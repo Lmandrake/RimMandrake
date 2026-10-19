@@ -1,0 +1,716 @@
+{
+ "mode": "partial",
+ "tier": "donor_off_phase0",
+ "manifestHead": "d0e00ddd3",
+ "utc": "2026-10-19T04:34:39Z",
+ "phases": [
+  "pre",
+  "log",
+  "mapgen"
+ ],
+ "ownerPresent": null,
+ "aborted": false,
+ "rows": [
+  {
+   "id": "P01_TIER_TRUTH",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "running": 542,
+    "tierLen": 20,
+    "donorsPresent": [],
+    "dlcMissing": [],
+    "vef": true,
+    "lenMatches": false
+   }
+  },
+  {
+   "id": "P02_TOOLS",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "missing": [],
+    "tools": 541
+   }
+  },
+  {
+   "id": "P03_LOG_ALIVE",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "alive": true,
+    "sentinel": "[proof log sentinel] revive 1792384248462",
+    "emitted": true,
+    "why": null,
+    "cleared": true
+   }
+  },
+  {
+   "id": "P04_MAP",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "mapId": 3,
+    "tile": 17007,
+    "biome": "RUT_ExtremeDesert",
+    "colonist": "Human632207"
+   }
+  },
+  {
+   "id": "L01_FIRST_EXCEPTION",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "exceptions": 485,
+    "ours": 0,
+    "retiredDonor": 0,
+    "other": 485,
+    "first": "Config error in Utinni Shellmandrake.rut.menushell: defName Utinni Shellmandrake.rut.menushell should only contain letters, numbers, underscores, or dashes.",
+    "firstException": "Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of an object",
+    "configErrors": 21,
+    "capAt": null
+   }
+  },
+  {
+   "id": "L02_XREF_OURS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "count": 0,
+    "retiredDonorOrRename": 0,
+    "examples": []
+   }
+  },
+  {
+   "id": "L03_TEX_PORTED",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "count": 1,
+    "examples": []
+   }
+  },
+  {
+   "id": "L04_TEX_OURS",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "count": 5,
+    "ofWhichPorted": 1,
+    "examples": [
+     "1369 Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RUT_LungerFry' in any active mod or in base resources.",
+     "1371 Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_NoothelmPlant' in any active mod or in base resources.",
+     "1373 Collection cannot init: No textures found at path Things/RM_Salvessa/RM_Salvessa",
+     "1374 Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_LungerFry' in any active mod or in base resources.",
+     "1376 Could not load Texture2D at 'StandIn/Things/Plants/AB_SlimeGrass' for def 'RM_TallSlimyGrass' in any active mod or in base resources."
+    ]
+   }
+  },
+  {
+   "id": "ROSTER_RM_Abyss",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_BlueDesert",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Cauldron",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "ports": 4,
+    "notSpawning": {
+     "RM_Bileworm": "absent"
+    },
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Contagion",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 23,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_FeverWood",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 2,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_FloodedCanyon",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_GelatinousSlime",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 4,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_LeaningScrub",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 3,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Miasma",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "ports": 5,
+    "notSpawning": {
+     "RM_Bileworm": "absent"
+    },
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_NightsideIce",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_TheForge",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 3,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_TheRot",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 4,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_TwilightSea",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 3,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Warscar",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Webwork",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RUT_AridShrubland",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 0,
+    "notSpawning": {},
+    "donorGuardedDropExpected": [
+     "AA_Cactipine",
+     "AA_Needlepost",
+     "AA_Wildpawn",
+     "AA_Wildpod",
+     "Plant_Nysyllin_Wild"
+    ]
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Abyss",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17084,
+    "mapBiome": "RM_Abyss",
+    "temperature": 0.0,
+    "wildAnimals": 5,
+    "kinds": {
+     "RSW_TaozinGrub": 4,
+     "RSW_Taozin": 1
+    },
+    "plants": 438,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66]\n  at MineralsFramework.ThingDef_StaticMineral.settlementDistProbFactor (Verse.Map "
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_BlueDesert",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17121,
+    "mapBiome": "RM_BlueDesert",
+    "temperature": -55.5,
+    "wildAnimals": 6,
+    "kinds": {
+     "RM_Vekkit": 6
+    },
+    "plants": 370,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Cauldron",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17195,
+    "mapBiome": "RM_Cauldron",
+    "temperature": -2.9,
+    "wildAnimals": 1,
+    "kinds": {
+     "RSW_Kreetle": 1
+    },
+    "plants": 1364,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Contagion",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17232,
+    "mapBiome": "RM_Contagion",
+    "temperature": 30.0,
+    "wildAnimals": 12,
+    "kinds": {
+     "RM_BloodyMess": 2,
+     "RM_Crispling": 2,
+     "RM_Sparkleech": 2,
+     "RM_Scorchpod": 2,
+     "RM_Danglemaw": 1,
+     "RM_Scaldhide": 1,
+     "RM_Eyestinger": 1,
+     "RM_OcularJelly": 1
+    },
+    "plants": 1691,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_FeverWood",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17306,
+    "mapBiome": "RM_FeverWood",
+    "temperature": 27.5,
+    "wildAnimals": 10,
+    "kinds": {
+     "RSW_Gelagrub": 9,
+     "RM_Silloch": 1
+    },
+    "plants": 9123,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_FloodedCanyon",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17380,
+    "mapBiome": "RM_FloodedCanyon",
+    "temperature": 25.0,
+    "wildAnimals": 1,
+    "kinds": {
+     "RSW_PustuleHornetQueen": 1
+    },
+    "plants": 3628,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original",
+     "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref DF9ACD49]\n  at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap"
+    ],
+    "errors": 2
+   }
+  },
+  {
+   "id": "MAPGEN_RM_GelatinousSlime",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17417,
+    "mapBiome": "RM_GelatinousSlime",
+    "temperature": 22.5,
+    "wildAnimals": 4,
+    "kinds": {
+     "RSW_Snoruuk": 1,
+     "RSW_FungalWeevil": 1,
+     "RSW_PustuleHornetSpawned": 1,
+     "RSW_PustuleHornet": 1
+    },
+    "plants": 5432,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_LeaningScrub",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17454,
+    "mapBiome": "RM_LeaningScrub",
+    "temperature": 22.5,
+    "wildAnimals": 5,
+    "kinds": {
+     "RM_Barkwarden": 3,
+     "RSW_PustuleHornet": 1,
+     "RSW_Thrumbungus": 1
+    },
+    "plants": 7876,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Miasma",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17528,
+    "mapBiome": "RM_Miasma",
+    "temperature": 30.0,
+    "wildAnimals": 21,
+    "kinds": {
+     "RSW_Yooka": 6,
+     "RSW_ColonyPustuleHornet": 4,
+     "RSW_Thrumbungus": 3,
+     "RM_Karrobel": 3,
+     "RSW_ColonyPustuleHornetQueen": 2,
+     "RSW_PustuleHornet": 1,
+     "RSW_SmogMoth": 1,
+     "RSW_ShiroTrap": 1
+    },
+    "plants": 5231,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_NightsideIce",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17639,
+    "mapBiome": "RM_NightsideIce",
+    "temperature": null,
+    "wildAnimals": 2,
+    "kinds": {
+     "RM_Dorrak": 2
+    },
+    "plants": 1272,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_TheForge",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17676,
+    "mapBiome": "RM_TheForge",
+    "temperature": 35.0,
+    "wildAnimals": 0,
+    "kinds": {},
+    "plants": 499,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_TheRot",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17713,
+    "mapBiome": "RM_TheRot",
+    "temperature": 5.0,
+    "wildAnimals": 15,
+    "kinds": {
+     "RSW_CaveLemming": 15
+    },
+    "plants": 175,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_TwilightSea",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17824,
+    "mapBiome": "RM_TwilightSea",
+    "temperature": 20.0,
+    "wildAnimals": 1,
+    "kinds": {
+     "RM_Gulloth": 1
+    },
+    "plants": 3577,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Warscar",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17861,
+    "mapBiome": "RM_Warscar",
+    "temperature": 33.5,
+    "wildAnimals": 4,
+    "kinds": {
+     "RM_Chotrix": 2,
+     "RSW_Bordok": 2
+    },
+    "plants": 5094,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Webwork",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17898,
+    "mapBiome": "RM_Webwork",
+    "temperature": 25.0,
+    "wildAnimals": 7,
+    "kinds": {
+     "RSW_CaveLemming": 7
+    },
+    "plants": 184,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RUT_AridShrubland",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 17935,
+    "mapBiome": "RUT_AridShrubland",
+    "temperature": 26.0,
+    "wildAnimals": 5,
+    "kinds": {
+     "RSW_PustuleHornet": 1,
+     "RSW_PustuleHornetQueen": 1,
+     "Terrorworm": 1,
+     "RSW_Lothcat": 1,
+     "RSW_SmogMoth": 1
+    },
+    "plants": 4573,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  }
+ ],
+ "summary": {
+  "PASS": 19,
+  "FAIL": 21
+ },
+ "tapLost": 0,
+ "plan": {
+  "P01_TIER_TRUTH": [
+   "jawa/running_mods details=false",
+   "no donor packageId; all five DLC; len == manifest tier len",
+   "a label that is not the list (2026-10-10: a 'tier' run on 550 mods)"
+  ],
+  "P02_TOOLS": [
+   "rimbridge list_tools",
+   "every tool this round calls is registered",
+   "a stale companion (L05, 2026-10-15) answers some calls and not others"
+  ],
+  "P03_LOG_ALIVE": [
+   "validation_core.log_revive",
+   "the sentinel warning reads back",
+   "Verse.Log cap: silent PASSes"
+  ],
+  "P04_MAP": [
+   "jawa/map_info + list_pawns faction=player",
+   "a Playing map with >=1 free colonist",
+   "rows that wait on a colonist void after a menu drop"
+  ],
+  "L01_FIRST_EXCEPTION": [
+   "Player.log of this load",
+   "0 lines containing Exception",
+   "a stale log from the previous process (identity: [JawaBench] ready line)"
+  ],
+  "L02_XREF_OURS": [
+   "Player.log",
+   "0 'Could not resolve cross-reference' lines naming RM_/RSW_/RUT_",
+   "cross-refs to absent mods' defs are expected on a 25-mod tier; only ours are graded"
+  ],
+  "L03_TEX_PORTED": [
+   "Player.log",
+   "0 texture misses on a manifest subject's texPath",
+   "a pawn texture resolves at load, not at spawn: the spawn row alone cannot see it"
+  ],
+  "L04_TEX_OURS": [
+   "Player.log",
+   "0 texture misses on any RM_/RSW_/RUT_ path (gate 0.5.5 #5)",
+   "art-owed items (no PNG yet) fail this honestly; read the split before blaming the port"
+  ],
+  "SPAWN_*": [
+   "jawa/spawn_pawn count=2 faction=none; 60 ticks; list_pawns; thing_graphic; tap",
+   "2 alive, kindActual == kind, no badTex, no new log line naming the kind/race/texPath",
+   "thing_graphic may not read a pawn graphic (then the log is the only texture evidence: said so)"
+  ],
+  "PLANT_*": [
+   "jawa/set_plants; list_things; thing_graphic",
+   "the plant stands and badTex is false",
+   "a plant with no PNG reads badTex only if the instrument can see the material"
+  ],
+  "BURST_*": [
+   "spawn hostile, kill_hostiles(pawnDef, destroyCorpses=false), 30 ticks, census the rect",
+   "acid: Filth_SpentAcid delta > 0; sentinel: WoodLog HP < max or Fire; gestation: organs > 0, acid 0",
+   "the burst's own Mod Setting off reads as a mod FAIL: the row reports the death and the tell separately"
+  ],
+  "OOMB_GROWTH": [
+   "tamed RM_LesserOomb; food need 0 then 500 ticks, repeated",
+   "RM_Oomb appears, the lesser is gone",
+   "growth is VEF's feeding counter: no VEF, no growth (P01 reads VEF in the list)"
+  ],
+  "OOMB_SPLIT": [
+   "tamed RM_GreaterOomb; same cycle",
+   ">=2 new tamed RM_LesserOomb, the greater is gone",
+   "fissionOnlyIfTamed: a wild subject never splits (spawned as player on purpose)"
+  ],
+  "HAZE_ZHOOL": [
+   "home tile -> RM_Contagion, grass site, 3 zhools, rate 5 (compressed, restored), 2500 ticks",
+   "converted ocular flora count > 0",
+   "OurBiome() refuses a non-mandrake biome: the row reads the map biome back first"
+  ],
+  "PORTAL_ENTER": [
+   "spawn RSW_DeadSarlaccHusk; ordered_job EnterPortal",
+   "a new map with a CaveExit, colonist on it",
+   "the old route listed loaded maps from a wrong key and read 'no map' x4 (SEA_DIVE_LIVE_ERRORS_1)"
+  ],
+  "PORTAL_EXIT": [
+   "ordered_job EnterPortal on the CaveExit",
+   "the colonist is back on the home map",
+   ""
+  ],
+  "MAPGEN_*": [
+   "jawa/world_tile_map_generate(tile, biome) on a scratch tile, read, map_drop",
+   "map biome == B; wild animals > 0 or plants > 0 (gate 0.5.5 #5); no exception during mapgen",
+   "a tile climate outside the roster's comfort reads 0 animals: the row says the temperature used"
+  ],
+  "ROSTER_*": [
+   "jawa/biome_probe find=<ported rows of B>",
+   "each unguarded port reads 'spawning'",
+   "rows still MayRequire'd on a donor (art owed) drop donor-off: expected, listed, not FAIL"
+  ],
+  "FLIGHT_*": [
+   "OWNER PRESENT ONLY: jawa/pawn_flight action=report kind=K",
+   "canEverFly true, maxFlightTimeStat > 0",
+   "never visual; never forced; a report read is the whole bar"
+  ],
+  "SAVE_LOAD": [
+   "go_to_main_menu; rimworld/load_game <fixed save>",
+   "Playing; 0 reference errors naming a donor def or its RSW_ rename",
+   "on a 25-mod tier the save's other mods are missing: only donor names graded"
+  ]
+ }
+}
