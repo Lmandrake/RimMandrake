@@ -1,0 +1,1 @@
+A helper committing C# source without the rebuilt DLL makes DLL_SOURCE_STAMP_GUARD_1 refuse EVERY seat push from the shared clone; brief C# helpers to commit DLL+.srchash in the same push, or have the orchestrator rebuild at once.
