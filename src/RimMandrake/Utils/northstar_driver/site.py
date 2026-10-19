@@ -116,7 +116,7 @@ def prepare_painter(s, pid, artistic=8):
     for need in ("Food", "Rest", "Joy"):
         s.call("jawa/pawn_need", pawn=pid, action="need", need=need, level=1.0)
     s.call("jawa/set_pawn_skill", pawn=pid, skill="Artistic", level=artistic)
-    s.call("jawa/set_draft", pawnId=pid, draft=False)
+    s.call("jawa/set_draft", pawnId=pid, drafted=False)
 
 
 def set_work_priority_all(s, work_type, priority=0):
