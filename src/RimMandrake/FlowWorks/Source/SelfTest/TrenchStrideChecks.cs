@@ -5,6 +5,8 @@
 // cross-mod key both mods must spell the same. Each case has a can-fail.
 // NOT proven here: a titan walking across a trench in game, the stride masks swapped into a live path job, the HugeThings
 // delegate registering at startup. Live rows owed.
+// TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG: the stride views composed with the suspension underpass (deck view / floor view, each
+// bridged over its own widths; which view a strider plans on) are proven here on the production math; the live swap is not.
 using System;
 using System.IO;
 
@@ -34,6 +36,19 @@ namespace RimMandrake.FlowWorks.SelfTest
             var g = new byte[w * h];
             Rect(g, w, 5, 0, tw, h, 8);
             return g;
+        }
+
+        /// <summary>The 3x3 of (x, z) as RM_TrenchStride.DeriveCell reads it (out of bounds: 0).</summary>
+        private static int[] D9(byte[] depth, int w, int h, int x, int z)
+        {
+            var d9 = new int[9];
+            for (int dz = -1; dz <= 1; dz++)
+                for (int dx = -1; dx <= 1; dx++)
+                {
+                    int cx = x + dx, cz = z + dz;
+                    d9[RM_CliffMaskMath.N9(dx, dz)] = cx >= 0 && cz >= 0 && cx < w && cz < h ? depth[cz * w + cx] : 0;
+                }
+            return d9;
         }
 
         private const int Titan = 4; // a titan's climb band (body size 3+), the trench is deeper than it climbs
@@ -100,12 +115,47 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             Case("TrenchStride_cliff_bits_open_the_crossing", () =>
             {
-                // the bank cell west of a 1-wide trench, as RM_TrenchStride.DeriveCell feeds AllowedBits
-                int[] plain = { 0, 0, 8, 0, 0, 8, 0, 0, 8 };   // centre a bank, east column (N9 2, 5, 8) the trench
+                // the bank cell west of a 1-wide trench, its 3x3 read from the PRODUCTION bridged depth as DeriveCell reads it
+                byte[] g = Trench(1, out int w, out int h);
+                byte[] runs = RM_TrenchStrideMath.RunWidths(g, w, h);
+                int[] plain = D9(g, w, h, 4, 3);
+                Assert(plain[RM_CliffMaskMath.N9(1, 0)] == 8 && plain[4] == 0, "the sample really is a bank beside the trench");
                 byte bPlain = RM_CliffMaskMath.AllowedBits(plain, Titan);
                 Assert((bPlain & (1 << 2)) == 0, "can-fail: the plain band refuses the 4 m step east into the trench");
-                int[] bridged = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                int[] bridged = D9(RM_TrenchStrideMath.BridgedDepth(g, runs, 1), w, h, 4, 3);
                 Assert((RM_CliffMaskMath.AllowedBits(bridged, Titan) & (1 << 2)) != 0, "the stride view allows it");
+                byte[] g2 = Trench(2, out w, out h);
+                int[] held = D9(RM_TrenchStrideMath.BridgedDepth(g2, RM_TrenchStrideMath.RunWidths(g2, w, h), 1), w, h, 4, 3);
+                Assert((RM_CliffMaskMath.AllowedBits(held, Titan) & (1 << 2)) == 0, "can-fail: stride 1 still refuses a 2-wide trench");
+            });
+            Case("TrenchStride_underpass_views_compose", () =>
+            {
+                // TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG. 16x10: a 1-wide trench at x=3 (a suspension deck on it at z=6), a 5-wide pit
+                // x=8..12 crossed by a suspension deck along z=4; both decks clear 2 m (the floor band passes under them).
+                int w = 16, h = 10;
+                var floor = new byte[w * h];               // the floor view: decks read as the hole beneath
+                Rect(floor, w, 3, 0, 1, h, 8);
+                Rect(floor, w, 8, 0, 5, h, 8);
+                var deck = (byte[])floor.Clone();          // the deck view: a surface deck is ground
+                Rect(deck, w, 8, 4, 5, 1, 0);
+                deck[6 * w + 3] = 0;
+                byte[] dv = RM_TrenchStrideMath.BridgedDepth(deck, RM_TrenchStrideMath.RunWidths(deck, w, h), 1);
+                byte[] fv = RM_TrenchStrideMath.BridgedDepth(floor, RM_TrenchStrideMath.RunWidths(floor, w, h), 1);
+                Assert(dv[5 * w + 3] == 0 && dv[7 * w + 3] == 0, "deck view: the trench beside the deck is still stepped over");
+                Assert(fv[6 * w + 3] == 0 && fv[0 * w + 3] == 0, "floor view: a deck over a narrow trench is stepped over too");
+                Assert(dv[2 * w + 10] == 8 && fv[2 * w + 10] == 8, "can-fail: the wide pit is never bridged");
+                var dl = RM_PocketGridMath.Label(dv, w, h, Titan);
+                var fl = RM_PocketGridMath.Label(fv, w, h, Titan);
+                Assert(dl.SameComponent(2 * w + 1, 4 * w + 14), "deck view: a titan crosses the trench and the pit's deck");
+                Assert(!fl.SameComponent(2 * w + 1, 4 * w + 14), "can-fail: the floor view never uses the deck as a deck");
+                Assert(fl.SameComponent(2 * w + 10, 7 * w + 10), "floor view: a titan in the pit walks under the deck");
+                Assert(!dl.SameComponent(2 * w + 10, 7 * w + 10), "can-fail: the deck view splits the pit at the deck");
+                // who gets which view: the stride must not override the underpass, nor read a strider as down in the hole
+                Assert(!RM_TrenchStrideMath.StriderUsesFloorView(true, false, true), "astride the narrow trench beside a deck: deck view");
+                Assert(RM_TrenchStrideMath.StriderUsesFloorView(true, true, false), "under a deck (floor band): floor view");
+                Assert(RM_TrenchStrideMath.StriderUsesFloorView(true, true, true), "in the floor band over a narrow trench: floor view");
+                Assert(RM_TrenchStrideMath.StriderUsesFloorView(true, false, false), "down in the wide pit: floor view");
+                Assert(!RM_TrenchStrideMath.StriderUsesFloorView(false, true, false), "can-fail: no floor view without the underpass");
             });
             Case("TrenchStride_wiring_every_judge_reads_the_stride_view", () =>
             {
@@ -116,8 +166,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(st.Contains("AppDomain.CurrentDomain.GetData(HookKey) as Func<Pawn, int>"), "the registration point is read, no reflection");
                 Assert(!st.Contains("GetTypeInAnyAssembly") && !st.Contains("TypeByName") && !st.Contains("HugeThings."),
                     "can-fail: no type lookup, no HugeThings type named");
-                Assert(st.Contains("RM_TrenchStrideMath.BridgedDepth(depth, runs, s)") && st.Contains("job.connectivity = m.band[s][band].AsReadOnly()"),
+                Assert(st.Contains("RM_TrenchStrideMath.BridgedDepth(depth, runs, s)") && st.Contains("job.connectivity = m.band[v][s][band].AsReadOnly()"),
                     "the stride masks derive from the bridged depth and are swapped in");
+                Assert(st.Contains("RM_PocketGrid.EffectiveDepth(map, eng, v == FloorView)")
+                    && st.Contains("RM_TrenchStrideMath.StriderUsesFloorView(Pits.RM_SuspensionUnderpass.UsesFloorView(p), Pits.RM_SuspensionUnderpass.InFloorBand(p),"),
+                    "TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG: the stride swap composes with the underpass floor view, never overwrites it");
+                string under = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
+                Assert(System.Text.RegularExpressions.Regex.Matches(under, @"RM_TrenchStride\.SteppedOver\(p, (p\.)?[mM]ap, eng, from\) \? 0").Count >= 2,
+                    "a titan stepping off a trench it strides onto a deck is on the deck, not under it");
                 Assert(st.Contains("[HarmonyPriority(Priority.Low)] public static void Postfix(Map ___map, ref PathFinderJob job)"),
                     "the stride swap runs after RM_CliffMask's");
                 Assert(grid.Contains("RM_TrenchStrideMath.BridgedDepth(depth, RM_TrenchStrideMath.RunWidths(depth, w, h), stride)")

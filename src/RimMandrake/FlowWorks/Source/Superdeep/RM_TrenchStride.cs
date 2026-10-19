@@ -14,7 +14,11 @@ namespace RimMandrake.FlowWorks
 	/// and every judge of a walk agrees, because each reads the SAME stride view:
 	///
 	///   • A* edges: per-stride cliff masks (this class), derived exactly as RM_CliffMask derives the plain ones but from the
-	///     bridged depth, swapped in after RM_CliffMask's own swap for a pawn with a stride.
+	///     bridged depth, swapped in after RM_CliffMask's own swap for a pawn with a stride. Two views, composed with the
+	///     suspension underpass (TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG): the deck view (decks are ground) and, while a deck the
+	///     floor band passes under stands, the floor view (RM_CliffMask's under masks), each bridged over its own trench widths.
+	///     A strider in the floor band or down in a hole plans on the floor view; one astride a trench it steps over, on the deck
+	///     view (RM_TrenchStrideMath.StriderUsesFloorView), and it steps from there ONTO a deck, never under it.
 	///   • Reachability veto and the hold: RM_PocketGrid.ForPawn hands such a pawn the pocket grid labelled on the bridged depth
 	///     (RM_SuperdeepTrap.RelativeVeto, IsHeldAtRelative, IsTrapped, InOwnPocketTooNarrow).
 	///   • The step floor, the jump drop and the fall detector: <see cref="StepDepthFor"/> (a bridged cell is depth 0 to it), so
@@ -86,17 +90,92 @@ namespace RimMandrake.FlowWorks
 
 		// ── per-map trench widths (main thread, or GatherData with the main thread blocked) ─────────────
 
+		/// <summary>TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG: the two views of the cliff masks a stride composes with. The DECK view
+		/// (RM_PocketGrid.EffectiveDepth: every intact deck is ground at its walking height) and the FLOOR view (a suspension deck
+		/// the floor band passes under reads as the hole beneath; RM_CliffMask's under masks), each with its own trench widths.</summary>
+		public const int DeckView = 0, FloorView = 1, Views = 2;
+
 		private sealed class Runs
 		{
 			public int generation = int.MinValue;
-			public byte[] runs;
+			public readonly byte[][] runs = new byte[Views][];       // [v]; the floor view's built on first ask
+			public bool floorBuilt;
+			public bool floorDiffers;                                // the floor view's depth is not the deck view's
+			// [v][s]: CanonicalStride(runs[v], s), -1 = not asked yet (a whole-map scan each; ViewStride is asked per path request)
+			public readonly int[][] canon = { new int[RM_TrenchStrideMath.MaxStride + 1], new int[RM_TrenchStrideMath.MaxStride + 1] };
 		}
 
 		private static readonly Dictionary<Map, Runs> runsByMap = new Dictionary<Map, Runs>();
 		private static readonly object gate = new object();
 
-		/// <summary>Each cell's trench width (RM_TrenchStrideMath.RunWidths over RM_PocketGrid.EffectiveDepth), recomputed when the
-		/// climb generation moves (dig, fill, cover, deck, bed recede). Only ever asked for a pawn with a stride.</summary>
+		/// <summary>The current widths of a map, recomputed when the climb generation moves (dig, fill, cover, deck, bed recede).
+		/// Call under <see cref="gate"/>.</summary>
+		private static Runs Fresh(Map map, RM_MapComponent_Excavation eng)
+		{
+			if (!runsByMap.TryGetValue(map, out Runs r))
+			{
+				PruneDeadMaps();
+				r = new Runs();
+				runsByMap[map] = r;
+			}
+			if (r.runs[DeckView] == null || r.generation != eng.ClimbGeneration)
+			{
+				r.generation = eng.ClimbGeneration;
+				r.runs[DeckView] = eng.ClimbCellCount == 0 ? new byte[map.cellIndices.NumGridCells]
+					: RM_TrenchStrideMath.RunWidths(RM_PocketGrid.EffectiveDepth(map, eng), map.Size.x, map.Size.z);
+				r.runs[FloorView] = null;
+				r.floorBuilt = false;
+				r.floorDiffers = false;
+				for (int v = 0; v < Views; v++)
+				{
+					for (int s = 0; s < r.canon[v].Length; s++)
+					{
+						r.canon[v][s] = -1;
+					}
+				}
+			}
+			return r;
+		}
+
+		/// <summary>The floor view's widths (built on first ask; the deck view's when no deck the floor band passes under stands).
+		/// Call under <see cref="gate"/>, after <see cref="Fresh"/>.</summary>
+		private static void EnsureFloor(Runs r, Map map, RM_MapComponent_Excavation eng)
+		{
+			if (r.floorBuilt)
+			{
+				return;
+			}
+			r.floorBuilt = true;
+			if (eng.ClimbCellCount == 0)
+			{
+				return;
+			}
+			byte[] floor = RM_PocketGrid.EffectiveDepth(map, eng, true);
+			r.floorDiffers = !SameDepth(floor, RM_PocketGrid.EffectiveDepth(map, eng));
+			if (r.floorDiffers)
+			{
+				r.runs[FloorView] = RM_TrenchStrideMath.RunWidths(floor, map.Size.x, map.Size.z);
+			}
+		}
+
+		private static bool SameDepth(byte[] a, byte[] b)
+		{
+			if (a.Length != b.Length)
+			{
+				return false;
+			}
+			for (int i = 0; i < a.Length; i++)
+			{
+				if (a[i] != b[i])
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/// <summary>Each cell's trench width in the DECK view (RM_TrenchStrideMath.RunWidths over RM_PocketGrid.EffectiveDepth),
+		/// recomputed when the climb generation moves. Only ever asked for a pawn with a stride.</summary>
 		public static byte[] RunsFor(Map map, RM_MapComponent_Excavation eng)
 		{
 			if (map == null || eng == null)
@@ -105,23 +184,12 @@ namespace RimMandrake.FlowWorks
 			}
 			lock (gate)
 			{
-				if (!runsByMap.TryGetValue(map, out Runs r))
-				{
-					PruneDeadMaps();
-					r = new Runs();
-					runsByMap[map] = r;
-				}
-				if (r.runs == null || r.generation != eng.ClimbGeneration)
-				{
-					r.generation = eng.ClimbGeneration;
-					r.runs = eng.ClimbCellCount == 0 ? new byte[map.cellIndices.NumGridCells]
-						: RM_TrenchStrideMath.RunWidths(RM_PocketGrid.EffectiveDepth(map, eng), map.Size.x, map.Size.z);
-				}
-				return r.runs;
+				return Fresh(map, eng).runs[DeckView];
 			}
 		}
 
-		/// <summary>Is <paramref name="c"/> ground to this pawn (a dug cell of a trench it steps over)?</summary>
+		/// <summary>Is <paramref name="c"/> ground to this pawn (a dug cell of a trench it steps over)? The deck view: a strider
+		/// stands on the banks, so a deck beside or over the trench is what it walks onto.</summary>
 		public static bool SteppedOver(Pawn p, Map map, RM_MapComponent_Excavation eng, IntVec3 c)
 		{
 			int s = StrideOf(p);
@@ -139,9 +207,16 @@ namespace RimMandrake.FlowWorks
 			return SteppedOver(p, map, eng, c) ? 0 : RM_SuperdeepTrap.StepDepthAt(map, eng, c);
 		}
 
-		/// <summary>The pocket-grid / mask view this pawn uses: 0 = the plain one, else the smallest stride with the same bridged
-		/// cells (RM_TrenchStrideMath.CanonicalStride), so one titan size class shares one grid.</summary>
+		/// <summary>The pocket-grid / mask view this pawn uses in the DECK view: 0 = the plain one, else the smallest stride with the
+		/// same bridged cells (RM_TrenchStrideMath.CanonicalStride), so one titan size class shares one grid.</summary>
 		public static int ViewStride(Pawn p, Map map)
+		{
+			return ViewStride(p, map, false);
+		}
+
+		/// <summary><see cref="ViewStride(Pawn, Map)"/> in the floor view when <paramref name="floorView"/> and the floor view
+		/// differs (else the deck view's). Cached per generation, view and stride.</summary>
+		public static int ViewStride(Pawn p, Map map, bool floorView)
 		{
 			int s = StrideOf(p);
 			if (s == 0 || map == null)
@@ -153,7 +228,22 @@ namespace RimMandrake.FlowWorks
 			{
 				return 0;
 			}
-			return RM_TrenchStrideMath.CanonicalStride(RunsFor(map, eng), s);
+			lock (gate)
+			{
+				Runs r = Fresh(map, eng);
+				int v = DeckView;
+				if (floorView)
+				{
+					EnsureFloor(r, map, eng);
+					v = r.floorDiffers ? FloorView : DeckView;
+				}
+				int c = r.canon[v][s];
+				if (c < 0)
+				{
+					c = r.canon[v][s] = RM_TrenchStrideMath.CanonicalStride(r.runs[v], s);
+				}
+				return c;
+			}
 		}
 
 		/// <summary>MAP_STATICS_PRUNE_GHOST_MAPS: drop the widths of every map that is gone (called on a miss).</summary>
@@ -176,17 +266,45 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		// ── stride cliff masks: RM_CliffMask's derivation over the bridged depth ──────────────────────────
+		// ── stride cliff masks: RM_CliffMask's derivation over the bridged depth, per view ───────────────────
 
 		private sealed class StrideMasks
 		{
-			// [s][k]: stride s = 1..MaxStride, band K = 1..RM_PitTrapMath.MaxClimbLimit; allocated on the first derive that needs s
-			public readonly NativeArray<CellConnection>[][] band = new NativeArray<CellConnection>[RM_TrenchStrideMath.MaxStride + 1][];
-			public readonly byte[][] depth = new byte[RM_TrenchStrideMath.MaxStride + 1][]; // the bridged depth each was derived from
-			public readonly bool[] derived = new bool[RM_TrenchStrideMath.MaxStride + 1];
+			// [v][s][k]: view v (DeckView, FloorView), stride s = 1..MaxStride, band K = 1..RM_PitTrapMath.MaxClimbLimit;
+			// allocated on the first derive that needs (v, s)
+			public readonly NativeArray<CellConnection>[][][] band =
+				{ new NativeArray<CellConnection>[RM_TrenchStrideMath.MaxStride + 1][], new NativeArray<CellConnection>[RM_TrenchStrideMath.MaxStride + 1][] };
+			public readonly byte[][][] depth = { new byte[RM_TrenchStrideMath.MaxStride + 1][], new byte[RM_TrenchStrideMath.MaxStride + 1][] };
+			public readonly bool[][] derived = { new bool[RM_TrenchStrideMath.MaxStride + 1], new bool[RM_TrenchStrideMath.MaxStride + 1] };
+			public bool floorDerived; // the floor view differs from the deck view (a deck the floor band passes under stands)
 			public int seenFullDerives = -1;
 			public int seenGeneration = int.MinValue;
 			public bool disposed;
+		}
+
+		/// <summary>One cell's 3×3 depths and the structural-join probe AllowedBits asks, reused across a derive (no int[9] and no
+		/// closure per cell).</summary>
+		private sealed class CellProbe
+		{
+			public readonly int[] d9 = new int[9];
+			public readonly Func<int, bool> joins;
+			private readonly Map map;
+			private readonly RM_MapComponent_Excavation eng;
+			public IntVec3 c;
+
+			public CellProbe(Map map, RM_MapComponent_Excavation eng)
+			{
+				this.map = map;
+				this.eng = eng;
+				joins = Joins;
+			}
+
+			private bool Joins(int b)
+			{
+				int dx = RM_CliffMaskMath.Dx[b], dz = RM_CliffMaskMath.Dz[b];
+				var o = new IntVec3(c.x + dx, 0, c.z + dz);
+				return o.InBounds(map) && RM_ClimbJoins.Structural(map, eng, c, o, d9[4], d9[RM_CliffMaskMath.N9(dx, dz)]);
+			}
 		}
 
 		private static readonly Dictionary<Map, StrideMasks> masks = new Dictionary<Map, StrideMasks>();
@@ -238,17 +356,20 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			m.disposed = true;
-			for (int s = 1; s < m.band.Length; s++)
+			for (int v = 0; v < Views; v++)
 			{
-				if (m.band[s] == null)
+				for (int s = 1; s < m.band[v].Length; s++)
 				{
-					continue;
-				}
-				for (int k = 1; k < m.band[s].Length; k++)
-				{
-					if (m.band[s][k].IsCreated)
+					if (m.band[v][s] == null)
 					{
-						m.band[s][k].Dispose();
+						continue;
+					}
+					for (int k = 1; k < m.band[v][s].Length; k++)
+					{
+						if (m.band[v][s][k].IsCreated)
+						{
+							m.band[v][s][k].Dispose();
+						}
 					}
 				}
 			}
@@ -287,23 +408,28 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			CellIndices ci = map.cellIndices;
-			for (int s = 1; s < m.derived.Length; s++)
+			var probe = new CellProbe(map, eng);
+			var done = new HashSet<int>();
+			for (int v = 0; v < Views; v++)
 			{
-				if (!m.derived[s])
+				for (int s = 1; s < m.derived[v].Length; s++)
 				{
-					continue;
-				}
-				var done = new HashSet<int>();
-				foreach (IntVec3 d in deltas)
-				{
-					for (int dz = -1; dz <= 1; dz++)
+					if (!m.derived[v][s])
 					{
-						for (int dx = -1; dx <= 1; dx++)
+						continue;
+					}
+					done.Clear();
+					foreach (IntVec3 d in deltas)
+					{
+						for (int dz = -1; dz <= 1; dz++)
 						{
-							var c = new IntVec3(d.x + dx, 0, d.z + dz);
-							if (c.InBounds(map) && done.Add(ci.CellToIndex(c)))
+							for (int dx = -1; dx <= 1; dx++)
 							{
-								DeriveCell(map, eng, m.band[s], vanilla, c, m.depth[s]);
+								var c = new IntVec3(d.x + dx, 0, d.z + dz);
+								if (c.InBounds(map) && done.Add(ci.CellToIndex(c)))
+								{
+									DeriveCell(map, probe, m.band[v][s], vanilla, c, m.depth[v][s]);
+								}
 							}
 						}
 					}
@@ -320,75 +446,103 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			m.seenFullDerives = RM_CliffMask.FullDerives;
 			m.seenGeneration = eng?.ClimbGeneration ?? 0;
-			for (int s = 1; s < m.derived.Length; s++)
+			m.floorDerived = false;
+			for (int v = 0; v < Views; v++)
 			{
-				m.derived[s] = false;
+				for (int s = 1; s < m.derived[v].Length; s++)
+				{
+					m.derived[v][s] = false;
+				}
 			}
 			if (!RM_CliffMask.On || eng == null || eng.ClimbCellCount == 0)
 			{
 				return;
 			}
-			byte[] depth = RM_PocketGrid.EffectiveDepth(map, eng);
 			int w = map.Size.x, h = map.Size.z, n = map.cellIndices.NumGridCells;
-			byte[] runs = RM_TrenchStrideMath.RunWidths(depth, w, h);
-			for (int s = 1; s < m.derived.Length; s++)
+			CellIndices ci = map.cellIndices;
+			var probe = new CellProbe(map, eng);
+			var done = new HashSet<int>();
+			byte[] deckDepth = null;
+			for (int v = 0; v < Views; v++)
 			{
-				if (RM_TrenchStrideMath.CanonicalStride(runs, s) != s)
+				// TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG: the floor view only while it differs, as RM_CliffMask derives its under masks
+				byte[] depth = RM_PocketGrid.EffectiveDepth(map, eng, v == FloorView);
+				if (v == DeckView)
 				{
-					continue; // the same view as a smaller stride (or the plain one): Swap hands that out
+					deckDepth = depth;
 				}
-				if (m.band[s] == null)
+				else if (SameDepth(depth, deckDepth))
 				{
-					m.band[s] = new NativeArray<CellConnection>[RM_PitTrapMath.ClimbBands];
-					for (int k = 1; k < m.band[s].Length; k++)
+					break;
+				}
+				else
+				{
+					m.floorDerived = true;
+				}
+				byte[] runs = RM_TrenchStrideMath.RunWidths(depth, w, h);
+				int prevCount = 0;
+				for (int s = 1; s < m.derived[v].Length; s++)
+				{
+					int count = RM_TrenchStrideMath.CountBridged(runs, s);
+					bool canonical = count > 0 && count != prevCount; // == CanonicalStride(runs, s) == s: bridged sets nest
+					prevCount = count;
+					if (!canonical)
 					{
-						m.band[s][k] = new NativeArray<CellConnection>(n, Allocator.Persistent);
+						continue; // the same view as a smaller stride (or the plain one): Swap hands that out
 					}
-				}
-				byte[] bridged = RM_TrenchStrideMath.BridgedDepth(depth, runs, s);
-				m.depth[s] = bridged;
-				NativeArray<CellConnection>[] bands = m.band[s];
-				for (int k = 1; k < bands.Length; k++)
-				{
-					NativeArray<CellConnection> a = bands[k];
+					if (m.band[v][s] == null)
+					{
+						m.band[v][s] = new NativeArray<CellConnection>[RM_PitTrapMath.ClimbBands];
+						for (int k = 1; k < m.band[v][s].Length; k++)
+						{
+							m.band[v][s][k] = new NativeArray<CellConnection>(n, Allocator.Persistent);
+						}
+					}
+					byte[] bridged = RM_TrenchStrideMath.BridgedDepth(depth, runs, s);
+					m.depth[v][s] = bridged;
+					NativeArray<CellConnection>[] bands = m.band[v][s];
+					for (int k = 1; k < bands.Length; k++)
+					{
+						NativeArray<CellConnection> a = bands[k];
+						for (int i = 0; i < n; i++)
+						{
+							a[i] = vanilla[i];
+						}
+					}
+					done.Clear();
 					for (int i = 0; i < n; i++)
 					{
-						a[i] = vanilla[i];
-					}
-				}
-				CellIndices ci = map.cellIndices;
-				var done = new HashSet<int>();
-				for (int i = 0; i < n; i++)
-				{
-					if (bridged[i] == 0)
-					{
-						continue;
-					}
-					IntVec3 c = ci.IndexToCell(i);
-					for (int dz = -1; dz <= 1; dz++)
-					{
-						for (int dx = -1; dx <= 1; dx++)
+						if (bridged[i] == 0)
 						{
-							int x = c.x + dx, z = c.z + dz;
-							if (x >= 0 && z >= 0 && x < w && z < h && done.Add(z * w + x))
+							continue;
+						}
+						IntVec3 c = ci.IndexToCell(i);
+						for (int dz = -1; dz <= 1; dz++)
+						{
+							for (int dx = -1; dx <= 1; dx++)
 							{
-								DeriveCell(map, eng, bands, vanilla, new IntVec3(x, 0, z), bridged);
+								int x = c.x + dx, z = c.z + dz;
+								if (x >= 0 && z >= 0 && x < w && z < h && done.Add(z * w + x))
+								{
+									DeriveCell(map, probe, bands, vanilla, new IntVec3(x, 0, z), bridged);
+								}
 							}
 						}
 					}
+					m.derived[v][s] = true;
 				}
-				m.derived[s] = true;
 			}
 			StrideDerives++;
 		}
 
 		/// <summary>RM_CliffMask.DeriveCell over a given depth (kept in step with it: vanilla's byte AND the band's AllowedBits, ramp
 		/// and structural-ladder edges restored).</summary>
-		private static void DeriveCell(Map map, RM_MapComponent_Excavation eng, NativeArray<CellConnection>[] bands,
+		private static void DeriveCell(Map map, CellProbe probe, NativeArray<CellConnection>[] bands,
 			NativeArray<CellConnection>.ReadOnly vanilla, IntVec3 c, byte[] depth)
 		{
 			int w = map.Size.x, h = map.Size.z;
-			var d9 = new int[9];
+			int[] d9 = probe.d9;
+			probe.c = c;
 			for (int dz = -1; dz <= 1; dz++)
 			{
 				for (int dx = -1; dx <= 1; dx++)
@@ -401,12 +555,7 @@ namespace RimMandrake.FlowWorks
 			byte van = (byte)vanilla[idx];
 			for (int k = 1; k < bands.Length; k++)
 			{
-				byte allowed = RM_CliffMaskMath.AllowedBits(d9, k, b =>
-				{
-					var o = new IntVec3(c.x + RM_CliffMaskMath.Dx[b], 0, c.z + RM_CliffMaskMath.Dz[b]);
-					return o.InBounds(map) && RM_ClimbJoins.Structural(map, eng, c, o, d9[4], d9[RM_CliffMaskMath.N9(RM_CliffMaskMath.Dx[b], RM_CliffMaskMath.Dz[b])]);
-				});
-				bands[k][idx] = (CellConnection)RM_CliffMaskMath.Derive(van, allowed);
+				bands[k][idx] = (CellConnection)RM_CliffMaskMath.Derive(van, RM_CliffMaskMath.AllowedBits(d9, k, probe.joins));
 			}
 		}
 
@@ -421,6 +570,10 @@ namespace RimMandrake.FlowWorks
 			notedPawn = request?.pawn;
 		}
 
+		/// <summary>TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG: the stride view COMPOSES with the view RM_CliffMask.Swap chose. A strider
+		/// in the floor band, or down in a hole it does not step over, plans on the floor view with that view's narrow trenches
+		/// bridged; one standing astride a trench it steps over is at ground, so it plans on the deck view (decks are decks to it).
+		/// No stride view differs from the chosen plain one: RM_CliffMask's array stands.</summary>
 		internal static void Swap(Map map, ref PathFinderJob job)
 		{
 			if (!noted)
@@ -430,30 +583,38 @@ namespace RimMandrake.FlowWorks
 			noted = false;
 			Pawn p = notedPawn;
 			notedPawn = null;
-			int s = ViewStride(p, map);
-			if (s == 0)
+			if (StrideOf(p) == 0)
 			{
 				return;
 			}
 			StrideMasks m = MasksFor(map, false);
-			if (m == null || !m.derived[s])
+			if (m == null)
 			{
-				return; // not derived yet (the next GatherData derives it): the plain band holds for that request
+				return;
 			}
 			// RM_CliffMask.Swap's own exceptions, which keep vanilla's array: a flyer, a pawn too wide for its pocket.
 			if (RM_PocketGrid.CanFly(p) || RM_SuperdeepTrap.InOwnPocketTooNarrow(p))
 			{
 				return;
 			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			bool floor = m.floorDerived && RM_TrenchStrideMath.StriderUsesFloorView(Pits.RM_SuspensionUnderpass.UsesFloorView(p), Pits.RM_SuspensionUnderpass.InFloorBand(p),
+				p.Spawned && SteppedOver(p, map, eng, p.Position));
+			int v = floor ? FloorView : DeckView;
+			int s = ViewStride(p, map, floor);
+			if (s == 0 || !m.derived[v][s])
+			{
+				return; // no stride view here, or not derived yet (the next GatherData derives it): RM_CliffMask's array holds
+			}
 			int band = RM_PocketGridMath.BandFor(RM_PocketGrid.ClimbLimitOf(p), RM_PitTrapMath.ClimbBands);
-			if (band <= 0 || band >= m.band[s].Length)
+			if (band <= 0 || band >= m.band[v][s].Length)
 			{
 				return;
 			}
-			job.connectivity = m.band[s][band].AsReadOnly();
+			job.connectivity = m.band[v][s][band].AsReadOnly();
 		}
 
-		/// <summary>Bridge/proof read: "STRIDE s=S view=V run=R bridged=b registered=b derives=N".</summary>
+		/// <summary>Bridge/proof read: "STRIDE s=S view=V floorView=F run=R bridged=b registered=b derives=N".</summary>
 		public static string ProofStride(Pawn p, IntVec3 c)
 		{
 			Map map = p?.Map;
@@ -464,7 +625,7 @@ namespace RimMandrake.FlowWorks
 			}
 			byte[] runs = RunsFor(map, eng);
 			int run = runs == null ? 0 : runs[map.cellIndices.CellToIndex(c)];
-			return "STRIDE s=" + StrideOf(p) + " view=" + ViewStride(p, map) + " run=" + run + " bridged=" + SteppedOver(p, map, eng, c)
+			return "STRIDE s=" + StrideOf(p) + " view=" + ViewStride(p, map) + " floorView=" + ViewStride(p, map, true) + " run=" + run + " bridged=" + SteppedOver(p, map, eng, c)
 				+ " registered=" + Registered + " derives=" + StrideDerives;
 		}
 	}

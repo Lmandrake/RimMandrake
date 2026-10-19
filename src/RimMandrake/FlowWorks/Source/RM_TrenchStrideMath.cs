@@ -118,6 +118,16 @@ namespace RimMandrake.FlowWorks
 			return c;
 		}
 
+		/// <summary>TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG: which cliff-mask view a strider's path request plans on. The suspension
+		/// underpass hands the FLOOR view (decks the floor band passes under read as the floor) to a pawn in the floor band or down
+		/// in a hole (<paramref name="cliffFloorView"/>, RM_SuspensionUnderpass.UsesFloorView); a strider standing astride a
+		/// trench it steps over is NOT down in a hole (it stands on the banks, at ground), so it keeps the deck view unless it is
+		/// in the floor band. The stride masks are then the chosen view's depth with that view's narrow trenches bridged.</summary>
+		public static bool StriderUsesFloorView(bool cliffFloorView, bool inFloorBand, bool standsOnBridged)
+		{
+			return cliffFloorView && (inFloorBand || !standsOnBridged);
+		}
+
 		/// <summary>The smallest stride whose view equals stride s's (views of strides with the same bridged count are the same
 		/// cells, since bridged sets nest): masks and pocket grids are kept once per distinct view. 0: the plain view.</summary>
 		public static int CanonicalStride(byte[] runs, int stride)

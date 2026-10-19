@@ -348,10 +348,12 @@ namespace RimMandrake.FlowWorks
 			return null;
 		}
 
-		/// <summary>Null when ladders cannot do this crossing; else the next ladder job, or the step down into the trench once
-		/// every ladder stands.</summary>
-		private static Job LadderJob(Pawn p, Plan plan, int k)
+		/// <summary>Null when ladders cannot do this crossing (<paramref name="waiting"/> false: breach instead) or cannot do it
+		/// YET (<paramref name="waiting"/> true: the next slot is out of reach or another raider is setting it; think again later);
+		/// else the next ladder job, or the step down into the trench once every ladder stands.</summary>
+		private static Job LadderJob(Pawn p, Plan plan, int k, out bool waiting)
 		{
+			waiting = false;
 			ThingDef def = RimMandrakeFlowWorks_DefOf.RM_LadderPortable;
 			if (!RM_RaiderTrenchSettings.raiderLaddersEnabled || def == null || RM_RaiderTrenchDefOf.RM_RaiderSetLadder == null)
 			{
@@ -380,9 +382,10 @@ namespace RimMandrake.FlowWorks
 				{
 					return null;
 				}
-				if (!p.CanReach(cell, PathEndMode.Touch, Danger.Deadly))
+				if (!p.CanReserve(cell) || !p.CanReach(cell, PathEndMode.Touch, Danger.Deadly))
 				{
-					return null;   // the slot is past a ladder not yet set, or cut off: think again later
+					waiting = true;
+					return null;   // another raider is setting it, or the slot is past a ladder not yet set: think again later
 				}
 				Warn(p, "RMFlow_RaidersSetLadders");
 				Job job = JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderSetLadder, cell, toward);
@@ -402,7 +405,7 @@ namespace RimMandrake.FlowWorks
 					return GotoJob(c);
 				}
 			}
-			return null;
+			return null;   // the ladders stand and still do not do it: breach instead
 		}
 
 		// ── breach by fill ────────────────────────────────────────────────
@@ -426,7 +429,8 @@ namespace RimMandrake.FlowWorks
 			Map map = p.Map;
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			IntVec3 c = plan.cells[i];
-			if (eng == null || !eng.CanFillIn(c) || !p.CanReach(c, PathEndMode.Touch, Danger.Deadly))
+			// one raider a square (the driver reserves it): two at once would shovel it past its causeway step
+			if (eng == null || !eng.CanFillIn(c) || !p.CanReserve(c) || !p.CanReach(c, PathEndMode.Touch, Danger.Deadly))
 			{
 				return null;
 			}
@@ -491,7 +495,12 @@ namespace RimMandrake.FlowWorks
 				case RM_RaiderTrenchMath.Crossing.Jump:
 					return jump;
 				case RM_RaiderTrenchMath.Crossing.Ladder:
-					return LadderJob(p, plan, k);   // null while the next ladder's square is out of reach: think again later
+				{
+					// null while the next ladder's square is out of reach or taken: think again later; null because ladders cannot
+					// do it after all (a slot blocked since, the ladders standing and the far side still cut off): breach by fill
+					Job ladder = LadderJob(p, plan, k, out bool waiting);
+					return ladder ?? (waiting ? null : FillJob(p, plan, k));
+				}
 				case RM_RaiderTrenchMath.Crossing.Fill:
 					return fill;
 				default:
@@ -613,9 +622,10 @@ namespace RimMandrake.FlowWorks
 	{
 		private bool IsLadder => job.def == RM_RaiderTrenchDefOf.RM_RaiderSetLadder;
 
+		/// <summary>One raider works a square at a time (the givers skip a square another raider holds).</summary>
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
-			return true;
+			return pawn.Reserve(job.targetA, job, 1, -1, null, errorOnFailed);
 		}
 
 		private int WorkTicks()

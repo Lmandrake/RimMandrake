@@ -147,6 +147,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(r, @"if \(dryRun \|\| lord == null \|\| !warned\.Add\(lord\)\)", "a dry run warns nobody");
                 RiverSwitchFlipChecks.Has(r, @"if \(r > 0f\)\s*\{\s*verb = v;", "a pack with range 0 falls through to the next source");
                 RiverSwitchFlipChecks.Has(r, @"if \(r > 0f\)\s*\{\s*ability = a;", "a range-0 ability falls through to the next ability");
+                // TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG minors: ladders that cannot do it after all breach by fill (but a raider
+                // waiting on a ladder another is setting does not start a breach); one raider a square.
+                RiverSwitchFlipChecks.Has(r, @"Job ladder = LadderJob\(p, plan, k, out bool waiting\);\s*return ladder \?\? \(waiting \? null : FillJob\(p, plan, k\)\);",
+                    "a null ladder job falls back to the fill breach unless it is only waiting");
+                RiverSwitchFlipChecks.Has(r, @"if \(!p\.CanReserve\(cell\) \|\| !p\.CanReach\(cell, PathEndMode\.Touch, Danger\.Deadly\)\)\s*\{\s*waiting = true;",
+                    "a slot held by another raider, or out of reach, is a wait, not a breach");
+                RiverSwitchFlipChecks.Has(r, @"!eng\.CanFillIn\(c\) \|\| !p\.CanReserve\(c\)", "a square another raider shovels is skipped");
+                RiverSwitchFlipChecks.Has(r, @"TryMakePreToilReservations\(bool errorOnFailed\)\s*\{\s*return pawn\.Reserve\(job\.targetA, job, 1, -1, null, errorOnFailed\);",
+                    "can-fail: the work driver reserves its square");
                 string u = Src("Superdeep", "RM_LadderUtility.cs");
                 RiverSwitchFlipChecks.Has(u, @"MayClimb\(p\) \|\| ClimbsOwnLadder\(ladder, p\)", "the prison door lets a raid climb its own ladder");
                 RiverSwitchFlipChecks.Has(u, @"ladder\.Faction != Faction\.OfPlayer && p\.Faction == ladder\.Faction", "only the ladder's own (non-player) faction");
