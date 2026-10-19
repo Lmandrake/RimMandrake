@@ -18,15 +18,23 @@ WHAT IS DEPENDED ON      Biotech, Core, VEF, Outland Genetics, Integrated Genes,
                          LFS Eyes, Big and Small. Their genes are generic and stay
                          where they are.
 
-Also repoints src/SPLIT_Phase3/Jawa_Patches at the copies: verify() fails if any def
-there still reaches a departing mod, including through a ParentName, which is a
-silent discard rather than an error.
+verify() also scans src/RimUtinni/UtinniPatches and src/RimStarWars/StarWarsPatches:
+it fails if any def there still reaches a departing mod, including through a
+ParentName, which is a silent discard rather than an error.
 
 Re-runnable. Reads the live def dump for the species table and the donor mods'
 own XML on disk for the def bodies, so the copies are the authors' text rather
 than a reconstruction from runtime fields.
 
-  python3 src/RimMandrake/Utils/gen_races_mod.py [--no-textures]
+  python3 src/RimMandrake/Utils/gen_races_mod.py [--no-textures] [--check]
+
+  --check         stage everything, report which files WOULD change, write nothing
+                  (exit 1 if any would). selftest_gen_races_mod.py runs this.
+  RACES_GEN_OUT   env var: regenerate into a copy of the mod instead of the repo's.
+
+ALL OR NOTHING: every output is staged in memory and written only after every
+refusal guard has passed (see `stage`). A clean run on an unchanged repo writes 0
+files; anything else is a hand edit the tables below have not absorbed.
 """
 import io
 import json
@@ -45,7 +53,9 @@ from game_paths import DEF_DUMP, WORKSHOP  # noqa: E402
 DUMP = DEF_DUMP
 WS = WORKSHOP
 BTD = WS + "/3458153185"
-OUT = os.path.join(REPO, "src/RimStarWars/StarWarsRaces")
+# RACES_GEN_OUT redirects every write (and every read of "what we ship") to a copy;
+# the selftest regenerates into a scratch copy this way and diffs it against git.
+OUT = os.environ.get("RACES_GEN_OUT") or os.path.join(REPO, "src/RimStarWars/StarWarsRaces")
 
 # donor tag -> (mod root, texture roots in search order)
 #
@@ -65,10 +75,17 @@ DONORS = {
 }
 DONOR_PIDS = {d["packageId"] for d in DONORS.values()}
 
-PREFIX = "RimMandrake_"
+# 🔴 TWO PREFIXES SINCE THE THREE-TIER RENAME (aa759446e4, 2026-08-31). That commit
+# rewrote the OUTPUT's defNames to RSW_ but left these constants alone, so every
+# later run named its copies RimMandrake_X, missed every shipped RSW_ def, rebuilt
+# all 63 species from donors and refused on "331 genes LOST" (RACES_GEN_REPAIR_
+# STOP_SHREDDING_FIRST, 2026-10-18). defNames carry DEF_PREFIX; Name= abstracts
+# and exclusion/style tags kept PREFIX, measured on the shipped files.
+PREFIX = "RimMandrake_"          # Name= abstracts, exclusionTags, styleTags
+DEF_PREFIX = "RSW_"              # every copied defName
 TEXNS = "RimMandrakeSW"          # our texture path namespace
 STRNS = "RimMandrakeSWNames"     # our Languages/English/Strings namespace
-SPECIES_PREFIX = "RimMandrake"   # xenotype defNames: RSW_RimMandrakeTwilek
+SPECIES_PREFIX = "RSW_RimMandrake"   # xenotype defNames: RSW_RimMandrakeTwilek
 
 # A RulePackDef's Rule_File entries name a plain text word list under some
 # active mod's `Languages/<lang>/Strings`. Copying the RulePackDef without the
@@ -112,16 +129,19 @@ DROP_SPECIES = {"Miraluka"}
 # is what the moved def is called here. The gene XML files are hand-moved; this
 # map only exists so generated gene lists point at the new names.
 JAWA_GENES = {
-    "Jawa_Gene_Skittish": PREFIX + "Jawa_Skittish",
-    "Jawa_Eyes_HugeOrange": PREFIX + "Jawa_Eyes_HugeOrange",
-    "Jawa_Eyes_HugeAmber": PREFIX + "Jawa_Eyes_HugeAmber",
-    "Jawa_Head_Plain": PREFIX + "Jawa_Head_Plain",
+    "Jawa_Gene_Skittish": DEF_PREFIX + "Jawa_Skittish",
+    "Jawa_Eyes_HugeOrange": DEF_PREFIX + "Jawa_Eyes_HugeOrange",
+    "Jawa_Eyes_HugeAmber": DEF_PREFIX + "Jawa_Eyes_HugeAmber",
+    "Jawa_Head_Plain": DEF_PREFIX + "Jawa_Head_Plain",
 }
 
 # modExtension classes whose assembly LEAVES with the donor. A def carrying one
 # logs "Could not find type named ..." once the donor is off, so the node is
 # dropped from the copy. Cosmetic in both cases.
-DROP_EXT_CLASSES = {"EyeOffsetSouth.ModExtension_EyeOffsetSouth"}
+DROP_EXT_CLASSES = {"EyeOffsetSouth.ModExtension_EyeOffsetSouth",
+                    # cc3cf5b0ce: no installed mod ships this type, and an unresolved
+                    # modExtension Class discarded the four tattoo genes WHOLE.
+                    "GeneTattooTagFilter.ModExtension_GeneTattooTagFilter"}
 
 # modExtension classes whose assembly is a SOFT dependency (declared in
 # SOFT_AFTER, never installed) rather than dropped outright. A <li Class=...>
@@ -129,7 +149,24 @@ DROP_EXT_CLASSES = {"EyeOffsetSouth.ModExtension_EyeOffsetSouth"}
 # this repo's own lesson an unresolved modExtension Class discards the WHOLE
 # containing def, not just the node -- so guard the <li> with MayRequire
 # instead of stripping it (STARWARSRACES_TOOLBOX_SOFT_DEP_1, 2026-09-08).
-MAYREQUIRE_EXT_CLASSES = {"TabulaRasa.DefModExt_HeadTypeStuff": "neronix17.toolbox"}
+MAYREQUIRE_EXT_CLASSES = {"TabulaRasa.DefModExt_HeadTypeStuff": "neronix17.toolbox",
+                          # 44de462808: compiled into KotOR Core, which ships inside
+                          # our armoury mod; guarded so the def survives without it.
+                          "guy762_Ionization.ModExtension_HediffGiver": "mandrake.rsw.armoury"}
+
+# Owner approved 2026-09-17 (bb51a1aac2): `useSkinShader false` stops a skin gene
+# tinting the face, so it is REMOVED from every head type whose base texture is
+# greyscale and KEPT only where it protects real baked colour (measured in the
+# base image) and on the abstract parents that already carried it.
+HEAD_KEEP_NO_SKIN_SHADER = {"RSW_Bith_Normal", "RSW_Geonosian_Normal", "RSW_Nikto",
+                            "RimMandrake_DathomirianHeadBase", "RimMandrake_MirialanHeadBase",
+                            "RimMandrake_PantoranHeadBase", "RimMandrake_TogrutaHeadBase"}
+
+# Rule-pack rules CUT after copying, keyed by OUR defName -> keywords whose Rule_File
+# entry and every rulesStrings line naming them are removed.
+# b9f4f6ba9e (2026-10-04): the SandP nickname list is empty, so the rule only ever
+# produced blank nicknames; its Nick.txt is not copied either.
+RULEPACK_CUT_KEYWORDS = {"RSW_NamerPersonSandP": ["NicknameSandP"]}
 
 DEPENDENCIES = [
     ("Ludeon.RimWorld.Biotech", "Biotech", ""),
@@ -139,7 +176,16 @@ DEPENDENCIES = [
      "https://steamcommunity.com/sharedfiles/filedetails/?id=2600618060"),
     ("Turnovus.Biotech.IntegratedGenes", "Integrated Genes",
      "https://steamcommunity.com/sharedfiles/filedetails/?id=2891845502"),
+    # 9274831fab: the three gene dependencies MEASURED as real (genes we ship name them).
+    ("RedMattis.BetterPrerequisites", "Big and Small - Framework",
+     "https://steamcommunity.com/sharedfiles/filedetails/?id=2925432336"),
+    ("RedMattis.BigSmall.Core", "Big and Small - Genes & More",
+     "https://steamcommunity.com/sharedfiles/filedetails/?id=2920751126"),
+    ("LazyFridayStudio.GenesExpandedEyes", "[LFS] Genes Expanded - Eyes",
+     "https://steamcommunity.com/sharedfiles/filedetails/?id=2922457045"),
 ]
+# loadAfter opens with these four (the original hard dependencies), then SOFT_AFTER.
+LOAD_AFTER_DEPS = 4
 # Reached only by a handful of genes or mod extensions, but reached: declared as
 # loadAfter so our defs land on top of theirs, without forcing an install.
 SOFT_AFTER = [
@@ -155,6 +201,13 @@ SOFT_AFTER = [
     "neronix17.outerrim.galacticdiversity",
     "btd.xenotyperemix.starwars",
 ]
+# f869774f15 (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81): MayRequire targets in this mod
+# that had no loadAfter declaration. Emitted under the sweep's own comment line.
+WAVE81_AFTER = ["guy762.kotorweapons", "kentington.saveourship2", "ludeon.rimworld.anomaly",
+                "ludeon.rimworld.ideology", "ludeon.rimworld.odyssey",
+                "ludeon.rimworld.royalty", "mandrake.rm.flowworks", "pathfinding.framework"]
+WAVE81_COMMENT = ("      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire "
+                  "target(s) with no loadAfter declaration -->\n")
 
 # 🔴 THE COPIER IS DRIVEN FROM THESE TWO LISTS. `copy_textures` is fed by
 # `texhits`, which only `rewrite` populates -- so a field missing here is not
@@ -199,69 +252,169 @@ def comment_safe(lines):
     return out
 
 
-def assert_comment_safe(path):
-    """Guard, not a habit. Runs over every file we write."""
-    t = io.open(path, encoding="utf-8").read()
-    for m in re.finditer(r"<!--(.*?)-->", t, re.S):
+def assert_comment_safe(text, where):
+    """Guard, not a habit. Runs over every file we stage, BEFORE it is written."""
+    for m in re.finditer(r"<!--(.*?)-->", text, re.S):
         if "--" in m.group(1):
-            raise SystemExit("ILLEGAL `--` inside an XML comment: %s" % path)
-    if "<!--" in t.split("-->")[-1]:
-        raise SystemExit("unterminated XML comment: %s" % path)
+            raise SystemExit("ILLEGAL `--` inside an XML comment: %s" % where)
+    if "<!--" in text.split("-->")[-1]:
+        raise SystemExit("unterminated XML comment: %s" % where)
+
+
+def _xesc(t):
+    return t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+# ---------------------------------------------------------------- staging
+#
+# 🔴 ALL OR NOTHING. Every file this generator produces is STAGED here, in memory,
+# and nothing touches disk until every refusal guard has passed (`commit_staged`).
+# Before 2026-10-18 each writer wrote as it went, so the gene-loss guard in
+# write_xenotypes fired AFTER SW_Genes, SW_HeadTypes, SW_Support, SW_Categories,
+# SW_NameMakers and About.xml were already overwritten - a refused run left the mod
+# half-regenerated, and a helper had to restore six files from git
+# (RACES_GEN_REPAIR_STOP_SHREDDING_FIRST). The "what do we ship" readers all read
+# DISK, which therefore stays the pre-run state for the whole run.
+_STAGED = {}
+
+
+def stage(path, text):
+    assert_comment_safe(text, path)
+    _STAGED[os.path.abspath(path)] = text
+
+
+def read_current(path):
+    """The staged text if this run produced one, else what is on disk."""
+    ap = os.path.abspath(path)
+    if ap in _STAGED:
+        return _STAGED[ap]
+    return io.open(ap, encoding="utf-8").read()
+
+
+def commit_staged():
+    """Write every staged file whose content changed. Returns the paths written."""
+    wrote = []
+    for ap, text in sorted(_STAGED.items()):
+        if os.path.exists(ap) and io.open(ap, encoding="utf-8").read() == text:
+            continue
+        os.makedirs(os.path.dirname(ap), exist_ok=True)
+        io.open(ap, "w", encoding="utf-8", newline="\n").write(text)
+        wrote.append(ap)
+    return wrote
+
+
+def _parse_keep_comments(path):
+    parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))
+    return ET.parse(path, parser).getroot()
+
+
+def _key(e):
+    # 🪤 ABSTRACT PARENTS HAVE NO defName — they are keyed by a Name= ATTRIBUTE.
+    # Keying on defName alone silently skipped every abstract, and an abstract that
+    # vanishes takes its CHILDREN with it (a ParentName that resolves to nothing is a
+    # SILENT DISCARD). MEASURED 2026-08-23: RSW_GunganEars and two head types died so.
+    return e.findtext("defName") or e.get("Name")
+
+
+def _canon(e):
+    """A def's MEANING: tags, attributes, stripped text, children - no comments, no
+    layout whitespace, and no EMPTY <modExtensions> (what DROP_EXT_CLASSES leaves; the
+    four tattoo genes ship that block commented out instead). Two elements with equal
+    _canon load identically."""
+    kids = tuple(_canon(c) for c in e if isinstance(c.tag, str)
+                 and not (c.tag == "modExtensions" and not len(c)))
+    return (e.tag, tuple(sorted(e.attrib.items())), (e.text or "").strip(), kids)
 
 
 def write_xml(path, header_lines, elements, keep_existing=True):
-    """Write a Defs file. 🔑 NEVER SUBTRACT, unless the caller says otherwise.
+    """Stage a Defs file. 🔑 NEVER SUBTRACT, unless the caller says otherwise.
 
     ⭐ OWNER'S RULING 2026-08-23: this generator may ADD, it may never SUBTRACT.
     MEASURED that day, on a rebuild whose species count matched perfectly: SW_Genes
     lost **17** defs — `RSW_DevaronianHorns`, `RSW_GeonosianHead`,
     `RSW_Eyes_HugeRed` among them — while gaining 42. The losses are
     APPEARANCE genes the shipped xenotypes still name, so dropping them is a
-    cross-reference error and a species losing its face. The gains are inert if
-    nothing references them.
+    cross-reference error and a species losing its face.
 
-    ⇒ Any def already in the file that this run did not produce is CARRIED. The
-    asymmetry is deliberate: an unreferenced def costs nothing, a missing one costs
-    a face.
+    ⇒ Any def already in the file that this run did not produce is CARRIED.
+    ⚠️ IT RATCHETS: a genuinely dead def needs deleting by hand. Taken knowingly.
 
-    ⚠️ IT RATCHETS. A file only ever grows this way, and a genuinely dead def now
-    needs deleting by hand. That is the trade, taken knowingly: the failure it
-    prevents is silent and the cost it imposes is visible.
+    🔑 THE EXISTING FILE IS THE LAYOUT (2026-10-18). Each def keeps its place and
+    the XML comments around it (owner rulings live in some of them - Ugnaught's dull
+    pink, Umbaran's grey-blue, the disabled tattoo filter). A rebuilt def that MEANS
+    the same as its old self (`_canon`) leaves the old text untouched, comments and
+    whitespace included; one that differs replaces it in the same slot; a def new to
+    the file goes in before the first def whose key sorts after it. Before this, a
+    run re-sorted the file and dropped every comment, so no run could reproduce the
+    committed file and every regeneration was an unreadable diff.
     """
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    elements = list(elements)
     root = ET.Element("Defs")
-    for e in elements:
-        root.append(e)
     if keep_existing and os.path.exists(path):
         try:
-            old_root = ET.parse(path).getroot()
+            old_root = _parse_keep_comments(path)
         except ET.ParseError:
             old_root = None
-        if old_root is not None:
-            # 🪤 ABSTRACT PARENTS HAVE NO defName — they are keyed by a Name= ATTRIBUTE.
-            # Keying this carry on defName alone silently skipped every abstract, and an
-            # abstract that vanishes takes its CHILDREN with it: a ParentName that
-            # resolves to nothing is a SILENT DISCARD in RimWorld, so the def simply does
-            # not exist in game. MEASURED 2026-08-23 — three defs died exactly this way
-            # (RSW_GunganEars on RimMandrake_GeneEarsBase, two head types on
-            # RimMandrake_HeavyBoneBase) and the only reason it was caught is that the
-            # offline validator resolves ParentName.
-            def _key(e):
-                return e.findtext("defName") or e.get("Name")
-            have = {_key(e) for e in root}
-            carried = [e for e in old_root if _key(e) and _key(e) not in have]
-            if carried:
-                print("  %s: carried %d existing def(s) this run did not rebuild"
-                      % (os.path.basename(path), len(carried)), file=sys.stderr)
-                for e in carried:
+    else:
+        old_root = None
+    if old_root is None:
+        for e in elements:
+            root.append(e)
+    else:
+        new = {}
+        for e in elements:
+            new.setdefault(_key(e), e)
+        placed = set()
+        fresh = []                                   # elements this run laid out
+        carried = replaced = 0
+        for c in old_root:
+            if not isinstance(c.tag, str):          # a comment
+                root.append(c)
+                continue
+            k = _key(c)
+            if k in new:
+                e = new.pop(k)
+                placed.add(id(e))
+                if _canon(e) == _canon(c):
+                    root.append(c)                  # same meaning: keep its text
+                else:
+                    e.tail = c.tail
                     root.append(e)
-            root[:] = sorted(root, key=lambda e: _key(e) or "")
-    ET.indent(root, space="  ")
+                    fresh.append(e)
+                    replaced += 1
+            elif k:
+                root.append(c)
+                carried += 1
+        if carried:
+            print("  %s: carried %d existing def(s) this run did not rebuild"
+                  % (os.path.basename(path), carried), file=sys.stderr)
+        if replaced:
+            print("  %s: %d def(s) rebuilt DIFFERENTLY from the shipped text"
+                  % (os.path.basename(path), replaced), file=sys.stderr)
+        for e in elements:                       # new to the file (or a duplicate key)
+            if id(e) in placed:
+                continue
+            k = _key(e) or ""
+            at = next((i for i, c in enumerate(root)
+                       if isinstance(c.tag, str) and (_key(c) or "") > k), len(root))
+            root.insert(at, e)
+            fresh.append(e)
+        root.text = old_root.text if old_root.text is not None else "\n  "
+        for e in fresh:
+            ET.indent(e, space="  ", level=1)
+            if e.tail is None:
+                e.tail = "\n  "
+        for c in root[:-1]:
+            if not (c.tail or "").endswith("  "):
+                c.tail = "\n  "
+        if len(root):
+            root[-1].tail = "\n"
+    if old_root is None:
+        ET.indent(root, space="  ")
     body = ET.tostring(root, encoding="unicode")
     head = comment_safe(['<?xml version="1.0" encoding="utf-8"?>', "<!--"]
                         + ["  " + l for l in header_lines] + ["-->"])
-    io.open(path, "w", encoding="utf-8").write("\n".join(head) + "\n" + body + "\n")
-    assert_comment_safe(path)
+    stage(path, "\n".join(head) + "\n" + body + "\n")
 
 
 # ---------------------------------------------------------------- loading
@@ -396,8 +549,18 @@ def species_table(x, donor_defs=None):
     return rows
 
 
+# Shipped xenotype defNames that are NOT SPECIES_PREFIX + species. Without an entry
+# here the rebuilt species misses its shipped self, is rebuilt from donors under the
+# old name, and the renamed one is carried beside it: two Sith Kissai.
+SPECIES_DEFNAME = {
+    # f894fe574d, XENOTYPE_CANON_CORRECTION_1: off the false "Pureblood"
+    "SithKissaiPureblood": "RSW_RimMandrakeSithKissai",
+}
+
+
 def clean_name(species):
-    return SPECIES_PREFIX + re.sub(r"[^A-Za-z0-9]", "", species)
+    return SPECIES_DEFNAME.get(species) or (
+        SPECIES_PREFIX + re.sub(r"[^A-Za-z0-9]", "", species))
 
 
 def _genes_of(el):
@@ -604,7 +767,7 @@ def closure(seeds, defs, absts):
     return seen, abstract
 
 
-def rename_map(names):
+def rename_map(names, prefix=DEF_PREFIX):
     """Strip the donor prefix so the result carries no trace of it -- otherwise
     a grep for `guy762_` can never come back clean and stops being a check."""
     out, taken = {}, {}
@@ -614,9 +777,9 @@ def rename_map(names):
             if base.startswith(cfg["prefix"]):
                 base = base[len(cfg["prefix"]):]
                 break
-        new = PREFIX + base
+        new = prefix + base
         if new in taken:
-            new = PREFIX + n.replace(".", "_")
+            new = prefix + n.replace(".", "_")
         taken[new] = n
         out[n] = new
     return out
@@ -636,6 +799,26 @@ def resolve_tex(path, texidx, home):
         if any(k.startswith(low + "/") for k in m):     # Graphic_Random dir
             return tag
     return None
+
+
+def cut_rules(el, keywords):
+    """Remove each keyword's Rule_File entry and every rulesStrings line naming it;
+    a rule that only fed a removed sub-rule (`nickName->[NicknameX]`) goes with it."""
+    dead = set(keywords)
+    for rr in el.iter("rulesRaw"):
+        for li in list(rr):
+            if li.findtext("keyword") in dead:
+                rr.remove(li)
+    for rs in el.iter("rulesStrings"):
+        lines = list(rs)
+        # names of sub-rules whose only body names a dead keyword
+        subs = {(li.text or "").split("->", 1)[0].split("(")[0]
+                for li in lines
+                if any("[%s]" % k in (li.text or "") for k in dead)}
+        for li in lines:
+            t = li.text or ""
+            if any("[%s]" % k in t for k in dead) or any("[%s]" % n in t for n in subs):
+                rs.remove(li)
 
 
 def rewrite(el, defmap, absmap, texidx, home, texhits,
@@ -666,6 +849,11 @@ def rewrite(el, defmap, absmap, texidx, home, texhits,
             tag = home if rel.lower() in stridx.get(home, {}) else next(
                 (t for t in stridx if rel.lower() in stridx[t]), None)
             if tag is None:
+                # b80d5967b1: a word list no donor ships but WE do (the canon Aqualish
+                # and Neimoidian lists) is pointed at our copy; nothing to copy.
+                if os.path.exists(os.path.join(OUT, "Languages/English/Strings", STRNS,
+                                               home, rel + ".txt")):
+                    p.text = "%s/%s/%s" % (STRNS, home, rel)
                 continue
             strhits.add((tag, rel))
             p.text = "%s/%s/%s" % (STRNS, tag, rel)
@@ -769,8 +957,15 @@ def apply_overrides(bytype, texhits):
     would make one roll in three look painted on rather than lit.
     """
     wire_surnames(bytype)
+    for e in bytype.get("HeadTypeDef", []):
+        if _key(e) in HEAD_KEEP_NO_SKIN_SHADER:
+            continue
+        for ext in e.iter("li"):
+            for u in ext.findall("useSkinShader"):
+                if (u.text or "").strip().lower() == "false":
+                    ext.remove(u)
     for e in bytype.get("GeneDef", []):
-        if e.findtext("defName") != PREFIX + "Eyes_HugeYellow":
+        if e.findtext("defName") != DEF_PREFIX + "Eyes_HugeYellow":
             continue
         for li in e.findall("renderNodeProperties/li"):
             li.find("texPath").text = TEXNS + "/Jawa/jawaeyes_glow"
@@ -789,7 +984,7 @@ def copy_textures(texhits, texidx, dry=False):
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "art"))
     from artwrite import TextureWriter     # ART_VERSION_WRANGLING_1: the only writer into Textures/
     tw = TextureWriter(__file__)
-    n_files = 0
+    n_files = n_absent = 0
     for tag, p in sorted(texhits):
         m = texidx[tag]
         low = p.lower()
@@ -809,10 +1004,15 @@ def copy_textures(texhits, texidx, dry=False):
             dst = os.path.join(OUT, "Textures", TEXNS, tag, rel)
             n_files += 1
             if dry:
+                if not os.path.exists(dst):
+                    n_absent += 1
                 continue
             tw.copy(s, dst)        # through the art ledger: archived, owner keeps never replaced
     if not dry:
         tw.report()
+    else:
+        print("  textures (dry): %d of %d not yet in the mod" % (n_absent, n_files),
+              file=sys.stderr)
     return n_files
 
 
@@ -858,23 +1058,25 @@ def write_about(n_species, n_swx, n_or):
     deps = ""
     for pid, name, url in DEPENDENCIES:
         deps += "    <li>\n      <packageId>%s</packageId>\n" % pid
-        deps += "      <displayName>%s</displayName>\n" % name
+        deps += "      <displayName>%s</displayName>\n" % _xesc(name)
         if url:
             deps += "      <steamWorkshopUrl>%s</steamWorkshopUrl>\n" % url
         deps += "    </li>\n"
     after = "".join("    <li>%s</li>\n" % p
-                    for p in [d[0] for d in DEPENDENCIES] + SOFT_AFTER)
+                    for p in [d[0] for d in DEPENDENCIES[:LOAD_AFTER_DEPS]] + SOFT_AFTER)
+    after += WAVE81_COMMENT + "".join("    <li>%s</li>\n" % p for p in WAVE81_AFTER)
+    _after = [d[0] for d in DEPENDENCIES[:LOAD_AFTER_DEPS]] + SOFT_AFTER + WAVE81_AFTER
+    _undeclared = [d[0] for d in DEPENDENCIES if d[0] not in _after]
+    if _undeclared:
+        raise SystemExit("dependency missing from loadAfter: %s" % _undeclared)
     # 🔑 Count what the mod SHIPS, not what this run rebuilt. Six species have no
     # donor and are carried verbatim (ORPHAN_XENOTYPES), so `n_species` is 63 and the
     # catalogue is 69 - and an About.xml advertising 63 is simply a false claim on the
     # mod page. Same rule as everywhere else here: the shipped artifact is the answer.
     desc = DESC.format(N=(_shipped_species_count() or n_species), SWX=n_swx, OR=n_or)
-    desc = desc.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    desc = _xesc(desc)
     p = os.path.join(OUT, "About/About.xml")
-    os.makedirs(os.path.dirname(p), exist_ok=True)
-    io.open(p, "w", encoding="utf-8").write(
-        ABOUT.format(DESC=desc, DEPS=deps, AFTER=after))
-    assert_comment_safe(p)
+    stage(p, ABOUT.format(DESC=desc, DEPS=deps, AFTER=after))
 
 
 RULE = "=" * 76
@@ -959,6 +1161,29 @@ OWNER_DESCRIPTION_APPEND = {
 _SHIPPED_GENES = {}
 
 
+def apply_owner_tables(els):
+    """The OWNER_* tables, applied to every XenotypeDef about to be written - built,
+    carried from the shipped file, or an orphan from ORPHAN_XENOTYPES alike.
+    Idempotent: re-applying to an already-ruled list changes nothing. Before
+    2026-10-18 they were applied to the shipped gene lists only, so the Anzati
+    orphan regrew the eight genes the owner removed on 2026-10-09."""
+    for e in els:
+        dn = e.findtext("defName")
+        gl = e.find("genes")
+        if gl is not None:
+            for li in list(gl):
+                if li.text in OWNER_GENE_REMOVALS.get(dn, ()):
+                    gl.remove(li)
+            have = {li.text for li in gl}
+            for g in OWNER_GENE_ADDITIONS.get(dn, ()):
+                if g not in have:
+                    ET.SubElement(gl, "li").text = g
+        t = OWNER_DESCRIPTION_APPEND.get(dn)
+        d = e.find("description")
+        if t and d is not None and t not in (d.text or ""):
+            d.text = (d.text or "").rstrip() + t
+
+
 def _shipped_kind_count():
     p = os.path.join(OUT, "Defs/PawnKindDefs/RimMandrakePawnKinds.xml")
     if not os.path.exists(p):
@@ -1005,21 +1230,21 @@ def write_xenotypes(built, defmap, x, tbl):
     # Read the catalogue we currently ship BEFORE overwriting it. This IS the
     # never-subtract rule; without it the write below is the lossy one.
     # ⚠️ IT RATCHETS: this reads the file the last run WROTE, so one bad run
-    # becomes the new floor. Always restore from git before testing a change here.
+    # becomes the new floor. Test a change with --check, or with RACES_GEN_OUT
+    # pointed at a copy, never by regenerating into the repo.
     _SHIPPED_GENES = _shipped_gene_lists()
-    _SHIPPED_GENES = {k: [g for g in v if g not in OWNER_GENE_REMOVALS.get(k, ())]
-                      for k, v in _SHIPPED_GENES.items()}
-    for _k, _add in OWNER_GENE_ADDITIONS.items():
-        for _g in _add:
-            if _k in _SHIPPED_GENES and _g not in _SHIPPED_GENES[_k]:
-                _SHIPPED_GENES[_k].append(_g)
     _SHIPPED_META = _shipped_meta()
-    for _k, _t in OWNER_DESCRIPTION_APPEND.items():
-        _d = _SHIPPED_META.get(_k, {}).get("description")
-        if _d is not None and _t not in _d:
-            _SHIPPED_META[_k]["description"] = _d.rstrip() + _t
     els = []
     unnamed = []
+
+    def from_shipped(dn):
+        e = ET.Element("XenotypeDef")
+        for _t, _v in _SHIPPED_META[dn].items():
+            ET.SubElement(e, _t).text = _v
+        gl = ET.SubElement(e, "genes")
+        for gn in _SHIPPED_GENES.get(dn, []):
+            ET.SubElement(gl, "li").text = gn
+        return e
     for b in built:
         f = b["f"]
         e = ET.Element("XenotypeDef")
@@ -1032,12 +1257,7 @@ def write_xenotypes(built, defmap, x, tbl):
             # combatPowerFactors where it had a different one. What is live and
             # playtested is the answer; a regeneration is not the place to relitigate
             # 69 species' identities.
-            for _t, _v in _meta.items():
-                ET.SubElement(e, _t).text = _v
-            gl = ET.SubElement(e, "genes")
-            for gn in _SHIPPED_GENES.get(_dn, []):
-                ET.SubElement(gl, "li").text = gn
-            els.append(e)
+            els.append(from_shipped(_dn))
             continue
         ET.SubElement(e, "defName").text = _dn
         ET.SubElement(e, "label").text = f.get("label") or b["species"]
@@ -1088,9 +1308,14 @@ def write_xenotypes(built, defmap, x, tbl):
     # as one catalogue rather than 63 plus an appendix. See ORPHAN_XENOTYPES for why
     # they cannot simply be built like the others.
     # ⛔ This is the step whose absence made the guard pass on a 63-species output.
+    # Shipped wins for them too: the table is the floor for a from-scratch build, and
+    # the shipped file carries every later ruling (SithZ's label, 24c7115622).
     for _name, _xml in ORPHAN_XENOTYPES.items():
-        els.append(ET.fromstring(_xml))
+        _o = ET.fromstring(_xml)
+        _odn = _o.findtext("defName")
+        els.append(from_shipped(_odn) if _odn in _SHIPPED_META else _o)
     els.sort(key=lambda el: el.findtext("defName") or "")
+    apply_owner_tables(els)
     # ⭐ THE GENE GUARD, against what is ACTUALLY ABOUT TO BE WRITTEN.
     # The never-subtract union should make loss impossible; this proves it rather
     # than assuming it. If it ever fires, the union broke - do not raise the
@@ -1100,11 +1325,11 @@ def write_xenotypes(built, defmap, x, tbl):
     _want_g = _shipped_gene_count()
     if _want_g and _have_g < _want_g:
         raise SystemExit(
-            "REFUSING TO WRITE: %d gene entries about to be written against the %d "
-            "the mod ships - %d would be LOST.\n"
-            "The never-subtract union in _shipped_gene_lists should make this "
-            "impossible, so if you are reading this it is broken. Fix the union; "
-            "do NOT lower this number."
+            "REFUSING TO WRITE (nothing has been written): %d gene entries about "
+            "to be written against the %d the mod ships - %d would be LOST.\n"
+            "Shipped lists win outright, so this means a shipped species was NOT "
+            "matched by name: check clean_name / SPECIES_DEFNAME / the prefixes "
+            "first (2026-10-18: a stale prefix lost 331). Do NOT lower this number."
             % (_have_g, _want_g, _want_g - _have_g))
 
     write_xml(os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml"),
@@ -1156,7 +1381,7 @@ def write_rescued_kinds(kinds, tbl, built, texidx):
             missing.append(dn)
             continue
         c = ET.fromstring(ET.tostring(kinds[dn][1]))
-        c.find("defName").text = PREFIX + dn.split("_", 1)[1]
+        c.find("defName").text = DEF_PREFIX + dn.split("_", 1)[1]
         pn = c.get("ParentName")
         if pn in RESCUE_KIND_PARENTS:
             c.set("ParentName", RESCUE_KIND_PARENTS[pn])
@@ -1354,16 +1579,11 @@ def _shipped_gene_count():
 # Carried VERBATIM, gene lists and all, because there is nothing to derive them
 # from.
 #
-# ⛔ THIS TABLE IS NOT YET WIRED INTO THE WRITER, so the generator STILL REFUSES
-# and that is correct. Adding the table and making the guard count it - without
-# emitting them - was tried on 2026-08-23 and silently shipped a 63-species mod
-# over the live 69. Reverted from git. To finish this properly:
-#   1. emit these six into Defs/XenotypeDefs/RimMandrakeXenotypes.xml,
-#   2. work out what to do about `OuterRim_Herglic -> xenotype OuterRim_Herglic`,
-#      which the rescued-pawnkind pass reports the moment the guard stops firing,
-#   3. THEN diff a full regeneration against git and confirm the other 63 species,
-#      the head types, the genes and the 69 pawn kinds all come back byte-identical.
-# Step 3 is the whole job. Steps 1-2 are the easy part.
+# write_xenotypes EMITS them (shipped text first, this table only as the floor
+# for a from-scratch build), and write_rescued_kinds maps their OuterRim_ names.
+# Counting the table without emitting it was tried on 2026-08-23 and silently
+# shipped a 63-species mod over the live 69 - a guard counts what is WRITTEN.
+# Byte-identical regeneration is asserted by selftest_gen_races_mod.py.
 # ============================================================================
 
 ORPHAN_XENOTYPES = {
@@ -1489,8 +1709,8 @@ ORPHAN_XENOTYPES = {
   </XenotypeDef>""",
  'SithZ': """  <XenotypeDef>
     <defName>RSW_RimMandrakeSithZ</defName>
-    <label>Sith Zugurak (Pureblood)</label>
-    <description>Zugurak  were the caste of engineers within the Sith species known for constructing burial mounds and starships.</description>
+    <label>Sith Zuguruk (Red Sith)</label>
+    <description>Zuguruk were the caste of engineers within the Sith species known for constructing burial mounds and starships.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Sith</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -1621,16 +1841,11 @@ def _guard_species_regression(built, skipped):
             "REFUSING TO WRITE: would ship %d species, but the mod on disk has "
             "%d.\n"
             "Regenerating now would DELETE %d species from a mod that is live "
-            "in ModsConfig.xml.\n"
-            "Cause: pick_species reads species from the def dump, and the dump "
-            "at\n  %s\nwas captured with the donors switched off, so their "
-            "xenotypes are absent.\n"
-            "Fix pick_species to fall back to the donors' XML on disk (as "
-            "_gene_exists does),\nor regenerate from a dump taken with %s "
-            "active.\n"
+            "in ModsConfig.xml. Nothing has been written.\n"
+            "A shipped species no donor defines belongs in ORPHAN_XENOTYPES; one "
+            "the donors define under another name needs a SPECIES_DEFNAME entry.\n"
             "Skipped:\n  %s"
-            % (have, want, want - have, DUMP, " + ".join(sorted(DONOR_PIDS)),
-               lost))
+            % (have, want, want - have, lost))
 
 
 def main():
@@ -1666,14 +1881,16 @@ def main():
     keep, abstract = closure(seeds, defs, absts)
 
     defmap = rename_map(keep)
-    absmap = rename_map(abstract)
+    absmap = rename_map(abstract, PREFIX)
 
     texhits, strhits = set(), set()
     bytype = {}
     for n in sorted(keep):
         tag, el = defs[n]
-        c = rewrite(ET.fromstring(ET.tostring(el)), defmap, absmap, texidx,
-                    tag, texhits, stridx, strhits)
+        c = ET.fromstring(ET.tostring(el))
+        if defmap.get(n) in RULEPACK_CUT_KEYWORDS:
+            cut_rules(c, RULEPACK_CUT_KEYWORDS[defmap[n]])
+        c = rewrite(c, defmap, absmap, texidx, tag, texhits, stridx, strhits)
         bytype.setdefault(c.tag, []).append(c)
     for a in sorted(abstract):
         tag, el = absts[a]
@@ -1719,6 +1936,18 @@ def main():
     # xenotype icons live on the xenotype defs, which are ours, not copies --
     # rewrite them the same way.
     fix_xenotype_icons(texidx, texhits)
+    # ⭐ Every refusal guard above has passed; only now does anything touch disk.
+    if "--check" in sys.argv:
+        # Compare-only: report what WOULD change and write nothing (the selftest's mode).
+        changed = [ap for ap, t in sorted(_STAGED.items())
+                   if not os.path.exists(ap) or io.open(ap, encoding="utf-8").read() != t]
+        print("== --check: %d staged file(s) differ from disk" % len(changed))
+        for ap in changed:
+            print("     %s" % os.path.relpath(ap, OUT))
+        raise SystemExit(1 if changed else 0)
+    wrote = commit_staged()
+    print("== files written %d (of %d staged; the rest were already identical)"
+          % (len(wrote), len(_STAGED)), file=sys.stderr)
     n_files = copy_textures(texhits, texidx, dry)
     n_str = copy_strings(strhits, stridx)
 
@@ -1737,7 +1966,8 @@ def main():
     print("== texture paths rewritten %d -> %d png files%s"
           % (len(texhits), n_files, " (dry)" if dry else ""))
     print("== word lists %d -> %d txt files" % (len(strhits), n_str))
-    print("== rescued Galactic Diversity pawn kinds %d" % len(rescued))
+    print("== rescued Galactic Diversity pawn kinds %s"
+          % (len(rescued) if rescued is not None else "preserved (hand-owned)"))
     print("== eye-glow override applied: %s" % ok)
     print("== species with no name maker %d%s"
           % (len(unnamed), (": " + ", ".join(unnamed)) if unnamed else ""))
@@ -1960,7 +2190,7 @@ def verify():
 
 def fix_xenotype_icons(texidx, texhits):
     p = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
-    t = io.open(p, encoding="utf-8").read()
+    t = read_current(p)
 
     def sub(m):
         path = m.group(1)
@@ -1970,8 +2200,7 @@ def fix_xenotype_icons(texidx, texhits):
         texhits.add((tag, path))
         return "<iconPath>%s/%s/%s</iconPath>" % (TEXNS, tag, path)
     t = re.sub(r"<iconPath>([^<]+)</iconPath>", sub, t)
-    io.open(p, "w", encoding="utf-8").write(t)
-    assert_comment_safe(p)
+    stage(p, t)
 
 
 if __name__ == "__main__":
