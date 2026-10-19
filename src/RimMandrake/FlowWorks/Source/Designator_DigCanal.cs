@@ -71,20 +71,21 @@ namespace RimMandrake.FlowWorks
 				// a pit is a canal cell dug to D=4, so digging deeper IS digging a pit.
 				return "Must designate open ground.";
 			}
-			// Top layer (foundation first), not GetTerrain: a wet channel carries its liquid on the TEMP
-			// layer (SetTempTerrain), and GetTerrain returns that, so every wet channel
-			// read as "Already water." and could never be deepened. JobDriver_DigCanal
-			// reads the base layer. NOT BaseTerrainAt here: that returns the soil UNDER
-			// a player floor, and would let a floored cell be dug (floor destroyed).
+			// Top layer (foundation first), not GetTerrain: GetTerrain returns the temp layer (ice, a flood).
+			// NOT BaseTerrainAt here: that returns the soil UNDER a player floor, and would let a floored cell be
+			// dug (floor destroyed). A wet channel's water is its top terrain since P14, so the water gate below
+			// asks the depth grid whether the square is already ours.
 			TerrainDef terrain = Map.terrainGrid.FoundationAt(c) ?? Map.terrainGrid.TopTerrainAt(c);
-			if (terrain.IsWater)
-			{
-				return "Already water.";
-			}
 			// Digging an already-dug cell DEEPENS it (ruling 19), half a metre a cut, to the dig cap. Depth is set by digging
 			// and by nothing else. PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the depth is the GRID's (terrain says only "2 m or
 			// deeper"), so a 2 m pit is no longer refused as "as far down as digging goes".
 			RM_MapComponent_Excavation eng = Map.GetComponent<RM_MapComponent_Excavation>();
+			// P14: a wet DUG square carries its water on the base layer (the one ladder), so "is water" is asked of the
+			// grid: only undug water (a lake, a river) is refused; a wet channel is deepened.
+			if (terrain.IsWater && !(eng != null && eng.IsExcavated(c)))
+			{
+				return "Already water.";
+			}
 			int depth = eng != null ? eng.ExcavatedDepthAt(c) : RM_ExcavationDepth.DepthOfDryTerrain(terrain);
 			int cap = RM_ExcavationDepth.MaxDigDepth;
 			if (depth != RM_ExcavationDepth.Surface)

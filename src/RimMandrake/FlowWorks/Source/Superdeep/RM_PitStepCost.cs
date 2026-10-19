@@ -152,7 +152,9 @@ namespace RimMandrake.FlowWorks
 				baseCostOverride = Swimming.RM_SwimSettings.swimPathCost;
 				return;
 			}
-			TerrainDef temp = map.terrainGrid.TempTerrainAt(c);
+			// P14: a wet dug square's water is its BASE terrain now (the one ladder, whose 0.5-1.5 m rungs cost less than a
+			// dug floor); TerrainAt also covers ice or a flood lying over it.
+			TerrainDef temp = map.terrainGrid.TerrainAt(c);
 			int dry = RM_ExcavationDepth.DryTerrainFor((byte)System.Math.Min(255, depth))?.pathCost ?? 0;
 			if (temp != null && temp.pathCost < dry)
 			{

@@ -23,8 +23,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_LevelSolve.LookBand(2L * U) == 3, "1 m of water is the 1 m look");
                 Assert(RM_LevelSolve.LookBand(U * 45L / 1000) == 1, "a 4.5 cm sheet is the very-shallow look, in a canal or a pit");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"TerrainDef want = fluid\.FillTerrainForLook\(RM_ExcavationDepth\.FillTier\(WaterDl\(i\)\)\);",
-                    "ApplyFillTerrain: one rule, by the cell's decilitres, for canals AND pits");
+                RiverSwitchFlipChecks.Has(ex, @"want = fluid\.WetTerrainForBand\(RM_ExcavationDepth\.FillTier\(WaterDl\(i\)\)\);",
+                    "ApplyFillTerrain: one rule, by the cell's decilitres, for canals AND pits (P14: via the one ladder)");
                 Assert(!Regex.IsMatch(ex, @"FillTerrainFor\("), "no fullness-keyed look is left (FillTerrainFor deleted)");
                 string fd = RiverSwitchFlipChecks.Src("FluidDef.cs");
                 Assert(!Regex.IsMatch(fd, @"public TerrainDef FillTerrainFor\("), "FluidDef.FillTerrainFor (by fraction) is deleted");
@@ -97,8 +97,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("FluidDef_config_errors_check_every_fill_tier_including_very_shallow", () =>
             {
                 string fd = RiverSwitchFlipChecks.Src("FluidDef.cs");
-                RiverSwitchFlipChecks.Has(fd, @"new\[\] \{ fillTerrainVeryShallow, fillTerrainHalf, fillTerrainBrim, fillTerrainSuperdeep \}",
-                    "ConfigErrors temporary-check covers the very-shallow tier too (SetTempTerrain refuses a non-temporary one)");
+                RiverSwitchFlipChecks.Has(fd, @"new\[\] \{ floodTerrain, fillTerrainVeryShallow, fillTerrainHalf, fillTerrainBrim, fillTerrainSuperdeep \}",
+                    "ConfigErrors layer-check covers every tier, the very-shallow one too (P14: own-tier liquids stage on the base layer)");
             });
 
             Case("Review_night_core_dig_scan_copies_and_pump_circle_ignores_hose_fill", () =>

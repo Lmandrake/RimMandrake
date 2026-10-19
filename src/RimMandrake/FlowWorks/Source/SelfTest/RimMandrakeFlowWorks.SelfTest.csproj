@@ -46,7 +46,9 @@
     <Compile Include="..\RM_BedMath.cs" />
     <Compile Include="..\RM_LakeFloorMath.cs" />
     <Compile Include="..\RM_PondDepthMath.cs" />
+    <Compile Include="..\RM_WaterLadder.cs" />
     <Compile Include="PondDepthChecks.cs" />
+    <Compile Include="WaterLadderChecks.cs" />
     <Compile Include="LakeFloorChecks.cs" />
     <Compile Include="LevelSurfaceChecks.cs" />
     <Compile Include="LevelExactChecks.cs" />

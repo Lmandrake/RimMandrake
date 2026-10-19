@@ -365,6 +365,16 @@ namespace RimMandrake.FlowWorks
 					return;
 				}
 			}
+			// P14 (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD): this is a SPILL over open natural water, the one temp-layer write
+			// left in FlowWorks, and it is a flood in vanilla's sense (laid, queued for removal, the ground restored). Dug
+			// squares never reach here (the policy above sends them through the engine, which stages on the base layer). A
+			// liquid whose own tiers are base-layer defs (every one but water) cannot spill this way: hands off, as on a
+			// refused cell.
+			if (fluidDef.floodTerrain == null || !fluidDef.floodTerrain.temporary)
+			{
+				placedLookup.Add(c);   // never offered again; spends no volume
+				return;
+			}
 			int recedeStagger = Mathf.Max(0, estimatedFloodedTiles - floodedTileCount);
 			map.terrainGrid.SetTempTerrain(c, fluidDef.floodTerrain);
 			map.tempTerrain.QueueRemoveTerrain(c, spawnedTick + FloodingTicks + fluidDef.floodedTicks + recedeStagger);

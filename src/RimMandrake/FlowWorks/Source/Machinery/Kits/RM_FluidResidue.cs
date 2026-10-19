@@ -63,6 +63,18 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			}
 			return fillOwner.TryGetValue(t, out FluidDef owner) ? owner : null;
 		}
+
+		/// <summary>P14 (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD): a wet dug square's liquid now stands on the BASE layer, so its
+		/// drain is a base write (RM_MapComponent_Excavation.ApplyFillTerrain), not a RemoveTempTerrain the patch below sees.
+		/// The engine reports it here; the same rare-tick re-check decides whether it was a real drain.</summary>
+		public static void NoteDrained(Map map, IntVec3 c, FluidDef fluid)
+		{
+			if (map == null || fluid == null || !RM_KitSettings.fluidResidueEnabled || fluid.GetModExtension<RM_FluidResidueExtension>() == null)
+			{
+				return;
+			}
+			map.GetComponent<RM_MapComponent_FluidResidue>()?.Pending(c, fluid);
+		}
 	}
 
 	[HarmonyPatch(typeof(TerrainGrid), nameof(TerrainGrid.RemoveTempTerrain))]
@@ -119,7 +131,8 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			{
 				IntVec3 c = cells[i];
 				FluidDef f = fluids[i];
-				if (!c.InBounds(map) || RM_FluidResidue.ResidueFluidOf(map.terrainGrid.TempTerrainAt(c)) == f)
+				// TerrainAt, not TempTerrainAt: P14 puts a dug square's liquid on the base layer, so a refill shows there.
+				if (!c.InBounds(map) || RM_FluidResidue.ResidueFluidOf(map.terrainGrid.TerrainAt(c)) == f)
 				{
 					continue;  // refilled or only changed level: not a drain
 				}

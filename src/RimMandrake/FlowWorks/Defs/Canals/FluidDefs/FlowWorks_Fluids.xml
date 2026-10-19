@@ -19,6 +19,9 @@
          parented to vanilla WaterShallow. A tier IS a volume, so the stock
          model quantises for free and the edge-aware ramp art comes with it
          at no cost. -->
+    <!-- P14 (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, owner R10): wet dug water shows the ONE freshwater ladder on the base
+         layer (RM_WaterLadder). The RM_Fill_Water_* tiers below stay temporary: only a spill over open water uses them. -->
+    <freshwaterLadder>true</freshwaterLadder>
     <floodTerrain>RM_Fill_Water_Trace</floodTerrain>
     <fillTerrainHalf>RM_Fill_Water_Half</fillTerrainHalf>
     <fillTerrainBrim>RM_Fill_Water_Brim</fillTerrainBrim>
