@@ -66,6 +66,8 @@
   </Operation>
 
   <!-- ============== GR_Beetlefleet -> garsulix ============== -->
+  <!-- The Cauldron now spawns our port RM_Garsulix (RimMandrake Cauldron, 2026-10-18), which carries this text itself;
+       these ops only touch the donor def if VGE + Alpha Animals ever load again, and match nothing otherwise. -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="GR_Beetlefleet"]</xpath>
     <match Class="PatchOperationSequence">
