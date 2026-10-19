@@ -1239,11 +1239,16 @@ def listing_model(rows, first_height, max_one_column, frames=12):
 
 
 def scan_scroll_listings(files):
-    """[(path, why)] for every file that draws a Listing_Standard into a scroll view sized from CurHeight without maxOneColumn."""
+    """[(path, why)] for every `new Listing_Standard ...;` statement in a file that scrolls (BeginScrollView) lacking
+    maxOneColumn = true. Per statement, not per file (a second unflagged listing in a flagged file must fail), and whether or
+    not the height is fed back from CurHeight: a fixed-height view wraps the same way once content outgrows it."""
     bad = []
     for path, text in files:
-        if "BeginScrollView" in text and "new Listing_Standard" in text and "CurHeight" in text and "maxOneColumn = true" not in text:
-            bad.append((path, "scrolling Listing_Standard sized from CurHeight without maxOneColumn = true"))
+        if "BeginScrollView" not in text:
+            continue
+        for m in re.finditer(r"new Listing_Standard\b[^;]*;", text):
+            if "maxOneColumn = true" not in m.group(0):
+                bad.append((path, "scrolling Listing_Standard without maxOneColumn = true: " + m.group(0)[:60]))
     return bad
 
 
@@ -1258,7 +1263,7 @@ def check_scroll_listings():
         print(("ok   " if ok else "FAIL ") + "ScrollListing: " + label)
         bad += not ok
     files = []
-    for dp, _, fns in os.walk(ROOT):
+    for dp, _, fns in os.walk(os.path.dirname(ROOT)):   # src/: all three tiers (RimMandrake, RimStarWars, RimUtinni)
         for fn in fns:
             if fn.endswith(".cs"):
                 fp = os.path.join(dp, fn)
@@ -1268,7 +1273,7 @@ def check_scroll_listings():
                     pass
     found = scan_scroll_listings(files)
     total += 1
-    print(("ok   " if not found else "FAIL ") + f"ScrollListing: {len(files)} .cs files, every scrolling CurHeight-sized listing is one column"
+    print(("ok   " if not found else "FAIL ") + f"ScrollListing: {len(files)} .cs files, every scrolling listing is one column"
           + ("" if not found else " | " + "; ".join(os.path.relpath(p, ROOT) for p, _ in found[:6])))
     bad += bool(found)
     planted = [(p, t.replace("maxOneColumn = true", "maxOneColumn = false")) for p, t in files
@@ -1276,6 +1281,19 @@ def check_scroll_listings():
     total += 1
     hit = bool(planted) and bool(scan_scroll_listings(planted))
     print(("ok   " if hit else "FAIL ") + "ScrollListing: plant (FlowWorks maxOneColumn removed) is caught")
+    bad += not hit
+    # a flagged file that also holds one unflagged scrolling listing (the per-file test this replaced passed it)
+    twin = [(p, t + "\n Listing_Standard other = new Listing_Standard { ColumnWidth = 9f };\n") for p, t in files
+            if p.endswith("RM_CreatureBehaviorsMod.cs")]
+    total += 1
+    hit = bool(twin) and bool(scan_scroll_listings(twin))
+    print(("ok   " if hit else "FAIL ") + "ScrollListing: plant (a second, unflagged listing in a flagged file) is caught")
+    bad += not hit
+    # the tiers outside RimMandrake are walked (RimUtinni and RimStarWars settings screens scroll too)
+    total += 1
+    tiers = {os.path.relpath(p, os.path.dirname(ROOT)).split(os.sep)[0] for p, t in files if "BeginScrollView" in t}
+    hit = {"RimMandrake", "RimStarWars", "RimUtinni"} <= tiers
+    print(("ok   " if hit else "FAIL ") + f"ScrollListing: scroll screens found in tiers {sorted(tiers)}")
     bad += not hit
     return bad, total
 
