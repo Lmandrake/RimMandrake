@@ -44,8 +44,9 @@ namespace RimMandrake.TitanicCreatures
             this.FailOn(() => !RM_HugeThingsSettings.SqueezeActive || pawn.Flying || Line == null || Line.Count < 2);
             AddFinishAction(delegate (JobCondition c)
             {
-                if (done || c == JobCondition.Succeeded || pawn == null || !pawn.Spawned || Line == null || Line.Count < 2) return;
+                if (done || pawn == null || !pawn.Spawned || Line == null || Line.Count < 2) return;
                 if (pawn.Position.WalkableBy(pawn.Map, pawn)) return;
+                // Also on a Succeeded that is only job expiry (done false): the pawn must not be left standing in the gap.
                 // Back out the way it came, or finish forward, whichever end is nearer and still free.
                 IntVec3 entry = Line[0].Cell, exit = Line[Line.Count - 1].Cell;
                 bool forward = step * 2 >= Line.Count;
