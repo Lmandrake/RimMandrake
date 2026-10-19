@@ -27,7 +27,7 @@ namespace RimMandrake.FlowWorks
 	{
 		public static bool On => RimMandrakeFlowWorksSettings.pitGuardrailEnabled;
 
-		/// <summary>The one predicate: a built rail on this cell (our guardrail, or any fence def).</summary>
+		/// <summary>The one predicate: a built rail on this cell (our guardrail, a suspension bridge's railing, or any fence def).</summary>
 		public static bool IsRail(Map map, IntVec3 c)
 		{
 			if (!On || map == null || !c.InBounds(map))
@@ -40,7 +40,7 @@ namespace RimMandrake.FlowWorks
 				Thing t = things[i];
 				ThingDef d = t.def;
 				if (d.building != null && RM_FallRailMath.IsRailThing(true, t is Building && !(t is Frame),
-					d == RimMandrakeFlowWorks_DefOf.RM_PitGuardrail, d.building.isFence))
+					d == RimMandrakeFlowWorks_DefOf.RM_PitGuardrail || t is Pits.Building_SuspensionRailing, d.building.isFence))
 				{
 					return true;
 				}

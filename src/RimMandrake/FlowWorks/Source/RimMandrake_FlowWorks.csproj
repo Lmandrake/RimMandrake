@@ -209,7 +209,14 @@
     <Compile Include="Pits\Trigger\PitCoverTier.cs" />
     <Compile Include="Pits\Building_PitCover.cs" />
     <Compile Include="Pits\Building_SpanDeck.cs" />
+    <Compile Include="Pits\Suspension\Building_SuspensionDeck.cs" />
+    <Compile Include="Pits\Suspension\Designator_SuspensionBridge.cs" />
+    <Compile Include="Pits\Suspension\RM_MapComponent_SuspensionBridges.cs" />
+    <Compile Include="Pits\Suspension\RM_SuspensionPatches.cs" />
+    <Compile Include="Pits\Suspension\RM_SuspensionProofs.cs" />
+    <Compile Include="Pits\Suspension\RM_SuspensionSettings.cs" />
     <Compile Include="RM_SpanMath.cs" />
+    <Compile Include="RM_SuspensionMath.cs" />
   </ItemGroup>
 
   <!-- ManyWaters, merged 2026-09-16. Namespace

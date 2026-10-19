@@ -2003,6 +2003,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PitAccessChecks.Run(Case);         // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: portable ladder, climbing gear, safe jumps/skips, rescue ladder (PitAccessChecks.cs)
             WallClimbChecks.Run(Case);         // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS: gear climbs unroofed built walls, slowly (WallClimbChecks.cs)
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
+            SuspensionBridgeChecks.Run(Case);  // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: drag validator, spans, load, falls, wiring (SuspensionBridgeChecks.cs)
             ThirstChecks.Run(Case);            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst math, shipped defs, DBH bridge patch (ThirstChecks.cs)
             PondDepthChecks.Run(Case);         // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: ponds shallow out, one surface across connected water (PondDepthChecks.cs)
             LevelSurfaceChecks.Run(Case);      // WATER_SURFACE_REPAIR_LEVEL_OR_BUST: live S5/S6 scenes offline, one level surface (LevelSurfaceChecks.cs)

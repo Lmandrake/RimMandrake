@@ -64,6 +64,8 @@
     <Compile Include="..\Superdeep\RM_WallClimbMath.cs" />
     <Compile Include="WallClimbChecks.cs" />
     <Compile Include="..\RM_SpanMath.cs" />
+    <Compile Include="..\RM_SuspensionMath.cs" />
+    <Compile Include="SuspensionBridgeChecks.cs" />
     <Compile Include="SpanBaseChecks.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />
     <Compile Include="..\RM_CliffMaskMath.cs" />
