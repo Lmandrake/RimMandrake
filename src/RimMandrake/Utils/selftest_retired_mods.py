@@ -58,16 +58,16 @@ for e in ents:
 print("retired_mods: matching is whole-value, not substring")
 check(not is_retired("Megafauna Bestiary Continued"),
       "a longer name containing a retired name is NOT retired")
-check(not is_retired("Alpha Animals"), "a live mod is not retired")
+check(not is_retired("Alpha Memes"), "a live mod is not retired")
 check(not is_retired(""), "empty string is not retired")
 check(not is_retired(None), "None is not retired")
 
 print("retired_mods: filter_rows drops by either column")
 rows = [{"modName": "Megafauna", "packageId": ""},
         {"modName": "", "packageId": "Mlie.BeastsoftheRim"},
-        {"modName": "Alpha Animals", "packageId": "sarg.alphaanimals"}]
+        {"modName": "Alpha Memes", "packageId": "sarg.alphamemes"}]
 kept = filter_rows(rows)
-check(len(kept) == 1 and kept[0]["modName"] == "Alpha Animals",
+check(len(kept) == 1 and kept[0]["modName"] == "Alpha Memes",
       "filter_rows keeps only the live row (kept %d)" % len(kept))
 
 print("no patch file in src/ names a retired mod in a FindMod block")

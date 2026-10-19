@@ -825,7 +825,10 @@ def resolve_tier(name, installed):
     missing); non-empty means the tier is refused. Also the manifest a pre-flight
     compares the running list against (preflight_pyrelands.py)."""
     t = TIERS[name]
-    want = list(t["want"])
+    # A donor the owner RETIRED (infrastructure/state/facts/retired_mods.json) never enters a tier, even one written
+    # while it was live (2026-10-18: SWAC, Alpha Animals + its Outposts patch, Alpha Biomes). tier_guard refuses the
+    # tier if a dependency drags one back.
+    want = [w for w in t["want"] if not _is_retired_donor(w)]
     if t["dlc"]:
         want += [p for p in installed if p.startswith("ludeon.rimworld")]
     else:
@@ -1022,6 +1025,15 @@ def _retired_ids():
     return _RETIRED
 
 
+def _is_retired_donor(pid):
+    try:
+        import retired_mods
+    except ImportError:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import retired_mods
+    return retired_mods.is_retired(pid)
+
+
 def tier_guard(tier, pids):
     """Refusals for a resolved tier list (empty = fine). A tier's `forbid` ids and
     `forbid_substr` fragments must be absent from the dependency CLOSURE, not just
@@ -1039,6 +1051,9 @@ def tier_guard(tier, pids):
     for f in sorted(_retired_ids()):
         if f in pids and f not in named:
             out.append("retired packageId in closure (folded into %s): %s" % (_retired_ids()[f], f))
+    for f in pids:
+        if _is_retired_donor(f) and f not in named:
+            out.append("retired donor in closure (infrastructure/state/facts/retired_mods.json): %s" % f)
     for frag in tier.get("forbid_substr", ()):
         hit = [p for p in pids if frag.lower() in p]
         if hit:
