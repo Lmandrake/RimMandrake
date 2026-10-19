@@ -1,0 +1,266 @@
+{
+ "script": "live_session.py",
+ "mode": "live",
+ "env": {
+  "partial": true,
+  "running": 11,
+  "flowworks": true,
+  "assembly_matches": 1,
+  "config": "min-11",
+  "ticks_per_s": 1807.9
+ },
+ "zones": {
+  "owner": [
+   18,
+   157,
+   216,
+   78
+  ],
+  "covers": [
+   15,
+   15,
+   26,
+   10
+  ],
+  "access": [
+   47,
+   15,
+   40,
+   14
+  ],
+  "digdepth": [
+   93,
+   15,
+   12,
+   8
+  ],
+  "reservoir": [
+   111,
+   15,
+   16,
+   26
+  ],
+  "grenade": [
+   133,
+   15,
+   20,
+   10
+  ],
+  "raillip": [
+   159,
+   15,
+   16,
+   14
+  ],
+  "ride": [
+   181,
+   15,
+   6,
+   6
+  ],
+  "tanks": [
+   193,
+   15,
+   12,
+   6
+  ],
+  "readout": [
+   228,
+   15,
+   22,
+   16
+  ],
+  "ice": [
+   15,
+   47,
+   16,
+   8
+  ],
+  "flood": [
+   37,
+   47,
+   18,
+   10
+  ],
+  "suspension": [
+   61,
+   47,
+   40,
+   16
+  ],
+  "props": [
+   107,
+   47,
+   30,
+   10
+  ],
+  "trench": [
+   15,
+   15,
+   30,
+   16
+  ],
+  "climb": [
+   51,
+   15,
+   46,
+   12
+  ],
+  "sprinkler": [
+   103,
+   15,
+   16,
+   86
+  ],
+  "l2": [
+   125,
+   15,
+   30,
+   18
+  ],
+  "l2b": [
+   161,
+   15,
+   30,
+   18
+  ],
+  "l6": [
+   197,
+   15,
+   30,
+   18
+  ],
+  "l4": [
+   15,
+   107,
+   30,
+   18
+  ],
+  "l5": [
+   51,
+   107,
+   30,
+   18
+  ],
+  "thirst": [
+   15,
+   15,
+   96,
+   42
+  ]
+ },
+ "timing": {
+  "B0": 0.7,
+  "restore": [
+   {
+    "after": "B5",
+    "healed": 3,
+    "refused": 0,
+    "fed": 3,
+    "weather": "Clear"
+   }
+  ],
+  "B5": 39.4,
+  "total_s": 40.2
+ },
+ "rows": [
+  {
+   "id": "B0_tier_truth",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "running": 11,
+    "flowworks": true,
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_clock_rate",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "ticks": 600,
+    "wall_s": 0.33,
+    "ticks_per_s": 1807.9,
+    "frameBudgetMs": 150.0
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B5_ice_freeze_thaw",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "why": "",
+    "conditions": [
+     "{'success': True, 'action': 'start', 'scope': 'map', 'notes': ['registered ColdS",
+     "{'success': True, 'action': 'start', 'scope': 'map', 'notes': ['registered DeepF"
+    ],
+    "frozeAfter": 10000,
+    "thawAfter": 5500,
+    "coldest": -17.93137,
+    "temps": [
+     -8.023418,
+     -10.4066906,
+     -12.3031883,
+     -14.1899166,
+     -16.0661964,
+     -17.93137
+    ],
+    "staleIce": 0,
+    "thawAll": null,
+    "iceSeries": [
+     10,
+     10,
+     10,
+     10,
+     8,
+     8,
+     8,
+     8
+    ],
+    "thawTemps": [
+     12.9627018,
+     13.0698519,
+     13.1925106,
+     13.3303051
+    ],
+    "expectedMelts": 1.62,
+    "expectedFreezes": 0.8,
+    "before": [
+     10000,
+     10000,
+     10000
+    ],
+    "after": [
+     10000,
+     10000,
+     10000
+    ]
+   },
+   "block": "B5",
+   "eyes": false
+  }
+ ],
+ "notes": [],
+ "args": {
+  "dry_run": false,
+  "mock": false,
+  "list": false,
+  "only": "B0,B5",
+  "skip": "",
+  "frame_budget_ms": 150.0,
+  "player_log": "Transient/live_session/pass3_20261019T0346/Player.log.copy",
+  "no_owner_save": true,
+  "out_dir": "Transient/live_session/pass3_20261019T0346_b5s"
+ }
+}

@@ -1304,7 +1304,40 @@ def freeze_expectation(temps, ncells, step):
     return e
 
 
-def ice_verdict(cond_ok, temps, froze, thaw, same, ncells, step=500):
+ICE_MELT_AT_C = 2.0         # Verse.FreezeManager.IceMeltThreshold (decompiled 1.6, Odyssey): no ice melts below it
+THAW_BUDGET_MAX = 36000
+
+
+def ice_cells(ops):
+    """ThinIce squares from get_terrain_batch ops text ('ThinIce:x,z,w,h;...')."""
+    out = set()
+    for m in re.finditer(r"ThinIce:(-?\d+),(-?\d+),(\d+),(\d+)", ops or ""):
+        x, z, w, h = (int(v) for v in m.groups())
+        out.update((x + i, z + j) for i in range(w) for j in range(h))
+    return out
+
+
+def melt_candidates(ice):
+    """Squares whose steady-effects visit can melt an ice square: DoIceMelting melts ThinIce within radius 2.9 of the
+    VISITED cell (which need not be ice itself)."""
+    near = set()
+    for (x, z) in ice:
+        for dx in range(-2, 3):
+            for dz in range(-2, 3):
+                if dx * dx + dz * dz <= 2.9 * 2.9:
+                    near.add((x + dx, z + dz))
+    return len(near)
+
+
+def melt_expectation_step(temp_c, ncand, step):
+    """Expected vanilla melt events in one `step`: FreezeManager.DoIceMelting rolls 0.001 * ((T + 5) / 5) per visit at
+    T >= 2 C (SurroundedByIce squares are skipped, so this is an upper bound per event, a fair bar for 'none at all')."""
+    if temp_c is None or temp_c < ICE_MELT_AT_C:
+        return 0.0
+    return step * ncand / float(STEADY_VISIT_TICKS) * 0.001 * ((temp_c + 5.0) / 5.0)
+
+
+def ice_verdict(cond_ok, temps, froze, thaw, same, ncells, step=500, melt_exp=None):
     """B5_ice_freeze_thaw -> (status, class, why). The row judges ice only once the site was really below freezing:
     UNMEASURED/SITE when the conditions did not start or the canal never read <= -7 C (pass 1: ColdSnap alone -> 1.4 C);
     no ice while cold enough that >= 4.6 freeze events were expected (P(no ice) < 1%) is FAIL/MOD, fewer is UNMEASURED/SITE;
@@ -1323,6 +1356,9 @@ def ice_verdict(cond_ok, temps, froze, thaw, same, ncells, step=500):
             return "FAIL", "MOD", "%.1f freeze events expected at <= %.0f C, no ice on the dug water" % (exp, FREEZE_AT_C)
         return "UNMEASURED", "SITE", "cold enough but only %.1f freeze events expected (< 4.6): too short to judge" % exp
     if thaw is None:
+        # pass 3 (2026-10-19, HARNESS): 12,000 fixed ticks at 26 C was ~2 expected melts (P(none) ~ 11%) -> a false FAIL.
+        if melt_exp is not None and melt_exp < 4.6:
+            return "UNMEASURED", "SITE", "warm, but only %.1f melt events expected (< 4.6): too short to judge thaw" % melt_exp
         return "FAIL", "MOD", "the ice never thawed after the cold ended"
     return ("PASS", "MOD", "") if same else ("FAIL", "MOD", "the readout litres changed across freeze and thaw")
 
@@ -1360,6 +1396,9 @@ def b5_cold_snap(s):
     def temp():
         return fnum(s.call("jawa/cell_temperature", cell="%d,%d" % canal[0]).get("temperature"))
     temps, froze = [], None
+    # pass 3 (2026-10-19, HARNESS): clear_zone leaves vanilla temp terrain (ThinIce) from an earlier B5 on the same map,
+    # which read as 'froze after 500 ticks' at 25 C. Ice before the cold is no reading.
+    stale_ice = len(ice_cells(terr())) if not s.mock else 0
     keep = (s.pawns.get("rescue"),)
     try:
         # pass 2 (2026-10-19, HARNESS): 24,000 ticks on a warm map reached only 4.49 expected freezes (bar 4.6) -> UNMEASURED.
@@ -1377,27 +1416,47 @@ def b5_cold_snap(s):
     finally:                            # a crash mid-cold must not leave -40 C on the map for every later block
         for n in COLD_CONDITIONS:
             s.call("jawa/game_condition", action="end", condition=n)
-    thaw = None
+    # 'thawed' = the ice count FELL (vanilla melts a radius-2.9 patch per successful roll; a full thaw of every patch is
+    # many independent rolls). Polled until a melt, or until >= 4.6 melts were expected (P(none) < 1%), or the budget.
+    thaw, thaw_all, melt_exp, ice_series, thaw_temps = None, None, 0.0, [], []
     if froze is not None:
-        for k in range(0, 12000, 500):
+        ice0 = ice_cells(terr())
+        ice_series.append(len(ice0))
+        for k in range(0, THAW_BUDGET_MAX, 500):
+            if melt_exp >= 4.6 and thaw is None:
+                break
+            ncand = melt_candidates(ice_cells(terr())) if k else melt_candidates(ice0)
             s.advance(500)
+            tt = temp()
+            thaw_temps.append(tt)
+            melt_exp += melt_expectation_step(tt, ncand, 500)
             if k % 2000 == 1500:
                 heal_colonists(s, keep=keep)
-            if "Ice" not in terr():
+            n_ice = len(ice_cells(terr()))
+            ice_series.append(n_ice)
+            if thaw is None and n_ice < ice_series[0]:
                 thaw = k + 500
+            if n_ice == 0:
+                thaw_all = k + 500
+                break
+            if thaw is not None and k >= 12000:
                 break
     after = [s.w.readout(c) if not s.mock else None for c in canal[:3]]
     same = [(a or {}).get("dl") for a in after] == [(b or {}).get("dl") for b in before]
-    st, cls, why = ice_verdict(cond_ok, temps, froze, thaw, same, sum(len(r) for r in canals))
+    st, cls, why = ice_verdict(cond_ok, temps, froze, thaw, same, sum(len(r) for r in canals),
+                               melt_exp=melt_exp if froze is not None else None)
     unread_dl = not s.mock and any((x or {}).get("dl") is None for x in before + after)
     if st == "PASS" and unread_dl:
         st, cls, why = "UNMEASURED", "HARNESS", "the readout litres were unread (before/after): 'unchanged' is no reading"
+    if stale_ice:
+        st, cls, why = "UNMEASURED", "HARNESS", "%d ThinIce squares were on the canals before the cold (an earlier B5 on this map)" % stale_ice
     elif st == "FAIL" and blind and froze is None:
         st, cls, why = "UNMEASURED", "HARNESS", "%d terrain reads of the canals came back empty: 'no ice' is no reading" % len(blind)
     s.row("B5_ice_freeze_thaw", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A5", st, cls,
           dict(why=why, conditions=[str(g)[:80] for g in gcs], frozeAfter=froze, thawAfter=thaw,
                coldest=min([t for t in temps if t is not None] or [None]) if any(t is not None for t in temps) else None,
-               temps=temps[-6:], expectedFreezes=round(freeze_expectation(temps, sum(len(r) for r in canals), 500), 2),
+               temps=temps[-6:], staleIce=stale_ice, thawAll=thaw_all, iceSeries=ice_series[:4] + ice_series[-4:],
+               thawTemps=thaw_temps[-4:], expectedMelts=round(melt_exp, 2), expectedFreezes=round(freeze_expectation(temps, sum(len(r) for r in canals), 500), 2),
                before=[(b or {}).get("dl") for b in before], after=[(a or {}).get("dl") for a in after]), "B5")
     restore_after_weather(s, "B5")
 

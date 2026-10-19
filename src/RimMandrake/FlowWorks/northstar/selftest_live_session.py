@@ -296,6 +296,13 @@ check(L.ice_verdict(True, cold, None, None, True, 56)[:2] == ("FAIL", "MOD"),
 check(L.ice_verdict(True, [-8.0, -8.0], None, None, True, 56)[:2] == ("UNMEASURED", "SITE"), "ice: barely cold, briefly, is too short to judge")
 check(L.ice_verdict(True, cold, 6000, 3000, True, 56)[0] == "PASS", "ice: froze below -7 C and thawed intact is PASS")
 check(L.ice_verdict(True, cold, 6000, None, True, 56)[:2] == ("FAIL", "MOD"), "can-fail ice: never thawed is FAIL")
+check(L.ice_verdict(True, cold, 6000, None, True, 56, melt_exp=2.2)[:2] == ("UNMEASURED", "SITE"),
+      "ice: no melt with only 2.2 melts expected (pass 3, 12k ticks at 26 C) is too short, not FAIL")
+check(L.ice_verdict(True, cold, 6000, None, True, 56, melt_exp=5.0)[:2] == ("FAIL", "MOD"), "can-fail ice: warm enough, no melt is FAIL")
+check(L.ice_cells("RM_WaterThin:16,50,7,1;ThinIce:23,50,2,1;ThinIce:23,54,3,1") == {(23, 50), (24, 50), (23, 54), (24, 54), (25, 54)},
+      "ice_cells parses ThinIce runs")
+check(abs(L.melt_expectation_step(26.0, 50, 500) - 500 * 50 / 1667.0 * 0.001 * 6.2) < 1e-9 and L.melt_expectation_step(1.0, 50, 500) == 0,
+      "melt expectation: vanilla 0.001*(T+5)/5 per visit, none below 2 C")
 check(L.ice_verdict(True, cold, 6000, 3000, False, 56)[:2] == ("FAIL", "MOD"), "can-fail ice: litres changed is FAIL")
 check(L.ice_verdict(False, cold, 6000, 3000, True, 56)[0] == "UNMEASURED", "ice: conditions refused is UNMEASURED")
 check(L.ice_verdict(True, [None, None], None, None, True, 56)[:2] == ("UNMEASURED", "HARNESS"), "ice: no temperature read is UNMEASURED/HARNESS")
