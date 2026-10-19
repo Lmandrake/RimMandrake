@@ -909,6 +909,10 @@ def g_pit_access(s):
     # pass 2 (2026-10-19, HARNESS, presumed): at 3 m the A2 climbing-gear colonist (climbs sheer 4 m) can reach the downed
     # one, so RM_MapComponent_PitRescueLadder.AnyRescuerReaches is true and NO ladder is queued -- by design. 5 m is past
     # every rescuer's reach on this map, which is the A4 scene ("nobody can go").
+    # RESCUE_LADDER_DIAGNOSE_NOBODY_FETCHES_IT (2026-10-19): FALSE premise. Climbing gear climbs ANY wall (ClimbLimitOf ->
+    # RM_PitAccessMath.ScalesAnyWall, k=7 in the ProofClimb read), so depth never excludes the gear wearer. It is drafted
+    # (s.order drafts), and vanilla's DoctorRescue never runs drafted: the MOD fix is that AnyRescuerReaches no longer
+    # counts a drafted / Doctor-disabled rescuer, so this scene (gear wearer drafted) is "nobody will go" and a ladder queues.
     s.pit(P4, 3, 3, 10)         # 5 m sheer, no ladder
     lad = FC.place(s.w, "RM_LadderPortable", (P1[0] + 1, P1[1] + 2), rot=0) if not s.mock else dict(survived=True)
     a = s.spawn(HUMAN, (P1[0] + 1, P1[1] + 1))

@@ -106,6 +106,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(a, @"HarmonyPatch\(typeof\(CompAbilityEffect_Teleport\), nameof\(CompAbilityEffect_Teleport\.Apply\)\)", "the skip patch");
                 RiverSwitchFlipChecks.Has(a, @"class RM_MapComponent_PitRescueLadder : MapComponent", "the rescue ladder job");
                 RiverSwitchFlipChecks.Has(a, @"RM_PitAccessMath\.ChooseRescueLadder\(", "the rescue reads the selftested verdict");
+                // RESCUE_LADDER_DIAGNOSE_NOBODY_FETCHES_IT: a drafted (or Doctor-disabled) colonist who reaches the pit never
+                // goes, so it must not stop the ladder job (live pass 2c: a drafted climbing-gear wearer did).
+                RiverSwitchFlipChecks.Has(a, @"!c\.InMentalState && !c\.Drafted && !c\.WorkTypeIsDisabled\(WorkTypeDefOf\.Doctor\)", "only a rescuer who would go cancels the ladder");
             });
             Case("PitAccess_defs_and_settings_shipped", () =>
             {
