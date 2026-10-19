@@ -94,7 +94,7 @@
     <label>scorched stars</label>
     <description>Rounder cacti covered in sharp spines. They are often said to look like a burnt star.</description>
     <graphicData>
-      <texPath>Things/Plant/ScorchedStars</texPath>
+      <texPath>Things/Plant/RM_WastelandScorchedStars</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>1.15</drawSize>
       <shadowData>

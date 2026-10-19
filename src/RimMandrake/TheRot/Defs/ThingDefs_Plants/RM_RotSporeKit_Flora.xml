@@ -1124,7 +1124,7 @@
       <Flammability>0.35</Flammability>
     </statBases>
     <graphicData>
-      <texPath>RotSporeKit/Things/Plant/MortalMorel</texPath>
+      <texPath>RotSporeKit/Things/Plant/RM_MortalMorelPlant</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -1388,7 +1388,7 @@
     <label>kabbrik pod</label>
     <description>A low cluster of taut, rounded pods on short stems, the skins grey-white and glossy, each seam showing a faint warm glow. The pods are packed with an oily spore-mass volatile enough to refine into chemfuel, and colonists learn to keep fires well away from a patch. It grows where it pleases and nowhere anyone plants it; nobody has managed to cultivate it.</description>
     <graphicData>
-      <texPath>RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown</texPath>
+      <texPath>RotSporeKit/Things/Plant/RM_BlastpodShroom</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <statBases>
