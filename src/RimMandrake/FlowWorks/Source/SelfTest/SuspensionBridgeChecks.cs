@@ -433,6 +433,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(fire.Contains("PawnsAt(map, c)") && !fire.Contains("for (int t = things.Count - 1; t >= 0; t--)"),
                     "can-fail: the fire and grate effects walk a snapshot of the pawns, not the live thing list a death or a fire spawn edits");
             });
+            Case("Suspension_deck_built_over_the_hole_floor", () =>
+            {
+                // SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN (live 2026-10-19: a timber span read 816 kg with ONE rider: 13 pawns
+                // left in the trench by earlier runs, built over, were counted ON the deck). The band was entered only by a
+                // walked step; a deck completed over the hole must put whoever stands down there in the floor band and slide
+                // what lies there out (or mark it under), or they weigh on the deck.
+                string comp = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");
+                int at = comp.IndexOf("public void Notify_DeckBuilt(Building_SuspensionDeck d)");
+                Assert(at >= 0, "Notify_DeckBuilt exists");
+                string body = comp.Substring(at, comp.IndexOf("// ── railings", at) - at);
+                Assert(body.Contains("d.FloorBandPassesUnder"), "can-fail: only a deck the floor band passes under takes the hole floor under it");
+                Assert(body.Contains("SetBand(p, true)") && body.Contains("!p.Flying") && body.Contains("!p.Dead"),
+                    "can-fail: a live, walking pawn already in the hole goes into the floor band (not the deck's load)");
+                Assert(body.Contains("RM_SuspensionUnderpass.SlideOut(t)") && body.Contains("ThingCategory.Item"),
+                    "can-fail: an item lying in the hole slides out (or is marked under), never the deck's load");
+                Assert(body.Contains(".ToList()"), "can-fail: the square's thing list is snapshotted before SlideOut edits it");
+            });
             // textures: selftest_flowworks_suspension_art.py (the SelfTest staging copies no Textures folder)
             UnderpassReachChecks.Run(Case);   // UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: reach agrees with A* under decks (UnderpassReachChecks.cs)
         }

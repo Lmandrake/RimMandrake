@@ -59,7 +59,8 @@ ANTI-GUESSING NOTES
   120 ticks run (two load passes of 60); PASS needs every deck of the span gone AND each spawned pawn standing on a dug
   square AND an injury hediff added. A span that never read Over makes the row UNMEASURED, never PASS.
 - GRATE_FIRE: PASS needs >= 1 Burn hediff among the grate's riders AND fewer on the solid deck's (both counts written);
-  a run where neither pit was alight (ProofIgnite not LIT) is UNMEASURED.
+  a run where EITHER pit was not alight (ProofIgnite not LIT: the solid deck's pit is the control and must burn) is
+  UNMEASURED, its ignite text and fill replies attached.
 - GRATE_POUR: the body read is the decilitres in every dug square within 12 (ProofPour, through RM_LiquidSpill.Spill, the
   production spill); PASS needs rise == 500 dL AND no new filth on the square.
 - RAILS: 20 production TryKnockOff rolls at the stagger chance (25%); railings off must drop >= 1 (P(0 of 20) = 0.3%),
@@ -72,6 +73,16 @@ First live run 2026-10-19 (SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN), what it tau
 - RULED OUT: "the path finder ignores decks" - it walked round a 1-wide trench at the same node count (corridor walls now).
 - RULED OUT: "the four looks are a harness misread" - LOOK styled=0 was the MOD: the part defs lacked CompProperties_Styleable,
   so Thing.StyleDef = s was a no-op (selftest_flowworks_suspension_art.py styleable_fails now goes red for it).
+- Runs a/b/c reused ONE map (no --fresh-map): each run inherits the last one's pawns, bridges and liquids. Prefer --fresh-map.
+- RULED OUT: "LoadOn double-counts cells / counts the deck's own parts / Mass is not kg" - 816 kg with one rider was 14
+  pawns of ~58 kg (Mass = kg, StatPart_BodySize): 12 riders of run a left in the bare trench, built over in run b, plus each
+  run's rider. MOD: a deck completed over the hole did not put the pawns on its floor in the floor band (Notify_DeckBuilt
+  now does, and slides items out). The "empty" read before riders shows any such leftover weight.
+- RULED OUT: "destroying an anchor via the bridge bypasses the swing hook" - destroy_batch's Destroy(Vanish) reaches
+  Building_SuspensionAnchor.Destroy. The script sent cells=/defName= (the tool takes rects=/categories=), got Fail
+  "rects is required" and destroyed nothing. A not-destroyed anchor is UNMEASURED now.
+- RULED OUT: "a solid deck stops the pit under it burning" - IgniteNow found no burnable liquid in the control pit (run c
+  only; run b lit it). The cause was lost to a 60-char cut and unread fill replies; both are kept now.
 """
 import argparse
 import json
@@ -276,8 +287,12 @@ def posts(ctx):
     row("SB_rails_on_nobody_falls", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"rails": txt0, "read": txt})
 
     # T4: lose an anchor -> swing-down from that end
-    proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 12)), xz(P(5, 12))))
-    B.call("jawa/destroy_batch", cells=[{"x": P(0, 12)[0], "z": P(0, 12)[1]}], defName="RM_SuspensionAnchor_Timber")
+    # destroy_batch takes rects="x,z,w,h" and categories; live 2026-10-19 sent cells=/defName=, the tool answered Fail
+    # "rects is required", nothing was destroyed and the SWING log read empty (HARNESS). Its Destroy(Vanish) reaches
+    # Building_SuspensionAnchor.Destroy -> Notify_SupportLost, the production hook. 4 decks x SwingTicksPerCell 20 < 150 ticks.
+    kvb, txtb = proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 12)), xz(P(5, 12))))
+    gone = B.call("jawa/destroy_batch", rects="%d,%d,1,1" % P(0, 12), categories="Building") or {}
+    destroyed = gone.get("success") is True and int(gone.get("destroyed") or 0) >= 1
     ticks(150)
     kv, txt = proof("ProofSwing", "-")   # an empty args string is a 0-param call (no such overload)
     stamps = []
@@ -291,7 +306,11 @@ def posts(ctx):
     xs = [x for x, _ in stamps]
     ts = [t for _, t in stamps]
     good = len(stamps) == 4 and xs == sorted(xs) and ts == sorted(ts) and len(set(ts)) == 4
-    row("SB_anchor_lost_swings_from_that_end", "PASS" if good else ("FAIL" if stamps else "UNMEASURED"), {"read": txt, "lane": stamps})
+    st = "PASS" if good else "FAIL"
+    if not good and (kvb.get("ok") != "True" or not destroyed):
+        st = "UNMEASURED"           # no bridge stood, or the anchor was never destroyed: no swing was asked for
+    row("SB_anchor_lost_swings_from_that_end", st,
+        {"read": txt, "lane": stamps, "build": txtb, "destroy": {k: gone.get(k) for k in ("success", "message", "destroyed")}})
 
     # T5: vanilla bridge refused on a dug square. The mod's postfix acts only where vanilla ACCEPTED: a dry dug square is
     # not Bridgeable terrain, so live 2026-10-19 read vanilla's own refusal and the ruled one never ran (SITE). Water in the
@@ -325,11 +344,15 @@ def grate(ctx):
     for dz in (20, 24, 28):
         for i in range(1, 5):
             dig(P(i, dz), 4)                                     # 2 m
-    counts = {}
+    counts, fills = {}, {}
     for dz, tier in ((20, "steelgrated"), (24, "steel")):
+        # every fill reply is kept: live 2026-10-19 (run c, same map as runs a/b) the solid-deck CONTROL pit read "REFUSED:
+        # fire off or nothing burnable" cut at 60 chars, the "(fluid X, F=n)" cause lost and the fill replies discarded
+        fills[tier] = []
         for i in range(1, 5):
-            B.call("jawa/static_call", type=FLUIDID_TYPE, method="ProofFillWithFluid",
-                   args="%d,%d,%d,RM_Fluid_Chemfuel" % (P(i, dz)[0], P(i, dz)[1], 2))
+            fr = B.call("jawa/static_call", type=FLUIDID_TYPE, method="ProofFillWithFluid",
+                        args="%d,%d,%d,RM_Fluid_Chemfuel" % (P(i, dz)[0], P(i, dz)[1], 2)) or {}
+            fills[tier].append(str(fr.get("result") or fr.get("message") or fr.get("error") or ""))
         proof("ProofBuild", "%s;%s;%s;god" % (xz(P(0, dz)), xz(P(5, dz)), tier))
         riders = [spawn(P(k, dz)) for k in (2, 3, 4)]
         before = pawns_by_id()
@@ -338,12 +361,15 @@ def grate(ctx):
         ticks(2500)
         after = pawns_by_id()
         n = sum(max(0, burns(after.get(r) or {}) - burns(before.get(r) or {})) for r in riders if r)
-        counts[tier] = (n, lit_txt[:60], proof("ProofGrate", xz(P(3, dz)))[1])
+        counts[tier] = (n, lit_txt[:200], proof("ProofGrate", xz(P(3, dz)))[1])
     g, s_ = counts["steelgrated"][0], counts["steel"][0]
-    litboth = all(c[1].startswith("LIT") for c in counts.values())
+    # intent: BOTH pits burn; the solid deck is the control whose riders stay unburnt. A pit that never lit (no burnable
+    # liquid: a refused fill, a cell left by an earlier run) asks nothing of the mod: UNMEASURED with the replies attached.
+    unlit = [t for t, c in counts.items() if not c[1].startswith("LIT")]
     st = "PASS" if g >= 1 and g > s_ else "FAIL"
-    row("GRATE_fire_burns_people_above", st if litboth else "UNMEASURED",
-        {"grateBurns": g, "solidBurns": s_, "reads": counts})
+    row("GRATE_fire_burns_people_above", "UNMEASURED" if unlit else st,
+        {"grateBurns": g, "solidBurns": s_, "reads": counts, "unlit": unlit,
+         "fills": {t: f for t, f in fills.items() if t in unlit or any(not x.startswith("FILLED") for x in f)}})
     for i in range(1, 5):                                         # 1 m of water in the 2 m canal: room for the pour
         B.call("jawa/flowworks_excavation_drive", x=P(i, 28)[0], z=P(i, 28)[1], deepenLevels=0, setFill=2)
     proof("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(0, 28)), xz(P(5, 28))))
@@ -602,6 +628,9 @@ class FakeBridge(object):
                                    **hl(([] if not late else ["Burn", "Bruise"] if self.tags.get(i) == "steelgrated" else ["Bruise"])
                                         + (["Crush"] * self.fell)))
                               for i in range(1001, self.next_id + 1)]}
+        if method == "jawa/destroy_batch":
+            ok = bool(kw.get("rects")) and kw.get("categories") == "Building"   # the real tool Fails without rects
+            return {"success": ok, "destroyed": 1 if ok else 0, "message": "Destroyed 1 thing(s)" if ok else "rects is required"}
         if method == "jawa/list_things":
             return {"success": True, "things": [{"def": "Steel"}]}
         return {"success": True}
@@ -638,6 +667,8 @@ class FakeBridge(object):
             return "SWING " + " ".join("%d,%d@%d" % (FakeBridge.ox + i, z, 100 + 20 * i) for i in range(1, 5))
         if m == "ProofVanillaBridge":
             return "VANILLA accepted=False reason=Use a suspension bridge over dug ground"
+        if m == "ProofFillWithFluid":
+            return "FILLED (1, 0, 1) F=2 fluid=RM_Fluid_Chemfuel"
         if m == "ProofIgnite":
             return "LIT 1 cell"
         if m == "ProofUnderPath":
