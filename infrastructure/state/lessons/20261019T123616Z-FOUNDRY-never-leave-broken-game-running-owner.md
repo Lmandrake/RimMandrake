@@ -1,0 +1,1 @@
+Never leave a broken game running (owner, 2026-10-19: 'Let's not leave broken games running'). The moment the log shows a Root-level exception storm or a map that failed to set up, stop driving it, close the game, stamp it down, and fix the cause before relaunching; a broken session wastes cycles and its results are not trustworthy.
