@@ -38,12 +38,17 @@ namespace RimMandrake.FlowWorks
 		private static readonly ConditionalWeakTable<Map, RM_PocketGrid> grids = new ConditionalWeakTable<Map, RM_PocketGrid>();
 		// TITAN_TRENCHES_WIRE_MIND_THE_GAP: per map, the grids labelled on a stride view (index s = 1..MaxStride; RM_TrenchStride)
 		private static readonly ConditionalWeakTable<Map, RM_PocketGrid[]> strideGrids = new ConditionalWeakTable<Map, RM_PocketGrid[]>();
+		// UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: per map, the grids labelled on the FLOOR view (index s = 0 plain, 1..MaxStride)
+		private static readonly ConditionalWeakTable<Map, RM_PocketGrid[]> floorGrids = new ConditionalWeakTable<Map, RM_PocketGrid[]>();
 		private static int settingsSalt;
 
 		private readonly Map map;
 		/// <summary>TITAN_TRENCHES_WIRE_MIND_THE_GAP: 0 = the plain grid; s &gt; 0 = labelled on the depth a stride-s creature sees
 		/// (every trench of width &lt;= s read as ground, RM_TrenchStrideMath.BridgedDepth). Never feeds the rooms.</summary>
 		private readonly int stride;
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: labelled on the floor view (a deck the floor band passes under reads as
+		/// the floor beneath it, RM_CliffMask's under masks), the view a pawn in the hole plans its walk on. Never feeds the rooms.</summary>
+		private readonly bool floorView;
 		private RM_PocketGridMath.Labels[] bands;
 		private int builtGeneration = int.MinValue;
 		private int builtSalt = int.MinValue;
@@ -55,10 +60,11 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Rebuild count, for the bridge proof (a pocket must survive save/reload identically).</summary>
 		public int Rebuilds { get; private set; }
 
-		private RM_PocketGrid(Map map, int stride = 0)
+		private RM_PocketGrid(Map map, int stride = 0, bool floorView = false)
 		{
 			this.map = map;
 			this.stride = stride;
+			this.floorView = floorView;
 		}
 
 		public static bool Relative => RimMandrakeFlowWorksSettings.pitRelativeClimbEnabled;
@@ -66,14 +72,45 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Band array length (index K = 1..MaxClimbLimit; 0 unused). PIT_DEPTH_WIDEN: was the dig cap (4).</summary>
 		public static int BandCount => RM_PitTrapMath.ClimbBands;
 
-		/// <summary>The grid for this map, built on first use. Never rebuilt here (see the class note).</summary>
 		/// <summary>TITAN_TRENCHES_WIRE_MIND_THE_GAP: the grid this pawn's walk is judged on: the stride view for a creature that
 		/// steps over the trenches on this map (RM_TrenchStride.ViewStride), else the plain grid. Every per-pawn hold, trap and
-		/// reach verdict asks here, so it agrees with the stride cliff masks.</summary>
+		/// reach verdict asks here, so it agrees with the stride cliff masks.
+		/// UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: and in the view its path request plans on (RM_PocketGridMath.ReachGridView, the
+		/// composition of RM_CliffMask.Swap and the stride swap): a pawn in the hole is judged on the floor view, where it walks
+		/// under a deck, never on the deck view, where the deck splits the hole into two pockets.</summary>
 		public static RM_PocketGrid ForPawn(Map map, Pawn p)
 		{
-			int s = p == null ? 0 : RM_TrenchStride.ViewStride(p, map);
-			return s > 0 ? For(map, s) : For(map);
+			if (p == null || map == null)
+			{
+				return For(map);
+			}
+			bool differs = Pits.RM_SuspensionUnderpass.FloorViewDiffers(map);
+			bool uses = differs && Pits.RM_SuspensionUnderpass.UsesFloorView(p);
+			bool striderFloor = uses && RM_TrenchStrideMath.StriderUsesFloorView(true, Pits.RM_SuspensionUnderpass.InFloorBand(p),
+				p.Spawned && RM_TrenchStride.SteppedOver(p, map, RM_SuperdeepTrap.EngineOf(map), p.Position));
+			(bool floor, int s) = RM_PocketGridMath.ReachGridView(differs, uses, striderFloor, f => RM_TrenchStride.ViewStride(p, map, f));
+			return For(map, s, floor);
+		}
+
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: the grid of stride s (0 = plain) in the floor or the deck view.</summary>
+		public static RM_PocketGrid For(Map map, int stride, bool floorView)
+		{
+			if (!floorView)
+			{
+				return stride > 0 ? For(map, stride) : For(map);
+			}
+			if (map == null)
+			{
+				return null;
+			}
+			int s = stride <= 0 || stride > RM_TrenchStrideMath.MaxStride ? 0 : stride;
+			RM_PocketGrid[] set = floorGrids.GetValue(map, m => new RM_PocketGrid[RM_TrenchStrideMath.MaxStride + 1]);
+			RM_PocketGrid g = set[s] ?? (set[s] = new RM_PocketGrid(map, s, true));
+			if (g.bands == null)
+			{
+				g.Build(false);
+			}
+			return g;
 		}
 
 		/// <summary>The stride-s grid (s = 1..RM_TrenchStrideMath.MaxStride; 0 or out of range: the plain one), built on first use
@@ -149,6 +186,16 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
+			if (floorGrids.TryGetValue(map, out RM_PocketGrid[] floors))
+			{
+				for (int s = 0; s < floors.Length; s++)
+				{
+					if (floors[s] != null)
+					{
+						floors[s].RebuildIfStale(eng, paused, false);
+					}
+				}
+			}
 			if (grids.TryGetValue(map, out RM_PocketGrid g))
 			{
 				g.RebuildIfStale(eng, paused, true);
@@ -178,7 +225,7 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			int w = map.Size.x, h = map.Size.z;
 			int n = w * h;
-			byte[] depth = EffectiveDepth(map, eng);
+			byte[] depth = EffectiveDepth(map, eng, floorView);
 			if (stride > 0)
 			{
 				// TITAN_TRENCHES_WIRE_MIND_THE_GAP: the stride view (RM_TrenchStride's masks bridge the same cells)
@@ -480,11 +527,18 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			int d = RM_SuperdeepTrap.StepDepthAt(map, eng, c);
+			int d = ViewStepDepthAt(eng, c);
 			int dx = RM_LadderWallMath.FX[rot], dz = RM_LadderWallMath.FZ[rot];
 			var o = new IntVec3(c.x + dx, 0, c.z + dz);
 			return o.InBounds(map) && ComponentOf(k, o) != component
-				&& RM_LadderWallMath.Joins(rot, d, dx, dz, RM_SuperdeepTrap.StepDepthAt(map, eng, o));
+				&& RM_LadderWallMath.Joins(rot, d, dx, dz, ViewStepDepthAt(eng, o));
+		}
+
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: a square's step depth in this grid's view, as the masks of the same view
+		/// read it for their ladder joins (RM_CliffMask.DeriveCell: FloorViewDepthAt in the floor view, else StepDepthAt).</summary>
+		private int ViewStepDepthAt(RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			return floorView ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, c) : RM_SuperdeepTrap.StepDepthAt(map, eng, c);
 		}
 
 		// ── TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: the ladder graph between components ───────────────
@@ -530,8 +584,12 @@ namespace RimMandrake.FlowWorks
 				bool way = RM_PocketGridMath.LadderIsAWay(p != null, p == null && RM_ClimbJoins.LoweredLadderAt(map, c),
 					p != null && RM_LadderRules.LadderLetsOut(map, c, p));
 				int a = ComponentOf(k, c), b = ComponentOf(k, o);
-				if (RM_PocketGridMath.LadderEdge(rot, RM_SuperdeepTrap.StepDepthAt(map, eng, c), a,
-					RM_SuperdeepTrap.StepDepthAt(map, eng, o), b, way))
+				// UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: the depths of this grid's view (ViewStepDepthAt)
+				bool joins = floorView
+					? RM_PocketGridMath.LadderEdge(rot, ViewStepDepthAt(eng, c), a, ViewStepDepthAt(eng, o), b, way)
+					: RM_PocketGridMath.LadderEdge(rot, RM_SuperdeepTrap.StepDepthAt(map, eng, c), a,
+						RM_SuperdeepTrap.StepDepthAt(map, eng, o), b, way);
+				if (joins)
 				{
 					edges.Add((a, b));
 				}

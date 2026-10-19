@@ -69,6 +69,7 @@
     <Compile Include="..\RM_SpanMath.cs" />
     <Compile Include="..\RM_SuspensionMath.cs" />
     <Compile Include="SuspensionBridgeChecks.cs" />
+    <Compile Include="UnderpassReachChecks.cs" />
     <Compile Include="SpanBaseChecks.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />
     <Compile Include="..\RM_TrenchStrideMath.cs" />

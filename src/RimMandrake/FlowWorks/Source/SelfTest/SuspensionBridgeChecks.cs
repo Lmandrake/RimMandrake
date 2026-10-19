@@ -434,6 +434,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: the fire and grate effects walk a snapshot of the pawns, not the live thing list a death or a fire spawn edits");
             });
             // textures: selftest_flowworks_suspension_art.py (the SelfTest staging copies no Textures folder)
+            UnderpassReachChecks.Run(Case);   // UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: reach agrees with A* under decks (UnderpassReachChecks.cs)
         }
     }
 }
