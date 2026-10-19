@@ -392,6 +392,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     Assert(File.ReadAllText(dec).Contains("private bool ShouldHaveNeed(NeedDef nd)"), "1.6 signature: private bool ShouldHaveNeed(NeedDef nd)");
                 }
+                else
+                {
+                    // never a silent pass: run_selftests.py reads this phrase from the suite output and lists the whole run UNMEASURED
+                    Console.WriteLine("      Thirst_harmony_target_and_call_sites: decompiled Pawn_NeedsTracker.cs not on disk (" + dec + ") - the ShouldHaveNeed signature check was NOT run; UNMEASURED, not a pass or a fail");
+                }
                 string need = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "Need_RM_Thirst.cs"));
                 RiverSwitchFlipChecks.Has(need, @"HealthUtility\.AdjustSeverity\(pawn, RM_ThirstDefOf\.RM_Dehydration, delta\)", "the need drives the readable hediff");
                 string jobs = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstJobs.cs"));
