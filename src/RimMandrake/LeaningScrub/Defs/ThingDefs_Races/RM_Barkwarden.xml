@@ -179,19 +179,19 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cougar/Cougar</texPath>
+          <texPath>Things/Pawn/Animal/RM_Barkwarden/RM_Barkwarden</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
           <color>(168,170,172)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cougar/Dessicated_Cougar</texPath>
+          <texPath>Things/Pawn/Animal/Cougar/RM_Barkwarden/RM_Barkwarden</texPath>
           <drawSize>1.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cougar/Cougar</texPath>
+          <texPath>Things/Pawn/Animal/RM_Barkwarden/RM_Barkwarden</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.35</drawSize>
           <color>(168,170,172)</color>
@@ -201,13 +201,13 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cougar/Dessicated_Cougar</texPath>
+          <texPath>Things/Pawn/Animal/Cougar/RM_Barkwarden/RM_Barkwarden</texPath>
           <drawSize>1.35</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cougar/Cougar</texPath>
+          <texPath>Things/Pawn/Animal/RM_Barkwarden/RM_Barkwarden</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.7</drawSize>
           <color>(168,170,172)</color>
@@ -217,7 +217,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cougar/Dessicated_Cougar</texPath>
+          <texPath>Things/Pawn/Animal/Cougar/RM_Barkwarden/RM_Barkwarden</texPath>
           <drawSize>1.7</drawSize>
         </dessicatedBodyGraphicData>
       </li>

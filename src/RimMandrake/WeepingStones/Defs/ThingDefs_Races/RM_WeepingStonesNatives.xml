@@ -269,34 +269,34 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Spelopede/Spelopede</texPath>
+          <texPath>Things/Pawn/Animal/RM_Mirrik/RM_Mirrik</texPath>
           <drawSize>0.3</drawSize>
           <color>(200, 210, 215)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Spelopede/Dessicated_Spelopede</texPath>
+          <texPath>Things/Pawn/Animal/Spelopede/RM_Mirrik/RM_Mirrik</texPath>
           <drawSize>0.3</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Spelopede/Spelopede</texPath>
+          <texPath>Things/Pawn/Animal/RM_Mirrik/RM_Mirrik</texPath>
           <drawSize>0.325</drawSize>
           <color>(200, 210, 215)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Spelopede/Dessicated_Spelopede</texPath>
+          <texPath>Things/Pawn/Animal/Spelopede/RM_Mirrik/RM_Mirrik</texPath>
           <drawSize>0.325</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Spelopede/Spelopede</texPath>
+          <texPath>Things/Pawn/Animal/RM_Mirrik/RM_Mirrik</texPath>
           <drawSize>0.35</drawSize>
           <color>(200, 210, 215)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Spelopede/Dessicated_Spelopede</texPath>
+          <texPath>Things/Pawn/Animal/Spelopede/RM_Mirrik/RM_Mirrik</texPath>
           <drawSize>0.35</drawSize>
         </dessicatedBodyGraphicData>
       </li>

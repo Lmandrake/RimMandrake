@@ -97,7 +97,7 @@
       <li>
         <label>old gorrask</label>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_GorraskCondenser/RM_GorraskCondenser</texPath>
           <drawSize>3.8500000000000005</drawSize>
           <color>(110, 105, 95)</color>
           <shadowData>
@@ -106,14 +106,14 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/Tortoise/RM_GorraskCondenser/RM_GorraskCondenser</texPath>
           <drawSize>3.8500000000000005</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <label>old gorrask</label>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_GorraskCondenser/RM_GorraskCondenser</texPath>
           <drawSize>4.675000000000001</drawSize>
           <color>(110, 105, 95)</color>
           <shadowData>
@@ -122,14 +122,14 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/Tortoise/RM_GorraskCondenser/RM_GorraskCondenser</texPath>
           <drawSize>4.675000000000001</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <label>old gorrask</label>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_GorraskCondenser/RM_GorraskCondenser</texPath>
           <drawSize>5.5</drawSize>
           <color>(110, 105, 95)</color>
           <shadowData>
@@ -138,7 +138,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/Tortoise/RM_GorraskCondenser/RM_GorraskCondenser</texPath>
           <drawSize>5.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
