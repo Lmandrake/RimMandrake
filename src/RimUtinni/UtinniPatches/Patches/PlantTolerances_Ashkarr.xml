@@ -71,53 +71,53 @@
     </match>
   </Operation>
 
-  <!-- skarrowdome (AB_AgaricusDomeCap) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- skarrowdome (RM_AgaricusDomeCap) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -179,53 +179,53 @@
     </match>
   </Operation>
 
-  <!-- grath elder (AB_AgariluxPrime) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- grath elder (RM_AgariluxPrime) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -395,53 +395,53 @@
     </match>
   </Operation>
 
-  <!-- madruka (AB_ArbuscularMycorrhiza) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- madruka (RM_ArbuscularMycorrhiza) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -503,53 +503,53 @@
     </match>
   </Operation>
 
-  <!-- hessuk moss (AB_Bryolux) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- hessuk moss (RM_Bryolux) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -719,53 +719,53 @@
     </match>
   </Operation>
 
-  <!-- amber weeper (AB_DribblingCap) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- amber weeper (RM_DribblingCap) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -989,53 +989,53 @@
     </match>
   </Operation>
 
-  <!-- vokkun pillar (AB_GiantAgarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- vokkun pillar (RM_GiantAgarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -1313,53 +1313,53 @@
     </match>
   </Operation>
 
-  <!-- ithrani glowcap (AB_GlowingAgarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- ithrani glowcap (RM_GlowingAgarilux) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -1421,53 +1421,53 @@
     </match>
   </Operation>
 
-  <!-- nubbik (AB_Glowstool) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- nubbik (RM_Glowstool) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -1907,53 +1907,53 @@
     </match>
   </Operation>
 
-  <!-- quessa spire (AB_LilacBeacon) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- quessa spire (RM_LilacBeacon) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -2177,53 +2177,53 @@
     </match>
   </Operation>
 
-  <!-- orrusk crook (AB_RecurvedStropharia) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- orrusk crook (RM_RecurvedStropharia) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -2555,53 +2555,53 @@
     </match>
   </Operation>
 
-  <!-- sweetsnare (AB_SlimyPholiota) - 2300 tiles, home demands -53 … 31.7 °C
+  <!-- sweetsnare (RM_SlimyPholiota) - 2300 tiles, home demands -53 … 31.7 °C
        minGrowthTem 0->-53  minOptimalGr 6->-41.5  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant</xpath>
             <value><minGrowthTemperature>-53</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.5</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.5</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>
@@ -3203,53 +3203,53 @@
     </match>
   </Operation>
 
-  <!-- Tumrata's shelf (AB_WitchesOyster) - 2204 tiles, home demands -53.1 … 31.4 °C
+  <!-- Tumrata's shelf (RM_WitchesOyster) - 2204 tiles, home demands -53.1 … 31.4 °C
        minGrowthTem 0->-53.1  minOptimalGr 6->-41.6  maxOptimalGr 42->27.4  maxGrowthTem 58->58 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant</xpath>
             <value><minGrowthTemperature>-53.1</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant</xpath>
             <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
           </nomatch>
         </li>

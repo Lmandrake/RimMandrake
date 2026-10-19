@@ -25,80 +25,80 @@
        decision) — name only, no size, no art job; the skerrith (RM_Skerrith) is owned
        directly in Defs/Fauna (ROT_RM_CAST_MIGRATION_1), not here. -->
 
-  <!-- ============== AB_AgaricusDomeCap -> skarrowdome (7 wide) ============== -->
+  <!-- ============== RM_AgaricusDomeCap -> skarrowdome (7 wide) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/label</xpath>
           <value><label>skarrowdome</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/description</xpath>
           <value><description>A squat, swollen dome of a mushroom as wide as a hut, its skin blotched in the yellows and bruise-purples that every other living thing reads as a warning. People read it as an invitation. Under the skin lies a pale psychotropic flesh, cut away a sliver at a time: one sliver opens the mind, two take it somewhere it does not come back from easily. It grows slowly, and each skarrowdome gives up very little.</description></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/visualSizeRange</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/plant/visualSizeRange</xpath>
           <value><visualSizeRange>5.25~7</visualSizeRange></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_AgariluxPrime -> grath elder (20 wide) ============== -->
+  <!-- ============== RM_AgariluxPrime -> grath elder (20 wide) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/label</xpath>
           <value><label>grath elder</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/description</xpath>
           <value><description>An elder of the pale forest, twenty paces across and older than any settlement on the planet. It never stops breathing: a standing cloud of heavy, suffocating spores rolls out from under its cap and settles around it, and anything that wanders in, whether grazer, hunter, colonist or rival fungus, chokes, lies down and does not get up. Then the slow part starts. Pale hyphae creep out from its foot to the bodies and eat them where they lie. Do not walk into its shadow. Anyone who means to cut one must be sealed against its breath to the last seam; a mortar, from far enough away, works better.</description></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/visualSizeRange</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/plant/visualSizeRange</xpath>
           <value><visualSizeRange>19.88~20</visualSizeRange></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_ArbuscularMycorrhiza -> madruka (9 wide) ============== -->
+  <!-- ============== RM_ArbuscularMycorrhiza -> madruka (9 wide) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/label</xpath>
           <value><label>madruka</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/description</xpath>
           <value><description>A fungus that long ago swallowed a tree and kept its bones. The madruka's trunk is still wood, ridged, pale and cold to the touch, but everything above it is mushroom: a broad cap where the crown should be, gills where the leaves once grew, and a mycelium that runs far underground. Cutting one yields a good stack of real wood, and it can be planted and grown again.</description></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/visualSizeRange</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/plant/visualSizeRange</xpath>
           <value><visualSizeRange>5.14~9</visualSizeRange></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_Bryolux -> hessuk moss (unchanged size) ============== -->
+  <!-- ============== RM_Bryolux -> hessuk moss (unchanged size) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_Bryolux"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Bryolux"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/label</xpath>
           <value><label>hessuk moss</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/description</xpath>
           <value><description>The glow-carpet of the pale forest: a blue-white mat of tangled sticky fibres, warm to lie on and slow to walk through, because it holds your feet. Where it is bright the ground is feeding; where it goes dark, the ground is cold.</description></value>
         </li>
         <!-- Draw order (owner, 2026-10-14): the moss is ground cover and must always sit UNDER the
@@ -106,171 +106,171 @@
              plant's top edge is raised 0.1 (Plant.Print, topVerticesAltitudeBias) against 0.0366
              between layers, so a moss only 3 layers below (FloorEmplacement 7) is guaranteed lower. -->
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/altitudeLayer</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/altitudeLayer</xpath>
           <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_DribblingCap -> amber weeper (12 wide) ============== -->
+  <!-- ============== RM_DribblingCap -> amber weeper (12 wide) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/label</xpath>
           <value><label>amber weeper</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/description</xpath>
           <value><description>A tall pink-lilac cap that weeps without stopping: a thick, sharp-smelling resin beads at the rim, runs down the stalk and pools around its foot. The resin is a nerve poison strong enough to drop a warg in a few breaths. Gathered with care it tips a single poison dart; gathered carelessly, it is gathered once. Slow to grow, and it can be planted.</description></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/visualSizeRange</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/plant/visualSizeRange</xpath>
           <value><visualSizeRange>8.4~12</visualSizeRange></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_GiantAgarilux -> vokkun pillar (6 wide, = current) ============== -->
+  <!-- ============== RM_GiantAgarilux -> vokkun pillar (6 wide, = current) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/label</xpath>
           <value><label>vokkun pillar</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/description</xpath>
           <value><description>A pale forest giant whose stalk has hardened, over many seasons, into something close to wood: light, fibrous and weak, but wood, in a biome that grows almost none. Its broad lilac cap is studded with soft knobs that shine faintly in the wet. Cut it at the base for mushroom logs; plant the ground again and another mast stands within a season.</description></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/visualSizeRange</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/plant/visualSizeRange</xpath>
           <value><visualSizeRange>3.5~6</visualSizeRange></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_GlowingAgarilux -> ithrani glowcap (4 wide) ============== -->
+  <!-- ============== RM_GlowingAgarilux -> ithrani glowcap (4 wide) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/label</xpath>
           <value><label>ithrani glowcap</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/description</xpath>
           <value><description>The night-light of the pale forest: a tall lilac mushroom whose every knob gives off a cold violet light, bright enough to work by and to be seen by from far off. It grows only wild, and anyone harvesting its few edible purple caps does it in the light it makes, which is exactly where every hungry thing in the grove is already looking.</description></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/visualSizeRange</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/plant/visualSizeRange</xpath>
           <value><visualSizeRange>2.6~4</visualSizeRange></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_Glowstool -> nubbik (unchanged size) ============== -->
+  <!-- ============== RM_Glowstool -> nubbik (unchanged size) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_Glowstool"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Glowstool"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/label</xpath>
           <value><label>nubbik</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/description</xpath>
           <value><description>A squat brown-grey mushroom that smells like a rag pulled out of a dead animal's stomach. Raw, it tastes the way it smells. Cooked, the stink goes and leaves something rich and savoury behind, and colonists who have eaten one stop complaining about the smell of the patch. Easy to grow in open ground, and it gives a good handful of caps.</description></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_LilacBeacon -> quessa spire (3 wide) ============== -->
+  <!-- ============== RM_LilacBeacon -> quessa spire (3 wide) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/label</xpath>
           <value><label>quessa spire</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/description</xpath>
           <value><description>A tall, narrow mushroom holding a bright lilac cap high on a pale stalk. Its flesh is dense and far more filling than anything else that grows here, and much harder on the stomach: eaten raw it sits like a stone, and even cooked it disagrees with some. It grows wild and can be planted; the caps are cut a few at a time.</description></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/visualSizeRange</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/plant/visualSizeRange</xpath>
           <value><visualSizeRange>1.5~3</visualSizeRange></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_RecurvedStropharia -> orrusk crook (5 wide, = current) ============== -->
+  <!-- ============== RM_RecurvedStropharia -> orrusk crook (5 wide, = current) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/label</xpath>
           <value><label>orrusk crook</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/description</xpath>
           <value><description>A big grey mushroom whose cap has curled up and back on itself into a crook, gills outward, like a hand cupped to the black sky. The stalk is hard enough to cut for mushroom logs.</description></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/plant/visualSizeRange</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/plant/visualSizeRange</xpath>
           <value><visualSizeRange>3.5~5</visualSizeRange></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_SlimyPholiota -> sweetsnare (5 wide, = current) ============== -->
+  <!-- ============== RM_SlimyPholiota -> sweetsnare (5 wide, = current) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/label</xpath>
           <value><label>sweetsnare</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/description</xpath>
           <value><description>A broad blue-pink mushroom that sweats a clear, sweet-smelling slime. Insects come for the smell, stick in the slime, stop moving, and slowly dissolve into food for the cap that caught them. The same slime soaks into the flesh and makes it rich and safe to eat raw, one of the few things in the pale forest that is.</description></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/visualSizeRange</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/plant/visualSizeRange</xpath>
           <value><visualSizeRange>3.5~5</visualSizeRange></value>
         </li>
       </operations>
     </match>
   </Operation>
 
-  <!-- ============== AB_WitchesOyster -> Tumrata's shelf (6 wide) ============== -->
+  <!-- ============== RM_WitchesOyster -> Tumrata's shelf (6 wide) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/label</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/label</xpath>
           <value><label>Tumrata's shelf</label></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/description</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/description</xpath>
           <value><description>A branching stack of pink shelf-caps growing one over another from a single woody foot, sharp-smelling enough to make the eyes water. The caps are tough and slow to rot: cut and stored, they keep far longer than anything else the pale forest gives, which makes it what colonists plant when they are thinking about winter.</description></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/visualSizeRange</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/plant/visualSizeRange</xpath>
           <value><visualSizeRange>3~6</visualSizeRange></value>
         </li>
       </operations>
@@ -467,80 +467,80 @@
        doesn't match -> silent no-op). New art lives under this mod's own
        Textures/RotSpecies/<Name>/ , never inside the donor mod's own folder. -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/AgaricusDomeCap</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/ArbuscularMycorrhiza</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_Bryolux"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Bryolux"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/Bryolux</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/DribblingCap</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/GiantAgarilux</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_GlowingAgarilux"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/GlowingAgarilux</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Glowstool"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/Glowstool</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_LilacBeacon"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/LilacBeacon</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_SlimyPholiota"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/SlimyPholiota</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/WitchesOyster</texPath></value>
     </match>
   </Operation>
   <!-- RotSpecies/WitchesOyster is a Graphic_Random folder (A + his ticked B/C, therot_sheet_2026-10-05, 2026-10-10) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/graphicData/graphicClass</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/graphicData/graphicClass</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/graphicData/graphicClass</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]/graphicData/graphicClass</xpath>
       <value><graphicClass>Graphic_Random</graphicClass></value>
     </match>
   </Operation>
@@ -624,16 +624,16 @@
 
   <!-- ============== v3 regen landings, 2026-09-20 (rejected v2 replaced) ============== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/AgariluxPrime</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/graphicData/texPath</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/graphicData/texPath</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_RecurvedStropharia"]/graphicData/texPath</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_RecurvedStropharia"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/RecurvedStropharia</texPath></value>
     </match>
   </Operation>

@@ -15,11 +15,11 @@
        carries MayRequire="mandrake.rm.hugethings", which the def loader honours on a list element.
        (MayRequire on an Operation would be inert; it is not used there.) -->
 
-  <!-- AB_AgariluxPrime, grath elder (20 wide): AgariluxPrime 118 contact cells -->
+  <!-- RM_AgariluxPrime, grath elder (20 wide): AgariluxPrime 118 contact cells -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_AgariluxPrime"]</xpath>
       <value>
         <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
           <measuredSize>20</measuredSize>
@@ -45,11 +45,11 @@
     </match>
   </Operation>
 
-  <!-- AB_DribblingCap, amber weeper (12 wide): DribblingCap_A 28 contact cells -->
+  <!-- RM_DribblingCap, amber weeper (12 wide): DribblingCap_A 28 contact cells -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]</xpath>
       <value>
         <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
           <measuredSize>12</measuredSize>
@@ -160,11 +160,11 @@
     </match>
   </Operation>
 
-  <!-- AB_ArbuscularMycorrhiza, madruka (9 wide): ArbuscularMycorrhiza_A 16 contact cells -->
+  <!-- RM_ArbuscularMycorrhiza, madruka (9 wide): ArbuscularMycorrhiza_A 16 contact cells -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_ArbuscularMycorrhiza"]</xpath>
       <value>
         <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
           <measuredSize>9</measuredSize>
@@ -186,11 +186,11 @@
     </match>
   </Operation>
 
-  <!-- AB_AgaricusDomeCap, skarrowdome (7 wide): AgaricusDomeCap 10 contact cells -->
+  <!-- RM_AgaricusDomeCap, skarrowdome (7 wide): AgaricusDomeCap 10 contact cells -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_AgaricusDomeCap"]</xpath>
       <value>
         <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
           <measuredSize>7</measuredSize>
@@ -210,11 +210,11 @@
     </match>
   </Operation>
 
-  <!-- AB_GiantAgarilux, vokkun pillar (6 wide): GiantAgarilux_A 0 contact cells -->
+  <!-- RM_GiantAgarilux, vokkun pillar (6 wide): GiantAgarilux_A 0 contact cells -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]</xpath>
       <value>
         <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
           <measuredSize>6</measuredSize>
@@ -232,11 +232,11 @@
     </match>
   </Operation>
 
-  <!-- AB_WitchesOyster, Tumrata's shelf (6 wide): WitchesOyster_A 9 contact cells, WitchesOyster_b 3 contact cells, WitchesOyster_c 8 contact cells -->
+  <!-- RM_WitchesOyster, Tumrata's shelf (6 wide): WitchesOyster_A 9 contact cells, WitchesOyster_b 3 contact cells, WitchesOyster_c 8 contact cells -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]</xpath>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]</xpath>
       <value>
         <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
           <measuredSize>6</measuredSize>

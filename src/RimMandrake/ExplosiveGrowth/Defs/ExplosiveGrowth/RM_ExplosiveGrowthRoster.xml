@@ -88,23 +88,23 @@
            they stay enrolled: an unlisted cave plant would fall to the cave carve-out. RM_Skulltop and RM_PaleTree are the
            exception ("Immortal wins", follow-up card): never wither or burst, water a growth spike only, so they keep NONE
            and stay dry natives (out of the wet-native cycle), as before. -->
-      <li><plant>AB_Bryolux</plant><top>Churn</top></li>
-      <li><plant>AB_Glowstool</plant><top>Churn</top></li>
-      <li><plant>AB_GiantAgarilux</plant><top>Churn</top></li>
-      <li><plant>AB_GlowingAgarilux</plant><top>Churn</top></li>
-      <li><plant>AB_LilacBeacon</plant><top>Churn</top></li>
-      <li><plant>AB_WitchesOyster</plant><top>Churn</top></li>
+      <li><plant>RM_Bryolux</plant><top>Churn</top></li>
+      <li><plant>RM_Glowstool</plant><top>Churn</top></li>
+      <li><plant>RM_GiantAgarilux</plant><top>Churn</top></li>
+      <li><plant>RM_GlowingAgarilux</plant><top>Churn</top></li>
+      <li><plant>RM_LilacBeacon</plant><top>Churn</top></li>
+      <li><plant>RM_WitchesOyster</plant><top>Churn</top></li>
       <li><plant>RM_Dewshrooms</plant><top>Churn</top></li>
       <li><plant>RM_FruitingBodies</plant><top>Churn</top></li>
       <li><plant>RM_Nuitae</plant><top>Churn</top></li>
       <li><plant>RM_Wrinklecap</plant><top>Churn</top></li>
       <li><plant>RM_Arpeau</plant><top>Churn</top></li>
-      <li><plant>AB_RecurvedStropharia</plant><top>Churn</top></li>
+      <li><plant>RM_RecurvedStropharia</plant><top>Churn</top></li>
       <li><plant>RM_FlakespireFungus</plant><top>Churn</top></li>
       <li><plant>RM_Pusmelon</plant><top>Churn</top></li>
       <li><plant>RM_Sagecrust</plant><top>Churn</top></li>
-      <li><plant>AB_ArbuscularMycorrhiza</plant><top>Churn</top></li>
-      <li><plant>AB_SlimyPholiota</plant><top>Churn</top></li>
+      <li><plant>RM_ArbuscularMycorrhiza</plant><top>Churn</top></li>
+      <li><plant>RM_SlimyPholiota</plant><top>Churn</top></li>
       <li><plant>RM_BleedingTooth</plant><top>Churn</top></li>
       <li><plant>RM_Brightbell</plant><top>Churn</top></li>
       <li><plant>RM_CrimsonCap</plant><top>Churn</top></li>
@@ -112,10 +112,10 @@
       <li><plant>RM_Shinecap</plant><top>Churn</top></li>
       <li><plant>RM_VioletWimple</plant><top>Churn</top></li>
       <li><plant>RM_MortalMorelPlant</plant><top>Churn</top></li>
-      <li><plant>AB_AgaricusDomeCap</plant><top>Churn</top></li>
-      <li><plant>AB_DribblingCap</plant><top>Churn</top></li>
+      <li><plant>RM_AgaricusDomeCap</plant><top>Churn</top></li>
+      <li><plant>RM_DribblingCap</plant><top>Churn</top></li>
       <li><plant>RM_BlastpodShroom</plant><top>Churn</top></li>
-      <li><plant>AB_AgariluxPrime</plant><top>Churn</top></li>
+      <li><plant>RM_AgariluxPrime</plant><top>Churn</top></li>
       <li><plant>RM_AgelessCap</plant><top>Churn</top></li>
       <li><plant>RM_RegenerantVeil</plant><top>Churn</top></li>
       <li><plant>RM_EuphoricCrown</plant><top>Churn</top></li>
@@ -286,11 +286,11 @@
       <li>RM_Skulltop</li>
       <li>RM_DulcisPlant</li>
       <li>AB_GiantAgariTox</li>
-      <li>AB_GiantAgarilux</li>
-      <li>AB_AgariluxPrime</li>
+      <li>RM_GiantAgarilux</li>
+      <li>RM_AgariluxPrime</li>
       <li>AB_Agarilux</li>
-      <li>AB_GlowingAgarilux</li>
-      <li>AB_AgaricusDomeCap</li>
+      <li>RM_GlowingAgarilux</li>
+      <li>RM_AgaricusDomeCap</li>
     </fungi>
     <!-- §0 (owner 2026-10-17): "Greatbole have an entirely different mechanic that's well articulated, NOT part of the
          bursting discussion. They express the same mechanic through their self healing." Kept on its old handling. -->
