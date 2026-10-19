@@ -217,6 +217,22 @@ def main():
             else:
                 sys.modules.pop("run_live", None)
 
+    # HOSE_REALFLOW_DIAGNOSE_SHORT_POUR_DRY_TANK: a pump level is conserved in tank + the route's hoses (a hose fills from its
+    # first level, rev 2 §3.7 L8); live run 6 read tank 8,899 + hose 1,101 = one level as a FAIL. Can-fail both ways.
+    import proof_hose as PHm
+    saved_tank, saved_held = PHm._tank, PHm._held
+    try:
+        for name, tank_gain, hose_gain, want in (("tank 8899 + hose 1101 is one level", 8899, 1101, True),
+                                                 ("tank 8899 with an empty hose is short", 8899, 0, False),
+                                                 ("a hose that took the whole level while the tank gained 0 is short", 0, 10000, False)):
+            fb = FakeBridge(tempfile.mkdtemp(), b"")
+            PHm._tank = lambda B, c, g=tank_gain, fb=fb: {"units": g if fb.tick >= 100 else 0}
+            PHm._held = lambda B, reels, g=hose_gain, fb=fb: g if fb.tick >= 100 else 0
+            _, w = PHm._moved(fb, (0, 0), 0, [(1, 1)], 0)
+            check("realflow _moved: " + name, (w <= PHm.RF_CYCLE) == want, w)
+    finally:
+        PHm._tank, PHm._held = saved_tank, saved_held
+
     P2, res2 = run_fake(args_only=["realflow"])
     check("a partial run (--only) is mode partial and never certifiable", res2["mode"] == "partial" and res2["certifiable"] is False)
 
