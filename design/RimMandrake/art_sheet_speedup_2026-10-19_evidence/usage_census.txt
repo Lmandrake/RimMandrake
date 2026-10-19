@@ -1,0 +1,1065 @@
+files 107
+counts {'rows': 3637, 'rows_touched': 1602, 'note': 736, 'decision_differs_from_prefill': 785, 'decision_equals_prefill': 2107, 'note_only_row': 40, 'decision_cut': 25, 'pool_add': 36, 'retire': 38, 'reject': 1, 'pool_remove': 7}
+slot states {'pick': 671, 'redraw': 189, 'accept': 4}
+asks (Requests panel) non-empty {}
+this-is assign values {'slot': 185, 'not_needed': 13}
+question answers {('tier', 'big'): 14, ('tier', 'giant'): 8, ('tier', 'small'): 16, ('tier', 'titanic'): 1}
+
+field census (path, nonempty) -> n
+  row.agentInference.authorised_by                             SET 9
+  row.agentInference.basis                                     SET 20
+  row.agentInference.by                                        SET 20
+  row.agentInference.not_owner_ruling                          SET 20
+  row.agentInference.pick                                      SET 20
+  row.assign.*                                                 SET 198
+  row.at                                                       SET 1602
+  row.cardRuling.at                                            SET 8
+  row.cardRuling.by                                            SET 8
+  row.cardRuling.note                                          SET 8
+  row.cardRuling.pick                                          SET 8
+  row.cardRuling.via                                           SET 8
+  row.carriedAt                                                SET 20
+  row.carriedBy                                                SET 20
+  row.carriedFrom                                              SET 31
+  row.carriedRuledAt                                           SET 11
+  row.conflictSheet                                            SET 64
+  row.correction                                               SET 1
+  row.decidedAt                                                SET 767
+  row.decision                                                 empty 123
+  row.decision                                                 SET 3514
+  row.evidence                                                 SET 8
+  row.legacyVariants                                           SET 312
+  row.legacyVariantsDefault                                    empty 10
+  row.legacyVariantsDefault                                    SET 215
+  row.migratedFrom                                             SET 984
+  row.note                                                     empty 2841
+  row.note                                                     SET 736
+  row.notes_followed                                           SET 477
+  row.picks.Animal/RockTroll/RockTrollBaby                     SET 1
+  row.picks.RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing  SET 1
+  row.picks.RimStarWars/SWBestiary/Nuna/Nuna_m                 SET 1
+  row.picks.Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_baby SET 1
+  row.picks.Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female SET 1
+  row.picks.Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby SET 1
+  row.picks.Things/Pawn/Animal/AA_NightMule/AA_NightMule_baby  SET 1
+  row.picks.Things/Pawn/Animal/AA_NightMule/AA_NightMule_female SET 1
+  row.picks.Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy  SET 1
+  row.picks.Things/Pawn/Animal/AA_Radyak/AA_Radyak_female      SET 1
+  row.picks.Things/Pawn/Animal/AA_Radyak/AA_Radyak_male        SET 1
+  row.picks.Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_baby SET 1
+  row.picks.Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female SET 1
+  row.picks.Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowFemale SET 1
+  row.picks.Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowMale   SET 1
+  row.picks.Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_female SET 1
+  row.picks.Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male  SET 1
+  row.picks.Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming    SET 3
+  row.picks.Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw        SET 1
+  row.picks.Things/Pawn/Animal/Visceral/VisceralBaby           SET 1
+  row.picks.Things/Pawn/Animal/Visceral/VisceralTeen           SET 1
+  row.picks.Things/Pawn/Animal/landopus/swimming_landopus      SET 1
+  row.picks.Things/Plant/Grass_Leafless                        SET 1
+  row.picks.Things/Plants/AB_FirevineTree_Leafless             SET 1
+  row.picks.Things/Plants/AB_TinkleGrass_Leafless              SET 1
+  row.picks._byname                                            SET 67
+  row.picks._flip:swanimals/Beldon/BeldonC_Flying_             SET 1
+  row.picks._flip:swanimals/Beldon/Beldon_Flying_              SET 1
+  row.picks._flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_Flying_ SET 1
+  row.picks._flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_Flying_ SET 2
+  row.picks._flip:swanimals/Bogwing/Bogwing_Flying_            SET 1
+  row.picks._flip:swanimals/CanCell/CanCell_Flying_            SET 1
+  row.picks._flip:swanimals/Convor/Convor_Flying_              SET 3
+  row.picks._flip:swanimals/Dactillion/Dactillion_Flying_      SET 1
+  row.picks._flip:swanimals/Hawkbat/Hawkbat_Flying_            SET 1
+  row.picks._flip:swanimals/Neebray/Neebray_Flying_            SET 1
+  row.picks._flip:swanimals/PekoPeko/PekoPeko_f_Flying_        SET 1
+  row.picks._flip:swanimals/Strill/Strill_Flying_              SET 1
+  row.picks._flip:swanimals/Urusai/Urusai_Flying_              SET 1
+  row.picks._flip:swanimals/Whisperbird/Whisperbird_Flying_    SET 4
+  row.picks.swanimals/Aiwha/Aiwha_Swimming                     SET 1
+  row.picks.swanimals/Anooba/Anooba_m                          SET 3
+  row.picks.swanimals/Bantha/BanthaV_G                         SET 1
+  row.picks.swanimals/Bantha/BanthaV_H                         SET 1
+  row.picks.swanimals/Bantha/BanthaV_I                         SET 1
+  row.picks.swanimals/Bantha/BanthaV_J                         SET 1
+  row.picks.swanimals/Bantha/BanthaW_j                         SET 3
+  row.picks.swanimals/Beldon/BeldonC                           SET 1
+  row.picks.swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale SET 1
+  row.picks.swanimals/Blarth/Blarth_Swimming                   SET 1
+  row.picks.swanimals/Blixus/Blixus_Swimming                   SET 1
+  row.picks.swanimals/Boarwolf/Boarwolf_j                      SET 1
+  row.picks.swanimals/Bursa/Bursa_Swimming                     SET 1
+  row.picks.swanimals/Convor/Convor_f                          SET 4
+  row.picks.swanimals/Dragonsnake/Dragonsnake_Swimming         SET 1
+  row.picks.swanimals/Drexl/Drexl_j                            SET 1
+  row.picks.swanimals/Eopie/Eopie_j                            SET 3
+  row.picks.swanimals/Fambaa/Fambaa_Swimming                   SET 2
+  row.picks.swanimals/Fambaa/Fambaa_j                          SET 2
+  row.picks.swanimals/Fambaa/Fambaa_j_Swimming                 SET 2
+  row.picks.swanimals/Fanback/Fanback_Swimming                 SET 1
+  row.picks.swanimals/FrilledGorg/FrilledGorg_Swimming         SET 2
+  row.picks.swanimals/FrilledGorg/FrilledGorg_j                SET 2
+  row.picks.swanimals/FrilledGorg/FrilledGorg_j_Swimming       SET 2
+  row.picks.swanimals/FrogDog/FrogDog_j                        SET 1
+  row.picks.swanimals/Gorg/GorgV_G                             SET 1
+  row.picks.swanimals/Gorg/GorgV_K                             SET 1
+  row.picks.swanimals/Gorg/GorgV_N                             SET 1
+  row.picks.swanimals/Gorg/GorgV_O                             SET 1
+  row.picks.swanimals/Gorg/Gorg_Swimming                       SET 2
+  row.picks.swanimals/Gorg/Gorg_j                              SET 2
+  row.picks.swanimals/Gorg/Gorg_j_Swimming                     SET 2
+  row.picks.swanimals/Grazer/Grazer_m                          SET 1
+  row.picks.swanimals/Gullipud/Gullipud_Swimming               SET 1
+  row.picks.swanimals/Gullipud/Gullipud_j                      SET 1
+  row.picks.swanimals/Gullipud/Gullipud_j_Swimming             SET 1
+  row.picks.swanimals/HarvesterBeetle/HarvesterBeetle_j        SET 1
+  row.picks.swanimals/Hawkbat/Hawkbat_j                        SET 1
+  row.picks.swanimals/Hrumph/Hrumph_j                          SET 1
+  row.picks.swanimals/Hssiss/Hssiss_Swimming                   SET 2
+  row.picks.swanimals/Igitz/Igitz_Swimming                     SET 1
+  row.picks.swanimals/Igitz/Igitz_j                            SET 1
+  row.picks.swanimals/Jakobeast/Jakobeast_j                    SET 1
+  row.picks.swanimals/JungleRancor/JungleRancor                SET 2
+  row.picks.swanimals/Kaadu/Kaadu_m                            SET 1
+  row.picks.swanimals/Kaadu/Kaadu_m_Swimming                   SET 1
+  row.picks.swanimals/Klorslug/Klorslug_j                      SET 1
+  row.picks.swanimals/KraytDragon/KraytDragon_j                SET 1
+  row.picks.swanimals/KraytDragon/KraytDragon_m                SET 1
+  row.picks.swanimals/Kreetle/Kreetle_j                        SET 2
+  row.picks.swanimals/KwazelMaw/KwazelMaw_Swimming             SET 1
+  row.picks.swanimals/LavaFlea/LavaFlea_j                      SET 1
+  row.picks.swanimals/LongtailGorg/LongtailGorg_Swimming       SET 3
+  row.picks.swanimals/LongtailGorg/LongtailGorg_j              SET 3
+  row.picks.swanimals/LongtailGorg/LongtailGorg_j_Swimming     SET 3
+  row.picks.swanimals/LothWolf/LothWolf_m                      SET 1
+  row.picks.swanimals/Lothcat/Lothcat_f                        SET 1
+  row.picks.swanimals/Lothcat/Lothcat_m                        SET 1
+  row.picks.swanimals/MarshHaunt/MarshHaunt_Swimming           SET 1
+  row.picks.swanimals/Mastmot/Mastmot_j                        SET 1
+  row.picks.swanimals/Mastmot/Mastmot_m                        SET 1
+  row.picks.swanimals/Mott/Mott_m                              SET 1
+  row.picks.swanimals/Mott/Mott_m_Swimming                     SET 1
+  row.picks.swanimals/Mudhorn/Mudhorn_j                        SET 1
+  row.picks.swanimals/Narglatch/Narglatch_m                    SET 1
+  row.picks.swanimals/Nerf/Nerf_f                              SET 1
+  row.picks.swanimals/Nerf/Nerf_j                              SET 1
+  row.picks.swanimals/Nerf/Nerf_m                              SET 1
+  row.picks.swanimals/Nexu/Nexu_j                              SET 1
+  row.picks.swanimals/Nuna/Nuna_m                              SET 5
+  row.picks.swanimals/Ollopom/Ollopom_Swimming                 SET 1
+  row.picks.swanimals/PekoPeko/PekoPeko_f                      SET 1
+  row.picks.swanimals/PekoPeko/PekoPeko_m                      SET 1
+  row.picks.swanimals/Pikobis/Pikobis_Swimming                 SET 1
+  row.picks.swanimals/Porg/Porg_f                              SET 2
+  row.picks.swanimals/Porg/Porg_j                              SET 1
+  row.picks.swanimals/Rancor/RancorW                           SET 1
+  row.picks.swanimals/Reek/Reek_j                              SET 3
+  row.picks.swanimals/Runyip/Runyip_Swimming                   SET 2
+  row.picks.swanimals/Runyip/Runyip_j                          SET 2
+  row.picks.swanimals/Runyip/Runyip_j_Swimming                 SET 2
+  row.picks.swanimals/Scurrier/Scurrier_m                      SET 2
+  row.picks.swanimals/ShiroTrap/ShiroTrap_i                    SET 2
+  row.picks.swanimals/ShiroTrap/ShiroTrap_j                    SET 2
+  row.picks.swanimals/Silooth/Silooth_j                        SET 1
+  row.picks.swanimals/Skalder/Skalder_Swimming                 SET 3
+  row.picks.swanimals/Snoruuk/Snoruuk_j                        SET 1
+  row.picks.swanimals/Taozin/Taozin_j                          SET 1
+  row.picks.swanimals/Tauntaun/Tauntaun_j                      SET 1
+  row.picks.swanimals/Torton/Torton_f                          SET 1
+  row.picks.swanimals/Tukata/TukataA                           SET 1
+  row.picks.swanimals/Tukata/TukataB                           SET 1
+  row.picks.swanimals/Tukata/TukataC                           SET 1
+  row.picks.swanimals/Varactyl/VaractylV_E                     SET 1
+  row.picks.swanimals/Varactyl/VaractylV_F                     SET 1
+  row.picks.swanimals/Varactyl/Varactyl_f                      SET 1
+  row.picks.swanimals/Varactyl/Varactyl_m                      SET 1
+  row.picks.swanimals/Wampa/Wampa_j                            SET 1
+  row.picks.swanimals/Worrt/Worrt_Swimming                     SET 3
+  row.picks.swanimals/Worrt/Worrt_j                            SET 3
+  row.picks.swplants/Nysillin_Immature                         SET 2
+  row.pool.*.add                                               empty 5
+  row.pool.*.add                                               SET 36
+  row.pool.*.baseline                                          empty 1
+  row.pool.*.baseline                                          SET 40
+  row.pool.*.remove                                            empty 34
+  row.pool.*.remove                                            SET 7
+  row.prefill                                                  empty 112
+  row.prefill                                                  SET 2954
+  row.prefillDecision                                          SET 9
+  row.purge                                                    empty 7
+  row.purge                                                    SET 331
+  row.purgeTouched                                             SET 338
+  row.q.tier                                                   SET 39
+  row.qPrefill.conflict                                        empty 15
+  row.qPrefill.tier                                            SET 44
+  row.reference_picks.decision                                 SET 10
+  row.reference_picks.picks                                    empty 1
+  row.reference_picks.picks.Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy SET 1
+  row.reference_picks.picks._byname                            SET 8
+  row.reference_picks.picks.swanimals/Kreetle/Kreetle_j        SET 1
+  row.regen                                                    SET 1
+  row.reject.*                                                 SET 1
+  row.retire.*                                                 SET 56
+  row.rev                                                      SET 1161
+  row.ruledBy                                                  SET 8
+  row.schema                                                   SET 1161
+  row.setIds.*                                                 SET 1516
+  row.slots.*.at                                               SET 171
+  row.slots.*.migrated                                         SET 693
+  row.slots.*.pick                                             SET 671
+  row.slots.*.set_id                                           SET 671
+  row.slots.*.slot_id                                          empty 39
+  row.slots.*.slot_id                                          SET 132
+  row.slots.*.state                                            SET 864
+  row.stale_letters_dropped.decision                           SET 13
+  row.stale_letters_dropped.picks                              empty 9
+  row.stale_letters_dropped.picks._flip:swanimals/Beldon/BeldonC_Flying_ SET 1
+  row.stale_letters_dropped.picks.swanimals/Beldon/BeldonC     SET 1
+  row.stale_letters_dropped.variants                           empty 12
+  row.stale_letters_dropped.variants                           SET 1
+  row.variantsAt                                               SET 326
+
+per sheet rows/touched
+   art_doubles_compare_2026-10-04.decisions.json 13 13
+   art_review_2026-09-06.decisions.json 6 5
+   bedazzle_art_sheets_2026-09-28/blue_desert/sheet.decisions.json 5 1
+   bedazzle_art_sheets_2026-09-28/cauldron/sheet.decisions.json 13 4
+   bedazzle_art_sheets_2026-09-28/cracked_lands/sheet.decisions.json 11 5
+   bedazzle_art_sheets_2026-09-28/wasteland/sheet.decisions.json 22 8
+   belt_bridge5_review/FlowWorks_owner_review.decisions.json 43 0
+   biome_ffar/abyss_sheet_2026-10-04.decisions.json 47 36
+   biome_ffar/aiwha_wingfirst_sheet_2026-10-15.decisions.json 1 1
+   biome_ffar/blue_desert_sheet_2026-10-04.decisions.json 20 16
+   biome_ffar/braskeen_on_e_variation_sheet_2026-10-16.decisions.json 1 1
+   biome_ffar/cauldron_sheet_2026-10-04.decisions.json 46 25
+   biome_ffar/contagion_sheet_2026-10-04.decisions.json 35 22
+   biome_ffar/deep_desert_sheet_2026-10-04.decisions.json 34 31
+   biome_ffar/desert_sheet_2026-10-04.decisions.json 93 90
+   biome_ffar/dewback_reconcile_sheet_2026-10-16.decisions.json 1 1
+   biome_ffar/dhoggur_swollen_sheet_2026-10-16.decisions.json 1 0
+   biome_ffar/donor_art_commission2_sheet_2026-10-15.decisions.json 40 0
+   biome_ffar/donor_pack_port_sheet_2026-10-14.decisions.json 9 9
+   biome_ffar/donor_pack_redraws_sheet_2026-10-14.decisions.json 7 5
+   biome_ffar/dragonsnake_canon_variants_sheet_2026-10-18.decisions.json 4 4
+   biome_ffar/dragonsnake_jfo_pick_sheet_2026-10-18.decisions.json 2 2
+   biome_ffar/dragonsnake_swim_variants_sheet_2026-10-18.decisions.json 4 0
+   biome_ffar/facing_regen_needs_eyes_sheet_2026-10-16.decisions.json 38 37
+   biome_ffar/facings_regen_picks_sheet_2026-10-18.decisions.json 12 0
+   biome_ffar/facings_stand_tall_pilot_sheet_2026-10-16.decisions.json 10 8
+   biome_ffar/feverwood_sheet_2026-10-05.decisions.json 44 38
+   biome_ffar/firespit_with_zisska_sheet_2026-10-16.decisions.json 2 2
+   biome_ffar/fleetflier_alien_sheet_2026-10-15.decisions.json 2 2
+   biome_ffar/floodedcanyon_sheet_2026-10-05.decisions.json 25 22
+   biome_ffar/flowworks_owner_walk_art_sheet_2026-10-11.decisions.json 47 0
+   biome_ffar/flyer_north_redraw_sheet_2026-10-15.decisions.json 3 1
+   biome_ffar/gelatinousslime_sheet_2026-10-05.decisions.json 12 6
+   biome_ffar/greentide_sheet_2026-10-05.decisions.json 65 53
+   biome_ffar/greysea_crown_retracted_and_elder_sheet_2026-10-18.decisions.json 2 0
+   biome_ffar/greysea_sheet_2026-10-05.decisions.json 46 45
+   biome_ffar/gss_all_art_sheet_2026-10-11.decisions.json 151 4
+   biome_ffar/gss_owner_walk_art_sheet_2026-10-11.decisions.json 4 2
+   biome_ffar/hosereel_coupling_sheet_2026-10-15.decisions.json 8 8
+   biome_ffar/icon_outline_batch4_sheet_2026-10-14.decisions.json 15 0
+   biome_ffar/lanterndeeps_sheet_2026-10-05.decisions.json 39 29
+   biome_ffar/leaningscrub_open_rows_sheet_2026-10-18.decisions.json 15 0
+   biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json 86 76
+   biome_ffar/liquid_connections_sheet_2026-10-16.decisions.json 21 0
+   biome_ffar/liquid_containers_four_styles_sheet_2026-10-16.decisions.json 12 0
+   biome_ffar/miasma_sheet_2026-10-05.decisions.json 63 44
+   biome_ffar/nightsideice_sheet_2026-10-05.decisions.json 4 4
+   biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json 36 28
+   biome_ffar/own_render_keep_sheet_2026-10-11.decisions.json 7 5
+   biome_ffar/pit_ladder_hung_sheet_2026-10-16.decisions.json 2 0
+   biome_ffar/pit_spikes_half_a_man_sheet_2026-10-16.decisions.json 1 1
+   biome_ffar/plant_baroque_bases_sheet_2026-10-16.decisions.json 7 7
+   biome_ffar/pyrelands_sheet_2026-10-05.decisions.json 18 14
+   biome_ffar/rustcathedral_sheet_2026-10-05.decisions.json 5 5
+   biome_ffar/sluice_panning_warden_sheet_2026-10-11.decisions.json 5 1
+   biome_ffar/sprinkler_heads_sheet_2026-10-16.decisions.json 5 0
+   biome_ffar/thechill_sheet_2026-10-05.decisions.json 29 20
+   biome_ffar/theforge_sheet_2026-10-05.decisions.json 24 0
+   biome_ffar/therot_sheet_2026-10-05.decisions.json 57 44
+   biome_ffar/thescald_sheet_2026-10-05.decisions.json 23 17
+   biome_ffar/thesump_sheet_2026-10-05.decisions.json 21 18
+   biome_ffar/three_picks_sheet_2026-10-15.decisions.json 4 3
+   biome_ffar/tree_art_picks_sheet_2026-10-18.decisions.json 11 11
+   biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json 44 44
+   biome_ffar/twilightsea_sheet_2026-10-05.decisions.json 36 33
+   biome_ffar/warscar_sheet_2026-10-05.decisions.json 24 16
+   biome_ffar/wasteland_sheet_2026-10-05.decisions.json 21 20
+   biome_ffar/water_art_candidates_sheet_2026-10-17.decisions.json 4 0
+   biome_ffar/water_thin_sheet_2026-10-16.decisions.json 1 0
+   biome_ffar/webwork_sheet_2026-10-05.decisions.json 23 23
+   biome_ffar/weepingstones_sheet_2026-10-05.decisions.json 51 47
+   biome_ffar/weir_looks_sheet_2026-10-17.decisions.json 13 0
+   biome_ffar/xeno_heads_new_vs_borrowed_sheet_2026-10-18.decisions.json 4 0
+   bulk_art_misroute_2026-09-19.decisions.json 82 2
+   canon_blog_disputes/canon_blog_disputes_sheet_2026-10-17.decisions.json 60 26
+   contagion_cast_art_review/sheet.decisions.json 47 8
+   deepfire_pigment_review.decisions.json 8 7
+   deeps_art_review_2026-09-18.decisions.json 48 0
+   deeps_flora_fauna_review_2026-09-18.decisions.json 16 16
+   desert_art_review_2026-10-03.decisions.json 90 90
+   desert_art_verdict_2026-09-20.decisions.json 25 0
+   desert_family_review_2026-09-20.decisions.json 109 109
+   desert_sitting1_2026-10-04.decisions.json 102 2
+   donor_code_creatures_sheet_2026-10-09.decisions.json 20 5
+   landmark_density_2026-09-19.decisions.json 26 0
+   lantern_deeps_strange_life_2026-09-20.decisions.json 21 0
+   leaningscrub_conflict17_2026-10-08.decisions.json 17 0
+   longshade_content_review_2026-10-02.decisions.json 8 4
+   longshade_extras_review_2026-10-03.decisions.json 0 0
+   longshade_fills_art.decisions.json 7 0
+   mc_matrix_live_20261002/review.decisions.json 96 0
+   mineral_numbers_review_2026-10-03.decisions.json 37 0
+   old_ticks_confirm_2026-10-10/old_ticks_confirm_2026-10-10.decisions.json 627 0
+   own_render_keep_sheet_2026-10-09.decisions.json 7 0
+   owner_walk_gss_flowworks_2026-10-11/gss_flowworks_owner_walk_2026-10-11.decisions.json 93 0
+   port_alphaanimals_2026-09-20.decisions.json 55 55
+   port_swac_2026-09-20.decisions.json 36 36
+   port_tail_2026-09-20.decisions.json 95 95
+   pyrelands_art_2026-10-14/pyrelands_art_sheet_2026-10-14.decisions.json 9 9
+   rot_art_landed_20260920/rot_art_landed_20260920.decisions.json 61 0
+   rot_flora_fauna_review_2026-09-18.decisions.json 55 55
+   rot_size_rejudge_2026-09-19.decisions.json 33 12
+   sheet_conflicts_review_2026-10-09.decisions.json 38 38
+   stoneback_identity_2026-09-22.decisions.json 2 2
+   therot_names_2026-10-10/therot_names_sheet_2026-10-10.decisions.json 14 14
+   twilight_deep_sitting_2026-09-26.decisions.json 33 0
+
+NOTES 736
+  [port_alphaanimals_2026-09-20.decisions.json] AA_AcanthamoebaGiganteaLarge: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_AcanthamoebaGiganteaSmall: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Aerofleet: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Agaripawn: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Agaripod: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_AngelMoth: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_BedBug: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_BloodShrimp: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Bumbledrone: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_BumbledroneHierophant: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_CrepuscularBeetle: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_CrescendoAnole: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_CrystalMit: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_DarkVandal: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Darkbeast: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_DecayDrake: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Drainer: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_DrainerLarva: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_DuskProwler: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_DuskRat: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_FissionMouse: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_FrostboundBehemoth: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Frostling: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Frostmite: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_GiantCrownedSilkie: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_GreenGoo: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Helixien: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_InfectedAerofleet: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Lockjaw: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Mantrap: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Metallovore: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Mime: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Murkling: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_MycoidColossus: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_NightAve: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_NightMule: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_NightRam: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Nightling: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_OcularJelly: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Plasmorph: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_RaptorShrimp: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_RedGoo: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_RedSpore: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_RoughPlatedMonitor: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_ShadowCharger: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_ShockGoat: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Slurrypede: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_SpinedGow: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_SummitCrab: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Swarmling: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_TarGuzzler: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Thermadon: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Thunderbeast: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] AA_Thunderox: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_alphaanimals_2026-09-20.decisions.json] VFEI2_BlackSwarmling: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Bantha/BanthaW: Look at the canon library and regen to modern standards. Criteria: it MUST have that very wide-slit mouth as shown in the canon imagery.
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Bantha/BanthaW_j: Female short-horn version of above
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Dalgo/Dalgo: Canon shows somthing more like C. We need a high quality version of that. Look at Canon please.
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Eopie/Eopie: B is closest but still pretty bad. Please look at Canon imagery.
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Eopie/EopieA: redundant with above
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Eopie/EopieB: redundant with above
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Eopie/EopieC: redundant with above
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Eopie/EopieD: redundant with above
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Eopie/EopieE: redundant with above
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Eopie/Eopie_j: redundant with above
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Iriaz/Iriaz: Use canon imagery. Four legs, two horns, greenish. Try again. B is almost good except for one horn.
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Nuna/Nuna_f: Finally, yes, keep B.
+  [art_doubles_compare_2026-10-04.decisions.json] swanimals/Nuna/Nuna_m: Good!
+  [desert_family_review_2026-09-20.decisions.json] A_AA_BoulderMit: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_Cactipine: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_DesertAve: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_Eyeling: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_Gigantelope: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_MammothWorm: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_Needlepost: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_Needleroll: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_SandProwler: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_SandSquid: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_Terramorph: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_TetraSlug: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_Wildpawn: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_AA_Wildpod: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Anooba: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Bantha: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Bolotaur: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Cannok: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Clodhopper: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Convor: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Corinathoth: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Eopie: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Falumpaset: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_FeralGrazer: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_FeralNerf: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_FrilledGorg: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Gizka: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Gorg: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_GraniteSlug: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Grank: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_GreaterKraytDragon: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Gutkurr: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Horax: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Hrumph: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Igitz: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Iriaz: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_IridonianReek: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_JOE_Landopus: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Jakobeast: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Jamel: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Jimvu: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_KowakianMonkeyLizard: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_KraytDragon: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Kreetle: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Krykna: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Kwi: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Kybuck: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_LongtailGorg: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Lothcat: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Massiff: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Mudhorn: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Mynock: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Nerf: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Nuna: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_OuterRim_DUMDroid: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_OuterRim_DestroyerDroid: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_OuterRim_FX7Droid: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_OuterRim_GNKDroid: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_OuterRim_MSEDroid: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_OuterRim_MuckrakerDroid: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_OuterRim_SalvageAssistDroid: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Pikobis: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Porg: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Pufferpig: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Qormot: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_RSW_ImperialToad: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_RSW_Jellypot: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_RSW_MossBeetle: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Rat: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Ronto: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Runyip: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Scavrat: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Scurrier: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Shaak: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Shyrack: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Skalder: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Sketto: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Strill: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_TeeMuss: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Terrorworm: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Urusai: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Uvak: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_VFEI2_Fuelmite: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Varactyl: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Voorpak: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Vulptex: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_WarWyrm: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Whisperbird: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_WompRat: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Worrt: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Wraid: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] A_Zeer: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_AB_Aaklac: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_AB_DessertTree: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_AB_GiantStikehr: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_AB_HardyGrass: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_Plant_Bloddle: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_Plant_Brambles: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_Plant_Bush: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_Plant_Chakroot_Wild: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_Plant_HealrootWild: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_Plant_HubbaGourd_Wild: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_Plant_Nysyllin_Wild: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_Plant_Ripthorn: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_Plant_ShrubLow: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_RG_Plant_AridGrass: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_RG_Plant_CreepStern: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_RG_Plant_CrimsonCushion: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [desert_family_review_2026-09-20.decisions.json] P_RG_Plant_Dervish: Owner blanket ruling 2026-09-20: keep the creature, replace with our own def and our own art.
+  [stoneback_identity_2026-09-22.decisions.json] bokka: Arid biome approved, make sure our art is up to modern standards.
+  [stoneback_identity_2026-09-22.decisions.json] korrum: This is good for Scarlands. Regenerate art.
+  [desert_art_review_2026-10-03.decisions.json] A_AA_BoulderMit: Tint it darker stone
+  [desert_art_review_2026-10-03.decisions.json] A_AA_Cactipine: The needles should be very long, more like a porcupine
+  [desert_art_review_2026-10-03.decisions.json] A_AA_DesertAve: Tint bird more golden, and North face is wrong creature?
+  [desert_art_review_2026-10-03.decisions.json] A_AA_Gigantelope: Unify beast faces
+  [desert_art_review_2026-10-03.decisions.json] A_AA_MammothWorm: Tint this one towards violet
+  [desert_art_review_2026-10-03.decisions.json] A_AA_Needlepost: This is absurd. It is not a four legged beast at all, but supposedly a near stationary cactus-like object. Please make it look more like an alien Cholla with two eye stalks.
+  [desert_art_review_2026-10-03.decisions.json] A_AA_Needleroll: This is incoherent. Please make it look like a large tumbleweed with oddly thick branches and two eye stalks peeking out from within.
+  [desert_art_review_2026-10-03.decisions.json] A_AA_SandSquid: No, it should look like a huge squid, not have elephant-like legs at all. Like a huge squid adapted to live in and emerge from the fine desert sand
+  [desert_art_review_2026-10-03.decisions.json] A_AA_TetraSlug: Each face looks like a different creature.
+  [desert_art_review_2026-10-03.decisions.json] A_AA_Wildpawn: Tint different shades for fun
+  [desert_art_review_2026-10-03.decisions.json] A_AA_Wildpod: Tint different shades for fun
+  [desert_art_review_2026-10-03.decisions.json] A_Cannok: Different animals in different faces, and too cartoonish
+  [desert_art_review_2026-10-03.decisions.json] A_Clodhopper: less cartoonish
+  [desert_art_review_2026-10-03.decisions.json] A_Convor: different animals in different faces
+  [desert_art_review_2026-10-03.decisions.json] A_Corinathoth: different animals in different faces
+  [desert_art_review_2026-10-03.decisions.json] A_Eopie: Look online for images of eopie's they are not mule like at all.
+  [desert_art_review_2026-10-03.decisions.json] A_Falumpaset: every animal appears to be something different
+  [desert_art_review_2026-10-03.decisions.json] A_FeralNerf: Not a Nerf from Star wars...
+  [desert_art_review_2026-10-03.decisions.json] A_Gizka: We had a good Gizka.... it didn't need to be redone, and it isn't a frog.
+  [desert_art_review_2026-10-03.decisions.json] A_Gorg: This is absolutely not a Gorg. Look it up. Not frog like.
+  [desert_art_review_2026-10-03.decisions.json] A_JOE_Landopus: This is just horrible. It should be an octopus with blue rings that drags itself along the ground, not a man creature with loctupus legs.
+  [desert_art_review_2026-10-03.decisions.json] A_KowakianMonkeyLizard: different faces must look the same. See web
+  [desert_art_review_2026-10-03.decisions.json] A_KraytDragon: unify faces
+  [desert_art_review_2026-10-03.decisions.json] A_Kwi: Generate variants of this by tinting them various shades of red and orange.
+  [desert_art_review_2026-10-03.decisions.json] A_LongtailGorg: look up gorg
+  [desert_art_review_2026-10-03.decisions.json] A_Lothcat: Look up online, unify, less cartoonish
+  [desert_art_review_2026-10-03.decisions.json] A_Mudhorn: This is very good except that it needs to have shaggy hide.
+  [desert_art_review_2026-10-03.decisions.json] A_Nuna: We already had a good looking Nuna
+  [desert_art_review_2026-10-03.decisions.json] A_Pufferpig: Needs to look more alien. Look up Pufferpig on the internet to get better info.
+  [desert_art_review_2026-10-03.decisions.json] A_Qormot: Check internet lore, this looks too cartonish.
+  [desert_art_review_2026-10-03.decisions.json] A_RSW_ImperialToad: Cut it
+  [desert_art_review_2026-10-03.decisions.json] A_Rat: Escaped white lab rat
+  [desert_art_review_2026-10-03.decisions.json] A_Scavrat: more alien
+  [desert_art_review_2026-10-03.decisions.json] A_Scurrier: more alien
+  [desert_art_review_2026-10-03.decisions.json] A_Skalder: not all facings are the same animal
+  [desert_art_review_2026-10-03.decisions.json] A_Sketto: just look like little dragons. Look up canon imagery in the database.
+  [desert_art_review_2026-10-03.decisions.json] A_Strill: Look in canon examples
+  [desert_art_review_2026-10-03.decisions.json] A_TeeMuss: Look in canon examples
+  [desert_art_review_2026-10-03.decisions.json] A_Terrorworm: Tint this an eerie blue with red insides. Rename to Assailant Worm
+  [desert_art_review_2026-10-03.decisions.json] A_Urusai: Look at canon, each face appears diferent creature.
+  [desert_art_review_2026-10-03.decisions.json] A_Uvak: Check canon lore, each face looks different
+  [desert_art_review_2026-10-03.decisions.json] A_Varactyl: Check lore, each face looks different
+  [desert_art_review_2026-10-03.decisions.json] A_Voorpak: Check lore, each face looks different
+  [desert_art_review_2026-10-03.decisions.json] A_WarWyrm: Check lore, each face looks different. But keep this creature, that's an amazing render! New beast somewhere.
+  [desert_art_review_2026-10-03.decisions.json] A_Worrt: Check canon
+  [desert_art_review_2026-10-03.decisions.json] A_Wraid: Check canon imagery, each face looks different
+  [desert_art_review_2026-10-03.decisions.json] P_AB_DessertTree: THIS IS CUT
+  [desert_art_review_2026-10-03.decisions.json] P_Plant_HealrootWild: This needs to be instantly recognizable on the map in appearance and color. Try again.
+  [sheet_conflicts_review_2026-10-09.decisions.json] RM_Abyss/Shadow Charger/amb: broken?
+  [sheet_conflicts_review_2026-10-09.decisions.json] RM_FeverWood/Maulith/kept: regen, not quality enough
+  [sheet_conflicts_review_2026-10-09.decisions.json] RM_GelatinousSlime/Readerbloom/purgedpick: regen for low quality
+  [sheet_conflicts_review_2026-10-09.decisions.json] RM_Greentide/Beldon/stale: This has more modern art, be careful
+  [longshade_content_review_2026-10-02.decisions.json] gloomcast_art: owner, typed in BENCH chat 2026-10-02: "accept colossus shade whale" (wire the new render)
+  [longshade_content_review_2026-10-02.decisions.json] maidenbloom: Tint it a little more green please
+  [longshade_content_review_2026-10-02.decisions.json] shadespire: Too Terran, more alien please, and more varied in color!
+  [longshade_content_review_2026-10-02.decisions.json] skarrok: This is just a bird. More alien please, and much more colorful. Perhaps a pale blue?
+  [longshade_content_review_2026-10-02.decisions.json] tazzok: Tint this more red
+  [deepfire_pigment_review.decisions.json] deepfire_crowncarpet_b: Needs to be much more sedate in coloration and more organic looking. Seems cartoonish and not gross enough.
+  [deepfire_pigment_review.decisions.json] deepfire_pigmentjar_a: CONTESTED pair with _b: a's contents read plain white (mayonnaise); the pigment's iridescence is the whole product.
+  [deepfire_pigment_review.decisions.json] deepfire_pigmentjar_b: This is what it should look like, along with the multiples for stacking as you indicated above
+  [deeps_art_review_2026-09-18.decisions.json] arpeau_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] arpeau_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] crystalcap_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] crystalcap_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] crystaltipbrambles_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] crystaltipbrambles_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] dulciscropitem_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] dulcisgrown_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] dulcisharvested_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] dulcisimmature_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] fungusfern_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] fungusfern_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] fungusfern_c_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] fungusfern_d_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] gleamtip_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] gleamtip_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] greyladygrown_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] greyladygrown_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] greyladygrown_c_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] greyladyimmature_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonechunk_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonechunk_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonechunk_c_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonechunk_d_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonehuge_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonehuge_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstoneitem_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstoneitem_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstoneitem_c_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonelarge_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonelarge_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonemedium_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonemedium_c_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonesmall_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonesmall_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonesmall_c_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonesowableimmature_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstoneterrain_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] lanternstonewallicon_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] luminousspout_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] luminousspout_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] mycelium_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] mycelium_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] mycelium_c_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] nuitae_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] nuitae_b_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] yumbulbs_a_v1: owner: approve all (2026-09-18)
+  [deeps_art_review_2026-09-18.decisions.json] yumbulbs_b_v1: owner: approve all (2026-09-18)
+  [rot_size_rejudge_2026-09-19.decisions.json] AA_Agaripawn: the current number (7 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] AA_MycoidColossus: What IS this graphic? Is this wired correctly? It's more like something we should keep for the Droidworks. Mycoid colossus is supposed to be a huge multi-legged purplish entity with glowing mushrooms sprouting from its back. Size 12.
+  [rot_size_rejudge_2026-09-19.decisions.json] AA_Swarmling: the current number (0.5 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] AA_Wildpawn: the current number (6 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] AA_Wildpod: the current number (5 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_AgaricusDomeCap: 2
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_Agarilux: you judged this against a false number, so this one genuinely needs your eye.
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_AgariluxPrime: the current number (20 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_ArbuscularMycorrhiza: 8
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_DribblingCap: 9
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_GiantAgarilux: 6 still, but make sure to keep the sparkling luminous violet spots
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_GlowingAgarilux: you judged this against a false number, so this one genuinely needs your eye.
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_Glowstool: you judged this against a false number, so this one genuinely needs your eye.
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_LilacBeacon: you judged this against a false number, so this one genuinely needs your eye.
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_RecurvedStropharia: you judged this against a false number, so this one genuinely needs your eye.
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_SlimyPholiota: you judged this against a false number, so this one genuinely needs your eye.
+  [rot_size_rejudge_2026-09-19.decisions.json] AB_WitchesOyster: 3
+  [rot_size_rejudge_2026-09-19.decisions.json] RSW_FungalWeevil: the current number (4 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_Arpeau: the current number (10 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_BleedingTooth: 1.5
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_Brightbell: the current number (1.5 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_CrimsonCap: .9
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_DulcisPlant: the current number (3 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_FlakespireFungus: 2
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_FurnaceCap: the current number (2 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_MortalMorelPlant: the current number (0.8 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_Nogtyl: the current number (12 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_Nuitae: the current number (1 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_PaleTree: the current number (6 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_Pusmelon: the current number (1 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_Shinecap: 3
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_VioletWimple: 1
+  [rot_size_rejudge_2026-09-19.decisions.json] RUT_Wrinklecap: the current number (0.9 cells) IS your own ruling from df261b2bc, just restated at its true value.
+  [deeps_flora_fauna_review_2026-09-18.decisions.json] RSW_BloodropMoth: give it sacks that it uses to store drained body fluids. Strangely, if it drains any day-side races with normal warm iron blood, it becomes poisoned and rapidly dies. Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Call it a Drinker.
+  [deeps_flora_fauna_review_2026-09-18.decisions.json] RSW_BovineBeetle: Horrible, total remake. This should be huge, bodysize 4. A small room-sized blob of pale yellow substance with a glass-like carapace, many small legs, and one large pincer-ending arm. Truly alien. Call it a Grabber. Give it great strength to Hold someone with its pincer and slowly crush them each ro
+  [deeps_flora_fauna_review_2026-09-18.decisions.json] RSW_FacetMoth: Please propose more truly alien hydrocarbon-based life forms that are utterly different than anything on the dayside... we need to repopulate this biome's fauna significantly with surprising life forms.
+  [deeps_flora_fauna_review_2026-09-18.decisions.json] RSW_FacetMothLarvae: A stubby larva-like creature that builds armor out of crystal shards it collects along the ground. Emits a powerful psychic stun on anyone that gets too close and alarms it. Taming one produces a soothing effect on those around it. Call it a Soulchime.
+  [deeps_flora_fauna_review_2026-09-18.decisions.json] RSW_Gembug: Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Strangely beautiful rounded-jewel-like body with carb-like legs and eye-like spots around its body like a starfish.
+  [deeps_flora_fauna_review_2026-09-18.decisions.json] RSW_GlowSlug: Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life. Call it a Glowbulb. Make it actually glow.
+  [deeps_flora_fauna_review_2026-09-18.decisions.json] RSW_Megapleura: Same body plan, but Make it the glowing pale blue with yellow internal liquids of hydrocarbon-based life
+  [deeps_flora_fauna_review_2026-09-18.decisions.json] RSW_MossBeetleLarvae: Slender, maggot-like bodyplan, pale yellow liquids and pale blue exterior, oozing and curling along the tunnels.
+  [deeps_flora_fauna_review_2026-09-18.decisions.json] RSW_ShatterjawBeetle: A shiny black beetle, strangely conventional and out of place in this alien tunnel system. Enormous, thick, strong mandibles.
+  [port_swac_2026-09-20.decisions.json] Beldon: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Boma: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Borcatu: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] CanCell: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Dactillion: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Dalgo: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Dewback: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Dianoga: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Dragonsnake: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Fambaa: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Fanback: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Gelagrub: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Gornt: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Hawkbat: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Hssiss: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Kinrath: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Klorslug: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] LavaFlea: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Lylek: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Mott: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Neebray: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Ollopom: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] PekoPeko: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Plant_Bubblespore_Wild: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Plant_FelucianGlowspore_Wild: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Plant_HydenockTree_Wild: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Plant_JoganTree_Wild: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Plant_MujaFruit_Wild: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Shiro: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] ShiroTrap: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Snoruuk: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Vornskyr: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Woolamander: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Wyyyschokk: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Yobshrimp: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_swac_2026-09-20.decisions.json] Zakkeg: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [art_review_2026-09-06.decisions.json] AA_Atispec: That is so strange I almost love it. A rainbow lobster thing... well at least it's creative.
+  [art_review_2026-09-06.decisions.json] AA_Behemoth: Might be interesting for the nightside beasts.
+  [art_review_2026-09-06.decisions.json] Enhydriodon: This is just some kind of lava beast, boring. Don't need.
+  [art_review_2026-09-06.decisions.json] Gorilla: Again, these "make a terrestrial shape made out of glowing plates" isn't a good solution.
+  [art_review_2026-09-06.decisions.json] Revenant: Do we really NEED this?
+  [longshade_fills_art.decisions.json] maidenbloom: much better, thanks
+  [longshade_fills_art.decisions.json] shadespire: Good lord. That's like a whole party. I didn't mean that celebrated. Keep the interesting husk-like fruits, but make it dull green without all that wild color and frills.
+  [longshade_fills_art.decisions.json] skarrok: Keep art, redo description based on image.
+  [longshade_fills_art.decisions.json] vrekka: Tint it a bit darker please.
+  [port_tail_2026-09-20.decisions.json] AB_AgaricusDomeCap: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_Agarilux: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_AgariluxPrime: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_AlienGrass: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_AlienTree: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_AlienTree_Polluted: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_ArbuscularMycorrhiza: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_BloodBouquet: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_Bryolux: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_CrystalFlower: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_CrystalHorn: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_DribblingCap: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_EyeGrass: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_FirevineTree: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_FrostLeaf: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_GargantuanLithops: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_GiantAgariTox: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_GiantAgarilux: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_GiantGamma: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_GiantSeptimum: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_GlobularPlant: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_GlowingAgarilux: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_GlowingGrass: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_Glowstool: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_Gomphoeria: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_GreenRockFern: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_HalfAlienTree: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_Iashiphus: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_JungleTree: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_KeeningCordax: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_LargeSlimyTree: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_LilacBeacon: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_MangrovePalm: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_MangroveTree: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_ParasiticMangrove: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_RavenNettle: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_RecurvedStropharia: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_RedBugloss: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_RedLeaves: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_RedPlantsTall: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_RimeNodules: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_Slimecasia: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_SlimyFern: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_SlimyPholiota: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_SlimyTree: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_SugarFamewort: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_TallSlimyGrass: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_TangleTea: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_TarPuddle: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_TentacularPlant: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_TinkleGrass: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_ToxicGamma: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_WildRadagast: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AB_WitchesOyster: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AG_Gamma: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AG_Septimum: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AM_Dryad_Corruptor: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AM_Dryad_Ocular: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] AM_Dryad_Tumorous: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_Dewshrooms: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_FireLavender: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_GiantLeaf: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_HeatsinkFungus: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_Plant_ScorchedStars: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_Plant_SewerReed: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_Plant_Snaketails: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_Plant_TreeMartyr: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_Plant_TreeTanglerootMangrove: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_Plant_TreeTwistingThornwood: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_Plant_TwistingThorngrass: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_Plant_TwistingThornweed: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_RainbowTongue: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] BMT_Sagecrust: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] GR_Beetlefleet: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] GR_Chickenrabbit: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] GR_Manbear: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] GR_Mecharat: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] GR_Molebear: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] GR_ParagonRat: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] GR_Spidercat: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] GRimMoss: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] IronScruff_Bindweed: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] IronScruff_PrimordialGrass: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] IronScruff_PrimordialTallGrass: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] LavaSnail: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] Ling_Cockroach: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] Plant_TookeTrap_Wild: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] RG_Plant_TropicalChokevine: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] RG_Rimclaw: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] SW_Electricgryllotalpa: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] SW_Electrictick: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] SW_Juggernautbeetles: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] VFEI2_Megathrips: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] VFEI2_Swarmling: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [port_tail_2026-09-20.decisions.json] Visceral: Owner blanket ruling 2026-09-20: replace applied to every row.
+  [bulk_art_misroute_2026-09-19.decisions.json] Things/Pawn/Animal/AA_MycoidColossus/AA_MycoidColossus: CONFIRMED 2026-09-19: a droid. Already pulled; renders kept at Droidworks/ArtIncoming.
+  [bulk_art_misroute_2026-09-19.decisions.json] swanimals/Grank/Grank: You already got the description. Huge teeth, red skin: https://static.wikia.nocookie.net/starwars/images/e/ef/Saw-toothed_grank.jpg/revision/latest?cb=20060719203513
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_AgaricusDomeCap: 7 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_Agarilux: rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_AgariluxPrime: 20 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_ArbuscularMycorrhiza: 9 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_Bryolux: rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_DribblingCap: 12 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_GiantAgarilux: wrong size, 6 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_GlowingAgarilux: wrong size, 4 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_Glowstool: rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_LilacBeacon: 3 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_RecurvedStropharia: 5 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_SlimyPholiota: 5 wide, , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_AB_WitchesOyster: 6 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_AgelessCap: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_Arpeau: 10 wide, , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_BlastpodShroom: keep general appearance, just improve, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_BleedingTooth: 2 wlde, , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_Brightbell: 1.5 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_CrimsonCap: 2 cells, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_Dewshrooms: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_DulcisPlant: 3 cells, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_EuphoricCrown: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_FalseFruit: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_FlakespireFungus: 3 wide, , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_FruitingBodies: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_FurnaceCap: 2 cells, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_GreyLady: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_MortalMorelPlant: 0.8, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_Nogtyl: 12 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_Nuitae: 1 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_PaleMoss: make look really like moss, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_PaleTree: 6 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_Pusmelon: 1 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_RegenerantVeil: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_Sagecrust: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_Shinecap: 4 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_Skulltop: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_VioletWimple: 2 cells, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] A_RUT_Wrinklecap: .9 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] B_AA_Agaripawn: 7 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] B_AA_Agaripod: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] B_AA_MycoidColossus: 15 wide, , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] B_AA_Swarmling: 0.5 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] B_AA_Wildpawn: 6 wide, , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] B_AA_Wildpod: 5 wide, rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] B_RSW_FungalMantis: , rename
+  [rot_flora_fauna_review_2026-09-18.decisions.json] B_RSW_FungalWeevil: disgusting fungus bug hybrid, rename, 4 cells wide
+  [rot_art_landed_20260920.decisions.json] AB_Agarilux: Owner 2026-10-02: tolluk cap is too cartoonish and needs regeneration. Current art stays as INTERIM until the regen lands; then replace this one only.
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_CorriskTree: add one random variant
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_Dulloth: That unused variant looks almost exactly like the think our "canopy view" might consider using!
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_Ghemmel: Too gorey. Make the sap amber, not blood red, and regenerate three variants like that. Otherwise beautiful. I like the bluish lavendar leaves, keep that.
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_Mourvel: Needs total redraw. Reads like a green lump or hill. It was supposed to be a willow-like dome the player could step beneath. Regen to make it a Giant willow-like tree draping down to the ground, but not  a wall of green.
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_Ollamane: Not a tree, does not make wood. Accept all variants as random pool. Add one more random variant.
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_Rockfinger: Make two other variants for random pool
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_Thulvane: I think this actually is supposed to use the GreatBole style thick trunk you can mine rather than just showing a picture of a trunk... but we don't need two trees with that mechanic. So this likely just needs totally regenerated art to return to being a tree.
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_Tumbel: Need more variants of this. Do not make it look constructed by people as an arch: it needs to be a natural plant that happens to grow in semi archlike manners with cups, bladders, or gourd-like shapes along its length.
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_VaultRoot: Regenerate to enhance coloration, then add two random variants to consider
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_Veluthar: Add one more variant, and make B and C be random pool entries. along with the new variant.
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_Vurmeloth: Needs regeneration to match its new size and resolution, but otherwise good. Much more realistic please.
+  [tree_tiers_sheet_2026-10-18.decisions.json] RM_Zhorrel: add one more random variant
+  [warscar_sheet_2026-10-05.decisions.json] RG_Rimclaw: redo description
+  [greentide_sheet_2026-10-05.decisions.json] RSW_PekoPeko: Ok, so this is totally messed up. Look at the canon. The best image is the central blue one with the upturned horn on its beak's end. But it kind of looks like it's flying. None of these images has that and looks like it's standing on the ground. That's what we need to regenerat, and we only have fl
+  [thescald_sheet_2026-10-05.decisions.json] RM_Muddal: Rename the Iridai
+  [desert_sheet_2026-10-04.decisions.json] RM_GreatDevourer: This is NOT Canon. Star Wars DOES have something called the Great Devourer that is unrelated. This was from Alpha Animals originally, and now we are making it ours. It is now a life stage of the Sarlacc (see entry) that quests until it finds rich food and a water source to claim. See the Sarlacc ent
+  [desert_sheet_2026-10-04.decisions.json] RM_Jellypot: See above, belongs at RimMandrake level.
+  [desert_sheet_2026-10-04.decisions.json] RM_Khorrak: See above, belongs at RimMandrake level
+  [desert_sheet_2026-10-04.decisions.json] RM_Skarrok: Accept art, but renake to Ski'ra'lim
+  [desert_sheet_2026-10-04.decisions.json] RM_Sollak: Keep art, rename it Chorn.
+  [desert_sheet_2026-10-04.decisions.json] RM_Ulgga: see above
+  [desert_sheet_2026-10-04.decisions.json] RM_Ultracactus: see above
+  [desert_sheet_2026-10-04.decisions.json] RM_Vosska: see above
+  [desert_sheet_2026-10-04.decisions.json] RM_Vrekka: Keep the overall face/mouth part and bony underjaw. Make the legs even snorter and less fit for running. Ambush predator.
+  [desert_sheet_2026-10-04.decisions.json] RSW_Clodhopper: Truly alien creature, do not turn into a bird. Ignore the "avian" description, they don't look anything like a bird. Four legged. Wingless. Travel in large groups. Bizarre jointed mouth part ending in an extended beak at the end of a fleshy appendage.  Follow canon.
+  [desert_sheet_2026-10-04.decisions.json] RSW_Eopie: Good!
+  [desert_sheet_2026-10-04.decisions.json] RSW_GreatDevourer: Not SW
+  [desert_sheet_2026-10-04.decisions.json] RSW_Jellypot: Tint it more green. Rename to Dunejelly.
+  [desert_sheet_2026-10-04.decisions.json] RSW_Khorrak: It should produce vacstone chunks.
+  [desert_sheet_2026-10-04.decisions.json] RSW_Vosska: Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand
+  [twilightsea_sheet_2026-10-05.decisions.json] RM_HolluCatch: See related notes above.
+  [wasteland_sheet_2026-10-05.decisions.json] RSW_FleeceSpider: Redo Name and Description. RimMandrake tier, NOt star wars at all.
+  [wasteland_sheet_2026-10-05.decisions.json] RSW_Maligoat: RimMandrake tier, NOT Star Wars. Never was.
+  [wasteland_sheet_2026-10-05.decisions.json] VAEWaste_Megatardi: Remake N and S. Redo name and description.
+  [donor_pack_port_sheet_2026-10-14.decisions.json] RSW_JungleRancor: No. Eliminate the purple canon images, they are NOT canon. Regenerate only on the central brown/red Canon image. Regen the Canon description based on that too.
+  [deep_desert_sheet_2026-10-04.decisions.json] RM_Drazzik: see above
+  [deep_desert_sheet_2026-10-04.decisions.json] RM_KneelOllim: create many variants
+  [deep_desert_sheet_2026-10-04.decisions.json] RM_Ollim: belongs in RimMandrake level
+  [deep_desert_sheet_2026-10-04.decisions.json] RM_Qorrax: The swimming image doesn't much look like the picture on the left.
+  [deep_desert_sheet_2026-10-04.decisions.json] RSW_Drazzik: Needs a beneath-sand-waiting image (swimming). Belongs at the RimMandrake level.
+  [deep_desert_sheet_2026-10-04.decisions.json] RSW_Ikee: duplicate, remove
+  [deep_desert_sheet_2026-10-04.decisions.json] RSW_Ollim: belongs in RimMandrake level
+  [deep_desert_sheet_2026-10-04.decisions.json] RSW_Vozzik: Please regenerate to make it obviously entirely synthetic. This should be moved to the Rust Cathedral Biome. There should be brightly glowing blue light coming from within through its metallic shell. There should be four eye stalks looking in several diretions, also glowing dull blue.
+  [pyrelands_sheet_2026-10-05.decisions.json] RM_FireHawk: I'm taking this one offline to do focused work on it directly.
+  [pyrelands_sheet_2026-10-05.decisions.json] RM_FireWasp: Needs flyer art now
+  [pyrelands_sheet_2026-10-05.decisions.json] RSW_Gizka: Call this done please. Remove all others immediately. A and D (random variant), remove ALL others. I don't want to see them again.
+  [pyrelands_sheet_2026-10-05.decisions.json] RSW_Nuna: Ok, listen. Use E for all MALES. Use B and C as random varients for all females. Then call this done, and remove all other examples here, ok? Clean this up.
+  [flyer_north_redraw_sheet_2026-10-15.decisions.json] RM_Murrelith: B, C, D, E , F, G, H are all beautiful and wonderful.
+  [facing_regen_needs_eyes_sheet_2026-10-16.decisions.json] RSW_Bantha: I mean sure, let's try the cargo, but I can't tell from here how well it will work.
+  [facing_regen_needs_eyes_sheet_2026-10-16.decisions.json] RSW_TeeMuss: I like them. Gather up a good N, S, E set. Good pack animal.
+  [facing_regen_needs_eyes_sheet_2026-10-16.decisions.json] RSW_Wampa: Don't need a baby version. Remove the standtall b1 versions (delete)
+  [facing_regen_needs_eyes_sheet_2026-10-16.decisions.json] RSW_YobshrimpLand: Already answered for Yobshrimp above. There should be only one Yobshrimp, consolidate.
+  [dragonsnake_jfo_pick_sheet_2026-10-18.decisions.json] Dragonsnake: This one should have several variants as per the Canon art and be regenerated. It should be called Dragonsnake without Albino, to distinguish it from the above, and NOT have any white variants. Unless  you've handled all this differently elsewhere? But I would like to have several of those greenish 
+  [dragonsnake_jfo_pick_sheet_2026-10-18.decisions.json] RSW_Dragonsnake: But this should be called Albino Dragonsnake
+  [feverwood_sheet_2026-10-05.decisions.json] RM_Maulith: regen, not quality enough
+  [miasma_sheet_2026-10-05.decisions.json] AA_RaptorShrimp: Rename to Sharpshrimp. Redo description.
+  [miasma_sheet_2026-10-05.decisions.json] AA_Thermadon: Redo description. Rename Duskfire.
+  [miasma_sheet_2026-10-05.decisions.json] RM_Nemreth: add variants
+  [miasma_sheet_2026-10-05.decisions.json] RSW_AaroxisDendoria: RimMandrake tier, not SW. Rewrite its description to indicate that it produces silk nonstop even in adulthood. Rename it Liliana.
+  [miasma_sheet_2026-10-05.decisions.json] RSW_Blarth: There's no new art!
+  [miasma_sheet_2026-10-05.decisions.json] RSW_Blixus: No new art!
+  [fleetflier_alien_sheet_2026-10-15.decisions.json] RM_FleetFlier: Use B, C, D as variants. They're beautiful!
+  [fleetflier_alien_sheet_2026-10-15.decisions.json] RUT_FleetFlier: redundant with above
+  [therot_sheet_2026-10-05.decisions.json] AA_Agaripod: Adopt new name, improve the description.
+  [therot_sheet_2026-10-05.decisions.json] AA_AngelMoth: Regenerate S. Otherwise accept. Rename and regenerate description.
+  [therot_sheet_2026-10-05.decisions.json] AB_AgaricusDomeCap: Redo name and description
+  [therot_sheet_2026-10-05.decisions.json] AB_Agarilux: Redo name and description
+  [therot_sheet_2026-10-05.decisions.json] AB_AgariluxPrime: Accept new name, improve description, focusing on its dangerous behavior
+  [therot_sheet_2026-10-05.decisions.json] AB_ArbuscularMycorrhiza: Improve name and description.
+  [therot_sheet_2026-10-05.decisions.json] AB_Bryolux: Add two more realistic variants
+  [therot_sheet_2026-10-05.decisions.json] AB_DribblingCap: Rename, improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] AB_GiantAgarilux: Rename, improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] AB_GlowingAgarilux: Rename, improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] AB_Glowstool: Rename, improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] AB_LilacBeacon: Rename, improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] AB_SlimyPholiota: Rename, improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] AB_WitchesOyster: Rename, improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_AgelessCap: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_BlastpodShroom: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_Brightbell: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_Brogg: Remove tint. Enhance description.
+  [therot_sheet_2026-10-05.decisions.json] RM_CrimsonCap: Rename, improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_FalseFruit: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_FlakespireFungus: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_FruitingBodies: make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_GreyLady: Improve description
+  [therot_sheet_2026-10-05.decisions.json] RM_MortalMorelPlant: Rename, improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_Nuitae: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_PaleTree: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_Pusmelon: Rename, improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_RegenerantVeil: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_Sagecrust: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_Skulltop: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_ThozzikQueen: Redundant?
+  [therot_sheet_2026-10-05.decisions.json] RM_ThozzikSpawned: Redundant?
+  [therot_sheet_2026-10-05.decisions.json] RM_VioletWimple: improve description, make two other improved variants that are more realistic
+  [therot_sheet_2026-10-05.decisions.json] RM_Wrinklecap: improve description, make two other improved variants that are more realistic
+  [lanterndeeps_sheet_2026-10-05.decisions.json] RM_BrellikBulb: add variants
+  [lanterndeeps_sheet_2026-10-05.decisions.json] RM_PrennaLace: add variants
+  [lanterndeeps_sheet_2026-10-05.decisions.json] RM_QuorrFern: add variants
+  [lanterndeeps_sheet_2026-10-05.decisions.json] RM_TwitchingPuffer: add variants
+  [lanterndeeps_sheet_2026-10-05.decisions.json] RM_VellokReed: add variants
+  [lanterndeeps_sheet_2026-10-05.decisions.json] RM_ZivvitTaper: add variants
+  [lanterndeeps_sheet_2026-10-05.decisions.json] RSW_BloodropMoth: I like it, but take eway its eyes. RimMandrake tier.
+  [lanterndeeps_sheet_2026-10-05.decisions.json] RSW_FacetMothLarvae: I like but remove eyes. Rimmandrake tier
+  [lanterndeeps_sheet_2026-10-05.decisions.json] RSW_MossBeetleLarvae: I like but remove eyes
+  [gss_owner_walk_art_sheet_2026-10-11.decisions.json] RM_PowerTapClamp: (row dropped from sheet 2026-10-12: tap clamp ruled, pick C installed 737b796e6f)
+  [contagion_sheet_2026-10-04.decisions.json] RM_Fleshsop: bodysize 0.8
+  [FlowWorks_owner_review.decisions.json] canal_reads_as_dug_channel: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] canal_dry_reads_as_obstacle: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] filled_excavation_reads_as_obstacle: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] canal_partial_fill_distinct: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] fill_tier_legible: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] canal_fill_spreads_along_itself: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] canal_fill_front_watchable: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] tar_fill_front_lags_water: prefill: state read PASSED live; the LOOK is yours
+  [FlowWorks_owner_review.decisions.json] canal_holds_only_the_channel: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] canal_reads_as_same_liquid_as_reservoir: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] fill_fluid_distinct: prefill: state read PASSED live; the LOOK is yours
+  [FlowWorks_owner_review.decisions.json] depth_and_fill_jointly_legible: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] reservoir_fill_visibly_drops: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] reservoir_shoreline_recedes: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] empty_reservoir_stops_flow: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] reservoir_recharge_progress_visible: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] canal_burning_reads_as_burning_liquid: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] canal_fire_reaches_reservoir: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] canal_fire_persists: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] canal_spent_after_burn: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] slime_reads_as_viscous_not_water: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] slime_occupant_below_surface: prefill: state read PASSED live; the LOOK is yours
+  [FlowWorks_owner_review.decisions.json] pit_depth_ladder_legible: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] pawn_height_ladder_legible: prefill: state read PASSED live; the LOOK is yours
+  [FlowWorks_owner_review.decisions.json] pawn_lowers_on_deeper_cell: prefill: state read PASSED live; the LOOK is yours
+  [FlowWorks_owner_review.decisions.json] pawn_rises_on_shallower_cell: prefill: state read PASSED live; the LOOK is yours
+  [FlowWorks_owner_review.decisions.json] pit_reads_as_hole: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] pit_walls_have_visible_depth: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] pit_not_vanilla_trap: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] pit_reads_at_size: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] pit_occupant_below_floor: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] pit_occupied_distinguishable: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] pit_trapped_reads_as_trapped: prefill: state read PASSED live; the LOOK is yours
+  [FlowWorks_owner_review.decisions.json] pit_covered_invisible: prefill: state read PASSED live; the LOOK is yours
+  [FlowWorks_owner_review.decisions.json] pit_covered_seam_at_max_zoom: prefill: state read PASSED live; the LOOK is yours
+  [FlowWorks_owner_review.decisions.json] ladder_state_legible: prefill: state read PASSED live; the LOOK is yours
+  [FlowWorks_owner_review.decisions.json] sluice_gate_state_legible: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] spikes_read_distinct: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] never_liquid_on_open_ground: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] never_gravel_path: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] never_full_reservoir_after_heavy_draw: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] never_snared_standing: left open on purpose: only your eyes decide a look bar
+  [FlowWorks_owner_review.decisions.json] never_reads_as_building: left open on purpose: only your eyes decide a look bar
+  [pyrelands_art_sheet_2026-10-14.decisions.json] PYR_BarbslingerSpike: Owner blanket ruling 2026-10-14: A applied to every row.
+  [pyrelands_art_sheet_2026-10-14.decisions.json] PYR_LightningBreakerCore: Owner blanket ruling 2026-10-14: A applied to every row.
+  [pyrelands_art_sheet_2026-10-14.decisions.json] PYR_FE_FirefoamSprayer: Owner blanket ruling 2026-10-14: A applied to every row.
+  [pyrelands_art_sheet_2026-10-14.decisions.json] PYR_LightningBreaker_Off: Owner blanket ruling 2026-10-14: A applied to every row.
+  [pyrelands_art_sheet_2026-10-14.decisions.json] PYR_Dessicated_Barbslinger: Owner blanket ruling 2026-10-14: A applied to every row.
+  [pyrelands_art_sheet_2026-10-14.decisions.json] PYR_Dessicated_Emberscythe: Owner blanket ruling 2026-10-14: A applied to every row.
+  [pyrelands_art_sheet_2026-10-14.decisions.json] PYR_Dessicated_FireWasp: Owner blanket ruling 2026-10-14: A applied to every row.
+  [pyrelands_art_sheet_2026-10-14.decisions.json] PYR_Dessicated_Flamefang: Owner blanket ruling 2026-10-14: A applied to every row.
+  [pyrelands_art_sheet_2026-10-14.decisions.json] PYR_Dessicated_Sytheclaw: Owner blanket ruling 2026-10-14: A applied to every row.
+  [sheet.decisions.json] RM_BloodyMess: Add more red goopey transparent jelly holding the thing together, less like a bunch of guts.
+  [sheet.decisions.json] RM_Ikee: ERROR! We liked the Ikee from before! Keep the little crawling single eye with tentacles as before. The Jawa consider it cute. This thing is hideous. Just a single eyeball with just enough flesh and a few small tentacles to pull itself around.
+  [sheet.decisions.json] RM_Fleshsop: The expression should be one of anger. This is a bioweapon.
+  [sheet.decisions.json] RM_Skinflap: This one will be fun to try and animate.
+  [sheet.decisions.json] RM_Eyebark: Make it hang droopily downward like a willow.
+  [sheet.decisions.json] coalescence_stage2: keep more of the gelatinous goop with eyes and random limbs, less of the near body-like emergence of coordinated limbs
+  [sheet.decisions.json] coalescence_stage3: keep more of the gelatinous goop with eyes and random limbs, less of the near body-like emergence of coordinated limbs
+  [sheet.decisions.json] RM_CloudRepulsor: It should not be shown with the beam in the art... that must be added by the game later when it is on
+  [sheet.decisions.json] RM_Muttavaq: south graphic is obviously wrong, like bad grep or something?
+  [sheet.decisions.json] RM_Tarruq: Needs really cool sounds associated
+  [sheet.decisions.json] RM_Veqma: You should not be able to see the taproot if this is supposed to be the plant in the ground. If this is instead the harvested plant it is ok
+  [sheet.decisions.json] RM_FossilSkeleton: That skeleton doesn't make sense, needs to be joined together and be more alien
+  [sheet.decisions.json] RM_Swale: I think you're going to need to take screenshots of what canals look like before you can actually generate this art. You can use this as placeholder as long as you make a ticket to work with Flowworks to make an actual canal and take snapshots of a live example so you can spec out the art.
+  [sheet.decisions.json] RM_Eskith: Looks like it has five eyes. That means you can only see three on side profile.
+  [sheet.decisions.json] RM_Vexxiss: Make its outside as colorful as the Cauldron Vents
+  [sheet.decisions.json] RM_Seismograph: weird, replace
+  [sheet.decisions.json] RM_Boilhide: Add some deadly color on those boils. Too little color here. Maybe a dangerous violet tinged with yellow?
+  [sheet.decisions.json] RM_Grimewing: Darken it and make its skin more pink. Make its knees bent forward like a mammal, to add alien nature.
+  [sheet.decisions.json] RM_Gristleswarm: Looks ok, but East facing has only four legs, while North and South have six. Make the strange flesh between the plates sickly white.
+  [sheet.decisions.json] RM_Middenbeetle: This beast is capable of stealing. Needs a new name to deconflict Middenshell. How about a Gripper? Always carrying something.
+  [sheet.decisions.json] RM_Middenshell: Your color palette is too uniform per biome. Needs more variety. Please make this a huge tubeworm-like creature with scaled tentacles, a long irregular shell made of accreted minerals fused into debris and bezoars. Truly large. Will lash out a tentacle at objects and pull them towards itself, seemin
+  [sheet.decisions.json] RM_Scumrat: Too terran. Make it more alien. How about a Scumslider? An oozing beast like a slug with two tails that it uses to lurch forward. Three eyes on stalks watching in all directions with eyes that are a cross between silly googly eyes and a horror-film's stare.
+  [sheet.decisions.json] RM_Slagmole: Too much of this green stone in the back of otherwise terrestrial animals. Give this fella a face like a shovel and keep the digging front claws. Then make its back covered in rib-like structures.
+  [sheet.decisions.json] RM_Sloghog: Too terran. Make it more alien.
+  [sheet.decisions.json] RM_Vhaulk: The east face should be frost-covered like the north and south are, with similar legs.
+  [therot_names_sheet_2026-10-10.decisions.json] AA_AngelMoth: I don't see any new art!
+  [therot_names_sheet_2026-10-10.decisions.json] AB_AgaricusDomeCap: Skarrowdome
+  [therot_names_sheet_2026-10-10.decisions.json] AB_ArbuscularMycorrhiza: madruka
+  [therot_names_sheet_2026-10-10.decisions.json] AB_DribblingCap: Amber Weeper
+  [therot_names_sheet_2026-10-10.decisions.json] AB_GiantAgarilux: Vokkun Pillar
+  [therot_names_sheet_2026-10-10.decisions.json] AB_GlowingAgarilux: Ithrani Glowcap
+  [therot_names_sheet_2026-10-10.decisions.json] AB_Glowstool: Nubbik
+  [therot_names_sheet_2026-10-10.decisions.json] AB_LilacBeacon: Quessa Spire
+  [therot_names_sheet_2026-10-10.decisions.json] AB_SlimyPholiota: Sweetsnare
+  [therot_names_sheet_2026-10-10.decisions.json] AB_WitchesOyster: Tumrata's Shelf
+  [therot_names_sheet_2026-10-10.decisions.json] RM_CrimsonCap: Redsong... but I don't see any new art!
+  [therot_names_sheet_2026-10-10.decisions.json] RM_MortalMorelPlant: Yullcomb
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] aqualish: Strangely, I see some of them have four eyes (two smaller ones beneath the major ones above) and some do not.
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] bith: remove bloggathehutt version
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] bothan: remove canon_bothans_xed_out and bloggathehutt versions.
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] dragonsnake: Split into two official versions. The two pale versions let's call Dragonsnake_albino. The Jedi Fallen Order four variants lets accept as the canon Dragonsnake. Comission both in our Star Wars fauna mod. Remove the huntforziro and cisualencyclopedia versions as crude and cartoonish. Regenerate the "
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] falleen: remove colorshift_red
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] hutt: delete bloggathehutt version.
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] ithorian: These are all valid
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] jawa: four_jawas_reference is THE canon reference to follow here, you may remove bloggathehutt here.
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] kel_dor: remove plo_koon_prosthetic_unmasked. remove keldor_resistance_animated and unmasked_legends.
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] klatooinian: Accept slate blue-grey and olive/mud green as all valid.
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] mimbanese: the brow horns are there, but the leather face straps are partly covering them.
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] mirialan: Remove bloggathehutt_mirialan_concept_art as non canon
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] neebray: remove canon_1.webp
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] rancor: remove canon_2.webp
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] tauntaun: remove wampa_eats_tauntaun as it does not actually show tauntaun. Agree with out claim.
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] wampa: remove unused_concept
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] weequay: remove weequay_rotj_still
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] womprat: remove both legends references here
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] wookiee: remove anatomy_diagram and lumpy and roar_rots
+  [canon_blog_disputes_sheet_2026-10-17.decisions.json] worrt: remove legends_2

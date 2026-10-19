@@ -1,0 +1,43 @@
+Timeout (0:00:45)!
+Thread 0x0000723d06fee1c0 [python3] (most recent call first):
+  File "/usr/lib/python3.14/selectors.py", line 398 in select
+  File "/usr/lib/python3.14/subprocess.py", line 2153 in _communicate
+  File "/usr/lib/python3.14/subprocess.py", line 1221 in communicate
+  File "/usr/lib/python3.14/subprocess.py", line 557 in run
+  File "/home/mandrake/rm/foundry/src/RimMandrake/Utils/art/gate_browser.py", line 80 in browser_render
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 540 in browser_render
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 547 in <lambda>
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 548 in check_browser
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 598 in run_gate
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 682 in main
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 702 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/home/mandrake/.seat-tmp/FOUNDRY/claude-1000/-home-mandrake-rm-foundry/77592a5e-5de7-43cb-9907-4350559ecc36/scratchpad/stack.py", line 7 in <module>
+Timeout (0:00:45)!
+Thread 0x0000723d06fee1c0 [python3] (most recent call first):
+  File "/usr/lib/python3.14/selectors.py", line 398 in select
+  File "/usr/lib/python3.14/subprocess.py", line 2153 in _communicate
+  File "/usr/lib/python3.14/subprocess.py", line 1221 in communicate
+  File "/usr/lib/python3.14/subprocess.py", line 557 in run
+  File "/home/mandrake/rm/foundry/src/RimMandrake/Utils/art/gate_browser.py", line 80 in browser_render
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 540 in browser_render
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 547 in <lambda>
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 548 in check_browser
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 598 in run_gate
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 682 in main
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 702 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/home/mandrake/.seat-tmp/FOUNDRY/claude-1000/-home-mandrake-rm-foundry/77592a5e-5de7-43cb-9907-4350559ecc36/scratchpad/stack.py", line 7 in <module>
+Timeout (0:00:45)!
+Thread 0x0000723d06fee1c0 [python3] (most recent call first):
+  File "/usr/lib/python3.14/selectors.py", line 398 in select
+  File "/usr/lib/python3.14/subprocess.py", line 2153 in _communicate
+  File "/usr/lib/python3.14/subprocess.py", line 1221 in communicate
+  File "/usr/lib/python3.14/subprocess.py", line 557 in run
+  File "/home/mandrake/rm/foundry/src/RimMandrake/Utils/art/gate_browser.py", line 80 in browser_render
+  File "src/RimMandrake/Utils/art/scaled_review_gate.py", line 540 in browser_render
+  File "src
