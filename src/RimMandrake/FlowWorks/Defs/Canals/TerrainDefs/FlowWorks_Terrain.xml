@@ -370,24 +370,13 @@
 
        Same shape as the water ladder above (ParentName WaterShallow,
        empty driesTo, canFreeze false; a BASE-layer def since P14), plus extinguishesFire
-       false (tar burns) and a near-black tint so the TINTED-VANILLA
-       FALLBACK reads as tar rather than as plain water even before Alpha
-       Biomes' real art is adopted — §13's named disease ("tar rippling
+       false (tar burns) and a near-black tint so the tinted
+       vanilla ramp reads as tar rather than as plain water — §13's named disease ("tar rippling
        like water") is a colour problem here, not a motion one; the ripple
        animation itself is WaterShallow/Deep's own shader and is not fixed
-       by this fallback. Alpha Biomes' own `AB_Tar` proves the only donor
-       tar water-ramp texture is `AB_TarDeepRamp` (there is no shallow
-       variant — AB's own `AB_ArtificialTar` "tar puddle" reuses the same
-       deep ramp), so all four tiers below adopt that ONE texture uniformly
-       once Alpha Biomes is present; see
-       Patches/Canals/RM_Fluid_Tar_AlphaBiomesAdoption.xml for the
-       PatchOperationConditional that swaps it in, gated on `sarg.
-       alphabiomes` (verified against that mod's own About.xml) exactly the
-       way ManyWaters already gates RM_Slime_* on AB_SlimeRamp.
+       by this tint.
 
-       pathCost per tier is anchored to Alpha Biomes' own real tar-ground
-       costs (AB_TarMud 100, AB_ArtificialTar 200) rather than invented,
-       topping out at vanilla WaterDeep's 300 ceiling every other tier-3
+       pathCost per tier tops out at vanilla WaterDeep's 300 ceiling every other tier-3
        terrain in this mod already uses. -->
 
   <!-- Tier 1 of 3 — a trace of tar, read as shallow but already thick. -->

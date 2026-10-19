@@ -8,8 +8,7 @@
   RM_TarGlass onto this campaign's bespoke RM_Glasswalk
   (Defs/TerrainDefs/RM_SumpWalkways.xml, SUMP_WALKWAYS_1) — same "the free
   mod works standalone, the campaign layer swaps in the nicer art/mechanic"
-  posture RM_Fluid_Tar_AlphaBiomesAdoption.xml already established for
-  floodTerrain's own texture, read in full before writing this.
+  posture.
 
   Wrapped in PatchOperationConditional on the field actually existing,
   matching that same precedent's own guard shape rather than

@@ -411,11 +411,10 @@ LIQUID_ROWS = {
 
     # ── SLIME_STREAM_ROWS_1 — R/G/W mucosal slime + YELLOW (human snot) ────
     # The item's own blocker: the only slime terrain already in this mod set
-    # is either MayRequire="sarg.alphabiomes" (ManyWaters' RM_Slime_<Colour>,
-    # Defs/ManyWaters/TerrainDefs/RM_ColoredWater.xml) or a SINGLE un-tinted
+    # is a SINGLE un-tinted
     # terrain owned by a separate, optional mod (GelatinousSlime's own
     # RM_Slime_Liquid — see this table's own "slime" COMPAT_ONLY_ROWS entry
-    # below, unaffected by this addition). Neither is four distinct
+    # below, unaffected by this addition). That is not four distinct
     # always-loaded colors. These four rows are therefore NEW, FlowWorks-
     # owned terrain — same clone-and-tint mechanism this table already uses
     # for RM_Tar/RM_Ooze/RM_Ichor, texture unchanged (vanilla
@@ -813,8 +812,7 @@ def build_compat_patch(out_dir: Path):
 #     suite (the slime_red/green/white/yellow LIQUID_ROWS entries above)
 #     and canal FluidDef (FlowWorks_Fluids.xml) -- the blocker this note
 #     used to name (only always-loaded slime terrain was GelatinousSlime's
-#     single un-tinted RM_Slime_Liquid, a separate optional mod; ManyWaters'
-#     tinted RM_Slime_<Colour> are MayRequire="sarg.alphabiomes") is solved
+#     single un-tinted RM_Slime_Liquid, a separate optional mod) is solved
 #     by authoring NEW FlowWorks-owned terrain rather than adopting either
 #     donor -- same tinted-vanilla-texture convention as RM_Tar/RM_Ooze
 #     above, no new art, no gate needed.

@@ -82,8 +82,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var targets = new System.Collections.Generic.SortedSet<string>();
                 foreach (Match m in Regex.Matches(patch, @"<match Class=""PatchOperationAddModExtension"">\s*<xpath>/Defs/TerrainDef\[defName=""(\w+)""\]</xpath>"))
                     targets.Add(m.Groups[1].Value);
-                var want = new System.Collections.Generic.SortedSet<string> { "AB_LiquidSlime", "RM_Slime_Liquid", "RM_Slime_Mud",
-                    "RM_Slime_Amber", "RM_Slime_Chalk", "RM_Slime_Rust", "RM_Slime_Verdigris", "RM_Slime_Violet" };
+                var want = new System.Collections.Generic.SortedSet<string> { "AB_LiquidSlime", "RM_Slime_Liquid", "RM_Slime_Mud" };
                 foreach (string col in new[] { "Red", "Green", "White", "Yellow" })
                 {
                     want.Add("RM_Slime" + col + "Shallow");

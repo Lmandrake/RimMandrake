@@ -890,12 +890,10 @@ SETUPS = {
                                   (8, 5, "churnmud"), (14, 5, "tar glass")],
                            try_=["hover each; walk a colonist across the churnmud and the tar glass"],
                            look="weak spot: tar glass that walks like liquid; churnmud that looks like plain mud"),
-    "many_waters": dict(short="Coloured waters and slimes", notice="five coloured waters (top), five coloured slimes "
-                        "(middle), a bottle of each water (bottom)", s="land", after="land_liquids_3",
-                        probes=["xml:defName>RM_Water_Rust<", "xml:defName>RM_Slime_Chalk<"],
+    "many_waters": dict(short="Coloured waters and slimes", notice="five coloured waters (top), "
+                        "a bottle of each water (bottom)", s="land", after="land_liquids_3",
+                        probes=["xml:defName>RM_Water_Rust<", "xml:defName>RM_Water_Chalk<"],
                         terrain=[("RM_Water_" + c, 3 * i, 8, 3, 3) for i, c in enumerate(
-                            ("Rust", "Verdigris", "Amber", "Violet", "Chalk"))]
-                        + [("RM_Slime_" + c, 3 * i, 3, 3, 3) for i, c in enumerate(
                             ("Rust", "Verdigris", "Amber", "Violet", "Chalk"))],
                         marks=[(1, 12, "rust"), (4, 12, "verdigris"), (7, 12, "amber"), (10, 12, "violet"),
                                (13, 12, "chalk")],
@@ -905,7 +903,7 @@ SETUPS = {
                             ("Rust", "Verdigris", "Amber", "Violet", "Chalk"))],
                         try_=["hover each; the bottles along the bottom are each water bottled",
                               "coloured steam rises only off a RIVER of these waters (not here)"],
-                        look="weak spot: two colours that read the same; a slime that looks like its water"),
+                        look="weak spot: two colours that read the same"),
     "land_deepsand": dict(short="Deep sand", notice="a patch of deep sand with a colonist on it", s="land",
                           after="many_waters", caps=["L04"],
                           terrain=[("RM_DeepSand", 2, 3, 12, 8)], pawns=[("Colonist", 8, 7, "player", "drafted")],
