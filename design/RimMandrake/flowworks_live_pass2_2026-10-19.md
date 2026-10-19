@@ -12,24 +12,30 @@ Plain `python3` = WSL (offline/plan); `python.exe` = Windows (anything touching 
 |---|---|---|
 | `live_session.py` B4: `B4_cover_120`, `B4_cover_220` (UNMEASURED), `B4_cover_40` (rode with them), `B4_grenade_no_blast_cover` (FAIL), `B4_access_rescue_ladder_queued` (FAIL), `B4_dehydration_rate` (FAIL), `B4_reservoir_fish_rolled` / `_catch` / `B4_access_jump_pack_in_no_fall` / `B4_rail_unrailed_control` / `B4_dig_cost_notch16` (UNMEASURED) | covers read "gave way" off the cover, not ProofClimb's deck-blind depth (ledger `PIT_COVER_DIAGNOSE_GIVES_WAY_TOO_SOON`); the other B4 rows come free with the block (B4 is one shared clock, not row-selectable) | `58e64eb436` (script) |
 | `proof_hose.py` realflow block: `NS_hose_carries_real_units`, `NS_hose_far_end_pump`, `NS_relay_chain_carries`, `NS_tank_feeds_hose`, `NS_tank_does_not_bridge_pipe_runs`, `NS_external_pipe_is_visual_only` | hose first fill counted, source tank set Empty (`HOSE_REALFLOW_DIAGNOSE_SHORT_POUR_DRY_TANK`); V tank moved inside the plot, unbuilt tank reads UNMEASURED SITE | `f93867b198`, `e27fbb60d5` (script) |
+| `live_session.py` B1 `validation_v2`: `S3_classification`, `P3f_forced_entry_falls`, `P4f_ladder_frees_forced` (FAIL) | all HARNESS (`FLOWWORKS_V2_DIAGNOSE_THREE_NEW_REDS`): W4 is a 40-cell EDGE body, limitless by the wetness-cut ruling (`392300ef0d`); ProofForcedFlyer launched an unstunned PawnFlyer = a jump, which lands safely by `pitJumpLandsSafe` (`0bed9b5796`). Proof now throws `PawnFlyer_Stun` (needs the new DLL deployed) | `3665fb781b` (DLL + script) |
+| `live_session.py` B7 `B7_reload_A2/A3/save_reload_pockets_iden` (FAIL, `pocket_covers`) | UNTRACED: the run kept no strings. B7 now records before/after/settled per differing key (`RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS`); re-run for evidence, ~8 s, needs B4's covers zone | `3665fb781b` (script) |
+| `liquid_checks.py` `L5_colonists_clean_spill` (UNMEASURED SITE) | HARNESS: precondition wanted Cleaning priority read back 1; vanilla stores 3 with manual priorities off (filth 9 -> 0 in 750 ticks was read UNMEASURED) | `3665fb781b` (script) |
+| `live_session.py` B4 `B4_access_jump_pack_in_no_fall` (UNMEASURED) | HARNESS: the verb list was read at the reply's top level; it sits under `result` (JawaBenchAbilityTools). Now cast by verb id | `3665fb781b` (script) |
 | `suspension_bridge_proof.py`, whole file (all sections) | first real run 12 PASS / 12 FAIL / 10 UNMEASURED (`Transient/suspension_live/suspension_bridge_proof_20261019c.json`) ran on DLL `23979d509b` (lacks `a01c76fe25` underpass reach) and defs without `CompProperties_Styleable`. Ledger `SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN`, `UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL` | `d99eab7349` defs + harness; DLL `a01c76fe25` and later |
 
 **Leftovers from the newest full run** (`Transient/live_session/20261018T233414/session.json`, 179 rows: 121 PASS / 19 FAIL / 38 UNMEASURED,
 total_s 1165.6 M). Re-read the newest `session.json` under `Transient/live_session/` when pass 2 starts; the current driver may have
 written a later one. Not in pass 2 on purpose (need a decision, not a re-run):
-- B1 `validation_v2` S3 / P3f / P4f FAIL: MOD regression, ledger `FLOWWORKS_V2_DIAGNOSE_THREE_NEW_REDS`; fix first.
 - B2 `B2_dialog_*` FAIL (dialog empty below Reset all): `FLOWWORKS_SETTINGS_MEND_EMPTY_BELOW_RESET`, landed `4285565110`; re-check needs the deployed DLL (step 1 here) and one dialog look, add to optional step 6b.
-- B7 `B7_reload_A2/A3/save_reload_pockets` FAIL (pocket_covers differ after save+load): `PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH` / `PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP`, unfixed.
-- B3 sprinkler_live / liquid_checks L4-L6 / thirst T1 `rc 1` (harness exit), trench_cover_proof + climb_proof + raid `rc 0` UNMEASURED rows, B5 ice, B6 flood: cause not yet triaged. Optional step 6b re-runs B3 (M 302 s) if the owner wants a second look; a re-run without a triage will most likely repeat.
+- B3 triaged 2026-10-19 (`Transient/pass1_reds/NOTES.md`); `rc 1` is only "not green", never a crash. Left out because a re-run repeats them:
+  `sprinkler_live` draws/dries/walls UNMEASURED SITE (the soak read is `ExplosiveGrowthAPI.IsSoaked`; ExplosiveGrowth is not in the `flowworks`
+  tier: run on `fw_gss_sitting`); `liquid_checks` L4 SITE (no gravship fixture), L6 goodwill needs `--theft-day` (~60,000 ticks);
+  `thirst_live` T1 needs three mod lists; `trench_cover_proof` / `climb_proof` UNMEASURED rows are OWED by the scripts themselves
+  (climb's two ramp rows are stale: `CLIMB_RAMP_ROWS_BUILD_STAIRS_ARRIVED_EARLY`); B5 ice SITE (ColdSnap took the map to 1.4 C, never
+  below 0: needs a cold site); B6 flood SITE (SeasonalFlooding never reached the canal zone).
 - B9 owner-eyes rows (`B9_staged_*`) are UNMEASURED by design. Thirst T15/T16/T27 need the Biomes tier (`fw_gss_sitting`), not this pass.
 
 ## 1. Preconditions (offline checks, recorded now)
 
-1. **DLL source stamp: MATCH at HEAD `2f118de1fa`.** `python3 src/RimMandrake/Utils/dll_source_stamp.py check` prints
-   `MATCH src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll` (it hashes COMMITTED blobs, so the dirty worktree does not matter).
-   The committed DLL's last stamp commit is `a01c76fe25`; later Source changes were SelfTest-only files that the stamp still covers and still matches.
-   **Re-run that check right before deploying.** If it prints anything but MATCH (someone committed Source or the
-   uncommitted `src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs` edit landed without a rebuild), rebuild from a clean HEAD export
+1. **DLL source stamp: run `python3 src/RimMandrake/Utils/dll_source_stamp.py check` right before deploying** (it hashes COMMITTED
+   blobs, so a dirty worktree does not matter). FlowWorks DLLs keep landing (the deck-over-pawns fix, the PawnFlyer_Stun proof), so
+   this doc cites no stamp sha. If it prints anything but `MATCH src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll`
+   (someone committed Source without a rebuild), rebuild from a clean HEAD export
    (UNTESTED, plan only; winbuild stages from the clone it is run in and `--dry-run` shows the staging):
    ```
    rm -rf /home/mandrake/.seat-tmp/BENCH/headexport; mkdir -p /home/mandrake/.seat-tmp/BENCH/headexport
@@ -86,21 +92,29 @@ python3 src/RimMandrake/Utils/modcheck/test_site_saves.py load calm             
 ```
 Expect O09/O13 (companion / FlowWorks drift) clear after step B. O10 (`0Harmony.dll` changed) may still need a human `--accept-deps`.
 ### F. The three re-runs (one map each where noted; all on the SAME launch)
-**F1. live_session B4 (pit covers + the shared-clock rows).** `--only` makes it a PARTIAL run, never recordable as a full pass: the verify lines it
+**F1. live_session B1 + B4 + B7 (v2 re-check, pit covers + the shared-clock rows, reload evidence).** `--only` makes it a PARTIAL run, never recordable as a full pass: the verify lines it
 writes are for reading, and the ledger `verify` for `SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT` (cover rows) is what this discharges.
-Flag check, run now: `python3 src/RimMandrake/FlowWorks/northstar/live_session.py --dry-run --only B0,B4` rc 0, prints the zone table and
-`B4   shared clock: covers, pit access, dig depth, reservoir, grenade, rail lip, dehydra ~ 8500 ticks ~ 178 s (ESTIMATED)`,
-`ESTIMATED wall for the selected blocks: 178 s (+ one cold load, MEASURED 44-70 s, + one quicktest map, 2-8 s)`, `DRY RUN: no bridge touched.`
+Flag check, run 2026-10-19: `python3 src/RimMandrake/FlowWorks/northstar/live_session.py --dry-run --only B0,B1,B4,B7` rc 0, prints the zone
+table, `B1   validation_v2 --live --current-map ~14000 ticks ~ 280 s`, `B4   shared clock: ... ~ 8500 ticks ~ 178 s`,
+`B7   one save + one load: snapshot rows ~ 0 ticks ~ 40 s`, `ESTIMATED wall for the selected blocks: 498 s (...)`, `DRY RUN: no bridge touched.`
+B1 runs first on purpose (it clears the whole map); B7 needs B4's covers zone, so they share this one run.
 ```
-python3 src/RimMandrake/Utils/save_guard.py run --current-slot none -- python.exe src/RimMandrake/FlowWorks/northstar/live_session.py --only B0,B4 --no-owner-save --player-log <pass2 Player.log.copy> --out-dir Transient/live_session/pass2_<stamp>
+python3 src/RimMandrake/Utils/save_guard.py run --current-slot none -- python.exe src/RimMandrake/FlowWorks/northstar/live_session.py --only B0,B1,B4,B7 --no-owner-save --player-log <pass2 Player.log.copy> --out-dir Transient/live_session/pass2_<stamp>
 ```
-M (run 20261018T233414): B0 0.9 s, B4 187.2 s (7000 ticks). Rows to read: `B4_cover_40/120/220` (read each criterion in the row; ledger item says 120/220 kg covers gave way under one ~60 kg colonist), `B4_grenade_no_blast_cover`, `B4_access_rescue_ladder_queued`, `B4_dehydration_rate`.
+M (run 20261018T233414): B0 0.9 s, B1 285.8 s, B4 187.2 s (7000 ticks), B7 8.1 s. Rows to read: `validation_v2:*` (want 61/0/0;
+a P3f "did not launch a thrown flyer" UNMEASURED means the deployed DLL predates `3665fb781b`), `B7_reload_*` (`detail.pairs` /
+`settledSame`: write them into `RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS`), `B4_access_jump_pack_in_no_fall`, `B4_cover_40/120/220` (read each criterion in the row; ledger item says 120/220 kg covers gave way under one ~60 kg colonist), `B4_grenade_no_blast_cover`, `B4_access_rescue_ladder_queued`, `B4_dehydration_rate`.
+**F1b. liquid_checks L5 only, same map as F1** (zone `l5` = `51,107` from the plan table; disjoint from every B4 zone, checked):
+```
+python.exe src/RimMandrake/FlowWorks/northstar/liquid_checks.py Transient/live_session/pass2_<stamp>/liquid_checks_L5.json --only L5 --origin-l5 51,107 2>&1 | tr -d '\r' | tee Transient/live_session/pass2_<stamp>/liquid_checks_L5.log
+```
+Rows: `L5_switched_off_hose_spills` then `L5_colonists_clean_spill` (M: 56 s for L2,L4,L5,L6 together; L5 alone E ~25 s).
 **F2. proof_hose realflow only.** Flags (from `--help` and source lines 49/68/895; the script has NO `--dry-run`, and `--offline-gate` did not finish in a 150 s WSL budget when tried tonight, so it is not part of this plan): `--live --only realflow`. `realflow` is one of the BLOCKS; `preflight` and `session` always run with `--only`. Default is a FRESH map (`--no-fresh-map` to reuse F1's).
 ```
 python.exe src/RimMandrake/FlowWorks/northstar/proof_hose.py --live --only realflow 2>&1 | tr -d '\r' | tee Transient/live_session/pass2_<stamp>/proof_hose_realflow.log
 ```
 Output `northstar/proof_hose_<stamp>.json` (mode `partial`). M: the whole proof_hose was 127.6 s inside live_session; realflow alone E ~150 s (runbook). Rows: the six `NS_*` above; `NS_tank_does_not_bridge_pipe_runs` UNMEASURED SITE means the V tank was not built (a site, not a mod, finding).
-**F3. suspension_bridge_proof whole.** Sections: `posts,grate,underpass,waters,jetty,looks` (all by default). Flag check, run now: `python3 src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py --mock --only underpass,looks <out>` rc 0, prints `== section underpass` and rows `UND_floor_path_walks_under SKIP {"read": "UNDERPATH found=True ...", "mock": "PASS"}` (mock proves paths only). `--river/--lake/--sea x1,z1,x2,z2` are optional drags; the previous run's JSON records the ones used: read them from `Transient/suspension_live/suspension_bridge_proof_20261019c.json` `args` before launching so the `WAT_*` rows (UNMEASURED last time) get their waters.
+**F3. suspension_bridge_proof whole, ALWAYS with `--fresh-map`** (runs a/b/c shared one map and leftover pawns produced the 816 kg reading). Sections: `posts,grate,underpass,waters,jetty,looks` (all by default). Flag check, run now: `python3 src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py --mock --only underpass,looks <out>` rc 0, prints `== section underpass` and rows `UND_floor_path_walks_under SKIP {"read": "UNDERPATH found=True ...", "mock": "PASS"}` (mock proves paths only). `--river/--lake/--sea x1,z1,x2,z2` are optional drags; the previous run's JSON records the ones used: read them from `Transient/suspension_live/suspension_bridge_proof_20261019c.json` `args` before launching so the `WAT_*` rows (UNMEASURED last time) get their waters.
 ```
 python.exe src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py --fresh-map Transient/suspension_live/suspension_bridge_proof_20261019d.json 2>&1 | tr -d '\r' | tee Transient/suspension_live/pass2_run.log
 ```
@@ -108,7 +122,7 @@ M: previous runs 215 s and 211 s (00:00:11-00:03:46, 00:04:22-00:07:53). Rows th
 Emit output at least every few minutes (600 s silence kill); `tee` does this.
 
 ### 6b. Optional (only if the owner wants it; not counted in the estimate)
-`live_session.py --only B0,B3 --no-owner-save ...` (M B3 302 s) for the sprinkler / liquid / climb / trench UNMEASURED rows, after someone triages their `rc 1`; and one look at the FlowWorks Mod Settings dialog to clear the `B2_dialog_*` reds.
+B3 is triaged (section 0 leftovers): a `flowworks`-tier re-run would repeat its SITE/OWED rows, so it is not offered here; one look at the FlowWorks Mod Settings dialog to clear the `B2_dialog_*` reds.
 
 ### G. Read, record, restore FULL, release
 ```
@@ -128,17 +142,18 @@ Then read the three outputs before any ledger line: verify lines are WRITTEN, no
 | A take + B deploy + C swap | 3-4 min (E; deploy seconds) |
 | D launch + gate | 1-2 min (M 44-70 s, 11 mods) |
 | E preflight + map | 3-6 min (E) |
-| F1 live_session B0,B4 | 3.2 min (M 188 s) |
+| F1 live_session B0,B1,B4,B7 | 8 min (M 286 + 188 + 8 s) |
+| F1b liquid_checks L5 | ~0.5 min (E) |
 | F2 proof_hose realflow | ~2.5 min (E from M 127.6 s whole script) + fresh map ~8 s |
 | F3 suspension proof | ~3.6 min (M 211-215 s) + fresh map |
 | G restore + release | 2 min (E) |
 | gates, copying logs, reading rows | ~8 min (E) |
-| **Total** | **~28 min (range 25-35)**, plus waiting for the current driver and a game-down |
+| **Total** | **~34 min (range 30-42)**, plus waiting for the current driver and a game-down |
 
 ## 4. Blockers and traps
 
 - The current driver must be finished, the game closed and the bridge released; nothing here is startable earlier.
-- Uncommitted `src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs` (28 lines) in this clone belongs to another window; if it is committed before step B the DLL stamp goes stale and 1.1 (rebuild) is required.
+- Any FlowWorks Source committed after the last DLL makes the stamp stale: 1.1 (rebuild from a clean export) is then required before step B.
 - `B4_reservoir_catch` and `B4_reservoir_fish_rolled` need the companion `jawa/fishing`; `B4_access_jump_pack_in_no_fall` and `B4_dig_cost_notch16` were UNMEASURED for unrecorded reasons: read `detail` in the new `session.json` before filing.
 - Covers are rated 40/120/220 kg and a colonist weighs ~60 kg: if `B4_cover_120` still reads "gave way" at one colonist it is a MOD finding on `PIT_COVER_DIAGNOSE_GIVES_WAY_TOO_SOON`, not a harness one.
 - Never save the map after a thirst run (not in this pass). Never live-test flyers without the owner.
