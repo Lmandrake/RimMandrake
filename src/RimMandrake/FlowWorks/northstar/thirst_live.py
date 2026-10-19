@@ -2,6 +2,11 @@
 walk. Every row is {id, status PASS|FAIL|UNMEASURED, class MOD|SITE|HARNESS, detail}; "could not ask" is UNMEASURED.
 
   python.exe src/RimMandrake/FlowWorks/northstar/thirst_live.py [out.json] [--only T2,T4,...] [--site X,Z]
+  python3    src/RimMandrake/FlowWorks/northstar/thirst_live.py --dry-run [--only ...]   print the plan, touch no bridge
+  python3    src/RimMandrake/FlowWorks/northstar/thirst_live.py --mock [--mock-faults a,b] [--only ...]
+             every row's control flow against thirst_fake.ThirstFakeBridge (a world model, NOT the mod): proves the driver's
+             wait/timeout/replacement branches run, never the mod. The result says mode "mock" and is written to the temp dir.
+             Faults and their effect: thirst_fake.py docstring; selftest: selftest_thirst_live.py.
 
 Run from the repo root with python.exe, the bridge held, a Playing map with free ground (the calm test site:
 Utils/modcheck/test_site_saves.py load calm). The map is DISPOSABLE: the script paints every potable water cell on the
@@ -100,38 +105,97 @@ import json
 import os
 import re
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# The plan --dry-run prints: (--only key, row ids it emits, what it proves). selftest_thirst_live.py checks every emitted id is declared.
+PLAN = (
+    ("T7", ("T7_no_dbh_clean_log",), "no thirst/Dubs exception in --log"),
+    ("T1", ("T1_provider_line",), "provider line (one arm of three: always UNMEASURED)"),
+    ("T2", ("T2_one_thirst_need",), "exactly one RM_Thirst, no DBHThirst"),
+    ("T3", ("T3_need_falls",), "15,000 ticks drop 0.2 x rate"),
+    ("T6", ("T6_dehydration_readable",), "60,000 ticks at 0 -> RM_Dehydration 0.30"),
+    ("T4", ("T4_bottle_satisfies",), "ordered fresh bottle: ingest_done waits the job out; gain and dirty bottle"),
+    ("T5", ("T5_salt_water_quality",), "salt bottle x0.7, poisoning 0.25, relief thought"),
+    ("T10", ("T10_terrain_drink",), "pond drink; OFF setting -> no job"),
+    ("T9", ("T9_animals_drink",), "tame and wild Muffalo drink the pond"),
+    ("T11", ("T11_autofill_skips_salt",), "autofill never fills from salt"),
+    ("T12", ("T12_no_routine_salt",), "no routine salt drink; fresh bottle 30 cells off is fetched"),
+    ("T13", ("T13_desperate_toxic_last",), "toxic only at need 0, bottle beats toxic"),
+    ("T27", ("T27_water_items",), "meltwater can (UNMEASURED SITE without biomes)"),
+    ("T28", ("T28_sanguophage_blood",), "hemogen pack hydrates a Sanguophage only"),
+    ("T19", ("T19_awkward_access",), "bucket drink: rough thought, Partly drunk"),
+    ("T24", ("T24_bucket_douses_fire",), "Firefighter priority, refused pawn replaced, area douse"),
+    ("T15", ("T15_slime_effects",), "four slime colours, each pawn its own pool"),
+    ("T17", ("T17_salt_break",), "forced brine break ends quenched, poisoning in 0.25 steps"),
+    ("T18", ("T18_dubs_last_resort",), "needs Dubs: UNMEASURED SITE"),
+    ("T14", ("T14_native_animal_terrible_water",), "native animal drinks salt, non-native does not"),
+    ("T16", ("T16_living_slime",), "RM_Slime_Liquid last resort; setting OFF -> none"),
+    ("T20", ("T20_bucket_drunk_dry",), "10 drinks per bucket; part-drunk pour +105"),
+    ("T23", ("T23_fill_tank_is_the_order",), "Fill tank gathers brine; Store tank does not (baseline drains in-flight fill)"),
+    ("T25", ("T25_snow_to_water",), "snow bucket melts within 7,000 ticks; pond -> no snow job"),
+    ("T26", ("T26_ice_block_bill",), "blue-ice bill makes a wooden fresh bucket"),
+    ("T29", ("T29_bottle_stock_and_batches",), "stock reaches the target exactly, steps <= 10"),
+    ("T15R", ("T15R_reload_mark",), "opt-in: stale terrain mark across a reload"),
+)
+SITE_ROWS = ("site_ready", "site3_ready")
 for _p in (HERE, os.path.join(os.path.dirname(os.path.dirname(HERE)), "Utils")):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
 S_TH = "RimMandrake.FlowWorks.Thirst.RM_ThirstSettings"
 NEED = "RM_Thirst"
+THIRST_KEYS = ("thirstEnabled", "thirstRateMultiplier", "thirstHeatScaling", "animalsGetThirst", "drinkFromTerrain",
+               "waterQualityEffects", "lastResortDrinking", "saltBreakEnabled", "roughDrinkPenalty", "snowGathering",
+               "filledBottlesPerColonist")
 POTABLE_TERRAIN = ("WaterShallow", "WaterDeep", "WaterMovingShallow", "WaterMovingChestDeep", "RM_WaterFrigidShallow",
                    "RM_WaterFrigidDeep", "RM_Water_Rust", "RM_Water_Verdigris", "RM_Water_Amber", "RM_Water_Violet",
                    "RM_Water_Chalk", "Marsh")
 
 
-def main(argv=None):
+def main(argv=None, bridge=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("out", nargs="?", default=None)
     ap.add_argument("--only", default="")
     ap.add_argument("--site", default="150,130", help="south-west corner of a 40x40 site")
     ap.add_argument("--log", default="", help="this load's Player.log copy (T1, T7)")
     ap.add_argument("--reload-site", default="calm", help="test_site_saves site T15R reloads (twice)")
+    ap.add_argument("--dry-run", action="store_true", help="print the plan (rows, settings, site) and exit; no bridge")
+    ap.add_argument("--mock", action="store_true", help="run against thirst_fake.ThirstFakeBridge (offline; mode 'mock')")
+    ap.add_argument("--mock-faults", default="", help="comma list of thirst_fake faults to inject (see thirst_fake.py)")
     ap.add_argument("--t25-empties", type=int, default=1, help="empty buckets T25 lays (the full run once met 3 leftovers)")
     a = ap.parse_args(argv)
     only = [x.strip().upper() for x in a.only.split(",") if x.strip()]
-    import validation_core as V
-    B = V.Bridge()
     X0, Z0 = map(int, a.site.split(","))
-    out = a.out or os.path.join(HERE, "thirst_live_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
+    if a.dry_run:
+        known = set(k for k, _, _ in PLAN)
+        unknown = [o for o in only if o not in known]
+        print("thirst_live plan (dry run, no bridge): site %s (40x40 at %d,%d, second site %d east), reload-site %s" % (a.site, X0, Z0, 45, a.reload_site))
+        for k, ids, what in PLAN:
+            on = (k in only) if k == "T15R" else (not only or k in only)
+            print("  %-5s %-4s %-36s %s" % (k, "RUN" if on else "skip", ",".join(ids), what))
+        print("  settings flipped (restored in a finally): %s" % ", ".join(sorted(THIRST_KEYS)))
+        if unknown:
+            print("  UNKNOWN --only keys: %s" % unknown)
+            return 2
+        return 0
+    import validation_core as V
+    if bridge is not None:
+        B = bridge
+    elif a.mock:
+        import thirst_fake
+        B = thirst_fake.ThirstFakeBridge(faults=[f for f in a.mock_faults.split(",") if f])
+    else:
+        B = V.Bridge()
+    mock = bridge is not None or a.mock
+    out = a.out or os.path.join(tempfile.gettempdir() if mock else HERE, "thirst_live_%sresult_%s.json" % ("mock_" if mock else "", time.strftime("%Y%m%dT%H%M%S")))
     rows = []
     res = {"script": "thirst_live.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a)}
     import driver_stamp
     driver_stamp.stamp(res, B.call)      # validation.py reads a result only at the current mod hash AND deployed DLL
+    if mock:
+        res["mode"] = "mock"             # never 'live': validation.py must refuse a result no game produced
     # THIRST_ROWS_DIAGNOSE_SLIME_SITS_STILL (2026-10-18): T27's RM_BlueIceMeltwaterCan (BlueDesert), T16's RM_Slime_Liquid
     # (GelatinousSlime) and T15's red/green/white hediffs (Contagion, GelatinousSlime, TheRot) all live in the composed
     # mandrake.rm.biomes mod. The flowworks tier (11 mods) does not load it, so those rows read SITE there, never MOD.
@@ -343,9 +407,7 @@ def main(argv=None):
         return len(wet3)
 
     saved = {}
-    keys = ("thirstEnabled", "thirstRateMultiplier", "thirstHeatScaling", "animalsGetThirst", "drinkFromTerrain",
-            "waterQualityEffects", "lastResortDrinking", "saltBreakEnabled", "roughDrinkPenalty", "snowGathering",
-            "filledBottlesPerColonist")
+    keys = THIRST_KEYS
     try:
         for k in keys:
             saved[k] = sget(k)
@@ -909,6 +971,8 @@ def main(argv=None):
 
         def tank_units(x, z):
             """The hose probe's tank read (decilitres), as sprinkler_live reads it: validation_hose.H().hp."""
+            if hasattr(B, "tank_units"):      # the offline fake answers directly (no hose probe on a mock)
+                return B.tank_units(x, z)
             if not _hp:
                 _fw = os.path.dirname(HERE)
                 if _fw not in sys.path:
@@ -1425,7 +1489,7 @@ def main(argv=None):
             import test_site_saves as TSS
 
             def reload_site():
-                rec = TSS.load_site(B.call, a.reload_site)
+                rec = B.reload() if hasattr(B, "reload") else TSS.load_site(B.call, a.reload_site)
                 tb2 = B.call("jawa/get_terrain_batch", rects="0,0,%d,%d" % (250, 250)) or {}
                 wet2 = [op for op in (tb2.get("ops") or "").split(";") if op and op.split(":")[0] in POTABLE_TERRAIN]
                 if wet2:
