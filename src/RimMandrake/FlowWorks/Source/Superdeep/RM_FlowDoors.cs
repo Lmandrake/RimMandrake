@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.FlowWorks
@@ -39,6 +40,37 @@ namespace RimMandrake.FlowWorks
 		public override bool PawnCanOpen(Pawn p)
 		{
 			return RM_FlowDoorRules.CanOpen(this, p, base.PawnCanOpen(p));
+		}
+
+		/// <summary>FLOWDOOR_EW_PERSPECTIVE (owner 2026-10-18: "make the East/West facing versions more vertically
+		/// perspectived just like doors work already"). Vanilla's 1x1 door draws its mover through Building_Door.DrawMovers,
+		/// which turns the MESH by Rotation.AsQuat and mirrors the second leaf (plane10Flip): a door spanning North-South
+		/// is the south-facing art rotated 90 degrees, which for a gate drawn front-on reads as a gate lying on its side.
+		/// With a Graphic_Multi def the leaf spanning North-South (Rotation East/West) instead draws the def's _east art
+		/// upright, unrotated and unmirrored (the side-view drawing, as Graphic_Multi's own side views draw), as the same two
+		/// movers sliding apart North and South by vanilla's 0..0.45 open offset. North/South, and any Graphic_Single
+		/// def, keep vanilla's draw unchanged.</summary>
+		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+		{
+			DoorPreDraw();
+			if (!Rotation.IsHorizontal || !(Graphic is Graphic_Multi))
+			{
+				base.DrawAt(drawLoc, flip);
+				return;
+			}
+			float offsetDist = 0.45f * OpenPct;
+			Material mat = Graphic.MatAt(Rotation, this);
+			Graphic_Shadow shadow = Graphic.ShadowGraphic;
+			for (int i = 0; i < 2; i++)
+			{
+				Vector3 pos = drawLoc;
+				pos.y = AltitudeLayer.DoorMoveable.AltitudeFor();
+				pos.z += (i == 0 ? 1f : -1f) * def.size.x * offsetDist;
+				UnityEngine.Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity,
+					new Vector3(def.size.x, 1f, def.size.z)), mat, 0);
+				shadow?.DrawWorker(pos, Rotation, def, this, 0f);
+			}
+			Comps_PostDraw();
 		}
 	}
 
