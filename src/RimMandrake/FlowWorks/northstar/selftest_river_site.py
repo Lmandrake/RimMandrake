@@ -275,5 +275,22 @@ check("returns_home can-fail: a look-alike pawn (new thingIDNumber/ThingID) is n
 d = RIV.returned_same_pawn(_b, dict(_b, apparel=[{"def": "Apparel_Duster"}], equipment=[]))
 check("returns_home can-fail: a redressed pawn (new apparel, no weapon) is caught on gear", any(x.startswith("gear") for x in d), d)
 check("returns_home can-fail: a pawn not found anywhere is a difference", RIV.returned_same_pawn(_b, {}) != [])
+# an unanswered list_pawns must be UNMEASURED: an empty set would read every staged pawn as washed off the map
+class _T(object):
+    def __init__(self, r):
+        self.r = r
+
+    def bridge_call(self, tool, **kw):
+        return self.r
+
+
+check("_map_pawn_ids: an answered list reads", RIV._map_pawn_ids(_T({"success": True, "pawns": [{"id": "H1"}, {}]})) == {"H1"})
+for _bad in (None, {"success": False, "message": "no map"}, {"success": True}):
+    try:
+        RIV._map_pawn_ids(_T(_bad))
+        _raised = False
+    except RIV.ExpectationFailed as _e:
+        _raised = str(_e).startswith("UNMEASURED")
+    check("_map_pawn_ids can-fail: %r is UNMEASURED, never an empty map" % (_bad,), _raised)
 print("selftest_river_site: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

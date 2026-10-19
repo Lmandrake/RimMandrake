@@ -179,7 +179,12 @@ def _pending(res):
 
 
 def _map_pawn_ids(t):
-    return {p.get("id") for p in ((t.bridge_call("jawa/list_pawns", limit=500) or {}).get("pawns") or []) if p.get("id")}
+    """ids of the pawns on the map. An unanswered list is UNMEASURED: an empty set would read every staged pawn as
+    'washed off the map' (staged - {} = all of them), a vacuous swept verdict."""
+    r = t.bridge_call("jawa/list_pawns", limit=500)
+    if not isinstance(r, dict) or r.get("success") is False or not isinstance(r.get("pawns"), list):
+        raise ExpectationFailed("UNMEASURED: jawa/list_pawns did not answer: %r" % (r,))
+    return {p.get("id") for p in r["pawns"] if p.get("id")}
 
 
 def _pawn_get(t, pid):
@@ -256,16 +261,22 @@ def swept(t):
                         pid = ((r.get("pawns") or [{}])[0] or {}).get("id")
                         if pid:
                             staged.append(pid)
-                            t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True)   # stays put; the current still carries
+                            dr = t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True)   # stays put; the current still carries
+                            if not isinstance(dr, dict) or dr.get("success") is False:
+                                _note(t, "set_draft refused (the pawn may wander off its edge cell)", "%s: %r" % (pid, dr))
                     if not staged:
                         raise ExpectationFailed("UNMEASURED: no throwaway colonist spawned on %d edge river cells" % len(cells))
                     for (x, z), status in zip(held_cells, ("Prisoner", "Slave")):
                         r = t.bridge_call("jawa/spawn_pawn", kindDef="Villager", x=x, z=z, faction="hostile", count=1) or {}
                         pid = ((r.get("pawns") or [{}])[0] or {}).get("id")
                         if pid:
-                            t.bridge_call("jawa/pawn_set_guest_status", pawn=pid, guestStatus=status, hostFaction="PlayerColony")
+                            gr = t.bridge_call("jawa/pawn_set_guest_status", pawn=pid, guestStatus=status, hostFaction="PlayerColony")
+                            staged.append(pid)          # staged either way: the finally block removes it
+                            if not isinstance(gr, dict) or gr.get("success") is False:
+                                # not held after all: tracking it as a prisoner would test a plain hostile villager
+                                _note(t, "%s staging refused, not tracked as one" % status.lower(), "UNMEASURED: %r" % (gr,))
+                                continue
                             held_kind[pid] = status
-                            staged.append(pid)
                     if held_cells and not held_kind:
                         _note(t, "prisoner/slave staging", "UNMEASURED: no villager spawned on %s" % held_cells)
                     snap0 = {pid: _pawn_get(t, pid) for pid in staged}

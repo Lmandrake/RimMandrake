@@ -165,6 +165,39 @@ rc, out = quiet(W.main, ["all", "--mock", "--no-wait", "--pace", "0", "--no-shot
 check("mock crash in S4: traceback kept, S5 and S6 still ran, exit 1", rc == 1 and glob.glob(os.path.join(OUT, "S4_traceback_*.txt"))
       and "S5.i" in out and "S6.c" in out, (rc, out[-200:]))
 
+# ---- can-fail: a refused fill-in / a reload that did not happen must make the row UNMEASURED, never a quiet MATCHES
+_call = M.MockBridge.call
+
+
+def refuse_fillin(self, tool, **kw):
+    if tool == "jawa/flowworks_excavation_drive" and kw.get("fillInLevels"):
+        return {"success": False, "message": "MOCK refusal"}
+    return _call(self, tool, **kw)
+
+
+M.MockBridge.call = refuse_fillin
+rc, out = quiet(W.main, ["go", "S5", "--mock", "--pace", "0", "--no-shots"])
+M.MockBridge.call = _call
+st5 = {x["id"]: x["status"] for x in rows_of("S5")}
+check("refused fill-in: S5.e and S5.f are UNMEASURED and the refusal is printed", st5.get("S5.e") == "UNMEASURED"
+      and st5.get("S5.f") == "UNMEASURED" and "STAGING REFUSED: fill_in" in out, (st5, out[-200:]))
+
+
+def refuse_load(self, tool, **kw):
+    if tool == "rimworld/load_game_ready":
+        return {"success": False, "message": "MOCK: no load"}
+    return _call(self, tool, **kw)
+
+
+M.MockBridge.call = refuse_load
+rc, out = quiet(W.main, ["go", "S6", "--mock", "--pace", "0", "--no-shots"])
+M.MockBridge.call = _call
+st6 = {x["id"]: x["status"] for x in rows_of("S6")}
+check("failed reload: S6.a, S6.b, S6.c are UNMEASURED (the 'after' is the game that never reloaded)",
+      all(st6.get(i) == "UNMEASURED" for i in ("S6.a", "S6.b", "S6.c")), st6)
+check("all_read: a missing square in any pulse is unread; control: all present reads",
+      not W.all_read([(0, {(1, 1): (1, 1)}, None), (1, {}, None)], [(1, 1)]) and W.all_read([(0, {(1, 1): (1, 1)}, None)], [(1, 1)]))
+
 # ---- the shelf pin (v2 triage 2026-10-18): off during a scene, previous value back after, also when the scene dies
 import argparse as _ap  # noqa: E402
 _w = W.Walk(_ap.Namespace(mock=True, mock_fail=None, fresh_map=False, no_shots=True, pace=0.0))

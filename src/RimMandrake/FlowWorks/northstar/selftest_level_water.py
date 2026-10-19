@@ -135,6 +135,12 @@ def t_solve_basics():
             check("solve: bounds on random graphs", False, "seed %d %s" % (seed, a))
             return
     check("solve: idempotent and in bounds on 300 random graphs", True)
+    # can-fail: the gap instrument the scenes and the fuzz lean on must SEE a gap (a worst_gap of 0 would pass them all)
+    g = lw.surface_gaps({(0, 0): (4, 2 * U, "w"), (1, 0): (4, 3 * U, "w")})
+    check("instrument can-fail: two touching wet squares one notch apart read a gap of one notch (0.5 m)",
+          len(g) == 1 and abs(g[0][0] - 0.5) < 1e-9, str(g))
+    g = lw.surface_gaps({(0, 0): (4, 2 * U, "w"), (1, 0): (4, 2 * U, "w")})
+    check("instrument control: two level squares read gap 0", len(g) == 1 and g[0][0] == 0, str(g))
 
 
 # ───────────────────────────── the scenes, redrawn for level water ─────────────────────────────

@@ -305,9 +305,10 @@ POURS_INTO_BODIES = _production_pours_into_bodies()
 # ── the cases ─────────────────────────────────────────────────────────────
 
 def main():
-    bad, notes = [], []
+    bad, notes, ran = [], [], [0]
 
     def check(ok, msg):
+        ran[0] += 1
         if not ok:
             bad.append(msg)
 
@@ -489,7 +490,7 @@ def main():
         for b in bad:
             print("FAIL:", b)
         return 1
-    print("PASS: 13/13 trips conserve volume")
+    print("PASS: %d checks across the 13 trips, all conserve volume" % ran[0])
     return 0
 
 
