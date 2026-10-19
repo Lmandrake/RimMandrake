@@ -156,6 +156,17 @@ def main(argv=None):
         a.river = a.river or "%d,%d,%d,%d" % (ox + 30, oz, ox + 40, oz)
         a.lake = a.lake or "%d,%d,%d,%d" % (ox + 30, oz + 10, ox + 50, oz + 10)
         a.sea = a.sea or "%d,%d,%d,%d" % (ox + 30, oz + 20, ox + 36, oz + 20)
+    if not a.mock:
+        # the plots must be bare, undug, unroofed ground: on a fresh rainforest map every BUILD was refused 'must start on
+        # solid, undug ground with nothing built on it' (trees/plants on the anchors) - live 2026-10-19, first live run
+        rect = (max(ox - 2, 1), max(oz - 2, 1), 40, 94)
+        B.call("jawa/kill_hostiles")
+        B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect", args="%d;%d;%d;%d" % rect)
+        site_rows = []
+        V.prepare_site(B, rect, site_rows, "suspension_site")
+        bad = [r for r in site_rows if r.get("status") not in (None, "PASS")]
+        if bad:
+            row("SB_site_ready", "UNMEASURED", {"rect": rect, "site": bad[:3]})
     ctx = dict(args=a, B=B, P=P, xz=xz, row=row, proof=proof, dig=dig, spawn=spawn, pawns_by_id=pawns_by_id, ticks=ticks, ox=ox, oz=oz)
     for name in SECTIONS:
         if name in only:
@@ -243,7 +254,9 @@ def posts(ctx):
     kv, txt = proof("ProofSwing", "")
     stamps = []
     for tok in txt.split()[1:]:
-        c, t = tok.split("@")
+        if "@" not in tok:          # 'SWING none' or a key=value token: not a stamp (live 2026-10-19 crashed here)
+            continue
+        c, t = tok.split("@", 1)
         x, z = (int(v) for v in c.split(","))
         if z == oz + 12:
             stamps.append((x, int(t)))
