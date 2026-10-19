@@ -208,7 +208,7 @@ def main() -> int:
     for d in ("pending", "active", "failed"):
         (art / d).mkdir()
 
-    def fail(dn, cause="429", **kw):
+    def fail(dn, cause="ERROR: exceeded retry limit, last status: 429 Too Many Requests", **kw):
         j = row(dn, install_to=it(f"Things/{dn}"), **kw)
         (art / "failed" / (j["id"] + ".json")).write_text(json.dumps(j))
         (art / "failed" / (j["id"] + ".manifest.json")).write_text(json.dumps({"worker_stderr_tail": cause}))
