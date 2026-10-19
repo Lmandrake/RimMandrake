@@ -291,6 +291,24 @@ namespace RimMandrake.FlowWorks.Pits
 				floorBandScribe.RemoveAll(p => p == null || p.Destroyed);
 			}
 			Scribe_Collections.Look(ref floorBandScribe, "rmSuspensionFloorBand", LookMode.Reference);
+			// a swing-down in flight survives a save (else the unfallen squares hang anchorless for good); old saves: keys absent = none
+			List<int> swingTicks = null;
+			List<IntVec3> swingCells = null;
+			if (Scribe.mode == LoadSaveMode.Saving)
+			{
+				swingTicks = swing.Select(d => d.tick).ToList();
+				swingCells = swing.Select(d => d.cell).ToList();
+			}
+			Scribe_Collections.Look(ref swingTicks, "rmSuspensionSwingTicks", LookMode.Value);
+			Scribe_Collections.Look(ref swingCells, "rmSuspensionSwingCells", LookMode.Value);
+			if (Scribe.mode == LoadSaveMode.LoadingVars && swingTicks != null && swingCells != null)
+			{
+				swing.Clear();
+				for (int i = 0; i < System.Math.Min(swingTicks.Count, swingCells.Count); i++)
+				{
+					swing.Add(new PendingDrop { tick = swingTicks[i], cell = swingCells[i] });
+				}
+			}
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				bridges = bridges ?? new List<SuspensionBridgeRecord>();

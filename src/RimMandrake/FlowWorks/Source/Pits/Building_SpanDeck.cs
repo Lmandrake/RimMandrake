@@ -81,6 +81,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			Map map = Map;
 			List<Building_SpanDeck> span = SpanCells();
+			int deck = DeckNotches; // read while still spawned: a suspension deck's height comes from Map's record
 			foreach (Building_SpanDeck c in span)
 			{
 				c.collapsed = true;
@@ -95,7 +96,6 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			RM_SuperdeepTrapState state = eng?.SuperdeepTrap;
-			int deck = DeckNotches;
 			Pawn first = null;
 			foreach (Pawn p in fallers)
 			{

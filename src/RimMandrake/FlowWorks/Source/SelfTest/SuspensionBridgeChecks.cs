@@ -282,7 +282,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(comp.Contains("Scribe_Collections.Look(ref floorBandScribe, \"rmSuspensionFloorBand\", LookMode.Reference);"), "the floor band is saved");
                 Assert(comp.Contains("new DamageInfo(DamageDefOf.Crush,") && comp.Contains("RM_SuspensionDefOf.RM_SuspensionWreck"), "a falling deck crushes below and leaves a wreck");
                 Assert(Src("Pits", "Building_SpanDeck.cs").Contains("&& !RM_SuspensionUnderpass.InFloorBand(p))"), "a pawn under a deck weighs nothing on it");
+                Assert(comp.Contains("\"rmSuspensionSwingTicks\"") && comp.Contains("\"rmSuspensionSwingCells\""), "can-fail: a swing-down in flight is saved");
                 // NOT actual tunnels: only the suspension deck class grants the floor band
+                string spanSrc = Src("Pits", "Building_SpanDeck.cs");
+                Assert(spanSrc.IndexOf("int deck = DeckNotches;") < spanSrc.IndexOf("c.Destroy(DestroyMode.Vanish);") && spanSrc.IndexOf("int deck = DeckNotches;") > 0,
+                    "can-fail: the collapse reads the deck height BEFORE destroying the span (Map is null after despawn)");
                 Assert(!Src("Pits", "Building_PitCover.cs").Contains("FloorBandPassesUnder"), "can-fail: a pit cover never lets anyone under");
                 Assert(Src("Pits", "Building_SpanDeck.cs").Contains("public virtual bool FloorBandPassesUnder => false;"), "the base span grants nothing");
                 string set = Src("Pits", "Suspension", "RM_SuspensionSettings.cs");
