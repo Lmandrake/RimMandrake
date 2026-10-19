@@ -22,7 +22,6 @@ namespace RimMandrake.EnvironmentalHazards
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_WarmGroundExtension">
     //         <warmTerrains>
-    //           <li MayRequire="sarg.alphabiomes">AB_MycoticGrass</li>
     //           <li MayRequire="mandrake.rut.rotsporekit">RUT_MycelialSoil</li>
     //         </warmTerrains>
     //       </li>
