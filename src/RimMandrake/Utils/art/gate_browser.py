@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import os
 import re
-import select
 import shutil
 import subprocess
 import sys
@@ -45,7 +44,18 @@ def stop_marked(marker: str) -> str:
         return f"stop failed: {type(e).__name__}"
 
 
-def browser_render(html_path, decisions_path=None, timeout: int = 600):
+EDGE_TIMEOUT_S = int(os.environ.get("GATE_EDGE_TIMEOUT_S") or 90)   # hard cap on the Edge stage (was 600 s with a retry: 20 min)
+URL_WAIT_S = 20
+
+
+def edge_cmd(url: str, profile: str) -> list[str]:
+    """The headless-Edge DOM dump. A module-level function so the selftest can swap in a stdlib fetcher."""
+    return [EDGE, "--headless=new", "--disable-gpu", "--virtual-time-budget=15000", "--disable-extensions",
+            "--enable-logging=stderr", "--log-level=0", "--user-data-dir=" + profile, "--no-first-run", "--dump-dom", url]
+
+
+def browser_render(html_path, decisions_path=None, timeout: int | None = None):
+    timeout = int(timeout or EDGE_TIMEOUT_S)
     if not Path(EDGE).is_file():
         return None, [], f"UNMEASURED: Edge not found at {EDGE}"
     html_path = Path(html_path).resolve()
@@ -60,34 +70,44 @@ def browser_render(html_path, decisions_path=None, timeout: int = 600):
     proc = None
     marker = "gate_%d_%d" % (os.getpid(), int(time.time() * 1000))
     profile = SCRATCH_WIN + "\\" + marker
+    # THE SIDECAR'S OUTPUT GOES TO A FILE, NEVER A PIPE (2026-10-19). It logs one line per HTTP request, and every image
+    # on the scratch copy 404s; with stdout=PIPE read only until the URL, ~64 KB of log lines filled the pipe, the
+    # sidecar blocked mid-request and Edge waited on it until the 600 s timeout (a 178-row sheet never gated). A file
+    # cannot fill; it is deleted with the scratch dir. selftest_gate_browser.py serves thousands of 404s to prove it.
+    log = work / "sidecar.log"
     try:
         if decisions_path and Path(decisions_path).is_file():
             shutil.copy(decisions_path, scratch)
-        proc = subprocess.Popen([sys.executable, "-u", str(SIDECAR), "--no-open", "--sheet", str(work / f"{sid}.html"), "--decisions", str(scratch)],
-                                cwd=str(work), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0,
-                                stdin=subprocess.DEVNULL)
+        with open(log, "wb") as fh:
+            proc = subprocess.Popen([sys.executable, "-u", str(SIDECAR), "--no-open", "--sheet", str(work / f"{sid}.html"),
+                                     "--decisions", str(scratch)],
+                                    cwd=str(work), stdout=fh, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
         url, t0, buf = None, time.time(), ""
-        while time.time() - t0 < 20 and not url:
-            if select.select([proc.stdout], [], [], 0.5)[0]:
-                buf += os.read(proc.stdout.fileno(), 4096).decode("utf-8", "replace")
-                m = URL_RE.search(buf)
-                url = m.group(0) if m else None
+        while time.time() - t0 < URL_WAIT_S and not url:
+            time.sleep(0.2)
+            try:
+                buf = log.read_text(errors="replace")
+            except OSError:
+                buf = ""
+            m = URL_RE.search(buf)
+            url = m.group(0) if m else None
             if proc.poll() is not None and not url:
                 break
         if not url:
             return None, [], "UNMEASURED: throwaway sidecar printed no URL: " + buf[-160:].replace("\n", " ")
-        time.sleep(3)                                         # the URL is printed before the socket reliably answers
-        r = subprocess.run([EDGE, "--headless=new", "--disable-gpu", "--virtual-time-budget=15000", "--disable-extensions", "--enable-logging=stderr",
-                            "--log-level=0", "--user-data-dir=" + profile, "--no-first-run", "--dump-dom", url],
-                           capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
+        _wait_answers(url, 5.0)                              # the URL is printed before the socket reliably answers
+        r = subprocess.run(edge_cmd(url, profile), capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         tail = ""
-        if isinstance(e, subprocess.TimeoutExpired) and e.stderr:
-            raw = e.stderr.decode("utf-8", "replace") if isinstance(e.stderr, bytes) else e.stderr
-            tail = " | Edge stderr tail: " + " / ".join(l.strip()[:160] for l in raw.splitlines()[-6:])
+        if isinstance(e, subprocess.TimeoutExpired):
+            tail = f" after {timeout} s"
+            if e.stderr:
+                raw = e.stderr.decode("utf-8", "replace") if isinstance(e.stderr, bytes) else e.stderr
+                tail += " | Edge stderr tail: " + " / ".join(l.strip()[:160] for l in raw.splitlines()[-6:])
         return None, [], f"UNMEASURED: headless Edge failed to run ({type(e).__name__}){tail}"
     finally:
-        stop_marked(marker)
+        if Path(EDGE).is_file() and edge_cmd.__module__ == __name__:
+            stop_marked(marker)
         shutil.rmtree(os.path.join(SCRATCH_WSL, marker), ignore_errors=True)
         if proc is not None:
             proc.terminate()
@@ -98,3 +118,15 @@ def browser_render(html_path, decisions_path=None, timeout: int = 600):
         shutil.rmtree(work, ignore_errors=True)
     errs = [l.strip()[:220] for l in r.stderr.splitlines() if "Uncaught" in l]
     return r.stdout.count("<img"), errs, ""
+
+
+def _wait_answers(url: str, limit: float) -> None:
+    import urllib.request
+    t0 = time.time()
+    while time.time() - t0 < limit:
+        try:
+            with urllib.request.urlopen(url, timeout=2) as r:
+                if r.status == 200:
+                    return
+        except Exception:                               # noqa: BLE001
+            time.sleep(0.2)

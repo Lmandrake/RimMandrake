@@ -546,8 +546,9 @@ def check_browser(ctx, items) -> Check:
     fn = ctx.get("browser_fn") or browser_render
     call = (lambda: fn(ctx["html_path"])) if ctx.get("browser_fn") else (lambda: fn(ctx["html_path"], ctx.get("decisions_path")))
     n, errs, prob = call()
-    if (prob and "Timeout" in prob) or (not prob and n == 0 and not ctx.get("browser_fn")):
-        n, errs, prob = call()          # Edge flakes under load (timeouts, an early empty dump): one retry before a FAIL
+    if not prob and n == 0 and not ctx.get("browser_fn"):
+        n, errs, prob = call()          # Edge flakes under load (an early empty dump): one retry before a FAIL. A TIMEOUT
+        #                                 is never retried (2026-10-19): it was the sidecar pipe deadlock, 2 x 600 s = 20 min
     if prob:
         return Check("13", "page renders in a real browser", [prob])
     p = [f"uncaught console error: {e}" for e in errs[:3]]
