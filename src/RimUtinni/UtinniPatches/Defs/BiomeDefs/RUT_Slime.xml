@@ -50,7 +50,7 @@
     <defName>RUT_Slime</defName>
     <label>the Slime</label>
     <description>A country-sized body lying in the mildest weather on the planet, wearing a landscape as its skin: fields of its own grass, groves of its own trees, herds of its own cells. It was a weapon once. It ate everything it was sent against, and what it ate unmade it -- now it is a living registry and database, forever seeking to ingest, analyze, recombine, store and multiply, still faithfully serving a master ages decayed.</description>
-    <workerClass>AlphaBiomes.BiomeWorker_GelatinousSuperorganism</workerClass>
+    <workerClass>RimMandrake.GelatinousSlime.BiomeWorker_GelatinousSlime</workerClass>  <!-- was AlphaBiomes.BiomeWorker_GelatinousSuperorganism; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
     <foragedFood>AB_RawSlime</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>

@@ -25,18 +25,12 @@
       <displayName>RimMandrake: Creature Behaviors</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
-    <li>
-      <packageId>sarg.alphabiomes</packageId>
-      <displayName>Alpha Biomes</displayName>
-      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2777849228</steamWorkshopUrl>
-    </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>brrainz.harmony</li>
     <li>mandrake.rm.creaturebehaviors</li>
-    <li>sarg.alphabiomes</li>
     <li>vanillaexpanded.vgeneticse</li>
   </loadAfter>
   <description>RUSTCATHEDRAL_RM_MOD_BUILD_1 (Phase A row 12 of

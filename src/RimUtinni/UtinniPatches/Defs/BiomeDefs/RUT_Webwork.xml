@@ -90,7 +90,7 @@
     </modExtensions>
     <label>the Webwork</label>
     <description>The place where the plants grew so dense and thick that they drank their entire river -- soaked it up into a thicket of terrible, nightmare plants ever churning against itself. The map shows a jungle with no water because the water is inside. It is eerily silent -- most of the animals have been eaten, and few will enter. Those who do frequently discover a shadow, seconds before it lands upon them, and know nothing more.</description>
-    <workerClass>AlphaBiomes.BiomeWorker_FeraliskInfestedJungle</workerClass>
+    <workerClass>RimMandrake.Webwork.RM_BiomeWorker_Webwork</workerClass>  <!-- was AlphaBiomes.BiomeWorker_FeraliskInfestedJungle; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
     <foragedFood>RawBerries</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>

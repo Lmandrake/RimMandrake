@@ -26,7 +26,6 @@
          (mandrake.rm.biomes, src/RimMandrake/Biomes.compose.json); it is never deployed standalone.
          This About is read only by the composer (dependency union, and the folded-packageId
          rewrite of MayRequire guards that still name mandrake.rm.explosivegrowth). -->
-    <li>sarg.alphabiomes</li>
   </loadAfter>
   <description>EXPLOSIVE_GROWTH_RULED_REWRITE (design/RimMandrake/explosive_growth_ruled_spec_2026-10-16.md). Water decides how plants grow, and a watered native is a countdown.
 

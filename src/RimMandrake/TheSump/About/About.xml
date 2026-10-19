@@ -17,17 +17,11 @@
       <displayName>RimMandrake: Environmental Hazards</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
-    <li>
-      <packageId>sarg.alphabiomes</packageId>
-      <displayName>Alpha Biomes</displayName>
-      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2777849228</steamWorkshopUrl>
-    </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>Ludeon.RimWorld.Anomaly</li>
-    <li>sarg.alphabiomes</li>
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.creaturebehaviors</li>

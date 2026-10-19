@@ -86,7 +86,6 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer` (retired 2026-10
     <li>zylle.morevanillabiomes</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Odyssey</li>
-    <li>sarg.alphabiomes</li>
     <li>mandrake.rsw.starwarsraces</li>
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>kentington.saveourship2</li>

@@ -47,7 +47,7 @@
     <defName>RUT_Miasma</defName>
     <label>the Miasma</label>
     <description>A salt-crusted, stilt-rooted mangal forest standing in brackish channels between a dying sea and the rivers that feed it, under a green-gold haze of its own breath. Walking is hard, the air hangs thick, and the water crowds with life -- because everything ends up here: the water, the sins it carries, and the life running from the salt. Threaded through the stink, improbably, beauty: rainbow-hued plants, young animals everywhere, and the stubborn sense the place is on the verge of something.</description>
-    <workerClass>AlphaBiomes.BiomeWorker_MiasmicMangrove</workerClass>
+    <workerClass>RimMandrake.Miasma.RM_BiomeWorker_Miasma</workerClass>  <!-- was AlphaBiomes.BiomeWorker_MiasmicMangrove; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
     <foragedFood>RawBerries</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>

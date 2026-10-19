@@ -59,6 +59,5 @@ Requires Harmony and all five RimWorld expansions.
     <li>ludeon.rimworld.anomaly</li>
     <li>ludeon.rimworld.odyssey</li>
     <li>ludeon.rimworld.biotech</li>
-    <li>sarg.alphaanimals</li>
   </loadAfter>
 </ModMetaData>

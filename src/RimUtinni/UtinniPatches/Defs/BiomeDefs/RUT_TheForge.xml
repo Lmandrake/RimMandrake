@@ -78,7 +78,7 @@
     <defName>RUT_TheForge</defName>
     <label>the Forge</label>
     <description>One mountain, three zones, and the only vertical skyline in the Dune Sea: tall, dark foundry towers rising defiantly against the sun, streaming vent-steam like banners, visible for a hundred kilometres. Below them the red seams and the flows; around them the ash skirts; above them, improbably, herds -- vast placid gas-grazers drifting in the vapor columns. The mountain rains on itself in scalding bursts, and mosses drink in the seconds between fall and flash.</description>
-    <workerClass>AlphaBiomes.BiomeWorker_PyroclasticConflagration</workerClass>
+    <workerClass>RimMandrake.TheForge.RM_BiomeWorker_TheForge</workerClass>  <!-- was AlphaBiomes.BiomeWorker_PyroclasticConflagration; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
     <foragedFood>AB_RawBrownBarrelCactus</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
