@@ -13,9 +13,10 @@ namespace RimMandrake.FlowWorks
 	// shoot into the pit from the edge as well. But that's the only mechanic."
 	//
 	// 🔴 IT IS A RESTRICTION, NEVER A BONUS. Nothing here touches hit chance,
-	// cover, accuracy, sight range or projectile arcs. That is the whole reason
-	// LAW 2 survives: a restriction is one boolean gate on a check that already
-	// exists; a bonus would drag in an elevation model.
+	// cover, accuracy, sight range or projectile arcs: a restriction is one
+	// boolean gate on a check that already exists; a bonus would drag in an
+	// elevation model. (Depth's one effect on cover is trench cover, LAW 2 as
+	// replaced 2026-10-18, in RM_TrenchCover.cs; it reads 8 neighbours, no line.)
 	//
 	// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, 2026-10-17 by card; form V5,
 	// veto-able): the rule holds ACROSS A CLIFF EDGE, never for "anyone 2 m down".

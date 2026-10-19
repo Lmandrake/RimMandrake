@@ -12,12 +12,13 @@ namespace RimMandrake.FlowWorks
 	///               and by nothing else (LAW 1: we dig down, we never build up).
 	///   F (fill)  — how much liquid is in it, 0 &lt;= F &lt;= D. Set by the engine.
 	///
-	/// LAW 2 bounds what may read them: depth affects MOVEMENT and LIQUID. It
-	/// never affects sight, cover or projectile arcs. Exactly TWO stated, narrow
-	/// exceptions exist, and neither is a precedent for any other system:
-	///   • ruling 23 — a SUPERDEEP occupant may only trade fire with whoever is
-	///     at its own lip (a RESTRICTION on an existing check;
-	///     RM_Patch_SuperdeepShooting);
+	/// LAW 2 bounds what may read them (replaced by the owner 2026-10-18): depth
+	/// affects MOVEMENT, LIQUID and COVER. It never affects sight or height
+	/// advantage. Cover is trench cover (RM_TrenchCover: the wall of a dug hole
+	/// covers a pawn standing in it, read like a sandbag). Two older stated
+	/// exceptions stand:
+	///   • ruling 23 — no shot crosses a cliff edge (a RESTRICTION on an existing
+	///     check; RM_Patch_SuperdeepShooting);
 	///   • [D] (owner, 2026-09-17) — a SUPERDEEP cell may bound a ROOM: the pit
 	///     wall splits regions, districts and rooms (RM_PitRooms). Only D = 4,
 	///     only room membership; D 1-3 bound nothing.
