@@ -1,0 +1,122 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-17T14:20:26",
+ "rows": [
+  {
+   "id": "T29_bottle_stock_and_batches",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "colonists": 20,
+    "perColonist": 1,
+    "target": 20,
+    "empties": 30,
+    "series": [
+     0,
+     10,
+     18,
+     16,
+     14,
+     12,
+     10,
+     8
+    ],
+    "final": 6,
+    "jobs": [
+     "RM_FillBottleJob",
+     "GotoWander",
+     "Wait_MaintainPosture",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "GoSwimming",
+     "Wait_MaintainPosture",
+     "Wait_Wander",
+     "GotoWander"
+    ],
+    "bad": [
+     "filled 6 bottles, want exactly the target 20 (1 x 20 colonists)",
+     "a target over 10 should take more than one fill trip (jobs ['RM_FillBottleJob', 'GotoWander', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'GoSwimming', 'Wait_MaintainPosture', 'Wait_Wander', 'GotoWander'])"
+    ],
+    "notRun": "15 dirty bottles washed in two trips"
+   }
+  }
+ ],
+ "args": {
+  "out": null,
+  "only": "T29",
+  "site": "150,130",
+  "log": "",
+  "reload_site": "calm"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "f93f7fff2c9c9ae8801b1d51287a6ab9c3dec8f1f875da90c5704873abedccbe",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "sarg.alphabiomes",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vfe.insectoid2",
+   "mandrake.rsw.cuisine",
+   "mandrake.rm.weathersuite",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rut.patches",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.biomes",
+   "mandrake.rsw.swbestiary",
+   "ray1203.simplecamerasetting"
+  ],
+  "assembly_sha256": "8d32f243952d8fc9c5c6c5f15eeaff1835305b6bfc3e5d073932e0342860cd50"
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "running": 20,
+ "site": {
+  "rect": "150,130,40,40",
+  "paintedWaterRuns": 2,
+  "bottlesOnMap": [],
+  "draftedOwn": 19
+ },
+ "governorStops": [
+  "safe_advance stopped after 120 of 1500 tick(s): starving: food category Starving"
+ ],
+ "settings_after": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "ended": "2026-10-17T14:23:11"
+}

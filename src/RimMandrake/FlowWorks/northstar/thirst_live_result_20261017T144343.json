@@ -1,0 +1,219 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-17T14:43:43",
+ "rows": [
+  {
+   "id": "T15_slime_effects",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "RM_SlimeRedShallow": {
+     "pawn": "Human37212",
+     "jobs": [
+      "RM_DrinkFromTank"
+     ],
+     "hediffs": {
+      "RM_Dehydration": 0.009000001
+     },
+     "memories": []
+    },
+    "RM_SlimeGreenShallow": {
+     "pawn": "Human37215",
+     "jobs": [
+      "RM_DrinkFromTank"
+     ],
+     "hediffs": {
+      "RM_Dehydration": 0.009000001
+     },
+     "memories": [
+      "Chitchat"
+     ]
+    },
+    "RM_SlimeWhiteShallow": {
+     "pawn": "Human37218",
+     "jobs": [
+      "RM_DrinkFromTank",
+      "GotoWander"
+     ],
+     "hediffs": {},
+     "memories": [
+      "Chitchat"
+     ]
+    },
+    "RM_SlimeYellowShallow": {
+     "pawn": "Human37221",
+     "jobs": [
+      "RM_DrinkFromTank",
+      "GotoWander"
+     ],
+     "hediffs": {},
+     "memories": [
+      "Insulted",
+      "InsultedMood"
+     ]
+    },
+    "at0.05": [
+     "RM_DrinkFromTank",
+     "GotoWander"
+    ],
+    "bad": [
+     "RM_SlimeRedShallow: no terrain drink",
+     "RM_SlimeGreenShallow: no terrain drink",
+     "RM_SlimeWhiteShallow: no terrain drink",
+     "RM_SlimeYellowShallow: no terrain drink"
+    ]
+   }
+  },
+  {
+   "id": "T23_fill_tank_is_the_order",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tank": "TANK mode=Fill effective=Fill liquid=RM_Liquid_Brine units=100",
+    "units": [
+     100,
+     250
+    ],
+    "brineBuckets": 2,
+    "jobsFill": [
+     "RM_FillBottleJob",
+     "Wait_MaintainPosture",
+     "RM_EmptyIntoTankJob",
+     "RM_FillBottleJob"
+    ],
+    "jobsStore": [
+     "Wait_Wander",
+     "Wait_MaintainPosture",
+     "GotoWander",
+     "Wait_MaintainPosture",
+     "Wait_Wander",
+     "Wait_MaintainPosture",
+     "GotoWander",
+     "Wait_MaintainPosture",
+     "Wait_Wander",
+     "Wait_MaintainPosture",
+     "GotoWander",
+     "Wait_Wander",
+     "Wait_MaintainPosture",
+     "GotoWander",
+     "Wait_Wander",
+     "Wait_MaintainPosture",
+     "GotoWander"
+    ],
+    "brineBucketsAfterStore": 0,
+    "droppedAtSwitch": 0,
+    "brineAt": [],
+    "storeTankUnits": 100,
+    "bad": []
+   }
+  },
+  {
+   "id": "T25_snow_to_water",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "snowSet": {
+     "success": true,
+     "cellsChanged": 64
+    },
+    "jobs": [
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander"
+    ],
+    "bucketsSnow": 0,
+    "snowAfter": null,
+    "meltTicks": null,
+    "meltTrace": [],
+    "temp": 18.2553139,
+    "jobsPond": [
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "Wait_MaintainPosture",
+     "Wait_Wander"
+    ],
+    "bad": [
+     "no RM_GatherSnow and no RM_BucketSnow with snow beside the bucket (jobs ['GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander', 'GotoWander'])"
+    ],
+    "notRun": "snow depth drop 0.4 (read back is a sample only)"
+   }
+  }
+ ],
+ "args": {
+  "out": null,
+  "only": "T15,T23,T25",
+  "site": "150,130",
+  "log": "",
+  "reload_site": "calm"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "7411c47b64a52794e2467821199d094be5618804f71ef38ffa1cff144f7fb0fc",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "sarg.alphabiomes",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vfe.insectoid2",
+   "mandrake.rsw.cuisine",
+   "mandrake.rm.weathersuite",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rut.patches",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.biomes",
+   "mandrake.rsw.swbestiary",
+   "ray1203.simplecamerasetting"
+  ],
+  "assembly_sha256": "3682593d42d69e377f33fba0b8b3323c3545dfe280956e61c0df7830525d3553"
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "running": 20,
+ "site": {
+  "rect": "150,130,40,40",
+  "paintedWaterRuns": 3,
+  "bottlesOnMap": [
+   "RM_Bottle_FreshWater"
+  ],
+  "draftedOwn": 31
+ },
+ "settings_after": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "ended": "2026-10-17T14:48:30"
+}

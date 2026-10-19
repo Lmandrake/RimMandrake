@@ -1,0 +1,111 @@
+{
+ "mod": "GimmeSomeSlack",
+ "mode": "flips",
+ "script": "validation_aerial.py",
+ "tier": "gimmesomeslack",
+ "started": "2026-10-12T23:10:41",
+ "rows": [
+  {
+   "id": "M20_flip_scene_built",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "tipCell": [
+     98,
+     135
+    ],
+    "cuts": 1
+   }
+  },
+  {
+   "id": "M20a_fallen_wire_shock_flip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "off": {
+     "id": "Muffalo85391",
+     "shocked": false,
+     "dead": false,
+     "start": [
+      98,
+      135
+     ],
+     "end": [
+      98,
+      135
+     ]
+    },
+    "on": {
+     "id": "Muffalo86437",
+     "shocked": true,
+     "dead": false,
+     "start": [
+      98,
+      135
+     ],
+     "end": [
+      98,
+      135
+     ]
+    }
+   }
+  },
+  {
+   "id": "M20b_fallen_wire_knockback_flip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "knockback0": {
+     "id": "Muffalo86441",
+     "shocked": true,
+     "dead": false,
+     "start": [
+      98,
+      135
+     ],
+     "end": [
+      98,
+      135
+     ]
+    },
+    "knockback3": [
+     {
+      "id": "Muffalo86521",
+      "shocked": true,
+      "dead": false,
+      "start": [
+       98,
+       135
+      ],
+      "end": [
+       98,
+       132
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "M20c_fallen_wire_ignites_flip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "fireWhenOff_12sweeps": 0,
+    "fireWhenOn": 2,
+    "sweepsToIgnite": 3,
+    "note": "ignite is a 35% roll per 250-tick sweep; P(miss in 12) = 0.6%"
+   }
+  },
+  {
+   "id": "M20d_keep_wires_setting_roundtrip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "off": "False",
+    "on": "True",
+    "behaviourOwed": "gravship launch rig; wiring only"
+   }
+  }
+ ],
+ "screenshots": []
+}

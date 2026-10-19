@@ -1,0 +1,124 @@
+{
+ "mod": "GimmeSomeSlack",
+ "mode": "flips",
+ "script": "validation_aerial.py",
+ "tier": "gimmesomeslack",
+ "started": "2026-10-12T23:09:21",
+ "rows": [
+  {
+   "id": "M20_flip_scene_built",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "tipCell": [
+     98,
+     135
+    ],
+    "cuts": 1
+   }
+  },
+  {
+   "id": "M20a_fallen_wire_shock_flip",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "off": {
+     "id": "Muffalo75736",
+     "shocked": false,
+     "dead": false,
+     "start": [
+      98,
+      135
+     ],
+     "end": [
+      98,
+      135
+     ]
+    },
+    "on": {
+     "id": "Muffalo75790",
+     "shocked": false,
+     "dead": false,
+     "start": [
+      98,
+      135
+     ],
+     "end": [
+      98,
+      135
+     ]
+    }
+   }
+  },
+  {
+   "id": "M20b_fallen_wire_knockback_flip",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "knockback0": {
+     "id": "Muffalo75813",
+     "shocked": false,
+     "dead": false,
+     "start": [
+      98,
+      135
+     ],
+     "end": [
+      98,
+      135
+     ]
+    },
+    "knockback3": [
+     {
+      "id": "Muffalo75820",
+      "shocked": false,
+      "dead": false,
+      "start": [
+       98,
+       135
+      ],
+      "end": [
+       98,
+       135
+      ]
+     },
+     {
+      "id": "Muffalo75825",
+      "shocked": true,
+      "dead": false,
+      "start": [
+       98,
+       135
+      ],
+      "end": [
+       101,
+       138
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "M20c_fallen_wire_ignites_flip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "fireWhenOff_12sweeps": 0,
+    "fireWhenOn": 1,
+    "sweepsToIgnite": 1,
+    "note": "ignite is a 35% roll per 250-tick sweep; P(miss in 12) = 0.6%"
+   }
+  },
+  {
+   "id": "M20d_keep_wires_setting_roundtrip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "off": "False",
+    "on": "True",
+    "behaviourOwed": "gravship launch rig; wiring only"
+   }
+  }
+ ],
+ "screenshots": []
+}
