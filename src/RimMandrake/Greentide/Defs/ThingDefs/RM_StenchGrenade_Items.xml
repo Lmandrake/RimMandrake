@@ -172,7 +172,7 @@
     <category>Projectile</category>
     <graphicData>
       <shaderType>Transparent</shaderType>
-      <texPath>Things/Projectile/ToxGrenadeThrown</texPath>
+      <texPath>Things/Projectile/RM_Proj_GrenadeStenchSmoke/RM_Proj_GrenadeStenchSmoke</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(140, 191, 64)</color>
     </graphicData>

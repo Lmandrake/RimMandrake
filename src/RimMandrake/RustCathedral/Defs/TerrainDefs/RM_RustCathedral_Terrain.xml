@@ -30,7 +30,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_RustCathedral_CrackedMetalSoil</defName>
     <label>soil on cracked metal</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_SoilOnCrackedMetal</texturePath>
+    <texturePath>Terrain/Surfaces/AB_SoilOnCrackedMetal</texturePath>
     <color>(100,100,100)</color>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>350</renderPrecedence>

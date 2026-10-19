@@ -63,7 +63,7 @@
     <label>titanoslime chunk</label>
     <thingClass>RimMandrake.GelatinousSlime.Projectile_SlimeChunk</thingClass>
     <graphicData>
-      <texPath>Things/Projectile/Grenade</texPath>
+      <texPath>Things/Projectile/RM_Proj_TitanoslimeChunk/RM_Proj_TitanoslimeChunk</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(70, 140, 60)</color>
     </graphicData>

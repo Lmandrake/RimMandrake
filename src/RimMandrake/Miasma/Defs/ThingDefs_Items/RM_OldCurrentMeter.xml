@@ -8,7 +8,7 @@
     <label>old current meter</label>
     <description>A brass-cased meter wired to two corroded plates, dug out of a heap of rotting delta loam. Its needle still twitches. Somebody once drew power out of rot here, and the meter remembers how.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/SignalChip</texPath>
+      <texPath>Things/Item/Resource/RM_OldCurrentMeter/RM_OldCurrentMeter</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(190,150,80)</color>
     </graphicData>
