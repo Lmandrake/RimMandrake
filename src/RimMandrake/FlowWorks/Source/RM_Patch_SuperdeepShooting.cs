@@ -91,7 +91,8 @@ namespace RimMandrake.FlowWorks
 			}
 			int d = engine.ClimbDepthAt(c);
 			// PIT_COVER_FALL_REWIRE_1: a covered cell is ground until the cover gives way.
-			return d > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c) ? 0 : d;
+			// SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: a deck is ground at its walking height (a cover: 0).
+			return Pits.RM_SpanUtility.WalkingDepth(map, c, d);
 		}
 
 		/// <summary>The cliff the rule holds across, in notches (setting "A cliff is a rise of N m"; 2 m shipped).</summary>

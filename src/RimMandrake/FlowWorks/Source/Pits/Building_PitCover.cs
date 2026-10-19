@@ -45,9 +45,12 @@ namespace RimMandrake.FlowWorks.Pits
             return null;
         }
 
+        /// <summary>Any intact deck on the cell (a cover or, later, any suspension deck), height ignored. Kept for the
+        /// height-blind sites (pathing veto, trap hold, swim, trench); a site whose answer depends on the walking height
+        /// reads RM_SpanUtility.DeckedAt(map, c, out deckHeightM) instead.</summary>
         public static bool IsCovered(Map map, IntVec3 c)
         {
-            return CoverAt(map, c) != null;
+            return RM_SpanUtility.DeckedAt(map, c);
         }
 
         /// <summary>Every intact cover 4-way connected to this one (this one included).</summary>
@@ -124,15 +127,27 @@ namespace RimMandrake.FlowWorks.Pits
         }
     }
 
-    public class Building_PitCover : Building, IPitCoverHost
+    /// <summary>The trap tier of the suspension family (SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT): a hidden surface deck over a
+    /// pit, with its own look (Q8). Span machinery (deck read, collapse through the descent event, climb generation) is
+    /// Building_SpanDeck's; what is a cover's own is the tier, the 4-way cover deck, the mimic print and the trap trigger.</summary>
+    public class Building_PitCover : Building_SpanDeck, IPitCoverHost
     {
-        private bool sprung;
+        public bool Covered => Decked;
 
-        public bool Covered => !sprung && Spawned;
-
-        public bool Sprung => sprung;
+        public bool Sprung => Collapsed;
 
         public PitCoverTier CoverTier => def.GetModExtension<RM_PitCoverExtension>()?.tier ?? PitCoverTier.None;
+
+        public override float LoadRatingKg => CoverTier.TriggerMassKg();
+
+        protected override string CollapseSaveKey => "rmCoverSprung";
+
+        public override bool JoinsSpan(Building_SpanDeck other) => other is Building_PitCover;
+
+        public override List<Building_SpanDeck> SpanCells()
+        {
+            return new List<Building_SpanDeck>(RM_PitCoverUtility.Deck(this));
+        }
 
         /// <summary>One cover per deck scans (the lowest id), so a deck is summed once, not once per cell.</summary>
         public bool IsDeckLead
@@ -148,21 +163,6 @@ namespace RimMandrake.FlowWorks.Pits
                 }
                 return true;
             }
-        }
-
-        // PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: a cover is ground in the pocket grid, so its coming and going moves the
-        // climb generation (design §8.3, GPT #12).
-        public override void SpawnSetup(Map map, bool respawningAfterLoad)
-        {
-            base.SpawnSetup(map, respawningAfterLoad);
-            RM_SuperdeepTrap.EngineOf(map)?.BumpClimbGeneration();
-        }
-
-        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
-        {
-            Map map = Map;
-            base.DeSpawn(mode);
-            RM_SuperdeepTrap.EngineOf(map)?.BumpClimbGeneration();
         }
 
         public override void Print(SectionLayer layer)
@@ -184,45 +184,16 @@ namespace RimMandrake.FlowWorks.Pits
             Printer_Plane.PrintPlane(layer, center, Vector2.one, mat);
         }
 
+        /// <summary>The whole cover deck gives way (Building_SpanDeck.Collapse: covers gone before anyone descends).</summary>
         public void Spring(List<Pawn> fallers)
         {
-            if (sprung || !Spawned)
-            {
-                return;
-            }
-            Map map = Map;
-            List<Building_PitCover> deck = RM_PitCoverUtility.Deck(this);
-            foreach (Building_PitCover c in deck)
-            {
-                c.sprung = true;
-            }
-            foreach (Building_PitCover c in deck)
-            {
-                if (c.Spawned)
-                {
-                    FilthMaker.TryMakeFilth(c.Position, map, ThingDefOf.Filth_RubbleRock, 1);
-                    c.Destroy(DestroyMode.Vanish);
-                }
-            }
-            RM_SuperdeepTrapState state = RM_SuperdeepTrap.EngineOf(map)?.SuperdeepTrap;
-            Pawn first = null;
-            foreach (Pawn p in fallers)
-            {
-                if (p == null || !p.Spawned || p.Dead || p.Flying)
-                {
-                    continue;
-                }
-                if (state != null)
-                {
-                    RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state);
-                }
-                first = first ?? p;
-            }
-            if (first != null)
-            {
-                Messages.Message("A pit cover gave way under " + first.LabelShort + (fallers.Count > 1 ? " and others." : "."),
-                    new LookTargets(fallers), MessageTypeDefOf.NeutralEvent);
-            }
+            Collapse(fallers);
+        }
+
+        protected override void CollapseMessage(Pawn first, List<Pawn> fallers)
+        {
+            Messages.Message("A pit cover gave way under " + first.LabelShort + (fallers.Count > 1 ? " and others." : "."),
+                new LookTargets(fallers), MessageTypeDefOf.NeutralEvent);
         }
 
         public override string GetInspectString()
@@ -232,11 +203,6 @@ namespace RimMandrake.FlowWorks.Pits
             return s.NullOrEmpty() ? line : s + "\n" + line;
         }
 
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_Values.Look(ref sprung, "rmCoverSprung", false);
-        }
     }
 
     /// <summary>Owner, 2026-10-06 (cards Q5 + Q9): a blast that reaches a pit cover breaks it: damaging blasts (bombs,
@@ -311,7 +277,7 @@ namespace RimMandrake.FlowWorks.Pits
             {
                 return;
             }
-            Building_PitCover cover = RM_PitCoverUtility.CoverAt(map, c);
+            Building_SpanDeck cover = RM_SpanUtility.DeckAt(map, c);
             if (cover != null)
             {
                 baseCostOverride = Mathf.Max(cover.def.pathCost, 0);

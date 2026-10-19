@@ -40,7 +40,7 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				IntVec3 c = p.Position;
-				if (Pits.RM_PitCoverUtility.IsCovered(map, c))
+				if (Pits.RM_SpanUtility.DeckedAt(map, c))
 				{
 					continue;
 				}
