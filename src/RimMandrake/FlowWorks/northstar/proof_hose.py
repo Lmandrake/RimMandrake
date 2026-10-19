@@ -156,7 +156,9 @@ RF_X0, RF_Z0, RF_PW, RF_PH = 158, 150, 26, 14
 # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: probe "units" are raw tank units = decilitres. One level = 1,000 L = 10,000 units
 # (was 5 drums); the old per-cycle bar 5 (and window 5..15) is x2000.
 UNITS_PER_LEVEL = 10000
-PER_CYCLE_CAP = 5 * 2000
+# HOSE_REALFLOW_DIAGNOSE_SHORT_POUR_DRY_TANK: a tank job moves RM_HoseSettings.tankLitresPerCycle (default 2,000 L = 20,000
+# units) per settle; the old 5 x 2000 was the drum-era half-of-per-cycle bar converted, not the per-cycle amount.
+PER_CYCLE_CAP = 2000 * 10
 FILL_UNITS = 120000          # filltank staging: 12 kL of a 16 kL 2x2 tank (the old 100 exceeded the old 80 capacity)
 RF_WEST = 6
 # FINAL §3.6 / G6.4 contract: a new link is discovered <= 60 ticks after it is made (the reel's free-end cache), and liquid
@@ -245,10 +247,61 @@ def _discover(B, reel, bound=RF_DISCOVER, step=5):
     return _poll(B, lambda: _hose(B, reel).get("netLink"), bound, step=step)
 
 
-def _moved(B, tank, u0, bound=RF_CYCLE + 10, step=10):
-    """Ticks until the tank at `tank` gained >= one level (UNITS_PER_LEVEL tank units) over u0 (<= bound); (units now, ticks)."""
-    v, w = _poll(B, lambda: (_tank(B, tank).get("units") or 0) - u0 >= UNITS_PER_LEVEL, bound, step=step)
+def _held(B, reels):
+    """Units (decilitres) held IN the hoses of `reels` (CompHoseReel.heldUnits). Hoses hold liquid (rev 2 §3.7 L8,
+    RM_LiquidNet.FillFrom): the first level a hose carries fills it from the destination tank, so that tank gains a level
+    MINUS the hose's room (live 2026-10-19: 8,899 of 10,000 over a 13-cell hose). The level is conserved in tank + hoses."""
+    tot = 0
+    for reel in reels:
+        hid = _hose(B, reel).get("id")
+        if hid is None:
+            continue
+        v = ((B.call("jawa/comp_read", thing="RM_HoseReel%d" % hid, comp="CompHoseReel", members="heldUnits") or {})
+             .get("values") or {}).get("heldUnits")
+        try:
+            tot += int(v or 0)
+        except (TypeError, ValueError):
+            pass
+    return tot
+
+
+def _moved(B, tank, u0, reels=(), h0=0, bound=RF_CYCLE + 10, step=10):
+    """Ticks until one level (UNITS_PER_LEVEL) arrived over u0 at the tank at `tank`, counting what the route's hoses
+    (`reels`, holding h0 at the start) took to fill (<= bound); (units now, ticks). The tank itself must gain."""
+    def arrived():
+        g = (_tank(B, tank).get("units") or 0) - u0
+        return g > 0 and g + (_held(B, reels) - h0) >= UNITS_PER_LEVEL
+    v, w = _poll(B, arrived, bound, step=step)
     return _tank(B, tank).get("units") or 0, w
+
+
+def _set_tank_job(B, cell, job, max_clicks=4):
+    """Cycle the tank's "Job:" gizmo to `job` (owner ruling #9: a tank feeds a hose screwed into it by one click on the tank,
+    RM_LiquidNet.SettleTick moves only Fill/Empty tanks; Store, the default, moves nothing). Same route as liquid_checks."""
+    out = {"clicks": 0, "ok": False, "want": "Job: " + job}
+    B.call("rimworld/set_god_mode", enabled=True)
+    try:
+        B.call("rimworld/clear_selection")
+        B.call("rimworld/click_cell", x=cell[0], z=cell[1])
+        for _ in range(max_clicks + 1):
+            gz = (B.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
+            g = next((q for q in gz if str(q.get("label") or "").startswith("Job:")), None)
+            if g is None:
+                out["labels"] = [q.get("label") for q in gz][:20]
+                return out
+            out["label"] = g.get("label")
+            if g.get("label") == out["want"]:
+                out["ok"] = True
+                return out
+            r = B.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
+            out["clicks"] += 1
+            if r.get("success") is False:
+                out["error"] = r
+                return out
+        return out
+    finally:
+        B.call("rimworld/set_god_mode", enabled=False)
+        B.call("rimworld/clear_selection")
 
 
 def realflow(B, rows):
@@ -265,14 +318,16 @@ def realflow(B, rows):
     s.pump_scene()
     lay = s.lay()
     t0 = _tank(B, s.tank)
+    h0 = _held(B, [s.reel])
     link, dt = _discover(B, s.reel)
-    u1, mt = _moved(B, s.tank, t0.get("units") or 0)
+    u1, mt = _moved(B, s.tank, t0.get("units") or 0, [s.reel], h0)
     t1 = _tank(B, s.tank)
     h = _hose(B, s.reel)
     gained = (t1.get("units") or 0) - (t0.get("units") or 0)
-    row("NS_hose_carries_real_units", lay.get("success") and link and dt <= RF_DISCOVER and gained >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10
-        and h.get("credits", 0) > 0 and h.get("netLink"),
-        {"lay": lay, "before": t0, "after": t1, "gained": gained, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt,
+    hose_took = _held(B, [s.reel]) - h0
+    row("NS_hose_carries_real_units", lay.get("success") and link and dt <= RF_DISCOVER and gained > 0
+        and gained + hose_took >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10 and h.get("credits", 0) > 0 and h.get("netLink"),
+        {"lay": lay, "before": t0, "after": t1, "gained": gained, "hoseTook": hose_took, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt,
          "bound": [RF_DISCOVER, RF_CYCLE], "pumpPoweredAfterTicks": s.powered, "credits": h.get("credits"), "netLink": h.get("netLink")})
     plump, waited = _poll(B, lambda: _hose(B, s.reel).get("state") == "Plump", 300)
     tint = _hose(B, s.reel).get("tintLiquid")
@@ -335,10 +390,12 @@ def realflow(B, rows):
         s3.powered = _powered(B, far_pump)
         lay3 = s3.lay((ox + 16, oz + 9))
         c0 = _tank(B, tank_at_reel).get("units") or 0
+        g0 = _held(B, [s3.reel])
         link, dt = _discover(B, s3.reel)
-        c1, mt = _moved(B, tank_at_reel, c0)
-        row("NS_hose_far_end_pump", link and dt <= RF_DISCOVER and c1 - c0 >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10,
-            {"lay": lay3, "units": [c0, c1], "pumpPoweredAfterTicks": s3.powered, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt, "netLink": link,
+        c1, mt = _moved(B, tank_at_reel, c0, [s3.reel], g0)
+        took3 = _held(B, [s3.reel]) - g0
+        row("NS_hose_far_end_pump", link and dt <= RF_DISCOVER and c1 - c0 > 0 and c1 - c0 + took3 >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10,
+            {"lay": lay3, "units": [c0, c1], "hoseTook": took3, "pumpPoweredAfterTicks": s3.powered, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt, "netLink": link,
              "net": B.hp("net:%d,%d" % far_pump)})
     # ---- scene 4: relay chain pump -> reel A -> reel B -> tank (both hoses credited)
     s4 = Scene(B, 4)
@@ -353,12 +410,14 @@ def realflow(B, rows):
         la = B.hp("lay:%d,%d,%d,%d" % (s4.reel + relay_b))
         lb = B.hp("lay:%d,%d,%d,%d" % (relay_b + (tank_b[0] - 1, tank_b[1])))
         d0 = _tank(B, tank_b).get("units") or 0
+        k0 = _held(B, [s4.reel, relay_b])
         lkb, dtb = _discover(B, relay_b)
-        d1, mt = _moved(B, tank_b, d0)
+        d1, mt = _moved(B, tank_b, d0, [s4.reel, relay_b], k0)
+        took4 = _held(B, [s4.reel, relay_b]) - k0
         ha, hb = _hose(B, s4.reel), _hose(B, relay_b)
-        row("NS_relay_chain_carries", d1 - d0 >= UNITS_PER_LEVEL and lkb and dtb <= RF_DISCOVER and mt <= RF_CYCLE + 10
+        row("NS_relay_chain_carries", d1 - d0 > 0 and d1 - d0 + took4 >= UNITS_PER_LEVEL and lkb and dtb <= RF_DISCOVER and mt <= RF_CYCLE + 10
             and ha.get("credits", 0) > 0 and hb.get("credits", 0) > 0,
-            {"layA": la, "layB": lb, "relayTo": ha.get("relayTo"), "pumpPoweredAfterTicks": s4.powered, "units": [d0, d1], "discoveredAfterTicks(B)": dtb,
+            {"layA": la, "layB": lb, "relayTo": ha.get("relayTo"), "pumpPoweredAfterTicks": s4.powered, "units": [d0, d1], "hoseTook": took4, "discoveredAfterTicks(B)": dtb,
              "movedTicksAfterDiscovery": mt, "creditsA": ha.get("credits"), "creditsB": hb.get("credits")})
     # ---- scene 5: pump -> universal pipe run -> reel -> hose -> tank; and two pipe runs never merge through a tank
     s5 = Scene(B, 5)
@@ -401,14 +460,28 @@ def realflow(B, rows):
         src = (ox + 3, oz + 10)
         s6.build("RM_HoseReel:%d,%d" % s6.reel, "RM_LiquidTank:%d,%d" % src, "RM_LiquidTank:%d,%d" % s6.tank)
         B.ticks(2)
-        B.hp("filltank:%d,%d=%s,%d" % (src + (LIQUID_WATER, FILL_UNITS)))
+        fill = B.hp("filltank:%d,%d=%s,%d" % (src + (LIQUID_WATER, FILL_UNITS)))
         s6.lay()
-        f0 = _tank(B, s6.tank).get("units") or 0
-        B.ticks(520)
-        f1 = _tank(B, s6.tank).get("units") or 0
-        h6 = _hose(B, s6.reel)
-        row("NS_tank_feeds_hose", PER_CYCLE_CAP <= f1 - f0 <= 3 * PER_CYCLE_CAP and h6.get("credits", 0) > 0,
-            {"units": [f0, f1], "perCycleCap": PER_CYCLE_CAP, "credits": h6.get("credits"), "netLink": h6.get("netLink")})
+        # the source tank's job must be Empty: a Store tank (the default) never sends (RM_LiquidNet.SettleTick); live run 6
+        # left it Store and read 0 moved, which measured the harness, not the mod
+        job = _set_tank_job(B, src, "Empty")
+        if not job.get("ok"):
+            row("NS_tank_feeds_hose", False, {"job": job, "fill": fill},
+                unmeasured="could not set the source tank's job to Empty (no Job: gizmo or it would not cycle)")
+        else:
+            s0 = _tank(B, src).get("units") or 0
+            f0 = _tank(B, s6.tank).get("units") or 0
+            q0 = _held(B, [s6.reel])
+            B.ticks(520)
+            f1 = _tank(B, s6.tank).get("units") or 0
+            s1u = _tank(B, src).get("units") or 0
+            took6 = _held(B, [s6.reel]) - q0
+            h6 = _hose(B, s6.reel)
+            # 520 ticks hold 2 or 3 settles (phase); each sends PER_CYCLE_CAP; the hose's first fill is part of what left src
+            row("NS_tank_feeds_hose", f1 - f0 > 0 and PER_CYCLE_CAP <= f1 - f0 + took6 <= 3 * PER_CYCLE_CAP and s0 - s1u >= f1 - f0 + took6
+                and h6.get("credits", 0) > 0,
+                {"units": [f0, f1], "source": [s0, s1u], "hoseTook": took6, "perCycleCap": PER_CYCLE_CAP, "job": job, "fill": fill,
+                 "credits": h6.get("credits"), "netLink": h6.get("netLink")})
 
 
 # ============================================================================ the session
