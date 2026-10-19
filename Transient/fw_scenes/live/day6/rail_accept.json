@@ -1,0 +1,536 @@
+{
+ "started": "2026-10-18T16:59:59",
+ "rows": [
+  {
+   "id": "site",
+   "detail": {
+    "ready": true,
+    "rows": []
+   }
+  },
+  {
+   "id": "rails_built",
+   "detail": {
+    "guardrail": "{'success': True, 'message': 'Placed 13 thing(s) of 13 requested across 13 of 13 op(s).', 'opsRequested': 13, 'spawned': 13, 'failed': 0, 'thingsRequested': 13, 'thingsPlaced': 13, 'thingsShort': 0, 'stacksOverLimit': 0, 'cellsOutOfBounds': 0, 'perDef': {'RM_PitGuardrail': 13}, 'errors': [], 'ticksG",
+    "fence": "{'success': True, 'message': 'Placed 13 thing(s) of 13 requested across 13 of 13 op(s).', 'opsRequested': 13, 'spawned': 13, 'failed': 0, 'thingsRequested': 13, 'thingsPlaced': 13, 'thingsShort': 0, 'stacksOverLimit': 0, 'cellsOutOfBounds': 0, 'perDef': {'Fence': 13}, 'errors': [], 'ticksGame': 133,"
+   }
+  },
+  {
+   "id": "readout",
+   "detail": {
+    "R": "OK Hole 7 m \u00b7 Water 0.00 m (0 L)",
+    "U": "OK Hole 7 m \u00b7 Water 0.00 m (0 L)",
+    "F": "OK Hole 7 m \u00b7 Water 0.00 m (0 L)"
+   }
+  },
+  {
+   "id": "proofrail",
+   "detail": {
+    "R": "RAIL rail=True guards=3/8 on=True",
+    "U": "RAIL rail=False guards=0/8 on=True",
+    "F": "RAIL rail=True guards=3/8 on=True"
+   }
+  },
+  {
+   "id": "A1_def",
+   "detail": {
+    "defs": "{'success': False, 'message': \"defs is required: 'DefType/defName' pairs separated by ';'.\", 'details': {'example': 'ThingDef/Steel;PawnKindDef/Ghoul'}, 'operation': {'OperationId': 'op_b9b3d9bb220e4836bbddaaf98feca38e', 'Status': 'Completed', 'Success': True, 'DurationMs': 18, 'Warnings': [{'Code': 'arguments.unknown', 'Message': 'Ignored unknown argument(s) pairs. Valid parameters: defs, fields, limit, deep.'}]}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 133}}"
+   }
+  },
+  {
+   "id": "A1_build_check",
+   "detail": {
+    "lip_R_free": "{'success': False, 'message': \"Give a rect as 'x,z,w,h'.\", 'operation': {'OperationId': 'op_0afa8bbadd0e4105ade3b6954ac688e5', 'Status': 'Completed', 'Success': True, 'DurationMs': 46, 'Warnings': [{'Code': 'arguments.unknown', 'Message': 'Ignored unknown argument(s) x, z. Valid parameters: def, rect, stuff, rot, godMode, limit.'}]}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'pa",
+    "lip_U": "{'success': False, 'message': \"Give a rect as 'x,z,w,h'.\", 'operation': {'OperationId': 'op_fe16dd567aea405699e1bcd69b8ca593', 'Status': 'Completed', 'Success': True, 'DurationMs': 47, 'Warnings': [{'Code': 'arguments.unknown', 'Message': 'Ignored unknown argument(s) x, z. Valid parameters: def, rect, stuff, rot, godMode, limit.'}]}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'pa",
+    "open_ground": "{'success': False, 'message': \"Give a rect as 'x,z,w,h'.\", 'operation': {'OperationId': 'op_abecea62237f4cb68f77c8805974d0e7', 'Status': 'Completed', 'Success': True, 'DurationMs': 47, 'Warnings': [{'Code': 'arguments.unknown', 'Message': 'Ignored unknown argument(s) x, z. Valid parameters: def, rect, stuff, rot, godMode, limit.'}]}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'pa",
+    "pit_floor": "{'success': False, 'message': \"Give a rect as 'x,z,w,h'.\", 'operation': {'OperationId': 'op_01583d7c1ef74aebb60f19725e19236d', 'Status': 'Completed', 'Success': True, 'DurationMs': 47, 'Warnings': [{'Code': 'arguments.unknown', 'Message': 'Ignored unknown argument(s) x, z. Valid parameters: def, rect, stuff, rot, godMode, limit.'}]}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'pa"
+   }
+  },
+  {
+   "id": "A2_setting",
+   "detail": {
+    "pitGuardrailEnabled": "True"
+   }
+  },
+  {
+   "id": "A1_def",
+   "detail": {
+    "defs": "{'success': True, 'message': '2 of 2 def(s) resolved', 'requested': 2, 'foundCount': 2, 'notFound': [], 'malformed': [], 'fieldsAsked': ['designationCategory', 'stuffCategories', 'passability', 'placeWorkers', 'building'], 'defs': [{'requested': 'ThingDef/RM_PitGuardrail', 'found': True, 'defName': 'RM_PitGuardrail', 'defType': 'ThingDef', 'label': 'pit guardrail', 'modName': 'RimMandrake: FlowWorks', 'packageId': 'mandrake.rm.flowworks', 'fields': {'passability': 'Standable', 'stuffCategories': ['Metallic', 'Woody'], 'placeWorkers': ['PlaceWorker_PitGuardrail'], 'designationCategory': 'Structure', 'building': '(no such field)'}}, {'requested': 'ThingDef/Fence', 'found': True, 'defName': 'Fence', 'defType': 'ThingDef', 'label': 'fence', 'modName': 'Core', 'packageId': 'ludeon.rimworld', 'fields': {'passability': 'PassThroughOnly', 'stuffCategories': ['Metallic', 'Woody', 'Stony'], 'designationCategory': 'Structure', 'building': '(no such field)'}}], 'ticksGame': 133, 'operation': {'OperationId': 'op_26e76ab9b27c45f98218c2ec97082461', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 133}}"
+   }
+  },
+  {
+   "id": "A1_build_check",
+   "detail": {
+    "lip_R_east": "{'success': True, 'def': 'RM_PitGuardrail', 'stuff': 'Steel', 'acceptableCells': 1, 'tested': 1, 'cellsInRect': 1, 'truncated': False, 'godMode': False, 'cells': [{'x': 126, 'z': 150, 'canPlace': True, 'canSpawn': True, 'occupants': []}], 'ticksGame': 133, 'operation': {'OperationId': 'op_c3ff9490f8e5457abccab93d87b4396d', 'Status': 'Completed', 'Success': True, 'DurationMs': 45}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 133}}",
+    "lip_U": "{'success': True, 'def': 'RM_PitGuardrail', 'stuff': 'Steel', 'acceptableCells': 1, 'tested': 1, 'cellsInRect': 1, 'truncated': False, 'godMode': False, 'cells': [{'x': 134, 'z': 150, 'canPlace': True, 'canSpawn': True, 'occupants': []}], 'ticksGame': 133, 'operation': {'OperationId': 'op_9b757f7089524a46bbf106ea3f759f71', 'Status': 'Completed', 'Success': True, 'DurationMs': 38}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 133}}",
+    "open_ground": "{'success': True, 'def': 'RM_PitGuardrail', 'stuff': 'Steel', 'acceptableCells': 0, 'tested': 1, 'cellsInRect': 1, 'truncated': False, 'godMode': False, 'cells': [{'x': 112, 'z': 160, 'canPlace': False, 'reason': 'A guardrail goes only on the lip of a sheer drop: some neighbouring square must be at least 1.5 m lower.', 'canSpawn': True, 'occupants': []}], 'ticksGame': 133, 'operation': {'OperationId': 'op_c031a599356d4769a302f916d6cfa4b0', 'Status': 'Completed', 'Success': True, 'DurationMs': 46}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 133}}",
+    "pit_floor": "{'success': True, 'def': 'RM_PitGuardrail', 'stuff': 'Steel', 'acceptableCells': 0, 'tested': 1, 'cellsInRect': 1, 'truncated': False, 'godMode': False, 'cells': [{'x': 140, 'z': 150, 'canPlace': False, 'reason': 'A guardrail goes only on the lip of a sheer drop: some neighbouring square must be at least 1.5 m lower.', 'canSpawn': True, 'occupants': []}], 'ticksGame': 133, 'operation': {'OperationId': 'op_0cd46401fc8b4c49b4fe291539d18390', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 133}}"
+   }
+  },
+  {
+   "id": "A2_setting",
+   "detail": {
+    "pitGuardrailEnabled": "True"
+   }
+  },
+  {
+   "id": "A4_railed_throw_0",
+   "detail": {
+    "pawn": "Human36010",
+    "start": [
+     114,
+     150
+    ],
+    "flyer": "PawnFlyer_Stun36013",
+    "end": [
+     114,
+     150
+    ],
+    "inPit": false,
+    "descents": [],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A4_unrailed_throw_0",
+   "detail": {
+    "pawn": "Human36681",
+    "start": [
+     134,
+     150
+    ],
+    "flyer": "PawnFlyer_Stun36684",
+    "end": [
+     138,
+     147
+    ],
+    "inPit": true,
+    "descents": [
+     "Human36681@135,147 t=479 fall=17.0"
+    ],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A4_railed_throw_1",
+   "detail": {
+    "pawn": "Human37975",
+    "start": [
+     114,
+     150
+    ],
+    "flyer": "PawnFlyer_Stun37978",
+    "end": [
+     114,
+     150
+    ],
+    "inPit": false,
+    "descents": [],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A4_unrailed_throw_1",
+   "detail": {
+    "pawn": "Human39110",
+    "start": [
+     134,
+     150
+    ],
+    "flyer": "PawnFlyer_Stun39113",
+    "end": [
+     140,
+     150
+    ],
+    "inPit": true,
+    "descents": [
+     "Human39110@141,150 t=1086 fall=17.0"
+    ],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A4_railed_throw_2",
+   "detail": {
+    "pawn": "Human40491",
+    "start": [
+     114,
+     150
+    ],
+    "flyer": "PawnFlyer_Stun40494",
+    "end": [
+     114,
+     149
+    ],
+    "inPit": false,
+    "descents": [],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A4_unrailed_throw_2",
+   "detail": {
+    "pawn": "Human42597",
+    "start": [
+     134,
+     150
+    ],
+    "flyer": "PawnFlyer_Stun42609",
+    "end": [
+     137,
+     154
+    ],
+    "inPit": true,
+    "descents": [
+     "Human42597@137,155 t=1679 fall=13.7"
+    ],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A5_fence_throw_0",
+   "detail": {
+    "pawn": "Human44005",
+    "start": [
+     153,
+     150
+    ],
+    "flyer": "PawnFlyer_Stun44008",
+    "end": [
+     153,
+     150
+    ],
+    "inPit": false,
+    "descents": [],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A5_guardrail_behind_throw_0",
+   "detail": {
+    "pawn": "Human46266",
+    "start": [
+     113,
+     152
+    ],
+    "flyer": "PawnFlyer_Stun46269",
+    "end": [
+     114,
+     152
+    ],
+    "inPit": false,
+    "descents": [],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A5_fence_throw_1",
+   "detail": {
+    "pawn": "Human48750",
+    "start": [
+     153,
+     150
+    ],
+    "flyer": "PawnFlyer_Stun48753",
+    "end": [
+     153,
+     150
+    ],
+    "inPit": false,
+    "descents": [],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A5_guardrail_behind_throw_1",
+   "detail": {
+    "pawn": "Human50905",
+    "start": [
+     113,
+     152
+    ],
+    "flyer": "PawnFlyer_Stun50908",
+    "end": [
+     114,
+     152
+    ],
+    "inPit": false,
+    "descents": [],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A5_fence_throw_2",
+   "detail": {
+    "pawn": "Human53077",
+    "start": [
+     153,
+     150
+    ],
+    "flyer": "PawnFlyer_Stun53081",
+    "end": [
+     153,
+     150
+    ],
+    "inPit": false,
+    "descents": [],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A5_guardrail_behind_throw_2",
+   "detail": {
+    "pawn": "Human53428",
+    "start": [
+     113,
+     152
+    ],
+    "flyer": "PawnFlyer_Stun53441",
+    "end": [
+     114,
+     151
+    ],
+    "inPit": false,
+    "descents": [],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A7_off",
+   "detail": {
+    "pitGuardrailEnabled": "False",
+    "proofrail": "RAIL rail=False guards=0/8 on=False"
+   }
+  },
+  {
+   "id": "A7_railed_off_throw_0",
+   "detail": {
+    "pawn": "Human54582",
+    "start": [
+     114,
+     147
+    ],
+    "flyer": "PawnFlyer_Stun54585",
+    "end": [
+     123,
+     154
+    ],
+    "inPit": true,
+    "descents": [
+     "Human54582@123,154 t=3820 fall=17.0"
+    ],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A7_railed_off_throw_1",
+   "detail": {
+    "pawn": "Human54974",
+    "start": [
+     114,
+     148
+    ],
+    "flyer": "PawnFlyer_Stun54977",
+    "end": [
+     122,
+     152
+    ],
+    "inPit": true,
+    "descents": [
+     "Human54974@122,150 t=4096 fall=17.0"
+    ],
+    "dead": null,
+    "downed": null
+   }
+  },
+  {
+   "id": "A7_on_again",
+   "detail": {
+    "pitGuardrailEnabled": "True"
+   }
+  },
+  {
+   "id": "A6_jump_from_rail",
+   "detail": {
+    "pawn": "Human56123",
+    "rail": "RAIL rail=True guards=3/8 on=True",
+    "jump": "True",
+    "end": [
+     115,
+     154
+    ],
+    "descents": [
+     "Human56123@115,154 t=4333 fall=17.0"
+    ],
+    "dead": null
+   }
+  },
+  {
+   "id": "A6_walk_along_rail",
+   "detail": {
+    "pawn": "Human56257",
+    "from": [
+     114,
+     145
+    ],
+    "to": [
+     114,
+     155
+    ],
+    "end": [
+     114,
+     155
+    ],
+    "descents": [],
+    "order": "{'success': True, 'message': '1/1 pawn(s) standing on (114,155) after 904 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human56257. Pass undraftAfter=true or undraft them yourself.', 'arrivedCount': 1, 'movedCount': 1, 'pawnCount': 1, 'destination': {'x': 114, 'z': 155}, 'pathEndMode': 'OnCell', 'ticksE"
+   }
+  },
+  {
+   "id": "A3_hostile_walk_U",
+   "detail": {
+    "pawn": "Human59002",
+    "lip": [
+     134,
+     150
+    ],
+    "target": [
+     140,
+     150
+    ],
+    "end": [
+     131,
+     155
+    ],
+    "descents": [],
+    "dead": null,
+    "order": "{'success': False, 'message': '0/1 pawn(s) standing on (140,150) after 600 tick(s); 1 moved at all.', 'arrivedCount': 0, 'movedCount': 1, 'pawnCount': 1, 'destination': {'x': 140, 'z': 150}, 'pathEndMode': 'OnCell', 'ticksElapsed': 600, 'ticksRequested': 600, 'timedOut': False, 'polls': 88, 'waitedSeconds': 8.8, 'speedBefore': 'Paused', 'speedRestored': True, 'leftDrafted': [], 'noDrafter': [], 'p"
+   }
+  },
+  {
+   "id": "A3_hostile_walk_R",
+   "detail": {
+    "pawn": "Human60547",
+    "lip": [
+     114,
+     150
+    ],
+    "target": [
+     120,
+     150
+    ],
+    "end": [
+     111,
+     153
+    ],
+    "descents": [],
+    "dead": null,
+    "order": "{'success': False, 'message': '0/1 pawn(s) standing on (120,150) after 605 tick(s); 1 moved at all.', 'arrivedCount': 0, 'movedCount': 1, 'pawnCount': 1, 'destination': {'x': 120, 'z': 150}, 'pathEndMode': 'OnCell', 'ticksElapsed': 605, 'ticksRequested': 600, 'timedOut': False, 'polls': 89, 'waitedSeconds': 8.9, 'speedBefore': 'Paused', 'speedRestored': True, 'leftDrafted': [], 'noDrafter': [], 'p"
+   }
+  },
+  {
+   "id": "A6_climb_out_past_rail",
+   "detail": {
+    "pawn": "Human62086",
+    "ladder": [
+     115,
+     152
+    ],
+    "spawn": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thingsPlaced': 1, 'thingsShort': 0, 'stacksOv",
+    "lower": "LADDER cell=115,152 present=True raised=False inspect=Ladder_down:_your_people_climb;_prisoners_only_in_a_prison_break.",
+    "start": [
+     117,
+     152
+    ],
+    "target": [
+     110,
+     152
+    ],
+    "end": [
+     110,
+     152
+    ],
+    "railAtLadderLip": "RAIL rail=True guards=3/8 on=True",
+    "order": "{'success': True, 'message': '1/1 pawn(s) standing on (110,152) after 2042 tick(s); 1 moved at all. \u26a0\ufe0f Timed out at 30s with only 2042 of 2400 ticks elapsed. \u26a0\ufe0f LEFT DRAFTED: Human62086. Pass undraftAfter=true or undraft them yourself.', 'arrivedCount': 1, 'movedCount': 1, 'pawnCount': 1, 'destinati"
+   }
+  },
+  {
+   "id": "A3abs_hostile_walk_U",
+   "detail": {
+    "relative": "False",
+    "pawn": "Human68022",
+    "end": [
+     131,
+     150
+    ],
+    "descents": [],
+    "order": "{'success': False, 'message': '0/1 pawn(s) standing on (140,148) after 600 tick(s); 1 moved at all.', 'arrivedCount': 0, 'movedCount': 1, 'pawnCount': 1, 'destination': {'x': 140, 'z': 148}, 'pathEndMode': 'OnCell', 'ticksElapsed': 600, 'ticksRequested': 600, 'timedOut': False, 'polls': 88, 'waitedS"
+   }
+  },
+  {
+   "id": "A3abs_hostile_walk_R",
+   "detail": {
+    "relative": "False",
+    "pawn": "Human69677",
+    "end": [
+     111,
+     151
+    ],
+    "descents": [],
+    "order": "{'success': False, 'message': '0/1 pawn(s) standing on (120,148) after 602 tick(s); 1 moved at all.', 'arrivedCount': 0, 'movedCount': 1, 'pawnCount': 1, 'destination': {'x': 120, 'z': 148}, 'pathEndMode': 'OnCell', 'ticksElapsed': 602, 'ticksRequested': 600, 'timedOut': False, 'polls': 89, 'waitedS"
+   }
+  },
+  {
+   "id": "A3abs_restore",
+   "detail": {
+    "pitRelativeClimbEnabled": "True"
+   }
+  },
+  {
+   "id": "falls_7m",
+   "detail": {
+    "n": 40,
+    "jumpsTrue": 40,
+    "jumpResults": [
+     "True"
+    ],
+    "dead": 2,
+    "censusCount": 40,
+    "readout": "OK Hole 7 m \u00b7 Water 0.00 m (0 L)",
+    "deadIds": [
+     "Human72274",
+     "Human72346"
+    ],
+    "censusErr": null
+   }
+  }
+ ],
+ "settings_before": {
+  "pitGuardrailEnabled": "True",
+  "superdeepCaptureEnabled": "True",
+  "superdeepCapturesOwnFaction": "False",
+  "fallDeathEnabled": "True",
+  "fallDeathFromMetres": "6",
+  "fallDeathCertainMetres": "25"
+ },
+ "settings_after": {
+  "pitGuardrailEnabled": "True",
+  "superdeepCaptureEnabled": "True",
+  "superdeepCapturesOwnFaction": "False",
+  "fallDeathEnabled": "True",
+  "fallDeathFromMetres": "6",
+  "fallDeathCertainMetres": "25"
+ }
+}

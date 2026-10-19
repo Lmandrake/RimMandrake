@@ -1,0 +1,955 @@
+{
+  "success": true,
+  "action": "list",
+  "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+  "count": 156,
+  "fields": [
+    {
+      "name": "depthEngineEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pulseIntervalTicks",
+      "type": "Single",
+      "kind": "static",
+      "value": "250"
+    },
+    {
+      "name": "flowPerPulse",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "digToDepthEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "maxDigDepth",
+      "type": "Single",
+      "kind": "static",
+      "value": "16"
+    },
+    {
+      "name": "digCostRisesWithDepth",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "liquidCorrosionEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "liquidIgnitionEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "canalFireEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "liquidHeatPushEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "waterBodyTypeFlipFixEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "liquidHeatStrength",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "burnDaysPerNotch",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "fireFrontSpeedMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "sourceFireReach",
+      "type": "Single",
+      "kind": "static",
+      "value": "3"
+    },
+    {
+      "name": "explosionIgnitesLiquidEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "foamSmothersLiquidFireEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "rainDousesLiquidFireEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "chemfuelInfernoEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "chemfuelIntensity",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "chemfuelSpreadSpeed",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "chemfuelBurnRate",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "astrofuelDetonationEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "astrofuelBlastScale",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "fillInEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "fillInDisplacementEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "sourceBudgetEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "stickyLimitlessEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "wetnessCutoffEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "recessionEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "recedeKeepsLastCell",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "recedeSparesOutflow",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "refillEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pondReturnLegEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "refillWaitsForOccupants",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "dugBedLeavesPondEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pondBedHollowEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "mouseoverDepthEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "deepBedsEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pondDepthEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pondMudDays",
+      "type": "Single",
+      "kind": "static",
+      "value": "2"
+    },
+    {
+      "name": "pondStageWritesPerPulse",
+      "type": "Single",
+      "kind": "static",
+      "value": "400"
+    },
+    {
+      "name": "pondHeadRuleEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "deepBedMaxDepth",
+      "type": "Single",
+      "kind": "static",
+      "value": "100"
+    },
+    {
+      "name": "lakeDepthScale",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "lakeFloorRoughness",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "lakeShoreShelfMetres",
+      "type": "Single",
+      "kind": "static",
+      "value": "0"
+    },
+    {
+      "name": "lakeWayOutMetres",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "drainableLakeMaxCells",
+      "type": "Single",
+      "kind": "static",
+      "value": "40000"
+    },
+    {
+      "name": "rainFillsExcavationsEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "edgeSinksEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "excavationLoadRepairEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "legacyFillFallbackEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "legacyFloodViaEngineEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pumpFedSpreadEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "networkSeamsMoveEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "maxNetworkCells",
+      "type": "Single",
+      "kind": "static",
+      "value": "6000"
+    },
+    {
+      "name": "minLimitlessBodyCells",
+      "type": "Single",
+      "kind": "static",
+      "value": "50"
+    },
+    {
+      "name": "refillRateMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "rainFillPerPulse",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.1"
+    },
+    {
+      "name": "superdeepCaptureEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "superdeepCapturesOwnFaction",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "False"
+    },
+    {
+      "name": "pitStuckAlertEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "ladderRequiredToExitEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "ladderPrisonDoorEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "ladderRaiseLowerEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "superdeepShootingRuleEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "shootingCliffMetres",
+      "type": "Single",
+      "kind": "static",
+      "value": "2"
+    },
+    {
+      "name": "blastsBreakPitCovers",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "superdeepRoomsEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "captureDownEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "wardenFromLipEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitRoomMinDepthMetres",
+      "type": "Single",
+      "kind": "static",
+      "value": "3"
+    },
+    {
+      "name": "pitWidthBodySizeMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "pitRelativeClimbEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitClimbAbilityMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "pitSlowClimbFactor",
+      "type": "Single",
+      "kind": "static",
+      "value": "2"
+    },
+    {
+      "name": "pitRampsEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitRampMaxSpan",
+      "type": "Int32",
+      "kind": "static",
+      "value": "3"
+    },
+    {
+      "name": "pitLadderSlowness",
+      "type": "Single",
+      "kind": "static",
+      "value": "2"
+    },
+    {
+      "name": "trapTriggerEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "trapSensitivityMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "fallDamageEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "fallDamageMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "fallDamagePerMetrePast2",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.5"
+    },
+    {
+      "name": "fallDamageCap",
+      "type": "Single",
+      "kind": "static",
+      "value": "4"
+    },
+    {
+      "name": "fallDeathEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "fallDeathFromMetres",
+      "type": "Single",
+      "kind": "static",
+      "value": "6"
+    },
+    {
+      "name": "fallDeathCertainMetres",
+      "type": "Single",
+      "kind": "static",
+      "value": "25"
+    },
+    {
+      "name": "pitExposureEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitExposureNarrowing",
+      "type": "Single",
+      "kind": "static",
+      "value": "8"
+    },
+    {
+      "name": "pitDrowningEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitDrowningRateMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "pitDrowningHeadFraction",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.9"
+    },
+    {
+      "name": "pitDrowningLyingFraction",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.2"
+    },
+    {
+      "name": "poisonFillEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "slimeSlipEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "slimeSlipChanceMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "slimeSlipStunSeconds",
+      "type": "Single",
+      "kind": "static",
+      "value": "2"
+    },
+    {
+      "name": "slimeClimbOutSlipFactor",
+      "type": "Single",
+      "kind": "static",
+      "value": "2"
+    },
+    {
+      "name": "pitTemperatureCoupling",
+      "type": "Single",
+      "kind": "static",
+      "value": "3"
+    },
+    {
+      "name": "pitResistanceLossMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "spikesEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "spikeDamageMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "spikeMinDropMetres",
+      "type": "Single",
+      "kind": "static",
+      "value": "2"
+    },
+    {
+      "name": "pitDepthDrawOffsetEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitSinkPerLevel",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.3"
+    },
+    {
+      "name": "excavationWallFacesEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "excavationWallMaterialEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitLipOcclusionEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitSinkClampEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitLipOcclusion",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.85"
+    },
+    {
+      "name": "pitLipOccupantCutEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitLipOccupantCutWidth",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "liquidSurfaceMotionEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "liquidWakesEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "liquidLooksEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "liquidBubblesEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "liquidBubbleDensity",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "liquidSeeThroughEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitWalkNormalEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "disabledFluids",
+      "type": "List`1",
+      "kind": "static",
+      "value": "System.Collections.Generic.List`1[System.String]"
+    },
+    {
+      "name": "pitScorchEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitScorchFadeDays",
+      "type": "Single",
+      "kind": "static",
+      "value": "20"
+    },
+    {
+      "name": "pitOutlineEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pitHidesShadowEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "flowDoorsSealedFromPitEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "sluiceLetsBigThroughEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "viscosityEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "thickCreepEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "waterFrontCreepEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "levelBySurfaceEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "levelSetEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "levelExactEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "bottleLoopEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "bottleDirtyStageEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "bottleRevertEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "tankLoopEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "tankCapacityMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "liquidPumpEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "liquidDrillingEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "drillYieldChanceMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "drillUnitsPerCycle",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "typedLiquidShoresEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "digFindsEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "digFindsLocalOnly",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "digFindChanceMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "digFindBudgetPercent",
+      "type": "Single",
+      "kind": "static",
+      "value": "5"
+    },
+    {
+      "name": "digFindLetterEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "digRockGroundEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "digRockWorkMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "4"
+    },
+    {
+      "name": "digRockChunksEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "digRockChunkMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "digSoilChunkPercent",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.5"
+    },
+    {
+      "name": "swaleEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "swaleRateMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    }
+  ],
+  "ticksGame": -1,
+  "operation": {
+    "OperationId": "op_429b9f06b52e4858b031c8f5a5a270cb",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 153
+  },
+  "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "message": "3 thing(s) inspected, 35496 examined.",
+  "matched": 3,
+  "examined": 35496,
+  "threw": 0,
+  "things": [
+    {
+      "id": "Plant_Potato45993",
+      "defName": "Plant_Potato",
+      "label": "potato plant",
+      "x": 165,
+      "z": 178,
+      "className": "RimWorld.Plant",
+      "inspect": [
+        "15% grown",
+        "Growth rate: 12% (temperature growth multiplier 73%)"
+      ]
+    },
+    {
+      "id": "Plant_Potato45994",
+      "defName": "Plant_Potato",
+      "label": "potato plant",
+      "x": 175,
+      "z": 178,
+      "className": "RimWorld.Plant",
+      "inspect": [
+        "15% grown",
+        "Growth rate: 1.2% (temperature growth multiplier 73%)"
+      ]
+    },
+    {
+      "id": "RM_Filth_WaterSpill45995",
+      "defName": "RM_Filth_WaterSpill",
+      "label": "spilled water x3",
+      "x": 166,
+      "z": 178,
+      "className": "RimWorld.Filth",
+      "inspect": []
+    }
+  ],
+  "ticksGame": 1616,
+  "operation": {
+    "OperationId": "op_7b9b026b5f9c46ff8947df16e132cf97",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 46
+  },
+  "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1616
+  }
+}

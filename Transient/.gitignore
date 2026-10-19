@@ -304,8 +304,10 @@
 !/fw_scenes/live/day4/proofs_swim_fix3.json
 !/fw_scenes/live/day4/run_S3_fix3_stdout.txt
 !/fw_scenes/live/day4/sweep_identity_fix3.json
+!/fw_scenes/live/day5/**
 !/fw_scenes/live/day5/run_S5_stdout.txt
 !/fw_scenes/live/day5/sweep_identity.json
+!/fw_scenes/live/day6/**
 !/fw_scenes/live/raid_trench_direct_20261017.json
 !/fw_scenes/live/walk_S2_S6_summary.txt
 !/fw_scenes/live_day_report.md

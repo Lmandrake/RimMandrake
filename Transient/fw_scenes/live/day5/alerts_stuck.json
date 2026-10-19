@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "count": 4,
+  "alerts": [
+    {
+      "type": "RimWorld.Alert_NeedColonistBeds",
+      "active": true,
+      "label": "Need colonist beds",
+      "priority": "High",
+      "explanation": "You have more colonists than you have colonist beds. Someone will lack a place to sleep.\n\nEither make more beds, or change a prisoner bed to a colonist bed.\n\nIf you have no resources, sleeping spots are free and can be placed instantly."
+    },
+    {
+      "type": "RimWorld.Alert_NeedJoySources",
+      "active": true,
+      "label": "Need recreation variety",
+      "priority": "Medium",
+      "explanation": "There are only 2 different recreation types available in Colony, but at the current expectations level (very low), colonists need 3 different kinds of recreation to remain satisfied. Provide recreation variety supplying a new, different kind of recreation.\n\n<color=#E6E64CFF>Available recreation types</color>:\n  - Solitary relaxation\r\n  - Social interaction\n\n<color=#E6E64CFF>Missing recreation types</color>:\n  - Dexterity play\n  - Cerebral play\n  - Television watching\n  - Telescope study\n  - Music\n  - Chemical consumption\n  - Food consumption\n  - Reading\n\nNote: You can check the recreation type of any item in its stats page, accessible with the 'i' button."
+    },
+    {
+      "type": "RimWorld.Alert_ColonistNeedsTend",
+      "active": true,
+      "label": "Medical treatment needed",
+      "priority": "High",
+      "explanation": "These people need medical treatment. Without it, they may die of their wounds, or their wounds may become permanent.\n  - <color=#D09B61FF>Cline</color>\n\nTreat them by sending them to a medical bed.\n\n(First, assign a medical bed by selecting it and toggling it into a medical bed. Then, select the wounded person and right-click on the medical bed to make them a patient.)"
+    },
+    {
+      "type": "RimMandrake.FlowWorks.Alert_ColonistStuckInPit",
+      "active": true,
+      "label": "Colonist stuck in a pit",
+      "priority": "Critical",
+      "explanation": "These colonists are down a pit they cannot climb out of, and cannot reach food or a bed:\n\n  - Cline\n\nLower a ladder into the pit, or dig a ramp out."
+    }
+  ],
+  "ticksGame": 996,
+  "operation": {
+    "OperationId": "op_fc778952287647d09c4190f9f69803a2",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 33
+  },
+  "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 996
+  }
+}
