@@ -2976,7 +2976,7 @@ def test_wall_clock_baseline_is_per_mode_not_pooled():
     workload under perfectly ordinary conditions. The SAME wall-clock
     value must be judged differently depending on which mode it came
     from."""
-    edit_typical = 140.0  # under edit's OWN 2x-baseline (300s), over generate's (124s)
+    edit_typical = 290.0  # under edit's OWN 2x-baseline (300s), over generate's (280s)
 
     d = artpiped.Detector()
     for _ in range(3):
