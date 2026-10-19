@@ -60,15 +60,16 @@ The first trial rebuild (Leaning Scrub) re-resolved 17 rows, for example `RSW_An
 - `sheet_freshness.verify_html` re-measures the disk, the src XML and the thumbnails on **every** call. It keeps no
   cache across calls; the only cache is a file-hash memo keyed on (path, size, mtime).
 
-## Refuse to serve
+## Refuse at build, label at serve
 
 - **`scaled_review_gate` req 15 `check_fresh`**: a sheet stale at build is never written. Because `refresh_sheets.py`
   re-runs the gate on every sheet it leaves alone, a sheet that has gone stale is rebuilt by the next refresh.
-- **`serve_gated.py`** refuses to start a stale sheet (exit 5, naming each stale row and reason). A running server
-  re-verifies on **every page load** (memo of 5 s or less) and serves a refusal page instead of a sheet that went stale
-  while open. There is no override (owner, by card 2026-10-14: the escape hatch is removed): a stale sheet is never
-  served, and the only way forward is a rebuild. `selftest_sheet_freshness.py` proves no stale-serve path exists.
-- An unmeasurable sheet, whether it has no `ITEMS` or a crashed check, is refused, never served as fresh.
+- **`serve_gated.py`** re-verifies at start and on **every page load** (memo of 5 s or less). Since the owner's card
+  of 2026-10-19 (*"How far do we go to make art review fast and reliable? → Python command, no agent before you see
+  it"*, relaxing his 2026-10-14 card from "stale sheets are refused" to "stale rows are refused") each stale ROW is
+  served with a red `STALE: <reason>` badge and its pick controls off; the other rows work. Nothing serves a stale row
+  as fresh. `selftest_sheet_freshness.py` (a) proves it.
+- A page with no `ITEMS` is refused (exit 5); a check that crashes labels every row stale, never fresh.
 
 ## Install invalidates
 
@@ -79,7 +80,7 @@ happens:
   showing that texPath that is now stale.
 - `enact.py --apply` with any install or retire runs `after_install(None)`, a scan of every art sheet.
 
-Both only print and never fail; the install has already happened, and the serve path refuses the stale sheets anyway.
+Both only print and never fail; the install has already happened, and the serve path labels the stale rows.
 
 ## Retrofit status at build time (2026-10-14)
 
@@ -89,8 +90,8 @@ they are pre-template, non-art or icon pages, and are UNMEASURED and refused. Th
 - 12 of the Oct 4–5 biome sheets (Weeping Stones 13 of 51 rows, The Scald 9 of 20, Leaning Scrub 6 of 83);
 - the GSS owner-walk sheet (lamp mast since re-installed);
 - GSS all-art (5 of 151) and FlowWorks owner-walk (1 of 47);
-- tonight's Pyrelands sheet (9 of 9 rows: its renders are now installed). They are rebuilt by `refresh_sheets.py` or `art_sheet.py`, and
-until then they refuse to serve.
+- tonight's Pyrelands sheet (9 of 9 rows: its renders are now installed). They are rebuilt by `refresh_sheets.py` or `art_sheet.py`; until then
+their stale rows are labelled when served (since 2026-10-19).
 
 ## What remains (not built tonight)
 
