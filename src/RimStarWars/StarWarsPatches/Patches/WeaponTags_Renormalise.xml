@@ -62,29 +62,7 @@
     2026-08-31/2026-09-06 removals just above.
 -->
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AG_ForsakenBow"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AG_ForsakenBow"]/weaponTags</xpath>
-      <value><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AG_ForsakenBow"]</xpath>
-      <value><weaponTags><li>NeolithicRangedBasic</li><li>NeolithicRangedDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AG_ForsakenSpear"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AG_ForsakenSpear"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AG_ForsakenSpear"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
+  <!-- AG_ForsakenBow / AG_ForsakenSpear tag ops stood here; Alpha Genes was retired 2026-10-18 (Forsaken gear has no twin), so they were deleted. -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AlphaThrumboHorn"]/weaponTags</xpath>
