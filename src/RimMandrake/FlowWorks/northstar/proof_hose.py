@@ -438,17 +438,26 @@ def realflow(B, rows):
         e1 = _tank(B, tank5).get("units") or 0
         row("NS_pipe_and_hose_one_net", e1 - e0 >= UNITS_PER_LEVEL, {"lay": lp, "units": [e0, e1], "net": B.hp("net:%d,%d" % s5.pump)})
         # a second pipe run touching a mid tank (and a tank V on it) must stay out of the pump's net
-        mid, v = (ox + 1, oz + 11), (ox + 1, oz + 13)
-        s5.build("RM_LiquidTank:%d,%d" % mid, "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 11), "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 12),
-                 "RM_LiquidTank:%d,%d" % v)
+        # A 2x2 tank at (x,z) occupies x..x+1, z..z+1. Live run 6 (2026-10-19) put V at (ox+1, oz+13): its z+1 row is oz+14, one row
+        # past the prepared plot (RF_PH=14 -> oz..oz+13), so V was never built (SITE). V now sits WEST of the pipe run, inside the
+        # RF_WEST-prepared strip: (ox-2..ox-1, oz+11..oz+12) touches the pipe cells (ox, oz+11/12) from the other side than mid.
+        mid, v = (ox + 1, oz + 11), (ox - 2, oz + 11)
+        bb = s5.build("RM_LiquidTank:%d,%d" % mid, "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 11), "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 12),
+                      "RM_LiquidTank:%d,%d" % v)
         B.ticks(300)
         net = B.hp("net:%d,%d" % s5.pump)
         reached = [tuple(t.get("tank") or ()) for t in net.get("tanks") or []]
         # can-fail on an empty probe (code review 2026-10-11): an empty or failed net read used to PASS ("v not in []"). The probe
         # must first see the pump's own hose-fed tank (tank5), and V must really stand, before "V is absent" means anything.
         saw_own, v_built = tuple(tank5) in reached, bool(_tank(B, v))
-        row("NS_tank_does_not_bridge_pipe_runs", saw_own and v_built and tuple(v) not in reached,
-            {"reached": reached, "secondRunTank": v, "probeSawPumpTank": saw_own, "secondRunTankBuilt": v_built})
+        mid_built = bool(_tank(B, mid))
+        if not (mid_built and v_built):
+            # a tank that was not built measures the staging, not the mod: UNMEASURED SITE, with the build_batch reply for the cause
+            row("NS_tank_does_not_bridge_pipe_runs", False, {"reached": reached, "secondRunTank": v, "midTankBuilt": mid_built,
+                "secondRunTankBuilt": v_built, "build": bb}, unmeasured="the second pipe run's tanks were not both built (mid %s, V %s)" % (mid_built, v_built))
+        else:
+            row("NS_tank_does_not_bridge_pipe_runs", saw_own and tuple(v) not in reached,
+                {"reached": reached, "secondRunTank": v, "probeSawPumpTank": saw_own, "secondRunTankBuilt": v_built})
     # ---- an external (VE PipeSystem) pipe: visual only. Needs a VE pipe def on the list.
     ve = B.call("jawa/get_defs", defs="ThingDef/VPE_PipeChemfuel") or {}
     row("NS_external_pipe_is_visual_only", False, {"probe": ve.get("foundCount")},
