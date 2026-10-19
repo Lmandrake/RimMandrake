@@ -1,0 +1,109 @@
+[contagion-note] sick start taken off the Contagion: {"tile": 3, "from": "RM_Contagion", "to": "AridShrubland"}
+[contagion-note] retiled: {"tile": 3, "from": "AridShrubland", "to": "RM_Contagion"}
+[contagion] 10:16:43 retile_to_contagion PASS 
+[contagion] 10:16:43 site_is_contagion PASS 
+[contagion-note] quiet-site profile (once per run): {"storyteller/mental/disease": {"enableStoryteller": false, "enableRandomMentalStates": false, "enableRandomDiseases": false, "logRaidInfo": true, "threatScale": 0.0, "allowBigThreats": false}, "wildSpawner": "blocked (read back)", "problems": [], "error": null}
+[contagion-note] mapgen wildlife removed: {"removed": 40, "verified": true, "residue": []}
+[contagion-note] pad burn unroofed: {"cellsChanged": 358, "perDef": {"None": 358}}
+[contagion] 10:16:50 burn_site_ready PASS 
+[contagion-note] no-Burn control: living samples / samples standing on the patch: [32, 0]
+[contagion] 10:17:09 native_no_dive_without_burn PASS 
+[contagion] 10:17:15 repulsor_forces_burn PASS 
+[contagion] 10:17:17 burn_harmless_at_zero_damage PASS 
+[contagion-note] burn native respawns (lost before a Burn was read): 0
+[contagion] 10:17:37 burn_doses_the_exposed_visitor PASS 
+[contagion-note] native alive at the end / Burn seen while alive: [false, true]
+[contagion] 10:17:37 burn_hurts_native_spares_armored UNMEASURED UNMEASURED: the armored control left the open pad (positions [(131, 76), (132, 77), (132, 81), (132, 83), (132, 83), (132, 83), (132, 83), (132, 90), (131, 100), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 
+[contagion-note] native job samples (def, targetA) / dive orders / samples on the patch: [["('RM_ShadeDash', 138, 76)", "('Wait', 146, 62)"], 0, 7]
+[contagion] 10:17:37 native_dives_for_roof FAIL ExpectationFailed: the UV-shy native was never ordered to the roof patch (no Goto targeting (131, 76, 8, 8); jobs seen ["('RM_ShadeDash', 138, 76)", "('Wait', 146, 62)"]); standing on the patch True is a wander, not a dive; positions [(131, 81), (135, 77), (138, 76), (138, 76), (138, 76), (138, 76),
+[contagion] 10:17:37 burn_off_means_no_harm UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:17:37 repulsor_off_lapses_burn UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:17:38 site_is_contagion PASS 
+[contagion-note] mapgen wildlife removed: {"removed": 2, "verified": true, "residue": []}
+[contagion-note] pad coal unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 10:17:39 coalescence_site_ready PASS 
+[contagion] 10:17:42 coalescence_off_absorbs_nothing PASS 
+[contagion-note] after absorbing 6: {"left": 3, "stage": 1, "mass": 3}
+[contagion-note] unabsorbed Unfinished: [{"id": "RM_TheUnfinished45818", "at": [188, 131], "inRing": false, "downed": false, "faction": null, "mental": false, "moving": 0.61, "job": ["Wait", 188, 131]}, {"id": "RM_TheUnfinished45819", "at": [200, 128], "inRing": false, "downed": false, "faction": null, "mental": false, "moving": 0.82, "job": ["Wait", 200, 128]}, {"id": "RM_TheUnfinished45820", "at": [188, 131], "inRing": false, "downed": false, "faction": null, "mental": false, "moving": 0.88, "job": ["Wait", 188, 131]}]
+[contagion] 10:17:50 coalescence_absorbs_and_grows_a_stage FAIL ExpectationFailed: after 10 passes the Coalescence reads Stage 1, mass 3 (want Stage >= 2 at mass >= 6); 3 of 6 Unfinished still alive and walkable: [{'id': 'RM_TheUnfinished45818', 'at': [188, 131], 'inRing': False, 'downed': False, 'faction': None, 'mental': False, 'moving': 0.61, 'job': ['Wait', 
+[contagion] 10:17:50 coalescence_emits_manhunters_and_grows_on_its_own UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:17:50 burn_collapses_it_into_monstrous_samples UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:17:50 monstrous_fixture UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:17:50 monstrous_gestation_grows_one_limb UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:17:50 grown_limbs_off_grows_organs UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:17:51 restore_tile PASS 
+[contagion-note] quiet-site restore: ok
+component burn_forced/burn_hurts_native_spares_armored: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the armored control left the open pad (positions [(131, 76), (132, 77), (132, 81), (132, 83), (132, 83), (132, 83), (132, 83), (132, 90), (131, 100), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103), (132, 103)]): 'spared' could be shelter", "evidence": [{"call": "native alive at the 
+component burn_forced/native_dives_for_roof: {"toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: the UV-shy native was never ordered to the roof patch (no Goto targeting (131, 76, 8, 8); jobs seen [\"('RM_ShadeDash', 138, 76)\", \"('Wait', 146, 62)\"]); standing on the patch True is a wander, not a dive; positions [(131, 81), (135, 77), (138, 76), (138, 76), (138, 76), (138, 76), (138, 76), (144, 67), (146, 62), (146, 62), (146, 62), (146, 62), (146, 62), (146, 62), (146, 62), (146, 62), (146, 62), (146, 62), (146, 62), (146, 62)]", "evidence": [{"call": "native job samples (def, targetA) / dive orde
+component burn_forced/burn_off_means_no_harm: {"toggle": "burnEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component burn_forced/repulsor_off_lapses_burn: {"toggle": "cloudRepulsorEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/coalescence_absorbs_and_grows_a_stage: {"toggle": "coalescenceEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: after 10 passes the Coalescence reads Stage 1, mass 3 (want Stage >= 2 at mass >= 6); 3 of 6 Unfinished still alive and walkable: [{'id': 'RM_TheUnfinished45818', 'at': [188, 131], 'inRing': False, 'downed': False, 'faction': None, 'mental': False, 'moving': 0.61, 'job': ['Wait', 188, 131]}, {'id': 'RM_TheUnfinished45819', 'at': [200, 128], 'inRing': False, 'downed': False, 'faction': None, 'mental': False, 'moving': 0.82, 'job': ['Wait', 200, 128]}, {'id': 'RM_TheUnfinished45820', 'at': [
+component coalescence/coalescence_emits_manhunters_and_grows_on_its_own: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/burn_collapses_it_into_monstrous_samples: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/monstrous_fixture: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/monstrous_gestation_grows_one_limb: {"toggle": "grownLimbsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/grown_limbs_off_grows_organs: {"toggle": "grownLimbsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component defs/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component defs/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component defs/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component defs/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component defs/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component defs/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_biomeRarityFactor/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeRarityFactor", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_burnDamageFactor/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnDamageFactor", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_burnEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_burnFrequency/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnFrequency", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_burnTellsEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnTellsEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_cloudRepulsorEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "cloudRepulsorEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_coalescenceEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "coalescenceEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_draftprintProvokeChance/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "draftprintProvokeChance", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_draftprintsEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "draftprintsEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_genomeOrganGrowingEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "genomeOrganGrowingEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_grownLimbsEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "grownLimbsEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_helixContractRewardFactor/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "helixContractRewardFactor", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_mulchDropsEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "mulchDropsEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_sunbeamArrestEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sunbeamArrestEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_sunbeamNativeFactor/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sunbeamNativeFactor", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_touchedEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "touchedEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_touchedExposureFactor/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "touchedExposureFactor", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_touchedMutationRate/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "touchedMutationRate", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_unfinishedSpawnerEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "unfinishedSpawnerEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_zhoolConversionEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolConversionEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_zhoolConversionRate/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolConversionRate", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_zhoolConvertsCrops/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolConvertsCrops", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_zhoolHazeDensity/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolHazeDensity", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component settings_zhoolHazeEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolHazeEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component repulsor_clear/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component repulsor_clear/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "cloudRepulsorEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component repulsor_clear/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "cloudRepulsorEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component repulsor_clear/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component spawner/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component spawner/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "unfinishedSpawnerEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component spawner/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "unfinishedSpawnerEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component spawner/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component spawner/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component spawner/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "mulchDropsEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component burn_natural/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component burn_natural/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component burn_natural/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component burn_natural/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnFrequency", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component burn_natural/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnFrequency", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component uv/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component uv/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component uv/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "sunbeamNativeFactor", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component touched/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component touched/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "touchedEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component touched/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "touchedEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component touched/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "sunbeamArrestEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component zhool_haze/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component zhool_haze/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component zhool_haze/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolConversionEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component zhool_haze/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolConversionRate", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component genome/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component genome/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component genome/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "genomeOrganGrowingEnabled", "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component genome/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component genome/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+component log/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains site,burn_forced,coalescence,site_restore)"}
+Contagion: NOT GREEN  PASS=11 FAIL=2 UNMEASURED=71  calls=2370 mean=29.937ms  -> Transient/live_testing_2026-10-19e/contagion_A1A6.json

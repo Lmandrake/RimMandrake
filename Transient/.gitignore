@@ -368,6 +368,11 @@
 !/live_testing_2026-10-19b/**
 !/live_testing_2026-10-19c/cauldron_result.json
 !/live_testing_2026-10-19c/cauldron_run.txt
+!/live_testing_2026-10-19e/contagion_A1A6.json
+!/live_testing_2026-10-19e/contagion_A6_rerun.json
+!/live_testing_2026-10-19e/load.json
+!/live_testing_2026-10-19e/run.txt
+!/live_testing_2026-10-19e/run_A6.txt
 !/livesession2_20261001/caves.json
 !/longshade_shadespire_redo_job.json
 !/mapgen_v3/comparator_sheet.png
