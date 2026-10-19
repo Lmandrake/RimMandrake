@@ -285,6 +285,9 @@ def capture_hashes(capture, def_type):
         return {r["defName"]: r["shortHash"] for r in json.load(fh)["defs"]}
 
 
+DROPPED = "(removed from the save)"
+
+
 def mutator_hash_map(mapping, old_capture=OLD_CAPTURE, new_capture=NEW_CAPTURE):
     """old shortHash -> (old name, new name, new shortHash) for every mapped TileMutatorDef row with a port."""
     import zlib  # noqa: F401  (kept local: only this mode needs it)
@@ -299,7 +302,10 @@ def mutator_hash_map(mapping, old_capture=OLD_CAPTURE, new_capture=NEW_CAPTURE):
     for o, r in mapping["TileMutatorDef"].items():
         if o not in old:
             sys.exit("%s not in the old capture %s - cannot know its hash" % (o, old_capture))
-        out[old[o]] = (o, r["new"], predicted[r["new"]] if r["new"] else None)
+        if r.get("drop"):  # owner-dropped: its entries are removed from the save, not renamed
+            out[old[o]] = (o, DROPPED, None)
+        else:
+            out[old[o]] = (o, r["new"], predicted[r["new"]] if r["new"] else None)
     return out
 
 
@@ -310,26 +316,51 @@ def rewrite_world_mutators(raw, mapping, hmap):
     import zlib
     edits, report = [], collections.OrderedDict()
     defs_re = re.compile(rb"<tileMutatorDefsDeflate>(.*?)</tileMutatorDefsDeflate>", re.S)
-    for m in defs_re.finditer(raw):
-        body = m.group(1)
-        grid = zlib.decompress(base64.b64decode(body.strip()), -15)
-        hs = list(struct.unpack("<%dH" % (len(grid) // 2), grid))
-        for i, h in enumerate(hs):
-            if h in hmap:
-                o, n, nh = hmap[h]
-                key = (o, n or "NOT PORTED - left in place", "tileMutatorDefsDeflate")
-                report[key] = report.get(key, 0) + 1
-                if nh is not None:
-                    hs[i] = nh
+    tiles_re = re.compile(rb"<tileMutatorTilesDeflate>(.*?)</tileMutatorTilesDeflate>", re.S)
+
+    def decode(body):
+        return zlib.decompress(base64.b64decode(body.strip()), -15)
+
+    def encode(body, grid):
         co = zlib.compressobj(9, zlib.DEFLATED, -15)
-        new_grid = struct.pack("<%dH" % len(hs), *hs)
-        b64 = base64.b64encode(co.compress(new_grid) + co.flush())
+        b64 = base64.b64encode(co.compress(grid) + co.flush())
         # keep the engine's layout: CRLF, 100-char lines, CRLF before the closing tag (MEASURED on the canonical save)
         nl = b"\r\n" if body.startswith(b"\r\n") else b"\n"
         width = len(body.strip().split(nl)[0]) or 100
-        new_body = nl + nl.join(b64[i:i + width] for i in range(0, len(b64), width)) + nl
+        return nl + nl.join(b64[i:i + width] for i in range(0, len(b64), width)) + nl
+
+    dm, tm = list(defs_re.finditer(raw)), list(tiles_re.finditer(raw))
+    dropping = any(n == DROPPED for (_, n, _) in hmap.values())
+    if dropping and len(dm) != len(tm):
+        sys.exit("cannot drop entries: %d tileMutatorDefsDeflate vs %d tileMutatorTilesDeflate" % (len(dm), len(tm)))
+    for k, m in enumerate(dm):
+        body = m.group(1)
+        grid = decode(body)
+        hs = list(struct.unpack("<%dH" % (len(grid) // 2), grid))
+        keep = [True] * len(hs)
+        for i, h in enumerate(hs):
+            if h in hmap:
+                o, n, nh = hmap[h]
+                if n == DROPPED:
+                    keep[i] = False
+                    key = (o, DROPPED, "tileMutatorDefsDeflate+tileMutatorTilesDeflate")
+                else:
+                    key = (o, n or "NOT PORTED - left in place", "tileMutatorDefsDeflate")
+                report[key] = report.get(key, 0) + 1
+                if nh is not None:
+                    hs[i] = nh
+        if not all(keep):
+            tb = tm[k].group(1)
+            tg = decode(tb)
+            ts = struct.unpack("<%dI" % (len(tg) // 4), tg)
+            if len(ts) != len(hs):
+                sys.exit("tile array (%d) and def array (%d) differ in length" % (len(ts), len(hs)))
+            ts = [t for t, kp in zip(ts, keep) if kp]
+            edits.append((tm[k].start(1), tm[k].end(1), encode(tb, struct.pack("<%dI" % len(ts), *ts))))
+            hs = [h for h, kp in zip(hs, keep) if kp]
+        new_grid = struct.pack("<%dH" % len(hs), *hs)
         if new_grid != grid:
-            edits.append((m.start(1), m.end(1), new_body))
+            edits.append((m.start(1), m.end(1), encode(body, new_grid)))
     lm_map = {o: r["new"] for o, r in mapping["LandmarkDef"].items()}
     for lm in re.finditer(rb"<landmarks>.*?</landmarks>", raw, re.S):
         for d in re.finditer(rb"<def>([^<]+)</def>", lm.group(0)):
@@ -356,7 +387,7 @@ def main_mutators_only(a):
     out += raw[last:]
     rows = ["| old | new | where | entries |", "|---|---|---|---:|"]
     for (o, n, w), k in report.items():
-        rows.append("| `%s` | %s | %s | %d |" % (o, n if n.startswith("NOT") else "`%s`" % n, w, k))
+        rows.append("| `%s` | %s | %s | %d |" % (o, n if n.startswith("NOT") or n == DROPPED else "`%s`" % n, w, k))
     hl = ["| old | new | old shortHash | new shortHash (predicted against %s) |" % NEW_CAPTURE, "|---|---|---:|---:|"]
     hl += ["| `%s` | `%s` | %d | %s |" % (o, n, h, nh) for h, (o, n, nh) in sorted(hmap.items(), key=lambda kv: kv[1][0])]
     open(a.table, "w").write("## World-tile mutator / landmark renames (%d splices)\n\n%s\n\n## shortHashes\n\n%s\n"

@@ -97,6 +97,8 @@ def main():
         for old, r in sorted(mapping[t].items()):
             if r["new"]:
                 check((t, r["new"]) in ours, "%s %s -> %s exists in src (%s)" % (t, old, r["new"], r["status"]))
+            elif r.get("drop"):
+                notes.append("%s %s: dropped by the owner (%s)" % (t, old, r["how"]))
             else:
                 notes.append("%s %s: not reproduced (%s)" % (t, old, r["how"]))
     eh = "".join(open(p, encoding="utf-8").read() for p in glob.glob(os.path.join(EH_SRC, "*.cs")))
@@ -118,7 +120,7 @@ def main():
     try:
         import save_donor_rewrite as sdr
         hm = sdr.mutator_hash_map(mapping)
-        new_hashes = [nh for (_, n, nh) in hm.values() if n]
+        new_hashes = [nh for (_, n, nh) in hm.values() if nh is not None]
         check(len(set(new_hashes)) == len(new_hashes), "ported mutators get %d distinct predicted shortHashes" % len(new_hashes))
     except SystemExit as e:
         check(False, "hash simulation refused: %s" % e)

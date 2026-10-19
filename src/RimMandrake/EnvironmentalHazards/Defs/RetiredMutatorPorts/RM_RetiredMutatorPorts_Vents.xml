@@ -9,7 +9,7 @@
      Vents: vanilla Odyssey's BaseAncientVentThing + vanilla CompAncientSmokeVent (CompAncientVent: one map-wide
      on/off cycle that registers conditionToCause while on). Donor values kept: on 12 / off 4 MTB days, heatToPush
      -200 (the donor set -200 on all four; kept as found). Conditions are vanilla: DeepFreeze (Core), GrayPall,
-     BloodRain, DeathPall (Anomaly; every DLC is assumed). -->
+     BloodRain (Anomaly; every DLC is assumed). The death pall vent is NOT ported (owner 2026-10-19: no zombies in Utinni). -->
 <Defs>
 
   <ThingDef Name="RM_PortedAncientVentBase" ParentName="BaseAncientVentThing" Abstract="True">
@@ -100,39 +100,6 @@
         <startupMessageKey>RM_AncientBloodRainVentStartUp</startupMessageKey>
         <shutdownMessageKey>RM_AncientBloodRainVentShutdown</shutdownMessageKey>
         <activeInspectStringKey>RM_AncientBloodRainVentActive</activeInspectStringKey>
-        <activeSound>AncientVent_Ambient</activeSound>
-      </li>
-      <li Class="CompProperties_FleckEmitterLongTerm">
-        <fleckDef>AncientSmoke</fleckDef>
-        <spawnRadius>2.0</spawnRadius>
-        <spawnChance>0.2</spawnChance>
-        <spawnOffsetFromCenter>(0.5,0.0,-0.5)</spawnOffsetFromCenter>
-        <prewarmCycles>1.0</prewarmCycles>
-        <fleckScale>4.0</fleckScale>
-        <minRotationRate>-20.0</minRotationRate>
-        <maxRotationRate>20.0</maxRotationRate>
-        <minVelocityAngle>-20.0</minVelocityAngle>
-        <maxVelocityAngle>20.0</maxVelocityAngle>
-        <minVelocitySpeed>0.5</minVelocitySpeed>
-        <maxVelocitySpeed>0.7</maxVelocitySpeed>
-      </li>
-    </comps>
-  </ThingDef>
-
-  <ThingDef ParentName="RM_PortedAncientVentBase">
-    <defName>RM_AncientDeathPallVent</defName>
-    <label>ancient death pall vent</label>
-    <description>A massive duct that drops endlessly into the ground. It regularly vents clouds of microscopic self-powered archites that reanimate corpses into a twisted imitation of life.</description>
-    <comps>
-      <li Class="CompProperties_AncientVentEmitter">
-        <compClass>CompAncientSmokeVent</compClass>
-        <conditionToCause>DeathPall</conditionToCause>
-        <onDurationMtbDays>12</onDurationMtbDays>
-        <offDurationMtbDays>4</offDurationMtbDays>
-        <heatToPush>-200</heatToPush>
-        <startupMessageKey>RM_AncientDeathPallVentStartUp</startupMessageKey>
-        <shutdownMessageKey>RM_AncientDeathPallVentShutdown</shutdownMessageKey>
-        <activeInspectStringKey>RM_AncientDeathPallVentActive</activeInspectStringKey>
         <activeSound>AncientVent_Ambient</activeSound>
       </li>
       <li Class="CompProperties_FleckEmitterLongTerm">
