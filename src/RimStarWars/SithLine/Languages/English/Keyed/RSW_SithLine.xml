@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- SANGUOPHAGE_KEPT_UNREACHABLE_1 §2: a Sith adept never joins. {0} = pawn. -->
+  <RSW_SithRefusesToJoin>{0} is a Sith adept and will never be one of yours.</RSW_SithRefusesToJoin>
+  <!-- §3: the lair Sith rises from its trance. {0} = pawn. -->
+  <RSW_SithLairRises>{0} rises from the dark trance.</RSW_SithLairRises>
+</LanguageData>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SANGUOPHAGE_KEPT_UNREACHABLE_1 design §1.5: RSW_RimMandrakeAnzati moves from the five vanilla blood/trance genes
+     onto this mod's copies (Defs/GeneDefs/RSW_AnzatiCopies.xml). A patch, not an edit: that XenotypeDef is generated
+     by gen_races_mod.py. Each swap is conditional on the vanilla li being there. Not setting-gated: the copies behave
+     exactly like the originals, so the swap is invisible except to the Sith relabels it protects the Anzati from. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAnzati"]/genes/li[text()="Hemogenic"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAnzati"]/genes/li[text()="Hemogenic"]</xpath>
+      <value><li>RSW_AnzatiHemogenic</li></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAnzati"]/genes/li[text()="HemogenDrain"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAnzati"]/genes/li[text()="HemogenDrain"]</xpath>
+      <value><li>RSW_AnzatiHemogenDrain</li></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAnzati"]/genes/li[text()="Bloodfeeder"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAnzati"]/genes/li[text()="Bloodfeeder"]</xpath>
+      <value><li>RSW_AnzatiBloodfeeder</li></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAnzati"]/genes/li[text()="Coagulate"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAnzati"]/genes/li[text()="Coagulate"]</xpath>
+      <value><li>RSW_AnzatiCoagulate</li></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAnzati"]/genes/li[text()="Deathrest"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAnzati"]/genes/li[text()="Deathrest"]</xpath>
+      <value><li>RSW_AnzatiDeathrest</li></value>
+    </match>
+  </Operation>
+</Patch>

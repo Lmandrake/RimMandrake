@@ -7141,8 +7141,8 @@
   "description": "Trotter-handed and iron-stomached, a pigskin will eat what would kill the rest of the crew and never miss a meal. Don't hand them fine tools—those hands weren't made for it—but hand them the detonator and stand back; they've got a taste for it."
  },
  "XenotypeDef::Sanguophage": {
-  "label": "Sanguophage",
-  "description": "Doesn't age, barely dies, heals like the desert doesn't touch it—and needs the blood of the free peoples to keep living, which is the kind of debt no clan wants on its ledger. Rare enough we've only heard the stories. Burn first, ask later."
+  "label": "Sith adept",
+  "description": "The dark-side ones. Doesn't age, barely dies, heals like the desert doesn't touch it, and lives on the life it pulls out of the free peoples, which is the kind of debt no clan wants on its ledger. You never bargain with one and you never take one in: it will not kneel to anyone. Rare enough we've only heard the stories. Burn first, ask later."
  },
  "XenotypeDef::Waster": {
   "label": "Waster",

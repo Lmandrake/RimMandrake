@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rsw.sithline</packageId>
+  <name>RimStarWars — Sith Line</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SANGUOPHAGE_KEPT_UNREACHABLE_1: the vanilla Sanguophage, retold as a Sith adept line
+(design/RimMandrake/sith_line_design.md). A reskin of the vampire: hemogen, bloodfeed and deathrest
+stay, told as stolen life, Force drain and dark trance. No new mechanics.
+
+- Never recruitable: a Sith adept is always an enemy, and a Sith prisoner never joins.
+- Their buildings cannot be built or reinstalled by the player.
+- The vanilla sanguophage quests and scenario (the conversion routes) are switched off.
+- Rare inquisitors join Galactic Empire raids and settlement defenders.
+- A rare rumour reveals a hidden Sith sanctum in the Abyss: one lone adept in dark trance, raidable for loot.
+- The Anzati keep vanilla blood-and-trance behaviour on their own gene and casket copies.
+
+Every behaviour has a Mod Settings switch; defaults are the shipped behaviour.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Biotech</packageId>
+      <displayName>RimWorld - Biotech</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Royalty</packageId>
+      <displayName>RimWorld - Royalty</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rsw.armoury</packageId>
+      <displayName>Jawa Armoury Rebalance</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>mandrake.rsw.armoury</li>
+    <!-- the Anzati xenotype this mod repoints onto its own gene copies -->
+    <li>mandrake.rsw.starwarsraces</li>
+    <!-- the inquisitor's weapon (Force_Lightsaber_Inquisitor, measured in the 2026-10-04 def dump) -->
+    <li>lee.theforce.lightsaber</li>
+    <!-- RM_Abyss for the lair (soft; detected by def lookup) -->
+    <li>mandrake.rm.biomes</li>
+  </loadAfter>
+</ModMetaData>

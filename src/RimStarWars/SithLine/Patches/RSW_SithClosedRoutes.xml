@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SANGUOPHAGE_KEPT_UNREACHABLE_1 design §1.3: the routes that would make a Sith one of the player's, or let the player
+     build their structures. Every operation is a PatchOperationConditional on the node (a top-level MayRequire on an
+     Operation is ignored by the engine), each block gated by its Mod Setting (applied at game start). -->
+<Patch>
+
+  <!-- S1/S2 quests, S3 scenario, S6a no gene implanter on the xenotype, and the faction as a permanent enemy. -->
+  <Operation Class="RimMandrake.StarWars.SithLine.RSW_PatchOperationSithSetting">
+    <setting>vanillaQuestsOff</setting>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/QuestScriptDef[defName="SanguophageMeetingHost"]/rootSelectionWeight</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/QuestScriptDef[defName="SanguophageMeetingHost"]/rootSelectionWeight</xpath>
+            <value><rootSelectionWeight>0</rootSelectionWeight></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/QuestScriptDef[defName="SanguophageShip"]/rootSelectionWeight</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/QuestScriptDef[defName="SanguophageShip"]/rootSelectionWeight</xpath>
+            <value><rootSelectionWeight>0</rootSelectionWeight></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ScenarioDef[defName="Sanguophage"]/scenario/showInUI</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ScenarioDef[defName="Sanguophage"]/scenario/showInUI</xpath>
+            <value><showInUI>false</showInUI></value>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/ScenarioDef[defName="Sanguophage"]/scenario</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/ScenarioDef[defName="Sanguophage"]/scenario</xpath>
+              <value><showInUI>false</showInUI></value>
+            </match>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/XenotypeDef[defName="Sanguophage"]/genes/li[text()="XenogermReimplanter"]</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>Defs/XenotypeDef[defName="Sanguophage"]/genes/li[text()="XenogermReimplanter"]</xpath>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/FactionDef[defName="Sanguophages"]/permanentEnemy</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/FactionDef[defName="Sanguophages"]/permanentEnemy</xpath>
+            <value><permanentEnemy>true</permanentEnemy></value>
+          </match>
+          <nomatch Class="PatchOperationConditional">
+            <xpath>Defs/FactionDef[defName="Sanguophages"]</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>Defs/FactionDef[defName="Sanguophages"]</xpath>
+              <value><permanentEnemy>true</permanentEnemy></value>
+            </match>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <!-- S7/S8: no build command (canGenerateDefaultDesignator false: the casket inherits a designationCategory from
+       vanilla FurnitureBase that no patch on its own node can remove), no minify on the five bound devices (the
+       casket's inherited minifiedDef is nulled in C# at startup), never claimable. The abstract
+       DeathrestBuildingBase carries the five devices. The Anzati casket is its own def and keeps all three. -->
+  <Operation Class="RimMandrake.StarWars.SithLine.RSW_PatchOperationSithSetting">
+    <setting>sithBuildingsUnbuildable</setting>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="DeathrestCasket"]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="DeathrestCasket"]</xpath>
+            <value><canGenerateDefaultDesignator>false</canGenerateDefaultDesignator></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="DeathrestCasket"]/building</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="DeathrestCasket"]/building</xpath>
+            <value><claimable>false</claimable></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[@Name="DeathrestBuildingBase"]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[@Name="DeathrestBuildingBase"]</xpath>
+            <value><canGenerateDefaultDesignator>false</canGenerateDefaultDesignator></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[@Name="DeathrestBuildingBase"]/minifiedDef</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>Defs/ThingDef[@Name="DeathrestBuildingBase"]/minifiedDef</xpath>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[@Name="DeathrestBuildingBase"]/building</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[@Name="DeathrestBuildingBase"]/building</xpath>
+            <value><claimable>false</claimable></value>
+          </match>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SANGUOPHAGE_KEPT_UNREACHABLE_1 design §4: the Galactic Empire's rare Sith inquisitor. It never enters a
+     pawnGroupMaker option list (the campaign's GalacticEmpire.xml replaces the Empire Combat lists wholesale); it is
+     appended to Empire raids and settlement defenders by Patch_PawnGroupMakerUtility_GeneratePawns. All values
+     PROVISIONAL. Referenced defs measured in the 2026-10-04 def dump: the namers, hood and apparel tag are
+     mandrake.rsw.armoury (a hard dependency); the weapon tag Force_InquisitorLightsaber is lee.theforce.lightsaber's
+     Force_Lightsaber_Inquisitor — a tag, so without that mod the kind simply goes unarmed by it, never an error. -->
+<Defs>
+  <PawnKindDef ParentName="SanguophageBase">
+    <defName>RSW_SithInquisitor</defName>
+    <label>inquisitor</label>
+    <defaultFactionDef>Empire</defaultFactionDef>
+    <combatPower>150</combatPower>
+    <nameMaker>guy762_NamerPawnKind_MaleInquisitor</nameMaker>
+    <nameMakerFemale>guy762_NamerPawnKind_FemaleInquisitor</nameMakerFemale>
+    <apparelRequired Inherit="False">
+      <li>guy762_SithHood_masked</li>
+    </apparelRequired>
+    <apparelTags>
+      <li>SE_sithapprentice</li>
+    </apparelTags>
+    <apparelMoney>1500~3000</apparelMoney>
+    <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
+    <weaponTags>
+      <li>Force_InquisitorLightsaber</li>
+    </weaponTags>
+    <weaponMoney>5000~10000</weaponMoney>
+    <invFoodDef>HemogenPack</invFoodDef>
+    <invNutrition>0.5</invNutrition>
+    <chronologicalAgeRange>80~600</chronologicalAgeRange>
+  </PawnKindDef>
+</Defs>

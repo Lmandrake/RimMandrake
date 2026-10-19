@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SANGUOPHAGE_KEPT_UNREACHABLE_1 design §3: the hidden Sith lair site, generated only by RSW_SithLairRumour onto an
+     RM_Abyss tile. The site part has no faction: the vanilla Sanguophages faction is hidden, and a hidden faction cannot
+     own a site part (SitePartDef.FactionCanOwn); RSW_GenStep_SithLair generates the Sith's own. PROVISIONAL numbers. -->
+<Defs>
+  <SitePartDef>
+    <defName>RSW_SithLair</defName>
+    <label>Sith sanctum</label>
+    <description>A sealed sanctum carved into the rock, where a Sith adept lies in dark trance among their devices.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/ItemStash</expandingIconTexture>
+    <handlesWorldObjectTimeoutInspectString>true</handlesWorldObjectTimeoutInspectString>
+    <considerEnteringAsAttack>true</considerEnteringAsAttack>
+    <tags>
+      <li>RSW_SithLair</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>RSW_SithLair</defName>
+    <linkWithSite>RSW_SithLair</linkWithSite>
+    <order>400</order>
+    <genStep Class="RimMandrake.StarWars.SithLine.RSW_GenStep_SithLair">
+      <radius>6</radius>
+      <boundDevices>2~4</boundDevices>
+      <essenceVials>2~5</essenceVials>
+      <traceSerumChance>0.5</traceSerumChance>
+    </genStep>
+  </GenStepDef>
+</Defs>

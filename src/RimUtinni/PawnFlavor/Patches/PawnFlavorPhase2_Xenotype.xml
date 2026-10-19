@@ -47,13 +47,13 @@
               <match Class="PatchOperationReplace">
                 <xpath>Defs/XenotypeDef[defName="Sanguophage"]/label</xpath>
                 <value>
-                  <label>Sanguophage</label>
+                  <label>Sith adept</label>
                 </value>
               </match>
               <nomatch Class="PatchOperationAdd">
                 <xpath>Defs/XenotypeDef[defName="Sanguophage"]</xpath>
                 <value>
-                  <label>Sanguophage</label>
+                  <label>Sith adept</label>
                 </value>
               </nomatch>
             </li>
@@ -62,13 +62,13 @@
               <match Class="PatchOperationReplace">
                 <xpath>Defs/XenotypeDef[defName="Sanguophage"]/description</xpath>
                 <value>
-                  <description>Doesn't age, barely dies, heals like the desert doesn't touch it—and needs the blood of the free peoples to keep living, which is the kind of debt no clan wants on its ledger. Rare enough we've only heard the stories. Burn first, ask later.</description>
+                  <description>The dark-side ones. Doesn't age, barely dies, heals like the desert doesn't touch it, and lives on the life it pulls out of the free peoples, which is the kind of debt no clan wants on its ledger. You never bargain with one and you never take one in: it will not kneel to anyone. Rare enough we've only heard the stories. Burn first, ask later.</description>
                 </value>
               </match>
               <nomatch Class="PatchOperationAdd">
                 <xpath>Defs/XenotypeDef[defName="Sanguophage"]</xpath>
                 <value>
-                  <description>Doesn't age, barely dies, heals like the desert doesn't touch it—and needs the blood of the free peoples to keep living, which is the kind of debt no clan wants on its ledger. Rare enough we've only heard the stories. Burn first, ask later.</description>
+                  <description>The dark-side ones. Doesn't age, barely dies, heals like the desert doesn't touch it, and lives on the life it pulls out of the free peoples, which is the kind of debt no clan wants on its ledger. You never bargain with one and you never take one in: it will not kneel to anyone. Rare enough we've only heard the stories. Burn first, ask later.</description>
                 </value>
               </nomatch>
             </li>
