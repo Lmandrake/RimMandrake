@@ -1244,7 +1244,7 @@ def burn_forced(t):
                 b["armored_fixture"] = b["armored"]
                 b["armored"] = _spawn(t, ARMORED, x, z - 6)
                 _set(t, "burnDamageFactor", 1)
-                track, atrack, nhd = [], [], set()
+                track, atrack, nhd, vhd = [], [], set(), set()
                 jobs, dive_orders = [], []
                 respawns = 0
                 for _ in range(32):                  # 32 x 25 = the same 800 ticks, sampling the dive
@@ -1261,6 +1261,7 @@ def burn_forced(t):
                         track, jobs, dive_orders = [], [], []
                         continue
                     arow = srows.get(b["armored"]) or {}
+                    vhd |= _hdefs(srows.get(b["open"]))                   # the dose on ANY sample, not just the last
                     if nrow is not None and _alive(nrow):                 # only a living sample is a position or a hediff read
                         track.append((nrow.get("x"), nrow.get("z")))
                         crow = _census(t, b["native"])                      # what it is DOING: the dive is a Goto to the patch
@@ -1279,9 +1280,40 @@ def burn_forced(t):
                 rows = _rows(t)
                 if not _alive(rows.get(b["open"])):
                     _unmeasured(t, "the open visitor is not readable alive after the Burn: 'undosed' would mean nothing")
-                if "RM_BurnDose" not in _hdefs(rows.get(b["open"])):
+                if "RM_BurnDose" not in (_hdefs(rows.get(b["open"])) | vhd):
+                    # LIVE 2026-10-19b (536-mod list, contagion_v1_AREAFIX): this row FAILED with only the visitor's
+                    # end hediffs as evidence ('AS_DuncePassion', 'SEX_Womb'), and its four downstream rows went
+                    # UNMEASURED, so nothing said whether the pressure loop ran at all. The same code PASSED on the
+                    # 22-mod list 2026-10-17. Offline reading of RM_GameCondition_ContagionBurn.Pressure: a human
+                    # visitor is never native (Classify -> Dose), HealthUtility.AdjustSeverity cannot no-op on a
+                    # positive offset, and the 800-tick window holds three 250-tick pulses -- so an undosed visitor
+                    # means (a) no pulse ran (the Burn condition or its weather was gone: PressureActive false),
+                    # (b) the visitor's cell was sheltered (Exposed false: a roof rebuilt over the pad), or (c) a
+                    # real mod fault. The row now reads all three before it rules, and names which.
+                    vrow = rows.get(b["open"]) or {}
+                    vx, vz = vrow.get("x"), vrow.get("z")
+                    cond_on, wx = _has_cond(t, BURN_COND), _weather_now(t)
+                    vroof = None
+                    if vx is not None and vz is not None:
+                        rr = t.bridge_call("jawa/get_roof_batch", rects="%d,%d,1,1" % (vx, vz))
+                        vroof = ((rr or {}).get("roofs") or [None])[0] if isinstance(rr, dict) else None
+                    _, rep_lines = _inspect(t, _STATE["rep_id"])
+                    pulsed = "Burn" in nhd
+                    diag = {"visitor_at": [vx, vz], "visitor_roof": vroof, "burn_condition": cond_on,
+                            "weather": wx, "native_burned_while_alive": pulsed, "repulsor": rep_lines}
+                    _note(t, "undosed visitor: what the Burn was doing", diag)
+                    if not cond_on or wx != BURN_WEATHER:
+                        if "the Burn is forced" in rep_lines:
+                            _fail("the powered repulsor says the Burn is forced but the Burn is not holding the sky "
+                                  "(condition %s, weather %r): no pressure pulse could dose anyone; %s"
+                                  % (cond_on, wx, diag))
+                        _unmeasured(t, "SITE: the forced Burn was not holding at the end of the dose window and the "
+                                       "repulsor is not forcing it (%s): the visitor was never under pressure" % diag)
+                    if vroof not in (None, "None"):
+                        _unmeasured(t, "SITE: the open visitor's cell (%s,%s) is roofed (%s): it was sheltered, not "
+                                       "exposed" % (vx, vz, vroof))
                     _fail("an exposed visitor carries no RM_BurnDose after the Burn pressed on it "
-                          "(hediffs: %s)" % sorted(_hdefs(rows.get(b["open"]))))
+                          "(hediffs: %s; %s)" % (sorted(_hdefs(rows.get(b["open"]))), diag))
                 rrow = rows.get(b["roofed"])
                 if not _alive(rrow):
                     _unmeasured(t, "the ROOFED control visitor is not readable alive: shelter cannot be judged")
@@ -1784,9 +1816,32 @@ def coalescence(t):
                 if mass is None:
                     _unmeasured(t, "Coalescence inspect line unreadable")
                 if mass < STAGE_MASS[1] or stage < 2:
-                    _fail("absorbed 6 Unfinished but the Coalescence reads Stage %s, mass %s "
-                          "(want Stage >= 2 at mass >= %d); %d of 6 still alive"
-                          % (stage, mass, STAGE_MASS[1], len(left)))
+                    # LIVE 2026-10-19b (536-mod list, contagion_v1_AREAFIX): Stage 1, mass 1, 5 of 6 still alive after
+                    # ten passes -- the old message said "absorbed 6", which was the harness's assumption, not a read.
+                    # The same code PASSED on the 22-mod list 2026-10-17. Building_RM_Coalescence.Absorb skips an
+                    # Unfinished that is Downed, has a Faction, or is InMentalState, eats only one standing in the
+                    # 1-cell ring round the 3x3 body, and otherwise orders a Walk Goto to the nearest ring cell. So
+                    # the survivors' own state decides MOD vs FIXTURE: each is read (cell, downed, faction, mental,
+                    # Moving, job) and a survivor Absorb is DESIGNED to skip is a fixture fault, not the mod's.
+                    cx, cz = _STATE["coal_xz"]
+                    rows = _rows(t)
+                    who = []
+                    for k in left:
+                        r = rows.get(k) or {}
+                        c = _census(t, k) or {}
+                        mv = ((r.get("health") or {}).get("capacities") or {}).get("Moving")
+                        who.append({"id": k, "at": [r.get("x"), r.get("z")],
+                                    "inRing": (r.get("x") is not None and abs(r["x"] - cx) <= 2 and abs(r["z"] - cz) <= 2),
+                                    "downed": r.get("downed"), "faction": r.get("faction"),
+                                    "mental": c.get("inMentalState"), "moving": mv, "job": list(_job_sample(c))})
+                    _note(t, "unabsorbed Unfinished", who)
+                    skipped = [w for w in who if w["downed"] or w["faction"] or w["mental"]]
+                    if who and len(skipped) == len(who):
+                        _unmeasured(t, "FIXTURE: every surviving Unfinished is one Absorb skips by design (downed, "
+                                       "factioned or in a mental state): %s" % who)
+                    _fail("after %d passes the Coalescence reads Stage %s, mass %s (want Stage >= 2 at mass >= %d); "
+                          "%d of 6 Unfinished still alive and walkable: %s"
+                          % (10, stage, mass, STAGE_MASS[1], len(left), [w for w in who if w not in skipped]))
 
         with _comp(t, "coalescence_emits_manhunters_and_grows_on_its_own"):
             if _live(t):
