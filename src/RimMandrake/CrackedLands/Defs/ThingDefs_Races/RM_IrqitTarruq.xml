@@ -151,12 +151,12 @@
           <!-- TEMP PLACEHOLDER: vanilla Rat's own body art. No donor def exists
                (invented per the bible); real art is queued in
                cracked_lands_bedazzle_cast.csv (row present, checked this pass). -->
-          <texPath>Things/Pawn/Animal/Rat/Rat</texPath>
+          <texPath>Things/Pawn/Animal/RM_Irqit/RM_Irqit</texPath>
           <color>(150,140,110)</color>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
+          <texPath>Things/Pawn/Animal/Rat/RM_Irqit/RM_Irqit</texPath>
           <drawSize>0.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -262,34 +262,34 @@
           <!-- TEMP PLACEHOLDER: vanilla Monkey's own body art. No donor def
                exists (invented per the bible); real art is queued in
                cracked_lands_bedazzle_cast.csv (row present, checked this pass). -->
-          <texPath>Things/Pawn/Animal/Monkey/Monkey</texPath>
+          <texPath>Things/Pawn/Animal/RM_Tarruq/RM_Tarruq</texPath>
           <color>(140,130,115)</color>
           <drawSize>0.7</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
+          <texPath>Things/Pawn/Animal/Monkey/RM_Tarruq/RM_Tarruq</texPath>
           <drawSize>0.7</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Monkey/Monkey</texPath>
+          <texPath>Things/Pawn/Animal/RM_Tarruq/RM_Tarruq</texPath>
           <color>(140,130,115)</color>
           <drawSize>1.0</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
+          <texPath>Things/Pawn/Animal/Monkey/RM_Tarruq/RM_Tarruq</texPath>
           <drawSize>1.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Monkey/Monkey</texPath>
+          <texPath>Things/Pawn/Animal/RM_Tarruq/RM_Tarruq</texPath>
           <color>(140,130,115)</color>
           <drawSize>1.3</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
+          <texPath>Things/Pawn/Animal/Monkey/RM_Tarruq/RM_Tarruq</texPath>
           <drawSize>1.3</drawSize>
         </dessicatedBodyGraphicData>
       </li>

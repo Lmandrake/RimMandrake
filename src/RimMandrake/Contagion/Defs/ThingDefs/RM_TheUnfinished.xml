@@ -128,13 +128,13 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <texPath>Things/Pawn/Animal/RM_TheUnfinished/RM_TheUnfinished</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.85</drawSize>
           <color>(168,54,96)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <texPath>Things/Pawn/Animal/Warg/RM_TheUnfinished/RM_TheUnfinished</texPath>
           <drawSize>0.85</drawSize>
         </dessicatedBodyGraphicData>
       </li>

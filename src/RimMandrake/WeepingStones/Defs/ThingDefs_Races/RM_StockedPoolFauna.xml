@@ -562,12 +562,12 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vhorrin/RM_Vhorrin</texPath>
           <drawSize>1.1</drawSize>
           <color>(90, 95, 80)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <texPath>Things/Pawn/Animal/Cobra/RM_Vhorrin/RM_Vhorrin</texPath>
           <drawSize>1.1</drawSize>
         </dessicatedBodyGraphicData>
       </li>
