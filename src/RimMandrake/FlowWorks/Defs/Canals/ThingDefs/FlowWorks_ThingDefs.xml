@@ -44,13 +44,17 @@
     <description>A rough ladder hung on one wall of an excavation, like a door between the pit and the ground above. Slid down, people climb down into the pit and back up by it, and haulers fetch what lies on the floor; it works like a prison door: your people climb it, trapped enemies cannot, prisoners only in a prison break. Slid up onto the rim, nobody climbs it.</description>
     <thingClass>RimMandrake.FlowWorks.RM_Building_Ladder</thingClass>
     <graphicData>
+      <!-- PIT_LADDER_RAILS_ON_THE_WALL (owner spec 2026-10-18): rails fixed on the wall, the ladder slides on them.
+           Rotation = the wall (north = far wall, whole apparatus face-on; south = near wall, only what stands above the
+           near rim; east/west = angled side mounts), as vanilla TorchWallLamp. Both states share drawSize and offsets so
+           the rails do not move. Art: art_source/Ladder/v2 (compose.py holds the same offsets). -->
       <texPath>Things/Building/FlowWorks/Canals/RM_Ladder</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,1)</drawSize>
-      <drawOffsetNorth>(0,0,0.15)</drawOffsetNorth>
-      <drawOffsetEast>(0.15,0,0)</drawOffsetEast>
-      <drawOffsetSouth>(0,0,-0.15)</drawOffsetSouth>
-      <drawOffsetWest>(-0.15,0,0)</drawOffsetWest>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1.5,1.5)</drawSize>
+      <drawOffsetNorth>(0,0,0.25)</drawOffsetNorth>
+      <drawOffsetEast>(0,0,0.25)</drawOffsetEast>
+      <drawOffsetSouth>(0,0,-0.25)</drawOffsetSouth>
+      <drawOffsetWest>(0,0,0.25)</drawOffsetWest>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>
@@ -76,17 +80,17 @@
     </building>
     <comps>
       <!-- LADDER_PRISON_DOOR_1 + FLOWWORKS_LADDER_RAISE_LOWER_1: raised/lowered by the player's gizmo,
-           prison-door climbing rule. raisedGraphicData is the raised state's own art (artpipe fwart_RM_LadderRaised);
-           the lowered state draws the graphicData above (fwart_RM_Ladder). -->
+           prison-door climbing rule. raisedGraphicData is the raised state's own art (ladder slid up the rails,
+           empty rails below); the lowered state draws the graphicData above. -->
       <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder">
         <raisedGraphicData>
           <texPath>Things/Building/FlowWorks/Canals/RM_LadderRaised</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-          <drawSize>(1,1)</drawSize>
-          <drawOffsetNorth>(0,0,0.6)</drawOffsetNorth>
-          <drawOffsetEast>(0.6,0,0)</drawOffsetEast>
-          <drawOffsetSouth>(0,0,-0.6)</drawOffsetSouth>
-          <drawOffsetWest>(-0.6,0,0)</drawOffsetWest>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>(1.5,1.5)</drawSize>
+          <drawOffsetNorth>(0,0,0.25)</drawOffsetNorth>
+          <drawOffsetEast>(0,0,0.25)</drawOffsetEast>
+          <drawOffsetSouth>(0,0,-0.25)</drawOffsetSouth>
+          <drawOffsetWest>(0,0,0.25)</drawOffsetWest>
         </raisedGraphicData>
       </li>
     </comps>
