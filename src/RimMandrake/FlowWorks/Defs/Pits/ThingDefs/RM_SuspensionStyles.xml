@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SUSPENSION_ART_RESKIN_HE_SEES_FIRST: the suspension bridge parts in the four looks (Scrapper, Industrial, Modern, Futuristic;
+     design/RimMandrake/liquid_containers_four_styles_2026-10-16.md), one ThingStyleDef per part per look, named <part>_<Look> and
+     picked through the shared style picker (Machinery/PipeLook.cs), the RM_BankWeir_* pattern. Registered by
+     RM_SuspensionLooks (Pits/Suspension/RM_SuspensionPatches.cs). The types share a look's art (a timber, steel and heavy deck
+     in one look draw alike; the tier shows in the inspect line); the rope type keeps its own Scrapper-only art and is not
+     styled. Art: Textures/RimMandrake/FlowWorks/SuspensionBridge/<Look>/. Graphic_Single decks (not linked): owed. -->
+<Defs>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Timber_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Timber_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Timber_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Timber_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Steel_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Steel_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Steel_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Steel_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Heavy_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Heavy_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Heavy_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_Heavy_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_SteelGrated_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeckGrated</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeckGrated</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_SteelGrated_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeckGrated</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeckGrated</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_SteelGrated_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_SteelGrated_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeckGrated</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeckGrated</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_HeavyGrated_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeckGrated</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeckGrated</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_HeavyGrated_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeckGrated</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeckGrated</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_HeavyGrated_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionDeck_HeavyGrated_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeckGrated</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeckGrated</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionJetty_Steel_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionJetty_Steel_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionJetty_Steel_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionJetty_Steel_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionJetty_Heavy_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionJetty_Heavy_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionJetty_Heavy_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionJetty_Heavy_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Timber_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Timber_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Timber_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Timber_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Steel_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Steel_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Steel_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Steel_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Heavy_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Heavy_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Heavy_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionAnchor_Heavy_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_north</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionTower_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionTower</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionTower</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionTower_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionTower</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionTower</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionTower_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionTower</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionTower</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionTower_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionTower</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionTower</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionRailing_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionRailing_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionRailing_Edge</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionRailing_Edge</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionRailing_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionRailing_Edge</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionRailing_Edge</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionRailing_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionRailing_Edge</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionRailing_Edge</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionWreck_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionWreck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionWreck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionWreck_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionWreck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionWreck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionWreck_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionWreck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionWreck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SuspensionWreck_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionWreck</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionWreck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingStyleDef>
+
+</Defs>

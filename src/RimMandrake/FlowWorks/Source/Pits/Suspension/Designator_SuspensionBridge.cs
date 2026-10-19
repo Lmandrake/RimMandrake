@@ -96,6 +96,7 @@ namespace RimMandrake.FlowWorks.Pits
 					width = dir == Rot4.North ? dx : dz,
 					stuff = StuffDef,
 					grated = Grated,
+					look = RM_SuspensionLooks.LookFor(this),
 				};
 				// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: the deck's height is the ends' (surface, or one dry ledge depth: a
 				// sunken bridge, setting sunkenBridges)
@@ -269,16 +270,18 @@ namespace RimMandrake.FlowWorks.Pits
 				Rot4 rot = end ? (i == 0 ? r.dir : r.dir.Opposite) : r.dir;
 				IntVec3 c = r.Cell(lane, i);
 				ThingDef stuff = d.MadeFromStuff ? r.stuff : null;
+				ThingStyleDef style = RM_SuspensionLooks.StyleFor(d, r.look);
 				if (DebugSettings.godMode)
 				{
 					Thing t = ThingMaker.MakeThing(d, stuff);
 					t.SetFactionDirect(Faction.OfPlayer);
+					RM_SuspensionLooks.Apply(t, r.look);
 					GenSpawn.Spawn(t, c, map, rot);
 				}
 				else
 				{
 					GenSpawn.WipeExistingThings(c, rot, d.blueprintDef, map, DestroyMode.Deconstruct);
-					GenConstruct.PlaceBlueprintForBuild(d, c, map, rot, Faction.OfPlayer, stuff);
+					GenConstruct.PlaceBlueprintForBuild(d, c, map, rot, Faction.OfPlayer, stuff, null, style);
 				}
 				FleckMaker.ThrowMetaPuffs(GenAdj.OccupiedRect(c, rot, d.Size), map);
 			}
@@ -432,7 +435,7 @@ namespace RimMandrake.FlowWorks.Pits
 					SuspensionBridgeRecord r = new SuspensionBridgeRecord
 					{
 						tier = Tier, origin = root, dir = RotOf(step), length = n + 1, width = 1, jetty = true, railings = true,
-						stuff = StuffDef, deckNotches = h,
+						stuff = StuffDef, deckNotches = h, look = RM_SuspensionLooks.LookFor(this),
 					};
 					why = Place(map, r, rootAnchor);
 					if (why == null)
@@ -468,12 +471,13 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					Thing t = ThingMaker.MakeThing(d, stuff);
 					t.SetFactionDirect(Faction.OfPlayer);
+					RM_SuspensionLooks.Apply(t, r.look);
 					GenSpawn.Spawn(t, c, map, r.dir);
 				}
 				else
 				{
 					GenSpawn.WipeExistingThings(c, r.dir, d.blueprintDef, map, DestroyMode.Deconstruct);
-					GenConstruct.PlaceBlueprintForBuild(d, c, map, r.dir, Faction.OfPlayer, stuff);
+					GenConstruct.PlaceBlueprintForBuild(d, c, map, r.dir, Faction.OfPlayer, stuff, null, RM_SuspensionLooks.StyleFor(d, r.look));
 				}
 				FleckMaker.ThrowMetaPuffs(GenAdj.OccupiedRect(c, r.dir, d.Size), map);
 			}

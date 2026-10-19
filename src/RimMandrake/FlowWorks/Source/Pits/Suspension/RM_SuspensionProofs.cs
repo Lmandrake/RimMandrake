@@ -507,5 +507,67 @@ namespace RimMandrake.FlowWorks.Pits
 			return "JETTY ok=" + (reason == null) + " anchors=" + anchors + " decks=" + decks + " blueprints=" + bps + " railed=" + railed
 				+ " reason=" + (reason ?? "-");
 		}
+
+		// ── SUSPENSION_ART_RESKIN_HE_SEES_FIRST ───────────────────────────────────────────────────────────────────
+
+		/// <summary>"Look;x1,z1;x2,z2": pick that look on the steel bridge button, drag it built (god), turn its railings on, and
+		/// read every part's graphic. → "LOOK look=L parts=N styled=N pink=N paths=a|b|..." (pink = the game's missing-texture
+		/// material).</summary>
+		public static string ProofLook(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length != 3 || !Cell(a[1], out IntVec3 c1) || !Cell(a[2], out IntVec3 c2))
+			{
+				return "REFUSED: arg must be Look;x1,z1;x2,z2";
+			}
+			var des = new Designator_SuspensionBridge_Steel();
+			Machinery.PipeLook.Core.Pick(des, a[0]);
+			bool was = DebugSettings.godMode;
+			DebugSettings.godMode = true;
+			string reason;
+			List<IntVec3> cells = CellRect.FromLimits(c1, c2).Cells.ToList();
+			try
+			{
+				reason = des.TryDesignate(cells);
+				SuspensionBridgeRecord r = map.GetComponent<RM_MapComponent_SuspensionBridges>()?.RecordAt(c1);
+				if (r != null)
+				{
+					map.GetComponent<RM_MapComponent_SuspensionBridges>().SetRailings(r, true);
+				}
+			}
+			finally
+			{
+				DebugSettings.godMode = was;
+			}
+			if (reason != null)
+			{
+				return "LOOK look=" + a[0] + " parts=0 reason=" + reason;
+			}
+			int parts = 0, styled = 0, pink = 0;
+			HashSet<string> paths = new HashSet<string>();
+			foreach (IntVec3 c in cells)
+			{
+				foreach (Thing t in c.GetThingList(map))
+				{
+					if (!RM_SuspensionDefOf.IsPartDef(t.def) || t.def.IsBlueprint || t.def.IsFrame)
+					{
+						continue;
+					}
+					parts++;
+					if (t.StyleDef != null && t.StyleDef.defName.EndsWith("_" + a[0]))
+					{
+						styled++;
+					}
+					Graphic g = t.Graphic;
+					if (g == null || g.MatSingle == BaseContent.BadMat)
+					{
+						pink++;
+					}
+					paths.Add(g?.path ?? "null");
+				}
+			}
+			return "LOOK look=" + a[0] + " parts=" + parts + " styled=" + styled + " pink=" + pink + " paths=" + string.Join("|", paths);
+		}
 	}
 }
