@@ -95,7 +95,7 @@ PLAN = {
     # Absorbed_OPTurret.xml — this FindMod op was gated on "Archotech Blaster
     # Turret" and would silently stop matching once that pack retires.
     "Turret_BeamRepeater":          (64,   None, 8,    None),   # beam: burst 30 -> 8
-    "VFEI2_Thornspitter":           (25,   None, None, None),
+    # VFEI2_Thornspitter/Thornworm/Vilelobber rows removed 2026-10-18: VFE Insectoids 2 retired, donor-only, no twin of ours.
     "VFES_Turret_Flame":            (33,   None, None, None),   # Wildsteam keep
     # --- 2x2 (direct mult 16, blast mult 4, side 2) ---
     # AA_BlackDefiler (Alpha Animals) row removed 2026-10-15: donor-only, no twin of ours.
@@ -117,8 +117,6 @@ PLAN = {
     "Turret_GravBlaster":           (48,   None, None, None),   # shockwave: radius kept
     "Turret_RocketswarmLauncher":   (560,  5.8,  None, None),
     "Turret_Sniper":                (960,  None, None, None),
-    "VFEI2_Thornworm":              (400,  None, None, None),
-    "VFEI2_Vilelobber":             (100,  7.8,  None, None),
     "VFES_Turret_Ballista":         (800,  None, None, None),
     "VFES_Turret_ChargeRailgun":    (960,  None, None, None),   # kinetic stands (owner)
     "VFES_Turret_TeslaBlaster":     (80,   None, None, "EMP"),  # was Smoke 10

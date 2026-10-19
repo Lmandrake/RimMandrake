@@ -298,33 +298,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Vanilla Factions Expanded - Insectoids 2</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- VFEI2_Thornspitter_Projectile : damageAmountBase -> 25 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="VFEI2_Thornspitter_Projectile"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>25</damageAmountBase></value>
-        </li>
-        <!-- VFEI2_Thornworm_Projectile : damageAmountBase -> 133 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="VFEI2_Thornworm_Projectile"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>133</damageAmountBase></value>
-        </li>
-        <!-- VFEI2_Vilelobber_Projectile : damageAmountBase -> 100 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="VFEI2_Vilelobber_Projectile"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>100</damageAmountBase></value>
-        </li>
-        <!-- VFEI2_Vilelobber_Projectile : explosionRadius -> 7.8 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="VFEI2_Vilelobber_Projectile"]/projectile/explosionRadius</xpath>
-          <value><explosionRadius>7.8</explosionRadius></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
 
   <Operation Class="PatchOperationFindMod">
     <mods><li>Vanilla Furniture Expanded - Security</li></mods>

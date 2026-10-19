@@ -66,16 +66,6 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer` (retired 2026-10
       <displayName>RimMandrake: Biomes</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
-    <li>
-      <!-- 🔴 ADDED 2026-09-20. Was declared NOWHERE, yet owns the ONLY copy of
-           Things/Pawn/Animal/Fuelmite/* - the texPath RSW_Zhakka (zhakka)
-           binds to. Art binds by texPath, not defName, so without this the
-           creature spawns perfectly and renders as a magenta X. Confirmed by
-           screenshot and by locating the PNGs in exactly one workshop folder. -->
-      <packageId>OskarPotocki.VFE.Insectoid2</packageId>
-      <displayName>Vanilla Factions Expanded - Insectoids 2</displayName>
-      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3309003431</steamWorkshopUrl>
-    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>

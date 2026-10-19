@@ -112,13 +112,13 @@ SYMBOLDEF_CONTAINER_TMPL = """  <KCSG.SymbolDef>
 # third-party mod's own ThingDef and needs an explicit wrapper) -----------
 THING_SYMBOLS = [
     # (symbolDefName, thingDefName, note)
-    ("RUT_Symbol_BlackJellyWall", "AA_BlackJellyWall",
+    ("RUT_Symbol_BlackJellyWall", "RUT_InsectJellyWall",
      "Type-2 outer/garrison perimeter, per the item's own draft skeleton (SS3.6)."),
     ("RUT_Symbol_Fleshmass", "Fleshmass",
      "Type-2 breach scarring, per the draft skeleton."),
-    ("RUT_Symbol_InfestedShipPart", "VFEI2_InfestedShipPart",
+    ("RUT_Symbol_InfestedShipPart", "RUT_InfestedShipPart",
      "Type-2 wreckage where the thing got out, per the draft skeleton."),
-    ("RUT_Symbol_InfestedShipChunk", "VFEI2_InfestedShipChunk",
+    ("RUT_Symbol_InfestedShipChunk", "RUT_InfestedShipChunk",
      "Type-2 wreckage, per the draft skeleton."),
     ("RUT_Symbol_GravRailArtillery", "GTbc_GravRailArtillery",
      "Type-1 garrison doctrine turret - named explicitly in dungeons_arc_spec.md SS3.3 "
