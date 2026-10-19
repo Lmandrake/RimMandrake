@@ -1,8 +1,8 @@
 {
  "name": "FULL",
- "captured": "2026-10-10T12:50:43",
+ "captured": "2026-10-18T19:18:06",
  "source": "infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml",
- "count": 551,
+ "count": 544,
  "ids": [
   "zetrith.prepatcher",
   "brrainz.harmony",
@@ -54,7 +54,6 @@
   "andrewraphaellukasik.allowdeadanimals",
   "unlimitedhugs.allowtool",
   "duz.almosttherefork",
-  "sarg.alphabiomes",
   "sarg.alphamechs",
   "sarg.alphamemes",
   "swablu.ambience",
@@ -296,7 +295,6 @@
   "jpt.speakup",
   "elshender.stackablechunks",
   "balistafreak.standalonehotspring",
-  "mlie.starwarsanimalcollection",
   "amoruch.rimworldstealingmod",
   "karshou.storagememory",
   "mlie.storytellerenhanced",
@@ -309,7 +307,6 @@
   "ucp.tabletopdecorations",
   "summersausages2ttv.techlevelenforcement",
   "propickelz.tinkerbench",
-  "vlvop.tormentmaster.expansion",
   "tsa.torturepod",
   "smashphil.dropspot",
   "mlie.tradeabletrinkets",
@@ -385,7 +382,6 @@
   "lazyfridaystudio.genesexpandedeyes",
   "nals.facialanimationexperimentals",
   "7f.alienworlds.tidallylocked",
-  "sarg.alphaanimals",
   "xmb.ancienturbanruins.mo",
   "mandrake.rut.ashkarrlandmarkart",
   "mandrake.rut.ishkolandmarks",
@@ -437,7 +433,6 @@
   "arcjc007.wallstuff",
   "fourtoo.glowingbush",
   "kyzy.shipwallenhanced",
-  "daria40k.alphaanimalspatchoutposts",
   "sarg.alphagenes",
   "meteores.ancienturbanruinsalldeconstructible.aurad",
   "mandrake.rm.weathersuite",
@@ -537,7 +532,6 @@
   "mandrake.rm.explosiveknockback",
   "mandrake.rm.kineticarms",
   "mandrake.rm.gimmesomeslack",
-  "mandrake.rut.plantgrowth",
   "mandrake.rm.oracle",
   "mandrake.rm.property",
   "mandrake.rm.rimdefdump",
@@ -553,9 +547,7 @@
   "mandrake.rm.biomes",
   "mandrake.rsw.swbestiary",
   "mandrake.rm.shipvermin",
-  "mandrake.rm.explosivegrowth",
   "mandrake.rut.greentideraidant"
  ],
- "modsconfig_sha256": "eeb9c5c884794a88b45cf0d4fcb1f3599ff1429e35f3fbc88f0023ae02b7bf50",
- "baseline_note": "BASELINE until a clean 551-mod cold load (owner ruling 2026-10-10): only then add the 14 in Transient/foundry_full_latest_gap_proposal_20261010.md; if the 551 does not load clean, debug it first (OuterRim_Durasteel fix 67153b072 untested in game)."
+ "modsconfig_sha256": "d21b791044c364fc92b66018555ca55b4bfce3ec8a07881603b35ce4e4ab5fef"
 }
