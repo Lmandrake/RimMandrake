@@ -94,7 +94,7 @@
     <drawGUIOverlay>true</drawGUIOverlay>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Item/Resource/PlantFoodRaw/Corn</texPath>
+      <texPath>Things/Item/Resource/PlantFoodRaw/RM_TumbelGourd/RM_TumbelGourd</texPath>
       <color>(150, 130, 70)</color>
     </graphicData>
     <healthAffectsPrice>false</healthAffectsPrice>
