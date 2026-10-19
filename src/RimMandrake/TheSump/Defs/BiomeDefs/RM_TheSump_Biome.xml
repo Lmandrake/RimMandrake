@@ -50,7 +50,8 @@
     terrainsByFertility: both rows gain the same MayRequire="sarg.alphabiomes"
     guard for the same reason.
 
-    biomeMapConditions: RUT_SumpDuskLock baked in directly (not via a second patch
+    biomeMapConditions: RM_SumpTarRainLock (SUMP_TAR_LIVING_SYSTEMS_1: RUT_SumpDuskLock plus tar-rain
+    spells; UtinniPatches' Campaign_SumpNoTarRain.xml puts RUT_SumpDuskLock back for the campaign), was RUT_SumpDuskLock baked in directly (not via a second patch
     op) - it now lives in this SAME mod (Patches/RUT_SumpDuskLock_BiomeWiring.xml
     wires it onto RUT_Sump alone; this def references it natively), matching the
     precedent RM_Miasma.xml actually shipped for RUT_MiasmaWeatherLock.
@@ -144,7 +145,7 @@
       <SnowHard>0</SnowHard>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
     </baseWeatherCommonalities>
     <biomeMapConditions>
-      <li>RUT_SumpDuskLock</li>
+      <li>RM_SumpTarRainLock</li>  <!-- SUMP_TAR_LIVING_SYSTEMS_1: dusk + tar rain; the campaign swaps back to RUT_SumpDuskLock -->
     </biomeMapConditions>
     <wildAnimals>
       <RM_Gulveth>0.45</RM_Gulveth>  <!-- tar guzzler - tar-eater, adjust-keep -->

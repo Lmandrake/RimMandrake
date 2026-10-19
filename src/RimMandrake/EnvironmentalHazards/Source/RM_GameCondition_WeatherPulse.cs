@@ -139,9 +139,13 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
+            // SUMP_TAR_LIVING_SYSTEMS_1: the burst alone may be switched off by the biome mod's setting, keeping
+            // the base weather forced (see WeatherPulseExtension.burstGateKey).
+            bool burstAllowed = ext.burstGateKey.NullOrEmpty() || RM_MechanicGates.Enabled(ext.burstGateKey);
+
             if (inBurst)
             {
-                if (Find.TickManager.TicksGame >= burstWeatherEndTick)
+                if (!burstAllowed || Find.TickManager.TicksGame >= burstWeatherEndTick)
                 {
                     EndBurst();
                     return;
@@ -156,7 +160,18 @@ namespace RimMandrake.EnvironmentalHazards
                 return; // mod option: never start a new burst while off (see StartBurst's own note)
             }
 
-            if (AllowRandomBurstNow() && Rand.MTBEventOccurs(ext.burstMtbHours, TicksPerHour, 1f))
+            if (!burstAllowed)
+            {
+                return;
+            }
+
+            float mtbHours = RM_FilthRainKernel.EffectiveMtbHours(ext.burstMtbHours, RM_MechanicGates.Scale(ext.burstFrequencyKey));
+            if (float.IsInfinity(mtbHours))
+            {
+                return; // frequency scaled to 0: never
+            }
+
+            if (AllowRandomBurstNow() && Rand.MTBEventOccurs(mtbHours, TicksPerHour, 1f))
             {
                 StartBurst(ext, -1);
             }

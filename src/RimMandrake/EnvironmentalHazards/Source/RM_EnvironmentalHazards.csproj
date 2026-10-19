@@ -164,6 +164,8 @@
     <Compile Include="RM_CompDryFieldEmitter.cs" />
     <Compile Include="RM_CompBlowerRoomCooler.cs" />
     <Compile Include="RM_RoomCoolerKernel.cs" />
+    <Compile Include="RM_FilthRainKernel.cs" />
+    <Compile Include="RM_WeatherEvent_FilthRain.cs" />
     <Compile Include="RM_FellableTreeExtension.cs" />
     <Compile Include="RM_TreeFallUtility.cs" />
     <Compile Include="RM_CompCrackFall.cs" />
