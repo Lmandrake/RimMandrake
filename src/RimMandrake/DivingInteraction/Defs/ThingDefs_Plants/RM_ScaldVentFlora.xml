@@ -18,7 +18,7 @@
       <Beauty>4</Beauty>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_Glasskelle/RM_Glasskelle</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(240,150,70)</colorTwo>
     </graphicData>
@@ -43,7 +43,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <texPath>Things/Plant/RM_Pulsebead/RM_Pulsebead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <plant>
