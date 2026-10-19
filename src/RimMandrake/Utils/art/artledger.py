@@ -896,6 +896,28 @@ def placeholder_refusal(rel: str, data: bytes) -> str:
     return f"{rel}: {why} — a placeholder is never installed ({PLACEHOLDER_RULE})" if why else ""
 
 
+def case_twin_refusal(target: Path, stop: Path) -> str | None:
+    """A path component of `target` (below `stop`) whose folder already holds a DIFFERENT entry with the
+    same name ignoring case. Windows and the Mac are case-insensitive: git there cannot hold both, so a
+    case-twin breaks every non-Linux clone (PaleTree_B beside the kept PaleTree_b, re-added by
+    bulk_accept_renders.py 2026-10-19 after its retirement). Refused here, the lowest writer, so no caller can."""
+    try:
+        parts = target.relative_to(stop).parts
+    except ValueError:
+        return None
+    cur = stop
+    for name in parts:
+        if cur.is_dir():
+            low = name.casefold()
+            for e in os.listdir(cur):
+                if e != name and e.casefold() == low:
+                    return (f"CASE-TWIN REFUSED: {cur / name} would sit beside existing {cur / e} — the same path "
+                            f"on Windows and macOS, so git cannot hold both there. Install into the existing "
+                            f"spelling ({e}) or retire it first; never write both.")
+        cur = cur / name
+    return None
+
+
 def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
             owner_said: str | None = None, reason: str | None = None,
             provenance: dict | None = None, dry_run: bool = False) -> dict:
@@ -924,6 +946,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
         target.parent.resolve().relative_to((src_root().resolve().parent / mod).resolve())
     except ValueError:
         raise Refused(f"{target} resolves outside {mod} (a symlinked folder?) — refusing to write through it") from None
+    why_twin = case_twin_refusal(target, src_root().resolve().parent)
+    if why_twin:
+        raise Refused(why_twin)
     ruling = None
     if ruling_id:
         ruling = next((r for r in idx.rulings if r["id"] == ruling_id), None)
