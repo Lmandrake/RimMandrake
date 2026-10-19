@@ -86,5 +86,8 @@
   <RM_DrillNeedsOutlet>Needs a dug channel at its outlet — the cell it faces.</RM_DrillNeedsOutlet>
   <RM_DrillLiquidHasNoCanalForm>The liquid below has no canal form and cannot be poured into a channel.</RM_DrillLiquidHasNoCanalForm>
   <RM_DrillLiquidMismatch>The outlet already holds {0}; this drill's liquid cannot mix with it.</RM_DrillLiquidMismatch>
+  <!-- RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: {0} = the raiding faction's name -->
+  <RMFlow_RaidersSetLadders>Raiders of {0} are setting scaling ladders against your trench.</RMFlow_RaidersSetLadders>
+  <RMFlow_RaidersFillTrench>Raiders of {0} are shovelling a causeway into your trench.</RMFlow_RaidersFillTrench>
 
 </LanguageData>

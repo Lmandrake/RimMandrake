@@ -194,6 +194,65 @@ namespace RimMandrake.FlowWorks
 			return !(outOk && inOk && (startPocket || destPocket));
 		}
 
+		/// <summary>TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: the join one ladder adds between band components — the component of
+		/// its own square and that of the square across the wall it hangs on — when that wall still joins
+		/// (RM_LadderWallMath.Joins: the ladder's own rotation, the other side shallower) and the ladder is a way for this
+		/// query (<see cref="LadderIsAWay"/>). The masks restore exactly this edge, so reachability and A* see one graph.</summary>
+		public static bool LadderEdge(int rot, int ladderD, int ladderComp, int otherD, int otherComp, bool isAWay)
+		{
+			return isAWay && rot >= 0 && rot < 4 && ladderComp >= 0 && otherComp >= 0 && ladderComp != otherComp
+				&& RM_LadderWallMath.Joins(rot, ladderD, RM_LadderWallMath.FX[rot], RM_LadderWallMath.FZ[rot], otherD);
+		}
+
+		/// <summary>TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: are two band components joined through ladders (each edge both ways:
+		/// a ladder is climbed down and up)? Bank A, down the near ladder to the trench floor, across, up the far ladder to
+		/// bank B is ONE route. ReachVetoed alone kept any two surface components apart, so a trench laddered on both walls was
+		/// never one hop (raiders were sent into the trench first; colonists were refused).</summary>
+		public static bool JoinedByLadders(int from, int to, IReadOnlyList<(int a, int b)> edges)
+		{
+			if (from < 0 || to < 0)
+			{
+				return false;
+			}
+			if (from == to)
+			{
+				return true;
+			}
+			if (edges == null || edges.Count == 0)
+			{
+				return false;
+			}
+			var seen = new HashSet<int> { from };
+			var q = new Queue<int>();
+			q.Enqueue(from);
+			while (q.Count > 0)
+			{
+				int c = q.Dequeue();
+				for (int i = 0; i < edges.Count; i++)
+				{
+					int n = edges[i].a == c ? edges[i].b : edges[i].b == c ? edges[i].a : -1;
+					if (n < 0 || !seen.Add(n))
+					{
+						continue;
+					}
+					if (n == to)
+					{
+						return true;
+					}
+					q.Enqueue(n);
+				}
+			}
+			return false;
+		}
+
+		/// <summary>TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: the relative rule's whole veto — <see cref="ReachVetoed"/>, lifted when
+		/// the two components are joined through ladders that are a way for this query. Only ever narrows the veto.</summary>
+		public static bool ReachVetoedAcross(bool sameComponent, bool startPocket, bool startWayOut, bool destPocket, bool destWayIn,
+			bool joinedByLadders)
+		{
+			return !joinedByLadders && ReachVetoed(sameComponent, startPocket, startWayOut, destPocket, destWayIn);
+		}
+
 		/// <summary>REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F9): does this component hold a cell on the map's border? A surface
 		/// component that does not (an island ringed by a sheer trench) never reaches the map edge on foot.</summary>
 		public static bool TouchesEdge(Labels l, int label)
