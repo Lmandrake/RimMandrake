@@ -64,6 +64,24 @@ class Fake(object):
         self.last_letter = {}
         self.burned = 0                                   # vent-gas cells burned, map-wide (CAULDRON_MECHANICS_BUILD_1)
         self.roof_stripped = []                           # rects the suite opened to the sky (jawa/set_roof_batch None)
+        self.chain = None                                 # the chain running now (the ruins chain reads the GENERATED Cauldron map)
+        self.accr = {}                                    # Filter-Works accrued budget, by works id
+        self._mapgen()
+
+    def _mapgen(self):
+        """CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD: the freshly generated Cauldron map's set-piece, as mapgen leaves it."""
+        b = self.broken
+        if "mapgen_no_rig" in b:
+            return
+        self.new(V.RIG, 60, 60, mapgen=True)
+        if "mapgen_undressed" not in b:
+            self.new(V.TANK, 63, 60, liquid="" if "mapgen_tanks_empty" in b else "toxic water", units=3000)
+            self.new("AncientPipe", 58, 60)
+            self.new("AncientPipe", 58, 63)
+        if "mapgen_blocked_cell" in b:
+            self.new("AncientPipe", 60, 59)                  # the rig's interaction cell
+        if "no_shrine" not in b:
+            self.new(V.SHRINE, 62, 57)
 
     # ------------------------------------------------------------ session surface
     def _ticks(self):
@@ -94,7 +112,13 @@ class Fake(object):
         if d == V.GAS_TAP:
             row.update(bank=0.0, deliv=0, hp=180)
         self.things[tid] = row
-        if d == V.RIG and "ruin_undressed" not in self.broken:      # the kit dresses its own site on first spawn
+        if d == V.TANK:
+            row.setdefault("liquid", ""); row.setdefault("units", 0)
+        if d == V.VWORKS:
+            row.update(fuel=0.0, tin=0, tout=0)
+        if d == V.BATTERY:
+            row.update(charge=0.0)
+        if d == V.RIG and not kw.get("mapgen") and "ruin_undressed" not in self.broken:      # the kit dresses its own site on first spawn
             self.new(V.TANK, x + 3, z)
             self.new("AncientPipe", x - 2, z)
         return tid
@@ -291,6 +315,7 @@ class Fake(object):
                     self.jobs[p["id"]] = ("BeatFire", self.ticks + 300)
         self.drink_vents(d)
         self.gas_tick(d)
+        self.works_tick(d)
         # --- the falter hush: wild natives hold still while the vents falter
         if self.vent_mult() == self.FALTER and self.of(V.VENT) and "no_hush" not in b \
                 and self.on("faunaHushEnabled", "hush_ignores_toggle"):
@@ -313,6 +338,75 @@ class Fake(object):
                         self.new("Steel", tr["x"], tr["z"], stackCount=int(round(V.THORN_FULL * f)))  # the twisting thornwood (RM_TreeMartyr cut 2026-10-18)
         # fires burn for a while
         self.fires = [f for f in self.fires if f[2] > self.ticks]
+
+    # ------------------------------------------------------------ the Filter-Works (CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD)
+    def works_tick(self, d):
+        b = self.broken
+        for w in self.of(V.VWORKS):
+            self.accr[w["id"]] = self.accr.get(w["id"], 0.0)
+            w["tick"] = w.get("tick", 0) + d
+            if w["tick"] < 250:
+                continue
+            w["tick"] = 0
+            powered = any(bt["charge"] > 0 and bt["x"] == w["x"] and bt["z"] == w["z"] + 2 for bt in self.of(V.BATTERY))
+            if not powered and "works_ignores_power" not in b:
+                w["status"] = "No power"
+                continue
+            if w["fuel"] <= 0 and "works_ignores_fuel" not in b:
+                w["status"] = "Out of fuel"
+                continue
+            w["status"] = "Working"
+            self.accr[w["id"]] += 666.0
+            tin = [t for t in self.of(V.TANK) if t["x"] == w["x"] + 2 and t["z"] == w["z"]]
+            tout = [t for t in self.of(V.TANK) if t["x"] == w["x"] - 3 and t["z"] == w["z"]]
+            if not tin or "works_no_recipe" in b:
+                continue
+            tk = tin[0]
+            if tk["liquid"] == V.COND and tk["units"] >= 8000 and self.accr[w["id"]] >= 8000:
+                tk["units"] -= 8000
+                self.accr[w["id"]] -= 8000
+                w["tin"] += 8000
+                if "works_no_reagent" not in b:
+                    self.new(V.REAGENT, w["x"] + 3, w["z"] - 2, stackCount=1)
+            if tk["liquid"] == V.TOXICW and tk["units"] >= 4000 and self.accr[w["id"]] >= 4000 and tout \
+                    and "works_no_filter" not in b:
+                tk["units"] -= 4000
+                self.accr[w["id"]] -= 4000
+                w["tin"] += 4000
+                w["tout"] += 2000
+                tout[0]["liquid"], tout[0]["units"] = V.FRESHW, tout[0]["units"] + 2000
+
+    def t_battery_set(self, thing=None, mode=None, value=0.0, **k):
+        self.things[thing]["charge"] = float(value)
+        return {"success": True}
+
+    def t_thing_refuel(self, thingId=None, amount=0.0, **k):
+        w = self.things[thingId]
+        w["fuel"] = min(5.0, w["fuel"] + amount)
+        return {"success": True, "fuelAfter": w["fuel"], "hasFuel": w["fuel"] > 0}
+
+    def t_static_call(self, type=None, method=None, args="", **k):
+        a = args.split("|")
+        if method == "ProofTank":
+            pos, mode, liq, units = args.split(";")
+            x, z = [int(v) for v in pos.split(",")]
+            tk = [t for t in self.of(V.TANK) if t["x"] == x and t["z"] == z]
+            if not tk:
+                return {"success": True, "result": "REFUSED: no RM_LiquidTank at (%d, 0, %d)" % (x, z)}
+            tk[0]["liquid"], tk[0]["units"] = (liq if int(units) else ""), int(units)
+            return {"success": True, "result": "TANK mode=%s liquid=%s units=%s" % (mode, liq, units)}
+        if method == "Heading":
+            ticks, seed = int(a[0]), int(a[1])
+            if "heading_constant" in self.broken:
+                return {"success": True, "result": "3"}
+            if "heading_hourly" in self.broken:
+                ticks = ticks // 2500 * 60000
+            return {"success": True, "result": str(V._py_heading(ticks, seed))}
+        if method == "DriftChance":
+            w = float(a[0])
+            c = 0.4 if "drift_flat" in self.broken else max(0.0, min(0.75, w * 0.4))
+            return {"success": True, "result": repr(c)}
+        return {"success": False}
 
     # ------------------------------------------------------------ tools: clock, weather, settings
     def t_step_game_ticks(self, ticks=0, **k):
@@ -355,7 +449,7 @@ class Fake(object):
     def t_map_info(self, **k):
         # map_is_cauldron: the real RM_Cauldron site (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES, live 2026-10-16)
         return {"success": True, "sizeX": 250, "sizeZ": 250,
-                "mapBiome": V.BIOME if "map_is_cauldron" in self.broken else "TemperateForest"}
+                "mapBiome": V.BIOME if ("map_is_cauldron" in self.broken or self.chain == "ruins") else "TemperateForest"}
 
     # ------------------------------------------------------------ tools: defs
     def t_get_defs(self, defs="", fields=None, limit=200, deep=False, **k):
@@ -389,6 +483,10 @@ class Fake(object):
         if want == ["ThingDef/RM_ZisskaMeat"]:
             docs = [] if "meat_not_toxic" in self.broken else [{"hediffDef": "ToxicBuildup", "severity": 0.05}]
             return self._defs("RM_ZisskaMeat", {"ingestible": {"outcomeDoers": docs}})
+        if want == ["ThingDef/%s" % V.SHRINE]:
+            if "no_utinni" in self.broken:
+                return {"success": True, "notFound": want, "foundCount": 0}
+            return self._defs(V.SHRINE, {"defName": V.SHRINE})
         missing = [d for d in want if d.endswith("NoSuchDef_Probe")]
         if "missing_def" in self.broken and want and want[0] in V.SHIPPED:
             missing.append(want[3])
@@ -673,6 +771,14 @@ class Fake(object):
             else:
                 lines.append("Vent gas: %d cells, peak %d; toxic smoke: %d cells; burned: %d"
                              % (int(t["gas"] / 4), int(t["gas"]), int(t["tox"] / 4), self.burned))
+        if t["def"] == V.TANK:
+            lines = ["Empty"] if not t["units"] else ["Holding: %s (%.1f L / 4000 L)" % (
+                t["liquid"].replace("RM_Liquid_", "").replace("VentCondensate", "Vent condensate").replace("FreshWater", "Fresh water")
+                .replace("ToxicWater", "Toxic water") if t["liquid"].startswith("RM_") else t["liquid"].capitalize(), t["units"] / 10.0)]
+        if t["def"] == V.VWORKS:
+            lines = [t.get("status", "Idle"), "Processed %.0f L in, %.0f L out" % (t["tin"] / 10.0, t["tout"] / 10.0)]
+        if t["def"] == V.SHRINE:
+            lines = ["Meditation focus: natural"]
         if t["def"] == V.GAS_TAP:
             lines = ["Gas tap: vent capped; condensate banked %.1f / 60" % t["bank"],
                      "Delivered %d units; 1 tank(s) touching it" % t["deliv"],
@@ -703,6 +809,7 @@ def run(broken=()):
     try:
         for name, fn in V.suite.chains:
             t = TestContext(game, anchor=(100, 100))
+            game.chain = name
             try:
                 fn(t)
             except Exception as ex:            # a chain-level crash is a script bug
@@ -718,6 +825,18 @@ def run(broken=()):
 
 # break -> the component that must go FAIL (and nothing else)
 BREAKS = {
+    "mapgen_no_rig": "ruins.ruin_rig_at_mapgen",
+    "mapgen_undressed": "ruins.ruin_site_dressed_at_mapgen",
+    "mapgen_tanks_empty": "ruins.ruin_site_dressed_at_mapgen",
+    "mapgen_blocked_cell": "ruins.ruin_site_dressed_at_mapgen",
+    "no_shrine": "ruins.oomo_shrine_at_mapgen",
+    "works_ignores_fuel": "works.works_refines_condensate",
+    "works_no_reagent": "works.works_refines_condensate",
+    "works_no_filter": "works.works_filters_toxic_water",
+    "works_ignores_power": "works.works_stops_without_power",
+    "heading_constant": "drift.gas_heading_is_daily_and_map_seeded",
+    "heading_hourly": "drift.gas_heading_is_daily_and_map_seeded",
+    "drift_flat": "drift.gas_drift_chance_follows_wind",
     "missing_def": "load.defs_resolve",
     "type_unresolved": "load.types_resolve",
     "stale_dll": "load.types_resolve",
@@ -809,6 +928,11 @@ def source_checks():
     if len(V.DEFAULTS) != 36 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 30:
         bad.append("parsed %d defaults / %d bools, expected 36 / 30" %
                    (len(V.DEFAULTS), sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool))))
+    for needle in ("HeadingPeriodTicks = 60000", "2654435761L", "0x2C1B3C6Du", "h >> 15", "h >> 12", "h % 8u"):
+        if needle not in blob and needle not in open(os.path.join(srcdir, "Kernel", "RM_VentGasKernel.cs"), encoding="utf-8").read():
+            bad.append("RM_VentGasKernel.Heading no longer contains %r: update validation._py_heading to match" % needle)
+    if "<inputLitres>800</inputLitres>" not in V._def_text("LiquidDefs/RM_Liquid_VentCondensate.xml"):
+        bad.append("COND_BATCH (8000 units) no longer matches the condensate refine step (inputLitres 800)")
     for f in V.DEFAULTS:
         if not re.search(r'Scribe_Values\.Look\(ref %s, "%s"' % (f, f), blob):
             bad.append("Mod Settings field %s is not scribed in ExposeData" % f)
@@ -857,6 +981,13 @@ def main():
         got = res.get("bloom.bloom_spares_roofed", ("?",))[0]
         if reds or got != "UNMEASURED":
             bad.append("site break %s: expected bloom_spares_roofed UNMEASURED and no red, got %s / %s" % (brk, got, reds))
+    # SITE: the Utinni layer is not on the tier -> the shrine row cannot ask: UNMEASURED, never red.
+    res = run(["no_utinni"])
+    reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
+    got = res.get("ruins.oomo_shrine_at_mapgen", ("?",))[0]
+    if reds or got != "UNMEASURED":
+        bad.append("site break no_utinni: expected oomo_shrine_at_mapgen UNMEASURED and no red, got %s / %s" % (got, reds))
+    # SITE: the loaded map is not a Cauldron map -> the mapgen census cannot ask.
     # SITE: a mountain site. With the pad's roof stripped (_open_sky) nothing collapses and the whole run stays green;
     # if the strip is lost the collapse buries the vent and vent_gas_emits must say UNMEASURED, never FAIL.
     res = run(["mountain_site"])

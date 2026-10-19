@@ -90,11 +90,17 @@ Vent gas, the gas tap and the ruin kit (CAULDRON_MECHANICS_BUILD_1 parts 3/4/5)
 - A gas-tap scaffold on a vent caps it (the vent reads capped) and banks condensate into a tank touching it; with `gasTapBanksCondensate` off it banks nothing more. → gas.gas_tap_caps_and_banks
 - A wild vexxiss drinking at a capped vent damages the scaffold; with `vexxissPriesTaps` off it drinks without harming it. → gas.vexxiss_pries_tap
 - A corroded filter rig dresses its own site on first spawn: battered tanks and corroded pipe beside it. → gas.ruin_kit_dresses
-- The cloud drifts with the wind on a daily heading. → UNCOVERED: no bridge tool reads the drift heading or the vent-gas grid cell by cell. `ventGasDrifts` exists, defaults on and is writable. → settings.ventGasDrifts_roundtrip
+- The cloud's drift heading turns once a day and is seeded per map (read from the live assembly, not from this script's model). → drift.gas_heading_is_daily_and_map_seeded
+- Wind sets the drift: calm air does not drift, a stronger wind drifts at least as often, capped at 0.75. `ventGasDrifts` exists, defaults on and is writable. → drift.gas_drift_chance_follows_wind
+- The cloud's physical displacement downwind (INFERRED from the two lines above and the kernel selftest's drift-conserves fuzz). → UNCOVERED: no bridge tool reads a vent-gas cell's density; the vent's inspect line counts cells in a radius, not a direction. A static readout (centroid) in the mod DLL would close it. → settings.ventGasDrifts_roundtrip
 - With `ventGasToxicSmoke` off the gas burns clean. → UNCOVERED: the ON arm's vanilla tox residue masks the OFF arm unless the suite waits it out. → settings.ventGasToxicSmoke_roundtrip
-- One corroded filter rig is scattered on a new Cauldron map. → UNCOVERED: worldgen, needs a freshly generated Cauldron map. `ruinKitEnabled` exists, defaults on and is writable. → settings.ruinKitEnabled_roundtrip
-- Studying the rig unlocks `RM_FilterWorksResearch`; a powered, cartridge-fed Filter-Works between two tanks refines vent condensate into vent reagent and toxic water into fresh water. → UNCOVERED: the study is an analysis job the bridge cannot order, and the Filter-Works needs a researched build, power, cartridges and two stocked tanks (a live row is owed on `CAULDRON_MECHANICS_BUILD_1`). The defs resolve under load (load.defs_resolve).
-- Oomo's grudging shrine stands beside the rig. → UNCOVERED: Utinni layer (`RUT_OomoGrudgingShrine`, patched into the kit's shrine slot); this RM-tier suite does not load it.
+- A freshly generated Cauldron map holds a corroded filter rig (the ruin scatter runs at mapgen; `ruinKitEnabled` exists, defaults on and is writable). → ruins.ruin_rig_at_mapgen
+- That rig's site is dressed at mapgen: battered tanks (one holding toxic water), corroded pipe, and nothing on the rig's interaction cell. → ruins.ruin_site_dressed_at_mapgen
+- Studying the rig unlocks `RM_FilterWorksResearch`. → UNCOVERED: the study is an analysis job the bridge cannot order; the research and the build are skipped by building the works directly, so the works rows prove the machine, not the unlock path. The defs resolve under load (load.defs_resolve).
+- A powered, cartridge-fed Filter-Works with a condensate tank touching it refines the condensate into vent reagent (and with no cartridge makes none). → works.works_refines_condensate
+- The same works turns toxic water into fresh water in a second tank. → works.works_filters_toxic_water
+- Without power the works stops converting. → works.works_stops_without_power
+- Oomo's grudging shrine (Utinni layer, patched into the kit's shrine slot) stands beside each rig on a Cauldron map; usability as a Natural meditation focus is INFERRED from the def. → ruins.oomo_shrine_at_mapgen
 
 ## the walk
 1. [B] Tier: `python3 src/RimMandrake/Utils/modset_builder.py --tier baroque_wave0 --apply` (Windows-side seat only), deploy the composed mod (`deploy_custom_mods.py --compose biomes --apply`), launch via Steam, wait for `Bridge token:` in Player.log, start a quicktest map (150 cells or larger). One command does all of it: `python3 src/RimMandrake/Utils/northstar_driver/live_session.py --mod Cauldron --tier baroque_wave0 --plan src/RimMandrake/Cauldron/northstar_plan.py --compose`.

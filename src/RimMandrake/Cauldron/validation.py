@@ -47,10 +47,13 @@ NOT DRIVEN HERE (walk lines say UNCOVERED, with the reason):
   * Appearance (dusk light, the vent-bloom overlay, art): visual, left to the judge pass.
   * CAULDRON_MECHANICS_BUILD_1 parts 3/4/6 (gas chain): the vent-gas cloud, its burn and the tap are read as STATE off
     the vent's and the tap's own inspect lines ('Vent gas: N cells, peak P; toxic smoke: T cells; burned: B',
-    'Gas tap: ... banked X / 60', 'Delivered D units', 'Scaffold: H / M HP'). NOT driven: the cloud's drift heading
-    (no tool reads it), its look, the Filter-Works converting (needs power, a researched build, cartridges and two tanks:
-    a live row is owed, CAULDRON_MECHANICS_BUILD_1), studying the rig (an analysis job the bridge cannot order), the
-    ruin scatter at mapgen (a fresh Cauldron map), and Oomo's shrine (Utinni layer, patched into the kit).
+    'Gas tap: ... banked X / 60', 'Delivered D units', 'Scaffold: H / M HP'). NOT driven: the cloud's physical drift (no
+    tool reads a cell's density; INFERRED from the `drift` chain's two law reads + the kernel selftest's conservation
+    fuzz), its look, studying the rig (an analysis job the bridge cannot order).
+  * CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD adds: `ruins` (the mapgen census of a generated Cauldron map: the rig, its
+    dressing, Oomo's shrine via the Utinni layer), `works` (the Filter-Works converting vent condensate to a reagent item
+    and toxic water to fresh water, with a no-cartridge and a no-power control arm) and `drift` (the daily heading and
+    the wind -> chance law, read from the live assembly through jawa/static_call).
 
 Settings fields are `public static` (RimMandrake.Cauldron.RM_CauldronSettings). Every arm that
 changes one restores it in a `finally`. `jawa/mod_settings_field` never writes ModSettings.xml.
@@ -131,8 +134,11 @@ VEXXITH, VDOOR, ACID = "RM_Vexxith", "RM_VexxithDoor", "AcidBurn"     # VEXXITH_
 VENT_PLANTS = {"RM_CrystalFlower": "StableRing", "RM_BloodBouquet": "ChronicLeak",
                "RM_GiantToxicFlower": "RecentBlowout"}
 PADS = {"vent": (0, -85), "fauna": (-45, -45), "suush": (45, -45), "flora": (-45, 0), "yield": (45, 0),
-        "bloom": (-45, 45), "water": (0, 45), "fire": (45, 45), "spawn": (0, -45), "gas": (-85, -85)}
+        "bloom": (-45, 45), "water": (0, 45), "fire": (45, 45), "spawn": (0, -45), "gas": (-85, -85), "works": (85, -85)}
 GAS_TAP, TANK, RIG = "RM_VentGasTap", "RM_LiquidTank", "RM_CorrodedFilterRig"     # CAULDRON_MECHANICS_BUILD_1 parts 3/4
+VWORKS, REAGENT, BATTERY = "RM_FilterWorks", "RM_VentReagent", "Battery"          # CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD
+COND, TOXICW, FRESHW = "RM_Liquid_VentCondensate", "RM_Liquid_ToxicWater", "RM_Liquid_FreshWater"
+SHRINE = "RUT_OomoGrudgingShrine"      # Utinni layer (src/RimUtinni/UtinniPatches), patched into the rig's shrineDefs
 PAD_SIZE = 24
 SOIL = "Soil"
 
@@ -923,6 +929,96 @@ def load_chain(t):
             ext = (r.get("extra") or {}).get("modExtensions")
             if not isinstance(ext, list) or "RM_VentExtension" not in ext:
                 _fail("%s carries no RM_VentExtension (no weather table, no falter): %r" % (VENT, ext))
+
+
+# --------------------------------------------------------------------------- chain: ruins at mapgen (read-only, FIRST after load)
+# CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD. Runs before any chain clears a pad: the census is of the map AS GENERATED
+# (the registered saved site IS a freshly generated RM_Cauldron map, prep_site.py step 5). A map that is not a Cauldron
+# map is UNMEASURED: RM_ScattererValidator_CauldronRuinSite refuses every other biome by design.
+
+def _static(t, typ, method, args):
+    """jawa/static_call result as text; a refused call is UNMEASURED (could not ask), never a number."""
+    r = t.bridge_call("jawa/static_call", type=typ, method=method, args=args)
+    if not _live(t):
+        return ""
+    if not isinstance(r, dict) or r.get("success") is False:
+        _unmeasured(t, "static_call %s.%s(%s) refused: %r" % (typ, method, args, r))
+    return str(r.get("result"))
+
+
+def _mapgen_rigs(t):
+    """The corroded filter rigs on a map that must be a freshly generated Cauldron map; UNMEASURED otherwise."""
+    mi = t.bridge_call("jawa/map_info") or {}
+    if _live(t) and mi.get("mapBiome") != BIOME:
+        _unmeasured(t, "the map's biome is %r, not %s: the ruin scatterer refuses every other biome by design" %
+                    (mi.get("mapBiome"), BIOME))
+    return _things(t, RIG)
+
+
+@suite.chain("ruins")
+def ruins_chain(t):
+    """CAULDRON_MECHANICS_BUILD_1 part 4/6 at mapgen: the ruin set-piece (one corroded filter rig per Cauldron map),
+    its dressing, and Oomo's grudging shrine patched into the kit by the Utinni layer. Reads only."""
+    with _comp(t, "ruin_rig_at_mapgen", toggle="ruinKitEnabled"):
+        if _live(t):
+            rigs = _mapgen_rigs(t)
+            _note(t, "rigs on the generated map", [(r.get("x"), r.get("z")) for r in rigs])
+            # LIES: 0 is also what a map with no dry open unroofed 7x7 reads (warnOnFail false), and a rig inside an
+            # earlier run's cleared pad is gone; a registered saved site loaded fresh has neither (count it on a 2nd map).
+            if not rigs:
+                _fail("a generated RM_Cauldron map holds no %s: RM_CauldronRuinScatter did not place its set-piece" % RIG)
+            _STATE["rigs"] = [(r["x"], r["z"]) for r in rigs]
+    with _comp(t, "ruin_site_dressed_at_mapgen"):
+        if _live(t):
+            rigs = _STATE.get("rigs")
+            if not rigs:
+                _unmeasured(t, "no rig read by ruin_rig_at_mapgen")
+            bad = []
+            for rx, rz in rigs:
+                rect = _rs((rx - 7, rz - 7, 15, 15))
+                tanks = _things(t, TANK, rect)
+                pipes = _count(t, "AncientPipe", rect)
+                toxic = 0
+                for tk in tanks:
+                    _l, lines = _inspect(t, tk["id"])
+                    if "toxic water" in " | ".join(str(x) for x in lines).lower():
+                        toxic += 1
+                # the interaction cell (rig pos + (0,-1)) and the ring around it stay open: a piece on it makes the
+                # rig unstudiable, and studying it is the only road to the Filter-Works research
+                blockers = [tk for tk in tanks if rx - 2 <= tk["x"] <= rx + 1 and rz - 3 <= tk["z"] <= rz]
+                for d in ("AncientPipe", "AncientStorageCylinder", "ChunkSlagSteel"):
+                    blockers += _things(t, d, _rs((rx - 1, rz - 2, 3, 3)))
+                _note(t, "dressing at rig (%d,%d): tanks / toxic tanks / pipes / blockers" % (rx, rz),
+                      [len(tanks), toxic, pipes, len(blockers)])
+                if len(tanks) < 1 or pipes < 1:
+                    bad.append("rig (%d,%d) undressed: tanks %d, pipes %d" % (rx, rz, len(tanks), pipes))
+                elif toxic < 1:
+                    bad.append("rig (%d,%d): %d tank(s) but none holds toxic water" % (rx, rz, len(tanks)))
+                if blockers:
+                    bad.append("rig (%d,%d): %d piece(s) on its interaction cell ring" % (rx, rz, len(blockers)))
+            if bad:
+                _fail("; ".join(bad))
+    with _comp(t, "oomo_shrine_at_mapgen"):
+        if _live(t):
+            rigs = _STATE.get("rigs")
+            if not rigs:
+                _unmeasured(t, "no rig read by ruin_rig_at_mapgen")
+            r = t.bridge_call("jawa/get_defs", defs="ThingDef/%s" % SHRINE, fields="defName", limit=5)
+            if (r or {}).get("notFound") or not (r or {}).get("foundCount"):
+                _unmeasured(t, "%s does not resolve: the Utinni patch layer is not on this tier (the RM tier names no god by ruling)" % SHRINE)
+            missing = []
+            for rx, rz in rigs:
+                n = _count(t, SHRINE, _rs((rx - 7, rz - 7, 15, 15)))
+                if n < 1:
+                    missing.append((rx, rz))
+                else:
+                    sh = _things(t, SHRINE, _rs((rx - 7, rz - 7, 15, 15)))
+                    if sh:
+                        _l, lines = _inspect(t, sh[0]["id"])
+                        _note(t, "shrine inspect (usability is INFERRED from the def: Natural meditation focus 0.12)", lines)
+            if missing:
+                _fail("%s resolves but no shrine stands within 7 cells of rig(s) %s: the Utinni patch (Cauldron_OomoShrine.xml) "
+                      "did not reach the kit's shrineDefs, or the placement found no free cell" % (SHRINE, missing))
 
 
 # --------------------------------------------------------------------------- chain: weather
@@ -2142,6 +2238,232 @@ def gas_chain(t):
                 if tanks < 1 or pipes < 1:
                     _fail("the corroded filter rig did not dress its site (tanks %d, pipes %d)" % (tanks, pipes))
     _stable(t, body)
+
+
+# --------------------------------------------------------------------------- chain: the Filter-Works converting
+# CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD. The works is FlowWorks' CompLiquidConverter: it needs power, a cartridge, a tank
+# of its input TOUCHING it and (for water) a tank to take the product; vent condensate (8000 units = 800 L) comes out as ONE
+# RM_VentReagent item dropped beside it. Decided by STATE: item stacks, the tanks' and the works' own inspect lines.
+# Geometry (works 3x3 at (X,Z); a 2x2 tank's position is its bottom-left cell): battery (X,Z+2) touches the north edge,
+# input tank (X+2,Z) the east edge, output tank (X-3,Z) the west edge.
+
+FLOWPROOFS = "RimMandrake.FlowWorks.RM_NorthstarProofs"
+COND_BATCH = 8000        # RM_Liquid_VentCondensate refine step: inputLitres 800 x 10 units/litre (Defs/LiquidDefs)
+RARE = 250
+
+
+def _w_tank(t, x, z, liquid, units):
+    """ProofTank: set a Store tank's contents (units 0 = empty); UNMEASURED on REFUSED, FAIL when the tank cannot hold a batch."""
+    out = _static(t, FLOWPROOFS, "ProofTank", "%d,%d;Store;%s;%d" % (x, z, liquid, units))
+    if not _live(t):
+        return out
+    if out.startswith("REFUSED"):
+        m = re.search(r"capacity (\d+)", out)
+        if m and units > int(m.group(1)) >= 0 and liquid == COND:
+            if int(m.group(1)) < COND_BATCH:
+                _fail("the input tank's capacity %s is below one condensate batch (%d units): the works could never run" % (m.group(1), COND_BATCH))
+            return _w_tank(t, x, z, liquid, int(m.group(1)))
+        _unmeasured(t, "ProofTank refused: %s" % out)
+    return out
+
+
+def _w_status(t, wid):
+    """(status line, 'Processed ... in, ... out' line) from the works' inspect."""
+    _l, lines = _inspect(t, wid)
+    ls = [str(x) for x in lines]
+    proc = [x for x in ls if x.startswith("Processed")]
+    stat = [x for x in ls if not x.startswith("Processed") and not x.startswith("Pending")]
+    return (stat[0] if stat else ""), (proc[0] if proc else "")
+
+
+def _w_hold(t, tid):
+    """The tank's own 'Holding: ...' / 'Empty' line."""
+    _l, lines = _inspect(t, tid)
+    for x in lines:
+        if str(x).startswith("Holding") or str(x).startswith("Empty"):
+            return str(x)
+    return " | ".join(str(x) for x in lines)
+
+
+@suite.chain("works")
+def works_chain(t):
+    _prep(t, "works")
+    x, z = t.anchor
+    ids = {}
+    pos = {"in": (x + 2, z), "out": (x - 3, z)}
+
+    def reagent():
+        return _stack_total(t, REAGENT, _rs(_rect(t)))
+
+    def poll(pred, limit, step=500):
+        """(value, ticks) once pred() is truthy, ticking `step` at a time up to `limit`."""
+        waited = 0
+        v = pred()
+        while not v and waited < limit:
+            _wait(t, step)
+            waited += step
+            v = pred()
+        return v, waited
+
+    def body():
+        with _comp(t, "works_site_ready", poison=True):
+            if _live(t):
+                _ok(t.bridge_call("jawa/build_batch", faction="player", wipeExisting=False,
+                                  ops="%s:%d,%d;%s:%d,%d;%s:%d,%d;%s:%d,%d" % (
+                                      VWORKS, x, z, BATTERY, x, z + 2, TANK, pos["in"][0], pos["in"][1],
+                                      TANK, pos["out"][0], pos["out"][1])), "build_batch(works site)")
+                t.wait_ticks(5)
+                rect = _rs(_rect(t))
+                w = _things(t, VWORKS, rect)
+                b = _things(t, BATTERY, rect)
+                tanks = dict((tk["x"], tk) for tk in _things(t, TANK, rect))
+                if not w or not b or pos["in"][0] not in tanks or pos["out"][0] not in tanks:
+                    _unmeasured(t, "the works site did not stand: works %d battery %d tanks at x %s" % (len(w), len(b), sorted(tanks)))
+                ids.update(works=w[0]["id"], batt=b[0]["id"], tin=tanks[pos["in"][0]]["id"], tout=tanks[pos["out"][0]]["id"])
+                _ok(t.bridge_call("jawa/battery_set", thing=ids["batt"], mode="setPct", value=1.0), "battery_set(1.0)")
+                _w_tank(t, pos["in"][0], pos["in"][1], COND, 16000)
+                _w_tank(t, pos["out"][0], pos["out"][1], FRESHW, 0)
+                # the powered works says something other than 'No power'/'Idle' once vanilla's power net has switched it on
+                # (~100-170 ticks on the full list, proof_hose._powered); wait for it and record how long
+                def powered():
+                    st = _w_status(t, ids["works"])[0]
+                    return bool(st) and st != "Idle" and "No power" not in st
+                got, waited = poll(powered, 1500, step=250)
+                _note(t, "works powered: status after ticks", [_w_status(t, ids["works"])[0], waited])
+                if not got:
+                    _unmeasured(t, "the works never left 'No power'/'Idle' in 1500 ticks (status %r): power never reached it"
+                                % (_w_status(t, ids["works"])[0],))
+        with _comp(t, "works_refines_condensate"):
+            if _live(t):
+                tin_txt0 = _w_hold(t, ids["tin"])
+                if "ondensate" not in tin_txt0:
+                    _unmeasured(t, "the input tank does not read as holding vent condensate: %r" % tin_txt0)
+                s0, p0 = _w_status(t, ids["works"])
+                # control arm: powered, no cartridge -> nothing may come out (a harness that sees nothing must not pass)
+                _wait(t, 3 * RARE)
+                if reagent() != 0 or _w_hold(t, ids["tin"]) != tin_txt0 or _w_status(t, ids["works"])[1] != p0 \
+                        or "Out of fuel" not in _w_status(t, ids["works"])[0]:
+                    _fail("the works ran, or does not say 'Out of fuel', with no cartridge (reagent %d, status %r)"
+                          % (reagent(), _w_status(t, ids["works"])[0]))
+                r = _ok(t.bridge_call("jawa/thing_refuel", thingId=ids["works"], amount=5), "thing_refuel(works)")
+                if not r.get("hasFuel"):
+                    _unmeasured(t, "thing_refuel did not leave the works fuelled: %r" % r)
+                # budget = 16000 L/day x 10 = 160000 units/day over 240 rare ticks = 666 units per 250 ticks: a batch of
+                # 8000 accrues in 12 rare ticks (~3000 ticks); poll to 7000
+                made, waited = poll(reagent, 7000)
+                s1, p1 = _w_status(t, ids["works"])
+                tin_txt1 = _w_hold(t, ids["tin"])
+                _note(t, "refine: reagent / ticks to first / status / totals / input tank", [made, waited, s1, p1, tin_txt1])
+                if not made:
+                    _fail("a powered, fuelled works with a condensate tank touching it made no %s in %d ticks (status %r, totals %r)"
+                          % (REAGENT, waited, s1, p1))
+                if tin_txt1 == tin_txt0 or p1 == p0:
+                    _fail("reagent appeared (%d) but the input tank (%r -> %r) or the works' totals (%r -> %r) did not move"
+                          % (made, tin_txt0, tin_txt1, p0, p1))
+        with _comp(t, "works_filters_toxic_water"):
+            if _live(t):
+                _w_tank(t, pos["in"][0], pos["in"][1], TOXICW, 6000)
+                _w_tank(t, pos["out"][0], pos["out"][1], FRESHW, 0)
+                r0 = reagent()
+                out0 = _w_hold(t, ids["tout"])
+
+                def fresh():
+                    h = _w_hold(t, ids["tout"]).lower()
+                    return "fresh water" in h and not h.startswith("empty")
+                got, waited = poll(fresh, 6000)
+                tin_h, tout_h = _w_hold(t, ids["tin"]), _w_hold(t, ids["tout"])
+                _note(t, "toxic -> fresh: ticks / input / output / status", [waited, tin_h, tout_h, _w_status(t, ids["works"])[0]])
+                if not got:
+                    _fail("toxic water in the touching tank came out as no fresh water in the product tank after %d ticks (output %r, status %r)"
+                          % (waited, tout_h, _w_status(t, ids["works"])[0]))
+                if reagent() != r0:
+                    _fail("a toxic-water run dropped vent reagent (%d -> %d): the wrong recipe ran" % (r0, reagent()))
+        with _comp(t, "works_stops_without_power"):
+            if _live(t):
+                _ok(t.bridge_call("jawa/battery_set", thing=ids["batt"], mode="setPct", value=0.0), "battery_set(0)")
+                _wait(t, 3 * RARE)                              # flush: a batch already due may still land on the first rare tick
+                # a powered works would turn this input (4000 units per batch, 666 accrued per rare tick) within 6 rare ticks
+                _w_tank(t, pos["in"][0], pos["in"][1], TOXICW, 6000)
+                _w_tank(t, pos["out"][0], pos["out"][1], FRESHW, 0)
+                before = (_w_hold(t, ids["tout"]), _w_status(t, ids["works"])[1])
+                _wait(t, 7 * RARE)
+                after = (_w_hold(t, ids["tout"]), _w_status(t, ids["works"])[1])
+                status = _w_status(t, ids["works"])[0]
+                _note(t, "unpowered: output tank / totals before, after; status", [before, after, status])
+                if after != before:
+                    _fail("an unpowered works kept converting (%r -> %r, status %r)" % (before, after, status))
+                if "No power" not in status:
+                    _unmeasured(t, "nothing moved but the works does not say why (status %r): cannot tell no power from no work" % status)
+    _stable(t, body)
+
+
+# --------------------------------------------------------------------------- chain: the gas drift (decomposed, INFERRED)
+# The cloud's physical drift has NO state read: vents' inspect line counts cells within 12 and no tool reads a cell's density.
+# So the law is decomposed and read from the LIVE assembly through jawa/static_call (pure public statics): the daily heading
+# and the wind -> chance law. The movement itself is the kernel selftest's (CauldronFuzz 'drift conserves'), INFERRED here.
+
+KERNEL = "RimMandrake.Cauldron.RM_VentGasKernel"
+HEADING_PERIOD = 60000
+
+
+def _py_heading(ticks, seed):
+    """Offline port of RM_VentGasKernel.Heading (uint arithmetic); selftest compares it with the C# source constants."""
+    day = (ticks if ticks > 0 else 0) // HEADING_PERIOD
+    h = ((day * 2654435761) & 0xFFFFFFFF) ^ (seed & 0xFFFFFFFF)
+    h ^= h >> 15
+    h = (h * 0x2C1B3C6D) & 0xFFFFFFFF
+    h ^= h >> 12
+    return h % 8
+
+
+def _heading(t, ticks, seed):
+    out = _static(t, KERNEL, "Heading", "%d|%d" % (ticks, seed))
+    if not _live(t):
+        return 0
+    try:
+        return int(out.strip())
+    except ValueError:
+        _unmeasured(t, "Heading(%d,%d) answered %r, not an integer" % (ticks, seed, out))
+
+
+@suite.chain("drift")
+def drift_chain(t):
+    with _comp(t, "gas_heading_is_daily_and_map_seeded"):
+        if _live(t):
+            seed = 17
+            days = list(range(0, 24))
+            live = [_heading(t, d * HEADING_PERIOD, seed) for d in days]
+            ends = [_heading(t, d * HEADING_PERIOD + HEADING_PERIOD - 1, seed) for d in days[:6]]
+            other = [_heading(t, d * HEADING_PERIOD, seed + 7919) for d in days]
+            _note(t, "headings day 0..23 (seed 17) / other seed", [live, other])
+            if any(h < 0 or h > 7 for h in live):
+                _fail("a heading outside 0..7: %r" % live)
+            if live[:6] != ends:
+                _fail("the heading changed inside a day: day starts %r vs day ends %r" % (live[:6], ends))
+            if len(set(live)) < 3:
+                _fail("the heading never turns (days 0..23 -> %r): the cloud would always drift one way" % sorted(set(live)))
+            if live == other:
+                _fail("two maps (seed 17 and 7936) share one heading calendar: the heading is not map-seeded")
+            want = [_py_heading(d * HEADING_PERIOD, seed) for d in days]
+            if live != want:
+                _fail("the live Heading differs from the offline port: live %r vs port %r" % (live, want))
+    with _comp(t, "gas_drift_chance_follows_wind", toggle="ventGasDrifts"):
+        if _live(t):
+            got = []
+            for w in (-1.0, 0.0, 0.5, 1.0, 2.0, 9.0):
+                out = _static(t, KERNEL, "DriftChance", "%s" % w)
+                try:
+                    got.append((w, float(out.strip())))
+                except ValueError:
+                    _unmeasured(t, "DriftChance(%s) answered %r" % (w, out))
+            _note(t, "DriftChance(wind)", got)
+            vals = dict(got)
+            if vals[-1.0] != 0.0 or vals[0.0] != 0.0:
+                _fail("calm air must not drift: %r" % got)
+            if not (0.0 < vals[0.5] < vals[1.0] <= vals[2.0]):
+                _fail("a stronger wind must drift at least as often, and a breeze must drift: %r" % got)
+            if vals[9.0] > 0.75 + 1e-6 or vals[9.0] < vals[2.0]:
+                _fail("the chance must cap at 0.75, never fall: %r" % got)
 
 
 # --------------------------------------------------------------------------- chain: the log (last)
