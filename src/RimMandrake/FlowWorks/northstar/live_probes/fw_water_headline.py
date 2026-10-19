@@ -96,8 +96,12 @@ call("jawa/incident_queue_clear")
 res["before_shot"] = shot("headline_before")
 res["terrain_before"] = call("jawa/get_terrain_batch", rects="%d,%d,%d,%d" % SCENE).get("ops")
 # ---- dig the trench
+dig_bad = []
 for c in TRENCH:
-    call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=1, setFill=-1)
+    dr = call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=1, setFill=-1)
+    if not (dr or {}).get("success"):
+        dig_bad.append((c, dr))
+res["dig_refused"] = dig_bad
 f0, d0 = fills()
 res["trench_dug"] = {"fills": f0, "depth": d0, "tick": tick()}
 print("dug", f0, d0)
@@ -105,8 +109,11 @@ res["dug_shot"] = shot("headline_dug_dry")
 # ---- run until mid-fill, save
 seqA = []
 run_chunks(3, "A", seqA)
-before = set(os.listdir(PH.V.__dict__.get("SAVES", "."))) if False else None
-call("rimworld/save_game", saveName=SAVE)
+sv = call("rimworld/save_game", saveName=SAVE)
+res["save_reply"] = sv
+if not (sv or {}).get("success", True):
+    res["verdict"] = "UNMEASURED"
+    res["why"] = "save_game refused: %s" % sv
 time.sleep(6)
 res["save_tick"] = tick()
 res["save_fills"] = fills()[0]
@@ -152,7 +159,16 @@ n = min(len(fa), len(fb))
 res["compare"] = {"A_after_save": fa, "B": fb, "identical_prefix": fa[:n] == fb[:n], "n": n}
 res["full_A"] = bool(seqA) and all(v == 1 for v in seqA[-1]["fills"])
 res["full_B"] = bool(seqB) and all(v == 1 for v in seqB[-1]["fills"])
-res["verdict"] = "PASS" if (res["full_A"] and res["full_B"] and fa[:n] == fb[:n]) else "FAIL"
+# a failed read ([] fills, a refused dig, a refused advance) is UNMEASURED, never a vacuous all([]) PASS
+read_ok = (not dig_bad and len(res["trench_dug"]["fills"]) == len(TRENCH) and all(d == 1 for d in res["trench_dug"]["depth"])
+           and n > 0 and all(len(s["fills"]) == len(TRENCH) and s["ok"] for s in seqA + seqB))
+if res.get("verdict") == "UNMEASURED":
+    pass
+elif not read_ok:
+    res["verdict"] = "UNMEASURED"
+    res["why"] = "a dig, advance or fill read failed (trench not 8 cells at depth 1, or a chunk not executed): see dig_refused / seqA / seqB"
+else:
+    res["verdict"] = "PASS" if (res["full_A"] and res["full_B"] and fa[:n] == fb[:n]) else "FAIL"
 res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
 with open(os.path.join(OUT, "headline_result.json"), "w") as f:
     json.dump(res, f, indent=1, default=str)

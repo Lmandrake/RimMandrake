@@ -132,6 +132,7 @@ def measured(s, step, pulse):
     out = []
     pl = pulse_line(s, step, pulse)
     if pl: out.append("Raw game readout at this moment (squares, 0 = dry, 1 = wet): " + pl)
+    elif pulse is not None: out.append("UNMEASURED: no raw readout for pulse %d was found in the walk's log (picture only)" % pulse)
     for r in rows(s):
         if r["status"] == "OPEN RULING": continue
         st = {"MATCHES": "MATCHES the rule", "DIFFERS": "DIFFERS from the rule", "UNMEASURED": "not measured"}.get(r["status"], r["status"])
