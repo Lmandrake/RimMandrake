@@ -4,7 +4,10 @@ UNMEASURED.
 
   python.exe src/RimMandrake/FlowWorks/northstar/sprinkler_live.py [out.json] [--only draws,dries,...] [--origin X,Z]
   python3    src/RimMandrake/FlowWorks/northstar/sprinkler_live.py --dry-run [--only ...]   plan only, no bridge
-(No --mock here: a faithful pump/pipe/tank net model is a separate job; thirst_live.py --mock has one for the thirst rows.)
+  python3    src/RimMandrake/FlowWorks/northstar/sprinkler_live.py --mock [--mock-faults a,b] [--only ...]
+             every row's control flow against sprinkler_fake.SprinklerFakeBridge (pump / pipe / tank / pulse / power-switch
+             timing, NOT the mod). Result says mode "mock", written to the temp dir. Faults: sprinkler_fake.py docstring;
+             selftest: selftest_sprinkler_live.py.
 
 Bridge held, a Playing disposable map (the calm test site). Settings flipped are restored in a finally.
 
@@ -27,6 +30,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -40,19 +44,34 @@ S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 S_TH = "RimMandrake.FlowWorks.Thirst.RM_ThirstSettings"
 MC = "RimMandrake.FlowWorks.Sprinklers.RM_MapComponent_Sprinklers"
 PULSE = 2500
+COLD_WAIT = 250       # net(): ticks let go before the first fill (see net()); the selftest sets 0 to prove the mock goes red
+# --only key -> the row ids it emits (--dry-run prints it; selftest_sprinkler_live.py checks every emitted id is declared)
+PLAN = (
+    ("draws", ("sprinkler.draws_and_wets",)),
+    ("pressure", ("sprinkler.no_pressure",)),
+    ("switch", ("sprinkler_switch_flips.flip_sprinklersEnabled",)),
+    ("dries", ("sprinkler.dries_when_starved",)),
+    ("thick", ("sprinkler.thick_clogs",)),
+    ("walls", ("sprinkler.walls_stop_spray",)),
+    ("brine", ("T22_no_brine_spray",)),
+    ("effects", ("sprinkler.acid_hurts_fuel_puddles",)),
+    ("reserve", ("T21_drinking_reserve",)),
+)
 UNITS_PER_CELL = 5          # 12.5 L/h over 25 cells = 0.5 L = 5 dL a cell a pulse (sprinklerLitresPerCellHour 0.5)
 
 
-def main(argv=None):
+def main(argv=None, bridge=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("out", nargs="?", default=None)
     ap.add_argument("--only", default="")
     ap.add_argument("--dry-run", action="store_true", help="print the plan and exit; no bridge")
+    ap.add_argument("--mock", action="store_true", help="run against sprinkler_fake.SprinklerFakeBridge (offline; mode 'mock')")
+    ap.add_argument("--mock-faults", default="", help="comma list of sprinkler_fake faults to inject")
     ap.add_argument("--origin", default="120,140", help="first net's tank corner; nets are 14 cells apart in z")
     a = ap.parse_args(argv)
     only = [x.strip().lower() for x in a.only.split(",") if x.strip()]
     if a.dry_run:
-        keys = ("draws", "pressure", "switch", "dries", "thick", "walls", "brine", "effects", "reserve")
+        keys = tuple(k for k, _ in PLAN)
         bad = [o for o in only if o not in keys]
         print("sprinkler_live plan (dry run, no bridge): first net at %s, nets 14 cells apart in z" % a.origin)
         for k in keys:
@@ -61,14 +80,24 @@ def main(argv=None):
             print("  UNKNOWN --only keys: %s" % bad)
             return 2
         return 0
-    import validation_hose as VH
-    B = VH.H()
+    if bridge is not None:
+        B = bridge
+    elif a.mock:
+        import sprinkler_fake
+        B = sprinkler_fake.SprinklerFakeBridge(faults=[f for f in a.mock_faults.split(",") if f])
+    else:
+        import validation_hose as VH
+        B = VH.H()
+    mock = bridge is not None or a.mock
     OX, OZ = map(int, a.origin.split(","))
-    out = a.out or os.path.join(HERE, "sprinkler_live_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
+    out = a.out or os.path.join(tempfile.gettempdir() if mock else HERE,
+                                "sprinkler_live_%sresult_%s.json" % ("mock_" if mock else "", time.strftime("%Y%m%dT%H%M%S")))
     rows = []
     res = {"script": "sprinkler_live.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a)}
     import driver_stamp
     driver_stamp.stamp(res, B.call)      # validation.py reads a result only at the current mod hash AND deployed DLL
+    if mock:
+        res["mode"] = "mock"             # never 'live': validation.py must refuse a result no game produced
     # 2026-10-18 (SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING): ExplosiveGrowthAPI.IsSoaked is in the composed mandrake.rm.biomes
     # mod; the 11-mod flowworks tier does not load it, so soaked() reads None there: SITE, not HARNESS.
     _run = (res.get("env") or {}).get("running")
@@ -165,7 +194,7 @@ def main(argv=None):
         # unpowered for up to 200 ticks after the build. A pulse landing in that gap reads NoPressure and holds for 2,500
         # ticks; whenever the phase put it after +130 the T22 read (fill, 2,500 + 130) WAS that cold pulse (the fresh tank
         # then paid two pulses, 180 dL, against one, 90 dL, in the PASS runs). Let the cold pulse go before the fill.
-        ticks(250)
+        ticks(COLD_WAIT)
         return n
 
     def until_pulse():
@@ -249,6 +278,17 @@ def main(argv=None):
                 row("sprinkler_switch_flips.flip_sprinklersEnabled", "PASS" if ok else "FAIL", "MOD",
                     {"inspect": line, "units": [u0, u1]})
             if want("dries"):
+                # HARNESS (found by the 2026-10-18 mock): the row dried cells that were never wet. Alone, or after the
+                # pressure/switch rows (their last spray is >2,750 ticks old), the covered cell already read dry and the
+                # row PASSed without the head ever being starved of anything. Wet the cell first.
+                wet_before = soaked(*n["covered"])
+                if wet_before is False:
+                    until_pulse()
+                    wet_before = soaked(*n["covered"])
+                if wet_before is False:
+                    row("sprinkler.dries_when_starved", "UNMEASURED", "HARNESS",
+                        {"why": "the covered cell never read wet before the tank was emptied", "inspect": inspect(n["headId"])})
+                    wet_before = "reported"
                 print(fill(n["tank"][0], n["tank"][1], "RM_Liquid_FreshWater", 0))
                 trace = []
                 for _ in range(22):
@@ -258,8 +298,10 @@ def main(argv=None):
                         break
                 line, wet = trace[-1]
                 ok = (line or "").startswith("Dry") and wet is False
-                row("sprinkler.dries_when_starved", "PASS" if ok else ("UNMEASURED" if wet is None else "FAIL"),
-                    "MOD" if wet is not None else EG_CLS, {"last": [line, wet], "ticks": 125 * len(trace)})
+                if wet_before != "reported":
+                    row("sprinkler.dries_when_starved", "PASS" if ok else ("UNMEASURED" if wet is None else "FAIL"),
+                        "MOD" if wet is not None else EG_CLS, {"last": [line, wet], "ticks": 125 * len(trace),
+                                                                "wetBefore": wet_before})
 
         # ---------------------------------------------------------------- thick / brine / walls / effects: net 1..
         if want("thick"):
