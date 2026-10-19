@@ -30,7 +30,17 @@
     "Pyrinth": {
       "at": "2026-10-19T13:58:16.550Z",
       "decision": "A",
-      "note": "This is a real mineral in our world, Pyrinth, keep this.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:58:16.550Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "This is a real mineral in our world, Pyrinth, keep this.",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "d178329a3a034e9e",
       "schema": 2,
@@ -60,7 +70,17 @@
       "at": "2026-10-19T13:34:18.901Z",
       "decidedAt": "2026-10-19T13:34:09.065Z",
       "decision": "A",
-      "note": "add A B C as random pool variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:34:18.901Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "add A B C as random pool variants",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "picks": {
         "_reference:RM_Aluun": "D"
       },
@@ -264,7 +284,17 @@
       "at": "2026-10-19T13:38:05.268Z",
       "decidedAt": "2026-10-19T13:37:52.295Z",
       "decision": "hold",
-      "note": "This makes Distilled water, a kind of FlowWorks water... no special art",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:38:05.268Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "This makes Distilled water, a kind of FlowWorks water... no special art",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "4a538a95d19462a724fa06796a633cc1bf77b6305e36851550349462c3f557ea"
@@ -437,7 +467,17 @@
       "at": "2026-10-19T13:41:22.094Z",
       "decidedAt": "2026-10-19T13:41:11.059Z",
       "decision": "A",
-      "note": "Make both random variant acceptable",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:41:22.094Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Make both random variant acceptable",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "reject": {},
       "retire": {},
@@ -694,7 +734,17 @@
       "at": "2026-10-19T13:58:37.577Z",
       "decidedAt": "2026-10-19T13:58:35.368Z",
       "decision": "hold",
-      "note": "drop",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:58:37.577Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "drop",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "d178329a3a034e9e",
       "schema": 2,
@@ -795,7 +845,17 @@
       "at": "2026-10-19T13:58:47.927Z",
       "decidedAt": "2026-10-19T13:58:46.576Z",
       "decision": "hold",
-      "note": "drop",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:58:47.927Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "drop",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "d178329a3a034e9e",
       "schema": 2,
@@ -900,7 +960,17 @@
       "at": "2026-10-19T13:42:45.241Z",
       "decidedAt": "2026-10-19T13:42:32.841Z",
       "decision": "A",
-      "note": "Both good random variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:42:45.241Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Both good random variants",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [],
       "purgeTouched": true,
@@ -941,7 +1011,17 @@
     "RM_GeneSeekerLoaded": {
       "at": "2026-10-19T13:59:16.797Z",
       "decision": "A",
-      "note": "This is a valid item from the Helix faction, that allows the player to find a patch of the slime that holds the genes they seek. Keep. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:59:16.797Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "This is a valid item from the Helix faction, that allows the player to find a patch of the slime that holds the genes they seek. Keep. ",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "d178329a3a034e9e",
       "schema": 2,
@@ -1039,7 +1119,17 @@
       "at": "2026-10-19T13:59:44.456Z",
       "decidedAt": "2026-10-19T13:59:43.199Z",
       "decision": "hold",
-      "note": "drop",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:59:44.456Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "drop",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "d178329a3a034e9e",
       "schema": 2,
@@ -1851,7 +1941,17 @@
     "RM_TollukCapHarvest": {
       "at": "2026-10-19T13:35:15.770Z",
       "decision": "A",
-      "note": "I have no assign option?",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:35:15.770Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "I have no assign option?",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "d178329a3a034e9e",
       "schema": 2,
@@ -1982,7 +2082,17 @@
       "at": "2026-10-19T13:56:26.916Z",
       "decidedAt": "2026-10-19T13:56:20.882Z",
       "decision": "A",
-      "note": "both are acceptable random variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:56:26.916Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "both are acceptable random variants",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "reject": {},
       "retire": {},
@@ -2174,7 +2284,17 @@
       "at": "2026-10-19T13:59:51.792Z",
       "decidedAt": "2026-10-19T13:59:50.515Z",
       "decision": "hold",
-      "note": "drop",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:59:51.792Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "drop",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "d178329a3a034e9e",
       "schema": 2,
@@ -2208,7 +2328,17 @@
       "at": "2026-10-19T13:41:33.654Z",
       "decidedAt": "2026-10-19T13:41:29.607Z",
       "decision": "hold",
-      "note": "Drop from game.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:41:33.654Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Drop from game.",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "d178329a3a034e9e",
       "schema": 2,
@@ -2218,7 +2348,17 @@
       "at": "2026-10-19T13:59:56.673Z",
       "decidedAt": "2026-10-19T13:59:55.214Z",
       "decision": "hold",
-      "note": "drop",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:59:56.673Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "drop",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "d178329a3a034e9e",
       "schema": 2,
@@ -2621,7 +2761,17 @@
       "at": "2026-10-19T14:00:10.506Z",
       "decidedAt": "2026-10-19T14:00:09.047Z",
       "decision": "hold",
-      "note": "drop",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T14:00:10.506Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "drop",
+          "when": "2026-10-19T07:28:11-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "d178329a3a034e9e",
       "schema": 2,
