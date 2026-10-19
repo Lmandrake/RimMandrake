@@ -42,6 +42,22 @@ check(W.parse_cell({"x": 3, "z": 9}) == (3, 9) and W.parse_cell("(3, 0, 9)") == 
 check(W.interp_cross([(0, 5, 0), (10, 7, 0)], 6) == 5.0, "interp_cross is linear between samples")
 z = W.shelf_pack([("a", 30, 41), ("b", 30, 41), ("c", 30, 41)], (15, 15, 100, 120))
 check(all(not W.overlaps(z[a], z[b], 2) for a in z for b in z if a < b), "shelf_pack zones do not overlap")
+# pass 3 (2026-10-19): the lanes are sealed. Pass 2's open-ended lanes let the creature walk round (the decider breaks toward
+# a REACHABLE goal only past a 2.5x detour), so a plan that leaks is refused before it is staged.
+zone = (20, 20, W.LEAD + 6 + W.LEAD, W.LANE_H)
+lanes = [W.build_ladder_lane("t%d" % t, "B4", "wood", False, t, zone) for t in range(1, 7)]
+lanes += [W.build_canyon_lane("S%d" % sl, "B6", sl, (20, 20, W.LEAD + W.CANYON_LEN + W.LEAD, W.CANYON_H)) for sl in range(1, 7)]
+check(all(not W.lane_leaks(ln, ln.meta.get("gap_cells") or ()) for ln in lanes), "every sealed ladder/canyon plan: no way to the goal round the structure")
+check(all(W.lane_leaks(ln) for ln in lanes if ln.kind == "canyon"), "a canyon's gap IS a way through (the flood fill sees the gap)")
+open_lane = W.build_ladder_lane("open", "B4", "wood", False, 1, zone, sealed=False)
+check(W.lane_leaks(open_lane), "the same wall without its moat leaks (pass 2's layout)")
+ln = lanes[0]
+check(all(zone[1] < c[1] < zone[1] + zone[3] - 1 for c in ln.walls) and len(ln.walls) == W.LANE_H - 2, "a ladder wall spans the interior moat to moat")
+check(ln.start not in W.moat_cells(zone) and ln.goal not in W.moat_cells(zone), "start and goal inside the moat")
+for b_ in (2, 3, 4, 6):
+    line = W.creature_line(b_, b_, dict(hold_line=1.0, per=100.0), True).lower()
+    check(W.REPORT_SMASH not in line and W.REPORT_SQUEEZE not in line,
+          "B%d creature line never reads as a smash/squeeze job report (pass 2 matched 'smash'/'squeez' in it)" % b_)
 rc, rows, out = run("--dry-run")
 check(rc == 0 and "DRY RUN" in out, "--dry-run exits 0")
 rc, rows, out = run("--mock")
@@ -55,6 +71,10 @@ for fault, prefix in (("hold", "A3_"), ("squeeze", "A2_cost"), ("roof", "A3_"), 
                       ("defaults", "A8_defaults"), ("label", "A8_dialog_group")):
     rc, rows, out = run("--mock", "--mock-fault", fault)
     check(any(r["status"] == "FAIL" and r["id"].startswith(prefix) for r in rows), "--mock-fault %s turns a %s row to FAIL" % (fault, prefix))
+rc, rows, out = run("--mock", "--mock-fault", "unsealed")
+a3 = [r for r in rows if r["criterion"] == "A3"]
+check(a3 and all(r["status"] == "UNMEASURED" and r["cls"] == "SITE" for r in a3),
+      "--mock-fault unsealed (no moat): every A3 row is SITE/UNMEASURED (the creature walked round), never PASS")
 rc, rows, out = run("--mock", "--mock-fault", "norock")
 check(any(r["id"] == "A2_canyons" and r["status"] == "UNMEASURED" for r in rows) and not [r for r in rows if r["status"] == "FAIL"],
       "no placeable rock = A2 UNMEASURED, never PASS or FAIL")

@@ -49,6 +49,13 @@ namespace RimMandrake.TitanicCreatures
             unreachable.Prune(now);
         }
 
+        /// <summary>Main thread (the despawn prefix): these creatures' held crossings just lost a wall, so their goals are open to a
+        /// fresh decision now, not after the unreachable cooldown.</summary>
+        internal static void ForgetUnreachable(List<int> creatures)
+        {
+            foreach (int id in creatures) unreachable.Forget(id);
+        }
+
         /// <summary>Null: no decision here, let the legacy clearing run (giant trunks). True/false: a job was started / not.</summary>
         public static bool? TryStart(Pawn pawn, LocalTargetInfo resolved, PathEndMode mode)
         {

@@ -102,14 +102,19 @@ namespace RimMandrake.TitanicCreatures
             lock (heldGate) held.CellsFor(p.thingIDNumber, map.uniqueID, now, TitanClearing.GiveUpMemoTicks, into);
         }
 
-        /// <summary>A wall left the map: every held crossing that contains its cells is forgotten at once (it is now thinner).</summary>
+        /// <summary>A wall left the map: every held crossing that contains its cells is forgotten at once (it is now thinner), and so
+        /// is the decider's "goal unreachable" cooldown of each creature that held there. BIG_CREATURES_DESIGN_WALLS_AND_SLOTS pass 3
+        /// (2026-10-19, read from the code): a creature held on every breach try is noted unreachable for 600 ticks
+        /// (UnreachableMemo), so without this it re-judged the thinner wall up to 600 ticks late, against §6's "re-judges as soon
+        /// as part of it is gone".</summary>
         public static void NotifyDespawned(Map map, CellRect rect)
         {
             if (!AnyHeld || map == null) return;
             CellIndices idx = map.cellIndices;
+            List<int> touched;
             lock (heldGate)
             {
-                held.RemoveWhere(map.uniqueID, cells =>
+                touched = held.RemoveWhere(map.uniqueID, cells =>
                 {
                     foreach (int c in cells)
                         if (rect.Contains(idx.IndexToCell(c))) return true;
@@ -117,6 +122,7 @@ namespace RimMandrake.TitanicCreatures
                 });
                 AnyHeld = held.Any;
             }
+            if (touched != null) WallsSlotsDecider.ForgetUnreachable(touched);
         }
 
         /// <summary>Main thread, at most every PruneEveryTicks (and at once when the tick goes backwards, a load): drop held crossings

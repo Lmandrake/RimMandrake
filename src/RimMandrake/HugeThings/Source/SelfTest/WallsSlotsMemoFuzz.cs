@@ -105,6 +105,27 @@ namespace RimMandrake.HugeThings.SelfTest
                 int id = 1000 + i;
                 Check(b.EntryCount(id) == 0 || (live.Contains(id) && b.EntryCountOnMap(id, liveMap) == b.EntryCount(id)), "off-map entry survived");
             }
+            // a wall leaving the map: RemoveWhere returns exactly the creatures that lost a crossing (the decider forgets their
+            // unreachable cooldown by that list, pass 3), and nothing it returns still holds a matching crossing
+            int hitCell = r.Next(0, 5000);
+            var had = new HashSet<int>();
+            for (int i = 0; i < creatures; i++)
+            {
+                b.CellsFor(1000 + i, liveMap, now, memo, cells);
+                if (cells.Contains(hitCell)) had.Add(1000 + i);
+            }
+            List<int> touched = b.RemoveWhere(liveMap, cs => Array.IndexOf(cs, hitCell) >= 0);
+            Check(had.Count == 0 ? touched == null : touched != null && new HashSet<int>(touched).SetEquals(had),
+                "RemoveWhere returned " + (touched == null ? "null" : touched.Count.ToString()) + " creatures, " + had.Count + " held the cell");
+            foreach (int id in had)
+            {
+                b.CellsFor(id, liveMap, now, memo, cells);
+                Check(!cells.Contains(hitCell), "creature " + id + " still holds the removed cell");
+            }
+            var um = new UnreachableMemo();
+            um.Note(42, 9, now);
+            um.Forget(42);
+            Check(!um.Blocked(42, 9, now + 1), "Forget left the creature's goal blocked");
             // after everything expires, the book is empty and Any is false
             b.Prune(now + memo * 3, memo, id => true, map => true);
             Check(b.Count == 0 && !b.Any && b.CreatureCount == 0, "expired entries left behind: " + b.Count);
