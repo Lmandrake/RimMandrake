@@ -102,17 +102,20 @@ namespace RimMandrake.TerminalBiomes
 
         public RM_MapComponent_WeatherPlantGraphic(Map map) : base(map) { }
 
+        // Includes the setting, so flipping it in Mod Settings remeshes within CheckInterval ticks instead of at the next weather change.
+        private bool Trigger() { return RM_TerminalBiomesSettings.GreyCrownRetractionActive && RM_WeatherPlantGraphics.IsTrigger(map.weatherManager?.curWeather); }
+
         public override void FinalizeInit()
         {
             base.FinalizeInit();
-            lastTrigger = RM_WeatherPlantGraphics.IsTrigger(map.weatherManager?.curWeather);
+            lastTrigger = Trigger();
             initialised = true;
         }
 
         public override void MapComponentTick()
         {
             if (!RM_WeatherPlantGraphics.Ready || Find.TickManager.TicksGame % CheckInterval != 0) return;
-            bool now = RM_WeatherPlantGraphics.IsTrigger(map.weatherManager?.curWeather);
+            bool now = Trigger();
             if (RM_TerminalMiscKernel.WeatherVariantRemesh(initialised, lastTrigger, now))
                 map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.Things);
             lastTrigger = now;

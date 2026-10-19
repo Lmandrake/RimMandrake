@@ -674,7 +674,7 @@ namespace RimMandrake.TerminalBiomes
                 }
                 list.CheckboxLabeled("Brine crowns pull in during salt snow", ref greyCrownRetractionEnabled,
                     "While salt snow falls, brine crowns draw their membranes in and show only their spines. "
-                  + "Picture only: nothing about the crown changes but its look. Takes effect at the next weather change.");
+                  + "Picture only: nothing about the crown changes but its look. Takes effect within a few seconds.");
                 list.GapLine();
             }
 
