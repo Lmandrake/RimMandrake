@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
+    mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the frozen campaign twin of the Cracked Lands (RUT_CrackedLands)
+    (src/RimUtinni/UtinniPatches/Defs/BiomeDefs) still named, ported as RM_ defs with the donor's own values so the
+    painted planet keeps its ground and flora. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
+    provenance kind=donor standin=true) until regenerated; texPaths not served by Alpha Biomes are left as they were.
+  -->
+  <!-- RM_HardyGrass: port of AB_HardyGrass (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_MechanoidIntrusion.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_HardyGrass</defName>
+    <label>hardy grass</label>
+    <description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>1.3</Flammability>
+      <Nutrition>0.15</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Grass_Leafless</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.30</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>2.5</growDays>
+      <pollution>Any</pollution>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_GargantuanLithops: port of AB_GargantuanLithops (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_IdyllicMeadows.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_GargantuanLithops</defName>
+    <label>gargantuan lithops</label>
+    <description>Lithops is a genus of succulent plants often known as pebble plants or living stones, due to their stone-like appearance that allows them to avoid being eaten by blending in with surrounding rocks. This gigantic lithops has been genetically modified to actually gather small amounts of metals and stone and incorporate them into its structure. Who said geneticists lack a sense of humour?\n\nPlant details: Gargantuan lithops is a wild plant that cannot be cultivated, and it needs minimum terrain fertility of 0.7. Can be harvested for steel and a stone chunk.</description>
+    <descriptionHyperlinks>
+      <ThingDef>Steel</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_Lithops</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.2, 0.15)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+    </graphicData>
+    <plant>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <visualSizeRange>0.75~1</visualSizeRange>
+      <harvestYield>10</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.30</harvestAfterGrowth>
+      <harvestedThingDef>Steel</harvestedThingDef>
+    </plant>
+    <modExtensions>
+      <li Class="VEF.Plants.DualCropExtension">
+        <randomOutput>true</randomOutput>
+        <outPutAmount>1</outPutAmount>
+        <randomSecondaryOutput>
+          <li>ChunkSandstone</li>
+          <li>ChunkGranite</li>
+          <li>ChunkLimestone</li>
+          <li>ChunkSlate</li>
+          <li>ChunkMarble</li>
+        </randomSecondaryOutput>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

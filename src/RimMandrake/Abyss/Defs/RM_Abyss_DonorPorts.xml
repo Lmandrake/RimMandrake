@@ -6,7 +6,7 @@
     with the donor's own values. Art: StandIn/<donor texPath> marked stand-in copies (art ledger, provenance
     kind=donor standin=true) until regenerated.
   -->
-  <!-- RM_FineForsakenSand: port of AB_FineForsakenSand (Alpha Biomes, TerrainDefs/Terrain_ForsakenCrags.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <!-- RM_FineForsakenSand: port of AB_FineForsakenSand (Alpha Biomes, TerrainDefs/Terrain_ForsakenCrags.xml), plain XML copy 2026-10-18 for donor retirement; donor scatterType AB_DarkScatter dropped. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_FineForsakenSand</defName>
     <label>fine forsaken sand</label>
@@ -21,7 +21,6 @@
       <BeautyOutdoors>0</BeautyOutdoors>
       <Cleanliness>-1</Cleanliness>
     </statBases>
-    <scatterType>AB_DarkScatter</scatterType>
     <affordances>
       <li>Light</li>
       <li>Medium</li>
@@ -43,7 +42,7 @@
     </tools>
   </TerrainDef>
 
-  <!-- RM_ForsakenSand: port of AB_ForsakenSand (Alpha Biomes, TerrainDefs/Terrain_ForsakenCrags.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <!-- RM_ForsakenSand: port of AB_ForsakenSand (Alpha Biomes, TerrainDefs/Terrain_ForsakenCrags.xml), plain XML copy 2026-10-18 for donor retirement; donor scatterType AB_DarkScatter dropped. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_ForsakenSand</defName>
     <label>forsaken sand</label>
@@ -58,7 +57,6 @@
       <BeautyOutdoors>0</BeautyOutdoors>
       <Cleanliness>-1</Cleanliness>
     </statBases>
-    <scatterType>AB_DarkScatter</scatterType>
     <affordances>
       <li>Light</li>
       <li>Medium</li>

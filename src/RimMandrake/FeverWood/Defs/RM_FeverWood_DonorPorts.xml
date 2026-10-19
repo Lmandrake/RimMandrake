@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
+    mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the frozen campaign twin of the Fever Wood (RUT_FeverWood)
+    (src/RimUtinni/UtinniPatches/Defs/BiomeDefs) still named, ported as RM_ defs with the donor's own values so the
+    painted planet keeps its ground and flora. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
+    provenance kind=donor standin=true) until regenerated; texPaths not served by Alpha Biomes are left as they were.
+  -->
+  <!-- RM_Iashiphus: port of AB_Iashiphus (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_TarPits.xml), plain XML copy 2026-10-18 for donor retirement.
+       Dropped/replaced: harvest AB iashiphus fruit -> vanilla RawBerries. -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_Iashiphus</defName>
+    <label>iashiphus</label>
+    <description>This vivid green plant seem to be related to cacti. Though it's fleshy bark is not edible, it produces flowers than can be consumed by humans.\n\nPlant details: Iashiphus is a wild plant that cannot be cultivated, and it needs minimum terrain fertility of 0.7. Can be harvested for raw iashiphus fruit.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RawBerries</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_Iashiphus</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.2, 0.15)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+    </graphicData>
+    <plant>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <visualSizeRange>1.5~2</visualSizeRange>
+      <harvestYield>10</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.30</harvestAfterGrowth>
+      <harvestedThingDef>RawBerries</harvestedThingDef>
+    </plant>
+  </ThingDef>
+</Defs>

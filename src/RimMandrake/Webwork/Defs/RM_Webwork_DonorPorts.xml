@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
+    mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the frozen campaign twin of the Webwork (RUT_Webwork)
+    (src/RimUtinni/UtinniPatches/Defs/BiomeDefs) still named, ported as RM_ defs with the donor's own values so the
+    painted planet keeps its ground and flora. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
+    provenance kind=donor standin=true) until regenerated; texPaths not served by Alpha Biomes are left as they were.
+  -->
+  <!-- RM_JungleTree: port of AB_JungleTree (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_FeraliskJungle.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_JungleTree</defName>
+    <label>deep jungle tree</label>
+    <description>A towering, ancient tree with dense foliage and thick, twisting roots—its canopy forms part of the near-impenetrable roof of the deep jungle.\n\nBased on concept art for plants for Guild Wars.</description>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_JungleTree</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.18, 0.3, 0.15)</volume>
+      </shadowData>
+    </graphicData>
+        <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Nutrition>1.2</Nutrition>
+    </statBases>
+    <plant>
+      <leaflessGraphicPath>StandIn/Things/Plants/AB_JungleTreeLeafless</leaflessGraphicPath>
+      <growDays>14</growDays>
+      <harvestWork>550</harvestWork>
+      <harvestYield>18</harvestYield>
+      <wildClusterRadius>10</wildClusterRadius>
+      <wildClusterWeight>11</wildClusterWeight>
+      <visualSizeRange>2.8~3.8</visualSizeRange>
+    </plant>
+    <ingestible/>
+  </ThingDef>
+
+  <!-- RM_TangleTea: port of AB_TangleTea (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_GallatrossGraveyard.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_TangleTea</defName>
+    <label>tangle tea</label>
+    <description>This strange plant seems to be of alien origins. It doesn't seem to be fit for human consumption. Its common name alludes to the tea-bag shape of its flowers, and the fact that its sap is a very sticky substance.\n\nInspired by art by Desiree-m. Deviantart page no longer exists :(</description>
+    <pathCost>50</pathCost>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_TangleTea</texPath>
+                  <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.55, 0.17, 0.15)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <plant>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>7.5</wildClusterWeight>
+      <visualSizeRange>0.75~1</visualSizeRange>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_Gomphoeria: port of AB_Gomphoeria (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_FeraliskJungle.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_Gomphoeria</defName>
+    <label>gomphoeria</label>
+    <description>An unusually tall plant with bright, pink nodules. Its nodules are slightly toxic for humans, and it produces a strange, rotten fruit smell, so it is considered absolutely inedible.</description>
+    <statBases>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_Gomphoeria</texPath>
+                  <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.2, 0.15)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+    </graphicData>
+    <plant>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <visualSizeRange>1.5~2</visualSizeRange>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_Aaklac: port of AB_Aaklac (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_FeraliskJungle.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_Aaklac</defName>
+    <label>aaklac</label>
+    <description>A rare, huge flower which can be found in the deepest jungles. Its quite striking colour and nice smell makes it popular in gardening, if it can be extracted from the deep jungle, of course.\n\nBased on artwork by Rob Smyth, https://robsmythart.com/projects</description>
+    <statBases>
+      <Beauty>10</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_Aaklac</texPath>
+            <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.5</drawSize>
+      <shadowData>
+        <volume>(0.55, 0.2, 0.2)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+    </graphicData>
+    <plant>
+      <topWindExposure>0.07</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_DenseMud: port of AB_DenseMud (Alpha Biomes 1.6/Defs/TerrainDefs/Terrain_FeraliskInfestedJungle.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_DenseMud</defName>
+    <label>dense mud</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_DenseMud</texturePath>
+  <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_DenseMud_Polluted</pollutedTexturePath>
+  <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
+    <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>
+    <pollutionColor>(1, 1, 1, 1)</pollutionColor>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>340</renderPrecedence>
+    <pathCost>20</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+    <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>Rocky</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>0.8</fertility>
+    <takeFootprints>True</takeFootprints>
+    <tools>
+      <li>
+        <label>mud</label>
+        <capacities>
+          <li>KickMaterialInEyes</li>
+        </capacities>
+        <hediff>MudInEyes</hediff>
+        <cooldownTime>1.5</cooldownTime>
+      </li>
+    </tools>
+  </TerrainDef>
+
+  <!-- RM_DenseGrass: port of AB_DenseGrass (Alpha Biomes 1.6/Defs/TerrainDefs/Terrain_FeraliskInfestedJungle.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_DenseGrass</defName>
+    <label>dense grass</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_DenseGrass</texturePath>
+  <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_DenseGrass_Polluted</pollutedTexturePath>
+   <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMarsh</pollutionOverlayTexturePath>
+    <pollutionColor>(1, 1, 1, 0.15)</pollutionColor>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>315</renderPrecedence>
+    <pathCost>15</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <fertility>1</fertility>
+    <takeFootprints>True</takeFootprints>
+    <avoidWander>false</avoidWander>
+  </TerrainDef>
+</Defs>

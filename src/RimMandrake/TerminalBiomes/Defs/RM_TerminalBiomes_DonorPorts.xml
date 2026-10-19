@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
+    mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the frozen campaign twin of the fuel snows and the umbra (RUT_FuelSnows, RUT_Umbra)
+    (src/RimUtinni/UtinniPatches/Defs/BiomeDefs) still named, ported as RM_ defs with the donor's own values so the
+    painted planet keeps its ground and flora. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
+    provenance kind=donor standin=true) until regenerated; texPaths not served by Alpha Biomes are left as they were.
+  -->
+  <!-- RM_CrystalHorn: port of AB_CrystalHorn (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_PropaneLakes.xml), plain XML copy 2026-10-18 for donor retirement.
+       Dropped/replaced: harvest AB raw crystal horn -> vanilla RawBerries. -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_CrystalHorn</defName>
+    <label>crystal horn</label>
+    <description>This strange flower seems to be only partially organic. Part of its structure is clearly crystalline, and it appears to be unaffected, or even bolstered, by the extremely cold climate. It might even be edible.\n\nPlant details: Crystal horn is a wild plant that cannot be cultivated, and it needs minimum terrain fertility of 0.25. It grows in low temperatures (above -65ºC, below 10ºC) and needs no light. Can be harvested for raw crystal horn.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RawBerries</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_CrystalHorn</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.55, 0.17, 0.15)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Beauty>2</Beauty>
+      <Nutrition>0.35</Nutrition>
+    </statBases>
+    <plant>
+      <minGrowthTemperature>-60</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-50</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>5</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>10</maxGrowthTemperature>
+      <neverBlightable>true</neverBlightable>
+      <growMinGlow>0</growMinGlow>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <fertilityMin>0.25</fertilityMin>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>7.5</wildClusterWeight>
+      <visualSizeRange>0.8~1.2</visualSizeRange>
+      <harvestYield>10</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.30</harvestAfterGrowth>
+      <harvestedThingDef>RawBerries</harvestedThingDef>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_FrostLeaf: port of AB_FrostLeaf (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_PropaneLakes.xml), plain XML copy 2026-10-18 for donor retirement.
+       Dropped/replaced: harvest AB frost leaf -> vanilla Hay; <li>AB_PropaneLakeTerrains dropped (the donor never defines that affordance). -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_FrostLeaf</defName>
+    <label>frost leaf</label>
+    <description>These translucent plants seem to be able to grow almost anywhere, even in some snow covered areas. They can be dried in a fire and used to feed herbivore animals efficiently. \n\nPlant details: Frost leaf is a wild plant that cannot be cultivated, and it needs minimum terrain fertility of 0. It grows in low temperatures (above -65ºC, below 10ºC) and needs no light. Can be harvested for raw frost leaf.\n\nInspired by art by Desiree-m. Deviantart page no longer exists :(</description>
+    <descriptionHyperlinks>
+      <ThingDef>Hay</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_FrostLeaf</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.55, 0.17, 0.15)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Beauty>2</Beauty>
+      <Nutrition>0.35</Nutrition>
+    </statBases>
+    <plant>
+      <minGrowthTemperature>-60</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-50</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>5</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>10</maxGrowthTemperature>
+      <neverBlightable>true</neverBlightable>
+      <growMinGlow>0</growMinGlow>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <fertilityMin>0</fertilityMin>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>7.5</wildClusterWeight>
+      <visualSizeRange>0.8~1.2</visualSizeRange>
+      <harvestYield>20</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.5</harvestAfterGrowth>
+      <harvestedThingDef>Hay</harvestedThingDef>
+      <wildTerrainTags/>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_PackedSnow: port of AB_PackedSnow (Alpha Biomes 1.6/Defs/TerrainDefs/Terrain_PropaneLakes.xml), plain XML copy 2026-10-18 for donor retirement.
+       Dropped/replaced: <li>AB_PropaneLakeTerrains dropped (the donor never defines that affordance). -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_PackedSnow</defName>
+    <label>packed snow</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_Snow</texturePath>
+    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_Snow_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionIce</pollutionOverlayTexturePath>
+    <pollutionColor>(1, 1, 1, 1)</pollutionColor>
+    <pollutionCloudColor>(1, 1, 1, 0.66)</pollutionCloudColor>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <pathCost>12</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+    </statBases>
+    <scatterType>SoftGray</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <tags>
+      </tags>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>0.05</fertility>
+    <takeFootprints>True</takeFootprints>
+  </TerrainDef>
+
+  <!-- RM_PackedIce: port of AB_PackedIce (Alpha Biomes 1.6/Defs/TerrainDefs/Terrain_PropaneLakes.xml), plain XML copy 2026-10-18 for donor retirement.
+       Dropped/replaced: <li>AB_PropaneLakeTerrains dropped (the donor never defines that affordance). -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_PackedIce</defName>
+    <label>packed ice</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_WhiteIce</texturePath>
+    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_WhiteIce_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionIce</pollutionOverlayTexturePath>
+    <pollutionColor>(1, 1, 1, 1)</pollutionColor>
+    <pollutionCloudColor>(1, 1, 1, 0.66)</pollutionCloudColor>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>352</renderPrecedence>
+    <pathCost>6</pathCost>
+    <holdSnowOrSand>false</holdSnowOrSand>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+    </statBases>
+    <scatterType>SoftGray</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>0.00</fertility>
+    <tags>
+      </tags>
+    <takeFootprints>True</takeFootprints>
+  </TerrainDef>
+</Defs>
