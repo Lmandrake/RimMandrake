@@ -113,7 +113,7 @@ WHISPERS = [
     (16, "The Prospector's Bones", None, None, "no-mechanism"),
     (17, "Iron Rain", "iron_rain", "RUT_BrokenRing", "done"),
     (18, "The Choir Wind", "choir_wind", "RUT_Monument", "done"),
-    (19, "The Mirage Twin", "mirage_twin", "AB_MagmaVents", "done"),
+    (19, "The Mirage Twin", "mirage_twin", None, "no-mechanism"),  # 2026-10-18: its anchor AB_MagmaVents (Alpha Biomes TileMutatorDef, VEF prefab spawner + AB-only biome whitelist) left with the retired donor; GenStepDef + patch deleted, Templates/mirage_twin.txt kept for a re-anchor
     (20, "The Rootstock", "rootstock", "DryLake", "done"),
     (21, "The Sleeper's Knock", None, None, "no-mechanism"),
     (22, "The Sarlacc Sign", "sarlacc_sign", "RSW_SarlaccLair", "done"),
