@@ -39,16 +39,18 @@ Design: `design/RimMandrake/art_sheet_freshness_design_2026-10-14.md`. Tool: `sr
   - thumbnails and inputs are unchanged.
 - **Enforced in four places:**
   - gate req 15 (a stale-at-birth sheet is never written; `refresh_sheets.py` rebuilds one that went stale);
-  - `serve_gated.py` refuses to start (exit 5) and re-checks on every page load, serving a refusal page. No override:
-    the stale-serve escape hatch was removed (owner, by card 2026-10-14), so a stale sheet is only ever rebuilt;
+  - `serve_gated.py` re-checks at start and on every page load. Since the owner's card of 2026-10-19 (below) a stale
+    ROW is badged `STALE: <reason>` with its picks off and the rest of the sheet serves; only a page with no readable
+    ITEMS is refused (exit 5). There is still no flag that serves a stale row as fresh;
   - `generate_biome` re-resolves every census row (creatures and plants) from src XML at build;
   - `art.py install` and `enact --apply` print the sheets they just made stale.
 - **Retrofit:** old sheets are verified from their own ITEMS block. Scan at build: 20 FRESH, 16 STALE (incl. Pyrelands
-  2026-10-14, 9/9 rows), 3 UNMEASURED (no ITEMS). Stale sheets refuse to serve until rebuilt.
+  2026-10-14, 9/9 rows), 3 UNMEASURED (no ITEMS). (Then: stale sheets refused whole; since 2026-10-19: stale rows labelled.)
 
 ## Built 2026-10-14 night (BENCH) — owner's three sheet rules, stale sheets rebuilt
 
-- **Stale-serve override removed** (owner, by card 2026-10-14): no flag, no banner path (56e5d0deab).
+- **Stale-serve override removed** (owner, by card 2026-10-14): no flag, no banner path (56e5d0deab). Relaxed by his card
+  of 2026-10-19 to per-row labelling, see the last section.
 - **Owner rules of 2026-10-12** (97e90a394a; design doc § "The owner's three other sheet rules"):
   - retire + replace in ONE pass: `✕ retire` + `use this` in one slot both stand, either order; `enact.retire_replaced`
     retires the leftover live copies in the same enact as the pick's install;
@@ -79,3 +81,15 @@ Design: `design/RimMandrake/art_sheet_freshness_design_2026-10-14.md`. Tool: `sr
   - re-deriving the load-order winner.
   - The sidecar's `decidedCount` field (in the shared review-sheets skill) still counts seeded letters. Nothing here
     reads it.
+
+## 2026-10-19 — stale ROWS are labelled, the sheet still serves (owner, by card)
+
+Card: *"How far do we go to make art review fast and reliable? → Python command, no agent before you see it"*
+(design `design/RimMandrake/art_sheet_speedup_2026-10-19.md`, option B, which names this relaxation: "stale sheet is
+refused" becomes "stale rows are refused"). `serve_gated.py` (`fresh_gate`, `label_stale`, `startup_freshness`) now
+serves a sheet with stale rows: each carries a red `STALE: <reason>` badge, its pick controls are off (notes and the
+per-picture ✕ still work, both content-addressed); a sheet-level input change gets a banner; a measurement that throws
+labels every row stale. Gate req 15 still refuses a sheet stale at BIRTH. So the hourly install no longer forces
+rebuilds of unrelated sheets before he can look; `art.py review awaiting-pick` (review_queue.py) builds one fresh page.
+Selftest: `selftest_sheet_freshness.py` (a).
+
