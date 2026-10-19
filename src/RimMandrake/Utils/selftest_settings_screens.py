@@ -1216,6 +1216,70 @@ def run_flowworks_main():
     return bad, total
 
 
+# FLOWWORKS_SETTINGS_MEND_EMPTY_BELOW_RESET (real cause, 2026-10-19): a Listing_Standard inside a scroll view whose view
+# height is fed back from list.CurHeight MUST set maxOneColumn. Vanilla Listing.NewColumnIfNeeded wraps any row that would
+# pass listingRect.height into a new column at x = ColumnWidth + 17 (outside the scroll view, so invisible), and CurHeight is
+# curY of the LAST column only. Fed back as next frame's view height, it shrinks every frame: FlowWorks' screen collapsed to
+# search box + "Reset all" and nothing else. listing_model() replays that arithmetic; scan_scroll_listings() finds the shape.
+def listing_model(rows, first_height, max_one_column, frames=12):
+    """Rows (heights) drawn per frame into a view of the last measured height; returns (heights per frame, rows in column 0
+    on the last frame). Mirrors Verse.Listing.GetRect / NewColumnIfNeeded / CurHeight (decompiled 1.6)."""
+    h, seen = first_height, []
+    for _ in range(frames):
+        cur, col, col0 = 0.0, 0, 0
+        for r in rows:
+            if not max_one_column and cur + r > h:
+                col, cur = col + 1, 0.0
+            if col == 0:
+                col0 += 1
+            cur += r
+        h = cur + 40.0
+        seen.append(h)
+    return seen, col0
+
+
+def scan_scroll_listings(files):
+    """[(path, why)] for every file that draws a Listing_Standard into a scroll view sized from CurHeight without maxOneColumn."""
+    bad = []
+    for path, text in files:
+        if "BeginScrollView" in text and "new Listing_Standard" in text and "CurHeight" in text and "maxOneColumn = true" not in text:
+            bad.append((path, "scrolling Listing_Standard sized from CurHeight without maxOneColumn = true"))
+    return bad
+
+
+def check_scroll_listings():
+    bad = total = 0
+    rows = [30.0, 24.0, 32.0] + [24.0] * 600          # notice, search, Reset all, then the sections
+    wrap, col0 = listing_model(rows, 11600.0, False)
+    one, col0_one = listing_model(rows, 11600.0, True)
+    for label, ok in (("model: without maxOneColumn the measured height collapses below the content", wrap[-1] < 600 * 24 and col0 < len(rows)),
+                      ("model: with maxOneColumn every row stays in column one and the height holds", col0_one == len(rows) and one[-1] >= sum(rows))):
+        total += 1
+        print(("ok   " if ok else "FAIL ") + "ScrollListing: " + label)
+        bad += not ok
+    files = []
+    for dp, _, fns in os.walk(ROOT):
+        for fn in fns:
+            if fn.endswith(".cs"):
+                fp = os.path.join(dp, fn)
+                try:
+                    files.append((fp, open(fp, encoding="utf-8", errors="replace").read()))
+                except OSError:
+                    pass
+    found = scan_scroll_listings(files)
+    total += 1
+    print(("ok   " if not found else "FAIL ") + f"ScrollListing: {len(files)} .cs files, every scrolling CurHeight-sized listing is one column"
+          + ("" if not found else " | " + "; ".join(os.path.relpath(p, ROOT) for p, _ in found[:6])))
+    bad += bool(found)
+    planted = [(p, t.replace("maxOneColumn = true", "maxOneColumn = false")) for p, t in files
+               if p.endswith("RimMandrakeFlowWorksMod.cs")]
+    total += 1
+    hit = bool(planted) and bool(scan_scroll_listings(planted))
+    print(("ok   " if hit else "FAIL ") + "ScrollListing: plant (FlowWorks maxOneColumn removed) is caught")
+    bad += not hit
+    return bad, total
+
+
 def main():
     bad = total = 0
     for name, (cs_name, pj_name, expected, extra) in MODS.items():
@@ -1226,6 +1290,9 @@ def main():
     bad += b
     total += t
     b, t = check_biomes_shell()
+    bad += b
+    total += t
+    b, t = check_scroll_listings()
     bad += b
     total += t
     print(f"settings screens selftest: {total - bad}/{total} ok")

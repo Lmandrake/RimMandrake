@@ -698,7 +698,9 @@ namespace RimMandrake.CreatureBehaviors
             // Scrolls: the screen outgrew one window height (38 mechanisms).
             Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(lastContentHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            // maxOneColumn is load-bearing: without it overflow wraps into a hidden second column and CurHeight measures only
+            // that column, so lastContentHeight collapses to the window height and the rest of the screen is unreachable.
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
