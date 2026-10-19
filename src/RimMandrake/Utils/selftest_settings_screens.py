@@ -1065,12 +1065,109 @@ def check_biomes_shell():
     return bad, total
 
 
+# FlowWorks' MAIN screen (RimMandrakeFlowWorksMod.cs) draws `if (Section(list, "title", new[] { names }))` blocks, not Group(...):
+# no scope tags, but the same promises. Titles are the audited section list; names the screen resets that are not Scribe_Values.
+FLOWWORKS_MAIN_SECTIONS = 12
+FLOWWORKS_MAIN_EXTRA = {"disabledFluids"}
+
+
+def check_flowworks_main(cs, csproj):
+    errs = []
+    scribed = {f for f, _ in re.findall(r'Scribe_Values\.Look\(ref (\w+), "(\w+)"', cs)}
+    for f, k in re.findall(r'Scribe_Values\.Look\(ref (\w+), "(\w+)"', cs):
+        if f != k:
+            errs.append(f"scribe key {k!r} != field {f!r}")
+    a = cs.index("public void DoWindowContents(")
+    end = cs.index("lastListHeight = list.CurHeight", a)
+    body = cs[a:end]
+    secs = list(re.finditer(r'if \(Section\(list, "([^"]+)", new\[\] \{ ([^}]*) \}\)\)', body))
+    if len(secs) != len(re.findall(r'\bSection\(list,', body)):
+        errs.append("a Section(...) call is not in the audited `if (Section(list, title, new[] {...}))` shape")
+    if len(secs) != FLOWWORKS_MAIN_SECTIONS:
+        errs.append(f"{len(secs)} sections found, expected {FLOWWORKS_MAIN_SECTIONS}")
+    seen = {}
+    for idx, m in enumerate(secs):
+        title = m.group(1)
+        names = re.findall(r'"(\w+)"', m.group(2))
+        for n in names:
+            if n in seen:
+                errs.append(f"{n} listed in two sections: {seen[n]!r} and {title!r}")
+            seen[n] = title
+            if n not in scribed and n not in FLOWWORKS_MAIN_EXTRA:
+                errs.append(f"section {title!r} names {n}, which is not a Scribed setting")
+        i = body.index("{", m.end())
+        j = balanced_end(body, i)
+        if "if (Section(" in body[i:j]:
+            errs.append(f"section {title!r} swallows the next section (a closing brace is missing)")
+        drawn = set(re.findall(r'ref (\w+)\b', body[i:j])) | set(re.findall(r'(\w+) = (?:\(int\)|Mathf\.\w+\()?list\.Slider', body[i:j]))
+        drawn -= set(re.findall(r'\b(?:bool|int|float|string|var)\s+(\w+)\s*=', body[i:j]))
+        for d in drawn - set(names):
+            if d in scribed:
+                errs.append(f"section {title!r} draws {d} but does not list it (it would not reset)")
+    for f in sorted(scribed - set(seen)):
+        errs.append(f"setting {f} is in no section (no reset, not searchable)")
+    for kit in ("SettingsKitCore.cs", "SettingsKitDrawer.cs", "SettingsKitMasters.cs", "SettingsKitMastersDrawer.cs"):
+        if kit not in csproj:
+            errs.append(f"csproj lacks the {kit} Compile Include")
+    if "SettingsKitDrawer.SearchBox" not in cs:
+        errs.append("no search box")
+    if "SettingsKitMastersDrawer.ResetAllButton" not in cs:
+        errs.append("no Reset-all button")
+    if "shippedDefaults = CaptureDefaults()" not in cs:
+        errs.append("no shippedDefaults snapshot for per-section reset")
+    # FLOWWORKS_SETTINGS_MEND_EMPTY_BELOW_RESET: a throw in the long draw must be caught and shown, not left as a blank screen
+    if "catch (System.Exception" not in body[:body.index("lastListHeight") if "lastListHeight" in body else len(body)] and "drawFailure" not in cs:
+        errs.append("the screen's draw is not guarded: a throw would leave it blank below Reset all")
+    return errs
+
+
+def run_flowworks_main():
+    src = os.path.join(ROOT, "FlowWorks", "Source")
+    cs = open(os.path.join(src, "RimMandrakeFlowWorksMod.cs"), encoding="utf-8").read()
+    pj = open(os.path.join(src, "RimMandrake_FlowWorks.csproj"), encoding="utf-8").read()
+    bad = total = 0
+    e = check_flowworks_main(cs, pj)
+    total += 1
+    print(("ok   " if not e else "FAIL ") + "FlowWorks#Main: real screen, every setting in exactly one resettable section" + ("" if not e else " | " + "; ".join(e[:4])))
+    bad += bool(e)
+    first = re.search(r'if \(Section\(list, "([^"]+)", new\[\] \{ ([^}]*) \}\)\)', cs)
+    names = re.findall(r'"(\w+)"', first.group(2))
+    second = list(re.finditer(r'if \(Section\(list, "([^"]+)", new\[\] \{ ', cs))[1]
+    plants = [
+        ("a name dropped from its section array", lambda c, p: (c.replace(f', "{names[-1]}" }})', ' })', 1), p), "no section"),
+        ("a setting in two sections", lambda c, p: (c.replace(second.group(0), second.group(0) + f'"{names[0]}", ', 1), p), "two sections"),
+        ("a section names a non-setting", lambda c, p: (c.replace(f', "{names[-1]}" }})', ', "notASettingAtAll" })', 1), p), "not a Scribed setting"),
+        ("a Section's closing brace lost", lambda c, p: (c.replace("            }\n\n            list.GapLine();\n            if (Section(", "\n            list.GapLine();\n            if (Section(", 1), p), "swallows|unbalanced"),
+        ("Reset-all removed", lambda c, p: (c.replace("SettingsKitMastersDrawer.ResetAllButton", "SettingsKitMastersDrawer.ResetAllButtn"), p), "Reset-all"),
+        ("kit dropped from the csproj", lambda c, p: (c, p.replace("SettingsKitMastersDrawer.cs", "SettingsKitMastersDrawr.cs")), "SettingsKitMastersDrawer.cs"),
+        ("the draw guard removed", lambda c, p: (c.replace("drawFailure", "drawFailur3"), p), "not guarded"),
+    ]
+    for label, f, want in plants:
+        c2, p2 = f(cs, pj)
+        total += 1
+        if (c2, p2) == (cs, pj):
+            print(f"FAIL FlowWorks#Main: {label}: pattern not found")
+            bad += 1
+            continue
+        try:
+            e = check_flowworks_main(c2, p2)
+        except Exception as ex:
+            e = [f"exception {ex}"]
+        hit = any(w in x for x in e for w in want.split("|"))
+        print(("ok   " if hit else "FAIL ") + f"FlowWorks#Main: {label}" + ("" if hit else f" | wanted {want!r}, got {e[:2]}"))
+        bad += not hit
+    return bad, total
+
+
 def main():
     bad = total = 0
     for name, (cs_name, pj_name, expected, extra) in MODS.items():
         b, t = run_mod(name, cs_name, pj_name, expected, extra)
         bad += b
         total += t
+    b, t = run_flowworks_main()
+    bad += b
+    total += t
     b, t = check_biomes_shell()
     bad += b
     total += t

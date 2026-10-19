@@ -518,6 +518,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref liquidHeatStrength, "liquidHeatStrength", 1f);
             // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: one burn rate. A settings file from before it has no "burnDaysPerNotch": the old
             // canal rate (the owner's ruling-7 day) is read once under its old name; the 5-day pond rate is dropped (D3).
+            // settings-audit: sentinel burnDaysPerNotch (-1 = key absent in an old file; the loader below migrates it)
             Scribe_Values.Look(ref burnDaysPerNotch, "burnDaysPerNotch", -1f);
             if (Scribe.mode == LoadSaveMode.LoadingVars && burnDaysPerNotch < 0f)
             {
@@ -892,6 +893,9 @@ namespace RimMandrake.FlowWorks
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
+            System.Exception drawFailure = null;
+            try
+            {
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works excavation, flow and pit", ResetAllFields);
@@ -1894,8 +1898,30 @@ namespace RimMandrake.FlowWorks
             RM_RaiderTrenchSettings.DoSettingsSection(list);
             Swimming.RM_SwimSettings.DoSettingsSection(list);
             RM_WaterMendSettings.DoSettingsSection(list);
-
-            lastListHeight = list.CurHeight;
+            }
+            catch (System.Exception ex)
+            {
+                // FLOWWORKS_SETTINGS_MEND_EMPTY_BELOW_RESET: a throw part-way through this one long draw left the screen blank below
+                // "Reset all" with no readable cause (the log message cap hides it). Say what threw, inside the window.
+                drawFailure = ex;
+                Verse.Log.ErrorOnce("FlowWorks settings screen failed to draw: " + ex, 1594425345);
+            }
+            finally
+            {
+                GUI.color = Color.white;
+                Text.Font = GameFont.Small;
+                Text.Anchor = TextAnchor.UpperLeft;
+            }
+            if (drawFailure != null)
+            {
+                list.Gap();
+                list.Label("This settings screen failed to draw below this line: " + drawFailure.GetType().Name + ": " + drawFailure.Message
+                    + (drawFailure.StackTrace == null ? "" : "  at " + drawFailure.StackTrace.Split('\n')[0].Trim()));
+            }
+            else
+            {
+                lastListHeight = list.CurHeight;
+            }
             list.End();
             Widgets.EndScrollView();
             // After drawing: a checkbox, slider or section reset changed in this frame.
