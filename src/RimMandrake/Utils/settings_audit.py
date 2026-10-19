@@ -47,6 +47,10 @@ def defaults_check(text):
     inits = {}
     for m in re.finditer(r'public\s+static\s+(?:bool|float|int)\s+(\w+)\s*=\s*([^;]+);', text):
         inits[m.group(1)] = m.group(2).strip().rstrip('f').rstrip('F')
+    # A Scribe default that differs from the initialiser on purpose is a MIGRATION SENTINEL (the key is absent from an old file, so the
+    # loader sees it and migrates). The source declares it next to the Look: `// settings-audit: sentinel <name>`; only a NEGATIVE
+    # scribe default qualifies (a real value is never negative here), so the marker cannot hide an ordinary drift.
+    sentinels = set(re.findall(r'settings-audit:\s*sentinel\s+(\w+)', text))
     bad, n = [], 0
     for m in re.finditer(r'Scribe_Values\.Look\(\s*ref\s+(\w+)\s*,\s*"[^"]*"\s*,\s*([^,)]+)', text):
         name, dflt = m.group(1), m.group(2).strip().rstrip('f').rstrip('F')
@@ -54,6 +58,9 @@ def defaults_check(text):
             a, b = inits[name], dflt
             if not re.fullmatch(r'-?[\d.]+|true|false', a) or not re.fullmatch(r'-?[\d.]+|true|false', b):
                 continue  # not determinable statically
+            if name in sentinels and re.fullmatch(r'-[\d.]+', b):
+                n += 1
+                continue
             n += 1
             try: same = float(a) == float(b)
             except ValueError: same = a.lower() == b.lower()

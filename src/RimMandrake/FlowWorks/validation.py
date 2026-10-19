@@ -943,7 +943,13 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         "deepSwimEnabled", "swimOpenWaterEnabled", "humanlikesSwim", "mechanoidsSink", "animalsAvoidDeepWater",
                         "tiredSwimmersHeadForShore", "deepSwimJoyEnabled", "shallowWaterDrowningEnabled",
                         "waterBodyMendsEnabled", "fishRollOnGrowth", "fishReturnOnRefill", "fishingZoneReturnOnRefill",
-                        "waterBodySplitEnabled", "waterPlantGraceEnabled"]
+                        "waterBodySplitEnabled", "waterPlantGraceEnabled",
+                        # RM_SuspensionSettings registered 2026-10-19 (SETTINGS_REGISTRY_FILL_FOUR_SECTIONS_UNSEEN): the suspension
+                        # items' live rows are owed on them (B4); not yet a toggle chain
+                        "suspensionBridgesBuildable", "suspensionWeightCollapse", "suspensionAnchorLossFalls",
+                        "vanillaBridgeRefusedOverDug", "suspensionOwnPeopleFall", "grateFirePasses", "grateDrainsSpills",
+                        "suspensionWalkUnder", "sunkenBridges", "suspensionOverWater", "suspensionOverSea",
+                        "floodsDamageLightBridges"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))
