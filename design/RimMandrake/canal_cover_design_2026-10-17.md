@@ -3,8 +3,9 @@
 Item: `CANAL_COVER_DESIGN_WET_FOXHOLE` (design, offline, for BENCH). Owner, verbatim (2026-10-17):
 *"file a ticket to consider standing in a shallow canal a trench with cover implications"*.
 
-Status: **DESIGN ONLY. No code written.** Nothing here is built; every number is a proposed default.
-The build belongs to FOUNDRY once the owner answers §11. Engine facts below were read from the 1.6 source through
+Status: **DESIGN ONLY. No code written.** Nothing here is built; numbers not ruled are proposed defaults. Every
+question was ruled 2026-10-18 (§11); the build is FOUNDRY's: `TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT` (cover, AI,
+readout) and `WET_FOXHOLE_BUILD_COLD_FEET_SHAKY_AIM` (the wet costs). Engine facts below were read from the 1.6 source through
 RimSage on 2026-10-17 (file and line given); FlowWorks facts were read from `src/RimMandrake/FlowWorks/Source/`.
 
 ## 0. The answer in five lines
@@ -16,25 +17,25 @@ RimSage on 2026-10-17 (file and line given); FlowWorks facts were read from `src
 3. **It falls out right by itself:** a canal shot along its length gives no cover (enfilade); a flat basin floor
    gives none; the bank of a dug canal facing the shooter gives the most; a shooter standing on the lip gets
    almost none of it.
-4. **It breaks a design law.** LAW 2 (2026-09-16) lists *"cover from below"* under *"Cut and stay cut"*. Building
-   this needs his ruling that trench cover is a third stated exception (§11 Q1). That is the first question.
-5. **Cost:** about 2 to 3 agent-days plus a short live check, after the depth rebuild's relative rules land.
+4. **LAW 2 was replaced for it** (owner, 2026-10-18): depth now affects movement, liquid **and cover**; it still never
+   affects sight or height advantage (`flowworks_mod_definition.md` LAW 2).
+5. **Cost:** about 2 to 3 agent-days plus a short live check; the relative rules (V5) it hands over to are built.
 
 ## 1. What already exists (searched first)
 
 | what | where | what it means for this design |
 |---|---|---|
 | **No trench cover code anywhere** | `grep` of `src/` for `trench`, `foxhole`, `CoverUtility`, `BaseBlockChance`, `ShotReport` (2026-10-17) | Only hit: `RSW Armoury/JumppackForMeleeAI` *reads* `CoverUtility.CalculateCoverGiverSet`. Nothing gives cover from depth. |
-| **LAW 2** | `design/RimMandrake/flowworks_mod_definition.md:920`; restated in `RM_ExcavationDepth.cs:15-23` | *"Depth affects MOVEMENT and LIQUID. It never affects sight or shooting."* Cut list includes *"cover from below"*. Two stated exceptions: ruling 23 (shooting restriction) and [D] (a pit bounds a room). |
+| **LAW 2** (replaced 2026-10-18) | `design/RimMandrake/flowworks_mod_definition.md` LAW 2; the C# docstring `RM_ExcavationDepth.cs:15-23` still states the old law (fix owed in `TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT`) | Now: *"Depth affects MOVEMENT, LIQUID and COVER. It never affects sight or height advantage."* Ruling 23 (shooting restriction) and [D] (a pit bounds a room) stand. |
 | **Ruling 23, the shooting restriction** | `RM_Patch_SuperdeepShooting.cs` (prefix on `Verb.CanHitTargetFrom`, validator on `AttackTargetFinder.BestAttackTarget`) | A pawn in a 2 m pit trades fire only with its 8 neighbours. Its own header: *"IT IS A RESTRICTION, NEVER A BONUS."* Setting `superdeepShootingRuleEnabled`. |
-| **V5, the relative rewrite of ruling 23** | `flowworks_one_rebuild_plan_2026-10-17.md` V5; item `PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE` | Shooting is blocked only when the shot line crosses ground higher than both ends by more than a person's height. Owed, not built. Trench cover must hand over to V5 smoothly (§4). |
+| **V5, the relative rewrite of ruling 23** | `flowworks_one_rebuild_plan_2026-10-17.md` V5; item `PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE` (done) | Shooting is blocked only when the shot line crosses ground higher than both ends by more than a person's height. Trench cover must hand over to V5 smoothly (§4). |
 | **R8, elevation is dead** | rebuild plan R8 (card, 2026-10-17) | *"no raised ground, hills, height line of sight, or cells above cells."* This design reads no line of sight and no height map, so it stays inside R8. |
 | **Hollow depth, cover-aware step depth** | `RM_MapComponent_Excavation.HollowDepthAt` (:302), `ClimbDepthAt`, `ClimbCellCount`; `RM_PocketGridMath` (a covered cell reads 0) | The one depth to read. Natural water reads 0 here (only dug squares and dry pond beds read as holes), so lakes and rivers never become trenches by accident. |
 | **Person height** | `relative_depth_climb_design_2026-10-12.md` §8.2 | `H = 1.0 × sqrt(bodySize)` cells; a 0.5 m notch is 0.3 cells; a person is about 1.7 m. Reused, not reinvented. |
 | **Water ladder** | `POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD` (P14), `FlowWorks_PondStageTerrain.xml` | `RM_WaterThin` 0.5 m (pathCost 18), `WaterShallow` 1 m (30), `RM_WaterChestDeepStill` 1.5 m (42), 2 m+ swimmable (R12, `DEEP_WATER_BUILD_SWIM_OR_SINK`). |
 | **Dry channel costs** | `FlowWorks_Terrain.xml` | `RM_Channel_Empty` 30, `_Mid` 45, `_Deep` 80, `_Superdeep` 300. |
 | **Drowning rule V2** | `PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE` | Drown when water covers the head: over 0.9 H standing, **0.2 H lying**. So a downed pawn drowns in about 0.35 m of water. |
-| **Climb limit** | `PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH` (FOUNDRY, 4 ledger events, live proof owed) | A person climbs a 0.5 m step easily, 1 m slowly, and is held by a sheer 1.5 m step. A deeper "foxhole" is also a cage. |
+| **Climb limit** | `PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH` (FOUNDRY, live proof owed) | A person climbs a 0.5 m step easily, 1 m slowly, and is held by a sheer 1.5 m step. A deeper "foxhole" is also a cage. |
 
 ## 2. Vanilla cover, as the 1.6 engine does it (read 2026-10-17, RimSage)
 
@@ -65,14 +66,14 @@ A pawn **is in a trench** against a given shooter when **all** hold:
 
 1. It stands on its feet (not downed, not lying, not swimming, not flying).
 2. Its own square's ground is lower than at least one neighbouring square's ground: wall height
-   `h = ground(neighbour) − ground(own)`, in metres, from `HollowDepthAt` (covered pit squares, bridges and a
-   pit cover read as ground level, 0).
+   `h = ground(neighbour) − ground(own)`, in metres, from `HollowDepthAt` (a pit cover reads as ground level, 0; a
+   suspension bridge's deck does not, because the floor runs on beneath it).
 3. That neighbour faces the shooter, by vanilla's angle rule (under 65°).
 4. The shooter is not standing in that neighbour square (vanilla skips it too).
 
 Consequences, all wanted and none special-cased:
 - **Water is irrelevant to the cover.** A dry 1 m trench and a 1 m canal with 0.5 m of water give the same cover. The
-  owner's "shallow canal" case is the wet version of the general rule (§11 Q2 asks whether dry counts too).
+  owner's "shallow canal" case is the wet version of the general rule (§11 Q2 ruled: wet or dry).
 - **Enfilade:** a one-square-wide canal shot straight down its length shows no wall to the shooter: no cover.
 - **Basins:** on the flat floor of a big dug basin, neighbours are level: no cover, except against the wall side.
 - **Natural lakes and rivers never count** (their squares read 0 in `HollowDepthAt`). Wading a river is not a trench.
@@ -81,7 +82,8 @@ Consequences, all wanted and none special-cased:
 
 ## 4. Cover value vs depth
 
-Proposed base block chance for one wall square, before vanilla's angle and distance falloff:
+Base block chance for one wall square, before vanilla's angle and distance falloff (strength ruled Q3: waist-deep a
+bit under sandbags, chest-deep a bit over):
 
 `block = 0.75 × clamp(h / H, 0, 1)` × the strength setting (default 1.0).
 
@@ -102,19 +104,19 @@ Proposed base block chance for one wall square, before vanilla's angle and dista
 
 ## 5. Costs
 
-What standing in a wet canal already costs, and what is proposed. Each extra is its own setting and its own question.
+What standing in a wet canal already costs, and what was ruled in (Q4, Q6, Q8). Each extra is its own setting.
 
 | cost | status | detail |
 |---|---|---|
 | Slow movement | **exists** | water pathCost 18 / 30 / 42 by depth; dry channels 30 / 45 / 80. Getting in and out also pays the climb cost. |
 | Wet mood | **exists** | vanilla `SoakingWet` thought from `traversedThought`. |
 | Fire | **exists** | water squares put out fire; a canal of oil or propane is the opposite (FlowWorks liquid fire). |
-| Can't lie down safely | **exists, and lethal** | V2: a downed pawn drowns when water covers 0.2 H (about 0.35 m). A wounded defender in a wet foxhole drowns unless pulled out. Readable warning owed by the no-vanishing rule. §11 Q8. |
+| Can't lie down safely | **exists, and lethal; kept (Q8)** | V2: a downed pawn drowns when water covers 0.2 H (about 0.35 m). A wounded defender in a wet foxhole drowns unless pulled out. A clear warning when it starts is ruled in (no-vanishing rule). |
 | Trapped by its own trench | **exists** | the climb rule: a sheer 1.5 m step holds a person. A ramp or a lowered ladder is the way out. |
-| Aim penalty in deep water | **proposed, off by default** | standing in water at chest depth (1.5 m) or more: the shooter's own hit chance ×0.85 (weapon held high, footing poor). §11 Q4. |
-| Weapon fouling | **proposed, rejected for v1** | jams or durability loss need a new mechanic and new UI; nothing in vanilla to hang it on. Listed so it is a choice, not an omission. |
-| Cold | **proposed, off by default** | "one kind of heat" (2026-09-29/30) says no new kind of cold either: if wanted, a wet pawn's comfortable minimum temperature rises (vanilla stat offset), so ordinary hypothermia arrives sooner. No new hediff. §11 Q4. |
-| Swimming | **exists (owed build)** | 2 m+ water is swum (R12). A swimmer is not in a trench and, proposed, cannot fire ranged weapons (§11 Q6). |
+| Aim penalty in deep water | **ruled in (Q4), on by default** | standing in water at chest depth (1.5 m) or more: the shooter's own hit chance ×0.85 (weapon held high, footing poor). |
+| Weapon fouling | **not picked (Q4), out of v1** | jams or durability loss need a new mechanic and new UI; nothing in vanilla to hang it on. Listed so it is a choice, not an omission. |
+| Cold | **ruled in (Q4), on by default** | "one kind of heat" (2026-09-29/30) says no new kind of cold either: a wet pawn's comfortable minimum temperature rises (vanilla stat offset), so ordinary hypothermia arrives sooner. No new hediff. |
+| Swimming | **exists** (`DEEP_WATER_BUILD_SWIM_OR_SINK`, done) | 2 m+ water is swum (R12). A swimmer is not in a trench and cannot fire ranged weapons (ruled Q6). |
 
 ## 6. Interactions
 
@@ -130,12 +132,13 @@ What standing in a wet canal already costs, and what is proposed. Each extra is 
   limit, held.
 - **Pit covers:** a covered square reads ground level: a pawn on a cover is not in a trench, and a pawn next to a
   covered pit gets no wall from it. When the cover gives way, the hole reads again.
-- **Bridges** over a canal: the pawn on the bridge is at ground level, no cover. A bridge square beside a pawn in
-  the canal reads as ground: it is a wall (correct: it is solid).
+- **Suspension bridges** over a canal: the pawn on the deck is at ground level, no cover (railings give none, ruled).
+  A pawn in the canal next to or under a deck reads the floor beneath it, so a deck is not a trench wall; a solid deck
+  blocks shots between the deck and the floor band (`suspension_bridge_construction_design_2026-10-18.md` §1.4).
 - **Sandbags on the lip:** vanilla cover and trench cover stack by vanilla's own combine rule
   (`1 − (1 − a)(1 − b)`). Sandbags on a 1 m trench's lip: 0.55 then 0.44 → 0.75 total straight on. Strong, as it
   should be: that is a real fortification. A cap setting is offered (§9).
-- **Explosions:** vanilla explosions ignore cover entirely. Proposed: unchanged (§11 Q7).
+- **Explosions:** vanilla explosions ignore cover entirely. Ruled unchanged (Q7): a trench gives no blast cover.
 - **Melee:** unchanged.
 - **Combat Extended** (if ever loaded) replaces all of this; trench cover would simply not apply. Noted, not handled.
 
@@ -149,8 +152,8 @@ What standing in a wet canal already costs, and what is proposed. Each extra is 
 - **What raiders weigh against it:** they still pay the water path cost to get there, and idle pathing avoids water.
   They do not know a 1.5 m sheer canal will hold them; a raider who jumps in may be stuck there. That is a feature in
   the pit design (Q7 of `DEPTH_QUESTIONS_ASK_RAIDERS_FIRST` decides whether raiders read traps); this design changes
-  nothing about it. Proposed: a raider choosing a cast square **skips squares it could not climb out of** (one
-  pocket-grid read), so raiders use foxholes, not cages. §11 Q5.
+  nothing about it. Ruled (Q5): a raider choosing a cast square **skips squares it could not climb out of** (one
+  pocket-grid read), so raiders use foxholes, not cages.
 - **Colonists** get the tooltip (the hit chance line shows "trench wall: blocks N%"), so the player learns by looking.
   No auto-take-cover is added (vanilla has none either).
 - **Raid generation** is untouched: no new raid type, no "trench raiders".
@@ -171,24 +174,23 @@ What standing in a wet canal already costs, and what is proposed. Each extra is 
 
 ## 9. Mod Settings (FlowWorks, section "Pits, ladders and shooting")
 
-| setting | default (proposed) | label and tooltip, plain |
+| setting | default | label and tooltip, plain |
 |---|---|---|
-| `trenchCoverEnabled` | on (if he rules it in) | **"Dug ground gives cover."** "A pawn standing in a dug trench or canal is covered by the wall facing the shooter, like a sandbag, more the deeper the trench. Off: depth never affects shooting except the pit rule." |
+| `trenchCoverEnabled` | on | **"Dug ground gives cover."** "A pawn standing in a dug trench or canal is covered by the wall facing the shooter, like a sandbag, more the deeper the trench. Off: depth never affects shooting except the pit rule." |
 | `trenchCoverStrength` | 1.0 (range 0.25 to 1.5) | **"Trench cover strength."** "At 1.0 a waist-deep trench blocks a bit less than sandbags; chest-deep a bit more." |
 | `trenchCoverCap` | 0.9 | **"Most cover from a trench plus sandbags."** Caps the combined block chance. |
-| `trenchCoverWetOnly` | off | **"Only water-filled canals give cover."** (Exists only if he picks Q2 (b).) |
 | `trenchAiAvoidsCages` | on | **"Raiders won't pick a foxhole they can't climb out of."** |
-| `deepWaterAimPenalty` | off, ×0.85 | **"Shooting from chest-deep water is harder."** |
-| `wetFeelsColder` | off, +6 °C | **"Wet pawns feel the cold sooner."** Ordinary temperature, no new illness. |
+| `deepWaterAimPenalty` | on, ×0.85 | **"Shooting from chest-deep water is harder."** |
+| `wetFeelsColder` | on, +6 °C | **"Wet pawns feel the cold sooner."** Ordinary temperature, no new illness. |
 | `swimmersCannotShoot` | on | **"Swimmers can't use guns."** |
 
 All off returns exactly today's behaviour. Each patch carries a `[PatchFeature]` tied to its setting, like
 ruling 23's, so a game update that breaks one switches off only that feature.
 
-## 10. Build plan (FOUNDRY, after §11 is answered)
+## 10. Build plan (FOUNDRY; filed 2026-10-18 as `TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT` steps 1-3, 5-8, and `WET_FOXHOLE_BUILD_COLD_FEET_SHAKY_AIM` step 4)
 
-**Gate:** lands after `PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE` (V5, so the hand-over at person height exists) and
-reads depth in metres once `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD` / P14 land; until then it reads notches × 0.5 m.
+**Gate:** `PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE` (V5) is done, so the hand-over at person height exists. It reads
+depth in metres once `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD` / P14 land; until then it reads notches × 0.5 m.
 
 1. **Pure math, offline** (`RM_TrenchCoverMath.cs`): `WallBlock(hMetres, H, strength)`, and the vanilla angle and
    distance falloff copied with the line reference (`Verse/CoverUtility.cs`, `TryFindAdjustedCoverInCell`).
@@ -200,9 +202,9 @@ reads depth in metres once `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD` / P14 land; until 
    trench "miss" flies wild into the ground instead of at a cover Thing that does not exist. Postfix
    `GetTextReadout` to print the "trench wall" line. (Alternative considered: a guard inside `TryCastShot`; rejected
    because it is the most-patched method in the game.)
-4. **Optional costs** (only those he picks): aim penalty in the shooter's half of `HitReportFor`; cold as a stat
-   offset on a wet pawn; swimmers' ranged verbs refused in the existing `CanHitTargetFrom` prefix.
-5. **AI cage guard** (if Q5 a): in the `CastPositionPreference` postfix, a square in a pocket the caster could not
+4. **Wet costs** (all ruled in): aim penalty in the shooter's half of `HitReportFor`; cold as a stat offset on a wet
+   pawn; swimmers' ranged verbs refused in the existing `CanHitTargetFrom` prefix; the downed-drowning warning.
+5. **AI cage guard** (ruled Q5): in the `CastPositionPreference` postfix, a square in a pocket the caster could not
    leave scores 0.
 6. **Settings and labels** (§9).
 7. **Functional script** (debug_process rule): `src/RimMandrake/FlowWorks/northstar/trench_cover_proof.py`, rows:
@@ -215,52 +217,18 @@ reads depth in metres once `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD` / P14 land; until 
 
 Estimate: 2 to 3 agent-days offline plus about 0.5 live. No art. No new Things or defs beyond settings text.
 
-## 11. Questions for the owner (plain language)
+## 11. Owner rulings (2026-10-18)
 
-**Answered 2026-10-18 (owner said):** Q1 — LAW 2 is REPLACED, not excepted: *"This updates/replaces the old ruling
-that digging does not change shooting. That is no longer true and needs replacing."* (LAW 2 rewritten in
-`flowworks_mod_definition.md`.) Q2 — (a) any dug hole with a wall, wet or dry. Q3-Q8 open.
-
-**Q1. This breaks a rule we wrote. Make an exception?** In September we wrote "digging changes movement and water,
-never shooting", and listed "cover from below" as cut for good, because it usually means building a whole height
-system. This design does not need one: it reads the 8 squares round a pawn, exactly like sandbags.
-- (a) **Yes, trench cover is the third exception.** *Recommended.* Cheap, local, and it makes canals a defence.
-- (b) Yes, but only as a mod setting that starts off. Safer; most players will never find it.
-- (c) No, the rule stands; close the item.
-
-**Q2. Dry trenches too, or only canals with water?**
-- (a) **Any dug hole with a wall gives cover, wet or dry.** *Recommended:* a dry trench is the purer trench; water
-  only adds costs.
-- (b) Only water-filled canals. Matches your words literally; a dry ditch then gives none, which reads oddly.
-
-**Q3. How strong?**
-- (a) **Waist-deep a bit under sandbags, chest-deep a bit over.** *Recommended.*
-- (b) Half that: a trench is a small edge, sandbags still matter.
-- (c) Stronger: chest-deep as good as a wall. Trench lines would dominate defence.
-
-**Q4. What should standing in water cost, beyond what the game already does (slower, wet mood)?**
-- (a) **Nothing more for now.** *Recommended:* the drowning and trapping rules already make wet foxholes risky.
-- (b) Add: shooting from chest-deep water is harder (about 15% worse).
-- (c) Add: wet pawns feel the cold sooner (ordinary temperature, no new illness). (b) and (c) can both be picked.
-- (Weapon fouling or jamming is left out: it needs a new mechanic. Say if you want it.)
-
-**Q5. Should raiders use canals for cover?**
-- (a) **Yes, the same way they use sandbags, but they won't jump into one they can't climb out of.** *Recommended.*
-- (b) Yes, with no cage check: raiders sometimes trap themselves. Funnier, sometimes cheap.
-- (c) No, only colonists benefit. Lopsided, and the game's AI usually plays by the player's rules.
-
-**Q6. Can a swimming pawn fire a gun?**
-- (a) **No.** *Recommended:* simple and believable.
-- (b) Yes, badly (half accuracy).
-
-**Q7. Does a trench protect from grenades and mortars?** The base game gives no cover from blasts at all.
-- (a) **No, same as the base game.** *Recommended* for now.
-- (b) Yes, partly: a trench halves blast damage to those in it. More real, more work, and it makes mortars weak.
-
-**Q8. A downed pawn in a wet canal drowns** (the agreed drowning rule: water over a lying pawn's head, about a third
-of a metre). So a wounded defender in a wet foxhole drowns unless pulled out.
-- (a) **Keep it, with a clear warning when it starts.** *Recommended:* it is the price of a wet foxhole.
-- (b) Spare them in shallow water (under 0.5 m): only deep water drowns the downed.
+| Q | question | ruling |
+|---|---|---|
+| Q1 | trench cover vs LAW 2 | **LAW 2 replaced**, owner said: *"This updates/replaces the old ruling that digging does not change shooting. That is no longer true and needs replacing."* |
+| Q2 | dry trenches too? | **any dug hole with a wall, wet or dry** |
+| Q3 | how strong? | **waist-deep a bit under sandbags, chest-deep a bit over** (the §4 table) |
+| Q4 | what water costs | **both:** shooting from chest-deep water about 15% worse, and wet pawns feel the cold sooner (ordinary temperature) |
+| Q5 | raiders use canals? | **yes, but never one they could not climb out of** |
+| Q6 | swimmers fire guns? | **no** |
+| Q7 | blast cover? | **no**, as the base game |
+| Q8 | downed pawns drown in wet canals? | **yes, with a clear warning when it starts** |
 
 ## 12. Open risks
 
@@ -270,5 +238,3 @@ of a metre). So a wounded defender in a wet foxhole drowns unless pulled out.
   checked against the live mod list; run `modcheck` for the list before building.
 - `PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH` is still unproven live: the AI cage guard (Q5 a) trusts the pocket grid
   that proof is meant to confirm.
-
-**Answered 2026-10-18 (by card), Q3-Q8:** Q3 strength **waist-deep a bit under sandbags, chest-deep a bit over**. Q4 standing in water costs **both** extras: shooting from chest-deep ~15% worse AND wet pawns feel cold sooner (ordinary temperature). Q5 raiders **use canals for cover but never jump into one they cannot climb out of**. Q6 swimming pawns **cannot fire**. Q7 **no blast protection** (base game). Q8 downed pawns in wet canals **drown, with a clear warning**. All Q1-Q8 answered.

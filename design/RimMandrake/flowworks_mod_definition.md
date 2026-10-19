@@ -17,7 +17,8 @@ stay siblings.
 
 Position in the family: FlowWorks is the **liquid engine itself** — depth is its primitive (ruling 18),
 and excavation plus the built half (canals, terraces, ladders, sluice gates, **pumps, tanks**) is now
-roughly half the design (rulings 19-20). Liquid *types* remain rows in the core registry (`LiquidDef`),
+roughly half the design (rulings 19-20); **suspension bridges** over dug ground and water joined it 2026-10-18
+(`design/RimMandrake/flowworks_bridges_design_2026-10-17.md`). Liquid *types* remain rows in the core registry (`LiquidDef`),
 per `design/RimMandrake/liquids_framework_design.md` §5.
 
 ⚠️ **Deleted claim:** this header previously said pumps, tanks and hoses "belong to `RimMandrake:
@@ -930,6 +931,11 @@ falling damage between levels, thrown objects across levels, multi-level buildin
 different heights, and pressure/siphons. Every one is defensible in isolation and
 each one alone converts this into a different project.
 
+**The one sanctioned two-height cell:** pawns (only pawns) may walk under a **suspension bridge** whose floor is at
+least 2 m below its deck (owner, 2026-10-18: *"only for these new bridges uniquely, NOT actual tunnels."*;
+`design/RimMandrake/suspension_bridge_construction_design_2026-10-18.md` §1.4). No roof, dug passage or other building
+ever grants it.
+
 ### THE ALGORITHM — every connected body of water is exactly level.
 
 At each pulse (never per tick — pillar 2), for each connected body of water (pond, canal, or both joined):
@@ -991,7 +997,7 @@ already is, so the two unify.
    chest-deep / deep ramp art (§13). A dry cell needs one inner-shadow edge treatment. Four depths ×
    dry/wet is a small finite art set — where a continuous Z would need arbitrary height rendering.
 
-## 22. Rulings 20-22 (owner, 2026-09-16): FlowWorks, farming, and the one shooting exception
+## 22. Rulings 20-22 (owner, 2026-09-16): FlowWorks, farming, and the pit shooting restriction
 
 **20. The name is `FlowWorks`.** His proposal, and it beats my `Liquid Flow` suggestion — recorded as
 the choice, superseding §15's recommendation. Why it is better: **"Works" carries the *built* half of
@@ -1026,13 +1032,13 @@ already free: §11's soak-factor pattern plus §18's `SoilRich` reclaim.
 **22. Dumping liquid on a trapped raider should be VERY effective.** Not a nuisance debuff. A pawn held
 in a SUPERDEEP cell that is then flooded is in serious trouble, and with a flammable liquid, finished.
 
-**23. The single shooting exception — and it is the cheap half of Law 2.**
+**23. The pit shooting restriction.** (Trench cover, ruled 2026-10-18, is the other way depth touches shooting; LAW 2.)
 
 > *"someone in a pit should really only be able to shoot at others at the edges above them, and those
 > outside should only be able to shoot into the pit from the edge as well. But that's the only
 > mechanic."*
 
-🔑 **Why this does not breach Law 2.** He asked for a **restriction**, never a bonus — no height
+🔑 **Why this needs no height model.** He asked for a **restriction**, never a bonus — no height
 advantage, no cover modifier, no accuracy change. That distinction is the whole cost difference: a
 restriction is one boolean gate on an existing check, while a bonus reaches into hit chance, cover
 math, AI target selection and player expectation. He picked the side that does not own an elevation

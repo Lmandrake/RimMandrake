@@ -1,6 +1,7 @@
 # Suspension bridge: how it is built (DESIGN, 2026-10-18)
 
-**Design only: nothing in code, defs, the bridge or the game was touched.** Parent design:
+**Design only: nothing in code, defs, the bridge or the game was touched.** Every question ruled 2026-10-18 (end of
+file); build items listed in the parent's §10. Parent design:
 `design/RimMandrake/flowworks_bridges_design_2026-10-17.md` (the span design; its §6 tiers, §6.3 collapse and the
 answered Q1/Q2 in §11 are inputs here). Epic: `FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG` (R8 amended 2026-10-18). Vanilla
 facts below were read with RimSage (1.6 decompile and defs) on 2026-10-18; anything not read is marked UNMEASURED.
@@ -15,22 +16,24 @@ Owner, verbatim (2026-10-18):
   wall is built? Or do they only come in certain widths and lengths and must simply fit? They should have guardrail vs.
   open designs too. And are cantilevers permitted?"*
 
-Fixed by LAW 1 (*"We dig down. We never build up."*): a suspension bridge always sits at the **surface** (deck height
-0) and crosses **dug** ground. "Walk under" means: pawns down in the trench pass beneath it. Nothing is raised.
+Fixed by LAW 1 (*"We dig down. We never build up."*): a suspension bridge sits at the **surface** (deck height 0), or,
+as a **sunken bridge**, at a ledge's height inside a deeper hole (parent §5.1; reached from a ledge, ramp or ladder,
+parent Q7). Nothing is ever raised above ground. It crosses **dug** ground, and (parent Q5) is designed toward natural
+rivers, large lakes and the ocean too. "Walk under" means: pawns down in the hole pass beneath it.
 
-## Summary
+## Summary (as ruled 2026-10-18)
 
-- **Recommended construction model: the hybrid.** You drag a line (or a narrow rectangle) across a dug hole, like a
+- **Construction model: the hybrid, "drag like a wall".** You drag a line (or a narrow rectangle) across a dug hole, like a
   wall; the drag must start and end on solid surface ground; the game puts an **anchor** at each end; each cell of the
   deck is its own 1×1 piece, built from the ends inward. Free length up to the tier's limit, width 1 to 3.
 - **Guardrail vs open: one deck, railings as a per-bridge switch** (a gizmo that orders railings built or removed).
-  Railings stop falls; open edges let pawns drop down on purpose and fall off by accident.
-- **Cantilevers: not in v1.** A suspension bridge hangs between two anchors by definition; an overhang is a different
-  structure. Offered to him as a choice, with a short (1 to 2 cell) jetty as the alternative.
+  Railings stop falls and give **no cover**; open edges let pawns drop down on purpose and fall off by accident.
+- **Cantilevers: a short jetty only**, 1 to 2 cells out from solid ground, one person's weight (§3).
 - **Walk-under clearance: the floor under a deck must be at least 2 m below it**; shallower holes are spanned but are a
-  wall to anyone down there, as the parent design already says for every deck.
-- **ESTIMATE: about 6 to 9 agent-days for this construction layer** (on top of the parent's S0/S1), of which walk-under
-  drawing and pathing are the risky half.
+  wall to anyone down there.
+- **Collapse hits whoever is underneath like a roof collapse**; the wreck blocks the floor until cleared.
+- **ESTIMATE: about 7.5 to 11 agent-days for this construction layer** including the jetty (on top of the parent's
+  S0), of which walk-under drawing and pathing are the risky half.
 
 ## 1. Construction model
 
@@ -49,7 +52,7 @@ can answer "does this drag reach ground at both ends?". Every option below that 
 
 ### 1.2 The three models
 
-| | **A. Free tiles, wall-style** | **B. Fixed sizes that must fit** | **C. Hybrid: drag anchor to anchor (recommended)** |
+| | **A. Free tiles, wall-style** | **B. Fixed sizes that must fit** | **C. Hybrid: drag anchor to anchor (ruled)** |
 |---|---|---|---|
 | what the player does | drags deck cells anywhere over a hole; each must be within N cells of support (counting planned cells) | picks "Suspension bridge 1×5" (or 2×7…) and places it so both ends land on ground | drags a line or a 1-3 wide rectangle; it must begin and end on solid ground; anchors appear at both ends |
 | engine shape | 1×1 building per cell; PlaceWorker per cell; a span record built from connectivity afterwards | one multi-cell Thing with `<size>`; one PlaceWorker checks ends on ground and middle over a 2 m+ hole | 1×1 building per cell plus 2 anchor buildings; custom `Designator_Build` checks the whole drag in `DesignateMultiCell`; a map component records "this span = these cells between these anchors" |
@@ -61,28 +64,31 @@ can answer "does this drag reach ground at both ends?". Every option below that 
 | build feel | cells go up in any order, so a "floating" middle cell can exist mid-build | appears all at once from one frame | built from the anchors inward; a half-built span is visibly half a bridge |
 | ESTIMATE | 2 to 3 days | 2 to 3 days + heavy art | 3 to 4 days |
 
-**Recommendation: C.** It is the only one that is both honest (a suspension bridge visibly hangs between two ends) and
+**Ruled: C** (owner, by card: drag like a wall). It is the only one that is both honest (a suspension bridge visibly hangs between two ends) and
 flexible (any trench length). A is the cheapest code but reads as "floor you paint over holes", which is exactly the
 vanilla bridge he said these are not. B looks the best per bridge but forces the player to dig to a catalogue and
 multiplies art by every size.
 
 ### 1.3 Anchor and support rules (model C)
 
-- **An end must be solid surface ground**: not dug, not water, no edifice. The anchor is a small 1×1 building
+- **An end must be solid ground at the deck's height**: not dug (or, for a sunken bridge, a ledge at its height), not
+  water, no edifice. The anchor is a small 1×1 building
   (posts or a pylon) on that cell, built first; the deck cells next to it are built next.
-- **Width 1 to 3** (proposal). Each row of a wide bridge shares the two anchor cells' line; a 3-wide bridge has 3
+- **Width 1 to 3** (ruled). Each row of a wide bridge shares the two anchor cells' line; a 3-wide bridge has 3
   anchors per end (or one wide anchor; art choice).
-- **Every deck cell must cover a dug hole** at least 0.5 m deep (parent rule 3). A drag that passes over undug ground
+- **Every deck cell must cover a dug hole** at least 0.5 m deep (parent rule 3), **or natural water** (rivers, large
+  lakes, the ocean: parent Q5, designed toward, may be backtracked). A drag that passes over undug ground
   in the middle is refused ("a bridge must cross a hole without touching down"): touching down means it is two bridges.
 - **Maximum length (anchor to anchor), by tier**, from the parent's §6.1, re-read for a suspension bridge: rope 8,
   timber 6, steel 10, heavy 14 cells (proposals; rope is longer than timber because rope bridges are). A longer gap
   needs a **tower**: a pillar built on the hole's floor that counts as an anchor in the middle (the parent's "pier",
-  renamed; it splits the bridge into two spans). Towers need someone to reach the floor to build them.
+  renamed; it splits the bridge into two spans). Towers need someone to reach the floor to build them (in natural water:
+  a builder wading or swimming to it; how is owed to `SUSPENSION_WATERS_BUILD_MAY_BACKTRACK`).
 - **Building order**: the builder stands on an anchor or on a finished deck cell next to the one being built. A cell
   whose neighbours toward both anchors are unbuilt cannot be started. No scaffolding, no flying builders.
 - **Deconstruct an anchor** = the span it holds falls (§4). The game asks first.
 
-### 1.4 Walk-under: how it is represented
+### 1.4 Walk-under: how it is represented (ruled in: pawns only, 2 m clearance)
 
 Pawns draw at one altitude (`AltitudeLayer.Pawn` = 23 of 40; `PawnRenderer` already moves flying pawns' draw height,
 line 179, so moving a pawn's draw height by state is an engine-sanctioned pattern). Proposal:
@@ -114,14 +120,14 @@ line 179, so moving a pawn's draw height by state is an engine-sanctioned patter
 | dropping down on purpose | no | yes: an open edge is a one-way way down into the trench (a jump of `F` metres, same fall rule; pathing uses it only when told, like a ladder) |
 | pathing | the edge is a wall | the edge is a drop, not a walkway; nobody routes off it unasked |
 | enemies | cannot be thrown off | a raider downed on an open bridge over a pit ends up in the pit: the trap value of open bridges |
-| cover for pawns on the deck | **none (proposal)**: a railing is waist-high cable and mesh, not sandbags; and vanilla cover is read from neighbouring cells, so a railing on the pawn's own cell would need a new rule | none |
+| cover for pawns on the deck | **none (ruled)**: a railing is waist-high cable and mesh, not sandbags; and vanilla cover is read from neighbouring cells, so a railing on the pawn's own cell would need a new rule | none |
 | cost | more material (proposal: +50% of the deck's cost) and more work | base |
 
 **Knockback**: only stagger, blasts and `RM_SlimeSlip`; a melee "shove off the bridge" is a new mechanic, not proposed.
 
 ### 2.1 How a railing is represented
 
-| | per-bridge switch (recommended) | separate def ("railed" / "open") | railing as its own thin building per cell |
+| | per-bridge switch (ruled) | separate def ("railed" / "open") | railing as its own thin building per cell |
 |---|---|---|---|
 | player choice | one gizmo on the bridge: "Railings: on / off"; orders the railing work | choose at build time; change = rebuild | any cell, any edge |
 | what it draws | railings on every open (non-deck) edge, automatically | same | same, per cell |
@@ -136,27 +142,27 @@ UNMEASURED: which linked subclass suits an edge-only railing on a 1×1 non-edifi
 
 A cantilever is deck that sticks out past its last support with nothing at the far end.
 
-- **Recommendation: not permitted in v1.** Every deck cell lies on a line between two anchors (or tower). Reasons: a
-  suspension bridge is by definition held at both ends; a cantilever needs a second load rule (bending at the root);
-  and the new things it buys (a diving board over a pit, a viewing platform) are small.
-- **If he wants them**, the smallest honest version: a **jetty**, 1 to 2 cells out from an anchor, steel or heavy tier
-  only, always railed on its three open sides except where he removes them, load capped at one pawn (proposal 120 kg).
-  It fails **at the root**: the whole overhang drops at once. Its use: a platform over a pit or trench to push prisoners
-  from, fish from, or pour from. ESTIMATE +1.5 days, +4 textures.
+- **Ruled: a short jetty only** (owner, by card; against the "none in v1" recommendation). Free overhangs are out.
+- **Support:** a jetty starts from an anchor on solid ground at the deck's height (its own, or a bridge's) and reaches
+  1 to 2 cells out over a hole or water; no far end. Steel or heavy tier only; railed on its three open sides by
+  default, the same railing switch as a bridge.
+- **Load:** capped at one person's weight (proposal 120 kg, × the load multiplier), shown in the inspect pane like a
+  bridge's.
+- **Collapse:** it fails **at the root**: the whole overhang drops at once (descent for those on it, roof-collapse hit
+  for those below). Losing its anchor drops it.
+- Its use: a platform over a pit or trench to push prisoners from, fish from, or pour from. ESTIMATE 1.5 days,
+  +4 textures. Item: `SUSPENSION_JETTY_BUILD_WALK_THE_PLANK`.
 
 ## 4. Collapse and load (with the parent's Q3)
 
 - **Load is per span** (anchor to anchor, or anchor to tower): pawns, items and buildings on the deck. Pawns under it
   weigh nothing on it.
-- **If he answers Q3 "yes, from weight"**: a span over its rating sags (a warning in the inspect pane and a creak sound
-  at 90%) and then **the whole span** goes at once. A suspension bridge does not unzip cell by cell; the parent's
-  "chain, one tick per cell" applies only when one anchor is lost (the deck swings down from the other anchor, falling
-  from the lost end toward the kept one).
-- **If he answers "damage only"**: the same two triggers minus weight: hit points to zero in any one cell drops that
-  span; losing an anchor drops it.
-- **New consequence of walk-under**: a falling deck lands on the floor band. Pawns under it take blunt crush damage
-  (proposal: a falling-roof hit, the vanilla scale), and the debris (filth or a skip) blocks the floor cells until
-  cleared. Pawns on it descend through the existing event (fall damage by metres; water or fire below as the parent's §3).
+- **Weight (parent Q3 ruled yes, load shown)**: a span over its rating sags (a warning in the inspect pane and a creak
+  sound at 90%) and then **the whole span** goes at once. A suspension bridge does not unzip cell by cell; it swings
+  down cell by cell only when one anchor is lost (falling from the lost end toward the kept one). Hit points to zero in
+  any one cell also drops the whole span.
+- **Walk-under consequence (ruled Q6)**: a falling deck lands on the floor band. Pawns under it are hit like a roof
+  collapse (the vanilla scale), and the debris (filth or a skip) blocks the floor cells until cleared. Pawns on it descend through the existing event (fall damage by metres; water or fire below as the parent's §3).
 
 ## 5. Art
 
@@ -168,9 +174,9 @@ A cantilever is deck that sticks out past its last support with nothing at the f
 | anchor (posts / pylon), facing the span | `Graphic_Multi` (north, south, east; west mirrors east) | 1 | 4 |
 | tower | `Graphic_Single` seen from above | 1 | 4 |
 | collapse debris on the floor | filth or skip | 1 | 4 |
-| jetty (only if cantilevers are ruled in) | `Graphic_Multi` | 1 | 4 |
+| jetty | `Graphic_Multi` | 1 | 4 |
 
-**About 24 textures (28 with jetties)**, replacing the parent's §8 deck/railing/pier rows. Model B would instead need one
+**About 28 textures, jetty included**, replacing the parent's §8 deck/railing/pier rows. Model B would instead need one
 large texture per size × rotation × style × rail/open. The rope tier stays Scrapper-only. Every texture is shown to him
 at true scale beside a vanilla human before it ships, including one shot of a pawn passing under a deck, because that is
 the picture that proves the idea. Search `artpipe_state.py find` and existing sheets for deck, catwalk or rope-bridge
@@ -185,8 +191,8 @@ art first.
 | railings switch, open-edge falls and deliberate drops | 1 | the above |
 | walk-under: two bands in the pocket grid, draw heights, nothing-rests-under rule, shots between bands, click cycling | 2.5 to 4 | P2 proved |
 | collapse as a whole span, swing-down on anchor loss, crush below | 0.5 to 1 | parent S1 |
-| jetty (only if ruled in) | 1.5 | — |
-| **total** | **about 6 to 9.5** (+1.5 with jetties), plus about 1 day live on the minimal list | |
+| jetty | 1.5 | the above |
+| **total** | **about 7.5 to 11**, plus about 1 day live on the minimal list | |
 
 | risk | why | fallback |
 |---|---|---|
@@ -195,66 +201,12 @@ art first.
 | raid AI and the floor band | raiders in a moat now walk under bridges instead of being stopped by them | that is the ruling; worth one line on the raider card |
 | "NOT tunnels" erodes | every later request ("a roof I can walk under") will cite this | the band is keyed to one building class; refuse in review |
 
-## 7. Questions for the owner (question-card shape)
-
-**Q1. How does a suspension bridge get built?**
-- **(a) Drag it across, like a wall, but it must start and end on solid ground (recommended).** Any length up to the
-  bridge type's limit, 1 to 3 wide; posts appear at each end and the deck is built from the ends inward. Buys: fits any
-  trench, always looks held at both ends. Costs: straight lines only; a bend means two bridges meeting on ground or a
-  tower. *Why: the only option that is both flexible and honest about what holds it up.*
-- (b) Free tiles, like a floor, anywhere over a hole near support. Buys: any shape, cheapest code. Costs: reads like
-  painting floor over holes, the vanilla-bridge feel you said these are not.
-- (c) Ready-made sizes (for example 1×5, 2×7) that must fit. Buys: each one can be a single, beautiful picture with sag
-  and cables. Costs: you must dig the trench to the bridge's size, and the art multiplies by every size.
-
-**Q2. How long can one span be, and what if the gap is longer?**
-- **(a) A limit by bridge type (rope 8, timber 6, steel 10, heavy 14), with towers built on the hole's floor to go
-  further (recommended).** Buys: long crossings exist but cost a tower you must reach. Costs: towers mean someone goes
-  down into the hole to build them. *Why: keeps materials meaningful without capping ambition.*
-- (b) A limit by type, no towers. Buys: simplest. Costs: wide lakes and big pits cannot be crossed.
-- (c) No length limit. Buys: freedom. Costs: rope bridges over anything; tiers matter only for weight.
-
-**Q3. Guardrails: how are they chosen, and what do they do?**
-- **(a) A switch on each bridge: railings on (nobody falls off) or off (people can be knocked or slip off, and can
-  jump down on purpose) (recommended).** Buys: one choice per bridge, changeable later for a bit of work. Costs:
-  you cannot rail only one side. *Why: the gameplay trade (safety vs. trap and shortcut) in one click.*
-- (b) Two separate bridges to build, "railed" and "open". Buys: no switch to learn. Costs: changing your mind means
-  tearing the bridge down.
-- (c) Railings as their own small build on any edge you like. Buys: full control (rail one side, leave a jump gap).
-  Costs: a second build pass on every bridge and more art.
-
-**Q4. Do railings give cover against gunfire?**
-- **(a) No; they are for safety only (recommended).** Buys: simple; railings stay thin cable and mesh. Costs: a
-  bridge is an exposed place to stand in a fight. *Why: cover from your own square is a new rule we would invent.*
-- (b) Yes, light cover (about half a sandbag). Buys: a railed bridge is a defensible line. Costs: a new cover rule and
-  more balancing.
-
-**Q5. Are cantilevers (deck sticking out with nothing at the far end) allowed?**
-- **(a) No; every bridge hangs between two ends (recommended).** Buys: one load rule, true to "suspension". Costs: no
-  platforms over pits. *Why: the overhang is a different structure that buys little.*
-- (b) A short jetty, 1 to 2 squares out from solid ground, steel or better, one person's weight. Buys: a platform to
-  push prisoners from, fish from or pour from. Costs: a second load rule and about a day and a half.
-- (c) Free overhangs up to a few squares by type. Buys: dramatic overlooks. Costs: the most balancing; looks unlike a
-  suspension bridge.
-
-**Q6. When a bridge gives way, what happens to people underneath it?**
-- **(a) They are hit by the falling deck (like a roof collapse) and the wreck blocks the floor until cleared
-  (recommended).** Buys: walking under a loaded bridge has a real risk; a dropped bridge blocks the trench.
-  Costs: a little code and a debris picture. *Why: the walk-under ruling's natural consequence.*
-- (b) They are untouched; the wreck simply vanishes. Buys: simplest. Costs: walking under is free of risk.
-
-**Q7. How deep must the hole be before you can walk under a bridge?**
-- **(a) At least 2 m below the deck; shallower holes are spanned but are a wall from below (recommended).** Buys:
-  people visibly fit. Costs: a shallow ditch with a bridge blocks traffic in the ditch. *Why: a person is about 1.8 m.*
-- (b) Any depth. Buys: no rule to learn. Costs: pawns walk under a bridge sitting in a knee-deep ditch.
-- (c) At least 2.5 m. Buys: roomier look. Costs: more digging for every underpass.
-
 ## Owner answers 2026-10-18 (by card)
 
 1. Build: **drag across like a wall**, 1-3 wide, solid ground at both ends.
 2. Length: **a limit per type plus towers** on the hole floor.
 3. Guardrails: **an on/off switch per bridge**; railings off = knock/slip/jump off.
 4. Rail cover: **no, safety only**.
-5. Cantilevers: **short jetty, 1-2 squares** (one person's weight) — not the recommendation; jetty support and collapse rules are owed.
+5. Cantilevers: **short jetty, 1-2 squares** (one person's weight) — not the recommendation; its support and collapse rules are §3.
 6. Collapse: **hit like a roof collapse**; the wreck blocks the trench until cleared.
 7. Clearance: **at least 2 m** to walk under.
