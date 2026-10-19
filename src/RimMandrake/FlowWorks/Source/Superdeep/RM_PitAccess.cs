@@ -154,12 +154,16 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Some other colonist on its feet reaches the downed one: vanilla's rescue sends them (they can climb back out,
-		/// since our reachability is the same both ways).</summary>
+		/// since our reachability is the same both ways). RESCUE_LADDER_DIAGNOSE_NOBODY_FETCHES_IT: only a colonist vanilla's
+		/// rescue (WorkGiverDef DoctorRescue: Doctor work, Manipulation, never while drafted) would actually send counts. A
+		/// drafted climbing-gear wearer reached every pit, so no ladder was ever queued and nobody went (live pass 2/2c).</summary>
 		private bool AnyRescuerReaches(Pawn downed)
 		{
 			foreach (Pawn c in map.mapPawns.FreeColonistsSpawned)
 			{
-				if (c != downed && !c.Downed && !c.Dead && !c.InMentalState
+				if (c != downed && !c.Downed && !c.Dead && !c.InMentalState && !c.Drafted
+					&& !c.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)
+					&& c.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)
 					&& c.CanReach(downed, PathEndMode.ClosestTouch, Danger.Deadly))
 				{
 					return true;
