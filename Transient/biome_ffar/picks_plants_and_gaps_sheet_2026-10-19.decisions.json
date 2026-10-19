@@ -6,7 +6,17 @@
     "AB_Bryolux": {
       "at": "2026-10-19T15:03:30.106Z",
       "decision": "A",
-      "note": "keep this, but rename it and place it sparsely on the blue desert. Its description should be hydrocarbon-based.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T15:03:30.106Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "keep this, but rename it and place it sparsely on the blue desert. Its description should be hydrocarbon-based.",
+          "when": "2026-10-19T08:33:20-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "bb281f0f87d2ff2d",
       "schema": 2,
@@ -15,7 +25,17 @@
     "AB_DribblingCap": {
       "at": "2026-10-19T15:06:26.579Z",
       "decision": "A",
-      "note": "First four are a new kind of mushroom to add to the Rot. Do so with a new name and description. The remainder are already in the Rot. Compare them to see if they should be added as valid random pool members or are redundant.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T15:06:26.579Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "First four are a new kind of mushroom to add to the Rot. Do so with a new name and description. The remainder are already in the Rot. Compare them to see if they should be added as valid random pool members or are redundant.",
+          "when": "2026-10-19T08:33:20-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "bb281f0f87d2ff2d",
       "schema": 2,
@@ -25,7 +45,17 @@
       "at": "2026-10-19T15:05:21.782Z",
       "decidedAt": "2026-10-19T15:04:45.949Z",
       "decision": "hold",
-      "note": "Rename star wars appropriate and place it in the Weeping Stones biome. Generate new description. All are valid random pools.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T15:05:21.782Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Rename star wars appropriate and place it in the Weeping Stones biome. Generate new description. All are valid random pools.",
+          "when": "2026-10-19T08:33:20-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "bb281f0f87d2ff2d",
       "schema": 2,
@@ -34,7 +64,17 @@
     "AB_GiantAgarilux": {
       "at": "2026-10-19T15:06:04.668Z",
       "decision": "A",
-      "note": "First three are a new kind of mushroom to add to the Rot. Do so with a new name and description. The tall slender pillars are already in the Rot. Compare them to see if they should be added as valid random pool members or are redundant.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T15:06:04.668Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "First three are a new kind of mushroom to add to the Rot. Do so with a new name and description. The tall slender pillars are already in the Rot. Compare them to see if they should be added as valid random pool members or are redundant.",
+          "when": "2026-10-19T08:33:20-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "bb281f0f87d2ff2d",
       "schema": 2,
@@ -53,7 +93,17 @@
     "AB_LilacBeacon": {
       "at": "2026-10-19T15:06:52.832Z",
       "decision": "A",
-      "note": "This is already in the Rot. Please add these as valid random pool members for it.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T15:06:52.832Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "This is already in the Rot. Please add these as valid random pool members for it.",
+          "when": "2026-10-19T08:33:20-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "bb281f0f87d2ff2d",
       "schema": 2,
@@ -62,7 +112,17 @@
     "AB_SlimyPholiota": {
       "at": "2026-10-19T15:07:18.504Z",
       "decision": "A",
-      "note": "First three are a new kind of mushroom to add to the Rot. Do so with a new name and description. The remainders are already in the Rot. Compare them to see if they should be added as valid random pool members or are redundant.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T15:07:18.504Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "First three are a new kind of mushroom to add to the Rot. Do so with a new name and description. The remainders are already in the Rot. Compare them to see if they should be added as valid random pool members or are redundant.",
+          "when": "2026-10-19T08:33:20-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "bb281f0f87d2ff2d",
       "schema": 2,
@@ -72,7 +132,17 @@
       "at": "2026-10-19T15:07:30.068Z",
       "decidedAt": "2026-10-19T15:07:30.068Z",
       "decision": "hold",
-      "note": "drop",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T15:07:30.068Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "drop",
+          "when": "2026-10-19T08:33:20-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "bb281f0f87d2ff2d",
       "schema": 2,
@@ -81,7 +151,17 @@
     "AB_WitchesOyster": {
       "at": "2026-10-19T15:07:40.459Z",
       "decision": "A",
-      "note": "drop, already in Rott",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T15:07:40.459Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "drop, already in Rott",
+          "when": "2026-10-19T08:33:20-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "bb281f0f87d2ff2d",
       "schema": 2,
