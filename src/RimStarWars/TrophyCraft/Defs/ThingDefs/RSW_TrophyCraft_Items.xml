@@ -2,15 +2,24 @@
 <!--
   RSW_TrophyCraft_Items                    mandrake.rsw.trophycraft
 
-  WYYYSCHOKK_FANG_PENDANT_1. One ThingDef: the raw fang (a butcher/hunt
+  WYYYSCHOKK_FANG_PENDANT_1. Two ThingDefs: the raw fang (a butcher/hunt
   product, attached to the donor Wyyyschokk by
-  Patches/RSW_TrophyCraft_WyyyschokkFangDrop.xml), a trade good.
-  The fang pendant, its recipe, its observer thought and its RSW_Neck layer
-  were removed from the game (owner, picks_icons_sheet_2026-10-19: "drop").
+  Patches/RSW_TrophyCraft_WyyyschokkFangDrop.xml) and the crafted pendant
+  (see Defs/RecipeDefs/RSW_TrophyCraft_Recipes.xml for how fangs become one).
 
   Pattern for the fang: SWBestiary's own RSW_MudhornSkull (ParentName
   ResourceBase, a stackable butcher-trophy resource) — same shape, smaller
   numbers, since a fang is a common drop rather than a rare skull trophy.
+
+  Pattern for the pendant: the live def dump's `Jewelry_Necklace`
+  (mod `Jewelry`) — ParentName ApparelBase (quality + styleable, no
+  recipeMaker), bodyPartGroups [Neck] only, `wornGraphicPath` left EMPTY
+  (that mod's own choice for a neck trinket too small to bother rendering on
+  the body — icon only), tradeTags [ExoticMisc] so it sells to any trader
+  regardless of faction. Layer is RSW_Neck (see
+  Defs/ApparelLayerDefs/RSW_TrophyCraft_ApparelLayerDefs.xml for why this
+  mod owns a new layer instead of reusing vanilla Middle or a third-party
+  Accessories layer).
 -->
 <Defs>
 
@@ -38,6 +47,52 @@ to mark a proven kill.</description>
     </thingCategories>
     <tradeTags>
       <li>Exotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="ApparelBase">
+    <defName>RSW_Apparel_FangPendant</defName>
+    <label>wyyyschokk fang pendant</label>
+    <description>A cord-wrapped cluster of wyyyschokk fangs, worn at the
+neck. Among the desert hunting tribes it needs no explanation: the wearer
+looked a wyyyschokk in its many eyes and walked away with proof.</description>
+    <techLevel>Neolithic</techLevel>
+    <graphicData>
+      <texPath>Things/Item/RSW_Apparel_FangPendant/RSW_Apparel_FangPendant</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>60</MarketValue>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Mass>0.15</Mass>
+      <Flammability>0.7</Flammability>
+      <DeteriorationRate>1.5</DeteriorationRate>
+      <EquipDelay>0.5</EquipDelay>
+      <Insulation_Cold>0</Insulation_Cold>
+      <Insulation_Heat>0</Insulation_Heat>
+    </statBases>
+    <smeltable>false</smeltable>   <!-- ApparelBase smelts; a bone-and-cord trinket has no smeltProducts (load-log ConfigError) -->
+    <thingCategories>
+      <li>ApparelMisc</li>
+    </thingCategories>
+    <apparel>
+      <bodyPartGroups>
+        <li>Neck</li>
+      </bodyPartGroups>
+      <!-- Deliberately empty — see the note above; matches Jewelry_Necklace's
+           own precedent for a small neck trinket. Icon-only, never a body
+           render, so it cannot clash visually with anything worn under it. -->
+      <wornGraphicPath></wornGraphicPath>
+      <layers>
+        <li>RSW_Neck</li>
+      </layers>
+      <tags>
+        <li>Jewelry</li>
+      </tags>
+      <canBeDesiredForIdeo>true</canBeDesiredForIdeo>
+    </apparel>
+    <tradeTags>
+      <li>ExoticMisc</li>
     </tradeTags>
   </ThingDef>
 

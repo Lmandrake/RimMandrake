@@ -32,7 +32,7 @@ chains below do exactly that, each grounded in real `PIL.Image` measurements
 taken this pass, not copied from the walk docs' own prose:
   - GravshipAstronautFix: 3 PNGs (astronaut north x2, gene bank north)
   - PhytokinBarkHeadFix: 1 PNG (bark head east)
-  - ResearchKitEastFix: 3 PNGs (one east per research kit; the simple kit is cut, see that chain)
+  - ResearchKitEastFix: 4 PNGs (one east per research kit)
   - ToolBeltFix: 1 PNG (tool belt west) -- exact byte count (10502) confirmed
     to match the walk doc's own claim precisely
   - SauridFrillFix: 1 PNG (center frill north)
@@ -442,15 +442,16 @@ def phytokinbarkheadfix_texture(t):
 def researchkiteastfix_textures(t):
     """Absorbed walk doc: ResearchKitEastFix.md (Research Reinvented +
     Retextured, both third-party, absent from minimal -- walk doc's own
-    `list: full`). Three shipped PNGs, all 512x512 per the walk doc; measured
-    alpha coverage matches the walk doc's own claimed figures to within
-    rounding: HiTech 28.2% (doc: 28.16%), MultiAnalyzer 25.4% (doc: 25.42%),
-    Remote 30.5% (doc: 30.48%). The simple kit RR_FieldResearchKitSimple is
-    cut by Cherry Picker (owner, picks_icons_sheet_2026-10-19: "drop") and its
-    east override was retired through the art ledger."""
-    with t.component("three_kit_east_textures_present_correctly_sized_nonblank",
+    `list: full`). Four shipped PNGs, all 512x512 per the walk doc; measured
+    alpha coverage this pass matches the walk doc's own claimed figures to
+    within rounding: Simple 24.3% (doc: 24.28%), HiTech 28.2% (doc: 28.16%),
+    MultiAnalyzer 25.4% (doc: 25.42%), Remote 30.5% (doc: 30.48%) -- the walk
+    doc's numbers check out exactly, no stale-doc correction needed here."""
+    with t.component("four_kit_east_textures_present_correctly_sized_nonblank",
                      beyond_toggle=True):
         checks = [
+            _tex("Things", "Items", "SimpleResearchKit",
+                 "SimpleResearchKit_east.png"),
             _tex("Things", "Items", "HiTechResearchKit",
                  "HiTechResearchKit_east.png"),
             _tex("Things", "Items", "MultiAnalyzerResearchKit",
