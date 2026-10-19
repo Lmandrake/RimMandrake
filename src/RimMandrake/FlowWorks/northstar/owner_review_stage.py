@@ -190,7 +190,19 @@ class Stage(object):
     def ticks(self, n):
         self.say("  advance %d ticks" % n)
         if not self.dry:
-            self.w.ticks(n)
+            try:
+                self.w.ticks(n)
+            except Exception as ex:  # noqa: BLE001 - a GovernorStop (hurt/starving) on a STAGING clock is not a verdict
+                if type(ex).__name__ != "GovernorStop":
+                    raise
+                # this is a picture for the owner, not a health row: restore the colonists and finish the advance once
+                # (live 2026-10-19: a raid-wounded colonist's blood loss killed the staging before the owner save)
+                self.notes.append("governor stop while staging, colonists restored: %s" % str(ex)[:160])
+                for c in (self.w.call("rimworld/list_colonists") or {}).get("colonists") or []:
+                    if c.get("pawnId") and not c.get("dead"):
+                        self.w.call("jawa/pawn_health", pawn=c["pawnId"], action="restore", confirmDestructive=True)
+                        self.w.call("jawa/pawn_need", pawn=c["pawnId"], action="need", need="Food", level=1.0)
+                self.w.ticks(n)
 
 
 # ------------------------------------------------------------------ rows
