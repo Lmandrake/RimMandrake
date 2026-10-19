@@ -164,6 +164,11 @@ Ruled by the owner on 2026-10-19 (§8 has his words). **Nothing in it is built**
     clock is a later option and not the primary target.
 - **DS8. Where it runs.** This is my reading of his principle, and it is the one confirm still
   owed (§8). Direct Sun runs on every sunlit map of the shipped world, with no per-biome opt-in.
+  - **Conditional on tree shade** (owner, 2026-10-19): *"If we have an excellent tree shade model
+    working, then YES direct sun works the same everywhere on the day side. If we do not go that
+    route, we may choose to turn it off on tree-heavy maps (this would be an inferior option)."* The
+    model, and the test that decides between the two, are in
+    `design/RimMandrake/tree_shade_model_2026-10-19.md`.
   - The Scarlands, the Miasma and the `RUT_` twins get it like every other biome (D6).
   - Sand glare is keyed to natural sand terrain under the sun, not to the Stillsand, so the Long
     Shade's sand glares too (D5).

@@ -138,6 +138,15 @@ description."*
   time of day. If that creates too much work, then drop sun heat (should actually be called "direct
   sun") when the day/night isn't constant anymore. That's not our primary deliverable target."*
 
+- Tree shade (2026-10-19, after the pass): *"Only the day-side biomes with massive trees would have
+  massive shade beneath them at a fixed angle, and we need to think about that. Most tree-dense maps
+  will be mostly shade then (ambient heat yes, direct sun no). So that needs to be deeply thought
+  though. If we have an excellent tree shade model working, then YES direct sun works the same
+  everywhere on the day side. If we do not go that route, we may choose to turn it off on tree-heavy
+  maps (this would be an inferior option)."* The model and its adopt-or-fall-back test are in
+  `design/RimMandrake/tree_shade_model_2026-10-19.md`, and the decision is
+  `TREE_SHADE_DECIDE_CROWNS_OR_LIGHTS_OUT`.
+
 What this means, and how to check it was applied:
 - **The feature is called Direct Sun.** Felt heat = 55 °C × sin(sun elevation) × weather sun factor
   × the strength dial, into the vanilla felt-temperature → Heatstroke path. No new hediff.

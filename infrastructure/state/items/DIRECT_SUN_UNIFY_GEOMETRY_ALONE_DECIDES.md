@@ -62,6 +62,20 @@ the day/night isn't constant anymore."*
    the four air-heat biomes say the air itself is hot.
 10. Change the tests named in design doc §4 ("Tests to change") in the same commit.
 
+## Rollout depends on tree shade (owner, 2026-10-19)
+
+*"If we have an excellent tree shade model working, then YES direct sun works the same everywhere on
+the day side. If we do not go that route, we may choose to turn it off on tree-heavy maps (this would
+be an inferior option)."*
+
+- Spec 7's all-day-side reach holds only if `TREE_SHADE_BUILD_CROWNS_ON_STILTS` passes the "excellent"
+  test (`design/RimMandrake/tree_shade_model_2026-10-19.md` §6).
+- Otherwise the fallback is Direct Sun off on maps whose measured canopy fraction is high, keyed on the
+  map and not on the biome. The owner chooses in `TREE_SHADE_DECIDE_CROWNS_OR_LIGHTS_OUT`.
+- The geometry core of this item (E, 55 × sin E, roofs, parasols, casters) does not wait on that
+  choice, and can be built now.
+- The D5/D6 confirm still stands, unchanged.
+
 ## criteria
 
 - No BiomeDef or patch under `src/` carries `heatKind`, `heatOffsetC`, `heatScalesWithElevation`,
