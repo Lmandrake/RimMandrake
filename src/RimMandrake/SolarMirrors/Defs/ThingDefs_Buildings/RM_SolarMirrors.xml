@@ -74,7 +74,7 @@
     <label>static mirror</label>
     <description>A framed metal mirror on a fixed stand. It throws a patch of sunlight two cells across onto the cell it is aimed at. A colonist has to walk over and turn it to aim it. It does not follow the sun, so where the sun moves across the sky its patch of light slowly drifts away from the target. Silver and gold reflect best.</description>
     <graphicData>
-      <texPath>Things/Building/Power/SolarCollector</texPath>
+      <texPath>Things/Building/Power/RM_StaticMirror/RM_StaticMirror</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
     </graphicData>
@@ -110,7 +110,7 @@
     <label>heliostat</label>
     <description>A powered mirror on a two-axis mount. It is aimed at once from its controls and turns on its own to hold the target as the sun moves, throwing a patch of sunlight three cells across. Without power it stops where it is and acts like a static mirror until power comes back.</description>
     <graphicData>
-      <texPath>Things/Building/Power/SolarCollector</texPath>
+      <texPath>Things/Building/Power/RM_Heliostat/RM_Heliostat</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
     </graphicData>
@@ -153,7 +153,7 @@
     <label>sun-stone</label>
     <description>A flat stone plate that shows whether mirror light reaches it. Plain sun does not count: it reads lit only when a mirror's beam falls on it.</description>
     <graphicData>
-      <texPath>Things/Building/Power/SolarCollector</texPath>
+      <texPath>Things/Building/Power/RM_SunStone/RM_SunStone</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
     </graphicData>
@@ -184,7 +184,7 @@
     <description>A ceramic-lined hearth built to sit in concentrated sunlight. It smelts metal from slag and scrap with no fuel and no power, but only while the light of two or more mirrors is focused on it. In plain sun, at night or under a roof it stands idle.</description>
     <thingClass>Building_WorkTable</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/ElectricSmelter</texPath>
+      <texPath>Things/Building/Production/RM_SolarFurnace/RM_SolarFurnace</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(3.5,1.5)</drawSize>
       <damageData>
@@ -254,7 +254,7 @@
     <label>ancient heliostat</label>
     <description>A sand-scoured heliostat from a vanished people, its brass pitted and its bearings seized. Freed, it still turns, but only between the old brass pins set in the ground around it, and it throws its light exactly on whichever pin it faces. Selecting it shows where each pin would send its light.</description>
     <graphicData>
-      <texPath>Things/Building/Power/SolarCollector</texPath>
+      <texPath>Things/Building/Power/RM_AncientHeliostat/RM_AncientHeliostat</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
       <color>(170,140,95)</color>
@@ -291,7 +291,7 @@
     <description>An old brass pin set into the ground. An ancient heliostat nearby can be turned to throw its light exactly here.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Joy/HorseshoesPin</texPath>
+      <texPath>Things/Building/Joy/RM_MirrorDetent/RM_MirrorDetent</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(0.4,0.4)</drawSize>
       <color>(190,150,70)</color>
@@ -363,7 +363,7 @@
     <description>A stone slab carved with a sun, sealing an ancient vault. It gives way when every sun-stone before it is lit by mirror light. Its inspect pane tells how many are lit, and, the longer the colony works at the mirrors, more about what is missing.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Furniture/Column</texPath>
+      <texPath>Things/Building/Furniture/RM_SunVaultSeal/RM_SunVaultSeal</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
       <color>(200,170,110)</color>

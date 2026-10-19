@@ -79,7 +79,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_Simmerlace/RM_Simmerlace</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(215,225,235)</colorTwo>
       <drawSize>(1.0,1.0)</drawSize>
@@ -105,7 +105,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_Kettlewick/RM_Kettlewick</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(225,200,130)</colorTwo>
       <drawSize>(0.6,0.6)</drawSize>
@@ -139,7 +139,7 @@
       <Beauty>4</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_Vekkfan/RM_Vekkfan</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(200,120,110)</colorTwo>
       <drawSize>(1.8,1.8)</drawSize>
@@ -165,7 +165,7 @@
       <Beauty>0</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_Thurlsponge/RM_Thurlsponge</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(80,70,65)</colorTwo>
       <drawSize>(1.1,1.1)</drawSize>
@@ -195,7 +195,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_Foamgorse/RM_Foamgorse</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(190,195,200)</colorTwo>
       <drawSize>(0.9,0.9)</drawSize>
@@ -221,7 +221,7 @@
       <Beauty>2</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_Seepcandle/RM_Seepcandle</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(225,215,185)</colorTwo>
       <drawSize>(1.0,1.0)</drawSize>
@@ -252,7 +252,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_Threshreed/RM_Threshreed</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(190,115,70)</colorTwo>
       <drawSize>(0.8,0.8)</drawSize>
