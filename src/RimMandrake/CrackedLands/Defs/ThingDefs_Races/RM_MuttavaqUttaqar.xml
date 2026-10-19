@@ -357,7 +357,7 @@
           <!-- TEMP PLACEHOLDER: donor RockTroll texture, loud-donor-art
                convention (RM_Aurrok.xml precedent) until this commission's
                real render lands. -->
-          <texPath>Animal/RockTroll/RockTrollBaby</texPath>
+          <texPath>StandIn/Animal/RockTroll/RockTrollBaby</texPath>
           <drawSize>2.2</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>

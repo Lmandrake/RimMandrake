@@ -173,7 +173,7 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/FireRed_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/FireRed_Reptile</texPath>
                   <anchorTag>RightEye</anchorTag>
                   <rotDrawMode>Fresh, Rotting</rotDrawMode>
                   <parentTagDef>Head</parentTagDef>
@@ -182,7 +182,7 @@
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/FireRed_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/FireRed_Reptile</texPath>
                   <anchorTag>LeftEye</anchorTag>
                   <rotDrawMode>Fresh, Rotting</rotDrawMode>
                   <parentTagDef>Head</parentTagDef>
@@ -202,13 +202,13 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MarsRed_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MarsRed_Reptile</texPath>
                   <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Right</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MarsRed_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MarsRed_Reptile</texPath>
                   <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Left</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
@@ -225,13 +225,13 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/BurntOrange_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/BurntOrange_Reptile</texPath>
                   <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Right</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/BurntOrange_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/BurntOrange_Reptile</texPath>
                   <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Left</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
@@ -248,13 +248,13 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/Tangerine_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/Tangerine_Reptile</texPath>
                   <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Right</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/Tangerine_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/Tangerine_Reptile</texPath>
                   <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Left</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
@@ -271,13 +271,13 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/TaxiCab_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/TaxiCab_Reptile</texPath>
                   <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Right</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/TaxiCab_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/TaxiCab_Reptile</texPath>
                   <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Left</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
@@ -294,13 +294,13 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MidasGold_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MidasGold_Reptile</texPath>
                   <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Right</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MidasGold_Reptile</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/MidasGold_Reptile</texPath>
                   <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Left</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
@@ -330,7 +330,7 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/FireRed_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/FireRed_Feline</texPath>
                   <anchorTag>RightEye</anchorTag>
                   <rotDrawMode>Fresh, Rotting</rotDrawMode>
                   <parentTagDef>Head</parentTagDef>
@@ -339,7 +339,7 @@
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/FireRed_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/FireRed_Feline</texPath>
                   <anchorTag>LeftEye</anchorTag>
                   <rotDrawMode>Fresh, Rotting</rotDrawMode>
                   <parentTagDef>Head</parentTagDef>
@@ -359,13 +359,13 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MarsRed_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MarsRed_Feline</texPath>
                   <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Right</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MarsRed_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MarsRed_Feline</texPath>
                   <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Left</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
@@ -382,13 +382,13 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/BurntOrange_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/BurntOrange_Feline</texPath>
                   <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Right</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/BurntOrange_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/BurntOrange_Feline</texPath>
                   <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Left</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
@@ -405,13 +405,13 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/Tangerine_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/Tangerine_Feline</texPath>
                   <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Right</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/Tangerine_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/Tangerine_Feline</texPath>
                   <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Left</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
@@ -428,13 +428,13 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/TaxiCab_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/TaxiCab_Feline</texPath>
                   <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Right</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/TaxiCab_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/TaxiCab_Feline</texPath>
                   <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Left</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>
@@ -451,13 +451,13 @@
             <value>
               <renderNodeProperties>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MidasGold_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MidasGold_Feline</texPath>
                   <anchorTag>RightEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Right</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset></defaultData></drawData>
                 </li>
                 <li Class="PawnRenderNodeProperties_Eye">
-                  <texPath>Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MidasGold_Feline</texPath>
+                  <texPath>StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/MidasGold_Feline</texPath>
                   <anchorTag>LeftEye</anchorTag><rotDrawMode>Fresh, Rotting</rotDrawMode><parentTagDef>Head</parentTagDef>
                   <drawSize>0.30</drawSize><side>Left</side>
                   <drawData><defaultData><layer>54</layer><offset>(0, 0, -0.25)</offset><flip>true</flip></defaultData><dataWest><flip>false</flip></dataWest></drawData>

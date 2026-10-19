@@ -79,7 +79,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>StandIn/Things/Plant/SnakePlant/SnakePlantA</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(215,225,235)</colorTwo>
       <drawSize>(1.0,1.0)</drawSize>
@@ -105,7 +105,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>StandIn/Things/Plant/SnakePlant/SnakePlantA</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(225,200,130)</colorTwo>
       <drawSize>(0.6,0.6)</drawSize>
@@ -252,7 +252,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>StandIn/Things/Plant/SnakePlant/SnakePlantA</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(190,115,70)</colorTwo>
       <drawSize>(0.8,0.8)</drawSize>

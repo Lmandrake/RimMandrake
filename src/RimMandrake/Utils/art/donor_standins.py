@@ -128,7 +128,7 @@ def plan(census: dict, cats: set, only: set | None) -> dict:
         else:
             srcs = []
         own = owners(t, files_by_mod)
-        defs = sorted({x["def"] for x in census["rows"] if x["tex"] == t})
+        defs = sorted({x.get("def") or f for x in census["rows"] if x["tex"] == t for f in (x.get("files") or [""])})
         out.append({"tex": t, "cat": r["cat"], "donor_pkg": r["by"], "defs": defs,
                     "sources": [[str(a), b] for a, b in srcs],
                     "owners": {m: fs for m, fs in own.items()},
@@ -150,11 +150,15 @@ def apply(pl: dict, do: bool) -> int:
             "kind": "donor", "donor_pkg": it["donor_pkg"], "standin": True, "orig_texpath": it["tex"],
             "why": "donor-retirement stand-in until regenerated (owner 2026-10-18)"})
         for mod, files in it["owners"].items():
+            ok = True
             for src, name in it["sources"]:
                 dest = REPO / mod / "Textures" / folder / name
                 if dest.exists():
                     continue                                    # never over a file already in our tree
-                tw.copy(src, dest)
+                ok = tw.copy(src, dest) and ok
+            if not ok:                                          # a refused picture: the XML keeps its old path
+                print(f"   NOT repointed in {mod}: a copy was refused")
+                continue
             for f in files:
                 p = REPO / f
                 txt = p.read_text()

@@ -107,7 +107,7 @@
     <category>Building</category>
     <tickerType>Rare</tickerType>
     <graphicData>
-      <texPath>UI/CSG/IConduit</texPath>
+      <texPath>StandIn/UI/CSG/IConduit</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>Basic</linkType>
       <linkFlags>
