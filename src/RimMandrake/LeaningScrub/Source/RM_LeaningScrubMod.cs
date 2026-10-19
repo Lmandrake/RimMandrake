@@ -292,6 +292,8 @@ namespace RimMandrake.LeaningScrub
             return d;
         }
 
+        public static void ResetAllFields() { ResetFields(new List<string>(shippedDefaults.Keys).ToArray()); }
+
         public static void ResetFields(string[] names)
         {
             foreach (string n in names)
@@ -340,6 +342,7 @@ namespace RimMandrake.LeaningScrub
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Leaning Scrub", ResetAllFields);
 
             if (Group(list, "Mod and venomvine passability", RimMandrake.Shared.SettingScope.Now, new[] { "modEnabled", "venomvinePassabilityEnabled" }))
             {
