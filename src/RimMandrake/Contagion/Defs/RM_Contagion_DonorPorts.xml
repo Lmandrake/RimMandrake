@@ -326,7 +326,7 @@
       <Nutrition>0.1</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_TentacularPlant</texPath>
+      <texPath>Things/Plants/AB_TentacularPlant</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.24, 0.3, 0.15)</volume>

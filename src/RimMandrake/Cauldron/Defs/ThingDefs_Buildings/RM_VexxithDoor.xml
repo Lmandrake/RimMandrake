@@ -22,7 +22,7 @@
       <MaxHitPoints>200</MaxHitPoints>
     </statBases>
     <graphicData>
-      <texPath>Things/Building/Door/DoorSimple_Mover</texPath>
+      <texPath>Things/Building/RM_VexxithDoor/RM_VexxithDoor</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <damageData>
         <enabled>false</enabled>

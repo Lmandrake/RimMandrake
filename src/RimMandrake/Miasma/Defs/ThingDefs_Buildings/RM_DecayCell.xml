@@ -82,7 +82,7 @@
     <thingClass>RimMandrake.Miasma.RM_Building_RottingBed</thingClass>
     <tickerType>Rare</tickerType>
     <graphicData>
-      <texPath>Things/Building/Power/WoodFiredGenerator</texPath>
+      <texPath>Things/Building/Power/RM_RottingBed/RM_RottingBed</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
       <color>(85,70,50)</color>

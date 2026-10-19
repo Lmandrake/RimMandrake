@@ -75,7 +75,7 @@
     <uiOrder>1801</uiOrder>
     <uiIconPath>Things/Building/Linked/GravshipHull/GravshipHull_MenuIcon</uiIconPath>
     <graphicData>
-      <texPath>Things/Building/Linked/GravshipHull/GravshipHull_Atlas</texPath>
+      <texPath>Things/Building/Linked/RM_SpunstoneHull/RM_SpunstoneHull</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <researchPrerequisites>

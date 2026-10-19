@@ -237,7 +237,7 @@
     <defName>RM_ThunderbeastArc</defName>
     <label>static arc</label>
     <graphicData>
-      <texPath>Things/Projectile/Charge_Small</texPath>
+      <texPath>Things/Projectile/RM_ThunderbeastArc/RM_ThunderbeastArc</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
       <color>(255,240,140)</color>

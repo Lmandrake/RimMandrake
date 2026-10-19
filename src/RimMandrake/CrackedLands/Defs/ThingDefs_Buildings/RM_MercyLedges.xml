@@ -43,7 +43,7 @@
     <clearBuildingArea>false</clearBuildingArea>
     <graphicData>
       <!-- PLACEHOLDER art -->
-      <texPath>Things/Building/Misc/PartySpot</texPath>
+      <texPath>Things/Building/Misc/RM_MercyLedge/RM_MercyLedge</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(150, 138, 120)</color>
     </graphicData>

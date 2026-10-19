@@ -27,7 +27,7 @@
     <label>plasma burst</label>
     <graphicData>
       <!-- PLACEHOLDER art: vanilla's charge-shot sprite. Real art owed. -->
-      <texPath>Things/Projectile/Charge_Small</texPath>
+      <texPath>Things/Projectile/RSW_Projectile_PlasmaBurst/RSW_Projectile_PlasmaBurst</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>Transparent</shaderType>
     </graphicData>
