@@ -38,7 +38,6 @@
     {"key": "Contagion", "source": "Contagion", "group": "biome", "wave": 0, "label": "The Contagion", "blurb": "A red storm-roofed valley running an unchecked mutation engine."},
     {"key": "FeverWood", "source": "FeverWood", "group": "biome", "wave": 2, "label": "Fever Wood", "blurb": "A hot, still, tree-canopied swamp."},
     {"key": "CrackedLands", "source": "CrackedLands", "group": "biome", "wave": 0, "label": "The Cracked Lands", "blurb": "Canyons that periodically flood from wall to wall."},
-    {"key": "CrackedLandsKeptArt", "source": "FloodedCanyon", "group": "art", "wave": 0, "label": "The Cracked Lands (kept art)", "blurb": "Textures only: owner-kept Cracked Lands pictures still at the old FloodedCanyon folder until he releases them (CRACKEDLANDS_FULL_RENAME_1)."},
     {"key": "GelatinousSlime", "source": "GelatinousSlime", "group": "biome", "wave": 2, "label": "Gelatinous Slime", "blurb": "A living, spreading superorganism of slime."},
     {"key": "Greentide", "source": "Greentide", "group": "biome", "wave": 2, "label": "Greentide", "blurb": "A furiously humid, ground-hugging green flood."},
     {"key": "LanternDeeps", "source": "LanternDeeps", "group": "biome", "wave": 2, "label": "Lantern Deeps", "blurb": "A persistent glowing cave layer beneath the surface."},
