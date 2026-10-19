@@ -25,7 +25,7 @@ namespace RimMandrake.Pyrelands
     // roster) plus `WildPlantSpawner.MutatorWildPlants` (any tile mutator's
     // AdditionalWildPlants(), biome-independent by design). A heavily
     // biome-modded stack (m00nl1ght.geologicallandforms +
-    // .biometransitions, kopp.biomecompatibilityproject, sarg.alphabiomes,
+    // .biometransitions, kopp.biomecompatibilityproject,
     // multiple biome-expansion mods, all active in the owner's full list)
     // gives this machinery every opportunity to hand a Pyrelands map a
     // foreign biome's flora, and Pyrelands' own <wildPlants> list has no way
