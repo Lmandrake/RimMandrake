@@ -54,4 +54,38 @@
   <RM_HugeThings_CorpseHours>  Work hours per session: {0}</RM_HugeThings_CorpseHours>
   <RM_HugeThings_CorpseMeatSpoil>  Meat spoilage per day: {0}%</RM_HugeThings_CorpseMeatSpoil>
   <RM_HugeThings_CorpseLeatherSpoil>  Leather spoilage per day: {0}%</RM_HugeThings_CorpseLeatherSpoil>
+  <!-- BIG_CREATURES_DESIGN_WALLS_AND_SLOTS phase 1: settings, text motes and inspect lines -->
+  <RM_HugeThings_WallsSlots>  Big creatures judge walls and gaps by their breadth</RM_HugeThings_WallsSlots>
+  <RM_HugeThings_WallsSlots_Desc>A creature's breadth is the square root of its body size, rounded (a krayt is 3). It walks gaps at least as wide as its body, squeezes through gaps at least half that wide (slowed, straight through) and ignores narrower ones. A built wall as thick as the creature is broad stops it; a thin wall whose hit points fit its trample budget it breaks through without stopping; anything in between it smashes, one body-wide blow a second. Natural rock is never damaged. This replaces the size-tier wall rules (colossal crush, titanic destroy outright). Off: the tier rules above.</RM_HugeThings_WallsSlots_Desc>
+  <RM_HugeThings_Squeeze>    Squeeze through gaps at least half its width</RM_HugeThings_Squeeze>
+  <RM_HugeThings_Squeeze_Desc>Through a gap narrower than its body but at least half as wide, a big creature squeezes: straight through, slowed, never stopped. A door is a gap only to a creature that can open it; to a wild one it is a wall. Off: such gaps block it.</RM_HugeThings_Squeeze_Desc>
+  <RM_HugeThings_SqueezeSlow>      Slowdown at half width: x{0}</RM_HugeThings_SqueezeSlow>
+  <RM_HugeThings_Scrape>      Squeezing scrapes the sides of built gaps</RM_HugeThings_Scrape>
+  <RM_HugeThings_Scrape_Desc>Each step through a built gap deals 20 damage to each built wall flanking it, at most once a second per wall, so gaps widen over visits. Rock gaps never widen.</RM_HugeThings_Scrape_Desc>
+  <RM_HugeThings_HoldLine>    A wall holds a creature when it is {0} x its breadth thick</RM_HugeThings_HoldLine>
+  <RM_HugeThings_TrampleBudget>    Breaks through without stopping up to {0} wall hit points per breadth</RM_HugeThings_TrampleBudget>
+  <RM_HugeThings_BlowDamage>    Smash blow: {0} damage per breadth, once a second</RM_HugeThings_BlowDamage>
+  <RM_HugeThings_RoofHp>    A wall holding up a roof counts its hit points x{0}</RM_HugeThings_RoofHp>
+  <RM_HugeThings_RoofDamage>    and takes {0}% of each smash blow</RM_HugeThings_RoofDamage>
+  <RM_HugeThings_Temperament>    Temperament: calm creatures do not break walls</RM_HugeThings_Temperament>
+  <RM_HugeThings_Temperament_Desc>A calm, fed creature goes round or squeezes rather than break anything, and never breaks out of a pen. Restlessness rises while it is shut in a small space (under 6 x its width squared cells) or hungry, and shows on its inspect panel; at 100%, or while fleeing, enraged or hunting, it breaks whatever the rules let it. Off: every big creature breaks walls whenever the detour slider says so.</RM_HugeThings_Temperament_Desc>
+  <RM_HugeThings_Breadth2>    Breadth 2 creatures (thrumbo class) break thin walls too</RM_HugeThings_Breadth2>
+  <RM_HugeThings_Breadth2_Desc>On by default (owner ruling, 2026-10-18). Off: breadth 2 creatures only squeeze; every built wall stops them.</RM_HugeThings_Breadth2_Desc>
+  <RM_HugeThings_WallsSlotsNeeds>Turn on giant animals, the wake and "titans smash through what seals their way" to change these.</RM_HugeThings_WallsSlotsNeeds>
+  <RM_WallsSlots_Squeezes>squeezes through</RM_WallsSlots_Squeezes>
+  <RM_WallsSlots_BacksOut>backs out of the gap</RM_WallsSlots_BacksOut>
+  <RM_WallsSlots_BreaksThrough>breaks through</RM_WallsSlots_BreaksThrough>
+  <RM_WallsSlots_Smashes>smashes at the wall</RM_WallsSlots_Smashes>
+  <RM_WallsSlots_Held>held by the wall ({0} thick)</RM_WallsSlots_Held>
+  <RM_WallsSlots_GivesUp>gives up on the wall</RM_WallsSlots_GivesUp>
+  <RM_WallsSlots_Restless>grows restless</RM_WallsSlots_Restless>
+  <RM_WallsSlots_PartBreadth>Breadth {0} (needs {1}-wide gaps)</RM_WallsSlots_PartBreadth>
+  <RM_WallsSlots_PartSqueeze>squeezes gaps of {0}+</RM_WallsSlots_PartSqueeze>
+  <RM_WallsSlots_PartBreaks>breaks walls up to {0} HP</RM_WallsSlots_PartBreaks>
+  <RM_WallsSlots_PartSmashes>smashes up to {0} thick</RM_WallsSlots_PartSmashes>
+  <RM_WallsSlots_PartStopped>stopped by {0} thick</RM_WallsSlots_PartStopped>
+  <RM_WallsSlots_PartStoppedAny>stopped by any built wall</RM_WallsSlots_PartStoppedAny>
+  <RM_WallsSlots_Restlessness>Restless {0}%</RM_WallsSlots_Restlessness>
+  <RM_WallsSlots_WallStops>Holds big creatures up to breadth {0} ({1} thick here)</RM_WallsSlots_WallStops>
+  <RM_WallsSlots_WallStopsNone>Too thin to hold a big creature ({0} thick here)</RM_WallsSlots_WallStopsNone>
 </LanguageData>

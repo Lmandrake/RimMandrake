@@ -16,4 +16,13 @@
     <casualInterruptible>false</casualInterruptible>
   </JobDef>
 
+  <!-- BIG_CREATURES_DESIGN_WALLS_AND_SLOTS phase 1: a big creature squeezes straight through a gap at least half its width
+       (JobDriver_TitanSqueeze). Started only by the path-start hook; suspendable so the job it interrupts resumes behind it. -->
+  <JobDef>
+    <defName>RM_TitanSqueeze</defName>
+    <driverClass>RimMandrake.TitanicCreatures.JobDriver_TitanSqueeze</driverClass>
+    <reportString>squeezing through a gap.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
 </Defs>

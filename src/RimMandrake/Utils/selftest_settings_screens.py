@@ -57,6 +57,7 @@ MODS = {
         "Giant animals: hitbox and roofs": "Now",
         "Large Pawns footprint and custom size tiers": "NextGameStart",
         "Wake and plant smashing": "Now",
+        "Big creatures: walls, slots and roofs": "Now",   # BIG_CREATURES_DESIGN_WALLS_AND_SLOTS: read at each path start, strike and tick
         "Yield curve": "Now",
         "Titanic corpse sites": "Now",
     }, ()),

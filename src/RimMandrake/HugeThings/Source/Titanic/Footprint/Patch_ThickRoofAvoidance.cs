@@ -76,6 +76,7 @@ namespace RimMandrake.TitanicCreatures
     {
         private const ushort EscapeCost = 2000;
         [System.ThreadStatic] private static bool[] thickBuf, markBuf;
+        [System.ThreadStatic] private static System.Collections.Generic.List<int> heldBuf;
 
         private static void Postfix(PathGridDoorsBlockedJob __instance)
         {
@@ -91,10 +92,20 @@ namespace RimMandrake.TitanicCreatures
 
         private static void Apply(PathGridDoorsBlockedJob job)
         {
-            if (!RM_HugeThingsSettings.RoofAvoidanceActive) return;
             Pawn pawn = job.pawn;
             Map map = job.map;
-            if (pawn == null || map == null || pawn.Map != map || TitanicTierUtility.GetTier(pawn) == TitanicTier.None) return;
+            if (pawn == null || map == null || pawn.Map != map) return;
+            // BIG_CREATURES_DESIGN_WALLS_AND_SLOTS: a crossing this creature holds at is closed to its own requests (all modes, so the
+            // PassAllDestroyableThings breach search looks for another crossing). In every other mode those cells are walls already.
+            if (WallsSlotsUtility.AnyHeld && RM_HugeThingsSettings.WallsSlotsActive && job.providerCost.IsCreated)
+            {
+                if (heldBuf == null) heldBuf = new System.Collections.Generic.List<int>();
+                WallsSlotsUtility.HeldCellsFor(pawn, map, GenTicks.TicksGame, heldBuf);
+                for (int i = 0; i < heldBuf.Count; i++)
+                    if (heldBuf[i] >= 0 && heldBuf[i] < job.providerCost.Length) job.providerCost[heldBuf[i]] = ushort.MaxValue;
+            }
+            if (!RM_HugeThingsSettings.RoofAvoidanceActive) return;
+            if (TitanicTierUtility.GetTier(pawn) == TitanicTier.None) return;
             int w = map.Size.x, h = map.Size.z, n = w * h;
             if (!job.providerCost.IsCreated || job.providerCost.Length < n) return;
             if (thickBuf == null || thickBuf.Length != n) { thickBuf = new bool[n]; markBuf = new bool[n]; }

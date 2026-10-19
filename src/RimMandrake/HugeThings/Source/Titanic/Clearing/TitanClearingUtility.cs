@@ -33,7 +33,7 @@ namespace RimMandrake.TitanicCreatures
             if (pawn == null || !pawn.Spawned || pawn.Map == null || pawn.Dead || pawn.Downed || pawn.Flying) return false;
             if (!dest.IsValid || (dest.HasThing && dest.ThingDestroyed)) return false;
             Job cur = pawn.CurJob;
-            if (cur == null || cur.def == RM_TitanicCreaturesDefOf.RM_TitanClearObstacle) return false;
+            if (cur == null || cur.def == RM_TitanicCreaturesDefOf.RM_TitanClearObstacle || cur.def == RM_TitanicCreaturesDefOf.RM_TitanSqueeze) return false;
             TitanicTier tier = TitanicTierUtility.GetTier(pawn);
             if (tier == TitanicTier.None) return false;
             Map map = pawn.Map;
@@ -45,6 +45,13 @@ namespace RimMandrake.TitanicCreatures
             PathEndMode mode = peMode;
             LocalTargetInfo resolved = (LocalTargetInfo)GenPath.ResolvePathMode(pawn, dest.ToTargetInfo(map), ref mode);
             if (!resolved.IsValid) return false;
+            // BIG_CREATURES_DESIGN_WALLS_AND_SLOTS phase 1: breadth against slots, walls and roofs replaces the tier gates on walls.
+            // Null hands a giant's trunk back to the legacy decision below (plants keep their tier gates).
+            if (RM_HugeThingsSettings.WallsSlotsActive)
+            {
+                bool? decided = WallsSlotsDecider.TryStart(pawn, resolved, mode);
+                if (decided.HasValue) return decided.Value;
+            }
             bool reachable = map.reachability.CanReach(pawn.Position, resolved, mode, TraverseParms.For(TraverseMode.PassDoors));
             float byPawn = -1f;
             if (reachable)
@@ -186,6 +193,14 @@ namespace RimMandrake.TitanicCreatures
             b.TakeDamage(new DamageInfo(DamageDefOf.Crush, RM_TitanicKernel.CrushDamage((int)tier, mult), instigator: titan));
             return true;
         }
+
+        /// <summary>One clearing start per titan per tick (shared with the walls-and-slots decider).</summary>
+        public static void NoteStarted(Pawn titan)
+        {
+            if (titan != null) lastStart[titan.thingIDNumber] = Find.TickManager.TicksGame;
+        }
+
+        public static bool GaveUpOnThing(int titanId, Thing t, int now) => GaveUpOn(titanId, t, now);
 
         /// <summary>Remember an obstacle a clearing job gave up on, so the resumed job does not pick it again at once.</summary>
         public static void NoteGaveUp(Pawn titan, Thing obstacle)
