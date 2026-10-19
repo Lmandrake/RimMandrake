@@ -30,7 +30,7 @@
     <drawerType>MapMeshOnly</drawerType>
     <tickerType>Never</tickerType>
     <graphicData>
-      <texPath>Things/Item/Chunk/ChunkStone</texPath>
+      <texPath>StandIn/Things/Item/Chunk/ChunkStone</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <color>(232,236,234)</color>
       <drawSize>(1.1,1.1)</drawSize>

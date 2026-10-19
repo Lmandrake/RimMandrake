@@ -19,7 +19,7 @@
     <description>The kyber crystal is a rare force attuned prism that makes up the core of lightsabers and other objects. Kyber Crystals are found when cutting stones into blocks.</description>
     <soundInteract>Silver_Drop</soundInteract>
     <graphicData>
-      <texPath>Things/Item/Resource/Crystal/Synthetic</texPath>
+      <texPath>StandIn/Things/Item/Resource/Crystal/Synthetic</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
       <drawSize>.7</drawSize>
