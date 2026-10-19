@@ -7,8 +7,8 @@ namespace RimMandrake.CreatureBehaviors
 	/// RUST_CATHEDRAL_MECHANICS_1 §6 (the roaches). Attach to a race ThingDef
 	/// to make it forage data-listed "cleanable" items (by defName — e.g. a
 	/// wastepack-style toxic-waste item) and/or filth, consuming the target on
-	/// a timer. Generalizes the pattern measured in the donor mod
-	/// LingLuo.Cockroach's ThinkNode_EatWastepack (dnfile metadata
+	/// a timer. Generalizes the pattern measured in the retired donor mod
+	/// the Cockroach mod's ThinkNode_EatWastepack (dnfile metadata
 	/// enumeration, RUST_CATHEDRAL_MECHANICS_1 kit spec §6) in two ways the
 	/// donor did not: (a) no player-faction gate — this fires for ANY pawn
 	/// whose race carries the extension, wild included, because
