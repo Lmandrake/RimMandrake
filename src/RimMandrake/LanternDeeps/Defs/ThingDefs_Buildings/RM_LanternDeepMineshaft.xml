@@ -16,7 +16,7 @@
          real ruined-mineshaft art is owed, see LANTERN_DEEPS_INJECTION_1. -->
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/PitGate/PitGate</texPath>
+      <texPath>Things/Building/RM_LanternDeepMineshaft/RM_LanternDeepMineshaft</texPath>
       <drawSize>(5,5)</drawSize>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
