@@ -234,9 +234,13 @@ def posts(ctx):
     # the span's load with nobody on it (live 2026-10-19 read 816 kg with ONE rider: what else weighs on the deck?)
     _, empty_txt = proof("ProofSpan", xz(P(3, 0)))
 
-    riders = []
+    riders, drafted = [], []
     for k in range(12):
         riders.append(spawn(P(1 + k % 6, 0)))
+        # pass 2 (2026-10-19, HARNESS): undrafted riders walked off inside the 60-tick load check (656 kg Over at the
+        # spawn, 425 kg two checks later, 6 decks still up): draft each one and read it back
+        if riders[-1]:
+            drafted.append((B.call("jawa/set_draft", pawnId=riders[-1], drafted=True) or {}).get("drafted") is True)
         kv, txt = proof("ProofSpan", xz(P(3, 0)))
         if kv.get("state") == "Over":
             break
@@ -257,11 +261,11 @@ def posts(ctx):
             hurt += 1
     gone = txt2.startswith("SPAN none") or kv2.get("decks") == "0"
     st = "PASS" if over and gone and fell == len([r for r in riders if r]) and hurt >= 1 else "FAIL"
-    if not over or not health_seen(after):
-        st = "UNMEASURED"           # never Over, or list_pawns sent no health block: the injury bar could not be read
+    if not over or not health_seen(after) or not all(drafted):
+        st = "UNMEASURED"           # never Over, no health block, or a rider not drafted (free to walk off the deck)
     row("SB_load_over_rating_whole_span_falls", st,
         {"empty": empty_txt, "before": txt, "inspect_line": line, "after": txt2, "riders": len(riders), "fell": fell, "hurt": hurt,
-         "healthSeen": health_seen(after)})
+         "healthSeen": health_seen(after), "drafted": drafted})
 
     # T2: too long for timber
     kv, txt = proof("ProofBuild", "%s;%s;timber" % (xz(P(0, 4)), xz(P(8, 4))))
@@ -403,7 +407,9 @@ def underpass(ctx):
     row("UND_floor_path_walks_under", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
     oa = B.call("jawa/order_pawn", pawnId=a_, x=P(8, 40)[0], z=P(8, 40)[1], waitTicks=900, draft=True) or {}
     ob = B.call("jawa/order_pawn", pawnId=b_, x=P(4, 42)[0], z=P(4, 42)[1], waitTicks=600, draft=True) or {}
-    at = {p.get("id"): (p.get("x"), p.get("z")) for o in (oa, ob) for p in (o.get("pawns") or [])}
+    # pass 2 (2026-10-19, HARNESS): jawa/order_pawn reports the READ-BACK cell under end{x,z} (null when despawned), not at the
+    # pawn's top level: the old read gave (None, None) for both pawns and scored FAIL
+    at = {p.get("id"): ((p.get("end") or {}).get("x"), (p.get("end") or {}).get("z")) for o in (oa, ob) for p in (o.get("pawns") or [])}
     good = at.get(a_) == P(8, 40) and at.get(b_) == P(4, 42)
     row("UND_both_arrive", "PASS" if good else ("FAIL" if at else "UNMEASURED"), {"a": at.get(a_), "b": at.get(b_)})
     c_ = spawn(P(1, 46))
@@ -481,7 +487,8 @@ def waters(ctx):
         w = spawn(before)
         kvp, txtp = proof("ProofPath", "%s;%s" % (w, xz(r[1]))) if w else ({}, "no pawn")
         o = B.call("jawa/order_pawn", pawnId=w, x=r[1][0], z=r[1][1], waitTicks=1500, draft=True) or {}
-        at = {p.get("id"): (p.get("x"), p.get("z")) for p in (o.get("pawns") or [])}.get(w)
+        at = {p.get("id"): ((p.get("end") or {}).get("x"), (p.get("end") or {}).get("z"))   # read-back cell is end{x,z}
+              for p in (o.get("pawns") or [])}.get(w)
         good = kv.get("ok") == "True" and all(e == "True" for e in ex) and kvp.get("found") == "True" and at == r[1]
         row("WAT_river_cross_no_drift", "PASS" if good else ("FAIL" if kv else "UNMEASURED"),
             {"build": txt, "exempt": ex, "path": txtp, "arrived": at})
@@ -610,7 +617,10 @@ class FakeBridge(object):
             self.dug[(kw.get("x"), kw.get("z"))] = kw.get("deepenLevels")
             return {"success": True}
         if method == "jawa/order_pawn":
-            return {"pawns": [{"id": kw.get("pawnId"), "x": kw.get("x"), "z": kw.get("z")}], "ticksElapsed": kw.get("waitTicks")}
+            # the real shape (JawaBenchTerrainTools OrderPawn): the read-back cell under end{x,z}
+            return {"pawns": [{"id": kw.get("pawnId"), "end": {"x": kw.get("x"), "z": kw.get("z")}}], "ticksElapsed": kw.get("waitTicks")}
+        if method == "jawa/set_draft":
+            return {"success": True, "drafted": kw.get("drafted") is True, "wasDrafted": False, "changed": True}
         if method == "jawa/spawn_pawn":
             self.next_id += 1
             self.tags[self.next_id] = self.last_tier
