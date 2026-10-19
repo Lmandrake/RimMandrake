@@ -37,7 +37,7 @@
     <altitudeLayer>MoteOverhead</altitudeLayer>
     <drawerType>RealtimeOnly</drawerType>
     <graphicData>
-      <texPath>Things/Mote/BeamGlow</texPath>
+      <texPath>Things/Mote/RM_Skylight/RM_Skylight</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>MoteGlow</shaderType>
       <drawSize>(6,6)</drawSize>
