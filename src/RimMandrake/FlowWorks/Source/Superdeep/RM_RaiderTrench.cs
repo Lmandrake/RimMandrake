@@ -26,9 +26,9 @@ namespace RimMandrake.FlowWorks
 	/// of its own faction (the prison-door rule still bars every other hostile), and RM_PitPathing's closed-ladder grid
 	/// leaves those cells open to that faction. Shoot the ladder (40 HP) and whoever is down there is in a pit.
 	///
-	/// Surface to surface across a trench is never one reachability hop (RelativeVeto vetoes two surface components with a
-	/// pocket between), so once the ladders stand the raider is sent INTO the trench; from there its way out is its own
-	/// ladder and vanilla reachability takes it on.
+	/// TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: once the ladders stand, bank to bank is one reachability hop for the raid
+	/// (RM_SuperdeepTrap.RelativeVeto joins components through ladders this pawn may use: its own faction's), so TryCross
+	/// sees the target reachable and vanilla's givers walk it down, across and up.
 	/// </summary>
 	public static class RM_RaiderTrench
 	{
@@ -367,12 +367,14 @@ namespace RimMandrake.FlowWorks
 				{
 					return null;   // the slot is past a ladder not yet set, or cut off: think again later
 				}
-				Warn(p, "are setting scaling ladders against your trench.");
+				Warn(p, "RMFlow_RaidersSetLadders");
 				Job job = JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderSetLadder, cell, toward);
 				job.count = slots[s].drop;
 				return job;
 			}
-			// Every ladder stands: step into the trench (the first square off this pawn's component that it can reach).
+			// Every ladder stands. Normally TryCross has already handed back to vanilla (the ladders make the target reachable:
+			// TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP); this is the fallback when the far side is still cut off for this pawn
+			// (a ladder too short, a wall filled in): step into the trench, the first square off this pawn's component it can reach.
 			RM_PocketGrid g = RM_PocketGrid.For(map);
 			int cs = g.ComponentOf(k, p.Position);
 			for (int i = 1; i < plan.cells.Count; i++)
@@ -411,7 +413,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
-			Warn(p, "are shovelling a causeway into your trench.");
+			Warn(p, "RMFlow_RaidersFillTrench");
 			return JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderFillTrench, c);
 		}
 
@@ -423,14 +425,14 @@ namespace RimMandrake.FlowWorks
 			return job;
 		}
 
-		private static void Warn(Pawn p, string what)
+		private static void Warn(Pawn p, string key)
 		{
 			Lord lord = p.GetLord();
 			if (lord == null || !warned.Add(lord))
 			{
 				return;
 			}
-			Messages.Message("Raiders of " + p.Faction.Name + " " + what, new LookTargets(p), MessageTypeDefOf.ThreatSmall, false);
+			Messages.Message(key.Translate(p.Faction.Name), new LookTargets(p), MessageTypeDefOf.ThreatSmall, false);
 		}
 
 		/// <summary>The whole decision for one raider (RM_RaiderTrenchMath.Choose), or null for vanilla to carry on.</summary>

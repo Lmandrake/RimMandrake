@@ -425,6 +425,88 @@ namespace RimMandrake.FlowWorks
 				&& RM_LadderWallMath.Joins(rot, d, dx, dz, RM_SuperdeepTrap.StepDepthAt(map, eng, o));
 		}
 
+		// ── TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: the ladder graph between components ───────────────
+		private int edgeTick = int.MinValue;
+		private int edgeRebuilds = -1;
+		private readonly Dictionary<long, List<(int a, int b)>> ladderEdgeCache = new Dictionary<long, List<(int a, int b)>>();
+
+		/// <summary>Every component join a ladder makes for this query (RM_PocketGridMath.LadderEdge: its square's component and
+		/// the one across the wall it hangs on, when it is a way for this pawn — LadderLetsOut — or, pawnless, lowered). Cached
+		/// per (band, pawn) for one tick and one grid build: ladders are raised, lowered, set and shot between ticks.</summary>
+		public List<(int a, int b)> LadderEdges(int k, Pawn p)
+		{
+			int now = Find.TickManager?.TicksGame ?? 0;
+			if (now != edgeTick || edgeRebuilds != Rebuilds || ladderEdgeCache.Count > 512)
+			{
+				ladderEdgeCache.Clear();
+				edgeTick = now;
+				edgeRebuilds = Rebuilds;
+			}
+			long key = ((long)k << 40) | (uint)(p == null ? -1 : p.thingIDNumber);
+			if (ladderEdgeCache.TryGetValue(key, out List<(int a, int b)> edges))
+			{
+				return edges;
+			}
+			edges = new List<(int a, int b)>();
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			List<Thing> ladders = RM_LadderUtility.AllLadders(map, ladderScratch);
+			for (int i = 0; i < ladders.Count; i++)
+			{
+				IntVec3 c = ladders[i].Position;
+				int rot = ladders[i].Rotation.AsInt;
+				if (rot < 0 || rot > 3 || !c.InBounds(map))
+				{
+					continue;
+				}
+				var o = new IntVec3(c.x + RM_LadderWallMath.FX[rot], 0, c.z + RM_LadderWallMath.FZ[rot]);
+				if (!o.InBounds(map))
+				{
+					continue;
+				}
+				bool way = RM_PocketGridMath.LadderIsAWay(p != null, p == null && RM_ClimbJoins.LoweredLadderAt(map, c),
+					p != null && RM_LadderRules.LadderLetsOut(map, c, p));
+				int a = ComponentOf(k, c), b = ComponentOf(k, o);
+				if (RM_PocketGridMath.LadderEdge(rot, RM_SuperdeepTrap.StepDepthAt(map, eng, c), a,
+					RM_SuperdeepTrap.StepDepthAt(map, eng, o), b, way))
+				{
+					edges.Add((a, b));
+				}
+			}
+			ladderEdgeCache[key] = edges;
+			return edges;
+		}
+
+		/// <summary>Are two components of band K joined through ladders this query may use (down one wall, across a floor, up
+		/// another — any number of hops)?</summary>
+		public bool JoinedByLadders(int k, int from, int to, Pawn p)
+		{
+			return RM_PocketGridMath.JoinedByLadders(from, to, LadderEdges(k, p));
+		}
+
+		/// <summary>Does this component reach a map-border component on foot, its own border or through ladders?</summary>
+		public bool ReachesEdge(int k, int component, Pawn p)
+		{
+			if (TouchesEdge(k, component))
+			{
+				return true;
+			}
+			List<(int a, int b)> edges = LadderEdges(k, p);
+			var seen = new HashSet<int>();
+			foreach ((int a, int b) e in edges)
+			{
+				seen.Add(e.a);
+				seen.Add(e.b);
+			}
+			foreach (int c in seen)
+			{
+				if (c != component && TouchesEdge(k, c) && RM_PocketGridMath.JoinedByLadders(component, c, edges))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
 		/// <summary>No way out at all for this pawn from its pocket (design §8.3).</summary>
 		public bool TrappedIn(int k, int component, Pawn p)
 		{

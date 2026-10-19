@@ -337,8 +337,101 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var big = RM_PocketGridMath.Label(g, w, h, 5);
                 Assert(big.label[4 * w + 4] == big.label[0], "a climber of 5 crosses the moat: one component");
                 string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
-                Assert(trap.Contains("!g.ComponentIsPocket(k, comp) && !g.TouchesEdge(k, comp)"), "the map-edge postfix vetoes an island");
+                Assert(trap.Contains("!g.ComponentIsPocket(k, comp) && !g.ReachesEdge(k, comp, p)"),
+                    "the map-edge postfix vetoes an island (unless ladders this pawn may use join it to a border component)");
                 Assert(trap.Contains("n.Walkable(p.Map) && eng.IsSuperdeepExcavation(n)"), "absolute-rule trap BFS never crosses a wall (C3-F12)");
+            });
+
+            Case("Trench_laddered_on_both_walls_is_one_route", () =>
+            {
+                // TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: bank A (x 0-2, D 0) | sheer D 3 trench (x 3-5) | bank B (x 6-8, D 0).
+                // A ladder on the near wall (3,1) hung west toward A and one on the far wall (5,1) hung east toward B. Before the
+                // fix ReachVetoed kept any two surface components apart, so this was never one hop (raiders were sent INTO the
+                // trench first; a colonist crossing by two ladders was refused).
+                int w = 9, h = 3;
+                byte[] g = Map(w, h);
+                Rect(g, w, 3, 0, 3, h, 3);
+                var l = RM_PocketGridMath.Label(g, w, h, Person);
+                int A = l.label[1 * w + 0], P = l.label[1 * w + 4], B = l.label[1 * w + 8];
+                Assert(A != P && P != B && A != B && l.surface[A] && l.surface[B] && !l.surface[P], "A, trench, B: three components");
+                const int West = 3, East = 1;
+                // one ladder's edge, the way production builds it (RM_PocketGrid.LadderEdges)
+                List<(int a, int b)> Edges(bool nearWay, bool farWay, int nearRot = West, int farRot = East)
+                {
+                    var e = new List<(int a, int b)>();
+                    foreach ((int x, int rot, bool way) in new[] { (3, nearRot, nearWay), (5, farRot, farWay) })
+                    {
+                        int ox = x + RM_LadderWallMath.FX[rot], oz = 1 + RM_LadderWallMath.FZ[rot];
+                        int a = l.label[1 * w + x], b = l.label[oz * w + ox];
+                        if (RM_PocketGridMath.LadderEdge(rot, g[1 * w + x], a, g[oz * w + ox], b, way)) e.Add((a, b));
+                    }
+                    return e;
+                }
+                bool Way(bool mayClimb, bool ownLadder, bool raised = false, bool prisonDoor = true) =>
+                    RM_PocketGridMath.LadderIsAWay(true, !raised, RM_PitTrapMath.LadderUsable(true, raised, prisonDoor, mayClimb || ownLadder));
+                bool Vetoed(List<(int a, int b)> e) =>
+                    RM_PocketGridMath.ReachVetoedAcross(false, false, false, false, false, RM_PocketGridMath.JoinedByLadders(A, B, e));
+
+                // colonist: down the near ladder, across the floor, up the far one
+                bool col = Way(true, false);
+                Assert(!Vetoed(Edges(col, col)), "a colonist crosses bank to bank by two ladders: one route");
+                Assert(!RM_PocketGridMath.ReachVetoedAcross(false, false, false, false, false, RM_PocketGridMath.JoinedByLadders(B, A, Edges(col, col))),
+                    "and back the other way (a ladder is climbed down and up)");
+                Assert(RM_PocketGridMath.ReachVetoed(false, false, false, false, false), "can-fail: the old veto alone kept the banks apart");
+                Assert(Vetoed(Edges(col, false)), "can-fail: one ladder only (near wall) is no crossing");
+                Assert(Vetoed(Edges(false, col)), "can-fail: one ladder only (far wall) is no crossing");
+                Assert(Vetoed(Edges(col, col, nearRot: East)), "can-fail: a ladder hung toward the trench floor joins nothing");
+                // raider: the raid's own scaling ladders (ClimbsOwnLadder) — prison door refuses it everything else
+                Assert(!Vetoed(Edges(Way(false, true), Way(false, true))), "a raider crosses on its own faction's ladders");
+                Assert(Vetoed(Edges(Way(false, true), Way(false, false))), "can-fail: one own ladder, one colony ladder: the far wall bars it");
+                // hostile on ladders that are not its own: the prison-door rule
+                Assert(Vetoed(Edges(Way(false, false), Way(false, false))), "a hostile on ladders not its own: refused (prison door)");
+                Assert(!Vetoed(Edges(Way(false, false, prisonDoor: false), Way(false, false, prisonDoor: false))),
+                    "sanity: prison-door rule off, the same hostile crosses (the refusal is the rule, not the graph)");
+                // raised ladders
+                Assert(Vetoed(Edges(Way(true, false, raised: true), col)), "a raised ladder blocks the crossing, even for a colonist");
+                Assert(!RM_PocketGridMath.LadderIsAWay(false, false, true) && RM_PocketGridMath.LadderIsAWay(false, true, false),
+                    "pawnless (vanilla StartPath): any lowered ladder joins, a raised one does not");
+                // a sealed pocket stays sealed: ladders into a pit with no way on are no route to the other bank
+                Assert(!RM_PocketGridMath.JoinedByLadders(A, B, new List<(int a, int b)> { (P, A) }), "can-fail: A to the floor only");
+                Assert(RM_PocketGridMath.JoinedByLadders(A, P, Edges(col, false)), "A to the trench floor by the near ladder");
+                Assert(!RM_PocketGridMath.JoinedByLadders(-1, B, Edges(col, col)), "can-fail: an off-map start joins nothing");
+
+                // the pathfinder agrees: the masks restore exactly the edges the graph uses (a structural ladder join)
+                int near = 1 * w + 3, nearWall = 1 * w + 2, far = 1 * w + 5, farWall = 1 * w + 6;
+                Func<int, int, bool> both = (i, j) => (i == near && j == nearWall) || (i == far && j == farWall);
+                Func<int, int, bool> one = (i, j) => i == near && j == nearWall;
+                Assert(Flood(g, w, h, Person, 0, 1, both).Contains(1 * w + 8), "A* (cardinal mask flood): A reaches B by both ladders");
+                Assert(!Flood(g, w, h, Person, 0, 1, one).Contains(1 * w + 8), "can-fail: A* with one ladder does not reach B");
+                Assert(!Flood(g, w, h, Person, 0, 1).Contains(1 * w + 4), "can-fail: A* with no ladder never enters the trench");
+
+                // an island in a sheer moat, laddered in and out, reaches the map edge
+                int mw = 9, mh = 9;
+                byte[] m = Map(mw, mh);
+                for (int x = 1; x <= 7; x++)
+                    for (int z = 1; z <= 7; z++)
+                        if (x == 1 || x == 7 || z == 1 || z == 7) m[z * mw + x] = 4;
+                var ml = RM_PocketGridMath.Label(m, mw, mh, Person);
+                int island = ml.label[4 * mw + 4], outer = ml.label[0], moat = ml.label[4 * mw + 1];
+                var me = new List<(int a, int b)>();
+                // (1,4) hung east toward the island (2,4); (1,3) hung west toward the outside (0,3)
+                if (RM_PocketGridMath.LadderEdge(East, 4, moat, 0, ml.label[4 * mw + 2], true)) me.Add((moat, ml.label[4 * mw + 2]));
+                if (RM_PocketGridMath.LadderEdge(West, 4, ml.label[3 * mw + 1], 0, ml.label[3 * mw + 0], true)) me.Add((ml.label[3 * mw + 1], outer));
+                Assert(me.Count == 2 && RM_PocketGridMath.JoinedByLadders(island, outer, me) && RM_PocketGridMath.TouchesEdge(ml, outer),
+                    "a laddered island joins the border component (CanReachMapEdge agrees)");
+                Assert(!RM_PocketGridMath.JoinedByLadders(island, outer, me.GetRange(0, 1)), "can-fail: laddered in only: still an island");
+
+                // pinned at the call sites
+                string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                Assert(trap.Contains("RM_PocketGridMath.ReachVetoedAcross(false, startPocket, startWayOut, destPocket, destWayIn,")
+                    && trap.Contains("g.JoinedByLadders(k, cs, cd, p)"), "RelativeVeto lifts the veto through the ladder graph");
+                string grid = Src("Superdeep", "RM_PocketGrid.cs");
+                Assert(grid.Contains("RM_PocketGridMath.LadderEdge(rot, RM_SuperdeepTrap.StepDepthAt(map, eng, c), a,")
+                    && grid.Contains("p != null && RM_LadderRules.LadderLetsOut(map, c, p)"),
+                    "LadderEdges: per-pawn LadderLetsOut (prison door, own ladders, raised), pawnless lowered");
+                string r = Src("Superdeep", "RM_RaiderTrench.cs");
+                Assert(r.Contains("Warn(p, \"RMFlow_RaidersSetLadders\")") && r.Contains("key.Translate(p.Faction.Name)")
+                    && !r.Contains("\"Raiders of \""), "raider messages are Keyed strings");
             });
 
             Case("StartPath_reach_answers_for_the_walker_not_the_person_band", () =>

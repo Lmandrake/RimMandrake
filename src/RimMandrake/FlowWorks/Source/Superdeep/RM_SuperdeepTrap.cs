@@ -268,7 +268,15 @@ namespace RimMandrake.FlowWorks
 			// REACH_VETO_FIX_ONE_END_ENOUGH: both ends are judged; a way out of the start no longer excuses a sealed destination.
 			bool destWayIn = destPocket
 				&& (g.UsableLadderIn(k, cd, p) || !g.WideEverywhere(k, cd, RequiredWidth(p)));
-			return RM_PocketGridMath.ReachVetoed(false, startPocket, startWayOut, destPocket, destWayIn);
+			if (!RM_PocketGridMath.ReachVetoed(false, startPocket, startWayOut, destPocket, destWayIn))
+			{
+				return false;
+			}
+			// TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: bank to bank across a trench laddered on both walls (down, the floor, up)
+			// is one route for any pawn those ladders allow — the same structural ladder edges the cliff masks restore for A*,
+			// closed per pawn by RM_PitPathing's ladder grid. Only narrows the veto; the graph is searched only when vetoed.
+			return RM_PocketGridMath.ReachVetoedAcross(false, startPocket, startWayOut, destPocket, destWayIn,
+				g.JoinedByLadders(k, cs, cd, p));
 		}
 
 		// ── the reachability region, cached per pawn per tick ──────────────
@@ -986,7 +994,8 @@ namespace RimMandrake.FlowWorks
 				int comp = g.ComponentOf(k, c);
 				// REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F9): nor does a surface island ringed by a sheer trench (no border
 				// cell in its component), the same "two surface components stay apart" rule CanReach's veto applies.
-				if (g.TrappedIn(k, comp, p) || (!g.ComponentIsPocket(k, comp) && !g.TouchesEdge(k, comp)))
+				// TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: unless ladders this pawn may use join it to a border component.
+				if (g.TrappedIn(k, comp, p) || (!g.ComponentIsPocket(k, comp) && !g.ReachesEdge(k, comp, p)))
 				{
 					__result = false;
 				}
