@@ -48,6 +48,62 @@ namespace RimMandrake.FlowWorks.Machinery
             return false;
         }
 
+        /// <summary>
+        /// PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (owner 2026-10-18: "draw pipes as though they are connected into the centers of all
+        /// pipe-receiving items even if the actual pipe ends at the edge of their graphic (so that it appears to continue beneath
+        /// them through any transparent boundaries they might have)"). A pipe or hose end on cell (cx, cz) joining the building
+        /// on its side (dx, dz) (a unit cardinal), whose footprint is (bx, bz, bw, bh): the polyline (world cell units) the
+        /// run continues along beneath the building -- from the shared edge's midpoint in front of the end, straight in to the
+        /// depth of the footprint's centre, then sideways to the centre when the end is off the centre line (a multi-cell
+        /// footprint). 2 points when the end faces the centre (always for a 1x1), 3 otherwise. Null when (cx, cz) + (dx, dz)
+        /// is not inside the footprint (the end does not face it).
+        /// </summary>
+        public static double[] CentreStub(int cx, int cz, int dx, int dz, int bx, int bz, int bw, int bh)
+        {
+            if (Math.Abs(dx) + Math.Abs(dz) != 1) throw new ArgumentException("a stub enters from a cardinal side");
+            int nx = cx + dx, nz = cz + dz;
+            if (nx < bx || nx >= bx + bw || nz < bz || nz >= bz + bh) return null;
+            double ex = cx + 0.5 + dx * 0.5, ez = cz + 0.5 + dz * 0.5;
+            double mx = bx + bw / 2.0, mz = bz + bh / 2.0;
+            double kx = dx != 0 ? mx : ex, kz = dz != 0 ? mz : ez;
+            bool bend = Math.Abs(kx - mx) > 1e-9 || Math.Abs(kz - mz) > 1e-9;
+            return bend ? new[] { ex, ez, kx, kz, mx, mz } : new[] { ex, ez, mx, mz };
+        }
+
+        /// <summary>One straight axis-aligned piece of a stub, drawn as a plane of the pipe's straight atlas tile: centre, its
+        /// length along the run (at most 1 cell, the tile's own length) and whether the run is east-west. U0/U1 crop the
+        /// tile along the run so a piece shorter than a cell shows a slice, not a squashed tile.</summary>
+        public struct StubPiece
+        {
+            public double X, Z, Length, U0, U1;
+            public bool EastWest;
+        }
+
+        /// <summary>Cut a stub polyline (CentreStub's output) into pieces of at most one cell, each a straight tile slice. A
+        /// zero-length leg yields nothing.</summary>
+        public static System.Collections.Generic.List<StubPiece> StubPieces(double[] poly)
+        {
+            var list = new System.Collections.Generic.List<StubPiece>();
+            if (poly == null) return list;
+            for (int i = 0; i + 3 < poly.Length; i += 2)
+            {
+                double ax = poly[i], az = poly[i + 1], bx = poly[i + 2], bz = poly[i + 3];
+                double len = Math.Abs(bx - ax) + Math.Abs(bz - az);
+                if (len < 1e-9) continue;
+                bool ew = Math.Abs(bz - az) < 1e-9;
+                double ux = (bx - ax) / len, uz = (bz - az) / len;
+                double done = 0;
+                while (done < len - 1e-9)
+                {
+                    double l = Math.Min(1.0, len - done);
+                    double mid = done + l / 2;
+                    list.Add(new StubPiece { X = ax + ux * mid, Z = az + uz * mid, Length = l, U0 = 0.5 - l / 2, U1 = 0.5 + l / 2, EastWest = ew });
+                    done += l;
+                }
+            }
+            return list;
+        }
+
         /// <summary>The hose thickness the design proposes (owner 2026-10-16: "shrink the tube diameter a bit to make it less
         /// fire-hydrant-thick"): 0.65 x today's visible width = 0.25 cell flat / 0.30 plump against the rigid pipe's 0.23.
         /// NOT shipped: RM_HoseSettings.thickness stays 1 until he rules on the sheet.</summary>
