@@ -425,7 +425,8 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			bool fromDecked = RM_SpanUtility.DeckedAt(map, from);
-			int fromWalk = eng == null ? 0 : RM_SpanUtility.WalkingDepth(map, from, eng.ClimbDepthAt(from));
+			// TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG: a titan astride a trench it steps over is at ground: onto a deck, not under it
+			int fromWalk = eng == null || RM_TrenchStride.SteppedOver(p, map, eng, from) ? 0 : RM_SpanUtility.WalkingDepth(map, from, eng.ClimbDepthAt(from));
 			bool fromBand = fromDecked && from == p.Position ? InFloorBand(p) : fromDecked && PassingDeckAt(map, from) != null
 				&& RM_MapComponent_SuspensionBridges.Of(map)?.InBandSet(p) == true;
 			return RM_SuspensionMath.StepGoesUnder(true, dTo.DeckNotches, fromDecked, fromBand, fromWalk);
@@ -474,7 +475,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			bool fromDecked = RM_SpanUtility.DeckedAt(p.Map, from);
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(p.Map);
-			int fromWalk = eng == null ? 0 : RM_SpanUtility.WalkingDepth(p.Map, from, eng.ClimbDepthAt(from));
+			int fromWalk = eng == null || RM_TrenchStride.SteppedOver(p, p.Map, eng, from) ? 0 : RM_SpanUtility.WalkingDepth(p.Map, from, eng.ClimbDepthAt(from));
 			bool fromBand = fromDecked && b.InBandSet(p) && PassingDeckAt(p.Map, from) != null;
 			b.SetBand(p, RM_SuspensionMath.StepGoesUnder(true, PassingDeckAt(p.Map, to).DeckNotches, fromDecked, fromBand, fromWalk));
 		}
