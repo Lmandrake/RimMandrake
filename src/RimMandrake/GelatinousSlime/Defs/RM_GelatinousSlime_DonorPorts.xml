@@ -88,7 +88,7 @@
     <pathCost>15</pathCost>
     <graphicData>
       <texPath>StandIn/Things/Plants/AB_SlimeGrass</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
     <ingestible/>
