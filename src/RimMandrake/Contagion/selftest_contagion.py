@@ -248,9 +248,10 @@ class Fake(object):
                             continue
                         if "native_unhurt" not in b:
                             self.addh(p, "Burn", 3 * max(f, 0.5))
-                        if p["kind"] not in LEAKERS and p["kind"] not in ARMORED and "no_dive" not in b:
+                        if p["kind"] not in LEAKERS and p["kind"] not in ARMORED and "no_dive" not in b and "wander_onto_patch" not in b:
                             roof = self.roofs[0]
                             p["x"], p["z"] = roof[0] + 2, roof[1] + 2
+                            p["job"], p["job_t"] = "Goto", (roof[0] + 2, roof[1] + 2)   # the dive is a Goto to a roofed cell
                     elif "no_dose" not in b:
                         self.addh(p, "RM_BurnDose", 0.02 * max(f, 0.5))
             if "dose_roofed" in b:
@@ -632,8 +633,23 @@ class Fake(object):
             p = self.pawns.get(pid)
             if p is None:
                 return {"success": False, "message": "no pawn %s" % pid}
+            if self.is_native(p) and not p["dead"] and self.roofs and p["kind"] not in ARMORED:
+                roof = self.roofs[0]
+                if "wander_onto_patch" in self.broken and not p.get("job"):
+                    # a native that WANDERS onto the patch (GotoWander) with no Burn order: standing there is not a dive
+                    p["x"], p["z"] = roof[0] + 2, roof[1] + 2
+                    p["wander"] = True
+                if "dive_without_burn" in self.broken and not self.cond(V.BURN_COND):
+                    p["job"], p["job_t"] = "Goto", (roof[0] + 2, roof[1] + 2)   # ordered to the roof with NO Burn
+            job = None
+            if p.get("job"):
+                job = {"def": p["job"]}
+                if p.get("job_t"):
+                    job["targetA"] = {"thingId": None, "x": p["job_t"][0], "z": p["job_t"][1]}
+            elif p.get("wander"):
+                job = {"def": "GotoWander", "targetA": {"thingId": None, "x": p["x"], "z": p["z"]}}
             rows.append({"id": pid, "x": p["x"], "z": p["z"], "dead": p["dead"], "downed": False,
-                         "inMentalState": bool(p["mental"]), "job": {"def": p["job"]} if p.get("job") else None})
+                         "inMentalState": bool(p["mental"]), "job": job})
             if p.get("job") == "DoBill":
                 p["job"] = None              # the fake surgery is seen running once, then it is over
         return {"success": True, "pawns": rows}
@@ -723,6 +739,8 @@ BREAKS = {
     "native_unhurt": ["burn_forced.burn_hurts_native_spares_armored"],
     "armored_hurt": ["burn_forced.burn_hurts_native_spares_armored"],
     "no_dive": ["burn_forced.native_dives_for_roof"],
+    "wander_onto_patch": ["burn_forced.native_dives_for_roof"],   # stands on the patch via GotoWander, never ordered: position alone passed this
+    "dive_without_burn": ["burn_forced.native_no_dive_without_burn"],
     "harm_ignores_burn_toggle": ["burn_forced.burn_off_means_no_harm"],
     "sched_ignores_toggle": ["burn_natural.burn_off_never_schedules"],
     "freq_ignored": ["burn_natural.slow_frequency_defers_burn"],

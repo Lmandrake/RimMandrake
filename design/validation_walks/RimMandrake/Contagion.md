@@ -57,7 +57,8 @@ The Burn (a Contagion map; the sky engine is gated on the biome extension)
 - At `burnDamageFactor` 0 the Burn is weather only: no one is dosed and no native is hurt. → burn_forced.burn_harmless_at_zero_damage
 - At the shipped factor an exposed visitor gains `RM_BurnDose`; a roofed one does not. → burn_forced.burn_doses_the_exposed_visitor
 - A UV-shy native caught in the open takes Burn damage; an armored one (Scaldhide) takes none. → burn_forced.burn_hurts_native_spares_armored
-- A UV-shy native dives for a roof. → burn_forced.native_dives_for_roof
+- A UV-shy native dives for a roof: the Burn orders it (a Goto job targeting the roof patch, read from pawn_census); merely standing on the patch is a wander and does not count. → burn_forced.native_dives_for_roof
+- With no Burn active nothing orders the native to the roof patch (the control for the dive). → burn_forced.native_no_dive_without_burn
 - With `burnEnabled` off the forced Burn still holds but harms no one ("its harm still follows the Burn settings"). → burn_forced.burn_off_means_no_harm
 - With `cloudRepulsorEnabled` off the forced Burn lapses within its hold time. → burn_forced.repulsor_off_lapses_burn
 - With `burnEnabled` off no Burn is ever scheduled. → burn_natural.burn_off_never_schedules

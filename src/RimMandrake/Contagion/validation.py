@@ -1115,6 +1115,20 @@ def _on_open_pad(t, px, pz):
             and not _under_patch(t, px, pz))
 
 
+def _job_sample(row):
+    """(job def, targetA x, z) from a pawn_census row: what the pawn is doing and where it was sent."""
+    j = (row or {}).get("job") or {}
+    ta = j.get("targetA") or {}
+    return (j.get("def"), ta.get("x"), ta.get("z"))
+
+
+def _goto_to_patch(t, row):
+    """True only for the Burn's dive order: a plain Goto job (RM_GameCondition_ContagionBurn.TryDive; a wander is
+    GotoWander, never Goto) whose target cell is under the roof patch."""
+    d, tx, tz = _job_sample(row)
+    return d == "Goto" and _under_patch(t, tx, tz)
+
+
 def _open_pawns(t, x, z):
     """The Burn fixture: an open visitor, a roofed visitor, a UV-shy native, an armored native, and a
     roof patch east of the native to dive for. Drafted colonists hold their ground."""
@@ -1154,11 +1168,37 @@ def burn_forced(t):
                               waitTicks=300)
                 for k in ("open", "roofed"):
                     t.bridge_call("jawa/set_draft", pawnId=_STATE["burn"][k], drafted=True)
-                _STATE["rep_id"] = _spawn_repulsor(t, x - 8, z + 8)
-                _power_on(t, _STATE["rep_id"])
+                _STATE["rep_id"] = _spawn_repulsor(t, x - 8, z + 8)     # left UNPOWERED: the no-Burn control reads first
+
+        with _comp(t, "native_no_dive_without_burn"):
+            # CONTAGION_DIVE_HARDEN_WANDERERS_WELCOME: the control for native_dives_for_roof. No Burn is active (the repulsor is
+            # unpowered), so nothing may ORDER the native to the patch. The dive is vanilla Goto to a roofed cell
+            # (RM_GameCondition_ContagionBurn.TryDive; a wander is GotoWander), so a native merely standing on the patch
+            # is allowed and only noted: position alone cannot tell a dive from a wander.
+            if _live(t):
+                if _has_cond(t, BURN_COND):
+                    _unmeasured(t, "a Burn is active: the no-Burn control cannot be taken")
+                nid = _STATE["burn"]["native"]
+                seen, ordered, onpatch = 0, [], []
+                for _ in range(32):                  # 32 x 25 = the same 800 ticks the dive arm samples
+                    _wait(t, 25)
+                    row = _census(t, nid)
+                    if row is None or row.get("dead"):
+                        continue
+                    seen += 1
+                    if _goto_to_patch(t, row):
+                        ordered.append(_job_sample(row))
+                    if _under_patch(t, row.get("x"), row.get("z")):
+                        onpatch.append((row.get("x"), row.get("z")))
+                _note(t, "no-Burn control: living samples / samples standing on the patch", [seen, len(onpatch)])
+                if seen < 8:
+                    _unmeasured(t, "the native was readable alive in only %d of 32 samples: the control proves nothing" % seen)
+                if ordered:
+                    _fail("with NO Burn the UV-shy native was ordered to the roof patch: %s" % ordered[:3])
 
         with _comp(t, "repulsor_forces_burn", toggle="cloudRepulsorEnabled"):
             if _live(t):
+                _power_on(t, _STATE["rep_id"])
                 _wait(t, 3300)
                 if not _has_cond(t, BURN_COND):
                     _fail("a warm, powered repulsor on a Contagion map did not force the Burn")
@@ -1204,6 +1244,7 @@ def burn_forced(t):
                 b["armored"] = _spawn(t, ARMORED, x, z - 6)
                 _set(t, "burnDamageFactor", 1)
                 track, atrack, nhd = [], [], set()
+                jobs, dive_orders = [], []
                 respawns = 0
                 for _ in range(32):                  # 32 x 25 = the same 800 ticks, sampling the dive
                     _wait(t, 25)
@@ -1216,17 +1257,23 @@ def burn_forced(t):
                     if (nrow is None or not _alive(nrow)) and "Burn" not in nhd and respawns < 2:
                         respawns += 1
                         b["native"] = _spawn(t, UV_NATIVE, x, z + 4)
-                        track = []
+                        track, jobs, dive_orders = [], [], []
                         continue
                     arow = srows.get(b["armored"]) or {}
                     if nrow is not None and _alive(nrow):                 # only a living sample is a position or a hediff read
                         track.append((nrow.get("x"), nrow.get("z")))
+                        crow = _census(t, b["native"])                      # what it is DOING: the dive is a Goto to the patch
+                        if crow is not None and not crow.get("dead"):
+                            jobs.append(_job_sample(crow))
+                            if _goto_to_patch(t, crow):
+                                dive_orders.append(_job_sample(crow))
                         nhd |= _hdefs(nrow) | _burned_off(nrow)
                     atrack.append((arow.get("x"), arow.get("z")))
                 # LIVE modcheck5 2026-10-16: the UV-shy native died inside the 800 ticks and list_pawns lists no corpses,
                 # so the end-of-window row was absent and both native rows went UNMEASURED. What it carried and where it
                 # stood while ALIVE is kept, so a Burn and a dive seen before it died are still read.
                 b["native_track"], b["armored_track"], b["native_hd_alive"] = track, atrack, nhd
+                b["native_jobs"], b["dive_orders"] = jobs, dive_orders
                 _note(t, "burn native respawns (lost before a Burn was read)", respawns)
                 rows = _rows(t)
                 if not _alive(rows.get(b["open"])):
@@ -1284,13 +1331,21 @@ def burn_forced(t):
                 # It dives to the patch's nearest edge cell, then may wander out and be re-dived at the
                 # next 250-tick pass, so ANY sample under the patch is the dive (it spawned 6 cells out).
                 # The track holds living samples only, so a dive seen before the native died still counts.
+                # CONTAGION_DIVE_HARDEN_WANDERERS_WELCOME: a position under the patch is NOT a dive (a native wandering onto
+                # 8x8 cells passes that). The dive is the Burn's own order, a Goto job whose target is under the patch,
+                # read from pawn_census while the native lived; a wander is GotoWander and never matches.
                 track = b.get("native_track") or []
-                dived = any(_under(px, pz) for px, pz in track)
-                if (nat is None or not _alive(nat)) and not dived:
-                    _unmeasured(t, "the native died before its dive could be read (living positions %s)" % track)
-                if not dived and not _under(nat.get("x"), nat.get("z")):
-                    _fail("the UV-shy native never reached the roof patch %s; positions %s, final (%s,%s)"
-                          % ((x + 6, z - 4, 8, 8), track, nat.get("x"), nat.get("z")))
+                orders = b.get("dive_orders") or []
+                jobs = b.get("native_jobs") or []
+                onpatch = any(_under(px, pz) for px, pz in track)
+                _note(t, "native job samples (def, targetA) / dive orders / samples on the patch",
+                      [sorted(set(map(str, jobs)))[:8], len(orders), sum(1 for p in track if _under(*p))])
+                if not orders:
+                    if not jobs:
+                        _unmeasured(t, "the native died before any job of it could be read (living positions %s)" % track)
+                    _fail("the UV-shy native was never ordered to the roof patch (no Goto targeting %s; jobs seen %s); "
+                          "standing on the patch %s is a wander, not a dive; positions %s"
+                          % ((x + 6, z - 4, 8, 8), sorted(set(map(str, jobs)))[:6], onpatch, track))
 
         with _comp(t, "burn_off_means_no_harm", toggle="burnEnabled"):
             if _live(t):
