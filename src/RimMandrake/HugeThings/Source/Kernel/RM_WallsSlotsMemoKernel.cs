@@ -102,16 +102,18 @@ namespace RimMandrake.HugeThings
                 if (e.mapId == mapId && e.until > now && e.until - now <= memoTicks) into.AddRange(e.cells);
         }
 
-        /// <summary>Forget every held crossing on this map for which `hit` says one of its cell indices matters.</summary>
-        public void RemoveWhere(int mapId, Func<int[], bool> hit)
+        /// <summary>Forget every held crossing on this map for which `hit` says one of its cell indices matters. Returns the
+        /// creatures that lost one (null when none), so their other "this goal is closed" memos can be dropped too.</summary>
+        public List<int> RemoveWhere(int mapId, Func<int[], bool> hit)
         {
-            List<int> empty = null;
+            List<int> empty = null, touched = null;
             foreach (KeyValuePair<int, List<Entry>> kv in byCreature)
             {
-                kv.Value.RemoveAll(e => e.mapId == mapId && hit(e.cells));
+                if (kv.Value.RemoveAll(e => e.mapId == mapId && hit(e.cells)) > 0) (touched ?? (touched = new List<int>())).Add(kv.Key);
                 if (kv.Value.Count == 0) (empty ?? (empty = new List<int>())).Add(kv.Key);
             }
             if (empty != null) foreach (int k in empty) byCreature.Remove(k);
+            return touched;
         }
 
         /// <summary>Drop expired and stale entries, entries of a creature that is no longer alive and spawned, and entries of a

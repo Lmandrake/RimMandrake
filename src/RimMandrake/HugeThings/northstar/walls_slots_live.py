@@ -10,8 +10,12 @@ section 3 (table), 4 (squeeze), 5 (rules), 7 (these tests).
   python.exe src/RimMandrake/HugeThings/northstar/walls_slots_live.py                   # LIVE: bridge held, the
                                                       # `flowworks_hugethings` tier (Large Pawns on), a fresh Playing quicktest map
   options: --only A2,A3 (a PARTIAL run: never recordable)  --skip A5  --full-ladder (all 6 thicknesses, not the compressed set)
-           --wave 12 (lanes at once)  --long-restless (wait out the restlessness meter instead of extrapolating it)
+           --wave 64 (lanes at once)  --long-restless (wait out the restlessness meter instead of extrapolating it)
            --frame-budget-ms 150  --out-dir DIR  --list  --table (print design section 3 from the kernel mirror and exit)
+
+PASS 3 (2026-10-19): every lane is a SEALED zone (a deep-water moat; see "Lane geometry"), so the structure under test is the
+only way to the goal; per-lane tick budgets come from the expectation; blocks run their lanes on one clock; the tick is
+read once per advance. ESTIMATED ~12 min of wall time at ~60 ticks/s (see --dry-run).
 
 BLOCKS (cheapest first; every block clears the arena it uses, so blocks may reuse ground):
   B0  preflight   tier truth (jawa/running_mods: Huge Things + Large Pawns), the cast read LIVE (Breadth / Passage by
@@ -32,8 +36,9 @@ Every row: {id, item, criterion, status PASS|FAIL|UNMEASURED|SKIP, class MOD|SIT
 they are NOT run (the driving agent runs them after reading the evidence).
 
 CLASSES (live-debugging-proof-harness): MOD = the mod behaved against the bar on a site that was read back as built;
-SITE = the lane was not what the row needs (wall not placed, rock not placeable, creature walked around a sealed-by-length
-wall, roof not as staged); HARNESS = the bridge, the clock, the creature (died, never started, juvenile) or the script.
+SITE = the lane was not what the row needs (wall not placed, rock not placeable, the moat not painted or leaked: the
+creature reached the goal with every wall standing, roof not as staged); HARNESS = the bridge, the clock, the creature
+(died, never started, juvenile) or the script.
 
 THINGS THIS SCRIPT KNOWS THAT THE DESIGN DOCUMENT DOES NOT (read from the built code, WallsSlotsUtility.WallEligible / KindAt):
 - A creature breaks only walls it is not friendly to: a TAMED (player) creature never breaks the player's walls, and a wall of
@@ -290,12 +295,34 @@ def shelf_pack(sizes, region, gap=6):
     return out
 
 
-# Lane geometry (cells). The creature starts LEAD cells west of the structure and is sent LEAD cells east of it; the structure
-# spans the full lane height, so the way round is long (detour >= 2.5 x the way through, titanClearingDetourFactor 2.5).
-LEAD = 6
-LANE_H = 41
-CANYON_H = 25          # rock block height for the canyon lanes (the rock is not breakable: going round it is the alternative)
+# Lane geometry (cells). PASS 3 (2026-10-19): every lane is SEALED. Pass 2's 41-tall walls had open ends, and the mod was
+# right to walk round them: WallsSlotsDecider.TryStart breaks (or squeezes) toward a REACHABLE goal only when the walk round
+# costs > titanClearingDetourFactor (2.5) x the way through and saves >= 240 ticks (TitanClearing.Worth), and a 41-tall
+# wall's detour is ~2.3x. With the full rule on (temperament off) an UNREACHABLE goal is always worth breaking for, so each
+# lane zone is ringed by a one-cell moat of deep water (Impassable terrain: no thing to destroy, so the breach path can only
+# cross the lane's own structure) and its interior is painted Soil (one walking cost for every lane, which the canyon cost
+# rows need). The structure spans the interior edge to edge; lane_leaks() flood-fills the plan and refuses a leaky layout.
+# The terrain is painted back to Soil when the lane is cleared (a quicktest map is disposable; the moat must not cut a later
+# block's lanes).
+LEAD = 7               # ring at offset 0, creature at START_OFF, the structure at offset LEAD
+START_OFF = 3
+GOAL_PAST = 4          # the goal is this many cells past the structure's far face
+LANE_H = 13            # interior 11: a B6 (Large Pawns footprint 4, passage 6) fits with room
+LANE_H_TALL = 21       # the diagonal sandwich (goal offset DIAG_DZ)
+DIAG_DZ = 6
+CANYON_H = 13          # the canyon rock spans the interior except its gap (the gap is the only way through)
 CANYON_LEN = 8         # a squeeze run of 8 cells (MaxSqueezeCells 30); the cost window is the 6 interior cells (entry and exit steps differ)
+ZONE_GAP = 2           # sealed zones need no detour room between them
+MOAT, FLOOR = "WaterDeep", "Soil"   # WaterDeep passability Impassable (RimSage, 1.6 TerrainDef); Soil the vanilla base soil
+# Per-lane tick budgets (ESTIMATED from the bars, not measured): the decision is taken at the path start, so a held lane shows
+# its verdict at once; a smash takes one blow a second (WallsSlots.SmashIntervalTicks 60).
+WALK_BUDGET = 720      # spawn to past the structure: ~12 cells at <= 30 ticks a cell + the order latency
+HOLD_BUDGET = 600      # held / too narrow: nothing happens; long enough for a wrong smash to show
+BLOW_TICKS = 60
+
+
+def smash_budget(blows):
+    return WALK_BUDGET + int(blows * BLOW_TICKS * 1.3)
 
 
 class Lane(object):
@@ -306,8 +333,10 @@ class Lane(object):
         self.walls = {}            # cell -> (def, stuff)
         self.rocks = set()
         self.roof = []             # rects 'RoofConstructed' over the lane
+        self.sealed = kw.pop("sealed", True)
         self.faction = kw.pop("faction", "none")
         self.cast = kw.pop("cast", None)
+        self.budget = kw.pop("budget", WALK_BUDGET)
         self.start = self.goal = None
         self.expect = {}
         self.meta = dict(kw)
@@ -321,39 +350,96 @@ class Lane(object):
     def z0(self):
         return self.zone[1]
 
+    @property
+    def iz0(self):
+        """First interior row (the ring is the zone's border)."""
+        return self.zone[1] + 1
+
+    @property
+    def ih(self):
+        return self.zone[3] - 2
+
+    @property
+    def zc(self):
+        return self.zone[1] + self.zone[3] // 2
+
+
+def moat_rects(zone):
+    x, z, w, h = zone
+    return [(x, z, w, 1), (x, z + h - 1, w, 1), (x, z + 1, 1, h - 2), (x + w - 1, z + 1, 1, h - 2)]
+
+
+def moat_cells(zone):
+    out = set()
+    for rx, rz, rw, rh in moat_rects(zone):
+        for i in range(rx, rx + rw):
+            for j in range(rz, rz + rh):
+                out.add((i, j))
+    return out
+
+
+def lane_leaks(lane, open_cells=()):
+    """Flood fill of the PLAN (pure): can the start reach the goal through the lane without crossing a wall, a rock or the
+    moat? open_cells are blocked too (a canyon's gap: the gap is a legal way through, everything else must be sealed).
+    A sealed lane must answer False, or a creature can walk round its structure and the row tests nothing."""
+    x, z, w, h = lane.zone
+    blocked = set(lane.walls) | set(lane.rocks) | set(open_cells) | (moat_cells(lane.zone) if lane.sealed else set())
+    lo_x, hi_x, lo_z, hi_z = (x, x + w - 1, z, z + h - 1) if lane.sealed else (x - 8, x + w + 7, z - 8, z + h + 7)
+    seen, todo = {lane.start}, [lane.start]
+    while todo:
+        cx, cz = todo.pop()
+        if (cx, cz) == lane.goal:
+            return True
+        for nx, nz in ((cx + 1, cz), (cx - 1, cz), (cx, cz + 1), (cx, cz - 1)):
+            if lo_x <= nx <= hi_x and lo_z <= nz <= hi_z and (nx, nz) not in blocked and (nx, nz) not in seen:
+                seen.add((nx, nz))
+                todo.append((nx, nz))
+    return False
+
 
 def wall_column(lane, x, z0, h, stuff="WoodLog", door_at=None):
     for z in range(z0, z0 + h):
         lane.walls[(x, z)] = ("Door" if door_at is not None and z == door_at else "Wall", stuff)
 
 
-def build_ladder_lane(lid, slot, mat, roofed, t, zone):
-    """A solid wall of thickness t, full lane height, wild creature west, goal east. Wood = WoodLog, granite = BlocksGranite."""
+def wall_across(lane, x, stuff="WoodLog", door_at=None):
+    """A wall column spanning the lane's interior edge to edge (moat to moat)."""
+    wall_column(lane, x, lane.iz0, lane.ih, stuff, door_at)
+
+
+def set_ends(lane, struct_x1, dz=0):
+    """Start START_OFF cells into the lane, goal GOAL_PAST cells past the structure's last column struct_x1."""
+    lane.start, lane.goal = (lane.x0 + START_OFF, lane.zc), (struct_x1 + GOAL_PAST, lane.zc + dz)
+
+
+def build_ladder_lane(lid, slot, mat, roofed, t, zone, budget=WALK_BUDGET, sealed=True):
+    """A solid wall of thickness t across the sealed lane, wild creature west, goal east. Wood = WoodLog, granite = BlocksGranite."""
     stuff = "WoodLog" if mat == "wood" else "BlocksGranite"
-    ln = Lane(lid, "A3", slot, "ladder", zone, mat=mat, roofed=roofed, t=t, cast=slot)
+    ln = Lane(lid, "A3", slot, "ladder", zone, mat=mat, roofed=roofed, t=t, cast=slot, budget=budget, sealed=sealed)
     wx = zone[0] + LEAD
     for i in range(t):
-        wall_column(ln, wx + i, zone[1], zone[3], stuff)
-    zc = zone[1] + zone[3] // 2
-    ln.start, ln.goal = (zone[0] + 1, zc), (wx + t + LEAD - 1, zc)
+        wall_across(ln, wx + i, stuff)
+    set_ends(ln, wx + t - 1)
     if roofed:
         ln.roof.append((wx - 3, zone[1], t + 6, zone[3]))
     ln.meta.update(wx=wx, hp=WOOD_HP if mat == "wood" else GRANITE_HP)
     return ln
 
 
-def build_canyon_lane(lid, slot, s, zone):
-    """A natural-rock block CANYON_LEN thick and CANYON_H tall with one open-sky gap s cells wide at its middle."""
-    ln = Lane(lid, "A2", slot, "canyon", zone, s=s, cast=slot)
+def build_canyon_lane(lid, slot, s, zone, budget=WALK_BUDGET):
+    """A natural-rock block CANYON_LEN thick across the sealed lane with one open-sky gap s cells wide at its middle."""
+    ln = Lane(lid, "A2", slot, "canyon", zone, s=s, cast=slot, budget=budget)
     rx = zone[0] + LEAD
-    gap0 = zone[1] + (zone[3] - s) // 2
+    gap0 = ln.iz0 + (ln.ih - s) // 2
     for x in range(rx, rx + CANYON_LEN):
-        for z in range(zone[1], zone[1] + zone[3]):
+        for z in range(ln.iz0, ln.iz0 + ln.ih):
             if not (gap0 <= z < gap0 + s):
                 ln.rocks.add((x, z))
+    set_ends(ln, rx + CANYON_LEN - 1)
     zc = gap0 + s // 2
-    ln.start, ln.goal = (zone[0] + 1, zc), (rx + CANYON_LEN + LEAD - 1, zc)
+    ln.start, ln.goal = (ln.start[0], zc), (ln.goal[0], zc)
     ln.meta.update(rx=rx, gap_rows=(gap0, gap0 + s - 1))
+    ln.meta["gap_cells"] = [(x, z) for x in range(rx, rx + CANYON_LEN) for z in range(gap0, gap0 + s)]
     return ln
 
 
@@ -383,6 +469,8 @@ class Session(object):
         self.saved_settings = {}
         self.rock_ok = None
         self.tick0 = 0
+        self._tick = None          # the game tick, cached until the next advance (pass 2: ~3 map_info calls per lane per poll)
+        self.calls = 0
 
     # ---- output
     def say(self, s):
@@ -407,6 +495,7 @@ class Session(object):
     def call(self, tool, **kw):
         if self.B is None:
             return {}
+        self.calls += 1
         try:
             return self.B.call(tool, **kw) or {}
         except Exception as ex:  # noqa: BLE001 - a failed call is an UNMEASURED reading, never a crash of the session
@@ -418,21 +507,27 @@ class Session(object):
         return (r.get("success") is True and not txt.startswith("REFUSED")), txt
 
     def now(self):
+        """The game tick. Cached between advances: the session pauses the game and moves it only through advance(), so one read
+        per advance is exact (pass 2 read map_info ~3 times per lane per poll: most of its 2.7 ticks per wall second)."""
         if self.B is None:
             return 0
         if self.mock:
             return self.B.tick
+        if self._tick is not None:
+            return self._tick
         mi = self.call("jawa/map_info")
         v = mi.get("ticksGame") or mi.get("tick") or mi.get("gameTick")
         if v is None:
             v = (self.call("jawa/flowworks_engine_state") or {}).get("ticksGame")
-        return int(v or 0)
+        self._tick = int(v or 0)
+        return self._tick
 
     def advance(self, n):
         n = int(n)
         if self.B is None or n <= 0:
             return
         self._pawn_cache = (None, None)
+        self._tick = None
         if self.mock:
             self.B.advance(n)
             return
@@ -442,6 +537,38 @@ class Session(object):
             self.B.ticks(n)
 
     # ---- settings (snapshot before the first write, restored in finally)
+    # Pass 2 was stopped by hand mid-B3, so its finally never ran and temperamentEnabled stayed False: the next run's
+    # A8_defaults read that as a mod FAIL. The snapshot is now also written to UNRESTORED (live runs only) until it is
+    # restored; the next run restores it first and its A8 row says which fields a killed run had left changed.
+    UNRESTORED = os.path.join(REPO, "Transient", "walls_slots_live", "UNRESTORED_SETTINGS.json")
+
+    def _persist_snapshot(self):
+        if self.mock:
+            return
+        try:
+            os.makedirs(os.path.dirname(self.UNRESTORED), exist_ok=True)
+            with open(self.UNRESTORED, "w", encoding="utf-8") as f:
+                json.dump(self.saved_settings, f)
+        except OSError:
+            pass
+
+    def restore_left_over(self):
+        """Settings a killed run changed and never restored: put them back before anything reads them. Returns the fields."""
+        if self.mock or not os.path.exists(self.UNRESTORED):
+            return {}
+        try:
+            with open(self.UNRESTORED, encoding="utf-8") as f:
+                old = json.load(f)
+        except (OSError, ValueError):
+            return {}
+        for k, v in old.items():
+            self.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=k, value=str(v))
+        try:
+            os.remove(self.UNRESTORED)
+        except OSError:
+            pass
+        return old
+
     def sget(self, f):
         return self.call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f).get("value")
 
@@ -451,6 +578,7 @@ class Session(object):
             if old is None:
                 raise RuntimeError("could not read %s before changing it; refusing to overwrite the player's setting" % f)
             self.saved_settings[f] = old
+            self._persist_snapshot()
         r = self.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v))
         return r.get("success") is True
 
@@ -458,6 +586,11 @@ class Session(object):
         for f, v in list(self.saved_settings.items()):
             self.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v))
         self.saved_settings.clear()
+        if not self.mock:
+            try:
+                os.remove(self.UNRESTORED)
+            except OSError:
+                pass
 
     # ---- the world
     def pawns(self):
@@ -465,7 +598,8 @@ class Session(object):
         t = self.now()
         if self._pawn_cache[0] == t:
             return self._pawn_cache[1]
-        r = self.call("jawa/list_pawns", limit=500)
+        kw = dict(rect=rect_str(self.arena_used)) if getattr(self, "arena_used", None) else {}
+        r = self.call("jawa/list_pawns", limit=500, **kw)
         by = {}
         for p in r.get("pawns") or []:
             c = parse_cell(p.get("position") if p.get("position") is not None else (p.get("x"), p.get("z")))
@@ -496,25 +630,42 @@ class Session(object):
             lines += ins if isinstance(ins, list) else ([ins] if ins else [])
         return [str(x) for x in lines]
 
-    def clear(self, rect):
+    def clear(self, rect, floor=False):
         """Everything built, planted or dropped in rect, roofs removed, rock left to the stager. Pawns are never touched by
-        destroy_batch; ours are killed by kill_pawns."""
+        destroy_batch; ours are killed by kill_pawns. floor=True also paints the rect back to FLOOR (a lane's moat gone)."""
         self.call("jawa/destroy_batch", rects=rect_str(rect), categories="All")
         self.call("jawa/set_roof_batch", ops="None:%s" % rect_str(rect))
+        if floor:
+            self.call("jawa/set_terrain_batch", ops="%s:%s" % (FLOOR, rect_str(rect)))
+
+    def kill_strays(self, rect):
+        """Wild animals and visitors standing in rect (never the player's: faction filter 'nonplayer'); returns how many."""
+        r = self.call("jawa/list_pawns", rect=rect_str(rect), faction="nonplayer", limit=200)
+        ids = [str(p.get("id")) for p in r.get("pawns") or [] if not p.get("dead")]
+        self.kill_pawns(ids)
+        return len(ids)
 
     def kill_pawns(self, ids):
         for i in ids:
             self.call("jawa/damage", damageDef="Bomb", amount=100000, thingId=i, allowColonists=False)
 
     def build(self, lane):
-        """Walls, rock and roof of a lane; returns (placed_walls, placed_rocks, notes)."""
+        """Floor and moat, walls, rock and roof of a lane; returns (placed_walls, placed_rocks, moat_failed_cells).
+        Walls are the PLAYER's (build_batch's default is no faction, and a tame creature breaks an unowned wall: the door rows'
+        "never breaks the player's walls" needs them owned); a wild creature (no faction) is friendly to no wall."""
+        moat_bad = 0
+        if lane.sealed and self.args.mock_fault != "unsealed":        # the fault: pass 2's open-ended lanes
+            x, z, w, h = lane.zone
+            tops = ["%s:%d,%d,%d,%d" % (FLOOR, x + 1, z + 1, w - 2, h - 2)] + ["%s:%s" % (MOAT, rect_str(r)) for r in moat_rects(lane.zone)]
+            r = self.call("jawa/set_terrain_batch", ops=";".join(tops))
+            moat_bad = int(r.get("cellsFailedVerify") or 0) if r.get("success") else len(moat_cells(lane.zone))
         ops = {}
         for (x, z), (d, stuff) in lane.walls.items():
             ops.setdefault((d, stuff), []).append("%s:%d,%d" % (d, x, z))
         placed = 0
         for (d, stuff), lst in ops.items():
             for ch in chunks(lst, 150):
-                r = self.call("jawa/build_batch", ops=";".join(ch), stuff=stuff, wipeExisting=True, readBack=False)
+                r = self.call("jawa/build_batch", ops=";".join(ch), stuff=stuff, faction="player", wipeExisting=True, readBack=0)
                 placed += int(r.get("placed") or r.get("count") or (len(ch) if r.get("success") else 0))
         rocks = 0
         if lane.rocks:
@@ -523,7 +674,7 @@ class Session(object):
                 rocks += len(ch) if r.get("success") else 0
         for rc in lane.roof:
             self.call("jawa/set_roof_batch", ops="RoofConstructed:%s" % rect_str(rc))
-        return placed, rocks
+        return placed, rocks, moat_bad
 
 
 # ============================================================================ the shared-clock scheduler (FlowWorks')
@@ -563,22 +714,31 @@ Wait, run_shared = _scheduler()
 
 
 # ============================================================================ lane runner (a generator for the shared clock)
-POLL_FAR, POLL_NEAR = 120, 15
+POLL_FAR, POLL_NEAR, POLL_GAP = 120, 30, 10
+# Job report strings (HugeThings Defs/JobDefs/RM_JobDefs.xml). PASS 3 (HARNESS): pass 2 matched "smash" / "squeez", which the
+# creature's OWN inspect line always carries (CreatureLine: "smashes up to N thick", "squeezes gaps of N+"), so every B2+
+# creature read as smashing and squeezing: the A3_B2 "smashed with every wall standing" rows and saw_squeeze=true on canyon
+# lanes it walked round were this. Only the job report is evidence.
+REPORT_SMASH, REPORT_SQUEEZE = "smashing through", "squeezing through"
 
 
 def observe_lane(s, lane, pid, timeout, goal_slack=1):
     """Generator: yields Wait until the creature reaches the goal, is lost, or the budget ends; fills lane.out with the samples.
-    Re-issues the goto when the creature is idle far from the wall (a wild animal wanders)."""
+    Re-issues the goto when the creature is idle far from the wall (a wild animal wanders; a held creature's goal is
+    remembered unreachable for 600 ticks, UnreachableMemo.CooldownTicks, so a re-order every 600 asks the decider again).
+    Inspect is read only where it can say something: in a canyon's rock span (squeezing), or near a wall while the creature
+    stands still (a smash is one blow a second on the spot; a creature walking up to a wall already carries the job's report).
+    smash_ticks sums the poll intervals in which it stood smashing: the blow count is smash_ticks / 60 + 1."""
     out = lane.out
-    out.update(samples=[], saw_squeeze=False, saw_smash=False, smash_polls=0, first_contact=None, wall_gone_tick=None,
-               reached=False, lost=None, in_gap=False, t_enter=None, t_exit=None, polls=0, minx=None, ordered=0)
+    out.update(samples=[], saw_squeeze=False, saw_smash=False, smash_polls=0, smash_ticks=0, first_contact=None, wall_gone_tick=None,
+               reached=False, lost=None, in_gap=False, t_enter=None, t_exit=None, polls=0, minx=None, ordered=0, inspects=0)
     t_start = s.now()
     wall_cells = sorted(set(lane.walls) | set(lane.rocks))
     wx = lane.meta.get("wx") or lane.meta.get("rx") or lane.x0 + LEAD
     xs = [c[0] for c in wall_cells] or [wx]
     wx0, wx1 = min(xs), max(xs)
-    last_order = -10 ** 9
-    near = False
+    last_order = t_start
+    prev = None          # (tick, x, z, stood_smashing)
     while True:
         t = s.now()
         if t - t_start > timeout:
@@ -596,16 +756,26 @@ def observe_lane(s, lane, pid, timeout, goal_slack=1):
         near = wx0 - 4 <= x <= wx1 + 3
         if near and out["first_contact"] is None and x >= wx0 - 2:
             out["first_contact"] = t - t_start
-        if lane.kind == "canyon" and wx0 <= x <= wx1:
+        in_span = lane.kind == "canyon" and wx0 <= x <= wx1
+        if in_span:
             gz = lane.meta["gap_rows"]
             out["in_gap"] = out["in_gap"] or gz[0] <= z <= gz[1]
-        if near:
+        still = prev is not None and (x, z) == (prev[1], prev[2])
+        stood = False
+        if (in_span if lane.kind == "canyon" else (near and still)):
             lines = " ".join(s.inspect(pid)).lower()
-            if "squeez" in lines:
+            out["inspects"] += 1
+            if REPORT_SQUEEZE in lines:
                 out["saw_squeeze"] = True
-            if "smash" in lines:
+            if REPORT_SMASH in lines and still:
+                stood = True
                 out["saw_smash"] = True
                 out["smash_polls"] += 1
+                if prev[3]:
+                    out["smash_ticks"] += t - prev[0]
+                else:
+                    out["smash_ticks"] += min(t - prev[0], BLOW_TICKS)   # the first still poll: at most one blow's worth
+        prev = (t, x, z, stood)
         gx, gz_ = lane.goal
         if abs(x - gx) <= goal_slack + 1 and abs(z - gz_) <= 3:
             out["reached"] = True
@@ -614,12 +784,16 @@ def observe_lane(s, lane, pid, timeout, goal_slack=1):
             s.call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=gx, targetAZ=gz_, waitTicks=1)
             out["ordered"] += 1
             last_order = t
-        if near:
-            nxt_poll = 10 if lane.kind == "canyon" else POLL_NEAR
+        if in_span:
+            nxt_poll = POLL_GAP
+        elif near:
+            nxt_poll = POLL_NEAR
         else:
             nxt_poll = int(min(POLL_FAR, max(POLL_NEAR, (wx0 - 6 - x) * 8))) if x < wx0 - 6 else POLL_FAR
         yield Wait(nxt_poll)
     out["ticks"] = s.now() - t_start
+    # N blows land at 0, 60, .. (N-1) x 60 ticks into the smash and the job ends on the last: (N-1) x 60 ticks stood smashing
+    out["blows_seen"] = int(round(out["smash_ticks"] / float(BLOW_TICKS))) + 1 if out["smash_ticks"] > 0 else 0
     if lane.kind == "canyon":
         out["t_enter"] = interp_cross(out["samples"], wx0 + 1)
         out["t_exit"] = interp_cross(out["samples"], wx1)
@@ -639,11 +813,26 @@ def interp_cross(samples, x_at):
     return None
 
 
+def layout_notes(lane):
+    """The plan's own seal check (pure, before any bridge call): a sealed lane whose start reaches its goal round the structure
+    (or, for a canyon, other than through its gap) tests nothing."""
+    if not lane.sealed or lane.start is None or lane.goal is None:
+        return []
+    if lane_leaks(lane, lane.meta.get("gap_cells") or ()):
+        return ["layout leaks: the plan's flood fill reaches the goal without crossing the structure"]
+    return []
+
+
 def stage_and_spawn(s, lane, faction=None):
     """Stage the lane, read it back, spawn its creature; returns (pid or None, site_notes)."""
-    notes = []
+    notes = layout_notes(lane)
     s.clear(lane.zone)
-    placed, rocks = s.build(lane)
+    strays = s.kill_strays(lane.zone)
+    if strays:
+        lane.out["strays_killed"] = strays
+    placed, rocks, moat_bad = s.build(lane)
+    if moat_bad:
+        notes.append("moat/floor: %d cells failed to paint" % moat_bad)
     want_w, want_r = len(lane.walls), len(lane.rocks)
     got_w = len([t for t in s.things(lane.zone, "Wall,Door") if t["cell"] in lane.walls])
     if want_w and got_w < want_w:
@@ -673,8 +862,9 @@ def read_creature(s, pid, slot):
     return info
 
 
-def lane_runner(s, lane, rowfn, timeout):
-    """The generator body shared by wall, canyon and plug lanes: stage, spawn, order, observe, evaluate (rowfn writes rows)."""
+def lane_runner(s, lane, rowfn, timeout=None):
+    """The generator body shared by wall, canyon and plug lanes: stage, spawn, order, observe, evaluate (rowfn writes rows).
+    timeout None = the lane's own budget (set from its expectation when it was planned)."""
     pid, notes = stage_and_spawn(s, lane)
     lane.out["site_notes"] = notes
     if pid is None:
@@ -684,7 +874,7 @@ def lane_runner(s, lane, rowfn, timeout):
     s.call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
     s.call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=lane.goal[0], targetAZ=lane.goal[1], waitTicks=1)
     yield Wait(1)
-    for w in observe_lane(s, lane, pid, timeout):
+    for w in observe_lane(s, lane, pid, timeout if timeout is not None else lane.budget):
         yield w
     # what is left of the walls
     left = {t["cell"]: t for t in s.things(lane.zone, "Wall,Door")}
@@ -698,18 +888,20 @@ def lane_runner(s, lane, rowfn, timeout):
 
 
 # ============================================================================ row writers
+SMASH_MIN_TICKS = 90       # stood smashing at least this long = a smash (a break-through pauses half a step, never a second)
+
+
 def classify_wall_lane(out, lane):
-    """held | broke | smashed | around | unreached from the samples and what is left."""
+    """held | broke | smashed | partial | leaked | unreached from the samples and what is left. In a SEALED lane a creature at
+    the goal with every wall standing walked round something: the seal leaked (SITE), never "around"."""
     n = len(lane.walls)
     gone = n - out.get("walls_left", n)
-    if out.get("saw_smash") or (out.get("smash_polls") or 0) > 0:
+    if out.get("saw_smash") and (out.get("smash_ticks") or 0) >= SMASH_MIN_TICKS:
         return "smashed"
-    if gone >= max(1, n // 2) and out.get("reached"):
-        return "broke"
     if gone > 0:
         return "broke" if out.get("reached") else "partial"
     if out.get("reached"):
-        return "around"
+        return "leaked" if lane.sealed else "around"
     return "unreached"
 
 
@@ -724,24 +916,27 @@ def ladder_row(s, lane, pid, info, notes):
     e = lane_expect(b, t, hp, roofed, **knobs)
     o = lane.out
     got = classify_wall_lane(o, lane)
-    blows = int(round((o.get("smash_polls") or 0) * POLL_NEAR / 60.0))
+    blows = o.get("blows_seen") or 0
     detail = dict(B=b, P=p, t=t, mat=lane.meta["mat"], roofed=roofed, expect=e["verdict"], got=got, blows_expect=e["blows"],
-                  blows_seen_est=blows, ticks=o.get("ticks"), walls_left=o.get("walls_left"), notes=notes)
+                  blows_seen=blows, smash_ticks=o.get("smash_ticks"), ticks=o.get("ticks"), budget=lane.budget,
+                  walls_left=o.get("walls_left"), first_contact=o.get("first_contact"), ordered=o.get("ordered"), notes=notes)
     if notes:
         s.row(rid, "A3", "UNMEASURED", "SITE", detail, "B3")
         return
     if o.get("lost"):
         s.row(rid, "A3", "UNMEASURED", "HARNESS", dict(detail, lost=o["lost"]), "B3")
         return
-    if got == "unreached" and e["verdict"] != "hold":
-        s.row(rid, "A3", "UNMEASURED", "HARNESS", dict(detail, why="creature never reached the wall in the budget"), "B3")
+    if got == "leaked":
+        s.row(rid, "A3", "UNMEASURED", "SITE", dict(detail, why="goal reached with every wall standing in a sealed lane: the moat leaked"), "B3")
         return
     if e["verdict"] == "hold":
-        ok = got in ("around", "unreached") and o.get("hp_lost", 0) == 0 and not o.get("saw_smash")
+        ok = got == "unreached" and o.get("hp_lost", 0) == 0 and not o.get("saw_smash")
     elif e["verdict"] == "break":
         ok = got == "broke"
     else:
         ok = got == "smashed" and abs(blows - e["blows"]) <= max(2, int(0.2 * e["blows"]))
+    if not ok and got == "unreached" and e["verdict"] != "hold":
+        detail["why"] = "sealed lane, the goal unreachable, and the creature never broke in: the breach did not trigger"
     s.row(rid, "A3", "PASS" if ok else "FAIL", "MOD", detail, "B3")
 
 
@@ -755,24 +950,33 @@ def canyon_row(s, lane, pid, info, notes):
     o = lane.out
     detail = dict(P=p, S=sl, band=band, in_gap=o.get("in_gap"), t_enter=o.get("t_enter"), t_exit=o.get("t_exit"),
                   saw_squeeze=o.get("saw_squeeze"), rock_left=o.get("rock_left"), rock_want=len(lane.rocks), notes=notes,
-                  reached=o.get("reached"))
+                  reached=o.get("reached"), budget=lane.budget)
     if notes:
-        s.row(rid, "A2", "UNMEASURED", "SITE", dict(detail, why="rock canyon not as staged (natural rock cannot be placed, or the wall/spawn failed)"), "B2")
+        s.row(rid, "A2", "UNMEASURED", "SITE", dict(detail, why="rock canyon not as staged (natural rock cannot be placed, the moat, or the wall/spawn failed)"), "B2")
         return
-    if o.get("lost") or not o.get("reached"):
-        s.row(rid, "A2", "UNMEASURED", "HARNESS", dict(detail, lost=o.get("lost"), why="goal not reached in the budget"), "B2")
+    if o.get("lost"):
+        s.row(rid, "A2", "UNMEASURED", "HARNESS", dict(detail, lost=o.get("lost")), "B2")
+        return
+    if o.get("rock_left") != len(lane.rocks):
+        s.row(rid, "A2", "FAIL", "MOD", dict(detail, why="rock HP/count changed: rock is never damaged"), "B2")
+        return
+    if band == "narrow":
+        # sealed: the gap is the only way through, so a creature that ignores it never reaches the goal
+        s.row(rid, "A2", "PASS" if not o.get("in_gap") and not o.get("reached") else "FAIL", "MOD",
+              dict(detail, bar="S < 0.5P never used: the creature stays west of the sealed canyon"), "B2")
+        return
+    if not o.get("reached"):
+        s.row(rid, "A2", "FAIL" if not o.get("in_gap") else "UNMEASURED", "MOD" if not o.get("in_gap") else "HARNESS",
+              dict(detail, why="sealed canyon: the gap is the only way, and the creature never took it" if not o.get("in_gap")
+                   else "in the gap but the goal not reached in the budget"), "B2")
         return
     dur = None
     if o.get("t_enter") is not None and o.get("t_exit") is not None:
         dur = o["t_exit"] - o["t_enter"]
     detail["crossing_ticks"] = dur
     s.canyon.setdefault(lane.cast, {})[sl] = dict(dur=dur, p=p, band=band, in_gap=o.get("in_gap"))
-    if o.get("rock_left") != len(lane.rocks):
-        s.row(rid, "A2", "FAIL", "MOD", dict(detail, why="rock HP/count changed: rock is never damaged"), "B2")
-    elif band == "narrow":
-        s.row(rid, "A2", "PASS" if not o.get("in_gap") else "FAIL", "MOD", dict(detail, bar="S < 0.5P never used"), "B2")
-    else:
-        s.row(rid, "A2", "PASS" if o.get("in_gap") else "FAIL", "MOD", dict(detail, bar="the gap is used"), "B2")
+    s.row(rid, "A2", "PASS" if o.get("in_gap") else "UNMEASURED", "MOD" if o.get("in_gap") else "SITE",
+          dict(detail, bar="the gap is used", why="" if o.get("in_gap") else "reached without a gap sample: the moat leaked"), "B2")
 
 
 def canyon_cost_rows(s):
@@ -790,7 +994,7 @@ def canyon_cost_rows(s):
             ratio = float(v["dur"]) / ctl["dur"]
             ok = abs(ratio - want) <= 0.15 * want
             s.row(rid, "A2", "PASS" if ok else "FAIL", "MOD", dict(S=sl, P=v["p"], ratio=round(ratio, 2), want=round(want, 2),
-                                                                  tol="15%", poll_ticks=POLL_NEAR), "B2")
+                                                                  tol="15%", poll_ticks=POLL_GAP), "B2")
         for sl, v in sorted(by.items()):
             if v["band"] == "walk" and v is not ctl and v["dur"] and ctl and ctl["dur"]:
                 r = float(v["dur"]) / ctl["dur"]
@@ -812,6 +1016,9 @@ def mk_knobs(s):
 
 
 def b0_preflight(s):
+    s.left_over = s.restore_left_over()
+    if s.left_over:
+        s.notes.append("restored settings a killed run left changed: %s" % s.left_over)
     rm = s.call("jawa/running_mods", details=False)
     ids = [p.lower() for p in rm.get("packageIds") or []]
     s.env.update(running=len(ids), hugethings=MOD_ID in ids, largepawns=LARGEPAWNS_ID in ids,
@@ -826,11 +1033,15 @@ def b0_preflight(s):
     s.call("jawa/kill_hostiles")
     s.call("jawa/weather_set", weather="Clear", lockWeather=True)
     s.call("jawa/incident_queue_clear")
+    # no wild animal walks in while lanes stand (the stager also kills any stray inside a zone before it builds)
+    wb = s.call("jawa/wild_spawner_block", action="block", minutes=120)
+    s.env["wild_spawner_blocked"] = wb.get("blocked")
     mi = s.call("jawa/map_info")
     if mi.get("sizeX"):
         s.size = (int(mi["sizeX"]), int(mi.get("sizeZ") or mi["sizeX"]))
     mk_knobs(s)
     s.arena = plan_arena(s.size)
+    s.arena_used = s.arena["region"]
     # the cast, read live on a throwaway lane in the arena (spawn, read, kill)
     x, z = s.arena["origin"]
     for slot, (kind, _why) in CAST.items():
@@ -866,13 +1077,14 @@ def plan_arena(size):
     return dict(origin=(m, m), region=(m, m, size[0] - 2 * m, size[1] - 2 * m))
 
 
-def wave_zones(arena, n, w, h, gap=6):
+def wave_zones(arena, n, w, h, gap=ZONE_GAP):
     sizes = [("z%d" % i, w, h) for i in range(n)]
     return [shelf_pack(sizes, arena["region"], gap)["z%d" % i] for i in range(n)]
 
 
-def run_wave(s, lanes, rowfn, timeout, block):
-    """Run lanes (already zoned inside the arena, non-overlapping) on ONE shared clock, wave by wave."""
+def run_wave(s, lanes, rowfn, block, timeout=None):
+    """Run lanes (already zoned inside the arena, non-overlapping) on ONE shared clock, wave by wave. timeout None = each
+    lane's own budget, so a wave lasts as long as its slowest lane's expectation, not a flat worst case."""
     wave = max(1, s.args.wave)
     for batch in chunks(lanes, wave):
         gens = {ln.id: lane_runner(s, ln, rowfn, timeout) for ln in batch}
@@ -882,8 +1094,7 @@ def run_wave(s, lanes, rowfn, timeout, block):
             if r != "done":
                 s.row("%s_%s_crashed" % (block, name), "-", "UNMEASURED", "HARNESS", dict(result=r), block)
         for ln in batch:
-            s.clear(ln.zone)
-            s.call("jawa/destroy_batch", rects=rect_str(ln.zone), categories="All")
+            s.clear(ln.zone, floor=ln.sealed)
         s.call("jawa/kill_hostiles", destroyCorpses=True)
 
 
@@ -904,9 +1115,11 @@ def b1_a8_defaults(s):
             ok = g is not None and abs(g - want) <= 1e-3 * max(1.0, abs(want))
         if not ok:
             bad[f] = dict(got=got, want=want)
+    left = getattr(s, "left_over", {}) or {}
     s.row("A8_defaults", "A8", "PASS" if not bad else "FAIL", "MOD",
-          dict(checked=len(DEFAULTS), differing=bad, note="a differing value may be the player's own: compare with the snapshot "
-                                                         "before calling it a mod bug"), "B1")
+          dict(checked=len(DEFAULTS), differing=bad, restored_from_killed_run=left,
+               note="a differing value may be the player's own (or a killed run's, restored in B0 and listed here): compare "
+                    "with the snapshot before calling it a mod bug"), "B1")
     # the Mod Settings group: every label of the walls-and-slots group is found in the open dialog's UI text
     labels = keyed_labels()
     r = s.call("rimworld/open_mod_settings", modId=MOD_ID, replaceExisting=True)
@@ -964,6 +1177,13 @@ def texts_of(o, acc):
 
 
 # ---- B2 / A2
+def canyon_budget(sl, p, at_half=2.0):
+    band = gap_band(sl, p)
+    if band == "narrow":
+        return HOLD_BUDGET
+    return WALK_BUDGET + int(CANYON_LEN * 30 * (squeeze_cost(sl, p, at_half) - 1.0))
+
+
 def b2_canyons(s):
     if not s.rock_ok:
         s.row("A2_canyons", "A2", "UNMEASURED", "HARNESS", dict(why="natural rock could not be placed (B0_rock_placeable)"), "B2")
@@ -971,22 +1191,29 @@ def b2_canyons(s):
     set_full_rule(s)
     lanes = []
     w = LEAD + CANYON_LEN + LEAD
-    zones = wave_zones(s.arena, 15, w, CANYON_H)
+    n = sum(min(6, s.cast.p(slot)) for slot in CAST)
+    zones = wave_zones(s.arena, n, w, CANYON_H)
     i = 0
     for slot in CAST:
         p = s.cast.p(slot)
         for sl in range(1, min(6, p) + 1):
-            lanes.append(build_canyon_lane("%s_S%d" % (slot, sl), slot, sl, zones[i]))
+            lanes.append(build_canyon_lane("%s_S%d" % (slot, sl), slot, sl, zones[i],
+                                           budget=canyon_budget(sl, p, s.knobs.get("at_half", 2.0))))
             i += 1
     s.canyon = {}
-    run_wave(s, lanes, canyon_row, 2400, "B2")
+    run_wave(s, lanes, canyon_row, "B2")
     canyon_cost_rows(s)
 
 
 # ---- B3 / A3 + A8 wall line
+def ladder_budget(e):
+    return HOLD_BUDGET if e["verdict"] == "hold" else smash_budget(e["blows"]) if e["verdict"] == "smash" else WALK_BUDGET
+
+
 def b3_ladder(s):
+    """Every ladder lane at once by default (--wave 64): a wave lasts as long as its slowest lane (B2 roofed granite, 20
+    blows), so one wave of all lanes costs that one lane's ticks instead of waves x the flat 2,600 of pass 2."""
     set_full_rule(s)
-    lanes, i = [], 0
     plan = []
     for slot in CAST:
         b = s.cast.b(slot)
@@ -999,8 +1226,10 @@ def b3_ladder(s):
     for batch in chunks(plan, s.args.wave):
         lanes = []
         for j, (slot, mat, hp, roofed, t) in enumerate(batch):
-            lanes.append(build_ladder_lane("%s_%s_%s_t%d" % (slot, mat, "roof" if roofed else "open", t), slot, mat, roofed, t, zones[j]))
-        run_wave(s, lanes, ladder_row, 2600, "B3")
+            e = lane_expect(s.cast.b(slot), t, hp, roofed, **s.knobs)
+            lanes.append(build_ladder_lane("%s_%s_%s_t%d" % (slot, mat, "roof" if roofed else "open", t), slot, mat, roofed, t,
+                                           zones[j], budget=ladder_budget(e)))
+        run_wave(s, lanes, ladder_row, "B3")
     s.env["ladder_lanes"] = len(plan)
 
 
@@ -1008,7 +1237,7 @@ def wall_inspect_rows(s):
     """A8: the wall's inspect line on a staged run of wall (thickness 1..6), against StopsUpTo; the creature line against the
     kernel. Staged on one throwaway strip (no creature)."""
     zone = wave_zones(s.arena, 1, 14, 12)[0]
-    ln = Lane("insp", "A8", None, "inspect", zone)
+    ln = Lane("insp", "A8", None, "inspect", zone, sealed=False)
     # six separate runs: run k is k columns thick and 12 tall, side by side with a one-cell clear gap between them
     x = zone[0]
     runs = []
@@ -1062,10 +1291,13 @@ def creature_line(b, p, knobs, b2_breaks):
 
 # ---- B4 / A4
 def b4_sandwich_plug(s):
+    """The three sandwich lanes and the plug on ONE clock (pass 2 ran the plug as a second wave)."""
     set_full_rule(s)
     slot = "B4"
     b = s.cast.b(slot)
-    zones = wave_zones(s.arena, 4, LEAD + 6 + LEAD, LANE_H)
+    w = LEAD + 6 + LEAD
+    zones = shelf_pack([("z%d" % i, w, LANE_H_TALL if i < 3 else LANE_H) for i in range(4)], s.arena["region"], ZONE_GAP)
+    zones = [zones["z%d" % i] for i in range(4)]
     lanes = []
 
     def sandwich(lid, zone, diagonal, solid):
@@ -1073,35 +1305,52 @@ def b4_sandwich_plug(s):
         wx = zone[0] + LEAD
         cols = [wx, wx + 1, wx + 2, wx + 3, wx + 4] if solid else [wx, wx + 2, wx + 4]
         for x in cols:
-            wall_column(ln, x, zone[1], zone[3], "WoodLog")
-        zc = zone[1] + zone[3] // 2
-        ln.start = (zone[0] + 1, zc)
-        ln.goal = (wx + 5 + LEAD - 1, zc + (8 if diagonal else 0))
+            wall_across(ln, x, "WoodLog")
+        set_ends(ln, wx + 4, DIAG_DZ if diagonal else 0)
         ln.meta.update(wx=wx, layers=len(cols))
+        t = sandwich_t(ln, b)
+        v = decide(b, max(t, len(cols)) if solid else t, len(cols) * WOOD_HP, False, s.knobs["b2_breaks"], s.knobs["hold_line"], s.knobs["per"])
+        # a smash of L layers of wood: ceil(195 / 20B) blows a layer
+        ln.budget = HOLD_BUDGET if v == "hold" else smash_budget(len(cols) * blows_for(WOOD_HP, b, False, s.knobs["blow"])) if v == "smash" else WALK_BUDGET
         return ln
     lanes.append(sandwich("sandwich_straight", zones[0], False, False))
     lanes.append(sandwich("sandwich_diagonal", zones[1], True, False))
     lanes.append(sandwich("five_solid", zones[2], False, True))
-    run_wave(s, lanes, sandwich_row, 3600, "B4")
-    # the plug: one wood wall between two rock outcrops (needs rock)
+    gens = {ln.id: lane_runner(s, ln, sandwich_row) for ln in lanes}
+    plug = None
+    if s.rock_ok:
+        # the plug: one wood wall between two rock outcrops, the outcrops spanning the rest of the sealed lane
+        zone = zones[3]
+        plug = Lane("plug", "A4", slot, "plug", zone, cast=slot, hp=WOOD_HP)
+        wx = zone[0] + LEAD
+        zc = plug.zc
+        for z in range(plug.iz0, plug.iz0 + plug.ih):
+            if abs(z - zc) <= 1 + max(0, b // 2):          # the plug is 3 + b//2 cells tall: the creature meets only the plug
+                plug.walls[(wx, z)] = ("Wall", "WoodLog")
+            else:
+                for dx in range(-2, 3):
+                    plug.rocks.add((wx + dx, z))
+        set_ends(plug, wx + 2)
+        plug.meta.update(wx=wx)
+        gens["plug"] = lane_runner(s, plug, plug_row)
+    res, spent = run_shared(gens, s.advance, s.now, log=s.say)
+    s.timing["B4_ticks"] = s.timing.get("B4_ticks", 0) + spent
+    for name, r in res.items():
+        if r != "done":
+            s.row("B4_%s_crashed" % name, "-", "UNMEASURED", "HARNESS", dict(result=r), "B4")
+    for ln in lanes + ([plug] if plug else []):
+        s.clear(ln.zone, floor=True)
     if not s.rock_ok:
         s.row("A4_plug", "A4", "UNMEASURED", "HARNESS", dict(why="natural rock could not be placed (B0_rock_placeable)"), "B4")
-        return
-    zone = zones[3]
-    ln = Lane("plug", "A4", slot, "plug", zone, cast=slot, hp=WOOD_HP)
-    wx = zone[0] + LEAD
-    zc = zone[1] + zone[3] // 2
-    for x in range(wx, wx + 1):
-        for z in range(zone[1], zone[1] + zone[3]):
-            if abs(z - zc) <= 1 + max(0, b // 2):          # the plug is 3 + b//2 cells tall: the creature meets only the plug
-                ln.walls[(x, z)] = ("Wall", "WoodLog")
-            else:
-                ln.rocks.add((x, z))
-                for dx in range(1, 4):
-                    ln.rocks.add((x + dx, z)); ln.rocks.add((x - dx, z))
-    ln.start, ln.goal = (zone[0] + 1, zc), (wx + LEAD + 1, zc)
-    ln.meta.update(wx=wx)
-    run_wave(s, [ln], plug_row, 2600, "B4")
+
+
+def sandwich_t(lane, b):
+    """T = the densest B-deep stretch of wall columns: wood,air,wood,air,wood in a B 4 window -> 2; five solid -> 4."""
+    cols = sorted(set(c[0] for c in lane.walls))
+    t = 0
+    for c0 in cols:
+        t = max(t, len([c for c in cols if c0 <= c < c0 + b]))
+    return t
 
 
 def sandwich_row(s, lane, pid, info, notes):
@@ -1112,21 +1361,20 @@ def sandwich_row(s, lane, pid, info, notes):
     o = lane.out
     b = info["b"]
     layers = lane.meta["layers"]
-    # T = densest B-deep stretch: wood,air,wood,air,wood within a B 4 window -> 2 (columns 0,2 inside 4 deep), solid five -> 4 in window
-    cols = sorted(set(c[0] for c in lane.walls))
-    t = 0
-    for i, c0 in enumerate(cols):
-        t = max(t, len([c for c in cols if c0 <= c < c0 + b]))
+    t = sandwich_t(lane, b)
     hp_sum = layers * WOOD_HP
     verdict = decide(b, t if not lane.meta["solid"] else max(t, layers), hp_sum, False, s.knobs["b2_breaks"], s.knobs["hold_line"], s.knobs["per"])
     got = classify_wall_lane(o, lane)
     detail = dict(B=b, T=t, layers=layers, hp_sum=hp_sum, expect=verdict, got=got, walls_left=o.get("walls_left"),
-                  smash_polls=o.get("smash_polls"), notes=notes)
+                  smash_ticks=o.get("smash_ticks"), budget=lane.budget, notes=notes)
     if notes or o.get("lost"):
         s.row(rid, "A4", "UNMEASURED", "SITE" if notes else "HARNESS", dict(detail, lost=o.get("lost")), "B4")
         return
+    if got == "leaked":
+        s.row(rid, "A4", "UNMEASURED", "SITE", dict(detail, why="goal reached with every wall standing in a sealed lane: the moat leaked"), "B4")
+        return
     if verdict == "hold":
-        ok = got in ("around", "unreached") and o.get("hp_lost", 0) == 0
+        ok = got == "unreached" and o.get("hp_lost", 0) == 0
     elif verdict == "smash":
         ok = got == "smashed"
     else:
@@ -1145,32 +1393,44 @@ def plug_row(s, lane, pid, info, notes):
 
 
 # ---- B5 / A6 scrape and roof pair
+SCRAPE_W = 16          # a SHORT sealed lane: the ten crossings are ten walks of ~9 cells, not of 2 x LEAD + 3
+
+
 def b5_scrape_roof(s):
+    """The scrape lane and the roof pair on ONE clock (pass 2 ran them one after the other)."""
     set_full_rule(s)
     slot = "B4"
-    zones = wave_zones(s.arena, 3, LEAD + 6 + LEAD, LANE_H)
-    # scrape: a 2-wide built gap (wood sides 3 thick so it is a gap run, not a wall), ten crossings
-    zone = zones[0]
+    b = s.cast.b(slot)
+    sizes = [("scrape", SCRAPE_W, LANE_H), ("open", LEAD + 6 + LEAD, LANE_H), ("roofed", LEAD + 6 + LEAD, LANE_H)]
+    zs = shelf_pack(sizes, s.arena["region"], ZONE_GAP)
+    # scrape: a 2-wide built gap (wood sides 3 thick so it is a gap run, not a wall) across the sealed lane, ten crossings
+    zone = zs["scrape"]
     ln = Lane("scrape", "A6", slot, "scrape", zone, cast=slot)
-    wx = zone[0] + LEAD
-    zc = zone[1] + zone[3] // 2
+    wx = zone[0] + 6
+    zc = ln.zc
     gap = (zc, zc + 1)
     for x in range(wx, wx + 3):
-        for z in range(zone[1], zone[1] + zone[3]):
+        for z in range(ln.iz0, ln.iz0 + ln.ih):
             if not (gap[0] <= z <= gap[1]):
                 ln.walls[(x, z)] = ("Wall", "WoodLog")
-    ln.start, ln.goal = (zone[0] + 1, zc), (wx + 3 + LEAD - 1, zc)
-    ln.meta.update(wx=wx, gap=gap)
+    set_ends(ln, wx + 2)
+    ln.meta.update(wx=wx, gap=gap, gap_cells=[(x, z) for x in range(wx, wx + 3) for z in gap])
     gens = {"scrape": scrape_runner(s, ln)}
-    res, spent = run_shared(gens, s.advance, s.now, log=s.say)
-    s.timing["B5_ticks"] = s.timing.get("B5_ticks", 0) + spent
-    s.clear(ln.zone)
     # roof pair: granite, free-standing vs roofed, B4
     pair = []
-    for k, roofed in enumerate((False, True)):
-        l2 = build_ladder_lane("roofpair_%s" % ("roofed" if roofed else "open"), slot, "granite", roofed, 1, zones[1 + k])
+    for roofed in (False, True):
+        e = lane_expect(b, 1, GRANITE_HP, roofed, **s.knobs)
+        l2 = build_ladder_lane("roofpair_%s" % ("roofed" if roofed else "open"), slot, "granite", roofed, 1,
+                               zs["roofed" if roofed else "open"], budget=ladder_budget(e))
         pair.append(l2)
-    run_wave(s, pair, roof_row, 2600, "B5")
+        gens[l2.id] = lane_runner(s, l2, roof_row)
+    res, spent = run_shared(gens, s.advance, s.now, log=s.say)
+    s.timing["B5_ticks"] = s.timing.get("B5_ticks", 0) + spent
+    for name, r in res.items():
+        if r != "done":
+            s.row("B5_%s_crashed" % name, "-", "UNMEASURED", "HARNESS", dict(result=r), "B5")
+    for l3 in [ln] + pair:
+        s.clear(l3.zone, floor=True)
     roof_compare(s, pair)
 
 
@@ -1182,6 +1442,7 @@ def scrape_runner(s, lane):
     info = read_creature(s, pid, lane.cast)
     if not info:
         s.row("A6_scrape", "A6", "UNMEASURED", "HARNESS", dict(why="Breadth unreadable"), "B5")
+        s.kill_pawns([pid])
         return
     p = info["p"]
     gz = lane.meta["gap"]
@@ -1192,17 +1453,20 @@ def scrape_runner(s, lane):
     west, east = lane.start, lane.goal
     t0 = s.now()
     dest = east
-    while crossings < 10 and s.now() - t0 < 12000:
+    gx0, gx1 = lane.meta["wx"] - 2, lane.meta["wx"] + 4      # at the gap (start and goal rest just outside this)
+    while crossings < 10 and s.now() - t0 < 6000:
         s.call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=dest[0], targetAZ=dest[1], waitTicks=1)
         arrived = False
-        for _ in range(80):
+        for _ in range(60):
             yield Wait(15)
             pw = s.pawns().get(str(pid))
             if pw is None or pw["dead"]:
                 break
-            th = {t["cell"]: t for t in s.things(lane.zone, "Wall")}
-            for c in flank_cells:
-                hp_hist[c].append((s.now() - t0, th[c]["hp"] if c in th else 0.0))
+            if pw["cell"] and gx0 <= pw["cell"][0] <= gx1:
+                # the flanks are read only while the creature is at the gap (no scrape can land elsewhere)
+                th = {t["cell"]: t for t in s.things(lane.zone, "Wall")}
+                for c in flank_cells:
+                    hp_hist[c].append((s.now() - t0, th[c]["hp"] if c in th else 0.0))
             if pw["cell"] and abs(pw["cell"][0] - dest[0]) <= 2:
                 arrived = True
                 break
@@ -1254,7 +1518,7 @@ def roof_row(s, lane, pid, info, notes):
     zc = lane.start[1]
     ok_r, txt = s.static("RoofedWall", "current|%d,%d|true" % (wx, zc))
     o["roofed_read_before"] = txt.strip().lower() == "true" if ok_r else None
-    o["blows_seen"] = int(round(o.get("smash_polls", 0) * POLL_NEAR / 60.0))
+    o["blows_seen"] = o.get("blows_seen") or 0           # observe_lane: stood-smashing ticks / 60 + 1
     s.roof_blows[lane.meta["roofed"]] = o["blows_seen"]
     want_roof = lane.meta["roofed"]
     detail = dict(B=info["b"], roofed_staged=want_roof, roofed_read=o["roofed_read_before"], blows_est=o["blows_seen"],
@@ -1278,31 +1542,39 @@ def roof_compare(s, pair):
 
 
 # ---- B6 / A7
+CONC_H = 15            # the concurrency lane holds two creatures side by side (B2 at zc-3, B4 at zc+3)
+
+
 def b6_door_concurrency_saves(s):
+    """Door lanes, concurrency and the wall destroyed en route, all on ONE clock (pass 2: three runs in a row)."""
     set_full_rule(s)
-    # the door: a granite wall (1 thick) with a wooden door; wild vs tamed, B3 and B2
-    zones = wave_zones(s.arena, 6, LEAD + 3 + LEAD, 17)
-    lanes = []
+    w = LEAD + 3 + LEAD
+    sizes = [("d%d" % j, w, LANE_H) for j in range(4)] + [("conc", w, CONC_H), ("gone", LEAD + 5 + LEAD, LANE_H)]
+    zs = shelf_pack(sizes, s.arena["region"], ZONE_GAP)
+    gens, lanes = {}, []
+    # the door: a granite wall (1 thick) across the sealed lane with one door cell; wild vs tamed, B3 and B2
     plan = [("B3", "none"), ("B3", "player"), ("B2", "none"), ("B2", "player")]
     for j, (slot, fac) in enumerate(plan):
-        zone = zones[j]
-        ln = Lane("door_%s_%s" % (slot, "tamed" if fac == "player" else "wild"), "A7", slot, "door", zone, cast=slot, faction=fac)
+        zone = zs["d%d" % j]
+        ln = Lane("door_%s_%s" % (slot, "tamed" if fac == "player" else "wild"), "A7", slot, "door", zone, cast=slot, faction=fac,
+                  budget=smash_budget(blows_for(GRANITE_HP, 2, False, s.knobs["blow"])) if fac == "none" else 900)
         wx = zone[0] + LEAD
-        zc = zone[1] + zone[3] // 2
-        wall_column(ln, wx, zone[1], zone[3], "BlocksGranite", door_at=zc)
-        ln.start, ln.goal = (zone[0] + 1, zc), (wx + 1 + LEAD - 1, zc)
-        ln.meta.update(wx=wx, door=(wx, zc))
+        wall_across(ln, wx, "BlocksGranite", door_at=ln.zc)
+        set_ends(ln, wx)
+        ln.meta.update(wx=wx, door=(wx, ln.zc))
         lanes.append(ln)
-    run_wave(s, lanes, door_row, 2400, "B6")
+        gens[ln.id] = lane_runner(s, ln, door_row)
     # concurrency: two creatures of different B past the same wall in the same tick (shared spawn tick, one wall of 3 wood)
-    zone = zones[4]
-    gens = {"conc": concurrency_runner(s, zone)}
+    gens["conc"] = concurrency_runner(s, zs["conc"])
+    # a wall destroyed (by "a colonist": destroy_batch, no instigator) while a titan is held at it
+    gens["gone"] = wall_gone_runner(s, zs["gone"])
     res, spent = run_shared(gens, s.advance, s.now, log=s.say)
     s.timing["B6_ticks"] = s.timing.get("B6_ticks", 0) + spent
-    # a wall destroyed by a colonist while a titan is on its way: we destroy it ourselves (destroy_batch = no instigator)
-    gens = {"gone": wall_gone_runner(s, zones[5])}
-    res, spent = run_shared(gens, s.advance, s.now, log=s.say)
-    s.timing["B6_ticks"] = s.timing.get("B6_ticks", 0) + spent
+    for name, r in res.items():
+        if r != "done":
+            s.row("B6_%s_crashed" % name, "-", "UNMEASURED", "HARNESS", dict(result=r), "B6")
+    for zone in list(zs.values()):
+        s.clear(zone, floor=True)
     # save + reload mid-squeeze / mid-smash: the bridge cannot hand us a save without ending the shared world; OWED
     s.row("A7_save_reload", "A7", "UNMEASURED", "OWED",
           dict(why="save/load mid-squeeze and mid-smash needs a held mid-job state across a load; the FlowWorks session's B7 does one "
@@ -1340,84 +1612,108 @@ def door_row(s, lane, pid, info, notes):
 
 
 def concurrency_runner(s, zone):
-    """Two creatures (B2 and B4) spawned in the same tick at the same wall (3 wood thick, 41 tall), both ordered in one tick."""
+    """Two creatures (B2 and B4) spawned in the same tick at the same wall (3 wood thick, across a sealed lane), both ordered
+    in one tick."""
     ln = Lane("conc", "A7", None, "conc", zone)
     wx = zone[0] + LEAD
     for i in range(3):
-        wall_column(ln, wx + i, zone[1], zone[3], "WoodLog")
-    zc = zone[1] + zone[3] // 2
+        wall_across(ln, wx + i, "WoodLog")
+    zc = ln.zc
+    goal = (wx + 2 + GOAL_PAST, zc)
     s.clear(zone)
+    s.kill_strays(zone)
     s.build(ln)
     pids = {}
     for slot, dz in (("B2", -3), ("B4", 3)):
-        r = s.call("jawa/spawn_pawn", kindDef=CAST[slot][0], x=zone[0] + 1, z=zc + dz, faction="none", count=1)
+        r = s.call("jawa/spawn_pawn", kindDef=CAST[slot][0], x=zone[0] + START_OFF, z=zc + dz, faction="none", count=1)
         pids[slot] = ((r.get("pawns") or [{}])[0]).get("id")
     if not all(pids.values()):
         s.row("A7_concurrency", "A7", "UNMEASURED", "HARNESS", dict(why="spawn failed", pids=pids), "B6")
         return
     infos = {sl: read_creature(s, pid, sl) for sl, pid in pids.items()}
+    exp = {sl: decide(infos[sl].get("b", 1), 3, 3 * WOOD_HP, False, s.knobs["b2_breaks"], s.knobs["hold_line"], s.knobs["per"])
+           for sl in pids if infos[sl]}
     for sl, pid in pids.items():
-        s.call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=wx + 3 + LEAD - 1, targetAZ=zc, waitTicks=1)
+        s.call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=goal[0], targetAZ=zc + (-3 if sl == "B2" else 3), waitTicks=1)
     t0 = s.now()
     done = {}
-    for _ in range(120):
+    # B4 smashes 3 layers of wood (ceil(195 / 80) = 3 blows a layer); B2 holds at once
+    budget = smash_budget(3 * blows_for(WOOD_HP, infos.get("B4", {}).get("b", 4), False, s.knobs["blow"]))
+    breakers = [sl for sl in exp if exp[sl] in ("break", "smash")]
+    while s.now() - t0 < budget:
         yield Wait(30)
         pw = s.pawns()
         for sl, pid in pids.items():
             c = (pw.get(str(pid)) or {}).get("cell")
             if c and c[0] >= wx + 3 and sl not in done:
                 done[sl] = s.now() - t0
-        if len(done) == 2:
-            break
+        if breakers and all(sl in done for sl in breakers) and s.now() - t0 >= HOLD_BUDGET:
+            break           # every breaker is through, and a holder has had a held lane's whole budget to (wrongly) cross
     left = len([t for t in s.things(zone, "Wall")])
-    exp = {sl: decide(infos[sl].get("b", 1), 3, 3 * WOOD_HP, False, s.knobs["b2_breaks"], s.knobs["hold_line"], s.knobs["per"])
-           for sl in pids if infos[sl]}
     crossed = {sl: sl in done for sl in pids}
     # a creature whose rule forbids the crossing (hold) must not have crossed where the wall stands; one whose rule allows it must
     ok = bool(exp) and all(not (exp[sl] == "hold" and crossed[sl] and left == len(ln.walls)) and
                            (crossed[sl] if exp[sl] in ("break", "smash") else True) for sl in exp)
     s.row("A7_concurrency", "A7", "PASS" if ok else "FAIL", "MOD",
-          dict(expect=exp, crossed=crossed, ticks=done, walls_left=left, note="B2 holds a 3-thick wall (hold at 2); B4 smashes it (3 x 195 = 585 > its 400 budget, thickness 3 < 4)"),
+          dict(expect=exp, crossed=crossed, ticks=done, walls_left=left, budget=budget,
+               note="B2 holds a 3-thick wall (hold at 2); B4 smashes it (3 x 195 = 585 > its 400 budget, thickness 3 < 4)"),
           "B6")
     s.kill_pawns(list(pids.values()))
-    s.clear(zone)
+
+
+REJUDGE_BAR = 450      # ticks from the cut to the far side: the walk past (~8 cells at <= 30) + two break-through pauses
 
 
 def wall_gone_runner(s, zone):
-    """A B4 on its way to a 5-thick wood wall (held); at contact we destroy its middle three columns; it must re-judge the
-    same tick (no stale hold, no standing at a gone wall) and reach the goal."""
+    """A B4 starts right at a 5-thick wood wall across a sealed lane (held: >= 4 thick), so it is held at once. Then we destroy
+    the middle three columns (leaving columns wx and wx+4: two 1-thick layers, T 1 in a B 4 window, 390 HP <= 400: broken
+    through) and re-order the goto: the held crossing must be forgotten when its walls go (WallsSlotsUtility.NotifyDespawned)
+    so the creature re-judges and goes through. Pass 2's version waited for an approach that a held (sealed) creature never
+    makes. rejudge_ticks is the lag from the cut to the far side."""
     ln = Lane("gone", "A7", "B4", "gone", zone, cast="B4")
     wx = zone[0] + LEAD
     for i in range(5):
-        wall_column(ln, wx + i, zone[1], zone[3], "WoodLog")     # five solid: B4 holds (>= 4 thick)
-    zc = zone[1] + zone[3] // 2
-    ln.start, ln.goal = (zone[0] + 1, zc), (wx + 5 + LEAD - 1, zc)
+        wall_across(ln, wx + i, "WoodLog")     # five solid: B4 holds (>= 4 thick)
+    set_ends(ln, wx + 4)
+    ln.start = (wx - 3, ln.zc)
     pid, notes = stage_and_spawn(s, ln)
-    if pid is None:
-        s.row("A7_wall_destroyed_en_route", "A7", "UNMEASURED", "HARNESS", dict(notes=notes), "B6")
+    if pid is None or notes:
+        s.row("A7_wall_destroyed_en_route", "A7", "UNMEASURED", "HARNESS" if pid is None else "SITE", dict(notes=notes), "B6")
+        if pid is not None:
+            s.kill_pawns([pid])
         return
     read_creature(s, pid, "B4")
     s.call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=ln.goal[0], targetAZ=ln.goal[1], waitTicks=1)
-    for _ in range(100):
-        yield Wait(15)
-        c = (s.pawns().get(str(pid)) or {}).get("cell")
-        if c and c[0] >= wx - 2:
-            break
-    held_before = len(s.things(zone, "Wall"))
-    s.call("jawa/destroy_batch", rects=rect_str((wx + 1, zone[1], 3, zone[3])), categories="Building")    # leaves columns wx and wx+4: two 1-thick layers (T 1 for B 4, 390 HP <= 400: broken through)
+    yield Wait(240)                              # the decision is taken at the path start: held by now
+    held_before = len([t for t in s.things(zone, "Wall") if t["cell"] in ln.walls])
+    c = (s.pawns().get(str(pid)) or {}).get("cell")
+    early = bool(c and c[0] > wx + 4)
+    s.call("jawa/destroy_batch", rects=rect_str((wx + 1, ln.iz0, 3, ln.ih)), categories="Building")
+    t_cut = s.now()
     s.call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=ln.goal[0], targetAZ=ln.goal[1], waitTicks=1)
     reached = False
-    for _ in range(160):
+    last_order = t_cut
+    while s.now() - t_cut < 1500:
         yield Wait(30)
         c = (s.pawns().get(str(pid)) or {}).get("cell")
         if c and c[0] >= ln.goal[0] - 2:
             reached = True
             break
-    s.row("A7_wall_destroyed_en_route", "A7", "PASS" if reached else "FAIL", "MOD",
-          dict(walls_before=held_before, reached_after_wall_cut_to_2_thick=reached,
-               bar="the held crossing is dropped the same tick the wall is gone: the creature re-judges and goes through"), "B6")
+        if s.now() - last_order >= 300:          # a wild animal drops a failed goto: ask again (a lag here is the finding)
+            s.call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=ln.goal[0], targetAZ=ln.goal[1], waitTicks=1)
+            last_order = s.now()
+    lag = s.now() - t_cut if reached else None
+    held_ok = held_before == len(ln.walls) and not early
+    detail = dict(walls_before=held_before, walls_planned=len(ln.walls), crossed_before_cut=early, reached_after_cut=reached,
+                  rejudge_ticks=lag, bar_ticks=REJUDGE_BAR,
+                  bar="held at 5 thick; after the cut to two 1-thick layers the re-order at the cut is judged afresh: through in "
+                      "< %d ticks (~8 cells and two break-throughs). A lag past ~600 is the decider's stale unreachable cooldown "
+                      "(UnreachableMemo), fixed 2026-10-19 by forgetting it with the held crossing" % REJUDGE_BAR)
+    if not held_ok:
+        s.row("A7_wall_destroyed_en_route", "A7", "FAIL", "MOD", dict(detail, why="not held by 5 thick wood before the cut"), "B6")
+    else:
+        s.row("A7_wall_destroyed_en_route", "A7", "PASS" if reached and lag <= REJUDGE_BAR else "FAIL", "MOD", detail, "B6")
     s.kill_pawns([pid])
-    s.clear(zone)
 
 
 # ---- B7 / A5
@@ -1429,7 +1725,7 @@ def b7_pen(s):
     p = s.cast.p(slot)
     inner = int(math.ceil(math.sqrt(6 * p * p))) + 1           # inner side so area >= 6 P^2 (not confined)
     small = max(p, 3)                                           # a confining ring: area < 6 P^2
-    zones = wave_zones(s.arena, 4, max(inner, 8) + 14, max(inner, 8) + 14)
+    zones = wave_zones(s.arena, 4, max(inner, 8) + 14, max(inner, 8) + 14, gap=8)   # pens are not moated: room between them
     gens = {
         "fed_roomy": pen_runner(s, "fed_roomy", zones[0], inner, 1, fed=True, shot=False),
         "hungry_small": pen_runner(s, "hungry_small", zones[1], small, 1, fed=False, shot=False),
@@ -1445,13 +1741,14 @@ def b7_pen(s):
 
 def pen_runner(s, name, zone, inner, thick, fed, shot, granite=False):
     stuff = "BlocksGranite" if granite else "WoodLog"
-    ln = Lane("pen_" + name, "A5", "B3", "pen", zone, cast="B3")
+    ln = Lane("pen_" + name, "A5", "B3", "pen", zone, cast="B3", sealed=False)     # the ring IS the seal
     x0, z0 = zone[0] + 6, zone[1] + 6
     for t in range(thick):
         for i in range(-t - 1, inner + t + 1):
             for c in ((x0 + i, z0 - t - 1), (x0 + i, z0 + inner + t), (x0 - t - 1, z0 + i), (x0 + inner + t, z0 + i)):
                 ln.walls[c] = ("Wall", stuff)
     s.clear(zone)
+    s.kill_strays(zone)
     s.build(ln)
     cx, cz = x0 + inner // 2, z0 + inner // 2
     r = s.call("jawa/spawn_pawn", kindDef=CAST["B3"][0], x=cx, z=cz, faction="none", count=1)
@@ -1536,13 +1833,15 @@ def restless_of(s, pid):
 
 # ============================================================================ catalog, plan, verify lines
 CRITERIA = [
-    ("A2", "B2", "canyon lanes: open-sky rock gaps 1..P wide per creature; S>=P x1 +-10%, 0.5P<=S<P at squeeze cost +-15%, S<0.5P never used, rock unchanged", 3200, 140),
-    ("A3", "B3", "thickness ladder: wood/granite, open/roofed, 1..B thick (compressed); broke through / smashed (blow count) / held per design section 3", 12000, 520),
-    ("A4", "B4", "sandwich straight+diagonal (smashed), five solid (held), plug between rock outcrops (wood broken, rock untouched)", 3600, 150),
-    ("A6", "B5", "scrape: 10 crossings of a 2-wide built gap; roof pair granite open vs roofed blow counts", 7000, 330),
-    ("A7", "B6", "door wild vs tamed, concurrency, wall destroyed en route; save/reload mid-job owed", 4200, 200),
-    ("A5", "B7", "pen: calm fed stays, hungry restlessness rate, shot breaks out in 30 s, 3-thick granite never", 2700, 120),
-    ("A8", "B1", "defaults read back, settings dialog group labels, wall and creature inspect lines", 0, 40),
+    # (criterion, block, text, ticks, wall s): ESTIMATED from the pass-3 mock (bridge calls x CALL_S + ticks / TPS_STEP), with
+    # each block's ticks taken as its longest lane BUDGET (the mock walks faster than a live creature)
+    ("A2", "B2", "canyon lanes: open-sky rock gaps 1..P wide per creature; S>=P x1 +-10%, 0.5P<=S<P at squeeze cost +-15%, S<0.5P never used, rock unchanged", 1200, 100),
+    ("A3", "B3", "thickness ladder: wood/granite, open/roofed, 1..B thick (compressed); broke through / smashed (blow count) / held per design section 3", 2300, 340),
+    ("A4", "B4", "sandwich straight+diagonal (smashed), five solid (held), plug between rock outcrops (wood broken, rock untouched)", 1800, 55),
+    ("A6", "B5", "scrape: 10 crossings of a 2-wide built gap; roof pair granite open vs roofed blow counts", 2500, 85),
+    ("A7", "B6", "door wild vs tamed, concurrency, wall destroyed en route; save/reload mid-job owed", 2300, 70),
+    ("A5", "B7", "pen: calm fed stays, hungry restlessness rate, shot breaks out in 30 s, 3-thick granite never", 2700, 60),
+    ("A8", "B1", "defaults read back, settings dialog group labels, wall and creature inspect lines", 0, 10),
 ]
 BLOCKS = [
     dict(id="B0", title="preflight: tier truth, cast read live, rock probe, bars from live settings"),
@@ -1618,7 +1917,9 @@ class FakeHugeGame(object):
     """Offline stand-in: a grid world, creatures that cross a lane by the kernel mirror, the tools this script calls. A mock run
     proves the script's PATHS, never the game (the rows say so). --mock-fault flips one behaviour so the matching rows FAIL:
     hold (nothing holds), squeeze (no slowdown), roof (roof does nothing), rock (rock is damaged), scrape (no scrape),
-    defaults (a setting differs)."""
+    defaults (a setting differs); unsealed (the stager paints no moat: pass 2's open lanes, walked round, rows must be SITE).
+    The fake's Reachability is a 1-cell flood fill (reach_around): a goal it can reach is walked round, as the real decider
+    does when the detour is under titanClearingDetourFactor."""
 
     TPC = 15      # base ticks per cell
 
@@ -1634,6 +1935,7 @@ class FakeHugeGame(object):
             self.settings["blowDamagePerBreadth"] = "30.0"
         self.rock_placeable = fault != "norock"
         self.last_scrape = {}
+        self.water = set()        # Impassable terrain cells (the lanes' moats)
 
     # ---- tool dispatch
     def call(self, tool, **kw):
@@ -1683,6 +1985,17 @@ class FakeHugeGame(object):
             n += 1
         return {"success": True, "placed": n}
 
+    def t_j_set_terrain_batch(self, ops="", **kw):
+        n = 0
+        for op in str(ops).split(";"):
+            d, rest = op.split(":")
+            x, z, w, h = (int(v) for v in rest.split(","))
+            for i in range(x, x + w):
+                for j in range(z, z + h):
+                    (self.water.add if d == MOAT else self.water.discard)((i, j))
+                    n += 1
+        return {"success": True, "cellsChanged": n, "cellsFailedVerify": 0}
+
     def t_j_set_roof_batch(self, ops="", **kw):
         d, rest = str(ops).split(":")
         x, z, w, h = (int(v) for v in rest.split(","))
@@ -1721,9 +2034,17 @@ class FakeHugeGame(object):
                                prog=0.0, restless=0.0, fed=True, blow_t=0, job="", cross=None, fled=False)
         return {"success": True, "pawns": [{"id": pid}]}
 
-    def t_j_list_pawns(self, **kw):
-        return {"success": True, "pawns": [dict(id=p["id"], kind=p["kind"], faction=p["faction"], dead=p["dead"], downed=False,
-                                                position={"x": p["x"], "z": p["z"]}) for p in self.pawns.values()]}
+    def t_j_list_pawns(self, rect=None, faction=None, **kw):
+        box = [int(v) for v in str(rect).split(",")[:4]] if rect else None
+        out = []
+        for p in self.pawns.values():
+            if box and not (box[0] <= p["x"] < box[0] + box[2] and box[1] <= p["z"] < box[1] + box[3]):
+                continue
+            if faction == "nonplayer" and p["faction"] == "player":
+                continue
+            out.append(dict(id=p["id"], kind=p["kind"], faction=p["faction"], dead=p["dead"], downed=False,
+                            position={"x": p["x"], "z": p["z"]}))
+        return {"success": True, "pawns": out}
 
     def t_j_pawn_need(self, pawn=None, need=None, level=1.0, **kw):
         if pawn in self.pawns and need == "Food":
@@ -1834,7 +2155,28 @@ class FakeHugeGame(object):
         return self.t_j_static_call(method="RoofedWall", args="current|%d,%d|true" % c).get("result") == "True"
 
     def free(self, c):
-        return c not in self.things
+        return c not in self.things and c not in self.water
+
+    def reach_around(self, p, also_blocked=()):
+        """BFS (1-cell, 4-way) from the creature to its goal over cells free of things and water, within 40 cells: the fake's
+        Reachability. A reachable goal is walked round, as the real decider does when the detour is under 2.5x (pass 2)."""
+        start, goal = (p["x"], p["z"]), tuple(p["goal"])
+        blocked = set(also_blocked)
+        seen, todo = {start}, [start]
+        while todo:
+            c = todo.pop()
+            if c == goal:
+                return True
+            for n in ((c[0] + 1, c[1]), (c[0] - 1, c[1]), (c[0], c[1] + 1), (c[0], c[1] - 1)):
+                if (n not in seen and abs(n[0] - start[0]) <= 40 and abs(n[1] - start[1]) <= 40 and self.free(n)
+                        and n not in blocked):
+                    seen.add(n)
+                    todo.append(n)
+        return False
+
+    def go_round(self, p):
+        p["x"], p["z"] = p["goal"]
+        p["state"] = "done"
 
     def step(self, p):
         kn = self.knobs()
@@ -1886,7 +2228,13 @@ class FakeHugeGame(object):
                     cost = squeeze_cost(sp, pw, kn["at_half"]) if self.fault != "squeeze" else 1.0
                     p["state"], p["sq_cost"], p["prog"] = "squeeze", cost, 0.0
                     return
-                if band == "narrow" or band == "squeeze":
+                if band == "narrow" and self.reach_around(p, [(nxt[0], z) for z in range(p["z"] - pw, p["z"] + pw + 1)]):
+                    self.go_round(p)       # an open way round the too-narrow gap (an unsealed lane)
+                    return
+                if band == "narrow":
+                    p["state"] = "hold"    # sealed: the too-narrow gap was the only way, and it is never used
+                    return
+                if band == "squeeze":
                     x = nxt[0]
                     while (x, p["z"]) not in self.things and self.span((x, p["z"]), pw) < pw and abs(x - p["x"]) < 40:
                         x += dx
@@ -1907,7 +2255,7 @@ class FakeHugeGame(object):
         s = 1
         for sign in (1, -1):
             k = 1
-            while s < cap and (c[0], c[1] + sign * k) not in self.things:
+            while s < cap and self.free((c[0], c[1] + sign * k)):
                 s += 1
                 k += 1
         return s
@@ -1925,6 +2273,9 @@ class FakeHugeGame(object):
 
     def contact(self, p, dx, kn):
         b, pw = p["b"], passage(p["b"], p["f"])
+        if p["state"] != "hold" and self.reach_around(p):
+            self.go_round(p)
+            return
         cells = []
         x = p["x"] + dx
         gapless = 0
@@ -2001,17 +2352,23 @@ class FakeHugeGame(object):
             p["x"] = max(c[0] for c in cr["cells"]) + (1 if p["goal"][0] > p["x"] else -1)
 
     def canyon(self, p, dx, kn, pw, rock):
-        # find the gap in this rock block: free rows across the block's x range
+        # find the gap in this rock block: the run of rows free across the block's x range nearest the creature (the moat
+        # rows are not free, so a sealed lane's only run is its gap)
         xs = sorted(set(c[0] for c in rock))
-        rows = [z for z in range(p["z"] - 30, p["z"] + 31) if all((x, z) not in self.things for x in xs)]
-        s = 0
-        if rows:
-            best = [z for z in rows if abs(z - p["z"]) <= 30]
-            lo = min(best)
-            hi = lo
-            run = [z for z in best if lo <= z <= lo + 12]
-            s = len(run)
-            gz = run[len(run) // 2] if run else p["z"]
+        rows = [z for z in range(p["z"] - 12, p["z"] + 13) if all(self.free((x, z)) for x in xs)]
+        runs, cur = [], []
+        for z in rows:
+            if cur and z != cur[-1] + 1:
+                runs.append(cur)
+                cur = []
+            cur.append(z)
+        if cur:
+            runs.append(cur)
+        s, gz = 0, p["z"]
+        if runs:
+            run = min(runs, key=lambda r: min(abs(z - p["z"]) for z in r))
+            s, gz = len(run), run[len(run) // 2]
+            rows = run
         band = gap_band(s, pw) if s else "narrow"
         if band == "walk" or (band == "squeeze" and self.settings["squeezeEnabled"].lower() != "false"):
             cost = 1.0 if band == "walk" else squeeze_cost(s, pw, kn["at_half"]) if self.fault != "squeeze" else 1.0
@@ -2023,10 +2380,12 @@ class FakeHugeGame(object):
             p["prog"] = 0.0
             p["x"] = xs[0] - 1 if dx > 0 else p["x"]
             return
-        # too narrow: the creature goes round (a detour of the rock's height)
-        p["x"] = xs[-1] + 1
-        p["prog"] = 0.0
-        p["tele"] = True
+        # too narrow: round the block if anything is open (an unsealed lane), else it stays put (the sealed lane's verdict)
+        gap = [(x, z) for x in xs for z in rows] if rows else []
+        if self.reach_around(p, gap):
+            self.go_round(p)
+        else:
+            p["state"] = "hold"
 
     def pen_step(self, p, kn):
         # restlessness for creatures spawned in a ring: confined (reachable area small) and/or hungry
@@ -2058,13 +2417,14 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--mock", action="store_true")
-    ap.add_argument("--mock-fault", default=None, choices=[None, "hold", "squeeze", "roof", "rock", "scrape", "defaults", "label", "norock"])
+    ap.add_argument("--mock-fault", default=None, choices=[None, "hold", "squeeze", "roof", "rock", "scrape", "defaults", "label", "norock",
+                                                           "unsealed"])
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--table", action="store_true", help="print design section 3 from the kernel mirror and exit")
     ap.add_argument("--only", default="")
     ap.add_argument("--skip", default="")
     ap.add_argument("--full-ladder", action="store_true")
-    ap.add_argument("--wave", type=int, default=12)
+    ap.add_argument("--wave", type=int, default=64)
     ap.add_argument("--long-restless", action="store_true")
     ap.add_argument("--frame-budget-ms", type=float, default=150.0)
     ap.add_argument("--out-dir", default=None)
@@ -2117,16 +2477,20 @@ def main(argv=None):
     try:
         for bid in sel:
             s.say("=== %s %s  (t+%.0fs, tick %s)" % (bid, next(b["title"] for b in BLOCKS if b["id"] == bid), time.time() - t_start, s.now()))
-            w0 = time.time()
+            w0, c0 = time.time(), s.calls
             try:
                 steps[bid](s)
             except Exception as ex:  # noqa: BLE001 - recorded, the session goes on
                 s.say(traceback.format_exc())
                 s.row("%s_crashed" % bid, "-", "UNMEASURED", "HARNESS", dict(error=str(ex)), bid)
             s.timing[bid] = round(time.time() - w0, 1)
+            s.timing["%s_calls" % bid] = s.calls - c0
     finally:
         s.restore_settings()
+        s.call("jawa/wild_spawner_block", action="release")
     s.timing["total_s"] = round(time.time() - t_start, 1)
+    s.timing["bridge_calls"] = s.calls
+    s.timing["ticks_total"] = sum(v for k, v in s.timing.items() if k.endswith("_ticks"))
     s.save()
     p, n = write_verify_lines(s)
     counts = {}
