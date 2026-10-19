@@ -86,5 +86,13 @@ check("haul: carried / unseen at the end is FAIL, not PASS", C.haul_verdict(jade
 check("haul: the Jade never read back is UNMEASURED", C.haul_verdict([], jade(143, 128), PIT, PILE)[0] == "UNMEASURED")
 check("site holds the new scenes: 46 x 12", (C.SITE_W, C.SITE_H) == (46, 12))
 
+# LS_FULLREAD 2026-10-19: the digs are read back, and old digs are reset first (Deepen ADDS: a reused map doubled depths)
+check("digs at the asked depth: no misses", C.dig_misses([((1, 1), 4, {"success": True, "depth": 4})]) == [])
+check("can-fail: a doubled depth (cell never reset) is a miss",
+      len(C.dig_misses([((1, 1), 4, {"success": True, "depth": 8}), ((2, 1), 2, {"success": False, "error": "no engine"})])) == 2)
+check("reset read: left=0", C.reset_left("RESET cells=9 levels=36 rolled=0 left=0") == 0)
+check("can-fail reset: left>0 or REFUSED is not 0", C.reset_left("RESET cells=9 levels=36 rolled=0 left=2") == 2
+      and C.reset_left("REFUSED: no excavation engine on the current map") is None)
+
 print("%s: %d failure(s)" % ("PASS" if not fails else "FAIL", len(fails)))
 sys.exit(1 if fails else 0)

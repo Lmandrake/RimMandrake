@@ -194,6 +194,29 @@ def out_of(rect, xz):
     return not (x0 <= xz[0] < x0 + w and z0 <= xz[1] < z0 + h)
 
 
+def dig_misses(digs):
+    """[(cell, wanted, why)] for every excavation_drive whose reply does not say the cell now sits at the wanted depth.
+    Deepen ADDS (LAW 1: depth only goes down), so a cell an earlier run dug and nobody reset reads deeper than asked; a
+    refused drive leaves it shallow. Either way every row on that scene would judge the wrong pit: the run stops
+    UNMEASURED/SITE instead of scoring a "free" row PASS on ground that was never dug."""
+    bad = []
+    for cell, want, r in digs:
+        if not isinstance(r, dict) or r.get("success") is not True:
+            bad.append((cell, want, "refused: %s" % str((r or {}).get("error") or r)[:80]))
+        elif "depth" in r and r.get("depth") != want:
+            bad.append((cell, want, "depth %s" % r.get("depth")))
+    return bad
+
+
+def reset_left(txt):
+    """ProofResetRect's 'RESET cells=n levels=n rolled=n left=n' -> left (None when unread or refused)."""
+    kv = parse(txt)
+    try:
+        return int(kv["left"]) if str(txt).startswith("RESET") else None
+    except (KeyError, ValueError):
+        return None
+
+
 def walk_verdict(order_row, rect, want_out):
     """A drafted order to a cell outside rect: PASS when the pawn ends outside (want_out) / inside (not want_out)."""
     if not order_row or order_row.get("orderAccepted") is not True or not (order_row.get("ticksElapsed") or 0) > 0:
@@ -314,8 +337,12 @@ def main():
     def sset(f, v):
         return B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
 
+    digs = []
+
     def dig(c, n):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=-1) or {}
+        r = B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=-1) or {}
+        digs.append((tuple(c), n, r))
+        return r
 
     def spawn(kind, c, faction):
         r = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0], z=c[1], faction=faction, count=1) or {}
@@ -340,8 +367,13 @@ def main():
     before = {f: sget(f) for f in FIELDS}
     res["settings_before"] = before
     try:
-        if not ok or not V.prepare_site(B, (ox, oz, SITE_W, SITE_H), rows, "CLIMB_site_ready"):
-            row("CLIMB_site", "UNMEASURED", "SITE", {"why": "site not ready / not playing"})
+        # old digs first: prepare_site paints Soil but never fills a dug cell back in, and Deepen ADDS, so a reused map
+        # (live_session B3 runs this without --fresh-map) doubled every depth below
+        rr = B.call("jawa/static_call", type=PROOF_TYPE, method="ProofResetRect", args="%d;%d;%d;%d" % (ox, oz, SITE_W, SITE_H)) or {}
+        left = reset_left(str(rr.get("result") or "")) if rr.get("success") is True else None
+        if not ok or left != 0 or not V.prepare_site(B, (ox, oz, SITE_W, SITE_H), rows, "CLIMB_site_ready"):
+            row("CLIMB_site", "UNMEASURED", "SITE", {"why": "site not ready / not playing / old digs not reset",
+                                                     "reset": str(rr.get("result") or rr.get("error") or rr)[:160]})
             return 2
         sset("pitRelativeClimbEnabled", True)
         sset("superdeepCapturesOwnFaction", True)
@@ -363,7 +395,12 @@ def main():
                     dig(P(30 + x, 3 + z), 4)
         dig(P(35, 5), 1)
         dig(P(41, 3), 1)
-        B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % P(20, 3))   # a wall cell: a ladder joins its cell to a SHALLOWER cardinal neighbour (design §8.4)
+        lad = B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % P(20, 3)) or {}   # a wall cell: a ladder joins its cell to a SHALLOWER cardinal neighbour (design §8.4)
+        bad = dig_misses(digs)
+        if bad:
+            row("CLIMB_site_dug", "UNMEASURED", "SITE", {"why": "%d drive(s) missed their depth: every scene would judge the "
+                                                         "wrong pit" % len(bad), "misses": bad[:8]})
+            return 2
         B.ticks(SETTLE)
         # A: the dried pond
         col_a = spawn("Colonist", P(4, 4), "player")
@@ -400,7 +437,10 @@ def main():
         s1, d1 = state_verdict(kc, want_trapped=False, want_pocket=True)
         s2, d2 = state_verdict(kr, want_trapped=True, want_pocket=True)
         st = "PASS" if (s1, s2) == ("PASS", "PASS") else ("UNMEASURED" if "UNMEASURED" in (s1, s2) else "FAIL")
-        row("CLIMB_ladder_prison_door", st, "MOD", {"colonist": d1, "rat": d2, "txt": [tc, tr]})
+        if not lad.get("thingsPlaced"):          # no ladder on the wall: a trapped colonist is the scene, not the mod
+            st = "UNMEASURED"
+        row("CLIMB_ladder_prison_door", st, "MOD" if st != "UNMEASURED" or lad.get("thingsPlaced") else "SITE",
+            {"colonist": d1, "rat": d2, "txt": [tc, tr], "ladder": {k: lad.get(k) for k in ("success", "thingsPlaced", "failed")}})
         # the cliff masks (PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS): on pit B's west lip (D 0 beside D 3) a person's A* has no
         # east step and a muffalo's does
         km, tm = climb("mask:%d,%d;2" % P(9, 3))
@@ -415,6 +455,8 @@ def main():
         B.ticks(SETTLE)
         k1, t1 = climb("%d,%d;2" % P(25, 3))
         st, det = walk_verdict(order(col_e, P(25, 9)), (ox + 24, oz + 2, 3, 3), want_out=True)
+        if st == "FAIL" and "joins=True" not in str(tr.get("result")):
+            st, det = "UNMEASURED", dict(det, why="the ramp did not join (%s)" % str(tr.get("result") or tr)[:80])
         row("CLIMB_ramp_walk_out", st, "MOD", dict(det, ramp=tr))
         tr2 = B.call("jawa/static_call", type=PROOF_TYPE, method="ProofRamp", args="%d,%d;off" % P(26, 3)) or {}
         B.ticks(SETTLE)
