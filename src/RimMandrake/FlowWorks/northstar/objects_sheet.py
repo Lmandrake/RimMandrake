@@ -183,7 +183,7 @@ def style_group(w, gid, kind_label, base, size_, row, out_dir):
         placed = all(r["survived"] for r in res)
         look = STYLE_LABEL[k]
         if not placed:
-            ok, got = False, "not placed"
+            ok, got = None, "not placed (nothing to read a look from: UNMEASURED, as the ladder groups do)"
         elif not suf:
             got = current_look(w, cells[0])
             ok = None if got is None else True

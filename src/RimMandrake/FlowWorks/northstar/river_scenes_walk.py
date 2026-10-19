@@ -258,7 +258,8 @@ def scene_R2(w, env):
                 time.sleep(w.args.pace)
         shot(w, shots, "R2", "p%02d" % WATCH_STEPS, "Step %d: the ford colonist should be where it started" % WATCH_STEPS, rect)
         da, db = displacement(a0, pawn_pos(w, a)), (displacement(b0, pawn_pos(w, b)) if b else None)
-        rd.append(row(w, "R2", "R2.b", None if db is None or db < 1 else (da == 0),
+        rd.append(row(w, "R2", "R2.b", None if (da is None or db is None or db < 1) else (da == 0),   # an unread ford colonist is UNMEASURED, not "moved"
+                      
                       "ford colonist moved %s; control moved %s%s" % (da, db, "" if (db or 0) >= 1 else " (control did not drift: the current is not shown running, so the ford reading is UNMEASURED)")))
         ok2, s = proof(w, PROOF, "ProofShove", "ford;3")
         rd.append(row(w, "R2", "R2.c", s.startswith("MOVED 0") if ok2 else None, "ford shove test: %s" % s[:100]))
@@ -297,27 +298,31 @@ def scene_R3(w, env):
         rect = view_rect(cells[:2], size, 40, 26)
         w.say("  %d colonists staged on edge river cells %s; pending %d" % (len(staged), cells, p0))
         shot(w, shots, "R3", "p00", "Start: colonists standing in the moving water at the map edge", rect)
-        waited, now = 0, p0
+        waited, now, reads_ok = 0, p0, 0   # reads_ok: if every follow-up book read was refused, R3.a is UNMEASURED, not "nobody swept"
         with bruise_declared(staged):
             while waited < SWEPT_MAX and now <= p0:
                 w.ticks(SWEPT_CHUNK)
                 waited += SWEPT_CHUNK
                 ok, txt = proof(w, PROOF, "ProofSwept", "read")
                 now = int(kv(txt).get("pending", now)) if ok else now
+                reads_ok += 1 if ok else 0
                 w.say("  after %d ticks: pending %d, still on map: %d of %d" % (waited, now, len([1 for c in (w.hp("colonists").get("pawns") or []) if _num(c.get("id")) in {_num(i) for i in staged}]), len(staged)))
                 time.sleep(w.args.pace)
         shot(w, shots, "R3", "swept", "After %d ticks: whoever the current carried off the edge is gone" % waited, rect)
-        rd.append(row(w, "R3", "R3.a", (now > p0), "pending %d -> %d after %d ticks (%d colonists staged)" % (p0, now, waited, len(staged))))
-        gone = {i for i in staged if _num(i) not in {_num(c.get("id")) for c in (w.hp("colonists").get("pawns") or [])}}
+        rd.append(row(w, "R3", "R3.a", (now > p0) if reads_ok else None, "pending %d -> %d after %d ticks (%d colonists staged)" % (p0, now, waited, len(staged))))
+        roster = w.hp("colonists").get("pawns") or []
+        gone = {i for i in staged if _num(i) not in {_num(c.get("id")) for c in roster}}
+        if not roster:
+            gone = None   # the roster read came back empty: cannot tell "washed away" from "unread"
         ok, ret = proof(w, PROOF, "ProofSwept", "return")
         rd.append(row(w, "R3", "R3.b", ret.startswith("SWEPT pending=0") if ok else None, "walk-home call: %s" % ret[:100]))
-        back = {i for i in gone if _num(i) in {_num(c.get("id")) for c in (w.hp("colonists").get("pawns") or [])}}
+        back = {i for i in (gone or ()) if _num(i) in {_num(c.get("id")) for c in (w.hp("colonists").get("pawns") or [])}}
         # LIVE 2026-10-17: the HoseProbe lists only THIS map's colonists; a returned pawn may walk home to another loaded map.
         # Ask the game where each washed-away pawn is now (jawa/pawn_get searches every map and the world).
-        for i in sorted(gone):
+        for i in sorted(gone or ()):
             pg = ((w.call("jawa/pawn_get", pawn=i) or {}).get("pawns") or [{}])[0]
             w.say("  after return, %s: faction %s (staged as %s), position %s" % (i, pg.get("faction"), fac0.get(i), pg.get("position")))
-        rd.append(row(w, "R3", "R3.c", None if not gone else bool(back), "washed away %s; back on the map after return: %s" % (sorted(gone), sorted(back))))
+        rd.append(row(w, "R3", "R3.c", None if not gone else bool(back), "washed away %s; back on the map after return: %s" % (sorted(gone or ()), sorted(back))))
         shot(w, shots, "R3", "home", "After the walk home: the washed-away colonists are back", rect)
         rd.append(row(w, "R3", "R3.d", None, "the 'Swept away' / 'Back from the river' letters are not read by this walk (the river suite's swept chain reads them)"))
     finally:

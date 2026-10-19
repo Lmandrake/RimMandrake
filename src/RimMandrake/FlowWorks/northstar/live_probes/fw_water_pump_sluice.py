@@ -121,7 +121,7 @@ else:
     if bid is not None:
         call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
     pw = PH._powered(B, pump)
-    ft = call("jawa/hose_probe", **{}) if False else B.hp("filltank:%d,%d=%s,120000" % (tank + (PH.LIQUID_WATER,)))   # UNITS (10,000 = one world level), not percent: 8 levels needed
+    ft = B.hp("filltank:%d,%d=%s,120000" % (tank + (PH.LIQUID_WATER,)))   # UNITS (10,000 = one world level), not percent: 8 levels needed
     # set the tank to Dump through the real gizmo (as fw_live_checks.set_job)
     import re
 
@@ -155,6 +155,10 @@ else:
     pre = None if (pw is not None and job_ok and ft.get("success") and all(d == 1 for d in d0)) else \
         "precondition: powered %s job %s filltank %s depth %s" % (pw, job_ok, ft.get("success"), d0)
     full = bool(seq) and all(v == 1 for v in seq[-1]["fills"])
+    if pre is None and (not seq or any(v is None for v in seq[-1]["fills"])):
+        pre = "fill read returned no value for a canal cell (instrument blind, not a FAIL): %s" % (seq[-1]["fills"] if seq else None)
+    if pre is None and not (bb.get("success") and not bb.get("failed")):
+        pre = "build_batch did not place the rig cleanly: %s" % {k: bb.get(k) for k in ("success", "built", "failed")}
     row("PUMP_D1_canal_fills_far_end", "UNMEASURED" if pre else ("PASS" if full else "FAIL"),
         {"pre": pre, "start": f0, "end": seq[-1]["fills"] if seq else None, "ticks": len(seq) * 250,
          "tankUnitsAfter": units, "setup": res["pump_setup"]})
@@ -193,7 +197,8 @@ below = [i for i, c in enumerate(canal2) if i not in above and c != GATE]
 last = seq[-1]["fills"]
 has_gate = "RM_Sluice" in str(res["sluice_build"]["things"]) or "Sluice" in str(res["sluice_build"]["things"])
 ok = bool(last) and all(last[i] == 1 for i in above)
-row("SLUICE_above_shut_gate_fills", "UNMEASURED" if not has_gate else ("PASS" if ok else "FAIL"),
+blind = (not last) or any(last[i] is None for i in above)   # an unread cell is UNMEASURED, never a FAIL or PASS
+row("SLUICE_above_shut_gate_fills", "UNMEASURED" if (not has_gate or blind) else ("PASS" if ok else "FAIL"),
     {"above_cells": [canal2[i] for i in above], "above_fills": [last[i] for i in above],
      "below_fills_not_scored": [last[i] for i in below], "gate_fill": last[canal2.index(GATE)], "ticks": len(seq) * 250,
      "build": res["sluice_build"]})
