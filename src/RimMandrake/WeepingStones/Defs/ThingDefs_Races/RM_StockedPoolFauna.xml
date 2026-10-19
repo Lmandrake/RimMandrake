@@ -103,7 +103,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Murrin/RM_Murrin</texPath>
           <drawSize>0.5</drawSize>
           <color>(150, 140, 110)</color>
         </bodyGraphicData>
@@ -114,7 +114,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Murrin/RM_Murrin</texPath>
           <drawSize>0.6</drawSize>
           <color>(150, 140, 110)</color>
         </bodyGraphicData>
@@ -125,7 +125,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Murrin/RM_Murrin</texPath>
           <drawSize>0.7</drawSize>
           <color>(150, 140, 110)</color>
         </bodyGraphicData>
@@ -220,7 +220,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Skarrin/RM_Skarrin</texPath>
           <drawSize>0.6</drawSize>
           <color>(200, 200, 210)</color>
         </bodyGraphicData>
@@ -231,7 +231,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Skarrin/RM_Skarrin</texPath>
           <drawSize>0.725</drawSize>
           <color>(200, 200, 210)</color>
         </bodyGraphicData>
@@ -242,7 +242,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Skarrin/RM_Skarrin</texPath>
           <drawSize>0.85</drawSize>
           <color>(200, 200, 210)</color>
         </bodyGraphicData>
@@ -452,7 +452,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vizhik/RM_Vizhik</texPath>
           <drawSize>0.5</drawSize>
           <color>(190, 195, 170)</color>
         </bodyGraphicData>
@@ -463,7 +463,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vizhik/RM_Vizhik</texPath>
           <drawSize>0.575</drawSize>
           <color>(190, 195, 170)</color>
         </bodyGraphicData>
@@ -474,7 +474,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vizhik/RM_Vizhik</texPath>
           <drawSize>0.65</drawSize>
           <color>(190, 195, 170)</color>
         </bodyGraphicData>
@@ -647,7 +647,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_Loomu/RM_Loomu</texPath>
           <drawSize>0.65</drawSize>
           <color>(150, 150, 158)</color>
         </bodyGraphicData>
@@ -658,7 +658,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_Loomu/RM_Loomu</texPath>
           <drawSize>0.75</drawSize>
           <color>(150, 150, 158)</color>
         </bodyGraphicData>
@@ -669,7 +669,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_Loomu/RM_Loomu</texPath>
           <drawSize>0.85</drawSize>
           <color>(150, 150, 158)</color>
         </bodyGraphicData>
@@ -754,7 +754,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_Huldu/RM_Huldu</texPath>
           <drawSize>0.6</drawSize>
           <color>(170, 110, 70)</color>
         </bodyGraphicData>
@@ -765,7 +765,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_Huldu/RM_Huldu</texPath>
           <drawSize>0.7</drawSize>
           <color>(170, 110, 70)</color>
         </bodyGraphicData>
@@ -776,7 +776,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_Huldu/RM_Huldu</texPath>
           <drawSize>0.8</drawSize>
           <color>(170, 110, 70)</color>
         </bodyGraphicData>
