@@ -1158,6 +1158,17 @@ OWNER_DESCRIPTION_APPEND = {
         " and the shortened lifespan is a game choice with no canon figure.",
 }
 
+# 24c7115622 (XENOTYPE_NONCOSMETIC_FIXES_1): the donors wired these species to ANOTHER
+# species' namer; no right one exists, so they take default names. verify() does not
+# count them as having lost a name.
+NAMER_DROPPED = {
+    "RSW_RimMandrakeIthorian": "RSW_KoTOR_NamerSullustan",
+    "RSW_RimMandrakeMonCalamari": "RSW_KoTOR_NamerQuarren",
+    "RSW_RimMandrakeUgnaught": "RSW_KoTOR_NamerDevaronian",
+    "RSW_RimMandrakeKelDor": "RSW_KoTOR_NamerDuros",
+    "RSW_RimMandrakeKaleesh": "RSW_KoTOR_NamerNagai",
+}
+
 _SHIPPED_GENES = {}
 
 
@@ -1178,6 +1189,9 @@ def apply_owner_tables(els):
             for g in OWNER_GENE_ADDITIONS.get(dn, ()):
                 if g not in have:
                     ET.SubElement(gl, "li").text = g
+        nm = e.find("nameMaker")
+        if nm is not None and nm.text == NAMER_DROPPED.get(dn):
+            e.remove(nm)
         t = OWNER_DESCRIPTION_APPEND.get(dn)
         d = e.find("description")
         if t and d is not None and t not in (d.text or ""):
@@ -2146,10 +2160,18 @@ def verify():
     # today with the donors installed; that is not a regression and not a fail.
     x, _ = load_dump()
     _dd, _, _ = index_donors()          # same reason as main(): see species_table
+    # 🔴 The dump ALONE read "donors named 0" once the donors left it, and a check
+    # whose expected set is empty passes vacuously. The donors' XML on disk is the
+    # same fallback species_table and _gene_exists use (2026-10-18).
     expect = {clean_name(sp) for sp, cand in species_table(x, _dd).items()
               if sp not in DROP_SPECIES
-              and any(c and c in x and x[c]["fields"].get("nameMaker")
+              and any(c and ((c in x and x[c]["fields"].get("nameMaker"))
+                             or (c in _dd and _dd[c][1].findtext("nameMaker")))
                       for c in cand)}
+    if not expect:
+        print("   ⚠️ species the donors named: 0 - the instrument is blind; failing")
+        return False
+    expect -= set(NAMER_DROPPED)
     xd = os.path.join(OUT, "Defs/XenotypeDefs")
     named, namers = set(), set()
     for f in sorted(os.listdir(xd)):
