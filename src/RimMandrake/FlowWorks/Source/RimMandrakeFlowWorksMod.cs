@@ -891,7 +891,10 @@ namespace RimMandrake.FlowWorks
             ApplyChangedSettings();
             Rect view = new Rect(0f, 0f, inRect.width - 24f, lastListHeight > 0f ? lastListHeight + 40f : 11600f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            // maxOneColumn is load-bearing (FLOWWORKS_SETTINGS_MEND_EMPTY_BELOW_RESET): without it, content taller than view
+            // wraps into a second column at x = view.width + 17, outside the scroll view, and CurHeight then reports only that
+            // last column, so lastListHeight shrinks every frame until nothing below "Reset all" is left in column one.
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
             System.Exception drawFailure = null;
             try
