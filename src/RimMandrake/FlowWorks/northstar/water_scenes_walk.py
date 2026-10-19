@@ -381,6 +381,9 @@ class Walk(object):
     def frame(self, rect):
         x, z, w, h = rect
         self.call("jawa/clear_ui", all=True)
+        # frame_cell_rect never zooms IN past the current zoom (rimworld-live-review): start at the closest zoom so a
+        # 12x8 'close' rect is really close (live 2026-10-19: every hoses '_close' shot was a half-map view)
+        self.call("rimworld/set_camera_zoom", rootSize=8)
         self.call("rimworld/frame_cell_rect", x=x, z=z, width=w, height=h, paddingCells=2)
 
     def shot(self, name, rect):
