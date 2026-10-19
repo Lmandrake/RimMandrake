@@ -59,14 +59,17 @@ namespace RimMandrake.FlowWorks
 				}
 				// An intact cover is ground (same predicate as RM_PitExposure / RM_PitPathing / the shooting
 				// patch): a pawn walking on it is not immersed in the fill beneath (GPT FlowWorks review #4).
-				if (Pits.RM_SpanUtility.DeckedAt(map, c))
+				// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: on a grate the fill splashes up (toxin at half the rate, never drowning);
+				// a pawn in the floor band under a deck is in the fill
+				float share = Pits.RM_GrateEffects.SplashShare(Pits.RM_SpanUtility.DeckAt(map, c), p);
+				if (share <= 0f)
 				{
 					continue;
 				}
 				int depth = ex.DepthAt(c);
 				FluidDef fluid = ex.FluidAt(c) ?? ex.ActiveFluid;
 				bool flying = p.Flying;
-				if (drown && drowning != null)
+				if (drown && drowning != null && share >= 1f)
 				{
 					float add = RM_Drowning.PerCheck(map, ex, p, c, ex.WaterMetresAt(c));
 					if (add > 0f)
@@ -77,7 +80,7 @@ namespace RimMandrake.FlowWorks
 				if (poison && fluid != null && fluid.toxicPerDayAtBrim > 0f && HediffDefOf.ToxicBuildup != null)
 				{
 					float res = p.GetStatValue(StatDefOf.ToxicEnvironmentResistance);
-					float add = RM_FillEffectMath.ToxinPerCheck(fill, depth, fluid.toxicPerDayAtBrim, res, flying);
+					float add = share * RM_FillEffectMath.ToxinPerCheck(fill, depth, fluid.toxicPerDayAtBrim, res, flying);
 					if (add > 0f)
 					{
 						HealthUtility.AdjustSeverity(p, HediffDefOf.ToxicBuildup, add);

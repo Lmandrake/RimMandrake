@@ -115,6 +115,25 @@ namespace RimMandrake.FlowWorks
 			return AttachChance(inPit && !onIntactCover);
 		}
 	
+		/// <summary>SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP (parent design §4.1): a grated deck passes the fire below to the people
+		/// on it at this share of the open-pit (trapped) chance; a solid deck keeps the open-cell chance.</summary>
+		public const float GratedOpenPitFactor = 0.75f;
+
+		/// <summary>C4-F7 plus the grate: a flyer is never lit; a pawn on an intact GRATED deck over the fire catches at the
+		/// open-pit chance × <see cref="GratedOpenPitFactor"/>; on a solid deck or cover, the open-cell chance.</summary>
+		public static float AttachChance(bool inPit, bool onIntactDeck, bool flying, bool grated)
+		{
+			if (flying)
+			{
+				return 0f;
+			}
+			if (onIntactDeck && grated)
+			{
+				return AttachChance(true) * GratedOpenPitFactor;
+			}
+			return AttachChance(inPit, onIntactDeck, false);
+		}
+
 		/// <summary>Rain douse chance per 60-tick check on an open burning cell. PROVISIONAL: 0.03 at full rain.</summary>
 		public static float RainDouseChance(float rainRate)
 		{

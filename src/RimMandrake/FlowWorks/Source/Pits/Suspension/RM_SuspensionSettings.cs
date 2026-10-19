@@ -7,8 +7,8 @@ namespace RimMandrake.FlowWorks.Pits
 	/// design/RimMandrake/flowworks_bridges_design_2026-10-17.md §9 this item makes real). Own static class, scribed into the
 	/// FlowWorks settings file from RimMandrakeFlowWorksSettings.ExposeData and drawn by its window, the same shape as
 	/// RM_SprinklerSettings. Defaults = shipped behaviour. All off: no build buttons, existing bridges stay as plain walkable
-	/// decks that never break from weight or a lost anchor; nothing is deleted from a save. The other §9 rows (walk under,
-	/// grates, sunken bridges, floods) arrive with their own items.</summary>
+	/// decks that never break from weight or a lost anchor; nothing is deleted from a save. Each later suspension item adds its
+	/// own §9 rows here (grates: SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP).</summary>
 	public static class RM_SuspensionSettings
 	{
 		public static bool suspensionBridgesBuildable = true;
@@ -18,6 +18,9 @@ namespace RimMandrake.FlowWorks.Pits
 		public static bool suspensionAnchorLossFalls = true;
 		public static bool vanillaBridgeRefusedOverDug = true;
 		public static bool suspensionOwnPeopleFall = true;
+		// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP
+		public static bool grateFirePasses = true;
+		public static bool grateDrainsSpills = true;
 
 		public static void ExposeData()
 		{
@@ -28,6 +31,8 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref suspensionAnchorLossFalls, "suspensionAnchorLossFalls", true);
 			Scribe_Values.Look(ref vanillaBridgeRefusedOverDug, "vanillaBridgeRefusedOverDug", true);
 			Scribe_Values.Look(ref suspensionOwnPeopleFall, "suspensionOwnPeopleFall", true);
+			Scribe_Values.Look(ref grateFirePasses, "grateFirePasses", true);
+			Scribe_Values.Look(ref grateDrainsSpills, "grateDrainsSpills", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -55,6 +60,13 @@ namespace RimMandrake.FlowWorks.Pits
 			list.CheckboxLabeled("Your own people fall when a bridge gives way", ref suspensionOwnPeopleFall,
 				"On: everyone on a span that gives way falls, your own colonists included. Off: your own people are set down on the "
 				+ "nearest anchor instead (others still fall).");
+			list.CheckboxLabeled("Grates pass fire to people above", ref grateFirePasses,
+				"On: burning liquid under a grated suspension bridge sets the people on it alight far more often than a solid deck "
+				+ "(three quarters of the chance down in the fire itself), and the hot grating burns them over time. Off: grated decks "
+				+ "shield like solid ones.");
+			list.CheckboxLabeled("Grates drain spills into the hole below", ref grateDrainsSpills,
+				"On: liquid spilled or poured on a grated suspension bridge over dug ground drains into the hole below it (nothing is "
+				+ "lost; items stay on the deck). Off: spills stay on the deck as puddles.");
 		}
 	}
 }

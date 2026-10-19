@@ -506,13 +506,23 @@ namespace RimMandrake.FlowWorks
 			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: trapped in the burning pit = down a pit (RM_PitRooms.IsPitFloor: a person-band
 			// pocket at any depth), never "dug 2 m"; an intact cover is ground, so its occupant is never trapped
 			bool heldInPit = RM_PitRooms.IsPitFloor(map, ex, c);
+			// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: a grated deck over the inferno passes it to the people on it
+			bool grated = Pits.RM_GrateEffects.GratePassesFire(map, c);
 			List<Thing> things = map.thingGrid.ThingsListAt(c);
 			for (int t = things.Count - 1; t >= 0; t--)
 			{
-				if (things[t] is Pawn p && !p.Dead && !p.Flying
-					&& Rand.Chance(heldInPit ? 1f : RM_FuelFireMath.InfernoAttachInCell))
+				if (things[t] is Pawn p && !p.Dead && !p.Flying)
 				{
-					p.TryAttachFire(heldInPit ? 1f : 0.6f, null);
+					bool held = heldInPit || Pits.RM_GrateEffects.UnderDeck(p);
+					if (Rand.Chance(held ? 1f : grated ? System.Math.Max(RM_FuelFireMath.InfernoAttachInCell, RM_FireMath.AttachChance(false, true, false, true))
+						: RM_FuelFireMath.InfernoAttachInCell))
+					{
+						p.TryAttachFire(held ? 1f : 0.6f, null);
+					}
+					if (grated && !held)
+					{
+						Pits.RM_GrateEffects.Scorch(p);
+					}
 				}
 			}
 			for (int d = 0; d < 8; d++)
@@ -553,13 +563,27 @@ namespace RimMandrake.FlowWorks
 			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: down a pit at any depth (RM_PitRooms.IsPitFloor), never "dug 2 m". C4-F7: a pawn
 			// on an intact cover is above the pit, not trapped in it (IsPitFloor already reads a covered square as ground); a flyer
 			// is above the fire.
+			// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: a GRATED deck over the fire passes it up (open-pit chance × 0.75, and vanilla
+			// Burn injuries over time); a solid deck keeps the open-cell chance. SUSPENSION_UNDERPASS: a pawn in the floor band
+			// under a deck is down in the burning hole.
 			bool heldInPit = RM_PitRooms.IsPitFloor(map, ex, c);
+			bool onDeck = Pits.RM_SpanUtility.DeckedAt(map, c);
+			bool grated = Pits.RM_GrateEffects.GratePassesFire(map, c);
 			List<Thing> things = map.thingGrid.ThingsListAt(c);
 			for (int t = things.Count - 1; t >= 0; t--)
 			{
-				if (things[t] is Pawn p && !p.Dead && Rand.Chance(RM_FireMath.AttachChance(heldInPit, false, p.Flying)))
+				if (!(things[t] is Pawn p) || p.Dead)
 				{
-					p.TryAttachFire(heldInPit ? 1f : 0.4f, null);
+					continue;
+				}
+				bool held = heldInPit || Pits.RM_GrateEffects.UnderDeck(p);
+				if (Rand.Chance(RM_FireMath.AttachChance(held, onDeck && !held, p.Flying, grated)))
+				{
+					p.TryAttachFire(held ? 1f : grated ? 0.6f : 0.4f, null);
+				}
+				if (grated && !held && !p.Flying)
+				{
+					Pits.RM_GrateEffects.Scorch(p);
 				}
 			}
 		}

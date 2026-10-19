@@ -154,7 +154,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 Assert(!defs.Contains("<label>bridge") && !defs.Contains("span</label>"), "player-facing names never say a bare bridge or span");
                 int noDefault = defs.Split(new[] { "<canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>" }, StringSplitOptions.None).Length - 1;
-                Assert(noDefault == 9, "decks, anchors and the railing get no plain per-square button (" + noDefault + ")");
+                Assert(noDefault == 11, "decks (grated included), anchors and the railing get no plain per-square button (" + noDefault + ")");
                 string patch = ModFile("Patches", "Pits", "RM_SuspensionBridges.xml");
                 foreach (string n in new[] { "Rope", "Timber", "Steel", "Heavy" })
                 {
@@ -163,6 +163,65 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string designator = Src("Pits", "Suspension", "Designator_SuspensionBridge.cs");
                 Assert(designator.Contains("public class Designator_SuspensionBridge_Timber : Designator_SuspensionBridge"), "designator classes exist");
                 Assert(designator.Contains("RM_SuspensionSettings.suspensionBridgesBuildable && base.Visible"), "settings off: no build button");
+            });
+            // SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP (parent design §4.1; Q4 spilled liquid only): verify row L1 and the wiring.
+            Case("Grate_fire_attach_open_pit_times_three_quarters", () =>
+            {
+                float open = RM_FireMath.AttachChance(true, false, false);
+                float solid = RM_FireMath.AttachChance(false, true, false, false);
+                float grate = RM_FireMath.AttachChance(false, true, false, true);
+                Assert(Math.Abs(grate - open * 0.75f) < 1e-6f, "verify L1: grated chance = open-pit chance × 0.75 (" + grate + ")");
+                Assert(grate > solid, "verify L1: grated > solid attach chance (" + grate + " vs " + solid + ")");
+                Assert(solid == RM_FireMath.AttachChance(false), "a solid deck keeps today's open-cell chance");
+                Assert(RM_FireMath.AttachChance(false, true, true, true) == 0f, "can-fail: a flyer over a grate is never lit");
+                Assert(RM_FireMath.AttachChance(true, false, false, true) == open, "no deck: the grate flag changes nothing (trapped stays certain)");
+            });
+
+            Case("Grate_drain_splash_and_types", () =>
+            {
+                Assert(RM_SuspensionMath.GrateDrainDl(true, true, true, 500, 9999) == 500, "a 50 L spill on a grate over a dug square drains whole");
+                Assert(RM_SuspensionMath.GrateDrainDl(true, true, true, 500, 120) == 120, "only what the hole has room for drains");
+                Assert(RM_SuspensionMath.GrateDrainDl(false, true, true, 500, 9999) == 0, "can-fail: a solid deck keeps its spill");
+                Assert(RM_SuspensionMath.GrateDrainDl(true, false, true, 500, 9999) == 0, "setting off: spills stay on the grate");
+                Assert(RM_SuspensionMath.GrateDrainDl(true, true, false, 500, 9999) == 0, "nothing drains where nothing is dug below");
+                Assert(RM_SuspensionMath.GrateSplashChance(0.4f) == 0.2f, "splash reaches a grate at half the open-pit chance");
+                Assert(RM_SuspensionMath.MayBeGrated(SuspensionTier.Steel) && RM_SuspensionMath.MayBeGrated(SuspensionTier.Heavy)
+                    && !RM_SuspensionMath.MayBeGrated(SuspensionTier.Timber) && !RM_SuspensionMath.MayBeGrated(SuspensionTier.Rope),
+                    "only steel and heavy come grated");
+            });
+
+            Case("Grate_wiring_sites_defs_settings", () =>
+            {
+                string fire = Src("RM_LiquidFire.cs");
+                Assert(fire.Contains("Pits.RM_GrateEffects.GratePassesFire(map, c)") && fire.Contains("Pits.RM_GrateEffects.Scorch(p);"),
+                    "the liquid fire's effects read the grate and burn the people on it");
+                Assert(Src("RM_SlimeSlip.cs").Contains("float chance = share * RM_SlimeMath.SlipChance("), "slime splash on a grate is scaled by its share");
+                string fx = Src("RM_PitFillEffects.cs");
+                Assert(fx.Contains("if (drown && drowning != null && share >= 1f)") && fx.Contains("float add = share * RM_FillEffectMath.ToxinPerCheck("),
+                    "toxic fill splashes onto a grate at its share; nobody drowns on a deck");
+                string spill = Src("Machinery", "RM_LiquidSpill.cs");
+                Assert(spill.IndexOf("Pits.RM_GrateEffects.DrainSpill(map, cell, liquid?.canalFluid, units)") >= 0
+                    && spill.IndexOf("Pits.RM_GrateEffects.DrainSpill(") < spill.IndexOf("units -= ReturnToPond(map, cell, liquid, units);"),
+                    "a spill on a grate drains before any filth or pond return");
+                string fx2 = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
+                Assert(fx2.Contains("new DamageInfo(DamageDefOf.Burn, RM_SuspensionMath.GrateBurnDamage)"), "burns on a grate are vanilla Burn injuries (no new hediff)");
+                Assert(fx2.Contains("RM_SuspensionSettings.grateFirePasses") && fx2.Contains("RM_SuspensionSettings.grateDrainsSpills"), "both grate settings are read");
+                string set = Src("Pits", "Suspension", "RM_SuspensionSettings.cs");
+                Assert(set.Contains("\"Grates pass fire to people above\"") && set.Contains("\"Grates drain spills into the hole below\"")
+                    && set.Contains("Scribe_Values.Look(ref grateFirePasses, \"grateFirePasses\", true);"), "the two grate settings are shown and saved");
+                Assert(Src("Pits", "Suspension", "Building_SuspensionDeck.cs").Contains("public override bool Grated =>"), "a suspension deck exposes IsGrated (Grated)");
+                string defs = ModFile("Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml");
+                foreach (string n in new[] { "Steel", "Heavy" })
+                {
+                    int at = defs.IndexOf("<defName>RM_SuspensionDeck_" + n + "Grated</defName>");
+                    Assert(at >= 0, n + ": grated deck def");
+                    int end = defs.IndexOf("</ThingDef>", at);
+                    Assert(defs.Substring(at, end - at).Contains("<grated>true</grated>"), n + ": the grated deck carries grated=true");
+                }
+                Assert(!defs.Contains("RM_SuspensionDeck_TimberGrated") && !defs.Contains("RM_SuspensionDeck_RopeGrated"), "can-fail: no wooden grate");
+                string patch = ModFile("Patches", "Pits", "RM_SuspensionBridges.xml");
+                Assert(patch.Contains("Designator_SuspensionBridge_SteelGrated") && patch.Contains("Designator_SuspensionBridge_HeavyGrated"),
+                    "the two grated build buttons are registered");
             });
             // textures: selftest_flowworks_suspension_art.py (the SelfTest staging copies no Textures folder)
         }

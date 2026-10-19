@@ -349,6 +349,13 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return;
 			}
+			// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP (Q4: spilled liquid only): a spill on a grated deck over a dug square drains
+			// into the hole below (stock conserved); no filth lies on the grate for what drained
+			units -= (int)Pits.RM_GrateEffects.DrainSpill(map, cell, liquid?.canalFluid, units);
+			if (units <= 0)
+			{
+				return;
+			}
 			// C1-F11: a spill over the liquid's own pond (no filth lies on water) goes back into the pond's stock first, never
 			// out of the ledger
 			units -= ReturnToPond(map, cell, liquid, units);
