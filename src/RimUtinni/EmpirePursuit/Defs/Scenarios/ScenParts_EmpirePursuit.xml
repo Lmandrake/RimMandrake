@@ -18,7 +18,6 @@
     <surveyShadowBiomes>
       <li MayRequire="mandrake.rut.patches">RUT_Abyss</li> <!-- the campaign def the world's tiles carry -->
       <li MayRequire="mandrake.rm.biomes">RM_Abyss</li> <!-- the free-tier biome -->
-      <li MayRequire="sarg.alphabiomes">AB_RockyCrags</li> <!-- Alpha Biomes donor def, relabelled "the Abyss" -->
     </surveyShadowBiomes>
   </ScenPartDef>
 </Defs>
