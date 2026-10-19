@@ -8,7 +8,7 @@
     <label>drowned ledger</label>
     <description>A farm's account book, swollen and stuck together, the ink run to grey. The first pages are seed counts and harvest weights. Then the entries get shorter: "south field soft again." "Moved the fence back." "Corn tastes of it now." "Moved the fence back." The last page is a single line, written hard enough to tear the paper: "It is not mud."</description>
     <graphicData>
-      <texPath>Things/Item/Book/Novel/Novel</texPath>
+      <texPath>Things/Item/Book/RM_SlimeFarmLedger/RM_SlimeFarmLedger</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.8</drawSize>
       <color>(150,160,130)</color>

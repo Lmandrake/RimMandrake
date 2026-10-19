@@ -39,7 +39,7 @@
       <li>PlantMatter</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/PlantFoodRaw/PsychoidLeaves</texPath>
+      <texPath>Things/Item/Resource/PlantFoodRaw/RM_StenchSporeExtract/RM_StenchSporeExtract</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(120, 145, 40)</color>
     </graphicData>

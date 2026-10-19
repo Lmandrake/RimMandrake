@@ -163,7 +163,7 @@
     <category>Building</category>
     <altitudeLayer>Building</altitudeLayer>
     <graphicData>
-      <texPath>Things/Building/Misc/MoisturePump</texPath>
+      <texPath>Things/Building/Misc/RM_WindVaporatorWreck/RM_WindVaporatorWreck</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(140,120,100)</color>
       <damageData>
