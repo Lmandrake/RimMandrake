@@ -3556,10 +3556,11 @@ def _x10_canal_fire(L):
             else:
                 L.row("X10_canal_fire", False, "HARNESS", "ProofIgnite did not run: %s" % lit[:200], status="UNMEASURED")
             return
+        # pass 2 (2026-10-19): 850 of 1000 ran with the bridge default timeout; every other step here passes one
         tk0 = L.eng().get("ticksGame")
-        B.call("rimworld/step_game_ticks", ticks=750)
+        B.call("rimworld/step_game_ticks", ticks=750, pauseFirst=True, timeoutMs=120000)
         burn1 = _things_at(B, FLAME, run)
-        B.call("rimworld/step_game_ticks", ticks=250)
+        B.call("rimworld/step_game_ticks", ticks=250, pauseFirst=True, timeoutMs=120000)
         burn2 = _things_at(B, FLAME, run)
         tk_burn = (L.eng().get("ticksGame") or 0) - (tk0 or 0)
         if tk_burn < 900:                  # the day-3 symptom: steps that report success and run 0 ticks
@@ -3574,7 +3575,7 @@ def _x10_canal_fire(L):
         # (a sheet) still burns. Spent = F 0, 0 L in every square (ProofReadout) and no flame, or the 6,000-tick cap.
         lit = []
         for _ in range(6):
-            B.call("rimworld/step_game_ticks", ticks=1000)
+            B.call("rimworld/step_game_ticks", ticks=1000, pauseFirst=True, timeoutMs=120000)
             e = B.call("jawa/flowworks_engine_state")
             _, fr, _ = _fluid_row(L, run)
             fv = [fr.get(c, {}).get("f") for c in run]
