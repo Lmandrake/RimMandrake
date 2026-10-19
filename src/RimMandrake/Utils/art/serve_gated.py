@@ -8,12 +8,16 @@ that route refuses any sheet whose PICTURES are game art (game_art.classify), wh
 Same arguments as the review-sheets skill's serve_sheet.py (it is exec'd after the check). A sheet that never passed
 `scaled_review_gate` (no stamp), or was edited after it (stamp mismatch), is REFUSED with exit 4 and nothing starts.
 Stamp: `python3 scaled_review_gate.py check <sheet> --stamp` (stamps only a passing sheet).
-FRESH OR REFUSE (ART_SHEET_REDESIGN_FRESH_OR_REFUSE): a stamped sheet any row of which no longer shows what is installed
-(sheet_freshness.verify_html, re-measured from disk) is REFUSED with exit 5; a running server re-checks on every page
-load and serves a refusal page in place of a sheet that went stale. There is NO override (owner, by card 2026-10-14:
-remove the escape hatch): a stale sheet is never served; the only way forward is a rebuild.
+STALE ROWS ARE LABELLED, NOT THE SHEET REFUSED (owner, by card 2026-10-19: "How far do we go to make art review fast
+and reliable? → Python command, no agent before you see it", relaxing his 2026-10-14 card "stale sheets are refused" to
+"stale rows are refused"). Freshness is still re-measured from disk (sheet_freshness.verify_html) at start and on every
+page load. A row that no longer shows what is installed is served with a red `STALE: <reason>` badge and its pick
+controls switched off (notes and the per-picture delete still work: both are content-addressed); the other rows are
+usable. A sheet-level input change gets a banner. Only a page with NO readable ITEMS block (freshness unmeasurable) is
+refused, exit 5; a measurement that throws marks EVERY row stale (fail closed) rather than serving it as fresh.
 """
 import hashlib
+import json
 import os
 import sys
 import time
@@ -49,28 +53,103 @@ def guard_ops(ops: dict, disk_decisions: dict) -> dict:
 
 FRESH_MEMO_S = 5.0     # a page load never sees a measurement of the world older than this
 
+STALE_JS = r"""<script id="STALE_ROWS" type="application/json">%s</script>
+<style>.bs-stale{background:#8a1f1f;color:#fff;font:bold 12px/1.35 sans-serif;padding:4px 9px;border-radius:4px;margin:3px 0 5px;display:block}
+.row-stale{outline:2px solid #c0392b;outline-offset:-2px}.row-stale [data-act]:not([data-act=purge]){opacity:.45;cursor:not-allowed}
+#stale-banner{position:sticky;top:0;z-index:50;background:#8a1f1f;color:#fff;font:bold 13px sans-serif;padding:6px 12px}</style>
+<script>(() => {
+  const S = JSON.parse(document.getElementById('STALE_ROWS').textContent), rows = S.rows || {}, all = S.all || null;
+  const why = id => rows[id] || all;
+  const paint = () => {
+    if ((S.sheet || all) && !document.getElementById('stale-banner')) {
+      const b = document.createElement('div'); b.id = 'stale-banner';
+      b.textContent = 'STALE: ' + (all ? all.join(' · ') : 'sheet inputs changed since the build: ' + S.sheet.join(' · ')).slice(0, 400)
+        + (S.n ? ' — ' + S.n + ' row(s) labelled; picks on them are off until the sheet is rebuilt, notes still save' : '');
+      document.body.prepend(b);
+    }
+    document.querySelectorAll('.row[data-id]').forEach(el => {
+      const w = why(el.dataset.id); if (!w) return;
+      el.classList.add('row-stale');
+      if (!el.querySelector('.bs-stale')) {
+        const b = document.createElement('div'); b.className = 'bs-stale';
+        b.textContent = 'STALE: ' + w.join(' · ').slice(0, 300) + ' — picks on this row are off until it is rebuilt; your note still saves';
+        el.prepend(b);
+      }
+    });
+  };
+  /* window capture runs before the page's own document-level handler: a pick on a stale row never reaches SLX */
+  const block = e => { const a = e.target.closest && e.target.closest('[data-act]'); if (!a || a.dataset.act === 'purge') return;
+    const r = a.closest('.row[data-id]'); if (!r || !why(r.dataset.id)) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type === 'click') alert('This row is STALE (' + why(r.dataset.id).join(' · ').slice(0, 200) + '). Picks on it are off until the sheet is rebuilt; type in the note instead.'); };
+  addEventListener('click', block, true); addEventListener('change', block, true);
+  new MutationObserver(paint).observe(document.documentElement, {childList: true, subtree: true});
+  addEventListener('load', paint); paint();
+})();</script>"""
+
+
+def stale_payload(r: dict) -> dict | None:
+    """{rows: {row: [reasons]}, sheet: [reasons], all: [reasons]|None, n} or None when nothing is stale."""
+    if r.get("error"):
+        return {"rows": {}, "sheet": [], "all": [r["error"]], "n": r.get("rows") or 0}
+    st = dict(r.get("stale") or {})
+    sheet = st.pop("_sheet", [])
+    if not st and not sheet:
+        return None
+    return {"rows": st, "sheet": sheet, "all": None, "n": len(st)}
+
+
+def label_stale(html: bytes, r: dict) -> bytes:
+    """The served page with every stale row badged (and its picks off). A fresh sheet is returned byte-identical."""
+    pay = stale_payload(r)
+    if pay is None:
+        return html
+    tag = (STALE_JS % json.dumps(pay).replace("</", "<\\/")).encode("utf-8")
+    low = html.lower()
+    at = low.rfind(b"</body>")
+    return html[:at] + tag + html[at:] if at != -1 else html + tag
+
 
 def fresh_gate(sheet: Path):
-    """Freshness on every page load (ART_SHEET_REDESIGN_FRESH_OR_REFUSE): returns a function html_bytes -> bytes that
-    re-measures the sheet against disk and serves the REFUSAL page instead of a sheet any row of which is stale."""
+    """Freshness on every page load: returns a function html_bytes -> bytes that re-measures the sheet against disk and
+    LABELS each stale row on the served page (owner, by card 2026-10-19). Only a page with no readable ITEMS block is
+    replaced by the refusal page: there is nothing to label."""
     import sheet_freshness as FR
-    memo = {"at": 0.0, "key": None, "r": None}
+    memo = {"at": 0.0, "key": None, "r": None, "said": None}
 
     def gate(html: bytes) -> bytes:
         key = hashlib.sha256(html).hexdigest()
         if memo["key"] != key or time.time() - memo["at"] > FRESH_MEMO_S:
             try:
                 memo["r"] = FR.verify_html(sheet, html=html.decode("utf-8", "replace"))
-            except Exception as e:      # noqa: BLE001  unmeasured is refused, never served as fresh
+            except Exception as e:      # noqa: BLE001  unmeasured is labelled stale everywhere, never served as fresh
                 memo["r"] = {"fresh": False, "rows": 0, "stale": {}, "manifest": False,
-                             "error": f"freshness UNMEASURED ({type(e).__name__}: {e})"}
+                             "error": f"freshness UNMEASURED ({type(e).__name__}: {e})", "measure_failed": True}
             memo.update(at=time.time(), key=key)
         r = memo["r"]
         if r["fresh"]:
             return html
-        print(FR.report(sheet.name, r, limit=10), file=sys.stderr, flush=True)
-        return FR.refusal_page(sheet.name, r)
+        line = FR.report(sheet.name, r, limit=10)
+        if line != memo["said"]:                       # once per change, not once per page load
+            print(line, file=sys.stderr, flush=True)
+            memo["said"] = line
+        if r.get("error") and not r.get("measure_failed"):
+            return FR.refusal_page(sheet.name, r)
+        return label_stale(html, r)
     return gate
+
+
+def startup_freshness(p: Path, ctx=None) -> int:
+    """0 = serve (stale rows, if any, are labelled on the page); 5 = refused (no readable ITEMS: nothing to label)."""
+    import sheet_freshness as FR
+    r = FR.verify_html(p, ctx)
+    if r.get("error"):
+        print(f"REFUSED serve_gated: {FR.report(p.name, r, limit=20)}", file=sys.stderr)
+        return 5
+    if not r["fresh"]:
+        print(f"SERVING WITH STALE ROWS LABELLED: {FR.report(p.name, r, limit=20)}\nEach stale row shows a STALE badge and "
+              f"its picks are off; rebuild (art_sheet.py with the same arguments) to clear them.", file=sys.stderr, flush=True)
+    return 0
 
 
 def serve_with_followed_guard(argv: list[str], fresh=None) -> int:
@@ -138,14 +217,11 @@ def main(argv: list[str]) -> int:
         print(f"REFUSED serve_gated: {p.name}: {msg}.\nBuild it with art_sheet.py --biome <RM_X> (gated), or stamp a sheet that "
               f"passes with `scaled_review_gate.py check {p.name} --stamp`.", file=sys.stderr)
         return 4
-    # FRESH OR REFUSE (owner 2026-10-12): a stamped art sheet any row of which no longer shows what is installed is not
-    # started, and a running one re-checks on every page load (a stale page is replaced by the refusal page)
-    import sheet_freshness as FR
-    r = FR.verify_html(p)
-    if not r["fresh"]:
-        print(f"REFUSED serve_gated: {FR.report(p.name, r, limit=20)}\nRebuild it (art_sheet.py with the arguments that "
-              f"built it, or refresh_sheets.py); this check re-measures disk, so a rebuilt sheet serves.", file=sys.stderr)
-        return 5
+    # freshness re-measured at start and on every page load (owner 2026-10-12); since his card of 2026-10-19 a stale ROW is
+    # labelled and its picks switched off, and the rest of the sheet serves
+    rc = startup_freshness(p)
+    if rc:
+        return rc
     return serve_with_followed_guard(argv, fresh=fresh_gate(p))
 
 

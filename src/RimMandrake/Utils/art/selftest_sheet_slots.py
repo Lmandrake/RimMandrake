@@ -11,8 +11,8 @@
            · retire of a live picture: redraw, stays until replaced — unless another set is in use there: then both stand
              in ONE pass (owner 2026-10-12), either click order
            · no accept-unchanged control; a seeded agent prefill never reads as a pick (owner provenance)
-           · `in random pool` only on a pool lane, never pre-ticked; "add all new renders" adds renders only
-           · an unassigned render cannot be used until labelled; a catch row's reference renders never
+           · `in random pool` logic (data saved before 2026-10-19 still enacts; the page offers no pool verb now)
+           · an unassigned render is used by `use` (labels + picks) or `not needed`; a catch row's reference renders never
            · a schema-1 record upgrades on edit: variants -> legacyVariants, a default list -> legacyVariantsDefault
            · needs-you lists required slots with no answer and unlabelled renders; asks set and clear
            · an old tick (legacyVariants) is answered IN the row: keep / drop toggle, clicking again takes it back,
@@ -125,6 +125,9 @@ S.assign(it, u, 'E', 'R/Young'); o.pickAssigned = S.pick(it, u, 'R/Young', 'E');
 let a = {decision: '', note: ''}; S.slotButton(it, a, 'R/Grown', 'accept'); o.accept = cp(a);
 let m = {decision: 'B', note: '', variants: ['B', 'C'], at: 'x'}; S.v2(m); o.v2 = cp(m);
 let md = {decision: 'B', note: '', variants: ['B', 'C'], variantsDefault: true}; S.v2(md); o.v2d = cp(md);
+let us = {decision: '', note: ''}; o.use1 = S.useRender(it, us, 'E'); o.afterUse = cp(us); o.use2 = S.useRender(it, us, 'E'); o.afterUnuse = cp(us);
+let nn = {decision: '', note: ''}; S.notNeeded(it, nn, 'E'); o.nn = cp(nn); S.notNeeded(it, nn, 'E'); o.nnBack = cp(nn);
+o.tgtYoung = S.useTarget(it, {hint: 'young'}).key; o.tgtNone = S.useTarget(it, {hint: ''}).key;
 let n = {decision: '', note: ''}; o.need = S.needsYou(it, n); S.assign(it, n, 'E', 'not_needed'); o.need2 = S.needsYou(it, n);
 o.noAcceptAll = typeof S.acceptAll === 'undefined';
 let r1 = {decision: '', note: '', prefill: 'A'}; S.pick(it, r1, 'R/Young', 'G'); o.rpMsg = S.retire(it, r1, 'R/Young', 'D'); o.pickRetire = cp(r1);
@@ -184,6 +187,12 @@ console.log(JSON.stringify(o));
     check(o["v2"].get("legacyVariants") == ["B", "C"] and "variants" not in o["v2"], "a schema-1 tick list upgrades to legacyVariants on edit")
     check(o["v2d"].get("legacyVariantsDefault") == ["B", "C"] and not o["v2d"].get("legacyVariants"),
           "a machine-default list upgrades to legacyVariantsDefault, never his")
+    check(o["use1"]["ok"] and o["afterUse"]["assign"] == {"E": "R/Grown"} and o["afterUse"]["decision"] == "E"
+          and o["afterUse"]["slots"]["R/Grown"]["pick"] == "E", "use: labels the render for its slot (assign, same field) AND picks it")
+    check(o["use2"]["ok"] and not (o["afterUnuse"].get("assign") or {}) and o["afterUnuse"]["decision"] == "",
+          "use clicked again takes back both the label and the pick")
+    check(o["nn"]["assign"] == {"E": "not_needed"} and not (o["nnBack"].get("assign") or {}), "not needed writes assign not_needed; again takes it back")
+    check(o["tgtYoung"] == "R/Young" and o["tgtNone"] == "R/Grown", "use goes to the slot the job name hints at, else the primary slot")
     check(o["need"] == ["1 render unassigned"] and o["need2"] == [],
           "needs-you: only the unlabelled render — a required slot with art in game is kept on return, never nagged")
     check(o["asks"] == {"rename": {"name": "Gloamling"}, "describe": "improve"} and o["asksCleared"], "asks set and clear")
@@ -204,10 +213,15 @@ def markup_tests():
     young = html[html.index("PLANT · YOUNG"):html.index("RENDERS NOT YET ASSIGNED")]
     check('data-act="pool"' not in young, "no pool control on a non-pool lane")
     unas = html[html.index("RENDERS NOT YET ASSIGNED"):html.index("REFERENCE")]
-    check('data-act="pick"' not in unas and "this is:" in unas, "an unassigned render offers 'this is:' and no use button")
+    check('data-act="pick"' not in unas and "this is:" not in unas and "<select" not in unas
+          and 'data-act="use"' in unas and 'data-act="notneeded"' in unas,
+          "an unassigned render offers use / not needed (no 'this is:' select, no plain pick) — owner 2026-10-19")
     check("accept unchanged" not in html and "accept all" not in html and "redraw this slot" in html
-          and "add all new renders to the pool" in html and "kept when you return the sheet" in html,
-          "no accept-unchanged control: slot buttons are redraw + the per-pool 'add all new renders'; unanswered = kept on return")
+          and "add all new renders to the pool" not in html and "kept when you return the sheet" in html,
+          "no accept-unchanged and no pool add-all control: the slot button is redraw; unanswered = kept on return")
+    check('data-act="pool"' not in html and 'data-act="reject"' not in html and "not for this slot" not in html
+          and "random pool —" not in html,
+          "no random-pool verb, no '✕ not for this slot' anywhere on the row (owner 2026-10-19)")
     rh = H.item_html(dict(ITEM, label="Pod", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],
                           rulings=[], desc={}, dependsOn=None),
                      {"decision": "", "note": "", "prefill": "A", "schema": 2, "decidedAt": "T",
@@ -218,8 +232,15 @@ def markup_tests():
                           rulings=[], desc={}, dependsOn=None), {"decision": "B", "note": "", "prefill": "B"})
     check("agent prefill B — not your answer" in ph and "using B" not in ph,
           "a seeded agent prefill shows as a suggestion, never as 'using B'")
-    for f in ("Name", "Description", "More art", "Missing facings", "Size", "Belongs", "cut from this biome"):
-        check(f in html, f"requests block has {f!r}")
+    check("Requests" not in html and 'data-act="ask' not in html and "cut from this biome" not in html,
+          "no Requests panel (owner 2026-10-19: he types these into the note)")
+    ah = H.item_html(dict(ITEM, label="Pod", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],
+                          rulings=[], desc={}, dependsOn=None), {"decision": "A", "note": "", "asks": {"describe": "improve"}})
+    check("earlier requests: describe" in ah and 'data-act="ask' not in ah, "a saved ask still shows, read-only")
+    uh = H.item_html(dict(ITEM, label="Pod", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],
+                          rulings=[], desc={}, dependsOn=None), {"decision": "", "note": "", "schema": 2, "assign": {"E": "not_needed"},
+                                                                 "pool": {"R/Grown": {"add": ["B"], "remove": []}}, "reject": {"R/Grown": ["C"]}})
+    check("✓ not needed" in uh and "pool + B" in uh, "an old not_needed answer and old pool data still read on the page")
     check('data-act="legacy"' not in html and "old tick" not in html and "ticked before" not in html,
           "a row with no old ticks shows no old-tick markup")
     lh = H.item_html(dict(ITEM, label="Pod", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],

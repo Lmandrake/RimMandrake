@@ -1378,11 +1378,11 @@ if (!window.__bsAnim) window.__bsAnim = setInterval(() => document.querySelector
 }), 66);
 /* ═══ SLOTS (DESIGN 2026-10-10 §3; owner rulings by question card 2026-10-10) ═══════════════════════════════════════
    Every picture lives in a labelled SLOT — what the game draws it as. Click a picture to USE it for that slot (click it
-   again to take that back), or say `redraw this slot`; a slot left alone keeps its in-game art on return. ✕ is four different things and the sheet
-   says which: `✕ not for this slot` (deletes nothing), `retire` (a live picture: it stays in game until its replacement
-   is installed), `leave the random pool` (pool slots only), and the small per-picture ✕ that deletes from the art store.
-   A variant tick (`in random pool`) exists only where the game truly draws from a random pool and is NEVER pre-ticked;
-   renders found by name must be labelled (`this is:`) before they can be used; a catch row's creature renders are
+   again to take that back), or say `redraw this slot`; a slot left alone keeps its in-game art on return. ✕ is two
+   things and the sheet says which: `retire` (a live picture: it stays in game until its replacement is installed) and
+   the small per-picture ✕ that deletes from the art store. Since 2026-10-19 the page offers no random-pool verbs, no
+   `✕ not for this slot` and no Requests panel (the note box carries those); data they saved still reads and enacts.
+   A render found by name offers `use` (labels it for its slot and picks it) or `not needed`; a catch row's creature renders are
    reference only. Records are schema 2 (decisions_v2.py). SLX is pure logic over (item, record): no DOM, node-tested. */
 window.artNoSelect = it => new Set((it.graphics || []).flatMap(g => g.cols.filter(c => c.noSelect).map(c => c.letter)));
 window.artEnsureVariants = (it, rec) => {
@@ -1569,6 +1569,27 @@ SLX.assign = (it, rec, L, target) => {
   for (const g of it.graphics || []) { const st = SLX.state(it, rec, g); if (st.state === 'pick' && st.pick === L && rec.assign[L] !== g.key && g.lane === 'slot' && !g.cols.some(c => c.letter === L)) SLX.setSlot(it, rec, g, null); }
   return _ok();
 };
+/* the slot an unassigned render's `use` puts it in: the slot its job name hints at, else the row's primary slot */
+SLX.useTarget = (it, c) => {
+  const slots = (it.graphics || []).filter(g => g.lane === 'slot'), h = String((c || {}).hint || '').toLowerCase();
+  let t = null;
+  if (h.startsWith('flight')) t = slots.find(g => g.flip);
+  else if (h) {
+    const w = h.split(' ')[0], rx = new RegExp('(^|[^a-z])' + w + '([^a-z]|$)');
+    t = slots.find(g => String((g.slot || {}).kind || '').toLowerCase() === w || rx.test(String((g.slot || {}).label || '').toLowerCase()));
+  }
+  return t || slots.find(g => g.primary) || slots[0] || null;
+};
+SLX.useRender = (it, rec, L) => {
+  const c = (it.graphics || []).filter(g => g.lane === 'unassigned').flatMap(g => g.cols).find(x => x.letter === L);
+  if (!c) return _no('Set ' + L + ' is not an unassigned render on this row.');
+  const t = SLX.useTarget(it, c);
+  if (!t) return _no('This row has no slot to use ' + L + ' in — say where in the note.');
+  if (SLX.assigned(rec)[L] === t.key) { SLX.assign(it, rec, L, ''); return _ok('took back ' + L); }
+  SLX.assign(it, rec, L, t.key);
+  return SLX.pick(it, rec, t.key, L);
+};
+SLX.notNeeded = (it, rec, L) => SLX.assign(it, rec, L, SLX.assigned(rec)[L] === 'not_needed' ? '' : 'not_needed');
 SLX.purgeToggle = (it, rec, sha) => {
   for (const g of it.graphics || []) {
     const st = SLX.state(it, rec, g);
@@ -1683,7 +1704,7 @@ const _itemBody = it => {
     const pr = SLX.poolRec(d, g.key), inAdd = (pr.add || []).includes(c.letter), leaves = (pr.remove || []).includes(c.letter);
     const tip = `${c.label}\n${c.detail}${c.ppc ? `\n\nresolution: ${c.srcPx[0]}×${c.srcPx[1]} px over the ${it.scale.kind === 'plant' ? 'quad' : 'drawSize'} = ${c.ppc} px/cell` : ''}${c.also ? '\n\nidentical copies:\n' + c.also.join('\n') : ''}${c.prompt ? '\n\nprompt: ' + c.prompt : ''}`;
     const X = ` data-g="${esc(g.key)}" data-l="${c.letter}"`;
-    const badges = [c.winner ? `<i class="sl-ig">IN GAME${g.pool ? ' · in pool' : ''}</i>` : '',
+    const badges = [c.winner ? `<i class="sl-ig">IN GAME</i>` : '',
       c.assignedHere ? '<i class="sl-asg">labelled by you</i>' : '',
       legacy.has(c.letter) ? SLX.legacyHtml(it, d, c.letter, !!g.pool) : '',
       c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : '',
@@ -1693,18 +1714,18 @@ const _itemBody = it => {
     if (c.noSelect) foot = '<i class="bs-novar">placeholder — cannot be used or kept</i>';
     else if (g.lane === 'reference') foot = '<i class="bs-novar">reference only</i>';
     else if (g.lane === 'unassigned') {
-      const cur = SLX.assigned(d)[c.letter] || '';
-      const opts = slotLanes.map(x => `<option value="${esc(x.key)}"${cur === x.key ? ' selected' : ''}>${esc((x.slot || {}).label || x.key)}</option>`).join('')
-        + `<option value="not_needed"${cur === 'not_needed' ? ' selected' : ''}>not needed — none of these</option>`;
-      foot = `<label class="sl-this">this is: <select data-act="assign" data-id="${esc(it.id)}"${X}><option value="">— choose —</option>${opts}</select></label>${c.hint ? `<i class="sl-hint" title="what its job name suggests — a hint, never applied for you">looks like: ${esc(c.hint)}</i>` : ''}`;
+      /* use / not needed (owner 2026-10-19: the "this is" select was "basically a checkbox for 'use this'"; of 198
+         answers 185 named the one slot and 13 said not needed). `use` labels the render for its slot AND picks it there;
+         the data is the same `assign{L: lane | not_needed}` the select wrote, so old files read unchanged. */
+      const cur = SLX.assigned(d)[c.letter] || '', tgt = SLX.useTarget(it, c);
+      foot = (tgt ? A('use', X, 'use this' + (slotLanes.length > 1 ? ' as ' + esc(((tgt.slot || {}).label || tgt.key).toLowerCase()) : ''), '', 'use this render for ' + ((tgt.slot || {}).label || 'this slot') + ' (click again to take it back)') : '')
+        + A('notneeded', X, cur === 'not_needed' ? '✓ not needed' : 'not needed', cur === 'not_needed' ? 'bad' : '', 'none of the slots needs this render (deletes nothing)')
+        + (c.hint ? `<i class="sl-hint" title="what its job name suggests">looks like: ${esc(c.hint)}</i>` : '');
     } else if (!c.purgedLive) {
       const verbs = [A('pick', X, picked ? '✓ using this' : 'use this', picked ? 'on' : '', 'use this set for ' + ((g.slot || {}).label || 'this slot') + ' (click again to take it back)')];
-      if (c.winner && g.pool) verbs.push(A('pool', X, leaves ? '✕ leaves the pool' : 'leave the random pool', leaves ? 'bad' : '', 'take this picture OUT of the random pool the game draws from (it is archived, never deleted)'));
-      else if (c.winner) verbs.push(A('retire', X, ret ? '✕ retiring' : '✕ retire', ret ? 'bad' : '', 'retire this live picture from the game — it stays until its replacement is installed'));
-      else {
-        if (g.pool) verbs.push(A('pool', X, inAdd ? '✓ in random pool' : '+ random pool', inAdd ? 'pool' : '', 'add this set to the random pool the game draws from (never pre-ticked)'));
-        verbs.push(A('reject', X, rej ? '✕ not for this slot' : '✕ not for this slot', rej ? 'bad' : '', 'this set is wrong for this slot — deletes nothing'));
-      }
+      /* no random-pool verbs and no "✕ not for this slot" (owner 2026-10-19; 23 of 698 rows and 1 of 698 used them): the
+         note box carries "put B and C in the pool". Pool / reject data already saved still reads and enacts. */
+      if (c.winner && !g.pool) verbs.push(A('retire', X, ret ? '✕ retiring' : '✕ retire', ret ? 'bad' : '', 'retire this live picture from the game — it stays until its replacement is installed'));
       foot = verbs.join('');
       if (ret && c.winner && st.state === 'pick' && st.pick !== c.letter) note = `<div class="sl-warn sl-replaced">${esc(c.letter)} leaves the game in this same pass, replaced by ${esc(st.pick)}</div>`;
       else if ((ret || leaves || rej) && c.winner) note = `<div class="sl-warn">${esc(c.letter)} stays in game until the new picture is installed</div>`;
@@ -1736,11 +1757,11 @@ const _itemBody = it => {
     const ordered = l.cols.slice().sort((a, b) => LETTER_ORDER.indexOf(a.letter) - LETTER_ORDER.indexOf(b.letter));
     const st = SLX.state(it, d, g);
     const stub = c => `<details class="bs-nearstub"${st.pick === c.letter ? ' open' : ''}><summary title="set ${c.letter} looks almost the same as set ${c.near_of} — click to show it"><b>${c.letter}</b><span>≈ ${c.near_of}</span><span class="sub">near-<br>duplicate<br>▸ show</span></summary>${col(c, g)}</details>`;
-    const btns = g.lane !== 'slot' ? '' : `<div class="sl-btns">${A('slot', ` data-g="${esc(g.key)}" data-v="redraw"`, it.dependsOn ? 'redraw from ' + esc(it.dependsOn) + ' (starts once it is settled)' : 'redraw this slot', st.state === 'redraw' ? 'on' : '', 'a new picture for this slot; the current one stays in game until it is installed')}${!sl.required && SLX.inGame(g).length ? '' : ''}${g.pool ? A('pooladdall', ` data-g="${esc(g.key)}"`, 'add all new renders to the pool', '', 'put every new render of ours in this slot into the random pool (nothing is ever pre-ticked)') : ''}<span class="sub">click a picture to use it</span></div>`;
+    const btns = g.lane !== 'slot' ? '' : `<div class="sl-btns">${A('slot', ` data-g="${esc(g.key)}" data-v="redraw"`, it.dependsOn ? 'redraw from ' + esc(it.dependsOn) + ' (starts once it is settled)' : 'redraw this slot', st.state === 'redraw' ? 'on' : '', 'a new picture for this slot; the current one stays in game until it is installed')}${!sl.required && SLX.inGame(g).length ? '' : ''}<span class="sub">click a picture to use it</span></div>`;
     const prior = g.prior ? `<div class="bs-prior" title="${esc(g.prior.was)}">${esc(g.prior.text)}${g.prior.note ? ' — “' + esc(g.prior.note) + '”' : ''}</div>` : '';
     return `<div class="sl-lane sl-${g.lane} sl-k-${esc(sl.kind || 'x')}" data-lane="${esc(g.key)}">
       <div class="sl-head"><b>${esc(sl.label || g.role)}</b>${chip(g, l.cols)}</div>
-      <div class="sl-desc">${esc(sl.desc || '')}${g.res && g.lane === 'slot' ? ` <span class="sub" title="${esc(g.res)}">· ${esc(g.res.replace(/^_flip:/, '').split('/').pop())}</span>` : ''}${(sl.also || []).length ? ` <span class="sub">· also used by: ${esc(sl.also.join(', ').toLowerCase())}</span>` : ''}${g.pool ? ' <span class="sl-poolnote">random pool — the game picks one of these at random</span>' : ''}</div>
+      <div class="sl-desc">${esc(sl.desc || '')}${g.res && g.lane === 'slot' ? ` <span class="sub" title="${esc(g.res)}">· ${esc(g.res.replace(/^_flip:/, '').split('/').pop())}</span>` : ''}${(sl.also || []).length ? ` <span class="sub">· also used by: ${esc(sl.also.join(', ').toLowerCase())}</span>` : ''}</div>
       ${btns}${prior}
       <div class="bs-strip">${ordered.map(c => c.near_of ? stub(c) : col(c, g)).join('') || '<span class="sub">no pictures</span>'}</div></div>`;
   };
@@ -1790,26 +1811,10 @@ window.artQuestionHtml = (it, d) => {
    description, make N more based on X, missing facings, size, move biome/tier, cut). The note stays for everything else.
    Each ask is its own work item in `art.py enact`, so "followed" is per ask. */
 window.artAsksHtml = (it, d) => {
-  const a = d.asks || {}, id = esc(it.id);
-  const lanes = (it.graphics || []).filter(g => g.lane === 'slot');
-  const letters = [...new Set(SLX.view(it, d).filter(l => l.g.lane === 'slot').flatMap(l => l.cols.map(c => c.letter)))].sort((x, y) => LETTER_ORDER.indexOf(x) - LETTER_ORDER.indexOf(y));
-  const sel = (path, opts, cur, blank) => `<select data-act="ask" data-id="${id}" data-k="${path}">${blank !== undefined ? `<option value="">${esc(blank)}</option>` : ''}${opts.map(([v, t]) => `<option value="${esc(v)}"${String(cur ?? '') === String(v) ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select>`;
-  const inp = (path, cur, ph, type, w) => `<input data-act="ask" data-id="${id}" data-k="${path}" type="${type || 'text'}" value="${esc(cur ?? '')}" placeholder="${esc(ph || '')}" style="width:${w || 140}px">`;
-  const laneOpts = lanes.map(g => [g.key, (g.slot || {}).label || g.key]);
-  const btn3 = (path, cur, vals) => vals.map(([v, t]) => `<button class="sl-b${cur === v ? ' on' : ''}" data-act="askset" data-id="${id}" data-k="${path}" data-v="${v}">${t}</button>`).join('');
-  const more = (a.more || []).map((m, i) => `<div class="sl-more">make <b>${esc(m.n)}</b> new <b>${esc(((lanes.find(g => g.key === m.slot) || {}).slot || {}).label || m.slot)}</b>${m.base ? ' based on <b>' + esc(m.base) + '</b>' : ''}${m.how ? ' — “' + esc(m.how) + '”' : ''} <button class="sl-b bad" data-act="moredel" data-id="${id}" data-v="${i}">remove</button></div>`).join('');
-  const fa = a.facings || {};
-  const set = Object.keys(a).filter(k => a[k] && (!Array.isArray(a[k]) || a[k].length));
-  const biomes = ((typeof CFG !== 'undefined' && CFG.biomes) || []).map(b => [b.key, b.label]);
-  return `<details class="sl-asks"${set.length ? ' open' : ''}><summary>Requests${set.length ? ': ' + esc(set.join(', ')) : ' — rename · description · more art · missing facings · size · move / cut'} <span class="sub">(the note box stays for anything else)</span></summary>
-    <div class="sl-grid">
-      <b>Name</b><div>${inp('rename.name', (a.rename || {}).name, 'new name (blank = keep)', 'text', 220)} <label><input type="checkbox" data-act="askcheck" data-id="${id}" data-k="rename.suggest"${(a.rename || {}).suggest ? ' checked' : ''}> suggest names for me</label></div>
-      <b>Description</b><div>${btn3('describe', a.describe, [['keep', 'keep'], ['improve', 'improve'], ['rewrite', 'rewrite to match the chosen art']])}</div>
-      <b>More art</b><div>${more}<span class="sl-addmore">make ${inp('_more.n', '2', '', 'number', 48)} new ${sel('_more.slot', laneOpts, (lanes[0] || {}).key)} versions based on ${sel('_more.base', letters.map(l => [l, l]), '', '—')} how: ${inp('_more.how', '', 'how should they differ', 'text', 200)} <button class="sl-b" data-act="moreadd" data-id="${id}">add</button></span></div>
-      <b>Missing facings</b><div>draw ${['south', 'east', 'north'].map(f => `<label><input type="checkbox" data-act="facing" data-id="${id}" data-v="${f}"${(fa.faces || []).includes(f) ? ' checked' : ''}> ${f}</label>`).join(' ')} of ${sel('facings.slot', laneOpts, fa.slot, '— slot —')} from ${sel('facings.from', letters.map(l => [l, l]), fa.from, '—')}</div>
-      <b>Size</b><div>body size ${inp('size.bodySize', (a.size || {}).bodySize, '', 'number', 70)} · drawn size × ${inp('size.drawScale', (a.size || {}).drawScale, '', 'number', 70)} · which pictures / what exactly: ${inp('size.scope', (a.size || {}).scope, 'e.g. adult and corpse, triple the length', 'text', 220)}</div>
-      <b>Belongs</b><div>move to ${sel('move.biome', biomes, (a.move || {}).biome, 'this biome')} · tier ${sel('move.tier', [['RM', 'RM'], ['RSW', 'RSW'], ['RUT', 'RUT']], (a.move || {}).tier, 'unchanged')} · <button class="sl-b${a.cut ? ' bad' : ''}" data-act="askset" data-id="${id}" data-k="cut" data-v="1">${a.cut ? '✕ cut from this biome' : 'cut from this biome'}</button></div>
-    </div></details>`;
+  /* the Requests panel is gone (owner 2026-10-19: 0 of 698 rows used it in nine days; he types these into the note).
+     A file that carries `asks` still shows them, read-only, so enact's per-ask TODOs stay visible. */
+  const a = d.asks || {}, set = Object.keys(a).filter(k => a[k] && (!Array.isArray(a[k]) || a[k].length));
+  return set.length ? `<div class="sl-asks sub" title="saved by the old Requests panel; enact still carries them">earlier requests: ${esc(set.map(k => k + ' ' + JSON.stringify(a[k])).join(' · ').slice(0, 400))}</div>` : '';
 };
 const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
 /* Click-to-zoom shows the FULL-RESOLUTION file (owner, 2026-10-15), at its own pixel size up to the window, with its
@@ -1864,6 +1869,8 @@ window.artAct = (el, ev) => {
   else if (act === 'pool') r = SLX.poolToggle(it, rec, g, L);
   else if (act === 'pooladdall') r = SLX.poolAddAll(it, rec, g);
   else if (act === 'assign') r = SLX.assign(it, rec, L, el.value);
+  else if (act === 'use') r = SLX.useRender(it, rec, L);
+  else if (act === 'notneeded') r = SLX.notNeeded(it, rec, L);
   else if (act === 'purge') r = SLX.purgeToggle(it, rec, el.dataset.sha);
   else if (act === 'legacy') r = SLX.legacyRule(rec, L, v);
   else if (act === 'ask') { const num = el.type === 'number'; r = SLX.setAsk(rec, k, num ? (el.value === '' ? '' : +el.value) : el.value.trim()); }
@@ -2113,13 +2120,10 @@ hover a set's header for where it came from.</p>
 <p><b>Every picture lives in a labelled SLOT</b> — what the game draws it as (ADULT · MALE, ADULT · FEMALE, YOUNG, FLYING,
 PLANT · GROWN, CATCH ITEM …). <b>Click a picture to use it for that slot</b> (click again to take it back), or <b>redraw this
 slot</b>. A slot you leave alone keeps what the game draws now once you return the sheet; there is no accept button.
-The ✕ verbs say what they do: <b>✕ not for this slot</b> deletes nothing;
 <b>✕ retire</b> takes a live picture out of the game: with another set in use in that slot it leaves in the same pass, otherwise
-the slot is redrawn and it stays until the new picture is installed; <b>leave the random
-pool</b> exists only where the game picks among pictures at random; the small ✕ on one picture deletes it from the art store.
-<b>+ random pool</b> appears only on a real random pool and is never pre-ticked. Renders found by name sit under <b>RENDERS NOT YET
-ASSIGNED</b> until you say what each one is. <b>Requests</b> (rename, description, more art, missing facings, size, move/cut) have
-their own fields; the note box is for anything else.</p>
+the slot is redrawn and it stays until the new picture is installed; the small ✕ on one picture deletes it from the art store.
+Renders found by name sit under <b>RENDERS NOT YET ASSIGNED</b>: <b>use</b> one, or say <b>not needed</b>. <b>Everything else —
+rename, description, more like C, random pool, size, move or cut — goes in the note box.</b></p>
 <p><b>Canon rows</b> show the canon-library reference images and the entry's <b>Must show</b> list beside the pictures. A canon creature and
 our own (franchise-free) stand-in for it are <b>separate rows</b>, each judged on its own, but grouped together under one coloured band
 with a <b>related</b> link both ways. A stand-in's Star Wars twin (RSW_) is always its own full row in the band, even where the biome
