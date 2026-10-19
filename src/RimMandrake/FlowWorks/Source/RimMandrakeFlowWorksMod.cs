@@ -945,9 +945,9 @@ namespace RimMandrake.FlowWorks
             list.Gap();
             using (Dependent(list, "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled"))
             {
-                list.Label("Flow per pulse: " + FlowPerPulse + " level(s) per cell");
+                list.Label("Flow per pulse: " + RM_Volume.FormatMetres(FlowPerPulse) + " of water per cell");
                 flowPerPulse = list.Slider(flowPerPulse, 1f, 4f);
-                list.Label("How many fill levels one cell can take in from its neighbours each "
+                list.Label("How much depth of water one cell can take in from its neighbours each "
                          + "pulse. Low reads as thick and slow; high reads as water.");
 
                 list.Gap();
@@ -1010,7 +1010,7 @@ namespace RimMandrake.FlowWorks
 
             list.CheckboxLabeled("Fill in channels", ref fillInEnabled,
                 "Adds the 'fill in canal' order — the opposite of digging. Each application "
-              + "raises a cell one level; taking it all the way back to the surface restores "
+              + "raises a cell half a metre; taking it all the way back to the surface restores "
               + "the terrain that was there before you dug. Off: the order refuses and the "
               + "tool is inert.");
 
@@ -1067,7 +1067,7 @@ namespace RimMandrake.FlowWorks
 
             list.CheckboxLabeled("Pumps and outflows can refill natural ponds", ref pondReturnLegEnabled,
                 "A pump pouring, or a hose outflow end, next to a pond or its dried bed puts the water back into that "
-              + "pond, one whole level at a time and never past what it held at the start. Off: only dug cells take "
+              + "pond, half a metre at a time and never past what it held at the start. Off: only dug cells take "
               + "poured water; an outflow over a dried bed spills.");
             list.CheckboxLabeled("Returning water waits for people and buildings", ref refillWaitsForOccupants,
                 "A dried pond square does not refill while a pawn stands on it or something is built on it; items "
@@ -1077,13 +1077,13 @@ namespace RimMandrake.FlowWorks
               + "ground level returns it to the pond as dry bed. Off: the old behaviour (a filled-in square came back "
               + "as unpaid pond water and flickered).");
             list.CheckboxLabeled("A drained pond leaves a hollow", ref pondBedHollowEnabled,
-                "A pond square that dries out becomes cracked lakebed sunk to the depth the water had: two levels where it "
-              + "was shallow, four where it was deep. A pond with a shallow rim is walked out of; a sheer deep drop holds what "
+                "A pond square that dries out becomes cracked lakebed sunk to the depth the water had: 1 m where it "
+              + "was shallow, 2 m where it was deep. A pond with a shallow rim is walked out of; a sheer deep drop holds what "
               + "falls in. A canal whose water stands above the bed's floor runs back into the pond. Refilling re-wets the "
               + "squares in the reverse order they dried, to the exact old shape. Off: a dried square is flat ground. "
               + "Climbing changes at once; squares already dry can keep their current look until they refill.");
 
-            list.CheckboxLabeled("Lakes have their own floors", ref deepBedsEnabled,
+            list.CheckboxLabeled("Lakes have their own floors (affects map generation)", ref deepBedsEnabled,
                 "Each natural lake gets its own floor when the map is made, by the land around it: on plains most lakes are "
               + "shallow and silted, in hills deeper, in mountains deep and chasm-like, with shelves, trenches and holes down "
               + "there, never a plain crater. A full lake looks exactly as before; the floor shows as it is drawn down, and it "
@@ -1126,7 +1126,7 @@ namespace RimMandrake.FlowWorks
               + "drawing), and a canal standing above a pond's surface runs back into it. Off: a pond feeds any ditch until "
               + "it is empty, as before.");
 
-            list.Label("Largest drainable lake: " + DrainableLakeMaxCells + " squares");
+            list.Label("Largest drainable lake (affects map generation): " + DrainableLakeMaxCells + " squares");
             drainableLakeMaxCells = list.Slider(drainableLakeMaxCells, RM_BedMath.OceanWalkCells, 62500f);
             list.Label("A lake that does not touch the map edge and is no bigger than this has a real stock and can be "
                      + "pumped dry. Bigger, or touching the edge past the size above, it is limitless. "
@@ -1149,10 +1149,10 @@ namespace RimMandrake.FlowWorks
             list.Gap();
             using (Dependent(list, "rainFillPerPulse"))
             {
-                list.Label("Rain fill speed: " + rainFillPerPulse.ToString("F2") + " level(s) per pulse");
+                list.Label("Rain fill speed: " + (rainFillPerPulse * RM_Volume.MetresPerLevel).ToString("F2") + " m per pulse");
                 rainFillPerPulse = list.Slider(rainFillPerPulse, 0.01f, 1f);
                 list.Label("How fast heavy rain fills an open trench. At the default a downpour takes "
-                         + "roughly an in-game hour to add one level.");
+                         + "roughly an in-game hour to add half a metre.");
             }
 
             list.CheckboxLabeled("Repair dig data on load", ref excavationLoadRepairEnabled,
@@ -1273,10 +1273,11 @@ namespace RimMandrake.FlowWorks
                      + "What holds a creature is the height of the step it must climb against its own size, never the "
                      + "depth alone: a slope it can climb a step at a time never traps it, however deep it goes.");
 
-            list.CheckboxLabeled("Superdeep cells trap", ref superdeepCaptureEnabled,
-                "Anyone who walks, is pushed or jumps into a superdeep cell takes a fall and, if the "
-              + "pit is wide enough for them, cannot climb back out. They stay on the map, standing "
-              + "on the pit floor. Off: a superdeep cell is just a very slow hole to cross.");
+            list.CheckboxLabeled("Pits can trap whoever falls in", ref superdeepCaptureEnabled,
+                "The master switch for pits holding people. Anyone who walks, is pushed or jumps into a pit "
+              + "they cannot climb out of takes the fall and stays down there, on the map, standing on the pit floor. "
+              + "Which pits hold whom is decided by relative height (the next switch). Off: no pit ever traps anyone; "
+              + "a deep hole is only a very slow way across.");
 
             list.CheckboxLabeled("Blasts break pit covers", ref blastsBreakPitCovers,
                 "A bomb, grenade, mortar or fire blast that reaches a pit cover breaks the whole cover, and anyone on it "
@@ -1323,15 +1324,15 @@ namespace RimMandrake.FlowWorks
                 "1.00 = the table above. Higher, every creature climbs as if it were taller; lower, shorter.");
             pitClimbAbilityMultiplier = list.Slider(pitClimbAbilityMultiplier, 0.5f, 2f);
             list.Label("Slow climb factor: " + pitSlowClimbFactor.ToString("F1"), tooltip:
-                "A creature climbs a step as tall as the most it can manage (two levels for a person) this many times slower "
+                "A creature climbs a step as tall as the most it can manage (1 m for a person) this many times slower "
               + "than a smaller step. 1 = no slower. Walking along one depth, or on a ramp, is never slowed.");
             pitSlowClimbFactor = list.Slider(pitSlowClimbFactor, 1f, 4f);
             list.CheckboxLabeled("Ramps", ref pitRampsEnabled,
                 "On, a ramp can be built on a dug square, pointing uphill at a neighbour up to the span below shallower. "
               + "Everyone walks it both ways at normal walking speed, enemies and animals too: a ramp makes a pit escapable. "
               + "Off: ramps are inert and a pit is only left by climbing or a ladder.");
-            list.Label("Levels a ramp spans: " + pitRampMaxSpan, tooltip:
-                "How much shallower the square a ramp faces may be (1 to 3). A deeper drop takes a second ramp, or a ramp then "
+            list.Label("Metres a ramp spans: " + RM_Volume.FormatMetres(pitRampMaxSpan), tooltip:
+                "How much shallower the square a ramp faces may be (0.5 to 1.5 m). A deeper drop takes a second ramp, or a ramp then "
               + "a step the creature can climb.");
             pitRampMaxSpan = Mathf.RoundToInt(list.Slider(pitRampMaxSpan, 1f, 3f));
             list.Label("Ladder slowness: " + pitLadderSlowness.ToString("F1"), tooltip:
@@ -1509,8 +1510,8 @@ namespace RimMandrake.FlowWorks
               + "movement, sight or shooting. Off: pawns are drawn at ground level everywhere.");
             using (Dependent(list, "pitSinkPerLevel"))
             {
-                list.Label("Sink per depth level (cells): " + pitSinkPerLevel.ToString("F2")
-                  + "  (superdeep: " + (pitSinkPerLevel * 4f).ToString("F2") + ")");
+                list.Label("Sink per metre of depth (cells): " + (pitSinkPerLevel * 2f).ToString("F2")
+                  + "  (superdeep: " + (pitSinkPerLevel * 8f).ToString("F2") + ")");
                 pitSinkPerLevel = list.Slider(pitSinkPerLevel, 0.05f, 0.5f);
             }
 
@@ -1653,7 +1654,7 @@ namespace RimMandrake.FlowWorks
                 trapSensitivityMultiplier = list.Slider(trapSensitivityMultiplier, 0.25f, 3f);
             }
 
-            list.CheckboxLabeled("Superdeep limits who can shoot whom", ref superdeepShootingRuleEnabled,
+            list.CheckboxLabeled("A cliff edge limits who can shoot whom", ref superdeepShootingRuleEnabled,
                 "No shot crosses a cliff edge: across a sheer rise of the height below or more, whoever is down "
               + "can only shoot whoever stands right at the edge above, and whoever is up can only shoot down from the "
               + "edge. Two people on the floor of one big pit, or on the ground on either side of a pit, fight normally. "
@@ -1784,7 +1785,7 @@ namespace RimMandrake.FlowWorks
             list.Gap();
             using (Dependent(list, "drillUnitsPerCycle"))
             {
-                list.Label("Extraction rate: " + DrillUnitsPerCycle.ToString("F2") + " fill-unit(s) per cycle");
+                list.Label("Extraction rate: " + RM_Volume.FormatLitres(Mathf.RoundToInt(DrillUnitsPerCycle * RM_Volume.LitresPerNotch)) + " per cycle");
                 drillUnitsPerCycle = list.Slider(drillUnitsPerCycle, 0.1f, 6f);
                 list.Label("How much a drill (or a slower tap, scaled down per building) can pull "
                          + "from the ground every 250 ticks once its outlet has room to take it. "

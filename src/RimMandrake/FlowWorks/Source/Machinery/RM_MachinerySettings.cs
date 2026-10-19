@@ -161,10 +161,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			converterRateMultiplier = list.Slider(converterRateMultiplier, 0.1f, 5f);
 			list.CheckboxLabeled("Ruined liquid works appear on new maps (map generation)", ref liquidWorksRuinsEnabled,
 				"Desal plants by salt water and brine, detox works by toxic or acid water, tar refineries by tar, pumping stations by any liquid. Affects only maps generated after the change.");
-			list.CheckboxLabeled("Ruins come with a damaged pump and a part-filled tank", ref liquidWorksRuinStockEnabled);
+			list.CheckboxLabeled("Ruins come with a damaged pump and a part-filled tank", ref liquidWorksRuinStockEnabled,
+				"On, a ruined works comes with a damaged pump and a tank part full of liquid, so there is something to salvage. Off: empty ruins. Applies to maps made from now on (map generation).");
 			list.CheckboxLabeled("Industrial works may be built anywhere (not only over a ruin)", ref industrialWorksBuildAnywhere,
 				"Off (campaign default): industrial scale is found, never built — a kludged or repaired works can only be raised over its ruin.");
-			list.CheckboxLabeled("Pipe-net adapters run (Vanilla Expanded pipe nets)", ref pipeAdaptersEnabled);
+			list.CheckboxLabeled("Pipe-net adapters run (Vanilla Expanded pipe nets)", ref pipeAdaptersEnabled,
+				"On, our pipes can join Vanilla Expanded pipe nets through adapters. Off: the two kinds of pipe never connect.");
 			list.Label("Spills: one patch of mess per " + RM_Volume.FormatLitres(litresPerFilth) + " of liquid run out onto the ground", -1f,
 				(TipSignal?)"Liquid leaving a hose's outflow end onto dry ground, or a stopped hose emptying, leaves a cleanable spill. Fewer litres per patch = more mess.");
 			litresPerFilth = UnityEngine.Mathf.RoundToInt(list.Slider(litresPerFilth, 50f, 2000f) / 50f) * 50;

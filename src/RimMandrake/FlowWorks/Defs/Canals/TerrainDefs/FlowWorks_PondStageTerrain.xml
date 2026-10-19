@@ -43,4 +43,18 @@
     </tags>
   </TerrainDef>
 
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_WaterVeryShallow</defName>
+    <label>damp film of water</label>
+    <description>A wet sheen over the floor, too thin to wade: the ground shows through, darkened and glinting. The first inch of water, or the last of it.</description>
+    <texturePath>RimMandrake/FlowWorks/Terrain/RM_WaterVeryShallow</texturePath>
+    <renderPrecedence>391</renderPrecedence>
+    <pathCost>10</pathCost>
+    <driesTo>Mud</driesTo>
+    <tags>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+    </tags>
+  </TerrainDef>
+
 </Defs>

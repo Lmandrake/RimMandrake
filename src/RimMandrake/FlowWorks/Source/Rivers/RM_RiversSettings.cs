@@ -155,12 +155,17 @@ namespace RimMandrake.FlowWorks.Rivers
 			  + "moves twice as fast.");
 			if (RM_RiversSettings.floodSurgeEnabled)
 			{
-				l.CheckboxLabeled("  Spring (seasonal) floods count", ref RM_RiversSettings.countSeasonalFloods);
-				l.CheckboxLabeled("  Torrential-rain floods count", ref RM_RiversSettings.countTorrentialRainFloods);
+				l.CheckboxLabeled("  Spring (seasonal) floods count", ref RM_RiversSettings.countSeasonalFloods,
+					"On, the yearly spring flood of a river makes its current fiercer too. Off: spring floods leave the current as it is.");
+				l.CheckboxLabeled("  Torrential-rain floods count", ref RM_RiversSettings.countTorrentialRainFloods,
+					"On, a flood from torrential rain makes the current fiercer too. Off: rain floods leave the current as it is.");
 			}
-			l.CheckboxLabeled("Carry animals", ref RM_RiversSettings.carryAnimals);
-			l.CheckboxLabeled("Carry visitors and raiders", ref RM_RiversSettings.carryStrangers);
-			l.CheckboxLabeled("Carry loose items and corpses", ref RM_RiversSettings.carryItems);
+			l.CheckboxLabeled("Carry animals", ref RM_RiversSettings.carryAnimals,
+				"On, a strong current can sweep animals off their feet and carry them downstream. Off: animals are never carried.");
+			l.CheckboxLabeled("Carry visitors and raiders", ref RM_RiversSettings.carryStrangers,
+				"On, a strong current can carry visitors and raiders downstream. Off: they are never swept away.");
+			l.CheckboxLabeled("Carry loose items and corpses", ref RM_RiversSettings.carryItems,
+				"On, loose items and corpses lying in strong water drift downstream. Off: they stay where they lie.");
 			l.CheckboxLabeled("Washed off the map at the edge", ref RM_RiversSettings.washOffMapEdge,
 				"A pawn carried to the edge of the map is washed away. Your own people walk home a few days "
 			  + "later; a letter says so when it happens. Off: the current stops at the map edge.");
@@ -204,7 +209,8 @@ namespace RimMandrake.FlowWorks.Rivers
 				RM_RiversSettings.breachHpFraction = l.Slider(RM_RiversSettings.breachHpFraction, 0.05f, 1f);
 				l.Label("Stake snap: ticks per cell " + RM_RiversSettings.stakeSnapTicksPerCell);
 				RM_RiversSettings.stakeSnapTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiversSettings.stakeSnapTicksPerCell, 10f, 1000f));
-				l.CheckboxLabeled("  Breach washes the held catch downstream", ref RM_RiversSettings.breachWashesCatch);
+				l.CheckboxLabeled("  Breach washes the held catch downstream", ref RM_RiversSettings.breachWashesCatch,
+					"On, a weir that breaches lets the fish and drift it was holding wash downstream. Off: the catch stays in the weir.");
 				if (RM_RiversSettings.breachWashesCatch)
 				{
 					l.Label("  Washed this many cells: " + RM_RiversSettings.breachWashCells);
@@ -225,7 +231,8 @@ namespace RimMandrake.FlowWorks.Rivers
 			RM_RiversSettings.weirDriftChance = l.Slider(RM_RiversSettings.weirDriftChance, 0f, 1f);
 			l.Label("Weir holds at most " + RM_RiversSettings.weirHeldCatchCap + " items before it stops catching");
 			RM_RiversSettings.weirHeldCatchCap = Mathf.RoundToInt(l.Slider(RM_RiversSettings.weirHeldCatchCap, 5f, 200f));
-			l.CheckboxLabeled("Silt-traps richen the bank", ref RM_RiversSettings.siltRichening);
+			l.CheckboxLabeled("Silt-traps richen the bank", ref RM_RiversSettings.siltRichening,
+				"On, a silt-trap slowly makes the bank soil beside it richer. Off: it only holds the silt.");
 			if (RM_RiversSettings.siltRichening)
 			{
 				l.Label("One cell richened every " + RM_RiversSettings.siltIntervalDays.ToString("F2") + " days");

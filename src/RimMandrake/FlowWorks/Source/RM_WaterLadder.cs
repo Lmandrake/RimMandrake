@@ -14,7 +14,7 @@ namespace RimMandrake.FlowWorks
 	/// <code>
 	/// rung         water            freshwater terrain (vanilla water family, base layer)
 	/// Dry          0                (none: the dry floor, RM_Channel_* by depth or RM_Lakebed_* by bed)
-	/// VeryShallow  under 25 cm      RM_WaterThin until the under-25 cm art lands (owner R2, VERY_SHALLOW_WATER_RESKIN_HE_SEES_FIRST)
+	/// VeryShallow  under 25 cm      RM_WaterVeryShallow, a damp film thinner than the silt (owner R2, VERY_SHALLOW_WATER_RESKIN_HE_SEES_FIRST)
 	/// Thin         about 0.5 m      RM_WaterThin
 	/// Shallow      about 1 m        WaterShallow
 	/// ChestDeep    about 1.5 m      RM_WaterChestDeepStill (vanilla WaterChestDeepBase-family affordances, GPT finding #2)
@@ -41,7 +41,7 @@ namespace RimMandrake.FlowWorks
 		private static readonly string[] FreshwaterDefNames =
 		{
 			null,
-			"RM_WaterThin",
+			"RM_WaterVeryShallow",
 			"RM_WaterThin",
 			"WaterShallow",
 			"RM_WaterChestDeepStill",

@@ -36,7 +36,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var want = new (double m, RM_WaterLadder.Rung rung, string def)[]
                 {
                     (0.0, RM_WaterLadder.Rung.Dry, null),
-                    (0.10, RM_WaterLadder.Rung.VeryShallow, "RM_WaterThin"),   // under 25 cm: thin water until the R2 art lands
+                    (0.10, RM_WaterLadder.Rung.VeryShallow, "RM_WaterVeryShallow"),   // under 25 cm: the damp-film look (R2)
                     (0.50, RM_WaterLadder.Rung.Thin, "RM_WaterThin"),
                     (1.00, RM_WaterLadder.Rung.Shallow, "WaterShallow"),
                     (1.50, RM_WaterLadder.Rung.ChestDeep, "RM_WaterChestDeepStill"),
@@ -59,6 +59,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string stage = File.ReadAllText(Path.Combine(DefsDir(), "Canals", "TerrainDefs", "FlowWorks_PondStageTerrain.xml"));
                 Assert(stage.Contains("<defName>RM_WaterThin</defName>") && stage.Contains("<defName>RM_WaterChestDeepStill</defName>"),
                     "RM_WaterThin and RM_WaterChestDeepStill are shipped");
+                Assert(stage.Contains("<defName>RM_WaterVeryShallow</defName>"), "RM_WaterVeryShallow is shipped (its PNG is outside the staged selftest tree)");
+                Assert(Regex.IsMatch(stage, @"<defName>RM_WaterVeryShallow</defName>[\s\S]*?<texturePath>RimMandrake/FlowWorks/Terrain/RM_WaterVeryShallow</texturePath>"),
+                    "the under-25 cm def points at its own texture");
                 string dof = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorks_DefOf.cs");
                 Assert(dof.Contains("public static TerrainDef RM_WaterThin;") && dof.Contains("public static TerrainDef RM_WaterChestDeepStill;"),
                     "and bound in DefOf (a typo fails the load)");
@@ -168,7 +171,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert((string)terr[t].Element("waterBodyType") == "Other", t + " carries its own water-body type (Other: no fish)");
                     Assert((string)terr[t].Attribute("ParentName") == "WaterShallow", t + " is in the water family (inherits IsWater)");
                 }
-                foreach (string w in new[] { "RM_WaterThin", "RM_WaterChestDeepStill" })
+                foreach (string w in new[] { "RM_WaterVeryShallow", "RM_WaterThin", "RM_WaterChestDeepStill" })
                 {
                     XElement t = XDocument.Load(Path.Combine(DefsDir(), "Canals", "TerrainDefs", "FlowWorks_PondStageTerrain.xml"))
                         .Root.Elements("TerrainDef").First(e => (string)e.Element("defName") == w);
