@@ -149,7 +149,7 @@
     <useHitPoints>False</useHitPoints>
     <neverMultiSelect>True</neverMultiSelect>
     <graphicData>
-      <texPath>Things/Projectile/LauncherShot</texPath>
+      <texPath>Things/Projectile/RM_ElectricGryllotalpa_Arc/RM_ElectricGryllotalpa_Arc</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
       <color>(147, 193, 232)</color>

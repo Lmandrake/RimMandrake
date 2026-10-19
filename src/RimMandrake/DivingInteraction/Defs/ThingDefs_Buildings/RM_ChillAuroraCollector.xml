@@ -49,7 +49,7 @@
     <filthLeaving>Filth_RubbleBuilding</filthLeaving>
     <drawerType>MapMeshOnly</drawerType>
     <graphicData>
-      <texPath>Things/Building/Misc/DropBeacon</texPath>
+      <texPath>Things/Building/Misc/RM_ChillAuroraCollector/RM_ChillAuroraCollector</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1.4)</drawSize>
       <color>(150, 140, 210)</color>

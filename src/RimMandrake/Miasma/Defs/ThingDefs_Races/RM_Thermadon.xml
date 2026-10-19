@@ -199,7 +199,7 @@
     <defName>RM_DuskfireSpit</defName>
     <label>duskfire spit</label>
     <graphicData>
-      <texPath>Things/Projectile/LauncherShot</texPath>
+      <texPath>Things/Projectile/RM_DuskfireSpit/RM_DuskfireSpit</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
       <color>(232,96,40)</color>
