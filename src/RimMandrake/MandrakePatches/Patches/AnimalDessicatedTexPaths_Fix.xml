@@ -161,20 +161,4 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Insectoids 2 - Isopoda geneline</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="SW_Electrictick"]/lifeStages/li/dessicatedBodyGraphicData[texPath="Things/Pawn/Animal/SW_GrenadeBug/SW_Dessicated_EngineerBug"]/texPath</xpath>
-          <value><texPath>StandIn/Things/Pawn/Animal/SW_GrenadeBug/SW_Dessicated_GrenadeBug</texPath></value>
-        </li>
-
-      </operations>
-    </match>
-  </Operation>
-
 </Patch>

@@ -17,30 +17,30 @@
 <Patch>
   <!-- arid grass (ReGrowth Core) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Plant_AridGrass"]/altitudeLayer</xpath>
+    <xpath>/Defs/ThingDef[defName="RSW_JekkaGrass"]/altitudeLayer</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RG_Plant_AridGrass"]/altitudeLayer</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_JekkaGrass"]/altitudeLayer</xpath>
       <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
     </match>
     <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RG_Plant_AridGrass"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_JekkaGrass"]</xpath>
       <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RG_Plant_AridGrass"]</xpath>
+        <xpath>/Defs/ThingDef[defName="RSW_JekkaGrass"]</xpath>
         <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
       </match>
     </nomatch>
   </Operation>
   <!-- crimson cushion (ReGrowth Core) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Plant_CrimsonCushion"]/altitudeLayer</xpath>
+    <xpath>/Defs/ThingDef[defName="RSW_RuzzoCarpet"]/altitudeLayer</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RG_Plant_CrimsonCushion"]/altitudeLayer</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_RuzzoCarpet"]/altitudeLayer</xpath>
       <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
     </match>
     <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RG_Plant_CrimsonCushion"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_RuzzoCarpet"]</xpath>
       <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RG_Plant_CrimsonCushion"]</xpath>
+        <xpath>/Defs/ThingDef[defName="RSW_RuzzoCarpet"]</xpath>
         <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
       </match>
     </nomatch>

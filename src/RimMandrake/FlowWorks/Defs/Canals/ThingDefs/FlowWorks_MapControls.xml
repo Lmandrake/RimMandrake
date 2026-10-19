@@ -13,7 +13,7 @@
   <ThingDef Name="RM_MapControlBase" ParentName="BuildingBase" Abstract="True">
     <category>Building</category>
     <graphicData>
-      <texPath>Things/Item/Chunk/ChunkStone</texPath>
+      <texPath>StandIn/Things/Item/Chunk/ChunkStone</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(0.38,0.38)</drawSize>
       <color>(0.56,0.55,0.53)</color>

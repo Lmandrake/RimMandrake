@@ -134,10 +134,10 @@
       <RSW_Borcatu MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Borcatu>  <!-- Borcatu - wretched-small, keep -->
       <RM_Gripper>0.7</RM_Gripper>  <!-- gripper: our port of the donor GR_Beetlefleet (RimMandrake Wasteland), donor retired 2026-10-18 -->
       <GR_ParagonRat MayRequire="vanillaexpanded.vgeneticse">0.7</GR_ParagonRat>  <!-- rodent paragon - wretched-small, keep -->
-      <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.6</VFEI2_Swarmling>  <!-- swarmlings - wretched-small, adjust-keep -->
+      <RM_Gristleswarm MayRequire="mandrake.rm.wasteland">0.6</RM_Gristleswarm>  <!-- gristleswarm (was VFEI2_Swarmling; RM_Wasteland's port, donor retired 2026-10-18) - wretched-small, adjust-keep -->
       <AA_Eyeling MayRequire="sarg.alphaanimals">0.6</AA_Eyeling>  <!-- ikee - wretched-small, keep -->
-      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.6</VFEI2_BlackSwarmling>  <!-- black swarmlings - wretched-small, adjust-keep -->
-      <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.5</SW_Electrictick>  <!-- Electrictick - extremophile-odd, adjust-keep -->
+      <RM_SootGristleswarm MayRequire="mandrake.rm.wasteland">0.6</RM_SootGristleswarm>  <!-- soot gristleswarm (was VFEI2_BlackSwarmling; RM_Wasteland's port, donors retired 2026-10-18) - wretched-small, adjust-keep -->
+      <RM_ElectricTick MayRequire="mandrake.rm.warscar">0.5</RM_ElectricTick>  <!-- Electrictick - extremophile-odd, adjust-keep -->
       <Toxalope MayRequire="Ludeon.RimWorld.Biotech">0.4</Toxalope>  <!-- toxalope - wretched-herd, import; vanilla Biotech animal, not mlie.advancedbiomes (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave: MayRequire pointed at an unrelated mod that happens to be active today but does not own this defName) -->
       <RSW_Maligoat MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Maligoat>  <!-- maligoat - wretched-herd, keep -->
       <!-- MULTI-HOMED ON PURPOSE - owner approved 2026-09-22 (BIOME_SPECIFIC_FAUNA_LAW_1):
@@ -177,8 +177,8 @@
          (Defs/ThingDefs_Plants/RUT_PollutedFlora.xml) and so needs no guard either —
          same as its unguarded row in RUT_Scarlands.xml. -->
     <wildPlants>
-      <RG_Plant_ToxiGrass MayRequire="ReGrowth.BOTR.Core">1.2</RG_Plant_ToxiGrass>  <!-- toxigrass -->
-      <RG_Plant_TallToxiGrass MayRequire="ReGrowth.BOTR.Core">0.8</RG_Plant_TallToxiGrass>  <!-- tall toxigrass -->
+      <RM_Scumgrass MayRequire="mandrake.rm.wasteland">1.2</RM_Scumgrass>  <!-- toxigrass -->
+      <RM_TallScumgrass MayRequire="mandrake.rm.wasteland">0.8</RM_TallScumgrass>  <!-- tall toxigrass -->
       <Plant_GrayGrass>0.35</Plant_GrayGrass>  <!-- gray grass -->
       <RM_ScorchedStars>0.3</RM_ScorchedStars>  <!-- scorched stars -->
       <RM_Pusberry>0.2</RM_Pusberry>  <!-- weeping toxberry - tree -->

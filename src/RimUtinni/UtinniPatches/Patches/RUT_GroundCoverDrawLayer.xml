@@ -77,15 +77,15 @@
   </Operation>
   <!-- toxigrass (ReGrowth Core) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Plant_ToxiGrass"]/altitudeLayer</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Scumgrass"]/altitudeLayer</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RG_Plant_ToxiGrass"]/altitudeLayer</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Scumgrass"]/altitudeLayer</xpath>
       <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
     </match>
     <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RG_Plant_ToxiGrass"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Scumgrass"]</xpath>
       <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RG_Plant_ToxiGrass"]</xpath>
+        <xpath>/Defs/ThingDef[defName="RM_Scumgrass"]</xpath>
         <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
       </match>
     </nomatch>

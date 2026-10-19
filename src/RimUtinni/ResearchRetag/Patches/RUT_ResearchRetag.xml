@@ -3083,35 +3083,6 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-      <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]/techLevel</xpath>
-        <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]/techLevel</xpath>
-          <value><techLevel>Industrial</techLevel></value>
-        </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]</xpath>
-          <value><techLevel>Industrial</techLevel></value>
-        </nomatch>
-      </li>
-      <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]/baseCost</xpath>
-        <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]/baseCost</xpath>
-          <value><baseCost>700</baseCost></value>
-        </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]</xpath>
-          <value><baseCost>700</baseCost></value>
-        </nomatch>
-      </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
     <xpath>Defs/ResearchProjectDef[defName="RR_ElectricityBasics"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>

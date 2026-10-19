@@ -13,7 +13,6 @@
          JAWA_PATCHES_SPLIT_1, and never named several mods this tier's own
          patches actually touch. Every entry below is cited against a file
          that is actually in this mod's Patches/ folder. -->
-    <li>Who.VFEE.IsopodaGeneline</li>                       <!-- AnimalDessicatedTexPaths_Fix.xml -->
     <li>btd.remix.gravshipblueprints</li>                   <!-- BTDGravshipQuest_GrammarFix.xml -->
     <li>IronScruff.PrimordialGeysers</li>                   <!-- BiomeAnimalDanglingRefs_Fix.xml - patches nodes ITS OWN patch creates; must load after -->
     <li>det.buzzers</li>                                    <!-- BuzzerApostrophe_Fix.xml -->

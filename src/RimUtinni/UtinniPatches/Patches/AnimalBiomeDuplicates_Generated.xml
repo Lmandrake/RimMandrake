@@ -1531,14 +1531,6 @@
     </match>
   </Operation>
 
-  <!-- 188. (carried) x Scarlands   (race RG_Rimclaw) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Rimclaw"]/race/wildBiomes/Scarlands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Rimclaw"]/race/wildBiomes/Scarlands</xpath>
-    </match>
-  </Operation>
-
   <!-- 189. (carried) x Volcano   (race AA_Aerofleet) -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_Aerofleet"]/race/wildBiomes/Volcano</xpath>

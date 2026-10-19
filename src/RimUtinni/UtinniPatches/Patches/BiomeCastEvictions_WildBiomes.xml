@@ -6928,22 +6928,6 @@
     </match>
   </Operation>
 
-  <!-- 862. Corpse_RG_Neutrolope x AridShrubland -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Neutrolope"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Neutrolope"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-
-  <!-- 863. Corpse_RG_Rabbit x AridShrubland -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Rabbit"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Rabbit"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-
   <!-- 864. Corpse_RSW_Bantha x AridShrubland -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Corpse_RSW_Bantha"]/race/wildBiomes/AridShrubland</xpath>
@@ -8533,22 +8517,6 @@
     <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-
-  <!-- 1063. RG_Neutrolope x AridShrubland -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-
-  <!-- 1064. RG_Rabbit x AridShrubland -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Rabbit"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Rabbit"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
 
@@ -11088,30 +11056,6 @@
     </match>
   </Operation>
 
-  <!-- 1382. Corpse_RG_Neutrolope x Desert -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Neutrolope"]/race/wildBiomes/Desert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Neutrolope"]/race/wildBiomes/Desert</xpath>
-    </match>
-  </Operation>
-
-  <!-- 1383. Corpse_RG_Rabbit x Desert -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Rabbit"]/race/wildBiomes/Desert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Rabbit"]/race/wildBiomes/Desert</xpath>
-    </match>
-  </Operation>
-
-  <!-- 1384. Corpse_RG_Rimclaw x Desert -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Rimclaw"]/race/wildBiomes/Desert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Rimclaw"]/race/wildBiomes/Desert</xpath>
-    </match>
-  </Operation>
-
   <!-- 1385. Corpse_RSW_Bantha x Desert -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Corpse_RSW_Bantha"]/race/wildBiomes/Desert</xpath>
@@ -12485,30 +12429,6 @@
     <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/Desert</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/Desert</xpath>
-    </match>
-  </Operation>
-
-  <!-- 1557. RG_Neutrolope x Desert -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/race/wildBiomes/Desert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/race/wildBiomes/Desert</xpath>
-    </match>
-  </Operation>
-
-  <!-- 1558. RG_Rabbit x Desert -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Rabbit"]/race/wildBiomes/Desert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Rabbit"]/race/wildBiomes/Desert</xpath>
-    </match>
-  </Operation>
-
-  <!-- 1559. RG_Rimclaw x Desert -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Rimclaw"]/race/wildBiomes/Desert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Rimclaw"]/race/wildBiomes/Desert</xpath>
     </match>
   </Operation>
 
@@ -17024,14 +16944,6 @@
     </match>
   </Operation>
 
-  <!-- 2124. Corpse_RG_Rimclaw x Scarlands -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Rimclaw"]/race/wildBiomes/Scarlands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Rimclaw"]/race/wildBiomes/Scarlands</xpath>
-    </match>
-  </Operation>
-
   <!-- 2125. Corpse_TYR_Mouse x Scarlands -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Corpse_TYR_Mouse"]/race/wildBiomes/Scarlands</xpath>
@@ -19384,22 +19296,6 @@
     </match>
   </Operation>
 
-  <!-- 2419. Corpse_RG_Neutrolope x ZBiome_Badlands -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Neutrolope"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Neutrolope"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    </match>
-  </Operation>
-
-  <!-- 2420. Corpse_RG_Rabbit x ZBiome_Badlands -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Rabbit"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Rabbit"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    </match>
-  </Operation>
-
   <!-- 2421. Corpse_ShortfacedBear x ZBiome_Badlands -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Corpse_ShortfacedBear"]/race/wildBiomes/ZBiome_Badlands</xpath>
@@ -20221,22 +20117,6 @@
     <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/ZBiome_Badlands</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    </match>
-  </Operation>
-
-  <!-- 2524. RG_Neutrolope x ZBiome_Badlands -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    </match>
-  </Operation>
-
-  <!-- 2525. RG_Rabbit x ZBiome_Badlands -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Rabbit"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Rabbit"]/race/wildBiomes/ZBiome_Badlands</xpath>
     </match>
   </Operation>
 
@@ -21440,22 +21320,6 @@
     </match>
   </Operation>
 
-  <!-- 2676. Corpse_RG_Neutrolope x ZBiome_DesertOasis -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Neutrolope"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Neutrolope"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
-    </match>
-  </Operation>
-
-  <!-- 2677. Corpse_RG_Rabbit x ZBiome_DesertOasis -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Rabbit"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Rabbit"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
-    </match>
-  </Operation>
-
   <!-- 2678. DA_BlackScribe x ZBiome_DesertOasis -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="DA_BlackScribe"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
@@ -21813,22 +21677,6 @@
     <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
-    </match>
-  </Operation>
-
-  <!-- 2723. RG_Neutrolope x ZBiome_DesertOasis -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
-    </match>
-  </Operation>
-
-  <!-- 2724. RG_Rabbit x ZBiome_DesertOasis -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Rabbit"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Rabbit"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
     </match>
   </Operation>
 
@@ -23408,22 +23256,6 @@
     </match>
   </Operation>
 
-  <!-- 2922. Corpse_RG_Neutrolope x ZBiome_Grasslands -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Neutrolope"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Neutrolope"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    </match>
-  </Operation>
-
-  <!-- 2923. Corpse_RG_Rabbit x ZBiome_Grasslands -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_RG_Rabbit"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_RG_Rabbit"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    </match>
-  </Operation>
-
   <!-- 2924. Corpse_ShortfacedBear x ZBiome_Grasslands -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Corpse_ShortfacedBear"]/race/wildBiomes/ZBiome_Grasslands</xpath>
@@ -23941,22 +23773,6 @@
     <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/ZBiome_Grasslands</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    </match>
-  </Operation>
-
-  <!-- 2989. RG_Neutrolope x ZBiome_Grasslands -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    </match>
-  </Operation>
-
-  <!-- 2990. RG_Rabbit x ZBiome_Grasslands -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Rabbit"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RG_Rabbit"]/race/wildBiomes/ZBiome_Grasslands</xpath>
     </match>
   </Operation>
 

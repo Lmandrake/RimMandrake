@@ -59,7 +59,7 @@
       <li><plant>RUT_RustPuff</plant><top>Rupture</top></li>
 
       <!-- BURST — dry-adapted (roster §BURST; ruling 4). -->
-      <li><plant>RG_Plant_AridGrass</plant><top>Burst</top></li>
+      <li><plant>RSW_JekkaGrass</plant><top>Burst</top></li>
       <!-- FLUSH — the giants (roster §FLUSH). -->
       <!-- CHURN, heavy produce — the former GLUT rows (roster §CHURN). produceFactor 2.5
            is 🄸 INVENTED: "a crop-scale dump, not a single plant's harvest" (the number is build's). -->
@@ -132,7 +132,7 @@
       <li><plant>RM_Lanternstone_Sowable</plant><top>None</top></li>
       <li><plant>RM_HeatsinkFungus</plant><top>None</top></li>
       <li><plant>RM_TreeMushroom</plant><top>None</top></li>
-      <li><plant>RG_Plant_CrimsonCushion</plant><top>None</top></li>
+      <li><plant>RSW_RuzzoCarpet</plant><top>None</top></li>
       <li><plant>RM_GiantAgariTox</plant><top>None</top></li>
       <li><plant>RM_TollukCap</plant><top>None</top></li>
       <!-- NONE — RM-tier and vanilla/DLC plants the roster excludes. -->
