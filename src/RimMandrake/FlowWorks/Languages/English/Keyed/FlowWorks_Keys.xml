@@ -35,7 +35,7 @@
   <RMFlow_LadderPortableShort>Too short for this wall: it lies on the floor and nobody can climb it. Uninstall it, or dig the wall shallower.</RMFlow_LadderPortableShort>
   <RMFlow_LadderPortableTooDeep>Too deep for a portable ladder (it reaches {0}). Build the wall ladder instead.</RMFlow_LadderPortableTooDeep>
   <RMFlow_ClimbsAnyWall>Climbing gear: climbs any pit wall, slowly.</RMFlow_ClimbsAnyWall>
-  <RMFlow_RescueLadderQueued>{0} is down in a pit nobody can climb back out of: a ladder job was queued at the wall.</RMFlow_RescueLadderQueued>
+  <RMFlow_RescueLadderQueued>{0} is stuck in a pit and cannot climb out: a ladder job was queued at the wall.</RMFlow_RescueLadderQueued>
   <RMFlow_SwaleNeedsExcavation>A swale is laid in a dug channel.</RMFlow_SwaleNeedsExcavation>
   <!-- CANAL_BOTTOM_SPIKES_1, owner Q2: spikes only in the deepest pits. -->
   <RMFlow_SpikesNeedDrop>Spikes go only at the foot of a sheer drop of {1} or more. The tallest wall over this square is {0}.</RMFlow_SpikesNeedDrop>

@@ -99,7 +99,7 @@ def hose_seg(canvas, a, b, width=0.48):
     paste_centered(canvas, strip, (ax + bx) / 2 * P, (az + bz) / 2 * P)
 
 
-def coupling(canvas, edge, d, size=1.2):
+def coupling(canvas, edge, d, size=1.2 * 1.5):  # x1.5 = RM_MapComponent_Hoses.PortCouplingWiden (reducer collar at a building port)
     """Coupling_Bare at a port: face (+X of the art, 0.46 canvas) on the shared edge, pointing along d."""
     c = COUPLING.resize((round(size * P), round(size * P)), Image.LANCZOS)
     ang = {(1, 0): 0, (0, -1): 90, (-1, 0): 180, (0, 1): 270}[d]
@@ -182,12 +182,12 @@ def main():
     d.text((6, H * P + 34), "same scene, setting OFF (runs stop at the building edge)", fill="white", font=font)
     for x, t in labels:
         d.text((x * P - 40, 22 + 4), t, fill=(255, 255, 255, 255), font=font)
-    sheet.save(OUT / "pump_pipes_truescale.png")
+    sheet.save(OUT / "pump_pipes_truescale_v2.png")
     z = on.crop((0, P, 18 * P, 5 * P))
     z = z.resize((z.width * 2, z.height * 2), Image.NEAREST)
-    z.save(OUT / "pump_pipes_zoom2x.png")
-    print(OUT / "pump_pipes_truescale.png")
-    print(OUT / "pump_pipes_zoom2x.png")
+    z.save(OUT / "pump_pipes_zoom2x_v2.png")
+    print(OUT / "pump_pipes_truescale_v2.png")
+    print(OUT / "pump_pipes_zoom2x_v2.png")
 
 
 if __name__ == "__main__":
