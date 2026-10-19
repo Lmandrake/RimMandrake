@@ -218,7 +218,7 @@ namespace JawaBench.BridgeTools
                 "Give a pawn an AbilityDef via Pawn_AbilityTracker.GainAbility - a permanent grant " +
                 "stored in abilities.abilities, distinct from abilities granted temporarily by " +
                 "hediffs, equipment, apparel, mutant status or an ideo role (those all show up in " +
-                "AllAbilitiesForReading but are NOT this list and are not removed by jawa/revoke - " +
+                "AllAbilitiesForReading but are NOT this list and are not removed by any revoke call - " +
                 "there is no revoke tool yet). GainAbility is idempotent - granting one already held " +
                 "is reported as a no-op, not an error. " +
                 "⚠ self-notifies: it calls Notify_TemporaryAbilitiesChanged(), which dirties the " +
