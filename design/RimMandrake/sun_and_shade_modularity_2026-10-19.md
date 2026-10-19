@@ -1,5 +1,7 @@
 # Sun & Shade: standalone mod or part of Baroque Biomes? Design pass, 2026-10-19
 
+**Owner ruling, 2026-10-19 (question card):** "Where does Sun & Shade live? -> Own piece inside Baroque Biomes, standalone later (Recommended)". Alternative C stands; items filed from section 6 (C list), with `SUNSHADE_MIGRATE_MOVE_NOT_CHANGE` ordered before the DIRECT_SUN_* and TREE_SHADE_* build items.
+
 FOUNDRY design pass. No mod code, defs, game or bridge were touched. This doc files nothing: the
 items in §6 are a list to file once the owner has picked.
 
