@@ -293,6 +293,15 @@ def site_calm(B):
         out["wildSpawner"] = q.evidence.get("wildSpawner")
         out["ok"] = bool(q.verified)
         out["removed"] = remove_intruders(B)
+        # pass 2 (2026-10-19, SITE): a fresh quicktest map rolled 3 insect Hives; remove_intruders sweeps PAWNS only, so the
+        # governor stopped proof_hose realflow at its first advance ("threat_structure: present at arm"). Vanish hostile
+        # threat structures too (jawa/quiet_site, the vitals classifier; read back: threatsAfter must be 0).
+        qs = B.call("jawa/quiet_site", action="apply", clearThreats=True)
+        qs = qs if isinstance(qs, dict) else {}
+        out["threatStructures"] = {"removed": [(x.get("def"), x.get("id")) for x in qs.get("removed") or []],
+                                   "threatsAfter": qs.get("threatsAfter"), "error": None if qs.get("success") else str(qs)[:200]}
+        if qs.get("success") is not True or qs.get("threatsAfter"):
+            out["ok"] = False
     except Exception as ex:  # noqa: BLE001
         out["ok"], out["error"] = False, repr(ex)
     return out
