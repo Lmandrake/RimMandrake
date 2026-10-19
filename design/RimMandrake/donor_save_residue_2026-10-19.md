@@ -45,3 +45,33 @@ Game up with the donor-free list, save loaded, bridge held:
   stay unless `--prune`), 5 held. Includes the rebuilt CreatureBehaviors DLL: game must be DOWN to write it.
 - One step: game down, then `deploy_custom_mods.py --mod UtinniPatches --apply --prune` and `--compose biomes --apply`; re-run
   both dry (expect clean), then `modcheck`.
+
+## Class names, not just def names (2026-10-19, FOUNDRY)
+`save_donor_census.py` and `save_adoption_check.py` read defNames in element TEXT. A save also names C# TYPES in
+`Class="..."` attributes, and a retired donor's type there is invisible to both. It broke every test site and every
+canonical candidate: `<li Class="VFEInsectoids.Area_Hive">` in `<areaManager><areas>` loads as a null area, the whole
+AreaManager is discarded, Vehicle Framework NREs and the map never finishes (`Transient/vf_nre_rootcause_2026-10-19.md`).
+
+- **Checker:** `src/RimMandrake/Utils/save_class_census.py <save>...` resolves every `Class=` against the TypeDef tables
+  of every DLL of the live ModsConfig list (dnfile; cache `~/.cache/rm_save_class_census_types.v2.json`, first run ~15 min
+  over /mnt/c, then seconds) and grades each unresolved one: **FATAL** (an Area: kills the AreaManager), **SKIPPED**
+  (a map/world/game component: dropped, harmless), **OTHER** (comps, hediffs, pawn parts: review). Exit 1 on any FATAL.
+  `--strip-fatal OUT` writes a copy without the FATAL elements (byte-level, CRLF kept, never in place). It refuses to
+  report when its probe cannot see `RimWorld.Area_Home`/`Verse.Area`, and names any DLL dnfile could not read.
+- **Fixed copies** (originals untouched; backups + md5 in `D:\Luke\dev\_rmscratch\saves_backup_20261019_areafix\`,
+  `MD5_ORIGINALS.txt`, `fixed\MD5_FIXED.txt`, `fixed\VERIFY.txt`): the five `RM_TestSite_*_v1`, `CANONICAL_ASHKARR_START_2026-09-12`,
+  its `.DONORFREE_CANDIDATE_2026-10-18`, `_donorfree`, `_donorfree_p6b`, and `CANONICAL_ASHKARR_START_2026-10-18_DONORFREE` and
+  `_REPAIRED`, each saved beside the original as `<name>_AREAFIX.rws`. One element removed each (an empty 250x250 grid; no
+  save references the area id), areas 7->6 (test sites) or 13->12 (canonicals), well-formed, 0 FATAL on re-census.
+  `RM_TestSite_calm_v1.before_fw11_rebuild_20261018.rws` also carries it and was left as is (a backup).
+- **Other unresolved classes, all non-fatal (SKIPPED unless noted), left alone:** retired donors: `VFEInsectoids.GameComponent_Insectoids`
+  (all 11), `AlphaBiomes.Map/WorldComponentExtender` (test sites + 2026-09-12 family), `AlphaGenes.*` x5 and
+  `ReGrowthCore.MapComponent_SmartFarming`/`WallSnowManager` (canonical family). Not on the retired list but absent from
+  the 535 list: `AlphaBehavioursAndEvents.MapRoomUpdater` (calm, river, canonical 09-12) and
+  `AlphaBehavioursAndEvents.ChameleonSkins` x4 (**OTHER**, river_v1 world pawns: those pawns lose that part); our own
+  `RimMandrake.FloodedCanyon.*` x3 (test sites; mod inactive) and old-namespace `RimMandrake.*Pyrelands*`/`DryRooms`
+  (09-12 family); stale types of still-active mods (`RimTunes.Storage.*` x4, `Fortified.MapComponent_ModificationIndex`,
+  `MoreIncidents.Settings.WorldComp`, `VanillaTradingExpanded.TradingManager`, `WallFridgePatch.*`,
+  `VanillaQuestsExpandedCryptoforge.*`). The 2026-10-18 DONORFREE pair carries only the AlphaGenes, ReGrowth and
+  VFEI2 components. Full table: `D:\Luke\dev\_rmscratch\saves_backup_20261019_areafix\class_census.txt`.
+- **Rule:** before calling a retirement save-safe, run `save_class_census.py` on the save as well as the def census.
