@@ -38,6 +38,25 @@ namespace RimMandrake.FlowWorks.SelfTest
                     g[z * w + x] = d;
         }
 
+        /// <summary>The production mask byte at cell i, its 3x3 patch read off the grid (off-map = surface), a join counted either way.</summary>
+        private static byte Bits(byte[] g, int w, int h, int k, int i, Func<int, int, bool> rampJoin)
+        {
+            int x = i % w, z = i / w;
+            var d9 = new int[9];
+            for (int dz = -1; dz <= 1; dz++)
+                for (int dx = -1; dx <= 1; dx++)
+                {
+                    int nx = x + dx, nz = z + dz;
+                    d9[RM_CliffMaskMath.N9(dx, dz)] = nx < 0 || nz < 0 || nx >= w || nz >= h ? 0 : g[nz * w + nx];
+                }
+            return RM_CliffMaskMath.AllowedBits(d9, k, b =>
+            {
+                int nx = x + RM_CliffMaskMath.Dx[b], nz = z + RM_CliffMaskMath.Dz[b];
+                int j = nz * w + nx;
+                return rampJoin != null && nx >= 0 && nz >= 0 && nx < w && nz < h && (rampJoin(i, j) || rampJoin(j, i));
+            });
+        }
+
         /// <summary>Flood over the mask's CARDINAL bits from (sx, sz): the cells A* could reach by cardinal steps.</summary>
         private static HashSet<int> Flood(byte[] g, int w, int h, int k, int sx, int sz, Func<int, int, bool> rampJoin = null)
         {
@@ -48,19 +67,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 int i = q.Dequeue();
                 int x = i % w, z = i / w;
-                var d9 = new int[9];
-                for (int dz = -1; dz <= 1; dz++)
-                    for (int dx = -1; dx <= 1; dx++)
-                    {
-                        int nx = x + dx, nz = z + dz;
-                        d9[RM_CliffMaskMath.N9(dx, dz)] = nx < 0 || nz < 0 || nx >= w || nz >= h ? 0 : g[nz * w + nx];
-                    }
-                byte bits = RM_CliffMaskMath.AllowedBits(d9, k, b =>
-                {
-                    int nx = x + RM_CliffMaskMath.Dx[b], nz = z + RM_CliffMaskMath.Dz[b];
-                    int j = nz * w + nx;
-                    return rampJoin != null && nx >= 0 && nz >= 0 && nx < w && nz < h && (rampJoin(i, j) || rampJoin(j, i));
-                });
+                byte bits = Bits(g, w, h, k, i, rampJoin);
                 for (int b = 0; b < 4; b++)
                 {
                     if ((bits & (1 << b)) == 0) continue;
@@ -153,8 +160,28 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Func<int, int, bool> ramp = (x, y) => x == rampCell && y == top;
                 var f = Flood(g, w, h, Person, 4, 4, ramp);
                 Assert(f.Contains(0), "the pit floor reaches the surface by the ramp");
-                int[] lip = P(0, 0, 0, 0, 4, 0, 0, 0, 0);
-                Assert(RM_CliffMaskMath.AllowedBits(lip, Person) == 0, "the north wall cell (no ramp) is still sealed");
+                Assert(!Flood(g, w, h, Person, 4, 4).Contains(0), "can-fail: without the ramp the pit floor is sealed");
+                // every bit of every pit cell, read in THIS scene with THIS ramp, that leaves the pit: only the ramp's own E bit
+                bool InPit(int x, int z) => x >= 3 && x <= 5 && z >= 3 && z <= 5;
+                string Leaks(Func<int, int, bool> join)
+                {
+                    string leaks = "";
+                    for (int x = 3; x <= 5; x++)
+                        for (int z = 3; z <= 5; z++)
+                        {
+                            byte bits = Bits(g, w, h, Person, z * w + x, join);
+                            for (int b = 0; b < 8; b++)
+                            {
+                                if ((bits & (1 << b)) == 0 || InPit(x + RM_CliffMaskMath.Dx[b], z + RM_CliffMaskMath.Dz[b])) continue;
+                                if (z * w + x == rampCell && b == 2) continue;   // the ramp itself
+                                leaks += " (" + x + "," + z + ") bit " + b;
+                            }
+                        }
+                    return leaks;
+                }
+                string real = Leaks(ramp);
+                Assert(real == "", "the ramp opened a wall it does not face:" + real);
+                Assert(Leaks((x, y) => true) != "", "can-fail: a join on every pair is seen leaking through the walls");
             });
 
             Case("Ramp_beats_ladder_and_both_join", () =>
