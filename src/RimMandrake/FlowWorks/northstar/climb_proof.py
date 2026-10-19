@@ -13,7 +13,7 @@ Owner rulings this proves (2026-10-12, verbatim, design §10):
   and the pond sentence: "Natural ponds and lakes when pumped dry would leave just such gradual terrain so no chance to
   fall in and get stuck."
 
-Scenes (plot coords from --origin, default 120,120; 30 x 12, cleared + read back by validation_core.prepare_site):
+Scenes (plot coords from --origin, default 120,120; 46 x 12 (SITE_W, SITE_H), cleared + read back by validation_core.prepare_site):
   A  dried-pond stand-in at (2..6, 2..6): a D 2 5x5 ring with a D 4 3x3 core (dug; a real drained pond reads the same once
      POND_BED step 2 routes the bed depth through RM_MapComponent_Excavation.ClimbDepthAt).
   B  sheer D 3 3x3 at (10..12, 2..4).
@@ -30,8 +30,16 @@ CLIMB_rebuild_follows_fill, CLIMB_ramp_frees_and_retraps + CLIMB_ramp_walk_out (
 (24..26, 2..4), a D 1 shelf at (27, 3), a ramp on (26, 3) pointing east, built and removed by ProofRamp),
 CLIMB_mask_seals_cliff_edge (PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the person band's
 connectivity byte on pit B's west lip has no east bit, the muffalo band's has), CLIMB_step_cost_slow_at_K (the same item's
-step cost: ProofClimb "cost:" prices surface -> D 2 ring slow, ring -> ring 0, surface -> pit E's D 1 shelf one climb).  OWED (always UNMEASURED, see OWED below): CLIMB_raider_never_crosses_ramped_moat, CLIMB_hauler_fetches_ramped_floor,
-CLIMB_save_reload_pockets_identical.
+step cost: ProofClimb "cost:" prices surface -> D 2 ring slow, ring -> ring 0, surface -> pit E's D 1 shelf one climb),
+CLIMB_raider_never_crosses_ramped_moat (F: a 3x3 surface island at (31..33, 4..6) ringed by a sheer D 4 moat (30..34, 3..7),
+ramped OUT on its east side: a ramp on (34, 5) pointing east to a D 1 shelf at (35, 5); one hostile Pirate on the island and
+one on the moat floor at (30, 3), read through jawa/flowworks_pit_report's canReachMapEdge (the game's own
+Reachability.CanReachMapEdge through RM_Patch_Reachability_SuperdeepMapEdge) and three ProofClimb band-2 components;
+moat_verdict), CLIMB_hauler_fetches_ramped_floor (G: a sheer D 4 3x3 at (38..40, 2..4), a D 1 shelf at (41, 3); 10 Jade on
+the floor's middle (39, 3), two squares from every lip; a Colonist with ONLY Hauling (priority 1, every other vanilla work
+type 0) and a Jade-only 2x2 stockpile at (43, 8) left to its own AI: first 600 ticks with NO ramp (the floor must keep the
+Jade), then a ramp on (40, 3) pointing east and up to 3000 ticks until the Jade lies in the stockpile; haul_verdict).
+Site 46 x 12 (x 0..45).  OWED (always UNMEASURED, see OWED below): CLIMB_save_reload_pockets_identical (live_session B7).
 
 ANTI-GUESSING NOTES
 - The pocket grid rebuilds from the map tick at most once per 60 ticks after a depth write; every scene is dug, then the
@@ -54,10 +62,18 @@ S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 SETTLE = 70          # > RM_PocketGrid.RebuildMinTicks
 WAIT_OUT = 900
 
+SITE_W, SITE_H = 46, 12
+HAUL_SEALED_TICKS = 600
+HAUL_BUDGET = 3000
+HAUL_ITEM = "Jade"        # vanilla resource ThingDef: a Jade-only stockpile is never fed by anything else on the map
+# vanilla WorkTypeDefs (Core + DLC; a missing or disabled one is refused by set_work_priority and simply skipped)
+OTHER_WORK = ("Firefighter", "Patient", "Doctor", "PatientBedRest", "Childcare", "BasicWorker", "Warden", "Handling",
+              "Cooking", "Hunting", "Construction", "Growing", "Mining", "PlantCutting", "Smithing", "Tailoring", "Art",
+              "Crafting", "Cleaning", "Research", "DarkStudy")
+
 OWED = {
-    "CLIMB_raider_never_crosses_ramped_moat": "needs ramps (§8.4); the masks are in (§8.5 step 2)",
-    "CLIMB_hauler_fetches_ramped_floor": "needs ramps (§8.4)",
-    "CLIMB_save_reload_pockets_identical": "needs a save + reload cycle on the bridge; the grid is derived, never scribed",
+    "CLIMB_save_reload_pockets_identical": "covered by live_session.py B7 (one save + one load; pockets compared, "
+                                           "RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS); the grid is derived, never scribed",
 }
 
 
@@ -123,6 +139,56 @@ def cost_verdict(slow, flat, normal):
     return "PASS" if sc == int(round(scl * f)) and fc == 0 and nc == ncl and sc > nc else "FAIL"
 
 
+def pit_pawn(report, pid):
+    """The pawns[] row of jawa/flowworks_pit_report for pawn pid (ids compared without the Thing_ prefix), or None."""
+    want = str(pid or "").replace("Thing_", "")
+    for p in (report or {}).get("pawns") or []:
+        if str(p.get("id") or "").replace("Thing_", "") == want:
+            return p
+    return None
+
+
+def moat_verdict(island, moat, k_island, k_moat, k_out):
+    """CLIMB_raider_never_crosses_ramped_moat (design §8.6) -> (status, why). island / moat = the pit_report pawn rows
+    of a hostile on the moated island and one on the ramped moat floor; k_* = ProofClimb band-2 reads (island, moat,
+    outer surface). The control first: the moat raider must reach the map edge up the ramp (else the instrument never
+    said True and the island's False proves nothing: UNMEASURED). Then PASS = the island raider cannot reach the edge
+    and the island is its own band component while moat and outside are one; FAIL = it can, or the grid joins it."""
+    for name, r in (("island", island), ("moat", moat)):
+        if not r or r.get("spawned") is not True or r.get("dead") or r.get("downed"):
+            return "UNMEASURED", "%s raider not read (or dead/downed): %r" % (name, r)
+    if moat.get("canReachMapEdge") is not True:
+        return "UNMEASURED", "control: the moat-floor raider cannot reach the edge up the ramp (see CLIMB_ramp_* rows)"
+    if island.get("canReachMapEdge") is True:
+        return "FAIL", "the island raider reaches the map edge across the moat"
+    reads = (k_island, k_moat, k_out)
+    if not all(r and fresh(r) and "comp" in r for r in reads):
+        return "UNMEASURED", "a stale or missing pocket-grid read"
+    if k_island["comp"] == k_out["comp"]:
+        return "FAIL", "the grid puts the island in the outside's component"
+    if k_moat["comp"] != k_out["comp"]:
+        return "UNMEASURED", "control: the grid does not join the ramped moat to the outside"
+    return "PASS", ""
+
+
+def in_rect(rect, xz):
+    return not out_of(rect, xz)
+
+
+def haul_verdict(sealed_items, final_items, pit_rect, pile_rect):
+    """CLIMB_hauler_fetches_ramped_floor -> (status, why). *_items = jawa/list_things rows of the Jade (def/x/z/spawned).
+    sealed_items: read after HAUL_SEALED_TICKS with NO ramp; final_items: after the ramp, at the end of the poll.
+    UNMEASURED when the Jade was never seen on the pit floor; FAIL when it left a sheer D 4 floor with no ramp (the
+    hauler got in where nobody can) or never reached the stockpile once the ramp stood; PASS = sealed, then fetched."""
+    if not sealed_items:
+        return "UNMEASURED", "the Jade was not read back after the sealed phase"
+    if not any(in_rect(pit_rect, (t.get("x"), t.get("z"))) for t in sealed_items):
+        return "FAIL", "the Jade left a sheer D 4 floor with no ramp"
+    if any(in_rect(pile_rect, (t.get("x"), t.get("z"))) for t in final_items or []):
+        return "PASS", ""
+    return "FAIL", "the Jade never reached the stockpile with the ramp built"
+
+
 def out_of(rect, xz):
     x0, z0, w, h = rect
     return not (x0 <= xz[0] < x0 + w and z0 <= xz[1] < z0 + h)
@@ -139,6 +205,78 @@ def walk_verdict(order_row, rect, want_out):
         return "UNMEASURED", {"why": "no end position in the order row", "order": order_row}
     ok = out_of(rect, pos) == want_out
     return ("PASS" if ok else "FAIL"), {"end": pos, "rect": rect, "wantOut": want_out}
+
+
+# ============================================================================ live rows F and G
+def _things(B, rect):
+    r = B.call("jawa/list_things", defName=HAUL_ITEM, rect="%d,%d,%d,%d" % rect) or {}
+    return [t for t in r.get("things") or [] if t.get("def") == HAUL_ITEM]
+
+
+def haul_rows(B, P, row, spawn, climb, rect_G, rect_pile):
+    x0, z0 = P(0, 0)
+    site = (x0, z0, SITE_W, SITE_H)
+    hauler = spawn("Colonist", P(39, 9), "player")
+    prio = {w: (B.call("jawa/set_work_priority", pawnId=hauler, workType=w, priority=0) or {}).get("success")
+            for w in OTHER_WORK} if hauler else {}
+    hp = (B.call("jawa/set_work_priority", pawnId=hauler, workType="Hauling", priority=1) or {}) if hauler else {}
+    zr = B.call("jawa/map_zones", action="createZone", zoneType="stockpile", rect="%d,%d,%d,%d" % rect_pile) or {}
+    label = zr.get("created")
+    ss = (B.call("jawa/storage_settings", target=label, disallowAll=True, allow=HAUL_ITEM) or {}) if label else {}
+    sp = B.call("jawa/spawn_batch", ops="%s:%d,%d,10" % ((HAUL_ITEM,) + P(39, 3))) or {}
+    setup = dict(hauler=hauler, hauling=hp.get("success"), zone=label, filter=ss.get("success"),
+                 placed=sp.get("thingsPlaced"), othersOff=sum(1 for v in prio.values() if v))
+    if not (hauler and hp.get("success") and label and ss.get("success") and sp.get("thingsPlaced")):
+        row("CLIMB_hauler_fetches_ramped_floor", "UNMEASURED", "SITE", dict(why="haul scene not staged", **setup))
+        return
+    trail = []
+    B.ticks(HAUL_SEALED_TICKS)
+    sealed = _things(B, site)
+    kv, _t = climb("pawn:%s" % hauler)
+    trail.append(kv.get("cell"))
+    tr = B.call("jawa/static_call", type=PROOF_TYPE, method="ProofRamp", args="%d,%d;1" % P(40, 3)) or {}
+    final, waited = [], 0
+    while waited < HAUL_BUDGET:
+        B.ticks(250)
+        waited += 250
+        kv, _t = climb("pawn:%s" % hauler)
+        trail.append(kv.get("cell"))
+        final = _things(B, site)
+        if any(in_rect(rect_pile, (t.get("x"), t.get("z"))) for t in final):
+            break
+    st, why = haul_verdict(sealed, final, rect_G, rect_pile)
+    if st == "FAIL" and "ramp built" in why and "joins=True" not in str(tr.get("result")):
+        st, why = "UNMEASURED", "the ramp did not join (%s): see CLIMB_ramp_* rows" % str(tr.get("result") or tr)[:80]
+    row("CLIMB_hauler_fetches_ramped_floor", st, "MOD", dict(why=why, sealed=sealed, final=final, waited=waited,
+                                                             ramp=tr, trail=trail[-14:], **setup))
+    B.call("jawa/set_draft", pawnId=hauler, drafted=True)
+
+
+def moat_row(B, P, row, spawn, climb, ramp):
+    isl = spawn("Pirate", P(32, 5), "hostile")
+    mo = spawn("Pirate", P(30, 3), "hostile")
+    try:
+        # no ticks: reachability needs none, and a hostile left a few ticks wanders off the cell pit_report reads; each
+        # report is taken where ProofClimb says the pawn stands
+        def report(pid, c):
+            kv, _t = climb("pawn:%s" % pid) if pid else ({}, "")
+            try:
+                c = tuple(int(v) for v in kv["cell"].split(","))
+            except (KeyError, ValueError):
+                pass
+            return B.call("jawa/flowworks_pit_report", x=c[0], z=c[1]) or {}
+        ri = report(isl, P(32, 5))
+        rm = report(mo, P(30, 3))
+        ki, ti = climb("%d,%d;2" % P(32, 5))
+        km, tm = climb("%d,%d;2" % P(30, 3))
+        ko, to = climb("%d,%d;2" % P(37, 10))
+        st, why = moat_verdict(pit_pawn(ri, isl), pit_pawn(rm, mo), ki, km, ko)
+        row("CLIMB_raider_never_crosses_ramped_moat", st, "MOD",
+            dict(why=why, island=pit_pawn(ri, isl), moat=pit_pawn(rm, mo), txt=[ti, tm, to], ramp=ramp))
+    finally:
+        for pid in (isl, mo):
+            if pid:
+                B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
 
 
 # ============================================================================ live run
@@ -196,12 +334,13 @@ def main():
     if a.fresh_map:
         B.call("rimworld/go_to_main_menu")
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
+    rect_G, rect_pile = (ox + 38, oz + 2, 3, 3), (ox + 43, oz + 8, 2, 2)
     ok, _ = V._wait_playing(B, leave_s=0)
     FIELDS = ("superdeepCapturesOwnFaction", "pitRelativeClimbEnabled", "ladderPrisonDoorEnabled")
     before = {f: sget(f) for f in FIELDS}
     res["settings_before"] = before
     try:
-        if not ok or not V.prepare_site(B, (ox, oz, 30, 12), rows, "CLIMB_site_ready"):
+        if not ok or not V.prepare_site(B, (ox, oz, SITE_W, SITE_H), rows, "CLIMB_site_ready"):
             row("CLIMB_site", "UNMEASURED", "SITE", {"why": "site not ready / not playing"})
             return 2
         sset("pitRelativeClimbEnabled", True)
@@ -215,8 +354,15 @@ def main():
                 dig(P(10 + x, 2 + z), 3)
                 dig(P(20 + x, 2 + z), 4)
                 dig(P(24 + x, 2 + z), 4)
+                dig(P(38 + x, 2 + z), 4)
         dig(P(16, 3), 2)
         dig(P(27, 3), 1)
+        for x in range(5):                 # F: the moat ring around a 3x3 island
+            for z in range(5):
+                if not (1 <= x <= 3 and 1 <= z <= 3):
+                    dig(P(30 + x, 3 + z), 4)
+        dig(P(35, 5), 1)
+        dig(P(41, 3), 1)
         B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % P(20, 3))   # a wall cell: a ladder joins its cell to a SHALLOWER cardinal neighbour (design §8.4)
         B.ticks(SETTLE)
         # A: the dried pond
@@ -265,6 +411,7 @@ def main():
         B.ticks(SETTLE)
         k0, t0 = climb("%d,%d;2" % P(25, 3))
         tr = B.call("jawa/static_call", type=PROOF_TYPE, method="ProofRamp", args="%d,%d;1" % P(26, 3)) or {}
+        trF = B.call("jawa/static_call", type=PROOF_TYPE, method="ProofRamp", args="%d,%d;1" % P(34, 5)) or {}   # F's ramp
         B.ticks(SETTLE)
         k1, t1 = climb("%d,%d;2" % P(25, 3))
         st, det = walk_verdict(order(col_e, P(25, 9)), (ox + 24, oz + 2, 3, 3), want_out=True)
@@ -288,6 +435,10 @@ def main():
         else:
             row("CLIMB_rebuild_follows_fill", "PASS" if kv.get("pocket") == "False" else "FAIL", "MOD",
                 {"kv": kv, "fill": f1})
+        # G: a hauler fetches from a ramped pit floor (design §8.6), by its own AI
+        haul_rows(B, P, row, spawn, climb, rect_G, rect_pile)
+        # F: a raider never crosses a ramped moat over its wall (design §8.6); hostiles last, vanished at once
+        moat_row(B, P, row, spawn, climb, trF)
         for rid, why in OWED.items():
             row(rid, "UNMEASURED", "OWED", {"why": why})
     finally:
