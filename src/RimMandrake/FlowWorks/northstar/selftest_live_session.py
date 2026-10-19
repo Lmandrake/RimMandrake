@@ -350,9 +350,22 @@ class FakeEventGame(object):
         return dict(success=True)
 
 
+class FakeV(object):
+    def __init__(self, ready=True):
+        self.ready = ready
+
+    def prepare_site(self, B, rect, rows, rid):
+        if not self.ready:
+            rows.append(dict(id=rid, status="UNMEASURED", cls="SITE", detail=dict(blocked=["roof still present over the site"])))
+        return self.ready
+
+
 class FakeEventWalk(object):
     def __init__(self, g):
-        self.g = g
+        self.g, self.V, self.B, self.reset_left = g, FakeV(getattr(g, "site_ready", True)), g, 0
+
+    def proof(self, typ, method, arg):
+        return True, "RESET cells=0 levels=0 rolled=0 left=%d" % self.reset_left
 
     def clear_site(self, rect):
         return True
@@ -370,6 +383,7 @@ class FakeEventSession(object):
     def __init__(self, g):
         self.g, self.w, self.rows = g, FakeEventWalk(g), g.rows
         self.zones, self.size = L.plan_zones((250, 250)), (250, 250)
+        self.site_bad, self.pawns, self.timing, self.notes = {}, {}, {}, []
 
     def call(self, tool, **kw):
         return self.g.call(tool, **kw)
@@ -380,14 +394,22 @@ class FakeEventSession(object):
     def dig(self, c, n, fill=-1):
         return {}
 
-    def row(self, rid, item, cid, status, cls, detail, block, eyes=False):
-        self.rows.append(dict(id=rid, status=status, cls=cls, detail=detail))
+    row = L.Session.row          # the REAL row(): its zone demotion is what the site checks below exercise
+
+    def say(self, s):
+        pass
+
+    def save(self):
+        pass
 
 
-def run_event(fn, **kw):
+def run_event(fn, site_ready=True, **kw):
     g = FakeEventGame(**kw)
-    fn(FakeEventSession(g))
-    return g.rows[-1]
+    g.site_ready = site_ready
+    s = FakeEventSession(g)
+    fn(s)
+    g.session = s
+    return [r for r in g.rows if r["id"].startswith(("B5", "B6"))][-1]
 
 
 r = run_event(L.b5_cold_snap, offset=-10.0)     # ColdSnap-strength alone: 21 - 2 x 10 = 1 C, the pass-1 bottom
@@ -402,6 +424,131 @@ r = run_event(L.b6_flood, floods=False)
 check(r["status"] == "UNMEASURED" and r["cls"] == "SITE", "B6 wired: a flood that never reaches the canal is UNMEASURED/SITE")
 r = run_event(L.b6_flood, flood_changes=True)
 check(r["status"] == "FAIL" and r["cls"] == "MOD", "can-fail B6 wired: the flood changed the canal's fill: FAIL/MOD")
+
+# 8d. LS_FULLREAD (2026-10-19 full read): each harness fix below can go red
+check(L.advance_remainder(dict(success=True, executed=500), 500) == 0, "advance: a finished safe_advance owes nothing")
+check(L.advance_remainder(dict(success=False, state="stopped", executed=200), 500) == 300,
+      "can-fail advance: a latch-stopped run owes only the REST (the old fallback re-advanced all 500)")
+check(L.advance_remainder(dict(success=False, state="refused"), 500) == 500, "advance: a refused run owes all of it")
+check(L.dig_miss(dict(success=True, depth=4), 4) is None, "dig: depth read back as asked is fine")
+check(L.dig_miss(dict(success=True, depth=8), 4) and L.dig_miss(dict(success=False, error="x"), 4),
+      "can-fail dig: a doubled depth (cell never reset) or a refused drive is reported")
+check(L.dig_miss(dict(success=True), 4) is None, "dig: a reply with no depth field is not judged (FakeGame)")
+
+r = run_event(L.b5_cold_snap, site_ready=False)
+check(r["status"] == "UNMEASURED" and r["cls"] == "SITE" and r["detail"].get("statusIfSiteReady") == "PASS",
+      "can-fail site: B5 on an ice zone that never read back clear is UNMEASURED/SITE, not PASS: %s" % r["status"])
+g = FakeEventGame()
+s = FakeEventSession(g)
+s.w.reset_left = 3
+L.b6_flood(s)
+r = [x for x in g.rows if x["id"] == "B6_flood_canal_kept"][-1]
+check(r["status"] == "UNMEASURED" and r["cls"] == "SITE", "can-fail site: old pits left by ProofResetRect (left=3) void B6")
+
+
+class CrashGame(FakeEventGame):
+    def call(self, tool, **kw):
+        if tool == "jawa/cell_temperature":
+            raise RuntimeError("bridge dropped")
+        return FakeEventGame.call(self, tool, **kw)
+
+
+g = CrashGame()
+try:
+    L.b5_cold_snap(FakeEventSession(g))
+except RuntimeError:
+    pass
+check(not g.conds, "can-fail B5: a crash mid-cold still ends ColdSnap + DeepFreeze (left: %s)" % sorted(g.conds))
+g = FakeEventGame()
+L.b5_cold_snap(FakeEventSession(g))
+check(g.weather == "Clear", "B5 ends with B0's locked Clear put back")
+
+hp = L.heal_plan([dict(def_="x"), dict(**{"def": "Hypothermia", "part": None, "severity": 0.4}),
+                  dict(**{"def": "Frostbite", "part": "Toe", "severity": 0.2})])
+check(("remove", "Hypothermia") in hp and ("restore", "Torso") in hp, "heal: hypothermia removed, frostbite restored via Torso: %s" % hp)
+check(L.heal_plan([dict(**{"def": "Hangover", "part": None})]) == [], "heal: nothing to heal is no call")
+
+
+class HealGame(object):
+    def __init__(self):
+        self.calls, self.rows = [], []
+
+    def call(self, tool, **kw):
+        self.calls.append((tool, kw))
+        if tool == "rimworld/list_colonists":
+            return dict(colonists=[dict(pawnId="Thing_Human1"), dict(pawnId="Thing_Human2")])
+        if tool == "jawa/pawn_get":
+            return dict(pawns=[dict(hediffs=[{"def": "Hypothermia", "part": None}, {"def": "Cut", "part": "Leg"}])])
+        if tool == "jawa/pawn_health":     # the real tool: restore without bodyPart is REFUSED
+            if kw.get("action") == "restore" and not kw.get("bodyPart"):
+                return dict(success=False, error="Give a bodyPart to restore.")
+            return dict(success=True)
+        return dict(success=True)
+
+
+hg = HealGame()
+hs = FakeEventSession(hg)
+healed, refused = L.heal_colonists(hs, keep=("Human2",))
+check(healed == 1 and not refused and not any(kw.get("pawn") == "Thing_Human2" for t, kw in hg.calls if t == "jawa/pawn_health"),
+      "can-fail heal: every heal call is one the tool accepts, and the kept (rescue) pawn is left alone: %s %s" % (healed, refused))
+
+check(L.dig_cost_verdict("True", True, "51200")[0] == "PASS", "dig cost: 3,200 x 16 is PASS")
+check(L.dig_cost_verdict("True", True, "12800")[0] == "FAIL", "can-fail dig cost: a flat 12,800 with the curve on is FAIL")
+check(L.dig_cost_verdict("False", True, "12800")[0] == "UNMEASURED", "dig cost: curve setting off is UNMEASURED")
+check(L.dig_cost_verdict("True", False, "REFUSED: x")[0] == "UNMEASURED", "dig cost: an unread work function is UNMEASURED")
+check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=True, size=100)))[0] == "PASS", "fish: a body with fish PASS")
+check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=False, size=100)))[:2] == ("FAIL", "MOD"),
+      "can-fail fish: a dug body with no fish is FAIL/MOD")
+check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=False)))[:2] == ("UNMEASURED", "SITE"), "fish: no body is SITE")
+check(L.fish_roll_verdict(dict(success=False))[:2] == ("UNMEASURED", "HARNESS"), "fish: a failed read is HARNESS")
+check(L.reload_verdict(True, [], []) == "PASS" and L.reload_verdict(True, [], ["pocket_covers"]) == "FAIL",
+      "reload: equal is PASS, a differing key is FAIL")
+check(L.reload_verdict(True, ["pocket_covers"], []) == "UNMEASURED",
+      "can-fail reload: a key unread on both sides (None == None) is UNMEASURED, never PASS")
+
+
+class RideGame(object):
+    """g_dehydration_ride: severity rises 0.30 per 60,000 ticks; an UNDRAFTED pawn walks off (and could drink)."""
+    def __init__(self, draft_works=True):
+        self.t, self.drafted, self.draft_works, self.cell, self.rows = 0, False, draft_works, (183, 17), []
+
+    def call(self, tool, **kw):
+        if tool == "jawa/set_draft":
+            self.drafted = self.drafted or (kw.get("drafted") is True and self.draft_works)
+            return dict(success=True, drafted=self.drafted)
+        if tool == "jawa/pawn_get":
+            return dict(pawns=[dict(hediffs=[{"def": "RM_Dehydration", "severity": 0.3 * self.t / 60000.0}])])
+        return dict(success=True)
+
+
+class RideSession(FakeEventSession):
+    def __init__(self, g):
+        FakeEventSession.__init__(self, g)
+        self.ride_stop = False
+
+    def spawn(self, kind, c, faction="player"):
+        return 7
+
+    def now(self):
+        return self.g.t
+
+    def climb(self, pid):
+        return dict(cell=self.g.cell)
+
+
+def run_ride(g):
+    s = RideSession(g)
+    for w in L.g_dehydration_ride(s):
+        g.t += w.ticks
+        if not g.drafted:
+            g.cell = (g.cell[0] + 1, g.cell[1])
+    return g.rows[-1]
+
+
+r = run_ride(RideGame())
+check(r["status"] == "PASS", "ride: a drafted colonist held at thirst 0 reads the 0.30/day rate: %s" % r["detail"].get("projected60k"))
+r = run_ride(RideGame(draft_works=False))
+check(r["status"] == "UNMEASURED", "can-fail ride: a colonist that was never drafted is UNMEASURED, never a rate")
 
 # 9. --dry-run and --mock exit 0 offline
 for flag in ("--dry-run", "--mock"):

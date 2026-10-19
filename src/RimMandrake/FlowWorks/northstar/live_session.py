@@ -119,11 +119,11 @@ crit("SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT", "A3", "B4", "native cover_tiers (
 for cid, t in (("A1", 1500), ("A2", 1500), ("A3", 300), ("A4", 6000)):
     crit("PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", cid, "B4", "native pit_access (ProofClimb pawn:<id>)", t, 30)
 crit("PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT", "A2", "B4", "native dig_depth (drive to 8 m, ProofReadout, job probe)", 10, 8)
-crit("DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT", "A2", "B4", "native dig_depth (flowworks_job_probe work total)", 0, 4,
+crit("DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT", "A2", "B4", "native dig_depth (RM_DigDepthMath.WorkToCut live + job_probe)", 0, 4,
      note="the bar's 'progress-bar time' is read as the job's work total + one rate sample: INFERRED, never a full dig")
 crit("THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY", "T6", "B4", "native dehydration_ride (rides the whole session clock)", 0, 4,
      note="thirst_live T6 holds need 0 for 60,000 ticks serially (E ~16 min); here it rides every other block's ticks")
-crit("FISH_ROLL_MEND_PONDS_BORN_BARREN", "A2", "B4", "native dug_reservoir (flowworks_body_report fish roll)", 500, 15)
+crit("FISH_ROLL_MEND_PONDS_BORN_BARREN", "A2", "B4", "native dug_reservoir (jawa/fishing water-body fish roll)", 500, 15)
 crit("POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A7", "B4", "native dug_reservoir (map_zones fishing + jawa/fishing + ordered_job Fish)",
      8500, 140, note="E: one vanilla Fish job, 7500/FishingSpeed ticks; the longest B4 wait. Needs the companion with jawa/fishing")
 crit("TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A4", "B4", "native grenade (explosion_at Bomb, pawn_get hediffs)", 10, 10)
@@ -525,6 +525,15 @@ def dig_miss(r, n):
     return None
 
 
+def draft(s, pid):
+    """Draft pid and READ IT BACK. jawa/set_draft with no `drafted` changes nothing (JawaBenchJobTools SetDraft: "Omit to
+    leave unchanged"), which left tonight's cover, grenade and dehydration colonists free to wander. True on mock."""
+    if not pid:
+        return False
+    r = s.call("jawa/set_draft", pawnId=pid, drafted=True)
+    return True if s.mock else r.get("drafted") is True
+
+
 def advance_remainder(r, n):
     """Ticks still owed after a jawa/safe_advance reply: 0 when it finished; n - executed when it stopped (vitals latch),
     was refused (executed absent = 0) or is still running."""
@@ -897,7 +906,10 @@ def g_pit_access(s):
     for pid in (a, g, ctl):
         if pid:
             s.order(pid, out)
-    s.call("jawa/pawn_force_incapacitate", pawn=d) if d else None
+    # downed WITHOUT bleeding (a bleeder dies inside the 6,000-tick wait) and read back: a colonist that is not downed
+    # is not the A4 scene (the reply was never read)
+    inc = s.call("jawa/pawn_force_incapacitate", pawn=d, action="downed", allowBleedingWounds=False) if d else {}
+    downed = s.mock or inc.get("downedAfter") is True
     rescue_t0 = s.now()
     yield Wait(1500, until=lambda: all((s.climb(p) or {}).get("depth") == 0 for p in (a, g) if p), every=150)
     ra, rg, rc = s.climb(a) if a else {}, s.climb(g) if g else {}, s.climb(ctl) if ctl else {}
@@ -906,13 +918,15 @@ def g_pit_access(s):
         if not r:
             return "UNMEASURED"
         return "PASS" if ((r.get("depth") == 0) == want_out) else "FAIL"
+    st = st_out(ra) if lad.get("survived") else "UNMEASURED"
     s.row("B4_access_portable_ladder_out", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A1",
-          st_out(ra) if lad.get("survived") else "UNMEASURED", "MOD", dict(ladder=lad, pawn=ra,
+          st, "MOD" if st != "UNMEASURED" else "SITE" if not lad.get("survived") else "HARNESS", dict(ladder=lad, pawn=ra,
           owed="build-by-colonist, uninstall/re-set and the 4 m refusal are not read by this row"), "B4")
     s.row("B4_access_gear_climbs_sheer_4m", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A2",
           st_out(rg) if gear.get("success") else "UNMEASURED", "MOD" if gear.get("success") else "HARNESS",
           dict(gear=str(gear)[:160], pawn=rg), "B4")
-    s.row("B4_access_no_gear_stays_in", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A2", st_out(rc, want_out=False), "MOD",
+    st = st_out(rc, want_out=False)
+    s.row("B4_access_no_gear_stays_in", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A2", st, "MOD" if st != "UNMEASURED" else "HARNESS",
           dict(pawn=rc), "B4")
     # A3: jump pack in and out (the jump verb is driven by jawa/pawn_use_verb on the pack; refused = UNMEASURED)
     jin = {}
@@ -945,9 +959,9 @@ def g_pit_access(s):
     yield Wait(6000, until=ladder_there, every=250)
     seen = ladder_there()
     rd = s.climb(d) if d else {}
-    st = "UNMEASURED" if not d or not rd or not (rd.get("depth") or 0) > 0 else ("PASS" if seen else "FAIL")
-    s.row("B4_access_rescue_ladder_queued", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A4", st, "MOD" if d else "HARNESS",
-          dict(ladderSeen=seen, afterTicks=s.now() - rescue_t0, downed=rd,
+    st = "UNMEASURED" if not d or not downed or not rd or not (rd.get("depth") or 0) > 0 else ("PASS" if seen else "FAIL")
+    s.row("B4_access_rescue_ladder_queued", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A4", st, "MOD" if st != "UNMEASURED" else "HARNESS",
+          dict(ladderSeen=seen, afterTicks=s.now() - rescue_t0, downed=rd, incapacitate=str(inc)[:160],
                owed="'built and the colonist carried out' needs a longer ride: read again in B7"), "B4")
     s.pawns["rescue"] = d
 
@@ -971,16 +985,45 @@ def g_dig_depth(s):
     st = "UNMEASURED" if hole is None else ("PASS" if abs(hole - 8.0) < 0.01 else "FAIL")
     s.row("B4_dig_8m_readout", "PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT", "A2", st, "MOD" if st != "UNMEASURED" else "HARNESS",
           dict(readout=txt[:160], owed="'a colonist digs it by Dig to depth' is the P10 walk: job read below"), "B4")
+    # jawa/flowworks_job_probe reports the designator and WorkGiver verdicts only, NO work total (its ResultDescription):
+    # the old row read workTotal/work/... off it and could never answer. The dig job prices each cut with
+    # RM_ExcavationDepth.WorkToDeepen(current) = RM_DigDepthMath.WorkToCut(current + 1, digCostRisesWithDepth): read that
+    # production function live for the 15 -> 16 cut on b, with the LIVE setting, and keep the probe as the "a dig job
+    # exists here" evidence.
     jp = s.call("jawa/flowworks_job_probe", x=b[0], z=b[1], kind="dig")
-    work = None
-    for k in ("workTotal", "work", "workAmount", "totalWork"):
-        if fnum(jp.get(k)) is not None:
-            work = fnum(jp.get(k))
-            break
-    want = 3200.0 * 16
-    st = "UNMEASURED" if work is None else ("PASS" if abs(work - want) <= 0.02 * want else "FAIL")
-    s.row("B4_dig_cost_notch16", "DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT", "A2", st, "MOD" if st != "UNMEASURED" else "HARNESS",
-          dict(probe=str(jp)[:240], want=want, how="INFERRED: work total read, the progress bar not timed"), "B4")
+    rises = s.sget("digCostRisesWithDepth")
+    st, why, work = dig_cost_verdict(rises, *s.proof("RimMandrake.FlowWorks.RM_DigDepthMath", "WorkToCut",
+                                                       "16|%s" % ("false" if str(rises).lower() == "false" else "true")))
+    s.row("B4_dig_cost_notch16", "DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT", "A2", st, "MOD" if st in ("PASS", "FAIL") else
+          "SITE" if "setting" in why else "HARNESS",
+          dict(work=work, want=3200 * 16, setting=rises, why=why, designator=(jp.get("designator") if isinstance(jp, dict) else None),
+               how="INFERRED: the job's per-cut work function read live, the progress bar not timed"), "B4")
+
+
+def fish_roll_verdict(fr):
+    """B4_reservoir_fish_rolled -> (status, class, why) from a jawa/fishing read of the filled 10x10 dug reservoir."""
+    if not isinstance(fr, dict) or fr.get("success") is not True or not isinstance(fr.get("body"), dict):
+        return "UNMEASURED", "HARNESS", "jawa/fishing read failed: %s" % str((fr or {}).get("error") or fr)[:100]
+    wb = fr["body"]
+    if wb.get("hasBody") is not True:
+        return "UNMEASURED", "SITE", "no vanilla water body under the reservoir (filled? see its dig rows)"
+    if wb.get("hasFish") is True or wb.get("commonFish"):
+        return "PASS", "MOD", ""
+    return "FAIL", "MOD", "a %s-square dug water body rolled no fish" % wb.get("size")
+
+
+def dig_cost_verdict(rises, ok, txt):
+    """B4_dig_cost_notch16 -> (status, why, work). ok/txt = the WorkToCut(16, setting) static_call. The bar is the curve
+    ("deep is a megaproject": 3,200 x notch, 51,200 for the 16th); with digCostRisesWithDepth off the flat cost is the
+    designed answer, so the row cannot judge the curve: UNMEASURED/SITE."""
+    if str(rises).lower() not in ("true", "false"):
+        return "UNMEASURED", "digCostRisesWithDepth unread (%r)" % (rises,), None
+    work = fnum(str(txt).strip()) if ok else None
+    if work is None:
+        return "UNMEASURED", "WorkToCut unread: %s" % str(txt)[:80], None
+    if str(rises).lower() == "false":
+        return "UNMEASURED", "the setting digCostRisesWithDepth is off: flat cost by design", work
+    return ("PASS" if work == 3200 * 16 else "FAIL"), "", work
 
 
 POND = "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD"
@@ -997,11 +1040,16 @@ def g_reservoir(s):
     x, z, _w, _h = s.zones["reservoir"]
     s.pit((x + 2, z + 2), 10, 10, 4, 4)
     yield Wait(500)
+    # flowworks_body_report has NO fish field (body{id, limitless, stock, capacity, cellCount, ...}): the old row read
+    # fish/fishTypes/fishCount off it, so every read body was a FAIL. The fish roll is the vanilla WaterBody's, read by
+    # jawa/fishing (body{hasBody, hasFish, commonFish, population, ...}); the FlowWorks body stays as detail.
     b = s.call("jawa/flowworks_body_report", x=x + 6, z=z + 6, classify=True).get("body") or {}
-    fish = b.get("fish") or b.get("fishTypes") or b.get("fishCount")
-    st = "UNMEASURED" if not b else ("PASS" if fish else "FAIL")
-    s.row("B4_reservoir_fish_rolled", "FISH_ROLL_MEND_PONDS_BORN_BARREN", "A2", st, "MOD" if b else "HARNESS",
-          dict(squares=b.get("squares") or b.get("cells"), fish=fish, keys=sorted(b)[:20]), "B4")
+    fr = s.call("jawa/fishing", action="read", x=x + 6, z=z + 6)
+    st, cls, why = fish_roll_verdict(fr)
+    wb = fr.get("body") if isinstance(fr.get("body"), dict) else {}
+    s.row("B4_reservoir_fish_rolled", "FISH_ROLL_MEND_PONDS_BORN_BARREN", "A2", st, cls,
+          dict(why=why, waterBody={k: wb.get(k) for k in ("hasBody", "type", "size", "hasFish", "commonFish", "population")},
+               fwBody={k: b.get(k) for k in ("id", "cellCount", "stock", "capacity", "limitless")}), "B4")
 
     def a7(st, cls, **d):
         s.row("B4_reservoir_catch", POND, "A7", st, cls, d, "B4")
@@ -1059,18 +1107,21 @@ def g_grenade(s):
         s.dig((t[0] + i, t[1]), 2)
     yield Wait(70)
     pt, po = s.spawn(HUMAN, t), s.spawn(HUMAN, o)
-    for p in (pt, po):
-        if p:
-            s.call("jawa/set_draft", pawnId=p)
+    # drafted (and read back) so neither walks off its square; each pawn's cell is read before the blast: a trench pawn
+    # not IN the trench, or a control not on open ground, makes the row UNMEASURED (set_draft with no drafted= was a no-op)
+    drafted = [draft(s, p) for p in (pt, po)]
+    cells = [(s.climb(p) or {}).get("cell") if p and not s.mock else None for p in (pt, po)]
+    placed = s.mock or (tuple(cells[0] or ()) == t and tuple(cells[1] or ()) == o)
     r1 = s.call("jawa/explosion_at", at="%d,%d" % t, radius=1.9, damType="Bomb", damAmount=20)
     r2 = s.call("jawa/explosion_at", at="%d,%d" % o, radius=1.9, damType="Bomb", damAmount=20)
     yield Wait(5)
     ht, ho = (hediffs(s.call("jawa/pawn_get", pawn=p)) if p else {} for p in (pt, po))
     st, sum_t, sum_o = "UNMEASURED", sum(ht.values()), sum(ho.values())
-    if r1.get("success") and r2.get("success") and pt and po and sum_o > 0:
+    if r1.get("success") and r2.get("success") and pt and po and sum_o > 0 and all(drafted) and placed:
         st = "PASS" if abs(sum_t - sum_o) <= max(2.0, 0.25 * sum_o) else "FAIL"
     s.row("B4_grenade_no_blast_cover", "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A4", st, "MOD" if st != "UNMEASURED" else "HARNESS",
-          dict(trench=round(sum_t, 2), open=round(sum_o, 2), note="injury severity sums; a blast is random per part"), "B4")
+          dict(trench=round(sum_t, 2), open=round(sum_o, 2), drafted=drafted, cells=cells, want=[t, o],
+               note="injury severity sums; a blast is random per part"), "B4")
 
 
 def g_rail_lip(s):
@@ -1098,8 +1149,14 @@ def g_dehydration_ride(s):
     if not p:
         s.row("B4_dehydration_rate", "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY", "T6", "UNMEASURED", "HARNESS", dict(why="no pawn"), "B4")
         return
-    s.call("jawa/set_draft", pawnId=p)
+    if not draft(s, p):
+        # an undrafted colonist at thirst 0 walks off to drink: the rate it gives is not the dehydration rate
+        s.row("B4_dehydration_rate", "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY", "T6", "UNMEASURED", "HARNESS",
+              dict(why="set_draft did not read back drafted=True"), "B4")
+        return
     s.pawns["ride"] = p
+    home = (s.climb(p) or {}).get("cell") if not s.mock else None
+    wandered = []
     t0 = s.now()
     sev0 = None
     for _ in range(40):
@@ -1109,16 +1166,21 @@ def g_dehydration_ride(s):
         if sev0 is None and sev is not None:
             sev0, t0 = sev, s.now()
         yield Wait(500)
+        if not s.mock:
+            here = (s.climb(p) or {}).get("cell")
+            if here != home:
+                wandered.append(here)        # a pawn that moved could have drunk: the rate is not the bar's
         if s.ride_stop:
             break
     sev1, t1 = hediffs(s.call("jawa/pawn_get", pawn=p)).get("RM_Dehydration"), s.now()
-    if sev0 is None or sev1 is None or t1 - t0 < 2000:
+    if sev0 is None or sev1 is None or t1 - t0 < 2000 or wandered or (home is None and not s.mock):
         st, proj = "UNMEASURED", None
     else:
         proj = (sev1 - sev0) / float(t1 - t0) * 60000.0
         st = "PASS" if abs(proj - 0.30) <= 0.03 else "FAIL"
     s.row("B4_dehydration_rate", "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY", "T6", st, "MOD" if st != "UNMEASURED" else "HARNESS",
-          dict(sev=[sev0, sev1], ticks=t1 - t0, projected60k=proj, how="INFERRED from the measured rate"), "B4")
+          dict(sev=[sev0, sev1], ticks=t1 - t0, projected60k=proj, home=home, wandered=wandered[:6],
+               how="INFERRED from the measured rate"), "B4")
 
 
 SHARED_GENS = (("covers", g_cover_tiers), ("access", g_pit_access), ("digdepth", g_dig_depth), ("reservoir", g_reservoir),
@@ -1223,18 +1285,25 @@ def b5_cold_snap(s):
     def temp():
         return fnum(s.call("jawa/cell_temperature", cell="%d,%d" % canal[0]).get("temperature"))
     temps, froze = [], None
-    for k in range(0, ICE_BUDGET, 500):
-        s.advance(500)
-        temps.append(temp())
-        if "Ice" in terr():
-            froze = k + 500
-            break
-    for n in COLD_CONDITIONS:
-        s.call("jawa/game_condition", action="end", condition=n)
+    keep = (s.pawns.get("rescue"),)
+    try:
+        for k in range(0, ICE_BUDGET, 500):
+            s.advance(500)
+            temps.append(temp())
+            if k % 2000 == 1500:        # -40 C at full: keep the colony alive through the cold (the row reads no pawn)
+                heal_colonists(s, keep=keep)
+            if "Ice" in terr():
+                froze = k + 500
+                break
+    finally:                            # a crash mid-cold must not leave -40 C on the map for every later block
+        for n in COLD_CONDITIONS:
+            s.call("jawa/game_condition", action="end", condition=n)
     thaw = None
     if froze is not None:
         for k in range(0, 12000, 500):
             s.advance(500)
+            if k % 2000 == 1500:
+                heal_colonists(s, keep=keep)
             if "Ice" not in terr():
                 thaw = k + 500
                 break
@@ -1246,6 +1315,7 @@ def b5_cold_snap(s):
                coldest=min([t for t in temps if t is not None] or [None]) if any(t is not None for t in temps) else None,
                temps=temps[-6:], expectedFreezes=round(freeze_expectation(temps, sum(len(r) for r in canals), 500), 2),
                before=[(b or {}).get("dl") for b in before], after=[(a or {}).get("dl") for a in after]), "B5")
+    restore_after_weather(s, "B5")
 
 
 def flood_verdict(started, reached, receded, same):
@@ -1285,16 +1355,19 @@ def b6_flood(s):
     def flood_ops():
         return str(s.call("jawa/get_terrain_batch", rects="%d,%d,16,3" % (x + 1, z + 3)).get("ops") or "")
     reached, reached_at = False, None
-    if started:
-        for k in range(0, 14000, 500):
-            s.advance(500)
-            if "Flood" in flood_ops():
-                reached, reached_at = True, k + 500
-                break
-        if reached:
-            s.advance(1000)                         # let it lie a while over the banks
-    # back to B0's locked Clear: the old lock ends, TransitionTo(Clear) runs TorrentialRain.OnWeatherEnd = the flood is destroyed
-    s.call("jawa/weather_set", weather="Clear", lockWeather=True)
+    try:
+        if started:
+            for k in range(0, 14000, 500):
+                s.advance(500)
+                if "Flood" in flood_ops():
+                    reached, reached_at = True, k + 500
+                    break
+            if reached:
+                s.advance(1000)                     # let it lie a while over the banks
+    finally:
+        # back to B0's locked Clear (also after a crash: a locked torrent would flood every later block): the old lock
+        # ends, TransitionTo(Clear) runs TorrentialRain.OnWeatherEnd = the flood is destroyed
+        s.call("jawa/weather_set", weather="Clear", lockWeather=True)
     receded, gone_at = False, None
     if reached:
         for k in range(0, 12000, 500):
@@ -1307,6 +1380,7 @@ def b6_flood(s):
     s.row("B6_flood_canal_kept", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A6", st, cls,
           dict(why=why, weather=str(ws)[:120], weatherBefore=(w0 or {}).get("weather"), floodReachedAfter=reached_at,
                recededAfter=gone_at, changed=[c for c in before if before.get(c) != after.get(c)][:8]), "B6")
+    restore_after_weather(s, "B6")
 
 
 # ============================================================================ B7 one save + one load
@@ -1321,10 +1395,19 @@ def snapshot(s):
         # pocket state (live 2026-10-19: every pocket row 'differed' on gen=1421 -> 163 alone)
         snap["pocket_" + n] = re.sub(r"\b(gen|built|rebuilds)=\d+", "", txt).strip() if ok else None
     x, z, _w, _h = s.zones["digdepth"]
-    snap["readout_8m"] = s.proof(NSP, "ProofReadout", "%d,%d" % (x + 2, z + 2))[1]
+    ok, txt = s.proof(NSP, "ProofReadout", "%d,%d" % (x + 2, z + 2))
+    snap["readout_8m"] = txt if ok else None      # an error text on both sides compared equal (a vacuous PASS)
     for f in ("pitGuardrailEnabled", "fallDeathEnabled", "pitRoomMinDepthMetres"):
         snap["set_" + f] = s.sget(f)
     return snap
+
+
+def reload_verdict(ok_io, blind, diff):
+    """B7 -> status: UNMEASURED when the save/load failed or any snapshot key was unread on either side; else PASS when
+    nothing differs."""
+    if not ok_io or blind:
+        return "UNMEASURED"
+    return "PASS" if not diff else "FAIL"
 
 
 RELOAD_SETTLE_TICKS = 120      # > RM_PocketGrid.RebuildMinTicks (60): the pocket grid has rebuilt at least once since the load
@@ -1349,9 +1432,10 @@ def b7_reload(s):
             s.notes.append("wait_playing: %s" % ex)
     after = snapshot(s)
     diff = sorted(k for k in before if before.get(k) != after.get(k))
-    blind = sorted(k for k in before if before.get(k) is None)
+    # a key unread on EITHER side is no comparison: None == None made the pocket/setting rows PASS with nothing read
+    blind = sorted(k for k in before if before.get(k) is None or after.get(k) is None)
     ok_io = sv.get("success") is not False and ld.get("success") is not False
-    st = "UNMEASURED" if not ok_io or any(k.startswith("dig_") for k in blind) else ("PASS" if not diff else "FAIL")
+    st = reload_verdict(ok_io, blind, diff)
     # RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS: runs 20261018T232207 / T233414 failed on pocket_covers alone and
     # kept no strings. Keep both sides of every differing key, and one SETTLED re-read (> RM_PocketGrid.RebuildMinTicks
     # = 60 later): a key that agrees once settled was a stale grid read straight after the load (a transient), one that
@@ -1375,7 +1459,7 @@ def b7_reload(s):
     if s.pawns.get("rescue"):
         r = s.climb(s.pawns["rescue"])
         s.row("B7_rescued_out_of_pit", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A4",
-              "UNMEASURED" if not r else ("PASS" if r.get("depth") == 0 else "FAIL"), "MOD", dict(downed=r), "B7")
+              "UNMEASURED" if not r else ("PASS" if r.get("depth") == 0 else "FAIL"), "MOD" if r else "HARNESS", dict(downed=r), "B7")
 
 
 # ============================================================================ B9 owner review
@@ -1415,18 +1499,67 @@ def b9_owner(s):
 
 
 # ============================================================================ subprocess steps
-def heal_colonists(s):
-    """Restore every living colonist's health (wounds, blood loss) before a block that is not about health: after B8's
-    raid a bleeding colonist trips the governor's 'hurt' latch and kills the owner staging (live 2026-10-19, B9)."""
-    if s.mock:
-        return 0
-    n = 0
-    for c in (s.call("rimworld/list_colonists") or {}).get("colonists") or []:
-        if c.get("dead") or not c.get("pawnId"):
+WHOLE_BODY_ILLS = ("Hypothermia", "Heatstroke", "BloodLoss", "Malnutrition", "RM_Dehydration")
+PART_HURTS = ("Frostbite", "Cut", "Scratch", "Bite", "Bruise", "Crack", "Crush", "Stab", "Gunshot", "Burn", "Shredded",
+              "SurgicalCut", "Blunt", "Bomb")
+
+
+def heal_plan(hediffs_list):
+    """[(action, hediff)] that heal one colonist from a pawn_get hediff list: each whole-body ill removed by name (once
+    per instance), plus ONE 'restore Torso' when any part injury is listed (RestorePart is recursive: Torso is the
+    human root part, so it clears every part's wounds; it never touches whole-body hediffs, hence the removes)."""
+    plan, part_hurt = [], False
+    for h in hediffs_list or []:
+        if not isinstance(h, dict):
             continue
-        s.call("jawa/pawn_health", pawn=c["pawnId"], action="restore", confirmDestructive=True)
-        n += 1
-    return n
+        d = str(h.get("def") or h.get("defName") or "")
+        if d in WHOLE_BODY_ILLS:
+            plan.append(("remove", d))
+        elif h.get("part") and any(k in d for k in PART_HURTS):
+            part_hurt = True
+    if part_hurt:
+        plan.append(("restore", "Torso"))
+    return plan
+
+
+def heal_colonists(s, keep=()):
+    """Heal every living colonist (wounds, frostbite, hypothermia, blood loss) before a block that is not about health:
+    after B8's raid a bleeding colonist trips the governor's 'hurt' latch and kills the owner staging (live 2026-10-19,
+    B9), and B5's -40 C leaves hypothermia for every later block. The old call (pawn_health restore with no bodyPart)
+    was REFUSED every time ("Give a bodyPart to restore."), so nobody was ever healed. keep = pawn ids left as they are
+    (B4's downed rescue colonist, whose state B7 reads). Returns (healed, refused)."""
+    if s.mock:
+        return 0, []
+    keep = {str(k).replace("Thing_", "") for k in keep if k}
+    healed, refused = 0, []
+    for c in (s.call("rimworld/list_colonists") or {}).get("colonists") or []:
+        pid = c.get("pawnId")
+        if c.get("dead") or not pid or str(pid).replace("Thing_", "") in keep:
+            continue
+        snap = s.call("jawa/pawn_get", pawn=pid)
+        p = ((snap.get("pawns") or [snap]) or [{}])[0] if isinstance(snap, dict) else {}
+        plan = heal_plan(p.get("hediffs") if isinstance(p, dict) else None)
+        for act, what in plan:
+            if act == "remove":
+                r = s.call("jawa/pawn_health", pawn=pid, action="remove", hediff=what)
+            else:
+                r = s.call("jawa/pawn_health", pawn=pid, action="restore", bodyPart=what, confirmDestructive=True)
+            if r.get("success") is not True:
+                refused.append("%s %s %s: %s" % (pid, act, what, str(r.get("error") or r.get("message") or r)[:80]))
+        healed += 1 if plan else 0
+    if refused:
+        s.notes.append("heal_colonists refused: %s" % refused[:6])
+    return healed, refused
+
+
+def restore_after_weather(s, label):
+    """After a map-wide weather block (B5's -40 C, B6's flood): heal and feed every colonist except the B4 rescue pawn,
+    and put B0's locked Clear back, so the next block does not start on a hypothermic or flooded colony."""
+    healed, refused = heal_colonists(s, keep=(s.pawns.get("rescue"),))
+    fed = feed_colonists(s)
+    ws = s.call("jawa/weather_set", weather="Clear", lockWeather=True)
+    s.timing.setdefault("restore", []).append(dict(after=label, healed=healed, refused=len(refused), fed=fed,
+                                                   weather=ws.get("after")))
 
 
 def feed_colonists(s):
