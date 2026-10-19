@@ -78,12 +78,12 @@
     </diseases>
     <terrainsByFertility>
       <li>
-        <terrain>AB_FineForsakenSand</terrain>
+        <terrain>RM_FineForsakenSand</terrain>
         <min>-999</min>
         <max>0.5</max>
       </li>
       <li>
-        <terrain>AB_ForsakenSand</terrain>
+        <terrain>RM_ForsakenSand</terrain>
         <min>0.5</min>
         <max>999</max>
       </li>
