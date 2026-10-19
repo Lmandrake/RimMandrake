@@ -4,20 +4,22 @@ run touched, publish. Owner decision 2026-10-19 (question card): finished donor-
 
     python3 src/RimMandrake/Utils/art/donor_regen_install_hourly.py [--dry-run]
 
-Runs art_accept_finished.py --prefix dregen_ (donor-coat AND SWBestiary jobs share that prefix). Skips (exit 0, logged)
+Runs bulk_accept_renders.py plan + apply (art_accept_finished.py was retired by eaf051b8f; every finished render waiting is installed, dregen_ ones included). Skips (exit 0, logged)
 when a git index lock is held. A refused push (ART_VERSION_WRANGLING_1 pre-push hook etc.) is logged; the local commit
 stays and the next run's ./publish retries it. Never forces, never stages anything but the run's own paths + the
 FOUNDRY art-events shard. Log: Transient/donor_regen_install.log (untracked).
 Timer: rm-donor-regen-install.timer (transient systemd-run; dies on WSL restart, re-create it - see the item
 DONOR_COATS_REDRAW_SIX_HUNDRED_TO_GO).
 """
-import json, re, subprocess, sys, tempfile, time
+import json, os, re, subprocess, sys, tempfile, time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
 LOG = REPO / "Transient" / "donor_regen_install.log"
 EVENTS = "infrastructure/state/art/events/FOUNDRY.jsonl"
-TOOL = "src/RimMandrake/Utils/art/art_accept_finished.py"
+TOOL = "src/RimMandrake/Utils/art/bulk_accept_renders.py"
+os.environ.setdefault("RIMFLOW_SEAT", "FOUNDRY")
+os.environ["BULK_ACCEPT_NO_OWNER_OVERRIDE"] = "1"  # owner-KEPT/rejected destinations are refused, never overridden  # the art ledger refuses to guess the seat
 DRY = "--dry-run" in sys.argv
 
 
@@ -38,17 +40,20 @@ def main():
     lock = lock if lock.is_absolute() else REPO / lock
     if lock.exists():
         return log(f"SKIP: git index lock held ({lock})")
-    args = ["python3", TOOL, "--prefix", "dregen_"] + ([] if DRY else ["--apply"])
-    r = run(*args)
+    plan = Path(tempfile.mkdtemp(prefix="dregen_plan_")) / "plan.json"
+    r = run("python3", TOOL, "plan", "--out", str(plan))
+    if r.returncode:
+        return log(f"FAIL plan rc={r.returncode} (no commit): {(r.stdout + r.stderr)[-400:]!r}")
+    r = run("python3", TOOL, "apply", "--plan", str(plan), *(["--dry-run"] if DRY else []))
     out = r.stdout + r.stderr
     m = re.search(r"^log: (.+)$", r.stdout, re.M)
     if r.returncode or not m:
         return log(f"FAIL rc={r.returncode} (no commit): {out[-400:]!r}")
-    first = next((l for l in r.stdout.splitlines() if l.startswith(("APPLIED", "DRY RUN"))), "")
     d = json.loads(Path(m.group(1)).read_text())
-    log(f"{first} plan-log={m.group(1)}")
     if DRY:
-        return log(f"would install {len(d['would_install'])}, needs his words {len(d['needs_his_words'])}")
+        return log(f"plan: {len(json.loads(plan.read_text())['rows'])} installable rows (dry run installs nothing)")
+    d = {k: d.get(k, []) for k in ("installed", "repointed", "retired", "refused", "already")} | d
+    log(f"{len(d['installed'])} installed, {len(d['refused'])} refused, plan-log={m.group(1)}")
     paths = sorted(set(d["installed"]) | set(d["repointed"]) | set(d["retired"]))
     n = len(d["installed"])
     if not paths:

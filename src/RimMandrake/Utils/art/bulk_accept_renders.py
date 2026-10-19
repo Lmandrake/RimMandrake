@@ -577,6 +577,9 @@ def apply(plan_path: Path, only: str | None, dry: bool):
             res = A.install(mod, rel, sha, reason=REASON, provenance=prov)
         except A.Refused as e:
             msg = str(e)
+            if os.environ.get("BULK_ACCEPT_NO_OWNER_OVERRIDE"):   # hourly installer: owner-kept pictures are reported, never overridden
+                log["refused"].append({"dest": r["dest"], "job": r["job"], "why": msg})
+                continue
             if any(w in msg for w in ("owner-KEPT", "REJECTED", "redo", "purged by the owner (since unpurged")):
                 try:
                     res = A.install(mod, rel, sha, owner_said=OWNER_SAID, provenance=prov)
