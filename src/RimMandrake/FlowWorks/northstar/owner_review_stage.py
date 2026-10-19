@@ -16,6 +16,11 @@ Rows (each gets a labelled picture; the overview picture carries all of them):
             Hold open button + a colonist walking in, water_scenes_walk.gate_open; skipped with a reason when it cannot be done).
   shallows  six separate dug pits at 0.2 / 0.5 / 1 / 1.5 / 2 / 5 m of water. A driver sets WHOLE 0.5 m notches (fill 1..10), so the
             0.2 m square is a 5-square strip given 2 notches that LEVEL to 0.2 m each. The build picks the terrain (RM_WaterLadder).
+  hoses     (--only hoses) pipe vs hose girth: RM_LiquidPump with a pipe W + hose E, pipe N + hose S, hoses W + E; a 2x2 tank, a tap and a
+            sprinkler head each fed by a pipe AND a hose; a 6-square pipe run beside a hose run; a colonist beside each for scale.
+            A hose is NOT a plain spawn: an RM_HoseReel is built touching the pump (it couples to it) and the hose is laid with the
+            HoseProbe command "lay:reelx,reelz,endx,endz" (static_call-style probe, water_scenes_walk.Walk.hp). Shots land in
+            Transient/fw_hoses_walk/FlowWorks_HosePipeWalk_<date>_<scene>_{wide,close}.png.
   sprinklers four nets (tank, pipe run, pump over the pipe, power, head) with the pipe run restyled Futuristic / Industrial / Modern /
             Scrapper BEFORE the head is built (a head takes its pipe's look); ticks run past one hourly pulse so the spray shows.
 Then: kill hostiles, Clear weather locked, stepped toward midday, camera framed, shots, ONE save.
@@ -41,6 +46,7 @@ PULSE = 2500
 NOTCH_M = 0.5                      # one fill notch = 0.5 m of water over a square (RM_LevelSolve.MetresPerUnit * U)
 SHALLOWS = ((0.5, 1), (1.0, 2), (1.5, 3), (2.0, 4), (5.0, 10))   # (metres, notches)
 ALL_ROWS = ("ladders", "spikes", "gates", "shallows", "sprinklers")
+OPT_ROWS = ("hoses",)            # run only when named in --only (own site east of the others; not in the default sweep)
 
 
 # ------------------------------------------------------------------ geometry (pure)
@@ -58,6 +64,7 @@ def opposite(r):
 def layout(ox, oz):
     """Every row's origin. Site rect (x, z, w, h) covers all of it."""
     return dict(
+        hoses=(ox + 70, oz), hoses_rect=(ox + 64, oz - 6, 84, 76),
         ladders=(ox, oz), spikes=(ox, oz + 8), gates_sluice=(ox, oz + 16), gates_grate=(ox, oz + 25),
         shallows=(ox, oz + 34), sprinklers=(ox, oz + 49), rect=(ox - 3, oz - 6, 64, 70))
 
@@ -101,6 +108,38 @@ class Stage(object):
         if not ok or ("raised=%s" % up) not in txt:
             self.notes.append("ladder %s raise read: %s" % (c, txt[:90]))
         return ok
+
+    def hp(self, cmd):
+        self.say("  hose probe %s" % cmd)
+        if self.dry:
+            return {"success": True}
+        return self.w.hp(cmd) or {}
+
+    def charge(self, cell):
+        self.say("  battery_set charge battery at %s to 100%%" % (cell,))
+        if self.dry:
+            return
+        import fw_walk_common as C
+        bat = [t for t in C.list_things(self.w, ["Battery"], (cell[0] - 2, cell[1] - 2, 5, 5)) if t["cell"] == cell]
+        br = self.w.call("jawa/battery_set", thing=bat[0]["raw"].get("id"), mode="setPct", value=1.0) if bat else {}
+        if not (br or {}).get("storedEnergyPctAfter"):
+            self.notes.append("battery at %s NOT charged (%s): its pump will show no power" % (cell, str(br)[:120]))
+
+    def store(self, cell, litres_dl=100000):
+        self.say("  fill tank %s with RM_Liquid_FreshWater %d dL (ProofTank)" % (cell, litres_dl))
+        if not self.dry:
+            self.w.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
+                        args="%d,%d;Store;RM_Liquid_FreshWater;%d" % (cell[0], cell[1], litres_dl))
+
+    def colonist(self, cell):
+        self.say("  colonist stands at %s (scale)" % (cell,))
+        if self.dry:
+            return
+        p = (self.w.hp("colonists").get("pawns") or [None])[0]
+        if p is None:
+            self.notes.append("no colonist to stand at %s for scale" % (cell,))
+            return
+        self.w.hp("pawn:%d=tp:%d,%d" % (p["id"], cell[0], cell[1]))
 
     def ticks(self, n):
         self.say("  advance %d ticks" % n)
@@ -249,7 +288,134 @@ def row_sprinklers(s, L):
     return cap
 
 
-ROWS = dict(ladders=row_ladders, spikes=row_spikes, shallows=row_shallows, sprinklers=row_sprinklers)
+# ------------------------------------------------------------------ hoses vs pipes (HOSE_PIPE_WALK_JUDGE_GIRTH_IN_GAME)
+DIRS = {"N": (0, 1), "E": (1, 0), "S": (0, -1), "W": (-1, 0)}
+SIDE_FOR = {"N": "E", "E": "S", "S": "W", "W": "S"}       # a free side for the power conduit (pipes/hoses use the others)
+HOSE_REACH = 11                                           # pump cell -> hose end cell, in the hose direction
+
+
+def _edge_anchor(edge, d, size=2):
+    """Anchor cell of a size x size thing that sits just beyond `edge` (the last open cell) in direction d (multi-cell things
+    spawn CENTRED on the anchor and occupy anchor..anchor+size-1 for an even size)."""
+    return (edge[0] + 1 if d[0] > 0 else edge[0] - (size - 1) - 1 if d[0] < 0 else edge[0],
+            edge[1] + 1 if d[1] > 0 else edge[1] - (size - 1) - 1 if d[1] < 0 else edge[1])
+
+
+def _reel_anchor(pump, d):
+    """2x2 reel touching the pump on side d."""
+    return (pump[0] + 1 if d[0] > 0 else pump[0] - 2 if d[0] < 0 else pump[0],
+            pump[1] + 1 if d[1] > 0 else pump[1] - 2 if d[1] < 0 else pump[1])
+
+
+def hose_pump(s, pump, side_in, kind_in, side_out, kind_out, pipe_len=6, out_target=None, out_size=2):
+    """One RM_LiquidPump with its INPUT (kind_in = pipe|hose) on side_in and OUTPUT (kind_out) on side_out, powered from a free
+    side. Input: a filled 2x2 tank at the far end. Output: a 2x2 tank at the far end, or `out_target` (cell) when the caller
+    supplies the consumer. Returns dict of the notable cells."""
+    di, do = DIRS[side_in], DIRS[side_out]
+    s.place("RM_LiquidPump", pump)
+    cells = dict(pump=pump, reels=[], ends=[], pipes=[], tanks=[])
+    free = next(k for k in ("S", "W", "N", "E") if k not in (side_in, side_out))
+    df = DIRS[free]
+    s.place("PowerConduit", (pump[0] + df[0], pump[1] + df[1]))
+    s.place("PowerConduit", (pump[0] + 2 * df[0], pump[1] + 2 * df[1]))
+    bat = (pump[0] + 4 * df[0], pump[1] + 4 * df[1])
+    s.place("Battery", bat)
+    for kind, d, out in ((kind_in, di, False), (kind_out, do, True)):
+        consumer = out and out_target is not None          # the caller supplies the far end of the output
+        if kind == "pipe":
+            far = None
+            for k in range(1, pipe_len + 1):
+                far = (pump[0] + d[0] * k, pump[1] + d[1] * k)
+                s.place("RM_UniversalPipe", far)
+                cells["pipes"].append(far)
+            if not consumer:
+                tk = _edge_anchor(far, d)
+                s.place("RM_LiquidTank", tk)
+                cells["tanks"].append(tk)
+                if not out:
+                    s.store(tk)
+        else:
+            reel = _reel_anchor(pump, d)
+            s.place("RM_HoseReel", reel)
+            end = (pump[0] + d[0] * HOSE_REACH, pump[1] + d[1] * HOSE_REACH)
+            if not consumer:
+                tk = _edge_anchor(end, d)
+                s.place("RM_LiquidTank", tk)
+                cells["tanks"].append(tk)
+                if not out:
+                    s.store(tk)
+            cells["reels"].append((reel, end))
+    cells["battery"] = bat
+    return cells
+
+
+def hose_lay_all(s, cells_list):
+    for cells in cells_list:
+        s.charge(cells["battery"])
+    for cells in cells_list:
+        for reel, end in cells["reels"]:
+            r = s.hp("lay:%d,%d,%d,%d" % (reel + end))
+            if not r.get("success", True):
+                s.notes.append("hose lay %s -> %s refused: %s" % (reel, end, r.get("reason") or r))
+
+
+def row_hoses(s, L):
+    hx, hz = L["hoses"]
+    s.say("ROW hoses: pipe vs hose girth (pump pipe+hose, tank/tap/sprinkler each fed by both, 6-square side-by-side run)")
+    cap = {}
+    nets = []
+    scenes = {}
+    # A: pipe W in, hose E out
+    pa = (hx + 10, hz + 4)
+    a = hose_pump(s, pa, "W", "pipe", "E", "hose")
+    nets.append(a)
+    scenes["pump_pipeW_hoseE"] = (pa, (hx + 1, hz + 1, 26, 10), (pa[0] - 4, pa[1] - 3, 12, 8), (pa[0] + 1, pa[1] - 1), "pump: pipe W (input), hose E (output)")
+    # C: hose W in, hose E out
+    pc = (hx + 14, hz + 16)
+    c = hose_pump(s, pc, "W", "hose", "E", "hose")
+    nets.append(c)
+    scenes["pump_hoses_W_E"] = (pc, (hx + 1, hz + 12, 28, 10), (pc[0] - 4, pc[1] - 3, 12, 8), (pc[0] + 1, pc[1] - 1), "pump: hose W (input), hose E (output)")
+    # B: pipe N in, hose S out (vertical)
+    pb = (hx + 40, hz + 14)
+    b = hose_pump(s, pb, "N", "pipe", "S", "hose")
+    nets.append(b)
+    scenes["pump_pipeN_hoseS"] = (pb, (hx + 34, hz, 10, 24), (pb[0] - 4, pb[1] - 4, 8, 12), (pb[0] - 2, pb[1] + 1), "pump: pipe N (input), hose S (output)")
+    # D: one consumer fed by a pipe from one pump (W) and a hose from another (E)
+    for k, (d, size, label) in enumerate((("RM_LiquidTank", 2, "2x2 tank"), ("RM_LiquidTap", 1, "liquid tap"), ("RM_SprinklerHead", 1, "sprinkler head"))):
+        t = (hx + 16, hz + 28 + 10 * k)
+        s.place(d, t)
+        p1, p2 = (t[0] - 6, t[1]), (t[0] + 14, t[1])
+        n1 = hose_pump(s, p1, "W", "pipe", "E", "pipe", pipe_len=5, out_target=t)
+        # pump 1's output pipe runs t.x-5 .. t.x-1, ending beside the consumer; its input tank is at the far west
+        n2 = hose_pump(s, p2, "E", "pipe", "W", "hose", out_target=t)
+        nets += [n1, n2]
+        # the consumer's west edge is t.x, east edge t.x+size-1: re-aim pump 2's hose to the cell beside the consumer
+        n2["reels"] = [(r, (t[0] + size, t[1])) for r, _e in n2["reels"]]
+        key = "%s_pipeW_hoseE" % d
+        scenes[key] = (t, (hx, t[1] - 5, 42, 9), (t[0] - 4, t[1] - 3, 12 if size == 2 else 10, 8), (t[0], t[1] - 1), "%s: pipe on W, hose on E" % label)
+    # E: 6 squares of pipe (z = ez) beside 6 squares of hose (z = ez + 1), same x span
+    ez = hz + 60
+    s.place("RM_LiquidTank", (hx + 3, ez - 1))
+    s.store((hx + 3, ez - 1))
+    for x in range(hx + 5, hx + 11):
+        s.place("RM_UniversalPipe", (x, ez))
+    s.place("RM_LiquidTank", (hx + 11, ez - 1))
+    pe = (hx, ez + 1)
+    e = hose_pump(s, pe, "W", "pipe", "E", "hose", pipe_len=2)
+    nets.append(e)
+    scenes["pipe_beside_hose_6"] = (pe, (hx - 6, ez - 4, 24, 9), (hx + 3, ez - 2, 12, 5), (hx + 7, ez + 3), "6 squares of pipe (south) beside 6 of hose (north)")
+    s.ticks(2)
+    hose_lay_all(s, nets)
+    s.ticks(700)                    # a pump cycle + discovery + settle: hoses plump, pipes tint
+    if not s.dry:
+        cen = s.hp("census")
+        s.notes.append("hose census after settle: %s" % str(cen)[:300])
+    cap["scenes"] = scenes
+    cap["lines"] = ["%s -- %s" % (k, v[4]) for k, v in scenes.items()]
+    return cap
+
+
+ROWS = dict(hoses=row_hoses, ladders=row_ladders, spikes=row_spikes, shallows=row_shallows, sprinklers=row_sprinklers)
 
 
 # ------------------------------------------------------------------ driver
@@ -277,11 +443,18 @@ def main(argv=None):
     if not a.dry_run:
         s.w.call("jawa/kill_hostiles")
         s.w.call("jawa/weather_set", weather="Clear", lockWeather=True)
-        s.w.clear_site(L["rect"])
+        if [r for r in only if r != "hoses"]:
+            s.w.clear_site(L["rect"])
+        if "hoses" in only:
+            s.w.clear_site(L["hoses_rect"])
     else:
-        s.say("  kill hostiles; Clear weather locked; clear_site %s" % (L["rect"],))
+        s.say("  kill hostiles; Clear weather locked; clear_site %s" % (L["rect"] if [r for r in only if r != "hoses"] else L["hoses_rect"],))
+        if "hoses" in only:
+            s.say("  clear_site %s (hoses)" % (L["hoses_rect"],))
     caps = {}
     for row in only:
+        if row not in ALL_ROWS + OPT_ROWS:
+            ap.error("unknown row %r (rows: %s)" % (row, ", ".join(ALL_ROWS + OPT_ROWS)))
         if row == "gates":
             caps["gates_sluice"] = row_gates(s, L, "RM_Sluice", "gates_sluice", "WoodLog")
             caps["gates_grate"] = row_gates(s, L, "RM_SecurityGrateDoor", "gates_grate", "Steel")
@@ -289,6 +462,10 @@ def main(argv=None):
             caps[row] = ROWS[row](s, L)
     s.say("FINISH: kill hostiles, Clear weather, step toward midday, frame, shoot, save '%s'" % name)
     if a.dry_run:
+        if "hoses" in caps:
+            s.say("SHOTS (per scene, wide + close) -> Transient/fw_hoses_walk/FlowWorks_HosePipeWalk_%s_<scene>_{wide,close}.png" % time.strftime("%Y%m%d"))
+            for k, v in caps["hoses"]["scenes"].items():
+                s.say("  scene %s wide %s close %s colonist %s" % (k, v[1], v[2], v[3]))
         print("DRY RUN: %d plan lines, no bridge touched." % len(s.plan))
         return 0
     s.w.call("jawa/kill_hostiles")
@@ -303,10 +480,28 @@ def main(argv=None):
     s.notes.append("approx hour %.1f (ticksAbs mod day, longitude ignored)" % hour)
     import fw_walk_common as C
     shots = []
+    if "hoses" in caps:
+        import shutil
+        hdir = os.path.join(C.REPO, "Transient", "fw_hoses_walk")
+        os.makedirs(hdir, exist_ok=True)
+        day = time.strftime("%Y%m%d")
+        for scene, (pump, wide, close, who, label) in caps["hoses"]["scenes"].items():
+            s.colonist(who)
+            for kind, rect in (("wide", wide), ("close", close)):
+                png = C.snap(w, "hoses_%s_%s" % (scene, kind), rect)
+                if png:
+                    dst = os.path.join(hdir, "FlowWorks_HosePipeWalk_%s_%s_%s.png" % (day, scene, kind))
+                    shutil.copyfile(png, dst)
+                    shots.append(dst)
+        over = C.snap(w, "hoses_overview", L["hoses_rect"])
+        if over:
+            dst = os.path.join(hdir, "FlowWorks_HosePipeWalk_%s_overview.png" % day)
+            shutil.copyfile(over, dst)
+            shots.append(dst)
     for key, title in (("ladders", "Ladders: lowered (wall k) + raised (opposite)"), ("spikes", "RM_Spikes dry and under 1 m"),
                        ("gates_sluice", "RM_Sluice, 4 facings + held open"), ("gates_grate", "RM_SecurityGrateDoor, 4 facings + held open"),
                        ("shallows", "Water ladder 0.2 / 0.5 / 1 / 1.5 / 2 / 5 m"), ("sprinklers", "Sprinklers: Futuristic / Industrial / Modern / Scrapper")):
-        if key not in caps:
+        if key not in caps or key == "hoses":
             continue
         gx, gz = L[key]
         rect = (gx - 3, gz - 3, 66 if key != "sprinklers" else 60, 12 if key != "sprinklers" else 14)
