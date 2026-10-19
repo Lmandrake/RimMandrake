@@ -1,0 +1,1 @@
+Helpers that EDIT a previously-clean file tend to re-mark it clean after reading only their own hunks (twice on 2026-10-19). Briefs must say 'mark-clean only after reading every line'; the orchestrator checks each report for 'hunk'/'diff only' and reopens with code_review_status.py reopen.
