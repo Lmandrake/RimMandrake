@@ -24,8 +24,8 @@ ORDER (cheapest first; every map-global side effect is placed AFTER the rows it 
   B4  shared clock      native blocks on DISJOINT zones staged together, then ONE clock serves them all: the scheduler
                         advances to the earliest checkpoint any block waits on (cover tiers, pit access A1-A4, dug
                         reservoir fish roll, dig-rate, dehydration riding the session clock)
-  B5  cold snap         ice on dug water (map-wide temperature: after B4)
-  B6  flood             seasonal flood over a wet canal (map-wide: after B5)
+  B5  cold snap         ice on dug water: ColdSnap + DeepFreeze, judged only below -7 C (map-wide temperature: after B4)
+  B6  flood             torrential-rain flood seeded at the canal itself (map-wide: after B5)
   B7  save + reload     ONE save, ONE load; pockets, depths, readouts, pipe look, settings re-read == before
   B8  raid              raid_trench_proof (hostiles roam: after every quiet row; serves P2 raid, trench A3, raiders trench)
   B9  owner review      owner_review_stage.main (ladders, spikes, gates, shallows, sprinklers, hoses) + the pit-access
@@ -99,8 +99,8 @@ crit("DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE", "A2", "B2", "native readout_stri
 crit("TANK_TALL_BUILD_TWICE_THE_DRINK", "live", "B2", "native tank_tall (ProofTank)", 2, 6)
 # B3 serial scripts
 crit("TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A2", "B3", "trench_cover_proof.py --origin", 140, 40)
-crit("PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP", "A1", "B3", "climb_proof.py --origin", 3000, 240,
-     note="E: climb_proof spends 900 ticks inside each of 3 order_pawn calls")
+crit("PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP", "A1", "B3", "climb_proof.py --origin", 6600, 330,
+     note="E: climb_proof spends 900 ticks inside each of 3 order_pawn calls + up to 3600 in the ramped-floor haul (G)")
 crit("PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH", "pocket+mask", "B3", "climb_proof.py", 0, 0)
 crit("SPRINKLER_HEADS_BUILD_PUMP_REQUIRED", "spray", "B3", "sprinkler_live.py --origin", 2600, 60,
      note="M: 59 s, 9 rows; T22 is the SALT_BOTTLE regression row")
@@ -130,8 +130,8 @@ crit("TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A4", "B4", "native grenade (ex
 crit("FALL_GUARDRAILS_BUILD_REAL_OBJECT", "A3", "B4", "native rail_lip (records: AI never steps off an unrailed lip)", 900, 15,
      note="day 6: the unrailed CONTROL never fell either; the row records it again and the plan asks for the bar's ruling")
 # B5 / B6
-crit("POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A5", "B5", "native cold_snap (game_condition ColdSnap)", 12000, 220)
-crit("POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A6", "B6", "native flood (fire_incident SeasonalFlooding)", 5000, 100)
+crit("POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A5", "B5", "native cold_snap (game_condition ColdSnap + DeepFreeze, sub -7 C gate)", 30000, 600)
+crit("POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A6", "B6", "native flood (weather_set TorrentialRain: the flood seeds at the canal)", 12000, 220)
 # B7
 crit("PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT", "A3", "B7", "native reload (snapshot before/after one save+load)", 0, 40)
 crit("PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP", "A2", "B7", "native reload (ProofPocket before/after)", 0, 0)
@@ -188,7 +188,7 @@ block("B2", "zero-tick reads: settings dialog, tall tank, readout strings", "nat
 block("B3", "serial scripts: trench cover, climb, sprinklers, liquid checks, hose realflow", "sub")
 block("B4", "shared clock: covers, pit access, dig depth, reservoir, grenade, rail lip, dehydration ride", "native")
 block("B5", "cold snap: ice on dug water", "native")
-block("B6", "seasonal flood over a wet canal", "native")
+block("B6", "torrential flood over a wet canal", "native")
 block("B7", "one save + one load: snapshot rows", "native")
 block("B8", "raid against a sheer trench", "sub")
 block("B9", "owner review staging + ONE save", "stage")
@@ -221,7 +221,7 @@ SUBS = [
 # Footprints (w, h) of each staged site, read from the scripts' own docstrings/geometry. Serial (B3/B8/B10) sites may
 # overlap each other (each clears and finishes before the next); B4 zones must be disjoint from each other AND from the
 # owner zone, which must stand until the B9 save.
-FOOT = dict(trench=(30, 16), climb=(30, 12), sprinkler=(16, 86), l2=(30, 18), l2b=(30, 18), l6=(30, 18), l4=(30, 18),
+FOOT = dict(trench=(30, 16), climb=(46, 12), sprinkler=(16, 86), l2=(30, 18), l2b=(30, 18), l6=(30, 18), l4=(30, 18),
             l5=(30, 18), thirst=(96, 42),
             covers=(26, 10), access=(40, 14), digdepth=(12, 8), reservoir=(16, 16), grenade=(20, 10), raillip=(16, 14),
             ride=(6, 6), tanks=(12, 6), readout=(22, 16), ice=(16, 8), flood=(18, 10), suspension=(40, 16),
@@ -262,6 +262,11 @@ def plan_zones(size=MAP_DEFAULT):
     zones = {"owner": (m + 3, H - m - FOOT["owner"][1], FOOT["owner"][0], FOOT["owner"][1])}
     south = (m, m, W - 2 * m, H - 2 * m - FOOT["owner"][1] - GAP)
     zones.update(shelf_pack(SHARED, south))
+    # B2_readout_sea_never_dry: the readout zone's painted lake must TOUCH the map edge to be limitless (every map-edge
+    # body is limitless by wetness since 392300ef0d, RM_StockMath.IsLimitlessByWetness), so the zone sits flush with the
+    # east edge, south band (its packed slot is left empty, so nothing else moves). The owner zone (216 wide, north band)
+    # and every other shared zone stay >= 2 cells away: checked below.
+    zones["readout"] = (W - FOOT["readout"][0], m, FOOT["readout"][0], FOOT["readout"][1])
     serial = shelf_pack(("trench", "climb", "sprinkler", "l2", "l2b", "l6", "l4", "l5"), south)
     zones.update(serial)
     zones["thirst"] = (m, m, FOOT["thirst"][0], FOOT["thirst"][1])
@@ -638,16 +643,25 @@ def b2_tank_tall(s):
 
 def b2_readouts(s):
     """DEPTH_READOUT A2 / LIQUID_DEPTH A2: the mouseover strings over a dug dry cell, a filled canal, a dug pond, dry
-    ground and a painted mid-map lake (154 cells: LIMITED under the wetness cutoff, LAKE_GROUNDWATER_REFILL_BUILD_WETNESS_CUT;
-    only a map-edge body or one past the tile's cutoff is limitless, so the sea row below is SITE here)."""
-    x, z, _w, _h = s.zones["readout"]
+    ground and a painted lake that TOUCHES the east map edge (the readout zone is edge-flush, plan_zones), so it is
+    limitless by wetness (LAKE_GROUNDWATER_REFILL_BUILD_WETNESS_CUT, 392300ef0d: every map-edge body is limitless) and
+    its readout must say the sea never runs dry. A lake that did not reach the edge, or stickyLimitlessEnabled off, is
+    UNMEASURED/SITE (sea_verdict)."""
+    rect = s.zones["readout"]
+    x, z, _w, _h = rect
+    W = s.size[0]
+    if not s.mock:
+        s.w.clear_site(rect)
     dry, canal, pond, ground = (x + 1, z + 1), [(x + 3 + i, z + 1) for i in range(5)], (x + 10, z + 1), (x + 1, z + 4)
     s.dig(dry, 2)
     for c in canal:
         s.dig(c, 1, 1)
     s.pit(pond, 3, 3, 4, 3)
-    s.call("jawa/set_terrain_batch", ops="WaterDeep:%d,%d,14,11" % (x + 4, z + 5))
+    lake = (x + 4, z + 5, W - (x + 4), 11)          # east edge column W-1 included
+    s.call("jawa/set_terrain_batch", ops="WaterDeep:%d,%d,%d,%d" % lake)
     s.advance(2)
+    edge = str(s.call("jawa/get_terrain_batch", rects="%d,%d,1,1" % (W - 1, z + 10)).get("ops") or "")
+    sticky = s.sget("stickyLimitlessEnabled")
     reads = {}
     for name, c in (("dug_dry", dry), ("canal", canal[2]), ("pond", (pond[0] + 1, pond[1] + 1)), ("ground", ground),
                     ("lake", (x + 10, z + 10))):
@@ -658,17 +672,31 @@ def b2_readouts(s):
     p = {k: WS.parse_readout(v) for k, v in reads.items()}
     unparsed = [k for k, v in p.items() if v is None]
     fmt_ok = p.get("canal") and p["canal"].get("kind") == "water" and p.get("pond") and p["pond"].get("kind") == "water"
-    lake_ok = (p.get("lake") or {}).get("kind") == "limitless"
-    # the sea half is its own row: a painted mid-map lake is a LIMITED body by design (limitless = an off-map
-    # continuation at the map edge), so it can never read 'never runs dry' here (live 2026-10-19 read 'Hole 2 m')
     st = "UNMEASURED" if unparsed or any(str(v).startswith("UNREAD") for v in reads.values()) else ("PASS" if fmt_ok else "FAIL")
-    s.row("B2_readout_sea_never_dry", "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE", "A2", "PASS" if lake_ok else "UNMEASURED",
-          "MOD" if lake_ok else "SITE", dict(lake=reads.get("lake"), why="" if lake_ok else "painted lake is mid-map (LIMITED); needs a map-edge body"), "B2")
+    sst, scls, swhy = sea_verdict(p.get("lake"), "WaterDeep" in edge, sticky)
+    s.row("B2_readout_sea_never_dry", "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE", "A2", sst, scls,
+          dict(lake=reads.get("lake"), lakeRect=lake, edgeCell=edge[:60], sticky=sticky, why=swhy), "B2")
     s.row("B2_readout_two_numbers_and_sea", "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE", "A2", st, "MOD" if st == "FAIL" else "HARNESS" if st != "PASS" else "MOD",
           dict(reads=reads, wording="owner looks at these strings (V8 kept by card)"), "B2", eyes=True)
     st2 = st if st == "UNMEASURED" else ("PASS" if all(" m " in str(v) and " L)" in str(v) for k, v in reads.items() if k in ("canal", "pond")) else "FAIL")
     s.row("B2_readout_metres_litres", "LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD", "A2", st2, "MOD" if st2 == "FAIL" else "HARNESS" if st2 != "PASS" else "MOD",
           dict(canal=reads.get("canal"), pond=reads.get("pond"), eyes="settings UI by eye: B2 dialog screenshot"), "B2", eyes=True)
+
+
+def sea_verdict(lake, edge_painted, sticky):
+    """B2_readout_sea_never_dry -> (status, class, why). lake = parse_readout of the lake square (None = unread).
+    PASS: the edge-touching lake reads limitless ('Open water ...'). FAIL/MOD: it reads as a limited body although its
+    paint reached the map edge with sticky-limitless on. UNMEASURED/SITE: unread, the paint never reached the edge
+    column, or stickyLimitlessEnabled is off (then a limited read is the mod's design, not a defect)."""
+    if lake is None:
+        return "UNMEASURED", "HARNESS", "lake readout unread"
+    if not edge_painted:
+        return "UNMEASURED", "SITE", "the painted lake does not reach the map-edge column (read back)"
+    if str(sticky) not in ("True", "true", "1"):
+        return "UNMEASURED", "SITE", "stickyLimitlessEnabled is %r: an edge body is limited by design" % (sticky,)
+    if lake.get("kind") == "limitless":
+        return "PASS", "MOD", ""
+    return "FAIL", "MOD", "an edge-touching lake read %r, not limitless" % (lake.get("text") or lake.get("kind"))
 
 
 # ============================================================================ B4 shared-clock blocks (generators)
@@ -1033,29 +1061,82 @@ def run_shared_with_stop(s, gens, done):
 
 
 # ============================================================================ B5 / B6 map-wide events
+FREEZE_AT_C = -7.0          # Verse.FreezeManager.WaterFreezeThreshold (decompiled 1.6): no water freezes above it
+STEADY_VISIT_TICKS = 1667   # SteadyEnvironmentEffectsTick visits ceil(Area * 0.0006) cells a tick: each cell ~ every 1667
+COLD_CONDITIONS = ("ColdSnap", "DeepFreeze")   # both GameCondition_ColdSnap, -20 C each at full (12,000-tick ramp);
+                                               # GameConditionManager.AggregateTemperatureOffset SUMS active conditions
+ICE_BUDGET = 24000
+FLOOD_WEATHER = "TorrentialRain"
+
+
+def freeze_expectation(temps, ncells, step):
+    """Expected vanilla freeze events on ncells water squares over the polled temperatures (one per `step` ticks):
+    FreezeManager.DoWaterFreezing rolls 0.003 * (T / -5) per steady-effects visit at T <= -7 C (the frozen-fraction and
+    surrounded terms only RAISE it, so this is a lower bound). P(no ice) ~ exp(-expectation)."""
+    e = 0.0
+    for t in temps:
+        if t is not None and t <= FREEZE_AT_C:
+            e += step * ncells / float(STEADY_VISIT_TICKS) * 0.003 * (t / -5.0)
+    return e
+
+
+def ice_verdict(cond_ok, temps, froze, thaw, same, ncells, step=500):
+    """B5_ice_freeze_thaw -> (status, class, why). The row judges ice only once the site was really below freezing:
+    UNMEASURED/SITE when the conditions did not start or the canal never read <= -7 C (pass 1: ColdSnap alone -> 1.4 C);
+    no ice while cold enough that >= 4.6 freeze events were expected (P(no ice) < 1%) is FAIL/MOD, fewer is UNMEASURED/SITE;
+    ice that froze then thawed with the readout litres unchanged is PASS, else FAIL/MOD."""
+    known = [t for t in temps if t is not None]
+    coldest = min(known) if known else None
+    if not cond_ok:
+        return "UNMEASURED", "SITE", "cold conditions did not start"
+    if coldest is None:
+        return "UNMEASURED", "HARNESS", "no temperature read"
+    if coldest > FREEZE_AT_C:
+        return "UNMEASURED", "SITE", "the canal never got below %.0f C (coldest %.1f C): ice not judged" % (FREEZE_AT_C, coldest)
+    exp = freeze_expectation(temps, ncells, step)
+    if froze is None:
+        if exp >= 4.6:
+            return "FAIL", "MOD", "%.1f freeze events expected at <= %.0f C, no ice on the dug water" % (exp, FREEZE_AT_C)
+        return "UNMEASURED", "SITE", "cold enough but only %.1f freeze events expected (< 4.6): too short to judge" % exp
+    if thaw is None:
+        return "FAIL", "MOD", "the ice never thawed after the cold ended"
+    return ("PASS", "MOD", "") if same else ("FAIL", "MOD", "the readout litres changed across freeze and thaw")
+
+
 def b5_cold_snap(s):
-    """POND_DEPTH A5: a wet 0.5 m canal; ColdSnap (vanilla GameConditionDef) until its squares freeze (terrain names
-    Ice) or 12,000 ticks; the condition ended; thaw polled. 'Water picture intact' = the readout litres before == after."""
-    x, z, _w, _h = s.zones["ice"]
-    canal = [(x + 2 + i, z + 3) for i in range(10)]
+    """POND_DEPTH A5: four wet 0.5 m canals (56 squares: more chances for vanilla's per-visit freeze roll, none of them
+    surrounded by water, which FreezeManager.CanFreeze refuses); ColdSnap + DeepFreeze (vanilla, -20 C each, summed) and
+    ticks in 500s until the dug water reads Ice (ThinIce) or ICE_BUDGET; the canal's temperature is read every step and
+    the row only judges ice once it was below -7 C (ice_verdict). Then both conditions end and thaw is polled.
+    'Water picture intact' = the readout litres before == after."""
+    rect = s.zones["ice"]
+    x, z, _w, _h = rect
+    canals = [[(x + 1 + i, z + 1 + 2 * r) for i in range(14)] for r in range(4)]   # z+1,3,5,7: a dry row between
+    canal = canals[0]
     if not s.mock:
-        s.w.clear_site(s.zones["ice"])
-    for c in canal:
-        s.dig(c, 1, 1)
+        s.w.clear_site(rect)
+    for row_ in canals:
+        for c in row_:
+            s.dig(c, 1, 1)
     s.advance(300)
     before = [s.w.readout(c) if not s.mock else None for c in canal[:3]]
-    gc = s.call("jawa/game_condition", action="start", condition="ColdSnap", durationTicks=30000)
+    gcs = [s.call("jawa/game_condition", action="start", condition=n, durationTicks=60000) for n in COLD_CONDITIONS]
+    cond_ok = all(g.get("success") for g in gcs)
 
     def terr():
-        r = s.call("jawa/get_terrain_batch", rects="%d,%d,10,1" % canal[0])
-        return str(r.get("ops") or "")
-    froze = None
-    for k in range(0, 12000, 500):
+        return "".join(str(s.call("jawa/get_terrain_batch", rects="%d,%d,14,1" % c[0]).get("ops") or "") for c in canals)
+
+    def temp():
+        return fnum(s.call("jawa/cell_temperature", cell="%d,%d" % canal[0]).get("temperature"))
+    temps, froze = [], None
+    for k in range(0, ICE_BUDGET, 500):
         s.advance(500)
+        temps.append(temp())
         if "Ice" in terr():
             froze = k + 500
             break
-    s.call("jawa/game_condition", action="end", condition="ColdSnap")
+    for n in COLD_CONDITIONS:
+        s.call("jawa/game_condition", action="end", condition=n)
     thaw = None
     if froze is not None:
         for k in range(0, 12000, 500):
@@ -1064,42 +1145,75 @@ def b5_cold_snap(s):
                 thaw = k + 500
                 break
     after = [s.w.readout(c) if not s.mock else None for c in canal[:3]]
-    temp = s.call("jawa/cell_temperature", cell="%d,%d" % canal[0])
-    if not gc.get("success") or froze is None:
-        st = "UNMEASURED"
-    else:
-        same = [(a or {}).get("dl") for a in after] == [(b or {}).get("dl") for b in before]
-        st = "PASS" if thaw is not None and same else "FAIL"
-    s.row("B5_ice_freeze_thaw", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A5", st, "MOD" if st != "UNMEASURED" else "SITE",
-          dict(condition=str(gc)[:120], frozeAfter=froze, thawAfter=thaw, temp=temp.get("temperature"),
+    same = [(a or {}).get("dl") for a in after] == [(b or {}).get("dl") for b in before]
+    st, cls, why = ice_verdict(cond_ok, temps, froze, thaw, same, sum(len(r) for r in canals))
+    s.row("B5_ice_freeze_thaw", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A5", st, cls,
+          dict(why=why, conditions=[str(g)[:80] for g in gcs], frozeAfter=froze, thawAfter=thaw,
+               coldest=min([t for t in temps if t is not None] or [None]) if any(t is not None for t in temps) else None,
+               temps=temps[-6:], expectedFreezes=round(freeze_expectation(temps, sum(len(r) for r in canals), 500), 2),
                before=[(b or {}).get("dl") for b in before], after=[(a or {}).get("dl") for a in after]), "B5")
 
 
+def flood_verdict(started, reached, receded, same):
+    """B6_flood_canal_kept -> (status, class, why). UNMEASURED/SITE unless the flood started AND laid floodwater beside
+    the canal (vanilla floods never enter a water square: Flood.CanFloodPotentiallySpreadInto refuses IsWater, so
+    'reached' = floodwater on the canal's banks) AND receded; then PASS when every canal square reads as before."""
+    if not started:
+        return "UNMEASURED", "SITE", "the flood weather did not start"
+    if not reached:
+        return "UNMEASURED", "SITE", "no floodwater beside the canal"
+    if not receded:
+        return "UNMEASURED", "SITE", "the floodwater had not receded at the budget"
+    return ("PASS", "MOD", "") if same else ("FAIL", "MOD", "canal squares changed across the flood")
+
+
 def b6_flood(s):
-    """POND_DEPTH A6: SeasonalFlooding (vanilla IncidentDef) fired over a map with a wet canal; after the flood ends the
-    canal's litres and floor depth read as before. A flood that never reached the canal is UNMEASURED/SITE."""
-    x, z, _w, _h = s.zones["flood"]
+    """POND_DEPTH A6 ("a seasonal or torrential flood over a wet canal leaves the canal's water and floor correct"):
+    TorrentialRain (Odyssey WeatherDef) locked by jawa/weather_set; WeatherWorker_TorrentialRain.OnWeatherStart spawns
+    a TorrentialRainFlood, whose GetInitialCells seeds from EVERY unroofed freshwater water body's bank squares -- the
+    dug canal itself is one (dug water is a vanilla water body, engine doc 2.2) -- so the flood starts AT the canal.
+    Pass 1 used SeasonalFlooding: SeasonalFlood seeds only at river banks and spreads <= 12 squares from them, so it can
+    never reach a staged canal (and does nothing on a riverless map). StartDelayTicks 4000, then floodwater (*Flood*
+    terrain, temp layer) is polled on the banks; weather back to Clear destroys the flood (OnWeatherEnd) and its squares
+    recede 2000+ ticks later; recession polled; the canal's cells compared before/after (flood_verdict)."""
+    rect = s.zones["flood"]
+    x, z, _w, _h = rect
     if not s.mock:
-        s.w.clear_site(s.zones["flood"])
+        s.w.clear_site(rect)
     canal = [(x + 2 + i, z + 4) for i in range(12)]
     for c in canal:
         s.dig(c, 2, 1)
     s.advance(300)
     before = s.w.cells(canal)[0] if not s.mock else {}
-    fi = s.call("jawa/fire_incident", incidentDef="SeasonalFlooding", forced=True)
-    reached = False
-    for _ in range(10):
-        s.advance(500)
-        ops = str(s.call("jawa/get_terrain_batch", rects="%d,%d,16,8" % (x, z + 1)).get("ops") or "")
-        reached = reached or "Flood" in ops
-    s.advance(3000)
+    w0 = s.call("jawa/weather_get")
+    ws = s.call("jawa/weather_set", weather=FLOOD_WEATHER, lockWeather=True)
+    started = bool(ws.get("success")) and ws.get("after") == FLOOD_WEATHER
+
+    def flood_ops():
+        return str(s.call("jawa/get_terrain_batch", rects="%d,%d,16,3" % (x + 1, z + 3)).get("ops") or "")
+    reached, reached_at = False, None
+    if started:
+        for k in range(0, 14000, 500):
+            s.advance(500)
+            if "Flood" in flood_ops():
+                reached, reached_at = True, k + 500
+                break
+        if reached:
+            s.advance(1000)                         # let it lie a while over the banks
+    # back to B0's locked Clear: the old lock ends, TransitionTo(Clear) runs TorrentialRain.OnWeatherEnd = the flood is destroyed
+    s.call("jawa/weather_set", weather="Clear", lockWeather=True)
+    receded, gone_at = False, None
+    if reached:
+        for k in range(0, 12000, 500):
+            s.advance(500)
+            if "Flood" not in flood_ops():
+                receded, gone_at = True, k + 500
+                break
     after = s.w.cells(canal)[0] if not s.mock else {}
-    if not fi.get("success") or not reached:
-        st = "UNMEASURED"
-    else:
-        st = "PASS" if before == after else "FAIL"
-    s.row("B6_flood_canal_kept", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A6", st, "MOD" if st != "UNMEASURED" else "SITE",
-          dict(incident=str(fi)[:120], floodReachedSite=reached, changed=[c for c in before if before.get(c) != after.get(c)][:8]), "B6")
+    st, cls, why = flood_verdict(started, reached, receded, before == after)
+    s.row("B6_flood_canal_kept", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A6", st, cls,
+          dict(why=why, weather=str(ws)[:120], weatherBefore=(w0 or {}).get("weather"), floodReachedAfter=reached_at,
+               recededAfter=gone_at, changed=[c for c in before if before.get(c) != after.get(c)][:8]), "B6")
 
 
 # ============================================================================ B7 one save + one load

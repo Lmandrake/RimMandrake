@@ -34,7 +34,8 @@ check("can-fail: stayed in when it should walk out", C.walk_verdict(row_in, R, T
 check("stayed in when held: PASS", C.walk_verdict(row_in, R, False)[0] == "PASS")
 check("a game that never ticked is UNMEASURED", C.walk_verdict(dict(row_in, ticksElapsed=0), R, False)[0] == "UNMEASURED")
 check("an unaccepted order is UNMEASURED", C.walk_verdict(dict(row_in, orderAccepted=False), R, False)[0] == "UNMEASURED")
-check("owed rows are named, three of them", len(C.OWED) == 3 and all(k.startswith("CLIMB_") for k in C.OWED))
+check("one owed row left, pointing at live_session B7", list(C.OWED) == ["CLIMB_save_reload_pockets_identical"] and "B7" in C.OWED["CLIMB_save_reload_pockets_identical"])
+check("the ramp rows are no longer owed", "CLIMB_raider_never_crosses_ramped_moat" not in C.OWED and "CLIMB_hauler_fetches_ramped_floor" not in C.OWED)
 
 # PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the mask row
 MP = C.parse("CLIFF k=2 bits=0xFB vanilla=0xFF derived=True derives=4 | POCKET k=2 comp=0 pocket=False")
@@ -61,6 +62,29 @@ check("can-fail: a step of K priced plain: FAIL", C.cost_verdict(cs(45), cs(0), 
 check("can-fail: walking the ring floor costs: FAIL", C.cost_verdict(cs(90), cs(45), cs(30, climb=30)) == "FAIL")
 check("masks off (old pricing): UNMEASURED", C.cost_verdict(cs(90, mask="False"), cs(0), cs(30, climb=30)) == "UNMEASURED")
 check("a REFUSED read: UNMEASURED", C.cost_verdict(C.parse("REFUSED: no pawn"), cs(0), cs(30)) == "UNMEASURED")
+
+# CLIMB_RAMP_ROWS_BUILD_STAIRS_ARRIVED_EARLY: the moat row (F) and the haul row (G)
+def raider(edge, pid="Thing_Human7", **kw):
+    return dict(dict(id=pid, spawned=True, dead=False, downed=False, canReachMapEdge=edge), **kw)
+def comp(n):
+    return C.parse("POCKET k=2 comp=%d pocket=False size=9 depth=0 gen=5 built=5 rebuilds=2" % n)
+check("pit_pawn finds a pawn with or without the Thing_ prefix", C.pit_pawn({"pawns": [raider(False)]}, "Human7") is not None)
+check("pit_pawn: another pawn is not this one", C.pit_pawn({"pawns": [raider(False)]}, "Human8") is None)
+check("moat: island cut off, moat out by the ramp, components apart: PASS", C.moat_verdict(raider(False), raider(True), comp(4), comp(1), comp(1))[0] == "PASS")
+check("can-fail moat: the island raider reaches the edge: FAIL", C.moat_verdict(raider(True), raider(True), comp(4), comp(1), comp(1))[0] == "FAIL")
+check("can-fail moat: the grid joins the island to the outside: FAIL", C.moat_verdict(raider(False), raider(True), comp(1), comp(1), comp(1))[0] == "FAIL")
+check("moat control: a moat raider that cannot reach the edge voids the row (UNMEASURED)", C.moat_verdict(raider(False), raider(False), comp(4), comp(1), comp(1))[0] == "UNMEASURED")
+check("moat: a downed raider is UNMEASURED", C.moat_verdict(raider(False, downed=True), raider(True), comp(4), comp(1), comp(1))[0] == "UNMEASURED")
+check("moat: an unread raider is UNMEASURED", C.moat_verdict(None, raider(True), comp(4), comp(1), comp(1))[0] == "UNMEASURED")
+check("moat: a stale grid read is UNMEASURED", C.moat_verdict(raider(False), raider(True), C.parse("POCKET k=2 comp=4 gen=6 built=5"), comp(1), comp(1))[0] == "UNMEASURED")
+PIT, PILE = (138, 122, 3, 3), (143, 128, 2, 2)
+jade = lambda x, z: [dict(def_="Jade", x=x, z=z)]   # noqa: E731
+check("haul: sealed without the ramp, in the stockpile after: PASS", C.haul_verdict(jade(139, 123), jade(143, 128), PIT, PILE)[0] == "PASS")
+check("can-fail haul: the Jade left a sheer D 4 floor with no ramp: FAIL", C.haul_verdict(jade(150, 130), jade(143, 128), PIT, PILE)[0] == "FAIL")
+check("can-fail haul: never fetched with the ramp built: FAIL", C.haul_verdict(jade(139, 123), jade(139, 123), PIT, PILE)[0] == "FAIL")
+check("haul: carried / unseen at the end is FAIL, not PASS", C.haul_verdict(jade(139, 123), [], PIT, PILE)[0] == "FAIL")
+check("haul: the Jade never read back is UNMEASURED", C.haul_verdict([], jade(143, 128), PIT, PILE)[0] == "UNMEASURED")
+check("site holds the new scenes: 46 x 12", (C.SITE_W, C.SITE_H) == (46, 12))
 
 print("%s: %d failure(s)" % ("PASS" if not fails else "FAIL", len(fails)))
 sys.exit(1 if fails else 0)

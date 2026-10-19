@@ -16,6 +16,10 @@ Plain `python3` = WSL (offline/plan); `python.exe` = Windows (anything touching 
 | `live_session.py` B7 `B7_reload_A2/A3/save_reload_pockets_iden` (FAIL, `pocket_covers`) | UNTRACED: the run kept no strings. B7 now records before/after/settled per differing key (`RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS`); re-run for evidence, ~8 s, needs B4's covers zone | `3665fb781b` (script) |
 | `liquid_checks.py` `L5_colonists_clean_spill` (UNMEASURED SITE) | HARNESS: precondition wanted Cleaning priority read back 1; vanilla stores 3 with manual priorities off (filth 9 -> 0 in 750 ticks was read UNMEASURED) | `3665fb781b` (script) |
 | `live_session.py` B4 `B4_access_jump_pack_in_no_fall` (UNMEASURED) | HARNESS: the verb list was read at the reply's top level; it sits under `result` (JawaBenchAbilityTools). Now cast by verb id | `3665fb781b` (script) |
+| `climb_proof.py` `CLIMB_raider_never_crosses_ramped_moat`, `CLIMB_hauler_fetches_ramped_floor` (were OWED "needs ramps") | ramps exist (`RM_PitRamp`, `CLIMB_ramp_frees_and_retraps` PASS in pass 1): scene F = a 3x3 island in a sheer D 4 moat ramped out on its far side, a hostile Pirate on each, `jawa/flowworks_pit_report` canReachMapEdge (the moat raider is the can-say-True control); scene G = a sheer D 4 pit, 10 Jade on its floor, a Hauling-only colonist + Jade-only stockpile: 600 ticks sealed, then a ramp, up to 3000 ticks to the stockpile. Ledger `CLIMB_RAMP_ROWS_BUILD_STAIRS_ARRIVED_EARLY` | HARNESS rows, this commit |
+| `live_session.py` B2 `B2_readout_sea_never_dry` (UNMEASURED SITE) | the painted lake was mid-map, so LIMITED by design; the readout zone now sits flush with the east map edge (`(228,15,22,16)` on 250x250, clear of the 216-wide owner zone) and the lake is painted to column W-1, read back; `stickyLimitlessEnabled` off or paint short of the edge reads UNMEASURED SITE, an edge lake reading limited is FAIL MOD | this commit |
+| `live_session.py` B5 `B5_ice_freeze_thaw` (UNMEASURED SITE, 1.4 C) | vanilla `FreezeManager` freezes no water above -7 C, and ColdSnap is only -20 C. Now ColdSnap + DeepFreeze (both `GameCondition_ColdSnap`, summed by `AggregateTemperatureOffset`: -40 C at full after the 12,000-tick ramp), four canals (56 squares), up to 24,000 ticks; the row is judged only once the canal read <= -7 C, and "no ice" is FAIL only when >= 4.6 freeze rolls were expected (P(no ice) < 1 %) | this commit |
+| `live_session.py` B6 `B6_flood_canal_kept` (UNMEASURED SITE) | `SeasonalFlood` seeds only at river banks and spreads <= 12 squares from them (nothing on a riverless map). Now `jawa/weather_set TorrentialRain lockWeather` (Odyssey): `TorrentialRainFlood` seeds from every unroofed freshwater body's bank squares, the dug canal included, after its 4,000-tick start delay; then back to B0's locked Clear (OnWeatherEnd destroys the flood), recession polled | this commit |
 | `suspension_bridge_proof.py`, whole file (all sections) | first real run 12 PASS / 12 FAIL / 10 UNMEASURED (`Transient/suspension_live/suspension_bridge_proof_20261019c.json`) ran on DLL `23979d509b` (lacks `a01c76fe25` underpass reach) and defs without `CompProperties_Styleable`. Ledger `SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN`, `UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL` | `d99eab7349` defs + harness; DLL `a01c76fe25` and later |
 
 **Leftovers from the newest full run** (`Transient/live_session/20261018T233414/session.json`, 179 rows: 121 PASS / 19 FAIL / 38 UNMEASURED,
@@ -25,9 +29,8 @@ written a later one. Not in pass 2 on purpose (need a decision, not a re-run):
 - B3 triaged 2026-10-19 (`Transient/pass1_reds/NOTES.md`); `rc 1` is only "not green", never a crash. Left out because a re-run repeats them:
   `sprinkler_live` draws/dries/walls UNMEASURED SITE (the soak read is `ExplosiveGrowthAPI.IsSoaked`; ExplosiveGrowth is not in the `flowworks`
   tier: run on `fw_gss_sitting`); `liquid_checks` L4 SITE (no gravship fixture), L6 goodwill needs `--theft-day` (~60,000 ticks);
-  `thirst_live` T1 needs three mod lists; `trench_cover_proof` / `climb_proof` UNMEASURED rows are OWED by the scripts themselves
-  (climb's two ramp rows are stale: `CLIMB_RAMP_ROWS_BUILD_STAIRS_ARRIVED_EARLY`); B5 ice SITE (ColdSnap took the map to 1.4 C, never
-  below 0: needs a cold site); B6 flood SITE (SeasonalFlooding never reached the canal zone).
+  `thirst_live` T1 needs three mod lists; `trench_cover_proof` UNMEASURED rows are OWED by the script itself; climb's two ramp rows,
+  B2 sea, B5 ice and B6 flood are fixed and re-run as F4/F5 below.
 - B9 owner-eyes rows (`B9_staged_*`) are UNMEASURED by design. Thirst T15/T16/T27 need the Biomes tier (`fw_gss_sitting`), not this pass.
 
 ## 1. Preconditions (offline checks, recorded now)
@@ -91,7 +94,7 @@ python3 src/RimMandrake/Utils/preflight_bridge.py --tier quicktest --modset flow
 python3 src/RimMandrake/Utils/modcheck/test_site_saves.py load calm                # or rimworld/start_debug_game_ready (fresh Playing quicktest map)
 ```
 Expect O09/O13 (companion / FlowWorks drift) clear after step B. O10 (`0Harmony.dll` changed) may still need a human `--accept-deps`.
-### F. The three re-runs (one map each where noted; all on the SAME launch)
+### F. The re-runs (F1-F5) (one map each where noted; all on the SAME launch)
 **F1. live_session B1 + B4 + B7 (v2 re-check, pit covers + the shared-clock rows, reload evidence).** `--only` makes it a PARTIAL run, never recordable as a full pass: the verify lines it
 writes are for reading, and the ledger `verify` for `SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT` (cover rows) is what this discharges.
 Flag check, run 2026-10-19: `python3 src/RimMandrake/FlowWorks/northstar/live_session.py --dry-run --only B0,B1,B4,B7` rc 0, prints the zone
@@ -121,6 +124,27 @@ python.exe src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py --fres
 M: previous runs 215 s and 211 s (00:00:11-00:03:46, 00:04:22-00:07:53). Rows that were red: `LOOK_*_resolves` (Styleable defs), `UND_*` and `SB_path_crosses_on_deck` (underpass reach), `SB_rails_off_some_fall`, `SB_load_over_rating_whole_span_falls`, `SB_vanilla_bridge_refused_over_dug`.
 Emit output at least every few minutes (600 s silence kill); `tee` does this.
 
+**F4. climb_proof whole, with `--fresh-map`** (scenes A-G on one 46 x 12 site at the default origin `120,120`; flags from `--help`:
+`[out] [--origin ORIGIN] [--fresh-map]`; the script has no `--dry-run`; its pure verdicts are `selftest_climb_proof.py`, PASS 2026-10-19):
+```
+python.exe src/RimMandrake/FlowWorks/northstar/climb_proof.py Transient/live_session/pass2_<stamp>/climb_proof.json --fresh-map 2>&1 | tr -d '\r' | tee Transient/live_session/pass2_<stamp>/climb_proof.log
+```
+E ~5.5 min (3 x 900-tick orders + up to 3,600 haul ticks). Rows to read: `CLIMB_raider_never_crosses_ramped_moat` (UNMEASURED with
+"control" in `why` = the moat raider could not reach the edge up the ramp: read the `CLIMB_ramp_*` rows first),
+`CLIMB_hauler_fetches_ramped_floor` (`detail.trail` = the hauler's cells; a sealed-phase FAIL means a hauler got onto a sheer D 4
+floor with no ramp), and the pass-1 rows again. (`CLIMB_RAMP_ROWS_BUILD_STAIRS_ARRIVED_EARLY` is closed by the script fix.) Record the
+rows on `PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP` A1.
+**F5. live_session B2 + B5 + B6, same map as F4** (climb's site `120..165,120..131` is disjoint from the readout/ice/flood zones).
+Flag check, run 2026-10-19: `python3 src/RimMandrake/FlowWorks/northstar/live_session.py --dry-run --only B0,B2,B5,B6` rc 0, zones
+`readout (228, 15, 22, 16)`, `ice (15, 37, 16, 8)`, `flood (37, 37, 18, 10)`, `ESTIMATED wall for the selected blocks: 868 s`,
+`DRY RUN: no bridge touched.`; `--mock --only B0,B2,B5,B6` rc 0 (14 rows, mock reads UNMEASURED as designed).
+```
+python3 src/RimMandrake/Utils/save_guard.py run --current-slot none -- python.exe src/RimMandrake/FlowWorks/northstar/live_session.py --only B0,B2,B5,B6 --no-owner-save --out-dir Transient/live_session/pass2b_<stamp>
+```
+Rows to read: `B2_readout_sea_never_dry` (`detail.edgeCell` must name WaterDeep at x = map width - 1), `B5_ice_freeze_thaw`
+(`detail.coldest`, `expectedFreezes`, `frozeAfter`, `thawAfter`), `B6_flood_canal_kept` (`floodReachedAfter`, `recededAfter`,
+`changed`). B2's dialog rows ride along (cheap).
+
 ### 6b. Optional (only if the owner wants it; not counted in the estimate)
 B3 is triaged (section 0 leftovers): a `flowworks`-tier re-run would repeat its SITE/OWED rows, so it is not offered here; one look at the FlowWorks Mod Settings dialog to clear the `B2_dialog_*` reds.
 
@@ -146,9 +170,11 @@ Then read the three outputs before any ledger line: verify lines are WRITTEN, no
 | F1b liquid_checks L5 | ~0.5 min (E) |
 | F2 proof_hose realflow | ~2.5 min (E from M 127.6 s whole script) + fresh map ~8 s |
 | F3 suspension proof | ~3.6 min (M 211-215 s) + fresh map |
+| F4 climb_proof | ~5.5 min (E) + fresh map ~8 s |
+| F5 live_session B0,B2,B5,B6 | ~14.5 min (E 868 s; B5 is up to 36,000 ticks) |
 | G restore + release | 2 min (E) |
 | gates, copying logs, reading rows | ~8 min (E) |
-| **Total** | **~34 min (range 30-42)**, plus waiting for the current driver and a game-down |
+| **Total** | **~54 min (range 48-65)**, plus waiting for the current driver and a game-down |
 
 ## 4. Blockers and traps
 
@@ -157,3 +183,6 @@ Then read the three outputs before any ledger line: verify lines are WRITTEN, no
 - `B4_reservoir_catch` and `B4_reservoir_fish_rolled` need the companion `jawa/fishing`; `B4_access_jump_pack_in_no_fall` and `B4_dig_cost_notch16` were UNMEASURED for unrecorded reasons: read `detail` in the new `session.json` before filing.
 - Covers are rated 40/120/220 kg and a colonist weighs ~60 kg: if `B4_cover_120` still reads "gave way" at one colonist it is a MOD finding on `PIT_COVER_DIAGNOSE_GIVES_WAY_TOO_SOON`, not a harness one.
 - Never save the map after a thirst run (not in this pass). Never live-test flyers without the owner.
+- F5's B5 holds the whole map near -19 C for up to ~24,000 ticks: colonists left outdoors may take hypothermia. B5's row is not
+  about health; if a colonist is downed by cold the row still reads (it only reads temperature, terrain and readouts), but heal before
+  any later block. B6 floods every unroofed freshwater body's banks map-wide, not only the canal.
