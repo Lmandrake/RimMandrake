@@ -9,7 +9,7 @@ Reds if:
     the dump is post-patch (PirateWaster no longer names DV_Buzzer), ANY remaining reference (a live leak);
   * CherryPicker.SHIP.xml lacks a typed `XenotypeDef/<X>` key for one of the 26 cut defs, carries one for the
     five assembly-bound defs that stay (VRE_Archon/Fungoid/Phytokin 3), carries a bare type-agnostic key
-    (`AG_Helixien` is also a HediffDef), or lacks a companion key (Outland ascension/implanter, Alpha Genes
+    (a xenotype defName can also be a HediffDef), or lacks a companion key (Outland ascension/implanter,
     meta/retromorphosis) or one of the three cut scenarios;
   * any src .xml/.cs names one of the 31 in a race/xenotype position outside the cut file.
 UNMEASURED (exit 2) without a readable dump. Sanity probes and mutants must go red.
@@ -30,12 +30,12 @@ PATCH_REL = "src/RimUtinni/UtinniPatches/Patches/XenotypeCut_NonSW_SpawnSets.xml
 SHIP = ROOT / "infrastructure" / "state" / "cherrypicker" / "CherryPicker.SHIP.xml"
 
 CUT_DEF = ("BX_Beliar DV_Avaloi DV_Bogleg DV_Brawnum DV_Buzzer DV_Keshig DV_Venator HBX_Highborn KAR_Orc XylTitan "
-           "AG_Mycormorph VRE_Ocularkin AG_Fleetkind AG_Helixien AG_Animusen AG_Lapis AG_Wretch AG_Taukai AG_Hiveling "
-           "AG_MindDevourer AG_Efreet AG_Drakonori AG_Nereid AG_Forsaken AG_RandomCustom BS_FrostJotunInBlue").split()
+           "BS_FrostJotunInBlue").split()
+# the Alpha Genes 15 (AG_* and VRE_Ocularkin) left with sarg.alphagenes, retired 2026-10-18
 # names compiled into their own mod's assembly: def kept, unreachable, until the mod is retired
 KEPT = "VRE_Archon VRE_Fungoid VRE_Gauranlenkin VRE_Animakin VRE_Poluxkin".split()
 ALL = CUT_DEF + KEPT
-SCENARIOS = ("AG_ForsakenCrashlanded", "AG_WretchScenario", "BX_BeliarStart")
+SCENARIOS = ("BX_BeliarStart",)
 FAILS = []
 
 
@@ -155,7 +155,7 @@ def main():
         ptext.replace('<match Class="PatchOperationRemove">', '<match Class="PatchOperationAdd">', 1)) != [])
     check("mutant: a dropped typed key reds", ship_findings(ship.replace("<li>XenotypeDef/KAR_Orc</li>", "")) != [])
     check("mutant: cutting a kept def reds", ship_findings(ship + "<li>XenotypeDef/VRE_Fungoid</li>") != [])
-    check("mutant: a bare AG_Helixien key reds", ship_findings(ship + "<li>AG_Helixien</li>") != [])
+    check("mutant: a bare DV_Buzzer key reds", ship_findings(ship + "<li>DV_Buzzer</li>") != [])
     check("mutant: a CharacterDef race of KAR_Orc reds", ref_findings([("a.xml", "<race>KAR_Orc</race>")]) != [])
     check("mutant: a restored KAR_Orc relabel reds", ref_findings([("a.xml", 'Defs/XenotypeDef[defName="KAR_Orc"]')]) != [])
     if FAILS:
