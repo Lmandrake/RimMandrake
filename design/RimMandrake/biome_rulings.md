@@ -182,3 +182,9 @@ Authority: `design/RimMandrake/biome_mod_architecture.md` §7 **Q11a**, beside Q
 entity that's placed quite intentionally (TBD)."* Royalty's random anima-tree generation is blocked
 planet-wide, not only on Pyrelands. Intentional Utinni placement is undesigned. Item:
 `ANIMA_TREE_FIX_TAKES_THE_SIDE_DOOR`.
+
+## 🔴 No biome-specific sun or heat — owner, 2026-10-19
+
+*"no biome-specific heat, no biome-specific sun. It's a matter of geometry"* A biome sheet or
+BiomeDef never declares a heat kind, a sun-heat number or a shade rule. Its sun is its tile's
+position; its hot air is its temperature. Full text: `standing_rulings.md` §Direct Sun.

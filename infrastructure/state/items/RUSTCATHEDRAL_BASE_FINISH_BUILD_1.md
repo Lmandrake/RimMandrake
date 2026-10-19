@@ -58,13 +58,10 @@ water-only confinement already built for the warden mother), `RM_SunHeatExtensio
    plus a catch). Butchering a living eel yields `RM_CoolantEelCatch` and triggers the existing eel-fishing
    hum consequence (`RM_NegativeFishingOutcome_CoolantEel`'s machinery). Art: `RM_CoolantEel` in
    `infrastructure/artpipe/art_lists/rustcathedral_turn1_2026-10-02.csv`.
-4. **Heat: overhead sun.** Add `RimMandrake.CreatureBehaviors.RM_SunHeatExtension` with
-   `heatKind overhead` to `BiomeDef RM_RustCathedral`'s `modExtensions` (the planet's highest steady sun,
-   +79°, median 62.5 °C; the deck plate's never-moving wall shadows are the shade, sheet §9). Default offsets
-   unless the review's numbers argue otherwise. 📌 **Note for `SOLAR_HEAT_EXPOSURE_1`:** that item's spec
-   tells its builder to *"list them [each extreme-heat biome] in the close note"*; the Rust Cathedral belongs
-   on that list as **overhead**. This item declares it; whoever closes `SOLAR_HEAT_EXPOSURE_1` lists it
-   (no edit to that item's prose is needed for the declaration to work).
+4. **Heat: Direct Sun.** Built here as `heatKind overhead` on `BiomeDef RM_RustCathedral`. The owner
+   ruled 2026-10-19 that there are no heat kinds (*"no biome-specific heat, no biome-specific sun"*):
+   `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES` removes the field and the Cathedral's +79° sun gives
+   55 × sin 79° ≈ 54 °C by geometry alone; its never-moving wall shadows are short under that sun.
 5. **The cooked strays** (sheet §4: *"the desiccated dead are map dressing, not spawns"*). `GenStepDef
    RM_CathedralStrays`, self-gated to `RM_RustCathedral` (the wall GenSteps' gate): scatters a handful of
    animal corpses at the map edges at generation, rot stage forced to **dessicated**, kinds drawn from the
@@ -95,7 +92,7 @@ Deterministic state reads through `jawa/get_defs` (reading `success`/`foundCount
   `ThoughtDef/RM_FeltTheGroundTurn`, `TraitDef/RM_HumReader`, `ThingDef/RM_HumPrimer`,
   `ThingDef/RM_CoolantEel`, `PawnKindDef/RM_CoolantEel`, `GenStepDef/RM_CathedralStrays` resolve
   (`foundCount` = list length).
-- `BiomeDef/RM_RustCathedral` carries `RM_SunHeatExtension` with `heatKind` = `overhead`.
+- ~~`BiomeDef/RM_RustCathedral` carries `RM_SunHeatExtension` with `heatKind` = `overhead`.~~ VOID 2026-10-19: heat kinds ruled out by the owner; a heatKind read would go red once `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES` lands. Direct Sun is verified in `DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME`.
 - Line-cycle, on a generated free-tier Rust Cathedral test map with spawned animals: firing `RM_LineCycle`
   lowers the attitude band by one (read the component's band before/after); while active, every spawned
   non-colonist animal's current job is `RM_Job_LineCycleStill`; no colonist's is; after it ends every

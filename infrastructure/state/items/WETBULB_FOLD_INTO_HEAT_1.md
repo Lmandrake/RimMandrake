@@ -10,10 +10,11 @@ one-kind-of-heat ruling (CLAUDE.md "One kind of heat"; `SOLAR_HEAT_EXPOSURE_1`,
    `RM_WetBulbOverwhelm`, StatDef `RM_WetBulbProtection`, C# `RM_GameCondition_WetBulb`,
    `RM_WetBulbExtension`, `RM_MapComponent_DryRooms`, and the Mod Settings toggle
    `wetBulbOverwhelmEnabled`. There is no wet-bulb clock, hediff or protection stat.
-2. **Heat.** The Greentide's `RM_SunHeatExtension` heat kind is `ambient`. It raises a pawn's felt
-   temperature by `heatOffsetC` 12 C (PROVISIONAL; was 8, the wet-bulb share is folded into it) and
-   vanilla Heatstroke does the rest. Ambient kind: shade and roofs do nothing outdoors, an enclosed
-   room takes no felt-heat offset, and heat insulation answers it.
+2. **Heat.** Built as an `ambient` `RM_SunHeatExtension` (`heatOffsetC` 12 C, PROVISIONAL; was 8, the
+   wet-bulb share is folded into it). The owner ruled 2026-10-19 (*"Hotter air on the thermometer"*) that
+   this heat becomes plain vanilla air temperature: a permanent `RM_GreentideAirHeat` temperature offset of
+   the same 12 C, built by `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`. Vanilla Heatstroke does the rest and
+   heat insulation answers it; shade changes only the Direct Sun term.
 3. **Gear.** Vanilla `StuffEffectMultiplierInsulation_Heat` (PROVISIONAL): sealed suit 1.4, wicking
    wrap 0.8, dry-hood 0.5 (old wet-bulb protection 0.6 / 0.3 / 0.2, order kept).
 4. **AI scoring.** `RM_Patch_HazardApparelScoring` adds `Insulation_Heat`/40 in place of the

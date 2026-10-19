@@ -19,7 +19,7 @@ Sources: `src/RimMandrake/LongShade/About/About.xml` description, `Defs/**`, `So
 - The mirrak ambushes from false shade. → map_mechanics.mirrak_ambush_wiring, map_mechanics.mirrak_false_shade_ambush (UNMEASURED: CreatureBehaviors mechanism, live pawn needed)
 - The vorrel runs its cycle. → map_mechanics.vorrel_cycle_chain_wired, map_mechanics.vorrel_cycle (UNMEASURED: game days)
 - Every shipped creature and plant is in the biome roster and every PawnKindDef resolves. → roster_wiring.every_creature_and_plant_is_in_the_biome_roster, roster_wiring.every_pawnkind_resolves
-- Nothing lives in the light and nothing survives leaving shelter (sun heat and shade gear). → UNCOVERED: owned by CreatureBehaviors / the SOLAR_HEAT_EXPOSURE_1 and SHADE_GEAR_FAMILY_1 items, not this mod
+- Nothing lives in the light and nothing survives leaving shelter (Direct Sun and shade gear). → UNCOVERED: owned by CreatureBehaviors / the DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME item, not this mod
 - The biome's tile count or painting. → UNCOVERED: the planet is painted once at the end (BIOME_PAINT_ONCE_AT_THE_END_1); a zero count is expected
 
 ## the walk

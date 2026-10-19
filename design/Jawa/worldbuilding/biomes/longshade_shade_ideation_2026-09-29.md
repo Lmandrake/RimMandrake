@@ -865,10 +865,8 @@ is a different reason to step out of the shade.
 - **5 Long Carry: IN, and widened to shade GEAR.** *"Actual shadow-casting gear doubles down on
   the idea of heat building up… Parisols, shade tents, simple shields you can stand behind. But
   again, this MUST be applied on other biomes where heat is extreme too... and there shade won't
-  help you (in steam) or sideways shade (deep desert)."* ⇒ Parasols, shade tents and portable
-  sun-shields become a cross-biome gear family. How well each piece works depends on the biome's
-  kind of heat:
-  - overhead sun here, so parasols and tents work;
-  - a low sun in the deep desert, so a shield you stand behind works and overhead shade does not;
-  - steam/volcanic heat, where shade does nothing and only insulation and escape help.
+  help you (in steam) or sideways shade (deep desert)."* ⇒ Parasols and shade tents are a
+  cross-biome gear family. How much shade there is depends on sun-angle geometry only, never on the
+  biome; steam and volcanic heat are plain air temperature (owner, 2026-10-19:
+  `design/RimMandrake/standing_rulings.md` §Direct Sun).
 - **6 gnomon line, 7 farm on the horizon, 8 smaller ideas:** not yet ruled.

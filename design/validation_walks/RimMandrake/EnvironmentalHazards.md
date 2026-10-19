@@ -18,7 +18,7 @@ Sources: `src/RimMandrake/EnvironmentalHazards/About/About.xml` description (the
 - Live-prep viability, treasure-sale conscience, hazard-apparel AI scoring and the grazing hook are armed. → harmony_rules_armed.CompTemperatureRuinable_CompTick_prefix_armed, harmony_rules_armed.TradeDeal_TryExecute_prefix_armed, harmony_rules_armed.TradeDeal_TryExecute_postfix_armed, harmony_rules_armed.JobGiver_OptimizeApparel_ApparelScoreRaw_postfix_armed, harmony_rules_armed.Plant_IngestedCalculateAmounts_postfix_armed
 - Contact venom is lethal at severity 1.0 (the threshold the lethal-off toggle holds under). → contact_venom_wiring.venom_hediff_is_lethal_at_one
 - Gas emitters, gas effects, periodic area attacks, environmental weather, scaled explosions, water truce behaviour (incl. the radius override), boles/regrowth/tree-fall, stranding pools, tar/glasswalk, accelerated rot/warm ground, sheen/live-prep, venomvine scratch and barrier, and the world-generation scatterers act as their toggles say. → map_mechanics.* (UNMEASURED: each needs a content mod's def, a generated biome map, an incident or game days; the run may not drive them)
-- Shade gear's heat and shade effect. → UNCOVERED: owned by CreatureBehaviors (shade grid) and the SOLAR_HEAT_EXPOSURE_1 / SHADE_GEAR_FAMILY_1 items; the defs resolve in defs_resolve
+- Shade gear's heat and shade effect. → UNCOVERED: owned by CreatureBehaviors (shade grid) and the DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME item; the defs resolve in defs_resolve
 - No biome's tile count or painting. → UNCOVERED: the planet is painted once at the end (BIOME_PAINT_ONCE_AT_THE_END_1)
 
 ## the walk

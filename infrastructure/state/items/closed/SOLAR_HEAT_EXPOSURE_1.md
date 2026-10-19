@@ -49,3 +49,7 @@ shade-driven hediff comp as the heat load, the ruling above overrides it.
   colonist in the open heats up through vanilla heatstroke.
 - On a steam/volcanic map, shade gives no relief. On a low-sun map, overhead shade gives none.
 - An owner-watched live sitting rules on the strictness tuning.
+
+## superseded 2026-10-19
+
+Superseded by `DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME` (owed live rows) and `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES` (the model). Spec §2 (per-biome heat kinds) is ruled out by the owner, 2026-10-19: *"no biome-specific heat, no biome-specific sun. It's a matter of geometry"*. Design: `design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`.

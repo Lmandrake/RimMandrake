@@ -26,7 +26,7 @@ are not used: they are not evidence, because the planet is painted once at the e
 | **DLL matches its source**: `dll_source_stamp.py check` | PASS: MATCH (FireEcologyHook, and PyrelandsMechanics in RimUtinni) | PASS: MATCH | PASS: MATCH | PASS: MATCH |
 | **Code review**: `code_review_status.py check` on every `.cs`/`.py` in the mod | FAIL: 9 DIRTY / 37 CLEAN | FAIL: 36 DIRTY / 14 CLEAN | FAIL: 21 DIRTY / 8 CLEAN | FAIL: 22 DIRTY / 29 CLEAN |
 | **Deployed = repo**: `deploy_custom_mods.py --compose biomes` dry run | FAIL: drift (world texture) | FAIL: drift (BiomeDef, plants, races, 2 patches, textures) | FAIL: drift (BiomeDef, races, textures) | FAIL: drift (defs, textures) |
-| **Heat kind** (`SOLAR_HEAT_EXPOSURE_1`): checked for an `RM_SunHeatExtension` on the def, read against the sheet's climate | PASS: `overhead` | n/a: median 19.7 °C, not extreme heat | n/a: the sheet says *"no heat source at all"* (R13) | FAIL / owed: on the dayside, p90 45 °C, with no kind declared. Filed as `CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID` |
+| **Direct Sun**: no per-biome heat kind is owed (owner, 2026-10-19: *"no biome-specific heat, no biome-specific sun"*) | n/a | n/a | n/a | n/a: `CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID` superseded by `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES` |
 | **No vanishing without a sign**: read every `Destroy`/`DeSpawn` on a pawn in the mod's C# | PASS: none on pawns | PASS: only inside proof cleanup | PASS: none | PASS: the Coalescence absorbs only wild members of its own unfinished kind, with a dust puff and a growth message |
 
 ## Fixed tonight
