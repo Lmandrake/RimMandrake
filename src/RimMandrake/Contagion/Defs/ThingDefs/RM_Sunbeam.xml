@@ -53,7 +53,7 @@
     <defName>RM_Bullet_Sunbeam</defName>
     <label>sunbeam pulse</label>
     <graphicData>
-      <texPath>Things/Projectile/Charge_Small</texPath>
+      <texPath>Things/Projectile/RM_Bullet_Sunbeam/RM_Bullet_Sunbeam</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(0.85,0.8,1)</color>
     </graphicData>

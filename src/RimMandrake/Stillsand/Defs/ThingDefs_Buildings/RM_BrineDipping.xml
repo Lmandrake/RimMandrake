@@ -18,7 +18,7 @@
     <description>A place on the edge of a brine pool to dip salt-bitter water into jars. Brine cannot be drunk, but a solar still draws the water out of it and a cooking fire boils it down to salt. It must stand on dry ground beside a brine pool.</description>
     <thingClass>Building_WorkTable</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/CraftingSpot</texPath>
+      <texPath>Things/Building/Production/RM_BrineDippingSpot/RM_BrineDippingSpot</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
       <color>(170,190,175)</color>
