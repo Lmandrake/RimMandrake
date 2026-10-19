@@ -52,7 +52,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 					{
 						continue;
 					}
-					foreach (TerrainDef fill in new[] { f.floodTerrain, f.fillTerrainHalf, f.fillTerrainBrim, f.fillTerrainSuperdeep })
+					foreach (TerrainDef fill in new[] { f.floodTerrain, f.fillTerrainHalf, f.fillTerrainBrim, f.fillTerrainSuperdeep, f.fillTerrainVeryShallow })
 					{
 						if (fill != null && !fillOwner.ContainsKey(fill))
 						{

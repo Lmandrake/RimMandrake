@@ -53,8 +53,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 
 		public static bool IsFillOf(TerrainDef t, FluidDef fluid)
 		{
-			return t != null && fluid != null && (t == fluid.floodTerrain || t == fluid.fillTerrainHalf
-				|| t == fluid.fillTerrainBrim || t == fluid.fillTerrainSuperdeep);
+			return t != null && fluid != null && fluid.OwnsFillTerrain(t);
 		}
 	}
 
