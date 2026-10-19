@@ -154,9 +154,10 @@ OVERRIDES = {
         note="Four reagent items plus the registry row. RM_ReactionPool/RM_ReactionTap/RM_ReactionPools genstep exist too but are not 'reagent defs'. "
              "The earlier prose-derived list wrongly included RM_GlowerCrust."),
     ("WYYYSCHOKK_FANG_PENDANT_1", "A1"): dict(
-        defs=["ThingDef/RSW_WyyyschokkFang"],
-        note="Only the fang remains: the pendant, its recipe, its RSW_Neck layer and the observer thought were removed from the game "
-             "(owner, picks_icons_sheet_2026-10-19: \"drop\")."),
+        defs=["ThingDef/RSW_WyyyschokkFang", "ThingDef/RSW_Apparel_FangPendant", "RecipeDef/RSW_Make_FangPendant",
+              "ThoughtDef/RSW_TrophyCraft_ObserverBraveFang"],
+        note="One recipe exists (criterion says 'recipes'). The thought's workerClass RSW_ThoughtWorker_ObserverFactionApparel is C#, so the "
+             "worker resolving is a ThoughtDef load, not a def lookup."),
     ("WARSCAR_TOTCHAK_WAKES_1", "A1"): dict(
         defs=["GenStepDef/RM_TotchakInWall", "JobDef/RM_TotchakGnaw", "JobDef/RM_TotchakLieDown", "ThinkTreeDef/RM_Totchak"],
         note="CORRECTED: the prose-derived name RUT_SealedSleeper was the wrong creature (the sealed sleeper, not the totchak). "

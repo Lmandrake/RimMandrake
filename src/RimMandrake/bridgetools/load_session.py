@@ -583,6 +583,7 @@ ART_ROWS = [
     ("P5", "VAEA_Apparel_ToolBelt", "apparel-worn",
      "⚠️ NOT `ToolBelt`, which exists nowhere. Two mods label an item 'tool "
      "belt', so never spawn this by label. WORN, pawn facing WEST."),
+    ("P6", "RR_FieldResearchKitSimple", "apparel-worn", "WORN, facing EAST"),
     ("P7", "RR_FieldResearchKitHiTech", "apparel-worn", "WORN, facing EAST"),
     ("P8", "RR_FieldResearchKitMultiAnalyzer", "apparel-worn", "WORN, facing EAST"),
     ("P9", "RR_FieldResearchKitRemote", "apparel-worn", "WORN, facing EAST"),
