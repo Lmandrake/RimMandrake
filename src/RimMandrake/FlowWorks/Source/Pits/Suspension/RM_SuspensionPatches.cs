@@ -440,7 +440,9 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 
 		/// <summary>Which view of the cliff masks a path request of this pawn uses: the floor view (decks the floor band passes
-		/// under read as the floor) for a pawn in the floor band or down in a hole on an undecked square; else the deck view.</summary>
+		/// under read as the floor) for a pawn in the floor band, or down in a hole on an undecked square deeper than every deck
+		/// the floor band passes under (RM_PocketGridMath.UsesFloorView); else the deck view. The pocket grid's reach verdicts
+		/// read the same view (RM_PocketGrid.ForPawn).</summary>
 		public static bool UsesFloorView(Pawn p)
 		{
 			if (p == null || !p.Spawned || !RM_SuspensionSettings.suspensionWalkUnder)
@@ -457,7 +459,55 @@ namespace RimMandrake.FlowWorks.Pits
 				return false;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			return eng != null && eng.ClimbDepthAt(p.Position) > 0;
+			int d = eng == null ? 0 : eng.ClimbDepthAt(p.Position);
+			// UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: a pawn on a ledge at a sunken deck's height steps onto it, not under it
+			return RM_PocketGridMath.UsesFloorView(true, false, false, d, d > 0 ? DeepestPassingDeck(map, eng) : -1);
+		}
+
+		private sealed class Deepest
+		{
+			public int generation = int.MinValue;
+			public int notches = -1;
+		}
+
+		private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, Deepest> deepest =
+			new System.Runtime.CompilerServices.ConditionalWeakTable<Map, Deepest>();
+
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: the deck height (notches) of the deepest intact suspension deck the floor
+		/// band passes under on this map, -1 for none (then the floor view is the deck view: <see cref="FloorViewDiffers"/>).
+		/// Cached per climb generation, which a deck's spawn and despawn and every depth write move.</summary>
+		public static int DeepestPassingDeck(Map map, RM_MapComponent_Excavation eng)
+		{
+			if (map == null || eng == null || !RM_SuspensionSettings.suspensionWalkUnder)
+			{
+				return -1;
+			}
+			Deepest c = deepest.GetValue(map, m => new Deepest());
+			lock (c)
+			{
+				if (c.generation != eng.ClimbGeneration)
+				{
+					int best = -1;
+					List<Thing> things = map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial);
+					for (int i = 0; i < things.Count; i++)
+					{
+						if (things[i] is Building_SuspensionDeck d && d.Decked && d.FloorBandPassesUnder && d.DeckNotches > best)
+						{
+							best = d.DeckNotches;
+						}
+					}
+					c.notches = best;
+					c.generation = eng.ClimbGeneration;
+				}
+				return c.notches;
+			}
+		}
+
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: does the floor view differ from the deck view (a deck the floor band
+		/// passes under stands; RM_CliffMask's underDerived, RM_TrenchStride's floorDiffers)?</summary>
+		public static bool FloorViewDiffers(Map map)
+		{
+			return DeepestPassingDeck(map, RM_SuperdeepTrap.EngineOf(map)) >= 0;
 		}
 
 		/// <summary>The pawn just walked from <paramref name="from"/> onto <paramref name="to"/>: its band there.</summary>

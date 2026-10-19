@@ -291,6 +291,50 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: the walking depth one square shows in a view (RM_PocketGrid.EffectiveDepth,
+		/// RM_SuspensionUnderpass.FloorViewDepthAt): an intact deck is ground at its height (RM_SpanMath.WalkingDepth), except
+		/// a deck the floor band passes under, which the floor view reads as the floor beneath it.</summary>
+		public static int ViewDepth(int climb, bool decked, int deckNotches, bool passesUnder, bool floorView)
+		{
+			if (!decked || (floorView && passesUnder))
+			{
+				return climb;
+			}
+			return deckNotches < climb ? deckNotches : climb;
+		}
+
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: does a walk of this pawn plan on the floor view? In the floor band, yes;
+		/// on a deck, no; on an undecked square only when it stands deeper than every deck the floor band passes under
+		/// (<paramref name="deepestPassingDeck"/>, -1 for none), the depth RM_SuspensionMath.StepGoesUnder sends a pawn under
+		/// from. Before: any dug square chose the floor view, so a pawn on a ledge read a sunken deck at its own height as the
+		/// hole beneath and could never step onto it. A ledge between two deck heights keeps the deck view (it steps onto the
+		/// deeper deck and does not walk under the shallower one): one view per walk, refused rather than promised.</summary>
+		public static bool UsesFloorView(bool walkUnderOn, bool inFloorBand, bool standsOnDeck, int standDepth, int deepestPassingDeck)
+		{
+			if (!walkUnderOn)
+			{
+				return false;
+			}
+			if (inFloorBand)
+			{
+				return true;
+			}
+			return !standsOnDeck && standDepth > 0 && standDepth > deepestPassingDeck;
+		}
+
+		/// <summary>UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: which pocket grid answers this pawn's reach, chosen exactly as the path
+		/// request's connectivity is (RM_CliffMask.Swap, then RM_TrenchStride's swap over it): a strider with a stride view
+		/// (<paramref name="viewStride"/> of the view it asks, &gt; 0) is judged on that view; anyone else on the floor view when
+		/// it plans on it. Before: reach always read the deck view, where a deck splits the hole beneath it, so CanReach refused
+		/// a walk under the deck that A* (on the floor view) would take.</summary>
+		public static (bool floorView, int stride) ReachGridView(bool floorDiffers, bool usesFloorView, bool striderFloorView,
+			Func<bool, int> viewStride)
+		{
+			bool sf = floorDiffers && striderFloorView;
+			int s = viewStride == null ? 0 : viewStride(sf);
+			return s > 0 ? (sf, s) : (floorDiffers && usesFloorView, 0);
+		}
+
 		/// <summary>The band whose grid answers for climb limit K: 1..maxDepth-1 (callers pass the band array length,
 		/// RM_PitTrapMath.ClimbBands). K ≥ maxDepth has no grid (returns 0): true only when no step on the map exceeds K, which
 		/// is why the band count is sized by the largest climb limit (PIT_DEPTH_WIDEN) and ClimbLimit is capped at it.</summary>
