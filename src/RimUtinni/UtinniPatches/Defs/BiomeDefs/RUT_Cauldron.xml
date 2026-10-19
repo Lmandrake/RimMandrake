@@ -127,8 +127,6 @@
     <wildAnimals>
       <RSW_Neebray MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Neebray>  <!-- neebray - small-flier, keep -->
       <RM_Garsulix>0.7</RM_Garsulix>  <!-- garsulix: our port of the donor GR_Beetlefleet (RimMandrake Cauldron), donor retired 2026-10-18 -->
-      <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - small, keep -->
-      <AA_OcularJelly MayRequire="sarg.alphaanimals">0.5</AA_OcularJelly>  <!-- ocular jelly - small, keep -->
       <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- corruptor dryad - small, keep -->
       <AM_Dryad_Ocular MayRequire="sarg.alphamemes">0.4</AM_Dryad_Ocular>  <!-- ocular dryad - small, keep -->
       <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- tumorous dryad - small, keep -->
@@ -138,14 +136,7 @@
            ⛔ Do not "fix" it by cutting either home. -->
       <RSW_Screecher MayRequire="mandrake.rsw.swbestiary">0.35</RSW_Screecher>  <!-- screecher - medium-pred, keep; wet end of the migration -->
       <RM_Visceral>0.35</RM_Visceral>  <!-- visceral - medium-pred, keep -->
-      <AA_BedBug MayRequire="sarg.alphaanimals">0.3</AA_BedBug>  <!-- bedbug - small-pred, keep -->
-      <Mynock MayRequire="mlie.starwarsanimalcollection">0.2</Mynock>  <!-- mynock - small, import -->
       <RSW_GraniteSlug MayRequire="mandrake.rsw.swbestiary">0.15</RSW_GraniteSlug>  <!-- granite slug - grain, import -->
-      <AA_CrystalMit MayRequire="sarg.alphaanimals">0.15</AA_CrystalMit>  <!-- crystalmit - small, import -->
-      <AA_GiantCrownedSilkie MayRequire="sarg.alphaanimals">0.15</AA_GiantCrownedSilkie>  <!-- giant crowned silkie - medium, keep -->
-      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - medium, keep -->
-      <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - giant, keep -->
-      <AA_Wildpod MayRequire="sarg.alphaanimals">0.05</AA_Wildpod>  <!-- wildpod - giant, keep -->
       <!-- COMMISSION_LEDGER_CLEANUP_1: eyeless-vibration-sensing-ambusher-the-signature.
            Body/art reskinned from the already-ported RSW_Kinrath (which stays placed at
            RUT_Greentide, cast_assignment.csv row 184): new defName, zero new PNGs. -->

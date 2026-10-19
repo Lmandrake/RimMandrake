@@ -135,12 +135,6 @@
     </biomeMapConditions>
     <wildAnimals>
       <RSW_FungalWeevil MayRequire="mandrake.rsw.swbestiary">0.4</RSW_FungalWeevil>  <!-- fungal weevil - ingest-strange, import -->
-      <AA_Swarmling MayRequire="sarg.alphaanimals">0.3</AA_Swarmling>  <!-- swarmling - hybrid-vermin, adjust-keep -->
-      <AA_Agaripod MayRequire="sarg.alphaanimals">0.25</AA_Agaripod>  <!-- agaripod - hybrid-native, keep -->
-      <AA_MycoidColossus MayRequire="sarg.alphaanimals">0.25</AA_MycoidColossus>  <!-- mycoid colossus - hybrid-giant, keep -->
-      <AA_Agaripawn MayRequire="sarg.alphaanimals">0.2</AA_Agaripawn>  <!-- agaripawn - hybrid-native, keep -->
-      <AA_Wildpawn MayRequire="sarg.alphaanimals">0.2</AA_Wildpawn>  <!-- wildpawn - hybrid-native, adjust-keep -->
-      <AA_Wildpod MayRequire="sarg.alphaanimals">0.2</AA_Wildpod>  <!-- wildpod - hybrid-native, adjust-keep -->
       <RSW_FungalMantis MayRequire="mandrake.rsw.swbestiary">0.15</RSW_FungalMantis>  <!-- fungal mimic mantis - guardian, import -->
       <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
            35.9% small. Both additions are already OWNER-RULED members of this exact
@@ -148,7 +142,6 @@
            "fauna", 0.5 each) that were never wired — not invented. AA_AngelMoth
            (bodySize 0.75) and Snoruuk (bodySize 0.5, canonically a mobile mushroom —
            fits a fungal rot swamp directly) are both small. -->
-      <AA_AngelMoth MayRequire="sarg.alphaanimals">0.5</AA_AngelMoth>  <!-- angel moth - small, ruled -->
       <RSW_Snoruuk MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Snoruuk>  <!-- snoruuk - mobile mushroom, small, ruled -->
       <!-- ROT_ROSTER_DEAD_DONOR_NAMES_1 (this pass): the roster's remaining `BMT_`
            names were never a coverage gap — they are the owner's own 2026-09-10
@@ -170,7 +163,6 @@
       <RSW_Thrumbungus MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Thrumbungus>  <!-- thrumbungus - titan, import -->
       <RSW_Yooka MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Yooka>  <!-- yooka - import -->
       <RSW_ShiroTrap MayRequire="mandrake.rsw.swbestiary">0.5</RSW_ShiroTrap>  <!-- shiro trap - floor-ambush, moved in from the Greentide's roster ruling -->
-      <AA_AnimaColossus MayRequire="sarg.alphaanimals">0.5</AA_AnimaColossus>  <!-- pluur'va (anima colossus) - titan, already-active donor def, never wired -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

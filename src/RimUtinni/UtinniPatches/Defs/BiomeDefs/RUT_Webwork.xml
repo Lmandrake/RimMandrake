@@ -171,7 +171,6 @@
     <wildPlants>
       <RM_JungleTree>1.1</RM_JungleTree>  <!-- deep jungle tree - tree -->
       <RM_TangleTea>0.4</RM_TangleTea>  <!-- tangle tea -->
-      <Plant_TookeTrap_Wild MayRequire="mlie.starwarsanimalcollection">0.3</Plant_TookeTrap_Wild>  <!-- wild tooke-trap plant -->
       <RM_Gomphoeria>0.15</RM_Gomphoeria>  <!-- gomphoeria -->
       <RM_RedBugloss>0.07</RM_RedBugloss>  <!-- red bugloss -->
       <RM_Aaklac>0.05</RM_Aaklac>  <!-- aaklac -->
