@@ -567,18 +567,6 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="JakobeastHorn"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="JakobeastHorn"]/weaponTags</xpath>
-      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="JakobeastHorn"]</xpath>
-      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_JawaIon_Blaster"]/weaponTags</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="RSW_JawaIon_Blaster"]/weaponTags</xpath>
@@ -587,30 +575,6 @@
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="RSW_JawaIon_Blaster"]</xpath>
       <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MankaTooth"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MankaTooth"]/weaponTags</xpath>
-      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MankaTooth"]</xpath>
-      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MastmotTusk"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MastmotTusk"]/weaponTags</xpath>
-      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MastmotTusk"]</xpath>
-      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
     </nomatch>
   </Operation>
 
@@ -777,18 +741,6 @@
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="OuterRim_TL50HeavyRepeaterBlaster"]</xpath>
       <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="SkalderTusk"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="SkalderTusk"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="SkalderTusk"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
     </nomatch>
   </Operation>
 

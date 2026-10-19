@@ -5778,11 +5778,6 @@
           <xpath>/Defs/ThingDef[defName="RSW_TeeMuss"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>63</woolAmount></value>
         </match></li>
-        <!-- Taozin woolAmount: bodySize 6.00, 60 -> 180 -->
-        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RSW_Taozin"]</xpath><match Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_Taozin"]/comps/li[woolAmount]/woolAmount</xpath>
-          <value><woolAmount>180</woolAmount></value>
-        </match></li>
         <!-- Bantha milkAmount: bodySize 4.00, 15 -> 32 -->
         <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RSW_Bantha"]</xpath><match Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="RSW_Bantha"]/comps/li[milkAmount]/milkAmount</xpath>

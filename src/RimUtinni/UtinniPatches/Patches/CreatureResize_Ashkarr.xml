@@ -32,30 +32,31 @@
   inside <bodyGraphicData>.
   ============================================================================
 -->
+<!-- Donor SWAC retired: targets are the RSW_ ports. Dropped: AA_Behemoth (promotion to 18 cells, bodySize 32, melee x2) and AA_Atispec - Alpha Animals is retired and neither has a port. -->
 <Patch>
 
   <Operation Class="PatchOperationSequence">
     <operations>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Zakkeg"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Zakkeg"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>2.46</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Zakkeg"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Zakkeg"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>4.92</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Zakkeg"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Zakkeg"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>8.20</drawSize></value>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="Zakkeg"]/race/baseBodySize</xpath>
+          <xpath>Defs/ThingDef[defName="RSW_Zakkeg"]/race/baseBodySize</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>Defs/ThingDef[defName="Zakkeg"]/race/baseBodySize</xpath>
+            <xpath>Defs/ThingDef[defName="RSW_Zakkeg"]/race/baseBodySize</xpath>
             <value><baseBodySize>8.2</baseBodySize></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ThingDef[defName="Zakkeg"]/race</xpath>
+            <xpath>Defs/ThingDef[defName="RSW_Zakkeg"]/race</xpath>
             <value><baseBodySize>8.2</baseBodySize></value>
           </nomatch>
         </li>
@@ -94,210 +95,28 @@
             </nomatch>
           </match>
         </li>
-        <!-- 🔴 AA_Behemoth IS A PROMOTION, NOT A SHRINK. Owner, 2026-08-24, on seeing the
-             redraw in game: "Behemoth (forsakendragon) is so cool it really deserves to be
-             MUCH larger now. One of the most massive creatures."
-
-             ⛔ DO NOT re-derive these from CREATURE_RESIZE_LIST.md. The list's x0.62 was
-             computed from the OLD art - 1,614 px carrying a SUPER silhouette, the weakest
-             headliner in the cast, shrunk to hide it. That art no longer exists: the owner
-             authorised the redraw and it ships at 1,024 px. The premise of the shrink is
-             gone, so the derived multiplier does not apply and its row is marked overridden.
-
-             🔴 DOUBLED AGAIN 2026-08-24, same sitting: "double it again, AND do it for
-             bodySize fully. This is now the night side's heaviest hitter and most amazing
-             thing." Adult drawSize 8.00 -> 16.00, all three stages x2 again.
-
-             ⚠️ 16.00 IS PAST WHAT THE ART SUPPORTS, KNOWINGLY, AND HE WAS TOLD. The sizing
-             rule is texture edge = drawSize x 128, so 16.00 wants a 2,048 px sprite and the
-             approved art is 1,024 - it renders at 64 px/cell, HALF the standard. ⛔ The fix
-             is NOT to upscale the file: resampling 1024 -> 2048 adds no detail and would only
-             make the number look compliant while the art stayed soft. It is to REGENERATE
-             at 2,048 px, which is a new generation and needs his approval because he
-             approved THIS sprite.
-
-             🔑 In practice the softness only shows at maximum zoom-in - at normal play zoom a
-             16-tile creature is well under 1,024 px on screen. That is why this ships rather
-             than blocking. Do not read it as the rule being wrong.
-
-             Life stages keep their original proportions throughout: x1.843 then x2.
-
-             🔴 SUPERSEDED BY A LATER, UNDOCUMENTED-HERE COMMIT: the three values just below
-             (10.81/14.90/18.06) are NOT 16.00-doubled-again (that would be 19.16/26.40/32.00).
-             Commit 15994482 "Behemoth redrawn on all three facings, and drawSize corrected for
-             the framing" moved the redraw from 47% canvas fill to 94%: RimWorld stretches the
-             WHOLE texture across drawSize, so at the old (doubled) numbers the redrawn art would
-             render at ~30 cells instead of the 16.9 the owner approved. These numbers hold that
-             same on-screen size steady against the tighter framing - they are correct, not a
-             missed doubling. This IS why adult drawSize (18.06) no longer numerically matches
-             baseBodySize/baseHealthScale (32/40) below: that match was true only until this
-             framing fix, and is not this file's invariant to restore. -->
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>10.81</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>14.90</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>18.06</drawSize></value>
-        </li>
-        <!-- 🔴 bodySize AND healthScale, "fully", on his instruction. This file's standing rule
-             is that drawSize and bodySize are NEVER merged - drawSize is the picture, bodySize
-             is meat, leather, hunting yield, carrying capacity, food need and melee scaling.
-             ⭐ That rule is not being broken, it is being INVOKED: he asked for the mechanical
-             half explicitly and by name, which is exactly the case the rule reserves.
-
-             Matched numerically to adult drawSize, which is this file's own precedent - Zakkeg
-             carries drawSize 8.20 and baseBodySize 8.2. Alpha Animals shipped 8 / 10; both
-             double, to 16 / 20.
-
-             ⚠️ WHAT THIS DOES NOT DO: melee damage. RimWorld tool `power` is a flat per-tool
-             number and does NOT scale with bodySize, so "heaviest hitter" here means it is
-             enormously durable and enormously heavy, not that it swings harder. Raising the
-             dragonclaw tools is a separate, deliberate combat change - ask before doing it. -->
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseBodySize</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseBodySize</xpath>
-            <value><baseBodySize>32</baseBodySize></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race</xpath>
-            <value><baseBodySize>32</baseBodySize></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseHealthScale</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race/baseHealthScale</xpath>
-            <value><baseHealthScale>40</baseHealthScale></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ThingDef[defName="AA_Behemoth"]/race</xpath>
-            <value><baseHealthScale>40</baseHealthScale></value>
-          </nomatch>
-        </li>
-
-        <!-- ================= EVERYTHING ELSE, x2 AGAIN ================= -->
-        <!-- 🔴 SECOND DOUBLING, owner 2026-08-26: "I would like to double its size again, as
-             well as its body, attack, and anything else that should travel along with those
-             numbers." Every number below is twice what the 2026-08-24 pass left.
-             ⛔ THE THREE ARMOUR RATINGS ARE NOT DOUBLED and that is the whole point of this
-             note. ArmorRating_Sharp is 0.85; at >= 1.00 the armour roll deflects EVERY sharp
-             hit and the creature stops being a heavy hitter and starts being invulnerable to
-             bullets and blades. Blunt 0.75 and Heat 0.60 are held for the same reason.
-             🔑 ASKED AND ANSWERED - owner, 2026-08-26: "No, don't double the armor."
-             0.85 / 0.75 / 0.60 are the intended values. Do not raise them. -->
-        <!-- 🔴 Owner, 2026-08-24: "Yes, scale ALL its attributes along with bodysize."
-             Straight x2 on every stat where doubling means what he means. The three that are
-             NOT doubled are called out below with the reason, so the omission reads as a
-             decision and not as work someone forgot to finish. -->
-
-        <!-- Yield and worth: twice the animal, twice what comes off it. -->
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/MeatAmount</xpath>
-          <value><MeatAmount>1000</MeatAmount></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/LeatherAmount</xpath>
-          <value><LeatherAmount>200</LeatherAmount></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/MarketValue</xpath>
-          <value><MarketValue>200000</MarketValue></value>
-        </li>
-
-        <!-- 🔑 THE MELEE HALF - this is what "heaviest hitter" actually needed. bodySize does
-             NOT scale tool power: RimWorld reads `power` as a flat per-tool number, so without
-             these four operations the creature would have doubled in size and health and hit
-             exactly as hard as before. Both dragonclaws 18 -> 36, razorfangs 15 -> 30, devour
-             5 -> 10, and the surprise-attack stuns with them. -->
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="left dragonclaw"]/power</xpath>
-          <value><power>72</power></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="left dragonclaw"]/surpriseAttack/extraMeleeDamages/li[def="Stun"]/amount</xpath>
-          <value><amount>88</amount></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="right dragonclaw"]/power</xpath>
-          <value><power>72</power></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="right dragonclaw"]/surpriseAttack/extraMeleeDamages/li[def="Stun"]/amount</xpath>
-          <value><amount>88</amount></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="razorfangs"]/power</xpath>
-          <value><power>60</power></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="razorfangs"]/surpriseAttack/extraMeleeDamages/li[def="Stun"]/amount</xpath>
-          <value><amount>56</amount></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/tools/li[label="devour"]/power</xpath>
-          <value><power>20</power></value>
-        </li>
-
-        <!-- ⚠️ ARMOUR IS RAISED HARD BUT DELIBERATELY NOT DOUBLED, AND THIS IS THE ONE THAT WOULD
-             HAVE BITTEN. ArmorRating_* are FRACTIONS, not points. Sharp 0.60 doubled is 1.20,
-             and at >= 1.00 the armour roll deflects EVERY sharp hit - the creature becomes
-             literally unkillable by bullets and blades, which is not "heaviest hitter", it is
-             a bug that looks like a feature until a raid cannot be stopped. Raised to a brutal
-             but beatable 0.85 / 0.75 / 0.60. ⛔ Do not "finish the job" by taking these to
-             1.20; if the owner wants true immunity that is a different design and should be
-             said out loud. -->
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>0.85</ArmorRating_Sharp></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.75</ArmorRating_Blunt></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Behemoth"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>0.60</ArmorRating_Heat></value>
-        </li>
-
-        <!-- ⛔ DELIBERATELY UNTOUCHED, all three:
-             MoveSpeed 4        - doubling makes a 16-tile monster faster than a sprinting
-                                  human, so nothing can disengage from it and nothing can
-                                  catch it. That is a chase-balance change, not a mass one;
-                                  mass makes a thing slower if anything. Ask before raising.
-             ComfyTemperature*  - owned by AnimalTolerances_Ashkarr.xml, which sets them from
-                                  the tiles it actually lives on. Two patches writing one
-                                  field is how a value silently depends on load order.
-             baseHungerRate 0.3 - food need ALREADY scales with bodySize in engine, so
-                                  doubling this would double the appetite twice over.
-             Wildness 0.99 and Flammability 0 are at their ceiling and floor already. -->
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="KwazelMaw"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_KwazelMaw"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>1.34</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="KwazelMaw"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_KwazelMaw"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>2.68</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="KwazelMaw"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_KwazelMaw"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>4.02</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Ronto"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Ronto"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>1.42</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Ronto"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Ronto"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>2.84</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Ronto"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Ronto"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>4.97</drawSize></value>
         </li>
         <li Class="PatchOperationConditional">
@@ -343,15 +162,15 @@
           </match>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="GreaterKraytDragon"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_GreaterKraytDragon"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>1.48</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="GreaterKraytDragon"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_GreaterKraytDragon"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>3.70</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="GreaterKraytDragon"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_GreaterKraytDragon"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>7.40</drawSize></value>
         </li>
         <li Class="PatchOperationConditional">
@@ -376,15 +195,15 @@
           </match>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Roggwart"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Roggwart"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>1.60</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Roggwart"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Roggwart"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>3.20</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Roggwart"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Roggwart"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>4.80</drawSize></value>
         </li>
         <li Class="PatchOperationConditional">
@@ -409,27 +228,27 @@
           </match>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Torton"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Torton"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>1.20</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Torton"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Torton"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>2.80</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Torton"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Torton"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>5.60</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Dactillion"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Dactillion"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>0.85</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Dactillion"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Dactillion"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>1.70</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Dactillion"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Dactillion"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>2.98</drawSize></value>
         </li>
         <li Class="PatchOperationConditional">
@@ -452,10 +271,6 @@
             <xpath>Defs/PawnKindDef[defName="VAEWaste_Pestigator"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
             <value><drawSize>3.44</drawSize></value>
           </match>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="AA_Atispec"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.69</drawSize></value>
         </li>
     </operations>
   </Operation>

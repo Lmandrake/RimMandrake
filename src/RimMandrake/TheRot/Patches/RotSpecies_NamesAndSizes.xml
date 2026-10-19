@@ -668,12 +668,6 @@
       <value><texPath>RotSpecies/AngelMoth/AngelMoth</texPath></value>
     </match>
   </Operation>
-  <Operation Class="PatchOperationRemove">
-    <xpath>/Defs/PawnKindDef[defName="AA_AngelMoth"]/alternateGraphics/li[texPath="Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth2"]</xpath>
-  </Operation>
-  <Operation Class="PatchOperationRemove">
-    <xpath>/Defs/PawnKindDef[defName="AA_AngelMoth"]/alternateGraphics/li[texPath="Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth3"]</xpath>
-  </Operation>
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_AnimaColossus"]</xpath>
     <match Class="PatchOperationSequence">
