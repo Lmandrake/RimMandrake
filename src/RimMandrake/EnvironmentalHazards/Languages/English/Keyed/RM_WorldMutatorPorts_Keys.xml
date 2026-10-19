@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT (2026-10-19): strings for RM_WorldMutatorPorts.cs and the four vent ThingDefs in
+     Defs/ThingDefs_Buildings/RM_WorldMutatorPorts_Buildings.xml. -->
+<LanguageData>
+  <RM_AmbientRadiationMutation>{PAWN_labelShort} has been changed by the ambient radiation: {GENE}.</RM_AmbientRadiationMutation>
+  <RM_RequiresTileMutator>Needs one of these on this map's world tile: {FEATURES}.</RM_RequiresTileMutator>
+
+  <RM_AncientFreezingVentStartUp>The ancient freezing vents have started to blow freezing air.</RM_AncientFreezingVentStartUp>
+  <RM_AncientFreezingVentShutdown>The ancient freezing vents have gone quiet.</RM_AncientFreezingVentShutdown>
+  <RM_AncientFreezingVentActive>Venting freezing air</RM_AncientFreezingVentActive>
+
+  <RM_AncientGrayPallVentStartUp>The ancient gray pall vents have started to pour out sickly smoke.</RM_AncientGrayPallVentStartUp>
+  <RM_AncientGrayPallVentShutdown>The ancient gray pall vents have gone quiet.</RM_AncientGrayPallVentShutdown>
+  <RM_AncientGrayPallVentActive>Venting a gray pall</RM_AncientGrayPallVentActive>
+
+  <RM_AncientBloodRainVentStartUp>The ancient blood rain vents have started to pour red vapor into the sky.</RM_AncientBloodRainVentStartUp>
+  <RM_AncientBloodRainVentShutdown>The ancient blood rain vents have gone quiet.</RM_AncientBloodRainVentShutdown>
+  <RM_AncientBloodRainVentActive>Venting blood vapor</RM_AncientBloodRainVentActive>
+
+  <RM_AncientDeathPallVentStartUp>The ancient death pall vents have started to release clouds of archites.</RM_AncientDeathPallVentStartUp>
+  <RM_AncientDeathPallVentShutdown>The ancient death pall vents have gone quiet.</RM_AncientDeathPallVentShutdown>
+  <RM_AncientDeathPallVentActive>Venting archites</RM_AncientDeathPallVentActive>
+</LanguageData>

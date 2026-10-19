@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT (owner, 2026-10-19: "Reproduce the mutators into our own code, then proceed with
+     deprecation of the donors."). The Rot's ports of the Alpha Biomes mycotic-jungle mutators (the donor's AB_MycoticJungle is our RM_TheRot):
+     AB_AgariluxPrime_Mutator, AB_MoldyEnvironment, AB_EdibleAirborneMicrofungi.
+     Mapping, per-row notes and what could not be reproduced: design/RimMandrake/retired_mutators_port_2026-10-19.md.
+     Classes named RimMandrake.EnvironmentalHazards.* live in EnvironmentalHazards/Source/RM_WorldMutatorPorts.cs.
+     The Ash'karr RUT_ biomes these tiles sit on are added to the whitelists from the Utinni layer
+     (UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml). PLACEHOLDER ART: any graphic here is vanilla. -->
+<Defs>
+
+  <!-- AB_AgariluxPrime_Mutator: one wayward Agarilux Prime (our port RM_AgariluxPrime, this mod) on soil. -->
+  <GenStepDef>
+    <defName>RM_GenStep_AgariluxPrimeSprout</defName>
+    <order>600</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_AgariluxPrime</thingDef>
+      <count>1</count>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <clearSpaceSize>3</clearSpaceSize>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <TileMutatorDef>
+    <defName>RM_AgariluxPrimeSprout</defName>
+    <label>agarilux prime sprout</label>
+    <description>This area contains a wayward Agarilux Prime growing outside the Rot. It will release spores that destroy everything surrounding it.</description>
+    <biomeBlacklist>
+      <li>RM_TheRot</li>
+    </biomeBlacklist>
+    <chanceOnNonLandmarkTile>0.005</chanceOnNonLandmarkTile>
+    <extraGenSteps>
+      <li>RM_GenStep_AgariluxPrimeSprout</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <!-- AB_MoldyEnvironment: a permanent condition plus a -10 mood while under open sky. -->
+  <GameConditionDef>
+    <defName>RM_MoldyEnvironment</defName>
+    <conditionClass>GameCondition</conditionClass>
+    <label>moldy environment</label>
+    <description>The ubiquitous presence of fungal spores makes staying outdoors almost unbearable.</description>
+    <canBePermanent>true</canBePermanent>
+  </GameConditionDef>
+
+  <ThoughtDef>
+    <defName>RM_MoldyEnvironment</defName>
+    <gameCondition>RM_MoldyEnvironment</gameCondition>
+    <workerClass>RimMandrake.EnvironmentalHazards.RM_ThoughtWorker_OutdoorsDuringCondition</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
+    <stages>
+      <li>
+        <label>moldy environment</label>
+        <description>This place reeks of mold and decay, I can't stay outdoors for long!</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <TileMutatorDef>
+    <defName>RM_MoldyEnvironment</defName>
+    <label>moldy environment</label>
+    <description>The ubiquitous presence of fungal spores in this region makes staying outdoors almost unbearable.</description>
+    <chanceOnNonLandmarkTile>0.25</chanceOnNonLandmarkTile>
+    <additionalGameConditions>
+      <li>RM_MoldyEnvironment</li>
+    </additionalGameConditions>
+    <biomeWhitelist>
+      <li>RM_TheRot</li>
+    </biomeWhitelist>
+  </TileMutatorDef>
+
+  <!-- AB_EdibleAirborneMicrofungi: a flag; RM_MycoticCollector below may only be built where it is. -->
+  <TileMutatorDef>
+    <defName>RM_EdibleAirborneMicrofungi</defName>
+    <label>edible airborne micro-fungi</label>
+    <description>Microscopic spores present in this biome can be collected and used as edible ingredients (build a mycotic collector, under Production).</description>
+    <chanceOnNonLandmarkTile>0.25</chanceOnNonLandmarkTile>
+    <biomeWhitelist>
+      <li>Glowforest</li>
+      <li>RM_TheRot</li>
+    </biomeWhitelist>
+  </TileMutatorDef>
+
+  <!-- Mycotic collector (replaces AB_MycoticCollector): the donor's numbers (2x2, 150 W, 150 steel + 3
+       components, 75 raw fungus every 10 days), buildable only where RM_EdibleAirborneMicrofungi is on the tile. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_MycoticCollector</defName>
+    <label>mycotic collector</label>
+    <description>A powered filter that pulls edible micro-fungi straight out of the air and presses them into raw fungus. It only works where such spores drift on the wind: a tile with edible airborne micro-fungi.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/Refinery</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <color>(200,215,170)</color>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <pathCost>42</pathCost>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>2000</WorkToBuild>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <size>(2,2)</size>
+    <costList>
+      <Steel>150</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <tickerType>Normal</tickerType>
+    <rotatable>false</rotatable>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>150</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Breakdownable"/>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Spawner">
+        <thingToSpawn>RawFungus</thingToSpawn>
+        <spawnCount>75</spawnCount>
+        <spawnIntervalRange>600000~600000</spawnIntervalRange>
+        <requiresPower>true</requiresPower>
+        <writeTimeLeftToSpawn>true</writeTimeLeftToSpawn>
+        <showMessageIfOwned>true</showMessageIfOwned>
+      </li>
+    </comps>
+    <designationCategory>Production</designationCategory>
+    <placeWorkers>
+      <li>RimMandrake.EnvironmentalHazards.RM_PlaceWorker_RequiresTileMutator</li>
+    </placeWorkers>
+    <constructEffect>ConstructMetal</constructEffect>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_RequiresTileMutatorExtension">
+        <mutators>
+          <li>RM_EdibleAirborneMicrofungi</li>
+        </mutators>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

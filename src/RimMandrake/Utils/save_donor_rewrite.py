@@ -244,15 +244,144 @@ def line_span(raw, start, end):
     return s, e
 
 
+# ---- --mutators-only: rename retired world-tile mutators and landmarks to our ports (RETIRED_MUTATORS_PORT) ----
+# Owner 2026-10-19: "Reproduce the mutators into our own code, then proceed with deprecation of the donors."
+# Mapping: design/RimMandrake/retired_mutators_port_map.json. A tile mutator lives in the save as a ushort shortHash
+# in <tileMutatorDefsDeflate> (raw DEFLATE + base64, parallel to <tileMutatorTilesDeflate> int32 tile ids; engine
+# RimWorld.SurfaceLayer.SerializeMutators); a landmark as <def>NAME</def> inside <landmarks>. Only those spans change:
+# the tile array, its order and every other byte of the file are untouched. A mapping row with new=null is left on
+# its tiles (the load drops it) and reported.
+MAP_JSON = os.path.join(SRC, "design", "RimMandrake", "retired_mutators_port_map.json")
+CAPTURES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/"
+OLD_CAPTURE = "2026-08-29T13-30-02Z"   # the 584-mod set the canonical save was made under (donors loaded)
+NEW_CAPTURE = "2026-10-19T11-55-43Z"   # the donor-free set the ports will load into
+
+
+def short_hash_raw(name):
+    """(ushort)(GenText.StableStringHash(defName) % 65535), C# truncating modulo (Verse.ShortHashGiver)."""
+    h = 23
+    for ch in name:
+        h = (h * 31 + ord(ch)) & 0xFFFFFFFF
+    if h >= 0x80000000:
+        h -= 0x100000000
+    r = abs(h) % 65535
+    return (-r if h < 0 else r) & 0xFFFF
+
+
+def assign_short_hashes(names):
+    """Verse.ShortHashGiver for one def type: sort by defName, bump on 0 or collision."""
+    taken, out = set(), {}
+    for n in sorted(names):  # List.SortBy(defName): ordinal for these ASCII names
+        v = short_hash_raw(n)
+        while v == 0 or v in taken:
+            v = (v + 1) & 0xFFFF
+        taken.add(v)
+        out[n] = v
+    return out
+
+
+def capture_hashes(capture, def_type):
+    with open(os.path.join(CAPTURES, capture, "defs", def_type + ".json")) as fh:
+        return {r["defName"]: r["shortHash"] for r in json.load(fh)["defs"]}
+
+
+def mutator_hash_map(mapping, old_capture=OLD_CAPTURE, new_capture=NEW_CAPTURE):
+    """old shortHash -> (old name, new name, new shortHash) for every mapped TileMutatorDef row with a port."""
+    import zlib  # noqa: F401  (kept local: only this mode needs it)
+    old = capture_hashes(old_capture, "TileMutatorDef")
+    new_live = capture_hashes(new_capture, "TileMutatorDef")
+    ports = {r["new"] for r in mapping["TileMutatorDef"].values() if r["new"]}
+    predicted = assign_short_hashes(set(new_live) | ports)
+    for n, h in new_live.items():  # the simulation must reproduce the capture it starts from
+        if predicted[n] != h:
+            sys.exit("shortHash simulation disagrees with %s on %s (%d vs %d) - refusing" % (new_capture, n, predicted[n], h))
+    out = {}
+    for o, r in mapping["TileMutatorDef"].items():
+        if o not in old:
+            sys.exit("%s not in the old capture %s - cannot know its hash" % (o, old_capture))
+        out[old[o]] = (o, r["new"], predicted[r["new"]] if r["new"] else None)
+    return out
+
+
+def rewrite_world_mutators(raw, mapping, hmap):
+    """-> (edits, report). edits are (start, end, bytes) splices."""
+    import base64
+    import struct
+    import zlib
+    edits, report = [], collections.OrderedDict()
+    defs_re = re.compile(rb"<tileMutatorDefsDeflate>(.*?)</tileMutatorDefsDeflate>", re.S)
+    for m in defs_re.finditer(raw):
+        body = m.group(1)
+        grid = zlib.decompress(base64.b64decode(body.strip()), -15)
+        hs = list(struct.unpack("<%dH" % (len(grid) // 2), grid))
+        for i, h in enumerate(hs):
+            if h in hmap:
+                o, n, nh = hmap[h]
+                key = (o, n or "NOT PORTED - left in place", "tileMutatorDefsDeflate")
+                report[key] = report.get(key, 0) + 1
+                if nh is not None:
+                    hs[i] = nh
+        co = zlib.compressobj(9, zlib.DEFLATED, -15)
+        new_grid = struct.pack("<%dH" % len(hs), *hs)
+        b64 = base64.b64encode(co.compress(new_grid) + co.flush())
+        # keep the engine's layout: CRLF, 100-char lines, CRLF before the closing tag (MEASURED on the canonical save)
+        nl = b"\r\n" if body.startswith(b"\r\n") else b"\n"
+        width = len(body.strip().split(nl)[0]) or 100
+        new_body = nl + nl.join(b64[i:i + width] for i in range(0, len(b64), width)) + nl
+        if new_grid != grid:
+            edits.append((m.start(1), m.end(1), new_body))
+    lm_map = {o: r["new"] for o, r in mapping["LandmarkDef"].items()}
+    for lm in re.finditer(rb"<landmarks>.*?</landmarks>", raw, re.S):
+        for d in re.finditer(rb"<def>([^<]+)</def>", lm.group(0)):
+            o = d.group(1).decode()
+            if o in lm_map:
+                n = lm_map[o]
+                report[(o, n or "NOT PORTED - left in place", "landmarks")] = report.get((o, n or "NOT PORTED - left in place", "landmarks"), 0) + 1
+                if n:
+                    s = lm.start() + d.start(1)
+                    edits.append((s, s + len(d.group(1)), n.encode()))
+    return edits, report
+
+
+def main_mutators_only(a):
+    raw = open(a.inp, "rb").read()
+    mapping = json.load(open(a.mutator_map))
+    hmap = mutator_hash_map(mapping)
+    edits, report = rewrite_world_mutators(raw, mapping, hmap)
+    edits.sort()
+    out, last = bytearray(), 0
+    for s, e, b in edits:
+        out += raw[last:s] + b
+        last = e
+    out += raw[last:]
+    rows = ["| old | new | where | entries |", "|---|---|---|---:|"]
+    for (o, n, w), k in report.items():
+        rows.append("| `%s` | %s | %s | %d |" % (o, n if n.startswith("NOT") else "`%s`" % n, w, k))
+    hl = ["| old | new | old shortHash | new shortHash (predicted against %s) |" % NEW_CAPTURE, "|---|---|---:|---:|"]
+    hl += ["| `%s` | `%s` | %d | %s |" % (o, n, h, nh) for h, (o, n, nh) in sorted(hmap.items(), key=lambda kv: kv[1][0])]
+    open(a.table, "w").write("## World-tile mutator / landmark renames (%d splices)\n\n%s\n\n## shortHashes\n\n%s\n"
+                             % (len(edits), "\n".join(rows), "\n".join(hl)))
+    print("splices %d; bytes %d -> %d" % (len(edits), len(raw), len(out)))
+    if not a.dry_run:
+        if os.path.exists(a.out):
+            sys.exit("refusing to overwrite " + a.out)
+        open(a.out, "wb").write(bytes(out))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("inp")
     ap.add_argument("out")
     ap.add_argument("--table", required=True)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--mutators-only", action="store_true",
+                    help="only rename retired world-tile mutators and landmarks per --mutator-map (grid + <landmarks>)")
+    ap.add_argument("--mutator-map", default=MAP_JSON)
     a = ap.parse_args()
     if os.path.abspath(a.inp) == os.path.abspath(a.out):
         sys.exit("refusing to write in place")
+    if a.mutators_only:
+        return main_mutators_only(a)
     raw = open(a.inp, "rb").read()
 
     names = {}

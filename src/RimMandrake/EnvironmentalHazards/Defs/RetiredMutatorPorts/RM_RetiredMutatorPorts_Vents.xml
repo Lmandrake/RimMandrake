@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT (owner, 2026-10-19: "Reproduce the mutators into our own code, then proceed with
+     deprecation of the donors."). Buildings our ported world-tile mutators place or unlock, replacing the Alpha
+     Biomes (sarg.alphabiomes) ones. Mapping: design/RimMandrake/retired_mutators_port_2026-10-19.md.
+
+     PLACEHOLDER ART throughout: every graphic below is a VANILLA texture (no donor art is kept, and new art is the
+     owner's call). Owed art is listed in the mapping doc.
+
+     Vents: vanilla Odyssey's BaseAncientVentThing + vanilla CompAncientSmokeVent (CompAncientVent: one map-wide
+     on/off cycle that registers conditionToCause while on). Donor values kept: on 12 / off 4 MTB days, heatToPush
+     -200 (the donor set -200 on all four; kept as found). Conditions are vanilla: DeepFreeze (Core), GrayPall,
+     BloodRain, DeathPall (Anomaly; every DLC is assumed). -->
+<Defs>
+
+  <ThingDef Name="RM_PortedAncientVentBase" ParentName="BaseAncientVentThing" Abstract="True">
+    <graphicData>
+      <texPath>Things/Building/AncientSmokeVent</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(7,7)</drawSize>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PortedAncientVentBase">
+    <defName>RM_AncientFreezingVent</defName>
+    <label>ancient freezing vent</label>
+    <description>A massive duct that drops endlessly into the ground. It regularly vents freezing air from an underground megastructure, dramatically lowering the temperature of the surrounding area.</description>
+    <comps>
+      <li Class="CompProperties_AncientVentEmitter">
+        <compClass>CompAncientSmokeVent</compClass>
+        <conditionToCause>DeepFreeze</conditionToCause>
+        <onDurationMtbDays>12</onDurationMtbDays>
+        <offDurationMtbDays>4</offDurationMtbDays>
+        <heatToPush>-200</heatToPush>
+        <startupMessageKey>RM_AncientFreezingVentStartUp</startupMessageKey>
+        <shutdownMessageKey>RM_AncientFreezingVentShutdown</shutdownMessageKey>
+        <activeInspectStringKey>RM_AncientFreezingVentActive</activeInspectStringKey>
+        <activeSound>AncientVent_Ambient</activeSound>
+      </li>
+      <li Class="CompProperties_FleckEmitterLongTerm">
+        <fleckDef>AncientSmoke</fleckDef>
+        <spawnRadius>2.0</spawnRadius>
+        <spawnChance>0.2</spawnChance>
+        <spawnOffsetFromCenter>(0.5,0.0,-0.5)</spawnOffsetFromCenter>
+        <prewarmCycles>1.0</prewarmCycles>
+        <fleckScale>4.0</fleckScale>
+        <minRotationRate>-20.0</minRotationRate>
+        <maxRotationRate>20.0</maxRotationRate>
+        <minVelocityAngle>-20.0</minVelocityAngle>
+        <maxVelocityAngle>20.0</maxVelocityAngle>
+        <minVelocitySpeed>0.5</minVelocitySpeed>
+        <maxVelocitySpeed>0.7</maxVelocitySpeed>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PortedAncientVentBase">
+    <defName>RM_AncientGrayPallVent</defName>
+    <label>ancient gray pall vent</label>
+    <description>A massive duct that drops endlessly into the ground. It regularly vents sickly smoke that plunges the area into a preternatural darkness.</description>
+    <comps>
+      <li Class="CompProperties_AncientVentEmitter">
+        <compClass>CompAncientSmokeVent</compClass>
+        <conditionToCause>GrayPall</conditionToCause>
+        <onDurationMtbDays>12</onDurationMtbDays>
+        <offDurationMtbDays>4</offDurationMtbDays>
+        <heatToPush>-200</heatToPush>
+        <startupMessageKey>RM_AncientGrayPallVentStartUp</startupMessageKey>
+        <shutdownMessageKey>RM_AncientGrayPallVentShutdown</shutdownMessageKey>
+        <activeInspectStringKey>RM_AncientGrayPallVentActive</activeInspectStringKey>
+        <activeSound>AncientVent_Ambient</activeSound>
+      </li>
+      <li Class="CompProperties_FleckEmitterLongTerm">
+        <fleckDef>AncientSmoke</fleckDef>
+        <spawnRadius>2.0</spawnRadius>
+        <spawnChance>0.2</spawnChance>
+        <spawnOffsetFromCenter>(0.5,0.0,-0.5)</spawnOffsetFromCenter>
+        <prewarmCycles>1.0</prewarmCycles>
+        <fleckScale>4.0</fleckScale>
+        <minRotationRate>-20.0</minRotationRate>
+        <maxRotationRate>20.0</maxRotationRate>
+        <minVelocityAngle>-20.0</minVelocityAngle>
+        <maxVelocityAngle>20.0</maxVelocityAngle>
+        <minVelocitySpeed>0.5</minVelocitySpeed>
+        <maxVelocitySpeed>0.7</maxVelocitySpeed>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PortedAncientVentBase">
+    <defName>RM_AncientBloodRainVent</defName>
+    <label>ancient blood rain vent</label>
+    <description>A massive duct that drops endlessly into the ground. It regularly vents huge red clouds of a vaporized blood-like substance that coalesce into a disgusting blood rain.</description>
+    <comps>
+      <li Class="CompProperties_AncientVentEmitter">
+        <compClass>CompAncientSmokeVent</compClass>
+        <conditionToCause>BloodRain</conditionToCause>
+        <onDurationMtbDays>12</onDurationMtbDays>
+        <offDurationMtbDays>4</offDurationMtbDays>
+        <heatToPush>-200</heatToPush>
+        <startupMessageKey>RM_AncientBloodRainVentStartUp</startupMessageKey>
+        <shutdownMessageKey>RM_AncientBloodRainVentShutdown</shutdownMessageKey>
+        <activeInspectStringKey>RM_AncientBloodRainVentActive</activeInspectStringKey>
+        <activeSound>AncientVent_Ambient</activeSound>
+      </li>
+      <li Class="CompProperties_FleckEmitterLongTerm">
+        <fleckDef>AncientSmoke</fleckDef>
+        <spawnRadius>2.0</spawnRadius>
+        <spawnChance>0.2</spawnChance>
+        <spawnOffsetFromCenter>(0.5,0.0,-0.5)</spawnOffsetFromCenter>
+        <prewarmCycles>1.0</prewarmCycles>
+        <fleckScale>4.0</fleckScale>
+        <minRotationRate>-20.0</minRotationRate>
+        <maxRotationRate>20.0</maxRotationRate>
+        <minVelocityAngle>-20.0</minVelocityAngle>
+        <maxVelocityAngle>20.0</maxVelocityAngle>
+        <minVelocitySpeed>0.5</minVelocitySpeed>
+        <maxVelocitySpeed>0.7</maxVelocitySpeed>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PortedAncientVentBase">
+    <defName>RM_AncientDeathPallVent</defName>
+    <label>ancient death pall vent</label>
+    <description>A massive duct that drops endlessly into the ground. It regularly vents clouds of microscopic self-powered archites that reanimate corpses into a twisted imitation of life.</description>
+    <comps>
+      <li Class="CompProperties_AncientVentEmitter">
+        <compClass>CompAncientSmokeVent</compClass>
+        <conditionToCause>DeathPall</conditionToCause>
+        <onDurationMtbDays>12</onDurationMtbDays>
+        <offDurationMtbDays>4</offDurationMtbDays>
+        <heatToPush>-200</heatToPush>
+        <startupMessageKey>RM_AncientDeathPallVentStartUp</startupMessageKey>
+        <shutdownMessageKey>RM_AncientDeathPallVentShutdown</shutdownMessageKey>
+        <activeInspectStringKey>RM_AncientDeathPallVentActive</activeInspectStringKey>
+        <activeSound>AncientVent_Ambient</activeSound>
+      </li>
+      <li Class="CompProperties_FleckEmitterLongTerm">
+        <fleckDef>AncientSmoke</fleckDef>
+        <spawnRadius>2.0</spawnRadius>
+        <spawnChance>0.2</spawnChance>
+        <spawnOffsetFromCenter>(0.5,0.0,-0.5)</spawnOffsetFromCenter>
+        <prewarmCycles>1.0</prewarmCycles>
+        <fleckScale>4.0</fleckScale>
+        <minRotationRate>-20.0</minRotationRate>
+        <maxRotationRate>20.0</maxRotationRate>
+        <minVelocityAngle>-20.0</minVelocityAngle>
+        <maxVelocityAngle>20.0</maxVelocityAngle>
+        <minVelocitySpeed>0.5</minVelocitySpeed>
+        <maxVelocitySpeed>0.7</maxVelocitySpeed>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT (owner, 2026-10-19: "Reproduce the mutators into our own code, then proceed with
+     deprecation of the donors."). Our own world-tile mutators replacing the Alpha Biomes (sarg.alphabiomes) ones
+     the Ash'karr save carries, for the rows with no biome of their own. Rows tied to one of our biomes live in that
+     biome's mod (TheRot, TheSump, Pyrelands, RustCathedral, Stillsand, Webwork: Defs/RetiredMutatorPorts/).
+     Mapping, per-row notes and what could not be reproduced: design/RimMandrake/retired_mutators_port_2026-10-19.md.
+
+     Field values are the donor's (label, description, categories, chanceOnNonLandmarkTile, hilliness, coast,
+     river) except where a donor value named a donor def: a donor biome is replaced by our twin or dropped, a donor
+     worker/extension by ours or a vanilla one. Biome whitelists name vanilla biomes as the donor did; the Ash'karr
+     RUT_ biomes these tiles actually sit on are added from the Utinni layer
+     (UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml). There is no worldgen (owner, 2026-08-15): these
+     reach the planet by the one-time repaint and the save rename, so chanceOnNonLandmarkTile only documents the
+     donor's intent. -->
+<Defs>
+
+  <!-- ===== ancient vents (AB_AncientFreezingVent / GreyPallVent / BloodRainVent / DeathPallVent) ===== -->
+  <TileMutatorDef Name="RM_PortedAncientVentMutatorBase" Abstract="True">
+    <workerClass>RimMandrake.EnvironmentalHazards.RM_TileMutatorWorker_AncientVent</workerClass>
+    <categories>
+      <li>AncientVent</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0.01</chanceOnNonLandmarkTile>
+  </TileMutatorDef>
+
+  <TileMutatorDef ParentName="RM_PortedAncientVentMutatorBase">
+    <defName>RM_AncientFreezingVent</defName>
+    <label>ancient freezing vent</label>
+    <description>This area has a number of massive freezing vents. An ancient mechanism buried deep beneath the earth will occasionally vent large amounts of freezing cold air, lowering temperatures greatly.</description>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TileMutatorPortExtension">
+        <ventDef>RM_AncientFreezingVent</ventDef>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef ParentName="RM_PortedAncientVentMutatorBase">
+    <defName>RM_AncientGrayPallVent</defName>
+    <label>gray pall vent</label>
+    <description>This area has a number of rusted, foreboding vents. An ancient mechanism buried deep beneath the earth will occasionally vent large amounts of sickly looking smoke that will plunge the area into a preternatural darkness.</description>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TileMutatorPortExtension">
+        <ventDef>RM_AncientGrayPallVent</ventDef>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef ParentName="RM_PortedAncientVentMutatorBase">
+    <defName>RM_AncientBloodRainVent</defName>
+    <label>blood rain vent</label>
+    <description>This area has a number of gigantic corroded vents. An ancient mechanism buried deep beneath the earth will occasionally vent huge red clouds of a vaporized blood-like substance that will coalesce into a disgusting blood rain.</description>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TileMutatorPortExtension">
+        <ventDef>RM_AncientBloodRainVent</ventDef>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef ParentName="RM_PortedAncientVentMutatorBase">
+    <defName>RM_AncientDeathPallVent</defName>
+    <label>death pall vent</label>
+    <description>This area has a number of ancient runic grates of unknown origin. An ancient mechanism buried deep beneath the earth will occasionally vent clouds of microscopic self-powered archites that affect corpses, reanimating them to create a twisted imitation of life.</description>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TileMutatorPortExtension">
+        <ventDef>RM_AncientDeathPallVent</ventDef>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <!-- ===== ambient radiation (AB_AmbientRadiation): the donor's game condition, our class ===== -->
+  <GameConditionDef>
+    <defName>RM_AmbientRadiation</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_AmbientRadiation</conditionClass>
+    <label>ambient radiation</label>
+    <description>Low levels of background radiation permeate the area, subtly affecting health and mutation rates, and causing gene mutations in random colonists every quadrum or so.</description>
+    <canBePermanent>true</canBePermanent>
+  </GameConditionDef>
+
+  <TileMutatorDef>
+    <defName>RM_AmbientRadiation</defName>
+    <label>ambient radiation</label>
+    <description>Low levels of background radiation permeate the area, subtly affecting health and mutation rates.</description>
+    <additionalGameConditions>
+      <li>RM_AmbientRadiation</li>
+    </additionalGameConditions>
+    <chanceOnNonLandmarkTile>0.025</chanceOnNonLandmarkTile>
+  </TileMutatorDef>
+
+  <!-- ===== swarm-hive nests (AB_BumbledroneNests): the donor placed 3~4 AB_BumbledroneHive (Alpha Animals
+       bumbledrones, retired with no RM_ twin). Reproduced with vanilla insect hives, the same "persistent hostile
+       swarm spawner" (a hive with no faction joins the insects on spawn and starts dormant). ===== -->
+  <GenStepDef>
+    <defName>RM_GenStep_SwarmHiveNests</defName>
+    <order>600</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>Hive</thingDef>
+      <countPer10kCellsRange>0.48~0.64</countPer10kCellsRange>
+      <minSpacing>12</minSpacing>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <clearSpaceSize>3</clearSpaceSize>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <TileMutatorDef>
+    <defName>RM_SwarmHiveNests</defName>
+    <label>swarm hive nests</label>
+    <description>This area has several dangerous nests of swarming insects.</description>
+    <biomeBlacklist>
+      <li>SeaIce</li>
+      <li>IceSheet</li>
+      <li>Tundra</li>
+      <li>GlacialPlain</li>
+    </biomeBlacklist>
+    <chanceOnNonLandmarkTile>0.015</chanceOnNonLandmarkTile>
+    <extraGenSteps>
+      <li>RM_GenStep_SwarmHiveNests</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <!-- ===== locust plagues (AB_LocustPlagues): the donor forced Alpha Animals' AA_Locusts (retired). Vanilla
+       Odyssey's Locust is the same insect, so ours infests with it. ===== -->
+  <TileMutatorDef>
+    <defName>RM_LocustPlagues</defName>
+    <label>locust plagues</label>
+    <description>Ravenous locust plagues infest this area, making short work of any grass lying unprotected.</description>
+    <workerClass>RimMandrake.EnvironmentalHazards.RM_TileMutatorWorker_ExtraAnimals</workerClass>
+    <biomeWhitelist>
+      <li>Grasslands</li>
+    </biomeWhitelist>
+    <chanceOnNonLandmarkTile>0.1</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TileMutatorPortExtension">
+        <pawnKind>Locust</pawnKind>
+        <pawnCountRange>6~10</pawnCountRange>
+        <arrivalMtbDays>10</arrivalMtbDays>
+        <maxOnMap>16</maxOnMap>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <!-- ===== quicksand pits (AB_QuicksandPits + landmark): pools of FlowWorks' RM_DeepSand (our existing
+       quicksand terrain: standable, path cost 300) laid by vanilla's patch worker. ===== -->
+  <TileMutatorDef>
+    <defName>RM_QuicksandPits</defName>
+    <label>quicksand pits</label>
+    <description>This region contains pools of shallow quicksand that impede movement.</description>
+    <workerClass>TileMutatorWorker_Patches</workerClass>
+    <categories>
+      <li>Lake</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0.01</chanceOnNonLandmarkTile>
+    <biomeWhitelist>
+      <li>Desert</li>
+      <li>AridShrubland</li>
+      <li>ExtremeDesert</li>
+    </biomeWhitelist>
+    <preventsPondGeneration>true</preventsPondGeneration>
+    <canSpawnOnRiver>false</canSpawnOnRiver>
+    <coastSidesRange>0~0</coastSidesRange>
+    <terrainPatchMakers>
+      <li>
+        <perlinFrequency>0.045</perlinFrequency>
+        <minSize>12</minSize>
+        <thresholds>
+          <li>
+            <terrain>RM_DeepSand</terrain>
+            <min>0.62</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
+  </TileMutatorDef>
+
+  <LandmarkDef>
+    <defName>RM_QuicksandPits</defName>
+    <label>quicksand pits</label>
+    <drawScale>0.8</drawScale>
+    <iconTexturePath>World/Landmarks/DryLake</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.25</commonality>
+    <nameMaker>NamerLandmark_DryLake</nameMaker>
+    <mutatorChances>
+      <RM_QuicksandPits Required="True" />
+      <SteamGeysers_Increased>0.25</SteamGeysers_Increased>
+      <Stockpile>0.05</Stockpile>
+      <MineralRich>0.03</MineralRich>
+      <Muddy>0.05</Muddy>
+      <FoggyMutator>0.05</FoggyMutator>
+      <SunnyMutator>0.05</SunnyMutator>
+      <WindyMutator>0.05</WindyMutator>
+      <InsectMegahive>0.01</InsectMegahive>
+      <MixedBiome>0.1</MixedBiome>
+      <AncientUplink>0.02</AncientUplink>
+      <AnimalHabitat>0.15</AnimalHabitat>
+      <ArcheanTrees>0.01</ArcheanTrees>
+    </mutatorChances>
+    <comboLandmarkMutators>
+      <Valley>0.1</Valley>
+      <Cavern>0.1</Cavern>
+      <Chasm>0.1</Chasm>
+      <TerraformingScar>0.1</TerraformingScar>
+    </comboLandmarkMutators>
+  </LandmarkDef>
+
+</Defs>

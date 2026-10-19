@@ -103,17 +103,17 @@ RULES = [
      "a crater that is not finished"),
     ("HotSprings",         3, 8, lambda t: t["temp"] > 20 and t["elev"] > 300 and t["biome"] in ("Volcano", "LavaField", "AB_PyroclasticConflagration", "ZBiome_Badlands"),
      "geothermal water - the one warm bath on this planet"),
-    ("AB_MagmaticQuagmire", 2, 3, lambda t: t["biome"] in ("LavaField", "AB_PyroclasticConflagration"),
+    ("RM_MagmaticQuagmire", 2, 3, lambda t: t["biome"] in ("LavaField", "AB_PyroclasticConflagration"),
      "ground that is not quite solid"),
 
     # the strange biomes the mod stack gives us and we barely use
     ("AB_PropaneLakes",    5, 8, lambda t: t["biome"] == "AB_PropaneLakes",
      "554 tiles of it and not one landmark until now"),
-    ("AB_TarLakes",        3, 6, lambda t: t["biome"] == "AB_TarPits",
+    ("RM_TarLakes",        3, 6, lambda t: t["biome"] == "AB_TarPits",
      "the tar pits, and what is preserved in them"),
     ("AB_MutagenicSprings", 2, 6, lambda t: t["biome"] in ("AB_OcularForest", "AB_MycoticJungle"),
      "the ocular ground - do not drink it"),
-    ("AB_QuicksandPits",   3, 9, lambda t: t["biome"] in ("AB_MiasmicMangrove", "AB_MycoticJungle"),
+    ("RM_QuicksandPits",   3, 9, lambda t: t["biome"] in ("AB_MiasmicMangrove", "AB_MycoticJungle"),
      "soft ground under the fungus"),
     ("AB_HealingSprings",  2, 14, lambda t: t["biome"] in ("AB_MycoticJungle", "BMT_FungalForest") and t["rain"] > 10,
      "rare, and worth a pilgrimage"),
@@ -195,7 +195,7 @@ RULES = [
 # ── forced patches ─────────────────────────────────────────────────────────────
 # (landmark, patch size in tiles, predicate, why). Spacing does NOT apply.
 FORCE_PATCH = [
-    ("AB_MagmaticQuagmire", 3,
+    ("RM_MagmaticQuagmire", 3,
      lambda t: t["biome"] in ("LavaField", "AB_PyroclasticConflagration", "Volcano"),
      "a patch of ground that is not quite solid, on the Scald rim - owner asked for it by name"),
 ]
@@ -328,7 +328,7 @@ def main():
 
     # ── FORCED PATCHES ────────────────────────────────────────────────────────
     # Rules whose biome is small enough that ordinary spacing starves them. The owner
-    # asked for AB_MagmaticQuagmire by name, 2026-08-22 - "a little patch would do" -
+    # asked for the magmatic quagmire (then AB_, ported 2026-10-19 to RM_) by name, 2026-08-22 - "a little patch would do" -
     # so it is placed as a CONTIGUOUS patch with the spacing guard switched off.
     # 🔑 THESE RUN FIRST. Run last, they are leftovers: at --density 2.5 the ordinary
     # rules had claimed every qualifying tile and a "forced" patch found nowhere to go,

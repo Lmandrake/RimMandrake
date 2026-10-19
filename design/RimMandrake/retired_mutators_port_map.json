@@ -1,0 +1,195 @@
+{
+ "_what": "Retired-donor world-tile mutators and landmarks -> our own defs. Read by save_donor_rewrite.py --mutators-only (save rename) and by the one-time repaint (BIOME_PAINT_ONCE_AT_THE_END_1) to rename old->new.",
+ "_authority": "Owner 2026-10-19: \"Reproduce the mutators into our own code, then proceed with deprecation of the donors.\" Doc: design/RimMandrake/retired_mutators_port_2026-10-19.md",
+ "_null_new": "new=null: not reproduced; the save keeps the donor hash on those tiles (the game drops it on load) and the owner decides at the repaint.",
+ "TileMutatorDef": {
+  "AB_AgariluxPrime_Mutator": {
+   "new": "RM_AgariluxPrimeSprout",
+   "status": "new",
+   "mod": "TheRot",
+   "how": "GenStep_ScatterThings of our RM_AgariluxPrime"
+  },
+  "AB_AmbientRadiation": {
+   "new": "RM_AmbientRadiation",
+   "status": "new",
+   "mod": "EnvironmentalHazards",
+   "how": "our GameCondition class: random xenogene ~every 15 days"
+  },
+  "AB_AncientBloodRainVent": {
+   "new": "RM_AncientBloodRainVent",
+   "status": "new",
+   "mod": "EnvironmentalHazards",
+   "how": "vanilla vent layout + vanilla BloodRain"
+  },
+  "AB_AncientDeathPallVent": {
+   "new": "RM_AncientDeathPallVent",
+   "status": "new",
+   "mod": "EnvironmentalHazards",
+   "how": "vanilla vent layout + vanilla DeathPall"
+  },
+  "AB_AncientFreezingVent": {
+   "new": "RM_AncientFreezingVent",
+   "status": "new",
+   "mod": "EnvironmentalHazards",
+   "how": "vanilla vent layout + vanilla DeepFreeze"
+  },
+  "AB_AncientGreyPallVent": {
+   "new": "RM_AncientGrayPallVent",
+   "status": "new",
+   "mod": "EnvironmentalHazards",
+   "how": "vanilla vent layout + vanilla GrayPall"
+  },
+  "AB_BumbledroneNests": {
+   "new": "RM_SwarmHiveNests",
+   "status": "new",
+   "mod": "EnvironmentalHazards",
+   "how": "stand-in: vanilla insect Hive x3-4 (bumbledrones retired, no twin)"
+  },
+  "AB_DerelictArchonexus": {
+   "new": null,
+   "status": "not_reproduced",
+   "mod": null,
+   "how": "needs derelict archotech building art + prefabs (donor content)"
+  },
+  "AB_DerelictBioLab": {
+   "new": null,
+   "status": "not_reproduced",
+   "mod": null,
+   "how": "needs 13 lab structure layouts (Alpha Genes KCSG, retired)"
+  },
+  "AB_DerelictClusters": {
+   "new": "RM_DerelictClusters",
+   "status": "new_partial",
+   "mod": "RustCathedral",
+   "how": "vanilla war-machine wrecks + mechanoid slag; no plasteel/components salvage"
+  },
+  "AB_DerelictKemeticTemple": {
+   "new": null,
+   "status": "not_reproduced",
+   "mod": null,
+   "how": "needs a temple structure layout (donor KCSG in Alpha Biomes)"
+  },
+  "AB_EdibleAirborneMicrofungi": {
+   "new": "RM_EdibleAirborneMicrofungi",
+   "status": "new",
+   "mod": "TheRot",
+   "how": "flag + RM_MycoticCollector (tile-locked)"
+  },
+  "AB_FeraliskNest": {
+   "new": "RM_OllathrixNest",
+   "status": "new",
+   "mod": "Webwork",
+   "how": "feralisk merged into RM_Ollathrix (owner 2026-09-10/10-03)"
+  },
+  "AB_GeothermalHotspots": {
+   "new": "RM_GeothermalHotspots",
+   "status": "new",
+   "mod": "Pyrelands",
+   "how": "flag + RM_MagmaThermalGenerator (tile-locked)"
+  },
+  "AB_GiantFossils": {
+   "new": "RM_GiantFossils",
+   "status": "new",
+   "mod": "Stillsand",
+   "how": "Stillsand's own giant skeletons"
+  },
+  "AB_LocustPlagues": {
+   "new": "RM_LocustPlagues",
+   "status": "new",
+   "mod": "EnvironmentalHazards",
+   "how": "vanilla Odyssey Locust infestation"
+  },
+  "AB_MagmaVents": {
+   "new": "RM_MagmaVents",
+   "status": "new",
+   "mod": "Pyrelands",
+   "how": "RM_MagmaVent x6-12 (our eruption comp)"
+  },
+  "AB_MagmaticQuagmire": {
+   "new": "RM_MagmaticQuagmire",
+   "status": "new",
+   "mod": "Pyrelands",
+   "how": "vanilla patch worker: volcanic rock, cooled lava, deep lava"
+  },
+  "AB_MoldyEnvironment": {
+   "new": "RM_MoldyEnvironment",
+   "status": "new",
+   "mod": "TheRot",
+   "how": "condition + outdoors mood -10"
+  },
+  "AB_QuicksandPits": {
+   "new": "RM_QuicksandPits",
+   "status": "new",
+   "mod": "EnvironmentalHazards",
+   "how": "vanilla patch worker: FlowWorks RM_DeepSand pools"
+  },
+  "AB_TarLakes": {
+   "new": "RM_TarLakes",
+   "status": "new",
+   "mod": "TheSump",
+   "how": "vanilla patch worker: FlowWorks RM_TarShallow/RM_TarDeep"
+  },
+  "sw_SarlaccLair": {
+   "new": "RSW_SarlaccLair",
+   "status": "reused",
+   "mod": "SWBestiary",
+   "how": "ported 2026-10-15 (RSW_DonorPack_Sarlacc.xml)"
+  },
+  "sw_DeadSarlaccCave": {
+   "new": "RSW_DeadSarlaccCave",
+   "status": "reused",
+   "mod": "SWBestiary",
+   "how": "ported 2026-10-15 (RSW_DonorPack_Sarlacc.xml)"
+  },
+  "WildTattooinePlants": {
+   "new": "RSW_WildTattooinePlants",
+   "status": "new",
+   "mod": "SWBestiary",
+   "how": "vanilla WildPlants worker, RSW_Plant_HubbaGourd_Wild"
+  },
+  "WildGalacticPlants": {
+   "new": "RSW_WildGalacticPlants",
+   "status": "new_partial",
+   "mod": "SWBestiary",
+   "how": "3 of the donor's 5 plant kinds (no Meiloorun / Muja fruit port)"
+  },
+  "WildDantooinePlants": {
+   "new": null,
+   "status": "not_reproduced",
+   "mod": null,
+   "how": "no RSW_ dantuber plant exists"
+  }
+ },
+ "LandmarkDef": {
+  "AB_TarLakes": {
+   "new": "RM_TarLakes",
+   "status": "new",
+   "mod": "TheSump",
+   "how": ""
+  },
+  "AB_MagmaticQuagmire": {
+   "new": "RM_MagmaticQuagmire",
+   "status": "new",
+   "mod": "Pyrelands",
+   "how": ""
+  },
+  "AB_QuicksandPits": {
+   "new": "RM_QuicksandPits",
+   "status": "new",
+   "mod": "EnvironmentalHazards",
+   "how": ""
+  },
+  "sw_Sarlacc": {
+   "new": "RSW_Sarlacc",
+   "status": "reused",
+   "mod": "SWBestiary",
+   "how": "ported 2026-10-15"
+  },
+  "sw_DeadSarlacc": {
+   "new": "RSW_DeadSarlacc",
+   "status": "reused",
+   "mod": "SWBestiary",
+   "how": "ported 2026-10-15"
+  }
+ }
+}

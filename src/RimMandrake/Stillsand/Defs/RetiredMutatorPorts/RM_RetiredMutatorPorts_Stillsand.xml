@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT (owner, 2026-10-19: "Reproduce the mutators into our own code, then proceed with
+     deprecation of the donors."). Stillsand's port of the Alpha Biomes giant fossils (the desert giant-skeleton set this mod already ships).
+     Mapping, per-row notes and what could not be reproduced: design/RimMandrake/retired_mutators_port_2026-10-19.md.
+     Classes named RimMandrake.EnvironmentalHazards.* live in EnvironmentalHazards/Source/RM_WorldMutatorPorts.cs.
+     The Ash'karr RUT_ biomes these tiles sit on are added to the whitelists from the Utinni layer
+     (UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml). PLACEHOLDER ART: any graphic here is vanilla. -->
+<Defs>
+
+  <!-- AB_GiantFossils: 4~8 giant skeletons 30 cells apart (donor: VEF KCSG spawner + fifteen AB_GiantBones layouts
+       of AB_BoneWall, donor art). Ours: this mod's own giant skeletons and skull (RM_GiantSkeletons.xml), one
+       scatter step each, about 5~10 in all on a 250x250 map. -->
+  <GenStepDef>
+    <defName>RM_GenStep_GiantFossils_OommokSkeleton</defName>
+    <order>600</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_OommokSkeleton</thingDef>
+      <countPer10kCellsRange>0.13~0.26</countPer10kCellsRange>
+      <minSpacing>30</minSpacing>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <clearSpaceSize>3</clearSpaceSize>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GenStep_GiantFossils_MuurrokSkeleton</defName>
+    <order>600</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_MuurrokSkeleton</thingDef>
+      <countPer10kCellsRange>0.13~0.26</countPer10kCellsRange>
+      <minSpacing>30</minSpacing>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <clearSpaceSize>3</clearSpaceSize>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GenStep_GiantFossils_GuzzkaSkeleton</defName>
+    <order>600</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_GuzzkaSkeleton</thingDef>
+      <countPer10kCellsRange>0.13~0.26</countPer10kCellsRange>
+      <minSpacing>30</minSpacing>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <clearSpaceSize>3</clearSpaceSize>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GenStep_GiantFossils_VozzikSkeleton</defName>
+    <order>600</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_VozzikSkeleton</thingDef>
+      <countPer10kCellsRange>0.13~0.26</countPer10kCellsRange>
+      <minSpacing>30</minSpacing>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <clearSpaceSize>3</clearSpaceSize>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GenStep_GiantFossils_GiantSkull</defName>
+    <order>600</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_GiantSkull</thingDef>
+      <countPer10kCellsRange>0.13~0.26</countPer10kCellsRange>
+      <minSpacing>30</minSpacing>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <clearSpaceSize>3</clearSpaceSize>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <TileMutatorDef>
+    <defName>RM_GiantFossils</defName>
+    <label>giant fossils</label>
+    <description>Gigantic skeletons of long-gone beasts litter this land. Considering fossilization hasn't had time to actually occur on the Rim, it's a mystery who put these giant bones here.</description>
+    <chanceOnNonLandmarkTile>0.02</chanceOnNonLandmarkTile>
+    <biomeWhitelist>
+      <li>Desert</li>
+      <li>ExtremeDesert</li>
+      <li>AridShrubland</li>
+      <li>RM_Stillsand</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RM_GenStep_GiantFossils_OommokSkeleton</li>
+      <li>RM_GenStep_GiantFossils_MuurrokSkeleton</li>
+      <li>RM_GenStep_GiantFossils_GuzzkaSkeleton</li>
+      <li>RM_GenStep_GiantFossils_VozzikSkeleton</li>
+      <li>RM_GenStep_GiantFossils_GiantSkull</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

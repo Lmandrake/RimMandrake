@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT / HUBBA_GOURD_MUTATOR_MIGRATE_AT_THE_REPAINT (owner, 2026-10-19: "Reproduce the mutators
+     into our own code, then proceed with deprecation of the donors."). Ports of Star Wars Animal Collection's
+     (mlie.starwarsanimalcollection, retired) wild-plant tile mutators, Plants_Farm_SW.xml: vanilla Odyssey's
+     WildPlants_Base + TileMutatorWorker_WildPlants (a band of the tile grows many of one plant kind, picked per
+     tile), pointed at our RSW_ wild-plant ports. Canon plant names, so RSW_.
+
+     WildTattooinePlants -> RSW_WildTattooinePlants (Plant_HubbaGourd_Wild -> RSW_Plant_HubbaGourd_Wild).
+     WildGalacticPlants  -> RSW_WildGalacticPlants: the donor's five kinds, minus the two with no port
+                            (Plant_Meiloorun_Wild, Plant_MujaFruit_Wild); each tile picks one kind.
+     WildDantooinePlants -> NOT PORTED: no RSW_ dantuber plant exists (see the mapping doc).
+     Biome whitelists are the donor's vanilla ones; the Ash'karr RUT_ biomes these tiles sit on are added from the
+     Utinni layer (UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml).
+     Mapping and tiles: design/RimMandrake/retired_mutators_port_2026-10-19.md. -->
+<Defs>
+
+  <TileMutatorDef ParentName="WildPlants_Base">
+    <defName>RSW_WildTattooinePlants</defName>
+    <description>When enough moisture condenses, this area can grow a large number of {0}s.</description>
+    <workerClass>TileMutatorWorker_WildPlants</workerClass>
+    <chanceOnNonLandmarkTile>0.03</chanceOnNonLandmarkTile>
+    <biomeWhitelist>
+      <li>AridShrubland</li>
+      <li>Desert</li>
+      <li>ExtremeDesert</li>
+    </biomeWhitelist>
+    <plantKinds>
+      <li>RSW_Plant_HubbaGourd_Wild</li>
+    </plantKinds>
+  </TileMutatorDef>
+
+  <TileMutatorDef ParentName="WildPlants_Base">
+    <defName>RSW_WildGalacticPlants</defName>
+    <description>This area can grow a large number of {0}s.</description>
+    <workerClass>TileMutatorWorker_WildPlants</workerClass>
+    <chanceOnNonLandmarkTile>0.03</chanceOnNonLandmarkTile>
+    <biomeWhitelist>
+      <li>AridShrubland</li>
+      <li>BorealForest</li>
+      <li>ColdBog</li>
+      <li>GlacialPlain</li>
+      <li>Grasslands</li>
+      <li>LavaField</li>
+      <li>TemperateForest</li>
+      <li>TemperateSwamp</li>
+      <li>TropicalRainforest</li>
+      <li>TropicalSwamp</li>
+      <li>Tundra</li>
+    </biomeWhitelist>
+    <plantKinds>
+      <li>RSW_Plant_Chakroot_Wild</li>
+      <li>RSW_Plant_JoganTree_Wild</li>
+      <li>RSW_Plant_Nysyllin_Wild</li>
+    </plantKinds>
+  </TileMutatorDef>
+
+</Defs>
