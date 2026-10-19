@@ -41,7 +41,7 @@
     <drawGUIOverlay>true</drawGUIOverlay>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Item/Resource/PlantFoodRaw/AgaveFruit</texPath>
+      <texPath>Things/Item/Resource/PlantFoodRaw/RM_BrakkelFruit/RM_BrakkelFruit</texPath>
       <color>(150, 190, 90)</color>
     </graphicData>
     <healthAffectsPrice>false</healthAffectsPrice>
