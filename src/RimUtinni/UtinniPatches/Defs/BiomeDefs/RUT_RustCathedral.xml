@@ -53,9 +53,9 @@
     <description>A flat plateau of deck plate and mathematical walls at the foot of the eternal noon -- a complex, circuit-board maze of walls and structures that screams of meaningful complexity and intention. Rust-dust banks in drifts against them, heat shimmer stands as the weather, and almost nothing living remains. And under everything, always, a hum.</description>
     <workerClass>RimMandrake.RustCathedral.RM_BiomeWorker_RustCathedral</workerClass>  <!-- was AlphaBiomes.BiomeWorker_MechanoidIntrusion; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
     <hasVirtualPlants>false</hasVirtualPlants>
-    <lakeBeachTerrain>AB_SoilOnCrackedMetal</lakeBeachTerrain>
-    <mudTerrain>AB_SoilOnCrackedMetal</mudTerrain>
-    <riverbankTerrain>AB_SoilOnCrackedMetal</riverbankTerrain>
+    <lakeBeachTerrain>RM_RustCathedral_CrackedMetalSoil</lakeBeachTerrain>
+    <mudTerrain>RM_RustCathedral_CrackedMetalSoil</mudTerrain>
+    <riverbankTerrain>RM_RustCathedral_CrackedMetalSoil</riverbankTerrain>
     <allowRoads>false</allowRoads>
     <allowRivers>true</allowRivers>
     <allowFarmingCamps>false</allowFarmingCamps>

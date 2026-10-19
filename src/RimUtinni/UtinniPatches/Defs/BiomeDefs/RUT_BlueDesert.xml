@@ -101,8 +101,8 @@
          owner). RM_Palefloss/RM_Glassfern/RM_Chimeglobe are the biome's own ratified
          flora (design brief §6) added alongside them, not a replacement for them. -->
     <wildPlants>
-      <AB_ToxiGrass>0.6</AB_ToxiGrass>  <!-- toxigrass -->
-      <AB_CrystalHorn>0.4</AB_CrystalHorn>  <!-- crystal horn -->
+      <RM_ToxiGrass>0.6</RM_ToxiGrass>  <!-- toxigrass -->
+      <RM_CrystalHorn>0.4</RM_CrystalHorn>  <!-- crystal horn -->
       <PoisonPlantTallGrass MayRequire="Mlie.AdvancedBiomes">0.4</PoisonPlantTallGrass>  <!-- poison tall grass -->
       <RM_Palefloss>1.0</RM_Palefloss>
       <RM_Glassfern>0.5</RM_Glassfern>

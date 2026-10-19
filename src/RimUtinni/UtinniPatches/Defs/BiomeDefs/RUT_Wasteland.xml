@@ -181,10 +181,10 @@
       <RG_Plant_TallToxiGrass MayRequire="ReGrowth.BOTR.Core">0.8</RG_Plant_TallToxiGrass>  <!-- tall toxigrass -->
       <Plant_GrayGrass>0.35</Plant_GrayGrass>  <!-- gray grass -->
       <RM_ScorchedStars>0.3</RM_ScorchedStars>  <!-- scorched stars -->
-      <AB_WeepingToxberry>0.2</AB_WeepingToxberry>  <!-- weeping toxberry - tree -->
+      <RM_Pusberry>0.2</RM_Pusberry>  <!-- weeping toxberry - tree -->
       <Plant_Toxipotato>0.2</Plant_Toxipotato>  <!-- toxipotato -->
       <RM_DosimeterLawn>0.15</RM_DosimeterLawn>  <!-- dosimeter lawn - COMMISSION_LEDGER_CLEANUP_1 wave 11, radiotroph flora, growth marks the hottest ground (dose-correlated growth is deferred C#, wasteland.md's own "dose/geiger layer" scope) -->
-      <AB_ToxiBulb>0.1</AB_ToxiBulb>  <!-- toxibulb -->
+      <RM_Boilbulb>0.1</RM_Boilbulb>  <!-- toxibulb -->
       <Plant_TreePolux>0.1</Plant_TreePolux>  <!-- polux tree - tree -->
       <RM_VaultRoot>0.08</RM_VaultRoot>  <!-- vault-root tree - COMMISSION_LEDGER_CLEANUP_1 wave 11, sequestration tree; ships as a plain wood-yield tree now, "vault ore" mining mechanic deferred to the same dose/geiger layer scope -->
       <VRE_PoluxBush MayRequire="vanillaracesexpanded.phytokin">0.08</VRE_PoluxBush>  <!-- polux bush -->

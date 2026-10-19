@@ -154,18 +154,18 @@
     <coastalWildAnimals />
     <wildPlants>
       <RM_TwistingThornwood>0.6</RM_TwistingThornwood>  <!-- twisting thornwood - tree -->
-      <AB_CrystalFlower>0.5</AB_CrystalFlower>  <!-- crystal flower -->
-      <AB_BloodBouquet>0.4</AB_BloodBouquet>  <!-- blood bouquet -->
-      <AB_RavenNettle>0.4</AB_RavenNettle>  <!-- raven nettle -->
-      <AB_GiantAgariTox>0.3</AB_GiantAgariTox>  <!-- agaritox - tree -->
-      <AB_RedBugloss>0.3</AB_RedBugloss>  <!-- red bugloss -->
-      <AB_KeeningCordax>0.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
+      <RM_CrystalFlower>0.5</RM_CrystalFlower>  <!-- crystal flower -->
+      <RM_BloodBouquet>0.4</RM_BloodBouquet>  <!-- blood bouquet -->
+      <RM_RavenNettle>0.4</RM_RavenNettle>  <!-- raven nettle -->
+      <RM_GiantAgariTox>0.3</RM_GiantAgariTox>  <!-- agaritox - tree -->
+      <RM_RedBugloss>0.3</RM_RedBugloss>  <!-- red bugloss -->
+      <RM_KeeningCordax>0.2</RM_KeeningCordax>  <!-- keening cordax - tree -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20: AB_CrystalHorn moved OUT
            ("propane lakes and blue desert only") and AB_GiantToxicFlower moved IN from
            wasteland ("poison forest"). Both rulings landed in rosters/poison_forest.json
            and reached the game only through BiomeFlora_Ashkarr.xml's now-retired replace
            operation; transplanted here by BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
-      <AB_GiantToxicFlower>0.08</AB_GiantToxicFlower>  <!-- giant toxic flower -->
+      <RM_GiantToxicFlower>0.08</RM_GiantToxicFlower>  <!-- giant toxic flower -->
       <!-- COMMISSION_LEDGER_CLEANUP_1: dark-crust-phototroph-flora-black-purple-red-films-on-starwa.
            Own new PlantDef (RUT_PollutedFlora.xml, same mod): no donor crust/lichen form exists. -->
       <RM_DarkCrust>0.25</RM_DarkCrust>  <!-- dark crust - phototroph film, new -->

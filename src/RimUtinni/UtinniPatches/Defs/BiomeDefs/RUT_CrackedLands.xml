@@ -129,12 +129,12 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_HardyGrass>1.0</AB_HardyGrass>  <!-- hardy grass -->
+      <RM_HardyGrass>1.0</RM_HardyGrass>  <!-- hardy grass -->
       <GRimMoss MayRequire="GRimTerra.Biomesmod">0.8</GRimMoss>  <!-- moss -->
       <RM_TwistingThorngrass>0.5</RM_TwistingThorngrass>  <!-- twisting thorngrass -->
       <RM_TwistingThornweed>0.4</RM_TwistingThornweed>  <!-- twisting thornweed -->
       <RM_CrackedThornwood>0.2</RM_CrackedThornwood>  <!-- twisting thornwood - tree -->
-      <AB_GargantuanLithops>0.15</AB_GargantuanLithops>  <!-- gargantuan lithops -->
+      <RM_GargantuanLithops>0.15</RM_GargantuanLithops>  <!-- gargantuan lithops -->
     </wildPlants>
     <wildPlantRegrowDays>28</wildPlantRegrowDays>
 
