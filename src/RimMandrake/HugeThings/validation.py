@@ -64,7 +64,12 @@ DEFAULTS = {"giantPlantsEnabled": True, "plantTrunkEnabled": True, "plantSelecti
             "yieldCurveEnabled": True, "yieldCurveMinFactor": 0.15,
             "corpseSiteEnabled": True, "corpseSiteHarvestMeatPerSession": 25, "corpseSiteHarvestLeatherPerSession": 10,
             "corpseSiteMeatSpoilagePerDay": 0.15, "corpseSiteLeatherSpoilagePerDay": 0.08,
-            "corpseSiteWorkHoursPerSession": 1.0}
+            "corpseSiteWorkHoursPerSession": 1.0,
+            # BIG_CREATURES_DESIGN_WALLS_AND_SLOTS phase 1 (owner cards 2026-10-18: x2 squeeze at half width, breadth 2 breaks
+            # thin walls, titans step over narrow trenches); live chains in northstar/walls_slots_live.py.
+            "wallsSlotsEnabled": True, "squeezeEnabled": True, "squeezeSlowdownAtHalf": 2.0, "trampleBudgetPerBreadth": 100.0,
+            "blowDamagePerBreadth": 20.0, "holdLineFactor": 1.0, "roofWallHpFactor": 1.5, "roofWallDamageFactor": 0.6667,
+            "scrapeEnabled": True, "temperamentEnabled": True, "breadth2BreakingEnabled": True, "trenchStepEnabled": True}
 PATCHES = [("Thing", "set_Position", "Patch_Thing_Position_Wake.cs"),
            ("Pawn_PathFollower", "CostToMoveIntoCell", "Patch_ThickRoofAvoidance.cs"),
            ("PathGridDoorsBlockedJob", "Execute", "Patch_ThickRoofAvoidance.cs"),
