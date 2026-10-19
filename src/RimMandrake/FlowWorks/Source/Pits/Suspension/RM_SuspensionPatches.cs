@@ -29,7 +29,10 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return;
 			}
-			bool ok = RM_SuspensionMath.MayBuildDeck(i, r.length, k =>
+			// a jetty builds outward from its root only (no far end to build from)
+			bool ok = r.jetty ? (i <= 1 ? RM_MapComponent_SuspensionBridges.BuiltAt<Building_SuspensionAnchor>(map, r.Cell(lane, 0)) != null
+					: RM_MapComponent_SuspensionBridges.DeckAt(map, r.Cell(lane, i - 1)) != null)
+				: RM_SuspensionMath.MayBuildDeck(i, r.length, k =>
 			{
 				IntVec3 c = r.Cell(lane, k);
 				return k == 0 || k == r.length - 1
@@ -269,9 +272,9 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return;
 			}
-			float load = b.SpanLoad(r, RM_SuspensionMath.SegmentOf(i, r.Supports));
-			string line = RM_SuspensionMath.ReadoutLine(r.tier, load, r.RatingKg, r.deckNotches,
-				RM_MapComponent_SuspensionBridges.DeckAt(map, c).FloorBandPassesUnder);
+			float load = b.SpanLoad(r, r.SpanOfIndex(i));
+			string line = r.jetty ? RM_SuspensionMath.JettyReadoutLine(r.tier, load, r.RatingKg, r.deckNotches)
+				: RM_SuspensionMath.ReadoutLine(r.tier, load, r.RatingKg, r.deckNotches, RM_MapComponent_SuspensionBridges.DeckAt(map, c).FloorBandPassesUnder);
 			__result = __result == null ? line : line + " · below: " + __result;
 		}
 	}
@@ -799,7 +802,7 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 				for (int lane = 0; lane < r.width; lane++)
 				{
-					for (int i = 1; i < r.length - 1; i++)
+					for (int i = 1; i <= r.LastDeck; i++)
 					{
 						IntVec3 c = r.Cell(lane, i);
 						if (c.InBounds(map) && map.terrainGrid.TempTerrainAt(c)?.IsWater == true

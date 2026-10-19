@@ -32,11 +32,44 @@ namespace RimMandrake.FlowWorks.Pits
 			return origin + Side * lane + dir.FacingCell * i;
 		}
 
+		/// <summary>SUSPENSION_JETTY_BUILD_WALK_THE_PLANK: a jetty: index 0 is its root (an anchor), 1..length-1 the overhang;
+		/// no far end, one span, one person's weight.</summary>
+		public bool jetty;
+
 		public List<int> Supports => RM_SuspensionMath.Supports(length, towers);
 
-		public int SpanCount => Supports.Count - 1;
+		public int SpanCount => jetty ? 1 : Supports.Count - 1;
 
-		public float RatingKg => RM_SuspensionMath.RatingKg(tier, width, RM_SuspensionSettings.suspensionLoadMultiplier);
+		/// <summary>The last deck index (a bridge's far anchor is not deck; a jetty has no far anchor).</summary>
+		public int LastDeck => jetty ? length - 1 : length - 2;
+
+		/// <summary>The span a deck index belongs to.</summary>
+		public int SpanOfIndex(int i)
+		{
+			if (jetty)
+			{
+				return 0;
+			}
+			return RM_SuspensionMath.SegmentOf(i <= 0 ? 1 : i >= length - 1 ? length - 2 : i, Supports);
+		}
+
+		/// <summary>The deck indices of span k.</summary>
+		public List<int> SpanIndices(int span)
+		{
+			if (jetty)
+			{
+				List<int> all = new List<int>();
+				for (int i = 1; i < length; i++)
+				{
+					all.Add(i);
+				}
+				return all;
+			}
+			return RM_SuspensionMath.SegmentCells(span, Supports, length);
+		}
+
+		public float RatingKg => jetty ? RM_SuspensionMath.JettyRatingKg(RM_SuspensionSettings.suspensionLoadMultiplier)
+			: RM_SuspensionMath.RatingKg(tier, width, RM_SuspensionSettings.suspensionLoadMultiplier);
 
 		public bool TryIndexOf(IntVec3 c, out int lane, out int i)
 		{
@@ -69,6 +102,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Defs.Look(ref stuff, "stuff");
 			Scribe_Values.Look(ref grated, "grated", false);
 			Scribe_Values.Look(ref deckNotches, "deckNotches", 0);
+			Scribe_Values.Look(ref jetty, "jetty", false);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit && towers == null)
 			{
 				towers = new List<int>();
@@ -223,6 +257,11 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					for (int i = 0; i < r.length; i++)
 					{
+						// a jetty rooted on a bridge's anchor leaves that square to the bridge (RootedJetties finds it)
+						if (r.jetty && i == 0 && index.ContainsKey(r.Cell(lane, i)))
+						{
+							continue;
+						}
 						index[r.Cell(lane, i)] = r;
 					}
 				}
@@ -259,14 +298,13 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return false;
 			}
-			List<int> sup = r.Supports;
-			return RM_SuspensionMath.SegmentOf(ia, sup) == RM_SuspensionMath.SegmentOf(ib, sup);
+			return r.SpanOfIndex(ia) == r.SpanOfIndex(ib);
 		}
 
 		public List<IntVec3> SpanCellsOf(SuspensionBridgeRecord r, int span)
 		{
 			List<IntVec3> cells = new List<IntVec3>();
-			List<int> idx = RM_SuspensionMath.SegmentCells(span, r.Supports, r.length);
+			List<int> idx = r.SpanIndices(span);
 			for (int lane = 0; lane < r.width; lane++)
 			{
 				foreach (int i in idx)
@@ -290,7 +328,7 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 				return decks;
 			}
-			foreach (IntVec3 cell in SpanCellsOf(r, RM_SuspensionMath.SegmentOf(i, r.Supports)))
+			foreach (IntVec3 cell in SpanCellsOf(r, r.SpanOfIndex(i)))
 			{
 				if (DeckAt(map, cell) is Building_SuspensionDeck d)
 				{
@@ -816,7 +854,19 @@ namespace RimMandrake.FlowWorks.Pits
 		/// (setting suspensionAnchorLossFalls; off, a bridge with no anchor stays up).</summary>
 		public void Notify_SupportLost(IntVec3 c)
 		{
+			// SUSPENSION_JETTY_BUILD_WALK_THE_PLANK: a jetty fails at the root: losing its anchor drops the whole overhang at once
+			foreach (SuspensionBridgeRecord j in bridges.Where(b => b.jetty && b.Cell(0, 0) == c).ToList())
+			{
+				if (RM_SuspensionSettings.suspensionAnchorLossFalls && DeckAt(map, j.Cell(0, 1)) is Building_SuspensionDeck jd)
+				{
+					CollapseSpan(jd, "lost its anchor");
+				}
+			}
 			SuspensionBridgeRecord r = RecordAt(c);
+			if (r != null && r.jetty)
+			{
+				return;
+			}
 			if (r == null || !r.TryIndexOf(c, out int lane, out int i))
 			{
 				return;
@@ -922,7 +972,7 @@ namespace RimMandrake.FlowWorks.Pits
 			r.railings = on;
 			for (int lane = 0; lane < r.width; lane++)
 			{
-				for (int i = 1; i < r.length - 1; i++)
+				for (int i = 1; i <= r.LastDeck; i++)
 				{
 					IntVec3 c = r.Cell(lane, i);
 					if (on)
@@ -1038,10 +1088,21 @@ namespace RimMandrake.FlowWorks.Pits
 			int span = 0;
 			if (r.TryIndexOf(at, out _, out int i))
 			{
-				span = RM_SuspensionMath.SegmentOf(i <= 0 ? 1 : i >= r.length - 1 ? r.length - 2 : i, r.Supports);
+				span = r.SpanOfIndex(i);
 			}
 			float load = SpanLoad(r, span);
-			Building_SuspensionDeck d0 = DeckAt(map, at) ?? (r.length > 2 ? DeckAt(map, r.Cell(0, 1)) : null);
+			Building_SuspensionDeck d0 = DeckAt(map, at) ?? (r.length > 1 ? DeckAt(map, r.Cell(0, 1)) : null);
+			if (r.jetty)
+			{
+				lines.Add(RM_SuspensionMath.JettyReadoutLine(r.tier, load, r.RatingKg, r.deckNotches));
+				lines.Add(RM_SuspensionMath.LoadLine(load, r.RatingKg) + " (one person's weight)");
+				if (RM_SuspensionMath.Classify(load, r.RatingKg) != SpanLoadState.Ok)
+				{
+					lines.Add("Sagging: any more weight and the whole jetty drops at the root.");
+				}
+				lines.Add("Reaches " + (r.length - 1) + " / " + RM_SuspensionMath.JettyMaxCells + " squares out · railings " + (r.railings ? "on" : "off"));
+				return string.Join("\n", lines);
+			}
 			lines.Add(RM_SuspensionMath.ReadoutLine(r.tier, load, r.RatingKg, r.deckNotches, d0 != null && d0.FloorBandPassesUnder));
 			lines.Add(RM_SuspensionMath.LoadLine(load, r.RatingKg) + (r.SpanCount > 1 ? " (span " + (span + 1) + " of " + r.SpanCount + ")" : ""));
 			if (RM_SuspensionMath.Classify(load, r.RatingKg) != SpanLoadState.Ok)

@@ -89,9 +89,9 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return "SPAN none";
 			}
-			int span = RM_SuspensionMath.SegmentOf(i <= 0 ? 1 : i >= r.length - 1 ? r.length - 2 : i, r.Supports);
+			int span = r.SpanOfIndex(i);
 			float load = b.SpanLoad(r, span);
-			List<Building_SpanDeck> decks = b.SpanDecks(r.Cell(0, RM_SuspensionMath.SegmentCells(span, r.Supports, r.length)[0]));
+			List<Building_SpanDeck> decks = b.SpanDecks(r.Cell(0, r.SpanIndices(span)[0]));
 			return "SPAN tier=" + RM_SuspensionMath.TierLabel(r.tier) + " load=" + load.ToString("0.0") + " rating=" + r.RatingKg.ToString("0")
 				+ " state=" + RM_SuspensionMath.Classify(load, r.RatingKg) + " decks=" + decks.Count + " railings=" + r.railings
 				+ " deckNotches=" + r.deckNotches + " span=" + (span + 1) + "/" + r.SpanCount + " line=" + RM_SuspensionMath.LoadLine(load, r.RatingKg);
@@ -432,7 +432,7 @@ namespace RimMandrake.FlowWorks.Pits
 			int hp = 0, max = 0, decks = 0, awash = 0;
 			for (int lane = 0; lane < r.width; lane++)
 			{
-				for (int i = 1; i < r.length - 1; i++)
+				for (int i = 1; i <= r.LastDeck; i++)
 				{
 					IntVec3 x = r.Cell(lane, i);
 					if (RM_MapComponent_SuspensionBridges.DeckAt(map, x) is Building_SuspensionDeck d)
@@ -465,6 +465,47 @@ namespace RimMandrake.FlowWorks.Pits
 				RM_SuspensionWaters.FloodHour(map, b.Bridges);
 			}
 			return "FLOODHOUR n=" + h;
+		}
+
+		// ── SUSPENSION_JETTY_BUILD_WALK_THE_PLANK ─────────────────────────────────────────────────────────────────
+
+		/// <summary>"x1,z1;x2,z2;steel|heavy[;god]": drag a jetty over that line (either end may be the root). → "JETTY ok=b
+		/// anchors=N decks=N blueprints=N railed=N reason=..."</summary>
+		public static string ProofJetty(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length < 3 || !Cell(a[0], out IntVec3 c1) || !Cell(a[1], out IntVec3 c2))
+			{
+				return "REFUSED: arg must be x1,z1;x2,z2;steel|heavy[;god] on the current map";
+			}
+			Designator_SuspensionJetty d = a[2] == "heavy" ? (Designator_SuspensionJetty)new Designator_SuspensionJetty_Heavy() : new Designator_SuspensionJetty_Steel();
+			bool god = a.Length > 3 && a[3] == "god";
+			bool was = DebugSettings.godMode;
+			DebugSettings.godMode = god;
+			string reason;
+			List<IntVec3> cells = CellRect.FromLimits(c1, c2).Cells.ToList();
+			try
+			{
+				reason = d.TryDesignate(cells);
+			}
+			finally
+			{
+				DebugSettings.godMode = was;
+			}
+			int anchors = 0, decks = 0, bps = 0, railed = 0;
+			foreach (IntVec3 c in cells)
+			{
+				foreach (Thing t in c.GetThingList(map))
+				{
+					if (t is Building_SuspensionAnchor) anchors++;
+					else if (t is Building_SuspensionDeck) decks++;
+					else if (t is Building_SuspensionRailing) railed++;
+					else if ((t.def.IsBlueprint || t.def.IsFrame) && RM_SuspensionDefOf.IsPartDef(t.def)) bps++;
+				}
+			}
+			return "JETTY ok=" + (reason == null) + " anchors=" + anchors + " decks=" + decks + " blueprints=" + bps + " railed=" + railed
+				+ " reason=" + (reason ?? "-");
 		}
 	}
 }

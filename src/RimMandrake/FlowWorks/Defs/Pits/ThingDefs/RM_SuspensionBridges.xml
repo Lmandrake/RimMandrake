@@ -528,6 +528,103 @@
     </modExtensions>
   </ThingDef>
 
+  <!-- SUSPENSION_JETTY_BUILD_WALK_THE_PLANK: the steel and heavy jetty squares (Graphic_Multi, facing out from the root). -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionJetty_Steel</defName>
+    <label>steel jetty</label>
+    <description>A short steel platform reaching 1 or 2 squares out from solid ground (or a suspension bridge's anchor) over a hole or water, with no far end. It holds about one person; any more and the whole jetty drops at the root, and whoever is on it falls. Railed on its open sides unless you switch the railings off: then it is a place to push someone from, fish from, or pour from.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionJetty_Steel</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>2</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <drawStyleCategory>RM_SuspensionBridge</drawStyleCategory>
+    <uiOrder>2212</uiOrder>
+    <stuffCategories>
+      <li>Metallic</li>
+    </stuffCategories>
+    <costStuffCount>15</costStuffCount>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>1400</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Pits.PlaceWorker_SuspensionOverHole</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Steel</tier>
+        <jetty>true</jetty>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionJetty_Heavy</defName>
+    <label>heavy jetty</label>
+    <description>A short heavy platform reaching 1 or 2 squares out from solid ground (or a suspension bridge's anchor) over a hole or water, with no far end. It holds about one person; any more and the whole jetty drops at the root, and whoever is on it falls. Railed on its open sides unless you switch the railings off: then it is a place to push someone from, fish from, or pour from.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionJetty_Heavy</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>1</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <drawStyleCategory>RM_SuspensionBridge</drawStyleCategory>
+    <uiOrder>2212</uiOrder>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <WorkToBuild>2500</WorkToBuild>
+      <Flammability>0.2</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <researchPrerequisites>
+      <li>HeavyBridges</li>
+    </researchPrerequisites>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Pits.PlaceWorker_SuspensionOverHole</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Heavy</tier>
+        <jetty>true</jetty>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
   <!-- SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (Q6, ruled by card): what a falling deck square leaves on the floor below. It
        blocks the floor until someone clears it (Deconstruct). Spawned by RM_MapComponent_SuspensionBridges.LandWreck only. -->
   <ThingDef ParentName="BuildingBase">

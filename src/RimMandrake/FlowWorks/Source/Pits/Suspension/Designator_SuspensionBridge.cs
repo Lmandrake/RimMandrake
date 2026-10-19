@@ -327,6 +327,174 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 	}
 
+	/// <summary>
+	/// SUSPENSION_JETTY_BUILD_WALK_THE_PLANK (construction design §3; owner card: "short jetty, 1-2 squares", against the
+	/// none-in-v1 recommendation): the jetty button of a type (steel or heavy). Drag from the root (solid ground at the deck's
+	/// height, or a suspension bridge's anchor already there) out 1 or 2 squares over a hole or water; no far end. An anchor
+	/// goes on the root unless one stands there; railings are on by default (the same switch as a bridge). Its record is a
+	/// one-span jetty rated at one person's weight; it fails at the root: the whole overhang at once.
+	/// </summary>
+	public abstract class Designator_SuspensionJetty : Designator_Build
+	{
+		protected Designator_SuspensionJetty(ThingDef deck) : base(deck)
+		{
+		}
+
+		public SuspensionTier Tier => ((ThingDef)PlacingDef).GetModExtension<RM_SuspensionExtension>()?.tier ?? SuspensionTier.Steel;
+
+		public override bool Visible => RM_SuspensionSettings.suspensionBridgesBuildable && base.Visible;
+
+		public override string Desc => base.Desc + "\n\nDrag from solid ground (or a suspension bridge's anchor) out over a hole or water, 1 or 2 "
+			+ "squares; it holds one person (about " + (int)RM_SuspensionMath.JettyRatingKg(RM_SuspensionSettings.suspensionLoadMultiplier)
+			+ " kg). Railed on its open sides unless you switch the railings off.";
+
+		public override AcceptanceReport CanDesignateCell(IntVec3 c)
+		{
+			if (!c.InBounds(Map))
+			{
+				return false;
+			}
+			return c.Fogged(Map) ? (AcceptanceReport)"CannotPlaceInUndiscovered".Translate() : (AcceptanceReport)true;
+		}
+
+		public override void DesignateSingleCell(IntVec3 c)
+		{
+			Messages.Message(RM_SuspensionMath.ValidateJetty(null, false, Tier), MessageTypeDefOf.RejectInput, false);
+		}
+
+		public override void DesignateMultiCell(IEnumerable<IntVec3> cells)
+		{
+			string refusal = TryDesignate(cells.ToList());
+			if (refusal != null)
+			{
+				Messages.Message(refusal, MessageTypeDefOf.RejectInput, false);
+				Finalize(false);
+				return;
+			}
+			Finalize(true);
+		}
+
+		private static bool AnchorAt(Map map, IntVec3 c)
+		{
+			foreach (Thing t in c.GetThingList(map))
+			{
+				ThingDef d = t.def.IsBlueprint || t.def.IsFrame ? t.def.entityDefToBuild as ThingDef : t.def;
+				if (RM_SuspensionDefOf.IsAnchorDef(d))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private static Rot4 RotOf(IntVec3 v)
+		{
+			return v.z > 0 ? Rot4.North : v.x > 0 ? Rot4.East : v.z < 0 ? Rot4.South : Rot4.West;
+		}
+
+		/// <summary>Validate the drag (either end may be the root) and place it. Null = placed; otherwise why not.</summary>
+		public string TryDesignate(List<IntVec3> cells)
+		{
+			Map map = Map;
+			if (cells == null || cells.Count == 0)
+			{
+				return RM_SuspensionMath.ValidateJetty(null, false, Tier);
+			}
+			int minX = cells.Min(c => c.x), maxX = cells.Max(c => c.x), minZ = cells.Min(c => c.z), maxZ = cells.Max(c => c.z);
+			if (minX != maxX && minZ != maxZ)
+			{
+				return "A jetty is one square wide.";
+			}
+			IntVec3 lo = new IntVec3(minX, 0, minZ), hi = new IntVec3(maxX, 0, maxZ);
+			int n = System.Math.Max(maxX - minX, maxZ - minZ);
+			string first = null;
+			foreach ((IntVec3 root, IntVec3 far) in new[] { (lo, hi), (hi, lo) })
+			{
+				IntVec3 step = n == 0 ? IntVec3.North : new IntVec3(System.Math.Sign(far.x - root.x), 0, System.Math.Sign(far.z - root.z));
+				bool rootAnchor = AnchorAt(map, root);
+				SuspensionBridgeRecord host = rootAnchor ? map.GetComponent<RM_MapComponent_SuspensionBridges>()?.RecordAt(root) : null;
+				int h = host != null ? host.deckNotches
+					: RM_SuspensionMath.DeckNotchesFor(Designator_SuspensionBridge.EndDepth(map, root), Designator_SuspensionBridge.EndDepth(map, root),
+						RM_SuspensionSettings.sunkenBridges);
+				if (h < 0)
+				{
+					first = first ?? "A jetty starts on solid ground at its own height, or on a suspension bridge's anchor.";
+					continue;
+				}
+				List<SpanGround> lane = new List<SpanGround> { rootAnchor ? SpanGround.Ground : Designator_SuspensionBridge.Classify(map, root, h) };
+				for (int i = 1; i <= n; i++)
+				{
+					lane.Add(Designator_SuspensionBridge.Classify(map, root + step * i, h));
+				}
+				string why = RM_SuspensionMath.ValidateJetty(lane, rootAnchor, Tier);
+				if (why == null)
+				{
+					SuspensionBridgeRecord r = new SuspensionBridgeRecord
+					{
+						tier = Tier, origin = root, dir = RotOf(step), length = n + 1, width = 1, jetty = true, railings = true,
+						stuff = StuffDef, deckNotches = h,
+					};
+					why = Place(map, r, rootAnchor);
+					if (why == null)
+					{
+						return null;
+					}
+				}
+				first = first ?? why;
+			}
+			return first;
+		}
+
+		private string Place(Map map, SuspensionBridgeRecord r, bool rootAnchor)
+		{
+			ThingDef anchor = RM_SuspensionDefOf.AnchorOf(r.tier);
+			ThingDef deck = (ThingDef)PlacingDef;
+			for (int i = rootAnchor ? 1 : 0; i < r.length; i++)
+			{
+				ThingDef d = i == 0 ? anchor : deck;
+				AcceptanceReport ok = GenConstruct.CanPlaceBlueprintAt(d, r.Cell(0, i), r.dir, map, false, null, null, d.MadeFromStuff ? r.stuff : null);
+				if (!ok.Accepted)
+				{
+					return (i == 0 ? "Anchor" : "Jetty square " + i) + ": " + (ok.Reason.NullOrEmpty() ? "cannot be placed there." : ok.Reason);
+				}
+			}
+			map.GetComponent<RM_MapComponent_SuspensionBridges>().Register(r);
+			for (int i = rootAnchor ? 1 : 0; i < r.length; i++)
+			{
+				ThingDef d = i == 0 ? anchor : deck;
+				IntVec3 c = r.Cell(0, i);
+				ThingDef stuff = d.MadeFromStuff ? r.stuff : null;
+				if (DebugSettings.godMode)
+				{
+					Thing t = ThingMaker.MakeThing(d, stuff);
+					t.SetFactionDirect(Faction.OfPlayer);
+					GenSpawn.Spawn(t, c, map, r.dir);
+				}
+				else
+				{
+					GenSpawn.WipeExistingThings(c, r.dir, d.blueprintDef, map, DestroyMode.Deconstruct);
+					GenConstruct.PlaceBlueprintForBuild(d, c, map, r.dir, Faction.OfPlayer, stuff);
+				}
+				FleckMaker.ThrowMetaPuffs(GenAdj.OccupiedRect(c, r.dir, d.Size), map);
+			}
+			return null;
+		}
+	}
+
+	public class Designator_SuspensionJetty_Steel : Designator_SuspensionJetty
+	{
+		public Designator_SuspensionJetty_Steel() : base(DefDatabase<ThingDef>.GetNamed("RM_SuspensionJetty_Steel"))
+		{
+		}
+	}
+
+	public class Designator_SuspensionJetty_Heavy : Designator_SuspensionJetty
+	{
+		public Designator_SuspensionJetty_Heavy() : base(DefDatabase<ThingDef>.GetNamed("RM_SuspensionJetty_Heavy"))
+		{
+		}
+	}
+
 	/// <summary>A deck square goes over a dug hole at least 0.5 m deep (the designator places them; this guards copy/paste).</summary>
 	public class PlaceWorker_SuspensionOverHole : PlaceWorker
 	{
