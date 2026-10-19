@@ -92,7 +92,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(u, @"return RM_LadderWallMath\.Resolve\(placed\.AsInt, d, sideD, inB\);", "the wall comes from the production verdict");
                 RiverSwitchFlipChecks.Has(u, @"if \(!respawningAfterLoad \|\| comp == null \|\| !comp\.hung\)\s*\{\s*int wall = RM_LadderUtility\.WallRotAt\(map, Position, Rotation\);\s*if \(wall >= 0 && wall != Rotation\.AsInt\)\s*\{\s*Rotation = new Rot4\(wall\);\s*\}\s*\}\s*if \(comp != null\)\s*\{\s*comp\.hung = true;\s*\}\s*base\.SpawnSetup",
                     "the building turns to its wall BEFORE it spawns (so it prints turned); a reload keeps a settled turn");
-                RiverSwitchFlipChecks.Has(u, @"return RM_LadderUtility\.WallRotAt\(map, loc, rot\) >= 0 \? \(AcceptanceReport\)true : ""RMFlow_LadderNeedsWall""\.Translate\(\);",
+                // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS reshaped the return (the portable ladder's depth check follows it).
+                RiverSwitchFlipChecks.Has(u, @"int wall = RM_LadderUtility\.WallRotAt\(map, loc, rot\); if \(wall < 0\) \{ return ""RMFlow_LadderNeedsWall""\.Translate\(\); \}",
                     "placement refused with no wall");
                 RiverSwitchFlipChecks.Has(u, @"Scribe_Values\.Look\(ref hung, ""rmLadderHung"", false\);", "the settled turn is saved");
                 RiverSwitchFlipChecks.Has(u, @"\[HarmonyPatch\(typeof\(GenConstruct\), nameof\(GenConstruct\.PlaceBlueprintForBuild\)\)\]", "the blueprint turns when placed");

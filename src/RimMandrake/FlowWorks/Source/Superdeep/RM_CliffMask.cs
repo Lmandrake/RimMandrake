@@ -322,21 +322,14 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The lowered ladder in this cell, if any (raised counts only while the raise/lower setting is off).</summary>
 		public static bool LoweredLadderAt(Map map, IntVec3 c)
 		{
-			ThingDef ladderDef = RimMandrakeFlowWorks_DefOf.RM_Ladder;
-			if (ladderDef == null || !c.InBounds(map))
+			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: either ladder; a portable one only while it reaches its wall.
+			Thing ladder = RM_LadderUtility.LadderAt(map, c);
+			if (ladder == null || !RM_LadderUtility.Reaches(ladder))
 			{
 				return false;
 			}
-			List<Thing> things = c.GetThingList(map);
-			for (int i = 0; i < things.Count; i++)
-			{
-				if (things[i].def == ladderDef)
-				{
-					RM_CompLadder comp = things[i].TryGetComp<RM_CompLadder>();
-					return comp == null || !comp.EffectivelyRaised;
-				}
-			}
-			return false;
+			RM_CompLadder comp = ladder.TryGetComp<RM_CompLadder>();
+			return comp == null || !comp.EffectivelyRaised;
 		}
 
 		/// <summary>Structural join for the masks: a ramp, or a lowered ladder in the deeper cell hung on the wall toward the

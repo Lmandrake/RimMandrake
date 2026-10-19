@@ -171,6 +171,9 @@
          the holder Thing is gone; a pit is a D=4 cell and the trap is a grid rule
          (RM_PitTrapMath is Verse-free and also compiled into Source/SelfTest/). -->
     <Compile Include="Superdeep\RM_LadderUtility.cs" />
+    <!-- PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: portable ladder, climbing gear, safe jumps/skips, rescue ladder job -->
+    <Compile Include="Superdeep\RM_PitAccessMath.cs" />
+    <Compile Include="Superdeep\RM_PitAccess.cs" />
     <Compile Include="Superdeep\RM_Spikes.cs" />
     <Compile Include="Superdeep\RM_FallRails.cs" />
     <Compile Include="Superdeep\RM_PitDepthDraw.cs" />
