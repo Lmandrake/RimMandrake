@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_facings_stand_tall_pilot",
- "built": "2026-10-16T07:21:50-0700",
+ "built": "2026-10-19T05:10:59-0700",
  "census": "Transient/biome_ffar/facings_stand_tall_pilot.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 535 active",
  "rows": {
   "RM_Heemin": {
    "columns": {
@@ -17,11 +17,6 @@
      "north": "632a6457144ae783656f31dac3e8c68adcb1487cb3accc18724de30f4e2be88d",
      "south": "fba7be68faff8ecec0a5a2b56518c77a8b4f0b2ebf2c118cbefa3262fc3e6a47"
     },
-    "D": {
-     "east": "a212a7f099413092aa961546ed8056109e80b4ae81363895673122af33c72968",
-     "north": "632a6457144ae783656f31dac3e8c68adcb1487cb3accc18724de30f4e2be88d",
-     "south": "35ebd4255845fb6221ff3db422ab677ce2e8b32730b1333a13e84fd0d7201f13"
-    },
     "E": {
      "east": "a212a7f099413092aa961546ed8056109e80b4ae81363895673122af33c72968",
      "north": "819fd00aa2018e217114eca4f6254250160cef82cde05a53f6b8400a76be53bb",
@@ -31,14 +26,12 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
     "C": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
-    "D": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
     "E": "Things/Pawn/Animal/RM_Heemin/RM_Heemin"
    },
    "labels": {
     "A": "WAS in game, no longer installed \u2014 TerminalBiomes",
     "C": "render chill_heemin_v2",
-    "D": "IN GAME \u2014 TerminalBiomes",
-    "E": "render standtall_v1_rm_heemin"
+    "E": "IN GAME \u2014 TerminalBiomes"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
@@ -70,11 +63,6 @@
      "north": "148e885a30d7947de7b6ee689e5d610789c7c23c6b3b8d906d22fe02d92b781c",
      "south": "0ef866d122e6d2b8b3a2160933cc0cf60e59bd5581ed01c8626a691623bf7971"
     },
-    "D": {
-     "east": "eaabe2666d6481ad76d15157f26f2dcd04214279057a8809ab32e78b5014c466",
-     "north": "148e885a30d7947de7b6ee689e5d610789c7c23c6b3b8d906d22fe02d92b781c",
-     "south": "b741e4f2c2ee862c3f7a174fa9790bde9b916c819b5a6509b4d221635f3516a2"
-    },
     "E": {
      "east": "eaabe2666d6481ad76d15157f26f2dcd04214279057a8809ab32e78b5014c466",
      "north": "88b95b035a75cf7af110779532d1299ec1ced3597b3fb01ab5a910e4473bbcb9",
@@ -84,14 +72,12 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Krissek/RM_Krissek",
     "C": "Things/Pawn/Animal/RM_Krissek/RM_Krissek",
-    "D": "Things/Pawn/Animal/RM_Krissek/RM_Krissek",
     "E": "Things/Pawn/Animal/RM_Krissek/RM_Krissek"
    },
    "labels": {
     "A": "WAS in game, no longer installed \u2014 BlueDesert",
     "C": "render bluedesert_krissek",
-    "D": "IN GAME \u2014 BlueDesert",
-    "E": "render standtall_v1_rm_krissek"
+    "E": "IN GAME \u2014 BlueDesert"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Krissek/RM_Krissek",
@@ -128,11 +114,6 @@
      "north": "207016afcc77718d263cae722a1562bf366f1d48069c452003f2da1647b6fbac",
      "south": "cc31f7366d3bdf7a3b0c1786d9329b43dc9aec9745e02cc45cc5a3f1d11f6b25"
     },
-    "F": {
-     "east": "d9d92a42e7410ea482d9f3e797f1637997310f766978e8f3d8f2ddf4fed04bb4",
-     "north": "2dd46af366ed36159462fc2a5718ede7e1cf087509b64ebfcb3138a01080b1e1",
-     "south": "507d84cf347563257b5e83f9949eaf9b44fb72d628691cdc6f62fdae91273406"
-    },
     "G": {
      "east": "3d85dc0a873ac199e86ae02d70cb15bc132be9e644d912a203dd4139eb0bd9fd",
      "north": "ad4aeb6d16532d79d54a39e8c70ac4130bb1b8720dd9699248f083ae7507337d",
@@ -142,23 +123,28 @@
      "east": "d9d92a42e7410ea482d9f3e797f1637997310f766978e8f3d8f2ddf4fed04bb4",
      "north": "2f225329b77ca63368685ef522845ce35221651a0eef265808cdf394ad2903fe",
      "south": "507d84cf347563257b5e83f9949eaf9b44fb72d628691cdc6f62fdae91273406"
+    },
+    "I": {
+     "east": "63ce82a102ef14a1135cc8b9d7cc879009504663f9a3bf91f2f051429e07814d",
+     "north": "e18957c59d2c1a8709a7081566a503f36319d78f278a3bfb0ccb6057214c5551",
+     "south": "f28b02999528dee5a6d6a1ea856214f44e7f4d0b5242e2b782dd5815fc7006da"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
     "D": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
     "E": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming",
-    "F": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
     "G": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
-    "H": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax"
+    "H": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
+    "I": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming"
    },
    "labels": {
     "A": "WAS in game, no longer installed \u2014 Stillsand",
     "D": "render RM_Qorrax",
     "E": "IN GAME \u2014 Stillsand",
-    "F": "IN GAME \u2014 Stillsand",
     "G": "render stillsand_regen_RM_Qorrax_swimming_v1 \u2014 grader flagged (advisory)",
-    "H": "render standtall_v1_rm_qorrax"
+    "H": "IN GAME \u2014 Stillsand",
+    "I": "render enact_05c3df91_qorrax_v1"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
@@ -170,7 +156,8 @@
     "E",
     "F",
     "G",
-    "H"
+    "H",
+    "I"
    ],
    "shownBase": [
     "125bc9e16093f82c33e2aa586d96388b8664504dbb7e90a16314e52f024aeb4a",
@@ -199,11 +186,6 @@
      "north": "097f8d9a67cd7a4e3a234018cbffbf9e05689975541abbc1cb347c335baf7b6c",
      "south": "6e016a0a2a89b911651e1106397b038d19d19b2f1fec39384c36cc842f5cb910"
     },
-    "D": {
-     "east": "32a393d544b6f05deead05fa2d54328bdbcfda124fbdb9c5f651aec05f6a423b",
-     "north": "097f8d9a67cd7a4e3a234018cbffbf9e05689975541abbc1cb347c335baf7b6c",
-     "south": "ce97199bf48b288919cc1a6382397c049b1c8ca36f6e52c217bccefe95ebb780"
-    },
     "E": {
      "east": "32a393d544b6f05deead05fa2d54328bdbcfda124fbdb9c5f651aec05f6a423b",
      "north": "4fa19c80f7e431f13f0fa06d385aa65b43dd7ee7e21210653b6c1cd83e26fac9",
@@ -213,14 +195,12 @@
    "graphic_of": {
     "B": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
     "C": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
-    "D": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
     "E": "Things/Pawn/Animal/RM_Siidda/RM_Siidda"
    },
    "labels": {
     "B": "render standtall_v1_rm_siidda",
     "C": "history Stillsand 2026-10-01",
-    "D": "IN GAME \u2014 Stillsand",
-    "E": "render standtall_v1_rm_siidda"
+    "E": "IN GAME \u2014 Stillsand"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
@@ -254,29 +234,29 @@
      "south": "46d457b2845ed05d1e97f1a3410e1fbf9be6f16999e55c94d2c037473f30c545",
      "west": "8064a4eee7b5a733df11f7a8a52add12c85f4a69239b7f57f0b410ea0e06e9fa"
     },
-    "D": {
-     "east": "e739c078ccdfc768dae86db3bb8b434a9899097d39566f52e0ec4411bb6544a9",
-     "north": "54c6bbfc2292dcf3afb37647d70e5a859e628a8e03002d9d69858ffda831999b",
-     "south": "9d9d4325dd8c025cd55f0fd2254d92aa4f38ff6600a1ec49eedf0d41e3454a3c",
-     "west": "8064a4eee7b5a733df11f7a8a52add12c85f4a69239b7f57f0b410ea0e06e9fa"
-    },
     "E": {
      "east": "e739c078ccdfc768dae86db3bb8b434a9899097d39566f52e0ec4411bb6544a9",
      "north": "b33e5dbcb5e8424f401d099ad5a9f4c4208fa2ea9914f71c4569bfd7b51bc29b",
      "south": "d5582812fe7dc9aef6fc0df3260d391fa961e158fe381220b6c71b3045816177"
+    },
+    "F": {
+     "east": "e739c078ccdfc768dae86db3bb8b434a9899097d39566f52e0ec4411bb6544a9",
+     "north": "b33e5dbcb5e8424f401d099ad5a9f4c4208fa2ea9914f71c4569bfd7b51bc29b",
+     "south": "d5582812fe7dc9aef6fc0df3260d391fa961e158fe381220b6c71b3045816177",
+     "west": "8064a4eee7b5a733df11f7a8a52add12c85f4a69239b7f57f0b410ea0e06e9fa"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/SeaBeasts/StormSando/StormSando",
     "B": "Things/Pawn/Animal/SeaBeasts/StormSando/StormSando",
-    "D": "Things/Pawn/Animal/SeaBeasts/StormSando/StormSando",
-    "E": "Things/Pawn/Animal/SeaBeasts/StormSando/StormSando"
+    "E": "Things/Pawn/Animal/SeaBeasts/StormSando/StormSando",
+    "F": "Things/Pawn/Animal/SeaBeasts/StormSando/StormSando"
    },
    "labels": {
     "A": "WAS in game, no longer installed \u2014 SWBestiary",
     "B": "shipped, shadowed \u2014 TerminalBiomes",
-    "D": "IN GAME \u2014 SWBestiary",
-    "E": "render standtall_v1_stormsando"
+    "E": "render standtall_v1_stormsando",
+    "F": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/StormSando/StormSando",
@@ -285,7 +265,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "shownBase": [
     "46d457b2845ed05d1e97f1a3410e1fbf9be6f16999e55c94d2c037473f30c545",
@@ -305,11 +286,6 @@
      "north": "e0d111e37c487b12f9056c5f960cff1e9282cb4e68472eab11087d90085999af",
      "south": "50d1d63faafcdb8ea50e64c31c4d56060132d6c209c0f62e9f84337d481253c2"
     },
-    "C": {
-     "east": "7f308bcc9543ccbc91097a511886170ea814690487dc4306e17c5d840eed0a74",
-     "north": "b348586a24aa42847796d57e0bb9d506824f76d6e0b80060505d2f665ee8e37f",
-     "south": "0d385a56587e174ddc7a5437660c22a35e47723058a46f53170b1d3c7e8b7842"
-    },
     "D": {
      "east": "7f308bcc9543ccbc91097a511886170ea814690487dc4306e17c5d840eed0a74",
      "north": "913d7df89adfb77883e0fb51fb9d93bc27961454908c122029355c1cb7c66e95",
@@ -318,13 +294,11 @@
    },
    "graphic_of": {
     "B": "Things/Pawn/Animal/RM_Zrrik/RM_Zrrik",
-    "C": "Things/Pawn/Animal/RM_Zrrik/RM_Zrrik",
     "D": "Things/Pawn/Animal/RM_Zrrik/RM_Zrrik"
    },
    "labels": {
     "B": "render standtall_v1_rm_zrrik",
-    "C": "IN GAME \u2014 Greentide",
-    "D": "render standtall_v1_rm_zrrik"
+    "D": "IN GAME \u2014 Greentide"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Zrrik/RM_Zrrik",
@@ -361,10 +335,13 @@
     "D": {
      "south": "004024b73efc88879ec68b7f79fde74d928957dd7ebb6343a85c4415cd80d781"
     },
-    "E": {
+    "F": {
      "east": "8fa024fbc12f71e8029bb03f910fe71685384095c43b1819bac09be9287b8136",
-     "north": "c28d3609416a316bd90e89ac6b25cd4c50420ee3f5351a5117ce82aeb16c7f63",
+     "north": "1cf19d7a1fa97f81aa9d6403209fee390e5c5fc098336a0c31fcac1a93688bee",
      "south": "7f8ee2ae08068b010b8b648fcf940e743c92840db25fb373412307aa481a2a99"
+    },
+    "G": {
+     "east": "2087322b275d751dc21427bd256967e3237cb9d715734e2ad99fe41929a08bce"
     }
    },
    "graphic_of": {
@@ -372,14 +349,16 @@
     "B": "swanimals/Akk/Akk",
     "C": "_byname",
     "D": "_byname",
-    "E": "swanimals/Akk/Akk"
+    "F": "swanimals/Akk/Akk",
+    "G": "_byname"
    },
    "labels": {
     "A": "WAS in game, no longer installed \u2014 SWBestiary",
     "B": "our deployed art (render standtall_v1_akk) \u2014 ?",
     "C": "render donorart_akk_v1 \u2014 grader flagged (advisory)",
     "D": "render donorart_akk_v3",
-    "E": "IN GAME \u2014 SWBestiary"
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "render dregen_RSW_Akk_Akk_v1"
    },
    "pools": [],
    "res": "swanimals/Akk/Akk",
@@ -388,7 +367,9 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
    "shownBase": [
     "004024b73efc88879ec68b7f79fde74d928957dd7ebb6343a85c4415cd80d781",
@@ -404,11 +385,6 @@
   },
   "RSW_Anooba": {
    "columns": {
-    "A": {
-     "east": "a616443d96fbee65ef9170145a450a5d4dace58012cbd5205d4d4f77e03c0d04",
-     "north": "4bad4bc4f761f8e3343f79b252f1b3070bf914a3058d7e26d06926046973fcf3",
-     "south": "9d63a4733f0f8ff358d154e3208731fa31e9f11d165c5fa43be1b010c58f32ba"
-    },
     "C": {
      "east": "2cbadfc9c5276d09059b21427d0b5e6f18361464d58c1400b3477a1e3c5c04b1",
      "north": "eea7e9ae90c7dddb3d7f2f9554c096d07223599a985414dec1828c896817ef2f",
@@ -418,17 +394,22 @@
      "east": "a616443d96fbee65ef9170145a450a5d4dace58012cbd5205d4d4f77e03c0d04",
      "north": "ec084f56df1ff8c64bce291d0d8350e38fdd74fa1672a80e30214ec0abee519a",
      "south": "269d409cbecb5b94c35adfa9232b97642574e7634939499568d638a45476ccf1"
+    },
+    "E": {
+     "east": "a616443d96fbee65ef9170145a450a5d4dace58012cbd5205d4d4f77e03c0d04",
+     "north": "ec084f56df1ff8c64bce291d0d8350e38fdd74fa1672a80e30214ec0abee519a",
+     "south": "9d63a4733f0f8ff358d154e3208731fa31e9f11d165c5fa43be1b010c58f32ba"
     }
    },
    "graphic_of": {
-    "A": "RimStarWars/SWBestiary/Anooba/Anooba_f",
     "C": "RimStarWars/SWBestiary/Anooba/Anooba_m",
-    "D": "RimStarWars/SWBestiary/Anooba/Anooba_f"
+    "D": "RimStarWars/SWBestiary/Anooba/Anooba_f",
+    "E": "RimStarWars/SWBestiary/Anooba/Anooba_f"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary",
-    "D": "render standtall_v1_anooba_f"
+    "D": "render standtall_v1_anooba_f",
+    "E": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "RimStarWars/SWBestiary/Anooba/Anooba_f",
@@ -436,7 +417,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "2cbadfc9c5276d09059b21427d0b5e6f18361464d58c1400b3477a1e3c5c04b1",
@@ -466,11 +448,6 @@
      "north": "0daef52061f87844f76494af23057913b55356b0936a1bd49559a8a2e0fd1620",
      "south": "a5961deed028ddc5029bece2215f75ad92345c7473d64b4648bef8650aa4a868"
     },
-    "F": {
-     "east": "04e24eb6db74020338efab88ce61d90eee12fe012b6a9b12f5382ab53a0dac47",
-     "north": "941a3f997093ef9dfff97bbc224a8e0588218c54101733b0b52cc90c475ec038",
-     "south": "f4db9021aa3f93eb88f9d1478068bc1e030680da0438e3666f38de530bdd97f9"
-    },
     "G": {
      "east": "afae421cc28ed8efdcf47960766562cac0dc2b2401a1f734db55e5d9b9fb36f4",
      "south": "e6f9789cc0bab81142caea1b792b9160c80c5ca93d3a088b4fbe3503d3e7a5f4"
@@ -485,7 +462,6 @@
     "B": "swanimals/Borcatu/Borcatu",
     "C": "swanimals/Borcatu/Borcatu",
     "D": "swanimals/Borcatu/Borcatu",
-    "F": "swanimals/Borcatu/Borcatu",
     "G": "_byname",
     "H": "swanimals/Borcatu/Borcatu"
    },
@@ -493,9 +469,8 @@
     "B": "render standtall_v1_borcatu",
     "C": "render canon_borcatu_v1",
     "D": "history SWBestiary 2026-09-13",
-    "F": "IN GAME \u2014 SWBestiary",
     "G": "render enact_wlborcatu_quills_v1 \u2014 grader flagged (advisory)",
-    "H": "render standtall_v1_borcatu"
+    "H": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "swanimals/Borcatu/Borcatu",
@@ -543,11 +518,6 @@
     "F": {
      "south": "c25e20d775248d8b55e9affff1a6f44021cf8dd530aaae33170b6d88079e713f"
     },
-    "G": {
-     "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df",
-     "north": "0bace5521bc60713a4bd7f3caf44a0b6caee8097c2e128f83eb33b10d8a81beb",
-     "south": "46831788c65c1182198f3eadb083377c5b211503c597c209f85fb197702c825a"
-    },
     "H": {
      "east": "a64097abc972d7bafdc36a7ed07f7708952c2d2c3ca0a4e388d6bded18558f30",
      "north": "48c4fecca5406f0133bb2de963cb99666927f7f7f9ddc6ad7249e7b70a6888b3",
@@ -565,7 +535,6 @@
     "D": "RimStarWars/SWBestiary/Dewback/Dewback",
     "E": "RimStarWars/SWBestiary/Dewback/Dewback",
     "F": "RimStarWars/SWBestiary/Dewback/Dewback",
-    "G": "RimStarWars/SWBestiary/Dewback/Dewback",
     "H": "RimStarWars/SWBestiary/Dewback/Dewback",
     "I": "RimStarWars/SWBestiary/Dewback/Dewback"
    },
@@ -575,8 +544,7 @@
     "D": "render regen_ls_canon_dewback_v1_ns",
     "E": "render longshade_rsw_dewback_v1 \u2014 grader flagged (advisory)",
     "F": "render facingrepair_dewback_v1",
-    "G": "IN GAME \u2014 SWBestiary",
-    "H": "render reconcile_v1_dewback",
+    "H": "IN GAME \u2014 SWBestiary",
     "I": "render standtall_v1_dewback"
    },
    "pools": [
@@ -608,5 +576,5 @@
   }
  },
  "sheetId": "facings_stand_tall_pilot_sheet_2026-10-16",
- "snapshotId": "1dafad2d013f451c"
+ "snapshotId": "d2d31a37c942e7f4"
 }

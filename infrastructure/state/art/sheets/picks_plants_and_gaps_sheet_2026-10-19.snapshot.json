@@ -1,0 +1,519 @@
+{
+ "biome": "SUBJECTS_picks_plants_and_gaps",
+ "built": "2026-10-19T06:18:07-0700",
+ "census": "Transient/biome_ffar/picks_plants_and_gaps.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 536 active",
+ "rows": {
+  "AB_Bryolux": {
+   "columns": {
+    "A": {
+     "single": "6311420e4c29e1cef217e3771dbfac8888f7b69d45b9594dd46f526b0865cbd5"
+    },
+    "B": {
+     "single": "46b8d93b0607813527a97e4c111646b71b3ed39d30ebd6d7b7dc2b21c9ac018c"
+    },
+    "C": {
+     "single": "d3565087381e7a4b38b689416bcb445f08962310276d8777289259008c148edc"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "render rotvar_ab_bryolux_a_v1",
+    "B": "render rotvar_ab_bryolux_b_v1",
+    "C": "render rot_bryolux_v2"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "bryolux"
+  },
+  "AB_DribblingCap": {
+   "columns": {
+    "A": {
+     "single": "c8ea9993f5a3954ab3ceac3764631799d7924cd363221d11f112b52e195df4a9"
+    },
+    "B": {
+     "single": "a1cc2985b9c3e526b4a648fcd895208ea421ad6c02c6e8063bd468517dbb10bd"
+    },
+    "C": {
+     "single": "723aa5da929a06e6e67a5f4640ec3c738aff2fffc1260b6138fc2503e2f67a2f"
+    },
+    "D": {
+     "single": "eaaa4d3e13a7c0f4be0d134c89fac1aa522b4264637e71b868b9cf6fbd87317b"
+    },
+    "E": {
+     "single": "89ed71432ca3caa6f5f13cbde05281d31ea575a13fb4933086ecaa1442ec7912"
+    },
+    "F": {
+     "single": "18378be6d43e8091775a68713cf39822a263b590b52b98ba0d29d321d887ba8c"
+    },
+    "G": {
+     "single": "cd270c5f37c9f5f0b27af0eadabbbd9aef7aed1ae967f2192fe7fdcd34ad840a"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname"
+   },
+   "labels": {
+    "A": "render dregen_RM_DribblingCap_ABDribblingCapA_v1",
+    "B": "render dregen_RM_DribblingCap_ABDribblingCapB_v1",
+    "C": "render dregen_RM_DribblingCap_ABDribblingCapC_v1",
+    "D": "render dregen_RM_DribblingCap_ABDribblingCapD_v1",
+    "E": "render rotvar_ab_dribblingcap_a_v1",
+    "F": "render rotvar_ab_dribblingcap_b_v1",
+    "G": "render rot_dribblingcap_v2"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "dribblingcap"
+  },
+  "AB_FirevineTree": {
+   "columns": {
+    "A": {
+     "single": "7df9f9f5186b5313f73d44627eb3638e4e775922b4ac00511a295353c4eff5c2"
+    },
+    "B": {
+     "single": "66ff2ec84ef87b2fd09ed32a021edcf6f8e965e1ab0147692e1ab5b5e8921ec1"
+    },
+    "C": {
+     "single": "0d9294c9be6c0315a014a164245b8a93ec87666cea610cf74192c5ffea0d4929"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "render dregen_RM_FirevineTree_ABFirevineTreeB_v1",
+    "B": "render dregen_RM_FirevineTree_ABFirevineTreeC_v1",
+    "C": "render gapbs_AB_FirevineTree_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "firevinetree"
+  },
+  "AB_GiantAgarilux": {
+   "columns": {
+    "A": {
+     "single": "865acc39ad31e0376214641b585ed7269586663e7f08f407a242d3b7a2a18bc1"
+    },
+    "B": {
+     "single": "f316cfdc76321d184a7ffc5fdde04cf1cfdb7591f7819e9fbee554244ff50441"
+    },
+    "C": {
+     "single": "489c2e116801adcce94a9fbda481f2ebb43fb505e711a40a96bfb46d49c6c3b6"
+    },
+    "D": {
+     "single": "38612d849a7ac6f8a15ddb882140c5623895ae463ba5414e9fc6c3e2e7e8dc0c"
+    },
+    "E": {
+     "single": "faa6d7e31322f0351f7e4782271edcab79dd5d175f24a9ca5f00700b537a39d0"
+    },
+    "F": {
+     "single": "36b0e1fb28b9ba8eb86c21c8d53313a01380a9883b6deff57238ef5eafde0a80"
+    },
+    "G": {
+     "single": "6a392571840af974a39d220490e80769f63598fbf42949d16b776720a822e8fc"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname"
+   },
+   "labels": {
+    "A": "render dregen_RM_GiantAgarilux_ABGiantAgariluxA_v1",
+    "B": "render dregen_RM_GiantAgarilux_ABGiantAgariluxE_v1",
+    "C": "render dregen_RM_GiantAgarilux_ABGiantAgariluxF_v1",
+    "D": "render rotvar_ab_giantagarilux_a_v1",
+    "E": "render rotvar_ab_giantagarilux_b_v1 \u2014 grader flagged (advisory)",
+    "F": "render rotvar_ab_giantagarilux_b_v2",
+    "G": "render rot_giantagarilux_v2"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "giantagarilux"
+  },
+  "AB_GlowingAgarilux": {
+   "columns": {
+    "A": {
+     "single": "45c5cc1081193a2d33b0eeeea4babe378a1280189bdab752a369c1e098d29152"
+    },
+    "B": {
+     "single": "d1764618bcf514ee1245fdf80ea1cb5ae43debddf8d03670647258d6a4cffdb4"
+    },
+    "C": {
+     "single": "6f67f77bd8b782014d847567cf9fa3e71841da8a8c834a5356b2da526e1bd2f0"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "render rotvar_ab_glowingagarilux_a_v1",
+    "B": "render rotvar_ab_glowingagarilux_b_v1",
+    "C": "render rot_glowingagarilux_v2"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "glowingagarilux"
+  },
+  "AB_Glowstool": {
+   "columns": {
+    "A": {
+     "single": "623d63073a1e39be85ade1b15633f56c78b808534f3da909e2aedd59a9a8623e"
+    },
+    "B": {
+     "single": "fdabff9f2dbde276b49e1117dd7a9f7dc022a5d9d11e2481f94103e9ebfac935"
+    },
+    "C": {
+     "single": "11b913669a293262eed08221906ac3aa8f02b266a168f4c7b6f697f9f07ec533"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "render rotvar_ab_glowstool_a_v1",
+    "B": "render rotvar_ab_glowstool_b_v1",
+    "C": "render rot_glowstool_v2"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "glowstool"
+  },
+  "AB_LilacBeacon": {
+   "columns": {
+    "A": {
+     "single": "fac1237e6a7046368c547b18d453bf3064e7e4be5297ac1a01c613058602b58b"
+    },
+    "B": {
+     "single": "4fcd82077ed0c3f73b02ba5f4a345bda3ec84341de2e10b553658b997ce7bc72"
+    },
+    "C": {
+     "single": "05b8e73fe481e9851897647040168932d87515ca04bea59f2b678607cc620e08"
+    },
+    "D": {
+     "single": "37606983c611688874f37f10f06e21f54ae84a00c4d729acd0c6ecf6bc5fb6ce"
+    },
+    "E": {
+     "single": "d0c0f977d67534c1e192a19d614db98ae53eaa30839434de87a95381d70d5e2f"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
+   },
+   "labels": {
+    "A": "render dregen_RM_LilacBeacon_ABLilacBeaconA_v1",
+    "B": "render dregen_RM_LilacBeacon_ABLilacBeaconB_v1",
+    "C": "render rotvar_ab_lilacbeacon_a_v1",
+    "D": "render rotvar_ab_lilacbeacon_b_v1",
+    "E": "render rot_lilacbeacon_v2"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "lilacbeacon"
+  },
+  "AB_SlimyPholiota": {
+   "columns": {
+    "A": {
+     "single": "68a0d9b951e23c13c3549fad510e6d6562ebad8e9a278d76272ce8d913422ae9"
+    },
+    "B": {
+     "single": "bebc09fd621e941e944e19bbd30afd9f6b1c0a45141f9c71539edbc8425cc65b"
+    },
+    "C": {
+     "single": "5abcb8fc4914806a12b0e1f30aae9b1d128f32710403aacc8c9a79c308e3d64c"
+    },
+    "D": {
+     "single": "130633d36a4db6dfdb28d1fc3889b9f24503c6e0798298c3b57af2ac706bcef1"
+    },
+    "E": {
+     "single": "b9cb4014d23ccfcbd739aacd475690b1def96864b8134a90db5d661397cadc85"
+    },
+    "F": {
+     "single": "25e8c5b5a5c024b466559689633c5d13b31f1c334f0c89546b440bffb1e71260"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname"
+   },
+   "labels": {
+    "A": "render dregen_RM_SlimyPholiota_ABSlimyPholiotaAcopy_v1",
+    "B": "render dregen_RM_SlimyPholiota_ABSlimyPholiotaB_v1",
+    "C": "render dregen_RM_SlimyPholiota_ABSlimyPholiotaC_v1",
+    "D": "render rotvar_ab_slimypholiota_a_v1",
+    "E": "render rotvar_ab_slimypholiota_b_v1",
+    "F": "render rot_slimypholiota_v2"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "slimypholiota"
+  },
+  "AB_TinkleGrass": {
+   "columns": {
+    "A": {
+     "single": "b10191cd4241c3c2ed00fddd76563186c94569c9a82c441cac49a8fa4388f0b1"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render gapbs_AB_TinkleGrass_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "tinklegrass"
+  },
+  "AB_WitchesOyster": {
+   "columns": {
+    "A": {
+     "single": "80500d8239a0ee86fb63860d5473e6226d3e49ea44c34a42702440674a2da8b9"
+    },
+    "B": {
+     "single": "bc51c3aebef0368c0dfe5099ffc3d4d1b6c5b08743a7827fdc2f2aed60594534"
+    },
+    "C": {
+     "single": "d707dbf7043780f1cfed17861bf57add4433aa0aef4cddd0d4365215f724ae38"
+    },
+    "D": {
+     "single": "780e22885637d57bafbad47e678a997348f32a754c61da0fc01fc74585438c28"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
+   },
+   "labels": {
+    "A": "render dregen_RM_WitchesOyster_ABWitchesOyster_v1",
+    "B": "render rotvar_ab_witchesoyster_a_v1",
+    "C": "render rotvar_ab_witchesoyster_b_v1",
+    "D": "render rot_witchesoyster_v2"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "witchesoyster"
+  },
+  "RM_Braskeen": {
+   "columns": {
+    "A": {
+     "single": "0b0264cb3dd0fd3fee3c360cf8a66d7e44f6d8a92b10f3bb504fcf0bfa1d9ddf"
+    },
+    "B": {
+     "single": "6d792f036e00cfbf70da14356661e8ccd4d859ebe1dcca3d7f2b43fe07f4b06b"
+    },
+    "C": {
+     "single": "0c1911ef2c1489297b3ea3aa8cc031a2690b80d456e667cc5353fb19b38f8195"
+    },
+    "D": {
+     "single": "b03534e14dff577504c2ffdb30a7326b87eef80ad910a28862d38b28a049775a"
+    },
+    "E": {
+     "single": "9c1faa7ca91933baad3baf83a14d6618daebc4b09c7f615178ae38a71770a40c"
+    },
+    "F": {
+     "single": "61371decb5b0f076e9daf39b973833c00e90aee2c8b412a8b86e83934ce886f1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Braskeen",
+    "B": "Things/Plant/RM_Braskeen",
+    "C": "Things/Plant/RM_Braskeen",
+    "D": "Things/Plant/RM_Braskeen",
+    "E": "Things/Plant/RM_Braskeen",
+    "F": "Things/Plant/RM_Braskeen"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Braskeen (1 of 2) \u2014 Miasma",
+    "B": "IN GAME \u2014 random variant RM_Braskeen_b (2 of 2) \u2014 Miasma",
+    "C": "render braskeen_onE_v1",
+    "D": "render braskeen_onE_v2",
+    "E": "render braskeen_onE_v4",
+    "F": "render braskeen_onE_v5"
+   },
+   "pools": [
+    "Things/Plant/RM_Braskeen"
+   ],
+   "res": "Things/Plant/RM_Braskeen",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "braskeen"
+  },
+  "RM_Ismerrow": {
+   "columns": {
+    "A": {
+     "single": "73353e258837c35ee97f605bd4e7d421a79412c8e13aa9a85388f5aaeadebb80"
+    },
+    "B": {
+     "single": "4b52f8cf7ce050a3191ae3deda9f353e23f9199ea82fd575903c12d7e2ec6a44"
+    },
+    "C": {
+     "single": "a3179a28c513eb5a9945a9b365e6c270ef71874abfbb2023f1b061455aefb030"
+    },
+    "D": {
+     "single": "80ade350dd5dd780b5f6c6c967c201b105bd0111f9df7585ae4d53f01cfdded3"
+    },
+    "E": {
+     "single": "e54bd6db6d469d8d99b7de46abee0cfecd6c6276e8695a084adb808bc28d5997"
+    },
+    "F": {
+     "single": "988d133eba969338df771f52af039b6b41461fdadbf3bde8268577862355488b"
+    },
+    "G": {
+     "single": "4fd2981030c98ac5ee9820fde95e6662f85b828f0115bdd2f4cbb75a6b1f28e7"
+    },
+    "H": {
+     "single": "9f0d00a495d3e754bb6c30a6b3e4df45d35338fa0d78f0a3347fd26d8e570242"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Ismerrow",
+    "B": "Things/Plant/RM_Ismerrow",
+    "C": "Things/Plant/RM_Ismerrow",
+    "D": "Things/Plant/RM_Ismerrow",
+    "E": "Things/Plant/RM_Ismerrow",
+    "F": "Things/Plant/RM_Ismerrow",
+    "G": "Things/Plant/RM_Ismerrow",
+    "H": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Ismerrow (1 of 7) \u2014 Miasma",
+    "B": "IN GAME \u2014 random variant RM_Ismerrow_B (2 of 7) \u2014 Miasma",
+    "C": "IN GAME \u2014 random variant RM_Ismerrow_C (3 of 7) \u2014 Miasma",
+    "D": "IN GAME \u2014 random variant RM_Ismerrow_D (4 of 7) \u2014 Miasma",
+    "E": "IN GAME \u2014 random variant RM_Ismerrow_F (5 of 7) \u2014 Miasma",
+    "F": "IN GAME \u2014 random variant RM_Ismerrow_G (6 of 7) \u2014 Miasma",
+    "G": "IN GAME \u2014 random variant RM_Ismerrow_H (7 of 7) \u2014 Miasma",
+    "H": "render b07_ismerrowA"
+   },
+   "pools": [
+    "Things/Plant/RM_Ismerrow"
+   ],
+   "res": "Things/Plant/RM_Ismerrow",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "ismerrow"
+  }
+ },
+ "sheetId": "picks_plants_and_gaps_sheet_2026-10-19",
+ "snapshotId": "bb281f0f87d2ff2d"
+}

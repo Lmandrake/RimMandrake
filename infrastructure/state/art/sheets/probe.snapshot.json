@@ -1,0 +1,115 @@
+{
+ "biome": "SUBJECTS_zz_probe_tmp",
+ "built": "2026-10-15T18:45:17-0700",
+ "census": "Transient/biome_ffar/zz_probe_tmp.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 550 active",
+ "rows": {
+  "RSW_Bursa": {
+   "columns": {
+    "A": {
+     "east": "c42b50f48561851c02e3badd1512101bcac97e578a00d90ec4bdc0d9e76bd1d1",
+     "north": "06aa0e0bb52a2036646c89f2bd02f1b051d5a0306ea4a37ca8c0c76816cf57ab",
+     "south": "1776a2c45ef1e431c6b770fbe7e742516553d060740faf9e5779b41a4519b84e"
+    },
+    "B": {
+     "east": "9cce356ec1faa436cf52a32c98e0833e1320fe6e89fa9203be35332ea9af92b1",
+     "north": "fcf6c54fec220f53fc53d1d5e888cb8e885d7acdb4b6df5485be36d5c8fcda2c",
+     "south": "21037ac074be4e38aa51a0712a4e6633e3e6cd6c61b60f5fc12cdba88bd00424"
+    },
+    "C": {
+     "east": "633d34672cbb6fe85a95bcc893397362482d6966bf169cbfd04b3da5dc11444d",
+     "north": "c1993ca44e1a2674a83eafd54fba7d8f6f11cb6ab77625ebe9548beeec2f00b7",
+     "south": "28ef70d91eecd6666ec7a4d60e2c95c82f966e141852a1b4f9f246e3755c99cc"
+    },
+    "D": {
+     "east": "b1cf9cb79faa7a86bcdc23f674f40b2e3c34ba8f1e576ccb115d04c0dff02898",
+     "north": "0365aef56ed78f6d87d8f6a146f1a4566b67f75732a51d3fe032853dca914091",
+     "south": "1a4b0c978e5652e8283587c64c7b077b3466ed595dec9052e9e0c56c3cb2f3f0"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Bursa/Bursa",
+    "B": "swanimals/Bursa/Bursa",
+    "C": "swanimals/Bursa/Bursa",
+    "D": "swanimals/Bursa/Bursa_Swimming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render donorart_bursa_swimming_v1",
+    "C": "donor original \u2014 ?",
+    "D": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [],
+   "res": "swanimals/Bursa/Bursa",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "bursa"
+  },
+  "RSW_FrogDog": {
+   "columns": {
+    "A": {
+     "east": "2cc60aabbf56a580e263ae2f84e9eec9ba626faf81a18b7a02e08c9457afb126",
+     "north": "0246ec2415ecfd9034c59d538641fbe4d8da89440dddaf09979e633782b98696",
+     "south": "f8089263f80ca0b9436a1a950955983fadf8b55b85f2d9fff63e1ce11bebc7da"
+    },
+    "B": {
+     "east": "d9171ed993459af898d4feaf3984e3872380519627eb4c1a54c34c2d5049a3a2",
+     "north": "365494b4a157d3d16c758999491683442c768f501cb09e40bad4785179930d51",
+     "south": "1d4eec5afe2df4867e0af383c7ca095ef076f70c154bccd7822e0492c68ab03d"
+    },
+    "C": {
+     "east": "b1f12e29159bd81d7ac810cef282d945b1ecb8f3ff9491b88f5d22ff2fd28d3b",
+     "north": "8163f03247a90a145c21e0a8124be1be541a1c66f9325a8d89a840f03620a17f",
+     "south": "eed9ea9d485ea61b258e338e385bd924e20c4294642c5e21f5f0519d44d13d7b"
+    },
+    "D": {
+     "south": "7776199f131e9d767a28bc7d5f4f1dd7ed761e8466c793d54a0da9b70a6f8f6f"
+    },
+    "E": {
+     "north": "ae43ce1983e82ad7c9424dc77512376850a6fc6152be687f48488c0aebfbfce2"
+    },
+    "F": {
+     "east": "c4032bae8b803580285e427b679be991f5e66c54f1d525b5b953cc021a34151f",
+     "north": "c706032868adf06a4ee4ff8a003a63e349f7dbb11c0d513395c30d8f1387c2e2",
+     "south": "8b108ac830aca90b33cb4e8820b8ba724d2f4c31db2835ae3b219d6ac8aa134e"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/FrogDog/FrogDog",
+    "B": "swanimals/FrogDog/FrogDog",
+    "C": "swanimals/FrogDog/FrogDog",
+    "D": "swanimals/FrogDog/FrogDog",
+    "E": "swanimals/FrogDog/FrogDog",
+    "F": "swanimals/FrogDog/FrogDog_j"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render donorart_frogdog_j_v1 \u2014 grader flagged (advisory)",
+    "C": "render donorart_frogdog_v1 \u2014 grader flagged (advisory)",
+    "D": "render donorart_frogdog_j_v2",
+    "E": "render donorart_frogdog_v2 \u2014 grader flagged (advisory)",
+    "F": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [],
+   "res": "swanimals/FrogDog/FrogDog",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "frogdog"
+  }
+ },
+ "sheetId": "probe",
+ "snapshotId": "3fe3ba9ddc7780e6"
+}

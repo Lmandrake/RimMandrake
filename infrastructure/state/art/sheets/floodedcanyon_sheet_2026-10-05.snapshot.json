@@ -1,9 +1,9 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-10-10T23:27:46-0700",
+ "built": "2026-10-19T05:16:48-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 550 active",
+ "loadOrder": "live ModsConfig.xml: 535 active",
  "rows": {
   "AA_Murkling": {
    "columns": {
@@ -23,7 +23,7 @@
     "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render sheet_redo_AA_Murkling_v2"
    },
    "pools": [],
@@ -53,21 +53,31 @@
     "C": {
      "single": "d92285d8adf2c75ae3f305b9e080e09645e079db354af088ca42c8ef44b9b26c"
     },
-    "D": {
-     "single": "8ca61330cac095970bb51d58fe04e0eac14a4c7394d6b333f909adb13eb1a278"
+    "E": {
+     "single": "c0a71d0fe14c34203a73920c60f22925607eb550c7d22184f50dbc5fcabc8062"
+    },
+    "F": {
+     "single": "e6cb00e4d05c8aa210428b8e387ec03a90d7a6f64c8858d4464d9b1ff850812a"
+    },
+    "G": {
+     "single": "36b7b61f0f61c900206de9c4363c27b230d0c82426d4cd0ffe62844898b7824f"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_CrackedThornwood",
     "B": "Things/Plant/RM_CrackedThornwood",
-    "C": "_byname",
-    "D": "Things/Plant/RM_CrackedThornwood"
+    "C": "Things/Plant/RM_CrackedThornwood",
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant TwistingThornwood_a (1 of 2) \u2014 FloodedCanyon",
-    "B": "render gapall_RM_CrackedThornwood_v1",
-    "C": "render gapfin_RM_TwistingThornwood_v1",
-    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThornwood_b (2 of 2) \u2014 FloodedCanyon"
+    "A": "IN GAME \u2014 random variant TwistingThornwood_a (3 of 3) \u2014 CrackedLands",
+    "B": "IN GAME \u2014 random variant RM_CrackedThornwood_c (1 of 3) \u2014 CrackedLands",
+    "C": "IN GAME \u2014 random variant RM_CrackedThornwood_d (2 of 3) \u2014 CrackedLands",
+    "E": "render dregen_RM_CrackedThornwood_RMCrackedThornwoodd_v1",
+    "F": "render dregen_RM_CrackedThornwood_TwistingThornwooda_v1",
+    "G": "render dregen_RM_TwistingThornwood_TwistingThornwooda_v1"
    },
    "pools": [
     "Things/Plant/RM_CrackedThornwood"
@@ -77,7 +87,10 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F",
+    "G"
    ],
    "shownBase": [
     "0a4a0528b19b365cb7a0b501b52ddea4f0e53a06887959bdc0164c46f91ee60a",
@@ -100,7 +113,7 @@
     "B": "Things/Plant/RM_Harrovaq/RM_Harrovaq"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon",
+    "A": "IN GAME \u2014 CrackedLands",
     "B": "render enact_eb31f5eb_harrovaq_v1"
    },
    "pools": [],
@@ -132,7 +145,7 @@
     "C": "Things/Plant/RM_Luqqim/RM_Luqqim"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon",
+    "A": "IN GAME \u2014 CrackedLands",
     "B": "render enact_080134bc_luqqim_v1",
     "C": "render enact_d14c4f0b_luqqim_v2"
    },
@@ -150,11 +163,6 @@
   },
   "RM_Muttavaq": {
    "columns": {
-    "A": {
-     "east": "10733b9eb62bf2d286f1e52f987513346df6178db74b30db6afa865dc338a5f0",
-     "north": "fbb8738669fb2de56eed7f43e8970386360c658906ed1502ebbc23a668f016d9",
-     "south": "28aec978958784677edf51eca63ed8c791037cf25fc653b309cab34075fa6205"
-    },
     "B": {
      "south": "07c885ae00517ab3f8063debe64cae070e645ae90683565f55cedae2be352c31"
     },
@@ -174,21 +182,19 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Thrumbo/Thrumbo",
-    "B": "_byname",
+    "B": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq",
     "C": "_byname",
-    "D": "_byname",
-    "E": "_byname"
+    "D": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq",
+    "E": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq"
    },
    "labels": {
-    "A": "donor original \u2014 Vanilla Textures Expanded",
     "B": "render RM_Muttavaq_v2",
     "C": "render RM_Muttavaq",
-    "D": "render enact_02b55f2e_muttavaq_v1",
+    "D": "IN GAME \u2014 CrackedLands",
     "E": "render RM_Muttavaq"
    },
    "pools": [],
-   "res": "Things/Pawn/Animal/Thrumbo/Thrumbo",
+   "res": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq",
    "reserved": [
     "A",
     "B",
@@ -225,7 +231,7 @@
     "C": "Things/Plant/RM_Nabbuq/RM_Nabbuq"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon",
+    "A": "IN GAME \u2014 CrackedLands",
     "B": "render enact_688d4c1b_nabbuq_v2",
     "C": "render enact_90c43f6c_nabbuq_v1"
    },
@@ -296,7 +302,7 @@
     "C": "Things/Plant/RM_Ruqqal/RM_Ruqqal"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon",
+    "A": "IN GAME \u2014 CrackedLands",
     "B": "render enact_154c12cf_ruqqal_v2",
     "C": "render enact_38e46a04_ruqqal_v1"
    },
@@ -330,7 +336,7 @@
     "C": "Things/Plant/RM_Sevvuq/RM_Sevvuq"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon",
+    "A": "IN GAME \u2014 CrackedLands",
     "B": "render enact_70b1f8a2_sevvuq_v1",
     "C": "render enact_f95acc37_sevvuq_v2"
    },
@@ -357,21 +363,36 @@
      "east": "48996f4d3e2199d587a1f4858ee7db77524b679e92e8f6dc27338f8a07b1ffaa",
      "north": "bcb8875dfee3ee396495a90a77bb83e053da52254d020eed3d199fa064d79f56",
      "south": "c1eabb2373a2a778345f05ff8141de394e66993238981ca8ce9ddffa32353772"
+    },
+    "C": {
+     "north": "e0d496dd33cc622b05e79a36ff6d1470e13809565aa8594057b8c9ba13c7b40b",
+     "south": "e92f82115616c0411080d402982af7ce9277aa019bde56d8c746d1a390a2d1f7"
+    },
+    "D": {
+     "east": "a139e27263207aead01abe597b57e2a887f81711021823916d02a09ec4220aa9",
+     "north": "e0d496dd33cc622b05e79a36ff6d1470e13809565aa8594057b8c9ba13c7b40b",
+     "south": "e92f82115616c0411080d402982af7ce9277aa019bde56d8c746d1a390a2d1f7"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Monkey/Monkey",
-    "B": "_byname"
+    "B": "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq",
+    "C": "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq",
+    "D": "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq"
    },
    "labels": {
     "A": "donor original \u2014 Vanilla Textures Expanded",
-    "B": "render RM_Tarruq"
+    "B": "render RM_Tarruq",
+    "C": "IN GAME \u2014 CrackedLands",
+    "D": "render dregen_RM_Tarruq_Monkey_v1"
    },
    "pools": [],
-   "res": null,
+   "res": "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [
     "48996f4d3e2199d587a1f4858ee7db77524b679e92e8f6dc27338f8a07b1ffaa",
@@ -414,11 +435,11 @@
    },
    "labels": {
     "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
-    "B": "IN GAME \u2014 random variant TwistingThorngrass_a (1 of 3) \u2014 FloodedCanyon",
+    "B": "render gapfin_RM_TwistingThorngrass_v1",
     "C": "render enact_10c96cdf_twistingthorngrass_v1",
-    "D": "render enact_cf1eb3bf_twistingthorngrass_v2",
-    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThorngrass_b (2 of 3) \u2014 FloodedCanyon",
-    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThorngrass_c (3 of 3) \u2014 FloodedCanyon"
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThorngrass_a (1 of 3) \u2014 CrackedLands",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThorngrass_b (2 of 3) \u2014 CrackedLands",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThorngrass_c (3 of 3) \u2014 CrackedLands"
    },
    "pools": [
     "Things/Plant/RM_TwistingThorngrass"
@@ -468,12 +489,12 @@
     "F": "Things/Plant/RM_TwistingThornweed"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant TwistingThornweed_a (1 of 3) \u2014 FloodedCanyon",
-    "B": "IN GAME \u2014 random variant TwistingThornweed_c (3 of 3) \u2014 FloodedCanyon",
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "B": "IN GAME \u2014 random variant TwistingThornweed_c (3 of 3) \u2014 CrackedLands",
     "C": "render enact_546016b1_twistingthornweed_v1",
-    "D": "render enact_b39e17ba_twistingthornweed_v2",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThornweed_a (1 of 3) \u2014 CrackedLands",
     "E": "render legacy_d52a8f4d_plant_twistingthornweed_v1",
-    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThornweed_b (2 of 3) \u2014 FloodedCanyon"
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThornweed_b (2 of 3) \u2014 CrackedLands"
    },
    "pools": [
     "Things/Plant/RM_TwistingThornweed"
@@ -495,11 +516,6 @@
   },
   "RM_Uttaqar": {
    "columns": {
-    "A": {
-     "east": "3ee9327363117842d579082d05cc4ddee65b4731d5aa6538a83a72705f822c33",
-     "north": "54e72766e7a5784c52fb42ff1343c7d9adb93bfa18cb7c6403b5966fe4512214",
-     "south": "d715dc9a1cd18a110bf6d6ea2e7680490c1c8d78683863525afa4a59e53f7dc3"
-    },
     "B": {
      "east": "8b7a2de527b39309663ae8aef748acd22205f2c0c821af952e93c2de2c913079",
      "north": "719248047b779eed2af25ccb94df2e1fb0392a481cf9d066a20bffaed566bdca",
@@ -512,27 +528,33 @@
     },
     "D": {
      "east": "9e37b9df33f588c972a0d471be90a1124890d5ea238824b39bfe5be926d3fce3"
+    },
+    "E": {
+     "east": "8a09c2588cb0092fb813aa17d518c2642ea040b75c9b9ff42fdff159b64ad722",
+     "north": "de4c20a606ee3699c03238118f51e3e099fde5a426c970d450611fbf95c74c3f",
+     "south": "e5ced273729ef9f0c1fceb24bc78f89e661011ccba4245ca7a6e559d5f1ea9e8"
     }
    },
    "graphic_of": {
-    "A": "Animal/RockTroll/RockTroll",
-    "B": "Animal/RockTroll/RockTrollBaby",
-    "C": "_byname",
-    "D": "_byname"
+    "B": "StandIn/Animal/RockTroll/RockTrollBaby",
+    "C": "Things/Pawn/Animal/FloodedCanyon/RM_Uttaqar/RM_Uttaqar",
+    "D": "_byname",
+    "E": "StandIn/Animal/RockTroll/RockTrollBaby"
    },
    "labels": {
-    "A": "IN GAME \u2014 Dark Ages : Beasts and Monsters",
-    "B": "IN GAME \u2014 Dark Ages : Beasts and Monsters",
-    "C": "render RM_Uttaqar",
-    "D": "render enact_uttaqar_baby_7dc56b70_uttaqar_v1 \u2014 failed canon check"
+    "B": "IN GAME \u2014 CrackedLands",
+    "C": "IN GAME \u2014 CrackedLands",
+    "D": "render enact_uttaqar_baby_7dc56b70_uttaqar_v1 \u2014 grader flagged (advisory)",
+    "E": "render dregen_RM_Uttaqar_RockTrollBaby_v1"
    },
    "pools": [],
-   "res": "Animal/RockTroll/RockTroll",
+   "res": "StandIn/Animal/RockTroll/RockTrollBaby",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "002334271c134fad2ef45a535a24704e804366e0312ef574edc0d271ce162c71",
@@ -560,19 +582,24 @@
     },
     "D": {
      "single": "d9c92d083ee4531b610dabdd92858ff45f5bc1a2da474ef4540125660236badf"
+    },
+    "E": {
+     "single": "a61c39045fe951f926f5bd9dfaeb00c1c103f0104cd1df080a253d53fd11aa62"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Veqma",
     "B": "_byname",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RM_Veqma (1 of 1) \u2014 FloodedCanyon",
+    "A": "IN GAME \u2014 random variant RM_Veqma (1 of 1) \u2014 CrackedLands",
     "B": "render enact_fcveqma_real_v1",
     "C": "render enact_fcveqma_real_v2",
-    "D": "render enact_fcveqma_real_v3"
+    "D": "render enact_fcveqma_real_v3",
+    "E": "render dregen_RM_Veqma_RMVeqma_v1"
    },
    "pools": [
     "Things/Plant/RM_Veqma"
@@ -582,7 +609,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "bdb7ac0f5185c8f0190369f9782444ff4bb243173e15d67d6295078d612cbb02"
@@ -603,7 +631,7 @@
     "B": "Things/Plant/RM_Zennaq/RM_Zennaq"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon",
+    "A": "IN GAME \u2014 CrackedLands",
     "B": "render enact_1d929b27_zennaq_v1"
    },
    "pools": [],
@@ -638,24 +666,49 @@
      "4_north": "fbc831bb620b7a45a897697a891e8d527480eff75c78c1ee99ca22d3be0e4a9e",
      "4_south": "a6c8756d7659797c36ac5e813bd0482b5fb4de72d20266a8fd8bcb5b0694bdaf"
     },
-    "D": {
-     "east": "8431d77ed49d3f3de751c42c06946b1699b3f2ae6eec60ecd5e66e52d74b4535"
-    },
     "E": {
      "east": "5c0ca893f552c0f9187f9516a3cdb19cee532bfab9a816600ee58504db949ba8"
+    },
+    "F": {
+     "east": "5c0ca893f552c0f9187f9516a3cdb19cee532bfab9a816600ee58504db949ba8",
+     "north": "d13cc142da0e1900dc50e2afc9d82ba124f12bc5b7b0d4231b11654b981c6693",
+     "south": "fe517111ee239991393c05991ef4aea72dc42434e52f52b3a0f8591f65917ec7"
+    },
+    "G": {
+     "north": "d13cc142da0e1900dc50e2afc9d82ba124f12bc5b7b0d4231b11654b981c6693",
+     "south": "fe517111ee239991393c05991ef4aea72dc42434e52f52b3a0f8591f65917ec7"
+    },
+    "H": {
+     "east": "97a030819d2a629c7419b54f806a768020bdd2baa16445ee19106bd4cdeb23c1",
+     "north": "36f1fe5be78dbb6dbc3e172803ef9529a18357c6cea5091be4424d9396300e88",
+     "south": "193f16ac5764c9485b1050d23f682d19af33e02bf0b95e69e6c36423c51dd1cf"
+    },
+    "I": {
+     "east": "3adc1122fe1c0fe5c69037bec07f010b6fefc24970231aa3d878cf3a19dca7a8"
+    },
+    "J": {
+     "single": "3058d19f16dd71855ca1be0fd93c0179e962880fbaa6e63f3dc93458ed75e27d"
     }
    },
    "graphic_of": {
     "A": "swanimals/CanCell/CanCell",
     "C": "_flip:swanimals/CanCell/CanCell_Flying_",
-    "D": "swanimals/CanCell/CanCell",
-    "E": "swanimals/CanCell/CanCell"
+    "E": "swanimals/CanCell/CanCell",
+    "F": "swanimals/CanCell/CanCell",
+    "G": "swanimals/CanCell/CanCell",
+    "H": "swanimals/CanCell/CanCell",
+    "I": "swanimals/CanCell/CanCell",
+    "J": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
+    "A": "history SWBestiary 2026-09-12",
     "C": "IN GAME \u2014 CanCell_Flying_",
-    "D": "render canonregen_rsw_cancell_v1 \u2014 failed canon check",
-    "E": "render canonregen_rsw_cancell_v2 \u2014 failed canon check"
+    "E": "render canonregen_rsw_cancell_v2 \u2014 grader flagged (advisory)",
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "render ",
+    "H": "render standtall_b1_cancell",
+    "I": "render canonregen_rsw_cancell_v1 \u2014 grader flagged (advisory)",
+    "J": "render enact_f1303f6c_cancell_v1"
    },
    "pools": [],
    "res": "swanimals/CanCell/CanCell",
@@ -664,7 +717,12 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
    ],
    "shownBase": [
     "193f16ac5764c9485b1050d23f682d19af33e02bf0b95e69e6c36423c51dd1cf",
@@ -739,6 +797,11 @@
      "4_east": "4458dc8bcef509555c53722d444141ea54edee1d44b125ed95453b5df6f413fd",
      "4_north": "360ca5fb897f01bf78417491f298b232e150794946e649576c7c68aa2b51f524",
      "4_south": "a8dd1f199a5b1a7b2e6c0d63cde5aa3f10c61e21f2b6906316dc82a8beb890e8"
+    },
+    "H": {
+     "east": "f60d39e95d3acd98fc9cbaa5f34e77dac892e4c46563e20e682bc947990e4cb2",
+     "north": "1516b7ee12d9b1c6e7d6772e34afc89717628e8483f4c20e14c47305f2cd3868",
+     "south": "0ac72b280765e0e43ed53b6399c4d4eafb3e97f6d52aad5fe79373b553433f97"
     }
    },
    "graphic_of": {
@@ -748,16 +811,18 @@
     "D": "swanimals/Convor/Convor",
     "E": "swanimals/Convor/Convor_f",
     "F": "_flip:swanimals/Convor/Convor_f_Flying_",
-    "G": "_flip:swanimals/Convor/Convor_Flying_"
+    "G": "_flip:swanimals/Convor/Convor_Flying_",
+    "H": "swanimals/Convor/Convor"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
+    "A": "history SWBestiary 2026-09-12",
     "B": "render regen_ls2_canon_convor_v2",
-    "C": "render regen_ls2_canon_convor_v3",
+    "C": "IN GAME \u2014 SWBestiary",
     "D": "render leaningscrub_convor_v1",
     "E": "IN GAME \u2014 SWBestiary",
     "F": "IN GAME \u2014 Convor_f_Flying_",
-    "G": "IN GAME \u2014 Convor_Flying_"
+    "G": "IN GAME \u2014 Convor_Flying_",
+    "H": "render dregen_RSW_Convor_Convorf_v1"
    },
    "pools": [],
    "res": "swanimals/Convor/Convor",
@@ -768,7 +833,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "shownBase": [
     "10b4b9ef4ad7f7afb05149181f27718035f9ce10031f464d0f9431d3ed1d2188",
@@ -874,21 +940,39 @@
      "east": "6cbc4b796388c153dcc5a8c1d9fc4bf2f3a8eae42040818cc7314bdf3015bdb8",
      "north": "d7f9e0db161bdd01c279592a796f51e81620840638902f951ad2b1d271635355",
      "south": "15b3b3ef2e66105effa546faf1e7370ed5fd503764deac26302f4f8c5b076297"
+    },
+    "C": {
+     "single": "dab919d1f3ea3305c4bcc215c2f0f178b550b65c89ee8b9a5c5accddd0cead04"
+    },
+    "D": {
+     "single": "a05f46437cb14dd5a3878bea6e70672eae7fa15ce251508d7106111eb0a46a9f"
+    },
+    "E": {
+     "single": "7c3f5d50e9eb546d0e8a3d087c7a73f7c27263fd3616ed516b1f169a35389422"
     }
    },
    "graphic_of": {
     "A": "swanimals/Gornt/Gornt",
-    "B": "swanimals/Gornt/Gornt"
+    "B": "swanimals/Gornt/Gornt",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render enact_0ae79c6a_gornt_v1"
+    "A": "history SWBestiary 2026-09-17",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "render dregen_RSW_Gornt_Meat_MeatGornta_v1",
+    "D": "render dregen_RSW_Gornt_Meat_MeatGorntb_v1",
+    "E": "render dregen_RSW_Gornt_Meat_MeatGorntc_v1"
    },
    "pools": [],
    "res": "swanimals/Gornt/Gornt",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "shownBase": [
     "03ba95e2744b017665c7808ce14e1dda41909e47a82756dcfd85e4502eb0855a",
@@ -908,21 +992,29 @@
      "east": "38443b91d00737824fd772d402caf561ed564b20c96f5f2047a34fb79ffb4159",
      "north": "e28e377135c233be0fd1a5c6b0ea0c8ed13994682c1dbb2239f990ed3afbf841",
      "south": "0e15dac3e552fdc438af68606d299b8ef5596a8f79b30c447bc63a81e28e8a0c"
+    },
+    "C": {
+     "east": "a2790f567690070fd77faf54dfe534df28dd826715c3b841a69ef3be21aa2bca",
+     "north": "3bbef1389b7ab59c626f6e37993db45eb153311107352af9139d8bde845c3293",
+     "south": "f0d2b9b06684c2fbc84be900dbd9402f1022657ebe066a34ffb5722389b86c53"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea",
-    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea"
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea",
+    "C": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render enact_5e098e7b_mutagenicnorphea_v1"
+    "A": "history SWBestiary 2026-09-11",
+    "B": "render enact_5e098e7b_mutagenicnorphea_v1",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "3bbef1389b7ab59c626f6e37993db45eb153311107352af9139d8bde845c3293",
@@ -942,21 +1034,29 @@
      "east": "09d8c617b8b88db486d695bcfcbc3be2bc3039c6760ec603d483d23e2b27a6f5",
      "north": "365ec9280543259a9b89f3b71097138362f6ccf2408bc4e368de4044b96f5467",
      "south": "c2e7459b97be904d91d6bda3de549eb4be54d10e4251e1dc31f5db020045d8f3"
+    },
+    "C": {
+     "east": "15716966a9bcf1110beb87170e53b3a01874f696738b043423df45987ca3b641",
+     "north": "68d5b3deed22ca192874362d868e6098136e8fd206d2cdb20a6860bd1c280fd4",
+     "south": "95202a8d6c9413cf060af724c6d93f0557c7730660eb8f1bf15fa95bf04505b9"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper"
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper",
+    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render enact_f4be0239_sandleaper_v1"
+    "A": "history SWBestiary 2026-09-11",
+    "B": "render enact_f4be0239_sandleaper_v1",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "15716966a9bcf1110beb87170e53b3a01874f696738b043423df45987ca3b641",
@@ -976,21 +1076,29 @@
      "east": "9fd15b4e16c9636d18a33ab6ecb8331220621b8a9510d2b1bdbfc442213a7d4e",
      "north": "6b9f1164bb9b1ac3089dfe7a52f16ecc75222a6356ea5dc0f25d183b2fe53902",
      "south": "022ddcc51e990c08b23c5f428a81aa4369938f02fd1e4b74a1ddbeac0407c206"
+    },
+    "C": {
+     "east": "bc6ad51af41659199083f62fe71a4d0e2ac8ca0acca05c2ac9661fcae5e8f13d",
+     "north": "c3cf853c655a06112072a66e16e5ec18be8424179485b3567a9a7416fb4c549d",
+     "south": "77adf2e56b7a276a92efb870b941bed515ad7da8f3701e098bad54d8bb405c72"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar"
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar",
+    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render enact_0232cc80_sandpillar_v1"
+    "A": "history SWBestiary 2026-09-11",
+    "B": "render enact_0232cc80_sandpillar_v1",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "77adf2e56b7a276a92efb870b941bed515ad7da8f3701e098bad54d8bb405c72",
@@ -1006,25 +1114,26 @@
      "north": "65b3c7b11712b1d1c1944d9118a9489017baf7ea120738497aa9d02ed67f3042",
      "south": "d56475fa9078e1308759e126d9b5aa58e2e00543989820a4442308183c9429f1"
     },
-    "B": {
+    "C": {
      "east": "48867cc5da87547a2d09615f615881ad17efffbfe8c4e8d3679b8bf596ec59b9",
      "north": "8c4dae5133f72ab2bb19428c5e7e9e00ee6cd24273a6d808f75b2572d962ace9",
-     "south": "092e8d9609c508f8d3b3f5eb33b740b08662cc4bf1ca8c7b5e70296b8751a41e"
+     "south": "31f03909505c8865d2aea6a75dfdbda42e9d285fc6b3b01c2302e06e0325e844"
     }
    },
    "graphic_of": {
     "A": "swanimals/Woolamander/Woolamander",
-    "B": "swanimals/Woolamander/Woolamander"
+    "C": "swanimals/Woolamander/Woolamander"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render enact_90d52757_woolamander_v1"
+    "A": "history SWBestiary 2026-09-18",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "swanimals/Woolamander/Woolamander",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "4fbc5a837cbb5e75600f27dc7f379566ebb47f91fe61e07a1bea726901cdaefd",
@@ -1040,31 +1149,32 @@
      "north": "17c45c085dcea55749a53339b048c80a5f83fc361067b4f33f76601cd6b327b4",
      "south": "5f63030396b0f0a31ce7be3d5c9037df7baac36d3a4695d975c3c6604ef094ae"
     },
-    "B": {
-     "east": "5fbb4188db3d7a6285268e464520b2662a7ca4e709b31c5adf4f01f67ef7500e"
-    },
     "C": {
      "east": "8ea99995fe401070c3f0dc98ace839d6d7122f4c5106ab6fe4853dbf2cd6c709",
      "north": "385211f4021ddd67f669db9cc3118aca4621dc9feb28ec88ef8e4b624700622c",
      "south": "695c088b859abcb71fd7c12acf5ff70268003b80e2f22d8d521f247a363a9fff"
+    },
+    "D": {
+     "east": "7cfa01be7070a1fed269acfc460bfebd9a6740c96e8bcca320e98fa7ba59590c"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
-    "B": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render enact_a1894dc1_emperorvulture_v1 \u2014 failed canon check",
-    "C": "render enact_rut_ulvassk_alien_v3"
+    "C": "render enact_rut_ulvassk_alien_v3",
+    "D": "render enact_a1894dc1_emperorvulture_v1 \u2014 grader flagged (advisory)"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "17c45c085dcea55749a53339b048c80a5f83fc361067b4f33f76601cd6b327b4",
@@ -1084,21 +1194,29 @@
      "east": "b6358fda56656551fac2647f349023fe7faa907cc00e773c0411d9e30edcdc1c",
      "north": "2e5ad1fdc0a41b7b336d52e08eea49f963e0f1aa4de5c9a12adf1e019f01763c",
      "south": "0d8a262a1b71e0ad081f453069b440ae38db071bdde679b8c0f9b1604e276458"
+    },
+    "C": {
+     "east": "ed99bc9e0a98d1c1084c2452d1edff277ada6e4dbfce72e00008d72dc7affbd0",
+     "north": "071947162488dd2df5a1b84d71da5e086ccff04f91f599b2b9cbaae045d8c63a",
+     "south": "ab1308b4b4f592ffe91dcb17505fa768665777fba10fab60e6c5630215a9d0f1"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
-    "B": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper"
+    "B": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
+    "C": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render enact_15eaaf39_sealedsleeper_v1"
+    "A": "history UtinniPatches 2026-10-02",
+    "B": "render enact_15eaaf39_sealedsleeper_v1",
+    "C": "IN GAME \u2014 UtinniPatches"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "72b1a2a8c4f576cb9abc63c59808a2b380abe8a86955a19ffde53308aa26ea88",
@@ -1109,5 +1227,5 @@
   }
  },
  "sheetId": "floodedcanyon_sheet_2026-10-05",
- "snapshotId": "dbe36c1fa3bcab24"
+ "snapshotId": "093de2afae8c6e7d"
 }

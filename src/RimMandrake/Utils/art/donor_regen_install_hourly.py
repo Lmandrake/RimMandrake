@@ -53,7 +53,21 @@ def main():
     if DRY:
         return log(f"plan: {len(json.loads(plan.read_text())['rows'])} installable rows (dry run installs nothing)")
     d = {k: d.get(k, []) for k in ("installed", "repointed", "retired", "refused", "already")} | d
-    log(f"{len(d['installed'])} installed, {len(d['refused'])} refused, plan-log={m.group(1)}")
+    # owner-KEPT refusals are SHELVED (owner 2026-10-19: the renders wait as unassigned candidates on the item's sheet,
+    # the kept picture stays): logged as a count, never re-reported as new. Anything else refused is still "refused".
+    shelved = [x for x in d["refused"] if "owner-KEPT" in (x.get("why") or "")]
+    d["refused"] = [x for x in d["refused"] if x not in shelved]
+    SH = REPO / "Transient" / "donor_regen_shelved.json"
+    try:
+        seen = set(json.loads(SH.read_text()))
+    except (OSError, ValueError):
+        seen = set()
+    fresh = sorted({x["job"] for x in shelved if x["job"]} - seen)
+    SH.write_text(json.dumps(sorted(seen | {x["job"] for x in shelved if x["job"]})))
+    log(f"{len(d['installed'])} installed, {len(shelved)} shelved (owner-KEPT, {len(fresh)} newly), "
+        f"{len(d['refused'])} refused, plan-log={m.group(1)}")
+    if fresh:
+        log("newly shelved (back-fill them onto sheets: art.py backfill artpipe, refresh_sheets.py): " + ", ".join(fresh))
     paths = sorted(set(d["installed"]) | set(d["repointed"]) | set(d["retired"]))
     n = len(d["installed"])
     if not paths:

@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_firespit_with_zisska",
- "built": "2026-10-16T07:56:42-0700",
+ "built": "2026-10-19T05:14:53-0700",
  "census": "Transient/biome_ffar/firespit_with_zisska.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 20 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 535 active",
  "rows": {
   "RM_FireSpit": {
    "columns": {
@@ -28,7 +28,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1fa6f5eec50ec3d61c7bd2dddd3ba4cf48482fca49687012aa3120de401922bf",
+    "66bf71ad6509a706cba3523f665703269d51bc1f7234525b43514c12ae607bcc"
+   ],
    "subject_key": "firespit"
   },
   "RM_Zisska": {
@@ -50,7 +53,11 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "420b1bc1455e0613b65b478584ed4e5c0f88cf4df75215bcc1a5b031f116e8b2",
+    "52a8914db58a3ab19ee5e7cb8e484ac2fd53e44470bd353c3b6b957b2d477e5c",
+    "6d00d06806209611fbe24dcb7637f714548a7b6a2f2570d0ce386f894091edaa"
+   ],
    "subject_key": "zisska"
   }
  },

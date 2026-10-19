@@ -1,21 +1,36 @@
 {
  "biome": "RM_GreySea",
- "built": "2026-10-10T23:30:38-0700",
+ "built": "2026-10-19T05:25:08-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 550 active",
+ "loadOrder": "live ModsConfig.xml: 535 active",
  "rows": {
   "RM_BrineCrown": {
    "columns": {
     "B": {
      "single": "6b2382baec6485fca031d00c424d1401d266b27bdd8f97e4dfe39445d74a0b63"
+    },
+    "C": {
+     "single": "e032bfdc364584b66cf4ce5c93c9b03387c8cadf4bec56594b224e87dbf8663e"
+    },
+    "D": {
+     "single": "9e988c1f8caeea392653c8345b8b2ce4ede731ccc60180c184bcc9555fad1843"
+    },
+    "E": {
+     "single": "cbe6318df7d5d3d75b43e6f9c2549161bea6c8aa11275837215278a383986b43"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_BrineCrown"
+    "B": "Things/Plant/RM_GreySea/RM_BrineCrown",
+    "C": "Things/Plant/RM_GreySea/RM_BrineCrown",
+    "D": "Things/Plant/RM_GreySea/RM_BrineCrown",
+    "E": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_BrineCrown_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_BrineCrown_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render greysea_brinecrown_retracted_v1",
+    "D": "render greysea_brinecrown_retracted_v2",
+    "E": "render dregen_RM_BrineCrown_RMBrineCrownA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_BrineCrown"
@@ -23,7 +38,10 @@
    "res": "Things/Plant/RM_GreySea/RM_BrineCrown",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "shownBase": [
     "1a0feeb83ffe925074a4ade7afe1712eb30711f5bcfe3e4d922b8f8dcacf393b",
@@ -35,13 +53,18 @@
    "columns": {
     "B": {
      "single": "1f18c26308a32b08c060e990fda2563c8998e6faee0f85f135919e8982065336"
+    },
+    "C": {
+     "single": "b1824a6be37c0e66ef20f5b3025f991f94cf247f8871d2dc154024245865a5b8"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_Brinecomb"
+    "B": "Things/Plant/RM_GreySea/RM_Brinecomb",
+    "C": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_Brinecomb_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_Brinecomb_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render dregen_RM_Brinecomb_RMBrinecombA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_Brinecomb"
@@ -49,7 +72,8 @@
    "res": "Things/Plant/RM_GreySea/RM_Brinecomb",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "1f18c26308a32b08c060e990fda2563c8998e6faee0f85f135919e8982065336",
@@ -97,13 +121,18 @@
    "columns": {
     "B": {
      "single": "1812567166ee319088961525aa333cbc13e2fad5a96d37273c70334c2a12f540"
+    },
+    "C": {
+     "single": "dc5c72f8c24780d4b7798a6ba5305016f143148d286386934d959e1e2ee00fc1"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_CruciblePod"
+    "B": "Things/Plant/RM_GreySea/RM_CruciblePod",
+    "C": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_CruciblePod_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_CruciblePod_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render dregen_RM_CruciblePod_RMCruciblePodA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_CruciblePod"
@@ -111,7 +140,8 @@
    "res": "Things/Plant/RM_GreySea/RM_CruciblePod",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "1812567166ee319088961525aa333cbc13e2fad5a96d37273c70334c2a12f540",
@@ -123,13 +153,18 @@
    "columns": {
     "B": {
      "single": "0129a8c15548fb7c01848d4eddf6a50620a37227e57bf0789b468ff8c2a2b621"
+    },
+    "C": {
+     "single": "5639997fa6f21e8336ca7c9de2043670bc7e655c249fa7b5101081fe31ce706f"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_CubicSculpture"
+    "B": "Things/Plant/RM_GreySea/RM_CubicSculpture",
+    "C": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_CubicSculpture_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_CubicSculpture_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render dregen_RM_CubicSculpture_RMCubicSculptureA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_CubicSculpture"
@@ -137,7 +172,8 @@
    "res": "Things/Plant/RM_GreySea/RM_CubicSculpture",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "0129a8c15548fb7c01848d4eddf6a50620a37227e57bf0789b468ff8c2a2b621",
@@ -151,19 +187,27 @@
      "east": "972f1cc7c0ecb8483ff464fffd56ce5f0da310873a0bcf480c9e9d3e0844ebfd",
      "north": "b4e7d5b6dd5244d3e16a40b23c70ef326d4c98558d3db6f1134d06e4fe84bfb6",
      "south": "26701bb3ba801aa4001f090ac35fdc7f86b2cd98a179d3058e2b0e40dac5ebb1"
+    },
+    "C": {
+     "east": "972f1cc7c0ecb8483ff464fffd56ce5f0da310873a0bcf480c9e9d3e0844ebfd",
+     "north": "4c1eb201b00c7b80e0a2481e2d2e742f4a4669037dbc44aebddb120472338d40",
+     "south": "f3c5c70ad10297de4daf28f174fa7cb0df42345ee005108d021981bb83af9a1f"
     }
    },
    "graphic_of": {
-    "B": "Things/Pawn/Animal/RM_Essarn/RM_Essarn"
+    "B": "Things/Pawn/Animal/RM_Essarn/RM_Essarn",
+    "C": "Things/Pawn/Animal/RM_Essarn/RM_Essarn"
    },
    "labels": {
-    "B": "IN GAME \u2014 TerminalBiomes"
+    "B": "render greysea_essarn_v1",
+    "C": "IN GAME \u2014 TerminalBiomes"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Essarn/RM_Essarn",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "26701bb3ba801aa4001f090ac35fdc7f86b2cd98a179d3058e2b0e40dac5ebb1",
@@ -512,13 +556,18 @@
    "columns": {
     "B": {
      "single": "f38b9394211b43cae8a5415f3d2a4da9ac7f41416bc485473da1fe2672149dd6"
+    },
+    "C": {
+     "single": "8ea6a9a093b8603bfd36cb940df19d7e378a9d7b0226966d0dbd9634a0e71f0f"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_Hoarstock"
+    "B": "Things/Plant/RM_GreySea/RM_Hoarstock",
+    "C": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_Hoarstock_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_Hoarstock_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render dregen_RM_Hoarstock_RMHoarstockA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_Hoarstock"
@@ -526,7 +575,8 @@
    "res": "Things/Plant/RM_GreySea/RM_Hoarstock",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "1a0feeb83ffe925074a4ade7afe1712eb30711f5bcfe3e4d922b8f8dcacf393b",
@@ -612,21 +662,29 @@
      "east": "950cf61d1aa2e68dadea4b213f81a20a245052f4b6fc84569a3b7d07e6e09e52",
      "north": "0f5c28efbebd08da9b68815c5cd942b8986528e47e359dc031b4d2b689fdbf76",
      "south": "58041dff642973b284ea6e997ba58f310d1ae2cda4521b8445cae3f2a32b7ae4"
+    },
+    "C": {
+     "east": "950cf61d1aa2e68dadea4b213f81a20a245052f4b6fc84569a3b7d07e6e09e52",
+     "north": "70b930f75cb6a6258a9e784541c2b26391100228716283e1f68f1d9d4664c9e9",
+     "south": "58041dff642973b284ea6e997ba58f310d1ae2cda4521b8445cae3f2a32b7ae4"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Karrud/RM_Karrud",
-    "B": "Things/Pawn/Animal/RM_Karrud/RM_Karrud"
+    "B": "Things/Pawn/Animal/RM_Karrud/RM_Karrud",
+    "C": "Things/Pawn/Animal/RM_Karrud/RM_Karrud"
    },
    "labels": {
     "A": "history TerminalBiomes 2026-09-26",
-    "B": "IN GAME \u2014 TerminalBiomes"
+    "B": "render phreg_RM_Karrud_v1",
+    "C": "IN GAME \u2014 TerminalBiomes"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Karrud/RM_Karrud",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "0f5c28efbebd08da9b68815c5cd942b8986528e47e359dc031b4d2b689fdbf76",
@@ -771,13 +829,18 @@
    "columns": {
     "B": {
      "single": "6d67a20d478083ba486cf0390618250fbdd2043b26268a1c3708fea0ea90f4f8"
+    },
+    "C": {
+     "single": "5b14fbb2829ece2f40e349cc2a9af9a9cd23b99f300b21f42b8d8e779581f9e5"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_Milkwell"
+    "B": "Things/Plant/RM_GreySea/RM_Milkwell",
+    "C": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_Milkwell_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_Milkwell_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render dregen_RM_Milkwell_RMMilkwellA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_Milkwell"
@@ -785,7 +848,8 @@
    "res": "Things/Plant/RM_GreySea/RM_Milkwell",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "65db735f6b0051898ee31c671a43f6d9518b75825317b4678a455149e95137f7",
@@ -797,13 +861,18 @@
    "columns": {
     "B": {
      "single": "6b9776d8af7c3fa6fb8bcc43bc08bde256f92048fe167afe4164ce0fffe1ab54"
+    },
+    "C": {
+     "single": "bee8ab838afbcb257a996b68e03c45c4157cd3438eded790b32aa7c1f674e730"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_MosaicFanPalm"
+    "B": "Things/Plant/RM_GreySea/RM_MosaicFanPalm",
+    "C": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_MosaicFanPalm_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_MosaicFanPalm_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render dregen_RM_MosaicFanPalm_RMMosaicFanPalmA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_MosaicFanPalm"
@@ -811,7 +880,8 @@
    "res": "Things/Plant/RM_GreySea/RM_MosaicFanPalm",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "6b9776d8af7c3fa6fb8bcc43bc08bde256f92048fe167afe4164ce0fffe1ab54",
@@ -875,13 +945,18 @@
    "columns": {
     "B": {
      "single": "70fb785293944d6f5c002c99e33b9db883c2208cb46f7c06eaaea4f23b888ad9"
+    },
+    "C": {
+     "single": "524c7d7aa3fab901f31bdeb4b03b493c425a58065f70686be48ee060b60857ef"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_Neverset"
+    "B": "Things/Plant/RM_GreySea/RM_Neverset",
+    "C": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_Neverset_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_Neverset_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render dregen_RM_Neverset_RMNeversetA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_Neverset"
@@ -889,7 +964,8 @@
    "res": "Things/Plant/RM_GreySea/RM_Neverset",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "70fb785293944d6f5c002c99e33b9db883c2208cb46f7c06eaaea4f23b888ad9",
@@ -906,21 +982,29 @@
      "east": "60568da65d172382a73043250a015befacbac2a308dadc9289eb7f73c736ef81",
      "north": "d1d56083af101c8467ebd98629c6af27ea2a2fd7b177aa95689c254fa3151d18",
      "south": "f609cfad6f1a8929032e0fbad822c162d1f10bd34d4b41a8ae8eb74ea710e57f"
+    },
+    "C": {
+     "east": "60568da65d172382a73043250a015befacbac2a308dadc9289eb7f73c736ef81",
+     "north": "e9cedbdb427ffeb6d1dce0c00f605b66bbb5648caeab3fc45c61034ad3d06121",
+     "south": "f609cfad6f1a8929032e0fbad822c162d1f10bd34d4b41a8ae8eb74ea710e57f"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Nissik/RM_Nissik",
-    "B": "Things/Pawn/Animal/RM_Nissik/RM_Nissik"
+    "B": "Things/Pawn/Animal/RM_Nissik/RM_Nissik",
+    "C": "Things/Pawn/Animal/RM_Nissik/RM_Nissik"
    },
    "labels": {
     "A": "history TerminalBiomes 2026-09-26",
-    "B": "IN GAME \u2014 TerminalBiomes"
+    "B": "render phreg_RM_Nissik_v1",
+    "C": "IN GAME \u2014 TerminalBiomes"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Nissik/RM_Nissik",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "60568da65d172382a73043250a015befacbac2a308dadc9289eb7f73c736ef81",
@@ -980,21 +1064,29 @@
      "east": "c08d9384c0f9233a5a971063b71a2db7a888e53a9d1ae70d104e4af0bb6fd76b",
      "north": "4615f73c05c4656960010b12c7b1bba9aa49dd7c64b8daa0c7a6569784db7da1",
      "south": "099cf473717e76689988b1769da45e6ffe087812d7139dd68f4ae15b7cb215a8"
+    },
+    "C": {
+     "east": "c08d9384c0f9233a5a971063b71a2db7a888e53a9d1ae70d104e4af0bb6fd76b",
+     "north": "9c6f6ada4a85ed1d5540aeaf632a3fefa46bd52cddb872ebee4588721ff54778",
+     "south": "6763dd23f42954fae93b1cbe9e7534865654852ce4fd0811d6da454c894a6775"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Oomal/RM_Oomal",
-    "B": "Things/Pawn/Animal/RM_Oomal/RM_Oomal"
+    "B": "Things/Pawn/Animal/RM_Oomal/RM_Oomal",
+    "C": "Things/Pawn/Animal/RM_Oomal/RM_Oomal"
    },
    "labels": {
     "A": "history TerminalBiomes 2026-09-26",
-    "B": "IN GAME \u2014 TerminalBiomes"
+    "B": "render phreg_RM_Oomal_v1",
+    "C": "IN GAME \u2014 TerminalBiomes"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Oomal/RM_Oomal",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "099cf473717e76689988b1769da45e6ffe087812d7139dd68f4ae15b7cb215a8",
@@ -1083,19 +1175,27 @@
      "east": "9f3c37cce0591e526603750a7506f6f65d56688006d570401399cc43533ac901",
      "north": "49b173dbd18e897214bf832583c741c4f68f2e0f84a79ee16e885caa73d59014",
      "south": "3f0474f07453ffb6d1c084f5879ea826032920c308c6cfb539c7c632ec362da5"
+    },
+    "C": {
+     "east": "9f3c37cce0591e526603750a7506f6f65d56688006d570401399cc43533ac901",
+     "north": "41c67fd3f35a5faf0026bcedd2c58badcc1825cc506c8d28aed6580f92620323",
+     "south": "4ecf2b7ce0383d9f59b5a878f8f42c8cdf4c82537c3b8bd1234f791388f96c56"
     }
    },
    "graphic_of": {
-    "B": "Things/Pawn/Animal/RM_Otheska/RM_Otheska"
+    "B": "Things/Pawn/Animal/RM_Otheska/RM_Otheska",
+    "C": "Things/Pawn/Animal/RM_Otheska/RM_Otheska"
    },
    "labels": {
-    "B": "IN GAME \u2014 TerminalBiomes"
+    "B": "render greysea_otheska_v1",
+    "C": "IN GAME \u2014 TerminalBiomes"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Otheska/RM_Otheska",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "3f0474f07453ffb6d1c084f5879ea826032920c308c6cfb539c7c632ec362da5",
@@ -1112,18 +1212,35 @@
      "north": "01f03283d92b0f1fe67eb09008c19eb983796fb5a56942e8499a0f5abe2177bf",
      "south": "589ec4d48f165f6ee1cf489a66979286a785c81e6afeee777e22fabdc676cb0d",
      "west": "2f5af1ae7696aa6de897540f22e6e6a519d4e7a02cdd4c94d08af8a4acaa6a60"
+    },
+    "B": {
+     "east": "3d0dd6247ced199248f8820eb7c2ee4015542e00c54c0212882df4f7c47ef5b1",
+     "north": "e185ca49deea693647aba4ec71993b8f4d9f7aba6742193a3e3531c0a6b7389d",
+     "south": "93f8bcffc6c07953e28cb803d77e550373a5caddaffacfd054924b76e72b8b83",
+     "west": "2f5af1ae7696aa6de897540f22e6e6a519d4e7a02cdd4c94d08af8a4acaa6a60"
+    },
+    "C": {
+     "east": "3d0dd6247ced199248f8820eb7c2ee4015542e00c54c0212882df4f7c47ef5b1",
+     "north": "e185ca49deea693647aba4ec71993b8f4d9f7aba6742193a3e3531c0a6b7389d",
+     "south": "93f8bcffc6c07953e28cb803d77e550373a5caddaffacfd054924b76e72b8b83"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback"
+    "A": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
+    "B": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
+    "C": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "shipped, shadowed \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "render standtall_b1_reefback"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "shownBase": [
     "01f03283d92b0f1fe67eb09008c19eb983796fb5a56942e8499a0f5abe2177bf",
@@ -1254,13 +1371,18 @@
    "columns": {
     "B": {
      "single": "72cff997f36e4ff8eeaf5e38caa7a3f823fd8b44148dd52d976e629b16e9efe3"
+    },
+    "C": {
+     "single": "9ed8cc3a3303a6f2985df4ed4f0025f68dfc7fcdcd4937b6ee5f9cf13b1748be"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_SaltChimneyVine"
+    "B": "Things/Plant/RM_GreySea/RM_SaltChimneyVine",
+    "C": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_SaltChimneyVine_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_SaltChimneyVine_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render dregen_RM_SaltChimneyVine_RMSaltChimneyVineA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_SaltChimneyVine"
@@ -1268,7 +1390,8 @@
    "res": "Things/Plant/RM_GreySea/RM_SaltChimneyVine",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "72cff997f36e4ff8eeaf5e38caa7a3f823fd8b44148dd52d976e629b16e9efe3",
@@ -1280,13 +1403,18 @@
    "columns": {
     "B": {
      "single": "3b85f5bf8ba8fee9560f8418a3065d5ed33ce510b9f94d41911baccee4ac13f4"
+    },
+    "C": {
+     "single": "cd8cccabe35a74ecb348d7f4f572c416c08e73b098d791437908ee6332cc9d97"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_Saltswoon"
+    "B": "Things/Plant/RM_GreySea/RM_Saltswoon",
+    "C": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_Saltswoon_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_Saltswoon_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render dregen_RM_Saltswoon_RMSaltswoonA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_Saltswoon"
@@ -1294,7 +1422,8 @@
    "res": "Things/Plant/RM_GreySea/RM_Saltswoon",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "3b85f5bf8ba8fee9560f8418a3065d5ed33ce510b9f94d41911baccee4ac13f4",
@@ -1364,13 +1493,18 @@
    "columns": {
     "B": {
      "single": "481ddb5a293b58889335d075102e9732268f8219637847aee58e3b9f04a68f48"
+    },
+    "C": {
+     "single": "dd7118ec1bcb982b0c66adf642ab340b71356c6e72e5716ae7540ec94508fbeb"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_GreySea/RM_SpherePlant"
+    "B": "Things/Plant/RM_GreySea/RM_SpherePlant",
+    "C": "_byname"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_SpherePlant_A (1 of 1) \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 random variant RM_SpherePlant_A (1 of 1) \u2014 TerminalBiomes",
+    "C": "render dregen_RM_SpherePlant_RMSpherePlantA_v1"
    },
    "pools": [
     "Things/Plant/RM_GreySea/RM_SpherePlant"
@@ -1378,7 +1512,8 @@
    "res": "Things/Plant/RM_GreySea/RM_SpherePlant",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "481ddb5a293b58889335d075102e9732268f8219637847aee58e3b9f04a68f48",
@@ -1462,18 +1597,35 @@
      "north": "01f03283d92b0f1fe67eb09008c19eb983796fb5a56942e8499a0f5abe2177bf",
      "south": "589ec4d48f165f6ee1cf489a66979286a785c81e6afeee777e22fabdc676cb0d",
      "west": "2f5af1ae7696aa6de897540f22e6e6a519d4e7a02cdd4c94d08af8a4acaa6a60"
+    },
+    "B": {
+     "east": "3d0dd6247ced199248f8820eb7c2ee4015542e00c54c0212882df4f7c47ef5b1",
+     "north": "e185ca49deea693647aba4ec71993b8f4d9f7aba6742193a3e3531c0a6b7389d",
+     "south": "93f8bcffc6c07953e28cb803d77e550373a5caddaffacfd054924b76e72b8b83",
+     "west": "2f5af1ae7696aa6de897540f22e6e6a519d4e7a02cdd4c94d08af8a4acaa6a60"
+    },
+    "C": {
+     "east": "3d0dd6247ced199248f8820eb7c2ee4015542e00c54c0212882df4f7c47ef5b1",
+     "north": "e185ca49deea693647aba4ec71993b8f4d9f7aba6742193a3e3531c0a6b7389d",
+     "south": "93f8bcffc6c07953e28cb803d77e550373a5caddaffacfd054924b76e72b8b83"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback"
+    "A": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
+    "B": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
+    "C": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "shipped, shadowed \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "render standtall_b1_reefback"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "shownBase": [
     "01f03283d92b0f1fe67eb09008c19eb983796fb5a56942e8499a0f5abe2177bf",
