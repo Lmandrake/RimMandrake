@@ -60,21 +60,6 @@
       </match>
     </nomatch>
   </Operation>
-  <!-- moss (GrimTerra Biomes) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GRimMoss"]/altitudeLayer</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="GRimMoss"]/altitudeLayer</xpath>
-      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="GRimMoss"]</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="GRimMoss"]</xpath>
-        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-      </match>
-    </nomatch>
-  </Operation>
   <!-- toxigrass (ReGrowth Core) -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Scumgrass"]/altitudeLayer</xpath>

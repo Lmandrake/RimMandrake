@@ -13,8 +13,7 @@
   placeholder; it is not — it is the finished generic twin, authored campaign-free on
   purpose, and copying this file into it would (a) put 22 Mlie Star Wars rows and 8 Star
   Wars plants inside a RimMandrake-tier def, which §7 Q11 forbids outright, (b) swap
-  vanilla Soil/SoilRich for the DONOR terrain `CypreJungleSoil` and the vanilla world
-  texture for the donor's `Biome_CypreJungle`, and (c) delete the
+  the world texture for the donor's `Biome_CypreJungle`, and (c) delete the
   `RM_GreentideBiomeRanges` modExtension that `RM_BiomeWorker_Greentide.cs:44` reads,
   silently falling the worker back to defaults. The Star Wars cast reaches `RM_Greentide`
   through UtinniPatches/Patches/WildAnimals_Greentide.xml, the way the Pyrelands already
@@ -115,13 +114,13 @@
       </li>
     </diseases>
     <terrainsByFertility>
-      <li MayRequire="GRimTerra.Biomesmod">
-        <terrain>CypreJungleSoil</terrain>
+      <li>
+        <terrain>Soil</terrain>
         <min>-999</min>
         <max>0.5</max>
       </li>
-      <li MayRequire="GRimTerra.Biomesmod">
-        <terrain>LightGrass</terrain>
+      <li>
+        <terrain>SoilRich</terrain>
         <min>0.5</min>
         <max>999</max>
       </li>

@@ -6,8 +6,8 @@
 
   Six dead `dessicatedBodyGraphicData/texPath` strings across three animal
   mods, all found by jawa/texture_audit against the LIVE process on the full
-  mod list (first_light_2026-08-21_0123.md). GRiNDTerra's equivalents live in
-  `GrimTerraTexPaths_Fix.xml`; this file is everything else.
+  mod list (first_light_2026-08-21_0123.md). (GRiNDTerra's equivalents were
+  retired with that donor, 2026-10-18.)
 
   🪤 EVERY ONE OF THESE IS ON A PawnKindDef, NOT ON THE ANIMAL'S ThingDef.
   The ThingDef carries race/lifeStages with `dessicatedTexPath`; these sit on

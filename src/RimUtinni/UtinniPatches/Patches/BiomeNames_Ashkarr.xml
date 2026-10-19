@@ -60,14 +60,6 @@
   </Operation>   <!-- was "propane lakes" -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/label</xpath>
-      <value><label>the Blue Desert</label></value>
-    </match>
-  </Operation>   <!-- was "Blue desert" -->
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/label</xpath>
@@ -114,14 +106,6 @@
       <value><label>the Pyrelands</label></value>
     </match>
   </Operation>   <!-- was "stormy savanna" -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/label</xpath>
-      <value><label>the Greentide</label></value>
-    </match>
-  </Operation>   <!-- was "Cypre Jungle" - the one the owner spotted -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/label</xpath>

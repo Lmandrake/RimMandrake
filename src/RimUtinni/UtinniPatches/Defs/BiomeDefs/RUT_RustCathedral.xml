@@ -93,7 +93,6 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <Ling_Cockroach MayRequire="lingluo.cockroach">0.05</Ling_Cockroach>  <!-- Giant Cockroach - medium, import -->
       <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
            0.0% small against a single large import. Both additions below are already
            OWNER-RULED members of this exact biome's fauna list

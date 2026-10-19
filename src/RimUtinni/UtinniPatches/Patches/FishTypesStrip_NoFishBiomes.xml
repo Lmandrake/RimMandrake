@@ -78,34 +78,6 @@
 
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>GRiNDTerra Biomes</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <success>Always</success>
-      <operations>
-
-        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
-          <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/fishTypes</xpath>
-          <match Class="PatchOperationSequence">
-            <success>Always</success>
-            <operations>
-              <li Class="PatchOperationRemove">
-                <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/fishTypes</xpath>
-              </li>
-              <li Class="PatchOperationReplace">
-                <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/maxFishPopulation</xpath>
-                <value><maxFishPopulation>0</maxFishPopulation></value>
-              </li>
-            </operations>
-          </match>
-        </li>
-
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods>
       <li>More Vanilla Biomes</li>
     </mods>
     <match Class="PatchOperationSequence">

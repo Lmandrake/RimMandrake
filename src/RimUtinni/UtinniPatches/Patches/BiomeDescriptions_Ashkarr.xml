@@ -92,14 +92,6 @@
   </Operation>   <!-- "the Rimefall" [PLOT LEAK 3] - see header note -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/description</xpath>
-      <value><description>From orbit the bluest thing on the planet; underfoot, colorless. A plateau of the oldest ice on Ash'karr, its "sand" ice grain, its "snow" that same sand blowing, scoured bare by cold wind draining off higher ground. Nothing here runs on water: what lives is a fuel charge stable only in the cold, and warmth is detonation. It is usually clear, silent, and almost empty -- then the ablation line gives something up.</description></value>
-    </match>
-  </Operation>   <!-- "the Blue Desert" - RUT_BlueDesert (the sliver of tiles still on the donor) -->
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/description</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/description</xpath>
@@ -138,14 +130,6 @@
       <value><description>A flat plateau of deck plate and mathematical walls at the foot of the eternal noon -- a complex, circuit-board maze of walls and structures that screams of meaningful complexity and intention. Rust-dust banks in drifts against them, heat shimmer stands as the weather, and almost nothing living remains. And under everything, always, a hum.</description></value>
     </match>
   </Operation>   <!-- "the Rust Cathedral" [PLOT LEAK 1, WORST] - RUT_RustCathedral -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/description</xpath>
-      <value><description>A gallery jungle hugging every mile of the rivers that fall off the Scald's rain-peaks -- a green ribbon a few tiles wide through country that gets deep-desert sun, visible from the dunes as a line of steam. The rivers steam all the time; the air holds more water than the river does. Under the steam, everything grows at a speed you can watch, everything eats everything in the open, and the crashing of trees is the background percussion of the place. There is no truce here.</description></value>
-    </match>
-  </Operation>   <!-- "the Greentide" - RUT_Greentide (drops the donor's "Overgrown jungle.") -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/description</xpath>

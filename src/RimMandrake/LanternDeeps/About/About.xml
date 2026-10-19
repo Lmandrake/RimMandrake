@@ -39,14 +39,13 @@ Also ships the darkness mechanic (carried light draws what lives down there) and
          About.xml now carries the ordering. -->
     <!-- LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1: GenStep_ScatterCavePortal's host-biome
          allowlist compares map.Biome.defName at RUNTIME (LanternDeepsMod.cs) against
-         the Nightside Ice / Chill biomes and BiomeGRimond (grimterra.biomesmod).
+         the Nightside Ice / Chill biomes and BiomeGRimond.
          A runtime string compare needs no load order; the GenStep self-gates to a
          no-op when a host biome is absent.
          LANTERNDEEPS_TIER_COLLISION_1: mandrake.rut.patches is deliberately NOT listed
          here. It declares loadAfter mandrake.rm.lanterndeeps (its
          RUT_LanternDeepGateKyber.xml patches RM_LanternDeepGenerator), so listing it
          here too made a load-order cycle. -->
-    <li>grimterra.biomesmod</li>
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>ludeon.rimworld.ideology</li>
   </loadAfter>

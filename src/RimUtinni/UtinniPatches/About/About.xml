@@ -91,8 +91,6 @@
     <li>Arcjc007.GravshipCrashes</li>                       <!-- JawaGroundHulk_Register.xml -->
     <li>sihv.rombonesPort</li>                              <!-- Bones_CutFuelAndPlasteelRecipes.xml: must run after Bones' BoneRefinePatch.xml -->
     <li>BiomesTeam.BiomesCore</li>                          <!-- BiomeCast_Ashkarr.xml -->
-    <li>GRimTerra.Biomesmod</li>                            <!-- BiomeCast_Ashkarr.xml -->
-    <li>LingLuo.Cockroach</li>                              <!-- BiomeCast_Ashkarr.xml -->
     <li>mandrake.rsw.droidworks</li>                        <!-- GalacticEmpire.xml, HomesteadDefenseLeague.xml -->
     <li>mandrake.rsw.swbestiary</li>                        <!-- SandFishing_CrackedLands.xml: RM_DuneCrawler, RSW_SandStalker, RM_GlassPearl, RSW_RareSandCatches -->
     <li>Mlie.AdvancedBiomes</li>                            <!-- BiomeCast_Ashkarr.xml -->
@@ -135,7 +133,6 @@
     <li>iforgotmysocks.caravanadventures</li>
     <li>karew.orcclan</li>
     <li>m3.continued.jangodsoul.starwars.tsda</li>
-    <li>mlie.horrors</li>
     <li>mlie.rfrumorhasit</li>
     <li>neronix17.outerrim.core</li>
     <li>neronix17.outerrim.droiddepot</li>

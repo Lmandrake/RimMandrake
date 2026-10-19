@@ -6576,14 +6576,6 @@
     </match>
   </Operation>
 
-  <!-- 818. Corpse_Ling_Cockroach x AridShrubland -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_Ling_Cockroach"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_Ling_Cockroach"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-
   <!-- 819. Corpse_LongtailGorg x AridShrubland -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Corpse_LongtailGorg"]/race/wildBiomes/AridShrubland</xpath>
@@ -8237,14 +8229,6 @@
     <xpath>/Defs/ThingDef[defName="Leaftail"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Leaftail"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-
-  <!-- 1028. Ling_Cockroach x AridShrubland -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Ling_Cockroach"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Ling_Cockroach"]/race/wildBiomes/AridShrubland</xpath>
     </match>
   </Operation>
 
@@ -10744,14 +10728,6 @@
     </match>
   </Operation>
 
-  <!-- 1343. Corpse_Ling_Cockroach x Desert -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_Ling_Cockroach"]/race/wildBiomes/Desert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_Ling_Cockroach"]/race/wildBiomes/Desert</xpath>
-    </match>
-  </Operation>
-
   <!-- 1344. Corpse_LongtailGorg x Desert -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Corpse_LongtailGorg"]/race/wildBiomes/Desert</xpath>
@@ -12149,14 +12125,6 @@
     <xpath>/Defs/ThingDef[defName="Leaftail"]/race/wildBiomes/Desert</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Leaftail"]/race/wildBiomes/Desert</xpath>
-    </match>
-  </Operation>
-
-  <!-- 1522. Ling_Cockroach x Desert -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Ling_Cockroach"]/race/wildBiomes/Desert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Ling_Cockroach"]/race/wildBiomes/Desert</xpath>
     </match>
   </Operation>
 
@@ -13936,14 +13904,6 @@
     </match>
   </Operation>
 
-  <!-- 1748. Corpse_Ling_Cockroach x ExtremeDesert -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Corpse_Ling_Cockroach"]/race/wildBiomes/ExtremeDesert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Corpse_Ling_Cockroach"]/race/wildBiomes/ExtremeDesert</xpath>
-    </match>
-  </Operation>
-
   <!-- 1749. Corpse_LongtailGorg x ExtremeDesert -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Corpse_LongtailGorg"]/race/wildBiomes/ExtremeDesert</xpath>
@@ -15005,14 +14965,6 @@
     <xpath>/Defs/ThingDef[defName="Leaftail"]/race/wildBiomes/ExtremeDesert</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Leaftail"]/race/wildBiomes/ExtremeDesert</xpath>
-    </match>
-  </Operation>
-
-  <!-- 1882. Ling_Cockroach x ExtremeDesert -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Ling_Cockroach"]/race/wildBiomes/ExtremeDesert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Ling_Cockroach"]/race/wildBiomes/ExtremeDesert</xpath>
     </match>
   </Operation>
 
