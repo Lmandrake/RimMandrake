@@ -52,6 +52,7 @@ REPO = BA.REPO
 ART = BA.ART
 CANON = REPO / "design/RimStarWars/canon_references"
 ITEM = "DONOR_COATS_REDRAW_SIX_HUNDRED_TO_GO"
+SW_ITEM = "TEXREGEN_SWBESTIARY_DECIDE_NO_ROSTER_OWNS_IT"
 HOUSE = ("Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a "
          "transparent background, no ground, no props, no baked shadow.")
 # The arid region the colony starts in (canonical start tile 17007 is RUT_ExtremeDesert, region The Breaks) and the
@@ -210,7 +211,8 @@ def dest(m, k):
     return f"{m}/Textures/{k.removeprefix('StandIn/')}.png"
 
 
-def build(audit_p: Path, census_p: Path, plan_p: Path | None, out: Path):
+def build(audit_p: Path, census_p: Path, plan_p: Path | None, out: Path, sw_only: bool = False,
+          exclude_jobs: Path | None = None):
     audit = json.loads(audit_p.read_text())
     census = json.loads(census_p.read_text())
     repo = BA.Repo()
@@ -228,11 +230,14 @@ def build(audit_p: Path, census_p: Path, plan_p: Path | None, out: Path):
                 labels.setdefault(dn, r.get("label"))
 
     targets, gaps = {}, defaultdict(list)       # def -> {why:set, src}
+    skip_defs = set()
+    if exclude_jobs and exclude_jobs.is_file():
+        skip_defs = {r["target_def"] for r in json.loads(exclude_jobs.read_text())["rows"]}
 
     def add(dn, why):
         targets.setdefault(dn, set()).add(why)
 
-    for bd, rows in audit["roster"].items():
+    for bd, rows in ([] if sw_only else audit["roster"].items()):
         for r in rows:
             if r["class"] in ("DONOR", "PLACEHOLDER", "NO_LIVE_DONOR_ONLY", "NO_LIVE_ART", "VANILLA_BORROWED"):
                 dn = r["defName"]
@@ -242,16 +247,20 @@ def build(audit_p: Path, census_p: Path, plan_p: Path | None, out: Path):
                 add(dn, f"roster {bd}: {r['class']}")
     for key, v in audit["defs"].items():
         twin = v["group"] == "twin"
+        if sw_only and "SWBestiary" not in key:
+            continue
         for r in v["rows"]:
             if r["class"] not in ("DONOR", "PLACEHOLDER", "EXTERNAL"):
                 continue
             dn = r["def"]
-            if twin and dn not in roster_biomes:
+            if twin and (dn in roster_biomes) == sw_only:   # sw_only: the no-roster twin defs; else: roster-cast only
+                continue
+            if dn in skip_defs:
                 continue
             if dn not in defs:
                 continue
             add(dn, f"{key}: {r['class']}")
-    for dn, ents in repo.defs.items():
+    for dn, ents in ([] if sw_only else repo.defs.items()):
         if any(t.startswith("StandIn/") for e in ents for vs in e[2].values() for t in vs):
             add(dn, "draws a StandIn/ copy")
 
@@ -276,7 +285,7 @@ def build(audit_p: Path, census_p: Path, plan_p: Path | None, out: Path):
         if not desc and ke is not None:
             desc = clean(ke.findtext("description"))
         ds_def = draw_size(ke, el)
-        base = {"rimflow_item_id": ITEM, "target_def": dn, "channel": "codex", "style_notes": HOUSE,
+        base = {"rimflow_item_id": SW_ITEM if sw_only else ITEM, "target_def": dn, "channel": "codex", "style_notes": HOUSE,
                 "biome_register": BA_REG(biomes), "ask": "new", "why": "; ".join(sorted(targets[dn])),
                 "kind": kind, "biomes": biomes}
         any_row = False
@@ -418,7 +427,7 @@ def build(audit_p: Path, census_p: Path, plan_p: Path | None, out: Path):
     rows.sort(key=lambda r: (r["priority"], r["id"]))
     out.write_text(json.dumps({"generated": BA.A.now(), "git_head": subprocess.run(
         ["git", "-C", str(REPO), "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip(),
-        "item": ITEM, "audit": str(audit_p), "rows": rows, "skipped": skipped, "gaps": gaps}, indent=1))
+        "item": SW_ITEM if sw_only else ITEM, "audit": str(audit_p), "rows": rows, "skipped": skipped, "gaps": gaps}, indent=1))
     kc = Counter((r["kind"], r["priority"]) for r in rows)
     nj = sum(max(1, len(r["facings"])) for r in rows)
     print(f"targets {len(targets)}; rows {len(rows)} ({nj} job files); by kind/prio {sorted(kc.items())}")
@@ -444,7 +453,18 @@ def in_flight() -> int:
                if f.name.endswith(".json") and not f.name.endswith(".manifest.json"))
 
 
-def submit(jobs_p: Path, cap: int, dry: bool):
+def submit(jobs_ps, cap: int, dry: bool):
+    """Feed the job files in order (earlier files claim the room first); one shared cap."""
+    rc = 0
+    for jp in jobs_ps:
+        if cap - in_flight() <= 0:
+            print(f"queue at cap before {jp.name}")
+            break
+        rc = submit_one(jp, cap, dry) or rc
+    return rc
+
+
+def submit_one(jobs_p: Path, cap: int, dry: bool):
     J = json.loads(jobs_p.read_text())
     _, filed = queue_view()
     room = cap - in_flight()
@@ -490,13 +510,16 @@ def main():
     b.add_argument("--census", required=True, type=Path)
     b.add_argument("--plan", type=Path, help="a bulk_accept_renders plan: defs it can install now are skipped")
     b.add_argument("--out", required=True, type=Path)
+    b.add_argument("--sw-only", action="store_true", help="only SWBestiary twin defs in NO biome roster "
+                   "(owner 2026-10-18: redraw all)")
+    b.add_argument("--exclude-jobs", type=Path, help="skip defs already in this job file")
     s = sp.add_parser("submit")
-    s.add_argument("--jobs", required=True, type=Path)
+    s.add_argument("--jobs", required=True, type=Path, nargs="+", help="fed in order, one shared cap")
     s.add_argument("--cap", type=int, default=40, help="max job files pending+active after filing")
     s.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
     if a.cmd == "build":
-        build(a.audit, a.census, a.plan, a.out)
+        build(a.audit, a.census, a.plan, a.out, a.sw_only, a.exclude_jobs)
     else:
         sys.exit(submit(a.jobs, a.cap, a.dry_run))
 
