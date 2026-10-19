@@ -341,6 +341,22 @@ def csharp_still_matches_this_mirror():
     assert "minGrowthToBlock = 0.25f" in ext and "hitboxFraction = 0.6f" in ext
 
 
+@test
+def gravship_clear_area_follows_vanilla_modes():
+    """GIANT_CLEARAREA_FIX_WIPES_EVERY_MODE: vanilla ClearThingsAt spares a giant's cells only in NaturalRockOnly (BlockingBuildingsOnly still destroys the blocker)."""
+    src = open(os.path.join(HERE, "Source", "HugeThingsCore.cs"), encoding="utf-8").read()
+    assert "return mode != GravshipPlacementUtility.ClearMode.NaturalRockOnly;" in src, "mode gate missing"
+    assert "GravshipPlacementUtility.ClearMode mode)\n        {\n            if (!ClearsGiants(mode)) return;" in src, "Prefix must take the mode and return first"
+    assert "DontGenerateClearedGravShipTerrain" in src, "vanilla's no-clear flag must be honoured"
+
+
+@test
+def settings_headers_use_the_keys():
+    src = open(os.path.join(HERE, "Source", "RM_HugeThingsSettings.cs"), encoding="utf-8").read()
+    assert 'Group(list, "RM_HugeThings_GiantPlants".Translate(),' in src and 'Group(list, "RM_HugeThings_GiantAnimals".Translate(),' in src
+    assert 'Group(list, "Giant plants"' not in src and 'Group(list, "Giant animals' not in src
+
+
 def main():
     ok = 0
     for fn in TESTS:

@@ -274,8 +274,20 @@ namespace RimMandrake.HugeThings
     [HarmonyPatch(typeof(GravshipPlacementUtility), nameof(GravshipPlacementUtility.ClearArea))]
     public static class Patch_Gravship_ClearArea
     {
-        public static void Prefix(Map map, IntVec3 root, HashSet<IntVec3> clearCells)
+        /// <summary>GIANT_CLEARAREA_FIX_WIPES_EVERY_MODE: vanilla ClearThingsAt removes plants and trunk blockers in All and
+        /// AllButNonTreePlants, and blockers (canLandGravshipOn is false on them) in BlockingBuildingsOnly; only NaturalRockOnly
+        /// leaves a giant's cells alone, so only it leaves the giant alone.</summary>
+        public static bool ClearsGiants(GravshipPlacementUtility.ClearMode mode)
         {
+            return mode != GravshipPlacementUtility.ClearMode.NaturalRockOnly;
+        }
+
+        public static void Prefix(Map map, IntVec3 root, HashSet<IntVec3> clearCells, GravshipPlacementUtility.ClearMode mode)
+        {
+            if (!ClearsGiants(mode)) return;
+            // vanilla returns before clearing anything when the map generator forbids it
+            MapGenerator.TryGetVar<bool>("DontGenerateClearedGravShipTerrain", out bool noClear);
+            if (noClear) return;
             MapComponent_HugeFootprints mc = map?.GetComponent<MapComponent_HugeFootprints>();
             if (mc == null || clearCells == null || mc.Count == 0) return;
             List<IntVec3> cells = new List<IntVec3>(clearCells.Count);
