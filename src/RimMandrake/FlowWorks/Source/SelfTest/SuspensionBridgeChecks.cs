@@ -372,6 +372,29 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string patch = ModFile("Patches", "Pits", "RM_SuspensionBridges.xml");
                 Assert(patch.Contains("Designator_SuspensionJetty_Steel") && patch.Contains("Designator_SuspensionJetty_Heavy"), "the jetty buttons are registered");
             });
+            // SUSPENSION_ART_RESKIN_HE_SEES_FIRST: the four looks through the shared style picker (art accepted first time, 2026-10-18).
+            Case("Looks_four_styles_registered_and_carried", () =>
+            {
+                string patches = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
+                Assert(patches.Contains("Machinery.PipeLook.Core.Register(StyledDefs, Machinery.PipeStyles.StyleDefName);"),
+                    "the parts join FlowWorks' style picker (the RM_BankWeir_* pattern)");
+                Assert(!patches.Contains("\"RM_SuspensionDeck_Rope\"") && !patches.Contains("\"RM_SuspensionAnchor_Rope\""), "rope stays Scrapper-only (unstyled)");
+                string des = Src("Pits", "Suspension", "Designator_SuspensionBridge.cs");
+                Assert(des.Contains("GenConstruct.PlaceBlueprintForBuild(d, c, map, rot, Faction.OfPlayer, stuff, null, style);")
+                    && des.Contains("look = RM_SuspensionLooks.LookFor(this),"), "a dragged bridge's parts carry the button's look");
+                string comp = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");
+                Assert(comp.Contains("Scribe_Values.Look(ref look, \"look\");") && comp.Contains("RM_SuspensionLooks.Apply(w, look);")
+                    && comp.Contains("RM_SuspensionLooks.StyleFor(rail, look)"), "the railings and the wreck follow the bridge's look; the look is saved");
+                string styles = ModFile("Defs", "Pits", "ThingDefs", "RM_SuspensionStyles.xml");
+                foreach (string part in new[] { "RM_SuspensionDeck_Steel", "RM_SuspensionDeck_SteelGrated", "RM_SuspensionAnchor_Heavy",
+                    "RM_SuspensionTower", "RM_SuspensionRailing", "RM_SuspensionWreck", "RM_SuspensionJetty_Heavy" })
+                {
+                    foreach (string look in new[] { "Scrapper", "Industrial", "Modern", "Futuristic" })
+                    {
+                        Assert(styles.Contains("<defName>" + part + "_" + look + "</defName>"), part + "_" + look + " style def");
+                    }
+                }
+            });
             // textures: selftest_flowworks_suspension_art.py (the SelfTest staging copies no Textures folder)
         }
     }

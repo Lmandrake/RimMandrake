@@ -48,6 +48,8 @@ JETTY (SUSPENSION_JETTY_BUILD_WALK_THE_PLANK), plot from origin + (0, 72): a 4 m
   J1 a 2-square steel jetty (0,73)-(2,73): accepted; a 3-square one (0,72)-(3,72): refused with the reason -> rows JET_TWO_OK, JET_THREE_REFUSED.
   J2 one colonist on (2,73): stands (ProofSpan Ok); a second added: Over, then both jetty squares gone in one load pass and
      both pawns on the pit floor                                                            -> row JET_OVERLOAD_DROPS_WHOLE.
+LOOKS (SUSPENSION_ART_RESKIN_HE_SEES_FIRST): a 2 m trench (1..3, 80+2k) per look k; a steel bridge built in that look, railed
+  -> rows LOOK_<Look>_RESOLVES: every part styled in the look, no pink texture, graphic paths read (verify L2).
   J3 a new 1-square jetty (0,74)-(1,74), railings off: a colonist on it ordered to jump down (the jump order, an open edge) -> row JET_OPEN_EDGE_DROP (owed: needs the jump order's bridge call).
 Every read is jawa/static_call RimMandrake.FlowWorks.Pits.RM_SuspensionProofs.<Proof*> (one line out; see that file).
 
@@ -473,11 +475,24 @@ def jetty(ctx):
         "job on a pawn on the jetty (no bridge call drives that menu yet); the rail-off knock row (SB_rails_off_some_fall) proves the edge"})
 
 
+def looks(ctx):
+    """SUSPENSION_ART_RESKIN_HE_SEES_FIRST rows (verify L2: each look's deck, railing and anchor resolve, no pink)."""
+    P, xz, row, proof, dig = (ctx[k] for k in ("P", "xz", "row", "proof", "dig"))
+    for k, look in enumerate(("Scrapper", "Industrial", "Modern", "Futuristic")):
+        z = 80 + 2 * k
+        for i in range(1, 4):
+            dig(P(i, z), 4)
+        kv, txt = proof("ProofLook", "%s;%s;%s" % (look, xz(P(0, z)), xz(P(4, z))))
+        parts = int(kv.get("parts", "0"))
+        good = parts >= 5 and kv.get("styled") == str(parts) and kv.get("pink") == "0" and ("/%s/" % look) in txt
+        row("LOOK_%s_resolves" % look, "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
+
+
 def pawns_of(B):
     return {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=300) or {}).get("pawns") or []}
 
 
-SECTIONS = {"posts": None, "grate": grate, "underpass": underpass, "waters": waters, "jetty": jetty}
+SECTIONS = {"posts": None, "grate": grate, "underpass": underpass, "waters": waters, "jetty": jetty, "looks": looks}
 
 
 class FakeBridge(object):
@@ -571,6 +586,10 @@ class FakeBridge(object):
                 return "JETTY ok=False anchors=0 decks=0 blueprints=0 railed=0 reason=A jetty reaches at most 2 squares out (this one: 3)."
             self.last_tier, self.jet = "jetty", 0
             return "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-"
+        if m == "ProofLook":
+            look = arg.split(";")[0]
+            return ("LOOK look=%s parts=8 styled=8 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/%s/RM_SuspensionDeck|"
+                    "RimMandrake/FlowWorks/SuspensionBridge/%s/RM_SuspensionAnchor" % (look, look, look))
         if m == "ProofWater":
             return "WATER terrain=WaterMovingChestDeep water=True ocean=False river=True spannable=True decked=True exempt=True walkable=True swim=False"
         if m == "ProofDeckHp":

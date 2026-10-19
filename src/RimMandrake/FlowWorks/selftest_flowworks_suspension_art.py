@@ -22,6 +22,9 @@ TEX = os.path.join(HERE, "Textures")
 # +2 jetties (SUSPENSION_JETTY_BUILD_WALK_THE_PLANK, Graphic_Multi: _north/_east/_south each)
 EXPECTED = 15
 MULTI = ("RM_SuspensionJetty_",)
+# SUSPENSION_ART_RESKIN_HE_SEES_FIRST: the four looks (Defs/Pits/ThingDefs/RM_SuspensionStyles.xml), 13 styled parts x 4 looks
+STYLES = os.path.join(HERE, "Defs", "Pits", "ThingDefs", "RM_SuspensionStyles.xml")
+EXPECTED_STYLES = 52
 
 
 def read_png(path):
@@ -120,6 +123,18 @@ def main():
             files += [tp + "_" + f for f in ("north", "east", "south")]   # west mirrors east
         else:
             files.append(tp)
+    sx = open(STYLES, encoding="utf-8").read()
+    nstyle = len(re.findall(r"<ThingStyleDef>", sx))
+    if nstyle != EXPECTED_STYLES:
+        print(f"FAIL expected {EXPECTED_STYLES} ThingStyleDefs in {STYLES}, found {nstyle}")
+        return 1
+    for m in re.finditer(r"<texPath>([^<]+)</texPath>\s*<graphicClass>([^<]+)</graphicClass>", sx):
+        tp, gc = m.group(1), m.group(2)
+        if gc == "Graphic_Multi":
+            files += [tp + "_" + f for f in ("north", "east", "south")]
+        else:
+            files.append(tp)
+    files = sorted(set(files))
     fails = check(files)
     for f in fails:
         print("FAIL " + f)

@@ -36,6 +36,10 @@ namespace RimMandrake.FlowWorks.Pits
 		/// no far end, one span, one person's weight.</summary>
 		public bool jetty;
 
+		/// <summary>SUSPENSION_ART_RESKIN_HE_SEES_FIRST: the look picked on the build button (Scrapper, Industrial, Modern,
+		/// Futuristic; null = the default look). Its railings and its wreck are made in it.</summary>
+		public string look;
+
 		public List<int> Supports => RM_SuspensionMath.Supports(length, towers);
 
 		public int SpanCount => jetty ? 1 : Supports.Count - 1;
@@ -103,6 +107,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref grated, "grated", false);
 			Scribe_Values.Look(ref deckNotches, "deckNotches", 0);
 			Scribe_Values.Look(ref jetty, "jetty", false);
+			Scribe_Values.Look(ref look, "look");
 			if (Scribe.mode == LoadSaveMode.PostLoadInit && towers == null)
 			{
 				towers = new List<int>();
@@ -141,6 +146,9 @@ namespace RimMandrake.FlowWorks.Pits
 			return p != null && floorBand.Contains(p);
 		}
 
+		/// <summary>Pawns in any floor band on any map: 0 lets the hot reads (shots, draw, loads) skip the band at once.</summary>
+		public static int BandTotal;
+
 		public void SetBand(Pawn p, bool under)
 		{
 			if (p == null)
@@ -149,11 +157,14 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			if (under)
 			{
-				floorBand.Add(p);
+				if (floorBand.Add(p))
+				{
+					BandTotal++;
+				}
 			}
-			else
+			else if (floorBand.Remove(p) && BandTotal > 0)
 			{
-				floorBand.Remove(p);
+				BandTotal--;
 			}
 		}
 
@@ -177,7 +188,7 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>Q6 (construction design §4, ruled by card): a deck square fell onto the floor at <paramref name="c"/>. Each pawn
 		/// that was under it takes vanilla's thin-roof collapse crush (15-30, from above); a wreck lands on the floor and blocks
 		/// it until someone clears it (deconstructs it). Where a pawn lies, only rubble lands (a wreck never spawns on anyone).</summary>
-		public static void LandWreck(Map map, IntVec3 c, List<Pawn> under)
+		public static void LandWreck(Map map, IntVec3 c, List<Pawn> under, string look = null)
 		{
 			RM_MapComponent_SuspensionBridges b = Of(map);
 			if (under != null)
@@ -213,6 +224,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			Thing w = ThingMaker.MakeThing(RM_SuspensionDefOf.RM_SuspensionWreck);
 			w.SetFactionDirect(Faction.OfPlayer);
+			RM_SuspensionLooks.Apply(w, look);
 			GenSpawn.Spawn(w, c, map, Rot4.Random);
 			Wrecks++;
 		}
@@ -284,6 +296,7 @@ namespace RimMandrake.FlowWorks.Pits
 				bridges = bridges ?? new List<SuspensionBridgeRecord>();
 				Reindex();
 				floorBand = new HashSet<Pawn>((floorBandScribe ?? new List<Pawn>()).Where(p => p != null));
+				BandTotal += floorBand.Count;
 				floorBandScribe = null;
 			}
 		}
@@ -765,7 +778,10 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			foreach (Pawn p in gone)
 			{
-				floorBand.Remove(p);
+				if (floorBand.Remove(p) && BandTotal > 0)
+				{
+					BandTotal--;
+				}
 				if (p != null && p.Dead && p.Corpse != null && p.Corpse.Spawned && p.Corpse.Map == map)
 				{
 					RM_SuspensionUnderpass.SlideOut(p.Corpse);
@@ -1006,15 +1022,17 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			if (GenConstruct.CanPlaceBlueprintAt(rail, c, Rot4.North, map).Accepted)
 			{
+				string look = RecordAt(c)?.look;
 				if (DebugSettings.godMode)
 				{
 					Thing t = ThingMaker.MakeThing(rail);
 					t.SetFactionDirect(Faction.OfPlayer);
+					RM_SuspensionLooks.Apply(t, look);
 					GenSpawn.Spawn(t, c, map, Rot4.North);
 				}
 				else
 				{
-					GenConstruct.PlaceBlueprintForBuild(rail, c, map, Rot4.North, Faction.OfPlayer, null);
+					GenConstruct.PlaceBlueprintForBuild(rail, c, map, Rot4.North, Faction.OfPlayer, null, null, RM_SuspensionLooks.StyleFor(rail, look));
 				}
 			}
 		}

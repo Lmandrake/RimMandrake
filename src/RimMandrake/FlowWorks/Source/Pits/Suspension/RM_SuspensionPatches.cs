@@ -380,7 +380,7 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>Is this pawn under a suspension deck now (in the floor band of the square it stands on)?</summary>
 		public static bool InFloorBand(Pawn p)
 		{
-			if (p == null || !p.Spawned)
+			if (RM_MapComponent_SuspensionBridges.BandTotal == 0 || p == null || !p.Spawned)
 			{
 				return false;
 			}
@@ -867,6 +867,56 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 			}
 			__result = cost;
+		}
+	}
+
+	/// <summary>
+	/// SUSPENSION_ART_RESKIN_HE_SEES_FIRST (construction design §5; parent §8): the suspension bridge parts in the four looks,
+	/// through the shared style picker FlowWorks' pipes, tanks and weir use (Machinery/PipeLook.cs: a look menu on the build
+	/// button, the default look from the pipes' setting, a legacy unstyled part drawn in the default look). One ThingStyleDef
+	/// per part per look, <c>&lt;part&gt;_&lt;Look&gt;</c> (Defs/Pits/ThingDefs/RM_SuspensionStyles.xml). The drag designators place
+	/// every part of one bridge in the look picked on its button; the railings and the wreck follow the bridge's look. The rope
+	/// type is Scrapper-only and keeps its own art. Registered only when the style defs are loaded (installed with their art).
+	/// Item title "he sees first" is superseded by the owner's 2026-10-18 ruling: new art is accepted the first time.
+	/// </summary>
+	[StaticConstructorOnStartup]
+	public static class RM_SuspensionLooks
+	{
+		public static readonly string[] StyledDefs =
+		{
+			"RM_SuspensionDeck_Timber", "RM_SuspensionDeck_Steel", "RM_SuspensionDeck_Heavy", "RM_SuspensionDeck_SteelGrated",
+			"RM_SuspensionDeck_HeavyGrated", "RM_SuspensionJetty_Steel", "RM_SuspensionJetty_Heavy", "RM_SuspensionAnchor_Timber",
+			"RM_SuspensionAnchor_Steel", "RM_SuspensionAnchor_Heavy", "RM_SuspensionTower", "RM_SuspensionRailing", "RM_SuspensionWreck",
+		};
+
+		static RM_SuspensionLooks()
+		{
+			if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(Machinery.PipeStyles.StyleDefName(StyledDefs[0], Machinery.PipeStyles.Scrapper)) != null)
+			{
+				Machinery.PipeLook.Core.Register(StyledDefs, Machinery.PipeStyles.StyleDefName);
+			}
+		}
+
+		/// <summary>The look the build button will place now (its menu pick, else the default look), or null if unstyled.</summary>
+		public static string LookFor(Designator_Build des)
+		{
+			ThingStyleDef s = Machinery.PipeLook.Core.Resolve(des);
+			return s == null ? null : Machinery.PipeLook.Core.LookOfStyle(s);
+		}
+
+		public static ThingStyleDef StyleFor(ThingDef d, string look)
+		{
+			return look == null ? null : Machinery.PipeLook.Core.StyleFor(d, look);
+		}
+
+		/// <summary>Give a part made in code (god mode, a railing, a wreck) its bridge's look.</summary>
+		public static void Apply(Thing t, string look)
+		{
+			ThingStyleDef s = StyleFor(t?.def, look);
+			if (s != null)
+			{
+				t.StyleDef = s;
+			}
 		}
 	}
 }

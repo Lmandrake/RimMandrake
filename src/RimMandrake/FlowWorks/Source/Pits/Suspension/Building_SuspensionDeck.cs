@@ -177,12 +177,13 @@ namespace RimMandrake.FlowWorks.Pits
 			// floor: whoever is under it is hit like a roof collapse, and the wreck blocks the floor until cleared
 			bool falls = collapsed;
 			List<Pawn> under = falls ? Bridges?.BandPawnsAt(pos) : null;
+			string look = Bridges?.RecordAt(pos)?.look;
 			base.DeSpawn(mode);
 			RM_MapComponent_SuspensionBridges.DirtyAround(map, pos);
 			RM_SuspensionWaters.Notify_DeckChanged(map, pos);
 			if (falls && map != null)
 			{
-				RM_MapComponent_SuspensionBridges.LandWreck(map, pos, under);
+				RM_MapComponent_SuspensionBridges.LandWreck(map, pos, under, look);
 			}
 		}
 
