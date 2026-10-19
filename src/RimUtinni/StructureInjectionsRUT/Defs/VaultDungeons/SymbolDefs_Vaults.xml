@@ -2,7 +2,7 @@
 <Defs>
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_GreenGoo</defName>
-    <pawnKindDef>AA_GreenGoo</pawnKindDef>
+    <pawnKindDef>RM_Wuum</pawnKindDef>  <!-- was AA_GreenGoo; RM_Wuum is our port (Alpha Animals retired 2026-10-18) -->
     <spawnPartOfFaction>false</spawnPartOfFaction>
     <numberToSpawn>1</numberToSpawn>
     <spawnDead>false</spawnDead>
@@ -31,7 +31,7 @@
   </KCSG.SymbolDef>
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_BlackJellyWall</defName>
-    <thing>AA_BlackJellyWall</thing>
+    <thing>VFEI2_InsectJellyWall</thing>  <!-- was AA_BlackJellyWall (Alpha Animals, retired 2026-10-18; no port): the VFE Insectoids jelly wall it was built on -->
   </KCSG.SymbolDef>
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_Fleshmass</defName>
