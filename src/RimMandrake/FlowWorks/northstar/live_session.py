@@ -1314,6 +1314,18 @@ def main(argv=None):
     if a.dry_run:
         s.say("DRY RUN: no bridge touched.")
         return 0
+    if not a.mock:
+        # live 2026-10-19: companion_profile.json lapsed at 06:00Z mid-run and every test-only tool (static_call,
+        # job_probe, log sentinel) came back REFUSED in the CAMPAIGN profile; refuse to start inside the run's budget
+        md = os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck")
+        if md not in sys.path:
+            sys.path.insert(0, md)
+        import runner as MR
+        try:
+            MR.ensure_test_profile(min_minutes=90)
+        except RuntimeError as ex:
+            s.say("REFUSING TO START: %s" % ex)
+            return 2
     import fw_walk_common as FC
     walk_args = argparse.Namespace(mock=a.mock, no_shots=True, mock_fail=None)
     s.w = FC.make_walk(walk_args, os.path.join(out_dir, "walk"))
