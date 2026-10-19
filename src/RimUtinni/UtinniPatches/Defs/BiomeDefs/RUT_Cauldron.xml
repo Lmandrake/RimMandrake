@@ -126,7 +126,7 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <RSW_Neebray MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Neebray>  <!-- neebray - small-flier, keep -->
-      <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- beetlefleet - small-shelled, keep -->
+      <RM_Garsulix>0.7</RM_Garsulix>  <!-- garsulix: our port of the donor GR_Beetlefleet (RimMandrake Cauldron), donor retired 2026-10-18 -->
       <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - small, keep -->
       <AA_OcularJelly MayRequire="sarg.alphaanimals">0.5</AA_OcularJelly>  <!-- ocular jelly - small, keep -->
       <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- corruptor dryad - small, keep -->

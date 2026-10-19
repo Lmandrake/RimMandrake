@@ -356,4 +356,85 @@
       <topWindExposure>0.3</topWindExposure>
     </plant>
   </ThingDef>
+
+  <!-- Ground terrains: ports of GU_AlienSand / GU_RichAlienSand / GU_AlienSandFine (Alpha Biomes 1.6/Defs/TerrainDefs/
+       Terrain_OcularForest.xml), plain XML copies 2026-10-18 for donor retirement; RM_Contagion and RUT_Contagion name them. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_AlienSand</defName>
+    <label>red-tinged ground</label>
+    <texturePath>StandIn/Terrain/Surfaces/GU_AlienSand</texturePath>
+    <pollutedTexturePath>StandIn/Terrain/Surfaces/GU_AlienSand_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <pathCost>4</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>SoftDry</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+      <li>GrowSoil</li>
+    </affordances>
+    <generatedFilth>Filth_Sand</generatedFilth>
+    <fertility>0.9</fertility>
+    <takeFootprints>True</takeFootprints>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_RichAlienSand</defName>
+    <label>rich red-tinged ground</label>
+    <texturePath>StandIn/Terrain/Surfaces/GU_AlienSand</texturePath>
+    <pollutedTexturePath>StandIn/Terrain/Surfaces/GU_AlienSand_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
+    <color>(160,140,140)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>335</renderPrecedence>
+    <pathCost>4</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>SoftDry</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+      <li>GrowSoil</li>
+    </affordances>
+    <generatedFilth>Filth_Sand</generatedFilth>
+    <fertility>1.2</fertility>
+    <takeFootprints>True</takeFootprints>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_AlienSandFine</defName>
+    <label>fine red sand</label>
+    <texturePath>StandIn/Terrain/Surfaces/GU_AlienSandFine</texturePath>
+    <pollutedTexturePath>StandIn/Terrain/Surfaces/GU_AlienSandFine_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>335</renderPrecedence>
+    <pathCost>2</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <driesTo>RM_AlienSand</driesTo>
+    <affordances>
+      <li>Light</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>0</fertility>
+    <takeFootprints>True</takeFootprints>
+  </TerrainDef>
 </Defs>
