@@ -87,7 +87,7 @@
     </statBases>
     <graphicData>
       <!-- PLACEHOLDER art -->
-      <texPath>Things/Building/Art/SculptureSmall</texPath>
+      <texPath>Things/Building/Art/RM_MercyCarving</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <color>(170, 155, 135)</color>
     </graphicData>
