@@ -1,0 +1,83 @@
+{
+ "biome": "SUBJECTS_greysea_crown_retracted_and_elder",
+ "built": "2026-10-18T17:36:57-0700",
+ "census": "Transient/biome_ffar/greysea_crown_retracted_and_elder.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 548 active",
+ "rows": {
+  "RM_BrineCrown": {
+   "columns": {
+    "A": {
+     "single": "6b2382baec6485fca031d00c424d1401d266b27bdd8f97e4dfe39445d74a0b63"
+    },
+    "B": {
+     "single": "e032bfdc364584b66cf4ce5c93c9b03387c8cadf4bec56594b224e87dbf8663e"
+    },
+    "C": {
+     "single": "9e988c1f8caeea392653c8345b8b2ce4ede731ccc60180c184bcc9555fad1843"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_GreySea/RM_BrineCrown",
+    "B": "Things/Plant/RM_GreySea/RM_BrineCrown",
+    "C": "Things/Plant/RM_GreySea/RM_BrineCrown"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_BrineCrown_A (1 of 1) \u2014 TerminalBiomes",
+    "B": "render greysea_brinecrown_retracted_v1",
+    "C": "render greysea_brinecrown_retracted_v2"
+   },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_BrineCrown"
+   ],
+   "res": "Things/Plant/RM_GreySea/RM_BrineCrown",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "brinecrown"
+  },
+  "RM_BrineElder": {
+   "columns": {
+    "A": {
+     "single": "fd4a58efb3c55bb7bf65f4cfc74ebc5e952b6b87992f89b3994537071ab78c65"
+    },
+    "B": {
+     "single": "0ed56b97384778c9a83bc4379ea9a1e1adad82efb86f0d0996917976a76fd4ae"
+    },
+    "C": {
+     "single": "fa06377d702abeddf394fc4f6b4385f141414bbc72eafe09e85c804506f05f65"
+    },
+    "D": {
+     "single": "943881ebe068cdf73e3cccd0d8079a88d3accfba6a84a371c14c1debebc35786"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/Natural/RM_SaltChimney",
+    "B": "Things/Building/Natural/RM_SaltChimney",
+    "C": "_byname",
+    "D": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render greysea_saltchimney_v1",
+    "C": "render greysea_brineelder_v1",
+    "D": "render greysea_brineelder_v2"
+   },
+   "pools": [],
+   "res": "Things/Building/Natural/RM_SaltChimney",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "brineelder"
+  }
+ },
+ "sheetId": "greysea_crown_retracted_and_elder_sheet_2026-10-18",
+ "snapshotId": "6d1ca20c68bbc369"
+}
