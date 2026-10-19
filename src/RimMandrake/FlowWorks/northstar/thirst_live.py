@@ -82,6 +82,18 @@ RM_ContagionTouched; a rerun from the same save (b6.json) was exact. Theories, i
     the nearest pool when it finally re-thought: white's. b6's red was clean because b5 had expired and dropped that entry.
     Fix: the marks are cleared when Current.Game changes (selftest Thirst_review_fixes_B2_B3_in_source). T15R is the
     red-before-the-fix check.
+
+DEBUG RECORD, 2026-10-18 BENCH reruns (Transient/bench_live_20261018{,b}/, offline diagnosis):
+  - FALSE: "26a47408f7 / ea44bf7957 broke the salt bottle". Their FlowWorks diff touches no thirst, ingest or liquid-quality
+    code, and T5 already FAILED once at edb4b72b49 (thirst_run1) while T4 itself failed twice at ea44bf7957 and PASSED in
+    the same load's T4,T5 rerun (thirst_t45). Flaky, not a regression.
+  - TRUE (T4/T5, HARNESS): every failing arm reads the bottle gone from its cell, no dirty bottle, no hydration, no
+    poisoning: the Ingest job was still running. Vanilla carries the drink to a chew spot (a chair at a table within
+    chairSearchRadius 32) and chews 500 / EatingSpeed ticks; the outcome doers run only at the end, and the row waited a
+    fixed 600 ticks. Fix: ingest_done() waits for the job to end (budget 3,000), UNMEASURED if it never does.
+  - TRUE (T15/T16/T27, SITE): the 10-17 PASS runs loaded 20 mods incl. mandrake.rm.biomes; the 10-18 runs loaded the
+    11-mod flowworks tier. T27's meltwater can, T16's living-slime terrain and T15's red/green/white hediffs are biomes
+    content (yellow's own RM_SlimeNausea, the purge and the thought all landed). Rows now read UNMEASURED SITE without it.
 """
 import argparse
 import json
@@ -120,6 +132,12 @@ def main(argv=None):
     res = {"script": "thirst_live.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a)}
     import driver_stamp
     driver_stamp.stamp(res, B.call)      # validation.py reads a result only at the current mod hash AND deployed DLL
+    # THIRST_ROWS_DIAGNOSE_SLIME_SITS_STILL (2026-10-18): T27's RM_BlueIceMeltwaterCan (BlueDesert), T16's RM_Slime_Liquid
+    # (GelatinousSlime) and T15's red/green/white hediffs (Contagion, GelatinousSlime, TheRot) all live in the composed
+    # mandrake.rm.biomes mod. The flowworks tier (11 mods) does not load it, so those rows read SITE there, never MOD.
+    RUNNING = (res.get("env") or {}).get("running")
+    BIOMES = "mandrake.rm.biomes"
+    biomes_absent = RUNNING is not None and BIOMES not in RUNNING
 
     def save():
         with open(out + ".tmp", "w", encoding="utf-8") as f:
@@ -271,6 +289,22 @@ def main(argv=None):
                 return t, seen
         return None, seen
 
+    def ingest_done(pid, budget=3000, step=100):
+        """HARNESS (SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING, 2026-10-18): an ordered Ingest is walk to the bottle, carry it to
+        a chew spot (vanilla Toils_Ingest.TryFindChairOrSpot: a chair at a table within chairSearchRadius 32, else a spot
+        near), then chew baseIngestTicks 500 / EatingSpeed; the outcome doers (hydrate, residue) run only at the END. The
+        old fixed 600-tick wait read a pawn still carrying or chewing as "drank for nothing". Wait for the job to end."""
+        t, seen = 0, []
+        while t < budget:
+            j = job(pid)
+            if j and (not seen or seen[-1] != j):
+                seen.append(j)
+            if t >= 60 and j != "Ingest":
+                return {"ended": True, "ticks": t, "jobs": seen}
+            ticks(step if t else 60)
+            t += step if t else 60
+        return {"ended": job(pid) != "Ingest", "ticks": t, "jobs": seen}
+
     DRINKS = ("RM_Bottle_FreshWater", "RM_Bottle_IcyWater", "RM_BottleEmpty", "RM_BottleDirty", "RM_Bottle_SaltWater",
               "RM_Bucket_FreshWater", "RM_BlueIceMeltwaterCan")
 
@@ -413,28 +447,29 @@ def main(argv=None):
             bid = spawn("RM_Bottle_FreshWater", X0 + 11, Z0 + 2)
             dirty0 = count("RM_BottleDirty")
             r = B.call("jawa/ordered_job", pawnId=pb, jobDef="Ingest", targetAId=bid, count=1, waitTicks=30) or {}
-            ticks(600)
+            ing4 = ingest_done(pb)
             l1 = need(pb)
             dirty1 = count("RM_BottleDirty")
             fresh_gain = (l1 - l0) if None not in (l0, l1) else None
             if want("T4"):
-                if fresh_gain is None or not r.get("accepted"):
-                    row("T4_bottle_satisfies", "UNMEASURED", "HARNESS", {"order": {k: r.get(k) for k in ("accepted", "afterJobDef", "message")}, "levels": [l0, l1]})
+                if fresh_gain is None or not r.get("accepted") or not ing4["ended"]:
+                    row("T4_bottle_satisfies", "UNMEASURED", "HARNESS", {"order": {k: r.get(k) for k in ("accepted", "afterJobDef", "message")}, "levels": [l0, l1], "ingest": ing4})
                 else:
                     ok4 = fresh_gain >= 0.45 and dirty1 > dirty0
                     row("T4_bottle_satisfies", "PASS" if ok4 else "FAIL", "MOD",
-                        {"levels": [l0, l1], "gain": round(fresh_gain, 4), "dirtyBottles": [dirty0, dirty1]})
+                        {"levels": [l0, l1], "gain": round(fresh_gain, 4), "dirtyBottles": [dirty0, dirty1], "ingest": ing4})
             if want("T5"):
                 pd = spawn_colonist(X0 + 14, Z0 + 2)
                 s0 = need(pd, 0.2)
                 sid = spawn("RM_Bottle_SaltWater", X0 + 15, Z0 + 2)
                 r = B.call("jawa/ordered_job", pawnId=pd, jobDef="Ingest", targetAId=sid, count=1, waitTicks=30) or {}
-                ticks(600)
+                ing5 = ingest_done(pd)
                 s1 = need(pd)
                 h = hediffs(pd)
                 _, mem = needs_of(pd)
-                if None in (s0, s1) or fresh_gain is None or not r.get("accepted"):
+                if None in (s0, s1) or fresh_gain is None or not r.get("accepted") or not ing5["ended"] or not ing4["ended"]:
                     row("T5_salt_water_quality", "UNMEASURED", "HARNESS", {"levels": [s0, s1], "freshGain": fresh_gain,
+                                                                             "ingest": ing5, "freshIngest": ing4,
                                                                              "order": {k: r.get(k) for k in ("accepted", "afterJobDef", "message")}})
                 else:
                     ratio = (s1 - s0) / fresh_gain if fresh_gain else 0
@@ -451,7 +486,7 @@ def main(argv=None):
                     row("T5_salt_water_quality", "FAIL" if bad else "PASS", "MOD",
                         {"order": {k: r.get(k) for k in ("accepted", "beforeJobDef", "afterJobDef", "message", "note")},
                          "saltBottleLeft": count("RM_Bottle_SaltWater", "%d,%d,1,1" % (X0 + 15, Z0 + 2)),
-                         "levels": [s0, s1], "ratioToFresh": round(ratio, 3), "hediffs": h, "memories": mem, "bad": bad,
+                         "levels": [s0, s1], "ratioToFresh": round(ratio, 3), "hediffs": h, "memories": mem, "bad": bad, "ingest": ing5,
                          "note": "one pawn, one bottle (the bar says x4 on test pawns; the per-drink numbers are what it scores)"})
 
         # ---------------------------------------------------------------- T10 / T9: a pond
@@ -603,7 +638,9 @@ def main(argv=None):
             return False
 
         # ---------------------------------------------------------------- T27 water item
-        if want("T27"):
+        if want("T27") and biomes_absent:
+            row("T27_water_items", "UNMEASURED", "SITE", {"why": "RM_BlueIceMeltwaterCan is BlueDesert's (%s not loaded)" % BIOMES})
+        elif want("T27"):
             purge_drinks()
             pw = spawn_colonist(X0 + 2, Z0 + 12)
             l0 = need(pw, 0.2)
@@ -791,7 +828,18 @@ def main(argv=None):
             if "RM_DrinkFromTerrain" in jobs[p5]:
                 bad.append("a pawn at 0.05 drank slime")
             out15["at0.05"] = jobs[p5]
-            row("T15_slime_effects", "FAIL" if bad else "PASS", "MOD", dict(out15, bad=bad))
+            # red/green/white's colour hediffs come from Contagion / GelatinousSlime / TheRot (all in mandrake.rm.biomes);
+            # without it only yellow's RM_SlimeNausea and the shared purge/thought can be scored
+            foreign = ("RM_ContagionTouched", "RM_Slimification", "RM_SporeFlesh")
+            unscorable = [b_ for b_ in bad if biomes_absent and any(b_.endswith(": %s None" % f_) for f_ in foreign)]
+            rest = [b_ for b_ in bad if b_ not in unscorable]
+            if rest:
+                row("T15_slime_effects", "FAIL", "MOD", dict(out15, bad=rest, unscorable=unscorable))
+            elif unscorable:
+                row("T15_slime_effects", "UNMEASURED", "SITE", dict(out15, bad=[], unscorable=unscorable,
+                                                                    why="%s not loaded: three colour hediffs absent" % BIOMES))
+            else:
+                row("T15_slime_effects", "PASS", "MOD", dict(out15, bad=bad))
             for _, _, pid in subj + [(0, 0, p5)]:
                 draft(pid)
 
@@ -951,7 +999,9 @@ def main(argv=None):
             dry_all()
 
         # ---------------------------------------------------------------- T16 living slime (RM_Slime_Liquid)
-        if "T16" in batch3:
+        if "T16" in batch3 and biomes_absent:
+            row("T16_living_slime", "UNMEASURED", "SITE", {"why": "RM_Slime_Liquid is GelatinousSlime's (%s not loaded)" % BIOMES})
+        elif "T16" in batch3:
             dry_all()
             quench_all()
             LX, LZ = X3 + 14, Z0 + 2
