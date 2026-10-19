@@ -49,7 +49,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         total += RM_MapControlMath.Due(ref carry, r);
                         Assert(carry >= 0f && carry < 1f, "carry left [0,1) at rate " + r + ": " + carry);
                         int want = (int)Math.Floor(p * (double)r + 1e-3);
-                        Assert(Math.Abs(total - want) <= 0, "rate " + r + " after " + p + " pulses gave " + total + ", want " + want);
+                        Assert(total == want, "rate " + r + " after " + p + " pulses gave " + total + ", want " + want);
                     }
                 }
                 float c = 0f;

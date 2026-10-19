@@ -23,11 +23,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var cells = new List<(int, bool, Fl)> { (2, true, tar), (3, true, tar) };
                 Assert(RM_PumpMath.PickPour(tanks, cells, out int t, out int c) && t == 1 && c == 1,
                        "the tar tank pours into the roomier tar cell (got tank " + t + ", cell " + c + ")");
-                // can-fail: the old rule took the first channel-capable tank (water) and found no compatible cell
-                int old = tanks[0].Item1 && tanks[0].Item2 != null ? 0 : -1;
-                bool oldFound = false;
-                foreach (var cc in cells) oldFound |= RimMandrake.FlowWorks.RM_StockMath.FluidsCompatible(cc.Item2, cc.Item3, tanks[old].Item2);
-                Assert(old == 0 && !oldFound, "can-fail: the old first-tank rule picks water and starves");
+                // can-fail: the assertion above IS it - the old first-channel-capable-tank rule picks the water tank (index 0), finds no
+                // compatible cell and returns no pour, so it cannot give tank 1 / cell 1. The old rule itself lived inline in
+                // Building_LiquidPump (Verse, not compiled here), so it is not replayed in the test.
             });
             Case("P1_pour_prefers_the_first_feasible_tank_and_the_deepest_emptiest_cell", () =>
             {

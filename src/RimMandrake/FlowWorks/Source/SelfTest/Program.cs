@@ -619,6 +619,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "a malformed FluidDef must not produce an unbounded credit; refusing shows up as "
                     + "disclosed overflow, which is the failure a player can actually see"));
 
+            // The four fill-in Scenario_* cases below replay §5's walk inline: the production walk (RM_LiquidStock displacement) needs
+            // Verse (Map, IntVec3, terrain grids) and cannot compile into this Verse-free project; only the arithmetic it calls is real.
             Case("Scenario_fill_in_one_end_of_a_full_canal_and_the_rest_gets_DEEPER", () =>
             {
                 // §5's third consequence, the one the player must SEE: "the
@@ -1747,8 +1749,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Plasteel, 25) > U("RM_BarrelItemBase", RM_ContainerMaterial.Metal, 25), "plasteel barrels hold more");
                 Assert(U("RM_BucketItemBase", RM_ContainerMaterial.Wood, 5) == 5 && U("RM_BucketItemBase", RM_ContainerMaterial.Metal, 5) == 6
                     && U("RM_BucketItemBase", RM_ContainerMaterial.Leather, 5) == 4, "buckets wood 5 / metal 6 / leather 4");
-                foreach (var m in new[] { RM_ContainerMaterial.Leather, RM_ContainerMaterial.Glass, RM_ContainerMaterial.Metal })
-                    Assert(U("RM_BottleItemBase", m, 1) == 1, "every bottle holds 1");
+                // A bottle is 1.5 L whatever it is made of (every shipped factor is 1.0). Measured in decilitres, where ANY factor
+                // off 1.0 by 0.04+ moves the count: base 1 unit rounds every factor below 1.5 back to 1 and proved nothing.
+                var bottleRules = ContainerMatFixture.Rules("RM_BottleItemBase");
+                Assert(bottleRules.Count >= 3, "sanity: found " + bottleRules.Count + " bottle material rules, expected >= 3");
+                foreach (var r in bottleRules)
+                    Assert(RM_ContainerMaterialMath.ScaledUnits(15, r.capacityFactor) == 15, "a " + r.material + " bottle does not hold 1.5 L (factor " + r.capacityFactor + ")");
+                Assert(RM_ContainerMaterialMath.ScaledUnits(15, 1.05f) != 15, "can-fail: a 1.05 bottle factor changes the 1.5 L count");
             });
             Case("ContainerMat_scaled_units_rounding", () =>
             {
