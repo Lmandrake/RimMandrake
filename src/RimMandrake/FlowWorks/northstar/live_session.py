@@ -549,9 +549,10 @@ def b2_settings_dialog(s):
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     before = s.sget("pitGuardrailEnabled")
     s.sset("pitGuardrailEnabled", False)
-    s.call("rimworld/open_mod_settings", modId=MOD_ID, replaceExisting=True)
+    opened2 = s.call("rimworld/open_mod_settings", modId=MOD_ID, replaceExisting=True).get("success") is True
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
-    disk = read_settings_file(s)
+    # a dialog that never opened never closes, so nothing is written: that is UNMEASURED, not a MOD fail (live 2026-10-19)
+    disk = read_settings_file(s) if opened2 else None
     s.sset("pitGuardrailEnabled", before if before is not None else True)
     s.call("rimworld/open_mod_settings", modId=MOD_ID, replaceExisting=True)
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
@@ -1142,6 +1143,10 @@ def run_sub(s, step):
         else:
             s.row("%s_%s" % (bid, script[:-3]), "-", "-", "SKIP", "HARNESS", dict(why="no --mock in %s; live only" % script, argv=fill), bid)
             return
+    # re-calm before EVERY script, not once per run: live 2026-10-19 two Mech_Pikeman arrived after B0's sweep and
+    # GovernorStop killed climb_proof and sprinkler_live (SITE, not the mod)
+    s.call("jawa/kill_hostiles")
+    s.call("jawa/incident_queue_clear")
     s.say("  RUN %s %s" % (script, " ".join(fill)))
     t0 = time.time()
     with open(log, "w", encoding="utf-8") as lf:
