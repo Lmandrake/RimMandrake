@@ -435,6 +435,64 @@ namespace RimMandrake.DivingInteraction.SelfTest
             return fails;
         }
 
+        // SCALD_WALKING_PASTURE_1 trample: drive RM_WalkerTrampleKernel.Decide exactly as the map component does
+        // (it records lastTrample AND lastWarn on a trample, lastWarn on a warning) and check every outcome against
+        // the ruling's own rule written out here.
+        public static List<string> Trample(int n, int baseSeed)
+        {
+            var fails = new List<string>();
+            float tr2 = RM_WalkerTrampleKernel.TrampleRadius * RM_WalkerTrampleKernel.TrampleRadius;
+            float wr2 = RM_WalkerTrampleKernel.WarnRadius * RM_WalkerTrampleKernel.WarnRadius;
+            for (int c = 0; c < n && fails.Count < 5; c++)
+            {
+                Cases++;
+                var r = new Random(baseSeed * 7919 + c);
+                int now = r.Next(0, 100000), lt = -1, lw = -1, lastTrampleSeen = -1000000;
+                bool en = r.Next(4) != 0, warn = r.Next(4) != 0;
+                for (int step = 0; step < 60; step++)
+                {
+                    Steps++;
+                    now += RM_WalkerTrampleKernel.SweepInterval * (1 + r.Next(4));
+                    float d;
+                    int pick = r.Next(10);
+                    if (pick == 0) d = float.PositiveInfinity;
+                    else if (pick == 1) d = float.NaN;
+                    else if (pick == 2) d = -1f;
+                    else d = r.Next(0, 50);
+                    bool downed = r.Next(8) == 0;
+                    var o = RM_WalkerTrampleKernel.Decide(d, downed, now, lt, lw, en, warn);
+                    bool valid = !float.IsNaN(d) && d >= 0f;
+                    bool wantT = valid && en && !downed && d <= tr2 && (lt < 0 || now - lt >= RM_WalkerTrampleKernel.TrampleCooldownTicks);
+                    bool wantW = !wantT && valid && en && warn && !downed && d <= wr2 && (lw < 0 || now - lw >= RM_WalkerTrampleKernel.WarnCooldownTicks);
+                    var want = wantT ? RM_WalkerTrampleKernel.Outcome.Trample : (wantW ? RM_WalkerTrampleKernel.Outcome.Warn : RM_WalkerTrampleKernel.Outcome.None);
+                    if (o != want) { fails.Add($"trample seed {c}: got {o}, want {want} (d2 {d}, downed {downed}, now {now}, lt {lt}, lw {lw}, en {en}, warn {warn})"); break; }
+                    if (o == RM_WalkerTrampleKernel.Outcome.Trample)
+                    {
+                        if (now - lastTrampleSeen < RM_WalkerTrampleKernel.TrampleCooldownTicks) { fails.Add($"trample seed {c}: two tramples {now - lastTrampleSeen} ticks apart"); break; }
+                        lastTrampleSeen = now; lt = now; lw = now;
+                    }
+                    else if (o == RM_WalkerTrampleKernel.Outcome.Warn) lw = now;
+                    if (!en && o != RM_WalkerTrampleKernel.Outcome.None) { fails.Add($"trample seed {c}: {o} with trampling switched off"); break; }
+                }
+            }
+            // damage: clamped, NaN/inf -> default, monotone, default inside the range
+            Cases++;
+            float prev = float.MinValue;
+            for (float v = -10f; v <= 50f; v += 0.25f)
+            {
+                Steps++;
+                float dmg = RM_WalkerTrampleKernel.Damage(v);
+                if (dmg < RM_WalkerTrampleKernel.MinDamage || dmg > RM_WalkerTrampleKernel.MaxDamage) fails.Add($"trample: damage {dmg} for setting {v} outside the slider range");
+                if (dmg < prev) fails.Add($"trample: damage fell from {prev} to {dmg} as the setting rose to {v}");
+                prev = dmg;
+            }
+            if (RM_WalkerTrampleKernel.Damage(float.NaN) != RM_WalkerTrampleKernel.DefaultDamage || RM_WalkerTrampleKernel.Damage(float.PositiveInfinity) != RM_WalkerTrampleKernel.DefaultDamage)
+                fails.Add("trample: NaN/infinite damage setting does not fall back to the shipped default");
+            if (RM_WalkerTrampleKernel.Damage(RM_WalkerTrampleKernel.DefaultDamage) != RM_WalkerTrampleKernel.DefaultDamage)
+                fails.Add("trample: the shipped default lies outside the slider range");
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -447,6 +505,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 ("elder", () => Elder(N(4000), S(1))),
                 ("units", () => Units(N(2000), S(1))),
                 ("oxygen", () => Oxygen(N(3000), S(1))),
+                ("trample", () => Trample(N(3000), S(1))),
             };
             foreach (var f in fam)
             {

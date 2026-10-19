@@ -54,4 +54,8 @@
   <RM_ChillAirPump_NotSealed>Not a sealed room: the air bleeds away into the cold. Enclose and roof it.</RM_ChillAirPump_NotSealed>
   <RM_ChillAirPump_Idle>Not pumping: no air down here, no fire.</RM_ChillAirPump_Idle>
 
+  <!-- SCALD_WALKING_PASTURE_1 trample (owner card 2026-10-09: tramples and deals damage; a warning is owed with it). {0} = pawn. -->
+  <RM_WalkerTrampleWarning>{0} is close to a moving bottom-walker herd. Walkers on the move trample anyone in their path.</RM_WalkerTrampleWarning>
+  <RM_WalkerTrampled>{0} was trampled by a moving bottom-walker.</RM_WalkerTrampled>
+
 </LanguageData>

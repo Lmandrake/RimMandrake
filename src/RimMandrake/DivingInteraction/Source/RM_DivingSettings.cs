@@ -203,6 +203,11 @@ namespace RimMandrake.DivingInteraction
         // SCALD_WALKING_PASTURE_1, 2026-10-03. Bottom-walker grazing exposes pigment-rich mat and the crew
         // gathers it behind the herd. Off: walkers are plain scenery animals; nothing is exposed, no job offered.
         public static bool walkerGrazingEnabled = true;
+        // SCALD_WALKING_PASTURE_1 trample, owner card 2026-10-09: a moving walker that gets too close tramples
+        // (damage, not push-aside), and the player is warned first. Off: walkers pass through people harmlessly.
+        public static bool walkerTrampleEnabled = true;
+        public static bool walkerTrampleWarning = true;
+        public static float walkerTrampleDamage = RM_WalkerTrampleKernel.DefaultDamage;
         // SCALD_RETURN_GALLERY_1. WORLDGEN-AFFECTING: new Scald floors may lay the Return Gallery ruin.
         public static bool scaldReturnGalleryEnabled = true;
         // CHILL_RETURN_COMB_LANDMARK_1. WORLDGEN-AFFECTING: new Chill floors may lay the Return Comb (scenery and lore only).
@@ -268,6 +273,9 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref scaldVentForecastEnabled, "scaldVentForecastEnabled", true);
             Scribe_Values.Look(ref scaldVentDischargeHarms, "scaldVentDischargeHarms", true);
             Scribe_Values.Look(ref walkerGrazingEnabled, "walkerGrazingEnabled", true);
+            Scribe_Values.Look(ref walkerTrampleEnabled, "walkerTrampleEnabled", true);
+            Scribe_Values.Look(ref walkerTrampleWarning, "walkerTrampleWarning", true);
+            Scribe_Values.Look(ref walkerTrampleDamage, "walkerTrampleDamage", RM_WalkerTrampleKernel.DefaultDamage);
             Scribe_Values.Look(ref scaldReturnGalleryEnabled, "scaldReturnGalleryEnabled", true);
             Scribe_Values.Look(ref chillReturnCombEnabled, "chillReturnCombEnabled", true);
             Scribe_Values.Look(ref chillDensityDrawEnabled, "chillDensityDrawEnabled", true);
@@ -401,7 +409,7 @@ namespace RimMandrake.DivingInteraction
                 list.GapLine();
             }
 
-            if (Group(list, "The Scald: hot floor", RimMandrake.Shared.SettingScope.Now, new[] { "scaldBerthEnabled", "scaldBerthIntensity", "scaldVentForecastEnabled", "scaldVentDischargeHarms", "walkerGrazingEnabled" }))
+            if (Group(list, "The Scald: hot floor", RimMandrake.Shared.SettingScope.Now, new[] { "scaldBerthEnabled", "scaldBerthIntensity", "scaldVentForecastEnabled", "scaldVentDischargeHarms", "walkerGrazingEnabled", "walkerTrampleEnabled", "walkerTrampleWarning", "walkerTrampleDamage" }))
                 {
                 list.CheckboxLabeled("The Scald: immersion berth (ship rooms heat)", ref scaldBerthEnabled,
                     "Shipped default: ON. A ship parked on the Scald's floor slowly heats its rooms; "
@@ -427,6 +435,19 @@ namespace RimMandrake.DivingInteraction
               + "cropped and its pigment-rich underside is left bare; colonists doing hauling gather it behind "
               + "the herd, stop when the herd moves on, and keep away from the walkers. Off: walkers are plain "
               + "grazing animals and no job is offered.");
+            list.CheckboxLabeled("The Scald: moving bottom-walkers trample people", ref walkerTrampleEnabled,
+                "Shipped default: ON. A bottom-walker on the move tramples anyone standing next to it: blunt damage, "
+              + "about once every ten seconds of contact. Grazing walkers stand still and never trample. A downed "
+              + "person is stepped over. Off: walkers pass people harmlessly.");
+            if (walkerTrampleEnabled)
+            {
+                list.CheckboxLabeled("Warn when a colonist is near a moving herd", ref walkerTrampleWarning,
+                    "Shipped default: ON. A caution message names the colonist within five cells of a moving walker, "
+                  + "at most once an in-game hour each. Off: only the trample itself is reported.");
+                list.Label("Trample damage: " + walkerTrampleDamage.ToString("0"));
+                walkerTrampleDamage = RM_WalkerTrampleKernel.Damage(list.Slider(walkerTrampleDamage,
+                    RM_WalkerTrampleKernel.MinDamage, RM_WalkerTrampleKernel.MaxDamage));
+            }
                 list.GapLine();
             }
 
