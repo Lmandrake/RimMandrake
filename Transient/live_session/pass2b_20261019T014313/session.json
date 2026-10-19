@@ -1,0 +1,483 @@
+{
+ "script": "live_session.py",
+ "mode": "live",
+ "env": {
+  "partial": true,
+  "running": 11,
+  "flowworks": true,
+  "assembly_matches": 1,
+  "config": "min-11",
+  "ticks_per_s": 1130.8
+ },
+ "zones": {
+  "owner": [
+   18,
+   157,
+   216,
+   78
+  ],
+  "covers": [
+   15,
+   15,
+   26,
+   10
+  ],
+  "access": [
+   47,
+   15,
+   40,
+   14
+  ],
+  "digdepth": [
+   93,
+   15,
+   12,
+   8
+  ],
+  "reservoir": [
+   111,
+   15,
+   16,
+   16
+  ],
+  "grenade": [
+   133,
+   15,
+   20,
+   10
+  ],
+  "raillip": [
+   159,
+   15,
+   16,
+   14
+  ],
+  "ride": [
+   181,
+   15,
+   6,
+   6
+  ],
+  "tanks": [
+   193,
+   15,
+   12,
+   6
+  ],
+  "readout": [
+   228,
+   15,
+   22,
+   16
+  ],
+  "ice": [
+   15,
+   37,
+   16,
+   8
+  ],
+  "flood": [
+   37,
+   37,
+   18,
+   10
+  ],
+  "suspension": [
+   61,
+   37,
+   40,
+   16
+  ],
+  "props": [
+   107,
+   37,
+   30,
+   10
+  ],
+  "trench": [
+   15,
+   15,
+   30,
+   16
+  ],
+  "climb": [
+   51,
+   15,
+   46,
+   12
+  ],
+  "sprinkler": [
+   103,
+   15,
+   16,
+   86
+  ],
+  "l2": [
+   125,
+   15,
+   30,
+   18
+  ],
+  "l2b": [
+   161,
+   15,
+   30,
+   18
+  ],
+  "l6": [
+   197,
+   15,
+   30,
+   18
+  ],
+  "l4": [
+   15,
+   107,
+   30,
+   18
+  ],
+  "l5": [
+   51,
+   107,
+   30,
+   18
+  ],
+  "thirst": [
+   15,
+   15,
+   96,
+   42
+  ]
+ },
+ "timing": {
+  "B0": 0.9,
+  "tank_tall": [
+   "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=160000",
+   "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=320000"
+  ],
+  "readouts": {
+   "dug_dry": "OK Hole 1 m \u00b7 Water 0.00 m (0 L)",
+   "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+   "pond": "OK Hole 2 m \u00b7 Water 1.50 m (3,000 L)",
+   "ground": "OK -",
+   "lake": "OK Hole 2 m \u00b7 Water 2.00 m (4,000 L)"
+  },
+  "B2": 4.3,
+  "restore": [
+   {
+    "after": "B5",
+    "healed": 0,
+    "refused": 0,
+    "fed": 8,
+    "weather": "Clear"
+   },
+   {
+    "after": "B6",
+    "healed": 0,
+    "refused": 0,
+    "fed": 8,
+    "weather": "Clear"
+   }
+  ],
+  "B5": 55.0,
+  "B6": 15.6,
+  "total_s": 76.0
+ },
+ "rows": [
+  {
+   "id": "B0_tier_truth",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "running": 11,
+    "flowworks": true,
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_clock_rate",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "ticks": 600,
+    "wall_s": 0.53,
+    "ticks_per_s": 1130.8,
+    "frameBudgetMs": 150.0
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_fall_A1",
+   "item": "FALL_DAMAGE_BUILD_DEEP_DROPS_KILL",
+   "criterion": "A1",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "label": "A deep fall can kill",
+    "why": "",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792402105.png",
+    "textChars": 318
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_pit_A1",
+   "item": "PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER",
+   "criterion": "A1",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "label": "A pit room's floor is at least",
+    "why": "",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792402105.png",
+    "textChars": 318
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_pit_A1",
+   "item": "PIT_ALERT_BUILD_RED_MEANS_HELP",
+   "criterion": "A1",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "label": "Red alert: a colonist stuck in a pit",
+    "why": "",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792402105.png",
+    "textChars": 318
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_beach_A1",
+   "item": "BEACH_RING_RETIRE_DRAINED_MEANS_DRY",
+   "criterion": "A1",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "label": "Shore shelf",
+    "why": "",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792402105.png",
+    "textChars": 318
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_fall_A2",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A2",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "label": "Guardrails and fences stop falls off a lip",
+    "why": "",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792402105.png",
+    "textChars": 318
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_guardrail_disk_roundtrip",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "before": "True",
+    "fileHadFalse": true
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_tank_tall_twice",
+   "item": "TANK_TALL_BUILD_TWICE_THE_DRINK",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "short": 160000.0,
+    "tall": 320000.0,
+    "offered": 10000000,
+    "placed": [
+     true,
+     true
+    ]
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_sea_never_dry",
+   "item": "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE",
+   "criterion": "A2",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "lake": "OK Hole 2 m \u00b7 Water 2.00 m (4,000 L)",
+    "lakeRect": [
+     232,
+     20,
+     18,
+     11
+    ],
+    "edgeCell": "WaterDeep:249,25,1,1",
+    "sticky": "True",
+    "why": "an edge-touching lake read 'Hole 2 m \u00b7 Water 2.00 m (4,000 L)', not limitless"
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_two_numbers_and_sea",
+   "item": "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "reads": {
+     "dug_dry": "OK Hole 1 m \u00b7 Water 0.00 m (0 L)",
+     "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+     "pond": "OK Hole 2 m \u00b7 Water 1.50 m (3,000 L)",
+     "ground": "OK -",
+     "lake": "OK Hole 2 m \u00b7 Water 2.00 m (4,000 L)"
+    },
+    "wording": "owner looks at these strings (V8 kept by card)"
+   },
+   "block": "B2",
+   "eyes": true
+  },
+  {
+   "id": "B2_readout_metres_litres",
+   "item": "LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+    "pond": "OK Hole 2 m \u00b7 Water 1.50 m (3,000 L)",
+    "eyes": "settings UI by eye: B2 dialog screenshot"
+   },
+   "block": "B2",
+   "eyes": true
+  },
+  {
+   "id": "B5_ice_freeze_thaw",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A5",
+   "status": "UNMEASURED",
+   "cls": "SITE",
+   "detail": {
+    "why": "cold enough but only 4.5 freeze events expected (< 4.6): too short to judge",
+    "conditions": [
+     "{'success': True, 'action': 'start', 'scope': 'map', 'notes': ['registered ColdS",
+     "{'success': True, 'action': 'start', 'scope': 'map', 'notes': ['registered DeepF"
+    ],
+    "frozeAfter": null,
+    "thawAfter": null,
+    "coldest": -16.90448,
+    "temps": [
+     -13.36323,
+     -13.3440781,
+     -13.3430939,
+     -13.3601875,
+     -13.3952293,
+     -13.4480534
+    ],
+    "expectedFreezes": 4.49,
+    "before": [
+     10000,
+     10000,
+     10000
+    ],
+    "after": [
+     10000,
+     10000,
+     10000
+    ]
+   },
+   "block": "B5",
+   "eyes": false
+  },
+  {
+   "id": "B6_flood_canal_kept",
+   "item": "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD",
+   "criterion": "A6",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": {
+    "why": "canal squares changed across the flood",
+    "weather": "{'success': True, 'before': 'Clear', 'after': 'TorrentialRain', 'lockInForce': True, 'gamePaused': True, 'notes': ['regi",
+    "weatherBefore": {
+     "current": "Clear",
+     "last": "Clear",
+     "curWeatherAge": 302,
+     "rainRate": 0.0,
+     "snowRate": 0.0
+    },
+    "floodReachedAfter": 4500,
+    "recededAfter": 2500,
+    "changed": [
+     [
+      39,
+      41
+     ],
+     [
+      40,
+      41
+     ],
+     [
+      41,
+      41
+     ],
+     [
+      42,
+      41
+     ],
+     [
+      43,
+      41
+     ],
+     [
+      44,
+      41
+     ],
+     [
+      45,
+      41
+     ],
+     [
+      46,
+      41
+     ]
+    ]
+   },
+   "block": "B6",
+   "eyes": false
+  }
+ ],
+ "notes": [],
+ "args": {
+  "dry_run": false,
+  "mock": false,
+  "list": false,
+  "only": "B0,B2,B5,B6",
+  "skip": "",
+  "frame_budget_ms": 150.0,
+  "player_log": "",
+  "no_owner_save": true,
+  "out_dir": "Transient/live_session/pass2b_20261019T014313"
+ }
+}
