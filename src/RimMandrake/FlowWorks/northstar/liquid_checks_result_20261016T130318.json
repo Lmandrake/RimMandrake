@@ -1,0 +1,242 @@
+{
+ "script": "liquid_checks.py",
+ "started": "2026-10-16T13:03:18",
+ "rows": [
+  {
+   "id": "LC_preflight",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "drafted": [
+     558,
+     561,
+     564
+    ],
+    "neutral": {
+     "defName": "OutlanderCivil",
+     "name": "Homestead Defense League",
+     "isPlayer": false,
+     "hostile": false,
+     "goodwill": 0,
+     "hidden": false,
+     "permanentEnemy": false,
+     "settlementCount": 11
+    }
+   }
+  },
+  {
+   "id": "L5_switched_off_hose_spills",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "heldUnits": [
+     10000,
+     0
+    ],
+    "drained": 10000,
+    "filthInRect": [
+     1,
+     1
+    ],
+    "unplaced": [
+     0,
+     0
+    ],
+    "heldLiquid": "LiquidDef:RM_Liquid_FreshWater",
+    "rect": [
+     34,
+     179,
+     5,
+     5
+    ],
+    "spilledUnits": [
+     1,
+     10001
+    ]
+   }
+  },
+  {
+   "id": "L5_colonists_clean_spill",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": "no spill filth to clean (L5 spill row FAIL)"
+  }
+ ],
+ "args": {
+  "out": null,
+  "only": "L5",
+  "fresh_map": true,
+  "theft_day": false,
+  "origin_l2": "60,150",
+  "origin_l2b": "100,150",
+  "origin_l6": "60,172",
+  "origin_l4": "180,150",
+  "origin_l5": "20,172"
+ },
+ "quiet_site": {
+  "profile": "quiet_site",
+  "suite": "isolated",
+  "row": "flowworks_liquid_checks",
+  "topic": null,
+  "controls": [
+   {
+    "name": "storyteller_off",
+    "what": "DebugSettings.enableStoryteller=false, threatScale 0, no big threats, incident queue cleared",
+    "hides": "storyteller-fired incidents incl. the mod's own IncidentDefs and conditions (seasonal flooding, cinderfall), pacing, threat-point scaling",
+    "readBack": {
+     "enableStoryteller": false,
+     "enableRandomMentalStates": false,
+     "enableRandomDiseases": false,
+     "logRaidInfo": true,
+     "threatScale": 0.0,
+     "allowBigThreats": false
+    }
+   },
+   {
+    "name": "random_events_off",
+    "what": "random mental states and diseases off",
+    "hides": "mood-break and disease interactions with the mod",
+    "readBack": "read back in storyteller_off readBack"
+   },
+   {
+    "name": "wild_spawner_off",
+    "what": "wild-animal replenishment blocked (jawa/wild_spawner_block, dead-man)",
+    "hides": "the mod's effect on ongoing wildlife arrival; mapgen wildlife is untouched",
+    "readBack": "blocked (read back)"
+   },
+   {
+    "name": "threat_structures_cleared",
+    "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+    "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+    "readBack": {
+     "removed": [
+      [
+       "Hive",
+       "Hive39700"
+      ]
+     ],
+     "threatsAfter": 0,
+     "kept": 0,
+     "errors": []
+    }
+   },
+   {
+    "name": "hostiles_removed",
+    "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+    "hides": "combat interactions with the mod's things",
+    "readBack": {
+     "acted": 0,
+     "residue": []
+    }
+   },
+   {
+    "name": "toxic_sources_cleared",
+    "what": "toxic sources removed at setup and read back: toxic game conditions ended, ToxGas cleared, POLLUTED terrain within TOXIC_SCAN_RADIUS of every colonist repainted to its clean counterpart (Biotech pollution gives ToxicBuildup to a pawn standing on it); the receipt also counts stacked 'Forced weather' controllers",
+    "hides": "the mod's interaction with pollution, toxic fallout and tox gas near the colonists",
+    "readBack": {
+     "conditionsEnded": [],
+     "gasCleared": [
+      "ToxGas"
+     ],
+     "pollutedRepainted": 0,
+     "pollutedLeft": 0,
+     "stackedWeatherControllers": 1,
+     "unavailable": []
+    }
+   },
+   {
+    "name": "proximity_letters_sent",
+    "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+    "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+    "readBack": {
+     "letters": [
+      [
+       "AncientExostriderRemains",
+       "Ancient mech",
+       false
+      ],
+      [
+       "VoidMonolith",
+       "Fallen monolith",
+       false
+      ]
+     ],
+     "unsentAfter": 0
+    }
+   },
+   {
+    "name": "queue_drain",
+    "what": "named queued incidents removed at every drain (default StrangerInBlackJoin: the colony-loss rescue is QUEUED by StorytellerComp_Triggered on the death and fires 180 ticks later through IncidentQueueTick, which runs even with the storyteller off)",
+    "hides": "the end-of-colony rescue; a row ABOUT that rescue must not use this control",
+    "readBack": {
+     "defs": [
+      "StrangerInBlackJoin",
+      "SeasonalFlooding"
+     ],
+     "atApply": []
+    }
+   },
+   {
+    "name": "modal_broker",
+    "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+    "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+    "readBack": {
+     "handled": [],
+     "unknown": []
+    }
+   }
+  ],
+  "notSuppressed": [
+   "active quests and their parts (never ended by default: ending a quest changes the world)",
+   "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+   "existing game conditions, map/world/game components and mod tickers",
+   "hives and other pawn-spawning structures, births, egg hatching, breeders",
+   "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+   "weather transitions, fires, existing hostile behaviour"
+  ],
+  "keepDefs": [],
+  "events": [],
+  "problems": [],
+  "verify": null,
+  "arrivals": [],
+  "note": "enableStoryteller is not saved with the game: re-apply after any load"
+ },
+ "settings_before": {
+  "tankModesEnabled": "True",
+  "freeEndRolesEnabled": "True",
+  "hoseHoldsLiquid": "True",
+  "tankLitresPerCycle": "2000",
+  "dumpLitresPerCycle": "1000",
+  "liquidTheftEnabled": "True",
+  "liquidTheftSightRange": "12",
+  "liquidTheftGoodwillPerDay": "2"
+ },
+ "preflight": {
+  "playing": true,
+  "flowworks": true,
+  "drafted": [
+   558,
+   561,
+   564
+  ],
+  "neutral": {
+   "defName": "OutlanderCivil",
+   "name": "Homestead Defense League",
+   "isPlayer": false,
+   "hostile": false,
+   "goodwill": 0,
+   "hidden": false,
+   "permanentEnemy": false,
+   "settlementCount": 11
+  }
+ },
+ "quiet_site_restore": null,
+ "finished": "2026-10-16T13:03:47",
+ "counts": {
+  "PASS": 1,
+  "FAIL": 1,
+  "UNMEASURED": 1
+ }
+}

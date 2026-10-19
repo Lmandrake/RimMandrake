@@ -1,0 +1,73 @@
+{
+ "script": "sprinkler_live.py",
+ "started": "2026-10-17T15:53:57",
+ "rows": [],
+ "args": {
+  "out": null,
+  "only": "",
+  "origin": "120,140"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "8b8aa4a2cbb5d459096001744d53335fd19ca12eaff614562776215d958f9324",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "sarg.alphabiomes",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vfe.insectoid2",
+   "mandrake.rsw.cuisine",
+   "mandrake.rm.weathersuite",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rut.patches",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.biomes",
+   "mandrake.rsw.swbestiary",
+   "ray1203.simplecamerasetting"
+  ],
+  "assembly_sha256": "05fabdc58d299c153c31c6506963c761f4ca9cb8b8034ffa2df80d50dfbfd792"
+ },
+ "net0": {
+  "tank": [
+   120,
+   140
+  ],
+  "pump": [
+   123,
+   140
+  ],
+  "head": [
+   125,
+   140
+  ],
+  "covered": [
+   126,
+   141
+  ],
+  "far": [
+   130,
+   144
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead37474",
+  "pumpId": "RM_LiquidPump37473"
+ },
+ "ended": "2026-10-17T15:54:11"
+}

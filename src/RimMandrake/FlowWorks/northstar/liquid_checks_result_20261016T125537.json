@@ -1,0 +1,482 @@
+{
+ "script": "liquid_checks.py",
+ "started": "2026-10-16T12:55:37",
+ "rows": [
+  {
+   "id": "LC_preflight",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "drafted": [
+     837,
+     840,
+     843
+    ],
+    "neutral": {
+     "defName": "OutlanderCivil",
+     "name": "Homestead Defense League",
+     "isPlayer": false,
+     "hostile": false,
+     "goodwill": 0,
+     "hidden": false,
+     "permanentEnemy": false,
+     "settlementCount": 6
+    }
+   }
+  },
+  {
+   "id": "L2_dump_tank_drains_without_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankUnits": [
+     120000,
+     108942,
+     98942,
+     88942,
+     78942
+    ],
+    "drainedPer1000": 41058,
+    "canalFillSum": [
+     0,
+     4
+    ],
+    "lay": {
+     "success": true,
+     "cmd": "lay:63,158,75,159",
+     "reason": null,
+     "layOk": true
+    },
+    "role": {
+     "clicks": 2,
+     "ok": true,
+     "label": "Free end: Outflow",
+     "readBack": "Outflow"
+    },
+    "job": {
+     "clicks": 3,
+     "ok": true,
+     "label": "Job: Dump",
+     "readBack": "Dump"
+    }
+   }
+  },
+  {
+   "id": "L2_pump_pour_drains_dump_fast",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankUnits": [
+     120000,
+     100000,
+     80000,
+     60000,
+     60000
+    ],
+    "drainedPer1000": 60000,
+    "vsNoPump": 41058,
+    "reachFillSum": [
+     0,
+     6
+    ],
+    "pumpProof": "PUMP running=True moved=0 pour=True tank=none",
+    "job": {
+     "clicks": 3,
+     "ok": true,
+     "label": "Job: Dump",
+     "readBack": "Dump"
+    },
+    "pumpPoweredAfterTicks": 80
+   }
+  },
+  {
+   "id": "L4_ship_tank_fill_loads",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "base_ship": [
+     [
+      120000,
+      0
+     ],
+     [
+      100000,
+      18893
+     ],
+     [
+      80000,
+      38893
+     ],
+     [
+      60000,
+      58893
+     ],
+     [
+      40000,
+      78893
+     ]
+    ],
+    "shipGained": 78893,
+    "baseFell": 80000,
+    "shipDef": "RM_UniversalCargoTank",
+    "cargoBuild": [],
+    "job": {
+     "clicks": 1,
+     "ok": true,
+     "label": "Job: Fill",
+     "readBack": "Fill"
+    },
+    "lay": {
+     "success": true,
+     "cmd": "lay:183,158,196,159",
+     "reason": null,
+     "layOk": true
+    },
+    "hose": {
+     "netLink": {
+      "a": "RM_LiquidTank@183,160",
+      "b": "RM_UniversalCargoTank@197,159"
+     },
+     "credits": 8,
+     "creditedUnits": 158893
+    }
+   }
+  },
+  {
+   "id": "L4_ship_tank_empty_unloads",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "base_ship": [
+     [
+      40000,
+      78893
+     ],
+     [
+      60000,
+      58893
+     ],
+     [
+      80000,
+      38893
+     ],
+     [
+      100000,
+      18893
+     ],
+     [
+      118893,
+      0
+     ]
+    ],
+    "shipFell": 78893,
+    "baseGained": 78893,
+    "job": {
+     "clicks": 1,
+     "ok": true,
+     "label": "Job: Empty",
+     "readBack": "Empty"
+    }
+   }
+  },
+  {
+   "id": "L4_on_a_real_gravship",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": "no gravship fixture on a quicktest map: a plain RM_UniversalCargoTank stands in for the ship's tank (no ship-tank def exists)"
+  },
+  {
+   "id": "L6_foreign_tank_drawn",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "foreignUnits": [
+     120000,
+     80000
+    ],
+    "ours": 38891
+   }
+  },
+  {
+   "id": "L6_theft_spotted_letter",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "caught": [
+     "0",
+     "1"
+    ],
+    "letters": [
+     0,
+     1
+    ],
+    "witnessAtCheck": [
+     {
+      "id": "Human18573",
+      "x": 80,
+      "z": 185,
+      "downed": false,
+      "dead": false
+     },
+     {
+      "id": "Human18579",
+      "x": 76,
+      "z": 183,
+      "downed": false,
+      "dead": false
+     }
+    ],
+    "drawn": 40000,
+    "attempts": [
+     {
+      "cycle": 0,
+      "spawnTick": 4504,
+      "checkTick": 4509,
+      "spawned": true,
+      "witnesses": [
+       {
+        "id": "Human18562",
+        "x": 80,
+        "z": 185,
+        "downed": false,
+        "dead": false
+       },
+       {
+        "id": "Human18567",
+        "x": 76,
+        "z": 181,
+        "downed": false,
+        "dead": false
+       }
+      ],
+      "caught": "0"
+     },
+     {
+      "cycle": 1,
+      "spawnTick": 4754,
+      "checkTick": 4759,
+      "spawned": true,
+      "witnesses": [
+       {
+        "id": "Human18573",
+        "x": 80,
+        "z": 185,
+        "downed": false,
+        "dead": false
+       },
+       {
+        "id": "Human18579",
+        "x": 76,
+        "z": 183,
+        "downed": false,
+        "dead": false
+       }
+      ],
+      "caught": "1"
+     }
+    ],
+    "faction": "OutlanderCivil",
+    "sightRange": "12"
+   }
+  },
+  {
+   "id": "L6_free_end_names_their_faction",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "freeEnd": {
+     "cell": [
+      76,
+      181
+     ],
+     "terrain": "Soil",
+     "water": "",
+     "port": "RM_LiquidTank",
+     "portFaction": "Homestead Defense League",
+     "describe": "coupled to liquid tank (Homestead Defense League)"
+    },
+    "factionName": "Homestead Defense League"
+   }
+  },
+  {
+   "id": "L6_block",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "raised": "GovernorStop('safe_advance stopped after 1200 of 1500 tick(s): starving: food category Starving')"
+   }
+  }
+ ],
+ "args": {
+  "out": null,
+  "only": "L2,L4,L6",
+  "fresh_map": true,
+  "theft_day": true,
+  "origin_l2": "60,150",
+  "origin_l2b": "100,150",
+  "origin_l6": "60,172",
+  "origin_l4": "180,150",
+  "origin_l5": "20,172"
+ },
+ "quiet_site": {
+  "profile": "quiet_site",
+  "suite": "isolated",
+  "row": "flowworks_liquid_checks",
+  "topic": null,
+  "controls": [
+   {
+    "name": "storyteller_off",
+    "what": "DebugSettings.enableStoryteller=false, threatScale 0, no big threats, incident queue cleared",
+    "hides": "storyteller-fired incidents incl. the mod's own IncidentDefs and conditions (seasonal flooding, cinderfall), pacing, threat-point scaling",
+    "readBack": {
+     "enableStoryteller": false,
+     "enableRandomMentalStates": false,
+     "enableRandomDiseases": false,
+     "logRaidInfo": true,
+     "threatScale": 0.0,
+     "allowBigThreats": false
+    }
+   },
+   {
+    "name": "random_events_off",
+    "what": "random mental states and diseases off",
+    "hides": "mood-break and disease interactions with the mod",
+    "readBack": "read back in storyteller_off readBack"
+   },
+   {
+    "name": "wild_spawner_off",
+    "what": "wild-animal replenishment blocked (jawa/wild_spawner_block, dead-man)",
+    "hides": "the mod's effect on ongoing wildlife arrival; mapgen wildlife is untouched",
+    "readBack": "blocked (read back)"
+   },
+   {
+    "name": "threat_structures_cleared",
+    "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+    "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+    "readBack": {
+     "removed": [],
+     "threatsAfter": 0,
+     "kept": 0,
+     "errors": []
+    }
+   },
+   {
+    "name": "hostiles_removed",
+    "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+    "hides": "combat interactions with the mod's things",
+    "readBack": {
+     "acted": 0,
+     "residue": []
+    }
+   },
+   {
+    "name": "toxic_sources_cleared",
+    "what": "toxic sources removed at setup and read back: toxic game conditions ended, ToxGas cleared, POLLUTED terrain within TOXIC_SCAN_RADIUS of every colonist repainted to its clean counterpart (Biotech pollution gives ToxicBuildup to a pawn standing on it); the receipt also counts stacked 'Forced weather' controllers",
+    "hides": "the mod's interaction with pollution, toxic fallout and tox gas near the colonists",
+    "readBack": {
+     "conditionsEnded": [],
+     "gasCleared": [
+      "ToxGas"
+     ],
+     "pollutedRepainted": 0,
+     "pollutedLeft": 0,
+     "stackedWeatherControllers": 1,
+     "unavailable": []
+    }
+   },
+   {
+    "name": "proximity_letters_sent",
+    "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+    "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+    "readBack": {
+     "letters": [
+      [
+       "AncientExostriderRemains",
+       "Ancient mech",
+       false
+      ],
+      [
+       "VoidMonolith",
+       "Fallen monolith",
+       false
+      ]
+     ],
+     "unsentAfter": 0
+    }
+   },
+   {
+    "name": "queue_drain",
+    "what": "named queued incidents removed at every drain (default StrangerInBlackJoin: the colony-loss rescue is QUEUED by StorytellerComp_Triggered on the death and fires 180 ticks later through IncidentQueueTick, which runs even with the storyteller off)",
+    "hides": "the end-of-colony rescue; a row ABOUT that rescue must not use this control",
+    "readBack": {
+     "defs": [
+      "StrangerInBlackJoin",
+      "SeasonalFlooding"
+     ],
+     "atApply": []
+    }
+   },
+   {
+    "name": "modal_broker",
+    "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+    "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+    "readBack": {
+     "handled": [],
+     "unknown": []
+    }
+   }
+  ],
+  "notSuppressed": [
+   "active quests and their parts (never ended by default: ending a quest changes the world)",
+   "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+   "existing game conditions, map/world/game components and mod tickers",
+   "hives and other pawn-spawning structures, births, egg hatching, breeders",
+   "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+   "weather transitions, fires, existing hostile behaviour"
+  ],
+  "keepDefs": [],
+  "events": [],
+  "problems": [],
+  "verify": null,
+  "arrivals": [],
+  "note": "enableStoryteller is not saved with the game: re-apply after any load"
+ },
+ "settings_before": {
+  "tankModesEnabled": "True",
+  "freeEndRolesEnabled": "True",
+  "hoseHoldsLiquid": "True",
+  "tankLitresPerCycle": "2000",
+  "dumpLitresPerCycle": "1000",
+  "liquidTheftEnabled": "True",
+  "liquidTheftSightRange": "12",
+  "liquidTheftGoodwillPerDay": "2"
+ },
+ "preflight": {
+  "playing": true,
+  "flowworks": true,
+  "drafted": [
+   837,
+   840,
+   843
+  ],
+  "neutral": {
+   "defName": "OutlanderCivil",
+   "name": "Homestead Defense League",
+   "isPlayer": false,
+   "hostile": false,
+   "goodwill": 0,
+   "hidden": false,
+   "permanentEnemy": false,
+   "settlementCount": 6
+  }
+ },
+ "quiet_site_restore": null,
+ "finished": "2026-10-16T12:57:15",
+ "counts": {
+  "PASS": 8,
+  "FAIL": 0,
+  "UNMEASURED": 2
+ }
+}

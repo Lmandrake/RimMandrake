@@ -1,0 +1,20 @@
+{
+ "mod": "GimmeSomeSlack",
+ "mode": "flips",
+ "script": "validation_aerial.py",
+ "tier": "gimmesomeslack",
+ "started": "2026-10-12T23:01:57",
+ "rows": [
+  {
+   "id": "A_probe_channel",
+   "status": "FAIL",
+   "class": "HARNESS",
+   "detail": {
+    "success": false,
+    "error": "aerial probe timed out (no frame serviced it)"
+   }
+  }
+ ],
+ "screenshots": [],
+ "aborted": "aerial probe dead"
+}

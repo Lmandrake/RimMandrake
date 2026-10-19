@@ -1,0 +1,624 @@
+{
+ "mod": "FlowWorks",
+ "script": "proof_hose.py",
+ "tier": "flowworks",
+ "mode": "partial",
+ "started": "2026-10-11T04:06:37",
+ "rows": [
+  {
+   "id": "HP1_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "startupErrorsNamingHose": []
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "HP2_probes_site_pinned",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "hoseProbe": true,
+    "colonistsDrafted": [
+     567,
+     570,
+     574
+    ]
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "MX_H00_Flat_straight_L6",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.38,
+    "widthOverWire": 6.08,
+    "minBendFlat": 1.2557,
+    "minBendPlump": 1.2566,
+    "couplings": 2,
+    "flatLen": 15.087,
+    "pathLen": 14.7818,
+    "poseLen": 15.087,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "31b9d10b2026bd9f",
+    "provider": "none",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H01_Flat_corner_L14",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.38,
+    "widthOverWire": 6.08,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 17.0092,
+    "pathLen": 17.7944,
+    "poseLen": 17.0092,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "a6f6f66d84d766a9",
+    "provider": "none",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H02_Flat_water_L24",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.38,
+    "widthOverWire": 6.08,
+    "minBendFlat": 1.2562,
+    "minBendPlump": 1.2578,
+    "couplings": 2,
+    "flatLen": 33.1557,
+    "pathLen": 32.7263,
+    "poseLen": 33.1557,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "783f06f302bbe401",
+    "provider": "none",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H03_Plump_straight_L14",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.465,
+    "widthOverWire": 7.44,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 22.9759,
+    "pathLen": 22.7354,
+    "poseLen": 22.9666,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "b84ba9ec522abc9f",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H04_Plump_corner_L24",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.465,
+    "widthOverWire": 7.44,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 23.9467,
+    "pathLen": 24.6606,
+    "poseLen": 23.8639,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "a88c8fd0cd2bb4d4",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H05_Plump_water_L6",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.465,
+    "widthOverWire": 7.44,
+    "minBendFlat": 1.2554,
+    "minBendPlump": 1.2554,
+    "couplings": 2,
+    "flatLen": 15.0881,
+    "pathLen": 14.7818,
+    "poseLen": 15.0842,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "0c86413ce2fded6e",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H06_Filling50_straight_L24",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.4183,
+    "widthOverWire": 6.6921,
+    "minBendFlat": 1.2558,
+    "minBendPlump": 1.2578,
+    "couplings": 2,
+    "flatLen": 33.2099,
+    "pathLen": 32.7263,
+    "poseLen": 33.0856,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "b97af4bde64e928e",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H07_Filling50_corner_L6",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.4183,
+    "widthOverWire": 6.6921,
+    "minBendFlat": 1.2554,
+    "minBendPlump": 1.2561,
+    "couplings": 2,
+    "flatLen": 11.9043,
+    "pathLen": 12.6067,
+    "poseLen": 11.9036,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "c3d4161fa83f0c05",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H08_Filling50_water_L14",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.4183,
+    "widthOverWire": 6.6921,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 22.9714,
+    "pathLen": 22.7354,
+    "poseLen": 22.9673,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "90a11a6692a20f6f",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "NS_hose_carries_real_units",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:161,158,174,159",
+     "reason": null,
+     "layOk": true
+    },
+    "before": {
+     "success": true,
+     "cmd": "tank:175,159",
+     "id": 50075,
+     "liquid": null,
+     "units": 0,
+     "capacity": 300,
+     "tick": 16903
+    },
+    "after": {
+     "success": true,
+     "cmd": "tank:175,159",
+     "id": 50075,
+     "liquid": "RM_Liquid_FreshWater",
+     "units": 5,
+     "capacity": 300,
+     "tick": 17103
+    },
+    "gained": 5,
+    "discoveredAfterTicks": 0,
+    "movedTicksAfterDiscovery": 200,
+    "bound": [
+     60,
+     250
+    ],
+    "credits": 1,
+    "netLink": {
+     "a": "RM_LiquidPump@161,157",
+     "b": "RM_LiquidTank@175,159"
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_tint_is_carried_liquid",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tintLiquid": "RM_Liquid_FreshWater",
+    "want": "RM_Liquid_FreshWater",
+    "tarHalf": "UNMEASURED here: a tar channel needs a fresh map's active fluid (water ran first)"
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_plumps_only_from_powered_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "plumpedAfterTicks": 30,
+    "flatAfterCut": 880,
+    "bound": 905,
+    "plumpedAtTick": 17133,
+    "cutTick": 17133,
+    "tankStillAfterCut": [
+     5,
+     5
+    ]
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_dropped_carries_nothing",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "staged": {
+     "success": true,
+     "cmd": "settrail:189,158=dropped;189,158;190,159;191,159;192,159;193,159;194,159;195,159;196,159;197,159;198,159;199,159;200,159;201,159;202,159",
+     "carry": "Dropped",
+     "trail": 14,
+     "trailLength": 13.4923,
+     "layOk": true
+    },
+    "units": [
+     0,
+     0
+    ],
+    "netLink": null
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_port_removed_discovered",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "afterRemove": null,
+    "afterRebuild61": {
+     "a": "RM_LiquidPump@217,157",
+     "b": "RM_LiquidTank@231,159"
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_port_removed_moves",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "units": [
+     0,
+     5
+    ]
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_far_end_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:161,174,174,175",
+     "reason": null,
+     "layOk": true
+    },
+    "units": [
+     0,
+     5
+    ],
+    "discoveredAfterTicks": 0,
+    "movedTicksAfterDiscovery": 140,
+    "netLink": {
+     "a": "RM_LiquidTank@161,176",
+     "b": "RM_LiquidPump@175,175"
+    },
+    "net": {
+     "success": true,
+     "cmd": "net:175,175",
+     "origin": "RM_LiquidPump",
+     "links": 3,
+     "tanks": [
+      {
+       "tank": [
+        161,
+        176
+       ],
+       "units": 5,
+       "liquid": "RM_Liquid_FreshWater",
+       "route": [
+        [
+         161,
+         174
+        ]
+       ]
+      }
+     ],
+     "walks": 12,
+     "indexRebuilds": 475
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_relay_chain_carries",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "layA": {
+     "success": true,
+     "cmd": "lay:189,174,199,174",
+     "reason": null,
+     "layOk": true
+    },
+    "layB": {
+     "success": true,
+     "cmd": "lay:199,174,208,175",
+     "reason": null,
+     "layOk": true
+    },
+    "relayTo": [
+     199,
+     174
+    ],
+    "units": [
+     0,
+     0
+    ],
+    "discoveredAfterTicks(B)": 0,
+    "movedTicksAfterDiscovery": 260,
+    "creditsA": 0,
+    "creditsB": 0
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_pipe_and_hose_one_net",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:218,176,230,176",
+     "reason": null,
+     "layOk": true
+    },
+    "units": [
+     0,
+     5
+    ],
+    "net": {
+     "success": true,
+     "cmd": "net:217,173",
+     "origin": "RM_LiquidPump",
+     "links": 5,
+     "tanks": [
+      {
+       "tank": [
+        231,
+        176
+       ],
+       "units": 5,
+       "liquid": "RM_Liquid_FreshWater",
+       "route": [
+        [
+         218,
+         176
+        ]
+       ]
+      }
+     ],
+     "walks": 24,
+     "indexRebuilds": 491
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_tank_does_not_bridge_pipe_runs",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reached": [
+     [
+      231,
+      176
+     ]
+    ],
+    "secondRunTank": [
+     215,
+     179
+    ]
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_external_pipe_is_visual_only",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "probe": 0,
+    "why": "no VE PipeSystem pipe on the flowworks tier: the offline kernel row (HoseNetChecks) is the evidence"
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_tank_feeds_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "units": [
+     0,
+     10
+    ],
+    "perCycleCap": 5,
+    "credits": 2,
+    "netLink": {
+     "a": "RM_LiquidTank@161,192",
+     "b": "RM_LiquidTank@175,191"
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errorsNamingHoseOrFlowWorks": [],
+    "otherErrors": 0,
+    "siteClearErrors": 0,
+    "newWarnings": 0
+   },
+   "block": "session"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 125.3,
+   "rows": 2,
+   "raised": null
+  },
+  "matrix_hose": {
+   "wall_s": 55.1,
+   "rows": 9,
+   "raised": null
+  },
+  "realflow": {
+   "wall_s": 136.2,
+   "rows": 12,
+   "raised": null
+  },
+  "session": {
+   "wall_s": 0.0,
+   "rows": 1,
+   "raised": null
+  }
+ },
+ "doc": "design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md",
+ "offline": {
+  "skipped": "--skip-offline"
+ },
+ "mod_hash": "1bcd30f372205c3862f2a9c8c7b2812031967dad7c2b1b34d0c3a86e4480d71c",
+ "wall_s": 316.9,
+ "site_notes": [],
+ "certifiable": false
+}

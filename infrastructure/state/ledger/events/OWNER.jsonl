@@ -1257,3 +1257,4 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"tier loaded, gate clean","ts":"2026-10-19T10:46:23Z","tsn":1792406783716296976}
 {"seat":"OWNER","event":"close","id":"FLOWWORKS_AB_FINDMOD_DELETE_LAST_HOLDOUT","sha":"7da09b1beb","ownerSaid":"In the background please identify and execute this work then close both tickets","why":"Alpha Biomes FindMod block deleted; selftest_retired_mods passes","ts":"2026-10-19T10:48:46Z","tsn":1792406926519035188}
 {"seat":"OWNER","event":"close","id":"PIPENET_ADAPTERS_DELETE_LAST_ALPHA_FINDMOD","sha":"7da09b1beb","ownerSaid":"In the background please identify and execute this work then close both tickets","why":"Alpha Biomes FindMod block deleted; selftest_retired_mods passes","ts":"2026-10-19T10:48:47Z","tsn":1792406927707546712}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"pass 3 done, FULL restored","ts":"2026-10-19T10:51:32Z","tsn":1792407092330683285}
