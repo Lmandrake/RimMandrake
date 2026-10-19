@@ -30,7 +30,7 @@
     <description>A vial of thick, faintly luminous toxin milked from a gorbeleth's throat sac. Raw, it is only a hazard. Refined, it is the Frenzy's dose.</description>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Item/Resource/PlantFoodRaw/PsychoidLeaves</texPath>
+      <texPath>Things/Item/Resource/PlantFoodRaw/RM_GorbelethToxin/RM_GorbelethToxin</texPath>
       <color>(0.55, 0.75, 0.2)</color>
     </graphicData>
     <statBases>
