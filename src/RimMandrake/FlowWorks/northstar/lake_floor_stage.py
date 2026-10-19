@@ -131,7 +131,8 @@ def main():
         img_low = C.snap(w, "%s_lake%d_drawn" % (a.name, n), rect)
         cap = ["%d squares; deepest floor %s m; floor depths (m: squares) %s" % (len(cells), deepest,
                ", ".join("%g: %d" % kv for kv in sorted(holes.items()))),
-               "full %s L -> drawn down to %d%%: %s L (%s)" % ("{:,}".format(l_full), round(a.frac * 100), "{:,}".format(l_low), setr[:60]),
+               "full %s L -> drawn down to %d%%: %s L (%s%s)" % ("{:,}".format(l_full), round(a.frac * 100), "{:,}".format(l_low), setr[:60],
+                                                                  "" if ok else "; DRAW-DOWN REFUSED, the 'drawn' shot is NOT drawn down"),
                "after the draw-down: %s" % census[:200]]
         lake = dict(n=n, centre=c0, squares=len(cells), deepest=deepest, holes=dict(holes), litresFull=l_full, litresLow=l_low,
                     body=str(br)[:300], set=setr, census=census, rect=rect)

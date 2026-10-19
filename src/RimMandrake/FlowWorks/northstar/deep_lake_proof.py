@@ -176,10 +176,10 @@ def main():
         return (parse(txt) if r.get("success") is True else {}), txt
 
     def sget(f):
-        return B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
+        return (B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f) or {}).get("value")
 
     def sset(f, v):
-        return B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
+        return B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v)) or {"success": False}
 
     ox, oz = (int(v) for v in a.origin.split(","))
     n = a.size
@@ -200,7 +200,9 @@ def main():
         for f, v in (("deepBedsEnabled", True), ("lakeDepthScale", 2.0), ("deepBedMaxDepth", 20),
                      ("drainableLakeMaxCells", 40000), ("pondBedHollowEnabled", True), ("recessionEnabled", True),
                      ("refillWaitsForOccupants", False)):
-            sset(f, v)
+            if sset(f, v).get("success") is False:   # an unset knob = the owner's value, not the proof's: every row below is suspect
+                row("DL_site", "UNMEASURED", "HARNESS", {"why": "mod_settings_field set refused", "field": f})
+                return 2
         _, painted = lake("paint;%d;%d;%d;%d;%d" % (ox, oz, n, n, RIM))
         kv, txt = lake("form;" + mid)
         st, det = body_verdict(kv, n)
@@ -208,6 +210,7 @@ def main():
         full_before, t0 = lake("shape;" + mid)
         _, ts = lake("stock;%s;%s" % (mid, DRAIN_TO))
         drained, t1 = lake("shape;" + mid)
+        drain_ok = not ts.startswith("REFUSED") and bool(ts) and (_int(drained, "dry") or 0) > 0
         st, det = hollow_verdict(drained)
         row("DL_drained_reads_gradual_hollow", st, "MOD", dict(det, stock=ts))
         st, det = drawdown_verdict(drained)
@@ -234,6 +237,8 @@ def main():
         _, ts2 = lake("stock;%s;1" % mid)
         full_after, t2 = lake("shape;" + mid)
         st, det = refill_verdict(full_before, full_after)
+        if not drain_ok:   # nothing was drained, so "back to the same shape" is true of a lake that never moved: not a pass
+            st, det = "UNMEASURED", dict(det, why="the drain-down did not happen (stock refused or no dry square)", stockRead=ts[:120])
         row("DL_refill_restores_exact_shape", st, "MOD", dict(det, stock=ts2, txt=[t0, t2]))
         for rid, why in OWED.items():
             row(rid, "UNMEASURED", "OWED", {"why": why})

@@ -104,7 +104,7 @@ def main():
         save()
 
     def tg():
-        g = B.call("rimworld/get_game_info")
+        g = B.call("rimworld/get_game_info") or {}
         return g.get("ticksGame") or (g.get("state") or {}).get("tick")
 
     raw_ticks = B.ticks
@@ -122,10 +122,10 @@ def main():
     B.ticks = ticks
 
     def sget(f):
-        return B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
+        return (B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f) or {}).get("value")
 
     def sset(f, v):
-        return B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
+        return B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v)) or {"success": False}
 
     ox, oz = (int(v) for v in a.origin.split(","))
     P = lambda dx, dz: (ox + dx, oz + dz)                        # noqa: E731
@@ -176,11 +176,16 @@ def main():
             row("POND_PUMP_pond_limited", "UNMEASURED", "SITE", {"body": b0})
             return 2
         row("POND_PUMP_pond_limited", "PASS", "SITE", {"body": b0})
-        sset("refillEnabled", False)
-        sset("liquidPumpEnabled", True)
+        bad = [f for f, v in (("refillEnabled", False), ("liquidPumpEnabled", True)) if sset(f, v).get("success") is False]
+        if bad:        # refill left on during the draw would break conservation and read as a MOD FAIL
+            row("POND_PUMP_draw_conserves", "UNMEASURED", "HARNESS", {"why": "mod_settings_field set refused", "fields": bad})
+            return 2
         bb = B.call("jawa/build_batch", ops="RM_LiquidPump:%d,%d;Battery:%d,%d;RM_UniversalPipe:%d,%d;RM_UniversalPipe:%d,%d;"
-                    "RM_LiquidTank:%d,%d" % (pump + battery + P(3, 8) + P(3, 9) + tank), faction="player", wipeExisting=False)
+                    "RM_LiquidTank:%d,%d" % (pump + battery + P(3, 8) + P(3, 9) + tank), faction="player", wipeExisting=False) or {}
         res["build"] = {k: bb.get(k) for k in ("success", "built", "failed")}
+        if bb.get("success") is False or bb.get("failed"):   # no pump/tank would read as "the tank gained nothing" = a MOD FAIL
+            row("POND_PUMP_draw_conserves", "UNMEASURED", "SITE", {"why": "build_batch failed", "build": res["build"]})
+            return 2
         B.ticks(2)
         lt = B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % battery, limit=2) or {}
         bid = ((lt.get("things") or [{}])[0]).get("id")
@@ -204,12 +209,17 @@ def main():
                                                          capacity=b0.get("capacity"), pumpPoweredAfterTicks=pw))
         res["terrain_after_draw"] = terrain()
         # ---- phase B
-        sset("liquidPumpEnabled", False)
+        bad = [f for f, v in (("liquidPumpEnabled", False),) if sset(f, v).get("success") is False]
+        if bad:
+            row("POND_PUMP_refill_rewets", "UNMEASURED", "HARNESS", {"why": "pump could not be switched off", "fields": bad})
+            return 1
         B.ticks(260)
         bd = body()
         s_ad, r_ad = bd.get("stock"), bd.get("recededCount")
-        sset("refillRateMultiplier", 5.0)
-        sset("refillEnabled", True)
+        bad = [f for f, v in (("refillRateMultiplier", 5.0), ("refillEnabled", True)) if sset(f, v).get("success") is False]
+        if bad:
+            row("POND_PUMP_refill_rewets", "UNMEASURED", "HARNESS", {"why": "refill knobs not set", "fields": bad})
+            return 1
         tb = []
         left = int(a.refill_days * 60000)
         while left > 0:

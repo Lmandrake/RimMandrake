@@ -64,7 +64,14 @@ def main():
     r = w.call("jawa/spawn_pawn", kindDef="Muffalo", x=cells[2][0], z=cells[2][1], faction="player", count=1) or {}
     staged["tame_animal"] = ((r.get("pawns") or [{}])[0]).get("id")
     # a tame animal walks out of the current at once (2026-10-18 run: never swept); downed it lies where the river takes it
-    w.call("jawa/pawn_force_incapacitate", pawn=staged["tame_animal"], action="downed", allowBleedingWounds=False)
+    dn = w.call("jawa/pawn_force_incapacitate", pawn=staged["tame_animal"], action="downed", allowBleedingWounds=False) or {}
+    if dn.get("success") is False:
+        row("SWEEP_site", "UNMEASURED", {"why": "could not down the tame animal", "raw": str(dn)[:200]})
+        return 2
+    missing = [k for k, i in staged.items() if not i]
+    if missing:        # a failed spawn leaves id None; pawn_get(None) then reads {} = "off the map" = a vacuous swept-off PASS
+        row("SWEEP_site", "UNMEASURED", {"why": "spawn failed for %s" % missing, "staged": staged})
+        return 2
     before = {k: {"faction": pget(i).get("faction"), "pos": pget(i).get("position")} for k, i in staged.items()}
     row("SWEEP_staged", "INFO", {"cells": cells[:3], "staged": staged, "before": before, "prisonerStatus": str(gs)[:200],
                                  "book": guest(None)})
@@ -85,8 +92,12 @@ def main():
     w.ticks(10)
     for kind, i in staged.items():
         if kind not in gone:
+            row("SWEEP_returns_same_%s" % kind, "UNMEASURED", {"why": "never swept off in 3000 ticks, nothing to return"})
             continue
         p = pget(i)
+        if ret.get("success") is False:
+            row("SWEEP_returns_same_%s" % kind, "UNMEASURED", {"why": "ProofSwept return refused", "raw": str(ret)[:200]})
+            continue
         st = "PASS" if p.get("thingId") == i and p.get("faction") == before[kind]["faction"] and p.get("position") else "FAIL"
         row("SWEEP_returns_same_%s" % kind, st, {"id": i, "thingIdBack": p.get("thingId"), "factionBefore": before[kind]["faction"],
                                                 "factionAfter": p.get("faction"), "posAfter": p.get("position"),

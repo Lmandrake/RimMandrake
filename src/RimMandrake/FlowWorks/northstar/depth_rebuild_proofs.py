@@ -70,27 +70,44 @@ def main():
             json.dump(res, f, indent=1, default=str)
         os.replace(out + ".tmp", out)
 
+    could_not = []   # a refused static_call / settings write / dig / spawn since the last row: the row could not ask
+
     def row(rid, st, det):
+        if st == "FAIL" and could_not:     # "could not ask" is UNMEASURED, never a MOD FAIL (live-debugging-proof-harness)
+            det = dict(det, couldNotAsk=list(could_not))
+            st = "UNMEASURED"
+        del could_not[:]
         rows.append({"id": rid, "status": st, "detail": det})
         print("%-44s %-10s %s" % (rid, st, json.dumps(det, default=str)[:420]), flush=True)
         save()
 
     def sc(typ, method, arg=""):
         r = B.call("jawa/static_call", type=typ, method=method, args=arg) or {}
+        if not r.get("success"):
+            could_not.append("%s.%s refused" % (method, arg[:30]))
         return str(r.get("result") if r.get("success") else (r.get("message") or r.get("error") or r))
 
     def fget(t, f):
-        return B.call("jawa/mod_settings_field", typeName=t, action="get", field=f).get("value")
+        return (B.call("jawa/mod_settings_field", typeName=t, action="get", field=f) or {}).get("value")
 
     def fset(t, f, v):
-        return B.call("jawa/mod_settings_field", typeName=t, action="set", field=f, value=str(v))
+        r = B.call("jawa/mod_settings_field", typeName=t, action="set", field=f, value=str(v)) or {"success": False}
+        if r.get("success") is False:
+            could_not.append("set %s refused" % f)
+        return r
 
     def dig(c, n, fill=-1):
-        return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill) or {}
+        r = B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill) or {}
+        if r.get("success") is False:
+            could_not.append("dig %s refused" % (c,))
+        return r
 
     def spawn(kind, c, faction):
         r = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0], z=c[1], faction=faction, count=1) or {}
-        return ((r.get("pawns") or [{}])[0]).get("id"), r
+        pid = ((r.get("pawns") or [{}])[0]).get("id")
+        if not pid:
+            could_not.append("spawn %s failed" % kind)
+        return pid, r
 
     def order(pid, c, wait):
         o = B.call("jawa/order_pawn", pawnId=pid, x=c[0], z=c[1], waitTicks=wait, draft=True) or {}
@@ -172,7 +189,7 @@ def main():
                 # 1a'. a mechanoid at the dug reservoir: class None, never routed in (fix3: dug water opens to swimmers only)
                 md, _ = spawn("Mech_Militor", (lake[0] - 2, lake[1] + 1), "player")
                 omd = order(md, mid, 600) if md else {}
-                row("SWIM_dug_reservoir_mechanoid_refused", "PASS" if md and not inside(pos(omd), lake) else "FAIL",
+                row("SWIM_dug_reservoir_mechanoid_refused", "PASS" if md and "raw" not in omd and not inside(pos(omd), lake) else "FAIL",
                     {"order": {k: omd.get(k) for k in ("end", "ticksElapsed", "canReach")}, "midSwim": sc(SWIM, "ProofSwim", "%d,%d" % mid)})
                 # 1b. a NATURAL lake (painted WaterDeep, 9x4): the rest of the section swims here
                 nl = (ox + 6, oz + 13, 9, 4)
@@ -238,7 +255,7 @@ def main():
                 sm = sc(SWIM, "ProofSwim", "%d,%d" % (lake[0] + 2, lake[1] + 2))
                 om = order(me, mid, 600) if me else {}
                 pm = pos(om) if om else None
-                row("SWIM_mechanoid_refused", "PASS" if "class=None" in sm and not inside(pm, lake) else "FAIL",
+                row("SWIM_mechanoid_refused", "PASS" if me and om and "raw" not in om and "class=None" in sm and not inside(pm, lake) else "FAIL",
                     {"swimInLake": sm, "orderToMiddle": {k: om.get(k) for k in ("end", "ticksElapsed", "canReach")} if om else mr,
                      "route": sc(PITPATH, "ProofRoute", "%s|%d,%d" % (me, mid[0], mid[1])) if me else None})
                 # 5. prisoner in a flooded sheer pit: 4 m hole, 2 m water -> surface 2 m below the lip (2026-10-18: with shipped rain fill a 3.5 m hole rose to 2.5 m of water in 1,500 ticks, a K 2 step, and the prisoner climbed out by the rule)
@@ -376,7 +393,7 @@ def main():
                 t1 = json.dumps(at1, default=str)
                 t2 = json.dumps(at2, default=str)
                 row("P7_shoot_across_2m_trench_allowed", "PASS" if en and en in t1 else "FAIL", {"shooter": sh, "target": en, "probe": t1[:700]})
-                row("P7_shoot_between_7m_pits_refused", "PASS" if eb and eb not in t2 else "FAIL", {"shooter": sa, "target": eb, "probe": t2[:700],
+                row("P7_shoot_between_7m_pits_refused", "PASS" if eb and at2.get("success") is not False and at1.get("success") is not False and en and en in t1 and eb not in t2 else "FAIL", {"shooter": sa, "target": eb, "probe": t2[:700],
                     "depthA": sc(NSP, "ProofReadout", "%d,%d" % pa), "depthB": sc(NSP, "ProofReadout", "%d,%d" % pb)})
         # ------------------------------------------------------------------ p5
         if "p5" in only:
@@ -404,7 +421,7 @@ def main():
                         except (IndexError, ValueError):
                             pass
                 ls = sc(NSP, "ProofLevelSurface", "%d,%d,4,4" % sq)
-                row("P5_4774_square_152000_L", "PASS" if total_l == 152000 else "FAIL", {"litres": total_l, "readouts": reads})
+                row("P5_4774_square_152000_L", "PASS" if total_l == 152000 else ("UNMEASURED" if total_l == 0 else "FAIL"), {"litres": total_l, "readouts": reads})
                 row("P5_4774_square_one_surface", "PASS" if " worst 0.000" in ls or "gap 0.0000" in ls or ls.startswith("OK 1") else "INFO", {"levelSurface": ls})
         # ------------------------------------------------------------------ p13 (reeds through a drain/refill cycle)
         if "p13" in only:

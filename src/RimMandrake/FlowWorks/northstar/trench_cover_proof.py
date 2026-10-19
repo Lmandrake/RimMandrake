@@ -114,10 +114,10 @@ def main():
         return (parse(txt) if r.get("success") is True and txt.startswith("TRENCH") else {}), txt
 
     def sget(f):
-        return B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
+        return (B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f) or {}).get("value")
 
     def sset(f, v):
-        return B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
+        return B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v)) or {"success": False}
 
     def dig(c, n, fill=-1):
         return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill) or {}
@@ -139,11 +139,15 @@ def main():
         if not ok or not V.prepare_site(B, (ox, oz, 30, 16), rows, "TRENCH_site_ready"):
             row("TRENCH_site", "UNMEASURED", "SITE", {"why": "site not ready / not playing"})
             return 2
-        sset("trenchCoverEnabled", True)
-        sset("trenchCoverStrength", 1.0)
-        sset("trenchCoverCap", 0.9)
-        for x in range(2, 13):
-            dig(P(x, 5), 2)
+        bad = [f for f, v in (("trenchCoverEnabled", True), ("trenchCoverStrength", 1.0), ("trenchCoverCap", 0.9))
+               if sset(f, v).get("success") is False]
+        if bad:        # an unset knob would read the owner's value, not the proof's: nothing below could be trusted
+            row("TRENCH_settings", "UNMEASURED", "HARNESS", {"why": "mod_settings_field set refused", "fields": bad})
+            return 2
+        bad = [x for x in range(2, 13) if dig(P(x, 5), 2).get("success") is False]
+        if bad:        # no trench dug reads as trench=0 and would FAIL the mod for a harness fault
+            row("TRENCH_dig", "UNMEASURED", "SITE", {"why": "excavation_drive refused", "x": bad})
+            return 2
         B.ticks(SETTLE)
         target = spawn("Colonist", P(7, 5))
         shooters = {name: spawn(SHOOTER_KIND, P(*xz)) for name, xz in
@@ -162,12 +166,11 @@ def main():
         kv, txt = read(target, shooters["back"])
         row("TRENCH_one_back_third", near_verdict(kv, "trench", 0.147, 0.01) if kv else "UNMEASURED", "MOD", {"kv": kv, "txt": txt})
 
-        for x in range(2, 13):
-            dig(P(x, 5), 0, fill=1)
+        badw = [x for x in range(2, 13) if dig(P(x, 5), 0, fill=1).get("success") is False]
         B.ticks(SETTLE)
         kv, txt = read(target, shooters["on"])
-        row("TRENCH_wet_same_as_dry", near_verdict(kv, "trench", 0.441, 0.02) if kv else "UNMEASURED", "MOD",
-            {"kv": kv, "txt": txt})
+        row("TRENCH_wet_same_as_dry", near_verdict(kv, "trench", 0.441, 0.02) if kv and not badw else "UNMEASURED",
+            "MOD" if not badw else "SITE", {"kv": kv, "txt": txt, "fillRefusedAt": badw})
         for rid, why in OWED.items():
             row(rid, "UNMEASURED", "OWED", {"why": why})
     finally:
