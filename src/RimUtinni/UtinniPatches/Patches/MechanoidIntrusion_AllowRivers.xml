@@ -61,28 +61,6 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Alpha Biomes</li>
-    </mods>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/allowRivers</xpath>
-
-      <match Class="PatchOperationReplace">
-        <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/allowRivers</xpath>
-        <value>
-          <allowRivers>true</allowRivers>
-        </value>
-      </match>
-
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]</xpath>
-        <value>
-          <allowRivers>true</allowRivers>
-        </value>
-      </nomatch>
-
-    </match>
-  </Operation>
+  <!-- A PatchOperationFindMod on "Alpha Biomes" stood here; that donor was retired 2026-10-18, so it could never match again and was deleted. -->
 
 </Patch>

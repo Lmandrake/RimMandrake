@@ -100,34 +100,7 @@
   </Operation>
 
   <!-- Alpha Biomes entries. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Alpha Biomes</li>
-    </mods>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
-
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/IncidentDef[defName="MechCluster"]</xpath>
-        <value>
-          <allowedBiomes>
-            <li>AB_MechanoidIntrusion</li>
-            <li>AB_PropaneLakes</li>
-            <li>AB_PyroclasticConflagration</li>
-          </allowedBiomes>
-        </value>
-      </nomatch>
-
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
-        <value>
-          <li>AB_MechanoidIntrusion</li>
-          <li>AB_PropaneLakes</li>
-          <li>AB_PyroclasticConflagration</li>
-        </value>
-      </match>
-    </match>
-  </Operation>
+  <!-- A PatchOperationFindMod on "Alpha Biomes" stood here; that donor was retired 2026-10-18, so it could never match again and was deleted. -->
 
   <!-- Advanced Biomes (Continued) entry: Volcano. -->
   <Operation Class="PatchOperationFindMod">
