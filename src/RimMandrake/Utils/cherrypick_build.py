@@ -558,8 +558,9 @@ KEYS = [
     # above plus the BS_Troll/TrollAdult/TrollOld trio counted separately from
     # the 20). Cutting the source XenotypeDef leaves these three purpose-built
     # for it with nothing to reference — 63 defs total, cut here too.
-    # NOT cut: BS_FrostJotunInBlue's Ascension/Implanter pair — that xenotype
-    # belongs to redmattis.bigsmall.core, which survives.
+    # BS_FrostJotunInBlue (redmattis.bigsmall.core, which survives) and its
+    # Ascension/Implanter pair are cut in CherryPicker.SHIP.xml under
+    # NONSW_XENOTYPES_SCOPE_1 (every non-Star-Wars xenotype), not here.
     # ⚠️ RESIDUAL, ACCEPTED, NOT CHASED: dozens of OTHER mods' own
     # xenotype-ascension GeneDefs (Alpha Genes' AG_Animusen/AG_Drakonori/... and
     # ~275 more) embed a shared "known special xenotypes" DefModExt_Xenotype

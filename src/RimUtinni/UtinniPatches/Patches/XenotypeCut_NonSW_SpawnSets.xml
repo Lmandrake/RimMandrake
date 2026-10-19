@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  XenotypeCut_NonSW_SpawnSets.xml - NONSW_XENOTYPES_SCOPE_1. Owner, question card 2026-10-09:
+  cut all the remaining non-Star-Wars xenotypes, same rule as the twelve
+  (XenotypeCut_SpawnSets.xml); repoint raider xenotype sets.
+
+  The 31 the load-13+ def dump holds beyond our own, the twelve and Baseliner: Alpha Genes 15,
+  Phytokin 3, det.* 6, Beliar, Highborn, Orc Clan, VRE Archon, VRE Fungoid, Titan, BigSmall's
+  Frost Jotun in Blue. Each is removed from every xenotypeSet (FactionDef and PawnKindDef,
+  abstract parents included); the unassigned chance falls to Baseliner, exactly as for the
+  twelve. Factions whose whole set was a cut xenotype (KAR_OrcClan, VRE_Archons,
+  AG_XenohumanPirates, AG_OutlanderCivilUnion, DV_OutlanderRoughBuzzer, DV_PirateKeshig) are
+  already zeroed out of world creation by FactionSlate/OnlyOurFactions.xml, and none of them
+  is on the canonical save's world.
+
+  The def cut itself is Cherry Picker's (typed keys in
+  infrastructure/state/cherrypicker/CherryPicker.SHIP.xml), EXCEPT the five whose names are
+  compiled into their own mod's assembly (VRE_Archon, VRE_Fungoid, VRE_Gauranlenkin,
+  VRE_Animakin, VRE_Poluxkin): those defs stay, unreachable (this file plus their companion
+  genes cut), until their mods are retired.
+
+  XenotypeChance loads by NODE NAME, and a Remove that matches nothing logs red, so each
+  Remove sits inside a Conditional on the same xpath.
+  Guarded by src/RimUtinni/UtinniPatches/selftest_xenotype_cut_nonsw.py.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/BX_Beliar</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/BX_Beliar</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Avaloi</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Avaloi</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Bogleg</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Bogleg</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Brawnum</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Brawnum</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Buzzer</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Buzzer</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Keshig</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Keshig</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Venator</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/DV_Venator</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/HBX_Highborn</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/HBX_Highborn</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/KAR_Orc</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/KAR_Orc</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Archon</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Archon</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Fungoid</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Fungoid</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Gauranlenkin</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Gauranlenkin</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Animakin</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Animakin</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Poluxkin</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Poluxkin</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/XylTitan</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/XylTitan</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Mycormorph</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Mycormorph</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Ocularkin</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Ocularkin</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Fleetkind</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Fleetkind</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Helixien</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Helixien</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Animusen</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Animusen</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Lapis</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Lapis</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Wretch</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Wretch</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Taukai</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Taukai</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Hiveling</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Hiveling</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_MindDevourer</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_MindDevourer</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Efreet</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Efreet</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Drakonori</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Drakonori</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Nereid</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Nereid</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Forsaken</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Forsaken</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_RandomCustom</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_RandomCustom</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/BS_FrostJotunInBlue</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/BS_FrostJotunInBlue</xpath>
+    </match>
+  </Operation>
+</Patch>
