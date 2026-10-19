@@ -1,0 +1,144 @@
+[contagion-note] shipped defs resolved: 126
+[contagion] 06:37:55 defs_resolve PASS 
+[contagion-note] biome roster: {"animals": 23, "plants": 12}
+[contagion] 06:37:55 biome_table_and_roster PASS 
+[contagion-note] roster kinds resolving live as PawnKindDef: [23, 23]
+[contagion] 06:37:55 biome_roster_animals UNMEASURED UNMEASURED: UNMEASURED BY DESIGN: BiomeDef.wildAnimals is non-public and not serialisable by get_defs (got "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"); 23 XML-rostered kinds all resolve live as PawnKindDefs, but the live BiomeDef roster itself cannot be compared
+[contagion] 06:37:55 helix_trader_wired PASS 
+[contagion] 06:37:55 visible_tells_wired PASS 
+[contagion] 06:37:56 organ_patch_comps PASS 
+[contagion] 06:37:57 defaults PASS 
+[contagion] 06:37:57 biomeRarityFactor_roundtrip PASS 
+[contagion] 06:37:57 burnDamageFactor_roundtrip PASS 
+[contagion] 06:37:58 burnEnabled_roundtrip PASS 
+[contagion] 06:37:58 burnFrequency_roundtrip PASS 
+[contagion] 06:37:58 burnTellsEnabled_roundtrip PASS 
+[contagion] 06:37:58 cloudRepulsorEnabled_roundtrip PASS 
+[contagion] 06:37:59 coalescenceEnabled_roundtrip PASS 
+[contagion] 06:37:59 draftprintProvokeChance_roundtrip PASS 
+[contagion] 06:37:59 draftprintsEnabled_roundtrip PASS 
+[contagion] 06:38:00 genomeOrganGrowingEnabled_roundtrip PASS 
+[contagion] 06:38:00 grownLimbsEnabled_roundtrip PASS 
+[contagion] 06:38:00 helixContractRewardFactor_roundtrip PASS 
+[contagion] 06:38:00 mulchDropsEnabled_roundtrip PASS 
+[contagion] 06:38:01 sunbeamArrestEnabled_roundtrip PASS 
+[contagion] 06:38:01 sunbeamNativeFactor_roundtrip PASS 
+[contagion] 06:38:01 touchedEnabled_roundtrip PASS 
+[contagion] 06:38:01 touchedExposureFactor_roundtrip PASS 
+[contagion] 06:38:02 touchedMutationRate_roundtrip PASS 
+[contagion] 06:38:02 unfinishedSpawnerEnabled_roundtrip PASS 
+[contagion] 06:38:02 zhoolConversionEnabled_roundtrip PASS 
+[contagion] 06:38:02 zhoolConversionRate_roundtrip PASS 
+[contagion] 06:38:03 zhoolConvertsCrops_roundtrip PASS 
+[contagion] 06:38:03 zhoolHazeDensity_roundtrip PASS 
+[contagion] 06:38:03 zhoolHazeEnabled_roundtrip PASS 
+[contagion-note] sick start taken off the Contagion: {"tile": 3, "from": "RM_Contagion", "to": "AridShrubland"}
+[contagion-note] quiet-site profile (once per run): {"storyteller/mental/disease": {"enableStoryteller": false, "enableRandomMentalStates": false, "enableRandomDiseases": false, "logRaidInfo": true, "threatScale": 0.0, "allowBigThreats": false}, "wildSpawner": "blocked (read back)", "problems": [], "error": null}
+[contagion-note] mapgen wildlife removed: {"removed": 40, "verified": true, "residue": []}
+[contagion-note] pad repulsor unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 06:38:09 site_ready_baseline PASS 
+[contagion] 06:38:16 off_when_setting_off PASS 
+[contagion-note] weather after the condition registered (vanilla's forcing, not ours): "Rain"
+[contagion] 06:38:24 holds_sky_clear PASS 
+[contagion] 06:38:27 lapses_without_power PASS 
+[contagion-note] mapgen wildlife removed: {"removed": 2, "verified": true, "residue": []}
+[contagion-note] pad spawner unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 06:38:31 site_ready_spawner PASS 
+[contagion] 06:38:34 spawner_off_buds_nothing PASS 
+[contagion] 06:38:35 spawner_buds_unfinished PASS 
+[contagion] 06:38:35 unfinished_rolls_limbs_and_lifespan PASS 
+[contagion] 06:38:37 unfinished_dissolves_on_death PASS 
+[contagion-note] mulch heaps: [2]
+[contagion] 06:38:37 unfinished_leaves_mulch PASS 
+[contagion-note] clock rewound after a declared jump: {"back": 90000, "from": 99785, "to": 9785}
+[contagion-note] retiled: {"tile": 3, "from": "AridShrubland", "to": "RM_Contagion"}
+[contagion] 06:38:40 retile_to_contagion PASS 
+[contagion] 06:38:41 site_is_contagion PASS 
+[contagion-note] mapgen wildlife removed: {"removed": 1, "verified": true, "residue": []}
+[contagion-note] pad burn unroofed: {"cellsChanged": 358, "perDef": {"None": 358}}
+[contagion] 06:38:48 burn_site_ready PASS 
+[contagion-note] no-Burn control: living samples / samples standing on the patch: [32, 5]
+[contagion] 06:39:34 native_no_dive_without_burn PASS 
+[contagion] 06:39:40 repulsor_forces_burn PASS 
+[contagion] 06:39:42 burn_harmless_at_zero_damage PASS 
+[contagion-note] burn native respawns (lost before a Burn was read): 0
+[contagion] 06:40:32 burn_doses_the_exposed_visitor FAIL ExpectationFailed: an exposed visitor carries no RM_BurnDose after the Burn pressed on it (hediffs: ['AS_DuncePassion', 'SEX_Womb'])
+[contagion] 06:40:32 burn_hurts_native_spares_armored UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 06:40:32 native_dives_for_roof UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 06:40:32 burn_off_means_no_harm UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 06:40:32 repulsor_off_lapses_burn UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 06:40:35 site_is_contagion PASS 
+[contagion-note] mapgen wildlife removed: {"removed": 4, "verified": true, "residue": []}
+[contagion-note] pad burn unroofed: {"cellsChanged": 64, "perDef": {"None": 64}}
+[contagion] 06:40:38 natural_site_ready PASS 
+[contagion] 06:40:43 burn_off_never_schedules PASS 
+GOVERNOR_STOP {"utc": "2026-10-19T13:40:48Z", "message": "safe_advance stopped after 480 of 600 tick(s): downed: downed (health 1)", "state": "stopped", "executed": 480, "requested": 600, "stopBy": {"seq": 60, "kind": "downed", "severity": "damage", "tick": 302255, "map": 1, "subjectId": 39831, "subject": "Ad\u00e8le", "critical": false, "declared": false, "detail": "downed (health 1)"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 60, "kind": "downed", "severity": "damage", "tick": 302255, "map": 1, "subjectId": 39831, "subject": "Ad\u00e8le", "critical": false, "declared": false, "detail": "downed (health 1)"}], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "Contagion", "--plan", "src/RimMandrake/Contagion/northstar_plan.py", "--no-record", "--out", "Transient/live_testing_2026-10-19b/contagion_result.json"]}
+[contagion] 06:40:48 slow_frequency_defers_burn UNMEASURED surprise: safe_advance stopped after 480 of 600 tick(s): downed: downed (health 1)
+[contagion] 06:40:48 natural_burn_arrives_on_schedule UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 480 of 600 tick(s): downed: downed (health 1)
+[contagion-note] clock rewound after a declared jump: {"back": 285000, "from": 302271, "to": 17271}
+[contagion] 06:40:51 site_is_contagion PASS 
+[contagion-note] mapgen wildlife removed: {"removed": 350, "verified": true, "residue": []}
+[contagion-note] pad uv unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 06:40:52 uv_site_ready PASS 
+[contagion-note] UV sunburn severity (native@6x, native@1x, person@6x): [30.0, 5.0, 5.0]
+[contagion] 06:40:53 uv_native_multiplier PASS 
+[contagion-note] pad touched unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 06:40:59 touched_site_ready PASS 
+[contagion] 06:41:03 touched_off_doses_nothing PASS 
+[contagion-note] touched severity (contact, far control): [0.04, 0.0]
+[contagion] 06:41:07 touched_contact_doses PASS 
+[contagion] 06:41:08 sunbeam_hit_arrests PASS 
+[contagion] 06:41:11 site_is_contagion PASS 
+[contagion-note] pad zhool unroofed: {"cellsChanged": 52, "perDef": {"None": 52}}
+[contagion] 06:41:13 zhool_site_ready PASS 
+[contagion] 06:41:18 conversion_off_turns_nothing UNMEASURED UNMEASURED: the zhool or its grass is gone from the pad: the off arm saw nothing (zhool on pad False, map row {"x": 98, "z": 168, "dead": false, "downed": false}, grass 225)
+[contagion] 06:41:18 haze_turns_grass_in_place UNMEASURED UNMEASURED: the zhool is not alive on the pad; nothing could turn
+[contagion] 06:41:22 site_is_contagion PASS 
+[contagion-note] pad coal unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 06:41:23 coalescence_site_ready PASS 
+[contagion] 06:41:26 coalescence_off_absorbs_nothing PASS 
+[contagion-note] after absorbing 6: {"left": 5, "stage": 1, "mass": 1}
+[contagion] 06:41:40 coalescence_absorbs_and_grows_a_stage FAIL ExpectationFailed: absorbed 6 Unfinished but the Coalescence reads Stage 1, mass 1 (want Stage >= 2 at mass >= 6); 5 of 6 still alive
+[contagion] 06:41:40 coalescence_emits_manhunters_and_grows_on_its_own UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 06:41:40 burn_collapses_it_into_monstrous_samples UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 06:41:40 monstrous_fixture UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 06:41:40 monstrous_gestation_grows_one_limb UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 06:41:40 grown_limbs_off_grows_organs UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 06:41:44 site_is_contagion PASS 
+[contagion-note] mapgen wildlife removed: {"removed": 1, "verified": true, "residue": []}
+[contagion-note] pad genome unroofed: {"cellsChanged": 115, "perDef": {"None": 115}}
+[contagion] 06:41:45 genome_site_ready PASS 
+[contagion-note] support upkeep: {"calmed": 0, "calmResidue": [], "fed": ["Human39831"]}
+[contagion-note] support upkeep: {"calmed": 0, "calmResidue": [], "fed": ["Human39818"]}
+[contagion-note] surgery try ended without a sample: {"ticks": 2500, "doBillEnded": false, "patient": {"id": "Human51154", "name": "Lady", "kindDef": "Colonist", "faction": "PlayerColony", "isPlayer": true, "hostile": false, "isColonist": true, "spawned": true, "dead": false, "downed": false, "x": 121, "z": 174, "inMentalState": false, "breakImminent": {"minor": false, "major": false, "extreme": false}, "job": {"def": "LayDown", "targetA": {"thingId": "Bed51157", "def": "Bed", "x": 121, "z": 174}}, "isPredatorHunting": false, "lastAttackTargetTick": -99999, "anyCloseHostilesRecently": false, "needs": {"food": 0.7319999, "rest": 0.19714281, "mood": 0.5, "joy": 0.50452286}}, "patientHediffs": ["SEX_Womb", "VTE_RestSlowFallFactor"], "patientBills": ["RM_ExtractGenomeSample"], "samplesOnMap": [], "doer": {"id": "Human51150", "name": "O'Brien", "kindDef": "Colonist", "faction": "PlayerColony", "isPlayer": true, "hostile": false, "isColonist": true, "spawned": true, "dead": false, "downed": false, "x": 122, "z": 174, "inMentalState": false, "breakImminent": {"minor": false, "major": false, "extreme": false}, "job": {"def": "DoBill", "targetA": {"thingId": "Human51154", "def": "Human", "x": 121, "z": 174}}, "isPredatorHunting": false, "last
+[contagion-note] surgery try ended without a sample: {"ticks": 2500, "doBillEnded": false, "patient": {"id": "Human51154", "name": "Lady", "kindDef": "Colonist", "faction": "PlayerColony", "isPlayer": true, "hostile": false, "isColonist": true, "spawned": true, "dead": false, "downed": false, "x": 121, "z": 174, "inMentalState": false, "breakImminent": {"minor": false, "major": false, "extreme": false}, "job": {"def": "LayDown", "targetA": {"thingId": "Bed51157", "def": "Bed", "x": 121, "z": 174}}, "isPredatorHunting": false, "lastAttackTargetTick": -99999, "anyCloseHostilesRecently": false, "needs": {"food": 0.663999736, "rest": 0.19714281, "mood": 0.5, "joy": 0.50452286}}, "patientHediffs": ["SEX_Womb", "VTE_RestSlowFallFactor"], "patientBills": ["RM_ExtractGenomeSample"], "samplesOnMap": [], "doer": {"id": "Human51150", "name": "O'Brien", "kindDef": "Colonist", "faction": "PlayerColony", "isPlayer": true, "hostile": false, "isColonist": true, "spawned": true, "dead": false, "downed": false, "x": 122, "z": 174, "inMentalState": false, "breakImminent": {"minor": false, "major": false, "extreme": false}, "job": {"def": "DoBill", "targetA": {"thingId": "Human51154", "def": "Human", "x": 121, "z": 174}}, "isPredatorHunting": false, "la
+[contagion-note] surgery try ended without a sample: {"ticks": 2500, "doBillEnded": false, "patient": {"id": "Human51154", "name": "Lady", "kindDef": "Colonist", "faction": "PlayerColony", "isPlayer": true, "hostile": false, "isColonist": true, "spawned": true, "dead": false, "downed": false, "x": 121, "z": 174, "inMentalState": false, "breakImminent": {"minor": false, "major": false, "extreme": false}, "job": {"def": "LayDown", "targetA": {"thingId": "Bed51157", "def": "Bed", "x": 121, "z": 174}}, "isPredatorHunting": false, "lastAttackTargetTick": -99999, "anyCloseHostilesRecently": false, "needs": {"food": 0.5999996, "rest": 0.191428527, "mood": 0.5, "joy": 0.50452286}}, "patientHediffs": ["SEX_Womb", "VTE_RestSlowFallFactor"], "patientBills": ["RM_ExtractGenomeSample"], "samplesOnMap": [], "doer": {"id": "Human51150", "name": "O'Brien", "kindDef": "Colonist", "faction": "PlayerColony", "isPlayer": true, "hostile": false, "isColonist": true, "spawned": true, "dead": false, "downed": false, "x": 122, "z": 174, "inMentalState": false, "breakImminent": {"minor": false, "major": false, "extreme": false}, "job": {"def": "DoBill", "targetA": {"thingId": "Human51154", "def": "Human", "x": 121, "z": 174}}, "isPredatorHunting": false, "las
+[contagion] 06:42:45 extraction_surgery_yields_sample UNMEASURED UNMEASURED: none of the three surgery tries ran to its end with the patient in bed
+[contagion-note] inject: the job ended: {"ticks": 150, "doerJobNow": "RemoveApparel", "at": [128, 173]}
+[contagion-note] inject: re-ordered once: {"accepted": true, "running": true}
+[contagion-note] inject: gestation read after: {"ticks": 450}
+[contagion] 06:42:51 inject_starts_gestation PASS 
+[contagion] 06:42:53 gestation_dies_producing_one_organ_batch FAIL ExpectationFailed: expected a batch of 2-4 organs/limbs, found 0: []
+[contagion-note] log scan: {"contagion errors": 0, "xref naming our defs": 0, "bufferLines": 1000}
+[contagion] 06:42:56 log_clean PASS 
+[contagion] 06:42:57 restore_tile PASS 
+[contagion-note] quiet-site restore: ok
+component defs/biome_roster_animals: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: UNMEASURED BY DESIGN: BiomeDef.wildAnimals is non-public and not serialisable by get_defs (got \"(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)\"); 23 XML-rostered kinds all resolve live as PawnKindDefs, but the live BiomeDef roster itself cannot be compared", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound": [], "malformed": [], "fieldsAsked": ["wildAnimals"], "defs": [{
+component burn_forced/burn_doses_the_exposed_visitor: {"toggle": "burnDamageFactor", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: an exposed visitor carries no RM_BurnDose after the Burn pressed on it (hediffs: ['AS_DuncePassion', 'SEX_Womb'])", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_Gnashling in faction (none).", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "RM_Gnashling46268", "name": "Gnashling", "kindRequested": "RM_Gnashling", "kindActual": "RM_Gnashling", "kindSubstituted": false, "hostile": false, "x"
+component burn_forced/burn_hurts_native_spares_armored: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component burn_forced/native_dives_for_roof: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component burn_forced/burn_off_means_no_harm: {"toggle": "burnEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component burn_forced/repulsor_off_lapses_burn: {"toggle": "cloudRepulsorEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component burn_natural/slow_frequency_defers_burn: {"toggle": "burnFrequency", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 480 of 600 tick(s): downed: downed (health 1)", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "burnFrequency", "fieldKind": "static", "valueBefore": "1", "valueAfter": "0.1", "ticksGame": 301791, "operation": {"OperationId": "op_971b64b6876d4525bb2e2b290ddc5b16", "Status": "Completed", "Success": true, "DurationMs": 43}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeS
+component burn_natural/natural_burn_arrives_on_schedule: {"toggle": "burnFrequency", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 480 of 600 tick(s): downed: downed (health 1)", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component zhool_haze/conversion_off_turns_nothing: {"toggle": "zhoolConversionEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the zhool or its grass is gone from the pad: the off arm saw nothing (zhool on pad False, map row {\"x\": 98, \"z\": 168, \"dead\": false, \"downed\": false}, grass 225)", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "zhoolConversionRate", "fieldKind": "static", "valueBefore": "1", "valueAfter": "5", "ticksGame": 19271, "operation": {"OperationId": "op_6fb9572b666e4f0690dd56dfe2447cd8", "Status": "Completed", "Success
+component zhool_haze/haze_turns_grass_in_place: {"toggle": "zhoolConversionRate", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the zhool is not alive on the pad; nothing could turn", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "0 pawn(s), 4 outside the rect.", "pawns": [], "returned": 0, "truncated": 0, "totalOnMap": 4, "ticksGame": 22271, "operation": {"OperationId": "op_c3430fe799914d3c93b4976bf3ae0e58", "Status": "Completed", "Success": true, "DurationMs": 47}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tic
+component coalescence/coalescence_absorbs_and_grows_a_stage: {"toggle": "coalescenceEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: absorbed 6 Unfinished but the Coalescence reads Stage 1, mass 1 (want Stage >= 2 at mass >= 6); 5 of 6 still alive", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_TheUnfinished in faction (none).", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "RM_TheUnfinished51116", "name": "The Unfinished", "kindRequested": "RM_TheUnfinished", "kindActual": "RM_TheUnfinished", "kindSubstituted": fals
+component coalescence/coalescence_emits_manhunters_and_grows_on_its_own: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/burn_collapses_it_into_monstrous_samples: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/monstrous_fixture: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/monstrous_gestation_grows_one_limb: {"toggle": "grownLimbsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/grown_limbs_off_grows_organs: {"toggle": "grownLimbsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component genome/extraction_surgery_yields_sample: {"toggle": "genomeOrganGrowingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: none of the three surgery tries ran to its end with the patient in bed", "evidence": [{"call": "bridge_call jawa/set_pawn_skill", "result": {"success": false, "message": "Skill 'Medicine' is TOTALLY DISABLED on this pawn by backstory, trait or gene. Writing a level would be silently meaningless. Change the backstory first.", "operation": {"OperationId": "op_9dda5adfa3b843ba9d8680fdc80acbd7", "Status": "Completed", "Success": true, "DurationMs": 48}, "state": {"programState": "Playing
+component genome/gestation_dies_producing_one_organ_batch: {"toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: expected a batch of 2-4 organs/limbs, found 0: []", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [], "scanned": 18147, "countReturned": 0, "countMatched": 0, "isCompleteList": true, "truncated": 0, "pawnsSkipped": 7, "perDef": {}, "ticksGame": 34281, "message": "NOTHING MATCHED. 18147 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.", "operatio
+Contagion: NOT GREEN  PASS=66 FAIL=3 UNMEASURED=15  calls=4572 mean=66.382ms  -> Transient/live_testing_2026-10-19b/contagion_result.json

@@ -1,0 +1,153 @@
+{
+ "spawns": [
+  {
+   "def": "Steel",
+   "cell": [
+    140,
+    140
+   ],
+   "terrain": "VFEArch_WoolCarpetMustard",
+   "success": true,
+   "thingId": "Thing_Steel41623",
+   "message": null,
+   "logCount": 0,
+   "logs": [],
+   "cellDefsAfter": [
+    "Steel"
+   ]
+  },
+  {
+   "def": "Plant_Grass",
+   "cell": [
+    144,
+    140
+   ],
+   "terrain": "VFEArch_WoolCarpetMustard",
+   "success": true,
+   "thingId": "Thing_Plant_Grass41624",
+   "message": null,
+   "logCount": 0,
+   "logs": [],
+   "cellDefsAfter": [
+    "Plant_Grass"
+   ]
+  },
+  {
+   "def": "RM_TallSlimyGrass",
+   "cell": [
+    148,
+    140
+   ],
+   "terrain": "Gravel",
+   "success": true,
+   "thingId": "Thing_RM_TallSlimyGrass41625",
+   "message": null,
+   "logCount": 0,
+   "logs": [],
+   "cellDefsAfter": [
+    "RM_TallSlimyGrass"
+   ]
+  },
+  {
+   "def": "RUT_Webwork_Nest",
+   "cell": [
+    152,
+    140
+   ],
+   "terrain": "Marble_Rough",
+   "success": true,
+   "thingId": "Thing_RUT_Webwork_Nest41626",
+   "message": null,
+   "logCount": 0,
+   "logs": [],
+   "cellDefsAfter": [
+    "RUT_Webwork_Nest"
+   ]
+  }
+ ],
+ "cells": [
+  [
+   140,
+   140,
+   "VFEArch_WoolCarpetMustard"
+  ],
+  [
+   144,
+   140,
+   "VFEArch_WoolCarpetMustard"
+  ],
+  [
+   148,
+   140,
+   "Gravel"
+  ],
+  [
+   152,
+   140,
+   "Marble_Rough"
+  ]
+ ],
+ "graphic": [
+  {
+   "defName": "Steel",
+   "graphicClass": "Graphic_StackCount",
+   "graphicPath": "Things/Item/Resource/Steel",
+   "resolvedPath": "Things/Item/Resource/Steel",
+   "textureName": "Steel_a",
+   "textureSize": {
+    "w": 64,
+    "h": 64
+   },
+   "badTex": false,
+   "variantCount": null,
+   "variantPath": null,
+   "error": null
+  },
+  {
+   "defName": "Plant_Grass",
+   "graphicClass": "Graphic_Random",
+   "graphicPath": "Things/Plant/Grass",
+   "resolvedPath": "Things/Plant/Grass/GrassA",
+   "textureName": "GrassA",
+   "textureSize": {
+    "w": 64,
+    "h": 64
+   },
+   "badTex": false,
+   "variantCount": 2,
+   "variantPath": "Things/Plant/Grass/GrassA",
+   "error": null
+  },
+  {
+   "defName": "RM_TallSlimyGrass",
+   "graphicClass": "Graphic_Random",
+   "graphicPath": "StandIn/Things/Plants/AB_SlimeGrass",
+   "resolvedPath": "StandIn/Things/Plants/AB_SlimeGrass/AB_SlimeGrassB",
+   "textureName": "AB_SlimeGrassB",
+   "textureSize": {
+    "w": 128,
+    "h": 128
+   },
+   "badTex": false,
+   "variantCount": 2,
+   "variantPath": "StandIn/Things/Plants/AB_SlimeGrass/AB_SlimeGrassB",
+   "error": null
+  },
+  {
+   "defName": "RUT_Webwork_Nest",
+   "graphicClass": "Graphic_Single",
+   "graphicPath": "StandIn/Things/Building/Natural/Hive",
+   "resolvedPath": "StandIn/Things/Building/Natural/Hive",
+   "textureName": "Hive",
+   "textureSize": {
+    "w": 256,
+    "h": 256
+   },
+   "badTex": false,
+   "variantCount": null,
+   "variantPath": null,
+   "error": null
+  }
+ ],
+ "graphicRefused": []
+}
