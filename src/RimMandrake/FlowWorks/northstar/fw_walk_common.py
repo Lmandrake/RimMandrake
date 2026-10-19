@@ -67,6 +67,8 @@ def list_things(w, defs, rect):
     w.last_list so a truncated read is never taken for absence."""
     r = w.call("jawa/list_things", defName=",".join(defs), rect="%d,%d,%d,%d" % tuple(rect), limit=500) or {}
     w.last_list = {k: r.get(k) for k in ("countMatched", "countReturned", "scanned")}
+    if r.get("success") is not True:        # a refused/empty reply is UNREADABLE (countMatched None), never "nothing there"
+        w.last_list = {"countMatched": None, "countReturned": None, "scanned": None, "refused": str(r)[:200]}
     out = []
     for t in r.get("things") or []:
         out.append(dict(def_=t.get("defName") or t.get("def"), cell=thing_cell(t), rot=thing_rot(t), raw=t))
@@ -85,8 +87,10 @@ def place(w, defname, cell, rot=None, stuff=None, wipe=False):
     mine = [t for t in got if abs(t["cell"][0] - cell[0]) <= 1 and abs(t["cell"][1] - cell[1]) <= 1]
     t = mine[0] if mine else None
     note = ""
+    if r.get("success") is False or (not r and not mine):
+        note = "build_batch refused: %s; " % str(r)[:200]
     if not mine:
-        note = "not on the map after build_batch (reply: %s)" % str(r.get("failed") or r)[:300]
+        note += "not on the map after build_batch (reply: %s)" % str(r.get("failed") or r)[:300]
     elif t["rot"] is None:
         note = "game gave no rotation field (keys: %s)" % sorted(t["raw"].keys())
     return dict(def_=defname, asked=cell, rot_asked=rot, rot_read=(t or {}).get("rot"), survived=bool(mine), note=note)
@@ -360,7 +364,10 @@ def read_terrain(w, size, band=64):
 
 def map_size(w):
     mi = w.call("jawa/map_info") or {}
-    return int(mi.get("sizeX") or 250), int(mi.get("sizeZ") or mi.get("sizeY") or 250)
+    sx, sz = mi.get("sizeX"), mi.get("sizeZ") or mi.get("sizeY")
+    if not sx or not sz:       # a guessed 250 would paint/read the wrong map silently
+        raise RuntimeError("jawa/map_info gave no map size: %s" % str(mi)[:200])
+    return int(sx), int(sz)
 
 
 def centroid_rect(cells, w_, h_, size):
