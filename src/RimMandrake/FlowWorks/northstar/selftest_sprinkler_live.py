@@ -127,7 +127,7 @@ try:
 finally:
     sprinkler_live.COLD_WAIT = 250
 check("with the wait: T22 PASS at every build phase (%d phases)" % len(starts), not red_with, red_with)
-check("without the wait: %d of %d phases FAIL" % (len(red_without), len(starts)), True)
+print("info  without the wait: %d of %d phases FAIL" % (len(red_without), len(starts)))   # informational; the next check is the one that can fail
 check("without the wait: T22 FAILS at some phase (power switch at %200 beats the first pulse)", len(red_without) > 0, red_without)
 
 # ---- (5) biomes absent -> the three IsSoaked rows are SITE, UNMEASURED

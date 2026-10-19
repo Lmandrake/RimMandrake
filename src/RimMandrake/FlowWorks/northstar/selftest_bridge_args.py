@@ -14,7 +14,11 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 TOOLS = os.path.join(ROOT, "src", "RimMandrake", "bridgetools", "JawaBench.BridgeTools")
-DRIVERS = ("thirst_live.py", "thirst_fake.py", "river_site.py", "pond_pump.py", "raid_trench_proof.py")
+# every non-selftest .py here (and live_probes/) that names a jawa/ tool: listed by glob so a new driver is covered at once.
+# (fakegame.py is the mock, not a driver: it has no bridge calls of its own to check.)
+DRIVERS = tuple(sorted(
+    os.path.relpath(f, HERE) for f in glob.glob(os.path.join(HERE, "*.py")) + glob.glob(os.path.join(HERE, "live_probes", "*.py"))
+    if not os.path.basename(f).startswith("selftest_") and '"jawa/' in open(f, encoding="utf-8").read()))
 # bridge tools that live in the core RimBridge server, not in JawaBench.BridgeTools: not checkable here
 EXTERNAL_OK = ()
 
@@ -33,7 +37,9 @@ def check_source(src, sigs, name="<src>"):
     """-> [problem strings] for the jawa/ calls in `src`."""
     out = []
     for n in ast.walk(ast.parse(src)):
-        if (isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "call" and n.args
+        fn = n.func.attr if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) else (
+            n.func.id if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) else "")
+        if (isinstance(n, ast.Call) and fn.lstrip("_") in ("call", "bridge_call", "tool") and n.args
                 and isinstance(n.args[0], ast.Constant) and isinstance(n.args[0].value, str) and n.args[0].value.startswith("jawa/")):
             tool = n.args[0].value
             if tool not in sigs:
@@ -60,6 +66,7 @@ check("the C# signatures were read (set_draft takes drafted, pawn_health takes c
 check("can-fail: a wrong name is caught", check_source('B.call("jawa/set_draft", pawnId=1, draft=True)', sigs) != [])
 check("can-fail: an unknown tool is caught", check_source('B.call("jawa/no_such_tool", x=1)', sigs) != [])
 check("control: the right names pass", check_source('B.call("jawa/set_draft", pawnId=1, drafted=True)', sigs) == [])
+check("the driver glob found the drivers (not an empty loop)", len(DRIVERS) >= 15, DRIVERS)
 for d in DRIVERS:
     probs = check_source(open(os.path.join(HERE, d), encoding="utf-8").read(), sigs, d)
     check("%s: every jawa/ call names declared parameters" % d, not probs, probs)
