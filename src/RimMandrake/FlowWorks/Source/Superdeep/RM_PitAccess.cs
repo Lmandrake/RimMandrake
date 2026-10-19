@@ -173,7 +173,7 @@ namespace RimMandrake.FlowWorks
 		{
 			foreach (Thing t in RM_LadderUtility.AllLadders(map, new List<Thing>()))
 			{
-				if (g.ComponentOf(k, t.Position) == comp)
+				if (RM_LadderUtility.Reaches(t) && g.ComponentOf(k, t.Position) == comp)
 				{
 					return true;
 				}
