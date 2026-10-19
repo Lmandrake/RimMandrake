@@ -501,23 +501,9 @@ most of all."* Tar was the top art priority of this mod: the defense spine's sig
 burning tar moat) and the liquid *least* served by tinted water — water tinted black still ripples
 like water, which reads as an oil slick rather than as something a raider wades through.
 
-`src/RimMandrake/FlowWorks/Patches/Canals/RM_Fluid_Tar_AlphaBiomesAdoption.xml` adopts Alpha Biomes'
-tar art onto FlowWorks' own always-resolvable `RM_Fill_Tar_*` terrains via `PatchOperationConditional`
-gated on the real AB def being loaded (not a bare `MayRequire`, because `RM_Fluid_Tar`'s
-`floodTerrain` needs `temporary="true"` terrains, which `AB_Tar` — `ParentName="WaterDeepBase"` —
-does not set; pointing the FluidDef at it directly would throw ConfigErrors). Without Alpha Biomes
-the tinted-vanilla-ramp fallback still renders and floods; with it, all four fill tiers retexture to
-`Terrain/Surfaces/AB_TarDeepRamp` (the only tar ramp AB ships — it does not distinguish tar depth by
-texture either) and `recededTerrain` adopts `AB_TarMud` for the drained lakebed.
-
-**Corrected donor facts** (measured directly against Alpha Biomes 1.6 on this machine,
-`workshop/content/294100/1841354677`, packageId `sarg.alphabiomes` confirmed in its own About.xml —
-three of the four names originally cited here were wrong): `AB_Tar` and `AB_TarMud` are real
-TerrainDefs and both are adopted above. `AB_TarPits` is a **BiomeDef**
-(`1.6/Defs/BiomeDefs/Biomes_TarPits.xml`), not a paintable per-cell terrain, so it is not adoptable
-here at all — it remains a real biome that IS placed on the frozen world (62 measured tiles), which
-is a fact about biome placement, not about terrain art. `AB_TarPuddle` is a Plant ThingDef plus a
-Filth texture, not a TerrainDef. `AB_TarLakes` does not exist anywhere in Alpha Biomes 1.6.
+FlowWorks' own always-resolvable `RM_Fill_Tar_*` terrains carry the tar look: a near-black tint on
+vanilla's water ramps, `recededTerrain` plain `Mud`. Alpha Biomes was retired 2026-10-18, so no donor tar art
+is adopted; bespoke tar art is still owed.
 
 🔴 **The defect this closed: differentiation between liquids was a colour multiply, not a look.**
 Every in-repo liquid tints the vanilla water ramp via `<color>(R,G,B)</color>`. So tar was tinted

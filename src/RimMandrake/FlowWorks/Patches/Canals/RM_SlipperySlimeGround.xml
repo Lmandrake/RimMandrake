@@ -7,7 +7,7 @@
 
   The set was MEASURED from the def dump (every TerrainDef whose defName/label/description says slime,
   2026-10-16 capture), then kept to the WET slime: FlowWorks' four natural slime pools (shallow + deep),
-  ManyWaters' five coloured slimes, GelatinousSlime's liquid slime and slimy mud, Alpha Biomes' liquid
+  GelatinousSlime's liquid slime and slimy mud, Alpha Biomes' liquid
   slime. Left out on purpose: hardened/rich slime ground, slime grass and slime stone (RM_Slime_Hardened,
   RM_Slime_Rich, RM_Slime_Grass, AB_Slime, AB_RichSlime, AB_SlimeGrass, AB_SlimeStone_*): set solid.
   Ooze is not slime.
@@ -83,51 +83,6 @@
     <xpath>/Defs/TerrainDef[defName="RM_SlimeYellowDeep"]</xpath>
     <match Class="PatchOperationAddModExtension">
       <xpath>/Defs/TerrainDef[defName="RM_SlimeYellowDeep"]</xpath>
-      <value>
-        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
-      </value>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RM_Slime_Rust"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RM_Slime_Rust"]</xpath>
-      <value>
-        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
-      </value>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RM_Slime_Verdigris"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RM_Slime_Verdigris"]</xpath>
-      <value>
-        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
-      </value>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RM_Slime_Amber"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RM_Slime_Amber"]</xpath>
-      <value>
-        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
-      </value>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RM_Slime_Violet"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RM_Slime_Violet"]</xpath>
-      <value>
-        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
-      </value>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TerrainDef[defName="RM_Slime_Chalk"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/TerrainDef[defName="RM_Slime_Chalk"]</xpath>
       <value>
         <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
       </value>

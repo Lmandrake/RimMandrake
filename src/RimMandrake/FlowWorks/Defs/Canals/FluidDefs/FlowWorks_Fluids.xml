@@ -43,11 +43,8 @@
   <!-- FLOWWORKS_BUILD_PROGRAM_1 Phase 7 — "Tar needs the viscosity most of
        all" (owner ruling, 2026-09-16). Same tier shape as water, own
        temporary terrains (Defs/Canals/TerrainDefs/FlowWorks_Terrain.xml),
-       tinted-vanilla by default and Alpha-Biomes-adopted when present
-       (Patches/Canals/RM_Fluid_Tar_AlphaBiomesAdoption.xml) — the floodTerrain
-       etc. references below are OUR OWN defNames either way, so this row
-       resolves whether or not sarg.alphabiomes is active; only the terrain's
-       own texture/receded-look changes underneath it. -->
+       tinted vanilla ramps; the floodTerrain etc. references below are
+       OUR OWN defNames. -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Tar</defName>
     <label>tar</label>
@@ -71,9 +68,7 @@
     <floodedTicks>300000</floodedTicks>
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
-    <!-- Fallback lakebed reads as ordinary Mud, same as water; Alpha
-         Biomes' own AB_TarMud ("tarred mud") is adopted onto this field by
-         the same conditional patch when AB is present. -->
+    <!-- Lakebed reads as ordinary Mud, same as water. -->
     <recededTerrain>Mud</recededTerrain>
     <!-- SUMP_TAR_HYDROLOGY_1 ruling 3, "flood fronts cool to glass". Our own
          def (Defs/LiquidTypes/TerrainDefs/RM_TarGlass.xml), tier-neutral so
