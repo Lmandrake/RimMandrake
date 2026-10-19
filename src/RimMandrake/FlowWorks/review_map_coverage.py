@@ -3,7 +3,7 @@
     (run by review_map.py --plan, which writes northstar/review/map/COVERAGE.md and fails on any uncovered item)
 
 The INVENTORY is derived, never typed: every non-abstract def in Defs/ (and every def a patch adds), every Mod Settings
-field a settings class saves (Scribe_Values.Look in Source/, SelfTest excluded), every gizmo label (defaultLabel in
+field a settings class saves (Scribe_Values.Look and Scribe_Collections.Look in Source/, SelfTest excluded), every gizmo label (defaultLabel in
 Source/) and the two designators, and every texture under Textures/. The FEATURES table below groups inventory items
 into the features a player would name and says where each is shown: a gallery station id, "V" (the pits visuals
 block), "F" (the free area), "R:<id>" (map R, the river site), or "matrix: <reason>" when no frozen station can show
@@ -88,6 +88,8 @@ FEATURES = [
     ("def", r"^RimMandrake\.FlowWorks\.FluidDef/RM_Fluid_(Water|Tar|Oil|SlimeGreen|SlimeWhite|SlimeRed|Blood|Chemfuel|Astrofuel)$",
      "Canal liquids in the V block", "V"),
     ("def", r"^RimMandrake\.FlowWorks\.FluidDef/RM_Fluid_", "Four more canal liquids", "canal_fluids_more"),
+    ("set", r"^disabledFluids$", "Per-liquid on/off list",
+     M + "a Mod Settings list; every liquid it can switch off is shown on in the V block and canal_fluids_more"),
     ("def", r"^TerrainDef/RM_Fill_(Water|Tar|Oil|SlimeGreen|SlimeWhite|SlimeRed|Blood|Chemfuel|Astrofuel)_(Brim|Superdeep)$",
      "Canal fill grounds, brim and pit", "V"),
     ("def", r"^TerrainDef/RM_Fill_Water_(Trace|Half)$", "Partial fills (trace, half)", "look_canal"),
@@ -247,6 +249,8 @@ FEATURES = [
     ("tex", r"Machinery/RM_(LiquidDrill|LiquidTap|SunPanStill|DripFilter|FueledStill)", "Drill and still art",
      "carry_drills"),
     ("set", r"^(liquidDrillingEnabled|drillYieldChanceMultiplier|drillUnitsPerCycle)$", "Drilling", "carry_drills"),
+    ("set", r"^disabledMachines$", "Per-machine on/off list",
+     M + "a Mod Settings list; every machine it can switch off is shown on at the carry_* and industry stations"),
     ("def", r"^ThingDef/RM_\w+_Wrecked$", "Four wrecked liquid plants", "carry_industry"),
     ("tex", r"Machinery/RM_\w+_Wrecked", "Wreck art", "carry_industry"),
     ("def", r"^ThingDef/RM_DesalPlant_", "Desal plant stages", "industry_stages"),
@@ -381,7 +385,8 @@ def inventory(mod=HERE):
         for dn in re.findall(r"<defName>(RM_\w+)</defName>", txt):
             if dn not in defined and "<value>" in txt:
                 add("def", "patch-added/%s" % dn, os.path.relpath(p, mod))
-    rx = re.compile(r'Scribe_Values\.Look\(ref (\w+),')
+    # Scribe_Collections too: the per-liquid and per-machine on/off lists are settings (they were invisible here)
+    rx = re.compile(r'Scribe_(?:Values|Collections)\.Look\(ref (\w+),')
     for p in sorted(_src_files(".cs", os.path.join(mod, "Source"))):
         b = os.path.basename(p)
         if "Settings" in b or b == "RimMandrakeFlowWorksMod.cs":
