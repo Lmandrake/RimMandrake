@@ -47,13 +47,14 @@ NOT DRIVEN HERE (walk lines say UNCOVERED, with the reason):
   * Appearance (dusk light, the vent-bloom overlay, art): visual, left to the judge pass.
   * CAULDRON_MECHANICS_BUILD_1 parts 3/4/6 (gas chain): the vent-gas cloud, its burn and the tap are read as STATE off
     the vent's and the tap's own inspect lines ('Vent gas: N cells, peak P; toxic smoke: T cells; burned: B',
-    'Gas tap: ... banked X / 60', 'Delivered D units', 'Scaffold: H / M HP'). NOT driven: the cloud's physical drift (no
-    tool reads a cell's density; INFERRED from the `drift` chain's two law reads + the kernel selftest's conservation
-    fuzz), its look, studying the rig (an analysis job the bridge cannot order).
+    'Gas tap: ... banked X / 60', 'Delivered D units', 'Scaffold: H / M HP'). The cloud's physical drift is read by the
+    `drift` chain (RM_MapComponent_VentGas.CentroidOf). NOT driven: its look, studying the rig (an analysis job the bridge
+    cannot order).
   * CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD adds: `ruins` (the mapgen census of a generated Cauldron map: the rig, its
     dressing, Oomo's shrine via the Utinni layer), `works` (the Filter-Works converting vent condensate to a reagent item
     and toxic water to fresh water, with a no-cartridge and a no-power control arm) and `drift` (the daily heading and
-    the wind -> chance law, read from the live assembly through jawa/static_call).
+    the wind -> chance law, read from the live assembly through jawa/static_call, and a seeded cloud's centroid moving
+    along that heading under wind and staying put with the drift off).
 
 Settings fields are `public static` (RimMandrake.Cauldron.RM_CauldronSettings). Every arm that
 changes one restores it in a `finally`. `jawa/mod_settings_field` never writes ModSettings.xml.
@@ -61,6 +62,7 @@ changes one restores it in a `finally`. `jawa/mod_settings_field` never writes M
 import contextlib
 import glob
 import json
+import math
 import os
 import re
 import sys
@@ -134,7 +136,8 @@ VEXXITH, VDOOR, ACID = "RM_Vexxith", "RM_VexxithDoor", "AcidBurn"     # VEXXITH_
 VENT_PLANTS = {"RM_CrystalFlower": "StableRing", "RM_BloodBouquet": "ChronicLeak",
                "RM_GiantToxicFlower": "RecentBlowout"}
 PADS = {"vent": (0, -85), "fauna": (-45, -45), "suush": (45, -45), "flora": (-45, 0), "yield": (45, 0),
-        "bloom": (-45, 45), "water": (0, 45), "fire": (45, 45), "spawn": (0, -45), "gas": (-85, -85), "works": (85, -85)}
+        "bloom": (-45, 45), "water": (0, 45), "fire": (45, 45), "spawn": (0, -45), "gas": (-85, -85), "works": (85, -85),
+        "drift": (85, 85)}
 GAS_TAP, TANK, RIG = "RM_VentGasTap", "RM_LiquidTank", "RM_CorrodedFilterRig"     # CAULDRON_MECHANICS_BUILD_1 parts 3/4
 VWORKS, REAGENT, BATTERY = "RM_FilterWorks", "RM_VentReagent", "Battery"          # CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD
 COND, TOXICW, FRESHW = "RM_Liquid_VentCondensate", "RM_Liquid_ToxicWater", "RM_Liquid_FreshWater"
@@ -1102,7 +1105,8 @@ def settings_chain(t):
                   # saturation and flecks are dormant until their art is installed (and are appearance anyway);
                   # prints live on CreatureBehaviors' grid, which no bridge tool reads.
                   "dewfallBeadsEnabled", "dewfallSaturationEnabled", "assayFlecksEnabled", "vexxissPrintsEnabled",
-                  # CAULDRON_MECHANICS_BUILD_1: the drift heading is not readable through any bridge tool; the toxic-smoke
+                  # CAULDRON_MECHANICS_BUILD_1: ventGasDrifts' OFF arm is driven by drift.gas_cloud_moves_along_heading
+                  # (this roundtrip only proves the field persists); the toxic-smoke
                   # OFF arm is masked by the ON arm's vanilla tox residue unless the suite waits it out (the ON arm is
                   # gas.vent_gas_burns_toxic); the ruin kit is worldgen (a fresh Cauldron map).
                   "ventGasDrifts", "ventGasToxicSmoke", "ruinKitEnabled"):
@@ -2397,10 +2401,10 @@ def works_chain(t):
     _stable(t, body)
 
 
-# --------------------------------------------------------------------------- chain: the gas drift (decomposed, INFERRED)
-# The cloud's physical drift has NO state read: vents' inspect line counts cells within 12 and no tool reads a cell's density.
-# So the law is decomposed and read from the LIVE assembly through jawa/static_call (pure public statics): the daily heading
-# and the wind -> chance law. The movement itself is the kernel selftest's (CauldronFuzz 'drift conserves'), INFERRED here.
+# --------------------------------------------------------------------------- chain: the gas drift
+# The law is read from the LIVE assembly through jawa/static_call (pure public statics): the daily heading and the wind ->
+# chance law. The MOVEMENT is read too (gas_cloud_moves_along_heading): RM_MapComponent_VentGas.CentroidOf is the one read of
+# the vent-gas grid's density (total + density-weighted centroid in a window), with SeedCloud / ClearOf as its fixtures.
 
 KERNEL = "RimMandrake.Cauldron.RM_VentGasKernel"
 HEADING_PERIOD = 60000
@@ -2464,6 +2468,112 @@ def drift_chain(t):
                 _fail("a stronger wind must drift at least as often, and a breeze must drift: %r" % got)
             if vals[9.0] > 0.75 + 1e-6 or vals[9.0] < vals[2.0]:
                 _fail("the chance must cap at 0.75, never fall: %r" % got)
+    _cloud_row(t)
+
+
+GASCOMP = "RimMandrake.Cauldron.RM_MapComponent_VentGas"
+HEAD_DX = (0, 1, 1, 1, 0, -1, -1, -1)        # RM_VentGasKernel.HeadingDx / HeadingDz (selftest checks the C# source)
+HEAD_DZ = (1, 1, 0, -1, -1, -1, 0, 1)
+CLOUD_SEED_R, CLOUD_SEED_AMT = 4, 255         # 49 cells at full density: ~12k units, thick enough to diffuse and drift
+CLOUD_WIN = 20                                # the readout window's half-width, inside the pad's cleared 48x48
+CLOUD_TICKS, CLOUD_STEP = 1500, 250
+CLOUD_MIN_TOTAL = 1000                        # less than this in the window: no cloud to follow (UNMEASURED)
+CLOUD_CALM_TOL = 1.5                          # cells a cloud may wander with the drift off (dissipation is random)
+CLOUD_MIN_MOVE = 1.0                          # cells the wind arm must out-travel the calm arm by
+CLOUD_MIN_CHANCE = 0.15                       # below this a 1500-tick window cannot show a cell of drift
+CLOUD_COS = 0.7071                            # within 45 degrees of the heading
+
+
+def _cloud(t, x, z):
+    """CentroidOf as a dict of floats; unreadable is UNMEASURED, never a number."""
+    out = _static(t, GASCOMP, "CentroidOf", "current|%d,%d|%d" % (x, z, CLOUD_WIN))
+    if not _live(t):
+        return {}
+    if out.startswith("REFUSED"):
+        _unmeasured(t, "CentroidOf refused: %s" % out)
+    try:
+        return dict((k, float(v)) for k, v in (kv.split("=", 1) for kv in out.split()))
+    except ValueError:
+        _unmeasured(t, "CentroidOf answered %r, not k=v numbers" % out)
+
+
+def _cloud_arm(t, x, z):
+    """A fresh cloud at (x, z), followed for CLOUD_TICKS: [first sample, ..., last]."""
+    _static(t, GASCOMP, "ClearOf", "current")
+    seed = _static(t, GASCOMP, "SeedCloud", "current|%d,%d|%d|%d" % (x, z, CLOUD_SEED_R, CLOUD_SEED_AMT))
+    if not _live(t):
+        return []
+    if seed.startswith("REFUSED"):
+        _unmeasured(t, "SeedCloud refused: %s" % seed)
+    samples = [_cloud(t, x, z)]
+    if samples[0]["total"] < CLOUD_MIN_TOTAL:
+        _unmeasured(t, "the seeded cloud holds %d units (seed %r): walls on the pad refused it, no cloud to follow"
+                    % (samples[0]["total"], seed))
+    for _ in range(CLOUD_TICKS // CLOUD_STEP):
+        _wait(t, CLOUD_STEP)
+        samples.append(_cloud(t, x, z))
+    if samples[-1]["total"] < CLOUD_MIN_TOTAL // 4 or samples[-1]["cx"] < 0:
+        _unmeasured(t, "the cloud thinned to %d units by the last read: no centroid to compare" % samples[-1]["total"])
+    return samples
+
+
+def _moved(a, b):
+    return b["cx"] - a["cx"], b["cz"] - a["cz"]
+
+
+def _cloud_row(t):
+    """drift.gas_cloud_moves_along_heading: the cloud itself, not the law. Two arms on the same cleared pad, each from a
+    fresh seeded cloud with emission off (no vent can feed the window): CALM (ventGasDrifts off -- every shipped weather
+    carries wind, windSpeedFactor >= 0.5, so 'calm air' is the drift law's own zero) must stay put; WIND (shipped default)
+    must out-travel the calm arm along the map's live heading. Subtracting the calm arm cancels the site's own asymmetry
+    (a wall or rock edge biases diffusion the same way in both arms).
+    PROVE  CentroidOf every 250 ticks over 1500, per arm.
+    EXPECT calm |d| <= 1.5 cells; wind - calm >= 1.0 cell, within 45 degrees of (HeadingDx, HeadingDz)[heading].
+    LIES   a window too small (gas leaving it drags the centroid back): 20-cell half-width vs a ~15-cell cloud; a heading
+           that turns mid-arm (day boundary): UNMEASURED; wind too light to show a cell: UNMEASURED."""
+    _prep(t, "drift", size=40)
+    x, z = t.anchor
+
+    def body():
+        with _comp(t, "gas_cloud_moves_along_heading", toggle="ventGasDrifts"):
+            if not _live(t):
+                return
+            with _setting(t, "ventGasEnabled", False):
+                with _setting(t, "ventGasDrifts", False):
+                    calm = _cloud_arm(t, x, z)
+                wind = _cloud_arm(t, x, z)
+                _static(t, GASCOMP, "ClearOf", "current")
+            dc = _moved(calm[0], calm[-1])
+            dw = _moved(wind[0], wind[-1])
+            heads = sorted(set(int(s["heading"]) for s in wind))
+            chance = min(s["chance"] for s in wind)
+            _note(t, "cloud calm / wind (total, cx, cz, heading, chance)",
+                  [[(int(s["total"]), round(s["cx"], 2), round(s["cz"], 2), int(s["heading"]), s["chance"]) for s in arm]
+                   for arm in (calm, wind)])
+            if any(s["chance"] != 0.0 for s in calm):
+                _fail("ventGasDrifts OFF but the tick's drift chance reads %r" % [s["chance"] for s in calm])
+            if math.hypot(*dc) > CLOUD_CALM_TOL:
+                _fail("with the drift off the cloud still travelled %.2f cells (%.2f, %.2f): it moves without wind"
+                      % (math.hypot(*dc), dc[0], dc[1]))
+            if len(heads) != 1:
+                _unmeasured(t, "the heading turned during the wind arm (%r): a day boundary fell in the window" % heads)
+            if chance < CLOUD_MIN_CHANCE:
+                _unmeasured(t, "the wind is too light (drift chance %.3f, wind %.3f): 1500 ticks cannot show a cell of drift"
+                            % (chance, wind[0]["wind"]))
+            rx, rz = dw[0] - dc[0], dw[1] - dc[1]
+            mag = math.hypot(rx, rz)
+            h = heads[0]
+            hx, hz = HEAD_DX[h], HEAD_DZ[h]
+            cos = (rx * hx + rz * hz) / (mag * math.hypot(hx, hz)) if mag > 0 else -1.0
+            _note(t, "cloud drift vs heading", {"heading": h, "dir": (hx, hz), "wind_minus_calm": (round(rx, 2), round(rz, 2)),
+                                                "cells": round(mag, 2), "cos": round(cos, 3), "chance": chance})
+            if mag < CLOUD_MIN_MOVE:
+                _fail("under wind (chance %.2f) the cloud out-travelled the calm arm by only %.2f cells: it does not drift"
+                      % (chance, mag))
+            if cos < CLOUD_COS:
+                _fail("the cloud drifted (%.2f, %.2f) but the heading is %d (%d, %d): cos %.2f, it goes the wrong way"
+                      % (rx, rz, h, hx, hz, cos))
+    _stable(t, body)
 
 
 # --------------------------------------------------------------------------- chain: the log (last)

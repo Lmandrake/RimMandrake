@@ -694,6 +694,14 @@ namespace RimMandrake.Cauldron.SelfTest
             var big = new RM_VentGasCells(2, 1); big.Add(0, 10);
             int bo = big.Add(0, int.MaxValue);
             Check(big.Density[0] == 255 && bo > 0 && big.NonZero == 1, $"Add(int.MaxValue) clamps (got {big.Density[0]}, overflow {bo})");
+            // CentroidIn: the drift row's readout. Empty -> (-1,-1); two cells 3:1 -> weighted; a window clips; a drift moves it.
+            var cg = new RM_VentGasCells(5, 4);
+            Check(cg.CentroidIn(0, 0, 4, 3, out double ex, out double ez, out int en) == 0 && ex == -1 && ez == -1 && en == 0, "an empty window has no centroid");
+            cg.Add(1 * 5 + 1, 90); cg.Add(1 * 5 + 3, 30);   // (1,1) x90, (3,1) x30
+            long ct = cg.CentroidIn(-9, -9, 99, 99, out double ccx, out double ccz, out int cn);
+            Check(ct == 120 && cn == 2 && Near(ccx, 1.5) && Near(ccz, 1.0), $"density-weighted centroid (got {ct} {ccx},{ccz} n{cn})");
+            Check(cg.CentroidIn(2, 0, 4, 3, out ccx, out ccz, out cn) == 30 && Near(ccx, 3.0) && cn == 1, "the window clips the cloud");
+            Check(cg.Drift(1 * 5 + 1, 0, i => true, null) && cg.CentroidIn(0, 0, 4, 3, out ccx, out ccz, out cn) == 120 && ccz > 1.0 && Near(ccx, 1.5), $"a +z drift moves the centroid +z only (got {ccx},{ccz})");
         }
 
         // ════════════════════════ units ════════════════════════
