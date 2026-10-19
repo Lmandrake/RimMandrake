@@ -113,7 +113,13 @@ def main(argv=None, bridge=None):
             with open(out, "w", encoding="utf-8") as f:
                 f.write(txt)
 
+    ctx = {"broken": [], "setfail": []}   # net layout not built / a bool setting that did not read back: rows below could not ask
+
     def row(rid, st, cls, det):
+        if st == "FAIL" and (ctx["broken"] or ctx["setfail"]):    # "could not ask" is UNMEASURED, never a MOD FAIL
+            det = dict(det, couldNotAsk=ctx["broken"] + ctx["setfail"])
+            st, cls = "UNMEASURED", "SITE" if ctx["broken"] else "HARNESS"
+        ctx["setfail"] = []
         rows.append({"id": rid, "status": st, "class": cls, "detail": det})
         print("%-44s %-10s %-8s %s" % (rid, st, cls, json.dumps(det, default=str)[:420]), flush=True)
         save()
@@ -122,7 +128,7 @@ def main(argv=None, bridge=None):
         return not only or key in only
 
     def tg():
-        g = B.call("rimworld/get_game_info")
+        g = B.call("rimworld/get_game_info") or {}
         return g.get("ticksGame") or (g.get("state") or {}).get("tick")
 
     def ticks(n):
@@ -139,7 +145,10 @@ def main(argv=None, bridge=None):
     def sfield(typ, field, value=None):
         if value is not None:
             B.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(value))
-        return B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field).get("value")
+        got = (B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}).get("value")
+        if isinstance(value, bool) and str(got).lower() != str(value).lower():
+            ctx["setfail"].append("%s set to %s but reads %r" % (field, value, got))
+        return got
 
     def pulses():
         try:
@@ -161,8 +170,11 @@ def main(argv=None, bridge=None):
         return None
 
     def fill(x, z, liquid, units):
-        return str(B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
-                          args="%d,%d;Store;%s;%d" % (x, z, liquid, units)).get("result"))
+        r = B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
+                   args="%d,%d;Store;%s;%d" % (x, z, liquid, units)) or {}
+        if r.get("success") is False:
+            ctx["broken"].append("ProofTank Store %s refused" % liquid)
+        return str(r.get("result"))
 
     def units(x, z):
         r = B.hp("tank:%d,%d" % (x, z))
@@ -188,6 +200,8 @@ def main(argv=None, bridge=None):
              "build": [s1, s2]}
         n["headId"] = thing_at("RM_SprinklerHead", ox + 5, oz)
         n["pumpId"] = thing_at("RM_LiquidPump", ox + 3, oz)
+        ctx["broken"] = [w_ for w_, v in (("head", n["headId"]), ("pump", n["pumpId"]), ("tank", thing_at("RM_LiquidTank", ox, oz))) if not v]
+        ctx["broken"] = ["net %d: %s not built" % (i, w_) for w_ in ctx["broken"]]
         # HARNESS (T22, 2026-10-18 rerun: brine-only read "No pressure"): the COLD pulse. A new head pulses at its first
         # rare tick (nextPulseTick -1; CompRM_SprinklerHead.RareTick, phase (tick + thingIDNumber) % 250), but vanilla
         # PowerNet.PowerNetTick switches a new consumer on only when TicksGame % (200 / wanting) == 0, so the pump can be
@@ -255,6 +269,8 @@ def main(argv=None, bridge=None):
                 ticks(130)
                 line2 = inspect(n["headId"])
                 bad = []
+                if None in (u0, u1):
+                    bad.append("tank units unreadable (%s, %s)" % (u0, u1))
                 if not (line or "").startswith("No pressure"):
                     bad.append("pump off but the head reads %r" % line)
                 if u0 != u1:
@@ -274,7 +290,7 @@ def main(argv=None, bridge=None):
                     u1 = units(*n["tank"])
                 finally:
                     sfield(S_SP, "sprinklersEnabled", saved[(S_SP, "sprinklersEnabled")])
-                ok = (line or "").startswith("Sprinklers are off in Mod Settings") and u0 == u1
+                ok = (line or "").startswith("Sprinklers are off in Mod Settings") and u0 == u1 and u0 is not None
                 row("sprinkler_switch_flips.flip_sprinklersEnabled", "PASS" if ok else "FAIL", "MOD",
                     {"inspect": line, "units": [u0, u1]})
             if want("dries"):
@@ -312,7 +328,7 @@ def main(argv=None, bridge=None):
             until_pulse()
             ticks(130)
             line, u1 = inspect(n["headId"]), units(*n["tank"])
-            ok = (line or "").startswith("Clogged") and u0 == u1
+            ok = (line or "").startswith("Clogged") and u0 == u1 and u0 is not None
             row("sprinkler.thick_clogs", "PASS" if ok else "FAIL", "MOD", {"inspect": line, "units": [u0, u1]})
 
         if want("walls"):
@@ -355,7 +371,7 @@ def main(argv=None, bridge=None):
                 bad.append("brine-only net reads %r" % line1)
             if "fresh" not in (line2 or "").lower() or "Spraying" not in (line2 or ""):
                 bad.append("brine + fresh reads %r (want spraying fresh)" % line2)
-            if u_b0 != u_b1:
+            if u_b0 is None or u_b0 != u_b1:
                 bad.append("brine tank moved %s -> %s" % (u_b0, u_b1))
             row("T22_no_brine_spray", "FAIL" if bad else "PASS", "MOD",
                 {"brineOnly": line1, "withFresh": line2, "brineUnits": [u_b0, u_b1], "freshUnits": u_f, "bad": bad})
@@ -373,7 +389,9 @@ def main(argv=None, bridge=None):
                 raise RuntimeError("effects: jawa/spawn_pawn gave no pawn id: %s" % str(r)[:200])
             B.call("jawa/set_draft", pawnId=pid, drafted=True)
             B.call("rimworld/select_pawn", pawnId="Thing_" + str(pid))
-            B.call("rimworld/execute_debug_action", path="Actions\\Wear apparel (selected)...\\*Remove all apparel")
+            ea = B.call("rimworld/execute_debug_action", path="Actions\\Wear apparel (selected)...\\*Remove all apparel") or {}
+            if ea.get("success") is False:     # a clothed pawn takes less acid harm: a FAIL would be the harness's
+                raise RuntimeError("effects: remove-all-apparel debug action refused: %s" % str(ea)[:200])
             B.call("rimworld/clear_selection")
 
             def harm(p):
@@ -439,7 +457,9 @@ def main(argv=None, bridge=None):
                 raise RuntimeError("reserve: jawa/spawn_pawn gave no pawn id: %s" % str(r)[:200])
             for nd in ("Food", "Rest", "Joy", "Mood"):
                 B.call("jawa/pawn_need", pawn=pid, action="need", need=nd, level=1.0)
-            B.call("jawa/pawn_need", pawn=pid, action="need", need="RM_Thirst", level=0.2)
+            pn = B.call("jawa/pawn_need", pawn=pid, action="need", need="RM_Thirst", level=0.2) or {}
+            if pn.get("success") is False:     # a pawn that was never thirsty "did not drink at the reserved tank"
+                raise RuntimeError("reserve: RM_Thirst need not set: %s" % str(pn)[:200])
             B.call("jawa/stop_job", pawnId=pid)
             seen = []
             for _ in range(15):

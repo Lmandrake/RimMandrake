@@ -151,7 +151,7 @@ def main(argv=None):
 
     # ------------------------------------------------------------ map
     if a.fresh_map:
-        if B.call("rimworld/get_ui_state").get("programState") == "Playing":
+        if (B.call("rimworld/get_ui_state") or {}).get("programState") == "Playing":
             B.call("rimworld/go_to_main_menu")
             time.sleep(5)
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
@@ -162,7 +162,7 @@ def main(argv=None):
     B.call("jawa/incident_queue_clear")
     # LIVE 2026-10-17: with the storyteller on, a fleshbeast assault (Entities) landed on the island mid-run and downed
     # the colonists; the scene must hold only the attackers it names
-    B.call("jawa/debug_settings", action="set", field="enableStoryteller", value="false")
+    B.call("jawa/debug_settings", action="set", field="enableStoryteller", value=False)
     B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
     B.call("rimworld/set_god_mode", enabled=True)
     mi = B.call("jawa/map_info") or {}
@@ -194,7 +194,8 @@ def main(argv=None):
             bits = next((int(tok[5:], 16) for tok in txt.split() if tok.startswith("bits=")), None)
             break
         adv(60)
-    row("RAID_island_sealed", "UNMEASURED" if bits is None else ("PASS" if not bits & 0x04 else "FAIL"),
+    sealed = "UNMEASURED" if bits is None else ("PASS" if not bits & 0x04 else "FAIL")
+    row("RAID_island_sealed", sealed,
         {"read": txt[:200], "eastBit": None if bits is None else bool(bits & 0x04)})
 
     # ------------------------------------------------------------ raid
@@ -260,10 +261,10 @@ def main(argv=None):
     row("RAID_outcome", "MEASURED", dict(outcome=words, **det))
     cameNear = len(det["cameNear"])
     crossed = det["onIsland"] + det["inTrench"]
-    row("MASKSWAP_no_wall_crossing", "UNMEASURED" if cameNear < 2 else ("FAIL" if crossed else "PASS"),
-        {"raidersWithin15": cameNear, "sampledOnIslandOrTrench": crossed, "churnRebuilds": k,
+    row("MASKSWAP_no_wall_crossing", "UNMEASURED" if (cameNear < 2 or sealed != "PASS") else ("FAIL" if crossed else "PASS"),
+        {"raidersWithin15": cameNear, "islandSealed": sealed, "sampledOnIslandOrTrench": crossed, "churnRebuilds": k,
          "caveat": "sampled every %d ticks; never seen, not proven impossible" % CHUNK})
-    B.call("jawa/debug_settings", action="set", field="enableStoryteller", value="true")
+    B.call("jawa/debug_settings", action="set", field="enableStoryteller", value=True)
     save()
     say("result: %s" % os.path.relpath(a.out, REPO))
     return 0
