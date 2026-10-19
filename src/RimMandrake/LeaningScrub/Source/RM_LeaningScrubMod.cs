@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using RimMandrake.EnvironmentalHazards;
@@ -242,6 +243,40 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref venomvineCreepCap, "venomvineCreepCap", 0.22f, true);
         }
 
+        /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: the master switch and each per-feature toggle with what it governs.
+        /// "Mod enabled" gates every other setting (all read sites test modEnabled first), so turning it off greys the rest and keeps their values.</summary>
+        internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
+            .Declare("modEnabled", "venomvinePassabilityEnabled", "stallFreezeEnabled", "stallFreezeMaxBodySize", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays", "galeRaidWeightingEnabled", "galeRaidWeightFactor", "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor", "smotherCraftEnabled", "smotherDays", "smotherYieldFactor", "leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanWakesEnabled", "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled", "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineGuardiansEnabled", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineProximityCharge", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "visslerArmFoodEnabled", "fireStampEnabled", "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor", "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled", "rearingEnabled", "rearingHours", "walkingEnabled", "walkingMaxCellsPerMap", "hoardEnabled", "hoardGrowInHours", "hoardKeepsDeadGear", "quenchEnabled", "quenchRecoveryDays", "swornSparesMarkedEnabled", "sheddingEnabled", "stranglerEnabled", "stranglerDamageFactor", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "sheddingLength", "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance", "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap")
+            .Declare("stallFreezeEnabled", "stallFreezeMaxBodySize")
+            .Declare("galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays")
+            .Declare("galeRaidWeightingEnabled", "galeRaidWeightFactor")
+            .Declare("twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor")
+            .Declare("smotherCraftEnabled", "smotherDays", "smotherYieldFactor")
+            .Declare("leanScentEnabled", "leanScentRange")
+            .Declare("leanFireEnabled", "leanFireBias")
+            .Declare("sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays")
+            .Declare("sweetlineGuardiansEnabled", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineProximityCharge")
+            .Declare("sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare")
+            .Declare("rippleEnabled", "rippleMaxBodySize")
+            .Declare("callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor")
+            .Declare("scrubInjectionsEnabled", "scrubRuinsPerMap")
+            .Declare("rearingEnabled", "rearingHours")
+            .Declare("hoardEnabled", "hoardGrowInHours", "hoardKeepsDeadGear")
+            .Declare("quenchEnabled", "quenchRecoveryDays")
+            .Declare("stranglerEnabled", "stranglerDamageFactor", "stranglerAutoTrim")
+            .Declare("weeperEnabled", "weeperPollutes")
+            .Declare("walkingEnabled", "walkingMaxCellsPerMap")
+            .Declare("sheddingEnabled", "sheddingLength")
+            .Declare("venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineStartClearance", "venomvineIslandRoomsEnabled")
+            .Declare("venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap")
+            .Name("modEnabled", "Mod enabled");
+
+        private static object GetField(string n) => typeof(RM_LeaningScrubSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+        private static void SetField(string n, object v) => typeof(RM_LeaningScrubSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.SetValue(null, v);
+
+        private static IDisposable Dependent(Listing_Standard list, params string[] keys) =>
+            RimMandrake.Shared.SettingsKitMastersDrawer.Dependent(list, Masters, GetField, SetField, keys);
+
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
         // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
         private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
@@ -310,360 +345,408 @@ namespace RimMandrake.LeaningScrub
                     "Turns off this mod's own settings-driven behaviour. The leaning "
                     + "scrub biome, its plants and its animals keep loading and playing "
                     + "exactly as before either way.");
-                list.CheckboxLabeled("Venomvine thickets block large creatures here", ref venomvinePassabilityEnabled,
-                    "The shrubland's venomvine thickets normally wall out anything above "
-                    + "the huge body-size band. Off restores plain pathfinding through "
-                    + "every stand on this biome specifically — it does not touch the "
-                    + "Environmental Hazards kit's own global switch for the same plant "
-                    + "elsewhere.");
+                using (Dependent(list, "venomvinePassabilityEnabled"))
+                {
+                    list.CheckboxLabeled("Venomvine thickets block large creatures here", ref venomvinePassabilityEnabled,
+                        "The shrubland's venomvine thickets normally wall out anything above "
+                        + "the huge body-size band. Off restores plain pathfinding through "
+                        + "every stand on this biome specifically — it does not touch the "
+                        + "Environmental Hazards kit's own global switch for the same plant "
+                        + "elsewhere.");
+                }
                 list.GapLine();
             }
 
             if (Group(list, "The Stall and the Gale", RimMandrake.Shared.SettingScope.Now, new[] { "stallFreezeEnabled", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "stallFreezeMaxBodySize", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays" }))
             {
-                list.Label("The Stall and the Gale (the wind calendar). The two weathers always run; "
-                    + "these switch off what they do beyond wind, sound and sky.");
-                list.CheckboxLabeled("Stall: small wild animals hold still", ref stallFreezeEnabled,
-                    "While the Stall holds, wild animals no bigger than the size below stop wandering "
-                    + "and wait where they are. Fleeing, feeding and hunting are unaffected.");
-                list.Label("Largest body size that freezes: " + stallFreezeMaxBodySize.ToString("0.00"));
-                stallFreezeMaxBodySize = list.Slider(stallFreezeMaxBodySize, 0.1f, 2f);
-                list.CheckboxLabeled("Gale: hearing and speech penalty outdoors", ref galeDeafenEnabled,
-                    "Pawns standing unroofed in the Gale lose hearing and talking capacity; it fades "
-                    + "within about an hour indoors or after the Gale passes.");
-                list.CheckboxLabeled("Gale: wind turbines surge and can break down", ref galeTurbineSurgeEnabled,
-                    "Wind turbines produce more than their rating while the Gale blows, and each running "
-                    + "turbine risks a breakdown.");
-                list.Label("Turbine surge output: x" + galeTurbineSurgeFactor.ToString("0.00"));
-                galeTurbineSurgeFactor = list.Slider(galeTurbineSurgeFactor, 1f, 2f);
-                list.Label("Turbine breakdown, mean days between (0 = never): " + galeTurbineBreakdownMtbDays.ToString("0.0"));
-                galeTurbineBreakdownMtbDays = list.Slider(galeTurbineBreakdownMtbDays, 0f, 20f);
-                list.GapLine();
+                using (Dependent(list, "stallFreezeEnabled", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "stallFreezeMaxBodySize", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays"))
+                {
+                    list.Label("The Stall and the Gale (the wind calendar). The two weathers always run; "
+                        + "these switch off what they do beyond wind, sound and sky.");
+                    list.CheckboxLabeled("Stall: small wild animals hold still", ref stallFreezeEnabled,
+                        "While the Stall holds, wild animals no bigger than the size below stop wandering "
+                        + "and wait where they are. Fleeing, feeding and hunting are unaffected.");
+                    list.Label("Largest body size that freezes: " + stallFreezeMaxBodySize.ToString("0.00"));
+                    stallFreezeMaxBodySize = list.Slider(stallFreezeMaxBodySize, 0.1f, 2f);
+                    list.CheckboxLabeled("Gale: hearing and speech penalty outdoors", ref galeDeafenEnabled,
+                        "Pawns standing unroofed in the Gale lose hearing and talking capacity; it fades "
+                        + "within about an hour indoors or after the Gale passes.");
+                    list.CheckboxLabeled("Gale: wind turbines surge and can break down", ref galeTurbineSurgeEnabled,
+                        "Wind turbines produce more than their rating while the Gale blows, and each running "
+                        + "turbine risks a breakdown.");
+                    list.Label("Turbine surge output: x" + galeTurbineSurgeFactor.ToString("0.00"));
+                    galeTurbineSurgeFactor = list.Slider(galeTurbineSurgeFactor, 1f, 2f);
+                    list.Label("Turbine breakdown, mean days between (0 = never): " + galeTurbineBreakdownMtbDays.ToString("0.0"));
+                    galeTurbineBreakdownMtbDays = list.Slider(galeTurbineBreakdownMtbDays, 0f, 20f);
+                    list.GapLine();
+                }
             }
 
             if (Group(list, "Gale raid weighting", RimMandrake.Shared.SettingScope.NextPulse, new[] { "galeRaidWeightingEnabled", "galeRaidWeightFactor" }))
             {
-                list.CheckboxLabeled("Gale: raids ride the wind", ref galeRaidWeightingEnabled,
-                    "While the Gale blows, a threat that fires is more likely to be a raid than any "
-                    + "other threat. It does not add threats.");
-                list.Label("Raid weight during the Gale: x" + galeRaidWeightFactor.ToString("0.0"));
-                galeRaidWeightFactor = list.Slider(galeRaidWeightFactor, 1f, 5f);
-                list.GapLine();
+                using (Dependent(list, "galeRaidWeightingEnabled", "galeRaidWeightFactor"))
+                {
+                    list.CheckboxLabeled("Gale: raids ride the wind", ref galeRaidWeightingEnabled,
+                        "While the Gale blows, a threat that fires is more likely to be a raid than any "
+                        + "other threat. It does not add threats.");
+                    list.Label("Raid weight during the Gale: x" + galeRaidWeightFactor.ToString("0.0"));
+                    galeRaidWeightFactor = list.Slider(galeRaidWeightFactor, 1f, 5f);
+                    list.GapLine();
+                }
             }
 
             if (Group(list, "Twitcher venomvine", RimMandrake.Shared.SettingScope.Now, new[] { "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor" }))
             {
-                list.CheckboxLabeled("Twitcher venomvine lashes", ref twitcherLashEnabled,
-                    "A twitcher venomvine strikes once at anything that comes within a cell of it, "
-                    + "then droops spent for about an hour. Off: it is an ordinary venomvine stand.");
-                list.Label("Lash damage: x" + twitcherLashDamageFactor.ToString("0.00"));
-                twitcherLashDamageFactor = list.Slider(twitcherLashDamageFactor, 0.25f, 3f);
-                list.Label("Lash recovery time: x" + twitcherLashRecoveryFactor.ToString("0.00"));
-                twitcherLashRecoveryFactor = list.Slider(twitcherLashRecoveryFactor, 0.25f, 4f);
-                list.GapLine();
+                using (Dependent(list, "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor"))
+                {
+                    list.CheckboxLabeled("Twitcher venomvine lashes", ref twitcherLashEnabled,
+                        "A twitcher venomvine strikes once at anything that comes within a cell of it, "
+                        + "then droops spent for about an hour. Off: it is an ordinary venomvine stand.");
+                    list.Label("Lash damage: x" + twitcherLashDamageFactor.ToString("0.00"));
+                    twitcherLashDamageFactor = list.Slider(twitcherLashDamageFactor, 0.25f, 3f);
+                    list.Label("Lash recovery time: x" + twitcherLashRecoveryFactor.ToString("0.00"));
+                    twitcherLashRecoveryFactor = list.Slider(twitcherLashRecoveryFactor, 0.25f, 4f);
+                    list.GapLine();
+                }
             }
 
             if (Group(list, "Smother-craft", RimMandrake.Shared.SettingScope.Now, new[] { "smotherCraftEnabled", "smotherDays", "smotherYieldFactor" }))
             {
-                list.CheckboxLabeled("Smother-craft", ref smotherCraftEnabled,
-                    "Right-click a venomvine stand to throw a smother-blanket over it; after the claim "
-                    + "time the stand dies back to dead venomvine, a fuel that burns wherever wood does. "
-                    + "Off: no new claims, and claims already laid wait until it is back on.");
-                list.Label("Claim time: " + smotherDays.ToString("0") + " days");
-                smotherDays = list.Slider(smotherDays, 1f, 120f);
-                list.Label("Dead venomvine yield: x" + smotherYieldFactor.ToString("0.00"));
-                smotherYieldFactor = list.Slider(smotherYieldFactor, 0.25f, 3f);
-                list.GapLine();
+                using (Dependent(list, "smotherCraftEnabled", "smotherDays", "smotherYieldFactor"))
+                {
+                    list.CheckboxLabeled("Smother-craft", ref smotherCraftEnabled,
+                        "Right-click a venomvine stand to throw a smother-blanket over it; after the claim "
+                        + "time the stand dies back to dead venomvine, a fuel that burns wherever wood does. "
+                        + "Off: no new claims, and claims already laid wait until it is back on.");
+                    list.Label("Claim time: " + smotherDays.ToString("0") + " days");
+                    smotherDays = list.Slider(smotherDays, 1f, 120f);
+                    list.Label("Dead venomvine yield: x" + smotherYieldFactor.ToString("0.00"));
+                    smotherYieldFactor = list.Slider(smotherYieldFactor, 0.25f, 3f);
+                    list.GapLine();
+                }
             }
 
             if (Group(list, "The Lean (wind heading)", RimMandrake.Shared.SettingScope.Now, new[] { "leanEnabled", "leanScentEnabled", "leanFireEnabled", "leanScentRange", "leanFireBias" }))
             {
-                list.CheckboxLabeled("The Lean: one locked wind heading per map", ref leanEnabled,
-                    "Each map of a biome that leans (the Leaning Scrub) keeps one wind heading for "
-                    + "its whole life. Off: the two effects below never apply.");
-                list.CheckboxLabeled("Lean: wild prey smell people upwind of them", ref leanScentEnabled,
-                    "A wild non-predator bolts from a person standing upwind of it within the range "
-                    + "below. Approach from downwind and it never knows you are there.");
-                list.Label("Scent range: " + leanScentRange.ToString("0") + " cells");
-                leanScentRange = list.Slider(leanScentRange, 4f, 30f);
-                list.CheckboxLabeled("Lean: fire races downwind", ref leanFireEnabled,
-                    "Part of every fire spread picks only downwind cells, so fire runs with the wind "
-                    + "and creeps against it.");
-                list.Label("Downwind fire bias: " + (leanFireBias * 100f).ToString("0") + "%");
-                leanFireBias = list.Slider(leanFireBias, 0f, 1f);
-                list.GapLine();
+                using (Dependent(list, "leanEnabled", "leanScentEnabled", "leanFireEnabled", "leanScentRange", "leanFireBias"))
+                {
+                    list.CheckboxLabeled("The Lean: one locked wind heading per map", ref leanEnabled,
+                        "Each map of a biome that leans (the Leaning Scrub) keeps one wind heading for "
+                        + "its whole life. Off: the two effects below never apply.");
+                    list.CheckboxLabeled("Lean: wild prey smell people upwind of them", ref leanScentEnabled,
+                        "A wild non-predator bolts from a person standing upwind of it within the range "
+                        + "below. Approach from downwind and it never knows you are there.");
+                    list.Label("Scent range: " + leanScentRange.ToString("0") + " cells");
+                    leanScentRange = list.Slider(leanScentRange, 4f, 30f);
+                    list.CheckboxLabeled("Lean: fire races downwind", ref leanFireEnabled,
+                        "Part of every fire spread picks only downwind cells, so fire runs with the wind "
+                        + "and creeps against it.");
+                    list.Label("Downwind fire bias: " + (leanFireBias * 100f).ToString("0") + "%");
+                    leanFireBias = list.Slider(leanFireBias, 0f, 1f);
+                    list.GapLine();
+                }
             }
 
             if (Group(list, "Venomvine rooms and the runway bloom", RimMandrake.Shared.SettingScope.Now, new[] { "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled" }))
             {
-                list.Label("Venomvine rooms, the runway bloom and the named sweetline trees.");
-                list.CheckboxLabeled("Dripping venomvine regrows its venom", ref drippingRegrowEnabled,
-                    "Harvesting a dripping stand's amber venom leaves the stand standing; it beads "
-                    + "again as it regrows. Off: the harvest kills the stand, like any other plant.");
-                list.CheckboxLabeled("Crown venomvine draws dustflutters in the Stall", ref crownMobEnabled,
-                    "While the Stall holds, wild dustflutters nearby fly to a crown stand and settle "
-                    + "around it in a cloud. When the wind returns they drift off.");
-                list.CheckboxLabeled("The runway bloom", ref runwayBloomEnabled,
-                    "Something big moving through the canopy sets off its small life in waves: "
-                    + "crustweevils scatter, fuzzrunners bolt, dustflutters burst up and land again "
-                    + "far off, visslers drop a twitching arm and run.");
-                list.GapLine();
+                using (Dependent(list, "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled"))
+                {
+                    list.Label("Venomvine rooms, the runway bloom and the named sweetline trees.");
+                    list.CheckboxLabeled("Dripping venomvine regrows its venom", ref drippingRegrowEnabled,
+                        "Harvesting a dripping stand's amber venom leaves the stand standing; it beads "
+                        + "again as it regrows. Off: the harvest kills the stand, like any other plant.");
+                    list.CheckboxLabeled("Crown venomvine draws dustflutters in the Stall", ref crownMobEnabled,
+                        "While the Stall holds, wild dustflutters nearby fly to a crown stand and settle "
+                        + "around it in a cloud. When the wind returns they drift off.");
+                    list.CheckboxLabeled("The runway bloom", ref runwayBloomEnabled,
+                        "Something big moving through the canopy sets off its small life in waves: "
+                        + "crustweevils scatter, fuzzrunners bolt, dustflutters burst up and land again "
+                        + "far off, visslers drop a twitching arm and run.");
+                    list.GapLine();
+                }
             }
 
             if (Group(list, "Sweetline trees", RimMandrake.Shared.SettingScope.Now, new[] { "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineGuardiansEnabled", "sweetlineProximityCharge", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "sweetlineScratchingEnabled", "sweetlineVisitIntervalDays", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineCoatReady", "sweetlineFeltShare" }))
             {
-                list.CheckboxLabeled("Named sweetline trees", ref sweetlineStationsEnabled,
-                    "Every sweetline tree carries a name and a short remembered history, and lets go "
-                    + "loose sweetline felt beside its trunk every few days once grown.");
-                list.CheckboxLabeled("Sweetline visitors", ref sweetlineVisitorsEnabled,
-                    "Road-folk now and then camp a night under a grown sweetline tree, and pilgrims "
-                    + "leave small tokens at its trunk. Each visit is remembered in the tree's history. "
-                    + "Needs named sweetline trees on. Home maps only.");
-                if (sweetlineVisitorsEnabled)
+                using (Dependent(list, "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineGuardiansEnabled", "sweetlineProximityCharge", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "sweetlineScratchingEnabled", "sweetlineVisitIntervalDays", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineCoatReady", "sweetlineFeltShare"))
                 {
-                    list.Label("Days between visits (average): " + sweetlineVisitIntervalDays.ToString("F0"));
-                    sweetlineVisitIntervalDays = Mathf.Round(list.Slider(sweetlineVisitIntervalDays, 2f, 30f));
+                    list.CheckboxLabeled("Named sweetline trees", ref sweetlineStationsEnabled,
+                        "Every sweetline tree carries a name and a short remembered history, and lets go "
+                        + "loose sweetline felt beside its trunk every few days once grown.");
+                    list.CheckboxLabeled("Sweetline visitors", ref sweetlineVisitorsEnabled,
+                        "Road-folk now and then camp a night under a grown sweetline tree, and pilgrims "
+                        + "leave small tokens at its trunk. Each visit is remembered in the tree's history. "
+                        + "Needs named sweetline trees on. Home maps only.");
+                    if (sweetlineVisitorsEnabled)
+                    {
+                        list.Label("Days between visits (average): " + sweetlineVisitIntervalDays.ToString("F0"));
+                        sweetlineVisitIntervalDays = Mathf.Round(list.Slider(sweetlineVisitIntervalDays, 2f, 30f));
+                    }
+                    list.CheckboxLabeled("Bark-wardens guard sweetline trees", ref sweetlineGuardiansEnabled,
+                        "Two or three bark-wardens roost asleep on every newly spawned sweetline tree. Working the tree "
+                        + "(harvest or cut) or wounding it disturbs them: they stir, turn restless, then drop on whoever "
+                        + "did it. Walking past only makes them watch. Off: no new wardens spawn and existing ones wake "
+                        + "as ordinary wild animals (none are removed). Affects newly spawned sweetline trees; not worldgen. "
+                        + "Needs named sweetline trees on.");
+                    if (sweetlineGuardiansEnabled)
+                    {
+                        list.Label("Most bark-wardens per tree: " + sweetlineGuardianMaxPerTree + " (each tree rolls 2-3)");
+                        sweetlineGuardianMaxPerTree = Mathf.RoundToInt(list.Slider(sweetlineGuardianMaxPerTree, 0f, 4f));
+                        list.Label("How fast harvesting disturbs them: x" + sweetlineHarvestDisturbance.ToString("0.0")
+                            + (sweetlineHarvestDisturbance <= 0f ? " (harvest is never harm)" : ""));
+                        sweetlineHarvestDisturbance = list.Slider(sweetlineHarvestDisturbance, 0f, 3f);
+                        list.Label("Days for a disturbed tree to calm: " + sweetlineForgivenessDays.ToString("0"));
+                        sweetlineForgivenessDays = Mathf.Round(list.Slider(sweetlineForgivenessDays, 1f, 30f));
+                        list.CheckboxLabeled("Bark-wardens also rouse at anyone who lingers under the tree", ref sweetlineProximityCharge,
+                            "Off (default, the owner's ruling): walking up only makes them watch. On: a person within 9 cells "
+                            + "slowly disturbs them too (about five hours of loitering fills the bar), with the same warnings.");
+                    }
+                    list.CheckboxLabeled("Sweetline felt furniture is more comfortable", ref sweetlineFeltComfortEnabled,
+                        "Chairs, beds and other furniture made of sweetline felt get +0.10 comfort.");
+                    list.CheckboxLabeled("Sweetline felt clothing lifts the mood", ref sweetlineFeltApparelEnabled,
+                        "Anyone wearing at least one piece made of sweetline felt is a little happier (+2), however many "
+                        + "pieces they wear.");
+                    list.CheckboxLabeled("Animals scratch their coats off on sweetline trees", ref sweetlineScratchingEnabled,
+                        "Any animal with a shearable coat (wild or tame, any wool) now and then walks to a calm sweetline tree "
+                        + "within 60 cells and rubs its coat off: most of it drops beside the trunk, the rest felts into the "
+                        + "bark and comes out with the next harvest. Wild animals grow their coats while this is on and a "
+                        + "sweetline tree stands anywhere. Penned animals only reach a tree inside their pen. "
+                        + "Needs named sweetline trees on. Off: no rubbing, and wild coats stop growing.");
+                    if (sweetlineScratchingEnabled)
+                    {
+                        list.Label("Coat fullness before an animal goes to scratch: " + sweetlineCoatReady.ToStringPercent());
+                        sweetlineCoatReady = Mathf.Round(list.Slider(sweetlineCoatReady, 0.5f, 1f) * 20f) / 20f;
+                        list.Label("Share of a rubbed coat that felts into the bark: " + sweetlineFeltShare.ToStringPercent()
+                            + (sweetlineFeltShare <= 0f ? " (rubs give only ground wool)" : ""));
+                        sweetlineFeltShare = Mathf.Round(list.Slider(sweetlineFeltShare, 0f, 0.5f) * 20f) / 20f;
+                    }
+                    list.GapLine();
                 }
-                list.CheckboxLabeled("Bark-wardens guard sweetline trees", ref sweetlineGuardiansEnabled,
-                    "Two or three bark-wardens roost asleep on every newly spawned sweetline tree. Working the tree "
-                    + "(harvest or cut) or wounding it disturbs them: they stir, turn restless, then drop on whoever "
-                    + "did it. Walking past only makes them watch. Off: no new wardens spawn and existing ones wake "
-                    + "as ordinary wild animals (none are removed). Affects newly spawned sweetline trees; not worldgen. "
-                    + "Needs named sweetline trees on.");
-                if (sweetlineGuardiansEnabled)
-                {
-                    list.Label("Most bark-wardens per tree: " + sweetlineGuardianMaxPerTree + " (each tree rolls 2-3)");
-                    sweetlineGuardianMaxPerTree = Mathf.RoundToInt(list.Slider(sweetlineGuardianMaxPerTree, 0f, 4f));
-                    list.Label("How fast harvesting disturbs them: x" + sweetlineHarvestDisturbance.ToString("0.0")
-                        + (sweetlineHarvestDisturbance <= 0f ? " (harvest is never harm)" : ""));
-                    sweetlineHarvestDisturbance = list.Slider(sweetlineHarvestDisturbance, 0f, 3f);
-                    list.Label("Days for a disturbed tree to calm: " + sweetlineForgivenessDays.ToString("0"));
-                    sweetlineForgivenessDays = Mathf.Round(list.Slider(sweetlineForgivenessDays, 1f, 30f));
-                    list.CheckboxLabeled("Bark-wardens also rouse at anyone who lingers under the tree", ref sweetlineProximityCharge,
-                        "Off (default, the owner's ruling): walking up only makes them watch. On: a person within 9 cells "
-                        + "slowly disturbs them too (about five hours of loitering fills the bar), with the same warnings.");
-                }
-                list.CheckboxLabeled("Sweetline felt furniture is more comfortable", ref sweetlineFeltComfortEnabled,
-                    "Chairs, beds and other furniture made of sweetline felt get +0.10 comfort.");
-                list.CheckboxLabeled("Sweetline felt clothing lifts the mood", ref sweetlineFeltApparelEnabled,
-                    "Anyone wearing at least one piece made of sweetline felt is a little happier (+2), however many "
-                    + "pieces they wear.");
-                list.CheckboxLabeled("Animals scratch their coats off on sweetline trees", ref sweetlineScratchingEnabled,
-                    "Any animal with a shearable coat (wild or tame, any wool) now and then walks to a calm sweetline tree "
-                    + "within 60 cells and rubs its coat off: most of it drops beside the trunk, the rest felts into the "
-                    + "bark and comes out with the next harvest. Wild animals grow their coats while this is on and a "
-                    + "sweetline tree stands anywhere. Penned animals only reach a tree inside their pen. "
-                    + "Needs named sweetline trees on. Off: no rubbing, and wild coats stop growing.");
-                if (sweetlineScratchingEnabled)
-                {
-                    list.Label("Coat fullness before an animal goes to scratch: " + sweetlineCoatReady.ToStringPercent());
-                    sweetlineCoatReady = Mathf.Round(list.Slider(sweetlineCoatReady, 0.5f, 1f) * 20f) / 20f;
-                    list.Label("Share of a rubbed coat that felts into the bark: " + sweetlineFeltShare.ToStringPercent()
-                        + (sweetlineFeltShare <= 0f ? " (rubs give only ground wool)" : ""));
-                    sweetlineFeltShare = Mathf.Round(list.Slider(sweetlineFeltShare, 0f, 0.5f) * 20f) / 20f;
-                }
-                list.GapLine();
             }
 
             if (Group(list, "Sweetline trees on new maps", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "sweetlineTreeMapChance" }))
             {
-                list.Label("Chance a new Leaning Scrub map has sweetline trees: " + sweetlineTreeMapChance.ToStringPercent()
-                    + (sweetlineTreeMapChance <= 0f ? " (none)" : ""), -1f, (TipSignal?)(
-                    "One tree, or two at 30%, at least 40 cells apart. Affects newly generated maps only; not worldgen. "
-                    + "Needs named sweetline trees on."));
-                sweetlineTreeMapChance = Mathf.Round(list.Slider(sweetlineTreeMapChance, 0f, 1f) * 20f) / 20f;
-                list.GapLine();
+                using (Dependent(list, "sweetlineTreeMapChance"))
+                {
+                    list.Label("Chance a new Leaning Scrub map has sweetline trees: " + sweetlineTreeMapChance.ToStringPercent()
+                        + (sweetlineTreeMapChance <= 0f ? " (none)" : ""), -1f, (TipSignal?)(
+                        "One tree, or two at 30%, at least 40 cells apart. Affects newly generated maps only; not worldgen. "
+                        + "Needs named sweetline trees on."));
+                    sweetlineTreeMapChance = Mathf.Round(list.Slider(sweetlineTreeMapChance, 0f, 1f) * 20f) / 20f;
+                    list.GapLine();
+                }
             }
 
             if (Group(list, "Vissler arms and fire-stamping giants", RimMandrake.Shared.SettingScope.Now, new[] { "visslerArmFoodEnabled", "fireStampEnabled" }))
             {
-                list.CheckboxLabeled("Vissler arms are carrion", ref visslerArmFoodEnabled,
-                    "A shed vissler arm is meat: hungry wild predators, scavengers and omnivores come "
-                    + "to it and eat it, and it rots in about six days. Off: arms are inedible trade goods "
-                    + "that never rot (the arm's rot timer is a def field; off stops the eating only).");
-                list.CheckboxLabeled("Giants stamp out open fires", ref fireStampEnabled,
-                    "A blaze of five or more open fires close together (not under a roof or indoors; stoves "
-                    + "and campfires never count) draws every wild giant that hates fire on the map to stamp "
-                    + "it out, crushing whatever was burning. Off: the herds ignore fire.");
-                list.GapLine();
+                using (Dependent(list, "visslerArmFoodEnabled", "fireStampEnabled"))
+                {
+                    list.CheckboxLabeled("Vissler arms are carrion", ref visslerArmFoodEnabled,
+                        "A shed vissler arm is meat: hungry wild predators, scavengers and omnivores come "
+                        + "to it and eat it, and it rots in about six days. Off: arms are inedible trade goods "
+                        + "that never rot (the arm's rot timer is a def field; off stops the eating only).");
+                    list.CheckboxLabeled("Giants stamp out open fires", ref fireStampEnabled,
+                        "A blaze of five or more open fires close together (not under a roof or indoors; stoves "
+                        + "and campfires never count) draws every wild giant that hates fire on the map to stamp "
+                        + "it out, crushing whatever was burning. Off: the herds ignore fire.");
+                    list.GapLine();
+                }
             }
 
             if (Group(list, "The ripple and the calling-pyre", RimMandrake.Shared.SettingScope.Now, new[] { "rippleEnabled", "rippleMaxBodySize", "leanWakesEnabled", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor" }))
             {
-                list.CheckboxLabeled("Small creatures hide under the fuzz", ref rippleEnabled,
-                    "A small wild animal standing in the fuzz cannot be shot, hunted or seen by predators; you see it "
-                    + "as a faint shimmer. The Gale doubles the size that can hide; in the Stall anything that moves "
-                    + "is seen. Off: nothing hides.");
-                if (rippleEnabled)
+                using (Dependent(list, "rippleEnabled", "rippleMaxBodySize", "leanWakesEnabled", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor"))
                 {
-                    list.Label("Largest body size that hides: " + rippleMaxBodySize.ToString("0.00") + " (PROVISIONAL; a hare is about 0.2, a person 1.0)");
-                    rippleMaxBodySize = Mathf.Round(list.Slider(rippleMaxBodySize, 0.1f, 1.5f) * 20f) / 20f;
+                    list.CheckboxLabeled("Small creatures hide under the fuzz", ref rippleEnabled,
+                        "A small wild animal standing in the fuzz cannot be shot, hunted or seen by predators; you see it "
+                        + "as a faint shimmer. The Gale doubles the size that can hide; in the Stall anything that moves "
+                        + "is seen. Off: nothing hides.");
+                    if (rippleEnabled)
+                    {
+                        list.Label("Largest body size that hides: " + rippleMaxBodySize.ToString("0.00") + " (PROVISIONAL; a hare is about 0.2, a person 1.0)");
+                        rippleMaxBodySize = Mathf.Round(list.Slider(rippleMaxBodySize, 0.1f, 1.5f) * 20f) / 20f;
+                    }
+                    list.CheckboxLabeled("Walls cast a calm wake", ref leanWakesEnabled,
+                        "On a leaning map, the few cells downwind of a wall are out of the wind: there, as in the Stall, "
+                        + "a small creature that moves is seen. Needs the Lean on.");
+                    list.CheckboxLabeled("Stall hunters hunt while the wind is dead", ref stallHuntEnabled,
+                        "While the Stall holds, a wild zellik goes after the nearest small creature it can see, hungry "
+                        + "or not. In wind its prey hides under the fuzz. Off: it hunts only when hungry, like any predator.");
+                    list.CheckboxLabeled("The calling-pyre ritual can be held", ref callingPyreEnabled,
+                        "Belief systems with a fire or ritual meme can hold the calling-pyre: the colony's own fields are "
+                        + "set alight and the fire-stamping giants come down on everyone. Off: the ritual cannot be started.");
+                    if (callingPyreEnabled)
+                    {
+                        list.Label("How far from the ritual spot the fields are lit: " + callingPyreRadius.ToString("0") + " cells");
+                        callingPyreRadius = Mathf.Round(list.Slider(callingPyreRadius, 4f, 30f));
+                        list.Label("Size of the herd it calls: " + callingPyreHerdFactor.ToString("0.0") + "x (PROVISIONAL)");
+                        callingPyreHerdFactor = Mathf.Round(list.Slider(callingPyreHerdFactor, 0f, 3f) * 10f) / 10f;
+                    }
+                    list.GapLine();
                 }
-                list.CheckboxLabeled("Walls cast a calm wake", ref leanWakesEnabled,
-                    "On a leaning map, the few cells downwind of a wall are out of the wind: there, as in the Stall, "
-                    + "a small creature that moves is seen. Needs the Lean on.");
-                list.CheckboxLabeled("Stall hunters hunt while the wind is dead", ref stallHuntEnabled,
-                    "While the Stall holds, a wild zellik goes after the nearest small creature it can see, hungry "
-                    + "or not. In wind its prey hides under the fuzz. Off: it hunts only when hungry, like any predator.");
-                list.CheckboxLabeled("The calling-pyre ritual can be held", ref callingPyreEnabled,
-                    "Belief systems with a fire or ritual meme can hold the calling-pyre: the colony's own fields are "
-                    + "set alight and the fire-stamping giants come down on everyone. Off: the ritual cannot be started.");
-                if (callingPyreEnabled)
-                {
-                    list.Label("How far from the ritual spot the fields are lit: " + callingPyreRadius.ToString("0") + " cells");
-                    callingPyreRadius = Mathf.Round(list.Slider(callingPyreRadius, 4f, 30f));
-                    list.Label("Size of the herd it calls: " + callingPyreHerdFactor.ToString("0.0") + "x (PROVISIONAL)");
-                    callingPyreHerdFactor = Mathf.Round(list.Slider(callingPyreHerdFactor, 0f, 3f) * 10f) / 10f;
-                }
-                list.GapLine();
             }
 
             if (Group(list, "Ruins and living camps", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled" }))
             {
-                list.CheckboxLabeled("New Leaning Scrub maps have ruins", ref scrubInjectionsEnabled,
-                    "Dead farmsteads (one always holds the vaporator plans while you have not learned it), smother-claimed "
-                    + "venomvine fields and hedge-walled homesteads. Affects newly generated maps only; not worldgen.");
-                if (scrubInjectionsEnabled)
+                using (Dependent(list, "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled"))
                 {
-                    list.Label("Ruins per map: " + scrubRuinsPerMap);
-                    scrubRuinsPerMap = Mathf.RoundToInt(list.Slider(scrubRuinsPerMap, 1f, 8f));
+                    list.CheckboxLabeled("New Leaning Scrub maps have ruins", ref scrubInjectionsEnabled,
+                        "Dead farmsteads (one always holds the vaporator plans while you have not learned it), smother-claimed "
+                        + "venomvine fields and hedge-walled homesteads. Affects newly generated maps only; not worldgen.");
+                    if (scrubInjectionsEnabled)
+                    {
+                        list.Label("Ruins per map: " + scrubRuinsPerMap);
+                        scrubRuinsPerMap = Mathf.RoundToInt(list.Slider(scrubRuinsPerMap, 1f, 8f));
+                    }
+                    list.CheckboxLabeled("New Leaning Scrub maps have living camps", ref scrubCampsEnabled,
+                        "A camp of comb-row vaporator farmers and one of a scavenger clan, when those peoples exist in your "
+                        + "world and are not at war with you. They hold their camp and turn on you only if you make them "
+                        + "enemies. Affects newly generated maps only.");
+                    list.GapLine();
                 }
-                list.CheckboxLabeled("New Leaning Scrub maps have living camps", ref scrubCampsEnabled,
-                    "A camp of comb-row vaporator farmers and one of a scavenger clan, when those peoples exist in your "
-                    + "world and are not at war with you. They hold their camp and turn on you only if you make them "
-                    + "enemies. Affects newly generated maps only.");
-                list.GapLine();
             }
 
             if (Group(list, "Venomvine forms", RimMandrake.Shared.SettingScope.Now, new[] { "rearingEnabled", "hoardEnabled", "hoardKeepsDeadGear", "quenchEnabled", "swornSparesMarkedEnabled", "stranglerEnabled", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "rearingHours", "hoardGrowInHours", "quenchRecoveryDays", "stranglerDamageFactor" }))
             {
-                list.Label("The six further venomvine forms. Each off: that form is a plain venomvine stand.");
-                list.CheckboxLabeled("Rearing venomvine rears and tells", ref rearingEnabled,
-                    "Anything big enough to push into a rearing stand makes it stand upright for a while. "
-                    + "You get a message when someone not of your colony does it (never during the Gale, "
-                    + "which hides it), and nobody inside a reared stand can stay invisible. The Stall "
-                    + "doubles how long it stays up.");
-                if (rearingEnabled)
+                using (Dependent(list, "rearingEnabled", "hoardEnabled", "hoardKeepsDeadGear", "quenchEnabled", "swornSparesMarkedEnabled", "stranglerEnabled", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "rearingHours", "hoardGrowInHours", "quenchRecoveryDays", "stranglerDamageFactor"))
                 {
-                    list.Label("Hours a stand stays reared: " + rearingHours.ToString("0.0"));
-                    rearingHours = Mathf.Round(list.Slider(rearingHours, 0.5f, 8f) * 2f) / 2f;
+                    list.Label("The six further venomvine forms. Each off: that form is a plain venomvine stand.");
+                    list.CheckboxLabeled("Rearing venomvine rears and tells", ref rearingEnabled,
+                        "Anything big enough to push into a rearing stand makes it stand upright for a while. "
+                        + "You get a message when someone not of your colony does it (never during the Gale, "
+                        + "which hides it), and nobody inside a reared stand can stay invisible. The Stall "
+                        + "doubles how long it stays up.");
+                    if (rearingEnabled)
+                    {
+                        list.Label("Hours a stand stays reared: " + rearingHours.ToString("0.0"));
+                        rearingHours = Mathf.Round(list.Slider(rearingHours, 0.5f, 8f) * 2f) / 2f;
+                    }
+                    list.CheckboxLabeled("Hoard venomvine keeps what it catches", ref hoardEnabled,
+                        "Loose things lying in or right beside a hoard stand are grown into it after a while and "
+                        + "listed when you select it. Cutting, smothering or killing the stand drops everything "
+                        + "on the spot. Off: it takes nothing new; what it holds stays until it falls.");
+                    if (hoardEnabled)
+                    {
+                        list.Label("Hours before a thing is grown in: " + hoardGrowInHours.ToString("0.0"));
+                        hoardGrowInHours = Mathf.Round(list.Slider(hoardGrowInHours, 0.5f, 24f) * 2f) / 2f;
+                        list.CheckboxLabeled("It also keeps the gear of whatever dies inside it", ref hoardKeepsDeadGear,
+                            "The clothes and weapons of a body lying in the stand are taken into it too; the body stays.");
+                    }
+                    list.CheckboxLabeled("Quench venomvine puts fire out", ref quenchEnabled,
+                        "When fire comes within reach of a quench stand it bursts and covers the area around it "
+                        + "in fire-smothering foam, then stays spent for a few days.");
+                    if (quenchEnabled)
+                    {
+                        list.Label("Days a burst stand stays spent: " + quenchRecoveryDays.ToString("0.0"));
+                        quenchRecoveryDays = Mathf.Round(list.Slider(quenchRecoveryDays, 0.5f, 15f) * 2f) / 2f;
+                    }
+                    list.CheckboxLabeled("Sworn venomvine spares the sap-marked", ref swornSparesMarkedEnabled,
+                        "A sworn stand's thorns let through anyone carrying its sap-mark, whoever they are, and "
+                        + "scratch everyone else. Off: it scratches everyone like any venomvine. Sowing it needs "
+                        + "the sworn hedgecraft research either way.");
+                    list.CheckboxLabeled("Strangler venomvine wraps walls and trees", ref stranglerEnabled,
+                        "A strangler stand wraps the wall or tree beside it and squeezes it a little each half-minute, harder as the wrap tightens. "
+                        + "Cutting the stand back stops it.");
+                    if (stranglerEnabled)
+                    {
+                        list.Label("Squeeze strength: " + stranglerDamageFactor.ToString("0.0") + "x");
+                        stranglerDamageFactor = Mathf.Round(list.Slider(stranglerDamageFactor, 0.1f, 4f) * 10f) / 10f;
+                        list.CheckboxLabeled("  Mark a strangler round your buildings to be cut", ref stranglerAutoTrim,
+                            "On: a strangler wrapped round something of yours is designated for cutting, so colonists trim it.");
+                    }
+                    list.CheckboxLabeled("Weeper venomvine leaves venom pools", ref weeperEnabled,
+                        "A weeper stand sheds a pool of venom now and then on the ground around it.");
+                    if (weeperEnabled)
+                    {
+                        list.CheckboxLabeled("  The pools poison the soil (affects the map)", ref weeperPollutes,
+                            "AFFECTS THE MAP. On: each pool also pollutes the ground under it (Biotech pollution: stunts growth, kills plants), up to a dozen cells per stand. Off: the pool is only filth.");
+                    }
+                    list.CheckboxLabeled("Sleeper venomvine looks dead until disturbed", ref sleeperEnabled,
+                        "A sleeper stand looks like dead venomvine and is harmless to walk past, until a grown body steps next to it: it wakes, lashes whoever is beside it, and becomes a live venomvine stand. Off: it stays a dead-looking vine forever.");
+                    list.CheckboxLabeled("Lure venomvine draws animals", ref lureEnabled,
+                        "A lure stand hangs sweet fruit low in itself. Wild animals come for it and walk into the thicket.");
+                    list.GapLine();
                 }
-                list.CheckboxLabeled("Hoard venomvine keeps what it catches", ref hoardEnabled,
-                    "Loose things lying in or right beside a hoard stand are grown into it after a while and "
-                    + "listed when you select it. Cutting, smothering or killing the stand drops everything "
-                    + "on the spot. Off: it takes nothing new; what it holds stays until it falls.");
-                if (hoardEnabled)
-                {
-                    list.Label("Hours before a thing is grown in: " + hoardGrowInHours.ToString("0.0"));
-                    hoardGrowInHours = Mathf.Round(list.Slider(hoardGrowInHours, 0.5f, 24f) * 2f) / 2f;
-                    list.CheckboxLabeled("It also keeps the gear of whatever dies inside it", ref hoardKeepsDeadGear,
-                        "The clothes and weapons of a body lying in the stand are taken into it too; the body stays.");
-                }
-                list.CheckboxLabeled("Quench venomvine puts fire out", ref quenchEnabled,
-                    "When fire comes within reach of a quench stand it bursts and covers the area around it "
-                    + "in fire-smothering foam, then stays spent for a few days.");
-                if (quenchEnabled)
-                {
-                    list.Label("Days a burst stand stays spent: " + quenchRecoveryDays.ToString("0.0"));
-                    quenchRecoveryDays = Mathf.Round(list.Slider(quenchRecoveryDays, 0.5f, 15f) * 2f) / 2f;
-                }
-                list.CheckboxLabeled("Sworn venomvine spares the sap-marked", ref swornSparesMarkedEnabled,
-                    "A sworn stand's thorns let through anyone carrying its sap-mark, whoever they are, and "
-                    + "scratch everyone else. Off: it scratches everyone like any venomvine. Sowing it needs "
-                    + "the sworn hedgecraft research either way.");
-                list.CheckboxLabeled("Strangler venomvine wraps walls and trees", ref stranglerEnabled,
-                    "A strangler stand wraps the wall or tree beside it and squeezes it a little each half-minute, harder as the wrap tightens. "
-                    + "Cutting the stand back stops it.");
-                if (stranglerEnabled)
-                {
-                    list.Label("Squeeze strength: " + stranglerDamageFactor.ToString("0.0") + "x");
-                    stranglerDamageFactor = Mathf.Round(list.Slider(stranglerDamageFactor, 0.1f, 4f) * 10f) / 10f;
-                    list.CheckboxLabeled("  Mark a strangler round your buildings to be cut", ref stranglerAutoTrim,
-                        "On: a strangler wrapped round something of yours is designated for cutting, so colonists trim it.");
-                }
-                list.CheckboxLabeled("Weeper venomvine leaves venom pools", ref weeperEnabled,
-                    "A weeper stand sheds a pool of venom now and then on the ground around it.");
-                if (weeperEnabled)
-                {
-                    list.CheckboxLabeled("  The pools poison the soil (affects the map)", ref weeperPollutes,
-                        "AFFECTS THE MAP. On: each pool also pollutes the ground under it (Biotech pollution: stunts growth, kills plants), up to a dozen cells per stand. Off: the pool is only filth.");
-                }
-                list.CheckboxLabeled("Sleeper venomvine looks dead until disturbed", ref sleeperEnabled,
-                    "A sleeper stand looks like dead venomvine and is harmless to walk past, until a grown body steps next to it: it wakes, lashes whoever is beside it, and becomes a live venomvine stand. Off: it stays a dead-looking vine forever.");
-                list.CheckboxLabeled("Lure venomvine draws animals", ref lureEnabled,
-                    "A lure stand hangs sweet fruit low in itself. Wild animals come for it and walk into the thicket.");
-                list.GapLine();
             }
 
             if (Group(list, "Forms that act when the Gale starts", RimMandrake.Shared.SettingScope.NextPulse, new[] { "walkingEnabled", "sheddingEnabled", "walkingMaxCellsPerMap", "sheddingLength" }))
             {
-                list.CheckboxLabeled("Walking venomvine moves with the wind", ref walkingEnabled,
-                    "Each time the Gale starts, a walking stand lays soft young runners one or two cells "
-                    + "downwind and its oldest tail can die back to dead venomvine, so it crawls across the "
-                    + "map. Runners have no thorns until half grown. A smothered stand stops walking. Only on "
-                    + "maps that lean (needs the Lean on).");
-                if (walkingEnabled)
+                using (Dependent(list, "walkingEnabled", "sheddingEnabled", "walkingMaxCellsPerMap", "sheddingLength"))
                 {
-                    list.Label("Most walking-stand cells per map: " + walkingMaxCellsPerMap);
-                    walkingMaxCellsPerMap = Mathf.RoundToInt(list.Slider(walkingMaxCellsPerMap, 10f, 400f));
+                    list.CheckboxLabeled("Walking venomvine moves with the wind", ref walkingEnabled,
+                        "Each time the Gale starts, a walking stand lays soft young runners one or two cells "
+                        + "downwind and its oldest tail can die back to dead venomvine, so it crawls across the "
+                        + "map. Runners have no thorns until half grown. A smothered stand stops walking. Only on "
+                        + "maps that lean (needs the Lean on).");
+                    if (walkingEnabled)
+                    {
+                        list.Label("Most walking-stand cells per map: " + walkingMaxCellsPerMap);
+                        walkingMaxCellsPerMap = Mathf.RoundToInt(list.Slider(walkingMaxCellsPerMap, 10f, 400f));
+                    }
+                    list.CheckboxLabeled("Shedding venomvine throws thorns downwind", ref sheddingEnabled,
+                        "Each time the Gale starts, a shedding stand throws a V of thorn litter downwind. Walking "
+                        + "on it scratches a little. Colonists sweep it like any dirt and it fades in a few days. "
+                        + "Only on maps that lean (needs the Lean on).");
+                    if (sheddingEnabled)
+                    {
+                        list.Label("Length of the thorn V: " + sheddingLength + " cells");
+                        sheddingLength = Mathf.RoundToInt(list.Slider(sheddingLength, 2f, 16f));
+                    }
+                    list.GapLine();
                 }
-                list.CheckboxLabeled("Shedding venomvine throws thorns downwind", ref sheddingEnabled,
-                    "Each time the Gale starts, a shedding stand throws a V of thorn litter downwind. Walking "
-                    + "on it scratches a little. Colonists sweep it like any dirt and it fades in a few days. "
-                    + "Only on maps that lean (needs the Lean on).");
-                if (sheddingEnabled)
-                {
-                    list.Label("Length of the thorn V: " + sheddingLength + " cells");
-                    sheddingLength = Mathf.RoundToInt(list.Slider(sheddingLength, 2f, 16f));
-                }
-                list.GapLine();
             }
 
             if (Group(list, "Venomvine islands", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance" }))
             {
-                list.CheckboxLabeled("New Leaning Scrub maps grow venomvine islands", ref venomvineIslandsEnabled,
-                    "AFFECTS NEW MAPS ONLY (not worldgen). Lays near-black islands of venomvine thicket over a share of the "
-                    + "map's open ground, stretched along the Lean, with corridors between them and your landing site kept "
-                    + "clear. An island that would cut the map in two is not laid. Off: venomvine is scattered single stands.");
-                if (venomvineIslandsEnabled)
+                using (Dependent(list, "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance"))
                 {
-                    list.Label("Share of open ground: " + venomvineIslandShare.ToStringPercent("0"));
-                    venomvineIslandShare = Mathf.Round(list.Slider(venomvineIslandShare, 0.02f, 0.30f) * 100f) / 100f;
-                    list.Label("Islands per map (raised if needed to reach the share): " + venomvineIslandsMin + " to " + venomvineIslandsMax);
-                    venomvineIslandsMin = Mathf.RoundToInt(list.Slider(venomvineIslandsMin, 1f, 40f));
-                    venomvineIslandsMax = Mathf.Max(venomvineIslandsMin, Mathf.RoundToInt(list.Slider(venomvineIslandsMax, 1f, 40f)));
-                    list.Label("Largest island: " + venomvineIslandMaxCells + " cells");
-                    venomvineIslandMaxCells = Mathf.RoundToInt(list.Slider(venomvineIslandMaxCells, 60f, 600f) / 10f) * 10;
-                    list.Label("Clear ground around the landing site: " + venomvineStartClearance.ToString("0") + " cells");
-                    venomvineStartClearance = Mathf.Round(list.Slider(venomvineStartClearance, 10f, 60f));
-                    list.CheckboxLabeled("  Rarer forms grow as rooms inside the islands", ref venomvineIslandRoomsEnabled,
-                        "Each island gets one to three rooms of a rarer form (a dripping harvest room, twitcher gatekeepers, "
-                        + "hollow galleries, a hoard, a lure, and so on), and the biggest island holds the crown at its heart.");
+                    list.CheckboxLabeled("New Leaning Scrub maps grow venomvine islands", ref venomvineIslandsEnabled,
+                        "AFFECTS NEW MAPS ONLY (not worldgen). Lays near-black islands of venomvine thicket over a share of the "
+                        + "map's open ground, stretched along the Lean, with corridors between them and your landing site kept "
+                        + "clear. An island that would cut the map in two is not laid. Off: venomvine is scattered single stands.");
+                    if (venomvineIslandsEnabled)
+                    {
+                        list.Label("Share of open ground: " + venomvineIslandShare.ToStringPercent("0"));
+                        venomvineIslandShare = Mathf.Round(list.Slider(venomvineIslandShare, 0.02f, 0.30f) * 100f) / 100f;
+                        list.Label("Islands per map (raised if needed to reach the share): " + venomvineIslandsMin + " to " + venomvineIslandsMax);
+                        venomvineIslandsMin = Mathf.RoundToInt(list.Slider(venomvineIslandsMin, 1f, 40f));
+                        venomvineIslandsMax = Mathf.Max(venomvineIslandsMin, Mathf.RoundToInt(list.Slider(venomvineIslandsMax, 1f, 40f)));
+                        list.Label("Largest island: " + venomvineIslandMaxCells + " cells");
+                        venomvineIslandMaxCells = Mathf.RoundToInt(list.Slider(venomvineIslandMaxCells, 60f, 600f) / 10f) * 10;
+                        list.Label("Clear ground around the landing site: " + venomvineStartClearance.ToString("0") + " cells");
+                        venomvineStartClearance = Mathf.Round(list.Slider(venomvineStartClearance, 10f, 60f));
+                        list.CheckboxLabeled("  Rarer forms grow as rooms inside the islands", ref venomvineIslandRoomsEnabled,
+                            "Each island gets one to three rooms of a rarer form (a dripping harvest room, twitcher gatekeepers, "
+                            + "hollow galleries, a hoard, a lure, and so on), and the biggest island holds the crown at its heart.");
+                    }
+                    list.GapLine();
                 }
-                list.GapLine();
             }
 
             if (Group(list, "Venomvine creep", RimMandrake.Shared.SettingScope.Now, new[] { "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap" }))
             {
-                list.CheckboxLabeled("Venomvine creeps slowly downwind", ref venomvineCreepEnabled,
-                    "AFFECTS THE MAP. Every few hours a fully grown venomvine stand may put one soft young runner into a free "
-                    + "neighbouring cell of natural ground, mostly downwind. Never onto floors, buildings, zones or under roofs. "
-                    + "Runners carry no venom until half grown. A smothered stand does not spread. Its own clock: Explosive "
-                    + "Growth does not touch venomvine. Selecting a stand shows how much of the map it holds.");
-                if (venomvineCreepEnabled)
+                using (Dependent(list, "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap"))
                 {
-                    list.Label("Days between runners from one stand (average): " + venomvineCreepDays.ToString("0"));
-                    venomvineCreepDays = Mathf.Round(list.Slider(venomvineCreepDays, 2f, 60f));
-                    list.Label("Runners that go downwind: " + venomvineCreepDownwindShare.ToStringPercent("0"));
-                    venomvineCreepDownwindShare = Mathf.Round(list.Slider(venomvineCreepDownwindShare, 0f, 1f) * 20f) / 20f;
-                    list.Label("Map cap (creep stops at this share of open ground): " + venomvineCreepCap.ToStringPercent("0"));
-                    venomvineCreepCap = Mathf.Round(list.Slider(venomvineCreepCap, 0.05f, 0.5f) * 100f) / 100f;
-                    if (venomvineCreepCap <= venomvineIslandShare)
+                    list.CheckboxLabeled("Venomvine creeps slowly downwind", ref venomvineCreepEnabled,
+                        "AFFECTS THE MAP. Every few hours a fully grown venomvine stand may put one soft young runner into a free "
+                        + "neighbouring cell of natural ground, mostly downwind. Never onto floors, buildings, zones or under roofs. "
+                        + "Runners carry no venom until half grown. A smothered stand does not spread. Its own clock: Explosive "
+                        + "Growth does not touch venomvine. Selecting a stand shows how much of the map it holds.");
+                    if (venomvineCreepEnabled)
                     {
-                        list.Label("  The cap is at or under the island share: creep will barely run on new maps.");
+                        list.Label("Days between runners from one stand (average): " + venomvineCreepDays.ToString("0"));
+                        venomvineCreepDays = Mathf.Round(list.Slider(venomvineCreepDays, 2f, 60f));
+                        list.Label("Runners that go downwind: " + venomvineCreepDownwindShare.ToStringPercent("0"));
+                        venomvineCreepDownwindShare = Mathf.Round(list.Slider(venomvineCreepDownwindShare, 0f, 1f) * 20f) / 20f;
+                        list.Label("Map cap (creep stops at this share of open ground): " + venomvineCreepCap.ToStringPercent("0"));
+                        venomvineCreepCap = Mathf.Round(list.Slider(venomvineCreepCap, 0.05f, 0.5f) * 100f) / 100f;
+                        if (venomvineCreepCap <= venomvineIslandShare)
+                        {
+                            list.Label("  The cap is at or under the island share: creep will barely run on new maps.");
+                        }
                     }
+                    list.GapLine();
                 }
-                list.GapLine();
             }
 
             viewHeight = list.CurHeight + 20f;
