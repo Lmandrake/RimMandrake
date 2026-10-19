@@ -126,9 +126,11 @@ def prep_worker(rb, x, z, name=None):
         return None
     p = cols[0] if not name else next((c for c in cols if c.get("name") == name), cols[0])
     pid = p.get("id")
-    # restore whole body to healthy (recursive/destructive -> regrows parts, heals
-    # injuries). The pawn tools key on `pawn`, not thingId.
-    rb.call("jawa/pawn_health", {"pawn": pid, "action": "restore", "confirmDestructive": True})
+    # whole-body heal (healAll; 'restore' with no bodyPart is always refused). Check the reply.
+    # The pawn tools key on `pawn`, not thingId.
+    hr = rb.call("jawa/pawn_health", {"pawn": pid, "action": "healAll", "confirmDestructive": True})
+    if not (isinstance(hr, dict) and hr.get("success")):
+        raise RuntimeError("pawn_health healAll failed: %s" % str(hr)[:200])
     # top up every need (food, rest, recreation, mood inputs)
     rb.call("jawa/pawn_refresh_needs", {"pawn": pid})
     for need in ("Food", "Rest", "Joy", "Comfort", "Beauty", "Outdoors"):
