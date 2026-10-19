@@ -51,7 +51,7 @@
     <defName>RM_VeilFallIncoming</defName>
     <label>waveglass pane (falling)</label>
     <graphicData>
-      <texPath>Things/Skyfaller/Meteorite</texPath>
+      <texPath>Things/Skyfaller/RM_VeilFallIncoming/RM_VeilFallIncoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>Transparent</shaderType>
       <drawSize>(7,7)</drawSize>

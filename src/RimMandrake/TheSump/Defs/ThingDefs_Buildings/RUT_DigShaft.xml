@@ -43,7 +43,7 @@
     <description>A braced shaft staked into the tar, worked by hand. The black keeps deep time down there — bones of unnamed ages, sunken machines, sealed casings, or a click you'd rather not have heard. Dig deeper at your own pace; the tar never runs out of things to sell back.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/DeepDrill</texPath>
+      <texPath>Things/Building/Production/RUT_DigShaft/RUT_DigShaft</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
     </graphicData>
