@@ -233,6 +233,49 @@ def main():
     finally:
         PHm._tank, PHm._held = saved_tank, saved_held
 
+    # code review 2026-10-19: a short build_batch makes a FAIL row UNMEASURED SITE; a "dropped hose moved nothing" row on a scene that
+    # could not move liquid anyway (tank unread / pump never powered) is UNMEASURED, and PASSes only with a live tank and powered pump
+    class ScenFake(FakeBridge):
+        short = False
+        tank_units = None
+        powered = None
+
+        def call(self, tool, **kw):
+            r = FakeBridge.call(self, tool, **kw)
+            if tool == "jawa/build_batch" and self.short:
+                return {"success": True, "survived": 0, "failed": [{"op": "x"}]}
+            return r
+
+        def hp(self, cmd, wait_s=20.0):
+            if cmd.startswith("tank:"):
+                return {"success": True, "units": self.tank_units} if self.tank_units is not None else {"success": False}
+            if cmd.startswith("pump:"):
+                return {"success": True, "powered": self.powered}
+            if cmd.startswith("settrail:"):
+                return {"success": True, "carry": "Dropped"}
+            return FakeBridge.hp(self, cmd, wait_s)
+
+    def rf_rows(**kw):
+        fb = ScenFake(tempfile.mkdtemp(), b"")
+        for k, v in kw.items():
+            setattr(fb, k, v)
+        with contextlib.redirect_stdout(io.StringIO()):
+            rr = PHm._rf(fb)["rows"]
+        return {r["id"]: r for r in rr}
+    r0 = rf_rows(tank_units=500, powered=True)
+    check("dropped-hose row PASSes with a live tank and a powered pump (can pass)", r0["NS_hose_dropped_carries_nothing"]["status"] == "PASS",
+          r0["NS_hose_dropped_carries_nothing"])
+    r1 = rf_rows(tank_units=None, powered=True)
+    check("dropped-hose row on an unread tank is UNMEASURED, not a vacuous PASS", r1["NS_hose_dropped_carries_nothing"]["status"] == "UNMEASURED")
+    r2 = rf_rows(tank_units=500, powered=None)
+    check("dropped-hose row with a pump that never powered is UNMEASURED, not a vacuous PASS", r2["NS_hose_dropped_carries_nothing"]["status"] == "UNMEASURED")
+    r3 = rf_rows(tank_units=500, powered=True, short=True)
+    check("a FAIL row over a short build_batch reads UNMEASURED (SITE), not a MOD FAIL",
+          r3["NS_hose_carries_real_units"]["status"] == "UNMEASURED" and r3["NS_hose_carries_real_units"]["class"] == "SITE", r3["NS_hose_carries_real_units"])
+    r4 = rf_rows(tank_units=500, powered=True)
+    check("can-fail: with a full build the same row is a measured FAIL (MOD), nothing moved",
+          r4["NS_hose_carries_real_units"]["status"] == "FAIL" and r4["NS_hose_carries_real_units"]["class"] == "MOD", r4["NS_hose_carries_real_units"])
+
     P2, res2 = run_fake(args_only=["realflow"])
     check("a partial run (--only) is mode partial and never certifiable", res2["mode"] == "partial" and res2["certifiable"] is False)
 
