@@ -242,8 +242,8 @@ class SprinklerFakeBridge(object):
                 self._remove(t)
         for c in [c for c in self.soaked if _in(r, *c)]:
             del self.soaked[c]
-        for pid in [p for p, v in self.pawns.items() if _in(r, v["x"], v["z"])]:
-            del self.pawns[pid]
+        # the real tool never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1); neither does the fake
+        return {"success": True}
 
     def t_jawa_build_batch(self, ops="", **kw):
         n = 0

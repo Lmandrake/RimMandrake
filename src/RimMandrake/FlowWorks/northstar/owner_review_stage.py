@@ -75,6 +75,17 @@ def opposite(r):
     return (r + 2) % 4
 
 
+BARS_Z = dict(bars_joint=(-1, 11), bars_dry=(13, 5), bars_trench=(21, 5), bars_access=(29, 8), bars_bridges=(39, 8),
+              bars_bridge_kinds=(47, 11))     # (z offset from the bars origin, height) of each bars row, from its own staging
+
+
+def bars_row_rect(L, row):
+    """Camera rect of ONE bars row (the whole 62x76 site would put every bars picture at the same far-off framing)."""
+    bx, bz = L["bars"]
+    dz, h = BARS_Z[row]
+    return (bx, bz + dz, 62, h)
+
+
 def layout(ox, oz):
     """Every row's origin. Site rect (x, z, w, h) covers all of it."""
     return dict(
@@ -93,15 +104,23 @@ class Stage(object):
         self.plan.append(s)
         print(s, flush=True)
 
+    def chk(self, what, r):
+        """Note a bridge reply that is empty or says success=false. Returns True when it looked fine (a picture of a failed
+        stage is not a staged scene)."""
+        if isinstance(r, dict) and r.get("success") is not False and r:
+            return True
+        self.notes.append("%s FAILED: %s" % (what, str(r)[:140]))
+        return False
+
     def dig(self, c, n, fill=-1):
         self.say("  dig %s depth %d%s" % (c, n, "" if fill < 0 else " fill %d" % fill))
         if not self.dry:
-            self.w.dig(c, n, fill)
+            self.chk("dig %s depth %d" % (c, n), self.w.dig(c, n, fill))
 
     def fill(self, c, f):
         self.say("  fill %s = %d notches (%.1f m)" % (c, f, f * NOTCH_M))
         if not self.dry:
-            self.w.set_fill(c, f)
+            self.chk("fill %s = %d" % (c, f), self.w.set_fill(c, f))
 
     def pit(self, origin, n, depth, fill=-1):
         for i in range(n):
@@ -113,7 +132,10 @@ class Stage(object):
         if self.dry:
             return dict(survived=True, rot_read=rot, note="")
         import fw_walk_common as C
-        return C.place(self.w, d, c, rot=rot, stuff=stuff)
+        r = C.place(self.w, d, c, rot=rot, stuff=stuff)
+        if not r.get("survived"):
+            self.notes.append("place %s at %s NOT on the map: %s" % (d, c, r.get("note")))
+        return r
 
     def raise_ladder(self, c, up=True):
         self.say("  ladder %s -> %s (ProofLadder)" % (c, "RAISED" if up else "lowered"))
@@ -143,8 +165,10 @@ class Stage(object):
     def store(self, cell, litres_dl=100000):
         self.say("  fill tank %s with RM_Liquid_FreshWater %d dL (ProofTank)" % (cell, litres_dl))
         if not self.dry:
-            self.w.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
-                        args="%d,%d;Store;RM_Liquid_FreshWater;%d" % (cell[0], cell[1], litres_dl))
+            ok, txt = self.w.proof("RimMandrake.FlowWorks.RM_NorthstarProofs", "ProofTank",
+                                   "%d,%d;Store;RM_Liquid_FreshWater;%d" % (cell[0], cell[1], litres_dl))
+            if not ok:
+                self.notes.append("tank at %s NOT filled: %s" % (cell, txt[:120]))
 
     def colonist(self, cell):
         self.say("  colonist stands at %s (scale)" % (cell,))
@@ -179,13 +203,16 @@ class Stage(object):
     def item(self, d, cell):
         self.say("  item %s at %s (spawn_batch)" % (d, cell))
         if not self.dry:
-            self.w.call("jawa/spawn_batch", ops="%s:%d,%d" % (d, cell[0], cell[1]))
+            self.chk("item %s at %s" % (d, cell), self.w.call("jawa/spawn_batch", ops="%s:%d,%d" % (d, cell[0], cell[1])))
 
     def proof(self, typ, method, arg):
         self.say("  proof %s.%s(%s)" % (typ.split(".")[-1], method, arg))
         if self.dry:
             return True, ""
-        return self.w.proof(typ, method, arg)
+        ok, txt = self.w.proof(typ, method, arg)
+        if not ok:
+            self.notes.append("proof %s.%s(%s) REFUSED/failed: %s" % (typ.split(".")[-1], method, arg, (txt or "")[:120]))
+        return ok, txt
 
     def ticks(self, n):
         self.say("  advance %d ticks" % n)
@@ -339,8 +366,7 @@ def row_sprinklers(s, L):
             br = s.w.call("jawa/battery_set", thing=bat[0]["raw"].get("id"), mode="setPct", value=1.0) if bat else {}
             if not (br or {}).get("storedEnergyPctAfter"):
                 s.notes.append("battery for net %d NOT charged (%s): its pump will show no power" % (k, str(br)[:120]))
-            s.w.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
-                     args="%d,%d;Store;RM_Liquid_FreshWater;100000" % (ox, oz))
+            s.store((ox, oz))
             got = O.choose_look(s.w, (ox + 2, oz), look, run=True)
             if got != look:
                 s.notes.append("pipe look for net %d: asked %s, game reads %s" % (k, look, got))
@@ -627,8 +653,8 @@ def main(argv=None):
     s = Stage(w, a.dry_run)
     s.say("OWNER REVIEW MAP %s  origin %s  rect %s  rows %s" % (name, (ox, oz), L["rect"], only))
     if not a.dry_run:
-        s.w.call("jawa/kill_hostiles")
-        s.w.call("jawa/weather_set", weather="Clear", lockWeather=True)
+        s.chk("kill_hostiles", s.w.call("jawa/kill_hostiles"))
+        s.chk("weather_set Clear", s.w.call("jawa/weather_set", weather="Clear", lockWeather=True))
         if [r for r in only if r not in ("hoses",) + BARS_ROWS]:
             s.w.clear_site(L["rect"])
         if [r for r in only if r in BARS_ROWS]:
@@ -658,8 +684,9 @@ def main(argv=None):
                 s.say("  scene %s wide %s close %s colonist %s" % (k, v[1], v[2], v[3]))
         print("DRY RUN: %d plan lines, no bridge touched." % len(s.plan))
         return 0
-    s.w.call("jawa/kill_hostiles")
-    s.w.call("jawa/weather_set", weather="Clear", lockWeather=True)
+    s.chk("kill_hostiles (final)", s.w.call("jawa/kill_hostiles"))
+    s.chk("weather_set Clear (final)", s.w.call("jawa/weather_set", weather="Clear", lockWeather=True))
+    hour = -1.0
     # daytime: approximate local hour from ticksAbs (ignores longitude); step to 10:00-14:00. Judge it in the picture.
     for _ in range(12):
         t = s.w.call("jawa/time_clock") or {}
@@ -700,18 +727,19 @@ def main(argv=None):
             shots.append(C.label_image(png, os.path.join(os.path.dirname(png), "row_%s_labelled.png" % key), title, "", caps[key]))
     for key in BARS_ROWS:
         if key in caps:
-            png = C.snap(w, key, L["bars_rect"])
+            png = C.snap(w, key, bars_row_rect(L, key))
             if png:
                 shots.append(C.label_image(png, os.path.join(os.path.dirname(png), "row_%s_labelled.png" % key), key, "", caps[key]))
     over = C.snap(w, "overview", L["rect"])
     if over:
         shots.append(over)
-    s.w.call("jawa/clear_ui", all=True)
-    s.w.call("rimworld/frame_cell_rect", x=L["rect"][0], z=L["rect"][1], width=L["rect"][2], height=L["rect"][3], paddingCells=2)
+    s.w.frame(L["rect"])            # clear_ui + closest zoom + frame (frame_cell_rect never zooms IN)
     if not a.no_save:
         r = s.w.call("rimworld/save_game", saveName=name) or {}
         time.sleep(2.0)
         p = r.get("path")
+        if not p or r.get("success") is False:
+            s.notes.append("save_game gave no path / failed: %s" % str(r)[:140])
         s.say("SAVE reported %s -- VERIFY the file exists and is new (save_game has written the wrong slot before)" % (p,))
     for n in s.notes:
         print("NOTE:", n)
