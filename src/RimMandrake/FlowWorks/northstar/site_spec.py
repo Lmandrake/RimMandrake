@@ -197,7 +197,7 @@ SETTINGS = {
         "raiderLadderSpeed": 1.0, "raiderFillSpeed": 1.0, "raiderJumpPackShare": 0.1,
     },
     # DEEP_WATER_BUILD_SWIM_OR_SINK (numeric defaults are RM_SwimMath consts)
-    "RimMandrake.FlowWorks.RM_SwimSettings": {
+    "RimMandrake.FlowWorks.Swimming.RM_SwimSettings": {
         "deepSwimEnabled": True, "swimOpenWaterEnabled": False, "humanlikesSwim": True, "mechanoidsSink": True,
         "swimPathCost": 60, "swimEnduranceHours": 2.0, "swimRecoveryHours": 1.0, "swimWeightEndurancePenalty": 1.25,
         "swimWeightSlowdown": 1.5, "animalsAvoidDeepWater": True, "animalAvoidCost": 3000, "swimWarnAt": 0.7,
@@ -224,7 +224,7 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Sprinklers.RM_SprinklerSettings": os.path.join("Sprinklers", "RM_SprinklerSettings.cs"),
     "RimMandrake.FlowWorks.RM_WallClimbSettings": os.path.join("Superdeep", "RM_WallClimbSettings.cs"),
     "RimMandrake.FlowWorks.RM_RaiderTrenchSettings": os.path.join("Superdeep", "RM_RaiderTrench.cs"),
-    "RimMandrake.FlowWorks.RM_SwimSettings": os.path.join("Swimming", "RM_Swim.cs"),
+    "RimMandrake.FlowWorks.Swimming.RM_SwimSettings": os.path.join("Swimming", "RM_Swim.cs"),
     "RimMandrake.FlowWorks.RM_WaterMendSettings": "RM_WaterBodyMendGame.cs",
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
