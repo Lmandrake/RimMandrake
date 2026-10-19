@@ -127,10 +127,21 @@ def _prep_plot(t, key, terrain="Soil"):
     if t._guard() and not (res.startswith("RESET") and res.endswith("left=0")):
         raise ExpectationFailed("plot %s excavation reset failed: %s" % (key, res or rs))
     t.bridge_call("jawa/destroy_batch", rects=r, categories="All")
-    t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, r))
+    _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (terrain, r))
     t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
     t.bridge_call("jawa/clear_ui")
     return x0, z0
+
+
+def _stage(t, tool, **kw):
+    """A fixture-staging bridge call (spawn / build / designate / paint) whose refusal is UNMEASURED. An unchecked staging
+    call made every 'cover gone', 'not held', 'D=1 held' and 'nothing wet' check below it pass vacuously on a plot that
+    was never built. Only an explicit success=False (or no reply while the guard is up) counts as a refusal."""
+    r = t.bridge_call(tool, **kw)
+    if t._guard() and (not isinstance(r, dict) or r.get("success") is False):
+        raise ExpectationFailed("UNMEASURED: staging %s was refused, so the plot under test does not exist: %r"
+                                % (tool, str(r)[:200]))
+    return r
 
 
 def _rep(t, x, z):
@@ -297,6 +308,24 @@ def _expect_dry_ring(t, cells, skip=()):
         raise ExpectationFailed("liquid/excavation on un-dug ground beside the run: %s" % bad[:5])
 
 
+RESTORE_FAILED = []     # [(field, why)]: a setting a `finally` could not put back (it would leak into every later chain)
+
+
+def _restore(t, typ, field, default):
+    """Put a flipped setting back. Never raises (it runs in `finally`), but a refusal or an exception is PRINTED and kept in
+    RESTORE_FAILED, not swallowed: a setting left flipped corrupts every later chain (MEASURED 2026-10-06)."""
+    if getattr(t, "session", None) is None:      # the offline declaration probe: nothing was flipped
+        return
+    try:
+        r = t.session.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(default))
+        bad = None if isinstance(r, dict) and r.get("success") is not False else "refused: %r" % (r,)
+    except Exception as e:  # noqa: BLE001
+        bad = "raised %r" % (e,)
+    if bad:
+        RESTORE_FAILED.append((field, bad))
+        print("SETTING NOT RESTORED: %s %s -- later chains run with it flipped" % (field, bad))
+
+
 @contextmanager
 def _setting(t, field, value):
     """Flip one Mod Settings field for the duration of a block, restore the shipped default in finally."""
@@ -308,10 +337,7 @@ def _setting(t, field, value):
         # NOT t.set_setting: it is a no-op once the chain's guard is down, so a component that FAILED inside this block
         # left the setting flipped for every later chain (MEASURED 2026-10-06: superdeepCaptureEnabled stuck False ->
         # capture-down "NotHeld", sluice "held=False", pit occupants walking out: four FAILs in other chains).
-        try:
-            t.session.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(DEFAULTS[field]))
-        except Exception:
-            pass
+        _restore(t, typ, field, DEFAULTS[field])
 
 
 @contextmanager
@@ -321,11 +347,7 @@ def _setting_in(t, typ, field, value):
     try:
         yield
     finally:
-        try:
-            t.session.call("jawa/mod_settings_field", typeName=typ, action="set", field=field,
-                           value=str(REG.BY_KEY[field]["default"]))
-        except Exception:
-            pass
+        _restore(t, typ, field, REG.BY_KEY[field]["default"])
 
 
 def _frame(t, x0, z0, w, h, name=None):
@@ -452,7 +474,7 @@ def _limitless_source(t, key, w=10, h=6, terrain="WaterDeep"):
     (classification happens once on first contact). `terrain` names the liquid (the body's fluid is its terrain's).
     Mid-map, so the body is LIMITED (~5 units/cell), never limitless: limitless needs map-edge contact (ruling 16)."""
     x0, z0 = _plot(t, key)
-    t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(x0, z0 + 4, w, h)))
+    _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(x0, z0 + 4, w, h)))
     return x0, z0
 
 
@@ -463,7 +485,7 @@ def _limited_pond(t, key, size=5, terrain="WaterShallow", dz=4):
     body, even one repainted Soil -- and gate on `_expect_fresh_pond`."""
     x0, z0 = _plot(t, key)
     px, pz = x0 + 3, z0 + dz
-    t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(px, pz, size, size)))
+    _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(px, pz, size, size)))
     return px, pz
 
 
@@ -1004,7 +1026,7 @@ def plot_G_pit(t):
                      shows=["pit_covered_invisible", "pit_covered_seam_at_max_zoom"]):
         # PIT_COVER_FALL_REWIRE_1: a reinforced deck over the empty twin (nobody on it is heavy enough
         # to spring it), framed beside the open pit; the frame is the bar, the count is the guard.
-        t.bridge_call("jawa/spawn_batch", ops=";".join("RM_PitCover_ReinforcedFrame:%d,%d" % (x, z) for x, z in twin))
+        _stage(t, "jawa/spawn_batch", ops=";".join("RM_PitCover_ReinforcedFrame:%d,%d" % (x, z) for x, z in twin))
         if t._guard():
             r = t.bridge_call("jawa/list_things", defName="RM_PitCover_ReinforcedFrame",
                               rect=_rect(twin[0][0] - 1, twin[0][1] - 1, 5, 5))
@@ -1012,7 +1034,7 @@ def plot_G_pit(t):
         _frame(t, *twin_shot)
     with t.component("ladder_state_look", toggle="ladderRequiredToExitEnabled",
                      shows=["ladder_state_legible"]):
-        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (LADDER, pit[0][0] - 1, pit[0][1]))
+        _stage(t, "jawa/spawn_batch", ops="%s:%d,%d" % (LADDER, pit[0][0] - 1, pit[0][1]))
         if t._guard():
             r = t.bridge_call("jawa/list_things", defName=LADDER, rect=_rect(pit[0][0] - 2, pit[0][1] - 1, 4, 3))
             _expect(bool((r or {}).get("things")), "RM_Ladder did not place beside the pit")
@@ -1020,8 +1042,8 @@ def plot_G_pit(t):
     with t.component("sluice_state_look", shows=["sluice_gate_state_legible"]):
         # FLOWWORKS_DOOR_FAMILY_1: a wooden sluice and a steel grate on the pit's west lip, framed.
         # Placeholder art (vanilla door mover) until the gate art lands; the frame is the bar.
-        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SLUICE, pit[0][0] - 1, pit[0][1] + 1), stuff="WoodLog")
-        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (GRATE, pit[0][0] - 1, pit[0][1] + 2), stuff="Steel")
+        _stage(t, "jawa/spawn_batch", ops="%s:%d,%d" % (SLUICE, pit[0][0] - 1, pit[0][1] + 1), stuff="WoodLog")
+        _stage(t, "jawa/spawn_batch", ops="%s:%d,%d" % (GRATE, pit[0][0] - 1, pit[0][1] + 2), stuff="Steel")
         if t._guard():
             for d in (SLUICE, GRATE):
                 r = t.bridge_call("jawa/list_things", defName=d, rect=_rect(pit[0][0] - 2, pit[0][1] - 1, 3, 5))
@@ -1029,7 +1051,7 @@ def plot_G_pit(t):
         _frame(t, *shot)
     with t.component("spikes_look", shows=["spikes_read_distinct"]):
         # CANAL_BOTTOM_SPIKES_1 built RM_Spikes (placeholder skullspike graphic until EXCAVATION_WALL_ART_1).
-        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SPIKES, pit[4][0], pit[4][1]))
+        _stage(t, "jawa/spawn_batch", ops="%s:%d,%d" % (SPIKES, pit[4][0], pit[4][1]))
         if t._guard():
             r = t.bridge_call("jawa/list_things", defName=SPIKES, rect=_rect(pit[4][0], pit[4][1], 1, 1))
             _expect(bool((r or {}).get("things")), "RM_Spikes did not place on the D=4 floor")
@@ -1072,17 +1094,20 @@ def toggle_fill_in(t):
     for c in (a, b):
         _dig(t, c[0], c[1], 1)
         _fill(t, c[0], c[1], 1)
+    pid = None
     with t.component("fill_in_on", toggle="fillInEnabled"):
-        t.bridge_call("jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % a)
+        _stage(t, "jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % a)
         pid = _spawn_pawn_at(t, "Colonist", a[0] - 2, a[1])     # registered in _SPAWNED: the next chain vanishes it
         _order_fill_in(t, pid, a)
         _wait(t, 10 * PULSE)
         _expect_state(t, [a], depth=0, what="filled-in cell")
     with t.component("fill_in_off", toggle="fillInEnabled"):
         with _setting(t, "fillInEnabled", False):
-            t.bridge_call("jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % b)
+            _stage(t, "jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % b)
             if t._guard():
                 # ask the mod with a pawn that CAN fill in (the ON side proved it): D=1 alone held with nobody trying
+                if pid is None:
+                    raise ExpectationFailed("UNMEASURED: the ON side spawned no colonist, so no pawn asked the WorkGiver with fill-in OFF")
                 pr = t.bridge_call("jawa/flowworks_job_probe", x=b[0], z=b[1], kind="fillin", pawnId=pid, forced=True) or {}
                 wg, pw = pr.get("workGiver") or {}, pr.get("pawn") or {}
                 if not pr.get("success") or not pw or not wg:
@@ -1106,7 +1131,7 @@ def toggle_fill_in_displacement(t):
         # counted in overflowDestroyedTotal) is added back, so a correct engine that overflows is not a FAIL
         pid = _spawn_pawn_at(t, "Colonist", cells[1][0], cells[1][1] - 2)
         r0 = [_rep(t, x, z) for x, z in cells] if t._guard() else []
-        t.bridge_call("jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % cells[1])
+        _stage(t, "jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % cells[1])
         _order_fill_in(t, pid, cells[1])
         _wait(t, 10 * PULSE)
         if t._guard():
@@ -1303,7 +1328,7 @@ def ladder_prison_door(t):
     x0, z0 = _prep_plot(t, "G")
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)
-    t.bridge_call("jawa/spawn_batch", ops=";".join("%s:%d,%d" % (LADDER, x, z) for x, z in pit))
+    _stage(t, "jawa/spawn_batch", ops=";".join("%s:%d,%d" % (LADDER, x, z) for x, z in pit))
     with t.component("lowered_lets_colonist_out", toggle="ladderPrisonDoorEnabled"):
         with _setting(t, "superdeepCapturesOwnFaction", True):
             pid = _spawn_pawn_at(t, "Colonist", pit[4][0], pit[4][1])
@@ -1332,7 +1357,7 @@ def pit_cover_fall(t):
     _dig_run(t, pit, 4)
     _dig_run(t, twin, 4)
     with t.component("heavy_springs_woven_cover", toggle="trapTriggerEnabled"):
-        t.bridge_call("jawa/spawn_batch", ops=";".join("RM_PitCover_WovenScrap:%d,%d" % (x, z) for x, z in pit))
+        _stage(t, "jawa/spawn_batch", ops=";".join("RM_PitCover_WovenScrap:%d,%d" % (x, z) for x, z in pit))
         hid = _spawn_pawn_at(t, "Pirate", pit[4][0], pit[4][1], faction="hostile")
         _wait(t, 2 * PULSE)
         if t._guard():
@@ -1340,7 +1365,7 @@ def pit_cover_fall(t):
             _expect((r or {}).get("countMatched") == 0, "woven cover still standing under a ~70 kg hostile: %r" % r)
             _expect(_pit_held(t, hid, pit) is True, "hostile not held after the cover gave way")
     with t.component("light_does_not_spring_reinforced", toggle="trapTriggerEnabled"):
-        t.bridge_call("jawa/spawn_batch", ops=";".join("RM_PitCover_ReinforcedFrame:%d,%d" % (x, z) for x, z in twin))
+        _stage(t, "jawa/spawn_batch", ops=";".join("RM_PitCover_ReinforcedFrame:%d,%d" % (x, z) for x, z in twin))
         lid = _spawn_pawn_at(t, "Pirate", twin[4][0], twin[4][1], faction="hostile")
         _wait(t, 2 * PULSE)
         if t._guard():
@@ -1376,7 +1401,7 @@ def canal_spikes(t):
             _expect(deep.startswith("ACCEPT depth 4"), "spikes refused on a D=4 cell: %s" % deep)
             for i, txt in enumerate(shal):
                 _expect(txt.startswith("REFUSE depth %d" % (i + 1)), "spikes not refused on depth %d: %s" % (i + 1, txt))
-    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SPIKES, pit[4][0], pit[4][1]))
+    _stage(t, "jawa/spawn_batch", ops="%s:%d,%d" % (SPIKES, pit[4][0], pit[4][1]))
     hid = _spawn_pawn_at(t, "Pirate", pit[4][0], pit[4][1], faction="hostile")
     with t.component("descent_onto_spikes_stabs", toggle="spikesEnabled"):
         txt = _spike_proof(t, "ProofDescent", pit[4][0], pit[4][1])
@@ -1419,8 +1444,8 @@ def flow_doors(t):
     run = _channel_from(x0 + 10, z0 + 6, 8)
     _dig_run(t, run, 2)
     gr, sl = run[2], run[5]
-    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (GRATE, gr[0], gr[1]), stuff="Steel")
-    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SLUICE, sl[0], sl[1]), stuff="WoodLog")
+    _stage(t, "jawa/spawn_batch", ops="%s:%d,%d" % (GRATE, gr[0], gr[1]), stuff="Steel")
+    _stage(t, "jawa/spawn_batch", ops="%s:%d,%d" % (SLUICE, sl[0], sl[1]), stuff="WoodLog")
     with t.component("grate_passes_sluice_seals"):
         _wait(t, 10 * PULSE)
         before = _rep(t, *run[4])
@@ -1441,9 +1466,9 @@ def flow_doors(t):
     # PLAYER-owned, as a built door is: spawn_batch leaves a door factionless, and vanilla Building_Door lets anyone
     # open a factionless door -- the hare walked through (MEASURED 2026-10-06: "Hare OPEN"), which says nothing
     # about the sluice rule.
-    t.bridge_call("jawa/build_batch", ops="%s:%d,%d;%s:%d,%d" % (SLUICE, sl[0], sl[1], SLUICE, lip[0], lip[1]),
+    _stage(t, "jawa/build_batch", ops="%s:%d,%d;%s:%d,%d" % (SLUICE, sl[0], sl[1], SLUICE, lip[0], lip[1]),
                   stuff="WoodLog", faction="player")
-    t.bridge_call("jawa/build_batch", ops="%s:%d,%d" % (GRATE, gr[0], gr[1]), stuff="Steel", faction="player")
+    _stage(t, "jawa/build_batch", ops="%s:%d,%d" % (GRATE, gr[0], gr[1]), stuff="Steel", faction="player")
     hum = _spawn_pawn_at(t, "Pirate", x0 + 3, z0 + 2, faction="hostile")
     muf = _spawn_pawn_at(t, "Muffalo", x0 + 1, z0 + 4, faction="none")
     hare = _spawn_pawn_at(t, "Hare", x0 + 1, z0 + 2, faction="none")
@@ -1680,11 +1705,13 @@ def slime_slip(t):
             row = _fx_row(rep, pid)
             if t._guard():
                 _expect("enabled=False" in rep, "setting not off in the census: %r" % rep[:120])
+                if not row:      # a pawn absent from the census reads slips 0 too: the OFF side needs its row
+                    raise ExpectationFailed("UNMEASURED: the colonist is in no census row (not in the slime), so slip OFF was not asked: %r" % rep[:160])
                 _expect(int(row.get("slips", 0)) == 0, "slipped with slimeSlipEnabled OFF: %r" % row)
     with t.component("natural_slime_slips", toggle="slimeSlipEnabled"):
         # owner 2026-10-16: "Natural slime should also be slippery." A natural (undug) green slime pool strip, painted.
         strip = [(x0 + 4 + i, z0 + 10) for i in range(8)]
-        t.bridge_call("jawa/set_terrain_batch", ops="RM_SlimeGreenShallow:%d,%d,8,1" % (strip[0][0], strip[0][1]))
+        _stage(t, "jawa/set_terrain_batch", ops="RM_SlimeGreenShallow:%d,%d,8,1" % (strip[0][0], strip[0][1]))
         pn = _spawn_pawn_at(t, "Colonist", strip[0][0], strip[0][1])
         t.bridge_call("jawa/pawn_gear", pawn=pn, action="clear")
         _slime_report(t, "reset")
@@ -1710,9 +1737,9 @@ def _bottle_loop_plot(t):
     """Plot F with a 4x4 WaterShallow pond at its west side, one RM_BottleEmpty (stuffed) 6 cells east of it, two fed
     colonists. No tank, so only the terrain fill giver (WorkGiver_FillBottle, gate bottleLoopEnabled) has work."""
     x0, z0 = _prep_plot(t, "F")
-    t.bridge_call("jawa/set_terrain_batch", ops="WaterShallow:%s" % _rect(x0 + 1, z0 + 5, 4, 4))
+    _stage(t, "jawa/set_terrain_batch", ops="WaterShallow:%s" % _rect(x0 + 1, z0 + 5, 4, 4))
     bottle = (x0 + 10, z0 + 6)
-    t.bridge_call("jawa/spawn_batch", ops="RM_BottleEmpty:%d,%d" % bottle, stuff="Leather_Plain")
+    _stage(t, "jawa/spawn_batch", ops="RM_BottleEmpty:%d,%d" % bottle, stuff="Leather_Plain")
     for i in range(2):
         pid = _spawn_pawn_at(t, "Colonist", x0 + 12 + i, z0 + 8)
         t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
@@ -1780,7 +1807,7 @@ def toggle_bottle_dirty(t):
     x0, z0 = _bottle_loop_plot(t)
     full_a, full_b = (x0 + 15, z0 + 4), (x0 + 17, z0 + 4)
     ops = "RM_Bottle_FreshWater:%d,%d;RM_Bottle_FreshWater:%d,%d" % (full_a + full_b)
-    t.bridge_call("jawa/spawn_batch", ops=ops, stuff="Leather_Plain")
+    _stage(t, "jawa/spawn_batch", ops=ops, stuff="Leather_Plain")
     pid = _spawn_pawn_at(t, "Colonist", x0 + 16, z0 + 3)
     with t.component("bottle_dirty_on", toggle="bottleDirtyStageEnabled"):
         with _setting(t, "bottleLoopEnabled", False):
@@ -1855,8 +1882,8 @@ def _tank_loop_plot(t, mode, bottle_def, liquid=None, units=None):
     at 47) cannot take the empty bottle first."""
     x0, z0 = _prep_plot(t, "F")
     tank, bottle = (x0 + 6, z0 + 6), (x0 + 10, z0 + 6)
-    t.bridge_call("jawa/build_batch", ops="RM_LiquidTank:%d,%d" % tank, faction="player")
-    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % ((bottle_def,) + bottle), stuff="Leather_Plain")
+    _stage(t, "jawa/build_batch", ops="RM_LiquidTank:%d,%d" % tank, faction="player")
+    _stage(t, "jawa/spawn_batch", ops="%s:%d,%d" % ((bottle_def,) + bottle), stuff="Leather_Plain")
     _tank_set(t, tank, mode, liquid, units)
     for i in range(2):
         pid = _spawn_pawn_at(t, "Colonist", x0 + 12 + i, z0 + 8)
@@ -1947,7 +1974,7 @@ def toggle_trap_trigger(t):
     _dig_run(t, pit, 4)
     with t.component("trap_trigger_off", toggle="trapTriggerEnabled"):
         with _setting(t, "trapTriggerEnabled", False):
-            t.bridge_call("jawa/spawn_batch", ops=";".join("RM_PitCover_WovenScrap:%d,%d" % (x, z) for x, z in pit))
+            _stage(t, "jawa/spawn_batch", ops=";".join("RM_PitCover_WovenScrap:%d,%d" % (x, z) for x, z in pit))
             _spawn_pawn_at(t, "Pirate", pit[4][0], pit[4][1], faction="hostile")
             _wait(t, 2 * PULSE)
             if t._guard():
@@ -1993,7 +2020,7 @@ def toggle_river_steam(t):
     toggle: ON throws ribbons within 300 ticks, OFF none. A biome WITHOUT it proves the gate: river cells, no vent, no
     ribbon. Each map can show only one half; the other reads UNMEASURED with the map it needs."""
     x0, z0 = _prep_plot(t, "C")
-    t.bridge_call("jawa/set_terrain_batch", ops="WaterMovingShallow:%s" % _rect(x0 + 4, z0 + 6, 8, 1))
+    _stage(t, "jawa/set_terrain_batch", ops="WaterMovingShallow:%s" % _rect(x0 + 4, z0 + 6, 8, 1))
     s0 = _steam(t, "rescan", strict=False)
     if "ext" not in s0:
         why = "ProofSteam unread on this map: %r" % s0
@@ -2066,7 +2093,7 @@ def swale_enrichment(t):
     x0, z0 = _prep_plot(t, "H", terrain="Sand")
     x, z = x0 + 8, z0 + 6
     _dig(t, x, z, 1)
-    t.bridge_call("jawa/spawn_batch", ops="RM_Swale:%d,%d" % (x, z))
+    _stage(t, "jawa/spawn_batch", ops="RM_Swale:%d,%d" % (x, z))
     with t.component("dry_swale_does_nothing", toggle="swaleEnabled"):
         txt = _swale_proof(t, x, z)
         if t._guard():
@@ -2078,7 +2105,7 @@ def swale_enrichment(t):
             _expect(txt.startswith("STEP") and "Sand->Soil" in txt, "a fed swale on sand did not step sand->soil: %s" % txt)
     with t.component("swale_capped_at_rich_soil", toggle="swaleEnabled"):
         ring = [_rect(x - 3, z + 1, 7, 3), _rect(x - 3, z - 3, 7, 3), _rect(x - 3, z, 3, 1), _rect(x + 1, z, 3, 1)]
-        t.bridge_call("jawa/set_terrain_batch", ops=";".join("SoilRich:%s" % r for r in ring))  # the swale's own cell untouched
+        _stage(t, "jawa/set_terrain_batch", ops=";".join("SoilRich:%s" % r for r in ring))  # the swale's own cell untouched
         txt = _swale_proof(t, x, z)
         if t._guard():
             _expect(txt.startswith("CAPPED"), "a swale ringed by rich soil still stepped: %s" % txt)
@@ -2235,7 +2262,7 @@ def fire_rain(t):
     open_row = [(x0 + 2 + 3 * i, z0 + 8) for i in range(6)]
     roof_row = [(x0 + 2 + 3 * i, z0 + 11) for i in range(6)]
     _tar_cells(t, open_row + roof_row)
-    t.bridge_call("jawa/set_roof_batch", ops=";".join("RoofConstructed:%d,%d,1,1" % c for c in roof_row))
+    _stage(t, "jawa/set_roof_batch", ops=";".join("RoofConstructed:%d,%d,1,1" % c for c in roof_row))
     with _setting(t, "canalFireEnabled", True), _setting(t, "rainFillsExcavationsEnabled", False):
         t.bridge_call("jawa/weather_set", weather="Rain", lockWeather=True)
         try:
@@ -2273,10 +2300,7 @@ def _num_setting(t, field, value):
     try:
         yield
     finally:
-        try:
-            t.session.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=field, value=str(default))
-        except Exception:
-            pass
+        _restore(t, S_FW, field, default)
 
 
 def _fire_cell(t, c):
@@ -2404,7 +2428,7 @@ def fuel_moat_chemfuel(t):
     slow = _line(x0 + 3, z0 + 10, 12)
     wood = (x0 + 9, z0 + 5)
     _fuel_run(t, moat, "RM_Fluid_Chemfuel")
-    t.bridge_call("jawa/spawn_batch", ops="WoodLog:%d,%d" % wood)
+    _stage(t, "jawa/spawn_batch", ops="WoodLog:%d,%d" % wood)
     with _setting(t, "canalFireEnabled", True):
         with t.component("chemfuel_moat_goes_up", toggle="chemfuelInfernoEnabled"):
             lit = _light(t, *moat[0])
@@ -2416,7 +2440,7 @@ def fuel_moat_chemfuel(t):
                 _expect(len(big) == len(moat), "inferno flame on %d/%d moat cells 90 ticks after the light" % (len(big), len(moat)))
             t.wait_ticks(300)
             near = t.bridge_call("jawa/list_things", defName="Fire", rect=_rect(wood[0] - 1, wood[1] - 1, 3, 3), limit=5) or {}
-            gone = not (t.bridge_call("jawa/list_things", defName="WoodLog", rect=_rect(wood[0], wood[1], 1, 1), limit=5) or {}).get("things")
+            gone = not _things_at(t, "WoodLog", [wood])      # a blind reply raises UNMEASURED, never "the log is gone"
             if t._guard():
                 _expect(bool(near.get("things")) or gone, "the wood two cells off the bank never caught: %r" % near)
             _wait(t, 1500)
@@ -2561,7 +2585,7 @@ def pit_prison_room(t):
             _expect(k.get("split") == "False" if t._guard() else None, "rooms OFF but the pit is still split: %s" % k)
         t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PitRooms", method="RebuildAllMaps", args="")
     with t.component("prisoner_bed_makes_prison_cell"):
-        t.bridge_call("jawa/build_batch", ops="Bed:%d,%d,0" % pit[3], stuff="WoodLog", faction="player")
+        _stage(t, "jawa/build_batch", ops="Bed:%d,%d,0" % pit[3], stuff="WoodLog", faction="player")
         beds = (t.bridge_call("jawa/list_things", defName="Bed", rect=_rect(pit[0][0], pit[0][1], 3, 3), limit=5) or {})
         bid = ((beds.get("things") or [{}])[0]).get("id")
         t.bridge_call("jawa/set_bed_owner_type", thing=bid, ownerType="Prisoner")
@@ -2623,7 +2647,7 @@ def liquid_pump(t):
     _dig_run(t, ch, 2)
     for x, z in ch:
         _fill(t, x, z, 2)
-    t.bridge_call("jawa/build_batch", ops="RM_LiquidPump:%d,%d;RM_LiquidTank:%d,%d" % (pump + tank), faction="player")
+    _stage(t, "jawa/build_batch", ops="RM_LiquidPump:%d,%d;RM_LiquidTank:%d,%d" % (pump + tank), faction="player")
 
     def rd(mode=""):
         return _kv(_sc(t, NS_PROOF, "ProofPump", "%d,%d" % pump + ((";" + mode) if mode else "")))
@@ -2637,7 +2661,7 @@ def liquid_pump(t):
         if t._guard():
             _expect(k.get("running") == "False" and k.get("moved") == "0" and level() == 6,
                     "an unpowered pump moved liquid: %s level %s" % (k, level()))
-    t.bridge_call("jawa/build_batch", ops="Battery:%d,%d" % batt, faction="player")
+    _stage(t, "jawa/build_batch", ops="Battery:%d,%d" % batt, faction="player")
     bat = ((t.bridge_call("jawa/list_things", defName="Battery", rect=_rect(batt[0], batt[1], 1, 2), limit=2) or {})
            .get("things") or [{}])[0].get("id")
     t.bridge_call("jawa/battery_set", thing=bat, mode="setPct", value=1.0)
@@ -2673,7 +2697,7 @@ def bottle_revert(t):
     x0, z0 = _prep_plot(t, "F")
     cells = [(x0 + 4 + 2 * i, z0 + 6) for i in range(3)]
     area = _rect(x0 + 3, z0 + 5, 8, 3)
-    t.bridge_call("jawa/spawn_batch", ops=";".join("RM_Bottle_BoilingWater:%d,%d" % c for c in cells), stuff="Leather_Plain")
+    _stage(t, "jawa/spawn_batch", ops=";".join("RM_Bottle_BoilingWater:%d,%d" % c for c in cells), stuff="Leather_Plain")
 
     def count(d):
         return len(((t.bridge_call("jawa/list_things", defName=d, rect=area, limit=20) or {}).get("things")) or [])
@@ -2724,7 +2748,7 @@ def _dig_by_hand(t, pid, c):
     """One real canal cut by a colonist's RM_DigCanalJob (the only caller of RM_DigDiscoveryState.OnCut). Done means
     the cell's DEPTH rose (live 19:38: a designation query reading 'gone' proved nothing -- no cut had happened)."""
     d0 = _rep(t, *c).get("depth") or 0
-    t.bridge_call("jawa/designate_batch", action="add", designation="RM_DigCanal", rect=_rect(c[0], c[1], 1, 1))
+    _stage(t, "jawa/designate_batch", action="add", designation="RM_DigCanal", rect=_rect(c[0], c[1], 1, 1))
     t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="RM_DigCanalJob", targetAX=c[0], targetAZ=c[1])
     for _ in range(16):
         t.wait_ticks(500)
@@ -2847,7 +2871,7 @@ def machinery_pipes(t):
         _fill(t, x, z, 2)
     ops = ["RM_LiquidPump:%d,%d" % pump, "RM_LiquidTank:%d,%d" % tank, "Battery:%d,%d" % batt] + \
           ["RM_UniversalPipe:%d,%d" % c for c in pipe]
-    t.bridge_call("jawa/build_batch", ops=";".join(ops), faction="player")
+    _stage(t, "jawa/build_batch", ops=";".join(ops), faction="player")
     bat = ((t.bridge_call("jawa/list_things", defName="Battery", rect=_rect(batt[0], batt[1], 1, 2), limit=2) or {})
            .get("things") or [{}])[0].get("id")
     t.bridge_call("jawa/battery_set", thing=bat, mode="setPct", value=1.0)
@@ -2906,9 +2930,9 @@ def _hut(t, x0, z0, terrain):
     """A 7x7 steel-walled, fully roofed hut whose 5x5 floor holds a 3x3 patch of `terrain`. Returns a floor cell."""
     ring = [(x0 + i, z0) for i in range(7)] + [(x0 + i, z0 + 6) for i in range(7)] + \
            [(x0, z0 + j) for j in range(1, 6)] + [(x0 + 6, z0 + j) for j in range(1, 6)]
-    t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(x0 + 2, z0 + 2, 3, 3)))
-    t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % c for c in ring), stuff="Steel")
-    t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%s" % _rect(x0, z0, 7, 7))
+    _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(x0 + 2, z0 + 2, 3, 3)))
+    _stage(t, "jawa/spawn_batch", ops=";".join("Wall:%d,%d" % c for c in ring), stuff="Steel")
+    _stage(t, "jawa/set_roof_batch", ops="RoofConstructed:%s" % _rect(x0, z0, 7, 7))
     return (x0 + 1, z0 + 1)
 
 
@@ -2926,7 +2950,7 @@ def liquid_heat(t):
     icy = _hut(t, x0 + 9, z0 + 3, "RM_WaterFrigidShallow")
     ctrl = _hut(t, x0 + 17, z0 + 3, "WaterShallow")
     open_boil = (x0 + 12, z0 + 12)
-    t.bridge_call("jawa/set_terrain_batch", ops="RM_WaterBoilingShallow:%s" % _rect(open_boil[0], open_boil[1], 1, 1))
+    _stage(t, "jawa/set_terrain_batch", ops="RM_WaterBoilingShallow:%s" % _rect(open_boil[0], open_boil[1], 1, 1))
     _sc(t, HEAT_PROOF, "ProofRescan", " ")
     with t.component("liquid_heat_kinds", toggle="liquidHeatPushEnabled"):
         kb, ki, kc, ko = (_heat(t, (x0 + 4, z0 + 6)), _heat(t, (x0 + 12, z0 + 6)), _heat(t, (x0 + 20, z0 + 6)),
@@ -2960,4 +2984,4 @@ def liquid_heat(t):
                         % (lead0, lead1))
                 _expect(b1.get("warmed") == "0", "rooms still warmed with the setting OFF: %s" % b1)
     t.bridge_call("jawa/destroy_batch", rects=_rect(x0, z0, PW, PH), categories="All")
-    t.bridge_call("jawa/set_roof_batch", ops=_rect(x0, z0, PW, PH), roofDef="None")
+    _stage(t, "jawa/set_roof_batch", ops=_rect(x0, z0, PW, PH), roofDef="None")

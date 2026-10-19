@@ -341,6 +341,35 @@ def _vacuous_check_probs(EXT):
     got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: _things([{"x": 0, "z": 0}] * 9) if tl == "jawa/list_things" else base(tl, p))
     if got.get("trap_trigger_off") != "PASS":
         out.append("trap_trigger_off with the cover standing: %s" % got)
+    # a staging call the bridge refused (the cover never spawned) is UNMEASURED: it used to leave "cover standing" true
+    got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: {"success": False, "message": "MOCK refusal"} if tl == "jawa/spawn_batch"
+                   else (_things([{"x": 0, "z": 0}] * 9) if tl == "jawa/list_things" else base(tl, p)))
+    if got.get("trap_trigger_off") != "UNMEASURED":
+        out.append("trap_trigger_off with spawn_batch refused: %s" % got)
+    # a setting a `finally` could not put back is reported, never swallowed
+    class _RS(object):
+        def __init__(self, reply):
+            self.reply = reply
+
+        def call(self, *a, **k):
+            if isinstance(self.reply, Exception):
+                raise self.reply
+            return self.reply
+
+    class _RT(object):
+        def __init__(self, reply):
+            self.session = _RS(reply)
+    n0 = len(EXT.RESTORE_FAILED)
+    import io as _io
+    import contextlib as _cl
+    with _cl.redirect_stdout(_io.StringIO()):
+        EXT._restore(_RT({"success": False}), "T", "f1", True)
+        EXT._restore(_RT(RuntimeError("boom")), "T", "f2", True)
+        EXT._restore(_RT({"success": True}), "T", "f3", True)
+    new = EXT.RESTORE_FAILED[n0:]
+    del EXT.RESTORE_FAILED[n0:]
+    if [f for f, _ in new] != ["f1", "f2"]:
+        out.append("_restore must record a refused and a raising restore (and not a good one): %s" % new)
     # a spawn that returns no id is UNMEASURED, not a vacuous "not held"
     got = _ext_run(EXT, "toggle_trap_trigger", lambda tl, p: {"pawns": []} if tl == "jawa/spawn_pawn"
                    else (_things([{"x": 0, "z": 0}] * 9) if tl == "jawa/list_things" else base(tl, p)))
@@ -956,7 +985,7 @@ def _new_probes(EXT, RIV, base):
     # home with the rest (False: the live day 3 shape, gone and never back); held_status = the guest status the tool reads back
     # held_escapes: SWEEP_PRISONER_RETURN, the live day 4 shape (back on the map, then gone again before the stay ends)
     def swept(before=0, wash=True, edge_water=True, comes_back=True, turns_npc=False, held_gone=False, held_back=True,
-              held_status="Prisoner", held_escapes=False):
+              held_status="Prisoner", held_escapes=False, blind_list=False):
         st = {"pending": before, "spawned": [], "gone": set(), "ticks": 0, "returned": False, "villagers": [], "stayed": False}
 
         def h(tl, p):
@@ -999,6 +1028,8 @@ def _new_probes(EXT, RIV, base):
                 st["ticks"] += 1          # stands in for wait_ticks (a no-op in _ext_run)
                 return {"success": True, "pawns": [{"id": pid}]}
             if tl == "jawa/list_pawns":
+                if blind_list:          # an unanswered list must not read as "every staged pawn left the map"
+                    return {"success": False, "message": "MOCK: no list"}
                 return {"success": True, "pawns": [{"id": i} for i in st["spawned"] if i not in st["gone"]]}
             if tl == "jawa/pawn_get":
                 pid = p.get("pawn")
@@ -1011,7 +1042,8 @@ def _new_probes(EXT, RIV, base):
                      ({"edge_water": False}, "UNMEASURED"), ({"comes_back": False}, "FAIL"), ({"turns_npc": True}, "FAIL"),
                      ({"held_gone": True}, "PASS"), ({"held_gone": True, "held_back": False}, "FAIL"),
                      ({"held_gone": True, "held_status": "Guest"}, "FAIL"),
-                     ({"held_gone": True, "held_escapes": True}, "FAIL"), ({"held_escapes": True}, "PASS")):
+                     ({"held_gone": True, "held_escapes": True}, "FAIL"), ({"held_escapes": True}, "PASS"),
+                     ({"blind_list": True}, "UNMEASURED")):
         got, st = swept(**kw)
         if got != want:
             out.append("returns_home %s: %s, want %s" % (kw, got, want))

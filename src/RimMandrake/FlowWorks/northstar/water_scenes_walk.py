@@ -225,6 +225,7 @@ class Walk(object):
         self.rows = []
         self.since_feed = 0
         self.terrain = {}
+        self.refused = []              # [(what, cell)] excavation drives the bridge refused (see _drive)
         os.makedirs(OUT, exist_ok=True)
 
     def call(self, tool, **kw):
@@ -236,7 +237,7 @@ class Walk(object):
         self.log_lines.append(s)
 
     def proof(self, typ, method, arg):
-        r = self.call("jawa/static_call", type=typ, method=method, args=arg)
+        r = self.call("jawa/static_call", type=typ, method=method, args=arg) or {}
         txt = str(r.get("result") or r.get("message") or r.get("error") or "")
         return r.get("success") is True and not txt.startswith("REFUSED"), txt
 
@@ -250,9 +251,14 @@ class Walk(object):
         Upkeep, never a verdict: the scenes measure water, not pawns."""
         fed = []
         for c in self.hp("colonists").get("pawns") or []:
+            good = True
             for need in ("Food", "Rest"):
-                self.call("jawa/pawn_need", pawn=c["id"], action="need", need=need, level=1.0)
-            fed.append(c["id"])
+                r = self.call("jawa/pawn_need", pawn=c["id"], action="need", need=need, level=1.0)
+                if not isinstance(r, dict) or r.get("success") is False:
+                    good = False
+                    self.say("         FEED REFUSED %s %s: %s (the vitals latch may stop the clock)" % (c["id"], need, str(r)[:120]))
+            if good:
+                fed.append(c["id"])
         self.since_feed = 0
         return fed
 
@@ -357,14 +363,24 @@ class Walk(object):
         r = self.call("jawa/flowworks_body_report", x=c[0], z=c[1], classify=classify) or {}
         return r.get("body") or {}
 
+    def _drive(self, what, c, **kw):
+        """flowworks_excavation_drive, reply checked: a refusal is printed and counted (self.refused), never taken for a
+        staged square. The reply is returned (a dict, {} when the bridge gave none) with its success key as the bridge set it."""
+        r = self.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], **kw)
+        if not isinstance(r, dict) or r.get("success") is False:
+            self.refused.append((what, tuple(c)))
+            self.say("         STAGING REFUSED: %s at %s: %s" % (what, tuple(c), str(r)[:160]))
+            return {"success": False}
+        return r
+
     def dig(self, c, n, fill=-1):
-        return self.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill)
+        return self._drive("dig", c, deepenLevels=n, setFill=fill)
 
     def set_fill(self, c, f):
-        return self.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=f)
+        return self._drive("set_fill", c, deepenLevels=0, setFill=f)
 
     def fill_in(self, c, n=1):
-        return self.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1, fillInLevels=n)
+        return self._drive("fill_in", c, deepenLevels=0, setFill=-1, fillInLevels=n)
 
     def build(self, ops, stuff=None):
         kw = dict(ops=ops, faction="player", wipeExisting=False)
@@ -375,7 +391,9 @@ class Walk(object):
     def clear_site(self, rect):
         """Soil, no things, no roof, no fog, and any old dug cells filled back in (ProofResetRect)."""
         x, z, w, h = rect
-        self.proof(NSP, "ProofResetRect", "%d;%d;%d;%d" % rect)
+        ok, txt = self.proof(NSP, "ProofResetRect", "%d;%d;%d;%d" % rect)
+        if not ok:
+            self.say("         SITE RESET REFUSED %s: %s (old dug cells or things may remain)" % (rect, txt[:120]))
         return self.V.prepare_site(self.B, rect, self.rows, "site_%d_%d" % (x, z))
 
     def frame(self, rect):
@@ -454,6 +472,12 @@ def one_run(m, cells):
         return True
     k = ws.index(False) if False in ws else len(ws)
     return all(ws[:k]) and not any(ws[k:])
+
+
+def all_read(hist, cells):
+    """True when every pulse's reading holds every cell in `cells`. A 'never wet' / 'none changed' row over squares the
+    walk could not read is vacuous (wet() of a missing square is False), so such a row is UNMEASURED, not MATCHES."""
+    return all(c in m for _, m, _ in hist for c in cells)
 
 
 def verdict(ok):
@@ -582,10 +606,12 @@ def run_S1(w):
     full = first_pulse(h, lambda m: all(holds(m, c, 1) for c in canal))
     expect_line(w, "S1", "S1.a", "all 8 hold 1 level first at pulse %s" % full, full is not None and full <= 10)
     broken = [k for k, m, _ in h if not one_run(m, canal)]
-    expect_line(w, "S1", "S1.b", "pulses where the wet part was NOT one run from the lake: %s" % (broken or "none"), not broken)
+    expect_line(w, "S1", "S1.b", "pulses where the wet part was NOT one run from the lake: %s" % (broken or "none"),
+                None if not all_read(h, canal) else not broken)
     dried = [k for i, (k, m, _) in enumerate(h) for c in canal
              if i and wet(h[i - 1][1], c) and not wet(m, c)]
-    expect_line(w, "S1", "S1.c", "a wet cell went dry at pulses: %s" % (sorted(set(dried)) or "never"), not dried)
+    expect_line(w, "S1", "S1.c", "a wet cell went dry at pulses: %s" % (sorted(set(dried)) or "never"),
+                None if not all_read(h, canal) else not dried)
     lim = [x.get("limitless") for _, _, x in h]
     expect_line(w, "S1", "S1.d", "lake limitless at every pulse: %s (stock %s -> %s)" % (
         all(lim), b0.get("stock"), h[-1][2].get("stock")), all(bool(v) for v in lim))
@@ -644,7 +670,8 @@ def run_S2(w):
     expect_line(w, "S2", "S2.b", "all 6 trench cells at 1 first at pulse %s (10,000 dL = 1,000 L each)" % tf, tf is not None and tf <= 30,
                 level="each trench square holds 10,000 dL (0.50 m, brim) within %d dL" % TOL_DL)
     broken = [k for k, m, _ in h if not one_run(m, trench)]
-    expect_line(w, "S2", "S2.c", "pulses where the wet trench was NOT one run from the pond: %s" % (broken or "none"), not broken)
+    expect_line(w, "S2", "S2.c", "pulses where the wet trench was NOT one run from the pond: %s" % (broken or "none"),
+                None if not all_read(h, trench) else not broken)
     # S2.d: SETTLED = N unchanged pulses in a row with the scene FULL (a pause mid-fill is not settled; live 2026-10-17 the
     # old 3-pulse test took the [3 3 3 3] plateau at p7-p10 for it)
     states = [tuple(dl_of(m, c) if dl_of(m, c) is not None else m.get(c, (0, 0))[1] for c in pond + trench) for _, m, _ in h]
@@ -701,8 +728,12 @@ def _pump_rig(w, g):
     w.ticks(2)
     lt = w.call("jawa/list_things", defName="Battery", rect="%d,%d,2,2" % g["battery"], limit=2) or {}
     bid = ((lt.get("things") or [{}])[0]).get("id")
-    if bid is not None:
-        w.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
+    if bid is None:
+        notes.append("no Battery found at %s: the pump may be unpowered" % (g["battery"],))
+    else:
+        bs = w.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
+        if not isinstance(bs, dict) or bs.get("success") is False:
+            notes.append("battery_set refused: %s" % str(bs)[:120])
     la = w.hp("lay:%d,%d,%d,%d" % (g["reelA"] + g["intake"]))
     # LIVE 2026-10-17 (fresh map, S3): the lay to the pond's middle edge square refused "no room for the straight
     # lead-out from the nozzle" while the same call one square south laid at once; the earlier walk's S3.b "pulse None"
@@ -810,7 +841,9 @@ def run_S3(w):
     wetA = [k for k, _, x in ha if (x["canal"] or 0) > TOL_DL * len(canal)]
     lostA = [k for k, _, x in ha if x["stock"] is not None and s0 is not None and x["stock"] < s0 - TOL_DL]
     expect_line(w, "S3", "S3.a", "canal wet at pulses %s; pond below its start (%s dL) at pulses %s" % (
-        wetA or "never", s0, lostA or "never"), not wetA and not lostA,
+        wetA or "never", s0, lostA or "never"),
+        None if s0 is None or not all_read(ha, canal) or any(x["stock"] is None or x["canal"] is None for _, _, x in ha)
+        else (not wetA and not lostA),
         level="canal 0 dL in every square, pond %s dL unchanged within %d dL" % (s0, TOL_DL))
     fl = w.hp("flick:%d,%d=on" % g["pump"])
     pw = w.hp("pump:%d,%d" % g["pump"])
@@ -822,17 +855,18 @@ def run_S3(w):
                 level="a pump lifts: the canal fills to the brim, every square 10,000 dL within %d dL, and the squares match each other" % TOL_DL,
                 readout=w.readout_lines([canal[0], canal[-1]]))
     sB = hb[0][2]["stock"]
-    bad = []
+    bad, audited = [], 0
     tolc = TOL_DL * (len(canal) + 1)
     for k, _, x in hb:
         if None in (x["stock"], sB, x["canal"]) or x["held"] != x["held"]:
             continue
+        audited += 1
         lost = sB - x["stock"]
         gained = x["canal"] + x["held"]
         if abs(lost - gained) > tolc:
             bad.append("p%d lost %d gained %d dL" % (k, lost, gained))
     expect_line(w, "S3", "S3.c", "pulses where canal+hoses gain != pond loss (tolerance %d dL): %s" % (tolc, bad[:4] or "none"),
-                not bad if sB is not None else None,
+                None if sB is None or not audited else not bad,
                 level="canal dL + hose dL = pond loss in dL at every pulse (no litre leaves the ledger as a spill)")
     # S3 mass audit: every counter that could hold the gap, first pulse of step B against the last (levels = 10,000 units)
     l0, l1 = hb[0][2]["ledger"], hb[-1][2]["ledger"]
@@ -844,7 +878,8 @@ def run_S3(w):
     w.rows.append(dict(id="S3.audit", status="MEASURED", game=dict(pondLostDl=lost, canalDl=hb[-1][2]["canal"],
                                                                    hosesDl=hb[-1][2]["held"], deltas=delta)))
     gw = sorted({c for _, _, x in ha + hb for c in x["gapwet"]})
-    expect_line(w, "S3", "S3.d", "undug ground between pond and canal ever wet: %s" % (gw or "never"), not gw)
+    expect_line(w, "S3", "S3.d", "undug ground between pond and canal ever wet: %s" % (gw or "never"),
+                None if not all_read(ha + hb, g["gap"]) else not gw)
     expect_line(w, "S3", "S3.e", "not staged in this walk (round trip A->tank->B->A needs tank jobs and two pump legs)", None)
     level_row(w, "S3.lvl", g["rect"], "S3 pond + canal after step B")
 
@@ -916,10 +951,11 @@ def gate_open(w, cell):
     """The player's way: press the door's Hold open button, and a drafted colonist walks into the gate cell (that opens
     it; Hold open keeps it open), then is sent home. The walk itself spends game ticks: they are reported."""
     t0 = w.tick_now()
-    _hold_open_toggle(w, cell)
-    _walk_in(w, cell)
+    tg = _hold_open_toggle(w, cell)
+    wk = _walk_in(w, cell)
     _, st = w.proof(GATES, "ProofLiquid", "current|%d,%d" % cell)
-    return "%s (opening took %s ticks: Hold open on + a colonist walked in and left)" % (st, (w.tick_now() or 0) - (t0 or 0))
+    return "%s (opening took %s ticks: Hold open on [button %s] + a colonist walked in and left [%s])" % (
+        st, (w.tick_now() or 0) - (t0 or 0), "pressed" if tg else "NOT PRESSED", "walked" if wk else "NO COLONIST")
 
 
 def gate_shut(w, cell):
@@ -975,7 +1011,8 @@ def run_S4(w):
     up = first_pulse(ha, lambda m: all(holds(m, c, 1) for c in g["up"]))
     expect_line(w, "S4", "S4.a", "3 upstream cells at 1 first at pulse %s" % up, up is not None and up <= 6)
     leak = [k for k, m, _ in ha if any(wet(m, c) for c in g["down"])]
-    expect_line(w, "S4", "S4.b", "downstream wet while shut at pulses: %s" % (leak or "never"), not leak)
+    expect_line(w, "S4", "S4.b", "downstream wet while shut at pulses: %s" % (leak or "never"),
+                None if not all_read(ha, g["down"]) else not leak)
     gr = first_pulse(ha, lambda m: all(holds(m, c, 1) for c in gg["down"]))
     expect_line(w, "S4", "S4.e", "grate: 4 downstream cells at 1 first at pulse %s" % gr, gr is not None and gr <= 12)
     state["step"] = "B"
@@ -1170,7 +1207,7 @@ def run_S5(w):
     cB_end = dl_sum(h[-1][1], g["canalB"])
     totB0 = None if cB_end is None else cB_end + stock_dl(w.body(g["pondB"][0]))
     ov0 = _overflow(w)
-    w.fill_in(g["canalB"][0])
+    fi_ok = w.fill_in(g["canalB"][0]).get("success") is not False
     w.say("  step C: canal B cell 1 filled in")
     hc = pulse_loop(w, "S5C", g["canalB"], 4, tick, g["rect"], shots_at=(1,))
     cB1 = dl_sum(hc[-1][1], g["canalB"][1:])
@@ -1182,7 +1219,7 @@ def run_S5(w):
                 "prediction: canal squares %s dL, pond %s dL)" % (
                     totB0, totB1, None if destroyed is None else round(destroyed, 1),
                     _r(exC_can), _r(exC_pond)),
-                None if totB0 is None or totB1 is None or destroyed is None else (
+                None if totB0 is None or totB1 is None or destroyed is None or not fi_ok else (
                     near(totB0, totB1, 11) and destroyed <= TOL_DL),
                 level="the 91 L sheet on cell 1 is displaced, not destroyed: total 40,000 dL, 0 dL overflowed",
                 readout=w.readout_lines([g["canalB"][1], g["pondB"][0]]))
@@ -1190,7 +1227,7 @@ def run_S5(w):
     m0, _ = w.cells(g["runD"])
     d0 = dl_sum(m0, g["runD"])
     ov0 = _overflow(w)
-    w.fill_in(g["runD"][1])
+    fiD_ok = w.fill_in(g["runD"][1]).get("success") is not False
     w.say("  step D: middle cell of the isolated 3-cell run filled in (look top-left for the message)")
     w.say("         screenshot: %s" % w.shot("S5_D_message", g["rect"]))
     m1, _ = w.cells(g["runD"])
@@ -1199,7 +1236,7 @@ def run_S5(w):
     lostd = None if None in (ov0, ov1) else (float(ov1) - float(ov0)) * LEVEL_UNITS
     expect_line(w, "S5", "S5.f", "run held %s -> %s dL; the game's destroyed-overflow total rose by %s dL (the message text is in the "
                 "screenshot)" % (d0, d1, None if lostd is None else round(lostd, 1)),
-                None if lostd is None or d0 is None or d1 is None else (
+                None if lostd is None or d0 is None or d1 is None or not fiD_ok else (
                     near(lostd, LEVEL_UNITS, 1) and near(d0 - d1, LEVEL_UNITS, 3)),
                 level="exactly 10,000 dL (1,000 L) destroyed and named in the message; the two end squares keep 10,000 dL each",
                 readout=w.readout_lines([g["runD"][0], g["runD"][2]]))
@@ -1364,16 +1401,17 @@ def run_S6(w):
     sv = w.call("rimworld/save_game", saveName=name) or {}
     ld = w.call("rimworld/load_game_ready", saveName=name, timeoutMs=240000) or {}
     ok, waited = w.V._wait_playing(w.B, leave_s=0)
+    reloaded = bool(ok) and sv.get("success") is True and ld.get("success") is True    # else `post` is the unreloaded game
     post = _s6_snap(w, g, with_grid=True)
-    w.say(_s6_line(4, post) + "   <- after reload (save %s, load %s)" % (sv.get("success"), ld.get("success")))
+    w.say(_s6_line(4, post) + "   <- after reload (save %s, load %s, playing %s)" % (sv.get("success"), ld.get("success"), ok))
     same = _s6_eq(pre, post)
     md = _s6_maxdiff(pre, post)
     expect_line(w, "S6", "S6.a", "after reload: cells (dL), pond stock (dL) and gate %s the save; widest square/pond difference %s dL" % (
-        "EQUAL" if same else "DIFFER FROM", md), same if pre["m"] and post["m"] else None,
+        "EQUAL" if same else "DIFFER FROM", md), same if pre["m"] and post["m"] and reloaded else None,
         "" if same else "pre %s / post %s" % (json.dumps(pre)[:200], json.dumps(post)[:200]),
         level="every square's decilitres, the pond's decilitres and the gate state are equal across the save (a long, not a rounded, stock)")
     expect_line(w, "S6", "S6.b", "total liquid before save %s dL, after reload %s dL" % (_s6_dl(pre), _s6_dl(post)),
-                None if None in (_s6_dl(pre), _s6_dl(post)) else abs(_s6_dl(pre) - _s6_dl(post)) <= TOL_DL,
+                None if None in (_s6_dl(pre), _s6_dl(post)) or not reloaded else abs(_s6_dl(pre) - _s6_dl(post)) <= TOL_DL,
                 level="conserved to the decilitre across the reload")
     r2 = [pre]
     for k in range(5, 31):
@@ -1386,7 +1424,8 @@ def run_S6(w):
     ro2 = w.readout_lines([g["canal"][0], g["canal"][-1], g["pond"][4]])
     expect_line(w, "S6", "S6.c", "pulse 30: cells (dL) %s; pond run 1 %s dL, run 2 %s dL; widest difference %s dL" % (
         "equal" if r2[-1]["m"] == r1[-1]["m"] else "differ", r1[-1]["pond"], r2[-1]["pond"], _s6_maxdiff(r1[-1], r2[-1])),
-                r2[-1]["m"] == r1[-1]["m"] and r2[-1]["pond"] == r1[-1]["pond"],
+                None if not r1[-1]["m"] or not r2[-1]["m"] or None in (r1[-1]["pond"], r2[-1]["pond"]) or not reloaded
+                else (r2[-1]["m"] == r1[-1]["m"] and r2[-1]["pond"] == r1[-1]["pond"]),
                 level="run 2 ends cell for cell and decilitre for decilitre as run 1 (run 1: %s; run 2: %s)" % (" || ".join(ro1[:1]), " || ".join(ro2[:1])),
                 readout=ro1 + ro2)
     level_row(w, "S6.lvl.run2", g["rect"], "S6 run 2 pond + canal at pulse 30")
@@ -1417,6 +1456,9 @@ def prep(w):
     for f, v in SCENE_OVERRIDES.items():
         w.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
         got[f] = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
+    off = {f: got[f] for f, v in SCENE_OVERRIDES.items() if str(got[f]).lower() != str(v).lower()}
+    if off:
+        w.say("  SETTING NOT TAKEN (read back differs): %s -- the scenes would run on the wrong settings" % off)
     w.say("map %sx%s; settings at shipped defaults except the scene file's: %s (read back)" % (
         mi.get("sizeX") or mi.get("width"), mi.get("sizeZ") or mi.get("height"), got))
     w.say("pulse interval %d ticks (shipped default 250)" % w.interval())
@@ -1436,6 +1478,9 @@ def restore(w):
         w.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
         got[f] = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
     w.say("shipped settings restored: %s" % got)
+    off = {f: got[f] for f, v in SHIPPED.items() if str(got[f]).lower() != str(v).lower()}
+    if off:
+        w.say("  RESTORE NOT TAKEN (read back differs): %s -- set them by hand" % off)
 
 
 STAGE = {"S1": stage_S1, "S2": stage_S2, "S3": stage_S3, "S4": stage_S4, "S5": stage_S5, "S6": stage_S6}
