@@ -201,6 +201,9 @@ import review_map_coverage as COV  # noqa: E402
 items = COV.inventory()
 check(len(items) > 500 and {k for k, _, _ in items} == {"def", "set", "gizmo", "tex"}, "inventory blind: %d" % len(items))
 got, unc = COV.classify(items)
+_sets = {n for k, n, _ in items if k == "set"}
+check({"disabledFluids", "disabledMachines"} <= _sets, "Scribe_Collections settings missing from the inventory: %s"
+      % sorted({"disabledFluids", "disabledMachines"} - _sets))
 check(not unc, "uncovered: %s" % unc[:5])
 check(not COV.check_targets(S, [s["id"] for s in RV.STATIONS]), "rule names no station: %s" % COV.check_targets(
     S, [s["id"] for s in RV.STATIONS])[:3])

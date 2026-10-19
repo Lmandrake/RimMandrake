@@ -1051,14 +1051,14 @@ Six odd grounds
 
 Coloured waters and slimes
 
-**Look at:** five coloured waters (top), five coloured slimes (middle), a bottle of each water (bottom)
+**Look at:** five coloured waters (top), a bottle of each water (bottom)
 
 **Poke it:**
 
 - hover each; the bottles along the bottom are each water bottled
 - coloured steam rises only off a RIVER of these waters (not here)
 
-**Look for:** weak spot: two colours that read the same; a slime that looks like its water
+**Look for:** weak spot: two colours that read the same
 
 ### 82. Deep sand - built, not yet seen
 
