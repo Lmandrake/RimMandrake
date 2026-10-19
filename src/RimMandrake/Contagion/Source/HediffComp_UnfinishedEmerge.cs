@@ -47,6 +47,11 @@ namespace RimMandrake.Contagion
             }
             Pawn unfinished = PawnGenerator.GeneratePawn(new PawnGenerationRequest(Props.emergeKind, null));
             IntVec3 cell = CellFinder.StandableCellNear(patient.PositionHeld, map, 2f);
+            if (!cell.IsValid)
+            {
+                // StandableCellNear returns Invalid when no cell within 2 is standable; GenSpawn would throw.
+                cell = patient.PositionHeld;
+            }
             GenSpawn.Spawn(unfinished, cell, map);
             unfinished.stances.stunner.StunFor(Props.stunDuration.RandomInRange, surgeon);
             unfinished.mindState?.mentalStateHandler?.TryStartMentalState(MentalStateDefOf.Manhunter, null, true);
