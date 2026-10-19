@@ -107,7 +107,7 @@
     <thingClass>Building</thingClass>
     <graphicData>
       <texPath>StandIn/Things/Building/Natural/Hive</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>
     <uiIconScale>0.65</uiIconScale>
