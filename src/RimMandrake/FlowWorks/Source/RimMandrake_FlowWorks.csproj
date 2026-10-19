@@ -70,6 +70,7 @@
     <Compile Include="RM_LiquidHeatMath.cs" />
     <Compile Include="RM_LiquidHeat.cs" />
     <Compile Include="RM_WaterBodyTypeFlipFix.cs" />
+    <Compile Include="RM_WaterBodyFreezeCountFix.cs" />
     <Compile Include="RM_WaterBodyMath.cs" />
     <Compile Include="RM_WaterBodyMendGame.cs" />
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
