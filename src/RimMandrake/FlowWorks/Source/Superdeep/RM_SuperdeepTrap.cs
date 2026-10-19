@@ -999,7 +999,10 @@ namespace RimMandrake.FlowWorks
 				// REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F9): nor does a surface island ringed by a sheer trench (no border
 				// cell in its component), the same "two surface components stay apart" rule CanReach's veto applies.
 				// TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: unless ladders this pawn may use join it to a border component.
-				if (g.TrappedIn(k, comp, p) || (!g.ComponentIsPocket(k, comp) && !g.ReachesEdge(k, comp, p)))
+				// A pit pocket is no exception when only a ladder leads out of it (it must reach the edge too); one this pawn is too
+				// big for is walked out of, so it is judged as the surface it joins.
+				bool walksOut = g.ComponentIsPocket(k, comp) && !g.WideEverywhere(k, comp, RM_SuperdeepTrap.RequiredWidth(p));
+				if (g.TrappedIn(k, comp, p) || (!walksOut && !g.ReachesEdge(k, comp, p)))
 				{
 					__result = false;
 				}

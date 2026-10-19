@@ -490,6 +490,7 @@ namespace RimMandrake.FlowWorks
 		// ── TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: the ladder graph between components ───────────────
 		private int edgeTick = int.MinValue;
 		private int edgeRebuilds = -1;
+		private int edgeVersion = -1;
 		private readonly Dictionary<long, List<(int a, int b)>> ladderEdgeCache = new Dictionary<long, List<(int a, int b)>>();
 
 		/// <summary>Every component join a ladder makes for this query (RM_PocketGridMath.LadderEdge: its square's component and
@@ -498,11 +499,12 @@ namespace RimMandrake.FlowWorks
 		public List<(int a, int b)> LadderEdges(int k, Pawn p)
 		{
 			int now = Find.TickManager?.TicksGame ?? 0;
-			if (now != edgeTick || edgeRebuilds != Rebuilds || ladderEdgeCache.Count > 512)
+			if (now != edgeTick || edgeRebuilds != Rebuilds || edgeVersion != RM_LadderUtility.StateVersion || ladderEdgeCache.Count > 512)
 			{
 				ladderEdgeCache.Clear();
 				edgeTick = now;
 				edgeRebuilds = Rebuilds;
+				edgeVersion = RM_LadderUtility.StateVersion;
 			}
 			long key = ((long)k << 40) | (uint)(p == null ? -1 : p.thingIDNumber);
 			if (ladderEdgeCache.TryGetValue(key, out List<(int a, int b)> edges))

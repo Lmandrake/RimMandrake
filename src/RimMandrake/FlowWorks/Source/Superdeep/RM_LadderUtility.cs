@@ -20,6 +20,9 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public static class RM_LadderUtility
 	{
+		/// <summary>Bumped whenever any ladder is raised or lowered: caches of ladder-derived joins key on it (a toggle while paused).</summary>
+		public static int StateVersion;
+
 		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: either ladder, the fixed wall ladder (RM_Ladder) or the portable one
 		/// (RM_LadderPortable). Every ladder read in the mod goes through this.</summary>
 		public static bool IsLadderDef(BuildableDef d)
@@ -224,6 +227,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			raised = value;
+			RM_LadderUtility.StateVersion++;
 			if (parent.Spawned)
 			{
 				parent.Map.mapDrawer.MapMeshDirty(parent.Position, (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things);

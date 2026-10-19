@@ -227,14 +227,29 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitTrapMath.HeldRelative(true, lp.IsPocketCell(2, 2), true, false, false, true), "held where it stands");
                 Assert(RM_PocketGridMath.Trapped(true, false, RM_PocketGridMath.WideEverywhere(lp, one, RM_PitTrapMath.RequiredWidth(1f, 1f))),
                     "no ladder: a person in a 1x1 D4 pit is trapped");
-                Assert(RM_PocketGridMath.Trapped(true, false, RM_PocketGridMath.WideEverywhere(lp, sq, RM_PitTrapMath.RequiredWidth(4f, 1f))),
-                    "a body-size-4 creature is held by the 2x2");
-                Assert(!RM_PocketGridMath.Trapped(true, false, RM_PocketGridMath.WideEverywhere(lp, one, RM_PitTrapMath.RequiredWidth(4f, 1f))),
+                // A body-size-4 creature climbs ClimbLimit(4f) levels (its own band, NOT the person's): hold it with a pit deeper
+                // than THAT, labelled at its own band; a D4 pit is within its climb and holds nobody of that size.
+                int kBig = RM_PitTrapMath.ClimbLimit(4f);
+                Assert(kBig > Person && kBig < RM_PitTrapMath.ClimbBands, "the big creature has its own band: " + kBig);
+                byte[] gb = Map(w, h);
+                Rect(gb, w, 2, 2, 1, 1, (byte)(kBig + 1));    // 1x1
+                Rect(gb, w, 12, 2, 2, 2, (byte)(kBig + 1));   // 2x2
+                var lb = RM_PocketGridMath.Label(gb, w, h, kBig);
+                int bone = lb.label[2 * w + 2], bsq = lb.label[2 * w + 12];
+                Assert(lb.IsPocketCell(12, 3) && lb.IsPocketCell(2, 2), "the D" + (kBig + 1) + " pits are pockets at the big creature's band");
+                Assert(RM_PocketGridMath.Trapped(true, false, RM_PocketGridMath.WideEverywhere(lb, bsq, RM_PitTrapMath.RequiredWidth(4f, 1f))),
+                    "a body-size-4 creature is held by the 2x2 (labelled at its own band)");
+                Assert(!RM_PocketGridMath.Trapped(true, false, RM_PocketGridMath.WideEverywhere(lb, bone, RM_PitTrapMath.RequiredWidth(4f, 1f))),
                     "can-fail: and walks out of the 1x1 (too big for it)");
+                var ld4 = RM_PocketGridMath.Label(g, w, h, kBig);
+                Assert(!ld4.IsPocketCell(12, 3), "can-fail: a D4 pit is within a size-4 creature's climb: no pocket at its band");
                 Assert(RM_PocketGridMath.BandFor(RM_PitTrapMath.ClimbLimit(1f), 4) != 0, "a person's band has a grid (K < MaxDepth)");
                 // the live miss: the harness digs with the game PAUSED and the grid rebuilt only from the tick (60-tick throttle),
                 // so every verdict read the ground from before the dig. Paused, the frame update rebuilds it.
                 string grid = Src("Superdeep", "RM_PocketGrid.cs");
+                RiverSwitchFlipChecks.Has(grid, @"edgeVersion != RM_LadderUtility\.StateVersion", "the ladder-edge cache is keyed on the ladder raise/lower counter");
+                RiverSwitchFlipChecks.Has(Src("Superdeep", "RM_LadderUtility.cs"), @"raised = value;\s*RM_LadderUtility\.StateVersion\+\+;", "SetRaised bumps the counter (a paused toggle)");
+                RiverSwitchFlipChecks.Has(Src("Superdeep", "RM_SuperdeepTrap.cs"), @"g\.TrappedIn\(k, comp, p\) \|\| \(!walksOut && !g\.ReachesEdge\(k, comp, p\)\)\)", "a pit pocket must reach the map edge too");
                 RiverSwitchFlipChecks.Has(grid, @"public static void UpdatePaused\(Map map, RM_MapComponent_Excavation eng\) \{ if \(Find\.TickManager != null && Find\.TickManager\.Paused\) \{ RebuildIfStale\(map, eng, true\); \} \}",
                     "paused: rebuild a stale grid at once");
                 RiverSwitchFlipChecks.Has(grid, @"if \(!paused && now - builtTick < RebuildMinTicks\) \{ return; \}", "the throttle applies only while time runs");
