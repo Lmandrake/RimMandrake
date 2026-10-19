@@ -241,6 +241,11 @@ namespace RimMandrake.FlowWorks.Swimming
 			{
 				return false;
 			}
+			// SUSPENSION_WATERS_BUILD_MAY_BACKTRACK: a suspension deck over the water is ground, not a swim square
+			if (Pits.RM_SpanUtility.DeckedAt(map, c))
+			{
+				return false;
+			}
 			if (IsSwimTerrain(map.terrainGrid.TerrainAt(c)))
 			{
 				return true;
@@ -492,7 +497,9 @@ namespace RimMandrake.FlowWorks.Swimming
 				// wadeable natural water (vanilla-passable, no pit) is footing when its drowning switch is off
 				bool wadeableOff = !dug && !RM_SwimSettings.shallowWaterDrowningEnabled && t != null && t.IsWater
 					&& t.passability != Traversability.Impassable;
-				if (!on || p.Flying || wadeableOff || (dug && Pits.RM_PitCoverUtility.IsCovered(map, c)))
+				// SUSPENSION_WATERS_BUILD_MAY_BACKTRACK: on a deck (over a pit or over natural water) nobody swims or drowns; under one
+				// (the floor band) they are in the water
+				if (!on || p.Flying || wadeableOff || (Pits.RM_PitCoverUtility.IsCovered(map, c) && !Pits.RM_SuspensionUnderpass.InFloorBand(p)))
 				{
 					Recover(p, exh);
 					continue;
@@ -792,7 +799,8 @@ namespace RimMandrake.FlowWorks.Swimming
 				{
 					IntVec3 cell = map.cellIndices.IndexToCell(i);
 					// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: dug swim squares close to non-swimmers like natural deep water
-					if (RM_SwimWater.IsSwimTerrain(map.terrainGrid.TerrainAt(cell)) || (dugSwim && ex.IsDugSwimCell(cell)))
+					if ((RM_SwimWater.IsSwimTerrain(map.terrainGrid.TerrainAt(cell)) || (dugSwim && ex.IsDugSwimCell(cell)))
+						&& !Pits.RM_SpanUtility.DeckedAt(map, cell))   // a suspension deck over it is ground (SUSPENSION_WATERS)
 					{
 						deep.Add(i);
 					}

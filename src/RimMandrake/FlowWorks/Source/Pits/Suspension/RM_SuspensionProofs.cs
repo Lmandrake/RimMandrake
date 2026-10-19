@@ -94,7 +94,7 @@ namespace RimMandrake.FlowWorks.Pits
 			List<Building_SpanDeck> decks = b.SpanDecks(r.Cell(0, RM_SuspensionMath.SegmentCells(span, r.Supports, r.length)[0]));
 			return "SPAN tier=" + RM_SuspensionMath.TierLabel(r.tier) + " load=" + load.ToString("0.0") + " rating=" + r.RatingKg.ToString("0")
 				+ " state=" + RM_SuspensionMath.Classify(load, r.RatingKg) + " decks=" + decks.Count + " railings=" + r.railings
-				+ " deckNotches=" + r.deckNotches + " line=" + RM_SuspensionMath.LoadLine(load, r.RatingKg);
+				+ " deckNotches=" + r.deckNotches + " span=" + (span + 1) + "/" + r.SpanCount + " line=" + RM_SuspensionMath.LoadLine(load, r.RatingKg);
 		}
 
 		/// <summary>"x,z;on|off": the bridge's railings switch, built at once (god). → "RAILS on=b railed=N"</summary>
@@ -394,6 +394,77 @@ namespace RimMandrake.FlowWorks.Pits
 			return "DROPUNDER under=" + under + " at=" + at.x + "," + at.z
 				+ " underDeck=" + (dropped != null && dropped.Spawned && RM_SuspensionUnderpass.PassingDeckAt(map, at) != null)
 				+ " slid=" + RM_SuspensionUnderpass.Slid;
+		}
+
+		// ── SUSPENSION_WATERS_BUILD_MAY_BACKTRACK ─────────────────────────────────────────────────────────────────
+
+		/// <summary>"x,z": the water reads on a square. → "WATER terrain=def water=b ocean=b river=b spannable=b decked=b
+		/// exempt=b walkable=b swim=b"</summary>
+		public static string ProofWater(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !Cell(arg, out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be x,z on the current map";
+			}
+			TerrainDef t = c.GetTerrain(map);
+			return "WATER terrain=" + t?.defName + " water=" + (t?.IsWater ?? false) + " ocean=" + (t?.IsOcean ?? false)
+				+ " river=" + (t?.IsRiver ?? false) + " spannable=" + RM_SuspensionWaters.Spannable(t) + " decked=" + RM_SpanUtility.DeckedAt(map, c)
+				+ " exempt=" + RM_SuspensionWaters.CurrentExempt(map, c) + " walkable=" + map.pathing.Normal.pathGrid.Walkable(c)
+				+ " swim=" + Swimming.RM_SwimWater.IsDeepSwimCell(map, c);
+		}
+
+		/// <summary>"x,z": the hit points of every deck square of the bridge holding that square, and how many are awash (a
+		/// flood's water on the temporary terrain layer). → "HP hp=N max=N decks=N awash=N floodHits=N"</summary>
+		public static string ProofDeckHp(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_SuspensionBridges b = map?.GetComponent<RM_MapComponent_SuspensionBridges>();
+			if (b == null || !Cell(arg, out IntVec3 c))
+			{
+				return "REFUSED: arg must be x,z on the current map";
+			}
+			SuspensionBridgeRecord r = b.RecordAt(c);
+			if (r == null)
+			{
+				return "HP none";
+			}
+			int hp = 0, max = 0, decks = 0, awash = 0;
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				for (int i = 1; i < r.length - 1; i++)
+				{
+					IntVec3 x = r.Cell(lane, i);
+					if (RM_MapComponent_SuspensionBridges.DeckAt(map, x) is Building_SuspensionDeck d)
+					{
+						hp += d.HitPoints;
+						max += d.MaxHitPoints;
+						decks++;
+						if (map.terrainGrid.TempTerrainAt(x)?.IsWater == true)
+						{
+							awash++;
+						}
+					}
+				}
+			}
+			return "HP hp=" + hp + " max=" + max + " decks=" + decks + " awash=" + awash + " floodHits=" + RM_SuspensionWaters.FloodHits;
+		}
+
+		/// <summary>"x,z;hours": run that many flood hours on the current map now (the production FloodHour). → "FLOODHOUR n=N"</summary>
+		public static string ProofFloodHours(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_SuspensionBridges b = map?.GetComponent<RM_MapComponent_SuspensionBridges>();
+			string[] a = (arg ?? "").Split(';');
+			if (b == null || a.Length != 2 || !int.TryParse(a[1], out int h))
+			{
+				return "REFUSED: arg must be x,z;hours";
+			}
+			for (int i = 0; i < h; i++)
+			{
+				RM_SuspensionWaters.FloodHour(map, b.Bridges);
+			}
+			return "FLOODHOUR n=" + h;
 		}
 	}
 }

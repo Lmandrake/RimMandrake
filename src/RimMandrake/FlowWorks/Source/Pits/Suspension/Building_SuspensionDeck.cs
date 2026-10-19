@@ -163,6 +163,7 @@ namespace RimMandrake.FlowWorks.Pits
 				map.GetComponent<RM_MapComponent_SuspensionBridges>()?.Notify_DeckBuilt(this);
 			}
 			RM_MapComponent_SuspensionBridges.DirtyAround(map, Position);
+			RM_SuspensionWaters.Notify_DeckChanged(map, Position);
 		}
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
@@ -175,6 +176,7 @@ namespace RimMandrake.FlowWorks.Pits
 			List<Pawn> under = falls ? Bridges?.BandPawnsAt(pos) : null;
 			base.DeSpawn(mode);
 			RM_MapComponent_SuspensionBridges.DirtyAround(map, pos);
+			RM_SuspensionWaters.Notify_DeckChanged(map, pos);
 			if (falls && map != null)
 			{
 				RM_MapComponent_SuspensionBridges.LandWreck(map, pos, under);

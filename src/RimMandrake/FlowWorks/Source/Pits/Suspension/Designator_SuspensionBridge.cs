@@ -221,9 +221,15 @@ namespace RimMandrake.FlowWorks.Pits
 				return SpanGround.Blocked;   // undug ground above a sunken deck
 			}
 			TerrainDef terrain = c.GetTerrain(map);
-			if (terrain == null || terrain.IsWater || !c.Standable(map) || (ex != null && ex.DepthAt(c) > 0))
+			// SUSPENSION_WATERS_BUILD_MAY_BACKTRACK (Q5): natural water (a river, a lake, the sea) is crossed like a hole; the
+			// deck is a building on top and nothing converts the water
+			if (terrain != null && terrain.IsWater)
 			{
-				return SpanGround.Blocked;   // natural water is SUSPENSION_WATERS_BUILD_MAY_BACKTRACK's
+				return RM_SuspensionWaters.Spannable(terrain) ? SpanGround.Hole : SpanGround.Blocked;
+			}
+			if (terrain == null || !c.Standable(map) || (ex != null && ex.DepthAt(c) > 0))
+			{
+				return SpanGround.Blocked;
 			}
 			return SpanGround.Ground;
 		}
@@ -328,9 +334,10 @@ namespace RimMandrake.FlowWorks.Pits
 			Thing thing = null)
 		{
 			RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
-			if (ex == null || !RM_SpanMath.HasDrop(ex.ExcavatedDepthAt(loc), 0))
+			bool water = map != null && loc.InBounds(map) && RM_SuspensionWaters.Spannable(loc.GetTerrain(map));
+			if (!water && (ex == null || !RM_SpanMath.HasDrop(ex.ExcavatedDepthAt(loc), 0)))
 			{
-				return "Goes over a dug hole at least 0.5 m deep.";
+				return "Goes over a dug hole at least 0.5 m deep, or over a river, lake or the sea.";
 			}
 			if (checkingDef == RM_SuspensionDefOf.RM_SuspensionTower && RM_SpanUtility.DeckedAt(map, loc))
 			{

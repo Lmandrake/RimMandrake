@@ -65,7 +65,8 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			if (RM_SuspensionDefOf.IsDeckDef(entDef) || entDef == RM_SuspensionDefOf.RM_SuspensionTower)
 			{
-				__result = ex.ExcavatedDepthAt(c) > 0;
+				// SUSPENSION_WATERS_BUILD_MAY_BACKTRACK: natural water as well as dug ground
+				__result = ex.ExcavatedDepthAt(c) > 0 || RM_SuspensionWaters.Spannable(c.GetTerrain(map));
 				return;
 			}
 			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: a sunken bridge's anchor stands on a dry dug ledge (the designator
@@ -731,6 +732,138 @@ namespace RimMandrake.FlowWorks.Pits
 		public static void Postfix(Pawn_CarryTracker __instance, bool __result, Thing resultingThing)
 		{
 			RM_Patch_SuspensionDropUnder.Postfix(__instance, __result, resultingThing);
+		}
+	}
+
+	/// <summary>
+	/// SUSPENSION_WATERS_BUILD_MAY_BACKTRACK (parent design §3, §7; owner Q5: <i>"Let's design towards including rivers and
+	/// oceans and large lakes (non canal pit types) but if we have to we can backtrack."</i>): suspension bridges over natural
+	/// water. The deck is a building on top of vanilla water (R10: rivers and the sea stay vanilla and limitless; nothing
+	/// converts their terrain). Its square is walking ground even over deep water (the path grid answers the deck's cost),
+	/// never a swim square (no swimming, no drowning, items may lie on it), and the river's current never carries anything
+	/// on it (the fords' exemption, RM_MapComponent_RiverCurrent). Floods: a rope or timber square awash takes 5% of its hit
+	/// points an hour; steel and heavy do not.
+	///
+	/// TOWERS IN WATER (decided at build, construction design §1.3): a tower is built by a builder who can touch the square beside
+	/// it: wading in shallow water, swimming where swimming is allowed (lakes, R12; the sea and deep moving water only with the
+	/// swim setting for open water), or standing on the finished deck square next to it: decks are built from the anchors inward,
+	/// so the deck itself reaches the tower. No new job: vanilla's touch-adjacent construction does it.
+	///
+	/// BACKTRACK: the settings suspensionOverWater (rivers, lakes) and suspensionOverSea are the levers; if a crossing type proves
+	/// unworkable live, its measured reason goes on FLOWWORKS_BRIDGES_DESIGN_SPAN_ANYTHING and that type's default goes off.
+	/// </summary>
+	public static class RM_SuspensionWaters
+	{
+		public static bool Spannable(TerrainDef t)
+		{
+			return t != null && RM_SuspensionMath.WaterSpannable(t.IsWater, t.IsOcean, RM_SuspensionSettings.suspensionOverWater,
+				RM_SuspensionSettings.suspensionOverSea);
+		}
+
+		/// <summary>Nothing on a deck is carried by a current (read by RM_MapComponent_RiverCurrent with the fords).</summary>
+		public static bool CurrentExempt(Map map, IntVec3 c)
+		{
+			return RM_SpanUtility.DeckedAt(map, c);
+		}
+
+		/// <summary>A deck came or went over natural water: the path grid (and with it the regions), reachability and the swim
+		/// grids see the change at once.</summary>
+		public static void Notify_DeckChanged(Map map, IntVec3 c)
+		{
+			if (map == null || !c.InBounds(map) || c.GetTerrain(map)?.IsWater != true)
+			{
+				return;
+			}
+			map.pathing?.RecalculatePerceivedPathCostAt(c);
+			map.reachability?.ClearCache();
+			Swimming.RM_SwimPathing.Bump(map);
+		}
+
+		/// <summary>State read for the functional script: hit points floods took from decks this session.</summary>
+		public static int FloodHits;
+
+		/// <summary>Every in-game hour: rope and timber deck squares awash in a flood (a flood's water on the square's temporary
+		/// terrain layer, Flood_FlowWorks or the game's own) take their flood damage.</summary>
+		public static void FloodHour(Map map, IReadOnlyList<SuspensionBridgeRecord> bridges)
+		{
+			if (!RM_SuspensionSettings.floodsDamageLightBridges)
+			{
+				return;
+			}
+			List<Building_SuspensionDeck> hit = new List<Building_SuspensionDeck>();
+			foreach (SuspensionBridgeRecord r in bridges)
+			{
+				if (RM_SuspensionMath.FloodDamage(r.tier, 100) <= 0)
+				{
+					continue;
+				}
+				for (int lane = 0; lane < r.width; lane++)
+				{
+					for (int i = 1; i < r.length - 1; i++)
+					{
+						IntVec3 c = r.Cell(lane, i);
+						if (c.InBounds(map) && map.terrainGrid.TempTerrainAt(c)?.IsWater == true
+							&& RM_MapComponent_SuspensionBridges.DeckAt(map, c) is Building_SuspensionDeck d)
+						{
+							hit.Add(d);
+						}
+					}
+				}
+			}
+			foreach (Building_SuspensionDeck d in hit)
+			{
+				if (!d.Spawned || d.Destroyed)
+				{
+					continue;
+				}
+				int dmg = RM_SuspensionMath.FloodDamage(d.Tier, d.MaxHitPoints);
+				FloodHits += dmg;
+				d.TakeDamage(new DamageInfo(DamageDefOf.Deterioration, dmg));
+			}
+		}
+	}
+
+	/// <summary>SUSPENSION_WATERS_BUILD_MAY_BACKTRACK: a deck over natural water is walking ground: the path grid answers the
+	/// deck's own cost instead of the water's (10000 on deep water; still closed by an impassable thing or a fence on it). Last,
+	/// after the swim cost (a deck is not swum).</summary>
+	[HarmonyPatch(typeof(PathGrid), nameof(PathGrid.CalculatedCostAt))]
+	[RimMandrake.Shared.PatchFeature("Suspension bridges over natural water", typeof(RM_SuspensionSettings), "suspensionOverWater")]
+	public static class RM_Patch_SuspensionDeckOverDeepWater
+	{
+		[HarmonyPostfix]
+		[HarmonyPriority(Priority.Last)]
+		public static void Postfix(PathGrid __instance, IntVec3 c, ref int __result)
+		{
+			Map map = __instance.map;
+			if (map == null || !c.InBounds(map))
+			{
+				return;
+			}
+			TerrainDef t = map.terrainGrid.TerrainAt(c);
+			if (t == null || !t.IsWater)
+			{
+				return;   // a deck over a dug hole is priced by RM_Patch_PathGrid_PitCoverCost
+			}
+			if (!(RM_MapComponent_SuspensionBridges.DeckAt(map, c) is Building_SuspensionDeck))
+			{
+				return;
+			}
+			int cost = 0;
+			List<Thing> list = map.thingGrid.ThingsListAt(c);
+			for (int i = 0; i < list.Count; i++)
+			{
+				ThingDef d = list[i].def;
+				if (d.passability == Traversability.Impassable || (!__instance.def.fencePassable && d.building != null && d.building.isFence))
+				{
+					__result = 10000;
+					return;
+				}
+				if (d.pathCost > cost)
+				{
+					cost = d.pathCost;
+				}
+			}
+			__result = cost;
 		}
 	}
 }
