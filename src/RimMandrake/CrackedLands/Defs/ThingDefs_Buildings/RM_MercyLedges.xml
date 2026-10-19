@@ -136,7 +136,7 @@
     </statBases>
     <graphicData>
       <!-- PLACEHOLDER art -->
-      <texPath>Things/Building/Misc/TorchLamp</texPath>
+      <texPath>Things/Building/Misc/RM_ChimeLineAnchor/RM_ChimeLineAnchor</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(110, 105, 100)</color>
     </graphicData>

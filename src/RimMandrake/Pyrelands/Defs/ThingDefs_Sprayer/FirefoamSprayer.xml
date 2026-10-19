@@ -26,7 +26,7 @@
     <category>Projectile</category>
     <graphicData>
       <shaderType>TransparentPostLight</shaderType>
-      <texPath>Things/Projectile/ShellFirefoam</texPath>
+      <texPath>Things/Projectile/RM_FE_Bullet_FirefoamSplash/RM_FE_Bullet_FirefoamSplash</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <neverMultiSelect>True</neverMultiSelect>

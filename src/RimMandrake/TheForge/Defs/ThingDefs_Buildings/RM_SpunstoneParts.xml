@@ -43,7 +43,7 @@
       <Flammability>0</Flammability>
     </statBases>
     <graphicData>
-      <texPath>Things/Building/Door/DoorSimple_Mover</texPath>
+      <texPath>Things/Building/RM_FloatstoneDoor/RM_FloatstoneDoor</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <damageData>
         <enabled>false</enabled>
