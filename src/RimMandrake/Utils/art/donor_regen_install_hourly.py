@@ -39,6 +39,8 @@ TOOL = "src/RimMandrake/Utils/art/bulk_accept_renders.py"
 TRAILER = "Hourly-Install: donor_regen_install_hourly"
 TIMEOUT = {"tool": 1800, "git": 120, "fetch": 180, "publish": 900}
 ZERO = "0" * 40
+sys.path.insert(0, str(REPO / "src/RimMandrake/Utils"))
+from selftest_no_case_twins import case_twins  # noqa: E402
 
 
 class Stop(Exception):
@@ -124,6 +126,10 @@ class Run:
                 info.append(f"{mode} {blob}\t{path}")
             self.git("update-index", "--index-info", env=env, input="\n".join(info) + "\n")
             tree = self.git("write-tree", env=env).stdout.strip()
+        names = self.git("ls-tree", "-r", "-z", "--name-only", tree, text=False).stdout.decode("utf-8", "surrogateescape")
+        twins = case_twins([p for p in names.split("\0") if p])
+        if twins:                                            # Windows/Mac clones cannot hold these (PaleTree_B, 2026-10-19)
+            raise Stop(f"commit would hold case-twin paths {twins[:5]}; nothing committed")
         if tree == self.git("rev-parse", f"{head}^{{tree}}").stdout.strip():
             return None
         msg = (f"Donor art: hourly install of {n} finished dregen_ renders (accepted-for-now)\n\n{TRAILER}\n"
