@@ -19,3 +19,12 @@ later time. No more art blockers."*). Record: `design/RimMandrake/donor_art_cens
   prints "every row already filed".
 - `ls D:\Luke\dev\_artpipe\done\dregen_*.manifest.json` count vs `failed\dregen_*`: failures retried or listed.
 - Then stop the timer: `systemctl --user stop rm-donor-regen-feeder.timer`.
+
+## hourly install (2026-10-19)
+
+Owner decision, by question card 2026-10-19: finished donor-replacement renders are installed AUTOMATICALLY EVERY HOUR.
+Timer `rm-donor-regen-install.timer` (transient `systemd-run --user --on-calendar=hourly`) runs
+`src/RimMandrake/Utils/art/donor_regen_install_hourly.py` (`--dry-run` supported; log `Transient/donor_regen_install.log`):
+`art_accept_finished.py --prefix dregen_ --apply`, then commits only the run's installed/repointed paths + the FOUNDRY art-events shard, then `./publish`.
+Skips on an index lock; a refused push is logged and retried next hour. Owner-KEPT pictures stay refused (need his words).
+Like the feeder it is transient and DIES ON WSL RESTART: re-create it with the same `systemd-run` line.
