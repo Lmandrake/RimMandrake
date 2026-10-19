@@ -31,7 +31,9 @@ namespace RimMandrake.FlowWorks
 		{
 			IntVec3 c = p.Position;
 			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: down a pit (a person-band pocket at least the pit-room depth), not "dug 2 m"
-			return RM_PitRooms.IsPitFloor(map, eng, c) && !map.roofGrid.Roofed(c);
+			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (Q9: a deck is not a roof): a pawn under a suspension deck is exposed as in
+			// the open hole
+			return (RM_PitRooms.IsPitFloor(map, eng, c) || Pits.RM_SuspensionUnderpass.InFloorBand(p)) && !map.roofGrid.Roofed(c);
 		}
 
 		/// <summary>

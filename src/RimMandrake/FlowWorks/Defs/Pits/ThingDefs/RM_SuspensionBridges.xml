@@ -18,7 +18,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_Rope</defName>
     <label>rope suspension bridge</label>
-    <description>Planks lashed between two ropes. Light and long (up to 8 squares between supports) but it carries only about 150 kg on a span, and nothing can be built on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. For now nobody can walk under it: from below it is a wall.</description>
+    <description>Planks lashed between two ropes. Light and long (up to 8 squares between supports) but it carries only about 150 kg on a span, and nothing can be built on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope</texPath>
@@ -101,7 +101,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_Timber</defName>
     <label>timber suspension bridge</label>
-    <description>Beams and boards. Spans up to 6 squares between supports and carries about 600 kg on a span; light furniture can stand on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. For now nobody can walk under it: from below it is a wall.</description>
+    <description>Beams and boards. Spans up to 6 squares between supports and carries about 600 kg on a span; light furniture can stand on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber</texPath>
@@ -184,7 +184,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_Steel</defName>
     <label>steel suspension bridge</label>
-    <description>Girders and riveted plate. Spans up to 10 squares between supports and carries about 2,000 kg on a span; light and medium buildings can stand on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. For now nobody can walk under it: from below it is a wall.</description>
+    <description>Girders and riveted plate. Spans up to 10 squares between supports and carries about 2,000 kg on a span; light and medium buildings can stand on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel</texPath>
@@ -229,7 +229,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_SteelGrated</defName>
     <label>grated steel suspension bridge</label>
-    <description>An open steel grating instead of plate: you can see the hole below through it. Fire in the hole reaches the people standing on it (they catch alight and take burns), and liquid spilled or poured on it drains into the hole below; items stay on it. Same span, load and building rules as the steel suspension bridge.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. For now nobody can walk under it: from below it is a wall.</description>
+    <description>An open steel grating instead of plate: you can see the hole below through it. Fire in the hole reaches the people standing on it (they catch alight and take burns), and liquid spilled or poured on it drains into the hole below; items stay on it. Same span, load and building rules as the steel suspension bridge.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_SteelGrated</texPath>
@@ -313,7 +313,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_Heavy</defName>
     <label>heavy suspension bridge</label>
-    <description>A box-girder deck. Spans up to 14 squares between supports and carries about 8,000 kg on a span; anything can be built on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. For now nobody can walk under it: from below it is a wall.</description>
+    <description>A box-girder deck. Spans up to 14 squares between supports and carries about 8,000 kg on a span; anything can be built on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Heavy</texPath>
@@ -361,7 +361,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_SuspensionDeck_HeavyGrated</defName>
     <label>grated heavy suspension bridge</label>
-    <description>An open heavy grating instead of plate: you can see the hole below through it. Fire in the hole reaches the people standing on it (they catch alight and take burns), and liquid spilled or poured on it drains into the hole below; items stay on it. Same span, load and building rules as the heavy suspension bridge.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. For now nobody can walk under it: from below it is a wall.</description>
+    <description>An open heavy grating instead of plate: you can see the hole below through it. Fire in the hole reaches the people standing on it (they catch alight and take burns), and liquid spilled or poured on it drains into the hole below; items stay on it. Same span, load and building rules as the heavy suspension bridge.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. People down in the hole walk under it where its floor is at least 2 m below the deck; shallower, it is a wall from below. If it falls, whoever is under it is hit as by a falling roof and the wreck blocks the floor until cleared. Dragged between two dry ledges at one depth inside a deeper hole, it is a sunken bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_HeavyGrated</texPath>
@@ -526,6 +526,37 @@
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension" />
     </modExtensions>
+  </ThingDef>
+
+  <!-- SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (Q6, ruled by card): what a falling deck square leaves on the floor below. It
+       blocks the floor until someone clears it (Deconstruct). Spawned by RM_MapComponent_SuspensionBridges.LandWreck only. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionWreck</defName>
+    <label>suspension bridge wreck</label>
+    <description>The tangled wreck of a fallen suspension bridge: planks, girders and cable on the floor of the hole. Nobody gets past it until it is cleared (deconstruct it).</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionWreck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>1200</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>-10</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>true</deconstructible>
+      <claimable>true</claimable>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
   </ThingDef>
 
 </Defs>

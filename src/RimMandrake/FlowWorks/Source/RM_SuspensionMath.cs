@@ -146,6 +146,13 @@ namespace RimMandrake.FlowWorks
 			return "Suspension bridge (" + TierLabel(t) + ") · deck at surface · load " + Kg(loadKg) + " / " + Kg(ratingKg) + " kg";
 		}
 
+		/// <summary>The readout line with the deck's height and what it is from below (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD).</summary>
+		public static string ReadoutLine(SuspensionTier t, float loadKg, float ratingKg, int deckNotches, bool passesUnder)
+		{
+			return "Suspension bridge (" + TierLabel(t) + ") · " + HeightPhrase(deckNotches, passesUnder) + " · load " + Kg(loadKg)
+				+ " / " + Kg(ratingKg) + " kg";
+		}
+
 		private static string Kg(float kg)
 		{
 			return ((int)(kg + 0.5f)).ToString("#,0", System.Globalization.CultureInfo.InvariantCulture);
@@ -312,6 +319,80 @@ namespace RimMandrake.FlowWorks
 				return 0;
 			}
 			return spilledDl < roomDl ? spilledDl : roomDl;
+		}
+
+		// ── SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (construction design §1.4, §4; parent §5.1-§5.2, Q2, Q6, Q7) ──────────
+
+		/// <summary>Vanilla's thin-roof collapse crush (RoofCollapserImmediate.ThinRoofCrushDamageRange, read via RimSage):
+		/// what a falling deck does to a pawn under it (Q6: "hit like a roof collapse").</summary>
+		public const int CrushDamageMin = 15;
+		public const int CrushDamageMax = 30;
+
+		/// <summary>Does a step from <paramref name="fromWalkDepth"/> into a deck square at <paramref name="deckNotches"/> go
+		/// UNDER it (the floor band)? Only into a deck the floor band passes under, and only from below the deck: a pawn already
+		/// in the floor band on a decked square, or one standing on an undecked square deeper than the deck (down in the hole).
+		/// A step from the deck, an anchor or a ledge at the deck's height is onto the deck.</summary>
+		public static bool StepGoesUnder(bool toPassesUnder, int deckNotches, bool fromDecked, bool fromInFloorBand, int fromWalkDepth)
+		{
+			if (!toPassesUnder)
+			{
+				return false;
+			}
+			return fromDecked ? fromInFloorBand : fromWalkDepth > deckNotches;
+		}
+
+		/// <summary>The deck height of a dragged bridge from its two end squares' walking depths (notches): both ends at the
+		/// surface = 0; both on a ledge at the same depth with sunken bridges on = that depth; otherwise -1 (refused).</summary>
+		public static int DeckNotchesFor(int startDepth, int endDepth, bool sunkenOn)
+		{
+			if (startDepth != endDepth || startDepth < 0)
+			{
+				return -1;
+			}
+			if (startDepth > 0 && !sunkenOn)
+			{
+				return -1;
+			}
+			return startDepth;
+		}
+
+		/// <summary>What a dragged square is for a deck at <paramref name="deckNotches"/>: an end (anchor) square sits at exactly
+		/// the deck's height and is dry; a crossed square is at least one notch deeper (parent rule 3).</summary>
+		public static SpanGround GroundFor(int walkDepth, int deckNotches, bool dryAndClear)
+		{
+			if (!dryAndClear)
+			{
+				return walkDepth > deckNotches ? SpanGround.Hole : SpanGround.Blocked;
+			}
+			if (walkDepth == deckNotches)
+			{
+				return SpanGround.Ground;
+			}
+			return walkDepth - deckNotches >= RM_SpanMath.MinDropNotches ? SpanGround.Hole : SpanGround.Blocked;
+		}
+
+		/// <summary>Construction design §1.4: a SOLID deck blocks a shot between someone on a deck and someone under a deck;
+		/// a grate does not; two pawns in the same band ignore the deck.</summary>
+		public static bool ShotBlockedBetweenBands(bool shooterUnder, bool shooterUnderGrate, bool shooterOnDeck,
+			bool targetUnder, bool targetUnderGrate, bool targetOnDeck)
+		{
+			if (shooterUnder && targetOnDeck && !targetUnder)
+			{
+				return !shooterUnderGrate;
+			}
+			if (targetUnder && shooterOnDeck && !shooterUnder)
+			{
+				return !targetUnderGrate;
+			}
+			return false;
+		}
+
+		/// <summary>The P8 readout line for any deck height: "deck at surface" or "deck at 4 m (sunken)", plus who walks under.</summary>
+		public static string HeightPhrase(int deckNotches, bool passesUnder)
+		{
+			string h = deckNotches <= 0 ? "deck at surface" : "deck at " + (deckNotches * RM_SpanMath.NotchM).ToString("0.#",
+				System.Globalization.CultureInfo.InvariantCulture) + " m (sunken)";
+			return h + (passesUnder ? " · people below walk under it" : " · a wall from below");
 		}
 
 		/// <summary>The build-order rule (construction design §1.3): a deck square may be worked once the square next to it along

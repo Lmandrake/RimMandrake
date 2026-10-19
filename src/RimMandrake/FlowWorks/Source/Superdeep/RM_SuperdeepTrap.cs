@@ -153,7 +153,9 @@ namespace RimMandrake.FlowWorks
 				return 0;
 			}
 			int d = eng.ClimbDepthAt(c);
-			return d > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c) ? 0 : d;
+			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: a deck is ground at its walking height (a cover and a surface deck: 0; a
+			// sunken deck: its ledge's depth), as the pocket grid reads it (RM_PocketGrid.EffectiveDepth)
+			return d > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c) ? Pits.RM_SpanUtility.WalkingDepth(map, c, d) : d;
 		}
 
 		/// <summary>Held here under the relative rule: in a pocket of this pawn's climb band, captured, not a flyer, no usable

@@ -65,13 +65,15 @@ namespace RimMandrake.FlowWorks
 			}
 			float perLevel = RimMandrakeFlowWorksSettings.pitSinkPerLevel;
 			IntVec3 from = pawn.Position;
-			int dFrom = ex.HollowDepthAt(from);
+			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: on a suspension deck the pawn sinks to the deck's height (none at the
+			// surface), under it (floor band) to the hole's floor
+			int dFrom = Pits.RM_SuspensionUnderpass.DrawDepth(pawn, from, ex.HollowDepthAt(from));
 			if (pawn.pather == null || !pawn.pather.Moving)
 			{
 				return Clamped(ex, pawn.Map, from, dFrom, perLevel);
 			}
 			IntVec3 to = pawn.pather.nextCell;
-			int dTo = to.IsValid ? ex.HollowDepthAt(to) : dFrom;
+			int dTo = to.IsValid ? Pits.RM_SuspensionUnderpass.DrawDepth(pawn, to, ex.HollowDepthAt(to)) : dFrom;
 			if (dFrom == 0 && dTo == 0)
 			{
 				return 0f;

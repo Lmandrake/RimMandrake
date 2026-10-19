@@ -94,7 +94,7 @@ namespace RimMandrake.FlowWorks.Pits
 			List<Building_SpanDeck> decks = b.SpanDecks(r.Cell(0, RM_SuspensionMath.SegmentCells(span, r.Supports, r.length)[0]));
 			return "SPAN tier=" + RM_SuspensionMath.TierLabel(r.tier) + " load=" + load.ToString("0.0") + " rating=" + r.RatingKg.ToString("0")
 				+ " state=" + RM_SuspensionMath.Classify(load, r.RatingKg) + " decks=" + decks.Count + " railings=" + r.railings
-				+ " line=" + RM_SuspensionMath.LoadLine(load, r.RatingKg);
+				+ " deckNotches=" + r.deckNotches + " line=" + RM_SuspensionMath.LoadLine(load, r.RatingKg);
 		}
 
 		/// <summary>"x,z;on|off": the bridge's railings switch, built at once (god). → "RAILS on=b railed=N"</summary>
@@ -271,6 +271,129 @@ namespace RimMandrake.FlowWorks.Pits
 			long b1 = Body();
 			return "POUR dl=" + dl + " bodyBefore=" + b0 + " bodyAfter=" + b1 + " rise=" + (b1 - b0) + " filthBefore=" + f0
 				+ " filthAfter=" + Filth();
+		}
+
+		// ── SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD ───────────────────────────────────────────────────────────────
+
+		private static Pawn PawnById(Map map, string id)
+		{
+			return int.TryParse(id, out int n) ? map.mapPawns.AllPawnsSpawned.FirstOrDefault(x => x.thingIDNumber == n) : null;
+		}
+
+		/// <summary>"pawnId": the pawn's band. → "BAND under=b onDeck=b passes=b view=floor|deck deckNotches=N"</summary>
+		public static string ProofBand(string arg)
+		{
+			Map map = Find.CurrentMap;
+			Pawn p = map == null ? null : PawnById(map, arg);
+			if (p == null)
+			{
+				return "REFUSED: arg must be a spawned pawn's id";
+			}
+			Building_SpanDeck d = RM_SpanUtility.DeckAt(map, p.Position);
+			return "BAND under=" + RM_SuspensionUnderpass.InFloorBand(p) + " onDeck=" + RM_SuspensionUnderpass.OnDeck(p)
+				+ " passes=" + (d?.FloorBandPassesUnder ?? false) + " view=" + (RM_SuspensionUnderpass.UsesFloorView(p) ? "floor" : "deck")
+				+ " deckNotches=" + (d?.DeckNotches ?? -1);
+		}
+
+		/// <summary>"pawnId;x,z": the path that pawn would walk to x,z now, and how many of its squares are UNDER a deck (a
+		/// decked square the floor band passes under, walked while the pawn plans on the floor view). → "UNDERPATH found=b
+		/// cells=N decked=N view=floor|deck"</summary>
+		public static string ProofUnderPath(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			Pawn p = map == null || a.Length != 2 ? null : PawnById(map, a[0]);
+			if (p == null || !Cell(a[1], out IntVec3 dest))
+			{
+				return "REFUSED: arg must be pawnId;x,z";
+			}
+			string view = RM_SuspensionUnderpass.UsesFloorView(p) ? "floor" : "deck";
+			using (PawnPath path = map.pathFinder.FindPathNow(p.Position, dest, p))
+			{
+				if (path == null || !path.Found)
+				{
+					return "UNDERPATH found=False cells=0 decked=0 view=" + view;
+				}
+				int decked = path.NodesReversed.Count(n => RM_SuspensionUnderpass.PassingDeckAt(map, n) != null);
+				return "UNDERPATH found=True cells=" + path.NodesLeftCount + " decked=" + decked + " view=" + view;
+			}
+		}
+
+		/// <summary>"pawnId;x,z": set that pawn down UNDER the deck at x,z (the floor band), as if it had walked in along the
+		/// floor. → "PUTUNDER under=b"</summary>
+		public static string ProofPutUnder(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			Pawn p = map == null || a.Length != 2 ? null : PawnById(map, a[0]);
+			if (p == null || !Cell(a[1], out IntVec3 c) || RM_SuspensionUnderpass.PassingDeckAt(map, c) == null)
+			{
+				return "REFUSED: arg must be pawnId;x,z of a deck the floor band passes under";
+			}
+			p.jobs?.StopAll();
+			p.Position = c;
+			p.Notify_Teleported(true, true);
+			RM_MapComponent_SuspensionBridges.Of(map).SetBand(p, true);
+			return "PUTUNDER under=" + RM_SuspensionUnderpass.InFloorBand(p);
+		}
+
+		/// <summary>"shooterId;targetId": may the shooter's primary verb hit the target from where it stands (the production
+		/// CanHitTargetFrom, every patch on it). → "SHOT can=b shooterUnder=b targetUnder=b"</summary>
+		public static string ProofShot(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			Pawn s = map == null || a.Length != 2 ? null : PawnById(map, a[0]);
+			Pawn t = s == null ? null : PawnById(map, a[1]);
+			Verb v = s?.equipment?.PrimaryEq?.PrimaryVerb ?? s?.verbTracker?.PrimaryVerb;
+			if (s == null || t == null || v == null)
+			{
+				return "REFUSED: arg must be shooterId;targetId and the shooter needs a verb";
+			}
+			return "SHOT can=" + v.CanHitTargetFrom(s.Position, t) + " shooterUnder=" + RM_SuspensionUnderpass.InFloorBand(s)
+				+ " targetUnder=" + RM_SuspensionUnderpass.InFloorBand(t) + " ranged=" + !v.IsMeleeAttack;
+		}
+
+		/// <summary>"x,z": the span holding that deck square gives way now (as if overloaded). → "FELL crushed=N wrecks=N
+		/// slid=N" (session counters, read before and after by the script).</summary>
+		public static string ProofFell(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !Cell(arg, out IntVec3 c))
+			{
+				return "REFUSED: arg must be x,z";
+			}
+			if (c.IsValid && arg != "" && RM_MapComponent_SuspensionBridges.DeckAt(map, c) is Building_SuspensionDeck d)
+			{
+				map.GetComponent<RM_MapComponent_SuspensionBridges>().CollapseSpan(d, "gave way (proof)");
+			}
+			return "FELL crushed=" + RM_MapComponent_SuspensionBridges.Crushed + " wrecks=" + RM_MapComponent_SuspensionBridges.Wrecks
+				+ " slid=" + RM_SuspensionUnderpass.Slid;
+		}
+
+		/// <summary>"pawnId;defName": the pawn picks up one of that item where it stands and drops it there (the production
+		/// carry-drop, every patch on it). → "DROPUNDER under=b at=x,z underDeck=b slid=N"</summary>
+		public static string ProofDropUnder(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			Pawn p = map == null || a.Length != 2 ? null : PawnById(map, a[0]);
+			ThingDef def = a.Length == 2 ? DefDatabase<ThingDef>.GetNamedSilentFail(a[1]) : null;
+			if (p == null || def == null || p.carryTracker == null)
+			{
+				return "REFUSED: arg must be pawnId;itemDefName";
+			}
+			bool under = RM_SuspensionUnderpass.InFloorBand(p);
+			Thing t = ThingMaker.MakeThing(def, def.MadeFromStuff ? GenStuff.DefaultStuffFor(def) : null);
+			if (!p.carryTracker.TryStartCarry(t))
+			{
+				return "REFUSED: the pawn could not carry it";
+			}
+			p.carryTracker.TryDropCarriedThing(p.Position, ThingPlaceMode.Direct, out Thing dropped);
+			IntVec3 at = dropped?.Position ?? IntVec3.Invalid;
+			return "DROPUNDER under=" + under + " at=" + at.x + "," + at.z
+				+ " underDeck=" + (dropped != null && dropped.Spawned && RM_SuspensionUnderpass.PassingDeckAt(map, at) != null)
+				+ " slid=" + RM_SuspensionUnderpass.Slid;
 		}
 	}
 }

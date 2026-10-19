@@ -170,6 +170,13 @@ namespace RimMandrake.FlowWorks
 		/// grid and the cliff masks (RM_CliffMask) both derive from, so they never disagree. Read-only on the map.</summary>
 		public static byte[] EffectiveDepth(Map map, RM_MapComponent_Excavation eng)
 		{
+			return EffectiveDepth(map, eng, false);
+		}
+
+		/// <summary>SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: <paramref name="floorView"/> = the floor band's view, where a
+		/// suspension deck the floor band passes under reads as the floor beneath it (RM_CliffMask's floor-view masks).</summary>
+		public static byte[] EffectiveDepth(Map map, RM_MapComponent_Excavation eng, bool floorView)
+		{
 			var depth = new byte[map.cellIndices.NumGridCells];
 			if (eng != null)
 			{
@@ -179,7 +186,7 @@ namespace RimMandrake.FlowWorks
 			for (int i = 0; i < covers.Count; i++)
 			{
 				// SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: any intact deck is ground at its walking height (a cover: 0).
-				if (covers[i] is Pits.Building_SpanDeck c && c.Decked && c.Position.InBounds(map))
+				if (covers[i] is Pits.Building_SpanDeck c && c.Decked && c.Position.InBounds(map) && !(floorView && c.FloorBandPassesUnder))
 				{
 					int idx = map.cellIndices.CellToIndex(c.Position);
 					depth[idx] = (byte)RM_SpanMath.WalkingDepth(depth[idx], c.Read);

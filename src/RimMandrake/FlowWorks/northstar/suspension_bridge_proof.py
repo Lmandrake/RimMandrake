@@ -25,6 +25,17 @@ GRATE (SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP), plot from origin + (0, 20):
      same with a solid steel bridge at (1..4, 24)                                           -> row GRATE_FIRE.
   G2 a 2 m canal (1..4, 28) holding water under a grated steel bridge; 50 L poured on (2, 28) -> row GRATE_POUR.
   G3 a Steel bar dropped on the grate at (3, 28)                                             -> row GRATE_ITEM_STAYS.
+UNDERPASS (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD), plot from origin + (0, 40):
+  U1 a 4 m trench (1..8, 40), steel bridge across it at x=4 ((4,39)-(4,41)); colonist A on the floor at (1,40) ordered to
+     (8,40), colonist B at (4,38) ordered to (4,42)                                          -> rows UND_FLOOR_PATH, UND_BOTH_ARRIVE.
+  U2 a 1.5 m trench (1..8, 46), the same bridge at x=4; colonist on the floor at (1,46)    -> row UND_SHALLOW_WALL.
+  U3 colonist set under U1's deck (ProofPutUnder) drops a Steel there                      -> row UND_ITEM_SLIDES.
+  U4 gunner under a solid steel deck (U1) vs a colonist on that deck, then the same under a grate (U5: (1..8, 50) 4 m,
+     grated steel bridge at x=4)                                                             -> rows UND_SHOT_SOLID, UND_SHOT_GRATE.
+  U6 a colonist under U1's deck, the span forced to give way (ProofFell)                     -> row UND_CRUSH_AND_WRECK.
+  U7 a stepped pit: west ledge x=1 and east ledge x=4 (z 56..59) at 4 m, core x=2..3 at 7 m; sunken steel bridge (1,57)-(4,57);
+     a colonist on the west ledge ordered to the east ledge                                  -> row UND_SUNKEN_CROSS.
+  owed: raiders in a 4 m moat walk under (modcheck record), the L4 picture of a pawn passing under a deck.
 Every read is jawa/static_call RimMandrake.FlowWorks.Pits.RM_SuspensionProofs.<Proof*> (one line out; see that file).
 
 ANTI-GUESSING NOTES
@@ -278,7 +289,74 @@ def grate(ctx):
         {"things": names})
 
 
-SECTIONS = {"posts": None, "grate": grate}
+def underpass(ctx):
+    """SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD rows (verify L2 x7; raiders and the picture owed)."""
+    B, P, xz, row, proof, dig, spawn, ticks = (ctx[k] for k in ("B", "P", "xz", "row", "proof", "dig", "spawn", "ticks"))
+    for i in range(1, 9):
+        dig(P(i, 40), 8)
+        dig(P(i, 46), 3)
+        dig(P(i, 50), 8)
+    proof("ProofBuild", "%s;%s;steel;god" % (xz(P(4, 39)), xz(P(4, 41))))
+    proof("ProofBuild", "%s;%s;steel;god" % (xz(P(4, 45)), xz(P(4, 47))))
+    proof("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(4, 49)), xz(P(4, 51))))
+    a_ = spawn(P(1, 40))
+    b_ = spawn(P(4, 38))
+    kv, txt = proof("ProofUnderPath", "%s;%s" % (a_, xz(P(8, 40)))) if a_ else ({}, "no pawn")
+    good = kv.get("found") == "True" and int(kv.get("decked", "0")) >= 1 and kv.get("view") == "floor"
+    row("UND_floor_path_walks_under", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
+    oa = B.call("jawa/order_pawn", pawnId=a_, x=P(8, 40)[0], z=P(8, 40)[1], waitTicks=900, draft=True) or {}
+    ob = B.call("jawa/order_pawn", pawnId=b_, x=P(4, 42)[0], z=P(4, 42)[1], waitTicks=600, draft=True) or {}
+    at = {p.get("id"): (p.get("x"), p.get("z")) for o in (oa, ob) for p in (o.get("pawns") or [])}
+    good = at.get(a_) == P(8, 40) and at.get(b_) == P(4, 42)
+    row("UND_both_arrive", "PASS" if good else ("FAIL" if at else "UNMEASURED"), {"a": at.get(a_), "b": at.get(b_)})
+    c_ = spawn(P(1, 46))
+    kv, txt = proof("ProofUnderPath", "%s;%s" % (c_, xz(P(8, 46)))) if c_ else ({}, "no pawn")
+    good = kv.get("found") == "False" or kv.get("decked") == "0"
+    row("UND_shallow_trench_is_a_wall", "PASS" if kv and good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
+    d_ = spawn(P(2, 40))
+    proof("ProofPutUnder", "%s;%s" % (d_, xz(P(4, 40))))
+    kv, txt = proof("ProofDropUnder", "%s;Steel" % d_)
+    good = kv.get("under") == "True" and kv.get("underDeck") == "False"
+    row("UND_item_slides_to_open_floor", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
+    for tag, z, want in (("solid", 40, "False"), ("grate", 50, "True")):
+        g = (B.call("jawa/spawn_pawn", kindDef="Mercenary_Gunner", x=P(3, z)[0], z=P(3, z)[1], faction="player", count=1) or {})
+        gid = ((g.get("pawns") or [{}])[0]).get("id")
+        tgt = spawn(P(4, z + 1))                                   # on the deck square next to the crossing square
+        proof("ProofPutUnder", "%s;%s" % (gid, xz(P(4, z))))
+        kv, txt = proof("ProofShot", "%s;%s" % (gid, tgt)) if gid and tgt else ({}, "no pawns")
+        good = kv.get("shooterUnder") == "True" and kv.get("can") == want
+        row("UND_shot_%s_deck" % tag, "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"want": want, "read": txt})
+    e_ = spawn(P(2, 40))
+    proof("ProofPutUnder", "%s;%s" % (e_, xz(P(4, 40))))
+    kv0, _ = proof("ProofFell", "")
+    hb = (pawns_of(B).get(e_) or {}).get("hediffs") or []
+    kv, txt = proof("ProofFell", xz(P(4, 40)))
+    ha = (pawns_of(B).get(e_) or {}).get("hediffs") or []
+    good = int(kv.get("crushed", "0")) > int(kv0.get("crushed", "0")) and len(ha) > len(hb)
+    row("UND_crush_below_and_wreck", "PASS" if good else ("FAIL" if kv else "UNMEASURED"),
+        {"before": kv0, "after": txt, "hediffs": [len(hb), len(ha)],
+         "owed": "wreck blocks the floor until a clear job runs: read RM_SuspensionWreck on (4,40) and its deconstruct"})
+    for zz in range(56, 60):
+        dig(P(1, zz), 8)
+        dig(P(4, zz), 8)
+        dig(P(2, zz), 14)
+        dig(P(3, zz), 14)
+    kv, txt = proof("ProofBuild", "%s;%s;steel;god" % (xz(P(1, 57)), xz(P(4, 57))))
+    kvs, txts = proof("ProofSpan", xz(P(2, 57)))
+    f_ = spawn(P(1, 59))
+    kvp, txtp = proof("ProofUnderPath", "%s;%s" % (f_, xz(P(4, 59)))) if f_ else ({}, "no pawn")
+    good = kv.get("ok") == "True" and kvs.get("deckNotches") == "8" and kvp.get("found") == "True"
+    row("UND_sunken_bridge_crossed", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"build": txt, "span": txts, "path": txtp})
+    row("UND_raiders_walk_under_moat", "UNMEASURED", {"owed": True, "why": "OWED: a raid into a 4 m moat with a bridge over it, "
+        "recorded with modcheck (behaviour is the ruling, not a bug)"})
+    row("UND_L4_picture_pawn_under_deck", "UNMEASURED", {"owed": True, "why": "OWED: one joint screenshot of a pawn passing under a deck"})
+
+
+def pawns_of(B):
+    return {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=300) or {}).get("pawns") or []}
+
+
+SECTIONS = {"posts": None, "grate": grate, "underpass": underpass}
 
 
 class FakeBridge(object):
@@ -287,21 +365,29 @@ class FakeBridge(object):
 
     def __init__(self):
         self.next_id, self.calls, self.reads, self.tags, self.last_tier, self.span = 1000, [], 0, {}, "", 0
+        self.shot, self.fell, self.under_shallow, self.dug = 0, 0, {}, {}
 
     def call(self, tool, **kw):
         method = tool
         self.calls.append(method)
         if method == "jawa/static_call":
             return {"success": True, "result": self.static(kw.get("method"), kw.get("args") or "")}
+        if method == "jawa/flowworks_excavation_drive":
+            self.dug[(kw.get("x"), kw.get("z"))] = kw.get("deepenLevels")
+            return {"success": True}
+        if method == "jawa/order_pawn":
+            return {"pawns": [{"id": kw.get("pawnId"), "x": kw.get("x"), "z": kw.get("z")}], "ticksElapsed": kw.get("waitTicks")}
         if method == "jawa/spawn_pawn":
             self.next_id += 1
             self.tags[self.next_id] = self.last_tier
+            self.under_shallow[self.next_id] = self.dug.get((kw.get("x"), kw.get("z"))) == 3
             return {"pawns": [{"id": self.next_id}]}
         if method == "jawa/list_pawns":
             self.reads += 1
             late = self.reads % 2 == 0
             return {"pawns": [{"id": i, "x": FakeBridge.ox + 1 + (i % 6), "z": FakeBridge.floor_z,
-                               "hediffs": ([] if not late else ["Burn", "Bruise"] if self.tags.get(i) == "steelgrated" else ["Bruise"])}
+                               "hediffs": ([] if not late else ["Burn", "Bruise"] if self.tags.get(i) == "steelgrated" else ["Bruise"])
+                               + (["Crush"] * self.fell)}
                               for i in range(1001, self.next_id + 1)]}
         if method == "jawa/list_things":
             return {"success": True, "things": [{"def": "Steel"}]}
@@ -320,6 +406,8 @@ class FakeBridge(object):
             return "PATH found=True cells=9 decked=6"
         if m == "ProofSpan":
             self.span += 1
+            if self.last_tier == "steel":
+                return "SPAN tier=steel load=0.0 rating=2000 state=Ok decks=2 railings=False deckNotches=8 line=Load 0 / 2,000 kg"
             return "SPAN none" if self.span % 2 == 0 else "SPAN tier=timber load=640.0 rating=600 state=Over decks=6 line=Load 640 / 600 kg"
         if m == "ProofRails":
             on = arg.endswith("on")
@@ -334,6 +422,21 @@ class FakeBridge(object):
             return "VANILLA accepted=False reason=Use a suspension bridge over dug ground"
         if m == "ProofIgnite":
             return "LIT 1 cell"
+        if m == "ProofUnderPath":
+            pid = int(arg.split(";")[0])
+            shallow = self.under_shallow.get(pid)
+            return "UNDERPATH found=True cells=8 decked=%d view=floor" % (0 if shallow else 1)
+        if m == "ProofPutUnder":
+            return "PUTUNDER under=True"
+        if m == "ProofDropUnder":
+            return "DROPUNDER under=True at=1,1 underDeck=False slid=1"
+        if m == "ProofShot":
+            grate = self.last_tier == "steelgrated" and self.shot > 0
+            self.shot += 1
+            return "SHOT can=%s shooterUnder=True targetUnder=False ranged=True" % grate
+        if m == "ProofFell":
+            self.fell += 1 if arg else 0
+            return "FELL crushed=%d wrecks=%d slid=1" % (self.fell, self.fell)
         if m == "ProofGrate":
             return "GRATE grated=True deck=True fire=True attach=0.75 splash=0.50 scorches=3 drainedDl=500"
         if m == "ProofPour":

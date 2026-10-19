@@ -18,8 +18,8 @@ import zlib
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFS = os.path.join(HERE, "Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml")
 TEX = os.path.join(HERE, "Textures")
-# 10 from the posts build; +2 grated decks (SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP)
-EXPECTED = 12
+# 10 from the posts build; +2 grated decks (SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP); +1 wreck (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD)
+EXPECTED = 13
 
 
 def read_png(path):
