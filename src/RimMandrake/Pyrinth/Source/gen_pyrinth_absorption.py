@@ -86,6 +86,11 @@ SRC_TEX = os.path.join(WORKSHOP_FOLDER, "Textures")
 OUT_SUBDIR = "Absorbed_EpochsPyrinth"
 OUT_FILE_PREFIX = "Absorbed_EpochsPyrinth_"
 
+# Donor defs the owner cut: never absorbed, so a re-run cannot bring them back.
+#   DV_MeleeWeapon_PyrinthBlade -- owner, review sheet picks_icons_sheet_2026-10-19: "not needed" (cut). The live donor's
+#   copy is cut by the ratified Cherry Picker list (deployed/config/v1_freeze/Mod_3521312241_Mod_CherryPicker.xml).
+OWNER_CUT_DEFNAMES = {"DV_MeleeWeapon_PyrinthBlade"}
+
 
 class Report(object):
     def __init__(self):
@@ -271,6 +276,10 @@ def main():
             dn_el = el.find("defName")
             dn = dn_el.text.strip() if dn_el is not None and dn_el.text else None
 
+            if dn in OWNER_CUT_DEFNAMES:
+                R.note("defName %r (from %s) cut by the owner -- not absorbed" % (dn, rel))
+                n_dropped += 1
+                continue
             if dn:
                 if dn in existing:
                     R.warn("defName %r (from %s) COLLIDES with %s -- SKIPPED" % (dn, rel, existing[dn]))
@@ -326,7 +335,7 @@ def main():
             R.note("wrote %s (verbatim patch)" % os.path.relpath(dst_p, _REPO_ROOT))
 
     print("\n=== summary ===")
-    print("source elements seen: %d; written: %d; dropped (collision): %d; patches copied: %d"
+    print("source elements seen: %d; written: %d; dropped (collision or owner cut): %d; patches copied: %d"
           % (n_source_defs, len(all_new_defnames), n_dropped, n_patches))
     print("textures: %d found+copied, %d not found under this pack's own Textures/ (see warnings)"
           % (len(tex_seen), len(tex_missing)))

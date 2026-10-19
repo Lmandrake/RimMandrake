@@ -1,28 +1,28 @@
 # ResearchKitEastFix — validation walk
 subject: src/RimMandrake/MandrakePatches  (packageId mandrake.rm.patches)
 feature: research-kit-east-fix
-absorbed: ResearchKitEastFix (dying id rm.researchkiteastfix) folded into MandrakePatches at Source/ResearchKitEastFix + Textures/Things/Items/{HiTechResearchKit,MultiAnalyzerResearchKit,RemoteResearchKit,SimpleResearchKit} in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
+absorbed: ResearchKitEastFix (dying id rm.researchkiteastfix) folded into MandrakePatches at Source/ResearchKitEastFix + Textures/Things/Items/{HiTechResearchKit,MultiAnalyzerResearchKit,RemoteResearchKit} in Sprint wave A (commit 7e6eda0bd) — no longer ships alone.
 deps: PeteTimesSix.ResearchReinvented (hard modDependency, "Research Reinvented" — owns the ThingDefs); loadAfter also names `aw.researchreinvented.retextured` ("Research Reinvented Retextured," a pure loose-texture mod with no packageId in modDependencies — soft, order-only)
 list: full   # neither donor mod is in the minimal list
-status-hint: restores the east-facing worn art of all four Research Reinvented field research kits (simple/hi-tech/multi-analyzer/remote) — both donor mods ship a fully-transparent (or entirely absent) `_east` file, so a pawn wearing any kit and facing east renders nothing visible.
+status-hint: restores the east-facing worn art of the three Research Reinvented field research kits still in the game (hi-tech/multi-analyzer/remote; the simple kit `RR_FieldResearchKitSimple` is cut by Cherry Picker, owner picks_icons_sheet_2026-10-19: "drop") — both donor mods ship a fully-transparent (or entirely absent) `_east` file, so a pawn wearing any kit and facing east renders nothing visible.
 
 ## must be true
-- Ships exactly four files, one per kit, all 512×512 (Retextured's canvas, matched deliberately): `Things/Items/SimpleResearchKit/SimpleResearchKit_east.png`, `HiTechResearchKit/HiTechResearchKit_east.png`, `MultiAnalyzerResearchKit/MultiAnalyzerResearchKit_east.png`, `RemoteResearchKit/RemoteResearchKit_east.png` — all present on disk, no Defs, no Source-time code, no patch of any kind.
-- Each file is the matching Retextured `_west` flipped horizontally, with alpha coverage matching its donor to two decimal places (24.28% / 28.16% / 25.42% / 30.48% respectively) — the flip-fidelity check the mod's own justification is built on (About.xml "CONTENTS").
+- Ships exactly three files, one per kit, all 512×512 (Retextured's canvas, matched deliberately): `Things/Items/HiTechResearchKit/HiTechResearchKit_east.png`, `MultiAnalyzerResearchKit/MultiAnalyzerResearchKit_east.png`, `RemoteResearchKit/RemoteResearchKit_east.png` — all present on disk, no Defs, no Source-time code, no patch of any kind.
+- Each file is the matching Retextured `_west` flipped horizontally, with alpha coverage matching its donor to two decimal places (28.16% / 25.42% / 30.48% respectively) — the flip-fidelity check the mod's own justification is built on (About.xml "CONTENTS").
 - The donor's own `ThingDef`s (Research Reinvented's
   <!-- walklint-ok: v1.6/Defs/Apparel_FieldKits.xml is the DONOR's (PeteTimesSix.ResearchReinvented) own shipped file, not ours -- never present under src/ -->
-  `v1.6/Defs/Apparel_FieldKits.xml`) ask for these `wornGraphicPath`s, quoted verbatim from that file: `RR_FieldResearchKitSimple` → `Things/Items/SimpleResearchKit/SimpleResearchKit` (line 62), `RR_FieldResearchKitHiTech` → `Things/Items/HiTechResearchKit/HiTechResearchKit` (line 152), `RR_FieldResearchKitMultiAnalyzer` → `Things/Items/MultiAnalyzerResearchKit/MultiAnalyzerResearchKit` (line 245), `RR_FieldResearchKitRemote` → `Things/Items/RemoteResearchKit/RemoteResearchKit` (line 336) — only the worn directional set is affected; each def's separate ground-icon `texPath` is a different, healthy file.
+  `v1.6/Defs/Apparel_FieldKits.xml`) ask for these `wornGraphicPath`s, quoted verbatim from that file: `RR_FieldResearchKitHiTech` → `Things/Items/HiTechResearchKit/HiTechResearchKit` (line 152), `RR_FieldResearchKitMultiAnalyzer` → `Things/Items/MultiAnalyzerResearchKit/MultiAnalyzerResearchKit` (line 245), `RR_FieldResearchKitRemote` → `Things/Items/RemoteResearchKit/RemoteResearchKit` (line 336) — only the worn directional set is affected; each def's separate ground-icon `texPath` is a different, healthy file.
 - This mod must load AFTER BOTH donors (About.xml `loadAfter`: `PeteTimesSix.ResearchReinvented`, `aw.researchreinvented.retextured`) — both ship loose PNGs (Retextured also ships a `.dds` per file, but the later mod's loose `.png` still wins across mods), so a misordered list makes the repair invisible.
 - The generator, `ResearchKitEastFix/Source/mirror_research_kit_easts.py`, refuses to run if a west donor is itself under 1% covered — guards against mirroring a blank into a permanent one.
 - No log line can prove the fix landed — "Failed to find any textures at" only fires when EVERY direction of a `Graphic_Multi` is absent, and Research Reinvented's own blank 256×256 `_east` files count as "present" for that purpose (About.xml: "No log line is possible").
 
 ## the walk
 1. [L] Player.log after load contains no "Config error in mandrake.rm.patches" (the id this fix now ships under, since it absorbed into MandrakePatches) and no XML error naming this fix (ships no XML/Defs of its own, only loose PNGs)   # load-time
-2. [D] confirm via file inspection (no def of its own) that all four `*_east.png` files exist under `ResearchKitEastFix/Textures/Things/Items/`, are valid 512×512 PNGs, and none has a uniformly-zero alpha channel — the exact defect being fixed
+2. [D] confirm via file inspection (no def of its own) that all three `*_east.png` files exist under `ResearchKitEastFix/Textures/Things/Items/`, are valid 512×512 PNGs, and none has a uniformly-zero alpha channel — the exact defect being fixed
 3. [D] confirm this mod's files load AFTER both `PeteTimesSix.ResearchReinvented` and `aw.researchreinvented.retextured` in the resolved mod order (`ModsConfig.xml` / live `jawa/mod_inventory` load-order listing) — order is the entire mechanism; either donor loading after this mod makes it a silent no-op
-4. [D] def read-back (on the donor's own defs, quoted not guessed): `ThingDef RR_FieldResearchKitSimple` exists with `wornGraphicPath` = `Things/Items/SimpleResearchKit/SimpleResearchKit` — repeat for HiTech/MultiAnalyzer/Remote — confirms the path this mod's files sit at is still the one the live game actually reads (a Research Reinvented update could move it)
-5. [B] `jawa/spawn_pawn`, then `jawa/inventory_transfer {mode: "add", ...}` an `RR_FieldResearchKitSimple` onto the pawn and wear it (or `rimworld/right_click_cell` → wear order), rotate the pawn to face east, then `jawa/inspect_string` on the pawn to confirm the apparel is worn — proves the def resolves and equips; whether the EAST-FACING TEXTURE actually renders is a visual property no bridge tool can assert (see [S] line) — repeat per kit if time allows, simple kit first since it's the one blank in BOTH donor layers
-X. [S] (human pass) with each kit worn and the pawn facing east, confirm the kit is visible rather than invisible, for all four kits — deferred to MOD_HUMAN_EXPLORATION_PASS_1
+4. [D] def read-back (on the donor's own defs, quoted not guessed): `ThingDef RR_FieldResearchKitHiTech` exists with `wornGraphicPath` = `Things/Items/HiTechResearchKit/HiTechResearchKit` — repeat for MultiAnalyzer/Remote — confirms the path this mod's files sit at is still the one the live game actually reads (a Research Reinvented update could move it)
+5. [B] `jawa/spawn_pawn`, then `jawa/inventory_transfer {mode: "add", ...}` an `RR_FieldResearchKitHiTech` onto the pawn and wear it (or `rimworld/right_click_cell` → wear order), rotate the pawn to face east, then `jawa/inspect_string` on the pawn to confirm the apparel is worn — proves the def resolves and equips; whether the EAST-FACING TEXTURE actually renders is a visual property no bridge tool can assert (see [S] line) — repeat per kit if time allows
+X. [S] (human pass) with each kit worn and the pawn facing east, confirm the kit is visible rather than invisible, for all three kits — deferred to MOD_HUMAN_EXPLORATION_PASS_1
 
 ## north star
 state: DRAFT
@@ -41,8 +41,8 @@ least certain. `### the experience` is his to dictate.
 ### must show
 
 **Field research kits from the east**
-- [ ] `researchkit_east_visible` — a colonist wearing each of the four field
-      research kits (simple, hi-tech, multi-analyzer, remote) and facing east shows
+- [ ] `researchkit_east_visible` — a colonist wearing each of the three field
+      research kits (hi-tech, multi-analyzer, remote) and facing east shows
       the kit.
 - [ ] `researchkit_east_mirrors_west` — each east kit reads as the mirror of its
       west view, at the same size and place on the body.
