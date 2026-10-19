@@ -19,9 +19,9 @@
      - RSW_SarlaccCavity drops the donor's UndercaveMapComponent: that component looks for a PitGate on the source map and,
        finding none, logged a warning on every generation and did nothing else but ambient dust. It also drops the donor's
        Name="Undercave" attribute, which collided with vanilla Anomaly's own abstract name.
-     - The donor's Wild*Plants mutators (WildGalacticPlants, WildRylothPlants, WildTattooinePlants, WildNabooPlants,
-       WildDantooinePlants, WildAlderaanPlants, WildFelucianPlants) are donor defs and are not ported; they are dropped from
-       both landmarks' optional mutator chances. Every other chance is a vanilla Odyssey/Biotech/Ideology mutator.
+     - The donor's wild-plant mutators are dropped from both landmarks' optional mutator chances. Two of them were ported
+       2026-10-19 as RSW_WildTattooinePlants / RSW_WildGalacticPlants (RSW_DonorPack_WildPlantMutators.xml); the rest
+       were on no tile and are not ported. Every other chance is a vanilla Odyssey/Biotech/Ideology mutator.
      - Odyssey MayRequire guards are dropped: every DLC is assumed and this mod depends on Odyssey.
      ART: no donor pixels. RSW_SarlaccPit, RSW_DeadSarlaccHusk and RSW_SarlacciSpore name OUR texture paths; the renders are
      filed in design/RimMandrake/swac_sarlacc_art_2026-10-15.json (artpipe). Until they install those three defs have no

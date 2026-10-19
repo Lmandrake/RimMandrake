@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT (owner, 2026-10-19: "Reproduce the mutators into our own code, then proceed with
+     deprecation of the donors."). The Utinni layer's half of the ported world-tile mutators: adds to each port's
+     biomeWhitelist the Ash'karr RUT_ biomes its tiles actually sit on in the canonical save
+     (CANONICAL_ASHKARR_START_2026-09-12.rws, tileBiome grid decoded per mutator tile, MEASURED 2026-10-19), so a
+     whitelist never refuses a tile the repaint or the save rename gives it. Ports whose donor had only a blacklist
+     need nothing here. Mapping: design/RimMandrake/retired_mutators_port_2026-10-19.md.
+     Each op is Conditional on the mutator existing (the RM_/RSW_ mods may be inactive), so a miss logs nothing. -->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="RM_DerelictClusters"]/biomeWhitelist</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="RM_DerelictClusters"]/biomeWhitelist</xpath>
+      <value>
+        <li>RUT_RustCathedral</li>
+        <li>RUT_ExtremeDesert</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="RM_EdibleAirborneMicrofungi"]/biomeWhitelist</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="RM_EdibleAirborneMicrofungi"]/biomeWhitelist</xpath>
+      <value>
+        <li>RUT_TheRot</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="RM_MoldyEnvironment"]/biomeWhitelist</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="RM_MoldyEnvironment"]/biomeWhitelist</xpath>
+      <value>
+        <li>RUT_TheRot</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="RM_GiantFossils"]/biomeWhitelist</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="RM_GiantFossils"]/biomeWhitelist</xpath>
+      <value>
+        <li>RUT_ExtremeDesert</li>
+        <li>RUT_Desert</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="RM_LocustPlagues"]/biomeWhitelist</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="RM_LocustPlagues"]/biomeWhitelist</xpath>
+      <value>
+        <li>RUT_Miasma</li>
+        <li>RUT_FeverWood</li>
+        <li>RUT_Greentide</li>
+        <li>RUT_CrackedLands</li>
+        <li>RUT_WeepingStones</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="RM_QuicksandPits"]/biomeWhitelist</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="RM_QuicksandPits"]/biomeWhitelist</xpath>
+      <value>
+        <li>RUT_Wasteland</li>
+        <li>RUT_Desert</li>
+        <li>RUT_ExtremeDesert</li>
+        <li>RUT_AridShrubland</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="RSW_WildTattooinePlants"]/biomeWhitelist</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="RSW_WildTattooinePlants"]/biomeWhitelist</xpath>
+      <value>
+        <li>RUT_ExtremeDesert</li>
+        <li>RUT_AridShrubland</li>
+        <li>RUT_Desert</li>
+        <li>RUT_Contagion</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="RSW_WildGalacticPlants"]/biomeWhitelist</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="RSW_WildGalacticPlants"]/biomeWhitelist</xpath>
+      <value>
+        <li>RUT_Wasteland</li>
+        <li>RUT_AridShrubland</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

@@ -472,6 +472,14 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool weatherGateCoversWholeCondition = true;
         // THORNBUG_FEAR_SCOPE_1 PROVISIONAL (auto-decided 2026-10-09): owner card 3's local radius wins over the map-wide danger gate.
         public static bool thornbugFearLocalOnly = true;
+        // RETIRED_MUTATORS_PORT (owner 2026-10-19): our own world-tile mutators replacing the retired Alpha Biomes ones
+        // (RM_WorldMutatorPorts.cs). Structures/animals are placed when a map is generated; the rest run on the map.
+        public static bool worldMutatorStructuresEnabled = true;
+        public static bool worldMutatorAnimalsEnabled = true;
+        public static bool worldMutatorBuildingGatesEnabled = true;
+        public static bool ambientRadiationMutationsEnabled = true;
+        public static bool moldyEnvironmentMoodEnabled = true;
+        public static bool magmaVentEruptionsEnabled = true;
 
         // EH-3 (ENVHAZARDS_SETTINGS_SCREEN_1): shipped value of every public static bool/float/int setting, read from the field
         // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order). The
@@ -616,6 +624,12 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref waterLockedRecoveryWalk, "waterLockedRecoveryWalk", true);
             Scribe_Values.Look(ref weatherGateCoversWholeCondition, "weatherGateCoversWholeCondition", true);
             Scribe_Values.Look(ref thornbugFearLocalOnly, "thornbugFearLocalOnly", true);
+            Scribe_Values.Look(ref worldMutatorStructuresEnabled, "worldMutatorStructuresEnabled", true);
+            Scribe_Values.Look(ref worldMutatorAnimalsEnabled, "worldMutatorAnimalsEnabled", true);
+            Scribe_Values.Look(ref worldMutatorBuildingGatesEnabled, "worldMutatorBuildingGatesEnabled", true);
+            Scribe_Values.Look(ref ambientRadiationMutationsEnabled, "ambientRadiationMutationsEnabled", true);
+            Scribe_Values.Look(ref moldyEnvironmentMoodEnabled, "moldyEnvironmentMoodEnabled", true);
+            Scribe_Values.Look(ref magmaVentEruptionsEnabled, "magmaVentEruptionsEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -866,6 +880,21 @@ namespace RimMandrake.EnvironmentalHazards
                 list.CheckboxLabeled("Thornbugs fear only nearby hostiles", ref thornbugFearLocalOnly,
                     "On: a calm-gated herd animal (the thornbug) is scared only by hostiles within its fear radius, so a sheltered herd on the far side of a raid stays calm. Off: any high-danger raid anywhere on the map scares every herd.");
                 list.GapLine();
+            }
+            if (Group(list, "World-tile features (ports of retired donor mutators)", RimMandrake.Shared.SettingScope.Now, new[] { "worldMutatorStructuresEnabled", "worldMutatorAnimalsEnabled", "worldMutatorBuildingGatesEnabled", "ambientRadiationMutationsEnabled", "moldyEnvironmentMoodEnabled", "magmaVentEruptionsEnabled" }))
+            {
+                list.CheckboxLabeled("Ancient vents on vent tiles (WORLDGEN-AFFECTING, new maps only)", ref worldMutatorStructuresEnabled,
+                    "Freezing, gray-pall, blood-rain and death-pall vent tiles place their vents when a new map is generated. Off: no vents are placed; existing vents keep working.");
+                list.CheckboxLabeled("Infesting animals (feralisk nests, locust plagues)", ref worldMutatorAnimalsEnabled,
+                    "An infested tile places a wild group on a new map and sends more in from the edge over time. Off: neither happens.");
+                list.CheckboxLabeled("Tile-locked buildings need their tile feature", ref worldMutatorBuildingGatesEnabled,
+                    "The magma-thermal generator needs geothermal hotspots and the mycotic collector needs edible airborne micro-fungi on the map's tile. Off: buildable anywhere.");
+                list.CheckboxLabeled("Ambient radiation mutates colonists", ref ambientRadiationMutationsEnabled,
+                    "On an ambient-radiation tile a random colonist gains a random gene about every 15 days. Off: the condition shows but does nothing.");
+                list.CheckboxLabeled("Moldy environment mood penalty outdoors", ref moldyEnvironmentMoodEnabled,
+                    "On a moldy-environment tile colonists under open sky take a -10 mood. Off: no penalty.");
+                list.CheckboxLabeled("Magma vents erupt", ref magmaVentEruptionsEnabled,
+                    "Magma vents burst into fire around themselves every couple of days. Off: they stay quiet.");
             }
             if (Group(list, "Water truce", RimMandrake.Shared.SettingScope.Now, new[] { "waterTruceRetributionEnabled", "waterTruceSuppressionEnabled", "waterTruceRadius" }))
             {

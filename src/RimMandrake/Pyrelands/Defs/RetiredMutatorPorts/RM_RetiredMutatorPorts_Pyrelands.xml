@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT (owner, 2026-10-19: "Reproduce the mutators into our own code, then proceed with
+     deprecation of the donors."). Pyrelands' ports of the Alpha Biomes pyroclastic mutators (the donor's AB_PyroclasticConflagration is our
+     RM_Pyrelands; the canon save's tiles carrying them read RM_FloodedCanyon, so that biome is listed too):
+     AB_MagmaVents, AB_MagmaticQuagmire (mutator + landmark), AB_GeothermalHotspots.
+     Mapping, per-row notes and what could not be reproduced: design/RimMandrake/retired_mutators_port_2026-10-19.md.
+     Classes named RimMandrake.EnvironmentalHazards.* live in EnvironmentalHazards/Source/RM_WorldMutatorPorts.cs.
+     The Ash'karr RUT_ biomes these tiles sit on are added to the whitelists from the Utinni layer
+     (UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml). PLACEHOLDER ART: any graphic here is vanilla. -->
+<Defs>
+
+  <!-- Magma vent (replaces AB_MagmaVent, whose eruptions lived in donor C#): natural 4x4, warm, erupts fire and
+       searing gas around itself (RM_CompMagmaVent). Placed by RM_GenStep_MagmaVents. -->
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_MagmaVent</defName>
+    <label>magma vent</label>
+    <description>A fiery fissure in the earth. It intermittently erupts with jets of molten rock and searing gas that set everything nearby alight.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/GeothermalVent</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize>
+      <color>(255,140,90)</color>
+    </graphicData>
+    <altitudeLayer>Floor</altitudeLayer>
+    <size>(4,4)</size>
+    <rotatable>false</rotatable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <selectable>true</selectable>
+    <tickerType>Rare</tickerType>
+    <blockPlants>true</blockPlants>
+    <neverOverlapFloors>false</neverOverlapFloors>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <repairable>false</repairable>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <li Class="CompProperties_HeatPusher">
+        <heatPerSecond>60</heatPerSecond>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_MagmaVent">
+        <eruptionMtbDays>2</eruptionMtbDays>
+        <radius>3.9</radius>
+        <damage>12</damage>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Magma-thermal generator (replaces AB_MagmaThermalPlant): the donor's numbers (6x6 on a steam geyser,
+       3960 W, 340 steel + 8 components), buildable only on a map whose tile carries RM_GeothermalHotspots. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_MagmaThermalGenerator</defName>
+    <label>magma-thermal generator</label>
+    <description>Produces electricity from a steam geyser fed by high geothermal activity. More efficient than an ordinary geothermal generator, but it can only be built where the land itself runs hot: a tile with geothermal hotspots.</description>
+    <thingClass>Building</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <texPath>Things/Building/Power/GeothermalPlant</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(6,6)</drawSize>
+      <color>(255,170,140)</color>
+      <shadowData>
+        <volume>(6.03,1.0,5.25)</volume>
+        <offset>(0,0,-0.25)</offset>
+      </shadowData>
+      <damageData>
+        <rect>(0.3,0,5.4,6)</rect>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <blockWind>true</blockWind>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <fillPercent>1</fillPercent>
+    <blockLight>true</blockLight>
+    <canOverlapZones>false</canOverlapZones>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <WorkToBuild>12000</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>-30</Beauty>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <size>(6,6)</size>
+    <costList>
+      <Steel>340</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerPlantSteam</compClass>
+        <basePowerConsumption>-3960</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Breakdownable"/>
+      <li Class="CompProperties_Stunnable">
+        <useLargeEMPEffecter>true</useLargeEMPEffecter>
+        <empChancePerTick>0.7</empChancePerTick>
+        <affectedDamageDefs>
+          <li>EMP</li>
+        </affectedDamageDefs>
+      </li>
+      <li Class="CompProperties_AmbientSound">
+        <sound>GeothermalPlant_Ambience</sound>
+        <disabledOnUnpowered>true</disabledOnUnpowered>
+      </li>
+    </comps>
+    <rotatable>false</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <designationCategory>Power</designationCategory>
+    <uiOrder>2111</uiOrder>
+    <placeWorkers>
+      <li>PlaceWorker_OnSteamGeyser</li>
+      <li>PlaceWorker_InvalidOverSubstructure</li>
+      <li>RimMandrake.EnvironmentalHazards.RM_PlaceWorker_RequiresTileMutator</li>
+    </placeWorkers>
+    <building>
+      <ai_chillDestination>false</ai_chillDestination>
+      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+    </building>
+    <constructEffect>ConstructMetal</constructEffect>
+    <researchPrerequisites><li>GeothermalPower</li></researchPrerequisites>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_RequiresTileMutatorExtension">
+        <mutators>
+          <li>RM_GeothermalHotspots</li>
+        </mutators>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+
+  <!-- AB_MagmaVents: 6~12 magma vents, 30 cells apart (donor: VEF prefab spawner + AB_MagmaVent_Prefab). -->
+  <GenStepDef>
+    <defName>RM_GenStep_MagmaVents</defName>
+    <order>600</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RM_MagmaVent</thingDef>
+      <countPer10kCellsRange>0.96~1.92</countPer10kCellsRange>
+      <minSpacing>30</minSpacing>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <clearSpaceSize>5</clearSpaceSize>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <TileMutatorDef>
+    <defName>RM_MagmaVents</defName>
+    <label>magma vents</label>
+    <description>Fiery fissures in the earth that intermittently erupt with jets of molten rock and searing gas.</description>
+    <chanceOnNonLandmarkTile>0.5</chanceOnNonLandmarkTile>
+    <biomeWhitelist>
+      <li>RM_Pyrelands</li>
+      <li>RM_FloodedCanyon</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RM_GenStep_MagmaVents</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <!-- AB_GeothermalHotspots: a flag; RM_MagmaThermalGenerator above may only be built where it is. The donor's
+       category VEE_Geothermal_NotHigh is kept (a category is only a string; it keeps Vanilla Events Expanded's
+       high-geothermal mutator off the same tile). -->
+  <TileMutatorDef>
+    <defName>RM_GeothermalHotspots</defName>
+    <label>geothermal hotspots</label>
+    <description>High geothermal activity allows construction of efficient magma-thermal generators (under Power).</description>
+    <chanceOnNonLandmarkTile>0.5</chanceOnNonLandmarkTile>
+    <biomeWhitelist>
+      <li>RM_Pyrelands</li>
+      <li>RM_FloodedCanyon</li>
+    </biomeWhitelist>
+    <categories>
+      <li>VEE_Geothermal_NotHigh</li>
+    </categories>
+  </TileMutatorDef>
+
+  <!-- AB_MagmaticQuagmire: molten, cracking ground (donor C# worker). Ours: vanilla's patch worker laying
+       vanilla Odyssey volcanic rock, cooled lava and pools of deep lava; donor's no-ponds, flat-only, inland-only
+       and solidified-lava banks kept (AB_SolidifiedLava -> vanilla CooledLava). -->
+  <TileMutatorDef>
+    <defName>RM_MagmaticQuagmire</defName>
+    <label>magmatic quagmire</label>
+    <description>A seething landscape of molten rock and blistering heat, where the ground bubbles, cracks, and burns beneath your feet.</description>
+    <workerClass>TileMutatorWorker_Patches</workerClass>
+    <maxHilliness>Flat</maxHilliness>
+    <preventsPondGeneration>true</preventsPondGeneration>
+    <overrideLakeBeachTerrain>CooledLava</overrideLakeBeachTerrain>
+    <overrideRiverbankTerrain>CooledLava</overrideRiverbankTerrain>
+    <coastSidesRange>0~0</coastSidesRange>
+    <biomeWhitelist>
+      <li>RM_Pyrelands</li>
+      <li>RM_FloodedCanyon</li>
+    </biomeWhitelist>
+    <terrainPatchMakers>
+      <li>
+        <perlinFrequency>0.03</perlinFrequency>
+        <thresholds>
+          <li>
+            <terrain>VolcanicRock</terrain>
+            <min>0.40</min>
+            <max>0.56</max>
+          </li>
+          <li>
+            <terrain>CooledLava</terrain>
+            <min>0.56</min>
+            <max>0.70</max>
+          </li>
+          <li>
+            <terrain>LavaDeep</terrain>
+            <min>0.70</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
+  </TileMutatorDef>
+
+  <LandmarkDef>
+    <defName>RM_MagmaticQuagmire</defName>
+    <label>magmatic quagmire</label>
+    <drawScale>0.7</drawScale>
+    <iconTexturePath>World/Landmarks/LavaFlow</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.15</commonality>
+    <nameMaker>NamerLandmark_LavaFlow</nameMaker>
+    <mutatorChances>
+      <RM_MagmaticQuagmire Required="True" />
+      <RM_MagmaVents Required="True" />
+      <RM_GeothermalHotspots Required="True" />
+      <SteamGeysers_Increased>0.25</SteamGeysers_Increased>
+      <Stockpile>0.05</Stockpile>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <SunnyMutator>0.1</SunnyMutator>
+      <WindyMutator>0.05</WindyMutator>
+      <InsectMegahive>0.01</InsectMegahive>
+      <AncientUplink>0.02</AncientUplink>
+      <MineralRich>0.05</MineralRich>
+    </mutatorChances>
+  </LandmarkDef>
+
+</Defs>

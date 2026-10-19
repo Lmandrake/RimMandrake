@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT (owner, 2026-10-19: "Reproduce the mutators into our own code, then proceed with
+     deprecation of the donors."). The Sump's port of the Alpha Biomes tar lakes (mutator + landmark). The donor blacklisted its own tar
+     biome AB_TarPits (our RM_TheSump, already tar ground), kept here.
+     Mapping, per-row notes and what could not be reproduced: design/RimMandrake/retired_mutators_port_2026-10-19.md.
+     Classes named RimMandrake.EnvironmentalHazards.* live in EnvironmentalHazards/Source/RM_WorldMutatorPorts.cs.
+     The Ash'karr RUT_ biomes these tiles sit on are added to the whitelists from the Utinni layer
+     (UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml). PLACEHOLDER ART: any graphic here is vanilla. -->
+<Defs>
+
+  <!-- AB_TarLakes: "a shallow pool of a dense tar-like substance. Impassable, and can't be bridged over"
+       (donor C# worker). Ours: vanilla's patch worker laying FlowWorks' RM_TarShallow at the rim and RM_TarDeep
+       (WaterDeepBase: impassable, and its only bridge affordance belongs to a retired mod, so unbridgeable). -->
+  <TileMutatorDef>
+    <defName>RM_TarLakes</defName>
+    <label>tar lakes</label>
+    <description>A shallow pool of a dense tar-like substance. Impassable, and can't be bridged over.</description>
+    <workerClass>TileMutatorWorker_Patches</workerClass>
+    <categories>
+      <li>Lake</li>
+    </categories>
+    <coastSidesRange>0~0</coastSidesRange>
+    <preventsPondGeneration>true</preventsPondGeneration>
+    <biomeBlacklist>
+      <li>RM_TheSump</li>
+    </biomeBlacklist>
+    <terrainPatchMakers>
+      <li>
+        <perlinFrequency>0.04</perlinFrequency>
+        <minSize>20</minSize>
+        <thresholds>
+          <li>
+            <terrain>RM_TarShallow</terrain>
+            <min>0.60</min>
+            <max>0.68</max>
+          </li>
+          <li>
+            <terrain>RM_TarDeep</terrain>
+            <min>0.68</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
+  </TileMutatorDef>
+
+  <!-- The donor landmark also required AB_TarHoles (scattered tar holes; on no tile of the save, not ported). -->
+  <LandmarkDef>
+    <defName>RM_TarLakes</defName>
+    <label>tar lakes</label>
+    <drawScale>0.7</drawScale>
+    <iconTexturePath>World/Landmarks/ToxicLake</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>1</commonality>
+    <nameMaker>NamerLandmark_Lake</nameMaker>
+    <category>lake</category>
+    <mutatorChances>
+      <RM_TarLakes Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <Muddy>0.75</Muddy>
+      <AnimalHabitat>0.25</AnimalHabitat>
+      <SunnyMutator>0.05</SunnyMutator>
+      <AncientUplink>0.02</AncientUplink>
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Fertile>0.05</Fertile>
+    </mutatorChances>
+  </LandmarkDef>
+
+</Defs>

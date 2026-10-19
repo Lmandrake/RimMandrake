@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT (owner, 2026-10-19: "Reproduce the mutators into our own code, then proceed with
+     deprecation of the donors."). Webwork's port of the Alpha Biomes feralisk nest. Owner ruling 2026-09-10 / 2026-10-03: the feralisk is
+     merged into RM_Ollathrix (the wyyyschokk; Alpha Animals' AA_Feralisk retired entirely), and the donor's
+     AB_FeraliskInfestedJungle is the Webwork.
+     Mapping, per-row notes and what could not be reproduced: design/RimMandrake/retired_mutators_port_2026-10-19.md.
+     Classes named RimMandrake.EnvironmentalHazards.* live in EnvironmentalHazards/Source/RM_WorldMutatorPorts.cs.
+     The Ash'karr RUT_ biomes these tiles sit on are added to the whitelists from the Utinni layer
+     (UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml). PLACEHOLDER ART: any graphic here is vanilla. -->
+<Defs>
+
+  <!-- AB_FeraliskNest: the donor forced AA_Feralisk into 25% of the tile's animal spawns (VEF extra-animal worker).
+       Ours: a wild ollathrix group on a new map, more wandering in over time (RM_TileMutatorWorker_ExtraAnimals). -->
+  <TileMutatorDef>
+    <defName>RM_OllathrixNest</defName>
+    <label>ollathrix nest</label>
+    <description>This area is infested with ollathrix.</description>
+    <workerClass>RimMandrake.EnvironmentalHazards.RM_TileMutatorWorker_ExtraAnimals</workerClass>
+    <biomeBlacklist>
+      <li>RM_Webwork</li>
+    </biomeBlacklist>
+    <chanceOnNonLandmarkTile>0.025</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TileMutatorPortExtension">
+        <pawnKind>RM_Ollathrix</pawnKind>
+        <pawnCountRange>1~2</pawnCountRange>
+        <arrivalMtbDays>20</arrivalMtbDays>
+        <maxOnMap>3</maxOnMap>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+</Defs>

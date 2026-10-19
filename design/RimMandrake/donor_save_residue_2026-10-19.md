@@ -20,13 +20,17 @@ The owner's canonical save was NOT edited.
 ## Save residue the canonical save still carries (live repair steps for BENCH)
 Game up with the donor-free list, save loaded, bridge held:
 1. Landmarks (unresolved; 14 tiles): AB_TarLakes (tiles 994, 457, 476, 1859, 1866, 2637, 10015), AB_MagmaticQuagmire (2540, 7405, 7400),
-   AB_QuicksandPits (1415), AB_PropaneLakes (x2: list with `save_adoption_check.py --json`). Remove each with `jawa/world_landmarks_set`
-   (clear) then `world_commit`, or set to a provided LandmarkDef. The load drops them with an error otherwise.
+   AB_QuicksandPits (1415), AB_PropaneLakes (x2: list with `save_adoption_check.py --json`). Since 2026-10-19 each has a port
+   (`RM_TarLakes`, `RM_MagmaticQuagmire`, `RM_QuicksandPits`; map `design/RimMandrake/retired_mutators_port_map.json`): set the
+   port with `jawa/world_landmarks_set` then `world_commit`, or use the offline-renamed copy (WORLDMAP_REPAIR note). `AB_PropaneLakes` is
+   on no tile of the canonical save (it is only a world-gen biome key). The load drops an unrenamed one with an error.
 2. Biomes with AB_ names (10 tiles-groups: AB_FeraliskInfestedJungle, AB_GallatrossGraveyard, AB_GelatinousSuperorganism,
    AB_MechanoidIntrusion ...): `world tileBiome` lostOnLoad hashes 59367 x1135, 65189 x546, 58457 x222: repaint those tiles
    (`world_tile_set`) to a provided biome; this is the planned one-time repaint, so just record it.
-3. tileMutatorDefs: AB_DerelictClusters x171, AB_AmbientRadiation x104, AB_FeraliskNest x70, AB_AncientFreezingVent x61, WildTattooinePlants x1403:
-   clear with the mutator setter, then `world_commit`.
+3. tileMutatorDefs: AB_DerelictClusters x171, AB_AmbientRadiation x104, AB_FeraliskNest x70, AB_AncientFreezingVent x61, WildTattooinePlants x1403
+   and the rest: since 2026-10-19 rename each to its port per `design/RimMandrake/retired_mutators_port_map.json`
+   (`save_donor_rewrite.py --mutators-only` does it offline on a copy); clear only the four with no port (AB_DerelictArchonexus,
+   AB_DerelictBioLab, AB_DerelictKemeticTemple, WildDantooinePlants) or leave them for the owner's repaint call.
 4. Things: 91 AB_Mech_Ruined* buildings on maps plus ~400 unresolved AB_/AA_ Thing names: Scribe drops each with one error line.
    Either `jawa/destroy_batch` on ids from `save_adoption_check.py --json`, or accept the drops and re-save once.
 5. Pawns: AA_Eyeling669122 (Marquee, (175,0,134)) is re-homed to Alpha Memes: destroy, spawn RSW_Ikee, re-create Bond with Yeku

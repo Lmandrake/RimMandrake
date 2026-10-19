@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RETIRED_MUTATORS_PORT (owner, 2026-10-19: "Reproduce the mutators into our own code, then proceed with
+     deprecation of the donors."). The Rust Cathedral's port of the Alpha Biomes derelict mechanoid clusters (the donor's AB_MechanoidIntrusion
+     is our RM_RustCathedral).
+     Mapping, per-row notes and what could not be reproduced: design/RimMandrake/retired_mutators_port_2026-10-19.md.
+     Classes named RimMandrake.EnvironmentalHazards.* live in EnvironmentalHazards/Source/RM_WorldMutatorPorts.cs.
+     The Ash'karr RUT_ biomes these tiles sit on are added to the whitelists from the Utinni layer
+     (UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml). PLACEHOLDER ART: any graphic here is vanilla. -->
+<Defs>
+
+  <!-- AB_DerelictClusters: 4~6 derelict mechanoid clusters 30 cells apart, "from which some materials could be
+       scavenged" (donor: VEF KCSG spawner + six AB_MechCluster layouts of AB_Mech_Ruined* buildings, donor art).
+       Ours: vanilla GenStep_ScatterGroup, each cluster a vanilla ancient war-machine wreck ringed by mechanoid slag
+       chunks (smelt for steel). Not reproduced: the donor's deconstruct-for-plasteel/components ruined buildings
+       (donor art; see the mapping doc). -->
+  <GenStepDef>
+    <defName>RM_GenStep_DerelictClusters</defName>
+    <order>600</order>
+    <genStep Class="GenStep_ScatterGroup">
+      <countPer10kCellsRange>0.64~0.96</countPer10kCellsRange>
+      <minSpacing>30</minSpacing>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <warnOnFail>false</warnOnFail>
+      <groups>
+        <li>
+          <spawnAtCenter>AncientWarwalkerTorso</spawnAtCenter>
+          <things>
+            <ChunkMechanoidSlag>1</ChunkMechanoidSlag>
+          </things>
+          <coveredCellsPer10Cells>0.6~1.2</coveredCellsPer10Cells>
+          <clusterRectRadius>4~6</clusterRectRadius>
+        </li>
+        <li>
+          <spawnAtCenter>AncientWarspiderRemains</spawnAtCenter>
+          <things>
+            <ChunkMechanoidSlag>1</ChunkMechanoidSlag>
+          </things>
+          <coveredCellsPer10Cells>0.6~1.2</coveredCellsPer10Cells>
+          <clusterRectRadius>4~6</clusterRectRadius>
+        </li>
+        <li>
+          <spawnAtCenter>AncientMiniWarwalkerRemains</spawnAtCenter>
+          <things>
+            <ChunkMechanoidSlag>1</ChunkMechanoidSlag>
+          </things>
+          <coveredCellsPer10Cells>0.6~1.2</coveredCellsPer10Cells>
+          <clusterRectRadius>4~6</clusterRectRadius>
+        </li>
+      </groups>
+    </genStep>
+  </GenStepDef>
+
+  <TileMutatorDef>
+    <defName>RM_DerelictClusters</defName>
+    <label>derelict clusters</label>
+    <description>This area is littered with derelict mechanoid clusters, from which some materials could be scavenged.</description>
+    <chanceOnNonLandmarkTile>0.5</chanceOnNonLandmarkTile>
+    <biomeWhitelist>
+      <li>RM_RustCathedral</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RM_GenStep_DerelictClusters</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

@@ -24,12 +24,17 @@ once we regenerate."*
    re-stamps and which rolls its own required mutator — check for doubles). The CSV still spells 5
    of its own rows `sw_SarlaccLair`/`sw_DeadSarlaccCave`; rename those to the `RSW_` names at the
    same time.
-3. **Wild-plant mutators** (`WildTattooinePlants`, `WildDantooinePlants`, `WildGalacticPlants`) have
-   **no port yet** — item `HUBBA_GOURD_MUTATOR_MIGRATE_AT_THE_REPAINT` must land an `RSW_` TileMutatorDef
-   first. They were never in the authoring CSV: vanilla worldgen rolled them onto tiles that were then
-   vanilla `ExtremeDesert`/`Desert`/`AridShrubland`. Either add the JSON's tiles to the CSV under the
-   ported name, or give the port a `biomeWhitelist` of our desert biomes and decide placement by
-   looking — the owner chooses at the repaint.
+3. **Wild-plant mutators** were ported 2026-10-19 (owner: *"Reproduce the mutators into our own code, then
+   proceed with deprecation of the donors."*): `WildTattooinePlants` -> `RSW_WildTattooinePlants`,
+   `WildGalacticPlants` -> `RSW_WildGalacticPlants` (3 of the donor's 5 plant kinds), both in
+   `src/RimStarWars/SWBestiary/Defs/DonorPackPort/RSW_DonorPack_WildPlantMutators.xml`. `WildDantooinePlants`
+   (4 tiles) has **no port** (no RSW_ dantuber plant): the owner decides at the repaint. The JSON's
+   `new_mutator` now carries these names. They were never in the authoring CSV: add the JSON's tiles to the CSV
+   under the ported name, or decide placement by looking; the owner chooses at the repaint.
+3b. **Alpha Biomes mutators and landmarks** (this file never held them; they were stripped in the 2026-10-18
+   donor-free copy) map to our ports in `design/RimMandrake/retired_mutators_port_map.json`, explained in
+   `design/RimMandrake/retired_mutators_port_2026-10-19.md`. `src/RimMandrake/Utils/save_donor_rewrite.py
+   --mutators-only` renames them (and the five above) in a save copy.
 4. Then `jawa/world_commit`, save, and confirm with a grid decode (`tileMutatorDefsDeflate`) that the
    restored names are present.
 
