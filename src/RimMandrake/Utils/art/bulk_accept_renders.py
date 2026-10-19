@@ -265,7 +265,13 @@ def random_dest(repo: "Repo", mod: str, folder: str, jid: str) -> tuple[str | No
     if pre.endswith("_") and not sep:
         pre, sep = pre[:-1], "_"
     lt = letter.upper() if last.isupper() else letter
-    return f"{mod}/Textures/{folder}/{pre}{sep}{lt}.png", f"random_{letter}"
+    name = f"{pre}{sep}{lt}"
+    # A mixed-case folder (PaleTree_A beside _b.._e) took its case from files[0] and wrote PaleTree_B beside the kept
+    # PaleTree_b — a case-twin no Windows/Mac clone can hold (2026-10-19). An existing spelling always wins.
+    same = [f for f in files if f.casefold() == name.casefold()]
+    if same:
+        name = same[0]
+    return f"{mod}/Textures/{folder}/{name}.png", f"random_{letter}"
 
 
 def resolve_texpath(repo: "Repo", tp: str, j) -> tuple[str | None, str, dict | None]:
