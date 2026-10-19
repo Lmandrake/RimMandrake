@@ -481,7 +481,9 @@ class Session(object):
         r = self.call("jawa/list_things", **kw)
         out = []
         for t in r.get("things") or r.get("results") or []:
-            c = parse_cell(t.get("position"))
+            # pass 2 (2026-10-19, HARNESS): jawa/list_things puts x/z at the thing's TOP level (no "position"), so every
+            # read cell was None: "walls built 0 of N" and "Granite did not appear" on maps where both stood (probed live)
+            c = parse_cell(t.get("position") if t.get("position") is not None else (t.get("x"), t.get("z")))
             out.append(dict(id=t.get("id"), d=t.get("def") or t.get("defName"), cell=c, hp=fnum(t.get("hitPoints")),
                             maxhp=fnum(t.get("maxHitPoints")), stuff=t.get("stuff"), faction=t.get("faction")))
         return out
@@ -918,7 +920,11 @@ def b1_a8_defaults(s):
               why="dialog not opened, or get_ui_layout returned no text; the screenshot is for his eye"), "B1", eyes=True)
         return
     missing = [k for k, lab in labels.items() if lab.lower() not in txt]
-    s.row("A8_dialog_group", "A8", "PASS" if not missing else "FAIL", "MOD",
+    # pass 2 (2026-10-19, HARNESS): the page is one scrolled column (screenshot: sections + scrollbar draw) and get_ui_layout
+    # returns only the visible rows, so a label below the fold is not readable here: UNMEASURED for his eye, never FAIL.
+    below_fold = bool(missing) and "reset this section" in txt
+    st = "PASS" if not missing else ("UNMEASURED" if below_fold else "FAIL")
+    s.row("A8_dialog_group", "A8", st, "HARNESS" if st == "UNMEASURED" else "MOD",
           dict(labels=len(labels), missing=missing[:12], shot=shot,
                note="a long settings page scrolls; a label below the fold may be missing from the layout text -> his eye"), "B1",
           eyes=bool(missing))
@@ -1699,7 +1705,8 @@ class FakeHugeGame(object):
         out = []
         for c, t in self.things.items():
             if x <= c[0] < x + w and z <= c[1] < z + h and (want is None or t["d"] in want):
-                out.append(dict(id=t["id"], **{"def": t["d"]}, position={"x": c[0], "z": c[1]}, hitPoints=t["hp"], maxHitPoints=t["maxhp"],
+                # the live shape (probed 2026-10-19): x/z at the thing's top level, no "position"
+                out.append(dict(id=t["id"], **{"def": t["d"]}, x=c[0], z=c[1], hitPoints=t["hp"], maxHitPoints=t["maxhp"],
                                 stuff=t["stuff"], faction=t["faction"]))
         return {"success": True, "things": out, "countMatched": len(out)}
 
