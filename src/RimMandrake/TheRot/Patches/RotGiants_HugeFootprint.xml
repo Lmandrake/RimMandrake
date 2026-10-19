@@ -117,7 +117,7 @@
     </match>
   </Operation>
 
-  <!-- RM_Arpeau, churrun mast (10 wide): Arpeau_A 4 contact cells, Arpeau_B 7 contact cells, Arpeau_C 10 contact cells -->
+  <!-- RM_Arpeau, churrun mast (10 wide): Arpeau_A 4 contact cells, Arpeau_B 7 contact cells, Arpeau_C 10 contact cells, Arpeau_p3b 7 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Arpeau"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -152,6 +152,15 @@
                 <li>(-1,0)</li><li>(1,0)</li><li>(2,0)</li>
                 <li>(-2,1)</li><li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
                 <li>(0,2)</li><li>(1,2)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>Arpeau_p3b</texture>
+              <opaqueMin>(0.2422,0.0117)</opaqueMin>
+              <opaqueMax>(0.7637,0.9902)</opaqueMax>
+              <contact>
+                <li>(-1,0)</li><li>(1,0)</li><li>(2,0)</li>
+                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
               </contact>
             </li>
           </variants>
@@ -232,48 +241,7 @@
     </match>
   </Operation>
 
-  <!-- RM_WitchesOyster, Tumrata's shelf (6 wide): WitchesOyster_A 9 contact cells, WitchesOyster_b 3 contact cells, WitchesOyster_c 8 contact cells -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]</xpath>
-      <value>
-        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
-          <measuredSize>6</measuredSize>
-          <variants>
-            <li>
-              <texture>WitchesOyster_A</texture>
-              <opaqueMin>(0.0117,0.1855)</opaqueMin>
-              <opaqueMax>(0.9863,0.8066)</opaqueMax>
-              <contact>
-                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
-                <li>(-2,2)</li><li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li><li>(2,2)</li>
-              </contact>
-            </li>
-            <li>
-              <texture>WitchesOyster_b</texture>
-              <opaqueMin>(0.0469,0.1289)</opaqueMin>
-              <opaqueMax>(0.957,0.875)</opaqueMax>
-              <contact>
-                <li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
-              </contact>
-            </li>
-            <li>
-              <texture>WitchesOyster_c</texture>
-              <opaqueMin>(0.0078,0.1406)</opaqueMin>
-              <opaqueMax>(0.9922,0.875)</opaqueMax>
-              <contact>
-                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
-                <li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li><li>(2,2)</li>
-              </contact>
-            </li>
-          </variants>
-        </li>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- RM_PaleTree, quellan tree (6 wide): PaleTree_A 3 contact cells, PaleTree_b 3 contact cells, PaleTree_c 9 contact cells, PaleTree_d 4 contact cells, PaleTree_e 5 contact cells -->
+  <!-- RM_PaleTree, quellan tree (6 wide): PaleTree_A 4 contact cells, PaleTree_b 3 contact cells, PaleTree_c 9 contact cells, PaleTree_d 4 contact cells, PaleTree_e 5 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_PaleTree"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -284,11 +252,11 @@
           <variants>
             <li>
               <texture>PaleTree_A</texture>
-              <opaqueMin>(0.0273,0.0127)</opaqueMin>
-              <opaqueMax>(0.9814,0.9795)</opaqueMax>
+              <opaqueMin>(0.0352,0.0117)</opaqueMin>
+              <opaqueMax>(0.9531,0.9805)</opaqueMax>
               <contact>
                 <li>(-1,0)</li><li>(1,0)</li>
-                <li>(0,1)</li>
+                <li>(0,1)</li><li>(1,1)</li>
               </contact>
             </li>
             <li>
@@ -326,6 +294,47 @@
               <contact>
                 <li>(-1,0)</li><li>(1,0)</li>
                 <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li>
+              </contact>
+            </li>
+          </variants>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- RM_WitchesOyster, Tumrata's shelf (6 wide): WitchesOyster_A 9 contact cells, WitchesOyster_b 3 contact cells, WitchesOyster_c 8 contact cells -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="RM_WitchesOyster"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <measuredSize>6</measuredSize>
+          <variants>
+            <li>
+              <texture>WitchesOyster_A</texture>
+              <opaqueMin>(0.0117,0.1855)</opaqueMin>
+              <opaqueMax>(0.9863,0.8066)</opaqueMax>
+              <contact>
+                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
+                <li>(-2,2)</li><li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li><li>(2,2)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>WitchesOyster_b</texture>
+              <opaqueMin>(0.0469,0.1289)</opaqueMin>
+              <opaqueMax>(0.957,0.875)</opaqueMax>
+              <contact>
+                <li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>WitchesOyster_c</texture>
+              <opaqueMin>(0.0078,0.1406)</opaqueMin>
+              <opaqueMax>(0.9922,0.875)</opaqueMax>
+              <contact>
+                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
+                <li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li><li>(2,2)</li>
               </contact>
             </li>
           </variants>

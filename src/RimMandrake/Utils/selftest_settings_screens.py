@@ -103,6 +103,8 @@ MODS = {
         "Forms that act when the Gale starts": "NextPulse",
         "The ripple and the calling-pyre": "Now",
         "Ruins and living camps": "NewMapsOnly",
+        "Venomvine islands": "NewMapsOnly",
+        "Venomvine creep": "Now",
     }, ()),
     "LanternDeeps": ("LanternDeepsMod.cs", "RM_LanternDeeps.csproj", {
         "Entrances: cave mouth and ruined mineshaft": "NewMapsOnly",
@@ -233,6 +235,7 @@ MODS = {
         "Vapour columns and sky creatures": "Now",
         "The dhokkur": "Now",
         "Not wired yet (these change nothing)": "Now",
+        "The dhoggur": "Now",
     }, ()),
     "ShipVermin": ("RM_ShipVerminMod.cs", "RM_ShipVermin.csproj", {
         "Alert and fuel mites": "Now",
@@ -508,6 +511,7 @@ MODS = {
         "The charge": "Now",
         "The tops (a disabled top falls back to fruiting)": "Now",
         "Player verbs": "Now",
+        "Trees (our plants drawn 3.0 or larger, fungi excepted)": "Now",
     }, ()),
     "ExplosiveKnockback": ("RM_KnockbackMod.cs", "RimMandrake_ExplosiveKnockback.csproj", {
         "Mod switch": "Now",
@@ -809,6 +813,9 @@ MODS = {
         "Scrap-hoarding birds": "Now",
         "Scrap-bird raids": "NextPulse",
         "Toxin-dependent creatures": "Now",
+        "Taozin brine tank": "Now",
+        "Taozin nests": "NewMapsOnly",
+        "Albino dragonsnake": "NextGameStart",
     }, ()),
 }
 

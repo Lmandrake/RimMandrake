@@ -120,7 +120,19 @@ def main():
     # the detector, and PIT_FALL_MEND_SAVED_MIDAIR's ResolveArrivalNow (a jump judged at once by the detector's own test)
     assert len(det) == 2, "the trap file should call OnForcedDescent twice (the detector, ResolveArrivalNow), found %s" % det
     probs = detector_guard_probs(trap) + resolve_now_guard_probs(trap)
-    for f in sorted({f for f, _ in callers} - {"Pits/Building_SpanDeck.cs", "Superdeep/RM_SuperdeepTrap.cs"}):
+    # The suspension bridge's two callers (added 2026-10-18) are not covers: Drop() runs only after the bridge's own deck has
+    # collapsed (sole caller Building_SuspensionDeck, pinned below), and the edge fall uses OpenEdgeBeside, which never
+    # returns a decked cell (pinned below). They are exempt from the open-pit regex but pinned by those two facts.
+    susp = "Pits/Suspension/RM_MapComponent_SuspensionBridges.cs"
+    sus_text = (SRC / susp).read_text(encoding="utf-8")
+    assert sum(1 for c in callers if c[0] == susp) == 2, "the suspension file's OnForcedDescent callers changed: re-scope this exemption"
+    assert "RM_MapComponent_SuspensionBridges.Drop(" in (SRC / "Pits/Suspension/Building_SuspensionDeck.cs").read_text(encoding="utf-8"), \
+        "suspension Drop is no longer called from the deck's collapse: re-scope this exemption"
+    assert not any("RM_MapComponent_SuspensionBridges.Drop(" in f.read_text(encoding="utf-8") for f in SRC.rglob("*.cs")
+                   if "SelfTest" not in f.parts and f.name != "Building_SuspensionDeck.cs"), "suspension Drop gained another caller"
+    assert "!RM_SpanUtility.DeckedAt(map, n)" in method_body(sus_text, "public static IntVec3 OpenEdgeBeside(Map map, IntVec3 c)"), \
+        "OpenEdgeBeside no longer excludes decked (covered) cells: the edge fall could pass through a cover"
+    for f in sorted({f for f, _ in callers} - {"Pits/Building_SpanDeck.cs", "Superdeep/RM_SuperdeepTrap.cs", susp}):
         probs += open_pit_guard_probs((SRC / f).read_text(encoding="utf-8"), f)
     assert not probs, "a forced descent can pass through an intact cover: %s" % probs
     held = method_body(trap, "public static bool IsHeldAt(Pawn p, IntVec3 c)")
