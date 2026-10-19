@@ -77,7 +77,7 @@
     </diseases>
     <terrainsByFertility>
       <li>
-        <terrain>GU_MetalFloor1</terrain>
+        <terrain>RM_RustCathedral_PolymerFloor</terrain>  <!-- was GU_MetalFloor1 (Alpha Biomes, retired 2026-10-18); same slot as RM_RustCathedral -->
         <min>-999</min>
         <max>999</max>
       </li>
