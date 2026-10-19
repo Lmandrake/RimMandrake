@@ -115,7 +115,7 @@
       <BeautyOutdoors>-3</BeautyOutdoors>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_PollutedAlienTree</texPath>
+      <texPath>Things/Plants/AB_PollutedAlienTree</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.24, 0.3, 0.15)</volume>
@@ -163,7 +163,7 @@
       <Nutrition>0.05</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/GU_RedLeaves</texPath>
+      <texPath>Things/Plants/GU_RedLeaves</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
@@ -244,7 +244,7 @@
       <Nutrition>0.075</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/GU_RedLeaves2</texPath>
+      <texPath>Things/Plants/GU_RedLeaves2</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>

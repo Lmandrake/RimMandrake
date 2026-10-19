@@ -66,7 +66,7 @@
       <Beauty>2</Beauty>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_Gomphoeria</texPath>
+      <texPath>Things/Plants/AB_Gomphoeria</texPath>
                   <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.3, 0.2, 0.15)</volume>
