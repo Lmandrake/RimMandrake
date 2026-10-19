@@ -51,44 +51,6 @@
       </operations>
     </match>
   </Operation>
-  <!-- AG_OutlanderCivilUnion -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="AG_OutlanderCivilUnion"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="AG_OutlanderCivilUnion"]/startingCountAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="AG_OutlanderCivilUnion"]/startingCountAtWorldCreation</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="AG_OutlanderCivilUnion"]</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <!-- AG_XenohumanPirates -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/startingCountAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/startingCountAtWorldCreation</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
   <!-- BMT_PustuleHornets -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/FactionDef[defName="BMT_PustuleHornets"]</xpath>

@@ -306,21 +306,6 @@
             </nomatch>
           </match>
         </li>
-        <!-- AG_XenohumanPirates -> Black Sun -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]</xpath>
-          <match Class="PatchOperationConditional">
-            <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/factionNameMaker</xpath>
-            <match Class="PatchOperationReplace">
-              <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]/factionNameMaker</xpath>
-              <value><factionNameMaker>RUT_Jawa_NamerFactionAG_XenohumanPirates</factionNameMaker></value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/FactionDef[defName="AG_XenohumanPirates"]</xpath>
-              <value><factionNameMaker>RUT_Jawa_NamerFactionAG_XenohumanPirates</factionNameMaker></value>
-            </nomatch>
-          </match>
-        </li>
         <!-- DV_PirateKeshig -> Kanjiklub -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/FactionDef[defName="DV_PirateKeshig"]</xpath>
