@@ -139,7 +139,7 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <RM_Suush>0.2</RM_Suush>  <!-- suush - the Cauldron's own floating drifter, SUUSH_CAULDRON_DRIFTER_1 -->
-      <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- garsulix (donor "beetlefleet", renamed in Cauldron_Rename.xml) -->
+      <RM_Garsulix>0.7</RM_Garsulix>  <!-- garsulix - our port of VGE's GR_Beetlefleet (Defs/ThingDefs_Races/RM_Garsulix.xml), donor retired 2026-10-18 -->
       <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- rhossak (donor "corruptor dryad", renamed in UtinniPatches Cauldron_Rename.xml) -->
       <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- galled rhossak (donor "tumorous dryad", renamed in Cauldron_Rename.xml) -->
       <Visceral MayRequire="mlie.horrors">0.35</Visceral>  <!-- visceral - medium-pred, keep -->

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Garsulix.xml                         RimMandrake: Cauldron
+
+  The garsulix: plain-XML port of vanillaexpanded.vgeneticse's GR_Beetlefleet (defined only in VGE's Alpha-Animals
+  compat folder, so it dies with sarg.alphaanimals). Owner, 2026-10-18: "Just put in placeholder art for now or donor
+  copies and retire these mods!!! Just get it done." Commonality 0.7 in RM_Cauldron, unchanged.
+  Folded in: label/description from UtinniPatches Cauldron_Rename.xml (owner: "this is a hideous creature now named
+  Garsulix that Hungers ..."); comfort -50.3..44.5 from AnimalTolerances_Ashkarr.xml (pinned live value).
+  Kept: the VEF comps (insect jelly product, asexual fission, floating) and the small death explosion.
+  DROPPED with the donor mods:
+    * GeneticRim.DefExtension_Hybrid (PawnKindDef) and VEF AnimalStatExtension listing GR_HybridRole* stats;
+    * tradeTag AnimalGenetic (VGE's hybrid trader tag) -> AnimalUncommon;
+    * body AA_JellyfishBody (Alpha Animals) -> vanilla BeetleLikeWithClaw (bite on HeadAttackTool, the hooked legs'
+      blunt blow on HeadClaw instead of the donor's Teeth/Arms);
+    * fleshType GR_Insectoid (VGE) -> vanilla Insectoid, blood Filth_BloodInsect;
+    * useLeatherFrom AA_Aerofleet (Alpha Animals) -> no leather; extra product AA_BlueGel (Alpha Animals) -> none.
+  Art: Textures/StandIn/<donor texPath>, installed by src/RimMandrake/Utils/art/garsulix_standin.py — the owner's
+  sheet pick (east+south redraw; north was ruled "needs regen", Graphic_Multi draws south for it) and the donor's
+  dessicated picture.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Garsulix</defName>
+    <label>garsulix</label>
+    <description>A hideous thing that hungers. A floating, chitinous, insect-like ball of gas: a swollen, veined sac held up by its own lift, plated over the top and hung beneath with hooked legs and a working mouth. It drifts ever closer, slowly but surely, intent on devouring your flesh. Its gas burns; a garsulix that dies close by takes you with it.</description>
+    <statBases>
+      <MoveSpeed>2.5</MoveSpeed>
+      <ComfyTemperatureMin>-50.3</ComfyTemperatureMin>
+      <ComfyTemperatureMax>44.5</ComfyTemperatureMax>
+      <MarketValue>175</MarketValue>
+      <Wildness>0.7</Wildness>
+      <LeatherAmount>0</LeatherAmount>
+    </statBases>
+    <tools>
+      <li>
+        <label>mouth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>hooked legs</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct">
+        <resourceDef>InsectJelly</resourceDef>
+        <gatheringIntervalDays>3</gatheringIntervalDays>
+        <resourceAmount>8</resourceAmount>
+        <customResourceString>VanillaJellyGrowth</customResourceString>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AsexualReproduction">
+        <reproductionIntervalDays>9</reproductionIntervalDays>
+        <customString>Asexual fission in: </customString>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_Floating" />
+    </comps>
+    <race>
+      <deathAction>
+        <workerClass>DeathActionWorker_SmallExplosion</workerClass>
+      </deathAction>
+      <executionRange>2</executionRange>
+      <herdMigrationAllowed>false</herdMigrationAllowed>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <body>BeetleLikeWithClaw</body>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <packAnimal>false</packAnimal>
+      <hasGenders>false</hasGenders>
+      <lifeExpectancy>4</lifeExpectancy>
+      <trainability>Intermediate</trainability>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.30</minAge>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Garsulix</defName>
+    <label>garsulix</label>
+    <race>RM_Garsulix</race>
+    <combatPower>35</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>StandIn/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>StandIn/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Dessicated_Beetlefleet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>StandIn/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>StandIn/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Dessicated_Beetlefleet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>StandIn/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>StandIn/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Dessicated_Beetlefleet</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
