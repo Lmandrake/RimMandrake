@@ -77,22 +77,22 @@
 
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="GRimTortoise"]/lifeStages/li/bodyGraphicData[texPath="Things/Pawn/Animal/TortoiseGRim/GRimTortoiseA"]/texPath</xpath>
-          <value><texPath>Things/Pawn/Animal/GRimTortoise/GRimTortoiseA</texPath></value>
+          <value><texPath>StandIn/Things/Pawn/Animal/GRimTortoise/GRimTortoiseA</texPath></value>
         </li>
 
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="GRimTortoise"]/lifeStages/li/dessicatedBodyGraphicData[texPath="Things/Pawn/Animal/Tortoise/Dessicated_GRimTortoiseA"]/texPath</xpath>
-          <value><texPath>Things/Pawn/Animal/GRimTortoise/Dessicated_GRimTortoiseA</texPath></value>
+          <value><texPath>StandIn/Things/Pawn/Animal/GRimTortoise/Dessicated_GRimTortoiseA</texPath></value>
         </li>
 
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="GRimPinkbird"]/lifeStages/li/bodyGraphicData[texPath="Things/Pawn/Animal/GRimPinkBird/GRimPinkbird"]/texPath</xpath>
-          <value><texPath>Things/Pawn/Animal/GRimPinkbird/GRimPinkbird</texPath></value>
+          <value><texPath>StandIn/Things/Pawn/Animal/GRimPinkbird/GRimPinkbird</texPath></value>
         </li>
 
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="GRimBullfrog"]/lifeStages/li/dessicatedBodyGraphicData[texPath="Things/Pawn/Animal/GRimBullfrog/Dessicated_GRimBullfrog"]/texPath</xpath>
-          <value><texPath>Things/Pawn/Animal/GRimBullfrog/Dessicated_GRimBullfrogA</texPath></value>
+          <value><texPath>StandIn/Things/Pawn/Animal/GRimBullfrog/Dessicated_GRimBullfrogA</texPath></value>
         </li>
 
       </operations>
