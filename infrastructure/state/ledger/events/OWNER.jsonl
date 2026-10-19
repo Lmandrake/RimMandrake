@@ -1241,3 +1241,19 @@
 {"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"sitting done; restoring FULL for the world repair","ts":"2026-10-19T08:14:33Z","tsn":1792397673700178819}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed","ts":"2026-10-19T08:14:40Z","tsn":1792397680209868271}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH cold-load FULL for the world-map repair (coordinator; owner approved via WORLDMAP_REPAIR_LOST_BIOMES_ROCKY_TEXTURES note)","ts":"2026-10-19T08:14:57Z","tsn":1792397697664650946}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"FULL list at main menu","ts":"2026-10-19T08:35:58Z","tsn":1792398958072738059}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"FULL list up on the repaired canonical save; BENCH released the bridge","ts":"2026-10-19T08:37:00Z","tsn":1792399020549152494}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH pass 2: closed game for deploy window","ts":"2026-10-19T08:40:49Z","tsn":1792399249183711294}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH launch flowworks tier pass 2","ts":"2026-10-19T08:42:34Z","tsn":1792399354249767651}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"tier loaded (bridge token, no exceptions in gate)","ts":"2026-10-19T08:43:18Z","tsn":1792399398431612594}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH pass 2: second deploy window (FlowWorks settings fix 5c75405998, HugeThings tier)","ts":"2026-10-19T09:32:19Z","tsn":1792402339448682904}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH relaunch flowworks tier with FlowWorks 4fd612e569 DLL","ts":"2026-10-19T09:33:34Z","tsn":1792402414349565542}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"flowworks tier loaded, gate clean","ts":"2026-10-19T09:34:13Z","tsn":1792402453038378514}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH pass 2: swap to flowworks_hugethings for the walls run","ts":"2026-10-19T09:42:26Z","tsn":1792402946338643363}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH launch flowworks_hugethings tier","ts":"2026-10-19T09:42:43Z","tsn":1792402963317205966}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"pass 2 done, FULL restored (542, md5 a40bedf5), left down","ts":"2026-10-19T10:30:09Z","tsn":1792405809736107108}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"BENCH","why":"BENCH pass 3 deploying","ts":"2026-10-19T10:44:48Z","tsn":1792406688445776311}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH launch flowworks tier pass 3","ts":"2026-10-19T10:45:52Z","tsn":1792406752570002704}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"tier loaded, gate clean","ts":"2026-10-19T10:46:23Z","tsn":1792406783716296976}
+{"seat":"OWNER","event":"close","id":"FLOWWORKS_AB_FINDMOD_DELETE_LAST_HOLDOUT","sha":"7da09b1beb","ownerSaid":"In the background please identify and execute this work then close both tickets","why":"Alpha Biomes FindMod block deleted; selftest_retired_mods passes","ts":"2026-10-19T10:48:46Z","tsn":1792406926519035188}
+{"seat":"OWNER","event":"close","id":"PIPENET_ADAPTERS_DELETE_LAST_ALPHA_FINDMOD","sha":"7da09b1beb","ownerSaid":"In the background please identify and execute this work then close both tickets","why":"Alpha Biomes FindMod block deleted; selftest_retired_mods passes","ts":"2026-10-19T10:48:47Z","tsn":1792406927707546712}
