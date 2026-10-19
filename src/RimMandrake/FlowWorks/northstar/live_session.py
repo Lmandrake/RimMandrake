@@ -750,6 +750,11 @@ def b2_readouts(s):
     s.pit(pond, 3, 3, 4, 3)
     lake = (x + 4, z + 5, W - (x + 4), 11)          # east edge column W-1 included
     s.call("jawa/set_terrain_batch", ops="WaterDeep:%d,%d,%d,%d" % lake)
+    # pass 2 (2026-10-19, HARNESS, presumed): 2 ticks after the paint the lake read "Hole 2 m · Water 2.00 m (4,000 L)"
+    # -- a body the engine had not classified yet. Ask the engine to classify it (as v2 S3 and B4's reservoir do) and
+    # give it a pulse; the body report is kept beside the readout so a limitless body with a limited readout is visible.
+    s.advance(300)
+    lake_body = (s.call("jawa/flowworks_body_report", x=x + 10, z=z + 10, classify=True) or {}).get("body") or {}
     s.advance(2)
     edge = str(s.call("jawa/get_terrain_batch", rects="%d,%d,1,1" % (W - 1, z + 10)).get("ops") or "")
     sticky = s.sget("stickyLimitlessEnabled")
@@ -766,7 +771,8 @@ def b2_readouts(s):
     st = "UNMEASURED" if unparsed or any(str(v).startswith("UNREAD") for v in reads.values()) else ("PASS" if fmt_ok else "FAIL")
     sst, scls, swhy = sea_verdict(p.get("lake"), "WaterDeep" in edge, sticky)
     s.row("B2_readout_sea_never_dry", "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE", "A2", sst, scls,
-          dict(lake=reads.get("lake"), lakeRect=lake, edgeCell=edge[:60], sticky=sticky, why=swhy), "B2")
+          dict(lake=reads.get("lake"), lakeRect=lake, edgeCell=edge[:60], sticky=sticky, why=swhy,
+               lakeBody={k: lake_body.get(k) for k in ("id", "limitless", "cellCount", "stock", "capacity")}), "B2")
     s.row("B2_readout_two_numbers_and_sea", "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE", "A2", st, "MOD" if st == "FAIL" else "HARNESS" if st != "PASS" else "MOD",
           dict(reads=reads, wording="owner looks at these strings (V8 kept by card)"), "B2", eyes=True)
     st2 = st if st == "UNMEASURED" else ("PASS" if all(" m " in str(v) and " L)" in str(v) for k, v in reads.items() if k in ("canal", "pond")) else "FAIL")
@@ -1242,6 +1248,7 @@ STEADY_VISIT_TICKS = 1667   # SteadyEnvironmentEffectsTick visits ceil(Area * 0.
 COLD_CONDITIONS = ("ColdSnap", "DeepFreeze")   # both GameCondition_ColdSnap, -20 C each at full (12,000-tick ramp);
                                                # GameConditionManager.AggregateTemperatureOffset SUMS active conditions
 ICE_BUDGET = 24000
+ICE_BUDGET_MAX = 36000      # only spent while the freeze expectation is under 4.6 (ice_verdict's bar)
 FLOOD_WEATHER = "TorrentialRain"
 
 
@@ -1306,7 +1313,11 @@ def b5_cold_snap(s):
     temps, froze = [], None
     keep = (s.pawns.get("rescue"),)
     try:
-        for k in range(0, ICE_BUDGET, 500):
+        # pass 2 (2026-10-19, HARNESS): 24,000 ticks on a warm map reached only 4.49 expected freezes (bar 4.6) -> UNMEASURED.
+        # Past ICE_BUDGET keep going, up to ICE_BUDGET_MAX, only while the expectation is still under the judging bar.
+        for k in range(0, ICE_BUDGET_MAX, 500):
+            if k >= ICE_BUDGET and freeze_expectation(temps, sum(len(r) for r in canals), 500) >= 4.6:
+                break
             s.advance(500)
             temps.append(temp())
             if k % 2000 == 1500:        # -40 C at full: keep the colony alive through the cold (the row reads no pawn)
@@ -1368,6 +1379,11 @@ def b6_flood(s):
     s.advance(300)
     before = s.w.cells(canal)[0] if not s.mock else {}
     w0 = s.call("jawa/weather_get")
+    # pass 2 (2026-10-19, HARNESS, presumed): 8+ canal squares "changed across the flood" -- a torrential rain also FILLS
+    # open dug squares (rainFillsExcavationsEnabled, the mod's design, proven by its own rows), which this row is not
+    # about. Rain fill off for the row (restored in finally); the changed squares keep their before/after values.
+    rain_fill_was = s.sget("rainFillsExcavationsEnabled")
+    s.sset("rainFillsExcavationsEnabled", False)
     ws = s.call("jawa/weather_set", weather=FLOOD_WEATHER, lockWeather=True)
     started = bool(ws.get("success")) and ws.get("after") == FLOOD_WEATHER
 
@@ -1387,6 +1403,7 @@ def b6_flood(s):
         # back to B0's locked Clear (also after a crash: a locked torrent would flood every later block): the old lock
         # ends, TransitionTo(Clear) runs TorrentialRain.OnWeatherEnd = the flood is destroyed
         s.call("jawa/weather_set", weather="Clear", lockWeather=True)
+        s.sset("rainFillsExcavationsEnabled", rain_fill_was if rain_fill_was is not None else True)   # Clear now: no rain
     receded, gone_at = False, None
     if reached:
         for k in range(0, 12000, 500):
@@ -1398,7 +1415,9 @@ def b6_flood(s):
     st, cls, why = flood_verdict(started, reached, receded, before == after)
     s.row("B6_flood_canal_kept", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A6", st, cls,
           dict(why=why, weather=str(ws)[:120], weatherBefore=(w0 or {}).get("weather"), floodReachedAfter=reached_at,
-               recededAfter=gone_at, changed=[c for c in before if before.get(c) != after.get(c)][:8]), "B6")
+               recededAfter=gone_at, changed=[c for c in before if before.get(c) != after.get(c)][:8],
+               changedValues=[[str(before.get(c))[:80], str(after.get(c))[:80]] for c in before if before.get(c) != after.get(c)][:4],
+               rainFillWas=rain_fill_was), "B6")
     restore_after_weather(s, "B6")
 
 
