@@ -291,6 +291,44 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(defs.Contains("<defName>RM_SuspensionWreck</defName>") && !defs.Contains("For now nobody can walk under it"),
                     "the wreck exists and no description still says nobody walks under");
             });
+            // SUSPENSION_WATERS_BUILD_MAY_BACKTRACK (parent §3, §7; Q5): natural water, floods, current, towers.
+            Case("Waters_spannable_and_flood_damage", () =>
+            {
+                Assert(RM_SuspensionMath.WaterSpannable(true, false, true, true) && RM_SuspensionMath.WaterSpannable(true, true, true, true),
+                    "rivers, lakes and the sea may be crossed");
+                Assert(!RM_SuspensionMath.WaterSpannable(true, true, true, false) && RM_SuspensionMath.WaterSpannable(true, false, true, false),
+                    "backtrack lever: sea off keeps rivers and lakes");
+                Assert(!RM_SuspensionMath.WaterSpannable(true, false, false, true), "water off: no river or lake crossing");
+                Assert(!RM_SuspensionMath.WaterSpannable(false, false, true, true), "can-fail: dry ground is never 'water'");
+                Assert(RM_SuspensionMath.FloodDamage(SuspensionTier.Timber, 120) == 6 && RM_SuspensionMath.FloodDamage(SuspensionTier.Rope, 60) == 3,
+                    "rope and timber lose 5% of their hit points an hour awash");
+                Assert(RM_SuspensionMath.FloodDamage(SuspensionTier.Steel, 250) == 0 && RM_SuspensionMath.FloodDamage(SuspensionTier.Heavy, 500) == 0,
+                    "steel and heavy shrug floods off");
+                Assert(RM_SuspensionMath.FloodDamage(SuspensionTier.Rope, 10) == 1, "never less than 1");
+            });
+
+            Case("Waters_wiring_path_swim_current_settings", () =>
+            {
+                string patches = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
+                Assert(patches.Contains("class RM_Patch_SuspensionDeckOverDeepWater") && patches.Contains("[HarmonyPriority(Priority.Last)]"),
+                    "a deck over deep water answers its own path cost, after the swim cost");
+                Assert(patches.Contains("__result = ex.ExcavatedDepthAt(c) > 0 || RM_SuspensionWaters.Spannable(c.GetTerrain(map));"),
+                    "decks and towers stand on natural water");
+                Assert(patches.Contains("map.terrainGrid.TempTerrainAt(c)?.IsWater == true") && patches.Contains("DamageDefOf.Deterioration"),
+                    "flood damage reads the flood's temporary water layer");
+                Assert(Src("Rivers", "RM_MapComponent_RiverCurrent.cs").Contains("Pits.RM_SuspensionWaters.CurrentExempt(map, c)"),
+                    "the current never carries anyone on a deck (the fords' exemption)");
+                string swim = Src("Swimming", "RM_Swim.cs");
+                Assert(swim.Contains("if (Pits.RM_SpanUtility.DeckedAt(map, c))") && swim.Contains("&& !Pits.RM_SpanUtility.DeckedAt(map, cell))"),
+                    "a decked square is not a swim square (items lie on it; non-swimmers cross it)");
+                Assert(swim.Contains("(Pits.RM_PitCoverUtility.IsCovered(map, c) && !Pits.RM_SuspensionUnderpass.InFloorBand(p))"),
+                    "nobody drowns on a deck over natural water");
+                string des = Src("Pits", "Suspension", "Designator_SuspensionBridge.cs");
+                Assert(des.Contains("return RM_SuspensionWaters.Spannable(terrain) ? SpanGround.Hole : SpanGround.Blocked;"), "the drag crosses natural water");
+                string set = Src("Pits", "Suspension", "RM_SuspensionSettings.cs");
+                Assert(set.Contains("\"Suspension bridges over rivers and lakes\"") && set.Contains("\"Suspension bridges over the sea\"")
+                    && set.Contains("\"Floods damage light bridges\""), "the three water settings are shown");
+            });
             // textures: selftest_flowworks_suspension_art.py (the SelfTest staging copies no Textures folder)
         }
     }

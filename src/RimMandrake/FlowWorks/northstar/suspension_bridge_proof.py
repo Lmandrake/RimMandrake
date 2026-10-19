@@ -36,6 +36,14 @@ UNDERPASS (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD), plot from origin + (0, 40
   U7 a stepped pit: west ledge x=1 and east ledge x=4 (z 56..59) at 4 m, core x=2..3 at 7 m; sunken steel bridge (1,57)-(4,57);
      a colonist on the west ledge ordered to the east ledge                                  -> row UND_SUNKEN_CROSS.
   owed: raiders in a 4 m moat walk under (modcheck record), the L4 picture of a pawn passing under a deck.
+WATERS (SUSPENSION_WATERS_BUILD_MAY_BACKTRACK): natural water is wherever the map has it, so the sites are arguments
+  (--river / --lake / --sea x1,z1,x2,z2: a straight drag from bank to bank; a row without its argument is UNMEASURED):
+  W1 a steel bridge across the river; a colonist crosses (path read, arrival) and every deck square is exempt from the
+     current                                                                                -> row WAT_RIVER_CROSS.
+  W2 a steel bridge across the lake with one tower planned at the middle                     -> row WAT_LAKE_TOWER_SPANS.
+  W3 timber and steel bridges over a 2 m water trench (1..4, 64)/(1..4, 68), a water flood released beside each, 5,000 ticks
+     (2 in-game hours)                                                                      -> row WAT_FLOOD_DAMAGE.
+  W4 a steel bridge across the sea: built and crossable, or the backtrack reason             -> row WAT_SEA_OR_BACKTRACK.
 Every read is jawa/static_call RimMandrake.FlowWorks.Pits.RM_SuspensionProofs.<Proof*> (one line out; see that file).
 
 ANTI-GUESSING NOTES
@@ -78,6 +86,9 @@ def main(argv=None):
     ap.add_argument("out", nargs="?", default=None)
     ap.add_argument("--origin", default="140,140")
     ap.add_argument("--fresh-map", action="store_true")
+    ap.add_argument("--river", default="", help="x1,z1,x2,z2: a bank-to-bank drag across this map's river")
+    ap.add_argument("--lake", default="", help="x1,z1,x2,z2: a bank-to-bank drag over 10 squares across a lake")
+    ap.add_argument("--sea", default="", help="x1,z1,x2,z2: a drag across the sea from the shore")
     ap.add_argument("--only", default="", help="comma list of sections: " + ",".join(SECTIONS))
     ap.add_argument("--mock", action="store_true", help="run every path against FakeBridge; rows are SKIP (mock verdict kept)")
     a = ap.parse_args(argv)
@@ -134,7 +145,11 @@ def main(argv=None):
     if not ok:
         row("SB_game_playing", "UNMEASURED", {"why": "no game in Playing"})
         return 2
-    ctx = dict(B=B, P=P, xz=xz, row=row, proof=proof, dig=dig, spawn=spawn, pawns_by_id=pawns_by_id, ticks=ticks, ox=ox, oz=oz)
+    if a.mock:
+        a.river = a.river or "%d,%d,%d,%d" % (ox + 30, oz, ox + 40, oz)
+        a.lake = a.lake or "%d,%d,%d,%d" % (ox + 30, oz + 10, ox + 50, oz + 10)
+        a.sea = a.sea or "%d,%d,%d,%d" % (ox + 30, oz + 20, ox + 36, oz + 20)
+    ctx = dict(args=a, B=B, P=P, xz=xz, row=row, proof=proof, dig=dig, spawn=spawn, pawns_by_id=pawns_by_id, ticks=ticks, ox=ox, oz=oz)
     for name in SECTIONS:
         if name in only:
             print("== section %s" % name, flush=True)
@@ -352,11 +367,85 @@ def underpass(ctx):
     row("UND_L4_picture_pawn_under_deck", "UNMEASURED", {"owed": True, "why": "OWED: one joint screenshot of a pawn passing under a deck"})
 
 
+def waters(ctx):
+    """SUSPENSION_WATERS_BUILD_MAY_BACKTRACK rows (verify L2 x4)."""
+    B, P, xz, row, proof, dig, spawn, ticks, a = (ctx[k] for k in ("B", "P", "xz", "row", "proof", "dig", "spawn", "ticks", "args"))
+
+    def site(spec):
+        if not spec:
+            return None
+        v = [int(t) for t in spec.split(",")]
+        return (v[0], v[1]), (v[2], v[3])
+
+    def lane(s0, s1):
+        dx, dz = (s1[0] > s0[0]) - (s1[0] < s0[0]), (s1[1] > s0[1]) - (s1[1] < s0[1])
+        n = max(abs(s1[0] - s0[0]), abs(s1[1] - s0[1]))
+        return [(s0[0] + dx * i, s0[1] + dz * i) for i in range(n + 1)]
+
+    r = site(a.river)
+    if r:
+        kv, txt = proof("ProofBuild", "%s;%s;steel;god" % (xz(r[0]), xz(r[1])))
+        cells = lane(*r)[1:-1]
+        ex = [proof("ProofWater", xz(c))[0].get("exempt") for c in cells]
+        before = (r[0][0] - (r[1][0] > r[0][0]) + (r[1][0] < r[0][0]), r[0][1] - (r[1][1] > r[0][1]) + (r[1][1] < r[0][1]))
+        w = spawn(before)
+        kvp, txtp = proof("ProofPath", "%s;%s" % (w, xz(r[1]))) if w else ({}, "no pawn")
+        o = B.call("jawa/order_pawn", pawnId=w, x=r[1][0], z=r[1][1], waitTicks=1500, draft=True) or {}
+        at = {p.get("id"): (p.get("x"), p.get("z")) for p in (o.get("pawns") or [])}.get(w)
+        good = kv.get("ok") == "True" and all(e == "True" for e in ex) and kvp.get("found") == "True" and at == r[1]
+        row("WAT_river_cross_no_drift", "PASS" if good else ("FAIL" if kv else "UNMEASURED"),
+            {"build": txt, "exempt": ex, "path": txtp, "arrived": at})
+    else:
+        row("WAT_river_cross_no_drift", "UNMEASURED", {"why": "no --river x1,z1,x2,z2 given (this map's river crossing)"})
+    lk = site(a.lake)
+    if lk:
+        cells = lane(*lk)
+        mid = cells[len(cells) // 2]
+        B.call("jawa/spawn_batch", ops="RM_SuspensionTower:%d,%d" % mid)
+        kv, txt = proof("ProofBuild", "%s;%s;steel;god" % (xz(lk[0]), xz(lk[1])))
+        k1, t1 = proof("ProofSpan", xz(cells[1]))
+        k2, t2 = proof("ProofSpan", xz(cells[-2]))
+        cap = 10
+        good = (kv.get("ok") == "True" and k1.get("span") == "1/2" and k2.get("span") == "2/2"
+                and int(k1.get("decks", "99")) <= cap and int(k2.get("decks", "99")) <= cap)
+        row("WAT_lake_tower_two_spans", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"build": txt, "span1": t1, "span2": t2})
+    else:
+        row("WAT_lake_tower_two_spans", "UNMEASURED", {"why": "no --lake x1,z1,x2,z2 given (a crossing longer than 10 squares)"})
+    hp = {}
+    for tier, z in (("timber", 64), ("steel", 68)):
+        for i in range(1, 5):
+            dig(P(i, z), 4)
+            B.call("jawa/flowworks_excavation_drive", x=P(i, z)[0], z=P(i, z)[1], deepenLevels=0, setFill=3)
+        proof("ProofBuild", "%s;%s;%s;god" % (xz(P(0, z)), xz(P(5, z)), tier))
+        hp[tier] = [proof("ProofDeckHp", xz(P(2, z)))[0]]
+        B.call("jawa/flowworks_spawn_flood", x=P(2, z - 1)[0], z=P(2, z - 1)[1], fluidDefName="RM_Fluid_Water", volume=30)
+    ticks(5000)
+    for tier, z in (("timber", 64), ("steel", 68)):
+        hp[tier].append(proof("ProofDeckHp", xz(P(2, z)))[0])
+    t0, t1 = hp["timber"]
+    s0, s1 = hp["steel"]
+    awash = int(t1.get("awash", "0")) + int(s1.get("awash", "0"))
+    good = int(t1.get("hp", "0")) < int(t0.get("max", "0")) and s1.get("hp") == s0.get("hp")
+    row("WAT_flood_damages_timber_not_steel", ("PASS" if good else "FAIL") if awash else "UNMEASURED",
+        {"timber": hp["timber"], "steel": hp["steel"], "why": "" if awash else "no deck square was awash (the flood never reached it)"})
+    sea = site(a.sea)
+    if sea:
+        kv, txt = proof("ProofBuild", "%s;%s;steel;god" % (xz(sea[0]), xz(sea[1])))
+        w = spawn(sea[0])
+        kvp, txtp = proof("ProofPath", "%s;%s" % (w, xz(sea[1]))) if w else ({}, "no pawn")
+        good = kv.get("ok") == "True" and kvp.get("found") == "True"
+        row("WAT_sea_or_backtrack", "PASS" if good else ("FAIL" if kv else "UNMEASURED"),
+            {"build": txt, "path": txtp, "ifFail": "record the measured reason on FLOWWORKS_BRIDGES_DESIGN_SPAN_ANYTHING and set "
+             "suspensionOverSea off (the backtrack rule)"})
+    else:
+        row("WAT_sea_or_backtrack", "UNMEASURED", {"why": "no --sea x1,z1,x2,z2 given (a coast crossing)"})
+
+
 def pawns_of(B):
     return {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=300) or {}).get("pawns") or []}
 
 
-SECTIONS = {"posts": None, "grate": grate, "underpass": underpass}
+SECTIONS = {"posts": None, "grate": grate, "underpass": underpass, "waters": waters}
 
 
 class FakeBridge(object):
@@ -365,7 +454,7 @@ class FakeBridge(object):
 
     def __init__(self):
         self.next_id, self.calls, self.reads, self.tags, self.last_tier, self.span = 1000, [], 0, {}, "", 0
-        self.shot, self.fell, self.under_shallow, self.dug = 0, 0, {}, {}
+        self.shot, self.fell, self.under_shallow, self.dug, self.hp = 0, 0, {}, {}, 0
 
     def call(self, tool, **kw):
         method = tool
@@ -407,7 +496,8 @@ class FakeBridge(object):
         if m == "ProofSpan":
             self.span += 1
             if self.last_tier == "steel":
-                return "SPAN tier=steel load=0.0 rating=2000 state=Ok decks=2 railings=False deckNotches=8 line=Load 0 / 2,000 kg"
+                return ("SPAN tier=steel load=0.0 rating=2000 state=Ok decks=2 railings=False deckNotches=8 span=%d/2 line=Load 0 / 2,000 kg"
+                        % (1 + self.span % 2))
             return "SPAN none" if self.span % 2 == 0 else "SPAN tier=timber load=640.0 rating=600 state=Over decks=6 line=Load 640 / 600 kg"
         if m == "ProofRails":
             on = arg.endswith("on")
@@ -437,6 +527,12 @@ class FakeBridge(object):
         if m == "ProofFell":
             self.fell += 1 if arg else 0
             return "FELL crushed=%d wrecks=%d slid=1" % (self.fell, self.fell)
+        if m == "ProofWater":
+            return "WATER terrain=WaterMovingChestDeep water=True ocean=False river=True spannable=True decked=True exempt=True walkable=True swim=False"
+        if m == "ProofDeckHp":
+            self.hp += 1
+            timber = "64" in arg.split(",")[1][-2:] or self.hp % 2 == 1
+            return "HP hp=%d max=480 decks=4 awash=%d floodHits=24" % (480 if self.hp <= 2 or not timber else 456, 0 if self.hp <= 2 else 2)
         if m == "ProofGrate":
             return "GRATE grated=True deck=True fire=True attach=0.75 splash=0.50 scorches=3 drainedDl=500"
         if m == "ProofPour":

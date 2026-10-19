@@ -393,7 +393,9 @@ namespace RimMandrake.FlowWorks.Pits
 			for (int i = 0; i < 4; i++)
 			{
 				IntVec3 n = c + GenAdj.CardinalDirections[i];
-				if (n.InBounds(map) && ex.ExcavatedDepthAt(n) > 0 && !RM_SpanUtility.DeckedAt(map, n) && n.Standable(map))
+				// SUSPENSION_WATERS_BUILD_MAY_BACKTRACK: natural water beside a deck is an open edge too (a fall is a splash)
+				if (n.InBounds(map) && !RM_SpanUtility.DeckedAt(map, n) && ((ex.ExcavatedDepthAt(n) > 0 && n.Standable(map))
+					|| (n.GetTerrain(map)?.IsWater == true && (n.Standable(map) || Swimming.RM_SwimWater.IsDeepSwimCell(map, n)))))
 				{
 					open.Add(n);
 				}
@@ -607,6 +609,10 @@ namespace RimMandrake.FlowWorks.Pits
 				PruneDead();
 			}
 			SweepUnder();
+			if (now % RM_SuspensionMath.TicksPerHour == 0)
+			{
+				RM_SuspensionWaters.FloodHour(map, bridges);
+			}
 			for (int b = 0; b < bridges.Count; b++)
 			{
 				SuspensionBridgeRecord r = bridges[b];

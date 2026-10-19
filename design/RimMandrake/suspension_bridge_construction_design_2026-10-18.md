@@ -82,8 +82,11 @@ multiplies art by every size.
 - **Maximum length (anchor to anchor), by tier**, from the parent's §6.1, re-read for a suspension bridge: rope 8,
   timber 6, steel 10, heavy 14 cells (proposals; rope is longer than timber because rope bridges are). A longer gap
   needs a **tower**: a pillar built on the hole's floor that counts as an anchor in the middle (the parent's "pier",
-  renamed; it splits the bridge into two spans). Towers need someone to reach the floor to build them (in natural water:
-  a builder wading or swimming to it; how is owed to `SUSPENSION_WATERS_BUILD_MAY_BACKTRACK`).
+  renamed; it splits the bridge into two spans). Towers need someone to reach the floor to build them. **Decided at build
+  (`SUSPENSION_WATERS_BUILD_MAY_BACKTRACK`, 2026-10-18):** in natural water a tower is built by a builder who can touch the
+  square beside it: wading in shallow water, swimming where swimming is allowed (lakes, R12; the sea and deep moving water
+  only with the open-water swim setting), or standing on the finished deck square next to it (decks build from the anchors
+  inward, so the deck itself reaches the tower). No new job: vanilla's touch-adjacent construction does it.
 - **Building order**: the builder stands on an anchor or on a finished deck cell next to the one being built. A cell
   whose neighbours toward both anchors are unbuilt cannot be started. No scaffolding, no flying builders.
 - **Deconstruct an anchor** = the span it holds falls (§4). The game asks first.

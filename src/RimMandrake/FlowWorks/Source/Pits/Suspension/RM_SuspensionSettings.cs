@@ -8,7 +8,7 @@ namespace RimMandrake.FlowWorks.Pits
 	/// FlowWorks settings file from RimMandrakeFlowWorksSettings.ExposeData and drawn by its window, the same shape as
 	/// RM_SprinklerSettings. Defaults = shipped behaviour. All off: no build buttons, existing bridges stay as plain walkable
 	/// decks that never break from weight or a lost anchor; nothing is deleted from a save. Each later suspension item adds its
-	/// own §9 rows here (grates: SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP; walk under, sunken: SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD).</summary>
+	/// own §9 rows here (grates: SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP; walk under, sunken: SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD; water, sea, floods: SUSPENSION_WATERS_BUILD_MAY_BACKTRACK).</summary>
 	public static class RM_SuspensionSettings
 	{
 		public static bool suspensionBridgesBuildable = true;
@@ -24,6 +24,10 @@ namespace RimMandrake.FlowWorks.Pits
 		// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD
 		public static bool suspensionWalkUnder = true;
 		public static bool sunkenBridges = true;
+		// SUSPENSION_WATERS_BUILD_MAY_BACKTRACK
+		public static bool suspensionOverWater = true;
+		public static bool suspensionOverSea = true;
+		public static bool floodsDamageLightBridges = true;
 
 		public static void ExposeData()
 		{
@@ -38,6 +42,9 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref grateDrainsSpills, "grateDrainsSpills", true);
 			Scribe_Values.Look(ref suspensionWalkUnder, "suspensionWalkUnder", true);
 			Scribe_Values.Look(ref sunkenBridges, "sunkenBridges", true);
+			Scribe_Values.Look(ref suspensionOverWater, "suspensionOverWater", true);
+			Scribe_Values.Look(ref suspensionOverSea, "suspensionOverSea", true);
+			Scribe_Values.Look(ref floodsDamageLightBridges, "floodsDamageLightBridges", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -85,6 +92,16 @@ namespace RimMandrake.FlowWorks.Pits
 				"On: a suspension bridge can be dragged between two dry ledges at the same depth inside a deeper hole (for example "
 				+ "across the core of a stepped pit), reached from a ledge, ramp or ladder at its height. Off: bridges only at the "
 				+ "surface; sunken bridges already built stay.");
+			list.CheckboxLabeled("Suspension bridges over rivers and lakes", ref suspensionOverWater,
+				"On: a suspension bridge may cross natural water (a river, a lake), anchored on the banks, with towers in the water "
+				+ "for a long crossing. The river's current never carries anyone on the deck. Off: only dug ground; bridges already "
+				+ "built stay.");
+			list.CheckboxLabeled("Suspension bridges over the sea", ref suspensionOverSea,
+				"On: the same over the ocean (towers stand in the sea). Off: no new crossings over the sea; bridges already built "
+				+ "stay.");
+			list.CheckboxLabeled("Floods damage light bridges", ref floodsDamageLightBridges,
+				"On: a rope or timber suspension bridge awash in a flood loses about 5% of its hit points an hour (and gives way if a "
+				+ "square breaks); steel and heavy ones shrug it off. Off: floods do them no harm.");
 		}
 	}
 }

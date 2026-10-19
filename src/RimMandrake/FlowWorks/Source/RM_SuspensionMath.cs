@@ -395,6 +395,36 @@ namespace RimMandrake.FlowWorks
 			return h + (passesUnder ? " · people below walk under it" : " · a wall from below");
 		}
 
+		// ── SUSPENSION_WATERS_BUILD_MAY_BACKTRACK (parent design §3, §7; Q5) ─────────────────────────────────────────
+
+		/// <summary>Rope and timber lose this share of their hit points per in-game hour awash in a flood (proposal 5%).</summary>
+		public const float FloodDamageFractionPerHour = 0.05f;
+
+		public const int TicksPerHour = 2500;
+
+		/// <summary>Natural water a deck may cross (Q5): rivers and lakes with the water setting on, the sea with the sea
+		/// setting on (the backtrack levers). Not water: never.</summary>
+		public static bool WaterSpannable(bool isWater, bool isOcean, bool waterOn, bool seaOn)
+		{
+			if (!isWater)
+			{
+				return false;
+			}
+			return isOcean ? seaOn : waterOn;
+		}
+
+		/// <summary>Hit points one hour awash in a flood takes from a deck square: rope and timber 5% of their maximum (at least
+		/// 1); steel and heavy nothing.</summary>
+		public static int FloodDamage(SuspensionTier t, int maxHitPoints)
+		{
+			if (t == SuspensionTier.Steel || t == SuspensionTier.Heavy || maxHitPoints <= 0)
+			{
+				return 0;
+			}
+			int d = (int)(maxHitPoints * FloodDamageFractionPerHour + 0.5f);
+			return d < 1 ? 1 : d;
+		}
+
 		/// <summary>The build-order rule (construction design §1.3): a deck square may be worked once the square next to it along
 		/// its lane, toward either anchor, is a finished anchor or a finished deck square.</summary>
 		public static bool MayBuildDeck(int i, int n, System.Func<int, bool> builtAt)

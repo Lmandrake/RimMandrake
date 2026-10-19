@@ -556,7 +556,8 @@ namespace RimMandrake.FlowWorks.Rivers
 
 		private bool IsArrestedOrFord(IntVec3 c)
 		{
-			if (NearFord(c) || RM_RiverWorks.IsArrested(map, c))
+			// SUSPENSION_WATERS_BUILD_MAY_BACKTRACK: nothing on a suspension deck is carried (the fords' exemption)
+			if (NearFord(c) || RM_RiverWorks.IsArrested(map, c) || Pits.RM_SuspensionWaters.CurrentExempt(map, c))
 			{
 				return true;
 			}
