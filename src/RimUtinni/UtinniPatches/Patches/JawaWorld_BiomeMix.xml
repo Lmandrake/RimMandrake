@@ -59,10 +59,6 @@
       RARE       -4   loses head-to-head, still wins where it is the only
                       allowed biome — which is what "rare" should mean
 
-    ⭐ AB_RockyCrags is COMMON on purpose, not abundant: the temperature curve
-    already confines it to the dark hemisphere, so common yields a dark half
-    rather than a planet-wide scatter.
-
     🔴 Ocean and Lake appear NOWHERE here, deliberately. They are
     isBackgroundBiome, assigned by the elevation threshold rather than by any
     worker score (BiomeWorker_Ocean::GetScore is `WaterCovered ? 0 : -100`), so a
@@ -83,6 +79,7 @@
       <xpath>/Defs/AlienWorlds.TidallyLocked.PlanetTypeDef[defName="TidallyLocked"]</xpath>
       <value>
 
+        <!-- Alpha Biomes rows (2 blacklisted, 11 scored) removed 2026-10-18: donor retired, its biomes no longer load. -->
         <biomeBlacklist>
           <li>ZBiome_CoastalDunes</li>
           <li>ZBiome_Sandbar_NoBeach</li>
@@ -101,8 +98,6 @@
           <li>Savanna</li>
           <li>ZBiome_Grasslands</li>
           <li>Grasslands</li>
-          <li>AB_GelatinousSuperorganism</li>
-          <li>AB_IdyllicMeadows</li>
           <li>TemperateForest</li>
           <li>GlacialPlain</li>
           <li>AG_NereidPocketPlane</li>
@@ -124,20 +119,10 @@
           <li><key>ZBiome_Badlands</key><value><scoreOffset>4</scoreOffset></value></li>
           <li><key>AridShrubland</key><value><scoreOffset>4</scoreOffset></value></li>
           <li><key>Wasteland</key><value><scoreOffset>4</scoreOffset></value></li>
-          <li><key>AB_RockyCrags</key><value><scoreOffset>4</scoreOffset></value></li>
 
           <!-- RARE -->
           <li MayRequire="zylle.MoreVanillaBiomes"><key>ZBiome_DesertOasis</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>AB_FeraliskInfestedJungle</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>AB_MiasmicMangrove</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>AB_MycoticJungle</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>COMIGO_GreaterSwamp_Tropical</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>AB_OcularForest</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>AB_TarPits</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>AB_PropaneLakes</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>AB_MechanoidIntrusion</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>AB_GallatrossGraveyard</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>AB_PyroclasticConflagration</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>Volcano</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>LavaField</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>Scarlands</key><value><scoreOffset>-4</scoreOffset></value></li>
