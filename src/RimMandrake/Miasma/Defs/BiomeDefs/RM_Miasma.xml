@@ -61,8 +61,9 @@
     that never appears in this list - see the RM_GradientAxisExtension
     landRepaintKillPlant/landRepaintDeadPlant fields below.
 
-    terrainsByFertility: AB_FertileMud gains the same MayRequire="sarg.alphabiomes"
-    guard for the same reason.
+    terrainsByFertility / landRepaintSource / diseases: the Alpha Biomes rows (AB_FertileMud and the
+    three AB_Disease_* incidents) were replaced 1:1 by our ports in Defs/RM_Miasma_DonorPorts.xml at the
+    2026-10-18 donor retirement.
 
     biomeMapConditions / modExtensions: unchanged in shape from the twin. The
     GameConditionDef/HediffDef/IncidentDef/WeatherDef/ThingDef/GenStepDef/
@@ -120,7 +121,7 @@
         <landRepaintMinSalinity>0.85</landRepaintMinSalinity>
         <landRepaintSource>
           <li>Mud</li>
-          <li MayRequire="sarg.alphabiomes">AB_FertileMud</li>
+          <li>RM_FertileMud</li>
         </landRepaintSource>
         <landTerrain>RM_MiasmaSaltCrust</landTerrain>
         <!-- MIASMA_FLORA_ROSTER_1: the salt-line gauge. The moment a cell
@@ -171,16 +172,16 @@
       </li>
     </modExtensions>
     <diseases>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_BacterialGangrene</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_BacterialGangrene</diseaseInc>
         <commonality>100</commonality>
       </li>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_ViralAbasia</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_ViralAbasia</diseaseInc>
         <commonality>100</commonality>
       </li>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_RavagingIntestinalParasites</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_RavagingIntestinalParasites</diseaseInc>
         <commonality>100</commonality>
       </li>
       <li>
@@ -215,7 +216,7 @@
         <max>0.65</max>
       </li>
       <li>
-        <terrain MayRequire="sarg.alphabiomes">AB_FertileMud</terrain>
+        <terrain>RM_FertileMud</terrain>
         <min>0.65</min>
         <max>999</max>
       </li>

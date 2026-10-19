@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
+    mods!!! Just get it done."). What the Miasma still borrowed from Alpha Biomes (sarg.alphabiomes), ported as
+    RM_ defs with the donor's own values: fertile mud (art: StandIn/<donor texPath> marked stand-in copies, art
+    ledger provenance kind=donor standin=true) and the three Alpha Biomes diseases with their hediffs.
+  -->
+  <!-- RM_FertileMud: port of AB_FertileMud (Alpha Biomes, TerrainDefs/Terrain_MiasmicMangrove.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_FertileMud</defName>
+    <label>fertile mud</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_FertileMud</texturePath>
+    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_FertileMud_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
+    <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>330</renderPrecedence>
+    <pathCost>12</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>1</fertility>
+    <takeFootprints>True</takeFootprints>
+    <avoidWander>true</avoidWander>
+    <driesTo>Soil</driesTo>
+    <tools>
+      <li>
+        <label>mud</label>
+        <capacities>
+          <li>KickMaterialInEyes</li>
+        </capacities>
+        <hediff>MudInEyes</hediff>
+        <cooldownTime>1.5</cooldownTime>
+      </li>
+    </tools>
+  </TerrainDef>
+
+  <!-- RM_BacterialGangrene: port of AB_BacterialGangrene (Alpha Biomes, HediffDefs/Hediffs_Local_Infections.xml), plain XML copy 2026-10-18 for donor retirement.
+       AlphaBiomes.HediffCompProperties_GangreneWounds (its random gangrene wounds via AB_Gangrene) dropped; no vanilla equivalent. -->
+  <HediffDef ParentName="DiseaseBase">
+    <defName>RM_BacterialGangrene</defName>
+    <label>bacterial gangrene</label>
+    <description>A fast-growing bacterial disease that causes gangrene, with skin progressively blackening and falling off. If treated properly, it will be cured in 3-4 days. Even if treated, the colonist may lose a toe or finger or two.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <makesSickThought>true</makesSickThought>
+    <minSeverity>0.001</minSeverity>
+    <initialSeverity>0.001</initialSeverity>
+    <stages>
+      <li>
+        <label>minor</label>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>-0.1</offset>
+          </li>
+          <li>
+            <capacity>BloodPumping</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.6</minSeverity>
+        <label>major</label>
+        <vomitMtbDays>1.5</vomitMtbDays>
+        <painOffset>0.25</painOffset>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>-0.2</offset>
+          </li>
+          <li>
+            <capacity>BloodPumping</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.85</minSeverity>
+        <label>extreme</label>
+        <lifeThreatening>true</lifeThreatening>
+        <vomitMtbDays>0.75</vomitMtbDays>
+        <painOffset>0.5</painOffset>
+        <capMods>
+          <li>
+            <capacity>BloodFiltration</capacity>
+            <offset>-0.3</offset>
+          </li>
+          <li>
+            <capacity>BloodPumping</capacity>
+            <offset>-0.3</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>0.4</severityPerDay>
+      </li>
+      <li Class="HediffCompProperties_TendDuration">
+        <severityPerDayTended>-1</severityPerDayTended>
+        <baseTendDurationHours>19</baseTendDurationHours>
+      </li>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>180000~240000</disappearsAfterTicks>
+        <!-- 3 ~ 4 days -->
+      </li>
+    </comps>
+  </HediffDef>
+
+  <!-- RM_ViralAbasia: port of AB_ViralAbasia (Alpha Biomes, HediffDefs/Hediffs_Local_Infections.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <HediffDef ParentName="InfectionBase">
+    <defName>RM_ViralAbasia</defName>
+    <label>viral abasia</label>
+    <description>Most likely artificially created as a bio-weapon, this perverse virus attacks the victim's motor cortex eventually leaving the person immobilized.\n\n&lt;color=#E5E54C&gt;Gameplay effect:&lt;/color&gt; Treatable, immunizable disease.</description>
+    <makesSickThought>true</makesSickThought>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <baseTendDurationHours>32</baseTendDurationHours>
+        <severityPerDayTended>-0.07</severityPerDayTended>
+      </li>
+      <li Class="HediffCompProperties_Immunizable">
+        <severityPerDayNotImmune>0.12</severityPerDayNotImmune>
+        <immunityPerDaySick>0.10</immunityPerDaySick>
+        <severityPerDayImmune>-0.176</severityPerDayImmune>
+        <immunityPerDayNotSick>-0.02</immunityPerDayNotSick>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>minor</label>
+        <painOffset>0.02</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.1</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.4375</minSeverity>
+        <label>minor</label>
+        <painOffset>0.03</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.3</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.4</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.625</minSeverity>
+        <label>major</label>
+        <vomitMtbDays>3.5</vomitMtbDays>
+        <painOffset>0.05</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.4</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0.1</setMax>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.875</minSeverity>
+        <label>extreme</label>
+        <lifeThreatening>true</lifeThreatening>
+        <vomitMtbDays>1.75</vomitMtbDays>
+        <painOffset>0.5</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.4</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0.1</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- RM_RavagingIntestinalParasites: port of AB_RavagingIntestinalParasites (Alpha Biomes, HediffDefs/Hediffs_Local_Infections.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <HediffDef ParentName="InfectionBase">
+    <defName>RM_RavagingIntestinalParasites</defName>
+    <label>ravaging intestinal parasites</label>
+    <description>A ravaging genetically engineered tapeworm has infected this person.\n\n&lt;color=#E5E54C&gt;Gameplay effect:&lt;/color&gt; Will increase severity unless treated. It will go away after a total tend quality of 3.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <makesSickThought>true</makesSickThought>
+    <tendable>true</tendable>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <label>minor</label>
+        <painOffset>0.2</painOffset>
+        <hungerRateFactorOffset>1</hungerRateFactorOffset>
+        <vomitMtbDays>1.0</vomitMtbDays>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.5</minSeverity>
+        <label>major</label>
+        <hungerRateFactorOffset>1.3</hungerRateFactorOffset>
+        <vomitMtbDays>0.8</vomitMtbDays>
+        <painOffset>0.3</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.12</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.08</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.91</minSeverity>
+        <label>extreme</label>
+        <hungerRateFactorOffset>1.5</hungerRateFactorOffset>
+        <lifeThreatening>true</lifeThreatening>
+        <vomitMtbDays>0.5</vomitMtbDays>
+        <painOffset>0.4</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.1</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <baseTendDurationHours>48</baseTendDurationHours>
+        <disappearsAtTotalTendQuality>3</disappearsAtTotalTendQuality>
+        <severityPerDayTended>-0.75</severityPerDayTended>
+      </li>
+      <li Class="HediffCompProperties_Immunizable">
+        <severityPerDayNotImmune>0.25</severityPerDayNotImmune>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <!-- RM_Disease_BacterialGangrene: port of AB_Disease_BacterialGangrene (Alpha Biomes, Storyteller/Incidents_Map_Disease.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <IncidentDef ParentName="DiseaseIncident">
+    <defName>RM_Disease_BacterialGangrene</defName>
+    <label>bacterial gangrene</label>
+    <diseaseIncident>RM_BacterialGangrene</diseaseIncident>
+    <letterLabel>Disease (bacterial gangrene)</letterLabel>
+  </IncidentDef>
+
+  <!-- RM_Disease_ViralAbasia: port of AB_Disease_ViralAbasia (Alpha Biomes, Storyteller/Incidents_Map_Disease.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <IncidentDef ParentName="DiseaseIncident">
+    <defName>RM_Disease_ViralAbasia</defName>
+    <label>viral abasia</label>
+    <diseaseIncident>RM_ViralAbasia</diseaseIncident>
+    <letterLabel>Disease (viral abasia)</letterLabel>
+  </IncidentDef>
+
+  <!-- RM_Disease_RavagingIntestinalParasites: port of AB_Disease_RavagingIntestinalParasites (Alpha Biomes, Storyteller/Incidents_Map_Disease.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <IncidentDef ParentName="DiseaseIncident">
+    <defName>RM_Disease_RavagingIntestinalParasites</defName>
+    <label>ravaging intestinal parasites</label>
+    <diseaseIncident>RM_RavagingIntestinalParasites</diseaseIncident>
+    <letterLabel>Disease (ravaging intestinal parasites)</letterLabel>
+  </IncidentDef>
+</Defs>

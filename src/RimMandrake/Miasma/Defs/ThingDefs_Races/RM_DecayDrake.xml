@@ -106,30 +106,24 @@
 		</tools>
     <comps>
       <li Class="VEF.AnimalBehaviours.CompProperties_NearbyEffecter" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+				<!-- Alpha Biomes retired 2026-10-18: tinkle grass/glowing grass point at our ports; hardy grass, tall slimy grass,
+				     alien grass and green rock fern (no port) left both lists (every convert target is the same mound). -->
 				<thingsToAffect>
 					<li>Plant_Grass</li>
 					<li>Plant_TallGrass</li>
 					<li>Plant_Brambles</li>
 					<li>Plant_HealrootWild</li>
 					<li>Plant_PincushionCactus</li>
-					<li>AB_TinkleGrass</li>
-					<li>AB_GlowingGrass</li>
-					<li>AB_HardyGrass</li>
-					<li>AB_TallSlimyGrass</li>
-					<li>AB_AlienGrass</li>
+					<li>RM_TinkleGrass</li>
+					<li>RM_GlowingGrass</li>
 					<li>Plant_Agave</li>
 					<li>Plant_Bush</li>
 					<li>Plant_Berry</li>
 					<li>Plant_Alocasia</li>
 					<li>Plant_Clivia</li>
 					<li>Plant_Rafflesia</li>
-					<li>AB_GreenRockFern</li>
 				</thingsToAffect>
 				<thingsToConvertTo>
-					<li>RM_FermentedMound</li>
-					<li>RM_FermentedMound</li>
-					<li>RM_FermentedMound</li>
-					<li>RM_FermentedMound</li>
 					<li>RM_FermentedMound</li>
 					<li>RM_FermentedMound</li>
 					<li>RM_FermentedMound</li>
