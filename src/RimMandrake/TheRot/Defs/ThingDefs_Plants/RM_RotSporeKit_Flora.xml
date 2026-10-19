@@ -18,10 +18,9 @@
     plant, and the source of the moonless-stripes carpet material this same sheet
     entry names. Flagged here as a judgment call, not a guess at an absent defName.
 
-    Skultop's defense mechanic uses AlphaBiomes' own CompProperties_GasProducer
-    (fields verified against vendor/mod_sources/AlphaBiomes_src, same mechanism as
-    AB_AgariluxPrime) rather than guessing at BiomesCore's spore comp — AlphaBiomes is
-    already a hard dependency of this biome (RUT_TheRot.xml's workerClass).
+    Skultop's defense mechanic is our own RimMandrake.EnvironmentalHazards
+    CompProperties_ActiveGasEmitter on RM_ChokingSpores (was Alpha Biomes' GasProducer
+    until the 2026-10-18 donor retirement; same rate and radius).
 
     RM_BlastpodShroom (blastpod -> chemfuel): ruled WILD-ONLY, owner 2026-09-06 — "not
     so bad as long as we're harvesting it" — so sowWork/sowMinSkill/sowTags/
@@ -33,6 +32,7 @@
     <defName>RM_Skulltop</defName>
     <label>vekkra choker</label>
     <description>A small mushroom with a pale, bulging cap pitted like a skull, which breathes a steady haze of toxic spores into the air around it. Anything not immune to poison that lingers nearby begins to choke, and the haze fouls the ground where it settles. It is the little cousin of the grath elder, and like the elder it guards nothing but itself; clear it from paths and fields masked, or with fire.</description>
+    <tickerType>Normal</tickerType>  <!-- the gas emitter comp only runs on CompTick -->
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Skulltop/Skulltop</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -65,10 +65,13 @@
     <selectable>true</selectable>
     <minifiedDef>MinifiedTree</minifiedDef>
     <comps>
-      <li Class="AlphaBiomes.CompProperties_GasProducer" MayRequire="sarg.alphabiomes">
-        <gasType>AB_MycoticSpores</gasType>
-        <rate>0.15</rate>
+      <!-- was AlphaBiomes.CompProperties_GasProducer (gas AB_MycoticSpores); donor retired 2026-10-18,
+           now our own emitter on RM_ChokingSpores at the same rate/radius -->
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ActiveGasEmitter">
+        <gasType>RM_ChokingSpores</gasType>
         <radius>5</radius>
+        <rate>0.15</rate>
+        <tickIntervalTicks>400</tickIntervalTicks>
       </li>
     </comps>
   </ThingDef>
