@@ -21,3 +21,16 @@ range is 20 to 57 °C (`RM_ContagionBiome.cs`). The Pyrelands (median lower) dec
 ## criteria
 - The BiomeDef carries a heat kind, or the close note says why it is not extreme heat.
 - `selftest_contagion*.py` still pass.
+
+## judgment (FOUNDRY, 2026-10-19, offline) — FOR OWNER REVIEW IN THE MORNING
+
+Read: sheet `the_contagion.md` (dayside p10/median/p90 25/32/45 C, max 57; the Burn is "a white shaft of sterilizing
+sun", natives dive for overhangs), `RM_Contagion.xml`, `RM_ContagionWeathers.xml`, and the extension/patch source
+(`RM_SunHeatExtension.cs`, `RM_SunHeatPatches.cs`, `RM_WeatherSenseExtension.cs`).
+- Extreme heat: yes (p90 45, max 57). Kind: **overhead**. Not `ambient` (no steam or vents; shade does matter, the natives hide
+  under overhangs), not `lowSun` (the dayside sun is not grazing; Pyrelands also uses overhead).
+- Catch found by reading the patch: sun exposure is multiplied only by `RM_WeatherSenseExtension.SunFactor`, so under the
+  standing Bloom (70 of ~80 weather weight) a bare extension would roast full-strength under a thunderstorm. The Bloom now
+  carries `sunExposureFactor 0.2`, so the heat bites in the Burn (and the rarer clear spells). The Burn def has none (factor 1).
+- Values `heatOffsetC 10`, `0.2` are invented first values. No new hediff. Owner to rule: is 0.2 under the Bloom right, and
+  should the Bloom be 0 (Burn-only heat)? Judged best-supported, not owner-confirmed.
