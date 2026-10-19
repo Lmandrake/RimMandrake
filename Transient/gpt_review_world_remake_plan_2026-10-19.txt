@@ -1,0 +1,44 @@
+**Option B is directionally sensible, but not ready for approval as written.** It promises a schedule, compatibility and ruling compliance that the evidence does not establish. References below use PLAN and evidence files 01–04.
+
+1. **“Fresh world removes save-borne problems, not def-borne ones” is correct—with qualifications.**
+
+A genuinely fresh save avoids deserializing the old missing classes, things and biome hashes. Reimporting contaminated founders, ship layouts or stamp data reintroduces those problems; subsequent renames create new residue. Resolving defNames also does not establish playability: roster coverage, `terrainPatchMakers`, generation safety and actual spawning remain unmeasured (02 §§4,6).
+
+Therefore PLAN §4’s “save-compat work remaining: none after” is false as a guarantee. Even its acceptance checks are incomplete: Option A omits `save_adoption_check.py`, explicitly required alongside both censuses in 02 §4. Passing those checks establishes reference hygiene, not functioning gameplay.
+
+2. **The options mix independent decisions; a fourth is preferable.**
+
+A and B chiefly differ in timing/readiness. C additionally commits to maintaining the old save and never remaking before v1. Mod retirement, development fixtures, canonical-world replacement and release freeze should be separate choices.
+
+**Option D: decouple development from canonical replacement.** Preserve the authoritative world and keeper saves; retire dependencies through validated candidate profiles; use the existing scratch-map workflow for development; perform one canonical remake when explicit freeze gates pass. Stop repairing old saves except where needed to recover authoritative content or support Lukas’s current play.
+
+This avoids both C’s repair treadmill and B’s premature final remake. It must not quietly authorize a test redraft or alternate planet: those remain restricted (02 §5). B becomes reasonable if rewritten around readiness gates rather than “2–3 days.”
+
+3. **The largest sequencing errors and hidden dependencies are these.**
+
+- **“Remove 124” is not dependency-safe.** “Nothing of ours hard-depends” excludes retained third-party dependants. Custom Quest Framework supports retained Dungeon Pack; VFE Props supports retained Gerrymon’s Dungeon; Apparel Accessories supports retained More Utility Packs; Minerals Framework supports retained Minerals Sparkle (01 §§5,10). Compute the removal set’s dependency closure first.
+- **Worldgen prerequisites disappear prematurely.** The proposed drops include Alien Worlds, My Little Planet, Sensible Factions and Deep Orbit. Yet the documented preset procedure depends on Alien Worlds, and 02 §2 explicitly assumes Deep Orbit remains at generation. Resolve that assumption before removal; 03’s critical path already requires proving generator mods inert.
+- **Wave 1 is a deployment transaction.** Deploy its prerequisites, activate `mandrake.rm.pyrinth` with the donor removal, and reconcile Cherry Picker’s ship profile—not merely subtract 39 packageIds (01 §9; 03, critical path steps 4–5).
+- **Scope cuts conflict with prerequisites.** 04’s inactive-mod cut includes Pyrinth, required for Wave 1. Its Warscar cut includes `WARSCAR_SHEET_DONOR_PORT_1`, classified prerequisite in 03. Utility Columns’ removal conflicts with keeping the existing trade stack when Bazaar is deferred (04 §5). Reconcile these before adopting cuts wholesale.
+- **The exporter’s scope is too narrow.** Settlements also regress: 121 CSV entries versus 96 canonical NPC settlements. Include current factions, settlement identities, names, features and potentially worldTags; select an authoritative save explicitly, including post-09-12 edits (02 §3; 03, owner questions).
+- **The start-save procedure is unwritten.** Add scenario, landing site, ideology mode/fixed ideos, faction roster, founder references and bonds, and ship import. Remap the two missing ship boulders as well as its floor; re-bond the replacement Ikee (02 §§1–3).
+- **B’s rehearsal cannot measure everything claimed.** Testing on the old 536 profile does not certify the reduced creation profile. Omitting Configure Factions leaves its duration and correctness unmeasured. A throwaway generated world also needs an explicit ruling interpretation (02 §§1b,5).
+
+4. **Replace promises with concrete gates and bounded verification.**
+
+Before the owner’s faction pass: freeze deployed builds, ordered creation profile, settings and Cherry Picker profile; audit removed dependencies, including unmeasured C# strings and XPath references (01 §1); freeze names; validate all stamp references and worldgen workers.
+
+Export authoritative layers, then compare tile IDs, edge topology, assignments and settlement identities—not counts alone. Resolve `AB_PropaneLakes`’ contradictory evidence (02 §7).
+
+After stamping: lint, compare the authored globe, obtain Lukas’s LOOK, construct the start save, run all three censuses, then **cold reload** and exercise landing, founders, ship and representative biome generation. Retain checkpoints before promotion. Rebuild or quarantine contaminated `RM_TestSite_*` fixtures; a new canonical save does not clean them (03). Reuse receipts and retest affected mechanisms under 04 §9.3’s proposed caps.
+
+5. **Other unsupported or overstated claims needing correction.**
+
+- PLAN §1: “not exportable” should be “no single exporter found”; live export exists (02 §3).
+- §§2,5: “cheap,” “one load,” and faster generation are unmeasured; “zero textures” overstates **~0**, with one missing path (01 §0).
+- §§3–4: all 21 items are neither eliminated nor save repairs; several merely shrink or retain art work (03 table).
+- §4: “zero world risk,” “one paint,” “0 rulings broken,” and the three-day estimate are unsupported.
+- §5: exporter “small” is unestimated; blanket exclusion of all 32 ignores tier-specific exceptions (01 §7).
+- §7: stale blocker edges may be removed, but their prose blockers may remain (03).
+
+**Revise the decision list:** first choose canonical freeze versus interim development; approve exact retained factions/ideos and world-layer losses; resolve Umbra; approve dependency-closed removals and scope conflicts; then explicitly amend affected rulings. Wave 1 already has owner authorization—ask about changed execution, not authorization again.
