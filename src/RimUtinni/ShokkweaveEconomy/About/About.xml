@@ -52,7 +52,6 @@
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
-    <li>Mlie.StarWarsAnimalCollection</li>
     <li>mandrake.rut.patches</li>
     <li>mandrake.rm.biomes</li>
   </loadAfter>

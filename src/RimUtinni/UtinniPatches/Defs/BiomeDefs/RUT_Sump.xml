@@ -87,7 +87,7 @@
     <defName>RUT_Sump</defName>
     <label>the Sump</label>
     <description>The planet's oil sump: the lowest basin on Ash'karr, filled by every slow black flow off the twilight slopes for geological time. Flat black pools and cooled glassy sheets under permanent dusk, ringed with low waxy plants that glow faintly where the Junker stations keep their lamp-gardens. Mice run the tar without a thought. Nothing else touches it -- because the tar takes slowly, keeps perfectly, and everything that ever blundered in is still in there.</description>
-    <workerClass>AlphaBiomes.BiomeWorker_TarPits</workerClass>
+    <workerClass>RimMandrake.TheSump.RM_BiomeWorker_TheSump</workerClass>  <!-- was AlphaBiomes.BiomeWorker_TarPits; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
 
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>

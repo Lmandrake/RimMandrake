@@ -70,7 +70,6 @@
                                                                    roster, RUT_SeaShoreExtension, BiomeCast_Ashkarr.xml,
                                                                    WildAnimals_LeaningScrub.xml, BiomeArrivalLetters_TheSump.xml). -->
 
-    <li>sarg.alphabiomes</li>                               <!-- AB_PyroclasticConflagration -->
     <li>IronScruff.PrimordialGeysers</li>                   <!-- IronScruff_PrimordialGeysers BiomeAnimalDanglingRefs_Fix.xml -->
     <li>zylle.MoreVanillaBiomes</li>                        <!-- ZBiome_Badlands, ZBiome_DesertOasis -->
     <li>titans.fl</li>                                      <!-- Titan                        AnimalBiomeDuplicates_Fix.xml -->
@@ -98,7 +97,6 @@
     <li>mandrake.rsw.swbestiary</li>                        <!-- SandFishing_CrackedLands.xml: RM_DuneCrawler, RSW_SandStalker, RM_GlassPearl, RSW_RareSandCatches -->
     <li>Mlie.AdvancedBiomes</li>                            <!-- BiomeCast_Ashkarr.xml -->
     <li>Mlie.SpaceWorms</li>                                <!-- BiomeCast_Ashkarr.xml -->
-    <li>Mlie.StarWarsAnimalCollection</li>                  <!-- BiomeCast_Ashkarr.xml -->
     <li>OskarPotocki.VFE.Insectoid2</li>                    <!-- BiomeCast_Ashkarr.xml, BugTurretRetexture_GeonosianHive.xml -->
     <li>RedMattis.BigSmall.Core</li>                        <!-- GiantWeaponWielders_Ashkarr.xml -->
     <li>ReGrowth.BOTR.Core</li>                             <!-- BiomeCast_Ashkarr.xml -->

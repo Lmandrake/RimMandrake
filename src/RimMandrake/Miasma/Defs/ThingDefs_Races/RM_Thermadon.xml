@@ -86,7 +86,7 @@
       <baseHealthScale>3</baseHealthScale>
       <gestationPeriodDays>6.66</gestationPeriodDays>
       <useMeatFrom>Megaspider</useMeatFrom>
-      <leatherDef MayRequire="sarg.alphaanimals">Leather_BlackChitin</leatherDef>
+      <leatherDef>RM_BlackChitin</leatherDef>  <!-- was AA Leather_BlackChitin (donor retired 2026-10-18) -->
       <trainability>Intermediate</trainability>
       <lifeExpectancy>6</lifeExpectancy>
       <lifeStageAges>

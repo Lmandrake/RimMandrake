@@ -43,7 +43,7 @@
     <defName>RUT_Abyss</defName>
     <label>the Abyss</label>
     <description>A country of obsidian-black stone twisted into shapes no wind carved, drowned in a darkness that behaves like a substance: it fills the air, it pools, it parts without warning into pockets of impossibly clear air, and it closes again. Light is eaten in transit here, not merely absent. The only reliable illumination is biological -- glowing grass, blue darklight gammas, yellow giant flora -- a land lit like a harbor at night, by its own lamps.</description>
-    <workerClass>AlphaBiomes.BiomeWorker_RockyCrags</workerClass>
+    <workerClass>RimMandrake.Abyss.RM_BiomeWorker_Abyss</workerClass>  <!-- was AlphaBiomes.BiomeWorker_RockyCrags; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
     <foragedFood>RawAgave</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>

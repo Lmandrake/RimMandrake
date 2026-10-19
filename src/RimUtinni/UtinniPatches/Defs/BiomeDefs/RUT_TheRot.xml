@@ -58,7 +58,7 @@
     <defName>RUT_TheRot</defName>
     <label>the Rot</label>
     <description>A pale fungal continent on the night shoulder of the stormwall: bone-white and lilac towers under a black sky, a glow-moss floor warm to lie on while the air above it would kill you, milky ponds that are not water. Nothing here is a plant. Nothing here is quite an animal. Everything is connected, everything is warm from the inside, and everything -- including what you take away with you -- is still alive.</description>
-    <workerClass>AlphaBiomes.BiomeWorker_MycoticJungle</workerClass>
+    <workerClass>RimMandrake.TheRot.RM_BiomeWorker_TheRot</workerClass>  <!-- was AlphaBiomes.BiomeWorker_MycoticJungle; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
     <foragedFood>RawFungus</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>

@@ -174,7 +174,9 @@
   <DamageDef>
     <defName>RM_RegenerativePierce</defName>
     <label>vampiric stab</label>
-    <workerClass>AlphaBehavioursAndEvents.DamageWorker_Vampiric</workerClass>
+    <!-- was AlphaBehavioursAndEvents.DamageWorker_Vampiric (heals the attacker); Alpha Animals retired 2026-10-18.
+         The heal is owed in our own C# (ZRRIK_VAMPIRIC_STAB_REBUILD_OWN_BLOODLUST); plain vanilla stab until then. -->
+    <workerClass>DamageWorker_Stab</workerClass>
     <externalViolence>true</externalViolence>
     <deathMessage>{0} has been gored to death.</deathMessage>
     <hediff>Stab</hediff>

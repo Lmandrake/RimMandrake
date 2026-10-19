@@ -84,7 +84,7 @@
     <defName>RUT_FuelSnows</defName>
     <label>the Fuel Snows</label>
     <description>The far end of the world: a black sea of liquid fuel under the brightest sky on the planet, ringed by frozen ammonia flats. It snows fuel. The aurora is the strongest anywhere -- the magnetosphere slamming back together after its rude shock upstream -- so the ice glows green and violet even without a moon. The fast things run in blue flame, because nothing moves fluidly here without burning; the plants are crystal, and grow overnight from what falls.</description>
-    <workerClass>AlphaBiomes.BiomeWorker_PropaneLakes</workerClass>
+    <workerClass>BiomeWorker_IceSheet</workerClass>  <!-- was AlphaBiomes.BiomeWorker_PropaneLakes; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
 
     <!-- OWNER RULING 2026-09-19 (RUT_UMBRA_ROADS_RULING_1): the ban STANDS. No
          roads in the Fuel Snows, same as RUT_ExtremeDesert's "No roads through the deep
