@@ -869,7 +869,10 @@ namespace JawaBench.BridgeTools
             "jawa/pawn_health",
             Description =
                 "Add or remove a hediff, install a bionic, or restore a body part. " +
-                "action='add' | 'remove' | 'bionic' | 'restore' | 'permanent' (marks matching injuries permanent). " +
+                "action='add' | 'remove' | 'bionic' | 'restore' | 'healAll' | 'permanent' (marks matching injuries permanent). " +
+                "⭐ 'healAll' (no bodyPart, needs confirmDestructive=true) heals the WHOLE body: removes every injury, " +
+                "missing part, scar and bad hediff (diseases, toxic buildup, heatstroke...) but keeps bionics/implants; " +
+                "it returns removed[] and a health summary. 'restore' with no bodyPart is refused (use healAll). " +
                 "⭐ 'bionic' needs NO RecipeDef and no surgeon: it does RestorePart(part) " +
                 "then AddHediff(def, part), which is exactly what " +
                 "Recipe_InstallArtificialBodyPart does with a null billDoer. " +
@@ -885,7 +888,7 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "HediffDef (add/remove) or the bionic's HediffDef.")] string hediff = null,
             [ToolParameter(Description = "BodyPartDef name, e.g. Leg, Eye, Hand. Empty = whole body.")] string bodyPart = null,
             [ToolParameter(Description = "Severity for 'add'. -1 uses the def default.")] float severity = -1f,
-            [ToolParameter(Description = "Required for 'restore' - it is recursive and destructive.")] bool confirmDestructive = false)
+            [ToolParameter(Description = "Required for 'restore' and 'healAll' - they are destructive.")] bool confirmDestructive = false)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -921,11 +924,58 @@ namespace JawaBench.BridgeTools
                     if (made == 0) return Fail("No hediff with a GetsPermanent comp matched" + (string.IsNullOrEmpty(hediff) ? "" : " '" + hediff + "'") + ".");
                     didWhat = "made " + made + " injur" + (made == 1 ? "y" : "ies") + " permanent";
                 }
+                else if (A == "healall")
+                {
+                    if (!confirmDestructive)
+                        return Fail("healAll removes every injury, missing part and bad hediff on the whole body. Pass confirmDestructive=true.");
+                    if (part != null) return Fail("healAll is whole-body; drop bodyPart, or use action='restore' for one part.");
+                    var removedList = new List<string>();
+                    var failedList = new List<string>();
+                    foreach (var hx in p.health.hediffSet.hediffs.ToList())
+                    {
+                        bool bionic = hx.def.countsAsAddedPartOrImplant || hx.def.addedPartProps != null;
+                        if (bionic) continue;
+                        bool bad = hx is Hediff_Injury || hx is Hediff_MissingPart || hx.def.isBad || hx.def.chronic;
+                        if (!bad) continue;
+                        string label = hx.def.defName + (hx.Part != null ? "@" + hx.Part.def.defName : "");
+                        p.health.RemoveHediff(hx);
+                        if (p.health.hediffSet.hediffs.Contains(hx)) failedList.Add(label); else removedList.Add(label);
+                    }
+                    if (failedList.Count > 0)
+                        return Fail("healAll could not remove: " + string.Join(", ", failedList) + " (removed " + removedList.Count + ").");
+                    var left = p.health.hediffSet.hediffs.Where(h => h.def.isBad || h is Hediff_Injury || h is Hediff_MissingPart)
+                        .Where(h => !(h.def.countsAsAddedPartOrImplant || h.def.addedPartProps != null))
+                        .Select(h => h.def.defName).ToList();
+                    if (left.Count > 0) return Fail("healAll left bad hediffs behind: " + string.Join(", ", left));
+                    return (object)new
+                    {
+                        success = true, action = A,
+                        didWhat = "healed whole body: removed " + removedList.Count + " hediff(s)",
+                        removed = removedList,
+                        health = new
+                        {
+                            hediffCount = p.health.hediffSet.hediffs.Count,
+                            remaining = p.health.hediffSet.hediffs.Select(h => h.def.defName).ToList(),
+                            healthState = p.health.State.ToString(),
+                            downed = p.Downed,
+                            dead = p.Dead,
+                            bleedRate = p.health.hediffSet.BleedRateTotal,
+                            painTotal = p.health.hediffSet.PainTotal,
+                            capacities = new
+                            {
+                                consciousness = p.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness),
+                                moving = p.health.capacities.GetLevel(PawnCapacityDefOf.Moving),
+                                manipulation = p.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation),
+                            },
+                        },
+                        ticksGame = TicksGameSafe(),
+                    };
+                }
                 else if (A == "restore")
                 {
                     if (!confirmDestructive)
                         return Fail("RestorePart is RECURSIVE into child parts, wipes their hediffs and does not drop what it removes. Pass confirmDestructive=true if that is what you want.");
-                    if (part == null) return Fail("Give a bodyPart to restore.");
+                    if (part == null) return Fail("'restore' needs a bodyPart (it is per-part). For the whole body use action='healAll' with confirmDestructive=true.");
                     p.health.RestorePart(part);
                     didWhat = "restored " + part.def.defName + " (and its children)";
                 }
@@ -962,7 +1012,7 @@ namespace JawaBench.BridgeTools
                         p.health.AddHediff(hd, part);
                         didWhat = "installed " + hd.defName + " on " + part.def.defName + " (RestorePart then AddHediff - no RecipeDef needed)";
                     }
-                    else return Fail("action must be add|remove|bionic|restore.");
+                    else return Fail("action must be add|remove|bionic|restore|healAll|permanent.");
                 }
 
                 var hediffs = p.health.hediffSet.hediffs
@@ -972,7 +1022,7 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, action = A, didWhat,
-                    partsAvailable = part == null && A != "restore"
+                    partsAvailable = part == null && A != "restore" && A != "healall"
                         ? p.RaceProps.body.AllParts.Select(bp => bp.def.defName).Distinct().Take(20).ToList()
                         : null,
                     hediffCount = p.health.hediffSet.hediffs.Count,
