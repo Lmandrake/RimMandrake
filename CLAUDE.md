@@ -157,8 +157,12 @@ and much more intense effect). Ambient heat is normal Rimworld rules."* Direct S
 heat (felt temperature → Heatstroke), 55 °C at the zenith × sin(sun angle), the sun angle from the
 tile's planet position; no per-biome heat kind, number or exception. Shade gear is parasols and roofs
 (a tent is any quick roof). Volcanic/steam/fog heat is plain air temperature. And **no animal or pawn
-ever vanishes without a readable sign.** Full text: `standing_rulings.md` §Direct Sun; design and
-migration: `design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`.
+ever vanishes without a readable sign.** 🔑 **Running it on every day-side map depends on tree
+shade:** *"If we have an excellent tree shade model working, then YES direct sun works the same
+everywhere on the day side."* Without one, it is turned off on tree-heavy maps, which he calls
+inferior. The model: `design/RimMandrake/tree_shade_model_2026-10-19.md`. Full text:
+`standing_rulings.md` §Direct Sun; design and migration:
+`design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`.
 
 ## 🔑 Every DLC is assumed — owner, 2026-09-19/25/26
 
