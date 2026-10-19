@@ -39,6 +39,8 @@ namespace RimMandrake.FlowWorks
 			Mud,
 			/// <summary>w == 0 past the mud time: the existing cracked RM_Lakebed_*.</summary>
 			Lakebed,
+			/// <summary>Under 25 cm (ladder rung 1): RM_WaterVeryShallow, the same look dug water shows (P14). Appended last so ordinals hold.</summary>
+			VeryShallow,
 		}
 
 		/// <summary>Mod Setting "pondMudDays" default: days an exposed square stays mud before it cracks.</summary>
@@ -143,8 +145,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the stage for a square standing in <paramref name="waterDl"/> decilitres
 		/// of water (the pond's exact surface, RM_LevelSolve.PondSquareWater) over a bed of <paramref name="bed"/> notches: the
 		/// look nearest its TRUE metres (RM_LevelSolve.LookBand), and the square's own original terrain when that is the look it
-		/// had full. Under 25 cm (band 1) shows the 0.5 m stage until the very-shallow art lands
-		/// (VERY_SHALLOW_WATER_RESKIN_HE_SEES_FIRST). Under half a decilitre is dry (mud).</summary>
+		/// had full. Under 25 cm (band 1) is the very-shallow stage, the ladder's rung 1. Under half a decilitre is dry (mud).</summary>
 		public static Stage StageForExact(double waterDl, int bed)
 		{
 			if (waterDl < 0.5)

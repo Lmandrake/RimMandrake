@@ -76,9 +76,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     RM_PondDepthMath.Stage st = RM_PondDepthMath.StageForExact(dl, 40);
                     Assert(st == RM_WaterLadder.PondStageOf(RM_WaterLadder.RungForDl(dl)), dl + " dl: pond stage " + st);
-                    Assert(RM_WaterLadder.RungOfPondStage(st) == RM_WaterLadder.RungForDl(dl)
-                        || RM_WaterLadder.RungForDl(dl) == RM_WaterLadder.Rung.VeryShallow, dl + " dl: stage and rung agree");
+                    Assert(RM_WaterLadder.RungOfPondStage(st) == RM_WaterLadder.RungForDl(dl), dl + " dl: stage and rung agree");
                 }
+                Assert(RM_PondDepthMath.StageForExact(Math.Round(0.10 / RM_LevelSolve.MetresPerUnit), 40) == RM_PondDepthMath.Stage.VeryShallow,
+                    "a drawn-down pond at under 25 cm stages VeryShallow, not Thin (P14)");
+                Assert(RM_WaterLadder.FreshwaterDefName(RM_WaterLadder.RungOfPondStage(RM_PondDepthMath.Stage.VeryShallow)) == "RM_WaterVeryShallow",
+                    "VeryShallow pond stage writes RM_WaterVeryShallow");
                 string pd = RiverSwitchFlipChecks.Src("RM_PondDepthMath.cs");
                 RiverSwitchFlipChecks.Has(pd, @"return RM_WaterLadder\.PondStageOf\(RM_WaterLadder\.RungForDl\(w\)\);", "StageForExact reads the ladder");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
