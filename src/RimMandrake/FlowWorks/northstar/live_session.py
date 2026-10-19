@@ -681,15 +681,19 @@ def g_cover_tiers(s):
     tiers = (("RM_PitCover_WovenScrap", 40.0), ("RM_PitCover_PlankLattice", 120.0), ("RM_PitCover_ReinforcedFrame", 220.0))
     import fw_walk_common as FC
     for k, (d, rating) in enumerate(tiers):
-        c = (x + 2 + k * 8, z + 3)
-        s.dig(c, 4)
+        c = (x + 1 + k * 8, z + 3)
+        # ONE deck of six covers in a row, one pawn per cover: a second pawn spawned on an occupied cell lands BESIDE
+        # it, off the cover (live 2026-10-19: 120/220 tiers 'held' 121 kg and 231 kg that were never on them)
+        deck = [(c[0] + i, c[1]) for i in range(6)]
+        for cc in deck:
+            s.dig(cc, 4)
         # the cover spares its OWN faction (CompPitCoverTrigger: LoadOn(.., parent.Faction, superdeepCapturesOwnFaction)),
         # so a player cover never weighs colonists: own the cover by another faction instead of flipping the map-wide
         # setting under the shared clock (live 2026-10-19: all three tiers 'held' a colonist at 60.7 kg)
         if not s.mock:
-            s.call("jawa/build_batch", ops="%s:%d,%d" % (d, c[0], c[1]), faction="hostile", wipeExisting=False)
-            got = [t for t in FC.list_things(s.w, [d], (c[0] - 1, c[1] - 1, 3, 3)) if t["cell"] is not None]
-            placed = dict(survived=bool(got), note="" if got else "not on the map after build_batch (faction hostile)")
+            s.call("jawa/build_batch", ops=";".join("%s:%d,%d" % (d, cc[0], cc[1]) for cc in deck), faction="hostile", wipeExisting=False)
+            got = [t for t in FC.list_things(s.w, [d], (c[0] - 1, c[1] - 1, 8, 3)) if t["cell"] is not None]
+            placed = dict(survived=len(got) >= len(deck), note="" if len(got) >= len(deck) else "%d of %d covers on the map after build_batch" % (len(got), len(deck)))
         else:
             placed = dict(survived=True)
         if not placed.get("survived"):
@@ -698,7 +702,7 @@ def g_cover_tiers(s):
             continue
         total, held_under, dropped_over, pids, trail = 0.0, True, None, [], []
         for n in range(6):
-            pid = s.spawn(HUMAN, c)
+            pid = s.spawn(HUMAN, deck[n])
             if pid is None:
                 break
             pids.append(pid)
