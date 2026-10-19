@@ -106,7 +106,7 @@
 		</tools>
     <comps>
       <li Class="VEF.AnimalBehaviours.CompProperties_NearbyEffecter" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
-				<!-- Alpha Biomes retired 2026-10-18: tinkle grass/glowing grass point at our ports; hardy grass, tall slimy grass,
+				<!-- Alpha Biomes retired 2026-10-18: glowing grass points at our port (tinkle grass dropped from the game 2026-10-19); hardy grass, tall slimy grass,
 				     alien grass and green rock fern (no port) left both lists (every convert target is the same mound). -->
 				<thingsToAffect>
 					<li>Plant_Grass</li>
@@ -114,7 +114,6 @@
 					<li>Plant_Brambles</li>
 					<li>Plant_HealrootWild</li>
 					<li>Plant_PincushionCactus</li>
-					<li>RM_TinkleGrass</li>
 					<li>RM_GlowingGrass</li>
 					<li>Plant_Agave</li>
 					<li>Plant_Bush</li>

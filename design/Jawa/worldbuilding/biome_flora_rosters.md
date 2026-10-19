@@ -271,7 +271,6 @@ original commissioning snapshot, kept for provenance, not the live state.
 | 0.6 | **fire lavender** |  | `RUT_FireLavender` · RimUtinni Patches (Jawa campaign) |
 | 0.4 | **tavvik crust** |  | `RUT_Sagecrust` · RimUtinni: Rot Spore Kit |
 | 0.35 | **primordial grass** |  | `IronScruff_PrimordialGrass` · Primordial Geysers |
-| 0.3 | **tinkle grass** |  | `AB_TinkleGrass` · Alpha Biomes |
 | 0.3 | **primordial tall grass** |  | `IronScruff_PrimordialTallGrass` · Primordial Geysers |
 | 0.25 | **bindweed** |  | `IronScruff_Bindweed` · Primordial Geysers |
 | 0.2 | **firevine tree** | 🌳 | `AB_FirevineTree` · Alpha Biomes |

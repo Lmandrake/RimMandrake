@@ -180,7 +180,6 @@
            at the crags. The ruling landed in rosters/the_forge.json and reached the game
            only through BiomeFlora_Ashkarr.xml's now-retired replace operation;
            transplanted here by BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
-      <RM_TinkleGrass>0.3</RM_TinkleGrass>  <!-- tinkle grass -->
       <IronScruff_PrimordialTallGrass MayRequire="IronScruff.PrimordialGeysers">0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
       <IronScruff_Bindweed MayRequire="IronScruff.PrimordialGeysers">0.25</IronScruff_Bindweed>  <!-- bindweed -->
       <RM_FirevineTree>0.2</RM_FirevineTree>  <!-- firevine tree - tree -->

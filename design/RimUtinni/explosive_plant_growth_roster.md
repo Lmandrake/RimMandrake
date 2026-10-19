@@ -246,7 +246,6 @@ Everything that soaks and is neither dry-adapted, contaminated, slime-fed, fire-
 |---|---|---|---|
 | `Plant_Fireweed` | `CHURN` | the_forge | heat-proof fibre plant (Odyssey); heat-adapted is not dry-adapted — the Forge's plants are starved of water by rock, not shaped by drought. Reachable only by irrigation (the Forge's rain flashes off the rock) |
 | `RUT_FireLavender` | `CHURN` | the_forge | 'adapted to survive off the glow of magma' — its adaptation is an energy source, not water |
-| `AB_TinkleGrass` | `CHURN` | the_forge | ash-skirt ground cover; default |
 | `AB_FirevineTree` | `CHURN` | the_forge | pyroclastic donor tree; default |
 | `IronScruff_PrimordialGrass` | `CHURN` | the_forge | geyser flora — geyser water is its habitat, if anything wet-living; default |
 | `IronScruff_PrimordialTallGrass` | `CHURN` | the_forge | as PrimordialGrass |

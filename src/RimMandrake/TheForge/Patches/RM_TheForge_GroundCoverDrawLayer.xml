@@ -15,21 +15,6 @@
   is tested first: a missing donor is a silent no-op.
 -->
 <Patch>
-  <!-- tinkle grass (our port of Alpha Biomes AB_TinkleGrass, RM_TheForge_DonorPorts.xml) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_TinkleGrass"]/altitudeLayer</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RM_TinkleGrass"]/altitudeLayer</xpath>
-      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RM_TinkleGrass"]</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RM_TinkleGrass"]</xpath>
-        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-      </match>
-    </nomatch>
-  </Operation>
   <!-- primordial grass (Primordial Geysers) -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/altitudeLayer</xpath>

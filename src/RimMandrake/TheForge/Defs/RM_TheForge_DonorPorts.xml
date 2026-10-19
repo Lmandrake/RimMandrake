@@ -3,9 +3,10 @@
   <!--
     DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
     mods!!! Just get it done."). Everything the Forge still borrowed from Alpha Biomes (sarg.alphabiomes), ported
-    as RM_ defs with the donor's own values: the three ground terrains, tinkle grass, the firevine tree, both
+    as RM_ defs with the donor's own values: the three ground terrains, the firevine tree, both
     volcanic-ash weathers and their mood thought. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
-    provenance kind=donor standin=true) until regenerated. LavaSnail was never Alpha Biomes' (vanilla Odyssey).
+    provenance kind=donor standin=true) until regenerated. Tinkle grass was ported too and then dropped from the game
+    (owner, picks_plants_and_gaps_sheet_2026-10-19, AB_TinkleGrass row: "drop"). LavaSnail was never Alpha Biomes' (vanilla Odyssey).
   -->
   <!-- RM_BlackPebbles: port of AB_BlackPebbles (Alpha Biomes, TerrainDefs/Terrain_PyroclasticConflagration.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
   <TerrainDef ParentName="NaturalTerrainBase">
@@ -85,40 +86,6 @@
     <fertility>1.5</fertility>
     <takeFootprints>True</takeFootprints>
   </TerrainDef>
-
-  <!-- RM_TinkleGrass: port of AB_TinkleGrass (Alpha Biomes, ThingDefs_Plants/Plants_PyroclasticConflagration.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
-  <ThingDef ParentName="PlantBase">
-    <defName>RM_TinkleGrass</defName>
-    <label>tinkle grass</label>
-    <description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
-    <statBases>
-      <MaxHitPoints>85</MaxHitPoints>
-      <Flammability>0.5</Flammability>
-      <Nutrition>0.15</Nutrition>
-    </statBases>
-    <graphicData>
-      <texPath>StandIn/Things/Plants/AB_TinkleGrass</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
-    <ingestible/>
-    <plant>
-      <minGrowthTemperature>0</minGrowthTemperature>
-      <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
-      <maxOptimalGrowthTemperature>100</maxOptimalGrowthTemperature>
-      <maxGrowthTemperature>110</maxGrowthTemperature>
-      <growMinGlow>0</growMinGlow>
-      <fertilityMin>0.05</fertilityMin>
-      <fertilitySensitivity>0</fertilitySensitivity>
-      <growDays>1</growDays>
-      <leaflessGraphicPath>StandIn/Things/Plants/AB_TinkleGrass_Leafless</leaflessGraphicPath>
-      <harvestWork>40</harvestWork>
-      <maxMeshCount>9</maxMeshCount>
-      <visualSizeRange>0.6~0.9</visualSizeRange>
-      <topWindExposure>0.1</topWindExposure>
-      <wildOrder>1</wildOrder>
-    </plant>
-  </ThingDef>
 
   <!-- RM_FirevineTree: port of AB_FirevineTree (Alpha Biomes, ThingDefs_Plants/Plants_PyroclasticConflagration.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
   <ThingDef ParentName="TreeBase">
