@@ -84,6 +84,13 @@
       <overlay>(0.45,0.4,0.4)</overlay>
       <saturation>0.9</saturation>
     </skyColorsNightMid>
+    <modExtensions>
+      <!-- CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID (SOLAR_HEAT_EXPOSURE_1): the Bloom is the standing roof of cloud, so the
+           sun heat the biome declares reaches full strength only in the Burn. INVENTED first value. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <sunExposureFactor>0.2</sunExposureFactor>
+      </li>
+    </modExtensions>
   </WeatherDef>
 
   <WeatherDef>
