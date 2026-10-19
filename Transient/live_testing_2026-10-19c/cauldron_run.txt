@@ -1,0 +1,158 @@
+[cauldron]-note shipped defs resolved: 70
+[cauldron] 09:01:09 defs_resolve PASS 
+[cauldron] 09:01:09 acid_wiring_shape PASS 
+[cauldron] 09:01:09 flora_expansion_shape PASS 
+[cauldron] 09:01:09 fexxil_venom_shape PASS 
+[cauldron] 09:01:15 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 09:01:15 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 09:01:15 biome_roster PASS 
+[cauldron] 09:01:15 biome_worker_and_terrain PASS 
+[cauldron] 09:01:15 nettle_habitat_wired PASS 
+[cauldron] 09:01:16 vent_habitat_wired PASS 
+[cauldron]-note rigs on the generated map: [[139, 196]]
+[cauldron] 09:01:16 ruin_rig_at_mapgen PASS 
+[cauldron]-note dressing at rig (139,196): tanks / toxic tanks / pipes / blockers: [1, 1, 4, 0]
+[cauldron] 09:01:16 ruin_site_dressed_at_mapgen PASS 
+[cauldron]-note shrine inspect (usability is INFERRED from the def: Natural meditation focus 0.12): []
+[cauldron] 09:01:16 oomo_shrine_at_mapgen PASS 
+[cauldron] 09:01:16 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 09:01:17 weathers_selectable PASS 
+[cauldron] 09:01:20 defaults PASS 
+[cauldron] 09:01:20 vexxissAttacksIgniter_roundtrip PASS 
+[cauldron] 09:01:20 condensateGardensEnabled_roundtrip PASS 
+[cauldron] 09:01:20 ventsEnabled_roundtrip PASS 
+[cauldron] 09:01:21 ventFalterMessage_roundtrip PASS 
+[cauldron] 09:01:21 ventGardensEnabled_roundtrip PASS 
+[cauldron] 09:01:21 vexxithDoorEnabled_roundtrip PASS 
+[cauldron] 09:01:21 dewfallBeadsEnabled_roundtrip PASS 
+[cauldron] 09:01:22 dewfallSaturationEnabled_roundtrip PASS 
+[cauldron] 09:01:22 assayFlecksEnabled_roundtrip PASS 
+[cauldron] 09:01:22 vexxissPrintsEnabled_roundtrip PASS 
+[cauldron] 09:01:22 ventGasDrifts_roundtrip PASS 
+[cauldron] 09:01:23 ventGasToxicSmoke_roundtrip PASS 
+[cauldron] 09:01:23 ruinKitEnabled_roundtrip PASS 
+[cauldron] 09:01:23 biomeRarityFactor_roundtrip PASS 
+[cauldron]-note comps: {"RM_Suush": ["CompProperties", "CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive", "CompProperties"], "RM_Vexxiss": ["CompProperties", "CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour", "CompProperties", "CompProperties_TitanicWake"]}
+[cauldron] 09:01:23 suush_and_vexxiss_comps PASS 
+[cauldron] 09:01:23 zisska_yields_and_toxic_meat PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[["Human79122", "Gunshot", "Clavicle"], ["Human79122", "Gunshot", "Clavicle"], ["Human79127", "Bite", "Brain"]], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note mapgen wildlife removed: {"removed": 7, "verified": true, "residue": []}
+[cauldron] 09:01:26 acid_site_ready PASS 
+[cauldron]-note AcidBurn 20: hp before/after: {"swall": [300, 280], "vdoor": [320, 320], "vwall": [480, 480]}
+[cauldron] 09:01:26 vexxith_acid_proof PASS 
+[cauldron]-note AcidBurn 20 with the toggle OFF: vexxith wall hp before/after: [480, 460]
+[cauldron] 09:01:26 vexxith_acid_toggle_off PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note wild kinds spawned: {"asked": 9, "lost": []}
+[cauldron] 09:01:29 fauna_spawns PASS 
+[cauldron] 09:01:29 suush_can_fly PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron] 09:01:35 suush_ignores_melee PASS 
+[cauldron]-note shot suush row / melee control still there: [null, true]
+[cauldron] 09:01:37 suush_detonates_when_shot PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note flora set: {"asked": 16, "lost": [], "why": {}}
+[cauldron] 09:01:41 flora_spawns PASS 
+[cauldron]-note assay grades read per growth 0.1/0.6/1.0: {"unripe": "unripe", "fair": "fair", "lode": "lode"}
+[cauldron] 09:01:41 assay_grades PASS 
+[cauldron] 09:01:41 assay_toggle_off PASS 
+[cauldron] 09:01:42 assay_factor_scales PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron] 09:01:44 yield_site_ready PASS 
+GOVERNOR_STOP {"utc": "2026-10-19T16:02:03Z", "message": "safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36", "state": "stopped", "executed": 60, "requested": 1000, "stopBy": {"seq": 3, "kind": "hurt", "severity": "damage", "tick": 842, "map": 1, "subjectId": 79127, "subject": "Samantha", "critical": false, "declared": false, "detail": "health 1 -> 0.37; newest hediff Crack/Clavicle age 36"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 3, "kind": "hurt", "severity": "damage", "tick": 842, "map": 1, "subjectId": 79127, "subject": "Samantha", "critical": false, "declared": false, "detail": "health 1 -> 0.37; newest hediff Crack/Clavicle age 36"}], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "Cauldron", "--plan", "src/RimMandrake/Cauldron/northstar_plan.py", "--no-record", "--out", "Transient/live_testing_2026-10-19c/cauldron_result.json"]}
+[cauldron] 09:02:03 harvest_pays_metal UNMEASURED surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36
+[cauldron] 09:02:03 yield_factor_scales UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36
+[cauldron] 09:02:03 yield_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36
+[cauldron]-note bystanders settled (mended / drafted / residue): [[["Human79127", "Crack", "Clavicle"], ["Human79127", "Shredded", "Shoulder"], ["Human79127", "Shredded", "Torso"], ["Human79127", "Shredded", "Arm"], ["Human79127", "BloodLoss", null]], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note map-biome native / non-native herbivore picked: ["RM_Zisska", "Deer"]
+[cauldron]-note weather transition factor after the wait: 1.0
+[cauldron] 09:02:18 bloom_site_ready PASS 
+[cauldron]-note outdoor colonist hediff: {"def": "RM_VentMetalLoad", "label": "metal load (trace)", "severity": 0.007396945}
+[cauldron] 09:02:18 bloom_loads_exposed PASS 
+[cauldron] 09:02:19 bloom_no_double_tax PASS 
+[cauldron]-note indoor colonist cell at the verdict: [73, 170]
+[cauldron] 09:02:19 bloom_spares_roofed PASS 
+[cauldron] 09:02:19 bloom_spares_natives PASS 
+[cauldron] 09:02:20 bloom_toggle_off PASS 
+[cauldron]-note severity at factor 2.0 vs 1.0 (ratio): [0.01479389, 0.007396945, 2.0]
+[cauldron] 09:02:21 bloom_factor_scales PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron] 09:02:24 water_site_ready PASS 
+[cauldron]-note pond A terrain after 300 ticks of a vexxiss wading: {"WaterShallow": 51, "ToxicWaterShallow": 13}
+[cauldron] 09:02:26 water_poison_on PASS 
+[cauldron] 09:02:26 water_letter_arrives PASS 
+[cauldron] 09:02:27 water_letter_cooldown UNMEASURED UNMEASURED: the vexxiss did not poison the re-laid water, so the warn path was never reached a second time ({'WaterShallow': 49})
+[cauldron] 09:02:29 water_letter_toggle_off PASS 
+[cauldron] 09:02:30 water_poison_toggle_off PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note vexxiss job BeatFire seen / fire polls with a fire standing: [true, 1]
+[cauldron] 09:02:34 fire_warden_beats_fire PASS 
+[cauldron]-note OFF arm: BeatFire seen / fire polls: [false, 18]
+[cauldron] 09:02:45 fire_warden_toggle_off PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 09:02:47 vents_site_ready PASS 
+[cauldron]-note vent output scatter-dusk / vapour bank: [1.0, 0.8]
+[cauldron] 09:02:48 vent_weather_multiplier PASS 
+[cauldron]-note ON: vent state / eskith job in the falter: ["faltering", "Wait_MaintainPosture"]
+[cauldron]-note OFF: vent state / eskith job in the falter: ["faltering", "Wait_Wander"]
+[cauldron] 09:03:15 fauna_hush_in_falter PASS 
+[cauldron]-note vent output / state just after the bloom is chosen: [0.1, "faltering"]
+[cauldron]-note vent output / state once the bloom has arrived: [2.5, "breathing"]
+[cauldron] 09:03:22 vent_falter_precedes_bloom PASS 
+[cauldron]-note metal load next to the vent / 21 cells away: [0.012, 0.007876506]
+[cauldron]-note OFF arm: near / far: [0.012, 0.012]
+[cauldron] 09:03:31 vent_exposure_is_local PASS 
+[cauldron]-note wild vexxiss took RM_VexxissDrinkVent: true
+[cauldron]-note vexxiss job / x / z / vent state per 150 ticks: [["RM_VexxissDrinkVent", 127, 38, "breathing"]]
+[cauldron]-note OFF arm: took the drink job: false
+[cauldron] 09:03:43 vexxiss_drinks_vent PASS 
+[cauldron]-note vent silenced by a drinking vexxiss: [true, 0.0, "silenced"]
+[cauldron]-note recovery output first / 3000 ticks later: [0.02, 0.07]
+[cauldron] 09:04:24 vent_silences_and_recovers PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note mapgen wildlife removed: {"removed": 1, "verified": true, "residue": []}
+[cauldron]-note vent gas after 1500 ticks: {"capped": false, "cells": 8, "peak": 45, "tox": 0, "burned": 0}
+[cauldron] 09:04:29 gas_site_ready PASS 
+[cauldron]-note ON / OFF arm: [{"capped": false, "cells": 8, "peak": 45, "tox": 0, "burned": 0}, {"capped": false, "cells": 3, "peak": 21, "tox": 0, "burned": 0}]
+[cauldron] 09:04:31 vent_gas_emits PASS 
+[cauldron]-note ON arm: before / after the fire: [{"capped": false, "cells": 10, "peak": 28, "tox": 0, "burned": 0}, {"capped": false, "cells": 7, "peak": 30, "tox": 4, "burned": 4}]
+[cauldron]-note OFF arm: burned before / after: [4, 4]
+[cauldron] 09:04:44 vent_gas_burns_toxic PASS 
+[cauldron]-note tap banked / delivered after 9000 ticks: [0.9, 1]
+[cauldron]-note OFF arm: banked+delivered before / after: [1.9, 1.9]
+[cauldron] 09:04:59 gas_tap_caps_and_banks PASS 
+[cauldron]-note tap HP before / after a drink: [180, 84]
+[cauldron]-note OFF arm: drank / HP before / after: [true, 84, 84]
+[cauldron] 09:05:04 vexxiss_pries_tap PASS 
+[cauldron]-note ruin pieces beside the rig: tanks / pipes: [1, 3]
+[cauldron] 09:05:04 ruin_kit_dresses PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note mapgen wildlife removed: {"removed": 1, "verified": true, "residue": []}
+[cauldron]-note works powered: status after ticks: ["Power needed: 350 W", 0]
+[cauldron] 09:05:08 works_site_ready PASS 
+[cauldron] 09:05:09 works_refines_condensate FAIL ExpectationFailed: the works ran, or does not say 'Out of fuel', with no cartridge (reagent 0, status 'Power needed: 350 W')
+[cauldron] 09:05:09 works_filters_toxic_water UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:05:09 works_stops_without_power UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron]-note headings day 0..23 (seed 17) / other seed: [[5, 6, 2, 0, 2, 7, 6, 6, 2, 7, 1, 0, 2, 1, 2, 0, 2, 2, 0, 5, 5, 2, 7, 5], [3, 4, 2, 1, 5, 5, 2, 0, 3, 6, 6, 5, 1, 6, 6, 7, 7, 5, 1, 5, 1, 4, 7, 3]]
+[cauldron] 09:05:12 gas_heading_is_daily_and_map_seeded PASS 
+[cauldron]-note DriftChance(wind): [[-1.0, 0.0], [0.0, 0.0], [0.5, 0.2], [1.0, 0.4], [2.0, 0.75], [9.0, 0.75]]
+[cauldron] 09:05:13 gas_drift_chance_follows_wind PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note mapgen wildlife removed: {"removed": 1, "verified": true, "residue": []}
+[cauldron]-note cloud calm / wind (total, cx, cz, heading, chance): [[[12495, 210.0, 210.0, 4, 0.0], [12027, 210.01, 210.0, 4, 0.0], [11357, 210.0, 210.01, 4, 0.0], [10667, 210.0, 210.01, 4, 0.0], [9979, 210.01, 210.01, 4, 0.0], [9299, 210.02, 210.01, 4, 0.0], [8624, 210.02, 210.01, 4, 0.0]], [[12495, 210.0, 210.0, 4, 0.296], [12045, 209.94, 209.78, 4, 0.295], [11335, 209.97, 209.45, 4, 0.295], [10545, 209.96, 209.19, 4, 0.295], [9698, 209.95, 208.87, 4, 0.296], [8844, 209.95, 208.59, 4, 0.299], [7992, 209.92, 208.3, 4, 0.303]]]
+[cauldron]-note cloud drift vs heading: {"heading": 4, "dir": [0, -1], "wind_minus_calm": [-0.1, -1.71], "cells": 1.71, "cos": 0.998, "chance": 0.295}
+[cauldron] 09:05:23 gas_cloud_moves_along_heading PASS 
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 0, "bufferLines": 1000}
+[cauldron] 09:05:24 log_clean PASS 
+component yield/harvest_pays_metal: {"toggle": "metalYieldEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [], "scanned": 18261, "countReturned": 0, "countMatched": 0, "isCompleteList": true, "truncated": 0, "pawnsSkipped": 4, "perDef": {}, "ticksGame": 802, "message": "NOTHING MATCHED. 18261 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the re
+component yield/yield_factor_scales: {"toggle": "metalYieldFactor", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component yield/yield_toggle_off: {"toggle": "metalYieldEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component water/water_letter_cooldown: {"toggle": "vexxissWaterLetter", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the vexxiss did not poison the re-laid water, so the warn path was never reached a second time ({'WaterShallow': 49})", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "5 pawn(s).", "pawns": [{"id": "Human79122", "name": "Erisen", "kind": "Colonist", "kindDef": "Colonist", "def": "Human", "hasGenes": true, "xenotype": "Baseliner", "xenotypeLabel": "Baseliner", "uniqueXenotype": false, "faction": "PlayerColony", "factionName": "Northstar Cauldron",
+component works/works_refines_condensate: {"toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: the works ran, or does not say 'Out of fuel', with no cartridge (reagent 0, status 'Power needed: 350 W')", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 15273 examined.", "matched": 1, "examined": 15273, "threw": 0, "things": [{"id": "RM_LiquidTank86152", "defName": "RM_LiquidTank", "label": "liquid tank", "x": 212, "z": 40, "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank", "inspect": ["Not airtight. On the sea f
+component works/works_filters_toxic_water: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component works/works_stops_without_power: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+Cauldron: NOT GREEN  PASS=76 FAIL=1 UNMEASURED=6  calls=2452 mean=101.273ms  -> Transient/live_testing_2026-10-19c/cauldron_result.json

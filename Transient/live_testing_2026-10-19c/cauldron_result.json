@@ -1,0 +1,1554 @@
+{
+  "mod": "Cauldron",
+  "mode": "live",
+  "started_utc": "2026-10-19T16:01:05Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
+  "bars": [
+    {
+      "id": "load.defs_resolve",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "load.acid_wiring_shape",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "load.flora_expansion_shape",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "load.fexxil_venom_shape",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "load.types_resolve",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "load.biome_weather_table",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "load.biome_roster",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "load.biome_worker_and_terrain",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "load.nettle_habitat_wired",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "load.vent_habitat_wired",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "ruins.ruin_rig_at_mapgen",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "ruins.ruin_site_dressed_at_mapgen",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "ruins.oomo_shrine_at_mapgen",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "weather.weather_defs_laws",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "weather.weathers_selectable",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.defaults",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.vexxissAttacksIgniter_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.condensateGardensEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.ventsEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.ventFalterMessage_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.ventGardensEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.vexxithDoorEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.dewfallBeadsEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.dewfallSaturationEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.assayFlecksEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.vexxissPrintsEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.ventGasDrifts_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.ventGasToxicSmoke_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.ruinKitEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.biomeRarityFactor_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "items.suush_and_vexxiss_comps",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "items.zisska_yields_and_toxic_meat",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "acid.acid_site_ready",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "acid.vexxith_acid_proof",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "acid.vexxith_acid_toggle_off",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "fauna.fauna_spawns",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "fauna.suush_can_fly",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "suush.suush_ignores_melee",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "suush.suush_detonates_when_shot",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "flora.flora_spawns",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "flora.assay_grades",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "flora.assay_toggle_off",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "flora.assay_factor_scales",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "yield.yield_site_ready",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "yield.harvest_pays_metal",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36",
+      "evidenceFull": "surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36"
+    },
+    {
+      "id": "yield.yield_factor_scales",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36",
+      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36"
+    },
+    {
+      "id": "yield.yield_toggle_off",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36",
+      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36"
+    },
+    {
+      "id": "bloom.bloom_site_ready",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "bloom.bloom_loads_exposed",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "bloom.bloom_no_double_tax",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "bloom.bloom_spares_roofed",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "bloom.bloom_spares_natives",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "bloom.bloom_toggle_off",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "bloom.bloom_factor_scales",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "water.water_site_ready",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "water.water_poison_on",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "water.water_letter_arrives",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "water.water_letter_cooldown",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: the vexxiss did not poison the re-laid water, so the warn path was never reached a second time ({'WaterShallow': 49})",
+      "evidenceFull": "UNMEASURED: the vexxiss did not poison the re-laid water, so the warn path was never reached a second time ({'WaterShallow': 49})"
+    },
+    {
+      "id": "water.water_letter_toggle_off",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "water.water_poison_toggle_off",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "fire.fire_warden_beats_fire",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "fire.fire_warden_toggle_off",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "vents.vents_site_ready",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "vents.vent_weather_multiplier",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "vents.fauna_hush_in_falter",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "vents.vent_falter_precedes_bloom",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "vents.vent_exposure_is_local",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "vents.vexxiss_drinks_vent",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "vents.vent_silences_and_recovers",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "gas.gas_site_ready",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "gas.vent_gas_emits",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "gas.vent_gas_burns_toxic",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "gas.gas_tap_caps_and_banks",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "gas.vexxiss_pries_tap",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "gas.ruin_kit_dresses",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "works.works_site_ready",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "works.works_refines_condensate",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: the works ran, or does not say 'Out of fuel', with no cartridge (reagent 0, status 'Power needed: 350 W')",
+      "evidenceFull": "ExpectationFailed: the works ran, or does not say 'Out of fuel', with no cartridge (reagent 0, status 'Power needed: 350 W')"
+    },
+    {
+      "id": "works.works_filters_toxic_water",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "works.works_stops_without_power",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "drift.gas_heading_is_daily_and_map_seeded",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "drift.gas_drift_chance_follows_wind",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "drift.gas_cloud_moves_along_heading",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "log.log_clean",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "542 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=2 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 2 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "536 active, sha256 b0c3e67687386c14 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "load",
+    "ruins",
+    "weather",
+    "settings",
+    "items",
+    "acid",
+    "fauna",
+    "suush",
+    "flora",
+    "yield",
+    "bloom",
+    "water",
+    "fire",
+    "vents",
+    "gas",
+    "works",
+    "drift",
+    "log"
+  ],
+  "chains_skipped": [],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "components": [
+    {
+      "chain": "load",
+      "name": "defs_resolve",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "acid_wiring_shape",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "flora_expansion_shape",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "fexxil_venom_shape",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "types_resolve",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "biome_weather_table",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "biome_roster",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "biome_worker_and_terrain",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "nettle_habitat_wired",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "vent_habitat_wired",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "ruin_rig_at_mapgen",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "ruin_site_dressed_at_mapgen",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "oomo_shrine_at_mapgen",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "weather",
+      "name": "weather_defs_laws",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "weather",
+      "name": "weathers_selectable",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "defaults",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "vexxissAttacksIgniter_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "condensateGardensEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "ventsEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "ventFalterMessage_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "ventGardensEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "vexxithDoorEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "dewfallBeadsEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "dewfallSaturationEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "assayFlecksEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "vexxissPrintsEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "ventGasDrifts_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "ventGasToxicSmoke_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "ruinKitEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "biomeRarityFactor_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "items",
+      "name": "suush_and_vexxiss_comps",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "items",
+      "name": "zisska_yields_and_toxic_meat",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "acid",
+      "name": "acid_site_ready",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "acid",
+      "name": "vexxith_acid_proof",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "acid",
+      "name": "vexxith_acid_toggle_off",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fauna",
+      "name": "fauna_spawns",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fauna",
+      "name": "suush_can_fly",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suush",
+      "name": "suush_ignores_melee",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suush",
+      "name": "suush_detonates_when_shot",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora",
+      "name": "flora_spawns",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora",
+      "name": "assay_grades",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora",
+      "name": "assay_toggle_off",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora",
+      "name": "assay_factor_scales",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "yield",
+      "name": "yield_site_ready",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "yield",
+      "name": "harvest_pays_metal",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "yield",
+      "name": "yield_factor_scales",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "yield",
+      "name": "yield_toggle_off",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 1000 tick(s): hurt: health 1 -> 0.37; newest hediff Crack/Clavicle age 36",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "bloom_site_ready",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "bloom_loads_exposed",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "bloom_no_double_tax",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "bloom_spares_roofed",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "bloom_spares_natives",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "bloom_toggle_off",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "bloom_factor_scales",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "water_site_ready",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "water_poison_on",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "water_letter_arrives",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "water_letter_cooldown",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: the vexxiss did not poison the re-laid water, so the warn path was never reached a second time ({'WaterShallow': 49})",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "water_letter_toggle_off",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "water_poison_toggle_off",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire",
+      "name": "fire_warden_beats_fire",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire",
+      "name": "fire_warden_toggle_off",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "vents_site_ready",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "vent_weather_multiplier",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "fauna_hush_in_falter",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "vent_falter_precedes_bloom",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "vent_exposure_is_local",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "vexxiss_drinks_vent",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "vent_silences_and_recovers",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "gas_site_ready",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "vent_gas_emits",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "vent_gas_burns_toxic",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "gas_tap_caps_and_banks",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "vexxiss_pries_tap",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "ruin_kit_dresses",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "works",
+      "name": "works_site_ready",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "works",
+      "name": "works_refines_condensate",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: the works ran, or does not say 'Out of fuel', with no cartridge (reagent 0, status 'Power needed: 350 W')",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "works",
+      "name": "works_filters_toxic_water",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "works",
+      "name": "works_stops_without_power",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "drift",
+      "name": "gas_heading_is_daily_and_map_seeded",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "drift",
+      "name": "gas_drift_chance_follows_wind",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "drift",
+      "name": "gas_cloud_moves_along_heading",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "log",
+      "name": "log_clean",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 76,
+    "FAIL": 1,
+    "UNMEASURED": 6
+  },
+  "all_green": false,
+  "timing": {
+    "n": 2452,
+    "total_ms": 248322.616,
+    "mean_ms": 101.2735,
+    "p50_ms": 49.9909,
+    "p95_ms": 253.9117,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 87,
+        "mean_ms": 50.1837,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 289,
+        "mean_ms": 19.0773,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 5,
+        "mean_ms": 43.9616,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.326,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 67.3891,
+        "errors": 0
+      },
+      "jawa/dlc_status": {
+        "n": 1,
+        "mean_ms": 58.0032,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 223,
+        "mean_ms": 53.5732,
+        "errors": 0
+      },
+      "jawa/site_state": {
+        "n": 52,
+        "mean_ms": 52.7252,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 55,
+        "mean_ms": 47.8892,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 17,
+        "mean_ms": 50.2547,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 9,
+        "mean_ms": 53.148,
+        "errors": 0
+      },
+      "jawa/type_probe": {
+        "n": 25,
+        "mean_ms": 215.5467,
+        "errors": 0
+      },
+      "jawa/biome_probe": {
+        "n": 3,
+        "mean_ms": 74.8907,
+        "errors": 0
+      },
+      "jawa/get_def": {
+        "n": 8,
+        "mean_ms": 59.6499,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 63,
+        "mean_ms": 49.6213,
+        "errors": 0
+      },
+      "jawa/inspect_string": {
+        "n": 83,
+        "mean_ms": 50.5714,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 269,
+        "mean_ms": 50.5724,
+        "errors": 0
+      },
+      "jawa/pawn_force_incapacitate": {
+        "n": 69,
+        "mean_ms": 51.6522,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 71,
+        "mean_ms": 89.1351,
+        "errors": 0
+      },
+      "jawa/set_roof_batch": {
+        "n": 25,
+        "mean_ms": 38.3145,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 20,
+        "mean_ms": 53.9219,
+        "errors": 0
+      },
+      "jawa/pawn_health": {
+        "n": 11,
+        "mean_ms": 52.8888,
+        "errors": 0
+      },
+      "jawa/pawn_mental": {
+        "n": 72,
+        "mean_ms": 50.3146,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 693,
+        "mean_ms": 50.5883,
+        "errors": 0
+      },
+      "jawa/set_draft": {
+        "n": 42,
+        "mean_ms": 51.0116,
+        "errors": 0
+      },
+      "jawa/destroy_bulk": {
+        "n": 4,
+        "mean_ms": 58.3775,
+        "errors": 0
+      },
+      "jawa/build_batch": {
+        "n": 5,
+        "mean_ms": 136.7618,
+        "errors": 0
+      },
+      "jawa/damage": {
+        "n": 6,
+        "mean_ms": 108.491,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 33,
+        "mean_ms": 89.0773,
+        "errors": 0
+      },
+      "jawa/pawn_flight": {
+        "n": 1,
+        "mean_ms": 92.301,
+        "errors": 0
+      },
+      "jawa/safe_advance": {
+        "n": 142,
+        "mean_ms": 797.5473,
+        "errors": 0
+      },
+      "jawa/set_plants": {
+        "n": 22,
+        "mean_ms": 49.8692,
+        "errors": 0
+      },
+      "jawa/designate_batch": {
+        "n": 1,
+        "mean_ms": 58.3527,
+        "errors": 0
+      },
+      "jawa/ordered_job": {
+        "n": 1,
+        "mean_ms": 17213.8259,
+        "errors": 0
+      },
+      "jawa/make_empty_room": {
+        "n": 1,
+        "mean_ms": 690.8368,
+        "errors": 0
+      },
+      "jawa/spawn_batch": {
+        "n": 9,
+        "mean_ms": 60.0479,
+        "errors": 0
+      },
+      "jawa/get_roof_batch": {
+        "n": 2,
+        "mean_ms": 53.6993,
+        "errors": 0
+      },
+      "jawa/time_set_ticks": {
+        "n": 5,
+        "mean_ms": 52.6369,
+        "errors": 0
+      },
+      "jawa/get_terrain_batch": {
+        "n": 8,
+        "mean_ms": 48.9209,
+        "errors": 0
+      },
+      "jawa/letter_list": {
+        "n": 4,
+        "mean_ms": 56.8468,
+        "errors": 0
+      },
+      "jawa/map_fire": {
+        "n": 7,
+        "mean_ms": 49.242,
+        "errors": 0
+      },
+      "rimworld/set_time_speed": {
+        "n": 2,
+        "mean_ms": 21.4061,
+        "errors": 0
+      },
+      "jawa/battery_set": {
+        "n": 1,
+        "mean_ms": 53.1798,
+        "errors": 0
+      },
+      "jawa/drain_log": {
+        "n": 4,
+        "mean_ms": 48.161,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "d9572c16cf9508f30aa869f06724121f058ce8583f6a9baed9b014d551a6deff"
+}
