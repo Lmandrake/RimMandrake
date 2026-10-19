@@ -20,22 +20,21 @@ def compile_set(csproj):
         if strip_ns(pg.tag) == 'EnableDefaultCompileItems' and pg.text: props['edci'] = pg.text.strip().lower()
     edci_false = props.get('edci') == 'false'
     files = set()
-    removes = []
     if not edci_false:
         for p in glob.glob(os.path.join(d, '**', '*.cs'), recursive=True):
             rel = os.path.relpath(p, d).replace('\\', '/')
             if rel.startswith(('obj/', 'bin/')): continue
             files.add(os.path.normpath(p))
-    for el in root.iter():
+    def expand(pat):
+        pat = os.path.normpath(os.path.join(d, pat.replace('\\', '/')))
+        return {os.path.normpath(p) for p in (glob.glob(pat, recursive=True) if any(c in pat for c in '*?') else [pat])}
+    for el in root.iter():   # MSBuild evaluates Include/Remove in document order: a later Include re-adds what an earlier Remove took
         if strip_ns(el.tag) == 'Compile':
             inc = el.get('Include'); rem = el.get('Remove')
             if inc:
-                pat = os.path.normpath(os.path.join(d, inc.replace('\\', '/')))
-                for p in (glob.glob(pat, recursive=True) if any(c in pat for c in '*?') else [pat]):
-                    files.add(os.path.normpath(p))
-            if rem: removes.append(os.path.normpath(os.path.join(d, rem.replace('\\', '/'))))
-    for r in removes:
-        files = {f for f in files if f != r}
+                for part in inc.split(';'): files |= expand(part)
+            if rem:
+                for part in rem.split(';'): files -= expand(part)
     return edci_false, files
 
 def read(p):
@@ -75,6 +74,9 @@ def stamp_status(root):
         if line.startswith(('MATCH ', 'MISMATCH ', 'STAMP_MISSING ')):
             k, p = line.split(' ', 1); st[p.strip()] = [k]; cur = p.strip()
         elif cur and line.strip(): st[cur].append(line.strip())
+    if not st:   # a crashed/empty stamp check would otherwise leave check (3) unable to fail (only "no committed DLL stamp" notes)
+        print('dll_source_stamp.py check returned no stamps (rc=%s): %s' % (r.returncode, (r.stderr or r.stdout)[-300:]), file=sys.stderr)
+        sys.exit(2)
     return st
 
 def project_stamps(stamps, rel_dir, csproj_text):
