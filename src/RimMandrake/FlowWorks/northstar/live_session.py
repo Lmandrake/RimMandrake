@@ -431,7 +431,8 @@ class Session(object):
                 self.dig((sw[0] + i, sw[1] + j), notches, fill)
 
     def climb(self, pid):
-        """ProofClimb pawn:<id> -> dict(cell, depth, held, trapped) or {} (unread)."""
+        """ProofClimb pawn:<id> -> dict(cell, depth, held, trapped) or {} (unread). depth is the CELL's dug depth
+        (ProofPocket -> ClimbDepthAt), deck-blind: a pawn on an intact cover over a 2 m cell reads 4."""
         ok, txt = self.proof(NSP, "ProofClimb", "pawn:%s" % pid)
         kv = kvparse(txt) if ok else {}
         if "cell" not in kv:
@@ -674,9 +675,10 @@ HUMAN = "Colonist"
 
 
 def g_cover_tiers(s):
-    """SUSPENSION_BASE A3: three one-cell covers over 2 m (superdeep) cells, one per tier (40/120/220 kg). Colonists
-    are stood on each cover one at a time; each pawn's Mass is READ (pawn_stats), never assumed. A cover must hold while
-    the summed mass is under its rating and give way (pawn ends on the pit floor: ProofClimb depth > 0) once over it."""
+    """SUSPENSION_BASE A3: one six-cover deck over 2 m (superdeep) cells per tier (40/120/220 kg). Colonists are
+    stood on the deck one per cover, one at a time; each pawn's Mass is READ (pawn_stats), never assumed. A cover must hold while
+    the summed mass is under its rating and give way (the deck is gone from the map and the pawn stands on a dug cell) once
+    over it."""
     x, z, _w, _h = s.zones["covers"]
     tiers = (("RM_PitCover_WovenScrap", 40.0), ("RM_PitCover_PlankLattice", 120.0), ("RM_PitCover_ReinforcedFrame", 220.0))
     import fw_walk_common as FC
@@ -718,15 +720,25 @@ def g_cover_tiers(s):
             total += m
             yield Wait(70)                          # the trigger scans the deck every 30 ticks
             down = [(s.climb(p) or {}).get("depth") for p in pids]
-            fell = any(dd is not None and dd > 0 for dd in down)
-            trail.append(dict(n=n + 1, total=round(total, 1), depths=down))
+            # "gave way" is read off the COVER, never ProofClimb's depth: that is the cell's dug depth (ProofPocket ->
+            # ClimbDepthAt, deck-blind), 4 under a colonist on an INTACT cover too (live 2026-10-19 run 20261018T233414:
+            # 120/220 "gave way" under one ~60 kg colonist; PIT_COVER_DIAGNOSE_GIVES_WAY_TOO_SOON). A deck gives way whole.
+            left = None                             # mock: FakeGame models no covers, the depth alone decides
+            if not s.mock:
+                got = [t for t in FC.list_things(s.w, [d], (c[0] - 1, c[1] - 1, 8, 3)) if t["cell"] in deck]
+                if not got and (getattr(s.w, "last_list", None) or {}).get("countMatched") is None:
+                    trail.append(dict(n=n + 1, total=round(total, 1), depths=down, covers_left="UNREAD"))
+                    break
+                left = len(got)
+            fell = (left is None or left == 0) and any(dd is not None and dd > 0 for dd in down)
+            trail.append(dict(n=n + 1, total=round(total, 1), depths=down, covers_left=left))
             if total < rating and fell:
                 held_under = False
                 break
             if total >= rating:
                 dropped_over = fell
                 break
-        if any(t.get("mass") == "UNREAD" for t in trail):
+        if any(t.get("mass") == "UNREAD" or t.get("covers_left") == "UNREAD" for t in trail):
             st = "UNMEASURED"
         elif not held_under:          # gave way UNDER its rating: an answer, and the wrong one (was read as UNMEASURED)
             st = "FAIL"
