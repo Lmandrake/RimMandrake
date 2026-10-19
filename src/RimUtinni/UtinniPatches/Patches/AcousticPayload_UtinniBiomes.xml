@@ -1247,14 +1247,6 @@
               </pawnRaces>
             </li>
             <li>
-              <label>rime nodules</label>
-              <reading>Small hard beads in the fuel, each holding something liquid.</reading>
-              <color>(0.8, 0.9, 1)</color>
-              <thingDefs>
-                <li>AB_RimeNodules</li>
-              </thingDefs>
-            </li>
-            <li>
               <label>void in the ice</label>
               <reading>The echo falls into a pocket under the frozen flats.</reading>
               <color>(0.6, 0.6, 0.9)</color>
@@ -1306,14 +1298,6 @@
               <pawnRaces>
                 <li>RUT_BurnerAscendant</li>
               </pawnRaces>
-            </li>
-            <li>
-              <label>rime nodules</label>
-              <reading>Small hard beads in the fuel, each holding something liquid.</reading>
-              <color>(0.8, 0.9, 1)</color>
-              <thingDefs>
-                <li>AB_RimeNodules</li>
-              </thingDefs>
             </li>
             <li>
               <label>void in the ice</label>
