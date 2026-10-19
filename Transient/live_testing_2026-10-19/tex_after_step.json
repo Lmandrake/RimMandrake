@@ -1,0 +1,117 @@
+{
+ "when": "2026-10-19T05:11:16",
+ "map_info": {
+  "mapId": 1,
+  "mapBiome": "RM_Contagion",
+  "size": null,
+  "tile": 3,
+  "success": true
+ },
+ "defs": {
+  "success": true,
+  "message": "2 of 2 def(s) resolved",
+  "requested": 2,
+  "foundCount": 2,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "defName"
+  ],
+  "defs": [
+   {
+    "requested": "ThingDef/RUT_Webwork_Nest",
+    "found": true,
+    "defName": "RUT_Webwork_Nest",
+    "defType": "ThingDef",
+    "label": "shokkweave nest",
+    "modName": "RimUtinni: Shokkweave Economy",
+    "packageId": "mandrake.rut.shokkweaveeconomy",
+    "fields": {
+     "defName": "RUT_Webwork_Nest"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_TallSlimyGrass",
+    "found": true,
+    "defName": "RM_TallSlimyGrass",
+    "defType": "ThingDef",
+    "label": "tall slimy grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_TallSlimyGrass"
+    }
+   }
+  ],
+  "ticksGame": 62,
+  "operation": {
+   "OperationId": "op_bbe9a7cf256d427a98a5127f084f12b4",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 24
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 62
+  }
+ },
+ "tex": [
+  {
+   "def": "RUT_Webwork_Nest",
+   "spawn": {
+    "success": false,
+    "message": "Object reference not set to an instance of an object",
+    "exception": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref DD6F77C3]\n  at Vehicles.PathingHelper.RecalculatePerceivedPathCostAt (Verse.IntVec3 cell, Verse.Map map) [0x00007] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Utility\\Helpers\\PathingHelper.cs:367 \n  at Vehicles.Patch_VehiclePathing.RecalculatePerceivedPathCostForVehicle (Verse.IntVec3 c, Verse.AI.PathingContext ___normal) [0x00000] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Harmony\\Patches\\Patch_VehiclePathing.cs:217 \n  at Verse.AI.Pathing.RecalculatePerceivedPathCostAt (Verse.IntVec3 c) [0x00076] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_VehiclePathing:RecalculatePerceivedPathCostForVehicle(IntVec3 c, PathingContext ___normal)\n  at Verse.AI.Pathing.RecalculatePerceivedPathCostUnderThing (Verse.Thing thing) [0x00052] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Thing.DeSpawn (Verse.DestroyMode mode) [0x001e9] in <61e4173561894da49d210260257b5097>:0 \n    - TRANSPILER SmashPhil.VehicleFramework: IEnumerable`1 Vehicles.Patch_VehiclePathing:DeSpawnAndUpdateVehicleRegionsTranspiler(IEnumerable`1 instructions)\n    - PREFIX ChezhouLib.lib: Void ChezhouLib.CustomMission.Levels.Patch_ClLevelThingDespawn:Prefix(Thing __instance)\n    - PREFIX QF_Patch: Void QuestEditor_Library.Patch_ActivateMapOnDespawn:Prefix(Thing __instance)\n    - PREFIX gravtide.mod: Void GravTide.Projectile_DeSpawn_Water_Patch:Prefix(Thing __instance)\n    - PREFIX gravtide.mod: Void GravTide.MarineAnimalSelection_Despawn:Prefix(Thing __instance)\n    - PREFIX gravtide.mod: Void GravTide.PlantSelection_Despawn:Prefix(Thing __instance)\n    - PREFIX net.littlewhitemouse.LWM.DeepStorage: Void LWM.DeepStorage.Cleanup_For_DeepStorage_Thing_At_DeSpawn:Prefix(Thing __instance)\n    - PREFIX Krkr.Rule56: Void CombatAI.Patches.Thing_Patch+Thing_DeSpawn_Patch:Prefix(Thing __instance)\n  at Verse.ThingWithComps.DeSpawn (Verse.DestroyMode mode) [0x00007] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Building.DeSpawn (Verse.DestroyMode mode) [0x00052] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX net.littlewhitemouse.LWM.DeepStorage: Void LWM.DeepStorage.Patch_Building_DeSpawn_For_Building_Storage:Prefix(Building __instance)\n    - PREFIX sbz.WallFridge: Void sbz.Storage.Building_DeSpawn_Patch:Prefix(Building __instance)\n    - PREFIX gravtide.mod: Void GravTide.Building_DeSpawn_Deck_Patch:Prefix(Building __instance, Map& __state)\n    - PREFIX gravtide.mod: Void GravTide.MapComponent_WallLeak+Building_DeSpawn_Patch:Prefix(Building __instance)\n    - PREFIX Karshou.StorageMemory: Void StorageMemory.Patch_GeneBank_DeSpawn:Prefix(Building __instance)\n    - PREFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.RM_Patch_NetTopologyDespawn:Prefix(Building __instance, Map& __state)\n    - PREFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.Patch_Joins_Despawn:Prefix(Building __instance, ValueTuple`2& __state)\n    - PREFIX mandrake.rm.titaniccreatures: Void RimMandrake.TitanicCreatures.Patch_Building_DeSpawn_WallsSlots:Prefix(Building __instance)\n    - POSTFIX LightsOut: Void LightsOut.Patches.Power.CleanupBuildingsOnDespawn:Postfix(ThingWithComps __instance)\n    - POSTFIX gravtide.mod: Void GravTide.Building_DeSpawn_Deck_Patch:Postfix(Building __instance, Map __state)\n    - POSTFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.RM_Patch_NetTopologyDespawn:Postfix(Building __instance, Map __state)\n    - POSTFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.Patch_Joins_Despawn:Postfix(ValueTuple`2 __state)\n  at Verse.Thing.Destroy (Verse.DestroyMode mode) [0x00105] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_Combat:ProjectileMapToWorld(Thing __instance)\n    - PREFIX ChezhouLib.lib: Boolean ChezhouLib.CustomMission.Levels.Patch_ClLevelDestruction:Prefix(Thing __instance)\n    - PREFIX gravtide.mod: Void GravTide.ShuttleLanding+PadDestroyed_Patch:Prefix(Thing __instance, DestroyMode mode)\n    - PREFIX mandrake.rsw.gizkastowaway: Void RimMandrake.StarWars.GizkaStowaway.Patch_Thing_Destroy_Salvage:Prefix(Thing __instance, DestroyMode mode)\n    - PREFIX mandrake.rm.stillsand.zuurrikfeeding: Void RimMandrake.Stillsand.RM_ZuurrikFeedingPatch:DestroyPrefix(Thing __instance)\n    - PREFIX mandrake.rm.warscar.chotrix: Void RimMandrake.Scarlands.Patch_Thing_Destroy:Prefix(Thing __instance, DestroyMode mode)\n    - PREFIX sk.gravshipraids: Void Gravship_Raids.FlightCriticalBuildingDestroyedPatch:Prefix(Thing __instance, Map& __state)\n    - PREFIX mandrake.jawabench.eventrecorder: Void JawaBench.BridgeTools.JawaBenchEventRecorder:DestroyPrefix(Thing __instance, DestroyMode mode)\n    - POSTFIX lordfelix.rimcontrol: Void ItemControl.Patch_Thing_Destroy:Postfix(Thing __instance)\n    - POSTFIX sk.gravshipraids: Void Gravship_Raids.FlightCriticalBuildingDestroyedPatch:Postfix(Thing __instance, Map __state)\n  at Verse.ThingWithComps.Destroy (Verse.DestroyMode mode) [0x0000d] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX Krkr.Rule56: Void CombatAI.Patches.ThingWithComps_Patch+ThingWithComps_Destroy_Patch:Prefix(ThingWithComps __instance)\n  at Verse.Building.Destroy (Verse.DestroyMode mode) [0x00091] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX OskarPotocki.VEF: Void VEF.Buildings.VanillaExpandedFramework_Building_Destroy_Patch:Prefix(Building __instance)\n    - PREFIX falconne.BWM: Boolean ImprovedWorkbenches.Building_Destroy_Detour:Prefix(Building __instance)\n    - PREFIX alt4s.visitsettlements: Void VS_PenalizeForDestruction:Prefix(Building __instance, DestroyMode mode)\n    - PREFIX ChezhouLib.lib: Boolean ChezhouLib.CustomMission.Levels.Patch_ClLevelDestruction:Prefix(Thing __instance)\n    - PREFIX QF_Patch: Boolean QuestEditor_Library.Patch_BuildingDestroy:PreFix(Building __instance)\n    - PREFIX RWM.BTD.Remix.GravshipBlueprints: Void RWM_BTD_Remix_GravshipBlueprints.Building_Destroy_Patch:Prefix(Building __instance, DestroyMode& mode)\n  at Verse.GenSpawn.WipeExistingThings (Verse.IntVec3 thingPos, Verse.Rot4 thingRot, Verse.BuildableDef thingDef, Verse.Map map, Verse.DestroyMode mode) [0x0004c] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.Rot4 rot, Verse.WipeMode wipeMode, System.Boolean respawningAfterLoad, System.Boolean forbidLeavings) [0x0024c] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX SmashPhil.VehicleFramework: Boolean Vehicles.Patch_Construction:RegisterThingSpawned(Thing newThing, IntVec3& loc, Map map, Rot4& rot, Thing& __result, Boolean respawningAfterLoad)\n    - PREFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Prefix(Thing newThing, IntVec3 loc, Map map, Rot4 rot, Boolean respawningAfterLoad, Thing& __state)\n    - PREFIX VFEPirates.Mod: Boolean VFEPirates.GenSpawn_Spawn_Patch:Prefix(Thing& newThing, WipeMode& wipeMode, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Void Fortified.Patch_ReplaceBuilding:Prefix(Thing& newThing, Map map, Rot4& rot, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Boolean Fortified.Patch_Replace:Prefix(Thing& newThing, IntVec3 loc, Map map, Rot4 rot)\n    - POSTFIX com.VanillaFurnitureExpandedFactory: Void VanillaFurnitureExpandedFactory.GenSpawn_Spawn_Patch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing __result)\n    - POSTFIX neku.largepawns: Void LargePawns.Patches.GenSpawn_Spawn_LargePawnFootprintPatch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing& __result)\n    - POSTFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Postfix(Thing __result, Thing __state)\n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.WipeMode wipeMode) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at RimBridgeServer.LifecycleCapabilityModule.SpawnThing (System.String defName, System.Int32 x, System.Int32 z, System.Int32 stackCount) [0x0009c] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n(wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <51fded79cd284d4d911c5949aff4cb21>:0 \r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1] Duplicate stacktrace, see ref for original",
+    "operation": {
+     "OperationId": "op_01e243406da843ee95e786d1d329984a",
+     "Status": "Failed",
+     "Success": false,
+     "DurationMs": 76,
+     "Error": {
+      "Code": "capability.failed",
+      "Message": "Object reference not set to an instance of an object",
+      "ExceptionType": "System.NullReferenceException",
+      "Details": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref DD6F77C3]\n  at Vehicles.PathingHelper.RecalculatePerceivedPathCostAt (Verse.IntVec3 cell, Verse.Map map) [0x00007] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Utility\\Helpers\\PathingHelper.cs:367 \n  at Vehicles.Patch_VehiclePathing.RecalculatePerceivedPathCostForVehicle (Verse.IntVec3 c, Verse.AI.PathingContext ___normal) [0x00000] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Harmony\\Patches\\Patch_VehiclePathing.cs:217 \n  at Verse.AI.Pathing.RecalculatePerceivedPathCostAt (Verse.IntVec3 c) [0x00076] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_VehiclePathing:RecalculatePerceivedPathCostForVehicle(IntVec3 c, PathingContext ___normal)\n  at Verse.AI.Pathing.RecalculatePerceivedPathCostUnderThing (Verse.Thing thing) [0x00052] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Thing.DeSpawn (Verse.DestroyMode mode) [0x001e9] in <61e4173561894da49d210260257b5097>:0 \n    - TRANSPILER SmashPhil.VehicleFramework: IEnumerable`1 Vehicles.Patch_VehiclePathing:DeSpawnAndUpdateVehicleRegionsTranspiler(IEnumerable`1 instructions)\n    - PREFIX ChezhouLib.lib: Void ChezhouLib.CustomMission.Levels.Patch_ClLevelThingDespawn:Prefix(Thing __instance)\n    - PREFIX QF_Patch: Void QuestEditor_Library.Patch_ActivateMapOnDespawn:Prefix(Thing __instance)\n    - PREFIX gravtide.mod: Void GravTide.Projectile_DeSpawn_Water_Patch:Prefix(Thing __instance)\n    - PREFIX gravtide.mod: Void GravTide.MarineAnimalSelection_Despawn:Prefix(Thing __instance)\n    - PREFIX gravtide.mod: Void GravTide.PlantSelection_Despawn:Prefix(Thing __instance)\n    - PREFIX net.littlewhitemouse.LWM.DeepStorage: Void LWM.DeepStorage.Cleanup_For_DeepStorage_Thing_At_DeSpawn:Prefix(Thing __instance)\n    - PREFIX Krkr.Rule56: Void CombatAI.Patches.Thing_Patch+Thing_DeSpawn_Patch:Prefix(Thing __instance)\n  at Verse.ThingWithComps.DeSpawn (Verse.DestroyMode mode) [0x00007] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Building.DeSpawn (Verse.DestroyMode mode) [0x00052] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX net.littlewhitemouse.LWM.DeepStorage: Void LWM.DeepStorage.Patch_Building_DeSpawn_For_Building_Storage:Prefix(Building __instance)\n    - PREFIX sbz.WallFridge: Void sbz.Storage.Building_DeSpawn_Patch:Prefix(Building __instance)\n    - PREFIX gravtide.mod: Void GravTide.Building_DeSpawn_Deck_Patch:Prefix(Building __instance, Map& __state)\n    - PREFIX gravtide.mod: Void GravTide.MapComponent_WallLeak+Building_DeSpawn_Patch:Prefix(Building __instance)\n    - PREFIX Karshou.StorageMemory: Void StorageMemory.Patch_GeneBank_DeSpawn:Prefix(Building __instance)\n    - PREFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.RM_Patch_NetTopologyDespawn:Prefix(Building __instance, Map& __state)\n    - PREFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.Patch_Joins_Despawn:Prefix(Building __instance, ValueTuple`2& __state)\n    - PREFIX mandrake.rm.titaniccreatures: Void RimMandrake.TitanicCreatures.Patch_Building_DeSpawn_WallsSlots:Prefix(Building __instance)\n    - POSTFIX LightsOut: Void LightsOut.Patches.Power.CleanupBuildingsOnDespawn:Postfix(ThingWithComps __instance)\n    - POSTFIX gravtide.mod: Void GravTide.Building_DeSpawn_Deck_Patch:Postfix(Building __instance, Map __state)\n    - POSTFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.RM_Patch_NetTopologyDespawn:Postfix(Building __instance, Map __state)\n    - POSTFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.Patch_Joins_Despawn:Postfix(ValueTuple`2 __state)\n  at Verse.Thing.Destroy (Verse.DestroyMode mode) [0x00105] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_Combat:ProjectileMapToWorld(Thing __instance)\n    - PREFIX ChezhouLib.lib: Boolean ChezhouLib.CustomMission.Levels.Patch_ClLevelDestruction:Prefix(Thing __instance)\n    - PREFIX gravtide.mod: Void GravTide.ShuttleLanding+PadDestroyed_Patch:Prefix(Thing __instance, DestroyMode mode)\n    - PREFIX mandrake.rsw.gizkastowaway: Void RimMandrake.StarWars.GizkaStowaway.Patch_Thing_Destroy_Salvage:Prefix(Thing __instance, DestroyMode mode)\n    - PREFIX mandrake.rm.stillsand.zuurrikfeeding: Void RimMandrake.Stillsand.RM_ZuurrikFeedingPatch:DestroyPrefix(Thing __instance)\n    - PREFIX mandrake.rm.warscar.chotrix: Void RimMandrake.Scarlands.Patch_Thing_Destroy:Prefix(Thing __instance, DestroyMode mode)\n    - PREFIX sk.gravshipraids: Void Gravship_Raids.FlightCriticalBuildingDestroyedPatch:Prefix(Thing __instance, Map& __state)\n    - PREFIX mandrake.jawabench.eventrecorder: Void JawaBench.BridgeTools.JawaBenchEventRecorder:DestroyPrefix(Thing __instance, DestroyMode mode)\n    - POSTFIX lordfelix.rimcontrol: Void ItemControl.Patch_Thing_Destroy:Postfix(Thing __instance)\n    - POSTFIX sk.gravshipraids: Void Gravship_Raids.FlightCriticalBuildingDestroyedPatch:Postfix(Thing __instance, Map __state)\n  at Verse.ThingWithComps.Destroy (Verse.DestroyMode mode) [0x0000d] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX Krkr.Rule56: Void CombatAI.Patches.ThingWithComps_Patch+ThingWithComps_Destroy_Patch:Prefix(ThingWithComps __instance)\n  at Verse.Building.Destroy (Verse.DestroyMode mode) [0x00091] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX OskarPotocki.VEF: Void VEF.Buildings.VanillaExpandedFramework_Building_Destroy_Patch:Prefix(Building __instance)\n    - PREFIX falconne.BWM: Boolean ImprovedWorkbenches.Building_Destroy_Detour:Prefix(Building __instance)\n    - PREFIX alt4s.visitsettlements: Void VS_PenalizeForDestruction:Prefix(Building __instance, DestroyMode mode)\n    - PREFIX ChezhouLib.lib: Boolean ChezhouLib.CustomMission.Levels.Patch_ClLevelDestruction:Prefix(Thing __instance)\n    - PREFIX QF_Patch: Boolean QuestEditor_Library.Patch_BuildingDestroy:PreFix(Building __instance)\n    - PREFIX RWM.BTD.Remix.GravshipBlueprints: Void RWM_BTD_Remix_GravshipBlueprints.Building_Destroy_Patch:Prefix(Building __instance, DestroyMode& mode)\n  at Verse.GenSpawn.WipeExistingThings (Verse.IntVec3 thingPos, Verse.Rot4 thingRot, Verse.BuildableDef thingDef, Verse.Map map, Verse.DestroyMode mode) [0x0004c] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.Rot4 rot, Verse.WipeMode wipeMode, System.Boolean respawningAfterLoad, System.Boolean forbidLeavings) [0x0024c] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX SmashPhil.VehicleFramework: Boolean Vehicles.Patch_Construction:RegisterThingSpawned(Thing newThing, IntVec3& loc, Map map, Rot4& rot, Thing& __result, Boolean respawningAfterLoad)\n    - PREFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Prefix(Thing newThing, IntVec3 loc, Map map, Rot4 rot, Boolean respawningAfterLoad, Thing& __state)\n    - PREFIX VFEPirates.Mod: Boolean VFEPirates.GenSpawn_Spawn_Patch:Prefix(Thing& newThing, WipeMode& wipeMode, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Void Fortified.Patch_ReplaceBuilding:Prefix(Thing& newThing, Map map, Rot4& rot, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Boolean Fortified.Patch_Replace:Prefix(Thing& newThing, IntVec3 loc, Map map, Rot4 rot)\n    - POSTFIX com.VanillaFurnitureExpandedFactory: Void VanillaFurnitureExpandedFactory.GenSpawn_Spawn_Patch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing __result)\n    - POSTFIX neku.largepawns: Void LargePawns.Patches.GenSpawn_Spawn_LargePawnFootprintPatch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing& __result)\n    - POSTFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Postfix(Thing __result, Thing __state)\n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.WipeMode wipeMode) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at RimBridgeServer.LifecycleCapabilityModule.SpawnThing (System.String defName, System.Int32 x, System.Int32 z, System.Int32 stackCount) [0x0009c] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n(wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <51fded79cd284d4d911c5949aff4cb21>:0 \r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1] Duplicate stacktrace, see ref for original"
+     }
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 62
+    }
+   }
+  },
+  {
+   "def": "RM_TallSlimyGrass",
+   "spawn": {
+    "success": false,
+    "message": "Object reference not set to an instance of an object",
+    "exception": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 1EAE2F28] Duplicate stacktrace, see ref for original\r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1] Duplicate stacktrace, see ref for original",
+    "operation": {
+     "OperationId": "op_092f7ff9f0524e41b21b18c974c18ae0",
+     "Status": "Failed",
+     "Success": false,
+     "DurationMs": 22,
+     "Error": {
+      "Code": "capability.failed",
+      "Message": "Object reference not set to an instance of an object",
+      "ExceptionType": "System.NullReferenceException",
+      "Details": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 1EAE2F28] Duplicate stacktrace, see ref for original\r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1] Duplicate stacktrace, see ref for original"
+     }
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 62
+    }
+   }
+  }
+ ]
+}

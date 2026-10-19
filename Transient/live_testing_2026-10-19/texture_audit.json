@@ -1,0 +1,83 @@
+{
+ "Plant_Grass": {
+  "success": true,
+  "message": "No dead texPaths in 2 path(s) across 2 def(s).",
+  "defsScanned": 2,
+  "pathsChecked": 2,
+  "missingCount": 0,
+  "unjudgedCount": 0,
+  "truncated": false,
+  "elapsedMs": 18,
+  "missing": [],
+  "unjudged": [],
+  "note": "A dead path here is invisible to `ls`: Windows is case-insensitive, RimWorld's content index is not. Fix by PATCH, never by editing a workshop folder - Steam overwrites it. `unjudged` holds defs whose graphicClass is not a vanilla Verse.Graphic_*: their own class resolves its own filenames and this checker does not know its rules, so a miss there is UNKNOWN rather than dead. Judge those by hand.",
+  "ticksGame": 126814,
+  "operation": {
+   "OperationId": "op_3a20d1a45def435e86b0dd8a29c5d85c",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 55
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 126814
+  }
+ },
+ "RUT_Webwork_Nest": {
+  "success": true,
+  "message": "No dead texPaths in 2 path(s) across 2 def(s).",
+  "defsScanned": 2,
+  "pathsChecked": 2,
+  "missingCount": 0,
+  "unjudgedCount": 0,
+  "truncated": false,
+  "elapsedMs": 7,
+  "missing": [],
+  "unjudged": [],
+  "note": "A dead path here is invisible to `ls`: Windows is case-insensitive, RimWorld's content index is not. Fix by PATCH, never by editing a workshop folder - Steam overwrites it. `unjudged` holds defs whose graphicClass is not a vanilla Verse.Graphic_*: their own class resolves its own filenames and this checker does not know its rules, so a miss there is UNKNOWN rather than dead. Judge those by hand.",
+  "ticksGame": 126814,
+  "operation": {
+   "OperationId": "op_f4edd602efc34f8191af79df53059f0e",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 34
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 126814
+  }
+ },
+ "RM_TallSlimyGrass": {
+  "success": true,
+  "message": "No dead texPaths in 1 path(s) across 1 def(s).",
+  "defsScanned": 1,
+  "pathsChecked": 1,
+  "missingCount": 0,
+  "unjudgedCount": 0,
+  "truncated": false,
+  "elapsedMs": 10,
+  "missing": [],
+  "unjudged": [],
+  "note": "A dead path here is invisible to `ls`: Windows is case-insensitive, RimWorld's content index is not. Fix by PATCH, never by editing a workshop folder - Steam overwrites it. `unjudged` holds defs whose graphicClass is not a vanilla Verse.Graphic_*: their own class resolves its own filenames and this checker does not know its rules, so a miss there is UNKNOWN rather than dead. Judge those by hand.",
+  "ticksGame": 126814,
+  "operation": {
+   "OperationId": "op_028f9a289e9c46d8965bc05d5bb1a559",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 126814
+  }
+ }
+}

@@ -1,0 +1,921 @@
+{
+  "mod": "Contagion",
+  "mode": "live",
+  "started_utc": "2026-10-19T12:21:30Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
+  "bars": [
+    {
+      "id": "defs.defs_resolve",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "defs.biome_table_and_roster",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "defs.biome_roster_animals",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: UNMEASURED BY DESIGN: BiomeDef.wildAnimals is non-public and not serialisable by get_defs (got \"(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)\"); 23 XML-rostered kinds all resolve live as PawnKindDefs, but the live BiomeDef roster itself cannot be compared",
+      "evidenceFull": "UNMEASURED: UNMEASURED BY DESIGN: BiomeDef.wildAnimals is non-public and not serialisable by get_defs (got \"(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)\"); 23 XML-rostered kinds all resolve live as PawnKindDefs, but the live BiomeDef roster itself cannot be compared"
+    },
+    {
+      "id": "defs.helix_trader_wired",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "defs.visible_tells_wired",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "defs.organ_patch_comps",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings.defaults",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_biomeRarityFactor.biomeRarityFactor_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_burnDamageFactor.burnDamageFactor_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_burnEnabled.burnEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_burnFrequency.burnFrequency_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_burnTellsEnabled.burnTellsEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_cloudRepulsorEnabled.cloudRepulsorEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_coalescenceEnabled.coalescenceEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_draftprintProvokeChance.draftprintProvokeChance_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_draftprintsEnabled.draftprintsEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_genomeOrganGrowingEnabled.genomeOrganGrowingEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_grownLimbsEnabled.grownLimbsEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_helixContractRewardFactor.helixContractRewardFactor_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_mulchDropsEnabled.mulchDropsEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_sunbeamArrestEnabled.sunbeamArrestEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_sunbeamNativeFactor.sunbeamNativeFactor_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_touchedEnabled.touchedEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_touchedExposureFactor.touchedExposureFactor_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_touchedMutationRate.touchedMutationRate_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_unfinishedSpawnerEnabled.unfinishedSpawnerEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_zhoolConversionEnabled.zhoolConversionEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_zhoolConversionRate.zhoolConversionRate_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_zhoolConvertsCrops.zhoolConvertsCrops_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_zhoolHazeDensity.zhoolHazeDensity_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "settings_zhoolHazeEnabled.zhoolHazeEnabled_roundtrip",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "repulsor_clear.site_ready_baseline",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "repulsor_clear.off_when_setting_off",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness",
+      "evidenceFull": "surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness"
+    },
+    {
+      "id": "repulsor_clear.holds_sky_clear",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "a surprise ended this chain earlier: surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness",
+      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness"
+    },
+    {
+      "id": "repulsor_clear.lapses_without_power",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "a surprise ended this chain earlier: surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness",
+      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness"
+    },
+    {
+      "id": "spawner.site_ready_spawner",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "spawner.spawner_off_buds_nothing",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "spawner.spawner_buds_unfinished",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "spawner.unfinished_rolls_limbs_and_lifespan",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "spawner.unfinished_dissolves_on_death",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: a corpse persists (1): death must dissolve it",
+      "evidenceFull": "ExpectationFailed: a corpse persists (1): death must dissolve it"
+    },
+    {
+      "id": "spawner.unfinished_leaves_mulch",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "site.retile_to_contagion",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "burn_forced.site_is_contagion",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "burn_forced.burn_site_ready",
+      "status": "FAIL",
+      "functional": true,
+      "evidence": "ExpectationFailed: fixture: no open pawn",
+      "evidenceFull": "ExpectationFailed: fixture: no open pawn"
+    },
+    {
+      "id": "burn_forced.native_no_dive_without_burn",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "burn_forced.repulsor_forces_burn",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "burn_forced.burn_harmless_at_zero_damage",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "burn_forced.burn_doses_the_exposed_visitor",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "burn_forced.burn_hurts_native_spares_armored",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "burn_forced.native_dives_for_roof",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "burn_forced.burn_off_means_no_harm",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "burn_forced.repulsor_off_lapses_burn",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "542 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=126814 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 126814 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "535 active, sha256 f4366daf3c73a469 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "defs",
+    "settings",
+    "settings_biomeRarityFactor",
+    "settings_burnDamageFactor",
+    "settings_burnEnabled",
+    "settings_burnFrequency",
+    "settings_burnTellsEnabled",
+    "settings_cloudRepulsorEnabled",
+    "settings_coalescenceEnabled",
+    "settings_draftprintProvokeChance",
+    "settings_draftprintsEnabled",
+    "settings_genomeOrganGrowingEnabled",
+    "settings_grownLimbsEnabled",
+    "settings_helixContractRewardFactor",
+    "settings_mulchDropsEnabled",
+    "settings_sunbeamArrestEnabled",
+    "settings_sunbeamNativeFactor",
+    "settings_touchedEnabled",
+    "settings_touchedExposureFactor",
+    "settings_touchedMutationRate",
+    "settings_unfinishedSpawnerEnabled",
+    "settings_zhoolConversionEnabled",
+    "settings_zhoolConversionRate",
+    "settings_zhoolConvertsCrops",
+    "settings_zhoolHazeDensity",
+    "settings_zhoolHazeEnabled",
+    "repulsor_clear",
+    "spawner",
+    "site",
+    "burn_forced",
+    "burn_natural",
+    "uv",
+    "touched",
+    "zhool_haze",
+    "coalescence",
+    "genome",
+    "log",
+    "site_restore"
+  ],
+  "chains_skipped": [],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "partial": true,
+  "chains_done": [
+    "defs",
+    "settings",
+    "settings_biomeRarityFactor",
+    "settings_burnDamageFactor",
+    "settings_burnEnabled",
+    "settings_burnFrequency",
+    "settings_burnTellsEnabled",
+    "settings_cloudRepulsorEnabled",
+    "settings_coalescenceEnabled",
+    "settings_draftprintProvokeChance",
+    "settings_draftprintsEnabled",
+    "settings_genomeOrganGrowingEnabled",
+    "settings_grownLimbsEnabled",
+    "settings_helixContractRewardFactor",
+    "settings_mulchDropsEnabled",
+    "settings_sunbeamArrestEnabled",
+    "settings_sunbeamNativeFactor",
+    "settings_touchedEnabled",
+    "settings_touchedExposureFactor",
+    "settings_touchedMutationRate",
+    "settings_unfinishedSpawnerEnabled",
+    "settings_zhoolConversionEnabled",
+    "settings_zhoolConversionRate",
+    "settings_zhoolConvertsCrops",
+    "settings_zhoolHazeDensity",
+    "settings_zhoolHazeEnabled",
+    "repulsor_clear",
+    "spawner",
+    "site",
+    "burn_forced"
+  ],
+  "chains_pending": [
+    "burn_natural",
+    "uv",
+    "touched",
+    "zhool_haze",
+    "coalescence",
+    "genome",
+    "log",
+    "site_restore"
+  ],
+  "components": [
+    {
+      "chain": "defs",
+      "name": "defs_resolve",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "biome_table_and_roster",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "biome_roster_animals",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: UNMEASURED BY DESIGN: BiomeDef.wildAnimals is non-public and not serialisable by get_defs (got \"(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)\"); 23 XML-rostered kinds all resolve live as PawnKindDefs, but the live BiomeDef roster itself cannot be compared",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "helix_trader_wired",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "visible_tells_wired",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "organ_patch_comps",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "defaults",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_biomeRarityFactor",
+      "name": "biomeRarityFactor_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_burnDamageFactor",
+      "name": "burnDamageFactor_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_burnEnabled",
+      "name": "burnEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_burnFrequency",
+      "name": "burnFrequency_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_burnTellsEnabled",
+      "name": "burnTellsEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_cloudRepulsorEnabled",
+      "name": "cloudRepulsorEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_coalescenceEnabled",
+      "name": "coalescenceEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_draftprintProvokeChance",
+      "name": "draftprintProvokeChance_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_draftprintsEnabled",
+      "name": "draftprintsEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_genomeOrganGrowingEnabled",
+      "name": "genomeOrganGrowingEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_grownLimbsEnabled",
+      "name": "grownLimbsEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_helixContractRewardFactor",
+      "name": "helixContractRewardFactor_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_mulchDropsEnabled",
+      "name": "mulchDropsEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_sunbeamArrestEnabled",
+      "name": "sunbeamArrestEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_sunbeamNativeFactor",
+      "name": "sunbeamNativeFactor_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_touchedEnabled",
+      "name": "touchedEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_touchedExposureFactor",
+      "name": "touchedExposureFactor_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_touchedMutationRate",
+      "name": "touchedMutationRate_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_unfinishedSpawnerEnabled",
+      "name": "unfinishedSpawnerEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_zhoolConversionEnabled",
+      "name": "zhoolConversionEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_zhoolConversionRate",
+      "name": "zhoolConversionRate_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_zhoolConvertsCrops",
+      "name": "zhoolConvertsCrops_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_zhoolHazeDensity",
+      "name": "zhoolHazeDensity_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_zhoolHazeEnabled",
+      "name": "zhoolHazeEnabled_roundtrip",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "repulsor_clear",
+      "name": "site_ready_baseline",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "repulsor_clear",
+      "name": "off_when_setting_off",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "repulsor_clear",
+      "name": "holds_sky_clear",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "repulsor_clear",
+      "name": "lapses_without_power",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "a surprise ended this chain earlier: surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spawner",
+      "name": "site_ready_spawner",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spawner",
+      "name": "spawner_off_buds_nothing",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spawner",
+      "name": "spawner_buds_unfinished",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spawner",
+      "name": "unfinished_rolls_limbs_and_lifespan",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spawner",
+      "name": "unfinished_dissolves_on_death",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: a corpse persists (1): death must dissolve it",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spawner",
+      "name": "unfinished_leaves_mulch",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "site",
+      "name": "retile_to_contagion",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_forced",
+      "name": "site_is_contagion",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_forced",
+      "name": "burn_site_ready",
+      "verdict": "FAIL",
+      "evidenceFull": "ExpectationFailed: fixture: no open pawn",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_forced",
+      "name": "native_no_dive_without_burn",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_forced",
+      "name": "repulsor_forces_burn",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_forced",
+      "name": "burn_harmless_at_zero_damage",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_forced",
+      "name": "burn_doses_the_exposed_visitor",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_forced",
+      "name": "burn_hurts_native_spares_armored",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_forced",
+      "name": "native_dives_for_roof",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_forced",
+      "name": "burn_off_means_no_harm",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burn_forced",
+      "name": "repulsor_off_lapses_burn",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 37,
+    "FAIL": 2,
+    "UNMEASURED": 13
+  },
+  "all_green": false
+}

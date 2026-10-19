@@ -1,0 +1,67 @@
+[contagion-note] shipped defs resolved: 126
+[contagion] 05:21:32 defs_resolve PASS 
+[contagion-note] biome roster: {"animals": 23, "plants": 12}
+[contagion] 05:21:32 biome_table_and_roster PASS 
+[contagion-note] roster kinds resolving live as PawnKindDef: [23, 23]
+[contagion] 05:21:32 biome_roster_animals UNMEASURED UNMEASURED: UNMEASURED BY DESIGN: BiomeDef.wildAnimals is non-public and not serialisable by get_defs (got "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"); 23 XML-rostered kinds all resolve live as PawnKindDefs, but the live BiomeDef roster itself cannot be compared
+[contagion] 05:21:33 helix_trader_wired PASS 
+[contagion] 05:21:33 visible_tells_wired PASS 
+[contagion] 05:21:33 organ_patch_comps PASS 
+[contagion] 05:21:34 defaults PASS 
+[contagion] 05:21:35 biomeRarityFactor_roundtrip PASS 
+[contagion] 05:21:35 burnDamageFactor_roundtrip PASS 
+[contagion] 05:21:35 burnEnabled_roundtrip PASS 
+[contagion] 05:21:35 burnFrequency_roundtrip PASS 
+[contagion] 05:21:36 burnTellsEnabled_roundtrip PASS 
+[contagion] 05:21:36 cloudRepulsorEnabled_roundtrip PASS 
+[contagion] 05:21:36 coalescenceEnabled_roundtrip PASS 
+[contagion] 05:21:36 draftprintProvokeChance_roundtrip PASS 
+[contagion] 05:21:37 draftprintsEnabled_roundtrip PASS 
+[contagion] 05:21:37 genomeOrganGrowingEnabled_roundtrip PASS 
+[contagion] 05:21:37 grownLimbsEnabled_roundtrip PASS 
+[contagion] 05:21:37 helixContractRewardFactor_roundtrip PASS 
+[contagion] 05:21:38 mulchDropsEnabled_roundtrip PASS 
+[contagion] 05:21:38 sunbeamArrestEnabled_roundtrip PASS 
+[contagion] 05:21:38 sunbeamNativeFactor_roundtrip PASS 
+[contagion] 05:21:38 touchedEnabled_roundtrip PASS 
+[contagion] 05:21:39 touchedExposureFactor_roundtrip PASS 
+[contagion] 05:21:39 touchedMutationRate_roundtrip PASS 
+[contagion] 05:21:39 unfinishedSpawnerEnabled_roundtrip PASS 
+[contagion] 05:21:39 zhoolConversionEnabled_roundtrip PASS 
+[contagion] 05:21:40 zhoolConversionRate_roundtrip PASS 
+[contagion] 05:21:40 zhoolConvertsCrops_roundtrip PASS 
+[contagion] 05:21:40 zhoolHazeDensity_roundtrip PASS 
+[contagion] 05:21:40 zhoolHazeEnabled_roundtrip PASS 
+[contagion-note] quiet-site profile (once per run): {"storyteller/mental/disease": {"enableStoryteller": false, "enableRandomMentalStates": false, "enableRandomDiseases": false, "logRaidInfo": true, "threatScale": 0.0, "allowBigThreats": false}, "wildSpawner": "blocked (read back)", "problems": [], "error": null}
+[contagion-note] mapgen wildlife removed: {"removed": 3, "verified": true, "residue": []}
+[contagion-note] pad repulsor unroofed: {"cellsChanged": 1101, "perDef": {"None": 1101}}
+[contagion] 05:21:45 site_ready_baseline PASS 
+GOVERNOR_STOP {"utc": "2026-10-19T12:25:52Z", "message": "safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness", "state": "cancelled", "executed": 1560, "requested": 2000, "stopBy": null, "refused": null, "abortWhy": "still running after timeoutMs; cancelled by the harness", "triggers": [], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "Contagion", "--plan", "src/RimMandrake/Contagion/northstar_plan.py", "--no-record", "--out", "Transient/live_testing_2026-10-19/contagion_result.json"]}
+[contagion] 05:25:52 off_when_setting_off UNMEASURED surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness
+[contagion] 05:25:52 holds_sky_clear UNMEASURED a surprise ended this chain earlier: surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness
+[contagion] 05:25:52 lapses_without_power UNMEASURED a surprise ended this chain earlier: surprise: safe_advance cancelled after 1560 of 2000 tick(s): still running after timeoutMs; cancelled by the harness
+[contagion-note] mapgen wildlife removed: {"removed": 1, "verified": true, "residue": []}
+[contagion-note] pad spawner unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 05:25:57 site_ready_spawner PASS 
+[contagion] 05:26:45 spawner_off_buds_nothing PASS 
+[contagion] 05:27:33 spawner_buds_unfinished PASS 
+[contagion] 05:27:33 unfinished_rolls_limbs_and_lifespan PASS 
+[contagion] 05:27:58 unfinished_dissolves_on_death FAIL ExpectationFailed: a corpse persists (1): death must dissolve it
+[contagion] 05:27:58 unfinished_leaves_mulch UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion-note] clock rewound after a declared jump: {"back": 90000, "from": 219244, "to": 129244}
+[contagion-note] retiled: {"tile": 17007, "from": "RUT_ExtremeDesert", "to": "RM_Contagion"}
+[contagion] 05:28:01 retile_to_contagion PASS 
+[contagion] 05:28:01 site_is_contagion PASS 
+[contagion-note] mapgen wildlife removed: {"removed": 1, "verified": true, "residue": []}
+[contagion-note] pad burn unroofed: {"cellsChanged": 430, "perDef": {"None": 430}}
+[contagion] 05:28:06 burn_site_ready FAIL ExpectationFailed: fixture: no open pawn
+[contagion] 05:28:06 native_no_dive_without_burn UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 05:28:06 repulsor_forces_burn UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 05:28:06 burn_harmless_at_zero_damage UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 05:28:06 burn_doses_the_exposed_visitor UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 05:28:06 burn_hurts_native_spares_armored UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 05:28:06 native_dives_for_roof UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 05:28:06 burn_off_means_no_harm UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 05:28:06 repulsor_off_lapses_burn UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 05:28:24 site_is_contagion PASS 
+[contagion-note] pad burn unroofed: {"cellsChanged": 64, "perDef": {"None": 64}}
