@@ -726,10 +726,14 @@ def g_cover_tiers(s):
             if total >= rating:
                 dropped_over = fell
                 break
-        if dropped_over is None or any(t.get("mass") == "UNREAD" for t in trail):
+        if any(t.get("mass") == "UNREAD" for t in trail):
+            st = "UNMEASURED"
+        elif not held_under:          # gave way UNDER its rating: an answer, and the wrong one (was read as UNMEASURED)
+            st = "FAIL"
+        elif dropped_over is None:
             st = "UNMEASURED"
         else:
-            st = "PASS" if held_under and dropped_over else "FAIL"
+            st = "PASS" if dropped_over else "FAIL"
         s.row("B4_cover_%d" % int(rating), "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT", "A3", st,
               "MOD" if st != "UNMEASURED" else "HARNESS", dict(def_=d, rating=rating, trail=trail), "B4")
 
