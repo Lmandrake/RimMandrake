@@ -2,8 +2,8 @@
 """selftest_sheet_freshness.py — an art review sheet never shows a picture that is not what it claims to be
 (ART_SHEET_REDESIGN_FRESH_OR_REFUSE, owner 2026-10-12).
 
-  (a) a sheet built, then the art changed on disk -> verify flags the changed row, gate req 15 fails, serve_gated
-      refuses to start (exit 5) and a running server's page load serves the refusal page (or a red banner on request)
+  (a) a sheet built, then the art changed on disk -> verify flags the changed row, gate req 15 fails, and serve_gated
+      serves the sheet with THAT ROW badged STALE and its picks off (owner, by card 2026-10-19; was: refused whole)
   (b) location resolution never uses a stale snapshot: a census row (creature AND plant) whose texPath is out of date is
       re-resolved from the src XML, and a sheet showing the old texPath is flagged
   (c) the Pyrelands sheet of 2026-10-14 (built before its art was installed) is reported stale now
@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 import tempfile
 from io import BytesIO
@@ -131,7 +132,8 @@ def main() -> int:
         check(any("thumbnail img/a.webp changed" in w for w in r["stale"].get("RM_Foo", [])),
               "a thumbnail rewritten after the build is flagged (FRESHNESS block sha256)")
 
-        # serve path: refuse to start; a running page load serves the refusal page; on request, a red banner per row
+        # serve path (owner, by card 2026-10-19, relaxing 2026-10-14): a stale ROW is labelled on the served page and its
+        # picks are off; the sheet still starts and serves. Only a page with no readable ITEMS is refused.
         stamped = d / "sheetdir" / "stamped_sheet_2026-10-14.html"
         stamped.write_text(SG.stamp(html))
         dec = d / "sheetdir" / "stamped_sheet_2026-10-14.decisions.json"
@@ -139,18 +141,29 @@ def main() -> int:
         real_ctx = FR.Ctx
         FR.Ctx = lambda: ctx
         try:
-            rc = SVG.main(["--no-open", "--sheet", str(stamped), "--decisions", str(dec)])
-            check(rc == 5, f"serve_gated refuses to START a stale sheet (exit {rc})")
-            out = SVG.fresh_gate(stamped)(stamped.read_bytes())
-            check(b"STALE sheet refused" in out and b"RM_Foo" in out, "a page load of a stale sheet serves the refusal page naming the row")
-            # owner, by card 2026-10-14: the stale-serve escape hatch is REMOVED — no flag, no banner path, no way in
-            import inspect
-            src_all = "\n".join(Path(m.__file__).read_text() for m in (SVG, FR))
-            check("serve-stale" not in src_all and not hasattr(FR, "stale_banner")
-                  and list(inspect.signature(SVG.fresh_gate).parameters) == ["sheet"],
-                  "no stale-serve path exists: no override flag, no stale banner, fresh_gate takes no 'serve anyway' switch")
-            rc2 = SVG.main(["--no-open", "--sheet", str(stamped), "--decisions", str(dec), "--serve-stale-i-know-it-shows-old-art"])
-            check(rc2 == 5, f"the old override flag starts nothing: a stale sheet is refused with it too (exit {rc2})")
+            rc = SVG.startup_freshness(stamped, ctx)
+            check(rc == 0, f"serve_gated STARTS a sheet with a stale row (rc {rc}); the row is labelled, not the sheet refused")
+            body0 = stamped.read_bytes()
+            out = SVG.fresh_gate(stamped)(body0)
+            m = re.search(rb'<script id="STALE_ROWS" type="application/json">(.*?)</script>', out, re.S)
+            pay = json.loads(m.group(1).replace(b"<\\/", b"</")) if m else {}
+            check(b"STALE sheet refused" not in out and out.startswith(body0[:out.find(b"<script id=\"STALE_ROWS\"")])
+                  and list((pay.get("rows") or {})) == ["RM_Foo"] and pay.get("n") == 1,
+                  "a page load serves the sheet itself with exactly the stale row named in STALE_ROWS")
+            check(b"'STALE: '" in out and b"stopImmediatePropagation" in out and b"data-act=purge" in out,
+                  "the served page badges 'STALE: <reason>' and switches the row's picks off (delete stays: content-addressed)")
+            noitems = d / "sheetdir" / "noitems_sheet_2026-10-14.html"
+            noitems.write_text(SG.stamp("<html><body>no items</body></html>"))
+            check(SVG.startup_freshness(noitems, ctx) == 5 and b"refused" in SVG.fresh_gate(noitems)(noitems.read_bytes()),
+                  "a page with no readable ITEMS block is still refused (freshness unmeasurable, nothing to label)")
+            boom = SVG.fresh_gate(stamped)
+            real_v = FR.verify_html
+            FR.verify_html = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("disk gone"))
+            try:
+                o2 = boom(body0 + b" ")
+            finally:
+                FR.verify_html = real_v
+            check(b'"all": ["freshness UNMEASURED' in o2, "a measurement that throws labels EVERY row stale (fail closed), never fresh")
             foo.write_bytes(png((10, 120, 30)))                   # put the original back: fresh again
             (d / "sheetdir" / "img" / "a.webp").write_bytes(b"thumbA")
             FR._SHA.clear()

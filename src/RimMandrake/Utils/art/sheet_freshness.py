@@ -17,8 +17,9 @@ built before this module existed is verified too. A sheet built after it also ca
 row, where each texPath came from, the sha256 of every thumbnail and input file), checked the same way.
 
 Where it runs: the gate (scaled_review_gate req 15, so a sheet stale at birth is never written and refresh_sheets
-rebuilds one that went stale), serve_gated.py (refuses to start, and re-checks on every page load), and art.py
-install / enact --apply (print which sheets the install just made stale).
+rebuilds one that went stale), serve_gated.py (re-checks at start and on every page load; since the owner's card of
+2026-10-19 each stale ROW is badged STALE with its picks off and the rest of the sheet serves, rather than the whole
+sheet refused), and art.py install / enact --apply (print which sheets the install just made stale).
 """
 from __future__ import annotations
 
@@ -343,7 +344,7 @@ def sheets_showing(res_list, root: Path | None = None) -> list[Path]:
 
 def after_install(res_list, out=sys.stderr) -> list[Path]:
     """The install-side hook: which sheets showing these texPaths are stale now. Printed, never fatal (the install
-    has happened; the serve path refuses them regardless)."""
+    has happened; the serve path labels their stale rows)."""
     try:
         hits = sheets_showing(res_list) if res_list is not None else [p for p in all_sheets()
                                                                        if read_items(p.read_text(errors="replace"))]
@@ -355,7 +356,7 @@ def after_install(res_list, out=sys.stderr) -> list[Path]:
             r = verify_html(p, ctx)
             if not r["fresh"]:
                 stale.append(p)
-                print(f"SHEET NOW STALE (refused when served until rebuilt): {p.relative_to(L.REPO_ROOT)} "
+                print(f"SHEET NOW HAS STALE ROWS (badged STALE when served, picks off on them, until rebuilt): {p.relative_to(L.REPO_ROOT)} "
                       f"— {len(r['stale'])} row(s)", file=out)
         return stale
     except Exception as e:                              # noqa: BLE001
