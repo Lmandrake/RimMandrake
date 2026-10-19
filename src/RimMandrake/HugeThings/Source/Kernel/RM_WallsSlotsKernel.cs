@@ -329,6 +329,11 @@ namespace RimMandrake.HugeThings
         /// <summary>Card 3: a titan steps over a trench narrower than B/4 (a positive width strictly below B x 0.25).</summary>
         public static bool StepsOverTrench(int breadth, int trenchWidth) => trenchWidth > 0 && trenchWidth < Math.Max(1, breadth) * TrenchStepFraction;
 
+        /// <summary>TITAN_TRENCHES_WIRE_MIND_THE_GAP: the widest trench (cells across) a creature of this breadth steps over, 0 for
+        /// none: the largest w with StepsOverTrench(breadth, w), i.e. floor((B - 1) / 4) (B 5-8: 1, B 9-12: 2). FlowWorks reads this
+        /// through the registration point (TrenchStrideHook) and treats a dug run that narrow as ground.</summary>
+        public static int WidestTrenchSteppedOver(int breadth) => breadth <= 4 ? 0 : (breadth - 1) / 4;
+
         /// <summary>Is the cell run [0..n) of a squeeze straight: every step one cardinal cell in the same direction.</summary>
         public static bool StraightCardinal(int[] xs, int[] zs)
         {

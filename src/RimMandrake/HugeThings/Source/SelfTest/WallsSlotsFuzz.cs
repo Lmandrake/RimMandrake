@@ -297,7 +297,12 @@ namespace RimMandrake.HugeThings.SelfTest
             Check(s == (w > 0 && 4 * w < b), "StepsOverTrench(" + b + "," + w + ") = " + s);
             Check(!WallsSlots.StepsOverTrench(4, 1) && WallsSlots.StepsOverTrench(5, 1) && !WallsSlots.StepsOverTrench(8, 2) && WallsSlots.StepsOverTrench(9, 2),
                   "card 3: strictly narrower than B/4");
-            return s ? "1" : "0";
+            int widest = WallsSlots.WidestTrenchSteppedOver(b);
+            Check(widest == 0 ? !WallsSlots.StepsOverTrench(b, 1) : WallsSlots.StepsOverTrench(b, widest) && !WallsSlots.StepsOverTrench(b, widest + 1),
+                  "WidestTrenchSteppedOver(" + b + ") = " + widest + " disagrees with StepsOverTrench");
+            Check(WallsSlots.WidestTrenchSteppedOver(4) == 0 && WallsSlots.WidestTrenchSteppedOver(5) == 1 && WallsSlots.WidestTrenchSteppedOver(8) == 1
+                  && WallsSlots.WidestTrenchSteppedOver(9) == 2, "can-fail: the stride edges are B 5 and B 9");
+            return (s ? "1" : "0") + widest;
         }
 
         private static bool Family(string name, int n, int? one, Func<int, string> run)

@@ -237,8 +237,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string grid = Src("Superdeep", "RM_PocketGrid.cs");
                 RiverSwitchFlipChecks.Has(grid, @"public static void UpdatePaused\(Map map, RM_MapComponent_Excavation eng\) \{ if \(Find\.TickManager != null && Find\.TickManager\.Paused\) \{ RebuildIfStale\(map, eng, true\); \} \}",
                     "paused: rebuild a stale grid at once");
-                RiverSwitchFlipChecks.Has(grid, @"if \(!paused && now - g\.builtTick < RebuildMinTicks\) \{ return; \}", "the throttle applies only while time runs");
-                RiverSwitchFlipChecks.Has(grid, @"if \(g\.builtGeneration == eng\.ClimbGeneration && g\.builtSalt == settingsSalt\) \{ return; \}", "and only a stale grid is rebuilt");
+                RiverSwitchFlipChecks.Has(grid, @"if \(!paused && now - builtTick < RebuildMinTicks\) \{ return; \}", "the throttle applies only while time runs");
+                RiverSwitchFlipChecks.Has(grid, @"if \(builtGeneration == eng\.ClimbGeneration && builtSalt == settingsSalt\) \{ return; \}", "and only a stale grid is rebuilt");
                 RiverSwitchFlipChecks.Has(Src("RM_MapComponent_Excavation.cs"),
                     @"public override void MapComponentUpdate\(\) \{ base\.MapComponentUpdate\(\); // [^\n]*?RM_PocketGrid\.UpdatePaused\(map, this\); \}", "the excavation component calls it every frame");
             });
@@ -246,7 +246,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Pocket_wiring_pinned_at_call_sites", () =>
             {
                 string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
-                Assert(trap.Contains("RM_PocketGrid.For(") && trap.Contains("RM_PitTrapMath.HeldRelative("),
+                Assert(trap.Contains("RM_PocketGrid.ForPawn(") && trap.Contains("RM_PitTrapMath.HeldRelative("),
                     "the hold reads the pocket grid when the relative rule is on");
                 Assert(trap.Contains("RM_PitTrapMath.ArrivalDropsTooFar("), "the descent detector falls by drop over K");
                 Assert(trap.Contains("RM_RelativeRulesMath.FallScaleNotches("), "fall damage scales by the drop (metres fallen, P7 V3)");

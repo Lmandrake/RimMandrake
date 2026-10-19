@@ -63,6 +63,7 @@
     <Compile Include="PitAccessChecks.cs" />
     <Compile Include="..\Superdeep\RM_WallClimbMath.cs" />
     <Compile Include="WallClimbChecks.cs" />
+    <Compile Include="TrenchStrideChecks.cs" />
     <Compile Include="..\Superdeep\RM_RaiderTrenchMath.cs" />
     <Compile Include="RaiderTrenchChecks.cs" />
     <Compile Include="..\RM_SpanMath.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="SuspensionBridgeChecks.cs" />
     <Compile Include="SpanBaseChecks.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />
+    <Compile Include="..\RM_TrenchStrideMath.cs" />
     <Compile Include="..\RM_CliffMaskMath.cs" />
     <Compile Include="..\RM_WakeMath.cs" />
     <Compile Include="..\RM_PitExposureMath.cs" />

@@ -99,7 +99,7 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			int k = RM_PocketGrid.ClimbLimitOf(p);
-			RM_PocketGrid g = RM_PocketGrid.For(p.Map);
+			RM_PocketGrid g = RM_PocketGrid.ForPawn(p.Map, p);
 			int comp = g.ComponentOf(k, p.Position);
 			return g.ComponentIsPocket(k, comp) && g.MeasuredWidth(k, p.Position) < RequiredWidth(p);
 		}
@@ -172,7 +172,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			RM_PocketGrid g = RM_PocketGrid.For(p.Map);
+			RM_PocketGrid g = RM_PocketGrid.ForPawn(p.Map, p);
 			int comp = g.ComponentOf(k, c);
 			bool inPocket = g.ComponentIsPocket(k, comp);
 			if (!inPocket)
@@ -196,7 +196,7 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			int k = RM_PocketGrid.ClimbLimitOf(p);
-			RM_PocketGrid g = RM_PocketGrid.For(p.Map);
+			RM_PocketGrid g = RM_PocketGrid.ForPawn(p.Map, p);
 			return g.TrappedIn(k, g.ComponentOf(k, p.Position), p);
 		}
 
@@ -254,7 +254,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			RM_PocketGrid g = RM_PocketGrid.For(map);
+			RM_PocketGrid g = RM_PocketGrid.ForPawn(map, p);   // TITAN_TRENCHES_WIRE_MIND_THE_GAP: a titan's stride view
 			int cs = g.ComponentOf(k, start);
 			if (cs < 0 || DestInComponent(g, k, cs, dest, peMode, map))
 			{
@@ -502,8 +502,8 @@ namespace RimMandrake.FlowWorks
 		{
 			if (RM_PocketGrid.Relative)
 			{
-				int fromD = StepDepthAt(p.Map, eng, from);
-				int toD = StepDepthAt(p.Map, eng, to);
+				int fromD = RM_TrenchStride.StepDepthFor(p, p.Map, eng, from);   // a trench it steps over is no drop
+				int toD = RM_TrenchStride.StepDepthFor(p, p.Map, eng, to);
 				return toD > fromD && RM_PitTrapMath.ArrivalDropsTooFar(fromD, toD, RM_PocketGrid.NaturalClimbLimitOf(p));   // gear is no parachute
 			}
 			return eng.IsSuperdeepExcavation(to) && !eng.IsSuperdeepExcavation(from);
@@ -691,11 +691,12 @@ namespace RimMandrake.FlowWorks
 				return RM_PitTrapMath.IsPitDescent(eng.ExcavatedDepthAt(prev), eng.ExcavatedDepthAt(pos));
 			}
 			int to = eng.ClimbDepthAt(pos);
-			if (to == 0)
+			// TITAN_TRENCHES_WIRE_MIND_THE_GAP: a trench this creature steps over is ground to it: no fall, walked or shoved
+			if (to == 0 || RM_TrenchStride.SteppedOver(p, map, eng, pos))
 			{
 				return false;
 			}
-			int from = RM_SuperdeepTrap.StepDepthAt(map, eng, prev);
+			int from = RM_TrenchStride.StepDepthFor(p, map, eng, prev);
 			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: judged by the climb limit WITHOUT climbing gear: gear is no parachute for a
 			// forced arrival; a walked step down on the gear is a climb (Tick passes it to DescentFalls as climbing down).
 			return to > from && RM_PitTrapMath.ArrivalDropsTooFar(from, to, RM_PocketGrid.NaturalClimbLimitOf(p));
@@ -864,13 +865,14 @@ namespace RimMandrake.FlowWorks
 			{
 				return true; // climbs every step there is
 			}
-			int fromD = RM_SuperdeepTrap.StepDepthAt(map, eng, from);
-			int toD = RM_SuperdeepTrap.StepDepthAt(map, eng, next);
+			// TITAN_TRENCHES_WIRE_MIND_THE_GAP: depths as this pawn sees them (a trench it steps over is ground), as its masks do
+			int fromD = RM_TrenchStride.StepDepthFor(pawn, map, eng, from);
+			int toD = RM_TrenchStride.StepDepthFor(pawn, map, eng, next);
 			if (from.x != next.x && from.z != next.z)
 			{
 				return RM_PitTrapMath.DiagonalAllowed(fromD, toD,
-					RM_SuperdeepTrap.StepDepthAt(map, eng, new IntVec3(next.x, 0, from.z)),
-					RM_SuperdeepTrap.StepDepthAt(map, eng, new IntVec3(from.x, 0, next.z)), k);
+					RM_TrenchStride.StepDepthFor(pawn, map, eng, new IntVec3(next.x, 0, from.z)),
+					RM_TrenchStride.StepDepthFor(pawn, map, eng, new IntVec3(from.x, 0, next.z)), k);
 			}
 			bool join = everyone && RM_ClimbJoins.ForPawn(map, eng, from, next, fromD, toD, pawn, out _, out _);
 			return RM_PitTrapMath.StepAllowed(fromD, toD, k, join);
@@ -991,7 +993,7 @@ namespace RimMandrake.FlowWorks
 				{
 					return;
 				}
-				RM_PocketGrid g = RM_PocketGrid.For(p.Map);
+				RM_PocketGrid g = RM_PocketGrid.ForPawn(p.Map, p);
 				int comp = g.ComponentOf(k, c);
 				// REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F9): nor does a surface island ringed by a sheer trench (no border
 				// cell in its component), the same "two surface components stay apart" rule CanReach's veto applies.

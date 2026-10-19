@@ -71,6 +71,8 @@
   <RM_HugeThings_Temperament_Desc>A calm, fed creature goes round or squeezes rather than break anything, and never breaks out of a pen. Restlessness rises while it is shut in a small space (under 6 x its width squared cells) or hungry, and shows on its inspect panel; at 100%, or while fleeing, enraged or hunting, it breaks whatever the rules let it. Off: every big creature breaks walls whenever the detour slider says so.</RM_HugeThings_Temperament_Desc>
   <RM_HugeThings_Breadth2>    Breadth 2 creatures (thrumbo class) break thin walls too</RM_HugeThings_Breadth2>
   <RM_HugeThings_Breadth2_Desc>On by default (owner ruling, 2026-10-18). Off: breadth 2 creatures only squeeze; every built wall stops them.</RM_HugeThings_Breadth2_Desc>
+  <RM_HugeThings_TrenchStep>    Titans step over narrow trenches</RM_HugeThings_TrenchStep>
+  <RM_HugeThings_TrenchStep_Desc>A big creature steps straight over a dug trench narrower than a quarter of its breadth, as if it were ground: it never falls in or climbs down (owner ruling, 2026-10-18). A wider trench holds it as before. Needs RimMandrake FlowWorks for trenches to exist. Off: every trench is judged as for any other creature.</RM_HugeThings_TrenchStep_Desc>
   <RM_HugeThings_WallsSlotsNeeds>Turn on giant animals, the wake and "titans smash through what seals their way" to change these.</RM_HugeThings_WallsSlotsNeeds>
   <RM_WallsSlots_Squeezes>squeezes through</RM_WallsSlots_Squeezes>
   <RM_WallsSlots_BacksOut>backs out of the gap</RM_WallsSlots_BacksOut>

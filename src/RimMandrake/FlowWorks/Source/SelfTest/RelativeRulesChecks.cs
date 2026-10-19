@@ -298,7 +298,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string trap = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_SuperdeepTrap.cs"));
                 RiverSwitchFlipChecks.Has(trap, @"RM_RelativeRulesMath\.FallScaleNotches\(dropNotches, RimMandrakeFlowWorksSettings\.fallDamagePerMetrePast2, RimMandrakeFlowWorksSettings\.fallDamageCap\)",
                     "falls: by metres fallen under the settings (V3)");
-                RiverSwitchFlipChecks.Has(trap, @"if \(RM_PocketGrid\.Relative\) \{ int fromD = StepDepthAt\(p\.Map, eng, from\);", "the jump gizmo: a drop over the climb limit");
+                RiverSwitchFlipChecks.Has(trap, @"if \(RM_PocketGrid\.Relative\) \{ int fromD = RM_TrenchStride\.StepDepthFor\(p, p\.Map, eng, from\);", "the jump gizmo: a drop over the climb limit");
                 string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
                 RiverSwitchFlipChecks.Has(rooms, @"return RM_RelativeRulesMath\.PitRoomCell\(RM_PocketGrid\.IsPersonPocketCell\(map, c\), eng\.ExcavatedDepthRaw\(c\), MinRoomNotches\);",
                     "rooms: a person-band pocket at the setting's depth (V6)");

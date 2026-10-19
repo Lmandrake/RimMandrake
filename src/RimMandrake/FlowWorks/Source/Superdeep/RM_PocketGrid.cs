@@ -36,9 +36,14 @@ namespace RimMandrake.FlowWorks
 		private readonly List<Thing> ladderScratch = new List<Thing>();
 
 		private static readonly ConditionalWeakTable<Map, RM_PocketGrid> grids = new ConditionalWeakTable<Map, RM_PocketGrid>();
+		// TITAN_TRENCHES_WIRE_MIND_THE_GAP: per map, the grids labelled on a stride view (index s = 1..MaxStride; RM_TrenchStride)
+		private static readonly ConditionalWeakTable<Map, RM_PocketGrid[]> strideGrids = new ConditionalWeakTable<Map, RM_PocketGrid[]>();
 		private static int settingsSalt;
 
 		private readonly Map map;
+		/// <summary>TITAN_TRENCHES_WIRE_MIND_THE_GAP: 0 = the plain grid; s &gt; 0 = labelled on the depth a stride-s creature sees
+		/// (every trench of width &lt;= s read as ground, RM_TrenchStrideMath.BridgedDepth). Never feeds the rooms.</summary>
+		private readonly int stride;
 		private RM_PocketGridMath.Labels[] bands;
 		private int builtGeneration = int.MinValue;
 		private int builtSalt = int.MinValue;
@@ -50,9 +55,10 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Rebuild count, for the bridge proof (a pocket must survive save/reload identically).</summary>
 		public int Rebuilds { get; private set; }
 
-		private RM_PocketGrid(Map map)
+		private RM_PocketGrid(Map map, int stride = 0)
 		{
 			this.map = map;
+			this.stride = stride;
 		}
 
 		public static bool Relative => RimMandrakeFlowWorksSettings.pitRelativeClimbEnabled;
@@ -61,6 +67,32 @@ namespace RimMandrake.FlowWorks
 		public static int BandCount => RM_PitTrapMath.ClimbBands;
 
 		/// <summary>The grid for this map, built on first use. Never rebuilt here (see the class note).</summary>
+		/// <summary>TITAN_TRENCHES_WIRE_MIND_THE_GAP: the grid this pawn's walk is judged on: the stride view for a creature that
+		/// steps over the trenches on this map (RM_TrenchStride.ViewStride), else the plain grid. Every per-pawn hold, trap and
+		/// reach verdict asks here, so it agrees with the stride cliff masks.</summary>
+		public static RM_PocketGrid ForPawn(Map map, Pawn p)
+		{
+			int s = p == null ? 0 : RM_TrenchStride.ViewStride(p, map);
+			return s > 0 ? For(map, s) : For(map);
+		}
+
+		/// <summary>The stride-s grid (s = 1..RM_TrenchStrideMath.MaxStride; 0 or out of range: the plain one), built on first use
+		/// like the plain one and rebuilt with it.</summary>
+		public static RM_PocketGrid For(Map map, int stride)
+		{
+			if (map == null || stride <= 0 || stride > RM_TrenchStrideMath.MaxStride)
+			{
+				return For(map);
+			}
+			RM_PocketGrid[] set = strideGrids.GetValue(map, m => new RM_PocketGrid[RM_TrenchStrideMath.MaxStride + 1]);
+			RM_PocketGrid g = set[stride] ?? (set[stride] = new RM_PocketGrid(map, stride));
+			if (g.bands == null)
+			{
+				g.Build(false);
+			}
+			return g;
+		}
+
 		public static RM_PocketGrid For(Map map)
 		{
 			if (map == null)
@@ -107,20 +139,38 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			if (!grids.TryGetValue(map, out RM_PocketGrid g) || g.bands == null)
+			if (strideGrids.TryGetValue(map, out RM_PocketGrid[] set))
+			{
+				for (int s = 1; s < set.Length; s++)
+				{
+					if (set[s] != null)
+					{
+						set[s].RebuildIfStale(eng, paused, false);
+					}
+				}
+			}
+			if (grids.TryGetValue(map, out RM_PocketGrid g))
+			{
+				g.RebuildIfStale(eng, paused, true);
+			}
+		}
+
+		private void RebuildIfStale(RM_MapComponent_Excavation eng, bool paused, bool notifyFlips)
+		{
+			if (bands == null)
 			{
 				return; // built on first query; nothing reads it yet
 			}
-			if (g.builtGeneration == eng.ClimbGeneration && g.builtSalt == settingsSalt)
+			if (builtGeneration == eng.ClimbGeneration && builtSalt == settingsSalt)
 			{
 				return;
 			}
 			int now = Find.TickManager?.TicksGame ?? 0;
-			if (!paused && now - g.builtTick < RebuildMinTicks)
+			if (!paused && now - builtTick < RebuildMinTicks)
 			{
 				return;
 			}
-			g.Build(true);
+			Build(notifyFlips);
 		}
 
 		private void Build(bool notifyFlips)
@@ -129,6 +179,11 @@ namespace RimMandrake.FlowWorks
 			int w = map.Size.x, h = map.Size.z;
 			int n = w * h;
 			byte[] depth = EffectiveDepth(map, eng);
+			if (stride > 0)
+			{
+				// TITAN_TRENCHES_WIRE_MIND_THE_GAP: the stride view (RM_TrenchStride's masks bridge the same cells)
+				depth = RM_TrenchStrideMath.BridgedDepth(depth, RM_TrenchStrideMath.RunWidths(depth, w, h), stride);
+			}
 			RM_PocketGridMath.Labels[] old = bands;
 			var fresh = new RM_PocketGridMath.Labels[BandCount];
 			bool anyDug = false;
@@ -153,7 +208,7 @@ namespace RimMandrake.FlowWorks
 			wideCache.Clear();
 			edgeCache.Clear();
 			Rebuilds++;
-			if (notifyFlips && old != null && old[PersonBand] != null && RM_PitRooms.RoomsOn)
+			if (notifyFlips && stride == 0 && old != null && old[PersonBand] != null && RM_PitRooms.RoomsOn)
 			{
 				RM_PocketGridMath.Labels a = old[PersonBand], b = fresh[PersonBand];
 				for (int i = 0; i < n; i++)

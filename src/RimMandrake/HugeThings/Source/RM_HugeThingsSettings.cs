@@ -56,6 +56,8 @@ namespace RimMandrake.HugeThings
         public static bool scrapeEnabled = true;
         public static bool temperamentEnabled = true;
         public static bool breadth2BreakingEnabled = true;
+        // TITAN_TRENCHES_WIRE_MIND_THE_GAP (card 3): titans step over trenches narrower than a quarter of their breadth (FlowWorks).
+        public static bool trenchStepEnabled = true;
         public static bool roofAvoidanceEnabled = true;
         public static bool yieldCurveEnabled = true;
         public static float yieldCurveMinFactor = 0.15f;
@@ -83,6 +85,7 @@ namespace RimMandrake.HugeThings
         public static bool SqueezeActive => WallsSlotsActive && squeezeEnabled;
         public static bool ScrapeActive => WallsSlotsActive && scrapeEnabled;
         public static bool TemperamentActive => WallsSlotsActive && temperamentEnabled;
+        public static bool TrenchStepActive => WallsSlotsActive && trenchStepEnabled;
         public static bool RoofAvoidanceActive => HugeGates.Animal(giantAnimalsEnabled, roofAvoidanceEnabled);
         public static bool YieldCurveActive => HugeGates.Animal(giantAnimalsEnabled, yieldCurveEnabled);
         public static bool CorpseSiteActive => HugeGates.Animal(giantAnimalsEnabled, corpseSiteEnabled);
@@ -124,6 +127,7 @@ namespace RimMandrake.HugeThings
             Scribe_Values.Look(ref scrapeEnabled, "scrapeEnabled", true);
             Scribe_Values.Look(ref temperamentEnabled, "temperamentEnabled", true);
             Scribe_Values.Look(ref breadth2BreakingEnabled, "breadth2BreakingEnabled", true);
+            Scribe_Values.Look(ref trenchStepEnabled, "trenchStepEnabled", true);
             Scribe_Values.Look(ref roofAvoidanceEnabled, "roofAvoidanceEnabled", true);
             Scribe_Values.Look(ref yieldCurveEnabled, "yieldCurveEnabled", true);
             Scribe_Values.Look(ref yieldCurveMinFactor, "yieldCurveMinFactor", 0.15f);
@@ -270,7 +274,7 @@ namespace RimMandrake.HugeThings
                 list.GapLine();
             }
 
-            if (Group(list, "Big creatures: walls, slots and roofs", RimMandrake.Shared.SettingScope.Now, new[] { "wallsSlotsEnabled", "squeezeEnabled", "squeezeSlowdownAtHalf", "trampleBudgetPerBreadth", "blowDamagePerBreadth", "holdLineFactor", "roofWallHpFactor", "roofWallDamageFactor", "scrapeEnabled", "temperamentEnabled", "breadth2BreakingEnabled" }))
+            if (Group(list, "Big creatures: walls, slots and roofs", RimMandrake.Shared.SettingScope.Now, new[] { "wallsSlotsEnabled", "squeezeEnabled", "squeezeSlowdownAtHalf", "trampleBudgetPerBreadth", "blowDamagePerBreadth", "holdLineFactor", "roofWallHpFactor", "roofWallDamageFactor", "scrapeEnabled", "temperamentEnabled", "breadth2BreakingEnabled", "trenchStepEnabled" }))
             {
                 if (giantAnimalsEnabled && wakeEnabled && titanClearingEnabled)
                 {
@@ -296,6 +300,7 @@ namespace RimMandrake.HugeThings
                         roofWallDamageFactor = list.Slider(roofWallDamageFactor, 0.25f, 1f);
                         list.CheckboxLabeled("RM_HugeThings_Temperament".Translate(), ref temperamentEnabled, "RM_HugeThings_Temperament_Desc".Translate());
                         list.CheckboxLabeled("RM_HugeThings_Breadth2".Translate(), ref breadth2BreakingEnabled, "RM_HugeThings_Breadth2_Desc".Translate());
+                        list.CheckboxLabeled("RM_HugeThings_TrenchStep".Translate(), ref trenchStepEnabled, "RM_HugeThings_TrenchStep_Desc".Translate());
                     }
                 }
                 else list.Label("RM_HugeThings_WallsSlotsNeeds".Translate());
