@@ -91,7 +91,8 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			int span = r.SpanOfIndex(i);
 			float load = b.SpanLoad(r, span);
-			List<Building_SpanDeck> decks = b.SpanDecks(r.Cell(0, r.SpanIndices(span)[0]));
+			List<int> idx = r.SpanIndices(span);
+			List<Building_SpanDeck> decks = idx.Count == 0 ? new List<Building_SpanDeck>() : b.SpanDecks(r.Cell(0, idx[0]));
 			return "SPAN tier=" + RM_SuspensionMath.TierLabel(r.tier) + " load=" + load.ToString("0.0") + " rating=" + r.RatingKg.ToString("0")
 				+ " state=" + RM_SuspensionMath.Classify(load, r.RatingKg) + " decks=" + decks.Count + " railings=" + r.railings
 				+ " deckNotches=" + r.deckNotches + " span=" + (span + 1) + "/" + r.SpanCount + " line=" + RM_SuspensionMath.LoadLine(load, r.RatingKg);
@@ -157,9 +158,9 @@ namespace RimMandrake.FlowWorks.Pits
 				if (RM_MapComponent_SuspensionBridges.TryKnockOff(p, RM_SuspensionMath.StaggerFallChance, "staggered"))
 				{
 					fell++;
-					if (!p.Spawned || p.Dead)
+					if (!p.Spawned || p.Dead || p.Map != map)
 					{
-						break;
+						break;   // a fall that took it to another map (a lower layer) is not put back from here
 					}
 					p.Position = home;
 					p.Notify_Teleported(true, true);
@@ -389,7 +390,11 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return "REFUSED: the pawn could not carry it";
 			}
-			p.carryTracker.TryDropCarriedThing(p.Position, ThingPlaceMode.Direct, out Thing dropped);
+			if (!p.carryTracker.TryDropCarriedThing(p.Position, ThingPlaceMode.Direct, out Thing dropped))
+			{
+				p.carryTracker.DestroyCarriedThing();   // a proof item never stays in the pawn's hands
+				return "REFUSED: the pawn could not drop it";
+			}
 			IntVec3 at = dropped?.Position ?? IntVec3.Invalid;
 			return "DROPUNDER under=" + under + " at=" + at.x + "," + at.z
 				+ " underDeck=" + (dropped != null && dropped.Spawned && RM_SuspensionUnderpass.PassingDeckAt(map, at) != null)

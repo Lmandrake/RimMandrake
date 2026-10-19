@@ -508,10 +508,9 @@ namespace RimMandrake.FlowWorks
 			bool heldInPit = RM_PitRooms.IsPitFloor(map, ex, c);
 			// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: a grated deck over the inferno passes it to the people on it
 			bool grated = Pits.RM_GrateEffects.GratePassesFire(map, c);
-			List<Thing> things = map.thingGrid.ThingsListAt(c);
-			for (int t = things.Count - 1; t >= 0; t--)
+			foreach (Pawn p in PawnsAt(map, c))
 			{
-				if (things[t] is Pawn p && !p.Dead && !p.Flying)
+				if (!p.Dead && !p.Flying)
 				{
 					bool held = heldInPit || Pits.RM_GrateEffects.UnderDeck(p);
 					if (Rand.Chance(held ? 1f : grated ? System.Math.Max(RM_FuelFireMath.InfernoAttachInCell, RM_FireMath.AttachChance(false, true, false, true))
@@ -556,6 +555,24 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		private readonly List<Pawn> effectPawns = new List<Pawn>();
+
+		/// <summary>The pawns on a burning square, copied: a Scorch can kill one (despawn, corpse spawned) and an attached fire
+		/// spawns into the same thing list, so the effects never walk the live list. Reused, no allocation per check.</summary>
+		private List<Pawn> PawnsAt(Map map, IntVec3 c)
+		{
+			effectPawns.Clear();
+			List<Thing> things = map.thingGrid.ThingsListAt(c);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i] is Pawn p)
+				{
+					effectPawns.Add(p);
+				}
+			}
+			return effectPawns;
+		}
+
 		private void ApplyEffects(Map map, RM_MapComponent_Excavation ex, IntVec3 c)
 		{
 			// PROVISIONAL heat: about what a vanilla full-size fire pushes over the same time.
@@ -569,10 +586,9 @@ namespace RimMandrake.FlowWorks
 			bool heldInPit = RM_PitRooms.IsPitFloor(map, ex, c);
 			bool onDeck = Pits.RM_SpanUtility.DeckedAt(map, c);
 			bool grated = Pits.RM_GrateEffects.GratePassesFire(map, c);
-			List<Thing> things = map.thingGrid.ThingsListAt(c);
-			for (int t = things.Count - 1; t >= 0; t--)
+			foreach (Pawn p in PawnsAt(map, c))
 			{
-				if (!(things[t] is Pawn p) || p.Dead)
+				if (p.Dead)
 				{
 					continue;
 				}

@@ -215,7 +215,15 @@ namespace RimMandrake.FlowWorks.Pits
 			return span;
 		}
 
-		/// <summary>The mass on these deck cells (StatDefOf.Mass: body plus gear and inventory) of every living, walking pawn,
+		/// <summary>What a pawn carries in its hands (the Mass stat's StatPart_GearAndInventoryMass counts apparel, equipment
+		/// and inventory, never the carried thing). A carried pawn's Mass includes its own gear.</summary>
+		public static float CarriedKg(Pawn p)
+		{
+			Thing c = p.carryTracker?.CarriedThing;
+			return c == null ? 0f : c.GetStatValue(StatDefOf.Mass) * c.stackCount;
+		}
+
+		/// <summary>The mass on these deck cells (StatDefOf.Mass: body plus gear and inventory, plus CarriedKg) of every living, walking pawn,
 		/// each added to standing. The owner's own faction counts only when countOwnFaction is on (the
 		/// superdeepCapturesOwnFaction carve-out). Items and buildings on a deck are the POSTS item's to add.</summary>
 		public static float LoadOn(Map map, List<IntVec3> cells, Faction owner, bool countOwnFaction, List<Pawn> standing)
@@ -235,7 +243,7 @@ namespace RimMandrake.FlowWorks.Pits
 					&& !RM_SuspensionUnderpass.InFloorBand(p))
 					{
 						standing?.Add(p);
-						sum += p.GetStatValue(StatDefOf.Mass);
+						sum += p.GetStatValue(StatDefOf.Mass) + CarriedKg(p);
 					}
 				}
 			}
