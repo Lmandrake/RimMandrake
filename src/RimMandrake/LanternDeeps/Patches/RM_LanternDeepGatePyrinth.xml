@@ -24,6 +24,7 @@
   <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Epochs - Pyrinth</li>
+      <li>RimMandrake: Pyrinth</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>

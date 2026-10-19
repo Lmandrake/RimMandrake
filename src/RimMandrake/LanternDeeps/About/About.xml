@@ -31,6 +31,7 @@ Also ships the darkness mechanic (carried light draws what lives down there) and
     <li>mandrake.rm.creaturebehaviors</li>
     <li>m00nl1ght.GeologicalLandforms</li>
     <li>det.epochspyrinth</li>
+    <li>mandrake.rm.pyrinth</li>
     <!-- LANTERNDEEPS_RM_MOD_BUILD_1 (2026-09-25): guy762.mm.kotorcore and
          lee.theforce.lightsaber DROPPED from this list — both existed only for
          the four Star Wars carve-out files (KotOR Stygium gate, KotOR crystal
