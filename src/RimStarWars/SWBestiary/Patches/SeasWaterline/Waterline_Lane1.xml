@@ -5,39 +5,8 @@
 <!-- and Mott's fire-desert placement (some other mod's compat patch, not this -->
 <!-- file's own declaration, hence this mod is positioned late in ModsConfig). -->
 <!-- see design/Jawa/worldbuilding/the_seas.md Lane 1, items/SEAS_WATERLINE_PASS_1.md -->
+<!-- donor SWAC retired: targets are the RSW_ ports; KwazelMaw port already carries Lake/Ocean -->
 <Patch>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.6</Lake>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.6</Lake>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.32</Ocean>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.32</Ocean>
-      </value>
-    </nomatch>
-  </Operation>
-
   <!-- KwazelMaw x ExtremeDesert intentionally NOT touched here (was: an
        animal-side zero, removed 2026-08-31 post-restart regression fix).
        BiomeCast_Ashkarr.xml already places KwazelMaw in ExtremeDesert at
@@ -53,15 +22,15 @@
        2026-08-31T18-29-38Z capture. See SEAS_WATERLINE_PASS_1.md. -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Mott"]/race/wildBiomes/Lake</xpath>
+    <xpath>/Defs/ThingDef[defName="RSW_Mott"]/race/wildBiomes/Lake</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Mott"]/race/wildBiomes/Lake</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Mott"]/race/wildBiomes/Lake</xpath>
       <value>
         <Lake>0.67</Lake>
       </value>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Mott"]/race/wildBiomes</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Mott"]/race/wildBiomes</xpath>
       <value>
         <Lake>0.67</Lake>
       </value>
@@ -69,15 +38,15 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Mott"]/race/wildBiomes/Ocean</xpath>
+    <xpath>/Defs/ThingDef[defName="RSW_Mott"]/race/wildBiomes/Ocean</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Mott"]/race/wildBiomes/Ocean</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Mott"]/race/wildBiomes/Ocean</xpath>
       <value>
         <Ocean>0.36</Ocean>
       </value>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Mott"]/race/wildBiomes</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Mott"]/race/wildBiomes</xpath>
       <value>
         <Ocean>0.36</Ocean>
       </value>
@@ -91,47 +60,15 @@
        2026-08-31. -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Dianoga"]/race/wildBiomes/Lake</xpath>
+    <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/race/wildBiomes/Lake</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Dianoga"]/race/wildBiomes/Lake</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/race/wildBiomes/Lake</xpath>
       <value>
         <Lake>0.6</Lake>
       </value>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Dianoga"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.6</Lake>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Dianoga"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Dianoga"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.32</Ocean>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Dianoga"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.32</Ocean>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Dragonsnake"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Dragonsnake"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.6</Lake>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Dragonsnake"]/race/wildBiomes</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/race/wildBiomes</xpath>
       <value>
         <Lake>0.6</Lake>
       </value>
@@ -139,47 +76,15 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Dragonsnake"]/race/wildBiomes/Ocean</xpath>
+    <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/race/wildBiomes/Ocean</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Dragonsnake"]/race/wildBiomes/Ocean</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/race/wildBiomes/Ocean</xpath>
       <value>
         <Ocean>0.32</Ocean>
       </value>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Dragonsnake"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.32</Ocean>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Fambaa"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Fambaa"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.6</Lake>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Fambaa"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.6</Lake>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Fambaa"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Fambaa"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.32</Ocean>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Fambaa"]/race/wildBiomes</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/race/wildBiomes</xpath>
       <value>
         <Ocean>0.32</Ocean>
       </value>
@@ -187,47 +92,15 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Fanback"]/race/wildBiomes/Lake</xpath>
+    <xpath>/Defs/ThingDef[defName="RSW_Dragonsnake"]/race/wildBiomes/Lake</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Fanback"]/race/wildBiomes/Lake</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Dragonsnake"]/race/wildBiomes/Lake</xpath>
       <value>
         <Lake>0.6</Lake>
       </value>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Fanback"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.6</Lake>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Fanback"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Fanback"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.32</Ocean>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Fanback"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.32</Ocean>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Blixus"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Blixus"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.6</Lake>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Blixus"]/race/wildBiomes</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Dragonsnake"]/race/wildBiomes</xpath>
       <value>
         <Lake>0.6</Lake>
       </value>
@@ -235,15 +108,111 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Blixus"]/race/wildBiomes/Ocean</xpath>
+    <xpath>/Defs/ThingDef[defName="RSW_Dragonsnake"]/race/wildBiomes/Ocean</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Blixus"]/race/wildBiomes/Ocean</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Dragonsnake"]/race/wildBiomes/Ocean</xpath>
       <value>
         <Ocean>0.32</Ocean>
       </value>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Blixus"]/race/wildBiomes</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Dragonsnake"]/race/wildBiomes</xpath>
+      <value>
+        <Ocean>0.32</Ocean>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Fambaa"]/race/wildBiomes/Lake</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_Fambaa"]/race/wildBiomes/Lake</xpath>
+      <value>
+        <Lake>0.6</Lake>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_Fambaa"]/race/wildBiomes</xpath>
+      <value>
+        <Lake>0.6</Lake>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Fambaa"]/race/wildBiomes/Ocean</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_Fambaa"]/race/wildBiomes/Ocean</xpath>
+      <value>
+        <Ocean>0.32</Ocean>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_Fambaa"]/race/wildBiomes</xpath>
+      <value>
+        <Ocean>0.32</Ocean>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Fanback"]/race/wildBiomes/Lake</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_Fanback"]/race/wildBiomes/Lake</xpath>
+      <value>
+        <Lake>0.6</Lake>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_Fanback"]/race/wildBiomes</xpath>
+      <value>
+        <Lake>0.6</Lake>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Fanback"]/race/wildBiomes/Ocean</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_Fanback"]/race/wildBiomes/Ocean</xpath>
+      <value>
+        <Ocean>0.32</Ocean>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_Fanback"]/race/wildBiomes</xpath>
+      <value>
+        <Ocean>0.32</Ocean>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Blixus"]/race/wildBiomes/Lake</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_Blixus"]/race/wildBiomes/Lake</xpath>
+      <value>
+        <Lake>0.6</Lake>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_Blixus"]/race/wildBiomes</xpath>
+      <value>
+        <Lake>0.6</Lake>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Blixus"]/race/wildBiomes/Ocean</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_Blixus"]/race/wildBiomes/Ocean</xpath>
+      <value>
+        <Ocean>0.32</Ocean>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_Blixus"]/race/wildBiomes</xpath>
       <value>
         <Ocean>0.32</Ocean>
       </value>

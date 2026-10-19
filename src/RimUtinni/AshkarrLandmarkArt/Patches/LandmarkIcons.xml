@@ -10,51 +10,6 @@
        so those take the Add branch. -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="AB_MagmaticQuagmire"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="AB_MagmaticQuagmire"]/iconTexturePath</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="AB_MagmaticQuagmire"]/iconTexturePath</xpath>
-        <value><iconTexturePath>World/Landmarks/Ashkarr/AB_MagmaticQuagmire</iconTexturePath></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="AB_MagmaticQuagmire"]</xpath>
-        <value><iconTexturePath>World/Landmarks/Ashkarr/AB_MagmaticQuagmire</iconTexturePath></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="AB_QuicksandPits"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="AB_QuicksandPits"]/iconTexturePath</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="AB_QuicksandPits"]/iconTexturePath</xpath>
-        <value><iconTexturePath>World/Landmarks/Ashkarr/AB_QuicksandPits</iconTexturePath></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="AB_QuicksandPits"]</xpath>
-        <value><iconTexturePath>World/Landmarks/Ashkarr/AB_QuicksandPits</iconTexturePath></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="AB_TarLakes"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="AB_TarLakes"]/iconTexturePath</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="AB_TarLakes"]/iconTexturePath</xpath>
-        <value><iconTexturePath>World/Landmarks/Ashkarr/AB_TarLakes</iconTexturePath></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="AB_TarLakes"]</xpath>
-        <value><iconTexturePath>World/Landmarks/Ashkarr/AB_TarLakes</iconTexturePath></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/LandmarkDef[defName="AbandonedColonyOutlander"]</xpath>
     <match Class="PatchOperationConditional">
       <xpath>/Defs/LandmarkDef[defName="AbandonedColonyOutlander"]/iconTexturePath</xpath>
