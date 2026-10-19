@@ -26,3 +26,8 @@ Offline: `CliffMaskChecks` / `RaiderTrenchChecks` cases — colonist two-ladder 
 ladders, hostile refused (prison door), raised ladder blocks, one ladder only is not a crossing.
 Live row owed (FOUNDRY): a colonist ordered bank-to-bank walks down, across and up without a stall; a raid's
 scaling ladders carry it straight across.
+
+## criteria
+- A1 L0: two-ladder colonist crossing, raider on own ladders, hostile refused (prison door), raised ladder blocks, one ladder is no crossing, mask flood agrees, laddered island reaches the edge — offline (CliffMaskChecks Trench_laddered_on_both_walls_is_one_route)
+- A2 L2: a colonist ordered from bank A to bank B of a sheer trench with a lowered ladder on each wall walks down, across and up in one Goto, no stall or bounce
+- A3 L2: a raid whose scaling ladders stand on both walls walks straight across to the colony (no Goto into the trench first); a raised colony ladder on one wall leaves a colonist refused
