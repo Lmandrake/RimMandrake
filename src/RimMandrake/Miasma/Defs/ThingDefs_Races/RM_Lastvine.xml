@@ -275,7 +275,7 @@
     <defName>RM_LastvineSpit</defName>
     <label>acid spit</label>
     <graphicData>
-      <texPath>Things/Projectile/LauncherShot</texPath>
+      <texPath>Things/Projectile/RM_LastvineSpit/RM_LastvineSpit</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
       <color>(150,200,60)</color>

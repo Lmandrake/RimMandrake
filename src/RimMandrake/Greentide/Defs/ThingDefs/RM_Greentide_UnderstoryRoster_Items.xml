@@ -198,7 +198,7 @@
     <drawGUIOverlay>true</drawGUIOverlay>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Item/Resource/PlantFoodRaw/Potatoes</texPath>
+      <texPath>Things/Item/Resource/PlantFoodRaw/RM_WollickTuber/RM_WollickTuber</texPath>
       <color>(190, 165, 120)</color>
     </graphicData>
     <healthAffectsPrice>false</healthAffectsPrice>
