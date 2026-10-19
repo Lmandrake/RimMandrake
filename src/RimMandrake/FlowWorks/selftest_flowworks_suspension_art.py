@@ -110,6 +110,31 @@ def check(texpaths):
     return fails
 
 
+def styleable_fails(styles_xml, defs_path=DEFS):
+    """SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN (live 2026-10-19, LOOK_Industrial/Modern/Futuristic styled=0): a ThingDef with
+    no CompProperties_Styleable has no CompStyleable, so Thing.StyleDef = s is a no-op (ThingStyleHelper.SetStyleDef only
+    warns) and every part drew the default look. Every def a ThingStyleDef names must declare the comp."""
+    import xml.etree.ElementTree as ET
+    looks = ("Scrapper", "Industrial", "Modern", "Futuristic")
+    styled = set()
+    for dn in re.findall(r"<ThingStyleDef>\s*<defName>([^<]+)</defName>", styles_xml):
+        base, _, look = dn.rpartition("_")
+        if look in looks:
+            styled.add(base)
+    has = {}
+    for td in ET.parse(defs_path).getroot().iter("ThingDef"):
+        dn = td.findtext("defName")
+        if dn:
+            has[dn] = any(li.get("Class") == "CompProperties_Styleable" for li in td.findall("comps/li"))
+    out = []
+    for base in sorted(styled):
+        if base not in has:
+            out.append(f"{base}: styled but no ThingDef of that name in {os.path.basename(defs_path)}")
+        elif not has[base]:
+            out.append(f"{base}: has ThingStyleDefs but no <li Class=\"CompProperties_Styleable\" /> (its look can never be set)")
+    return out
+
+
 def main():
     xml = open(DEFS, encoding="utf-8").read()
     texpaths = sorted(set(re.findall(r"<texPath>([^<]+)</texPath>", xml)))
@@ -138,7 +163,7 @@ def main():
         else:
             files.append(tp)
     files = sorted(set(files))
-    fails = check(files)
+    fails = check(files) + styleable_fails(sx)
     for f in fails:
         print("FAIL " + f)
     print(f"suspension art: {len(files) - len({f.split(':')[0] for f in fails})}/{len(files)} texture files pass")

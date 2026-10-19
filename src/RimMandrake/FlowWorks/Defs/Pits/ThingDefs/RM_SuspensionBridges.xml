@@ -145,6 +145,9 @@
         <tier>Timber</tier>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -183,6 +186,9 @@
         <tier>Timber</tier>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -230,6 +236,9 @@
         <tier>Steel</tier>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -278,6 +287,9 @@
         <grated>true</grated>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -316,6 +328,9 @@
         <tier>Steel</tier>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -366,6 +381,9 @@
         <tier>Heavy</tier>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -417,6 +435,9 @@
         <grated>true</grated>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -458,6 +479,9 @@
         <tier>Heavy</tier>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -499,6 +523,9 @@
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension" />
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -538,6 +565,9 @@
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension" />
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <!-- SUSPENSION_JETTY_BUILD_WALK_THE_PLANK: the steel and heavy jetty squares (Graphic_Multi, facing out from the root). -->
@@ -586,6 +616,9 @@
         <jetty>true</jetty>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -635,6 +668,9 @@
         <jetty>true</jetty>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
   <!-- SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (Q6, ruled by card): what a falling deck square leaves on the floor below. It
@@ -666,6 +702,9 @@
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
     </building>
+    <comps>
+      <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+    </comps>
   </ThingDef>
 
 </Defs>

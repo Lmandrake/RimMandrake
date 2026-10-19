@@ -64,6 +64,14 @@ ANTI-GUESSING NOTES
   production spill); PASS needs rise == 500 dL AND no new filth on the square.
 - RAILS: 20 production TryKnockOff rolls at the stagger chance (25%); railings off must drop >= 1 (P(0 of 20) = 0.3%),
   railings on must drop 0.
+First live run 2026-10-19 (SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN), what it taught:
+- Pawn injuries come from jawa/list_pawns includeHealth=True at row['health']['hediffs']; the flat 'hediffs' key is always
+  empty. A row that sees no health block is UNMEASURED (hediffs_of / health_seen).
+- RULED OUT: "rails-off never drops = TryKnockOff broken" - KNOCK read edge=False: no dug square beside a 1-wide deck over a
+  1-wide trench. RULED OUT: "a gunner under a solid deck shoots through it" - the target stood on the anchor, not a deck.
+- RULED OUT: "the path finder ignores decks" - it walked round a 1-wide trench at the same node count (corridor walls now).
+- RULED OUT: "the four looks are a harness misread" - LOOK styled=0 was the MOD: the part defs lacked CompProperties_Styleable,
+  so Thing.StyleDef = s was a no-op (selftest_flowworks_suspension_art.py styleable_fails now goes red for it).
 """
 import argparse
 import json
@@ -140,7 +148,7 @@ def main(argv=None):
         return ((r.get("pawns") or [{}])[0]).get("id")
 
     def pawns_by_id():
-        return {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=300) or {}).get("pawns") or []}
+        return pawns_of(B)
 
     def ticks(n):
         return B.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=max(60000, n * 40))
@@ -201,10 +209,19 @@ def posts(ctx):
     kv, txt = proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 0)), xz(P(7, 0))))
     good = kv.get("ok") == "True" and kv.get("anchors") == "2" and kv.get("decks") == "6"
     row("SB_drag_6_timber_builds", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
+    # a 1-wide trench is walked round: live 2026-10-19 the path went (-1,0)->(0,1)..(7,1)->(8,0), 10 cells like the deck
+    # route but without the deck's pathCost (SITE). Granite walls along z=-1 and z=+1 leave the deck the only short way over.
+    wall = B.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % P(x, dz) for x in range(-2, 10) for dz in (-1, 1)),
+                  stuff="BlocksGranite") or {}
     walker = spawn(P(-1, 0))
     kv, txt = proof("ProofPath", "%s;%s" % (walker, xz(P(8, 0)))) if walker else ({}, "no pawn")
     good = kv.get("found") == "True" and int(kv.get("decked", "0")) >= 6
-    row("SB_path_crosses_on_deck", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
+    st = "PASS" if good else ("FAIL" if kv else "UNMEASURED")
+    if st == "FAIL" and wall.get("success") is not True:
+        st = "UNMEASURED"           # the corridor walls never stood: a detour is still open (SITE)
+    row("SB_path_crosses_on_deck", st, {"read": txt, "walls": wall.get("success")})
+    # the span's load with nobody on it (live 2026-10-19 read 816 kg with ONE rider: what else weighs on the deck?)
+    _, empty_txt = proof("ProofSpan", xz(P(3, 0)))
 
     riders = []
     for k in range(12):
@@ -225,26 +242,33 @@ def posts(ctx):
             continue
         if ox + 1 <= int(p1.get("x", -1)) <= ox + 6 and int(p1.get("z", -1)) == oz:
             fell += 1
-        if len(p1.get("hediffs") or []) > len(p0.get("hediffs") or []):
+        if len(hediffs_of(p1) or []) > len(hediffs_of(p0) or []):
             hurt += 1
     gone = txt2.startswith("SPAN none") or kv2.get("decks") == "0"
     st = "PASS" if over and gone and fell == len([r for r in riders if r]) and hurt >= 1 else "FAIL"
-    if not over:
-        st = "UNMEASURED"
+    if not over or not health_seen(after):
+        st = "UNMEASURED"           # never Over, or list_pawns sent no health block: the injury bar could not be read
     row("SB_load_over_rating_whole_span_falls", st,
-        {"before": txt, "inspect_line": line, "after": txt2, "riders": len(riders), "fell": fell, "hurt": hurt})
+        {"empty": empty_txt, "before": txt, "inspect_line": line, "after": txt2, "riders": len(riders), "fell": fell, "hurt": hurt,
+         "healthSeen": health_seen(after)})
 
     # T2: too long for timber
     kv, txt = proof("ProofBuild", "%s;%s;timber" % (xz(P(0, 4)), xz(P(8, 4))))
     good = kv.get("ok") == "False" and "at most 6" in txt and kv.get("blueprints") == "0" and kv.get("anchors") == "0"
     row("SB_drag_7_timber_refused", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
 
-    # T3: railings
+    # T3: railings. A fall needs an open edge: a dug square BESIDE the deck (OpenEdgeBeside). Under a 1-wide bridge over a
+    # 1-wide trench every dug square is decked, so live 2026-10-19 read edge=False and 0 of 20 fell (SITE): dig z=9 too.
+    for i in range(1, 5):
+        dig(P(i, 9))
     proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 8)), xz(P(5, 8))))
     rider = spawn(P(2, 8))
     proof("ProofRails", "%s;off" % xz(P(2, 8)))
     kv, txt = proof("ProofKnock", "%s;20" % rider) if rider else ({}, "no pawn")
-    row("SB_rails_off_some_fall", "PASS" if kv and int(kv.get("fell", "0")) >= 1 else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
+    st = "PASS" if kv and int(kv.get("fell", "0")) >= 1 else ("FAIL" if kv else "UNMEASURED")
+    if kv and kv.get("edge") != "True":
+        st = "UNMEASURED"           # no open edge beside the rider: nothing to fall off (SITE)
+    row("SB_rails_off_some_fall", st, {"read": txt})
     rider2 = spawn(P(3, 8))
     kv0, txt0 = proof("ProofRails", "%s;on" % xz(P(2, 8)))
     kv, txt = proof("ProofKnock", "%s;20" % rider2) if rider2 else ({}, "no pawn")
@@ -269,10 +293,16 @@ def posts(ctx):
     good = len(stamps) == 4 and xs == sorted(xs) and ts == sorted(ts) and len(set(ts)) == 4
     row("SB_anchor_lost_swings_from_that_end", "PASS" if good else ("FAIL" if stamps else "UNMEASURED"), {"read": txt, "lane": stamps})
 
-    # T5: vanilla bridge refused on a dug square
+    # T5: vanilla bridge refused on a dug square. The mod's postfix acts only where vanilla ACCEPTED: a dry dug square is
+    # not Bridgeable terrain, so live 2026-10-19 read vanilla's own refusal and the ruled one never ran (SITE). Water in the
+    # square makes it bridgeable terrain to vanilla.
+    B.call("jawa/flowworks_excavation_drive", x=P(10, 0)[0], z=P(10, 0)[1], deepenLevels=0, setFill=2)
     kv, txt = proof("ProofVanillaBridge", xz(P(10, 0)))
     good = kv.get("accepted") == "False" and "Use a suspension bridge over dug ground" in txt
-    row("SB_vanilla_bridge_refused_over_dug", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
+    st = "PASS" if good else ("FAIL" if kv else "UNMEASURED")
+    if st == "FAIL" and kv.get("accepted") == "False" and "Bridgeable" in txt:
+        st = "UNMEASURED"           # vanilla refused on terrain before the mod could: the ruled refusal was never asked
+    row("SB_vanilla_bridge_refused_over_dug", st, {"read": txt})
 
     row("SB_settings_off_no_button_never_breaks", "UNMEASURED",
         {"owed": True, "why": "OWED: toggle suspensionBridgesBuildable / suspensionWeightCollapse via jawa/mod_settings_field on "
@@ -284,7 +314,7 @@ FLUIDID_TYPE = "RimMandrake.FlowWorks.RM_FluidIdentityProof"
 
 
 def burns(p):
-    return sum(1 for h in (p.get("hediffs") or []) if "Burn" in (h if isinstance(h, str) else str(h.get("def") or h.get("defName") or h)))
+    return sum(1 for h in (hediffs_of(p) or []) if "Burn" in (h if isinstance(h, str) else str(h.get("def") or h.get("defName") or h)))
 
 
 def grate(ctx):
@@ -335,9 +365,11 @@ def underpass(ctx):
         dig(P(i, 40), 8)
         dig(P(i, 46), 3)
         dig(P(i, 50), 8)
-    proof("ProofBuild", "%s;%s;steel;god" % (xz(P(4, 39)), xz(P(4, 41))))
+    # U1 and U5 are 2 wide (x=4..5): the shot rows need a colonist ON a deck square beside the one the gunner is under. Live
+    # 2026-10-19 the target stood on (4,41), the ANCHOR (solid ground), so no deck was between them (HARNESS).
+    proof("ProofBuild", "%s;%s;steel;god" % (xz(P(4, 39)), xz(P(5, 41))))
     proof("ProofBuild", "%s;%s;steel;god" % (xz(P(4, 45)), xz(P(4, 47))))
-    proof("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(4, 49)), xz(P(4, 51))))
+    proof("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(4, 49)), xz(P(5, 51))))
     a_ = spawn(P(1, 40))
     b_ = spawn(P(4, 38))
     kv, txt = proof("ProofUnderPath", "%s;%s" % (a_, xz(P(8, 40)))) if a_ else ({}, "no pawn")
@@ -360,19 +392,27 @@ def underpass(ctx):
     for tag, z, want in (("solid", 40, "False"), ("grate", 50, "True")):
         g = (B.call("jawa/spawn_pawn", kindDef="Mercenary_Gunner", x=P(3, z)[0], z=P(3, z)[1], faction="player", count=1) or {})
         gid = ((g.get("pawns") or [{}])[0]).get("id")
-        tgt = spawn(P(4, z + 1))                                   # on the deck square next to the crossing square
+        tgt = spawn(P(5, z))                                       # ON the deck square beside the one the gunner is under
         proof("ProofPutUnder", "%s;%s" % (gid, xz(P(4, z))))
+        kvb, txtb = proof("ProofBand", tgt) if tgt else ({}, "no pawn")
         kv, txt = proof("ProofShot", "%s;%s" % (gid, tgt)) if gid and tgt else ({}, "no pawns")
         good = kv.get("shooterUnder") == "True" and kv.get("can") == want
-        row("UND_shot_%s_deck" % tag, "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"want": want, "read": txt})
+        st = "PASS" if good else ("FAIL" if kv else "UNMEASURED")
+        if kv and (kvb.get("onDeck") != "True" or kv.get("shooterUnder") != "True"):
+            st = "UNMEASURED"       # the target is not on a deck or the gunner not under one: no deck between them (SITE)
+        row("UND_shot_%s_deck" % tag, st, {"want": want, "read": txt, "target": txtb})
     e_ = spawn(P(2, 40))
     proof("ProofPutUnder", "%s;%s" % (e_, xz(P(4, 40))))
-    kv0, _ = proof("ProofFell", "")
-    hb = (pawns_of(B).get(e_) or {}).get("hediffs") or []
+    kv0, _ = proof("ProofFell", "-1,-1")   # an off-map square: the counters only (live 2026-10-19: "" was REFUSED -> {})
+    hb = hediffs_of(pawns_of(B).get(e_) or {})
     kv, txt = proof("ProofFell", xz(P(4, 40)))
-    ha = (pawns_of(B).get(e_) or {}).get("hediffs") or []
-    good = int(kv.get("crushed", "0")) > int(kv0.get("crushed", "0")) and len(ha) > len(hb)
-    row("UND_crush_below_and_wreck", "PASS" if good else ("FAIL" if kv else "UNMEASURED"),
+    ha = hediffs_of(pawns_of(B).get(e_) or {})
+    good = kv0 and int(kv.get("crushed", "0")) > int(kv0.get("crushed", "0")) and len(ha or []) > len(hb or [])
+    st = "PASS" if good else ("FAIL" if kv else "UNMEASURED")
+    if st == "FAIL" and (not kv0 or ha is None or hb is None):
+        st = "UNMEASURED"           # no counter baseline or no health block: the bar could not be read
+    hb, ha = hb or [], ha or []
+    row("UND_crush_below_and_wreck", st,
         {"before": kv0, "after": txt, "hediffs": [len(hb), len(ha)],
          "owed": "wreck blocks the floor until a clear job runs: read RM_SuspensionWreck on (4,40) and its deconstruct"})
     for zz in range(56, 60):
@@ -506,7 +546,22 @@ def looks(ctx):
 
 
 def pawns_of(B):
-    return {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=300) or {}).get("pawns") or []}
+    # includeHealth: without it list_pawns sends no hediffs at all, and with it they sit at row['health']['hediffs'], never
+    # row['hediffs'] (first live run 2026-10-19: LOAD hurt=0, crush hediffs [0,0], grate burns 0 - all read an empty list)
+    return {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=300, includeHealth=True) or {}).get("pawns") or []}
+
+
+def hediffs_of(p):
+    """The pawn row's hediff list (jawa/list_pawns includeHealth=True nests it under 'health'); None when the row carries no
+    health block at all - the caller cannot see injuries and its row is UNMEASURED, never a clean zero."""
+    h = p.get("health") if isinstance(p, dict) else None
+    if not isinstance(h, dict):
+        return None
+    return h.get("hediffs") or []
+
+
+def health_seen(rows):
+    return any(hediffs_of(p) is not None for p in rows.values())
 
 
 SECTIONS = {"posts": None, "grate": grate, "underpass": underpass, "waters": waters, "jetty": jetty, "looks": looks}
@@ -538,12 +593,14 @@ class FakeBridge(object):
         if method == "jawa/list_pawns":
             self.reads += 1
             late = self.reads % 2 == 0
+            # the real shape: hediffs only with includeHealth, nested at row['health']['hediffs'] (JawaBenchTerrainTools)
+            hl = (lambda hs: {"health": {"hediffs": [{"def": h} for h in hs]}}) if kw.get("includeHealth") else (lambda hs: {})
             if self.last_tier == "jetty":
-                return {"pawns": [{"id": i, "x": FakeBridge.ox + 1 + (i % 2), "z": FakeBridge.floor_z + 73, "hediffs": []}
+                return {"pawns": [dict({"id": i, "x": FakeBridge.ox + 1 + (i % 2), "z": FakeBridge.floor_z + 73}, **hl([]))
                                   for i in range(1001, self.next_id + 1)]}
-            return {"pawns": [{"id": i, "x": FakeBridge.ox + 1 + (i % 6), "z": FakeBridge.floor_z,
-                               "hediffs": ([] if not late else ["Burn", "Bruise"] if self.tags.get(i) == "steelgrated" else ["Bruise"])
-                               + (["Crush"] * self.fell)}
+            return {"pawns": [dict({"id": i, "x": FakeBridge.ox + 1 + (i % 6), "z": FakeBridge.floor_z},
+                                   **hl(([] if not late else ["Burn", "Bruise"] if self.tags.get(i) == "steelgrated" else ["Bruise"])
+                                        + (["Crush"] * self.fell)))
                               for i in range(1001, self.next_id + 1)]}
         if method == "jawa/list_things":
             return {"success": True, "things": [{"def": "Steel"}]}
@@ -589,6 +646,8 @@ class FakeBridge(object):
             return "UNDERPATH found=True cells=8 decked=%d view=floor" % (0 if shallow else 1)
         if m == "ProofPutUnder":
             return "PUTUNDER under=True"
+        if m == "ProofBand":
+            return "BAND under=False onDeck=True passes=True view=deck deckNotches=0"
         if m == "ProofDropUnder":
             return "DROPUNDER under=True at=1,1 underDeck=False slid=1"
         if m == "ProofShot":
