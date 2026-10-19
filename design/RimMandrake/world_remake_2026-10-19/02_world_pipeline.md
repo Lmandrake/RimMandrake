@@ -184,9 +184,8 @@ What still carries retired-donor content into a fresh world: **only what we feed
 - the gravship layout (`AG_RustedTile`, `RG_Boulder*`);
 - the founders (`AA_Eyeling`);
 - our own defs, where the 536 dump still resolves non-ours refs. These are in the 536 list, not retired:
-  - `RM_Wasteland` terrain `VolcanoSoil` and `WastelandAsphalt` (`mlie.advancedbiomes`);
-  - `RM_Cauldron` ×2 `AM_Dryad_*` (`sarg.alphamemes`, a STAY mod);
-  - `RM_TheForge` ×3 `IronScruff_*` plants.
+  - `RM_Cauldron` ×2 `AM_Dryad_*` (`sarg.alphamemes`, a STAY mod; MayRequire-gated, port awaits the owner).
+  (`RM_Wasteland`'s terrain and `RM_TheForge`'s `IronScruff_*` rows were decoupled 2026-10-19, `8e87a9649`.)
 
   The full table is in §6.
 
@@ -256,9 +255,7 @@ Measured on the 536 dump (subagent; its own one-off script over `BiomeDef/ThingD
 
 | biome | non-ours refs |
 |---|---|
-| `RM_Wasteland` | terrain `VolcanoSoil`, `WastelandAsphalt` (advancedbiomes) |
 | `RM_Cauldron` | 2 `AM_Dryad_*` (alphamemes) |
-| `RM_TheForge` | 3 `IronScruff_*` plants |
 | `RUT_FuelSnows` / `RUT_Umbra` | `PoisonShrub` |
 | `RUT_BlueDesert` | `PoisonPlantTallGrass` |
 | `RUT_Slime` | 2 `GR_*` |
