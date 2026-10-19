@@ -21,6 +21,8 @@
 
   XenotypeChance loads by NODE NAME, and a Remove that matches nothing logs red, so each
   Remove sits inside a Conditional on the same xpath.
+  The Alpha Genes 15 were dropped from this file 2026-10-18 when sarg.alphagenes was retired (their defs
+  no longer load, so there is nothing to remove).
   Guarded by src/RimUtinni/UtinniPatches/selftest_xenotype_cut_nonsw.py.
 -->
 <Patch>
@@ -112,96 +114,6 @@
     <xpath>Defs/*/xenotypeSet/xenotypeChances/XylTitan</xpath>
     <match Class="PatchOperationRemove">
       <xpath>Defs/*/xenotypeSet/xenotypeChances/XylTitan</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Mycormorph</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Mycormorph</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Ocularkin</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/VRE_Ocularkin</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Fleetkind</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Fleetkind</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Helixien</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Helixien</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Animusen</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Animusen</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Lapis</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Lapis</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Wretch</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Wretch</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Taukai</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Taukai</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Hiveling</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Hiveling</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_MindDevourer</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_MindDevourer</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Efreet</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Efreet</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Drakonori</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Drakonori</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Nereid</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Nereid</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Forsaken</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_Forsaken</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_RandomCustom</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>Defs/*/xenotypeSet/xenotypeChances/AG_RandomCustom</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
