@@ -72,6 +72,12 @@ c, log = Clock(stall_after=0), []
 res, spent = L.run_shared({"a": waiter(1000, log, "a")}, c.advance, c.now, log=lambda s: None)
 check(res["a"].startswith("clock stalled"), "a stalled clock is reported: %s" % res)
 
+# 5b. a block that FINISHES early never shrinks the later steps to 1 tick (live 2026-10-19: a finished block's stale
+#     deadline left in `due` made B4 crawl one tick per call)
+c, log = Clock(), []
+res, spent = L.run_shared({"short": waiter(10, log, "s"), "long": waiter(3000, log, "l")}, c.advance, c.now, log=lambda s: None)
+check(spent == 3000 and len(c.steps) <= 4, "a finished block leaves big steps: %d steps %s" % (len(c.steps), c.steps[:6]))
+
 # 6. the zone plan: shared zones disjoint from each other and from the owner zone, all inside the map margins
 z = L.plan_zones((250, 250))
 shared = [z[n] for n in L.SHARED]

@@ -333,7 +333,9 @@ def run_shared(gens, advance, now, log=print):
             break
         if ready:
             continue
-        step = max(1, min(min(e, p) for e, p in due.values()) - t)
+        # only LIVE blocks set the step: a finished block's stale deadline left in `due` made every later step 1 tick
+        # (live 2026-10-19: B4 crawled at ~4 ticks/s for 20 min)
+        step = max(1, min(min(due[n]) for n in live) - t)
         step = min(step, 2500)
         advance(step)
         if now() <= t:              # the clock did not move: a 0-tick step (live day 4) voids every waiting block
