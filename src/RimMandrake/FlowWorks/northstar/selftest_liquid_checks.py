@@ -94,6 +94,15 @@ case(LC.pond_depth_verdict([_P(0, 0, 100, own=100), _P(1, 0, 100, own=100)])[0],
 case(LC.pond_depth_verdict([_P(0, 0, 100, own=100), _P(0, 0, 100, own=100)])[0], "UNMEASURED", "L8: the pump drew nothing is SITE")
 case(LC.pond_depth_verdict([_P(0, 0, 9, False), _P(1, 0, 9, False)])[1], "SITE", "L8: model not applying is SITE")
 case(LC.pond_depth_verdict([_P(0, 0, 9)])[0], "UNMEASURED", "L8: one read is not a trace")
+case(LC.spill_verdict(None, 0, L, 0, 3, 0, 0)[:2], ("UNMEASURED", "HARNESS"), "held units unreadable is HARNESS, not 'held nothing'")
+case(LC.clean_verdict("Human1", {"success": True}, 3, 9, 0, 750)[0], "PASS", "readBack 3 with manual priorities off is enabled")
+case(LC.clean_verdict("Human1", {"success": True}, 0, 9, 0, 750)[0], "UNMEASURED", "Cleaning off is no test")
+case(LC.clean_verdict("Human1", {"success": True}, 3, 9, 4, 3000)[0], "FAIL", "filth left after the wait")
+case(LC.clean_verdict("Human1", {"success": True}, 3, 9, None, 250)[:2], ("UNMEASURED", "HARNESS"), "filth unreadable")
+case(LC.clean_verdict(None, {"success": True}, 3, 9, 0, 750)[0], "UNMEASURED", "no cleaner spawned")
+case(LC.free_end_verdict({}, "Ankor", True)[:2], ("UNMEASURED", "HARNESS"), "unread free end is not a MOD FAIL")
+case(LC.free_end_verdict({"describe": "to Ankor's tank", "portFaction": "Ankor"}, "Ankor", True)[0], "PASS", "names them")
+case(LC.free_end_verdict({"describe": "to a tank", "portFaction": None}, "Ankor", True)[0], "FAIL", "does not name them")
 bad = [(g, w, y) for g, w, y in cases if g != w]
 for g, w, y in bad:
     print("FAIL", y, "got", g, "want", w)

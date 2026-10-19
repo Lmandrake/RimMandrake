@@ -182,14 +182,44 @@ def spill_verdict(held0, held1, drained, filth0, filth1, unplaced0, unplaced1, p
     a MOD FAIL that says so."""
     det = {"heldUnits": [held0, held1], "drained": drained, "filthThicknessInRect": [filth0, filth1],
            "expectedPieces": expected, "unplaced": [unplaced0, unplaced1]}
-    if precondition or not held0:
-        return "UNMEASURED", "SITE", dict(det, why=precondition or "the hose held nothing before the cap")
+    if precondition:
+        return "UNMEASURED", "SITE", dict(det, why=precondition)
+    if held0 is None:                       # comp_read failed: the harness could not ask, the hose may be full
+        return "UNMEASURED", "HARNESS", dict(det, why="the hose's held units were unreadable before the cap")
+    if not held0:
+        return "UNMEASURED", "SITE", dict(det, why="the hose held nothing before the cap")
     if None in (held1, drained, filth0, filth1):
         return "UNMEASURED", "HARNESS", dict(det, why="a reading was unreadable")
     rise = filth1 - filth0
     ok = held1 == 0 and drained >= held0 and rise > 0 and (expected is None or rise == expected)
     if not ok and unplaced0 is not None and unplaced1 is not None and unplaced1 > unplaced0:
         det["why"] = "the spill found no cell that takes the filth (RM_LiquidSpill.Unplaced %s -> %s)" % (unplaced0, unplaced1)
+    return ("PASS" if ok else "FAIL"), "MOD", det
+
+
+def clean_verdict(cleaner, paint, readback, filth_before, filth_left, ticks):
+    """L5_colonists_clean_spill. Cleaning ENABLED is the precondition, not priority 1: with manual priorities off (the
+    quicktest default) vanilla's GetPriority reads any non-zero priority back as 3 (live 20261018T233414: readBack 3,
+    filth 9 -> 0 in 750 ticks, read UNMEASURED by the old == 1 test). An unreadable filth read is HARNESS, not SITE."""
+    det = {"filth": [filth_before, filth_left], "ticks": ticks, "cleaner": cleaner}
+    rb = str(readback)
+    if not cleaner or (paint or {}).get("success") is False or not (rb.isdigit() and int(rb) > 0):
+        return "UNMEASURED", "SITE", dict(det, why="precondition: cleaner %s, home paint %s, Cleaning priority %s" % (
+            cleaner, (paint or {}).get("setCount"), readback))
+    if filth_left is None:
+        return "UNMEASURED", "HARNESS", dict(det, why="the spill filth was unreadable while waiting")
+    return ("PASS" if filth_left == 0 else "FAIL"), "MOD", det
+
+
+def free_end_verdict(fe, fname, lay_ok):
+    """L6_free_end_names_their_faction. An unread free end (the hose census missed the reel) is UNMEASURED HARNESS, never a
+    MOD FAIL; nor is a lay that failed or a faction with no name."""
+    det = {"freeEnd": fe, "factionName": fname}
+    if not lay_ok or not fname:
+        return "UNMEASURED", "SITE", dict(det, why="no laid hose or no faction name to look for")
+    if not fe:
+        return "UNMEASURED", "HARNESS", dict(det, why="the hose census returned no free end for this reel")
+    ok = fname in str(fe.get("describe")) and fe.get("portFaction") == fname
     return ("PASS" if ok else "FAIL"), "MOD", det
 
 
@@ -596,9 +626,7 @@ def main(argv=None):
         row("L6_theft_spotted_letter", st, cls, dict(det, attempts=att, faction=nf,
                                                      sightRange=res["settings_before"].get("liquidTheftSightRange")))
         fname = str(neutral.get("name") or "")
-        row("L6_free_end_names_their_faction",
-            "PASS" if (fname and fname in str(fe.get("describe")) and fe.get("portFaction") == fname) else
-            ("FAIL" if lay.get("success") and fname else "UNMEASURED"), "MOD", {"freeEnd": fe, "factionName": fname})
+        row("L6_free_end_names_their_faction", *free_end_verdict(fe, fname, bool(lay.get("success"))))
         if not a.theft_day:
             row("L6_goodwill_after_a_day", "UNMEASURED", "HARNESS", "not run: pass --theft-day (ticks ~60,000)")
             return
@@ -724,14 +752,7 @@ def main(argv=None):
             B.ticks(250)
             waited += 250
             left = filth()
-        # Cleaning ENABLED is the precondition, not priority 1: with manual priorities off (the quicktest default) vanilla
-        # stores any non-zero priority as 3 (live 20261018T233414: readBack 3, filth 9 -> 0 in 750 ticks, read UNMEASURED)
-        rb = str(wp.get("readBack"))
-        pre2 = None if (cid and pa.get("success") is not False and rb.isdigit() and int(rb) > 0 and left is not None) else \
-            "precondition: cleaner %s, home paint %s, Cleaning priority %s, filth read %s" % (
-                cid, pa.get("setCount"), wp.get("readBack"), left)
-        row("L5_colonists_clean_spill", "UNMEASURED" if pre2 else ("PASS" if left == 0 else "FAIL"), "SITE" if pre2 else "MOD",
-            {"filth": [n1, left], "ticks": waited, "cleaner": cid, "why": pre2})
+        row("L5_colonists_clean_spill", *clean_verdict(cid, pa, wp.get("readBack"), n1, left, waited))
         if cid:
             B.hp("pawn:%d=draft" % int(re.search(r"(\d+)$", str(cid)).group(1)))
 
