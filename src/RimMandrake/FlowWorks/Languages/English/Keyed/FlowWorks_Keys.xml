@@ -29,6 +29,13 @@
   <RMFlow_LadderRaisedInspect>Slid up onto the rim: nobody can climb down or out.</RMFlow_LadderRaisedInspect>
   <RMFlow_LadderLoweredPrisonInspect>Ladder down: your people climb; prisoners only in a prison break.</RMFlow_LadderLoweredPrisonInspect>
   <RMFlow_LadderLoweredInspect>Ladder down: anyone can climb.</RMFlow_LadderLoweredInspect>
+  <!-- PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS (owner 2026-10-18): the carriable ladder, climbing gear, the rescue ladder job. -->
+  <RMFlow_LadderPortableReach>Portable ladder: reaches a wall up to {0} high.</RMFlow_LadderPortableReach>
+  <RMFlow_LadderPortableOff>Portable ladders are switched off in the mod settings: it reaches nothing.</RMFlow_LadderPortableOff>
+  <RMFlow_LadderPortableShort>Too short for this wall: it lies on the floor and nobody can climb it. Uninstall it, or dig the wall shallower.</RMFlow_LadderPortableShort>
+  <RMFlow_LadderPortableTooDeep>Too deep for a portable ladder (it reaches {0}). Build the wall ladder instead.</RMFlow_LadderPortableTooDeep>
+  <RMFlow_ClimbsAnyWall>Climbing gear: climbs any pit wall, slowly.</RMFlow_ClimbsAnyWall>
+  <RMFlow_RescueLadderQueued>{0} is down in a pit nobody can climb back out of: a ladder job was queued at the wall.</RMFlow_RescueLadderQueued>
   <RMFlow_SwaleNeedsExcavation>A swale is laid in a dug channel.</RMFlow_SwaleNeedsExcavation>
   <!-- CANAL_BOTTOM_SPIKES_1, owner Q2: spikes only in the deepest pits. -->
   <RMFlow_SpikesNeedDrop>Spikes go only at the foot of a sheer drop of {1} or more. The tallest wall over this square is {0}.</RMFlow_SpikesNeedDrop>

@@ -495,7 +495,7 @@ namespace RimMandrake.FlowWorks
 			{
 				int fromD = StepDepthAt(p.Map, eng, from);
 				int toD = StepDepthAt(p.Map, eng, to);
-				return toD > fromD && RM_PitTrapMath.ArrivalDropsTooFar(fromD, toD, RM_PocketGrid.ClimbLimitOf(p));
+				return toD > fromD && RM_PitTrapMath.ArrivalDropsTooFar(fromD, toD, RM_PocketGrid.NaturalClimbLimitOf(p));   // gear is no parachute
 			}
 			return eng.IsSuperdeepExcavation(to) && !eng.IsSuperdeepExcavation(from);
 		}
@@ -581,7 +581,7 @@ namespace RimMandrake.FlowWorks
 				{
 					// FLOWWORKS_PIT_FALL_ONLY_FORCED_1: who falls is decided by HOW the pawn arrived.
 					bool walked = walkedInto.TryGetValue(p, out IntVec3 w) && w == pos;
-					if (RM_PitTrapMath.DescentFalls(walked, RM_LadderRules.LadderLetsOut(map, pos, p),
+					if (RM_PitTrapMath.DescentFalls(walked, RM_LadderRules.LadderLetsOut(map, pos, p) || (walked && RM_PocketGrid.ClimbsOnGear(p)),
 						p.Faction == Faction.OfPlayer, RM_SuperdeepTrap.Captures(p)))
 					{
 						// FALL_GUARDRAILS_BUILD_REAL_OBJECT: shoved one cell over a railed lip: back onto the lip, no fall.
@@ -687,7 +687,9 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			int from = RM_SuperdeepTrap.StepDepthAt(map, eng, prev);
-			return to > from && RM_PitTrapMath.ArrivalDropsTooFar(from, to, RM_PocketGrid.ClimbLimitOf(p));
+			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: judged by the climb limit WITHOUT climbing gear: gear is no parachute for a
+			// forced arrival; a walked step down on the gear is a climb (Tick passes it to DescentFalls as climbing down).
+			return to > from && RM_PitTrapMath.ArrivalDropsTooFar(from, to, RM_PocketGrid.NaturalClimbLimitOf(p));
 		}
 
 		/// <summary>Still down the hole, for the jumper flag: D = 4 (absolute), any dug cell (relative).</summary>
@@ -1060,7 +1062,9 @@ namespace RimMandrake.FlowWorks
 			// PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.2: "Climbs out of steps up to K deep."), for anyone in a hole.
 			if (relative && !RM_PocketGrid.CanFly(__instance))
 			{
-				string climb = "RMFlow_ClimbsSteps".Translate(RM_Volume.FormatMetres(RM_PocketGrid.ClimbLimitOf(__instance)));
+				// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: climbing gear climbs any wall, slowly.
+				string climb = RM_PocketGrid.ClimbsOnGear(__instance) ? "RMFlow_ClimbsAnyWall".Translate().ToString()
+					: "RMFlow_ClimbsSteps".Translate(RM_Volume.FormatMetres(RM_PocketGrid.ClimbLimitOf(__instance))).ToString();
 				__result = string.IsNullOrEmpty(__result) ? climb : __result + "\n" + climb;
 			}
 			if (!RM_SuperdeepTrap.Captures(__instance))

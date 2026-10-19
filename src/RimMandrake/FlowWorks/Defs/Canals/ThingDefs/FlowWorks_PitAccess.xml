@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS — owner 2026-10-18, verbatim: "Two ladders: one permanent that you install on a wall
+  that raises and lowers to open and close access (prisoner logic). Also a personally carriable ladder placed into the pit (if
+  not too deep) to allow entrance/exit, easily retrieved or moved. Climbing gear a pawn has that allows them to scale."
+  The permanent one is RM_Ladder (FlowWorks_ThingDefs.xml). These are the other two. Code: Source/Superdeep/RM_LadderUtility.cs
+  (both ladder defs, the portable reach), RM_PocketGrid.ClimbLimitOf (the gear), RM_PitAccess.cs (skips, the rescue ladder job).
+
+  Owner on the art, 2026-10-18: "The ladder you drew looks like a portable ladder that would be set diagonally against a wall,
+  and that's ok if that's what you're using it for." So the old diagonal art is the portable ladder's; lying flat when it does
+  not reach its wall.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LadderPortable</defName>
+    <label>portable ladder</label>
+    <description>A light ladder one person can carry and set against a pit wall that is not too deep (3 m by default; see the mod settings). It is always down and works like a prison door: your people and friendly visitors climb it, trapped enemies and wild animals cannot, prisoners only during a prison break. Uninstall it to carry it to another pit. Against a wall too high for it, it lies on the floor and nobody can climb it.</description>
+    <thingClass>RimMandrake.FlowWorks.RM_Building_Ladder</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/Canals/RM_LadderPortable</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <uiIconPath>Things/Building/FlowWorks/Canals/RM_LadderPortableFlat</uiIconPath>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>0</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <designationCategory>Structure</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <WorkToBuild>250</WorkToBuild>
+      <Mass>6</Mass>
+      <Flammability>1.0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>12</WoodLog>
+    </costList>
+    <building>
+      <!-- Not an edifice, as RM_Ladder: an edifice would block the fill-in designator on its cell. -->
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <uninstallWork>60</uninstallWork>
+    </building>
+    <comps>
+      <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder">
+        <portable>true</portable>
+        <shortGraphicData>
+          <texPath>Things/Building/FlowWorks/Canals/RM_LadderPortableFlat</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>(1,1)</drawSize>
+        </shortGraphicData>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.PlaceWorker_LadderOnExcavation</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <ThingDef ParentName="ApparelBase">
+    <defName>RM_ClimbingGear</defName>
+    <label>climbing gear</label>
+    <description>A coil of rope, iron pitons and a harness, worn at the belt. The wearer climbs up or down any pit wall, however deep, slowly. Steps the wearer could climb anyway are no slower. Takes the belt slot, so it cannot be worn with a jump pack or a shield belt.</description>
+    <graphicData>
+      <onGroundRandomRotateAngle>35</onGroundRandomRotateAngle>
+      <texPath>Things/Item/FlowWorks/RM_ClimbingGear</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <techLevel>Medieval</techLevel>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+      <Beauty>-2</Beauty>
+      <WorkToMake>2400</WorkToMake>
+      <Mass>3</Mass>
+      <EquipDelay>2</EquipDelay>
+    </statBases>
+    <costList>
+      <Cloth>25</Cloth>
+      <Steel>15</Steel>
+    </costList>
+    <thingCategories>
+      <li>ApparelUtility</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Clothing</li>
+    </tradeTags>
+    <apparel>
+      <countsAsClothingForNudity>false</countsAsClothingForNudity>
+      <careIfWornByCorpse>false</careIfWornByCorpse>
+      <careIfDamaged>false</careIfDamaged>
+      <wearPerDay>0</wearPerDay>
+      <bodyPartGroups>
+        <li>Waist</li>
+      </bodyPartGroups>
+      <layers>
+        <li>Belt</li>
+      </layers>
+    </apparel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>HandTailoringBench</li>
+        <li>ElectricTailoringBench</li>
+      </recipeUsers>
+      <useIngredientsForColor>false</useIngredientsForColor>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <unfinishedThingDef>UnfinishedApparel</unfinishedThingDef>
+      <skillRequirements>
+        <Crafting>3</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.RM_ClimbAbility">
+        <scalesAnyWall>true</scalesAnyWall>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

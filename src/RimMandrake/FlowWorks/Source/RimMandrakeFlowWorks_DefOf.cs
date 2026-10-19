@@ -62,6 +62,10 @@ namespace RimMandrake.FlowWorks
 		/// <summary>PHASE 5. The one boolean that makes a dug cell exitable.</summary>
 		public static ThingDef RM_Ladder;
 
+		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: the carriable ladder, and the climbing gear (apparel).</summary>
+		public static ThingDef RM_LadderPortable;
+		public static ThingDef RM_ClimbingGear;
+
 		// CANAL_BOTTOM_SPIKES_1
 		public static ThingDef RM_Spikes;
 

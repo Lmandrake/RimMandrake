@@ -330,6 +330,8 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		private static readonly List<Thing> ladderScratch = new List<Thing>();
+
 		/// <summary>The offset grid closing every LOWERED ladder cell, for a pawn the prison-door rule refuses (raised ladders
 		/// are already no edge in the masks); null when this pawn may climb them or there is none. That ladder's floor cell is
 		/// lost to that pawn, which the design accepts. One immutable grid per ladder layout (the pathfinder caches grid jobs
@@ -340,8 +342,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
-			ThingDef ladderDef = RimMandrakeFlowWorks_DefOf.RM_Ladder;
-			if (ladderDef == null)
+			if (RimMandrakeFlowWorks_DefOf.RM_Ladder == null)
 			{
 				return null;
 			}
@@ -355,7 +356,7 @@ namespace RimMandrake.FlowWorks
 			if (g.tick != now)
 			{
 				g.tick = now;
-				List<Thing> ladders = map.listerThings.ThingsOfDef(ladderDef);
+				List<Thing> ladders = RM_LadderUtility.AllLadders(map, ladderScratch);   // both defs (PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS)
 				long sig = 23;
 				for (int i = 0; i < ladders.Count; i++)
 				{
@@ -567,12 +568,21 @@ namespace RimMandrake.FlowWorks
 					return;
 				}
 			}
+			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS (owner 2026-10-18: "jump packs and other leaping abilities allow
+			// entrance/exit immediately"): a deliberate jump (no stun) lands on its feet, however deep; the detector must not count
+			// the arrival either (it would see a forced descent on its next pass).
+			bool deliberate = __instance.def?.pawnFlyer == null || __instance.def.pawnFlyer.stunDurationTicksRange == IntRange.Zero;
+			if (RM_PitAccessMath.LandsSafely(deliberate, RimMandrakeFlowWorksSettings.pitJumpLandsSafe, false, false))
+			{
+				eng.SuperdeepTrap.NoteHandledArrival(p, p.Position);
+				return;
+			}
 			if (RM_PocketGrid.Relative)
 			{
 				// Design §8.5 steps 8-9: a landing is a fall when it drops more than this pawn climbs.
 				int to = RM_SuperdeepTrap.StepDepthAt(p.Map, eng, p.Position);
 				int fromD = RM_SuperdeepTrap.StepDepthAt(p.Map, eng, from);
-				if (RM_PitTrapMath.ArrivalDropsTooFar(fromD, to, RM_PocketGrid.ClimbLimitOf(p)))
+				if (RM_PitTrapMath.ArrivalDropsTooFar(fromD, to, RM_PocketGrid.NaturalClimbLimitOf(p)))
 				{
 					RM_SuperdeepTrap.OnForcedDescent(p, p.Position, eng.SuperdeepTrap, to - fromD);
 				}

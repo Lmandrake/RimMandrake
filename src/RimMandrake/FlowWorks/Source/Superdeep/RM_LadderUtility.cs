@@ -20,47 +20,99 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public static class RM_LadderUtility
 	{
+		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: either ladder, the fixed wall ladder (RM_Ladder) or the portable one
+		/// (RM_LadderPortable). Every ladder read in the mod goes through this.</summary>
+		public static bool IsLadderDef(BuildableDef d)
+		{
+			return d != null && (d == RimMandrakeFlowWorks_DefOf.RM_Ladder || d == RimMandrakeFlowWorks_DefOf.RM_LadderPortable);
+		}
+
+		/// <summary>Every ladder on the map, both defs, into <paramref name="into"/> (cleared first).</summary>
+		public static List<Thing> AllLadders(Map map, List<Thing> into)
+		{
+			into.Clear();
+			if (map == null)
+			{
+				return into;
+			}
+			if (RimMandrakeFlowWorks_DefOf.RM_Ladder != null)
+			{
+				into.AddRange(map.listerThings.ThingsOfDef(RimMandrakeFlowWorks_DefOf.RM_Ladder));
+			}
+			if (RimMandrakeFlowWorks_DefOf.RM_LadderPortable != null)
+			{
+				into.AddRange(map.listerThings.ThingsOfDef(RimMandrakeFlowWorks_DefOf.RM_LadderPortable));
+			}
+			return into;
+		}
+
 		/// <summary>Is there a ladder standing in this cell? O(things-in-cell),
 		/// which on an excavated cell is one or two.</summary>
 		public static bool HasLadder(Map map, IntVec3 c)
 		{
-			if (map == null || !c.InBounds(map))
-			{
-				return false;
-			}
-			ThingDef ladder = RimMandrakeFlowWorks_DefOf.RM_Ladder;
-			if (ladder == null)
-			{
-				return false;
-			}
-			List<Thing> things = c.GetThingList(map);
-			for (int i = 0; i < things.Count; i++)
-			{
-				if (things[i].def == ladder)
-				{
-					return true;
-				}
-			}
-			return false;
+			return LadderAt(map, c) != null;
 		}
 
-		/// <summary>The ladder standing in this cell (a built one), or null.</summary>
+		/// <summary>The ladder standing in this cell (a built one, either def), or null.</summary>
 		public static Thing LadderAt(Map map, IntVec3 c)
 		{
-			ThingDef ladder = RimMandrakeFlowWorks_DefOf.RM_Ladder;
-			if (map == null || ladder == null || !c.InBounds(map))
+			if (map == null || !c.InBounds(map))
 			{
 				return null;
 			}
 			List<Thing> things = c.GetThingList(map);
 			for (int i = 0; i < things.Count; i++)
 			{
-				if (things[i].def == ladder)
+				if (IsLadderDef(things[i].def))
 				{
 					return things[i];
 				}
 			}
 			return null;
+		}
+
+		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: does this ladder span the drop to the wall it hangs on? The fixed
+		/// ladder reaches any depth; the portable one only "if not too deep" (portableLadderMaxLevels), and nothing at all with
+		/// the portable-ladder setting off. A ladder that does not reach is no way in or out for anyone (it lies flat).</summary>
+		public static bool Reaches(Thing ladder)
+		{
+			if (ladder == null || !ladder.Spawned)
+			{
+				return false;
+			}
+			int max = MaxLevelsOf(ladder.def);
+			if (max == 0)
+			{
+				return true;
+			}
+			if (max < 0)
+			{
+				return false;
+			}
+			Map map = ladder.Map;
+			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
+			if (eng == null)
+			{
+				return false;
+			}
+			IntVec3 wall = ladder.Position + ladder.Rotation.FacingCell;
+			if (!wall.InBounds(map))
+			{
+				return false;
+			}
+			return RM_PitAccessMath.LadderReaches(RM_SuperdeepTrap.StepDepthAt(map, eng, ladder.Position),
+				RM_SuperdeepTrap.StepDepthAt(map, eng, wall), max);
+		}
+
+		/// <summary>The levels a ladder def spans: 0 = any depth (the fixed ladder), -1 = none (portable ladders switched off).</summary>
+		public static int MaxLevelsOf(BuildableDef def)
+		{
+			RM_CompProperties_Ladder props = (def as ThingDef)?.GetCompProperties<RM_CompProperties_Ladder>();
+			if (props == null || !props.portable)
+			{
+				return 0;
+			}
+			return RimMandrakeFlowWorksSettings.portableLadderEnabled ? System.Math.Max(1, RimMandrakeFlowWorksSettings.portableLadderMaxLevels) : -1;
 		}
 
 		/// <summary>PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the wall a ladder on this square hangs on, as a Rot4 index — the
@@ -110,6 +162,13 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The raised state's own art. Null = the def's graphic in both states (art pending).</summary>
 		public GraphicData raisedGraphicData;
 
+		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: the carriable ladder. Always down (no raise/lower button), spans only
+		/// portableLadderMaxLevels, and uninstalls to be carried elsewhere (minifiable def).</summary>
+		public bool portable;
+
+		/// <summary>The portable ladder's art while it does not reach its wall (lying flat on the pit floor). Null = the def's.</summary>
+		public GraphicData shortGraphicData;
+
 		public RM_CompProperties_Ladder()
 		{
 			compClass = typeof(RM_CompLadder);
@@ -129,7 +188,21 @@ namespace RimMandrake.FlowWorks
 		public RM_CompProperties_Ladder Props => (RM_CompProperties_Ladder)props;
 
 		/// <summary>Raised as far as the rules are concerned (the setting off = always lowered).</summary>
-		public bool EffectivelyRaised => raised && RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled;
+		public bool EffectivelyRaised => raised && !Props.portable && RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled;
+
+		private Graphic shortGraphic;
+
+		public Graphic ShortGraphic
+		{
+			get
+			{
+				if (shortGraphic == null && Props.shortGraphicData != null)
+				{
+					shortGraphic = Props.shortGraphicData.GraphicColoredFor(parent);
+				}
+				return shortGraphic;
+			}
+		}
 
 		public Graphic RaisedGraphic
 		{
@@ -170,7 +243,7 @@ namespace RimMandrake.FlowWorks
 			{
 				yield return g;
 			}
-			if (parent.Faction != Faction.OfPlayer || !RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled)
+			if (parent.Faction != Faction.OfPlayer || Props.portable || !RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled)
 			{
 				yield break;
 			}
@@ -186,6 +259,18 @@ namespace RimMandrake.FlowWorks
 
 		public override string CompInspectStringExtra()
 		{
+			if (Props.portable)
+			{
+				int max = RM_LadderUtility.MaxLevelsOf(parent.def);
+				string reach = max <= 0 ? "RMFlow_LadderPortableOff".Translate().ToString()
+					: "RMFlow_LadderPortableReach".Translate(RM_Volume.FormatMetres(max)).ToString();
+				if (parent.Spawned && !RM_LadderUtility.Reaches(parent))
+				{
+					return reach + "\n" + "RMFlow_LadderPortableShort".Translate();
+				}
+				return reach + "\n" + (RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled
+					? "RMFlow_LadderLoweredPrisonInspect".Translate() : "RMFlow_LadderLoweredInspect".Translate());
+			}
 			if (!RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled && !RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled)
 			{
 				return null;
@@ -270,6 +355,10 @@ namespace RimMandrake.FlowWorks
 			{
 				RM_CompLadder comp = GetComp<RM_CompLadder>();
 				Graphic g = comp != null && comp.EffectivelyRaised ? comp.RaisedGraphic : null;
+				if (g == null && comp != null && comp.Props.portable && Spawned && !RM_LadderUtility.Reaches(this))
+				{
+					g = comp.ShortGraphic;   // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: too short for its wall: lying flat
+				}
 				return g ?? base.Graphic;
 			}
 		}
@@ -280,27 +369,14 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Does the ladder in this cell (if any) let THIS pawn climb it, down or up?</summary>
 		public static bool LadderLetsOut(Map map, IntVec3 c, Pawn p)
 		{
-			if (map == null || !c.InBounds(map))
+			Thing ladder = RM_LadderUtility.LadderAt(map, c);
+			if (ladder == null || !RM_LadderUtility.Reaches(ladder))
 			{
-				return false;
+				return false;   // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: a portable ladder too short for its wall frees nobody
 			}
-			ThingDef ladderDef = RimMandrakeFlowWorks_DefOf.RM_Ladder;
-			if (ladderDef == null)
-			{
-				return false;
-			}
-			List<Thing> things = c.GetThingList(map);
-			for (int i = 0; i < things.Count; i++)
-			{
-				if (things[i].def != ladderDef)
-				{
-					continue;
-				}
-				RM_CompLadder comp = things[i].TryGetComp<RM_CompLadder>();
-				return RM_PitTrapMath.LadderUsable(RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled,
-					comp != null && comp.raised, RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled, MayClimb(p));
-			}
-			return false;
+			RM_CompLadder comp = ladder.TryGetComp<RM_CompLadder>();
+			return RM_PitTrapMath.LadderUsable(RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled,
+				comp != null && comp.raised && !comp.Props.portable, RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled, MayClimb(p));
 		}
 
 		/// <summary>PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: does the ladder on <paramref name="deep"/> hang on the wall toward
@@ -356,7 +432,23 @@ namespace RimMandrake.FlowWorks
 			{
 				return "RMFlow_RampNotOnLadder".Translate();
 			}
-			return RM_LadderUtility.WallRotAt(map, loc, rot) >= 0 ? (AcceptanceReport)true : "RMFlow_LadderNeedsWall".Translate();
+			int wall = RM_LadderUtility.WallRotAt(map, loc, rot);
+			if (wall < 0)
+			{
+				return "RMFlow_LadderNeedsWall".Translate();
+			}
+			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: a portable ladder only "if not too deep".
+			int max = RM_LadderUtility.MaxLevelsOf(checkingDef);
+			if (max != 0)
+			{
+				IntVec3 w = loc + new Rot4(wall).FacingCell;
+				if (max < 0 || !RM_PitAccessMath.LadderReaches(RM_SuperdeepTrap.StepDepthAt(map, engine, loc),
+					RM_SuperdeepTrap.StepDepthAt(map, engine, w), max))
+				{
+					return "RMFlow_LadderPortableTooDeep".Translate(RM_Volume.FormatMetres(System.Math.Max(0, max)));
+				}
+			}
+			return true;
 		}
 
 		public override void DrawGhost(ThingDef def, IntVec3 center, Rot4 rot, Color ghostCol, Thing thing = null)
@@ -378,7 +470,7 @@ namespace RimMandrake.FlowWorks
 	{
 		public static void Prefix(BuildableDef sourceDef, IntVec3 center, Map map, ref Rot4 rotation)
 		{
-			if (sourceDef == null || sourceDef != RimMandrakeFlowWorks_DefOf.RM_Ladder)
+			if (!RM_LadderUtility.IsLadderDef(sourceDef))
 			{
 				return;
 			}

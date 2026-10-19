@@ -90,7 +90,7 @@ namespace RimMandrake.FlowWorks
 			RM_CompLadder comp = null;
 			foreach (Thing t in c.GetThingList(map))
 			{
-				if (t.def == RimMandrakeFlowWorks_DefOf.RM_Ladder)
+				if (RM_LadderUtility.IsLadderDef(t.def))
 				{
 					comp = t.TryGetComp<RM_CompLadder>();
 					break;

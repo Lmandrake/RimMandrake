@@ -249,6 +249,16 @@ namespace RimMandrake.FlowWorks
         public static bool pitRampsEnabled = true;
         public static int pitRampMaxSpan = 3;
         public static float pitLadderSlowness = 2f;
+        // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS (owner 2026-10-18): a carriable ladder set into a pit "if not too deep" (this many
+        // levels, PROVISIONAL 6 = 3 m), climbing gear that scales any pit wall (each level this many normal climbs), jumps and
+        // skips that land in a pit without a fall, and the rescue rule (owner by card: "if nobody can, a ladder job is queued first").
+        public static bool portableLadderEnabled = true;
+        public static int portableLadderMaxLevels = 6;
+        public static bool climbingGearEnabled = true;
+        public static float climbingGearSlowness = 3f;
+        public static bool pitJumpLandsSafe = true;
+        public static bool pitTeleportLandsSafe = true;
+        public static bool pitRescueLadderEnabled = true;
         // PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsMod screen
         // (same field names and defaults, so nothing that reads them changes meaning).
         // The cover's mass trigger (PIT_COVER_FALL_REWIRE_1) and the fall on any descent
@@ -588,6 +598,13 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitRampsEnabled, "pitRampsEnabled", true);
             Scribe_Values.Look(ref pitRampMaxSpan, "pitRampMaxSpan", 3);
             Scribe_Values.Look(ref pitLadderSlowness, "pitLadderSlowness", 2f);
+            Scribe_Values.Look(ref portableLadderEnabled, "portableLadderEnabled", true);
+            Scribe_Values.Look(ref portableLadderMaxLevels, "portableLadderMaxLevels", 6);
+            Scribe_Values.Look(ref climbingGearEnabled, "climbingGearEnabled", true);
+            Scribe_Values.Look(ref climbingGearSlowness, "climbingGearSlowness", 3f);
+            Scribe_Values.Look(ref pitJumpLandsSafe, "pitJumpLandsSafe", true);
+            Scribe_Values.Look(ref pitTeleportLandsSafe, "pitTeleportLandsSafe", true);
+            Scribe_Values.Look(ref pitRescueLadderEnabled, "pitRescueLadderEnabled", true);
             Scribe_Values.Look(ref trapTriggerEnabled, "trapTriggerEnabled", true);
             Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
@@ -1247,7 +1264,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitGuardrailEnabled", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap", "trenchAiAvoidsCages", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitRescueLadderEnabled", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitGuardrailEnabled", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap", "trenchAiAvoidsCages", "disabledFluids" }))
             {
             list.Label("A pit is any dug pocket nothing can climb out of, nothing more: there is no pit building. "
                      + "What holds a creature is the height of the step it must climb against its own size, never the "
@@ -1318,6 +1335,31 @@ namespace RimMandrake.FlowWorks
                 "A ladder joins its square to the wall it hangs on (a shallower neighbour), however deep, but each level climbed on it costs this "
               + "many normal climbs, so a ramp is always faster.");
             pitLadderSlowness = list.Slider(pitLadderSlowness, 1f, 4f);
+            list.CheckboxLabeled("Portable ladders", ref portableLadderEnabled,
+                "On, a light ladder can be built, carried and set against a pit wall that is not too deep (below). It is always down: "
+              + "it works like a prison door, as a fixed ladder does, but has no up/down button. Uninstall it to carry it elsewhere. "
+              + "Off: a portable ladder reaches nothing (it lies flat), and rescues queue the fixed ladder.");
+            list.Label("Portable ladder reach: " + RM_Volume.FormatMetres(portableLadderMaxLevels), tooltip:
+                "The deepest drop a portable ladder spans (0.5 m a level). A deeper wall needs the fixed wall ladder.");
+            portableLadderMaxLevels = Mathf.RoundToInt(list.Slider(portableLadderMaxLevels, 2f, 12f));
+            list.CheckboxLabeled("Climbing gear", ref climbingGearEnabled,
+                "On, a pawn wearing climbing gear (rope, pitons, harness: a belt item) climbs up or down any pit wall, however deep, "
+              + "slowly. Off: the gear does nothing.");
+            list.Label("Climbing gear slowness: " + climbingGearSlowness.ToString("F1"), tooltip:
+                "Each level climbed on the gear costs this many normal climbs (a ladder costs the ladder slowness above). Steps the "
+              + "pawn could climb without the gear cost what they always did.");
+            climbingGearSlowness = list.Slider(climbingGearSlowness, 1f, 6f);
+            list.CheckboxLabeled("Jumps land safely in pits", ref pitJumpLandsSafe,
+                "On, a deliberate jump (jump packs, longjump, leaping abilities) into a pit lands without a fall, and a jump is "
+              + "always a way out. Being thrown (blast knockback) still falls. Off: a jump down a drop taller than the jumper "
+              + "climbs falls, as any forced arrival does.");
+            list.CheckboxLabeled("Teleports land safely in pits", ref pitTeleportLandsSafe,
+                "On, a skip (teleport) into a pit lands without a fall. Off: it falls like any forced arrival.");
+            list.CheckboxLabeled("Rescues queue a ladder", ref pitRescueLadderEnabled,
+                "On, when one of your colonists is down in a pit (downed, or stuck) and nobody can climb down to them and back out, "
+              + "a ladder job is queued at the nearest pit wall: a spare portable ladder is carried there, else a portable one is "
+              + "built, else (too deep) the fixed ladder. Anyone who can climb back out (climbing gear, a big creature) simply "
+              + "goes. Off: you place the ladder yourself.");
 
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
                 "A dug pocket a person cannot climb out of counts as a room of its own, separate "
@@ -1860,9 +1902,9 @@ namespace RimMandrake.FlowWorks
         private static bool appliedKnown;
         private static float appliedRoomMin = -1f;
         private static bool appliedHollow, appliedClimb, appliedRamps, appliedRooms, appliedWalls, appliedMat, appliedOutline,
-            appliedScorch, appliedLooks, appliedSee;
+            appliedScorch, appliedLooks, appliedSee, appliedPortable;
         private static float appliedClimbMul;
-        private static int appliedRampSpan;
+        private static int appliedRampSpan, appliedPortableReach;
 
         private static void ApplyChangedSettings()
         {
@@ -1870,7 +1912,8 @@ namespace RimMandrake.FlowWorks
             {
                 bool hollow = appliedHollow != pondBedHollowEnabled;
                 if (hollow || appliedClimb != pitRelativeClimbEnabled || appliedClimbMul != pitClimbAbilityMultiplier
-                    || appliedRamps != pitRampsEnabled || appliedRampSpan != pitRampMaxSpan)
+                    || appliedRamps != pitRampsEnabled || appliedRampSpan != pitRampMaxSpan
+                    || appliedPortable != portableLadderEnabled || appliedPortableReach != portableLadderMaxLevels)
                 {
                     RM_PocketGrid.SettingsChanged();
                 }
@@ -1902,6 +1945,8 @@ namespace RimMandrake.FlowWorks
             appliedClimbMul = pitClimbAbilityMultiplier;
             appliedRamps = pitRampsEnabled;
             appliedRampSpan = pitRampMaxSpan;
+            appliedPortable = portableLadderEnabled;
+            appliedPortableReach = portableLadderMaxLevels;
             appliedRooms = superdeepRoomsEnabled;
             appliedRoomMin = pitRoomMinDepthMetres;
             appliedWalls = excavationWallFacesEnabled;
