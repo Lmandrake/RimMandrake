@@ -77,9 +77,9 @@ Every line here is one of his rulings (item `PIT_SUPERDEEP_COLLAPSE_1` unless no
   `W = max(1, round(sqrt(BodySize)))` (BodySize < 2.25 → 1, < 6.25 → 2, < 12.25 → 3; bands are a
   proposal for his word, exposed as a Mod Setting); a pawn is held only if a **W×W square of D=4 cells
   contains its cell**. The same `BodySize` also scales spike damage ([G]) — a deliberate pairing.
-- **LAW 2** (depth reads only movement and liquid) carries **two** stated, narrow exceptions:
-  ruling 23 (a D=4 occupant trades fire only with its 8 neighbours — already built, reads the grid)
-  and [D] (depth may bound a room). Worded so it is not a precedent for anything else.
+- **LAW 2** (replaced 2026-10-18: depth affects movement, liquid and cover, never sight or height advantage;
+  `flowworks_mod_definition.md`) keeps ruling 23 (a D=4 occupant trades fire only with its 8 neighbours — already
+  built, reads the grid) and [D] (depth may bound a room).
 
 ### 3.2 What "a pit" is
 
