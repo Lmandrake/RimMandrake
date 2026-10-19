@@ -106,7 +106,6 @@
          residents above could never spawn, on a dive map or anywhere else. CLOSED
          2026-09-09 (fix wave, BIOME_FAUNA_ASSIGNMENT_SITTING_1): 0.1 declared below. -->
     <wildAnimals>
-      <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>                    <!-- aerofleet - drifter, import -->
       <RSW_Lanternwhale MayRequire="mandrake.rsw.swbestiary">0.005</RSW_Lanternwhale>     <!-- lanternwhale - endemic giant, import -->
     </wildAnimals>
     <!-- animalDensity: undeclared (engine default 0) -> 0.1, DESIGNED interim

@@ -162,12 +162,6 @@
          commonality. CLOSED 2026-09-09: set to 0.2 above as a DESIGNED interim, sized
          to vanilla IceSheet, with a quicktest tune owed. -->
     <wildAnimals>
-      <AA_BoulderMit MayRequire="sarg.alphaanimals">0.004</AA_BoulderMit>       <!-- boulder mit - giant, import -->
-      <AA_SummitCrab MayRequire="sarg.alphaanimals">0.004</AA_SummitCrab>       <!-- summit crab - landform-giant, import -->
-      <AA_RedGoo MayRequire="sarg.alphaanimals">0.003</AA_RedGoo>               <!-- red goo - small, import -->
-      <AA_Terramorph MayRequire="sarg.alphaanimals">0.003</AA_Terramorph>       <!-- terramorph - medium, import -->
-      <AA_Slurrypede MayRequire="sarg.alphaanimals">0.002</AA_Slurrypede>       <!-- slurrypede - medium, import -->
-      <AA_TetraSlug MayRequire="sarg.alphaanimals">0.002</AA_TetraSlug>         <!-- tetra slug - giant, import -->
       <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
            16.7% small against five giant/medium imports. This addition is already an
            OWNER-RULED "native visitor" in this exact biome's fauna list
@@ -187,7 +181,6 @@
            ⛔ So this is NOT a pyramid defect to fix: do not lower it, and do not remove it
            to make ECOSYSTEM_PYRAMID_LAW_1 pass. The remedy runs the other way — this biome
            has no small natives of its own, only giant imports, and owes some. -->
-      <AA_ShockGoat MayRequire="sarg.alphaanimals">0.03</AA_ShockGoat>  <!-- shock goat - small native visitor, ruled -->
       <RSW_CaveLemming MayRequire="mandrake.rsw.swbestiary">0.03</RSW_CaveLemming>  <!-- mahllik - big hopper, LARGE, owner-ruled 2026-09-21; renamed 2026-09-24 (NONCANON_BEAST_RENAME_1 batch 3b) - thermal-only sensing refashion still owed -->
     </wildAnimals>
     <coastalWildAnimals />

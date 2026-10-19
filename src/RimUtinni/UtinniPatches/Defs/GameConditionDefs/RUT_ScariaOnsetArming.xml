@@ -64,7 +64,6 @@
         <targets>Animals</targets>
         <pawnKindFilter>
           <li MayRequire="mandrake.rsw.swbestiary">RSW_FoundryBeetle</li>
-          <li MayRequire="sarg.alphaanimals">AA_SpinedGow</li>
         </pawnKindFilter>
         <requiredHediff>Scaria</requiredHediff>
       </li>

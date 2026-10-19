@@ -193,7 +193,6 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <Mynock MayRequire="mlie.starwarsanimalcollection">0.5</Mynock>  <!-- mynock - wiring-eater, import -->
       <RSW_MegaphoridLarva MayRequire="mandrake.rsw.swbestiary">0.5</RSW_MegaphoridLarva>  <!-- megaphorid larva (bodySize 0.32) - placed by the round2 move mapping ("scarlands"), never wired until 2026-09-23. Same reasoning as the fairy mole above: small, so 0.5 helps the pyramid rather than hurting it. -->
       <RM_ElectricTick MayRequire="mandrake.rm.biomes">0.3</RM_ElectricTick>  <!-- Electrictick - weapon-descendant, keep (WARSCAR_SHEET_DONOR_PORT_1: owned port of SW_Electrictick, same row as RM_Warscar) -->
       <RSW_FoundryBeetle MayRequire="mandrake.rsw.swbestiary">0.18</RSW_FoundryBeetle>  <!-- foundry beetle - plated-grazer, keep -->

@@ -83,13 +83,6 @@
       <Rain>8</Rain>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <AA_GreenGoo MayRequire="sarg.alphaanimals">2.0</AA_GreenGoo>  <!-- green goo - substrate, keep -->
-      <AA_AcanthamoebaGiganteaLarge MayRequire="sarg.alphaanimals">0.15</AA_AcanthamoebaGiganteaLarge>  <!-- acanthamoeba gigantea, large - resistant-native, import -->
-      <AA_Plasmorph MayRequire="sarg.alphaanimals">0.1</AA_Plasmorph>  <!-- plasmorph - resistant-native, adjust-keep -->
-      <AA_Helixien MayRequire="sarg.alphaanimals">0.075</AA_Helixien>  <!-- helixien - resistant-native, keep -->
-      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.02</AA_DecayDrake>  <!-- decay drake - trace-experiment, keep -->
-      <AA_Mime MayRequire="sarg.alphaanimals">0.01</AA_Mime>  <!-- mime - trace-experiment, keep -->
-      <AA_Thunderbeast MayRequire="sarg.alphaanimals">0.005</AA_Thunderbeast>  <!-- thunderbeast - trace-experiment, keep -->
       <GR_Chickenrabbit MayRequire="vanillaexpanded.vgeneticse">0.005</GR_Chickenrabbit>  <!-- chickenrabbit - trace-tail, import -->
       <GR_Manbear MayRequire="vanillaexpanded.vgeneticse">0.002</GR_Manbear>  <!-- manbear - trace-tail, import -->
       <RM_Titanoslime MayRequire="mandrake.rm.biomes">0.12</RM_Titanoslime>  <!-- titanoslime - apex-native, new-def (TITANOSLIME_SLIME_BIOME_1) -->

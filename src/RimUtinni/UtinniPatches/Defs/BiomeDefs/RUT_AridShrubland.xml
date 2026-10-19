@@ -178,21 +178,17 @@
       <RSW_Nuna MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Nuna>  <!-- nuna - small-runway, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Nuna to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <RSW_Worrt MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Worrt>  <!-- worrt - small-runway, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Worrt to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <RSW_MossBeetle MayRequire="mandrake.rsw.swbestiary">0.3</RSW_MossBeetle>  <!-- moss beetle - small-runway, keep -->
-      <AA_Cactipine MayRequire="sarg.alphaanimals">0.25</AA_Cactipine>  <!-- cactipine - small-venom, keep -->
       <RSW_Grank MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Grank>  <!-- Grank - medium-interface, keep -->
       <RSW_Qormot MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Qormot>  <!-- qormot - medium-interface, keep -->
       <RSW_Strill MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Strill>  <!-- strill - medium-interface, keep -->
       <RSW_Cannok MayRequire="mandrake.rsw.swbestiary">0.16</RSW_Cannok>  <!-- cannok - medium-interface, keep -->
       <RSW_Whisperbird MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Whisperbird>  <!-- whisperbird - flier-interface, keep -->
       <RSW_Pikobis MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Pikobis>  <!-- pikobis - medium-runner, keep -->
-      <AA_Needlepost MayRequire="sarg.alphaanimals">0.1</AA_Needlepost>  <!-- needlepost - small-venom, adjust-keep -->
-      <AA_Wildpawn MayRequire="sarg.alphaanimals">0.1</AA_Wildpawn>  <!-- wildpawn - medium-venom, keep -->
       <RSW_Convor MayRequire="mandrake.rsw.swbestiary">0.08</RSW_Convor>  <!-- convor - flier-interface, keep -->
       <RSW_Skalder MayRequire="mandrake.rsw.swbestiary">0.08</RSW_Skalder>  <!-- skalder - huge-grazer, keep -->
       <RSW_Vulptex MayRequire="mandrake.rsw.swbestiary">0.08</RSW_Vulptex>  <!-- vulptex - small-runway, keep -->
       <RSW_FeralNerf MayRequire="mandrake.rsw.swbestiary">0.04</RSW_FeralNerf>  <!-- feral nerf - medium-runner, keep -->
       <RSW_Porg MayRequire="mandrake.rsw.swbestiary">0.04</RSW_Porg>  <!-- porg - small-runway, keep -->
-      <AA_Wildpod MayRequire="sarg.alphaanimals">0.025</AA_Wildpod>  <!-- wildpod - huge-sessile, keep -->
       <RSW_Voorpak MayRequire="mandrake.rsw.swbestiary">0.02</RSW_Voorpak>  <!-- voorpak - small-runway, keep -->
       <RSW_KowakianMonkeyLizard MayRequire="mandrake.rsw.swbestiary">0.01</RSW_KowakianMonkeyLizard>  <!-- kowakian monkey-lizard - small-runway, keep -->
     </wildAnimals>
@@ -204,7 +200,6 @@
       <RM_Grellbush>0.3</RM_Grellbush>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces vanilla Plant_Bush -->
       <RM_Grellspine>0.3</RM_Grellspine>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces Biotech's Plant_Ripthorn -->
       <RM_WildHealroot>0.25</RM_WildHealroot>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces vanilla Plant_HealrootWild. Label kept "wild healroot" per PlantNames_Ashkarr.xml (owner 2026-09-05: healroot is already an invented word, not renamed) -->
-      <Plant_Nysyllin_Wild MayRequire="mlie.starwarsanimalcollection">0.22</Plant_Nysyllin_Wild>  <!-- wild nysyllin plant -->
       <RSW_TanniVine MayRequire="mandrake.rsw.swbestiary">0.2</RSW_TanniVine>  <!-- creep stern -->
       <RSW_RuzzoCarpet MayRequire="mandrake.rsw.swbestiary">0.2</RSW_RuzzoCarpet>  <!-- crimson cushion -->
       <RSW_QuissaBloom MayRequire="mandrake.rsw.swbestiary">0.2</RSW_QuissaBloom>  <!-- dervish -->

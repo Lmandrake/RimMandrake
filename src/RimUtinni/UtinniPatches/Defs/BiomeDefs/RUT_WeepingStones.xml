@@ -149,7 +149,6 @@
       <RSW_Bantha MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Bantha>  <!-- bantha - pilgrim, import -->
       <RSW_Eopie MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Eopie>  <!-- eopie - pilgrim, import -->
       <RSW_Jamel MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Jamel>  <!-- Jamel - pilgrim, import -->
-      <AA_Eyeling MayRequire="sarg.alphaanimals">0.1</AA_Eyeling>  <!-- ikee - omen, import -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

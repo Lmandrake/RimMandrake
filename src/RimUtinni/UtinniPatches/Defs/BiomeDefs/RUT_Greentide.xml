@@ -220,10 +220,8 @@
       <RSW_Falumpaset MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Falumpaset>  <!-- falumpaset - brake, import -->
       <RSW_Gelagrub MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Gelagrub>  <!-- gelagrub - gnawer, import -->
       <RSW_Kinrath MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Kinrath>  <!-- kinrath - canopy-ambush, adjust-keep -->
-      <AA_Needlepost MayRequire="sarg.alphaanimals">0.3</AA_Needlepost>  <!-- needlepost - floor-vermin, keep -->
       <RSW_Fambaa MayRequire="mandrake.rsw.swbestiary">0.25</RSW_Fambaa>  <!-- fambaa - shatterer, import -->
       <RSW_PekoPeko MayRequire="mandrake.rsw.swbestiary">0.2</RSW_PekoPeko>  <!-- Peko-peko - flier, import -->
-      <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>  <!-- blood shrimp - margin-predator, keep -->
       <RM_Sytheclaw>0.2</RM_Sytheclaw>  <!-- sytheclaw - floor-predator, keep; was the donor AA_Razorjack until PYRELANDS_DONOR_PORT_4 (2026-09-19) re-authored it as ours, so no MayRequire: this mod ships the def -->
       <RSW_Dalgo MayRequire="mandrake.rsw.swbestiary">0.18</RSW_Dalgo>  <!-- dalgo - brake, keep -->
       <RSW_Hawkbat MayRequire="mandrake.rsw.swbestiary">0.18</RSW_Hawkbat>  <!-- hawk-bat - flier-predator, keep -->
@@ -241,16 +239,8 @@
     <coastalWildAnimals />
     <wildPlants>
       <RM_JungleTree>3.0</RM_JungleTree>  <!-- deep jungle tree - tree -->
-      <Plant_HydenockTree_Wild MayRequire="mlie.starwarsanimalcollection">1.5</Plant_HydenockTree_Wild>  <!-- wild hydenock tree - tree -->
-      <Plant_JoganTree_Wild MayRequire="mlie.starwarsanimalcollection">1.2</Plant_JoganTree_Wild>  <!-- wild jogan tree - tree -->
       <RM_GiantLeaf>1.0</RM_GiantLeaf>  <!-- giant leaf -->
-      <Plant_MujaFruit_Wild MayRequire="mlie.starwarsanimalcollection">1.0</Plant_MujaFruit_Wild>  <!-- wild muja fruit bush -->
-      <Plant_HubbaGourd_Wild MayRequire="mlie.starwarsanimalcollection">0.8</Plant_HubbaGourd_Wild>  <!-- wild hubba gourd plant -->
       <RM_SugarFamewort>0.6</RM_SugarFamewort>  <!-- sugar famewort -->
-      <Plant_FelucianGlowspore_Wild MayRequire="mlie.starwarsanimalcollection">0.6</Plant_FelucianGlowspore_Wild>  <!-- wild felucian glowspore - tree -->
-      <Plant_Bubblespore_Wild MayRequire="mlie.starwarsanimalcollection">0.5</Plant_Bubblespore_Wild>  <!-- wild bubble spore plant -->
-      <Plant_Chakroot_Wild MayRequire="mlie.starwarsanimalcollection">0.5</Plant_Chakroot_Wild>  <!-- wild chak-root plant -->
-      <Plant_TookeTrap_Wild MayRequire="mlie.starwarsanimalcollection">0.5</Plant_TookeTrap_Wild>  <!-- wild tooke-trap plant -->
     </wildPlants>
     <wildPlantRegrowDays>18</wildPlantRegrowDays>
 

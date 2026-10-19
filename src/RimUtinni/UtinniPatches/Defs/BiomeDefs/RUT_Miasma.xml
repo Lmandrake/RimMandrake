@@ -231,18 +231,9 @@
       <RSW_Whisperbird MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Whisperbird>  <!-- whisperbird - flier, keep -->
       <RSW_RustNipperJuv MayRequire="mandrake.rsw.swbestiary">0.25</RSW_RustNipperJuv>  <!-- rust nipper - nursery, juvenile-locked -->
       <RSW_SiltLampreyJuv MayRequire="mandrake.rsw.swbestiary">0.25</RSW_SiltLampreyJuv>  <!-- silt lamprey - nursery, juvenile-locked -->
-      <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- lockjaw - channel-predator, keep -->
-      <AA_Mantrap MayRequire="sarg.alphaanimals">0.2</AA_Mantrap>  <!-- mantrap - root-ambush, keep -->
-      <AA_RaptorShrimp MayRequire="sarg.alphaanimals">0.2</AA_RaptorShrimp>  <!-- raptor shrimp - channel-predator, keep -->
       <RSW_Vornskyr MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Vornskyr>  <!-- vornskyr - strange, keep -->
-      <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.1</AA_BloodShrimp>  <!-- blood shrimp - channel-predator, keep -->
-      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - composter, keep -->
-      <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - strange, keep -->
-      <AA_Slurrypede MayRequire="sarg.alphaanimals">0.1</AA_Slurrypede>  <!-- slurrypede - composter, adjust-keep -->
-      <AA_Thermadon MayRequire="sarg.alphaanimals">0.1</AA_Thermadon>  <!-- thermadon - channel-predator, keep -->
       <RSW_OpeeSeaKillerJuv MayRequire="mandrake.rsw.swbestiary">0.05</RSW_OpeeSeaKillerJuv>  <!-- opee sea killer - nursery-guard, juvenile-locked -->
       <RSW_Zakkeg MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Zakkeg>  <!-- zakkeg - big-wanderer, keep -->
-      <AA_Plasmorph MayRequire="sarg.alphaanimals">0.05</AA_Plasmorph>  <!-- plasmorph - strange, keep -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

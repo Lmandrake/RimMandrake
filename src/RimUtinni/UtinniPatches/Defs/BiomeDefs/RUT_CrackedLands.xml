@@ -117,10 +117,8 @@
       <RSW_SandLeaper MayRequire="mandrake.rsw.swbestiary">0.2</RSW_SandLeaper>  <!-- qetta - the-Spenders, adjust-keep -->
       <RSW_CanCell MayRequire="mandrake.rsw.swbestiary">0.2</RSW_CanCell>  <!-- can-cell - flier-commuter, keep -->
       <RSW_Convor MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Convor>  <!-- convor - flier-commuter, import -->
-      <AA_Murkling MayRequire="sarg.alphaanimals">0.2</AA_Murkling>  <!-- murkling - the-Spenders, adjust-keep -->
       <RSW_Creature_Mantrap MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Creature_Mantrap>  <!-- mantrap - the-Patient, import -->
       <RSW_Woolamander MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Woolamander>  <!-- woolamander - walking resident (canon: arboreal Yavin 4 canopy primate, no flight; owner 2026-10-03), import -->
-      <AA_SandSquid MayRequire="sarg.alphaanimals">0.1</AA_SandSquid>  <!-- sand squid - the-Sealed, adjust-keep -->
       <!-- COMMISSION_LEDGER_CLEANUP_1: two signature commissions the roster's
            own new_defs list flagged as unbuilt ("no live def answers to it" /
            the flagship vs. the existing sort-fillers above). -->

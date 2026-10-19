@@ -143,10 +143,8 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <AA_Aerofleet MayRequire="sarg.alphaanimals">0.4</AA_Aerofleet>  <!-- aerofleet - sky, adjust-keep -->
       <LavaSnail>0.35</LavaSnail>  <!-- lava snail - ground-slow, import -->
       <RSW_LavaFlea MayRequire="mandrake.rsw.swbestiary">0.25</RSW_LavaFlea>  <!-- lava flea - ground-herd, import -->
-      <AA_Metallovore MayRequire="sarg.alphaanimals">0.15</AA_Metallovore>  <!-- metallovore - ground-slow, keep -->
       <RSW_Beldon MayRequire="mandrake.rsw.swbestiary">0.08</RSW_Beldon>  <!-- beldon - sky-herd, keep -->
       <RSW_Maguana MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Maguana>  <!-- maguana - ground-slow, ported out of Caverns (CAVERNS_PARITY_BUILD_1 r5, owner: the Forge keeps its creature); donor commonality -->
       <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
@@ -156,7 +154,6 @@
            (bodySize 0.3) is small; the roster's other two unwired entries
            (AA_ColossalAerofleet bodySize 2, Tibidee bodySize 12) are both LARGE and are
            left out on purpose. -->
-      <AA_CrescendoAnole MayRequire="sarg.alphaanimals">0.5</AA_CrescendoAnole>  <!-- crescendo anole - small, ruled -->
       <!-- COMMISSION_LEDGER_CLEANUP_1: the_forge sheet's own owed roster line ("fleet
            fliers, flash-flora + fireweed") plus §4's named sky fauna ("small darting
            things that race in, eat fireweed, and retreat before they perish").
