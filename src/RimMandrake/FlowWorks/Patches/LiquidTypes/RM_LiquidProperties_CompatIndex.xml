@@ -21,8 +21,8 @@
 
   Includes: acid (Spike A's proof, onto Odyssey ToxicWater*), a normal-water
   pH7 baseline onto vanilla's own water family + Marsh, and slime (onto
-  RM_GelatinousSlime's own RM_Slime_Liquid and Alpha Biomes' AB_LiquidSlime)
-  — see the module docstring for why those two are patch-only, no clone.
+  RM_GelatinousSlime's own RM_Slime_Liquid)
+  — see the module docstring for why that is patch-only, no clone.
   ============================================================================
 -->
 <Patch>
@@ -151,19 +151,6 @@
       <xpath>/Defs/TerrainDef[defName="RM_Slime_Liquid"]</xpath>
       <match Class="PatchOperationAddModExtension">
         <xpath>/Defs/TerrainDef[defName="RM_Slime_Liquid"]</xpath>
-        <value>
-          <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
-            <viscosityClass>Thick</viscosityClass>
-            <pH>7</pH>
-          </li>
-        </value>
-      </match>
-    </Operation>
-    <!-- match-validation: expects exactly 1 hit against /Defs/TerrainDef[defName="AB_LiquidSlime"] -->
-    <Operation Class="PatchOperationConditional">
-      <xpath>/Defs/TerrainDef[defName="AB_LiquidSlime"]</xpath>
-      <match Class="PatchOperationAddModExtension">
-        <xpath>/Defs/TerrainDef[defName="AB_LiquidSlime"]</xpath>
         <value>
           <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
             <viscosityClass>Thick</viscosityClass>

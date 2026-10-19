@@ -21,8 +21,7 @@ Rows deliberately NOT generated here, per §6 and the item's own scoping:
     row says as much: "that mod authors its OWN suite; this mod supplies the
     property grammar it fills in." Cloning a second RM_SlimeShallow/Deep off
     vanilla water here would duplicate/confuse that, so "slime" is also a
-    COMPAT_ONLY_ROWS entry (patched onto RM_Slime_Liquid and, for the same
-    "shape" donor §6 cites, Alpha Biomes' AB_LiquidSlime) rather than a
+    COMPAT_ONLY_ROWS entry (patched onto RM_Slime_Liquid) rather than a
     cloned suite.
   - "mud grades (churnmud)" — §6: native Mud/Marsh + one RM_Churnmud. Hand-
     authored directly as ../Defs/TerrainDefs/RM_Churnmud.xml (ParentName
@@ -556,7 +555,7 @@ COMPAT_ONLY_ROWS = {
     },
     "slime": {
         "extension": {"viscosityClass": "thick", "pH": 7},
-        "compat_targets": ["RM_Slime_Liquid", "AB_LiquidSlime"],
+        "compat_targets": ["RM_Slime_Liquid"],
     },
 }
 
@@ -775,8 +774,8 @@ def build_compat_patch(out_dir: Path):
 
   Includes: acid (Spike A's proof, onto Odyssey ToxicWater*), a normal-water
   pH7 baseline onto vanilla's own water family + Marsh, and slime (onto
-  RM_GelatinousSlime's own RM_Slime_Liquid and Alpha Biomes' AB_LiquidSlime)
-  — see the module docstring for why those two are patch-only, no clone.
+  RM_GelatinousSlime's own RM_Slime_Liquid)
+  — see the module docstring for why that is patch-only, no clone.
   ============================================================================
 -->
 <Patch>
@@ -802,7 +801,7 @@ def build_compat_patch(out_dir: Path):
 # (RM_AcidShallow/Deep, RM_TarShallow/Deep, RM_WaterBrine*, RM_Propane*,
 # RM_WaterBoiling*, RM_WaterFrigid*, RM_WaterPoisoned*, RM_Fluid_Water,
 # RM_Fluid_Tar). Nothing here references an optional third-party def
-# (Odyssey toxic suites, Alpha Biomes slime, VGE astrofuel) -- those need a
+# (Odyssey toxic suites, VGE astrofuel) -- those need a
 # MayRequire-gated PATCH onto the row, not a hard field reference, and are
 # left for the pass that builds that adoption.
 #
