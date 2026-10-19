@@ -14,9 +14,9 @@
   2026-09-25 against Wookieepedia's search API: no canon hit), so it ships
   inline below as `RM_Reefback` (RM_SeaBeasts_Invented.xml, same mod,
   no MayRequire) instead of behind a mandrake.rsw.swbestiary gate.
-  AA_Aerofleet (Alpha Animals, not Star Wars) stays. Everything else —
-  terrain, weather, fishTypes, GravTide support — is byte-identical to the
-  twin.
+  Later Grey Sea sittings have changed this def since (AA_Aerofleet cut,
+  the sallik family cut 2026-10-12, flora, sessiles); it is no longer
+  identical to the frozen twin, and every content fix lands HERE.
   ============================================================================
 -->
 <Defs>
@@ -96,23 +96,15 @@
       <RM_Nissik>0.9</RM_Nissik>
       <RM_Grusk>0.8</RM_Grusk>
       <RM_Thollim>0.7</RM_Thollim>
-      <!-- SEA_FISHABLES_ALIVE_IN_DEPTHS_1, 2026-09-26 (Grey portion). Owner:
-           "All the fishables should also be alive and moving around in the
-           depths (this is true for ALL seas)." These seven are the living
-           counterparts of the seven catch-only rows in <fishTypes> below,
-           authored from those items' own existing descriptions rather than
-           invented fresh. Defs: RM_GreySeaFloorLife.xml.
-           ✅ GREYSEA_CATCH_TIER_RENAME_1, 2026-09-27: the seven catch items
-           below are now RM_*Catch, inline, no MayRequire — the tier mismatch
-           this comment used to describe is closed. RM_GreySeaFloorLife.xml's
-           header has the same correction. -->
-      <RM_Sallik>0.5</RM_Sallik>
-      <RM_Karrud>0.45</RM_Karrud>
-      <RM_Hessal>0.55</RM_Hessal>
-      <RM_Oomal>0.35</RM_Oomal>
-      <RM_Maalu>0.3</RM_Maalu>
-      <RM_Immu>0.3</RM_Immu>
-      <RM_Haarn>0.08</RM_Haarn>
+      <!-- 🔴 THE SALLIK FAMILY IS CUT FROM THE GREY SEA, 2026-10-12 (owner, by
+           card: "Sallik in the Grey Sea → Remove from the Grey Sea only"). The
+           seven older catch species and their floor bodies — RM_Sallik,
+           RM_Karrud, RM_Hessal, RM_Oomal, RM_Maalu, RM_Immu, RM_Haarn (and
+           their RM_*Catch items in <fishTypes> below) — are no longer cast
+           here, so the catch is the sparse, bizarre one he ruled. Scoped to
+           THIS biome: the defs stay in RM_GreySeaFloorLife.xml /
+           RM_GreySeaCatch.xml, cast nowhere today, free for another water.
+           ⛔ Do not re-add them here. -->
       <!-- GREYSEA_ANCHOR_CREATURES_1, ruling 2: the AA_Aerofleet replacement,
            at the same commonality the cut donor drifter held. Solitary,
            non-schooling (ban 2); no *Catch counterpart, see
@@ -257,21 +249,16 @@
     </terrainsByFertility>
 
     <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Grey Sea's catch table.
-         terminal_seas_cast_proposal_2026-09-25.md verdict 2: essarn
-         ADDED here, not replacing the pre-existing table (see
-         RM_GreySeaCatch.xml's own header).
-
-         GREYSEA_RULED_CONTENT_1, Q2 (question card 2026-09-27): option (c),
-         "keep all 13, rebalanced rare" — NO species cut. maxFishPopulation
-         halved (120 -> 60) and RM_OomalCatch/RM_KarrudCatch moved from
-         Common into Uncommon (the two lowest-weight Common rows), so the
-         line feels sparser at the dock without deleting anything shipped.
-         Remaining Common weights trimmed slightly for the same reason. -->
+         2026-10-12 (owner, by card): the sallik family — RM_SallikCatch,
+         RM_KarrudCatch, RM_HessalCatch, RM_OomalCatch, RM_MaaluCatch,
+         RM_ImmuCatch, RM_HaarnCatch — is REMOVED from the Grey Sea only
+         ("Gives the sparse, bizarre catch you ruled. Cost: a thinner Grey
+         Sea catch."). This supersedes the 2026-09-27 "keep all 13" breadth
+         ruling. What is left is the essarn and the sessile layer, plus the
+         rare table. maxFishPopulation stays at 60. -->
     <maxFishPopulation>60</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <saltwater_Common>
-        <RM_SallikCatch>1.0</RM_SallikCatch>
-        <RM_HessalCatch>0.8</RM_HessalCatch>
         <RM_EssarnCatch>0.8</RM_EssarnCatch>
         <!-- GREYSEA_SESSILE_LAYER_1: the sessile layer is catchable, so
              each of the three owes a row here beside its floor resident
@@ -282,14 +269,6 @@
         <RM_ThollimCatch>0.9</RM_ThollimCatch>
         <RM_GruskCatch>0.7</RM_GruskCatch>
       </saltwater_Common>
-      <saltwater_Uncommon>
-        <RM_MaaluCatch>1</RM_MaaluCatch>
-        <RM_ImmuCatch>0.7</RM_ImmuCatch>
-        <RM_HaarnCatch>0.4</RM_HaarnCatch>
-        <!-- Q2's rebalance: moved down from Common, unchanged weights. -->
-        <RM_KarrudCatch>1</RM_KarrudCatch>
-        <RM_OomalCatch>0.6</RM_OomalCatch>
-      </saltwater_Uncommon>
       <!-- GREYSEA_RULED_CONTENT_1 housekeeping: migrated off the RUT_
            campaign-layer table (RUT_RareGreyCatches, still frozen for
            RUT_GreySea's own use) onto the free-tier RM_RareGreyCatches

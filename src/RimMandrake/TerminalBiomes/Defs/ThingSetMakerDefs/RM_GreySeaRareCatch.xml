@@ -9,9 +9,11 @@
   RimUtinni def with no MayRequire guard — that is exactly the shape
   PATCH_MAYREQUIRE_GUARD_INERT_1 warns against for a missing-mod resolve, and
   RM_GreySea's own tier is supposed to "look precisely the same" standalone
-  (Q11a). Same three-option shape, same weights, both items swapped for
-  their RM_ twins: RUT_SaltCameo -> RM_SaltCameo (RM_GreySeaSaltCameo.xml),
-  RUT_Hessal -> RM_HessalCatch (already shipped, RM_GreySeaCatch.xml).
+  (Q11a). Same option weights, the items swapped for
+  their RM_ twins: RUT_SaltCameo -> RM_SaltCameo (RM_GreySeaSaltCameo.xml).
+  2026-10-12 (owner, by card): the hessal-bed option is GONE — the hessal
+  is one of the sallik family, removed from the Grey Sea only. Two options
+  remain: the salt cameo and the silver.
 
   RUT_RareGreyCatches is left untouched — RUT_GreySea.xml is frozen and
   still points at it; both retire together at the Phase B repaint.
@@ -33,19 +35,6 @@
                 </thingDefs>
               </filter>
               <countRange>1~1</countRange>
-            </fixedParams>
-          </thingSetMaker>
-        </li>
-        <li>
-          <weight>2</weight>
-          <thingSetMaker Class="ThingSetMaker_StackCount">
-            <fixedParams>
-              <filter>
-                <thingDefs>
-                  <li>RM_HessalCatch</li>
-                </thingDefs>
-              </filter>
-              <countRange>4~6</countRange>
             </fixedParams>
           </thingSetMaker>
         </li>

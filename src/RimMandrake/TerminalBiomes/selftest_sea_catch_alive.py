@@ -39,7 +39,7 @@ shipped = V.sea_catch_alive_checks()
 check("shipped: every catch in the four seas has a living floor body", not shipped, str(shipped[:5]))
 for label, rel, old, new in [
     ("twilight niim body unwired", "BiomeDefs/RM_TwilightSea.xml", "<RM_Niim>1.0</RM_Niim>", ""),
-    ("grey body unwired", "BiomeDefs/RM_GreySea.xml", "<RM_Sallik>0.5</RM_Sallik>", ""),
+    ("grey body unwired", "BiomeDefs/RM_GreySea.xml", "<RM_Nissik>0.9</RM_Nissik>", ""),
     ("catch breaks pairing", "BiomeDefs/RM_TwilightSea.xml", "<RM_KelluCatch>1</RM_KelluCatch>", "<RM_Kellu_Item>1</RM_Kellu_Item>"),
     ("body wired but undefined", "ThingDefs_Races/RM_TwilightSeaFloorLife.xml", "<defName>RM_Liiru</defName>\n    <label>", "<defName>RM_LiiruGone</defName>\n    <label>"),
 ]:
