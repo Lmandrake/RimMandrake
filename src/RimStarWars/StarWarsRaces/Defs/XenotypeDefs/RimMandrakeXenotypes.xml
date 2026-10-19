@@ -252,7 +252,7 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeChadraFan</defName>
     <label>Chadra-Fan</label>
-    <description>The Chadra-Fan was a sentient species of meter-tall, rodent-like humanoids from the Outer Rim world of Chad. They had large ears, and flat noses with four nostrils.</description>
+    <description>The Chadra-Fan was a sentient species of meter-tall, rodent-like humanoids from the Outer Rim world of Chad. They had large ears, and flat noses with four nostrils. Canon gives the Chadra-Fan a height of one meter but no lifespan; the small frame follows the Jawa and Ewok, both documented at one meter and 30 kilograms, and the shortened lifespan is a game choice with no canon figure.</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon7</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -667,7 +667,7 @@
   <XenotypeDef>
     <defName>RSW_RimMandrakeGand</defName>
     <label>Gand</label>
-    <description>Gand are an insectoid species from the planet Gand, split between a Breathing subspecies and a Non-breathing subspecies that relies on an ammonia-filled encounter suit to survive off-world. Their findsmen track prey and fugitives alike through ritualized, clan-sanctioned hunts.</description>
+    <description>Gand are an insectoid species from the planet Gand, split between a Breathing subspecies and a Non-breathing subspecies that relies on an ammonia-filled encounter suit to survive off-world. Their findsmen track prey and fugitives alike through ritualized, clan-sanctioned hunts. Canon gives the Gand no height or lifespan; the small frame is borrowed from the Defel, another stocky species documented as short, and the shortened lifespan is a game choice with no canon figure.</description>
     <iconPath>UI/Icons/Xenotypes/Custom/CustomXenotypeIcon8</iconPath>
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
@@ -1392,7 +1392,6 @@
       <li>RSW_GS_Primitive</li>
       <li>Outland_UnusualSpeech</li>
       <li>AptitudePoor_Plants</li>
-      <li>AptitudePoor_Intellectual</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -1831,7 +1830,6 @@
       <li>RSW_Eyes_BigYellow</li>
       <li>Outland_Hands_Talons</li>
       <li>Unstoppable</li>
-      <li>Outland_AcceleratedAgeing</li>
       <li>Outland_AcceleratedMaturation</li>
       <li>Outland_Evasive</li>
     </genes>
@@ -2029,7 +2027,6 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
       <li>RSW_Face_jowls</li>
       <li>RSW_Nose_SmallPig</li>
       <li>RSW_BodySizeGene_smaller</li>
-      <li>RSW_lifespan_double</li>
       <li>RSW_Skin_DullPink</li>
       <li>Turn_Gene_Certain</li>
       <li>Hair_ShortOnly</li>
@@ -2046,6 +2043,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
       <li>AptitudePoor_Plants</li>
       <li>AptitudePoor_Animals</li>
       <li>AptitudeRemarkable_Crafting</li>
+      <li>RSW_lifespan_quad</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>

@@ -933,6 +933,27 @@ OWNER_GENE_REMOVALS = {
     "RSW_RimMandrakeEwok": ["Robust"],
     "RSW_RimMandrakeNikto": ["ToxicEnvironmentResistance_Total"],
     "RSW_RimMandrakeKubaz": ["ToxicEnvironmentResistance_Partial"],
+    # XENOTYPE_CANON_CORRECTION_1, owner by card 2026-10-18
+    "RSW_RimMandrakeNelvaanian": ["AptitudePoor_Intellectual"],   # slow-witted removed
+    "RSW_RimMandrakeTaung": ["Outland_AcceleratedAgeing"],       # sourced lifespan 85 y
+    "RSW_RimMandrakeUgnaught": ["RSW_lifespan_double"],          # replaced by quad below
+}
+
+# Genes ADDED to the shipped list (after removals), same ruling: "sourced figure wins".
+# Ugnaught canon is 200+ years / "centuries"; double is 160 on a baseline of 80, quad is 320.
+OWNER_GENE_ADDITIONS = {
+    "RSW_RimMandrakeUgnaught": ["RSW_lifespan_quad"],
+}
+
+# Description sentences appended to the shipped description (owner 2026-10-18: Gand and
+# Chadra-Fan keep small bodies and halved lifespans, the description names the borrow).
+OWNER_DESCRIPTION_APPEND = {
+    "RSW_RimMandrakeGand": " Canon gives the Gand no height or lifespan; the small frame is borrowed"
+        " from the Defel, another stocky species documented as short, and the shortened"
+        " lifespan is a game choice with no canon figure.",
+    "RSW_RimMandrakeChadraFan": " Canon gives the Chadra-Fan a height of one meter but no lifespan; the"
+        " small frame follows the Jawa and Ewok, both documented at one meter and 30 kilograms,"
+        " and the shortened lifespan is a game choice with no canon figure.",
 }
 
 _SHIPPED_GENES = {}
@@ -988,7 +1009,15 @@ def write_xenotypes(built, defmap, x, tbl):
     _SHIPPED_GENES = _shipped_gene_lists()
     _SHIPPED_GENES = {k: [g for g in v if g not in OWNER_GENE_REMOVALS.get(k, ())]
                       for k, v in _SHIPPED_GENES.items()}
+    for _k, _add in OWNER_GENE_ADDITIONS.items():
+        for _g in _add:
+            if _k in _SHIPPED_GENES and _g not in _SHIPPED_GENES[_k]:
+                _SHIPPED_GENES[_k].append(_g)
     _SHIPPED_META = _shipped_meta()
+    for _k, _t in OWNER_DESCRIPTION_APPEND.items():
+        _d = _SHIPPED_META.get(_k, {}).get("description")
+        if _d is not None and _t not in _d:
+            _SHIPPED_META[_k]["description"] = _d.rstrip() + _t
     els = []
     unnamed = []
     for b in built:
