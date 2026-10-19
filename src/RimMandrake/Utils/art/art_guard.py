@@ -100,7 +100,8 @@ def _authorized(ev: dict, idx: L.Index) -> str | None:
     elif reason in BOOKKEEPING:
         return None
     if L.is_mechanical_reason(reason):
-        if ev.get("prev") and idx.protected(ev["prev"]):
+        if ev.get("prev") and idx.protected(ev["prev"]) and not (
+                ev.get("sha") is None and L.held_elsewhere(idx, ev["prev"], (ev.get("mod"), ev.get("rel")))):
             return f"mechanical install ({reason}) displaced owner-kept {ev['prev'][:12]}"
         if ev.get("sha") is None and not ev.get("said") and ev.get("prev") and idx.protected(ev["prev"]):
             return "retired an owner-kept picture without his words"

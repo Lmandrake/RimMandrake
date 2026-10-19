@@ -298,12 +298,32 @@ def test_c():
           and len(L.read_events()) == n, "art.py kept-purged writes the report and no events")
 
 
+def test_d():
+    """An extension-less rel is refused (44 twins, 2026-10-18); a duplicate slot of a kept picture retires on a
+    mechanical reason, the last slot holding it does not."""
+    import artledger as L
+    import art_guard as G
+    tmp = fixture()
+    mod = "src/RimMandrake/FlowWorks"
+    sred = L.store_put_bytes(png((255, 0, 0, 255)))
+    msg = refused(L.install, mod, "SuspensionBridge/Modern/RM_SuspensionDeck", sred, reason=WRITER)
+    check(msg is not None and "image extension" in msg, "install refuses a rel with no image extension")
+    check(not (tmp / mod / "Textures" / "SuspensionBridge").exists(), "...and writes nothing")
+    L.install(mod, "A/Deck.png", sred, owner_said="fixture keep")
+    L.install(mod, "A/DeckTwin.png", sred, reason=WRITER)
+    check(refused(L.retire, tmp / mod / "Textures" / "A/DeckTwin.png", reason=WRITER) is None,
+          "retire of a duplicate slot of a kept picture needs no owner words")
+    check(refused(L.retire, tmp / mod / "Textures" / "A/Deck.png", reason=WRITER) is not None,
+          "retire of the last slot holding a kept picture still needs his words")
+
+
 def main():
     sys.path.insert(0, str(HERE))
     tmp = fixture()
     test_b(tmp)
     test_a()
     test_c()
+    test_d()
     print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

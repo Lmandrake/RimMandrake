@@ -501,9 +501,15 @@ def canonical_mod(mod) -> str:
     return f"{sroot.name}/{relp.as_posix()}"
 
 
+IMAGE_EXTS = (".png", ".jpg", ".jpeg", ".tga", ".psd", ".dds", ".bmp")
+
+
 def canonical_rel(rel) -> str:
-    """WRITE-side rel: accepts 'a/b.png' or 'Textures/a/b.png'; refuses absolute paths and '..'."""
+    """WRITE-side rel: accepts 'a/b.png' or 'Textures/a/b.png'; refuses absolute paths and '..', and a name with
+    no image extension (a rel without `.png` wrote 44 extension-less twins beside the PNGs, 2026-10-18)."""
     r = rel_key(rel)
+    if r and not r.lower().endswith(IMAGE_EXTS):
+        raise Refused(f"rel {rel!r} has no image extension ({'/'.join(IMAGE_EXTS)}) — install the file as its .png")
     if not r or r.startswith("/") or "/Textures/" in "/" + r or ".." in r.split("/"):
         raise Refused(f"rel must be the path UNDER Textures/, got {rel}")
     return r
@@ -1039,6 +1045,12 @@ def install_image(dest, img, **kw) -> dict:
     return install_bytes(dest, b.getvalue(), **kw)
 
 
+def held_elsewhere(idx, sha: str, key) -> bool:
+    """True when another LIVE slot (not `key`) holds exactly this picture: retiring the duplicate slot
+    loses no kept picture, so it needs no owner words (the 44 extension-less twins, 2026-10-18)."""
+    return any(k != tuple(key) and ev.get("sha") == sha for k, ev in idx.live.items())
+
+
 def retire(dest, *, reason: str | None = None, owner_said: str | None = None) -> dict:
     """Remove a Textures file through the ledger: archive, delete, `live` with sha None."""
     mod, rel = locate(dest)
@@ -1047,7 +1059,7 @@ def retire(dest, *, reason: str | None = None, owner_said: str | None = None) ->
         return {"status": "absent", "path": str(target)}
     idx = cached_index()
     old = sha256_file(target)
-    if idx.protected(old) and not owner_said:
+    if idx.protected(old) and not owner_said and not held_elsewhere(idx, old, (mod, rel)):
         raise Refused(f"{target} is owner-kept ({old[:12]}) — retiring it needs his words")
     if not owner_said:
         if not reason:
