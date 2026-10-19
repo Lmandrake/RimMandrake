@@ -411,7 +411,7 @@ def artpipe_jobs(terms):
         return None, out.stderr.strip()[-300:]
     res, cur, head = defaultdict(set), None, ""
     for line in out.stdout.splitlines():
-        m = re.match(r"^(\S.*?): (\d+) hit\(s\)$", line)
+        m = re.match(r"^(\S.*?): (\d+) (?:raw text )?hit\(s\)(?: \(.*\))?$", line)
         if m:
             cur = m.group(1)
             continue
