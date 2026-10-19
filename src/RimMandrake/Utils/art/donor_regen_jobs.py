@@ -15,6 +15,8 @@ art blockers."  Stand-ins were installed so the donor mods could retire; every o
     python3 src/RimMandrake/Utils/art/donor_regen_jobs.py build --audit <audit.json> --census <dir>/census.json \
         --out design/RimMandrake/donor_regen_jobs_2026-10-18.json
     # 3. feed: file the next rows until pending+active reaches --cap (default 40). Safe to re-run any time.
+    #    Every row passes regen_eligibility.Gate first (owner 2026-10-19: only confirmed NONE / PLACEHOLDER / DONOR
+    #    art is queued; owner-kept, regenerated or renamed destinations are refused and logged; gate error = no filing).
     python3 src/RimMandrake/Utils/art/donor_regen_jobs.py submit --jobs design/RimMandrake/donor_regen_jobs_2026-10-18.json
     # 4. later, install what finished (accept-for-now):  src/RimMandrake/Utils/art/art_accept_finished.py
 
@@ -47,6 +49,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import bulk_accept_renders as BA  # noqa: E402
+import regen_eligibility as RE  # noqa: E402
 
 REPO = BA.REPO
 ART = BA.ART
@@ -453,23 +456,36 @@ def in_flight() -> int:
                if f.name.endswith(".json") and not f.name.endswith(".manifest.json"))
 
 
-def submit(jobs_ps, cap: int, dry: bool):
-    """Feed the job files in order (earlier files claim the room first); one shared cap."""
+def submit(jobs_ps, cap: int, dry: bool, gate=None):
+    """Feed the job files in order (earlier files claim the room first); one shared cap. Every row passes the
+    eligibility gate (regen_eligibility.py, owner 2026-10-19: only confirmed NONE / PLACEHOLDER / DONOR art is
+    queued). Fail closed: a gate that cannot be built files nothing."""
+    try:
+        gate = gate or RE.Gate()
+    except RE.GateError as e:
+        print(f"ELIGIBILITY GATE FAILED — filing nothing: {e}", file=sys.stderr)
+        return 2
     rc = 0
     for jp in jobs_ps:
         if cap - in_flight() <= 0:
             print(f"queue at cap before {jp.name}")
             break
-        rc = submit_one(jp, cap, dry) or rc
+        rc = submit_one(jp, cap, dry, gate) or rc
     return rc
 
 
-def submit_one(jobs_p: Path, cap: int, dry: bool):
+def submit_one(jobs_p: Path, cap: int, dry: bool, gate=None):
+    if gate is None:
+        try:
+            gate = RE.Gate()
+        except RE.GateError as e:
+            print(f"ELIGIBILITY GATE FAILED — filing nothing: {e}", file=sys.stderr)
+            return 2
     J = json.loads(jobs_p.read_text())
     _, filed = queue_view()
     room = cap - in_flight()
     print(f"in flight {cap - room} / cap {cap}")
-    batch = []
+    batch, refused = [], []
     for r in J["rows"]:
         if room <= 0:
             break
@@ -477,12 +493,26 @@ def submit_one(jobs_p: Path, cap: int, dry: bool):
         ids = [r["id"]] if not r["facings"] else [f"{r['id']}_{f}" for f in r["facings"]]
         if any(i in filed for i in ids):
             continue
+        v = gate.classify(r)
+        if not v["eligible"]:
+            refused.append(v)
+            continue
         if n > room and batch:
             break
         batch.append({k: v for k, v in r.items() if not k.startswith("_") and k not in ("kind", "biomes", "why")})
         room -= n
+    if refused:
+        print(f"eligibility gate refused {len(refused)} rows: "
+              + ", ".join(f"{k}={n}" for k, n in Counter(v["verdict"] for v in refused).most_common()))
+        for v in refused[:20]:
+            print(f"  REFUSED {v['id']}: {v['verdict']} — {v['reason'][:160]}")
+        if not dry:
+            with (ART / "_refs" / (jobs_p.stem + ".refused.log")).open("a") as fh:
+                for v in refused:
+                    fh.write(json.dumps({"ts": BA.A.now(), "id": v["id"], "verdict": v["verdict"],
+                                         "reason": v["reason"]}) + "\n")
     if not batch:
-        print("nothing to file (queue at cap, or every row already filed)")
+        print("nothing to file (queue at cap, every row already filed, or every remaining row refused)")
         return 0
     tmp = ART / "_refs" / f"donor_regen_batch_{BA.A.now().replace(':', '')}.json"
     tmp.parent.mkdir(exist_ok=True)
