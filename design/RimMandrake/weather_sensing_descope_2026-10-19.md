@@ -5,8 +5,9 @@ planetary map observation of weather systems, and that entire line of inquiry, t
 and development. Downscope this. Please assess what we already have in the game and give me
 question cards on what to descope at this time."*
 
-Assessment only. Nothing here has been changed in code, the ledger or the game. The decisions
-at the end are the card material.
+**Outcome (owner cards 2026-10-19):** D1 → delete the mast and its comp; D3 → Tiers 2-4 and the
+main-map tier cut permanently. Done offline in `WEATHER_MAST_DELETE_BAROMETER_GOES_QUIET`
+(deploy owed). D2, D4, D5, D6 were not asked.
 
 Precedent already in the ledger, verbatim, from `LEANINGSCRUB_MECHANICS_BUILD_1`'s trim law:
 *"Too much focus on constant advanced warning... Players arent that into it."* That item
@@ -40,12 +41,12 @@ another mod.** There is no weather research def and no world-map weather overlay
 - **What depends on it:**
   - `src/RimMandrake/WeatherSuite/validation.py`, the `weather_instrument_reports_a_live_forecast_reading` chain (spawns it by defName).
   - `design/validation_walks/RimStarWars/WeatherSuite.md`, steps 8 and 9.
-  - Savegames: the defName appears in **10 saves**, including `CANONICAL_ASHKARR_START_2026-09-12.rws` and
-    its donor-free variants, but **only inside Vanilla Trading Expanded's price-history table**
-    (`TradingManager/priceHistoryRecorders`). No save has one built.
+  - Savegames: the defName appears in **68 of 345 saves** (grep, 2026-10-19), including
+    `CANONICAL_ASHKARR_START_2026-09-12.rws`, only inside Vanilla Trading Expanded's price-history table
+    (`TradingManager/priceHistoryRecorders`) or CaravanAdventures' `packUpFilter/allowedDefs`. No save has one built.
   - Docs that only name it: `design/RimMandrake/flowworks_map_controls_design_2026-10-16.md` (one table row),
     the mod-audit registry under `design/RimMandrake/mod_audit/`, `infrastructure/state/art/def_history.json`.
-- **What removing it would break:** deleting the def gives every one of those 10 saves one
+- **What removing it would break:** deleting the def gives every one of those saves one
   "could not load reference" warning when VTE reloads its price table. That is harmless, but it is
   noise in exactly the saves we use most. The validation chain and walk steps 8–9 would need deleting
   in the same change. Making it unbuildable while keeping the def breaks nothing.
@@ -172,7 +173,7 @@ Whether this is deliberate is not recorded. Candidate item name (namecheck OK): 
 - (b) **Make it unbuildable** (remove `designationCategory`; def, comp and tests stay). One XML line, no rebuild, saves stay
   clean, easy to revive. The validation chain still spawns it by name.
 - (c) Delete the building and its comp. The cleanest result, but it needs a DLL rebuild and code review, deleting the
-  validation chain and walk steps, deleting the forecast fuzz and mutants, and it adds a load warning in 10 saves.
+  validation chain and walk steps, deleting the forecast fuzz and mutants, and it adds a load warning in the saves that name it.
 - (d) Hide it behind a new Mod Setting, off by default. It needs new C# plus a rebuild, and it adds a switch for a feature
   nobody uses.
 

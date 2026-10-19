@@ -4,7 +4,6 @@
 //             the invalid-tile sentinel is in neither; the exclusive nightside edge keeps that true for any geometry that shares an edge
 //   tint      maximised-aurora channel arithmetic: never past white, never darker than vanilla at the shipped defaults (every channel 0..1),
 //             monotone in brightness; reports (does not fail on) how many slider-range corners can dip below vanilla
-//   forecast  the instrument's top-N shares: descending, tie-stable, over the total of all positive weights, never above 100% in sum
 // A failing case prints `family seed N: message`; --fuzz-seed N replays it. PROVISIONAL: the Ash'karr geometry (substellar 0,0; wall 63..117)
 // and the default tint (sat 0.35, overlay 0.05, brightness 1.15) are design-draft numbers.
 using System;
@@ -136,39 +135,6 @@ namespace RimMandrake.StarWars.WeatherSuite.SelfTest
             return fails;
         }
 
-        private static List<string> Forecast(int cases, int seed0)
-        {
-            var fails = new List<string>();
-            for (int c = 0; c < cases; c++)
-            {
-                int seed = seed0 + c; var r = new Random(seed); Cases++; Steps++;
-                try
-                {
-                    int n = r.Next(0, 14); var w = new List<float>();
-                    for (int i = 0; i < n; i++) { int k = r.Next(6); w.Add(k == 0 ? 0f : k == 1 ? -1f : k == 2 && w.Count > 0 ? w[r.Next(w.Count)] : F(r, 0.01f, 10f)); }
-                    int top = r.Next(1, 4);
-                    var got = RM_WeatherKernel.TopShares(w, top);
-                    var pos = Enumerable.Range(0, n).Where(i => w[i] > 0f).ToList();
-                    Check(got.Count == Math.Min(top, pos.Count), $"returned {got.Count} rows for {pos.Count} positive weights, top {top}");
-                    float total = pos.Sum(i => w[i]); float sumPct = 0f;
-                    for (int i = 0; i < got.Count; i++)
-                    {
-                        Check(w[got[i].Key] > 0f, "a zero/negative weight was forecast");
-                        Check(Math.Abs(got[i].Value - w[got[i].Key] / total * 100f) < 1e-3f, "share is not weight / total of all positive weights");
-                        if (i > 0) Check(got[i - 1].Value >= got[i].Value - 1e-6f, "shares not descending");
-                        if (i > 0 && Math.Abs(got[i - 1].Value - got[i].Value) < 1e-9f) Check(got[i - 1].Key < got[i].Key, "ties not index-stable");
-                        sumPct += got[i].Value;
-                    }
-                    Check(sumPct <= 100.001f, $"top shares sum to {sumPct}%");
-                    foreach (int j in pos) if (!got.Any(g => g.Key == j)) foreach (var g in got) Check(w[j] <= w[g.Key] + 1e-6f, "an omitted weather outweighs a shown one");
-                    var again = RM_WeatherKernel.TopShares(w, top);
-                    Check(again.Select(g => g.Key).SequenceEqual(got.Select(g => g.Key)), "forecast not deterministic");
-                }
-                catch (Exception e) { fails.Add($"forecast seed {seed}: {e.Message}"); }
-            }
-            return fails;
-        }
-
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -180,7 +146,6 @@ namespace RimMandrake.StarWars.WeatherSuite.SelfTest
                 ("arc", () => Arc(N(2500), S(1))),
                 ("bands", () => Bands(N(1500), S(1))),
                 ("tint", () => Tint(N(2500), S(1))),
-                ("forecast", () => Forecast(N(4000), S(1))),
             };
             foreach (var f in fam)
             {

@@ -4,10 +4,10 @@
 Grounded in the mod's actual, entire source read whole -- `Source/
 WeatherSuiteHook.cs` (PlanetGeometryDef, WeatherGeometryUtility,
 MapComponent_TerminatorBand, GameCondition_DarkAuroraMax,
-IncidentWorker_NightsideAurora, CompForecaster) and `Source/
+IncidentWorker_NightsideAurora) and `Source/
 WeatherSuiteSettings.cs` (the three Mod Settings toggles, all `public
 static` -- same reflectable shape as StructureInjections/RustChrome) -- and
-every one of its five Defs XML files, read whole rather than trusted from
+every one of its four Defs XML files, read whole rather than trusted from
 the walk doc's own quotes.
 
 THE WALK DOC ITSELF IS WRONG, same family as CLAUDE.md's RustChrome note
@@ -19,12 +19,11 @@ correctly names `src/RimMandrake/WeatherSuite` and About.xml's packageId is
 `mandrake.rm.weathersuite`, a RimMandrake-tier engine mechanism per the
 mod's own description: "Campaign-specific wiring... lives in RimUtinni...
 This mod carries no Ash'karr/clan/story references") -- quotes EVERY
-defName in this mod as `RSW_WS_*` (steps 4-9, 11). Reading the actual XML
+defName in this mod as `RSW_WS_*` (steps 4-7, 9). Reading the actual XML
 (`GameConditionDefs_TerminatorFront.xml`, `GameConditionDefs_DarkAurora.xml`,
-`IncidentDefs_DarkAurora.xml`, `ThoughtDefs_DarkAurora.xml`,
-`ThingDefs_WeatherInstrument.xml`) shows every one of them is `RM_WS_*` --
+`IncidentDefs_DarkAurora.xml`, `ThoughtDefs_DarkAurora.xml`) shows every one of them is `RM_WS_*` --
 `RM_WS_TerminatorFront`, `RM_WS_DarkAurora` (three defs, same name, three
-def TYPES), `RM_WS_WeatherInstrument` -- matching `WeatherSuiteHook.cs`'s
+def TYPES) -- matching `WeatherSuiteHook.cs`'s
 own `GetNamedSilentFail("RM_WS_TerminatorFront")` call. The walk doc's step
 1 config-error string ("mandrake.rsw.weathersuite") is wrong for the same
 reason -- the real packageId is `mandrake.rm.weathersuite`. The ONE thing
@@ -46,8 +45,7 @@ player-home map, whether `IncidentWorker_NightsideAurora` (a `CanFireNowSub`
 override on vanilla `IncidentWorker_Aurora`) can ever fire
 `RM_WS_DarkAurora` (`GameCondition_DarkAuroraMax`, a `SkyTarget()` override
 of vanilla `GameCondition_Aurora`, +14 mood via `ThoughtWorker_Aurora`
-reused unchanged). `CompForecaster` is a passive, `Rand`-free
-`CompInspectStringExtra()` reader.
+reused unchanged).
 
 THE STRUCTURAL, ENVIRONMENT-GATED GAP THE WALK DOC ITSELF ALREADY NAMES
 (status-hint, step 3): on the minimal modcheck list there is NO
@@ -64,7 +62,7 @@ it is that the mechanism they gate never gets a chance to fire at all
 without a second mod's def loaded. `auroraMaxBrightnessEnabled` gates pure
 render output (`SkyTarget()`'s returned colours) with no bridge tool found
 that reads a live `GameCondition`'s rendered sky colour back -- the walk
-doc's own step 12 already calls this a human-eyes-only judgment.
+doc's own step 10 already calls this a human-eyes-only judgment.
 
 Still not proven / likely first-live-run corrections:
   1. `terminatorFrontEnabled` and `nightsideAuroraEnabled`'s actual gating
@@ -83,7 +81,7 @@ Still not proven / likely first-live-run corrections:
   3. `auroraMaxBrightnessEnabled`'s visual effect (`SkyTarget()`'s
      saturation/brightness math) is UNCOVERED -- no bridge tool reads a
      live GameCondition's rendered sky colours back; this is the walk doc's
-     own named human-eyes gap (step 12), not a new one.
+     own named human-eyes gap (step 10), not a new one.
   4. `WeatherGeometryUtility`'s one-time "no PlanetGeometryDef loaded"
      warning (the `warnedMissing` static flag) is NOT asserted via log
      presence -- it fires at most ONCE per game process and `jawa/drain_log`
@@ -102,14 +100,13 @@ suite.toggles = ["terminatorFrontEnabled", "nightsideAuroraEnabled",
 SETTINGS_TYPE = "RimMandrake.StarWars.WeatherSuite.WeatherSuiteSettings"
 TERMINATOR = "RM_WS_TerminatorFront"
 DARK_AURORA = "RM_WS_DarkAurora"
-INSTRUMENT = "RM_WS_WeatherInstrument"
 
 
 @suite.chain("terminator_front_registers_permanently_bypassing_geometry")
 def terminator_front_registers_permanently_bypassing_geometry(t):
     """`jawa/game_condition(start, RM_WS_TerminatorFront, permanent=True)`
     bypasses `MapComponent_TerminatorBand.FinalizeInit`'s own geometry gate
-    entirely -- deliberately, per the walk doc's own step 11 ("bypassing
+    entirely -- deliberately, per the walk doc's own step 9 ("bypassing
     the geometry gate, testing the condition itself"), since the minimal
     list can never make that gate pass naturally (module docstring's
     structural gap). Proves `RM_WS_TerminatorFront` resolves as a real,
@@ -222,35 +219,4 @@ def dark_aurora_condition_grants_the_paired_mood_thought(t):
                 % (DARK_AURORA, match.get("moodOffset"), match))
 
         t.bridge_call("jawa/game_condition", action="end", condition=DARK_AURORA)
-        t.screenshot()
-
-
-@suite.chain("weather_instrument_reports_a_live_forecast_reading")
-def weather_instrument_reports_a_live_forecast_reading(t):
-    """`RM_WS_WeatherInstrument`'s `CompForecaster.CompInspectStringExtra()`
-    always returns one of exactly three shapes (forced-weather line,
-    ranked-forecast line, or "no clear signal") -- this chain does not pin
-    which branch fires (that depends on the live biome/weather roll this
-    suite does not control), only that the instrument produces its own
-    "Instrument reading" line at all once spawned and selected."""
-    t.clear_area(size=15)
-    cells = t.spawn(INSTRUMENT, count=1, at="point")
-
-    with t.component("forecaster_inspect_string_present", beyond_toggle=True):
-        things = t.bridge_call("jawa/list_things", defName=INSTRUMENT)
-        rows = (things or {}).get("things") or []
-        if not rows:
-            raise ExpectationFailed(
-                "no %s found via jawa/list_things after spawning it" % INSTRUMENT)
-        thing_id = rows[0].get("id")
-        r = t.bridge_call("jawa/inspect_string", thingIds=thing_id)
-        rows2 = (r or {}).get("things") or []
-        lines = []
-        for row in rows2 if isinstance(rows2, list) else []:
-            lines.extend((row or {}).get("inspect") or [])
-        text = "\n".join(str(l) for l in lines)
-        if "Instrument reading" not in text:
-            raise ExpectationFailed(
-                "no 'Instrument reading' text in %s's inspect string: %r"
-                % (INSTRUMENT, text))
         t.screenshot()

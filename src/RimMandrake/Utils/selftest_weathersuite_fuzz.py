@@ -4,7 +4,7 @@
 Seeded fuzz with explicit invariants against independent restatements of the rules. Built through winbuild.stage_build
 (dotnet.exe is Windows-native), then run.
 
-    python3 src/RimMandrake/Utils/selftest_weathersuite_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only arc|bands|tint|forecast]
+    python3 src/RimMandrake/Utils/selftest_weathersuite_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only arc|bands|tint]
 
 A failing case is printed as `family seed N: message`; --fuzz-seed N replays it.
 """
