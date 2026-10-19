@@ -159,7 +159,9 @@ crit("WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES", "A2", "P10", "water_scenes_walk
 # B10 thirst tail
 crit("THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY", "T1-T5,T7,T9,T10", "B10", "thirst_live.py --only T7,T1,T2,T3,T4,T5,T10,T9", 9000, 420,
      note="M: full thirst_live 807-855 s; T6 moved to B4; T1/T7 need --log (this load's Player.log copy)")
-crit("THIRST_ROWS_DIAGNOSE_SLIME_SITS_STILL", "T15,T16,T27", "B10", "thirst_live.py --only T15,T16,T27", 4000, 200)
+crit("THIRST_ROWS_DIAGNOSE_SLIME_SITS_STILL", "T15,T16,T27", "OUT", "thirst_live.py --only T15,T16,T27 (needs mandrake.rm.biomes)", 4000, 200,
+     note="SITE, 2026-10-18: the meltwater can, RM_Slime_Liquid and the red/green/white hediffs are mandrake.rm.biomes content; "
+          "the flowworks tier reads them UNMEASURED SITE. One run on a list with Biomes after this session")
 crit("SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING", "T5", "B10", "thirst_live.py T5", 0, 0)
 # not on this load
 crit("CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS", "A1", "OUT", "prove_contagion_burn.py (Contagion is not in the flowworks tier)", 0, 0,
@@ -209,9 +211,8 @@ SUBS = [
     ("B3", "proof_hose.py", ["--live", "--no-fresh-map", "--skip-offline", "--only", "realflow,save_load", "--out", "{out}"],
      {"NS_": ("HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD", "A5"), "SL": ("HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD", "A5")}),
     ("B8", "raid_trench_proof.py", ["{out}"], {"*": ("PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH", "raid")}),
-    ("B10", "thirst_live.py", ["{out}", "--only", "T7,T1,T2,T3,T4,T5,T10,T9,T15,T16,T27", "--site", "{origin:thirst}", "--log", "{log}"],
-     {"T15": ("THIRST_ROWS_DIAGNOSE_SLIME_SITS_STILL", "T15,T16,T27"), "T16": ("THIRST_ROWS_DIAGNOSE_SLIME_SITS_STILL", "T15,T16,T27"),
-      "T27": ("THIRST_ROWS_DIAGNOSE_SLIME_SITS_STILL", "T15,T16,T27"), "T5": ("SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING", "T5"),
+    ("B10", "thirst_live.py", ["{out}", "--only", "T7,T1,T2,T3,T4,T5,T10,T9", "--site", "{origin:thirst}", "--log", "{log}"],
+     {"T5": ("SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING", "T5"),
       "*": ("THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY", "T1-T5,T7,T9,T10")}),
 ]
 
@@ -223,7 +224,7 @@ FOOT = dict(trench=(30, 16), climb=(30, 12), sprinkler=(16, 86), l2=(30, 18), l2
             l5=(30, 18), thirst=(96, 42),
             covers=(26, 10), access=(40, 14), digdepth=(12, 8), reservoir=(16, 16), grenade=(20, 10), raillip=(16, 14),
             ride=(6, 6), tanks=(12, 6), readout=(22, 16), ice=(16, 8), flood=(18, 10), suspension=(40, 16),
-            owner=(152, 78), props=(30, 10))
+            owner=(216, 78), props=(30, 10))
 GAP = 6
 SHARED = ("covers", "access", "digdepth", "reservoir", "grenade", "raillip", "ride", "tanks", "readout", "ice", "flood",
           "suspension", "props")
@@ -1099,7 +1100,7 @@ def b9_owner(s):
           dict(rect=s.zones["props"], why="his look: portable ladder diagonal vs flat, climbing gear icon"), "B9", eyes=True)
     import owner_review_stage as ORS
     ox, oz = s.zones["owner"][0] + 3, s.zones["owner"][1] + 6
-    argv = ["--origin", "%d,%d" % (ox, oz), "--only", "ladders,spikes,gates,shallows,sprinklers,hoses"]
+    argv = ["--origin", "%d,%d" % (ox, oz), "--only", "ladders,spikes,gates,shallows,sprinklers,hoses,bars_joint,bars_dry,bars_trench,bars_access,bars_bridges"]
     if s.mock:
         argv.append("--mock")
     if s.args.no_owner_save:
