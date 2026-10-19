@@ -683,7 +683,15 @@ def g_cover_tiers(s):
     for k, (d, rating) in enumerate(tiers):
         c = (x + 2 + k * 8, z + 3)
         s.dig(c, 4)
-        placed = FC.place(s.w, d, c) if not s.mock else dict(survived=True)
+        # the cover spares its OWN faction (CompPitCoverTrigger: LoadOn(.., parent.Faction, superdeepCapturesOwnFaction)),
+        # so a player cover never weighs colonists: own the cover by another faction instead of flipping the map-wide
+        # setting under the shared clock (live 2026-10-19: all three tiers 'held' a colonist at 60.7 kg)
+        if not s.mock:
+            s.call("jawa/build_batch", ops="%s:%d,%d" % (d, c[0], c[1]), faction="hostile", wipeExisting=False)
+            got = [t for t in FC.list_things(s.w, [d], (c[0] - 1, c[1] - 1, 3, 3)) if t["cell"] is not None]
+            placed = dict(survived=bool(got), note="" if got else "not on the map after build_batch (faction hostile)")
+        else:
+            placed = dict(survived=True)
         if not placed.get("survived"):
             s.row("B4_cover_%d" % int(rating), "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT", "A3", "UNMEASURED", "SITE",
                   dict(def_=d, note=placed.get("note")), "B4")
@@ -1077,7 +1085,9 @@ def snapshot(s):
         r = s.call("jawa/flowworks_excavation_rect", x=x, z=z, w=w, h=h, onlyNonZero=True, includeTerrain=False)
         snap["dig_" + n] = r.get("cells") or r.get("rows") or r.get("result")
         ok, txt = s.proof(NSP, "ProofClimb", "%d,%d;3" % (x + 2, z + 2))
-        snap["pocket_" + n] = txt if ok else None
+        # gen/built/rebuilds are the pocket grid's own rebuild COUNTERS: a load starts them again, so they are not
+        # pocket state (live 2026-10-19: every pocket row 'differed' on gen=1421 -> 163 alone)
+        snap["pocket_" + n] = re.sub(r"\b(gen|built|rebuilds)=\d+", "", txt).strip() if ok else None
     x, z, _w, _h = s.zones["digdepth"]
     snap["readout_8m"] = s.proof(NSP, "ProofReadout", "%d,%d" % (x + 2, z + 2))[1]
     for f in ("pitGuardrailEnabled", "fallDeathEnabled", "pitRoomMinDepthMetres"):
