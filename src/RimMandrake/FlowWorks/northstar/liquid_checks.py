@@ -724,7 +724,10 @@ def main(argv=None):
             B.ticks(250)
             waited += 250
             left = filth()
-        pre2 = None if (cid and pa.get("success") is not False and wp.get("readBack") == 1 and left is not None) else \
+        # Cleaning ENABLED is the precondition, not priority 1: with manual priorities off (the quicktest default) vanilla
+        # stores any non-zero priority as 3 (live 20261018T233414: readBack 3, filth 9 -> 0 in 750 ticks, read UNMEASURED)
+        rb = str(wp.get("readBack"))
+        pre2 = None if (cid and pa.get("success") is not False and rb.isdigit() and int(rb) > 0 and left is not None) else \
             "precondition: cleaner %s, home paint %s, Cleaning priority %s, filth read %s" % (
                 cid, pa.get("setCount"), wp.get("readBack"), left)
         row("L5_colonists_clean_spill", "UNMEASURED" if pre2 else ("PASS" if left == 0 else "FAIL"), "SITE" if pre2 else "MOD",

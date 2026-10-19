@@ -638,7 +638,8 @@ def b2_tank_tall(s):
 
 def b2_readouts(s):
     """DEPTH_READOUT A2 / LIQUID_DEPTH A2: the mouseover strings over a dug dry cell, a filled canal, a dug pond, dry
-    ground and a painted limitless lake (154 cells >= minLimitlessBodyCells 50: water_scenes_walk.LAKE_W x LAKE_H)."""
+    ground and a painted mid-map lake (154 cells: LIMITED under the wetness cutoff, LAKE_GROUNDWATER_REFILL_BUILD_WETNESS_CUT;
+    only a map-edge body or one past the tile's cutoff is limitless, so the sea row below is SITE here)."""
     x, z, _w, _h = s.zones["readout"]
     dry, canal, pond, ground = (x + 1, z + 1), [(x + 3 + i, z + 1) for i in range(5)], (x + 10, z + 1), (x + 1, z + 4)
     s.dig(dry, 2)
@@ -793,8 +794,12 @@ def g_pit_access(s):
     jin = {}
     if jp.get("success"):
         vl = s.call("jawa/pawn_use_verb", pawn=j, action="list")
-        verbs = [v for v in (vl.get("verbs") or []) if "jump" in str(v).lower()]
-        lab = (verbs[0].get("label") if isinstance(verbs[0], dict) else str(verbs[0])) if verbs else None
+        # the list sits under "result" ({success, action, result: {pawn, verbCount, verbs}}, JawaBenchAbilityTools); the
+        # top-level read found none (live 20261018T233414: "no jump verb listed"). Cast by the verb's load id: a jump
+        # pack's verbProps.label may be null
+        listed = (vl.get("result") or {}).get("verbs") if isinstance(vl.get("result"), dict) else vl.get("verbs")
+        verbs = [v for v in (listed or []) if "jump" in str(v).lower()]
+        lab = ((verbs[0].get("id") or verbs[0].get("label")) if isinstance(verbs[0], dict) else str(verbs[0])) if verbs else None
         if lab:
             jin = s.call("jawa/pawn_use_verb", pawn=j, action="cast", verb=lab, x=P3[0] + 1, z=P3[1] + 1)
         else:
@@ -1115,6 +1120,9 @@ def snapshot(s):
     return snap
 
 
+RELOAD_SETTLE_TICKS = 120      # > RM_PocketGrid.RebuildMinTicks (60): the pocket grid has rebuilt at least once since the load
+
+
 def b7_reload(s):
     before = snapshot(s)
     name = "RM_live_session_reload_%s" % time.strftime("%Y%m%d_%H%M%S")
@@ -1137,10 +1145,23 @@ def b7_reload(s):
     blind = sorted(k for k in before if before.get(k) is None)
     ok_io = sv.get("success") is not False and ld.get("success") is not False
     st = "UNMEASURED" if not ok_io or any(k.startswith("dig_") for k in blind) else ("PASS" if not diff else "FAIL")
+    # RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS: runs 20261018T232207 / T233414 failed on pocket_covers alone and
+    # kept no strings. Keep both sides of every differing key, and one SETTLED re-read (> RM_PocketGrid.RebuildMinTicks
+    # = 60 later): a key that agrees once settled was a stale grid read straight after the load (a transient), one that
+    # still differs is a real save/load difference. The verdict stays on the immediate read; the settled one is evidence.
+    pairs = {k: dict(before=str(before.get(k))[:300], after=str(after.get(k))[:300]) for k in diff}
+    settled_same = []
+    if diff and ok_io:
+        s.advance(RELOAD_SETTLE_TICKS)
+        later = snapshot(s)
+        for k in diff:
+            pairs[k]["settled"] = str(later.get(k))[:300]
+        settled_same = [k for k in diff if later.get(k) == before.get(k)]
     for item, cid in (("PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT", "A3"), ("PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP", "A2"),
                       ("PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH", "save_reload_pockets_identical")):
         s.row("B7_reload_%s" % cid[:24], item, cid, st, "MOD" if st != "UNMEASURED" else "HARNESS",
-              dict(save=name, differs=diff, unread=blind), "B7")
+              dict(save=name, differs=diff, unread=blind, pairs=pairs, settledSame=settled_same,
+                   settleTicks=RELOAD_SETTLE_TICKS if diff else 0), "B7")
     s.row("B7_pipe_look_survives", "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD", "A2", "UNMEASURED", "OWED",
           dict(why="needs a colonist-built styled pipe (blueprint->frame->building); objects_sheet.choose_look stages "
                    "the look, the build half rides B4 once a builder row exists"), "B7")

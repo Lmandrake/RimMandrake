@@ -398,7 +398,7 @@ def _repair_probes(EXT, base):
     out = []
 
     # pits: an open pit is entered only by force (FLOWWORKS_PIT_FALL_ONLY_FORCED_1); no chain may order a pawn in
-    def pit(launched=True, held=True):
+    def pit(launched=True, held=True, thrown=True):
         seen = {"order": 0, "fly": 0}
 
         def h(tl, p):
@@ -407,15 +407,18 @@ def _repair_probes(EXT, base):
             if tl == "jawa/static_call" and p.get("method") == "ProofForcedFlyer":
                 seen["fly"] += 1
                 pid, x, z = p.get("args").split(",")
-                return {"result": "FLYER id=%s from=0,0 to=%s,%s depth=4 launched=%s" % (pid, x, z, launched)}
+                return {"result": "FLYER id=%s from=0,0 to=%s,%s depth=4 launched=%s def=%s" % (
+                    pid, x, z, launched, "PawnFlyer_Stun" if thrown else "PawnFlyer")}
             if tl == "jawa/flowworks_pit_report":
                 return {"success": True, "pawns": [{"id": "P1", "held": held}]}
             return base(tl, p)
         return seen, h
     for chain, comp in (("plot_G_pit", "pit_captures_hostile"), ("toggle_superdeep_capture", "superdeep_capture_on"),
                         ("toggle_ladder_required", "ladder_required_on")):
-        for launched, held, want in ((True, True, "PASS"), (True, False, "FAIL"), (False, True, "UNMEASURED")):
-            seen, h = pit(launched, held)
+        # thrown=False: a DLL still launching the unstunned jump flyer (lands safely by pitJumpLandsSafe) is UNMEASURED
+        for launched, held, thrown, want in ((True, True, True, "PASS"), (True, False, True, "FAIL"),
+                                             (False, True, True, "UNMEASURED"), (True, True, False, "UNMEASURED")):
+            seen, h = pit(launched, held, thrown)
             got = _ext_run(EXT, chain, h).get(comp)
             if got != want:
                 out.append("%s/%s forced launched=%s held=%s: %s, want %s" % (chain, comp, launched, held, got, want))

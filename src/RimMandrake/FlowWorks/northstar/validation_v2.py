@@ -882,7 +882,8 @@ BODIES = {
     "W2": dict(cells=[(60, 150)], limitless=False, capacity=pond_capacity(1)),       # E3 budget (recession OFF)
     "W2R": dict(cells=[(70, 150), (71, 150), (72, 150), (73, 150)], limitless=False, capacity=pond_capacity(4)),   # E3b recession (defaults); 4 cells, capacity 8
     "W3": dict(cells=[(80, 150), (81, 150), (82, 150), (83, 150), (84, 150)], limitless=False, capacity=pond_capacity(5)),   # E4 engine
-    "W4": dict(cells=rect_cells(0, 200, 10, 4), limitless=False, capacity=pond_capacity(40)),     # edge, 40 < 50 cells
+    "W4": dict(cells=rect_cells(0, 200, 10, 4), limitless=True),      # edge, 40 cells: off-map is limitless however small
+    # (LAKE_GROUNDWATER_REFILL_BUILD_WETNESS_CUT, owner card 2026-10-18; the old edge + 50-cell rule only with wetnessCutoffEnabled off)
     "W5": dict(cells=rect_cells(150, 30, 8, 8), limitless=False, capacity=pond_capacity(64)),  # interior 64
     "W6": dict(cells=rect_cells(0, 170, 16, 4), limitless=False, sticky_off=True),
     "W7": dict(cells=rect_cells(0, 180, 16, 4), limitless=True),      # W6's twin, sticky ON
@@ -1322,6 +1323,9 @@ def o3_unbuilt_register(emitted=None):
                  % (len(UNBUILT) - len(landed), landed or "none", len(PROMOTED)))   # each promoted row seen emitted
 
 
+WETNESS_CUTOFF_MIN_CELLS = 600     # RM_StockMath.WetnessCutoffCells at rainfall >= 1500 mm: the smallest cutoff any tile has
+
+
 def o4_geometry(bodies=None, scenes=None):
     """R1/R2 over the live layout: in bounds, edge rules, disjoint, no unintended contact."""
     bodies = BODIES if bodies is None else bodies
@@ -1333,8 +1337,10 @@ def o4_geometry(bodies=None, scenes=None):
             owner.setdefault(c, []).append(name)
             bcell[c] = name
         edge = any(edge_distance(c) == 0 for c in b["cells"])
-        big = len(b["cells"]) >= FLOAT_DEFAULTS["minLimitlessBodyCells"]
-        want = edge and big and not b.get("sticky_off")
+        # wetness-cutoff rule (RM_StockMath.IsLimitlessByWetness): edge always; inland only at >= the tile's cutoff, never
+        # under 600 cells (the wettest anchor), so every inland body here is limited
+        big = len(b["cells"]) >= WETNESS_CUTOFF_MIN_CELLS
+        want = (edge or big) and not b.get("sticky_off")
         if b["limitless"] != want:
             probs.append("%s declared limitless=%s but edge=%s cells=%d sticky_off=%s" % (
                 name, b["limitless"], edge, len(b["cells"]), bool(b.get("sticky_off"))))
@@ -1757,8 +1763,8 @@ def _offline_negative_controls():
     out.append(("O8 a bridge call with an undeclared parameter",
                 o8_lint(src=me + '\nB.call("jawa/flowworks_engine_state", noSuchParam=1)\n').ok))
     bad_bodies = dict(BODIES)
-    bad_bodies["W4"] = dict(BODIES["W4"], limitless=True)                          # 40-cell edge "limitless"
-    out.append(("O4 40-cell edge body declared limitless", o4_geometry(bodies=bad_bodies).ok))
+    bad_bodies["W5"] = dict(BODIES["W5"], limitless=True)                          # 64-cell inland "limitless"
+    out.append(("O4 64-cell inland body declared limitless", o4_geometry(bodies=bad_bodies).ok))
     sc = dict(SCENES)
     sc["X_overlap"] = dict(cells=[SCENES["E2_east_A"]["cells"][1]], phase="A")
     out.append(("O4 overlapping cell", o4_geometry(scenes=sc).ok))
@@ -2396,17 +2402,17 @@ def _phase_S_body(L, args):
             L.row("S3_classification", False, "HARNESS", "sanity probe: W1 (edge, 64) not limitless %r" % got["W1"],
                   status="UNMEASURED")
         else:
-            bad = [] if got["W8"].get("limitless") is True else ["W8 (edge, 64) not limitless: %r" % got["W8"]]
-            for k in ("W2", "W2R", "W3", "W4", "W5"):
+            bad = ["%s (edge) not limitless: %r" % (k, got[k]) for k in ("W8", "W4") if got[k].get("limitless") is not True]
+            for k in ("W2", "W2R", "W3", "W5"):
                 want_c = float(BODIES[k].get("capacity", pond_capacity(len(BODIES[k]["cells"]))))
                 g = got[k]
                 if g.get("limitless") is not False or abs((g.get("capacity") or 0) - want_c) > 1e-3 \
                         or abs((g.get("stock") or 0) - want_c) > 1e-3 or g.get("cellCount") != len(BODIES[k]["cells"]):
                     bad.append("%s %r (want limited cap %s)" % (k, g, want_c))
-            L.row("S3_classification", not bad, "MOD", bad or "W1, W8 limitless; limited at %d levels a shallow square (RM_Volume.ShallowBedLevels): "
-                  "W2 %g, W2R %g, W3 %g, W4 (edge,40) %g, W5 (interior,64) %g" % (
+            L.row("S3_classification", not bad, "MOD", bad or "W1, W8, W4 (edge, 40) limitless; limited at %d levels a shallow "
+                  "square (RM_Volume.ShallowBedLevels): W2 %g, W2R %g, W3 %g, W5 (interior,64) %g" % (
                       POND_LEVELS_PER_CELL, BODIES["W2"]["capacity"], BODIES["W2R"]["capacity"], BODIES["W3"]["capacity"],
-                      BODIES["W4"]["capacity"], BODIES["W5"]["capacity"]))
+                      BODIES["W5"]["capacity"]))
         band, inner = SCENES["S4_band"]["cells"]
         L.dig(band, 1)
         L.dig(inner, 1)
@@ -3059,10 +3065,13 @@ def phase_P(L, args):
             pf = _pit_pawn(r_f, fp)
             rec_f = [d for d in r_f.get("recentDescents") or [] if d.startswith(fp + "@")]
             falls = [float(d.rsplit("fall=", 1)[1]) for d in rec_f if "fall=" in d]
-            forced_measured = ok_f and lf.get("launched") == "True"
+            # def=PawnFlyer_Stun: a THROW. A DLL that still launches the unstunned ThingDefOf.PawnFlyer makes a deliberate
+            # jump, which lands safely by design (pitJumpLandsSafe, owner 2026-10-18) -- the 2026-10-19 "own descents 0"
+            # red on DLL ccf36a9af7 was that, not the trap (FLOWWORKS_V2_DIAGNOSE_THREE_NEW_REDS)
+            forced_measured = ok_f and lf.get("launched") == "True" and lf.get("def") == "PawnFlyer_Stun"
             if not forced_measured:
-                L.row("P3f_forced_entry_falls", False, "HARNESS", "ProofForcedFlyer did not launch (stale DLL?): %s" % tf,
-                      status="UNMEASURED")
+                L.row("P3f_forced_entry_falls", False, "HARNESS", "ProofForcedFlyer did not launch a thrown flyer "
+                      "(stale DLL? want def=PawnFlyer_Stun): %s" % tf, status="UNMEASURED")
             else:
                 L.row("P3f_forced_entry_falls", ctrl_ok and lf.get("depth") == "4" and pf is not None
                       and pf.get("spawned") is True and not pf.get("dead") and len(rec_f) == 1 and falls and falls[0] > 0
@@ -3793,7 +3802,12 @@ class MockBridge(object):
         name = "B%d" % self.body_seq
         edge = any(edge_distance(x) == 0 for x in seen)
         sticky = self.S("stickyLimitlessEnabled") or "sticky_ignored" in self.faults
-        lim = sticky and edge and len(seen) >= 50
+        # RM_LiquidStock: wetnessCutoffEnabled ON (shipped) = IsLimitlessByWetness (edge always; inland at the tile's cutoff,
+        # never under WETNESS_CUTOFF_MIN_CELLS); OFF = the older edge + minLimitlessBodyCells rule
+        if self.settings[S_FW].get("wetnessCutoffEnabled", True):
+            lim = sticky and (edge or len(seen) >= WETNESS_CUTOFF_MIN_CELLS)
+        else:
+            lim = sticky and edge and len(seen) >= 50
         # beds: WaterShallow = ShallowBedLevels; with deepBedsEnabled ON a LIMITED pond records the P11 lake floor at
         # classification, modelled here as a 0.5 m outer ring (the shelf day 3 measured live: caps 1/4/5/56/100; the shelf
         # default is off since 2026-10-18, so with deepBedsEnabled on and lakeShoreShelfMetres 0 this model is unmeasured)
@@ -4249,8 +4263,8 @@ class MockBridge(object):
                         self.jumpers.add(pid)
                     if "pit_no_fall" not in self.faults:
                         self.descents.append("%s@%d,%d t=%d fall=4.8" % (pid, c[0], c[1], self.tick))
-                res = "FLYER id=%s from=%d,%d to=%d,%d depth=%d launched=True" % (pid, start[0], start[1], c[0], c[1],
-                                                                                 o.D.get(c, 0))
+                res = "FLYER id=%s from=%d,%d to=%d,%d depth=%d launched=True def=PawnFlyer_Stun" % (
+                    pid, start[0], start[1], c[0], c[1], o.D.get(c, 0))
         elif method == "ProofCover":
             x, z = map(int, args.split(","))
             c = (x, z)
