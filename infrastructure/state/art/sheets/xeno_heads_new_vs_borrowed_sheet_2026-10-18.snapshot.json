@@ -1,0 +1,131 @@
+{
+ "biome": "SUBJECTS_xeno_heads_new_vs_borrowed",
+ "built": "2026-10-18T17:08:09-0700",
+ "census": "Transient/biome_ffar/xeno_heads_new_vs_borrowed.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 548 active",
+ "rows": {
+  "XenoHead_Lasat": {
+   "columns": {
+    "A": {
+     "east": "ea69d3bffe1e87c7dbf4e23447b5b07da9358844e17b1118ed05590373a6ce63",
+     "north": "23c38059f44b959256c6c1f4fb14883fea9f423a2ece1d0285bd6ec4fb656694",
+     "south": "3dfba641c945e734cb50eb51724019a9853b09ec61fda12dd9711c69b5741134"
+    },
+    "B": {
+     "east": "1be23c1ba57b6ff369cd7caf4a5a43f389a77028bc1a8b55eaf1dc10be2e388c",
+     "north": "07caaf46b52dd63fb1b10cf043e229eb6ff5997ee409bf3d4a20a2d5c2b141e8",
+     "south": "cef69dea2f3562df2f2d1768dfda47a096f16a36f12180f58ceeb6cda14eea35"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrakeSW/OR/Things/Pawn/Humanlike/Heads/Cathar/Male_Head",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 StarWarsRaces",
+    "B": "render xeno_head_lasat_v1"
+   },
+   "pools": [],
+   "res": "RimMandrakeSW/OR/Things/Pawn/Humanlike/Heads/Cathar/Male_Head",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "xenohead_lasat"
+  },
+  "XenoHead_Mimbanese": {
+   "columns": {
+    "A": {
+     "east": "35e8920d221abd71e4d7eb053385da05a899f7d6414f3c0c8dff8f1e986a6192",
+     "north": "2dcd3b4111701f4e2c2c512fe914c394db3abb42c62598e8d12bd5fd6c1d849e",
+     "south": "a944ef7051f8286d35b70d3424990e1467cee621f6db546a8f6a8c9c2ccd0d5d"
+    },
+    "B": {
+     "east": "819ded2cd5c8a66f0aa5b6387ef4df4790a9485932f5301a4d300b4845800c10",
+     "north": "1f03126197ce1bc0580f8b1518f5407acad01fcc531d48f5cab84dac9abf6796",
+     "south": "a9f985d737e1685f7a84a42176ceb9e8becc071cd89226d045fe9076215c5340"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrakeSW/SWX/Pawn/HeadType/Sov_tusken/HeadSandM",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 StarWarsRaces",
+    "B": "render xeno_head_mimbanese_v1"
+   },
+   "pools": [],
+   "res": "RimMandrakeSW/SWX/Pawn/HeadType/Sov_tusken/HeadSandM",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "xenohead_mimbanese"
+  },
+  "XenoHead_Nelvaanian": {
+   "columns": {
+    "A": {
+     "east": "0762c4caa6295ce592c2ac7dfd86ffaa7f6511343615e07042ebcdfab6781df8",
+     "north": "47550cdf0fc22718b8c8d08d5ea2fc51416d3d2746c272e099cc07397e565286",
+     "south": "2c27e62990c124fd6c89d55e7cb73033cd35d685abb6b19a0432b557d6fcc911"
+    },
+    "B": {
+     "east": "181b0c1af9f25986eb442a7df20f7eca3204ac633c19898f6d2045d67c652628",
+     "north": "844136ca6de395e16a8a03269ff51a8014160635e7989471767fc2a23970178c",
+     "south": "785ab17ca1ca6aa72dd8569892215a02b817303bc1bef7c6d3e9de8e7b265069"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrakeSW/OR/Things/Pawn/Humanlike/Heads/Bothan/Male_Bothan",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 StarWarsRaces",
+    "B": "render xeno_head_nelvaanian_v1"
+   },
+   "pools": [],
+   "res": "RimMandrakeSW/OR/Things/Pawn/Humanlike/Heads/Bothan/Male_Bothan",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "xenohead_nelvaanian"
+  },
+  "XenoHead_Ortolan": {
+   "columns": {
+    "A": {
+     "east": "3c017cf0e44a79b82c7b43620a9fffe3da77183d0cf6918fbd170beea6010d34",
+     "north": "4dd515461d41cf92aec068461ac39e2bad31cfc98e8a634571eb4bd40fa3b476",
+     "south": "033ca31e574dc5427df832adddbbfc967618d83a2350e2b0240945db051008a5"
+    },
+    "B": {
+     "east": "55d234232f74fd453223586726a4eca3ad0e1f77c584fbef25146e794adbb02c",
+     "north": "0f0464b9a7c357999a2349ec4d78109a6380da468ab23b90ab29add5f61913ce",
+     "south": "3177ebc46ff73429713afcc55e6d26e003ed3c8bba234a2a43714351c12ed1a2"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrakeSW/SWX/Pawn/HeadType/kubaz/Male_Kubaz",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 StarWarsRaces",
+    "B": "render xeno_head_ortolan_v1"
+   },
+   "pools": [],
+   "res": "RimMandrakeSW/SWX/Pawn/HeadType/kubaz/Male_Kubaz",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "xenohead_ortolan"
+  }
+ },
+ "sheetId": "xeno_heads_new_vs_borrowed_sheet_2026-10-18",
+ "snapshotId": "eac5cdf27fdcd83c"
+}
