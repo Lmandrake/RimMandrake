@@ -219,8 +219,11 @@ def main():
         # the colonists left on the map we are leaving: vanished once the new site stands. Left alone they starve or
         # cook there, and their deaths are game-wide letters the watch reads as colonist_died in whatever chain is
         # running (MEASURED 2026-10-06: three chains UNMEASURED on deaths of map-0 quicktest colonists)
-        old_cols = [p["id"] for p in (s.call("jawa/list_pawns", limit=500).get("pawns") or [])
-                    if p.get("isPlayer") and not p.get("dead")]
+        bad = []
+        lp0 = s.call("jawa/list_pawns", limit=500) or {}
+        if lp0.get("success") is False or "pawns" not in lp0:       # an unread list is not "no old colonists": they would starve on the old map
+            bad.append("list_pawns refused before founding, old colonists unknown: %s" % str(lp0)[:160])
+        old_cols = [p["id"] for p in (lp0.get("pawns") or []) if p.get("isPlayer") and not p.get("dead")]
         path = os.path.join(os.environ.get("TEMP") or tempfile.gettempdir(), "river_site_tiles.csv")
         r = s.call("jawa/world_tile_export", path=path)
         if not r.get("success") or not os.path.isfile(path):
@@ -232,7 +235,10 @@ def main():
         print("tiles", len(rows), "flat temperate candidates", len(cands))
         tile, info, river = None, None, []
         for i in range(0, len(cands), 100):           # world_tile_get caps a read at 100 rows
-            got = s.call("jawa/world_tile_get", tiles=",".join(str(t) for t in cands[i:i + 100])).get("tiles") or []
+            wg = s.call("jawa/world_tile_get", tiles=",".join(str(t) for t in cands[i:i + 100])) or {}
+            if wg.get("success") is False:        # a refused read would otherwise end as "no river tile", blaming the world
+                print("world_tile_get refused for candidates %d..%d: %s" % (i, i + 100, str(wg)[:160]))
+            got = wg.get("tiles") or []
             # no mutator/road filter: on 1.6 a river tile commonly carries a river mutator (0 of 7901 passed with it)
             river += [g for g in got if (int(g.get("riverCount") or 0) > 0) != DRY]
         print("river tiles among them", len(river))
@@ -306,7 +312,6 @@ def main():
             return 2
         site_id = generated_map_id(g)
         # TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ: no candidate map of this run may outlive it (read back)
-        bad = []
         for m in leftover_maps(loaded_maps(s.call), site_id, generated):
             print("dropping leftover candidate map", m)
             s.call("jawa/settlement_remove", mode="map", tile=m.get("tile"), force=True)
@@ -330,8 +335,12 @@ def main():
               "problems", qs.get("problems"), "error", qs.get("error"))
         if qs.get("error"):                     # prep_site.py's bar: an UNCLEAN map-only profile is a site problem
             bad.append("quiet site (map) not clean: %s" % (qs.get("error"),))
-        d = s.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
-        mi = s.call("jawa/map_info")
+        d = s.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False) or {}
+        if d.get("success") is not True:          # hostiles/animals left on the "quiet" site would read as the mod's doing
+            bad.append("destroy_bulk nonColonists refused: %s" % str(d)[:160])
+        mi = s.call("jawa/map_info") or {}
+        if mi.get("success") is False:
+            bad.append("map_info refused after the site was made (size/tile defaults used): %s" % str(mi)[:160])
         # OFF the extension plot grid (centred on the map, +-~56 cells) and DRAFTED: colonists spawned at the centre
         # wandered into the plots' pits and read as colonist_damaged "Blunt by nobody" (the mod's fall damage) in five
         # components (MEASURED 2026-10-06, map 5).

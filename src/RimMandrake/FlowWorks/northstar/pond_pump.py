@@ -76,6 +76,15 @@ def refill_verdict(trace, s_after_draw, receded_after_draw):
     return ("PASS" if (s_max > s_after_draw + EPS and r_min < receded_after_draw) else "FAIL"), d
 
 
+def engine_gate(v):
+    """(status or None, detail) for the refill row: refill and recession only happen on depth-engine pulses, so with
+    depthEngineEnabled off the refill row cannot be observed -- UNMEASURED SITE, never a MOD FAIL. None status = go."""
+    on = {True: True, False: False, "true": True, "false": False, "True": True, "False": False}.get(v)
+    if on is True:
+        return None, {}
+    return "UNMEASURED", {"why": "depthEngineEnabled is %r: no RM_LiquidStock pulse runs, so refill cannot happen" % (v,)}
+
+
 # ============================================================================ live
 def main():
     ap = argparse.ArgumentParser()
@@ -209,6 +218,10 @@ def main():
                                                          capacity=b0.get("capacity"), pumpPoweredAfterTicks=pw))
         res["terrain_after_draw"] = terrain()
         # ---- phase B
+        gate, gdet = engine_gate(before.get("depthEngineEnabled"))
+        if gate:
+            row("POND_PUMP_refill_rewets", gate, "SITE", gdet)
+            return 2
         bad = [f for f, v in (("liquidPumpEnabled", False),) if sset(f, v).get("success") is False]
         if bad:
             row("POND_PUMP_refill_rewets", "UNMEASURED", "HARNESS", {"why": "pump could not be switched off", "fields": bad})

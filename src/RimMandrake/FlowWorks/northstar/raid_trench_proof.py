@@ -110,7 +110,45 @@ def classify(samples, c):
     return words or ["NONE_ARRIVED"], det
 
 
+def storyteller_value(B):
+    """The live DebugSettings.enableStoryteller, or None when the list reply cannot be read (never a guessed default)."""
+    r = B.call("jawa/debug_settings", action="list") or {}
+    for f in r.get("fields") or []:
+        if f.get("name") == "enableStoryteller" and isinstance(f.get("value"), bool):
+            return f["value"]
+    return None
+
+
+def restore_storyteller(B, prior):
+    """Put enableStoryteller back to what the run found; -> (ok, note). Reads the reply back: a refused set is not a restore."""
+    if prior is None:
+        return False, "prior value was never read (UNMEASURED): storyteller left as the run set it"
+    r = B.call("jawa/debug_settings", action="set", field="enableStoryteller", value=bool(prior)) or {}
+    if r.get("success") is True and r.get("valueAfter") == bool(prior):
+        return True, "enableStoryteller restored to %s" % prior
+    return False, "restore of enableStoryteller to %s NOT confirmed: %s" % (prior, json.dumps(r, default=str)[:200])
+
+
 def main(argv=None):
+    """Runs the proof; the storyteller setting is restored in a finally whatever the body does (raise, Ctrl-C, early return)."""
+    hold = {}
+    try:
+        return _run(argv, hold)
+    finally:
+        if hold.get("changed"):
+            ok, note = restore_storyteller(hold["B"], hold.get("prior"))
+            print("storyteller restore: %s" % note, flush=True)
+            hold["restore"] = (ok, note)
+            if hold.get("log") is not None:
+                hold["log"].append("storyteller restore: " + note)
+            if hold.get("save"):
+                try:
+                    hold["save"]()
+                except Exception:  # noqa: BLE001
+                    pass
+
+
+def _run(argv, hold):
     ap = argparse.ArgumentParser()
     ap.add_argument("out", nargs="?", default=os.path.join(OUT, "raid_trench_%s.json" % time.strftime("%Y%m%dT%H%M%S")))
     ap.add_argument("--fresh-map", action="store_true")
@@ -122,6 +160,7 @@ def main(argv=None):
     import validation_core as V
     B = V.Bridge()
     rows, samples, log = [], [], []
+    hold["B"], hold["log"] = B, log
     res = {"script": "raid_trench_proof.py", "mode": "live", "rows": rows, "samples": samples, "log": log}
 
     def save():
@@ -162,7 +201,13 @@ def main(argv=None):
     B.call("jawa/incident_queue_clear")
     # LIVE 2026-10-17: with the storyteller on, a fleshbeast assault (Entities) landed on the island mid-run and downed
     # the colonists; the scene must hold only the attackers it names
-    B.call("jawa/debug_settings", action="set", field="enableStoryteller", value=False)
+    hold["prior"] = storyteller_value(B)
+    hold["save"] = save
+    off = B.call("jawa/debug_settings", action="set", field="enableStoryteller", value=False) or {}
+    hold["changed"] = True          # even a refused set is restored: its effect is not known
+    if not (off.get("success") is True and off.get("valueAfter") is False):
+        say("WARNING: storyteller NOT confirmed off (%s): a stray incident may land on the island" % json.dumps(off, default=str)[:200])
+        res["storytellerOff"] = "UNCONFIRMED"
     B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
     B.call("rimworld/set_god_mode", enabled=True)
     mi = B.call("jawa/map_info") or {}
@@ -204,10 +249,15 @@ def main(argv=None):
         # ticks; a StageThenAttack tribe staged 54+ squares out for 30,000). --direct puts known pawns 30 squares east
         # straight into vanilla's LordJob_AssaultColony (the graph a raid's assault phase uses), defaults kept.
         ids = []
-        probe = B.call("jawa/spawn_pawn", kindDef="Mercenary_Gunner", x=c[0] + 30, z=c[1], faction="?", count=1, dryRun=True) or {}
+        probe = B.call("jawa/spawn_pawn", kindDef="Mercenary_Gunner", x=c[0] + 30, z=c[1], faction="?", count=1) or {}   # spawn_pawn has NO dryRun (an unknown arg is silently dropped);
+        # the unknown faction "?" is what makes it refuse and list `available`, so nothing spawns
         avail = (probe.get("details") or {}).get("available") or []
         fac = next((f_["def"] for f_ in avail if f_.get("hostile") and str(f_.get("def")).startswith("Pirate")),
                    next((f_["def"] for f_ in avail if f_.get("hostile") and f_.get("def") not in ("Entities", "Mechanoid", "Insect")), None))
+        if fac is None:
+            say("no hostile humanlike faction readable from spawn_pawn's refusal: --direct cannot stage (UNMEASURED)")
+            row("RAID_outcome", "UNMEASURED", dict(why="no assault faction available", reply=json.dumps(probe, default=str)[:300]))
+            return 2
         say("assault faction: %s (hostile factions on this map: %s)" % (fac, [f_["def"] for f_ in avail if f_.get("hostile")]))
         for kind, n in (("Mercenary_Gunner", 4), ("Mercenary_Slasher", 2)):
             sp = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0] + 30, z=c[1], faction=fac, count=n) or {}
@@ -264,7 +314,6 @@ def main(argv=None):
     row("MASKSWAP_no_wall_crossing", "UNMEASURED" if (cameNear < 2 or sealed != "PASS") else ("FAIL" if crossed else "PASS"),
         {"raidersWithin15": cameNear, "islandSealed": sealed, "sampledOnIslandOrTrench": crossed, "churnRebuilds": k,
          "caveat": "sampled every %d ticks; never seen, not proven impossible" % CHUNK})
-    B.call("jawa/debug_settings", action="set", field="enableStoryteller", value=True)
     save()
     say("result: %s" % os.path.relpath(a.out, REPO))
     return 0

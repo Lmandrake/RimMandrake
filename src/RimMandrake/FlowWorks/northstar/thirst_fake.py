@@ -33,6 +33,10 @@ faults (name -> intended effect):
   dubs_need           every colonist carries a DBHThirst need -> T2 FAIL
   no_fuel             fires do not take -> T24 UNMEASURED SITE
   site_blocked        a rock stays in the site rect -> site_ready UNMEASURED SITE, run aborts
+  draft_refused       set_draft answers success=False and drafts nobody -> T3/T6 UNMEASURED HARNESS (not a vacuous PASS)
+  zones_refused       map_zones answers success=False -> T24 UNMEASURED HARNESS
+  snow_refused        set_weather_buildup answers success=False -> T25 UNMEASURED HARNESS
+Unmodelled tools answer success=False and are listed in `unmodelled` (a clean run must leave it empty).
 """
 import re
 
@@ -88,6 +92,7 @@ class ThirstFakeBridge(object):
         self.faults = set(faults)
         self.biomes = biomes and "no_biomes" not in self.faults
         self.calls = []
+        self.unmodelled = set()
         self.log = []
         self.settings = dict(SETTINGS0)
         self.marks = {}
@@ -152,7 +157,10 @@ class ThirstFakeBridge(object):
         self.calls.append(tool)
         fn = getattr(self, "t_" + re.sub(r"[^a-z0-9]", "_", tool.lower()), None)
         if fn is None:
-            return {"success": True}
+            # MOCK, not the game: a tool this model does not play is a FAILURE, never a cheerful success (a driver that does
+            # not read the reply would otherwise pass here on a call the world model never saw)
+            self.unmodelled.add(tool)
+            return {"success": False, "error": "MOCK: tool %s is not modelled by ThirstFakeBridge" % tool}
         r = fn(**kw)
         return r if r is not None else {"success": True}
 
@@ -204,6 +212,23 @@ class ThirstFakeBridge(object):
                 self.settings[field] = value
             return {"success": True}
         return {"success": True, "value": self.settings.get(field)}
+
+    # validation_core.prepare_site's calls: the mock site is already open ground, so these are declared no-ops (not "unknown
+    # tool, success"): the colonists are the only pawns, no fog or roof exists to clear
+    def t_jawa_set_fog(self, **kw):
+        return {"success": True}
+
+    def t_jawa_set_roof_batch(self, **kw):
+        return {"success": True}
+
+    def t_jawa_list_pawns(self, **kw):
+        return {"success": True, "pawns": []}
+
+    def t_jawa_map_zones(self, **kw):
+        """MOCK no-op: the Home area is not modelled (the fake douse giver ignores it); only the refusal fault is real."""
+        if "zones_refused" in self.faults:
+            return {"success": False, "message": "MOCK refusal"}
+        return {"success": True}
 
     def t_jawa_get_roof_batch(self, **kw):
         return {"success": True, "roofs": []}
@@ -299,6 +324,8 @@ class ThirstFakeBridge(object):
         return {"success": True}
 
     def t_jawa_set_weather_buildup(self, kind="snow", mode="set", rect="", depth=0.0, **kw):
+        if "snow_refused" in self.faults:
+            return {"success": False, "message": "MOCK refusal"}
         if mode == "set":
             for c in _cells(_rect(rect)):
                 if depth > 0:
@@ -351,10 +378,13 @@ class ThirstFakeBridge(object):
 
     def t_jawa_set_draft(self, pawnId="", drafted=True, **kw):
         p = self._p(pawnId)
+        if p is None or "draft_refused" in self.faults:
+            return {"success": False, "message": "MOCK refusal (unknown pawn or draft_refused)"}
         if p:
             p.drafted = bool(drafted)
             p.job, p.job_t = (None, 0) if drafted else (p.job, p.job_t)
             p.think_now = True
+        return {"success": True, "drafted": bool(drafted)}
 
     def t_jawa_stop_job(self, pawnId="", **kw):
         p = self._p(pawnId)

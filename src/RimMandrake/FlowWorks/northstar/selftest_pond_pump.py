@@ -18,6 +18,10 @@ cases = [
     (PP.refill_verdict([{"stock": 22.0, "receded": 2}], 22.0, 2)[0], "FAIL", "no refill"),
     (PP.refill_verdict([{"stock": 25.0, "receded": 0}], 24.0, 0)[0], "UNMEASURED", "draw receded nothing"),
     (PP.refill_verdict([], 22.0, 2)[0], "UNMEASURED", "no reads"),
+    (PP.engine_gate(False)[0], "UNMEASURED", "engine off -> refill row UNMEASURED"),
+    (PP.engine_gate("false")[0], "UNMEASURED", "engine off as string"),
+    (PP.engine_gate(None)[0], "UNMEASURED", "engine setting unread is not 'on'"),
+    (PP.engine_gate(True)[0], None, "engine on -> refill runs"),
 ]
 bad = [(got, want, why) for got, want, why in cases if got != want]
 for got, want, why in bad:
