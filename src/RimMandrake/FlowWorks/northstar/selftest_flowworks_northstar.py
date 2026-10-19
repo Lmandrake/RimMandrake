@@ -60,11 +60,15 @@ def test_tier():
           any("odyssey" in r for r in M.tier_guard(t, [p for p in clean if p != "ludeon.rimworld.odyssey"])))
 
 
+VEF_CORE = "oskarpotocki.vanillafactionsexpanded.core"
+
+
 def _fake_installed(drop=()):
     """packageId -> About record for the fw_gss_sitting closure, minus `drop` (a planted missing mod)."""
     deps = {"mandrake.rm.flowworks": ["brrainz.harmony"], "mandrake.rm.gimmesomeslack": ["brrainz.harmony"],
             "mandrake.rm.biomes": ["brrainz.harmony", "mandrake.rm.flowworks"]}  # Alpha Biomes retired 2026-10-18
-    pids = ["ludeon.rimworld", "brrainz.harmony", M.BRIDGE] + list(M.DLC_IDS) + list(deps)
+    # VEF core: named in the tier's want since 58b13ec551 (Biomes needs it once insectoid2 stopped dragging it in)
+    pids = ["ludeon.rimworld", "brrainz.harmony", M.BRIDGE, VEF_CORE] + list(M.DLC_IDS) + list(deps)
     return {p: {"packageId": p, "name": p, "deps": deps.get(p, []), "after": [], "before": []}
             for p in pids if p not in drop}
 
@@ -73,8 +77,9 @@ def test_gss_sitting_tier():
     check("tier `fw_gss_sitting` exists", "fw_gss_sitting" in M.TIERS)
     t = M.TIERS["fw_gss_sitting"]
     # CrackedLands ships COMPOSED in mandrake.rm.biomes; its standalone packageId never exists at runtime
-    check("fw_gss_sitting = flowworks want + biomes (carries CrackedLands AND ExplosiveGrowth; River Colors is in FlowWorks)",
-          t["want"] == M.TIERS["flowworks"]["want"] + ["mandrake.rm.biomes"], t["want"])
+    check("fw_gss_sitting = flowworks want + biomes (carries CrackedLands AND ExplosiveGrowth; River Colors is in FlowWorks)"
+          " + VEF core (58b13ec551: Biomes loses VEF comps and map gen NREs without it)",
+          t["want"] == M.TIERS["flowworks"]["want"] + ["mandrake.rm.biomes", VEF_CORE], t["want"])
     check("fw_gss_sitting never wants the composed members' own ids",
           "mandrake.rm.crackedlands" not in t["want"] and "mandrake.rm.explosivegrowth" not in t["want"])
     check("fw_gss_sitting forbids the folded ExplosiveGrowth standalone id (it would load twice)",
@@ -93,6 +98,8 @@ def test_gss_sitting_tier():
     inst = _fake_installed(drop=("mandrake.rm.biomes",))
     _, missing, _ = M.resolve_tier("fw_gss_sitting", inst)
     check("planted: missing biomes is reported", missing == ["mandrake.rm.biomes"], missing)
+    _, missing_v, _ = M.resolve_tier("fw_gss_sitting", _fake_installed(drop=(VEF_CORE,)))
+    check("planted: missing VEF core is reported", missing_v == [VEF_CORE], missing_v)
     real_scan, real_argv, real_write = M.scan, sys.argv, M.write_config
     wrote = []
     try:

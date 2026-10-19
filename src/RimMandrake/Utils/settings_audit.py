@@ -77,6 +77,18 @@ def stamp_status(root):
         elif cur and line.strip(): st[cur].append(line.strip())
     return st
 
+def project_stamps(stamps, rel_dir, csproj_text):
+    """The committed-DLL stamps (dll_source_stamp.py paths) that belong to the csproj in `rel_dir` (repo-relative). The mod
+    root is the folder above its Source/ (a csproj in Source/<Sub>/, as in a multi-assembly mod, used to look in Source/Assemblies/,
+    found nothing and only NOTED "no committed DLL stamp", so a stale DLL there could never FAIL check (3)); without a Source/
+    segment, the csproj folder's parent as before. Narrowed to the csproj's <AssemblyName>.dll when that matches a stamp."""
+    parts = rel_dir.replace('\\', '/').split('/')
+    mod_root = '/'.join(parts[:parts.index('Source')]) if 'Source' in parts else os.path.dirname(rel_dir)
+    mine = [p for p in stamps if p.startswith(mod_root + '/') and '/Assemblies/' in p[len(mod_root):]]
+    m = re.search(r'<AssemblyName>\s*([^<\s]+)\s*</AssemblyName>', csproj_text or '')
+    named = [p for p in mine if m and os.path.basename(p) == m.group(1) + '.dll']
+    return named or mine
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--root', default=None); ap.add_argument('--out'); ap.add_argument('--json', action='store_true')
     a = ap.parse_args()
@@ -121,8 +133,7 @@ def main():
                 if not any(os.path.basename(c) == kf for c in cset): r['fails'].append(f'(6) masters kit file {kf} not in compile set')
         if draws_master and not declares:
             r['notes'].append('(6) draws a master switch but declares no SettingDependencies: its dependents cannot grey')
-        dlls = [p for p in stamps if p.startswith(os.path.relpath(d, root).rsplit('/Source', 1)[0] + '/')]
-        proj_stamp = [p for p in stamps if p.startswith(os.path.dirname(os.path.relpath(d, root)) + '/Assemblies/')]
+        proj_stamp = project_stamps(stamps, os.path.relpath(d, root), read(cs))
         if not proj_stamp: r['notes'].append('(3) no committed DLL stamp')
         for p in proj_stamp:
             if stamps[p][0] != 'MATCH': r['fails'].append(f'(3) {stamps[p][0]} {p} ' + '; '.join(stamps[p][1:3]))
