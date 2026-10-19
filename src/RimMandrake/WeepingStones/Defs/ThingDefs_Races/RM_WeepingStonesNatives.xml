@@ -403,7 +403,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Iguana/Iguana</texPath>
+          <texPath>Things/Pawn/Animal/RM_Ssurr/RM_Ssurr</texPath>
           <drawSize>0.9</drawSize>
           <color>(90, 170, 160)</color>
         </bodyGraphicData>
@@ -414,7 +414,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Iguana/Iguana</texPath>
+          <texPath>Things/Pawn/Animal/RM_Ssurr/RM_Ssurr</texPath>
           <drawSize>1</drawSize>
           <color>(90, 170, 160)</color>
         </bodyGraphicData>
@@ -425,7 +425,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Iguana/Iguana</texPath>
+          <texPath>Things/Pawn/Animal/RM_Ssurr/RM_Ssurr</texPath>
           <drawSize>1.1</drawSize>
           <color>(90, 170, 160)</color>
         </bodyGraphicData>
@@ -772,7 +772,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Alligator/Alligator</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vhakk/RM_Vhakk</texPath>
           <drawSize>1.5</drawSize>
           <color>(150, 130, 100)</color>
         </bodyGraphicData>
@@ -783,7 +783,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Alligator/Alligator</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vhakk/RM_Vhakk</texPath>
           <drawSize>1.675</drawSize>
           <color>(150, 130, 100)</color>
         </bodyGraphicData>
@@ -794,7 +794,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Alligator/Alligator</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vhakk/RM_Vhakk</texPath>
           <drawSize>1.85</drawSize>
           <color>(150, 130, 100)</color>
         </bodyGraphicData>
@@ -886,7 +886,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Dromedary/Dromedary</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vellak/RM_Vellak</texPath>
           <drawSize>1.6</drawSize>
           <color>(215, 200, 175)</color>
         </bodyGraphicData>
@@ -897,7 +897,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Dromedary/Dromedary</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vellak/RM_Vellak</texPath>
           <drawSize>1.8</drawSize>
           <color>(215, 200, 175)</color>
         </bodyGraphicData>
@@ -908,7 +908,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Dromedary/Dromedary</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vellak/RM_Vellak</texPath>
           <drawSize>2.0</drawSize>
           <color>(215, 200, 175)</color>
         </bodyGraphicData>
@@ -1021,7 +1021,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Chicken/Chicken</texPath>
+          <texPath>Things/Pawn/Animal/RM_Kirruk/RM_Kirruk</texPath>
           <drawSize>0.7</drawSize>
           <color>(120, 115, 110)</color>
         </bodyGraphicData>
@@ -1032,7 +1032,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Chicken/Chicken</texPath>
+          <texPath>Things/Pawn/Animal/RM_Kirruk/RM_Kirruk</texPath>
           <drawSize>0.775</drawSize>
           <color>(120, 115, 110)</color>
         </bodyGraphicData>
@@ -1043,7 +1043,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Chicken/Chicken</texPath>
+          <texPath>Things/Pawn/Animal/RM_Kirruk/RM_Kirruk</texPath>
           <drawSize>0.85</drawSize>
           <color>(120, 115, 110)</color>
         </bodyGraphicData>
