@@ -1,0 +1,340 @@
+{
+ "check": {
+  "colonists": [
+   [
+    "Human39818",
+    false
+   ],
+   [
+    "Human39829",
+    false
+   ],
+   [
+    "Human39831",
+    false
+   ]
+  ],
+  "danger": [],
+  "fires": 0,
+  "foggedCells": 0,
+  "hostiles": [],
+  "map": {
+   "mapBiome": "RM_Contagion",
+   "mapId": 1,
+   "outdoorTempNow": 17.0978565,
+   "sizeX": 250,
+   "sizeZ": 250,
+   "tile": 3
+  },
+  "problems": [],
+  "site": "contagion",
+  "threatStructures": [],
+  "triggers": 0,
+  "utc": "2026-10-19T13:31:42Z",
+  "verified": true,
+  "weather": {
+   "current": "Clear",
+   "rainRate": 0.0
+  }
+ },
+ "load_s": 41.1,
+ "problems": [],
+ "quietMap": {
+  "arrivals": [],
+  "controls": [
+   {
+    "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+    "name": "threat_structures_cleared",
+    "readBack": {
+     "errors": [],
+     "kept": 0,
+     "removed": [],
+     "threatsAfter": 0
+    },
+    "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared"
+   },
+   {
+    "hides": "combat interactions with the mod's things",
+    "name": "hostiles_removed",
+    "readBack": {
+     "acted": 0,
+     "residue": []
+    },
+    "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)"
+   },
+   {
+    "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+    "name": "proximity_letters_sent",
+    "readBack": {
+     "letters": [],
+     "unsentAfter": 0
+    },
+    "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')"
+   },
+   {
+    "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+    "name": "modal_broker",
+    "readBack": {
+     "handled": [
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:1:5:29",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 2
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:2:5:25",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 4
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:3:5:29",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 5
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:4:5:21",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 6
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:5:5:21",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 7
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:6:5:29",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 8
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:7:5:21",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 9
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:8:5:29",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 10
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:9:5:21",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 11
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:10:5:29",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 12
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:11:5:29",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 13
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:12:5:21",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 14
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:13:5:21",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 15
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:14:5:29",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 16
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:15:5:21",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 17
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:16:5:21",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 18
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:17:5:25",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 19
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:18:5:25",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 20
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:19:5:25",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 21
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:20:5:25",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 22
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:21:5:25",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 23
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:22:5:21",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 24
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:23:5:25",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 25
+      },
+      {
+       "closed": true,
+       "error": null,
+       "handler": "click Do nothing",
+       "target": "ui-element:24:5:29",
+       "title": null,
+       "type": "VEF.Factions.Dialog_NewFactionSpawning",
+       "window": 26
+      }
+     ],
+     "unknown": []
+    },
+    "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates"
+   }
+  ],
+  "events": [],
+  "keepDefs": [],
+  "notSuppressed": [
+   "active quests and their parts (never ended by default: ending a quest changes the world)",
+   "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+   "existing game conditions, map/world/game components and mod tickers",
+   "hives and other pawn-spawning structures, births, egg hatching, breeders",
+   "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+   "weather transitions, fires, existing hostile behaviour"
+  ],
+  "note": "enableStoryteller is not saved with the game: re-apply after any load",
+  "problems": [],
+  "profile": "quiet_site",
+  "row": "test_site_saves_load_contagion",
+  "suite": "isolated",
+  "topic": null,
+  "verify": null
+ },
+ "ready_s": 51.1,
+ "save": "RM_TestSite_contagion_v1_AREAFIX",
+ "site": "contagion",
+ "sky": {
+  "error": null,
+  "extinguished": 0,
+  "strayFires": 0,
+  "verified": true,
+  "weather": [
+   {
+    "after": "Clear",
+    "ok": true
+   },
+   {
+    "after": "Clear",
+    "ok": true
+   }
+  ]
+ },
+ "utc": "2026-10-19T13:30:52Z",
+ "verified": true
+}

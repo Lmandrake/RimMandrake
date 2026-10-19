@@ -1,0 +1,209 @@
+{
+ "map": {
+  "tile": 3,
+  "lat": -2.561321e-08,
+  "lon": -20.905159,
+  "biome": "RM_Contagion"
+ },
+ "activeGeometry": {
+  "success": true,
+  "method": "RimMandrake.StarWars.WeatherSuite.PlanetGeometryDef get_ActiveGeometry()",
+  "result": "PlanetGeometryDef:RUT_WS_AshkarrGeometry",
+  "message": null
+ },
+ "mapInTerminator": {
+  "success": true,
+  "method": "Boolean MapInTerminatorBand(Verse.Map)",
+  "result": "False",
+  "message": null
+ },
+ "mapInNightside": {
+  "success": true,
+  "method": "Boolean MapInNightsideBand(Verse.Map)",
+  "result": "False",
+  "message": null
+ },
+ "arcHere": {
+  "success": true,
+  "method": "Single ArcDegrees(Single, Single, Single, Single)",
+  "result": "20.90516",
+  "message": null
+ },
+ "kernel_terminator_90": {
+  "success": true,
+  "method": "Boolean InTerminatorBand(Single, Single, Single)",
+  "result": "True",
+  "message": null
+ },
+ "kernel_nightside_150": {
+  "success": true,
+  "method": "Boolean InNightsideBand(Single, Single)",
+  "result": "True",
+  "message": null
+ },
+ "defs": {
+  "success": true,
+  "message": "5 of 5 def(s) resolved",
+  "requested": 5,
+  "foundCount": 5,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "conditionClass",
+   "workerClass",
+   "genStep",
+   "label"
+  ],
+  "defs": [
+   {
+    "requested": "GameConditionDef/RM_WS_TerminatorFront",
+    "found": true,
+    "defName": "RM_WS_TerminatorFront",
+    "defType": "GameConditionDef",
+    "label": "terminator front",
+    "modName": "RimMandrake: SW \u2014 Weather Suite",
+    "packageId": "mandrake.rm.weathersuite",
+    "fields": {
+     "conditionClass": "GameCondition_Flashstorm",
+     "label": "terminator front",
+     "workerClass": "(no such field)",
+     "genStep": "(no such field)"
+    }
+   },
+   {
+    "requested": "GameConditionDef/RM_WS_DarkAurora",
+    "found": true,
+    "defName": "RM_WS_DarkAurora",
+    "defType": "GameConditionDef",
+    "label": "dark-side aurora",
+    "modName": "RimMandrake: SW \u2014 Weather Suite",
+    "packageId": "mandrake.rm.weathersuite",
+    "fields": {
+     "conditionClass": "GameCondition_DarkAuroraMax",
+     "label": "dark-side aurora",
+     "workerClass": "(no such field)",
+     "genStep": "(no such field)"
+    }
+   },
+   {
+    "requested": "IncidentDef/RM_WS_DarkAurora",
+    "found": true,
+    "defName": "RM_WS_DarkAurora",
+    "defType": "IncidentDef",
+    "label": "dark-side aurora",
+    "modName": "RimMandrake: SW \u2014 Weather Suite",
+    "packageId": "mandrake.rm.weathersuite",
+    "fields": {
+     "workerClass": "IncidentWorker_NightsideAurora",
+     "label": "dark-side aurora",
+     "conditionClass": "(no such field)",
+     "genStep": "(no such field)"
+    }
+   },
+   {
+    "requested": "ThoughtDef/RM_WS_DarkAurora",
+    "found": true,
+    "defName": "RM_WS_DarkAurora",
+    "defType": "ThoughtDef",
+    "modName": "RimMandrake: SW \u2014 Weather Suite",
+    "packageId": "mandrake.rm.weathersuite",
+    "fields": {
+     "workerClass": "ThoughtWorker_Aurora",
+     "conditionClass": "(no such field)",
+     "genStep": "(no such field)"
+    }
+   },
+   {
+    "requested": "GenStepDef/SteamGeysers",
+    "found": true,
+    "defName": "SteamGeysers",
+    "defType": "GenStepDef",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "conditionClass": "(no such field)",
+     "workerClass": "(no such field)",
+     "genStep": "(no such field)"
+    }
+   }
+  ],
+  "ticksGame": 2
+ },
+ "settings_ws": {
+  "terminatorFrontEnabled": {
+   "success": false,
+   "method": null,
+   "result": null,
+   "message": "No public static get_terminatorFrontEnabled with 0 params."
+  }
+ },
+ "aurora_dry": {
+  "success": true,
+  "dryRun": true,
+  "resolved": {
+   "incident": "RM_WS_DarkAurora",
+   "category": "Misc",
+   "points": 642.585144,
+   "faction": "(worker chooses)"
+  },
+  "canFireNow": false,
+  "note": "DRY RUN - nothing was sent. Pass dryRun=false to fire through Storyteller.TryFire for real.",
+  "ticksGame": 2
+ },
+ "RM_WS_TerminatorFront": {
+  "started": true,
+  "active": [
+   {
+    "def": "RM_WS_TerminatorFront",
+    "permanent": true,
+    "ticksLeft": -1
+   }
+  ],
+  "step": {
+   "success": false,
+   "message": "Timed out after advancing 546 of 600 requested tick(s).",
+   "ticksAdvanced": null,
+   "tick": null
+  },
+  "stepLogs": [],
+  "ticks": [
+   2,
+   548
+  ],
+  "endedStillActive": [
+   {
+    "def": "RM_WS_TerminatorFront",
+    "permanent": false,
+    "ticksLeft": 0
+   }
+  ]
+ },
+ "RM_WS_DarkAurora": {
+  "started": true,
+  "active": [
+   {
+    "def": "RM_WS_DarkAurora",
+    "permanent": true,
+    "ticksLeft": -1
+   }
+  ],
+  "step": {
+   "success": false,
+   "message": "Timed out after advancing 567 of 600 requested tick(s).",
+   "ticksAdvanced": null,
+   "tick": null
+  },
+  "stepLogs": [],
+  "ticks": [
+   548,
+   1115
+  ],
+  "endedStillActive": [
+   {
+    "def": "RM_WS_DarkAurora",
+    "permanent": false,
+    "ticksLeft": 0
+   }
+  ]
+ }
+}

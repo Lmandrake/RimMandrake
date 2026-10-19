@@ -1,0 +1,1369 @@
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=10, mood=0.56, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+System.AggregateException: One or more errors occurred. (Object reference not set to an instance of an object) ---> System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 431F6A8C]
+RimWorld.Planet.FastTileFinder+CachedTileData..ctor(Tile tile)
+  at RimWorld.Planet.FastTileFinder.<RegenerateCache>b__31_0 (System.Int32 i) [0x00018] in <61e4173561894da49d210260257b5097>:0 
+  at System.Threading.Tasks.Parallel+<>c__DisplayClass19_0`1[TLocal].<ForWorker>b__1 (System.Threading.Tasks.RangeWorker& currentWorker, System.Int32 timeout, System.Boolean& replicationDelegateYieldedBeforeCompletion) [0x000cf] in <51fded79cd284d4d911c5949aff4cb21>:0 
+--- End of stack trace from previous location where exception was thrown ---
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+ [0x00006] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Threading.Tasks.Parallel+<>c__DisplayClass19_0`1[TLocal].<ForWorker>b__1 (System.Threading.Tasks.RangeWorker& currentWorker, System.Int32 timeout, System.Boolean& replicationDelegateYieldedBeforeCompletion) [0x001e5] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Threading.Tasks.TaskReplicator+Replica`1[TState].ExecuteAction (System.Boolean& yieldedBeforeCompletion) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Threading.Tasks.TaskReplicator+Replica.Execute () [0x00023] in <51fded79cd284d4d911c5949aff4cb21>:0 
+   --- End of inner exception stack trace ---
+[Ref 6FA55D5F]
+  at System.Threading.Tasks.TaskReplicator.Run[TState] (System.Threading.Tasks.TaskReplicator+ReplicatableUserAction`1[TState] action, System.Threading.Tasks.ParallelOptions options, System.Boolean stopOnFirstFailure) [0x0005b] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Threading.Tasks.Parallel.ForWorker[TLocal] (System.Int32 fromInclusive, System.Int32 toExclusive, System.Threading.Tasks.ParallelOptions parallelOptions, System.Action`1[T] body, System.Action`2[T1,T2] bodyWithState, System.Func`4[T1,T2,T3,TResult] bodyWithLocal, System.Func`1[TResult] localInit, System.Action`1[T] localFinally) [0x00139] in <51fded79cd284d4d911c5949aff4cb21>:0 
+--- End of stack trace from previous location where exception was thrown ---
+ [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+ [0x00006] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Threading.Tasks.Parallel.ThrowSingleCancellationExceptionOrOtherException (System.Collections.ICollection exceptions, System.Threading.CancellationToken cancelToken, System.Exception otherException) [0x0000b] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Threading.Tasks.Parallel.ForWorker[TLocal] (System.Int32 fromInclusive, System.Int32 toExclusive, System.Threading.Tasks.ParallelOptions parallelOptions, System.Action`1[T] body, System.Action`2[T1,T2] bodyWithState, System.Func`4[T1,T2,T3,TResult] bodyWithLocal, System.Func`1[TResult] localInit, System.Action`1[T] localFinally) [0x00199] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Threading.Tasks.Parallel.For (System.Int32 fromInclusive, System.Int32 toExclusive, System.Action`1[T] body) [0x0000e] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimWorld.Planet.FastTileFinder.RegenerateCache () [0x00022] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.FastTileFinder.Query (RimWorld.Planet.FastTileFinder+TileQueryParams query, System.Collections.Generic.List`1[T] biomes, System.Collections.Generic.List`1[T] landmarks, RimWorld.Planet.FastTileFinder+TileQueryParams desperate) [0x00008] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.TileFinder.TryFindNewSiteTile (RimWorld.Planet.PlanetTile& tile, RimWorld.Planet.PlanetTile nearTile, System.Int32 minDist, System.Int32 maxDist, System.Boolean allowCaravans, System.Collections.Generic.List`1[T] allowedLandmarks, System.Single selectLandmarkChance, System.Boolean canSelectComboLandmarks, RimWorld.Planet.TileFinderMode tileFinderMode, System.Boolean exitOnFirstTileFound, System.Boolean canBeSpace, RimWorld.Planet.PlanetLayer layer, System.Predicate`1[T] validator) [0x000e4] in <61e4173561894da49d210260257b5097>:0 
+  at SandWormLib.SandWormQuestUtility.TryFindDesertQuestTile (RimWorld.Planet.PlanetTile& tile) [0x0002d] in <798694f8cd2f4316a087bfc42a8012a4>:0 
+  at SandWormLib.SandWormQuestUtility.CanFindDesertQuestTile () [0x00000] in <798694f8cd2f4316a087bfc42a8012a4>:0 
+  at SandWormLib.SandWormQuestUtility.TryCreateLeviathanQuest () [0x0000b] in <798694f8cd2f4316a087bfc42a8012a4>:0 
+  at SandWormLib.SandWormQuestGameComponent.GameComponentTick () [0x000c9] in <798694f8cd2f4316a087bfc42a8012a4>:0 
+  at Verse.GameComponentUtility.GameComponentTick () [0x00033] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX mandrake.jawabench.tps.attr: Void JawaBench.BridgeTools.JawaBenchTpsProfiler:GameCompPre(Scope& __state)
+    - FINALIZER mandrake.jawabench.tps.attr: Void JawaBench.BridgeTools.JawaBenchTpsProfiler:GameCompFin(Scope __state)
+---> (Inner Exception #0) System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 431F6A8C] Duplicate stacktrace, see ref for original<---
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.56
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-15, mood=0.56, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.56, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.56, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[Real Fog of War] Message_Prefix called: 'A contaminated eyebark ruptured. Anyone in the cloud without a sealed suit risks mutation.'
+[Real Fog of War] AcceptsMessage: True
+[Real Fog of War] Has Thing: False
+[Real Fog of War] No thing, allowing message through
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=10, mood=0.59, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.59
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-15, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.59, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 9.0 [Neutral]
+[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 9.0 [Neutral]
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=10, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.60
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-15, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 12.0 [Neutral]
+[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 12.0 [Neutral]
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=10, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.60
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-15, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=10, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.60
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-15, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 15.0 [Neutral]
+[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 15.0 [Neutral]
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=10, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.60
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-15, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 18.0 [Neutral]
+[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 18.0 [Neutral]
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=10, mood=0.58, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.58
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-15, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.58, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 21.0 [Content]
+[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 21.0 [Content]
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-14, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+Cannot use Graphic_Random.GetColoredVersion with a non-white colorTwo.
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-14, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 24.0 [Content]
+[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 24.0 [Content]
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-14, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-14, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.53
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.50, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-14, mood=0.53, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.50, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.50
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.53, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+Ko Yasi failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.51
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=11, mood=0.54, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.54
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-14, mood=0.51, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.49
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.54, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=11, mood=0.51, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Tony failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Ko Yasi cannot ever do lovin'
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Adèle cannot engage in social activities due to their current duty.
+Ko Yasi cannot engage in social activities due to their current duty.
+Tony failed to get a job from any IntimacyGivers
+Tony is not accepted by the conversation group.
+Ko Yasi is already in conversation.
+Adèle is already in conversation.
+Adèle cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 1
+Tony is not accepted by the conversation group.
+Ko Yasi is already in conversation.
+Adèle is already in conversation.
+Ko Yasi cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 2
+Tony is not accepted by the conversation group.
+Ko Yasi is already in conversation.
+Adèle is already in conversation.
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Adèle cannot engage in social activities due to their current duty.
+Ko Yasi cannot engage in social activities due to their current duty.
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Ko Yasi: Starting scan. Candidates=3, CurrentMood=0.49
+[MCR][MoodChain] Ko Yasi: Eval Tony: opinion=11, mood=0.54, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Eval Adèle: opinion=11, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Ko Yasi: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Tony cannot ever do lovin'
+Adèle cannot engage in social activities due to their current duty.
+Ko Yasi cannot engage in social activities due to their current duty.
+Tony failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Tony: Starting scan. Candidates=3, CurrentMood=0.54
+[MCR][MoodChain] Tony: Eval Ko Yasi: opinion=-14, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Eval Adèle: opinion=-14, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Tony: Scan finished. NewlyAddedMemories=0
+Ko Yasi cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 3
+Tony is not accepted by the conversation group.
+Ko Yasi is already in conversation.
+Adèle is already in conversation.
+[MCR][MoodChain] Adèle: Starting scan. Candidates=3, CurrentMood=0.49
+[MCR][MoodChain] Adèle: Eval Tony: opinion=11, mood=0.54, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Eval Ko Yasi: opinion=12, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Adèle: Scan finished. NewlyAddedMemories=0
