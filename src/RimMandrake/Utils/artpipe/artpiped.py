@@ -98,7 +98,7 @@ import codex_image  # noqa: E402
 # healthy conditions. 150s (the midpoint of the measured range) is the
 # working edit baseline until a real measured median exists for it —
 # see _baseline_for_mode() and Detector.note_wall_clock()'s own `mode` param.
-BASELINE_WALL_CLOCK_S = 62.0
+BASELINE_WALL_CLOCK_S = 140.0  # was 62: measured generate runs 2026-10-18 are 80-210s each (512px painterly), and a 62 baseline ratcheted N 5->1
 EDIT_BASELINE_WALL_CLOCK_S = 150.0
 WALL_CLOCK_MULTIPLIER = 2.0
 WALL_CLOCK_STREAK = 3
