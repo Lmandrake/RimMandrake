@@ -146,7 +146,7 @@
     <drawGUIOverlay>true</drawGUIOverlay>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Item/Resource/PlantFoodRaw/Hops</texPath>
+      <texPath>Things/Item/Resource/PlantFoodRaw/RM_SarquinSap/RM_SarquinSap</texPath>
       <color>(210, 175, 60)</color>
     </graphicData>
     <healthAffectsPrice>false</healthAffectsPrice>

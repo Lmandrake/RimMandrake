@@ -153,7 +153,7 @@
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <texPath>Things/Item/Resource/RM_Seepwax/RM_Seepwax</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(196, 156, 64)</color>
     </graphicData>
