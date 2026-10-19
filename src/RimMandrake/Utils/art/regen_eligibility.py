@@ -67,6 +67,31 @@ def low(s: str) -> str:
     return s.replace("\\", "/").strip("/").lower()
 
 
+_STANDIN = re.compile(r"^standin/", re.I)
+
+
+def unstandin(s: str) -> str:
+    """Drop a leading StandIn/ in ANY case: Windows resolves Textures/standin/Foo and Textures/StandIn/Foo to one file
+    (GPT review 2026-10-19 #1)."""
+    return _STANDIN.sub("", s.replace("\\", "/").strip("/"))
+
+
+def key(s: str) -> str:
+    """The case-insensitive, StandIn-free form every path comparison in this gate uses."""
+    return low(unstandin(s))
+
+
+_LOC = re.compile(r"(?:^git:[0-9a-f]+:)?.*?/Textures/(.+)\.png$", re.I)
+
+
+def res_of_variant(v: dict) -> str | None:
+    """The texture res a ledger variant was registered at: `res`, else derived from `loc` (facing stripped)."""
+    if v.get("res"):
+        return v["res"]
+    m = _LOC.match((v.get("loc") or "").replace("\\", "/"))
+    return strip_facing(m.group(1)) if m else None
+
+
 def own_path(ext_tp: str, dn: str) -> str:
     """Where bulk_accept_renders puts a render for a def that drew a vanilla/donor path (same rule, kept in sync)."""
     parts = ext_tp.strip("/").split("/")
@@ -82,11 +107,16 @@ class Gate:
 
     def __init__(self, repo: Path | None = None, idx=None, game_classify=None, game_file=None,
                  placeholder_reason=None, allowlist: dict | None = None):
+        # what fresh() needs to rebuild this gate from the CURRENT disk and ledger (GPT review 2026-10-19 #5)
+        self._args = dict(repo=repo, idx=idx, game_classify=game_classify, game_file=game_file,
+                          placeholder_reason=placeholder_reason, allowlist=allowlist)
         try:
             self.repo = Path(repo or REPO)
             if idx is None:
                 import artledger as A
-                idx = A.Index()
+                idx = A.Index()                       # a fresh read of every shard, never the process cache
+            elif callable(idx):
+                idx = idx()                           # a factory (selftest): called anew by every fresh()
             self.idx = idx
             if game_classify is None or game_file is None:
                 gc, gf = self._game()
@@ -110,6 +140,21 @@ class Gate:
         except Exception as e:                                       # noqa: BLE001
             raise GateError(f"eligibility gate could not be built: {type(e).__name__}: {e}") from e
 
+    def fresh(self) -> "Gate":
+        """A new gate built from the disk and ledger as they are NOW. Callers re-judge every row with it immediately
+        before publishing a job, so a render installed after this gate was built cannot be queued over (#5).
+        Raises GateError like the constructor."""
+        return Gate(**self._args)
+
+    def recheck(self, rows) -> tuple[list, list]:
+        """-> (rows still eligible under a fresh gate, verdicts of rows it now refuses)."""
+        g = self.fresh()
+        ok, gone = [], []
+        for r in rows:
+            v = g.classify(r)
+            (ok if v["eligible"] else gone).append(r if v["eligible"] else v)
+        return ok, gone
+
     # ───────────────────────────────────────────────────────────── building ──
 
     @staticmethod
@@ -129,23 +174,37 @@ class Gate:
     def _scan(self):
         src = self.repo / "src"
         self.tex = {}                                 # 'mod/rel' (as on disk, no .png) -> Path
-        self.tex_low = defaultdict(list)              # rel lowercased (no .png, no StandIn/) -> ['mod/Textures/rel']
+        self.tex_low = defaultdict(list)              # key(rel) (lowercased, no .png, no StandIn/) -> ['mod/Textures/rel']
+        self.tex_ci = defaultdict(list)               # 'mod/Textures/rel' lowercased -> ['mod/Textures/rel'] (Windows)
         for troot in src.glob("*/*/Textures"):
             mod = troot.parent.relative_to(self.repo).as_posix()
-            for p in troot.rglob("*.png"):
+            for p in troot.rglob("*"):
+                if p.suffix.lower() != ".png" or not p.is_file():
+                    continue
                 rel = p.relative_to(troot).as_posix()[:-4]
                 self.tex[f"{mod}/Textures/{rel}"] = p
-                self.tex_low[low(rel.removeprefix("StandIn/"))].append(f"{mod}/Textures/{rel}")
+                self.tex_low[key(rel)].append(f"{mod}/Textures/{rel}")
+                self.tex_ci[f"{mod}/Textures/{rel}".lower()].append(f"{mod}/Textures/{rel}")
         self.drawn = defaultdict(set)                 # texture text lowercased -> {defName or xml file}
-        self.def_tex = defaultdict(set)               # defName -> {texture texts}
+        self.def_tex = defaultdict(set)               # defName -> {texture texts} (our own defs)
+        self.def_draws = defaultdict(set)             # defName -> {key(texture)}: its own XML, its PawnKindDefs, and
+        #                                               patches whose xpath names it (#4: per-target-def attribution)
         for x in src.rglob("*.xml"):
             r = x.relative_to(self.repo).as_posix()
-            if "/Textures/" in r:
+            if "/textures/" in r.lower():
                 continue
             try:
                 root = ET.parse(x).getroot()
-            except (ET.ParseError, OSError):
-                continue
+            except (ET.ParseError, OSError) as e:      # fail closed (#17): an incomplete scan judges nothing
+                raise GateError(f"XML scan failed on {r}: {type(e).__name__}: {e}") from e
+            for op in root.iter():
+                xp = op.find("xpath") if isinstance(op.tag, str) else None
+                if xp is None or not (xp.text or "").strip():
+                    continue
+                for name in re.findall(r"defName\s*=\s*[\"']([^\"']+)[\"']", xp.text):
+                    for el in op.iter():
+                        if isinstance(el.tag, str) and el.tag in TEXTAGS and (el.text or "").strip() and not list(el):
+                            self.def_draws[name].add(key(el.text))
             for d in root.iter():
                 dn = (d.findtext("defName") or "").strip() if isinstance(d.tag, str) else ""
                 for el in d:
@@ -153,10 +212,14 @@ class Gate:
                         self.drawn[low(el.text)].add(r)
                 if not dn:
                     continue
+                race = (d.findtext("race") or "").strip() if d.tag == "PawnKindDef" else ""
                 for el in d.iter():
                     if isinstance(el.tag, str) and el.tag in TEXTAGS and (el.text or "").strip() and not list(el):
                         self.def_tex[dn].add(el.text.strip())
                         self.drawn[low(el.text)].add(dn)
+                        self.def_draws[dn].add(key(el.text))
+                        if race:
+                            self.def_draws[race].add(key(el.text))
 
     def _ledger(self):
         idx = self.idx
@@ -178,22 +241,38 @@ class Gate:
             why = ev.get("reason") or ""
             if ev.get("sha") and ("bulk accept" in why or why.startswith("artpipe-collect")):
                 self.regen_sha.setdefault(ev["sha"], f"ledger live {m}/Textures/{r}: {why[:60]}")
+        # regeneration HISTORY: renders of ours and installed art of ours (kind=install, #7), placeholders excepted
+        self.history_sha = dict(self.regen_sha)
+        for s, why in self.install_sha.items():
+            if s not in self.ph_sha and s not in self.ph_shas:
+                self.history_sha.setdefault(s, why)
         # renders bound to a def+path (a finished render waiting to install, or one installed then moved)
-        self.bound = defaultdict(list)                # (subject key lowercased, texpath lowercased) -> [why]
-        self.bound_subject = defaultdict(list)        # subject key lowercased -> [(texpath, why)]
+        self.bound = defaultdict(list)                # (subject key lowercased, key(texpath)) -> [why]
+        self.bound_subject = defaultdict(list)        # subject key lowercased -> [(key(texpath), why)]
         for sha, bs in idx.bindings.items():
-            if sha not in self.regen_sha:
+            if sha not in self.history_sha:
                 continue
             for b in bs:
-                tp = low(b.get("texpath") or "")
+                tp = key(b.get("texpath") or "")
                 subj = (b.get("subject") or "")
                 self.bound[(subj.lower(), tp)].append(f"binding {b.get('id')} job {b.get('job')}")
                 self.bound_subject[subj.lower()].append((tp, f"binding {b.get('id')} job {b.get('job')}"))
-        self.by_res_regen = defaultdict(list)         # res lowercased -> [why]: a render was once registered there
+        self.by_res_regen = defaultdict(list)         # key(res) -> [why]: a render of ours was once registered there
+        for sha, vs in idx.variants.items():
+            if sha not in self.history_sha:
+                continue
+            for v in vs:
+                res = res_of_variant(v)
+                if res:
+                    self.by_res_regen[key(res)].append(self.history_sha[sha])
         for res, shas in idx.by_res.items():
             for s in shas:
-                if s in self.regen_sha:
-                    self.by_res_regen[low(res.removeprefix("StandIn/"))].append(self.regen_sha[s])
+                if s in self.history_sha:
+                    self.by_res_regen[key(res)].append(self.history_sha[s])
+        for (m, r), ev in idx.live.items():           # installed (live) now or before, at any spelling
+            if ev.get("sha") in self.history_sha:
+                self.by_res_regen[key(strip_facing(r[:-4] if r.lower().endswith(".png") else r))].append(
+                    f"ledger live {m}/Textures/{r}")
 
     # ───────────────────────────────────────────────────────────── judging ──
 
@@ -225,20 +304,27 @@ class Gate:
             return "REFUSED_REGEN", f"{where}: installed art of ours, not a donor copy ({self.install_sha[sha]})"
         return "REFUSED_UNCONFIRMED", f"{where}: sha {sha[:12]} has no donor/placeholder provenance in the ledger"
 
+    @staticmethod
+    def _cands(rel: str) -> set:
+        return {key(rel), key(strip_facing(rel)), key(rel.rsplit("/", 1)[0])}
+
     def _drawn(self, rel: str) -> bool:
-        b = strip_facing(rel)
-        cands = {rel, b, rel.rsplit("/", 1)[0]}
-        return any(low(c) in self.drawn or low("StandIn/" + c) in self.drawn for c in cands)
+        """Some def or patch of ours draws this path (any def)."""
+        return any(c in self.drawn or low("StandIn/" + c) in self.drawn for c in self._cands(rel))
+
+    def _drawn_by(self, dn: str, rel: str) -> bool:
+        """THE TARGET DEF draws this path (its XML, its PawnKindDefs, or a patch naming it): #4."""
+        return bool(self._cands(rel) & self.def_draws.get(dn, set()))
 
     def _renamed(self, dn: str, rel: str) -> str | None:
         """A render for this def+path exists in the ledger, or the def now draws a render of ours elsewhere."""
-        r0 = low(strip_facing(rel))
-        for key in {low(rel), r0}:
-            if self.by_res_regen.get(key):
-                return f"a render was registered at {rel} ({self.by_res_regen[key][0]})"
+        r0 = key(strip_facing(rel))
+        for k in sorted({key(rel), r0}):
+            if self.by_res_regen.get(k):
+                return f"a render was registered at {k} ({self.by_res_regen[k][0]})"
         if dn:
             for tp, why in self.bound_subject.get(dn.lower(), ()):
-                if tp in (low(rel), r0):
+                if tp in (key(rel), r0):
                     return f"a render is bound to {dn} at {tp} ({why})"
         return None
 
@@ -258,57 +344,62 @@ class Gate:
 
     def _def_now_regen(self, dn: str) -> str | None:
         for t in sorted(self.def_tex.get(dn, ())):
-            t2 = t.removeprefix("StandIn/")
-            for k in (t2, t2 + "_east", t2 + "_south", t2 + "_north"):
-                for path in self.tex_low.get(low(k), ()):
+            t2 = unstandin(t)
+            for k in (t2, t2 + "_east", t2 + "_south", t2 + "_north", t2 + "_west"):
+                for path in self.tex_low.get(key(k), ()):
                     sha = hashlib.sha256(self.tex[path].read_bytes()).hexdigest()
-                    if sha in self.regen_sha or sha in self.install_sha:
+                    if sha in self.history_sha:
                         return f"{dn} now draws {path}.png, a render of ours"
             for path, p in self.tex.items():                          # Graphic_Random folder
-                if low(path.split("/Textures/", 1)[1]).startswith(low(t2) + "/"):
-                    if hashlib.sha256(p.read_bytes()).hexdigest() in self.regen_sha:
+                if key(path.split("/Textures/", 1)[1]).startswith(key(t2) + "/"):
+                    if hashlib.sha256(p.read_bytes()).hexdigest() in self.history_sha:
                         return f"{dn} now draws folder {t2} holding a render of ours ({path}.png)"
         return None
 
+    def _judge_all(self, paths, why_prefix: str = "") -> list[tuple[str, str]]:
+        return [(c, why_prefix + w) for c, w in
+                (self.judge_bytes(self.tex[q].read_bytes(), q + ".png") for q in sorted(set(paths)))]
+
     def slot_install(self, dest: str, dn: str) -> tuple[str, str]:
-        d = dest.lstrip("/")
-        if not d.startswith("src/") or "/Textures/" not in d or not d.endswith(".png"):
+        d = dest.replace("\\", "/").lstrip("/")
+        dl = d.lower()
+        if not dl.startswith("src/") or "/textures/" not in dl or not dl.endswith(".png"):
             return "REFUSED_UNCONFIRMED", f"{dest}: not a src/<mod>/Textures/<rel>.png path"
-        mod, rel = d[:-4].split("/Textures/", 1)
-        rel = rel.removeprefix("StandIn/")
+        i = dl.index("/textures/")
+        mod, rel = d[:i], unstandin(d[i + len("/textures/"):-4])     # any-case StandIn/ (#1)
         alias = self._def_alias(dn)
         if alias:
             return "REFUSED_REGEN" if "bound" in alias else "REFUSED_UNCONFIRMED", alias
-        if not self._drawn(rel):
+        if not self._drawn_by(dn, rel):                              # #4: the TARGET def must draw it
             nr = self._def_now_regen(dn)
             if nr:
-                return "REFUSED_REGEN", f"{rel}: renamed — no def draws it any more; {nr}"
+                return "REFUSED_REGEN", f"{rel}: renamed — {dn} no longer draws it; {nr}"
+            if self._drawn(rel):
+                return "REFUSED_UNCONFIRMED", f"{rel}: drawn by another def of ours, not by {dn}"
             return "REFUSED_UNCONFIRMED", f"{rel}: no def of ours draws this path (orphan or drawn from C#)"
+        rn = self._renamed(dn, rel)                                  # #3: history before any file match
+        if rn:
+            return "REFUSED_REGEN", f"{rel}: {rn}"
         exact = f"{mod}/Textures/{rel}"
         standin = f"{mod}/Textures/StandIn/{rel}"
-        if exact in self.tex:
-            return self.judge_bytes(self.tex[exact].read_bytes(), exact + ".png")
-        if standin in self.tex:
-            return self.judge_bytes(self.tex[standin].read_bytes(), standin + ".png")
-        same = self.tex_low.get(low(rel), ())
-        twins = [p for p in same if p not in (exact, standin) and p.lower() in (exact.lower(), standin.lower())]
-        if twins:
-            cls, why = self.judge_bytes(self.tex[twins[0]].read_bytes(), twins[0] + ".png")
-            if cls == "REFUSED_REGEN":
+        here = set(self.tex_ci.get(exact.lower(), ())) | set(self.tex_ci.get(standin.lower(), ()))
+        twins = {q for q in here if q not in (exact, standin)}       # another case spelling: the same file on Windows
+        others = {q for q in self.tex_low.get(key(rel), ()) if q not in here}   # another mod of ours, same texPath
+        res = self._judge_all(here) + self._judge_all(others, f"same texPath shipped by another mod of ours: ")
+        if res:
+            cls, why = min(res, key=lambda x: RANK[x[0]])            # every copy must be confirmed (#6)
+            if cls == "REFUSED_REGEN" and twins:
                 return cls, f"renamed/case twin: {why}"
-            return "REFUSED_UNCONFIRMED", f"{exact}.png exists under another case spelling ({twins[0]}.png, {cls})"
-        others = [p for p in same if p not in (exact, standin)]
-        if others:                                    # another mod of ours ships the same texPath: the game draws it
-            res = [self.judge_bytes(self.tex[p].read_bytes(), p + ".png") for p in sorted(others)]
-            cls, why = min(res, key=lambda x: RANK[x[0]])
-            return cls, f"no file at {exact}.png; same texPath shipped by another mod of ours: {why}"
-        rn = self._renamed(dn, rel)
-        if rn:
-            return "REFUSED_REGEN", f"{rel}: no file now, but {rn}"
+            if cls in ELIGIBLE and twins:
+                return "REFUSED_UNCONFIRMED", f"{exact}.png exists under another case spelling ({sorted(twins)[0]}.png, {cls})"
+            if not here:
+                why = f"no file at {exact}.png; {why}"
+            return cls, why
         return self._game_side(rel, f"{exact}.png")
 
     def _game_side(self, rel: str, where: str) -> tuple[str, str]:
         res = strip_facing(rel)
+        fac = rel[len(res) + 1:] if rel != res else ""
         c = self.game_classify(res)
         cat = c.get("cat")
         if cat == "MISSING":
@@ -316,46 +407,48 @@ class Gate:
         if cat in DONOR_CENSUS:
             return "DONOR", f"{where}: the game serves {res} from {c.get('by')} ({cat})"
         if cat == "OURS":
-            for pkg, p in self.game_file(res):
-                if pkg.lower().startswith(OWN_PKG):
-                    try:
-                        b = Path(p).read_bytes()
-                    except OSError as e:
-                        return "REFUSED_UNCONFIRMED", f"{where}: deployed copy unreadable ({e})"
-                    cls, why = self.judge_bytes(b, f"deployed {p}")
-                    return cls, why
+            own = [p for pkg, p in self.game_file(res) if pkg.lower().startswith(OWN_PKG)]
+            if fac:                                  # judge THIS facing's copies when the game has them (#6)
+                same = [p for p in own if Path(str(p)).stem.lower().endswith("_" + fac.lower())]
+                own = same or own
+            out = []
+            for p in own:                            # every copy, every package: the worst decides (#6)
+                try:
+                    b = Path(p).read_bytes()
+                except OSError as e:
+                    return "REFUSED_UNCONFIRMED", f"{where}: deployed copy unreadable ({e})"
+                out.append(self.judge_bytes(b, f"deployed {p}"))
+            if out:
+                return min(out, key=lambda x: RANK[x[0]])
             return "REFUSED_UNCONFIRMED", f"{where}: the game serves an OURS copy that could not be located"
         return "REFUSED_UNCONFIRMED", f"{where}: game-texture class {cat!r}"
 
     def slot_external(self, dn: str, tp: str, facing: str) -> tuple[str, str]:
-        t = tp.strip().strip("/").removeprefix("StandIn/")
+        t = unstandin(tp.strip())
         suf = f"_{facing}" if facing in FACINGS else ""
         alias = self._def_alias(dn)
         if alias:
             return "REFUSED_REGEN" if "bound" in alias else "REFUSED_UNCONFIRMED", alias
-        names = {low(x.removeprefix("StandIn/")) for x in self.def_tex.get(dn, ())}
-        if low(t) not in names:
+        if key(t) not in self.def_draws.get(dn, set()):
             nr = self._def_now_regen(dn)
             if nr:
                 return "REFUSED_REGEN", f"{dn} no longer draws {t}: renamed — {nr}"
             return "REFUSED_UNCONFIRMED", f"{dn} no longer draws {t} (now: {', '.join(sorted(self.def_tex.get(dn, ())))[:120]})"
-        for cand in (own_path(t, dn), t):
+        op = own_path(t, dn)
+        for cand in (op, t):
             rn = self._renamed(dn, cand + suf)
             if rn:
                 return "REFUSED_REGEN", rn
-        op = own_path(t, dn) + suf
-        for path in self.tex_low.get(low(op), ()):
-            cls, why = self.judge_bytes(self.tex[path].read_bytes(), path + ".png")
-            if cls == "REFUSED_REGEN":
-                return cls, f"renamed: our own path already holds {why}"
-        ours = self.tex_low.get(low(t + suf), ())
-        if ours:
-            return self.judge_bytes(self.tex[ours[0]].read_bytes(), ours[0] + ".png")
-        folder = [p for p, _ in self.tex.items() if low(p.split("/Textures/", 1)[1].removeprefix("StandIn/")).startswith(low(t) + "/")]
-        if folder:
-            res = [self.judge_bytes(self.tex[p].read_bytes(), p + ".png") for p in sorted(folder)]
-            return min(res, key=lambda x: RANK[x[0]])
-        return self._game_side(t + suf, f"{dn}:{t}{suf}")
+        # the EVENTUAL destination (where the installer will write): ANY refusal there refuses the job (#2)
+        res = self._judge_all(self.tex_low.get(key(op + suf), ()), "our own path (the eventual destination): ")
+        ours = self.tex_low.get(key(t + suf), ())
+        res += self._judge_all(ours)                                  # every copy of ours, not the first (#6)
+        if not ours:
+            folder = [q for q in self.tex if key(q.split("/Textures/", 1)[1]).startswith(key(t) + "/")]
+            res += self._judge_all(folder)
+            if not folder:
+                res.append(self._game_side(t + suf, f"{dn}:{t}{suf}"))
+        return min(res, key=lambda x: RANK[x[0]])
 
     def slots(self, row: dict) -> list[tuple[str, tuple]]:
         dn = row.get("target_def") or ""
