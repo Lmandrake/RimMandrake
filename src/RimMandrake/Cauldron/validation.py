@@ -295,7 +295,7 @@ def _rect(t, size=PAD_SIZE, dx=0, dz=0):
     return x - half + dx, z - half + dz, size, size
 
 
-def _remove_pawn(t, pid):
+def _remove_pawn(t, pid, raw=False):
     """Take one pawn off the map with NO death: Destroy(Vanish), no corpse, no death action, read back by
     destroyedAfter. LIVE 2026-10-16 (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES, HARNESS): the old kill was ONE
     jawa/damage Bullet 5000, which lands on ONE body part; on a hand it takes the hand and the pawn lives. The
@@ -303,24 +303,25 @@ def _remove_pawn(t, pid):
     survived it and bled into vexxiss_drinks_vent's first 60-tick wait -- the 'colonist hurt near a vexxiss drink'
     of 2 of 2 runs, before the vexxiss was even spawned. A suush would also detonate on a real death. Falls back to the
     bullet only when the vanish does not read back. -> True when the pawn is gone."""
-    v = t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish") or {}
+    call = t.session.call if raw else t.bridge_call     # raw: the _stable teardown, when bridge_call is a no-op
+    v = call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish") or {}
     if v.get("destroyedAfter") is True:
         return True
-    t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=pid, allowColonists=True)
+    call("jawa/damage", damageDef="Bullet", amount=5000, thingId=pid, allowColonists=True)
     return False
 
 
-def _kill_pawns_in(t, rect):
+def _kill_pawns_in(t, rect, raw=False):
     """Remove every living pawn in rect (by id, _remove_pawn: destroy_batch NEVER removes pawns,
     DESTROY_BATCH_NEVER_KILLS_PAWNS_1), except the site's own bystanders, which are settled, never shot; returns the
     count removed."""
-    r = t.bridge_call("jawa/list_pawns", limit=500, rect=_rs(rect))
+    r = (t.session.call if raw else t.bridge_call)("jawa/list_pawns", limit=500, rect=_rs(rect))
     keep = set(getattr(t, "_bystanders", ()) or ())
     n = 0
     for p in ((r or {}).get("pawns") or []):
         if p.get("dead") or not p.get("id") or p["id"] in keep:
             continue
-        _remove_pawn(t, p["id"])
+        _remove_pawn(t, p["id"], raw=raw)
         n += 1
     return n
 
@@ -636,9 +637,11 @@ def _wait(t, n):
                 break
             if now > last:
                 last, stall = now, time.time()
-            elif time.time() - stall > 60:
-                raise ExpectationFailed("clock stalled at %d during a %d-tick wait (a modal dialog "
-                                        "pausing the game?)" % (now, n))
+            elif time.time() - stall > 30:
+                # LeaningScrub LIVE 2026-10-07: Ultrafast left the clock frozen while stepped waits advanced normally.
+                # Step the rest (exact) rather than failing the component on a harness clock.
+                _note(t, "_wait: Ultrafast did not advance the clock (stuck at %d); stepping instead" % now, n)
+                break
     finally:
         s.call("rimworld/set_time_speed", speed="Paused")
     now = s._ticks()
@@ -656,7 +659,7 @@ def _stable(t, fn):
         _unlock_weather(t)
         if t.session is not None and getattr(t, "anchor", None):
             try:    # pawns first, by id (destroy_batch never removes them); then their corpses with the things
-                _kill_pawns_in(t, _rect(t, PAD_SIZE + 24))
+                _kill_pawns_in(t, _rect(t, PAD_SIZE + 24), raw=True)
                 t.session.call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 24)),
                                categories="All")
             except Exception as ex:
