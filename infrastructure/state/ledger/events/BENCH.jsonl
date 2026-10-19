@@ -3062,3 +3062,5 @@
 {"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-19T03:13:28Z","tsn":1792379608040052195}
 {"seat":"BENCH","event":"reassign","id":"RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP","to":"BENCH","why":"owner: prepare all FlowWorks work now for one review sitting; FOUNDRY busy with donor retirement, items unstarted","ts":"2026-10-19T03:19:45Z","tsn":1792379985133055592}
 {"seat":"BENCH","event":"reassign","id":"BIG_CREATURES_DESIGN_WALLS_AND_SLOTS","to":"BENCH","why":"owner: prepare all FlowWorks work now for one review sitting; FOUNDRY busy with donor retirement, items unstarted","ts":"2026-10-19T03:19:46Z","tsn":1792379986923441457}
+{"seat":"BENCH","event":"start","id":"RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP","ts":"2026-10-19T03:20:42Z","tsn":1792380042998941655}
+{"seat":"BENCH","event":"start","id":"BIG_CREATURES_DESIGN_WALLS_AND_SLOTS","why":"owner answered; building phase 1","ts":"2026-10-19T03:25:21Z","tsn":1792380321615862050}
