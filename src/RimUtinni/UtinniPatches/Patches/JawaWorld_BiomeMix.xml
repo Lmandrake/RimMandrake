@@ -133,7 +133,6 @@
           <li><key>BMT_CrystalCaverns</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>BMT_EarthenDepths</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>BMT_FungalForest</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>HorrorWastes</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>Glowforest</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>PoisonForest</key><value><scoreOffset>-4</scoreOffset></value></li>
         </biomeConfigs>

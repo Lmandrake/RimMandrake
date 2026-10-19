@@ -3313,58 +3313,6 @@
 
   <!-- moss (GRimMoss) - 970 tiles, home demands -8.6 … 70.1 °C
        minGrowthTem 0->-8.6  minOptimalGr 6->-0.5  maxOptimalGr 42->48.4  maxGrowthTem 58->70.1 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant/minGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant/minGrowthTemperature</xpath>
-            <value><minGrowthTemperature>-8.6</minGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant</xpath>
-            <value><minGrowthTemperature>-8.6</minGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant/minOptimalGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant/minOptimalGrowthTemperature</xpath>
-            <value><minOptimalGrowthTemperature>-0.5</minOptimalGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant</xpath>
-            <value><minOptimalGrowthTemperature>-0.5</minOptimalGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant/maxOptimalGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant/maxOptimalGrowthTemperature</xpath>
-            <value><maxOptimalGrowthTemperature>48.4</maxOptimalGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant</xpath>
-            <value><maxOptimalGrowthTemperature>48.4</maxOptimalGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant/maxGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant/maxGrowthTemperature</xpath>
-            <value><maxGrowthTemperature>70.1</maxGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="GRimMoss"]/plant</xpath>
-            <value><maxGrowthTemperature>70.1</maxGrowthTemperature></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
   <!-- bindweed (IronScruff_Bindweed) - 44 tiles, home demands 26.9 … 70.8 °C
        minGrowthTem 0->0  minOptimalGr 6->7.3  maxOptimalGr 42->51.3  maxGrowthTem 58->70.8 -->
   <Operation Class="PatchOperationConditional">

@@ -35,8 +35,8 @@
   it. A predicate that selects an `<li>` BY ITS OWN TEXT is `li[.="..."]`, which
   RimWorld accepts and the offline validator cannot evaluate - it has no child to
   predicate on - so it would report 0 matches and look exactly like a dead xpath.
-  Replacing the parent keeps both engines in agreement. Same reasoning as
-  GrimTerraTexPaths_Fix.xml.
+  Replacing the parent keeps both engines in agreement. Same reasoning as the
+  retired GRiNDTerra tex-path fix.
 
   ⛔ DO NOT EDIT THE WORKSHOP FOLDER. Steam overwrites it on the next update.
   ============================================================================

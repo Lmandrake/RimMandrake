@@ -165,7 +165,7 @@
       <RSW_ScrapNestBird MayRequire="mandrake.rsw.swbestiary">0.45</RSW_ScrapNestBird>  <!-- SHRUBLAND_SCRAPNEST_BIRDS_1: the §4 scrap-nest bird-analog; the tunnel snake's own prey -->
       <RSW_Scurrier MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Scurrier>  <!-- scurrier - small-runway, keep -->
       <RSW_Sketto MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Sketto>  <!-- sketto - small-runway, keep -->
-      <Terrorworm MayRequire="mlie.horrors">0.7</Terrorworm>  <!-- terrorworm - medium-tunnel, keep -->
+      <RM_Vurra MayRequire="mandrake.rsw.swbestiary">0.7</RM_Vurra>  <!-- vurra (our port of the donor terrorworm) - medium-tunnel, keep -->
       <RSW_Igitz MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Igitz>  <!-- igitz - small-runway, keep -->
       <RSW_Urusai MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Urusai>  <!-- urusai - medium-interface, keep -->
       <RSW_Kybuck MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Kybuck>  <!-- kybuck - medium-runner, keep -->

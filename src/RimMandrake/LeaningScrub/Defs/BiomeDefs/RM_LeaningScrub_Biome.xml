@@ -162,7 +162,7 @@
       <Overcast MayRequire="Ludeon.RimWorld.Odyssey">5</Overcast>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <Terrorworm MayRequire="mlie.horrors">0.7</Terrorworm>  <!-- terrorworm - non-Star-Wars donor, Q9 -->
+      <RM_Vurra MayRequire="mandrake.rsw.swbestiary">0.7</RM_Vurra>  <!-- vurra - our port of the donor terrorworm (RSW_DesertPortMisc_Races.xml), Q9 -->
       <RM_Chikka MayRequire="mandrake.rsw.swbestiary">0.25</RM_Chikka>  <!-- cactipine - non-Star-Wars donor, Q9 -->
       <RM_Durrok MayRequire="mandrake.rsw.swbestiary">0.1</RM_Durrok>  <!-- wildpawn - non-Star-Wars donor, Q9 -->
       <RM_Mullgoth MayRequire="mandrake.rsw.swbestiary">0.025</RM_Mullgoth>  <!-- wildpod - non-Star-Wars donor, Q9 -->

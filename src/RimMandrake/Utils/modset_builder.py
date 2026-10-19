@@ -508,10 +508,8 @@ TIERS = {
                "BiomeDef carry its 5 inline non-Star-Wars fauna rows plus its "
                "renamed RM_ plant defs, and does WildAnimals_LeaningScrub.xml "
                "(UtinniPatches) land its 40 Star Wars PatchOperationAdd rows onto "
-               "it. mlie.horrors is named explicitly for Terrorworm, which "
-               "SWBestiary/BiomeCast do not carry — closure only walks "
-               "<modDependencies>, and this biome's def MayRequire's it "
-               "directly.",
+               "it. Its Terrorworm row is now RM_Vurra (SWBestiary), so no "
+               "donor is named explicitly any more.",
         "want": [
             BRIDGE,
             # BAROQUE_BIOMES_WAVE2_FOLD_1: leaningscrub + environmentalhazards
@@ -521,7 +519,6 @@ TIERS = {
             "mandrake.rut.patches",
             "sarg.alphaanimals",
             "mlie.starwarsanimalcollection",
-            "mlie.horrors",
         ],
         "dlc": True,
     },
@@ -784,7 +781,7 @@ TIERS["acc_20261009b"] = {
            "swbestiary + Utinni/StarWars patch layers, graffiti, rites, wasterun, warcasket) so ~60 skipped criteria and "
            "everything built after the first deploy (Illisk, venomvines, LongShade, WasteRun proof hooks) can be measured.",
     "want": list(TIERS["acc_20261009"]["want"]) + ["mandrake.rsw.bacta", "mandrake.rm.bazaar", "mandrake.rut.empirepursuit", "mandrake.rut.cathedralpass",
-             "mandrake.rsw.swbestiary", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mlie.horrors", "mandrake.rm.graffiti", "mandrake.rut.rites", "mandrake.rut.wasterun",
+             "mandrake.rsw.swbestiary", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mandrake.rm.graffiti", "mandrake.rut.rites", "mandrake.rut.wasterun",
              "mandrake.rm.warcasket"],
     "dlc": True,
 }

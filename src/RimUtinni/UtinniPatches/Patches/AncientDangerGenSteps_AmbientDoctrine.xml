@@ -171,67 +171,6 @@
     </match>
   </Operation>
 
-  <!-- GRiNDTerra Biomes: BiomeGRimond, BiomeCypreJungle, both RARE. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>GRiNDTerra Biomes</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <success>Always</success>
-      <operations>
-
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/preventGenSteps</xpath>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]</xpath>
-            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
-          </nomatch>
-          <match Class="PatchOperationAdd">
-            <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/preventGenSteps</xpath>
-            <value><li>ScatterShrines</li></value>
-          </match>
-        </li>
-
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/extraGenSteps</xpath>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]</xpath>
-            <value><extraGenSteps><li>RUT_ScatterShrinesRare</li></extraGenSteps></value>
-          </nomatch>
-          <match Class="PatchOperationAdd">
-            <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/extraGenSteps</xpath>
-            <value><li>RUT_ScatterShrinesRare</li></value>
-          </match>
-        </li>
-
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/preventGenSteps</xpath>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]</xpath>
-            <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
-          </nomatch>
-          <match Class="PatchOperationAdd">
-            <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/preventGenSteps</xpath>
-            <value><li>ScatterShrines</li></value>
-          </match>
-        </li>
-
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/extraGenSteps</xpath>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]</xpath>
-            <value><extraGenSteps><li>RUT_ScatterShrinesRare</li></extraGenSteps></value>
-          </nomatch>
-          <match Class="PatchOperationAdd">
-            <xpath>/Defs/BiomeDef[defName="BiomeCypreJungle"]/extraGenSteps</xpath>
-            <value><li>RUT_ScatterShrinesRare</li></value>
-          </match>
-        </li>
-
-      </operations>
-    </match>
-  </Operation>
-
   <!-- Advanced Biomes (Continued): PoisonForest, RARE. -->
   <Operation Class="PatchOperationFindMod">
     <mods>

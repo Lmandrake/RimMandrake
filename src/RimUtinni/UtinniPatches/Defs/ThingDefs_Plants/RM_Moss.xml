@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Moss.xml - plain port of GRiNDTerra's GRimMoss (grimterra.biomesmod), 2026-10-18, so the donor can retire.
+  Stats verbatim; the Ash'karr growth band (PlantTolerances_Ashkarr.xml: -8.6/-0.5/48.4/70.1) and the ground-cover
+  altitudeLayer (RUT_GroundCoverDrawLayer.xml) are baked in here and those donor-targeting patch ops are deleted.
+  Art: donor pictures copied as marked stand-ins through the art ledger (donor_standins.py); regenerate later.
+-->
+<Defs>
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Moss</defName>
+    <label>moss</label>
+    <description>Wild moss that grows in clumps in areas of low light and cool temperatures. Moss takes a long time to grow, but is very frost-resistant.</description>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <Nutrition>0.50</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plant/GRimMoss</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>4</growDays>
+      <leaflessGraphicPath>StandIn/Things/Plant/GRimMoss_Leafless</leaflessGraphicPath>
+      <pollutedGraphicPath>Things/Plant/Moss_Polluted</pollutedGraphicPath>
+      <harvestWork>60</harvestWork>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <topWindExposure>0.0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <pollution>Any</pollution>
+      <minGrowthTemperature>-8.6</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-0.5</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>48.4</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>70.1</maxGrowthTemperature>
+    </plant>
+  </ThingDef>
+</Defs>

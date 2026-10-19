@@ -17,7 +17,6 @@
     <li>IronScruff.PrimordialGeysers</li>                   <!-- BiomeAnimalDanglingRefs_Fix.xml - patches nodes ITS OWN patch creates; must load after -->
     <li>det.buzzers</li>                                    <!-- BuzzerApostrophe_Fix.xml -->
     <li>mlie.miningcodrillturret</li>                       <!-- DrillTurret_ShootingJob.xml -->
-    <li>GRimTerra.Biomesmod</li>                            <!-- GrimTerraTexPaths_Fix.xml -->
     <li>Nals.FacialAnimation</li>                           <!-- HeadSetForFA_Revive.xml - supplies the FaceAdjustmentDef TYPE -->
     <li>DanZinagri.FacialAnimationCompatabilityProject</li> <!-- HeadSetForFA_Revive.xml - creates BS_InsectoidHumanoid_FourArmed_FaceAdjustment; must load after -->
     <li>ab.hoffa</li>                                       <!-- HeadSetForFA_Revive.xml - the mod being revived (not in the current active list; the patch no-ops harmlessly until it is) -->
