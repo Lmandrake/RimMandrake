@@ -382,38 +382,6 @@
     </match>
   </Operation>
 
-  <!-- RG_BerryCultivation -> Jawa Scavenging (RUT_Tree_Scavenging) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]/tab</xpath>
-        <value><tab>RUT_Tree_Scavenging</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="RG_BerryCultivation"]</xpath>
-        <value><tab>RUT_Tree_Scavenging</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <!-- RG_MushroomCultivation -> Jawa Scavenging (RUT_Tree_Scavenging) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="RG_MushroomCultivation"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="RG_MushroomCultivation"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="RG_MushroomCultivation"]/tab</xpath>
-        <value><tab>RUT_Tree_Scavenging</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="RG_MushroomCultivation"]</xpath>
-        <value><tab>RUT_Tree_Scavenging</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
-
   <!-- RR_BasicApparel -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ResearchProjectDef[defName="RR_BasicApparel"]</xpath>

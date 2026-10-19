@@ -1331,42 +1331,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>ReGrowth 2</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- RG_DinosaursHideHeavy : large beast -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RG_DinosaursHideHeavy"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RG_DinosaursHideHeavy"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.30</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.42</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RG_DinosaursHideHeavy"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.30</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
-              <ArmorRating_Heat>0.42</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.00</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
   <!-- Ops on defs THIS mod declares (mostly absorbed donors). No
        PatchOperationFindMod: def and patch ship in the same mod, so naming
        ourselves is a tautology dressed as a guard, and that shape has
