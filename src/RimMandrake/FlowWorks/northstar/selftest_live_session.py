@@ -396,6 +396,12 @@ class FakeEventSession(object):
 
     row = L.Session.row          # the REAL row(): its zone demotion is what the site checks below exercise
 
+    def sget(self, f):           # B6 turns rain fill off for the flood row and restores it
+        return getattr(self, "_settings", {}).get(f, True)
+
+    def sset(self, f, v):
+        self.__dict__.setdefault("_settings", {})[f] = v
+
     def say(self, s):
         pass
 
