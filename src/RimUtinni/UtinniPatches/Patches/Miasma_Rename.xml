@@ -111,28 +111,6 @@
     </match>
   </Operation>
 
-  <!-- ============== VFEI2_BlackSwarmling -> ondrukka — owner: "Picture good, rewrite the description please and rename. (name invented: ondrukka)" ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="VFEI2_BlackSwarmling"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="VFEI2_BlackSwarmling"]/label</xpath>
-          <value><label>ondrukka</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="VFEI2_BlackSwarmling"]/description</xpath>
-          <value><description>Glossy black grubs no longer than a hand, crawling in loose, chittering heaps through the Miasma's leaf-rot. Ondrukka are the young of something larger: left alone, each one eventually seals itself into a cocoon and splits out as an adult of the dark hive — and nothing about the grub tells you which kind. Slow, soft and easy to crush, they are harmless on their own, and other animals give a heap of them a wide berth all the same. What matters is how many there are, and how long they have been left.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="VFEI2_BlackSwarmling"]</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef[defName="VFEI2_BlackSwarmling"]/label</xpath>
-      <value><label>ondrukka</label></value>
-    </match>
-  </Operation>
+  <!-- VFEI2_BlackSwarmling -> ondrukka stood here; the ondrukka is our own RM_Ondrukka (Miasma) and the donor def is gone (insectoid2 and alphaanimals retired 2026-10-18). -->
 
 </Patch>

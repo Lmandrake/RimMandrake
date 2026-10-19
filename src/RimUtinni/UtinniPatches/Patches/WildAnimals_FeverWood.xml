@@ -5,8 +5,8 @@
   ============================================================================
 
   Puts the campaign's Fever Wood Star-Wars-canon fauna/flora onto
-  RM_FeverWood, alongside the one non-Star-Wars-donor animal row
-  (VFEI2_Megathrips) and three non-Star-Wars-donor plant rows
+  RM_FeverWood, alongside the one non-Star-Wars animal row
+  (RM_Kasselith, our port of the donor VFEI2_Megathrips) and three non-Star-Wars-donor plant rows
   (AB_KeeningCordax/AB_Iashiphus/AB_Gomphoeria) that ship inline on
   src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml itself, per Q9.
   Same shape as WildAnimals_Pyrelands.xml / WildAnimals_Greentide.xml.
@@ -60,7 +60,7 @@
   before believing this file works, same standing caveat as every sibling
   WildAnimals_*.xml in this folder.
 
-  RM_FeverWood's own inline rows (VFEI2_Megathrips, AB_KeeningCordax,
+  RM_FeverWood's own inline rows (RM_Kasselith, AB_KeeningCordax,
   AB_Iashiphus, AB_Gomphoeria, RM_GiantLeaf) need no patch — they are direct
   fields on the BiomeDef itself, added onto by this file, never replaced.
 -->

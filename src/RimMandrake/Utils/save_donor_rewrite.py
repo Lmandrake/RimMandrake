@@ -57,6 +57,10 @@ EXPLICIT = {
     # shrimps (4da613788), ondrukka (aabcd7a5a), twin-only slime family (3021d7031, 3fbec5530)
     "AA_BloodShrimp": "RM_Zrrik", "AA_RaptorShrimp": "RM_Sharpshrimp",
     "VFEI2_BlackSwarmling": "RM_Ondrukka",
+    # VFE Insectoids 2 retirement 2026-10-18 (creatures + hive-vault fixtures)
+    "VFEI2_Swarmling": "RM_Saluksis", "VFEI2_Megathrips": "RM_Kasselith",
+    "VFEI2_InsectJellyWall": "RUT_InsectJellyWall", "VFEI2_InfestedShipPart": "RUT_InfestedShipPart",
+    "VFEI2_InfestedShipChunk": "RUT_InfestedShipChunk",
     "AA_GreenGoo": "RM_Wuum", "AA_AcanthamoebaGiganteaSmall": "RM_LesserOomb",
     "AA_AcanthamoebaGiganteaLarge": "RM_Oomb", "AA_AcanthamoebaGiganteaHuge": "RM_GreaterOomb",
 }

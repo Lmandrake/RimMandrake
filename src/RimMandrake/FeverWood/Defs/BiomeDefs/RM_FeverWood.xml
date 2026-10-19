@@ -15,8 +15,8 @@
   ⛔ Star Wars canon fauna/flora do NOT ship here (Q11a) — every RSW_/donor
   row that carries a canon or franchise name rides
   src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml instead (10
-  animal rows, 3 plant rows). VFEI2_Megathrips (non-Star-Wars donor) stays
-  inline per Q9. RUT_GiantLeaf is duplicated as this mod's own RM_GiantLeaf
+  animal rows, 3 plant rows). RM_Kasselith (our port of the non-Star-Wars donor
+  VFEI2_Megathrips, 2026-10-18) stays inline per Q9. RUT_GiantLeaf is duplicated as this mod's own RM_GiantLeaf
   (Q13 — see Defs/ThingDefs_Plants/RM_GiantLeaf.xml for why this is a
   duplicate, not a move: the donor def is also an unconditional row in
   RUT_Greentide.xml). FEVERWOOD_FLORA_ROSTER_1 cut the 3 AB_* donor
@@ -212,7 +212,7 @@
          rows from the twin ride WildAnimals_FeverWood.xml (Utinni patch)
          instead — Q11a. -->
     <wildAnimals>
-      <VFEI2_Megathrips MayRequire="oskarpotocki.vfe.insectoid2">0.5</VFEI2_Megathrips>  <!-- kasselith (renamed from megathrips, Feverwood sheet 2026-10-08) - wood-borer, keep -->
+      <RM_Kasselith>0.5</RM_Kasselith>  <!-- kasselith (renamed from megathrips, Feverwood sheet 2026-10-08) - wood-borer, keep; our port of VFEI2_Megathrips, donor retired 2026-10-18 -->
 
       <!-- FEVERWOOD_SAP_SUCKER_GUILD_1: the sap-drinker guild, four species,
            one rule ("clamped to bark, drinks sap, does not flee"), four
