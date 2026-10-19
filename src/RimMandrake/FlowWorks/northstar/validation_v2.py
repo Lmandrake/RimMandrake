@@ -2285,8 +2285,11 @@ def phase_site(L, args):
         pw = B.call("jawa/list_pawns", limit=500)
         inside = [(p.get("id") or p.get("thingId"), p.get("position") or (p.get("x"), p.get("z"))) for p in pw.get("pawns") or []
                   if _in_any(_pos(p), rects)]
-        pawn_part = ("no_pawn_in_plots", not inside, "SITE", inside or "%d pawns, none in %d plot rects" % (
-            len(pw.get("pawns") or []), len(rects)))
+        # an unread pawn list is not "no pawn in the plots" (full read 2026-10-19: a failed list_pawns read "0 pawns, none in")
+        pawn_part = ("no_pawn_in_plots", None, "HARNESS", "list_pawns unreadable: %s" % str(pw)[:200]) \
+            if not (pw.get("success") and isinstance(pw.get("pawns"), list)) else \
+            ("no_pawn_in_plots", not inside, "SITE", inside or "%d pawns, none in %d plot rects" % (
+                len(pw.get("pawns") or []), len(rects)))
         if inside:
             _fold(L, "L4_site_ready", [pawn_part])
             raise Abort("a pawn stands in a plot rect")
@@ -2785,11 +2788,16 @@ def phase_J(L, args):
               "pulseIntervalTicks set 30 -> engine reads %s (clamp floor %d)" % (e2.get("pulseIntervalTicks"), PULSE_PIN))
         hist, chunks, done = [], 0, {}
         t_start = e2.get("ticksGame")
-        while True:
+        # full read 2026-10-19: the loop ended only on "jobs done" or "ran >= cap", so a step that runs 0 ticks (the day-3
+        # symptom, E4_off above) spun it forever. Bounded by chunk count, and 3 chunks in a row with no tick end it.
+        max_chunks, stalled, last_t = args.max_job_ticks // PULSE_PIN + 10, 0, t_start
+        while chunks < max_chunks and stalled < 3:
             B.call("rimworld/step_game_ticks", ticks=PULSE_PIN, pauseFirst=True, timeoutMs=120000)
             chunks += 1
             e = L.eng()
             hist.append((e.get("ticksGame"), e.get("nextPulseTick")))
+            stalled = stalled + 1 if e.get("ticksGame") == last_t else 0
+            last_t = e.get("ticksGame")
             q8, q7a, q7b = L.cells_read([e8, e7a, e7b])
             done = {"E8": q8["d"] == 1, "E7a": q7a["d"] == 0, "E7b": q7b["d"] == 0}
             ran = e.get("ticksGame") - t_start
@@ -2813,18 +2821,27 @@ def phase_J(L, args):
         first = fired[0] if fired else len(hist)
         gaps = [b[1] - a[1] for a, b in zip(hist[first:], hist[first + 1:])]
         lead = [n - t for t, n in hist[first:]]
-        L.row("E1c_cadence_real_scheduler", bool(fired) and all(g == PULSE_PIN for g in gaps)
-              and all(0 < x <= PULSE_PIN for x in lead) and len(hist) - first >= 2, "MOD",
-              "%d chunks of %d ticks, first pulse in chunk %s: nextPulseTick advances %s, lead %s" % (
-                  chunks, PULSE_PIN, first + 1 if fired else None, sorted(set(gaps)), sorted(set(lead))))
+        # the clock must have run for the scheduler to be asked at all: under two pinned cadences of ticks is UNMEASURED
+        clock_ran = spent >= 2 * PULSE_PIN
+        clock_note = "the clock did not run: %s ticks over %d chunks of %d (stalled %d)" % (spent, chunks, PULSE_PIN, stalled)
+        if not clock_ran:
+            L.row("E1c_cadence_real_scheduler", False, "HARNESS", clock_note, status="UNMEASURED")
+        else:
+            L.row("E1c_cadence_real_scheduler", bool(fired) and all(g == PULSE_PIN for g in gaps)
+                  and all(0 < x <= PULSE_PIN for x in lead) and len(hist) - first >= 2, "MOD",
+                  "%d chunks of %d ticks, first pulse in chunk %s: nextPulseTick advances %s, lead %s" % (
+                      chunks, PULSE_PIN, first + 1 if fired else None, sorted(set(gaps)), sorted(set(lead))))
         for _ in range(live_pulses):
             L.o.pulse()
         snap2 = _snapshot(L)
         diff = sorted((c, snap2.get(c), (L.o.D.get(c, 0), L.o.F.get(c, 0))) for c in snap2
                       if snap2[c] != (L.o.D.get(c, 0), L.o.F.get(c, 0)))
         e4 = [snap2[c][1] for c in SCENES["E4_engine"]["cells"]]
-        L.row("E4_engine_on_scheduled", not diff and sum(e4) > 0, "MOD", diff[:4] or
-              "after %d real scheduled pulses every oracle cell == oracle; E4 channel %s" % (live_pulses, e4))
+        if not clock_ran:
+            L.row("E4_engine_on_scheduled", False, "HARNESS", clock_note, status="UNMEASURED")
+        else:
+            L.row("E4_engine_on_scheduled", not diff and sum(e4) > 0, "MOD", diff[:4] or
+                  "after %d real scheduled pulses every oracle cell == oracle; E4 channel %s" % (live_pulses, e4))
         wr = (B.call("jawa/weather_get").get("weather") or {}).get("rainRate") or 0.0
         would = 0.5 * wr * live_pulses * 1.0     # levels the rain WOULD have added (rate rose ~linearly)
         if wr <= 0.01 or would < 1.5:
@@ -2843,7 +2860,15 @@ def phase_J(L, args):
                 jobs_info[k] = {x: pp.get(x) for x in ("position", "curJob", "job", "jobDef", "drafted", "downed")}
         q7 = {k: L.cells_read(SCENES[k]["cells"]) for k in ("E7a_fillin", "E7b_overflow")}
         dov = (e3.get("overflowDestroyedTotal") or 0) - (ov0 or 0)
-        if done.get("E7a"):
+        # full read 2026-10-19: dig_scene's prefill is not checked, so an E7a run left dry (0,0,0) "conserved" 0 -> 0 and
+        # PASSed with nothing displaced. The prefill read before the order must be the scene's own.
+        pre_bad = {k: (sum7[k], sum(SCENES[k]["fill"])) for k in sum7 if sum7[k] != sum(SCENES[k]["fill"])}
+        if pre_bad:
+            for k in ("E7a_fillin", "E7b_overflow"):
+                L.row("E7a_fillin_displaces" if k == "E7a_fillin" else "E7b_overflow_sanctioned", False, "HARNESS",
+                      "precondition: prefilled sum F %s, scene asks %s (the fill write did not take)" % pre_bad.get(
+                          k, (sum7[k], sum(SCENES[k]["fill"]))), status="UNMEASURED")
+        elif done.get("E7a"):
             s_after = sum(q["f"] for q in q7["E7a_fillin"])
             mid = q7["E7a_fillin"][1]
             L.row("E7a_fillin_displaces", s_after == sum7["E7a_fillin"] and mid.get("terrain") == "Soil" and not mid["isExcavated"],
@@ -2852,7 +2877,9 @@ def phase_J(L, args):
         else:
             L.row("E7a_fillin_displaces", False, "UNRESOLVED", "job not done in %d ticks (cap %d): %s" % (spent, cap, jobs_info),
                   status="UNMEASURED")
-        if done.get("E7b"):
+        if pre_bad:
+            pass                                # E7b's UNMEASURED row was written with E7a's above
+        elif done.get("E7b"):
             s_after = sum(q["f"] for q in q7["E7b_overflow"])
             L.row("E7b_overflow_sanctioned", s_after == sum7["E7b_overflow"] - 1 and abs(dov - 1) < 1e-3, "MOD",
                   "no room: sum F %s -> %s, overflowDestroyedTotal +%s (want +1)" % (sum7["E7b_overflow"], s_after, dov))
@@ -2892,6 +2919,9 @@ def phase_rain(L, args):
                 if rdef.strip() not in ("None", "Clear"):
                     roofed.update((x + i, z + j) for i in range(ww) for j in range(hh))
         o_open, o_roof = SCENES["E6_open"]["cells"][0], SCENES["E6_roofed"]["cells"][0]
+        if not (rr.get("success") and isinstance(rr.get("ops"), str)):     # an unread roof is not a SITE fault
+            L.row("E6_roof_readback", False, "HARNESS", "get_roof_batch unreadable: %s" % str(rr)[:200], status="UNMEASURED")
+            return
         if not L.row("E6_roof_readback", o_roof in roofed and o_open not in roofed, "SITE",
                      "roofed excavated cells %s" % sorted(roofed)[:6]):
             return
@@ -2941,6 +2971,14 @@ def _order_row(o, pid):
 def _order_measured(row):
     """An order that can be evidence of a refusal: the pawn got it (orderAccepted) and the game ticked."""
     return row.get("orderAccepted") is True and (row.get("ticksElapsed") or 0) > 0
+
+
+def _orders_unmeasured(**rows):
+    """None when every named order was taken and the game ticked; else the reason (full read 2026-10-19: P4/P4f/P5n/X2-X4
+    read "arrived False" off an order that never ran as a MOD FAIL; only P3 guarded it)."""
+    bad = ["%s (orderAccepted %s, ticksElapsed %s)" % (k, r.get("orderAccepted"), r.get("ticksElapsed"))
+           for k, r in sorted(rows.items()) if not _order_measured(r)]
+    return ("order not measurable: " + "; ".join(bad)) if bad else None
 
 
 def phase_P(L, args):
@@ -3060,7 +3098,9 @@ def phase_P(L, args):
             ctrl_ok = _order_measured(o_fc) and o_fc.get("arrived") is False and _pit_pawn(r_fc, fp) is None
             df = r_fc.get("descentCount") or 0
             ok_f, lf, tf = _proof(B, "ProofForcedFlyer", "%s,%d,%d" % (fp, wc[0], wc[1]))
+            tk_land0 = L.eng().get("ticksGame")
             st_land = B.call("rimworld/step_game_ticks", ticks=FLYER_LAND_TICKS, pauseFirst=True, timeoutMs=120000)
+            tk_land = (L.eng().get("ticksGame") or 0) - (tk_land0 or 0)
             r_f = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
             pf = _pit_pawn(r_f, fp)
             rec_f = [d for d in r_f.get("recentDescents") or [] if d.startswith(fp + "@")]
@@ -3076,8 +3116,10 @@ def phase_P(L, args):
             if not p3f_unm and not _order_measured(o_fc):
                 p3f_unm = "control order not measurable: orderAccepted %s, ticksElapsed %s" % (
                     o_fc.get("orderAccepted"), o_fc.get("ticksElapsed"))
-            if not p3f_unm and st_land.get("success") is False:
-                p3f_unm = "landing window not stepped: step_game_ticks replied %s" % str(st_land)[:200]
+            if not p3f_unm and (st_land.get("success") is False or tk_land < FLYER_LAND_TICKS // 2):
+                # full read 2026-10-19: a success reply that ran 0 ticks (the day-3 symptom) left the flyer in the air
+                p3f_unm = "landing window not stepped: %s of %d ticks ran; step_game_ticks replied %s" % (
+                    tk_land, FLYER_LAND_TICKS, str(st_land)[:200])
             if p3f_unm:
                 L.row("P3f_forced_entry_falls", False, "HARNESS", p3f_unm, status="UNMEASURED")
             else:
@@ -3106,14 +3148,18 @@ def phase_P(L, args):
             pl = _pit_pawn(r_l, a) or {}
             rec_l = [d for d in r_l.get("recentDescents") or [] if d.startswith(a + "@")]
             o_l = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), a)
-            L.row("P4_ladder_frees", ok_rd and lrd.get("raised") == "False" and r_l.get("hasLadder") is True
-                  and o_l_in.get("arrived") is True and pl.get("spawned") is True and not rec_l and pl.get("held") is False
-                  and (pl.get("lipReachable") or 0) > 0 and o_l.get("arrived") is True, "MOD",
-                  "ladder spawned %s lowered %s hasLadder %s; climbed down: arrived %s, falls %d, held %s lip %s/%s; "
-                  "ordered out: arrived %s; %s" % (
-                      sb.get("success"), lrd.get("raised") == "False", r_l.get("hasLadder"), o_l_in.get("arrived"),
-                      len(rec_l), pl.get("held"), pl.get("lipReachable"), pl.get("lipCells"), o_l.get("arrived"),
-                      alive(r_l, a)))
+            p4_unm = _orders_unmeasured(climb_down=o_l_in, walk_out=o_l)
+            if p4_unm:
+                L.row("P4_ladder_frees", False, "HARNESS", p4_unm, status="UNMEASURED")
+            else:
+                L.row("P4_ladder_frees", ok_rd and lrd.get("raised") == "False" and r_l.get("hasLadder") is True
+                      and o_l_in.get("arrived") is True and pl.get("spawned") is True and not rec_l and pl.get("held") is False
+                      and (pl.get("lipReachable") or 0) > 0 and o_l.get("arrived") is True, "MOD",
+                      "ladder spawned %s lowered %s hasLadder %s; climbed down: arrived %s, falls %d, held %s lip %s/%s; "
+                      "ordered out: arrived %s; %s" % (
+                          sb.get("success"), lrd.get("raised") == "False", r_l.get("hasLadder"), o_l_in.get("arrived"),
+                          len(rec_l), pl.get("held"), pl.get("lipReachable"), pl.get("lipCells"), o_l.get("arrived"),
+                          alive(r_l, a)))
             # P4f: the P3f pawn, forced in and held, is freed by the same lowered ladder (and took no second fall).
             pff = _pit_pawn(r_ff, fp) or {}
             rec_ff = [d for d in r_l.get("recentDescents") or [] if d.startswith(fp + "@")]
@@ -3125,6 +3171,8 @@ def phase_P(L, args):
                 L.row("P4f_ladder_frees_forced", False, "SITE", "precondition: the forced pawn was not held in the pit "
                       "before the ladder (in cell %s, held %s): see P3f" % (pf is not None, (pf or {}).get("held")),
                       status="UNMEASURED")
+            elif _orders_unmeasured(walk_out=o_ff_out):
+                L.row("P4f_ladder_frees_forced", False, "HARNESS", _orders_unmeasured(walk_out=o_ff_out), status="UNMEASURED")
             else:
                 L.row("P4f_ladder_frees_forced", ok_rd and r_ff.get("hasLadder") is True and pff.get("spawned") is True
                       and pff.get("held") is False and (pff.get("lipReachable") or 0) > 0 and len(rec_ff) == 1
@@ -3170,12 +3218,16 @@ def phase_P(L, args):
         r_c = B.call("jawa/flowworks_pit_report", x=cc[0], z=cc[1])
         pc = _pit_pawn(r_c, b) or {}
         o_out = _order_row(B.call("jawa/order_pawn", pawnId=b, x=cc[0], z=cc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), b)
-        L.row("P5n_own_faction_carveout", o_in.get("arrived") is True and pc.get("captured") is False
-              and pc.get("held") is False and not [d for d in r_c.get("recentDescents") or [] if d.startswith(b + "@")]
-              and o_out.get("arrived") is True,
-              "MOD", "carve-out ON (shipped), ladder %s: colonist in %s captured %s held %s descents %s->%s; out %s; %s" % (
-                  sbc.get("success"), o_in.get("arrived"), pc.get("captured"), pc.get("held"), d1, r_c.get("descentCount"),
-                  o_out.get("arrived"), alive(r_c, b)))
+        p5_unm = _orders_unmeasured(climb_down=o_in, walk_out=o_out)
+        if p5_unm:
+            L.row("P5n_own_faction_carveout", False, "HARNESS", p5_unm, status="UNMEASURED")
+        else:
+            L.row("P5n_own_faction_carveout", o_in.get("arrived") is True and pc.get("captured") is False
+                  and pc.get("held") is False and not [d for d in r_c.get("recentDescents") or [] if d.startswith(b + "@")]
+                  and o_out.get("arrived") is True,
+                  "MOD", "carve-out ON (shipped), ladder %s: colonist in %s captured %s held %s descents %s->%s; out %s; %s" % (
+                      sbc.get("success"), o_in.get("arrived"), pc.get("captured"), pc.get("held"), d1, r_c.get("descentCount"),
+                      o_out.get("arrived"), alive(r_c, b)))
         for pid in col.values():
             B.call("jawa/set_pawn_faction", pawn=pid, faction="none")
         B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
@@ -3236,10 +3288,14 @@ def _litres(L, c):
     return int(m.group(1).replace(",", "")) if m else None
 
 
-def _x_two_oracle(exact, tar_row, water_row):
+def _x_two_oracle(exact, tar_row, water_row, pulse0=0):
     """X_two alone after phase X's 3 + 9 pulses: the tar row (D=1, one notch each), the water row (D=1, one notch each)
-    and the dry D=2 junction between them, through the engine the game runs (exact or whole-notch)."""
+    and the dry D=2 junction between them, through the engine the game runs (exact or whole-notch). pulse0 = the map's
+    scribed pulse count before the first of them: tar moves only on pulses that are a multiple of its stride
+    (RM_StockMath.FluidMovesThisPulse over PulseCount), so the race at the junction depends on it (full read 2026-10-19:
+    the oracle started at 0, right only when the map's count happened to sit on a stride boundary)."""
     o = PulseOracle(MAP_W, MAP_H, {}, {}, algo="fixed", level_exact=exact, **CREEP_LIVE)
+    o.pulse_n = pulse0
     for c in tar_row + water_row:
         o.dig(c, 1)
         o.set_fill(c, 1)
@@ -3321,25 +3377,32 @@ def phase_X(L, args):
         # so the colonist climbs down it. The sink/wall numbers are read exactly as before.
         B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % tuple(strip[-1]))
         _proof(B, "ProofLadder", "%d,%d,lower" % tuple(strip[-1]))
-        _, k0, _ = _proof(B, "ProofPawnSink", col)
+        okk0, k0, _ = _proof(B, "ProofPawnSink", col)
         o_in = _order_row(B.call("jawa/order_pawn", pawnId=col, x=strip[-1][0], z=strip[-1][1], waitTicks=PIT_WAIT_IN, draft=True), col)
         ok4, k4, t4 = _proof(B, "ProofPawnSink", col)
         o_out = _order_row(B.call("jawa/order_pawn", pawnId=col, x=X_WALK[0], z=X_WALK[1], waitTicks=PIT_WAIT_IN, draft=True), col)
         ok0, k1, t1 = _proof(B, "ProofPawnSink", col)
-        L.row("X2_pawn_lowers_walking_in", ok4 and o_in.get("arrived") is True and _sink_ok(k0, 0) and _sink_ok(k4, 4), "MOD",
-              "walked D0->D4 arrived %s: sink %s -> %s (drawDz %s) %s" % (o_in.get("arrived"), k0.get("sink"), k4.get("sink"),
-                                                                       k4.get("drawDz"), "" if ok4 else t4))
-        L.row("X3_pawn_rises_walking_out", ok0 and o_out.get("arrived") is True and _sink_ok(k4, 4) and _sink_ok(k1, 0), "MOD",
-              "walked D4->D0 arrived %s: sink %s -> %s (drawDz %s) %s" % (o_out.get("arrived"), k4.get("sink"), k1.get("sink"),
-                                                                       k1.get("drawDz"), "" if ok0 else t1))
-        try:
-            wall = float(k4.get("sink")) / FEET_TO_HEAD
-        except (TypeError, ValueError):
-            wall = None
-        L.row("X4_pit_wall_over_head", ok4 and _sink_ok(k4, 4) and wall is not None and wall >= 1.2 - 1e-6
-              and abs(float(k4.get("wallOverHead") or 0) - wall) < 1e-3, "MOD",
-              "colonist on D=4 drawn %s cells down; wall over crown %s x a person's height (owner: walls 20%% above "
-              "the head, >= 1.2)" % (k4.get("sink"), k4.get("wallOverHead")))
+        # full read 2026-10-19: an unread sink or an order that never ran is "could not ask", not a MOD FAIL
+        x_unm = _orders_unmeasured(walk_in=o_in, walk_out=o_out) or (
+            None if (okk0 and ok4 and ok0) else "ProofPawnSink unreadable: %s / %s / %s" % (okk0, t4[:80], t1[:80]))
+        if x_unm:
+            for rid in ("X2_pawn_lowers_walking_in", "X3_pawn_rises_walking_out", "X4_pit_wall_over_head"):
+                L.row(rid, False, "HARNESS", x_unm, status="UNMEASURED")
+        else:
+            L.row("X2_pawn_lowers_walking_in", o_in.get("arrived") is True and _sink_ok(k0, 0) and _sink_ok(k4, 4), "MOD",
+                  "walked D0->D4 arrived %s: sink %s -> %s (drawDz %s)" % (o_in.get("arrived"), k0.get("sink"), k4.get("sink"),
+                                                                        k4.get("drawDz")))
+            L.row("X3_pawn_rises_walking_out", o_out.get("arrived") is True and _sink_ok(k4, 4) and _sink_ok(k1, 0), "MOD",
+                  "walked D4->D0 arrived %s: sink %s -> %s (drawDz %s)" % (o_out.get("arrived"), k4.get("sink"), k1.get("sink"),
+                                                                        k1.get("drawDz")))
+            try:
+                wall = float(k4.get("sink")) / FEET_TO_HEAD
+            except (TypeError, ValueError):
+                wall = None
+            L.row("X4_pit_wall_over_head", _sink_ok(k4, 4) and wall is not None and wall >= 1.2 - 1e-6
+                  and abs(float(k4.get("wallOverHead") or 0) - wall) < 1e-3, "MOD",
+                  "colonist on D=4 drawn %s cells down; wall over crown %s x a person's height (owner: walls 20%% above "
+                  "the head, >= 1.2)" % (k4.get("sink"), k4.get("wallOverHead")))
         B.call("jawa/set_pawn_faction", pawn=col, faction="none")
         B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
 
@@ -3366,46 +3429,63 @@ def phase_X(L, args):
                   status="UNMEASURED")
             return
         _xpulse(L, 3)
-        _, race3, kv3 = _fluid_row(L, rt + rw)
+        ok3, race3, kv3 = _fluid_row(L, rt + rw)
         _xpulse(L, 9)
         okr, rows, kv = _fluid_row(L, two + rt + rw)
         t3, w3 = _level_at(race3, rt), _level_at(race3, rw)
         t12, w12 = _level_at(rows, rt), _level_at(rows, rw)
-        L.row("X7_tar_front_lags_water", okr and w3[0] == 3 and t3[0] in (0, 1) and t12[0] == 2 and w12[0] == 3
-              and t12[1] == w12[1] == 1 and t12[2] == [TAR] and w12[2] == [WATER], "MOD",
-              "gravity staircase D1..D4, one level each: after 3 pulses water at step %s, tar at %s; after 12 water %s, "
-              "tar %s (stride 6 PROVISIONAL = 360/60 ticksPerTile); levels %s/%s; pulse %s viscosity %s" % (
-                  w3[0], t3[0], w12[0], t12[0], w12[1], t12[1], kv.get("pulse"), kv.get("viscosity")))
-        tar_f = sum(rows.get(c, {}).get("f", 0) for c in tar_row)
-        wat_f = sum(rows.get(c, {}).get("f", 0) for c in water_row) + rows.get(X_JUNCTION, {}).get("f", 0)
-        wrong = [c for c in tar_row if rows.get(c, {}).get("f") and rows[c]["fluid"] != TAR] + \
-                [c for c in water_row + [X_JUNCTION] if rows.get(c, {}).get("f") and rows[c]["fluid"] != WATER]
-        tt = {rows[c]["terrain"] for c in tar_row if rows.get(c, {}).get("f")}
-        wt = {rows[c]["terrain"] for c in water_row + [X_JUNCTION] if rows.get(c, {}).get("f")}
-        j = rows.get(X_JUNCTION, {})
-        # the levels each row should show after the 3 + 9 pulses, from the engine the game runs: whole notch, the water row
-        # fills the D=2 junction to the brim (F=2, 4 levels); exact level (owner 2026-10-17) the four water notches lie at
-        # ONE surface over the row and the junction (junction 1.6 notch -> F=1, the row 0.6 -> F=0: 1 level shown)
-        xo = _x_two_oracle(getattr(L, "exact", LIVE_EXACT), tar_row, water_row)
-        want_tar, want_wat, want_j = (sum(xo.F[c] for c in tar_row), sum(xo.F[c] for c in water_row) + xo.F[X_JUNCTION],
-                                      xo.F[X_JUNCTION])
-        L.row("X6_two_fluids_distinct", okr and not wrong and tar_f == want_tar and wat_f == want_wat
-              and j.get("fluid") == WATER and j.get("f") == want_j and want_j > 0 and len(tt) == 1 and len(wt) == 1
-              and not (tt & wt) and not any(t.startswith("RM_Channel") for t in tt | wt), "MOD",
-              "tar row %s levels drawn %s | water row+junction %s levels drawn %s | junction %s F=%s (oracle tar %s, water %s, "
-              "junction %s: water reached it first and levelled into it; tar refused: no-mix) | wrong-fluid cells %s" % (
-                  tar_f, sorted(tt), wat_f, sorted(wt), j.get("fluid"), j.get("f"), want_tar, want_wat, want_j, wrong[:3]))
+        # full read 2026-10-19: an unread ProofFluidRow left {} and X6/X7 FAILed as MOD on no reading
+        if not (ok3 and okr and race3 and rows):
+            for rid in ("X7_tar_front_lags_water", "X6_two_fluids_distinct"):
+                L.row(rid, False, "HARNESS", "ProofFluidRow unreadable: after 3 pulses %s (%d cells), after 12 %s (%d cells): %s"
+                      % (ok3, len(race3), okr, len(rows), kv or kv3), status="UNMEASURED")
+        else:
+            L.row("X7_tar_front_lags_water", okr and w3[0] == 3 and t3[0] in (0, 1) and t12[0] == 2 and w12[0] == 3
+                  and t12[1] == w12[1] == 1 and t12[2] == [TAR] and w12[2] == [WATER], "MOD",
+                  "gravity staircase D1..D4, one level each: after 3 pulses water at step %s, tar at %s; after 12 water %s, "
+                  "tar %s (stride 6 PROVISIONAL = 360/60 ticksPerTile); levels %s/%s; pulse %s viscosity %s" % (
+                      w3[0], t3[0], w12[0], t12[0], w12[1], t12[1], kv.get("pulse"), kv.get("viscosity")))
+            # the levels each row should show after the 3 + 9 pulses, and WHICH fluid reached the dry D=2 junction first, from
+            # the engine the game runs started at the map's own pulse count (full read 2026-10-19: the row asserted "water
+            # first" always; tar's stride phase decides it, and on a loaded save either can win -- no-mix is the bar)
+            try:
+                pulse0 = int(kv3.get("pulse")) - 3          # ProofFluidRow prints the map's PulseCount after the first 3
+            except (TypeError, ValueError):
+                pulse0 = None
+            xo = _x_two_oracle(getattr(L, "exact", LIVE_EXACT), tar_row, water_row, pulse0=pulse0 or 0)
+            allc = tar_row + water_row + [X_JUNCTION]
+            fl_of = lambda c: (rows[c]["fluid"] if rows.get(c, {}).get("f") else None)          # noqa: E731
+            want_fl = lambda c: ((xo.fluid.get(c, WATER)) if xo.F.get(c, 0) else None)          # noqa: E731
+            cell_bad = [(c, rows.get(c, {}).get("f"), fl_of(c), xo.F.get(c, 0), want_fl(c)) for c in allc
+                        if (rows.get(c, {}).get("f"), fl_of(c)) != (xo.F.get(c, 0), want_fl(c))]
+            # no-mix: every wet cell of a row holds that row's fluid; the junction holds the one that reached it
+            wrong = [c for c in tar_row if fl_of(c) not in (None, TAR)] + [c for c in water_row if fl_of(c) not in (None, WATER)]
+            tt = {rows[c]["terrain"] for c in allc if fl_of(c) == TAR}
+            wt = {rows[c]["terrain"] for c in allc if fl_of(c) == WATER}
+            j = rows.get(X_JUNCTION, {})
+            want_j = xo.F[X_JUNCTION]
+            L.row("X6_two_fluids_distinct", pulse0 is not None and okr and not wrong and not cell_bad
+                  and want_j > 0 and len(tt) == 1 and len(wt) == 1
+                  and not (tt & wt) and not any(t.startswith("RM_Channel") for t in tt | wt), "MOD",
+                  "tar drawn %s | water drawn %s | junction %s F=%s (oracle %s F=%s: first to reach it fills it; the other "
+                  "refused, no-mix) | cells off the oracle %s | wrong-fluid cells %s | map pulse count before %s" % (
+                      sorted(tt), sorted(wt), j.get("fluid"), j.get("f"), want_fl(X_JUNCTION), want_j, cell_bad[:3],
+                      wrong[:3], pulse0))
         okf, tf = _fill_fluid(L, ro[0], 1, TAR)      # filled only now: ON it would still sit at step 0..1
         L.sset(S_FW, "viscosityEnabled", False)
         try:
             _xpulse(L, 3)
-            _, roff, kvo = _fluid_row(L, ro)
+            okn, roff, kvo = _fluid_row(L, ro)
         finally:
             L.sset(S_FW, "viscosityEnabled", True)
         toff = _level_at(roff, ro)
-        L.row("X7n_viscosity_off", okf and toff[0] == 3 and toff[2] == [TAR] and kvo.get("viscosity") == "False", "MOD",
-              "viscosityEnabled OFF: a tar staircase moved like water, step %s after 3 pulses (levels %s, %s)" % (
-                  toff[0], toff[1], toff[2]))
+        if not (okn and roff):
+            L.row("X7n_viscosity_off", False, "HARNESS", "ProofFluidRow unreadable (%s, %d cells)" % (okn, len(roff)),
+                  status="UNMEASURED")
+        else:
+            L.row("X7n_viscosity_off", okf and toff[0] == 3 and toff[2] == [TAR] and kvo.get("viscosity") == "False", "MOD",
+                  "viscosityEnabled OFF: a tar staircase moved like water, step %s after 3 pulses (levels %s, %s)" % (
+                      toff[0], toff[1], toff[2]))
 
         # X8/X9 pit_covered_invisible + seam: a 2x2 woven-scrap deck over a D=4 pit.
         cov = SCENES["X_cover"]["cells"]
@@ -3469,12 +3549,23 @@ def _x10_canal_fire(L):
     try:
         ok, _, lit = _proof(B, "ProofIgnite", "%d,%d" % run[-1], typ=FIRE_TYPE)
         if not (ok and lit.startswith("LIT")):
-            L.row("X10_canal_fire", False, "MOD", "a lit tar cell refused the light: %s" % lit[:200])
+            # full read 2026-10-19: only the mod's own REFUSED answer is a MOD finding; a static_call that could not run
+            # (stale DLL, "Type not found") was scored MOD FAIL "refused the light"
+            if lit.startswith("REFUSED"):
+                L.row("X10_canal_fire", False, "MOD", "a lit tar cell refused the light: %s" % lit[:200])
+            else:
+                L.row("X10_canal_fire", False, "HARNESS", "ProofIgnite did not run: %s" % lit[:200], status="UNMEASURED")
             return
+        tk0 = L.eng().get("ticksGame")
         B.call("rimworld/step_game_ticks", ticks=750)
         burn1 = _things_at(B, FLAME, run)
         B.call("rimworld/step_game_ticks", ticks=250)
         burn2 = _things_at(B, FLAME, run)
+        tk_burn = (L.eng().get("ticksGame") or 0) - (tk0 or 0)
+        if tk_burn < 900:                  # the day-3 symptom: steps that report success and run 0 ticks
+            L.row("X10_canal_fire", False, "HARNESS", "the clock did not run: %s of 1000 ticks after the light" % tk_burn,
+                  status="UNMEASURED")
+            return
         # 6000, not 3000: a burned-out cell takes a level back from its neighbour by flow (tar, stride 6), which
         # relights it and stretches the burn (live 19:53: 5 of 6 spent at 4,000 ticks, the last still alight)
         trace = []                 # (ticks, nextPulseTick, engine pulse interval, F vector): why a burn stalls
@@ -3494,7 +3585,7 @@ def _x10_canal_fire(L):
                 break
         burn3 = _things_at(B, FLAME, run)
         ash = _things_at(B, ASH, run)
-        _, rows, _ = _fluid_row(L, run)
+        ok_rows, rows, _ = _fluid_row(L, run)
         _, _, rep = _proof(B, "ProofReport", " ", typ=FIRE_TYPE)    # " ": static_call reads "" as ZERO args
     finally:
         L.sset(S_FW, "burnDaysPerNotch", 1.0)
@@ -3503,6 +3594,9 @@ def _x10_canal_fire(L):
     if None in (burn1, burn2, burn3, ash):        # an unread flame list is not "no flames" (burn3 None read as "none alight")
         L.row("X10_canal_fire", False, "HARNESS", "list_things unreadable: flames %s/%s/%s ash %s" % tuple(
             "?" if x is None else len(x) for x in (burn1, burn2, burn3, ash)), status="UNMEASURED")
+        return
+    if not (ok_rows and rows):                    # an unread row is not "F>0 left" (full read 2026-10-19)
+        L.row("X10_canal_fire", False, "HARNESS", "ProofFluidRow unreadable at the spent read", status="UNMEASURED")
         return
     off_run = sorted((burn1 | burn2) - set(run))
     left = [c for c in run if rows.get(c, {}).get("f", 1) != 0]
@@ -3631,9 +3725,29 @@ class MockBridge(object):
         "preflight_crash": ["ABORT"],                  # type_probe reply unreadable: the preflight must abort, not drive on
         "pulse_drops_twins": ["E2_twins_identical"],   # flowworks_pulse omits both E2 twins: None == None is no reading
         "cover_no_printed": ["X9_cover_deck_uniform"],  # ProofCover without printed=/around=: {None} == {None}
+        # full read 2026-10-19 (each once read PASS on no reading, scored MOD on no reading, or hung the run)
+        "prefill_refused": ["E7a_fillin_displaces", "E7b_overflow_sanctioned"],   # E7's prefill never written: E7a 0 -> 0 PASSed
+        "ticks_frozen": ["E1c_cadence_real_scheduler", "E4_engine_on_scheduled", "P3f_forced_entry_falls", "P4_ladder_frees",
+                         "P5n_own_faction_carveout", "X2_pawn_lowers_walking_in", "X10_canal_fire"],   # steps run 0 ticks (day 3)
+        "ignite_type_missing": ["X10_canal_fire"],      # ProofIgnite's type absent (stale DLL): was MOD "refused the light"
+        "fluid_row_blind": ["X6_two_fluids_distinct", "X7_tar_front_lags_water", "X7n_viscosity_off", "X10_canal_fire"],
+        "list_pawns_blind": ["L4_site_ready"],          # list_pawns fails: was "0 pawns, none in the plots"
+        "roof_read_blind": ["E6_roof_readback"],        # get_roof_batch fails: was a SITE FAIL
+        "save_pulse_count": [],     # no row may go red: the map's own PulseCount (a loaded save) only shifts the tar stride
     }
     FAULT_STATUS = {"forced_control_unmeasured": {"P3f_forced_entry_falls": "UNMEASURED"},
-                    "forced_lands_free": {"P3f_forced_entry_falls": "FAIL", "P4f_ladder_frees_forced": "UNMEASURED"}}
+                    "forced_lands_free": {"P3f_forced_entry_falls": "FAIL", "P4f_ladder_frees_forced": "UNMEASURED"},
+                    "prefill_refused": {"E7a_fillin_displaces": "UNMEASURED", "E7b_overflow_sanctioned": "UNMEASURED"},
+                    "ticks_frozen": {r: "UNMEASURED" for r in (
+                        "E1c_cadence_real_scheduler", "E4_engine_off", "E4_engine_on_scheduled", "P3f_forced_entry_falls",
+                        "P4_ladder_frees", "P5n_own_faction_carveout", "X2_pawn_lowers_walking_in",
+                        "X3_pawn_rises_walking_out", "X4_pit_wall_over_head", "X10_canal_fire")},
+                    "ignite_type_missing": {"X10_canal_fire": "UNMEASURED"},
+                    "fluid_row_blind": {"X6_two_fluids_distinct": "UNMEASURED", "X7_tar_front_lags_water": "UNMEASURED",
+                                        "X7n_viscosity_off": "UNMEASURED", "X10_canal_fire": "UNMEASURED"},
+                    "list_pawns_blind": {"L4_site_ready": "UNMEASURED"},
+                    "roof_read_blind": {"E6_roof_readback": "UNMEASURED"},
+                    "save_pulse_count": {"X6_two_fluids_distinct": "PASS", "X7_tar_front_lags_water": "PASS"}}
     ABORTING = ("settings_drift", "dll_stale", "engine_lost_late", "preflight_crash")   # faults whose run aborts BY DESIGN
 
     def __init__(self, faults=()):
@@ -3650,6 +3764,8 @@ class MockBridge(object):
         self.o = PulseOracle(MAP_W, MAP_H, {}, {}, sink_band=SINK_BAND,
                              algo="old" if "oscillate" in self.faults else "fixed", recession=True,
                              level_exact=exact, **CREEP_LIVE)
+        if "save_pulse_count" in self.faults:     # a loaded save carries its own scribed PulseCount, not 0
+            self.o.pulse_n = 1
         self.next_pulse = self.tick + PULSE_SHIPPED
         self.weather, self.weather_age = "Clear", 0
         self.logs = [dict(Sequence=1, Level="warning", Message="[RimBridge] STARTUP_TIMING mock", RepeatCount=1)]
@@ -3763,6 +3879,10 @@ class MockBridge(object):
             return dict(success=False, ticksElapsed=0, pawns=[dict(
                 id=pawnId, start=dict(x=start[0], z=start[1]), end=dict(x=start[0], z=start[1]),
                 arrived=False, moved=False, canReach=True, orderAccepted=False)])
+        if "ticks_frozen" in self.faults:          # the order is taken but the game never ticks: nobody moves
+            return dict(success=False, ticksElapsed=0, pawns=[dict(
+                id=pawnId, start=dict(x=start[0], z=start[1]), end=dict(x=start[0], z=start[1]),
+                arrived=False, moved=False, canReach=True, orderAccepted=True)])
         tr = self.trapped(p)
         can = not (tr and dest not in self.comp4(start))
         # RM_PitPathing (FLOWWORKS_PIT_FALL_ONLY_FORCED_1): no way down into an open D=4 cell but a usable ladder in its pit
@@ -3984,6 +4104,8 @@ class MockBridge(object):
         return dict(success=True)
 
     def t_jawa_list_pawns(self, limit=500, **kw):
+        if "list_pawns_blind" in self.faults:
+            return dict(success=False, error="mock: list_pawns failed")
         return dict(success=True, pawns=[dict(id="P%d" % i, position=dict(x=125 + i, z=125)) for i in range(3)] + self.pawns)
 
     def t_jawa_destroy_bulk(self, filter=None, dryRun=True):
@@ -4020,6 +4142,8 @@ class MockBridge(object):
         return dict(success=True)
 
     def t_jawa_get_roof_batch(self, rects):
+        if "roof_read_blind" in self.faults:
+            return dict(success=False, error="mock: get_roof_batch failed")
         ops = []
         for r in rects.split(";"):
             x, z, w, h = map(int, r.split(","))
@@ -4048,6 +4172,8 @@ class MockBridge(object):
         if deepenLevels:
             self.o.dig(c, deepenLevels)
         fill_set = False
+        if "prefill_refused" in self.faults and c in set(SCENES["E7a_fillin"]["cells"] + SCENES["E7b_overflow"]["cells"]):
+            setFill = -1                            # the write never takes (fillSet false), as a refusing engine would
         if setFill >= 0 and self.o.exc(c):
             self.put(c, setFill if "clamp_broken" in self.faults else min(setFill, self.o.D[c]))
             fill_set = True
@@ -4143,6 +4269,8 @@ class MockBridge(object):
     def t_rimworld_step_game_ticks(self, ticks=1, pauseFirst=True, timeoutMs=0):
         if "flowworks_error" in self.faults and not any(x["Level"] == "error" for x in self.logs):
             self.log("error", "Exception in RimMandrake.FlowWorks.RM_MapComponent_Excavation.MapComponentTick")
+        if "ticks_frozen" in self.faults:          # day 3: the step replies success and runs 0 ticks
+            return dict(success=True)
         for _ in range(ticks):
             self.tick += 1
             self.weather_age += 1
@@ -4305,6 +4433,8 @@ class MockBridge(object):
                 x, z, c in self.covers, c in self.covers, o.D.get(c, 0), self.terrain_of(c), printed, around)
             if "cover_no_printed" in self.faults:          # an older/changed ProofCover format: no printed=/around=
                 res = re.sub(r" (printed|around)=\S+", "", res)
+        elif method == "ProofIgnite" and "ignite_type_missing" in self.faults:
+            return dict(success=False, message="Type not found: %s" % type)
         elif method == "ProofIgnite":
             x, z = map(int, args.split(","))
             c = (x, z)
@@ -4323,6 +4453,8 @@ class MockBridge(object):
             w = o.W.get(c, 0) if o.level_exact else o.F.get(c, 0) * level_water.U
             res = "OK Hole %.1f m \u00b7 Water %.2f m (%s L)" % (0.5 * o.D.get(c, 0), w * level_water.M_PER_UNIT,
                                                                 format(int(round(w / 10.0)), ","))
+        elif method == "ProofFluidRow" and "fluid_row_blind" in self.faults:
+            return dict(success=False, message="mock: ProofFluidRow threw")
         elif method == "ProofFluidRow":
             x, z, w, h = map(int, args.split(","))
             toks = []
