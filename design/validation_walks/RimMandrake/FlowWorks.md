@@ -64,7 +64,8 @@ The `state:` line above is authoritative;
 `design/RimMandrake/north_star_validation_spec.md` defines what each state means, and a
 checklist binds only while that line reads VALIDATED. The recorded hash covers this whole
 section, so any edit reverts it to DRAFT until he re-validates. Every bar is one observable
-claim a player can check by looking; where each came from is in the provenance table at the
+claim a player can check by looking, or, where the bar itself says so, read from the game's
+state; where each came from is in the provenance table at the
 end of this section, never in the bar text, because the bar text is the question the judge
 is asked.
 
@@ -154,8 +155,9 @@ holds.
 **Fill**
 - [ ] `canal_partial_fill_distinct` — a partly filled canal is distinguishable at a glance
       from a full one.
-- [ ] `fill_tier_legible` — dry, and water 0.5 m, 1 m, 1.5 m and 2 m or more deep, are
-      distinguishable from each other by looking, whatever the depth of the hole holding them.
+- [ ] `fill_tier_legible` — dry, water under a quarter of a metre deep, and water about 0.5 m,
+      1 m, 1.5 m, and 2 m or more deep, are six looks distinguishable from each other by
+      looking, whatever the depth of the hole holding them.
 - [ ] `canal_fill_spreads_along_itself` — an incompletely filled channel shows one
       continuous wet reach extending away from its inlet, not an isolated puddle at the inlet.
 - [ ] `canal_fill_front_watchable` (change) — the boundary between wet and dry is visibly
@@ -169,11 +171,13 @@ holds.
       as the body it came from.
 - [ ] `fill_fluid_distinct` — excavations holding different fluids are distinguishable from
       each other by looking.
-- [ ] `depth_and_fill_jointly_legible` — in one view, cells holding the same depth of water
-      in holes of different depth (shown by the walls and how low a pawn sits), and cells in
-      holes of the same depth holding different depths of water, are all distinguishable.
-- [ ] `still_water_one_surface_height` — every square of a connected body of still water stands at the same
-      surface height, to within 1 cm, read from the game's state, not from the picture.
+- [ ] `depth_and_fill_jointly_legible` — in one view, 1 m of water standing in holes 1 m, 2 m
+      and 4 m deep (told apart by their walls and by how low a pawn sits), and holes 4 m deep
+      holding 0.5 m, 1 m and 2 m of water (told apart by the water's look), are all
+      distinguishable from each other.
+- [ ] `still_water_one_surface_height` — every square of one connected body of still water (a
+      pond, lake, canal or pit, joined below its surface) stands at the same surface height, to
+      within 1 cm, read from the game's state, not from the picture.
 
 **The reservoir paying for it**
 - [ ] `reservoir_fill_visibly_drops` (change) — after supplying a canal, an enclosed
@@ -201,11 +205,12 @@ holds.
       slime, not standing on its surface.
 
 **Depth**
-- [ ] `pit_depth_ladder_legible` — undug ground and excavations of depth one, two, three and
-      four side by side are each distinguishable from the others by looking, without a
+- [ ] `pit_depth_ladder_legible` — undug ground and dry holes 0.5 m, 1 m, 1.5 m, 2 m, 4 m and
+      8 m deep, side by side, are each distinguishable from the others by looking, without a
       tooltip.
-- [ ] `pawn_height_ladder_legible` — pawns standing on undug ground and on each of the four
-      depths sit progressively lower at every deeper step.
+- [ ] `pawn_height_ladder_legible` — pawns standing on undug ground and on the floors of dry
+      holes 0.5 m, 1 m, 1.5 m and 2 m deep sit progressively lower at every deeper step, and a
+      pawn on the floor of a hole deeper than 2 m sits no higher than one on a 2 m floor.
 - [ ] `pawn_lowers_on_deeper_cell` (change) — the same pawn is drawn visibly lower relative to
       the rim in the AFTER frame, after moving onto a deeper cell.
 - [ ] `pawn_rises_on_shallower_cell` (change) — the same pawn is drawn visibly higher in the
@@ -304,7 +309,7 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 **Empty by decision.** Resolved with him and not to be re-added:
 
 - `limited_vs_limitless_legible` — **cut** by ruling 35 (2026-09-17); **narrowed 2026-10-17**: limitless bodies are
-  marked in the readout, limited ones are not. A narrowed bar is offered at `FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING`.
+  marked in the readout, limited ones are not. A narrowed bar is offered as a proposal, outside this section.
 - `source_exhausted_distinct_from_strained` — **cut.** Incoherent after ruling 34, which
   removed the source object and the strained state.
 - `irrigated_ground_visibly_differs` — **cut** by ruling 36, above.
@@ -318,15 +323,15 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `canal_dry_reads_as_obstacle` | *"an unfilled pit slows movement as per other established dug barriers"* |
 | `filled_excavation_reads_as_obstacle` | *"filled pits reduce as per that terrain cost"*; *"all other flooded canal depths just slow you down more"* |
 | `canal_partial_fill_distinct` | *"a graphic showing partial fill"* |
-| `fill_tier_legible` | pit card round 3, 2026-09-17 — approved; strengthens `canal_partial_fill_distinct` (four states vs two), sits beside it because ids are frozen |
+| `fill_tier_legible` | pit card round 3, 2026-09-17 — approved; strengthens `canal_partial_fill_distinct` (many states vs two), sits beside it because ids are frozen; re-stated in metres by the 2026-10-17 depth rebuild (one water ladder by metres; a new look under 25 cm) |
 | `canal_fill_spreads_along_itself` | *"spread the water throughout themselves"* |
 | `canal_fill_front_watchable` | *"at the liquid's viscosity (water is essentially zero)"*; promoted from candidate 2026-09-17 |
 | `tar_fill_front_lags_water` | *"water is essentially zero"* viscosity against tar; split from `canal_fill_front_watchable` on GPT review |
 | `canal_holds_only_the_channel` | *"flows into the canal to fill it"* |
 | `canal_reads_as_same_liquid_as_reservoir` | *"extending the source"* |
 | `fill_fluid_distinct` | pit card round 3 — approved; generalises `slime_reads_as_viscous_not_water`; half of the old Pits `fitting_reads_distinct` |
-| `depth_and_fill_jointly_legible` | the depth ruling (*"All depths must be visually legible"*) held together with the four fill tiers |
-| `still_water_one_surface_height` | 2026-10-17: *"Yes, north star should check for level surfaces"*, on *"We need VERY smooth water. That's water's one primary characteristic: a level surface."* |
+| `depth_and_fill_jointly_legible` | the depth ruling (*"All depths must be visually legible"*) held together with the water ladder; re-stated in metres by the 2026-10-17 depth rebuild |
+| `still_water_one_surface_height` | 2026-10-17: *"Yes, north star should check for level surfaces"*, on *"We need VERY smooth water. That's water's one primary characteristic: a level surface."*; rivers and the sea stay the game's own water and are not still bodies |
 | `reservoir_fill_visibly_drops` | *"the parent body of water reduces itself in proportion as well"*; ruling 34 makes it partial fill on a deeper cell |
 | `reservoir_shoreline_recedes` | *"a small pond visibly shrinks at its far edge"*, split out of `reservoir_fill_visibly_drops` |
 | `empty_reservoir_stops_flow` | *"Each source's square can supply up to five canal squares with liquid before it stops providing"* |
@@ -337,8 +342,8 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `canal_spent_after_burn` | promoted from candidate 2026-09-17 so the defense use leaves a visible mark |
 | `slime_reads_as_viscous_not_water` | *"so slippery that it is nearly impossible to cross"* |
 | `slime_occupant_below_surface` | *"escape from the pit takes a great deal of time"*; his rejection of a pawn *"staring at the camera"* |
-| `pit_depth_ladder_legible` | the depth ruling: *"All depths must be visually legible and differentiable graphically."* |
-| `pawn_height_ladder_legible` | the depth ruling: *"They should be low enough that it is visually clear how they could not possibly climb out"* |
+| `pit_depth_ladder_legible` | the depth ruling: *"All depths must be visually legible and differentiable graphically."*; re-stated in metres when colonist digs went past 2 m (2026-10-17, by card: default deepest dig 8 m) |
+| `pawn_height_ladder_legible` | the depth ruling: *"They should be low enough that it is visually clear how they could not possibly climb out"*; past 2 m the pawn stops sinking further (a picture rule of the 2026-10-17 depth rebuild) |
 | `pawn_lowers_on_deeper_cell` | the depth ruling: *"The pawn should visibly rise up and lower down as they move over the depths."* |
 | `pawn_rises_on_shallower_cell` | the same sentence, the other direction |
 | `pit_reads_as_hole` | *"we need a big dark pit"*; ruling 33 *"walls with depth, not a flat tile"* |
@@ -379,6 +384,79 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `tank_feeds_hose_without_pump` | owner, typed 2026-10-11: *"Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed."* |
 | `never_tank_bridges_pipe_runs` | FlowWorks' net rule: a tank is an endpoint, two runs never merge through it (RM_LiquidNet) |
 | `never_external_pipe_carries` | design FINAL §3.1 (G1.7): VE/DBH couplings stay visual |
+
+## proposed bars (NOT hash-bound — proposals for his sitting)
+
+⚠️ **Everything under this heading is a PROPOSAL by an agent, not a bar.** It sits outside `## north star`, so the
+validated-hash does not cover it and `modcheck` does not read it. A proposal becomes a bar only when he accepts it at a
+sitting (`FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING`); it then moves, with a `- [ ]` checkbox and a provenance row, into
+`## north star`, and that move is itself an edit he re-validates. Sitting sheet:
+`design/RimMandrake/flowworks_bars_sitting_2026-10-18.md`.
+
+**R13 — the narrowed limitless bar** (replaces the cut `limited_vs_limitless_legible`)
+- `limitless_body_marked` — the depth readout over a body of water that never runs dry (the sea, a river, a lake fed
+  from off the map) says so in words; the readout over a pond, canal, pit or any lake that can be drawn down carries no
+  such mark. *Source: R13, owner said 2026-10-17: "Any natural body of water that is supposed to be 'clearly limitless'
+  should be so marked, so players aren't shocked."*
+
+**The water ladder and swimming**
+- `half_metre_water_reads_as_silt` — water about 0.5 m deep reads as grey-brown silty water; 1 m is the first depth
+  that reads blue. *Source: card 2026-10-18, "How should 0.5 m water look → Keep grey silt".*
+- `deep_water_pawn_swims` — a pawn in water 2 m or deeper is drawn swimming at the surface, head and shoulders above
+  it, never walking on the floor beneath it nor standing on top of it. *Source: R12 (pawns may swim in water 2 m or
+  deeper).*
+
+**Trench cover**
+- `trench_wall_cover_shown` — a shooter's hit chance on a pawn standing in a dug hole shows a "trench wall" cover line,
+  and the figure is larger for a pawn chest-deep below the lip than for one waist-deep. *Source: owner 2026-10-18,
+  "This updates/replaces the old ruling that digging does not change shooting"; card "Any dug hole with a wall".*
+- `raiders_never_shelter_in_a_cage` — raiders seeking cover take trench squares they can climb out of and never step
+  down into a sheer pocket they could not leave, read from the game's state. *Source: canal cover design Q5 (raiders
+  use trenches, with the cage check).*
+
+**Pit access — ladders, gear, jumps**
+- `wall_ladder_rides_on_rails` — the permanent pit ladder is drawn on rails fixed to the wall it serves, raised and
+  lowered, from each of the four sides of a pit. *Source: owner 2026-10-18, "one permanent that you install on a wall
+  that raises and lowers to open and close access".*
+- `portable_ladder_leans_on_its_wall` — a portable ladder set in a pit leans diagonally against the wall it serves; one
+  set against a wall too tall for it lies flat and gives no way out. *Source: owner 2026-10-18, "a personally carriable
+  ladder placed into the pit (if not too deep)"; his look at the diagonal art.*
+- `climbing_gear_reads_as_kit` — climbing gear reads as one belt-or-backpack kit of ropes, small grappling hooks and
+  climbing claws, on the ground and worn. *Source: owner 2026-10-18 by card (the gear is one item of all of these).*
+- `geared_pawn_climbs_out` (change) — a colonist wearing climbing gear is on the floor of a sheer pit with no ladder in
+  the BEFORE frame and on the ground beside it in the AFTER frame. *Source: "Climbing gear a pawn has that allows them
+  to scale".*
+- `jump_into_pit_lands_unhurt` — a pawn who jumps (jump pack) or skips into a pit arrives on its floor with no fall
+  injury, read from the game's state. *Source: "jump packs and other leaping abilities allow entrance/exit
+  immediately".*
+
+**Wall scaling**
+- `geared_pawn_scales_built_wall` (change) — a pawn wearing climbing gear is on one side of an unroofed built wall in
+  the BEFORE frame and on the other side in the AFTER frame, with no door in the wall; the same pawn without the gear
+  cannot. *Source: owner 2026-10-18 by card: built walls too, colonists and raiders, slowly, both ways.*
+
+**Suspension bridges and pit covers**
+- `suspension_bridge_reads_hung` — a suspension bridge reads as a deck hung between anchors at its two ends over a
+  dug hole, not as a floor tile or the game's own bridge. *Source: owner 2026-10-17, "These are not 'Bridges' in the
+  sense Rimworld normally uses … Something that shows they're not pier/pyle-type bridges over water."*
+- `pawn_walks_under_deck` (change) — a pawn on the floor of a hole is on one side of a suspension deck overhead in the
+  BEFORE frame and on the other side in the AFTER frame, having walked beneath it. *Source: R8 amendment, "only for
+  these new bridges uniquely, NOT actual tunnels."*
+- `pit_cover_unlike_bridge` — a pit cover never looks like a suspension bridge: the cover passes for ground (the bars
+  `pit_covered_invisible` and `pit_covered_seam_at_max_zoom` judge it), the bridge reads as a built crossing.
+  *Source: the bridges design: covers are the hidden trap tier of the same span base, with their own look (Q8).*
+
+**Pipes, ports and hoses**
+- `pipe_meets_building_centre` — a pipe or hose that meets a tank, pump, tap or sprinkler reads as running on beneath
+  it to its centre: seen through its see-through margins, hidden by its solid body, never stopping short at its edge.
+  *Source: owner 2026-10-18, "draw pipes as though they are connected into the centers of all pipe-receiving items".*
+- `pump_port_takes_pipe_and_hose` — a pump shows a clear port on each of its four sides, and a hose and a solid pipe
+  joined to it at the same time each meet a port with a visible coupling. *Source: owner 2026-10-18, "a more squarish
+  device with a clear place for pumps to join … connectable from any angle".*
+- `hose_and_pipe_girth_sensible` — side by side at a pump, a tank, a tap and a sprinkler, with a colonist beside them,
+  a hose and a solid pipe look sized for each other, for the port they enter and for the colonist. *Source: owner
+  2026-10-18, "we need to do a live game walk of the hoses vs pipes to make sure the diameters are sensible." His
+  numbers for what "sensible" is are owed at the sitting.*
 
 ## anti-guessing notes
 - ✅ **The DRAFT banner that used to open `## north star` was false and is deleted** (2026-09-17).
