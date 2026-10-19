@@ -132,6 +132,8 @@ class FakeCoverGame(object):
             return dict(things=got, countMatched=len(got), countReturned=len(got))
         if tool == "jawa/pawn_stats":
             return dict(stats=[dict(stat="Mass", value=self.mass)])
+        if tool == "jawa/set_draft":            # the real tool reads Drafted back; no `drafted` leaves it unchanged (false)
+            return dict(success=True, drafted=kw.get("drafted") is True)
         return dict(success=True)
 
     def settle(self, ratings):
@@ -229,6 +231,52 @@ for _w in L.g_cover_tiers(s):
     pass
 got = {r["id"]: r["status"] for r in g.rows}
 check(all(v == "UNMEASURED" for v in got.values()) and len(got) == 3, "a blind cover read is UNMEASURED, never 'gave way': %s" % got)
+
+
+# 8b'. PIT_COVER_DIAGNOSE_GIVES_WAY_TOO_SOON (live rerun 20261019T010244: 120 "held" 121.0 kg, 220 "held" 244.3 kg): the
+#      row called jawa/set_draft with no `drafted`, which leaves the draft UNCHANGED, so each spawned colonist was undrafted
+#      and wandered off the deck between reads (trail depths 4 -> 0 while covers_left stayed 6). Undrafted pawns here walk
+#      off on every settle; a drafted one stays. The row must draft (and read the draft back), and a pawn found OFF the
+#      deck at read time makes the row UNMEASURED, never "held".
+class WanderGame(FakeCoverGame):
+    def __init__(self, mass=60.9, draft_works=True):
+        FakeCoverGame.__init__(self, mass)
+        self.drafted, self.draft_works = set(), draft_works
+
+    def call(self, tool, **kw):
+        if tool == "jawa/set_draft":
+            pid = kw.get("pawnId")
+            if kw.get("drafted") is True and self.draft_works:
+                self.drafted.add(pid)
+            return dict(success=True, drafted=pid in self.drafted)
+        return FakeCoverGame.call(self, tool, **kw)
+
+    def settle(self, ratings):
+        for pid, c in list(self.pawns.items()):
+            if pid not in self.drafted:
+                self.pawns[pid] = (c[0], c[1] + 2)      # wandered off the deck
+        FakeCoverGame.settle(self, ratings)
+
+
+def run_wander(mass, draft_works=True):
+    g = WanderGame(mass, draft_works)
+    s = FakeCoverSession(g)
+    ratings = {"RM_PitCover_WovenScrap": 40.0, "RM_PitCover_PlankLattice": 120.0, "RM_PitCover_ReinforcedFrame": 220.0}
+    for _w in L.g_cover_tiers(s):
+        g.settle(ratings)
+    return {r["id"]: r["status"] for r in g.rows}, g
+
+
+got, g = run_wander(60.5)
+check(got.get("B4_cover_120") == "PASS" and got.get("B4_cover_220") == "PASS",
+      "2 x 60.5 kg give way on 120 and 4 x 60.5 on 220 when the colonists are DRAFTED onto the deck: %s" % got)
+got, g = run_wander(61.0)
+check(got.get("B4_cover_220") == "PASS", "4 x 61 kg give way on 220: %s" % got)
+got, g = run_wander(60.7)
+check(got.get("B4_cover_40") == "PASS" and got.get("B4_cover_120") == "PASS", "1 x 60.7 kg holds on 120 then 2 drop it: %s" % got)
+got, g = run_wander(60.5, draft_works=False)
+check(got.get("B4_cover_120") == "UNMEASURED" and got.get("B4_cover_220") == "UNMEASURED",
+      "a colonist that is not drafted (left the deck) makes the row UNMEASURED, never 'held': %s" % got)
 
 # 8c. HARNESS_ROWS (2026-10-19): B2 sea, B5 ice, B6 flood verdicts can go red, and say UNMEASURED when they could not ask
 OPEN = dict(kind="limitless", text="Open water: never runs dry")
