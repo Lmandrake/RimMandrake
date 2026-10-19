@@ -1577,14 +1577,14 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/set_draft",
             Description =
-                "Draft or undraft a pawn (Pawn_DraftController.Drafted) and/or set its fire " +
-                "policy (FireAtWill). Before setting Drafted=true this checks " +
+                "Draft or undraft a pawn (Pawn_DraftController.Drafted); `drafted` is REQUIRED " +
+                "(a call without it is refused) and fire policy (FireAtWill) is optional. Before setting Drafted=true this checks " +
                 "Lord.AllowsDrafting(pawn) - the same AcceptanceReport that disables the " +
                 "game's own draft gizmo (e.g. during a ritual or ceremony) - and refuses " +
                 "with the game's own reason string instead of drafting a pawn a Lord will " +
                 "immediately fight.",
             ResultDescription =
-                "drafted and fireAtWill read back off the controller after writing. On a " +
+                "drafted and fireAtWill read back off the controller after writing, plus wasDrafted and changed. On a " +
                 "drafting refusal, success is false and message carries " +
                 "Lord.AllowsDrafting's Reason verbatim.")]
         public static async Task<object> SetDraft(
@@ -1592,7 +1592,7 @@ namespace JawaBench.BridgeTools
             CancellationToken cancellationToken,
             [ToolParameter(Description = "ThingID, name or thingIDNumber of the pawn.")]
             string pawnId = null,
-            [ToolParameter(Description = "Draft (true) or undraft (false). Omit to leave unchanged.")]
+            [ToolParameter(Description = "REQUIRED. Draft (true) or undraft (false). A call without it is refused: it would change nothing.")]
             bool? drafted = null,
             [ToolParameter(Description = "Fire-at-will (true) or wait-for-target (false). Omit to leave unchanged.")]
             bool? fireAtWill = null)
@@ -1607,6 +1607,13 @@ namespace JawaBench.BridgeTools
                 if (pawn == null) return Fail(perr);
                 if (pawn.drafter == null)
                     return Fail($"'{pawnId}' has no Pawn_DraftController (not draftable).");
+
+                // No silent success (2026-10-19): a call without `drafted` used to change nothing
+                // and report success, so test pawns wandered off their decks.
+                if (!drafted.HasValue)
+                    return Fail("Parameter 'drafted' is required (true to draft, false to undraft). " +
+                                "Without it this call would change nothing. Nothing was changed.");
+                var wasDrafted = pawn.drafter.Drafted;
 
                 if (drafted.HasValue)
                 {
@@ -1670,6 +1677,8 @@ namespace JawaBench.BridgeTools
                               && (!fireAtWill.HasValue || fireAtWillNow == fireAtWill.Value),
                     drafted = draftedNow,
                     fireAtWill = fireAtWillNow,
+                    wasDrafted,
+                    changed = wasDrafted != draftedNow,
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
