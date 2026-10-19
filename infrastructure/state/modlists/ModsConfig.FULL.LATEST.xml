@@ -28,7 +28,6 @@
     <li>04.23.2020</li>
     <li>ap.huntingmeme</li>
     <li>dizzy.candlesandmeditation</li>
-    <li>hmc.wall.furniture</li>
     <li>jm.disstynan</li>
     <li>zal.calltradeships</li>
     <li>lc.tammybee.selectablesculpturegraphic</li>
@@ -40,9 +39,7 @@
     <li>sbz.neatstoragefridge</li>
     <li>sbz.gravshipstorage</li>
     <li>sr.modrimworld.factionalwarcontinued</li>
-    <li>mlie.syrmoreslaves</li>
     <li>zav.glowstoneforked</li>
-    <li>armoredampharos.fancyrats</li>
     <li>adaptive.ideology.storage</li>
     <li>adaptive.primitivestorage</li>
     <li>adaptive.simplestorage</li>
@@ -52,14 +49,11 @@
     <li>andrewraphaellukasik.allowdeadanimals</li>
     <li>unlimitedhugs.allowtool</li>
     <li>duz.almosttherefork</li>
-    <li>sarg.alphamechs</li>
     <li>sarg.alphamemes</li>
     <li>swablu.ambience</li>
     <li>vita.campdangers</li>
     <li>xmb.ancientminingindustry.mo</li>
-    <li>aqued.dredgeaberrations</li>
     <li>asp.halituisamaricanous</li>
-    <li>kshtantrumsounds.mod</li>
     <li>automatic.autolinks</li>
     <li>fuu.autostriponhaul</li>
     <li>elsov.beliar</li>
@@ -94,21 +88,17 @@
     <li>com.makeitso.configurabletechprints</li>
     <li>cozyfire.velcroboy333</li>
     <li>heatherathebyne.craftingspotslavegear</li>
-    <li>thumb.bettercremation</li>
     <li>greg.customgastypes</li>
     <li>hailuan.customquestframework</li>
     <li>costel.customroomnames</li>
     <li>dimonsever000.ideologyvirtues</li>
     <li>east.dancepartycustommusic</li>
     <li>van.beasts</li>
-    <li>van.dacrypts</li>
     <li>darkestdungeon.incidentsounds</li>
     <li>troopersmith1.deathrattle</li>
     <li>mlie.decorativecliffs</li>
-    <li>clown.dedicatedturrets</li>
     <li>gondragon.defensivepositions</li>
     <li>merthsoft.designatorshapes</li>
-    <li>milkwater.destinymod</li>
     <li>garwel.destroyitem</li>
     <li>det.avaloi</li>
     <li>det.boglegs</li>
@@ -130,13 +120,12 @@
     <li>carnysenpai.enableoversizedweapons</li>
     <li>nep.enginesunlimited</li>
     <li>det.epochsincense</li>
-    <li>det.epochspyrinth</li>
+    <li>mandrake.rm.pyrinth</li>
     <li>keshash.extraexplosioneffects</li>
     <li>eoralmilk.faceaddonframework</li>
     <li>azravos.factioncustomizer</li>
     <li>mlie.factionraidcooldown</li>
     <li>kosaro.fahrenheitandcelsius</li>
-    <li>tyrannidae.fancyratsplus</li>
     <li>realify.firefoam</li>
     <li>kathanon.floatsubmenu</li>
     <li>temeez.floorlights2</li>
@@ -149,11 +138,9 @@
     <li>arcjc007.gravshipexporter</li>
     <li>sk.gravshipraids</li>
     <li>imagitama.rimworldgravshiprangeonmap</li>
-    <li>grimterra.biomesmod</li>
     <li>arti.shrinez</li>
     <li>ael.tua.helmetsaddtoxresistance</li>
     <li>elsov.highborn</li>
-    <li>mlie.horrors</li>
     <li>hazn.huntingtraps</li>
     <li>hailuan.iwbb</li>
     <li>amegakull.scvrole</li>
@@ -187,12 +174,10 @@
     <li>mlie.justputitoverthere</li>
     <li>linnun.keepconverting</li>
     <li>vaguelysexual.modpackageid.goeshere</li>
-    <li>mlie.largefactionbases</li>
     <li>zal.largeoutpost</li>
     <li>arcjc007.lasercannon</li>
     <li>costel.layeredapparel</li>
     <li>noneobsidiaexpansion.ledlightsstrip</li>
-    <li>juanlopez2008.lightsout</li>
     <li>mlie.linkablesettings</li>
     <li>dorbo.watersfx</li>
     <li>mlie.logafterdeferror</li>
@@ -201,15 +186,11 @@
     <li>m00nl1ght.mappreview</li>
     <li>udon.masslovein</li>
     <li>sirdarkelf.meaningfulencounters</li>
-    <li>bonible.medievalmeleesounds</li>
     <li>mewn.medievalsigns</li>
     <li>mlie.mercerbackpacks</li>
-    <li>flangopink.metalpipe</li>
-    <li>flangopink.metalpipehorseshoe</li>
     <li>andromeda.milkyway</li>
     <li>rabiosus.minesight</li>
     <li>cain.mineshaft</li>
-    <li>erdelf.minifyeverything</li>
     <li>mlie.miningcoalertspeaker</li>
     <li>mlie.miningcodrillturret</li>
     <li>mlie.miningcomms</li>
@@ -245,18 +226,15 @@
     <li>mlie.prisonersshouldfearturrets</li>
     <li>laureeeeeeeeeeeeeeen.shrooms</li>
     <li>dawnsglow.qualcolor</li>
-    <li>leo.raidprotectionfee</li>
     <li>ingendum.raiderswarmcompression</li>
     <li>zal.randomgrowthchoices</li>
     <li>wemd.realisticdarknesslight</li>
     <li>mlie.realistichumansounds</li>
     <li>mlie.recyclethis</li>
-    <li>reel.turretpipeline</li>
     <li>mlie.relevantstatsindescription</li>
     <li>petetimessix.researchreinvented</li>
     <li>scorpio.resourcedictionary</li>
     <li>alma.tossem</li>
-    <li>lingluo.cockroach</li>
     <li>sihv.rombonesport</li>
     <li>kilokio.rimai.framework</li>
     <li>brrainz.rimbridgeserver</li>
@@ -294,12 +272,10 @@
     <li>balistafreak.standalonehotspring</li>
     <li>amoruch.rimworldstealingmod</li>
     <li>karshou.storagememory</li>
-    <li>mlie.storytellerenhanced</li>
     <li>mandrake.rm.strandedquest</li>
     <li>kas.strongerscaling</li>
     <li>moistestwhale.stuffontablesforked</li>
     <li>gerrymon.stylizedslavecollar</li>
-    <li>jellypowered.survivaltools</li>
     <li>mlie.tabsorting</li>
     <li>ucp.tabletopdecorations</li>
     <li>summersausages2ttv.techlevelenforcement</li>
@@ -325,7 +301,6 @@
     <li>vanillaexpanded.vbrewe</li>
     <li>vanillaexpanded.vcooke</li>
     <li>vanillaexpanded.vee</li>
-    <li>oskarpotocki.vfe.insectoid2</li>
     <li>oskarpotocki.vfe.tribals</li>
     <li>vanillaexpanded.vfecore</li>
     <li>vanillaexpanded.vfearchitect</li>
@@ -344,7 +319,6 @@
     <li>vanillaexpanded.ideo.relicsandartifacts</li>
     <li>vanillaexpanded.vexploratione</li>
     <li>vanillaexpanded.outposts</li>
-    <li>vanillaquestsexpanded.ancients</li>
     <li>vanillaquestsexpanded.generator</li>
     <li>vanillaracesexpanded.archon</li>
     <li>vanillaracesexpanded.fungoid</li>
@@ -352,16 +326,13 @@
     <li>vanillaracesexpanded.phytokin</li>
     <li>vanillaracesexpanded.saurid</li>
     <li>vanillaracesexpanded.starjack</li>
-    <li>gravenwitch.vsrexamined</li>
     <li>vanillaexpanded.vanillatraitsexpanded</li>
-    <li>vanillaexpanded.vwe</li>
     <li>vanillaexpanded.vwems</li>
     <li>gabrieel1482.raidvehicleframework</li>
     <li>ninagoblin.visitsettlements</li>
     <li>addvans.walktheworld</li>
     <li>ogliss.g223.wanderingcaravans</li>
     <li>addvans.wasdedpawn</li>
-    <li>sl4vp0wer.weareunited</li>
     <li>aelanna.weaponracks</li>
     <li>bodlosh.weaponstats</li>
     <li>revolus.whatsmissing</li>
@@ -382,7 +353,6 @@
     <li>xmb.ancienturbanruins.mo</li>
     <li>mandrake.rut.ashkarrlandmarkart</li>
     <li>mandrake.rut.ishkolandmarks</li>
-    <li>groovytaco.beltextractors</li>
     <li>m00nl1ght.geologicallandforms.biometransitions</li>
     <li>neronix17.retexture.charactereditor</li>
     <li>hailuan.customquestframeworkai</li>
@@ -393,7 +363,6 @@
     <li>sd.fa.geneticheadsframework</li>
     <li>gmmp.dungeon</li>
     <li>zal.gianttoads</li>
-    <li>who.vfee.isopodageneline</li>
     <li>icepickgma.invisibledisplaycase</li>
     <li>mandrake.rsw.jawavoice</li>
     <li>neku.largepawns</li>
@@ -409,7 +378,6 @@
     <li>mlie.preceptsandmemesritualsmodule</li>
     <li>lambda.psykshroom</li>
     <li>ogliss.thewhitecrayon.quarry</li>
-    <li>regrowth.botr.core</li>
     <li>memegoddess.replacestuff</li>
     <li>kilokio.rimai.core</li>
     <li>jaxe.rimhud</li>
@@ -427,12 +395,9 @@
     <li>kuhlyus.modpatch.vanillaoutpost</li>
     <li>mrhydralisk.voeadditionaloutposts</li>
     <li>vanillaexpanded.vwel</li>
-    <li>arcjc007.wallstuff</li>
     <li>fourtoo.glowingbush</li>
-    <li>kyzy.shipwallenhanced</li>
-    <li>sarg.alphagenes</li>
-    <li>meteores.ancienturbanruinsalldeconstructible.aurad</li>
     <li>mandrake.rm.weathersuite</li>
+    <li>mandrake.rut.weathersuite</li>
     <li>zal.comigogreaterswamps</li>
     <li>mlie.functionalvanillaexpandedprops</li>
     <li>sd.fa.geneticheadsbiotech</li>
@@ -446,19 +411,14 @@
     <li>reel.facialanims</li>
     <li>oskarpotocki.vfe.pirates</li>
     <li>vanillaexpanded.vmemese</li>
-    <li>vanillaexpanded.skills</li>
     <li>sd.fa.reelsadjustments</li>
     <li>opa.allspecialistscanwork</li>
-    <li>sarg.alphaskills</li>
-    <li>meteores.ancienturbanruinsvanillaloot.aurvl</li>
-    <li>chezhou.chezhoulib.lib</li>
     <li>broms.deeporbit</li>
     <li>teiwaz.gtgtradercore</li>
     <li>keyz182.keyzallowutilities</li>
     <li>toastyman.moreritualseats</li>
     <li>sugarcube.puahsharedstorage</li>
     <li>legator.prisonerrealism</li>
-    <li>font.rimesis</li>
     <li>petetimessix.simplesidearms</li>
     <li>tribeagle.simpleslaverycollars</li>
     <li>neronix17.toolbox</li>
@@ -466,7 +426,6 @@
     <li>vanillaexpanded.vtexe.facialanims</li>
     <li>oskarpotocki.vanillavehiclesexpanded</li>
     <li>dmp.vfepirates.warcasketwork</li>
-    <li>aoba.warcasket</li>
     <li>divinederivative.romance</li>
     <li>teiwaz.taajg</li>
     <li>teiwaz.tacac</li>
@@ -476,13 +435,10 @@
     <li>kem.beardadjustment</li>
     <li>redmattis.bigsmall.core</li>
     <li>lovelydovey.sex.witheuterpe</li>
-    <li>chezhou.creature.sandworm</li>
     <li>mandrake.rut.longhunger</li>
     <li>neronix17.outerrim.core</li>
     <li>neronix17.outland.genetics</li>
-    <li>neronix17.shieldgenerators</li>
     <li>redmattis.optional</li>
-    <li>redmattis.bigsmall</li>
     <li>redmattis.bigweapons</li>
     <li>avilmask.commonsense</li>
     <li>mandrake.rsw.desertvehiclereskin</li>

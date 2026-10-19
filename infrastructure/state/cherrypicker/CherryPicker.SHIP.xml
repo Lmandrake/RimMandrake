@@ -67,34 +67,6 @@
 			<li>ThingDef/Gun_PumpShotgun</li>
 			<li>ThingDef/Gun_Revolver</li>
 			<li>ThingDef/Gun_SniperRifle</li>
-			<li>ThingDef/VWE_CombatHandgun</li>
-			<li>ThingDef/VWE_Gun_AntiMaterialRifle</li>
-			<li>ThingDef/VWE_Gun_AntiMaterialRifle_Unique</li>
-			<li>ThingDef/VWE_Gun_BattleRifle</li>
-			<li>ThingDef/VWE_Gun_BattleRifle_Unique</li>
-			<li>ThingDef/VWE_Gun_Carbine</li>
-			<li>ThingDef/VWE_Gun_Carbine_Unique</li>
-			<li>ThingDef/VWE_Gun_CombatHandgun_Unique</li>
-			<li>ThingDef/VWE_Gun_HMG</li>
-			<li>ThingDef/VWE_Gun_HMG_Unique</li>
-			<li>ThingDef/VWE_Gun_HandCannon</li>
-			<li>ThingDef/VWE_Gun_HandCannon_Unique</li>
-			<li>ThingDef/VWE_Gun_LeverActionRifle</li>
-			<li>ThingDef/VWE_Gun_LeverActionRifle_Unique</li>
-			<li>ThingDef/VWE_Gun_LightSMG</li>
-			<li>ThingDef/VWE_Gun_LightSMG_Unique</li>
-			<li>ThingDef/VWE_Gun_MarksmanRifle</li>
-			<li>ThingDef/VWE_Gun_MarksmanRifle_Unique</li>
-			<li>ThingDef/VWE_Gun_SMG</li>
-			<li>ThingDef/VWE_Gun_SMG_Unique</li>
-			<li>ThingDef/VWE_Gun_SawedOffShotgun_Unique</li>
-			<li>ThingDef/VWE_Gun_SemiAutomaticRifle</li>
-			<li>ThingDef/VWE_Gun_SemiAutomaticRifle_Unique</li>
-			<li>ThingDef/VWE_Gun_ServiceRifle</li>
-			<li>ThingDef/VWE_Gun_ServiceRifle_Unique</li>
-			<li>ThingDef/VWE_Gun_TrenchGun_Unique</li>
-			<li>ThingDef/VWE_SawedOffShotgun</li>
-			<li>ThingDef/VWE_TrenchGun</li>
 			<li>PawnKindDef/Mechanitor</li>
 			<li>PawnKindDef/Mechanitor_Basic</li>
 			<li>ThingDef/Mechlink</li>
@@ -112,19 +84,6 @@
 			<li>HediffDef/MechlinkImplant</li>
 			<li>HediffDef/BandNode</li>
 			<li>HediffDef/ControlSublinkImplant</li>
-			<li>ThingDef/AM_InfernusMechlinkBooster</li>
-			<li>ThingDef/AM_WarEmpressMechlinkBooster</li>
-			<li>ThingDef/AM_ApoptosisMechlinkBooster</li>
-			<li>ThingDef/AM_BeamcasterBandNode</li>
-			<li>ThingDef/AM_GreaterBandNode</li>
-			<li>ThingDef/AM_GreaterMechBooster</li>
-			<li>ThingDef/AM_GreaterRecharger</li>
-			<li>HediffDef/AM_BeamncasterBandNode</li>
-			<li>HediffDef/AM_VoidlinkBandNode</li>
-			<li>ThingDef/wallcharger</li>
-			<li>ThingDef/largewallcharger</li>
-			<li>ThingDef/ultrawallcharger</li>
-			<li>ThingDef/WallMountedMechBooster</li>
 			<li>ThingDef/VGE_GravshipBasicRecharger</li>
 			<li>ThingDef/VGE_GravshipStandardRecharger</li>
 			<li>ThingDef/AG_TemporaryBandNode</li>
@@ -162,11 +121,6 @@
 			<li>ThingDef/AM_CataphractHelmetSlaughter</li>
 			<li>ThingDef/AM_ClosedOxygenCylinder</li>
 			<li>ThingDef/AM_BulletproofMask</li>
-			<li>ThingDef/Armadillo</li>
-			<li>ThingDef/BlackBear</li>
-			<li>ThingDef/Mandrill</li>
-			<li>ThingDef/Penguin</li>
-			<li>ThingDef/Zebra</li>
 			<li>ThingDef/AEXP_Zebra</li>
 			<li>ThingDef/AEXP_BlackBear</li>
 			<li>ThingDef/AEXP_Mandrill</li>
@@ -176,10 +130,6 @@
 			<li>ThingDef/Grimstone_EmperorVulture</li>
 			<li>ThingDef/Grimstone_NorthernLynx</li>
 			<li>ThingDef/Grimstone_Sheepdog</li>
-			<li>ThingDef/AlligatorMan</li>
-			<li>ThingDef/BlackBearMan</li>
-			<li>ThingDef/MandrillMan</li>
-			<li>ThingDef/Neanderthal</li>
 			<li>ThingDef/BMT_GlarralPenguin</li>
 			<li>ThingDef/BiomesIslands_Flamingo</li>
 			<li>ThingDef/Flamingo</li>
@@ -335,24 +285,6 @@
 			<li>ThingDef/VWE_Gun_MakeshiftShotgun</li>
 			<li>ThingDef/VWE_Gun_MakeshiftLMG</li>
 			<li>ThingDef/VWE_Gun_MakeshiftRevolver</li>
-			<li>ThingDef/HMC_Wall_Emp_Turret</li>
-			<li>ThingDef/HMC_Wall_Emp_Turret_Ship</li>
-			<li>ThingDef/HMC_Wall_FireShotgun_Turret</li>
-			<li>ThingDef/HMC_Wall_Foam_Turret</li>
-			<li>ThingDef/HMC_Wall_LightMachinegun_Turret</li>
-			<li>ThingDef/HMC_Wall_MachineCannon_Turret_Ship</li>
-			<li>ThingDef/HMC_Wall_Minigun_Turret</li>
-			<li>ThingDef/HMC_Wall_Minigun_Turret_Ship</li>
-			<li>ThingDef/HMC_Wall_Rocket_Turret</li>
-			<li>ThingDef/HMC_Wall_Emp_Turret_Top</li>
-			<li>ThingDef/HMC_Wall_Emp_Turret_Top_Ship</li>
-			<li>ThingDef/HMC_Wall_FireShotgun_Turret_Top</li>
-			<li>ThingDef/HMC_Gun_TurretFoam</li>
-			<li>ThingDef/HMC_Wall_LightMachinegun_Turret_Top</li>
-			<li>ThingDef/HMC_Wall_MachineCannon_Turret_Top_Ship</li>
-			<li>ThingDef/HMC_Wall_Minigun_Turret_Top</li>
-			<li>ThingDef/HMC_Wall_Minigun_Turret_Top_Ship</li>
-			<li>ThingDef/HMC_Wall_Rocket_Turret_Top</li>
 			<li>ThingDef/Ame_RhodesShotgun</li>
 			<li>ThingDef/Ame_RhodesShotgun_Uniqueya</li>
 			<li>ThingDef/Artillery_AutoMortar</li>
@@ -405,7 +337,6 @@
 			<li>ThingDef/MeleeWeapon_Gladius</li>
 			<li>ThingDef/MeleeWeapon_LongSword</li>
 			<li>ThingDef/MeleeWeapon_Mace</li>
-			<li>ThingDef/SW_MiniTurretGun</li>
 			<li>ThingDef/VFEP_Artillery_Cannon</li>
 			<li>ThingDef/VFEP_Artillery_FieldGun</li>
 			<li>ThingDef/VFES_Artillery_ArtilleryGun</li>
@@ -419,16 +350,6 @@
 			<li>ThingDef/VFES_TurretMinigun_Top</li>
 			<li>ThingDef/VQE_AncientShieldedTurret_Gun</li>
 			<li>ThingDef/VQE_AncientSpacerAutocannon_Gun</li>
-			<li>ThingDef/VWE_Bow_Compound</li>
-			<li>ThingDef/VWE_Bow_Compound_Unique</li>
-			<li>ThingDef/VWE_Bow_Crossbow</li>
-			<li>ThingDef/VWE_Bow_Crossbow_Unique</li>
-			<li>ThingDef/VWE_Bow_Long</li>
-			<li>ThingDef/VWE_Bow_Long_Unique</li>
-			<li>ThingDef/VWE_FlashGrenade</li>
-			<li>ThingDef/VWE_Gun_GrenadeLauncher</li>
-			<li>ThingDef/VWE_SmokeGrenade</li>
-			<li>ThingDef/VWE_Throwing_Rocks</li>
 			<li>ThingDef/Wall_ChargeMinigun_Turret_Gun</li>
 			<li>ThingDef/Wall_Charge_Shotgun_Turret_Gun</li>
 			<li>ThingDef/Wall_Charge_Sniper_Turret_Gun</li>
@@ -436,8 +357,6 @@
 			<li>ThingDef/Wall_Minigun_Turret_Gun</li>
 			<li>ThingDef/Wall_Shotgun_Turret_Gun</li>
 			<li>ThingDef/Wall_Sniper_Turret_Gun</li>
-			<li>ThingDef/m_Khvostov_7G0X</li>
-			<li>ThingDef/m_RatKing</li>
 			<li>ThingDef/AM_LassoHyperwave</li>
 			<li>ThingDef/Apparel_AirwireHeadset</li>
 			<li>ThingDef/Apparel_ArchoShuttle</li>
@@ -504,14 +423,12 @@
 			<li>ThingDef/DP_NinjaRobe</li>
 			<li>ThingDef/DP_OrbOfMadness</li>
 			<li>ThingDef/DP_ShroudOfMadness</li>
-			<li>ThingDef/HumanSkinSuit</li>
 			<li>ThingDef/LargeBackpackMC</li>
 			<li>ThingDef/OuterRim_StormtrooperCuirass_Pride</li>
 			<li>ThingDef/OuterRim_StormtrooperHelmet_Pride</li>
 			<li>ThingDef/OuterRim_StormtrooperPauldrons_Pride</li>
 			<li>ThingDef/SGC_Apparel_CommandTower</li>
 			<li>ThingDef/SmallBackpackMC</li>
-			<li>ThingDef/TempuraOnesie</li>
 			<li>ThingDef/TornadoGenerator</li>
 			<li>ThingDef/VAEA_Apparel_Backpack</li>
 			<li>ThingDef/VAEA_Apparel_BattleBanner</li>
@@ -529,7 +446,6 @@
 			<li>ThingDef/VIEHAR_Apparel_HorseMask</li>
 			<li>ThingDef/VIEHAR_Apparel_MilitaryCap</li>
 			<li>ThingDef/VIEHAR_Apparel_Rags</li>
-			<li>ThingDef/VQEA_Apparel_PatientGown</li>
 			<li>ThingDef/VQE_Apparel_Parka</li>
 			<li>ThingDef/Apparel_ArmorHelmetRecon</li>
 			<li>ThingDef/Apparel_ArmorRecon</li>
@@ -707,8 +623,6 @@
 			<li>ThingDef/EggOwlcatFertilized</li>
 			<li>ThingDef/EggOwlcatUnfertilized</li>
 			<li>ThingDef/EggPalaeeudyptesFertilized</li>
-			<li>ThingDef/EggPenguinFertilized</li>
-			<li>ThingDef/EggPenguinUnFertilized</li>
 			<li>ThingDef/EggPurussaurusFertilized</li>
 			<li>ThingDef/EggQuinkanaFertilized</li>
 			<li>ThingDef/EggTitanoboaFertilized</li>
@@ -771,12 +685,8 @@
 			<li>ThingDef/Meat_AEXP_Platypus</li>
 			<li>ThingDef/Meat_AEXP_RedPanda</li>
 			<li>ThingDef/Meat_Alligator</li>
-			<li>ThingDef/Meat_AlligatorMan</li>
-			<li>ThingDef/Meat_Armadillo</li>
 			<li>ThingDef/Meat_BMT_GlarralPenguin</li>
 			<li>ThingDef/Meat_Badger</li>
-			<li>ThingDef/Meat_BlackBear</li>
-			<li>ThingDef/Meat_BlackBearMan</li>
 			<li>ThingDef/Meat_Cat_Scimitar</li>
 			<li>ThingDef/Meat_Chalicotherium</li>
 			<li>ThingDef/Meat_DA_ArcticOwlcat</li>
@@ -798,14 +708,10 @@
 			<li>ThingDef/Meat_Josephoartigasia</li>
 			<li>ThingDef/Meat_MA_Harpeagle</li>
 			<li>ThingDef/Meat_MA_Manehound</li>
-			<li>ThingDef/Meat_Mandrill</li>
-			<li>ThingDef/Meat_MandrillMan</li>
 			<li>ThingDef/Meat_Megalania</li>
 			<li>ThingDef/Meat_Moose</li>
 			<li>ThingDef/Meat_Muskox</li>
-			<li>ThingDef/Meat_Neanderthal</li>
 			<li>ThingDef/Meat_Otter</li>
-			<li>ThingDef/Meat_Penguin</li>
 			<li>ThingDef/Meat_Porcupine</li>
 			<li>ThingDef/Meat_Procoptodon</li>
 			<li>ThingDef/Meat_Quinkana</li>
@@ -818,7 +724,6 @@
 			<li>ThingDef/Meat_Titanoboa</li>
 			<li>ThingDef/Meat_Walrus</li>
 			<li>ThingDef/Meat_YorkshireTerrier</li>
-			<li>ThingDef/Meat_Zebra</li>
 			<li>ThingDef/RG_EggWoollyStegosaurusFertilized</li>
 			<li>ThingDef/RG_EggWoollyStegosaurusUnfertilized</li>
 			<li>ThingDef/RG_WoolStegosaurus</li>
@@ -833,16 +738,7 @@
 			<li>ThingDef/DA_Leather_SilverMole</li>
 			<li>ThingDef/Fur_Carbuncle</li>
 			<li>ThingDef/Grimstone_Leather_Griffar</li>
-			<li>ThingDef/Leather_AlligatorMan</li>
-			<li>ThingDef/Leather_Armadillo</li>
-			<li>ThingDef/Leather_BlackBear</li>
-			<li>ThingDef/Leather_BlackBearMan</li>
 			<li>ThingDef/Leather_Hippo</li>
-			<li>ThingDef/Leather_Mandrill</li>
-			<li>ThingDef/Leather_MandrillMan</li>
-			<li>ThingDef/Leather_Neanderthal</li>
-			<li>ThingDef/Leather_Penguin</li>
-			<li>ThingDef/Leather_Zebra</li>
 			<li>ThingDef/MA_Leather_Direhorse</li>
 			<li>ThingDef/MA_Leather_Dunbear</li>
 			<li>ThingDef/MA_Leather_Furpotamus</li>
@@ -1510,8 +1406,6 @@
 			<li>BiomeDef/TropicalRainforest</li>
 			<li>BiomeDef/TropicalSwamp</li>
 			<li>BiomeDef/Tundra</li>
-			<li>ThingDef/VWE_Gun_Flamethrower</li>
-			<li>ThingDef/VWE_MeleeWeapon_Axe</li>
 			<li>BiomeDef/Wetland</li>
 			<li>BiomeDef/ZBiome_AlpineMeadow</li>
 			<li>BiomeDef/ZBiome_CloudForest</li>
@@ -2163,15 +2057,10 @@
 			<li>PawnKindDef/GR_ParagonBoomalope</li>
 			<li>ThingDef/GR_Squirralope</li>
 			<li>PawnKindDef/GR_Squirralope</li>
-			<li>AbilityDef/VQEA_Levitation</li>
 			<li>GeneDef/VQEA_Levitation</li>
-			<li>AbilityDef/VQEA_Invisibility</li>
 			<li>GeneDef/VQEA_Invisibility</li>
-			<li>AbilityDef/VQEA_InfernoSpew</li>
 			<li>GeneDef/VQEA_InfernoSpew</li>
-			<li>AbilityDef/VQEA_HellsphereBlast</li>
 			<li>GeneDef/VQEA_HellsphereBlast</li>
-			<li>ThingDef/VQEA_Bullet_HellsphereCannonGun</li>
 			<li>ThingDef/BMT_Maguana</li>
 			<li>ThingDef/BMT_EggMaguanaFertilized</li>
 			<li>ThingDef/BMT_EggMaguanaUnfertilized</li>
@@ -2202,33 +2091,6 @@
 			<li>BackstoryDef/VA_MED_ServingBoy</li>
 			<li>BackstoryDef/VA_MED_UnwantedSurvivor</li>
 			<li>BackstoryDef/VA_MED_Warrior</li>
-			<li>BackstoryDef/VQE_ArchiteVolunteer1</li>
-			<li>BackstoryDef/VQE_BetrayalStudy21</li>
-			<li>BackstoryDef/VQE_BoneReforged6</li>
-			<li>BackstoryDef/VQE_BrainProbed8</li>
-			<li>BackstoryDef/VQE_CombatDrills15</li>
-			<li>BackstoryDef/VQE_CompassionPunished24</li>
-			<li>BackstoryDef/VQE_DeceptionStudy16</li>
-			<li>BackstoryDef/VQE_EnhancedSoldier5</li>
-			<li>BackstoryDef/VQE_EyeReplaced10</li>
-			<li>BackstoryDef/VQE_FalseFamily22</li>
-			<li>BackstoryDef/VQE_GeneFighter3</li>
-			<li>BackstoryDef/VQE_GroupConflict17</li>
-			<li>BackstoryDef/VQE_IdealPatient</li>
-			<li>BackstoryDef/VQE_IsolationChamber14</li>
-			<li>BackstoryDef/VQE_IsolationTest19</li>
-			<li>BackstoryDef/VQE_KidnappedChild</li>
-			<li>BackstoryDef/VQE_LossExperiment20</li>
-			<li>BackstoryDef/VQE_MilitaryExperiment4</li>
-			<li>BackstoryDef/VQE_MuscleStitched9</li>
-			<li>BackstoryDef/VQE_ObedienceTrial18</li>
-			<li>BackstoryDef/VQE_PainTolerance13</li>
-			<li>BackstoryDef/VQE_SilenceStudy25</li>
-			<li>BackstoryDef/VQE_SkinGrafted7</li>
-			<li>BackstoryDef/VQE_StarvationTrial23</li>
-			<li>BackstoryDef/VQE_StressTest11</li>
-			<li>BackstoryDef/VQE_ToxicExposure12</li>
-			<li>BackstoryDef/VQE_TrialSubject2</li>
 			<li>BackstoryDef/VREA_ArchohavenArchitect</li>
 			<li>BackstoryDef/VREA_ArchonCadet</li>
 			<li>BackstoryDef/VREA_ArchonChildExplorer</li>
@@ -2292,7 +2154,6 @@
 			<li>ThingDef/FT_Turret_Mortar</li>
 			<li>ThingDef/Grenade_TurretPack</li>
 			<li>ThingDef/Metalhorror</li>
-			<li>ThingDef/ShipWallMountMiniTurret</li>
 			<li>ThingDef/Trispike</li>
 			<li>ThingDef/Turret_AncientArmoredTurret</li>
 			<li>ThingDef/Turret_AutoMiniTurret</li>
@@ -2316,7 +2177,6 @@
 			<li>PawnKindDef/ShamblerSoldier</li>
 			<li>PawnKindDef/ShamblerSwarmer</li>
 			<li>PawnKindDef/Trispike</li>
-			<li>TraitDef/VQE_IdealPatient</li>
 			<li>FactionDef/BS_Dvergr_Medieval_Union</li>
 			<li>FactionDef/BS_JotunPlayerColony</li>
 			<li>FactionDef/BS_LittlePeople</li>
