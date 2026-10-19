@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ClimbingGear_JawaFactions.xml  (WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS follow-up, 2026-10-18)
+  Owner by card 2026-10-18: "Wildsteam should have this. Junkers and Blackstar should. Jawa should. Deep Desert tribes yes."
+  Read from the defs, 2026-10-18:
+    Wildsteam Clan    RUT_Jawa_WildsteamClan      Defs/FactionDefs/JawaWildsteamClan.xml
+    Junkers           RUT_Jawa_Junkers            Defs/FactionDefs/JawaJunkers.xml
+    Jawa Trade Moot   RUT_Jawa_IndigenousTribes   Defs/FactionDefs/JawaTribes.xml (the only Jawa NPC faction)
+    Blackstar Company the vanilla Pirate FactionDef, relabelled by Patches/BlackstarCompany.xml
+    Deep Desert Tribes the vanilla TribeCivil FactionDef, relabelled by Patches/DeepDesertTribes.xml
+  A faction-level RM_ClimbingGearChance: every humanlike pawn generated for the faction rolls it (FlowWorks'
+  RM_Patch_GenerateGear_ClimbingGear; the gear is added only beside what is worn, so a warcasket that takes the belt slot
+  keeps it). The extension type lives in FlowWorks (mandrake.rm.flowworks), so the whole file is guarded on it: without
+  FlowWorks, an unknown modExtension class would discard the faction def.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>mandrake.rm.flowworks</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+          <li Class="PatchOperationConditional">
+            <xpath>Defs/FactionDef[defName="RUT_Jawa_WildsteamClan"]</xpath>
+            <match Class="PatchOperationConditional">
+              <xpath>Defs/FactionDef[defName="RUT_Jawa_WildsteamClan"]/modExtensions</xpath>
+              <match Class="PatchOperationAdd">
+                <xpath>Defs/FactionDef[defName="RUT_Jawa_WildsteamClan"]/modExtensions</xpath>
+                <value>
+                  <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.35</chance></li>
+                </value>
+              </match>
+              <nomatch Class="PatchOperationAdd">
+                <xpath>Defs/FactionDef[defName="RUT_Jawa_WildsteamClan"]</xpath>
+                <value>
+                  <modExtensions>
+                    <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.35</chance></li>
+                  </modExtensions>
+                </value>
+              </nomatch>
+            </match>
+          </li>
+          <li Class="PatchOperationConditional">
+            <xpath>Defs/FactionDef[defName="RUT_Jawa_Junkers"]</xpath>
+            <match Class="PatchOperationConditional">
+              <xpath>Defs/FactionDef[defName="RUT_Jawa_Junkers"]/modExtensions</xpath>
+              <match Class="PatchOperationAdd">
+                <xpath>Defs/FactionDef[defName="RUT_Jawa_Junkers"]/modExtensions</xpath>
+                <value>
+                  <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.35</chance></li>
+                </value>
+              </match>
+              <nomatch Class="PatchOperationAdd">
+                <xpath>Defs/FactionDef[defName="RUT_Jawa_Junkers"]</xpath>
+                <value>
+                  <modExtensions>
+                    <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.35</chance></li>
+                  </modExtensions>
+                </value>
+              </nomatch>
+            </match>
+          </li>
+          <li Class="PatchOperationConditional">
+            <xpath>Defs/FactionDef[defName="RUT_Jawa_IndigenousTribes"]</xpath>
+            <match Class="PatchOperationConditional">
+              <xpath>Defs/FactionDef[defName="RUT_Jawa_IndigenousTribes"]/modExtensions</xpath>
+              <match Class="PatchOperationAdd">
+                <xpath>Defs/FactionDef[defName="RUT_Jawa_IndigenousTribes"]/modExtensions</xpath>
+                <value>
+                  <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.35</chance></li>
+                </value>
+              </match>
+              <nomatch Class="PatchOperationAdd">
+                <xpath>Defs/FactionDef[defName="RUT_Jawa_IndigenousTribes"]</xpath>
+                <value>
+                  <modExtensions>
+                    <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.35</chance></li>
+                  </modExtensions>
+                </value>
+              </nomatch>
+            </match>
+          </li>
+          <li Class="PatchOperationConditional">
+            <xpath>Defs/FactionDef[defName="Pirate"]</xpath>
+            <match Class="PatchOperationConditional">
+              <xpath>Defs/FactionDef[defName="Pirate"]/modExtensions</xpath>
+              <match Class="PatchOperationAdd">
+                <xpath>Defs/FactionDef[defName="Pirate"]/modExtensions</xpath>
+                <value>
+                  <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.35</chance></li>
+                </value>
+              </match>
+              <nomatch Class="PatchOperationAdd">
+                <xpath>Defs/FactionDef[defName="Pirate"]</xpath>
+                <value>
+                  <modExtensions>
+                    <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.35</chance></li>
+                  </modExtensions>
+                </value>
+              </nomatch>
+            </match>
+          </li>
+          <li Class="PatchOperationConditional">
+            <xpath>Defs/FactionDef[defName="TribeCivil"]</xpath>
+            <match Class="PatchOperationConditional">
+              <xpath>Defs/FactionDef[defName="TribeCivil"]/modExtensions</xpath>
+              <match Class="PatchOperationAdd">
+                <xpath>Defs/FactionDef[defName="TribeCivil"]/modExtensions</xpath>
+                <value>
+                  <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.35</chance></li>
+                </value>
+              </match>
+              <nomatch Class="PatchOperationAdd">
+                <xpath>Defs/FactionDef[defName="TribeCivil"]</xpath>
+                <value>
+                  <modExtensions>
+                    <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.35</chance></li>
+                  </modExtensions>
+                </value>
+              </nomatch>
+            </match>
+          </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
