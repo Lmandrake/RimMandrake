@@ -141,6 +141,13 @@ to ablate expansions out of our list at this time."* `modset_builder.py`'s
 all tiers now set `dlc: True`. A tier's `want` list may still narrow which
 *mods* load for isolation — it may no longer narrow which *DLC* loads.
 
+## Biome art never blocks — owner, 2026-10-18
+
+*"We are going to simply accept all art for the Biomes at this time and review them later, so there is no blocking. Art
+review is now a secondary priority."* All biome art currently in game is ACCEPTED as-is; open review sheets stay open
+for later, and no build, deploy, sprint gate or item waits on an art pick. Art work is picked up only after
+FlowWorks, which is force-advanced to finished first.
+
 ## Correctness outranks seat ownership — owner, 2026-09-19
 
 *"It is WORSE to leave incorrect information that belongs to another seat than it is
