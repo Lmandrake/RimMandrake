@@ -216,6 +216,14 @@ namespace RimMandrake.FlowWorks
         // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V5): the shooting rule holds across a cliff of this many metres or
         // more (more than a person's height): a square between the two ends this much higher than the lower end blocks the shot.
         public static float shootingCliffMetres = 2f;
+        // TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT (owner 2026-10-18, canal_cover_design §9): a pawn standing in a dug hole is
+        // covered by the wall facing the shooter, like a sandbag, more the deeper the hole. Strength scales the wall's block
+        // (1.0: waist-deep a bit under sandbags, chest-deep a bit over); the cap limits trench plus sandbags together;
+        // raiders skip cast squares in a pocket they could not climb out of. All off = no depth effect on cover.
+        public static bool trenchCoverEnabled = true;
+        public static float trenchCoverStrength = 1f;
+        public static float trenchCoverCap = 0.9f;
+        public static bool trenchAiAvoidsCages = true;
         // Owner 2026-10-06 (Q5/Q9): a damaging or fire blast breaks any pit cover it reaches.
         public static bool blastsBreakPitCovers = true;
         // SUPERDEEP_PRISON_ROOM_1 (LAW 2 exception [D]): an enclosed superdeep area is its own room;
@@ -565,6 +573,10 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref ladderRaiseLowerEnabled, "ladderRaiseLowerEnabled", true);
             Scribe_Values.Look(ref superdeepShootingRuleEnabled, "superdeepShootingRuleEnabled", true);
             Scribe_Values.Look(ref shootingCliffMetres, "shootingCliffMetres", 2f);
+            Scribe_Values.Look(ref trenchCoverEnabled, "trenchCoverEnabled", true);
+            Scribe_Values.Look(ref trenchCoverStrength, "trenchCoverStrength", 1f);
+            Scribe_Values.Look(ref trenchCoverCap, "trenchCoverCap", 0.9f);
+            Scribe_Values.Look(ref trenchAiAvoidsCages, "trenchAiAvoidsCages", true);
             Scribe_Values.Look(ref superdeepRoomsEnabled, "superdeepRoomsEnabled", true);
             Scribe_Values.Look(ref pitRoomMinDepthMetres, "pitRoomMinDepthMetres", 3f);
             Scribe_Values.Look(ref captureDownEnabled, "captureDownEnabled", true);
@@ -717,6 +729,7 @@ namespace RimMandrake.FlowWorks
             .Declare("trapTriggerEnabled", "trapSensitivityMultiplier")
             .Declare("superdeepRoomsEnabled", "captureDownEnabled", "pitRoomMinDepthMetres")
             .Declare("superdeepShootingRuleEnabled", "shootingCliffMetres")
+            .Declare("trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap", "trenchAiAvoidsCages")
             .Declare("digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled")
             .Declare("digRockGroundEnabled", "digRockWorkMultiplier")
             .Declare("digToDepthEnabled", "maxDigDepth", "digCostRisesWithDepth")
@@ -1234,7 +1247,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitGuardrailEnabled", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitGuardrailEnabled", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap", "trenchAiAvoidsCages", "disabledFluids" }))
             {
             list.Label("A pit is any dug pocket nothing can climb out of, nothing more: there is no pit building. "
                      + "What holds a creature is the height of the step it must climb against its own size, never the "
@@ -1598,13 +1611,37 @@ namespace RimMandrake.FlowWorks
                 "No shot crosses a cliff edge: across a sheer rise of the height below or more, whoever is down "
               + "can only shoot whoever stands right at the edge above, and whoever is up can only shoot down from the "
               + "edge. Two people on the floor of one big pit, or on the ground on either side of a pit, fight normally. "
-              + "It is a restriction only — nothing here changes accuracy, cover or sight. Off: depth never affects shooting.");
+              + "It is a restriction only: it never changes accuracy or sight (trench cover is its own setting below). "
+              + "Off: no shot is blocked by a cliff edge.");
             using (Dependent(list, "shootingCliffMetres"))
             {
                 list.Label("A cliff is a rise of " + shootingCliffMetres.ToString("0.0") + " m or more", tooltip:
                     "How much higher the ground between two shooters must stand than the lower of them before it blocks the "
                   + "shot. Shipped: 2 m, more than a person's height.");
                 shootingCliffMetres = Mathf.Round(list.Slider(shootingCliffMetres, 0.5f, 5f) * 2f) / 2f;
+            }
+
+            list.CheckboxLabeled("Dug ground gives cover", ref trenchCoverEnabled,
+                "A pawn standing in a dug trench or canal, wet or dry, is covered by the wall facing the shooter, like a "
+              + "sandbag, more the deeper the trench. A shot along the trench gets no cover; a shooter on the lip sees "
+              + "past it. No cover from explosions. Off: depth never affects shooting except the cliff rule above.");
+            using (Dependent(list, "trenchCoverStrength"))
+            {
+                list.Label("Trench cover strength: " + trenchCoverStrength.ToString("F2"), tooltip:
+                    "At 1.0 a waist-deep trench blocks a bit less than sandbags; chest-deep a bit more.");
+                trenchCoverStrength = Mathf.Round(list.Slider(trenchCoverStrength, 0.25f, 1.5f) * 20f) / 20f;
+            }
+            using (Dependent(list, "trenchCoverCap"))
+            {
+                list.Label("Most cover from a trench plus sandbags: " + trenchCoverCap.ToStringPercent(), tooltip:
+                    "Caps the combined block chance when a trench wall and vanilla cover stack. Never lowers vanilla cover.");
+                trenchCoverCap = Mathf.Round(list.Slider(trenchCoverCap, 0.5f, 1f) * 20f) / 20f;
+            }
+            using (Dependent(list, "trenchAiAvoidsCages"))
+            {
+                list.CheckboxLabeled("Raiders won't pick a foxhole they can't climb out of", ref trenchAiAvoidsCages,
+                    "A raider choosing where to fire from skips a square in a pit it could not climb back out of. "
+                  + "Off: raiders may jump into a sheer trench for its cover and be held there.");
             }
 
             // ══════════════════════════════════════════════════════════════

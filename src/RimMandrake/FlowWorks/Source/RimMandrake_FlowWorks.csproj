@@ -188,6 +188,8 @@
     <Compile Include="Superdeep\RM_PitPathing.cs" />
     <Compile Include="Superdeep\RM_PitStepCost.cs" />
     <Compile Include="RM_Patch_SuperdeepShooting.cs" />
+    <Compile Include="RM_TrenchCoverMath.cs" />
+    <Compile Include="RM_TrenchCover.cs" />
   </ItemGroup>
 
   <!-- Pits, merged 2026-09-16; the building model RETIRED 2026-10-02

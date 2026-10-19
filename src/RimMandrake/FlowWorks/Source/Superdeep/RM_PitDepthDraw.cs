@@ -6,7 +6,8 @@ namespace RimMandrake.FlowWorks
 {
 	/// <summary>
 	/// PIT_DEPTH_DRAW_OFFSET_1 — a pawn is drawn lower the deeper the dug cell it stands
-	/// in, and rises again as it walks out. LAW 2 (depth never touches sight, shooting or cover):
+	/// in, and rises again as it walks out. LAW 2 (depth never touches sight; its only effect on shooting is
+	/// trench cover, RM_TrenchCover):
 	/// the patched getter, Pawn_DrawTracker.DrawPos, is also what vanilla launches shots from
 	/// (Verb_LaunchProjectile.TryCastShot's caster.DrawPos, arc-spray, beam and spray aim), so
 	/// the sink is switched OFF while a verb fires (<see cref="RM_Patch_PitDepthDrawCombatOrigin"/>):
@@ -39,7 +40,7 @@ namespace RimMandrake.FlowWorks
 		{
 			if (!RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled || RM_Patch_PitDepthDrawCombatOrigin.Firing > 0)
 			{
-				return;   // off, or a verb is firing: shots leave from the unsunk position (LAW 2)
+				return;   // off, or a verb is firing: shots leave from the unsunk position (no height advantage)
 			}
 			Pawn pawn = PawnRef(__instance);
 			if (pawn == null || !pawn.Spawned || pawn.Flying)
@@ -161,7 +162,7 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
-	/// <summary>LAW 2 for the sink: while any verb fires a shot (Verb.TryCastNextBurstShot, which runs every verb's
+	/// <summary>No height advantage from the sink (LAW 2): while any verb fires a shot (Verb.TryCastNextBurstShot, which runs every verb's
 	/// TryCastShot), DrawPos is read unsunk, so a projectile's origin, a beam's or spray's aim and the interceptor
 	/// tests that start from that origin are exactly what they would be with no pit. Drawing is untouched: frames are
 	/// never rendered inside a shot. A counter, not a bool, so a shot that triggers another verb nests safely.</summary>

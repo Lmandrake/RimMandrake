@@ -17,7 +17,7 @@ namespace RimMandrake.FlowWorks
 	/// The lip is the north edge of the first cell south of the pawn, in each column the sprite spans, that is
 	/// shallower than the pawn's floor. Opacity is a Mod Setting (default 0.85: a faint ghost stays so a pawn at
 	/// D4 can still be found — assumption A2); where a terrain shader ignores vertex alpha the lip is simply opaque.
-	/// Render only: LAW 2 (depth never touches sight, shooting or cover) is untouched.
+	/// Render only: it changes no sight, shot or cover (trench cover is RM_TrenchCover).
 	/// Known trade (recorded): an item or pawn standing on the lip cell inside that band is drawn under the lip too.
 	/// </summary>
 	public class RM_PitLipOcclusion : MapComponent

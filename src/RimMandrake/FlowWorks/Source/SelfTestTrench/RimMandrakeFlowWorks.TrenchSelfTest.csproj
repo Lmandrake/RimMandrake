@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT: offline selftest of RM_TrenchCoverMath.cs (canal_cover_design_2026-10-17.md
+    §4 table, enfilade, lip shooter, pit cover, natural water, stacking and the HitReportFor fold). Its own project so it
+    does not touch the shared SelfTest project; the mod build (RimMandrake_FlowWorks.csproj, EnableDefaultCompileItems
+    false) does not compile this folder. The ..\ sources are the production files, compiled in directly.
+    Run: python3 src/RimMandrake/Utils/selftest_flowworks_trench_cover.py
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakeFlowWorks.TrenchSelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.FlowWorks.TrenchSelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\RM_Volume.cs" />
+    <Compile Include="..\RM_StockMath.cs" />
+    <Compile Include="..\RM_TrenchCoverMath.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>
