@@ -321,40 +321,7 @@
 
   <!-- A PatchOperationFindMod on "Alpha Biomes" stood here; that donor was retired 2026-10-18, so it could never match again and was deleted. -->
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Alpha Genes</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- AG_OcularSlinger MeatAmount: bodySize 2.50, base 350, yields 875 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>350</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]/statBases</xpath>
-            <value><MeatAmount>350</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- AG_OcularSlinger BoneAmount: bodySize 2.50, base 125, yields 312 -->
-        <li Class="PatchOperationFindMod">
-          <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
-          <match Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]/statBases/BoneAmount</xpath>
-            <match Class="PatchOperationReplace">
-              <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]/statBases/BoneAmount</xpath>
-              <value><BoneAmount>125</BoneAmount></value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]/statBases</xpath>
-              <value><BoneAmount>125</BoneAmount></value>
-            </nomatch>
-          </match>
-        </li>
-      </operations>
-    </match>
-  </Operation>
+  <!-- A PatchOperationFindMod on "Alpha Genes" (AG_OcularSlinger yields) stood here; that donor was retired 2026-10-18 and the creature has no twin, so it was deleted. -->
 
   <Operation Class="PatchOperationFindMod">
     <mods><li>Anomaly</li></mods>
@@ -3404,97 +3371,6 @@
     <mods><li>ReGrowth 2</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- RG_Hemolope MeatAmount: bodySize 2.00, base 280, yields 560 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RG_Hemolope"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RG_Hemolope"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RG_Hemolope"]/statBases</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- RG_Hemolope BoneAmount: bodySize 2.00, base 100, yields 200 -->
-        <li Class="PatchOperationFindMod">
-          <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
-          <match Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="RG_Hemolope"]/statBases/BoneAmount</xpath>
-            <match Class="PatchOperationReplace">
-              <xpath>/Defs/ThingDef[defName="RG_Hemolope"]/statBases/BoneAmount</xpath>
-              <value><BoneAmount>100</BoneAmount></value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="RG_Hemolope"]/statBases</xpath>
-              <value><BoneAmount>100</BoneAmount></value>
-            </nomatch>
-          </match>
-        </li>
-        <!-- RG_WoollyStegosaurus MeatAmount: bodySize 4.00, base 560, yields 2240 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RG_WoollyStegosaurus"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RG_WoollyStegosaurus"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>560</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RG_WoollyStegosaurus"]/statBases</xpath>
-            <value><MeatAmount>560</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- RG_WoollyStegosaurus BoneAmount: bodySize 4.00, base 200, yields 800 -->
-        <li Class="PatchOperationFindMod">
-          <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
-          <match Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="RG_WoollyStegosaurus"]/statBases/BoneAmount</xpath>
-            <match Class="PatchOperationReplace">
-              <xpath>/Defs/ThingDef[defName="RG_WoollyStegosaurus"]/statBases/BoneAmount</xpath>
-              <value><BoneAmount>200</BoneAmount></value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="RG_WoollyStegosaurus"]/statBases</xpath>
-              <value><BoneAmount>200</BoneAmount></value>
-            </nomatch>
-          </match>
-        </li>
-        <!-- RG_Neutrolope MeatAmount: bodySize 2.00, base 280, yields 560 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/statBases</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- RG_Neutrolope BoneAmount: bodySize 2.00, base 100, yields 200 -->
-        <li Class="PatchOperationFindMod">
-          <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
-          <match Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/statBases/BoneAmount</xpath>
-            <match Class="PatchOperationReplace">
-              <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/statBases/BoneAmount</xpath>
-              <value><BoneAmount>100</BoneAmount></value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/statBases</xpath>
-              <value><BoneAmount>100</BoneAmount></value>
-            </nomatch>
-          </match>
-        </li>
-        <!-- RG_WoollyStegosaurus woolAmount: bodySize 4.00, 125 -> 120 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RG_WoollyStegosaurus"]/comps/li[woolAmount]/woolAmount</xpath>
-          <value><woolAmount>120</woolAmount></value>
-        </li>
-        <!-- RG_Neutrolope milkAmount: bodySize 2.00, 15 -> 8 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RG_Neutrolope"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>8</milkAmount></value>
-        </li>
       </operations>
     </match>
   </Operation>

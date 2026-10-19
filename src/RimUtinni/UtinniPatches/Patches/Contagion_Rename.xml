@@ -321,29 +321,7 @@
     </match>
   </Operation>
 
-  <!-- ============== AG_OcularSlinger -> pellorax ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]/label</xpath>
-          <value><label>pellorax</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AG_OcularSlinger"]/description</xpath>
-          <value><description>A large, mutated scorpion, its raised tail held ready and a scatter of eyes across its carapace that never stop twitching, watching every direction at once.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AG_OcularSlinger"]</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef[defName="AG_OcularSlinger"]/label</xpath>
-      <value><label>pellorax</label></value>
-    </match>
-  </Operation>
+  <!-- AG_OcularSlinger -> pellorax stood here; Alpha Genes was retired 2026-10-18 and the summoned creature has no twin, so it was deleted. -->
 
   <!-- ============== GR_Fleshling -> pibbo ============== -->
   <Operation Class="PatchOperationConditional">

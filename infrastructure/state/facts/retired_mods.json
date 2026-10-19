@@ -108,6 +108,13 @@
       "retiredOn": "2026-10-18",
       "commit": "see git log of this file",
       "why": "owner 2026-10-18: \"Just put in placeholder art for now or donor copies and retire these mods!!! Just get it done.\" (Phase 0, biome_sprint_kickoff_2026-10-15 §0.5)"
+    },
+    {
+      "packageId": "sarg.alphagenes",
+      "modNames": ["Alpha Genes"],
+      "retiredOn": "2026-10-18",
+      "commit": "see git log of this file",
+      "why": "owner 2026-10-18: \"Just put in placeholder art for now or donor copies and retire these mods!!! Just get it done.\" (Phase 0, biome_sprint_kickoff_2026-10-15 §0.5)"
     }
   ]
 }
