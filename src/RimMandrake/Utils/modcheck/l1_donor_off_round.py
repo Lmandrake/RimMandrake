@@ -681,23 +681,29 @@ class Round(object):
             for rid in ("L01_FIRST_EXCEPTION", "L02_XREF_OURS", "L03_TEX_PORTED", "L04_TEX_OURS"):
                 self.row(rid, "UNMEASURED", "HARNESS", "no '[JawaBench] ready' / 'Bridge token:' line: this log may not be this load")
             return
-        lines = log.splitlines()
-        exc = [ln.strip()[:220] for ln in lines if "Exception" in ln]
-        first = next((ln.strip()[:220] for ln in lines
-                      if re.search(r"Exception|Could not find type named|Config error in", ln)), None)
-        self.row("L01_FIRST_EXCEPTION", "FAIL" if exc else "PASS", "MOD",
-                 {"exceptions": len(exc), "first": first, "firstException": exc[0] if exc else None,
-                  "configErrors": sum(1 for ln in lines if ln.startswith("Config error in"))})
-        xref = [ln.strip()[:220] for ln in lines if XREF_RE.search(ln) and OURS_RE.search(ln)]
-        self.row("L02_XREF_OURS", "FAIL" if xref else "PASS", "MOD", {"count": len(xref), "examples": xref[:8]})
-        tex_lines = [ln.strip() for ln in lines if TEX_MISS_RE.search(ln)]
+        # One classifier for this row set and harvest_donor_free.py (2026-10-18): exception EVENTS (stack frames
+        # folded), xref / texture lines attributed by the same rules, in one streaming pass.
+        import harvest_donor_free as H
         ported = sorted({t for s in self.man["species"] + self.man["plants"] for t in s.get("texPaths", [])})
-        hit_ported = [ln[:220] for ln in tex_lines if any(t in ln for t in ported)]
-        ours = [ln[:220] for ln in tex_lines if OURS_RE.search(ln) or re.search(r"\bsw[a-z]+/", ln)]
-        self.row("L03_TEX_PORTED", "FAIL" if hit_ported else "PASS", "MOD",
-                 {"count": len(hit_ported), "examples": hit_ported[:10]})
-        self.row("L04_TEX_OURS", "FAIL" if ours else "PASS", "MOD",
-                 {"count": len(ours), "ofWhichPorted": len(hit_ported), "examples": ours[:10]})
+        donors = set() if getattr(self.args, "no_index", False) else H.donor_names()
+        c = H.classify(path, donors=donors, renames=H.renames_of(donors), our_tex=H.our_texpaths(),
+                       our_mods=H.our_mod_names(), ported_tex=ported, keep=12)
+        e, x, t = c["exc"], c["xref"], c["tex"]
+
+        def st(n):   # after the Verse.Log cap nothing is written: a zero there is blind, not a PASS
+            return "FAIL" if n else ("UNMEASURED" if c["capAt"] else "PASS")
+        self.row("L01_FIRST_EXCEPTION", st(e["events"]), "MOD",
+                 {"exceptions": e["events"], "ours": e["ours"], "retiredDonor": e["retired"], "other": e["other"],
+                  "first": (c["firstErrorish"] or {}).get("text"),
+                  "firstException": (e["first"] or {}).get("text"), "configErrors": c["config"]["lines"],
+                  "capAt": c["capAt"]})
+        self.row("L02_XREF_OURS", st(x["bar"]), "MOD",
+                 {"count": x["bar"], "retiredDonorOrRename": x["retired"], "examples": c["ex"]["xref"][:8]})
+        hit_ported = [ln for ln in c["ex"]["tex"] if any(q in ln for q in ported)]
+        self.row("L03_TEX_PORTED", st(t["ported"]), "MOD",
+                 {"count": t["ported"], "examples": hit_ported[:10]})
+        self.row("L04_TEX_OURS", st(t["ours"]), "MOD",
+                 {"count": t["ours"], "ofWhichPorted": t["ported"], "examples": c["ex"]["tex"][:10]})
 
     def phase_spawn(self, batch=12):
         species = self.man["species"]
