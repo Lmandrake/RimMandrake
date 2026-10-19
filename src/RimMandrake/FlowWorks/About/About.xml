@@ -58,7 +58,6 @@ Requires Harmony and all five RimWorld expansions.</description>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>brrainz.harmony</li>
-    <li>sarg.alphabiomes</li>
     <li>Dubwise.DubsBadHygiene.Lite</li>
     <!-- THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: ordering only; RM_DBH_BottleWaterExt.xml patches our bottles after DBH -->
     <li>Dubwise.DubsBadHygiene.Thirst</li>
