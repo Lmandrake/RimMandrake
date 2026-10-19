@@ -13,7 +13,11 @@
        RM_Patch_FlowDoorOnWetCanal), so they can be placed on a wet canal cell and a blueprint or frame
        survives its cut flooding. A half-built frame seals nothing: liquid runs through it until the door
        is finished. A natural lake or river cell stays refused.
-       RM_SecurityGrateDoor draws its own grate art (artpipe fwart_RM_SecurityGrateDoor); RM_Sluice draws its own art (fwart_RM_Sluice). -->
+       RM_SecurityGrateDoor draws its own grate art (artpipe fwart_RM_SecurityGrateDoor); RM_Sluice draws its own art (fwart_RM_Sluice).
+       FLOWDOOR_EW_PERSPECTIVE (owner 2026-10-18): Graphic_Multi. _south is the front view (North/South: vanilla's
+       mover draw); _east is the side view a gate spanning North-South draws upright (Building_RM_FlowDoor.DrawAt).
+       There is no _north (Graphic_Multi falls back to _south) and no _west (a 1x1 door only turns North or East).
+       The bare RM_Sluice / RM_SecurityGrateDoor PNGs stay as the menu icons (uiIconPath). -->
   <ThingDef ParentName="DoorBase">
     <defName>RM_Sluice</defName>
     <label>sluice</label>
@@ -25,7 +29,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Canals/RM_Sluice</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Multi</graphicClass>
       <damageData>
         <enabled>false</enabled>
       </damageData>
@@ -55,7 +59,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Canals/RM_SecurityGrateDoor</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Multi</graphicClass>
       <damageData>
         <enabled>false</enabled>
       </damageData>
