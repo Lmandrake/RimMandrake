@@ -63,8 +63,7 @@ def test_tier():
 def _fake_installed(drop=()):
     """packageId -> About record for the fw_gss_sitting closure, minus `drop` (a planted missing mod)."""
     deps = {"mandrake.rm.flowworks": ["brrainz.harmony"], "mandrake.rm.gimmesomeslack": ["brrainz.harmony"],
-            "mandrake.rm.biomes": ["brrainz.harmony", "mandrake.rm.flowworks", "sarg.alphabiomes"],
-            "sarg.alphabiomes": []}
+            "mandrake.rm.biomes": ["brrainz.harmony", "mandrake.rm.flowworks"]}  # Alpha Biomes retired 2026-10-18
     pids = ["ludeon.rimworld", "brrainz.harmony", M.BRIDGE] + list(M.DLC_IDS) + list(deps)
     return {p: {"packageId": p, "name": p, "deps": deps.get(p, []), "after": [], "before": []}
             for p in pids if p not in drop}
