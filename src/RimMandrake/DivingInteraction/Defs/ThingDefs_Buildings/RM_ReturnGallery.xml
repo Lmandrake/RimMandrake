@@ -43,7 +43,7 @@
     <category>Building</category>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/CaveEntranceA</texPath>
+      <texPath>Things/Building/RM_GalleryOutlet/RM_GalleryOutlet</texPath>
       <drawSize>(1,1)</drawSize>
       <color>(150,120,90)</color>
     </graphicData>
@@ -71,7 +71,7 @@
     <category>Building</category>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/CaveEntranceA</texPath>
+      <texPath>Things/Building/RM_GalleryPipe/RM_GalleryPipe</texPath>
       <drawSize>(1,1)</drawSize>
       <color>(110,100,95)</color>
     </graphicData>
@@ -96,7 +96,7 @@
     <category>Building</category>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/CaveEntranceA</texPath>
+      <texPath>Things/Building/RM_GalleryBreak/RM_GalleryBreak</texPath>
       <drawSize>(1,1)</drawSize>
       <color>(170,90,60)</color>
     </graphicData>
