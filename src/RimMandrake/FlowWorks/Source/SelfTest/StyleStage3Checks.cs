@@ -56,17 +56,15 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private static void HoseTakesReelLook()
         {
-            int pairs = 0, ok = 0, globalAgrees = 0;
+            int pairs = 0, ok = 0;
             foreach (string reel in HoseStyles.Looks)
                 foreach (string def in HoseStyles.Looks)
                 {
                     pairs++;
                     string got = HoseStyles.HoseLook(reel, def);
                     if (got == reel) ok++;
-                    if (def == reel) globalAgrees++;          // what a rule reading the global setting would draw correctly
                 }
             Check(pairs == 16 && ok == 16, $"hose look: for every (reel look, default setting) pair the hose draws the REEL's look ({ok}/{pairs})");
-            Check(globalAgrees == 4, "can fail: a hose reading the global setting would be right in only 4 of 16 pairs, so the check above can tell them apart");
             Check(HoseStyles.HoseLook(null, "Modern") == "Modern" && HoseStyles.HoseLook("Gold", "Industrial") == "Industrial" && HoseStyles.HoseLook(null, null) == "Scrapper",
                   "legacy: a reel with no look draws the default look; no default at all draws Scrapper");
             // the selection the draw code makes per look returns that look's folder for every piece (the material set's source)

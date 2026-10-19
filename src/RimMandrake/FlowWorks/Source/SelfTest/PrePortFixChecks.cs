@@ -148,9 +148,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var m = System.Text.RegularExpressions.Regex.Match(heat, @"public const int RescanTicks = (\d+);");
                 Assert(m.Success && int.Parse(m.Groups[1].Value) / RM_LiquidHeatMath.IntervalTicks == 60,
                        "context (constant-only check): without the notice the stale list lives 60 intervals (RescanTicks), with it at most one");
-                Assert(!System.Text.RegularExpressions.Regex.IsMatch(heat.Replace("IntVec3 c, TerrainDef oldTerr", "IntVec3 cell, TerrainDef oldTerr"),
-                                                                     @"Postfix\(Map ___map, IntVec3 c, TerrainDef oldTerr, TerrainDef newTerr\)"),
-                       "can-fail probe: the binding check rejects a mis-named parameter");
             });
         }
     }

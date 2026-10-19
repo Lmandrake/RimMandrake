@@ -47,7 +47,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Near(RM_ThirstMath.FallPerDay(2f, 1f, false, false), 1.6f, 0.001f), "multiplier scales the rate");
                 Assert(Near(RM_ThirstMath.FallPerDay(1f, 1f, true, false), 1.04f, 0.001f), "hard labour x1.3");
                 Assert(Near(RM_ThirstMath.FallPerDay(1f, 1f, false, true), 0.4f, 0.001f), "asleep x0.5");
-                Assert(!Near(drop, 0.4f, 0.01f), "can-fail: not the hard-labour-asleep-blind rate");
+                Assert(Near(RM_ThirstMath.FallPerDay(1f, 1f, true, true), 0.52f, 0.001f), "hard labour and asleep both apply (0.8 x 1.3 x 0.5)");
             });
             Case("Thirst_heat_cap_ruled", () =>
             {

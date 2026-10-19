@@ -87,10 +87,10 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("Pump_world_to_world_refusal_puts_the_take_back", () =>
             {
-                int lake = 10, canal = 2;
+                int lake = 10;
                 RM_TransferLeg from = RM_TransferLeg.World(k => lake > 0, k => { lake--; return true; }, k => { lake++; return true; });
                 RM_TransferLeg into = RM_TransferLeg.World(k => true, k => false);   // the pour refuses after the check
-                Assert(RM_LiquidTransfer.Move(1, from, into, out RM_MoveOutcome o) == 0 && lake == 10 && canal == 2 && o.Lost == 0, "a refused pour puts the level back into the lake");
+                Assert(RM_LiquidTransfer.Move(1, from, into, out RM_MoveOutcome o) == 0 && lake == 10 && o.Lost == 0, "a refused pour puts the level back into the lake");
                 RM_TransferLeg dry = RM_TransferLeg.World(k => false, k => true);
                 Assert(RM_LiquidTransfer.Move(1, from, dry, out _) == 0 && lake == 10, "a destination that cannot take a level is checked BEFORE the take");
             });

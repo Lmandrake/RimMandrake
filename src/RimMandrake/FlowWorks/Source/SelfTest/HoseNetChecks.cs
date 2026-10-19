@@ -234,7 +234,13 @@ namespace RimMandrake.FlowWorks.SelfTest
             g4.Hose("P1", "T", "second");
             Check(Route(Walk(g4, "P1"), "T") == "first", "one route per tank: the parallel hose stays flat (only the first is credited)");
             // pour = draw: the route is undirected, so a pour credits the same hoses a draw does
-            Check(Route(Walk(g, "P1"), "T") == Route(r, "T"), "the same route whichever way the liquid moves");
+            // the same chain with every hose laid the other way round (each link's A and B swapped)
+            var gr = new G();
+            gr.Hose("RB", "P1", "A");
+            gr.Hose("RC", "RB", "B");
+            gr.Hose("T", "RC", "C");
+            RM_NetResult rr = Walk(gr, "P1");
+            Check(Tanks(rr).SequenceEqual(new[] { "T" }) && Route(rr, "T") == Route(r, "T"), "the same route whichever way the hoses were laid (" + Route(rr, "T") + " vs " + Route(r, "T") + ")");
             // route liveness at transfer: a hose wound in after the walk (same tick) drops the route
             var dead = new HashSet<int> { 1 };
             Check(RM_LiquidNetKernel.RouteLive(r.Routes["T"], x => !dead.Contains(x.Id)) == false && RM_LiquidNetKernel.RouteLive(r.Routes["T"], x => true),
@@ -261,9 +267,14 @@ namespace RimMandrake.FlowWorks.SelfTest
             }
             Check(!gap, "a steady pump: no tick without flow");
             // can-fail: the old adapter's window (1.5 x the flow PULSE, 60 ticks) against a 250-tick pump flickers
+            int shortLease = nl;
             bool oldGap = false;
-            for (int t = 0; t <= 1000; t++) if (!(t - (t / 250) * 250 <= 60 + 60 / 2)) oldGap = true;
-            Check(oldGap, "can-fail: a 1.5 x 60-tick window against a 250-tick pump would flicker");
+            for (int t = 0; t <= 1000; t++)
+            {
+                if (t % 250 == 0) shortLease = RM_LiquidNetKernel.Lease(shortLease, t, 60);
+                if (!RM_LiquidNetKernel.Flowing(shortLease, t)) oldGap = true;
+            }
+            Check(oldGap, "can-fail: a lease sized for a 60-tick cadence against a 250-tick pump would flicker");
             // the bath: one craft is one plump pulse of the release window
             Check(RM_LiquidNetKernel.Lease(nl, 0, 500) == 750, "a bath credit (cadence = releaseTicks 500) leases one pulse of 750");
             // the plump-off bound (§3.6): last credit live 375, release 500, transition 30 -> flat by ~905 ticks after the last transfer

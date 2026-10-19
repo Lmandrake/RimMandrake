@@ -29,8 +29,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var t = new List<RM_TankView> { V(10, 97, 100, true), V(11, 98, 100, true) };
                 List<KeyValuePair<int, int>> plan = RM_LiquidNetKernel.FillPlan(t, 5);
                 Assert(Ids(t, plan) == "11:2 10:3", "3 + 2 units of room take the level, fullest first: " + Ids(t, plan));
-                // can-fail: the old TankToFill rule (one tank must take all 5) finds none
-                Assert(!t.Any(x => x.Cap - x.Units >= 5), "can-fail: no single tank has room for 5 (the old rule deadlocked here)");
                 Assert(RM_LiquidNetKernel.FillPlan(new List<RM_TankView> { V(1, 97, 100, true), V(2, 99, 100, true) }, 5) == null,
                     "3 + 1 units of room: no part-level is placed (null)");
             });
