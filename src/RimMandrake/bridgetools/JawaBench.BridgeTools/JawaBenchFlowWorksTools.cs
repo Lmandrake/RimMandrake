@@ -170,7 +170,7 @@ namespace JawaBench.BridgeTools
                 "sequence (and FluidDef.coolsToGlassEdge/Flood_FlowWorks.CoolFrontToGlass, " +
                 "which neither the offline FlowWorks selftest nor any existing live caller " +
                 "ever exercised - grep the source, nothing spawns RM_FluidCanalFlood before " +
-                "this tool) without needing sarg.alphabiomes/mandrake.rm.thesump (TheSump's " +
+                "this tool) without needing mandrake.rm.thesump (TheSump's " +
                 "own hard dependency, not installed on this machine) just to reach a real tar " +
                 "pit. Reflection-coupled the same way jawa/canal_cell_report is: works with " +
                 "or without FlowWorks loaded, fails loudly naming why. Pick a small volume " +
