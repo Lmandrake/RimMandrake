@@ -68,6 +68,23 @@ namespace RimMandrake.FlowWorks
 			{
 				from = System.Math.Min(from, RM_SpanMath.Notches(fromDeckM));
 			}
+			// TITAN_TRENCHES_WIRE_MIND_THE_GAP: a trench this creature steps over is ground to it, at either end of the step.
+			// Onto one from ground: priced as the bank it steps from (the trench floor is never walked); off one: surface walking
+			// onto the far bank (vanilla's own cost, below). From a hole up onto one: priced as today.
+			Pawn strider = RM_CliffMask.On ? RM_Patch_PathFollower_StepPawn.current : null;
+			if (strider != null && RM_TrenchStride.StrideOf(strider) > 0)
+			{
+				bool overFrom = from > 0 && RM_TrenchStride.SteppedOver(strider, map, eng, prevCell);
+				if (overFrom)
+				{
+					from = 0;
+				}
+				if (from == 0 && to > 0 && RM_TrenchStride.SteppedOver(strider, map, eng, c))
+				{
+					baseCostOverride = overFrom ? 0 : Mathf.Max(map.terrainGrid.TerrainAt(prevCell)?.pathCost ?? 0, 0);
+					return;
+				}
+			}
 			if ((to == 0 && from == 0) || (to > 0 && eng.FillAt(c) > 0))
 			{
 				return;   // surface walking, or a liquid cell (wading costs stay)

@@ -81,6 +81,7 @@
     <Compile Include="Titanic\Wake\YieldCurveUtility.cs" />
     <Compile Include="Titanic\WallsSlots\JobDriver_TitanSqueeze.cs" />
     <Compile Include="Titanic\WallsSlots\Patch_WallsSlots.cs" />
+    <Compile Include="Titanic\WallsSlots\TrenchStrideHook.cs" />
     <Compile Include="Titanic\WallsSlots\WallsSlotsDecider.cs" />
     <Compile Include="Titanic\WallsSlots\WallsSlotsUtility.cs" />
   </ItemGroup>

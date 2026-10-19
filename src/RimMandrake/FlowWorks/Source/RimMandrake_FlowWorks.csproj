@@ -188,6 +188,7 @@
     <Compile Include="Superdeep\RM_LadderWallMath.cs" />
     <Compile Include="RM_PitTrapMath.cs" />
     <Compile Include="RM_PocketGridMath.cs" />
+    <Compile Include="RM_TrenchStrideMath.cs" />
     <Compile Include="RM_CliffMaskMath.cs" />
     <Compile Include="Superdeep\RM_SuperdeepTrap.cs" />
     <Compile Include="Superdeep\RM_PocketGrid.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="Superdeep\RM_PitRamp.cs" />
     <Compile Include="Superdeep\RM_PitPathing.cs" />
     <Compile Include="Superdeep\RM_PitStepCost.cs" />
+    <Compile Include="Superdeep\RM_TrenchStride.cs" />
     <Compile Include="RM_Patch_SuperdeepShooting.cs" />
     <Compile Include="RM_TrenchCoverMath.cs" />
     <Compile Include="RM_TrenchCover.cs" />
