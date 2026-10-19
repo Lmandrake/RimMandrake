@@ -51,16 +51,47 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!RM_WallClimbMath.CrossingOpen(RM_WallClimbMath.MaxWallSquares + 1, false, false, false, true, true), "can-fail: too thick");
                 Assert(!RM_WallClimbMath.CrossingOpen(0, false, false, false, true, true), "can-fail: no wall to climb");
             });
-            Case("WallClimb_is_slow", () =>
+            Case("WallClimb_is_slow_x20", () =>
             {
-                int one = RM_WallClimbMath.ClimbTicks(1, 1f, RM_WallClimbMath.NormalMoveSpeed);
-                Assert(one == RM_WallClimbMath.BaseTicksPerSquare, "a person, speed 1: the base ticks per square");
-                Assert(one >= 10 * 60 / RM_WallClimbMath.NormalMoveSpeed, "slower than walking ten squares");
-                Assert(RM_WallClimbMath.ClimbTicks(2, 1f, RM_WallClimbMath.NormalMoveSpeed) == 2 * one, "a double wall takes twice as long");
-                Assert(RM_WallClimbMath.ClimbTicks(1, 2f, RM_WallClimbMath.NormalMoveSpeed) == one / 2, "the speed slider halves it");
-                Assert(RM_WallClimbMath.ClimbTicks(1, 1f, 2.3f) == 2 * one, "a slow walker climbs slower");
-                Assert(RM_WallClimbMath.ClimbTicks(1, 1f, 100f) == one / 2, "can-fail: a fast walker is capped at double");
-                Assert(RM_WallClimbMath.ClimbTicks(1, 100f, 100f) >= 60, "can-fail: never under a second");
+                // Owner 2026-10-18 by card: "climbing should be SLOOOWW. Like x20 slow".
+                float step = RM_WallClimbMath.PersonTicksPerCell;
+                int one = RM_WallClimbMath.ClimbTicks(1, RM_WallClimbMath.DefaultSlowFactor, step);
+                Assert(RM_WallClimbMath.DefaultSlowFactor == 20f, "the default is x20");
+                Assert(one == (int)Math.Round(20f * step), "a person: one wall square is twenty of its steps");
+                Assert(RM_WallClimbMath.ClimbTicks(2, 20f, step) == 2 * one, "a double wall takes twice as long");
+                Assert(RM_WallClimbMath.ClimbTicks(1, 40f, step) == 2 * one, "the slowness setting doubles it");
+                Assert(RM_WallClimbMath.ClimbTicks(1, 20f, 2f * step) == 2 * one, "a slow walker climbs slower");
+                Assert(RM_WallClimbMath.ClimbTicks(1, 20f, 0f) == one, "can-fail: an unknown step is a person's");
+                Assert(RM_WallClimbMath.ClimbTicks(1, 1f, 1f) >= 60, "can-fail: never under a second");
+                Assert(RM_WallClimbMath.StepCost(1000f, 1000f) == RM_WallClimbMath.MaxStepCost && RM_WallClimbMath.MaxStepCost < 10000,
+                    "can-fail: the planner's price stays under the pathfinder's impassable");
+                Assert(RM_WallClimbMath.StepCost(20f, step) == one, "the planner charges what the climb takes");
+            });
+            Case("WallClimb_routes_only_when_shorter", () =>
+            {
+                Assert(RM_WallClimbMath.ClimbIsShorter(true, 900f, true, 600f), "over the wall is quicker than round");
+                Assert(!RM_WallClimbMath.ClimbIsShorter(true, 600f, true, 600f), "can-fail: a tie walks round");
+                Assert(!RM_WallClimbMath.ClimbIsShorter(true, 400f, true, 600f), "can-fail: round is quicker, walk it");
+                Assert(RM_WallClimbMath.ClimbIsShorter(false, -1f, true, 600f), "no ordinary route: climb");
+                Assert(!RM_WallClimbMath.ClimbIsShorter(true, 900f, false, 600f), "can-fail: no climb route");
+                // The x20 rule in path terms: a person walking round a 10-square wall (about 20 extra steps) climbs only
+                // when the detour costs more than the climb (20 steps a square).
+                int climb = RM_WallClimbMath.StepCost(20f, RM_WallClimbMath.PersonTicksPerCell);
+                float s = RM_WallClimbMath.PersonTicksPerCell;
+                Assert(!RM_WallClimbMath.ClimbIsShorter(true, 30f * s, true, 10f * s + climb), "can-fail: a 20-step detour is not worth a climb");
+                Assert(RM_WallClimbMath.ClimbIsShorter(true, 60f * s, true, 10f * s + climb), "a 50-step detour is");
+            });
+            Case("WallClimb_gear_chance", () =>
+            {
+                Assert(RM_WallClimbMath.GearChance(0f, 0.35f, false, 1f, 1f, true, false) == 0.35f, "a named faction's chance");
+                Assert(RM_WallClimbMath.GearChance(0.08f, 0f, false, 1f, 1f, true, false) == 0.08f, "a light raider kind's chance");
+                Assert(RM_WallClimbMath.GearChance(0.08f, 0.35f, false, 1f, 1f, true, false) == 0.35f, "the higher of kind and faction");
+                Assert(RM_WallClimbMath.GearChance(0f, 0f, true, 1f, 1f, true, false) == 1f, "breachers and sappers from anyone");
+                Assert(RM_WallClimbMath.GearChance(0f, 0f, false, 1f, 1f, true, false) == 0f, "can-fail: an ordinary pawn of an unnamed faction");
+                Assert(RM_WallClimbMath.GearChance(0f, 0.35f, true, 1f, 1f, true, true) == 0f, "can-fail: never the player's own");
+                Assert(RM_WallClimbMath.GearChance(0f, 0.35f, true, 1f, 1f, false, false) == 0f, "can-fail: setting off");
+                Assert(RM_WallClimbMath.GearChance(0f, 0.35f, false, 1f, 0f, true, false) == 0f, "can-fail: scale 0");
+                Assert(RM_WallClimbMath.GearChance(0f, 0.5f, false, 1f, 3f, true, false) == 1f, "can-fail: clamped to 1");
             });
             Case("WallClimb_wiring", () =>
             {
@@ -73,13 +104,43 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(w, @"\[HarmonyPatch\(typeof\(Pawn_PathFollower\), ""TryEnterNextPathCell""\)\]", "a blocked path climbs instead of bashing");
                 RiverSwitchFlipChecks.Has(w, @"\[HarmonyPatch\(typeof\(JobGiver_AIGotoNearestHostile\), ""TryGiveJob""\)\]", "raiders with no way in climb");
                 RiverSwitchFlipChecks.Has(w, @"class FloatMenuOptionProvider_RM_ClimbOverWall : FloatMenuOptionProvider", "colonists ordered over");
-                RiverSwitchFlipChecks.Has(w, @"RM_WallClimbMath\.ClimbTicks\(squares, RM_WallClimbSettings\.wallClimbSpeed", "the climb lasts ClimbTicks at the speed setting");
+                RiverSwitchFlipChecks.Has(w, @"RM_WallClimbMath\.ClimbTicks\(squares, RM_WallClimbSettings\.wallClimbSlowFactor,\s*pawn\.TicksPerMoveCardinal\)", "the climb lasts slowFactor of the pawn's steps");
+                RiverSwitchFlipChecks.Has(w, @"\[HarmonyPatch\(typeof\(Pawn_PathFollower\), nameof\(Pawn_PathFollower\.StartPath\)\)\]\s*\[RimMandrake\.Shared\.PatchFeature\(""Climbing gear routes over walls""", "walks are planned");
+                RiverSwitchFlipChecks.Has(w, @"\[HarmonyPatch\(typeof\(Pawn_PathFollower\), nameof\(Pawn_PathFollower\.PatherTick\)\)\]", "the plan runs on the next pather tick");
+                RiverSwitchFlipChecks.Has(w, @"tuning\.costBlockedWallBase = RM_WallClimbMath\.StepCost\(RM_WallClimbSettings\.wallClimbSlowFactor, p\.TicksPerMoveCardinal\);\s*tuning\.costBlockedWallExtraPerHitPoint = 0f;", "the planner prices a wall square at the climb");
+                RiverSwitchFlipChecks.Has(w, @"TraverseMode\.PassAllDestroyablePlayerOwnedThings", "only the player's walls are passable to the planner");
+                RiverSwitchFlipChecks.Has(w, @"class RM_WallClimbGrid : PathRequest\.IPathGridCustomizer", "the other buildings shut by the offset grid");
+                RiverSwitchFlipChecks.Has(w, @"offsets\[idx\.CellToIndex\(c\)\] = 10000;", "shut means >= 10000 (PathGridJob.CellIsPassable)");
+                RiverSwitchFlipChecks.Has(w, @"map\.reachability\.CanReach\(landing, dest, peMode, TraverseParms\.For\(p, Danger\.Deadly\)\)", "the landing must reach the destination (no stall)");
+                RiverSwitchFlipChecks.Has(w, @"RM_WallClimbMath\.ClimbIsShorter\(found, found \? normal\.TotalCost : -1f, true, climbCost\)", "only when shorter than the ordinary route");
+                RiverSwitchFlipChecks.Has(w, @"if \(!RM_WallClimbRoute\.AnyPending \|\| ___pawn == null\)", "can-fail: nobody pays while nothing is pending");
+                RiverSwitchFlipChecks.Has(w, @"\[HarmonyPatch\(typeof\(PawnGenerator\), ""GenerateGearFor""\)\]", "raiders dressed with gear at generation");
+                RiverSwitchFlipChecks.Has(w, @"\[HarmonyPatch\(typeof\(RaidStrategyWorker\), nameof\(RaidStrategyWorker\.MakeLords\)\)\]", "breach and sapper raids dress their workers");
+                RiverSwitchFlipChecks.Has(w, @"sappers \? p\.kindDef\.canBeSapper : \(p\.kindDef\.isGoodBreacher \|\| BreachingUtility\.IsGoodBreacher\(p\)\)", "breachers and sappers from anyone");
+                RiverSwitchFlipChecks.Has(w, @"RM_WallClimbMath\.GearChance\(kindChance, facChance, false, 0f,", "can-fail: generation never gives every sapper-capable kind the gear");
+                RiverSwitchFlipChecks.Has(w, @"ApparelUtility\.CanWearTogether\(gearDef, worn\[i\]\.def, pawn\.RaceProps\.body\)", "can-fail: never replaces what is worn");
                 string s = Src("Superdeep", "RM_WallClimbSettings.cs");
-                foreach (string f in new[] { "wallClimbEnabled", "wallClimbSpeed", "raidersMayClimbWalls" })
+                foreach (string f in new[] { "wallClimbEnabled", "wallClimbSlowFactor", "raidersMayClimbWalls", "wallClimbAutoRoute",
+                    "raidersCarryClimbingGear", "raiderGearChanceScale", "breacherSapperGearChance" })
                 {
                     Assert(s.Contains("ref " + f + ", \"" + f + "\""), "scribed setting " + f);
                 }
                 Assert(s.Contains("public static bool raidersMayClimbWalls = true;"), "raiders climb by default (owner by card)");
+                Assert(s.Contains("public static float wallClimbSlowFactor = RM_WallClimbMath.DefaultSlowFactor;")
+                    && s.Contains("public static bool wallClimbAutoRoute = true;") && s.Contains("public static bool raidersCarryClimbingGear = true;"),
+                    "x20, routing and raider gear on by default (owner by card)");
+                string vp = Src("..", "Patches", "Pits", "FlowWorks_ClimbingGearRaiders.xml");
+                foreach (string k in new[] { "Tribal_Penitent", "Tribal_Archer", "Tribal_Warrior", "Tribal_Hunter", "Drifter", "Scavenger", "Thrasher" })
+                {
+                    Assert(vp.Contains("defName=\"" + k + "\""), "light raider kind patched: " + k);
+                }
+                Assert(vp.Contains("RimMandrake.FlowWorks.RM_ClimbingGearChance"), "the chance extension");
+                string up = RiverSwitchFlipChecks.Src(Path.Combine("..", "..", "..", "RimUtinni", "UtinniPatches", "Patches", "ClimbingGear_JawaFactions.xml"));
+                foreach (string f in new[] { "RUT_Jawa_WildsteamClan", "RUT_Jawa_Junkers", "Pirate", "RUT_Jawa_IndigenousTribes", "TribeCivil" })
+                {
+                    Assert(up.Contains("defName=\"" + f + "\""), "named faction patched: " + f);
+                }
+                Assert(up.Contains("<li>mandrake.rm.flowworks</li>"), "can-fail: the Utinni patch is guarded on FlowWorks (the extension type)");
                 string mod = Src("RimMandrakeFlowWorksMod.cs");
                 Assert(mod.Contains("RM_WallClimbSettings.ExposeData();") && mod.Contains("RM_WallClimbSettings.DoSettingsSection(list);"), "settings scribed and drawn");
                 string csproj = Src("RimMandrake_FlowWorks.csproj");

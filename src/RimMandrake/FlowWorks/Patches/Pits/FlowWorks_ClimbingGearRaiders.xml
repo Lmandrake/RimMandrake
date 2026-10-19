@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FlowWorks_ClimbingGearRaiders.xml  (WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS follow-up, 2026-10-18)
+  Owner by card 2026-10-18 (the question: which raiders carry climbing gear; option 1 picked: a small chance on light
+  tribal and pirate raiders). Read from the shipped defs, 2026-10-18:
+    Data/Core/Defs/PawnKindDefs_Humanlikes/PawnKinds_Tribal.xml  Tribal_Penitent (combatPower 40), Tribal_Archer (45),
+      Tribal_Warrior (50), Tribal_Hunter (60): the TribeCivil/TribeRough/TribeSavage combat kinds under 65.
+    Data/Core/Defs/PawnKindDefs_Humanlikes/PawnKinds_Pirate.xml  Drifter (35), Scavenger (50), Thrasher (50): the Pirate
+      combat kinds under 55.
+  Each is a concrete PawnKindDef (it also carries a Name= for children; a child inherits the extension). The chance is
+  read by RM_Patch_GenerateGear_ClimbingGear (RM_WallClimb.cs) and scaled by the "Raider climbing gear chance" setting.
+  The named factions (Wildsteam, Junkers, Blackstar, Jawa, Deep Desert) are patched in
+  RimUtinni/UtinniPatches/Patches/ClimbingGear_JawaFactions.xml; breachers and sappers get theirs when the raid forms.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/PawnKindDef[defName="Tribal_Penitent"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/PawnKindDef[defName="Tribal_Penitent"]/modExtensions</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Tribal_Penitent"]/modExtensions</xpath>
+        <value>
+          <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Tribal_Penitent"]</xpath>
+        <value>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+          </modExtensions>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/PawnKindDef[defName="Tribal_Archer"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/PawnKindDef[defName="Tribal_Archer"]/modExtensions</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Tribal_Archer"]/modExtensions</xpath>
+        <value>
+          <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Tribal_Archer"]</xpath>
+        <value>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+          </modExtensions>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/PawnKindDef[defName="Tribal_Warrior"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/PawnKindDef[defName="Tribal_Warrior"]/modExtensions</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Tribal_Warrior"]/modExtensions</xpath>
+        <value>
+          <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Tribal_Warrior"]</xpath>
+        <value>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+          </modExtensions>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/PawnKindDef[defName="Tribal_Hunter"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/PawnKindDef[defName="Tribal_Hunter"]/modExtensions</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Tribal_Hunter"]/modExtensions</xpath>
+        <value>
+          <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Tribal_Hunter"]</xpath>
+        <value>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+          </modExtensions>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/PawnKindDef[defName="Drifter"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/PawnKindDef[defName="Drifter"]/modExtensions</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Drifter"]/modExtensions</xpath>
+        <value>
+          <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Drifter"]</xpath>
+        <value>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+          </modExtensions>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/PawnKindDef[defName="Scavenger"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/PawnKindDef[defName="Scavenger"]/modExtensions</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Scavenger"]/modExtensions</xpath>
+        <value>
+          <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Scavenger"]</xpath>
+        <value>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+          </modExtensions>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/PawnKindDef[defName="Thrasher"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/PawnKindDef[defName="Thrasher"]/modExtensions</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Thrasher"]/modExtensions</xpath>
+        <value>
+          <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/PawnKindDef[defName="Thrasher"]</xpath>
+        <value>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.RM_ClimbingGearChance"><chance>0.08</chance></li>
+          </modExtensions>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+</Patch>
