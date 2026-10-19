@@ -63,6 +63,8 @@
     <Compile Include="PitAccessChecks.cs" />
     <Compile Include="..\Superdeep\RM_WallClimbMath.cs" />
     <Compile Include="WallClimbChecks.cs" />
+    <Compile Include="..\Superdeep\RM_RaiderTrenchMath.cs" />
+    <Compile Include="RaiderTrenchChecks.cs" />
     <Compile Include="..\RM_SpanMath.cs" />
     <Compile Include="..\RM_SuspensionMath.cs" />
     <Compile Include="SuspensionBridgeChecks.cs" />

@@ -177,6 +177,8 @@
     <Compile Include="Superdeep\RM_WallClimbMath.cs" />
     <Compile Include="Superdeep\RM_WallClimbSettings.cs" />
     <Compile Include="Superdeep\RM_WallClimb.cs" />
+    <Compile Include="Superdeep\RM_RaiderTrenchMath.cs" />
+    <Compile Include="Superdeep\RM_RaiderTrench.cs" />
     <Compile Include="Superdeep\RM_Spikes.cs" />
     <Compile Include="Superdeep\RM_FallRails.cs" />
     <Compile Include="Superdeep\RM_PitDepthDraw.cs" />

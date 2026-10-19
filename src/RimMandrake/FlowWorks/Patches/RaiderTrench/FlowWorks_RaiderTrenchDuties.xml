@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP (owner 2026-10-18, card Q7: "Go around, and breach if no way"). JobGiver_RM_CrossTrench
+  goes LAST in the assault duty (after JobGiver_AISapper, which returns null when nothing is reachable even through destroyable
+  things) and right after the breacher / sapper givers in the Breaching and Sapper duties. It returns null unless a trench is
+  what separates the raider from the colony, so vanilla keeps every other case. Sieges (LordJob_Siege) are refused in code.
+-->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/DutyDef[defName="AssaultColony"]/thinkNode/subNodes</xpath>
+    <value>
+      <li Class="RimMandrake.FlowWorks.JobGiver_RM_CrossTrench" />
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/DutyDef[defName="Breaching"]/thinkNode/subNodes/li[@Class="JobGiver_AIBreaching"]</xpath>
+    <order>Append</order>
+    <value>
+      <li Class="RimMandrake.FlowWorks.JobGiver_RM_CrossTrench" />
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/DutyDef[defName="Sapper"]/thinkNode/subNodes/li[@Class="JobGiver_AISapper"]</xpath>
+    <order>Append</order>
+    <value>
+      <li Class="RimMandrake.FlowWorks.JobGiver_RM_CrossTrench" />
+    </value>
+  </Operation>
+</Patch>

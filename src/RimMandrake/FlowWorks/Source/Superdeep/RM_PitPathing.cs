@@ -311,21 +311,23 @@ namespace RimMandrake.FlowWorks
 			public readonly List<(Grid grid, int retiredTick)> retired = new List<(Grid, int)>();
 		}
 
-		private static readonly Dictionary<Map, LadderGrids> ladderGrids = new Dictionary<Map, LadderGrids>();
+		// RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: keyed by (map, the faction whose own scaling ladders stay open; null = none).
+		private static readonly Dictionary<(Map, Faction), LadderGrids> ladderGrids = new Dictionary<(Map, Faction), LadderGrids>();
 
 		private static void PruneDeadLadders()
 		{
-			foreach (Map m in new List<Map>(ladderGrids.Keys))
+			foreach ((Map, Faction) key in new List<(Map, Faction)>(ladderGrids.Keys))
 			{
+				Map m = key.Item1;
 				if (Find.Maps == null || !Find.Maps.Contains(m))
 				{
-					LadderGrids dead = ladderGrids[m];
+					LadderGrids dead = ladderGrids[key];
 					dead.closedLowered?.cells.Dispose();
 					foreach ((Grid grid, int _) in dead.retired)
 					{
 						grid.cells.Dispose();
 					}
-					ladderGrids.Remove(m);
+					ladderGrids.Remove(key);
 				}
 			}
 		}
@@ -346,11 +348,22 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
-			if (!ladderGrids.TryGetValue(map, out LadderGrids g))
+			// RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: a raid's own scaling ladders stay open to that raid (ClimbsOwnLadder).
+			Faction own = null;
+			List<Thing> all = RM_LadderUtility.AllLadders(map, ladderScratch);
+			for (int i = 0; i < all.Count; i++)
+			{
+				if (RM_LadderRules.ClimbsOwnLadder(all[i], pawn))
+				{
+					own = pawn.Faction;
+					break;
+				}
+			}
+			if (!ladderGrids.TryGetValue((map, own), out LadderGrids g))
 			{
 				PruneDeadLadders();
 				g = new LadderGrids();
-				ladderGrids[map] = g;
+				ladderGrids[(map, own)] = g;
 			}
 			int now = Find.TickManager?.TicksGame ?? 0;
 			if (g.tick != now)
@@ -360,7 +373,7 @@ namespace RimMandrake.FlowWorks
 				long sig = 23;
 				for (int i = 0; i < ladders.Count; i++)
 				{
-					if (RM_ClimbJoins.LoweredLadderAt(map, ladders[i].Position))
+					if (RM_ClimbJoins.LoweredLadderAt(map, ladders[i].Position) && (own == null || ladders[i].Faction != own))
 					{
 						sig = sig * 31 + map.cellIndices.CellToIndex(ladders[i].Position) + 1;
 					}
@@ -378,7 +391,7 @@ namespace RimMandrake.FlowWorks
 						var cells = new NativeArray<ushort>(map.cellIndices.NumGridCells, Allocator.Persistent, NativeArrayOptions.ClearMemory);
 						for (int i = 0; i < ladders.Count; i++)
 						{
-							if (RM_ClimbJoins.LoweredLadderAt(map, ladders[i].Position))
+							if (RM_ClimbJoins.LoweredLadderAt(map, ladders[i].Position) && (own == null || ladders[i].Faction != own))
 							{
 								cells[map.cellIndices.CellToIndex(ladders[i].Position)] = Blocked;
 							}

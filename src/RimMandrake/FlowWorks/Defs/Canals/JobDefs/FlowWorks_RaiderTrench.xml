@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: raiders cross a trench they cannot walk round (Source/Superdeep/RM_RaiderTrench.cs). -->
+  <JobDef>
+    <defName>RM_RaiderSetLadder</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_RaiderTrenchWork</driverClass>
+    <reportString>setting a scaling ladder.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
+  <JobDef>
+    <defName>RM_RaiderFillTrench</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_RaiderTrenchWork</driverClass>
+    <reportString>shovelling earth into a trench.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
+</Defs>
