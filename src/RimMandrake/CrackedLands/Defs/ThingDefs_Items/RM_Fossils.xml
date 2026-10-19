@@ -105,7 +105,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Special/RM_FossilDeepStratum/RM_FossilDeepStratum</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>

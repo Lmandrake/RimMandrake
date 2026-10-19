@@ -29,7 +29,7 @@
     <description>A dense fist-sized lump of refined metal-salt contamination, coughed up whole by an excretor animal that spent days walking it out of poisoned ground. Heavy, layered, faintly waxy — worth real money to the right buyer, and worth keeping in small piles only. A kept herd producing these one stone at a time is the closest thing this ground has to a refinery.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_ContaminantBezoar</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <thingCategories>
       <li>ResourcesRaw</li>
@@ -57,7 +57,7 @@
     <description>A rarer, larger grade of contaminant bezoar, mined out of a hardened Middenshell corpse's own accreted shell — glassy black-green vitrified mineral fused with metal-salt layers, deep sickly-radiance seams glowing faintly inside the glass. The richest excretor-refining prize in the biome, priced in the dose you take digging it out.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_VitrifiedBezoar</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <thingCategories>
       <li>ResourcesRaw</li>

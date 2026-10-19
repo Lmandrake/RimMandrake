@@ -748,7 +748,8 @@
     <description>The soft purple caps of the aumbri, cut from the stalk. Edible raw, better cooked.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
-      <texPath>Things/Item/Resource/PlantFoodRaw/RawFungus</texPath>
+      <texPath>Things/Item/Resource/RM_TollukCapHarvest</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>1.1</MarketValue>

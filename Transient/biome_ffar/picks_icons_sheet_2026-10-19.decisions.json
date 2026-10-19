@@ -1,0 +1,2670 @@
+{
+  "biome": "SUBJECTS_picks_icons",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 118,
+  "decisions": {
+    "HiTechResearchKit": {
+      "assign": {
+        "A": "not_needed"
+      },
+      "at": "2026-10-19T13:57:55.182Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "MultiAnalyzerResearchKit": {
+      "assign": {
+        "A": "not_needed"
+      },
+      "at": "2026-10-19T13:57:59.350Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "Pyrinth": {
+      "at": "2026-10-19T13:58:16.550Z",
+      "decision": "A",
+      "note": "This is a real mineral in our world, Pyrinth, keep this.",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "PyrinthBlade": {
+      "at": "2026-10-19T13:58:24.393Z",
+      "decidedAt": "2026-10-19T13:58:21.631Z",
+      "decision": "hold",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-19T13:58:24.393Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "not needed",
+          "when": "2026-10-19T07:04:45-0700"
+        }
+      ],
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_AluunCatch": {
+      "at": "2026-10-19T13:34:18.901Z",
+      "decidedAt": "2026-10-19T13:34:09.065Z",
+      "decision": "A",
+      "note": "add A B C as random pool variants",
+      "picks": {
+        "_reference:RM_Aluun": "D"
+      },
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_TwilightSea/RM_AluunCatch": {
+          "at": "2026-10-19T13:34:09.065Z",
+          "pick": "A",
+          "set_id": "40e41329677dcf4b",
+          "slot_id": "RM_AluunCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Attar": {
+      "at": "2026-10-19T13:34:55.049Z",
+      "decidedAt": "2026-10-19T13:34:49.229Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "68f18813a6b78ae1adf082657de5953b56d702f98352874fa090ba8f25de2a11",
+        "74425ba81e2f5a2aa34f976cf23f004c67b9c12a8678cdb6594da04d87f4c749"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_Attar/RM_Attar": {
+          "at": "2026-10-19T13:34:49.229Z",
+          "pick": "A",
+          "set_id": "7fb0ab17c3d78faa",
+          "slot_id": "RM_Attar/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_BellowsItem": {
+      "at": "2026-10-19T13:35:50.139Z",
+      "decidedAt": "2026-10-19T13:35:38.983Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "4dd6c8157fdab8e394aea69068f2f6de069a55d7ba56243d54976960a20fcf77",
+        "38b547df96afeb49a978415485f4e96ac4b88093cf946912022f99a5ca74b01f",
+        "c247fdb90a3f55d30c7b574b78e6cf6d8377150fedca28c41cc567e0729ed5b5",
+        "7ae084b00a34bc72578ddd8977a53f40bafb61d094aef09262de4e886a24e94b",
+        "4c2f39c6562d55aa88e0cfcb4aee822bf5f40c3b30f274baf7f87fcb920b4571"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_BellowsItem": {
+          "at": "2026-10-19T13:35:38.983Z",
+          "pick": "A",
+          "set_id": "50d36c1e2ba2bdb0",
+          "slot_id": "RM_BellowsItem/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Biosilica": {
+      "at": "2026-10-19T13:35:58.115Z",
+      "decidedAt": "2026-10-19T13:35:56.792Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "5a59859c46d8e5e2fb296ba29fc97455c5ae25c47acf29d2cfe6b38dcdeb6ae9"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_Biosilica": {
+          "at": "2026-10-19T13:35:56.792Z",
+          "pick": "A",
+          "set_id": "86f83d485aabb1d7",
+          "slot_id": "RM_Biosilica/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Bitumen": {
+      "at": "2026-10-19T13:36:12.536Z",
+      "decidedAt": "2026-10-19T13:36:08.697Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "25fa8e5c68d14a6f746a8619b32c44c350e6e9fcb76a6a196279cf910876bfe6"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_Bitumen": {
+          "at": "2026-10-19T13:36:08.697Z",
+          "pick": "B",
+          "set_id": "9611042c863098ad",
+          "slot_id": "RM_Bitumen/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_BladderFruit": {
+      "at": "2026-10-19T13:36:32.677Z",
+      "decidedAt": "2026-10-19T13:36:29.953Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Plant/RM_BladderFruit": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Plant/RM_BladderFruit": {
+          "at": "2026-10-19T13:36:29.953Z",
+          "pick": "B",
+          "set_id": "bbcf287e1b11f540",
+          "slot_id": "RM_BladderFruit/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_BladderboilCatch": {
+      "at": "2026-10-19T13:37:07.481Z",
+      "decidedAt": "2026-10-19T13:36:51.097Z",
+      "decision": "C",
+      "note": "",
+      "picks": {
+        "_reference:RM_Bladderboil": "I"
+      },
+      "prefill": "E",
+      "purge": [
+        "eea25b3467344a5f2b26c6cb6ddd3d258fe4623a6018e978ffe78b54cf59fc85",
+        "b2e72fe2387f11fa8f5567cc9b770fb9bb6ea0c9182a9cb7bf41c93a78555296"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {
+        "Things/Item/Fish/RM_BladderboilCatch": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Fish/RM_BladderboilCatch": {
+          "at": "2026-10-19T13:36:51.097Z",
+          "pick": "C",
+          "set_id": "e549e33160c201da",
+          "slot_id": "RM_BladderboilCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_BloomLiquor": {
+      "at": "2026-10-19T13:37:39.162Z",
+      "decidedAt": "2026-10-19T13:37:33.136Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "751af6ef6b2e601f619ec9a6bc9572ea9b45ba76bb3e0ebd4f8af6fa3d1db4f1"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_BloomLiquor": {
+          "at": "2026-10-19T13:37:33.136Z",
+          "pick": "A",
+          "set_id": "8f67ca707eedeb95",
+          "slot_id": "RM_BloomLiquor/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_BlueIceMeltwaterCan": {
+      "at": "2026-10-19T13:38:05.268Z",
+      "decidedAt": "2026-10-19T13:37:52.295Z",
+      "decision": "hold",
+      "note": "This makes Distilled water, a kind of FlowWorks water... no special art",
+      "prefill": "A",
+      "purge": [
+        "4a538a95d19462a724fa06796a633cc1bf77b6305e36851550349462c3f557ea"
+      ],
+      "purgeTouched": true,
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_Bones": {
+      "at": "2026-10-19T13:38:50.640Z",
+      "decidedAt": "2026-10-19T13:38:41.009Z",
+      "decision": "B",
+      "note": "",
+      "pool": {
+        "Things/Item/Resource/RM_Bones": {
+          "add": [
+            "C"
+          ],
+          "baseline": [
+            "1196490ad925335c"
+          ],
+          "remove": [
+            "A"
+          ]
+        }
+      },
+      "prefill": "A",
+      "purge": [
+        "fc67f9e8f4ea3ce4779d00b527d3789532719a7352a96059659890ae1bfd7dd3"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_Bones": {
+          "at": "2026-10-19T13:38:41.009Z",
+          "pick": "B",
+          "set_id": "74de0870e66e6b87",
+          "slot_id": "RM_Bones/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_BrimlockWater": {
+      "at": "2026-10-19T13:39:23.095Z",
+      "decidedAt": "2026-10-19T13:39:21.653Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "ea98606189957096a0092b0082c1b0b322e5e661ab862785e2e5172aaf7a01cc",
+        "1c83895e7fc5ad4cab9b35b7560cacba7a85b0c3141635be1a3cc3dcb3c44e15",
+        "0e82583a16310784a0e00518c6762767d1f925e95438989b58fa9efbe37a502b"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_BrimlockWater/RM_BrimlockWater": {
+          "at": "2026-10-19T13:39:21.653Z",
+          "pick": "A",
+          "set_id": "35f8021755696591",
+          "slot_id": "RM_BrimlockWater/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_BrinePlate": {
+      "at": "2026-10-19T13:39:35.748Z",
+      "decidedAt": "2026-10-19T13:39:32.131Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "c925ee0a5f87611a3a01e3bed0c43b5c232233641b18a0cd6a132c795e8fb582"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_BrinePlate": {
+          "at": "2026-10-19T13:39:32.131Z",
+          "pick": "A",
+          "set_id": "776de758c5bc14c3",
+          "slot_id": "RM_BrinePlate/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_CaudalSpringItem": {
+      "at": "2026-10-19T13:40:11.227Z",
+      "decidedAt": "2026-10-19T13:40:04.891Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/RM_CaudalSpringItem": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_CaudalSpringItem": {
+          "at": "2026-10-19T13:40:04.891Z",
+          "pick": "B",
+          "set_id": "f04f473ad79b3e79",
+          "slot_id": "RM_CaudalSpringItem/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_CharLace": {
+      "at": "2026-10-19T13:40:40.864Z",
+      "decidedAt": "2026-10-19T13:40:39.206Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "28408752d7816a6f4ca5dccc7d93a49d05f63112aa5f417fb6b8348a6f3a5ccd"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_CharLace/RM_CharLace": {
+          "at": "2026-10-19T13:40:39.206Z",
+          "pick": "A",
+          "set_id": "cc64756502275f61",
+          "slot_id": "RM_CharLace/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_ChassisCore": {
+      "at": "2026-10-19T13:41:03.440Z",
+      "decidedAt": "2026-10-19T13:40:59.743Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "16b7eabd8f4321ea63ef95e98dce49e5c3d43cbada54d5c80631018fe69ef8aa"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_ChassisCore": {
+          "at": "2026-10-19T13:40:59.743Z",
+          "pick": "A",
+          "set_id": "061bb5347bccf075",
+          "slot_id": "RM_ChassisCore/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_ContaminantBezoar": {
+      "at": "2026-10-19T13:41:22.094Z",
+      "decidedAt": "2026-10-19T13:41:11.059Z",
+      "decision": "A",
+      "note": "Make both random variant acceptable",
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_ContaminantBezoar": {
+          "at": "2026-10-19T13:41:11.059Z",
+          "pick": "A",
+          "set_id": "5d0fe4c03937459c",
+          "slot_id": "RM_ContaminantBezoar/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_CrestPlate": {
+      "at": "2026-10-19T13:42:13.753Z",
+      "decidedAt": "2026-10-19T13:42:10.917Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Resource/RM_CrestPlate": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_CrestPlate": {
+          "at": "2026-10-19T13:42:10.917Z",
+          "pick": "B",
+          "set_id": "f3b51848314b28ce",
+          "slot_id": "RM_CrestPlate/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Deepfire": {
+      "at": "2026-10-19T13:43:04.231Z",
+      "decidedAt": "2026-10-19T13:42:55.966Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Item/Resource/RM_Deepfire/RM_Deepfire": {
+          "add": [
+            "D",
+            "C",
+            "E"
+          ],
+          "baseline": [
+            "96c5154b562f6edf"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "purge": [
+        "22862fcb779a5eb6fbdb8fca7f976ff02cf813e75dc6ea5f6895fbddf66e71d7",
+        "2ee5949fa5ebb35ff97f030a97d796fbf196db913f1c3994df2857eaa7211143"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_Deepfire/RM_Deepfire": {
+          "at": "2026-10-19T13:42:55.966Z",
+          "pick": "A",
+          "set_id": "96c5154b562f6edf",
+          "slot_id": "RM_Deepfire/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_DeltaLoam": {
+      "at": "2026-10-19T13:43:12.322Z",
+      "decidedAt": "2026-10-19T13:43:12.322Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_DeltaLoam": {
+          "at": "2026-10-19T13:43:12.322Z",
+          "pick": "A",
+          "set_id": "a2037b7ebf2a6143",
+          "slot_id": "RM_DeltaLoam/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_DewgourdFruit": {
+      "at": "2026-10-19T13:43:27.607Z",
+      "decidedAt": "2026-10-19T13:43:26.095Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Plant/RM_DewgourdFruit": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Plant/RM_DewgourdFruit": {
+          "at": "2026-10-19T13:43:26.095Z",
+          "pick": "B",
+          "set_id": "2122d791863676cc",
+          "slot_id": "RM_DewgourdFruit/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Dewsilk": {
+      "at": "2026-10-19T13:43:49.638Z",
+      "decidedAt": "2026-10-19T13:43:46.429Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "eb3924b002c07a65e38afa322c8f1e6f478c58ab31a58c12922b8e8db2055993"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_Dewsilk": {
+          "at": "2026-10-19T13:43:46.429Z",
+          "pick": "A",
+          "set_id": "3ac2ceacf044e57f",
+          "slot_id": "RM_Dewsilk/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_DielectricGel": {
+      "at": "2026-10-19T13:43:53.953Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "09d2e8e2dfbef705846e6f379bb8b14334aff8f60601ad54f3b1ed15e1afa9d5"
+      ],
+      "purgeTouched": true,
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_DossCatch": {
+      "at": "2026-10-19T13:44:23.055Z",
+      "decidedAt": "2026-10-19T13:44:23.055Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_reference:RM_Doss": "F"
+      },
+      "prefill": "C",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Fish/RM_DossCatch": {
+          "at": "2026-10-19T13:44:23.055Z",
+          "pick": "A",
+          "set_id": "e184eac45cfa1786",
+          "slot_id": "RM_DossCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Drazz": {
+      "at": "2026-10-19T13:39:46.881Z",
+      "decidedAt": "2026-10-19T13:39:45.772Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "0d13cfdcc4f4312c2a6bb5a3d9bc1b810d1aab44340b0cac27a4b8484f593804"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_Drazz": {
+          "at": "2026-10-19T13:39:45.772Z",
+          "pick": "A",
+          "set_id": "69e377afa99d88ea",
+          "slot_id": "RM_Drazz/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_DuneCrawler": {
+      "at": "2026-10-19T13:44:30.668Z",
+      "decidedAt": "2026-10-19T13:44:28.075Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "28da68744208da1bcc1f5fdb27cdc118f88232743091f03655451d42c6ad99b3"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_DuneCrawler": {
+          "at": "2026-10-19T13:44:28.075Z",
+          "pick": "A",
+          "set_id": "be1661fd6f2bd2c3",
+          "slot_id": "RM_DuneCrawler/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_EeshCatch": {
+      "at": "2026-10-19T13:44:39.923Z",
+      "decidedAt": "2026-10-19T13:44:39.923Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_reference:RM_Eesh": "F"
+      },
+      "prefill": "C",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Fish/RM_EeshCatch": {
+          "at": "2026-10-19T13:44:39.923Z",
+          "pick": "A",
+          "set_id": "7e09a7b1379fe0ac",
+          "slot_id": "RM_EeshCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_EggScaled": {
+      "at": "2026-10-19T13:58:37.577Z",
+      "decidedAt": "2026-10-19T13:58:35.368Z",
+      "decision": "hold",
+      "note": "drop",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_EkkelCatch": {
+      "at": "2026-10-19T13:44:49.841Z",
+      "decidedAt": "2026-10-19T13:44:49.841Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_reference:RM_Ekkel": "F"
+      },
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Fish/RM_EkkelCatch": {
+          "at": "2026-10-19T13:44:49.841Z",
+          "pick": "A",
+          "set_id": "eaf96638d95c71d2",
+          "slot_id": "RM_EkkelCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_EssarnCatch": {
+      "at": "2026-10-19T13:44:57.484Z",
+      "decidedAt": "2026-10-19T13:44:57.484Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_GreySea/RM_EssarnCatch": {
+          "at": "2026-10-19T13:44:57.484Z",
+          "pick": "B",
+          "set_id": "1dffb278e3da31c4",
+          "slot_id": "RM_EssarnCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Etchant": {
+      "at": "2026-10-19T13:45:01.901Z",
+      "decidedAt": "2026-10-19T13:45:00.808Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "03163c97e144c05200dbb9f97437478b360a99b96e3cb72a1453e06bbd1325a4"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_Etchant": {
+          "at": "2026-10-19T13:45:00.808Z",
+          "pick": "A",
+          "set_id": "0918f83b0ba4b060",
+          "slot_id": "RM_Etchant/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_EyeburstItem": {
+      "at": "2026-10-19T13:45:19.922Z",
+      "decidedAt": "2026-10-19T13:45:19.922Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "8835afb2f1e56b57641244720f71b66b0f0d526050a39dd273ba21646c04aa35"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_EyeburstItem": {
+          "at": "2026-10-19T13:45:19.922Z",
+          "pick": "A",
+          "set_id": "5a1fce85eb534169",
+          "slot_id": "RM_EyeburstItem/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_FE_Fulgurite": {
+      "at": "2026-10-19T13:58:47.927Z",
+      "decidedAt": "2026-10-19T13:58:46.576Z",
+      "decision": "hold",
+      "note": "drop",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_FE_ScorchFruitYield": {
+      "assign": {
+        "B": "Things/Item/Resource/RM_FE_ScorchFruit"
+      },
+      "at": "2026-10-19T13:52:40.880Z",
+      "decidedAt": "2026-10-19T13:52:39.845Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Resource/RM_FE_ScorchFruit": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_FE_ScorchFruit": {
+          "at": "2026-10-19T13:52:39.845Z",
+          "pick": "B",
+          "set_id": "d64de1fc8dcca36f",
+          "slot_id": "RM_FE_ScorchFruitYield/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_FailedChassis": {
+      "at": "2026-10-19T13:45:32.508Z",
+      "decidedAt": "2026-10-19T13:45:32.508Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_FailedChassis": {
+          "at": "2026-10-19T13:45:32.508Z",
+          "pick": "B",
+          "set_id": "8c630faf3486b727",
+          "slot_id": "RM_FailedChassis/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_FexxilShard": {
+      "at": "2026-10-19T13:45:40.669Z",
+      "decidedAt": "2026-10-19T13:45:39.322Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "9ed0e17efd70f0f7c3b489f686525ae7ccd8bc065851f116a9040a20511bd88d"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_FexxilShard": {
+          "at": "2026-10-19T13:45:39.322Z",
+          "pick": "A",
+          "set_id": "f9f5c1645da198f9",
+          "slot_id": "RM_FexxilShard/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Floatstone": {
+      "at": "2026-10-19T13:46:00.697Z",
+      "decidedAt": "2026-10-19T13:45:59.092Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "ba21af1e454533c8c63324bb2e90ffd455327d6408c08b9da0e90b91329e9a2c"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_Floatstone/RM_Floatstone": {
+          "at": "2026-10-19T13:45:59.092Z",
+          "pick": "A",
+          "set_id": "67097dd8f299c7ae",
+          "slot_id": "RM_Floatstone/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_FossilDeepStratum": {
+      "at": "2026-10-19T13:42:45.241Z",
+      "decidedAt": "2026-10-19T13:42:32.841Z",
+      "decision": "A",
+      "note": "Both good random variants",
+      "prefill": "A",
+      "purge": [],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Special/RM_FossilDeepStratum/RM_FossilDeepStratum": {
+          "at": "2026-10-19T13:42:32.841Z",
+          "pick": "A",
+          "set_id": "4995e6605504267d",
+          "slot_id": "RM_FossilDeepStratum/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_FossilSkeleton": {
+      "at": "2026-10-19T13:34:27.634Z",
+      "decidedAt": "2026-10-19T13:34:27.634Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton": {
+          "at": "2026-10-19T13:34:27.634Z",
+          "pick": "A",
+          "set_id": "dd7b47a21f58e98e",
+          "slot_id": null,
+          "state": "pick"
+        }
+      }
+    },
+    "RM_GeneSeekerLoaded": {
+      "at": "2026-10-19T13:59:16.797Z",
+      "decision": "A",
+      "note": "This is a valid item from the Helix faction, that allows the player to find a patch of the slime that holds the genes they seek. Keep. ",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_GlowerCrust": {
+      "at": "2026-10-19T13:46:15.840Z",
+      "decidedAt": "2026-10-19T13:46:13.908Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "6ad084d0c87bde8cbb945f41f204da599b796e63ff4e5ab710c760cdbfb9b81a"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_GlowerCrust": {
+          "at": "2026-10-19T13:46:13.908Z",
+          "pick": "A",
+          "set_id": "f59e73c71c4fc9ac",
+          "slot_id": "RM_GlowerCrust/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_HalfExtractedCore": {
+      "at": "2026-10-19T13:59:35.334Z",
+      "decidedAt": "2026-10-19T13:59:34.036Z",
+      "decision": "hold",
+      "note": "drop",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_IlissCatch": {
+      "at": "2026-10-19T13:46:32.332Z",
+      "decidedAt": "2026-10-19T13:46:31.075Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_reference:RM_Iliss": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "1b97ee29834388542925113dd7262fe8f9f3888edef82a7b6154c2d6b64ce276"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_TheChill/RM_IlissCatch": {
+          "at": "2026-10-19T13:46:31.075Z",
+          "pick": "A",
+          "set_id": "d3e4c716eb958279",
+          "slot_id": "RM_IlissCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_KarrashCatch": {
+      "at": "2026-10-19T13:46:45.784Z",
+      "decidedAt": "2026-10-19T13:46:44.470Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_reference:RM_Karrash": "F"
+      },
+      "prefill": "A",
+      "purge": [
+        "fb4fc12993f6def3056d87cfc0cad7b1bd0c626d45428b5d99d38ad6b4ff348f"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Fish/RM_KarrashCatch": {
+          "at": "2026-10-19T13:46:44.470Z",
+          "pick": "A",
+          "set_id": "a03f9c47bc2be22b",
+          "slot_id": "RM_KarrashCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_LilianaEgg": {
+      "at": "2026-10-19T13:59:44.456Z",
+      "decidedAt": "2026-10-19T13:59:43.199Z",
+      "decision": "hold",
+      "note": "drop",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_LilianaSilk": {
+      "at": "2026-10-19T13:47:31.665Z",
+      "decidedAt": "2026-10-19T13:47:31.665Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "65c27cd37196323577d44e504b2e5d5bc8f4f75418ada54b67dc41a8ba19ca41",
+        "df1c37651b2e2a2fe4fedfc3f79c00e8f830db8bf6dd075779735da23b6836a1",
+        "fdde8cd1d39c3f8b153832525b0f2f35117fee5e85a1aa172681290b18157820"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_LilianaSilk": {
+          "at": "2026-10-19T13:47:31.665Z",
+          "pick": "A",
+          "set_id": "1eed6af551fbb7d0",
+          "slot_id": "RM_LilianaSilk/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_MedicalCoagulant": {
+      "at": "2026-10-19T13:47:56.016Z",
+      "decidedAt": "2026-10-19T13:47:54.898Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/RM_MedicalCoagulant": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_MedicalCoagulant": {
+          "at": "2026-10-19T13:47:54.898Z",
+          "pick": "B",
+          "set_id": "ef4ac8a0fa5ae9f6",
+          "slot_id": "RM_MedicalCoagulant/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_MuddalCatch": {
+      "at": "2026-10-19T13:46:40.558Z",
+      "decidedAt": "2026-10-19T13:46:39.193Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "4b3deff1de43b1d7dae301af1057d5eb073888447c29cd451f70d8835accb5fc"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Fish/RM_MuddalCatch": {
+          "at": "2026-10-19T13:46:39.193Z",
+          "pick": "A",
+          "set_id": "d6141e6afe1264b2",
+          "slot_id": "RM_MuddalCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_MurrinCatch": {
+      "at": "2026-10-19T13:49:00.927Z",
+      "decidedAt": "2026-10-19T13:48:58.879Z",
+      "decision": "B",
+      "note": "",
+      "picks": {
+        "_reference:RM_Murrin": "F"
+      },
+      "prefill": "A",
+      "purge": [
+        "395bfc698568c4407d35601e49738e5121cabffe0c3f018575ca6e22338f1dda"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {
+        "Things/Item/RM_MurrinCatch": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_MurrinCatch": {
+          "at": "2026-10-19T13:48:58.879Z",
+          "pick": "B",
+          "set_id": "d8e113c3794fd31d",
+          "slot_id": "RM_MurrinCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_NoolimCatch": {
+      "at": "2026-10-19T13:49:18.633Z",
+      "decidedAt": "2026-10-19T13:49:16.356Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "af9fe7d42c64ffbee94d15629df174cb47f5978624fd7428e66b2db62d204493"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_TwilightSea/RM_NoolimCatch": {
+          "at": "2026-10-19T13:49:16.356Z",
+          "pick": "A",
+          "set_id": "696f3932d05ea805",
+          "slot_id": "RM_NoolimCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_OllimWood": {
+      "at": "2026-10-19T13:49:24.879Z",
+      "decidedAt": "2026-10-19T13:49:23.424Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "4faf8e0b625e03f86afffdbb97c51d81a44a825cc7daa9b55199c8831811cb68"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_OllimWood": {
+          "at": "2026-10-19T13:49:23.424Z",
+          "pick": "A",
+          "set_id": "21bdf3057aa3ddea",
+          "slot_id": "RM_OllimWood/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_OssagrelSap": {
+      "at": "2026-10-19T13:49:39.341Z",
+      "decidedAt": "2026-10-19T13:49:34.465Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "930d996b1c73463e3667986f2d6d743aec50315274b24f6115f03be069b895be"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {
+        "Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap": {
+          "at": "2026-10-19T13:49:34.465Z",
+          "pick": "B",
+          "set_id": "a85f9befea5e2cb9",
+          "slot_id": "RM_OssagrelSap/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_PearlLens": {
+      "at": "2026-10-19T13:49:52.033Z",
+      "decidedAt": "2026-10-19T13:49:51.037Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "5f5c424733af81d573502450f758e2420a5fd8358a846aef7a025155eab60f0d"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_PearlLens": {
+          "at": "2026-10-19T13:49:51.037Z",
+          "pick": "A",
+          "set_id": "f2a1a203a64e47f1",
+          "slot_id": "RM_PearlLens/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_PillarArmItem": {
+      "at": "2026-10-19T13:50:06.149Z",
+      "decidedAt": "2026-10-19T13:50:05.081Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Health/RM_PillarArmItem": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Health/RM_PillarArmItem": {
+          "at": "2026-10-19T13:50:05.081Z",
+          "pick": "B",
+          "set_id": "ece2f5d180a1b36e",
+          "slot_id": "RM_PillarArmItem/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_PottersClay": {
+      "at": "2026-10-19T13:50:13.348Z",
+      "decidedAt": "2026-10-19T13:50:11.060Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Resource/RM_PottersClay/RM_PottersClay": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_PottersClay/RM_PottersClay": {
+          "at": "2026-10-19T13:50:11.060Z",
+          "pick": "B",
+          "set_id": "39fda1aafe3c6bef",
+          "slot_id": "RM_PottersClay/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_QeshraRoe": {
+      "at": "2026-10-19T13:51:10.556Z",
+      "decidedAt": "2026-10-19T13:51:09.124Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "72f4b8ab590a74740dda9e8c849d75e57fdf86d31995c5ebeaefff0bd1670395"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_QeshraRoe/RM_QeshraRoe": {
+          "at": "2026-10-19T13:51:09.124Z",
+          "pick": "A",
+          "set_id": "ee4848dcd4653276",
+          "slot_id": "RM_QeshraRoe/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_RawSlime": {
+      "at": "2026-10-19T13:51:21.857Z",
+      "decidedAt": "2026-10-19T13:51:20.853Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "3bc65e179f48b8355fce84d93b3b016eb7a645b3a63ddab58ccaca2c19ae6fba"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_RawSlime": {
+          "at": "2026-10-19T13:51:20.853Z",
+          "pick": "A",
+          "set_id": "2cbab27ea87e1e20",
+          "slot_id": "RM_RawSlime/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_RawUltracactus": {
+      "at": "2026-10-19T13:55:36.461Z",
+      "decidedAt": "2026-10-19T13:55:35.555Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Plant/RM_RawUltracactus": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Plant/RM_RawUltracactus": {
+          "at": "2026-10-19T13:55:35.555Z",
+          "pick": "B",
+          "set_id": "5be3eec35f32123d",
+          "slot_id": "RM_RawUltracactus/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_RawVenom": {
+      "at": "2026-10-19T13:51:38.503Z",
+      "decidedAt": "2026-10-19T13:51:35.235Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "fcc8e7b99029edacb856999442abd7bf581c75d68a1da77c64582d2fec3105f4",
+        "808ba8ea20001fbb0b2502bfe8852774489edc638a49c16c7e0c5567e95361f3"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_RawVenom": {
+          "at": "2026-10-19T13:51:35.235Z",
+          "pick": "B",
+          "set_id": "da9f5ed594d5ffb1",
+          "slot_id": "RM_RawVenom/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_RuqqalFibre": {
+      "at": "2026-10-19T13:51:50.694Z",
+      "decidedAt": "2026-10-19T13:51:49.587Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "b638424ac771a1e88d7b6042c9b043832c809d92dc9a40c1b2ede1aab7d0fdb9"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_RuqqalFibre": {
+          "at": "2026-10-19T13:51:49.587Z",
+          "pick": "A",
+          "set_id": "0713396cb5c39cf8",
+          "slot_id": "RM_RuqqalFibre/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Saal": {
+      "at": "2026-10-19T13:51:59.408Z",
+      "decidedAt": "2026-10-19T13:51:57.976Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "9e45fb05b7842039980dd9b5b0bc6ffca31f8497f5b264accbaf8a32b5c81c93"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Fish/RM_Saal": {
+          "at": "2026-10-19T13:51:57.976Z",
+          "pick": "A",
+          "set_id": "1c4951a6092deb10",
+          "slot_id": "RM_Saal/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_SandSieve": {
+      "at": "2026-10-19T13:52:17.670Z",
+      "decidedAt": "2026-10-19T13:52:16.252Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/RM_SandSieve": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_SandSieve": {
+          "at": "2026-10-19T13:52:16.252Z",
+          "pick": "B",
+          "set_id": "88a087fd578a3d62",
+          "slot_id": "RM_SandSieve/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_ScaaLumsigh": {
+      "at": "2026-10-19T13:52:23.927Z",
+      "decidedAt": "2026-10-19T13:52:22.648Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "e12e9f8e72c274c09cf360b3fcd9d63319f3da1620d055e041a485594e4a0293"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Fish/RM_ScaaLumsigh": {
+          "at": "2026-10-19T13:52:22.648Z",
+          "pick": "A",
+          "set_id": "db699f021af1511f",
+          "slot_id": "RM_ScaaLumsigh/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_SeepOil": {
+      "at": "2026-10-19T13:53:10.904Z",
+      "decidedAt": "2026-10-19T13:53:04.051Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "20ac9821e5981fec2be86f5ba5a7c54bdda01de414810524ee14b87ee70f437f"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {
+        "Things/Item/Resource/RM_SeepOil/RM_SeepOil": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_SeepOil/RM_SeepOil": {
+          "at": "2026-10-19T13:53:04.051Z",
+          "pick": "B",
+          "set_id": "ca8dd94a35f2de27",
+          "slot_id": "RM_SeepOil/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_ShullaCatch": {
+      "at": "2026-10-19T13:53:27.293Z",
+      "decidedAt": "2026-10-19T13:53:24.449Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_reference:RM_Shulla": "G"
+      },
+      "prefill": "A",
+      "purge": [
+        "5b3914eed767545dfd3fcc2a907f00bed31f33d19a7a9507100217be85946c47",
+        "2397bcafac35ca89d649d1af4cf2c33285bb7e95c9ea4b0e7a071df298266a44"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Fish/RM_ShullaCatch": {
+          "at": "2026-10-19T13:53:24.449Z",
+          "pick": "A",
+          "set_id": "de53bc0e849968cf",
+          "slot_id": "RM_ShullaCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_SlimeAntidote": {
+      "at": "2026-10-19T13:53:34.034Z",
+      "decidedAt": "2026-10-19T13:53:32.943Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "d97afb3c32c0c5c776566fa486c7f9019801baeaafed63ce01ed70959c6fda33"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_SlimeAntidote": {
+          "at": "2026-10-19T13:53:32.943Z",
+          "pick": "A",
+          "set_id": "0e64d96530d67d95",
+          "slot_id": "RM_SlimeAntidote/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_SlimeBlock": {
+      "at": "2026-10-19T13:53:43.896Z",
+      "decidedAt": "2026-10-19T13:53:40.874Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/RM_SlimeBlock": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_SlimeBlock": {
+          "at": "2026-10-19T13:53:40.874Z",
+          "pick": "B",
+          "set_id": "7aeaccf17ea7f2cd",
+          "slot_id": "RM_SlimeBlock/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_SootBrick": {
+      "at": "2026-10-19T13:53:53.994Z",
+      "decidedAt": "2026-10-19T13:53:52.436Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Resource/RM_SootBrick": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_SootBrick": {
+          "at": "2026-10-19T13:53:52.436Z",
+          "pick": "B",
+          "set_id": "1c98be38a39b31d9",
+          "slot_id": "RM_SootBrick/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_SunGlass": {
+      "at": "2026-10-19T13:54:17.118Z",
+      "decidedAt": "2026-10-19T13:54:00.960Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "59edd778a7982bbd5c9ae5af9a12a9553f4a4e6e2016793d0f987d8ed67e579f"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_SunGlass": {
+          "at": "2026-10-19T13:54:00.960Z",
+          "pick": "A",
+          "set_id": "171631a9a4d3a7c9",
+          "slot_id": "RM_SunGlass/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Sunbeam": {
+      "at": "2026-10-19T13:54:28.981Z",
+      "decidedAt": "2026-10-19T13:54:24.256Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "a859ad5cb24e22f04825fd7da2f277c17de3ca0ecc97820b7e736e9adba9b897",
+        "255fabe2220ad4b88b2bb82ff9e1ca236c3bd39f96399e7cb137ecd9d2ef7c1a"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Equipment/RM_Sunbeam": {
+          "at": "2026-10-19T13:54:24.256Z",
+          "pick": "A",
+          "set_id": "2cdf40daf5b8c4cf",
+          "slot_id": "RM_Sunbeam/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_SweetlineWool": {
+      "at": "2026-10-19T13:54:39.710Z",
+      "decidedAt": "2026-10-19T13:54:38.323Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Resource/RM_SweetlineWool": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_SweetlineWool": {
+          "at": "2026-10-19T13:54:38.323Z",
+          "pick": "B",
+          "set_id": "0532f746d254956d",
+          "slot_id": "RM_SweetlineWool/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_TarRuinedGoods": {
+      "at": "2026-10-19T13:54:48.382Z",
+      "decidedAt": "2026-10-19T13:54:47.515Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "f535e814bd45a26f2ade3091abc3089e90debd3ddff4ed544705ce97f3e4654c"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {
+        "Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods": {
+          "at": "2026-10-19T13:54:47.515Z",
+          "pick": "B",
+          "set_id": "26e1708791066c6b",
+          "slot_id": "RM_TarRuinedGoods/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_TavroskLiquor": {
+      "at": "2026-10-19T13:54:54.639Z",
+      "decidedAt": "2026-10-19T13:54:52.140Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "ebe2c5c3e7d14f8f7993ca0d6df3ecde27447c0396e70e4d82f91daf4b07ef9d"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {
+        "Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor": {
+          "at": "2026-10-19T13:54:52.140Z",
+          "pick": "B",
+          "set_id": "80eba95bb99cb0de",
+          "slot_id": "RM_TavroskLiquor/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Tekk": {
+      "at": "2026-10-19T13:53:58.134Z",
+      "decidedAt": "2026-10-19T13:53:56.808Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "467e9291477b9c1a44369d3e233fa419a8500646cbdc16145454212fae5aed1a"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_Tekk": {
+          "at": "2026-10-19T13:53:56.808Z",
+          "pick": "A",
+          "set_id": "eef2f21cd6e706e9",
+          "slot_id": "RM_Tekk/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_TetchikJar": {
+      "at": "2026-10-19T13:55:01.112Z",
+      "decidedAt": "2026-10-19T13:55:00.118Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/RM_TetchikJar": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_TetchikJar": {
+          "at": "2026-10-19T13:55:00.118Z",
+          "pick": "B",
+          "set_id": "36202fe43e55718c",
+          "slot_id": "RM_TetchikJar/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_ThuumCatch": {
+      "at": "2026-10-19T13:53:18.686Z",
+      "decidedAt": "2026-10-19T13:53:18.686Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_reference:RM_Thuum": "F"
+      },
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Fish/RM_ThuumCatch": {
+          "at": "2026-10-19T13:53:18.686Z",
+          "pick": "A",
+          "set_id": "553574a5203d838d",
+          "slot_id": "RM_ThuumCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_TitanoslimeChunk": {
+      "at": "2026-10-19T13:55:10.602Z",
+      "decidedAt": "2026-10-19T13:55:09.704Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/RM_TitanoslimeChunk": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_TitanoslimeChunk": {
+          "at": "2026-10-19T13:55:09.704Z",
+          "pick": "B",
+          "set_id": "e76ecd42f93195cb",
+          "slot_id": "RM_TitanoslimeChunk/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_TollukCap": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_TollukCapHarvest": {
+      "at": "2026-10-19T13:35:15.770Z",
+      "decision": "A",
+      "note": "I have no assign option?",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_TsevrixPulp": {
+      "at": "2026-10-19T13:55:30.419Z",
+      "decidedAt": "2026-10-19T13:55:29.002Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/RM_TsevrixPulp": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_TsevrixPulp": {
+          "at": "2026-10-19T13:55:29.002Z",
+          "pick": "B",
+          "set_id": "e46669709384f0cc",
+          "slot_id": "RM_TsevrixPulp/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_TsevrixRoasted": {
+      "at": "2026-10-19T13:51:45.592Z",
+      "decidedAt": "2026-10-19T13:51:44.452Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "c5e5f74a46ee5ebc6e41a6d260c786c28fd5159d91927d514181057417db412d"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_TsevrixRoasted": {
+          "at": "2026-10-19T13:51:44.452Z",
+          "pick": "A",
+          "set_id": "58c3380ac302712d",
+          "slot_id": "RM_TsevrixRoasted/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_UltracactusPad": {
+      "at": "2026-10-19T13:42:23.174Z",
+      "decidedAt": "2026-10-19T13:42:21.809Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "1988f4e629681abc8e58a07cf61d30d05e7d6cefdec2fb9b369bc429c9802ac4"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Plant/RM_UltracactusPad": {
+          "at": "2026-10-19T13:42:21.809Z",
+          "pick": "A",
+          "set_id": "db62bc616e484105",
+          "slot_id": "RM_UltracactusPad/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Vexxith": {
+      "at": "2026-10-19T13:56:11.484Z",
+      "decidedAt": "2026-10-19T13:56:08.502Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "5f6d4c03db9646d31db8ad2c0caa80e876023fe079ebf61939df35bbea1dd815",
+        "3be0c6a0e2606eb8e5dc8440c6eebf67dec8383b62c010d81c01aa60e60eaa2c"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_Vexxith/RM_Vexxith": {
+          "at": "2026-10-19T13:56:08.502Z",
+          "pick": "A",
+          "set_id": "05358f2f992e0a1b",
+          "slot_id": "RM_Vexxith/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_VisslerArm": {
+      "at": "2026-10-19T13:56:16.541Z",
+      "decidedAt": "2026-10-19T13:56:15.485Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "7a0b3394881020343fc332f9545040178c6e0b443adebd12e0c0ef64dfe72f25"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_VisslerArm": {
+          "at": "2026-10-19T13:56:15.485Z",
+          "pick": "A",
+          "set_id": "5a8c29bfcb80e16c",
+          "slot_id": "RM_VisslerArm/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_VitrifiedBezoar": {
+      "at": "2026-10-19T13:56:26.916Z",
+      "decidedAt": "2026-10-19T13:56:20.882Z",
+      "decision": "A",
+      "note": "both are acceptable random variants",
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_VitrifiedBezoar": {
+          "at": "2026-10-19T13:56:20.882Z",
+          "pick": "A",
+          "set_id": "9d70f8d6c45f37f1",
+          "slot_id": "RM_VitrifiedBezoar/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_VorrelFruit": {
+      "at": "2026-10-19T13:56:33.623Z",
+      "decidedAt": "2026-10-19T13:56:33.622Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "f37dd6f324c1c9f81656071cc25167b01c5f039b63d7726433ff7c32a4f5ea8c"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Plant/RM_VorrelFruit": {
+          "at": "2026-10-19T13:56:33.622Z",
+          "pick": "A",
+          "set_id": "013cb63a158cf4f7",
+          "slot_id": "RM_VorrelFruit/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_VorrelSeedDish": {
+      "at": "2026-10-19T13:50:35.707Z",
+      "decidedAt": "2026-10-19T13:50:34.625Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "715fbbe5e58a7e0a9b206f854e9fc50640c451c5763c43e1f671307edef33ce3"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Meal/RM_VorrelSeedDish": {
+          "at": "2026-10-19T13:50:34.625Z",
+          "pick": "A",
+          "set_id": "41ca198a63771d8a",
+          "slot_id": "RM_VorrelSeedDish/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_WarDust": {
+      "at": "2026-10-19T13:56:41.647Z",
+      "decidedAt": "2026-10-19T13:56:40.162Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Resource/RM_WarDust": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_WarDust": {
+          "at": "2026-10-19T13:56:40.162Z",
+          "pick": "B",
+          "set_id": "57c22f6481c7a21b",
+          "slot_id": "RM_WarDust/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_WasteCask": {
+      "at": "2026-10-19T13:56:46.934Z",
+      "decidedAt": "2026-10-19T13:56:45.538Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "65928ccee5b321706e45794baa1f275b7167abdd6ff68bd4a38fa43d75b6b44d"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_WasteCask": {
+          "at": "2026-10-19T13:56:45.538Z",
+          "pick": "A",
+          "set_id": "47eb7df1765d230d",
+          "slot_id": "RM_WasteCask/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_WeloonCatch": {
+      "at": "2026-10-19T13:57:14.961Z",
+      "decidedAt": "2026-10-19T13:57:12.969Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "32613d1bcaa8010ffbe0e6094a57b708a59b06869bab3ef805408c02fce74e08"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {
+        "Things/Item/RM_TwilightSea/RM_WeloonCatch": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_TwilightSea/RM_WeloonCatch": {
+          "at": "2026-10-19T13:57:12.969Z",
+          "pick": "C",
+          "set_id": "652273d6406a63f7",
+          "slot_id": "RM_WeloonCatch/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_WreckLichenScrapings": {
+      "at": "2026-10-19T13:57:25.259Z",
+      "decidedAt": "2026-10-19T13:57:24.204Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "f9510291edd24403c79d0517f2a325dd4c02e29a693dfd13282e35ad9d8e6d9d"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RM_WreckLichenScrapings/RM_WreckLichenScrapings": {
+          "at": "2026-10-19T13:57:24.204Z",
+          "pick": "A",
+          "set_id": "ef9a1a5a2abba8e3",
+          "slot_id": "RM_WreckLichenScrapings/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_ZennaqFilament": {
+      "at": "2026-10-19T13:57:33.421Z",
+      "decidedAt": "2026-10-19T13:57:32.447Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/RM_ZennaqFilament": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RM_ZennaqFilament": {
+          "at": "2026-10-19T13:57:32.447Z",
+          "pick": "B",
+          "set_id": "cc36064d18150a4b",
+          "slot_id": "RM_ZennaqFilament/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_Apparel_FangPendant": {
+      "at": "2026-10-19T13:59:51.792Z",
+      "decidedAt": "2026-10-19T13:59:50.515Z",
+      "decision": "hold",
+      "note": "drop",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RSW_BlendOnAStick": {
+      "at": "2026-10-19T13:33:20.975Z",
+      "decidedAt": "2026-10-19T13:33:07.185Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "ab4b682ebf429427d919a0d3e4b3cfb8dabf8b2dd3da5be600124a245159247f"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Meal/RSW_BlendOnAStick/RSW_BlendOnAStick": {
+          "at": "2026-10-19T13:33:07.185Z",
+          "pick": "A",
+          "set_id": "221e1a13874a54b6",
+          "slot_id": "RSW_BlendOnAStick/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_CookedSkewer": {
+      "at": "2026-10-19T13:41:33.654Z",
+      "decidedAt": "2026-10-19T13:41:29.607Z",
+      "decision": "hold",
+      "note": "Drop from game.",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RSW_EggOval": {
+      "at": "2026-10-19T13:59:56.673Z",
+      "decidedAt": "2026-10-19T13:59:55.214Z",
+      "decision": "hold",
+      "note": "drop",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RSW_FishOnAStick": {
+      "at": "2026-10-19T13:45:49.047Z",
+      "decidedAt": "2026-10-19T13:45:46.071Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "70638359e7977d608ad009145fa6626186c814f4c7053d9223097092f7201309"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Meal/RSW_FishOnAStick/RSW_FishOnAStick": {
+          "at": "2026-10-19T13:45:46.071Z",
+          "pick": "A",
+          "set_id": "7c65ecd92d41832f",
+          "slot_id": "RSW_FishOnAStick/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_FruitOnAStick": {
+      "at": "2026-10-19T13:46:07.590Z",
+      "decidedAt": "2026-10-19T13:46:05.982Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "6a786e5978d2047678e033ca06659dea26d36ccebafb48497701e578cd76028f"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Meal/RSW_FruitOnAStick/RSW_FruitOnAStick": {
+          "at": "2026-10-19T13:46:05.982Z",
+          "pick": "A",
+          "set_id": "d4a930188a8f5bf2",
+          "slot_id": "RSW_FruitOnAStick/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_FungusOnAStick": {
+      "at": "2026-10-19T13:49:09.728Z",
+      "decidedAt": "2026-10-19T13:49:08.188Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "c732dca00b515cd5574e1c5e066b22f42186c4969f30de7ca9d94700834327b4"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Meal/RSW_FungusOnAStick/RSW_FungusOnAStick": {
+          "at": "2026-10-19T13:49:08.188Z",
+          "pick": "A",
+          "set_id": "93375deac6f44274",
+          "slot_id": "RSW_FungusOnAStick/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_KraytHorn": {
+      "at": "2026-10-19T13:47:10.865Z",
+      "decidedAt": "2026-10-19T13:47:10.865Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RSW_KraytHorn": {
+          "at": "2026-10-19T13:47:10.865Z",
+          "pick": "A",
+          "set_id": "fe11eea092780a87",
+          "slot_id": "RSW_KraytHorn/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_KraytLens": {
+      "at": "2026-10-19T13:47:19.029Z",
+      "decidedAt": "2026-10-19T13:47:17.763Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "4692bcb78177fa7d6f22064d4bf407b3775c63b424a1e0b15ebff60d85214d98"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RSW_KraytLens": {
+          "at": "2026-10-19T13:47:17.763Z",
+          "pick": "A",
+          "set_id": "16b202e68c3275eb",
+          "slot_id": "RSW_KraytLens/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_LittleMeatOnAStick": {
+      "at": "2026-10-19T13:33:30.802Z",
+      "decidedAt": "2026-10-19T13:33:27.718Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Item/Meal/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick": {
+          "add": [
+            "B"
+          ],
+          "baseline": [
+            "e29f513d2649caad"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Meal/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick": {
+          "at": "2026-10-19T13:33:27.718Z",
+          "pick": "A",
+          "set_id": "e29f513d2649caad",
+          "slot_id": "RSW_LittleMeatOnAStick/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_MarshFungus": {
+      "at": "2026-10-19T13:47:40.522Z",
+      "decidedAt": "2026-10-19T13:47:39.438Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "9a64dbf8ef9295e393e6fdf8d88743ff6de261a82a1001ab7f15c2a672cebc35"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RSW_MarshFungus": {
+          "at": "2026-10-19T13:47:39.438Z",
+          "pick": "A",
+          "set_id": "768fd8a2138a0bad",
+          "slot_id": "RSW_MarshFungus/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_MeatOnAStick": {
+      "at": "2026-10-19T13:47:45.958Z",
+      "decidedAt": "2026-10-19T13:47:44.359Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "541e2c154d0550b524d68982744ad2dc2d8acc613eb7ecb6e79eec752cc19107"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Meal/RSW_MeatOnAStick/RSW_MeatOnAStick": {
+          "at": "2026-10-19T13:47:44.359Z",
+          "pick": "A",
+          "set_id": "7df7c249f04ed59c",
+          "slot_id": "RSW_MeatOnAStick/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RSW_VegOnAStick": {
+      "at": "2026-10-19T13:55:43.250Z",
+      "decidedAt": "2026-10-19T13:55:42.146Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "b880c9578e42eda0109fd9b86f065aab3d0c8518239604ab008c9ca0e6a3aaae"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Meal/RSW_VegOnAStick/RSW_VegOnAStick": {
+          "at": "2026-10-19T13:55:42.146Z",
+          "pick": "A",
+          "set_id": "99f9e997189a04f4",
+          "slot_id": "RSW_VegOnAStick/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RUT_CrackWax": {
+      "at": "2026-10-19T13:41:57.405Z",
+      "decidedAt": "2026-10-19T13:41:56.421Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Item/Resource/RUT_CrackWax": {
+          "add": [
+            "B"
+          ],
+          "baseline": [
+            "309dee018c2d35b3"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RUT_CrackWax": {
+          "at": "2026-10-19T13:41:56.421Z",
+          "pick": "A",
+          "set_id": "309dee018c2d35b3",
+          "slot_id": "RUT_CrackWax/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RUT_Jawa_ClaimRumour": {
+      "at": "2026-10-19T13:52:11.077Z",
+      "decidedAt": "2026-10-19T13:52:09.499Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {
+        "Things/Item/Special/JawaClaimRumour": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Special/JawaClaimRumour": {
+          "at": "2026-10-19T13:52:09.499Z",
+          "pick": "B",
+          "set_id": "ccfc84b5f77eccda",
+          "slot_id": "RUT_Jawa_ClaimRumour/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RUT_MetalSaltBezoar": {
+      "at": "2026-10-19T13:48:02.590Z",
+      "decidedAt": "2026-10-19T13:48:02.590Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/Resource/RUT_MetalSaltBezoar": {
+          "at": "2026-10-19T13:48:02.590Z",
+          "pick": "A",
+          "set_id": "18ea70e2d6ad3bc5",
+          "slot_id": "RUT_MetalSaltBezoar/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RUT_Mindstone": {
+      "at": "2026-10-19T13:48:12.843Z",
+      "decidedAt": "2026-10-19T13:48:08.809Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "c2bcfb387a17c46cb3affd53fb7757c2c8a337b3ecdfc608e8d58f7eba8431b5"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RUT_Mindstone/RUT_Mindstone": {
+          "at": "2026-10-19T13:48:08.809Z",
+          "pick": "A",
+          "set_id": "8a3f543f1facc755",
+          "slot_id": "RUT_Mindstone/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RUT_PilgrimJournal": {
+      "at": "2026-10-19T14:00:03.701Z",
+      "decidedAt": "2026-10-19T14:00:02.414Z",
+      "decision": "hold",
+      "note": "drop",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "RUT_PreservedDrawJoint": {
+      "at": "2026-10-19T13:51:01.142Z",
+      "decidedAt": "2026-10-19T13:50:57.157Z",
+      "decision": "D",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "bc3dd3dd5d71b02a5634f252d96dab8dc91b2cfb63299e1d0ad1f30b2e9f3a57",
+        "2af195b20c30e7964d4c9d199bc136999b011e50ce6843707556bc74ce70bb45"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {
+        "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint": [
+          "A"
+        ]
+      },
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint": {
+          "at": "2026-10-19T13:50:57.157Z",
+          "pick": "D",
+          "set_id": "6b0ed42e6e28e124",
+          "slot_id": "RUT_PreservedDrawJoint/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RUT_SealedWaterJar": {
+      "at": "2026-10-19T13:52:57.831Z",
+      "decidedAt": "2026-10-19T13:52:52.599Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "420f82d9158f635cef431534f3873fd7765eebc33450df7259273d5763ff60e1"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/RUT_SealedWaterJar": {
+          "at": "2026-10-19T13:52:52.599Z",
+          "pick": "A",
+          "set_id": "5364d6c745bcf7d3",
+          "slot_id": "RUT_SealedWaterJar/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RemoteResearchKit": {
+      "assign": {
+        "A": "not_needed"
+      },
+      "at": "2026-10-19T13:58:29.159Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "SimpleResearchKit": {
+      "at": "2026-10-19T14:00:10.506Z",
+      "decidedAt": "2026-10-19T14:00:09.047Z",
+      "decision": "hold",
+      "note": "drop",
+      "prefill": "A",
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {}
+    },
+    "VAEWaste_ToxicMeat": {
+      "at": "2026-10-19T13:55:21.450Z",
+      "decidedAt": "2026-10-19T13:55:16.281Z",
+      "decision": "D",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "69695239ffa8f3caebbc832d74778f4d4cf9f3f18bed19826d48059d276e853b",
+        "567de09af4fd863a900487915ba7776508a5b65e03711705f3cc81a8d1001975",
+        "8cde0233ae2e946775c4a44de323e2336c470b63e5e543875bc5e23915b5f8e6"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "d178329a3a034e9e",
+      "schema": 2,
+      "slots": {
+        "Things/Item/ToxicMeat": {
+          "at": "2026-10-19T13:55:16.281Z",
+          "pick": "D",
+          "set_id": "10b096d892bf7021",
+          "slot_id": "VAEWaste_ToxicMeat/graphicData",
+          "state": "pick"
+        }
+      }
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-19T07:00:11-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "picks_icons_sheet_2026-10-19",
+  "snapshot": "infrastructure/state/art/sheets/picks_icons_sheet_2026-10-19.snapshot.json",
+  "snapshotId": "d178329a3a034e9e",
+  "writeCount": 270
+}
