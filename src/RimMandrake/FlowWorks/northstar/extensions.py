@@ -431,7 +431,8 @@ def _force_into(t, pid, x, z):
     """FLOWWORKS_PIT_FALL_ONLY_FORCED_1 (owner, 2026-10-06): "You can't fall in by careless colonist pathing. Only if
     they get blown/forced in do they fall. Enemies can fall if the pit is concealed or they are forced/blown in."
     RM_PitPathing refuses a walk into an OPEN ladderless D=4 cell, so a pawn is put INTO an open pit only by force:
-    RM_PromotionProofs.ProofForcedFlyer launches it as a vanilla PawnFlyer onto (x,z), the landing running through
+    RM_PromotionProofs.ProofForcedFlyer throws it (vanilla PawnFlyer_Stun; an unstunned PawnFlyer is a jump and lands
+    safely by pitJumpLandsSafe) onto (x,z), the landing running through
     PawnFlyer.RespawnPawn -> RM_Patch_PawnFlyer_LandInPit (validation_v2 P3f's route). A launch that did not happen
     is UNMEASURED, never a capture verdict.
     RULED OUT (2026-10-11 live, PIT_CHAINS_REPAIR_STALE_SINCE_RULING): `_march` into an uncovered pit -- the path veto
@@ -439,8 +440,8 @@ def _force_into(t, pid, x, z):
     r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PromotionProofs", method="ProofForcedFlyer",
                       args="%s,%d,%d" % (pid, x, z))
     res = str((r or {}).get("result", ""))
-    if t._guard() and "launched=True" not in res.split():
-        raise ExpectationFailed("UNMEASURED: ProofForcedFlyer did not launch %s onto (%d,%d) (stale DLL?): %s"
+    if t._guard() and ("launched=True" not in res.split() or "def=PawnFlyer_Stun" not in res.split()):
+        raise ExpectationFailed("UNMEASURED: ProofForcedFlyer did not throw %s onto (%d,%d) (stale DLL? want def=PawnFlyer_Stun): %s"
                                 % (pid, x, z, res or r))
     t.wait_ticks(FLYER_LAND_TICKS)
     return res

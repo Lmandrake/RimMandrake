@@ -115,10 +115,11 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>FLOWWORKS_FORCED_PIT_FALL_ROW_1. arg = "pawnId,x,z". Launches the pawn as a vanilla
-		/// PawnFlyer (ThingDefOf.PawnFlyer, the same MakeFlyer + GenSpawn.Spawn-at-destination pair
-		/// JumpUtility.DoJump uses) to land on x,z, so the landing runs through PawnFlyer.RespawnPawn and
-		/// RM_Patch_PawnFlyer_LandInPit exactly as a real forced arrival would. No fall is applied here:
-		/// "FLYER id=.. from=x,z to=x,z depth=D launched=b".</summary>
+		/// THROWN flyer (PawnFlyer_Stun, the knockback flyer; MakeFlyer + GenSpawn.Spawn-at-destination as
+		/// JumpUtility.DoJump does) to land on x,z, so the landing runs through PawnFlyer.RespawnPawn and
+		/// RM_Patch_PawnFlyer_LandInPit exactly as a real forced arrival would. Not ThingDefOf.PawnFlyer: an
+		/// unstunned flyer is a deliberate JUMP and lands safely (pitJumpLandsSafe, PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS).
+		/// No fall is applied here: "FLYER id=.. from=x,z to=x,z depth=D launched=b def=..".</summary>
 		public static string ProofForcedFlyer(string arg)
 		{
 			RM_MapComponent_Excavation ex = Engine(out Map map);
@@ -141,11 +142,16 @@ namespace RimMandrake.FlowWorks
 			{
 				return "REFUSED: no spawned pawn " + id;
 			}
+			ThingDef thrown = DefDatabase<ThingDef>.GetNamedSilentFail("PawnFlyer_Stun");
+			if (thrown?.pawnFlyer == null)
+			{
+				return "REFUSED: no PawnFlyer_Stun def";
+			}
 			IntVec3 from = pawn.Position;
-			PawnFlyer flyer = PawnFlyer.MakeFlyer(ThingDefOf.PawnFlyer, pawn, dest, null, null);
+			PawnFlyer flyer = PawnFlyer.MakeFlyer(thrown, pawn, dest, null, null);
 			bool launched = flyer != null && GenSpawn.Spawn(flyer, dest, map) != null;
 			return "FLYER id=" + id + " from=" + from.x + "," + from.z + " to=" + dest.x + "," + dest.z
-				+ " depth=" + ex.ExcavatedDepthAt(dest) + " launched=" + launched;
+				+ " depth=" + ex.ExcavatedDepthAt(dest) + " launched=" + launched + " def=" + thrown.defName;
 		}
 
 		/// <summary>PIT_COVER_FALL_REWIRE_1. arg = "x,z". What the cover over a superdeep cell prints against
@@ -195,9 +201,6 @@ namespace RimMandrake.FlowWorks
 			return sb.ToString();
 		}
 
-		/// <summary>LIQUID_BODY_FLUID_IDENTITY_1 / viscosity. arg = "x,z,w,h". One token per cell, row-major:
-		/// "ROW x,z:D/F/fluid/terrain;..." (terrain is TerrainAt, the temp fill layer included), plus the map's
-		/// pulse count so a reader can tell where a viscous fluid's cadence stands.</summary>
 		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD live row L8 (northstar/liquid_checks.py): the pond indexed at "x,z" —
 		/// its drawdown s, part-level r, picture wet count, stock, and a terrain census over its footprint (deep, chest, shallow,
 		/// thin, own = still its original water, mud, lakebed, other). Read-only; never forms a body.</summary>
@@ -243,6 +246,9 @@ namespace RimMandrake.FlowWorks
 				+ ",thin:" + thin + ",own:" + own + ",mud:" + mud + ",lakebed:" + lakebed + ",other:" + other;
 		}
 
+		/// <summary>LIQUID_BODY_FLUID_IDENTITY_1 / viscosity. arg = "x,z,w,h". One token per cell, row-major:
+		/// "ROW x,z:D/F/fluid/terrain;..." (terrain is TerrainAt, the temp fill layer included), plus the map's
+		/// pulse count so a reader can tell where a viscous fluid's cadence stands.</summary>
 		public static string ProofFluidRow(string arg)
 		{
 			RM_MapComponent_Excavation ex = Engine(out Map map);
