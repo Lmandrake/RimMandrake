@@ -113,8 +113,8 @@ causes, are not wired.
 - **Ruled, unbuilt:** the **natural seep flames** and the **discovery pilot** (*"the flickering
   light or geyser both can teach"*, `SUMP_GASLIGHT_1` §5–6); `RUT_TarRendering`'s *"first meeting
   tar"* trigger (its own description: *"Unwired flavor tech for now"*); network fire with gate
-  firebreaks and the belch as a real flood (`SUMP_TAR_FIRE_NETWORK_1`); the living map and tar rain
-  (`SUMP_TAR_LIVING_SYSTEMS_1`, the latter blocked on a design fork); the tar beast's body; the
+  firebreaks and the belch as a real flood (`SUMP_TAR_FIRE_NETWORK_1`); the living map
+  (`SUMP_TAR_LIVING_SYSTEMS_1`; tar rain was ruled out 2026-10-18, the Sump has no precipitation); the tar beast's body; the
   Inhabited faction weighting (`SUMP_INHABITED_NOTES_1`, gated on that pass).
 
 ### Heat

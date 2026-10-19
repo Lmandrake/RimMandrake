@@ -83,13 +83,6 @@ namespace RimMandrake.TheSump
         public static float capstanMaxMass = 150f;
         public static float capstanMaxBodySize = 2.5f;
         public static float capstanSnapDamage = 20f;
-        // SUMP_TAR_LIVING_SYSTEMS_1 part 2: tar rain (RM_SumpTarRainLock bursts + RM_TarRain's coating), read live
-        // through the shared kit's RM_MechanicGates keys registered below. Off: the dusk stays, it never rains.
-        // Never in the campaign whatever these say (UtinniPatches swaps the lock back). Numbers PROVISIONAL.
-        public static bool tarRainEnabled = true;
-        public static float tarRainFrequency = 1f;
-        public static float tarRainIntensity = 1f;
-
         public override void ExposeData()
         {
             base.ExposeData();
@@ -111,9 +104,6 @@ namespace RimMandrake.TheSump
             Scribe_Values.Look(ref capstanMaxMass, "capstanMaxMass", 150f, true);
             Scribe_Values.Look(ref capstanMaxBodySize, "capstanMaxBodySize", 2.5f, true);
             Scribe_Values.Look(ref capstanSnapDamage, "capstanSnapDamage", 20f, true);
-            Scribe_Values.Look(ref tarRainEnabled, "tarRainEnabled", true, true);
-            Scribe_Values.Look(ref tarRainFrequency, "tarRainFrequency", 1f, true);
-            Scribe_Values.Look(ref tarRainIntensity, "tarRainIntensity", 1f, true);
         }
 
                 // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -252,20 +242,6 @@ namespace RimMandrake.TheSump
                 list.GapLine();
             }
 
-            if (Group(list, "Tar rain", RimMandrake.Shared.SettingScope.Now, new[] { "tarRainEnabled", "tarRainFrequency", "tarRainIntensity" }))
-            {
-                list.CheckboxLabeled("Tar rain", ref tarRainEnabled,
-                    "Shipped default: ON. Now and then the Sump's dusk thickens into a slow black drizzle of tar that spots open "
-                  + "ground and sticks to anyone caught outside (they come in tarred). It never puts out a fire. Off: the "
-                  + "permanent dusk stays and it never rains. Never in the Ash'karr campaign, whatever this says. "
-                  + "Numbers are provisional.");
-                list.Label("How often: " + tarRainFrequency.ToString("0.00") + "x (default about one spell every 4 days, 1-3 hours long; 0 = never)");
-                tarRainFrequency = list.Slider(tarRainFrequency, 0f, 4f);
-                list.Label("How heavy: " + tarRainIntensity.ToString("0.00") + "x (tar spots per drizzle and the chance a pawn outside is hit)");
-                tarRainIntensity = list.Slider(tarRainIntensity, 0f, 4f);
-                list.GapLine();
-            }
-
             list.Label("This biome's own mechanics (the poured tar moat and fuse-post ignition, the dig-shaft stratum lottery, the dormant "
                       + "tar-beast set-piece, sump-mouse filth-trail telegraphy, the wick-garden crop, and the permanent-dusk weather lock) "
                       + "are not toggled here. The tar-coating, tarred-hediff, glasswalk-slip, warbling-gaslight and glow-multiplier switches "
@@ -295,17 +271,6 @@ namespace RimMandrake.TheSump
         public RM_TheSumpMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_TheSumpSettings>();
-            RegisterMechanicGates();
-        }
-
-        // The shared kit is a hard dependency (About.xml), so its types always resolve; NoInlining keeps the
-        // reference out of the constructor body, the TerminalBiomes precedent.
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
-        private static void RegisterMechanicGates()
-        {
-            RimMandrake.EnvironmentalHazards.RM_MechanicGates.Register("Sump.tarRain", () => RM_TheSumpSettings.tarRainEnabled);
-            RimMandrake.EnvironmentalHazards.RM_MechanicGates.RegisterScale("Sump.tarRainFrequency", () => RM_TheSumpSettings.tarRainFrequency);
-            RimMandrake.EnvironmentalHazards.RM_MechanicGates.RegisterScale("Sump.tarRainIntensity", () => RM_TheSumpSettings.tarRainIntensity);
         }
 
         public override string SettingsCategory()
