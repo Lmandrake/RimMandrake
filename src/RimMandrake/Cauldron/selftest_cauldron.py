@@ -987,8 +987,9 @@ def source_checks():
     # filter cartridge, RM_FilterWorksResearch and RM_CauldronRuinScatter (ResearchProjectDef/GenStepDef now parsed too).
     # 69/8: RM_Bezzul removed (BEZZUL_DELETE_NOT_NEEDED_ANYMORE); RM_FireSpit projectile restored for RM_Zisska (2026-10-16).
     # 68/16/8: RM_TreeMartyr cut (owner, tree tiers sheet 2026-10-18: "Cut and remove from game").
-    if len(V.SHIPPED) != 68 or len(V.FLORA) != 16 or len(V.KINDS) != 8:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 68 / 16 / 8); update "
+    # 70/16/9: + RM_Garsulix ThingDef and PawnKindDef (owned port of GR_Beetlefleet, e5c1f01e3, Alpha Animals retirement).
+    if len(V.SHIPPED) != 70 or len(V.FLORA) != 16 or len(V.KINDS) != 9:
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 70 / 16 / 9); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 
