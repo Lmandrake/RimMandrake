@@ -96,7 +96,15 @@ def browser_render(html_path, decisions_path=None, timeout: int | None = None):
         if not url:
             return None, [], "UNMEASURED: throwaway sidecar printed no URL: " + buf[-160:].replace("\n", " ")
         _wait_answers(url, 5.0)                              # the URL is printed before the socket reliably answers
-        r = subprocess.run(edge_cmd(url, profile), capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
+        # ...from WSL. Windows reaches it through the WSL localhost relay, which can lag: Edge then exits in under a
+        # second with "Page load failed: net::ERR_CONNECTION_REFUSED" and an empty DOM, read as "renders blank"
+        # (MEASURED 2026-10-19: 3 builds of a 190-row sheet refused that way; the same page rendered 1936 <img> in
+        # 12.6 s one attempt later). Such a refusal is retried here, never counted as a render.
+        for attempt in range(4):
+            r = subprocess.run(edge_cmd(url, profile), capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
+            if "<img" in r.stdout or "ERR_CONNECTION_REFUSED" not in (r.stderr or ""):
+                break
+            time.sleep(1.5 * (attempt + 1))
     except (OSError, subprocess.SubprocessError) as e:
         tail = ""
         if isinstance(e, subprocess.TimeoutExpired):

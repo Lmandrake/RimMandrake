@@ -27,6 +27,9 @@
                                             REPORTED for his reconciliation, never auto-released
     art.py ingest    <decisions.json>       owner sheet decisions -> ruling/purge events
     art.py index                            write the gitignored projection index.json
+    art.py review    awaiting-pick [--dry-run] [--no-open]
+                                            every row awaiting his pick on every open sheet -> ONE gated page,
+                                            served and opened; no agent in the loop (review_queue.py)
     art.py enact     <decisions.json> [--apply] [--hold S]... [--mark-done ROW]... [--no-deploy]
                                             a ruled sheet in ONE pass: ingest, install picks, queue redraws,
                                             purge ✕ (never protected ones), cut rows, deploy touched mods (enact.py)
@@ -409,6 +412,9 @@ def main(argv=None):
     if argv[:1] == ["guard"]:
         import art_guard
         return art_guard.main(argv[1:])
+    if argv[:1] == ["review"]:
+        import review_queue
+        return review_queue.main(argv[1:])
     a = ap.parse_args(argv)
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
