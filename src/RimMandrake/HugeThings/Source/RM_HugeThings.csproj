@@ -44,6 +44,7 @@
     <Compile Include="Kernel\RM_TitanicKernel.cs" />
     <Compile Include="Kernel\RM_TitanClearingKernel.cs" />
     <Compile Include="Kernel\RM_WallsSlotsKernel.cs" />
+    <Compile Include="Kernel\RM_WallsSlotsMemoKernel.cs" />
     <Compile Include="Building_TrunkBlocker.cs" />
     <Compile Include="CompHugeFootprint.cs" />
     <Compile Include="Extensions.cs" />
