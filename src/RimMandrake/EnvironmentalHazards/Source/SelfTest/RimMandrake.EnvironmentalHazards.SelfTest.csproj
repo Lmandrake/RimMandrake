@@ -26,6 +26,8 @@
     <Compile Include="..\RM_AxisKernel.cs" />
     <Compile Include="..\RM_PoolKernel.cs" />
     <Compile Include="..\RM_RoomCoolerKernel.cs" />
+    <Compile Include="..\RM_FilthRainKernel.cs" />
+    <Compile Include="FilthRainFuzz.cs" />
     <Compile Include="CoolerFuzz.cs" />
     <Compile Include="AxisFuzz.cs" />
     <Compile Include="PoolFuzz.cs" />

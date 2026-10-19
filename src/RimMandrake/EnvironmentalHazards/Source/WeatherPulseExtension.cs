@@ -60,6 +60,13 @@ namespace RimMandrake.EnvironmentalHazards
         // INVENTED, F1 spec: 20-40 in-game minutes.
         public IntRange burstDurationMinutesRange = new IntRange(20, 40);
 
+        // SUMP_TAR_LIVING_SYSTEMS_1: optional seams for a biome mod's own settings, both read through
+        // RM_MechanicGates. burstGateKey off = no burst starts and a running one ends, while baseWeather STAYS forced
+        // (unlike an RM_MechanicGateExtension on the def, which releases the whole lock). burstFrequencyKey divides
+        // burstMtbHours by its registered scale (RM_FilthRainKernel.EffectiveMtbHours; 0 = never). Null = ungated.
+        public string burstGateKey;
+        public string burstFrequencyKey;
+
         // --- the flash --------------------------------------------------
         // RM_MapComponent_FlashCycle's own window runs from burst start
         // until this many in-game hours later — deliberately independent

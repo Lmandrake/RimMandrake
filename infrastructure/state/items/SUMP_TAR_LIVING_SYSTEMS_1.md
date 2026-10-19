@@ -33,32 +33,25 @@ an explicit design decision this pass could not respons­ibly guess at.
    First script: `validation.py` `_living_map_findings` (offline) + live
    chain `sump_living_map` (`RM_SumpLivingMapProof.ProofRewrite on|off`).
 
-2. **Tar rain — genuinely blocked on an architecture question, not merely
-   deferred for time.** Ruling 1 (typed verbatim): "Tar rain is part of mod
-   but not this scenario." `SUMP_TAR_HYDROLOGY_1`'s own build-status section
-   found the actual blocker: **both** `RM_TheSump` (the standalone mod
-   biome) and `RUT_Sump` (the campaign biome) currently force the SAME
-   `RUT_SumpDuskLock` `GameCondition` via `GameCondition.ForcedWeather()`,
-   which is why `RUT_SumpWeather`'s own header already calls its
-   `baseWeatherCommonalities` table "pre-mod-load documentation... it never
-   actually gets rolled." A new `RUT_TarRain` `WeatherDef` added the same
-   way would never roll on EITHER biome under the current architecture.
-   Making "mod ships it, scenario doesn't" real needs one of:
-   - A scenario-level override (e.g. a `ScenPart` on the Ash'karr scenario
-     that keeps forcing zero rain specifically, while the base `RM_TheSump`
-     biome's own forced condition is loosened to allow tar rain through), or
-   - Splitting `RUT_SumpDuskLock` into two conditions (a "permanent dusk"
-     half both share, and a "no rain at all" half only the campaign keeps),
-     or
-   - Some other shape the owner prefers.
-
-   This is a real fork in the campaign's already-shipped "no rain" guarantee
-   (sheet ban #4) and should not be resolved silently by whichever agent
-   happens to pick this item up — surface it as a question before building
-   either half, per this session's own "when a tier/provenance question
-   starts generating sub-questions, ask whether the category is needed at
-   all" lesson (it applies here in miniature: ask which SHAPE before
-   building any of them).
+2. **Tar rain — BUILT (2026-10-18).** Owner, typed 2026-10-09: *"Flowworks supports tar rain but campaign does
+   not. The biome itself does except for the campaign. Correct."* The shared no-rain lock is split:
+   - `RM_TheSump` now carries `RM_SumpTarRainLock` (TheSump `Defs/GameConditionDefs/`): the shared
+     `RM_GameCondition_WeatherPulse` forcing `RUT_SumpWeather` (the dusk) with `RM_TarRain` spells. `RUT_SumpDuskLock`
+     is unchanged and still what `RUT_Sump` carries.
+   - The campaign layer swaps `RM_TheSump` back onto `RUT_SumpDuskLock`
+     (`UtinniPatches/Patches/Campaign_SumpNoTarRain.xml`, FindMod on the composed "RimMandrake: Baroque Biomes"), so
+     no-rain stays campaign-only through the final repaint onto RM_ biomes.
+   - `RM_TarRain` (`rainRate` 0: no fire dousing, no water) fires `RM_WeatherEvent_FilthRain` (EnvironmentalHazards):
+     each event coats random open-sky cells with `RM_Filth_Tar` via `RM_TarCoatingUtility` and gives exposed pawns a
+     chance of tar filth (they become tarred through the existing carried-filth hediff).
+   - Shared kit: `WeatherPulseExtension.burstGateKey`/`burstFrequencyKey` (burst switch keeps the dusk forced) and
+     `RM_MechanicGates.RegisterScale/Scale`; pure numbers in `RM_FilthRainKernel` (fuzz family `filthrain`).
+   - Mod Settings (the Sump, "Tar rain"): on/off, how often, how heavy; defaults on, 1x, 1x.
+   - **PROVISIONAL numbers**: a spell every ~96 h on average, 60-180 min; an event every ~250 ticks; 6 cells per
+     250x250 map per event; 4% per exposed pawn per event.
+   - NOT done (FlowWorks was off-limits to this pass): tar rain refilling tar bodies or filling excavations with tar.
+     FlowWorks reads `rainRate`, which tar rain keeps at 0 on purpose.
+   Checks: `src/RimMandrake/TheSump/selftest_sump_tar_rain.py`, `selftest_envhazards_fuzz.py --fuzz-only filthrain`.
 
 ## what already exists to reuse
 
@@ -75,8 +68,7 @@ an explicit design decision this pass could not respons­ibly guess at.
 
 ## verify
 
-Once the architecture question above is answered: tar-rain weather exists in
-`RM_TheSump` (or wherever the answer places it) and is provably absent from
+Tar-rain weather rolls on an `RM_TheSump` map outside the campaign and is provably absent from
 the Ash'karr scenario's actual rolled weather; a soffeth ring visibly forms
 near a genuinely new seep/glass-front within a bounded number of days.
 

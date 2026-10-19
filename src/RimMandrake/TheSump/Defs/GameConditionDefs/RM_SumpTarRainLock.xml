@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SumpTarRainLock.xml - SUMP_TAR_LIVING_SYSTEMS_1 part 2: the shared no-rain lock, split. Owner 2026-10-09:
+  "The biome itself does [tar rain] except for the campaign."
+
+  RM_TheSump (this mod's biome) now carries THIS lock: the same forced permanent dusk (RUT_SumpWeather) as
+  RUT_SumpDuskLock, broken now and then by a spell of RM_TarRain, through the shared
+  RM_GameCondition_WeatherPulse (no scald: scaldDamageDef unset). RUT_SumpDuskLock stays exactly as it was and is
+  still what RUT_Sump carries; the campaign layer swaps RM_TheSump back onto it
+  (UtinniPatches/Patches/Campaign_SumpNoTarRain.xml), so no-rain is campaign-only and survives the final repaint.
+
+  burstGateKey off (Mod Settings, "Tar rain") ends a spell and starts none, while the dusk stays forced.
+  burstFrequencyKey scales the MTB. Numbers PROVISIONAL (owner ruling 2026-10-03): a spell every ~4 days on
+  average, 1-3 hours long. flashWindowHoursAfterBurstStart is required > 0 by the extension and only drives Forge
+  flash flora, which the Sump does not grow.
+-->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RM_SumpTarRainLock</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_WeatherPulse</conditionClass>
+    <label>permanent dusk</label>
+    <description>The Sump never sees full day or full dark. The sun sits just below the horizon, forever. Now and then the dusk thickens and it rains tar.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.WeatherPulseExtension">
+        <baseWeather>RUT_SumpWeather</baseWeather>
+        <burstWeather>RM_TarRain</burstWeather>
+        <burstMtbHours>96</burstMtbHours>                          <!-- PROVISIONAL -->
+        <burstDurationMinutesRange>60~180</burstDurationMinutesRange>  <!-- PROVISIONAL -->
+        <flashWindowHoursAfterBurstStart>0.1</flashWindowHoursAfterBurstStart>
+        <burstGateKey>Sump.tarRain</burstGateKey>
+        <burstFrequencyKey>Sump.tarRainFrequency</burstFrequencyKey>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+</Defs>

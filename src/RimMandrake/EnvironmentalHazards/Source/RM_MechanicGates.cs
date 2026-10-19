@@ -81,6 +81,43 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
+        // SUMP_TAR_LIVING_SYSTEMS_1: the same seam for a NUMBER (a frequency or intensity multiplier a biome mod's
+        // setting owns). An unregistered key reads 1 (the def's own figure), so absence degrades to shipped behaviour.
+        private static readonly Dictionary<string, Func<float>> scales = new Dictionary<string, Func<float>>();
+
+        /// <summary>Register (or replace) the live reader behind a scale key. Call from a Mod constructor.</summary>
+        public static void RegisterScale(string key, Func<float> scale)
+        {
+            if (key.NullOrEmpty() || scale == null)
+            {
+                Log.Error("[RM EnvironmentalHazards] RM_MechanicGates.RegisterScale called with an empty key or null reader.");
+                return;
+            }
+            scales[key] = scale;
+        }
+
+        /// <summary>The registered multiplier for this key, or 1 when the key is empty or unregistered. A reader that
+        /// throws or returns NaN reads 1, never a silent kill.</summary>
+        public static float Scale(string key)
+        {
+            if (key.NullOrEmpty() || !scales.TryGetValue(key, out Func<float> scale))
+            {
+                return 1f;
+            }
+            try
+            {
+                float v = scale();
+                return float.IsNaN(v) ? 1f : v;
+            }
+            catch (Exception e)
+            {
+                Log.ErrorOnce(
+                    "[RM EnvironmentalHazards] mechanic scale '" + key + "' threw; treating as 1. " + e,
+                    key.GetHashCode() ^ 0x5CA1);
+                return 1f;
+            }
+        }
+
         /// <summary>True unless the def carries an RM_MechanicGateExtension
         /// whose key is registered and currently off.</summary>
         public static bool Enabled(Def def)
