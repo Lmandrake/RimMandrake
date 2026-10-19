@@ -57,24 +57,7 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Alpha Animals</li>  <!-- FindMod matches the mod NAME, never the packageId (sarg.alphaanimals); fixed 2026-10-17 live walk -->
-    </mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
-          <match Class="PatchOperationAdd">
-            <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
-            <value>
-              <RM_Zrrik MayRequire="mandrake.rm.greentide">0.2</RM_Zrrik>
-            </value>
-          </match>
-        </li>
-      </operations>
-    </match>
-  </Operation>
+  <!-- A PatchOperationFindMod on "Alpha Animals" stood here; that donor was retired 2026-10-18, so it could never match again and was deleted. -->
 
   <Operation Class="PatchOperationFindMod">
     <mods>

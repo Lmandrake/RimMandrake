@@ -5,18 +5,7 @@
      design/Jawa/worldbuilding/review/turret_normalization_v1.md -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Alpha Biomes</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- AB_Turret_Propane_Bullet : damageAmountBase -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/VEF.Weapons.ExpandableProjectileDef[defName="AB_Turret_Propane_Bullet"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
+  <!-- A PatchOperationFindMod on "Alpha Biomes" stood here; that donor was retired 2026-10-18, so it could never match again and was deleted. -->
 
   <Operation Class="PatchOperationFindMod">
     <mods><li>Core</li></mods>
