@@ -223,7 +223,7 @@ SUBS = [
 # owner zone, which must stand until the B9 save.
 FOOT = dict(trench=(30, 16), climb=(46, 12), sprinkler=(16, 86), l2=(30, 18), l2b=(30, 18), l6=(30, 18), l4=(30, 18),
             l5=(30, 18), thirst=(96, 42),
-            covers=(26, 10), access=(40, 14), digdepth=(12, 8), reservoir=(16, 16), grenade=(20, 10), raillip=(16, 14),
+            covers=(26, 10), access=(40, 14), digdepth=(12, 8), reservoir=(16, 26), grenade=(20, 10), raillip=(16, 14),
             ride=(6, 6), tanks=(12, 6), readout=(22, 16), ice=(16, 8), flood=(18, 10), suspension=(40, 16),
             owner=(216, 78), props=(30, 10))
 GAP = 6
@@ -1037,8 +1037,14 @@ def g_dig_depth(s):
                how="INFERRED: the job's per-cut work function read live, the progress bar not timed"), "B4")
 
 
+FISH_CERTAIN_SIZE = 200     # vanilla FishingUtility.ChanceForCommonFishFromWaterBodySizeCurve: 0 <75, .05@75, .5@100, 1@200
+
+
 def fish_roll_verdict(fr):
-    """B4_reservoir_fish_rolled -> (status, class, why) from a jawa/fishing read of the filled 10x10 dug reservoir."""
+    """B4_reservoir_fish_rolled -> (status, class, why) from a jawa/fishing read of the filled 10x20 dug reservoir.
+    Fish are a ROLL on the body's size (WaterBody.SetFishTypes; the FlowWorks mend re-rolls at 75/100/200): only a body
+    of 200+ squares is certain. pass 2 (2026-10-19, HARNESS): a 100-square body PASSed in pass2 and FAILed in pass2c on
+    the same build -- the 52.5% coin (1 - .95 x .5), not a bug. A fishless body under 200 is UNMEASURED/SITE."""
     if not isinstance(fr, dict) or fr.get("success") is not True or not isinstance(fr.get("body"), dict):
         return "UNMEASURED", "HARNESS", "jawa/fishing read failed: %s" % str((fr or {}).get("error") or fr)[:100]
     wb = fr["body"]
@@ -1046,7 +1052,11 @@ def fish_roll_verdict(fr):
         return "UNMEASURED", "SITE", "no vanilla water body under the reservoir (filled? see its dig rows)"
     if wb.get("hasFish") is True or wb.get("commonFish"):
         return "PASS", "MOD", ""
-    return "FAIL", "MOD", "a %s-square dug water body rolled no fish" % wb.get("size")
+    size = fnum(str(wb.get("size")))
+    if size is None or size < FISH_CERTAIN_SIZE:
+        return "UNMEASURED", "SITE", "a %s-square body lost the game's size roll (certain only at %d+)" % (
+            wb.get("size"), FISH_CERTAIN_SIZE)
+    return "FAIL", "MOD", "a %s-square dug water body rolled no fish (certain at %d+)" % (wb.get("size"), FISH_CERTAIN_SIZE)
 
 
 def dig_cost_verdict(rises, ok, txt):
@@ -1067,8 +1077,8 @@ POND = "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD"
 
 
 def g_reservoir(s):
-    """FISH_ROLL A2 / POND_DEPTH A7: a 10x10 dug reservoir, filled; its body report after a pulse names the fish it
-    rolled (75 at 100 squares, FISH_ROLL selftest). A7, the catch: a vanilla fishing zone over the dug water
+    """FISH_ROLL A2 / POND_DEPTH A7: a 10x20 (200-square) dug reservoir, filled; its body report after a pulse names the
+    fish it rolled (200 squares: the game's chance is 1.0, so a fishless body is the mend failing). A7, the catch: a vanilla fishing zone over the dug water
     (jawa/map_zones zoneType=fishing, which names each refused cell), one colonist on the vanilla Fish job
     (jawa/ordered_job, fishCell + standSpot from jawa/fishing), and the map's Fish-group total read before and after.
     PASS = the total rose. A zone refused for 'no fish' / 'no water-body type' or a zone that lost its cells during the
@@ -1078,17 +1088,18 @@ def g_reservoir(s):
     # pass 2 (2026-10-19, SITE): a uniform 4-notch (2 m) pit is all WaterDeep, and vanilla
     # Designator_ZoneAdd_Fishing.CanDesignateCell refuses Impassable terrain, so every cell was refused ("impassable
     # terrain WaterDeep", read live) -- a lake is fished from its shallows too. Shape it like a pond: a 2-notch (1 m,
-    # WaterShallow) rim, a 4-notch 6x6 middle, both filled to the brim (one surface, one body).
+    # WaterShallow) rim, a 4-notch 6x16 middle, both filled to the brim (one surface, one body). 10x20 = 200 squares,
+    # where vanilla's fish chance reaches 1.0 (pass 2c: a 10x10 body lost its 52.5% roll).
     for i in range(10):
-        for j in range(10):
-            mid = 2 <= i <= 7 and 2 <= j <= 7      # each cell dug ONCE: dig() reads back depth == n from 0
+        for j in range(20):
+            mid = 2 <= i <= 7 and 2 <= j <= 17     # each cell dug ONCE: dig() reads back depth == n from 0
             s.dig((x + 2 + i, z + 2 + j), 4 if mid else 2, 4 if mid else 2)
     yield Wait(500)
     # flowworks_body_report has NO fish field (body{id, limitless, stock, capacity, cellCount, ...}): the old row read
     # fish/fishTypes/fishCount off it, so every read body was a FAIL. The fish roll is the vanilla WaterBody's, read by
     # jawa/fishing (body{hasBody, hasFish, commonFish, population, ...}); the FlowWorks body stays as detail.
-    b = s.call("jawa/flowworks_body_report", x=x + 6, z=z + 6, classify=True).get("body") or {}
-    fr = s.call("jawa/fishing", action="read", x=x + 6, z=z + 6)
+    b = s.call("jawa/flowworks_body_report", x=x + 6, z=z + 11, classify=True).get("body") or {}
+    fr = s.call("jawa/fishing", action="read", x=x + 6, z=z + 11)
     st, cls, why = fish_roll_verdict(fr)
     wb = fr.get("body") if isinstance(fr.get("body"), dict) else {}
     s.row("B4_reservoir_fish_rolled", "FISH_ROLL_MEND_PONDS_BORN_BARREN", "A2", st, cls,
@@ -1098,7 +1109,7 @@ def g_reservoir(s):
     def a7(st, cls, **d):
         s.row("B4_reservoir_catch", POND, "A7", st, cls, d, "B4")
 
-    zr = s.call("jawa/map_zones", action="createZone", zoneType="fishing", rect="%d,%d,10,10" % (x + 2, z + 2))
+    zr = s.call("jawa/map_zones", action="createZone", zoneType="fishing", rect="%d,%d,10,20" % (x + 2, z + 2))
     if not zr.get("success"):
         # pass 2 (2026-10-19, HARNESS): the companion's Fail() nests the cells under "details" ({success, message,
         # details: {cellsRequested, refusedCells}}); the top-level read saw none, so a "no fish" refusal scored HARNESS

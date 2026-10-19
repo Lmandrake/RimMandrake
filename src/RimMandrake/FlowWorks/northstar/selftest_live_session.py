@@ -503,8 +503,13 @@ check(L.dig_cost_verdict("True", True, "12800")[0] == "FAIL", "can-fail dig cost
 check(L.dig_cost_verdict("False", True, "12800")[0] == "UNMEASURED", "dig cost: curve setting off is UNMEASURED")
 check(L.dig_cost_verdict("True", False, "REFUSED: x")[0] == "UNMEASURED", "dig cost: an unread work function is UNMEASURED")
 check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=True, size=100)))[0] == "PASS", "fish: a body with fish PASS")
-check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=False, size=100)))[:2] == ("FAIL", "MOD"),
-      "can-fail fish: a dug body with no fish is FAIL/MOD")
+check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=False, size=200)))[:2] == ("FAIL", "MOD"),
+      "can-fail fish: a 200-square dug body with no fish is FAIL/MOD (the game's chance is 1.0 there)")
+check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=False, size=100)))[:2] == ("UNMEASURED", "SITE"),
+      "fish: a 100-square fishless body lost a 52.5% roll (pass 2 PASS, pass 2c FAIL, same build): SITE, not a MOD fail")
+check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=True, hasFish=False)))[:2] == ("UNMEASURED", "SITE"),
+      "fish: a fishless body of unread size is not a MOD fail")
+check(L.FOOT["reservoir"][1] >= 2 + 20, "fish: the reservoir footprint holds the 10x20 (200-square) dig")
 check(L.fish_roll_verdict(dict(success=True, body=dict(hasBody=False)))[:2] == ("UNMEASURED", "SITE"), "fish: no body is SITE")
 check(L.fish_roll_verdict(dict(success=False))[:2] == ("UNMEASURED", "HARNESS"), "fish: a failed read is HARNESS")
 check(L.reload_verdict(True, [], []) == "PASS" and L.reload_verdict(True, [], ["pocket_covers"]) == "FAIL",
