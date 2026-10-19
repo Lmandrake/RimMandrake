@@ -7,7 +7,7 @@ bundle, one nowhere; src resolves a Graphic_Random folder and a Graphic_Multi fi
 (inactive-only, nowhere) must be flagged, every good path must not be; lint() fails an unlisted gap, a stale entry, an entry
 added after the freeze.
 Part 2, the REAL repo (skipped as UNMEASURED without the gametex cache): the lint passes, and SANITY PROBE: a texPath known to
-resolve in src is OK_SRC and at least one genuine MISSING gap is seen (none named: owed art gets installed), so the scan is demonstrably looking.
+resolve in src is OK_SRC and a planted nowhere-path run through the real roots and index is MISSING, so the scan is demonstrably looking.
 """
 from __future__ import annotations
 
@@ -69,8 +69,12 @@ def main() -> int:
         print("UNMEASURED part 2: no gametex cache on this machine")
     else:
         real = T.census()
-        gaps = [k for k, v in real.items() if v["class"] == "MISSING"]
-        check(len(gaps) > 0, "probe: the scan sees at least one genuine MISSING gap", gaps)
+        # 2026-10-18: the repo's last MISSING gaps got their art (49f734a92), so "at least one genuine MISSING gap" stopped
+        # being true of the repo while the instrument still worked. The probe now plants a path through the REAL roots and
+        # REAL index: the live scan must call it MISSING.
+        planted = T.census(paths={"Things/RM_SelftestProbe/NoSuchTexture_probe": ["selftest"]})
+        check(planted["Things/RM_SelftestProbe/NoSuchTexture_probe"]["class"] == "MISSING",
+              "probe: the real scan calls a planted nowhere-path MISSING", planted)
         check(sum(1 for v in real.values() if v["class"] == "OK_SRC") > 1000, "probe: thousands of real texPaths resolve in src")
         allow = T.json.loads(T.ALLOWLIST.read_text())
         fails = T.lint(real, allow)

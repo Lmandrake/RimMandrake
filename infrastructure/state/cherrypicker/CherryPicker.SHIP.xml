@@ -180,9 +180,6 @@
 			<li>ThingDef/BlackBearMan</li>
 			<li>ThingDef/MandrillMan</li>
 			<li>ThingDef/Neanderthal</li>
-			<li>ThingDef/AA_CrystallineCaracal</li>
-			<li>ThingDef/AA_DevilSheep</li>
-			<li>ThingDef/AA_FlamingoPhoenix</li>
 			<li>ThingDef/BMT_GlarralPenguin</li>
 			<li>ThingDef/BiomesIslands_Flamingo</li>
 			<li>ThingDef/Flamingo</li>
@@ -195,7 +192,6 @@
 			<li>ThingDef/Ostrich</li>
 			<li>ThingDef/Tortoise</li>
 			<li>ThingDef/YorkshireTerrier</li>
-			<li>ThingDef/AA_PhoenixOwlcat</li>
 			<li>ThingDef/Grimstone_Griffar</li>
 			<li>ThingDef/WhiteViper</li>
 			<li>ThingDef/GiantSnake</li>
@@ -760,7 +756,6 @@
 			<li>ThingDef/MA_HorseBeef</li>
 			<li>ThingDef/MA_ScarodonMeat</li>
 			<li>ThingDef/MammothWool</li>
-			<li>ThingDef/Meat_AA_DevilSheep</li>
 			<li>ThingDef/Meat_AEXP_Beagle</li>
 			<li>ThingDef/Meat_AEXP_Cheetah</li>
 			<li>ThingDef/Meat_AEXP_Crocodile</li>
@@ -831,7 +826,6 @@
 			<li>ThingDef/TitanoboaEggUnFertilized</li>
 			<li>ThingDef/WoolCamel</li>
 			<li>ThingDef/WoolMuskox</li>
-			<li>ThingDef/AA_EggFlamingoPhoenixFertilized</li>
 			<li>ThingDef/AEXP_Leather_Lion</li>
 			<li>ThingDef/AEXP_Leather_Platypus</li>
 			<li>ThingDef/AEXP_Leather_Wildebeest</li>
@@ -855,8 +849,6 @@
 			<li>ThingDef/MA_Leather_Harpeagle</li>
 			<li>ThingDef/MA_Leather_Scarodon</li>
 			<li>ThingDef/RG_DinosaursHideHeavy</li>
-			<li>ThingDef/AA_FrostLynx</li>
-			<li>ThingDef/AA_Genix</li>
 			<li>ThingDef/AEXP_Boombat</li>
 			<li>ThingDef/AEXP_CatMaineCoon</li>
 			<li>ThingDef/Andrewsarchus</li>
@@ -1294,7 +1286,6 @@
 			<li>ThingDef/FT_TurretEmpero</li>
 			<li>ThingDef/FT_TurretHexMortar</li>
 			<li>ThingDef/FT_TurretQuadAA</li>
-			<li>BiomeDef/AB_IdyllicMeadows</li>
 			<li>BiomeDef/AG_NereidPocketPlane</li>
 			<li>BiomeDef/AG_PocketPlane</li>
 			<li>ThingDef/AM_LassoDevilstrand</li>
@@ -1655,11 +1646,6 @@
 			<li>ResearchProjectDef/guy762_ResearchKotOR_uncraftable</li>
 			<li>ResearchProjectDef/guy762_ResearchKotOR_vao</li>
 			<li>ResearchProjectDef/guy762_ResearchKotOR_visas</li>
-			<li>ThingDef/AA_Blizzarisk</li>
-			<li>ThingDef/AA_BlizzariskClutchMother</li>
-			<li>ThingDef/AA_BlizzariskEggFertilized</li>
-			<li>ThingDef/AA_BlizzariskSuperEggFertilized</li>
-			<li>IncidentDef/AA_IncidentBlizzariskClutchMother</li>
 			<li>FactionDef/AM_EnemyPirate</li>
 			<li>FactionDef/AM_PlayerColony</li>
 			<li>ScenarioDef/AM_SafeHouse</li>
@@ -2186,24 +2172,6 @@
 			<li>AbilityDef/VQEA_HellsphereBlast</li>
 			<li>GeneDef/VQEA_HellsphereBlast</li>
 			<li>ThingDef/VQEA_Bullet_HellsphereCannonGun</li>
-			<li>ThingDef/AA_Feralisk</li>
-			<li>ThingDef/AA_FeraliskClutchMother</li>
-			<li>ThingDef/AA_FeraliskEggFertilized</li>
-			<li>ThingDef/AA_FeraliskEggUnfertilized</li>
-			<li>ThingDef/AA_FeraliskSuperEggFertilized</li>
-			<li>ThingDef/AA_Cinderlisk</li>
-			<li>ThingDef/AA_CinderliskEggFertilized</li>
-			<li>ThingDef/AA_Animalisk</li>
-			<li>ThingDef/AA_AnimaliskEggFertilized</li>
-			<li>ThingDef/AA_Dunealisk</li>
-			<li>ThingDef/AA_DunealiskClutchMother</li>
-			<li>ThingDef/AA_DunealiskEggFertilized</li>
-			<li>ThingDef/AA_DunealiskSuperEggFertilized</li>
-			<li>ThingDef/AA_Junglelisk</li>
-			<li>ThingDef/AA_JungleliskEggFertilized</li>
-			<li>IncidentDef/AA_IncidentAnimaliskEnters</li>
-			<li>IncidentDef/AA_IncidentDunealiskClutchMother</li>
-			<li>IncidentDef/AA_IncidentFeraliskClutchMother</li>
 			<li>ThingDef/BMT_Maguana</li>
 			<li>ThingDef/BMT_EggMaguanaFertilized</li>
 			<li>ThingDef/BMT_EggMaguanaUnfertilized</li>
