@@ -1,0 +1,84 @@
+{
+ "active": 536,
+ "wave": 39,
+ "wave_not_active": [],
+ "active_without_about": [],
+ "retained": 497,
+ "HARD_retained_on_wave": [],
+ "loadAfter_retained_on_wave": [
+  {
+   "dependant": "frozensnowfox.complexjobs",
+   "on": "sarg.alphamechs"
+  },
+  {
+   "dependant": "danzinagri.facialanimationcompatabilityproject",
+   "on": "redmattis.bigsmall"
+  },
+  {
+   "dependant": "mandrake.rut.doctrine",
+   "on": "vanillaquestsexpanded.ancients"
+  },
+  {
+   "dependant": "mandrake.rsw.armoury",
+   "on": "sarg.alphamechs"
+  },
+  {
+   "dependant": "mandrake.rsw.armoury",
+   "on": "milkwater.destinymod"
+  },
+  {
+   "dependant": "mandrake.rsw.armoury",
+   "on": "vanillaexpanded.vwe"
+  },
+  {
+   "dependant": "mandrake.rsw.armoury",
+   "on": "aoba.warcasket"
+  },
+  {
+   "dependant": "mandrake.rut.researchretag",
+   "on": "sarg.alphamechs"
+  },
+  {
+   "dependant": "mandrake.rut.researchretag",
+   "on": "vanillaexpanded.vwe"
+  },
+  {
+   "dependant": "mandrake.rsw.patches",
+   "on": "vanillaexpanded.vwe"
+  },
+  {
+   "dependant": "mandrake.rut.patches",
+   "on": "vanillaquestsexpanded.ancients"
+  },
+  {
+   "dependant": "mandrake.rut.patches",
+   "on": "redmattis.bigsmall"
+  },
+  {
+   "dependant": "mandrake.rm.biomes",
+   "on": "det.epochspyrinth"
+  }
+ ],
+ "hard_within_wave": [
+  {
+   "dependant": "tyrannidae.fancyratsplus",
+   "on": "armoredampharos.fancyrats"
+  },
+  {
+   "dependant": "gravenwitch.vsrexamined",
+   "on": "vanillaexpanded.skills"
+  },
+  {
+   "dependant": "sarg.alphaskills",
+   "on": "vanillaexpanded.skills"
+  },
+  {
+   "dependant": "meteores.ancienturbanruinsvanillaloot.aurvl",
+   "on": "meteores.ancienturbanruinsalldeconstructible.aurad"
+  },
+  {
+   "dependant": "chezhou.creature.sandworm",
+   "on": "chezhou.chezhoulib.lib"
+  }
+ ]
+}

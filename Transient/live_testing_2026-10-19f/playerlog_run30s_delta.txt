@@ -1,0 +1,1687 @@
+Dirt cannot engage in social activities due to their current duty.
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot engage in social activities due to their current duty.
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot engage in social activities due to their current duty.
+Jet failed to get a job from any IntimacyGivers
+Dirt is already in conversation.
+Monika is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot converse with Dirt.
+Dirt cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 1
+Dirt is already in conversation.
+Monika is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot converse with Dirt.
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 1 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.51
+[MCR][MoodChain] Monika: Eval Dirt: opinion=66, mood=0.51, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=ADDED
+[MCR][MoodChain] Monika: Eval Jet: opinion=55, mood=0.51, happy=False, sad=False, thought=null
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=1
+Dirt cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 2
+Dirt is already in conversation.
+Monika is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot converse with Dirt.
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.51
+[MCR][MoodChain] Jet: Eval Dirt: opinion=65, mood=0.51, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=ADDED
+[MCR][MoodChain] Jet: Eval Monika: opinion=50, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=1
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Monika cannot engage in social activities due to their current duty.
+Dirt cannot engage in social activities due to their current duty.
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.51
+[MCR][MoodChain] Dirt: Eval Monika: opinion=66, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Dirt: Eval Jet: opinion=70, mood=0.52, happy=False, sad=False, thought=null
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Monika cannot engage in social activities due to their current duty.
+Dirt cannot engage in social activities due to their current duty.
+Jet failed to get a job from any IntimacyGivers
+Dirt cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 3
+Dirt is already in conversation.
+Monika is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot converse with Dirt.
+Dirt cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 4
+Dirt is already in conversation.
+Monika is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot converse with Dirt.
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot engage in social activities due to their current duty.
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot engage in social activities due to their current duty.
+Jet failed to get a job from any IntimacyGivers
+Dirt cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 5
+Dirt is already in conversation.
+Monika is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot converse with Dirt.
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.54
+[MCR][MoodChain] Monika: Eval Dirt: opinion=68, mood=0.54, happy=False, sad=False, thought=null
+[MCR][MoodChain] Monika: Eval Jet: opinion=64, mood=0.54, happy=False, sad=False, thought=null
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot engage in social activities due to their current duty.
+Jet failed to get a job from any IntimacyGivers
+Dirt cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 6
+Dirt is already in conversation.
+Monika is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot converse with Dirt.
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot engage in social activities due to their current duty.
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.54
+[MCR][MoodChain] Jet: Eval Dirt: opinion=65, mood=0.54, happy=False, sad=False, thought=null
+[MCR][MoodChain] Jet: Eval Monika: opinion=50, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.54
+[MCR][MoodChain] Dirt: Eval Monika: opinion=68, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Dirt: Eval Jet: opinion=73, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=0
+Monika cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 7
+Dirt is already in conversation.
+Monika is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot converse with Dirt.
+Monika cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 8
+Dirt is already in conversation.
+Monika is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot converse with Dirt.
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Monika cannot engage in social activities due to their current duty.
+Dirt cannot engage in social activities due to their current duty.
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Monika cannot engage in social activities due to their current duty.
+Dirt cannot engage in social activities due to their current duty.
+Jet failed to get a job from any IntimacyGivers
+Dirt cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 9
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Monika: Eval Dirt: opinion=71, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Monika: Eval Jet: opinion=65, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Jet: Eval Dirt: opinion=65, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Jet: Eval Monika: opinion=50, mood=0.58, happy=False, sad=False, thought=null
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.58, happy=False, sad=False, thought=null
+[MCR][MoodChain] Dirt: Eval Jet: opinion=76, mood=0.58, happy=False, sad=False, thought=null
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.60
+[MCR][MoodChain] Monika: Eval Dirt: opinion=71, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Monika: Eval Jet: opinion=65, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.60
+[MCR][MoodChain] Jet: Eval Dirt: opinion=65, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Jet: Eval Monika: opinion=50, mood=0.61, happy=False, sad=False, thought=null
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.60
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.61, happy=False, sad=False, thought=null
+[MCR][MoodChain] Dirt: Eval Jet: opinion=76, mood=0.61, happy=False, sad=False, thought=null
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.63
+[MCR][MoodChain] Monika: Eval Dirt: opinion=76, mood=0.63, happy=False, sad=False, thought=null
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.63, happy=False, sad=False, thought=null
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.63
+[MCR][MoodChain] Jet: Eval Dirt: opinion=70, mood=0.63, happy=False, sad=False, thought=null
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.64, happy=False, sad=False, thought=null
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.63
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.64, happy=False, sad=False, thought=null
+[MCR][MoodChain] Dirt: Eval Jet: opinion=76, mood=0.64, happy=False, sad=False, thought=null
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=0
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.66
+[MCR][MoodChain] Monika: Eval Dirt: opinion=76, mood=0.66, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=ADDED
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.66, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=ADDED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.66
+[MCR][MoodChain] Jet: Eval Dirt: opinion=70, mood=0.66, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=ADDED
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.67, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=ADDED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.66
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.67, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=ADDED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=76, mood=0.67, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=ADDED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.69
+[MCR][MoodChain] Monika: Eval Dirt: opinion=76, mood=0.69, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.69, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.69
+[MCR][MoodChain] Jet: Eval Dirt: opinion=70, mood=0.69, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.69, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.69
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.69, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=76, mood=0.69, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.72
+[MCR][MoodChain] Monika: Eval Dirt: opinion=76, mood=0.72, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.72, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.72
+[MCR][MoodChain] Jet: Eval Dirt: opinion=70, mood=0.72, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.72, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.72
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.72, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=76, mood=0.72, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.74
+[MCR][MoodChain] Monika: Eval Dirt: opinion=76, mood=0.74, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.74, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.74
+[MCR][MoodChain] Jet: Eval Dirt: opinion=70, mood=0.74, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.75, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.74
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.75, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=76, mood=0.75, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.77
+[MCR][MoodChain] Monika: Eval Dirt: opinion=77, mood=0.77, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.77, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.77
+[MCR][MoodChain] Jet: Eval Dirt: opinion=71, mood=0.77, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.78, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.77
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.78, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=77, mood=0.78, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.80
+[MCR][MoodChain] Monika: Eval Dirt: opinion=77, mood=0.80, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.80, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.80
+[MCR][MoodChain] Jet: Eval Dirt: opinion=71, mood=0.80, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.81, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.80
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.81, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=77, mood=0.81, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.83
+[MCR][MoodChain] Monika: Eval Dirt: opinion=77, mood=0.83, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.83, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.83
+[MCR][MoodChain] Jet: Eval Dirt: opinion=71, mood=0.83, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.84, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.83
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.84, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=77, mood=0.84, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+Cannot use Graphic_Random.GetColoredVersion with a non-white colorTwo.
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.86
+[MCR][MoodChain] Monika: Eval Dirt: opinion=77, mood=0.86, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.86, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.86
+[MCR][MoodChain] Jet: Eval Dirt: opinion=71, mood=0.86, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.87, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.86
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.87, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=77, mood=0.87, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.89
+[MCR][MoodChain] Monika: Eval Dirt: opinion=77, mood=0.89, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.89, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.89
+[MCR][MoodChain] Jet: Eval Dirt: opinion=71, mood=0.89, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.90, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.89
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.90, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=77, mood=0.90, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.92
+[MCR][MoodChain] Monika: Eval Dirt: opinion=80, mood=0.92, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=66, mood=0.92, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.92
+[MCR][MoodChain] Jet: Eval Dirt: opinion=71, mood=0.92, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=51, mood=0.92, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.92
+[MCR][MoodChain] Dirt: Eval Monika: opinion=70, mood=0.92, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=77, mood=0.92, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot converse with Dirt.
+Jet is already in conversation.
+Jet cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 1
+Dirt is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot converse with Dirt.
+Jet is already in conversation.
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Jet cannot engage in social activities due to their current duty.
+Dirt cannot engage in social activities due to their current duty.
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Jet cannot engage in social activities due to their current duty.
+Dirt cannot engage in social activities due to their current duty.
+Monika failed to get a job from any IntimacyGivers
+Jet cannot engage in social activities due to their current duty.
+Jet cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 2
+Dirt is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot converse with Dirt.
+Jet is already in conversation.
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.95
+[MCR][MoodChain] Monika: Eval Dirt: opinion=80, mood=0.95, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=67, mood=0.95, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot engage in social activities due to their current duty.
+Monika failed to get a job from any IntimacyGivers
+Jet cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 3
+Dirt is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot converse with Dirt.
+Jet is already in conversation.
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.95
+[MCR][MoodChain] Jet: Eval Dirt: opinion=72, mood=0.95, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=57, mood=0.95, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Jet cannot engage in social activities due to their current duty.
+Dirt cannot engage in social activities due to their current duty.
+Monika failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.95
+[MCR][MoodChain] Dirt: Eval Monika: opinion=75, mood=0.95, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=78, mood=0.95, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+Jet cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 4
+Dirt is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot converse with Dirt.
+Jet is already in conversation.
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Jet cannot engage in social activities due to their current duty.
+Dirt cannot engage in social activities due to their current duty.
+Monika failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Dirt cannot engage in social activities due to their current duty.
+Jet cannot engage in social activities due to their current duty.
+Monika failed to get a job from any IntimacyGivers
+Dirt cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 5
+Dirt is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot converse with Dirt.
+Jet is already in conversation.
+Jet cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 6
+Dirt is already in conversation.
+Dirt cannot engage in social activities due to their current duty.
+Monika cannot converse with Dirt.
+Jet is already in conversation.
+[MCR][MoodChain] Monika: Starting scan. Candidates=3, CurrentMood=0.98
+[MCR][MoodChain] Monika: Eval Dirt: opinion=80, mood=0.98, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Eval Jet: opinion=67, mood=0.98, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Monika: Scan finished. NewlyAddedMemories=2
+Dirt cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 7
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Dirt cannot ever do lovin'
+Dirt failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Jet: Starting scan. Candidates=3, CurrentMood=0.98
+[MCR][MoodChain] Jet: Eval Dirt: opinion=74, mood=0.98, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Eval Monika: opinion=60, mood=0.98, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Jet: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Jet cannot ever do lovin'
+Jet failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Dirt: Starting scan. Candidates=3, CurrentMood=0.98
+[MCR][MoodChain] Dirt: Eval Monika: opinion=78, mood=0.98, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Eval Jet: opinion=79, mood=0.98, happy=True, sad=False, thought=MCR_MyGoodFriendIsHappy, result=REFRESHED
+[MCR][MoodChain] Dirt: Scan finished. NewlyAddedMemories=2
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+AllowedToTakeScheduledEver on non-drug Beer
+IntimacyGiver_Sex: Monika cannot ever do lovin'
+Monika failed to get a job from any IntimacyGivers

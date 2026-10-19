@@ -1,0 +1,15 @@
+DV_Avaloi
+DV_Bogleg
+DV_Brawnum
+DV_Buzzer
+DV_Gun_PrecisionLongrifle
+DV_Keshig
+DV_MeleeWeapon_CeremonialBlade
+DV_MeleeWeapon_SerratedScimitar
+DV_NamerFactionOutlanderBuzzer
+DV_NamerFactionPirateKeshig
+DV_NamerSettlementOutlanderBuzzer
+DV_OutlanderRoughBuzzer
+DV_PirateKeshig
+DV_PyrinthTorchBase
+DV_Venator

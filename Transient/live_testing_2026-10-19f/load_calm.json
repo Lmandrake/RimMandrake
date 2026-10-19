@@ -1,0 +1,75 @@
+{
+ "check": {
+  "colonists": [
+   [
+    "Human428",
+    false
+   ],
+   [
+    "Human431",
+    false
+   ],
+   [
+    "Human434",
+    false
+   ]
+  ],
+  "danger": [],
+  "fires": 0,
+  "foggedCells": 0,
+  "hostiles": [],
+  "map": {
+   "mapBiome": "AridShrubland",
+   "mapId": 0,
+   "outdoorTempNow": 18.593977,
+   "sizeX": 250,
+   "sizeZ": 250,
+   "tile": 116136
+  },
+  "problems": [
+   "threat structures: {'success': False, 'refused': True, 'error': 'REFUSED in the CAMPAIGN profile: jawa/quiet_site is quiet-world (a quiet-world test control that suppresses vanill"
+  ],
+  "ruins": 0,
+  "site": "calm",
+  "threatStructures": null,
+  "triggers": 0,
+  "utc": "2026-10-19T22:50:30Z",
+  "verified": false,
+  "weather": {
+   "current": "Clear",
+   "rainRate": 0.0
+  }
+ },
+ "load_s": 39.9,
+ "problems": [
+  "current map is tile 116136, the save's site is 112579",
+  "threat structures: {'success': False, 'refused': True, 'error': 'REFUSED in the CAMPAIGN profile: jawa/quiet_site is quiet-world (a quiet-world test control that suppresses vanill"
+ ],
+ "quietMap": {
+  "error": "HelperUnverified: debug_settings list failed: REFUSED in the CAMPAIGN profile: jawa/debug_settings is debug-invoke (arbitrary invocation / debug actions / def hot-reload: can do anything, including slow or destructive things); profile: test profile expired at 2026-10-19T20:00:00.0000000Z: campaign. Authoring tools stay available. Test/diagnostic tools run only when <SaveData>/JawaBench/companion_profile.json says {\"profile\": \"test\"}, is unexpired, and the loaded save is not one of its campaignSaves. Call jawa/companion_handshake to see the profile.",
+  "profile": "quiet_site",
+  "row": "test_site_saves_load_calm",
+  "suite": "isolated"
+ },
+ "ready_s": 44.9,
+ "save": "RM_TestSite_calm_v1_AREAFIX2",
+ "site": "calm",
+ "sky": {
+  "error": null,
+  "extinguished": 0,
+  "strayFires": 0,
+  "verified": true,
+  "weather": [
+   {
+    "after": "Clear",
+    "ok": true
+   },
+   {
+    "after": "Clear",
+    "ok": true
+   }
+  ]
+ },
+ "utc": "2026-10-19T22:49:46Z",
+ "verified": false
+}

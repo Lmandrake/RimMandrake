@@ -1,0 +1,53 @@
+{
+ "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/RM_TestSite_calm_v1_AREAFIX2.rws": [
+  {
+   "class": "AlphaBehavioursAndEvents.MapRoomUpdater",
+   "count": 1,
+   "context": "li/components",
+   "severity": "SKIPPED",
+   "retired_donor": false
+  },
+  {
+   "class": "AlphaBiomes.MapComponentExtender",
+   "count": 1,
+   "context": "li/components",
+   "severity": "SKIPPED",
+   "retired_donor": true
+  },
+  {
+   "class": "AlphaBiomes.WorldComponentExtender",
+   "count": 1,
+   "context": "world/components",
+   "severity": "SKIPPED",
+   "retired_donor": true
+  },
+  {
+   "class": "RimMandrake.FloodedCanyon.RM_MapComponent_CanyonFlood",
+   "count": 1,
+   "context": "li/components",
+   "severity": "SKIPPED",
+   "retired_donor": false
+  },
+  {
+   "class": "RimMandrake.FloodedCanyon.RM_MapComponent_LedgeRefuge",
+   "count": 1,
+   "context": "li/components",
+   "severity": "SKIPPED",
+   "retired_donor": false
+  },
+  {
+   "class": "RimMandrake.FloodedCanyon.RM_MapComponent_RecedeAftermath",
+   "count": 1,
+   "context": "li/components",
+   "severity": "SKIPPED",
+   "retired_donor": false
+  },
+  {
+   "class": "VFEInsectoids.GameComponent_Insectoids",
+   "count": 1,
+   "context": "game/components",
+   "severity": "SKIPPED",
+   "retired_donor": true
+  }
+ ]
+}

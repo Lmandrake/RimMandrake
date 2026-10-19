@@ -1,0 +1,14 @@
+DONOR-FREE HARVEST  Transient/live_testing_2026-10-19f/playerlog_536_baseline_menu.txt  8463 lines
+  (a) mods loaded: UNMEASURED -- no 'with mods:' block yet (main menu?) and no def dump from this run; start/load a game or pass --running-mods <jawa/running_mods reply>
+  (b) BARS (§0.5.5 #5)       now   
+      exception events           6   ours 0 / retired-donor 0 / other 6
+        first: line 1170 [other] Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of an object
+      xref naming RM_/RSW_/RUT_    0   (all xref 0: retired-donor-or-rename 0 / ours 0 / other 0)
+      texture misses, ours       0   (0 distinct; others 0 lines, 0 distinct; on ported subjects 0)
+      also: config errors 21 (ours 0) | patch failures 4 (ours 0, aimed at a retired def 0) | Scribe 'Could not load reference' 209 (retired 16, ours 0)
+  (c) harvest_log baselines: scribe 209 vs 0 RED; configerror 22 vs 17 RED; patchfail 4 vs 5 better
+      vs previous run: none recorded
+      e.g. exc  1170 [other] Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of an object
+      e.g. exc  1194 [other] Exception in ConfigErrors() of PirateYttakin: System.NullReferenceException: Object reference not set to an instance of an object
+      e.g. exc  1331 [other] Could not execute post-long-event action. Exception: System.Collections.Generic.KeyNotFoundException: The given key '-1§Vanilla' was not present in the dicti
+VERDICT exit 3: UNMEASURED: loaded mod list unknown

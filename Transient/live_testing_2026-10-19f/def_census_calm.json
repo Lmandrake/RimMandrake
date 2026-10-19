@@ -1,0 +1,128 @@
+{
+ "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/RM_TestSite_calm_v1_AREAFIX2.rws": {
+  "things_total": 9562,
+  "things": [],
+  "refs": [
+   {
+    "def": "AB_TarLakes",
+    "tag": "li",
+    "count": 16,
+    "src_only": false
+   },
+   {
+    "def": "AB_PropaneLakes",
+    "tag": "li",
+    "count": 9,
+    "src_only": false
+   },
+   {
+    "def": "AB_WillowForest",
+    "tag": "li",
+    "count": 8,
+    "src_only": false
+   },
+   {
+    "def": "AB_CloverForest",
+    "tag": "li",
+    "count": 8,
+    "src_only": false
+   },
+   {
+    "def": "AB_GinkgoForest",
+    "tag": "li",
+    "count": 6,
+    "src_only": false
+   },
+   {
+    "def": "AB_GauranlenGrove",
+    "tag": "li",
+    "count": 6,
+    "src_only": false
+   },
+   {
+    "def": "AB_MauvebloomFields",
+    "tag": "li",
+    "count": 5,
+    "src_only": false
+   },
+   {
+    "def": "AB_SweetForest",
+    "tag": "li",
+    "count": 4,
+    "src_only": false
+   },
+   {
+    "def": "AB_QuicksandPits",
+    "tag": "li",
+    "count": 4,
+    "src_only": false
+   },
+   {
+    "def": "AB_HealingSprings",
+    "tag": "li",
+    "count": 3,
+    "src_only": false
+   },
+   {
+    "def": "AB_ToxicMeadows",
+    "tag": "li",
+    "count": 3,
+    "src_only": false
+   },
+   {
+    "def": "AB_GnawingSands",
+    "tag": "li",
+    "count": 2,
+    "src_only": false
+   },
+   {
+    "def": "AB_WarpedStoneForest",
+    "tag": "li",
+    "count": 2,
+    "src_only": false
+   },
+   {
+    "def": "AB_FleshMorass",
+    "tag": "li",
+    "count": 2,
+    "src_only": false
+   },
+   {
+    "def": "AB_ObsidianExpanse",
+    "tag": "li",
+    "count": 2,
+    "src_only": false
+   },
+   {
+    "def": "AA_BlackHive",
+    "tag": "li",
+    "count": 1,
+    "src_only": false
+   },
+   {
+    "def": "AB_DryMeadows",
+    "tag": "li",
+    "count": 1,
+    "src_only": false
+   },
+   {
+    "def": "AB_CorruptedIntrusion",
+    "tag": "li",
+    "count": 1,
+    "src_only": false
+   },
+   {
+    "def": "AB_LivingCrystalBed",
+    "tag": "li",
+    "count": 1,
+    "src_only": false
+   },
+   {
+    "def": "AB_MutagenicSprings",
+    "tag": "li",
+    "count": 1,
+    "src_only": false
+   }
+  ]
+ }
+}
