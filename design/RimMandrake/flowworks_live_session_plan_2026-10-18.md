@@ -252,3 +252,16 @@ save/reload (`b7_reload`) can then also carry a mid-squeeze and a mid-smash (row
 - The cast is read LIVE (`WallsSlotsUtility.Breadth/Footprint/Passage` by `jawa/static_call`); the bars use the live breadth,
   so a juvenile spawn or a changed `baseBodySize` shifts the expectation instead of failing the mod. The 2026-10-07 walk plan's
   RM_Ulgga body size 6 is stale (the def now has none of its own), which is why the Elephant is the B 2.
+
+## Thirst rows that need Baroque Biomes (T15, T16, T27) -- tier `fw_gss_sitting`
+
+These three rows paint `RM_Slime*` terrain and read the Gelatinous Slime drink rule, which ship composed in `mandrake.rm.biomes`;
+the `flowworks` tier lacks it, so thirst_live.py reports them UNMEASURED/SITE there (commit 58e9f914a5). The cheapest existing
+tier that loads FlowWorks plus Biomes is `fw_gss_sitting` (`modset_builder.py`): **13 mods** (Core, 4 expansions + Odyssey,
+RimBridgeServer, SimpleCameraSetting, GSS, FlowWorks, Luminous Pigment, Baroque Biomes), MEASURED by the dry run 2026-10-18.
+No new tier was added. A thirst run on it records as `fw_gss_sitting`, never flowworks-minimal.
+
+    python3 src/RimMandrake/Utils/modset_builder.py --tier fw_gss_sitting --apply
+    python.exe src/RimMandrake/FlowWorks/northstar/thirst_live.py Transient/<dir>/thirst_biomes.json --only T15,T16,T27
+
+(Restore the list afterwards with `modset_builder.py --restore`.)
