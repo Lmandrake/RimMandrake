@@ -1,0 +1,537 @@
+packageId	name	profile	class_01	kind	reason
+zetrith.prepatcher	Prepatcher	SHIP	F2	FW	library: profile follows its dependants | PROBLEM MED crash,other: Fatal ReflectionTypeLoadException (unguarded GetTypes) when a depended-on add-on mod is disabled: game loads with unpatched assemblies silently [skills/rimworld-modding/references/traps-mods-and-managers.md:59;skills/rimworld-modding/references/traps-mods-and-managers.md:60]
+brrainz.harmony	Harmony	DEV	F1		framework our content hard-depends on | PROBLEM LOW other: Stale bundled 0Harmony.dll when bypassing Steam gave 'Recovered from incompatible or corrupted mods' x3; winbuild path to workshop Harmony folder broke [design/RimMandrake/bridge_debugging_system.md:437;infrastructure/state/lessons/20261012T185349Z-BENCH-winbuild-fails-harmony-workshop-folder-2009463077.md:1]
+mandrake.rm.loadtracer	Load Tracer (local)	DEV-INSTR	OURS		our load-stall diagnostic; not player content
+aleksey.betterstacktraces	Better Stacktraces	DEV-INSTR	D		log instrument: proof_all.py parses its [Ref] lines | PROBLEM LOW other: Repeats print only '[Ref XXXXXXXX] Duplicate stacktrace' with no frames: log attribution trap, must resolve to first occurrence [skills/rimworld-modding/references/player-log-triage.md:89]
+ludeon.rimworld	None	DEV	LUDEON		Core/DLC (all DLC assumed)
+ludeon.rimworld.royalty	None	DEV	LUDEON		Core/DLC (all DLC assumed)
+ludeon.rimworld.ideology	None	DEV	LUDEON		Core/DLC (all DLC assumed)
+ludeon.rimworld.biotech	None	DEV	LUDEON		Core/DLC (all DLC assumed)
+ludeon.rimworld.anomaly	None	DEV	LUDEON		Core/DLC (all DLC assumed)
+ludeon.rimworld.odyssey	None	DEV	LUDEON		Core/DLC (all DLC assumed)
+krkr.rule56	[1.6] CAI 5000 - Advanced AI + Fog Of War (continued)	SHIP	F2	E	Route B ruled ship feature (fog pair with Real FoW); strips fog, blinded gravship landing (GRAVSHIP_LANDING_FOG_REVEAL_1.md:4) | PROBLEM MED visibility,other: Its FogOfWar_DisableOnPlayerMap strips other mods' fog and blinded gravship landing; heaviest tick mechanism; orphan unofficial 1.6 port [infrastructure/state/items/closed/FOG_REVIEW_SITTING_WITH_OWNER_1.md:8;infrastructure/state/items/closed/GRAVSHIP_LANDING_FOG_REVEAL_1.md:4;Transient/MODLIST_COMPLEXITY_AUDIT_shortlist_2026-09-13.md:94;/home/mandrake/.claude/projects/-home-mandrake-rm-foundry/memory/real-fog-of-war-and-cai.md:13]
+mlie.nwnrealfogofwar	(NWN) Real Fog of War (Continued)	SHIP	F2	E	Route B ruled ship feature; never in DEV/TEST: IndexOutOfRange wedged bland_world.setup (bridge_debugging_system.md:484); goes with CAI | PROBLEM HIGH hang,visibility,NRE: IndexOutOfRange every Update after ruins destroyed on 2nd map wedged bridge; hides things from non-colonist views; no off switch; unfogAll wedges 4 min [design/RimMandrake/bridge_debugging_system.md:484;design/RimMandrake/live_test_hang_runbook.md:16;infrastructure/state/lessons/20260925T161606Z-BENCH-staged-review-strip-with-no-colonist.md:1;/home/mandrake/.claude/projects/-home-mandrake-rm-foundry/memory/real-fog-of-war-and-cai.md:32]
+owlchemist.cherrypicker	Cherry Picker	DEV	D		curation instrument: its cuts shape the def set; leaves only when the cuts are baked in (CHERRY_PICKER_RESTORE_FROM_SHIP_PROFILE) | PROBLEM MED other: Cuts are commonality-0 and invisible to def dump and XML searches: repeated wrong counts/missed cuts; cut collisions (Neanderthal xenotype vs BotR animal) [infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md:44;infrastructure/state/facts/dump-is-pre-cherrypicker.md:17;infrastructure/state/ledger/events/FOUNDRY.jsonl:2757;infrastructure/state/items/closed/THOROUGH_RETAG_WEAPONS_ARMOUR_1.md:102]
+aoba.framework	Fortified Features Framework	TEST	F2	FW	library: profile follows its dependants; pulled to TEST by aoba.fortress.neolithic (needs it)
+vanillaexpanded.backgrounds	Vanilla Backgrounds Expanded	DROP-112	C2		05 SAFE drop | PROBLEM LOW other: RimThemes-compat shim builds a malformed defName from our theme key ('Utinni Shell'+packageId, with a space) and throws a config error every load [infrastructure/state/items/closed/UTINNI_SHELL_DEFNAME_BUG_1.md:4;Transient/foundry_fulllist_deploy_20261010.md:28]
+thesepeople.ritualattachableoutcomes	Custom Ritual Framework	TEST	F2	FW	library: profile follows its dependants; pulled to TEST by mlie.preceptsandmemesritualsmodule (needs it)
+adaptive.storage.framework	Adaptive Storage Framework	DEV	F1		framework our content hard-depends on
+redmattis.betterprerequisites	Big and Small - Framework	DEV	F1		framework our content hard-depends on
+smashphil.vehicleframework	Vehicle Framework	DEV	F1		framework our content hard-depends on | PROBLEM HIGH crash,NRE: NRE in Game.Dispose crashed start_debug_game_ready on full list; VehiclePathFinder NRE every map after a save lost AreaManager (blank screen); skips StunFor [infrastructure/state/handoffs/FOUNDRY_REBOOT_HANDOFF_202609241836.md:66;infrastructure/state/lessons/20261019T123616Z-FOUNDRY-retired-donor-mod-leaves-class-names.md:1;skills/rimbridge-companion/references/extending-detail.md:69;infrastructure/state/items/closed/KORRUM_ART_REGEN_1.md:190]
+imranfish.xmlextensions	XML Extensions	DEV	F1		framework our content hard-depends on
+unlimitedhugs.hugslib	HugsLib	SHIP	F2	FW	library: profile follows its dependants
+oskarpotocki.vanillafactionsexpanded.core	Vanilla Expanded Framework	DEV	F1		framework our content hard-depends on | PROBLEM LOW other: VEF Dialog_NewFactionSpawning windows stack after loading a donor-free save and go_to_main_menu then NREs; restart needed [infrastructure/state/lessons/20261016T155408Z-FOUNDRY-after-donor-free-save-loads-short.md:1]
+ebsg.framework	EBSG Framework	DEV	F1		framework our content hard-depends on
+04.23.2020	[1.1]TO[1.6]MultipleTraders	TEST	F2		player content that ships
+ap.huntingmeme	[AP] Hunting Meme	TEST	F2		player content that ships
+dizzy.candlesandmeditation	[Dizzy] Candles and Hidden Meditation	SHIP	F2	DECOR	decorative buildables
+hmc.wall.furniture	[HMC]Wall Furniture	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+jm.disstynan	[JM]Disable Pseudo Translate 禁用泰南语	SHIP	F2	UI	UI only: not scenario identity
+zal.calltradeships	[KV] Call Trade Ships (Continued)	SHIP	F2	QOL	QoL automation: not scenario identity
+lc.tammybee.selectablesculpturegraphic	[LC] Selectable Sculpture Graphic	SHIP	F2	COS	cosmetic/sound/visual
+mingtuwuxiang.spacebasedecorative	[MUS]太空基地家具Space Base Furniture	SHIP	F2	DECOR	decorative buildables
+nals.facialanimation	[NL] Facial Animation - WIP	SHIP	F2	E	C16 owner keep; out of DEV/TEST: removes vanilla head draw, vetoes gene render nodes (mod_deepdive_faces.md:91); add it to a visual-review variant | PROBLEM MED conflict,other: Removes vanilla head draw, vetoes Biotech gene render nodes, disables render cache per pawn; breaks custom heads/eyes; Head Set For FA cctor crash [design/RimMandrake/mod_deepdive_faces.md:91;design/RimMandrake/mod_deepdive_faces.md:97;design/RimMandrake/mod_deepdive_faces.md:169;skills/rimworld-xenotypes/references/appearance.md:68]
+mlie.rfrumorhasit	[RF] Rumor Has It.... (Continued)	TEST	F2		player content that ships
+rh2.cpers.arrest.here	[RH2] CPERS: Arrest Here!	SHIP	F2	QOL	QoL automation: not scenario identity
+cp.uncle.boris.used.furniture	[RH2] Uncle Boris' - Used Furniture	SHIP	F2	DECOR	decorative buildables
+sbz.neatstoragefridge	[sbz] Fridge	TEST	F2		player content that ships
+sbz.gravshipstorage	[sbz] Gravship Storage	TEST	F2		player content that ships
+sr.modrimworld.factionalwarcontinued	[SR]Factional War (fork)	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+mlie.syrmoreslaves	[SYR] More Slaves (Continued)	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+zav.glowstoneforked	[ZAV] Glowstone	DROP-112	C2		05 SAFE drop
+armoredampharos.fancyrats	AA FancyRats	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+adaptive.ideology.storage	Adaptive Ideology Storage	DROP-112	C2		05 SAFE drop
+adaptive.primitivestorage	Adaptive Primitive Storage	DROP-112	C2		05 SAFE drop
+adaptive.simplestorage	Adaptive Simple Storage	DROP-112	C2		05 SAFE drop
+mlie.advancedbiomes	Advanced Biomes (Continued)	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+ali.growodysseyplants	Ali's Grow All Odyssey Plants	SHIP	F2	QOL	QoL automation: not scenario identity
+7f.alienworlds	Alien Worlds Framework	AUTHORING	C2		world generation only (05 HOLD) | PROBLEM LOW conflict: Machine-generated preset lacks myLittlePlanetSubcount so Worldbuilder forces 10; unrelated biome-config warnings on load [skills/rimworld-world-editing/references/generating-a-world.md:20;infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md:385]
+andrewraphaellukasik.allowdeadanimals	Allow Dead Animals	SHIP	F2	QOL	QoL automation: not scenario identity
+unlimitedhugs.allowtool	Allow Tool	SHIP	F2	QOL	QoL automation: not scenario identity
+duz.almosttherefork	Almost There! Fork	SHIP	F2	QOL	QoL automation: not scenario identity
+sarg.alphamechs	Alpha Mechs	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+sarg.alphamemes	Alpha Memes	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+swablu.ambience	Ambient Rim	DROP-112	C2		05 SAFE drop
+vita.campdangers	Ancient Dangers on Campsites and Encounter maps	DROP-112	C2	E	05 SAFE drop
+xmb.ancientminingindustry.mo	Ancient mining industry	TEST	F2	WORLD	world-borne content (factions/sites/world objects): must be present when the start save is made
+aqued.dredgeaberrations	Aqued Dredge Aberrations	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+asp.halituisamaricanous	Astronomy Style Pack	DROP-112	C2		05 SAFE drop
+kshtantrumsounds.mod	AuthenticTantrumNoises	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+automatic.autolinks	Auto links	SHIP	F2	UI	UI only: not scenario identity
+fuu.autostriponhaul	Auto Strip on Haul	SHIP	F2	QOL	QoL automation: not scenario identity
+elsov.beliar	Beliar Xenotype	DROP-112	C2		05 SAFE drop
+io.github.relvl.rimworld.bestapparel	BestApparel	SHIP	F2	UI	UI only: not scenario identity
+ionfrigate12345.coolandgoodambush	Better Ambushes Continued	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+mlie.betterbeggars	Better Beggars (Continued)	TEST	F2		player content that ships
+nephlite.advexplosions	Better Explosions	SHIP	F2	COS	cosmetic/sound/visual
+arkymn.bettergrowthmoments	Better Growth Moments	SHIP	F2	QOL	QoL automation: not scenario identity
+zal.betterinfestations	Better Infestations (Continued)	DROP-112	C2	E	05 SAFE drop
+madeline.modmismatchformatter	Better ModMismatch Window	AUTHORING	D		mismatch-dialog formatter; no consumer in our tooling
+mlie.betterprojectileorigin	Better Projectile Origin	SHIP	F2	COS	cosmetic/sound/visual
+jm.bettertraders	Better Traders	DROP-DEEPER	F2		full-def replace of trader kinds; a runtime remover trimmed our trader rows from Base_Outlander_Standard, unresolved (bridge_debugging_system.md:488) | PROBLEM MED other: Full-def replace of trader kinds; a runtime remover trimmed Base_Outlander_Standard 69->64 rows, our trader rows absent (unresolved, hours lost) [design/RimMandrake/bridge_debugging_system.md:488]
+chaoticenrico.bettertrees	Better Trees	DROP-112	C2		05 SAFE drop
+falconne.bwm	Better Workbench Management	SHIP	F2	UI	UI only: not scenario identity
+redmattis.biggergravship	Bigger Gravships (and other Odyssey spaceship related settings)	TEST	F2	SCEN	scenario identity
+kopp.biomecompatibilityproject	Biome Compatibility Project	DROP-112	C2		05 SAFE drop | PROBLEM LOW NRE: Threw in post-long-event queue on the biome animal duplicate key; StartUp ctor listed dead in failed quicktest log (victim) [skills/rimworld-modding/references/traps-xml-and-defs.md:12;infrastructure/state/items/closed/LOAD_GAME_READY_MAPGEN_CRASH_1.md:45]
+biomesteam.biomesfossils	Biomes! Fossils	DROP-DEEPER	F2		top Player.log error source (51 BMT_ errors, mod_facts.jsonl:77; attribution UNMEASURED, prefix shared with retired Biomes! Caverns); dropping it is also the measurement | PROBLEM LOW error_storm: 51 distinct BMT_ reference errors in 550-mod session (top of log table); BMT_ prefix is shared with retired Biomes! Caverns, so attribution is uncertain [design/RimMandrake/mod_audit/facts/mod_facts.jsonl:77;infrastructure/state/items/closed/FORGE_ROSTER_UNRECONCILED_BMT_1.md:1]
+biomesteam.coreframework	Biomes! Framework	DEV	C2		05 HOLD framework: profile follows its dependants; pulled to DEV by zylle.morevanillabiomes (needs it)
+zal.biomeskit	BiomesKit (Continued)	TEST	C2		05 HOLD framework: profile follows its dependants; pulled to TEST by ironscruff.primordialgeysers (needs it)
+bs.mbifvte	Bradson's Main Button Icons (Forked + Expanded)	SHIP	F2	UI	UI only: not scenario identity
+gulmadred.breedingritual	Breeding Ritual	TEST	F2		player content that ships
+memegoddess.buildfrominventory	Build From Inventory - Continued	SHIP	F2	QOL	QoL automation: not scenario identity
+8z.callforintel	Call For Intel	SHIP	F2	QOL	QoL automation: not scenario identity
+brrainz.cameraplus	Camera+	SHIP	F2	UI	UI only: not scenario identity
+iforgotmysocks.caravanadventures	Caravan Adventures	TEST	F2	WORLD	world-borne content (factions/sites/world objects): must be present when the start save is made
+kapitanoczywisty.changemapedge	Change map edge limit	SHIP	F2	QOL	QoL automation: not scenario identity
+void.charactereditor	Character Editor	AUTHORING	D		pawn editor (C04); JawaBench deep-edit covers scripted edits | PROBLEM LOW other: Editing a non-human pawn's head breaks it; 1.1 MB DLL patches pawn generation at every spawn (audit risk) [skills/rimworld-xenotypes/references/appearance.md:78;Transient/MODLIST_COMPLEXITY_AUDIT_shortlist_2026-09-13.md:149]
+heatherathebyne.childrenlearnoncaravan	Children Learn on Caravan [USE NEW FORK!]	DROP-112	C2		05 SAFE drop
+kearril.choosewheretoland	Choose Where To Land	SHIP	F2	QOL	QoL automation: not scenario identity
+kikohi.coloreddeepresources	Colored deep resources	SHIP	F2	UI	UI only: not scenario identity
+petetimessix.compacthediffs	Compact Hediffs	SHIP	F2	UI	UI only: not scenario identity
+com.makeitso.configurabletechprints	Configurable Techprints	SHIP	F2	QOL	QoL automation: not scenario identity
+cozyfire.velcroboy333	Cozy Fires	SHIP	F2	COS	cosmetic/sound/visual
+heatherathebyne.craftingspotslavegear	Crafting Spot Slave Gear	TEST	F2		player content that ships
+thumb.bettercremation	Cremation smelts apparels	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+greg.customgastypes	Custom Gas Types	TEST	F2		player content that ships
+hailuan.customquestframework	Custom Quest Framework	TEST	C2		05 HOLD framework: profile follows its dependants; pulled to TEST by mlie.dungeonpack (needs it)
+costel.customroomnames	Custom Room Names	SHIP	F2	UI	UI only: not scenario identity
+dimonsever000.ideologyvirtues	Cybranian - Ideology Virtues	DROP-112	C2		05 SAFE drop
+east.dancepartycustommusic	Dance Party Custom Music	DROP-112	C2		05 SAFE drop
+van.beasts	Dark Ages : Beasts and Monsters	DROP-112	C2		05 SAFE drop
+van.dacrypts	Dark Ages : Crypts and Tombs	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+darkestdungeon.incidentsounds	Darkest Dungeon Incident Sounds	SHIP	F2	COS	cosmetic/sound/visual
+troopersmith1.deathrattle	Death Rattle Continued [1.2+]	TEST	F2		player content that ships
+mlie.decorativecliffs	Decorative Cliffs (Continued)	SHIP	F2	DECOR	decorative buildables
+clown.dedicatedturrets	Dedicated Turrets	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+gondragon.defensivepositions	Defensive Positions - Forked	SHIP	F2	QOL	QoL automation: not scenario identity
+merthsoft.designatorshapes	Designator Shapes	SHIP	F2	UI	UI only: not scenario identity
+milkwater.destinymod	Destiny Exotic Weapons	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+garwel.destroyitem	Destroy Item	SHIP	F2	QOL	QoL automation: not scenario identity
+det.avaloi	Det's Xenotypes - Avaloi	DROP-112	C2		05 SAFE drop
+det.boglegs	Det's Xenotypes - Boglegs	DROP-112	C2		05 SAFE drop
+det.brawnum	Det's Xenotypes - Brawnum	DROP-112	C2		05 SAFE drop
+det.buzzers	Det's Xenotypes - Buzzers	DROP-112	C2		05 SAFE drop
+det.keshig	Det's Xenotypes - Keshig	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+det.venators	Det's Xenotypes - Venators	DROP-112	C2		05 SAFE drop
+cometopapa.deteriorated	Deteriorable Filter	SHIP	F2	UI	UI only: not scenario identity
+lornath.diseaseimmunityprogresstracker	Disease Immunity Progress Tracker	SHIP	F2	UI	UI only: not scenario identity
+jecrell.doorsexpanded	Doors Expanded	DEV	F1		framework our content hard-depends on
+dubwise.dubspaintshop	Dub's Paint Shop	SHIP	F2	DECOR	decorative buildables
+dubwise.dubsbadhygiene.thirst	Dubs Bad Hygiene - Thirst	TEST	F2	SCEN	scenario identity
+dubwise.dubsbadhygiene.lite	Dubs Bad Hygiene Lite	DEV	F1		framework our content hard-depends on | PROBLEM LOW other: 3 research-tab collision config errors; actually caused by our ResearchRetag, charged to the mod by attribution [design/RimMandrake/mod_audit/ACTIONS_NOW.md:36]
+dubwise.dubsmintmenus	Dubs Mint Menus	SHIP	F2	UI	UI only: not scenario identity
+dubwise.dubsmintminimap	Dubs Mint Minimap	SHIP	F2	UI	UI only: not scenario identity
+dubwise.dubsrimkit	Dubs Rimkit	SHIP	F2	FW	library: profile follows its dependants
+blues.forge	Dynamic Effects Forge	SHIP	F2	COS	cosmetic/sound/visual
+yourname.effigys.mod	Effigys - Terror Spikes	SHIP	F2	DECOR	decorative buildables
+carnysenpai.enableoversizedweapons	Enable Oversized Weapons	SHIP	F2	COS	cosmetic/sound/visual
+nep.enginesunlimited	Engines Unlimited	DROP-112	C2		05 SAFE drop
+det.epochsincense	Epochs - Incense	DROP-112	C2		05 SAFE drop
+det.epochspyrinth	Epochs - Pyrinth	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+keshash.extraexplosioneffects	Extra Explosion Effects	SHIP	F2	COS	cosmetic/sound/visual
+eoralmilk.faceaddonframework	Face Addon Framework	DROP-112	C2		05 SAFE drop
+azravos.factioncustomizer	Faction Customizer	AUTHORING	D		faction editor (C04); config empty (MEASURED)
+mlie.factionraidcooldown	Faction Raid Cooldown (Continued)	DROP-112	C2		05 SAFE drop
+kosaro.fahrenheitandcelsius	Fahrenheit and Celsius	SHIP	F2	UI	UI only: not scenario identity
+tyrannidae.fancyratsplus	FancyRats+	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+realify.firefoam	Firefoam poppers aren't ugly!	SHIP	F2	COS	cosmetic/sound/visual
+kathanon.floatsubmenu	Float Sub-Menus	SHIP	F2	UI	UI only: not scenario identity
+temeez.floorlights2	Floor Lights 2	SHIP	F2	DECOR	decorative buildables
+aoba.fortress.neolithic	Fortifications - Neolithic	TEST	F2		player content that ships
+m00nl1ght.geologicallandforms	Geological Landforms	SHIP-PENDING	C1		map-generation edit (C06: replicate or keep; LANDFORMS_REPLICATE_OR_KEEP_EXPERIMENT); out of DEV/TEST so test maps are vanilla-generated
+memegoddess.giddyup	Giddy-Up 2 - Continued	TEST	F2		player content that ships | PROBLEM LOW error_storm: Logs AllWildAnimals errors (null/duplicate key) every load; victim of our cast data duplicates, not the cause [infrastructure/state/items/closed/GIDDYUP_WILDBIOMES_DUPLICATE_KEY_1.md:14;skills/rimworld-modding/references/traps-xml-and-defs.md:12;Transient/GIDDYUP_KEEP_OR_CUT_analysis_2026-09-13.md:68]
+lts.geg	Glowing eyes genes	TEST	F2		player content that ships
+albion.goexplore	Go Explore!	TEST	F2	WORLD	world-borne content (factions/sites/world objects): must be present when the start save is made
+arcjc007.gravshipcrashes	Gravship Crashes	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+arcjc007.gravshipexporter	Gravship Exporter	SHIP-PENDING	F2	AUTH	gravship authoring (gravship-layout skill); also a dependency of Gravship Crashes, so it ships only if that is ruled in; pulled to SHIP-PENDING by arcjc007.gravshipcrashes (needs it)
+sk.gravshipraids	Gravship Raids	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+imagitama.rimworldgravshiprangeonmap	Gravship Range On Map	SHIP	F2	UI	UI only: not scenario identity
+arti.shrinez	Guaranteed Ancient Dangers	DROP-112	C2		05 SAFE drop
+ael.tua.helmetsaddtoxresistance	High Tech Helmets Give Tox Gas Resistance	TEST	F2		player content that ships
+elsov.highborn	Highborn Xenotype	DROP-112	C2		05 SAFE drop
+hazn.huntingtraps	Hunting Traps	TEST	F2		player content that ships
+hailuan.iwbb	I will be back	DROP-112	C2	E	05 SAFE drop
+amegakull.scvrole	Ideology Scavenger Role	TEST	F2	SCEN	scenario identity
+kxp.ideosymbolsasideograms	Ideology symbols as Ideograms	DROP-112	C2		05 SAFE drop
+llunak.moreprecepts	Ideology: More Precepts	TEST	F2		player content that ships
+agentblac.makepawnsprisoners	Imprisonment On The Go! (Continued)	SHIP	F2	QOL	QoL automation: not scenario identity
+mlie.incidentdisabler	Incident Disabler (Continued)	DEV-INSTR	D		evaluation aid: silences incidents in tests
+koth.isid	Infestations Spawn in Darkness 1.6	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+gravtide.mod	GravTide	TEST	C1		C1: kept until replicated (01 §4) | PROBLEM LOW NRE: SectionLayer_GravshipHull corner check reads off-map: IndexOutOfRange regenerating layers on 50x50 sea-dive pocket maps [infrastructure/state/handoffs/FOUNDRY_HANDOFF_202609301338.md:31;infrastructure/state/ledger/events/FOUNDRY.jsonl:1546]
+mandrake.rm.injections	RimMandrake: Structure Injections	DEV	OURS		our mod
+mandrake.rsw.injections	RimStarWars: Structure Injections	DEV	OURS		our mod
+mandrake.rut.injections	RimUtinni: Structure Injections	DEV	OURS		our mod
+mandrake.rm.ninefold	RimMandrake Ninefold (M0 — safe core)	DEV	OURS		our mod
+mandrake.rm.aftermath	RimMandrake: Aftermath	DEV	OURS		our mod
+mandrake.rm.visibility	RimMandrake: Colony Visibility	DEV	OURS		our mod
+mandrake.rm.graffiti	RimMandrake: Graffiti Framework	DEV	OURS		our mod
+mandrake.rm.sacredgraffiti	RimMandrake Sacred Marks	DEV	OURS		our mod
+mandrake.rm.inhabited	Inhabited (local)	DEV	OURS		our mod
+mandrake.rut.inhabited	RimMandrake: Utinni — Inhabited (Ash'karr)	DEV	OURS		our mod
+haecriver.injuredcarry	Injured Carry	SHIP	F2	QOL	QoL automation: not scenario identity
+ferny.easycaravanformation	Instant Caravan	SHIP	F2	QOL	QoL automation: not scenario identity
+turnovus.biotech.integratedgenes	Integrated Genes	DEV	F1		framework our content hard-depends on
+jaxe.bubbles	Interaction Bubbles	DEV	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling; pulled to DEV by jpt.speakup (needs it)
+mlie.interactionareasettings	Interaction-Area Settings	SHIP	F2	QOL	QoL automation: not scenario identity
+zal.ionweaponry	Ion Weaponry (Continued)	DROP-112	C2		05 SAFE drop
+mandrake.rsw.jawarules	Jawa Rules (local)	DEV	OURS		our mod
+jecrell.jecstools	JecsTools Unofficial 1.6 BETA	DEV	F1		framework our content hard-depends on
+kikohi.jewelry	Jewelry	DEV	F1		framework our content hard-depends on
+nep.landonanything	Land On Anything	SHIP	F2	QOL	QoL automation: not scenario identity
+timuttie.justleavealready.fork.mitasamodel	Just Leave Already	TEST	F2		player content that ships
+mlie.justputitoverthere	Just Put It Over There	SHIP	F2	QOL	QoL automation: not scenario identity
+linnun.keepconverting	Keep Converting	SHIP	F2	QOL	QoL automation: not scenario identity
+vaguelysexual.modpackageid.goeshere	Knick Knacks - Let your colonists decorate!	SHIP	F2	DECOR	decorative buildables
+mlie.largefactionbases	Large Faction Bases (Continued)	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+zal.largeoutpost	Large Outpost (Continued)	DROP-112	C2		05 SAFE drop
+arcjc007.lasercannon	Laser Cannon	DROP-112	C2		05 SAFE drop
+costel.layeredapparel	Layered Apparel	SHIP	F2	QOL	QoL automation: not scenario identity
+noneobsidiaexpansion.ledlightsstrip	LED Lights Strip	SHIP	F2	DECOR	decorative buildables
+juanlopez2008.lightsout	LightsOut	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+mlie.linkablesettings	Linkable Settings	SHIP	F2	FW	library: profile follows its dependants
+dorbo.watersfx	LiquidSFX	DROP-112	C2		05 SAFE drop
+mlie.logafterdeferror	Log After Def Error (Continued)	DEV-INSTR	D		log instrument: harvest_log.py parses its manifest
+zylle.mapdesigner	Map Designer	DROP-DEEPER	D		map edit (owner 2026-10-19 example): silently caps BiomeDef plantDensity at startup and rewrites seabed densities in GetOrGenerateMap (lesson 20261011T163154Z; RM_SeabedFloorLife.cs:67); 7.8 KB live settings incl. ore commonality | PROBLEM MED other: Silently caps XML BiomeDef plantDensity above 1.0 at startup and folds ratio into regrowth, no log line; countermeasure RM_PyrelandsDensityEnforcer [infrastructure/state/lessons/20261011T163154Z-BENCH-map-designer-zylle-mapdesigner-silently-caps.md:1;infrastructure/state/items/closed/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md:224]
+nozome.mapmodeframework	Map Mode Framework	TEST	F2	FW	library: profile follows its dependants; pulled to TEST by jaeger972.factionterritories (needs it)
+m00nl1ght.mappreview	Map Preview	AUTHORING	D		world-map landing preview (C04)
+udon.masslovein	Mass Lovin'	SHIP	F2	QOL	QoL automation: not scenario identity
+sirdarkelf.meaningfulencounters	Meaningful Encounters	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+bonible.medievalmeleesounds	Medieval Melee Sounds	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+mewn.medievalsigns	Medieval Signs	DROP-112	C2		05 SAFE drop
+mlie.mercerbackpacks	Mercer's Backpacks (Continued)	TEST	F2		player content that ships
+flangopink.metalpipe	Metal Pipe	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+flangopink.metalpipehorseshoe	Metal Pipe Horseshoe Replacement	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+andromeda.milkyway	Milky Way	SHIP	F2	COS	cosmetic/sound/visual
+rabiosus.minesight	Mine Sight	SHIP	F2	UI	UI only: not scenario identity
+cain.mineshaft	Mines 2.0	TEST	F2		player content that ships
+erdelf.minifyeverything	MinifyEverything	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10) | PROBLEM HIGH crash,NRE: GenerateImpliedDefsPostfix NRE on a costList entry with null def killed the full-list cold load; RimWorld reset ModsConfig to Core [infrastructure/state/handoffs/BENCH_HANDOFF_202610101044.md:8;infrastructure/state/ledger/events/BENCH.jsonl:1595;infrastructure/state/ledger/events/FOUNDRY.jsonl:5319;design/RimMandrake/mod_audit/RETIREMENT_WAVE_1.md:161]
+mlie.miningcoalertspeaker	MiningCo. Alert speaker (Continued)	DROP-112	C2		05 SAFE drop
+mlie.miningcodrillturret	MiningCo. DrillTurret (Continued)	DROP-112	C2		05 SAFE drop
+mlie.miningcomms	MiningCo. MMS (Continued)	DROP-112	C2		05 SAFE drop
+mlie.miningcospaceship	MiningCo. Spaceship (Continued)	DROP-112	C2		05 SAFE drop
+mandrake.rut.scavengerevents	Jawa Scavenger Events	DEV	OURS		our mod
+hali.modifylandingtile	Modify Tiles at Game Start	AUTHORING	D		landing-tile editor (C04)
+deadmano.moodalerts	Mood Alerts	SHIP	F2	UI	UI only: not scenario identity
+acutus.moodchainreaction	Mood Chain Reaction	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+mlie.morefactioninteraction	More Faction Interaction (Continued)	DROP-112	C2	E	05 SAFE drop
+garryflowers.moreslaverystuff	More Slavery Stuff	TEST	F2		player content that ships
+zylle.morevanillabiomes	More Vanilla Biomes	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+snobi.mutatorworldicons	MutatorWorldIcons	AUTHORING	D		world-map mutator icons (C04)
+oblitus.mylittleplanet	My Little Planet	AUTHORING	C2		planet size at generation (05 HOLD) | PROBLEM LOW conflict: Scale slider can never win while Worldbuilder with an Alien Worlds preset is loaded (subdivisions forced to 10) [skills/rimworld-world-editing/references/generating-a-world.md:8]
+radzerp.naturalpaths	Natural Paths	DROP-112	C2		05 SAFE drop
+zylle.nightlights	Night Lights	SHIP	F2	DECOR	decorative buildables
+nightmare.core	Nightmare Core	DROP-112	C2		05 SAFE drop
+dingo.noforcedslowdown	No Forced Slowdown	SHIP	F2	QOL	QoL automation: not scenario identity
+mlie.nomissinggeneicons	No Missing Gene Icons	SHIP	F2	UI	UI only: not scenario identity
+edern.norandomapparelonideoedit	No Random Apparel on Ideology Edit	SHIP	F2	QOL	QoL automation: not scenario identity
+jaeger972.nomadfreindlyquests	Nomad Friendly Quests	SHIP	F2	QOL	QoL automation: not scenario identity
+avilmask.nonunopinata	Non uno Pinata (don't drop items)	SHIP	F2	QOL	QoL automation: not scenario identity
+planetace.nondestructivegravlaunch	Non-Destructive Gravlaunch	SHIP	F2	QOL	QoL automation: not scenario identity
+mehni.numbers	Numbers	SHIP	F2	UI	UI only: not scenario identity
+karew.orcclan	Orc Clan + Xenotype	TEST	C1		C1: kept until replicated (01 §4)
+coolzie.oocreboost	Out of Combat ReBoost	SHIP	F2	QOL	QoL automation: not scenario identity | PROBLEM LOW other: Walks colonists ~2 ticks/cell while MoveSpeed stat still reads 4.6: wrong-number trap for fixed-tick bridge tests [infrastructure/state/lessons/20261011T025641Z-BENCH-owner-s-full-list-out-combat.md:1]
+alleykat.persistentprecepts	Persistent Precepts	AUTHORING	D		ideoligion editing aid (C04)
+mlie.perspectivebuildings	Perspective: Buildings (Continued)	SHIP	F2	COS	cosmetic/sound/visual
+meltup.polyamorybeds.vanilla	Polyamory Beds (Vanilla Edition)	DROP-112	C2		05 SAFE drop
+xylthixlm.races.core	Posthuman Drift Core Mod	DROP-112	C2		05 SAFE drop
+mlie.preceptsandmemes	Precepts and Memes (Continued)	TEST	F2		player content that ships
+m00nl1ght.unofficialupdates.preparelanding	Prepare Landing (Continued)	AUTHORING	D		tile picker (C04); its PrepareLanding/ config is a startup-deserialised surface
+ironscruff.primordialgeysers	Primordial Geysers	TEST	C1		C1: kept until replicated (01 §4)
+mlie.prisonersshouldfearturrets	Prisoners Should Fear Turrets	TEST	F2		player content that ships
+laureeeeeeeeeeeeeeen.shrooms	Psilocap Cultivation	DROP-112	C2		05 SAFE drop
+dawnsglow.qualcolor	Quality Colors (Continued)	SHIP	F2	UI	UI only: not scenario identity
+leo.raidprotectionfee	Raid Protection Fee	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10) | PROBLEM HIGH other: Harmony prefix replaces raids with a modal and sets __result=true: fire_raid reports executed with zero arrivals; invalidated three evidence tables [design/RimMandrake/bridge_debugging_system.md:436;infrastructure/state/items/closed/SIX_FACTIONS_NEVER_RAID_1.md:5;Transient/foundry_fulllist_deploy_20261010.md:36;infrastructure/state/items/closed/EMPIRE_RAID_QUICKTEST_1.md:113]
+ingendum.raiderswarmcompression	Raider Swarm Compression	TEST	F2		player content that ships
+zal.randomgrowthchoices	RandomGrowthChoices (Continued)	SHIP	F2	QOL	QoL automation: not scenario identity
+wemd.realisticdarknesslight	Realistic Darkness (Light)	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+mlie.realistichumansounds	Realistic Human Sounds (Continued)	SHIP	F2	COS	cosmetic/sound/visual
+mlie.recyclethis	Recycle This (Continued)	DROP-112	C2		05 SAFE drop
+reel.turretpipeline	Reel's Turret Pipeline	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+mlie.relevantstatsindescription	Relevant Stats In Description	SHIP	F2	UI	UI only: not scenario identity
+petetimessix.researchreinvented	Research Reinvented	DEV	F1		framework our content hard-depends on | PROBLEM HIGH crash: Stepping Stones patch makes RR_ElectricityBasics its own prerequisite: FinishProject infinite recursion hard-crashed quicktest (we guard it); strays DLLs [infrastructure/state/items/closed/QUICKTEST_POSTSETUP_CRASH_1.md:96;Transient/MODLIST_COMPLEXITY_AUDIT_shortlist_2026-09-13.md:137;skills/rimworld-modding/references/traps-mods-and-managers.md:69;infrastructure/state/facts/config_error_baseline_2026-09-06.json:22]
+scorpio.resourcedictionary	Resource Dictionary	SHIP	F2	UI	UI only: not scenario identity
+alma.tossem	Right Click to Toss Carried Pawn	SHIP	F2	QOL	QoL automation: not scenario identity
+sihv.rombonesport	Rim of Madness - Bones Unofficial Fix	TEST	C1		C1: kept until replicated (01 §4) | PROBLEM LOW other: Def error on BoneWall at load [design/RimMandrake/mod_audit/facts/mod_facts.jsonl:1]
+kilokio.rimai.framework	RimAI Framework	DROP-112	C2	E	05 SAFE drop | PROBLEM LOW other: Loads after RimAI Core so Core typerefs fail; no loadAfter declared [skills/rimworld-modding/references/traps-mods-and-managers.md:77]
+brrainz.rimbridgeserver	RimBridgeServer	DEV-INSTR	D		bridge instrument (98 .cs use its SDK); never ships | PROBLEM MED hang,NRE: Debug-action tree enumeration NREs on any broad query and search_debug_actions wedges the main thread in quest test loops (20-30 min lost) [infrastructure/state/items/closed/DEBUG_ACTION_ENUM_CRASH_1.md:1;design/RimMandrake/live_test_hang_runbook.md:22;design/RimMandrake/bridge_debugging_system.md:483]
+dubwise.rimefeller	Rimefeller	TEST	F2		player content that ships
+rimfridge.kv.rw	RimFridge: Now with Shelves!	DEV	F2		player content that ships; pulled to DEV by lwm.deepstorage (needs it) | PROBLEM LOW NRE: RimFridgeComponent.StartedOrLoadedGame NRE on every map init/load plus missing research def (known per-load noise) [skills/rimworld-modding/references/player-log-triage.md:86;design/RimMandrake/mod_audit/facts/mod_facts.jsonl:346]
+mlie.rimquest	RimQuest (Continued)	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+deon.rimtek.core	RimTek Core	TEST	C1		C1: kept until replicated (01 §4)
+sierra.rt.generaltraits	RimTraits - General Traits	TEST	F2		player content that ships
+depscian.rimtunes	RimTunes	SHIP	F2	COS	cosmetic/sound/visual
+mianreplicate.romanceandintimacyontherim	Romance & Intimacy On The Rim	TEST	F2		player content that ships
+kupie.isjustdoingitlive.plzdonthateme.roofedscanning	Roofed Scanning 1.6	TEST	F2		player content that ships
+ghost.rootsofrimworld	Roots of Rimworld	DROP-112	C2		05 SAFE drop | PROBLEM LOW other: Research-tab collision config error charged to it; caused by our ResearchRetag negative coords [design/RimMandrake/mod_audit/ACTIONS_NOW.md:36]
+memegoddess.runandgun	RunAndGun - Continued	TEST	F2		player content that ships
+mandrake.rut.empirepursuit	Empire Pursuit — Survey Shadow	DEV	OURS		our mod
+rwnodetree.rwplanetatmosphere	RW - Planet Atmosphere	DROP-112	C2		05 SAFE drop
+moja.salvagerubble	Salvage Rubble	DROP-112	C2		05 SAFE drop
+plusblankplus.scenarioamenderfork	Scenario Amender [1.6 Fixed]	AUTHORING	D		rewrites a live save scenario (C04)
+hellrevenger.searchoption	Search Option	SHIP	F2	UI	UI only: not scenario identity
+avilmask.selfdyeing	Self Dyeing	SHIP	F2	QOL	QoL automation: not scenario identity
+sensiblebedownership.1trickpwnyta	Sensible Bed Ownership	SHIP	F2	QOL	QoL automation: not scenario identity
+boots.sensiblefactions	Sensible Factions	AUTHORING	C2		faction placer at the faction pass (05 HOLD)
+flyingsloth.scfilthreducer	Sentience Catalyst Filth Rate Reducer	SHIP	F2	QOL	QoL automation: not scenario identity
+shavius.medieval.flavour	Shavius's Medieval Flavour Pack	DROP-112	C2		05 SAFE drop
+spacemoth.showknowntechprints	Show Known Techprints	SHIP	F2	UI	UI only: not scenario identity
+dark.signs	Signs and Comments	SHIP	F2	DECOR	decorative buildables | PROBLEM LOW other: Nine impassable sign buildings raised Config errors (shot/seen over) every load; fixed by our ThirdPartySignConfigErrors_Fix patch [src/RimMandrake/MandrakePatches/Patches/ThirdPartySignConfigErrors_Fix.xml:1;infrastructure/state/facts/config_error_baseline_2026-09-06.json:30]
+usgiyi.slaveoutfits	Slave Outfits [1.6]	TEST	F2		player content that ships
+mlie.slaverebellionsimproved	Slave Rebellions Improved (Continued)	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+astryl.sleepingbuddies	Sleeping Buddies	SHIP	F2	QOL	QoL automation: not scenario identity
+hol.smeltpatch	Smelt More Stuff	DROP-112	C2		05 SAFE drop
+weilbyte.snapout	Snap Out!	SHIP	F2	QOL	QoL automation: not scenario identity
+krelinos.socialexpfromtrade	Social Experience from Trade	SHIP	F2	QOL	QoL automation: not scenario identity
+mlie.spaceworms	Space Worms (Continued)	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+jpt.speakup	SpeakUp	DEV	F1		framework our content hard-depends on
+elshender.stackablechunks	Stackable Chunks	SHIP	F2	QOL	QoL automation: not scenario identity
+balistafreak.standalonehotspring	Standalone Hot Spring	DROP-112	C2		05 SAFE drop
+amoruch.rimworldstealingmod	Stealing Mod	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+karshou.storagememory	Storage Memory	SHIP	F2	QOL	QoL automation: not scenario identity
+mlie.storytellerenhanced	Storyteller Enhanced (Continued)	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+mandrake.rm.strandedquest	RM_Stranded	DEV	OURS		our mod
+kas.strongerscaling	Stronger Quality Scaling (1.6)	SHIP-PENDING	C1	E	class E + C1: quality cliff with Yayo (mod_deepdive_yayo_full.md:21); rule with Yayo | PROBLEM LOW other: With Yayo's engine turns item quality into a cliff (masterwork flak jacket); undecided keep/cut [design/RimMandrake/mod_deepdive_yayo_full.md:21;design/RimMandrake/mod_audit/OWNER_CARDS.md:131]
+moistestwhale.stuffontablesforked	Stuff on Tables Forked	SHIP	F2	COS	cosmetic/sound/visual
+gerrymon.stylizedslavecollar	Stylized Slave Collars and Headgears	DROP-112	C2		05 SAFE drop
+jellypowered.survivaltools	Survival Tools Reborn	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+mlie.tabsorting	Tab-sorting	SHIP	F2	UI	UI only: not scenario identity
+ucp.tabletopdecorations	Tabletop Decorations	DROP-112	C2		05 SAFE drop
+summersausages2ttv.techlevelenforcement	Tech Level Enforcement	TEST	F2		player content that ships
+propickelz.tinkerbench	Tinkering Bench and Biohacking Station	TEST	F2		player content that ships
+tsa.torturepod	Torture Pod	DROP-112	C2		05 SAFE drop
+smashphil.dropspot	Trade Ships Drop Spot	SHIP	F2	QOL	QoL automation: not scenario identity
+mlie.tradeabletrinkets	Tradeable Trinkets (Continued)	DROP-112	C2		05 SAFE drop
+automatic.traderships	Trader ships	TEST	F2	WORLD	world-borne content (factions/sites/world objects): must be present when the start save is made
+kearril.tradingoptionscontinue	Trading Options Continue	SHIP	F2	QOL	QoL automation: not scenario identity
+aelanna.transparentsubstructure	Transparent Substructure	DROP-112	C2		05 SAFE drop
+xercaine.tribal.furniture	Tribal Furniture	DROP-DEEPER	F2	DECOR	ships 26 DLLs incl. the game's Assembly-CSharp; silently killed Interaction Bubbles, which our SpeakUp chain needs (traps-mods-and-managers.md:67) | PROBLEM MED conflict: Ships 26 DLLs incl. game Assembly-CSharp; silently killed Interaction Bubbles with no log line (23-min load wasted) [skills/rimworld-modding/references/traps-mods-and-managers.md:67;skills/rimworld-modding/references/traps-mods-and-managers.md:69]
+geojak.tributedemand	Tribute Demand	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+ferny.triumphantresearch	Triumphant Research	SHIP	F2	COS	cosmetic/sound/visual
+trouperton.trystantravellersshuttleschematics	Trystan Traveller's Shuttle Schematics	DROP-112	C2		05 SAFE drop
+error277.tunneler.expanded	Tunneler Expanded	TEST	F2		player content that ships
+marvinkosh.ughyougotme	Ugh You Got Me	SHIP	F2	QOL	QoL automation: not scenario identity
+madarauchiha.undraftaftertucking	Undraft After Tucking	SHIP	F2	QOL	QoL automation: not scenario identity
+universalpregnancy.1trickpwnyta	Universal Pregnancy	TEST	F2		player content that ships
+nephlite.orbitaltradecolumn	Utility Columns	DROP-112	C2		05 SAFE drop
+vanillaexpanded.vappe	Vanilla Apparel Expanded	DROP-112	C2		05 SAFE drop
+vanillaexpanded.vaeaccessories	Vanilla Apparel Expanded — Accessories	TEST	C2		05 HOLD framework: profile follows its dependants; pulled to TEST by zal.moreutilitypacks (needs it)
+vanillaexpanded.vanillabackstoriesexpanded	Vanilla Backstories Expanded	DROP-112	C2		05 SAFE drop
+vanillaexpanded.vbrewe	Vanilla Brewing Expanded	TEST	F2		player content that ships
+vanillaexpanded.vcooke	Vanilla Cooking Expanded	TEST	F2		player content that ships
+vanillaexpanded.vee	Vanilla Events Expanded	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+oskarpotocki.vfe.tribals	Vanilla Factions Expanded - Tribals	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+vanillaexpanded.vfecore	Vanilla Furniture Expanded	DROP-112	C2		05 SAFE drop
+vanillaexpanded.vfearchitect	Vanilla Furniture Expanded - Architect	TEST	C2		05 HOLD framework: profile follows its dependants; pulled to TEST by aoba.fortress.industrial (needs it)
+vanillaexpanded.vfeart	Vanilla Furniture Expanded - Art	DROP-112	C2		05 SAFE drop
+vanillaexpanded.vfefactory	Vanilla Furniture Expanded - Factory	DEV	F1		framework our content hard-depends on
+vanillaexpanded.vfefarming	Vanilla Furniture Expanded - Farming	DROP-112	C2		05 SAFE drop
+vanillaexpanded.vfemedical	Vanilla Furniture Expanded - Medical Module	DROP-112	C2		05 SAFE drop
+vanillaexpanded.vfepower	Vanilla Furniture Expanded - Power	DROP-112	C2		05 SAFE drop
+vanillaexpanded.vfeproduction	Vanilla Furniture Expanded - Production	DROP-112	C2		05 SAFE drop
+vanillaexpanded.vfepropsanddecor	Vanilla Furniture Expanded - Props and Decor	SHIP	C2		05 HOLD framework: profile follows its dependants
+vanillaexpanded.vfesecurity	Vanilla Furniture Expanded - Security	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+vanillaexpanded.vfespacer	Vanilla Furniture Expanded - Spacer Module	DROP-112	C2		05 SAFE drop
+vanillaexpanded.gravship	Vanilla Gravship Expanded - Chapter 1	DEV	F1		framework our content hard-depends on
+vanillaexpanded.helixiengas	Vanilla Helixien Gas Expanded	TEST	F2		player content that ships
+vanillaexpanded.viehar	Vanilla Ideology Expanded - Hats and Rags	DROP-112	C2		05 SAFE drop
+vanillaexpanded.ideo.relicsandartifacts	Vanilla Ideology Expanded - Relics and Artifacts	TEST	F2		player content that ships
+vanillaexpanded.vexploratione	Vanilla Landmarks Expanded	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+vanillaexpanded.outposts	Vanilla Outposts Expanded	TEST	F2	WORLD	world-borne content (factions/sites/world objects): must be present when the start save is made
+vanillaquestsexpanded.ancients	Vanilla Quests Expanded - Ancients	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+vanillaquestsexpanded.generator	Vanilla Quests Expanded - The Generator	DROP-112	C2		05 SAFE drop
+vanillaracesexpanded.archon	Vanilla Races Expanded - Archon	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+vanillaracesexpanded.fungoid	Vanilla Races Expanded - Fungoid	DROP-112	C2		05 SAFE drop
+vanillaracesexpanded.genie	Vanilla Races Expanded - Genie	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+vanillaracesexpanded.phytokin	Vanilla Races Expanded - Phytokin	DROP-112	C2		05 SAFE drop
+vanillaracesexpanded.saurid	Vanilla Races Expanded - Saurid	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+vanillaracesexpanded.starjack	Vanilla Races Expanded - Starjack	DROP-112	C2		05 SAFE drop
+gravenwitch.vsrexamined	Vanilla Skills Rexamined	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+vanillaexpanded.vanillatraitsexpanded	Vanilla Traits Expanded	TEST	F2		player content that ships
+vanillaexpanded.vwe	Vanilla Weapons Expanded	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+vanillaexpanded.vwems	Vanilla Weapons Expanded - Makeshift	DROP-112	C2		05 SAFE drop
+gabrieel1482.raidvehicleframework	VehicleRaid Framework	DROP-112	C2		05 SAFE drop
+ninagoblin.visitsettlements	Visit Settlements	SHIP	F2	QOL	QoL automation: not scenario identity
+addvans.walktheworld	Walk the World	DROP-112	C2		05 SAFE drop
+ogliss.g223.wanderingcaravans	Wandering Caravans	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+addvans.wasdedpawn	WASDed Pawn	SHIP	F2	UI	UI only: not scenario identity
+sl4vp0wer.weareunited	We Are United	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+aelanna.weaponracks	Weapon Racks	TEST	F2		player content that ships
+bodlosh.weaponstats	WeaponStats	SHIP	F2	UI	UI only: not scenario identity
+revolus.whatsmissing	What's Missing?	SHIP	F2	UI	UI only: not scenario identity
+co.uk.epicguru.whatsthatmod	What's That Mod	AUTHORING	D		mod-source tooltip; manual dev aid only
+winggar.meaningfulparties	Wing's Meaningful Parties	TEST	F2		player content that ships
+tleno.wireheadstyle	Wirehead Style	DROP-112	C2		05 SAFE drop
+fluffy.worktab	Work Tab	SHIP	F2	UI	UI only: not scenario identity
+ferny.worldbuilder	Worldbuilder	AUTHORING	D		world generation: loads the TidallyLocked preset (C04) | PROBLEM MED NRE,conflict: Postfix on IdeoUtility.IsMemeAllowedFor reads null FactionManager: ConfigErrors NRE every load; overwrites My Little Planet scale slider (Generate prefix) [infrastructure/state/facts/config_error_baseline_2026-09-06.json:52;skills/rimworld-world-editing/references/generating-a-world.md:8;Transient/foundry_fulllist_deploy_20261010.md:27;infrastructure/state/items/closed/MAPGEN_NRE_FULL_LIST_20260920_1.md:85]
+funkyshit.mods.worldedit.alpha	WorldEdit 2.0	AUTHORING	D		owner-adopted world editor (C04)
+bs.xenotypespawncontrol	Xenotype Spawn Control	TEST	F2	SCEN	scenario identity
+mlie.yayoscaravan	Yayo's Caravan (Continued)	SHIP	F2	QOL	QoL automation: not scenario identity
+mlie.yayoscombat3	Yayo's Combat 3 (Continued)	SHIP-PENDING	C1	E	class E + C1: replaces shot/injury code; +43% melee bug and quicktest NRE (mod_deepdive_yayo.md:22, LOAD_GAME_READY_MAPGEN_CRASH_1.md:35); deep dive says remove and port | PROBLEM MED NRE,other: Melee +43% attack-speed bug, silent mech inflation, armour cliff with Stronger Scaling; Harmony prefix NRE (DrugPolicy sort) in quicktest map gen [design/RimMandrake/mod_deepdive_yayo.md:22;design/RimMandrake/mod_deepdive_yayo.md:117;infrastructure/state/items/closed/LOAD_GAME_READY_MAPGEN_CRASH_1.md:35;design/RimMandrake/mod_deepdive_yayo_full.md:21]
+mlie.yayosmeteor	Yayo's Meteor (Continued)	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+btd.remix.gravshipblueprints	[BTD] Gravship Blueprints	DROP-112	C2		05 SAFE drop
+lazyfridaystudio.genesexpandedeyes	[LFS] Genes Expanded - Eyes	DEV	F1		framework our content hard-depends on | PROBLEM LOW conflict: Strips gene render nodes whenever Facial Animation is installed; our HuttEyes_RestoreRenderNodes patch exists because of it [skills/rimworld-modding/references/traps-xml-and-defs.md:43;design/RimMandrake/mod_deepdive_faces.md:166]
+nals.facialanimationexperimentals	[NL] Facial Animation - Experimentals	DROP-112	C2		05 SAFE drop
+7f.alienworlds.tidallylocked	Alien Worlds - Tidally Locked	AUTHORING	C2		world generation only (05 HOLD)
+xmb.ancienturbanruins.mo	Ancient urban ruins	DROP-DEEPER	C1		heavy custom map generation (6 DLLs, live faction, 2 def errors); 'not save-safe' applies to old saves only, so the new start save is the cheapest excision; _AREAFIX2 fixture loads still need it | PROBLEM LOW other: 2 def errors (AM_Entrance_*); heavy custom mapgen with 6 DLLs, 51% already cut; not save-safe to remove [design/RimMandrake/mod_audit/facts/mod_facts.jsonl:182;Transient/MODLIST_COMPLEXITY_AUDIT_shortlist_2026-09-13.md:25;design/RimMandrake/mod_audit/RETIREMENT_WAVE_1.md:30]
+mandrake.rut.ashkarrlandmarkart	Ash'karr Landmark Art	DEV	OURS		our mod
+mandrake.rut.ishkolandmarks	RimUtinni: Ishko's Dark Landmarks	DEV	OURS		our mod
+groovytaco.beltextractors	Belt Extractors - VFE Factory Patch	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+m00nl1ght.geologicallandforms.biometransitions	Biome Transitions	DROP-DEEPER	C1		map-generation edit, no dependence of ours (C06: may go with baroque biomes)
+neronix17.retexture.charactereditor	Character Editor Retextured	AUTHORING	D		retexture of Character Editor; goes with it
+hailuan.customquestframeworkai	Custom Quest Framework-Level AI	DROP-112	C2		05 SAFE drop
+mlie.dungeonpack	Dungeon Pack (Continued)	TEST	F2		player content that ships
+vesper.egihologramsandprojectors	EGI Holograms and Projectors	DROP-112	C2		05 SAFE drop
+jaeger972.factionterritories	Faction Territories and Vassalage	TEST	F2	WORLD	world-borne content (factions/sites/world objects): must be present when the start save is made
+aoba.fortress.industrial	Fortifications - Industrial	TEST	F2		player content that ships
+sd.fa.geneticheadsframework	Genetic Heads Framework for [NL] Facial Animation	DROP-112	C2		05 SAFE drop
+gmmp.dungeon	Gerrymon's Misc Props: Dungeon	SHIP	F2	DECOR	decorative buildables
+zal.gianttoads	Giant Toads (Continued)	DROP-112	C2		05 SAFE drop
+icepickgma.invisibledisplaycase	Invisible Display Case Continued	DROP-112	C2		05 SAFE drop
+mandrake.rsw.jawavoice	JawaVoice (SpeakUp reskin)	DEV	OURS		our mod
+neku.largepawns	Large Pawns	SHIP	F2	COS	cosmetic/sound/visual | PROBLEM LOW conflict: Its PathClearingUtility wall-break must be turned off so our crush table is sole authority; our reconcile never touches the switches [infrastructure/state/items/LARGEPAWNS_BRIDGE_HARDENING_1.md:8]
+lwm.deepstorage	LWM's Deep Storage	DEV	F2		player content that ships; pulled to DEV by neronix17.outerrim.core (needs it)
+smxrez.makeshiftreexamined	Makeshift: Re-Examined	DROP-112	C2		05 SAFE drop
+zacharyfoster.mineralsframework	Minerals Framework	TEST	C2		05 HOLD framework: profile follows its dependants; pulled to TEST by zacharyfoster.mineralssparkle (needs it)
+mandrake.rsw.cuisine	RimStarWars: Cuisine	DEV	OURS		our mod
+sinnamon.moreritualrewards	More Ritual Rewards	DROP-112	C2		05 SAFE drop
+zal.moreutilitypacks	More Utility Packs (Continued)	TEST	F2		player content that ships
+andromeda.niceresearchtab	Nice Research Tab	SHIP	F2	UI	UI only: not scenario identity
+mandrake.rm.planetpresetprime	Planet Preset Prime (local)	DEV	OURS		our mod
+xylthixlm.races.titan	Posthuman Drift Titan Xenotype	DROP-112	C2		05 SAFE drop
+mlie.preceptsandmemesritualsmodule	Precepts and Memes - Rituals module (Continued)	TEST	F2		player content that ships
+lambda.psykshroom	Psyshrooms	TEST	F2		player content that ships
+ogliss.thewhitecrayon.quarry	Quarry	DROP-112	C2		05 SAFE drop | PROBLEM LOW error_storm: BuildStoneDict duplicate 'Sandstone' key exception after long event every load (non-fatal, unresolved) [Transient/foundry_fulllist_deploy_20261010.md:28;design/RimMandrake/mod_audit/GPT_PACKAGE.md:205]
+memegoddess.replacestuff	Replace Stuff - Continued	SHIP	F2	QOL	QoL automation: not scenario identity
+kilokio.rimai.core	RimAI Core (BETA)	DROP-112	C2	E	05 SAFE drop | PROBLEM MED load_stall,other: ReflectionTypeLoadException: Framework loaded after Core (no loadAfter); mod silently dead while standing greps read 0; HTTP transport violates LLM rule [skills/rimworld-modding/references/traps-mods-and-managers.md:76;skills/rimworld-modding/references/traps-mods-and-managers.md:77;Transient/MODLIST_COMPLEXITY_AUDIT_shortlist_2026-09-13.md:61]
+jaxe.rimhud	RimHUD	SHIP	F2	UI	UI only: not scenario identity
+zal.spaceports	Rimsential - Spaceports (Continued)	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+co.uk.epicguru.factionloadout	Rimsential - Total Control: Continued	AUTHORING	D		pawnkind-gear editor; prime suspect for apparel bypass (SpeciesStartingGear_Tuning.xml:37)
+deon.rimtek.digipal	RimTek DigiPal	TEST	C1		C1: kept until replicated (01 §4)
+deon.rimtek.docmate	RimTek DocMate	TEST	C1		C1: kept until replicated (01 §4)
+telardo.romanceontherim	Romance On The Rim	TEST	F2		player content that ships
+kathanon.searchablemenus	Searchable Menus	SHIP	F2	UI	UI only: not scenario identity
+mlie.showmeyourhands	Show Me Your Hands	SHIP	F2	COS	cosmetic/sound/visual | PROBLEM MED crash,conflict: Rebuilt DrawHandsOnWeapon broke ModularWeapons2 transpiler: InvalidProgramException killed pawn gen on every new map (resolved by removing MW2) [infrastructure/state/items/closed/SMYH_MODULARWEAPONS_PAWNGEN_CRASH_1.md:8;infrastructure/state/items/closed/CORRECT_SMYH_MODULARWEAPONS_1.md:11]
+scherub.stonecuttingextended	Stonecutting Extended	TEST	F2		player content that ships
+cyanobot.toddlers	Toddlers	TEST	F2		player content that ships
+vanillaexpanded.vchemfuele	Vanilla Chemfuel Expanded	TEST	F2		player content that ships
+vanillaexpanded.vcookestews	Vanilla Cooking Expanded - Stews	DROP-112	C2		05 SAFE drop | PROBLEM LOW other: Research-tab collision config error charged to it; caused by our ResearchRetag [design/RimMandrake/mod_audit/ACTIONS_NOW.md:36]
+kuhlyus.modpatch.vanillaoutpost	Vanilla Mining Outpost Patch	DROP-112	C2		05 SAFE drop
+mrhydralisk.voeadditionaloutposts	Vanilla Outposts Expanded: Additional Outposts	TEST	F2	WORLD	world-borne content (factions/sites/world objects): must be present when the start save is made
+vanillaexpanded.vwel	Vanilla Weapons Expanded - Laser	TEST	F2		player content that ships
+arcjc007.wallstuff	WallStuff	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+fourtoo.glowingbush	[42G]Glowing Bushes | Fork by [ETF]	DROP-112	C2		05 SAFE drop
+kyzy.shipwallenhanced	[kyzy] Ship Wall Enhanced	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+meteores.ancienturbanruinsalldeconstructible.aurad	Ancient Ruins All Deconstructible	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+mandrake.rm.weathersuite	RimMandrake: SW — Weather Suite	DEV	OURS		our mod
+mandrake.rut.weathersuite	RimMandrake: Utinni — Weather Suite (Ash'karr)	DEV	OURS		our mod
+zal.comigogreaterswamps	Comigo's Greater Swamps (Continued)	DROP-112	C2		05 SAFE drop
+mlie.functionalvanillaexpandedprops	Functional Vanilla Expanded Props (Continued)	DROP-112	C2		05 SAFE drop
+sd.fa.geneticheadsbiotech	Genetic Biotech for Facial Animation	DROP-112	C2		05 SAFE drop
+sd.fa.geneticheadsmods	Genetic Mods for Facial Animation	DROP-112	C2		05 SAFE drop
+erdelf.humanoidalienraces	Humanoid Alien Races	DEV	F1		framework our content hard-depends on
+zacharyfoster.mineralsfrozen	Minerals Frozen	DROP-112	C2		05 SAFE drop
+zacharyfoster.mineralsrock	Minerals Rock	DROP-112	C2		05 SAFE drop | PROBLEM LOW other: Def errors on WeatheredBasalt and PassableBasalt at load [design/RimMandrake/mod_audit/facts/mod_facts.jsonl:1]
+zacharyfoster.mineralssparkle	Minerals Sparkle	TEST	F2		player content that ships
+mehni.pickupandhaul	Pick Up And Haul	SHIP	F2	QOL	QoL automation: not scenario identity
+avius.prisonlabor	Prison Labor	TEST	F2		player content that ships
+reel.facialanims	Reel's Facial Animation Textures	DROP-112	C2		05 SAFE drop
+oskarpotocki.vfe.pirates	Vanilla Factions Expanded - Pirates	TEST	F2	WORLD	world-borne content (factions/sites/world objects): must be present when the start save is made
+vanillaexpanded.vmemese	Vanilla Ideology Expanded - Memes and Structures	TEST	C1		C1: kept until replicated (01 §4)
+vanillaexpanded.skills	Vanilla Skills Expanded	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+sd.fa.reelsadjustments	Adjustments for Reel's Facial Animation Textures	DROP-112	C2		05 SAFE drop
+opa.allspecialistscanwork	All Specialists Can Work	SHIP	F2	QOL	QoL automation: not scenario identity
+sarg.alphaskills	Alpha Skills	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+meteores.ancienturbanruinsvanillaloot.aurvl	Ancient Urban Ruins Hit Point	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+chezhou.chezhoulib.lib	ChezhouLib	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+broms.deeporbit	Deep Orbit	DEV	C2		save-borne Orbit2 layer needed to load the _AREAFIX2 fixtures (05 HOLD); leaves when fixtures do | PROBLEM LOW NRE: Canonical save carries its Orbit2 PlanetLayerDef: loading without it NREs in WorldGrid.CreateRequiredLayers and drops to Entry (hard dependency of the save) [infrastructure/state/lessons/20261016T155408Z-FOUNDRY-canonical-ashkarr-start-2026-09-12.md:1]
+teiwaz.gtgtradercore	GTG Trader Core	TEST	F2	WORLD	world-borne content (factions/sites/world objects): must be present when the start save is made
+keyz182.keyzallowutilities	Keyz' Allow Utilities	SHIP	F2	QOL	QoL automation: not scenario identity
+toastyman.moreritualseats	More Ritual Seats	SHIP	F2	DECOR	decorative buildables
+sugarcube.puahsharedstorage	Pick Up And Haul - Shared Storage Access	SHIP	F2	QOL	QoL automation: not scenario identity
+legator.prisonerrealism	Prisoner Realism	TEST	F2		player content that ships
+font.rimesis	Rimesis	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+petetimessix.simplesidearms	Simple sidearms	TEST	F2		player content that ships
+tribeagle.simpleslaverycollars	Simple Slavery Collars	TEST	F2		player content that ships
+neronix17.toolbox	Tabula Rasa	DEV	F1		framework our content hard-depends on
+vanillaexpanded.vgeneticse	Vanilla Genetics Expanded	TEST	C1		C1: kept until replicated (01 §4) | PROBLEM LOW crash: GeneticRim crashed at startup on invalid diet values in our creature defs, breaking all pawn creation (trigger was ours); core listed dead in quicktest log [infrastructure/state/lessons/20260925T143203Z-FOUNDRY-foundry-2026-09-25-def-that.md:1;infrastructure/state/items/closed/LOAD_GAME_READY_MAPGEN_CRASH_1.md:45]
+vanillaexpanded.vtexe.facialanims	Vanilla Textures Expanded - [NL] Facial Animation	DROP-112	C2		05 SAFE drop
+oskarpotocki.vanillavehiclesexpanded	Vanilla Vehicles Expanded	DEV	F2	SCEN	scenario identity; pulled to DEV by sarg.alphavehiclesneolithic (needs it)
+dmp.vfepirates.warcasketwork	VFE Pirates - Hardworking Warcaskets	DROP-112	C2		05 SAFE drop
+aoba.warcasket	WarCasket Expanded	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+divinederivative.romance	Way Better Romance	TEST	F2		player content that ships
+teiwaz.taajg	[GTG]Traders Accept All Junk Gear	DROP-112	C2		05 SAFE drop
+teiwaz.tacac	[GTG]Traders Accept Chunks & Corpses	DROP-112	C2		05 SAFE drop
+brrainz.achtung	Achtung!	SHIP	F2	QOL	QoL automation: not scenario identity
+sd.fa.vteadjustments	Adjustments for Vanilla Textures Expanded - [NL] Facial Animation	DROP-112	C2		05 SAFE drop
+sarg.alphavehiclesneolithic	Alpha Vehicles - Neolithic	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+kem.beardadjustment	Beard Adjustment	SHIP	F2	COS	cosmetic/sound/visual
+redmattis.bigsmall.core	Big and Small - Genes & More	DEV	F1		framework our content hard-depends on
+lovelydovey.sex.witheuterpe	Intimacy - Friends n' Lovers	DEV	F2		player content that ships; pulled to DEV by lovelydovey.sex.withrosaline (needs it)
+chezhou.creature.sandworm	LEVIATHANS:SANDWORM	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+mandrake.rut.longhunger	RimUtinni: The Long Hunger	DEV	OURS		our mod
+neronix17.outerrim.core	Outer Rim - Core	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9) | PROBLEM MED NRE,crash: OuterRimCoreMod ctor NRE (get_VersionDir) at mod init every load; crashed scratch tier loads twice when copied from MINIMAL [infrastructure/state/items/closed/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md:49;infrastructure/state/items/closed/FORSAKENCRAGS_RM_MOD_BUILD_1.md:282;infrastructure/state/items/closed/DROID_SYSTEM_BUILD_1.md:183]
+neronix17.outland.genetics	Outland - Genetics	DEV	F1		framework our content hard-depends on
+neronix17.shieldgenerators	Shield Generators	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+redmattis.optional	Big and Small - Enable All Optional Content	SHIP	F2	FW	library: profile follows its dependants
+redmattis.bigsmall	Big and Small - Races	DROP-W1	B		Retirement Wave 1 (owner 2026-10-10)
+redmattis.bigweapons	Big and Small - Weapons	DROP-112	C2		05 SAFE drop
+avilmask.commonsense	Common Sense	SHIP	F2	QOL	QoL automation: not scenario identity
+mandrake.rsw.desertvehiclereskin	Desert Vehicle Reskin — Alpha Vehicles Neolithic	DEV	OURS		our mod
+lovelydovey.sex.withrosaline	Intimacy - Gender Works	DEV	F1		framework our content hard-depends on
+lovelydovey.recreation.witheuterpe	Intimacy - Socio Butterfly	TEST	F2		player content that ships
+leutiankane.mineablesor	LK Mineable Resources Outer Rim	DROP-112	C2		05 SAFE drop
+leutiankane.mines2patchouterrim	LK Mines 2.0 Compatability[Outer Rim Core]	DROP-112	C2		05 SAFE drop
+neronix17.outerrim.furnitureanddecor	Outer Rim - Furniture & Decor	DROP-112	C2		05 SAFE drop
+neronix17.outerrim.galacticempire	Outer Rim - Galactic Empire	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+neronix17.outerrim.rebelalliance	Outer Rim - Rebel Alliance	DEV	C1		C1: our content hard-depends on it; kept until replicated (01 §4/§9)
+frozensnowfox.complexjobs	[FSF] Complex Jobs	SHIP	F2	QOL	QoL automation: not scenario identity
+dubwise.dubsbreakmod	Dubs Break Mod	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+danzinagri.facialanimationcompatabilityproject	Facial Animation Compatability Project	DROP-112	C2		05 SAFE drop
+mandrake.rut.doctrine	Jawa Doctrine Patches	DEV	OURS		our mod
+taranchuk.performanceoptimizer	Performance Optimizer	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling | PROBLEM LOW load_stall,other: Last log line 'Finished transpiling' misread as cold-load stall; patches tick paths so may distort/blind TPS attribution on full list (predicted) [infrastructure/state/items/closed/COLD_LOAD_STALL_INTERMITTENT_1.md:12;design/RimMandrake/bridge_debugging_system.md:579;/home/mandrake/.claude/projects/-home-mandrake-rm-foundry/memory/idle-menu-looks-like-load-stall.md:17]
+co.uk.epicguru.meleeanimation	Melee Animation	SHIP-PENDING	F2	E	class E evaluation-hostile (01 §7): never in DEV/TEST; ship by ruling
+lordfelix.rimcontrol	Rim Control	AUTHORING	D		owner-adopted tuning tool; its override config is EMPTY (MEASURED), so leaving loses nothing
+meathax.showmeyourtools	Show Me Your Tools - Forked	SHIP	F2	COS	cosmetic/sound/visual
+lee.theforce.lightsaber	Star Wars : The Force - Lightsaber	DEV	F1		framework our content hard-depends on
+mandrake.rsw.starwarsraces	RimMandrake - Star Wars Races	DEV	OURS		our mod
+mandrake.rsw.armoury	Jawa Armoury Rebalance	DEV	OURS		our mod
+mandrake.rm.proximityhatch	RimMandrake: Proximity Hatch	DEV	OURS		our mod
+mandrake.rsw.gizkastowaway	RimMandrake: SW — Gizka Stowaway	DEV	OURS		our mod
+mandrake.rsw.shokk	RimMandrake: SW — Shokk	DEV	OURS		our mod
+mandrake.rm.luminouspigment	RimMandrake: Luminous Pigment	DEV	OURS		our mod
+mandrake.rsw.ionweapons	Jawa Ion Weapons (local)	DEV	OURS		our mod
+mandrake.rut.shipmemory	RimUtinni: Ship Memory — the Chains Below	DEV	OURS		our mod
+mandrake.rut.antiquities	Antiquities	DEV	OURS		our mod
+mandrake.rut.rites	Salvation Rites	DEV	OURS		our mod
+mandrake.rut.researchretag	Research Retag	DEV	OURS		our mod
+zylle.sandcastles	Sand Castles	DROP-112	C2		05 SAFE drop
+mandrake.rm.patches	RimMandrake Patches	DEV	OURS		our mod
+mandrake.rsw.bacta	RimStarWars — Bacta	DEV	OURS		our mod
+mandrake.rsw.patches	RimStarWars Patches	DEV	OURS		our mod
+mandrake.rut.patches	RimUtinni Patches (Jawa campaign)	DEV	OURS		our mod
+mandrake.rut.pawnflavor	Jawa Pawn Flavor — faction backstories and traits	DEV	OURS		our mod
+btd.gbp.shippack.kotor.vge	[BTD] Ship Pack: KotOR Ships VGE	DROP-112	C2		05 SAFE drop
+mandrake.rsw.droidworks	Droidworks	DEV	OURS		our mod
+mandrake.rut.droidrepairjobs	RimUtinni: Droid Repair Jobs	DEV	OURS		our mod
+mandrake.rm.wreckedmachines	Wrecked Machines	DEV	OURS		our mod
+mandrake.rut.pyrelandsmechanics	RimMandrake: Utinni — Pyrelands Mechanics	DEV	OURS		our mod
+mandrake.rm.flowworks	RimMandrake: FlowWorks	DEV	OURS		our mod
+mandrake.rm.explosiveknockback	RimMandrake: Explosive Knockback	DEV	OURS		our mod
+mandrake.rm.kineticarms	RimMandrake: Kinetic Arms	DEV	OURS		our mod
+mandrake.rm.gimmesomeslack	RimMandrake: Gimme Some Slack	DEV	OURS		our mod
+mandrake.rm.oracle	RimMandrake: Oracle	DEV	OURS		our mod
+mandrake.rm.property	RimProperty	DEV	OURS		our mod
+mandrake.rm.rimdefdump	RimDefDump (local tooling)	DEV-INSTR	OURS		our def-dump instrument; not player content
+mandrake.rut.birthhatchdemo	RimMandrake: Utinni — Birth & Hatch Demo	AUTHORING	OURS		our DEMONSTRATION mod (About.xml), not campaign content
+arandomkiwi.rimthemes	RimThemes	DEV	F1		framework our content hard-depends on
+mandrake.rut.menushell	RimUtinni: Menu Shell	DEV	OURS		our mod
+mandrake.rut.shokkweaveeconomy	RimUtinni: Shokkweave Economy	DEV	OURS		our mod
+mandrake.rut.rustcathedralroaches	RimMandrake: Utinni — Rust Cathedral Roaches	DEV	OURS		our mod
+mandrake.rm.gravshiplanding	RimMandrake: Gravship Landing Reveal	DEV	OURS		our mod
+rw.mod.simplestairs	SimpleStairs (Fork)	TEST	F2		player content that ships
+kutte.stairs	Simple Visual Stairs	SHIP	F2	DECOR	decorative buildables
+mandrake.rm.hugethings	RimMandrake: Huge Things	DEV	OURS		our mod
+mandrake.rm.biomes	RimMandrake: Baroque Biomes	DEV	OURS		our mod
+mandrake.rsw.swbestiary	RimMandrake: SW — Bestiary	DEV	OURS		our mod
+mandrake.rm.shipvermin	RimMandrake: Ship Vermin	DEV	OURS		our mod
+mandrake.rut.greentideraidant	RimUtinni: Greentide Raid Ant	DEV	OURS		our mod
