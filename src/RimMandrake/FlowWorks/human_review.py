@@ -196,7 +196,7 @@ CAPS = [
     dict(id="C05", g="C", label="The source visibly recedes as it pays out", item=BP,
          effect="Supplying a canal shrinks an enclosed body cell by cell from the outside in, restoring the old ground.",
          probes=["set:recessionEnabled", "cs:recededCount|Recede"], rows=["E3b_recession_shipped"],
-         bars=["reservoir_fill_visibly_drops", "reservoir_shoreline_recedes"], shots=["E3_E4"], src="Owner experience"),
+         bars=["reservoir_fill_visibly_drops", "reservoir_shoreline_recedes", "still_water_one_surface_height"], shots=["E3_E4"], src="Owner experience"),
     dict(id="C06", g="C", label="Slow refill from rain, season and seepage", item=BP,
          effect="A drawn-down body slowly regains level; a very small body refills slowest.",
          probes=["set:refillEnabled", "set:refillRateMultiplier", "cs:void Refill"],
