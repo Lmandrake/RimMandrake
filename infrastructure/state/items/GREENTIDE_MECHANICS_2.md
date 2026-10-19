@@ -372,8 +372,9 @@ game access in this task).
 
 **M1 — wet-bulb heat.** There is no wet-bulb condition, hediff or protection stat
 (`WETBULB_FOLD_INTO_HEAT_1`, decision taken by question card 2026-10-08). `RUT_Greentide`
-carries an `RM_SunHeatExtension` of heat kind `ambient` (`heatOffsetC` 12, PROVISIONAL), so
-vanilla `Heatstroke` does the work. Three `RUT_` apparel defs (`RUT_WickingWrap`,
+carries an `RM_SunHeatExtension` of heat kind `ambient` (`heatOffsetC` 12, PROVISIONAL) as built; by the
+owner's ruling of 2026-10-19 it becomes a vanilla air-temperature offset (`RM_GreentideAirHeat`,
+`DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`), and vanilla `Heatstroke` does the work. Three `RUT_` apparel defs (`RUT_WickingWrap`,
 `RUT_SealedSuit`, `RUT_DryHood`) answer it through vanilla
 `StuffEffectMultiplierInsulation_Heat` (0.8 / 1.4 / 0.5, PROVISIONAL). All three reuse a real,
 already-shipping vanilla texPath verbatim (`Apparel_TribalA`/`Apparel_Vacsuit`/`Apparel_HatHood`).

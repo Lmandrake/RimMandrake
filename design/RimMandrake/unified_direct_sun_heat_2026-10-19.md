@@ -1,7 +1,9 @@
 # One Direct Sun, planet-wide: design pass, 2026-10-19
 
-FOUNDRY design pass. Nothing in mod code or defs was changed. Items: `SOLAR_HEAT_EXPOSURE_1`,
-`CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID`.
+FOUNDRY design pass. Nothing in mod code or defs was changed. The owner ruled on it the same day (§8).
+§1–§2 describe the code as built today; §3 onward is the ruled model. Build items:
+`DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`, `DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS`,
+`DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL`, `DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME`.
 
 The owner, today (2026-10-19), verbatim:
 
@@ -125,117 +127,111 @@ Out of scope, and different on purpose: two species-specific sun effects, `RM_We
 (the ollathrix's hide, ruled 2026-09-11) and the Contagion's UV sunburn. They are photosensitivity
 traits, the same shape as vanilla UV sensitivity, not biome heat.
 
-## 3. The unified model: one Direct Sun
+## 3. The ruled model: one Direct Sun, a pure function of geometry
 
-**Rule DS: the same arithmetic on every sun-heat map. No biome field changes it.**
+Ruled by the owner on 2026-10-19 (§8 has his words). **Nothing in it is built**; the build is
+`DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`.
 
-- **DS1. Sun height.** E is computed from the map tile's arc to the substellar point (0,0). It is
-  one planet constant and one clamp, [0°, 85°], everywhere. A pinned sky uses the same geometry,
-  as it does already. Per-biome `min/maxElevationDegrees` and `substellar*` fields are deleted
-  from `RM_SunHeatExtension`.
-- **DS2. Sun strength.** `offset = Z × sin(E) × weatherSunFactor × daylight × bodySizeFactor ×
-  strengthDial`, capped by one planet `maxHeatOffsetC`.
-  - Z is **one planet number**. The default proposed is the owner's own card value, 55 °C at the
-    zenith.
-  - There is no per-biome `heatOffsetC` and no per-biome floor.
-- **DS3. Which cover counts.** If E ≥ T, the overhead regime applies: roof, cast shade, parasol and
-  tent all count. If E < T, the low-sun regime applies: only a lee shadow, rock or a shield
-  counts. T is one planet threshold (55°, the value all four switching biomes already use). This
-  is the card *"the cover that counts follows the sun angle"*, applied everywhere instead of only
-  where a biome opted in. The per-biome `heatKind` field is deleted. The two regimes are a
-  function of the sun, not of the biome.
-- **DS4. Enclosed rooms** are never exposed. This is unchanged.
-- **DS5. Weather.** Every weather has a sun factor. Ours stay as authored, and vanilla rain, fog
-  and storm weathers get one through a patch. The numbers are invented and the owner tunes them.
-  The factor dims **direct sun only**.
-- **DS6. Daylight.** On a map without a pinned sky, the sun heat is multiplied by the visible sun
-  (vanilla `GenCelestial` sun glow). The heat then follows the sun the player sees, and there is
-  no midnight sunstroke. Pinning the sky on every dayside biome is the alternative. That is
-  cosmetic, so it needs the owner's permission (decision D4).
-- **DS7. Opting in stays per biome.** This follows the 2026-10-15 rule, which promises biome
-  mechanics only inside our own biomes. The extension becomes a marker meaning "Direct Sun runs
-  here", plus the non-heat extras: glare-blind, mirage and shade-hop tuning. Sand glare
-  (`sandGlareExposureFloor`) is keyed to terrain, so it can apply wherever there is natural sand,
-  including the Long Shade's. Whether it should is decision D5.
+**Rule DS: the same arithmetic on every map. No biome field changes it.**
 
-**Ambient heat (volcanic, steam, hot fog) is not sun.** It leaves the sun pipeline completely
-and becomes **plain vanilla air temperature**, applied as a permanent vanilla
-`GameCondition_TemperatureOffset` on the biome's map. That class exists in 1.6 and reads
-`GameConditionDef.temperatureOffset`; I confirmed it with RimSage. The heat then shows on the
-thermometer, rooms leak toward it and coolers fight it the vanilla way, and insulation answers it
-through the vanilla comfort range. Shade does nothing against it because shade never changes air
-temperature, which is *"shade won't help you (in steam)"* with no special rule.
+- **DS1. Sun elevation.** E comes from the map tile's arc to the substellar point (0,0), with one
+  clamp [0°, 90°] everywhere. E ≤ 0 means no Direct Sun. Per-biome `min/maxElevationDegrees` and
+  `substellar*` fields are deleted from `RM_SunHeatExtension`.
+- **DS2. Intensity.** `offset = 55 °C × sin(E) × weatherSunFactor × bodySizeFactor × strengthDial`.
+  55 is one planet number (a setting). There is no per-biome `heatOffsetC`, floor or scaling switch.
+  A low sun is less intense and a high sun is much more intense, by the sine alone.
+- **DS3. Shade is geometry.**
+  - A roofed cell is covered at every E. Any roof counts: a tent, a building, overhead rock. The
+    old "only a thick roof counts under a low sun" rule goes.
+  - A parasol covers its carrier at every E. The owner kept parasols in the Long Shade, whose sun is
+    about 14°.
+  - Structures, rock and tall plants cast a shadow down-sun of length height / tan E, capped for
+    performance. A high sun leaves almost nothing but covered shade. A low sun leaves long shade.
+  - There is no regime switch and no threshold T. `heatKind`, `RM_HeatKind`, `KindFromElevation`
+    and `overheadAboveElevationDegrees` are deleted.
+- **DS4. Shade gear is parasols and tents.** A tent is any quick roof structure. The standing sun
+  shield (`RM_SunShield`) is removed as a shade item, because a wall casts the same lee. The mirrak
+  shade cloth keeps one deepening value.
+- **DS5. Enclosed rooms** are never exposed. This is unchanged.
+- **DS6. Weather.** Every weather has a sun factor. Ours stay as authored (the Contagion Bloom 0.2,
+  the Stillsand Dune Gale 0.2), and vanilla overcast weathers get one through a patch (invented
+  numbers, which the owner tunes). The factor is a property of the weather, not of the biome.
+- **DS7. Time of day.**
+  - In Utinni, time of day = location, permanently. Every map of the shipped world has a fixed sun
+    at its tile's E, decided by the world and not by a BiomeDef. Today only the Long Shade and the
+    Stillsand pin it.
+  - On a world with a day/night cycle, Direct Sun is off. The owner allowed this drop; following the
+    clock is a later option and not the primary target.
+- **DS8. Where it runs.** This is my reading of his principle, and it is the one confirm still
+  owed (§8). Direct Sun runs on every sunlit map of the shipped world, with no per-biome opt-in.
+  - The Scarlands, the Miasma and the `RUT_` twins get it like every other biome (D6).
+  - Sand glare is keyed to natural sand terrain under the sun, not to the Stillsand, so the Long
+    Shade's sand glares too (D5).
+  - Glare-blind, mirage and shade-hop tuning become planet constants or terrain properties.
 
-**Does this satisfy "no different kinds"?** Yes. After this change there is one kind of heat,
-vanilla temperature, and one rule that adds felt sun to it, identical on every map. "Ambient" is
-no longer a kind. It is a hotter thermometer, the same as any hot biome's base temperature.
+**Ambient heat is vanilla air temperature** (D3, *"Hotter air on the thermometer"*). It leaves the sun
+pipeline completely. It becomes a permanent vanilla `GameCondition_TemperatureOffset` on the biome's
+map. That class exists in 1.6 and reads `GameConditionDef.temperatureOffset`; I confirmed it with
+RimSage. The heat shows on the thermometer, rooms leak toward it, coolers fight it and insulation
+answers it, all the vanilla way. Shade never changes air temperature, so *"shade won't help you (in
+steam)"* needs no special rule. The Greentide's 12 °C card (`WETBULB_FOLD_INTO_HEAT_1`) survives.
 
-**If he means ambient sources should go entirely**, the four biomes keep only their tile
-temperature plus the Direct Sun. That costs:
-- the Forge loses 15 °C over the volcano, and keeps only its plume fronts as local hotter air;
-- the Scald loses 15 °C over the boiling sea;
-- the Fever Wood loses its 8 °C still-air heat;
-- the Greentide loses 12 °C, including the wet-bulb share the owner ruled into it by card on
-  2026-10-08 (`WETBULB_FOLD_INTO_HEAT_1`), so that decision would be undone.
+**The cost of the condition route.** Outdoor temperature itself rises, so plants and animal comfort
+feel it too. Some Forge, Fever Wood or Greentide flora may pass their growth maximum. Before fixing
+the numbers, run an offline script that compares every rostered plant's growth temperature limit
+against tile median + offset. The vanilla field is still to be looked up in RimSage (UNMEASURED).
 
-Their tile medians (42–56 °C) still put a colonist outside the vanilla comfort range, so they stay
-hot, but no longer hotter than the sun-only biomes around them.
+### Owner rulings this changes
 
-**A second cost of the GameCondition route.** Outdoor temperature itself rises, so plants and
-animal comfort feel it too. Some Forge, Fever Wood or Greentide flora may pass their growth
-maximum. The offline check is a script that compares every rostered plant's
-growth temperature limit against tile median + offset. The exact vanilla field is still to be
-looked up in RimSage, so it is UNMEASURED here. Run the check before choosing the numbers.
-
-### Owner rulings this changes, marked
-
-| Change | His ruling it touches | Effect |
+| Change | Ruling it touches | Effect |
 |---|---|---|
-| ⚠️ The per-biome `heatKind` goes; cover follows E everywhere | CLAUDE.md "every extreme-heat biome declares a heat KIND" (our paraphrase); the card "cover follows the sun angle" (2026-09-30) | The card is **extended** to every biome. The CLAUDE.md sentence must be corrected once he rules. |
-| ⚠️ The Long Shade (14°) becomes low-sun | Our gloss *"overhead sun here, so parasols and tents work"* (not his words) | Parasols drop to 0.35 and tents to 0.3; a shield you stand behind works fully. That changes the Long Carry play (D2). |
-| ⚠️ One Z for the whole planet; the Stillsand floor goes | Card 2026-09-30 18:11 PDT: *"+55 °C at the substellar point, scaled by sun angle, about 35 °C in the far ring"* | With Z = 55 the zenith value holds. The far-ring 35 floor is dropped, so the Stillsand's low edge falls to about 55 × sin E (D1). |
-| ⚠️ Greentide ambient becomes a temperature condition, or is deleted | Card 2026-10-08 (`WETBULB_FOLD_INTO_HEAT_1`), 12 °C | Kept as a +12 °C air temperature, or lost under option D3-b. |
-| Forge, Scald, Fever Wood and Greentide now get Direct Sun | 2026-09-29: *"there shade won't help you (in steam)"* | Shade helps against **the sun part** there and never against the air heat. I read this as consistent with his words; he should confirm (D3). |
+| Per-biome `heatKind` goes; shade is geometry | CLAUDE.md's old "every extreme-heat biome declares a heat KIND" (our paraphrase) | Corrected 2026-10-19: CLAUDE.md §"One Direct Sun" |
+| The Long Shade keeps parasols, and its long low-sun shadows count too | Our gloss *"overhead sun here, so parasols and tents work"* | The gloss is deleted from `longshade_shade_ideation_2026-09-29.md`; parasols work at every angle |
+| One zenith value of 55; the Stillsand's far-ring floor of 35 goes | Card 2026-09-30: *"+55 °C at the substellar point … about 35 °C in the far ring"* | The low edge falls to 55 × sin E |
+| The sun shield is removed | `SHADE_GEAR_FAMILY_1` (closed), whose card listed *"simple shields you can stand behind"* | His 2026-10-19 words replace it: *"Keep only Parasols and Tents"* |
+| Ambient heat becomes air temperature | Card 2026-10-08, the Greentide at 12 °C | Kept at 12 °C, now as hotter air |
 
-## 4. Migration list
+## 4. Migration list (for `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`)
 
 **C#: `src/RimMandrake/CreatureBehaviors/Source/`**
 - `RM_SunHeatExtension.cs`: delete `heatKind`, `heatOffsetC`, `maxHeatOffsetC`,
   `heatScalesWithElevation`, `minScaledHeatOffsetC`, `overheadAboveElevationDegrees`,
-  `min/maxElevationDegrees` and `substellarLatitude/Longitude`. Keep glare, mirage and shade-hop
-  tuning, and the body-size terms (or move them to planet constants).
-- `RM_SunHeatMath.cs`: replace `RM_HeatKind` with `RM_SunCover { overhead, lowSun }` and drop
-  `ambient`. Replace `KindFromElevation` with `CoverFor(E, T)`. `ElevationHeatOffset(Z, E)` loses
-  its floor. Add a `Daylight` factor.
-- `RM_MapComponent_ShadeGrid.cs`: `EffectiveHeatKind` becomes `CoverRegime`, and
-  `EffectiveHeatOffsetC` uses Z. `ResolveSun` uses the one clamp. Delete the ambient branches (lines
-  ~193, 551, 558, 755, 865, 874, 885, 918). `ExposureFor` multiplies by daylight.
+  `min/maxElevationDegrees` and `substellarLatitude/Longitude`. Under DS8 the extension is no longer
+  needed as a switch; keep it only if glare, mirage or shade-hop need per-terrain data.
+- `RM_SunHeatMath.cs`: delete `RM_HeatKind`, `KindFromElevation` and `GearKindFactor`.
+  `ElevationHeatOffset(Z, E)` loses its floor. Cover becomes `max(roof, parasol, castShade)` at every E.
+- `RM_MapComponent_ShadeGrid.cs`:
+  - `EffectiveHeatKind` goes, and `EffectiveHeatOffsetC` uses Z.
+  - `ResolveSun` uses the one clamp, and a fixed sun on every map of the shipped world (DS7).
+  - Delete the ambient branches (lines ~193, 551, 558, 755, 865, 874, 885, 918).
+  - The cast length follows height / tan E.
 - `RM_SunHeatPatches.cs`: no change in shape.
-- `RM_ShadeGear.cs`, `RM_Gizmo_SunLoad.cs`, `RM_ShadeHop.cs`: drop ambient.
-- `RM_WeatherSenseExtension.cs`: unchanged; it gets used more.
+- `RM_ShadeGear.cs`, `RM_Gizmo_SunLoad.cs`, `RM_ShadeHop.cs`: drop the kind. The gizmo says
+  "Direct Sun".
 - `RM_CreatureBehaviorsMod.cs`: settings (§5).
-- `src/RimMandrake/SolarMirrors/Source/RM_MirrorPatches.cs`: drop the ambient gate.
-- New: no new class. The ambient source uses vanilla `GameCondition_TemperatureOffset` through
-  each biome's existing permanent-condition bootstrap. The Sump and Miasma lock conditions already
-  use this pattern.
+- `RM_MapComponent_PinnedSun`: pin by world, not by biome (read first how it is triggered).
+- `src/RimMandrake/SolarMirrors/Source/RM_MirrorPatches.cs` and
+  `src/RimMandrake/LongShade/Source/RM_ShipfallCommons.cs`: drop the kind gates.
+- New: no new class. Ambient heat uses vanilla `GameCondition_TemperatureOffset` through each
+  biome's existing permanent-condition bootstrap. The Sump and Miasma lock conditions already work
+  this way.
 
-**XML, per biome.** Each `<li>` loses its heat fields and keeps the marker. Guards are unified on
-`mandrake.rm.creaturebehaviors`.
-- Long Shade: drop `heatKind` and `heatOffsetC`. Keep the pinned sky.
-- Stillsand: drop kind, offset, scaling, floor, threshold and cap. Keep glare, glare-blind and
-  mirage.
+**XML, per biome.** Every `<li>` loses its heat fields.
+- Long Shade: drop `heatKind overhead` and `heatOffsetC`. Its pinned sky stays.
+- Stillsand: drop kind, offset, scaling, floor, threshold and cap. Glare, glare-blind and mirage
+  stay.
 - Cracked Lands, Weeping Stones, Pyrelands, Webwork, Rust Cathedral, Contagion: drop all heat
-  fields. Add the guard to the Rust Cathedral and the Webwork. The Contagion's Bloom 0.2 stays.
-- Forge, Scald: drop `heatKind ambient` and `heatOffsetC 15`. Add a `GameConditionDef`
-  (`RM_ForgeAirHeat`, `RM_ScaldAirHeat`) with `temperatureOffset`, value per D3.
-- Fever Wood, Greentide: the same (`RM_FeverWoodAirHeat`, `RM_GreentideAirHeat`).
-- **New opt-ins**, each needing the owner's yes (D6): Scarlands `RM_Warscar` and Miasma
-  `RM_Miasma` get the marker.
-- `RUT_` twins: add the marker by patch in `src/RimUtinni/UtinniPatches/Patches/`, guarded with
-  `PatchOperationFindMod`, because `MayRequire` on a top-level Operation is ignored.
-- `src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Buildings/RM_ShadeGear.xml`: drop the ambient
-  column from the header table.
-- New patch: `sunExposureFactor` on vanilla overcast weathers (DS5).
+  fields. The Contagion's Bloom 0.2 stays.
+- Forge, Scald: drop `heatKind ambient` and `heatOffsetC 15`. Add the `GameConditionDef`s
+  `RM_ForgeAirHeat` and `RM_ScaldAirHeat`, 15 °C each, PROVISIONAL.
+- Fever Wood, Greentide: the same, `RM_FeverWoodAirHeat` at 8 °C and `RM_GreentideAirHeat` at 12 °C.
+- Scarlands `RM_Warscar`, Miasma `RM_Miasma` and the `RUT_` twins: nothing to add under DS8. If the
+  owner says no to DS8, they keep no Direct Sun.
+- `src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Buildings/RM_ShadeGear.xml`: remove
+  `RM_SunShield`; drop the per-kind columns.
+- The arrival-letter heat lines on 10 BiomeDefs (`BIOME_ARRIVAL_LETTERS_ALL_1`): rewrite them without
+  kinds.
+- New patch: `sunExposureFactor` on vanilla overcast weathers (DS6).
 
 **Tests to change in the same commit.**
 - `src/RimMandrake/TheForge/validation.py` `biome_declares_ambient_heat` and
@@ -248,80 +244,135 @@ looked up in RimSage, so it is UNMEASURED here. Run the check before choosing th
   ~610/700/750.
 - The fuzz harness, `Utils/mutate_creaturebehaviors_fuzz.py`.
 
-**Docs.**
-- CLAUDE.md §"One kind of heat": fix the KIND sentence.
-- `SOLAR_HEAT_EXPOSURE_1` spec §2.
-- `CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID`: superseded; close it into this item.
-- The ⇒ paraphrase in `longshade_shade_ideation_2026-09-29.md`: delete it, per the "remove
-  inaccurate material" rule.
-
-## 5. Mod Settings (Creature Behaviors)
+## 5. Mod Settings (`DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS`)
 
 Defaults equal the shipped behaviour. With everything off, the game is plain vanilla temperature.
 
-- **Direct Sun** master switch (exists as `sunHeatEnabled`), plus the **strength** dial
+- **Direct Sun** master switch (`sunHeatEnabled` today, relabelled) and the **strength** dial
   (`sunHeatStrength`, exists).
-- **Sun heat at the zenith (°C)** slider: Z. New.
-- **Low-sun rules below (°)** slider: T. The existing `kindFromElevationEnabled` toggle becomes
-  "cover follows the sun". Off means every map uses overhead rules.
-- **Weather dims the sun** toggle. New.
-- **Sun heat only while the sun is up** toggle (DS6). New.
-- Existing toggles stay: directional shade, sun pathing, sun-load bar, sand glare, glare-blind,
+- **Direct Sun at the zenith (°C)**: default 55. New.
+- **Weather dims Direct Sun**: new.
+- **Direct Sun on day/night worlds**: off. It is labelled unsupported, and off is the only option
+  built.
+- **Deleted:** `kindFromElevationEnabled` and any threshold slider.
+- These toggles stay: directional shade, sun pathing, sun-load bar, sand glare, glare-blind and
   mirage.
-- **Air heat** (the ambient conditions) lives in **each biome mod's own settings**: an on/off and
-  a °C slider for the Forge, Scald, Fever Wood and Greentide. It no longer switches off with the
-  sun setting. Each label says it affects the map's temperature, so plants feel it too.
+- **Air heat** lives in each biome mod's own settings: an on/off and a °C slider for the Forge, the
+  Scald, the Fever Wood and the Greentide. Each label says the setting changes the map's
+  temperature, so plants feel it too.
 
 No new cross-biome switch is built (owner, 2026-10-15).
 
 ## 6. Test plan
 
-**Offline first.** `python3 src/RimMandrake/Utils/selftest_sun_heat.py` and the per-mod selftests.
-- **Equality across biomes.** Load every BiomeDef carrying the marker, and for E ∈ {5, 14, 21, 31,
-  45, 56, 79, 85} assert that offset and cover regime are identical whatever the biome.
-- **Lint.** No BiomeDef or patch under `src/` may carry `heatKind`, `heatOffsetC`,
-  `heatScalesWithElevation`, `minScaledHeatOffsetC` or `overheadAboveElevationDegrees`. The check
-  parses XML elements; it does not grep.
-- **Regime switch at T:** roof counts at E = 56 and not at 54; a lee counts at both.
-- **Ambient leaves the sun pipeline:** a Forge pawn's sun offset comes only from the sun term, and
-  the air-heat condition's `temperatureOffset` reads from XML.
-- Weather factor and daylight multiply sun heat only.
-- Long Shade at 14° uses the low-sun gear factors.
-- The fuzz run mutates Z, T and E and checks the pipeline holds.
+**Offline** (`DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL`), in `selftest_sun_heat.py` and the C#
+SelfTest:
+- **Equality across biomes:** for E ∈ {0, 5, 14, 21, 31, 45, 56, 79, 90}, the offset and the
+  exposure of an open cell, a roofed cell, a parasol and a lee are identical in every biome.
+- **Intensity:** 55 × sin E, and 0 at E ≤ 0.
+- **Shadow length:** height / tan E. At 85° no open cell beside a wall is shaded. At 14° the lee is
+  about four times the height.
+- **Lint:** no BiomeDef or patch carries a heat-kind or per-biome sun field (XML parsed as elements),
+  and `RM_SunShield` is not shade gear.
+- **Air heat:** the four conditions carry `temperatureOffset`, and their biomes carry no sun number.
+- The fuzz run mutates Z and E.
 
-**L1 (quicktest map and bridge, state reads only, no visuals).** Use three maps: the Long Shade,
-the Pyrelands and the Forge. On each, read `SunOffsetFor` and `ExposureFor` for one pawn in the
-open, under a roof and in a lee. The same E must give the same numbers. On the Forge, read
-outdoor `map.mapTemperature` with the air-heat condition on and off. The difference must equal the
-offset.
+**Live** (`DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME`):
+- **L1:** state reads on Long Shade, Pyrelands and Forge maps. On each map, read an open cell, a
+  roofed cell, a parasol and a lee: the same E gives the same numbers, the lee is long at a low E
+  and absent at a high E, and the Forge thermometer moves by the air-heat offset.
+- **L2:** an owner-watched sitting. He tunes the zenith value, the weather factors and the air-heat
+  offsets, plus the rest-dash strictness inherited from `SOLAR_HEAT_EXPOSURE_1`.
 
-**L2 (owner-watched sitting).** He tunes Z, T, the weather factors and the four air-heat offsets
-by watching a colonist heat up. This fills the existing sitting criterion in
-`SOLAR_HEAT_EXPOSURE_1`.
+## 7. Decisions
 
-## 7. Recommendation and the decisions only he can make
+D1–D4 are ruled (§8). D5 and D6 were not asked; DS8 applies his principle to them, and it is the
+one confirm still owed.
 
-**Recommendation.** Ship Direct Sun as DS1–DS7 on every sun-heat biome, with ambient as a vanilla
-air-temperature condition (D3-a), the daylight gate (D4-a) and Z = 55 (D1-a). Then fix CLAUDE.md
-and close the Contagion item into this one.
+## 8. Owner rulings 2026-10-19 and what they changed
 
-- **D1. How hot is the sun?**
-  - a) 55 °C at the zenith everywhere: his Stillsand number. Pyrelands, Webwork and Rust Cathedral
-    get much hotter.
-  - b) A milder single number, about 25 °C. Long Shade and Stillsand get gentler.
-  - c) a) but keep a far-ring floor. Every low-sun tile gets that floor, which makes the angle
-    matter less.
-- **D2. The Long Shade becomes low-sun.**
-  - a) Yes. Shields and lees work; parasols mostly don't. This matches its long shadows.
-  - b) Keep parasols working there. That reintroduces a per-biome exception, which is a "kind".
-- **D3. Volcanic, steam and hot-fog heat.**
-  - a) Keep it as hotter air on the thermometer. Plants feel it too; the Greentide's 12 °C card
-    survives.
-  - b) Delete it. Four biomes become as hot as their tiles only, and the wet-bulb card is undone.
-- **D4. The sun at night on biomes without a pinned sky.**
-  - a) No sun heat at night (code only).
-  - b) Pin the sky on every dayside biome: no night on the dayside, which is a cosmetic change.
-- **D5. Sand glare.**
-  - a) Stillsand only.
-  - b) Any natural sand under the sun, which includes the Long Shade.
-- **D6. Add sun heat to the Scarlands and the Miasma**, both hot with none today: yes or no.
+By question card on this pass, verbatim:
+
+- **D1:** *"55 C everywhere"*.
+- **D2** (asked whether the Long Shade keeps parasols): *"This is too ornate. Keep only Parasols and
+  Tents, and Tents are just a quick structure (any roof structure will do the same). Then we just
+  need to think about where "shade vs not shade" is for the various maps, and that's a pure function
+  of geometry, NOT biome. So: no biome-specific heat, no biome-specific sun. It's a matter of
+  geometry (low sun is less intense AND produces longer shade, high sun produces only covered shade
+  and much more intense effect). Ambient heat is normal Rimworld rules. Do an opus 5.5 design pass now
+  on all the rulings, doc changes, and queue items that need to be updated to effect this change and
+  do so."*
+- **D3:** *"Hotter air on the thermometer"*.
+- **D4:** *"In Utinni this isn't possible: time of day = location, permanently. If these biomes are
+  used on a day/night world, then of course it follows solar angle/geometry that is now a function of
+  time of day. If that creates too much work, then drop sun heat (should actually be called "direct
+  sun") when the day/night isn't constant anymore. That's not our primary deliverable target."*
+
+**What they changed in this design:**
+- The low-sun/overhead regime switch and its threshold T are gone. Shade is cast geometry plus covered
+  cells (DS3).
+- The shield is gone. The only gear is parasols and tents, and a tent is any roof (DS4).
+- Ambient heat is air temperature (D3).
+- The daylight multiplier is replaced by a fixed sun in Utinni and an off switch elsewhere (DS7).
+- The feature is named Direct Sun.
+
+**The one confirm still owed (D5 + D6), with my reading.** Because there is *"no biome-specific
+sun"*, I read Direct Sun as running on every sunlit map of the shipped world, with no opt-in.
+- The Scarlands (+72°, so about 52 °C of Direct Sun), the Miasma (under its haze's weather factor)
+  and the `RUT_` twins get it.
+- Sand glare comes from natural sand terrain under the sun, wherever that is, including the Long
+  Shade.
+
+If he says no, the build adds an opt-in list, which is a one-line gate.
+
+**Queue changes** (ledger, FOUNDRY shard, `--by-card "Sun heat design pass → 55 C everywhere / pure
+geometry, no biome kind"`):
+- **Filed:**
+  - `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES` (code and XML; replaces
+    `CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID`)
+  - `DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS` (blocked on the model)
+  - `DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL`
+  - `DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME` (bridge, blocked on the model; replaces
+    `SOLAR_HEAT_EXPOSURE_1` and carries its owed rest-dash sitting)
+- **Superseded:** `CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID` and `SOLAR_HEAT_EXPOSURE_1`. Their prose is in
+  `infrastructure/state/items/closed/`.
+- **Noted and edited:** the live items in the table below.
+
+### Every place that stated or depended on the old model
+
+Swept with `grep -rniE "heat ?kind|heatKind|sun ?heat|lowSun|low-sun|parasol|shade gear|ambient
+heat|LONG_CARRY|sun kind|direct sun|overhead sun"` over `design/`, `infrastructure/state/items`,
+`infrastructure/state/facts`, `skills/`, `infrastructure/agents` and `CLAUDE.md`, plus the ledger
+event files for open items. The **record** rows are dated sitting or review records: they tell the
+history of a day and direct nothing now, so they were left as written.
+
+| File / item | What it said | Action |
+|---|---|---|
+| `CLAUDE.md` §"One kind of heat" | every extreme-heat biome declares a heat KIND; gear works per kind | **rewritten**: "One Direct Sun, a pure function of geometry" |
+| `design/RimMandrake/standing_rulings.md` | no heat ruling (0 hits) | **added** §Direct Sun with his words and a test |
+| `design/RimMandrake/biome_rulings.md` | no heat ruling (0 hits) | **added** "No biome-specific sun or heat" |
+| `infrastructure/state/facts/*`, `skills/*`, `infrastructure/agents/*` | 0 hits | none |
+| `SOLAR_HEAT_EXPOSURE_1` | spec §2: heat kinds per biome; A2 "each biome's heat kind behaves as declared" | **superseded** by `DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME`; A2 void |
+| `CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID` | the Contagion owes a kind | **superseded** by `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES` |
+| `STILLSAND_SUN_LIVE_VERIFY_1` | "above 55° a roof protects, below it only a lee" | **edited**: that clause is void; the rest stands |
+| `WEBWORK_FELLED_NOON_RITE_1` | rite gate = the biome's overhead threshold | **edited**: a fixed sun is always local noon; the gate is sun above the horizon |
+| `RUSTCATHEDRAL_BASE_FINISH_BUILD_1` | §4 `heatKind overhead`; a criterion reading it | **edited**; the criterion is struck as VOID (a heatKind read would go red once the model lands) |
+| `BIOME_ARRIVAL_LETTERS_ALL_1` | heat line follows the kind; shield gear | **edited**: the lines are false, and the rewrite is spec 9 of the model item |
+| `WETBULB_FOLD_INTO_HEAT_1` | Greentide `ambient` kind | **edited**: 12 °C of air temperature |
+| `GREENTIDE_MECHANICS_2` | `RUT_Greentide` ambient kind | **edited** (the BiomeDef is `RM_Greentide` now; the line also names `RUT_`, left as its history) |
+| `SHADECRAFT_LESSONS_DESIGN_1` | three pieces; the shield is the low-sun piece | **edited**: two pieces; question 2 restated |
+| `LONGSHADE_BEDAZZLE_MECHANICS_1` (Long Carry), `DECOY_SHADE_TARP_1`, `PIT_SUPERDEEP_COLLAPSE_1`, `SOLAR_MIRRORS_BUILD_1`, `STILLSAND_SUN_LANCE_1`, `STILLSAND_SOLAR_STILL_1`, `PYRELANDS_*`, `SCRUB_SETTINGS_WIRE_MASTER_CANNOT_GREY` | do not depend on a heat kind | none. Long Carry gives the dead a parasol, which stays. |
+| `FEVERWOOD_CROWN_SOUND_HEAT_1`, `PYRELANDS_HEAT_KIND_BUILD_1`, `WEBWORK_HEAT_SHADE_BUILD_1`, `WEEPINGSTONES_HEAT_WINDHOUR_TEXT_1`, `STILLSAND_SUN_FROM_LATITUDE_1`, `SHADE_GEAR_FAMILY_1`, `SHADEGRID_BRIDGE_READER_1` | closed; built the per-biome kinds | none (closed). Their code is undone by the model item. |
+| `design/Jawa/worldbuilding/biomes/longshade_shade_ideation_2026-09-29.md` | the `⇒` paraphrase of three kinds | **deleted and replaced** with the ruling |
+| `design/Jawa/worldbuilding/biomes/kits/greentide_kit_spec.md` | ambient kind and its engine route | **edited**: air heat |
+| `design/RimMandrake/northstar_trials/Pyrelands_trial_plan.md` | "overhead-sun biome", heat kind recorded | **edited**: sun elevation |
+| `design/RimMandrake/solar_mirrors_mod_design_2026-10-04.md` (line ~99) | mirrors inert under ambient | **edited** |
+| same file, lines ~17–23 | inventory of today's code (`ExposureAt` by heat kind) | true of today's code; left |
+| `design/validation_walks/_drafts/must_show_drafts_2026-10-18.md` | parasol, tent and shield bar | **edited**: the shield is dropped |
+| `design/validation_walks/RimMandrake/EnvironmentalHazards.md`, `LongShade.md` | owned by `SOLAR_HEAT_EXPOSURE_1` | **repointed** to `DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME` |
+| `design/validation_walks/RimMandrake/Stillsand.md` | carries the sun-heat extension | true today; the model item decides it |
+| `design/RimMandrake/four_biomes_readiness_2026-10-19.md` | heat-kind row; Contagion FAIL | **edited**: no kind owed |
+| `stillsand_bedazzle_review_2026-09-29.md`, `stillsand_turn3_development_2026-09-30.md`, `stillsand_bedazzle_cast_2026-09-30.md`, `longshade_bedazzle_cast_2026-09-29.md`, `pyrelands_bedazzle_review_2026-10-01.md`, `webwork_bedazzle_review_2026-10-02.md`, `rustcathedral_bedazzle_review_2026-10-02.md`, `weepingstones_bedazzle_review_2026-10-02.md`, `feverwood_bedazzle_review_2026-10-02.md`, `greentide_bedazzle_review_2026-10-02.md`, `miasma_bedazzle_review_2026-10-02.md`, `gelatinousslime_bedazzle_review_2026-10-02.md`, `sump_bedazzle_review_2026-10-01.md`, `the_scald_floor_sitting_agenda_2026-10-02.md` | per-biome kind findings and recommendations | record |
+| `design/RimMandrake/gpt_reviews/{DESIGN_PASS_2026-10-08,CreatureBehaviors,FeverWood,VERDICTS}.md`, `design/RimMandrake/mod_audit/records/batch_15.md` | heat-kind references | record |
+| `cauldron.md`, `the_webwork.md`, `webwork_kit_spec.md`, `folk_gesture_mechanics.md`, `assailant_weapon_remnants.md`, `ship_shields_deep_design.md`, `flowworks_pits_unified_model_2026-10-02.md`, `pit_superdeep_collapse_spec.md`, `pit_exposure_to_the_elements_2026-10-11.md`, `mod_validation_runner_spec.md` | "direct sunlight" as prose, or vanilla heat | none: no kind is stated |
+| `src/**` (C#, XML, selftests) | the built kinds | **not touched** (mod code is out of scope here); listed in §4 for the model item |

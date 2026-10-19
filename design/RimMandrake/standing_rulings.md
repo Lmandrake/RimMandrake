@@ -115,6 +115,45 @@ default off, labelled "Unsupported: may work outside our biomes, not tested" (ow
 card 2026-10-15). Spec + retrofit of existing mods:
 `MOD_OPTIONS_RETROFIT_1`. Applies to every future mod, no exceptions.
 
+## Direct Sun — one model, a pure function of geometry — owner, 2026-09-29 and 2026-10-19
+
+2026-09-29 (Long Shade sitting): *"If we implement the heat load, then places like the Deep Desert
+and volcanic biomes should absolutely roast you similarly. It can't be a new "kind" of heat."*
+2026-09-30: *"The biome takes its sun angle from its latitude ok the planet not a region
+description."*
+
+2026-10-19, by question card on the design pass
+(`design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`):
+
+- Zenith value: *"55 C everywhere"*.
+- Shade: *"This is too ornate. Keep only Parasols and Tents, and Tents are just a quick structure
+  (any roof structure will do the same). Then we just need to think about where "shade vs not
+  shade" is for the various maps, and that's a pure function of geometry, NOT biome. So: no
+  biome-specific heat, no biome-specific sun. It's a matter of geometry (low sun is less intense AND
+  produces longer shade, high sun produces only covered shade and much more intense effect).
+  Ambient heat is normal Rimworld rules."*
+- Volcanic, steam and hot-fog heat: *"Hotter air on the thermometer"*.
+- Night: *"In Utinni this isn't possible: time of day = location, permanently. If these biomes are
+  used on a day/night world, then of course it follows solar angle/geometry that is now a function of
+  time of day. If that creates too much work, then drop sun heat (should actually be called "direct
+  sun") when the day/night isn't constant anymore. That's not our primary deliverable target."*
+
+What this means, and how to check it was applied:
+- **The feature is called Direct Sun.** Felt heat = 55 °C × sin(sun elevation) × weather sun factor
+  × the strength dial, into the vanilla felt-temperature → Heatstroke path. No new hediff.
+- **Sun elevation comes from the map tile's position on the planet only.** In Utinni every map's sun
+  is fixed (time of day = location). On a world with a day/night cycle it follows the clock, or Direct
+  Sun switches off there; that world is not the primary target.
+- **Shade is geometry.** Roofs, and parasols, cover at every sun angle. Structures and rock cast a
+  shadow whose length grows as the sun drops, so a low sun gives long shade and a high sun gives
+  almost none beyond covered cells. No BiomeDef field, heat kind or per-biome number changes either.
+- **Shade gear is the parasol and roof structures.** A tent is any quick roof. The standing sun
+  shield is not a shade item.
+- **Ambient heat is vanilla air temperature**, shown on the thermometer; shade never changes it.
+- Test: no BiomeDef or patch under `src/` carries `heatKind`, `heatOffsetC` or any per-biome sun
+  field, and the selftest gives the same numbers at the same elevation in every biome
+  (`DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL`).
+
 ## Every DLC is assumed — owner, 2026-09-19/25/26
 
 🔑 **Design assumes every DLC is present** — owner, 2026-09-25, verbatim: *"Always assume all

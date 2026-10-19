@@ -13,13 +13,18 @@ RM_Parasol`). Mirrak hide exists (`RM_LongShade_Mirrak.xml`) and is the deepest 
 
 ## open questions (the owner's)
 
+⚠️ 2026-10-19: the three-piece list above predates the parasols-and-tents ruling; question 1 now maps lessons onto two pieces (or onto ideas), and the shield lesson has no piece.
+
 1. **Which lesson unlocks which piece.** The spec lists the gear and the lessons in two parallel
    lists (parasol / tent / shield against dewfringe rim / herd crossing / mirrak hide). The consult
    instead ties the lessons to *ideas* (condensation geometry, portable shade, deeper shade cloth),
    not to pieces. Is it read in order, or some other way?
 2. **Cross-biome availability. This is a conflict with a ruling.** `SHADE_GEAR_FAMILY_1` was ruled
-   with *"this MUST be applied on other biomes where heat is extreme too"*, and the sun shield is
-   the one piece that works under a low sun (the Stillsand). Every lesson named is Long Shade-only:
+   with *"this MUST be applied on other biomes where heat is extreme too"*, and since 2026-10-19 the
+   gear is parasols and tents only, working the same at every sun angle (owner: *"Keep only Parasols
+   and Tents, and Tents are just a quick structure (any roof structure will do the same)"*; the
+   standing shield is removed, `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`). So only two pieces remain
+   to lock, and a tent is any roof, which cannot be locked at all. Every lesson named is Long Shade-only:
    the dewfringe and the mirrak live nowhere else. So a colony that never visits the Long Shade could
    never learn the gear its own biome needs. Options: the lock applies only to colonies that start
    there; each hot biome teaches its own lesson; or the lessons speed research up rather than gate it.

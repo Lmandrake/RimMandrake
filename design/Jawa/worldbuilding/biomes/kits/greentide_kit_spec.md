@@ -48,15 +48,16 @@ mechanic folds into vanilla heat. There is no wet-bulb clock, hediff, protection
 condition class.
 
 **Player experience.** At 45 °C in saturated air your pawns cook even under shade, because
-sweat does nothing here. The Greentide's heat kind is **ambient**: shade and roofs do nothing
-outdoors, an enclosed room takes no offset, and only heat insulation answers it. Sealed and
+sweat does nothing here. The Greentide's heat is **hot air**: a vanilla air-temperature offset
+on the thermometer (owner, 2026-10-19: *"Hotter air on the thermometer"*). Shade and roofs only
+take off the Direct Sun share, and heat insulation answers the rest. Sealed and
 wicking gear raise the wearer's comfortable maximum; the desert's shade-and-cooling kit is
 useless; the trader sells you the other tree.
 
-**Engine route.** The biome's `RM_SunHeatExtension` declares heat kind `ambient` and a felt
-heat offset (`heatOffsetC` 12 °C, PROVISIONAL; the wet-bulb share is folded into it). That
-raises the pawn's felt temperature and vanilla `Heatstroke` (the untouched `HediffGiver_Heat`)
-does the rest. Gear answers through vanilla `StuffEffectMultiplierInsulation_Heat`
+**Engine route.** A permanent vanilla `GameCondition_TemperatureOffset`, `RM_GreentideAirHeat`,
++12 °C (PROVISIONAL; the wet-bulb share is folded into it), raises the map's air temperature
+(`DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`; built today as an `ambient` `RM_SunHeatExtension`),
+and vanilla `Heatstroke` (the untouched `HediffGiver_Heat`) does the rest. Gear answers through vanilla `StuffEffectMultiplierInsulation_Heat`
 (PROVISIONAL): sealed suit 1.4, wicking wrap 0.8, dry-hood 0.5. The apparel AI scorer
 (`RM_Patch_HazardApparelScoring`) adds `Insulation_Heat`/40. A saved wet-bulb hediff loads as
 vanilla Heatstroke via an alias def.

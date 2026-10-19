@@ -96,7 +96,7 @@ It is applied in `RebuildHeatLayers` (so the **path-cost grid and the shade-patc
 - **Outdoors, mirror light raises exposure and nothing else.** Exposure already drives the per-pawn vanilla temperature offset (heatstroke) through `RM_SunHeatPatches`. A lit patch is simply "sun" again, which satisfies the ruling with no new hediff.
 - **Concentration (light > 1, several beams on one cell)** scales exposure past 1 into the same offset, capped by the extension's existing `maxOffsetC`. It is still vanilla heat. Any burn or ignite effect (a weapon extension) must go through vanilla fire (`FireUtility.TryStartFireIn`) and vanilla heatstroke, never a new "solar burn" hediff.
 - **Outdoor cell temperature cannot be raised.** MEASURED: `GenTemperature.PushHeat` → `Room.PushHeat` returns false and does nothing when `UsesOutdoorTemperature` (`Verse/Room.cs:635`). **Indoors it works**: a beam into a roofed room through an open door or a glazed opening (§5 greenhouse/furnace) can `PushHeat` at a receiver building. So the solar furnace is a **receiver building**, never a hot cell.
-- **Heat kinds:** under `ambient` heat (steam/volcanic), shade does nothing, and **light does nothing either**. Mirrors are inert on ambient biomes for heat but still give glow. Under `lowSun`/`overhead`, they work as specified.
+- **No heat kinds** (owner, 2026-10-19: *"no biome-specific heat, no biome-specific sun"*). Mirror light adds to Direct Sun exposure on every map the same way. Volcanic, steam and hot-fog heat is plain air temperature, which neither shade nor mirror light changes. The ambient gate in `RM_MirrorPatches.cs` is removed by `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`.
 
 ### 2.7 Update cost, rotation and save/load
 

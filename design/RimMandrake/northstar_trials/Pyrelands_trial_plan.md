@@ -100,8 +100,8 @@ with the instrument named. **UNMEASURED** means nobody has looked yet.
 - **Terrain** (redesigned 2026-10-12, `design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md`): the biome paints `RM_FE_Ash_Deep` on almost all open land, with rare `RM_FE_Ground_{Soil,Gravel}` pockets, a Sand beach and a SoilRich ring at standing water. Every `RM_FE_Ground_*` burns in one step to deep ash, which is not flammable. There is no ash ladder and no expected burnedDef config warning.
 - **Heat**: the sheet records the Ash'karr Pyrelands at sun median **+56°**, median temperature
   **53.6 °C** (range 39–65) and elevation ~257 m (`the_pyrelands.md` §0). This is an extreme-heat,
-  **overhead-sun** biome under the one-heat ruling. `RM_Pyrelands` carries an `overhead` `RM_SunHeatExtension` (`PYRELANDS_HEAT_KIND_BUILD_1`). The furnace-beast's
-  warmth is a local felt-temperature offset (`PYRELANDS_FURNACE_WARMTH_AMBIENT_1`), not a hediff and not a heat kind.
+  high-sun biome. Its Direct Sun is geometry alone, 55 × sin(tile elevation) °C, with no biome field (owner, 2026-10-19; `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`). The furnace-beast's
+  warmth is a local felt-temperature offset (`PYRELANDS_FURNACE_WARMTH_AMBIENT_1`), not a hediff.
 
 ---
 
@@ -362,12 +362,12 @@ the campaign world. The site is a **scratch quicktest world** on the `pyrelands`
 `extraGenSteps` (`RM_FE_ScorchRuins`) and `preventGenSteps`. The census reads the log for the
 genstep's line as a by-product.
 
-### 3.5 Climate, latitude and heat kind
+### 3.5 Climate, latitude and sun elevation
 
 - **Latitude:** choose site tiles at |lat| ≤ 25°, the hot band, and record each tile's
-  latitude. **Heat kind:** record the would-be heat kind as `overhead` (sun +56° median). No
-  Pyrelands-specific heat logic exists or may be added (the one-heat ruling). When
-  `SOLAR_HEAT_EXPOSURE_1` lands, add a bar for it then.
+  latitude. **Sun elevation:** record each tile's sun elevation (median +56°). No
+  Pyrelands-specific heat logic exists or may be added (owner, 2026-10-19: *"no biome-specific heat, no
+  biome-specific sun"*). When `DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME` lands, add a bar for it then.
 - **Temperature:** set the tile mean to **50 °C**, inside the campaign's 39–65 range and near its
   53.6 median. Record the actual map temperature at each sampling instant. Also set up **one
   control site at 30 °C**, used only to tell temperature from mechanism on bar 5 and never for
@@ -536,7 +536,7 @@ fallbacks.
    mutators → generate → home it → census at tick 0 → save → reload → [V] on the reloaded copy.
    K = 3.
 6. **Temperature at the campaign value from the biome sheet's §0,** plus one control site.
-   Latitude band and heat kind recorded.
+   Latitude band and sun elevation recorded.
 7. **Generic bars every biome gets:** plant purity + coverage, animal purity + pyramid-rank,
    mapgen log clean, terrain family present, weather table matches the ruled bans.
    Biome-specific bars sit on top.

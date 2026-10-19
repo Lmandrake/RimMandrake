@@ -61,7 +61,7 @@ no visual surface — no bar: a pure data patch (zeroes `startingCountAtWorldCre
 ## RimMandrake/LongShade
 ### must show
 - [ ] `longshade_perpetual_beautiful_sunset` — the sky and light read as a perpetual, beautiful sunset (source: owner, `I/LONGSHADE_BEDAZZLE_MECHANICS_1.md:11`: "A perpetual beautiful sunset.")
-- [ ] `longshade_shade_gear_parasol_tent_shield` — parasols, shade tents and simple shields you can stand behind exist (source: owner, `B/longshade_bedazzle_cast_2026-09-29.md:133`)
+- [ ] `longshade_shade_gear_parasol_tent` — parasols and shade tents exist (source: owner, `B/longshade_bedazzle_cast_2026-09-29.md:133`; the shield was dropped by the owner 2026-10-19: *"Keep only Parasols and Tents"*)
 - [ ] `longshade_shadespire_dull_green_husks` — the shadespire keeps its interesting husk-like fruits, in dull green without wild colour or frills (source: owner, `I/LONGSHADE_BEDAZZLE_CONTENT_1.md:40`)
 - [ ] `longshade_vrekka_darker` — the vrekka is tinted a bit darker (source: owner, `I/LONGSHADE_BEDAZZLE_CONTENT_1.md:42`)
 - [ ] `longshade_palette_varied` — sprites do not share one uniform palette (source: owner, `B/longshade_bedazzle_cast_2026-09-29.md:26`, same "palette is too uniform" quote)

@@ -34,3 +34,7 @@ sun", natives dive for overhangs), `RM_Contagion.xml`, `RM_ContagionWeathers.xml
   carries `sunExposureFactor 0.2`, so the heat bites in the Burn (and the rarer clear spells). The Burn def has none (factor 1).
 - Values `heatOffsetC 10`, `0.2` are invented first values. No new hediff. Owner to rule: is 0.2 under the Bloom right, and
   should the Bloom be 0 (Burn-only heat)? Judged best-supported, not owner-confirmed.
+
+## superseded 2026-10-19
+
+Superseded by `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`: the owner ruled (card, 2026-10-19) there are no per-biome heat kinds, so the Contagion owes none. Its Bloom `sunExposureFactor 0.2` stays as a weather factor.

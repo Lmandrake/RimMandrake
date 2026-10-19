@@ -8,8 +8,10 @@ fired once per save on the first gravship landing; setting `biomeArrivalLettersE
 Built at `4b1b7c63c`, text only. One extension on each of 10 BiomeDefs, Fever Wood first: RM_FeverWood,
 RM_RustCathedral, RM_Webwork, RM_TheForge, RM_FloodedCanyon (the Cracked Lands), RM_LongShade, RM_WeepingStones,
 RM_Pyrelands, RM_Stillsand, RM_Greentide. Each gives the biome's survival reads, then a heat line that follows its
-declared heat kind and names the SHADE_GEAR_FAMILY_1 gear that answers it (overhead: roof/parasol/shade tent;
-low sun: lee shadow/sun shield, parasol barely helps; ambient: no shade helps, insulation or a closed room).
+declared heat kind as built at `4b1b7c63c`. ⚠️ Those heat lines are now false: the owner ruled 2026-10-19 there
+are no heat kinds and the shade gear is parasols and roofs (*"Keep only Parasols and Tents"*). Their rewrite (the
+tile's sun, roof/parasol, long shadows at low sun; air heat for the Forge, Scald, Fever Wood, Greentide) is
+spec 9 of `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`.
 
 Selection: a declared heat kind (`RM_SunHeatExtension`) AND a bedazzle review on file. **The Scald is left out**:
 only a floor sitting agenda exists. The Sump already had its letter.

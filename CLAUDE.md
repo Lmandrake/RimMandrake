@@ -149,13 +149,16 @@ laws (text/menu authority only; the game is whole with the LLM absent) stand. De
 `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md` is the authority, not the 1127-line
 spec**, which predates ten changed answers. Summary in `standing_rulings.md`.
 
-## 🔴 One kind of heat, planet-wide — owner, 2026-09-29/30
+## 🔴 One Direct Sun, a pure function of geometry — owner, 2026-09-29 and 2026-10-19
 
-*"It can't be a new "kind" of heat."* Sun exposure feeds **vanilla** heat (temperature → Heatstroke),
-never a new hediff, and every extreme-heat biome declares a heat KIND: overhead sun, low sun, or
-ambient (steam/volcanic, where shade does nothing). *"The biome takes its sun angle from its
-latitude"*, meaning the tile's planet latitude, never a region's prose. Shade gear works per heat kind.
-And **no animal or pawn ever vanishes without a readable sign.** Item: `SOLAR_HEAT_EXPOSURE_1`.
+*"It can't be a new "kind" of heat."* · *"no biome-specific heat, no biome-specific sun. It's a matter
+of geometry (low sun is less intense AND produces longer shade, high sun produces only covered shade
+and much more intense effect). Ambient heat is normal Rimworld rules."* Direct Sun feeds **vanilla**
+heat (felt temperature → Heatstroke), 55 °C at the zenith × sin(sun angle), the sun angle from the
+tile's planet position; no per-biome heat kind, number or exception. Shade gear is parasols and roofs
+(a tent is any quick roof). Volcanic/steam/fog heat is plain air temperature. And **no animal or pawn
+ever vanishes without a readable sign.** Full text: `standing_rulings.md` §Direct Sun; design and
+migration: `design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`.
 
 ## 🔑 Every DLC is assumed — owner, 2026-09-19/25/26
 

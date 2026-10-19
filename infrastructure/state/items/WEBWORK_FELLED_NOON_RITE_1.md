@@ -27,10 +27,11 @@ God.Shkaar, <sized by outcome quality>, "The Felled Noon")` per performance, the
      vanilla) as the ritual's first stage.
    - **At the hour of highest sun.** On a map with a day cycle, the start window is the middle of the
      day (vanilla `DayPercent` about 0.45 to 0.55, a Mod Settings width). 🔴 On a pinned-sun map
-     (`RM_MapComponent_PinnedSun` active: Ash'karr's dayside has no night) there is no hour: the gate is
-     the sun's elevation at or above the biome's overhead threshold, so on a high-sun tile the rite may
-     start whenever, and on a low-sun tile it cannot start at all. BENCH's reading of "high noon" on a
-     world with a fixed sun; whether Webwork maps run a pinned sun is UNMEASURED, read it first.
+     (`RM_MapComponent_PinnedSun` active: Ash'karr's dayside has no night) there is no hour: the sun
+     stands at that place's noon permanently (owner, 2026-10-19: *"time of day = location,
+     permanently"*), so the rite may start whenever the sun is above the horizon. There is no
+     per-biome overhead threshold any more (`DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES` makes every
+     map of the shipped world fixed-sun).
    - **The standing:** participants then stand **bare-headed in the hole the fall leaves** for the rest of
      the rite: they doff head-layer apparel at the start (restored after), and their duty cells are the
      cells whose shade the felled tree was casting, now `ShadeAt` 0. A participant who steps into shade
@@ -42,7 +43,7 @@ God.Shkaar, <sized by outcome quality>, "The Felled Noon")` per performance, the
    take anyone who steps back into the shade. The sun is the only thing between them; the scald does the
    rest. Dormant ollathrix wake by the existing `CompWakeUpDormant` path only if a participant is in range,
    as today.
-4. **Risk (the point).** Standing unshaded in an overhead-heat biome is vanilla heatstroke (no new
+4. **Risk (the point).** Standing unshaded under the Webwork's high sun is Direct Sun into vanilla heatstroke (no new
    hediff); on the Webwork it is also a ring of predators at arm's length.
 5. **Outcomes: cohesion only.** Shared memories by quality (attendance, how many stood to the end, no one
    stepped back). Sh'kaar's pleasure is told by the Narrator and shows only as events and odds, never a
@@ -52,8 +53,8 @@ God.Shkaar, <sized by outcome quality>, "The Felled Noon")` per performance, the
 7. **Mod Settings:** on/off; noon window width; the gathering on/off; inscription chance.
 
 Depends on: `SALVATION_RITES_UNIFICATION_1` (found-rite machinery, `RUT_ResearchMod_GrantRite`),
-`WEBWORK_HEAT_SHADE_BUILD_1` (the scald reads the shade grid, so the shade line is real; the heat kind makes
-the standing dangerous). Art: `infrastructure/artpipe/art_lists/webwork_turn1_2026-10-02.csv`
+`WEBWORK_HEAT_SHADE_BUILD_1` (the scald reads the shade grid, so the shade line is real; Direct Sun at the
+tile's sun makes the standing dangerous). Art: `infrastructure/artpipe/art_lists/webwork_turn1_2026-10-02.csv`
 (`RUT_FelledNoonStump`).
 
 ## criteria
@@ -64,7 +65,7 @@ Deterministic state reads through debug `[Tool]`s, recorded as cases in `src/Rim
 - Target: on a map with three trees of differing size, the ritual's target is the largest; on a map with
   none, the rite reports unavailable with a reason line.
 - Gate: with a day cycle and `DayPercent` 0.2 the start is refused with a reason; at 0.5 it is allowed.
-  With a pinned sun above the overhead threshold it is allowed; below, refused.
+  With a pinned sun above the horizon it is allowed; at or below it, refused.
 - After the felling stage: the target tree is destroyed, a stump exists at its cell, and the participants'
   duty cells all read `ShadeAt` 0; each participant holds no head-layer apparel during the standing and
   holds it again after.
