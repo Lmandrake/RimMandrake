@@ -40,8 +40,10 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
+import time
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -456,7 +458,7 @@ def in_flight() -> int:
                if f.name.endswith(".json") and not f.name.endswith(".manifest.json"))
 
 
-def submit(jobs_ps, cap: int, dry: bool, gate=None):
+def submit(jobs_ps, cap: int, dry: bool, gate=None, journal=None, requeue_pool: bool = True):
     """Feed the job files in order (earlier files claim the room first); one shared cap. Every row passes the
     eligibility gate (regen_eligibility.py, owner 2026-10-19: only confirmed NONE / PLACEHOLDER / DONOR art is
     queued). Fail closed: a gate that cannot be built files nothing."""
@@ -465,12 +467,22 @@ def submit(jobs_ps, cap: int, dry: bool, gate=None):
     except RE.GateError as e:
         print(f"ELIGIBILITY GATE FAILED — filing nothing: {e}", file=sys.stderr)
         return 2
+    try:
+        n429 = (journal or recent_429s)()
+    except Exception as e:                                # noqa: BLE001
+        print(f"backing off: cannot read the artpipe journal ({e})")
+        return 0
+    if n429:
+        print(f"backing off: {n429} 429 lines in the artpipe journal in the last {BACKOFF_MIN} min; filing nothing")
+        return 0
     rc = 0
     for jp in jobs_ps:
         if cap - in_flight() <= 0:
             print(f"queue at cap before {jp.name}")
             break
         rc = submit_one(jp, cap, dry, gate) or rc
+    if requeue_pool:
+        rc = requeue(ART, cap, REQUEUE_BATCH, dry, gate, journal=lambda: 0) or rc
     return rc
 
 
@@ -532,6 +544,86 @@ def submit_one(jobs_p: Path, cap: int, dry: bool, gate=None):
     return res.returncode
 
 
+# ─────────────────────────────────────────────────────────── requeue ──
+# Owner 2026-10-19 ("Requeue them gently"): failed dregen_ jobs whose only fault was an HTTP 429 go back to pending/,
+# but only if the eligibility gate confirms them AGAIN right now (fail closed), in small batches, below the cap,
+# and never while the daemon journal shows a 429 in the last 30 minutes.
+
+REQUEUE_BATCH = 10
+BACKOFF_MIN = 30
+
+
+def recent_429s(minutes: int = BACKOFF_MIN) -> int:
+    """429 lines in the artpipe daemon journal. Raises OSError when the journal cannot be read (caller backs off)."""
+    r = subprocess.run(["journalctl", "--user", "-u", "rm-artpiped", "--since", f"{minutes} min ago", "--no-pager"],
+                       capture_output=True, text=True, timeout=60)
+    if r.returncode != 0:
+        raise OSError(f"journalctl rc={r.returncode}: {r.stderr.strip()[:120]}")
+    return sum(1 for ln in r.stdout.splitlines() if "429" in ln)
+
+
+def eligible_failed(art: Path, gate) -> list:
+    """-> [(job dict, verdict)] for failed dregen_ jobs that failed on a 429 and pass the gate NOW."""
+    out = []
+    for f in sorted((art / "failed").glob("dregen_*.json")):
+        if f.name.endswith(".manifest.json"):
+            continue
+        man = art / "failed" / (f.stem + ".manifest.json")
+        try:
+            if "429" not in man.read_text():
+                continue
+            j = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        if (art / "pending" / f.name).exists() or (art / "active" / f.name).exists():
+            continue
+        v = gate.classify(j)
+        if v["eligible"]:
+            out.append((j, v))
+    return out
+
+
+def requeue(art: Path = None, cap: int = 40, batch: int = REQUEUE_BATCH, dry: bool = False, gate=None,
+            journal=None) -> int:
+    art = art or ART
+    try:
+        n429 = (journal or recent_429s)()
+    except Exception as e:                                # noqa: BLE001 — cannot see the journal: do not file
+        print(f"backing off: cannot read the artpipe journal ({e})")
+        return 0
+    if n429:
+        print(f"backing off: {n429} 429 lines in the artpipe journal in the last {BACKOFF_MIN} min; filing nothing")
+        return 0
+    try:
+        gate = gate or RE.Gate()
+    except RE.GateError as e:
+        print(f"ELIGIBILITY GATE FAILED — requeuing nothing: {e}", file=sys.stderr)
+        return 2
+    pool = eligible_failed(art, gate)
+    inflight = sum(1 for st in ("pending", "active") for f in (art / st).iterdir()
+                   if f.name.endswith(".json") and not f.name.endswith(".manifest.json"))
+    room = min(batch, cap - inflight)
+    print(f"eligible failed pool {len(pool)}; in flight {inflight} / cap {cap}; this run up to {max(room, 0)}")
+    if room <= 0 or not pool:
+        return 0
+    park = art / "_requeued_manifests"
+    n = 0
+    for j, v in pool[:room]:
+        name = j["id"] + ".json"
+        if dry:
+            print(f"would requeue {j['id']} ({v['verdict']})")
+            n += 1
+            continue
+        park.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(art / "failed" / name), str(art / "pending" / name))
+        man = art / "failed" / (j["id"] + ".manifest.json")
+        if man.is_file():
+            shutil.move(str(man), str(park / f"{man.stem}.{int(time.time())}.json"))
+        n += 1
+    print(f"requeued {n}" + (" (dry run)" if dry else ""))
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     sp = ap.add_subparsers(dest="cmd", required=True)
@@ -547,7 +639,13 @@ def main():
     s.add_argument("--jobs", required=True, type=Path, nargs="+", help="fed in order, one shared cap")
     s.add_argument("--cap", type=int, default=40, help="max job files pending+active after filing")
     s.add_argument("--dry-run", action="store_true")
+    q = sp.add_parser("requeue", help="move gate-confirmed 429-failed dregen_ jobs back to pending/, <=10 per run")
+    q.add_argument("--cap", type=int, default=40)
+    q.add_argument("--batch", type=int, default=REQUEUE_BATCH)
+    q.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
+    if a.cmd == "requeue":
+        sys.exit(requeue(ART, a.cap, a.batch, a.dry_run))
     if a.cmd == "build":
         build(a.audit, a.census, a.plan, a.out, a.sw_only, a.exclude_jobs)
     else:

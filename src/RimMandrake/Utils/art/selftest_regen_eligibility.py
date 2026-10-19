@@ -198,11 +198,66 @@ def main() -> int:
         jf.write_text(json.dumps({"rows": [row("RM_Regen", install_to=it("Things/RM_Regen"))]}))
         orig_qv = DJ.queue_view
         DJ.queue_view = lambda: ({}, set())
-        rc = DJ.submit([jf], 40, True, gate=g)
+        rc = DJ.submit([jf], 40, True, gate=g, journal=lambda: 0, requeue_pool=False)
         check(not calls, "submit never files a refused row", calls)
         DJ.queue_view = orig_qv
     finally:
         DJ.RE.Gate, DJ.subprocess.run, DJ.in_flight = orig_gate, orig_run, orig_if
+    # requeue: 429-failed + gate-eligible only, batch cap, room cap, backoff, fail closed
+    art = Path(tempfile.mkdtemp(prefix="regen_art_"))
+    for d in ("pending", "active", "failed"):
+        (art / d).mkdir()
+
+    def fail(dn, cause="429", **kw):
+        j = row(dn, install_to=it(f"Things/{dn}"), **kw)
+        (art / "failed" / (j["id"] + ".json")).write_text(json.dumps(j))
+        (art / "failed" / (j["id"] + ".manifest.json")).write_text(json.dumps({"worker_stderr_tail": cause}))
+        return j["id"]
+    for i in range(12):
+        fail("RM_Donor")                                   # same id rewritten: one file; vary below
+    ids = []
+    for i in range(12):
+        j = row("RM_Donor", id=f"dregen_RM_Donor_n{i}_v1", install_to=it("Things/RM_Donor"))
+        (art / "failed" / (j["id"] + ".json")).write_text(json.dumps(j))
+        (art / "failed" / (j["id"] + ".manifest.json")).write_text(json.dumps({"worker_stderr_tail": "HTTP 429"}))
+        ids.append(j["id"])
+    kept = fail("RM_Kept")
+    regen = fail("RM_Regen")
+    other = fail("RM_Donor", cause="derivation impossible", id="dregen_RM_Donor_other_v1")
+    g2 = gate(root)
+    pool = DJ.eligible_failed(art, g2)
+    pid = {j["id"] for j, _ in pool}
+    check(kept not in pid and regen not in pid, "requeue pool excludes KEPT and regenerated jobs", pid)
+    check("dregen_RM_Donor_other_v1" not in pid, "requeue pool excludes non-429 failures")
+    check(len(pool) == 13, "requeue pool = the 429 + gate-eligible jobs", len(pool))
+    check(DJ.requeue(art, 40, 10, True, g2, journal=lambda: 0) == 0 and len(list((art / "pending").iterdir())) == 0,
+          "requeue dry run moves nothing")
+    DJ.requeue(art, 40, 10, False, g2, journal=lambda: 0)
+    npend = len([f for f in (art / "pending").iterdir()])
+    check(npend == 10, "requeue moves at most 10 per run", npend)
+    check(not [f for f in (art / "failed").iterdir() if f.name.startswith(sorted(pid)[0]) and f.exists()
+               and (art / "pending" / (f.name)).exists()], "moved job left failed/")
+    DJ.requeue(art, 40, 10, False, g2, journal=lambda: 3)
+    check(len(list((art / "pending").iterdir())) == 10, "a 429 in the journal files nothing (backing off)")
+    DJ.requeue(art, 12, 10, False, g2, journal=lambda: 0)
+    check(len(list((art / "pending").iterdir())) == 12, "requeue honours the cap on pending+active",
+          len(list((art / "pending").iterdir())))
+
+    def unreadable():
+        raise OSError("no journal")
+    DJ.requeue(art, 99, 10, False, g2, journal=unreadable)
+    check(len(list((art / "pending").iterdir())) == 12, "an unreadable journal backs off (fail closed)")
+
+    def boom2(*a, **k):
+        raise RE.GateError("synthetic")
+    orig_g2 = DJ.RE.Gate
+    DJ.RE.Gate = boom2
+    try:
+        rc = DJ.requeue(art, 99, 10, False, None, journal=lambda: 0)
+    finally:
+        DJ.RE.Gate = orig_g2
+    check(rc == 2 and len(list((art / "pending").iterdir())) == 12, "requeue with a broken gate files nothing")
+    DJ.in_flight = lambda: 0
     print(f"\n{'FAILED' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 
