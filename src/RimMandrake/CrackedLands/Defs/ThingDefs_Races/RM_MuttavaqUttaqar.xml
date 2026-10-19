@@ -577,19 +577,19 @@
           <!-- TEMP PLACEHOLDER: vanilla Thrumbo texture as a plausible
                large-creature stand-in — this commission owes real art, not
                FOUNDRY's fill_queue.py this pass. -->
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq</texPath>
           <drawSize>2.6</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq</texPath>
           <drawSize>3.6</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq</texPath>
           <drawSize>4.6</drawSize>
         </bodyGraphicData>
       </li>
