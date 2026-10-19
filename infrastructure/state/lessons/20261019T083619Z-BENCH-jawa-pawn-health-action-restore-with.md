@@ -1,0 +1,1 @@
+jawa/pawn_health action=restore with no body part is always refused, so scripts that 'healed' colonists that way healed nobody (live_session heal_colonists, northstar_driver/site.py, found 2026-10-19). Check the reply of every heal call.
