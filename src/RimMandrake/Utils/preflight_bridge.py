@@ -555,7 +555,7 @@ def c_live_mods(ctx):
     r = check_load.evaluate()
     if r.get('absent'):
         return UNM('no %s: RimDefDump did not write its manifest (yet)' % r['absent'])
-    procs = ctx.get('procs') or []
+    procs = ctx.get('procs') or win_processes() or []   # --live never runs O01, so ctx may lack procs
     if procs and procs[0][1] and os.path.getmtime(check_load.MANIFEST) < procs[0][1]:
         return UNM('DefDump manifest predates this process: it describes a previous load')
     want = ctx.get('want') or intended(ctx)[0]
