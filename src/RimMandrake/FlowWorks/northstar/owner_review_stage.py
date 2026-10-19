@@ -23,6 +23,16 @@ Rows (each gets a labelled picture; the overview picture carries all of them):
             Transient/fw_hoses_walk/FlowWorks_HosePipeWalk_<date>_<scene>_{wide,close}.png.
   sprinklers four nets (tank, pipe run, pump over the pipe, power, head) with the pipe run restyled Futuristic / Industrial / Modern /
             Scrapper BEFORE the head is built (a head takes its pipe's look); ticks run past one hourly pulse so the spray shows.
+  bars_joint   (default) 1 m of water in 1/2/4 m holes, and 0.5/1/2 m of water in 4 m holes; a colonist in the 2 m+ water holes (swims).
+  bars_dry     (default) dry holes 0.5/1/1.5/2/4/8 m, a colonist standing in each (pawn height ladder to 2 m and deeper).
+  bars_trench  (default) a colonist waist-deep (1 m) and chest-deep (1.5 m) with a shooter on flat ground; ProofTrenchCover read into notes.
+  bars_access  (default) portable ladder in a 2 m pit and against a 4 m wall; climbing gear on the ground; a geared and an ungeared
+            colonist in 4 m sheer pits; a pit cover over a 2 m pit.
+  bars_bridges (default) suspension bridges rope/timber/steel/heavy over 4 m pits, railings on (north lane) and off (south lane), plus a
+            pit cover beside them. Built with RM_SuspensionProofs.ProofBuild "...;god" and ProofRails (the proof script's own calls).
+  Bars with NO site (no bridge tool can pose them): wall-climb mid-climb (RM_WallClimb has no pose call; the scale-a-built-wall build
+  is in progress), raiders-never-shelter (a raid-run state read), jump-into-pit hurts nobody (state read; live_session g_pit_access).
+  Site for all bars_* rows: east of the hoses, rect "bars_rect" (x = origin+150, 62 wide, 76 tall); live_session's owner zone is 216 wide.
 Then: kill hostiles, Clear weather locked, stepped toward midday, camera framed, shots, ONE save.
 
 Every action goes through Stage: --dry-run prints exactly the calls a live run would make.
@@ -45,7 +55,8 @@ LOOKS = ("Futuristic", "Industrial", "Modern", "Scrapper")
 PULSE = 2500
 NOTCH_M = 0.5                      # one fill notch = 0.5 m of water over a square (RM_LevelSolve.MetresPerUnit * U)
 SHALLOWS = ((0.5, 1), (1.0, 2), (1.5, 3), (2.0, 4), (5.0, 10))   # (metres, notches)
-ALL_ROWS = ("ladders", "spikes", "gates", "shallows", "sprinklers")
+BARS_ROWS = ("bars_joint", "bars_dry", "bars_trench", "bars_access", "bars_bridges")
+ALL_ROWS = ("ladders", "spikes", "gates", "shallows", "sprinklers") + BARS_ROWS
 OPT_ROWS = ("hoses",)            # run only when named in --only (own site east of the others; not in the default sweep)
 
 
@@ -65,6 +76,7 @@ def layout(ox, oz):
     """Every row's origin. Site rect (x, z, w, h) covers all of it."""
     return dict(
         hoses=(ox + 70, oz), hoses_rect=(ox + 64, oz - 6, 84, 76),
+        bars=(ox + 150, oz), bars_rect=(ox + 150, oz - 6, 62, 76),
         ladders=(ox, oz), spikes=(ox, oz + 8), gates_sluice=(ox, oz + 16), gates_grate=(ox, oz + 25),
         shallows=(ox, oz + 34), sprinklers=(ox, oz + 49), rect=(ox - 3, oz - 6, 64, 70))
 
@@ -140,6 +152,34 @@ class Stage(object):
             self.notes.append("no colonist to stand at %s for scale" % (cell,))
             return
         self.w.hp("pawn:%d=tp:%d,%d" % (p["id"], cell[0], cell[1]))
+
+    def pawn(self, cell, label="", wear=None):
+        """A drafted colonist standing at cell (spawn_pawn Colonist, as live_session.Run.spawn); wear = defName of apparel. Returns id or None."""
+        self.say("  colonist at %s%s%s" % (cell, " (%s)" % label if label else "", " wearing %s" % wear if wear else ""))
+        if self.dry:
+            return 0
+        r = self.w.call("jawa/spawn_pawn", kindDef="Colonist", x=cell[0], z=cell[1], faction="player", count=1) or {}
+        pid = ((r.get("pawns") or [{}])[0]).get("id")
+        if pid is None:
+            self.notes.append("colonist at %s NOT spawned (%s)" % (cell, str(r)[:100]))
+            return None
+        if wear:
+            g = self.w.call("jawa/pawn_gear", **{"pawn": pid, "action": "wear", "def": wear, "stuff": ""}) or {}
+            if not g.get("success"):
+                self.notes.append("%s NOT worn at %s (%s)" % (wear, cell, str(g)[:100]))
+        self.w.hp("pawn:%d=draft" % pid)
+        return pid
+
+    def item(self, d, cell):
+        self.say("  item %s at %s (spawn_batch)" % (d, cell))
+        if not self.dry:
+            self.w.call("jawa/spawn_batch", ops="%s:%d,%d" % (d, cell[0], cell[1]))
+
+    def proof(self, typ, method, arg):
+        self.say("  proof %s.%s(%s)" % (typ.split(".")[-1], method, arg))
+        if self.dry:
+            return True, ""
+        return self.w.proof(typ, method, arg)
 
     def ticks(self, n):
         self.say("  advance %d ticks" % n)
@@ -233,6 +273,8 @@ def row_shallows(s, L):
                 s.fill((pit[0] + i, pit[1] + j), notches)
         cap.append("%s m: pit %d deep, %d notches" % (metres, notches, notches))
         x += 5
+    s.pit((x, oz), 3, 2)            # the sixth look: a dry 1 m hole, no water
+    cap.append("dry: 1 m hole, no water")
     # The exact-level solver grows a body's dry rim ONE square per flow pulse (RM_FlowKernel.ExactDomain adds a dry square
     # only beside a wet one), so 2 notches in squares 0-1 read 0.33/0.33/0.33/0/0 after one pulse and level at 0.2 m after
     # three (measured live 2026-10-18). The 2026-10-18 run read after 300 ticks = one pulse and reported a false unlevel.
@@ -415,7 +457,103 @@ def row_hoses(s, L):
     return cap
 
 
-ROWS = dict(hoses=row_hoses, ladders=row_ladders, spikes=row_spikes, shallows=row_shallows, sprinklers=row_sprinklers)
+# ------------------------------------------------------------------ FlowWorks north-star bars (flowworks_bars_sitting_2026-10-18.md)
+SUSP = "RimMandrake.FlowWorks.Pits.RM_SuspensionProofs"
+TRENCH = "RimMandrake.FlowWorks.RM_TrenchCover"
+
+
+def row_bars_joint(s, L):
+    bx, bz = L["bars"]
+    s.say("ROW bars_joint: 1 m of water in 1/2/4 m holes (north); 0.5/1/2 m of water in 4 m holes (south)")
+    cap = []
+    for k, depth_m in enumerate((1, 2, 4)):                       # 1 m water = 2 notches
+        pit = (bx + k * 5, bz + 6)
+        s.pit(pit, 3, int(depth_m * 2), 2)
+        cap.append("1 m of water in a %d m hole" % depth_m)
+    for k, wet_m in enumerate((0.5, 1, 2)):
+        pit = (bx + k * 5, bz)
+        s.pit(pit, 3, 8, int(wet_m * 2))
+        cap.append("%s m of water in a 4 m hole" % wet_m)
+        if wet_m >= 2:
+            s.pawn((pit[0] + 1, pit[1] + 1), "swims: 2 m of water")
+    s.pawn((bx + 11, bz + 7), "swims in 1 m water in a 4 m hole")
+    return cap
+
+
+def row_bars_dry(s, L):
+    bx, bz = L["bars"]
+    s.say("ROW bars_dry: dry holes 0.5 / 1 / 1.5 / 2 / 4 / 8 m, a colonist in each")
+    cap = []
+    for k, m in enumerate((0.5, 1, 1.5, 2, 4, 8)):
+        pit = (bx + k * 5, bz + 14)
+        s.pit(pit, 3, int(m * 2))
+        s.pawn((pit[0] + 1, pit[1] + 1), "stands in a %s m hole" % m)
+        cap.append("dry %s m hole, colonist standing in it" % m)
+    return cap
+
+
+def row_bars_trench(s, L):
+    bx, bz = L["bars"]
+    s.say("ROW bars_trench: waist-deep (1 m) and chest-deep (1.5 m) colonist, a shooter 8 squares east on flat ground")
+    cap = []
+    for k, (m, what) in enumerate(((1.0, "waist-deep"), (1.5, "chest-deep"))):
+        pit = (bx + k * 5, bz + 22)
+        s.pit(pit, 3, int(m * 2))
+        tid = s.pawn((pit[0] + 1, pit[1] + 1), what)
+        sid = s.pawn((pit[0] + 9, pit[1] + 1), "shooter")
+        cap.append("%s colonist (%s m hole) with a shooter 8 squares east" % (what, m))
+        if not s.dry and tid is not None and sid is not None:
+            ok, txt = s.proof(TRENCH, "ProofTrenchCover", "%s;%s" % (tid, sid))
+            s.notes.append("trench cover %s: %s" % (what, (txt or "")[:160]))
+    return cap
+
+
+def row_bars_access(s, L):
+    bx, bz = L["bars"]
+    s.say("ROW bars_access: portable ladder (2 m pit, 4 m wall), climbing gear on the ground and worn, a pit cover")
+    cap = []
+    p2, p4, pg, pn, pc = (bx, bz + 30), (bx + 5, bz + 30), (bx + 10, bz + 30), (bx + 15, bz + 30), (bx + 20, bz + 30)
+    s.pit(p2, 3, 4)
+    s.place("RM_LadderPortable", (p2[0] + 1, p2[1] + 2), rot=0)
+    cap.append("portable ladder leaning in a 2 m pit")
+    s.pit(p4, 3, 8)
+    s.place("RM_LadderPortable", (p4[0] + 1, p4[1] + 2), rot=0)
+    cap.append("portable ladder against a 4 m wall (too short: lies flat)")
+    s.pit(pg, 3, 8)
+    s.pawn((pg[0] + 1, pg[1] + 1), "WEARS climbing gear, 4 m sheer pit", wear="RM_ClimbingGear")
+    cap.append("climbing gear worn: colonist in a 4 m sheer pit")
+    s.pit(pn, 3, 8)
+    s.pawn((pn[0] + 1, pn[1] + 1), "no gear, 4 m sheer pit (control)")
+    cap.append("no gear: control colonist in a 4 m sheer pit")
+    s.item("RM_ClimbingGear", (bx + 20, bz + 34))
+    cap.append("climbing gear item on the ground")
+    s.pit((pc[0] + 4, pc[1]), 3, 4)
+    s.place("RM_PitCover_PlankLattice", (pc[0] + 5, pc[1] + 1))
+    cap.append("plank pit cover over a 2 m pit")
+    return cap
+
+
+def row_bars_bridges(s, L):
+    bx, bz = L["bars"]
+    s.say("ROW bars_bridges: rope/timber/steel/heavy, railings on (north lane) and off (south lane), pit cover beside")
+    cap = []
+    for k, tier in enumerate(("rope", "timber", "steel", "heavy")):
+        x0 = bx + k * 13
+        for lane, rails in ((0, "on"), (1, "off")):
+            z = bz + 40 + lane * 4
+            for x in range(x0 + 1, x0 + 5):
+                s.dig((x, z), 8)
+            s.proof(SUSP, "ProofBuild", "%d,%d;%d,%d;%s;god" % (x0, z, x0 + 5, z, tier))
+            s.proof(SUSP, "ProofRails", "%d,%d;%s" % (x0 + 2, z, rails))
+            cap.append("%s suspension bridge, railings %s (%s lane)" % (tier, rails, "north" if lane == 0 else "south"))
+    s.pit((bx + 54, bz + 40), 3, 4)
+    s.place("RM_PitCover_PlankLattice", (bx + 55, bz + 41))
+    cap.append("plank pit cover (east end) beside the bridges: a cover passes for ground, a bridge does not")
+    return cap
+
+
+ROWS = dict(bars_joint=row_bars_joint, bars_dry=row_bars_dry, bars_trench=row_bars_trench, bars_access=row_bars_access,
+            bars_bridges=row_bars_bridges, hoses=row_hoses, ladders=row_ladders, spikes=row_spikes, shallows=row_shallows, sprinklers=row_sprinklers)
 
 
 # ------------------------------------------------------------------ driver
@@ -443,12 +581,16 @@ def main(argv=None):
     if not a.dry_run:
         s.w.call("jawa/kill_hostiles")
         s.w.call("jawa/weather_set", weather="Clear", lockWeather=True)
-        if [r for r in only if r != "hoses"]:
+        if [r for r in only if r not in ("hoses",) + BARS_ROWS]:
             s.w.clear_site(L["rect"])
+        if [r for r in only if r in BARS_ROWS]:
+            s.w.clear_site(L["bars_rect"])
         if "hoses" in only:
             s.w.clear_site(L["hoses_rect"])
     else:
-        s.say("  kill hostiles; Clear weather locked; clear_site %s" % (L["rect"] if [r for r in only if r != "hoses"] else L["hoses_rect"],))
+        s.say("  kill hostiles; Clear weather locked; clear_site %s" % (L["rect"] if [r for r in only if r not in ("hoses",) + BARS_ROWS] else L["hoses_rect"],))
+        if [r for r in only if r in BARS_ROWS]:
+            s.say("  clear_site %s (bars)" % (L["bars_rect"],))
         if "hoses" in only:
             s.say("  clear_site %s (hoses)" % (L["hoses_rect"],))
     caps = {}
@@ -501,13 +643,18 @@ def main(argv=None):
     for key, title in (("ladders", "Ladders: lowered (wall k) + raised (opposite)"), ("spikes", "RM_Spikes dry and under 1 m"),
                        ("gates_sluice", "RM_Sluice, 4 facings + held open"), ("gates_grate", "RM_SecurityGrateDoor, 4 facings + held open"),
                        ("shallows", "Water ladder 0.2 / 0.5 / 1 / 1.5 / 2 / 5 m"), ("sprinklers", "Sprinklers: Futuristic / Industrial / Modern / Scrapper")):
-        if key not in caps or key == "hoses":
+        if key not in caps or key == "hoses" or key in BARS_ROWS:
             continue
         gx, gz = L[key]
         rect = (gx - 3, gz - 3, 66 if key != "sprinklers" else 60, 12 if key != "sprinklers" else 14)
         png = C.snap(w, "row_" + key, rect)
         if png:
             shots.append(C.label_image(png, os.path.join(os.path.dirname(png), "row_%s_labelled.png" % key), title, "", caps[key]))
+    for key in BARS_ROWS:
+        if key in caps:
+            png = C.snap(w, key, L["bars_rect"])
+            if png:
+                shots.append(C.label_image(png, os.path.join(os.path.dirname(png), "row_%s_labelled.png" % key), key, "", caps[key]))
     over = C.snap(w, "overview", L["rect"])
     if over:
         shots.append(over)
