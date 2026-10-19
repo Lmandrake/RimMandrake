@@ -190,7 +190,14 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>A sunken deck draws a ledge shadow over itself so it reads as down in the hole, not on the surface.</summary>
 		public override void Print(SectionLayer layer)
 		{
-			base.Print(layer);
+			if (Graphic is Graphic_Linked linked && linked.SubGraphic != null)
+			{
+				RM_SuspensionDeckLink.Print(layer, this);   // SUSPENSION_DECK_LINKED_NO_SEAMS
+			}
+			else
+			{
+				base.Print(layer);
+			}
 			if (DeckNotches > 0 && RM_SuspensionMats.LedgeShadow != null)
 			{
 				Vector3 c = Position.ToVector3Shifted();

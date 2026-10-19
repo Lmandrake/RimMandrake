@@ -82,11 +82,14 @@ def check(texpaths):
         if ctype != 6 or depth != 8:
             fails.append(f"{tp}: not 8-bit RGBA (type {ctype}, depth {depth})")
             continue
-        if (w, h) != (256, 256):
-            fails.append(f"{tp}: {w}x{h}, want 256x256")
+        atlas = tp.endswith("_Atlas")        # SUSPENSION_DECK_LINKED_NO_SEAMS: a 4x4 link atlas, 4 x 344 px
+        if (w, h) != ((1376, 1376) if atlas else (256, 256)):
+            fails.append(f"{tp}: {w}x{h}, want {'1376x1376' if atlas else '256x256'}")
         a = alpha_rows(w, h, idat)
         name = tp.rsplit("/", 1)[-1]
         corners = [a[0][0], a[0][w - 1], a[h - 1][0], a[h - 1][w - 1]]
+        if atlas:
+            continue                          # corners/holes/cover are judged on the single picture; seams in selftest_flowworks_suspension_linked.py
         if "Deck" not in name and max(corners) > 0:
             fails.append(f"{tp}: corners not transparent {corners}")
         if name.endswith("Railing_Edge"):
