@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -501,8 +502,9 @@ namespace RimMandrake.FlowWorks
 	}
 
 	/// <summary>Per-map trap state, scribed by RM_MapComponent_Excavation: the jumper set
-	/// (references) and, derived and never scribed, the per-pawn last cell the descent
-	/// detector compares against.</summary>
+	/// (references) and the per-pawn last cell the descent detector compares against, scribed together with
+	/// the walked-step record (FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED: lastCell alone would read a walked
+	/// arrival in the last pre-save tick as forced).</summary>
 	public class RM_SuperdeepTrapState : IExposable
 	{
 		private HashSet<Pawn> jumpers = new HashSet<Pawn>();
@@ -510,7 +512,7 @@ namespace RimMandrake.FlowWorks
 		private Dictionary<Pawn, IntVec3> nextCell = new Dictionary<Pawn, IntVec3>();
 		/// <summary>Superdeep cells a pawn's own path follower stepped it into since the last
 		/// detector pass (RM_Patch_PathFollower_WalkedStep). Absent = the arrival was forced.</summary>
-		private readonly Dictionary<Pawn, IntVec3> walkedInto = new Dictionary<Pawn, IntVec3>();
+		private Dictionary<Pawn, IntVec3> walkedInto = new Dictionary<Pawn, IntVec3>();
 		private readonly List<Pawn> descents = new List<Pawn>();
 		private readonly HashSet<Pawn> forced = new HashSet<Pawn>();
 		private readonly Dictionary<Pawn, int> dropOf = new Dictionary<Pawn, int>();
@@ -712,6 +714,9 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		private List<Pawn> lastCellKeys, walkedKeys;
+		private List<IntVec3> lastCellVals, walkedVals;
+
 		public void ExposeData()
 		{
 			if (Scribe.mode == LoadSaveMode.Saving && jumpers != null)
@@ -721,6 +726,13 @@ namespace RimMandrake.FlowWorks
 				jumpers.RemoveWhere(p => p == null || p.Destroyed);
 			}
 			Scribe_Collections.Look(ref jumpers, "jumpers", LookMode.Reference);
+			if (Scribe.mode == LoadSaveMode.Saving)
+			{
+				lastCell?.Keys.Where(p => p == null || p.Destroyed).ToList().ForEach(p => lastCell.Remove(p));
+				walkedInto?.Keys.Where(p => p == null || p.Destroyed).ToList().ForEach(p => walkedInto.Remove(p));
+			}
+			Scribe_Collections.Look(ref lastCell, "lastCell", LookMode.Reference, LookMode.Value, ref lastCellKeys, ref lastCellVals);
+			Scribe_Collections.Look(ref walkedInto, "walkedInto", LookMode.Reference, LookMode.Value, ref walkedKeys, ref walkedVals);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (jumpers == null)
@@ -728,6 +740,10 @@ namespace RimMandrake.FlowWorks
 					jumpers = new HashSet<Pawn>();
 				}
 				jumpers.RemoveWhere(p => p == null);
+				if (lastCell == null) lastCell = new Dictionary<Pawn, IntVec3>();
+				if (walkedInto == null) walkedInto = new Dictionary<Pawn, IntVec3>();
+				lastCell.Keys.Where(p => p == null).ToList().ForEach(p => lastCell.Remove(p));
+				walkedInto.Keys.Where(p => p == null).ToList().ForEach(p => walkedInto.Remove(p));
 			}
 		}
 	}

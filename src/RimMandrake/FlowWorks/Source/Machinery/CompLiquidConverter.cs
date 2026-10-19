@@ -265,6 +265,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				batches.Add(n);
 			}
 			int pick = RM_ConversionMath.NextRunnable(batches, cand.FindIndex(c => c.input == lastInput));
+			float clipped = pick >= 0 ? RM_ConversionMath.ClippedIncome(accrued, cand[pick].capped, perTick) : 0f;
 			accrued = RM_ConversionMath.AccruedAfterPick(accrued, cand.Select(c => c.capped).ToList(), pick);
 			if (pick >= 0)
 			{
@@ -298,6 +299,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				lastInput = inputLiquid;
 				PlacePending();
 				accrued -= n * step.InputUnits;
+				accrued += clipped;   // CAP_EATS_CHANGE: income the cap clipped this tick is kept, not eaten
 				totalIn += n * step.InputUnits;
 				totalOut += made;
 				CompRefuelable fuel = parent.GetComp<CompRefuelable>();

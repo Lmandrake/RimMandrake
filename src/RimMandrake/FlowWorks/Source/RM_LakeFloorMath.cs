@@ -389,7 +389,8 @@ namespace RimMandrake.FlowWorks
 			{
 				f[k] = Math.Max(1, Math.Min(f[k], ceiling));
 			}
-			// ── one basin, then the way out (each only moves a floor shallower, so the pair settles; a few rounds at most) ──
+			// ── one basin, then the way out (SingleBasin only makes floors shallower, but WayOut can also DEEPEN a square that stood more than a step
+			// above the floor it is reached from; the loop is bounded at 8 rounds and stops early once a round moves nothing) ──
 			for (int round = 0; round < 8; round++)
 			{
 				int moved = SingleBasin(width, height, footprint, f);
