@@ -234,6 +234,11 @@ namespace RimMandrake.FlowWorks.Rivers
 				Thing t = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_BankWeir);
 				t.SetFaction(Faction.OfPlayer);
 				w2 = GenSpawn.Spawn(t, found, map, w.Rotation) as RM_Building_BankWeir;
+				if (w2 == null)
+				{
+					if (!t.Destroyed) t.Destroy();
+					return "UNMEASURED the second weir did not spawn at " + found;
+				}
 				comp.MarkWorksDirty();
 				HashSet<int> joined = new HashSet<int>();
 				w.AddPoolCells(comp, joined);

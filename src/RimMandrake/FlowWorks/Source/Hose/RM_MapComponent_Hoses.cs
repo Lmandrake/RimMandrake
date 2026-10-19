@@ -582,7 +582,8 @@ namespace RimMandrake.FlowWorks.Hose
                 int T = RM_HoseSettings.Tuning().TransitionTicks;
                 List<V2> pts = HoseMath.Pose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt);
                 bool settled = !pi.Wobbling && (pi.Blend <= 0 || pi.Blend >= 1);
-                string key = settled ? (pi.Blend >= 1 ? "P" : "F") + r.layKey + "@" + RankOf(r) : null;
+                // a transitioning pose depends only on the game tick, so it is cached per tick (a paused game stops re-meshing every frame)
+                string key = (settled ? (pi.Blend >= 1 ? "P" : "F") : "T" + Find.TickManager.TicksGame) + r.layKey + "@" + RankOf(r);
                 // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)
                 List<int> joints = Layered().Joints.TryGetValue(r.parent.thingIDNumber, out List<int> kept) ? kept : lay.Joints;
                 // S4: winding in, the laid pose is cut at the wound fraction (rebuilt per frame only while winding)

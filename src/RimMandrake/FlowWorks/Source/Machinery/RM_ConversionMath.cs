@@ -78,6 +78,13 @@ namespace RimMandrake.FlowWorks.Machinery
 			return Math.Min(accrued, Math.Max(inputUnits, perTick));
 		}
 
+		/// <summary>FLOWWORKS_CONVERTER_FIX_CAP_EATS_CHANGE: the part of this tick's income the cap clipped off, at most one rare tick's
+		/// worth (the idle bound is unchanged: batches still come from the capped budget). Added back after the batch is spent.</summary>
+		public static float ClippedIncome(float accrued, float capped, float perTick)
+		{
+			return Math.Max(0f, Math.Min(accrued - capped, perTick));
+		}
+
 		/// <summary>The budget kept after the pick: the picked candidate's capped budget, or when nothing runs the LARGEST
 		/// candidate cap (FLOWWORKS_CONVERTER_FIX_BLOCKED_STARVES_REST: taking candidate 0's cap let a blocked small recipe
 		/// hold a bigger one below its batch for ever). Unchanged when there are no candidates.</summary>

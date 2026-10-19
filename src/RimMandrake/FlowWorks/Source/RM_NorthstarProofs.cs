@@ -321,6 +321,10 @@ namespace RimMandrake.FlowWorks
 			{
 				return "REFUSED body #" + body.id + " is limitless";
 			}
+			if (float.IsNaN(frac))
+			{
+				return "REFUSED fraction is not a number";
+			}
 			frac = frac < 0f ? 0f : (frac > 1f ? 1f : frac);
 			body.stock = body.capacity * frac;
 			body.depthStaged = true;
@@ -379,6 +383,10 @@ namespace RimMandrake.FlowWorks
 				if (a.Length != 3 || !float.TryParse(a[2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float f))
 				{
 					return "REFUSED: stock;x,z;fraction";
+				}
+				if (float.IsNaN(f))
+				{
+					return "REFUSED: fraction is not a number";
 				}
 				body.stock = UnityEngine.Mathf.Clamp01(f) * body.capacity;
 				int rounds = eng.Stock.SettleRecession(map, body, eng);
