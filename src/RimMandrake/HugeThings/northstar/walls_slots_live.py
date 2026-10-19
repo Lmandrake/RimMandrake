@@ -94,7 +94,7 @@ PLANNED_B = {"B2": 2, "B3": 3, "B4": 4, "B6": 6}
 # The new settings at the owner's 2026-10-18 card defaults (RM_HugeThingsSettings.cs).
 DEFAULTS = {"wallsSlotsEnabled": True, "squeezeEnabled": True, "squeezeSlowdownAtHalf": 2.0, "trampleBudgetPerBreadth": 100.0,
             "blowDamagePerBreadth": 20.0, "holdLineFactor": 1.0, "roofWallHpFactor": 1.5, "roofWallDamageFactor": 0.6667,
-            "scrapeEnabled": True, "temperamentEnabled": True, "breadth2BreakingEnabled": True}
+            "scrapeEnabled": True, "temperamentEnabled": True, "breadth2BreakingEnabled": True, "trenchStepEnabled": True}
 
 # ============================================================================ kernel mirror (pure; RM_WallsSlotsKernel.cs)
 # Mirrors the Verse-free kernel line for line so the bars are computed, not typed. selftest: --table and the A1 fuzz (offline,
@@ -1143,7 +1143,7 @@ def b5_scrape_roof(s):
     set_full_rule(s)
     slot = "B4"
     zones = wave_zones(s.arena, 3, LEAD + 6 + LEAD, LANE_H)
-    # scrape: a 2-wide built gap (granite sides 3 thick so it is a gap run, not a wall), ten crossings
+    # scrape: a 2-wide built gap (wood sides 3 thick so it is a gap run, not a wall), ten crossings
     zone = zones[0]
     ln = Lane("scrape", "A6", slot, "scrape", zone, cast=slot)
     wx = zone[0] + LEAD
@@ -1378,7 +1378,7 @@ def concurrency_runner(s, zone):
 
 
 def wall_gone_runner(s, zone):
-    """A B4 on its way to a 2-thick wood wall; we destroy the wall's cells at the moment it is in contact; it must re-judge the
+    """A B4 on its way to a 5-thick wood wall (held); at contact we destroy its middle three columns; it must re-judge the
     same tick (no stale hold, no standing at a gone wall) and reach the goal."""
     ln = Lane("gone", "A7", "B4", "gone", zone, cast="B4")
     wx = zone[0] + LEAD
@@ -1398,7 +1398,7 @@ def wall_gone_runner(s, zone):
         if c and c[0] >= wx - 2:
             break
     held_before = len(s.things(zone, "Wall"))
-    s.call("jawa/destroy_batch", rects=rect_str((wx + 1, zone[1], 3, zone[3])), categories="Building")    # leaves a 2-thick wall
+    s.call("jawa/destroy_batch", rects=rect_str((wx + 1, zone[1], 3, zone[3])), categories="Building")    # leaves columns wx and wx+4: two 1-thick layers (T 1 for B 4, 390 HP <= 400: broken through)
     s.call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=ln.goal[0], targetAZ=ln.goal[1], waitTicks=1)
     reached = False
     for _ in range(160):
@@ -1576,6 +1576,11 @@ def write_verify_lines(s):
     p = os.path.join(s.out_dir, "verify_lines.txt")
     ev = os.path.relpath(os.path.join(s.out_dir, "session.json"), REPO)
     lines = []
+    if s.mock or s.env.get("partial"):
+        # A mock proves the script's paths, never the game; a partial run is never recordable. No ledger-ready line for either.
+        with open(p, "w", encoding="utf-8") as f:
+            f.write("# no verify lines: %s run\n" % ("mock" if s.mock else "partial (--only/--skip)"))
+        return p, 0
     for cid, (res, ids) in sorted(verdicts(s.rows).items()):
         lines.append('python3 src/RimMandrake/rimflow/cli.py verify %s --criterion %s --result %s --config %s --level L2 --evidence %s '
                      '--why "walls_slots_live rows %s"' % (ITEM, cid, res, s.env.get("config", "UNMEASURED"), ev, ",".join(ids)[:200]))

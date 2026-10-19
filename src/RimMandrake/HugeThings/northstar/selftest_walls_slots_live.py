@@ -47,6 +47,10 @@ check(rc == 0 and "DRY RUN" in out, "--dry-run exits 0")
 rc, rows, out = run("--mock")
 check(rc == 0 and rows and not [r for r in rows if r["status"] == "FAIL"], "clean --mock: no FAIL row (%d rows)" % len(rows))
 check(len([r for r in rows if r["status"] == "PASS"]) > 80, "clean --mock exercises > 80 PASS rows")
+# review wave 6 (2026-10-19): a mock run wrote seven ledger-ready `rimflow verify --result pass` lines against the fake game.
+check("verify lines 0 " in out, "a --mock run writes no ledger-ready verify line (a mock proves paths, never the game)")
+rc, rows, out = run("--mock", "--only", "A3")
+check("verify lines 0 " in out, "a partial (--only) run writes no ledger-ready verify line (never recordable)")
 for fault, prefix in (("hold", "A3_"), ("squeeze", "A2_cost"), ("roof", "A3_"), ("rock", "A2_"), ("scrape", "A6_scrape"),
                       ("defaults", "A8_defaults"), ("label", "A8_dialog_group")):
     rc, rows, out = run("--mock", "--mock-fault", fault)
