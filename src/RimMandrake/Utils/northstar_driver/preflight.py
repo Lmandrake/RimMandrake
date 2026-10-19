@@ -67,8 +67,10 @@ def check_loaded_not_zombie(s):
     return Check("game_loaded", PASS, "ticksGame=%s map=%sx%s" % (t1, mi["sizeX"], mi["sizeZ"]))
 
 
-# Windows that sit on screen in a dev quicktest and block nothing: the tick-rate/dev overlays.
-_BENIGN_WINDOWS = {"Verse.ImmediateWindow", "LudeonTK.Dialog_DevPalette"}
+# Windows that sit on screen in a dev quicktest and block nothing: the tick-rate/dev overlays, and on the
+# owner's full list Dubs Mint Minimap's tab (GameUI layer, forcePause false; it reopens itself the instant it is
+# closed, MEASURED 2026-10-19 on the 535-mod list, so it can never be cleared and must not refuse a run).
+_BENIGN_WINDOWS = {"Verse.ImmediateWindow", "LudeonTK.Dialog_DevPalette", "DubsMintMinimap.MainTabWindow_MiniMap"}
 
 
 def check_no_modal(s):

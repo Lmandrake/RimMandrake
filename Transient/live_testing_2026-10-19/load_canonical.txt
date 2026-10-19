@@ -1,0 +1,8 @@
+start Playing True
+go_to_main_menu {"success": true, "status": "queued", "message": "Queued return to the RimWorld main menu.", "state": {"programState": "Playing", "inEntryScene": false, "hasCurrentGame": true, "currentMapId": "Map_1", "longEventPending": true, "paused": true, "timeSpeed": "Paused", "playable": false, "visualReady":
+at menu Entry 4
+load_game {"success": true, "status": "queued", "saveName": "CANONICAL_ASHKARR_START_2026-10-18_DONORFREE_REPAIRED", "path": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Saves\\CANONICAL_ASHKARR_START_2026-10-18_DONORFREE_REPAIRED.rws", "compatibilityCheckIgnored": true, "com
+5 ('MapInitializing', True, None)
+193 ('Playing', True, 17007)
+198 ('Playing', False, 17007)
+MAP {"mapId": 3, "mapBiome": "RUT_ExtremeDesert", "tile": 17007, "ticksGame": 126814}

@@ -1,0 +1,159 @@
+{
+ "when": "2026-10-19T05:10:58",
+ "map_info": {
+  "mapId": 1,
+  "mapBiome": "RM_Contagion",
+  "size": null,
+  "tile": 3,
+  "success": true
+ },
+ "defs": {
+  "success": true,
+  "message": "2 of 2 def(s) resolved",
+  "requested": 2,
+  "foundCount": 2,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "defName"
+  ],
+  "defs": [
+   {
+    "requested": "ThingDef/RUT_Webwork_Nest",
+    "found": true,
+    "defName": "RUT_Webwork_Nest",
+    "defType": "ThingDef",
+    "label": "shokkweave nest",
+    "modName": "RimUtinni: Shokkweave Economy",
+    "packageId": "mandrake.rut.shokkweaveeconomy",
+    "fields": {
+     "defName": "RUT_Webwork_Nest"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_TallSlimyGrass",
+    "found": true,
+    "defName": "RM_TallSlimyGrass",
+    "defType": "ThingDef",
+    "label": "tall slimy grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_TallSlimyGrass"
+    }
+   }
+  ],
+  "ticksGame": 2,
+  "operation": {
+   "OperationId": "op_80ade8931cd24e889aeb554e5be92b6a",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 295
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 2
+  }
+ },
+ "tex": [
+  {
+   "def": "RUT_Webwork_Nest",
+   "spawn": {
+    "success": false,
+    "message": "Object reference not set to an instance of an object",
+    "exception": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 5BEF25F7]\n  at Vehicles.PathingHelper.RecalculatePerceivedPathCostAt (Verse.IntVec3 cell, Verse.Map map) [0x00007] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Utility\\Helpers\\PathingHelper.cs:367 \n  at Vehicles.Patch_VehiclePathing.RecalculatePerceivedPathCostForVehicle (Verse.IntVec3 c, Verse.AI.PathingContext ___normal) [0x00000] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Harmony\\Patches\\Patch_VehiclePathing.cs:217 \n  at Verse.AI.Pathing.RecalculatePerceivedPathCostAt (Verse.IntVec3 c) [0x00076] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_VehiclePathing:RecalculatePerceivedPathCostForVehicle(IntVec3 c, PathingContext ___normal)\n  at Verse.AI.Pathing.RecalculatePerceivedPathCostUnderThing (Verse.Thing thing) [0x00052] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Thing.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x00316] in <61e4173561894da49d210260257b5097>:0 \n    - TRANSPILER SmashPhil.VehicleFramework: IEnumerable`1 Vehicles.Patch_VehiclePathing:SpawnAndUpdateVehicleRegionsTranspiler(IEnumerable`1 instructions)\n    - TRANSPILER Kikohi.PipeSystem: IEnumerable`1 PipeSystem.PipeSystem_Thing_SpawnSetup_Patch:Transpiler(IEnumerable`1 instructions)\n    - PREFIX QF_Patch: Void QuestEditor_Library.Patch_ActivateMapOnSpawn:Prefix(Map map)\n    - POSTFIX WorldbuilderMod: Void Worldbuilder.Thing_SpawnSetup_Patch:Postfix(Thing __instance)\n    - POSTFIX ChezhouLib.lib: Void ChezhouLib.CustomMission.Levels.Patch_ClLevelThingSpawn:Postfix(Thing __instance, Map map)\n  at Verse.ThingWithComps.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX com.vanillageneticrimexpanded: Void GeneticRim.VanillaGeneticsExpanded_ThingWithComps_SpawnSetup:Postfix(ThingWithComps __instance)\n  at Verse.Building.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x0005d] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX LightsOut: Void LightsOut.Patches.Power.DisableBuildingsOnSpawn:Postfix(ThingWithComps __instance)\n    - POSTFIX mandrake.rm.gimmesomeslack: Void RimMandrake.GimmeSomeSlack.Aerial.Patch_Building_SpawnSetup_Runs:Postfix(Building __instance, Map map, Boolean respawningAfterLoad)\n    - POSTFIX gravtide.mod: Void GravTide.Building_SpawnSetup_Deck_Patch:Postfix(Building __instance)\n    - POSTFIX gravtide.mod: Void GravTide.MapComponent_WallLeak+Building_SpawnSetup_Patch:Postfix(Building __instance)\n    - POSTFIX LightsOut: Void LightsOut.Patches.ModCompatibility.Biotech.PatchMechCharger:AfterSpawn(Building __instance)\n    - POSTFIX LightsOut: Void LightsOut.Patches.ModCompatibility.Biotech.PatchMechGestator:AfterSpawn(Building __instance)\n    - POSTFIX LightsOut: Void LightsOut.Patches.ModCompatibility.Biotech.PatchGrowthVat:CheckTryEnable(Building __instance)\n    - POSTFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.RM_Patch_NetTopologySpawn:Postfix(Building __instance, Map map)\n    - POSTFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.Patch_Joins_Spawn:Postfix(Building __instance, Map map)\n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.Rot4 rot, Verse.WipeMode wipeMode, System.Boolean respawningAfterLoad, System.Boolean forbidLeavings) [0x003bf] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX SmashPhil.VehicleFramework: Boolean Vehicles.Patch_Construction:RegisterThingSpawned(Thing newThing, IntVec3& loc, Map map, Rot4& rot, Thing& __result, Boolean respawningAfterLoad)\n    - PREFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Prefix(Thing newThing, IntVec3 loc, Map map, Rot4 rot, Boolean respawningAfterLoad, Thing& __state)\n    - PREFIX VFEPirates.Mod: Boolean VFEPirates.GenSpawn_Spawn_Patch:Prefix(Thing& newThing, WipeMode& wipeMode, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Void Fortified.Patch_ReplaceBuilding:Prefix(Thing& newThing, Map map, Rot4& rot, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Boolean Fortified.Patch_Replace:Prefix(Thing& newThing, IntVec3 loc, Map map, Rot4 rot)\n    - POSTFIX com.VanillaFurnitureExpandedFactory: Void VanillaFurnitureExpandedFactory.GenSpawn_Spawn_Patch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing __result)\n    - POSTFIX neku.largepawns: Void LargePawns.Patches.GenSpawn_Spawn_LargePawnFootprintPatch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing& __result)\n    - POSTFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Postfix(Thing __result, Thing __state)\n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.WipeMode wipeMode) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at RimBridgeServer.LifecycleCapabilityModule.SpawnThing (System.String defName, System.Int32 x, System.Int32 z, System.Int32 stackCount) [0x0009c] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n(wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <51fded79cd284d4d911c5949aff4cb21>:0 \r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1]\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.BuiltInCapabilityModuleProvider+<>c__DisplayClass12_0.<InvokeAsync>b__0 () [0x00027] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n  at RimBridgeServer.RimBridgeMainThread+MainThreadWorkItem`1[T].ExecuteIfPending () [0x0001d] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.RimBridgeMainThread.Invoke[T] (System.Func`1[TResult] func, System.Int32 timeoutMs) [0x0004c] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n  at RimBridgeServer.MainThreadDispatcher.Invoke[T] (System.Func`1[TResult] func, System.Int32 timeoutMs) [0x00000] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n  at RimBridgeServer.Core.OperationRunner.Run (System.Func`1[TResult] func, RimBridgeServer.Core.OperationExecutionOptions options) [0x0008a] in <180d5ade2d6d4609998ff7b2086e323a>:0 ",
+    "operation": {
+     "OperationId": "op_3795d0be419f438283c0f9ee760af641",
+     "Status": "Failed",
+     "Success": false,
+     "DurationMs": 78,
+     "Error": {
+      "Code": "capability.failed",
+      "Message": "Object reference not set to an instance of an object",
+      "ExceptionType": "System.NullReferenceException",
+      "Details": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 5BEF25F7]\n  at Vehicles.PathingHelper.RecalculatePerceivedPathCostAt (Verse.IntVec3 cell, Verse.Map map) [0x00007] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Utility\\Helpers\\PathingHelper.cs:367 \n  at Vehicles.Patch_VehiclePathing.RecalculatePerceivedPathCostForVehicle (Verse.IntVec3 c, Verse.AI.PathingContext ___normal) [0x00000] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Harmony\\Patches\\Patch_VehiclePathing.cs:217 \n  at Verse.AI.Pathing.RecalculatePerceivedPathCostAt (Verse.IntVec3 c) [0x00076] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_VehiclePathing:RecalculatePerceivedPathCostForVehicle(IntVec3 c, PathingContext ___normal)\n  at Verse.AI.Pathing.RecalculatePerceivedPathCostUnderThing (Verse.Thing thing) [0x00052] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Thing.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x00316] in <61e4173561894da49d210260257b5097>:0 \n    - TRANSPILER SmashPhil.VehicleFramework: IEnumerable`1 Vehicles.Patch_VehiclePathing:SpawnAndUpdateVehicleRegionsTranspiler(IEnumerable`1 instructions)\n    - TRANSPILER Kikohi.PipeSystem: IEnumerable`1 PipeSystem.PipeSystem_Thing_SpawnSetup_Patch:Transpiler(IEnumerable`1 instructions)\n    - PREFIX QF_Patch: Void QuestEditor_Library.Patch_ActivateMapOnSpawn:Prefix(Map map)\n    - POSTFIX WorldbuilderMod: Void Worldbuilder.Thing_SpawnSetup_Patch:Postfix(Thing __instance)\n    - POSTFIX ChezhouLib.lib: Void ChezhouLib.CustomMission.Levels.Patch_ClLevelThingSpawn:Postfix(Thing __instance, Map map)\n  at Verse.ThingWithComps.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX com.vanillageneticrimexpanded: Void GeneticRim.VanillaGeneticsExpanded_ThingWithComps_SpawnSetup:Postfix(ThingWithComps __instance)\n  at Verse.Building.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x0005d] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX LightsOut: Void LightsOut.Patches.Power.DisableBuildingsOnSpawn:Postfix(ThingWithComps __instance)\n    - POSTFIX mandrake.rm.gimmesomeslack: Void RimMandrake.GimmeSomeSlack.Aerial.Patch_Building_SpawnSetup_Runs:Postfix(Building __instance, Map map, Boolean respawningAfterLoad)\n    - POSTFIX gravtide.mod: Void GravTide.Building_SpawnSetup_Deck_Patch:Postfix(Building __instance)\n    - POSTFIX gravtide.mod: Void GravTide.MapComponent_WallLeak+Building_SpawnSetup_Patch:Postfix(Building __instance)\n    - POSTFIX LightsOut: Void LightsOut.Patches.ModCompatibility.Biotech.PatchMechCharger:AfterSpawn(Building __instance)\n    - POSTFIX LightsOut: Void LightsOut.Patches.ModCompatibility.Biotech.PatchMechGestator:AfterSpawn(Building __instance)\n    - POSTFIX LightsOut: Void LightsOut.Patches.ModCompatibility.Biotech.PatchGrowthVat:CheckTryEnable(Building __instance)\n    - POSTFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.RM_Patch_NetTopologySpawn:Postfix(Building __instance, Map map)\n    - POSTFIX mandrake.rm.flowworks: Void RimMandrake.FlowWorks.Machinery.Patch_Joins_Spawn:Postfix(Building __instance, Map map)\n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.Rot4 rot, Verse.WipeMode wipeMode, System.Boolean respawningAfterLoad, System.Boolean forbidLeavings) [0x003bf] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX SmashPhil.VehicleFramework: Boolean Vehicles.Patch_Construction:RegisterThingSpawned(Thing newThing, IntVec3& loc, Map map, Rot4& rot, Thing& __result, Boolean respawningAfterLoad)\n    - PREFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Prefix(Thing newThing, IntVec3 loc, Map map, Rot4 rot, Boolean respawningAfterLoad, Thing& __state)\n    - PREFIX VFEPirates.Mod: Boolean VFEPirates.GenSpawn_Spawn_Patch:Prefix(Thing& newThing, WipeMode& wipeMode, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Void Fortified.Patch_ReplaceBuilding:Prefix(Thing& newThing, Map map, Rot4& rot, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Boolean Fortified.Patch_Replace:Prefix(Thing& newThing, IntVec3 loc, Map map, Rot4 rot)\n    - POSTFIX com.VanillaFurnitureExpandedFactory: Void VanillaFurnitureExpandedFactory.GenSpawn_Spawn_Patch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing __result)\n    - POSTFIX neku.largepawns: Void LargePawns.Patches.GenSpawn_Spawn_LargePawnFootprintPatch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing& __result)\n    - POSTFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Postfix(Thing __result, Thing __state)\n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.WipeMode wipeMode) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at RimBridgeServer.LifecycleCapabilityModule.SpawnThing (System.String defName, System.Int32 x, System.Int32 z, System.Int32 stackCount) [0x0009c] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n(wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <51fded79cd284d4d911c5949aff4cb21>:0 \r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1]\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.BuiltInCapabilityModuleProvider+<>c__DisplayClass12_0.<InvokeAsync>b__0 () [0x00027] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n  at RimBridgeServer.RimBridgeMainThread+MainThreadWorkItem`1[T].ExecuteIfPending () [0x0001d] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.RimBridgeMainThread.Invoke[T] (System.Func`1[TResult] func, System.Int32 timeoutMs) [0x0004c] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n  at RimBridgeServer.MainThreadDispatcher.Invoke[T] (System.Func`1[TResult] func, System.Int32 timeoutMs) [0x00000] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n  at RimBridgeServer.Core.OperationRunner.Run (System.Func`1[TResult] func, RimBridgeServer.Core.OperationExecutionOptions options) [0x0008a] in <180d5ade2d6d4609998ff7b2086e323a>:0 "
+     }
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 2
+    }
+   }
+  },
+  {
+   "def": "RM_TallSlimyGrass",
+   "spawn": {
+    "success": false,
+    "message": "Object reference not set to an instance of an object",
+    "exception": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 1EAE2F28]\n  at Vehicles.PathingHelper.RecalculatePerceivedPathCostAt (Verse.IntVec3 cell, Verse.Map map) [0x00007] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Utility\\Helpers\\PathingHelper.cs:367 \n  at Vehicles.Patch_VehiclePathing.RecalculatePerceivedPathCostForVehicle (Verse.IntVec3 c, Verse.AI.PathingContext ___normal) [0x00000] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Harmony\\Patches\\Patch_VehiclePathing.cs:217 \n  at Verse.AI.Pathing.RecalculatePerceivedPathCostAt (Verse.IntVec3 c) [0x00076] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_VehiclePathing:RecalculatePerceivedPathCostForVehicle(IntVec3 c, PathingContext ___normal)\n  at Verse.AI.Pathing.RecalculatePerceivedPathCostUnderThing (Verse.Thing thing) [0x00052] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Thing.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x00316] in <61e4173561894da49d210260257b5097>:0 \n    - TRANSPILER SmashPhil.VehicleFramework: IEnumerable`1 Vehicles.Patch_VehiclePathing:SpawnAndUpdateVehicleRegionsTranspiler(IEnumerable`1 instructions)\n    - TRANSPILER Kikohi.PipeSystem: IEnumerable`1 PipeSystem.PipeSystem_Thing_SpawnSetup_Patch:Transpiler(IEnumerable`1 instructions)\n    - PREFIX QF_Patch: Void QuestEditor_Library.Patch_ActivateMapOnSpawn:Prefix(Map map)\n    - POSTFIX WorldbuilderMod: Void Worldbuilder.Thing_SpawnSetup_Patch:Postfix(Thing __instance)\n    - POSTFIX ChezhouLib.lib: Void ChezhouLib.CustomMission.Levels.Patch_ClLevelThingSpawn:Postfix(Thing __instance, Map map)\n  at Verse.ThingWithComps.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX com.vanillageneticrimexpanded: Void GeneticRim.VanillaGeneticsExpanded_ThingWithComps_SpawnSetup:Postfix(ThingWithComps __instance)\n  at RimWorld.Plant.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX com.alphamemes: Void AlphaMemes.AlphaMemes_Plant_SpawnSetup_Patch:SetPlantFertility(Map map, Plant __instance)\n    - POSTFIX gravtide.mod: Void GravTide.AttachedVisualSpace_PlantSpawn:Postfix(Plant __instance, Boolean respawningAfterLoad)\n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.Rot4 rot, Verse.WipeMode wipeMode, System.Boolean respawningAfterLoad, System.Boolean forbidLeavings) [0x003bf] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX SmashPhil.VehicleFramework: Boolean Vehicles.Patch_Construction:RegisterThingSpawned(Thing newThing, IntVec3& loc, Map map, Rot4& rot, Thing& __result, Boolean respawningAfterLoad)\n    - PREFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Prefix(Thing newThing, IntVec3 loc, Map map, Rot4 rot, Boolean respawningAfterLoad, Thing& __state)\n    - PREFIX VFEPirates.Mod: Boolean VFEPirates.GenSpawn_Spawn_Patch:Prefix(Thing& newThing, WipeMode& wipeMode, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Void Fortified.Patch_ReplaceBuilding:Prefix(Thing& newThing, Map map, Rot4& rot, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Boolean Fortified.Patch_Replace:Prefix(Thing& newThing, IntVec3 loc, Map map, Rot4 rot)\n    - POSTFIX com.VanillaFurnitureExpandedFactory: Void VanillaFurnitureExpandedFactory.GenSpawn_Spawn_Patch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing __result)\n    - POSTFIX neku.largepawns: Void LargePawns.Patches.GenSpawn_Spawn_LargePawnFootprintPatch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing& __result)\n    - POSTFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Postfix(Thing __result, Thing __state)\n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.WipeMode wipeMode) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at RimBridgeServer.LifecycleCapabilityModule.SpawnThing (System.String defName, System.Int32 x, System.Int32 z, System.Int32 stackCount) [0x0009c] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n(wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <51fded79cd284d4d911c5949aff4cb21>:0 \r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1] Duplicate stacktrace, see ref for original",
+    "operation": {
+     "OperationId": "op_be5c03ec159d47e1aec880754764b05d",
+     "Status": "Failed",
+     "Success": false,
+     "DurationMs": 26,
+     "Error": {
+      "Code": "capability.failed",
+      "Message": "Object reference not set to an instance of an object",
+      "ExceptionType": "System.NullReferenceException",
+      "Details": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 1EAE2F28]\n  at Vehicles.PathingHelper.RecalculatePerceivedPathCostAt (Verse.IntVec3 cell, Verse.Map map) [0x00007] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Utility\\Helpers\\PathingHelper.cs:367 \n  at Vehicles.Patch_VehiclePathing.RecalculatePerceivedPathCostForVehicle (Verse.IntVec3 c, Verse.AI.PathingContext ___normal) [0x00000] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Harmony\\Patches\\Patch_VehiclePathing.cs:217 \n  at Verse.AI.Pathing.RecalculatePerceivedPathCostAt (Verse.IntVec3 c) [0x00076] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_VehiclePathing:RecalculatePerceivedPathCostForVehicle(IntVec3 c, PathingContext ___normal)\n  at Verse.AI.Pathing.RecalculatePerceivedPathCostUnderThing (Verse.Thing thing) [0x00052] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Thing.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x00316] in <61e4173561894da49d210260257b5097>:0 \n    - TRANSPILER SmashPhil.VehicleFramework: IEnumerable`1 Vehicles.Patch_VehiclePathing:SpawnAndUpdateVehicleRegionsTranspiler(IEnumerable`1 instructions)\n    - TRANSPILER Kikohi.PipeSystem: IEnumerable`1 PipeSystem.PipeSystem_Thing_SpawnSetup_Patch:Transpiler(IEnumerable`1 instructions)\n    - PREFIX QF_Patch: Void QuestEditor_Library.Patch_ActivateMapOnSpawn:Prefix(Map map)\n    - POSTFIX WorldbuilderMod: Void Worldbuilder.Thing_SpawnSetup_Patch:Postfix(Thing __instance)\n    - POSTFIX ChezhouLib.lib: Void ChezhouLib.CustomMission.Levels.Patch_ClLevelThingSpawn:Postfix(Thing __instance, Map map)\n  at Verse.ThingWithComps.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX com.vanillageneticrimexpanded: Void GeneticRim.VanillaGeneticsExpanded_ThingWithComps_SpawnSetup:Postfix(ThingWithComps __instance)\n  at RimWorld.Plant.SpawnSetup (Verse.Map map, System.Boolean respawningAfterLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX com.alphamemes: Void AlphaMemes.AlphaMemes_Plant_SpawnSetup_Patch:SetPlantFertility(Map map, Plant __instance)\n    - POSTFIX gravtide.mod: Void GravTide.AttachedVisualSpace_PlantSpawn:Postfix(Plant __instance, Boolean respawningAfterLoad)\n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.Rot4 rot, Verse.WipeMode wipeMode, System.Boolean respawningAfterLoad, System.Boolean forbidLeavings) [0x003bf] in <61e4173561894da49d210260257b5097>:0 \n    - PREFIX SmashPhil.VehicleFramework: Boolean Vehicles.Patch_Construction:RegisterThingSpawned(Thing newThing, IntVec3& loc, Map map, Rot4& rot, Thing& __result, Boolean respawningAfterLoad)\n    - PREFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Prefix(Thing newThing, IntVec3 loc, Map map, Rot4 rot, Boolean respawningAfterLoad, Thing& __state)\n    - PREFIX VFEPirates.Mod: Boolean VFEPirates.GenSpawn_Spawn_Patch:Prefix(Thing& newThing, WipeMode& wipeMode, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Void Fortified.Patch_ReplaceBuilding:Prefix(Thing& newThing, Map map, Rot4& rot, Boolean respawningAfterLoad)\n    - PREFIX Fortified: Boolean Fortified.Patch_Replace:Prefix(Thing& newThing, IntVec3 loc, Map map, Rot4 rot)\n    - POSTFIX com.VanillaFurnitureExpandedFactory: Void VanillaFurnitureExpandedFactory.GenSpawn_Spawn_Patch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing __result)\n    - POSTFIX neku.largepawns: Void LargePawns.Patches.GenSpawn_Spawn_LargePawnFootprintPatch:Postfix(Thing newThing, IntVec3 loc, Map map, Thing& __result)\n    - POSTFIX Uuugggg.rimworld.Replace_Stuff.main: Void Replace_Stuff.NewThing.TransferSettings:Postfix(Thing __result, Thing __state)\n  at Verse.GenSpawn.Spawn (Verse.Thing newThing, Verse.IntVec3 loc, Verse.Map map, Verse.WipeMode wipeMode) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at RimBridgeServer.LifecycleCapabilityModule.SpawnThing (System.String defName, System.Int32 x, System.Int32 z, System.Int32 stackCount) [0x0009c] in <3b96934e59bd4a10a8a17586c6464df1>:0 \n(wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <51fded79cd284d4d911c5949aff4cb21>:0 \r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1] Duplicate stacktrace, see ref for original"
+     }
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 2
+    }
+   }
+  }
+ ],
+ "sump": {
+  "on": {
+   "success": true,
+   "method": "System.String ProofRewrite(System.String)",
+   "result": "UNMEASURED: no clear (plant-free, unroofed) 12x12 patch of ordinary ground",
+   "thingArgs": [],
+   "ticksGame": 2,
+   "operation": {
+    "OperationId": "op_555301855fd9429dbe10fc75095532f1",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 63
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 2
+   }
+  },
+  "off": {
+   "success": true,
+   "method": "System.String ProofRewrite(System.String)",
+   "result": "UNMEASURED: no clear (plant-free, unroofed) 12x12 patch of ordinary ground",
+   "thingArgs": [],
+   "ticksGame": 2,
+   "operation": {
+    "OperationId": "op_39c60899eb284dd9b0248872b7b3f77e",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 29
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 2
+   }
+  }
+ }
+}

@@ -1,0 +1,153 @@
+{
+ "when": "2026-10-19T05:19:18",
+ "map_info": {
+  "mapId": 3,
+  "mapBiome": "RUT_ExtremeDesert",
+  "size": null,
+  "tile": 17007,
+  "success": true
+ },
+ "defs": {
+  "success": true,
+  "message": "2 of 2 def(s) resolved",
+  "requested": 2,
+  "foundCount": 2,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "defName"
+  ],
+  "defs": [
+   {
+    "requested": "ThingDef/RUT_Webwork_Nest",
+    "found": true,
+    "defName": "RUT_Webwork_Nest",
+    "defType": "ThingDef",
+    "label": "shokkweave nest",
+    "modName": "RimUtinni: Shokkweave Economy",
+    "packageId": "mandrake.rut.shokkweaveeconomy",
+    "fields": {
+     "defName": "RUT_Webwork_Nest"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_TallSlimyGrass",
+    "found": true,
+    "defName": "RM_TallSlimyGrass",
+    "defType": "ThingDef",
+    "label": "tall slimy grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_TallSlimyGrass"
+    }
+   }
+  ],
+  "ticksGame": 126814,
+  "operation": {
+   "OperationId": "op_b141473a5f49456f8b9a1e88ea47bb84",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 39
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 126814
+  }
+ },
+ "tex": [
+  {
+   "def": "RUT_Webwork_Nest",
+   "spawn": {
+    "success": false,
+    "message": "Object reference not set to an instance of an object",
+    "exception": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 5BEF25F7] Duplicate stacktrace, see ref for original\r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1] Duplicate stacktrace, see ref for original",
+    "operation": {
+     "OperationId": "op_46e5abf7700540e188246349b52cda7d",
+     "Status": "Failed",
+     "Success": false,
+     "DurationMs": 41,
+     "Error": {
+      "Code": "capability.failed",
+      "Message": "Object reference not set to an instance of an object",
+      "ExceptionType": "System.NullReferenceException",
+      "Details": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 5BEF25F7] Duplicate stacktrace, see ref for original\r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1] Duplicate stacktrace, see ref for original"
+     }
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 126814
+    }
+   }
+  },
+  {
+   "def": "RM_TallSlimyGrass",
+   "spawn": {
+    "success": false,
+    "message": "Object reference not set to an instance of an object",
+    "exception": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 1EAE2F28] Duplicate stacktrace, see ref for original\r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1] Duplicate stacktrace, see ref for original",
+    "operation": {
+     "OperationId": "op_ca5bc3ee0e8f457e933046a8810387e5",
+     "Status": "Failed",
+     "Success": false,
+     "DurationMs": 20,
+     "Error": {
+      "Code": "capability.failed",
+      "Message": "Object reference not set to an instance of an object",
+      "ExceptionType": "System.NullReferenceException",
+      "Details": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 1EAE2F28] Duplicate stacktrace, see ref for original\r\n   --- End of inner exception stack trace ---\r\n[Ref 562946B1] Duplicate stacktrace, see ref for original"
+     }
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 126814
+    }
+   }
+  }
+ ],
+ "sump": {
+  "on": {
+   "success": false,
+   "message": "Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref DF05AB44] <- at Vehicles.PathingHelper.RecalculatePerceivedPathCostAt (Verse.IntVec3 cell, Verse.Map map) [0x00007] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Utility\\Helpers\\PathingHelper.cs:367 <- at Vehicles.Patch_VehiclePathing.SetTerrainAndUpdateVehiclePathCosts (Verse.IntVec3& c, Verse.Map ___map) [0x00008] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Vehicle-Framework\\Source\\Vehicles\\Harmony\\Patches\\Patch_VehiclePathing.cs:229 <- at Verse.TerrainGrid.DoTerrainChangedEffects (Verse.IntVec3 c, Verse.TerrainDef oldTerr, Verse.TerrainDef newTerr, Verse.TerrainDef oldFoundation) [0x0000d] in <61e4173561894da49d210260257b5097>:0 <- - TRANSPILER mandrake.rm.flowworks: IEnumerable`1 RimMandrake.FlowWorks.RM_Patch_WaterPlantGraceOnChange:Transpiler(IEnumerable`1 instructions) <- - PREFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_VehiclePathing:SetTerrainAndUpdateVehiclePathCosts(IntVec3& c, Map ___map)",
+   "operation": {
+    "OperationId": "op_69a15d23a94b4e93b53a66409e5613b6",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 68
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 126814
+   }
+  },
+  "off": {
+   "success": false,
+   "message": "Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref DF05AB44] Duplicate stacktrace, see ref for original",
+   "operation": {
+    "OperationId": "op_5eeb68c2b6114d48902a5c9a4c19dded",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 47
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 126814
+   }
+  }
+ }
+}
