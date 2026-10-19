@@ -200,7 +200,9 @@ class Stage(object):
                 self.notes.append("governor stop while staging, colonists restored: %s" % str(ex)[:160])
                 for c in (self.w.call("rimworld/list_colonists") or {}).get("colonists") or []:
                     if c.get("pawnId") and not c.get("dead"):
-                        self.w.call("jawa/pawn_health", pawn=c["pawnId"], action="restore", confirmDestructive=True)
+                        hr = self.w.call("jawa/pawn_health", pawn=c["pawnId"], action="healAll", confirmDestructive=True)
+                        if not (isinstance(hr, dict) and hr.get("success")):
+                            self.notes.append("healAll refused for %s: %s" % (c["pawnId"], str(hr)[:120]))
                         self.w.call("jawa/pawn_need", pawn=c["pawnId"], action="need", need="Food", level=1.0)
                 self.w.ticks(n)
 

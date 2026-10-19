@@ -117,24 +117,28 @@ def prep_worker(rb, x, z, name=None):
     and heals so the pawn works instead of collapsing, fleeing, or breaking.
 
     Returns the pawn id staged, or None if no colonist found."""
-    # spawn a fresh healthy colonist AT the job cell so distance never stalls it
-    rb.call("jawa/spawn_pawn", {"kindDef": "Colonist", "x": int(x), "z": int(z),
-                                "count": 1, "faction": "PlayerColony"})
-    lp = rb.call("jawa/list_pawns", {"limit": 300})
-    cols = [p for p in lp.get("pawns", []) if p.get("isPlayer")]
-    if not cols:
-        return None
-    p = cols[0] if not name else next((c for c in cols if c.get("name") == name), cols[0])
-    pid = p.get("id")
+    # spawn a fresh healthy colonist AT the job cell so distance never stalls it; stage THAT pawn
+    sr = rb.call("jawa/spawn_pawn", {"kindDef": "Colonist", "x": int(x), "z": int(z),
+                                     "count": 1, "faction": "player"})
+    if not (isinstance(sr, dict) and sr.get("success")):
+        raise RuntimeError("prep_worker: spawn_pawn failed: %s" % str(sr)[:200])
+    row = (sr.get("pawns") or [{}])[0]
+    pid = row.get("id")
+    if not pid:
+        raise RuntimeError("prep_worker: spawn_pawn returned no pawn id: %s" % str(sr)[:200])
     # whole-body heal (healAll; 'restore' with no bodyPart is always refused). Check the reply.
     # The pawn tools key on `pawn`, not thingId.
     hr = rb.call("jawa/pawn_health", {"pawn": pid, "action": "healAll", "confirmDestructive": True})
     if not (isinstance(hr, dict) and hr.get("success")):
         raise RuntimeError("pawn_health healAll failed: %s" % str(hr)[:200])
     # top up every need (food, rest, recreation, mood inputs)
-    rb.call("jawa/pawn_refresh_needs", {"pawn": pid})
+    rr = rb.call("jawa/pawn_refresh_needs", {"pawn": pid})
+    if not (isinstance(rr, dict) and rr.get("success")):
+        raise RuntimeError("pawn_refresh_needs failed: %s" % str(rr)[:200])
     for need in ("Food", "Rest", "Joy", "Comfort", "Beauty", "Outdoors"):
-        rb.call("jawa/pawn_need", {"pawn": pid, "action": "need", "need": need, "level": 1.0})
+        nr = rb.call("jawa/pawn_need", {"pawn": pid, "action": "need", "need": need, "level": 1.0})
+        if not (isinstance(nr, dict) and nr.get("success")):
+            print("  WARNING: pawn_need %s not set: %s" % (need, str(nr)[:120]), file=sys.stderr)
     return pid
 
 
@@ -159,7 +163,11 @@ def clear(rb, kinds, rect):
 def cell_open(rb, x, z, want_terrain_prefix=None):
     """A subject spawned into rock/wall/water is the #1 review-shot defect. Verify
     the cell is walkable-ish and (optionally) on the terrain family you want."""
-    ci = rb.call("rimworld/get_cell_info", {"x": int(x), "z": int(z)}).get("cell", {})
+    gr = rb.call("rimworld/get_cell_info", {"x": int(x), "z": int(z)})
+    if not isinstance(gr, dict) or not gr.get("cell"):
+        # an unreadable cell is NOT an open cell (empty dict used to read as open grass)
+        raise RuntimeError("get_cell_info(%s,%s) unreadable: %s" % (x, z, str(gr)[:160]))
+    ci = gr["cell"]
     terr = ci.get("terrainDefName", "")
     things = ci.get("things") or []
     blocked = any((t.get("category") in ("Building",)) or ("Wall" in str(t.get("defName", "")))
@@ -376,6 +384,8 @@ def main():
     ap.add_argument("--save", default=None, help="keeper save name")
     args = ap.parse_args()
 
+    shot_path = None
+    spawn_failed = False
     rb = connect()
     mi = ensure_map(rb, args.map)
     print("map:", mi.get("mapId"), mi.get("mapBiome"), "tile", mi.get("tile"))
@@ -389,6 +399,7 @@ def main():
         at = tuple(int(v) for v in args.at.split(","))
         for row in spawn_roster(rb, parse_roster(args.spawn), at, args.spread, args.terrain, args.layout):
             print("  spawn", row)
+            spawn_failed = spawn_failed or not row[3]
     if args.face:
         print("faced:", face(rb, args.face))
     if args.daylight:
@@ -406,8 +417,12 @@ def main():
         wname = args.two_pass.split("_")[-1].lower()
         print("weather shot:", shoot(rb, args.frame, (args.shot or "review") + "_" + wname))
     elif args.frame or args.shot:
-        print("shot:", shoot(rb, args.frame, args.shot))
-    rc = 0
+        shot_path = shoot(rb, args.frame, args.shot)
+        print("shot:", shot_path)
+    rc = 1 if spawn_failed else 0
+    if (args.frame or args.shot) and not args.two_pass and not shot_path:
+        print("shot: NO PATH returned -- screenshot not verified", file=sys.stderr)
+        rc = 1
     if args.save:
         sv = save_game(rb, args.save)
         print("save:", sv)
