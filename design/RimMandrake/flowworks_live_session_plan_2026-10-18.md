@@ -86,7 +86,7 @@ longest wait, not the sum. "owner eyes" means the run stages and saves it and he
 | 28 | B4 | `DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT` | A2 | native dig_depth (flowworks_job_probe work total) | 0 | 0 |  | the bar's 'progress-bar time' is read as the job's work total + one rate sample: INFERRED, never a full dig |
 | 29 | B4 | `THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY` | T6 | native dehydration_ride (rides the whole session clock) | 0 | 0 |  | thirst_live T6 holds need 0 for 60,000 ticks serially (E ~16 min); here it rides every other block's ticks |
 | 30 | B4 | `FISH_ROLL_MEND_PONDS_BORN_BARREN` | A2 | native dug_reservoir (flowworks_body_report fish roll) | 500 | 8 |  |  |
-| 31 | B4 | `POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD` | A7 | native dug_reservoir (fishing zone: no bridge tool yet) | 0 | 0 |  | the fish roll on the 100-square dug body is read; the catch itself needs a fishing zone -> UNMEASURED/HARNESS |
+| 31 | B4 | `POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD` | A7 | native dug_reservoir (`jawa/map_zones` zoneType=fishing + `jawa/fishing` + `jawa/ordered_job` Fish) | 8500 | 140 |  | one vanilla Fish job (7500 / FishingSpeed ticks), the longest B4 wait; needs the companion build that carries `jawa/fishing` deployed |
 | 32 | B4 | `TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT` | A4 | native grenade (explosion_at Bomb, pawn_get hediffs) | 10 | 0 |  |  |
 | 33 | B4 | `FALL_GUARDRAILS_BUILD_REAL_OBJECT` | A3 | native rail_lip (records: AI never steps off an unrailed lip) | 900 | 15 |  | day 6: the unrailed CONTROL never fell either; the row records it again and the plan asks for the bar's ruling |
 | 34 | B5 | `POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD` | A5 | native cold_snap (game_condition ColdSnap) | 12000 | 200 |  |  |
@@ -190,8 +190,6 @@ last are in the ONE owner save B9 writes, or in the B2 dialog screenshot.
 ## 6. Gaps the session reports as UNMEASURED (no driver can ask yet)
 
 - `LIQUID_LEDGER_BUILD_NO_UNIT_LOST` A4 (`NS_intake_needs_pump`): no live row in any script.
-- `POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD` A7 (a catch on a dug reservoir): no bridge tool makes a fishing zone; the fish
-  ROLL on the 100-square body is read instead (`FISH_ROLL` A2).
 - `HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD` A2's blueprint -> frame -> building half: needs a colonist build of a styled
   pipe; the save/load half is in B7 once a builder row exists.
 - `FALL_GUARDRAILS_BUILD_REAL_OBJECT` A3: day 6 found the unrailed CONTROL never falls (the AI keeps off lips), so the bar

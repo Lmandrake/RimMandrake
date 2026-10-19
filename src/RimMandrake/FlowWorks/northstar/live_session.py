@@ -123,8 +123,8 @@ crit("DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT", "A2", "B4", "native dig_depth (floww
 crit("THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY", "T6", "B4", "native dehydration_ride (rides the whole session clock)", 0, 4,
      note="thirst_live T6 holds need 0 for 60,000 ticks serially (E ~16 min); here it rides every other block's ticks")
 crit("FISH_ROLL_MEND_PONDS_BORN_BARREN", "A2", "B4", "native dug_reservoir (flowworks_body_report fish roll)", 500, 15)
-crit("POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A7", "B4", "native dug_reservoir (fishing zone: no bridge tool yet)", 0, 0,
-     note="the fish roll on the 100-square dug body is read; the catch itself needs a fishing zone -> UNMEASURED/HARNESS")
+crit("POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A7", "B4", "native dug_reservoir (map_zones fishing + jawa/fishing + ordered_job Fish)",
+     8500, 140, note="E: one vanilla Fish job, 7500/FishingSpeed ticks; the longest B4 wait. Needs the companion with jawa/fishing")
 crit("TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A4", "B4", "native grenade (explosion_at Bomb, pawn_get hediffs)", 10, 10)
 crit("FALL_GUARDRAILS_BUILD_REAL_OBJECT", "A3", "B4", "native rail_lip (records: AI never steps off an unrailed lip)", 900, 15,
      note="day 6: the unrailed CONTROL never fell either; the row records it again and the plan asks for the bar's ruling")
@@ -787,9 +787,17 @@ def g_dig_depth(s):
           dict(probe=str(jp)[:240], want=want, how="INFERRED: work total read, the progress bar not timed"), "B4")
 
 
+POND = "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD"
+
+
 def g_reservoir(s):
     """FISH_ROLL A2 / POND_DEPTH A7: a 10x10 dug reservoir, filled; its body report after a pulse names the fish it
-    rolled (75 at 100 squares, FISH_ROLL selftest). Catching a fish needs a fishing zone: no bridge tool, UNMEASURED."""
+    rolled (75 at 100 squares, FISH_ROLL selftest). A7, the catch: a vanilla fishing zone over the dug water
+    (jawa/map_zones zoneType=fishing, which names each refused cell), one colonist on the vanilla Fish job
+    (jawa/ordered_job, fishCell + standSpot from jawa/fishing), and the map's Fish-group total read before and after.
+    PASS = the total rose. A zone refused for 'no fish' / 'no water-body type' or a zone that lost its cells during the
+    job is FAIL/MOD (dug water that cannot be fished). No catch with the zone intact is UNMEASURED/SITE: the job's 2%
+    negative-outcome roll gives no fish by design, and a needs interrupt ends the job; the detail says which to re-run."""
     x, z, _w, _h = s.zones["reservoir"]
     s.pit((x + 2, z + 2), 10, 10, 4, 4)
     yield Wait(500)
@@ -798,8 +806,53 @@ def g_reservoir(s):
     st = "UNMEASURED" if not b else ("PASS" if fish else "FAIL")
     s.row("B4_reservoir_fish_rolled", "FISH_ROLL_MEND_PONDS_BORN_BARREN", "A2", st, "MOD" if b else "HARNESS",
           dict(squares=b.get("squares") or b.get("cells"), fish=fish, keys=sorted(b)[:20]), "B4")
-    s.row("B4_reservoir_catch", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A7", "UNMEASURED", "HARNESS",
-          dict(why="no bridge tool makes a fishing zone; the body's fish roll is read above (B4_reservoir_fish_rolled)"), "B4")
+
+    def a7(st, cls, **d):
+        s.row("B4_reservoir_catch", POND, "A7", st, cls, d, "B4")
+
+    zr = s.call("jawa/map_zones", action="createZone", zoneType="fishing", rect="%d,%d,10,10" % (x + 2, z + 2))
+    if not zr.get("success"):
+        whys = sorted(set(str(c.get("why")) for c in (zr.get("refusedCells") or [])))
+        mod = any("no fish" in w or "no water-body type" in w for w in whys)
+        a7("FAIL" if mod else "UNMEASURED", "MOD" if mod else "HARNESS",
+           why="fishing zone refused on the dug reservoir", refusals=whys[:6], error=str(zr.get("error") or zr.get("message"))[:200])
+        return
+    label = zr.get("created")
+    p = s.spawn(HUMAN, (x + 1, z + 1))
+    rd = s.call("jawa/fishing", action="read", zone=label, pawn=p) if p else {}
+    fc, sp = rd.get("fishCell"), rd.get("standSpot")
+    if not (p and rd.get("success") and fc and sp):
+        a7("UNMEASURED", "HARNESS" if not rd.get("success") else "SITE", why="no pawn, no jawa/fishing read, or no stand spot",
+           pawn=p, zone=dict(label=label, cells=zr.get("cells"), refused=zr.get("refusedCount")),
+           read=str(rd.get("error") or rd.get("standSpotWhyNone") or rd.get("message"))[:200])
+        return
+    before = int(rd.get("fishTotal") or 0)
+    job_ticks = int(rd.get("jobTicks") or 7500)
+    oj = s.call("jawa/ordered_job", pawnId=p, jobDef="Fish", targetAX=fc["x"], targetAZ=fc["z"],
+                targetBX=sp["x"], targetBZ=sp["z"], waitTicks=0)
+    if not oj.get("accepted"):
+        a7("UNMEASURED", "HARNESS", why="Fish job not accepted", job=str(oj)[:240])
+        return
+    last = {}
+
+    def caught():
+        last.update(s.call("jawa/fishing", action="read", zone=label) or {})
+        return int(last.get("fishTotal") or 0) > before
+    w = Wait(job_ticks + 1500, until=caught, every=250)
+    yield w
+    caught()
+    after, zone_after = int(last.get("fishTotal") or 0), last.get("zone") or {}
+    d = dict(zone=label, zoneCells=[zr.get("cells"), zone_after.get("cells")], body=(rd.get("body") or {}),
+             fishBefore=before, fishAfter=after, fishOnMap=last.get("fishOnMap"), jobTicks=job_ticks,
+             fishCell=fc, standSpot=sp, whyNot=zone_after.get("whyNot"))
+    if after > before:
+        a7("PASS", "MOD", **d)
+    elif not last.get("success") or not zone_after.get("cells"):
+        a7("FAIL" if last.get("success") else "UNMEASURED", "MOD" if last.get("success") else "HARNESS",
+           why="the fishing zone lost its dug-water cells during the job" if last.get("success") else "jawa/fishing read failed", **d)
+    else:
+        a7("UNMEASURED", "SITE", why="no catch, zone intact: 2%% negative outcome or the job was interrupted; re-run the block "
+           "(waited %d ticks, timed_out=%s)" % (job_ticks + 1500, w.timed_out), **d)
 
 
 def g_grenade(s):

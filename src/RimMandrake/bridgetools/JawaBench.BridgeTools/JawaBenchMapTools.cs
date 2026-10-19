@@ -1916,19 +1916,25 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/map_zones",
             Description =
-                "Create, paint or delete STOCKPILE and GROWING zones, and paint the player " +
+                "Create, paint or delete STOCKPILE, GROWING and FISHING zones, and paint the player " +
                 "AREAS (home, no-roof, build-roof, allowed). " +
                 "action='listZones' | 'createZone' | 'paintZone' | 'deleteZone' | " +
                 "'listAreas' | 'paintArea'. " +
                 "⚠️ Bulk AddCell needs CheckContiguous() afterwards or a zone can end up " +
                 "internally inconsistent - this tool calls it. " +
+                "🐟 zoneType='fishing' (Odyssey) builds a vanilla Zone_Fishing and applies " +
+                "Designator_ZoneAdd_Fishing.CanDesignateCell's own refusals per cell, each named: " +
+                "no water-body type, impassable terrain, or a water body with NO FISH " +
+                "(WaterBody.HasFish false - a barren roll refuses EVERY cell of that body). " +
+                "One zone holds ONE water-body type (Zone_Fishing.FishType reads Cells[0]); a cell " +
+                "of the other type is refused, never mixed in. Read the zone back with the fishing tool. " +
                 "📌 The 1.6 name is Area_SnowOrSandClear, renamed from Area_SnowClear.",
             ResultDescription = "success, zones[] or areas[] with cell counts.")]
         public static async Task<object> MapZones(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "'listZones'|'createZone'|'paintZone'|'deleteZone'|'listAreas'|'paintArea'.")] string action = "listZones",
-            [ToolParameter(Description = "'stockpile' or 'growing' for createZone.")] string zoneType = "stockpile",
+            [ToolParameter(Description = "'stockpile', 'growing' or 'fishing' (Odyssey) for createZone.")] string zoneType = "stockpile",
             [ToolParameter(Description = "Zone label for paint/delete.")] string zone = null,
             [ToolParameter(Description = "Rect 'x,z,w,h'.")] string rect = null,
             [ToolParameter(Description = "Area for paintArea: Home | NoRoof | BuildRoof | SnowOrSandClear | PollutionClear (Biotech), or the label of an allowed area.")] string area = null,
@@ -1969,12 +1975,21 @@ namespace JawaBench.BridgeTools
                     // dropped the `plant` argument with it. The same fall-through already
                     // closed on designate_batch's action and set_weather_buildup's mode.
                     var ZT = (zoneType ?? "").Trim();
+                    bool fishing = ZT.Equals("fishing", StringComparison.OrdinalIgnoreCase);
                     if (!ZT.Equals("growing", StringComparison.OrdinalIgnoreCase)
-                        && !ZT.Equals("stockpile", StringComparison.OrdinalIgnoreCase))
-                        return Fail("zoneType must be 'stockpile' or 'growing', got '" + zoneType + "'. "
+                        && !ZT.Equals("stockpile", StringComparison.OrdinalIgnoreCase) && !fishing)
+                        return Fail("zoneType must be 'stockpile', 'growing' or 'fishing', got '" + zoneType + "'. "
                                     + "Every other value used to build a stockpile silently.");
+                    if (fishing && !ModsConfig.OdysseyActive)
+                        return Fail("zoneType 'fishing' needs the Odyssey expansion; it is not active.");
                     Zone z;
-                    if (ZT.Equals("growing", StringComparison.OrdinalIgnoreCase))
+                    if (fishing)
+                    {
+                        z = new Zone_Fishing(zm);
+                        if (!string.IsNullOrEmpty(plant))
+                            notes.Add("plant '" + plant + "' was IGNORED - a fishing zone grows nothing.");
+                    }
+                    else if (ZT.Equals("growing", StringComparison.OrdinalIgnoreCase))
                     {
                         var gz = new Zone_Growing(zm);
                         if (!string.IsNullOrEmpty(plant))
@@ -2012,8 +2027,25 @@ namespace JawaBench.BridgeTools
                     // IsZoneableCell is the engine's own predicate for fogged cells, the
                     // 5-cell no-zone map edge, and zone-incompatible things. Use both.
                     var refusedCells = new List<object>();
+                    WaterBodyType fishType = WaterBodyType.None;
                     foreach (var c in r)
                     {
+                        if (fishing)
+                        {
+                            // Designator_ZoneAdd_Fishing.CanDesignateCell, read from 1.6 source,
+                            // split into its three causes so the caller learns WHICH one.
+                            var wbt = c.GetWaterBodyType(map);
+                            string fwhy = null;
+                            if (wbt == WaterBodyType.None) fwhy = "no water-body type here (terrain " + c.GetTerrain(map).defName + ")";
+                            else if (c.GetTerrain(map).passability == Traversability.Impassable) fwhy = "impassable terrain " + c.GetTerrain(map).defName;
+                            else if (!map.waterBodyTracker.AnyFishPopulationAt(c)) fwhy = "water body has no fish (WaterBody.HasFish false: barren roll, no fish types, or population 0)";
+                            else if (fishType != WaterBodyType.None && wbt != fishType) fwhy = "water-body type " + wbt + " differs from this zone's " + fishType;
+                            if (fwhy != null)
+                            {
+                                if (refusedCells.Count < 12) refusedCells.Add(new { x = c.x, z = c.z, why = fwhy });
+                                continue;
+                            }
+                        }
                         var owner = zm.ZoneAt(c);
                         if (owner != null && owner != z)
                         {
@@ -2033,6 +2065,7 @@ namespace JawaBench.BridgeTools
                         z.AddCell(c);
                         if (!z.Cells.Contains(c) && refusedCells.Count < 12)
                             refusedCells.Add(new { x = c.x, z = c.z, why = "Zone.AddCell refused (see the log)" });
+                        if (fishing && fishType == WaterBodyType.None && z.Cells.Contains(c)) fishType = c.GetWaterBodyType(map);
                     }
                     // A registered zone with no cells is litter that outlives the call and
                     // gets saved. Vanilla registers only once it has a cell to put in.
