@@ -157,7 +157,7 @@
     <label>noothelm lamp</label>
     <description>A noothelm bulb clipped whole to a tether-chain — sealed, living and permanent, needing nothing but the water around it. Its light is warm gold, and it breathes, slow and steady, the way every real living lamp in this sea does.</description>
     <graphicData>
-      <texPath>Things/Mote/BeamGlow</texPath>
+      <texPath>Things/Mote/RM_NoothelmLampClipped/RM_NoothelmLampClipped</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>MoteGlow</shaderType>
       <drawSize>(1.4,1.4)</drawSize>

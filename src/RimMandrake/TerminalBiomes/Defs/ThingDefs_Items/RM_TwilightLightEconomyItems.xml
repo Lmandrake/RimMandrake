@@ -135,7 +135,7 @@
     <label>noothelm bulb</label>
     <description>A sealed golden bulb harvested off a noothelm stand. Unlit and inert until it is clipped whole to a tether-chain, at which point it wakes and never needs anything again.</description>
     <graphicData>
-      <texPath>Things/Mote/BeamGlow</texPath>
+      <texPath>Things/Mote/RM_NoothelmBulb/RM_NoothelmBulb</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.6</drawSize>
       <color>(255,220,150,255)</color>
