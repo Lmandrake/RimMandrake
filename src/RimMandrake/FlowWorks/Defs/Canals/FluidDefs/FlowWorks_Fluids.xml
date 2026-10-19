@@ -5,8 +5,9 @@
        the four slime colours below, and oil and poison in FlowWorks_PitFluids.xml.
        Further liquids exist as LiquidDefs (Defs/LiquidTypes) without a canal form.
 
-       Every tier terrain MUST be temporary=true (see FluidDef.ConfigErrors),
-       and every one of them is OURS: the base game's only temporary water
+       Tier terrains are all OURS. Water's spill tiers stay temporary=true; every
+       other liquid's tiers are base-layer (non-temporary, FluidDef.ConfigErrors
+       refuses a temporary one, P14). The base game's only temporary water
        terrains (ShallowFloodwater, MarshFlood) ship in Data/Odyssey and
        naming one hard-required the DLC. The temp-terrain engine itself is
        Core, so RM_Fill_Water_Trace clones ShallowFloodwater's properties

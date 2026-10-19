@@ -108,7 +108,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_PitRamp</defName>
     <label>pit ramp</label>
-    <description>A packed earth-and-timber ramp built in a dug pit, pointing uphill at a neighbouring square up to three levels shallower. Anyone walks it, both ways, at normal walking speed: your people, visitors, enemies and animals alike. A pit with a ramp is a pit people can leave; deconstruct the ramp to seal it again.</description>
+    <description>A packed earth-and-timber ramp built in a dug pit, pointing uphill at a neighbouring square up to 1.5 m shallower (a mod setting). Anyone walks it, both ways, at normal walking speed: your people, visitors, enemies and animals alike. A pit with a ramp is a pit people can leave; deconstruct the ramp to seal it again.</description>
     <thingClass>RimMandrake.FlowWorks.RM_Building_PitRamp</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Excavation/RM_PitRamp</texPath>
