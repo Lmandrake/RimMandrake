@@ -103,7 +103,7 @@ Also owed:
 | Writing all 21,872 tiles | 0.1 s | `rimworld-world-editing` §3, RECORDED |
 | Full stamp on 2026-08-23: 21,872 tiles, 293 rivers, 1,373 roads, 9,717 mutator writes, 569 landmarks, 120 settlements, 71 features, commit | durations **UNMEASURED**; results are recorded | `ASHKARR_WORLD_DEFINITION.md` |
 | Configure Factions hand pass | **UNMEASURED** | — |
-| Ideoligions | **UNMEASURED**. Live route is `FactionIdeosTracker.ChooseOrGenerateIdeo` with `fixedIdeo` (source-verified, `closed/CORRECT_ASHKARR_IDEOLOGY_1.md`). No bridge tool was found for it. Ash'karr was created in **classic** mode, with 1 ideo in the world (`closed/ASHKARR_IDEOLOGY_MODE_CALL_1.md`, 2026-08-26). | — |
+| Ideoligions | **UNMEASURED**. Live route is `FactionIdeosTracker.ChooseOrGenerateIdeo` with `fixedIdeo` (source-verified, `closed/CORRECT_ASHKARR_IDEOLOGY_1.md`). Bridge tools exist: `jawa/faction_ideo_set` (FactionDef's `ideoName`/`ideoDescription`/`deityPresets` → `ChooseOrGenerateIdeo` with `fixedIdeo=true`), `jawa/ideo_create`, `jawa/ideo_set_primary`, `jawa/faction_ideo_get` (`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchIdeoTools.cs`, `JawaBenchSocietyTools.cs`); never run on a fresh world (UNMEASURED). Ash'karr was created in **classic** mode, with 1 ideo in the world (`closed/ASHKARR_IDEOLOGY_MODE_CALL_1.md`, 2026-08-26). | — |
 | Founders splice | Offline, seconds (INFERRED). Proven live on the 618 list, 2026-09-21: 6 of 6 founders with `Wimp` (`closed/FOUNDERS_IMPORTER_OWED_1.md`). **Not run on the 536 list.** | RECORDED |
 | `save_class_census.py`, first run | ~15 min, then seconds (cached) | `donor_save_residue_2026-10-19.md` |
 | Owner LOOK at the globe | **UNMEASURED**; his time | — |
@@ -122,8 +122,9 @@ What each layer needs in a rebuild on the 536 list:
 - **Mutators and landmarks.** These come from the stage 3–4b CSVs. They need the port map (§3).
 - **Factions and settlements.** Configure Factions (by hand), then stage 5. The settlement CSV uses pre-rename faction
   defNames (§3).
-- **Ideoligions.** These are set either at Create World (Ideology mode choice; owner) or after it with the live route
-  above (no tool).
+- **Ideoligions.** These are set either at Create World (Ideology mode choice; owner) or after it with `jawa/faction_ideo_set`
+  (above). A faction absent at creation can be added later on a development world with `jawa/faction_create`
+  (`JawaBenchFactionTools.cs`; never run for one of our factions, UNMEASURED).
 - **Start colony and scenario.** UI landing at the chosen tile, with the founders splice and the gravship import. There
   is no end-to-end script.
 
@@ -149,8 +150,12 @@ What each layer needs in a rebuild on the 536 list:
 - These need a reading of their own:
   - `RUT_CrackedLands` ×970 goes to `RM_FloodedCanyon`, per the paint list.
   - `RUT_Greentide` ×235 goes to `RM_Greentide`, per the paint list.
-  - **`RUT_Umbra` ×2,531 has no `RM_` target.** The paint list says "retire once the repaint moves these 2531 tiles
-    onto `RUT_FuelSnows`". That is a RUT-tier def with one non-ours plant.
+  - `RUT_Umbra` ×2,531 goes to `RUT_FuelSnows`, per the paint list. `RUT_Umbra` is the old defName of
+    `RUT_FuelSnows` (renamed 2026-09-21 by `UMBRA_IS_A_REGION_NOT_A_BIOME_1`: Umbra is a REGION, not a biome) and is
+    kept only as a compat duplicate so these tiles resolve until the paint. Not an open decision. These tiles are
+    the LAND of the Propane Lakes sheet (`design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §0: regions
+    Deadstone 861, Umbra 773, Ammonia Flats 692); the propane sea itself is `RUT_PropaneLake` (57 tiles), which
+    merges into `RM_TheChill`. `RUT_FuelSnows` carries one non-ours plant (`PoisonShrub`, §6).
 
 **What is lost in a fresh world, whatever the inputs:**
 - everything the owner ruled "regenerates": colony, map state, placed things, stock, research, relations
@@ -209,7 +214,6 @@ The proposal changes **timing** and possibly **method**. Each of these is the ow
    - The ruling reads: *"No per-biome repaint, ever."*
    - A paint tonight is consistent only if **this** is the once. Every biome later added or re-homed then needs a
      second paint. Known pending examples:
-     - `RUT_Umbra`→`RUT_FuelSnows`;
      - `WARSCAR_PILGRIM_CAMP_SITES_1`, explicitly parked for the final painting;
      - the 4 unported mutators.
 3. ⚠️ **`WORLD_REDRAFT.md`** (owner 2026-08-21, "content first, remake later"): *"This procedure does NOT run next…
@@ -277,8 +281,8 @@ Measured on the 536 dump (subagent; its own one-off script over `BiomeDef/ThingD
 
 **Can be done tonight, with the owner present for the hand steps:**
 1. Offline prep, no game:
-   - **(a)** a biome-remap CSV: tiles CSV to `RM_` targets per the paint list, plus an owner call on `RUT_Umbra`'s 2,531
-     tiles;
+   - **(a)** a biome-remap CSV: tiles CSV to `RM_` targets per the paint list (including `RUT_Umbra` →
+     `RUT_FuelSnows`, 2,531 tiles);
    - **(b)** rewrite the mutators and landmarks CSVs through `retired_mutators_port_map.json`;
    - **(c)** rewrite the settlements CSV `Jawa_*` → `RUT_Jawa_*`;
    - **(d)** remap `AG_RustedTile` in the gravship layout;
@@ -301,8 +305,6 @@ Measured on the 536 dump (subagent; its own one-off script over `BiomeDef/ThingD
   CSVs are 08-23/09-07 vintage, and no save→CSV exporter exists for those layers. Choices:
   - accept the 08-23 layers (a visible regression: roads, mutator density);
   - build an exporter, or do a live export pass. Duration UNMEASURED.
-- Ideoligions: no tool was found to set the twelve fixed ideos after creation. At creation it is a hand choice of
-  Ideology mode.
 - The four unported mutators; all placeholder art (owner call).
 - A tested end-to-end start-save procedure. `WORLD_REMAKE_FINAL_STEP_1`'s spec is unwritten, and **no step of a fresh
   world on the 536 list has ever been run.**

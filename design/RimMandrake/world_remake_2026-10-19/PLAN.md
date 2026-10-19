@@ -44,7 +44,7 @@ Live list 536 = 6 Ludeon + 62 ours + 468 third-party; identical to the donor-fre
 | Retired already | 22 | all owner-ruled, none active |
 | **Retire now** | **39** | Retirement Wave 1, ruled 2026-10-10, **never run**; only Pyrinth is a hard dependence and its replacement `mandrake.rm.pyrinth` is built but not on the list |
 | Likely retire — rebuild first | 28 | Outer Rim Core, Galactic Empire, Rebel Alliance, Advanced Biomes, Alpha Memes, VFE Tribals, RimTek, Bones, Yayo, Landforms… (what to rebuild is 01 §9: beskar, hypertech component, Binary Star faction, two terrains) |
-| Likely retire — simply drop | 124 | nothing of ours hard-depends on them |
+| Likely retire — simply drop | 124 | nothing of ours hard-depends on them; 12 are HOLD (retained third-party dependants, or world-generation mods): `05_drop_closure.md` |
 | Exclude during dev, maybe v2 | 32 | the evaluation-hostile set. **Real Fog of War and CAI 5000 are a pair: CAI strips the fog, so exclude both or neither.** Yayo's Combat 3 also. |
 | Authoring tools | 21 | world/pawn editors, dev tools — keep to author, remove at release (ruling C04) |
 | Keep | 256 | 24 hard-dependency frameworks (VEF, HAR, Big and Small, EBSG, Outland Genetics…) + 232 others |
@@ -53,7 +53,7 @@ Also: `ModsConfig.FULL.LATEST.xml` (542) still lists the 7 donors retired 10-18;
 resurrects them. We depend on third-party mods for **zero textures** — what ties us is defNames,
 C# classes and About.xml dependencies.
 
-**Recommendation that holds in every option:** run Wave 1 (39) and drop the 124 now — a mod-list
+**Recommendation that holds in every option:** run Wave 1 (39) and drop the 112 SAFE of the 124 (`05_drop_closure.md`; 12 HOLD) — a mod-list
 edit plus one load, independent of the world — and put the 32 evaluation-hostile mods on the
 "not during dev" list today. That alone shrinks every load, every test and the world-gen time.
 
@@ -73,23 +73,23 @@ checks out of v1.
 
 ### Option A — Remake tonight (your proposal, hardened)
 **Tonight, with you present:** (1) rebuild the mod list = live list minus Wave 1 (39) minus the
-124 drops, minus the 32 evaluation-hostile; (2) offline remaps — biome names (incl. a ruling on
-`RUT_Umbra`, 2,531 tiles), mutator and landmark ports, faction names, gravship floor, founder;
+124 drops, minus the 32 evaluation-hostile; (2) offline remaps — biome names (incl. `RUT_Umbra`→`RUT_FuelSnows`,
+2,531 tiles, per the paint list), mutator and landmark ports, faction names, gravship floor, founder;
 (3) build the missing exporter OR accept older layers; (4) one generate + faction pass + stamp +
 your look; (5) first start save from the stamped world, run through `save_class_census.py`,
 `save_def_census.py` and `save_adoption_check.py`, then a cold reload.
 - **Wins:** ends the save-compat class of work today; every later test runs on a clean world.
-- **Costs/risks:** spends the one irreversible faction pass before the renames, `RUT_Umbra`,
+- **Costs/risks:** spends the one irreversible faction pass before the renames,
   pilgrim camps, 4 unported mutators and the 16 donor roster rows are settled → a second paint is
-  likely; loses save-only layers unless the exporter exists; twelve ideoligions have no tool; a
+  likely; loses save-only layers unless the exporter exists; the ideoligion and late-faction bridge
+  tools (`jawa/faction_ideo_set`, `jawa/ideo_create`, `jawa/faction_create`) have never run on a fresh world; a
   tested end-to-end start save has never existed; contradicts the "last step" ruling.
 - **Realistic?** The tile stamp, yes. A *complete* tested world tonight, no (02 §7).
 
 ### Option B — Prerequisite sprint, then ONE remake
 **Tonight:** the Option-A offline work only (list rebuild, remaps, Wave 1, drops, evaluation-hostile
 exclusion) plus the exporter spec. **Next, until the gates in §5a pass (no date promised):** land the renames and the 31 "must come first"
-items that matter (donor defs off, 16 roster rows, 3 leaning biomes, 4 mutators, `RUT_Umbra`
-ruling), run one donor-off load proof on the new list, **time** generation + load on the 536
+items that matter (donor defs off, 16 roster rows, 3 leaning biomes, 4 mutators), run one donor-off load proof on the new list, **time** generation + load on the 536
 list on a throwaway world (no faction pass). **Then** the single remake — which is the paint-once
 ruling honoured, with placeholder art allowed.
 - **Wins:** one paint; every ruling respected; the dry-run measures the unknowns before the
@@ -124,8 +124,9 @@ new retirement can leave a new class/def trap in the save, and the redraw/AREAFI
 5. **Adopt the scope cuts first** (04): the fewer systems the new world must carry, the less there
    is to re-prove after it. At minimum the testing-rule change (offline tests + your play for minor
    fixes, settings tested at defaults and all-off).
-6. **Decide `RUT_Umbra` (2,531 tiles) and whether this is the shipped freeze** before anything
-   irreversible — they decide whether factions/pilgrims are prerequisites.
+6. **Decide whether this is the shipped freeze** before anything irreversible — it decides whether
+   pilgrims are prerequisites. Factions are not, on a development world: one absent at creation
+   (`HORRORS_RAIDING_FACTION_1`) can be created later with `jawa/faction_create` (UNMEASURED; `06_remake_runbook.md` §0).
 
 
 ### Option D — Decouple development from the canonical remake (recommended; added after GPT review)
@@ -160,8 +161,8 @@ keep checkpoints before promotion · rebuild or quarantine contaminated `RM_Test
 ## 5b. Corrections to this plan's own claims (GPT, verified)
 - "Remove the 124" is **not yet dependency-safe**: Custom Quest Framework supports the retained
   `mlie.dungeonpack` (01 line 219), and other retained dependants exist (VFE Props / Gerrymon's Dungeon,
-  Apparel Accessories / More Utility Packs, Minerals Framework / Minerals Sparkle). Compute the removal
-  set's dependency closure before dropping anything.
+  Apparel Accessories / More Utility Packs, Minerals Framework / Minerals Sparkle). The closure is computed in
+  `05_drop_closure.md` (112 SAFE, 12 HOLD).
 - **World-generation mods must not be dropped yet**: Alien Worlds (and its Tidally Locked patch, 01
   lines 208/291), My Little Planet, Sensible Factions and Deep Orbit are assumed present at generation
   (02 §2, line 117). Prove the generator mods inert first (03 critical path).
@@ -177,11 +178,11 @@ keep checkpoints before promotion · rebuild or quarantine contaminated `RM_Test
 ## 6. Decisions only you can make
 1. Option D (recommended), B (scheduled), A (tonight) or C (never)? And first: is the remake the canonical FREEZE, or an interim development world?
 2. May the remake precede "all biomes mod-migrated" (changes your 2026-09-20 ruling)?
-3. Is the remake the shipped freeze, or a dev world we may repaint? (decides faction prerequisites)
-4. `RUT_Umbra` (2,531 tiles): which `RM_` biome, or a new one?
-5. Wave 1 already has your 2026-10-10 authorization — approve only the changed execution (transactional deploy). Approve the 124 drops only after the dependency closure is computed, and the fog pair exclusion with its tier exceptions.
+3. Is the remake the shipped freeze, or a dev world we may repaint? **Answered 2026-10-19 (card): a development world
+   that may be repainted.** So `HORRORS_RAIDING_FACTION_1` is "create later" (`jawa/faction_create`), not a prerequisite.
+4. Wave 1 already has your 2026-10-10 authorization — approve only the changed execution (transactional deploy). The 124 drops' dependency closure is computed (`05_drop_closure.md`: 112 SAFE, 12 HOLD); approve the 112 and the fog pair exclusion with its tier exceptions.
    Also: exactly which factions/ideoligions are retained, and which world-layer losses are acceptable.
-6. Which of the 04 scope cuts that reverse your rulings do you accept (its section 7)?
+5. Which of the 04 scope cuts that reverse your rulings do you accept (its section 7)?
 
 ## 7. What I will do without waiting
 Nothing irreversible. Identical in B and D, so I can start them: compute the dependency closure of the
