@@ -80,6 +80,63 @@ namespace RimMandrake.FlowWorks
 			return climbFound && climbCost >= 0f && (!normalFound || climbCost < normalCost);
 		}
 
+		/// <summary>WALL_CLIMB_FIX_BUDGET_CAP_LEAKY_MEMOS: through-walls pathfinds per tick, the colonist route planner and the
+		/// raider seam together (the cap counts FindPathNow calls, not plans).</summary>
+		public const int PathfindsPerTick = 3;
+
+		/// <summary>A route plan asks the pathfinder twice: through the walls, then the ordinary route to compare.</summary>
+		public const int PlanPathfinds = 2;
+
+		/// <summary>A raider with no way in asks once (through-walls, to find the first wall).</summary>
+		public const int RaiderPathfinds = 1;
+
+		/// <summary>The per-tick pathfind budget. A take is all or nothing (a plan never starts with half its pathfinds); a
+		/// new tick, earlier or later, starts empty.</summary>
+		public sealed class PathfindBudget
+		{
+			private int tick = int.MinValue, used;
+
+			public bool TryTake(int now, int pathfinds)
+			{
+				if (now != tick)
+				{
+					tick = now;
+					used = 0;
+				}
+				if (pathfinds <= 0 || used + pathfinds > PathfindsPerTick)
+				{
+					return false;
+				}
+				used += pathfinds;
+				return true;
+			}
+
+			public int UsedAt(int now)
+			{
+				return now == tick ? used : 0;
+			}
+
+			public void Reset()
+			{
+				tick = int.MinValue;
+				used = 0;
+			}
+		}
+
+		/// <summary>A memo stamped at <paramref name="stampedAt"/> is spent once <paramref name="window"/> ticks have passed,
+		/// or when time went backwards (an earlier-tick save was loaded): "now - stamp &lt; window" alone never expires then. A
+		/// never-set stamp (int.MinValue) is spent.</summary>
+		public static bool MemoExpired(int stampedAt, int now, int window)
+		{
+			return stampedAt == int.MinValue || now < stampedAt || (long)now - stampedAt >= window;
+		}
+
+		/// <summary>The game tick went backwards since the last look (a save from earlier was loaded); never on the first look.</summary>
+		public static bool TimeWentBack(int lastSeen, int now)
+		{
+			return lastSeen != int.MinValue && now < lastSeen;
+		}
+
 		/// <summary>Chance a generated pawn carries climbing gear (owner 2026-10-18 by card: <i>"Wildsteam should have this.
 		/// Junkers and Blackstar should. Jawa should. Deep Desert tribes yes. Then breachers and sappers from anyone."</i>): the
 		/// highest of its kind's and its faction's own chance, and the breacher/sapper chance when the kind is one, times the

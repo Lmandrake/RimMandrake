@@ -342,14 +342,22 @@ namespace RimMandrake.FlowWorks
 	}
 
 	/// <summary>An AssaultColony raider wearing gear that finds no enemy it can walk to: the first climbable wall on a
-	/// through-walls path to the nearest enemy is climbed. Throttled per pawn (300 ticks), and only gear-wearers pay.</summary>
+	/// through-walls path to the nearest enemy is climbed. Throttled per pawn (300 ticks), and only gear-wearers pay; the
+	/// pathfind is paid from the shared per-tick budget (RM_WallClimbMemo.Budget, WALL_CLIMB_FIX_BUDGET_CAP_LEAKY_MEMOS), so
+	/// a raid of N gear-wearers no longer runs N through-walls pathfinds in one tick.</summary>
 	[HarmonyPatch(typeof(JobGiver_AIGotoNearestHostile), "TryGiveJob")]
 	[RimMandrake.Shared.PatchFeature("Climbing gear scales walls (raiders get in)", typeof(RimMandrake.FlowWorks.RM_WallClimbSettings), "wallClimbEnabled")]
 	public static class RM_Patch_GotoHostile_Climb
 	{
 		private const int RetryTicks = 300;
 		private const float MaxDistSq = 90f * 90f;
-		private static readonly Dictionary<int, int> nextTry = new Dictionary<int, int>();
+		/// <summary>Per pawn: the tick of its last try (a stamp, so a memo from a later tick than now is spent).</summary>
+		private static readonly Dictionary<int, int> lastTry = new Dictionary<int, int>();
+
+		public static void ClearMemos()
+		{
+			lastTry.Clear();
+		}
 
 		[HarmonyPostfix]
 		public static void Postfix(Pawn pawn, ref Job __result)
@@ -359,15 +367,15 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int now = Find.TickManager.TicksGame;
-			if (nextTry.TryGetValue(pawn.thingIDNumber, out int at) && now < at)
+			RM_WallClimbMemo.Observe(now);
+			if (lastTry.TryGetValue(pawn.thingIDNumber, out int at) && !RM_WallClimbMath.MemoExpired(at, now, RetryTicks))
 			{
 				return;
 			}
-			if (nextTry.Count > 512)
+			if (lastTry.Count > 512)
 			{
-				nextTry.Clear();
+				lastTry.Clear();
 			}
-			nextTry[pawn.thingIDNumber] = now + RetryTicks;
 			Thing target = null;
 			float best = MaxDistSq;
 			foreach (IAttackTarget t in pawn.Map.attackTargetsCache.GetPotentialTargetsFor(pawn))
@@ -386,8 +394,15 @@ namespace RimMandrake.FlowWorks
 			}
 			if (target == null)
 			{
+				lastTry[pawn.thingIDNumber] = now;
 				return;
 			}
+			// Out of budget this tick: not stamped, so the next think asks again.
+			if (!RM_WallClimbMemo.Budget.TryTake(now, RM_WallClimbMath.RaiderPathfinds))
+			{
+				return;
+			}
+			lastTry[pawn.thingIDNumber] = now;
 			using (PawnPath path = pawn.Map.pathFinder.FindPathNow(pawn.Position, target.Position,
 				TraverseParms.For(pawn, Danger.Deadly, TraverseMode.PassAllDestroyableThings)))
 			{
@@ -460,13 +475,43 @@ namespace RimMandrake.FlowWorks
 	public static class RM_WallClimbRoute
 	{
 		private const int ReplanSameDestTicks = 250;
-		private const int MaxPlansPerTick = 3;
 		private const int MinStraightDistSq = 3 * 3;
+		/// <summary>A walk not planned within this many ticks is dropped (the pawn left, died, or the budget stayed full).</summary>
+		private const int PendingTicks = 600;
+		private const int PruneEveryTicks = 60;
 		private static readonly Dictionary<Pawn, int> pending = new Dictionary<Pawn, int>();
 		private static readonly Dictionary<int, KeyValuePair<IntVec3, int>> lastPlan = new Dictionary<int, KeyValuePair<IntVec3, int>>();
-		private static int budgetTick = -1, budgetUsed;
+		private static readonly List<Pawn> pruneScratch = new List<Pawn>();
+		private static int lastPrune = int.MinValue;
 
 		public static bool AnyPending => pending.Count > 0;
+
+		public static void ClearMemos()
+		{
+			pending.Clear();
+			lastPlan.Clear();
+			lastPrune = int.MinValue;
+		}
+
+		/// <summary>Drop pending walks of pawns no longer on a map, and stale ones (the dictionary held dead Pawns forever).</summary>
+		private static void PrunePending(int now)
+		{
+			lastPrune = now;
+			pruneScratch.Clear();
+			foreach (KeyValuePair<Pawn, int> kv in pending)
+			{
+				Pawn p = kv.Key;
+				if (p == null || !p.Spawned || p.Map == null || RM_WallClimbMath.MemoExpired(kv.Value, now, PendingTicks))
+				{
+					pruneScratch.Add(p);
+				}
+			}
+			for (int i = 0; i < pruneScratch.Count; i++)
+			{
+				pending.Remove(pruneScratch[i]);
+			}
+			pruneScratch.Clear();
+		}
 
 		/// <summary>From StartPath: a gear-wearer has started a walk; plan it on its next pather tick. Settings and the gear
 		/// first, so nobody else pays more than two static reads and an apparel scan.</summary>
@@ -483,10 +528,15 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int now = Find.TickManager.TicksGame;
+			RM_WallClimbMemo.Observe(now);
 			if (lastPlan.TryGetValue(p.thingIDNumber, out KeyValuePair<IntVec3, int> lp) && lp.Key == dest.Cell
-				&& now - lp.Value < ReplanSameDestTicks)
+				&& !RM_WallClimbMath.MemoExpired(lp.Value, now, ReplanSameDestTicks))
 			{
 				return;
+			}
+			if (pending.Count > 32)
+			{
+				PrunePending(now);
 			}
 			if (pending.Count > 256)
 			{
@@ -503,23 +553,29 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			int now = Find.TickManager.TicksGame;
-			if (budgetTick != now)
+			RM_WallClimbMemo.Observe(now);
+			if (RM_WallClimbMath.MemoExpired(lastPrune, now, PruneEveryTicks))
 			{
-				budgetTick = now;
-				budgetUsed = 0;
+				PrunePending(now);
 			}
-			if (budgetUsed >= MaxPlansPerTick)
+			if (!pending.ContainsKey(p))
 			{
 				return false;
 			}
-			budgetUsed++;
-			pending.Remove(p);
 			LocalTargetInfo dest = pather.Destination;
 			if (!pather.Moving || !dest.IsValid || p.Map == null || p.CurJob == null
 				|| p.CurJob.def == RM_WallClimbDefOf.RM_ClimbOverWall)
 			{
+				pending.Remove(p);
 				return false;
 			}
+			// WALL_CLIMB_FIX_BUDGET_CAP_LEAKY_MEMOS: a plan is two pathfinds (Plan: through the walls, then the ordinary route),
+			// paid from the budget the raider seam shares. Out of budget: it stays pending for a later tick.
+			if (!RM_WallClimbMemo.Budget.TryTake(now, RM_WallClimbMath.PlanPathfinds))
+			{
+				return false;
+			}
+			pending.Remove(p);
 			if (lastPlan.Count > 1024)
 			{
 				lastPlan.Clear();
@@ -628,6 +684,16 @@ namespace RimMandrake.FlowWorks
 	{
 		private const int RebuildTicks = 250;
 		private static readonly Dictionary<int, RM_WallClimbGrid> byMap = new Dictionary<int, RM_WallClimbGrid>();
+
+		/// <summary>Every map's grid disposed and forgotten (a game loaded: map ids are reused by the next game).</summary>
+		public static void ClearMemos()
+		{
+			foreach (RM_WallClimbGrid g in byMap.Values)
+			{
+				g.Dispose();
+			}
+			byMap.Clear();
+		}
 		private NativeArray<ushort> offsets;
 		private int builtTick;
 		public bool AnyClimbable { get; private set; }
@@ -648,8 +714,9 @@ namespace RimMandrake.FlowWorks
 		public static RM_WallClimbGrid For(Map map)
 		{
 			int now = Find.TickManager.TicksGame;
+			RM_WallClimbMemo.Observe(now);
 			if (byMap.TryGetValue(map.uniqueID, out RM_WallClimbGrid g) && g.offsets.IsCreated
-				&& g.offsets.Length == map.cellIndices.NumGridCells && now - g.builtTick < RebuildTicks)
+				&& g.offsets.Length == map.cellIndices.NumGridCells && !RM_WallClimbMath.MemoExpired(g.builtTick, now, RebuildTicks))
 			{
 				return g;
 			}
@@ -735,6 +802,46 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			return false;
+		}
+	}
+
+	/// <summary>WALL_CLIMB_FIX_BUDGET_CAP_LEAKY_MEMOS: the shared per-tick pathfind budget and the one place every wall-climb
+	/// memo is forgotten: when a game finishes loading (Game.FinalizeInit, new or loaded), and whenever the tick is seen to
+	/// go backwards (an earlier save loaded without a fresh Game, or a dev rewind). Before, the memos survived a load: a
+	/// stamp from a later tick never expired ("now - stamp" stayed negative), pending held the old game's Pawns, and a map id
+	/// reused by the new game could be handed the old game's offset grid.</summary>
+	public static class RM_WallClimbMemo
+	{
+		public static readonly RM_WallClimbMath.PathfindBudget Budget = new RM_WallClimbMath.PathfindBudget();
+		private static int lastSeenTick = int.MinValue;
+
+		public static void Observe(int now)
+		{
+			if (RM_WallClimbMath.TimeWentBack(lastSeenTick, now))
+			{
+				ClearAll();
+			}
+			lastSeenTick = now;
+		}
+
+		public static void ClearAll()
+		{
+			RM_WallClimbRoute.ClearMemos();
+			RM_Patch_GotoHostile_Climb.ClearMemos();
+			RM_WallClimbGrid.ClearMemos();
+			Budget.Reset();
+			lastSeenTick = int.MinValue;
+		}
+	}
+
+	[HarmonyPatch(typeof(Game), nameof(Game.FinalizeInit))]
+	[RimMandrake.Shared.PatchFeature("Climbing gear routes over walls", typeof(RimMandrake.FlowWorks.RM_WallClimbSettings), "wallClimbAutoRoute")]
+	public static class RM_Patch_GameInit_WallClimbMemos
+	{
+		[HarmonyPostfix]
+		public static void Postfix()
+		{
+			RM_WallClimbMemo.ClearAll();
 		}
 	}
 

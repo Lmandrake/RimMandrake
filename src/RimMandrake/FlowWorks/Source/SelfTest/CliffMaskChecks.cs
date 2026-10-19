@@ -295,7 +295,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!RM_PocketGridMath.ReachVetoed(true, true, false, true, false), "same component: never vetoed");
                 // pinned at the call sites
                 string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
-                Assert(trap.Contains("RM_PocketGridMath.ReachVetoed(false, startPocket, startWayOut, destPocket, destWayIn)")
+                Assert(trap.Contains("RM_PocketGridMath.ReachVetoedWhole(startPocket, startNarrow, startWayOut, destPocket, destNarrow, destWayIn,")
                     && !trap.Contains("p != null && g.ComponentIsPocket(k, cd)"), "RelativeVeto decides by ReachVetoed, pawnless included");
                 string grid = Src("Superdeep", "RM_PocketGrid.cs");
                 Assert(grid.Contains("RM_PocketGridMath.LadderIsAWay(p != null, p == null && RM_ClimbJoins.LoweredLadderAt(map, c)"),
@@ -423,8 +423,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 
                 // pinned at the call sites
                 string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
-                Assert(trap.Contains("RM_PocketGridMath.ReachVetoedAcross(false, startPocket, startWayOut, destPocket, destWayIn,")
-                    && trap.Contains("g.JoinedByLadders(k, cs, cd, p)"), "RelativeVeto lifts the veto through the ladder graph");
+                Assert(trap.Contains("RM_PocketGridMath.ReachVetoedWhole(startPocket, startNarrow, startWayOut, destPocket, destNarrow, destWayIn,")
+                    && trap.Contains("() => g.JoinedByLadders(k, cs, cd, p))"), "RelativeVeto lifts the veto through the ladder graph");
                 string grid = Src("Superdeep", "RM_PocketGrid.cs");
                 Assert(grid.Contains("RM_PocketGridMath.LadderEdge(rot, RM_SuperdeepTrap.StepDepthAt(map, eng, c), a,")
                     && grid.Contains("p != null && RM_LadderRules.LadderLetsOut(map, c, p)"),
@@ -432,6 +432,84 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string r = Src("Superdeep", "RM_RaiderTrench.cs");
                 Assert(r.Contains("Warn(p, \"RMFlow_RaidersSetLadders\")") && r.Contains("key.Translate(p.Faction.Name)")
                     && !r.Contains("\"Raiders of \""), "raider messages are Keyed strings");
+            });
+
+            Case("Trench_reach_agrees_with_the_pathfinder_every_direction", () =>
+            {
+                // RAIDER_TRENCH_FIX_REACH_BOUNCE: a raider on the trench floor with only the near-wall ladder was told the FAR bank
+                // was reachable (a pocket with any way out cleared the veto for every surface), A* found no path, the raid looped.
+                // Property: for every ladder-usability case on each wall, from each of bank A, the floor and bank B to each other,
+                // RelativeVeto's decision (ReachVetoedWhole) == "the cardinal mask flood (A*) does NOT reach it".
+                int w = 9, h = 3;
+                byte[] g = Map(w, h);
+                Rect(g, w, 3, 0, 3, h, 3);
+                var l = RM_PocketGridMath.Label(g, w, h, Person);
+                const int West = 3, East = 1;
+                int near = 1 * w + 3, far = 1 * w + 5;
+                // the usability cases, as each query sees one ladder (RM_PocketGrid.LadderEdges / UsableLadderIn)
+                bool Way(bool mayClimb, bool own, bool raised) =>
+                    RM_PocketGridMath.LadderIsAWay(true, !raised, RM_PitTrapMath.LadderUsable(true, raised, true, mayClimb || own));
+                var cases = new (string name, bool way)[]
+                {
+                    ("colonist", Way(true, false, false)),
+                    ("raider on its own ladder", Way(false, true, false)),
+                    ("hostile refused (prison door)", Way(false, false, false)),
+                    ("raised", Way(true, false, true)),
+                    ("pawnless lowered", RM_PocketGridMath.LadderIsAWay(false, true, false)),
+                    ("pawnless raised", RM_PocketGridMath.LadderIsAWay(false, false, false)),
+                };
+                Assert(cases[0].way && cases[1].way && !cases[2].way && !cases[3].way && cases[4].way && !cases[5].way,
+                    "the usability cases resolve as ruled");
+                var ends = new (string name, int x)[] { ("bank A", 0), ("floor", 4), ("bank B", 8) };
+                int checkedPairs = 0, bounces = 0;
+                foreach (int nearRot in new[] { West, East })
+                    foreach (var nc in cases)
+                        foreach (var fc in cases)
+                        {
+                            var edges = new List<(int a, int b)>();
+                            var restored = new List<(int i, int j)>();
+                            bool usableInFloor = false;
+                            foreach ((int c, int rot, bool way) in new[] { (near, nearRot, nc.way), (far, East, fc.way) })
+                            {
+                                int o = c + RM_LadderWallMath.FX[rot] + RM_LadderWallMath.FZ[rot] * w;
+                                int a = l.label[c], b = l.label[o];
+                                if (RM_PocketGridMath.LadderEdge(rot, g[c], a, g[o], b, way))
+                                {
+                                    edges.Add((a, b));
+                                    restored.Add((c, o));   // the masks restore exactly this edge (RM_CliffMask)
+                                    usableInFloor |= !l.surface[a];
+                                }
+                            }
+                            Func<int, int, bool> join = (i, j) => restored.Exists(e => e.i == i && e.j == j);
+                            foreach (var s in ends)
+                                foreach (var d in ends)
+                                {
+                                    int si = 1 * w + s.x, di = 1 * w + d.x;
+                                    if (l.SameComponent(si, di)) continue;
+                                    int cs = l.label[si], cd = l.label[di];
+                                    bool sp = !l.surface[cs], dp = !l.surface[cd];
+                                    bool sNarrow = sp && !RM_PocketGridMath.WideEverywhere(l, cs, 1);
+                                    bool dNarrow = dp && !RM_PocketGridMath.WideEverywhere(l, cd, 1);
+                                    bool sOut = sp && !RM_PocketGridMath.Trapped(true, usableInFloor, !sNarrow);
+                                    bool dIn = dp && (usableInFloor || dNarrow);
+                                    bool vetoed = RM_PocketGridMath.ReachVetoedWhole(sp, sNarrow, sOut, dp, dNarrow, dIn,
+                                        () => RM_PocketGridMath.JoinedByLadders(cs, cd, edges));
+                                    bool astar = Flood(g, w, h, Person, s.x, 1, join).Contains(di);
+                                    checkedPairs++;
+                                    if (!vetoed && !astar) bounces++;
+                                    Assert(vetoed == !astar, "reach and A* disagree: " + s.name + " -> " + d.name + ", near ladder "
+                                        + nc.name + (nearRot == East ? " (hung toward the floor)" : "") + ", far ladder " + fc.name
+                                        + ": reach " + (vetoed ? "vetoed" : "allowed") + ", A* " + (astar ? "reaches" : "does not"));
+                                }
+                        }
+                Assert(checkedPairs == 2 * 6 * 6 * 6 && bounces == 0, "every pair checked (" + checkedPairs + "), no bounce");
+                // the reported bug, by name: floor, near ladder only (colonist-usable), far bank
+                Assert(!Flood(g, w, h, Person, 4, 1, (i, j) => i == near && j == near - 1).Contains(1 * w + 8),
+                    "can-fail: A* from the floor up the near ladder never reaches the far bank");
+                // pinned at the call site
+                string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                Assert(trap.Contains("RM_PocketGridMath.ReachVetoedWhole(startPocket, startNarrow, startWayOut, destPocket, destNarrow, destWayIn,")
+                    && trap.Contains("() => g.JoinedByLadders(k, cs, cd, p))"), "RelativeVeto decides by ReachVetoedWhole");
             });
 
             Case("StartPath_reach_answers_for_the_walker_not_the_person_band", () =>

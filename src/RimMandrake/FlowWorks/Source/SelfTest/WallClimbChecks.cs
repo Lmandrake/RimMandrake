@@ -93,6 +93,46 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallClimbMath.GearChance(0f, 0.35f, false, 1f, 0f, true, false) == 0f, "can-fail: scale 0");
                 Assert(RM_WallClimbMath.GearChance(0f, 0.5f, false, 1f, 3f, true, false) == 1f, "can-fail: clamped to 1");
             });
+            Case("WallClimb_pathfind_budget_and_memos", () =>
+            {
+                // WALL_CLIMB_FIX_BUDGET_CAP_LEAKY_MEMOS: the cap counted PLANS (3 a tick) but each plan runs two FindPathNow (6 a
+                // tick), the raider seam ran one per gear-wearer with no tick cap, and the memos outlived loading an earlier save.
+                var b = new RM_WallClimbMath.PathfindBudget();
+                Assert(RM_WallClimbMath.PathfindsPerTick == 3, "3 pathfinds a tick, colonist planner and raiders together");
+                Assert(RM_WallClimbMath.PlanPathfinds == 2 && RM_WallClimbMath.RaiderPathfinds == 1,
+                    "a route plan is two pathfinds (through the walls, then the ordinary route); a raider's is one");
+                Assert(b.TryTake(100, RM_WallClimbMath.PlanPathfinds), "the first plan of the tick");
+                Assert(!b.TryTake(100, RM_WallClimbMath.PlanPathfinds), "can-fail: a second plan would make 4 pathfinds");
+                Assert(b.TryTake(100, RM_WallClimbMath.RaiderPathfinds), "a raider takes the third");
+                Assert(!b.TryTake(100, RM_WallClimbMath.RaiderPathfinds), "can-fail: a fourth raider waits for the next tick");
+                Assert(b.UsedAt(100) == 3, "exactly 3 used");
+                int raiders = 0;
+                for (int i = 0; i < 40; i++) if (b.TryTake(101, RM_WallClimbMath.RaiderPathfinds)) raiders++;
+                Assert(raiders == 3, "a raid of 40 gear-wearers runs 3 through-walls pathfinds in a tick, not 40 (" + raiders + ")");
+                Assert(b.TryTake(50, RM_WallClimbMath.PlanPathfinds), "an earlier tick (a loaded save) gets a fresh budget");
+                Assert(!b.TryTake(50, 0) && !b.TryTake(50, 4), "can-fail: a take of nothing, or more than a tick holds, is refused");
+                // memos: an earlier-tick save must not keep a memo alive (the old "now - stamp < window" never expired backwards)
+                Assert(!RM_WallClimbMath.MemoExpired(1000, 1100, 250) && RM_WallClimbMath.MemoExpired(1000, 1250, 250), "the window");
+                Assert(RM_WallClimbMath.MemoExpired(1000, 400, 250), "can-fail: time went backwards: expired");
+                Assert(RM_WallClimbMath.MemoExpired(int.MinValue, 5, 60) && RM_WallClimbMath.MemoExpired(int.MinValue, -5, 60),
+                    "a never-set stamp is spent (no overflow)");
+                Assert(RM_WallClimbMath.TimeWentBack(1000, 999) && !RM_WallClimbMath.TimeWentBack(1000, 1000)
+                    && !RM_WallClimbMath.TimeWentBack(int.MinValue, 5), "time going back is noticed (never on the first look)");
+                // wired
+                string w = Src("Superdeep", "RM_WallClimb.cs");
+                RiverSwitchFlipChecks.Has(w, @"RM_WallClimbMemo\.Budget\.TryTake\(now, RM_WallClimbMath\.PlanPathfinds\)", "the planner pays two pathfinds");
+                RiverSwitchFlipChecks.Has(w, @"RM_WallClimbMemo\.Budget\.TryTake\(now, RM_WallClimbMath\.RaiderPathfinds\)", "the raider seam pays from the same budget");
+                Assert(!w.Contains("MaxPlansPerTick") && !w.Contains("budgetUsed"), "can-fail: the per-plan counter is gone");
+                RiverSwitchFlipChecks.Has(w, @"\[HarmonyPatch\(typeof\(Game\), nameof\(Game\.FinalizeInit\)\)\]", "memos cleared when a game loads");
+                RiverSwitchFlipChecks.Has(w, @"RM_WallClimbMath\.TimeWentBack\(lastSeenTick, now\)", "and whenever the tick goes backwards");
+                foreach (string m in new[] { "RM_WallClimbRoute.ClearMemos();", "RM_Patch_GotoHostile_Climb.ClearMemos();", "RM_WallClimbGrid.ClearMemos();", "Budget.Reset();" })
+                {
+                    Assert(w.Contains(m), "cleared on load: " + m);
+                }
+                Assert(!w.Contains("now - lp.Value < ReplanSameDestTicks") && !w.Contains("now - g.builtTick < RebuildTicks")
+                    && !w.Contains("now < at"), "can-fail: no memo window that never expires backwards");
+                RiverSwitchFlipChecks.Has(w, @"!p\.Spawned \|\| p\.Map == null", "despawned pawns are pruned from pending");
+            });
             Case("WallClimb_wiring", () =>
             {
                 string w = Src("Superdeep", "RM_WallClimb.cs");
