@@ -448,9 +448,14 @@ def realflow(B, rows):
         s5.powered = _powered(B, s5.pump)
         lp = B.hp("lay:%d,%d,%d,%d" % (reel5 + (tank5[0] - 1, tank5[1])))
         e0 = _tank(B, tank5).get("units") or 0
+        k5 = _held(B, [reel5])
         B.ticks(300)
         e1 = _tank(B, tank5).get("units") or 0
-        row("NS_pipe_and_hose_one_net", e1 - e0 >= UNITS_PER_LEVEL, {"lay": lp, "units": [e0, e1], "net": B.hp("net:%d,%d" % s5.pump)}, bad=s5.bad)
+        # pass 2 (2026-10-19, HARNESS): the hose's first fill comes out of the level (see _held): 8,950 + the hose's room
+        # was read as a FAIL against a bare 10,000 bar -- the same fault f93867b198 fixed in scenes 1-4 and 6
+        took5 = _held(B, [reel5]) - k5
+        row("NS_pipe_and_hose_one_net", e1 - e0 > 0 and e1 - e0 + took5 >= UNITS_PER_LEVEL,
+            {"lay": lp, "units": [e0, e1], "hoseTook": took5, "net": B.hp("net:%d,%d" % s5.pump)}, bad=s5.bad)
         # a second pipe run touching a mid tank (and a tank V on it) must stay out of the pump's net
         # A 2x2 tank at (x,z) occupies x..x+1, z..z+1. Live run 6 (2026-10-19) put V at (ox+1, oz+13): its z+1 row is oz+14, one row
         # past the prepared plot (RF_PH=14 -> oz..oz+13), so V was never built (SITE). V now sits WEST of the pipe run, inside the
