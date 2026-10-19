@@ -3,7 +3,7 @@
 // (multiplies every case count; must be > 0), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME, where NAME is
 // any|full|boundary|symmetry|ledger|planner|items|root|cache|damage|hitbox|determinism (plants), tier|yield|crush|pool (titans) or
 // smash|smashstep|gates|titandeterminism (the seam) or clearing|line|lane|clearingdeterminism (titan breakthrough clearing) or
-// breadth|gap|table|sandwich|plug|monotone|restless|trench|wallsdeterminism (big creatures vs walls and slots).
+// breadth|gap|table|sandwich|plug|monotone|restless|trench|wallsdeterminism or memo|heldprune (walls-and-slots decider memos) (big creatures vs walls and slots).
 using System;
 using System.Linq;
 
@@ -32,7 +32,7 @@ namespace RimMandrake.HugeThings.SelfTest
             string only = null;
             i = Array.IndexOf(args, "--fuzz-only");
             if (i >= 0) only = args[i + 1];
-            if (only != null && !PlantFamilies.Contains(only) && !TitanFamilies.Contains(only) && !HugeTitanFuzz.Families.Contains(only) && !ClearingFuzz.Families.Contains(only) && !WallsSlotsFuzz.Families.Contains(only))
+            if (only != null && !PlantFamilies.Contains(only) && !TitanFamilies.Contains(only) && !HugeTitanFuzz.Families.Contains(only) && !ClearingFuzz.Families.Contains(only) && !WallsSlotsFuzz.Families.Contains(only) && !WallsSlotsMemoFuzz.Families.Contains(only))
             {
                 Console.WriteLine("FAIL unknown --fuzz-only family: " + only);
                 return 1;
@@ -43,7 +43,8 @@ namespace RimMandrake.HugeThings.SelfTest
             if (only == null || HugeTitanFuzz.Families.Contains(only)) ok &= HugeTitanFuzz.Run(scale, one, only);
             if (only == null || ClearingFuzz.Families.Contains(only)) ok &= ClearingFuzz.Run(scale, one, only);
             if (only == null || WallsSlotsFuzz.Families.Contains(only)) ok &= WallsSlotsFuzz.Run(scale, one, only);
-            long total = HugeThingsFuzz.Cases + RimMandrake.TitanicCreatures.SelfTest.TitanicFuzz.Cases + HugeTitanFuzz.Cases + ClearingFuzz.Cases + WallsSlotsFuzz.Cases;
+            if (only == null || WallsSlotsMemoFuzz.Families.Contains(only)) ok &= WallsSlotsMemoFuzz.Run(scale, one, only);
+            long total = HugeThingsFuzz.Cases + RimMandrake.TitanicCreatures.SelfTest.TitanicFuzz.Cases + HugeTitanFuzz.Cases + ClearingFuzz.Cases + WallsSlotsFuzz.Cases + WallsSlotsMemoFuzz.Cases;
             if (total == 0)
             {
                 Console.WriteLine("FAIL no fuzz case ran at all: a fuzz that checked nothing is not a pass");

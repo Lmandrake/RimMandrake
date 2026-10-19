@@ -23,6 +23,31 @@ namespace RimMandrake.TitanicCreatures
         private const int HeldSayTicks = 2500;
 
         private static readonly Dictionary<int, int> lastDetourCheck = new Dictionary<int, int>();
+        /// <summary>HUGE_WALLS_FIX_DECIDER_RETRIES_FOREVER: a destination found unreachable and not opened is not decided again for a cooldown.</summary>
+        private static readonly UnreachableMemo unreachable = new UnreachableMemo();
+        private static int lastDetourPrune = int.MinValue;
+
+        private static long DestKey(Map map, LocalTargetInfo t, PathEndMode mode)
+            => ((long)map.uniqueID << 48) ^ ((long)t.Cell.x << 28) ^ ((long)t.Cell.z << 8) ^ (long)mode;
+
+        private static bool Fail(bool reachable, int id, long key, int now)
+        {
+            if (!reachable) unreachable.Note(id, key, now);
+            return false;
+        }
+
+        private static void PruneDetourMemo(int now)
+        {
+            bool back = now < lastDetourPrune;
+            if (!back && lastDetourPrune != int.MinValue && now - lastDetourPrune < 2500) return;
+            lastDetourPrune = now;
+            if (back) { lastDetourCheck.Clear(); return; }
+            List<int> old = null;
+            foreach (KeyValuePair<int, int> kv in lastDetourCheck)
+                if (now - kv.Value > TitanClearing.DetourCheckCooldownTicks || kv.Value > now) (old ?? (old = new List<int>())).Add(kv.Key);
+            if (old != null) foreach (int k in old) lastDetourCheck.Remove(k);
+            unreachable.Prune(now);
+        }
 
         /// <summary>Null: no decision here, let the legacy clearing run (giant trunks). True/false: a job was started / not.</summary>
         public static bool? TryStart(Pawn pawn, LocalTargetInfo resolved, PathEndMode mode)
@@ -31,6 +56,11 @@ namespace RimMandrake.TitanicCreatures
             int now = Find.TickManager.TicksGame;
             int id = pawn.thingIDNumber;
             if (WallsSlotsUtility.Breadth(pawn) <= 1) return null;
+            unreachable.Sync(now);
+            PruneDetourMemo(now);
+            WallsSlotsUtility.PruneMemos(now);
+            long key = DestKey(map, resolved, mode);
+            if (unreachable.Blocked(id, key, now)) return false;
 
             bool reachable = map.reachability.CanReach(pawn.Position, resolved, mode, TraverseParms.For(pawn, Danger.Deadly, TraverseMode.ByPawn));
             float byPawn = -1f;
@@ -97,14 +127,14 @@ namespace RimMandrake.TitanicCreatures
                     throughCost = TitanClearing.StraightCost(d.x, d.z, pawn.TicksPerMoveCardinal);
                 }
                 WallsSlotsUtility.Crossing cr = WallsSlotsUtility.Probe(pawn, route);
-                if (cr == null) return false;
+                if (cr == null) return Fail(reachable, id, key, now);
                 if (cr.trunk && cr.cells.Count == 0) return null;   // a giant's trunk: the legacy smash route decides
                 if (WallsSlots.Breaks(cr.verdict))
                 {
-                    if (!WallsSlots.MayBreak(full, reachable, byPawn, throughCost, factor)) return false;
-                    if (cr.walls.Count == 0) return false;
+                    if (!WallsSlots.MayBreak(full, reachable, byPawn, throughCost, factor)) return Fail(reachable, id, key, now);
+                    if (cr.walls.Count == 0) return Fail(reachable, id, key, now);
                     Thing first = NearestWall(pawn, cr);
-                    if (TitanClearingUtility.GaveUpOnThing(id, first, now)) return false;
+                    if (TitanClearingUtility.GaveUpOnThing(id, first, now)) return Fail(reachable, id, key, now);
                     Job job = JobMaker.MakeJob(RM_TitanicCreaturesDefOf.RM_TitanClearObstacle, first);
                     job.count = (int)cr.verdict;
                     job.targetQueueA = new List<LocalTargetInfo>();
@@ -124,13 +154,13 @@ namespace RimMandrake.TitanicCreatures
                 if (cr.verdict == CrossVerdict.Hold || cr.verdict == CrossVerdict.Forbidden)
                 {
                     WallsSlotsUtility.Say(pawn, "RM_WallsSlots_Held".Translate(cr.thickness), HeldSayTicks);
-                    if (cr.cells.Count == 0) return false;   // nothing of ours to close: rock or protected only
+                    if (cr.cells.Count == 0) return Fail(reachable, id, key, now);   // nothing of ours to close: rock or protected only
                     WallsSlotsUtility.NoteHeld(pawn, cr.cells);
                     continue;   // the breach search now routes round the held crossing
                 }
-                return false;
+                return Fail(reachable, id, key, now);
             }
-            return false;
+            return Fail(reachable, id, key, now);
         }
 
         private static Thing NearestWall(Pawn pawn, WallsSlotsUtility.Crossing cr)

@@ -73,15 +73,10 @@ namespace RimMandrake.TitanicCreatures
         }
 
         // ---- held crossings (read off the main thread by the provider-cost postfix) ---------------------------------------------
-        private sealed class Held
-        {
-            public int mapId;
-            public int until;
-            public int[] cells;
-        }
-
         private static readonly object heldGate = new object();
-        private static readonly Dictionary<int, List<Held>> held = new Dictionary<int, List<Held>>();
+        private static readonly HeldBook held = new HeldBook();
+        private static int lastPrune = int.MinValue;
+        private const int PruneEveryTicks = 600;
         /// <summary>Fast gate for the despawn postfix: no held crossing anywhere costs one static read.</summary>
         internal static volatile bool AnyHeld;
 
@@ -91,13 +86,10 @@ namespace RimMandrake.TitanicCreatures
             CellIndices idx = p.Map.cellIndices;
             int[] arr = new int[cells.Count];
             for (int i = 0; i < cells.Count; i++) arr[i] = idx.CellToIndex(cells[i]);
-            var h = new Held { mapId = p.Map.uniqueID, until = Find.TickManager.TicksGame + TitanClearing.GiveUpMemoTicks, cells = arr };
             lock (heldGate)
             {
-                if (!held.TryGetValue(p.thingIDNumber, out List<Held> list)) held[p.thingIDNumber] = list = new List<Held>();
-                list.Add(h);
-                if (list.Count > 8) list.RemoveAt(0);
-                AnyHeld = true;
+                held.Add(p.thingIDNumber, p.Map.uniqueID, Find.TickManager.TicksGame, TitanClearing.GiveUpMemoTicks, arr);
+                AnyHeld = held.Any;
             }
         }
 
@@ -107,13 +99,7 @@ namespace RimMandrake.TitanicCreatures
         {
             into.Clear();
             if (!AnyHeld || p == null || map == null) return;
-            lock (heldGate)
-            {
-                if (!held.TryGetValue(p.thingIDNumber, out List<Held> list)) return;
-                foreach (Held h in list)
-                    if (h.mapId == map.uniqueID && h.until > now && h.until - now <= TitanClearing.GiveUpMemoTicks)
-                        into.AddRange(h.cells);
-            }
+            lock (heldGate) held.CellsFor(p.thingIDNumber, map.uniqueID, now, TitanClearing.GiveUpMemoTicks, into);
         }
 
         /// <summary>A wall left the map: every held crossing that contains its cells is forgotten at once (it is now thinner).</summary>
@@ -123,20 +109,56 @@ namespace RimMandrake.TitanicCreatures
             CellIndices idx = map.cellIndices;
             lock (heldGate)
             {
-                bool any = false;
-                foreach (List<Held> list in held.Values)
+                held.RemoveWhere(map.uniqueID, cells =>
                 {
-                    list.RemoveAll(h =>
-                    {
-                        if (h.mapId != map.uniqueID) return false;
-                        foreach (int c in h.cells)
-                            if (rect.Contains(idx.IndexToCell(c))) return true;
-                        return false;
-                    });
-                    any |= list.Count > 0;
-                }
-                AnyHeld = any;
+                    foreach (int c in cells)
+                        if (rect.Contains(idx.IndexToCell(c))) return true;
+                    return false;
+                });
+                AnyHeld = held.Any;
             }
+        }
+
+        /// <summary>Main thread, at most every PruneEveryTicks (and at once when the tick goes backwards, a load): drop held crossings
+        /// of creatures that are dead, despawned, destroyed or on a map that is gone, and expired ones; trim the mote memo.</summary>
+        public static void PruneMemos(int now)
+        {
+            bool back = now < lastPrune;
+            if (!back && lastPrune != int.MinValue && now - lastPrune < PruneEveryTicks) return;
+            lastPrune = now;
+            if (back) lastSaid.Clear();
+            else
+            {
+                List<long> old = null;
+                foreach (KeyValuePair<long, int> kv in lastSaid)
+                    if (now - kv.Value > 20000 || kv.Value > now) (old ?? (old = new List<long>())).Add(kv.Key);
+                if (old != null) foreach (long k in old) lastSaid.Remove(k);
+            }
+            lock (heldGate)
+            {
+                if (!held.Any) return;
+                held.Prune(now, TitanClearing.GiveUpMemoTicks, id => CreatureLive(id), id => MapLive(id));
+                AnyHeld = held.Any;
+            }
+        }
+
+        private static bool MapLive(int mapId)
+        {
+            List<Map> maps = Find.Maps;
+            for (int i = 0; i < maps.Count; i++) if (maps[i].uniqueID == mapId) return true;
+            return false;
+        }
+
+        private static bool CreatureLive(int thingId)
+        {
+            List<Map> maps = Find.Maps;
+            for (int i = 0; i < maps.Count; i++)
+            {
+                IReadOnlyList<Pawn> ps = maps[i].mapPawns.AllPawnsSpawned;
+                for (int j = 0; j < ps.Count; j++)
+                    if (ps[j].thingIDNumber == thingId) return !ps[j].Dead && !ps[j].Destroyed;
+            }
+            return false;
         }
 
         // ---- what a wall is to this creature -----------------------------------------------------------------------------------
