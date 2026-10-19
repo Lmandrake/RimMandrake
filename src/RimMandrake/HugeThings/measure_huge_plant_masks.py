@@ -351,7 +351,7 @@ def main(argv=None):
     ap.add_argument("--preview", metavar="DIR", help="write overlay PNGs (red contact, cyan picture box, yellow root)")
     a = ap.parse_args(argv)
     gs = giants()
-    probe = {"AB_AgariluxPrime", "RM_Nogtyl", "AB_DribblingCap"} - {p["def"] for p in gs}
+    probe = {"RM_AgariluxPrime", "RM_Nogtyl", "RM_DribblingCap"} - {p["def"] for p in gs}
     if probe:
         raise SystemExit("sanity probe: cannot see known giants %r among %d plants" % (sorted(probe), len(gs)))
     results = []

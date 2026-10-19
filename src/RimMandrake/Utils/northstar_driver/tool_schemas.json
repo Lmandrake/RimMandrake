@@ -1,5 +1,5 @@
 {
- "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); supplemented offline from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census), 523 tools, refreshed 2026-10-10; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in /home/mandrake/rm/bench/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +3 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
+ "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); supplemented offline from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census), 523 tools, refreshed 2026-10-10; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in /home/mandrake/rm/bench/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +3 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +7 tools from C# [Tool] attributes in /home/mandrake/.seat-tmp/BENCH/claude-1000/-home-mandrake-rm-bench/ad1e252d-0853-4c98-a210-c848bbcfe7f8/scratchpad/head/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
  "tools": {
   "deepfire/add_coat": {
    "parameters": [
@@ -491,6 +491,7 @@
     "armorPenetration",
     "bodyPart",
     "damageDef",
+    "instigatorId",
     "thingId",
     "x",
     "z"
@@ -793,6 +794,18 @@
     "strategy"
    ],
    "required": []
+  },
+  "jawa/fishing": {
+   "parameters": [
+    "action",
+    "pawn",
+    "rolls",
+    "x",
+    "z",
+    "zone"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/fix_floating_roofs": {
    "parameters": [],
@@ -1362,6 +1375,28 @@
     "textLetterDef"
    ],
    "required": []
+  },
+  "jawa/liquid_look_dump": {
+   "parameters": [
+    "liquid"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/liquid_look_get": {
+   "parameters": [
+    "liquid"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/liquid_look_set": {
+   "parameters": [
+    "liquid",
+    "spec"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/list_factions": {
    "parameters": [
@@ -2044,6 +2079,28 @@
    ],
    "required": []
   },
+  "jawa/pen_pin": {
+   "parameters": [
+    "allMap",
+    "includeHumanlike",
+    "pawns",
+    "rects",
+    "restore",
+    "ticks"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/pen_release": {
+   "parameters": [
+    "allMap",
+    "includeHumanlike",
+    "pawns",
+    "rects"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/pipe_net_info": {
    "parameters": [
     "maxGenericFields"
@@ -2282,7 +2339,17 @@
    "parameters": [
     "action",
     "ops",
+    "saveName",
     "tag"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/review_sign": {
+   "parameters": [
+    "action",
+    "ops",
+    "prefix"
    ],
    "required": [],
    "source": "csharp"

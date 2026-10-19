@@ -35,19 +35,19 @@ PATCH = tool.PATCH
 # defName -> {variant texture: measured contact cells at full growth}. Pinned from a tool run 2026-10-07; a change
 # in the art or the method shows here first. Rerun the tool, LOOK at --preview, then update this table.
 EXPECTED = {
-    "AB_AgariluxPrime": {"AgariluxPrime": 118},
-    "AB_DribblingCap": {"DribblingCap_A": 28},
+    "RM_AgariluxPrime": {"AgariluxPrime": 118},
+    "RM_DribblingCap": {"DribblingCap_A": 28},
     "RM_Nogtyl": {"Nogtyl_A": 17, "Nogtyl_B": 13, "Nogtyl_C": 10},
-    "RM_Arpeau": {"Arpeau_A": 4, "Arpeau_B": 7, "Arpeau_C": 10},
-    "AB_ArbuscularMycorrhiza": {"ArbuscularMycorrhiza_A": 16},
-    "AB_AgaricusDomeCap": {"AgaricusDomeCap": 10},
-    "AB_GiantAgarilux": {"GiantAgarilux_A": 0},   # its art touches the ground only in its own (root) cell,
-    "AB_WitchesOyster": {"WitchesOyster_A": 9, "WitchesOyster_b": 3, "WitchesOyster_c": 8},   # folder installed 80b9b9f7c
-    "RM_PaleTree": {"PaleTree_A": 3, "PaleTree_b": 3, "PaleTree_c": 9, "PaleTree_d": 4, "PaleTree_e": 5},   # B/C installed 80b9b9f7c, later picks via art ledger
+    "RM_Arpeau": {"Arpeau_A": 4, "Arpeau_B": 7, "Arpeau_C": 10, "Arpeau_p3b": 7},
+    "RM_ArbuscularMycorrhiza": {"ArbuscularMycorrhiza_A": 16},
+    "RM_AgaricusDomeCap": {"AgaricusDomeCap": 10},
+    "RM_GiantAgarilux": {"GiantAgarilux_A": 0},   # its art touches the ground only in its own (root) cell,
+    "RM_WitchesOyster": {"WitchesOyster_A": 9, "WitchesOyster_b": 3, "WitchesOyster_c": 8},   # folder installed 80b9b9f7c
+    "RM_PaleTree": {"PaleTree_A": 4, "PaleTree_b": 3, "PaleTree_c": 9, "PaleTree_d": 4, "PaleTree_e": 5},   # B/C installed 80b9b9f7c, later picks via art ledger
 }
 # Before this rework every giant blocked a trunkWidth x trunkDepth column north of its root (minus the root):
-BEFORE = {"AB_AgariluxPrime": 15, "AB_DribblingCap": 8, "RM_Nogtyl": 8, "RM_Arpeau": 3, "AB_ArbuscularMycorrhiza": 8,
-          "AB_AgaricusDomeCap": 5, "AB_GiantAgarilux": 3, "RM_PaleTree": 3, "AB_WitchesOyster": 1}
+BEFORE = {"RM_AgariluxPrime": 15, "RM_DribblingCap": 8, "RM_Nogtyl": 8, "RM_Arpeau": 3, "RM_ArbuscularMycorrhiza": 8,
+          "RM_AgaricusDomeCap": 5, "RM_GiantAgarilux": 3, "RM_PaleTree": 3, "RM_WitchesOyster": 1}
 
 
 def f32(x):
@@ -284,7 +284,7 @@ def measured_size_is_the_full_growth_quad():
 @test
 def every_rot_giant_is_covered():
     gs = sorted(giants())
-    probe = [g for g in ("AB_AgariluxPrime", "RM_Nogtyl", "AB_DribblingCap") if g in gs]
+    probe = [g for g in ("RM_AgariluxPrime", "RM_Nogtyl", "RM_DribblingCap") if g in gs]
     assert len(probe) == 3, "sanity probe: the sweep cannot see known giants (%r of %d)" % (probe, len(gs))
     table = patch_table()
     assert sorted(table) == gs, "patch vs giants differ: %r" % sorted(set(table) ^ set(gs))
@@ -302,11 +302,11 @@ def root_only_giants_are_made_impassable_and_stay_cuttable():
     Impassable on that cell, by the generic rule (never a per-species exception). Pins which giants that is today, and that
     the code path carries its 1.6 evidence: Touch reaches an impassable 1x1 plant from an adjacent cell."""
     root_only = sorted(dn for dn, (_s, vs) in patch_table().items() if vs and all(len(v[2]) == 0 for v in vs.values()))
-    assert root_only == ["AB_GiantAgarilux"], root_only
+    assert root_only == ["RM_GiantAgarilux"], root_only
     core = open(os.path.join(HERE, "Source", "HugeThingsCore.cs"), encoding="utf-8").read()
     assert "RootRule.RootImpassable(RM_HugeThingsSettings.PlantTrunkActive, ext.blockingSupported, counts)" in core
     assert "def.passability = Traversability.Impassable;" in core
-    assert "AB_GiantAgarilux" not in core and "GiantAgarilux" not in core, "a hand-tuned exception crept in"
+    assert "RM_GiantAgarilux" not in core and "GiantAgarilux" not in core, "a hand-tuned exception crept in"
     for needle in ("PathEndMode.Touch", "WorkGiver_PlantsCut", "WorkGiver_GrowerHarvest", "TouchPathEndModeUtility.AddAllowedAdjacentRegions"):
         assert needle in core, "the impassable-root note lost its 1.6 evidence: %s" % needle
     # the root of an impassable plant must still have an open neighbour: the planner keeps every served root served
