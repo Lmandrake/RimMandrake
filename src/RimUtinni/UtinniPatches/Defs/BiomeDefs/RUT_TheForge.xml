@@ -143,7 +143,7 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <LavaSnail>0.35</LavaSnail>  <!-- lava snail - ground-slow, import -->
+      <!-- LavaSnail CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
       <RSW_LavaFlea MayRequire="mandrake.rsw.swbestiary">0.25</RSW_LavaFlea>  <!-- lava flea - ground-herd, import -->
       <RSW_Beldon MayRequire="mandrake.rsw.swbestiary">0.08</RSW_Beldon>  <!-- beldon - sky-herd, keep -->
       <RSW_Maguana MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Maguana>  <!-- maguana - ground-slow, ported out of Caverns (CAVERNS_PARITY_BUILD_1 r5, owner: the Forge keeps its creature); donor commonality -->
@@ -164,8 +164,7 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <Plant_Fireweed>0.9</Plant_Fireweed>  <!-- fireweed -->
-      <Plant_MagmaCactus>0.7</Plant_MagmaCactus>  <!-- magma cactus -->
+      <!-- Plant_Fireweed / Plant_MagmaCactus CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
       <RM_FireLavender>0.6</RM_FireLavender>  <!-- fire lavender -->
       <RM_Sagecrust>0.4</RM_Sagecrust>  <!-- sagecrust — LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: repointed from
            RUT_Sagecrust (RotSporeKit, retired/not in the canonical mod list) to its

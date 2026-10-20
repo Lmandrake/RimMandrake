@@ -166,13 +166,11 @@
     <wildPlants>
       <RM_Scumgrass>1.2</RM_Scumgrass>  <!-- port of RG_Plant_ToxiGrass -->
       <RM_TallScumgrass>0.8</RM_TallScumgrass>  <!-- port of RG_Plant_TallToxiGrass -->
-      <Plant_GrayGrass>0.35</Plant_GrayGrass>  <!-- gray grass — vanilla, unchanged -->
+      <!-- Plant_GrayGrass / Plant_Toxipotato / Plant_TreePolux CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
       <RM_WastelandScorchedStars>0.3</RM_WastelandScorchedStars>  <!-- scorched stars — this mod's own duplicate of RUT_ScorchedStars, per §7 Q13 (DUPLICATE, THEN DIVERGE); see RM_WastelandFlora.xml -->
       <RM_Pusberry>0.2</RM_Pusberry>  <!-- port of AB_WeepingToxberry -->
-      <Plant_Toxipotato>0.2</Plant_Toxipotato>  <!-- toxipotato — vanilla Biotech, unchanged -->
       <RM_DosimeterLawn>0.15</RM_DosimeterLawn>  <!-- dosimeter lawn - radiotroph flora, unchanged -->
       <RM_Boilbulb>0.1</RM_Boilbulb>  <!-- port of AB_ToxiBulb -->
-      <Plant_TreePolux>0.1</Plant_TreePolux>  <!-- polux tree — vanilla, unchanged -->
       <RM_VaultRoot>0.08</RM_VaultRoot>  <!-- vault-root tree - sequestration tree, unchanged -->
       <RM_Wartshrub>0.08</RM_Wartshrub>  <!-- port of VRE_PoluxBush -->
       <RM_Cinderfelt>0.02</RM_Cinderfelt>  <!-- new: fresh-ash-fall marker mat; mainly germinated by the ash storm (RM_MapComponent_WastelandStorms, WASTELAND_MECHANICS_BUILD_1); this token row stays so it also shows when storm germination is toggled off, per cast bible §6 -->

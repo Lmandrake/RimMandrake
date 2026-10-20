@@ -243,7 +243,7 @@
     </biomeMapConditions>
     <wildAnimals>
       <RM_Bulloo>0.4</RM_Bulloo>  <!-- aerofleet - sky -->
-      <LavaSnail>0.35</LavaSnail>  <!-- lava snail - ground-slow -->
+      <!-- LavaSnail CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
       <RM_Metallovore>0.15</RM_Metallovore>  <!-- metallovore - ground-slow -->
       <RM_Dhoggur>0.5</RM_Dhoggur>  <!-- dhoggur - small ground, fills the crescendo anole's slot (owner by card 2026-10-16), ECOSYSTEM_PYRAMID_LAW_1 -->
       <RM_FleetFlier>0.45</RM_FleetFlier>  <!-- fleet flier - small sky, from-scratch, renamed from RUT_FleetFlier -->
@@ -264,8 +264,7 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <Plant_Fireweed>0.9</Plant_Fireweed>  <!-- fireweed -->
-      <Plant_MagmaCactus>0.7</Plant_MagmaCactus>  <!-- magma cactus -->
+      <!-- Plant_Fireweed / Plant_MagmaCactus CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
       <RM_FireLavender>0.6</RM_FireLavender>  <!-- renamed from RUT_FireLavender -->
       <RM_CinderCrust>0.4</RM_CinderCrust>  <!-- this biome's own variant of the shared crust-fungus, §7 Q13 -->
       <!-- IronScruff_PrimordialGrass / _PrimordialTallGrass / _Bindweed (Primordial Geysers) CUT from this roster:

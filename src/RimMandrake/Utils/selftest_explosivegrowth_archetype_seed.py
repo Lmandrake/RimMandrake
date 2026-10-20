@@ -69,8 +69,9 @@ def main():
     want("RM_Wasteland", "RM_Scumgrass", "archetype", "DryNative", "§4.1 default archetype")
     want("RM_Wasteland", "RM_Scumgrass", "ruptureOdds", "1 in 3", "C3")
     want("RM_BlueDesert", "RM_Palefloss", "archetype", "Exempt", "bandExemptPlants / exemptPlants")
-    # setting A: a vanilla grass in our dry biome is Vanilla (water nearby or x0.1)
-    want("RM_Wasteland", "Plant_GrayGrass", "archetype", "Vanilla", "C4 setting A")
+    # setting A: a non-ours grass in our dry biome is Vanilla (water nearby or x0.1). Was RM_Wasteland
+    # Plant_GrayGrass until the owner's 2026-10-19 card cut it; no RM_ biome keeps a non-ours grass row now.
+    want("RUT_BlueDesert", "PoisonPlantTallGrass", "archetype", "Vanilla", "C4 setting A")
     # T2: slime-fed rows accept the slimes; nothing else does
     slimey = [r for r in rows if len(r["liquids"]) > 1]
     if not slimey or any(r["violentTop"] != "Slime" for r in slimey):

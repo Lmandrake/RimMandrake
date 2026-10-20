@@ -176,13 +176,11 @@
     <wildPlants>
       <RM_Scumgrass MayRequire="mandrake.rm.wasteland">1.2</RM_Scumgrass>  <!-- toxigrass -->
       <RM_TallScumgrass MayRequire="mandrake.rm.wasteland">0.8</RM_TallScumgrass>  <!-- tall toxigrass -->
-      <Plant_GrayGrass>0.35</Plant_GrayGrass>  <!-- gray grass -->
+      <!-- Plant_GrayGrass / Plant_Toxipotato / Plant_TreePolux CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
       <RM_ScorchedStars>0.3</RM_ScorchedStars>  <!-- scorched stars -->
       <RM_Pusberry>0.2</RM_Pusberry>  <!-- weeping toxberry - tree -->
-      <Plant_Toxipotato>0.2</Plant_Toxipotato>  <!-- toxipotato -->
       <RM_DosimeterLawn>0.15</RM_DosimeterLawn>  <!-- dosimeter lawn - COMMISSION_LEDGER_CLEANUP_1 wave 11, radiotroph flora, growth marks the hottest ground (dose-correlated growth is deferred C#, wasteland.md's own "dose/geiger layer" scope) -->
       <RM_Boilbulb>0.1</RM_Boilbulb>  <!-- toxibulb -->
-      <Plant_TreePolux>0.1</Plant_TreePolux>  <!-- polux tree - tree -->
       <RM_VaultRoot>0.08</RM_VaultRoot>  <!-- vault-root tree - COMMISSION_LEDGER_CLEANUP_1 wave 11, sequestration tree; ships as a plain wood-yield tree now, "vault ore" mining mechanic deferred to the same dose/geiger layer scope -->
       <VRE_PoluxBush MayRequire="vanillaracesexpanded.phytokin">0.08</VRE_PoluxBush>  <!-- polux bush -->
     </wildPlants>

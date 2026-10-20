@@ -159,7 +159,7 @@
            mandrake.rm.therot equivalent; this row had no MayRequire and dangled a
            cross-reference on every load. Overlaps ROTSPOREKIT_MAYREQUIRE_ORPHANED_1,
            which owns the fuller retirement sweep. -->
-      <Plant_Ambrosia>0.12</Plant_Ambrosia>  <!-- ambrosia bush -->
+      <!-- Plant_Ambrosia CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
     </wildPlants>
     <wildPlantRegrowDays>17</wildPlantRegrowDays>
 

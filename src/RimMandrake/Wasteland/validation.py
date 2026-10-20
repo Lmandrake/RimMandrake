@@ -796,7 +796,8 @@ def biome_roster(t):
         with _comp(t, "wild_%s_wired" % kind, independent=True):
             if _live(t):
                 _need_parse(t)
-                if len(expect) < (12 if kind == "animals" else 12):
+                # plants floor 9: the owner's 2026-10-19 card cut Plant_GrayGrass/Toxipotato/TreePolux (12 -> 9).
+                if len(expect) < (12 if kind == "animals" else 9):
                     _fail("source parse found %d wild %s rows: parse failure" % (len(expect), kind))
                 missing, skewed, skipped = [], [], []
                 for name, (c, req) in sorted(expect.items()):
