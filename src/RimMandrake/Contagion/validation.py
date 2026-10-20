@@ -58,6 +58,11 @@ import time
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("Contagion")
+# PROOF_VERDICTS_REPAIR_SAME_BUG_EVERY_ROUND: every chain and component is a preconditions scope. A bridge_call that refused or
+# did not take (modcheck/preconditions.py) withholds the PASS/FAIL of every later component in its scope -- by construction, so a
+# new call site cannot score the bench as the mod. A reply that IS the claim (a settings field the mod no longer declares, an
+# existence probe, best-effort cleanup) passes `_answer=True`.
+suite.preconditions = True
 
 SETTINGS = "RimMandrake.Contagion.RM_ContagionSettings"
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -396,7 +401,7 @@ def _same(got, want):
 
 
 def _get_setting(t, field):
-    r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field)
+    r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field, _answer=True)
     if not _live(t):
         return None
     _ok(r, "mod_settings_field(get %s)" % field, mod=True)
@@ -405,7 +410,7 @@ def _get_setting(t, field):
 
 def _set(t, field, value):
     r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field,
-                      value=str(value))
+                      value=str(value), _answer=True)
     if not _live(t):
         return
     _ok(r, "mod_settings_field(set %s=%r)" % (field, value), mod=True)
@@ -916,7 +921,7 @@ def settings_chain(t):
             if wrong:
                 _fail("settings not at shipped defaults (or missing): %s" % wrong)
             bogus = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get",
-                                  field="noSuchField_probe")
+                                  field="noSuchField_probe", _answer=True)     # the refusal is the sanity probe's answer
             if (bogus or {}).get("success") is not False:
                 _fail("sanity probe: a nonexistent field did not fail loudly: %r" % bogus)
 
@@ -1830,9 +1835,10 @@ def coalescence(t):
                     if not _alive(_rows(t).get(kid)):
                         _unmeasured(t, "the off arm's Unfinished is gone with the Coalescence's mass untouched: no candidate "
                                        "stood to be absorbed, so 'absorbs nothing' was not tested")
-                # the off arm's Unfinished would otherwise be absorbed in the next arm and pad its mass count
-                t.bridge_call("jawa/pawn_force_incapacitate", pawn=kid, action="vanish")
-                t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 24)), categories="Item")
+                # the off arm's Unfinished would otherwise be absorbed in the next arm and pad its mass count (cleanup after
+                # this arm's read: `_answer`, so a refusal here never withholds THIS arm's verdict)
+                t.bridge_call("jawa/pawn_force_incapacitate", pawn=kid, action="vanish", _answer=True)
+                t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 24)), categories="Item", _answer=True)
 
         with _comp(t, "coalescence_absorbs_and_grows_a_stage", toggle="coalescenceEnabled"):
             if _live(t):
@@ -1909,11 +1915,10 @@ def coalescence(t):
                 # the nearest human, out of a 24-cell rect. Read jawa/pawn_mental.currentState for
                 # every Unfinished on the WHOLE map that was not there before the jump.
                 new = [p for p in _things_pawns(t, UNFINISHED, None) if p["id"] not in known]
-                states, unread = {}, []
+                states = {}
                 for p in new:
+                    # a failed mental read is ignorance, not "not a manhunter": the refusal withholds this verdict (preconditions)
                     d = t.bridge_call("jawa/pawn_mental", pawn=p["id"], action="list", limit=1)
-                    if not isinstance(d, dict) or d.get("success") is False:
-                        unread.append(p["id"])          # a failed mental read is ignorance, not "not a manhunter"
                     states[p["id"]] = ((d or {}).get("currentState"), p.get("hostile"), p.get("downed"),
                                        (p.get("x"), p.get("z")))
                 _note(t, "Unfinished new since the jump", states)
@@ -1921,11 +1926,9 @@ def coalescence(t):
                 # Read, then removed: the emitted manhunters are this arm's own product, and left alive they maul the
                 # next arm's colonist (Vanish: no death, no corpse, no acid burst).
                 for k in states:
-                    t.bridge_call("jawa/pawn_force_incapacitate", pawn=k, action="vanish")
+                    t.bridge_call("jawa/pawn_force_incapacitate", pawn=k, action="vanish", _answer=True)   # cleanup after the read
                 if not new:
                     _fail("no Unfinished emitted at all after 7000 ticks (stage %s; emit interval 3000)" % stage)
-                if not mad and unread:
-                    _unmeasured(t, "pawn_mental could not be read for %s: manhunter status unknown (%s)" % (unread, states))
                 if not mad:
                     _fail("%d Unfinished emitted after 7000 ticks but none is a manhunter: %s" % (len(new), states))
 
