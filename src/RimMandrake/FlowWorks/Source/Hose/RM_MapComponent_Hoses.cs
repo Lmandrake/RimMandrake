@@ -96,7 +96,8 @@ namespace RimMandrake.FlowWorks.Hose
 
         // ------------------------------------------------------------------ world snapshot for hoses
         /// <summary>A hose's CordWorld: walls, rock, impassable buildings and fog block it; WATER does not (a hose
-        /// floats, design 3.5: walkable at extra cost 3); trees cost a little. Cached for the tick it was taken.</summary>
+        /// floats, design 3.5: walkable at extra cost 3); trees cost a little; a reel or pump (walk-over) costs
+        /// HoseMath.BuildingCrossCost so the hose goes round it (HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE). Cached for the tick it was taken.</summary>
         internal CordWorld World(int maxAge = 0)
         {
             int now = Find.TickManager.TicksGame;
@@ -113,9 +114,9 @@ namespace RimMandrake.FlowWorks.Hose
                 Building ed = map.edificeGrid[idx];
                 if (ed is Building_Door) cw.SetDoor(cell);
                 TerrainDef t = map.terrainGrid.TerrainAt(idx);
-                if (map.pathing.Normal.pathGrid.WalkableFast(idx)) continue;
+                if (map.pathing.Normal.pathGrid.WalkableFast(idx)) { if (CostsAsBuilding(ed)) cw.SetExtraCost(cell, HoseMath.BuildingCrossCost); continue; }
                 if (ed == null && t != null && t.IsWater && !HasImpassableThing(c)) { cw.SetExtraCost(cell, 3f); continue; }
-                if (ed != null && CompHoseReelOf(ed) != null) continue;
+                if (ed != null && CompHoseReelOf(ed) != null) { cw.SetExtraCost(cell, HoseMath.BuildingCrossCost); continue; }
                 cw.SetBlocked(cell, ed != null && ed.def.building != null && ed.def.building.isNaturalRock ? BlockKind.Rock : BlockKind.Wall);
             }
             foreach (Plant p in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
@@ -127,7 +128,7 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>
         /// CordSig.CellSig(World(), c) read off the LIVE map for one cell, without building the whole-map snapshot: the same
-        /// per-cell rule as World() above (fog -> blocked; door; walkable; free water costs 3; a reel's own edifice is open;
+        /// per-cell rule as World() above (fog -> blocked; door; walkable, a reel or pump costing BuildingCrossCost; free water costs 3; a reel's own edifice costs the same;
         /// else blocked) and its tree pass (a tree costs 1.5, over anything). 2026-10-11 live perf reading (full list, 23
         /// reels, 11 laid): the every-250-tick corridor check of each laid reel called World() at its OWN staggered tick, so
         /// the per-tick cache never hit and every laid reel paid a full 250x250 scan (~4 ms) per cycle: 0.152 ms/tick mean
@@ -147,9 +148,9 @@ namespace RimMandrake.FlowWorks.Hose
                 Building ed = map.edificeGrid[idx];
                 door = ed is Building_Door;
                 TerrainDef t = map.terrainGrid.TerrainAt(idx);
-                if (map.pathing.Normal.pathGrid.WalkableFast(idx)) { }
+                if (map.pathing.Normal.pathGrid.WalkableFast(idx)) { if (CostsAsBuilding(ed)) extra = HoseMath.BuildingCrossCost; }
                 else if (ed == null && t != null && t.IsWater && !HasImpassableThing(c)) extra = 3f;
-                else if (ed != null && CompHoseReelOf(ed) != null) { }
+                else if (ed != null && CompHoseReelOf(ed) != null) extra = HoseMath.BuildingCrossCost;
                 else walk = false;
             }
             List<Thing> l = c.GetThingList(map);
@@ -175,6 +176,13 @@ namespace RimMandrake.FlowWorks.Hose
             for (int i = 0; i < l.Count; i++) if (l[i].def.passability == Traversability.Impassable) return true;
             return false;
         }
+
+        /// <summary>HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE: the hose rig's own walk-over machinery (a reel, a pump) costs
+        /// <see cref="HoseMath.BuildingCrossCost"/>, so a hose goes round it on bare ground. Deliberately not every walk-over
+        /// building: a hose that must run the length of a bridge or a bank-works row would pay the cost per cell and could be
+        /// planned past its own length.</summary>
+        private static bool CostsAsBuilding(Building ed) =>
+            ed != null && (CompHoseReelOf(ed) != null || ed is RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump);
 
         private static CompHoseReel CompHoseReelOf(Thing t) => (t as ThingWithComps)?.GetComp<CompHoseReel>();
 

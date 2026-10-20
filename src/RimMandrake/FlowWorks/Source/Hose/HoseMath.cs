@@ -461,8 +461,11 @@ namespace RimMandrake.FlowWorks.Hose
                 if (!OutletClear(w, a, startOutward.Value, lead)) lead = LeadOutStraight(p);
                 V2 o = a + startOutward.Value * lead;
                 CordPlan hop = null;
+                // HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE: the walk starts on the reel's own cells; once the hose leaves by
+                // the nozzle those points are behind it, and hopping to them would drag it back over the drum
+                while (pts.Count > 2 && w.ExtraCost(pts[1].Floor) >= BuildingCrossCost) pts.RemoveAt(1);
                 if (!OutletClear(w, a, startOutward.Value, lead)) return new HoseLay { Reason = LeadOutBlocked };
-                else if (SegmentClear(w, o, pts[1])) pts.Insert(1, o);
+                else if (SegmentClear(w, o, pts[1]) && SegmentAvoidsBuildings(w, o, pts[1])) pts.Insert(1, o);
                 else if ((hop = CordPlanner.Plan(w, o, pts[1], new List<KeyValuePair<V2, WaypointKind>>())).Ok && hop.Points.Count >= 2)
                     pts.InsertRange(1, hop.Points.Take(hop.Points.Count - 1));     // round the reel to where the walk went
                 else return new HoseLay { Reason = LeadOutBlocked };
@@ -496,6 +499,11 @@ namespace RimMandrake.FlowWorks.Hose
         private static HoseLay LayOnce(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward = null)
         {
             var lay = new HoseLay();
+            // HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE: the reel/pump cells the PLAN crosses (it chose to, at their cost); every
+            // shaping stage below prefers a pose that enters no other one (RigHits), so a bend or S-curve never swings the
+            // hose back over a reel the plan went round
+            HashSet<Cell> planCells = CellsAlong(planPoints);
+            int Rig(List<V2> pts) => RigHits(w, pts, planCells);
             List<V2> C = CordPlanner.RoundCorners(planPoints, Math.Max(0.45, p.MinBendRadius));
             CordLayer.ProjectOut(w, C);
             C[0] = a;
@@ -521,16 +529,28 @@ namespace RimMandrake.FlowWorks.Hose
             F[0] = a;
             F[F.Count - 1] = b;
             F = Stiffen(w, F, p.MinBendRadius);
-            if (!Clear(w, F))
+            if (!Clear(w, F) || Rig(F) > 0)
             {
-                F = Stiffen(w, C, p.MinBendRadius);
-                lay.FellBack = true;
-                if (!Clear(w, F)) F = Geo.Resample(C, Sample);
                 // round 4: the rounded centreline itself can clip a stub corner in a one-cell zig-zag; the string-pulled
                 // plan (line of sight between its corners) is the last resort, and a hose that still crosses a wall is
-                // not laid at all (the reel retracts it with the reason) rather than drawn through the wall
-                if (!Clear(w, F)) F = Geo.Resample(planPoints, Sample);
-                if (!Clear(w, F)) { lay.Reason = "no clear route (corners too tight for the hose)"; return lay; }
+                // not laid at all (the reel retracts it with the reason) rather than drawn through the wall.
+                // Scenic route: the first wall-clear pose with the fewest stray reel/pump cells wins (with none near, that
+                // is the first wall-clear pose, as before)
+                List<V2> first = F;
+                List<V2> best = null;
+                int bestHits = int.MaxValue;
+                foreach (Func<List<V2>> make in new Func<List<V2>>[] { () => first, () => Stiffen(w, C, p.MinBendRadius),
+                                                                      () => Geo.Resample(C, Sample), () => Geo.Resample(planPoints, Sample) })
+                {
+                    List<V2> cand = make();
+                    if (!Clear(w, cand)) continue;
+                    int h = Rig(cand);
+                    if (h < bestHits) { best = cand; bestHits = h; }
+                    if (h == 0) break;
+                }
+                if (best == null) { lay.Reason = "no clear route (corners too tight for the hose)"; return lay; }
+                lay.FellBack = !ReferenceEquals(best, first);
+                F = best;
             }
             int n = Math.Max(8, F.Count);
             lay.Flat = ResampleN(F, n);
@@ -539,7 +559,7 @@ namespace RimMandrake.FlowWorks.Hose
             var P = new List<V2>(n);
             for (int i = 0; i < n; i++) P.Add(lay.Flat[i] + (lay.Centre[i] - lay.Flat[i]) * k);
             P = ResampleN(Stiffen(w, P, p.MinBendRadius), n);
-            if (!Clear(w, P)) P = new List<V2>(lay.Flat);
+            if (!Clear(w, P) || Rig(P) > Rig(lay.Flat)) P = new List<V2>(lay.Flat);
             lay.Plump = P;
             if (endInward.HasValue)
             {
@@ -557,6 +577,12 @@ namespace RimMandrake.FlowWorks.Hose
                 double S = LeadOutStraight(p), R = Math.Max(0.45, p.MinBendRadius);
                 V2 u = startOutward.Value;
                 bool done = false;
+                // scenic route: first only joins that cross no stray reel/pump cell; only if one was turned away for that alone
+                // does a second pass take the old first-that-fits (a cost, never a refusal)
+                bool rigTurnedAway = false;
+                foreach (bool scenic in new[] { true, false })
+                {
+                if (done || (!scenic && !rigTurnedAway)) break;
                 // 2026-10-10 (full-list M4, maze 6 selftest): the 4 shortest joins all land just before a jog in the planned
                 // line (the outlet run meets the first cell centre), and the bend window past the join reads that jog at ~0.7
                 // < R -- 85 of 300 seeds refused. When none of the 4 fits, joins farther along (up to the 24 the search
@@ -573,6 +599,7 @@ namespace RimMandrake.FlowWorks.Hose
                     if (!Clear(w, f) || !Clear(w, q)) continue;
                     double lead = Math.Max(pair.x.leadLen, pair.y.leadLen);
                     if (Math.Min(MinBendRadiusUpTo(f, EndSkip, lead + 2 * R + 1), MinBendRadiusUpTo(q, EndSkip, lead + 2 * R + 1)) < R * 0.97) continue;
+                    if (scenic && Rig(f) + Rig(q) > 0) { rigTurnedAway = true; continue; }
                     var cc = LeadOutCandidates(null, lay.Centre, a, u, S, R, 1);
                     lay.Flat = f;
                     lay.Plump = q;
@@ -580,6 +607,7 @@ namespace RimMandrake.FlowWorks.Hose
                     lay.LeadOutLen = pair.x.leadLen;
                     done = true;
                     break;
+                }
                 }
                 }
                 if (!done) return new HoseLay { Reason = LeadOutBlocked, PathLen = L };
@@ -598,6 +626,7 @@ namespace RimMandrake.FlowWorks.Hose
                 // whose straightened run would touch a wall is dropped rather than drawn bent or clipped
                 List<V2> f = StraightenAt(lay.Flat, j, half), q = StraightenAt(lay.Plump, j, half);
                 if (!Clear(w, f) || !Clear(w, q)) continue;
+                if (Rig(f) > Rig(lay.Flat) || Rig(q) > Rig(lay.Plump)) continue;
                 lay.Flat = f;
                 lay.Plump = q;
                 lay.Joints.Add(j);
@@ -1199,6 +1228,55 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>True when the straight segment a-b stays out of walls (ClipTolerance) and never slips through a
         /// pinched diagonal (two wall cells meeting corner to corner).</summary>
         internal static bool SegmentClear(CordWorld w, V2 a, V2 b) => Clear(w, new List<V2> { a, b }, 0);
+
+        /// <summary>HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE (owner 2026-10-17, water scene S3: "It should prefer to NOT pass
+        /// through the reel but go around on the bare ground"). The extra route cost of a cell holding the hose rig's own
+        /// machinery (a hose reel or a pump: PassThroughOnly, so the path grid calls it walkable). Before this the hose world
+        /// costed such a cell 0, so a hose leaving a reel's west nozzle for a target to the east U-turned straight back over
+        /// its own drum. Two reel cells at this cost (12) outweigh any detour round a 2x2 footprint, so the planner goes
+        /// round; it is a cost, not a block, so a hose with no other way still crosses. Above water (3) and trees (1.5), so
+        /// <see cref="SegmentAvoidsBuildings"/> can tell a building cell from those by cost alone.</summary>
+        public const float BuildingCrossCost = 6f;
+
+        /// <summary>The cells a polyline passes through (sampled every 0.05 cell).</summary>
+        internal static HashSet<Cell> CellsAlong(IList<V2> pts)
+        {
+            var cells = new HashSet<Cell>();
+            if (pts.Count > 0) cells.Add(pts[0].Floor);
+            for (int i = 1; i < pts.Count; i++)
+            {
+                int k = Math.Max(1, (int)Math.Ceiling(V2.Dist(pts[i - 1], pts[i]) / 0.05));
+                for (int j = 0; j <= k; j++) cells.Add((pts[i - 1] + (pts[i] - pts[i - 1]) * (j / (double)k)).Floor);
+            }
+            return cells;
+        }
+
+        /// <summary>How many distinct reel/pump cells (cost &gt;= <see cref="BuildingCrossCost"/>) a hose pose enters that are
+        /// not in <paramref name="allowed"/> (the plan's own cells). 0 in any world with no reel or pump near the hose.</summary>
+        internal static int RigHits(CordWorld w, IList<V2> pts, HashSet<Cell> allowed)
+        {
+            HashSet<Cell> hit = null;
+            foreach (Cell c in CellsAlong(pts))
+                if (!allowed.Contains(c) && w.ExtraCost(c) >= BuildingCrossCost) (hit ?? (hit = new HashSet<Cell>())).Add(c);
+            return hit == null ? 0 : hit.Count;
+        }
+
+        /// <summary>True when the straight segment a-b enters no building-costed cell (<see cref="BuildingCrossCost"/>) other
+        /// than those in <paramref name="allowed"/> (a walked trail's own cells) and the two end cells. The any-angle pulls
+        /// (HoseTrail.Pulled, LayAlong's lead-out hop) use it so a taut shortcut never cuts back across a reel the route went
+        /// round: the same rule CordPlanner's string-pull applies to every costed cell (GSS pre-release A5).</summary>
+        internal static bool SegmentAvoidsBuildings(CordWorld w, V2 a, V2 b, ICollection<Cell> allowed = null)
+        {
+            Cell ca = a.Floor, cb = b.Floor;
+            int n = (int)(V2.Dist(a, b) / 0.05) + 2;
+            for (int i = 0; i < n; i++)
+            {
+                Cell c = (a + (b - a) * (i / (double)(n - 1))).Floor;
+                if (c == ca || c == cb || (allowed != null && allowed.Contains(c))) continue;
+                if (w.ExtraCost(c) >= BuildingCrossCost) return false;
+            }
+            return true;
+        }
 
         /// <summary>HOSE_BLOCKED_REROUTE_RETRACT_1 (owner, by card 2026-10-04: "reroute within its length; if none exists,
         /// retract to the reel with a visible alert. Never a ghost hose; also enforce length on re-plan."). Run when an

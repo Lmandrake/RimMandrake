@@ -394,6 +394,60 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(!HoseRelay.WouldLoop(1, 0, i => laidNext[i]), "B10 can-fail: following laid hoses only, the ring is missed");
             LeadOut();
             LayLength();
+            ScenicRoute();
+        }
+
+        /// <summary>HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE (owner 2026-10-17, water scene S3: "It should prefer to NOT pass
+        /// through the reel but go around on the bare ground"). The S3 rig: a 2x2 reel whose nozzle faces west, a pump cell
+        /// beside it, the free end to the EAST. The live hose world costed the reel's own cells 0 (PassThroughOnly reads as
+        /// walkable), so the lay U-turned out of the nozzle straight back over the drum. Planned (Lay) and walked (LayAlong)
+        /// lays must both stay off the footprint; can-fail: the same world with the reel uncosted (the old live world) crosses.</summary>
+        private static void ScenicRoute()
+        {
+            // the S3 rig (water_scenes_walk.s3_geom, shifted): reel B (hose out), the pump on the row above it, reel A above that
+            var reel = new HoseReelRect(20, 8, 2, 2);
+            var reelA = new HoseReelRect(20, 11, 2, 2);
+            Cell pump = new Cell(20, 10), end = new Cell(26, 10);
+            CordWorld Rig(bool costed)
+            {
+                var w = new CordWorld(44, 24);
+                if (costed)
+                {
+                    foreach (HoseReelRect r in new[] { reel, reelA })
+                        for (int x = r.X0; x < r.X0 + 2; x++) for (int z = r.Z0; z < r.Z0 + 2; z++) w.SetExtraCost(new Cell(x, z), HoseMath.BuildingCrossCost);
+                    w.SetExtraCost(pump, HoseMath.BuildingCrossCost);
+                }
+                return w;
+            }
+            CordWorld rig = Rig(true);
+            // points of the laid hose on a reel or the pump, clear of the nozzle (the mouth sits 0.02 inside the reel's west cell)
+            int OnRig(HoseLay lay) => lay.Ok ? lay.Flat.Count(q => V2.Dist(q, reel.Mouth) > 0.3 && rig.ExtraCost(q.Floor) >= HoseMath.BuildingCrossCost) : -1;
+            var prm = new HoseShapeParams { MinBendRadius = 1.2, MaxLength = 40 };
+            HoseLay planned = HoseMath.Lay(Rig(true), reel.Mouth, end.Centre, prm, 7, null, reel.Outward);
+            HoseLay old = HoseMath.Lay(Rig(false), reel.Mouth, end.Centre, prm, 7, null, reel.Outward);
+            Check(planned.Ok && OnRig(planned) == 0, "scenic: a planned hose from the west nozzle to an east end goes round the reels and pump (" + (planned.Reason ?? "laid") + ", " + OnRig(planned) + " points on them)");
+            Check(old.Ok && OnRig(old) > 0, "scenic can-fail: with the rig uncosted (the old live world) the same lay crosses it (" + OnRig(old) + " points)");
+            // the walked hose: the carrier starts on the reel's east cell and walks straight east (the start cell is the trail's)
+            var walk = new List<Cell>();
+            for (int x = 21; x <= end.X; x++) walk.Add(new Cell(x, 9));
+            walk.Add(end);
+            HoseLay carried = HoseMath.LayAlong(Rig(true), reel.Mouth, walk, end.Centre, prm, 7, null, reel.Outward);
+            HoseLay carriedOld = HoseMath.LayAlong(Rig(false), reel.Mouth, walk, end.Centre, prm, 7, null, reel.Outward);
+            Check(carried.Ok && OnRig(carried) == 0, "scenic: a carried hose walked east from the reel goes round it too (" + (carried.Reason ?? "laid") + ", " + OnRig(carried) + " points on the rig)");
+            Check(carriedOld.Ok && OnRig(carriedOld) > 0, "scenic can-fail: the same walk with the rig uncosted crosses it (" + OnRig(carriedOld) + " points)");
+            // a cost, never a block: a reel walled in on both sides is still crossed when there is no other way
+            CordWorld boxed = Rig(true);
+            for (int x = 0; x < 44; x++) { boxed.SetBlocked(new Cell(x, 7), BlockKind.Wall); boxed.SetBlocked(new Cell(x, 10), BlockKind.Wall); }
+            HoseLay forced = HoseMath.Lay(boxed, reel.Mouth, new Cell(14, 9).Centre, prm, 7, null, reel.Outward);
+            Check(forced.Ok, "scenic: the cost never blocks (a hose with no way round still lays: " + (forced.Reason ?? "laid") + ")");
+            Check(HoseMath.SegmentAvoidsBuildings(Rig(true), new V2(17, 7.5), new V2(25, 7.5)) && !HoseMath.SegmentAvoidsBuildings(Rig(true), new V2(17, 9), new V2(25, 9)),
+                "scenic: a straight shortcut across the drum is refused, one past it is not");
+            // the live hose world (Verse-bound, not compiled here): World() and LiveCellSig must cost a reel/pump the same
+            string mc = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+            Check(System.Text.RegularExpressions.Regex.IsMatch(mc, @"WalkableFast\(idx\)\) \{ if \(CostsAsBuilding\(ed\)\) cw\.SetExtraCost\(cell, HoseMath\.BuildingCrossCost\); continue; \}")
+                  && System.Text.RegularExpressions.Regex.IsMatch(mc, @"WalkableFast\(idx\)\) \{ if \(CostsAsBuilding\(ed\)\) extra = HoseMath\.BuildingCrossCost; \}")
+                  && System.Text.RegularExpressions.Regex.IsMatch(mc, @"CostsAsBuilding\(Building ed\) => ed != null && \(CompHoseReelOf\(ed\) != null \|\| ed is [\w.]*Building_LiquidPump\)"),
+                "scenic: the live hose world and its per-cell signature both cost a reel or pump BuildingCrossCost");
         }
     }
 
