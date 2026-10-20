@@ -2708,13 +2708,24 @@ def rhossak_chain(t):
                     # 4 reads (rhossak_a3_probe3.txt); once (probe2) the line was gone at +2800. Vanilla
                     # InspectStringPartsFromComps has no cache; Harmony on Pawn/ThingWithComps.GetInspectString is
                     # postfixes only. Mechanism UNRESOLVED.
+                    # 2026-10-20b offline pass (Transient/rhossak_a3_2026-10-20b.md): the committed IL gates the line on
+                    # the static BEFORE reading boundTree, so "Bound to" with the static False is impossible for the
+                    # comp's own code. The row now also reads the comp's OWN view (BindSettingSeen, InspectLine; DLL
+                    # with those members needed, else they land in missing[]) so a disagreement names its side.
                     t.wait_ticks(600)
                     line = _rhossak_bind_line(t, ids[RHOSSAK])
+                    comp = t.bridge_call("jawa/comp_read", thing=ids[RHOSSAK], comp="RhossakGrove",
+                                         members="boundTree,BindSettingSeen,InspectLine")
+                    vals = (comp or {}).get("values") or {}
+                    _note(t, "comp state with the bind off", {"values": vals, "missing": (comp or {}).get("missing")})
+                    own = vals.get("InspectLine")
                     if line is not None:
-                        comp = t.bridge_call("jawa/comp_read", thing=ids[RHOSSAK], comp="RhossakGrove", members="boundTree")
-                        _note(t, "comp state with the bind off", (comp or {}).get("values"))
-                        _fail("rhossakBindEnabled off but the inspect pane still reads %r (comp boundTree %r, bridge %r)"
-                              % (line, ((comp or {}).get("values") or {}).get("boundTree"), ident))
+                        if "InspectLine" in vals and own in (None, "null") and str(vals.get("BindSettingSeen")) == "False":
+                            _unmeasured(t, "HARNESS: the comp's own line is empty and it sees the setting False, yet the "
+                                           "pane read %r: the pane text is not coming from this comp (bridge %r)" % (line, ident))
+                        _fail("rhossakBindEnabled off but the inspect pane still reads %r (comp boundTree %r, comp sees "
+                              "setting %r, comp's own line %r, bridge %r)"
+                              % (line, vals.get("boundTree"), vals.get("BindSettingSeen"), own, ident))
     _stable(t, body)
 
 
