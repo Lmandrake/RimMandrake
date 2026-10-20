@@ -39,4 +39,8 @@ RULED OUT: "a seam count of zero after recede means the recut is broken" — the
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"Most days it is a quiet canyon, and one day it is a river that kills. Listen for the chimes and farm the mud it leaves."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
+
 DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned.

@@ -45,4 +45,8 @@ RULED OUT: "an `<Operation MayRequire>` or folded packageId gate still protects 
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"A stinking, beautiful nursery where the sea dumps everything. Rot is power, and every surge brings orphans."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
+
 DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned.

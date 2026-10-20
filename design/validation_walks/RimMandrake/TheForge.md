@@ -78,4 +78,8 @@ Run the script, not the prose: `python.exe src/RimMandrake/Utils/northstar_drive
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"Where the gods came to forge a world is now the ruins that seek to unmake you. Even the beasts challenge your presence."
+(typed by the owner, 2026-10-20)
+
 DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned.

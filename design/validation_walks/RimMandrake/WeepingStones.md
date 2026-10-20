@@ -51,4 +51,8 @@ Run the script, not the prose: `python.exe src/RimMandrake/Utils/northstar_drive
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"Bright dry stone and secret weeping shade, where every pool is a gathering. Keep the oasis healthy, or it breeds something wrong."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
+
 DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned.

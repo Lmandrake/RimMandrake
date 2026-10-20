@@ -124,6 +124,10 @@ Offline: `python3 src/RimMandrake/Stillsand/selftest_stillsand.py` runs the suit
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"An ocean of nothing under a sun that never sets, crossed by giants. Rock islands are your harbours, and their caves are your fortune."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
+
 No owner north-star bars are drafted for this mod yet; whether the Stillsand reads as a still ochre plain under a sun that does not move, whether the gale reads as a gale and the zuurrik as a boiling stain, are his to rule. A functional script needs none: the lines above are the agent layer.
 
 ## anti-guessing notes

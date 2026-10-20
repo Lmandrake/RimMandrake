@@ -120,7 +120,8 @@ Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
 least certain. `### the experience` is his to dictate.
 
 ### the experience  (OWNER'S WORDS)
-(not yet dictated)
+"The sky roils with eternal anger and lightning yet no rain ever falls. Water is acid, animals are minerals, and life twists under the load… including you."
+(typed by the owner, 2026-10-20)
 
 ### must show
 

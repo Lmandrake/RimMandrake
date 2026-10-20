@@ -49,4 +49,10 @@ RULED OUT: "a failed enum set proves the enum toggle is dead" — the bridge set
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+- **the Grey Sea:** "It looks and smells like it's dying. Yet in the crusted remains bold new life remains and emerges older than what dies." (typed by the owner, 2026-10-20)
+- **the Chill:** "A frigid alien sea with unspeakable beauty and strangeness. All is fuel yet nothing burns." (typed by the owner, 2026-10-20)
+- **the Scald:** "The kettle at the centre of the world: every river starts here, boiling. Life here is cooked and proud of it." (chosen by the owner from drafted options, by question card, 2026-10-20)
+- **the Twilight Sea:** "A ceiling of cathedral living glass, where every creature is bedecked in reverent light. Shame most of them are so big, hungry, and quick." (typed by the owner, 2026-10-20)
+
 DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned.
