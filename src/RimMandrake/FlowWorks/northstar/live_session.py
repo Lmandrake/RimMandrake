@@ -10,7 +10,7 @@ material in a tighter timeline?"*
   python.exe src/RimMandrake/FlowWorks/northstar/live_session.py                     # LIVE: bridge held, flowworks tier,
                                                                                      # a fresh Playing quicktest map
   options: --only B1,B2 (blocks, a PARTIAL run: never recordable) --skip B9 --frame-budget-ms 150 --out-dir DIR
-           --no-owner-save --keep-going (a crashed block is recorded and the run goes on: default) --list (catalog only)
+           --no-owner-save --list (catalog only). A crashed block is always recorded and the run goes on (no flag).
   Wrap the live run for the keeper-saves check:
   python3 src/RimMandrake/Utils/save_guard.py run --current-slot none -- python.exe <this script>
 
@@ -690,7 +690,8 @@ def b2_settings_dialog(s):
             st, why = "UNMEASURED", "label below the fold: get_ui_layout reads only the visible rows of the scrolled list"
         else:
             st, why = "FAIL", "the dialog draws no section body (no 'Reset this section')"
-        s.row("B2_dialog_%s_%s" % (item.split("_")[0].lower(), cid), item, cid, st, "MOD" if st == "FAIL" else "HARNESS" if st != "PASS" else "MOD",
+        # two words of the item: PIT_ROOM/PIT_ALERT and FALL_GUARDRAILS/FALL_DAMAGE shared one id on the first word alone
+        s.row("B2_dialog_%s_%s" % ("_".join(item.split("_")[:2]).lower(), cid), item, cid, st, "MOD" if st == "FAIL" else "HARNESS" if st != "PASS" else "MOD",
               dict(label=label, why=why, shot=shot, textChars=len(texts)), "B2", eyes=not texts)
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     before = s.sget("pitGuardrailEnabled")
@@ -1275,11 +1276,14 @@ def run_shared_with_stop(s, gens, done):
         s.advance(n)
 
     def wrap(name, g):
-        for w in g:
-            yield w
-        done[name] = True
-        if all(done.get(k) for k in others):
-            s.ride_stop = True
+        try:
+            for w in g:
+                yield w
+        finally:
+            # a crashed block is finished too: otherwise the ride runs its whole 40 x 500 ticks on the shared clock
+            done[name] = True
+            if all(done.get(k) for k in others):
+                s.ride_stop = True
     return run_shared({k: wrap(k, g) for k, g in gens.items()}, adv, s.now, log=s.say)
 
 
@@ -1649,7 +1653,7 @@ def b9_owner(s):
                       ("SPRINKLER_HEADS_BUILD_PUMP_REQUIRED", "looks"), ("HOSE_PIPE_WALK_JUDGE_GIRTH_IN_GAME", "walk"),
                       ("HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD", "A4"), ("LIQUID_LEDGER_BUILD_NO_UNIT_LOST", "A9"),
                       ("PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT", "A4")):
-        s.row("B9_staged_%s" % item.split("_")[0].lower(), item, cid, "UNMEASURED", "OWED",
+        s.row("B9_staged_%s_%s" % (item.split("_")[0].lower(), cid), item, cid, "UNMEASURED", "OWED",
               dict(stageExit=rc, why="his eyes: open the owner-review save"), "B9", eyes=True)
 
 
@@ -1827,6 +1831,8 @@ def write_verify_lines(s):
     p = os.path.join(s.out_dir, "verify_lines.txt")
     ev = os.path.relpath(os.path.join(s.out_dir, "session.json"), REPO)
     lines = []
+    if s.env.get("partial"):
+        lines.append("# PARTIAL run (--only/--skip): never recordable as the session result; each line stands only for its own rows")
     for (item, cid), (res, ids) in sorted(verdicts(s.rows).items()):
         c = (" --criterion %s" % cid) if cid and cid[0] in "AT" and cid[1:].isdigit() else ""
         lines.append('python3 src/RimMandrake/rimflow/cli.py verify %s%s --result %s --config %s --level L2 --evidence %s '
