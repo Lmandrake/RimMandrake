@@ -69,3 +69,9 @@ queue is blocked on a tile count before then.
 ## Paint list addition 2026-10-09 (decision taken by question card)
 
 `WARSCAR_PILGRIM_CAMP_SITES_1` (pilgrim camp SitePartDefs at authored tiles along the Ashfall Road) is done at the final world painting, not before.
+
+## Paint list addition 2026-10-20 (from `WORLD_PHYSICS_AUDIT_LOCKED_SUN_TEMPS_RINGS`)
+
+The Scald (`RM_TheScald`): its sheet (`design/Jawa/worldbuilding/biomes/the_scald.md` §0) puts it at arc 0–30, air
++58..+70 °C; the dev save has its 312 tiles at arc 23–51, 36..53 °C, 7.8 °C under the ruled curve on every tile
+(`design/RimMandrake/world_physics_audit_2026-10-20.md` §3). Place it on its arc and temperature at the final painting.
