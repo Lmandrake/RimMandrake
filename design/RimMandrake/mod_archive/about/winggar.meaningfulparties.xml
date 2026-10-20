@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Wing's Meaningful Parties</name>
+	<author>winggar</author>
+	<supportedVersions>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<description>Wish you knew why your pawns were partying the night away? So did I, so I whipped up this mod in a few hours.
+	
+Without changing the frequency of parties, colonists will now throw parties over any of over 100 new party causes, including:
+ - a colonist or bonded animal's birthday
+ - the survival of a major raid
+ - settling a new tile
+ - researching beer brewing
+ - a colonist recovering from alcohol addiction
+ - a baby shower for a pregnant colonist
+ - the end of a volcanic winter
+ - a colonist's optimism
+ - sacrificing a prisoner
+ - embracing the void
+ ... and many more
+ 
+This mod includes support for Vanilla Events Expanded's purple events, and as far as I can tell is compatible with Days Matter.
+
+This mod is entirely cosmetic, and is safe to add or remove mid-save.</description>
+	<modDependenciesByVersion>
+		<v1.5>
+			<li>
+				<packageId>brrainz.harmony</packageId>
+				<displayName>Harmony</displayName>
+				<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+				<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+			</li>
+		</v1.5>
+		<v1.6>
+			<li>
+				<packageId>brrainz.harmony</packageId>
+				<displayName>Harmony</displayName>
+				<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+				<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+			</li>
+		</v1.6>
+	</modDependenciesByVersion>
+	<loadAfterByVersion>
+		<v1.5>
+			<li>brrainz.harmony</li>
+		</v1.5>
+		<v1.6>
+			<li>brrainz.harmony</li>
+		</v1.6>
+	  </loadAfterByVersion>
+	<packageId>winggar.meaningfulparties</packageId>
+</ModMetaData>

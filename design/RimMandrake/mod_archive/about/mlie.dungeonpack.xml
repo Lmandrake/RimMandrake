@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Dungeon Pack (Continued)</name>
+  <packageId>Mlie.DungeonPack</packageId>
+  <author>swablu</author>
+  <url>https://github.com/emipa606/DungeonPack</url>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+      <displayName>Vanilla Expanded Framework</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2023507013</steamWorkshopUrl>
+      <downloadUrl>https://github.com/Vanilla-Expanded/VanillaExpandedFramework</downloadUrl>
+    </li>
+    <li>
+      <packageId>HaiLuan.CustomQuestFramework</packageId>
+      <displayName>Custom Quest Framework</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2978572782</steamWorkshopUrl>
+      <downloadUrl>https://github.com/ying636/Custom-Quest-Framework</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+    <li>HaiLuan.CustomQuestFramework</li>
+  </loadAfter>
+  <description>[img]https://img.litet.net/logos/Info.png[/img]
+Update of swablus mod https://steamcommunity.com/sharedfiles/filedetails/?id=3140486097
+
+[img]https://img.litet.net/logos/Notice.png[/img]
+
+[table]
+    [tr][td][url=https://discord.gg/h5TY6DA][img]https://img.litet.net/logos/Discord.png[/img][/url][/td] [td][url=https://github.com/emipa606/DungeonPack][img]https://img.litet.net/logos/Github.png[/img][/url][/td]
+    [/tr]
+    [tr]
+        [td][img]https://img.litet.net/logos/SafeToAdd.png[/img][/td]
+        [td][img]https://img.litet.net/logos/RemoveMayWork.png[/img][/td]
+    [/tr]
+[/table]
+	
+[img]https://img.litet.net/logos/OriginalDescription.png[/img]
+[b]This mod is not being maintained, if you would like to update it, here is the source code[/b]
+https://github.com/Anton-Ymous/DungeonPack
+
+Adds 10 new custom quest locations filled with powerful enemies, bosses, and unique loot.
+
+[h1]New Dungeons[/h1]
+[img]https://img.litet.net/ci2e29f.png[/img]
+
+These quest locations aren't like your ordinary factional bases with the same 3 generic buildings and interchangeable rewards. Each dungeon has a unique challenge, setting, and a powerful custom reward. 
+
+Some dungeons include:
+* Fighting on a pirate ship with cannons
+* Digging into the mountain to excavate a lost, buried city.
+* Battling invisible ninja monks
+* Navigating a maze filled with traps and madmen.
+
+[b]These dungeons are supposed to challenging. They are recommended as lategame challenges unless you go a more 'creative' route. A less challenging version may be released eventually.[/b] 
+
+
+[h1]New Items[/h1]
+[img]https://img.litet.net/FLK4r2h.png[/img]
+
+Each quest is associated with a powerful relic.
+
+Some relics include:
+* Reusable mechanoid ally summoner
+* A cloak that gives the user invisibility
+* A belt that gives the user phasing abilities
+* A [i]real zeushammer[/i] that causes a lightning strike on hit
+
+
+[h1]Obtaining the Quest[/h1]
+The quests [b] can start by being researched.[/b] Quests can be restarted by using the quest machine once researched.
+
+[h1]Tools Used/Thanks[/h1]
+Custom Quest Framework
+Vanilla Expanded
+Geological Landforms
+
+[h1]Compatibility[/h1]
+Compatible with CE, though the enemies/items may not be balanced.
+
+[img]https://img.litet.net/logos/ReportingIssues.png[/img]
+[list]
+[*] See if the error persists if you just have this mod and its requirements active.
+[*] If not, try adding your other mods until it happens again.
+[*] Always post your log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url]
+[*] For best support, please use the Discord-channel for error-reporting.
+[*] Do not report errors by making a discussion-thread, I get no notification of that.
+[*] If you have the solution for a problem, please post it to the GitHub repository.
+[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods
+[/list] 
+
+[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/3765496911][img]https://img.shields.io/github/v/release/emipa606/DungeonPack?label=latest%20version&amp;style=plastic&amp;color=9f1111&amp;labelColor=black[/img][/url] | tags: dungeon challenges, late-game content</description>
+  <modVersion IgnoreIfNoMatchingField="True">1.6.2</modVersion>
+</ModMetaData>

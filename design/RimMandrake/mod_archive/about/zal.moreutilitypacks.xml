@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>More Utility Packs (Continued)</name>
+	<author>Zaljerem</author>
+	<supportedVersions><li>1.5</li><li>1.6</li></supportedVersions>
+<modVersion IgnoreIfNoMatchingField="True">1.0.5</modVersion>
+	<modDependencies>
+        <li>
+			<packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+			<displayName>Vanilla Expanded Framework</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1854607105</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>VanillaExpanded.VAEAccessories</packageId>
+			<displayName>Vanilla Apparel Expanded — Accessories</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2521176396</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+	<li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+	<li>VanillaExpanded.VAEAccessories</li>
+        <li>OskarPotocki.VFE.Mechanoid</li>
+    </loadAfter>
+	<packageId>zal.moreutilitypacks</packageId>
+	<description>
+Original mod by SGC
+https://steamcommunity.com/sharedfiles/filedetails/?id=2357611837
+If the original author requests it, I will remove this update.
+
+--
+
+Original mod notes (1.4):
+
+Underwhelmed by the absurdly overspecialized utility items in RimWorld? When was the last time you built a jump pack or smokepop belt on purpose, anyway?
+
+More Utility Packs adds a variety of vanilla-friendly 'general-purpose' utility items for industrial-level colonies designed to assist with general labour, augment combat capabilities, and improve caravanning. The goal was to give players a 'tough choice' in deciding between a number of balanced--but attractive--mutually exclusive bonuses for each of their colonists.
+
+**some of the packs require Royalty, Ideology, or other mods, see descriptions below.
+
+
+The mod adds several utility items, eight of which are craftable; while the remaining are quest reward items. All packs require are constructed at the Fabrication Bench (though some require additional research in addition to this).
+
+1. Robotic Rig - A wearable robotic arm outfitted with a precision multi-tool designed to assist the wearer perform intricate tasks. While it does not provide any protection, it improves the wearer's manipulation/sight, and assists with aim time in combat.
+
+(Improves Aim Time, Shooting Accuracy, and Manipulation)
+
+2. Trauma Kit - A wearable medical kit designed to support combat functionality. Provides a small amount of protection and medical support to the wearer to keep them going longer despite severe injuries.
+
+(Increases Pain Shock and Medical Tend Quality, while decreasing both Incoming Damage, and Rest Fall Rate)
+
+3. Survival Pack - A heavy backpack and outdoors kit designed to support long trips. Various powered containers for food and gear improve carrying capacity and foraging, which keep the wearer happier and fuller while on the road.
+
+(Increases Foraging Rate and Caravan Carrying Capacity, while decreasing Mental Break Threshold and Huger Rate)
+
+4. Command Tower **Requires Royalty** - A wearable radio kit designed to assist the wearer in commanding small groups of people in the field. While it does not provide any protection, its broadcasts can either inspire or demoralize nearby allies depending on the mood of the wearer.
+
+(Increases Social Skills and reduces pain factor, while providing a small mood bonus to nearby allies proportional to the wearer's mood (which stacks up to two times with additional Command Towers).
+
+5. Portable Mortar - A scaled-down version of a standard mortar launcher. Trades the tremendous range of its full-sized cousin in favour of increased accuracy. Despite the efforts to make the device more portable, it will slow the wearer and requires a fair amount setup time per volley. It can be reloaded, but it requires a frankly unreasonable number of high-explosive shells to do so. Requires Mortar research and is crafted at the fabrication bench.
+
+(A wearable mortar useful for assaulting faction bases with limited range and a long firing period. Holds three charges of high explosive shells which can be reloaded for the price of three shells per charge.)
+
+6. Mechanoid Combat Gear **Requires Vanilla Factions Expanded - Mechanoids** - A wearable micro-shield generator and field module designed to make the wearer more effective in combat. A rudimentary onboard AI assists the wearer with a variety of tasks, from target tracking to the timely dispensing of nutrient paste and combat drugs. However, the device reacts extremely poorly when exposed to EMPs, the feedback from which is liable to knock the wearer unconscious.
+
+(Grants a quick-charging full-body shield which can be used ranged combatants, while providing a small bonus to Aim Time, Pain Shock, and Move Speed — at the price of a weakness to EMPs, which induce Brain Shock.)
+
+7. Mechanoid Industrial Gear **Requires Vanilla Factions Expanded - Mechanoids** - A bulky assistive tool kit outfitted with high-power, extreme-precision multi-tools designed to greatly increase the work capababilities of the wearer. A rudimentary on-board AI creates the perfect tool for the job, making this device especially useful for all manner of workers not involved in combat.
+
+(Grants a tremendous 50% increase in global workspeed — at the price of a weakness to EMPs, which induce Brain Shock.)
+
+8. Mechanoid Jump Jet **Requires Vanilla Factions Expanded - Mechanoids** - A wearable ultra-hardened shield generator and jump jet designed to make the wearer more effective in close-quarters combat. A rudimentary onboard AI dynamically assists with locomotion and weight distribution, allowing the wearing to move faster and hit harder.
+
+However, the device reacts extremely poorly when exposed to EMPs, the feedback from which is liable to knock the wearer unconscious.
+
+(Basically a jump pack with a very large shield belt. Reduces incoming damage while increasing pain shock threshold and mêlée hit/dodge change — at the price of a weakness to EMPs, which induce Brain Shock.)
+
+Quest Reward Items
+
+1. Vanometric Grav-Pack **Requires Royalty** - An inscrutable archotech device that somehow enables the wearer to move at extreme speeds and fly for short distances by manipulating gravity. Uses a small amount of uranium to refuel. On-board evasion heuristics make the wearer especially lethal in close-range combat.
+
+(A powerful ranged shield belt and jump pack that greatly improves pawn move speed and hit/dodge chance at close range while significantly reducing any incoming damage. Jumps are longer too.)
+
+2. Rescue Frame - A glitter-tech exoskeleton designed to outfit the wearer for search and rescue during disasters. The device generates a strong shield that protects the wearer from harm and extreme environments, while on-board medical tools increase tend speed to the limits of human capability. Since the device is very bulky, the wearer cannot fight properly.
+
+(Near immunity to toxic fallout and all but the most extreme temperatures. Extreme bonus to Medical Tend Speed. Smaller bonuses to Tend Quality and Surgery Success Chance. Pawns should have no issue running into burning buildings or most firefights to rescue allies.)
+
+3. Wearable Forklift - A glitter-tech industrial exoskeleton designed to outfit the wearer for heavy-duty lifting and precision manufacturing. The device allows the wearer to carry extremely heavy objects with ease, while self-guided robotic multi-tools push the user's work skills to the limits of human capability.
+
+(A tremendous 100% bonus to workspeed and 80% buff to manipulation, along with further large increases to move speed and caravan/inventory carrying capacity.)
+
+Compatibility and More Information
+
+What are the mod requirements?
+
+This mod requires the Vanilla Expanded Framework and Vanilla Accessories Expanded in order to work properly. Load this mod after the Framework, Accessories, Royalty, Ideology, and Biotech (if you have them).
+
+Can this mod be added/removed from saved games without issue?
+
+You can add to saved games without any issues. You should be able to remove the mod from any active game, provided all instances of the items/bills are removed from your map. Do so at your own risk, however.
+</description>
+</ModMetaData>

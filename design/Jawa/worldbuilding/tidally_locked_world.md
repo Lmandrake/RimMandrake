@@ -215,7 +215,13 @@ not the equator, not the poles.~~ ⛔ **DEAD, 2026-08-20.** The original *"not l
 the terminator"* was right after all; this paragraph withdrew a correct correction. **The
 terminator is arc 90°, which is curve x=1.0 — not 0.4–0.6.**
 
-🔴 **AND IT DOES NOT REACH US ANYWAY.** The mod is **worldgen-only**: `FieldPatcher.cs`
+🔴 **THE SUN IS RUNTIME, THE TEMPERATURE IS NOT (corrected 2026-10-20, Wave 4).** `7f.alienworlds.tidallylocked`'s
+`Source/PlanetTypeDef.cs` Harmony-patches `GenCelestial.SunPositionUnmodified` (fixes the sun in place),
+`CurSunPositionInWorldSpace`, `CelestialSunGlow(PlanetTile,int)` (light by tile longitude) and `CompPowerPlantSolar`
+every session, keyed on the save's `<alienWorldsFrameworkPlanetType>TidallyLocked</…>`. Retire it (or the Alien Worlds
+Framework it rides on) and Ash'karr's sun rises and sets again; both stay on every list that loads the world.
+
+🔴 **AND ITS TEMPERATURE DOES NOT REACH US ANYWAY.** The temperature half is **worldgen-only**: `FieldPatcher.cs`
 patches the curve into `WorldGenStep_Terrain.BaseTemperatureAtLatitude` and the
 tidally-locked transpiler targets `WorldGenStep_Terrain.GenerateTileFor`. Nothing
 recomputes per-tile temperature at runtime, so the mod's −37 °C can never reach a

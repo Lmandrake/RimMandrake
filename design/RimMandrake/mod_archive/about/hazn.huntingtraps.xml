@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<ModMetaData>
+  <name>Hunting Traps</name>
+  <author>hazN</author>
+  <supportedVersions>
+    <li>1.4</li>
+    <li>1.5</li>
+    <li>1.6</li>
+  </supportedVersions>
+  <packageId>hazN.huntingtraps</packageId>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <modDependencies>
+  </modDependencies>
+
+  <description>Adds a small hunting trap to catch animals passively over time, must be fueled with kibble or raw plants.</description>
+</ModMetaData>

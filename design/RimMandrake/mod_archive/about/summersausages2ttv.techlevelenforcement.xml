@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <name>Tech Level Enforcement</name>
+    <author>Summersausages2TTV</author>
+    <packageId>Summersausages2TTV.TechLevelEnforcement</packageId>
+    <description>
+        This mod enforces tech level restrictions for the player's faction. 
+        - Pawns cannot equip items beyond their faction's tech level unless configured otherwise.
+        - Items can be whitelisted if they are starting equipment, quest rewards, or purchased from traders.
+        - Configurable options allow chance-based item retention and limited higher-tech use.
+        - An optional trader item limiter prevents traders from selling over-tech gear.
+    </description>
+    <supportedVersions>
+        <li>1.5</li>
+        <li>1.6</li>
+    </supportedVersions>
+</ModMetaData>

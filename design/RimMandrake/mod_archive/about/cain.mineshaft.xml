@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Mines 2.0</name>
+	<author>StatistNo1,Rebel_Rabbit,Cain</author>
+	<packageId>Cain.Mineshaft</packageId>
+	<url/>
+	<supportedVersions>
+		<li>1.2</li>
+		<li>1.3</li>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+    <description>This version of Mines mod makes it possible to mine modded resources from other mods.
+The Mines, a place for your pawns to excavate the treasures of the earth.
+This is a remake of the mod from AngleWyrm 1.3
+    </description>
+</ModMetaData>

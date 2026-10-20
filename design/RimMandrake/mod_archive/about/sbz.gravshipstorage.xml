@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+	<name>[sbz] Gravship Storage</name>
+	<author>seobongzu</author>
+	<packageId>sbz.GravshipStorage</packageId>
+	<supportedVersions>
+		<li>1.5</li>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+	<description>Adds 13 types of storage furniture for gravship interiors.</description>
+	<modIconPath IgnoreIfNoMatchingField="True">UI/sbz</modIconPath>
+	<modDependencies>
+		<li>
+			<packageId>adaptive.storage.framework</packageId>
+			<displayName>Adaptive Storage Framework</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3033901359</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>adaptive.storage.framework</li>
+	</loadAfter>
+</ModMetaData>

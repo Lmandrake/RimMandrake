@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Precepts and Memes - Rituals module (Continued)</name>
+  <packageId>Mlie.PreceptsAndMemesRitualsModule</packageId>
+  <author>Zezz</author>
+  <url>https://github.com/emipa606/PreceptsAndMemesRitualsModule</url>
+  <supportedVersions>
+    <li>1.3</li>
+    <li>1.4</li>
+    <li>1.5</li>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.Rimworld.Ideology</packageId>
+      <displayName>Rimworld Ideology</displayName>
+      <downloadUrl>https://store.steampowered.com/app/1392840/RimWorld__Ideology/</downloadUrl>
+    </li>
+    <li>
+      <packageId>thesepeople.RitualAttachableOutcomes</packageId>
+      <displayName>Custom Ritual Framework</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2561617361</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>Mlie.PreceptsAndMemes</packageId>
+      <displayName>Precepts and Memes</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2894625496</steamWorkshopUrl>
+      <downloadUrl>https://github.com/emipa606/PreceptsAndMemes/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.Rimworld.Ideology</li>
+    <li>thesepeople.RitualAttachableOutcomes</li>
+    <li>Mlie.PreceptsAndMemes</li>
+  </loadAfter>
+  <description>[img]https://i.imgur.com/buuPQel.png[/img]
+Update of Zezzs mod
+https://steamcommunity.com/sharedfiles/filedetails/?id=2586107221
+
+[img]https://i.imgur.com/pufA0kM.png[/img]
+
+[table]
+    [tr]
+        [td][url=https://discord.gg/h5TY6DA][img]https://i.imgur.com/zdzzBrc.png[/img][/url][/td]
+        [td][url=https://github.com/emipa606/PreceptsAndMemesRitualsModule][img]https://i.imgur.com/kTkpTOE.png[/img][/url][/td]
+    [/tr]
+    [tr]
+        [td][img]https://i.imgur.com/WjDSfUn.png[/img][/td]
+        [td][img]https://i.imgur.com/Be8E2qJ.png[/img][/td]
+    [/tr]
+[/table]
+	
+[img]https://i.imgur.com/Z4GOv8H.png[/img]
+Adds new rituals for the Precepts and Memes mod. 
+	
+Power funneling (For altruistic pawns only):
+-Channel the power of your pawns into a single colonist, boosting their stats for the next quadrum.
+-Ritual quality is only dependant on ammount of people. The better the ritual goes, the higher the buff will be.
+-15 days cooldown.
+
+Equivalent exchange (For Necrolatry only):
+-Sacrifices a colonist to bring a dead pawn back to life, as if they hadn't been dead in the first place.
+-Ritual can fail, leaving you with two dead people and a 30 days cooldown.
+-At 100% quality it has a 20% chance of failure.
+
+Quarterly report (Traders only):
+-Requires a leader in the colony.
+-After a short and somewhat boring talk about finances, the speech will end. Depending on the outcome, all of the attendants will get a boost or malus to trade prices for the next quadrum.
+-15 days cooldown.
+
+Colonist duel (For all the vanilla memes that also get Gladiator duel, and also Necrolatry):
+-Allows two colonists and/or slaves to fight each other in honorable combat.
+-Works just like the vanilla variant, but this one doesn't require the escorts.
+-1 day cooldown for maximum bloodbath.
+	
+[img]https://i.imgur.com/PwoNOj4.png[/img]
+[list]
+[*] See if the the error persists if you just have this mod and its requirements active.
+[*] If not, try adding your other mods until it happens again.
+[*] Post your error-log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url] or the standalone [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Uploader[/url] and command Ctrl+F12
+[*] For best support, please use the Discord-channel for error-reporting.
+[*] Do not report errors by making a discussion-thread, I get no notification of that.
+[*] If you have the solution for a problem, please post it to the GitHub repository.
+[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods
+[/list] 
+
+[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2894628849][img]https://img.shields.io/github/v/release/emipa606/PreceptsAndMemesRitualsModule?label=latest%20version&amp;style=plastic&amp;color=9f1111&amp;labelColor=black[/img][/url] | tags:  rituals</description>
+  <modVersion IgnoreIfNoMatchingField="True">1.6.0</modVersion>
+</ModMetaData>

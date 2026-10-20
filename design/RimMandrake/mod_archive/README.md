@@ -11,7 +11,7 @@ About.xml (small text only) wherever its folder still exists on this machine or 
 |---|---|
 | name, name_source | from About.xml on disk (`About.xml (disk)` / `(src)`), else `mod_facts.jsonl`, else `UNKNOWN` (workshop folder long gone) |
 | workshop_id, folder_name, author, supported_versions | from About.xml / mod_facts where known |
-| lifecycle, lifecycle_date, ruling_doc | `ACTIVE-380`, `RETIRED-WAVE1` (in PRE_WAVE1 542, absent from WAVE1_498; includes donor-free removals made between), `RETIRED-WAVE2` (118), `RETIRED-EARLIER` (gone before PRE_WAVE1; see `last_seen_list`), `DROPPED-BY-KEEPCUT` (Wave 3, owner 2026-10-20) |
+| lifecycle, lifecycle_date, ruling_doc | `ACTIVE-380`, `RETIRED-WAVE1` (in PRE_WAVE1 542, absent from WAVE1_498; includes donor-free removals made between), `RETIRED-WAVE2` (118), `RETIRED-EARLIER` (gone before PRE_WAVE1; see `last_seen_list`), `DROPPED-BY-KEEPCUT` (Wave 3, owner 2026-10-20), `RETIRED-WAVE3` (6), `RETIRED-WAVE4` (50, `design/RimMandrake/retirement_register_wave4_2026-10-20.md`) |
 | current_profile | DEV/TEST/AUTHORING/SHIP/PAINT per the `RULED_2026-10-20` lists (SHIP/DEV/TEST/AUTHORING) and the WAVE2 PAINT list; `-` when retired |
 | reason, reconsider_when | the removal reason from the wave file, or the 07 profile reason for active mods; `reconsider_when` only where `07_deeper_drops.md` gives an add-back column |
 | first_seen_list, last_seen_list | first and last list (file name, or `LATEST@<sha> <date>`) containing it |

@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Better Beggars (Continued)</name>
+  <packageId>Mlie.BetterBeggars</packageId>
+  <author>Fraser Hitchen</author>
+  <url>https://github.com/emipa606/BetterBeggars</url>
+  <supportedVersions>
+    <li>1.3</li>
+    <li>1.4</li>
+    <li>1.5</li>
+    <li>1.6</li>
+    <li>1.7</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.Rimworld.Ideology</packageId>
+      <displayName>Rimworld Ideology</displayName>
+      <downloadUrl>https://store.steampowered.com/app/1392840/RimWorld__Ideology/</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.Rimworld.Ideology</li>
+  </loadAfter>
+  <description>[img]https://img.litet.net/logos/Info.png[/img]
+Update of Fraser Hitchens mod https://steamcommunity.com/sharedfiles/filedetails/?id=2729617288
+
+[img]https://img.litet.net/logos/Notice.png[/img]
+
+[table]
+    [tr][td][url=https://discord.gg/h5TY6DA][img]https://img.litet.net/logos/Discord.png[/img][/url][/td] [td][url=https://github.com/emipa606/BetterBeggars][img]https://img.litet.net/logos/Github.png[/img][/url][/td]
+    [/tr]
+    [tr]
+        [td][img]https://img.litet.net/logos/SafeToAdd.png[/img][/td]
+        [td][img]https://img.litet.net/logos/SafeToRemove.png[/img][/td]
+    [/tr]
+[/table]
+	
+[img]https://img.litet.net/logos/OriginalDescription.png[/img]
+Better Beggars enhances the beggars added in the Ideology DLC.
+
+[h1]Features[/h1]
+[list]
+[*] Change how much beggars will ask for (vanilla is a 0.85x multiplier on colony wealth, this mod allows you to change it from 0.1 up to 2x).
+[*] Change what items beggars ask for.
+[*] Beggars have a chance to send a delayed reward if you help them out.
+[*] New Event: Beggar addicts who will come and ask for drugs to help their addictions.
+[*] New Event: Beggars who are being chased by raiders, if you agree to help they will join you for a few days before leaving.
+[/list]
+
+[h1]Planned Features[/h1]
+[list]
+[*] Larger list of items to choose from.
+[*] More beggar events.
+[/list]
+
+[h1]FAQ[/h1]
+Q: Can this mod be added to an existing save?
+A: From my testing yes, but no promises.
+
+Q: Can this mod be safely removed from a save?
+A: From my testing yes.
+
+[h1]Compatibility[/h1]
+Should be compatible with all mods as long as they do not change the vanilla beggars quest or vanilla item defs. If you find compatibility issues let me know and I will try my best to sort them out!
+
+This mod is licensed under the GNU General Public License v3.0
+https://github.com/FraserHitchen/BetterBeggars
+
+[img]https://img.litet.net/logos/ReportingIssues.png[/img]
+[list]
+[*] See if the the error persists if you just have this mod and its requirements active.
+[*] If not, try adding your other mods until it happens again.
+[*] Always post your log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url]
+[*] For best support, please use the Discord-channel for error-reporting.
+[*] Do not report errors by making a discussion-thread, I get no notification of that.
+[*] If you have the solution for a problem, please post it to the GitHub repository.
+[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods
+[/list] 
+
+[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/3006899215][img]https://img.shields.io/github/v/release/emipa606/BetterBeggars?label=latest%20version&amp;style=plastic&amp;color=9f1111&amp;labelColor=black[/img][/url] | event, customization</description>
+  <modVersion IgnoreIfNoMatchingField="True">1.7.0</modVersion>
+</ModMetaData>

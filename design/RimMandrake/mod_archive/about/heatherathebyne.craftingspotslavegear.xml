@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ModMetaData>
+  <name>Crafting Spot Slave Gear</name>
+  <description>
+Slave collars and body straps are now craftable at crafting spots. Useful for tribals and early game colonies.
+
+Photo by me, because not every stock photo author wants their work used for a mod like this.
+</description>
+  <author>HeatherAthebyne</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <packageId>heatherathebyne.craftingspotslavegear</packageId>
+  <modDependencies>
+    <li>
+      <packageId>ludeon.rimworld.ideology</packageId>
+      <displayName>Ideology</displayName>
+    </li>
+  </modDependencies>
+</ModMetaData>
