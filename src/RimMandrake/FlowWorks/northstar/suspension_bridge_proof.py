@@ -425,9 +425,10 @@ def grate(ctx):
         for i in range(1, 5):                                         # 1 m of water in the 2 m canal: room for the pour
             B.call("jawa/flowworks_excavation_drive", x=P(i, 28)[0], z=P(i, 28)[1], deepenLevels=0, setFill=2)
         _, txtb = stage("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(0, 28)), xz(P(5, 28))))
-        kv, txt = proof("ProofPour", "%s;50;RM_Liquid_FreshWater" % xz(P(2, 28)))
-        good = kv.get("rise") == "500" and kv.get("filthAfter") == kv.get("filthBefore")
-        row("GRATE_pour_drains_to_body", "PASS" if good else "FAIL", {"build": txtb, "read": txt})
+        with V.scope("GRATE_pour"):       # the pour's own read must not withhold the item row below
+            kv, txt = proof("ProofPour", "%s;50;RM_Liquid_FreshWater" % xz(P(2, 28)))
+            good = kv.get("rise") == "500" and kv.get("filthAfter") == kv.get("filthBefore")
+            row("GRATE_pour_drains_to_body", "PASS" if good else "FAIL", {"build": txtb, "read": txt})
         dropped = B.call("jawa/spawn_batch", ops="Steel:%d,%d" % P(3, 28)) or {}
         ticks(60)
         things = B.call("jawa/list_things", rect="%d,%d,1,1" % P(3, 28), limit=20, includePawns=False) or {}
@@ -481,7 +482,8 @@ def underpass(ctx):
     with V.scope("UND_item"):
         V.adopt(u1)
         d_ = spawn(P(2, 40))
-        proof("ProofPutUnder", "%s;%s" % (d_, xz(P(4, 40))))
+        put_d, _ = proof("ProofPutUnder", "%s;%s" % (d_, xz(P(4, 40)))) if d_ else ({}, "no pawn")
+        V.require(put_d.get("under") == "True", "pawn stands under the deck", put_d)      # else DropUnder reads under=False: the harness
         kv, txt = proof("ProofDropUnder", "%s;Steel" % d_)
         good = kv.get("under") == "True" and kv.get("underDeck") == "False"
         row("UND_item_slides_to_open_floor", "PASS" if good else "FAIL", {"read": txt})
@@ -563,6 +565,7 @@ def waters(ctx):
             at = {p.get("id"): ((p.get("end") or {}).get("x"), (p.get("end") or {}).get("z"))   # read-back cell is end{x,z}
                   for p in (o.get("pawns") or [])}.get(w)
             V.require(at is not None, "order_pawn read back the walker", o)
+            V.require(bool(ex), "the river drag has interior deck squares to read", {"drag": r})
             good = bool(ex) and kv.get("ok") == "True" and all(e == "True" for e in ex) and kvp.get("found") == "True" and at == r[1]
             row("WAT_river_cross_no_drift", "PASS" if good else "FAIL", {"build": txt, "exempt": ex, "path": txtp, "arrived": at})
     else:

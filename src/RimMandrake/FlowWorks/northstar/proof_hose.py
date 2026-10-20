@@ -629,7 +629,7 @@ class Proof(object):
         except Exception as ex:  # noqa: BLE001
             import traceback
             err = "%r" % ex
-            self.row(name, "%s_block" % name.upper(), "FAIL", "HARNESS", {"raised": err, "trace": traceback.format_exc()[-1200:]})
+            self.row(name, "%s_block" % name.upper(), "UNMEASURED", "HARNESS", {"raised": err, "trace": traceback.format_exc()[-1200:]})
         if V.TAP:
             try:
                 V.TAP[0].poll()
@@ -881,28 +881,32 @@ class Proof(object):
                 self.row("preport", rid, "UNMEASURED", "SITE", "needs --preport-save MIDCARRY,MIDRETRACT: two saves made BEFORE the "
                          "port, one with a colonist mid-carry and one mid-retract")
             return
-        B = self.B
         for rid, name in zip(ids, names):
-            base = max([x.get("Sequence", 0) for x in (B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}).get("logs") or []] or [0])
-            ld = B.call("rimworld/load_game", saveName=name) or {}
-            if ld.get("success") is False:
-                # no such save / load refused: the old map stays Playing and would FAIL the row for want of a mid-carry job (SITE)
-                self.row("preport", rid, "UNMEASURED", "SITE", {"save": name, "loadRefused": ld})
-                continue
-            ok, waited = V._wait_playing(B)
-            B.ticks(60)
-            new = [e for e in (B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}).get("logs") or [] if (e.get("Sequence") or 0) > base]
-            text = [str(e.get("Message", "")) for e in new]
-            bad = [t[:200] for t in text if "Cleaning up invalid job state" in t or (("Could not find" in t or "Could not resolve" in t) and VH.names_hose_class(t))]
-            jobs = [p.get("job") for p in B.hp("colonists").get("pawns") or []]
-            if not ok:
-                # a load that never reached Playing is the site (the wait budget) -- unless the log names the class/job error this
-                # row exists to catch, which is the mod's FAIL
-                self.row("preport", rid, "FAIL" if bad else "UNMEASURED", "MOD" if bad else "SITE",
-                         {"save": name, "loaded": ok, "loadSeconds": waited, "badLines": bad[:4]})
-                continue
-            self.row("preport", rid, "PASS" if not bad and any(str(j).startswith(("RM_CarryHoseEnd", "RM_RetractHose")) for j in jobs) else "FAIL",
-                     "MOD", {"save": name, "loaded": ok, "loadSeconds": waited, "badLines": bad[:4], "jobs": jobs})
+            with V.scope(rid):                 # a refused load of save 1 must not withhold save 2's row
+                self._preport_one(rid, name)
+
+    def _preport_one(self, rid, name):
+        B = self.B
+        base = max([x.get("Sequence", 0) for x in (B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}).get("logs") or []] or [0])
+        ld = B.call("rimworld/load_game", saveName=name) or {}
+        if ld.get("success") is False:
+            # no such save / load refused: the old map stays Playing and would FAIL the row for want of a mid-carry job (SITE)
+            self.row("preport", rid, "UNMEASURED", "SITE", {"save": name, "loadRefused": ld})
+            return
+        ok, waited = V._wait_playing(B)
+        B.ticks(60)
+        new = [e for e in (B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}).get("logs") or [] if (e.get("Sequence") or 0) > base]
+        text = [str(e.get("Message", "")) for e in new]
+        bad = [t[:200] for t in text if "Cleaning up invalid job state" in t or (("Could not find" in t or "Could not resolve" in t) and VH.names_hose_class(t))]
+        jobs = [p.get("job") for p in B.hp("colonists").get("pawns") or []]
+        if not ok:
+            # a load that never reached Playing is the site (the wait budget) -- unless the log names the class/job error this
+            # row exists to catch, which is the mod's FAIL
+            self.row("preport", rid, "FAIL" if bad else "UNMEASURED", "MOD" if bad else "SITE",
+                     {"save": name, "loaded": ok, "loadSeconds": waited, "badLines": bad[:4]})
+            return
+        self.row("preport", rid, "PASS" if not bad and any(str(j).startswith(("RM_CarryHoseEnd", "RM_RetractHose")) for j in jobs) else "FAIL",
+                 "MOD", {"save": name, "loaded": ok, "loadSeconds": waited, "badLines": bad[:4], "jobs": jobs})
 
     # ---------------------------------------------------------------- Z
     def log_budget(self):

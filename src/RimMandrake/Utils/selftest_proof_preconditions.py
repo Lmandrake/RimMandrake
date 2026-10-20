@@ -385,6 +385,20 @@ def part_c2():
         got = mock("t_" + kind.replace("/", "_") + how, call=refuser(kind, how))
         bad = {r: got.get(r) for r in rids if got.get(r) != "UNMEASURED"}
         check("C2 %s %s withholds the rows staged on it" % (how, kind), not bad, bad)
+    # review 2026-10-20: a ProofPutUnder that ANSWERED under=False (not a refusal) left DropUnder reading under=False: scored FAIL
+    def put_under_false(self, m, a):
+        if m == "ProofPutUnder":
+            return "PUTUNDER under=False"
+        if m == "ProofDropUnder":
+            return "DROPUNDER under=False at=1,1 underDeck=False slid=0"
+        return ostat(self, m, a)
+    got = mock("putunder_false", static=put_under_false)
+    check("C2 a put-under that did not take withholds UND_item_slides_to_open_floor", got.get("UND_item_slides_to_open_floor") == "UNMEASURED",
+          got.get("UND_item_slides_to_open_floor"))
+    # a refused pour must not withhold the item row staged beside it (scope leak)
+    got = mock("pour_refused", call=refuser("static:ProofPour", "refuse"))
+    check("C2 a refused ProofPour withholds the pour row only", got.get("GRATE_pour_drains_to_body") == "UNMEASURED"
+          and got.get("GRATE_item_stays_on_deck") == "PASS", {k: got.get(k) for k in ("GRATE_pour_drains_to_body", "GRATE_item_stays_on_deck")})
     # can-fail through the harness: a real mod fault still FAILs
     got = mock("realfail", static=lambda self, m, a: ("KNOCK trials=20 fell=0 railed=False edge=True" if m == "ProofKnock" else ostat(self, m, a)))
     check("C2 can-fail: rails off, open edge, nobody falls -> FAIL", got.get("SB_rails_off_some_fall") == "FAIL", got.get("SB_rails_off_some_fall"))
@@ -428,8 +442,51 @@ def part_c3():
         sweep_same_or_withheld("Contagion refuse %s" % k, hv, {n: v[0] for n, v in got.items()})
 
 
+# ============================================================================ D. proof_hose preport: one save's refused load must not withhold the other
+def part_d():
+    import proof_hose as PH
+    import validation_core as V
+
+    class PreFake(object):
+        def __init__(self):
+            self.log = []
+
+        def call(self, tool, **kw):
+            if tool == "rimworld/load_game" and kw.get("saveName") == "A":
+                return {"success": False, "message": "no such save (selftest)"}
+            return {"success": True, "logs": []}
+
+        def hp(self, cmd, wait_s=20.0):
+            return {"success": True, "pawns": [{"job": "RM_CarryHoseEnd"}]}
+
+        def ticks(self, n):
+            return {"success": True}
+
+    ow = V._wait_playing
+    V._wait_playing = lambda B, **k: (True, 1)
+    try:
+        import argparse
+        P = PH.Proof(argparse.Namespace(only=None, preport_save="A,B"), bridge=PreFake())
+        with quiet_out():
+            with V.scope("preport"):
+                P.preport()
+    finally:
+        V._wait_playing = ow
+    st = {r["id"]: r["status"] for r in P.rows}
+    check("D preport: a refused load of save 1 is UNMEASURED and save 2 still PASSes",
+          st.get("PP1_preport_midcarry_save_loads") == "UNMEASURED" and st.get("PP2_preport_midretract_save_loads") == "PASS", st)
+    P2 = PH.Proof(argparse.Namespace(only=None, preport_save=None), bridge=PreFake())
+    with quiet_out():
+        try:
+            P2.block("zzz", lambda: (_ for _ in ()).throw(RuntimeError("harness boom (selftest)")))
+        except Exception:
+            pass
+    rr = [r for r in P2.rows if r["id"] == "ZZZ_block"]
+    check("D a raised block is UNMEASURED/HARNESS, never FAIL", rr and rr[0]["status"] == "UNMEASURED" and rr[0]["class"] == "HARNESS", rr)
+
+
 def main():
-    for part in (part_a, part_b, part_c1, part_c2, part_c3):
+    for part in (part_a, part_b, part_c1, part_c2, part_c3, part_d):
         try:
             part()
         except Exception as ex:  # noqa: BLE001 - a part that cannot run is a failure of this selftest, never a skip
