@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- THEY_MOD_REPLICATION_1. Ports donor's Faction_Ants.xml 1:1.
-       startingCountAtWorldCreation is declared 0 directly here rather than
-       through a patch — UtinniPatches/Patches/FactionSlate/OnlyOurFactions.xml
-       used to zero the donor's GiantAnt_Faction the same way; a freshly
-       authored hidden faction just states the answer instead of needing a
-       patch to reach it. -->
+  <!-- THEY_MOD_REPLICATION_1. Ports donor's Faction_Ants.xml.
+       🔴 World creation (2026-10-20 remake: the faction was ABSENT after worldgen).
+       In 1.6 a world made through Page_CreateWorldParams passes the page's faction
+       list to FactionGenerator.InitializeFactions, which then creates ONLY that list;
+       requiredCountAtGameStart is read solely on the no-page path (factions == null).
+       The page list is ConfigurableFactions (maxConfigurableAtWorldCreation > 0,
+       default -1) x startingCountAtWorldCreation. The old 0 here (copied from the
+       donor's zeroing patch) plus the -1 default kept it off the list for good.
+       Now shaped like Core's hidden Insect/Ancients: configurable 1, start 1, not
+       shown in the selection list. Owner ruling 7 (2026-10-19): Green Tide present
+       at paint. -->
   <FactionDef>
     <defName>RUT_GreentideAntFaction</defName>
     <label>giant ant colony</label>
     <pawnSingular>ant</pawnSingular>
     <pawnsPlural>ants</pawnsPlural>
     <requiredCountAtGameStart>1</requiredCountAtGameStart>
-    <startingCountAtWorldCreation>0</startingCountAtWorldCreation>
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <displayInFactionSelection>false</displayInFactionSelection>
+    <configurationListOrderPriority>1100</configurationListOrderPriority>
     <fixedName>They!</fixedName>
 
     <humanlikeFaction>false</humanlikeFaction>
