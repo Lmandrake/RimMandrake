@@ -35,6 +35,8 @@ and paid *output* (ceremony prose, reports, re-verification narration).
 Current line: **Haiku 4.5 · Sonnet 5 · Opus 5 (+fast mode) · Fable 5** (this model;
 Mythos-class tier above Opus). External free tier: NVIDIA nemotron (§4).
 
+> Current ladder as of 2026-10-20 (owner): opus = design and complex code; sonnet = well-defined coding, prose, cross-context judgment; haiku (Haiku 5.5, read `ANTHROPIC_DEFAULT_HAIKU_MODEL`) = mechanical bulk work. No Fable. See `infrastructure/agents/Agent_Policy.md`.
+
 | model | use it for (this project's actions) | do not use it for |
 |---|---|---|
 | **Haiku 4.5** | Fan-out greps, censuses, existence checks, file inventories, log bucketing, contact-sheet assembly, `path:line` sweeps, roster/index regeneration checks — anything whose answer is enumerable and the parent will verify | Anything requiring judgment about what it found; anything it writes that lands unreviewed |
