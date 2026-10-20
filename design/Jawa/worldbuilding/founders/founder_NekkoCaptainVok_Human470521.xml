@@ -35,31 +35,8 @@
   <defaultRangedWeapon IsNull="True" />
   <preferredMeleeWeapon IsNull="True" />
   <primaryWeaponMode>BySkill</primaryWeaponMode>
-  <AM.UniqueSkills.Instances.GilgameshSkill Class="AM.UniqueSkills.Instances.GilgameshSkill">
-    <def>AM_Skill_Gilgamesh</def>
-    <pawn>Thing_Human470521</pawn>
-    <currentTarget>null</currentTarget>
-  </AM.UniqueSkills.Instances.GilgameshSkill>
-  <AM.UniqueSkills.Instances.WeebstickSkill Class="AM.UniqueSkills.Instances.WeebstickSkill">
-    <def>AM_Skill_Weebstick</def>
-    <pawn>Thing_Human470521</pawn>
-  </AM.UniqueSkills.Instances.WeebstickSkill>
-  <AM.UniqueSkills.Instances.GaeBulgSkill Class="AM.UniqueSkills.Instances.GaeBulgSkill">
-    <def>AM_Skill_GaeBulg</def>
-    <pawn>Thing_Human470521</pawn>
-  </AM.UniqueSkills.Instances.GaeBulgSkill>
   <targetHolder>null</targetHolder>
   <lastStudiedTick>-9999999</lastStudiedTick>
-  <HeadControllerComp_faceType>HeadNormal</HeadControllerComp_faceType>
-  <EyeballControllerComp_faceType>EyeNormal</EyeballControllerComp_faceType>
-  <EyeballControllerComp_color>RGBA(0.272, 0.279, 0.358, 1.000)</EyeballControllerComp_color>
-  <LidControllerComp_faceType>LidStaredown</LidControllerComp_faceType>
-  <LidControllerComp_color>RGBA(0.365, 0.518, 0.784, 1.000)</LidControllerComp_color>
-  <BrowControllerComp_faceType>BrowNone</BrowControllerComp_faceType>
-  <BrowControllerComp_color>RGBA(0.365, 0.518, 0.784, 1.000)</BrowControllerComp_color>
-  <MouthControllerComp_faceType>MouthSmile</MouthControllerComp_faceType>
-  <MouthControllerComp_color>RGBA(0.000, 0.000, 0.000, 1.000)</MouthControllerComp_color>
-  <SkinControllerComp_faceType>SkinFreckled</SkinControllerComp_faceType>
   <convertTarget>null</convertTarget>
   <ssc_lastGameTick>125185</ssc_lastGameTick>
   <ssc_migratedOnce>True</ssc_migratedOnce>
@@ -415,10 +392,9 @@
       </allTraits>
     </traits>
     <birthLastName>Pugh</birthLastName>
-    <favoriteColorDef>ForgedSky_Cloud2</favoriteColorDef>
     <headType>Male_AverageWide</headType>
-    <childhood>VBE_ClonedHeir</childhood>
-    <adulthood>VQE_PowerArchitect02</adulthood>
+    <childhood>RUT_Jawa_FounderClonedHeir</childhood>
+    <adulthood>RUT_Jawa_FounderPowerArchitect</adulthood>
   </story>
   <equipment>
     <equipment>
@@ -467,29 +443,6 @@
             <body>Human</body>
             <index>4</index>
           </part>
-          <combatLogEntry>null</combatLogEntry>
-          <abilities IsNull="True" />
-        </li>
-        <li Class="HediffWithComps">
-          <loadID>288</loadID>
-          <ageTicks>14825</ageTicks>
-          <tickAdded>108701</tickAdded>
-          <severity>0.5</severity>
-          <canBeThreateningToPart>True</canBeThreateningToPart>
-          <def>SEX_Birthday</def>
-          <combatLogEntry>null</combatLogEntry>
-          <abilities IsNull="True" />
-          <ticksToDisappear>48125</ticksToDisappear>
-          <disappearsAfterTicks>60000</disappearsAfterTicks>
-          <seed>-652945746</seed>
-        </li>
-        <li Class="MoodChainReaction.Hediff_MCRMoodChain">
-          <loadID>318</loadID>
-          <ageTicks>14811</ageTicks>
-          <tickAdded>108721</tickAdded>
-          <severity>0.5</severity>
-          <canBeThreateningToPart>True</canBeThreateningToPart>
-          <def>MCR_MoodChainWatcher</def>
           <combatLogEntry>null</combatLogEntry>
           <abilities IsNull="True" />
         </li>
@@ -622,13 +575,6 @@
                 <otherPawn>null</otherPawn>
                 <age>13950</age>
                 <durationTicksOverride>120000</durationTicksOverride>
-              </li>
-              <li Class="MoodChainReaction.Thought_MCRMoodMemorySocial">
-                <def>MCR_ADislikableGuyIsSad</def>
-                <sourcePrecept>null</sourcePrecept>
-                <otherPawn>Thing_Human470527</otherPawn>
-                <age>750</age>
-                <durationTicksOverride>1199</durationTicksOverride>
               </li>
             </memories>
           </memories>
@@ -768,39 +714,6 @@
       <li Class="DubsBadHygiene.Need_Thirst">
         <def>DBHThirst</def>
       </li>
-      <li Class="RomanceOnTheRim.Need_Romance">
-        <lastLordStartTick>-99999</lastLordStartTick>
-        <lastLordCheckTick>-99999</lastLordCheckTick>
-        <isWorryingAbout>null</isWorryingAbout>
-        <separatedPawns />
-        <separateTick IsNull="True" />
-        <relationRecords>
-          <keys />
-          <values />
-        </relationRecords>
-        <def>RomanceOnTheRim_Need_Romance</def>
-        <curLevel>0.5</curLevel>
-      </li>
-      <li Class="PrisonLabor.Core.Needs.Need_Motivation">
-        <def>PrisonLabor_Motivation</def>
-        <curLevel>1</curLevel>
-      </li>
-      <li Class="PrisonLabor.Core.Needs.Need_Treatment">
-        <def>PrisonLabor_Treatment</def>
-        <curLevel>0.5</curLevel>
-      </li>
-      <li Class="VanillaMemesExpanded.Need_Desserts">
-        <def>VME_Desserts</def>
-        <curLevel>0.366250128</curLevel>
-      </li>
-      <li Class="VanillaMemesExpanded.Need_Anonymity">
-        <def>VME_Anonymity</def>
-        <curLevel>0.366250128</curLevel>
-      </li>
-      <li Class="VanillaMemesExpanded.Need_Corruption">
-        <def>VME_Corruption</def>
-        <curLevel>0.5</curLevel>
-      </li>
       <li Class="LoveyDoveySexWithEuterpe.Need_Intimacy">
         <def>SEX_Intimacy</def>
         <curLevel>0.594033182</curLevel>
@@ -840,27 +753,7 @@
   </royalty>
   <social>
     <directRelations>
-      <li>
-        <def>CAOutsiderRelation</def>
-        <startTicks>109493</startTicks>
-        <otherPawn>Thing_Human470524</otherPawn>
-      </li>
-      <li>
-        <def>CAOutsiderRelation</def>
-        <startTicks>109493</startTicks>
-        <otherPawn>Thing_Human470527</otherPawn>
-      </li>
-      <li>
-        <def>CAOutsiderRelation</def>
-        <startTicks>109493</startTicks>
-        <otherPawn>Thing_Human470530</otherPawn>
-      </li>
-      <li>
-        <def>CAOutsiderRelation</def>
-        <startTicks>115498</startTicks>
-        <otherPawn>Thing_Human632207</otherPawn>
-      </li>
-    </directRelations>
+      </directRelations>
     <virtualRelations />
     <relativeInvolvedInRescueQuest>null</relativeInvolvedInRescueQuest>
     <pregnancyApproaches>
@@ -922,7 +815,7 @@
       <li>
         <def>Plants</def>
         <level>8</level>
-        <passion>AS_PainDrivenPassion</passion>
+        <passion>None</passion>
       </li>
       <li>
         <def>Animals</def>
@@ -1100,8 +993,6 @@
       <keys>
         <li>Medicine</li>
         <li>SEX_Contraceptives</li>
-        <li>MintFoodStock</li>
-        <li>MintDrugStock</li>
       </keys>
       <values>
         <li>
@@ -1109,12 +1000,6 @@
         </li>
         <li>
           <thingDef>SEX_Contraceptive</thingDef>
-        </li>
-        <li>
-          <thingDef>MealSimple</thingDef>
-        </li>
-        <li>
-          <thingDef>Beer</thingDef>
         </li>
       </values>
     </stockEntries>
@@ -1148,24 +1033,6 @@
         <loadID>331</loadID>
       </li>
       <li>
-        <def>AG_UnderdevelopedTeeth</def>
-        <pawn>Thing_Human470521</pawn>
-        <overriddenByGene>null</overriddenByGene>
-        <loadID>332</loadID>
-      </li>
-      <li>
-        <def>AG_SurvivalInstinct_High</def>
-        <pawn>Thing_Human470521</pawn>
-        <overriddenByGene>null</overriddenByGene>
-        <loadID>333</loadID>
-      </li>
-      <li>
-        <def>AG_TableResistance</def>
-        <pawn>Thing_Human470521</pawn>
-        <overriddenByGene>null</overriddenByGene>
-        <loadID>334</loadID>
-      </li>
-      <li>
         <def>WoundHealing_Slow</def>
         <pawn>Thing_Human470521</pawn>
         <overriddenByGene>null</overriddenByGene>
@@ -1176,18 +1043,6 @@
         <pawn>Thing_Human470521</pawn>
         <overriddenByGene>null</overriddenByGene>
         <loadID>336</loadID>
-      </li>
-      <li>
-        <def>AG_Stinky</def>
-        <pawn>Thing_Human470521</pawn>
-        <overriddenByGene>null</overriddenByGene>
-        <loadID>337</loadID>
-      </li>
-      <li>
-        <def>AG_FrailSkin</def>
-        <pawn>Thing_Human470521</pawn>
-        <overriddenByGene>null</overriddenByGene>
-        <loadID>338</loadID>
       </li>
       <li>
         <def>Mood_Pessimist</def>

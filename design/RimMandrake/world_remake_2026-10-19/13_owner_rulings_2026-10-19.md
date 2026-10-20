@@ -31,3 +31,10 @@ Ruling 18 (appended after the list above; same card set):
 | # | question | his answer | what it changes |
 |---|---|---|---|
 | 18 | How should this frozen biome be settled? (the Fuel Snows / Umbra land) | "Back to Umbra, dark": "(2) it's totally dark except for the utterly beautiful and wildly active aurora. Let's call it the Auroral Umbra then. And look back at the original concept sheet to find out about precipitation. It ruled what's solid, liquid, gas at various temperatures." Then: "Yes, there should be a perpetual Auroral activity in that biome. Put that in its def now. Auroral Umbra is the new name, better than Rimefall. And yes, it should NOT snow, it should rain propane (equivalent with chemfuel)." | item `AURORAL_UMBRA_RENAME_BACK_TO_DARK`: `RUT_FuelSnows` renamed back to `RUT_Umbra`, label "Auroral Umbra"; perpetual aurora (Weather Suite, tunable); propane rain, no snow (concept sheet `worldgen_interactive_def.md:151-155,177-179`: propane liquid −188…−42 °C); the RUT_Umbra→RUT_FuelSnows paint remap is cancelled (the save already holds RUT_Umbra on 2,531 tiles) |
+
+Rulings 19 and 20 (card 2026-10-19, gravship/founders remap, `Transient/gravship_remap_2026-10-20.md`):
+
+| # | question | his answer | what it changes |
+|---|---|---|---|
+| 19 | Founders' genes, skill passions and face add-ons that come from retired mods | "Drop them" | removed from the 6 founder fragments (and every other def outside the PAINT closure: hediffs, needs, thoughts, relations, stock entries, AM unique skills, favorite colour); skill passions from Alpha Skills / VSE become None; donor backstories re-pointed to `RUT_Jawa_Founder*`. Tool `src/RimMandrake/Utils/founders_drop_retired.py`, guard `selftest_founders_paint_closure.py` |
+| 20 | Gravship floors that came from retired mods | "Yes, use our rust and grate floors" | AG_RustedTile -> `guy762_FloorTiles_DivotedTile_rust`, UCScaffoldTile -> `guy762_FloorTiles_XGrate_iron` in `ship_remap_S10b.json` (already applied in the `.paint.xml`) |

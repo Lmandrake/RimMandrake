@@ -33,31 +33,8 @@
   <defaultRangedWeapon IsNull="True" />
   <preferredMeleeWeapon IsNull="True" />
   <primaryWeaponMode>BySkill</primaryWeaponMode>
-  <AM.UniqueSkills.Instances.GilgameshSkill Class="AM.UniqueSkills.Instances.GilgameshSkill">
-    <def>AM_Skill_Gilgamesh</def>
-    <pawn>Thing_Human669116</pawn>
-    <currentTarget>null</currentTarget>
-  </AM.UniqueSkills.Instances.GilgameshSkill>
-  <AM.UniqueSkills.Instances.WeebstickSkill Class="AM.UniqueSkills.Instances.WeebstickSkill">
-    <def>AM_Skill_Weebstick</def>
-    <pawn>Thing_Human669116</pawn>
-  </AM.UniqueSkills.Instances.WeebstickSkill>
-  <AM.UniqueSkills.Instances.GaeBulgSkill Class="AM.UniqueSkills.Instances.GaeBulgSkill">
-    <def>AM_Skill_GaeBulg</def>
-    <pawn>Thing_Human669116</pawn>
-  </AM.UniqueSkills.Instances.GaeBulgSkill>
   <targetHolder>null</targetHolder>
   <lastStudiedTick>-9999999</lastStudiedTick>
-  <HeadControllerComp_faceType>HeadSquare</HeadControllerComp_faceType>
-  <EyeballControllerComp_faceType>EyeNormal</EyeballControllerComp_faceType>
-  <EyeballControllerComp_color>RGBA(0.436, 0.520, 0.778, 1.000)</EyeballControllerComp_color>
-  <LidControllerComp_faceType>LidHardened</LidControllerComp_faceType>
-  <LidControllerComp_color>RGBA(0.219, 0.141, 0.070, 1.000)</LidControllerComp_color>
-  <BrowControllerComp_faceType>BrowNormal</BrowControllerComp_faceType>
-  <BrowControllerComp_color>RGBA(0.219, 0.141, 0.070, 1.000)</BrowControllerComp_color>
-  <MouthControllerComp_faceType>MouthLittleFrown</MouthControllerComp_faceType>
-  <MouthControllerComp_color>RGBA(0.000, 0.000, 0.000, 1.000)</MouthControllerComp_color>
-  <SkinControllerComp_faceType>SkinBruise</SkinControllerComp_faceType>
   <convertTarget>null</convertTarget>
   <canGainIntimacyFromEatingTick>0</canGainIntimacyFromEatingTick>
   <canConverseTick>0</canConverseTick>
@@ -363,7 +340,6 @@
       </allTraits>
     </traits>
     <birthLastName>Yosei</birthLastName>
-    <favoriteColorDef>ForgedSky_Cloud1</favoriteColorDef>
     <headType>Male_AverageWide</headType>
     <childhood>SewerKid57</childhood>
     <adulthood>HouseServant63</adulthood>
@@ -440,15 +416,6 @@
           <severity>0.5</severity>
           <canBeThreateningToPart>True</canBeThreateningToPart>
           <def>VTE_RestSlowFallFactor</def>
-          <combatLogEntry>null</combatLogEntry>
-          <abilities IsNull="True" />
-        </li>
-        <li Class="HediffWithComps">
-          <loadID>1769</loadID>
-          <tickAdded>126811</tickAdded>
-          <severity>1</severity>
-          <canBeThreateningToPart>True</canBeThreateningToPart>
-          <def>AS_NomadicPassion</def>
           <combatLogEntry>null</combatLogEntry>
           <abilities IsNull="True" />
         </li>
@@ -728,36 +695,6 @@
         <def>DBHThirst</def>
         <curLevel>0.819596887</curLevel>
       </li>
-      <li Class="RomanceOnTheRim.Need_Romance">
-        <lastLordStartTick>-99999</lastLordStartTick>
-        <lastLordCheckTick>-99999</lastLordCheckTick>
-        <isWorryingAbout>null</isWorryingAbout>
-        <separatedPawns IsNull="True" />
-        <separateTick IsNull="True" />
-        <relationRecords IsNull="True" />
-        <def>RomanceOnTheRim_Need_Romance</def>
-        <curLevel>0.5</curLevel>
-      </li>
-      <li Class="PrisonLabor.Core.Needs.Need_Motivation">
-        <def>PrisonLabor_Motivation</def>
-        <curLevel>1</curLevel>
-      </li>
-      <li Class="PrisonLabor.Core.Needs.Need_Treatment">
-        <def>PrisonLabor_Treatment</def>
-        <curLevel>0.5</curLevel>
-      </li>
-      <li Class="VanillaMemesExpanded.Need_Desserts">
-        <def>VME_Desserts</def>
-        <curLevel>0.5</curLevel>
-      </li>
-      <li Class="VanillaMemesExpanded.Need_Anonymity">
-        <def>VME_Anonymity</def>
-        <curLevel>0.5</curLevel>
-      </li>
-      <li Class="VanillaMemesExpanded.Need_Corruption">
-        <def>VME_Corruption</def>
-        <curLevel>0.5</curLevel>
-      </li>
       <li Class="LoveyDoveySexWithEuterpe.Need_Intimacy">
         <def>SEX_Intimacy</def>
         <curLevel>0.395891607</curLevel>
@@ -829,7 +766,7 @@
       <li>
         <def>Shooting</def>
         <level>4</level>
-        <passion>VSE_Critical</passion>
+        <passion>None</passion>
       </li>
       <li>
         <def>Melee</def>
@@ -864,7 +801,7 @@
       <li>
         <def>Crafting</def>
         <level>6</level>
-        <passion>AS_DedicatedPassion</passion>
+        <passion>None</passion>
       </li>
       <li>
         <def>Artistic</def>
@@ -1061,24 +998,6 @@
         <loadID>1998</loadID>
       </li>
       <li>
-        <def>AG_UnderdevelopedTeeth</def>
-        <pawn>Thing_Human669116</pawn>
-        <overriddenByGene>null</overriddenByGene>
-        <loadID>1999</loadID>
-      </li>
-      <li>
-        <def>AG_SurvivalInstinct_High</def>
-        <pawn>Thing_Human669116</pawn>
-        <overriddenByGene>null</overriddenByGene>
-        <loadID>2000</loadID>
-      </li>
-      <li>
-        <def>AG_TableResistance</def>
-        <pawn>Thing_Human669116</pawn>
-        <overriddenByGene>null</overriddenByGene>
-        <loadID>2001</loadID>
-      </li>
-      <li>
         <def>WoundHealing_Slow</def>
         <pawn>Thing_Human669116</pawn>
         <overriddenByGene>null</overriddenByGene>
@@ -1089,18 +1008,6 @@
         <pawn>Thing_Human669116</pawn>
         <overriddenByGene>null</overriddenByGene>
         <loadID>2003</loadID>
-      </li>
-      <li>
-        <def>AG_Stinky</def>
-        <pawn>Thing_Human669116</pawn>
-        <overriddenByGene>null</overriddenByGene>
-        <loadID>2004</loadID>
-      </li>
-      <li>
-        <def>AG_FrailSkin</def>
-        <pawn>Thing_Human669116</pawn>
-        <overriddenByGene>null</overriddenByGene>
-        <loadID>2005</loadID>
       </li>
       <li>
         <def>Mood_Pessimist</def>
