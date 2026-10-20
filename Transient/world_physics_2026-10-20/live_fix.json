@@ -1,0 +1,76 @@
+{
+ "phase": "fix",
+ "utc": "2026-10-20T15:29:30Z",
+ "before": {
+  "planetType": {
+   "success": true,
+   "result": "Default",
+   "ticksGame": 3
+  },
+  "worldPresetName": {
+   "success": true,
+   "result": "null",
+   "ticksGame": 3
+  }
+ },
+ "setPreset": {
+  "success": true,
+  "result": "null",
+  "ticksGame": 3
+ },
+ "updateActive": {
+  "success": true,
+  "result": "null",
+  "ticksGame": 3
+ },
+ "after": {
+  "planetType": {
+   "success": true,
+   "result": "TidallyLocked",
+   "ticksGame": 3
+  },
+  "worldPresetName": {
+   "success": true,
+   "result": "TidallyLocked",
+   "ticksGame": 3
+  },
+  "tidalPatchesPresent": {
+   "success": true,
+   "result": "True",
+   "ticksGame": 3
+  },
+  "celestialGlowCurMap": {
+   "success": true,
+   "result": "0.7535209",
+   "ticksGame": 3
+  },
+  "shadegrid": {
+   "mapTile": "17011,0",
+   "sunHeatActive": true,
+   "shadeGrid": {
+    "sunElevationDegrees": 35.39559,
+    "effectiveHeatKind": "lowSun",
+    "isDirectional": true
+   },
+   "pinnedSun": {
+    "present": true,
+    "isActive": true,
+    "sunElevationDegrees": 35.39559
+   },
+   "skyGlow": 1.0,
+   "celestialSunGlow": 0.7535209
+  },
+  "temp": {
+   "temperature": 34.375,
+   "outdoorTemp": 32.49606,
+   "seasonalTemp": 36.9511452
+  },
+  "date": {
+   "absTicksUsed": 65003,
+   "dateFullString": "2nd of Aprimay, 5500",
+   "season": "Spring",
+   "latitude": 15.9231024,
+   "longitude": 52.96309
+  }
+ }
+}

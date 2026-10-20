@@ -64,6 +64,33 @@ it is fixed in time but not a clean function of arc:
 Planet-wide: 448 night-side tiles read as daytime (glow > 0.6) and 1,796 day-side tiles read as
 night. Live confirmation of this table is in §5.
 
+## 5. Live reads, 2026-10-20 15:28–15:31Z (Wave 4 324 list, dev save loaded, bridge held by FOUNDRY)
+
+- **Readback on load:** `PlanetTypeManager.Current` = **`Default`**, `WorldPresetName` = null,
+  `Harmony.HasAnyPatches("7f.alienworlds.tidallylocked")` = **False**. Not locked.
+- **Clock scrub before the fix** (home tile 17011; +6 h/+12 h/+18 h/+15 d, restored to tick 3):
+  celestial glow 0.68 → 1.00 → 0.68 → **0.00** → 0.75 — the sun sets. Direct Sun elevation stayed
+  35.40° throughout (geometry: 35.4°).
+- **Fix applied live** (the two static calls in §1): `Current` = `TidallyLocked`, patches present =
+  True. **Same scrub after:** glow 0.7535 at all five times, Direct Sun 35.40°. Locked, and no
+  day/night change.
+- **Scratch maps** (generated, read, dropped, their world objects 156–159 removed):
+
+  | tile | arc | predicted glow | live glow | Direct Sun ° (live) | outdoor °C live / stored |
+  |---:|---:|---:|---:|---:|---|
+  | 18631 terminator W | 90 | 0.72 | **0.721** | (no sun-heat biome) | 12.7 / 14.0 |
+  | 7724 arc 80 E | 80 | 0.00 | **0.000** | (no sun-heat biome) | 23.0 / 21.8 |
+  | 7821 arc 100 W | 100 | 0.50 | **0.500** | (no sun-heat biome) | 3.4 / 2.2 |
+  | 2475 arc 60 E | 60 | 0.87 | **0.873** | 29.97 (geometry 30.0) | 33.6 / 34.8 |
+
+  The port matches the game on every scratch tile. The home map reads 0.7535 where the port says
+  1.00: something on that map scales glow after the patch (our `BiomeGlowPatches` postfix or a
+  condition override are the candidates) — cause UNMEASURED. The ±1.25 °C live-vs-stored offsets
+  flip sign by hemisphere: that is the seasonal term of §3 at this date.
+- **Saved:** `Saves\ASHKARR_DEV_START_2026-10-20_LOCKED.rws` (in-game save, new name), which reads
+  `alienWorldsFrameworkPlanetType = TidallyLocked` and `worldPresetName = TidallyLocked`. The
+  original `ASHKARR_DEV_START_2026-10-20.rws` is untouched and still loads unlocked on the full list.
+
 ## 3. Temperatures
 
 Stored tile temperatures in the dev save equal the painted record (`world/ASHKARR_WORLDMAP_tiles.csv`)
@@ -93,3 +120,11 @@ can wipe it). It was on every full list through Wave 1 (498) and dropped in Wave
 (`infrastructure/state/modlists/wave2_removed_118.txt`); absent from FULL.LATEST/Wave 4 324, SHIP,
 DEV, PAINT. Registry: KEEP-TEMPORARILY-THEN-PHASE-OUT, owner C18 "measure real memory cost first".
 Restore steps: item `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT`.
+
+## 6. Owed
+
+- `TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING` — pick the dev save; a load-time guard so the full list cannot load unlocked.
+- `SUN_GLOW_DECIDE_WEST_TERMINATOR_SUNBATHING` — owner card: light by geometry or the mod's skew.
+- `LOCKED_SEASONS_DECIDE_FIFTEEN_DEGREE_WOBBLE` — owner card: the ±15 °C seasons.
+- `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT` — ride the next larger-list cold load.
+- The Scald's arc/temperature vs its sheet (§3) goes on the end-of-build paint list, not a repaint now.

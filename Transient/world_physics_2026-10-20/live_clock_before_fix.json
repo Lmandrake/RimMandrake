@@ -1,0 +1,164 @@
+{
+ "phase": "clock",
+ "utc": "2026-10-20T15:29:22Z",
+ "clock0": {
+  "success": true,
+  "ticksGame": 3,
+  "ticksAbs": 65003,
+  "ticksSinceSettle": 3,
+  "startingYear": 5500,
+  "settleTick": 0,
+  "hasSettledNewColony": false,
+  "curTimeSpeed": "Paused",
+  "paused": true,
+  "operation": {
+   "OperationId": "op_51079c958874426493748794a51a1e41",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 46
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 3
+  }
+ },
+ "samples": [
+  {
+   "label": "now",
+   "glow": "0.6802856",
+   "temp": {
+    "temperature": 34.375,
+    "outdoorTemp": 32.49606,
+    "seasonalTemp": 36.9511452
+   },
+   "date": "2nd of Aprimay, 5500",
+   "shadegrid": {
+    "mapTile": "17011,0",
+    "sunHeatActive": true,
+    "shadeGrid": {
+     "sunElevationDegrees": 35.39559,
+     "effectiveHeatKind": "lowSun",
+     "isDirectional": true
+    },
+    "pinnedSun": {
+     "present": true,
+     "isActive": true,
+     "sunElevationDegrees": 35.39559
+    },
+    "skyGlow": 1.0,
+    "celestialSunGlow": 0.6802856
+   }
+  },
+  {
+   "label": "+6h",
+   "glow": "1",
+   "temp": {
+    "temperature": 34.375,
+    "outdoorTemp": 32.49606,
+    "seasonalTemp": 36.9511452
+   },
+   "date": "2nd of Aprimay, 5500",
+   "shadegrid": {
+    "mapTile": "17011,0",
+    "sunHeatActive": true,
+    "shadeGrid": {
+     "sunElevationDegrees": 35.39559,
+     "effectiveHeatKind": "lowSun",
+     "isDirectional": true
+    },
+    "pinnedSun": {
+     "present": true,
+     "isActive": true,
+     "sunElevationDegrees": 35.39559
+    },
+    "skyGlow": 1.0,
+    "celestialSunGlow": 1.0
+   }
+  },
+  {
+   "label": "+12h",
+   "glow": "0.6795397",
+   "temp": {
+    "temperature": 34.375,
+    "outdoorTemp": 32.49606,
+    "seasonalTemp": 36.9511452
+   },
+   "date": "2nd of Aprimay, 5500",
+   "shadegrid": {
+    "mapTile": "17011,0",
+    "sunHeatActive": true,
+    "shadeGrid": {
+     "sunElevationDegrees": 35.39559,
+     "effectiveHeatKind": "lowSun",
+     "isDirectional": true
+    },
+    "pinnedSun": {
+     "present": true,
+     "isActive": true,
+     "sunElevationDegrees": 35.39559
+    },
+    "skyGlow": 1.0,
+    "celestialSunGlow": 0.6795397
+   }
+  },
+  {
+   "label": "+18h",
+   "glow": "0",
+   "temp": {
+    "temperature": 34.375,
+    "outdoorTemp": 32.49606,
+    "seasonalTemp": 36.9511452
+   },
+   "date": "3rd of Aprimay, 5500",
+   "shadegrid": {
+    "mapTile": "17011,0",
+    "sunHeatActive": true,
+    "shadeGrid": {
+     "sunElevationDegrees": 35.39559,
+     "effectiveHeatKind": "lowSun",
+     "isDirectional": true
+    },
+    "pinnedSun": {
+     "present": true,
+     "isActive": true,
+     "sunElevationDegrees": 35.39559
+    },
+    "skyGlow": 1.0,
+    "celestialSunGlow": 0.0
+   }
+  },
+  {
+   "label": "+15d",
+   "glow": "0.7535209",
+   "temp": {
+    "temperature": 34.375,
+    "outdoorTemp": 32.49606,
+    "seasonalTemp": 36.9511452
+   },
+   "date": "2nd of Jugust, 5500",
+   "shadegrid": {
+    "mapTile": "17011,0",
+    "sunHeatActive": true,
+    "shadeGrid": {
+     "sunElevationDegrees": 35.39559,
+     "effectiveHeatKind": "lowSun",
+     "isDirectional": true
+    },
+    "pinnedSun": {
+     "present": true,
+     "isActive": true,
+     "sunElevationDegrees": 35.39559
+    },
+    "skyGlow": 1.0,
+    "celestialSunGlow": 0.7535209
+   }
+  }
+ ],
+ "restored": {
+  "success": true,
+  "ticksGameAfter": 3
+ }
+}

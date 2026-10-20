@@ -101,6 +101,11 @@ shipped `TidallyLocked` one.
 ✅ **The only positive proof is post-generation and it is offline:** the save carries
 `<alienWorldsFrameworkPlanetType>` in `<world>`, directly above `<info>`. It must read
 `TidallyLocked`; `Default` means the world is vanilla.
+🔴 **With Worldbuilder loaded that field is NOT what a load reads** (MEASURED 2026-10-20): the backend takes
+`Current` from the save's `<worldPresetName>`; a save made without Worldbuilder (PAINT) has none and loads as
+`Default`, sun moving. Live fix: `jawa/static_call Worldbuilder.World_ExposeData_Patch set_WorldPresetName
+TidallyLocked`, then `AlienWorlds.PlanetTypeManager UpdateActive`; check `get_Current` and `HarmonyLib.Harmony
+HasAnyPatches 7f.alienworlds.tidallylocked`; save. Detail: `design/RimMandrake/world_physics_audit_2026-10-20.md`.
 
 ### ⚠️ It applies NO biome restriction — this is the trap
 
