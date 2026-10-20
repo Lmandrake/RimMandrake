@@ -32,6 +32,8 @@ By 19 BBY, however, Yoda had a new kybuck, received as a gift as a token of grat
 A colony of kybucks was established on Felucia during the battle there by Confederate mercenaries, including Vazus Mandrake, who tended to the creatures after the war's end.
 
 ## Visual brief
+**OWNER RULING 2026-10-20 OVERRIDES THE BODY PLAN BELOW: draw the dark-brown four-legged animal of `legends_2` (purple-background painting) with a prominent facial bone plate; ignore every instruction below to make it a biped or to take its body plan from `canon_1`. See `## ruling`.**
+
 **Animation-only canon — no realistic source found (searched: Wookieepedia `Kybuck` and `Kybuck/Legends` page images, `Category:Images of kybucks` (Tales of the Jedi animation, 2003 Clone Wars 2D cartoon, Galaxy of Creatures, sourcebook and toy art)).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
 
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: the 2003 *Clone Wars* 2D cartoon frame of Yoda's mount (`YodaKybuck-CW23.jpg`). Kept: the canon *Tales of the Jedi* animated render (`canon_1`, the only canon image; anatomy only) and the two painted Legends images (`legends_2` sourcebook painting, `legends_3` toy-packaging painting). Render the canon animal as a real antelope/goat would look: short, dense coat with real hair texture, real horn keratin.
@@ -44,12 +46,13 @@ Three images; the canon one (animated render, file `Kybucks-LaD.png`) differs a 
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`), and set to one population the same day by the owner's question-card decision (see `## ruling`): the target is the **Kashyyyk** population (canon text: dark-brown fur, upward-curving horns, no chin tufts). Body plan comes from the canon *Tales of the Jedi* render `canon_1`; that render shows the Shili form, so its colour, horn curve and chin tuft are NOT the target.*
-- [ ] BODY PLAN: a slender, deer-sized antelope/goat-like animal standing and walking upright on TWO hoofed hind legs, small forelimbs held up and tucked; a long thin neck; a small head with a small pointed muzzle and large upright leaf-shaped ears — not a horse stance
+- [ ] BODY PLAN (owner ruling 2026-10-20, see `## ruling`): a dark-brown, deer-to-pony-sized, four-legged hoofed animal in the pose and build of `legends_2`, horse-like neck and head — NOT the biped pronghorn/antelope; no saddle, harness or rider
 - [ ] COLOUR LAYOUT: short dark-brown coat over the body (Kashyyyk form); horns darker; nose dark
 - [ ] Pair of ridged horns curving UPWARD
 - [ ] No beard or tuft hanging from the chin
+- [ ] PROMINENT FACIAL BONE PLATE: a pale, ridged bone plate across the face/top of the head, mounted to the horns (as in `legends_2` and `legends_3`) — a must-show, missed twice before
 - [ ] Realistic rendering: natural short-haired coat and horn texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
-- [ ] NEGATIVE: not the Shili form shown in `canon_1` (no light golden-tan coat, no down-curving horns, no chin tuft); not a four-legged horse/yak riding mount (the Legends look: no bushy tail, no heavy mane, no saddle, no horse-sized bulk); not a tauntaun
+- [ ] NEGATIVE: not the Shili form shown in `canon_1` (no light golden-tan coat, no down-curving horns, no chin tuft); not a saddled riding mount (no saddle, harness, rider); not a tauntaun
 
 ## Engine limits
 not yet assessed
@@ -65,3 +68,5 @@ not yet assessed
 
 ## ruling
 **RULED 2026-10-09 — decision taken by question card:** the target is the **Kashyyyk** population: dark brown, up-curving horns, no chin tuft. The Shili form (light brown, down-curving horns, chin tuft) is a negative.
+
+**RULED 2026-10-20 (owner, Leaning Scrub open-rows sheet, verbatim):** "Completely remove the absurd standing pronghorn images. Instead, regenerate Canon based on the dark brown standing on a purple background image. Note the prominant facial bone plate." The base image is `wookieepedia_legends_2.webp` (dark brown animal on purple); the biped goat/pronghorn body plan and its renders (installed A, B, C, D) are retired. This overrides the biped body plan above where they differ.
