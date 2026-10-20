@@ -39,71 +39,98 @@
 
   <!-- CADevourer (ThingDef) - body=MechanicalCentipede -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="CADevourer"]/statBases/ArmorRating_Blunt</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="CADevourer"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="CADevourer"]/statBases/ArmorRating_Blunt</xpath>
-      <value><ArmorRating_Blunt>0.22</ArmorRating_Blunt></value>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="CADevourer"]/statBases/ArmorRating_Blunt</xpath>
+        <value><ArmorRating_Blunt>0.22</ArmorRating_Blunt></value>
+      </match>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="CADevourer"]/statBases/ArmorRating_Sharp</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="CADevourer"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="CADevourer"]/statBases/ArmorRating_Sharp</xpath>
-      <value><ArmorRating_Sharp>0.72</ArmorRating_Sharp></value>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="CADevourer"]/statBases/ArmorRating_Sharp</xpath>
+        <value><ArmorRating_Sharp>0.72</ArmorRating_Sharp></value>
+      </match>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="CADevourer"]/race/baseBodySize</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="CADevourer"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="CADevourer"]/race/baseBodySize</xpath>
-      <value><baseBodySize>3</baseBodySize></value>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="CADevourer"]/race/baseBodySize</xpath>
+        <value><baseBodySize>3</baseBodySize></value>
+      </match>
     </match>
   </Operation>
 
   <!-- CAEndBossMech (ThingDef) - body=MechanicalCentipede; its armor already
        matches the vanilla Centipede baseline (0.22/0.72), only bodySize needs it -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="CAEndBossMech"]/race/baseBodySize</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="CAEndBossMech"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="CAEndBossMech"]/race/baseBodySize</xpath>
-      <value><baseBodySize>3</baseBodySize></value>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="CAEndBossMech"]/race/baseBodySize</xpath>
+        <value><baseBodySize>3</baseBodySize></value>
+      </match>
     </match>
   </Operation>
 
   <!-- combatPower (PawnKindDef) - every boss reset to its body's vanilla mech -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="CABossMechDevourer"]/combatPower</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="CABossMechDevourer"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/PawnKindDef[defName="CABossMechDevourer"]/combatPower</xpath>
-      <value><combatPower>400</combatPower></value>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/PawnKindDef[defName="CABossMechDevourer"]/combatPower</xpath>
+        <value><combatPower>400</combatPower></value>
+      </match>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="CABossMechCrystalScythe"]/combatPower</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="CABossMechCrystalScythe"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/PawnKindDef[defName="CABossMechCrystalScythe"]/combatPower</xpath>
-      <value><combatPower>150</combatPower></value>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/PawnKindDef[defName="CABossMechCrystalScythe"]/combatPower</xpath>
+        <value><combatPower>150</combatPower></value>
+      </match>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="CABossMechHarbinger"]/combatPower</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="CABossMechHarbinger"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/PawnKindDef[defName="CABossMechHarbinger"]/combatPower</xpath>
-      <value><combatPower>150</combatPower></value>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/PawnKindDef[defName="CABossMechHarbinger"]/combatPower</xpath>
+        <value><combatPower>150</combatPower></value>
+      </match>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="CABossMechHavoc"]/combatPower</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="CABossMechHavoc"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/PawnKindDef[defName="CABossMechHavoc"]/combatPower</xpath>
-      <value><combatPower>150</combatPower></value>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/PawnKindDef[defName="CABossMechHavoc"]/combatPower</xpath>
+        <value><combatPower>150</combatPower></value>
+      </match>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="CAEndBossMech"]/combatPower</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="CAEndBossMech"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/PawnKindDef[defName="CAEndBossMech"]/combatPower</xpath>
-      <value><combatPower>400</combatPower></value>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/PawnKindDef[defName="CAEndBossMech"]/combatPower</xpath>
+        <value><combatPower>400</combatPower></value>
+      </match>
     </match>
   </Operation>
 </Patch>

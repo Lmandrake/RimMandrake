@@ -124,7 +124,7 @@
           <li><key>Volcano</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>LavaField</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>Scarlands</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>IronScruff_PrimordialGeysers</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li MayRequire="ironscruff.primordialgeysers"><key>IronScruff_PrimordialGeysers</key><value><scoreOffset>-4</scoreOffset></value></li>
           <!-- RG_BoilingForest CUT 2026-08-15 — owner: "WE ARE NOT USING BOILING
                BIOME." regrowth.botr.boilingforest left the mod list in the
                585→575 descope, so this scored a def that no longer loads: it

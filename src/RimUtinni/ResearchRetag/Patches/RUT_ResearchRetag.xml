@@ -213,7 +213,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="AM_Cryptoharmonization"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="AM_Cryptoharmonization"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -260,7 +260,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="AM_Cryptoharmonization"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="AM_Cryptoharmonization"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -580,7 +580,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="FT_Concrete"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="FT_Concrete"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -616,7 +616,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="ScuttlebugsBiology"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="ScuttlebugsBiology"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -728,7 +728,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="BoneRefine"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="BoneRefine"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -782,7 +782,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="CGT_WeaponizedGasIEDs"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="CGT_WeaponizedGasIEDs"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -836,7 +836,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_droidblasters"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_droidblasters"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -984,7 +984,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="FT_Chemistry"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="FT_Chemistry"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -1462,7 +1462,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="KOTOR_Research_Spice"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_Spice"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -1603,7 +1603,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="FT_Chemistry"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="FT_Chemistry"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -1628,7 +1628,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="BreadMoAM_AncientMiningTechniques"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="BreadMoAM_AncientMiningTechniques"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -1881,7 +1881,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_bluntmelee"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_bluntmelee"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -1906,7 +1906,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="OuterRim_MediumInstallations"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="OuterRim_MediumInstallations"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -1942,7 +1942,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -2074,7 +2074,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="VGE_GravshipLiving"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="VGE_GravshipLiving"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -2153,7 +2153,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="VFE_Res_FarmingTechniques"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="VFE_Res_FarmingTechniques"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -2274,7 +2274,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -2339,7 +2339,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -2462,7 +2462,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="OuterRim_AstromechDroids"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="OuterRim_AstromechDroids"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -2585,7 +2585,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_droidblasters"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_droidblasters"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -2704,7 +2704,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_blasters"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_blasters"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -2740,7 +2740,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="OuterRim_TechBelts"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="OuterRim_TechBelts"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -2888,7 +2888,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -2995,7 +2995,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -3031,7 +3031,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -3067,7 +3067,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -3132,7 +3132,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -3433,7 +3433,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="FT_Chemistry"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="FT_Chemistry"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -3980,7 +3980,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="SynthreadProduction"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="SynthreadProduction"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -4005,7 +4005,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="SynthyleneComponents"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="SynthyleneComponents"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -4030,7 +4030,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="SynthyleneProduction"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="SynthyleneProduction"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -4073,7 +4073,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="FT_Concrete"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="FT_Concrete"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -4163,7 +4163,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="VAE_WorkAttire"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="VAE_WorkAttire"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -5322,7 +5322,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="VVE_BasicVehicles"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="VVE_BasicVehicles"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -5347,7 +5347,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="VVE_BasicVehicles"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="VVE_BasicVehicles"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -5372,7 +5372,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="VVE_BasicVehicles"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="VVE_BasicVehicles"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -5444,7 +5444,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="Tinkering"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="Tinkering"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -5480,7 +5480,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -5505,7 +5505,7 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_vibroweapons"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_vibroweapons"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -5541,7 +5541,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -5709,7 +5709,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_droidsimple"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_droidsimple"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -5962,7 +5962,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_miniblasters"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_miniblasters"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -6045,7 +6045,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="OuterRim_HeavyArmour"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="OuterRim_HeavyArmour"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -6105,7 +6105,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -6141,7 +6141,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="OuterRim_HeavyArmour"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="OuterRim_HeavyArmour"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">
@@ -6259,7 +6259,7 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs[ResearchProjectDef[defName="OuterRim_HeavyArmour"]]</xpath>
+        <xpath>Defs/ResearchProjectDef[defName="OuterRim_HeavyArmour"]</xpath>
         <match Class="PatchOperationSequence">
           <operations>
         <li Class="PatchOperationConditional">

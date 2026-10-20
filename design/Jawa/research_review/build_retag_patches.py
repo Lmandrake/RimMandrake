@@ -89,16 +89,20 @@ def prereq_guard(guard, inner):
     With a guarded prereq absent the def keeps its own prerequisites (vanilla behaviour)."""
     if not guard:
         return inner
-    pred = " and ".join(def_xpath(p)[len("Defs/"):] for p in guard)
-    body = "\n".join("  " + l for l in inner.split("\n"))
-    return """      <li Class="PatchOperationConditional">
-        <xpath>Defs[%s]</xpath>
+    # One Conditional per prerequisite, each testing `Defs/<Type>[defName="X"]`: the plain def-exists
+    # shape (g5_reverse_closure counts only that shape as a guard; `Defs[A and B]` is not one).
+    out = inner
+    for p in reversed(list(guard)):
+        body = "\n".join("  " + l for l in out.split("\n"))
+        out = """      <li Class="PatchOperationConditional">
+        <xpath>%s</xpath>
         <match Class="PatchOperationSequence">
           <operations>
 %s
           </operations>
         </match>
-      </li>""" % (pred, body)
+      </li>""" % (def_xpath(p), body)
+    return out
 
 
 def prereq_remove(dn):

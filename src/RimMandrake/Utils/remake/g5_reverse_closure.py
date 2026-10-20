@@ -40,7 +40,7 @@ OLD_VER = re.compile(r"^1\.[0-5]$")
 TOK = re.compile(r"^[A-Za-z_][A-Za-z0-9_\-]{3,}$")
 XTOK = re.compile(r"[\"']([A-Za-z_][A-Za-z0-9_\-]{3,})[\"']")
 U16 = re.compile(rb"(?:[A-Za-z0-9_\-]\x00){4,}")
-SKIP_TAGS = {"defName", "label", "description", "labelShort", "jobString", "text", "reportString"}
+SKIP_TAGS = {"defName", "role", "label", "description", "labelShort", "jobString", "text", "reportString"}
 
 
 def about_deps(root):
@@ -123,7 +123,8 @@ def scan_xml(path, removed_names, removed_pkgs, removed_modnames):
             t = e.text.strip()
             if e.tag == "xpath":
                 names = set(XTOK.findall(t)) & removed_names
-            elif e.tag not in SKIP_TAGS and TOK.match(t) and t in removed_names:
+            elif (e.tag not in SKIP_TAGS and TOK.match(t) and t in removed_names
+                  and not (len(stack) > 1 and stack[-2].tag in ("mods", "modsToCheck"))):  # a FindMod name list is the guard
                 names = {t}
         if names:
             why = None
