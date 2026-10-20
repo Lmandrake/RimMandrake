@@ -31,7 +31,7 @@
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <hasVirtualPlants>false</hasVirtualPlants>
-    <texture>World/Biomes/RM_GreySea</texture>
+    <texture>World/Biomes/Ocean</texture>  <!-- WORLDMAP_IN_GAME_AUDIT 2026-10-20: vanilla ocean face, drawn with the WorldOcean shader by RM_WorldTerrainShader; the RM_GreySea colour field read as land in game -->
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
 
