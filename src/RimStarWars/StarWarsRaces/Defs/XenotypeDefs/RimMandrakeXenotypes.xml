@@ -1128,7 +1128,7 @@
       <li>RSW_GS_Eyes_Yellow</li>
       <li>Outland_Chest_Fur</li>
       <li>Outland_BaldMale</li>
-      <li>RSW_CatharHead</li>
+      <li>RSW_LasatHead</li>
       <li>Body_Standard</li>
       <li>Body_Hulk</li>
       <li>Hair_DarkBlack</li>
@@ -1164,7 +1164,7 @@
       <li>Outland_AcceleratedPregnancy</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
-      <li>RSW_Head_Devolved</li>
+      <li>RSW_MimbaneseHead</li>
       <li>Body_Thin</li>
       <li>Skin_DeepRed</li>
       <li>Outland_Skin_Brown</li>
@@ -1385,7 +1385,7 @@
       <li>Turn_Gene_Duelist</li>
       <li>Hair_LongOnly</li>
       <li>Beard_NoBeardOnly</li>
-      <li>RSW_BothanHead</li>
+      <li>RSW_NelvaanianHead</li>
       <li>Hair_InkBlack</li>
       <li>RSW_Skin_SlateBlue</li>
       <li>Outland_Ears_FlatPointed</li>
@@ -1437,7 +1437,7 @@
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <genes>
       <li>RSW_Eyes_Big</li>
-      <li>RSW_Head_kubaz</li>
+      <li>RSW_OrtolanHead</li>
       <li>Immunity_Strong</li>
       <li>MinTemp_LargeDecrease</li>
       <li>Hair_BaldOnly</li>
