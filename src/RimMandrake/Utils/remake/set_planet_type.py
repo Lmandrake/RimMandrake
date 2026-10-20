@@ -77,6 +77,21 @@ def render(value):
             '\t</ModSettings>\n</SettingsBlock>\n')
 
 
+def merged_text(path, value):
+    """File text setting FIELD=value while KEEPING every other child of the existing block
+    (the game rewrites the whole block, so a fresh render would drop a sibling setting)."""
+    if not os.path.exists(path):
+        return render(value)
+    root = ET.parse(path).getroot()
+    ms = root.find("ModSettings")
+    el = ms.find(FIELD)
+    if el is None:
+        el = ET.SubElement(ms, FIELD)
+    el.text = value
+    ET.indent(root, space="\t")
+    return '\ufeff<?xml version="1.0" encoding="utf-8"?>\n' + ET.tostring(root, encoding="unicode") + "\n"
+
+
 def read_current(path):
     """(value or None, error or None). A missing file reads as None (the mod's default)."""
     if not os.path.exists(path):
@@ -101,6 +116,9 @@ def main(argv=None):
     ap.add_argument("--workshop", default=WORKSHOP, help=argparse.SUPPRESS)
     a = ap.parse_args(argv)
 
+    if not re.fullmatch(r"[A-Za-z0-9_]+", a.type):
+        print(f"REFUSED: --type {a.type!r} is not a defName")
+        return 2
     bad = verify_mod_folder(a.workshop)
     if bad:
         print(f"REFUSED: {bad}")
@@ -120,12 +138,13 @@ def main(argv=None):
     if not a.apply:
         print(f"DRY RUN would set {FIELD}: {shown} -> {a.type} in {path} (--apply to write)")
         return 0
+    text = merged_text(path, a.type)
     if os.path.exists(path):
         shutil.copy2(path, path + time.strftime(".bak-%Y%m%dT%H%M%S"))
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write(render(a.type))
+        fh.write(text)
     os.replace(tmp, path)
     back, err = read_current(path)
     if back != a.type:
