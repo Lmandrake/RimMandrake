@@ -260,7 +260,7 @@ FlowWorks are not biomes and keep their own builders.
 | generated, committed | `src/RimMandrake/<Biome>/review/{KEYSHEET.md, COVERAGE.md, AUDIT.md}` |
 | read-once output | `Transient/<tag>_human_review/keysheet.html`, `Transient/<tag>_review_audit_<date>/sheet.png` |
 | build state | `Transient/<tag>_review_map_state.json` (a program reads it: never cited by a doc) |
-| saves backup | `D:\Luke\dev\_rmscratch\<round>\saves_backup_pre_review` before every `--save` |
+| saves backup | `D:\ClaudeWork\rimmandrake\scratch\<round>\saves_backup_pre_review` before every `--save` |
 
 The event board in v1 is **V**, not E (Pyrelands used E for both the creature row and the event board). Pyrelands keeps
 its letters until it migrates to the generic builder.

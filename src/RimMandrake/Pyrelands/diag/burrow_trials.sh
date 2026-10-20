@@ -9,8 +9,8 @@
 set -u
 MIRROR=/mnt/d/Luke/dev/RimMandrake
 FP=${3:-417df172fdb5}; TAG=${4:-r2}; TILE=${5:-3}
-OUTW='D:\Luke\dev\_rmscratch\burrow_trials'           # program-read output: outside the repo
-mkdir -p /mnt/d/Luke/dev/_rmscratch/burrow_trials
+OUTW="$(python3 "$MIRROR/src/RimMandrake/Utils/rmpaths.py" --native scratch burrow_trials)" || exit 2   # program-read output: outside the repo
+mkdir -p "$(python3 "$MIRROR/src/RimMandrake/Utils/rmpaths.py" scratch burrow_trials)"
 cd "$MIRROR" || exit 2
 export PYRE_BURROW_DIAG=1 BURROW_QUIET=${BURROW_QUIET:-10} BURROW_NEAR=1 BURROW_CTRL=0 BURROW_SAMPLES=${BURROW_SAMPLES:-40}
 export WSLENV=PYRE_BURROW_DIAG:BURROW_NEAR:BURROW_CTRL:BURROW_DIAG_OUT:BURROW_QUIET:BURROW_SAMPLES

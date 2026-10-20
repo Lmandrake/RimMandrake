@@ -14,4 +14,4 @@ drawSize×128 canvases, no `_west`).
 - No ESB reference image is on disk and no canon-library entry exists for the bacta tank; the prompt describes it.
 
 ## NEXT
-Renders land in `D:\Luke\dev\_artpipe\done`; put them on an owner review sheet, then `art.py install`/`enact` what he keeps.
+Renders land in `D:\ClaudeWork\rimmandrake\artpipe\done`; put them on an owner review sheet, then `art.py install`/`enact` what he keeps.

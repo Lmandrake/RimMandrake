@@ -160,7 +160,7 @@ Storyteller Enhanced · `3547098393` Faction Raid Cooldown · `3285516766` Bette
 `2379076640` More Faction Interaction · `3767949538` Rimesis · `3257781909` Large Faction Bases ·
 `2105322804` Space Worms · `3650927927` Raid Protection Fee · `3711373966` Tribute Demand (studied as the
 KEEP comparison); `common/RimWorld/Mods/StrandedQuest` is ours. Decompiled 1.6 sources were staged at
-`D:\Luke\dev\_rmscratch\ew_decomp\` (throwaway). Audit verdicts are in
+`D:\ClaudeWork\rimmandrake\scratch\ew_decomp\` (throwaway). Audit verdicts are in
 `design/RimMandrake/mod_audit/records/batch_NN.md`; this section is about mechanism, not verdict.
 
 ### 2.1 Raid Protection Fee (`leo.raidprotectionfee`)

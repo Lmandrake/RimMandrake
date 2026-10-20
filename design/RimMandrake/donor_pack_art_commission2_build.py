@@ -2,10 +2,13 @@
 """Builds design/RimMandrake/donor_pack_art_commission2_2026-10-15.json: one artpipe row per DONOR-bytes texture slot
 (adult, juvenile, female, swimming, alternate colour) of the 40 KEEP_DONOR_ART_FOR_NOW species. Slot list from
 /tmp/dp_slots.json (made by parsing each PawnKindDef: body/female/swim/alternate graphics); sizes = def drawSize."""
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[2] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import json, re, shutil, os
 from pathlib import Path
 R = Path("/home/mandrake/rm/foundry"); CANON = R/"design/RimStarWars/canon_references"
-REFS = Path("/mnt/d/Luke/dev/_artpipe/_refs/donorpack")
+REFS = Path(rm_str("artpipe", "_refs", "donorpack"))
 slots = json.load(open("/tmp/dp_slots.json"))
 CANONSLUG = {"Grazer": "grazerdomestic"}
 SKIP_TP = {"swanimals/Reek/Reek_j", "swanimals/Gullipud/Gullipud_i", "swanimals/Gullipud/Gullipud_j_Swimming_skip"}

@@ -7,13 +7,16 @@ rows) at their native pixel size (shrunk only to fit a 256 px tile), labelled wi
 
     python3 tentacle_composite.py [--out DIR]     writes <out>/tt_bulloo_composite.png and tt_zhool_composite.png
 
-Read-only: never installs, never touches the ledger. Art folder: ARTPIPE_STATE_DIR or /mnt/d/Luke/dev/_artpipe.
+Read-only: never installs, never touches the ledger. Art folder: ARTPIPE_STATE_DIR or /mnt/d/ClaudeWork/rimmandrake/artpipe.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse, os, sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
-ART = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe") / "_artsrc"
+ART = Path(os.environ.get("ARTPIPE_STATE_DIR") or rm_str("artpipe")) / "_artsrc"
 MIRROR = Path("/mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc")
 FACES = ("south", "east", "north")
 TILE = 256

@@ -18,6 +18,9 @@ idempotent (deterministic event ids) and resumable under a time budget.
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import csv
 import json
 import os
@@ -27,7 +30,7 @@ from pathlib import Path
 
 import artledger as L
 
-ARTPIPE = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe")
+ARTPIPE = Path(os.environ.get("ARTPIPE_STATE_DIR") or rm_str("artpipe"))
 LEGACY_ARTPIPE = Path(os.environ.get("ARTPIPE_LEGACY_DIR") or "/mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe")
 BUNDLES = Path("/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures")
 CENSUS_CSV = L.REPO_ROOT / "Transient" / "art_census_desert_2026-10-04.csv"

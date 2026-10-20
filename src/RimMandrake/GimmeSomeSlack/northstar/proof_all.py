@@ -46,6 +46,9 @@ cord graph rebuilds off camera-driven section regeneration (northstar_matrix/run
 Output: ONE result JSON northstar/proof_all_<stamp>.json (mode "live" for a full run; "partial" with --only, which
 `modcheck record` refuses) and a one-screen summary.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import collections
 import hashlib
@@ -64,8 +67,8 @@ for _p in (HERE, MX_DIR):
         sys.path.insert(0, _p)
 import validation as V  # noqa: E402
 
-SCRATCH_WIN = r"D:\Luke\dev\_rmscratch\gss_proof"
-SCRATCH_POSIX = "/mnt/d/Luke/dev/_rmscratch/gss_proof"
+SCRATCH_WIN = rm_win("scratch", "gss_proof")
+SCRATCH_POSIX = rm_str("scratch", "gss_proof")
 SPEC_NAME = "scenes_design.json"
 BLOCKS = ["matrix", "core", "aerial", "style", "save_load"]   # hose/maze/relay/carry/style_hose moved to FlowWorks/northstar/proof_hose.py (hose port)
 PARK = (125, 165)                     # colonists moved here, out of the matrix REGION and every site

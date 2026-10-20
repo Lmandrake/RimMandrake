@@ -162,7 +162,7 @@ never blurred), `vision_key.json` (tile → subject id, question, canon path, ti
 - `run.approve(out, ids, ref_dir)` copies Accepted crops; it must be called **only** on an owner Accept
   or an art-ledger owner ruling — an agent's own pass never creates a reference (that would let an agent
   approve its own art).
-- Storage: pixels in the content-addressed store beside the art ledger's (`D:\Luke\dev\_artstore\`), not
+- Storage: pixels in the content-addressed store beside the art ledger's (`D:\ClaudeWork\rimmandrake\artstore\`), not
   git. Proposed art-ledger event (for the ledger's owner to accept or reshape):
   `render_ref {slot, set, recipe_fp, crop_sha, said, via}` — the reference is bound to the **set version**
   the owner kept, so installing a new set invalidates it automatically rather than drifting silently.
@@ -248,7 +248,7 @@ the analysis needs numpy, which only WSL has):
 
     cd src/RimMandrake/Utils
     python3 -m artboard.live flowworks_pit_states --origin X,Z --dry-run     # prints the rect; touches nothing
-    python3 -m artboard.live flowworks_pit_states --origin X,Z               # out: D:\Luke\dev\_rmscratch\artboard\…
+    python3 -m artboard.live flowworks_pit_states --origin X,Z               # out: D:\ClaudeWork\rimmandrake\scratch\artboard\…
 
 Output folder: `stage_ops.txt`, `plate.png`, `board.png`, `board.json`, the §5–7 report/mosaics, and
 `live_report.json` (stage + capture results, refused subjects, warnings for fog, roof, dusk light, camera).

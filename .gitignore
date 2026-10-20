@@ -287,7 +287,7 @@ infrastructure/artpipe/*.lock
 # both uncommitted, pruned/rewritten by the daemon itself.
 infrastructure/artpipe/logs/
 infrastructure/artpipe/status/
-# Phase 5 (2026-10-02): artpipe queue STATE lives in $ARTPIPE_STATE_DIR (D:\Luke\dev\_artpipe),
+# Phase 5 (2026-10-02): artpipe queue STATE lives in $ARTPIPE_STATE_DIR (D:\ClaudeWork\rimmandrake\artpipe),
 # resolved by src/RimMandrake/Utils/artpipe/state_dir.py. Ignored here so an old-code daemon
 # or a stray copy can never re-add it. Config (art_lists/, legibility_*.json, README) stays tracked.
 infrastructure/artpipe/pending/

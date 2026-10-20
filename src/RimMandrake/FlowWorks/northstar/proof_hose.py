@@ -25,6 +25,9 @@ The manifest the FlowWorks walk names is northstar/manifest.py: v2's rows UNION 
 NOT RUN in the hose port itself (no bridge in that job): this file is built and its control flow is proven offline by
 northstar/selftest_proof_hose.py against a fake bridge; live tuning of the real-flow scene geometry is owed to the first run.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import collections
 import json
@@ -80,8 +83,8 @@ DECLARED_ROWS = {
 # not, so run_live's `import design_spec` leaves D None there and load_catalog("design") raised on the first live run
 # (2026-10-11, MATRIX_HOSE_block "'NoneType' object has no attribute 'build_spec'"). Same split as GSS proof_all: the offline
 # gate (WSL) writes the catalog JSON here and the live side reads it.
-SPEC_WIN = r"D:\Luke\dev\_rmscratch\fw_hose_proof\scenes_design.json"
-SPEC_POSIX = "/mnt/d/Luke/dev/_rmscratch/fw_hose_proof/scenes_design.json"
+SPEC_WIN = rm_win("scratch", "fw_hose_proof", "scenes_design.json")
+SPEC_POSIX = rm_str("scratch", "fw_hose_proof", "scenes_design.json")
 
 
 def _posix(p):

@@ -236,8 +236,8 @@ a duplicate, write a pointer instead.
 - Committed *and pushed* is the only durable state: commit each finished unit and push at once. Proof of publication is `git merge-base --is-ancestor <sha> origin/main`, not an empty `git log origin/main..HEAD`.
 - The pre-push and PreToolUse hooks refuse a compound command whole: keep file writes and commits in separate Bash calls.
 - 🔴 **Worktrees are OFF** (owner, 2026-10-02, by card): never `isolation: "worktree"`, never `git worktree add` (`block_worktrees.py` refuses both). Writing helpers edit in the window's clone, one at a time when paths could overlap; the window commits explicit paths. Brief helpers that `reset --hard`, `checkout --` and `stash` are forbidden and a conflict is reported, never cleared.
-- **Per-writer state, nothing shared:** ledger shards `ledger/events/<SEAT>.jsonl` (`merge=union`, `ledger_lint.py`; never `checkout --ours/--theirs` one); queue views are rendered on read (`rimflow queue <SEAT>`); lessons are one file each under `infrastructure/state/lessons/`; review status records under `infrastructure/state/code_review/`; artpipe state is outside git at `D:\Luke\dev\_artpipe\`.
-- **Windows-side tools:** builds go through `winbuild.py <Mod|csproj>`; `codex.exe` needs `D:\Luke\dev\_rmscratch\codex\` staging (`gpt_consult.py`, `codex_image.py` do it). 🔴 A committed mod DLL carries a `.srchash` and is pushed with it (hook `block_dll_source_mismatch.py`, on push); after a merge touching a mod's `Source/`, rebuild — never pick a side's DLL.
+- **Per-writer state, nothing shared:** ledger shards `ledger/events/<SEAT>.jsonl` (`merge=union`, `ledger_lint.py`; never `checkout --ours/--theirs` one); queue views are rendered on read (`rimflow queue <SEAT>`); lessons are one file each under `infrastructure/state/lessons/`; review status records under `infrastructure/state/code_review/`; artpipe state is outside git at `D:\ClaudeWork\rimmandrake\artpipe\`.
+- **Windows-side tools:** builds go through `winbuild.py <Mod|csproj>`; `codex.exe` needs `D:\ClaudeWork\rimmandrake\scratch\codex\` staging (`gpt_consult.py`, `codex_image.py` do it). 🔴 A committed mod DLL carries a `.srchash` and is pushed with it (hook `block_dll_source_mismatch.py`, on push); after a merge touching a mod's `Source/`, rebuild — never pick a side's DLL.
 - Drained historical work lives in `archive/*` tags on origin.
 - Origin is SSH (`git@github.com:Lmandrake/RimMandrake.git`); a push that falls back to https can use a one-shot token header (`gh auth token`).
 - ⚠️ A `cd` in one Bash call persists into later calls (`modcheck` needs `python3 -m modcheck.cli <verb>` from `src/RimMandrake/Utils`); use absolute paths or `cd` back.
@@ -341,7 +341,7 @@ happened yet.
 
 - **Search the artpipe state dir by subject/defName first** —
   `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <term>…` covers `done/`, `_artsrc/`,
-  `registry.jsonl` and `art_status.json` in `D:\Luke\dev\_artpipe` (outside git since 2026-10-02) and
+  `registry.jsonl` and `art_status.json` in `D:\ClaudeWork\rimmandrake\artpipe` (outside git since 2026-10-02) and
   refuses rather than report 0 when that dir is absent — not just by job-id guesswork.
   A finished job's `rimflow_item_id` and `style_notes` often name the exact
   roster row or item it was generated for.

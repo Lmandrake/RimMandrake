@@ -15,13 +15,16 @@ can explain the width difference gracefully."* Writes into Textures/.../Hose/:
     as a rust patch beyond the wrap on a plump hose (live review round 2). The originals stay for gizmo icons.
 RM_MapComponent_Hoses.BindBand is the wrap's widest opaque band of Binding.png's height; validation.py O6 re-measures it.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import os
 
 from PIL import Image, ImageDraw, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 H = os.path.join(HERE, "..", "..", "..", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack", "Hose")
-SRC = "/mnt/d/Luke/dev/_artpipe/_artsrc/messyconduit_hose_binding_v1/messyconduit_hose_binding_v1.png"
+SRC = rm_str("artpipe", "_artsrc", "messyconduit_hose_binding_v1", "messyconduit_hose_binding_v1.png")
 X0, X1, Y0, Y1 = 22, 104, 12, 52
 BARE_FROM = {"Coupling_Brass": 58, "EndCap": 44, "Nozzle": 42}   # first brass column, judged on a 3x enlargement
 

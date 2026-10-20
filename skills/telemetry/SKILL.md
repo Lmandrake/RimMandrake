@@ -31,8 +31,8 @@ Alarms are coarse (very low memory or TPS, disk filling) and every firing is log
 producers (unchanged)                      Windows, E:\telemetry  (survives wsl --shutdown)
  JawaBench TPS record  C:\…\JawaBench\tps ─┐
  health_observer       C:\…\JawaBench\health┤   telemetryd (pythonw, kept alive by supervise.py,
- rimbridge_client      D:\…\_rmscratch\bridge_calls.jsonl ├─►  scheduled task "RimMandrake\Telemetry", 1 min)
- artpipe               D:\Luke\dev\_artpipe ┤     ├─► VictoriaMetrics 127.0.0.1:8428  (series, 2 y)
+ rimbridge_client      <data root>\scratch\bridge_calls.jsonl ├─►  scheduled task "RimMandrake\Telemetry", 1 min)
+ artpipe               D:\ClaudeWork\rimmandrake\artpipe ┤     ├─► VictoriaMetrics 127.0.0.1:8428  (series, 2 y)
  deploy/winbuild/modset_builder → inbox\changes ┤ ├─► events.db SQLite WAL             (events, calls, proofs)
  WSL exporter (rm-telemetry-export.timer) → inbox\wsl ┘ ├─► raw\<src>\<day>.jsonl.gz   (90 d, then F:\telemetry_archive)
                                                         └─► state\alerts.json ──► RimPulse rows + 4 sparklines

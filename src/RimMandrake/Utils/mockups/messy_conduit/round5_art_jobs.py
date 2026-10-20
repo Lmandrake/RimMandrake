@@ -3,12 +3,15 @@
     python3 src/RimMandrake/Utils/mockups/messy_conduit/round5_art_jobs.py wave1|wave2 [--only name ...]
 
 Runs Codex $imagegen (skills/generating-images/scripts/codex_image.py) 6 at a time, each worker on its own CODEX_HOME.
-Inputs/outputs live outside git at D:\\Luke\\dev\\_rmscratch\\mc_r5\\{in,raw}. Report: Transient/mc_art_round5_report.md.
+Inputs/outputs live outside git at D:\\ClaudeWork\\rimmandrake\\scratch\\mc_r5\\{in,raw}. Report: Transient/mc_art_round5_report.md.
 Conform + install: round5_art_install.py (same folder).
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import os, subprocess, sys, threading, queue, time
 
-R = "/mnt/d/Luke/dev/_rmscratch/mc_r5"
+R = rm_str("scratch", "mc_r5")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), *[".."] * 5))
 CI = os.path.join(REPO, "skills/generating-images/scripts/codex_image.py")
 

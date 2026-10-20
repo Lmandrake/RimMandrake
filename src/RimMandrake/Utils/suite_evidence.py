@@ -20,6 +20,9 @@ covered means RUN. The rules, in the order they bite:
 A non-PASS result deletes the test's record. `--full` / `--no-skip` ignores records (and re-records on PASS).
 Records live in ~/.local/state/rm-selftests/records/<repo-key>/ — a program reads them, so not in the repo.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import fnmatch
 import hashlib
 import json
@@ -54,7 +57,7 @@ def _allowed_outside(tmp_roots):
     roots.add(str(Path.home() / ".local/lib"))
     roots.add(str(Path.home() / ".local/venvs"))
     # winbuild's stage holds the build OUTPUT of hashed inputs (the rsync'd trees), so reading it back is fine.
-    roots.add(os.environ.get("WINBUILD_ROOT", "/mnt/d/Luke/dev/_rmbuild"))
+    roots.add(os.environ.get("WINBUILD_ROOT", rm_str("build")))
     roots |= set(tmp_roots)
     return tuple(os.path.join(os.path.normpath(r), "") for r in roots if r)
 

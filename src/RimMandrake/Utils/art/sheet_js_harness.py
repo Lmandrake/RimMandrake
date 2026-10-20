@@ -11,6 +11,9 @@ for selftests. Not a selftest itself.
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import json
 import os
 import re
@@ -73,7 +76,7 @@ def page_css() -> str:
     return "<style>" + (m.group(1) if m else "") + "</style>" + A.STYLE + A.BIOME_STYLE
 
 
-SCRATCH_WIN, SCRATCH_WSL = r"D:\Luke\dev\_rmscratch\sheet_probe", "/mnt/d/Luke/dev/_rmscratch/sheet_probe"
+SCRATCH_WIN, SCRATCH_WSL = rm_win("scratch", "sheet_probe"), rm_str("scratch", "sheet_probe")
 
 
 def edge_probe(body_html: str, probe_js: str, files: dict | None = None, width: int = 1600, timeout: int = 180):

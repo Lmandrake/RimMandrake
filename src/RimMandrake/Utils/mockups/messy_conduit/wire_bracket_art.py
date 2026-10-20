@@ -21,6 +21,9 @@ records each texture's PLATE EDGE (the plate's extreme toward the wall, cells al
 centre); AerialMath.BracketDrawOffset turns it into the per-look draw offset that puts the plate on the wall's outer edge.
 The table is Verse-free (P2) so the SelfTest compiles it and asserts the lean and the offsets for all four facings.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import glob
 import os
 import sys
@@ -35,7 +38,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
 MOD = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack")
 STY = os.path.join(MOD, "Textures", "RimMandrake", "GimmeSomeSlack", "Aerial", "Styles")
 TABLE = os.path.join(MOD, "Source", "Aerial", "BracketGeometryTable.cs")
-ARTPIPE = "/mnt/d/Luke/dev/_artpipe"
+ARTPIPE = rm_str("artpipe")
 LOOKS = {"scrapper": "Scrapper", "industrial": "Industrial", "modern": "Modern", "futuristic": "Futuristic"}
 FACINGS = ("east", "north", "south")
 # plate (wall) side of each render AS DRAWN, judged by eye 2026-10-04 (contact sheet of all landed renders)

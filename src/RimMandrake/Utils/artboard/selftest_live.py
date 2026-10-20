@@ -136,7 +136,7 @@ def main():
            len(live.capture_warnings({"foggedCells": 3, "skyGlow": 0.5})) == 2)
 
     expect("WSL drive path -> Windows path for the game", live.WIN or
-           live.to_win("/mnt/d/Luke/dev/_rmscratch/a/b.png") == "D:\\Luke\\dev\\_rmscratch\\a\\b.png")
+           live.to_win("/mnt/d/ClaudeWork/rimmandrake/scratch/a/b.png") == "D:\\ClaudeWork\\rimmandrake\\scratch\\a\\b.png")
     try:
         live.WIN or live.to_win("/home/x/out")
         expect("an ext4 output path is refused (the game cannot write it)", live.WIN)

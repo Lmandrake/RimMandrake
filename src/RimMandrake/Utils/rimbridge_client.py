@@ -87,6 +87,9 @@ then the newest pair scraped from Player.log, then the built-in defaults.
 Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 """
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import hashlib
 import json
@@ -124,8 +127,8 @@ WSL = sys.platform.startswith("linux") and os.path.isdir("/mnt/c")
 # bridge time. Outside git (a program reads it). RIMBRIDGE_SESSION_LOG overrides; "" disables.
 SESSION_LOG = os.environ.get(
     "RIMBRIDGE_SESSION_LOG",
-    r"D:\Luke\dev\_rmscratch\bridge_sessions.jsonl" if os.name == "nt"
-    else "/mnt/d/Luke/dev/_rmscratch/bridge_sessions.jsonl")
+    rm_win("scratch", "bridge_sessions.jsonl") if os.name == "nt"
+    else rm_str("scratch", "bridge_sessions.jsonl"))
 
 
 def _log_session(started, calls, client):
@@ -153,7 +156,7 @@ def _log_session(started, calls, client):
 # Default on Windows only: the bridge is reachable only from python.exe (WSL2 is NAT-mode, so a WSL call dies at
 # connect, before any tools/call), and a WSL selftest faking a lost reply must never leave a REAL marker behind.
 EVIDENCE_LOG = os.environ.get("RIMBRIDGE_EVIDENCE_LOG",
-                              r"D:\Luke\dev\_rmscratch\bridge_calls.jsonl" if os.name == "nt" else "")
+                              rm_win("scratch", "bridge_calls.jsonl") if os.name == "nt" else "")
 EVIDENCE_MAX_BYTES = 20 * 1024 * 1024
 _RUN_ID = uuid.uuid4().hex[:12]
 _ACTIVE = set()                       # cids in flight in THIS process

@@ -12,6 +12,9 @@ plant = one job, no facings; catch item = item sprite, anatomy-referenced to the
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import json
 import os
 import re
@@ -24,7 +27,7 @@ sys.path.insert(0, str(HERE))
 import placeholder_detect as P  # noqa: E402
 
 REPO = P.REPO
-ART = Path("/mnt/d/Luke/dev/_artpipe")
+ART = Path(rm_str("artpipe"))
 OWNER_NOTE = ("Ok, I did half the Grey Sea... something very wrong with that sheet. Most of the images look like nothing, "
               "trivially simple imagery, or cactus. Please investigate and repair.")
 ITEM = "BIOME_FLORAFAUNA_ART_REVIEW_1"

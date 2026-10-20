@@ -3,13 +3,16 @@
 Qeshra orange-yellow; Long Shade sheet: Dunejelly greener. Hue/saturation shift of the straight-alpha colour, luma preserved, alpha untouched, so the
 keyline and value structure survive. Registered as kind=artpipe variants (job <Id>_tint_v1[_facing]) bound to the
 slot's res; NOT installed. Re-runnable: ids are deterministic and the store is content-addressed."""
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import colorsys, io, sys
 from pathlib import Path
 from PIL import Image
 sys.path.insert(0, str(Path(__file__).parent))
 import artledger as L
 
-ART = Path("/mnt/d/Luke/dev/_artpipe/_artsrc")
+ART = Path(rm_str("artpipe", "_artsrc"))
 JOBS = {  # id: (res, {facing|None: source sha}, target hue 0-1, min sat, hue-pull strength)
     "RM_Murrek": ("Things/Pawn/Animal/RM_Murrek/RM_Murrek",
                   {"east": "c3d820ad4aa34a2335c2160a746aef459aafd365805dab6c883bc5f8d916e263",

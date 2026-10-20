@@ -7,7 +7,7 @@
   pulse.py collect             one collection, prints the rows (debug)
   pulse.py since [--back | --scheduled | --since ISO] [--quiet]
                                the "since you left" digest: printed with native paths,
-                               saved dated under D:\\Luke\\dev\\_rmdashboard\\digests\\ and
+                               saved dated under D:\\ClaudeWork\\rimmandrake\\dashboard\\digests\\ and
                                shown in the widget. `./pulse back` is the "I'm back" form.
   pulse.py ack <incident> [--noise]
   pulse.py hand <path-or-url> [--title "what it is"] [--seat BENCH|FOUNDRY]
@@ -27,6 +27,9 @@ The widget is src/RimMandrake/Utils/pulse/widget/ (Windows, pywebview).
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import hashlib
 import re
@@ -45,7 +48,7 @@ import pulse_core as pc  # noqa: E402
 HERE = Path(__file__).resolve().parent
 WIDGET_HTML = HERE / "widget" / "index.html"
 PORT = int(os.environ.get("RM_PULSE_PORT", "8765"))
-DIGEST_DIR = Path(os.environ.get("RM_PULSE_DIGESTS", "/mnt/d/Luke/dev/_rmdashboard/digests"))
+DIGEST_DIR = Path(os.environ.get("RM_PULSE_DIGESTS", rm_str("dashboard", "digests")))
 INTERVAL = 5.0
 
 # Phone push: NOT decided by the owner yet (2026-10-08). Hook point only; stays off until

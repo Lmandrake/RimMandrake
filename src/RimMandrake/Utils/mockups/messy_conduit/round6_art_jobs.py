@@ -5,17 +5,20 @@
 Owner: "The hose reel for the scrapper needs to look hacked together out of piecemeal [scrap parts]. The modern hose
 should not be neon, it should look like a real firehose."
 Codex $imagegen via skills/generating-images/scripts/codex_image.py, 5 at a time, reusing round 5's CODEX_HOMEs.
-Inputs/outputs outside git at D:\\Luke\\dev\\_rmscratch\\mc_r6\\{in,raw}. Strands, Mouth and the Modern reel's coil are
+Inputs/outputs outside git at D:\\ClaudeWork\\rimmandrake\\scratch\\mc_r6\\{in,raw}. Strands, Mouth and the Modern reel's coil are
 procedural (round6_art_install.py), not generated. Report: Transient/mc_art_round6_report.md.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import os, subprocess, sys, threading, queue, time
 from PIL import Image
 
-R = "/mnt/d/Luke/dev/_rmscratch/mc_r6"
-HOMES = "/mnt/d/Luke/dev/_rmscratch/mc_r5/homes"
+R = rm_str("scratch", "mc_r6")
+HOMES = rm_str("scratch", "mc_r5", "homes")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), *[".."] * 5))
 CI = os.path.join(REPO, "skills/generating-images/scripts/codex_image.py")
-HOSE = os.path.join(REPO, "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Hose"  # moved at the hose port)
+HOSE = os.path.join(REPO, "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Hose")  # moved at the hose port
 
 BASE = ("RimWorld game sprite, seen from directly above (top-down, as RimWorld draws buildings and items), hand-painted "
         "painterly style with crisp detail and a thin dark outline, like RimWorld's own shipping art. One object only. "

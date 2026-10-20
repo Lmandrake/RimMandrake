@@ -17,7 +17,7 @@ python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --live     # after
 
 Exit **0 GREEN**, **1 NO-GO** (a FAIL), **2 NOT-GREEN** (no FAIL, but a required check is UNMEASURED or
 was skipped by fail-fast). Each line: `STATUS id name req|opt seconds reason`. Report:
-`D:\Luke\dev\_rmscratch\preflight\last_preflight.json` (also `--json <path>`); `experiment_manifest.py
+`D:\ClaudeWork\rimmandrake\scratch\preflight\last_preflight.json` (also `--json <path>`); `experiment_manifest.py
 complete` reads it.
 
 - **Cheapest first, fail-fast.** A required FAIL stops the run; `--all` runs everything.
@@ -26,7 +26,7 @@ complete` reads it.
   Without it a miss is UNMEASURED, so a changed mod set cannot read GREEN by accident.
 - **`--purpose test`** (default) refuses known wedgers (RealFoW on a bland-world run). Use
   `campaign`, `menu` or `review` when the run does not destroy ruins on a second map.
-- Its one write: the current `Player.log` is copied to `D:\Luke\dev\_rmscratch\preflight\playerlogs\`
+- Its one write: the current `Player.log` is copied to `D:\ClaudeWork\rimmandrake\scratch\preflight\playerlogs\`
   before the next launch truncates it (`--no-archive` skips).
 - It never takes the bridge, launches or kills the game, or writes `ModsConfig.xml`.
 
@@ -80,7 +80,7 @@ It builds the effective def tree the way the engine does (Defs, LoadFolders, pat
 MayRequire, ParentName) and runs every check in its docstring. `crash` means a decompiled-1.6 path
 dereferences the value during load (a costList miss on a `recipeMaker` def NREs in
 `RecipeDefGenerator.SetIngredients`; on Minify Everything's Mass path it NREs in the implied-def postfix).
-Results are cached by file content in `D:\Luke\dev\_rmscratch\effective_def_lint\`.
+Results are cached by file content in `D:\ClaudeWork\rimmandrake\scratch\effective_def_lint\`.
 
 🔴 It reads the **deployed** Mods folders. A fix committed but not deployed still shows; use an
 override to prove the fix, then deploy.

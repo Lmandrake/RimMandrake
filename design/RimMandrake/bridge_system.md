@@ -167,7 +167,7 @@ functional script and is debugged through it*. The bridge is what those scripts 
  │  │ Claude Code windows: BENCH, FOUNDRY (+ subagents)                          │  │
  │  │ seat clones /home/mandrake/rm/{bench,foundry} (ext4, one writer each)      │  │
  │  │ python3: rimflow (lease, ledger, game-state probe), modlist_swap,          │  │
- │  │          modset_builder, build.py/winbuild.py (stage to D:\Luke\dev\_rmbuild,│ │
+ │  │          modset_builder, build.py/winbuild.py (stage to D:\ClaudeWork\rimmandrake\build,│ │
  │  │          build with Windows dotnet), belt_watchdog                         │  │
  │  │ shells out to *.exe: tasklist.exe, taskkill.exe, netstat.exe, cmd.exe,     │  │
  │  │          python.exe, powershell.exe                                        │  │
@@ -261,7 +261,7 @@ MEASURED `rimbridge_client.py:273-560`:
 - **Timeouts:** connect 5 s; per-call socket timeout 30 s (default, `--timeout` overrides).
 - **Per-call evidence** (since 2026-10-10, `BRIDGE_CALL_EVIDENCE_WIRE_LOST_REPLY_UNKNOWN`): every
   `rimbridge_client.RimBridge.call` under python.exe appends `start`/`end` rows (tool, args sha256, pid, seat,
-  script, status ok/error/lost/INDETERMINATE) to `D:\Luke\dev\_rmscratch\bridge_calls.jsonl` (rotated at 20 MB).
+  script, status ok/error/lost/INDETERMINATE) to `D:\ClaudeWork\rimmandrake\scratch\bridge_calls.jsonl` (rotated at 20 MB).
   A mutating call whose reply is lost, or whose process died mid-call, stays as a marker in `bridge_inflight\`
   and every later mutating call raises `IndeterminateError` until `python.exe rimbridge_client.py --reconcile
   --resolve <cid> --as applied|not-applied|partial --note "..."`. Clients that bypass `RimBridge.call`
@@ -274,7 +274,7 @@ MEASURED `rimbridge_client.py:273-560`:
   `--yes-i-know-this-is-live` (MEASURED `:574-590`). The library `call()` has no such gate:
   "NOTHING here stops you calling a destructive tool" (MEASURED `:535`).
 - **Session log:** every connect→close appends one row to
-  `D:\Luke\dev\_rmscratch\bridge_sessions.jsonl` (MEASURED `:122-140`). This is the only
+  `D:\ClaudeWork\rimmandrake\scratch\bridge_sessions.jsonl` (MEASURED `:122-140`). This is the only
   per-script attribution record. It does **not** carry the seat or lease holder.
 - **No lease check.** The client never consults `rimflow` or `BRIDGE` (MEASURED: grep for
   gate/rimflow/lease in the client finds nothing).
@@ -482,7 +482,7 @@ MEASURED from `src/RimMandrake/rimflow/cli.py:2111-2370` and `model.py`.
    "they took it in the same instant" is printed, and the **later event wins**.
    The code says outright this is **not atomic** (`cli.py:2288-2295`).
 6. Since 2026-10-10 (`BRIDGE_LOCK_HARDEN_ALIVE_MEANS_A_PID`) the take must also win the **driver lock**
-   `/mnt/d/Luke/dev/_rmscratch/DRIVER_LOCK.json` (`rimflow/driver_lock.py`): created `O_CREAT|O_EXCL`, held by a
+   `/mnt/d/ClaudeWork/rimmandrake/scratch/DRIVER_LOCK.json` (`rimflow/driver_lock.py`): created `O_CREAT|O_EXCL`, held by a
    PROCESS (the nearest `claude` ancestor: pid + start time + boot_id), live while that process lives. A second
    window of the SAME seat is refused; a dead holder is taken over (generation bumped); an unreadable lock is an
    explicit failure; `--force` and owner `give` break it, recorded. `release` frees it only for its holder process.
@@ -492,7 +492,7 @@ MEASURED from `src/RimMandrake/rimflow/cli.py:2111-2370` and `model.py`.
 
 - **Per-clone ledger shard** `infrastructure/state/ledger/events/<SEAT>.jsonl`. It is visible
   to the other clone only after commit, push and pull.
-- **Cross-clone shared lock** `/mnt/d/Luke/dev/_rmscratch/BRIDGE_SHARED.json`
+- **Cross-clone shared lock** `/mnt/d/ClaudeWork/rimmandrake/scratch/BRIDGE_SHARED.json`
   (`model.py:1011`, `{holder, since, touched, purpose, clone}`). It was added after BENCH and
   FOUNDRY both "held" the bridge a minute apart on 2026-10-07. The holder's every other ledger
   emit refreshes `touched` (`cli.py:335-336`). **A read failure means allow** (`model.py:1022-1032`).
@@ -609,7 +609,7 @@ on every driver (including subagents and ad-hoc `Transient/*.py` scripts) choosi
 
 | artifact | build | deploy | gate |
 |---|---|---|---|
-| **JawaBench companion** | `python3 src/RimMandrake/bridgetools/build.py --gm --apply`: stages through `winbuild.stage_build` to `D:\Luke\dev\_rmbuild`, builds with Windows `dotnet.exe` (`--no-incremental`, `-p:JawaGmTools=true`) | `shutil.copy2` straight onto `C:\…\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` (**not atomic**) | `verify_bundle` (only our DLL in the output), `verify_gm_gate` (length-prefixed name match), refusal if the tool surface shrinks (`--allow-tool-removal`), WinError 1224 → "CANNOT DEPLOY WHILE RIMWORLD IS RUNNING" (MEASURED `build.py:405-436`). **No explicit process check, and no lease check** |
+| **JawaBench companion** | `python3 src/RimMandrake/bridgetools/build.py --gm --apply`: stages through `winbuild.stage_build` to `D:\ClaudeWork\rimmandrake\build`, builds with Windows `dotnet.exe` (`--no-incremental`, `-p:JawaGmTools=true`) | `shutil.copy2` straight onto `C:\…\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll` (**not atomic**) | `verify_bundle` (only our DLL in the output), `verify_gm_gate` (length-prefixed name match), refusal if the tool surface shrinks (`--allow-tool-removal`), WinError 1224 → "CANNOT DEPLOY WHILE RIMWORLD IS RUNNING" (MEASURED `build.py:405-436`). **No explicit process check, and no lease check** |
 | **Mod DLLs** | `winbuild.py <Mod>`: rsync to `_rmbuild`, `dotnet.exe build -c Release -p:SourceRevisionId=<sha>`, then copies back `*.dll` plus `*.dll.srchash` with mtime ≥ start−2 s, aborting on a `# dll:` hash mismatch (exit 3) | `deploy_custom_mods.py --mod <name>` (dry run), then `--apply` into `C:\…\RimWorld\Mods\<Folder>` | `.srchash` stamp (`src/Directory.Build.targets`) checked at `git push` by `.claude/hooks/block_dll_source_mismatch.py` and `infrastructure/githooks/pre-push` (**fails open** on any checker error) |
 | **XML/defs/textures** | none | `deploy_custom_mods.py --apply` | needs a restart. `hot_reload_defs` is retired |
 
@@ -678,8 +678,8 @@ marked otherwise.
 | exports / PNGs | various tools | `SaveData\DefDump\world_tiles_*`, `world_neighbors.csv`, artboard PNGs, `GenFilePaths.ScreenshotFolderPath` | on call | overwritten or unbounded | `worldview.py`, humans |
 | def dumps | `DefDumper` (RimDefDump mod) | `SaveData\DefDump\captures\<stamp>\` | `dump_request.txt` armed, then launch | `.keep` protects; the rest is UNVERIFIED | `refresh.py`, `game_paths.DEF_DUMP` |
 | dump registry | `refresh.py` | `infrastructure/state/dumps/REGISTRY.jsonl` (git) | owner freeze | append-only, line-sealed | `refresh.py` |
-| bridge session log | `rimbridge_client._log_session` | `D:\Luke\dev\_rmscratch\bridge_sessions.jsonl` | every client session | **append, no rotation**; carries no seat | `northstar_driver/bridge_utilization.py` |
-| shared lease | rimflow | `D:\Luke\dev\_rmscratch\BRIDGE_SHARED.json` | take, release, emit | overwritten | rimflow |
+| bridge session log | `rimbridge_client._log_session` | `D:\ClaudeWork\rimmandrake\scratch\bridge_sessions.jsonl` | every client session | **append, no rotation**; carries no seat | `northstar_driver/bridge_utilization.py` |
+| shared lease | rimflow | `D:\ClaudeWork\rimmandrake\scratch\BRIDGE_SHARED.json` | take, release, emit | overwritten | rimflow |
 | lease / game ledger | rimflow | `infrastructure/state/ledger/events/<SEAT>.jsonl` (git, `merge=union`) | events | append; git history | rimflow |
 | BRIDGE mirror | rimflow | `infrastructure/state/BRIDGE` (git) | take, release, who | overwritten | humans, seats |
 | probe cache | rimflow | `infrastructure/state/derived/gamestate_probe.json` | probe | 20 s TTL | rimflow |

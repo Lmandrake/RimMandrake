@@ -11,7 +11,7 @@ wherever it is delivered — served (serve_gated.py), committed (.githooks/pre-c
     python3 game_art.py precommit [<repo>]           the commit chokepoint (infrastructure/githooks/pre-commit)
 
 A picture is game art when EITHER
-  * its path says so: a mod `Textures/` folder, the artpipe state (`_artpipe`, `_artsrc`), the art store (`_artstore`),
+  * its path says so: a mod `Textures/` folder, the artpipe state (`<data root>/artpipe`, `_artsrc`), the art store (`<data root>/artstore`),
     the vanilla `bundle_textures` inventory, or a texPath-shaped name (`Things/…`, `UI/Icons/…`), a facing sprite's file
     name (`X_east.png`), or a file named after a ThingDef/PawnKindDef/TerrainDef in the def dump; or
   * its pixels say so: a cut-out sprite — PNG/WebP/GIF with an alpha channel holding both fully transparent and opaque
@@ -38,7 +38,7 @@ sys.path.insert(0, str(HERE))
 IMG_EXT = (".png", ".webp", ".gif", ".jpg", ".jpeg")
 REF_RE = re.compile(r"""["'(=]\s*([^"'()<>\s]{1,400}?\.(?:png|webp|gif|jpe?g))(?:\?[^"'()<>\s]*)?\s*["')]""", re.I)
 DATA_RE = re.compile(r"data:image/(?:png|webp|gif);base64,([A-Za-z0-9+/=]{200,})")
-PATH_MARKS = re.compile(r"(?:^|/)(?:Textures|_artpipe|_artsrc|_artstore|bundle_textures)/|(?:^|/)(?:Things|UI/Icons|UI/Commands)/", re.I)
+PATH_MARKS = re.compile(r"(?:^|/)(?:Textures|_artpipe|_artsrc|_artstore|rimmandrake/artpipe|rimmandrake/artstore|bundle_textures)/|(?:^|/)(?:Things|UI/Icons|UI/Commands)/", re.I)
 NOT_ART_NAME = re.compile(r"(?:^|/)scale_[^/]*\.png$|(?:^|/)(?:canon|refs?)/", re.I)   # our own scale panels; canon refs
 FACING_RE = re.compile(r"_(?:north|south|east|west)m?(?:_r?\d+)?\.(?:png|webp|gif)$", re.I)   # a facing sprite's file name
 STRIP_RE = re.compile(r"(?:_(?:north|south|east|west)m?|_v\d+|_\d+|_(?:old|new|current|render|nooutline|outline))+$", re.I)

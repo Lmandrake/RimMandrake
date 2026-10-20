@@ -23,6 +23,9 @@ over an owner keep or a rejection/redo), and each is appended to <artpipe>/colle
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import hashlib
 import json
@@ -38,7 +41,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[3]
 SRC = REPO / "src"
-ART = Path(os.environ.get("ARTPIPE_STATE") or "/mnt/d/Luke/dev/_artpipe")
+ART = Path(os.environ.get("ARTPIPE_STATE") or rm_str("artpipe"))
 sys.path.insert(0, str(HERE))
 import artledger as A            # noqa: E402
 import placeholder_detect as PD  # noqa: E402

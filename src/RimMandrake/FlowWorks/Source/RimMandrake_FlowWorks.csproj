@@ -21,7 +21,7 @@
     absent from the Compile list below; EnableDefaultCompileItems is false,
     so nothing there is picked up implicitly.
 
-    Build (dotnet.exe is Windows-native and cannot build from the WSL clone; winbuild stages it on D:\Luke\dev\_rmbuild):
+    Build (dotnet.exe is Windows-native and cannot build from the WSL clone; winbuild stages it on D:\ClaudeWork\rimmandrake\build):
       python3 src/RimMandrake/Utils/winbuild.py FlowWorks
 
     Output lands in ../Assemblies/, which is where RimWorld looks.

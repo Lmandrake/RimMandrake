@@ -26,6 +26,9 @@ backup rule, listed separately) and the save_guard keeper store size.
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import glob
 import json
@@ -43,7 +46,7 @@ CANONICAL = "CANONICAL_ASHKARR_START_2026-09-12.rws"
 AWAITING = ROOT / "infrastructure" / "state" / "saves_awaiting_review.txt"
 AUTOSAVE = re.compile(r"^Autosave-\d+\.rws$", re.I)
 BACKUP = re.compile(r"(\.bak|bak-pre|\.before[_-]|before_|_backup|\.prev|\.orig|pre_?edit|\.old$)", re.I)
-KEEPER_STORE = Path("/mnt/d/Luke/dev/_rmscratch/save_keepers")
+KEEPER_STORE = Path(rm_str("scratch", "save_keepers"))
 TEXT_EXT = {".md", ".html", ".json", ".txt", ".yml", ".yaml", ".py", ".xml", ".csv"}
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Wire the artpipe Messy Conduit art families into the mod's Textures (lane C, 2026-10-02).
 
-Source: D:\\Luke\\dev\\_artpipe\\_artsrc\\<job id>\\<job id>.png (finished jobs; item MESSY_CONDUIT_MOD_1).
+Source: D:\\ClaudeWork\\rimmandrake\\artpipe\\_artsrc\\<job id>\\<job id>.png (finished jobs; item MESSY_CONDUIT_MOD_1).
 Destination: src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/...
 
 Naming scheme (one folder per family, slot names fixed so CordMaterials maps slot -> file):
@@ -20,11 +20,14 @@ T junctions are shifted vertically so their side arms sit on the Jawa anchor row
 
 Usage: python3 wire_style_art.py [--dry]   prints one line per piece and a JSON report to --report.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse, json, os, sys
 import numpy as np
 from PIL import Image
 
-SRC = "/mnt/d/Luke/dev/_artpipe/_artsrc"
+SRC = rm_str("artpipe", "_artsrc")
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../.."))
 TEX = os.path.join(REPO, "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack")
 J = "RM_MessyConduit_"

@@ -9,7 +9,7 @@ Three stores, kept apart on purpose:
               merge=union (like the rimflow ledger). Facts about art; no pixels. Older events
               may sit in write-once events/archive/<SEAT>.<NNNN>.<from>_<to>.jsonl (`art.py
               rotate`); read them only through shard_files()/read_events(), never a glob.
-  * bytes   — the content-addressed art store, D:\\Luke\\dev\\_artstore\\<sha[:2]>\\<sha>.png,
+  * bytes   — the content-addressed art store, D:\\ClaudeWork\\rimmandrake\\artstore\\<sha[:2]>\\<sha>.png,
               outside git. Every displaced or shown picture lands here BEFORE anything
               overwrites it. Writes are copy -> fsync -> re-hash -> rename.
   * index   — infrastructure/state/art/index.json, a gitignored projection, rebuilt on read.
@@ -31,6 +31,9 @@ Owner rulings 2026-10-04 that this code enforces (item notes):
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import hashlib
 import json
 import os
@@ -44,7 +47,7 @@ from collections import defaultdict
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
-STORE_DEFAULT = Path("/mnt/d/Luke/dev/_artstore")
+STORE_DEFAULT = Path(rm_str("artstore"))
 
 
 def ledger_dir() -> Path:

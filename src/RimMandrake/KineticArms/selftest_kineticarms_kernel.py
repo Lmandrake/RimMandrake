@@ -2,12 +2,15 @@
 """Offline kernel selftest for Kinetic Arms (RM_KineticMath, KA-01..KA-13).
 
 Runs Source/SelfTest (net8.0, compiles the production RM_KineticMath.cs). dotnet.exe is Windows-native and
-cannot build from an ext4 clone, so the two source files are staged into D:\\Luke\\dev\\_rmbuild\\KineticArmsSelfTest
+cannot build from an ext4 clone, so the two source files are staged into D:\\ClaudeWork\\rimmandrake\\build\\KineticArmsSelfTest
 first (same staging root as winbuild.py).
 
     python3 src/RimMandrake/KineticArms/selftest_kineticarms_kernel.py
 """
 # selftest-timeout: 300
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import fcntl
 import os
 import shutil
@@ -16,7 +19,7 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STAGE = os.environ.get("WINBUILD_ROOT", "/mnt/d/Luke/dev/_rmbuild") + "/KineticArmsSelfTest"
+STAGE = os.environ.get("WINBUILD_ROOT", rm_str("build")) + "/KineticArmsSelfTest"
 DOTNET = ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe"]
 
 

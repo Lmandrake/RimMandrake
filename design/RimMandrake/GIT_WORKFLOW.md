@@ -10,8 +10,8 @@ Rationale and measurements: `git_workflow_plan_2026-10-01.md` (plan) and the dat
 | `/home/mandrake/rm/bench`, `/home/mandrake/rm/foundry` | the seat clones — ext4, plain git, **one writer each** (the seat's own window). Every seat launches from its clone. |
 | `D:\Luke\dev\RimMandrake` (`/mnt/d/Luke/dev/RimMandrake`) | **read-only mirror** of origin/main, refreshed every 5 min by `rm-mirror.timer` (`./mirror sync`). No `.git`. Never write it; Windows tools (the game deploy, Explorer, python.exe) read it. `MIRROR_HEAD` names its commit; `MIRROR_STALE` appears if a refresh failed. |
 | `/home/mandrake/rm/mirror.git` | the mirror's bare fetch-only repo |
-| `D:\Luke\dev\_artpipe\` | artpipe queue/state (not in git): `pending/ active/ done/ failed/ _artsrc/ registry.jsonl` |
-| `D:\Luke\dev\_rmbuild\`, `D:\Luke\dev\_rmscratch\codex\` | build staging and codex.exe staging (drive-local scratch) |
+| `D:\ClaudeWork\rimmandrake\artpipe\` | artpipe queue/state (not in git): `pending/ active/ done/ failed/ _artsrc/ registry.jsonl` |
+| `D:\ClaudeWork\rimmandrake\build\`, `D:\ClaudeWork\rimmandrake\scratch\codex\` | build staging and codex.exe staging (drive-local scratch) |
 | `/home/mandrake/rm/store.git` | the shared object store: bare, fetched from `mirror.git`, never pruned. Throwaway clones borrow from it, never from a seat clone |
 | `/home/mandrake/rm/scratch/<SEAT>/` | throwaway ext4 clones, made only with `python3 src/RimMandrake/Utils/scratch_clone.py clone "<purpose>"` (never `/tmp`: tmpfs). Trial with telemetry: `design/RimMandrake/objstore_trial_2026-10-08.md` |
 
@@ -67,10 +67,10 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
 
 ## Builds, DLLs, tools that need Windows
 
-- C# builds: `python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>` stages the sources on `D:\Luke\dev\_rmbuild\`, runs Windows dotnet, copies the DLL **and its `.srchash` back as a pair**. The JawaBench companion builds through `bridgetools/build.py`, which stages the same way.
+- C# builds: `python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>` stages the sources on `D:\ClaudeWork\rimmandrake\build\`, runs Windows dotnet, copies the DLL **and its `.srchash` back as a pair**. The JawaBench companion builds through `bridgetools/build.py`, which stages the same way.
 - A committed DLL must be pushed with its `.srchash` (`dll_source_stamp.py`; guard `block_dll_source_mismatch.py` on push). FOUNDRY alone commits DLLs; after a merge touching a mod's `Source/`, rebuild — never pick a side's DLL.
-- `codex.exe` cannot run from an ext4 cwd: `codex_image.py` and `gpt_consult.py` stage the call in `D:\Luke\dev\_rmscratch\codex\<job>\` and copy results back.
-- artpipe: the daemon runs from the FOUNDRY clone with `ARTPIPE_STATE_DIR=/mnt/d/Luke/dev/_artpipe`. Art is copied into a clone for commit with `artpipe_state.py collect <job> --to src/…`; `artpipe_state.py find <term>` searches finished jobs.
+- `codex.exe` cannot run from an ext4 cwd: `codex_image.py` and `gpt_consult.py` stage the call in `D:\ClaudeWork\rimmandrake\scratch\codex\<job>\` and copy results back.
+- artpipe: the daemon runs from the FOUNDRY clone with `ARTPIPE_STATE_DIR=/mnt/d/ClaudeWork/rimmandrake/artpipe`. Art is copied into a clone for commit with `artpipe_state.py collect <job> --to src/…`; `artpipe_state.py find <term>` searches finished jobs.
 - Anything bridge or game-facing from WSL runs under `python.exe` against the **mirror** path.
 - Selftests that run Windows `dotnet.exe` fail from an ext4 clone with MSB3101/MSB3030/MSB1009 — not regressions; `src/RimMandrake/Utils/selftest_winstage.py` stages them on the Windows drive.
 

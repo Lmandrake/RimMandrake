@@ -4,7 +4,7 @@ The ledger lock (`rimflow bridge take`) knows SEATS and judges liveness from led
 cannot be told apart (CLAUDE.md, handoff.py) and a crashed window stays "alive" for 45 minutes. This lock is a
 second, stricter witness the ledger lock now consults:
 
-  * ONE file on the drive every clone and python.exe can see (D:\\Luke\\dev\\_rmscratch\\DRIVER_LOCK.json),
+  * ONE file on the drive every clone and python.exe can see (D:\\ClaudeWork\\rimmandrake\\scratch\\DRIVER_LOCK.json),
     created with O_CREAT|O_EXCL - the filesystem picks exactly one winner.
   * the holder is a PROCESS: {pid, start time, boot_id, platform}. The owner process is the nearest `claude`
     ancestor (the agent window), else the parent shell - not the short-lived rimflow process.
@@ -16,6 +16,9 @@ second, stricter witness the ledger lock now consults:
 Release requires the same identity, or force (recorded). Disabled under a redirected RIMFLOW_LEDGER unless
 RIMFLOW_DRIVER_LOCK names a path, so selftests never touch the real lock.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import json
 import os
 import socket
@@ -23,7 +26,7 @@ import subprocess
 import sys
 import time
 
-DEFAULT = r"D:\Luke\dev\_rmscratch\DRIVER_LOCK.json" if os.name == "nt" else "/mnt/d/Luke/dev/_rmscratch/DRIVER_LOCK.json"
+DEFAULT = rm_win("scratch", "DRIVER_LOCK.json") if os.name == "nt" else rm_str("scratch", "DRIVER_LOCK.json")
 STALE_HEARTBEAT_S = 45 * 60          # only consulted when the holder process cannot be inspected
 WRITING_GRACE_S = 3.0
 

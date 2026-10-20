@@ -1,12 +1,12 @@
 <# sparse_once.ps1 -- force the moved Ubuntu image sparse (owner, 2026-10-11: "Force it"), then fstrim so
 freed blocks go back to E:. Runs as a one-shot scheduled task (it must survive `wsl --shutdown`).
 Microsoft disables sparse VHDs for "potential data corruption"; the old image on C: is the fallback.
-  Launch:  powershell.exe -NoProfile -ExecutionPolicy Bypass -File D:\Luke\dev\_rmscratch\wslmove\sparse_once.ps1 -Launch -DelaySec 60 #>
+  Launch:  powershell.exe -NoProfile -ExecutionPolicy Bypass -File D:\ClaudeWork\rimmandrake\scratch\wslmove\sparse_once.ps1 -Launch -DelaySec 60 #>
 param([switch]$Launch, [int]$DelaySec = 60)
 $name   = "WSL Sparse Once"
 $distro = "Ubuntu"
 $vhd    = "E:\WSL\Ubuntu\ext4.vhdx"
-$log    = "D:\Luke\dev\_rmscratch\wslmove\sparse.log"
+$log    = "$PSScriptRoot\sparse.log"
 $tasks  = @("\WSL Keepalive","\RimFlow Pulse")
 
 if ($Launch) {

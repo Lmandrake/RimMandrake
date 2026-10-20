@@ -6,12 +6,15 @@ Also checks the wiring: FeverWood no longer ends sustainers itself and both side
 
     python3 src/RimMandrake/Utils/selftest_silence_reasons.py
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import os, shutil, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 CB = os.path.join(ROOT, "src", "RimMandrake", "CreatureBehaviors", "Source")
 FW = os.path.join(ROOT, "src", "RimMandrake", "FeverWood", "Source", "RM_MapComponent_TentacleWatch.cs")
-STAGE = "/mnt/d/Luke/dev/_rmscratch/silencetest"
+STAGE = rm_str("scratch", "silencetest")
 DOTNET = "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe"
 PROG = r'''using System; using System.Collections.Generic; using RimMandrake.CreatureBehaviors;
 class P { static int bad; static void Eq(string n, object a, object b){ if(!Equals(a,b)){bad++;Console.WriteLine("FAIL "+n+": "+a+" != "+b);} else Console.WriteLine("ok   "+n);}

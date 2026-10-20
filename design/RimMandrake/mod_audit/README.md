@@ -51,8 +51,8 @@ python3 src/RimMandrake/Utils/modaudit/batches.py                     # writes b
 To re-collect one mod after it changed: `diskfacts.py --redo <packageId>`, then `assemble.py`.
 
 **After a new full-list cold load**, point `runtime.py` at THAT session: its Player.log is archived by the next
-launch to `D:\Luke\dev\_rmscratch\playerlog_archive\Player.<launch time>.log`; the TPS session id and bridge
-token are in that launch's receipt in `D:\Luke\dev\_rmscratch\launch_receipts\`. The live `Player.log` belongs to
+launch to `D:\ClaudeWork\rimmandrake\scratch\playerlog_archive\Player.<launch time>.log`; the TPS session id and bridge
+token are in that launch's receipt in `D:\ClaudeWork\rimmandrake\scratch\launch_receipts\`. The live `Player.log` belongs to
 whatever is running now and is never the default.
 
 ## How to read a facts row (and what each number is NOT)

@@ -1,1 +1,1 @@
-Never --force-take the bridge from a stale-looking lock: check D:\Luke\dev\_rmscratch\bridge_calls.jsonl for a live foreign client first (a force-take loaded BENCH's walk save over a FOUNDRY test site, 2026-10-16).
+Never --force-take the bridge from a stale-looking lock: check D:\ClaudeWork\rimmandrake\scratch\bridge_calls.jsonl for a live foreign client first (a force-take loaded BENCH's walk save over a FOUNDRY test site, 2026-10-16).

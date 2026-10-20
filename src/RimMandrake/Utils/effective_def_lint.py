@@ -17,7 +17,7 @@ drvfs from WSL is several times slower. Both interpreters work (paths come from 
 
 CACHE. The result is keyed on the CONTENT of every Defs/Patches/About/LoadFolders file read (sha256), the ordered
 mod list, the overrides and this script's own source. File shas are memoised by (path, size, mtime_ns), the way git's
-index does, so a repeat run only stats files. Cache: D:\Luke\dev\_rmscratch\effective_def_lint\ (outside git; a
+index does, so a repeat run only stats files. Cache: D:\ClaudeWork\rimmandrake\scratch\effective_def_lint\ (outside git; a
 program reads it).
 
 SEVERITY. `crash` = a VERIFIED engine path dereferences the bad value during load (each names its path, checked
@@ -49,6 +49,9 @@ from an absent assembly -- only OUR namespaces are checked, by lint_def_type_ref
 (counted, with whether they touch costList); C# def generators and runtime removers; list-merge subtleties beyond
 Inherit="False". A post-startup resolved-def audit in the live game is the backstop for those.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import glob
 import hashlib
@@ -73,7 +76,7 @@ def cache_dir():
     if os.environ.get('EDL_CACHE'):
         return os.environ['EDL_CACHE']
     # by platform: game_paths.resolve returns the Windows spelling while the WSL dir does not exist yet
-    return r'D:\Luke\dev\_rmscratch\effective_def_lint' if os.name == 'nt' else '/mnt/d/Luke/dev/_rmscratch/effective_def_lint'
+    return rm_win("scratch", "effective_def_lint") if os.name == 'nt' else rm_str("scratch", "effective_def_lint")
 
 
 # ---------------------------------------------------------------------------------------------------------- findings

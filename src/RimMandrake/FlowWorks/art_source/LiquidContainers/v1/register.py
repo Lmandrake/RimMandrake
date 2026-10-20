@@ -1,12 +1,15 @@
 """File the 12 pilot sprites (+3 tint previews each) as finished artpipe render families and write the --textures
 manifest for art_sheet.py. Column 'base' is the installable sprite (liquid region neutral grey, tinted in game by the
 _m mask); the tint columns are PREVIEWS of the same file and carry no target_texpath, so nothing installs them."""
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[6] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import json, shutil, time
 from pathlib import Path
 from PIL import Image
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[5]
-AP = Path("/mnt/d/Luke/dev/_artpipe")
+AP = Path(rm_str("artpipe"))
 ITEM = "LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS"
 DRAW = {"Bottle": 0.75, "Bucket": 1.0, "Barrel": 1.4}
 LOOK = {"Scrapper": "junker: odd-shaped scavenged", "Industrial": "industrial: generic water bottle / steel pail / oil drum",

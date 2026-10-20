@@ -27,17 +27,16 @@ def _defaults() -> dict:
     import sys
     sys.path.insert(0, os.path.dirname(CODE_DIR))
     import game_paths
+    import rmpaths  # the RimMandrake data root (scratch, artpipe, obs, build): never D:\\Luke\\dev
     jb = os.path.join(game_paths.LOCALLOW, "JawaBench")
     game_mods = game_paths.LOCAL_MODS
     modsconfig = game_paths.MODS_CONFIG
     if IS_WIN:
         root = "E:\\telemetry"
-        d = "D:\\Luke\\dev"
         mirror = "D:\\Luke\\dev\\RimMandrake"
         archive = "F:\\telemetry_archive"
     else:
         root = "/mnt/e/telemetry"
-        d = "/mnt/d/Luke/dev"
         mirror = "/mnt/d/Luke/dev/RimMandrake"
         archive = "/mnt/f/telemetry_archive"
     j = os.path.join
@@ -53,8 +52,8 @@ def _defaults() -> dict:
         "jawabench": jb,
         "game_mods": game_mods,
         "modsconfig": modsconfig,
-        "bridge_calls": j(d, "_rmscratch", "bridge_calls.jsonl"),
-        "artpipe": j(d, "_artpipe"),
+        "bridge_calls": rmpaths.rm_str("scratch", "bridge_calls.jsonl"),
+        "artpipe": rmpaths.rm_str("artpipe"),
         "mirror": mirror,
         "vm_url": "http://127.0.0.1:8428",
         "grafana_url": "http://127.0.0.1:3000",
@@ -64,8 +63,8 @@ def _defaults() -> dict:
         "vhdx": j("E:\\" if IS_WIN else "/mnt/e/", "WSL", "Ubuntu", "ext4.vhdx"),
         # hourly directory sizes (name -> path); kept short, each walk costs IO
         "dirs": {
-            "rmscratch": j(d, "_rmscratch"), "artpipe": j(d, "_artpipe"), "obs": j(d, "_obs"),
-            "rmbuild": j(d, "_rmbuild"), "jawabench": jb, "telemetry": root,
+            "rmscratch": rmpaths.rm_str("scratch"), "artpipe": rmpaths.rm_str("artpipe"),
+            "obs": rmpaths.rm_str("obs"), "rmbuild": rmpaths.rm_str("build"), "jawabench": jb, "telemetry": root,
         },
         # retention budgets (design §11 Q8a): VM 2y, raw 90 d on E: then F:, caps below
         "raw_days_hot": 90,

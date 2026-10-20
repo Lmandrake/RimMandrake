@@ -23,6 +23,9 @@ is not written). The save is backed up byte-exact first, and the written file is
 `rimworld/save_game` has reported success while writing a different slot (skills/rimbridge/references/
 silent-failures.md).
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import datetime
 import hashlib
@@ -45,7 +48,7 @@ NAME = "Marquee"
 NEW_KIND = "RSW_Ikee"
 RETIRED = ("mlie.starwarsanimalcollection", "sarg.alphaanimals", "daria40k.alphaanimalspatchoutposts",
            "sarg.alphabiomes")
-BACKUPS = r"D:\Luke\dev\_rmscratch\save_backups"
+BACKUPS = rm_win("scratch", "save_backups")
 CLIENT = "python.exe src/RimMandrake/Utils/rimbridge_client.py --yes-i-know-this-is-live --timeout 120"
 
 

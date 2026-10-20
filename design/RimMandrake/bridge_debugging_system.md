@@ -14,7 +14,7 @@ slowly iterating on debugging live.**
 - Paths are repo-relative to `/home/mandrake/rm/foundry` (the read-only Windows mirror is
   `D:\Luke\dev\RimMandrake`). Live record directories are on Windows:
   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\` (`Player.log`, `JawaBench\tps\`,
-  `JawaBench\health\`), `D:\Luke\dev\_obs\runs\` (per-call telemetry), `D:\Luke\dev\_rmscratch\bridge_sessions.jsonl`
+  `JawaBench\health\`), `D:\ClaudeWork\rimmandrake\obs\runs\` (per-call telemetry), `D:\ClaudeWork\rimmandrake\scratch\bridge_sessions.jsonl`
   (session log).
 
 The one-paragraph intention: **a cold load costs ~15–25 minutes, so everything that can be known offline must be
@@ -203,7 +203,7 @@ Maturity scale: **built** (code exists, selftests offline) → **deployed** (in 
 
 | piece | what | MEASURED state |
 |---|---|---|
-| `rimdrive/session.py` → `rimdrive/obs_events.py` | `call_start`/`call_end` per call, never blocks/raises | built; **newest run file in `D:\Luke\dev\_obs\runs` is 2026-10-06T06:08** (42 files) |
+| `rimdrive/session.py` → `rimdrive/obs_events.py` | `call_start`/`call_end` per call, never blocks/raises | built; **newest run file in `D:\ClaudeWork\rimmandrake\obs\runs` is 2026-10-06T06:08** (42 files) |
 | `modcheck/obs_summary.py` | calls/min by tool and outcome, p50/p95, UNFINISHED calls, timeline setup/ticks/tool/idle | built, offline |
 | `rimbridge_client.py` session log `bridge_sessions.jsonl` | one row per client session (script, calls, seconds) | live: 1,259 rows; 151 today |
 | `northstar_driver/bridge_utilization.py` | ACTIVE ∩ HELD / HELD | built |

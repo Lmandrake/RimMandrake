@@ -7,7 +7,7 @@
     header if this one goes stale.
 
     Build: python3 src/RimMandrake/Utils/winbuild.py Pyrelands (stages on
-    D:\Luke\dev\_rmbuild; dotnet is Windows-native and cannot take a /mnt path).
+    D:\ClaudeWork\rimmandrake\build; dotnet is Windows-native and cannot take a /mnt path).
     Commit the DLL with its .srchash.
 
     Output lands in ../Assemblies/, which is where RimWorld looks.

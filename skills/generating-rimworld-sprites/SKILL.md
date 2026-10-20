@@ -354,7 +354,7 @@ check with `validate_sprite.py --upright-cylinder`. Numbers and method: `referen
   pose in three rounds — appended HARD REQUIREMENT tails and a front-loaded pose
   sentence alike scored 0/1. Derive from a passing dead master instead (2026-10-11).
 - **Search before queuing.** `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <term>`
-  searches the artpipe state dir (`done/`, `_artsrc/`, `registry.jsonl`; `D:\Luke\dev\_artpipe`, outside
+  searches the artpipe state dir (`done/`, `_artsrc/`, `registry.jsonl`; `D:\ClaudeWork\rimmandrake\artpipe`, outside
   git since 2026-10-02) — that, and any `.decisions.json` review sheet, can already hold
   finished, ruled-on art for the subject — the daemon runs continuously and
   its output regularly sits unused. Grep `registry.jsonl` for `source:

@@ -30,7 +30,7 @@ Evidence: Transient/art_review_2026-10-15/pipeline_review.md §3 (FAIL predicted
 
 ROUTE
   codex.exe exec, read-only sandbox, `--output-schema` JSON, images via `-i`, prompt on stdin, cwd + image copies in
-  D:\\Luke\\dev\\_rmscratch\\codex\\canoncheck-*\\ (codex.exe fails from an ext4 cwd and hangs on \\\\wsl.localhost
+  D:\\ClaudeWork\\rimmandrake\\scratch\\codex\\canoncheck-*\\ (codex.exe fails from an ext4 cwd and hangs on \\\\wsl.localhost
   reads — same staging gpt_consult.py uses). Model: $ARTPIPE_CANON_MODEL, else gpt_consult's consult default
   (gpt-6.1-sol); effort high. In the daemon it runs on the job's leased codex home (artpiped's slot pool).
 

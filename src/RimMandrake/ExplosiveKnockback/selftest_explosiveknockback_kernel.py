@@ -2,12 +2,15 @@
 """Offline kernel selftest for Explosive Knockback (design §8.1, K-01..K-12).
 
 Runs Source/SelfTest (net8.0, compiles the production RM_KnockbackMath.cs). dotnet.exe is Windows-native and
-cannot build from an ext4 clone, so the two source files are staged into D:\\Luke\\dev\\_rmbuild\\ExplosiveKnockbackSelfTest
+cannot build from an ext4 clone, so the two source files are staged into D:\\ClaudeWork\\rimmandrake\\build\\ExplosiveKnockbackSelfTest
 first (same staging root as winbuild.py).
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py
 """
 # selftest-timeout: 300
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import fcntl
 import os
 import shutil
@@ -16,7 +19,7 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STAGE = os.environ.get("WINBUILD_ROOT", "/mnt/d/Luke/dev/_rmbuild") + "/ExplosiveKnockbackSelfTest"
+STAGE = os.environ.get("WINBUILD_ROOT", rm_str("build")) + "/ExplosiveKnockbackSelfTest"
 DOTNET = ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe"]
 
 

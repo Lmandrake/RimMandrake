@@ -14,8 +14,11 @@ CONTRACT (each clause has a red-able test in selftest_obs_events.py):
     dropped > 0, is telemetry-incomplete (obs_summary says so).
   * Read-only for the game: this module never calls the bridge.
 
-Files: <obs dir>/runs/<run_id>.jsonl, outside git (default D:\\Luke\\dev\\_obs).
+Files: <obs dir>/runs/<run_id>.jsonl, outside git (default D:\\ClaudeWork\\rimmandrake\\obs).
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import itertools
 import json
 import os
@@ -31,7 +34,7 @@ def default_dir():
     env = os.environ.get("OBS_DIR")
     if env:
         return env
-    return r"D:\Luke\dev\_obs" if os.name == "nt" else "/mnt/d/Luke/dev/_obs"
+    return rm_win("obs") if os.name == "nt" else rm_str("obs")
 
 
 def new_run_id(label="run"):

@@ -12,6 +12,9 @@ file is written only when absent (prefill, never his ruling). Thicket row (RM_Ve
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import json
 import hashlib
 import re
@@ -24,7 +27,7 @@ from art_sheet import thumb  # noqa: E402
 
 SKILL = Path.home() / ".claude" / "skills" / "review-sheets" / "assets"
 SRC = L.REPO_ROOT / "src" / "RimMandrake"
-ART = Path("/mnt/d/Luke/dev/_artpipe/_artsrc")
+ART = Path(rm_str("artpipe", "_artsrc"))
 SHEET_ID = "own_render_keep_sheet_2026-10-09"
 OUT = L.REPO_ROOT / "Transient" / f"{SHEET_ID}.html"
 

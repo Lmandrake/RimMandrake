@@ -6,7 +6,7 @@
     this machine, so Microsoft.NETFramework.ReferenceAssemblies supplies the
     reference assemblies from NuGet instead.
 
-    Build: python3 src/RimMandrake/Utils/winbuild.py EmpirePursuit (stages the source on D:\Luke\dev\_rmbuild for the
+    Build: python3 src/RimMandrake/Utils/winbuild.py EmpirePursuit (stages the source on D:\ClaudeWork\rimmandrake\build for the
     Windows-native dotnet and writes the .srchash beside the DLL).
 
     Output lands in ../Assemblies/, which is where RimWorld looks. RootNamespace stays upstream's
