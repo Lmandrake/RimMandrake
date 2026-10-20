@@ -147,9 +147,15 @@ namespace RimMandrake.StarWars.WeatherSuite
 
         static AuroraCurtains()
         {
-            Texture2D tex = MakeRibbonTexture(256, 128);
-            Near = new Material(ShaderDatabase.MoteGlow) { mainTexture = tex, name = "RM_WS_AuroraCurtainNear" };
-            Far = new Material(ShaderDatabase.MoteGlow) { mainTexture = tex, name = "RM_WS_AuroraCurtainFar" };
+            // Art drop-in: the art ledger installs Textures/Weather/RM_WS_AuroraCurtainA.png and RM_WS_AuroraGlowBand.png (artpipe jobs filed
+            // 2026-10-20); until then (or if either is missing) the procedural ribbons stand in. No code change when the art lands.
+            Texture2D ribbons = MakeRibbonTexture(256, 128);
+            Texture2D near = ContentFinder<Texture2D>.Get("Weather/RM_WS_AuroraCurtainA", false) ?? ribbons;
+            Texture2D far = ContentFinder<Texture2D>.Get("Weather/RM_WS_AuroraGlowBand", false) ?? ribbons;
+            near.wrapMode = TextureWrapMode.Repeat;
+            far.wrapMode = TextureWrapMode.Repeat;
+            Near = new Material(ShaderDatabase.MoteGlow) { mainTexture = near, name = "RM_WS_AuroraCurtainNear" };
+            Far = new Material(ShaderDatabase.MoteGlow) { mainTexture = far, name = "RM_WS_AuroraCurtainFar" };
             Near.color = Color.clear;
             Far.color = Color.clear;
         }
