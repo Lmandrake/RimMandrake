@@ -399,6 +399,20 @@ def part_c2():
     got = mock("pour_refused", call=refuser("static:ProofPour", "refuse"))
     check("C2 a refused ProofPour withholds the pour row only", got.get("GRATE_pour_drains_to_body") == "UNMEASURED"
           and got.get("GRATE_item_stays_on_deck") == "PASS", {k: got.get(k) for k in ("GRATE_pour_drains_to_body", "GRATE_item_stays_on_deck")})
+    # scope leak (review 2026-10-20): a refused dig of ONE scene's trench withholds the rows standing on it, never an unrelated scene's
+    def dig_refuser(z):
+        def call(self, tool, **kw):
+            if tool == "jawa/flowworks_excavation_drive" and kw.get("z") == z + SBP.FakeBridge.floor_z and kw.get("deepenLevels"):
+                return {"success": False, "message": "refused (selftest)"}
+            return ocall(self, tool, **kw)
+        return call
+    for dz, bad_row, kept in ((12, "SB_anchor_lost_swings_from_that_end", ("SB_drag_6_timber_builds", "SB_rails_on_nobody_falls")),
+                              (24, "GRATE_fire_burns_people_above", ("GRATE_pour_drains_to_body", "GRATE_item_stays_on_deck")),
+                              (46, "UND_shallow_trench_is_a_wall", ("UND_floor_path_walks_under", "UND_both_arrive", "UND_sunken_bridge_crossed")),
+                              (50, "UND_shot_grate_deck", ("UND_shot_solid_deck", "UND_crush_below_and_wreck"))):
+        got = mock("dig_%d" % dz, call=dig_refuser(dz))
+        check("C2 a refused dig at z+%d withholds %s only" % (dz, bad_row), got.get(bad_row) == "UNMEASURED"
+              and all(got.get(k) == healthy.get(k) for k in kept), {k: got.get(k) for k in (bad_row,) + kept})
     # can-fail through the harness: a real mod fault still FAILs
     got = mock("realfail", static=lambda self, m, a: ("KNOCK trials=20 fell=0 railed=False edge=True" if m == "ProofKnock" else ostat(self, m, a)))
     check("C2 can-fail: rails off, open edge, nobody falls -> FAIL", got.get("SB_rails_off_some_fall") == "FAIL", got.get("SB_rails_off_some_fall"))
@@ -475,6 +489,39 @@ def part_d():
     st = {r["id"]: r["status"] for r in P.rows}
     check("D preport: a refused load of save 1 is UNMEASURED and save 2 still PASSes",
           st.get("PP1_preport_midcarry_save_loads") == "UNMEASURED" and st.get("PP2_preport_midretract_save_loads") == "PASS", st)
+    # review 2026-10-20: the real _wait_playing polls a map that is still loading (a refused get_ui_state / map_info): those
+    # polls are not the rows' preconditions -- they used to withhold every PP row of a healthy load
+    class LoadingFake(PreFake):
+        def __init__(self):
+            PreFake.__init__(self)
+            self.ui = self.mi = 0
+
+        def call(self, tool, **kw):
+            if tool == "rimworld/get_ui_state":
+                self.ui += 1
+                return {"success": False, "message": "loading (selftest)"} if self.ui % 2 == 1 else {"success": True, "programState": "Playing"}
+            if tool == "jawa/map_info":
+                self.mi += 1
+                return {"success": False, "message": "no map yet (selftest)"} if self.mi % 2 == 1 else {"success": True}
+            return PreFake.call(self, tool, **kw)
+    osleep = V.time.sleep
+    V.time.sleep = lambda s: None
+    try:
+        P3 = PH.Proof(argparse.Namespace(only=None, preport_save="C,D"), bridge=LoadingFake())
+        with quiet_out():
+            with V.scope("preport"):
+                P3.preport()
+    finally:
+        V.time.sleep = osleep
+    st3 = {r["id"]: r["status"] for r in P3.rows}
+    check("D preport: refused polls of a loading map are not faults -- both rows PASS",
+          st3.get("PP1_preport_midcarry_save_loads") == "PASS" and st3.get("PP2_preport_midretract_save_loads") == "PASS", st3)
+    P4 = PH.Proof(argparse.Namespace(only=None, preport_save=None), bridge=PreFake())
+    with quiet_out():
+        P4.take("hose", {"rows": [], "aborted": "hose probe dead"})
+    ab = [r for r in P4.rows if r["id"] == "HOSE_aborted"]
+    check("D a sub-run's abort (dead probe, site not ready) is UNMEASURED/HARNESS, never FAIL", ab and ab[0]["status"] == "UNMEASURED"
+          and ab[0]["class"] == "HARNESS", ab)
     P2 = PH.Proof(argparse.Namespace(only=None, preport_save=None), bridge=PreFake())
     with quiet_out():
         try:
