@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Rimesis</name>
+  <author>Font</author>
+  <packageId>Font.Rimesis</packageId>
+  <description>Rimesis turns a small number of otherwise anonymous enemy raiders into persistent recurring antagonists with a personal history against the colony.
+
+They remember killers, weapons, wounds, destroyed body parts, escape, extraction, captivity, betrayal, successful raids, and settlements lost to the player. When they return, they remain the same character - but their skills, equipment, armor, implants, companions, and tactics grow with their history.
+
+Destroying a faction's final settlement triggers a configurable series of escalating retaliation raids from that exact faction, even after RimWorld marks it defeated. Campaign waves wait for earlier attackers to leave the field so the pressure remains severe without becoming an unavoidable pileup.
+
+Each Rimesis receives a recognizable combat focus and tactical style. They may command sieges, breaches, flanking groups, elite troops, hordes, mechs, trained animals, vehicles, or Warcasket equipment when supported content is active. Their complete story remains available in the Chronicle, including after permanent death.
+
+No DLC is required. Royalty, Biotech, Anomaly, Odyssey, Custom Base Framework, RimHUD, Trauma and Integrity, Fantasy Biotech, Giddy-Up 2, Mount Passengers, Vehicle Raid Framework, Exosuit Framework, VFE Pirates, Isekai RPG Leveling, Eternal Pawns, and compatible modded equipment activate additional features only when available.</description>
+  <supportedVersions>
+    <li>1.6</li>
+    <li>1.7</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>ferny.Vengeance</li>
+    <li>SR.ModRimworld.FactionalWarContinued</li>
+    <li>oskarpotocki.vanillafactionsexpanded.core</li>
+    <li>CETeam.CombatExtended</li>
+    <li>JellyCreative.IsekaiLeveling</li>
+    <li>helldan.eternalpawns</li>
+    <li>Jaxe.RimHUD</li>
+    <li>ferny.TraumaAndIntegrity</li>
+    <li>vr.fantasy.biotech</li>
+    <li>MemeGoddess.GiddyUp</li>
+    <li>font.mountpassengers</li>
+    <li>gabrieel1482.raidvehicleframework</li>
+    <li>Aoba.Exosuit.Framework</li>
+    <li>Aoba.DeadManSwitch.Core</li>
+    <li>Aoba.DeadManSwitch.MobileDragoon</li>
+    <li>OskarPotocki.VFE.Pirates</li>
+    <li>Krkr.rule56</li>
+    <li>Mlie.DireRaids</li>
+    <li>VanillaStorytellersExpanded.WinstonWave</li>
+    <li>m00nl1ght.WorldTechLevel</li>
+    <li>TSA.WorldDominationExperimental</li>
+    <li>EvilEyeGuy.CustomBaseFramework</li>
+  </loadAfter>
+</ModMetaData>

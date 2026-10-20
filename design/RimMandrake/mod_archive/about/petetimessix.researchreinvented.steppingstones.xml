@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Research Reinvented: Stepping Stones</name>
+	<author>PeteTimesSix</author>  
+	<packageId>PeteTimesSix.ResearchReinvented.SteppingStones</packageId>
+	<supportedVersions>
+		<li>1.3</li>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<url>https://github.com/PeteTimesSix/ResearchReinvented_SteppingStones</url>
+	<modDependencies>
+      <li>
+        <packageId>brrainz.harmony</packageId>
+        <displayName>Harmony</displayName>
+        <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      </li> 
+    </modDependencies>
+	<modDependenciesByVersion>
+		<v1.3>
+		  <li>
+			<packageId>imranfish.xmlextensions</packageId>
+			<displayName>XML Extensions</displayName>
+			<downloadUrl>https://github.com/15adhami/XmlExtensions/releases</downloadUrl>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2574315206</steamWorkshopUrl>
+		  </li>
+		</v1.3>
+	</modDependenciesByVersion>
+	<loadAfter>
+		<li>brrainz.harmony</li>
+		<li>imranfish.xmlextensions</li>
+		<li>petetimessix.researchreinvented</li>
+	</loadAfter>
+	<loadAfterByVersion>
+	  <v1.5>
+		<li>brrainz.harmony</li>
+		<li>petetimessix.researchreinvented</li>
+		<li>OskarPotocki.VFE.Tribals</li>
+	  </v1.5>
+	  <v1.6>
+		<li>brrainz.harmony</li>
+		<li>petetimessix.researchreinvented</li>
+		<li>OskarPotocki.VFE.Tribals</li>
+	  </v1.6>
+	</loadAfterByVersion>
+	<loadBefore>
+		<li>fridgeBaron.TechBlock</li>
+	</loadBefore>
+	<description>
+Restructures the vanilla research tree to follow a more logical progression.
+	</description>
+</ModMetaData>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>VFE Pirates - Hardworking Warcaskets</name>
+	<author>dmp☆</author>
+	<packageId>dmp.vfepirates.warcasketwork</packageId>
+	<supportedVersions>
+		<li>1.6</li>
+	</supportedVersions>
+	<description><![CDATA[
+Allows warcaskets to work with reduced work speeds. They are trying their best..
+Configure this mod through VEF Toggable Patches
+]]></description>
+	<modDependencies>
+		<li>
+			<packageId>oskarpotocki.vfe.pirates</packageId>
+			<displayName>Vanilla Factions Expanded - Pirates</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2723801948</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>oskarpotocki.vfe.pirates</li>
+	</loadAfter>
+</ModMetaData>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Rim cockroach</name>
+	<author>LingLuo</author>
+	<supportedVersions>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>LingLuo.Cockroach</packageId>
+	<description>添加了一种巨型蟑螂和一种机械蟑螂.
+巨型蟑螂会在温热带或沙漠以较低概率出现,它们有着庞大的体型和吞噬污染的能力,能够帮助你处理打包的垃圾和地上的污渍,此外也能够在需要的是作为基地的先锋为你阻挡敌人,不过最好不要让它们在食用了大量垃圾后突然死亡,否则那些被吞噬的垃圾会一涌而出.
+机械蟑螂则是可以通过机械师在大型机械培育器上制作,其厚重的机械装甲和强而有力的弹跳装置可以在敌人反应过来之前便扑到敌人脸上,对于绝大多数的生物来讲,这种机械都有着极高的威胁性.
+
+Added two types of cockroaches: a giant cockroach and a mechanical cockroach.
+Giant cockroaches spawn with a low probability in warm, tropical, or desert regions. They have massive bodies and the ability to consume pollution, helping you dispose of packed trash and clean up stains on the ground. Additionally, they can serve as frontline defenders for your base when needed, blocking enemies. However, it's best not to let them die suddenly after consuming large amounts of garbage, as all the swallowed waste will gush out at once.
+Mechanical cockroaches, on the other hand, can be crafted by mechanics in a large mechanical incubator. Their heavy armor and powerful jumping mechanisms allow them to pounce onto enemies before they can react. For most creatures, these mechanical pests pose an extremely high threat.</description>
+</ModMetaData>

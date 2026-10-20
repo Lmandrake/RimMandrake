@@ -1,0 +1,40 @@
+<ModMetaData>
+	<name>Vanilla Races Expanded - Phytokin</name>
+	<author>Oskar Potocki, Sarg Bjornson, Allie, Erin, Sir Van, Reann Shepard</author>
+	<supportedVersions>
+		<li>1.7</li>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<modIconPath IgnoreIfNoMatchingField="True">UI/VELogo</modIconPath>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+		<li>
+			<packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+			<displayName>Vanilla Expanded Framework</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2023507013</steamWorkshopUrl>
+			<downloadUrl>https://github.com/Vanilla-Expanded/VanillaExpandedFramework</downloadUrl>
+		</li>
+		<li>
+			<packageId>Ludeon.RimWorld.Biotech</packageId>
+			<displayName>Biotech</displayName>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		
+		<li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+	</loadAfter>
+	<packageId>vanillaracesexpanded.phytokin</packageId>
+	<description>Vanilla Races Expanded is a brand new series of mods to enhance Biotech features, add to the storytelling and the world-building of RimWorld, and to introduce new, cool types ofxenohumans, complete with their own unique genes, behaviors, mechanics and items.
+
+This mod adds a new race called Phytokins, which are a unique and extremely rare xenotype that mixes the DNA of a plant with human DNA. Phytokins are capable of photosynthesis and reproduce via planting a saplingchild, and come in three varieties based on what DLCs you have enabled. With no other DLC, the only Phytokin variety present in the game will be the evil Poluxkin.
+
+Based on genetic data retrofitted from Gauranlen Inc.’s investment into dendrology following the Fall of Sorne, phytokins are plant-based humanoids with an emphasis on symmetry and symbiosis. Their ability to subsist only on sunlight and affinity with any and all plantlife make them especially suited to aiding newly established colonies or underperforming industrial farms.
+
+Based on research from the forest planet of Phytok that committed to extensive analysis on human-compatibility with psychic energy, phytokin xenogerms are typically exclusive to high-ranking, supporting roles in megacorporations and planetary governments. Their unique way of reproduction has resulted in many identical offspring, with each generation becoming successively more competent than their progenitor, further contributing to their extremely low numbers. Their affinity with plantlife, along with the side effect of extremely high and ever-increasing psychic sensitivity, mean that any phytokin xenohumans found on the Rim are always adapted to high-concept, dominant trees that are present on their residing planet.</description>
+</ModMetaData>

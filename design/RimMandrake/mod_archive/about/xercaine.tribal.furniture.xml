@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+
+  <name>Tribal Furniture</name>
+  <author>Xercaine</author>
+  <packageId>Xercaine.Tribal.Furniture</packageId>
+  <description>A mod that adds primitive furniture.</description>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+	  <packageId>brrainz.harmony</packageId>
+	  <displayName>Harmony</displayName>
+	  <steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2009463077</steamWorkshopUrl>
+	</li>
+  </modDependencies>
+  <loadAfter>
+	<li>brrainz.harmony</li>
+  </loadAfter>
+
+	
+</ModMetaData>

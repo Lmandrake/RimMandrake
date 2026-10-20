@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Outer Rim - Furniture &amp; Decor</name>
+	<description>Outer Rim module containing all the furniture, decals, joy buildings, statues, etc. If loaded without Outer Rim - Core it will automatically patch all contained items to use vanilla materials in place of the usual Outer Rim ones, and switch the required research to Complex Furniture.</description>
+	<author>Neronix17</author>
+	<packageId>Neronix17.OuterRim.FurnitureAndDecor</packageId>
+	<modIconPath IgnoreIfNoMatchingField="True">OuterRim/ModIcon</modIconPath>
+	<url>https://www.patreon.com/neronix17</url>
+	<supportedVersions>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<modDependencies>
+		<li>
+			<packageId>neronix17.toolbox</packageId>
+			<displayName>Tabula Rasa</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1660622094</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>neronix17.toolbox</li>
+		<li>Neronix17.OuterRim.Core</li>
+	</loadAfter>
+</ModMetaData>

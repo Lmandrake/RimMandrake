@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>ReGrowth 2</name>
+	<author>Helixien</author>
+	<supportedVersions>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+	<packageId>ReGrowth.BOTR.Core</packageId>
+	<url>https://steamcommunity.com/sharedfiles/filedetails/?id=2260097569</url>
+	<modVersion IgnoreIfNoMatchingField="True">5.2-rev1</modVersion>
+	<modIconPath IgnoreIfNoMatchingField="True">UI/RG_ModIcon</modIconPath>
+	<description>ReGrowth: Core is both a content mod and a small framework, aiming to overhaul and improve on Rimworlds vanilla biomes, add new and unique features and biomes, replace many of the vanilla plant textures with HD ones and, in combination with its companion mods, add new plants that fit perfectly into the vanilla artstyle. On top of that, it adds a lot of new weather types, many with custom visual effects to spice up your game.
+
+ReGrowth is, at its core, a mod deeply influenced by the philosophy of the Vanilla Expanded Series. Everything it adds fits into Vanilla Rimworld. Every system (like for example new terrain) is designed to mimic how similar vanilla systems work while also being as friendly to your games performance as possible. NOTHING in this mod will absolutely tank your FPS and the few features that do cost some performance are optional.
+
+This mod is the Core, which is a requirement for all other ReGrowth mods. Please note the new terrain will only be seen in new biomes that use them, not in vanilla biomes.
+
+This mod is as lightweight as possible, adding the minimum of code required and every bit of code written has performance in mind!</description>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/tag/v2.3.1.0</downloadUrl>
+			<steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2009463077</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>brrainz.harmony</li>
+		<li>Ludeon.RimWorld</li>
+		<li>Ludeon.RimWorld.Royalty</li>
+		<li>Ludeon.RimWorld.Ideology</li>
+		<li>Ludeon.RimWorld.Biotech</li>
+		<li>Ludeon.RimWorld.Anomaly</li>
+		<li>Ludeon.RimWorld.Odyssey</li>
+		<li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+		<li>VanillaExpanded.VCEF</li>
+		<li>OskarPotocki.VFE.Tribals</li>
+		<li>oskarpotocki.vfe.empire</li>
+	</loadAfter>
+	<loadBefore>
+		<li>Balthoraz.RimUniverse.BiomesModule</li>
+		<li>VanillaExpanded.VPlantsE</li>
+		<li>VanillaExpanded.VPlantsEMushrooms</li>
+		<li>sarg.rimbees</li>
+		<li>Argon.TribalMedicineRemake</li>
+		<li>ReTextured.HD</li>
+	</loadBefore>
+	<incompatibleWith>
+		<li>HerdMigration.velcroboy333</li>
+		<li>ONegative.AnimatedMarshes</li>
+		<li>Shotgunfrenzy.Rain.Removes.Filth</li>
+		<li>dninemfive.moa</li>
+		<li>hlx.dontsettlethere</li>
+		<li>project.neutrolope.dslexodus</li>
+		<li>Archangel.ReplantSpTrees</li>
+	</incompatibleWith>
+	<incompatibleWithByVersion>
+		<v1.5>
+			<li>Owlchemist.PerspectiveOres</li>
+			<li>Odeum.WMBP</li>
+			<li>Odeum.BiomesKit</li>
+			<li>zal.wmbp</li>
+		</v1.5>
+		<v1.6>
+			<li>Owlchemist.PerspectiveOres</li>
+			<li>Odeum.WMBP</li>
+			<li>Odeum.BiomesKit</li>
+			<li>zal.wmbp</li>
+			<li>NoAbandonedCamp</li>
+		</v1.6>
+	</incompatibleWithByVersion>
+</ModMetaData>

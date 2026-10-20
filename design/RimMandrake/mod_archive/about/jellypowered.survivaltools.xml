@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <packageId>jellypowered.survivaltools</packageId>
+    <name>Survival Tools Reborn</name>
+    <author>Jellypowered</author>
+    <url>https://github.com/Jellypowered/SurvivalTools/</url>
+    <supportedVersions>
+        <li>1.6</li>
+    </supportedVersions>
+    <description><![CDATA[
+Current version: v1.6 (September 2025)
+
+Transforms RimWorld into a challenging tool-dependent survival experience where proper equipment becomes essential for colony success.
+
+KEY FEATURES:
+• Smart Tool System: Colonists automatically acquire optimal tools before starting work
+• Hardcore Mode: Tools become essential - most work impossible without proper equipment
+• Extra Hardcore Mode: Ultimate difficulty with 87.5% faster tool wear and strict tool requirements
+• Granular Controls: Choose exactly which tasks require tools (cleaning, butchery, medical)
+• Intelligent Management: Advanced tool optimization and automatic swapping systems
+• Realistic Degradation: Tools wear down with use and must be maintained or replaced
+• Early Game Survival: Find tools in ruins or craft them to establish your colony
+
+DIFFICULTY MODES:
+• Normal: Tools improve efficiency but work remains possible without them
+• Hardcore: Most tasks become impossible without proper tools, 50% faster wear
+• Extra Hardcore: Maximum challenge - strict tool requirements, 87.5% faster wear
+
+QUALITY OF LIFE:
+• Automatic tool pickup before jobs begin
+• Smart tool swapping for optimal efficiency
+• Detailed alerts for missing or worn tools
+• Comprehensive mod compatibility patches
+• Extensive debugging and logging options
+
+Originally by XeoNovaDan. Rebuilt and enhanced for RimWorld 1.6 with improvements to tool mechanics, hardcore survival features, and intelligent automation systems.
+    ]]>    </description>
+</ModMetaData>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Salvage Rubble</name>
+  <author>Moja</author>
+  <packageId>moja.salvagerubble</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>
+    This mod allows the deconstruction of Rubble Piles (added in RimWorld 1.6 / Odyssey) to yield a small amount of salvageable resources:
+
+    - Steel (common)
+    - Wood (rare)
+    - Components (very rare)
+    - Gold (ultra rare)
+    - Plasteel (extremely rare)
+
+    Internally, cost values are scaled using high integers (e.g. Steel = 1000) to allow precise tuning of returned materials via the resourcesFractionWhenDeconstructed field.
+
+    Future versions may support Construction skill-based return scaling and configuration options.
+  </description>
+</ModMetaData>

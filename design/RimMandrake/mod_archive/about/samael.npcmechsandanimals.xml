@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ModMetaData>
+	<packageId>Samael.NPCMechsAndAnimals</packageId>
+	<name>Mechs and Animals for NPC Factions</name>
+	<author>Samael Gray</author>
+	<supportedVersions>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+	<description>Adds various mechanoids and animals to the different vanilla and DLC factions.</description>
+</ModMetaData>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Medieval Signs</name>
+	<author>Mewn Goddess</author>
+	<packageId>Mewn.MedievalSigns</packageId>
+	<supportedVersions>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+
+	<description>This mod adds 14 decorative medieval styled signboards that can be used to mark different types of buildings so your colony looks more organized and lived-in. The added signs are: inn, flophouse, tavern, stables, armory, archery, library, magic shop, butcher, tailor, quarry, blacksmith, apothecary and shop.
+
+This is a reworked version of my earlier mini mod - Medieval Overhaul Extra Signs, which obviously required the Medieval Overhaul mod to function. But this version comes with entirely new textures and is completely standalone, though the two mods are still fully compatible if used together.
+
+To include different designs and at the same time keep the Furniture tab relatively clean, I've combined 3 texture variations of a single sign into one building. You just need to rotate a sign while placing it to switch between different textures.</description>
+
+</ModMetaData>

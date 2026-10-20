@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>ABF: Artificial Beings Framework</name>
+    <author>Killathon</author>
+    <supportedVersions>
+		<li>1.5</li>
+        <li>1.6</li>
+    </supportedVersions>
+    <modDependencies>
+        <li>
+            <packageId>brrainz.harmony</packageId>
+            <displayName>Harmony</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+            <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+        </li>
+        <li>
+            <packageId>erdelf.HumanoidAlienRaces</packageId>
+            <alternativePackageIds IgnoreIfNoMatchingField="True">
+                <li>erdelf.HumanoidAlienRaces.dev</li>
+            </alternativePackageIds>
+            <displayName>Humanoid Alien Races 2.0</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/839005762</steamWorkshopUrl>
+            <downloadUrl>https://github.com/RimWorld-CCL-Reborn/AlienRaces</downloadUrl>
+        </li>
+    </modDependencies>
+    <packageId>Killathon.ArtificialBeings</packageId>
+    <loadAfter>
+        <li>brrainz.harmony</li><!-- Dependency -->
+        <li>erdelf.HumanoidAlienRaces</li><!-- Dependency -->
+        <li>Dubwise.DubsBadHygiene</li><!-- DBH has a destructive PostFix on pawn needs so we need to load after it. -->
+        <li>Dubwise.DubsBadHygiene.Lite</li><!-- DBH has a destructive PostFix on pawn needs so we need to load after it. -->
+        <li>vanillaexpanded.skills</li><!-- Can apparently cause issues with sapient newboots if not loaded before ABF -->
+    </loadAfter>
+    <incompatibleWith>
+        <li>koth.modmedicinepatch</li> <!-- Will break the health tab if both are loaded due to conflicting patches. Do not know how to resolve. -->
+    </incompatibleWith>
+    <description><![CDATA[ABF is an extension to Humanoid Alien Races (HAR) and Harmony to allow for pawns that do not obey normal organic rules.
+This mod itself does very little except pave the way for sub mods to have properly inorganic pawns.]]></description>
+</ModMetaData>

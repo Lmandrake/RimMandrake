@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+  <ModMetaData>
+	<name>[JDS] StarWars - The Separatist Droid Army</name>
+	<author>JangoD'soul, Criz</author>
+    <supportedVersions>
+	  <li>1.5</li>
+	  <li>1.6</li>
+    </supportedVersions>
+    <packageId>M3.Continued.JangoDsoul.StarWars.TSDA</packageId>
+    <description>
+[img]https://imgur.com/1zA4Gvl.png[/img]			
+This mod adds the StarWars CIS faction and its droids.This mod adds a CIS scenario start (WIP)
+and a StarWar CIS Faction (hidden always hostile)
+
+B1 Battle/Security droids Haul and Shoot.
+T1 Tactical droids can Craft, Smith, Tailor and Cook.
+Super tactical droid can Craft, Smith, Tailor, Cook and Reserch.
+Pistoeka droids can Mine and Build
+
+IF "The Dead Man's Switch" mod is enabled
+"B1 Commander Droid" will be a "mech relay commander" like the DMS Sergeant.
+
+[img]https://imgur.com/Rr65K1a.png[/img]
+[img]https://imgur.com/XdOG7uO.png[/img]
+[img]https://imgur.com/y52ApGp.png[/img]
+[img]https://imgur.com/YBvChVa.png[/img]
+[img]https://imgur.com/SxEGnGo.png[/img]
+[img]https://imgur.com/7F57V9d.png[/img]
+[img]https://imgur.com/YGtwqCT.png[/img]
+[img]https://imgur.com/12cHuVu.png[/img]
+[img]https://imgur.com/KtvnucZ.png[/img]
+[img]https://imgur.com/1TlHfR7.png[/img]
+[img]https://imgur.com/1PixQQi.png[/img]
+[img]https://imgur.com/1WJt72h.png[/img]
+[img]https://imgur.com/UbLAk19.png[/img]
+[img]https://imgur.com/uAJ4AOJ.png[/img]
+[img]https://imgur.com/cd2y3di.png[/img]
+[img]https://imgur.com/MeGQvYx.png[/img]
+[img]https://imgur.com/oG1vuGD.png[/img]
+
+[img]https://imgur.com/ZXKsxaZ.png[/img]
+-inspired by "Star Wars"
+-JangoDsoul: Original creator, Art and coder
+-Criz: Continuer, Coder
+	  </description>
+	  <modDependencies>
+	    <li>
+		  <displayName>[JDS] Star Wars Armory</displayName>
+		  <packageId>M3.Continued.JangoDsoul.StarWars.BTI</packageId>
+		  <steamWorkshopUrl>steam://url/CommunityFilePage/11911155594</steamWorkshopUrl>
+	    </li>
+	  </modDependencies>
+	  <loadAfter>
+	    <li>M3.Continued.JangoDsoul.StarWars.BTI</li>
+	  </loadAfter>
+	</ModMetaData>

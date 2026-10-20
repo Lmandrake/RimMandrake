@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Better Trees: More Djeeshka Like Textures</name>
+  <packageId>Maal.BetterTreesMod</packageId>
+  <author>Maal</author>
+  <supportedVersions>
+    <li>1.6</li>
+	<li>1.7</li>
+  </supportedVersions>
+    <modDependencies>
+        <li>
+            <packageId>ChaoticEnrico.BetterTrees</packageId>
+            <displayName>Better Trees</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/</steamWorkshopUrl>
+            <downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=</downloadUrl>
+        </li>
+    </modDependencies>
+    <loadAfter>
+        <li>ChaoticEnrico.BetterTrees</li>
+        <li>VanillaExpanded.VPlantsE</li>
+        <li>VanillaExpanded.VPlantsEMore</li>
+        <li>DankPyon.Medieval.Overhaul</li>
+		<li>VanillaExpanded.VBrewECandT</li>
+    </loadAfter>
+  <description>
+This mod contains recolors and variants for several Trees originaly drawn Djeeshka and Comigo, some of which were edited by tzverg's for Majestic Foliage, and then further edited by me. These are intended to be used with biome mods where the regular trees wouldn't fit in.
+  </description>
+</ModMetaData>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Morphs Assorted Biotech Retex</name>
+	<author>Morphium</author>
+	<supportedVersions>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>MorphsAssorted.BiotechRetex</packageId>
+	<description>New, High res Textures for Biotech. so far not much. this things take artistic talent, time and money. And i only have money, but not a lot sadly.</description>
+	<modDependencies>
+		<li>
+			<packageId>Ludeon.RimWorld.Biotech</packageId>
+			<displayName>Biotech</displayName>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>Ludeon.Rimworld</li>
+		<li>Ludeon.Biotech</li>
+	</loadAfter>
+</ModMetaData>

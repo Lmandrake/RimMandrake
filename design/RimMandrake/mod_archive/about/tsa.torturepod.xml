@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ModMetaData>
+  <name>Torture Pod</name>
+  <packageId>TSA.TorturePod</packageId>
+  <author>TSA</author>
+  <url>https://github.com/Likewise87/TorturePod</url>
+  <supportedVersions>
+    <li>1.6</li>
+    <li>1.7</li>
+  </supportedVersions>
+  <description>Adds a torturing device that behaves similar to a softcore scanner. You can designate a prisoner to be tortured. The torture will lower his resistance and the resistance of all other prisoners. But the victim will be scarred for life and your colonists will not be happy either.</description>
+</ModMetaData>

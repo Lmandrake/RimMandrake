@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+	<ModMetaData>
+		<name>[NL] Facial Animation - Experimentals</name>
+		<author>Nals</author>
+		<supportedVersions>
+      <li>1.3</li>
+      <li>1.4</li>
+      <li>1.5</li>
+      <li>1.6</li>
+    </supportedVersions>
+    <modDependencies>
+      <li>
+        <packageId>Nals.FacialAnimation</packageId>
+        <displayName>[NL] Facial Animation - WIP</displayName>
+        <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1635901197</steamWorkshopUrl>
+      </li>
+    </modDependencies>
+    <loadAfter>
+      <li>Nals.FacialAnimation</li>
+    </loadAfter>
+    <packageId>Nals.FacialAnimationExperimentals</packageId>
+		<description>
+
+      Dear Users
+
+      Thank you using my Mods, Facial Animation has been patched by various modders.
+      I'm very happy about that. However, at the same time, it was becoming difficult to expand the functionality.
+
+      So, I decided to split Facial Animation into two mods. This mod is for the human race.
+      It contains only textures and definition files enabling new features.
+      If you are interested in my textures and you want to trying new features, please activate this mod.
+      I apologize for any inconvenience.
+
+
+      Dear Modders
+
+      In order to release the new features of FacialAnimation faster, this mod has been separated from FacialAnimation.
+      Therefore, the new features implemented in this mod do not consider compatibility at all.
+      If you create a compatibility patch, it may not work properly depending on the future updates of this mod.
+
+      Caution
+      Redistribution of this MOD data is prohibited.
+
+      ユーザーの皆様へ
+
+      Facial Animationをいつもご利用いただきありがとうございます。
+      Facial Animationはこれまで様々なModderの方々によってパッチが作成されてきました。ありがとうございます。
+      しかしながら、同時に最近は互換性を考えると新機能の追加が難しいと感じてきています。
+
+      そこで、私は表情Modを2つに分離することにしました。
+      新機能を試してみたい方は本Modを有効化してください。ご不便をおかけしますが宜しくお願い致します。
+
+      Modderの方々へ
+
+      FacialAnimationの新機能を高速にリリースするため、本ModはFaicalAnimationから分離しました。
+      したがって、本Modに組み込まれた新機能は互換性を重要視していません。
+      互換パッチを作成する場合、本Modの今後の更新によっては正常に動作しなくなる可能性があります。
+
+
+      注意
+      当MODの再配布を禁じます。
+
+    </description>
+	</ModMetaData>

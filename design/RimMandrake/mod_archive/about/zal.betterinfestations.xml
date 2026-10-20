@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ModMetaData>
+	<name>Better Infestations (Continued)</name>
+	<author>Zaljerem</author>
+	<supportedVersions>		
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+<modVersion IgnoreIfNoMatchingField="True">1.0.7</modVersion>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+	</modDependencies>
+	<packageId>zal.betterinfestations</packageId>
+<loadAfter>
+<li>zal.vfeinsectoid</li>
+<li>zal.vaecaves</li>
+</loadAfter>
+	<description>
+Original mod by Machine
+https://steamcommunity.com/sharedfiles/filedetails/?id=1319614331
+If the original author requests it, I will remove this update.
+
+--
+
+Fixed:
+1. Amusing as it sometimes was, insectoids no longer haul their meat to your stockpile.
+2. World map infestations are now functional again.
+
+Increased infestation chance (that's what we're here for, right?)
+Lowered min days until refire
+
+And yes, before anyone asks: I will certainly be looking at compatibility/synergy between this and Vanilla Factions Expanded - Insectoids 2
+
+--
+
+Original mod notes (1.4):
+
+This mod changes almost everything about infestations, the way they produce and insect behavior.
+
+Features:
+Infestations can start in most biomes, almost anywhere. The only exception is icelands. The bugs like warmer, rocky areas, preferably dark caves. If you build in a cave, that area will be less likely to get an infestation. The new dev mode draw infestation chance cell finder highlights all the areas the bugs will most likely spawn at.
+
+Group AI for insects: When a hive spawns it will have 2 groups, 1 defending and 1 offensive. The defending group takes care of the hive. They butcher carcasses, maintain the hive, dig rock and attack intruders. As the offensive group grows in strength it will determine when to hunt and they seek out food, corpses, animals and pawns! They bring back the food to the hive for the colony workers. After the hive reproduces it will unlock more offensive groups, up to a maximum of 3 groups. All insects like to sleep during the day and are active at night.
+
+Queens: When the defending group has spawned enough takecarers the hive has a chance to spawn a queen. The queen is another member of the defending group but has an additional job, creating more hives! Not only can the hives reproduce on their own, the queen can assist the expansion. Every few days it will journey to an area on the map to spawn another hive. The queen also gives a 30% spawnrate time reduction bonus to all the groups of the hive the queen is a member of. The hive can only produce 1 queen so if you kill it the hive loses its bonus and can't spawn another one but the other hives can produce their own queen. Multiple queens can be active at the same time.
+
+World Map: There are insect hive colonies all over the world and some will naturally appear over the course of the game. The colonies there are matured and numerous. Sometimes you might find valuables from the corpses of pawns that strayed too close. Wiping out infestations around the world makes no difference to the infestation events however. They are intelligent but not sentient. You can also get raids from insects seeing as they are now a growing problem on the planet and they cannot be defeated, only suppressed.
+
+The insects can surprise you. They can dig through rock to get to areas they need to hunt and are very adaptable. You can't build them in. Fires can be beaten out. They will occasionally chew your power conduits if they are near a power source. Attacking one of them draws their entire group in. They are highly aggressive. Things can spiral out of control very quickly if you don't contain them.
+
+</description>
+</ModMetaData>

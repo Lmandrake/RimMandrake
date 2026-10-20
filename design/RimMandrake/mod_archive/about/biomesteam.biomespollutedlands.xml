@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<ModMetaData>
+	<name>Biomes! Polluted Lands</name>
+	<author>The Biomes Mod Team</author>
+	<supportedVersions>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>BiomesTeam.BiomesPollutedLands</packageId>
+	<modDependencies>
+		<li>
+		  <packageId>brrainz.harmony</packageId>
+		  <displayName>Harmony</displayName>
+		  <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+		  <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li> 
+		<li>
+			<packageId>BiomesTeam.BiomesCore</packageId>
+			<displayName>Biomes! Core</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2038000893</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>Ludeon.RimWorld.Biotech</packageId>
+			<displayName>Biotech</displayName>
+		</li>
+		<!-- temp remove depend -->
+		<!-- <li> -->
+		  <!-- <packageId>pathfinding.framework</packageId> -->
+		  <!-- <displayName>Pathfinding Framework</displayName> -->
+		  <!-- <steamWorkshopUrl>steam://url/CommunityFilePage/3070914628</steamWorkshopUrl> -->
+		  <!-- <downloadUrl>https://github.com/joseasoler/Pathfinding-Framework</downloadUrl> -->
+		<!-- </li>  -->
+	</modDependencies>
+	<loadAfter>
+		<li>Ludeon.RimWorld</li>
+		<li>Ludeon.RimWorld.Royalty</li>
+		<li>Ludeon.RimWorld.Ideology</li>
+		<li>Ludeon.RimWorld.Biotech</li>
+		<li>Ludeon.Rimworld.Anomaly</li>
+		<li>brrainz.harmony</li>
+		<li>regrowth.botr.core</li>
+		<li>pathfinding.framework</li>
+		<li>vanillaexpanded.vcef</li>
+		<li>oskarpotocki.vanillafactionsexpanded.core</li>
+		<li>BiomesTeam.BiomesCore</li>
+	</loadAfter>
+	<description>Adds an assortment of new plants and animals to polluted vanilla biomes as well as some modded ones. Have you ever tried out living in a polluted biome, whether it be settling in one or polluting your home tile and found it really really boring? Well this mod is for you, because it makes polluted biomes feel much more alive and interesting. From mutated predator birds to green-tinged sheep, you'll have lots of new things to play with.
+	</description>
+</ModMetaData>

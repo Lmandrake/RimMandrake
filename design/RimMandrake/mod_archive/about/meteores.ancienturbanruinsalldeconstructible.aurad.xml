@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Ancient Ruins All Deconstructible</name>
+  <author>Meteores</author>
+  <supportedVersions>
+    <li>1.5</li>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>XMB.AncientUrbanrUins.MO</li>
+    <li>XMB.AncientHydroponicFarmFacilities.MO</li>
+    <li>XMB.AncientMiningIndustry.MO</li>
+    <li>Aoba.DeadManSwitch.AncientCorps</li>
+  </loadAfter>
+  <description>Have you tried living in the ruins of cities? It's not that easy to get several floors, but I personally want to. It is very difficult to rebuild everything to suit your needs in cities, because getting rid of all the junk is incredibly long and tedious, and these walls that cannot be dismantled in any honest way.
+
+There is a solution! Ancient Urban Ruins All Deconstructible allows you to disassemble almost everything in ruins simply by ordering it to be disassembled, cleanly and without residual debris.
+
+Currently supports:
+- Ancient urban ruins
+- Ancient mining industry
+- Ancient hydroponic farm facilities
+- The Dead Man's Switch - AncientCorps
+
+(Maybe in the future I will give HP to the walls, but if you give it just like that, then all existing walls will have negative health, and for new ones there will be 1 HP.)
+
+To give HP to walls and some objects, check out this mod:  
+Ancient Urban Ruins Hit Point  
+If you have any structures from Ancient Urban Ruins, do not install this mod, otherwise all modified objects will have negative health.
+
+Well, just for aesthetics, I gave the sculptures in the mall a lot of beauty.
+
+Is it safe to add to an existing game?
+- Yes. This is just a small XML patch.
+But I recommend always making backups 
+
+Is it safe to delete? 
+- Yes, no problem. This is just a small XML patch.
+
+But I recommend always making backups 
+
+Write if you find compatibility issues.</description>
+  <packageId>Meteores.AncientUrbanRuinsAllDeconstructible.AURAD</packageId>
+</ModMetaData>

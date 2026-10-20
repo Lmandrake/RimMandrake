@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>[1.6] Star Wars Animal Collection (Continued)</name>
+  <packageId>Mlie.StarWarsAnimalCollection</packageId>
+  <author>Beasstmann</author>
+  <url>https://github.com/emipa606/StarWarsAnimalCollection</url>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies />
+  <loadAfter />
+  <description>[img]https://img.litet.net/logos/Info.png[/img]
+Update of Beasstmanns mod
+https://steamcommunity.com/sharedfiles/filedetails/?id=1342364585
+based on the continuation by Guy
+https://steamcommunity.com/sharedfiles/filedetails/?id=2006670799
+
+[b]The release of RimWorld 1.7 added a system where assets like textures and sounds can be cached to improve performance[/b].
+To avoid doubling the size of the mod, it was re-released with only this cache included, you can find the new version of this mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3821001977]here[/url].
+This version will not receive any further updates.
+
+If you want to set what animals can spawn in each biome, please use [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2564042934]Choose Wild Animal Spawns[/url]
+
+[h2]Very large update![/h2]
+Thanks to the excellent work of Delta this update brings alot of new animals to the mod.
+These are from all around the Star Wars Galaxy. There are also added custom sounds and graphical variations.
+If you have Vanilla Expanded Framework active, some animals have added behaviors regarding food and movement.
+There are also added resources, like leathers, wool, meat, eggs and drugs; as well as skulls for trophies to collect.
+Enjoy!
+
+[h3]Updated content[/h3]
+[b]Animals[/b]
+[list]
+[*]Acklay
+[*]Aiwha
+[*]Akk
+[*]Anooba
+[*]Bantha
+[*]Behemoth
+[*]Beldon
+[*]Blarth
+[*]Blixus
+[*]Blurrg
+[*]Boarwolf
+[*]Bogwing
+[*]Bolotaur
+[*]Boma
+[*]Borcatu
+[*]Bordok
+[*]Brezak
+[*]Bursa
+[*]Can-Cell
+[*]Cannok
+[*]Chrysalide Rancor
+[*]Clodhopper
+[*]Convor
+[*]Corellian Hound
+[*]Corinathoth
+[*]Dactillion
+[*]Dalgo
+[*]Devourer
+[*]Dewback
+[*]Dianoga
+[*]Dragonsnake
+[*]Drexl
+[*]Energy Spider
+[*]Eopie
+[*]Falumpaset
+[*]Fambaa
+[*]Fanback
+[*]Feral Grazer
+[*]Feral Nerf
+[*]Frilled Gorg
+[*]Frog Dog
+[*]Gelagrub
+[*]Gizka
+[*]Gorg
+[*]Gornt
+[*]Granite Slug
+[*]Grank
+[*]Grazer
+[*]Greater Krayt Dragon
+[*]Gualaar
+[*]Gullipud
+[*]Gundark
+[*]Gutkurr
+[*]Harvester Beetle
+[*]Hawkbat
+[*]Horax
+[*]Hrumph
+[*]Hssiss
+[*]Igitz
+[*]Insectomorph
+[*]Iriaz
+[*]Iridonian Reek
+[*]Ithorian Reek
+[*]Jakobeast
+[*]Jamel
+[*]Jimvu
+[*]JungleRancor
+[*]Kaadu
+[*]Katarn
+[*]Kell Dragon
+[*]Kinrath
+[*]K'lor'slug
+[*]Kowakian Monkey Lizard
+[*]Krayt Dragon
+[*]Kreetle
+[*]Krykna
+[*]Kwazel Maw
+[*]Kwi
+[*]Kybuck
+[*]Lava Flea
+[*]Leaftail
+[*]Longtail Gorg
+[*]Loth Wolf
+[*]Lothcat
+[*]Lylek
+[*]Maalraas
+[*]Manka
+[*]Marsh Haunt
+[*]Massiff
+[*]Mastiff Phalone
+[*]Mastmot
+[*]Mawvorr
+[*]Mott
+[*]Mudhorn
+[*]Mynock
+[*]Narglatch
+[*]Neebray
+[*]Nerf
+[*]Nexu
+[*]Nuna
+[*]Ollopom
+[*]Orray
+[*]Painted Spat
+[*]Peko-Peko
+[*]Pikobis
+[*]Porg
+[*]Pufferpig
+[*]Qormot
+[*]Rancor
+[*]Raxshir
+[*]Reek
+[*]Rikknit
+[*]Roggwart
+[*]Ronto
+[*]Runyip
+[*]Rycrit
+[*]Scavrat
+[*]Scurrier
+[*]Shaak
+[*]Shiro
+[*]Shiro-Trap
+[*]Shyrack
+[*]Silooth
+[*]Skalder
+[*]Sketto
+[*]Snoruuk
+[*]Squall
+[*]Stintaril
+[*]Strill
+[*]Tach
+[*]Taozin
+[*]Tauntaun
+[*]Tee-Muss
+[*]Tet'niss Crab
+[*]Thranta
+[*]Tibidee
+[*]Tooke
+[*]Torton
+[*]Tukata
+[*]Tusk Cat
+[*]Urusai
+[*]Uvak
+[*]Vapaad
+[*]Varactyl
+[*]Veermok
+[*]Voorpak
+[*]Vornskyr
+[*]Vulptex
+[*]Wampa
+[*]War Wyrm
+[*]Warbird
+[*]Whisperbird
+[*]Womp Rat
+[*]Woolamander
+[*]Worrt
+[*]Wraid
+[*]Wyyyschokk
+[*]Yobshrimp
+[*]Zakkeg
+[*]Zeer
+[/list]
+
+[b]Plants[/b]
+[list]
+[*]Bloddle
+[*]Bubble Spore
+[*]Chakroot
+[*]Dantuber
+[*]Felucian Glowbulb
+[*]Hubba Gourd
+[*]Hydenock
+[*]Jogan Tree
+[*]Manax Fungus
+[*]Meiloorun
+[*]Muja Fruit
+[*]Munch-Fungus
+[*]Nysllin
+[*]Tooke-trap
+[/list]
+
+[b]Fish (Odyssey Resource)[/b]
+[list]
+[*]Burra
+[*]Dactopus
+[*]Daggert
+[*]Doshian Jelly
+[*]Faa
+[*]Fleek Eel
+[*]Laa
+[*]Nyork
+[*]Paddy Frog
+[*]Ray
+[*]See
+[*]Sink-Crab
+[/list]
+
+[b]Special (Odyssey Landmark)[/b]
+[list]
+[*]Sarlacc
+[/list]
+
+[img]https://img.litet.net/logos/Notice.png[/img]
+
+[table]
+    [tr]
+        [td][url=https://discord.gg/h5TY6DA][img]https://img.litet.net/logos/Discord.png[/img][/url][/td]
+        [td][url=https://github.com/emipa606/StarWarsAnimalCollection/tree/assetbundles][img]https://img.litet.net/logos/Github.png[/img][/url][/td]
+    [/tr]
+    [tr]
+        [td][img]https://img.litet.net/logos/SafeToAdd.png[/img][/td]
+        [td][img]https://img.litet.net/logos/RemoveMayWork.png[/img][/td]
+    [/tr]
+[/table]
+	
+[img]https://img.litet.net/logos/OriginalDescription.png[/img]
+Star Wars Animal Collection V 1.0.2059
+
+Including so far:
+[strike]
+-Krayt Dragon
+-Rancor
+-Acklay
+-Reek
+-Nexu
+-Bantha
+-Dewback
+-Tauntaun
+-Nerf
+-Gizka
+-Ronto
+-Vulptex
+-Porg
+-Frogdog
+-Wampa
+[/strike]
+
+[b]See updated creature list at the top of the description[/b]
+
+Let me know if you find any bugs or other problems within this mod.
+Also drop some comments about balancing and let me know what animal you would like to see next.
+	
+[img]https://img.litet.net/logos/ReportingIssues.png[/img]
+[list]
+[*] See if the the error persists if you just have this mod and its requirements active.
+[*] If not, try adding your other mods until it happens again.
+[*] Always post your log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url]
+[*] For best support, please use the Discord-channel for error-reporting.
+[*] Do not report errors by making a discussion-thread, I get no notification of that.
+[*] If you have the solution for a problem, please post it to the GitHub repository.
+[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods 
+
+[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/3497316713][img]https://img.shields.io/github/v/release/emipa606/StarWarsAnimalCollection?label=latest%20version&amp;style=plastic&amp;color=9f1111&amp;labelColor=black[/img][/url] | animals, collection</description>
+  <modVersion IgnoreIfNoMatchingField="True">1.6.6</modVersion>
+</ModMetaData>

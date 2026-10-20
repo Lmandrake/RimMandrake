@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ModMetaData>
+  <name>Map Designer</name>
+  <author>Zylle</author>
+  <supportedVersions>
+	<li>1.1</li>
+	<li>1.2</li>
+	<li>1.3</li>
+	<li>1.4</li>
+	<li>1.5</li>
+	<li>1.6</li>
+	<li>1.7</li>
+  </supportedVersions>
+	<modIconPath IgnoreIfNoMatchingField="True">GUI/ZModLogo</modIconPath>
+    <packageId>zylle.MapDesigner</packageId>
+    <modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+	</modDependencies>
+	<incompatibleWith>
+	<li>configurablemaps.kv.rw</li>
+	</incompatibleWith>
+  <description>More options for customizing maps! Use from mod settings under Options > Mod Settings > Map Designer.
+
+Mountains:
+	- make flat or solid maps
+	- hill size, shape, and positioning
+	- hill shape
+	- disable caves
+
+Terrain:
+	- fertility
+	- water
+	- stone types per map
+
+Things - increase or decrease amount of:
+	- plants
+	- animals
+	- ruins
+	- steam geysers
+	- ore
+	- disable rock chunks
+	- anima trees (if Royalty is active)
+	- ideology map junk (if Ideology is active)
+	- Biotech map stuff (pollution, polux trees, ancient mechs)
+	- Medieval Overhaul map stuff
+	
+Rivers:
+	- size
+	- style: vanilla, forked, confluence, oxbow, or spring
+	- add river banks of sand, rich soil, or other terrain around rivers
+	- pick river location and direction
+	
+Beaches:
+	- pick coast direction
+	- custom beach terrain
+	
+Map Features: optional special features you can add to your home map.
+	- perfectly round islands: your map will generate as one or more perfectly round islands, surrounded by shallow water. Raids and trade caravans will still path in normally from the sides.
+	- natural lakes: adds a configurable lake to your map.
+	- natural islands: turns any map into an island, your choice of island shape and placement
+
+-----
+
+Compatibility:
+Map Reroll - Compatible. You can change settings between rerolling!
+Map Preview - Compatible. You can access Map Designer settings from the preview, and the preview will update as you make changes! (Thanks to m00nl1ght for the integration)
+
+Compatible with most modded biomes. 
+Biomes! Islands-- Islands should generate normally, terrain will not be changed. Plant and animal density adjustments will work. 
+Coastlines-- compatible
+Real Ruins-- compatible
+Grand Rivers reborn-- overridden by this mod
+Ongoing games-- can be added or removed. Plant and animal density can change on existing maps. Extra anima trees can spawn on existing maps. Existing terrain will not change.
+
+-----
+
+Not compatible with Configurable Maps.
+
+-----
+
+Japanese translation by Proxyer
+Russian by TbMA and m0nka
+Spanish by Crusader
+
+-----
+
+Github: https://github.com/Zylleon/MapDesigner/releases/latest
+Discord: https://discord.gg/4EFv76C
+ko-fi: https://ko-fi.com/zylleon
+
+</description>
+</ModMetaData>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>RimTek DigiPal</name>
+	<packageId>Deon.rimtek.digipal</packageId>
+	<supportedVersions>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<author>Deon</author>
+	<description>Adds a belt with a personal computer (RimTek DigiPal) that increases wearer's melee and ranged accuracy. It also allows them to play games (cerebral play) when relaxing and looking for recreation.</description>
+	<modDependencies>
+		<li>
+			<packageId>Deon.rimtek.core</packageId>
+			<displayName>RimTek Core</displayName>
+			<downloadUrl>https://github.com/DeonUrist/RimTek/releases</downloadUrl>
+			<steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=3500429104</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+  <loadAfter>
+    <li>Deon.rimtek.core</li>
+  </loadAfter>
+</ModMetaData>

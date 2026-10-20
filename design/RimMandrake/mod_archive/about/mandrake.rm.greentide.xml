@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.greentide</packageId>
+  <name>RimMandrake: Greentide</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards Kit</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.environmentalhazards</li>
+  </loadAfter>
+  <description>GREENTIDE_STANDALONE_MOD_1 (owner ruling, 2026-09-11, on the churnmud
+card, verbatim: "This is a really cool mechanic and suggests making the Biome
+Greentide its own RimMandrake level mod too."). A furiously humid, ground-hugging
+jungle biome and its own hazard kit, fully generalized: it names no other
+franchise or campaign and is playable standalone on any generated RimWorld
+planet. A separate frozen campaign world's own Greentide instance is
+unaffected and unrelated; this is a new sibling biome for everyone else's
+worlds, not a rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+Ships the four v1 mechanics the owner ruled MUST ship together, not deferred
+(the source design kit's "Owner rulings" section):
+
+  1. Churnmud (M8, NO EXEMPTION ruling): RM_GreentideChurnmud is a natural high-pathCost
+     mire terrain. RM_MapComponent_TerrainMire escalates an RM_Mired hediff
+     (slowed, then stuck) on anyone standing on it; RM_MapComponent_MudSwallow
+     buries loose items left there long enough — a RM_DigOutBuried designation
+     and job get them back, nothing is destroyed. Deliberately never checks
+     stockpile/haul-destination status: mud under a player stockpile zone
+     swallows stored items too, exactly as ruled.
+  2. Toxin sealant, sourced from sap/resin (ruling confirmed): RM_SapResin is
+     rendered from wood at a machining table; RM_ToxinSealant is crafted from
+     sap/resin at the same bench; RM_ChurnmudSealed is a normal buildable floor
+     costed in sealant that replaces churnmud with safe ground — it carries no
+     RM_MireExtension, so sealing a cell IS the safety mechanism, no separate
+     registry needed.
+  3. Seek-shade AI (deferral REJECTED — ships in v1): RM_JobGiver_SeekShade,
+     added to the shared mandrake.rm.creaturebehaviors assembly (generic —
+     any race carrying RM_SeekShadeExtension seeks a roofed cell once ambient
+     temperature crosses its threshold). 
+  4. The silence cue (deferral REJECTED — ships in v1): RM_MapComponent_SilenceCue,
+     also in the shared assembly — a predator carrying RM_SilenceAuraExtension
+     hunting near the player's home area ends and later restores the map's
+     biome ambience sustainers (Find.SoundRoot.sustainerManager /
+     AmbientSoundManager.Notify_SwitchedMap — the one route RimSage confirmed
+     for a live sustainer, since Sustainer/AmbientSoundManager expose no partial
+     volume-ramp API). Carried by the dhollollo (RM_Dhollock).
+
+The spine (GREENTIDE_BASE_PORT_BUILD_1, moved down from the campaign tier, RUT_ to RM_): the Roil
+(RM_RoilWeather forced by the permanent RM_RoilLock), wet-bulb heat as vanilla heat (the ambient
+felt-heat offset; vanilla Heatstroke), Breaklight (RM_Breaklight, RM_BreaklightCondition, RM_BreaklightClear), the dry-air
+blower (RM_DryAirBlower, RM_DryAirAversion), root causeways (RM_RootCauseway) and the living greatbole
+landmark (RM_GreatboleHeartwood, RM_GreatboleCore and its harvest ladder, RM_GreatboleTrunkSegment,
+RM_GreatboleDeadHusk, RM_ToxinSealedFloor, RM_GreatboleFruitfall). Mechanism classes are in
+mandrake.rm.environmentalhazards; old RUT_ names in a save load as the new defs
+(Defs/Misc/RM_GreentideTierMove_Aliases.xml).
+
+GREATBOLE_HARVEST_LADDER_1 (2026-09-25) added the fruit's own harvest
+economy here instead, per design/RimMandrake/exposure_gear_matrix_spec.md's
+own naming ruling ("Royal Rind (RM_RoyalRind stuff from RM_GreatboleFruit)"
+is RM_ tier, not campaign tier): RM_GreatboleFruit (the fruit), its three
+butchered products (RM_GreatboleFruitSteak, RM_RoyalRind, RM_GreatboleSeed),
+RM_Apparel_RindCoat, and RM_GreatboleGrub (the fruit's contesting purple
+grub — reuses this mod's own mandrake.rm.creaturebehaviors dependency, no
+new one added). These items existed independently of the landmark that
+drops them, and that gap is now closed:
+
+GREENTIDE_JUNGLE_TREE_ROSTER_1 (2026-09-26) gave this biome its own tree
+canopy — 14 invented, franchise-free RM_ jungle trees
+(RM_Greentide_TreeRoster.xml, wired directly into this BiomeDef's own
+&lt;wildPlants&gt;, replacing the rejected Plant_TreeOak/Plant_TreePoplar/
+Plant_Bush) plus the franchise-free signature giant, RM_Greatbole
+(RM_Greatbole.xml) — the mature, fellable life stage of the same species as
+the greatbole landmark, sharing its visual family and nothing else (no
+shared def, no growth path; the relationship is fiction by design). Felling
+one is the franchise-free source for the fruit economy above that this file
+used to call "owed separately." RM_Greatbole drops true hardwood
+(RM_GreatboleHardwood, the RM_ tier resource; the campaign's RUT_Hardwood twin
+was folded into it 2026-10-09, so this mod depends on nothing Utinni-side) via the shared, def-agnostic RM_FellableTreeExtension /
+RM_TreeFallUtility mechanism in mandrake.rm.environmentalhazards. CORRECTED
+2026-09-29 (GREENTIDE_CANOPY_SWARM_1): that dependency was previously
+described here as "optional, gated per-&lt;li&gt; with MayRequire" but no
+&lt;li&gt; anywhere in this mod (RM_Greatbole.xml's own RM_FellableTreeExtension
+included) ever actually carried a MayRequire guard — a real gap, since
+MayRequire on a modExtension &lt;li&gt; class reference is exactly the kind of
+element it's documented to work on. mandrake.rm.environmentalhazards is now a
+declared modDependency/loadAfter instead of an unenforced assumption. The
+roster's seven non-tree understory plants
+(brakkel, tumbel, sarquin, phorrik, wollick, maddrick, illurin) are a
+follow-on, GREENTIDE_UNDERSTORY_PLANT_ROSTER_1 — this biome's foragedFood
+stays RawBerries until brakkel ships to replace it.
+
+GREENTIDE_FRENZY_DISEASE_1 (2026-09-26) authored this project's first disease,
+RM_Frenzy — a staged work-speed high that ends in a multi-day coma, lethal
+untended and survivable if tended during the coma. Disease_Flu and
+Disease_Malaria came out of this biome's disease list, replaced one-for-one
+by the ambient half of RM_Frenzy (RM_Greentide_FrenzyDisease); the deliberate
+half is a harvested item, RM_FrenzyDose, refined at a Drug Lab from
+RM_GorbelethToxin (RM_Gorbeleth's own harvest, row 14 of the tree roster).
+Both routes are gated by one Mod Settings toggle.
+
+GREENTIDE_CANOPY_SWARM_1 (2026-09-29) gave the Greentide its canopy-hazard
+insect axis — a new creature, RM_Krannock, distinct from RM_Skerrel's gall
+wasp (a separate item) and not a reuse of the existing 27-row fauna cast per
+the owner's own ruling. A large flying beetle, RM_Krannock carries
+RM_GnawTreeBaseExtension and drives the already-shipped Gnawer mechanic
+(RM_JobGiver_GnawTreeBase / RM_TreeFallUtility, mandrake.rm.environmentalhazards)
+via a new ThinkTreeDef splice in that mod — real flight per the standing
+rule, group/swarm wildGroupSize. The Shatterer mechanic
+(fellsTreesBelowHealthFraction) remains deliberately unwired to any creature
+— see the def's own header for why. NOT placed in WildAnimals_Greentide.xml
+or given a commonality/band: roster placement is owed to this biome's own
+review sitting, not this item. Art is queued, not yet generated.
+
+GREENTIDE_FREE_ROSTER_OWNED_1 (2026-10-03) gave the biome its own animal list, no vanilla rows: krannock,
+sulleth (grazer), dhollollo (river ambusher), yammeth (flier), ookala (canopy climber) and the yearning
+fruit.
+
+Live proof is OWED at publish time — see the item's own verify record.</description>
+</ModMetaData>

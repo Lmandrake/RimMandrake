@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Simple Cape and Hood Retexture</name>
+	<author>Stokes52</author>
+	<supportedVersions>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>Stokes.simplehoodcape</packageId>
+    <description>
+    	Simple retexture of the hood and cape
+
+    	Version 1.1
+    	- Add optional replacement textures for Eltex Cape from Vanilla Psycast Expanded
+    </description>
+ </ModMetaData>

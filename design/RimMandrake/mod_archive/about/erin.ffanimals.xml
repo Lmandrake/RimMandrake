@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Erin's Final Fantasy Animals</name>
+	<author>Erin</author>
+	<packageId>Erin.FFAnimals</packageId>
+	<url></url>
+	<supportedVersions>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<description>All the fluffy Final Fantasy friends!</description>
+</ModMetaData>

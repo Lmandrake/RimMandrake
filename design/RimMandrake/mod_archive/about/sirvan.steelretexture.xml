@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <name>Van's Retexture : Steel</name>
+    <author>SirVan</author>
+    <supportedVersions>
+        <li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+    </supportedVersions>
+    <loadAfter>
+	    <li>VanillaExpanded.VTEXE</li>
+        <li>Ludeon.RimWorld</li>
+        <li>Ludeon.RimWorld.Royalty</li>
+        <li>Ludeon.RimWorld.Ideology</li>
+		<li>Ludeon.RimWorld.Biotech</li>
+		<li>Ludeon.RimWorld.Anomaly</li>
+
+    </loadAfter>
+    <packageId>SirVan.SteelRetexture</packageId>
+    <description>Want steel, steel and only steel to be retextured ? Well there you go.</description>
+</ModMetaData>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Engines Unlimited</name>
+  <author>Nepenthe</author>
+  <url>n/a</url>
+  <supportedVersions>
+	<li>1.6</li>	
+  </supportedVersions>
+  <packageId>nep.enginesunlimited</packageId>
+  <description>Removes the restriction on the number of engines your gravship can handle.</description>
+</ModMetaData>

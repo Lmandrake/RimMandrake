@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>[BTD] Gravship Blueprints</name>	
+	<author>beeteedubs</author>
+	<supportedVersions>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>btd.remix.gravshipblueprints</packageId>
+	<description>This adds a "save ship" button to the pilot console and a scenario that allows you to start with a saved gravship, also includes down gravship quest sites and an endgame like quest site to salvage a custom gravship.</description>
+	<modDependencies>
+		<li>
+			<packageId>ludeon.rimworld.odyssey</packageId>
+			<displayName>Odyssey DLC</displayName>
+		</li>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>brrainz.harmony</li>
+		<li>vanillaexpanded.gravship</li>
+	</loadAfter>
+</ModMetaData>
+

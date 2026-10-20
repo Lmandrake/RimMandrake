@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Fists Aren't Made of Steel</name>
+  <author>Aelanna</author>
+  <packageId>Aelanna.FistNerf</packageId>
+  <supportedVersions>
+    <li>1.3</li>
+    <li>1.4</li>
+    <li>1.5</li>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Reduces the damage that humanlike unarmed attacks deal to buildings by changing their damage type from the generic blunt damage to a custom unarmed damage type.</description>
+</ModMetaData>

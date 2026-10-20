@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>[BTD] Ship Pack: KotOR Ships VGE</name>	
+	<author>beeteedubs</author>
+	<supportedVersions>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>btd.gbp.shippack.kotor.vge</packageId>
+	<description>Adds Gravship Designs inspired by Star Wars: Knights of the Old Republic.</description>
+	<modDependencies>
+		<li>
+			<packageId>ludeon.rimworld.odyssey</packageId>
+			<displayName>Odyssey DLC</displayName>
+		</li>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>btd.remix.gravshipblueprints</packageId>
+			<displayName>[BTD] REMIX: Gravship Blueprints</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3575162262</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>brrainz.harmony</li>
+		<li>btd.remix.gravshipblueprints</li>
+		<li>guy762.KotORDroids</li>
+	</loadAfter>
+	<incompatibleWith>
+		<li>btd.gbp.shippack.kotor</li>
+	</incompatibleWith>
+</ModMetaData>
+

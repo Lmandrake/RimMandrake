@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Large Faction Bases (Continued)</name>
+  <packageId>Mlie.LargeFactionBases</packageId>
+  <author>newcolonist</author>
+  <url>https://github.com/emipa606/LargeFactionBases</url>
+  <supportedVersions>
+    <li>1.0</li>
+    <li>1.1</li>
+    <li>1.2</li>
+    <li>1.3</li>
+    <li>1.4</li>
+    <li>1.5</li>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies />
+  <loadAfter />
+  <description>[img]https://img.litet.net/logos/Info.png[/img]
+Update of newcolonists mod https://steamcommunity.com/sharedfiles/filedetails/?id=1841553735
+
+[img]https://img.litet.net/logos/Notice.png[/img]
+
+[table]
+    [tr][td][url=https://discord.gg/h5TY6DA][img]https://img.litet.net/logos/Discord.png[/img][/url][/td] [td][url=https://github.com/emipa606/LargeFactionBases][img]https://img.litet.net/logos/Github.png[/img][/url][/td]
+    [/tr]
+    [tr]
+        [td][img]https://img.litet.net/logos/SafeToAdd.png[/img][/td]
+        [td][img]https://img.litet.net/logos/SafeToRemove.png[/img][/td]
+    [/tr]
+[/table]
+	
+[img]https://img.litet.net/logos/OriginalDescription.png[/img]
+Generate larger faction bases. Their size and manpower evolve with time. It also factors in the difficulty level, and some randomness. A high-risk, high-reward challenge.
+
+Safe to add/remove in-game.
+
+For compatibility with other mods changing faction bases, check [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2366709688]Choose your enemy base[/url] from  [url=https://steamcommunity.com/profiles/76561198036011663/myworkshopfiles/]BrokenBed[/url].
+
+[img]https://img.litet.net/logos/ReportingIssues.png[/img]
+[list]
+[*] See if the the error persists if you just have this mod and its requirements active.
+[*] If not, try adding your other mods until it happens again.
+[*] Always post your log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url]
+[*] For best support, please use the Discord-channel for error-reporting.
+[*] Do not report errors by making a discussion-thread, I get no notification of that.
+[*] If you have the solution for a problem, please post it to the GitHub repository.
+[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods
+[/list] 
+
+[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/3257781909][img]https://img.shields.io/github/v/release/emipa606/LargeFactionBases?label=latest%20version&amp;style=plastic&amp;color=9f1111&amp;labelColor=black[/img][/url] | tags: high-risk challenge</description>
+  <modVersion IgnoreIfNoMatchingField="True">1.6.5</modVersion>
+</ModMetaData>

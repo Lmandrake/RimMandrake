@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>GravTide</name>
+  <author>yongdd</author>
+  <packageId>gravtide.mod</packageId>
+  <modVersion>2026.10.18.2</modVersion>
+  <!-- The mod list draws this as a clickable button beside the description, which is the only
+       place a player already looking at GravTide can be handed somewhere to report to. The Steam
+       description carries the same link for people who never open the mod list.
+       A NEVER-EXPIRING INVITE. Discord's default expires in seven days, and a dead link printed
+       inside a shipped mod is worse than none - it reads as an abandoned project. -->
+  <url>https://discord.gg/gzDb8Cqxxg</url>
+  <supportedVersions>
+    <li>1.6</li>
+    <li>1.7</li>
+  </supportedVersions>
+  <!-- ODYSSEY IS REQUIRED AND ANOMALY, BIOTECH, ROYALTY AND IDEOLOGY ARE NOT.
+       Odyssey is not a source of extra content here, it is the mod's foundation: the vacuum
+       system this mod dresses as water, the gravship, substructure, vacsuits and the oxygen
+       pump. Without it there is no air model to patch and nothing to land on the sea floor,
+       so declaring it is the difference between a clear message at the mod list and a wall
+       of red at load.
+
+       LoadFolders.xml admits the optional DLC patch folders by package ID. Individual
+       Biotech-only defs and references in shared files retain their MayRequire guards. -->
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
+      <steamWorkshopUrl>steam://url/StoreAppPage/3022790</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <!-- MOYO, so Compat/Moyo/Patches/Moyo.xml lands after their Contents_Biotech patch, which replaces
+         the whole statBases block it writes into. In front of them our three stats go in and are
+         thrown away again, with nothing logged - a replaced node is not an error.
+         loadAfter warns rather than reorders; the mod list's sort button is what acts on it.
+         An entry for a mod that is not installed does nothing, so Moyo stays optional. -->
+    <li>Nemonian.MY2</li>
+    <!-- MERREN, for the reason the whole of Compat/Merren/Patches/Merren.xml rests on: every value
+         in it only fills a blank, and a blank filled before its author wrote theirs is a
+         blank that was never blank. Reading last is what makes the refusal work. -->
+    <li>Arquebus.StagzMerfolk</li>
+    <!-- HAEYANG, same reason again: Compat/Haeyang/Patches/Haeyang.xml only fills blanks in that
+         race's statBases, and reading last is what lets it stand down once its author has
+         written a figure of their own. -->
+    <li>Sanoo6.HaeyangRaceMod</li>
+    <!-- MINCHO, same reason: Compat/Mincho/Patches/Mincho.xml only fills blanks in that race's
+         statBases, and reading last is what lets it stand down for a figure their author writes. -->
+    <li>SutSutMan.MinchoTheMintChocoSlimeHARver</li>
+    <!-- STAR WARS XENOTYPES, whose six amphibious species share one gene and whose author
+         gated that gene on Pathfinding Framework. Compat/StarWars/Patches/StarWars.xml fills blanks in
+         its statOffsets, so the same reading order applies: last, and only where they left a
+         blank. It is a no-op without that framework, by their decision and not ours. -->
+    <li>guy762.StarWarsXenotypes</li>
+    <li>MrHydralisk.LayeredAtmosphereOrbit</li>
+  </loadAfter>
+  <!-- The disclaimer is required rather than polite. RimWorld's EULA permits using Ludeon's art,
+       code and sound as a basis or reference for a mod - which this does by referencing
+       vanilla texture paths at runtime - and requires every
+       derivative work to carry this exact wording. Verbatim on purpose: it is quoted text, not
+       something to tidy up. -->
+  <description>Explore the sea floor aboard your gravship. Discover new underwater biomes shaped by depth and water temperature, from coral reefs and kelp forests to the lightless deep sea. Encounter marine life and find mineral resources along the way. Prepare for pressure, cold and flooding as you explore the ocean depths.
+
+THE OCEAN
+- Pressure increases with depth. Check both equipment ratings and the wearer's breathing and pressure limits before a dive. Diving helmets and integrated hardsuits supply air with a complete functioning seal. A working one-atmosphere suit also isolates its wearer from the surrounding pressure.
+- Water reduces insulation and narrows comfortable temperature ranges. Sealed diving equipment helps, but does not remove the underwater temperature penalty.
+- Underwater rooms need walls, roofs and watertight foundations. Gravship substructure and suitable concrete foundations seal the floor. Hulls and hatches have pressure ratings; airtight walls hold until they implode, ordinary doors leak first, and stone or wooden walls let water through. Deeper roofs need closer supports.
+- Water reduces the range and damage of conventional projectiles and the damage of blunt melee attacks. Underwater weapons retain their damage. Overhead projectiles and orbital attacks cannot be used on seabed maps.
+- Deep bases lose radio contact. Comms consoles, scanners and uplinks have depth limits; uplink progress is retained until contact returns. Colonists within radio range can still receive quest offers. Raid access also depends on depth and the attackers' type.
+- Light decreases with depth. The continental shelf supports abundant marine life, while deeper waters offer vents, oil seeps, mineral deposits and animals adapted to the dark.
+
+AIRLOCKS AND DIVING
+- Select colonists and right-click deep ocean water on a coastal land map to dive to a linked seabed. Choose crew and cargo, explore, then return through the shore boundary.
+- Layout: dry room - pressure hatch - airlock with compartment pressure set - pressure hatch - sea. Use pressure-rated walls, a roof and a watertight floor.
+- Connect a drain tank and drainage pump on the same continuous deck; no sea-facing outlet is needed. Add a suction pump in other rooms that need draining.
+- To leave: close both hatches, match sea pressure, then open the outer hatch. To return: close the outer hatch, drain and match the inner room, then open the inner hatch. Wear diving equipment suited to the depth and pressure.
+
+BOATS AND SHIPYARDS
+- Build hulls in a coastal shipyard and fit them with suitable propulsion, crew stations and cargo storage. Cabins, a galley, an infirmary, a storeroom and chemfuel generators can be installed below deck.
+- Colonists gather to launch wooden hulls. Steel hulls use the shipyard gantry, operated by one colonist.
+- Carry crew and cargo between coasts or anchor in open water. Submarines can travel at the surface or on the sea floor, with separate diving and surfacing operations.
+
+OFFSHORE PLATFORMS
+- Support platform decks with piles in shallower water or moorings in deeper water. Bring a work barge with suitable installation equipment to build them.
+- Use a seabed survey array to locate deposits. A production platform above an oil field extracts and processes its crude oil.
+
+GENES
+With Biotech, preserve tissue samples from marine animals and process them in a gene sequencer to recover underwater adaptations.
+- Gills provide underwater breathing and increase food consumption while active. Work and learning are slower even on land. Gills provide no pressure protection.
+- Pressure-stable nerves prevent high-pressure nervous syndrome, with slower research and increased food demand. Other pressure limits still apply.
+- High-pressure membranes prevent enzyme failure but slow work.
+- The dive reflex extends breath-holding time and slows the development of some pressure-related conditions. It does not raise pressure limits.
+- An unossified skeleton aids swimming but reduces carrying capacity, movement and melee damage. Ectothermy reduces food needs, with penalties in cold water and reduced protection from clothing.
+
+SCENARIO
+Stranded below starts three survivors aboard a damaged gravship on the sea floor.
+
+COMPATIBILITY
+Race compatibility: Moyo, Merren, Haeyang, Mincho and Star Wars Xenotypes.
+
+Mod settings let you adjust underwater equipment and humanoid race support for other mods.
+
+Also compatible with Ambient Rim, TP Sea Plants, Event Image Popup, Smooth Terrain, Layered Atmosphere and Orbit, Vanilla Gravship Expanded, Gravship Fleet, RimPacts, Dlc collaboration - Void universe, and Yet another Optimizer.
+
+A WARNING
+Pressure failures and flooding can be fatal. Keep saves you can reload; commitment mode is not recommended.
+
+Start a new world. This mod changes how the world map is generated, so it cannot be added to an existing one. Mostly tested at 100% planet coverage.
+
+Requires Odyssey and Harmony. Anomaly, Biotech, Royalty and Ideology are optional.
+
+Languages: English and Korean (한국어). Not personally verified by the author: Russian (Русский), Simplified Chinese (简体中文), Japanese (日本語), German (Deutsch), French (Français), Spanish (Español) and Brazilian Portuguese (Português Brasileiro).
+
+More on the Discord (https://discord.gg/gzDb8Cqxxg); bug reports and suggestions welcome there or on the Discussions tab.
+
+Built with AI assistance from Claude and Codex for code, defs, tooling, documentation, translations and artwork. The author directs development and decides what is released. Validation includes automated tests and in-game playtesting. Declared to the AI-DECLARATION.md standard (https://ai-declaration.md/en/0.1.2/) at level auto; see the included declaration for details.
+
+Portions of the materials used to create this content/mod are trademarks and/or copyrighted works of Ludeon Studios Inc. All rights reserved by Ludeon. This content/mod is not official and is not endorsed by Ludeon.</description>
+</ModMetaData>

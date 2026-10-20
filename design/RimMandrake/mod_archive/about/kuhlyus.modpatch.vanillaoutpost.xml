@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Vanilla Mining Outpost Patch</name>
+    <author>Kuhlyus</author>
+    <url>steam://url/CommunityFilePage/2968491314</url>
+    <packageId>Kuhlyus.ModPatch.VanillaOutpost</packageId>
+    <supportedVersions>
+        <li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+    </supportedVersions>
+
+    <description>
+	A Patch for the Mining Outpost from the Vanilla Outposts Expanded Mod to add Ores, Minerals and other mineable Stuff from other Mods.
+	I try to add more "Ore Mods" in the future... if you got a sugestion, please tell me. 
+	
+	For now there are this Mods compatible with it:
+	
+	MorrowRim - Glass and Ebony
+	- Glass
+	- Ebony
+	
+	MorrowRim - Adamantium
+	- Adamantium
+	- Blessed Adamantium? (No... it needs to be blessed by Almalexia and i own her money... sooo... bad luck i guess. ¯\_(ツ)_/¯)
+	
+	Medieval Overhaul
+	- Coal
+	- Citrine
+	- Amber
+	- Onyx
+	- Emerald
+	- Sapphire
+	- Ruby
+	- Iron Ore (for Steel)
+	- Silver Ore (for Silver)
+	- Gold Ore (for Gold)
+	- removes Industrial Components (becurse Medieval and such)
+	
+	Obsidia Expansion
+	- Obsidian
+	- Mythril
+	- Platinum
+	- Empyrium and Orichalcum? (No... Both needs to be synthesized and the Miners dont know how.)
+	
+	Jewelry
+	- Diamond
+	- Ruby
+	- Sapphire
+	
+	[Ry]Rimcraft Metals
+	- Thorium ore
+	- Dark Iron ore
+	- Mithril Ore
+	- Adamantite Ore
+	- True Silver Ore
+	
+	Gemstones
+	- Amethyst
+	- Chalcedony
+	- Citrine
+	- Garnet
+	- Lapis
+	- Quartz
+	- Serpentine
+	- Turquoise
+	- Emerald, Diamond, Ruby and Sapphire? (No... there have to be a surface vein available to be able to mine them at the outpost and this 4 can only be deepmined... sorry)
+	
+	Vanilla Psycasts Expanded
+	- Eltex
+	
+	Kraltech Industries
+	- Super Steel
+	
+	Glitter Tech
+	- Titanium
+	
+	HRG164hjo's Starbound Mod
+	- Bone
+	- Coal
+	- Glass
+	- Erchius
+	- Core Fragment
+	- Diamond
+	- Copper Ore
+	- Iron Ore
+	- Tungsten Ore
+	- Titanium Ore
+	- Durasteel Ore
+	- Aegisalt Ore
+	- Ferozium Ore
+	- Violium Ore
+	- Solarium Ore
+	
+	RimFantasy - House Doyle
+	- Amethyst
+	
+	you dont have to add all of them in your Modlist. Just use the ones you like. It works with and without them.
+	
+	Other Patches for the Mining Outpost i know:
+	
+	Expanded Materials Metals Patch for Outposts Mines
+	- Its made by Daria40K and she mostly did the same as i did... there should be no Problem when you load her Patch before mine. Same thing with the lite version.
+	
+	RimFantasy Gemstones Patch for Outposts Mines
+	- Also made by Daria40K with a lil twist she made seperat Mining Outpost just for the Gems... should also work if you load it before my Patch.
+	
+	Thanks to:
+	
+	- ScooterBug for pointing out an incompatibility bug with the Jewelry and the Gemstones mods... that helps a lot to code a solution for it! Now they should work with and without each other ;)
+	
+	In case of any questions, sugestions or bugs, use Steam Workshop comment section.
+	
+	</description>
+	<modDependencies>
+        <li>
+            <packageId>vanillaexpanded.outposts</packageId>
+            <displayName>Vanilla Outposts Expanded</displayName>
+            <downloadUrl></downloadUrl>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2688941031</steamWorkshopUrl>
+        </li>
+    </modDependencies>
+    <loadAfter>
+        <li>vanillaexpanded.outposts</li>
+		<li>dankpyon.medieval.overhaul</li>
+		<li>sirmashedpotato.morrowrim.glassandebony</li>
+		<li>sirmashedpotato.morrowrim.adamantium</li>
+		<li>obsidiaexpansion.core</li>
+		<li>kikohi.jewelry</li>
+		<li>daria40k.expandedmaterialsmetalspatchoutposts</li>
+		<li>daria40k.rimfantasygemstonespatchoutposts</li>
+		<li>vanillaexpanded.vpsycastse</li>
+		<li>blackmarket420.kraltechindustries</li>
+		<li>blackmarket420.kraltechindustrieslite</li>
+		<li>zylle.gemstones</li>
+		<li>ryflamer.rimcraft.metals</li>
+		<li>xavior.glittertech</li>
+		<li>hrg164hjo.starboundinrimworld</li>
+		<li>sierra.rf.housedoyle</li>
+    </loadAfter>
+	<forceLoadAfter>
+		<li>vanillaexpanded.outposts</li>
+	</forceLoadAfter>
+</ModMetaData>

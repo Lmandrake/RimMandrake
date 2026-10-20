@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+
+	<name>Reel's Facial Animation Textures</name>
+	<packageId>Reel.FacialAnims</packageId>
+	<author>Reel</author>
+    <url></url>
+	<description>My own Vanilla-Style textures for [NL] Facial Animations, built to work alongside Vanilla Expanded's retexture as well as EyeGenes2 to add custom eye coloring. 
+
+Adds 6 custom eye mouth textures that are based on Roblox faces.
+This mod doesn't add custom eyebrow or skin textures, however I may decide to add some in a future update.
+
+Please place this above VTE Facial Anims and EyeGenes2.</description>
+	<supportedVersions>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>	
+		<li>1.7</li>	
+	</supportedVersions>
+	<modDependencies>
+		<li>
+			<packageId>nals.facialanimation</packageId>
+			<displayName>[NL] Facial Animation - WIP</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=1635901197</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>vanillaexpanded.vtexe.facialanims</packageId>
+			<displayName>Vanilla Textures Expanded - [NL] Facial Animation</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2816938779</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadBefore>
+		<li>vanillaexpanded.vtexe.facialanims</li>
+		<li>oppey.eyegenes2</li>
+	</loadBefore>
+	<loadAfter>
+		<li>nals.facialanimation</li>
+		<li>nals.facialanimationexperimentals</li>
+	</loadAfter>
+
+</ModMetaData>

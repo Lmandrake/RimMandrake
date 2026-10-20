@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>E-Web Heavy Repeating Blaster</name>
+  <author>Maincrep</author>
+  <supportedVersions>
+  <li>1.6</li>
+  </supportedVersions>
+  <packageId>maincrep.eweb</packageId>
+  <description>Simple E-WEB manable turret from star wars </description>
+</ModMetaData>

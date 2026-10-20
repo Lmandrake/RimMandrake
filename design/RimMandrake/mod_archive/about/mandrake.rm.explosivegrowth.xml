@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.explosivegrowth</packageId>
+  <name>RimMandrake: Explosive Plant Growth</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mandrake.rm.flowworks</li>
+    <!-- EXPLOSIVE_GROWTH_MERGE_COMES_HOME: this folder is a COMPOSED MEMBER of Baroque Biomes
+         (mandrake.rm.biomes, src/RimMandrake/Biomes.compose.json); it is never deployed standalone.
+         This About is read only by the composer (dependency union, and the folded-packageId
+         rewrite of MayRequire guards that still name mandrake.rm.explosivegrowth). -->
+  </loadAfter>
+  <description>EXPLOSIVE_GROWTH_RULED_REWRITE (design/RimMandrake/explosive_growth_ruled_spec_2026-10-16.md). Water decides how plants grow, and a watered native is a countdown.
+
+Ships inside RimMandrake: Baroque Biomes as one of its engines (it has its own toggle on the Baroque Biomes settings page, and its own settings page). RM tier: nothing here knows what campaign or planet uses it.
+
+ONE RATE PER PLANT, by its kind and its cell, multiplying its normal growth and only while it has light: dry-land natives x10 on wet ground and x0.1 on dry ground; jungle natives (Greentide, Miasma, Fever Wood, Webwork, Contagion) x4, wet or dry; anything yielding wood at 0.625 of its kind's rate; vanilla crops and plants x0.1 unless water lies within 2 cells (an option makes them normal); basins, pots and hydroponics at vanilla speed. A plant growing slower than normal also ages slower.
+
+WET GROUND is ground with water on it, and only while it is there: rivers, fresh water, marsh and mud (their own cells), a flood (RimMandrake: Cracked Lands), spilled or poured water, a dug FlowWorks channel and the ground beside it, rain on open ground (and a few hours after, shown by puddles), snow in the biomes that say so, a salt-line surge's fresh side; fresh ash for fire-adapted plants. Clean water waters every plant; other liquids only plants adapted to them. Every fruiting plant uses the water on its cell.
+
+WHERE. Only on maps whose biome Baroque Biomes ships; outside them our plants grow at vanilla speed (an UNSUPPORTED option applies the same rule elsewhere). A campaign layer's roster can put its whole world in scope (scopeAllBiomes).
+
+THE CHARGE. A soaked plant that reaches full size keeps going: it swells past natural size, and it tells you, in a fixed order — the ground darkens, it swells, its hue shifts wrong, it trembles, it creaks, and then it goes silent. Then the top.
+
+THE TOP belongs to the PLANT, never the ground it stands on:
+  - The dry cycle (the default for dry-land natives): it fruits, throws many sprouts and dies; its seedlings carry the cycle on. One time in three it bursts instead. It respects your floors and walls.
+  - The wet cycle (jungle natives): it fruits heavily, then withers, leaving a few sprouts.
+  - A native sown as a crop drops its full harvest by itself, and its water is used up.
+  - Burst (dry-adapted plants only): a pop, chaff, bruises and knockdown nearby (never lethal on its own), premium produce scattered — and a sown ring that ignores your zones, floors and doorways.
+  - Tinder: a burst whose debris is fuel.
+  - Slime: the ring turns the ground to slime.
+  - Rupture (contaminated plants): a gas cloud, spawned things, sprouts, and mutations for anyone in the cloud without a full vacuum seal.
+  - Flush (giant trees): it swells inside and survives, silently.
+
+PLAYER VERBS. Harvest a swollen plant for extra produce. Cut it to defuse it — though once it trembles, the last swing is a gamble. Keep ground dry. Grazing animals (and a dry-air blower, where another mod ships one) suppress encroachment for a few days.
+
+Every mechanic has a Mod Settings toggle; defaults are the shipped behaviour. Plant tops are data: an RM_ExplosiveGrowthRosterDef (by name, silently skipping absent plants) or an RM_ExplosiveGrowthExtension on a plant you own. Soak/suppress are exposed as RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI; the Baroque Biomes members (Cracked Lands, Environmental Hazards) call it directly, other mods may call it by reflection.
+
+Ships the IncidentWorker behind a map-scale bloom (RM_IncidentWorker_BloomBurst); a campaign layer names the IncidentDef and the bloom plant.
+
+The performance gate (TPS on a jungle-density map under a full-map soak) is OWED to a live session; no density is promised until it runs.</description>
+</ModMetaData>

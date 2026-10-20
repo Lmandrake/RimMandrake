@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+
+  <packageId>Xylthixlm.Races.Titan</packageId>
+  <name>Posthuman Drift Titan Xenotype</name>
+  <author>Xylthixlm</author>
+  <description>
+Adds the Titan xenotype and associated genes.
+
+These stony giants are grown in vats for one purpose: to build things that will outlast them. Towering and near-impervious, they work without pause in places that would kill most people: burning deserts, frozen tundras, poisonous wastelands. They don't talk much, don't reflect much, and don't seem to care. Walls go up, fire burns, storms howl—and the Titans keep working.
+
+This mod includes one new xenotype and 4 new genes.
+
+[list]
+[*] [b]Mountainous:[/b] Titans aren't just hulking, they're [i]HUGE[/i]. They're physically larger than other xenohumans, which affects everything from how much they can carry to how they metabolize drugs. They also have more base HP.
+[*] [b]Tough as Stone:[/b] Besides their raw health pool, Titans are built to take punishment. Their rock-like skin functions like armor, they have special clotting factors to seal bleeding wounds automatically, and they're resistant to diseases, toxins, extreme temperatures, fire, vacuum, and psychic effects.
+[*] [b]Rock Steady:[/b] Titans aren't just physically tough, they're also mentally tough. They have no need for recreation and don't get any penalties from not getting enough. They also never get traits that give permanent mood penalties. It's not all upside, though: they don't get mood bonuses from recreation or positive traits, either.
+[*] [b]Construction Experts:[/b] As fits their engineering to be harsh-environment construction workers, Titans have a +8 bonus and guaranteed passion for Construction. What more could you need? Hopefully not much, because the genetic engineers who created them made some sacrifices in their other skills....
+[/list]
+  </description>
+  <modIconPath>Xyl/UI/Icons/Xenotypes/Titan_small</modIconPath>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Biotech</packageId>
+      <displayName>Biotech</displayName>
+    </li>
+    <li>
+      <packageId>Xylthixlm.Races.Core</packageId>
+      <displayName>Posthuman Drift: Core Mod</displayName>
+      <downloadUrl>https://github.com/RossM/RimworldMods/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Xylthixlm.Races.Core</li>
+  </loadAfter>
+
+</ModMetaData>

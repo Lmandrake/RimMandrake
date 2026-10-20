@@ -1,0 +1,65 @@
+<ModMetaData>
+	<name>Alpha Genes</name>
+	<author>Allie, Erin, Major Quadrangle, Matsay, Sarg</author>
+	<supportedVersions>
+		<li>1.6</li>
+		<li>1.7</li>
+		<li>1.5</li>
+	</supportedVersions>
+	<modIconPath IgnoreIfNoMatchingField="True">UI/AlphaGenesLogo</modIconPath>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+		<li>
+			<packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+			<displayName>Vanilla Expanded Framework</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2023507013</steamWorkshopUrl>
+			<downloadUrl>https://github.com/Vanilla-Expanded/VanillaExpandedFramework</downloadUrl>
+		</li>
+		<li>
+			<packageId>Ludeon.RimWorld.Biotech</packageId>
+			<displayName>Biotech</displayName>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>Ludeon.RimWorld</li>
+		<li>Ludeon.RimWorld.Royalty</li>
+		<li>Ludeon.RimWorld.Ideology</li>
+		<li>Ludeon.RimWorld.Biotech</li>
+		<li>brrainz.harmony</li>
+		<li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+		<li>sarg.alphaanimals</li>
+		<li>sarg.alphabiomes</li>
+		<li>vanillaracesexpanded.android</li>
+		<li>vanillaracesexpanded.insector</li>
+	</loadAfter>
+	<packageId>sarg.alphagenes</packageId>
+	<description>Adds new genes and xenotypes to Rimworld.
+
+&lt;size=24&gt;Features&lt;/size&gt;
+
+- More than 250 new genes. Some are very low impact, while some are truly game changing.
+- 16 new xenotypes with wild mechanics.
+- A new "Custom random" xenotype that allows you to make new player created xenotypes, and have them loaded into two new custom factions.
+- Abandoned Biotech labs quests, similar to the ones in VE Genetics, that give access to all the new genes during play.
+- Genetic tools that allow you to tweak your colonists' genes. Obtainable through lab quests or normal quest rewards.
+
+&lt;size=24&gt;Issues&lt;/size&gt;
+
+No issues known at the moment 
+
+&lt;size=24&gt;Plans for the future&lt;/size&gt;
+
+Oh you can bet I will add new things!
+
+&lt;size=24&gt;Changelog&lt;/size&gt;
+
+Full changelog on GitHub
+
+
+	</description>
+</ModMetaData>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>Kyzy.ShipWallEnhanced</packageId>
+  <author>Kyzy_4399</author>
+  <name>[kyzy] Ship Wall Enhanced</name>
+  <description>Have you ever wondered?
+All those narrow corridors and complex wall structures inside of gravship are massive waste of ship interior space. Why do we still need to tolerate such shocking inefficiency?
+
+Now introduce the Ship Wall Enhanced MOD — a revolutionary upgrade that merges many useful facilities directly into wall or wall-mounted buildings,  it could saving you an incredible amount of space.
+
+No more struggling with cramped layouts — reclaim your ship’s interior with smart, space-efficient design.
+
+你有没有这样想过？逆重飞船里这些狭窄的通道和繁复的墙体解构，都是一种对珍贵内部空间的巨大浪费，那为什么我们要继续忍受这些惊人的空间浪费呢？
+
+现在向你介绍飞船墙体增强MOD，它可以将大量飞船内使用的设施直接整合为墙壁仓体从而节省大量的空间，因此你不用再为飞船空间不足而深受烦恼。</description>
+  <!-- <modClass>ShipWallEnhanced.ShipWallEnhancedVCHECompatible</modClass> -->
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>oskarpotocki.vanillafactionsexpanded.core</packageId>
+      <displayName>Vanilla Expanded Framework</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2023507013</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>vanillaexpanded.vchemfuele</li>
+    <li>adaptive.storage.framework</li>
+    <li>vanillaexpanded.gravship</li>
+  </loadAfter>
+  <modIconPath IgnoreIfNoMatchingField="True">UI/SW_ModIcon</modIconPath>
+</ModMetaData>

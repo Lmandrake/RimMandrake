@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.environmentalhazards</packageId>
+  <name>RimMandrake: Environmental Hazards Kit</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>ALPHA_MECHANICS_KIT_1. Six generalized, XML-configurable environmental
+mechanics the base game cannot do, each a reusable comp/worker/extension rather than a
+def-specific hardcode. Design borrowed by function from the Alpha-family source review
+(design/Jawa/worldbuilding/alpha_family_source_review.md, section 4, owner ruling
+2026-09-11) — no donor code or art ships here; every class below was written against
+vanilla's own API and vanilla's own equivalents.
+
+RM tier: nothing in this mod knows what campaign, planet or creature it is used by. A
+content def in any mod opts in through XML alone.
+
+  1. CompProperties_ActiveGasEmitter  — a ThingComp that periodically seeds a
+     configurable gas ThingDef into a radius, optionally power-gated.
+     Companions: Gas_Damaging (tick-and-scan damage/hediff/plant-damage gas, driven by
+     GasDamageExtension) and Gas_Transmuting (tick-and-scan flora rewrite, driven by
+     GasTransmuteExtension). Abstract XML parent RM_BaseGas ships in Defs/.
+  2. HediffCompProperties_PeriodicAreaAttack — a HediffComp (so it stacks onto ANY
+     existing HediffDef via XML) that deals falloff-by-distance, per-ThingCategory
+     scaled area damage around its carrier, with optional filth and sustainer.
+  3. BiomeGlowMultiplierExtension — a DefModExtension on any BiomeDef; one Harmony
+     postfix on GenCelestial.CurCelestialSunGlow makes that biome permanently darker
+     and vanilla's own darkness chain (accuracy, mood, plant growth) does the rest.
+     Optionally also forces ConditionalStatAffecter_InSunlight to read false there.
+  4. GameCondition_EnvironmentalWeather — a data-driven weather-lock condition
+     (EnvironmentalWeatherExtension on the GameConditionDef): forced weather, interval
+     damage to unroofed pawns with a species gate, item-rot acceleration, plant-kill
+     chance, animal/plant density factors, and flat or day/night temperature offsets.
+  5. DeathActionProperties_ScaledExplosion — one DeathActionWorker whose explosion
+     radius is indexed by the dying pawn's life stage, with configurable damage,
+     weapon-for-flash, sound and post-explosion filth. Paired with
+     GameCondition_ArmLatentHazard, which periodically arms every matching pawn on the
+     map with a configured HediffDef.
+  6. CompProperties_AbilityTargetedHediffAffliction — one ability effect comp that
+     either adds N of a HediffDef to random body parts, or destroys every body part
+     matching a BodyPartDef with a configured damage type.
+  7. RM_WaterTruceExtension / RM_MapComponent_WaterTruce — a DefModExtension any
+     BiomeDef opts into: the first GUILTY hit (DamageInfo.InstigatorGuilty) landing
+     within its radius of standing water turns wild animals in that radius against
+     the aggressor's faction, via RM_MentalState_WaterTruceRetribution (a
+     MentalState_Manhunter subclass narrowed to one faction). WATER_TRUCE_RETRIBUTION_1.
+  8. RM_BiomeArrivalLetterExtension / RM_GameComponent_BiomeArrivalLetters — a
+     DefModExtension any BiomeDef opts into: the first gravship landing on that biome
+     (GenStep_GravshipMarker.Generate, the same detection RimMandrake.GravshipLanding
+     already proves) fires one plain survival-reads letter, once per save. The Utinni
+     layer replaces the letter's label/text wholesale to speak in the campaign
+     Narrator's voice instead — flavor only, no new machinery. BIOME_ARRIVAL_NARRATION_1.
+  9. Shade gear (Defs/ThingDefs_Buildings/RM_ShadeGear.xml) — RM_Parasol (utility apparel),
+     RM_ShadeTent (minifiable 3x3 awning), RM_SunShield (standing lee panel). Stuffable;
+     mirrak hide casts deepest. Their shade feeds Creature Behaviors' shade grid and sun
+     heat through RM_CompProperties_ShadeGear, scaled by each biome's heat kind (overhead /
+     low sun / ambient, where no shade helps). Toggles: Creature Behaviors settings.
+     SHADE_GEAR_FAMILY_1.
+
+Live proof is OWED: this mod has not yet been loaded in a running game.
+
+FEVER_WOOD_MECHANICS_1 F2 (2026-09-18): RUT_IncidentWorker_MirrorBreak calls
+RimMandrake.CreatureBehaviors.RM_MapComponent_SilenceCue.TriggerHush for the
+mirror-break "everything goes silent to watch" beat (the_fever_wood.md §9),
+reusing the Greentide kit's own silence-cue class rather than a second
+implementation. This makes mandrake.rm.creaturebehaviors a real dependency
+of this mod, same shape mandrake.rm.shipvermin already ships.
+
+SUMP_TAR_FIRE_NETWORK_1 part 2 (2026-09-29): RUT_IncidentWorker_TarPitBelch
+now spawns a real RimMandrake.FlowWorks.Flood_FlowWorks release (RM_Fluid_Tar)
+at the epicenter instead of a filth splash, so its cooled edge becomes real
+RM_TarGlass terrain via FluidDef.coolsToGlassEdge. This incident already
+hard-required FlowWorks' own RM_TarDeep/RM_TarShallow terrain to ever fire,
+so declaring mandrake.rm.flowworks as a dependency makes that existing need
+explicit rather than adding a new one.</description>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rm.flowworks</packageId>
+      <displayName>RimMandrake: FlowWorks</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.flowworks</li>
+  </loadAfter>
+</ModMetaData>

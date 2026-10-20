@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Rimwars:Pureblood Xenotype</name>
+	<authors>
+		<li>Sovereign</li>
+		<li>Netjamjr</li>
+	</authors>
+	<supportedVersions>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>Sov.Sith</packageId>
+	<description>A xenohuman once described as "the cold cruelty of war, given flesh." Historically, each child of the species was bred for three key factors: cunning, ambition, and psychic sensitivity. These genetic aspects are passed down in its xenotype: an innately intimidating profile, facial bone protrusions, crimson skin, piercing neon eyes, and enhanced melee capabilities.
+
+However, an innate aggression is linked to said genes, making pureblood xenotypes socially volatile and heavily prone to physical disputes. This genetic aggression also leads to a predisposition of focusing on combat so much as to neglect pursuits not in some way tangentially related to war- agriculture and the arts chief among them.
+
+Purebloods originate from a long forgotten desert urbworld, when the government in charge needed a military force that was resistant to the natural temperatures of the planet. Their violent nature and powerful fighting abilities made them the perfect peacekeeping force, as they were good at their jobs and never asked questions as long as they could satiate their bloodlust. However, when they couldn't find anyone else to forcefully pacify, most of them turned on each other. The few that could manage to work together took advantage of the chaos, and took for the stars in search of more conquests.</description>
+</ModMetaData>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<packageId>Tleno.WireheadStyle</packageId>
+	<name>Wirehead Style</name>
+	<author>Tleno</author>
+	<supportedVersions>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+	<modIconPath IgnoreIfNoMatchingField="True">GUI/WireheadIcon</modIconPath>
+	<loadAfter>
+		<li>Ludeon.RimWorld</li>
+		<li>Ludeon.RimWorld.Ideology</li>
+	</loadAfter>
+	<description>Introduces a new tech-focused ideoligion style that eschews techist hexagons for exposed cables and messy piles of electronics, for all your techno-cultist, electronics hoarder and post-apocalyptic techie needs.
+	
+Requires Ideology DLC.	
+	</description>
+</ModMetaData>

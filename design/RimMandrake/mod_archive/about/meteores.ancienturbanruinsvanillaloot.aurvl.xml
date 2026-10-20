@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Ancient Urban Ruins Hit Point</name>
+  <author>Meteores</author>
+  <supportedVersions>
+    <li>1.5</li>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>XMB.AncientUrbanrUins.MO</li>
+    <li>Meteores.AncientUrbanRuinsAllDeconstructible.AURAD</li>
+  </loadAfter>
+  <modDependencies>
+		<li>
+			<packageId>XMB.AncientUrbanrUins.MO</packageId>
+			<displayName>Ancient urban ruins</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/3316062206</steamWorkshopUrl>
+		</li>
+    <li>
+			<packageId>Meteores.AncientUrbanRuinsAllDeconstructible.AURAD</packageId>
+			<displayName>Ancient Urban Ruins All Deconstructible</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/3361061429</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+  <description>After a short break, I finally gave HP to the walls and some objects, and it turned out to be surprisingly simple.
+
+This mod is partially incompatible with existing saves.
+
+FAQ:
+Hey! Why do my walls have -1 HP?!?!?
+- If you live in ancient ruins - DO NOT INSTALL THIS MOD!
+- If you are currently looting ancient ruins - DO NOT INSTALL THIS MOD!!
+- If you started the 'Safe House' or 'Scavenger Group' scenario - DO NOT INSTALL THIS MOD!!!</description>
+  <packageId>Meteores.AncientUrbanRuinsVanillaLoot.AURVL</packageId>
+</ModMetaData>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <packageId>Trouperton.TrystanTravellersShuttleSchematics</packageId>
+    <name>Trystan Traveller's Shuttle Schematics</name>
+    <modVersion>1.1</modVersion>
+
+    <authors>
+        <li>Trouperton</li>
+        <li>Gangar4999</li>
+    </authors>
+    
+    <supportedVersions>
+        <li>1.6</li>
+        <li>1.7</li>
+    </supportedVersions>
+
+    <modDependencies>
+        <li>
+            <packageId>Ludeon.RimWorld.Odyssey</packageId>
+            <displayName>Odyssey</displayName>
+        </li>
+    </modDependencies>
+
+    <description>Simple mod that adds additional shuttle variants more suited to certain tasks.
+    
+Those being:
+- Personal Shuttle
+- Cargo Shuttle
+    </description>
+</ModMetaData>

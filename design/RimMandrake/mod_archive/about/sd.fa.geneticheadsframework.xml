@@ -1,0 +1,58 @@
+<ModMetaData>
+	<name>Genetic Heads Framework for [NL] Facial Animation</name>
+	<author>SunshineyDays</author>
+	<packageId>sd.fa.geneticheadsframework</packageId>
+	<modVersion>2.0</modVersion>
+
+	<supportedVersions>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+
+	<descriptionsByVersion>
+		<v1.5>Core framework for assigning [NL] Facial Animation WIP based on Biotech-type genes. Intended as a dependency for head packs. Supports multi-gene logic, modular head packs, and fallback handling.
+
+- Dynamically maps to specific gene combinations using mod extensions 
+- Automatically selects the most specific match for a pawn's gene set, or falls back to race/gender-appropriate ones if none match
+- Adds variety by randomly selecting one of several head types when a gene rule offers multiple choices</v1.5>
+
+		<v1.6>Adds a slightly different logic than [NL] Facial Animation WIP when it comes to gene part selection. Uses the FA field targetGeneDefs and adds more restrictions so heads are assigned appropriately. 
+		
+With the new gene-specific FA head sorting limiting choices in the FA part selector, instead use Character Editor to apply any head to your pawns.</v1.6>
+	</descriptionsByVersion>
+
+	<loadAfterByVersion>
+		<v1.5>
+			<li>ludeon.rimworld.biotech</li>
+			<li>nals.facialanimation</li>
+			<li>void.charactereditor</li>
+			<li>hawkwood.facialanimationsxenotypecompatibility</li>
+		</v1.5>
+	
+		<v1.6>
+			<li>ludeon.rimworld.biotech</li>
+			<li>nals.facialanimation</li>
+			<li>hawkwood.facialanimationsxenotypecompatibility</li>
+	<!-- 	<li>sarg.alphagenes</li>
+			<li>vanillaracesexpanded.saurid</li>
+			<li>vanillaracesexpanded.android</li>
+			<li>vanillaracesexpanded.genie</li>
+			<li>vanillaracesexpanded.phytokin</li>
+			<li>vanillaracesexpanded.insector</li>		
+			<li>erin.auronyabiotech</li>
+			<li>erin.corvyia</li>
+			<li>erin.fenrisulfr</li>
+			<li>erin.shisune</li>
+			<li>rooboid.faun</li> -->
+		</v1.6>
+	</loadAfterByVersion>
+
+	<modDependencies>
+		<li>
+			<packageId>nals.facialanimation</packageId>
+			<displayName>[NL] Facial Animation - WIP</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1635901197</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	
+</ModMetaData>

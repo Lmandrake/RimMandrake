@@ -1,0 +1,33 @@
+<ModMetaData>
+	<name>Belt Extractors - VFE Factory Patch</name>
+	<author>GroovyTaco</author>
+	<supportedVersions>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>GroovyTaco.BeltExtractors</packageId>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+		<li>
+			<packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+			<displayName>Vanilla Expanded Framework</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2023507013</steamWorkshopUrl>
+			<downloadUrl>https://github.com/Vanilla-Expanded/VanillaExpandedFramework</downloadUrl>
+		</li>
+		<li>
+			<packageId>VanillaExpanded.VFEFactory</packageId>
+			<displayName>Vanilla Furniture Expanded - Factory</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/3454372432</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>brrainz.harmony</li>
+		<li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+		<li>VanillaExpanded.VFEFactory</li>
+	</loadAfter>
+	<description>Allows conveyor belts to automatically pull items from adjacent storage buildings when the belt's input face is directly adjacent to the storage. No configuration required, just place the belt facing away from the storage.</description>
+</ModMetaData>

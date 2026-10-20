@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ModMetaData>
+
+	<name>Meat on a Stick - Expansion</name>
+	<description>This mod marginally expands the brilliant and amazing Meat on a Stick mod, adding MORE simple ways of cooking meat (and other ingredients...?) over a campfire.</description>
+	<author>chrisb</author>
+	<supportedVersions>
+		<li>1.6</li>
+    <li>1.7</li>
+	</supportedVersions>
+	<modDependencies>
+		<li>
+			<packageId>badoaks.meatonastick</packageId>
+			<displayName>Meat on a Stick</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3435027361</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>badoaks.meatonastick</li>
+	</loadAfter>
+	<modIconPath IgnoreIfNoMatchingField="True"></modIconPath>
+	<packageId>badoaks.MeatOnAStick.expansion</packageId>
+	
+</ModMetaData>
