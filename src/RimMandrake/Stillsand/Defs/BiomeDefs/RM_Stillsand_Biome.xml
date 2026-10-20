@@ -57,7 +57,10 @@
     <lakeBeachTerrain>Sand</lakeBeachTerrain>
     <mudTerrain>Sand</mudTerrain>
     <riverbankTerrain>Sand</riverbankTerrain>
-    <allowRoads>false</allowRoads>
+    <!-- allowRoads true: owner 2026-10-20, "For now just replicate where we had roads before."
+         SurfaceTile.Roads returns null when this is false, so the record's 196 road links across
+         the Stillsand were stored but never drawn. Replaces the ExtremeDesert deep-dune ban. -->
+    <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <allowFarmingCamps>false</allowFarmingCamps>
     <animalDensity>0.1</animalDensity>
