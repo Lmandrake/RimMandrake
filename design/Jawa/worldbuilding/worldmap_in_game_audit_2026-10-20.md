@@ -106,3 +106,39 @@ Deploy at shutdown (DLLs cannot be written while the game runs):
 already-committed `RM_CombHolds.xml` and `RM_ScrubInjections_GenStep.xml` (banned factions, 58488adc0).
 Then load `ASHKARR_DEV_START_2026-10-20_RECORDLINKS` and check three things in Player.log and on screen:
 the line `[RimMandrake.Biomes] world ocean shader on N water biomes`, blue seas, and no grey-ring hexes.
+
+## 5. After the restart (2026-10-20, two cold loads on the 325 list)
+
+Images: `D:\ClaudeWork\rimmandrake\scratch\worldlook3\` (`F_globe.png`, `G_sea_mid.png`, `H_coast_close.png`,
+`I_mountains.png`, `J_desert_roads.png`).
+
+- **First load: the planet drew black and every world view sat ~10 min in "GeneratingPlanet".**
+  Mechanism (source + live): `WorldRenderer.ShouldRegenerateDirtyLayersInLongEvent` checks only the PLANET
+  layer's visibility and whether a terrain draw layer on it is Dirty; `RegenerateDirtyLayersNow_Async`
+  skips draw layers whose `Visible` is false. The coplanar-hide postfix made the floor's terrain layer
+  invisible, so it stayed dirty for ever and `DrawWorldLayers` queued a new long event each frame, returning
+  before it rendered. Fixed by a postfix on that getter that ignores hidden coplanar terrain layers
+  (`Patch_SeabedLayerCoplanarHide.cs`, `6a182f352`). Second load: the save is playable in ~1 min, a world view
+  regenerates in seconds.
+- **Honeycomb: gone.** No grey-ring hexes at globe, mid or close zoom.
+- **Seas: read as water.** `world ocean shader on 8 water biomes` is in Player.log. Grey, Twilight and Scald
+  seas are flat slate-navy with faint darker hexes at depth. They have no shoreline effect or sheen.
+- **Roads: all 1,242 record links live.** `world_links_get`: 2,484 road entries, 2,416 drawn. The 68 not drawn
+  are on `RUT_Umbra` (34 tiles, his ruling RUT_UMBRA_ROADS_RULING_1 stands) and `RM_GelatinousSlime`
+  (9 tiles, `allowRoads=false` from the Slime spec). Stillsand now has `allowRoads=true` (`6d8692254`).
+  Across the desert the Ancient Asphalt Highway shows as short grey dashes. That is the record itself:
+  its 153 highway tiles form 46 pieces of 1-9 tiles. Dirt paths are tan on tan and hard to see.
+- **Rings back** (RW - Planet Atmosphere after `mandrake.rut.empirepursuit`): the debris ring draws clear of the
+  planet, using the debris texture, not the grey disk. One Player.log error: `Shader Planet/AtmosphereLUT shader is not
+  supported on this GPU`, so the atmosphere scattering does not render. Memory on the 325 list with Rings:
+  8.3 GB working set, 18.1 GB private. There is no reading from the same session without Rings yet.
+- **Tidal lock held**: `PlanetTypeManager.Current` = `TidallyLocked`, `7f.alienworlds.tidallylocked` patches present.
+- **Face rendering facts (source).** `WorldDrawLayer_Terrain` puts the tile ELEVATION in UV0 and builds one
+  submesh per material. The face texture is projected in the shader, not by mesh UVs. On screen the pattern
+  runs on across hexes of the same biome with no seams, and every border between two biomes is a hard hex
+  edge with no blending. Loose PNGs load with a full mip chain, trilinear filtering and anisoLevel 2, and are
+  DXT-compressed when the texture-compression pref is on and both sides divide by 4
+  (`ModContentLoader.LoadTextureViaImageConversion`). The texture scale (how many hexes one face spans) lives
+  in the compiled WorldTerrain shader and is UNMEASURED.
+- **Log hygiene:** in the first load, 9,520 `null texture passed to GUI.DrawTexture` lines from the looping
+  loading screen hit Verse's message cap. The second load has 77.
