@@ -66,4 +66,8 @@ RULED OUT: "a Warscar BiomeDef with few tiles says the mod is broken" — a biom
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"Poisoned forever, mad beasts, silent guns. Everyone calls it cursed, and everyone who scavenges here learns why."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
+
 DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned.
