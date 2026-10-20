@@ -400,16 +400,17 @@ def grate(ctx):
          "fills": {t: f for t, f in fills.items() if t in unlit or any(not x.startswith("FILLED") for x in f)}})
     for i in range(1, 5):                                         # 1 m of water in the 2 m canal: room for the pour
         B.call("jawa/flowworks_excavation_drive", x=P(i, 28)[0], z=P(i, 28)[1], deepenLevels=0, setFill=2)
-    proof("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(0, 28)), xz(P(5, 28))))
+    kvb, txtb = proof("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(0, 28)), xz(P(5, 28))))
+    built = kvb.get("ok") == "True"          # no grated deck: neither row below asks the mod anything (review 2026-10-20)
     kv, txt = proof("ProofPour", "%s;50;RM_Liquid_FreshWater" % xz(P(2, 28)))
     good = kv.get("rise") == "500" and kv.get("filthAfter") == kv.get("filthBefore")
-    row("GRATE_pour_drains_to_body", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
+    row("GRATE_pour_drains_to_body", "PASS" if good and built else ("FAIL" if kv and built else "UNMEASURED"), {"build": txtb, "read": txt})
     B.call("jawa/spawn_batch", ops="Steel:%d,%d" % P(3, 28))
     ticks(60)
     things = B.call("jawa/list_things", rect="%d,%d,1,1" % P(3, 28), limit=20, includePawns=False) or {}
     names = [t.get("def") or t.get("defName") for t in (things.get("things") or [])]
-    row("GRATE_item_stays_on_deck", "PASS" if "Steel" in names else ("FAIL" if things.get("success") else "UNMEASURED"),
-        {"things": names})
+    row("GRATE_item_stays_on_deck", ("PASS" if "Steel" in names else ("FAIL" if things.get("success") else "UNMEASURED"))
+        if built else "UNMEASURED", {"things": names, "build": txtb})
 
 
 def underpass(ctx):

@@ -554,8 +554,10 @@ def _jump(t, delta):
             w.gate.observe(after, epoch_change=True, reason="time_set_ticks declared jump")
     # read the clock back ourselves: a reply without ticksGameAfter must not make a no-op jump look taken
     after = t.session._ticks()
-    if delta > 0:
-        _STATE["jumped"] = _STATE.get("jumped", 0) + int(delta)   # unwound by _stable: a chain never leaves the clock moved
+    # unwound by _unjump: count only what the clock really moved, so a jump that did not take is never rewound below where
+    # it started (review 2026-10-20)
+    if delta > 0 and after is not None and now is not None and after > now:
+        _STATE["jumped"] = _STATE.get("jumped", 0) + int(after - now)
     if after is None or after < now + delta - 5:
         _fail("time_set_ticks did not take: clock %r after asking for %d (%r)" % (after, now + delta, r))
 

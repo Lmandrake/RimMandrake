@@ -875,6 +875,10 @@ def sl4_verdict(carry, r1a, r1b, r2a, r2b, carry_a, carry_b):
     UNMEASURED when a half could not be staged (no colonist, one colonist, the carry block not run) -- never PASS on half."""
     if carry.get("error") or (carry.get("reel2_staged") or {}).get("error") or not carry.get("reel1_staged"):
         return "UNMEASURED"
+    # a staging that did not reach Dropped / Carrying at the save measured the site, not the mod (review 2026-10-20)
+    s1, s2 = (carry.get("reel1_staged") or {}).get("carry"), (carry.get("reel2_staged") or {}).get("carry")
+    if (s1 is not None and s1 != "Dropped") or (s2 is not None and s2 != "Carrying"):
+        return "UNMEASURED"
     good1 = r1a.get("carry") == "Dropped" and r1a == r1b
     good2 = (r2a.get("carry") == "Carrying" and r2b.get("carry") in ("Carrying", "Dropped") and (r2b.get("trailCount") or 0) > 0
              and r2b.get("pending") == "Deploy")
