@@ -1,0 +1,236 @@
+{
+ "phase": "tiles",
+ "utc": "2026-10-20T15:30:27Z",
+ "tiles": [
+  {
+   "tile": 18631,
+   "why": "terminator W, game predicts glow 0.72, geometry 0",
+   "objectsBefore": [],
+   "generate": {
+    "success": true,
+    "message": null,
+    "mapIndex": 1,
+    "mapId": 1,
+    "wasAlreadyGenerated": false,
+    "error": null
+   },
+   "glow": {
+    "success": true,
+    "result": "0.7209677",
+    "ticksGame": 3
+   },
+   "shadegrid": {
+    "mapTile": "18631,0",
+    "sunHeatActive": false,
+    "shadeGrid": {
+     "effectiveHeatKind": "overhead",
+     "isDirectional": false
+    },
+    "pinnedSun": {
+     "present": true,
+     "isActive": false,
+     "sunElevationDegrees": 45.0
+    },
+    "skyGlow": 0.72096765,
+    "celestialSunGlow": 0.72096765
+   },
+   "temp": {
+    "temperature": 12.7494574,
+    "outdoorTemp": 12.7494574,
+    "seasonalTemp": 12.7494574
+   },
+   "date": {
+    "absTicksUsed": 65003,
+    "dateFullString": "1st of Aprimay, 5500",
+    "season": "PermanentSummer",
+    "latitude": 0.780406237,
+    "longitude": -90.0
+   },
+   "drop": {
+    "success": true,
+    "mapCountBefore": 2,
+    "mapCountAfter": 1
+   },
+   "scratchObjectRemoved": {
+    "ids": [
+     156
+    ],
+    "success": true,
+    "removed": 1
+   }
+  },
+  {
+   "tile": 7724,
+   "why": "arc80 E, game predicts 0.00, geometry sun 9.8 deg",
+   "objectsBefore": [],
+   "generate": {
+    "success": true,
+    "message": null,
+    "mapIndex": 1,
+    "mapId": 2,
+    "wasAlreadyGenerated": false,
+    "error": null
+   },
+   "glow": {
+    "success": true,
+    "result": "0",
+    "ticksGame": 3
+   },
+   "shadegrid": {
+    "mapTile": "7724,0",
+    "sunHeatActive": false,
+    "shadeGrid": {
+     "effectiveHeatKind": "overhead",
+     "isDirectional": false
+    },
+    "pinnedSun": {
+     "present": true,
+     "isActive": false,
+     "sunElevationDegrees": 45.0
+    },
+    "skyGlow": 0.0,
+    "celestialSunGlow": 0.0
+   },
+   "temp": {
+    "temperature": 23.0498238,
+    "outdoorTemp": 23.0498238,
+    "seasonalTemp": 23.0498238
+   },
+   "date": {
+    "absTicksUsed": 65003,
+    "dateFullString": "2nd of Aprimay, 5500",
+    "season": "PermanentSummer",
+    "latitude": -0.7700926,
+    "longitude": 80.19171
+   },
+   "drop": {
+    "success": true,
+    "mapCountBefore": 2,
+    "mapCountAfter": 1
+   },
+   "scratchObjectRemoved": {
+    "ids": [
+     157
+    ],
+    "success": true,
+    "removed": 1
+   }
+  },
+  {
+   "tile": 7821,
+   "why": "arc100 W (night side), game predicts 0.50, geometry -9.8 deg",
+   "objectsBefore": [],
+   "generate": {
+    "success": true,
+    "message": null,
+    "mapIndex": 1,
+    "mapId": 3,
+    "wasAlreadyGenerated": false,
+    "error": null
+   },
+   "glow": {
+    "success": true,
+    "result": "0.5003537",
+    "ticksGame": 3
+   },
+   "shadegrid": {
+    "mapTile": "7821,0",
+    "sunHeatActive": false,
+    "shadeGrid": {
+     "effectiveHeatKind": "overhead",
+     "isDirectional": false
+    },
+    "pinnedSun": {
+     "present": true,
+     "isActive": false,
+     "sunElevationDegrees": 45.0
+    },
+    "skyGlow": 0.5003537,
+    "celestialSunGlow": 0.5003537
+   },
+   "temp": {
+    "temperature": 3.44982529,
+    "outdoorTemp": 3.44982529,
+    "seasonalTemp": 3.44982529
+   },
+   "date": {
+    "absTicksUsed": 65003,
+    "dateFullString": "1st of Aprimay, 5500",
+    "season": "PermanentSummer",
+    "latitude": -0.7700926,
+    "longitude": -99.80829
+   },
+   "drop": {
+    "success": true,
+    "mapCountBefore": 2,
+    "mapCountAfter": 1
+   },
+   "scratchObjectRemoved": {
+    "ids": [
+     158
+    ],
+    "success": true,
+    "removed": 1
+   }
+  },
+  {
+   "tile": 2475,
+   "why": "arc60 E, game predicts 0.87, geometry 30 deg",
+   "objectsBefore": [],
+   "generate": {
+    "success": true,
+    "message": null,
+    "mapIndex": 1,
+    "mapId": 4,
+    "wasAlreadyGenerated": false,
+    "error": null
+   },
+   "glow": {
+    "success": true,
+    "result": "0.8727798",
+    "ticksGame": 3
+   },
+   "shadegrid": {
+    "mapTile": "2475,0",
+    "sunHeatActive": true,
+    "shadeGrid": {
+     "sunElevationDegrees": 29.9678612,
+     "effectiveHeatKind": "overhead",
+     "isDirectional": true
+    },
+    "pinnedSun": {
+     "present": true,
+     "isActive": true,
+     "sunElevationDegrees": 29.9678612
+    },
+    "skyGlow": 0.8,
+    "celestialSunGlow": 0.872779846
+   },
+   "temp": {
+    "temperature": 33.6037674,
+    "outdoorTemp": 33.6037674,
+    "seasonalTemp": 33.6037674
+   },
+   "date": {
+    "absTicksUsed": 65003,
+    "dateFullString": "2nd of Aprimay, 5500",
+    "season": "PermanentSummer",
+    "latitude": 7.588847e-09,
+    "longitude": 60.03214
+   },
+   "drop": {
+    "success": true,
+    "mapCountBefore": 2,
+    "mapCountAfter": 1
+   },
+   "scratchObjectRemoved": {
+    "ids": [
+     159
+    ],
+    "success": true,
+    "removed": 1
+   }
+  }
+ ],
+ "homeMapId": 0
+}

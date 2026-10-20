@@ -1,0 +1,54 @@
+{
+ "phase": "read",
+ "utc": "2026-10-20T15:28:56Z",
+ "state": {
+  "planetType": {
+   "success": true,
+   "result": "Default",
+   "ticksGame": 3
+  },
+  "worldPresetName": {
+   "success": true,
+   "result": "null",
+   "ticksGame": 3
+  },
+  "tidalPatchesPresent": {
+   "success": true,
+   "result": "False",
+   "ticksGame": 3
+  },
+  "celestialGlowCurMap": {
+   "success": true,
+   "result": "0.6802856",
+   "ticksGame": 3
+  },
+  "shadegrid": {
+   "mapTile": "17011,0",
+   "sunHeatActive": true,
+   "shadeGrid": {
+    "sunElevationDegrees": 35.39559,
+    "effectiveHeatKind": "lowSun",
+    "isDirectional": true
+   },
+   "pinnedSun": {
+    "present": true,
+    "isActive": true,
+    "sunElevationDegrees": 35.39559
+   },
+   "skyGlow": 1.0,
+   "celestialSunGlow": 0.6802856
+  },
+  "temp": {
+   "temperature": 34.375,
+   "outdoorTemp": 32.49606,
+   "seasonalTemp": 36.9511452
+  },
+  "date": {
+   "absTicksUsed": 65003,
+   "dateFullString": "2nd of Aprimay, 5500",
+   "season": "Spring",
+   "latitude": 15.9231024,
+   "longitude": 52.96309
+  }
+ }
+}

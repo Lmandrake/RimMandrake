@@ -1,0 +1,50 @@
+save tiles 21872  unresolved biome hashes 0
+probe          tile   lat    lon    arc  elevGeo glowMod  tSave tIntent   dT biome
+substellar    19337    0.0   -0.8    0.8   89.2   1.00   62.9   66.3  -3.4 RM_Stillsand
+arc30 E        2391    0.0   30.0   30.0   60.0   1.00   53.4   55.0  -1.6 RM_Stillsand
+arc60 E        2475    0.0   60.0   60.0   30.0   0.87   34.8   35.5  -0.7 RM_LongShade
+arc80 E        7724   -0.8   80.2   80.2    9.8   0.00   21.8   21.8   0.0 RM_GreySea
+terminator E  20791   -0.8   90.0   90.0    0.0   0.00   14.0   14.0   0.0 RM_GreySea
+terminator W  18631    0.8  -90.0   90.0    0.0   0.72   14.0   14.0   0.0 RM_Cauldron
+arc60 W        2485    0.0  -60.0   60.0   30.0   1.00   34.6   34.4   0.2 RM_LeaningScrub
+arc100 W       7821   -0.8  -99.8   99.8   -9.8   0.50    2.2    2.2   0.0 RM_Wasteland
+arc120 W       2489    0.0 -120.0  120.0  -30.0   0.01  -10.4  -22.3  11.9 RM_TheRot
+arc120 E       2480    0.0  120.0  120.0  -30.0   0.00  -24.4  -24.2  -0.2 RM_NightsideIce
+arc150         2283    0.0  150.0  150.0  -60.0   0.00  -60.6  -66.1   5.5 RUT_Umbra
+antistellar   18991    0.0 -179.2  179.2  -89.2   0.00  -82.0  -79.4  -2.6 RM_TheChill
+N pole        17825   88.8  180.0   91.2   -1.2   0.00   12.1   12.6  -0.5 RM_GelatinousSlime
+S pole        20071  -88.8 -180.0   91.2   -1.2   0.00   12.2   11.3   0.9 RM_Wasteland
+lat45 lon45    9607   44.5   45.6   60.1   29.9   0.91   36.2   35.0   1.2 RM_Stillsand
+lat-45 lon-135 9864  -44.5 -134.4  119.9  -29.9   0.00  -30.1  -28.9  -1.2 RM_TheRot
+start 17011   17011   15.9   53.0   54.6   35.4   1.00   40.4   40.8  -0.4 RM_Stillsand
+
+night-side tiles (arc>90) the game calls DAYTIME (glow>0.6): 448  | day-side tiles (arc<90) it calls night: 1796
+
+biome                      n   tSave med [min..max]   dT med  |dT|>5
+RM_Stillsand              3969    45.9 [  16.1..  66.1]    0.0     0
+RUT_Umbra                 2531   -62.2 [ -81.7.. -42.1]    0.6    19
+RM_LongShade              2390    25.2 [  -3.6..  50.9]    0.3     0
+RM_TheRot                 2204   -19.3 [ -42.0..  24.0]   -0.1    61
+RM_Wasteland              1853     3.8 [ -23.3..  54.1]    0.0     0
+RM_NightsideIce           1506   -33.4 [ -54.3.. -14.1]   -0.1     2
+RM_Abyss                  1135   -10.8 [ -24.4..  30.9]   -0.1    45
+RM_BlueDesert             1029   -42.6 [ -58.0.. -19.4]    0.4     4
+RM_FloodedCanyon           970    27.5 [ -20.6..  59.4]   -0.1    17
+RM_LeaningScrub            628    20.7 [ -14.7..  59.4]    0.0     1
+RM_TwilightSea             607    15.0 [ -11.2..  35.3]    0.0    83
+RM_Cauldron                546    11.4 [ -10.0..  41.3]    0.0     3
+RM_GreySea                 472    14.0 [  -6.5..  30.0]    0.0     0
+RM_TheScald                312    46.3 [  36.0..  52.9]   -7.8   312
+RM_RustCathedral           236    62.5 [  58.0..  65.9]   -0.1     0
+RM_Greentide               235    45.5 [  35.5..  64.4]   -0.6     0
+RM_WeepingStones           223    35.3 [  17.8..  63.5]    0.9     0
+RM_Pyrelands               222    53.6 [  28.4..  64.7]   -0.6     0
+RM_Contagion               179    32.3 [  22.7..  56.9]    0.7     2
+RM_Webwork                 161    49.2 [  36.2..  63.0]   -0.7     3
+RM_GelatinousSlime          96    13.4 [  -2.7..  21.9]   -0.7     0
+RM_Miasma                   93    42.8 [  26.0..  59.1]   -0.9     0
+RM_Warscar                  90    59.5 [  57.6..  66.0]   -0.8     0
+RM_TheChill                 57   -79.0 [ -82.0.. -74.7]   -2.3     0
+RM_TheForge                 44    48.6 [  41.7..  56.3]   -0.3     0
+RM_FeverWood                43    45.5 [  37.6..  51.5]   -0.3     0
+RM_TheSump                  41     1.3 [  -6.3..  20.3]   -0.6     0

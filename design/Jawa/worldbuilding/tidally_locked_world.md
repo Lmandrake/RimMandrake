@@ -218,8 +218,12 @@ terminator is arc 90°, which is curve x=1.0 — not 0.4–0.6.**
 🔴 **THE SUN IS RUNTIME, THE TEMPERATURE IS NOT (corrected 2026-10-20, Wave 4).** `7f.alienworlds.tidallylocked`'s
 `Source/PlanetTypeDef.cs` Harmony-patches `GenCelestial.SunPositionUnmodified` (fixes the sun in place),
 `CurSunPositionInWorldSpace`, `CelestialSunGlow(PlanetTile,int)` (light by tile longitude) and `CompPowerPlantSolar`
-every session, keyed on the save's `<alienWorldsFrameworkPlanetType>TidallyLocked</…>`. Retire it (or the Alien Worlds
-Framework it rides on) and Ash'karr's sun rises and sets again; both stay on every list that loads the world.
+every session, but only while TidallyLocked is the ACTIVE planet type. Which save field decides that depends on the list:
+without Worldbuilder (PAINT) it is the save's `<alienWorldsFrameworkPlanetType>`; **with `ferny.worldbuilder` loaded (the
+full list) it is the save's `<worldPresetName>TidallyLocked</worldPresetName>`, and a save without it loads as `Default`,
+sun moving** (MEASURED live 2026-10-20 on `ASHKARR_DEV_START_2026-10-20.rws`, Wave 4 324 list —
+`design/RimMandrake/world_physics_audit_2026-10-20.md` §1). Retire it (or the Alien Worlds Framework it rides on) and
+Ash'karr's sun rises and sets again; both stay on every list that loads the world.
 
 🔴 **AND ITS TEMPERATURE DOES NOT REACH US ANYWAY.** The temperature half is **worldgen-only**: `FieldPatcher.cs`
 patches the curve into `WorldGenStep_Terrain.BaseTemperatureAtLatitude` and the

@@ -483,6 +483,14 @@
 !/walk_precheck_2026-10-18/**
 !/weekly_cleaning_2026-10-11/08_telemetry_deep_design.md
 !/work_PLUME_20261003.md
+!/world_physics_2026-10-20/live_clock_after_fix.json
+!/world_physics_2026-10-20/live_clock_before_fix.json
+!/world_physics_2026-10-20/live_fix.json
+!/world_physics_2026-10-20/live_probe.py
+!/world_physics_2026-10-20/live_read.json
+!/world_physics_2026-10-20/live_tiles.json
+!/world_physics_2026-10-20/offline_audit.json
+!/world_physics_2026-10-20/offline_audit.txt
 !/world_remake_run_2026-10-20/RESULTS.md
 !/worldtex_flatten/before_after_planet_zoom.png
 !/worldtex_flatten/contrast_after.txt

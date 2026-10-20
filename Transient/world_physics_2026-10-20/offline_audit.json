@@ -1,0 +1,307 @@
+{
+ "sample": [
+  {
+   "tile": 19337,
+   "lat": 0.0,
+   "lon": -0.7805,
+   "arc": 0.78,
+   "elev_geo": 89.22,
+   "glow_mod": 1.0,
+   "t_save": 62.9,
+   "t_intent": 66.3,
+   "elev_m": 612.0,
+   "biome": "RM_Stillsand",
+   "dT": -3.4,
+   "probe": "substellar"
+  },
+  {
+   "tile": 2391,
+   "lat": 0.0,
+   "lon": 29.9587,
+   "arc": 29.96,
+   "elev_geo": 60.04,
+   "glow_mod": 1.0,
+   "t_save": 53.4,
+   "t_intent": 55.0,
+   "elev_m": 556.0,
+   "biome": "RM_Stillsand",
+   "dT": -1.6,
+   "probe": "arc30 E"
+  },
+  {
+   "tile": 2475,
+   "lat": 0.0,
+   "lon": 60.0321,
+   "arc": 60.03,
+   "elev_geo": 29.97,
+   "glow_mod": 0.873,
+   "t_save": 34.8,
+   "t_intent": 35.5,
+   "elev_m": 446.0,
+   "biome": "RM_LongShade",
+   "dT": -0.7,
+   "probe": "arc60 E"
+  },
+  {
+   "tile": 7724,
+   "lat": -0.7701,
+   "lon": 80.1917,
+   "arc": 80.19,
+   "elev_geo": 9.81,
+   "glow_mod": 0.0,
+   "t_save": 21.8,
+   "t_intent": 21.8,
+   "elev_m": -350.0,
+   "biome": "RM_GreySea",
+   "dT": 0.0,
+   "probe": "arc80 E"
+  },
+  {
+   "tile": 20791,
+   "lat": -0.7804,
+   "lon": 90.0,
+   "arc": 90.0,
+   "elev_geo": 0.0,
+   "glow_mod": 0.0,
+   "t_save": 14.0,
+   "t_intent": 14.0,
+   "elev_m": -350.0,
+   "biome": "RM_GreySea",
+   "dT": 0.0,
+   "probe": "terminator E"
+  },
+  {
+   "tile": 18631,
+   "lat": 0.7804,
+   "lon": -90.0,
+   "arc": 90.0,
+   "elev_geo": 0.0,
+   "glow_mod": 0.721,
+   "t_save": 14.0,
+   "t_intent": 14.0,
+   "elev_m": 1.0,
+   "biome": "RM_Cauldron",
+   "dT": 0.0,
+   "probe": "terminator W"
+  },
+  {
+   "tile": 2485,
+   "lat": 0.0,
+   "lon": -60.0321,
+   "arc": 60.03,
+   "elev_geo": 29.97,
+   "glow_mod": 1.0,
+   "t_save": 34.6,
+   "t_intent": 34.4,
+   "elev_m": 647.0,
+   "biome": "RM_LeaningScrub",
+   "dT": 0.2,
+   "probe": "arc60 W"
+  },
+  {
+   "tile": 7821,
+   "lat": -0.7701,
+   "lon": -99.8083,
+   "arc": 99.81,
+   "elev_geo": -9.81,
+   "glow_mod": 0.5,
+   "t_save": 2.2,
+   "t_intent": 2.2,
+   "elev_m": 1.0,
+   "biome": "RM_Wasteland",
+   "dT": 0.0,
+   "probe": "arc100 W"
+  },
+  {
+   "tile": 2489,
+   "lat": 0.0,
+   "lon": -119.9679,
+   "arc": 119.97,
+   "elev_geo": -29.97,
+   "glow_mod": 0.009,
+   "t_save": -10.4,
+   "t_intent": -22.3,
+   "elev_m": 68.0,
+   "biome": "RM_TheRot",
+   "dT": 11.9,
+   "probe": "arc120 W"
+  },
+  {
+   "tile": 2480,
+   "lat": 0.0,
+   "lon": 119.9679,
+   "arc": 119.97,
+   "elev_geo": -29.97,
+   "glow_mod": 0.0,
+   "t_save": -24.4,
+   "t_intent": -24.2,
+   "elev_m": 408.0,
+   "biome": "RM_NightsideIce",
+   "dT": -0.2,
+   "probe": "arc120 E"
+  },
+  {
+   "tile": 2283,
+   "lat": 0.0,
+   "lon": 150.0414,
+   "arc": 150.04,
+   "elev_geo": -60.04,
+   "glow_mod": 0.0,
+   "t_save": -60.6,
+   "t_intent": -66.1,
+   "elev_m": 1464.0,
+   "biome": "RUT_Umbra",
+   "dT": 5.5,
+   "probe": "arc150"
+  },
+  {
+   "tile": 18991,
+   "lat": 0.0,
+   "lon": -179.2195,
+   "arc": 179.22,
+   "elev_geo": -89.22,
+   "glow_mod": 0.0,
+   "t_save": -82.0,
+   "t_intent": -79.4,
+   "elev_m": -200.0,
+   "biome": "RM_TheChill",
+   "dT": -2.6,
+   "probe": "antistellar"
+  },
+  {
+   "tile": 17825,
+   "lat": 88.8385,
+   "lon": 180.0,
+   "arc": 91.16,
+   "elev_geo": -1.16,
+   "glow_mod": 0.0,
+   "t_save": 12.1,
+   "t_intent": 12.6,
+   "elev_m": 4.0,
+   "biome": "RM_GelatinousSlime",
+   "dT": -0.5,
+   "probe": "N pole"
+  },
+  {
+   "tile": 20071,
+   "lat": -88.8385,
+   "lon": -180.0,
+   "arc": 91.16,
+   "elev_geo": -1.16,
+   "glow_mod": 0.0,
+   "t_save": 12.2,
+   "t_intent": 11.3,
+   "elev_m": 236.0,
+   "biome": "RM_Wasteland",
+   "dT": 0.9,
+   "probe": "S pole"
+  },
+  {
+   "tile": 9607,
+   "lat": 44.5408,
+   "lon": 45.5637,
+   "arc": 60.07,
+   "elev_geo": 29.93,
+   "glow_mod": 0.906,
+   "t_save": 36.2,
+   "t_intent": 35.0,
+   "elev_m": 528.0,
+   "biome": "RM_Stillsand",
+   "dT": 1.2,
+   "probe": "lat45 lon45"
+  },
+  {
+   "tile": 9864,
+   "lat": -44.5408,
+   "lon": -134.4363,
+   "arc": 119.93,
+   "elev_geo": -29.93,
+   "glow_mod": 0.0,
+   "t_save": -30.1,
+   "t_intent": -28.9,
+   "elev_m": 1265.0,
+   "biome": "RM_TheRot",
+   "dT": -1.2,
+   "probe": "lat-45 lon-135"
+  },
+  {
+   "tile": 17011,
+   "lat": 15.9231,
+   "lon": 52.9631,
+   "arc": 54.6,
+   "elev_geo": 35.4,
+   "glow_mod": 1.0,
+   "t_save": 40.4,
+   "t_intent": 40.8,
+   "elev_m": 141.0,
+   "biome": "RM_Stillsand",
+   "dT": -0.4,
+   "probe": "start 17011"
+  }
+ ],
+ "unresolved": [],
+ "flagged": [
+  [
+   "RUT_Umbra",
+   2531,
+   19
+  ],
+  [
+   "RM_TheRot",
+   2204,
+   61
+  ],
+  [
+   "RM_NightsideIce",
+   1506,
+   2
+  ],
+  [
+   "RM_Abyss",
+   1135,
+   45
+  ],
+  [
+   "RM_BlueDesert",
+   1029,
+   4
+  ],
+  [
+   "RM_FloodedCanyon",
+   970,
+   17
+  ],
+  [
+   "RM_LeaningScrub",
+   628,
+   1
+  ],
+  [
+   "RM_TwilightSea",
+   607,
+   83
+  ],
+  [
+   "RM_Cauldron",
+   546,
+   3
+  ],
+  [
+   "RM_TheScald",
+   312,
+   312
+  ],
+  [
+   "RM_Contagion",
+   179,
+   2
+  ],
+  [
+   "RM_Webwork",
+   161,
+   3
+  ]
+ ],
+ "lit_night": 448,
+ "dark_day": 1796
+}
