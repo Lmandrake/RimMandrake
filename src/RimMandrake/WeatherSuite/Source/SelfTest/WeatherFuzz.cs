@@ -4,6 +4,10 @@
 //             the invalid-tile sentinel is in neither; the exclusive nightside edge keeps that true for any geometry that shares an edge
 //   tint      maximised-aurora channel arithmetic: never past white, never darker than vanilla at the shipped defaults (every channel 0..1),
 //             monotone in brightness; reports (does not fail on) how many slider-range corners can dip below vanilla
+//   light     perpetual-aurora light (AURORA_LIGHT): shimmer stays in [ShimmerMin,1] and actually varies; nightness is 1 at night, 0 from
+//             dusk, monotone; a sky channel is in 0..1, never brighter than base+light nor darker than base*(1-darkness) (before clamping),
+//             and with darkness 0 never darker than the plain night; the ground floor is 0..MaxGroundGlow, zero in daylight, and the
+//             SHIPPED default (0.22) stays under vanilla's 0.30 "Lit" line at full shimmer (the biome stays "totally dark")
 // A failing case prints `family seed N: message`; --fuzz-seed N replays it. PROVISIONAL: the Ash'karr geometry (substellar 0,0; wall 63..117)
 // and the default tint (sat 0.35, overlay 0.05, brightness 1.15) are design-draft numbers.
 using System;
@@ -135,6 +139,50 @@ namespace RimMandrake.StarWars.WeatherSuite.SelfTest
             return fails;
         }
 
+        private static List<string> Light(int cases, int seed0)
+        {
+            var fails = new List<string>();
+            for (int c = 0; c < cases; c++)
+            {
+                int seed = seed0 + c; var r = new Random(seed); Cases++;
+                try
+                {
+                    float act = F(r, 1f, 30f), ph = F(r, 0f, 50f);
+                    float lo = 2f, hi = -1f;
+                    for (int i = 0; i < 60; i++)
+                    {
+                        Steps++;
+                        int t = r.Next(0, 60000 * 120);
+                        float sh = RM_WeatherKernel.Shimmer(t, act, ph);
+                        Check(sh >= RM_WeatherKernel.ShimmerMin - 1e-5f && sh <= 1f + 1e-5f, $"shimmer {sh} outside [{RM_WeatherKernel.ShimmerMin},1]");
+                        lo = Math.Min(lo, sh); hi = Math.Max(hi, sh);
+                        float g = F(r, 0f, 1f);
+                        float n = RM_WeatherKernel.Nightness(g);
+                        Check(n >= 0f && n <= 1f, $"nightness {n}");
+                        Check(RM_WeatherKernel.Nightness(Math.Min(1f, g + 0.05f)) <= n + 1e-6f, "nightness rose with the sun");
+                        float b = F(r, 0f, 1f), h = F(r, 0f, 1f), d = F(r, 0f, 1f), l = F(r, 0f, 0.8f);
+                        float v = RM_WeatherKernel.AuroraSkyChannel(b, h, d, l);
+                        Check(v >= 0f && v <= 1f, $"sky channel {v} outside 0..1");
+                        Check(v <= Math.Min(1f, b + h * l) + 1e-5f, "sky channel brighter than base + hue x light");
+                        Check(v >= Math.Min(1f, b * (1f - d)) - 1e-5f, "sky channel darker than the darkened base");
+                        Check(RM_WeatherKernel.AuroraSkyChannel(b, h, 0f, l) >= b - 1e-6f, "darkness 0 made the night darker");
+                        float gg = F(r, 0f, 0.6f);
+                        float fl = RM_WeatherKernel.GroundGlowFloor(gg, sh, n);
+                        Check(fl >= 0f && fl <= RM_WeatherKernel.MaxGroundGlow, $"ground floor {fl}");
+                        Check(RM_WeatherKernel.GroundGlowFloor(gg, sh, RM_WeatherKernel.Nightness(0.6f)) == 0f, "ground floor nonzero at dusk/day");
+                    }
+                    Check(hi - lo > 0.05f, $"shimmer barely moved ({lo}..{hi}) at activity {act}: not 'wildly active'");
+                }
+                catch (Exception e) { fails.Add($"light seed {seed}: {e.Message}"); }
+            }
+            // fixed points (not seeded)
+            if (RM_WeatherKernel.Nightness(0f) != 1f || RM_WeatherKernel.Nightness(0.1f) != 1f || RM_WeatherKernel.Nightness(0.6f) != 0f)
+                fails.Add("light: nightness edges are not night 1 at <= 0.1 and 0 at 0.6");
+            if (RM_WeatherKernel.GroundGlowFloor(0.22f, 1f, 1f) >= RM_WeatherKernel.PsychLitThreshold)
+                fails.Add("light: the shipped ground glow 0.22 reaches vanilla's Lit line at full shimmer (the Umbra would stop being dark)");
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -146,6 +194,7 @@ namespace RimMandrake.StarWars.WeatherSuite.SelfTest
                 ("arc", () => Arc(N(2500), S(1))),
                 ("bands", () => Bands(N(1500), S(1))),
                 ("tint", () => Tint(N(2500), S(1))),
+                ("light", () => Light(N(1500), S(1))),
             };
             foreach (var f in fam)
             {

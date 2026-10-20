@@ -16,8 +16,10 @@ v1 slice only: terminator storms, dark-side auroras. Glass storms, static season
       <packageId>Ludeon.RimWorld</packageId>
       <displayName>RimWorld</displayName>
     </li>
+    <li><packageId>brrainz.harmony</packageId><displayName>Harmony</displayName><downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</downloadUrl></li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>Ludeon.RimWorld</li>
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>ludeon.rimworld.anomaly</li>

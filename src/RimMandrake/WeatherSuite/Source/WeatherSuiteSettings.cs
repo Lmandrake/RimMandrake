@@ -20,6 +20,9 @@ namespace RimMandrake.StarWars.WeatherSuite
     //   3. Maximized aurora brightness — GameCondition_DarkAuroraMax's
     //      override of vanilla's hardcoded-private aurora colour/brightness.
     //
+    //   4. Perpetual aurora (AURORAL_UMBRA) - a permanent aurora on marked biomes; its light comes from
+    //      two Harmony postfixes (AuroraLight.cs, AURORA_LIGHT 2026-10-20).
+    //
     // Precedent: src/RimMandrake/Greentide/Source/RM_GreentideMod.cs.
     // ════════════════════════════════════════════════════════════════════
     public class WeatherSuiteSettings : ModSettings
@@ -34,16 +37,23 @@ namespace RimMandrake.StarWars.WeatherSuite
         public static float auroraOverlaySaturation = 0.05f;
         public static float auroraSkyBrightness = 1.15f;
 
-        // AURORAL_UMBRA (owner 2026-10-19): the perpetual aurora on biomes carrying PerpetualAuroraExtension.
-        // PROVISIONAL first-guess numbers: glow 0.35 (vanilla aurora floor 0.25, i.e. a little brighter than the
-        // incident), activity 8 (colour change every ~470 ticks, about 8 s at 1x, vs vanilla permanent 3750).
+        // AURORAL_UMBRA (owner 2026-10-19: "totally dark except for the utterly beautiful and wildly active aurora"): the perpetual aurora on
+        // biomes carrying PerpetualAuroraExtension; its light is AuroraLight.cs (AURORA_LIGHT 2026-10-20). ALL NUMBERS PROVISIONAL (first
+        // guesses, to be judged by eye in game): ground glow 0.22 (under vanilla's 0.30 "Lit" line: lit but still a dark place), sky light 0.30
+        // (aurora hue added to the night sky colour), night darkness 0.50 (the ordinary night sky dimmed by half), activity 8 (colour change
+        // every ~470 ticks, shimmer and curtain drift 8x), curtains on at strength 0.35.
         public static bool perpetualAuroraEnabled = true;
-        public static float perpetualAuroraGlow = 0.35f;
+        public static float perpetualAuroraGroundGlow = 0.22f;
+        public static float perpetualAuroraSkyLight = 0.30f;
+        public static float perpetualAuroraNightDarkness = 0.50f;
         public static int perpetualAuroraActivity = 8;
+        public static bool perpetualAuroraCurtains = true;
+        public static float perpetualAuroraCurtainStrength = 0.35f;
 
         public override void ExposeData()
         {
             base.ExposeData();
+            RimMandrake.Shared.PatchApplier.BeforeExpose(typeof(WeatherSuiteSettings));
             Scribe_Values.Look(ref terminatorFrontEnabled, "terminatorFrontEnabled", true);
             Scribe_Values.Look(ref nightsideAuroraEnabled, "nightsideAuroraEnabled", true);
             Scribe_Values.Look(ref auroraMaxBrightnessEnabled, "auroraMaxBrightnessEnabled", true);
@@ -51,8 +61,13 @@ namespace RimMandrake.StarWars.WeatherSuite
             Scribe_Values.Look(ref auroraOverlaySaturation, "auroraOverlaySaturation", 0.05f);
             Scribe_Values.Look(ref auroraSkyBrightness, "auroraSkyBrightness", 1.15f);
             Scribe_Values.Look(ref perpetualAuroraEnabled, "perpetualAuroraEnabled", true);
-            Scribe_Values.Look(ref perpetualAuroraGlow, "perpetualAuroraGlow", 0.35f);
+            Scribe_Values.Look(ref perpetualAuroraGroundGlow, "perpetualAuroraGroundGlow", 0.22f);
+            Scribe_Values.Look(ref perpetualAuroraSkyLight, "perpetualAuroraSkyLight", 0.30f);
+            Scribe_Values.Look(ref perpetualAuroraNightDarkness, "perpetualAuroraNightDarkness", 0.50f);
             Scribe_Values.Look(ref perpetualAuroraActivity, "perpetualAuroraActivity", 8);
+            Scribe_Values.Look(ref perpetualAuroraCurtains, "perpetualAuroraCurtains", true);
+            Scribe_Values.Look(ref perpetualAuroraCurtainStrength, "perpetualAuroraCurtainStrength", 0.35f);
+            RimMandrake.Shared.PatchApplier.AfterExpose(typeof(WeatherSuiteSettings));
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -153,16 +168,24 @@ namespace RimMandrake.StarWars.WeatherSuite
                 list.GapLine();
             }
 
-            if (Group(list, "Perpetual aurora (biomes that never lose it)", RimMandrake.Shared.SettingScope.Now, new[] { "perpetualAuroraEnabled", "perpetualAuroraGlow", "perpetualAuroraActivity" }))
+            if (Group(list, "Perpetual aurora (biomes that never lose it)", RimMandrake.Shared.SettingScope.Now, new[] { "perpetualAuroraEnabled", "perpetualAuroraGroundGlow", "perpetualAuroraSkyLight", "perpetualAuroraNightDarkness", "perpetualAuroraActivity", "perpetualAuroraCurtains", "perpetualAuroraCurtainStrength" }))
             {
                 list.CheckboxLabeled("Perpetual aurora", ref perpetualAuroraEnabled,
                     "A biome marked for it (on Ash'karr: the Auroral Umbra) keeps an aurora in its sky at all times, "
-                  + "lighting the ground and lifting moods. Off: the aurora is removed from those maps within an hour "
-                  + "of game time; only the ordinary, occasional aurora event remains.");
-                list.Label("  Light it casts on the ground: " + perpetualAuroraGlow.ToString("0.00") + " (occasional aurora: 0.25; full daylight: 1.00)");
-                perpetualAuroraGlow = list.Slider(perpetualAuroraGlow, 0.05f, 0.8f);
-                list.Label("  Activity (how fast its colours sweep): " + perpetualAuroraActivity + "x (1x = vanilla's slow permanent drift)");
+                  + "colouring the night sky, faintly lighting open ground and lifting moods. Off: the aurora is removed from those maps "
+                  + "within an hour of game time; only the ordinary, occasional aurora event remains.");
+                list.Label("  Light on open ground: " + perpetualAuroraGroundGlow.ToString("0.00") + " (below 0.30 the ground still counts as dark; full daylight: 1.00)");
+                perpetualAuroraGroundGlow = list.Slider(perpetualAuroraGroundGlow, 0f, RimMandrake.StarWars.WeatherSuite.RM_WeatherKernel.MaxGroundGlow);
+                list.Label("  Aurora colour in the sky: " + perpetualAuroraSkyLight.ToString("0.00") + " (how strongly its light tints the whole map)");
+                perpetualAuroraSkyLight = list.Slider(perpetualAuroraSkyLight, 0f, 0.8f);
+                list.Label("  Darkness of the night around it: " + perpetualAuroraNightDarkness.ToString("0.00") + " (0 = an ordinary night; 1 = black but for the aurora)");
+                perpetualAuroraNightDarkness = list.Slider(perpetualAuroraNightDarkness, 0f, 1f);
+                list.Label("  Activity (how fast it sweeps, shimmers and drifts): " + perpetualAuroraActivity + "x (1x = vanilla's slow permanent drift)");
                 perpetualAuroraActivity = Mathf.RoundToInt(list.Slider(perpetualAuroraActivity, 1f, 30f));
+                list.CheckboxLabeled("  Moving curtains of light", ref perpetualAuroraCurtains,
+                    "Draws drifting ribbons of aurora light over the map at night. Off: only the sky colour and ground light remain.");
+                list.Label("  Curtain brightness: " + perpetualAuroraCurtainStrength.ToString("0.00"));
+                perpetualAuroraCurtainStrength = list.Slider(perpetualAuroraCurtainStrength, 0f, 1f);
                 list.GapLine();
             }
 
@@ -179,6 +202,8 @@ namespace RimMandrake.StarWars.WeatherSuite
         public WeatherSuiteOptionsMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<WeatherSuiteSettings>();
+            // AURORA_LIGHT: the perpetual aurora's two light postfixes (AuroraLight.cs). One broken patch switches its feature off, not the mod.
+            RimMandrake.Shared.PatchApplier.Apply(new HarmonyLib.Harmony("mandrake.rm.weathersuite"), typeof(WeatherSuiteOptionsMod).Assembly, "RimMandrake.StarWars.WeatherSuite");
         }
 
         public override string SettingsCategory()
