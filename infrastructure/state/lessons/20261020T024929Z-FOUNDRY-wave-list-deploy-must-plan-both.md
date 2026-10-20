@@ -1,0 +1,1 @@
+A Wave/list deploy must plan BOTH deploy_custom_mods.py (whole tree) AND deploy_custom_mods.py --compose biomes: the whole-tree plan does not cover the composed RimMandrake.Biomes mod, so a deployed UtinniPatches BiomeDef naming new composed defs (RM_Rhossak) xref-failed and aborted Wave 2 load #1 (2026-10-19).

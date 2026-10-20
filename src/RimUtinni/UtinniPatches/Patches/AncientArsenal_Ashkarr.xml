@@ -59,11 +59,14 @@
        POOL, not the budget. Adding IndustrialGunAdvanced lets the existing 7500 reach a
        pool whose p25 is 4825. This is the single largest difficulty change in this file. -->
   <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AncientSoldierBoss"]</xpath>
+    <match Class="PatchOperationConditional">
     <xpath>/Defs/PawnKindDef[defName="AncientSoldierBoss"]/weaponTags/li[text()="IndustrialGunAdvanced"]</xpath>
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/PawnKindDef[defName="AncientSoldierBoss"]/weaponTags</xpath>
       <value><li>IndustrialGunAdvanced</li></value>
     </nomatch>
+    </match>
   </Operation>
 
 </Patch>
