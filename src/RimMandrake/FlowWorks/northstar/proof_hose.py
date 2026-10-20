@@ -462,7 +462,7 @@ def realflow(B, rows):
         # a second pipe run touching a mid tank (and a tank V on it) must stay out of the pump's net
         # A 2x2 tank at (x,z) occupies x..x+1, z..z+1. Live run 6 (2026-10-19) put V at (ox+1, oz+13): its z+1 row is oz+14, one row
         # past the prepared plot (RF_PH=14 -> oz..oz+13), so V was never built (SITE). V now sits WEST of the pipe run, inside the
-        # RF_WEST-prepared strip: (ox-2..ox-1, oz+11..oz+12) touches the pipe cells (ox, oz+11/12) from the other side than mid.
+        # RF_WEST-prepared strip (since 2026-10-20 at oz+8..oz+9, see below), touching run 2's pipe cells from the other side than mid.
         # Code review 2026-10-20: mid at (ox+1, oz+11) met run 1's last pipe (ox+3, oz+10) only corner to corner, so it touched
         # ONE run and the row could not fail. It now sits WEST of run 1 at (ox+1, oz+8): ox+1..ox+2, oz+8..oz+9, edge to edge with
         # pipes (ox+3, oz+8/9), clear of the channel (oz+6), the pump (ox+3, oz+7) and reel5's west lead-out (row oz+10). Run 2
