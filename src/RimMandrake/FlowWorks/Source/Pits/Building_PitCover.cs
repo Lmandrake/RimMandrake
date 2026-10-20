@@ -146,13 +146,15 @@ namespace RimMandrake.FlowWorks.Pits
 
         /// <summary>FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED (GPT edge read V3): a cover destroyed by damage (fire, shots, a
         /// blast that kills it before the explosion postfix looks) is no longer ground, so whoever stands on it falls, as the
-        /// blast rule already has everyone fall (owner cards Q5 + Q9). Only a kill: a deconstructed or vanished cover is unchanged.</summary>
+        /// blast rule already has everyone fall (owner cards Q5 + Q9). PIT_COVER_BUILD_DECONSTRUCT_DROPS_TOO (owner card 2026-10-20):
+        /// a deconstructed cover drops its riders the same way. A vanished/replaced cover is unchanged; covers have no
+        /// minifiedDef, so there is no uninstall path.</summary>
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
             Map map = Map;
             IntVec3 pos = Position;
             List<Pawn> riders = null;
-            if (!collapsed && map != null && (mode == DestroyMode.KillFinalize || mode == DestroyMode.KillFinalizeLeavingsOnly))
+            if (!collapsed && map != null && (mode == DestroyMode.KillFinalize || mode == DestroyMode.KillFinalizeLeavingsOnly || mode == DestroyMode.Deconstruct))
             {
                 foreach (Thing t in pos.GetThingList(map))
                 {
@@ -179,7 +181,8 @@ namespace RimMandrake.FlowWorks.Pits
             }
             if (first != null)
             {
-                Messages.Message("A pit cover broke under " + first.LabelShort + (riders.Count > 1 ? " and others." : "."),
+                string what = mode == DestroyMode.Deconstruct ? "A pit cover was taken apart under " : "A pit cover broke under ";
+                Messages.Message(what + first.LabelShort + (riders.Count > 1 ? " and others." : "."),
                     new LookTargets(riders), MessageTypeDefOf.NegativeEvent);
             }
         }
