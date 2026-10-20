@@ -17,7 +17,7 @@
     <description>A fiery fissure in the earth. It intermittently erupts with jets of molten rock and searing gas that set everything nearby alight.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/GeothermalVent</texPath>
+      <texPath>Things/Building/RM_MagmaVent/RM_MagmaVent</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(4,4)</drawSize>
       <color>(255,140,90)</color>
