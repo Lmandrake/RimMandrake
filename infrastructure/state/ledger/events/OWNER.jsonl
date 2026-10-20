@@ -1367,3 +1367,5 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"374 load READY (launch_ready rc=0)","ts":"2026-10-20T04:54:47Z","tsn":1792472087604263282}
 {"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"restart to load xeno heads, swim/elder art, Weather Suite aurora, Cauldron rhossak DLL, Umbra, JawaBench (live_testing_2026-10-20d)","ts":"2026-10-20T05:54:41Z","tsn":1792475681740836645}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"game closed for deploy","ts":"2026-10-20T05:54:48Z","tsn":1792475688449151137}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"relaunched via Steam after deploy (heads, swim, elder, Weather Suite, Cauldron DLL, JawaBench)","ts":"2026-10-20T06:06:51Z","tsn":1792476411540887910}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"READY after launch_ready (live_testing_2026-10-20d)","ts":"2026-10-20T06:19:32Z","tsn":1792477172381757720}
