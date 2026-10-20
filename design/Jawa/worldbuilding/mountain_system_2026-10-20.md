@@ -113,8 +113,97 @@ Owed checks:
 2. **Overlay mods:** decide whether *World Map Enhanced* and/or *GRimTerra Worldmap* return. It is a
    cosmetic change, so it is his permission to give. With them on, hills draw as relief rather than
    honeycomb, and the 49% matters less.
-3. **Ashfall / Fall Line** still reads as one thick X-shaped massif, and the **Ashteeth** is still a
-   LargeHills ring around the Anvil. Each could get the same treatment in a second pass if he wants it.
+3. **Ashfall / Fall Line** read as one thick X-shaped massif, and the **Ashteeth** as a LargeHills
+   ring around the Anvil. The second pass (below) is the plan for both; it is not applied yet.
 4. **Rock landmarks on demoted tiles:** 66 Caverns and 33 Valleys left Mountainous. The live world
    already had 125 Caverns and 101 Valleys on Flat (validity was never enforced at import), but
    `world_lint` after the apply is the check.
+
+## Second pass (planned 2026-10-20, offline; not yet applied)
+
+Owner, 2026-10-20: the mountains are *"better"*, and *"Let's keep working on these biome and mountain
+and river and road issues."* (His *"the honeycomb looks bizarre"* turned out to be the sea-floor layer,
+which is fixed. So the hills were judged again from scratch.)
+Plan: `world/ASHKARR_MOUNTAINS2_2026-10-20_plan.json`. It uses the first plan's schema, adds
+`elevationBefore`, and has a `before` value on every tile so the applier can verify the base.
+Script: `world/_mountain_plan2_2026-10-20.py`. Selftest: `src/RimMandrake/Utils/selftest_mountain_plan2.py`.
+The selftest regenerates the plan, checks the invariants, and first proves each checker fails on a
+broken copy.
+**Base: `ASHKARR_DEV_START_2026-10-20_RECORDLINKS`.** It has the first pass applied and the links
+re-imported from the record: 326 river links and 1,242 road links.
+Pictures are in `D:\ClaudeWork\rimmandrake\scratch\mountains2\`:
+`BEFORE_AFTER_hilliness.jpg`, `BEFORE_AFTER_elevation.jpg`, `BEFORE_AFTER_ashfall.png` and
+`BEFORE_AFTER_ashteeth.png`. The "after" pictures are an offline worldview render of the plan
+applied to the export.
+
+- **Ashfall Range / Fall Line: ridge-and-valley instead of a block.** The old footprint is every
+  LargeHills+ tile in the box from arc 24 to 73, bearing 322 to 42. It is reset, then repainted as 8
+  ridges placed by hand on the measured crests (elevation and topographic position):
+  - Ashfall West N and Ashfall West S run en-echelon, with the road in the valley between them.
+  - Ashfall High is the 2,190 m summits.
+  - Ashfall East S and the lower Ashfall East N have the east road in the longitudinal valley between them.
+  - A short south spur.
+  - The Fall Line is two en-echelon radial segments. They overlap at arc 30 to 34 and stop at arc 47,
+    so there is now a saddle at arc 48 to 51 where the X used to join.
+
+  Each ridge has a Mountainous core, a LargeHills skirt and a SmallHills apron, and tapers at both
+  ends. Four authored saddles cut the ridges where roads cross. Between the ridges:
+  - valley floors (TPI < −60 m and relief < 210 m) are Flat;
+  - the rest of the old footprint is SmallHills.
+- **Hilliness is still local relief (§12.7).** No rebuilt tile drops more than one class below its
+  own relief class (cuts 110/210/380). Relief here is measured against land neighbours only, because a
+  coast's drop to the −350 m sea floor is not hill relief. So a canyon wall stays LargeHills even when
+  it lies in a valley.
+- **The Ashteeth: 12 oblique teeth instead of a ring.** The Anvil rim runs from arc 17 to 24, outside
+  the Cratercrown zone. On it, the continuous LargeHills band becomes 12 short teeth:
+  - each tooth is about 4 to 6 tiles of LargeHills with one SmallHills apron;
+  - they lie 25 to 70° off the rim line, are staggered from arc 17 to 23.5, and differ in length;
+  - they do not alternate regularly.
+
+  Between teeth, the rim follows the first pass's purposeful-hills rule: relief under 210 m is plain.
+  Real high relief (≥ 380 m, above 900 m) keeps a peak.
+- **Roads go through passes.** A road tile on a rebuilt ridge core or tooth drops one class (12 tiles).
+- **Hills that were only there for removed river heads go back.** The first pass raised 46 river
+  heads. With the links re-imported, 44 sources remain, and all 44 were already LargeHills+. The
+  first-pass heads that are no longer sources and still sat at LargeHills were reset to what they were
+  before the first pass: 23 tiles, 14 to Flat and 9 to SmallHills (still on a stream mid-course). The
+  rest were already high ground before the first pass, or are inside a rebuilt footprint.
+- **Untouched:** settlements, rivers, roads, biomes, and the whole Cratercrown zone (≤ 22.5° from the
+  Scald centre, which keeps the only Impassable). No river tile's elevation changes. Elevation is
+  raised on 4 new crest tiles that stood below their own skirt (skirt mean + 120 m, at most +119).
+
+| measured on the RECORDLINKS export | before | after |
+|---|---|---|
+| Flat / Small / Large / Mountainous / Impassable (land) | 9,721 / 5,236 / 3,785 / 1,620 / 62 | 9,803 / 5,644 / 3,612 / 1,303 / 62 |
+| hill overlay, SmallHills+ (of 21,872) | 10,703 (48.9%) | 10,621 (48.6%) |
+| Mountainous next to Flat | 0 | 0 |
+| Mountainous+ with land relief < 210 m | 402 | 298 |
+| river links changing downhill sense | — | 0 |
+| river links running uphill (the record's own, unchanged) | 72 | 72 |
+| river sources at LargeHills+ | 44 / 44 | 44 / 44 |
+| Impassable off the Cratercrown crest | 0 | 0 |
+| Ashfall/Fall Line Mountainous: tiles / bodies / largest | 406 / 6 / 279 | 90 / 13 / 23 |
+| Ashfall/Fall Line largest LargeHills+ body | 606 | 178 |
+| Anvil rim (arc 17–24, off-crater): LargeHills+ / SmallHills of 358 | 165 / 73 | 95 / 151 |
+| tiles changed | — | 805 hilliness + 4 elevation; 0 settlements; 0 Cratercrown; 86 landmark tiles |
+
+**Lint.** Live `world_lint` on RECORDLINKS reads 21 findings. Of its checks, only "settlement on
+Impassable" reads hilliness, and that is 0 before and 0 after. Elevation changes only on 4 land tiles,
+which move upward, so no water/land check can move. The offline proxy agrees: 1 single-tile island
+and 19 settlements with no road, the same before and after. The 21st live finding comes from a check
+that cannot be measured offline, and that check does not read hilliness. **The prediction is 21 → 21.**
+Applying the plan includes running `world_lint` before and after.
+
+**Applying it** (needs the bridge, so the owner's game must be up):
+1. Load `ASHKARR_DEV_START_2026-10-20_RECORDLINKS` and check that planet type reads `TidallyLocked`.
+2. Verify that live hilliness equals the plan's `before` on all 805 tiles, and elevation equals
+   `elevationBefore` on 4.
+3. Run `world_lint` and keep the result.
+4. Write with grouped `world_tile_set` calls plus 4 elevation sets, then one `world_commit`.
+5. Read back and require 0 mismatches.
+6. Run `world_lint` again and compare.
+7. Save as `ASHKARR_DEV_START_2026-10-20_MOUNTAINS2.rws`, never over the base.
+
+The applier is `world/_mountain_apply2_2026-10-20.py` (the first pass's, with the `elevationBefore`
+comparison added): `python.exe <it> <plan.json> <outdir>` verifies and lints only; add `--apply` to write.
+The acceptance test is the owner's look at the globe.
