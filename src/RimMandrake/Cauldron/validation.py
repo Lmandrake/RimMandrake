@@ -2286,7 +2286,10 @@ def _w_status(t, wid):
     _l, lines = _inspect(t, wid)
     ls = [str(x) for x in lines]
     proc = [x for x in ls if x.startswith("Processed")]
-    stat = [x for x in ls if not x.startswith("Processed") and not x.startswith("Pending")]
+    # HARNESS LESSON (A5, live 2026-10-19c): the inspect string leads with VANILLA's CompPowerTrader line "Power needed: 350 W" (shown
+    # whenever the works is on the grid) and the Refuelable line; the converter's own status ("Out of fuel", "No power", "Idle",
+    # "Turning ...") comes after. Taking lines[0] read the power draw as the status and failed A5 although the works was fine.
+    stat = [x for x in ls if not x.startswith(("Processed", "Pending", "Power needed", "Filter cartridge", "Cartridge"))]
     return (stat[0] if stat else ""), (proc[0] if proc else "")
 
 
