@@ -19,11 +19,17 @@ The owner's canonical save was NOT edited.
 
 ## Save residue the canonical save still carries (live repair steps for BENCH)
 Game up with the donor-free list, save loaded, bridge held:
-1. Landmarks (unresolved; 14 tiles): AB_TarLakes (tiles 994, 457, 476, 1859, 1866, 2637, 10015), AB_MagmaticQuagmire (2540, 7405, 7400),
-   AB_QuicksandPits (1415), AB_PropaneLakes (x2: list with `save_adoption_check.py --json`). Since 2026-10-19 each has a port
+1. Landmarks (unresolved; 11 tiles): AB_TarLakes (tiles 994, 457, 476, 1859, 1866, 2637, 10015), AB_MagmaticQuagmire (2540, 7405, 7400),
+   AB_QuicksandPits (1415). Since 2026-10-19 each has a port
    (`RM_TarLakes`, `RM_MagmaticQuagmire`, `RM_QuicksandPits`; map `design/RimMandrake/retired_mutators_port_map.json`): set the
-   port with `jawa/world_landmarks_set` then `world_commit`, or use the offline-renamed copy (WORLDMAP_REPAIR note). `AB_PropaneLakes` is
-   on no tile of the canonical save (it is only a world-gen biome key). The load drops an unrenamed one with an error.
+   port with `jawa/world_landmarks_set` then `world_commit`, or use the offline-renamed copy (WORLDMAP_REPAIR note).
+   The load drops an unrenamed one with an error.
+   **`AB_PropaneLakes` is NOT a landmark (gate G10, settled 2026-10-19, MEASURED):** `save_adoption_check.py --save
+   CANONICAL_ASHKARR_START_2026-09-12.rws` (read-only; sha256 prefix 1ff329161abeaa8c before and after) finds its 2 rows at
+   `worldGenerationData/biomeCommonalities/keys/li` ×1 and `worldGenerationData/biomeScoreOffsets/keys/li` ×1 — the world-creation
+   biome sliders — and 0 rows under `landmarks/values/li/def`, 0 in the landmark worklist. The earlier "x2 landmarks" came from the
+   tool's summary bucket `WorldObject/landmark`, which groups by owner kind, not by save path. It is on no tile; on a fresh world it
+   does not arise (the slider key exists only if Alpha Biomes is loaded at creation, and it is off the PAINT list).
 2. Biomes with AB_ names (10 tiles-groups: AB_FeraliskInfestedJungle, AB_GallatrossGraveyard, AB_GelatinousSuperorganism,
    AB_MechanoidIntrusion ...): `world tileBiome` lostOnLoad hashes 59367 x1135, 65189 x546, 58457 x222: repaint those tiles
    (`world_tile_set`) to a provided biome; this is the planned one-time repaint, so just record it.
