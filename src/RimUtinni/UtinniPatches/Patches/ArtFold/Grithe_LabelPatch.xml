@@ -11,19 +11,28 @@
   reads consistently.
 -->
 <Patch>
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/ThingDef[defName="GR_ParagonRat"]/label</xpath>
-    <value><label>grithe</label></value>
-    <success>Always</success>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GR_ParagonRat"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="GR_ParagonRat"]/label</xpath>
+      <value><label>grithe</label></value>
+      <success>Always</success>
+    </match>
   </Operation>
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/ThingDef[defName="GR_ParagonRat"]/description</xpath>
-    <value><description>A chitin-plated insectoid-rodent scavenger, native to the wastes. Its oversized, grasping forepaws are built for one purpose: snatching whatever isn't nailed down. Fast-breeding and utterly indiscriminate about what it eats, a grithe infestation is as much a property crime as a pest problem.</description></value>
-    <success>Always</success>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GR_ParagonRat"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="GR_ParagonRat"]/description</xpath>
+      <value><description>A chitin-plated insectoid-rodent scavenger, native to the wastes. Its oversized, grasping forepaws are built for one purpose: snatching whatever isn't nailed down. Fast-breeding and utterly indiscriminate about what it eats, a grithe infestation is as much a property crime as a pest problem.</description></value>
+      <success>Always</success>
+    </match>
   </Operation>
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/PawnKindDef[defName="GR_ParagonRat"]/label</xpath>
-    <value><label>grithe</label></value>
-    <success>Always</success>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="GR_ParagonRat"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="GR_ParagonRat"]/label</xpath>
+      <value><label>grithe</label></value>
+      <success>Always</success>
+    </match>
   </Operation>
 </Patch>

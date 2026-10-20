@@ -75,26 +75,35 @@
               <li>RSW_SmeltDoonium</li>
             </value>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltDoonium</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltDoonium</li>
+              </value>
+            </match>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltDoonium</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltDoonium</li>
+              </value>
+            </match>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltDoonium</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltDoonium</li>
+              </value>
+            </match>
           </li>
         </operations>
       </match>
@@ -155,26 +164,35 @@
               <li>RSW_SmeltPhrik</li>
             </value>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltPhrik</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltPhrik</li>
+              </value>
+            </match>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltPhrik</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltPhrik</li>
+              </value>
+            </match>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltPhrik</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltPhrik</li>
+              </value>
+            </match>
           </li>
         </operations>
       </match>
@@ -270,26 +288,35 @@
               <li>RSW_SmeltPlasteelFromSlag</li>
             </value>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltPlasteelFromSlag</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltPlasteelFromSlag</li>
+              </value>
+            </match>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltPlasteelFromSlag</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltPlasteelFromSlag</li>
+              </value>
+            </match>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltPlasteelFromSlag</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltPlasteelFromSlag</li>
+              </value>
+            </match>
           </li>
           <li Class="PatchOperationAdd">
             <success>Always</success>
@@ -298,26 +325,35 @@
               <li>RSW_SmeltDurasteelFromSlag</li>
             </value>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltDurasteelFromSlag</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltDurasteelFromSlag</li>
+              </value>
+            </match>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltDurasteelFromSlag</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltDurasteelFromSlag</li>
+              </value>
+            </match>
           </li>
-          <li Class="PatchOperationAdd">
-            <success>Always</success>
-            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
-            <value>
-              <li>RSW_SmeltDurasteelFromSlag</li>
-            </value>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <value>
+                <li>RSW_SmeltDurasteelFromSlag</li>
+              </value>
+            </match>
           </li>
         </operations>
       </match>

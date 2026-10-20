@@ -3316,162 +3316,171 @@
   <!-- bindweed (IronScruff_Bindweed) - 44 tiles, home demands 26.9 … 70.8 °C
        minGrowthTem 0->0  minOptimalGr 6->7.3  maxOptimalGr 42->51.3  maxGrowthTem 58->70.8 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/minGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/minGrowthTemperature</xpath>
-            <value><minGrowthTemperature>0</minGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant</xpath>
-            <value><minGrowthTemperature>0</minGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/minOptimalGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/minGrowthTemperature</xpath>
+              <value><minGrowthTemperature>0</minGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant</xpath>
+              <value><minGrowthTemperature>0</minGrowthTemperature></value>
+            </nomatch>
+          </li>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/minOptimalGrowthTemperature</xpath>
-            <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant</xpath>
-            <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/maxOptimalGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/minOptimalGrowthTemperature</xpath>
+              <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant</xpath>
+              <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
+            </nomatch>
+          </li>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/maxOptimalGrowthTemperature</xpath>
-            <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant</xpath>
-            <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/maxGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/maxOptimalGrowthTemperature</xpath>
+              <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant</xpath>
+              <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
+            </nomatch>
+          </li>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/maxGrowthTemperature</xpath>
-            <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant</xpath>
-            <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
-          </nomatch>
-        </li>
-      </operations>
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant/maxGrowthTemperature</xpath>
+              <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_Bindweed"]/plant</xpath>
+              <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
+            </nomatch>
+          </li>
+        </operations>
+      </match>
     </match>
   </Operation>
 
   <!-- primordial grass (IronScruff_PrimordialGrass) - 44 tiles, home demands 26.9 … 70.8 °C
        minGrowthTem 0->0  minOptimalGr 6->7.3  maxOptimalGr 42->51.3  maxGrowthTem 58->70.8 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/minGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/minGrowthTemperature</xpath>
-            <value><minGrowthTemperature>0</minGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant</xpath>
-            <value><minGrowthTemperature>0</minGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/minOptimalGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/minGrowthTemperature</xpath>
+              <value><minGrowthTemperature>0</minGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant</xpath>
+              <value><minGrowthTemperature>0</minGrowthTemperature></value>
+            </nomatch>
+          </li>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/minOptimalGrowthTemperature</xpath>
-            <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant</xpath>
-            <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/maxOptimalGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/minOptimalGrowthTemperature</xpath>
+              <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant</xpath>
+              <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
+            </nomatch>
+          </li>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/maxOptimalGrowthTemperature</xpath>
-            <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant</xpath>
-            <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/maxGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/maxOptimalGrowthTemperature</xpath>
+              <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant</xpath>
+              <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
+            </nomatch>
+          </li>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/maxGrowthTemperature</xpath>
-            <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant</xpath>
-            <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
-          </nomatch>
-        </li>
-      </operations>
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant/maxGrowthTemperature</xpath>
+              <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/plant</xpath>
+              <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
+            </nomatch>
+          </li>
+        </operations>
+      </match>
     </match>
   </Operation>
 
   <!-- primordial tall grass (IronScruff_PrimordialTallGrass) - 44 tiles, home demands 26.9 … 70.8 °C
        minGrowthTem 0->0  minOptimalGr 6->7.3  maxOptimalGr 42->51.3  maxGrowthTem 58->70.8 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/minGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/minGrowthTemperature</xpath>
-            <value><minGrowthTemperature>0</minGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant</xpath>
-            <value><minGrowthTemperature>0</minGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/minOptimalGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/minGrowthTemperature</xpath>
+              <value><minGrowthTemperature>0</minGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant</xpath>
+              <value><minGrowthTemperature>0</minGrowthTemperature></value>
+            </nomatch>
+          </li>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/minOptimalGrowthTemperature</xpath>
-            <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant</xpath>
-            <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/maxOptimalGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/minOptimalGrowthTemperature</xpath>
+              <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant</xpath>
+              <value><minOptimalGrowthTemperature>7.3</minOptimalGrowthTemperature></value>
+            </nomatch>
+          </li>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/maxOptimalGrowthTemperature</xpath>
-            <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant</xpath>
-            <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/maxGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/maxOptimalGrowthTemperature</xpath>
+              <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant</xpath>
+              <value><maxOptimalGrowthTemperature>51.3</maxOptimalGrowthTemperature></value>
+            </nomatch>
+          </li>
+          <li Class="PatchOperationConditional">
             <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/maxGrowthTemperature</xpath>
-            <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant</xpath>
-            <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
-          </nomatch>
-        </li>
-      </operations>
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant/maxGrowthTemperature</xpath>
+              <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialTallGrass"]/plant</xpath>
+              <value><maxGrowthTemperature>70.8</maxGrowthTemperature></value>
+            </nomatch>
+          </li>
+        </operations>
+      </match>
     </match>
   </Operation>
 

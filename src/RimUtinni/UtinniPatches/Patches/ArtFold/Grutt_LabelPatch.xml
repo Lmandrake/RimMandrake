@@ -9,19 +9,28 @@
   ThingDef and the PawnKindDef carry their own label; both are patched.
 -->
 <Patch>
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/ThingDef[defName="GR_Molebear"]/label</xpath>
-    <value><label>grutt</label></value>
-    <success>Always</success>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GR_Molebear"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="GR_Molebear"]/label</xpath>
+      <value><label>grutt</label></value>
+      <success>Always</success>
+    </match>
   </Operation>
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/ThingDef[defName="GR_Molebear"]/description</xpath>
-    <value><description>A tusked, armor-plated burrower, blind but for vestigial eyes it has no real use for underground. Its oversized digging claws work as well through rock as through an enemy's hide, and it will periodically surface with whatever raw metal it happened to dig up. Too independent to train as a fighter, but tough enough that few things bother trying to make it one.</description></value>
-    <success>Always</success>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GR_Molebear"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="GR_Molebear"]/description</xpath>
+      <value><description>A tusked, armor-plated burrower, blind but for vestigial eyes it has no real use for underground. Its oversized digging claws work as well through rock as through an enemy's hide, and it will periodically surface with whatever raw metal it happened to dig up. Too independent to train as a fighter, but tough enough that few things bother trying to make it one.</description></value>
+      <success>Always</success>
+    </match>
   </Operation>
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/PawnKindDef[defName="GR_Molebear"]/label</xpath>
-    <value><label>grutt</label></value>
-    <success>Always</success>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="GR_Molebear"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="GR_Molebear"]/label</xpath>
+      <value><label>grutt</label></value>
+      <success>Always</success>
+    </match>
   </Operation>
 </Patch>

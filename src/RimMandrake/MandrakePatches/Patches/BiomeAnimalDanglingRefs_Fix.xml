@@ -113,9 +113,12 @@
        1. AA_WaywardMobileAssembler  (removed from Alpha Animals)
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AA_WaywardMobileAssembler</xpath>
-    <match Class="PatchOperationRemove">
+    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AA_WaywardMobileAssembler</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AA_WaywardMobileAssembler</xpath>
+      </match>
     </match>
   </Operation>
 
@@ -123,9 +126,12 @@
        2. AEXP_Badger      (VAE 1.6NotOdyssey only; Odyssey is active)
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Badger</xpath>
-    <match Class="PatchOperationRemove">
+    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Badger</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Badger</xpath>
+      </match>
     </match>
   </Operation>
 
@@ -133,9 +139,12 @@
        3. AEXP_Muskox      (ditto)
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Muskox</xpath>
-    <match Class="PatchOperationRemove">
+    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Muskox</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Muskox</xpath>
+      </match>
     </match>
   </Operation>
 
@@ -143,9 +152,12 @@
        4. AEXP_Moose       (ditto; biome already lists vanilla Moose)
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Moose</xpath>
-    <match Class="PatchOperationRemove">
+    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Moose</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Moose</xpath>
+      </match>
     </match>
   </Operation>
 
@@ -153,9 +165,12 @@
        5. AEXP_Porcupine   (ditto; biome already lists vanilla Porcupine)
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Porcupine</xpath>
-    <match Class="PatchOperationRemove">
+    <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Porcupine</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/BiomeDef[defName="IronScruff_PrimordialGeysers"]/wildAnimals/AEXP_Porcupine</xpath>
+      </match>
     </match>
   </Operation>
 

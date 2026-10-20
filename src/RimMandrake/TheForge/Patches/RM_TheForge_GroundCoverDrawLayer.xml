@@ -17,17 +17,20 @@
 <Patch>
   <!-- primordial grass (Primordial Geysers) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/altitudeLayer</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/altitudeLayer</xpath>
-      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]/altitudeLayer</xpath>
         <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
       </match>
-    </nomatch>
+      <nomatch Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="IronScruff_PrimordialGrass"]</xpath>
+          <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+        </match>
+      </nomatch>
+    </match>
   </Operation>
 </Patch>
