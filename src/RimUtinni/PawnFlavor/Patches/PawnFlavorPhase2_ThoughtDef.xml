@@ -4821,7 +4821,10 @@
             </nomatch>
           </nomatch>
         </li>
+        <!-- AM_AmazingDreadnought exists only when Alpha Memes loads its VFE Pirates folder: guard on the def itself. -->
         <li Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="AM_AmazingDreadnought"]</xpath>
+          <match Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="AM_AmazingDreadnought"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -4880,6 +4883,7 @@
               </value>
             </nomatch>
           </nomatch>
+          </match>
         </li>
         <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="AM_AmazingFuneral"]/stages/li[1]</xpath>
