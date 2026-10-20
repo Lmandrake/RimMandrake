@@ -79,6 +79,17 @@ namespace RimMandrake.Cauldron
             return (float)(1.0 - Math.Exp(-(double)intervalTicks / (mtbHours * TicksPerHour)));
         }
 
+        // RHOSSAK A3: the inspect-pane line. Bind OFF -> no line at all, whatever the comp still remembers (a plain wild
+        // animal; "all-off degrades gracefully"); ON -> bound to the named tree, or unbound when none is valid.
+        public const string BoundPrefix = "Bound to ";
+        public const string UnboundLine = "Unbound: no grove tree on this map";
+
+        public static string BindLine(bool bindEnabled, bool treeValid, string treeLabel)
+        {
+            if (!bindEnabled) return null;
+            return treeValid ? BoundPrefix + treeLabel : UnboundLine;
+        }
+
         public static bool ShouldSprout(bool enabled, bool seedBearing, bool resting, float roll, float chance)
         {
             return enabled && seedBearing && resting && roll < chance;

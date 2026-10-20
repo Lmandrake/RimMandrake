@@ -235,10 +235,16 @@ namespace RimMandrake.Cauldron
         // ------------------------------------------------------------------ readout
         public override string CompInspectStringExtra()
         {
-            if (!RM_CauldronSettings.rhossakBindEnabled) return null;
-            if (TreeValid(boundTree)) return "Bound to " + boundTree.LabelNoCount;
-            return "Unbound: no grove tree on this map";
+            bool valid = TreeValid(boundTree);
+            return RM_RhossakKernel.BindLine(RM_CauldronSettings.rhossakBindEnabled, valid, valid ? boundTree.LabelNoCount : null);
         }
+
+        // RHOSSAK A3 probe surface (read by jawa/comp_read, members="BindSettingSeen,InspectLine"): the setting as THIS
+        // assembly's code sees it, and this comp's own pane line. The live A3 failure had the pane saying "Bound to" while
+        // comp_read saw boundTree null and the bridge read the setting False — impossible for this code, so the row now
+        // reads the comp's own line beside the pane to say which side is lying.
+        public bool BindSettingSeen => RM_CauldronSettings.rhossakBindEnabled;
+        public string InspectLine => CompInspectStringExtra();
 
         public override void PostExposeData()
         {

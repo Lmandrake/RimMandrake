@@ -825,6 +825,12 @@ namespace RimMandrake.Cauldron.SelfTest
                 Check(!RM_RhossakKernel.Together(false, true, true, 2, 3, true, true), "grove off never roots");
                 Check(RM_RhossakKernel.CooledDown(100, -1, 10f) && !RM_RhossakKernel.CooledDown(599999, 0, 10f) && RM_RhossakKernel.CooledDown(600000, 0, 10f), "cooldown cut");
                 Check(RM_RhossakKernel.StepTogether(int.MaxValue - 5, true, 100) == int.MaxValue, "together count saturates");
+                // A3: bind off -> no line at all, even for a rhossak whose comp still holds a valid tree
+                foreach (bool v in new[] { true, false })
+                    foreach (string lab in new[] { "twisting thornwood", null, "" })
+                        Check(RM_RhossakKernel.BindLine(false, v, lab) == null, "bind off must show no line (valid=" + v + ")");
+                Check(RM_RhossakKernel.BindLine(true, true, "twisting thornwood") == "Bound to twisting thornwood", "bound line");
+                Check(RM_RhossakKernel.BindLine(true, false, "twisting thornwood") == RM_RhossakKernel.UnboundLine, "an invalid tree reads unbound, never bound");
                 Check(RM_RhossakKernel.StepTogetherHeld(500, false, true, 250) == 500 && RM_RhossakKernel.StepTogetherHeld(500, false, false, 250) == 0
                       && RM_RhossakKernel.StepTogetherHeld(500, true, true, 250) == 750, "asleep together holds, apart resets, awake together advances");
                 {   // a day-sleeping herd of three, together throughout, roots within ~1.5 days (24 h awake at 16 h awake/day)
