@@ -16,7 +16,9 @@ Found by FOUNDRY 2026-10-20 during WORLDMAP_BIOME_APPEARANCE_1 (owner: *"Let's g
 - Consequence (INFERRED): the map day/night cycle and sun glow are vanilla, not tidally locked, and the globe looks dark whenever the clock puts the sun on the nightside.
 
 ## spec
-1. Find why the Alien Worlds framework does not call `OnActivate` on this save (framework `AlienWorlds.PlanetTypeManager`; try the 374 backup list `infrastructure/state/modlists/ModsConfig.LIVE_BACKUP_2026-10-20_pre_wave4.xml` to see if Wave 4 caused it; read the framework source).
+1. Cause, found offline by WORLD_PHYSICS_AUDIT_LOCKED_SUN_TEMPS_RINGS (2686e5dd9, `design/RimMandrake/world_physics_audit_2026-10-20.md`):
+   the dev save has no `<worldPresetName>`, so with `ferny.worldbuilder` loaded AlienWorlds reads the Default planet type. This item's live
+   read is the proof (no tidal-lock patches on GenCelestial). Fix the item the audit names; do not open a second one.
 2. Fix the activation, or have a small RimMandrake patch call it. Do not re-implement the sun.
 
 ## verify
