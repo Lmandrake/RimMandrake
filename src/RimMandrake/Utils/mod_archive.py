@@ -16,7 +16,9 @@ COLS = "packageId name name_source workshop_id folder_name author supported_vers
 
 def ids_of(text):
     try: return [e.text.strip() for e in ET.fromstring(text).find("activeMods") if e.text]
-    except Exception: return []
+    except Exception as e:
+        if (text or "").strip(): print("WARN mod_archive: unparseable ModsConfig text (%s) - list skipped" % e, file=sys.stderr)
+        return []
 
 def lists():
     """ordered [(label, [ids])]: working-tree FULL-like lists, then LATEST history oldest..newest."""
@@ -153,6 +155,7 @@ def check():
     return 1 if missing else 0
 
 def add(a):
+    if not a.packageId: sys.exit("add needs a packageId")
     ovr = read_tsv(OVR); r = ovr.get(a.packageId.lower(), {c: "" for c in COLS}); r["packageId"] = a.packageId
     for c, v in (("lifecycle", a.lifecycle), ("lifecycle_date", a.date), ("ruling_doc", a.doc), ("reason", a.reason), ("reconsider_when", a.reconsider), ("name", a.name)):
         if v: r[c] = v

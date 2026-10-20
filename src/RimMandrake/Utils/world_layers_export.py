@@ -713,6 +713,8 @@ def save_mod_ids(path):
     with open(path, encoding="utf-8", errors="surrogateescape") as fh:
         head = fh.read(200000)
     a, b = head.find("<modIds>"), head.find("</modIds>")
+    if a < 0 or b < a:
+        raise SystemExit("REFUSING: no <modIds> block in the first 200000 chars of %s" % path)
     return {m.strip().lower() for m in re.findall(r"<li>(.*?)</li>", head[a:b])}
 
 
@@ -726,7 +728,7 @@ def sha16(path):
 
 def run(save, out, profile_path, dry_run, cap_root=None, record_prefix=RECORD_PREFIX, src_root=None,
         table=None, geom=None, src_idx=None, quiet=False):
-    if os.path.abspath(out) == os.path.abspath(os.path.dirname(record_prefix)):
+    if os.path.realpath(out) == os.path.realpath(os.path.dirname(record_prefix)):
         raise SystemExit("REFUSING: --out is the committed stamp-file folder; write to a NEW folder")
     record = {l: read_csv(record_prefix + l + ".csv") for l in LAYERS}
     save_mods = save_mod_ids(save)

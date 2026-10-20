@@ -32,7 +32,8 @@ def load_profile(path):
 
 def load_capture(dump):
     """(manifest, roots{pkg: wsl root}) of a def-dump capture."""
-    man = json.load(open(os.path.join(dump, "manifest.json")))
+    with open(os.path.join(dump, "manifest.json"), encoding="utf-8-sig") as fh:
+        man = json.load(fh)
     roots = {m["packageId"].lower(): wsl(m.get("rootDir") or "") for m in man["mods"]}
     return man, roots
 
@@ -41,7 +42,8 @@ def load_defs(dump, def_type):
     p = os.path.join(dump, "defs", def_type + ".json")
     if not os.path.isfile(p):
         return []
-    return json.load(open(p)).get("defs", [])
+    with open(p, encoding="utf-8-sig") as fh:
+        return json.load(fh).get("defs", [])
 
 
 def iter_def_files(dump):

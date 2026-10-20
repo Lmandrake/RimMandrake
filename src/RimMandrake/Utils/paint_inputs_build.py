@@ -52,7 +52,7 @@ DEF_COLUMNS = [
 
 
 def read(path):
-    with io.open(path, encoding="utf-8", newline="") as fh:
+    with io.open(path, encoding="utf-8-sig", newline="") as fh:
         r = csv.DictReader(fh)
         return r.fieldnames, list(r)
 
@@ -69,14 +69,18 @@ def closure():
     import game_paths
     ids = {li.text.strip().lower() for li in ET.parse(PAINT).getroot().find("activeMods")}
     cap = game_paths.DEF_DUMP
-    man = json.load(open(os.path.join(cap, "manifest.json")))
+    man = json.load(io.open(os.path.join(cap, "manifest.json"), encoding="utf-8-sig"))
     capids = {m["packageId"].lower() for m in man.get("mods", [])}
     by = collections.defaultdict(dict)
+    unreadable = []
     ddir = os.path.join(cap, "defs")
     for f in os.listdir(ddir):
         try:
-            j = json.load(open(os.path.join(ddir, f)))
+            j = json.load(io.open(os.path.join(ddir, f), encoding="utf-8-sig"))
         except Exception:
+            # Never silent: an unreadable def file under-counts the closure and every name in it
+            # would then read as "unresolved" (or worse, a probe would pass on a thin closure).
+            unreadable.append(f)
             continue
         # Bucket by the FILE's def type, not each def's own: HAR re-types Human as
         # ThingDef_AlienRace inside ThingDef.json, and a subclass must still count as its base.
@@ -85,7 +89,8 @@ def closure():
             if (d.get("packageId") or "").lower() in ids:
                 by[ftype][d["defName"]] = d.get("packageId")
     return by, {"capture": os.path.basename(cap), "capturedUtc": man.get("capturedUtc"),
-                "paint_mods": len(ids), "paint_mods_absent_from_capture": sorted(ids - capids)}
+                "paint_mods": len(ids), "paint_mods_absent_from_capture": sorted(ids - capids),
+                "unreadable_def_files": unreadable}
 
 
 def paint_verdicts():
@@ -230,8 +235,8 @@ def main(argv=None):
     ap.add_argument("--check", action="store_true", help="resolve --out only, write nothing but the report")
     a = ap.parse_args(argv)
     out = os.path.abspath(a.out)
-    if os.path.realpath(out) == os.path.realpath(os.path.join(REPO, "world")):
-        print("REFUSED: --out is world/ - the frozen record lives there")
+    if os.path.realpath(out) in (os.path.realpath(os.path.join(REPO, "world")), os.path.realpath(a.src)):
+        print("REFUSED: --out is world/ (the frozen record) or the --src folder it is built from")
         return 2
     tab = json.load(open(TABLE))
     pm = json.load(open(PORTMAP))
@@ -239,6 +244,9 @@ def main(argv=None):
     # sanity probe 1: the instrument can see
     if "Human" not in by.get("ThingDef", {}) or "RUT_Umbra" not in by.get("BiomeDef", {}):
         print("FAIL instrument blind: closure lacks Human or RUT_Umbra")
+        return 1
+    if prov["unreadable_def_files"]:
+        print("FAIL capture def files unreadable %s - closure would under-count" % prov["unreadable_def_files"])
         return 1
     if prov["paint_mods_absent_from_capture"]:
         print("FAIL capture lacks PAINT mods %s - closure would under-count" % prov["paint_mods_absent_from_capture"])

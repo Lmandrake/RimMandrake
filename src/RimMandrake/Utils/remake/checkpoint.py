@@ -189,6 +189,8 @@ def verify(d, against_live=False, locallow=None, quiet=False):
         known = {x["rel"] for x in man["files"]} | set(man.get("missing", []))
         bad += [("NEW", r) for r in sorted(now - known)]
     else:
+        # make() exits 1 on a missing source; the copy verify must not turn that into a PASS
+        bad += [("MISSING", r) for r in man.get("missing", [])]
         for x in man["files"]:
             p = os.path.join(d, x["rel"])
             if not os.path.isfile(p):
