@@ -184,6 +184,9 @@ class Fake(object):
                     if p["kind"] == "Colonist" and not p["dead"] and not p["vanished"] \
                             and (("touched_bloom_only" in b) or (abs(p["x"] - c["x"]) <= 2 and abs(p["z"] - c["z"]) <= 2)):
                         self.addh(p, V.TOUCHED, 0.01)
+        if "touched_coal_gone" in b and not self.on("coalescenceEnabled"):
+            for c in self.of(V.COALESCENCE):         # SITE: an inert Coalescence collapsed under the pad (not a Burn): no contact left
+                del self.things[c["id"]]
         # --- the zhool's haze (CompZhoolHaze): one grass in reach turns per 250-tick step, on our biome only
         for z in [q for q in self.pawns.values() if q["kind"] == V.ZHOOL and not q["dead"] and not q["vanished"]]:
             on = self.on("zhoolConversionEnabled") or "haze_ignores_toggle" in b
@@ -530,6 +533,10 @@ class Fake(object):
             for p in self.pawns.values():
                 if p["kind"] in ARMORED and not p["vanished"]:
                     p["x"], p["z"] = p["x"] - 40, p["z"]
+        if "kid_vanishes" in self.broken and rect is None and not getattr(self, "kid_done", False):
+            ks = [p for p in self.pawns.values() if p["kind"] == V.UNFINISHED and not p["vanished"]]
+            if ks:                                   # SITE: the budded Unfinished walks off before the push (first map-wide read)
+                ks[0]["vanished"], self.kid_done = True, True
         for p in self.pawns.values():
             if p["vanished"] or (rr and not inrect(p["x"], p["z"], rr)):
                 continue
@@ -546,6 +553,8 @@ class Fake(object):
         return {"success": True, "pawns": [{"thingId": pawn}]}
 
     def t_pawn_mental(self, pawn=None, action="list", **k):
+        if "mental_unreadable" in self.broken:
+            return {"success": False, "message": "bridge dropped"}
         return {"success": True, "action": action, "currentState": self.pawns[pawn]["mental"] or None}
 
     def t_set_draft(self, **k):
@@ -560,6 +569,12 @@ class Fake(object):
 
     def t_power_net(self, thing=None, forcePowerOn=None, **k):
         t = self.things[thing]
+        if forcePowerOn is True:
+            t["power_calls"] = t.get("power_calls", 0) + 1
+            # SITE (review 2026-10-20): the device cannot be powered on a Contagion map / on any later call; its power state is kept
+            if ("burn_repower_fails" in self.broken and self.biome == V.BIOME) or \
+                    ("holds_repower_fails" in self.broken and t["power_calls"] > 1):
+                return {"success": True, "powerOnAfter": False}
         if forcePowerOn is not None:
             t["power"] = bool(forcePowerOn)
         return {"success": True, "powerOnAfter": t.get("power", False)}
@@ -816,13 +831,21 @@ SITE_EXPECT = {
     # a jump that did not take is the bench's: UNMEASURED, never a FAIL (review 2026-10-20)
     "jump_noop": {"spawner.spawner_off_buds_nothing": "UNMEASURED", "burn_natural.burn_off_never_schedules": "UNMEASURED"},
     "retile_noop": {"site.retile_to_contagion": "UNMEASURED"},
+    # review 2026-10-20 (round 3): a fixture that could not be raised makes the rows that stand on it UNMEASURED -- never a vacuous PASS
+    # ("lapsed", "harmless") and never a FAIL ("no mulch", "the forced Burn vanished", "no contact", "not a manhunter")
+    "burn_repower_fails": {"burn_forced.repulsor_forces_burn": "UNMEASURED", "burn_forced.burn_harmless_at_zero_damage": "UNMEASURED",
+                           "burn_forced.burn_off_means_no_harm": "UNMEASURED", "burn_forced.repulsor_off_lapses_burn": "UNMEASURED"},
+    "holds_repower_fails": {"repulsor_clear.holds_sky_clear": "UNMEASURED", "repulsor_clear.lapses_without_power": "UNMEASURED"},
+    "kid_vanishes": {"spawner.unfinished_dissolves_on_death": "UNMEASURED", "spawner.unfinished_leaves_mulch": "UNMEASURED"},
+    "mental_unreadable": {"coalescence.coalescence_emits_manhunters_and_grows_on_its_own": "UNMEASURED"},
+    "touched_coal_gone": {"touched.touched_contact_doses": "UNMEASURED"},
     "spawn_fails": {"spawner.site_ready_spawner": "UNMEASURED"},
     "kid_gone_off": {"coalescence.coalescence_off_absorbs_nothing": "UNMEASURED"},
     "patient_walks_to_bed": {"genome.extraction_surgery_yields_sample": "PASS"},
     "host_vanishes": {"spawner.spawner_off_buds_nothing": "UNMEASURED",
                       "spawner.spawner_buds_unfinished": "UNMEASURED"},
     # the round-4 failure, reproduced: without the unroof the fake map crushes the pads exactly as live did
-    "unroof_noop": {"repulsor_clear.off_when_setting_off": "FAIL",
+    "unroof_noop": {"repulsor_clear.off_when_setting_off": "UNMEASURED",     # a crushed repulsor cannot be read: the bench's
                     "spawner.spawner_off_buds_nothing": "UNMEASURED",
                     "burn_forced.burn_harmless_at_zero_damage": "UNMEASURED",   # crushed visitor: no reading
                     "coalescence.coalescence_off_absorbs_nothing": "FAIL"},
