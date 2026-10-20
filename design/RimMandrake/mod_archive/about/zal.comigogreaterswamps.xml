@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <name>Comigo's Greater Swamps (Continued)</name>
+    <author>Zaljerem</author>
+    <packageId>zal.comigogreaterswamps</packageId>
+    <supportedVersions> 
+        <li>1.6</li>
+    </supportedVersions>
+<modVersion IgnoreIfNoMatchingField="True">1.0.2</modVersion>
+    <description>
+Original mod by Bara CoMiGo
+https://steamcommunity.com/sharedfiles/filedetails/?id=2548444243
+If the original author requests it, I will remove this update.
+
+REQUIRES BiomesKit (Continued) or ReGrowth 2
+
+--
+
+Added Odyssey fishing and landmark compatibility.
+Added animal mod compatibility:
+
+The Basilisk
+Giant Toads
+Vanilla Animals Expanded
+
+--
+
+Original mod notes (1.4):
+
+Hostile environments that make regular swamps look like a sweet home. Embrace water and disease, embrace the Greater Swamps.</description>
+    <modDependencies>
+        <li>
+            <packageId>brrainz.harmony</packageId>
+            <displayName>Harmony</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+            <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+        </li>
+	 <li>
+            <packageId>zal.biomeskit</packageId>
+            <displayName>BiomesKit (Continued)</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/3333951497</steamWorkshopUrl>   
+        </li>       
+    </modDependencies>
+    <loadAfter>
+        <li>Ludeon.RimWorld</li>
+        <li>Ludeon.RimWorld.Royalty</li>
+        <li>brrainz.harmony</li>  
+	<li>zal.biomeskit</li>
+	<li>zal.wmbp</li>
+	<li>regrowth.botr.core</li>     
+        <li>VanillaExpanded.VCEF</li>
+    </loadAfter>
+</ModMetaData>

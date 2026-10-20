@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Minerals Rock</name>
+  <author>Zachary S. L. Foster</author>
+	<packageId>zacharyfoster.mineralsrock</packageId>
+  <description>
+Version 0.1
+
+NOTE: Under development. This is my first time adding mods to Steam, so I have some learning to do and I am sure things will need fixing.
+
+A complete overhaul of mountainous terrain and rocks in RimWorld.
+This has been adapted from the Hardcore SK mod "Minerals" by the original author (Me!).
+
+- Rocks come in different sizes, textures, and shapes other than square!
+- Different types of rocks have distinct appearances and properties, so each map looks and plays different.
+- Rock types vary more in how hard they are to mine, how much they yield when mined, how rocky the landscape is, how beautiful they are, and how much cover they provide in a gunfight.
+- Rocks are a type of "Mineral" from the Minerals Framework mod which grants them features such as dropping multiple types of resources while being mined. See Minerals Framework for more information.
+- Adds Basalt and makes it the only rock present in volcanic biomes
+
+See other mods in the "Minerals" collection to get the full experience:
+
+- Minerals Sparkle: Valuable crystals that can be mined for gems in remote and extreme biomes
+- Minerals Frozen: Dynamic ice and snow that can be used for building and cooling rooms
+
+The Minerals mods are still being balanced. Feel free to let me know if anything needs to be adjusted!
+
+I am not aware of any incompatibilities with other mods, but please let me know if you find any.
+
+Requires "Minerals Framework" mod to function.
+
+See the source code and report issues at: https://github.com/zachary-foster/MineralsRock
+  </description>
+  <url>https://github.com/zachary-foster/MineralsRock</url>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+       <packageId>zacharyfoster.mineralsframework</packageId>
+       <displayName>MineralsFramework</displayName>
+       <downloadUrl>https://github.com/zachary-foster/MineralsFramework</downloadUrl>
+    </li>
+  </modDependencies>
+	<loadAfter>
+		<li>sarg.alphabiomes</li>
+		<li>zacharyfoster.mineralsframework</li>
+		<li>brrainz.harmony</li>
+	</loadAfter>
+</ModMetaData>

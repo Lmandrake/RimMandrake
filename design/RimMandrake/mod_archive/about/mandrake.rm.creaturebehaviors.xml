@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.creaturebehaviors</packageId>
+  <name>RimMandrake: Creature Behaviors</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <description>SHIP_VERMIN_MOD_1 (owner ruling, 2026-09-11, on the Scarlands and
+Webwork kit-placement cards): a small shared engine assembly for generic
+JobGiver/MapComponent creature-AI classes that more than one future mod needs,
+so nothing gets duplicated per-species or dumped into
+mandrake.rm.environmentalhazards (which stays hazards-only, no creature AI).
+
+RM tier: nothing here knows what species, biome or campaign uses it. Every
+class is driven entirely by DefModExtensions a content mod attaches to its own
+race/pawnKind via an ordinary XML patch — this mod ships zero content defs of
+its own beyond the plumbing (a JobDef and two insertable ThinkTreeDefs).
+
+First consumer: ShipVermin (mandrake.rm.shipvermin, the mynock and future
+ship-infesting critters). Reserved for later, per the owner's ruling on the
+Webwork kit-placement card: a future Greentide standalone mod and a future
+Shokk RimStarWars-tier mod (SHOKK_RSW_MOD_1) will also depend on this mod
+rather than re-implement the same primitives.
+
+Ships:
+  1. RM_MapComponent_VerminPopulation — per-map population tracker. Any race
+     carrying RM_VerminPressureExtension is counted by its populationGroupTag;
+     GetPressure() returns 0..1 scaled between the extension's soft and hard
+     population caps ("nuisance unless there are many" — owner-verbatim
+     ruling, 2026-09-11 — implemented as an actual scaling curve other comps
+     and JobGivers read, not a comment).
+  2. RM_CompVerminBreeder (+ RM_CompProperties_VerminBreeder) — a lord-free,
+     population-capped breeder comp: spawns an adjacent copy of the parent
+     pawn on an interval, refusing once RM_MapComponent_VerminPopulation
+     reports the race's hard cap reached on this map. Deliberately NOT
+     vanilla CompSpawnerPawn: that comp always builds a Lord for its spawns
+     (RimSage-verified against CompSpawnerPawn.TrySpawnPawn), which would
+     fight a vermin's own think-tree behavior.
+  3. RM_SeekTargetExtension + RM_JobGiver_SeekMarkedTerrain — generic
+     "walk to and linger on a data-tagged cell" behavior (gravship
+     substructure, by defName-listed terrain, or both). No-ops instantly for
+     any pawn whose race lacks the extension, so it is safe to insert
+     globally.
+  4. RM_GnawTargetExtension + RM_JobGiver_GnawTargets + RM_JobDriver_Gnaw
+     (JobDef RM_Gnaw) — generic "chew a data-listed building/comp/floor
+     terrain for nutrition" behavior. Bite damage and job-seek frequency both
+     scale with RM_MapComponent_VerminPopulation's pressure value — the
+     mechanical form of "nuisance unless there are many": lone vermin gnaw
+     rarely and lightly, a swarm gnaws often and hard.
+  5. RM_ThinkTree_VerminBehaviors — a ThinkTreeDef with
+     insertTag="Animal_PreMain", so the two JobGivers above are tried for
+     every animal in the game (vanilla's own extension point for this,
+     Verse.AI.ThinkNode_SubtreesByTag) but do nothing unless the pawn's race
+     carries the matching extension.
+  6. RM_Alert_VerminPopulationBase — abstract Alert base; a concrete mod
+     (ShipVermin's RM_Alert_ShipVermin) supplies the group tag and label.
+  7. RM_EatCleanableExtension + RM_ThinkNode_EatCleanable + RM_JobDriver_EatCleanable
+     (JobDef RM_EatCleanable) — RUST_CATHEDRAL_MECHANICS_1 §6 (the roaches).
+     Generic "forage a data-listed item and/or filth, then consume it"
+     behavior, generalizing the donor mod LingLuo.Cockroach's measured
+     ThinkNode_EatWastepack in two ways: no player-faction gate (fires for
+     any pawn via the shared Animal_PreMain insertTag, wild included) and
+     filth is a first-class target alongside named items. First consumer:
+     mandrake.rut.rustcathedralroaches (RUT_ScarRoach, RUT_CathedralRoach) —
+     see that mod's own About for the full roach build.
+
+  8. DEEPS_FAUNA_MECHANICS_1 (owner filing, 2026-09-19, off the Lantern
+     Deeps fauna verdicts) — three more generic, content-blind mechanisms
+     for the Deeps' renamed fauna (SWBestiary's Grabber/Soulchime/Drinker):
+     RM_HediffDef_Grapple + RM_Hediff_Grappled (a pincer hold that crushes
+     the victim a little more each round via the hediff's own climbing
+     severity, until it's freed or the hold's lethalSeverity kills it —
+     delivered by a DamageDef's vanilla additionalHediffs, no custom
+     Verb); RM_CompFluidSacs + RM_Hediff_Drained (a bite that feeds its
+     drinker's hunger, or poisons it instead if the victim's own
+     RaceProps.FleshType is on the comp's poison list); and
+     RM_CompProximityPsychicStun + RM_CompShardArmor + RM_CompTameSootheAura
+     (a wild carrier stuns anyone too close and rings this mod's own
+     RM_CompPlantAlarm; a tamed one exempts its own faction from the stun
+     and soothes them instead; shard armor grows passively and capped — see
+     that comp's own header for the fuller, still-owed foraging version).
+     Live-quicktest proof (per spawn-many-for-bridge-tests) is explicitly
+     owed, not done this pass — see that item's own status log.
+
+  9. SHRUBLAND_GIANT_ENRAGE_1 (2026-09-20) — GIANT WITH YOUNG, a generic
+     parental-enrage mechanic: RM_ParentalEnrageExtension +
+     RM_CompProperties_ParentalEnrage/RM_CompParentalEnrage +
+     RM_MentalState_ParentalEnrage (MentalStateDef RM_ParentalEnrage). Let a
+     tool-user or humanlike walk within the extension's triggerRadius of a
+     pawn of the race that is still in a juvenile life stage, and the nearest
+     ADULT of the same race drops into a short, scoped rage aimed at that ONE
+     intruder. No warning is given; back off, and it ends.
+     The scope is real: RM_MentalState_ParentalEnrage overrides
+     ForceHostileTo(Thing) to answer true for the intruder alone and
+     ForceHostileTo(Faction) to answer false, so GenHostility never flips
+     faction hostility and JobGiver_Manhunter's target search finds exactly
+     that pawn. It is not a manhunter flip.
+     NO Harmony and NO think-tree patch: the state class derives from vanilla
+     MentalState_Manhunter, and Core's MentalStateNonCritical routes
+     manhunting through ThinkNode_ConditionalMentalStateClass, whose
+     Satisfied() is an IsInstanceOfType check rather than the def-identity
+     check its ThinkNode_ConditionalMentalState sibling does — so a subclass
+     inherits the whole chase-and-melee behaviour for free (MEASURED against
+     the decompiled 1.6 engine). That inheritance is load-bearing; flattening
+     it leaves a pawn holding a mental state with no behaviour and nothing in
+     the log. The time-box is vanilla's own
+     MentalState.forceRecoverAfterTicks.
+     Trigger cost: a bounded GenRadial scan on the CALF at CompTickRare only
+     (adult carriers are inert), with the wider guardian search paid only on
+     the rare tick where an intruder was actually found.
+     First consumer: mandrake.rsw.swbestiary's RSW_ShrublandGiant.
+
+Live-loaded 2026-09-11: standalone (no consumer active) tripped a crash in
+RimWorld.AlertsReadout's ctor because the abstract RM_Alert_VerminPopulationBase
+became a reflection "leaf" with no concrete subclass loaded — fixed by
+RM_Alert_VerminPopulation_Inert, an always-inactive sealed subclass that keeps
+the base permanently non-leaf. See that class's header for the full root
+cause.
+
+Sight blockers (GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1): any ThingDef carrying
+RM_CompProperties_SightBlocker (a tall plant, once grown past its minGrowth)
+blocks a pawn's SIGHT — targeting, ranged shots, witnessing, noticing — through
+a small Harmony postfix on GenSight.LineOfSight that only acts inside a
+whitelist of "a pawn is looking" call sites. Fire, explosions, pathing and the
+player's camera are untouched. This is the one Harmony dependency in the kit.</description>
+</ModMetaData>

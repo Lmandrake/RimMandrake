@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--The above line is the start of every XML file. Just ignore it-->
+
+<ModMetaData>
+    <name>Meat on a Stick</name>
+    <description>This mod adds Meat on a Stick to the game, a simple way of cooking meat over a campfire.</description>
+    <author>BadOaks</author>
+    <supportedVersions>
+        <li>1.5</li>
+        <li>1.6</li>
+    </supportedVersions>
+    <packageId>badoaks.MeatOnAStick</packageId>
+</ModMetaData>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Metal Pipe</name>
+	<author>flangopink</author>
+	<supportedVersions>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>flangopink.MetalPipe</packageId>
+	<description>*insert metal pipe falling sound effect here*</description>
+</ModMetaData>

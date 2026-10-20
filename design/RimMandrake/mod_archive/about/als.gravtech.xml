@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<packageId>als.gravtech</packageId>
+	<author>Alsariul</author>
+	<name>GravTech</name>
+	<description>Add Grav Field Pylon used to increase the size of a gravship, and Grav Forge on which you can create Gravcore. Also make Grav Engine buildable and power source. </description>
+	<modVersion>1.5.1</modVersion>
+	<supportedVersions>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+	<modDependencies>
+		<li>
+			<packageId>Ludeon.RimWorld.Odyssey</packageId>
+			<displayName>Odyssey</displayName>
+		</li>
+	</modDependencies>
+	<loadAfter>
+	    <li>Ludeon.RimWorld.Royalty</li>
+		<li>Ludeon.RimWorld.Biotech</li>
+		<li>Ludeon.RimWorld.Anomaly</li>
+		<li>Ludeon.RimWorld.Odyssey</li>
+		<li>oskarpotocki.vanillafactionsexpanded.core</li>
+		<li>vanillaexpanded.gravship</li>
+		<li>CETeam.CombatExtended</li>
+		<li>CerebrexNodeUnleashed.Sentinel</li>
+		<li>hobbes.bamba.evenmorelinkables</li>
+		<li>hobbes.bamba.evenmorelinkables16</li>
+	</loadAfter>
+</ModMetaData>

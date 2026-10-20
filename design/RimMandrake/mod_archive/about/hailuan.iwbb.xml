@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>I will be back</name>
+	<author>HaiLuan</author>
+	<packageId>HaiLuan.IWBB</packageId>
+	<supportedVersions>
+		<li>1.5</li>
+<li>1.6</li>
+	<li>1.7</li></supportedVersions>
+	<description>I will be back</description>
+</ModMetaData>

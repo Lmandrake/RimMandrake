@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Adjustments for Vanilla Textures Expanded - [NL] Facial Animation</name>
+	<author>Sunny Days</author>
+	<packageId>sd.fa.vteadjustments</packageId>
+	<supportedVersions>
+		<li>1.6</li>
+		<li>1.5</li>
+	</supportedVersions>
+	<modDependencies>
+		<li>
+			<packageId>vanillaexpanded.vtexe.facialanims</packageId>
+			<displayName>Vanilla Textures Expanded - [NL] Facial Animation</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2816938779</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>vanillaexpanded.vtexe.facialanims</li>
+	</loadAfter>
+	<description>Adjustments for some items in Vanilla Textures Expanded - [NL] Facial Animation. Side-facing male eyebrows and one male and female mouth (Hawk). I made none of the art, just adjusted placement. I'll happily take this down if the VTE team asks me to.</description>
+</ModMetaData>

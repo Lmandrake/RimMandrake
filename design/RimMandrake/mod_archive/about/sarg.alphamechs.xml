@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Alpha Mechs</name>
+	<supportedVersions>
+		<li>1.7</li>
+		<li>1.6</li>
+		<li>1.5</li>
+	</supportedVersions>
+	<modIconPath IgnoreIfNoMatchingField="True">UI/AlphaMechsLogo</modIconPath>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+		<li>
+			<packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+			<displayName>Vanilla Expanded Framework</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1854607105</steamWorkshopUrl>
+			<downloadUrl>https://github.com/Vanilla-Expanded/VanillaExpandedFramework</downloadUrl>
+		</li>
+	</modDependencies>
+
+	<loadAfter>
+		
+        <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+		<li>OskarPotocki.VFE.Mechanoid</li>
+		<li>VanillaExpanded.VPsycastsE</li>
+		<li>VanillaExpanded.VCEF</li>
+		
+	</loadAfter>
+	<author>Sarg Bjornson</author>
+
+	<packageId>sarg.alphamechs</packageId>
+
+	<description>Adds multiple unique new mechs to Rimworld.
+
+&lt;size=24&gt;Features&lt;/size&gt;
+ 
+- Adds 7 new mechanoids
+- With Biotech: adds around 20 more, as well as apparel, buildings, research, a lot,
+
+&lt;size=24&gt;Issues&lt;/size&gt;
+
+No issues known at the moment 
+
+&lt;size=24&gt;Plans for the future&lt;/size&gt;
+
+Oh you can bet I will add new things!
+
+&lt;size=24&gt;Changelog&lt;/size&gt;
+
+Full changelog on GitHub
+
+
+
+	</description>
+</ModMetaData>

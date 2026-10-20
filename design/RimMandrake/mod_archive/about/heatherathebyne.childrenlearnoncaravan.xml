@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Children Learn on Caravan [USE NEW FORK!]</name>
+  <author>Heather Athebyne</author>
+  <supportedVersions>
+    <li>1.5</li>
+    <li>1.6</li>
+  </supportedVersions>
+  <packageId>heatherathebyne.childrenlearnoncaravan</packageId>
+  <description>
+Maintained fork available!
+
+Please use Halicade's maintained fork of this mod at https://steamcommunity.com/sharedfiles/filedetails/?id=3811638548 ! This version is no longer maintained and the fork contains compatibility fixes for 1.6. Thanks to Halicade for taking it over!
+
+[hr][/hr]
+
+DEPRECATED: I have stepped away from RimWorld modding. All of my original mods are licensed under the MIT license, and you have my explicit permission to use their code and assets in new or updated mods. For mods which I did not originally create (labeled Continued), to the extent possible I release my contributions to those mods into the public domain.
+
+[hr][/hr]
+
+That constellation is called the Muffalo...
+
+Here's how you can find bushes with lots of berries...
+
+Race you to that big rock!
+
+Caravanning can be way more than an endless "are we there yet?". This mod gradually fills children's learning need while on caravan. Be sure to give them a [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2972704114]thrumbo plushie[/url] too! (Not actually required, but why not?)
+
+Image by josealbafotos via Pixabay. (Except for the thrumbo. I put that there.)
+
+Source is available on [url=https://github.com/heatherathebyne/childrenlearnoncaravan-rimworld]GitHub[/url].
+
+If you'd like to support me, consider purchasing something from [url=https://shop.athebyne.com]my Etsy shop[/url]! I make unique garment buttons, and also offer PDF embroidery patterns, jewelry, and yarn spinning fiber.
+  </description>
+  <modDependencies>
+    <li>
+      <packageId>ludeon.rimworld.biotech</packageId>
+      <displayName>Biotech</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+</ModMetaData>
+
+

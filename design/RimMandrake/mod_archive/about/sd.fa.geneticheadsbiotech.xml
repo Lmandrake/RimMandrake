@@ -1,0 +1,40 @@
+<ModMetaData>
+	<name>Genetic Biotech for Facial Animation</name>
+	<author>SunshineyDays</author>
+	<packageId>sd.fa.geneticheadsbiotech</packageId>
+	<modVersion>2.0</modVersion>
+
+
+	<supportedVersions>
+		<li>1.6</li>
+		<li>1.5</li>
+	</supportedVersions>
+
+	<descriptionsByVersion>
+		<v1.5>Biotech head pack for Facial Animation. Requires the Genetic Heads Framework for [NL] Facial Animation.
+	
+-Adds  Facial Animation heads using the vanilla Biotech head types: Gaunt, Furskin (with variations), Gaunt Furskin, Heavy Jaw Furskin (with variations), Heavy Jaw. 
+
+Art recreated in Illustrator for HD quality!</v1.5>
+		<v1.6>Biotech head pack for Facial Animation. Requires the Genetic Heads Framework for [NL] Facial Animation for variations and multi-gene heads.
+	
+-Adds  Facial Animation heads using the vanilla Biotech head types: Gaunt, Furskin (with variations), Gaunt Furskin, Heavy Jaw Furskin (with variations), Heavy Jaw. 
+-Adds Facial Animation lids for Biotech eye colors: Gray and Red.
+
+Art recreated in Illustrator for HD quality!</v1.6>
+	</descriptionsByVersion>
+
+	<loadAfter>
+		<li>nals.facialanimation</li>
+		<li>sd.fa.geneticheadsframework</li>
+	</loadAfter>
+
+<!-- 	<modDependencies>
+		<li>
+			<packageId>sd.fa.geneticheadsframework</packageId>
+			<displayName>Genetic Heads Framework for [NL] Facial Animation</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3498759997</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+ -->	
+</ModMetaData>

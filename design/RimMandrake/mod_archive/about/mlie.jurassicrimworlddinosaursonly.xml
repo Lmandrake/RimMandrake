@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Jurassic Rimworld - Dinosaurs Only (Continued)</name>
+  <packageId>Mlie.JurassicRimworldDinosaursOnly</packageId>
+  <author>Serpyderpy</author>
+  <url>https://github.com/emipa606/JurassicRimworldDinosaursOnly</url>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <incompatibleWith>
+    <li>Mlie.JurassicRimworld</li>
+  </incompatibleWith>
+  <description>[img]https://i.imgur.com/buuPQel.png[/img]
+Update of Serpyderpys mod
+https://steamcommunity.com/sharedfiles/filedetails/?id=1804979738
+
+[b]The release of RimWorld 1.6 added improved support for [url=https://github.com/emipa606/AssetBuilder/blob/main/README.md]Asset Bundles[/url][/b].
+To avoid doubling the size of the mod, it was re-released using only Asset Bundles, you can find the previous version of this mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2567491934]here[/url].
+
+[img]https://i.imgur.com/pufA0kM.png[/img]
+
+[table]
+    [tr]
+        [td][url=https://dsc.gg/mlie][img]https://i.imgur.com/zdzzBrc.png[/img][/url][/td]
+        [td][url=https://github.com/emipa606/JurassicRimworldDinosaursOnly][img]https://i.imgur.com/kTkpTOE.png[/img][/url][/td]
+    [/tr]
+    [tr]
+        [td][img]https://i.imgur.com/WjDSfUn.png[/img][/td]
+        [td][img]https://i.imgur.com/Be8E2qJ.png[/img][/td]
+    [/tr]
+[/table]
+	
+[img]https://i.imgur.com/Z4GOv8H.png[/img]
+Life finds a way.
+
+This is an alternate version of Jurassic Rimworld which has had the following removed:
+
+- Amber and the ability to create dinosaurs.
+- Decorations, walls, floors and other buildings.
+- Research topics.
+- Music.
+
+This leaves this mod as-is currently a dinosaur only version of the full mod. This mod will be maintained at the same time as the expanded version of the mod though juggling two mod means one or the other will fall behind sometimes. Please be patient with updates.
+
+Able to be added to current saves.
+
+Compatible with Dinosauria and Megafauna.
+
+JURASSIC RIMWORLD 1.0:
+https://steamcommunity.com/sharedfiles/filedetails/?id=1419618659
+
+MANUAL DOWNLOAD:
+https://drive.google.com/open?id=1mUvq73FKPU85DunlBPHdDf-CSi3jcAHD
+
+You are free to use any of the code in this mod as a base, a launchpad, etc.
+Do NOT use any of the art in this mod in other mods without my permission. Thank you.
+
+[img]https://i.imgur.com/PwoNOj4.png[/img]
+[list]
+[*] See if the the error persists if you just have this mod and its requirements active.
+[*] If not, try adding your other mods until it happens again.
+[*] Post your error-log using [url=https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib[/url] or the standalone [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Uploader[/url] and command Ctrl+F12
+[*] For best support, please use the Discord-channel for error-reporting.
+[*] Do not report errors by making a discussion-thread, I get no notification of that.
+[*] If you have the solution for a problem, please post it to the GitHub repository.
+[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods
+[/list]</description>
+  <modVersion IgnoreIfNoMatchingField="True">1.6.0</modVersion>
+</ModMetaData>

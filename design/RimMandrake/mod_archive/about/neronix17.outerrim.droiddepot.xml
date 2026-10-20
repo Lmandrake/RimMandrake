@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Outer Rim - Droid Depot</name>
+	<description>Outer Rim module adding droids and droid related items, buildings and more. This module will also add droids to various other modules if they are both active.</description>
+	<author>Neronix17</author>
+	<packageId>Neronix17.OuterRim.DroidDepot</packageId>
+	<modIconPath IgnoreIfNoMatchingField="True">OuterRim/ModIcon</modIconPath>
+	<url>https://www.patreon.com/neronix17</url>
+	<supportedVersions>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>
+	<modDependencies>
+		<li>
+			<packageId>Neronix17.Asimov</packageId>
+			<displayName>Asimov</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3096481956</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>Neronix17.OuterRim.Core</packageId>
+			<displayName>Outer Rim - Core</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2919227155</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>Neronix17.Asimov</li>
+		<li>Neronix17.OuterRim.Core</li>
+	</loadAfter>
+</ModMetaData>

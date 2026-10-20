@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Recycle This (Continued)</name>
+  <packageId>Mlie.RecycleThis</packageId>
+  <author>busted_bunny</author>
+  <url>https://github.com/emipa606/RecycleThis</url>
+  <supportedVersions>
+    <li>1.3</li>
+    <li>1.4</li>
+    <li>1.5</li>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Mlie.TinyWorkbenchs</li>
+    <li>co.uk.epicguru.rimforge</li>
+    <li>trigger.building.voidextractor</li>
+  </loadAfter>
+  <description>[img]https://i.imgur.com/buuPQel.png[/img]
+Update of busted_bunnys mod https://steamcommunity.com/sharedfiles/filedetails/?id=2567877605
+
+- Added option to not show the extra gizmos on items
+- Added option to not return components (or any complex items) when recycling
+- Load after any HAR race mods to avoid compatibility issues
+
+[img]https://i.imgur.com/pufA0kM.png[/img]
+
+[table]
+    [tr][td][url=https://discord.gg/h5TY6DA][img]https://i.imgur.com/zdzzBrc.png[/img][/url][/td] [td][url=https://github.com/emipa606/RecycleThis][img]https://i.imgur.com/kTkpTOE.png[/img][/url][/td]
+    [/tr]
+    [tr]
+        [td][img]https://i.imgur.com/WjDSfUn.png[/img][/td]
+        [td][img]https://i.imgur.com/h5VwTNL.png[/img][/td]
+    [/tr]
+[/table]
+	
+[img]https://i.imgur.com/Z4GOv8H.png[/img]
+[i]Ever got tired of creating bills to smelt and destroy useless junk left from last cannibal raid? Not anymore. Just select all items you want to get rid of and pawns will do it.[/i]
+
+This mod allows you to recycle and destroy weapons and apparel through order icons, without creating annoying bills. It uses all vanilla values to calculate refund (around 25% of recipe) and job speed to make almost identical to vanilla bills (Smelt or burn weapons/apparel).
+Basically it adds 2 orders to menu and affected items:
+[olist]
+[*]Destroy item - selected weapons or apparel will be destroyed on closest campfire or smelter (including modded ones).
+[*]Recycle item - selected weapons or apparel will be either smelted or scrapped at the closest workbench yielding part of it's recipe resources back.
+[/olist]
+Post raid cleaning has never been this easy!
+
+New job (can be seen with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=725219116&amp;amp;searchtext=Work+Tab]Fluffy's Work Tab[/url]) assosiated with added features exist in Crafting worktype right behind all vanilla jobs.
+
+[h1]Troubleshooting[/h1]
+
+There are 2 ways items get recycled:
+[olist]
+[*]For metal items, you must have a building that has "smelt weapons" bill and it must be either powered or fueled.
+[*]Everything else, like clothes, stone or wooden weapons get scrapped on tailor benches or crafting spots.
+[/olist]
+In order to destroy things you need any building that has "burn apparel" bill (ex: campfire, cremator) and it also must be powered, fueled or whatever else workbench uses.
+
+Unless these conditions are fully met - items won't get recycled or destroyed.
+
+[h1]Bugs and suggestions[/h1]
+[strike]If you encounter any errors related to this mod or notice bugs, please post bug reports in [url=https://steamcommunity.com/workshop/filedetails/discussion/2567877605/3060745474560090101/]bug reports section[/url].[/strike] Also feel free to post any suggestions in comments on how to make this mod better.
+
+[h1]Compatibility[/h1]
+[list]
+[*]Should be compatible with any modded workbenches, as long as they have recipe to burn apparel (for campfires) and smelt weapons (for smelters).
+[*]Other mods that add recycle bills are compatible with this mod as well.
+[/list]
+
+[h1]Credits:[/h1]
+Oken - he made these brand new icons for buttons.
+
+Coding help, without these people mod would have never existed:
+ Jamaican Castle 
+ Mehni
+ AUTOMATIC
+ PeteTimesSix
+
+[img]https://i.imgur.com/PwoNOj4.png[/img]
+[list]
+[*] See if the the error persists if you just have this mod and its requirements active.
+[*] If not, try adding your other mods until it happens again.
+[*] Post your error-log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url] or the standalone [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Uploader[/url] and command Ctrl+F12
+[*] For best support, please use the Discord-channel for error-reporting.
+[*] Do not report errors by making a discussion-thread, I get no notification of that.
+[*] If you have the solution for a problem, please post it to the GitHub repository.
+[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods
+[/list] 
+
+[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/3253550009][img]https://img.shields.io/github/v/release/emipa606/RecycleThis?label=latest%20version&amp;style=plastic&amp;color=9f1111&amp;labelColor=black[/img][/url] | tags: recycling,  destroying</description>
+  <modVersion IgnoreIfNoMatchingField="True">1.6.6</modVersion>
+</ModMetaData>

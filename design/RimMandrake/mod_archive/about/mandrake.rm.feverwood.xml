@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.feverwood</packageId>
+  <name>RimMandrake: Fever Wood</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.environmentalhazards</li>
+    <li>mandrake.rm.creaturebehaviors</li>
+  </loadAfter>
+  <description>FEVERWOOD_RM_MOD_BUILD_1 — RimMandrake tier standalone build of the Fever
+Wood biome (Phase A row 22 of design/RimMandrake/biome_mod_architecture.md;
+parent BIOME_MOD_SPLIT_EXECUTION_1). A hot, still, tree-canopied swamp: great
+solid trunks have rooted the backswamp still and tamed the flowing waters
+into shallow surface pools with deep mud beneath, laced with living-wood
+byways above the black, unrippled mirror pools below.
+
+RM tier: nothing here knows what campaign or planet uses it. The three
+biome-level hazard modExtensions this def carries (the trunk, the mirror
+pools, the ground-refusal marsh) are defined in the shared
+mandrake.rm.environmentalhazards library (loadAfter, hard dependency) —
+this mod re-points them at RM_FeverWood; it does not re-author them.
+
+⛔ Star Wars canon fauna and flora do NOT ship here — Q11a (owner ruling,
+2026-09-22): a genuinely canon name is IP and must route through the Utinni
+campaign patch layer, never the franchise-free RimMandrake tier. Ten
+wildAnimals rows and three wildPlants rows that carry canon or RSW_ names
+ride src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml instead;
+this def ships only vanilla + this mod's own RM_Kasselith (port of the
+donor VFEI2_Megathrips, 2026-10-18) + three non-Star-Wars donor plants (AB_KeeningCordax,
+AB_Iashiphus, AB_Gomphoeria) + this mod's own RM_GiantLeaf.
+
+Live proof (step 5, a scratch-world quicktest with all five expansions) is
+DONE — loaded clean, 0 typeloads/patch failures/recovery, 18/18 def
+sentinels resolved live (2026-09-25). This mod ships in the owner's full
+626-mod list. All of the biome's F1/F5/F6/F7 mechanic content (mirror
+pools, ground-refusal marsh, boughway network, fever trunks) now lives
+here rather than in UtinniPatches — see the item's own verify record.</description>
+</ModMetaData>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Guaranteed Ancient Dangers</name>
+  <packageId>Arti.Shrinez</packageId>
+  <author>Arti</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>
+    Patches the built in 25% chance that a newly generated map will contain an Ancient Danger to instead each map has a 100% chance to contain an Ancient Danger.
+    The mod only modifies the chance of Ancient Dangers spawning.
+    Compatible with Map Designer.
+    Disclaimer: This mod was made by using the help of AI and I am not a professional modder.
+  </description>
+</ModMetaData>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<packageId>als.gravtech.bc</packageId>
+	<author>Alsariul</author>
+	<name>GravTech - Big cannons</name>
+	<description>This mod adds compatibility between GravTech and Vanilla Gravship Expanded. New parts for gravship and large, powerful guns await you here.</description>
+	<modVersion>1.2.1</modVersion>
+	<supportedVersions>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+	<modDependencies>
+		<li>
+			<packageId>Ludeon.RimWorld.Odyssey</packageId>
+			<displayName>Odyssey</displayName>
+		</li>
+		<li>
+			<packageId>vanillaexpanded.gravship</packageId>
+			<displayName>Vanilla Gravship Expanded - Chapter 1</displayName>
+			<steamWorkshopUrl>https:/steamcommunity.com/sharedfiles/filedetails/?id=3609835606</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>als.gravtech</packageId>
+			<displayName>GravTech</displayName>
+			<steamWorkshopUrl>https:/steamcommunity.com/sharedfiles/filedetails/?id=3545374124</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<incompatibleWith>
+		<li>memer.minigravships</li>
+	</incompatibleWith>
+	<loadAfter>
+		<li>Ludeon.RimWorld.Odyssey</li>
+		<li>oskarpotocki.vanillafactionsexpanded.core</li>
+		<li>vanillaexpanded.gravship</li>
+		<li>als.gravtech</li>
+	</loadAfter>
+</ModMetaData>

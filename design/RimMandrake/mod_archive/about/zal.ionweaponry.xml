@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Ion Weaponry (Continued)</name>
+	<author>Zaljerem</author>
+	<supportedVersions>
+		<li>1.6</li>
+	</supportedVersions>
+<modVersion IgnoreIfNoMatchingField="True">1.0.0</modVersion>
+	<modDependencies>
+		<!--<li>
+			<packageId>smartkar.athenaframework</packageId>
+			<displayName>Athena Framework</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2903359518</steamWorkshopUrl>
+			<downloadUrl>https://github.com/SmArtKar/AthenaFramework</downloadUrl>
+		</li>-->
+	</modDependencies>
+	<packageId>zal.ionweaponry</packageId>
+	<loadAfter>
+		<!--<li>smartkar.athenaframework</li>-->
+	</loadAfter>
+	<description>
+Original mod by Elseud
+https://steamcommunity.com/sharedfiles/filedetails/?id=3223261922
+
+Credits:
+Design, XML, Textures: Elseud
+C# - SmArtKar
+
+Athena Framework code - MIT License
+This mod is distributed under Creative Commons Attribution 4.0 International which means that you can use and modify this mod as long as credit is retained.
+License aside - if the original author requests it, I will remove this update.
+
+--
+
+No longer requires Athena Framework; the required code has been integrated (and SmArtKar credited).
+
+--
+
+Original mod notes (1.5):
+
+Adds an assortment of spacer ion weapons, which sacrifice raw damage and stopping power for short cooldowns and armor penetration, along with a special EMP explosion passive.
+</description>
+</ModMetaData>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ModMetaData>
+	<name>Reel's Turret Pipeline</name>
+	<author>Reel</author>
+	<packageId>Reel.TurretPipeline</packageId>
+	<supportedVersions>
+	  <li>1.5</li>
+	  <li>1.6</li>
+	  <li>1.7</li>
+	</supportedVersions>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+			<steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2009463077</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+			<displayName>Vanilla Expanded Framework</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2023507013</steamWorkshopUrl>
+		</li>
+
+	</modDependencies>
+	<loadAfter>
+		<li>Ludeon.RimWorld</li>
+		<li>brrainz.harmony</li>
+		<li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+	</loadAfter>
+	<incompatibleWith>
+		<li>ceteam.combatextended</li>
+	</incompatibleWith>	
+	<description>Welcome to Reel's Turret Pipeline!
+
+After thousands of hours playing RimWorld, I always felt that turrets could be more efficient. While working on a rebalance patch, an idea sparked - what if turrets could connect to a pipe network that automatically refills their ammo? Manually rearming turrets is not only time-consuming but also dangerous for any colonists involved.
+
+With this mod, that problem becomes a thing of the past! Connect your colony's defenses to an ammunition pipe network and ensure your turrets are always fully stocked, ready to face any raid - so long as you have enough ammo on hand.
+
+This mod also includes full compatibility with all known Vanilla Expanded mods, allowing you to connect the pipe network to Sentry turrets, HMG complexes, and more!</description>
+</ModMetaData>

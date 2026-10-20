@@ -1,0 +1,11 @@
+<ModMetaData>
+  <name>Archotech Blaster Turret</name>
+  <author>RPGWanderer</author>
+  <packageId>rpgwanderer.opturret</packageId>
+  <description>
+    An archotech blaster turret using archites clouds that destroy what they touch on a molecular level. Directly written into your dreams from the insane mind of a demented archotech, this turret is capable of unleashing devastating volleys of energy blasts at unsuspecting foes... And friends who didn't clear the way fast enough. Seriously, don't blame the archotech for friendly fire, it's doing its best. This turret shouldn't even exist in the first place, but you know, archotechs™, they do crazy things with no regards for safety, sanity or even balancing...
+  </description>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+</ModMetaData>

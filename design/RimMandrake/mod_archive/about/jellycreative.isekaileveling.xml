@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <name>ISEKAI RPG LEVELING</name>
+    <author>Jelly Creative</author>
+    <packageId>JellyCreative.IsekaiLeveling</packageId>
+    <url>https://github.com/JellyCreative/IsekaiLeveling</url>
+    <supportedVersions>
+        <li>1.6</li>
+        <li>1.7</li>
+    </supportedVersions>
+    <description>
+ISEKAI RPG LEVELING SYSTEM  -  v1.1.8.3
+
+Your pawns have been transported to the Rim... but they brought something special with them - the ability to level up like heroes from another world!
+
+CORE FEATURES
+- RPG Stats: STR, DEX, VIT, INT, WIS, CHA - allocate stat points on level up
+- XP System: Gain XP from combat, crafting, research, social, and more
+- Rank System: F, E, D, C, B, A, S, SS, SSS, then Nation - ten ranks with unique bonuses
+- Level Cap: 1600, with the Nation rank unlocking at level 800
+- Combat Auras: High-rank pawns (B+) display colorful energy auras in combat
+- Aura Pressure: S-rank and above unleash a crushing aura that collapses weaker foes
+- Build Titles: Your highest stat names you, from Sword Disciple to Sword God
+- Title Duels: Rivals travel to challenge titled colonists for their name
+- Original Soundtrack: Six tracks, replacing or joining the vanilla playlist
+- Mood Thoughts: Pawns react to levelling, ranking up, forging, and battle
+- Mob Ranking: All creatures ranked by power - fight stronger foes for more XP
+- Mana Core Drops: Enemies drop valuable mana cores based on their rank
+- Rank Traits: Social bonuses and roleplay flavor based on power level
+- Psycast Integration: WIS affects neural heat, psychic sensitivity, and more
+
+STAT EFFECTS
+- STR: Melee damage, carry capacity
+- VIT: Health regen, damage reduction, armor, rest rate
+- DEX: Move speed, dodge, accuracy
+- INT: Research speed, learning speed, work speed
+- WIS: Mental stability, medical skill, animal handling, psycast abilities
+- CHA: Social impact, trade prices, tame chance, arrest success
+
+COMBAT AURAS (B-Rank and above)
+- B Rank: White/Silver
+- A Rank: Blue
+- S Rank: Gold
+- SS Rank: Orange/Red
+- SSS Rank: Violet/Purple
+- Auras grow with rank in both size and density, and rotate around the pawn
+- Every pawn shows the default flame aura; per-class Constellation auras are
+  an optional choice in each pawn's Status tab
+
+AURA PRESSURE (S-Rank and above)
+- A Conqueror's aura that collapses every weaker non-allied creature in range
+- Equal or higher ranks resist it completely; your colony and allies are never hit
+- Reach grows with rank: 19 tiles at S, 28 at SS, 38 at SSS
+- The weaker the target, the longer they stay down (never lethal)
+- Hostile S-rank enemies can use it against you too (can be disabled in settings)
+
+NATION RANK (Level 800+)
+- A tenth rank above SSS, titled "Calamity"
+- Never rolled randomly - level to 800, or be the Empire's leader
+- Prestige only: standing, trade, negotiation and market value, no combat stats
+
+BUILD TITLES
+- 42 titles: seven disciplines across six rungs (Disciple to God)
+- Named by the stat you actually raised, not by a class you picked
+- Each grants a combat buff suited to its style, +5% at Disciple to +25% at God
+- Rungs at 20, 50, 100, 200, 400 and 800 allocated points in that stat
+
+TITLE DUELS
+- Saint-rank colonists and above are challenged for their name, about once a year
+- A solo duel at a site 5-10 tiles out, against a rival built from your own sheet
+- Silver is staked on it: 1,200 at Saint up to 6,500 at God
+- Come alone, or the terms are void. Refusing the challenge costs you standing
+
+MANA CORE VALUES
+- Small Mana Core: 50 silver (F-E ranks)
+- Mana Core: 150 silver (D-C ranks)
+- Big Mana Core: 500 silver (B-A ranks)
+- Huge Mana Core: 1500 silver (S-SSS ranks)
+
+COMPATIBILITY
+- Combat Extended, Vanilla Expanded, VPE compatible
+- Safe to add mid-save
+- Royalty DLC: Optional (adds psychic stat bonuses)
+- Ideology, Biotech, Anomaly: Fully compatible
+
+REQUIREMENTS
+- Harmony
+
+See Steam Workshop page for full details!
+
+Made by Jelly Creative
+    </description>
+    
+    <!-- Steam Workshop description with BBCode formatting -->
+    <descriptionsByVersion>
+        <li>
+            <version>Steam</version>
+            <description>
+[h1]Isekai RPG Leveling System[/h1]
+
+Your pawns have been transported to the Rim... but they brought something special with them - the ability to level up like heroes from another world!
+
+[h2]Core Features[/h2]
+[list]
+[*] [b]RPG Stats System[/b] - STR, DEX, VIT, INT, WIS, CHA - allocate stat points on level up!
+[*] [b]XP and Leveling[/b] - Gain XP from combat, crafting, research, social, and more
+[*] [b]Rank System[/b] - F, E, D, C, B, A, S, SS, SSS, and Nation - a tenth rank earned at level 800 (level cap 1600)
+[*] [b]Rank Traits[/b] - Unique bonuses granted at certain ranks
+[*] [b]Stat Attribution Window[/b] - Beautiful UI to spend stat points with detailed tooltips for theorycraft
+[*] [b]Combat Auras[/b] - Show off your power with colorful auras based on rank
+[*] [b]Aura Pressure[/b] - S-rank and above unleash a crushing aura that collapses weaker foes
+[*] [b]Build Titles[/b] - Your highest stat names you, from Sword Disciple to Sword God, each granting its own combat buff
+[*] [b]Title Duels[/b] - Rivals cross the world to challenge titled colonists for their name, one on one
+[*] [b]Original Soundtrack[/b] - Six original tracks that replace or join the vanilla playlist
+[*] [b]RPG Mood Thoughts[/b] - Pawns react to levelling, ranking up, forging, and battle
+[*] [b]VPE Integration and other mods[/b] - WIS stat affects psycast abilities
+[*] [b]Mob Ranking System[/b] - Enemies have ranks too! Fight stronger foes for more XP
+[*] [b]Mod Settings[/b] - Customize XP rates, stat points per level, aura appearance, and more
+[*] [b]Rank Titles[/b] - Awakened, Apprentice, Adventurer, Warrior, Champion, Hero, Legend, Monarch, Overlord, Calamity
+[/list]
+
+[h2]Nation Rank[/h2]
+The tenth rank, sitting above SSS and titled [b]Calamity[/b]. It is never rolled randomly - there are only two ways to hold it: level a pawn to 800, or be the Empire's leader, who is promoted to it automatically. The Nation trait grants prestige rather than power (standing, negotiation, trade prices, market value), because a level-800 pawn's raw stats are already overwhelming on their own. The level cap is 1600.
+
+
+[h2]Build Titles[/h2]
+Forty-two titles: seven disciplines across six rungs, from Disciple through Saint, King and Emperor to God. A title is not a class you pick - it is read from the stat you actually raised, so it always describes the pawn in front of you. Each one grants a combat buff suited to its style, scaling from [b]+5% at Disciple to +25% at God[/b]: Sword takes move speed and dodge, Archer takes aiming time, Warlord takes melee cooldown. The rungs sit at 20, 50, 100, 200, 400 and 800 allocated points in the stat that names you. Vitality names nothing - it is the survival tax every build pays. Intelligence and Wisdom are one axis and both read as Magic, and three hybrids (Warlord, Warmage, Stormcaller) fire when a second stat keeps pace with the first.
+
+[h2]Title Duels[/h2]
+Hold a title at Saint rank or above and sooner or later somebody comes for it. Roughly once a year each, a titled colonist is challenged to a solo duel at a marked site 5-10 tiles from the colony, and the challenger is built from that colonist's own sheet: same discipline, same rung, stats within a band of theirs. Silver is staked on the outcome, from 1,200 at Saint up to 6,500 at God. You must arrive alone - a second colonist on the ground voids the terms and the stake leaves with him. Being downed ends the duel and your wounds are tended, so losing is not dying. Letting the challenge stand costs more than losing it does.
+
+[h2]Original Soundtrack[/h2]
+Six original tracks, shuffled with smooth fades and never the same song twice in a row. They can replace the vanilla playlist outright or sit inside it, with their own volume slider so they balance against the rest of the game. Anomaly and Odyssey hand the whole soundtrack to their own music whenever their conditions hold - an activated monolith, a map in space - so there is a toggle for each to keep the Isekai soundtrack playing through them.
+
+[h2]Stat Effects[/h2]
+
+[b]STR (Strength)[/b] - Physical power and raw muscle
+[list]
+[*] Melee Damage (+2% per point)
+[*] Carry Capacity (+2% per point)
+[/list]
+
+[b]VIT (Vitality)[/b] - Constitution and toughness
+[list]
+[*] Health Regeneration (+2% per point)
+[*] Toxic Resistance (+1% per point)
+[*] Incoming Damage Reduction (-1% per point)
+[*] Natural Armor: Sharp, Blunt, Heat (+0.5% per point)
+[*] Pain Shock Threshold (+1% per point)
+[*] Rest Rate (+1.5% per point)
+[*] Neural Heat Limit (shared with WIS)
+[/list]
+
+[b]DEX (Dexterity)[/b] - Agility and precision
+[list]
+[*] Move Speed (+2% per point)
+[*] Melee Dodge Chance (+1% per point)
+[*] Shooting Accuracy (+1.5% per point)
+[*] Melee Hit Chance (+0.8% per point)
+[*] Aiming Delay (-1% per point)
+[/list]
+
+[b]INT (Intelligence)[/b] - Mental acuity and learning
+[list]
+[*] Research Speed (+2% per point)
+[*] Work Speed (+2% per point)
+[*] Learning Speed (+2% per point)
+[*] Psychic Sensitivity (shared with WIS)
+[/list]
+
+[b]WIS (Wisdom)[/b] - Insight and mental fortitude
+[list]
+[*] Mental Break Threshold (-1% per point, harder to break)
+[*] Meditation Focus Gain (+1.5% per point)
+[*] Medical Tend Quality (+1% per point)
+[*] Surgery Success Chance (+1.5% per point)
+[*] Train Animal Chance (+1.5% per point)
+[*] Animal Gather Yield (+1% per point)
+[*] Psychic Sensitivity (shared with INT)
+[*] Neural Heat Limit (shared with VIT)
+[*] Neural Heat Recovery (+1.5% per point)
+[*] Psyfocus Cost Reduction (-0.8% per point)
+[/list]
+
+[b]CHA (Charisma)[/b] - Social influence and presence
+[list]
+[*] Social Impact (+1.5% per point)
+[*] Negotiation Ability (+1% per point)
+[*] Trade Price Improvement (+1.5% per point)
+[*] Tame Animal Chance (+1% per point)
+[*] Arrest Success Chance (+0.5% per point)
+[/list]
+
+[h2]Combat Auras[/h2]
+High-rank pawns (B+) display impressive energy auras when in combat! Allows for quick visual identification of powerful allies and enemies on the battlefield.
+[list]
+[*] [b]B Rank[/b] - White/Silver aura
+[*] [b]A Rank[/b] - Blue aura
+[*] [b]S Rank[/b] - Gold aura
+[*] [b]SS Rank[/b] - Orange/Red aura
+[*] [b]SSS Rank[/b] - Violet/Purple aura
+[/list]
+Enemies and allies also display their auras when in combat!
+
+Auras grow with rank in both size and density, so a high-rank pawn is unmistakable at a glance. Every pawn shows the default flame aura, while the per-class Constellation auras (magic circles, banners, blades and more) are an optional choice in each pawn's Status tab.
+
+[h2]Aura Pressure[/h2]
+A Conqueror's aura unlocked at S rank. Release it and every non-allied creature in range of a LOWER rank is crushed by the sheer weight of your presence and collapses where it stands.
+[list]
+[*] [b]Rank decides everything[/b] - Equal or higher ranks resist it completely
+[*] [b]Your people are safe[/b] - Your colony and allied factions are never affected
+[*] [b]Reach grows with rank[/b] - 19 tiles at S, 28 at SS, 38 at SSS
+[*] [b]The weak stay down longer[/b] - Duration scales with the rank gap, and it is never lethal
+[*] [b]Enemies have it too[/b] - Hostile S-rank foes can unleash it on your colony, so rank your colonists up to withstand it (can be disabled in settings)
+[/list]
+
+[h2]RPG Mood Thoughts[/h2]
+Your pawns feel their adventuring life. They swell with pride on levelling up and ascending a rank, thrill at unlocking a constellation node or slaying a monster far above their rank, and take it hard when a forge destroys a treasure or something beneath their rank puts them on the ground. They also feel where they stand in the colony, from awe of a stronger comrade to the shame of being the weakest, and a battle-born class stuck hauling and cleaning will resent every minute of it. Can be turned off in the settings.
+
+[h2]XP System[/h2]
+Gain experience through various activities:
+
+[b]Combat XP[/b]
+[list]
+[*] Kill XP scales with enemy rank (F: 30 XP to SSS: 2000 XP)
+[*] Elite enemies give +50% bonus XP
+[*] [b]Shared XP[/b]: When multiple pawns attack the same enemy, XP is distributed based on damage contribution (minimum 20% for participants)
+[*] Small XP bonus for dealing damage
+[/list]
+
+[b]Work XP[/b]
+[list]
+[*] Crafting: 15 XP per task
+[*] Research: 15 XP per session
+[*] Building: 8 XP per structure
+[*] Medical/Tending: 35 XP
+[*] Surgery: 50 XP
+[*] Animal training: 10 XP
+[*] Harvesting: 5 XP
+[*] Mining: 5 XP
+[*] Cooking: 10 XP
+[*] Art creation: 20 XP
+[/list]
+
+[b]Social and Other[/b]
+[list]
+[*] Successful social interactions: 5-15 XP
+[*] Recruiting prisoners: 25 XP
+[*] Taming animals: 15 XP
+[*] Meditation (psycasts): 8 XP per session
+[*] Using psycast abilities: XP based on entropy cost
+[/list]
+
+[h2]Mob Ranking System[/h2]
+All creatures in the game are automatically assigned a rank based on their combat threat level:
+
+[b]Creature Rank Examples[/b]
+[list]
+[*] [b]F-Rank (Harmless)[/b] - Squirrels, rats, chickens
+[*] [b]E-Rank (Weak)[/b] - Dogs, deer, small animals
+[*] [b]D-Rank (Common)[/b] - Camels, horses, boars
+[*] [b]C-Rank (Threatening)[/b] - Wolves, cougars
+[*] [b]B-Rank (Dangerous)[/b] - Bears, panthers
+[*] [b]A-Rank (Deadly)[/b] - Elephants, rhinoceros
+[*] [b]S-Rank (Legendary)[/b] - Thrumbos, megasloths
+[*] [b]SS-Rank (Alpha Beast)[/b] - Rare elite variants
+[*] [b]SSS-Rank (Apex Predator)[/b] - Extremely rare, godlike creatures
+[/list]
+
+[b]Elite Creatures[/b]
+Creatures ranked B and above are considered Elite and display special titles based on their power level! These dangerous foes are marked with descriptive epithets to warn you of their strength.
+[list]
+[*] [b]B-Rank (Dangerous)[/b] - "Savage" or "Fierce" - 1.3x damage, 1.5x health, +10% armor
+[*] [b]A-Rank (Deadly)[/b] - "Ferocious" or "Brutal" - 1.6x damage, 2.0x health, +20% armor
+[*] [b]S-Rank (Legendary)[/b] - "Apex" or "Alpha" - 2.0x damage, 2.5x health, +35% armor
+[*] [b]SS-Rank (Alpha Beast)[/b] - "Mythic" or "Primordial" - 2.2x damage, 3.0x health, +45% armor
+[*] [b]SSS-Rank (Apex Predator)[/b] - "Legendary" or "Godlike" - 2.5x damage, 3.5x health, +50% armor
+[/list]
+Elite creatures also drop higher tier mana cores and give significantly more XP when killed! Elite title display can be toggled in mod settings.
+
+[b]Rank Stat Bonuses[/b]
+Higher rank creatures are significantly stronger:
+[list]
+[*] Damage: F (0.7x) to SSS (2.5x)
+[*] Health: F (0.7x) to SSS (3.5x)
+[*] Armor: F (-10%) to SSS (+50%)
+[*] Speed: F (0.9x) to SSS (1.4x)
+[/list]
+
+[h2]Mana Core Drops[/h2]
+Creatures drop mana cores when killed, based on their rank:
+
+[b]Small Mana Core (50 silver)[/b]
+[list]
+[*] F-Rank: Low chance, 1 core
+[*] E-Rank: Medium chance, 1-2 cores
+[/list]
+
+[b]Mana Core (150 silver)[/b]
+[list]
+[*] D-Rank: Low chance, 1 core
+[*] C-Rank: 50% chance, 1-2 cores
+[/list]
+
+[b]Big Mana Core (500 silver)[/b]
+[list]
+[*] B-Rank: 40% chance, 1 core
+[*] A-Rank: 70% chance, 1-2 cores
+[/list]
+
+[b]Huge Mana Core (1500 silver)[/b]
+[list]
+[*] S-Rank: 50% chance, 1 core
+[*] SS-Rank: 80% chance, 1-2 cores
+[*] SSS-Rank: 100% chance, 1-3 cores
+[/list]
+
+[h2]Guild Quest System[/h2]
+The Adventurer's Guild delivers daily hunt contracts! Accept quests to hunt powerful creatures for XP, silver bounties, and valuable loot. Every contract sits within a single caravan trip - higher ranks send you further afield, but never more than 8 tiles out.
+
+[b]Hunt Quests (F-D Rank)[/b]
+[list]
+[*] Target spawns on your home map
+[*] Quick encounters for beginners
+[*] Immediate combat engagement
+[/list]
+
+[b]Expedition Quests (B-A Rank)[/b]
+[list]
+[*] Pack hunts on world map sites
+[*] B-Rank: 3-5 creatures | A-Rank: 5-8 creatures
+[*] All pack members must be killed to complete
+[*] Form a caravan and bring your hunting party!
+[/list]
+
+[b]Raid Quests (S-SSS Rank)[/b]
+[list]
+[*] Legendary single boss encounters
+[*] World map expeditions (3-8 tiles away)
+[*] Endgame challenges with massive rewards
+[/list]
+
+[b]Quest Rewards[/b]
+[list]
+[*] XP based on creature rank
+[*] Silver bounties (50-2000+ silver)
+[*] Random loot: weapons, armor, components, valuables
+[*] Reward quality scales with quest difficulty
+[/list]
+
+[h2]Rank Traits (Roleplay)[/h2]
+Your pawns receive a trait based on their rank that affects social interactions:
+
+[b]F-Rank[/b]
+"The weakest classification. Others look down on them with pity or contempt."
+[list]
+[*] Beauty: -0.5 | Social Impact: -30% | Trade Prices: -10%
+[*] Market Value: 0.5x | More likely to be targeted in social fights
+[/list]
+
+[b]E-Rank[/b]
+"Below average but not completely worthless. Often overlooked."
+[list]
+[*] Beauty: -0.25 | Social Impact: -15%
+[*] Market Value: 0.75x
+[/list]
+
+[b]D-Rank[/b]
+"Thoroughly average. Neither stands out nor falls behind."
+[list]
+[*] No bonuses or penalties - baseline
+[/list]
+
+[b]C-Rank[/b]
+"A competent person above the common masses. Commands modest respect."
+[list]
+[*] Beauty: +0.25 | Social Impact: +10%
+[*] Market Value: 1.5x
+[/list]
+
+[b]B-Rank[/b]
+"A skilled veteran worthy of respect. Their reputation precedes them."
+[list]
+[*] Beauty: +0.5 | Social Impact: +25% | Trade Prices: +5%
+[*] Market Value: 2.5x | Less likely to be in social fights
+[/list]
+
+[b]A-Rank[/b]
+"Among the finest in existence. Their presence commands attention."
+[list]
+[*] Beauty: +1.0 | Social Impact: +50% | Arrest: +15%
+[*] Market Value: 5x
+[/list]
+
+[b]S-Rank[/b]
+"A hero of incredible power. Their name is spoken with reverence."
+[list]
+[*] Beauty: +1.5 | Social Impact: +75% | Arrest: +25%
+[*] Market Value: 10x
+[/list]
+
+[b]SS-Rank[/b]
+"A demigod walking among mortals. Entire nations would pay any price for their loyalty."
+[list]
+[*] Beauty: +2.0 | Social Impact: +100% | Arrest: +40%
+[*] Market Value: 25x
+[/list]
+
+[b]SSS-Rank[/b]
+"The absolute apex of existence. A god among mortals. Kingdoms would fall to possess them."
+[list]
+[*] Beauty: +3.0 | Social Impact: +150% | Arrest: +60%
+[*] Market Value: 100x | Almost never involved in social fights
+[/list]
+
+[h2]Psycast Integration[/h2]
+Works with vanilla psycasts! WIS affects:
+[list]
+[*] Psychic Sensitivity
+[*] Neural Heat Limit
+[*] Neural Heat Recovery
+[*] Psyfocus Cost
+[/list]
+
+[h2]Mod Settings[/h2]
+[list]
+[*] XP multiplier
+[*] Stat points per level
+[*] Aura opacity and size
+[*] Enable/disable floating panels
+[*] And more!
+[/list]
+
+[h2]Compatibility[/h2]
+[list]
+[*] Compatible with Combat Extended
+[*] Compatible with Vanilla Expanded mods
+[*] Compatible with Vanilla Psycasts Expanded
+[*] Safe to add mid-save
+[/list]
+
+[h2]Requirements[/h2]
+[list]
+[*] Harmony (required)
+[/list]
+
+[hr][/hr]
+Made by Jelly Creative
+            </description>
+        </li>
+    </descriptionsByVersion>
+    <modDependencies>
+        <li>
+            <packageId>brrainz.harmony</packageId>
+            <displayName>Harmony</displayName>
+            <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+            <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+        </li>
+    </modDependencies>
+    <loadAfter>
+        <li>Ludeon.RimWorld</li>
+        <li>Ludeon.RimWorld.Royalty</li>
+        <li>Ludeon.RimWorld.Ideology</li>
+        <li>Ludeon.RimWorld.Biotech</li>
+        <li>Ludeon.RimWorld.Anomaly</li>
+        <li>brrainz.harmony</li>
+        <li>void.charactereditor</li> <!-- Character Editor compatibility -->
+        <li>Jaxe.RimHUD</li> <!-- RimHUD custom widgets -->
+    </loadAfter>
+    <loadBefore>
+        <!-- SimpleSidearms must load AFTER Isekai so its melee auto-switch Harmony patches
+             wrap our stat/combat patches correctly. Reversing this order breaks SS. -->
+        <li>petetimessix.simplesidearms</li>
+    </loadBefore>
+    <incompatibleWith>
+        <!-- Add any known incompatible mods here -->
+    </incompatibleWith>
+</ModMetaData>

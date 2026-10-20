@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Pyrelands</name>
+  <packageId>mandrake.rm.pyrelands</packageId>
+  <author>Mandrake</author>
+  <modVersion>1.0.0</modVersion>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Adds the Pyrelands: a hot savanna that burns on a cycle of its own, with the plants, weather and creatures that live by the fire.
+
+The fire. Ember grass regrows in under a day and dries to tinder almost as fast, so the fuel bed is always ready. A grass fire here walks the map with its own burn intelligence instead of flaring up and dying like an ordinary fire, and the burn never fully goes out: if a Pyrelands map goes long enough with no fire at all, a smoulder relights in open grass, far from anything you have built. Ground that burns turns to deep ash, poor while dry and rich once watered (beside water, on a riverbank, or during and after black rain), and a fresh burn feeds the ground with a fertility bonus that fades over a few days.
+
+The weather. Fine ash drifts through the air like snow even on clear days. Ash fall and cinderfall bank loose ash across the map, and cinderfall brings lightning with it. The only rain is black rain: a short, filthy downpour that puts fires out and washes the loose ash away.
+
+Fire pays. A scorch-fruit pod appears only where flame has just cracked one open and rots within a day, so the harvest happens during the burn or not at all. A sprayed firebreak line and a firefoam sprayer let you decide where the next burn stops. Pyrelands sand can be shovelled for glass sand, leaving gravel behind, so every sand patch is a finite deposit.
+
+The creatures. The fire-hawk carries a live ember away to start a new burn. The giant furnace-beast warms the ground around it, banks heat in the burn and smoulders the bed it lies in, and its herds migrate across the world. Ullai herds drift to wherever it burned a couple of days ago. The ashwallow goes to ground ahead of a fire front and curls into its dome when struck by heat. The emberscythe mantis, sytheclaw, barbslinger with its tail spikes, venomous flamefang and fire wasp round out the cast.
+
+Self-contained: the biome, its terrains, plants, weather, creatures and fire mechanics all ship here, and it places itself on newly generated worlds with no other mod required. Every mechanic has its own switch in Mod Settings, including whether the Pyrelands can appear on new worlds at all.
+
+Requires Harmony and all five RimWorld expansions.
+</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Royalty</packageId>
+      <displayName>Royalty</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Ideology</packageId>
+      <displayName>Ideology</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Biotech</packageId>
+      <displayName>Biotech</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Anomaly</packageId>
+      <displayName>Anomaly</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+      <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
+    <li>ludeon.rimworld.anomaly</li>
+    <li>ludeon.rimworld.odyssey</li>
+    <li>ludeon.rimworld.biotech</li>
+  </loadAfter>
+</ModMetaData>

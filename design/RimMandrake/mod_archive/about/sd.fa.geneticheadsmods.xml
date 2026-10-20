@@ -1,0 +1,66 @@
+<ModMetaData>
+	<name>Genetic Mods for Facial Animation</name>
+	<author>SunshineyDays</author>
+	<packageId>sd.fa.geneticheadsmods</packageId>
+
+	<supportedVersions>
+		<li>1.6</li>
+		<li>1.5</li>
+	</supportedVersions>
+
+	<descriptionsByVersion>
+		<v1.5>Mod head pack for Facial Animation. Requires the Genetic Heads Framework for [NL] Facial Animation.
+	
+Adds genetic Facial Animation support for a few different mods. Art is slightly modified from the original mods to allow Facial Animation compatibility. Guy762 was kind enough to provide blank head textures.
+
+Current Supported Mods:
+- Vanilla Races Expanded - Android
+- Vanilla Races Expanded - Genie
+- Vanilla Races Expanded - Insector
+- Vanilla Races Expanded - Phytokin
+- Vanilla Races Expanded - Saurid
+- Roo's Faun Xenotype
+- Guy762's Star Wars Xenotypes</v1.5>
+		<v1.6>Mod head pack for Facial Animation. 
+	
+Adds genetic Facial Animation support for a few different mods. Art is slightly modified from the original mods to allow Facial Animation compatibility. Guy762 and Erin were kind enough to provide blank head textures.
+
+Current Supported Mods:
+- Vanilla Races Expanded - Android
+- Vanilla Races Expanded - Genie
+- Vanilla Races Expanded - Insector
+- Vanilla Races Expanded - Phytokin
+- Vanilla Races Expanded - Saurid
+- Roo's Faun Xenotype
+- Guy762's Star Wars Xenotypes
+- Erin's Auraeyl (color matching working thanks to Lucius!)
+- Erin's Auronya
+- Erin's Corvyia
+- Erin's Fenrisulfr
+- Erin's FFXIV Races: AuRa Raen, AuRa Xaela
+- Erin's Shisune
+- Bone Reapers ReMarrowed
+- The Profaned</v1.6>
+	</descriptionsByVersion>
+
+	<loadAfter>
+		<li>nals.facialanimation</li>
+		<li>sd.fa.geneticheadsframework</li>
+		<li>sd.fa.geneticheadsframework.dev</li>
+		<li>sd.fa.geneticheadsframework.devbuild</li>
+		<li>guy762.StarWarsXenotypes</li>
+		<li>BotchJob.Profaned</li>
+		<li>jtcsbonereapers.formerlypphhyy</li>
+	</loadAfter>
+
+	<modDependenciesByVersion>
+		<v1.5>
+			<li>
+				<packageId>sd.fa.geneticheadsframework</packageId>
+				<displayName>Genetic Framework for [NL] Facial Animation</displayName>
+				<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3498759997</steamWorkshopUrl>
+			</li>
+		</v1.5>
+	</modDependenciesByVersion>
+
+</ModMetaData>

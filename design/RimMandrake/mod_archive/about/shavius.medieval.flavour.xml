@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modMetaData>
+    <packageId>shavius.Medieval.Flavour</packageId>
+    <name>Shavius's Medieval Flavour Pack</name>
+    <loadAfter>
+        <li>Ludeon.RimWorld</li>
+        <li>Ludeon.RimWorld.Royalty</li>
+        <li>Ludeon.RimWorld.Ideology</li>
+    </loadAfter>
+    <loadBefore>
+        <li>shavius.VEpatches</li>
+    </loadBefore>
+    <author>Shavius</author>
+    <supportedVersions>
+        <li>1.2</li>
+        <li>1.3</li>
+        <li>1.4</li>
+        <li>1.5</li>
+        <li>1.6</li>
+    </supportedVersions>
+    <description>Added some medieval backstories from VFE. Modified some vanilla backstories to make medieval. Created a medieval leader title maker.
+    </description>
+</modMetaData>

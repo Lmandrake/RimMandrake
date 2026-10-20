@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+        <name>Laser Cannon</name>
+        <author>Arcjc007</author>
+        <packageId>Arcjc007.LaserCannon</packageId>
+        <supportedVersions>
+                <li>1.6</li>
+        </supportedVersions>
+        <description><![CDATA[Adds a 3x3 Laser cannon that can shoot over walls and shoot down incoming mortar shells.
+        ]]></description>
+</ModMetaData>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Ancient urban ruins</name>
+	<author>MO</author>
+	<packageId>XMB.AncientUrbanrUins.MO</packageId>
+	<supportedVersions>
+		<li>1.5</li>
+		<li>1.6</li>
+	</supportedVersions>	
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>ceteam.combatextended</li>
+		<li>zylle.MapDesigner</li>
+		<li>m00nl1ght.GeologicalLandforms</li>
+		<li>Uuugggg.ReplaceStuff</li>
+	</loadAfter>
+	<description>This mod offers a variety of urban exploration experiences and maps, featuring an extensive collection of architectural and debris art assets, and includes a system for importing floor plans and generating quest maps.</description>
+</ModMetaData>

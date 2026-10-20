@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+ <name>Invisible Display Case Continued</name>
+ <packageId>Icepickgma.InvisibleDisplayCase</packageId>
+ <author>Icepickgma</author>
+ <supportedVersions>
+  <li>1.5</li>
+  <li>1.6</li>
+ </supportedVersions>
+ <modDependencies>
+  <!-- only required if Harmony patches assembly is compiled -->
+  <!-- <li>
+   <packageId>brrainz.harmony</packageId>
+   <displayName>Harmony</displayName>
+   <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+   <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+  </li> -->
+  <li>
+   <packageId>Nightmare.Core</packageId>
+   <displayName>Nightmare Core</displayName>
+   <steamWorkshopUrl>steam://url/CommunityFilePage/3047049650</steamWorkshopUrl>
+   <downloadUrl>https://gitlab.com/nightcorp/nightmarecore/-/archive/master/nightmarecore-master.zip</downloadUrl>
+  </li>
+ </modDependencies>
+  <loadAfter>
+    <!-- <li>brrainz.harmony</li> -->
+    <li>Nightmare.Core</li>
+  </loadAfter>
+  <description>Decorate your base!
+
+Adds an invisible display case using NightmareCore that can be placed over top of anything.
+
+Pawns cannot use items stored inside, so it's only for a cosmetic appeal.
+ 
+In NightmareCore settings enable the "Allow all items to be displayed" option to put all kinds of things inside.
+
+Warning: placing buildings inside may cause errors? Not tested fully.
+
+If you find an item that doesn't won't let you put it inside, give me the name of the mod it comes from and I may make a patch for it.
+</description>
+</ModMetaData>

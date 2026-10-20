@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ModMetaData>
+  <name>Standalone Hot Spring</name>
+  <author>balistafreak</author>
+  <supportedVersions>
+    <li>1.1</li>
+    <li>1.2</li>
+    <li>1.3</li>
+	<li>1.4</li>
+	<li>1.5</li>
+      <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+        <packageId>brrainz.harmony</packageId>
+        <displayName>Harmony</displayName>
+        <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+        <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <!-- <loadBefore> -->
+  <!-- <li>ModderName.ModSeries.ModName</li> -->
+  <!-- </loadBefore> -->
+  <loadAfter>
+<li>brrainz.harmony</li>
+  </loadAfter>
+  <packageId>balistafreak.StandaloneHotSpring</packageId>
+  <description>[h1]Changelog[/h1]
+18 June 2025: 1.6 compatibility tentatively functional!
+10 April 2024: 1.5 compatibility tentatively functional!
+20 Oct 2022: 1.4 compatibility tentatively functional!
+5 Jul 2021: 1.3 compatibility tenatively functional, will declare as 'definitely' once other players have more extensively used it. Many thanks to Ogliss and Wiri for their assistance with the details of the 1.2->1.3 transition!
+30 Aug 2020: Chinese (Simplified and Traditional) localizations added, thanks to [url=https://steamcommunity.com/profiles/76561198430532092]RicoFox223@
+边缘汉化组[/url] and [url=https://steamcommunity.com/id/leafzxg]leafzxg@
+边缘汉化组[/url]!
+25 Aug 2020: Russian localization added, thanks to [url=https://steamcommunity.com/profiles/76561198122890724]Tkhakiro[/url]!
+22 Aug 2020: Hot spring texture improved, now works with Stuff thanks to [url=https://steamcommunity.com/profiles/76561198143995572]Vincent_Wolfgang[/url]!
+
+[h1]What this mod does[/h1]
+Make use of those steam geysers dotting the map for more than mere electric power! With a great deal of clever excavation deep underground, the groundwater that fuels a steam geyser can be brought gushing to the surface. A large amount of stone blocks are used to stabilize the shifted earth and form a clean, abiotic vessel in the ground, pooling the pure, steaming water into a luxurious hot spring.
+
+This gorgeous all-natural bath will be automatically used by pawns as a potent source of meditative joy, and is capable of hosting up to six pawns at once.
+
+It is of special interest to sick and/or injured colonists; the soothing heat and therapeutic trace minerals within the hot spring's waters greatly accelerate recovery from injury and illness. Colonists capable of movement can maximize their uptime on the hot spring's positive hediff by being manually directed to use it once per day, hastening their return to health as soon as possible.
+
+[h1]Hard numbers[/h1]
+[url=https://pastebin.com/GsT9WPrQ]Too long for Steam.[/url]
+
+[h1]How will this mod affect my gameplay?[/h1]
+This mod allows pre-electricity colonies to benefit from steam geysers with a non-trivial investment of 500 stony material and several days' worth of construction labor. It encourages building facilities directly around it, as it is useful for both recreation (pawns using it in an impressive room will gain an impressive rec room positive mood) and for injury/illness recovery (recovering pawns should be kept near it to minimize walking time to and from it).
+
+Colonies that have electricity must 'sacrifice' a potential geothermal generator, as steam geysers are a limited resource. You will need to find alternative sources of power.
+
+The Blood filtration buff is rather modest, equivalent to only 16% of a kidney. It will rarely be the most important factor in immunity gain.
+
+The Natural healing factor increase is very strong, as the only other (non-mod) source of increase is an implant locked behind a techprint. If this bothers you, you can easily reduce the hediff's strength or remove the effect altogether by editing the HediffDefs in the .xml.
+ 
+[h1]Tested With[/h1]
+While this mod's code was based on the hot spring from [url=https://steamcommunity.com/profiles/76561198184990805/myworkshopfiles/?appid=294100]ssulunge[/url]'s [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1918120749]Kijin Race 2.0[/url] mod, everything in the backend was renamed and recategorized properly to ensure that the mods should not conflict on a compatibility level.
+
+Mod order seems to be irrelevant as long as it comes after Core/Royalty. 
+
+[h1]Graphics[/h1]
+Workshop page art can be found [url=https://www.pixiv.net/en/artworks/15894645]here[/url]. It was drawn by [url=https://www.pixiv.net/en/users/979179/artworks]隂宅[/url].
+
+The original art for the hot spring was sourced from an anonymous Mongolian cartoon-swapping website. It was further modified, enhanced, and given a stuff-mask by the talented [url=https://steamcommunity.com/profiles/76561198143995572]Vincent_Wolfgang[/url].
+
+[h1]About and Acknowledgments[/h1]
+Please let me know in the comments section if you encounter any problems with this mod. I have little experience with game modding, so any comments, feedback, and/or coding/implementation pointers are greatly appreciated.
+
+[h1]A very big thanks to:[/h1]
+[url=https://steamcommunity.com/profiles/76561198184990805/myworkshopfiles/?appid=294100]ssulunge[/url] for creating the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1918120749]Kijin Race mod[/url] in the first place. His original C# code forms the basis of this mod's code; without it, I never would have even considered undertaking this project.
+
+"Wiri" (from the Rimworld discord) for taking me by the hand and teaching me about .dll decompilers, Visual Studio, and Rimworld in C# code far above and beyond what a static tutorial ever could.
+
+[url=https://steamcommunity.com/id/dninemfive/myworkshopfiles/?appid=294100]dninemfive[/url] for having written the Plague Gun tutorial in the first place, encouraging me to step into the world of C# properly, and for continuing to assist me with Rimworld code screwups beyond it.
+
+[url=https://steamcommunity.com/profiles/76561198143995572]Vincent_Wolfgang[/url] for taking the fate of my ugly texture into his own two hands. He improved the original bootleg texture's linework, greyscaled the rocks to work with a stuff-mask, and made said stuff-mask almost entirely on his own initiative.
+
+[url=https://steamcommunity.com/id/erdelf/myworkshopfiles/?appid=294100]erdelf[/url], [url=https://steamcommunity.com/id/Garthor/myworkshopfiles/?appid=294100]Garthor[/url], [url=https://steamcommunity.com/profiles/76561197998915712/myworkshopfiles/?appid=294100]Jamaican Castle[/url], [url=https://steamcommunity.com/profiles/76561197993602698/myworkshopfiles/?appid=294100]Ogliss[/url], and [url=https://steamcommunity.com/id/moigeh/myworkshopfiles/?appid=294100]"Yap"/Mic[/url] for offering further code-related pointers, as well as for discussing balance and implementation with me.
+[url=https://steamcommunity.com/profiles/76561198122890724]Tkhahiro[/url] for the Russian localization.
+
+Taranchuk for refactoring this mod to work properly in 1.5.
+
+If you would like to show your support, please do your part for inter-mod soft compatibility by making your mod's buildings Stuffable, as opposed to requiring exactly Steel or WoodLogs.
+</description>
+
+<url>https://steamcommunity.com/sharedfiles/filedetails/?id=2205921400</url>
+</ModMetaData>

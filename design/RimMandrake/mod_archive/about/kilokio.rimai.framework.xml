@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  
+  <name>RimAI Framework</name>
+  
+  <author>Kilokio</author>
+  
+  <supportedVersions>
+    <li>1.5</li>
+    <li>1.6</li>
+  </supportedVersions>
+  
+  <packageId>kilokio.rimai.framework</packageId>
+  
+  <modVersion>4.2.1</modVersion>
+  
+  <url>https://steamcommunity.com/sharedfiles/filedetails/?id=3529263357</url>
+  
+  <description>
+The foundational framework for the RimAI ecosystem. It handles all communication with Large Language Models (LLMs) and provides the core APIs for other content modules. 
+
+This framework itself does not add gameplay features but is required by all other RimAI modules.
+  </description>
+
+</ModMetaData>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <name>Psilocap Cultivation</name>
+    <author>Laureeeeeeeeeeeeeeen</author>
+    <packageId>Laureeeeeeeeeeeeeeen.shrooms</packageId>
+    <supportedVersions>
+        <li>1.6</li>
+    </supportedVersions>
+    <description>  Adds the ability to sow psilocap mushrooms in biomes where they grow naturally. Much like healroot, the cultivated version is slightly different from the wild version for balance reasons. Your farmers are still going to be tripping balls though, you can be sure of that.
+	
+  Also adds an ornamental variety that can be planted in pots and does not cause hallucinations. This variety will not grow in harsh sunlight but does fine with indoor lamps. It has the same beauty-per-work as the vanilla flowers and still emits that characteristic violet glow.
+	</description>
+	<modIconPath IgnoreIfNoMatchingField="True">shrooms</modIconPath>
+	<modDependencies>
+		<li>
+			<packageId>Ludeon.RimWorld.Odyssey</packageId>
+			<displayName>Rimworld - Odyssey</displayName>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>Ludeon.RimWorld</li>
+		<li>Ludeon.RimWorld.Royalty</li>
+		<li>Ludeon.RimWorld.Ideology</li>
+		<li>Ludeon.RimWorld.Biotech</li>
+		<li>Ludeon.RimWorld.Odyssey</li>
+	</loadAfter>
+</ModMetaData>

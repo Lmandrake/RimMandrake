@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Blood Animations</name>
+	<author>Fuu Chan</author>
+	<packageId>Fuu.BloodAnimations</packageId>
+	<description>
+Extreme violence!
+
+Adds blood sprays, animated bleeding, ricochets, impact debris, and bullet casings!
+
+Directional blood sprays (Videos above)
+*Triggered by direct damage, such as bullets, explosions, and damaging psycasts, and the blood amount scales based on the damage done.
+*Blood particles last ~10s (configurable in options) and will fade away on its own.
+*15% (configurable in options) of particles will leave filth behind, which requires cleanup like vanilla blood.
+
+Animated bleeding
+*Animated bleeding based on pawn bleed rate.
+
+Ricochets
+*When bullets are deflected by body armor, or when hitting hard targets like mechanoids, visual ricochet animations may occur!
+
+Impact Debris
+*When hitting inorganic pawns or structures, debris will fly out!
+*Impact debris follow similar rules to blood spray.
+
+Compatible with Vanilla Expanded Framework blood types (Vanilla Races Expanded, Alpha Genes) as well as HAR (Humanoid Alien Races)
+
+Bullet Casings
+*Originally a mod called [Syr] Bullet Casings. It was one of my favorites, but sadly no longer updated. So here it is reimplemented, with improved animations and fixed to be compatible with everything since 1.4 including modded weapons. This feature can be disabled in the options. Credit and thanks to Syrchalis!
+		
+Performance
+Inevitably, extra objects on the map has a cost, but these objects are relatively simple and do not last a long time, and how much and how long can be configured to the point where it has nearly 0% impact. So the performance cost shouldn't be noticeable and can be configured to match your needs.
+
+Compatibility
+*Adjustable performance impact (Blood multiplier, cleanable filth chance, and fade time can be configured to fit your performance needs).
+
+*Safe to add and remove mid-game.
+
+*Independent, isolated, and minimal in scope, with no modifications to vanilla behavior/code required: Should be compatible with nearly every mod, leaves no permanent changes to your saved game, and will not brick your game.
+
+*Confirmed compatible with Combat Extended, Vanilla Expanded series, Alpha series, Dubs series, Ragdoll Physics, Melee Animation, Yayo's Animation, Layered Wall Destruction, Gore upon dismemberment, Gunplay, Blood Color Genes, HAR (Humanoid Alien Races), The Profaned, and hundreds more.
+
+*Multiplayer compatible if you turn off the filth options. This mod is entirely cosmetic only with the filth options off.
+
+*Incompatible: Bullet Casings do not work under CE. "Combat Effects for Combat Extended" will cause black blood unless you turn off their "show extra blood" option.
+
+Updates
+~2.00 update: Now compatible with 1.7! 
+		- Changed use of Verse.Rand to System.Random to allow multiplayer compatibility without desyncs.
+		- Added extra check to prevent white blood for mods that define custom blood in non-vanilla ways.
+		- Added extra out-of-bounds checking for mods that do strange things with pawn/object locations.
+		- Added separate slider for blood and debris in mod settings.
+~1.09 update: Fixed null exception errors caused by changes to pawn caching in the latest version of Vanilla Framework Expanded.
+~1.08 update: Bullet filth will now last a max of 35-40 days and will wash away from rain. Added toggle in options for ground impact particles.
+~1.07 update: Improved fleshmass and fleshbeast blood animations, improved fleshmass filth textures, improved impact debris particles, added ground impact particles, added support for the unique blood types in The Profaned.
+~1.06 update: Added bullet casings support for plasma weapons, VEAndroids will stop bleeding animation when they're fully bled out, and reduced default filth chance in options to 15%.
+~1.05 update: Added Bullet Casings feature!
+~1.04 update: Particles should now properly despawn based on the time defined in the mod options, rather than the time defined in the XML.
+~1.03 update: Fix for System.IndexOutOfRangeException.
+~1.02 update: Particles were skidding for longer than intended due to a small forgor.
+~1.01 update: Added backwards compatibility for 1.4
+
+Github Link: https://github.com/tenguin/Rimworld_BloodAnimations
+
+Credits to: felutiahime and Nanashi Mumei for the art sources used in the thumbnail and tanosii_chan for the upvote animation! Give them a visit!
+	</description>
+	<supportedVersions>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>Ludeon.RimWorld</li>
+		<li>Ludeon.RimWorld.Royalty</li>
+		<li>Ludeon.RimWorld.Ideology</li>
+		<li>Ludeon.RimWorld.Biotech</li>
+		<li>Ludeon.RimWorld.Anomaly</li>
+		<li>Ludeon.RimWorld.Odyssey</li>
+		<li>brrainz.harmony</li>
+	</loadAfter>
+</ModMetaData>

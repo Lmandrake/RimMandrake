@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>They! (Giant Ants)</name> 
+  <author>Sapiently</author> 
+  <packageId>Sapiently.TheyAtomicMonsters</packageId> 
+  
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  
+  <description>This the first in the atomic monster series. Giant Ants to raid your colony and eat your food!</description>
+  
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases</downloadUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+</ModMetaData>
