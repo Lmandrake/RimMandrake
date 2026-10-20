@@ -121,6 +121,8 @@ def main(argv=None):
     ap.add_argument("--mock", action="store_true", help="run every path against FakeBridge; rows are SKIP (mock verdict kept)")
     a = ap.parse_args(argv)
     only = set(x for x in a.only.split(",") if x) or set(SECTIONS)
+    if only - set(SECTIONS):
+        ap.error("unknown --only section(s) %s; known: %s" % (",".join(sorted(only - set(SECTIONS))), ",".join(SECTIONS)))
     if a.mock:
         B, V = FakeBridge(), None
     else:
@@ -361,6 +363,7 @@ def grate(ctx):
         for i in range(1, 5):
             dig(P(i, dz), 4)                                     # 2 m
     counts, fills = {}, {}
+    blind = False
     for dz, tier in ((20, "steelgrated"), (24, "steel")):
         # every fill reply is kept: live 2026-10-19 (run c, same map as runs a/b) the solid-deck CONTROL pit read "REFUSED:
         # fire off or nothing burnable" cut at 60 chars, the "(fluid X, F=n)" cause lost and the fill replies discarded
@@ -376,6 +379,7 @@ def grate(ctx):
         lit_txt = str(lit.get("result") or "")
         ticks(2500)
         after = pawns_by_id()
+        blind = blind or not health_seen(after) or any(r and r not in after for r in riders)
         n = sum(max(0, burns(after.get(r) or {}) - burns(before.get(r) or {})) for r in riders if r)
         counts[tier] = (n, lit_txt[:200], proof("ProofGrate", xz(P(3, dz)))[1])
     g, s_ = counts["steelgrated"][0], counts["steel"][0]
@@ -383,6 +387,10 @@ def grate(ctx):
     # liquid: a refused fill, a cell left by an earlier run) asks nothing of the mod: UNMEASURED with the replies attached.
     unlit = [t for t, c in counts.items() if not c[1].startswith("LIT")]
     st = "PASS" if g >= 1 and g > s_ else "FAIL"
+    # no health block, or a rider gone from the after-read (burned to death, despawned): burns read 0, which is ignorance,
+    # not a FAIL (the docstring's rule; T1/T3/crush rows carry the same guard) -- review 2026-10-20
+    if st == "FAIL" and blind:
+        st = "UNMEASURED"
     row("GRATE_fire_burns_people_above", "UNMEASURED" if unlit else st,
         {"grateBurns": g, "solidBurns": s_, "reads": counts, "unlit": unlit,
          "fills": {t: f for t, f in fills.items() if t in unlit or any(not x.startswith("FILLED") for x in f)}})
