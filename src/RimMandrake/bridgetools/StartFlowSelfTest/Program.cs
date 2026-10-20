@@ -97,6 +97,20 @@ namespace JawaBench.BridgeTools
             p = C.PickFirstAcceptable(new int[0], id => null);
             U("tile.pick_empty_candidates", p.Chosen == -1 && p.Refused.Count == 0, "chosen " + p.Chosen);
 
+            // read-back re-assert (2026-10-20: selection read back -1 after skipped candidates)
+            int writesMade = 0, sel = -1;
+            int w = C.WriteUntilReadBack(() => { writesMade++; sel = 17011; }, () => sel == 17011);
+            U("tile.readback_first_write", w == 1 && writesMade == 1, "w " + w);
+            writesMade = 0; sel = -1;
+            w = C.WriteUntilReadBack(() => { writesMade++; sel = writesMade >= 2 ? 17011 : -1; }, () => sel == 17011);
+            U("tile.readback_second_write_reported", w == 2 && writesMade == 2, "w " + w);
+            writesMade = 0;
+            w = C.WriteUntilReadBack(() => writesMade++, () => false);
+            U("tile.readback_never_fails_negative", w == -3 && writesMade == 3, "w " + w);
+            writesMade = 0;
+            w = C.WriteUntilReadBack(() => writesMade++, () => false, 0);
+            U("tile.readback_min_one_write", w == -1 && writesMade == 1, "w " + w);
+
             Console.WriteLine("U-count " + n);
             return 0;
         }

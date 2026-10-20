@@ -178,7 +178,7 @@ namespace JawaBench.BridgeTools
                 "with a UI click, or pick a farther tile). REFUSES: page not open; a tile out of range; " +
                 "every candidate invalid. Surface layer only.",
             ResultDescription =
-                "success, chosen, refused[] {tile, reason}, selectedTileReadBack, startingTileReadBack, " +
+                "success, chosen, refused[] {tile, reason}, selectedTileReadBack, startingTileReadBack, selectionWrites (1 normally; >1 = the selection had to be re-written), " +
                 "biome, hilliness, landmark, advanced, pendingConfirmation[] {title,text}, nextPage, windows[].")]
         public static async Task<object> StartSiteSelect(
             IRimBridgeContext ctx, CancellationToken cancellationToken,
@@ -214,28 +214,36 @@ namespace JawaBench.BridgeTools
 
                 var pt = new PlanetTile(pick.Chosen, surface);
                 Find.WorldSelector.ClearSelection();
-                Find.WorldInterface.SelectedTile = pt;
-                Find.GameInitData.startingTile = pt;
                 if (jumpCamera) Find.WorldCameraDriver.JumpTo(pt);
+                // 2026-10-20 remake: after skipped candidates the selection once read back -1 while
+                // startingTile held the pick; a second write worked. Write both, re-assert until BOTH
+                // read back (camera jump first, so nothing after the write can move it), and report
+                // how many writes it took instead of hiding a retry.
+                bool SelOk() { var s = Find.WorldInterface.SelectedTile; return s.Valid && s.tileId == pick.Chosen && s.Layer == surface; }
+                bool StOk() { var s = Find.GameInitData.startingTile; return s.Valid && s.tileId == pick.Chosen && s.Layer == surface; }
+                int writes = Core.WriteUntilReadBack(() =>
+                {
+                    Find.WorldInterface.SelectedTile = pt;
+                    Find.GameInitData.startingTile = pt;
+                }, () => SelOk() && StOk());
 
                 PlanetTile sel = Find.WorldInterface.SelectedTile;
                 PlanetTile st = Find.GameInitData.startingTile;
-                bool selOk = sel.Valid && sel.tileId == pick.Chosen && sel.Layer == surface;
-                bool stOk = st.Valid && st.tileId == pick.Chosen && st.Layer == surface;
                 Tile tile = pt.Tile;
                 var common = new
                 {
                     chosen = pick.Chosen, refused,
                     selectedTileReadBack = sel.Valid ? sel.tileId : -1,
                     startingTileReadBack = st.Valid ? st.tileId : -1,
+                    selectionWrites = Math.Abs(writes),
                     biome = tile?.PrimaryBiome?.defName,
                     hilliness = tile?.hilliness.ToString(),
                     landmark = tile?.Landmark?.name,
                 };
-                if (!selOk || !stOk) return Fail("Selection did not read back (selected=" + common.selectedTileReadBack + ", startingTile=" + common.startingTileReadBack + ").", common);
+                if (writes < 0) return Fail("Selection did not read back after " + (-writes) + " writes (selected=" + common.selectedTileReadBack + ", startingTile=" + common.startingTileReadBack + ", selectedLayer=" + Find.WorldSelector.SelectedLayer?.LayerID + ").", common);
 
                 if (!advance)
-                    return (object)new { success = true, common.chosen, common.refused, common.selectedTileReadBack, common.startingTileReadBack, common.biome, common.hilliness, common.landmark, advanced = false, windows = StartFlowWindows() };
+                    return (object)new { success = true, common.chosen, common.refused, common.selectedTileReadBack, common.startingTileReadBack, common.selectionWrites, common.biome, common.hilliness, common.landmark, advanced = false, windows = StartFlowWindows() };
 
                 if (!StartFlowCanDoNext(page))
                     return Fail("The page refused Next (CanDoNext false; tutorial gate or a validity rule this tool did not pre-check). Selection stands.", common);
@@ -253,7 +261,7 @@ namespace JawaBench.BridgeTools
                 {
                     success = ok,
                     message = ok ? null : "Next ran but the read-back disagrees (pageClosed=" + pageClosed + ", startingTileCommitted=" + committed + ", nextOpen=" + nextOpen + ").",
-                    common.chosen, common.refused, common.selectedTileReadBack,
+                    common.chosen, common.refused, common.selectedTileReadBack, common.selectionWrites,
                     startingTileReadBack = Find.GameInitData.startingTile.Valid ? Find.GameInitData.startingTile.tileId : -1,
                     common.biome, common.hilliness, common.landmark,
                     advanced = true, nextPage = nextPage?.GetType().Name, windows = StartFlowWindows(),
