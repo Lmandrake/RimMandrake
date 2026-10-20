@@ -1,0 +1,72 @@
+uid,def,name,drawCenter,size,tiles
+21,WB_MapLabelFeature,Pan,"(1.140197, 78.74852, 61.62281)",12,79
+22,WB_MapLabelFeature,Sporefields,"(-4.210598, 85.51077, -51.67377)",22,255
+23,WB_MapLabelFeature,Pale Flats,"(1.953081, -81.67176, 57.6707)",10,60
+24,WB_MapLabelFeature,Wither,"(4.552586, -85.60505, -51.48834)",11,72
+25,WB_MapLabelFeature,Deadstone,"(-98.54525, -4.846872, 16.28933)",61,2051
+26,WB_MapLabelFeature,Ammonia Flats,"(-92.44379, 34.28469, -16.6945)",39,818
+27,WB_MapLabelFeature,Dune Sea,"(99.74464, -0.5117534, -7.123506)",56,1692
+28,WB_MapLabelFeature,Ashfall Range,"(49.43353, 0.6102375, -86.92499)",24,324
+29,WB_MapLabelFeature,Sunreach,"(-44.04948, -30.56024, -84.41395)",38,795
+30,WB_MapLabelFeature,Dew Belt,"(16.19944, -20.24554, 96.58)",26,362
+31,WB_MapLabelFeature,Nightspill,"(-44.57271, -14.3742, 88.35528)",39,853
+32,WB_MapLabelFeature,Frostcaps,"(-33.9751244, 83.9169235, 42.4425011)",22,254
+33,WB_MapLabelFeature,Cracklands,"(30.8211, 95.11537, 1.76832)",20,227
+34,WB_MapLabelFeature,Pyrelands,"(54.83085, 57.75282, 60.48296)",11,63
+35,WB_MapLabelFeature,Twilight Sea,"(-1.66762, 30.4249, 95.24466)",39,852
+36,WB_MapLabelFeature,Capwood,"(-61.52853, 60.90144, -50.05253)",12,75
+37,WB_MapLabelFeature,Umbra,"(-98.84471, -13.56963, 6.751915)",38,802
+38,WB_MapLabelFeature,Glare,"(70.20199, 69.90943, -13.57762)",40,879
+39,WB_MapLabelFeature,Sootreach,"(-62.33798, -75.83488, -19.05378)",28,433
+40,WB_MapLabelFeature,The Verge,"(-42.63387, -87.75179, -21.95397)",18,171
+41,WB_MapLabelFeature,Long Sand,"(35.60035, -83.68843, 41.57958)",36,721
+42,WB_MapLabelFeature,Kiln,"(69.8358, -70.79726, -10.52184)",40,878
+43,WB_MapLabelFeature,Damp,"(-1.315294, -63.25726, -77.43893)",20,230
+44,WB_MapLabelFeature,Ashwood,"(-72.4029541, -36.3202324, 58.6205788)",11,69
+45,WB_MapLabelFeature,Scorch,"(95.60393, 28.27504, -7.772472)",13,90
+46,WB_MapLabelFeature,Grey Sea,"(0.849733, 13.48483, -99.08298)",34,617
+47,WB_MapLabelFeature,Rimewall,"(-33.1574974, 90.7629929, 25.6988125)",25,338
+48,WB_MapLabelFeature,Slough,"(4.28156853, 99.887764, -1.36018956)",16,148
+49,WB_MapLabelFeature,Combs,"(35.81187, 81.97791, 44.68929)",26,360
+50,WB_MapLabelFeature,Glass Reach,"(-0.07654287, 79.31738, 60.89949)",18,172
+51,WB_MapLabelFeature,Dry Marches,"(37.18456, 72.45086, -58.03603)",27,387
+52,WB_MapLabelFeature,Gray Crags,"(-40.10947, 36.915, -83.83623)",32,577
+53,WB_MapLabelFeature,Sunward Scrub,"(18.94392, 88.09579, -43.36195)",17,154
+54,WB_MapLabelFeature,Sinkground,"(-6.731803, -94.48207, 32.05964)",22,276
+55,WB_MapLabelFeature,Coldstone,"(-28.87416, -87.81461, 38.14285)",10,57
+56,WB_MapLabelFeature,Sweatwood,"(17.4065, -57.77034, 79.74711)",13,93
+57,WB_MapLabelFeature,Ashen Wastes,"(-31.42875, -87.57145, -36.65344)",19,202
+58,WB_MapLabelFeature,Scour,"(13.0817461, -98.6786499, 9.44043446)",21,234
+59,WB_MapLabelFeature,Thornbelt,"(33.9751244, -83.9169312, -42.4425011)",30,502
+60,WB_MapLabelFeature,Lantern Deeps,"(-86.18179, -47.29447, 18.32847)",10,57
+61,WB_MapLabelFeature,Stillwood,"(-63.65895, 77.03342, 3.659277)",16,142
+62,WB_MapLabelFeature,Rust Cathedral,"(99.20314, 8.894869, -8.922888)",21,236
+63,WB_MapLabelFeature,The Breaks,"(66.24499, -11.8544, -73.96672)",17,153
+64,WB_MapLabelFeature,Notch,"(41.56396, -38.51001, -82.39792)",10,56
+65,WB_MapLabelFeature,Frostvein,"(-70.06404, -27.47452, -65.84968)",11,61
+66,WB_MapLabelFeature,Dew Horn,"(49.67846, -0.7177052, 86.78442)",30,491
+67,WB_MapLabelFeature,Cratercrown,"(68.17632, -7.558929, 72.76573)",18,174
+68,WB_MapLabelFeature,Scald,"(81.41918, -1.324158, 58.0445)",24,312
+69,WB_MapLabelFeature,Twilight Crags,"(-30.10461, -30.11913, 90.47956)",26,384
+70,WB_MapLabelFeature,Fanground,"(14.974, 87.41464, 46.20021)",11,70
+71,WB_MapLabelFeature,Tallow Ground,"(10.8273, 73.13228, -67.33824)",15,129
+72,WB_MapLabelFeature,Blight,"(26.1437321, -95.4141312, -14.5057821)",16,140
+73,WB_MapLabelFeature,Fall Line,"(74.0401917, 15.3778486, -65.4172745)",26,155
+74,WB_MapLabelFeature,Cinderdark,"(-63.91864, -13.70851, -75.67354)",17,153
+75,WB_MapLabelFeature,Blindwood,"(-73.645546, 23.9671726, 63.243)",16,145
+76,WB_MapLabelFeature,Knuckles,"(-15.070076, 98.699646, 5.38822174)",20,219
+77,WB_MapLabelFeature,Mould Marches,"(-24.92801, 90.45424, -34.59225)",15,123
+78,WB_MapLabelFeature,Salt Gate,"(42.52141, 55.87385, 71.20424)",10,16
+79,WB_MapLabelFeature,Fever Wood,"(67.82414, 41.04566, 60.95195)",12,81
+80,WB_MapLabelFeature,Stepwood,"(-0.2666117, -61.46707, 78.87793)",12,85
+81,WB_MapLabelFeature,Anvil,"(99.24939, -8.721268, 8.573127)",25,349
+82,WB_MapLabelFeature,Fuelmere,"(-75.71741, -33.29685, -56.1978)",11,72
+83,WB_MapLabelFeature,Sunshelf,"(-21.4235, -91.57713, 33.98034)",11,68
+84,WB_MapLabelFeature,Cinders,"(30.4283, -47.47177, -82.58662)",14,112
+85,WB_MapLabelFeature,Salt,"(19.96614, 36.50578, -90.93229)",21,249
+86,WB_MapLabelFeature,Hollow Verge,"(70.46593, -42.67094, 56.68989)",10,40
+88,WB_MapLabelFeature,Grinding Floor,"(-5.435139, -35.14397, 93.46315)",12,79
+89,WB_MapLabelFeature,Hanging Wood,"(-27.0818176, -90.6564255, 32.3374062)",17,165
+90,WB_MapLabelFeature,Chalk Marches,"(11.48814, -95.62531, 26.90394)",10,57
+91,WB_MapLabelFeature,Quiet Ground,"(-64.05734, 34.29985, -68.70355)",10,43
+92,WB_MapLabelFeature,The Abandoned Mines,"(43.46095, -19.44265, -87.93821)",10,34

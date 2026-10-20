@@ -1,0 +1,126 @@
+{
+ "info": {
+  "name": "Ash'karr",
+  "planetCoverage": "1",
+  "seedString": "raven",
+  "persistentRandomValue": "-1622588257",
+  "overallRainfall": "Normal",
+  "overallTemperature": "Normal",
+  "initialMapSize": "(325, 1, 325)",
+  "pollution": "0.0500000007",
+  "factions": [
+   "RUT_Jawa_IndigenousTribes",
+   "RUT_Jawa_Junkers",
+   "RUT_Jawa_HuttCartel",
+   "RUT_Jawa_DeepwaterCompact",
+   "RUT_Jawa_WildsteamClan",
+   "RUT_Jawa_GeonosianFoundryHive",
+   "RUT_Jawa_FreeDroidEnclaves",
+   "RUT_Jawa_AscendantHelix",
+   "OutlanderCivil",
+   "TribeCivil",
+   "Pirate",
+   "Empire",
+   "Mechanoid",
+   "Insect",
+   "Entities",
+   "Ancients",
+   "AncientsHostile",
+   "HoraxCult",
+   "AM_EnemyPirate",
+   "TribalHostile",
+   "DP_GenericHostile"
+  ]
+ },
+ "worldPresetName": "TidallyLocked",
+ "axialTilt": "Normal",
+ "worldGenerationData": {
+  "factionCountsStrings": [
+   "Empire",
+   "Empire",
+   "Empire",
+   "OutlanderCivil",
+   "OutlanderCivil",
+   "OutlanderCivil",
+   "OutlanderCivil",
+   "TribeCivil",
+   "TribeCivil",
+   "TribeCivil",
+   "Pirate",
+   "Pirate",
+   "RUT_Jawa_IndigenousTribes",
+   "RUT_Jawa_IndigenousTribes",
+   "RUT_Jawa_IndigenousTribes",
+   "RUT_Jawa_HuttCartel",
+   "RUT_Jawa_HuttCartel",
+   "RUT_Jawa_Junkers",
+   "RUT_Jawa_Junkers",
+   "RUT_Jawa_WildsteamClan",
+   "RUT_Jawa_WildsteamClan",
+   "RUT_Jawa_DeepwaterCompact",
+   "RUT_Jawa_DeepwaterCompact",
+   "RUT_Jawa_AscendantHelix",
+   "RUT_Jawa_FreeDroidEnclaves",
+   "RUT_Jawa_FreeDroidEnclaves",
+   "RUT_Jawa_GeonosianFoundryHive"
+  ],
+  "biomeCommonalities": [
+   "<keys>\n\t\t\t\t\t\t<li>IceSheet</li>\n\t\t\t\t\t\t<li>SeaIce</li>\n\t\t\t\t\t\t<li>Ocean</li>\n\t\t\t\t\t\t<li>Lake</li>\n\t\t\t\t\t\t<li>Glowforest</li>\n\t\t\t\t\t\t<li>LavaField</li>\n\t\t\t\t\t\t<li>Scarlands</li>\n\t\t\t\t\t\t<li>PoisonForest</li>\n\t\t\t\t\t\t<li>Volcano</li>\n\t\t\t\t\t\t<li>Wasteland</li>\n\t\t\t\t\t\t<li>AB_FeraliskInfestedJungle</li>\n\t\t\t\t\t\t<li>AB_RockyCrags</li>\n\t\t\t\t\t\t<li>AB_GallatrossGraveyard</li>\n\t\t\t\t\t\t<li>AB_GelatinousSuperorganism</li>\n\t\t\t\t\t\t<li>AB_MechanoidIntrusion</li>\n\t\t\t\t\t\t<li>AB_MiasmicMangrove</li>\n\t\t\t\t\t\t<li>AB_MycoticJungle</li>\n\t\t\t\t\t\t<li>AB_OcularForest</li>\n\t\t\t\t\t\t<li>AB_PropaneLakes</li>\n\t\t\t\t\t\t<li>AB_PyroclasticConflagration</li>\n\t\t\t\t\t\t<li>AB_TarPits</li>\n\t\t\t\t\t\t<li>BiomeArcticOasis</li>\n\t\t\t\t\t\t<li>BiomeAreeb</li>\n\t\t\t\t\t\t<li>BiomeCypreJungle</li>\n\t\t\t\t\t\t<li>BiomeGRimberlands</li>\n\t\t\t\t\t\t<li>BiomeGRimerald</li>\n\t\t\t\t\t\t<li>BiomeGRimethyst</li>\n\t\t\t\t\t\t<li>BiomeGRimonade</li>\n\t\t\t\t\t\t<li>BiomeGRimond</li>\n\t\t\t\t\t\t<li>BiomeGRimphire</li>\n\t\t\t\t\t\t<li>BiomeGRimworld</li>\n\t\t\t\t\t\t<li>BiomeGrindland</li>\n\t\t\t\t\t\t<li>BiomeGRuby</li>\n\t\t\t\t\t\t<li>BiomeGRuquoise</li>\n\t\t\t\t\t\t<li>BiomeMist</li>\n\t\t\t\t\t\t<li>BiomeToxlands</li>\n\t\t\t\t\t\t<li>AridShrubland</li>\n\t\t\t\t\t\t<li>Desert</li>\n\t\t\t\t\t\t<li>ExtremeDesert</li>\n\t\t\t\t\t\t<li>HorrorWastes</li>\n\t\t\t\t\t\t<li>ZBiome_Badlands</li>\n\t\t\t\t\t\t<li>ZBiome_DesertOasis</li>\n\t\t\t\t\t\t<li>ZBiome_Grasslands</li>\n\t\t\t\t\t\t<li>IronScruff_PrimordialGeysers</li>\n\t\t\t\t\t\t<li>BMT_CrystalCaverns</li>\n\t\t\t\t\t\t<li>BMT_EarthenDepths</li>\n\t\t\t\t\t\t<li>BMT_FungalForest</li>\n\t\t\t\t\t\t<li>COMIGO_GreaterSwamp_Tropical</li>\n\t\t\t\t\t</keys>",
+   "<values>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t\t<li>10</li>\n\t\t\t\t\t</values>"
+  ],
+  "biomeScoreOffsets": [
+   "<keys>\n\t\t\t\t\t\t<li>IceSheet</li>\n\t\t\t\t\t\t<li>SeaIce</li>\n\t\t\t\t\t\t<li>Ocean</li>\n\t\t\t\t\t\t<li>Lake</li>\n\t\t\t\t\t\t<li>Glowforest</li>\n\t\t\t\t\t\t<li>LavaField</li>\n\t\t\t\t\t\t<li>Scarlands</li>\n\t\t\t\t\t\t<li>PoisonForest</li>\n\t\t\t\t\t\t<li>Volcano</li>\n\t\t\t\t\t\t<li>Wasteland</li>\n\t\t\t\t\t\t<li>AB_FeraliskInfestedJungle</li>\n\t\t\t\t\t\t<li>AB_RockyCrags</li>\n\t\t\t\t\t\t<li>AB_GallatrossGraveyard</li>\n\t\t\t\t\t\t<li>AB_GelatinousSuperorganism</li>\n\t\t\t\t\t\t<li>AB_MechanoidIntrusion</li>\n\t\t\t\t\t\t<li>AB_MiasmicMangrove</li>\n\t\t\t\t\t\t<li>AB_MycoticJungle</li>\n\t\t\t\t\t\t<li>AB_OcularForest</li>\n\t\t\t\t\t\t<li>AB_PropaneLakes</li>\n\t\t\t\t\t\t<li>AB_PyroclasticConflagration</li>\n\t\t\t\t\t\t<li>AB_TarPits</li>\n\t\t\t\t\t\t<li>BiomeArcticOasis</li>\n\t\t\t\t\t\t<li>BiomeAreeb</li>\n\t\t\t\t\t\t<li>BiomeCypreJungle</li>\n\t\t\t\t\t\t<li>BiomeGRimberlands</li>\n\t\t\t\t\t\t<li>BiomeGRimerald</li>\n\t\t\t\t\t\t<li>BiomeGRimethyst</li>\n\t\t\t\t\t\t<li>BiomeGRimonade</li>\n\t\t\t\t\t\t<li>BiomeGRimond</li>\n\t\t\t\t\t\t<li>BiomeGRimphire</li>\n\t\t\t\t\t\t<li>BiomeGRimworld</li>\n\t\t\t\t\t\t<li>BiomeGrindland</li>\n\t\t\t\t\t\t<li>BiomeGRuby</li>\n\t\t\t\t\t\t<li>BiomeGRuquoise</li>\n\t\t\t\t\t\t<li>BiomeMist</li>\n\t\t\t\t\t\t<li>BiomeToxlands</li>\n\t\t\t\t\t\t<li>AridShrubland</li>\n\t\t\t\t\t\t<li>Desert</li>\n\t\t\t\t\t\t<li>ExtremeDesert</li>\n\t\t\t\t\t\t<li>HorrorWastes</li>\n\t\t\t\t\t\t<li>ZBiome_Badlands</li>\n\t\t\t\t\t\t<li>ZBiome_DesertOasis</li>\n\t\t\t\t\t\t<li>ZBiome_Grasslands</li>\n\t\t\t\t\t\t<li>IronScruff_PrimordialGeysers</li>\n\t\t\t\t\t\t<li>BMT_CrystalCaverns</li>\n\t\t\t\t\t\t<li>BMT_EarthenDepths</li>\n\t\t\t\t\t\t<li>BMT_FungalForest</li>\n\t\t\t\t\t\t<li>COMIGO_GreaterSwamp_Tropical</li>\n\t\t\t\t\t</keys>",
+   "<values>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t\t<li>0</li>\n\t\t\t\t\t</values>"
+  ],
+  "seedString": "raven",
+  "planetCoverage": "1",
+  "rainfall": "Normal",
+  "temperature": "Normal",
+  "population": "High",
+  "riverDensity": "1",
+  "ancientRoadDensity": "1",
+  "settlementRoadDensity": "1",
+  "mountainDensity": "1",
+  "seaLevel": "1",
+  "axialTilt": "Normal",
+  "pollution": "0.0500000007",
+  "landmarkDensity": "Normal"
+ },
+ "liquid_worldTags": "component present, EMPTY (self-closing element)",
+ "_provenance": {
+  "save": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/CANONICAL_ASHKARR_START_2026-09-12.rws",
+  "save_sha256_16": "1ff329161abeaa8c",
+  "save_modIds": 616,
+  "captures_ranked": [
+   {
+    "name": "2026-10-19T15-02-31Z",
+    "dir": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-10-19T15-02-31Z",
+    "mods": 536,
+    "share": 0.8555
+   },
+   {
+    "name": "2026-10-19T13-18-11Z",
+    "dir": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-10-19T13-18-11Z",
+    "mods": 536,
+    "share": 0.8555
+   },
+   {
+    "name": "2026-08-29T13-30-02Z",
+    "dir": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-08-29T13-30-02Z",
+    "mods": 584,
+    "share": 0.8101
+   },
+   {
+    "name": "2026-10-19T22-45-42Z",
+    "dir": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/2026-10-19T22-45-42Z",
+    "mods": 498,
+    "share": 0.7922
+   }
+  ],
+  "profile": "/home/mandrake/rm/foundry/deployed/config/ModsConfig.CANDIDATE_2026-10-19.xml",
+  "profile_mods": 367,
+  "rename_map": "/home/mandrake/rm/foundry/infrastructure/state/naming_rename_map.csv",
+  "port_map": "/home/mandrake/rm/foundry/design/RimMandrake/retired_mutators_port_map.json",
+  "tool": "src/RimMandrake/Utils/world_layers_export.py"
+ }
+}
