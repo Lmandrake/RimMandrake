@@ -1,0 +1,63 @@
+{
+  "_what": "G7 remap table: canonical-save layers (world/rescue_2026-10-19/ported/) -> paint inputs for the PAINT profile (infrastructure/state/modlists/ModsConfig.PAINT.RULED_2026-10-20.xml). Read by src/RimMandrake/Utils/paint_inputs_build.py. Every PROVISIONAL row is an agent default taken 2026-10-20 while the owner slept; flip the row and re-run the tool to reverse it.",
+  "_authority": "biome rows: infrastructure/state/facts/biome_paint_list.md (each frozen RUT_ twin 'NO PAINT - content merges into RM_X'). Owner 2026-10-19/20: RUT_Umbra stays RUT_Umbra (13_owner_rulings row 18); the 44 tiles under hash 56104 are RUT_TheForge (rescue REPORT decode note); the 222 ZBiome_Grasslands tiles are RM_Pyrelands.",
+  "biome": {
+    "RUT_AridShrubland": "RM_LeaningScrub",
+    "RUT_BlueDesert": "RM_BlueDesert",
+    "RUT_Contagion": "RM_Contagion",
+    "RUT_CrackedLands": "RM_FloodedCanyon",
+    "RUT_Desert": "RM_LongShade",
+    "RUT_ExtremeDesert": "RM_Stillsand",
+    "RUT_FeverWood": "RM_FeverWood",
+    "RUT_Abyss": "RM_Abyss",
+    "RUT_ForsakenCrags": "RM_Abyss",
+    "RUT_Greentide": "RM_Greentide",
+    "RUT_GreySea": "RM_GreySea",
+    "RUT_Miasma": "RM_Miasma",
+    "RUT_NightsideIce": "RM_NightsideIce",
+    "RUT_Cauldron": "RM_Cauldron",
+    "RUT_PoisonForest": "RM_Cauldron",
+    "RUT_PropaneLake": "RM_TheChill",
+    "RUT_RustCathedral": "RM_RustCathedral",
+    "RUT_Scarlands": "RM_Warscar",
+    "RUT_Slime": "RM_GelatinousSlime",
+    "RUT_Sump": "RM_TheSump",
+    "RUT_TheForge": "RM_TheForge",
+    "RUT_TheRot": "RM_TheRot",
+    "RUT_TheScald": "RM_TheScald",
+    "RUT_TwilightSea": "RM_TwilightSea",
+    "RUT_Wasteland": "RM_Wasteland",
+    "RUT_Webwork": "RM_Webwork",
+    "RUT_WeepingStones": "RM_WeepingStones",
+    "ZBiome_Grasslands": "RM_Pyrelands",
+    "RM_FE_Pyrelands": "RM_Pyrelands"
+  },
+  "biome_keep": {
+    "RUT_Umbra": "owner 2026-10-19: 'Let's call it the Auroral Umbra then' - the save already holds RUT_Umbra; the FuelSnows remap is cancelled",
+    "RM_Pyrelands": "already the ruled survivor"
+  },
+  "mutators": {
+    "AB_AncientDeathPallVent": {"new": null, "decision": "DROP", "why": "owner 2026-10-19 (retired_mutators_port_map.json): no zombies in Utinni; its tiles are stripped"},
+    "AB_DerelictKemeticTemple": {"new": "AncientRuins", "decision": "REPLACE", "provisional": true, "why": "no port (needs a donor KCSG temple layout); vanilla Odyssey AncientRuins is the nearest existing 'ancient structure on this tile'. Reverse: set new to null (drop)"},
+    "AB_DerelictBioLab": {"new": "AncientRuins", "decision": "REPLACE", "provisional": true, "why": "no port (13 retired Alpha Genes lab layouts); vanilla Odyssey AncientRuins keeps a ruin on the tile. Reverse: set new to null"},
+    "AB_DerelictArchonexus": {"new": "RM_DerelictClusters", "decision": "REPLACE", "provisional": true, "why": "no port (donor archotech art); our RM_DerelictClusters (RustCathedral, already the port of AB_DerelictClusters) keeps a derelict-tech wreck site. Reverse: set new to null"},
+    "WildDantooinePlants": {"new": "RSW_WildGalacticPlants", "decision": "REPLACE", "provisional": true, "why": "no RSW_ dantuber plant exists; RSW_WildGalacticPlants is the generic Star Wars wild-plants mutator already on the PAINT list. Reverse: set new to null"}
+  },
+  "landmarks": {},
+  "factions_drop": {
+    "AM_EnemyPirate": "PROVISIONAL: sarg.alphamemes is on PAINT but defines no AM_EnemyPirate in the 2026-10-20 capture; no settlement uses it; the faction will simply not exist at Configure Factions",
+    "TribalHostile": "PROVISIONAL: mlie.dungeonpack not on PAINT; no settlement uses it",
+    "DP_GenericHostile": "PROVISIONAL: mlie.dungeonpack not on PAINT; no settlement uses it",
+    "CASacrilegHunters": "PROVISIONAL: iforgotmysocks.caravanadventures not on PAINT; no settlement uses it"
+  },
+  "feature_def": {
+    "new": "Desert",
+    "provisional": true,
+    "why": "WB_MapLabelFeature belongs to ferny.worldbuilder, which is NOT on the ruled PAINT list. Region labels are imported under ONE FeatureDef by w9 stage 6; vanilla 'Desert' (FeatureWorker_Biome, Core) carries a name and draws a label, and its worker only runs at worldgen, never on an imported feature. Reverse: put 'WB_MapLabelFeature' here AND add ferny.worldbuilder to the PAINT list (owner call - the list is ruled)."
+  },
+  "settlement_faction_prefix": {"from": "Jawa_", "to": "RUT_Jawa_"},
+  "not_copied": {
+    "ASHKARR_WORLDMAP_landforms.csv": "Geological Landforms names (64 tiles); no def type for them exists in the PAINT capture and w9_run never stamps landforms. Record stays in world/rescue_2026-10-19/ported/.",
+    "world_info.json": "informational; world creation parameters are set by hand at S3"
+  }
+}

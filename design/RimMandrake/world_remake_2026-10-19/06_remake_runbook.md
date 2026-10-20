@@ -29,9 +29,10 @@ done for him. Steps marked 🔴 cannot be undone inside one run.
    landed map (§1, step S10).
 4. **The scenario already spawns a bonded `RSW_Ikee`** (`ScenPart_StartingAnimal`, `bondToRandomPlayerPawnChance
    1.0`) — bonded to a *random* starting pawn, not Yeku. The re-bond is therefore a **move**, not a creation (S12).
-5. **`w9_run.py` has no input-path flag.** It hard-codes `world/ASHKARR_WORLDMAP_{tiles,links,settlements,mutators,landmarks}.csv`
-   (lines 64–68). The remapped CSVs (02 §7 items a–c) can only be stamped by overwriting the tiles RECORD
-   (`ASHKARR_WORLDMAP_tiles.csv.frozen.json` guards it) or by adding a flag. **Owed: an `--inputs DIR` flag** (G7).
+5. **`w9_run.py --inputs DIR`** (2026-10-20) stamps from `DIR/ASHKARR_WORLDMAP_{tiles,links,settlements,mutators,landmarks}.csv`;
+   the default is still the frozen record in `world/`, which nothing writes. `--check-inputs` validates a bundle offline;
+   `--feature-def` (default: the bundle's features CSV) sets stage 6's label def. Guard: `selftest_w9_inputs.py`.
+   The bundle is `world/paint_inputs_2026-10-20/` (G7).
 6. **`WORLDGEN_FACTION_CHECKLIST.md` is stale for this list.** Section 4b names `Jawa_*` defNames; the 536 dump has
    them as `RUT_Jawa_*` (02 §3, MEASURED). Its Section 4 keeps name third-party mods (`JDSCIS_CIS_Faction`,
    `guy762_KotORFaction_RogueDroids`) whose presence on the candidate profile is UNMEASURED. Rewrite it from the
@@ -85,7 +86,7 @@ sitting. UNMEASURED never counts as PASS.
 | G4 | **Cherry Picker profile frozen** | `python3 src/RimMandrake/Utils/cherrypicker_swap.py --status`; `CHERRY_PICKER_RESTORE_FROM_SHIP_PROFILE` done | live = `infrastructure/state/cherrypicker/CherryPicker.SHIP.WAVE1_CANDIDATE.xml`, live key count 2,177 (the item's own bar) | yes | |
 | G5 | **Removed-dependency audit** | About.xml closure: `modset_builder.py` walks `<modDependencies>` forward for a tier; the **reverse** closure of the removal set (which retained mod needs a removed one, PLAN §5b) has no tool; C# string defName refs and `text()=` XPath refs are UNMEASURED (01 line 77) | 0 retained mods depend on a removed one; 0 C#/XPath refs to removed defs | **PARTIAL** (forward closure only; reverse closure, C# strings, XPath: NO TOOL) | |
 | G6 | **Names frozen** | `rimflow show` on `BIOME_DEFNAME_MIGRATION_WAVE_1`, `CRACKEDLANDS_FULL_RENAME_1`, `BIOME_TIER_CLEANUP_1`, `PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE` | all done (or 👤 waives) | yes | |
-| G7 | **Stamp inputs valid** | (a) remap tiles CSV biome names to `RM_` targets per `infrastructure/state/facts/biome_paint_list.md` + 👤 call on `RUT_Umbra` ×2,531; (b) mutators/landmarks through `design/RimMandrake/retired_mutators_port_map.json`; (c) settlements `Jawa_X`→`RUT_Jawa_X`; then resolve every def name in all five CSVs against the frozen dump; then `w9_run.py` dry run | 0 unresolved names; dry run clean | **NO TOOL** for (a)–(c) and the resolver (02 measured with a one-off subagent script); `--inputs` flag owed (§0.5) | |
+| G7 | **Stamp inputs valid** | (a) remap tiles CSV biome names to `RM_` targets per `infrastructure/state/facts/biome_paint_list.md` + 👤 call on `RUT_Umbra` ×2,531; (b) mutators/landmarks through `design/RimMandrake/retired_mutators_port_map.json`; (c) settlements `Jawa_X`→`RUT_Jawa_X`; then resolve every def name in all five CSVs against the frozen dump; then `w9_run.py` dry run | 0 unresolved names; dry run clean | yes: `python3 src/RimMandrake/Utils/paint_inputs_build.py` (remaps + resolver, table `paint_inputs_remap.json`), `w9_run.py --inputs world/paint_inputs_2026-10-20 [--check-inputs]` | 2026-10-20: resolver **PASS, 0 unresolved** (`world/paint_inputs_2026-10-20/RESOLVER.md`); offline `--check-inputs` ok; bridge dry run UNMEASURED (needs the game, S8); 7 PROVISIONAL defaults await 👤 (bundle README) |
 | G8 | **Worldgen workers safe** | every BiomeDef on the profile: `workerClass` resolves, or `generatesNaturally=false` (a worker-less natural biome crashes ALL worldgen, `rimworld-world-editing` §5a); `RM_LanternDeeps` and `RM_Seabed*` are UNMEASURED (02 §6) | 0 worker-less natural biomes | **NO TOOL** (one-off script) | |
 | G9 | **Authoritative layers exported and compared** | name the authoritative save (👤): `CANONICAL_ASHKARR_START_2026-09-12.rws` was edited in place after 09-12 (its `.bak-pre-*` trail runs to 2026-10-19). Export roads, rivers, mutators (27,856), landmarks (3,008), settlements (96 NPC), factions, names, features, worldTags; compare tile IDs, edge topology, assignments and settlement identities against the stamp CSVs — not counts | 👤 accepts every listed loss | **NO TOOL** — offline readers exist (`worldmap.py`: biome/scalars, settlements, landmarks, features; `ashkarr_rebase_from_save.py`: tiles, live), no exporter for links/mutators/landmarks and no comparer | |
 | G10 | **`AB_PropaneLakes` contradiction settled** | `python3 src/RimMandrake/Utils/save_adoption_check.py --save <authoritative> --json /tmp/adopt.json`, then read the AB_PropaneLakes rows | one answer, written into `donor_save_residue_2026-10-19.md` | yes | |
@@ -98,8 +99,7 @@ sitting. UNMEASURED never counts as PASS.
 | G17 | **Checkpoints exist** | §4 C1–C3 present before S2, with sha256 | all present | yes (`cp`, `sha256sum`) | |
 | G18 | **Load proof of the list** | `DONOR_OFF_LOAD_PROVE_AFTER_BENCH` / `DONOR_FOUR_RETIRE_JUST_GET_IT_DONE` A3, and re-checks of `QUICKTEST_POLICY_NRE_FULLLIST_1`, `MATERIAL_MERGE_LOAD_CRASH_1` (both UNMEASURED since filing) | a quicktest map starts on the frozen profile; first exception not ours | yes (`l1_donor_off_round.py`, quicktest) | |
 
-**Gates with no tool today:** G3 (settings snapshot), G5 (reverse closure, C# strings, XPath), G7 (the three remaps,
-the CSV resolver, `w9_run --inputs`), G8 (worker check), G9 (layer exporter and comparer), G12 (load timer),
+**Gates with no tool today:** G3 (settings snapshot), G5 (reverse closure, C# strings, XPath), G8 (worker check), G9 (layer exporter and comparer), G12 (load timer),
 G16 (fixture rebuild), plus the ship remap (S10b) and the Ikee un-bond (S12). G13 needs a 28-biome manifest.
 
 ---

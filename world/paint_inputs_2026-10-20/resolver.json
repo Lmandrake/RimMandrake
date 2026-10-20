@@ -1,0 +1,334 @@
+{
+ "closure": {
+  "capture": "2026-10-20T06-17-12Z",
+  "capturedUtc": "2026-10-20T06:17:12Z",
+  "paint_mods": 83,
+  "paint_mods_absent_from_capture": []
+ },
+ "closure_sizes": {
+  "BiomeDef": 101,
+  "CultureDef": 23,
+  "FactionDef": 60,
+  "FeatureDef": 32,
+  "LandmarkDef": 117,
+  "RiverDef": 4,
+  "RoadDef": 5,
+  "TileMutatorDef": 287
+ },
+ "probe_raw_unresolved_mutators": [
+  "AB_AncientDeathPallVent",
+  "AB_DerelictArchonexus",
+  "AB_DerelictBioLab",
+  "AB_DerelictKemeticTemple",
+  "WildDantooinePlants"
+ ],
+ "build": {
+  "tiles": {
+   "rows": 21872,
+   "remapped": 19119,
+   "moves": [
+    [
+     "RUT_Abyss",
+     "RM_Abyss",
+     1135
+    ],
+    [
+     "RUT_AridShrubland",
+     "RM_LeaningScrub",
+     628
+    ],
+    [
+     "RUT_BlueDesert",
+     "RM_BlueDesert",
+     1029
+    ],
+    [
+     "RUT_Cauldron",
+     "RM_Cauldron",
+     546
+    ],
+    [
+     "RUT_Contagion",
+     "RM_Contagion",
+     179
+    ],
+    [
+     "RUT_CrackedLands",
+     "RM_FloodedCanyon",
+     970
+    ],
+    [
+     "RUT_Desert",
+     "RM_LongShade",
+     2390
+    ],
+    [
+     "RUT_ExtremeDesert",
+     "RM_Stillsand",
+     3969
+    ],
+    [
+     "RUT_FeverWood",
+     "RM_FeverWood",
+     43
+    ],
+    [
+     "RUT_Greentide",
+     "RM_Greentide",
+     235
+    ],
+    [
+     "RUT_GreySea",
+     "RM_GreySea",
+     472
+    ],
+    [
+     "RUT_Miasma",
+     "RM_Miasma",
+     93
+    ],
+    [
+     "RUT_NightsideIce",
+     "RM_NightsideIce",
+     1506
+    ],
+    [
+     "RUT_PropaneLake",
+     "RM_TheChill",
+     57
+    ],
+    [
+     "RUT_RustCathedral",
+     "RM_RustCathedral",
+     236
+    ],
+    [
+     "RUT_Scarlands",
+     "RM_Warscar",
+     90
+    ],
+    [
+     "RUT_Slime",
+     "RM_GelatinousSlime",
+     96
+    ],
+    [
+     "RUT_Sump",
+     "RM_TheSump",
+     41
+    ],
+    [
+     "RUT_TheForge",
+     "RM_TheForge",
+     44
+    ],
+    [
+     "RUT_TheRot",
+     "RM_TheRot",
+     2204
+    ],
+    [
+     "RUT_TheScald",
+     "RM_TheScald",
+     312
+    ],
+    [
+     "RUT_TwilightSea",
+     "RM_TwilightSea",
+     607
+    ],
+    [
+     "RUT_Wasteland",
+     "RM_Wasteland",
+     1853
+    ],
+    [
+     "RUT_Webwork",
+     "RM_Webwork",
+     161
+    ],
+    [
+     "RUT_WeepingStones",
+     "RM_WeepingStones",
+     223
+    ]
+   ]
+  },
+  "settlements": {
+   "rows": 95,
+   "faction_prefixed": 0,
+   "biome_column_synced_to_tile": 92
+  },
+  "mutators": {
+   "tiles_in": 14421,
+   "tiles_out": 14397,
+   "actions": [
+    [
+     "AB_AncientDeathPallVent",
+     "DROP",
+     33
+    ],
+    [
+     "AB_DerelictArchonexus",
+     "RM_DerelictClusters",
+     2
+    ],
+    [
+     "AB_DerelictBioLab",
+     "AncientRuins",
+     5
+    ],
+    [
+     "AB_DerelictKemeticTemple",
+     "AncientRuins",
+     5
+    ],
+    [
+     "WildDantooinePlants",
+     "RSW_WildGalacticPlants",
+     4
+    ]
+   ]
+  },
+  "landmarks": {
+   "rows_in": 3008,
+   "rows_out": 3008,
+   "actions": []
+  },
+  "links": {
+   "rows": 1568
+  },
+  "factions": {
+   "rows_in": 26,
+   "rows_out": 22,
+   "dropped": [
+    "AM_EnemyPirate",
+    "CASacrilegHunters",
+    "DP_GenericHostile",
+    "TribalHostile"
+   ]
+  },
+  "features": {
+   "rows": 71,
+   "def": [
+    [
+     "WB_MapLabelFeature"
+    ],
+    "Desert"
+   ]
+  }
+ },
+ "resolve": [
+  {
+   "layer": "tiles",
+   "column": "biome",
+   "type": "BiomeDef",
+   "distinct": 27,
+   "entries": 21872,
+   "unresolved": {}
+  },
+  {
+   "layer": "links",
+   "column": "def",
+   "type": "RiverDef",
+   "distinct": 4,
+   "entries": 326,
+   "unresolved": {}
+  },
+  {
+   "layer": "links",
+   "column": "def",
+   "type": "RoadDef",
+   "distinct": 4,
+   "entries": 1242,
+   "unresolved": {}
+  },
+  {
+   "layer": "settlements",
+   "column": "faction_def",
+   "type": "FactionDef",
+   "distinct": 12,
+   "entries": 95,
+   "unresolved": {}
+  },
+  {
+   "layer": "settlements",
+   "column": "biome",
+   "type": "BiomeDef",
+   "distinct": 18,
+   "entries": 95,
+   "unresolved": {}
+  },
+  {
+   "layer": "mutators",
+   "column": "mutators",
+   "type": "TileMutatorDef",
+   "distinct": 157,
+   "entries": 27645,
+   "unresolved": {}
+  },
+  {
+   "layer": "landmarks",
+   "column": "landmark",
+   "type": "LandmarkDef",
+   "distinct": 65,
+   "entries": 3008,
+   "unresolved": {}
+  },
+  {
+   "layer": "factions",
+   "column": "def",
+   "type": "FactionDef",
+   "distinct": 22,
+   "entries": 22,
+   "unresolved": {}
+  },
+  {
+   "layer": "factions",
+   "column": "ideo_culture",
+   "type": "CultureDef",
+   "distinct": 13,
+   "entries": 18,
+   "unresolved": {}
+  },
+  {
+   "layer": "features",
+   "column": "def",
+   "type": "FeatureDef",
+   "distinct": 1,
+   "entries": 71,
+   "unresolved": {}
+  }
+ ],
+ "unresolved": [],
+ "tile_biomes": {
+  "RM_Stillsand": 3969,
+  "RUT_Umbra": 2531,
+  "RM_LongShade": 2390,
+  "RM_TheRot": 2204,
+  "RM_Wasteland": 1853,
+  "RM_NightsideIce": 1506,
+  "RM_Abyss": 1135,
+  "RM_BlueDesert": 1029,
+  "RM_FloodedCanyon": 970,
+  "RM_LeaningScrub": 628,
+  "RM_TwilightSea": 607,
+  "RM_Cauldron": 546,
+  "RM_GreySea": 472,
+  "RM_TheScald": 312,
+  "RM_RustCathedral": 236,
+  "RM_Greentide": 235,
+  "RM_WeepingStones": 223,
+  "RM_Pyrelands": 222,
+  "RM_Contagion": 179,
+  "RM_Webwork": 161,
+  "RM_GelatinousSlime": 96,
+  "RM_Miasma": 93,
+  "RM_Warscar": 90,
+  "RM_TheChill": 57,
+  "RM_TheForge": 44,
+  "RM_FeverWood": 43,
+  "RM_TheSump": 41
+ },
+ "tile_biomes_not_PAINT_verdict": {}
+}
