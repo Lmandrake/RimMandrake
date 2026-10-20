@@ -673,6 +673,7 @@ MODS = {
         "Terminator Front permanent storm (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Nightside Aurora incident": "NextPulse",
         "Maximized aurora colours": "Now",
+        "Perpetual aurora (biomes that never lose it)": "Now",
     }, ()),
     "Wreckage": ("RM_WreckageMod.cs", "RM_Wreckage.csproj", {
         "Salvage loot": "Now",

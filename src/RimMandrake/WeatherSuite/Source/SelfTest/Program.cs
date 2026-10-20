@@ -1,5 +1,5 @@
 // WeatherSuite offline fuzz entry. Knobs: --fuzz-scale F (multiplies every case count, 0 skips), --fuzz-seed N (replay one seed of every
-// family), --fuzz-only NAME (arc|bands|tint).
+// family), --fuzz-only NAME (arc|bands|tint|light).
 using System;
 
 namespace RimMandrake.StarWars.WeatherSuite.SelfTest

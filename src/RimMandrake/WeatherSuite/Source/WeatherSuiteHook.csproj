@@ -11,8 +11,9 @@
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
     WEATHER_SUITE_SLICE_1's one C# hook: a fixed-geometry arc-from-substellar
-    test (MapComponent + a small IncidentWorker override), no Harmony —
-    see WeatherSuiteHook.cs's own header.
+    test (MapComponent + a small IncidentWorker override). AURORA_LIGHT (2026-10-20) adds
+    two Harmony postfixes for the perpetual aurora's light (AuroraLight.cs); 0Harmony is
+    Private=false (the Harmony mod supplies it).
   -->
 
   <PropertyGroup>
@@ -44,7 +45,13 @@
     <Compile Include="WeatherSuiteHook.cs" />
     <Compile Include="Kernel\RM_WeatherKernel.cs" />
     <Compile Include="WeatherSuiteSettings.cs" />
+    <Compile Include="AuroraLight.cs" />
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
@@ -53,6 +60,10 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine">

@@ -150,8 +150,8 @@ namespace RimMandrake.StarWars.WeatherSuite
         {
             Log.Message("[RimMandrake.StarWars.WeatherSuite] loaded — terminator-band and "
                         + "nightside-band geometry checks armed (MapComponent_TerminatorBand, "
-                        + "IncidentWorker_NightsideAurora). No Harmony patches: both hooks are "
-                        + "ordinary MapComponent/IncidentWorker overrides.");
+                        + "IncidentWorker_NightsideAurora). Harmony: two postfixes for the perpetual "
+                        + "aurora's light (AuroraLight.cs), applied by WeatherSuiteOptionsMod.");
         }
     }
 
@@ -286,11 +286,11 @@ namespace RimMandrake.StarWars.WeatherSuite
                 lightsourceShineIntensity: 1f);
         }
 
-        // AURORAL_UMBRA (owner 2026-10-19: "perpetual Auroral activity in that biome"): a PERMANENT instance
-        // of this condition is the perpetual aurora MapComponent_PerpetualAurora starts on maps whose biome
-        // carries PerpetualAuroraExtension. Only permanent instances read the perpetual settings, so the
-        // 3-8 hour nightside incident looks exactly as before.
-        protected float GlowFloor => Permanent ? WeatherSuiteSettings.perpetualAuroraGlow : AuroraGlowFloor;
+        // AURORAL_UMBRA (owner 2026-10-19: "perpetual Auroral activity in that biome"): a PERMANENT instance of this condition is the
+        // perpetual aurora MapComponent_PerpetualAurora starts on maps whose biome carries PerpetualAuroraExtension. The glow below only
+        // matters for the incident: SkyManager folds conditions in with LerpDarken, so a condition's glow can never raise light. The
+        // permanent aurora's LIGHT and moving curtains are AuroraLight.cs (AURORA_LIGHT, 2026-10-20).
+        protected float GlowFloor => AuroraGlowFloor;
 
         // Vanilla slows a permanent aurora's colour drift to 3750 ticks per colour (TransitionDurationTicks_Permanent);
         // the owner asked for a "wildly active" one, so the base tick (colour drift only - a permanent condition has
@@ -299,6 +299,29 @@ namespace RimMandrake.StarWars.WeatherSuite
         {
             int n = Permanent ? Mathf.Clamp(WeatherSuiteSettings.perpetualAuroraActivity, 1, 30) : 1;
             for (int i = 0; i < n; i++) base.GameConditionTick();
+            if (!Permanent || !WeatherSuiteSettings.perpetualAuroraEnabled) return;
+            List<Map> maps = AffectedMaps;
+            for (int i = 0; i < maps.Count; i++)
+            {
+                AuroraLightRegistry.Refresh(this, maps[i]);
+            }
+            AuroraLightRegistry.Entry e = maps.Count > 0 ? AuroraLightRegistry.Find(maps[0]) : null;
+            if (e != null) AuroraCurtains.Tick(e);
+        }
+
+        public override void GameConditionDraw(Map map)
+        {
+            base.GameConditionDraw(map);
+            if (!Permanent || HiddenByOtherCondition(map)) return;
+            AuroraLightRegistry.Entry e = AuroraLightRegistry.Live(map);
+            if (e != null) AuroraCurtains.Draw(map, e);
+        }
+
+        public override void End()
+        {
+            List<Map> maps = AffectedMaps;
+            for (int i = 0; i < maps.Count; i++) AuroraLightRegistry.Remove(maps[i]);
+            base.End();
         }
 
         private static Color Tint(Color c, float saturation, float brightness, float vanillaSaturation)
@@ -353,6 +376,7 @@ namespace RimMandrake.StarWars.WeatherSuite
                 else if (permanent != null)
                 {
                     permanent.End();
+                    AuroraLightRegistry.Remove(map);
                 }
             }
             catch (Exception e)

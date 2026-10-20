@@ -52,5 +52,48 @@ namespace RimMandrake.StarWars.WeatherSuite
         {
             return (1f + (channel - 1f) * vanillaSaturation) * VanillaBrightness;
         }
+
+        // ── AURORA_LIGHT (2026-10-20): the perpetual aurora's LIGHT. A GameCondition's SkyTarget can only darken (SkyManager folds it in with
+        // SkyTarget.LerpDarken: glow and every colour channel = min), so the light is applied AFTER the fold by a Harmony postfix, with these
+        // numbers. ShimmerMin..1 is the aurora's breathing; Nightness fades the whole effect out between night (sun glow <= 0.1) and dusk (0.6).
+        public const float ShimmerMin = 0.55f, NightGlowEdge = 0.1f, DuskGlowEdge = 0.6f;
+
+        /// <summary>The aurora's brightness pulse in [ShimmerMin, 1]: two incommensurate sines, both sped up by activity (1 = slow drift).
+        /// phase decorrelates two maps or two layers.</summary>
+        public static float Shimmer(int ticks, float activity, float phase)
+        {
+            if (activity < 0f) activity = 0f;
+            double a = ticks * activity * 0.0021 + phase, b = ticks * activity * 0.0057 + phase * 1.7;
+            double s = 0.6 * Math.Sin(a) + 0.4 * Math.Sin(b);                 // -1..1
+            return (float)(ShimmerMin + (1.0 - ShimmerMin) * 0.5 * (s + 1.0));
+        }
+
+        /// <summary>1 at night, 0 from dusk on: an aurora is not seen in daylight.</summary>
+        public static float Nightness(float sunGlow)
+        {
+            float t = (sunGlow - NightGlowEdge) / (DuskGlowEdge - NightGlowEdge);
+            t = t < 0f ? 0f : t > 1f ? 1f : t;
+            return 1f - t;
+        }
+
+        /// <summary>One sky-colour channel under the aurora: the ordinary night channel darkened by `darkness` (0..1, the biome's "totally
+        /// dark"), plus the aurora's coloured light (hue channel x light), clamped to 0..1. Both terms are scaled by nightness by the caller.</summary>
+        public static float AuroraSkyChannel(float baseChannel, float hueChannel, float darkness, float light)
+        {
+            darkness = darkness < 0f ? 0f : darkness > 1f ? 1f : darkness;
+            float v = baseChannel * (1f - darkness) + hueChannel * (light < 0f ? 0f : light);
+            return v < 0f ? 0f : v > 1f ? 1f : v;
+        }
+
+        /// <summary>The outdoor ground-glow floor the aurora gives: groundGlow x shimmer x nightness, clamped to 0..MaxGroundGlow.</summary>
+        public const float MaxGroundGlow = 0.6f;
+        public static float GroundGlowFloor(float groundGlow, float shimmer, float nightness)
+        {
+            float v = groundGlow * shimmer * nightness;
+            return v < 0f ? 0f : v > MaxGroundGlow ? MaxGroundGlow : v;
+        }
+
+        /// <summary>Vanilla PsychGlow: glow above this reads "Lit" (no darkness mood); the default ground glow stays below it ("totally dark").</summary>
+        public const float PsychLitThreshold = 0.3f;
     }
 }
