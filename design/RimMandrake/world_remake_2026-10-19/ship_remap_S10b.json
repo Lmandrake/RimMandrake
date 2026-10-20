@@ -1,0 +1,36 @@
+{
+ "_about": "S10b remap for design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.xml onto the PAINT profile (infrastructure/state/modlists/ModsConfig.PAINT.RULED_2026-10-20.xml). Applied by src/RimMandrake/Utils/ship_remap.py. Floors are COSMETIC: every row is a proposal until the owner says so (CLAUDE.md: cosmetic changes need his permission). Counts MEASURED 2026-10-20 from the layout; owners from the 2026-08-29 def dump; wave from wave2_removed_118.txt / PRE_WAVE1 minus WAVE1_498 / wave3_removed_6.txt.",
+ "terrain": {
+  "AG_RustedTile": {"to": "guy762_FloorTiles_DivotedTile_rust", "n": 892, "was": "sarg.alphagenes", "wave": 1, "why": "owned (mandrake.rsw.armoury), already on this ship, labelled 'divoted tile (rust)'"},
+  "UCScaffoldTile": {"to": "guy762_FloorTiles_XGrate_iron", "n": 229, "was": "nephlite.orbitaltradecolumn", "wave": 2, "why": "owned open-grate deck; reads as scaffold; same iron colour family as the rest of the hull"}
+ },
+ "things": {
+  "AM_DamagedEmptyShelves": {"to": "AncientShelf", "n": 1, "was": "xmb.ancienturbanruins.mo", "wave": 2, "why": "Odyssey ancient shelf, same 2x1 footprint and rotatable"},
+  "VFE_LargeAdvancedBattery": {"to": "Battery", "n": 1, "was": "vanillaexpanded.vfepower", "wave": 2, "why": "Core battery (1x2 for a 2x2): runs on power, visibly smaller"},
+  "RG_BoulderRockMediumSandstone": {"to": "CollapsedRocks", "n": 1, "was": "regrowth.botr.core", "wave": 1, "why": "Core rubble already used 15 times on this ship (2x2 boulder becomes 1x1)"},
+  "RG_BoulderRockMediumMarble": {"to": "CollapsedRocks", "n": 1, "was": "regrowth.botr.core", "wave": 1, "why": "as above"},
+  "OuterRim_AurebeshWordArmory": {"to": null, "n": 1, "was": "neronix17.outerrim.furnitureanddecor", "wave": 2, "why": "floor decal word; no owned Aurebesh art exists and no new art is allowed, so drop"},
+  "OuterRim_AurebeshWordCommand": {"to": null, "n": 1, "was": "neronix17.outerrim.furnitureanddecor", "wave": 2, "why": "decal, drop"},
+  "OuterRim_AurebeshWordControl": {"to": null, "n": 1, "was": "neronix17.outerrim.furnitureanddecor", "wave": 2, "why": "decal, drop"},
+  "OuterRim_AurebeshWordEngineer": {"to": null, "n": 1, "was": "neronix17.outerrim.furnitureanddecor", "wave": 2, "why": "decal, drop"},
+  "OuterRim_AurebeshWordFarming": {"to": null, "n": 1, "was": "neronix17.outerrim.furnitureanddecor", "wave": 2, "why": "decal, drop"},
+  "OuterRim_AurebeshWordKitchen": {"to": null, "n": 1, "was": "neronix17.outerrim.furnitureanddecor", "wave": 2, "why": "decal, drop"},
+  "OuterRim_AurebeshWordReactor": {"to": null, "n": 2, "was": "neronix17.outerrim.furnitureanddecor", "wave": 2, "why": "decal, drop"},
+  "OuterRim_AurebeshWordRefinery": {"to": null, "n": 1, "was": "neronix17.outerrim.furnitureanddecor", "wave": 2, "why": "decal, drop"},
+  "OuterRim_AurebeshWordStorage": {"to": null, "n": 1, "was": "neronix17.outerrim.furnitureanddecor", "wave": 2, "why": "decal, drop"},
+  "Spaceports_ShuttleLandingPad": {"to": null, "n": 1, "was": "zal.spaceports", "wave": 0, "why": "mod is still on the 374 list but NOT in PAINT; a 7x5 pad on a flying ship is wrong anyway, drop"},
+  "VHGE_GasGeyser": {"to": null, "n": 1, "was": "vanillaexpanded.helixiengas", "wave": 0, "why": "mod is on the 374 list, not in PAINT; a natural geyser under a hull is an export artefact, drop"}
+ },
+ "special_filters_drop": {
+  "AM_Test_Filter": "xmb.ancienturbanruins.mo (wave 2)",
+  "AM_AMGuns_Filter": "xmb.ancienturbanruins.mo (wave 2)",
+  "MOAS_RawFungus": "badoaks.meatonastick.expansion",
+  "MOAS_RawVegNotFungus": "badoaks.meatonastick.expansion",
+  "SurvivalTools_AllowNonSmeltable": "jellypowered.survivaltools",
+  "SurvivalTools_AllowSmeltable": "jellypowered.survivaltools",
+  "AllowDetThings": "cometopapa.deteriorated (not in PAINT)",
+  "AllowNotDetThings": "cometopapa.deteriorated (not in PAINT)",
+  "GR_AllowExtracted": "vanillaexpanded.vgeneticse (not in PAINT)",
+  "GR_AllowUnextracted": "vanillaexpanded.vgeneticse (not in PAINT)"
+ }
+}
