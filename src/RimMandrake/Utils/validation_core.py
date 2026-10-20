@@ -24,6 +24,20 @@ SAVES = os.path.join(os.environ.get("USERPROFILE", ""), "AppData", "LocalLow", "
                      "RimWorld by Ludeon Studios", "Saves")
 PLAYER_LOG = os.path.join(os.path.dirname(SAVES), "Player.log")
 
+if os.path.join(UTILS, "modcheck") not in sys.path:
+    sys.path.insert(0, os.path.join(UTILS, "modcheck"))
+import preconditions as _PC  # noqa: E402
+
+# PRECONDITIONS (PROOF_VERDICTS_REPAIR_SAME_BUG_EVERY_ROUND): inside `with scope(name):` every refused / non-taking bridge
+# reply, every dead probe read and every failed require() withholds the PASS/FAIL of each row emitted later in that scope
+# (row() reads UNMEASURED, the faults attached). A call whose reply IS the measured answer passes `_answer=True`. No scope
+# open: nothing changes (validation_hose, proof_all and the other users that never open one). See modcheck/preconditions.py.
+PRE = _PC.Preconditions()
+scope = PRE.scope
+require = PRE.require
+adopt = PRE.adopt
+quiet = PRE.quiet
+
 # SHARED (set by a proof driver): one session, one map. A harness/site row is then written only when it is NOT PASS (a
 # fault still surfaces under its own id; a green one becomes a site note).
 SHARED = False
@@ -35,6 +49,7 @@ class Row(dict):
 
 
 def row(rows, rid, status, cls, detail):
+    status, cls, detail = PRE.judge(status, cls, detail)
     rows.append({"id": rid, "status": status, "class": cls, "detail": detail})
     print("%-28s %-9s %s" % (rid, status, str(detail)[:150]), flush=True)
 
@@ -55,7 +70,8 @@ class _BridgeBase(object):
     def _raw(self, tool, kw):
         raise NotImplementedError
 
-    def call(self, tool, **kw):
+    def call(self, tool, _answer=False, **kw):
+        """One bridge call. `_answer` is the Guarded proxy's flag (see guard()); it is dropped here, never sent to the game."""
         r = self._raw(tool, kw) or {}
         tap_after(tool)
         if isinstance(r, dict) and r.get("content"):
@@ -103,7 +119,8 @@ class _BridgeBase(object):
             try:
                 ex = cg.advance_chunk(self, req)
             except cg.GovernorStop as g:
-                took = site_recover(self, g.result)
+                with PRE.quiet():
+                    took = site_recover(self, g.result)
                 if took is None:
                     raise
                 ex = min(req, took)
@@ -150,6 +167,62 @@ class SuiteBridge(_BridgeBase):
     def ticks(self, n):
         self.t.wait_ticks(n)
         return {"success": True}
+
+
+def _channel_dead(r):
+    """A probe reply that never came from the probe: the request was not taken, no frame serviced it, the result would not parse."""
+    if not isinstance(r, dict):
+        return True
+    err = str(r.get("error") or "")
+    return r.get("success") is False and ("timed out" in err or "set failed" in err or "no probe_type" in err
+                                          or ("raw" in r and "error" not in r))
+
+
+class Guarded(object):
+    """The one place a scoped proof's bridge replies reach PRE. Wraps ANY bridge object (Bridge, SuiteBridge, a proof's own
+    subclass, a selftest's fake): call / hp / probe / probe_of replies are reported, everything else passes through.
+
+    `_answer=True` on a call (or `answer=True` on a probe) marks a reply that IS the measurement -- the mod's own refusal
+    under test, an existence check, best-effort cleanup: the caller judges it, it is never a fault. A dead probe channel is
+    a fault even then (nothing was asked)."""
+
+    def __init__(self, B):
+        self.__dict__["_B"] = B
+
+    def __getattr__(self, k):
+        return getattr(self._B, k)
+
+    def __setattr__(self, k, v):
+        setattr(self._B, k, v)
+
+    def call(self, tool, _answer=False, **kw):
+        try:
+            r = self._B.call(tool, **kw)
+        except Exception as ex:
+            PRE.fault(tool, "raised %r" % ex)
+            raise
+        return PRE.reply(tool, kw, r, answer=_answer)
+
+    def _probed(self, cmd, r, answer):
+        if _channel_dead(r):
+            PRE.fault("probe %s" % str(cmd)[:60], str((r or {}).get("error") or "dead probe channel") if isinstance(r, dict) else r)
+        elif not answer and r.get("success") is False:
+            PRE.fault("probe %s" % str(cmd)[:60], str(r.get("error") or r.get("message") or r)[:200])
+        return r if isinstance(r, dict) else {"success": False, "raw": r}
+
+    def hp(self, cmd, wait_s=20.0, answer=False):
+        return self._probed(cmd, self._B.hp(cmd, wait_s), answer)
+
+    def probe(self, cmd, wait_s=20.0, answer=False):
+        return self._probed(cmd, self._B.probe(cmd, wait_s), answer)
+
+    def probe_of(self, probe_type, cmd, wait_s=20.0, poll_s=0.3, answer=False):
+        return self._probed(cmd, self._B.probe_of(probe_type, cmd, wait_s, poll_s), answer)
+
+
+def guard(B):
+    """B wrapped once (idempotent). Every proof that opens a scope() drives the bridge through this."""
+    return B if isinstance(B, Guarded) else Guarded(B)
 
 
 # ------------------------------------------------------------------ site disturbances (not the mod's doing)
@@ -520,15 +593,24 @@ def prepare_site(B, rect, rows, rid):
     Fingerspike arriving and on a colonist-fight bruise, both inside reveal)."""
     SITE_PHASE[0] = "prepare"
     try:
-        try:
-            swept = remove_intruders(B, rect)
-            if swept["removed"] or swept["left"]:
-                SITE_NOTES.append({"id": "%s_site_sweep" % rid, "detail": swept})
-        except Exception as ex:  # noqa: BLE001 - the sweep is a courtesy; the read-back below still gates the site
-            SITE_NOTES.append({"id": "%s_site_sweep_failed" % rid, "detail": repr(ex)})
-        return _prepare_site(B, rect, rows, rid)
+        # its own read-back gates the site (an UNMEASURED/SITE row and False); the courtesy calls inside are not the rows'
+        # preconditions, so they are not recorded in PRE
+        with PRE.quiet():
+            ok = _prepare_site_swept(B, rect, rows, rid)
     finally:
         SITE_PHASE[0] = "measure"
+    # a caller that carries on over an unprepared site still cannot score a row on it
+    return require(ok, "%s site prepared" % rid, list(rect))
+
+
+def _prepare_site_swept(B, rect, rows, rid):
+    try:
+        swept = remove_intruders(B, rect)
+        if swept["removed"] or swept["left"]:
+            SITE_NOTES.append({"id": "%s_site_sweep" % rid, "detail": swept})
+    except Exception as ex:  # noqa: BLE001 - the sweep is a courtesy; the read-back below still gates the site
+        SITE_NOTES.append({"id": "%s_site_sweep_failed" % rid, "detail": repr(ex)})
+    return _prepare_site(B, rect, rows, rid)
 
 
 def _prepare_site(B, rect, rows, rid):
