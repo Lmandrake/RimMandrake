@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Breeding Ritual</name>
+  <author>GulMadred / Hyper</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <modVersion>1.4</modVersion>
+  <packageId>GulMadred.BreedingRitual</packageId>
+  <modDependencies>
+	<li>
+	  <packageId>Ludeon.RimWorld.Ideology</packageId>
+	  <displayName>Ideology</displayName>
+	</li>
+	<li>
+	  <packageId>Ludeon.RimWorld.Biotech</packageId>
+	  <displayName>Biotech</displayName>
+	</li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+	<li>Ludeon.RimWorld.Royalty</li>
+	<li>Ludeon.RimWorld.Ideology</li>
+	<li>Ludeon.RimWorld.Biotech</li>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <description>This mod adds a new precept to the Ideology system: a breeding ceremony. Two eligible pawns must be assigned to the same bed, which will cause a new button to appear on the bed's selection panel. Click the button to begin the ritual. The couple will perform Lovin' until they're exhausted, while spectators encourage them with dancing and music.</description>
+</ModMetaData>

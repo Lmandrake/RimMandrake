@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+    <name>Roofed Scanning 1.6</name>
+    <author>TheElm</author>
+    <url>https://theelm.net/RW-Scanning</url>
+    <packageId>Kupie.IsJustDoingItLive.PlzDontHateMe.RoofedScanning</packageId>
+    <supportedVersions>
+        <li>1.3</li>
+        <li>1.4</li>
+        <li>1.5</li>
+        <li>1.6</li>
+    </supportedVersions>
+
+    <description>Updated from TheElm's mod:
+https://steamcommunity.com/sharedfiles/filedetails/?id=2870663873
+
+And an unknown member who made it for 1.5, but they deleted it now.
+
+I'm also bad at coding, and the original code used Transpilers which actually search for/inject code. I just patched Rimworld's function that checks for roof: Nothing checks for a roof besides these specific buildings, so I just patched that instead!
+
+Lets you use the scanners indoors
+	
+Should include:
+-Long Range Mineral Scanner
+-Ground Penetrating Scanner
+-Orbital Scanner (from Odyssey DLC)
+        
+Because scanning is just that important</description>
+
+    <modDependencies>
+        <li>
+            <packageId>brrainz.harmony</packageId>
+            <displayName>Harmony</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+            <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+        </li>
+    </modDependencies>
+    <modDependenciesByVersion>
+    </modDependenciesByVersion>
+
+    <loadAfter>
+    </loadAfter>
+    <incompatibleWith>
+    </incompatibleWith>
+</ModMetaData>

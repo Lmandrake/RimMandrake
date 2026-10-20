@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Caravan Adventures</name>
+  <author>iforgotmysocks</author>
+  <url></url>
+  <supportedVersions>
+    <li>1.2</li>
+    <li>1.3</li>
+    <li>1.4</li>
+    <li>1.5</li>
+	  <li>1.6</li>
+    <li>1.7</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+  <packageId>iforgotmysocks.CaravanAdventures</packageId>
+  <modIconPath IgnoreIfNoMatchingField="True">UI/CAModIcon</modIconPath>
+  <description>
+Version 1.9.0
+
+Caravan Adventures aims to transform traveling around the world into a fun adventure by providing new features to replace the annoying micromanagement, make traveling more fun and give you a sense of purpose doing so. Quick heads-up, about 25% of this mod's content is the Storyline, which requires Royalty. Everything else can be used without it, don't worry.
+
+Join us on Discord (https://discord.gg/KwaRubs2kx)
+All mod details available in the Mod's Wiki (https://github.com/iforgotmysocks/CaravanAdventures/wiki)
+
+Automatic Camp Setup
+* Settle on tiles by having your pawns set up a camp first, before you even get involved.
+* If you prepared and have enough spacer tent supplies, you will be able to stay in high quality camp sites, if not, your pawns will divert to make shift materials.
+* You pawns automatically build enough tents for your individual number of travelers and prisoners. Pawns also choose their tents based on their relationship.
+* Choose to either leave the bulk of most items strapped to your animals or create enough storage tents, so all your equipment is tugged away "safely".
+* Choose to pre-apply basic jobs, like creating a set of fresh clothes, butcher animals or grill some stakes
+* Leave the camp site immediately if you want to, just for the impatient ones
+
+Caravan forming / trading presets
+* Set up 3 presets in mod settings, that allow you to quickly select all items for travel, or create specific trade filters to select all you may want to sell at once.
+* More basic selection options for all items or none
+* Keep the automatic supplies disabled with a toggle, to avoid some lag when it's active every time you open up the dialog
+* Have selected pawns and items on the map automatically enabled in the caravan forming dialog
+
+Mechanoid Bounty
+* Initially part of the story, but also separately available
+* Hunt mechanoids to receive bounty credits with the faction that called out the bounty
+* Get assistance from said faction on any map you currently have pawns located (they can help engage hostile locations)
+* Hire veteran soldiers for a hefty large amount of bounty credits, which come with a lot of experience and you're able to choose some of their traits
+* Purchase valuable items in exchange for bounty credits
+* Improve relations to other factions in exchange for bounty credits
+* Buy bounty credits for a large amount of silver
+
+Immersion - Travel companions
+* Pawns start out disliking the newcomers due to uncertainty and some lack of trust
+* Pawns individually bond with each other over time which can turn the initial distrust into a true friendship
+
+Caravan Incidents
+* More smaller events that do not always have to end in a fight (currently only 1)
+
+Storyline (requires Royalty)
+* A storyline that gives you a reason to travel the world
+* Form a bond with a new faction sharing your troubles on a new world
+* Encounter a dangerous threat that endangers the entire world
+* Fight bosses to claim treasures, learn powerful spells and prevent the end of all living beings
+
+General travel support
+(disabled at default, enable in mod settings)
+* auto clean up settlement remains
+* Increase food and silver available for settlements to trade
+* Increase ancient shrine spawns and reward changes
+* Increase skill decay level from 10 to 15
+* Enable a side bar icon allowing to remove letters
+
+(All categories can be enabled or disabled and further configured to your liking in the mod's settings)
+
+
+Credits
+
+Artwork:
+Artwork and the preview image generously provided by Shakesthespeare, thank you mate, u're awesome!
+Portal in Ancient master shrine by gecko-kobold
+Shortcut-button icon for forming/trade preset settings by Madman666
+
+Sounds:
+Anima tree whisper by zapsplat (zapsplat_whispers.mp3) from https://www.zapsplat.com
+Earthquake by zatar (zatar_earthquake.mp3) https://freesound.org/people/zatar/sounds/514381/
+slice1 by audione https://freesound.org/people/audione/sounds/52458/
+slice2 by freefire66 https://freesound.org/people/freefire66/sounds/175949/
+slice3 by TheBuilder15 https://freesound.org/people/TheBuilder15/sounds/434896/
+slice4 by Aleks41 https://freesound.org/people/Aleks41/sounds/449552/
+
+Translations:
+ChineseSimplified translation by MZM_GOW and ameki
+ChineseTraditional translation by MZM_GOW and ameki
+Korean translation by inbae
+SpanishLatin translation by Evilservant6
+
+CE Patch done by DkPepper
+Thanks to the testers who helped to get this mod on the road!
+
+  </description>
+</ModMetaData>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+	<name>[sbz] Fridge</name>
+	<author>seobongzu</author>
+	<packageId>sbz.NeatStorageFridge</packageId>
+	<supportedVersions>
+		<li>1.5</li>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+	<description>Adds 7 types of fridges that keep stored items frozen.</description>
+	<modIconPath IgnoreIfNoMatchingField="True">UI/sbz</modIconPath>
+	<modDependencies>
+		<li>
+			<packageId>adaptive.storage.framework</packageId>
+			<displayName>Adaptive Storage Framework</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3033901359</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>adaptive.storage.framework</li>
+	</loadAfter>
+</ModMetaData>

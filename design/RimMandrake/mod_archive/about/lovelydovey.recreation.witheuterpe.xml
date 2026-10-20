@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Intimacy - Socio Butterfly</name>
+	<author>rosaline</author>
+	<description>You are appreciated.</description>
+	<modIconPath IgnoreIfNoMatchingField="True">UI/SEX_Intimacy</modIconPath>
+	<supportedVersions>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>LovelyDovey.Recreation.WithEuterpe</packageId>
+	<modDependencies>
+		<li>
+			<packageId>LovelyDovey.Sex.WithEuterpe</packageId>
+			<displayName>Intimacy - Friends n' Lovers</displayName>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3498422643</steamWorkshopUrl>
+			<downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3498422643</downloadUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>LovelyDovey.Sex.WithEuterpe</li>
+	</loadAfter>
+</ModMetaData>

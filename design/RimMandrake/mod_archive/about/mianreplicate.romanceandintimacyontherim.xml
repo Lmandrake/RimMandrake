@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ModMetaData>
+    <name>Romance &amp; Intimacy On The Rim</name>
+    <author>MianReplicate</author>
+    <packageId>mianreplicate.romanceandintimacyontherim</packageId>
+    <supportedVersions>
+        <li>1.6</li>
+    </supportedVersions>
+    <modVersion>1.2.3</modVersion>
+    <modDependencies>
+        <li>
+            <packageId>brrainz.harmony</packageId>
+            <displayName>Harmony</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+            <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+        </li>
+        <li>
+            <packageId>lovelydovey.sex.witheuterpe</packageId>
+            <displayName>Intimacy - A Loving Expansion</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/3498422643</steamWorkshopUrl>
+            <downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3498422643</downloadUrl>
+        </li>
+        <li>
+            <packageId>telardo.romanceontherim</packageId>
+            <displayName>Romance On The Rim</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/2654432921</steamWorkshopUrl>
+            <downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2654432921</downloadUrl>
+        </li>
+    </modDependencies>
+
+    <description>Romance &amp; Intimacy On The Rim is a RimWorld mod that adds compatibility between two well known liked mods: Romance On The Rim &amp; Intimacy - a Loving Expansion.</description>
+    <loadAfter>
+        <li>Ludeon.RimWorld</li>
+        <li>brrainz.harmony</li>
+    </loadAfter>
+</ModMetaData> 

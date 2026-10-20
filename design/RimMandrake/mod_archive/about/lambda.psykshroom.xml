@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+
+<packageId>lambda.Psykshroom</packageId>
+<name>Psyshrooms</name>
+<author>Lambda</author>
+<description>A subterranean solution for the aspiring psychite kingpin. Adds Psyshrooms, a type of psychedelic fungus that can be used to refine psychite into its related drugs! It can even be eaten raw, or fermented into the powerful alcohol Croomin!</description>
+
+<supportedVersions>
+  <li>1.5</li>
+  <li>1.6</li>
+</supportedVersions>
+
+<modVersion IgnoreIfNoMatchingField="True">3.1</modVersion>
+
+<modDependencies>
+  <li>
+    <packageId>oskarpotocki.vanillafactionsexpanded.core</packageId>
+    <displayName>Vanilla Expanded Framework</displayName>
+    <steamWorkshopUrl>steam://url/CommunityFilePage/2023507013</steamWorkshopUrl>
+  </li>
+</modDependencies>
+
+<loadAfter>
+  <li>oskarpotocki.vanillafactionsexpanded.core</li>
+  <li>vanillaracesexpanded.genie</li>
+</loadAfter>
+
+</ModMetaData>

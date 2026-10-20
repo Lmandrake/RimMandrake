@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>RimTraits - General Traits</name>
+	<author>Sierra</author>
+	<packageId>Sierra.RT.GeneralTraits</packageId>
+	<url></url>
+	<supportedVersions>
+		<li>1.1</li>
+		<li>1.2</li>
+		<li>1.3</li>
+		<li>1.4</li>
+		<li>1.5</li>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+	<loadAfter>
+		<li>Ludeon.RimWorld</li>
+		<li>Ludeon.RimWorld.Royalty</li>
+		<li>Ludeon.RimWorld.Ideology</li>
+		<li>Ludeon.RimWorld.Biotech</li>
+		<li>Ludeon.RimWorld.Anomaly</li>
+		<li>Ludeon.RimWorld.Odyssey</li>
+	</loadAfter>
+	<description>
+[h1]Mod Version: v1.19[/h1]
+
+
+[h1]Get [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2244594116]RimTraits - Vanilla Trait Colors[/url] to change your Trait Colours to match this mod![/h1]
+
+
+This mod adds 46 traits defining a pawn's attributes, some are mutually exclusive to each other with increasing rarity for the higher tier traits.
+
+This mod aims to add more minor traits that give each pawn a bit more uniqueness.
+
+
+[b]Features:[/b]
+[list]
+[*]46 Traits
+[/list]
+
+
+[b]Recommended Mods:[/b]
+[list]
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2836791007]RimFantasy - Medieval Overhaul Edition[/url]
+[b]- Recommended for [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2553700067]Medieval Overhaul[/url] users. Incompatible with the other RimFantasy mods.[/b]
+
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=1916352291]RimTraits - Medieval Talents[/url]
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2206957172]RimTraits - General Traits[/url]
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2244594116]RimTraits - Vanilla Trait Colours[/url]
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2595980371]Milkshakes - Digital Deluxe Edition[/url]
+
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2695164414]Tweaks Galore[/url]
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027]RimHUD[/url]
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=1855885448]Guard For Me[/url]
+[/list]
+
+
+[b]Mod Compatibility:[/b]
+[list]
+[*]No Known Issues
+[*]Supports [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2451324814][SYR] Trait Value[/url]
+[/list]
+
+
+[b]Balance:[/b]
+Balance feedbacks are appreciated, suggestions will be considered as long as no C# is involved.
+
+
+[h1][url=https://discord.gg/rimworld]Click here to join us on the Community Discord![/url][/h1]
+[url=https://ko-fi.com/sierra0001][img]https://i.imgur.com/SBiUpbW.png[/img][/url]
+
+
+[h1]Credits:[/h1]
+[list]
+[*]Mascot inspired and based on Geneforge by Spiderweb Software (Go play the series, it's great).
+[/list]
+
+
+(CC BY-NC-ND 4.0)
+
+
+[h1]Troubleshooting &amp; Bug Reports:[/h1]
+Join the Discord (link below) for troubleshooting and bug reports. Steam is a terrible platform for support and I will not be using it to deal with anything longer than a simple answer.
+[h1][url=https://discord.gg/rimworld][img]https://i.imgur.com/Y2Bdoia.gif[/img][/url][/h1]
+
+
+[h1]Latest Changes:[/h1]
+[b]v1.19/b]
+[list]
+[*][Update] RimWorld 1.7 Ready.
+[/list]
+	</description>
+</ModMetaData>

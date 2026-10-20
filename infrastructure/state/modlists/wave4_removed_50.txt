@@ -1,0 +1,51 @@
+# Retirement Wave 4 (prepared 2026-10-20). packageId<TAB>name<TAB>class<TAB>why
+04.23.2020	[1.1]TO[1.6]MultipleTraders	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+ael.tua.helmetsaddtoxresistance	High Tech Helmets Give Tox Gas Resistance	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+aelanna.weaponracks	Weapon Racks	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+aoba.fortress.neolithic	Fortifications - Neolithic	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+ap.huntingmeme	[AP] Hunting Meme	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+avius.prisonlabor	Prison Labor	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+cain.mineshaft	Mines 2.0	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+cyanobot.toddlers	Toddlers	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP. Caveat in the text.
+error277.tunneler.expanded	Tunneler Expanded	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+garryflowers.moreslaverystuff	More Slavery Stuff	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+gulmadred.breedingritual	Breeding Ritual	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+hailuan.customquestframework	Custom Quest Framework	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP. Caveat in the text.
+hazn.huntingtraps	Hunting Traps	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+heatherathebyne.craftingspotslavegear	Crafting Spot Slave Gear	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+ingendum.raiderswarmcompression	Raider Swarm Compression	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+karew.orcclan	Orc Clan + Xenotype	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP. Caveat in the text.
+kupie.isjustdoingitlive.plzdonthateme.roofedscanning	Roofed Scanning 1.6	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+lambda.psykshroom	Psyshrooms	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+legator.prisonerrealism	Prisoner Realism	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+lovelydovey.recreation.witheuterpe	Intimacy - Socio Butterfly	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+lts.geg	Glowing eyes genes	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+memegoddess.giddyup	Giddy-Up 2 - Continued	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+memegoddess.runandgun	RunAndGun - Continued	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+mianreplicate.romanceandintimacyontherim	Romance & Intimacy On The Rim	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+mlie.betterbeggars	Better Beggars (Continued)	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+mlie.dungeonpack	Dungeon Pack (Continued)	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP. Caveat in the text.
+mlie.mercerbackpacks	Mercer's Backpacks (Continued)	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+mlie.preceptsandmemesritualsmodule	Precepts and Memes - Rituals module (Continued)	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP. Caveat in the text.
+mlie.prisonersshouldfearturrets	Prisoners Should Fear Turrets	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+mlie.rfrumorhasit	[RF] Rumor Has It.... (Continued)	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+petetimessix.simplesidearms	Simple sidearms	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+rw.mod.simplestairs	SimpleStairs (Fork)	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+sbz.gravshipstorage	[sbz] Gravship Storage	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+sbz.neatstoragefridge	[sbz] Fridge	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+scherub.stonecuttingextended	Stonecutting Extended	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+sierra.rt.generaltraits	RimTraits - General Traits	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+summersausages2ttv.techlevelenforcement	Tech Level Enforcement	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+telardo.romanceontherim	Romance On The Rim	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+thesepeople.ritualattachableoutcomes	Custom Ritual Framework	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+timuttie.justleavealready.fork.mitasamodel	Just Leave Already	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+tribeagle.simpleslaverycollars	Simple Slavery Collars	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+troopersmith1.deathrattle	Death Rattle Continued [1.2+]	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+universalpregnancy.1trickpwnyta	Universal Pregnancy	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP. Caveat in the text.
+usgiyi.slaveoutfits	Slave Outfits [1.7]	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+vanillaexpanded.ideo.relicsandartifacts	Vanilla Ideology Expanded - Relics and Artifacts	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+vanillaexpanded.vaeaccessories	Vanilla Apparel Expanded — Accessories	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+winggar.meaningfulparties	Wing's Meaningful Parties	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+zal.moreutilitypacks	More Utility Packs (Continued)	sheet-cut	owner 2026-10-20: "I am ok cutting all the cut ones for now"; sheet note: Audit: MOVE-TO-SHIP.
+oblitus.mylittleplanet	My Little Planet	world-only	owner 2026-10-20: "cutting the ones that were only used for initial world creation" (planet coverage is baked into the world; dev world ASHKARR_DEV_START_2026-10-20 painted)
+iforgotmysocks.caravanadventures	Caravan Adventures	faction	owner 2026-10-20: "Tallmere Combs and Sacrileg Hunters ... We don't want those" (Sacrileg Hunters = CASacrilegHunters, this mod's only FactionDef)

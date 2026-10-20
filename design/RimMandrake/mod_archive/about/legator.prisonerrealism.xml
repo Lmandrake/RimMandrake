@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Prisoner Realism</name>
+  <author>Legator</author>
+  <packageId>Legator.PrisonerRealism</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>RH2.CPERS.Arrest.Here</li>
+    <li>Mlie.PrisonersDontHaveKeys</li>
+    <li>Mlie.PrisonersShouldFearTurrets</li>
+    <li>Memegoddess.PrisonersAreNotSwines</li>
+    <li>Cedaro.LowerPrisonerExpectation</li>
+    <li>automatic.prisonerbedsetowner</li>
+    <li>CETeam.CombatExtended</li>
+    <li>avius.prisonlabor</li>
+    <li>sk.noprisonersympathy</li>
+    <li>Mersid.WCE2Updated.Core</li>
+  </loadAfter>
+  <description>Prisoner Realism overhauls prison management with in-place arrests, force feeding, a rebuilt prison-break system, prisoner recreation, keys/turret/cleaning realism, institutionalization and surrendering. Full Steam description in the workshop listing. Author: Legator.</description>
+</ModMetaData>

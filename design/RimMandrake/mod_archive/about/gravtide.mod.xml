@@ -3,7 +3,7 @@
   <name>GravTide</name>
   <author>yongdd</author>
   <packageId>gravtide.mod</packageId>
-  <modVersion>2026.10.18.2</modVersion>
+  <modVersion>2026.10.20.2</modVersion>
   <!-- The mod list draws this as a clickable button beside the description, which is the only
        place a player already looking at GravTide can be handed somewhere to report to. The Steam
        description carries the same link for people who never open the mod list.

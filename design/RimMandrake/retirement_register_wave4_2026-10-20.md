@@ -1,0 +1,142 @@
+# Retirement Wave 4 register (2026-10-20): what was cut, why, and how to bring it back
+
+FOUNDRY, offline. Owner, 2026-10-20: *"So long as we retain knowledge of these mods for when we wish to re-rule them, rebuild them,
+or dismiss them later, I am ok cutting all the cut ones for now. Also cutting the ones that were only used for initial world
+creation. I notice in factions there are Tallmere Combs and Sacrileg Hunters however. We don't want those... same with the Space
+Exchange."* This file is the knowledge he asked to keep. The same 50 rows are in the all-waves archive
+`design/RimMandrake/mod_archive/ALL_ORIGINAL_MODS.tsv` (lifecycle `RETIRED-WAVE4`, manual rows in `mod_archive/overrides.tsv`);
+that TSV is the one register across Waves 1-4, and this file is the Wave 4 detail.
+
+## State: PREPARED, NOT DEPLOYED
+
+The game was UP (DEV_START loaded) when this was made, so the Wave 3 deploy step (game down, bridge held) was not run.
+**The live `ModsConfig.xml` and `ModsConfig.FULL.LATEST.xml` are both still the 374 list.** Deploy and live proof are owed:
+`WAVE4_LIST_DEPLOY_FIFTY_FEWER_PASSENGERS`.
+
+| list | before | after | file (`infrastructure/state/modlists/` unless noted) |
+|---|---:|---:|---|
+| FULL | 374 | **324** | `ModsConfig.FULL.WAVE4_324_2026-10-20.xml` (ET.parse 324, 0 dupes, 6 `ludeon.*`); 374 snapshot `ModsConfig.FULL.PRE_WAVE4_374.xml` |
+| SHIP (RULED, regenerated in place) | 325 | 276 | `ModsConfig.SHIP.RULED_2026-10-20.xml` |
+| TEST / AUTHORING (RULED) | 153 / 172 | 152 / 171 | Caravan Adventures only |
+| DEV / PAINT (RULED) | 117 / 83 | 117 / 83 | unchanged (PAINT keeps everything the final repaint needs) |
+| Cherry Picker SHIP keys | 1,747 | 1,723 | `infrastructure/state/cherrypicker/CherryPicker.SHIP.WAVE4_CANDIDATE.xml`; the 24 removed keys: `cp_wave4_keys_24.txt` |
+| removed list | | 50 | `wave4_removed_50.txt` (packageId, name, class, why) |
+
+Instruments (same as Wave 3): `design/RimMandrake/world_remake_2026-10-19/wave3_prep.py` (id-driven), then
+`wave4_lists.py <wave4_ids.tsv> <roots.json> <cp_keys>`; work files `Transient/wave4_prep_2026-10-20/` (unpinned, regenerable).
+Save censuses: `save_class_census.py`, `save_def_census.py`, `save_adoption_check.py` on `ASHKARR_DEV_START_2026-10-20.rws`.
+
+## Requested cuts REFUSED (they stay; each is needed by the saved world or by our src)
+
+| mod | packageId | why it stays | what would make it cuttable |
+|---|---|---|---|
+| Alien Worlds Framework + Alien Worlds - Tidally Locked | `7f.alienworlds`, `7f.alienworlds.tidallylocked` | **Not world-creation only.** The save names `<alienWorldsFrameworkPlanetType>TidallyLocked</...>`, and the mod Harmony-patches `GenCelestial.SunPositionUnmodified`, `CurSunPositionInWorldSpace`, `CelestialSunGlow(PlanetTile,int)` and `CompPowerPlantSolar` every session (`Source/PlanetTypeDef.cs`). Without it Ash'karr's sun rises and sets, and Direct Sun (sun angle from tile position) loses its geometry. `design/Jawa/worldbuilding/tidally_locked_world.md` called it "worldgen-only"; corrected in this change. | our own sun-fix patch replacing those four patches |
+| More Vanilla Biomes | `zylle.morevanillabiomes` | 818 UNGUARDED references in our src to its `ZBiome_*` BiomeDefs (xpaths and lists): `StarWarsPatches/Patches/SWDesertWeather_Attach.xml`, `UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml`, `AnimalBiomeDuplicates_Fix.xml`, `BiomeCastEvictions_WildBiomes.xml`, `JawaWorld_BiomeMix.xml`, `StructureInjectionsSW/Defs/TileMutatorDefs_Batch2.xml`, `StructureInjectionsRUT/Defs/TileMutatorDefs_MoistureFarm.xml`. Archive: "C1: our content hard-depends on it; kept until replicated". The save itself is clean of it (world tileBiome clean on a list without it). | guard or remove those refs (a src scrub), then re-run `wave3_prep.py` |
+| Biomes! Framework | `biomesteam.coreframework` | hard dependency of More Vanilla Biomes (stays). Its save residue is 2 map components (`BiomesCore.Locations.LocationGrid`, `SpecialTerrainList`), SKIPPED on load, harmless. | goes with More Vanilla Biomes |
+| Vanilla Factions Expanded - Tribals (a sheet cut) | `oskarpotocki.vfe.tribals` | the save needs it: `VFETribals.*` ritual classes in every ideo's tech-advancement precepts (85 obligation triggers, 17 of each Advance-To ritual), `GameComponent_Tribals`, 2 things (`VFET_Apparel_TribalHeavy`, `VFET_Apparel_TribalWar`), 2 factions (`VFET_WildMen`, `VFET_WildMenGroup`); our `ResearchRetag/Defs/ResearchProjectDefs/RUT_Ported_ResearchTrio.xml` names `VFET_Bow/Fire/Furniture/Tribalwear` unguarded. Archive: "C1: our content hard-depends on it". | ideos re-made without its rituals, and RUT_Ported_ResearchTrio guarded |
+
+My Little Planet (`oblitus.mylittleplanet`) WAS cut: planet coverage is baked into the save, it leaves no save residue, and
+`mandrake.rm.planetpresetprime` names it only in `loadAfter`. PAINT and AUTHORING keep it for the final repaint.
+
+## The three factions he named
+
+| faction (in the save) | FactionDef | supplied by | action |
+|---|---|---|---|
+| **Sacrileg Hunters** | `CASacrilegHunters` | **Caravan Adventures** (`iforgotmysocks.caravanadventures`, Workshop 2558957509) | **CUT** (whole mod; it is the mod's only FactionDef). Not in any `ASHKARR_DEV_*` save: no orphan. Its quests, sites and boss content go with it. Lighter alternative if he wants the mod back without the faction: keep it and patch `CASacrilegHunters` `requiredCountAtGameStart` 0 (our `FactionSlate/OnlyOurFactions.xml` already zeroes `startingCountAtWorldCreation`). |
+| **Tallmere Combs** | `RM_Faction_CombHolds` | **our own Leaning Scrub** biome (`src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml`, composed into Baroque Biomes `mandrake.rm.biomes`) | **NOT cut** (cutting the mod cuts Baroque Biomes). In all four dev saves (loadID 9). Owed: `COMB_EXCHANGE_FACTIONS_EXCISE_POLITELY`. |
+| **Space Exchange** | `TradersGuild` | **Odyssey DLC** (`ludeon.rimworld.odyssey`) | **NOT cut** (every DLC is a prerequisite). In `ASHKARR_DEV_START` only (loadID 23, with the hidden `Salvagers` 24); absent from FOUNDERS/LANDED/SHIP. Our patch zeroes `startingCountAtWorldCreation`, but `requiredCountAtGameStart` is 1, so starting the game added it. Owed in the same item. |
+
+**Orphan risk of this wave: none.** No retired mod supplies a faction present in any dev save (Sacrileg Hunters is absent).
+The two that ARE present (Tallmere Combs, Space Exchange) stay loadable because their mods stay. Removing them is a separate,
+owed change: (1) set `requiredCountAtGameStart` 0 (and `startingCountAtWorldCreation` 0 for Comb Holds) and point
+`LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml` `farmerFaction` at another faction; (2) back the saves up to
+`D:\ClaudeWork\backups\` and remove the faction (with its settlements, world pawns and relations) with savegame tooling, or re-make
+START from SHIP once the patch is live. Removing the FactionDef without step 2 orphans loadID 9 in every save.
+
+## Bring one back (any row)
+
+1. Insert `<li><packageId></li>` into `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (and the live list) right after the
+   predecessor named in its row (line numbers are in `ModsConfig.FULL.PRE_WAVE4_374.xml`); parse it back with ElementTree.
+2. Re-add it to `ModsConfig.SHIP.RULED_2026-10-20.xml` (and TEST/AUTHORING) as the row's `was in` column says.
+3. Cherry Picker: restore its keys from `infrastructure/state/cherrypicker/cp_wave4_keys_24.txt` into `CherryPicker.SHIP.xml`.
+4. Our src that names it (last column) is guarded (MayRequire / FindMod / Conditional) or order-only; nothing to re-enable.
+   `ResearchRetag` `forceLoadAfter` still names `cain.mineshaft`, `error277.tunneler.expanded`, `hazn.huntingtraps`,
+   `mlie.dungeonpack`, `zal.moreutilitypacks` (left in on purpose until the post-deploy dump, Wave 2/3 order).
+5. Re-save `src/Jawa/ideoligion/The Salvation.rid` / `MandrakeJawa.xtp` if its active-mod stamp matters (harmless notice otherwise).
+6. Set its archive row back (`python3 src/RimMandrake/Utils/mod_archive.py add <id> --lifecycle ACTIVE-...`, then `check`).
+The mods are NOT unsubscribed: every folder is still on disk under the Steam workshop dir.
+
+Closure (About.xml `modDependencies` incl. v1.6 + `mod_facts.jsonl` class_ref/hard_dep): no retained mod hard-depends on a cut.
+One flagged edge is soft: `mlie.tabsorting` -> `avius.prisonlabor` is an `IfModActive` LoadFolders branch. Order-only edges left
+in place: `neku.largepawns`, `co.uk.epicguru.factionloadout` (giddyup), `mandrake.rsw.armoury` (dungeonpack), `mandrake.rm.patches`
+(vaeaccessories), `mandrake.rut.patches`, `mandrake.rut.pawnflavor`, `mandrake.rut.researchretag`, `mandrake.rm.planetpresetprime`.
+src closure: 1,691 dropped defNames; 1,917 src refs, 1,910 guarded, 7 unguarded, all false hits (labels, a quest signal, a mod
+name in FindMod, `KAR_Orc` inside a Conditional); 10 C# literals (ArmouryFuzz pure table; `RSW_MineShaftCanonGate.cs` uses
+`GetNamedSilentFail`).
+Save censuses on the 324 list, `ASHKARR_DEV_START_2026-10-20.rws`: **class 0 unresolved sites; def 0 unresolved THING defs, other refs 73 (22 defs) = identical to the 374 baseline** (`Transient/live_testing_2026-10-20e/def_census_START.txt`); `ASHKARR_DEV_FOUNDERS_2026-10-20.rws` the same (0 / 0 / 73). The 319-mod test list (with the refused five also cut) gave 16 class sites / 2 things / VFET_* and `TidallyLocked` names: the evidence for the refusals.
+
+## Deploy (Wave 3 procedure, `world_remake_2026-10-19/14_wave3_prep.md` §4)
+
+Game DOWN, bridge held: back up live `ModsConfig.xml` to `ModsConfig.LIVE_BACKUP_<date>_pre_wave4.xml`; copy
+`ModsConfig.FULL.WAVE4_324_2026-10-20.xml` over live and over `FULL.LATEST` (parse back: 324); Cherry Picker to the WAVE4
+candidate (1,723); no src deploy needed. Cold load, FIRST exception vs the 374 baseline
+(`Transient/live_testing_2026-10-20e/RESULTS.md`: CannibalPirate ConfigErrors NRE; ours 0); load `ASHKARR_DEV_START_2026-10-20`;
+expect 0 new exceptions. Then dump, and trim ResearchRetag `forceLoadAfter`.
+
+## The 50 retired mods
+
+`was in` = profiles before Wave 4. `bring back` = position in `ModsConfig.FULL.PRE_WAVE4_374.xml`. Last column = our src files
+that name the packageId (all guarded or order-only).
+
+| # | name | packageId | Workshop | why cut | what it provided (its own description) | was in | bring back | our src naming it |
+|---|---|---|---|---|---|---|---|---|
+| 1 | [1.1]TO[1.6]MultipleTraders | `04.23.2020` | 2070709529 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | As of June 21st 2026. The Mod is now compatible with 1.6 Update. Fix : 1.6 Compatible Added : None New Compatibility : None | SHIP | line 26, after `ebsg.framework` | none |
+| 2 | High Tech Helmets Give Tox Gas Resistance | `ael.tua.helmetsaddtoxresistance` | 3503847744 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | I haven't played without a ton of mods in a long time and learned the hard way when wasters came to raid that things like recon helmets do not give tox gas resistance in ... | SHIP | line 113, after `imagitama.rimworldgravshiprangeonmap` | none |
+| 3 | Weapon Racks | `aelanna.weaponracks` | 2788630748 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Adds decorative storage racks for displaying weapons. | SHIP | line 254, after `addvans.wasdedpawn` | none |
+| 4 | Fortifications - Neolithic | `aoba.fortress.neolithic` | 2385960678 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | It has always been a problem to make their settlements secured since human existence, so this is the reason why people in each era have used their own wisdom to build var... | SHIP | line 104, after `temeez.floorlights2` | none |
+| 5 | [AP] Hunting Meme | `ap.huntingmeme` | 3535691822 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | The Hunting Meme contains several new precepts and thoughts regarding hunting animals . | SHIP | line 27, after `04.23.2020` | none |
+| 6 | Prison Labor | `avius.prisonlabor` | 1899474310 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | This mod force prisoners to work. To enable this feature prisoners must have "Force to work" option checked ("Prisoner" tab). Prison labor needs management that consist: ... | SHIP | line 300, after `mehni.pickupandhaul` | `RimUtinni/PawnFlavor/About/About.xml` |
+| 7 | Mines 2.0 | `cain.mineshaft` | 2503894706 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | This version of Mines mod makes it possible to mine modded resources from other mods. The Mines, a place for your pawns to excavate the treasures of the earth. This is a ... | SHIP | line 154, after `rabiosus.minesight` | `RimMandrake/MineShaft/About/About.xml`; `RimMandrake/MineShaft/Source/MineShaftMod.cs`; `RimStarWars/Armoury/Patches/RSW_ZeroedOreGates.xml`; `RimStarWars/Armoury/Source/CanonMaterials/RSW_MineShaftCanonGate.cs`; `RimStarWars/Armoury/Source/Kernel/RSW_ArmouryKernel.cs`; `RimUtinni/ResearchRetag/About/About.xml` |
+| 8 | Toddlers | `cyanobot.toddlers` | 2903359152 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. Caveat in the text. | New life stage: Toddler - 1- and 2-year-old pawns are no longer completely passive objects - toddlers cannot work, but can move around and interact with the world - toddl... | SHIP | line 292, after `scherub.stonecuttingextended` | none |
+| 9 | Tunneler Expanded | `error277.tunneler.expanded` | 2599616050 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Tunneler Expanded adds a lot of extra content and quality of life improvements for you cave people | SHIP | line 227, after `ferny.triumphantresearch` | `RimUtinni/ResearchRetag/About/About.xml` |
+| 10 | More Slavery Stuff | `garryflowers.moreslaverystuff` | 2896845138 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Adds a couple slavery related precepts and let's colonists share beds with slaves. | SHIP | line 159, after `acutus.moodchainreaction` | `RimUtinni/PawnFlavor/About/About.xml` |
+| 11 | Breeding Ritual | `gulmadred.breedingritual` | 3772996961 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | This mod adds a new precept to the Ideology system: a breeding ceremony. Two eligible pawns must be assigned to the same bed, which will cause a new button to appear on t... | SHIP | line 62, after `bs.mbifvte` | `RimUtinni/PawnFlavor/About/About.xml` |
+| 12 | Custom Quest Framework | `hailuan.customquestframework` | 2978572782 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. Caveat in the text. | (WIP) Have you ever thought about editing a quest yourself? Build your own map for other players to explore? The Custom Quest Framework has added the function of allowing... | SHIP | line 76, after `greg.customgastypes` | none |
+| 13 | Hunting Traps | `hazn.huntingtraps` | 3219487356 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Adds a small hunting trap to catch animals passively over time, must be fueled with kibble or raw plants. | SHIP | line 114, after `ael.tua.helmetsaddtoxresistance` | `RimUtinni/ResearchRetag/About/About.xml` |
+| 14 | Crafting Spot Slave Gear | `heatherathebyne.craftingspotslavegear` | 3502196889 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Slave collars and body straps are now craftable at crafting spots. Useful for tribals and early game colonies. Photo by me, because not every stock photo author wants the... | SHIP | line 74, after `cozyfire.velcroboy333` | none |
+| 15 | Raider Swarm Compression | `ingendum.raiderswarmcompression` | 3515541126 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | This mod makes large raids more managable by compressing raiders into swarms. | SHIP | line 180, after `dawnsglow.qualcolor` | none |
+| 16 | Orc Clan + Xenotype | `karew.orcclan` | 3232348025 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. Caveat in the text. | Adds a new orc clan faction and an orc xenotype.\n\nThe orc clans are proud, industrial-era rimworld denizens who heavily favor melee combat. Battle the orcs as raiders o... | SHIP | line 171, after `mehni.numbers` | `RimUtinni/UtinniPatches/About/About.xml`; `RimUtinni/UtinniPatches/Patches/OrcClan_GamorreanRename.xml` |
+| 17 | Roofed Scanning 1.6 | `kupie.isjustdoingitlive.plzdonthateme.roofedscanning` | 3524551636 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Updated from TheElm's mod: And an unknown member who made it for 1.5, but they deleted it now. I'm also bad at coding, and the original code used Transpilers which actual... | SHIP | line 196, after `mianreplicate.romanceandintimacyontherim` | none |
+| 18 | Psyshrooms | `lambda.psykshroom` | 3280268952 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | A subterranean solution for the aspiring psychite kingpin. Adds Psyshrooms, a type of psychedelic fungus that can be used to refine psychite into its related drugs! It ca... | SHIP | line 283, after `mlie.preceptsandmemesritualsmodule` | none |
+| 19 | Prisoner Realism | `legator.prisonerrealism` | 3760196312 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Prisoner Realism overhauls prison management with in-place arrests, force feeding, a rebuilt prison-break system, prisoner recreation, keys/turret/cleaning realism, insti... | SHIP | line 309, after `sugarcube.puahsharedstorage` | `RimUtinni/PawnFlavor/About/About.xml` |
+| 20 | Intimacy - Socio Butterfly | `lovelydovey.recreation.witheuterpe` | 3630896210 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | You are appreciated. | SHIP | line 328, after `lovelydovey.sex.withrosaline` | none |
+| 21 | Glowing eyes genes | `lts.geg` | 3023336989 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Adds a variety of genes that give their pawns glowing eyes. Currently comes in blood red, purple, anima cyan, fiery orange and archotech lime. | SHIP | line 107, after `memegoddess.giddyup` | none |
+| 22 | Giddy-Up 2 - Continued | `memegoddess.giddyup` | 3674332861 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | This is a renovated, overhauled fork of Giddy-Up, developed with permission from the original author Roolo. It's an all-in-one, containing all the modules in a single mod... | SHIP | line 106, after `m00nl1ght.geologicallandforms` | none |
+| 23 | RunAndGun - Continued | `memegoddess.runandgun` | 3562365100 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Your colonists can never be a true Rambo if they cannot gun while they are running. Therefore, this mod adds a mode that, when enabled, allows drafted colonists to shoot ... | SHIP | line 197, after `kupie.isjustdoingitlive.plzdonthateme.roofedscanning` | none |
+| 24 | Romance & Intimacy On The Rim | `mianreplicate.romanceandintimacyontherim` | 3612563959 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Romance & Intimacy On The Rim is a RimWorld mod that adds compatibility between two well known liked mods: Romance On The Rim & Intimacy - a Loving Expansion. | SHIP | line 195, after `depscian.rimtunes` | none |
+| 25 | Better Beggars (Continued) | `mlie.betterbeggars` | 3006899215 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. |  Update of Fraser Hitchens mod [url= [url= Better Beggars enhances the beggars added in the Ideology DLC. Features [*] Change how much beggars will ask for (vanilla is a ... | SHIP | line 52, after `ionfrigate12345.coolandgoodambush` | none |
+| 26 | Dungeon Pack (Continued) | `mlie.dungeonpack` | 3765496911 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. Caveat in the text. |  Update of swablus mod [url= [url= This mod is not being maintained, if you would like to update it, here is the source code Adds 10 new custom quest locations filled wit... | SHIP | line 271, after `neronix17.retexture.charactereditor` | `RimStarWars/Armoury/About/About.xml`; `RimUtinni/ResearchRetag/About/About.xml` |
+| 27 | Mercer's Backpacks (Continued) | `mlie.mercerbackpacks` | 2014572849 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. |  Update of Mercer a.k.a. jaeger972 mod Mods for fixing carry capacity: - Added a more colorful type of backpack that shows the color of the stuff its made from better [ur... | SHIP | line 151, after `sirdarkelf.meaningfulencounters` | none |
+| 28 | Precepts and Memes - Rituals module (Continued) | `mlie.preceptsandmemesritualsmodule` | 2894628849 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. Caveat in the text. |  Update of Zezzs mod [url= [url= Adds new rituals for the Precepts and Memes mod. Power funneling (For altruistic pawns only): -Channel the power of your pawns into a sin... | SHIP | line 282, after `mandrake.rm.planetpresetprime` | none |
+| 29 | Prisoners Should Fear Turrets | `mlie.prisonersshouldfearturrets` | 2602436826 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. |  Escaping prisoners will now get fired upon by turrets. Rebelling slaves will also be shot, selectable in the options. There is also an option for shooting at slaves/pris... | SHIP | line 178, after `ironscruff.primordialgeysers` | none |
+| 30 | [RF] Rumor Has It.... (Continued) | `mlie.rfrumorhasit` | 2013940581 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. |  Update of Rainbeau Flambes mod - Added support for [url= Trait Value [url= [url= Have you ever wondered why your pawns don't talk about each other? Did no one wonder abo... | SHIP | line 34, after `nals.facialanimation` | `RimUtinni/UtinniPatches/About/About.xml` |
+| 31 | Simple sidearms | `petetimessix.simplesidearms` | 927155256 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | With the invention of pockets comes the idea of bringing EVEN MORE WEAPONS. Because your snipers are getting really tired of getting shanked. See forum thread for details... | SHIP | line 310, after `legator.prisonerrealism` | none |
+| 32 | SimpleStairs (Fork) | `rw.mod.simplestairs` | 3526906079 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | SimpleStairs (Fork) This is a fork of the [url= "SimpleStairs" mod for RimWorld, updated to support version 1.6. As of RimWorld 1.6, the placingDraggableDimensions XML el... | SHIP | line 372, after `mandrake.rm.gravshiplanding` | none |
+| 33 | [sbz] Gravship Storage | `sbz.gravshipstorage` | 3537905298 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Adds 13 types of storage furniture for gravship interiors. | SHIP | line 38, after `sbz.neatstoragefridge` | none |
+| 34 | [sbz] Fridge | `sbz.neatstoragefridge` | 3486264784 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Adds 7 types of fridges that keep stored items frozen. | SHIP | line 37, after `cp.uncle.boris.used.furniture` | none |
+| 35 | Stonecutting Extended | `scherub.stonecuttingextended` | 2571676542 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | This mod adds learning XP for stonecutting again, as well as bulk recipes, cutting three chunks at once. Features: - Adds bulk bills: 3 chunks at once - Allows you to gai... | SHIP | line 291, after `mlie.showmeyourhands` | none |
+| 36 | RimTraits - General Traits | `sierra.rt.generaltraits` | 2206957172 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Mod Version: v1.18 Get [url= - Vanilla Trait Colors to change your Trait Colours to match this mod! This mod adds 46 traits defining a pawn's attributes, some are mutuall... | SHIP | line 193, after `mlie.rimquest` | none |
+| 37 | Tech Level Enforcement | `summersausages2ttv.techlevelenforcement` | 3430230860 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | This mod enforces tech level restrictions for the player's faction. - Pawns cannot equip items beyond their faction's tech level unless configured otherwise. - Items can ... | SHIP | line 220, after `mlie.tabsorting` | none |
+| 38 | Romance On The Rim | `telardo.romanceontherim` | 2654432921 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | The goal of this mod is to make vanilla romance more lively and flavourful. It adds a new "Romance" need and several romantic interactions, thoughts and precepts. | SHIP | line 288, after `co.uk.epicguru.factionloadout` | `RimUtinni/PawnFlavor/About/About.xml` |
+| 39 | Custom Ritual Framework | `thesepeople.ritualattachableoutcomes` | 2561617361 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Adds three attachable ritual outcomes and two new rituals. More importantly, provides a framework for creating custom rituals and outcomes. | SHIP | line 18, after `aoba.framework` | none |
+| 40 | Just Leave Already | `timuttie.justleavealready.fork.mitasamodel` | 3530313037 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Allows to leave maps at the edges\nCheck settings | SHIP | line 139, after `nep.landonanything` | none |
+| 41 | Simple Slavery Collars | `tribeagle.simpleslaverycollars` | 2557274194 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Add collars from Simple Slavery Mod and some tweaks related to slavery in Ideology DLC. | SHIP | line 311, after `petetimessix.simplesidearms` | `RimUtinni/PawnFlavor/About/About.xml` |
+| 42 | Death Rattle Continued [1.2+] | `troopersmith1.deathrattle` | 2896207870 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | This mod makes it so that people will no longer instantly die when their vital capacities reach zero. If one of your colonists has their liver destroyed by a charge lance... | SHIP | line 79, after `darkestdungeon.incidentsounds` | none |
+| 43 | Universal Pregnancy | `universalpregnancy.1trickpwnyta` | 3303758779 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. Caveat in the text. | <size=18px><color=#5aa9d6>Description</color></size> Removes gender requirements from everything related to reproduction, including IVF. Same-sex couples as well as oppos... | SHIP | line 230, after `madarauchiha.undraftaftertucking` | none |
+| 44 | Slave Outfits [1.7] | `usgiyi.slaveoutfits` | 1522429439 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | V1.7.3 8/19/25 Do you have a bunch of slaves/prisoners wearing the same clothes as your colonists? Did your inner slaver get triggered because you just can't find proper ... | SHIP | line 206, after `dark.signs` | none |
+| 45 | Vanilla Ideology Expanded - Relics and Artifacts | `vanillaexpanded.ideo.relicsandartifacts` | 2564895018 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | This mod adds another 40 'useless' relic items like Chalice, Ark or Shard in Ideology DLC. You can now find Shards of a Sword, mechanoid head, Mysterious orb and many, ma... | SHIP | line 243, after `vanillaexpanded.helixiengas` | none |
+| 46 | Vanilla Apparel Expanded — Accessories | `vanillaexpanded.vaeaccessories` | 2521176396 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Vanilla Apparel Expanded - Accessories is a new installment in the Vanilla Expanded series. This time, our sight fell onto the accessories system, which is quite heavily ... | SHIP | line 231, after `universalpregnancy.1trickpwnyta` | `RimMandrake/MandrakePatches/About/About.xml` |
+| 47 | Wing's Meaningful Parties | `winggar.meaningfulparties` | 3504909699 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Wish you knew why your pawns were partying the night away? So did I, so I whipped up this mod in a few hours. Without changing the frequency of parties, colonists will no... | SHIP | line 258, after `co.uk.epicguru.whatsthatmod` | none |
+| 48 | More Utility Packs (Continued) | `zal.moreutilitypacks` | 3249560356 | keep/cut sheet: cut: Audit: MOVE-TO-SHIP. | Original mod by SGC If the original author requests it, I will remove this update. -- Original mod notes (1.4): Underwhelmed by the absurdly overspecialized utility items... | SHIP | line 279, after `mandrake.rsw.cuisine` | `RimUtinni/ResearchRetag/About/About.xml` |
+| 49 | My Little Planet | `oblitus.mylittleplanet` | 1117406550 | world-creation only: "cutting the ones that were only used for initial world creation" (planet coverage is baked into the world; dev world ASHKARR_DEV_START_2026-10-20 painted) | Generate differently sized worlds. | AUTHORING,PAINT | line 162, after `snobi.mutatorworldicons` | `RimMandrake/PlanetPresetPrime/About/About.xml` |
+| 50 | Caravan Adventures | `iforgotmysocks.caravanadventures` | 2558957509 | unwanted faction: "Tallmere Combs and Sacrileg Hunters ... We don't want those" (Sacrileg Hunters = CASacrilegHunters, this mod's only FactionDef) | Caravan Adventures aims to transform traveling around the world into a fun adventure by providing new features to replace the annoying micromanagement, make traveling mor... | TEST,AUTHORING,SHIP | line 66, after `brrainz.cameraplus` | `RimUtinni/PawnFlavor/About/About.xml`; `RimUtinni/UtinniPatches/About/About.xml`; `RimUtinni/UtinniPatches/Patches/FactionSlate/OnlyOurFactions.xml`; `RimUtinni/UtinniPatches/Patches/StatNorm_CaravanAdventures_BossStatsNeutral.xml` |

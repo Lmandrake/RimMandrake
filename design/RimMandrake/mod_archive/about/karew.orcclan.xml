@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+
+  <name>Orc Clan + Xenotype</name>
+  <author>Karew</author>
+  <packageId>Karew.OrcClan</packageId>
+  <modVersion>1.1.0</modVersion>
+  <modIconPath>UI/Icons/OrcClan</modIconPath>
+
+  <description>Adds a new orc clan faction and an orc xenotype.\n\nThe orc clans are proud, industrial-era rimworld denizens who heavily favor melee combat. Battle the orcs as raiders or become their trade partner and ally.\n\nAll genes are inheritable, and orcs are an available xenotype at colony start.</description>
+
+  <supportedVersions>
+    <li>1.5</li>
+    <li>1.6</li>
+  </supportedVersions>
+
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Biotech</packageId>
+      <displayName>Biotech</displayName>
+      <steamWorkshopUrl>https://store.steampowered.com/app/1826140/RimWorld__Biotech/</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+  </loadAfter>
+
+</ModMetaData>
