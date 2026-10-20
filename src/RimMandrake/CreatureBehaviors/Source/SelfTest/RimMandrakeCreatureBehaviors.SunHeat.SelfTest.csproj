@@ -57,6 +57,7 @@
     <Compile Include="..\RM_ShadePatchGraph.cs" />
     <Compile Include="..\RM_DeferredDisposal.cs" />
     <Compile Include="..\RM_PerceivedBeautyMath.cs" />
+    <Compile Include="..\RM_WorldStarsMath.cs" />
     <Compile Include="..\..\..\MovingDunes\Source\DuneWindBearing.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

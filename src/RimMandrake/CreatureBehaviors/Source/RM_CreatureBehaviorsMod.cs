@@ -327,6 +327,11 @@ namespace RimMandrake.CreatureBehaviors
     //      RM_MetalEaterPatches (KHORRAK_STEEL_DIET_TIER_1, moved from
     //      SWBestiary). Off: a metal eater neither seeks metal nor digs slag,
     //      and the block on ordinary food lifts, so it grazes like any animal.
+    //  50. worldStarsPinned / worldStarsYearlyDrift — RM_WorldStarsPatch
+    //      (WORLD_STARS_REPAIR_STILL_SPINNING_FOR_NOBODY). On: the planet
+    //      view's stars stop wheeling round the world every day and drift
+    //      once a year (6° a day); drift off freezes them. Off: vanilla, the
+    //      stars turn daily with the sun. Rendering only.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -411,6 +416,8 @@ namespace RimMandrake.CreatureBehaviors
         public static bool creatureHeatSoundsEnabled = true;
         public static bool pinnedSunEnabled = true;
         public static float pinnedSunSkyStrength = 1f;
+        public static bool worldStarsPinned = true;
+        public static bool worldStarsYearlyDrift = true;
         public static bool falseShadeAmbushEnabled = true;
         // CREATURE_JOB_INTERRUPTION_POLICY_1 (RM_AmbushJobPolicy): wild ambush predators also take wild animal prey.
         public static bool ambushWildPreyEnabled = true;
@@ -644,6 +651,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref creatureHeatSoundsEnabled, "creatureHeatSoundsEnabled", true);
             Scribe_Values.Look(ref pinnedSunEnabled, "pinnedSunEnabled", true);
             Scribe_Values.Look(ref pinnedSunSkyStrength, "pinnedSunSkyStrength", 1f);
+            Scribe_Values.Look(ref worldStarsPinned, "worldStarsPinned", true);
+            Scribe_Values.Look(ref worldStarsYearlyDrift, "worldStarsYearlyDrift", true);
             Scribe_Values.Look(ref falseShadeAmbushEnabled, "falseShadeAmbushEnabled", true);
             Scribe_Values.Look(ref ambushWildPreyEnabled, "ambushWildPreyEnabled", true);
             Scribe_Values.Look(ref sunHeatEnabled, "sunHeatEnabled", true);
@@ -1030,7 +1039,7 @@ namespace RimMandrake.CreatureBehaviors
                   + "in it like the shadow of a rock. Off: its shadow is only something its riders follow.");
                 list.GapLine();
             }
-            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade" }))
+            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "worldStarsPinned", "worldStarsYearlyDrift", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade", "WorldStars" }))
             {
                 list.CheckboxLabeled("Pinned sun (golden hour)", ref pinnedSunEnabled,
                     "On: a biome built with a pinned sun (the Long Shade) keeps one fixed sunset sky "
@@ -1039,6 +1048,14 @@ namespace RimMandrake.CreatureBehaviors
                   + "with the real sun again.");
                 list.Label("Golden-hour sky strength: " + pinnedSunSkyStrength.ToStringPercent());
                 pinnedSunSkyStrength = list.Slider(pinnedSunSkyStrength, 0f, 1f);
+                list.CheckboxLabeled("Planet view: stars hold still", ref worldStarsPinned,
+                    "On: in the planet view the stars no longer wheel round the world every day as if it were "
+                  + "spinning; they hold still around the fixed sun. Off: the stars turn once a day as in the base game.");
+                if (worldStarsPinned)
+                {
+                    list.CheckboxLabeled("    Stars drift once a year", ref worldStarsYearlyDrift,
+                        "On: the stars drift slowly, one full turn per year (6 degrees a day). Off: they never move.");
+                }
                 list.CheckboxLabeled("False-shade ambush (the mirrak)", ref falseShadeAmbushEnabled,
                     "On: a flat ambusher lying in the open looks like shade to animals looking for "
                   + "shade, and seizes whatever lies down in it. Off: it never strikes and nothing "
