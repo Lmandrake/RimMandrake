@@ -1,7 +1,7 @@
 """Stage the finalized candidates as artpipe renders and write the art_sheet texture manifest.
 
 The route the GSS tap-clamp candidates took (2026-10-11): each candidate facing becomes an artpipe render dir
-_artpipe/_artsrc/<job>/<job>.png + done/<job>.json (facing, target_texpath, prompt), `art.py backfill artpipe`
+<data root>/artpipe/_artsrc/<job>/<job>.png + done/<job>.json (facing, target_texpath, prompt), `art.py backfill artpipe`
 imports it into the art ledger, and a texture-manifest row names its families, so `art_sheet.py --textures` shows
 local candidates at true scale. Installs nothing into any Textures folder.
 

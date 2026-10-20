@@ -236,7 +236,7 @@ it whole. A taint can only remove trust; nothing but an attestation backed by a 
 ### 3.2 Event schema (JSONL, append-only)
 
 One line per event, one file per **run**: `D:\ClaudeWork\rimmandrake\obs\runs\<run_id>.jsonl`; session index
-`D:\ClaudeWork\rimmandrake\obs\sessions.jsonl`. Outside git (like `_artpipe`): high volume, a program's input.
+`D:\ClaudeWork\rimmandrake\obs\sessions.jsonl`. Outside git (like `<data root>/artpipe`): high volume, a program's input.
 
 ```json
 {"v":1,"run":"20261003T164024-situational_rerun-27988","producer":"client:27988","pseq":412,
