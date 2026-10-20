@@ -507,6 +507,33 @@ def _full(t, pid):
         t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need=need, level=1.0)
 
 
+def _mend_pawn(t, pid):
+    """Make ONE test pawn unhurt and fed, by exact id: remove every INJURY_DEFS hediff, refill needs. LIVE 2026-10-20
+    (Cauldron run 19c, HARNESS): the yield colonist was hurt (Crack/Clavicle) and the vitals latch stopped safe_advance
+    at 60 ticks, so harvest_pays_metal, yield_factor_scales and yield_toggle_off were UNMEASURED. Same removal route as
+    helpers.settle_bystanders (jawa/pawn_health remove), applied to the fixture itself before each wait. Upkeep, never
+    a verdict: returns the list of removed hediffs, [] when none or unreadable."""
+    if not _live(t):
+        return []
+    removed = []
+    try:
+        row = _rows(t, health=True).get(pid) or {}
+        for h in (row.get("health") or {}).get("hediffs") or []:
+            if h.get("def") not in H.INJURY_DEFS:
+                continue
+            r = t.bridge_call("jawa/pawn_health", pawn=pid, action="remove", hediff=h["def"], bodyPart=h.get("part") or "")
+            if not (r or {}).get("success") and h.get("part"):
+                t.bridge_call("jawa/pawn_health", pawn=pid, action="remove", hediff=h["def"])
+            removed.append((h["def"], h.get("part")))
+        _full(t, pid)
+        t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Joy", level=1.0)
+        if removed:
+            _note(t, "test pawn mended", removed)
+    except Exception as ex:    # upkeep: a failure is evidence, never a verdict
+        _note(t, "test pawn not mended", str(ex)[:200])
+    return removed
+
+
 def _jobs(t):
     r = t.bridge_call("jawa/site_state")
     if not _live(t):
@@ -1421,6 +1448,7 @@ def _harvest_one(t, col, tree, rect):
     """Designate and order a harvest of one tree, then wait until its wood lands (<= 5 x 1000 ticks).
     Returns wood gained. The designation makes the plant harvestable-by-order; the direct job makes it
     immediate."""
+    _mend_pawn(t, col)      # an unhurt harvester: a hurt one stops safe_advance and the row goes UNMEASURED
     before = _stack_total(t, "WoodLog", _rs(rect))
     x, z = tree["x"], tree["z"]
     t.bridge_call("jawa/designate_batch", action="add", designation="HarvestPlant", rect="%d,%d,1,1" % (x, z))
@@ -1434,6 +1462,7 @@ def _harvest_one(t, col, tree, rect):
         t.wait_ticks(1000)
         if _stack_total(t, "WoodLog", _rs(rect)) > before:
             break
+        _mend_pawn(t, col)
     got = _stack_total(t, "WoodLog", _rs(rect)) - before
     if got < 1 and _live(t):
         # LIVE modcheck5 2026-10-16: 'no wood in 5000 ticks' with nothing else read. Evidence for the next round: is the
@@ -1724,13 +1753,23 @@ def water_chain(t):
                 row = _rows(t).get(ids["A"])
                 if row is None or not _xz(row):
                     _unmeasured(t, "vexxiss A is gone, cannot re-lay water under it")
-                vx, vz = _xz(row)
-                around = "%d,%d,7,7" % (vx - 3, vz - 3)
-                t.bridge_call("jawa/set_terrain_batch", ops="WaterShallow:%s" % around, layer="top")
-                t.wait_ticks(300)           # clean water UNDER the same vexxiss: it must poison again
-                again = _terrain(t, around)
+                again = {}
+                for attempt in range(3):
+                    # re-read where the vexxiss stands NOW (it wanders) and re-lay clean water under it each attempt,
+                    # so the poison tick (every 60 ticks, own cell must be WaterShallow) is reached twice
+                    row = _rows(t).get(ids["A"])
+                    if row is None or not _xz(row):
+                        _unmeasured(t, "vexxiss A is gone, cannot re-lay water under it")
+                    vx, vz = _xz(row)
+                    around = "%d,%d,7,7" % (vx - 3, vz - 3)
+                    t.bridge_call("jawa/set_terrain_batch", ops="WaterShallow:%s" % around, layer="top")
+                    t.wait_ticks(120)       # clean water UNDER the same vexxiss: it must poison again
+                    again = _terrain(t, around)
+                    if _toxic_cells(again) >= 1:
+                        break
+                    _note(t, "re-laid water attempt %d: vexxiss at / terrain" % (attempt + 1), [(vx, vz), again])
                 if _toxic_cells(again) < 1:
-                    _unmeasured(t, "the vexxiss did not poison the re-laid water, so the warn path was "
+                    _unmeasured(t, "the vexxiss did not poison the re-laid water in 3 attempts, so the warn path was "
                                    "never reached a second time (%r)" % again)
                 n = _letters(t)
                 if n != 1:
