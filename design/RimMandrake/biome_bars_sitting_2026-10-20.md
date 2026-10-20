@@ -121,3 +121,13 @@ bars fail today (their "why" says so). That is validation state: it goes in the 
 5. **Cauldron soils use plain vanilla soil art.** Commission dark, gassy terrain art, or cut `cauldron_soils_read_dark`?
 6. **Owner-present bars.** Three bars concern fliers: the dustflutter bloom, the zellik and the suush. Judge them at a
    joint session, or keep them only as state reads?
+
+## 5. Owner's answers (by question card, 2026-10-20)
+
+1. **Lean:** keep `scrub_lean_visible` and `scrub_never_lean_mixed`, and build the draw. Leaning Scrub maps stop mirroring plants at random and face them with the map's wind heading.
+2. **Gale:** driven dust and fuzz on screen. This needs overlay art and a weather overlay.
+3. **Calm days:** give Overcast, GrayPall and DryThunderstorm the Scrub's wind as weather twins, so the rule "the wind never stops" holds.
+4. **Roster:** the fauna bars cover only the biome's own `RM_` creatures. The franchise cast is checked elsewhere.
+5. **Cauldron soils:** commission dark, gassy soil art for both soils, with the rich soil visibly different. This goes through the art ledger.
+6. **Flyer bars:** a state read confirms each flyer can fly and launches. The owner judges the look at a joint session.
+7. **Pit cover (FlowWorks):** deconstructing a pit cover drops whoever stands on it, the same as when it is destroyed.
