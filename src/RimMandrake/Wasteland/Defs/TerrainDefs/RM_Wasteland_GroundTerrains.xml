@@ -15,7 +15,7 @@
     <defName>RM_WastelandAshySoil</defName>
     <label>ashy soil</label>
     <description>Grey soil sifted through with old ash. It still grows things, after a fashion.</description>
-    <texturePath>StandIn/Terrain/VolcanoSoil</texturePath>
+    <texturePath>Terrain/VolcanoSoil</texturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>340</renderPrecedence>
     <fertility>1</fertility>
@@ -42,7 +42,7 @@
     <defName>RM_WastelandBrokenAsphalt</defName>
     <label>broken asphalt</label>
     <description>Slabs of ancient paving, heaved and cracked, with grit packed into every seam. Nothing grows from it unaided.</description>
-    <texturePath>StandIn/Terrain/WastelandAsphalt</texturePath>
+    <texturePath>Terrain/WastelandAsphalt</texturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>320</renderPrecedence>
     <fertility>0</fertility>
