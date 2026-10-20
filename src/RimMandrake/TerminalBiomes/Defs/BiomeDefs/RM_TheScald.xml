@@ -35,7 +35,7 @@
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <hasVirtualPlants>false</hasVirtualPlants>
-    <texture>World/Biomes/RM_Scald</texture>
+    <texture>World/Biomes/Ocean</texture>  <!-- WORLDMAP_IN_GAME_AUDIT 2026-10-20: vanilla ocean face + WorldOcean shader (RM_WorldTerrainShader) -->
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
     <waterShallowTerrain>RUT_ScaldWaterShallow</waterShallowTerrain>

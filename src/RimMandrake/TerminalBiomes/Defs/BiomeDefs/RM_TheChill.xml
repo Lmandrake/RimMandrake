@@ -37,7 +37,7 @@
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <hasVirtualPlants>false</hasVirtualPlants>
-    <texture>World/Biomes/RM_Chill</texture>
+    <texture>World/Biomes/Jawa_SickWater</texture>  <!-- WORLDMAP_IN_GAME_AUDIT 2026-10-20: back to the owner-briefed sediment water (pre-2026-10-18 face), WorldOcean shader -->
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
     <waterDeepTerrain>RM_TheChillDeep</waterDeepTerrain>
