@@ -9,6 +9,12 @@ Unbudgeted, like everything in `facts/`.
 - **Nothing outside the repo is precious** (owner, 2026-08-15): maps, saves,
   colonies, deployed mod folders, live game state — destroy freely, do not ask. Do
   not infer that play has started; the trigger is an explicit announcement.
+- **Runtime data lives under the data root, never `D:\Luke\dev`** (owner, 2026-10-19: *"dev is my special
+  directory for Lodestar-managed projects, not a temp dir for your stuff"*). `src/RimMandrake/Utils/rmpaths.py`
+  resolves it (`RM_DATA_ROOT`, else Lodestar `agent_storage.py rimmandrake`; archmagi `D:\ClaudeWork\rimmandrake`):
+  `artpipe` `artstore` `scratch` `build` `obs` `dashboard`. Code calls `rm_path(...)`; `selftest_rmpaths.py` refuses
+  a hard-wired `Luke/dev/_<dir>`. Units get it from `~/.config/systemd/user/<unit>.service.d/rm-data-root.conf`,
+  Windows tasks from the user env var.
 - **`observed/` is the ONE capture root**, at the repo root. The former second root
   under `infrastructure/state/` merged in 2026-08-23; a second root manufactured a
   false "evidence missing" verdict three times. `rimflow verify` still accepts the

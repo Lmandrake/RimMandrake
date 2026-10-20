@@ -143,7 +143,7 @@ counts["cs files"] = len(on_disk)
 # ---------- 4 + 5: lookups by string
 defnames = set()
 for x in glob.glob(os.path.join(SRC, "**", "*.xml"), recursive=True):
-    if "/Transient/" in x or "/_rmbuild/" in x:
+    if "/Transient/" in x or "/_rmbuild/" in x or "/rimmandrake/build/" in x:
         continue
     try:
         t = open(x, encoding="utf-8", errors="replace").read()
@@ -153,7 +153,7 @@ for x in glob.glob(os.path.join(SRC, "**", "*.xml"), recursive=True):
         pass
 classnames = set()
 for x in glob.glob(os.path.join(SRC, "**", "*.cs"), recursive=True):
-    if "/_rmbuild/" in x or "/Transient/" in x:
+    if "/_rmbuild/" in x or "/rimmandrake/build/" in x or "/Transient/" in x:
         continue
     try:
         classnames.update(re.findall(r"\bclass\s+(\w+)", open(x, encoding="utf-8", errors="replace").read()))

@@ -6,6 +6,9 @@ step_game_ticks was in flight (two clients, one game). The evidence is the bridg
 rimbridge_client (`start`/`end` rows with pid, cid, t). Refuse when a foreign pid has a call with no end row yet
 (young enough to be plausible) or one that ended within WINDOW_S (10 s). Override: env
 RM_ALLOW_CONCURRENT_BRIDGE=1. Log missing/unreadable => allow (WSL has no log; never block on blindness)."""
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import calendar
 import json
 import os
@@ -24,7 +27,7 @@ def default_log():
     p = os.environ.get("RIMBRIDGE_EVIDENCE_LOG")
     if p is not None:
         return p
-    return r"D:\Luke\dev\_rmscratch\bridge_calls.jsonl" if os.name == "nt" else ""
+    return rm_win("scratch", "bridge_calls.jsonl") if os.name == "nt" else ""
 
 
 def _ts(s):

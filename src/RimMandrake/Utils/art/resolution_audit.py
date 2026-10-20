@@ -13,6 +13,9 @@ never a verdict.  A SANITY PROBE must find known-present things first or the run
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import json
 import os
@@ -22,7 +25,7 @@ from collections import defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
-ARTPIPE = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe")
+ARTPIPE = Path(os.environ.get("ARTPIPE_STATE_DIR") or rm_str("artpipe"))
 CANON = REPO / "design" / "RimStarWars" / "canon_references"
 TIER_RE = re.compile(r"^(RSW_|RM_|RUT_|rut_|AA_|AB_|BMT_|JOE_|A_|ZBiome_|SW_|VCE_|AEXP_|VFEI2_|RG_|ZB_)")
 NOT_BODY_JOB = re.compile(r"dess?icc?at|corpse|_mote|halo|filth|skeleton|print|mask|_icon\b", re.I)

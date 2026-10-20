@@ -8,12 +8,13 @@ dashboard hub — resolves it here, never by joining a path onto the repo root.
 
 Resolution order:
   1. `$ARTPIPE_STATE_DIR` if set (tests, a second machine, the launcher).
-  2. `/mnt/d/Luke/dev/_artpipe` when `/mnt/d/Luke/dev` exists (Archmagi, WSL):
-     on the Windows drive on purpose — codex.exe runs with its cwd in the
-     per-job `_artsrc/<id>/` dir and fails from ext4 (plan §2.3).
-  3. `<parent of this clone>/_artpipe` otherwise (a Mac: `~/dev/_artpipe`).
-     The daemon does not run there, so it is usually absent — and an absent
-     state dir must be reported as absent, never read as an empty queue.
+  2. `rmpaths.rm_path("artpipe")` — the RimMandrake data root (Lodestar's agent storage;
+     archmagi: `D:\\ClaudeWork\\rimmandrake\\artpipe`). On the Windows drive on purpose:
+     codex.exe runs with its cwd in the per-job `_artsrc/<id>/` dir and fails from ext4
+     (plan §2.3). Moved out of the owner's dev tree on 2026-10-20 (owner: that tree
+     is for Lodestar-managed projects only). No root -> rmpaths raises by name; there is no
+     fallback beside the clone. An absent state dir must be reported as absent, never read
+     as an empty queue.
 
 Tracked config (`legibility_*.json`, `art_lists/`, README) stays in the repo at
 `CONFIG_ROOT`. Deliberately stdlib-only and import-cheap: `common.py` imports
@@ -22,10 +23,13 @@ codex_image at import time, which a dashboard script must not pay for.
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # Utils: rmpaths
+import rmpaths  # noqa: E402
+
 ENV_VAR = "ARTPIPE_STATE_DIR"
-WINDOWS_DEFAULT = Path("/mnt/d/Luke/dev/_artpipe")
 
 # this file -> artpipe -> Utils -> RimMandrake -> src -> repo root.
 REPO_ROOT = Path(__file__).resolve().parents[4]
@@ -34,15 +38,12 @@ CONFIG_ROOT = REPO_ROOT / "infrastructure" / "artpipe"
 QUEUE_DIRS = ("pending", "active", "done", "failed")
 
 
-def resolve(environ=None, windows_default: Path = WINDOWS_DEFAULT,
-            repo_root: Path = REPO_ROOT) -> Path:
+def resolve(environ=None, default: Path | None = None) -> Path:
     env = os.environ if environ is None else environ
     v = env.get(ENV_VAR, "").strip()
     if v:
         return Path(v).expanduser()
-    if windows_default.parent.is_dir():
-        return windows_default
-    return repo_root.parent / "_artpipe"
+    return default if default is not None else rmpaths.rm_path("artpipe")
 
 
 STATE_ROOT = resolve()

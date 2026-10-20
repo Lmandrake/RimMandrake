@@ -32,7 +32,7 @@ param(
     [string]$Distro    = "Ubuntu",
     [string]$Target    = "E:\WSL\Ubuntu",
     [string]$BackupDir = "F:\WSLBackup",
-    [string]$LogPath   = "D:\Luke\dev\_rmscratch\wslmove\move.log",
+    [string]$LogPath   = "$PSScriptRoot\move.log",
     [int]$DelaySec     = 0,                # grace period so the launching agent can finish
     [switch]$SkipBackup,                   # NOT recommended; only if a verified tar already exists
     [switch]$RelaunchFleet,                # run the logon "Start Agent Fleet" launcher at the end

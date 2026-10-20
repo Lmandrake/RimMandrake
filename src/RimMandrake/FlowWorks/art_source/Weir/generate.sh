@@ -5,6 +5,7 @@ set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"; REPO="$(cd "$HERE/../../../../.." && pwd)"
 LOOK="$1"; TANK="$REPO/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Tank/$LOOK/RM_LiquidTank.png"
 CI="$REPO/skills/generating-images/scripts/codex_image.py"; mkdir -p "$HERE/raw"
+RMS="$(python3 "$REPO/src/RimMandrake/Utils/rmpaths.py" scratch)" || exit 2   # data root (rmpaths.py)
 case "$LOOK" in
  Scrapper) MAT="weathered grey-brown salvaged timber planks, mismatched widths, patched here and there with rusty riveted scrap-metal plates, frayed rope lashings - the same rust, worn steel and old wood as image 2";;
  Industrial) MAT="heavy dark-stained timber planks held by dark gunmetal steel straps and channel with hex bolts, yellow-and-black hazard stripes painted on the crest beam at intervals - the same gunmetal and hazard yellow as image 2";;
@@ -15,7 +16,7 @@ COMMON="RimWorld building sprite for a river weir, look: $LOOK. Image 1 is a gre
 run() { # piece guide prompt
   [ -s "$HERE/raw/${LOOK}_$1.png" ] && return 0
   python3 "$CI" edit --model gpt-6.1-sol --out "$HERE/raw/${LOOK}_$1.png" --image "$HERE/guides/$2" --image "$TANK" \
-    --codex-home "/mnt/d/Luke/dev/_rmscratch/codex/home_weir_$LOOK" --timeout 900 --prompt "$COMMON $3" > "$HERE/raw/${LOOK}_$1.log" 2>&1
+    --codex-home "$RMS/codex/home_weir_$LOOK" --timeout 900 --prompt "$COMMON $3" > "$HERE/raw/${LOOK}_$1.log" 2>&1
   echo "$LOOK $1 exit=$?"
 }
 run h_spill guide_h_spill.png "Subject: a LOW TIMBER WEIR wall section running left to right across the whole canvas and continuing off both side edges (a repeating section of a longer wall; both ends cut flush at the canvas edges, no end posts). The level crest beam's lit top face runs straight; below it the downstream spill face of boards slopes toward the camera to a toe sill, with four squat support posts at the toe."

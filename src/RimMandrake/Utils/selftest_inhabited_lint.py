@@ -79,7 +79,7 @@ def all_fields(name, seen=()):
 # defNames anywhere under src (tags and <li> RM_ names)
 defnames = set()
 for x in glob.glob(os.path.join(SRC, "**", "*.xml"), recursive=True):
-    if "/Transient/" in x or "/_rmbuild/" in x:
+    if "/Transient/" in x or "/_rmbuild/" in x or "/rimmandrake/build/" in x:
         continue
     try:
         defnames.update(re.findall(r"<defName>\s*([^<\s]+)\s*</defName>", open(x, encoding="utf-8", errors="replace").read()))

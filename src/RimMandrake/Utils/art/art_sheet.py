@@ -25,6 +25,9 @@ safe; the DECISIONS file is only written when absent (never over his rulings).
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import hashlib
 import html
@@ -1007,7 +1010,7 @@ def canon_advice(job: str) -> dict | None:
     """The canon ADVISOR's verdict on one artpipe job, from its done/ (else failed/) manifest:
     {verdict, text} with text = canon_check.advisory_text (score + flagged lines). None when ungraded/absent."""
     import os
-    root = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe")
+    root = Path(os.environ.get("ARTPIPE_STATE_DIR") or rm_str("artpipe"))
     key = (str(root), job)
     if key in _CA_CACHE:
         return _CA_CACHE[key]
@@ -1050,7 +1053,7 @@ def failed_canon_jobs() -> set:
     """Job ids the artpipe canon gate filed as failed_canon (failed/<job>.manifest.json). The render still exists in
     _artsrc and is a CANDIDATE: the gate has false-failed before (owner accepted such a render). Read at build time."""
     import os
-    root = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe") / "failed"
+    root = Path(os.environ.get("ARTPIPE_STATE_DIR") or rm_str("artpipe")) / "failed"
     if root in _FC_CACHE:
         return _FC_CACHE[root]
     out = _FC_CACHE[root] = set()
@@ -1079,7 +1082,7 @@ def job_slots() -> dict:
     if _JOB_SLOTS is None:
         import os
         _JOB_SLOTS = {}
-        root = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe") / "done"
+        root = Path(os.environ.get("ARTPIPE_STATE_DIR") or rm_str("artpipe")) / "done"
         if root.is_dir():
             for f in root.glob("*.json"):
                 if f.name.endswith(".manifest.json"):
@@ -1114,7 +1117,7 @@ def job_targets() -> dict:
     if _JOB_TARGETS is None:
         import os
         _JOB_TARGETS = {}
-        root = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe") / "done"
+        root = Path(os.environ.get("ARTPIPE_STATE_DIR") or rm_str("artpipe")) / "done"
         if root.is_dir():
             for f in root.glob("*.json"):
                 if f.name.endswith(".manifest.json"):
@@ -2402,7 +2405,7 @@ def ruled_elsewhere_for(row_names: set[str], entries: list[dict]) -> dict | None
 def _job_created(job_id: str) -> str:
     """The artpipe job's `created` stamp (ISO), or '' if the job file is not found in any state dir."""
     import os
-    root = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe")
+    root = Path(os.environ.get("ARTPIPE_STATE_DIR") or rm_str("artpipe"))
     for d in ("done", "active", "pending", "failed"):
         p = root / d / f"{job_id}.json"
         try:

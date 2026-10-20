@@ -10,6 +10,9 @@ Run from anywhere:  python3 port_fauna.py
 Shared-closure defs the LanternDeeps port also carries get an RM_Rot prefix instead of RM_ (two
 free mods must never declare the same defName). Defs TheRot already owns are reused, not copied.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import xml.etree.ElementTree as ET, glob, re, os, shutil, subprocess, sys
 from collections import defaultdict
 
@@ -17,7 +20,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRCROOT = os.path.join(HERE, '..')
 SW = os.path.join(SRCROOT, '..', 'RimStarWars', 'SWBestiary')
 SRC = os.path.join(SW, 'Defs', 'BiomesTeamPort')
-ART = os.environ.get('ARTSRC', '/mnt/d/Luke/dev/_artpipe/_artsrc')
+ART = os.environ.get('ARTSRC', rm_str("artpipe", "_artsrc"))
 
 CREATURES = {
     'RSW_PustuleHornet': 'RM_Thozzik', 'RSW_ColonyPustuleHornet': 'RM_ThozzikColony',

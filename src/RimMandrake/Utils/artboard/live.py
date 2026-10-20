@@ -17,6 +17,9 @@ artboard_capture (board.png) -> board.json with the capture's exact mapping -> a
 A subject whose staging was refused is dropped from the board and listed as STAGE_REFUSED - never captured
 on a cell it does not occupy. Nothing here moves the user's camera, resizes or focuses the window.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import datetime
 import json
@@ -31,7 +34,7 @@ else:
 
 UTILS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WIN = os.name == "nt"
-DEFAULT_ROOT = r"D:\Luke\dev\_rmscratch\artboard" if WIN else "/mnt/d/Luke/dev/_rmscratch/artboard"
+DEFAULT_ROOT = rm_win("scratch", "artboard") if WIN else rm_str("scratch", "artboard")
 MIRROR_CLIENT = r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\rimbridge_client.py"
 
 

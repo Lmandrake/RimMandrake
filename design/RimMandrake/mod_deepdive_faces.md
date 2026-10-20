@@ -13,7 +13,7 @@ an owner decision point (§8).
 Method (FOUNDRY, 2026-10-10, offline; no bridge, no game). Census = parse `About.xml` `<name>`+`<description>`
 of all 589 mods in `facts/universe.json` (sanity probe: the sweep found `nals.facialanimation` with a 687-char
 description). Code = `ilspycmd` decompiles of every shipped 1.6 DLL (scratch, outside git:
-`D:\Luke\dev\_rmscratch\faces_decomp\`), plus the source FaceAddonFramework ships in its own folder. Engine
+`D:\ClaudeWork\rimmandrake\scratch\faces_decomp\`), plus the source FaceAddonFramework ships in its own folder. Engine
 facts = RimSage (decompiled 1.6). GitHub = public metadata via `gh api`. Labels: **MEASURED** (read in a file
 or source this session), **INFERRED** (reasoned, not observed), **UNMEASURED** (needs the live game).
 

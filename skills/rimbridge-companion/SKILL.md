@@ -46,7 +46,7 @@ fields (a `ThoughtDef.stages` array, say). That gap is a deep-serialize upgrade 
 
 ```
 taskkill.exe /F /IM RimWorldWin64.exe          # MUST be first; the DLL is memory-mapped
-python3      src/RimMandrake/bridgetools/build.py --gm --apply     # from your seat clone: stages on D:\Luke\dev\_rmbuild, builds with Windows dotnet, copies the DLL back
+python3      src/RimMandrake/bridgetools/build.py --gm --apply     # from your seat clone: stages on D:\ClaudeWork\rimmandrake\build, builds with Windows dotnet, copies the DLL back
              D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\launch_and_wait.sh
 python.exe   D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\prove_<thing>.py
 ```

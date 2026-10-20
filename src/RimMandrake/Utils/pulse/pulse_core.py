@@ -26,6 +26,9 @@ session file stayed behind (a clean exit removes the file -> neutral).
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import glob
 import json
 import os
@@ -39,7 +42,7 @@ HISTORY = HOME / ".claude" / "history.jsonl"
 MEMWATCH_EVENTS = HOME / ".local" / "state" / "rm-memwatch" / "events.jsonl"
 STATE_DIR = Path(os.environ.get("RM_PULSE_STATE", HOME / ".local" / "state" / "rm-dashboard"))
 CLONES = [Path("/home/mandrake/rm/bench"), Path("/home/mandrake/rm/foundry")]
-ARTPIPE_DIR = Path(os.environ.get("ARTPIPE_STATE_DIR", "/mnt/d/Luke/dev/_artpipe"))
+ARTPIPE_DIR = Path(os.environ.get("ARTPIPE_STATE_DIR", rm_str("artpipe")))
 MIRROR_WIN = "D:\\Luke\\dev\\RimMandrake"
 GITHUB_COMMIT = "https://github.com/Lmandrake/RimMandrake/commit/"
 

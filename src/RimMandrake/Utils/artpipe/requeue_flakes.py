@@ -21,7 +21,7 @@ import json
 import time
 from pathlib import Path
 
-from state_dir import require  # D:\Luke\dev\_artpipe; refuses when absent
+from state_dir import require  # D:\ClaudeWork\rimmandrake\artpipe; refuses when absent
 
 
 def main(argv=None) -> int:

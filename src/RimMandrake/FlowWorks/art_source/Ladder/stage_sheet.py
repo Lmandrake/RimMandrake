@@ -7,6 +7,9 @@ local candidates at true scale. Installs nothing into any Textures folder.
 
     python3 stage_sheet.py MANIFEST_OUT
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import json
 import os
 import shutil
@@ -15,7 +18,7 @@ import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-ARTPIPE = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe")
+ARTPIPE = Path(os.environ.get("ARTPIPE_STATE_DIR") or rm_str("artpipe"))
 TEXDIR = "Things/Building/FlowWorks/Canals"
 KINDS = {"Hung": "slid DOWN, hung on the pit wall the rotation names (usable)",
          "Stowed": "slid UP, laid on the rim beside that wall (prisoners cannot reach it)"}

@@ -2,7 +2,7 @@ r"""Shared by the dotnet-driven selftests: make a csproj reachable by Windows do
 
 dotnet.exe cannot build from an ext4 clone (`\wsl.localhost` UNC: obj state files unwritable,
 MSB3101/MSB3030; a bare /home path converts to an invalid `\home\...`). From an ext4 clone this
-stages the project through winbuild.stage_build (under D:\Luke\dev\_rmbuild, or $WINBUILD_ROOT when
+stages the project through winbuild.stage_build (under D:\ClaudeWork\rimmandrake\build, or $WINBUILD_ROOT when
 set) plus the whole src tree (the tests walk up from their exe to read shipped defs) and returns the
 staged Windows path.
 
@@ -12,10 +12,13 @@ rsync --delete over another's and execute THEIR source (P-series review, 2026-10
 bare to check that two roots never share a stage.
 
 Stages are never auto-pruned (~209 stages, 2.2G by 2026-10-10, and the per-clone hash multiplies
-them: every throwaway clone leaves its own): prune stale ones by hand under D:\Luke\dev\_rmbuild when
+them: every throwaway clone leaves its own): prune stale ones by hand under D:\ClaudeWork\rimmandrake\build when
 space matters - a `selftest_*_<hash>` dir whose clone is gone is dead. On the /mnt tree it returns the
 plain D:-style path, as before.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import hashlib
 import os
 import re
@@ -68,7 +71,7 @@ def _selftest():
               and re.fullmatch(r"[A-Za-z0-9_.-]+", na) is not None)
     import winbuild
     check("WINBUILD_ROOT override still decides the base dir",
-          winbuild.BUILD_ROOT == os.environ.get("WINBUILD_ROOT", "/mnt/d/Luke/dev/_rmbuild"))
+          winbuild.BUILD_ROOT == os.environ.get("WINBUILD_ROOT", rm_str("build")))
     print("\n%s" % ("PASS: 0 failure(s)" if not fails else "FAIL: %d failure(s)" % len(fails)))
     return 1 if fails else 0
 

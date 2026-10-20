@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Copy an artpipe job's full-resolution image_gen master (the worker's own generated_images/<session>/) here as
 <Look>_cand<N>_master.png. The session id is the tail of the done manifest's meter_after.rollout path."""
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import glob, json, re, shutil, sys
 from pathlib import Path
 from PIL import Image
 job, dest = sys.argv[1], Path(sys.argv[2])
-m = json.load(open(f"/mnt/d/Luke/dev/_artpipe/done/{job}.manifest.json"))
+m = json.load(open(rm_path("artpipe", "done", f"{job}.manifest.json")))
 ro = Path(m["meter_after"]["rollout"])
 sess = re.search(r"([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.jsonl$", ro.name).group(1)
 home = ro.parents[4]

@@ -152,7 +152,7 @@ not your mechanism.
   restart the row, never FAIL; **every** threat → logged plus a test-environment item;
   protected colonists only in rows labelled not about health/needs/damage/death.
 - **Watch the run, not just its result.** The owner expects a live pass to be monitored
-  (e.g. a `Monitor` tailing `D:\Luke\dev\_rmscratch\bridge_calls.jsonl` for `time_set_ticks`,
+  (e.g. a `Monitor` tailing `D:\ClaudeWork\rimmandrake\scratch\bridge_calls.jsonl` for `time_set_ticks`,
   `start_debug_game`, failures). What telemetry cannot see yet: `skills/telemetry/references/traps.md`.
 - **When the owner says something happened in the game, relay it to whoever drives the
   bridge at once, and name no cause until the log does.** Pass 7's deaths were first blamed

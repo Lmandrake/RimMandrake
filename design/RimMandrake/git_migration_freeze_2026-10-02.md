@@ -7,6 +7,9 @@ Artpipe: `git_migration_phase5_artpipe_2026-10-02.md` §7. Owner authorized full
 **Status: DONE.** `D:\Luke\dev\RimMandrake` has no `.git`; it is the mirror export of origin/main
 (`7f4eaffc6b16` at first sync), kept current by `rm-mirror.timer`. The artpipe daemon runs as
 `rm-artpiped.service` from `/home/mandrake/rm/foundry`.
+**Moved 2026-10-19/20 (paths in the log below are history):** the old `.git` (`_rm_old_git_2026-10`) and
+`_rm_shared_tree_leftovers_2026-10` now live in `D:\ClaudeWork\retired-trees\rimmandrake\` (moved, not
+deleted; still "keep until the owner says delete"); the artpipe state is `D:\ClaudeWork\rimmandrake\artpipe`.
 
 ## Log (UTC)
 

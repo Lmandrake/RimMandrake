@@ -5,8 +5,8 @@ Input is the SelfTest's dump (TapClampPoseChecks writes tapclamp_poses.json unde
 around a tap, for each bitten-cord direction x side our cord comes from, plus the pose AerialMath.TapClampPose chose
 (bite, AngleAxis angle). Nothing about the pose is recomputed here, so the picture shows what the game will draw.
 
-    python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --dump /mnt/d/Luke/dev/_rmbuild/tapdump
-    python3 .../render_tapclamp_poses.py /mnt/d/Luke/dev/_rmbuild/tapdump/tapclamp_poses.json <out.png>
+    python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --dump /mnt/d/ClaudeWork/rimmandrake/build/tapdump
+    python3 .../render_tapclamp_poses.py /mnt/d/ClaudeWork/rimmandrake/build/tapdump/tapclamp_poses.json <out.png>
 
 Rows = looks (Scrapper / Industrial / Modern / Futuristic, each on its own strand texture); columns = poses
 (their cord W/E/S/N x ours). Their cord is drawn in the look's strand, ours in the same look (as in game, a tap bites a

@@ -63,6 +63,9 @@ load. The floating labels are not in the save: every SaveGame writes them to a s
 back on load once it is awake; --labels re-pins them.
 Reuses run_live.LiveBridge (the probe protocol) and placer._ops (the op-string shape).
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import html
 import json
@@ -1643,7 +1646,7 @@ def main(argv=None):
     ap.add_argument("--goto", default=None)
     ap.add_argument("--sub", default=None, help="with --goto N: frame only dx,dz,w,h (station-local cells), a close look")
     ap.add_argument("--shot", default=None, help="with --goto N --sub: the game's own render of that rect (no window focus "
-                                                 "needed) copied to D:\\Luke\\dev\\_rmscratch\\<shot>.png")
+                                                 "needed) copied to D:\\ClaudeWork\\rimmandrake\\scratch\\<shot>.png")
     ap.add_argument("--set", action="append", default=[], metavar="gss.FIELD=V|aerial.FIELD=V",
                     help="flip one GLOBAL Mod Setting live (repeatable; the key sheet's settings table lists them); with --build "
                          "it is applied after the build, which starts from the shipped defaults")
@@ -1734,7 +1737,7 @@ def main(argv=None):
                 if src and os.path.exists(src):
                     break
                 time.sleep(0.5)
-            dst = os.path.join("D:\\Luke\\dev\\_rmscratch", a.shot + ".png") if os.name == "nt" else None
+            dst = os.path.join(rm_win("scratch"), a.shot + ".png") if os.name == "nt" else None
             if src and dst and os.path.exists(src):
                 shutil.copyfile(src, dst)
             print("shot %s -> %s" % (a.shot, dst if dst and os.path.exists(dst) else "FAILED %s" % json.dumps(res)[:200]))

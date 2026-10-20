@@ -2,7 +2,7 @@
 
     python3 src/RimMandrake/Utils/mockups/messy_conduit/round6_art_install.py conform | sheets | install [--only s ...] [--dry]
 
-Raw renders from round6_art_jobs.py (D:\\Luke\\dev\\_rmscratch\\mc_r6\\raw); conformed candidates in ...\\conf.
+Raw renders from round6_art_jobs.py (D:\\ClaudeWork\\rimmandrake\\scratch\\mc_r6\\raw); conformed candidates in ...\\conf.
 Install goes ONLY through artledger.install_image. Report: Transient/mc_art_round6_report.md.
 
 Geometry kept (code offsets unchanged):
@@ -11,6 +11,9 @@ Geometry kept (code offsets unchanged):
   * binding 82x40, mouth 64, strands 256x64: full canvas, as before.
   * strands are procedural: old Modern alpha + its shading (highlights compressed), twill + dirt with periods dividing 256.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import colorsys
 import os
 import subprocess
@@ -25,7 +28,7 @@ import round5_art_install as r5  # noqa: E402  (fit, conform, bbox, resize, ensu
 
 REPO, TEX = r5.REPO, r5.TEX
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils", "art"))
-R = "/mnt/d/Luke/dev/_rmscratch/mc_r6"
+R = rm_str("scratch", "mc_r6")
 RAW, IN, CONF = R + "/raw", R + "/in", R + "/conf"
 REASON = "script:src/RimMandrake/Utils/mockups/messy_conduit/round6_art_install.py"
 H, M = "Hose/", "Hose/Styles/Modern/"

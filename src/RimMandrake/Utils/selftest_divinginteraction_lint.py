@@ -104,7 +104,7 @@ counts["cs files"] = len(on_disk)
 # ---------- 4 + 5: lookups by string
 defnames = set()
 for x in glob.glob(os.path.join(SRC, "**", "*.xml"), recursive=True):
-    if "/Transient/" in x or "/_rmbuild/" in x:
+    if "/Transient/" in x or "/_rmbuild/" in x or "/rimmandrake/build/" in x:
         continue
     try:
         t = open(x, encoding="utf-8", errors="replace").read()

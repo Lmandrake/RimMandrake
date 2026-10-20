@@ -3,11 +3,14 @@
 dessicated corpse slot (63: 61 role=dessicated + the two Snoruuk ones the ledger leaves role-less). Inputs (scratch, rerunnable):
 donorlive_207.json (ledger Index.live joined to donor variants), dess_found.json (XML scan of dessicatedBodyGraphicData),
 jobindex.json (artpipe done jobs). Reference = the species' own body art as canon_reference (NEVER `reference`: that arms reskin-validate)."""
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[2] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import json, glob, os, re, shutil, collections
 from pathlib import Path
 R = Path("/home/mandrake/rm/foundry"); os.chdir(R)
 WORK = Path("/home/mandrake/.seat-tmp/FOUNDRY/work")
-REFS = Path("/mnt/d/Luke/dev/_artpipe/_refs/dessicated"); REFS.mkdir(parents=True, exist_ok=True)
+REFS = Path(rm_str("artpipe", "_refs", "dessicated")); REFS.mkdir(parents=True, exist_ok=True)
 SW = "src/RimStarWars/SWBestiary/Textures/"
 live = json.load(open(WORK/"donorlive_207.json"))
 slots = [o for o in live if o["role"] == "dessicated" or (o["rel"].startswith("swanimals/Snoruuk/") and "Dessicated" in o["rel"])]
@@ -30,7 +33,7 @@ def body_ref(body):
         return p, "installed"
     done = sorted([j for j in jobs if j["tp"] == body and j["facing"] == "east" and j["state"] == "done"], key=lambda j: j["id"])
     for j in reversed(done):
-        q = Path(f"/mnt/d/Luke/dev/_artpipe/_artsrc/{j['id']}/{j['id']}.png")
+        q = rm_path("artpipe", "_artsrc", j['id'], f"{j['id']}.png")
         if q.exists(): return str(q), "render:" + j["id"]
     return None, None
 

@@ -18,8 +18,8 @@ from a clean tree) before W1, because `deploy_custom_mods.py` deploys the workin
 rimflow bridge who                                    # must be free or yours; never --force over a live holder
 ./game                                                # measures; must say NOT RUNNING
 python3 $U/preflight_bridge.py --tier wave1 --deep    # WAVE1 manifest (ML/manifest.WAVE1.json); expect GREEN
-# under python.exe from D:\Luke\dev\RimMandrake (copy the list to D:\Luke\dev\_rmscratch\rw1\ first), after W1 deploys:
-python.exe src/RimMandrake/Utils/effective_def_lint.py 'D:\Luke\dev\_rmscratch\rw1\ModsConfig.WAVE1_CANDIDATE.xml'
+# under python.exe from D:\Luke\dev\RimMandrake (copy the list to D:\ClaudeWork\rimmandrake\scratch\rw1\ first), after W1 deploys:
+python.exe src/RimMandrake/Utils/effective_def_lint.py 'D:\ClaudeWork\rimmandrake\scratch\rw1\ModsConfig.WAVE1_CANDIDATE.xml'
 #   expect: crash 0; failed_ops = exactly the 2 AncientsAreRakata.xml rows (pre-existing). Save Windows paths with printf, never zsh echo.
 ```
 

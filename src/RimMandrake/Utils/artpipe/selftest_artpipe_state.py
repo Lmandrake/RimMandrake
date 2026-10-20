@@ -22,14 +22,13 @@ def check(name, cond):
 
 
 def test_resolver(tmp: Path):
-    win = tmp / "winroot" / "_artpipe"
-    repo = tmp / "clones" / "rm"
-    check("env var wins", state_dir.resolve({state_dir.ENV_VAR: str(tmp / "x")}, win, repo) == tmp / "x")
-    check("no /mnt/d parent -> sibling of clone",
-          state_dir.resolve({}, win, repo) == tmp / "clones" / "_artpipe")
-    win.parent.mkdir(parents=True)
-    check("/mnt/d parent present -> windows default", state_dir.resolve({}, win, repo) == win)
-    check("blank env ignored", state_dir.resolve({state_dir.ENV_VAR: "  "}, win, repo) == win)
+    dflt = tmp / "dataroot" / "artpipe"
+    check("env var wins", state_dir.resolve({state_dir.ENV_VAR: str(tmp / "x")}, dflt) == tmp / "x")
+    check("no env -> the data-root default", state_dir.resolve({}, dflt) == dflt)
+    check("blank env ignored", state_dir.resolve({state_dir.ENV_VAR: "  "}, dflt) == dflt)
+    check("real default is rmpaths' artpipe, never under Luke/dev",
+          state_dir.resolve({}) == state_dir.rmpaths.rm_path("artpipe")
+          and "luke/dev" not in str(state_dir.resolve({})).replace("\\", "/").lower())
     try:
         state_dir.require(tmp / "nope")
         check("require refuses a missing state dir", False)

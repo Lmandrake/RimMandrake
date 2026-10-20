@@ -10,7 +10,7 @@ Each line below fires once the named creature's redraw is PICKED by him (a lette
 
 ## Catches (his note: "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until")
 `art.py enact` now files these itself once the creature is settled (catch rows wait; the source's picked picture is
-attached as reference). Early renders were withdrawn to `D:\Luke\dev\_artpipe\_withdrawn\`.
+attached as reference). Early renders were withdrawn to `D:\ClaudeWork\rimmandrake\artpipe\_withdrawn\`.
 - RM_HulduCatch — waits on RM_Huldu (`enact_huldu_from_c_v2_*` done, awaiting his pick).
 - RM_LoomuCatch — waits on RM_Loomu (`enact_34cbe6a2_loomu_v2_*` pending).
 - RM_MurrinCatch — waits on RM_Murrin (`enact_e6d931f4_murrin_v2_*` pending).

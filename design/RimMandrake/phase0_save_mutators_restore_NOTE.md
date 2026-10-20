@@ -53,6 +53,6 @@ come from `world/ASHKARR_WORLDMAP_tiles.csv`, a record exported 2026-09-12, not 
 - Checks: donor entries 1,429 → 0; controls `Caves` 1,568 and `AB_DerelictClusters` 171 unchanged;
   418,354 XML elements before and after, no tag-count difference; `<def>Human</def>` 75 → 75.
 - Backup (byte-exact, sha256 `dadf2996…3b31`):
-  `D:\Luke\dev\_rmscratch\save_backups\CANONICAL_ASHKARR_START_2026-09-12_donorfree.rws.bak-pre-mutator-strip-20261015`.
+  `D:\ClaudeWork\rimmandrake\scratch\save_backups\CANONICAL_ASHKARR_START_2026-09-12_donorfree.rws.bak-pre-mutator-strip-20261015`.
   New file sha256 `de54dd3e9f2e5e2b11daa97432dc0f1bb423d929f400dc1675bb96ec9aba3a51`.
 - Not yet load-tested in game (the save must reload once before it is trusted; the L1 round does that).

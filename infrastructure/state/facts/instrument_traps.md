@@ -46,7 +46,7 @@ The general method is the global skill `~/.claude/skills/confident-wrong-numbers
   round is a query bug until proven otherwise, and the alarming direction is the one you will
   believe without checking.
 - 🔴 **`ls <dir> | wc -l` answers 0 for a directory that does not exist**, so a "queue is empty" claim can be
-  a wrong-path claim wearing a number. The artpipe queue is `<state>/pending/` (state dir `D:\Luke\dev\_artpipe`,
+  a wrong-path claim wearing a number. The artpipe queue is `<state>/pending/` (state dir `D:\ClaudeWork\rimmandrake\artpipe`,
   outside git since 2026-10-02; `artpipe_state.py where` prints it and its counts) — it held
   **182** jobs when a count of `artpipe/queue/` reported 0, and that figure was stated to the owner. ⇒ Prove
   the path (glob `*.json`, which errors loudly) before repeating any count of zero. ⚠️ **And the artpipe

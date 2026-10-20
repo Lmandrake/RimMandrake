@@ -20,7 +20,7 @@
       python3 src/RimMandrake/Utils/selftest_flowworks_stock.py
 
     Never point dotnet.exe at D:\Luke\dev\RimMandrake: that is the read-only origin/main mirror, so it would test
-    origin/main, not this clone. The wrapper stages the clone on D:\Luke\dev\_rmbuild and runs it from there.
+    origin/main, not this clone. The wrapper stages the clone on D:\ClaudeWork\rimmandrake\build and runs it from there.
   -->
 
   <PropertyGroup>

@@ -71,6 +71,9 @@ copies of one field is the single failure this whole design is aimed at.
 
 Stdlib only, and no daemon. Everything is a file in git.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import calendar
 import copy
 import fcntl
@@ -1012,7 +1015,7 @@ def bridge_mirror_path():
 # It is a second witness, not a new source of truth: the ledger still records every take.
 # Disabled (None) under a redirected RIMFLOW_LEDGER, so a selftest never writes the real one,
 # and on a machine without the shared drive (the Mac), where there is no second clone to race.
-SHARED_BRIDGE_DEFAULT = "/mnt/d/Luke/dev/_rmscratch/BRIDGE_SHARED.json"
+SHARED_BRIDGE_DEFAULT = rm_str("scratch", "BRIDGE_SHARED.json")
 
 
 def shared_bridge_path():

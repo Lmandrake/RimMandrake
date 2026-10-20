@@ -22,6 +22,9 @@ Not measured (named in the output): defs whose texPath is inherited from a Paren
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import hashlib
 import json
@@ -220,7 +223,7 @@ def audit_roster(cl: Classifier, census_path: Path):
 
 
 # ───────────────────────────────────────────────── gap evidence + job filing ──
-ART = Path("/mnt/d/Luke/dev/_artpipe")
+ART = Path(rm_str("artpipe"))
 
 
 def _norm(s):

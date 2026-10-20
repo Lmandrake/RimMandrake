@@ -1,9 +1,12 @@
 """pole_shots.py -- screenshot every review station that holds a mast, in every look through the bridge, for eyeballing pole art.
 
-    python.exe src/RimMandrake/GimmeSomeSlack/pole_shots.py [OUTDIR]     # default D:\\Luke\\dev\\_rmscratch\\mc_poles
+    python.exe src/RimMandrake/GimmeSomeSlack/pole_shots.py [OUTDIR]     # default D:\\ClaudeWork\\rimmandrake\\scratch\\mc_poles
 Per look x station: one station frame (rect_of(s,2)) and one close-up on the first mast (16x6 cells, zoomed to root size 11).
 Needs the review map built (human_review.py --build). Leaves the style on the LAST look in LOOKS_ORDER.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import os
 import shutil
 import sys
@@ -18,7 +21,7 @@ LOOKS_ORDER = ["StarWars", "StarWarsJawa", "ExtensionCord", "Cybertek"]
 
 
 def main(argv):
-    out = argv[0] if argv else "D:\\Luke\\dev\\_rmscratch\\mc_poles"
+    out = argv[0] if argv else rm_win("scratch", "mc_poles")
     os.makedirs(out, exist_ok=True)
     S = HR.station_list()
     R = HR.Review(RL.LiveBridge(), None)

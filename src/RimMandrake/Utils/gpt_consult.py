@@ -6,7 +6,7 @@
 
 The named files are INLINED into the prompt (codex's sandboxed file reads are flaky, and it hangs
 reading \\\\wsl.localhost paths), and codex runs with its cwd in
-D:\\Luke\\dev\\_rmscratch\\codex\\consult-<ts>\\ (it fails from an ext4 cwd) — git_workflow_plan_2026-10-01.md
+D:\\ClaudeWork\\rimmandrake\\scratch\\codex\\consult-<ts>\\ (it fails from an ext4 cwd) — git_workflow_plan_2026-10-01.md
 §2.3. The prompt goes in on stdin (no Windows command-line length limit). The answer is printed,
 and written to --out when given. Default model: gpt-6.1-sol at high effort (owner,
 2026-10-02; CODEX_CONSULT_MODEL overrides). Art (codex_image.py) stays on gpt-5.5 — a separate default.

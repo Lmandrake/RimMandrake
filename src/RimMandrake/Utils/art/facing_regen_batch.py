@@ -17,6 +17,9 @@ plan time (someone else touching it -> needs_eyes). Commits go through ./publish
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import hashlib
 import json
@@ -40,7 +43,7 @@ BATCH = REPO / "Transient/facing_regen_batch_2026-10-16"
 STATE = BATCH / "state.json"
 LOG = BATCH / "events.jsonl"
 CAND = BATCH / "candidates"                      # in-clone copies art.py install --file needs
-WORK = Path("/mnt/d/Luke/dev/_rmscratch/facing_regen_batch")   # raw renders: not in the repo
+WORK = Path(rm_str("scratch", "facing_regen_batch"))   # raw renders: not in the repo
 ROWS = REPO / "Transient/facing_rescale_2026-10-16/lint_after_reseat.json"
 TAG = "standtall_b1"
 MAX_ATTEMPTS = 2                                 # whole-picture attempts (each = up to GEN_TRIES per facing)

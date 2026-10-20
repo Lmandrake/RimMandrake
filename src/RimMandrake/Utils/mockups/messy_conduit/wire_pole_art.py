@@ -14,6 +14,9 @@ sits at z = 3.5 - r/128 cells above the cell centre, column 128 is the cell cent
   * regenerates Source/Aerial/PoleGeometryTable.cs. --check recomputes everything from the wired PNGs (state, not eyes):
     size, crop identical to the mast's top rows, table identical.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import glob
 import json
 import os
@@ -26,7 +29,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
 MOD = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack")
 STY = os.path.join(MOD, "Textures", "RimMandrake", "GimmeSomeSlack", "Aerial", "Styles")
 TABLE = os.path.join(MOD, "Source", "Aerial", "PoleGeometryTable.cs")
-ARTPIPE = "/mnt/d/Luke/dev/_artpipe"
+ARTPIPE = rm_str("artpipe")
 LOOKS = {"scrapper": "Scrapper", "industrial": "Industrial", "modern": "Modern", "futuristic": "Futuristic"}
 KINDS = {"mast": ("AerialMast", "RM_AerialMast"), "lampmast": ("AerialLampMast", "RM_AerialLampMast")}
 W, H = 256, 512

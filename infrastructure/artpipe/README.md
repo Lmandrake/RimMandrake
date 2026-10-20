@@ -5,7 +5,7 @@ ART_PIPELINE_DAEMON_1. Built by `src/RimMandrake/Utils/artpipe/artpiped.py`.
 **The queue STATE is not in this folder and not in git** (git migration Phase 5, 2026-10-02,
 `design/RimMandrake/git_migration_phase5_artpipe_2026-10-02.md`). It lives in the state dir
 resolved by `src/RimMandrake/Utils/artpipe/state_dir.py` — `$ARTPIPE_STATE_DIR`, default
-`D:\Luke\dev\_artpipe` (`/mnt/d/Luke/dev/_artpipe`). Every directory and log in the layout
+`D:\ClaudeWork\rimmandrake\artpipe` (`/mnt/d/ClaudeWork/rimmandrake/artpipe`). Every directory and log in the layout
 below is relative to THAT dir. This folder keeps only tracked config: this README,
 `BACKGROUND_TEMPLATE*.md`, `art_lists/`, `legibility_*.json`, `drawsize_backfill.json`.
 

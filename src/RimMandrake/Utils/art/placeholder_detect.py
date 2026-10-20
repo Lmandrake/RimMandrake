@@ -20,6 +20,9 @@ be found and the texPath rule did not fire; that is never read as REAL by sweep 
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import json
 import re
 import sys
@@ -292,7 +295,7 @@ def main(argv=None) -> int:
                         m = pixel_metrics(f)
                         (pl if is_flat(m) else rl).append(m)
         import glob
-        art = [pixel_metrics(f) for f in glob.glob("/mnt/d/Luke/dev/_artpipe/_artsrc/*/*.png")[::6]]
+        art = [pixel_metrics(f) for f in glob.glob(rm_str("artpipe", "_artsrc", "*", "*.png"))[::6]]
         for name, ms in (("FLAT (live census)", pl), ("live census not flat", rl), ("artpipe real renders", art)):
             for k in ("ncol", "smooth"):
                 v = np.array([m[k] for m in ms if m["n"] >= FLAT_MIN_PIXELS], float)

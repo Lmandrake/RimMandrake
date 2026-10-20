@@ -13,7 +13,7 @@ the same field) are pushed through the adapter lines that copy settings into RM_
 player-facing bool setting that an adapter line reads and re-evaluates the adapter (so viscosity off also turns creep off,
 exactly as the game does). The owner's saved settings file is read and its differences listed, never used.
 
-HOW. Stages FlowWorks/Source (+ Defs, _Shared) on D:\\Luke\\dev\\_rmbuild\\VV_PILOT1_<clone hash>, deletes the probe
+HOW. Stages FlowWorks/Source (+ Defs, _Shared) on D:\\ClaudeWork\\rimmandrake\\build\\VV_PILOT1_<clone hash>, deletes the probe
 bin/obj (stale-stage lesson 2026-10-16), inserts one line into the STAGED ArrayWorld.Pulse
 (`VV.MatrixFlags.Apply(k);` just before `k.Pulse`) and one into the staged Program.Case (case name), builds
 SelfTest/VV/ShippedMatrixProbe.cs with the whole SelfTest compile list, and runs it with Windows dotnet.exe.

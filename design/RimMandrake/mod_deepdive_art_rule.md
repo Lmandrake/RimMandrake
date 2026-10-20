@@ -187,7 +187,7 @@ bundle art):
 
 ## 5. Cost per asset type
 
-**The pipeline, measured from `D:\Luke\dev\_artpipe\throughput.jsonl`.**
+**The pipeline, measured from `D:\ClaudeWork\rimmandrake\artpipe\throughput.jsonl`.**
 
 - A job's median is **99 s**, with a p90 of 130 s.
 - 5,856 of 7,994 jobs came back ok (73%), so it takes about **1.37 jobs per accepted image**.

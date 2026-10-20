@@ -26,6 +26,9 @@ hand edit after the gate invalidates it.
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import hashlib
 import json
@@ -51,7 +54,7 @@ RULED_GROUP = "Already ruled on another sheet"
 SIZE_FALLBACK_FLAG = "SIZE FALLBACK"
 SKIP_FRESH = False     # fixture selftests of the gate's OTHER requirements set this (their pictures are not on disk)
 SKIP_BROWSER = False   # selftests of OTHER tools that build throwaway fixture sheets set this; the real tools never do
-ARTPIPE_DEFAULT = "/mnt/d/Luke/dev/_artpipe"
+ARTPIPE_DEFAULT = rm_str("artpipe")
 
 
 class GateFailed(Exception):

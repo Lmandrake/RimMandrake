@@ -3,7 +3,7 @@
     python3 src/RimMandrake/Utils/mockups/messy_conduit/round5_art_install.py conform     # raw -> conf, writes candidates
     python3 src/RimMandrake/Utils/mockups/messy_conduit/round5_art_install.py install [--only substr ...] [--dry]
 
-Raw renders come from round5_art_jobs.py (D:\\Luke\\dev\\_rmscratch\\mc_r5\\raw); conformed candidates land in ...\\conf
+Raw renders come from round5_art_jobs.py (D:\\ClaudeWork\\rimmandrake\\scratch\\mc_r5\\raw); conformed candidates land in ...\\conf
 under their install path. Install goes ONLY through artledger.install_image (reason script:<this file>).
 Report: Transient/mc_art_round5_report.md.
 
@@ -20,6 +20,9 @@ Geometry kept (code offsets unchanged):
     centre kept, so TapBiteX (-0.40 of width) still lands on the jaws. Drawn at TapSize 1.5 cells either way.
   * reel 256: conform_sprite registration onto the old Modern reel.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import os
 import subprocess
 import sys
@@ -32,7 +35,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils", "art"))
 sys.path.insert(0, HERE)
 TEX = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack")
-R = "/mnt/d/Luke/dev/_rmscratch/mc_r5"
+R = rm_str("scratch", "mc_r5")
 RAW, IN, CONF = R + "/raw", R + "/in", R + "/conf"
 REASON = "script:src/RimMandrake/Utils/mockups/messy_conduit/round5_art_install.py"
 CONFORM = os.path.join(REPO, "skills", "generating-rimworld-sprites", "scripts", "conform_sprite.py")

@@ -6,7 +6,7 @@ KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES (2026-10-10). `rimworld/save_game` has wri
 afterwards is necessary but too late, so this guard works in three steps:
 
   snapshot   hash every keeper (*.rws except Autosave-*) and copy each into a content-addressed store
-             (D:\\Luke\\dev\\_rmscratch\\save_keepers\\<sha256>.rws) - recoverable copies BEFORE the act
+             (D:\\ClaudeWork\\rimmandrake\\scratch\\save_keepers\\<sha256>.rws) - recoverable copies BEFORE the act
   admit      refuse: an existing target (no overwrite), a path escape, and any run where the game's CURRENT slot is
              a keeper or unknown - save_game may write the current slot, so only a known non-keeper is admitted
              ("none" = a game never loaded from a file, e.g. a quicktest)
@@ -20,6 +20,9 @@ afterwards is necessary but too late, so this guard works in three steps:
 Exit 0 verified; 1 refused or a keeper changed (the keeper is named and its store copy given); 2 cannot measure.
 Autosaves rotate by design and are listed as changed, never as violations.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import hashlib
 import json
 import os
@@ -30,7 +33,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-STORE = r"D:\Luke\dev\_rmscratch\save_keepers" if os.name == "nt" else "/mnt/d/Luke/dev/_rmscratch/save_keepers"
+STORE = rm_win("scratch", "save_keepers") if os.name == "nt" else rm_str("scratch", "save_keepers")
 AUTOSAVE = re.compile(r"^Autosave-\d+\.rws$", re.I)
 NAME_OK = re.compile(r"^[A-Za-z0-9_\-. ]+$")
 MIN_BYTES = 1000

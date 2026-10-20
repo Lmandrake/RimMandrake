@@ -12,11 +12,14 @@ RM_PitScorch). The AFTER LIQUID rows do NOT: they draw the 2026-10-05 proposal
 ships as vanilla shallow water, tar on the plain Solid shader with wake 0
 (Tools/selftest_liquid_looks.py pins the shipped look). Treat them as superseded.
 Real vanilla textures come from resources.assets (extracted with UnityPy into
-D:\\Luke\\dev\\_rmscratch\\fwvis\\tex — derived, not committed; the
+D:\\ClaudeWork\\rimmandrake\\scratch\\fwvis\\tex — derived, not committed; the
 terrain textures named in load() calls: Soil, RoughStone, Gravel, ...).
 
     python3 make_mockups.py            # writes PNG/GIFs beside this file
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import math
 import os
 import random
@@ -26,7 +29,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-TEX = "/mnt/d/Luke/dev/_rmscratch/fwvis/tex"
+TEX = rm_str("scratch", "fwvis", "tex")
 PX = 46                      # pixels per cell
 W, H = 6, 6                  # scene cells
 PIT_X0, PIT_X1 = 1, 5        # pit columns [x0, x1)

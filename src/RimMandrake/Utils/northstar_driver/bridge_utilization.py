@@ -11,7 +11,7 @@ ACTIVE = union of driver run intervals:
          - north-star driver results (`Transient/northstar/*.json`, `started_utc` + timing.total_ms;
            mock runs skipped).
          - every RimBridge session (connect -> close) any script opened, from rimbridge_client.py's
-           session log (`D:\Luke\dev\_rmscratch\bridge_sessions.jsonl`, UTC; ADHOC_BRIDGE_CALL_LOG_1,
+           session log (`D:\ClaudeWork\rimmandrake\scratch\bridge_sessions.jsonl`, UTC; ADHOC_BRIDGE_CALL_LOG_1,
            rows only exist from 2026-10-04). Tick advance is a bridge call (`step_game_ticks`), so the call log's
            total already includes it — a lower bound, since gaps between calls are not counted.
 Utilization = |ACTIVE ∩ HELD| / |HELD|. Idle gaps over --gap-min inside a hold are listed with the
@@ -20,6 +20,9 @@ load or the game being down, the usual cause).
 
 Owner, 2026-10-01: "Live bridge usage. In fact that's a great metric to track."
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import datetime as dt
 import glob
@@ -173,7 +176,7 @@ def main(argv=None):
     ap.add_argument("--modcheck", action="append",
                     default=None, help="glob of modcheck live-queue jsonl (repeatable)")
     ap.add_argument("--northstar", default=os.path.join(REPO, "Transient", "northstar", "*.json"))
-    ap.add_argument("--sessions", default="/mnt/d/Luke/dev/_rmscratch/bridge_sessions.jsonl",
+    ap.add_argument("--sessions", default=rm_str("scratch", "bridge_sessions.jsonl"),
                     help="rimbridge_client.py session log")
     ap.add_argument("--local-tz", default="America/Los_Angeles",
                     help="zone of the naive modcheck stamps (python.exe on the Windows host)")

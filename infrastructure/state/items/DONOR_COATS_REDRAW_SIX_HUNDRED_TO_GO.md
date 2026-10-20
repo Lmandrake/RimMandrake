@@ -11,13 +11,13 @@ later time. No more art blockers."*). Record: `design/RimMandrake/donor_art_cens
   `src/RimMandrake/Utils/art/donor_regen_jobs.py build` from a fresh census + `texture_regen_audit.py`.
 - Fed by `donor_regen_jobs.py submit --cap 40` (transient timer `rm-donor-regen-feeder.timer`, every 10 min). Order:
   start-region creatures, other creatures, plants, terrain, buildings, items, icons.
-- Renders land in `D:\Luke\dev\_artpipe\done`; installing them is `REGEN_RENDERS_INSTALL_AS_THEY_LAND`.
+- Renders land in `D:\ClaudeWork\rimmandrake\artpipe\done`; installing them is `REGEN_RENDERS_INSTALL_AS_THEY_LAND`.
 
 ## verify
 
 - `python3 src/RimMandrake/Utils/art/donor_regen_jobs.py submit --jobs design/RimMandrake/donor_regen_jobs_2026-10-18.json --dry-run`
   prints "every row already filed".
-- `ls D:\Luke\dev\_artpipe\done\dregen_*.manifest.json` count vs `failed\dregen_*`: failures retried or listed.
+- `ls D:\ClaudeWork\rimmandrake\artpipe\done\dregen_*.manifest.json` count vs `failed\dregen_*`: failures retried or listed.
 - Then stop the timer: `systemctl --user stop rm-donor-regen-feeder.timer`.
 
 ## hourly install (2026-10-19)

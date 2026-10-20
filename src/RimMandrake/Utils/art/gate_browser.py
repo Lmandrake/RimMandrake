@@ -7,6 +7,9 @@ Returns (rendered <img> count or None, uncaught console errors, problem text or 
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import os
 import re
 import shutil
@@ -21,7 +24,7 @@ URL_RE = re.compile(r"http://localhost:\d+/\?t=[A-Za-z0-9_-]+")
 # Edge runs on WINDOWS through interop: a timeout kills only the WSL-side handle and the Windows msedge tree lives on.
 # MEASURED 2026-10-06 00:50: 915 msedge.exe (110 headless roots) had piled up and every new render timed out. Each run
 # therefore gets its own --user-data-dir, and everything carrying that marker is stopped afterwards, timeout or not.
-SCRATCH_WIN, SCRATCH_WSL = r"D:\Luke\dev\_rmscratch\edge_gate", "/mnt/d/Luke/dev/_rmscratch/edge_gate"
+SCRATCH_WIN, SCRATCH_WSL = rm_win("scratch", "edge_gate"), rm_str("scratch", "edge_gate")
 KILL_PS1 = r"""param([string]$Marker)
 $p = Get-CimInstance -ClassName Win32_Process | Where-Object { $_.Name -eq 'msedge.exe' -and $_.CommandLine -like "*$Marker*" }
 $p | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }

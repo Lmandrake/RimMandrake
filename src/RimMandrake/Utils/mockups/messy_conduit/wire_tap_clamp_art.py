@@ -11,6 +11,9 @@ cleared, the copper jaws and the rusted handle stay, then the 64 px render is up
 The jaws' bite line stays at -0.375 of the width (RM_MapComponent_Aerial.TapBiteX), now drawn on the tap node where the
 two grids' cables meet.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import colorsys
 import os
 import sys
@@ -23,7 +26,7 @@ import artledger  # noqa: E402  the only sanctioned writer into Textures
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
 DEST = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack", "Aerial", "TapClamp.png")
-SRC = "/mnt/d/Luke/dev/_artpipe/_artsrc/RM_MessyConduit_Jawa_TapClamp/RM_MessyConduit_Jawa_TapClamp.png"
+SRC = rm_str("artpipe", "_artsrc", "RM_MessyConduit_Jawa_TapClamp", "RM_MessyConduit_Jawa_TapClamp.png")
 PIPE_X = 15          # 64 px render: the pipe spans x 2..14; the jaws' hinge starts right of it
 GREY_SAT = 0.28      # saturation below this is pipe steel; the copper jaws are well above it
 

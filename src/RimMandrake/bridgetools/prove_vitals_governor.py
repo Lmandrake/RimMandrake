@@ -3,6 +3,9 @@ r"""Run: python.exe D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\prove_vi
 
 Live acceptance proofs for the test-state monitor + row governor (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO).
 GPT §5 table cases that inject cheaply on a quicktest map. Each case writes {case: {result, evidence}}."""
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import sys, json, time, os
 sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\modcheck")
@@ -202,6 +205,6 @@ if "colonyloss" in which:
     cl2 = [t for t in events().get("triggers", []) if t["kind"] == "colony_loss" and "GameEnded letter" in (t.get("detail") or "")]
     rec("colony_loss_letter_detected_while_paused", bool(cl2), sent=sl.get("success"), trigger=cl2[:1])
 
-name = os.path.join(r"D:\Luke\dev\_rmscratch\vitals", "proof_" + "_".join(which)) + "_" + time.strftime("%Y%m%dT%H%M%S") + ".json"
+name = os.path.join(rm_win("scratch", "vitals"), "proof_" + "_".join(which)) + "_" + time.strftime("%Y%m%dT%H%M%S") + ".json"
 with open(name, "w") as f: json.dump(OUT, f, indent=1, default=str)
 print("wrote", name)

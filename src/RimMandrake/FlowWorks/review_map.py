@@ -40,6 +40,9 @@ Partly built / Not built) comes from that sheet's own feature_status() over its 
 its caps or disk probes through the sheet's derive_status (extra_status), read at build/plan time. A NOT BUILT feature gets a placeholder
 pad that says so. Setups (what is built in each station) are code: SETUPS below. Mod Settings stay at shipped defaults.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import html
 import importlib.util
@@ -104,8 +107,8 @@ def derive(m=None, rows=None):
 
 
 def _nav_cache_path():
-    return r"D:\Luke\dev\_rmscratch\fw_review_nav_cache.pickle" if os.name == "nt" else \
-        "/mnt/d/Luke/dev/_rmscratch/fw_review_nav_cache.pickle"
+    return rm_win("scratch", "fw_review_nav_cache.pickle") if os.name == "nt" else \
+        rm_str("scratch", "fw_review_nav_cache.pickle")
 
 
 def _nav_key():
@@ -118,7 +121,7 @@ def _nav_key():
 
 
 def _nav_cache_write(S, st):
-    """A program reads it, so it lives outside the repo (D:\\Luke\\dev\\_rmscratch, where python.exe can reach it)."""
+    """A program reads it, so it lives outside the repo (D:\\ClaudeWork\\rimmandrake\\scratch, where python.exe can reach it)."""
     import pickle
     try:
         with open(_nav_cache_path(), "wb") as f:

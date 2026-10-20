@@ -11,16 +11,19 @@ Windows directory is the default route"). dotnet.exe is Windows-native: it canno
 2. Collect what it needs by RELATIVE path — its own dir, every `..\\` Include/HintPath/
    ProjectReference/OutputPath target (recursively through ProjectReferences), and
    src/Directory.Build.targets (the .srchash stamp) — and rsync them, keeping their repo-relative
-   layout, into /mnt/d/Luke/dev/_rmbuild/<Mod>/ (D:\\Luke\\dev\\_rmbuild\\<Mod>\\). Layout matters:
+   layout, into /mnt/d/ClaudeWork/rimmandrake/build/<Mod>/ (D:\\ClaudeWork\\rimmandrake\\build\\<Mod>\\). Layout matters:
    the stamp records the csproj path relative to src/, so the mirror must keep src/ as its root.
    bin/ and obj/ on the Windows side are left alone as a warm incremental cache.
 3. Run C:\\Users\\Mandrake\\.dotnet\\dotnet.exe build there.
 4. Copy every DLL and .srchash the build wrote under an Assemblies/ dir back to the same path in
-   the clone, and record the source sha in _rmbuild/<Mod>/BUILD_SOURCE.json.
+   the clone, and record the source sha in <build root>/<Mod>/BUILD_SOURCE.json.
 
 Run from the /mnt/d tree it builds in place (that tree is already a Windows path).
 Prints `BUILT <repo-relative dll> (source <sha>[+dirty])` per DLL; exits non-zero on failure.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import datetime
 import glob
@@ -34,7 +37,7 @@ import time
 import xml.etree.ElementTree as ET
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-BUILD_ROOT = os.environ.get("WINBUILD_ROOT", "/mnt/d/Luke/dev/_rmbuild")
+BUILD_ROOT = os.environ.get("WINBUILD_ROOT", rm_str("build"))
 DOTNET_CANDIDATES = ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
                      "/mnt/c/Program Files/dotnet/dotnet.exe"]
 RSYNC_EXCLUDES = ["bin/", "obj/", "Textures/", "Sounds/", "*.png", "*.psd", "*.ogg", "*.wav"]

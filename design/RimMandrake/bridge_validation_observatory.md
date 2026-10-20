@@ -235,8 +235,8 @@ it whole. A taint can only remove trust; nothing but an attestation backed by a 
 
 ### 3.2 Event schema (JSONL, append-only)
 
-One line per event, one file per **run**: `D:\Luke\dev\_obs\runs\<run_id>.jsonl`; session index
-`D:\Luke\dev\_obs\sessions.jsonl`. Outside git (like `_artpipe`): high volume, a program's input.
+One line per event, one file per **run**: `D:\ClaudeWork\rimmandrake\obs\runs\<run_id>.jsonl`; session index
+`D:\ClaudeWork\rimmandrake\obs\sessions.jsonl`. Outside git (like `_artpipe`): high volume, a program's input.
 
 ```json
 {"v":1,"run":"20261003T164024-situational_rerun-27988","producer":"client:27988","pseq":412,
@@ -263,7 +263,7 @@ One line per event, one file per **run**: `D:\Luke\dev\_obs\runs\<run_id>.jsonl`
 
 **Retention.** Raw run evidence is **not regenerable** — it is a record of what happened. Ordinary raw streams
 expire after a retention window (open question 4), but the traces supporting a finding or an accepted experiment
-are copied to `D:\Luke\dev\_obs\kept\` and never expire. Two committed outputs:
+are copied to `D:\ClaudeWork\rimmandrake\obs\kept\` and never expire. Two committed outputs:
 `infrastructure/state/obs/reports.jsonl` — the display summary per run — and
 `infrastructure/state/obs/components.jsonl` — the **retained analytical record** (one row per component per run:
 identity, three axes, cost, finding id), which is what discordance, findings and coverage history are computed
@@ -319,7 +319,7 @@ the runner's verdict line) is the operator who reads it.
 ### 4.2 Loop
 
 ```
-during a run:   runner + client emit events (bounded queue -> writer thread -> D:\Luke\dev\_obs\runs\<run>.jsonl)
+during a run:   runner + client emit events (bounded queue -> writer thread -> D:\ClaudeWork\rimmandrake\obs\runs\<run>.jsonl)
 every watchdog cycle (300 s, existing --watch cadence), in a SEPARATE process:
     obs fold <active run> --since-last   (size- and time-capped) -> .belt_state/obs_last.json
     belt_watchdog reads obs_last.json and prints one EFFICIENCY line after its health verdict
@@ -501,7 +501,7 @@ at all today.
    mods bind bars today?
 3. Can two RimWorld instances run concurrently on Archmagi (a minimal-list game for static/companion checks
    beside the full-list one)? UNMEASURED; it would be the only real parallelism.
-4. Where does `D:\Luke\dev\_obs` get pruned? (Proposal: raw streams 30 days; `kept/` traces for findings and
+4. Where does `D:\ClaudeWork\rimmandrake\obs` get pruned? (Proposal: raw streams 30 days; `kept/` traces for findings and
    accepted experiments, plus the committed `reports.jsonl` / `components.jsonl`, forever.)
 5. Modal contamination: the runner now closes modals at chain start — should it also *record* each probe
    (open/closed, type) per chain so validity has an exact source instead of the watchdog's 5-min samples?

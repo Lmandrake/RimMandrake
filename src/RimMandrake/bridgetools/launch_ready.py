@@ -27,8 +27,11 @@ evidence of a hang (stall verdicts belong to belt_watchdog's evidence).
     python3 src/RimMandrake/bridgetools/launch_ready.py --no-kill    # refuse (ALREADY_RUNNING) if a game is up
 
 Exit 0 READY; 1 any failure; 2 DEADLINE_ALIVE (process still running, not ready). The receipt JSON is written to
-D:\\Luke\\dev\\_rmscratch\\launch_receipts\\ and its path printed. DO NOT run this without holding the bridge.
+D:\\ClaudeWork\\rimmandrake\\scratch\\launch_receipts\\ and its path printed. DO NOT run this without holding the bridge.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import json
 import os
 import re
@@ -48,7 +51,7 @@ PORT_RE = re.compile(r"\[RimBridge\].*?on port\s+(\d+)")
 EXC_RE = re.compile(r"^[^\s].*?(?:Exception|Could not resolve|Error while).*$", re.M)
 RESET_MARK = "Resetting mods config"
 FAIL_EXIT = {"READY": 0, "DEADLINE_ALIVE": 2}
-SCRATCH = "/mnt/d/Luke/dev/_rmscratch"
+SCRATCH = rm_str("scratch")
 
 
 def exit_code(r):

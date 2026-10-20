@@ -21,7 +21,7 @@ Evidence labels: **MEASURED** means parsed from the artifact named. **RimSage** 
 How the roots were found and read:
 - **Roots.** All 1,377 installed `About.xml` files in both roots were parsed for `<packageId>`. A first pass missed VFE Factory: its About.xml lists two dependency packageIds before its own, so reading the first `<packageId>` in the file gets the wrong one. The second pass matched on the top-level `<packageId>`.
 - **Defs and patches.** A per-mod XML parser honoured each mod's `loadFolders.xml` for v1.6 and counted defs per type and patch operations. VFE Factory's VCE and Odyssey subfolders are included: VCE (`VanillaExpanded.VCookE`) and Odyssey are both active.
-- **C#.** All three DLLs were decompiled with `ilspycmd` 8.2. The decompiled copies are at `D:\Luke\dev\_rmscratch\dd_ind\{vfef,bc,bones}`.
+- **C#.** All three DLLs were decompiled with `ilspycmd` 8.2. The decompiled copies are at `D:\ClaudeWork\rimmandrake\scratch\dd_ind\{vfef,bc,bones}`.
 - **Engine facts** come from RimSage, named where used.
 - **Our references.** A tokenising Python sweep covered 6,537 files under `src/`, matching on whole tokens. A sanity probe found `HideDonorSmelter` in 4 files. The sweep was then followed by reading each patch it found.
 - **Save.** The canonical save is `canon.yml` `planet.start_savegame` = `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\CANONICAL_ASHKARR_START_2026-09-12.rws` (17,483,421 bytes, mtime 2026-10-09). It was copied and read with a streaming `iterparse`. Its meta lists 616 mods, including all three of these. Probes: `Steel` appears as stuff on 861 placed things, and 37 `Corpse_Human` things are on map 0.

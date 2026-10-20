@@ -9,6 +9,9 @@ artpipe renders + the installed Orruhmu set must classify REAL; the run fails if
 """
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import glob
 import random
 import sys
@@ -82,7 +85,7 @@ def run() -> int:
     real = sorted(glob.glob(str(base / "RM_Orruhmu/*.png")))
     check(len(real) >= 3, "probe can see the installed Orruhmu render", len(real))
     check(not any(P.is_flat(P.pixel_metrics(f)) for f in real), "installed Orruhmu render classifies REAL")
-    arts = glob.glob("/mnt/d/Luke/dev/_artpipe/_artsrc/*/*.png")
+    arts = glob.glob(rm_str("artpipe", "_artsrc", "*", "*.png"))
     if arts:
         random.seed(7)
         pick = random.sample(arts, min(150, len(arts)))

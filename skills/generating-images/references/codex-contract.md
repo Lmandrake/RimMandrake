@@ -40,7 +40,7 @@ Windows path — `codex_image.py` converts via `wslpath -w`, falling back to the
 `/mnt/<drive>/` convention. Paths under `/tmp` or `~` in WSL are **not visible
 to Windows**, and `codex.exe` fails from an ext4 cwd. `codex_image.py` and
 `gpt_consult.py` therefore stage every call in
-`D:\Luke\dev\_rmscratch\codex\<job>\` (inputs copied in, codex cwd there, outputs copied
+`D:\ClaudeWork\rimmandrake\scratch\codex\<job>\` (inputs copied in, codex cwd there, outputs copied
 back), so inputs and outputs may live in an ext4 clone. Calling `codex.exe` by hand needs
 that staging dir.
 

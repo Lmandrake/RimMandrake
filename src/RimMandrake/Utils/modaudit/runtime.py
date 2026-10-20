@@ -5,7 +5,7 @@ r"""modaudit/runtime.py - runtime evidence per mod from the last FULL-LIST sessi
 
 Defaults are the 2026-10-10 550-mod cold load (launch receipt launch_20261010T140006.json, pid 1568, TPS session
 c1a88107): its Player.log was archived by the NEXT launch to
-D:\Luke\dev\_rmscratch\playerlog_archive\Player.20261010T143457.log. The live Player.log at any moment belongs to
+D:\ClaudeWork\rimmandrake\scratch\playerlog_archive\Player.20261010T143457.log. The live Player.log at any moment belongs to
 whatever is running NOW, so it is never the default. Writes ~/.cache/rm_modaudit/runtime.json (derived).
 
 ERRORS. Blocks are cut with measure.playerlog's own opener/continuation patterns, and the total number of openers
@@ -31,6 +31,9 @@ per-mod TPS cost is UNMEASURED; the session-level stage profile is recorded as c
 MEMORY. The health observer measures the whole game process; per-mod memory is UNMEASURED (diskfacts' decoded
 texture estimate is the INFERRED proxy).
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import json
 import os
@@ -44,7 +47,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 MEASURE = os.path.expanduser("~/.claude/skills/measuring-large-artifacts/scripts")
 
-DEFAULT_LOG = "/mnt/d/Luke/dev/_rmscratch/playerlog_archive/Player.20261010T143457.log"
+DEFAULT_LOG = rm_str("scratch", "playerlog_archive", "Player.20261010T143457.log")
 DEFAULT_SESSION = "c1a88107"
 DEFAULT_TOKEN = "b4e14a17f2fb40509e71ba5e6b55fa9a"     # bridge token of that launch (launch receipt)
 from game_paths import LOCALLOW  # noqa: E402

@@ -2,7 +2,7 @@
 per owner ruling 2026-10-03 the required-checks-proven headline leads; nothing here is a target or a verdict.
 
     python3 obs_summary.py [run.jsonl ...]      default: every file in <obs dir>/runs (newest last)
-    python3 obs_summary.py --dir D:\\Luke\\dev\\_obs
+    python3 obs_summary.py --dir D:\\ClaudeWork\\rimmandrake\\obs
 
 Prints per run: completeness, calls/min by tool and by outcome, p50/p95 latency, retries (reconnects),
 UNFINISHED calls (a call_start with no call_end: a hang, or a kill) and a timeline of where the bridge
@@ -16,6 +16,9 @@ intervals overlap):
   idle          the gaps between calls (client-side work, sleeps, screenshots decoding, judge time)
 An unfinished call is counted to the last event seen in its file (right-censored) and flagged.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import glob
 import json
 import os
@@ -28,7 +31,7 @@ TICK_MARKS = ("step_game_ticks", "wait_ticks", "game_ticks")
 
 def default_dir():
     env = os.environ.get("OBS_DIR")
-    return env or (r"D:\Luke\dev\_obs" if os.name == "nt" else "/mnt/d/Luke/dev/_obs")
+    return env or (rm_win("obs") if os.name == "nt" else rm_str("obs"))
 
 
 def load(path):

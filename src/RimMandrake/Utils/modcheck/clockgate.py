@@ -31,6 +31,9 @@ bridge call in the worker; it can only act beside it (open its own connection
 and request pause, optionally kill the worker process). A worker stuck inside
 a call stays stuck until the supervisor's action unblocks it.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import contextlib
 import json
 import threading
@@ -96,7 +99,7 @@ def _stop_log_path():
     p = os.environ.get("RIMBRIDGE_GOVERNOR_LOG")
     if p is not None:
         return p
-    ev = os.environ.get("RIMBRIDGE_EVIDENCE_LOG", r"D:\Luke\dev\_rmscratch\bridge_calls.jsonl" if os.name == "nt" else "")
+    ev = os.environ.get("RIMBRIDGE_EVIDENCE_LOG", rm_win("scratch", "bridge_calls.jsonl") if os.name == "nt" else "")
     return os.path.join(os.path.dirname(ev), "governor_stops.jsonl") if ev else ""
 
 

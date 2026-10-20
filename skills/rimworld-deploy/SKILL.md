@@ -25,7 +25,7 @@ and not in version control.
 
 🔑 **Where you run it.** Edit and commit in your seat clone (`/home/mandrake/rm/<seat>`);
 `deploy_custom_mods.py` runs from the clone and plans/copies from it. C# mods are built with
-`python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>` (stages on `D:\Luke\dev\_rmbuild`, Windows
+`python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>` (stages on `D:\ClaudeWork\rimmandrake\build`, Windows
 dotnet, DLL and `.srchash` copied back as a pair). `D:\Luke\dev\RimMandrake` is a read-only
 mirror of origin/main: Windows tools read it, nothing writes it.
 

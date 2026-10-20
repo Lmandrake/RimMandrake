@@ -10,11 +10,22 @@ that have the path written into their code.
 
 ## Goal
 
-Move every RimMandrake runtime dir out of `D:\Luke\dev\` (Lodestar's area) into ONE parent,
-proposed `D:\Luke\_rm\` (`/mnt/d/Luke/_rm`), resolved through ONE path function (e.g.
-`src/RimMandrake/Utils/rmpaths.py: rm_data_root()` reading `RM_DATA_ROOT`, default
-`/mnt/d/Luke/_rm`), so that no code writes out `D:\Luke\dev\_*`. Then move the dirs while the
-daemons are stopped (artpiped, any gate Edge, the nightly selftests), and delete the old ones.
+Move every RimMandrake runtime dir out of `D:\Luke\dev\` (Lodestar's area) into the data root
+`D:\ClaudeWork\rimmandrake` (`/mnt/d/ClaudeWork/rimmandrake`; Lodestar's machine-wide agent storage,
+owner 2026-10-19: *"Find another storage place for yourself permanently and use it."*), resolved through
+ONE path function, `src/RimMandrake/Utils/rmpaths.py` (`RM_DATA_ROOT`, else Lodestar's
+`agent_storage.py rimmandrake`; no fallback), so that no code writes out `D:\Luke\dev\_*`.
+Plan: `D:\ClaudeWork\rimmandrake\path_migration_for_foundry.md`.
+
+## Status 2026-10-20 (FOUNDRY, night window)
+
+DONE: rmpaths.py + guard `selftest_rmpaths.py`; ~80 code files and the instructing docs repointed; the six dirs
+moved (`_artpipe`->`artpipe`, `_artstore`->`artstore`, `_rmscratch`->`scratch`, `_rmbuild`->`build`, `_obs`->`obs`,
+`_rmdashboard`->`dashboard`); systemd units carry `rm-data-root.conf` drop-ins; Windows user env `RM_DATA_ROOT`
+set; task "WSL Move Once" repointed. Dated design history keeps the old paths as history.
+OPEN: the other non-project entries in `D:\Luke\dev` (worktrees `wt_live2`, `RimMandrake-wt-handoff`,
+`RimMandrake-wt-livedeploy`; `Rimworld`, `Rimworld_history.bundle`, `reference`, `rimtools`, `govee_scan.ps1`) —
+see the plan's last table; BENCH clone must pull (its units run pre-rmpaths code on env-var overrides).
 
 ## Dirs to move and the code that names them (grep 2026-10-19, foundry clone)
 
@@ -40,7 +51,8 @@ daemons are stopped (artpiped, any gate Edge, the nightly selftests), and delete
 
 ## Owner decision still owed (do not move, delete or salvage without it)
 
-- `_rm_old_git_2026-10` (4.2 GB, the pre-migration shared-tree `.git`) and `_rm_shared_tree_leftovers_2026-10`
+- `_rm_old_git_2026-10` (4.2 GB, the pre-migration shared-tree `.git`) and `_rm_shared_tree_leftovers_2026-10`,
+  both MOVED (not deleted) on 2026-10-19 to `D:\ClaudeWork\retired-trees\rimmandrake\`
   (a manifest; its tar is gone). `design/RimMandrake/git_migration_freeze_2026-10-02.md` says to keep them
   "until the owner says delete". A patch-id audit on 2026-10-19 found 14 refs (branches + 4 stashes)
   holding commits that are not on origin/main by patch, so deleting it may lose work. Ask him: salvage then delete, or delete.

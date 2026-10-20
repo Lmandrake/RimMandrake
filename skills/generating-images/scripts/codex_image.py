@@ -24,6 +24,9 @@ Exit codes: 0 ok, 1 generation failed, 2 environment not usable.
 
 from __future__ import annotations
 
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import base64
 import json
@@ -74,8 +77,8 @@ DEFAULT_MODEL = os.environ.get("CODEX_MODEL", "gpt-5.6-sol")
 # codex.exe FAILS with an ext4 cwd and HANGS reading \\wsl.localhost paths (MEASURED,
 # git_workflow_plan_2026-10-01.md §2.3). When a caller's output/input paths are not on a Windows
 # drive (a repo clone on ext4), the call is staged: cwd + inputs copied into
-# D:\Luke\dev\_rmscratch\codex\<job>\, run there, outputs copied back. Untracked, outside any repo.
-CODEX_SCRATCH = Path(os.environ.get("CODEX_SCRATCH", "/mnt/d/Luke/dev/_rmscratch/codex"))
+# D:\ClaudeWork\rimmandrake\scratch\codex\<job>\, run there, outputs copied back. Untracked, outside any repo.
+CODEX_SCRATCH = Path(os.environ.get("CODEX_SCRATCH", rm_str("scratch", "codex")))
 REASONING_EFFORTS = ("low", "medium", "high", "xhigh", "max", "inherit")
 
 # Files copied when seeding an isolated CODEX_HOME. MEASURED 2026-09-06: with

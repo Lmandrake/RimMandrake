@@ -7,7 +7,7 @@ Design: design/RimMandrake/messyconduit_style_per_build_design.md sec. 4. Report
 Sources: Codex $imagegen EDITS of the shipped Scrapper piece (same pose/framing, new materials), conformed onto the Scrapper
 piece's canvas with skills/generating-rimworld-sprites/scripts/conform_sprite.py (strips: band crop + wrap crossfade),
 validated with validate_sprite.py. Conformed candidates live outside git at
-D:\\Luke\\dev\\_rmscratch\\mc_style_art\\conformed\\<Look>\\<Slot>.png; every installed byte is archived in the art store.
+D:\\ClaudeWork\\rimmandrake\\scratch\\mc_style_art\\conformed\\<Look>\\<Slot>.png; every installed byte is archived in the art store.
 
 Naming scheme (the rule the code reads; Look = Industrial | Modern | Futuristic, Scrapper = the existing root files):
   a piece shipped at  <folder>/<Name>.png  has its style version at  <folder>/Styles/<Look>/<Name>.png
@@ -21,6 +21,9 @@ Naming scheme (the rule the code reads; Look = Industrial | Modern | Futuristic,
     Styles/<Family>/EndFrayed_Live.png 64x64;  Styles/ExtCord/PowerStrip_Off.png 64x32 (Modern only)
 Derived deterministically here, never generated: PowerSwitch_Off (centre lamp darkened) and PowerStrip_Off (LED off).
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import colorsys
 import os
 import sys
@@ -34,7 +37,7 @@ import artledger  # noqa: E402  the only sanctioned writer into Textures
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
 TEX = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack")
-CONF = "/mnt/d/Luke/dev/_rmscratch/mc_style_art/conformed"
+CONF = rm_str("scratch", "mc_style_art", "conformed")
 REASON = "script:src/RimMandrake/Utils/mockups/messy_conduit/wire_style_pieces_art.py"
 LOOKS = ("Industrial", "Modern", "Futuristic")
 FAMILY = {"Industrial": "StarWars", "Modern": "ExtCord", "Futuristic": "Cybertek"}

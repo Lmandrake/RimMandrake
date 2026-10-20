@@ -21,7 +21,7 @@ and the credit/debit primitives are all covered for real.
 dotnet is WINDOWS-NATIVE (see RimMandrake_FlowWorks.csproj's own build comment)
 and cannot take a /mnt/d path, so this script finds dotnet.exe and hands it the
 project path from selftest_winstage.windows_project_path (a D-drive path on the
-/mnt tree; a staged copy under D:\\Luke\\dev\\_rmbuild from an ext4 clone).
+/mnt tree; a staged copy under D:\\ClaudeWork\\rimmandrake\\build from an ext4 clone).
 The SelfTest project now also carries the hose suites and every other Verse-free
 FlowWorks check (325+ cases), not only the stock and pit-trap math.
 _to_windows_path stays: selftest_flowworks_kernel_oracle.py imports it.

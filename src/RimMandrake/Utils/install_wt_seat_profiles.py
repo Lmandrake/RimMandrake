@@ -67,6 +67,9 @@ A SINGLE rolling backup (`settings.json.bak`) is written before any change and
 overwritten each run. A malformed settings.json makes Windows Terminal fall back
 to defaults silently, so that one file is the whole recovery path.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import datetime
 import glob
@@ -96,7 +99,7 @@ SHARED_BOUNDED = BOUNDED.format(home=SEAT_CLONES["BENCH"][0])
 # ARTIST_STATE (Phase 5, design/RimMandrake/git_migration_phase5_artpipe_2026-10-02.md).
 # It writes nothing into the clone, so sharing FOUNDRY's tree dirties nothing.
 ARTIST_HOME = SEAT_CLONES["FOUNDRY"]
-ARTIST_STATE = "/mnt/d/Luke/dev/_artpipe"
+ARTIST_STATE = rm_str("artpipe")
 DISTRO = "Ubuntu"
 
 # How the owner launches Claude Code. There is no `claude` alias in ~/.zshrc —

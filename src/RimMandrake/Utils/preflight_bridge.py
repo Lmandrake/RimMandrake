@@ -27,6 +27,9 @@ INTENDED LIST, first that exists: `--modset <modset_builder tier>`; modmanifest'
 infrastructure/state/modlists/manifest.<TIER>.json; the committed snapshot ModsConfig.FULL.LATEST.xml /
 ModsConfig.MINIMAL.xml. Never inferred from what is deployed.
 """
+import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
+_rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import glob
 import hashlib
@@ -53,7 +56,7 @@ COMPANION_GAME = gp.resolve(r'C:\Program Files (x86)\Steam\steamapps\common\RimW
                             '/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll')
 # by platform, NOT gp.resolve: resolve falls back to the Windows spelling when the WSL path does not exist YET, and
 # os.makedirs('D:\\...') under WSL then creates a literal directory of that name in the cwd
-SCRATCH = r'D:\Luke\dev\_rmscratch\preflight' if os.name == 'nt' else '/mnt/d/Luke/dev/_rmscratch/preflight'
+SCRATCH = rm_win("scratch", "preflight") if os.name == 'nt' else rm_str("scratch", "preflight")
 LOG_ARCHIVE = os.path.join(SCRATCH, 'playerlogs')
 DEP_BASELINE = os.path.join(REPO, 'infrastructure', 'state', 'preflight', 'dependency_baseline.json')
 LAST_REPORT = os.path.join(SCRATCH, 'last_preflight.json')
@@ -455,7 +458,7 @@ def c_def_lint(ctx):
     out_json = os.path.join(SCRATCH, 'effective_def_lint_last.json')
     os.makedirs(SCRATCH, exist_ok=True)
     if sys.platform.startswith('linux') and shutil.which('python.exe') and rel:
-        win_json = r'D:\Luke\dev\_rmscratch\preflight\effective_def_lint_last.json'
+        win_json = rm_win("scratch", "preflight", "effective_def_lint_last.json")
         cmd = ['python.exe', 'src/RimMandrake/Utils/effective_def_lint.py', rel.replace(os.sep, '/'), '--json', win_json]
     else:
         cmd = [sys.executable, os.path.join(HERE, 'effective_def_lint.py'), mc, '--json', out_json]
