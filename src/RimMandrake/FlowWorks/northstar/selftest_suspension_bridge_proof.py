@@ -49,6 +49,21 @@ def main():
             SBP.FakeBridge.static = orig
         if rc2 == 0:
             fails.append("can-fail BROKEN: a refused build still passed the mock")
+        # review 2026-10-20: with NO bridge built, every row that stands on one is UNMEASURED (never a vacuous PASS, never a FAIL)
+        SBP.FakeBridge.static = lambda self, m, a: ("BUILD ok=False anchors=0 decks=0 blueprints=0 reason=x" if m == "ProofBuild"
+                                                    else orig(self, m, a))
+        try:
+            nb = os.path.join(d, "nobuild.json")
+            run(["--mock", nb, "--only", "posts,grate,underpass,waters"])
+        finally:
+            SBP.FakeBridge.static = orig
+        got = {r["id"]: r["detail"].get("mock") for r in json.load(open(nb, encoding="utf-8"))["rows"]}
+        for rid in ("SB_rails_off_some_fall", "SB_rails_on_nobody_falls", "GRATE_fire_burns_people_above", "GRATE_pour_drains_to_body",
+                    "GRATE_item_stays_on_deck", "UND_floor_path_walks_under", "UND_both_arrive", "UND_shallow_trench_is_a_wall",
+                    "UND_item_slides_to_open_floor", "UND_shot_solid_deck", "UND_shot_grate_deck", "UND_crush_below_and_wreck",
+                    "WAT_flood_damages_timber_not_steel"):
+            if got.get(rid) != "UNMEASURED":
+                fails.append("no bridge built: %s reads %s, want UNMEASURED" % (rid, got.get(rid)))
     for f in fails:
         print("FAIL " + f)
     print("suspension bridge proof mock: %d rows, %d sections, %s" % (len(ids), len(SBP.SECTIONS), "ok" if not fails else "FAIL"))

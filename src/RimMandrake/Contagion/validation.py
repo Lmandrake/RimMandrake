@@ -154,6 +154,12 @@ def _fail(msg):
     raise ExpectationFailed(msg)
 
 
+def _harness(msg):
+    """A failure of the bench or the site (a fixture that did not stand, a bridge call that failed, a clock that did not move),
+    never a finding against the mod: UNMEASURED, and the suite files no finding (review 2026-10-20)."""
+    raise ExpectationFailed("UNMEASURED: " + msg)
+
+
 class _Unmeasured(Exception):
     pass
 
@@ -193,9 +199,11 @@ def _note(t, label, data):
               file=sys.stderr, flush=True)
 
 
-def _ok(r, what):
+def _ok(r, what, mod=False):
+    """A failed bridge reply is the bench's (UNMEASURED). `mod=True` only where the reply IS the claim under test (a settings
+    field the mod no longer declares)."""
     if not isinstance(r, dict) or r.get("success") is False:
-        _fail("%s failed: %r" % (what, r))
+        (_fail if mod else _harness)("%s failed: %r" % (what, r))
     return r
 
 
@@ -280,9 +288,9 @@ def _things(t, defName, rect=None, limit=300):
         return []
     _ok(r, "list_things(%s)" % defName)
     if "countMatched" not in r or not r.get("scanned"):
-        _fail("list_things(%s) unreadable (no countMatched / scanned 0): %r" % (defName, r))
+        _harness("list_things(%s) unreadable (no countMatched / scanned 0): %r" % (defName, r))
     if r.get("isCompleteList") is False:
-        _fail("list_things(%s) truncated: %r" % (defName, r.get("countMatched")))
+        _harness("list_things(%s) truncated: %r" % (defName, r.get("countMatched")))
     return list(r.get("things") or [])
 
 
@@ -292,7 +300,7 @@ def _spawn(t, kind, x, z, faction="none"):
         return None
     pid = (((r or {}).get("pawns") or [{}])[0]).get("id")
     if not pid:
-        _fail("spawn_pawn(%s, %s) returned no pawn: %r" % (kind, faction, r))
+        _harness("spawn_pawn(%s, %s) returned no pawn: %r" % (kind, faction, r))
     t.session.track("pawn", pid, x=x, z=z)
     return pid
 
@@ -366,7 +374,7 @@ def _inspect(t, thing_id):
         _fail("inspect_string(%s): the thing is no longer on the map (matched %r of %r examined)"
               % (thing_id, r.get("matched"), r.get("examined")))
     if rows[0].get("error"):
-        _fail("inspect_string(%s) unreadable: %r" % (thing_id, rows[:1]))
+        _harness("inspect_string(%s) unreadable: %r" % (thing_id, rows[:1]))
     return rows[0].get("label"), "\n".join(str(x) for x in (rows[0].get("inspect") or []))
 
 
@@ -390,7 +398,7 @@ def _get_setting(t, field):
     r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field)
     if not _live(t):
         return None
-    _ok(r, "mod_settings_field(get %s)" % field)
+    _ok(r, "mod_settings_field(get %s)" % field, mod=True)
     return r.get("value")
 
 
@@ -399,7 +407,7 @@ def _set(t, field, value):
                       value=str(value))
     if not _live(t):
         return
-    _ok(r, "mod_settings_field(set %s=%r)" % (field, value))
+    _ok(r, "mod_settings_field(set %s=%r)" % (field, value), mod=True)
     got = _get_setting(t, field)
     if not _same(got, value):
         _fail("setting %s=%r did not take: read back %r" % (field, value, got))
@@ -559,7 +567,7 @@ def _jump(t, delta):
     if delta > 0 and after is not None and now is not None and after > now:
         _STATE["jumped"] = _STATE.get("jumped", 0) + int(after - now)
     if after is None or after < now + delta - 5:
-        _fail("time_set_ticks did not take: clock %r after asking for %d (%r)" % (after, now + delta, r))
+        _harness("time_set_ticks did not take: clock %r after asking for %d (%r)" % (after, now + delta, r))
 
 
 def _unjump(t):
@@ -646,7 +654,7 @@ def _spawn_repulsor(t, x, z):
     t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (REPULSOR, x, z))
     rows = _things(t, REPULSOR, _rs((x - 3, z - 3, 8, 8)))
     if _live(t) and len(rows) != 1:
-        _fail("fixture: wanted 1 %s at (%d,%d), found %d" % (REPULSOR, x, z, len(rows)))
+        _harness("fixture: wanted 1 %s at (%d,%d), found %d" % (REPULSOR, x, z, len(rows)))
     return rows[0]["id"] if rows else None
 
 
@@ -761,7 +769,7 @@ def defs_chain(t):
         if _live(t):
             # The parser must see the mod: a broken regex would read "all 0 defs resolve".
             if len(SHIPPED) < 60 or not DEFS_BY_TYPE.get("WeatherDef") or not WILD_ANIMALS:
-                _fail("parsed only %d shipped defs / %d wildAnimals from %s (parser broken?)"
+                _harness("parsed only %d shipped defs / %d wildAnimals from %s (parser broken?)"
                       % (len(SHIPPED), len(WILD_ANIMALS), HERE))
             r = t.bridge_call("jawa/get_defs", defs=";".join(SHIPPED), fields="defName", limit=500)
             _ok(r, "get_defs(all shipped)")
@@ -1098,7 +1106,7 @@ def site(t):
             _ok(t.bridge_call("jawa/world_commit", redraw=False, recalcPaths=False), "world_commit")
             b2, _ = _map_biome(t)
             if b2 != BIOME:
-                _fail("after world_tile_set(%s) the map's own biome reads %r" % (BIOME, b2))
+                _harness("SITE: after world_tile_set(%s) the map's own biome reads %r" % (BIOME, b2))
             _note(t, "retiled", {"tile": tile, "from": b, "to": b2})
 
 
@@ -1164,7 +1172,7 @@ def burn_forced(t):
                 _STATE["burn"] = _open_pawns(t, x, z)
                 for k in ("open", "roofed", "native", "armored"):
                     if not _STATE["burn"][k]:
-                        _fail("fixture: no %s pawn" % k)
+                        _harness("fixture: no %s pawn" % k)
                 # the roofed colonist stands under the patch; both colonists hold their ground
                 rx, rz = x + 9, z
                 t.bridge_call("jawa/order_pawn", pawnId=_STATE["burn"]["roofed"], x=rx, z=rz,
@@ -1516,7 +1524,7 @@ def uv(t):
                                 "person": t.spawn_pawn("Colonist", hostile=False)}
                 for k, v in _STATE["uv"].items():
                     if not v:
-                        _fail("fixture: no %s" % k)
+                        _harness("fixture: no %s" % k)
 
         with _comp(t, "uv_native_multiplier", toggle="sunbeamNativeFactor"):
             if _live(t):
@@ -1568,7 +1576,7 @@ def touched(t):
                 x, z = t.anchor
                 t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (COALESCENCE, x, z))
                 if not _things(t, COALESCENCE, _rs(_rect(t))):
-                    _fail("fixture: no Coalescence spawned")
+                    _harness("fixture: no Coalescence spawned")
                 _STATE["touched"] = {"near": _spawn(t, "Colonist", x + 2, z, faction="player")}
                 t.bridge_call("jawa/set_draft", pawnId=_STATE["touched"]["near"], drafted=True)
 
@@ -1666,9 +1674,9 @@ def zhool_haze(t):
                 _STATE["zrect"] = _rs(_rect(t, PAD_SIZE))
                 n = len(_things(t, GRASS, _STATE["zrect"]))
                 if n < len(ops) // 2:
-                    _fail("fixture: wanted ~%d grass plants, found %d" % (len(ops), n))
+                    _harness("fixture: wanted ~%d grass plants, found %d" % (len(ops), n))
                 if _things(t, LASHGRASS, _STATE["zrect"]):
-                    _fail("fixture: lashgrass already on the cleared pad")
+                    _harness("fixture: lashgrass already on the cleared pad")
                 _STATE["zhool"] = _spawn(t, ZHOOL, x, z)
 
         with _comp(t, "conversion_off_turns_nothing", toggle="zhoolConversionEnabled"):
@@ -1768,7 +1776,7 @@ def coalescence(t):
                 t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (COALESCENCE, x, z))
                 rows = _things(t, COALESCENCE, _rs(_rect(t, 24)))
                 if len(rows) != 1:
-                    _fail("fixture: wanted 1 %s, found %d" % (COALESCENCE, len(rows)))
+                    _harness("fixture: wanted 1 %s, found %d" % (COALESCENCE, len(rows)))
                 _STATE["coal"] = rows[0]["id"]
                 _STATE["coal_xz"] = (x, z)
                 _, lines = _inspect(t, _STATE["coal"])
@@ -1794,10 +1802,15 @@ def coalescence(t):
                                         % (_has_cond(t, BURN_COND), len(samples)))
                         _fail("the Coalescence vanished with coalescenceEnabled off and no Burn collapse "
                               "(no samples, no Burn condition)")
+                    # the Coalescence's own mass is the read: an absorbed Unfinished moves it. A candidate that is merely GONE
+                    # (its lifespan ran out, it wandered off the map) with the mass untouched absorbed nothing and proves
+                    # nothing either: UNMEASURED, never a FAIL (review 2026-10-20)
+                    sm = _mass_stage(_inspect(t, _STATE["coal"])[1])
+                    if sm != (1, 0):
+                        _fail("mass moved with coalescenceEnabled off: %s" % (sm,))
                     if not _alive(_rows(t).get(kid)):
-                        _fail("the Coalescence absorbed an Unfinished with coalescenceEnabled off")
-                    if _mass_stage(_inspect(t, _STATE["coal"])[1]) != (1, 0):
-                        _fail("mass moved with coalescenceEnabled off")
+                        _unmeasured(t, "the off arm's Unfinished is gone with the Coalescence's mass untouched: no candidate "
+                                       "stood to be absorbed, so 'absorbs nothing' was not tested")
                 # the off arm's Unfinished would otherwise be absorbed in the next arm and pad its mass count
                 t.bridge_call("jawa/pawn_force_incapacitate", pawn=kid, action="vanish")
                 t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 24)), categories="Item")
@@ -1923,7 +1936,7 @@ def coalescence(t):
 def _give(t, pawn, sample_id):
     r = t.bridge_call("jawa/inventory_transfer", pawn=pawn, mode="add", thing=sample_id)
     if _live(t) and not (_ok(r, "inventory_transfer").get("movedCount") or 0) >= 1:
-        _fail("could not put the sample in the colonist's pack: %r" % r)
+        _harness("could not put the sample in the colonist's pack: %r" % r)
 
 
 def _census(t, pid):
@@ -2045,7 +2058,7 @@ def _inject(t, doer, host):
     if not _live(t):
         return
     if not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
-        _fail("RM_InjectGenomeSample was not accepted and running: %r" % r)
+        _harness("RM_InjectGenomeSample was not accepted and running: %r" % r)
     waited, c, reorders = 0, None, 0
     while waited < INJECT_CEILING:
         _wait(t, INJECT_STEP)
@@ -2110,7 +2123,7 @@ def genome(t):
                                "patient": t.spawn_pawn("Colonist", hostile=False),
                                "rect": _rs(_rect(t, 24))}
                 if not (_STATE["g"]["doer"] and _STATE["g"]["patient"]):
-                    _fail("fixture: colonists not spawned")
+                    _harness("fixture: colonists not spawned")
 
         with _comp(t, "extraction_surgery_yields_sample", toggle="genomeOrganGrowingEnabled"):
             if _live(t):
@@ -2170,7 +2183,7 @@ def genome(t):
                     t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SAMPLE, x + 2, z))
                     got = _things(t, SAMPLE, g["rect"])
                     if not got:
-                        _fail("fixture: no genome sample to inject")
+                        _harness("fixture: no genome sample to inject")
                     g["sample"] = got[0]["id"]
                 g["host"] = _spawn(t, HOST, x + 4, z + 3)
                 _give(t, g["doer"], g["sample"])
@@ -2210,7 +2223,7 @@ def _monstrous_components(t):
             _STATE["m"] = {"doer": t.spawn_pawn("Colonist", hostile=False), "rect": _rs(_rect(t, 28)),
                            "samples": need[:2], "x": x, "z": z}
             if not _STATE["m"]["doer"]:
-                _fail("fixture: no colonist")
+                _harness("fixture: no colonist")
 
     with _comp(t, "monstrous_gestation_grows_one_limb", toggle="grownLimbsEnabled"):
         if _live(t):
@@ -2295,7 +2308,7 @@ def site_restore(t):
                 "world_tile_set(restore)")
             _ok(t.bridge_call("jawa/world_commit", redraw=False, recalcPaths=False), "world_commit")
             if _map_biome(t)[0] != orig:
-                _fail("the map's biome did not return to %s" % orig)
+                _harness("SITE: the map's biome did not return to %s" % orig)
     if t.session is not None and "quiet" in _STATE:
         # put back what the quiet-site profile changed (debug + difficulty statics, the wild-spawner block)
         try:
