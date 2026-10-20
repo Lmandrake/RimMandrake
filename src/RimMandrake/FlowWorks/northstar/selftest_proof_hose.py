@@ -183,6 +183,22 @@ def main():
           v(ok_carry, d1, dict(d1, trailCount=2), c2a, dict(c2a), {}, {}) == "FAIL")
     check("sl4_verdict: one colonist (Carrying half not staged) -> UNMEASURED, never PASS",
           v(dict(ok_carry, reel2_staged={"error": "only one free colonist"}), d1, dict(d1), {}, {}, {}, {}) == "UNMEASURED")
+    # review 2026-10-20: a staging that read no hose at the reel (carry None) or the wrong state measured the site, not the mod
+    check("sl4_verdict: reel 1 staged with no hose read (carry None) -> UNMEASURED, never FAIL",
+          v(dict(ok_carry, reel1_staged={"carry": None}), d1, {}, c2a, dict(c2a), {}, {}) == "UNMEASURED")
+    check("sl4_verdict: reel 2 staged Dropped instead of Carrying -> UNMEASURED",
+          v(dict(ok_carry, reel2_staged={"carry": "Dropped"}), d1, dict(d1), c2a, dict(c2a), {}, {}) == "UNMEASURED")
+
+    class NoHoseBridge(FakeBridge):
+        def hp(self, cmd, wait_s=20.0):
+            if cmd == "census":
+                return {"success": True, "tick": self.tick, "hoses": []}
+            return FakeBridge.hp(self, cmd, wait_s)
+    with contextlib.redirect_stdout(io.StringIO()):
+        _, resnh = run_fake(bridge_cls=NoHoseBridge)
+    stnh = {r["id"]: r["status"] for r in resnh["rows"]}
+    check("SL2/SL3 with no hose on the map at the save are UNMEASURED (site), not a MOD FAIL",
+          stnh.get("SL2_save_names_no_class_of_ours") == "UNMEASURED" and stnh.get("SL3_hoses_and_reel_styles_survive") == "UNMEASURED", stnh)
     # H0_probe_channel (review S7): a failing matrix probe channel turns every hose scene row FAIL (ids stay declared)
     import types
     spec = PH.hose_matrix_spec()
@@ -269,6 +285,9 @@ def main():
     check("dropped-hose row on an unread tank is UNMEASURED, not a vacuous PASS", r1["NS_hose_dropped_carries_nothing"]["status"] == "UNMEASURED")
     r2 = rf_rows(tank_units=500, powered=None)
     check("dropped-hose row with a pump that never powered is UNMEASURED, not a vacuous PASS", r2["NS_hose_dropped_carries_nothing"]["status"] == "UNMEASURED")
+    rp = rf_rows(tank_units=500, powered=None)
+    check("a FAIL row over a pump that never powered reads UNMEASURED (SITE), not a MOD FAIL",
+          rp["NS_hose_carries_real_units"]["status"] == "UNMEASURED" and rp["NS_hose_carries_real_units"]["class"] == "SITE", rp["NS_hose_carries_real_units"])
     r3 = rf_rows(tank_units=500, powered=True, short=True)
     check("a FAIL row over a short build_batch reads UNMEASURED (SITE), not a MOD FAIL",
           r3["NS_hose_carries_real_units"]["status"] == "UNMEASURED" and r3["NS_hose_carries_real_units"]["class"] == "SITE", r3["NS_hose_carries_real_units"])

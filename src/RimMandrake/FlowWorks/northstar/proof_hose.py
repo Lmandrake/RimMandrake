@@ -225,7 +225,13 @@ class Scene(object):
         self.B.ticks(2)
         self.charge()
         self.powered = _powered(self.B, self.pump)
+        self.note_power()
 
+    def note_power(self):
+        """A pump that never read powered moves nothing whatever the hose does: that is vanilla's power net (SITE), so a row
+        that FAILs over it reads UNMEASURED like an unbuilt building (review 2026-10-20). A PASS is never touched."""
+        if self.powered is None:
+            self.bad.append({"pump": "never read powered", "pumpPoweredAfterTicks": None})
 
     def lay(self, to=None):
         return self.B.hp("lay:%d,%d,%d,%d" % (self.reel + (to or self.end)))
@@ -317,7 +323,8 @@ def realflow(B, rows):
     """The real-flow bars of hose port step 6 (FINAL §3.6). Each reads the FAR tank's units (G3.11), never the pump's neighbour."""
     def row(rid, ok, detail, cls="MOD", unmeasured=None, bad=None):
         if not ok and not unmeasured and bad:
-            unmeasured = "the scene's buildings were not all built (build_batch survived < asked): %s" % json.dumps(bad, default=str)[:300]
+            unmeasured = "the scene's buildings were not all built or its pump never powered (build_batch survived < asked): %s" % json.dumps(bad, default=str)[:300]
+        unmeasured = unmeasured if not ok else None      # a measured PASS is never turned back into ignorance
         V.row(rows, rid, "UNMEASURED" if unmeasured else ("PASS" if ok else "FAIL"), "SITE" if unmeasured else cls,
               dict(detail, why=unmeasured) if unmeasured else detail)
 
@@ -343,7 +350,8 @@ def realflow(B, rows):
     plump, waited = _poll(B, lambda: _hose(B, s.reel).get("state") == "Plump", 300)
     tint = _hose(B, s.reel).get("tintLiquid")
     row("NS_hose_tint_is_carried_liquid", tint == LIQUID_WATER, {"tintLiquid": tint, "want": LIQUID_WATER,
-        "tarHalf": "UNMEASURED here: a tar channel needs a fresh map's active fluid (water ran first)"}, bad=s.bad)
+        "tarHalf": "UNMEASURED here: a tar channel needs a fresh map's active fluid (water ran first)"}, bad=s.bad,
+        unmeasured=None if lay.get("success") else "the hose was never laid (lay: %s): no tint to read" % json.dumps(lay, default=str)[:200])
     # power cut: destroy the battery -> no transfer -> flat no later than 1.5 x 250 + releaseTicks + transitionTicks = 905
     plumped_at = B.hp("census").get("tick")
     B.call("jawa/destroy_batch", rects="%d,%d,1,2" % s.battery, categories="Building")
@@ -377,7 +385,7 @@ def realflow(B, rows):
     s2 = Scene(B, 2)
     if s2.site(rows, "RF_site2_ready"):
         s2.pump_scene()
-        s2.lay()
+        lay2 = s2.lay()
         B.ticks(260)
         B.call("jawa/destroy_batch", rects="%d,%d,2,2" % s2.tank, categories="Building")
         B.ticks(61)
@@ -385,11 +393,13 @@ def realflow(B, rows):
         s2.build("RM_LiquidTank:%d,%d" % s2.tank)
         B.ticks(61)                            # the reel's free-end cache re-reads within 60 ticks; the index rebuilds per tick
         found = _hose(B, s2.reel).get("netLink")
-        row("NS_hose_port_removed_discovered", gone is None and found is not None, {"afterRemove": gone, "afterRebuild61": found}, bad=s2.bad)
+        row("NS_hose_port_removed_discovered", gone is None and found is not None, {"afterRemove": gone, "afterRebuild61": found}, bad=s2.bad,
+            unmeasured=None if lay2.get("success") else "the hose was never laid (lay: %s)" % json.dumps(lay2, default=str)[:200])
         b0 = _tank(B, s2.tank).get("units") or 0
         B.ticks(260)
         b1 = _tank(B, s2.tank).get("units") or 0
-        row("NS_hose_port_removed_moves", b1 - b0 >= UNITS_PER_LEVEL, {"units": [b0, b1]}, bad=s2.bad)
+        row("NS_hose_port_removed_moves", b1 - b0 >= UNITS_PER_LEVEL, {"units": [b0, b1]}, bad=s2.bad,
+            unmeasured=None if lay2.get("success") else "the hose was never laid")
     # ---- scene 3: the pump at the FAR end, the tank beside the reel (M2); bars below were ">= 5" (one level) in the drum era
     s3 = Scene(B, 3)
     if s3.site(rows, "RF_site3_ready"):
@@ -405,6 +415,7 @@ def realflow(B, rows):
         s3.battery = far_bat
         s3.charge()
         s3.powered = _powered(B, far_pump)
+        s3.note_power()
         lay3 = s3.lay((ox + 16, oz + 9))
         c0 = _tank(B, tank_at_reel).get("units") or 0
         g0 = _held(B, [s3.reel])
@@ -449,6 +460,7 @@ def realflow(B, rows):
         B.ticks(2)
         s5.charge()
         s5.powered = _powered(B, s5.pump)
+        s5.note_power()
         lp = B.hp("lay:%d,%d,%d,%d" % (reel5 + (tank5[0] - 1, tank5[1])))
         e0 = _tank(B, tank5).get("units") or 0
         k5 = _held(B, [reel5])
@@ -763,8 +775,11 @@ class Proof(object):
         hits = VH.save_class_hits(blob)
         styles = {l: blob.count(("RM_HoseReel_%s" % l).encode()) for l in VSH.LOOKS}
         sl2 = not hits["offending"] and hits["rmHoseState"] >= 1 and hits["drivers"] <= max(hose_jobs, 0)
-        self.row("save_load", "SL2_save_names_no_class_of_ours", "PASS" if sl2 else "FAIL", "MOD",
-                 dict(hits, colonistsOnHoseJobsAtSave=hose_jobs, hoseReelStylesInSave=styles))
+        # no hose on the map at the save (a partial run, a block that laid none) leaves nothing for the save to name: the site
+        no_hose = not VH._hose_set(c_a)
+        st2 = "PASS" if sl2 else ("UNMEASURED" if no_hose else "FAIL")
+        self.row("save_load", "SL2_save_names_no_class_of_ours", st2, "SITE" if st2 == "UNMEASURED" else "MOD",
+                 dict(hits, colonistsOnHoseJobsAtSave=hose_jobs, hoseReelStylesInSave=styles, hosesAtSave=0 if no_hose else "some"))
         B.call("rimworld/load_game", saveName=name)
         ok2, waited = V._wait_playing(B)
         if not ok2:
@@ -775,7 +790,8 @@ class Proof(object):
         r2b = VH._carry_view(self._hose_by(c_b, reel2))
         sa, sb = VH._hose_set(c_a), VH._hose_set(c_b)
         ra, rb = VSH._snapshot(c_a), VSH._snapshot(c_b)
-        self.row("save_load", "SL3_hoses_and_reel_styles_survive", "PASS" if sa == sb and ra == rb and sa else "FAIL", "MOD",
+        st3 = "PASS" if sa == sb and ra == rb and sa else ("UNMEASURED" if not sa else "FAIL")   # no hose before the save: nothing to survive
+        self.row("save_load", "SL3_hoses_and_reel_styles_survive", st3, "SITE" if st3 == "UNMEASURED" else "MOD",
                  {"hoses": len(sa), "hosesEqual": sa == sb, "reelStylesEqual": ra == rb, "loadSeconds": waited})
         carry_a = {tuple(h["reel"]): VH._carry_view(h) for h in c_a.get("hoses") or [] if h.get("carry") in ("Carrying", "Dropped")}
         carry_b = {tuple(h["reel"]): VH._carry_view(h) for h in c_b.get("hoses") or [] if tuple(h["reel"]) in carry_a}
@@ -877,7 +893,7 @@ def sl4_verdict(carry, r1a, r1b, r2a, r2b, carry_a, carry_b):
         return "UNMEASURED"
     # a staging that did not reach Dropped / Carrying at the save measured the site, not the mod (review 2026-10-20)
     s1, s2 = (carry.get("reel1_staged") or {}).get("carry"), (carry.get("reel2_staged") or {}).get("carry")
-    if (s1 is not None and s1 != "Dropped") or (s2 is not None and s2 != "Carrying"):
+    if s1 != "Dropped" or s2 != "Carrying":           # None too: no hose read at the reel is no staging at all
         return "UNMEASURED"
     good1 = r1a.get("carry") == "Dropped" and r1a == r1b
     good2 = (r2a.get("carry") == "Carrying" and r2b.get("carry") in ("Carrying", "Dropped") and (r2b.get("trailCount") or 0) > 0

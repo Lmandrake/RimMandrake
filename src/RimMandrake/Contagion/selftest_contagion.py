@@ -513,7 +513,11 @@ class Fake(object):
                 "things": [dict(t) for t in rows[:limit]]}
 
     def t_spawn_pawn(self, kindDef=None, x=0, z=0, faction="none", **k):
+        if kindDef == V.HOST and "spawn_fails" in self.broken:
+            return {"success": True, "pawns": []}      # SITE: the bridge spawned nothing
         p = self.pawn(kindDef, x, z, faction)
+        if kindDef == V.UNFINISHED and "kid_gone_off" in self.broken and not self.on("coalescenceEnabled"):
+            p["vanished"] = True                       # the off arm's candidate is gone with the mass untouched
         if kindDef == V.HOST and "host_vanishes" in self.broken and not self.host_gone:
             self.host_gone = True
             p["vanished"] = True                  # SITE: the spawner's host is gone before the arms read it
@@ -742,7 +746,9 @@ BREAKS = {
     "no_limbs": ["spawner.unfinished_rolls_limbs_and_lifespan"],
     "no_lifespan": ["spawner.unfinished_rolls_limbs_and_lifespan"],
     "corpse_persists": ["spawner.unfinished_dissolves_on_death"],
-    "retile_noop": ["site.retile_to_contagion"],
+    "retile_noop": [],                        # the retile tool did not take: the bench's, UNMEASURED (SITE_EXPECT)
+    "spawn_fails": [],                        # a fixture that never spawned: UNMEASURED, never a finding (SITE_EXPECT)
+    "kid_gone_off": [],                       # no candidate to absorb, mass untouched: UNMEASURED (SITE_EXPECT)
     "no_force_burn": ["burn_forced.repulsor_forces_burn"],
     "weather_not_burn": ["burn_forced.repulsor_forces_burn"],
     "zero_dmg_hurts": ["burn_forced.burn_harmless_at_zero_damage"],
@@ -807,7 +813,11 @@ SITE_EXPECT = {
     "xref_flood": {"log.log_clean": "UNMEASURED"},
     # an undosed visitor whose roof cannot be read is ignorance, never a FAIL (review 2026-10-20)
     "no_dose+roof_read_fails": {"burn_forced.burn_doses_the_exposed_visitor": "UNMEASURED"},
-    "jump_noop": {"spawner.spawner_off_buds_nothing": "FAIL", "burn_natural.burn_off_never_schedules": "FAIL"},
+    # a jump that did not take is the bench's: UNMEASURED, never a FAIL (review 2026-10-20)
+    "jump_noop": {"spawner.spawner_off_buds_nothing": "UNMEASURED", "burn_natural.burn_off_never_schedules": "UNMEASURED"},
+    "retile_noop": {"site.retile_to_contagion": "UNMEASURED"},
+    "spawn_fails": {"spawner.site_ready_spawner": "UNMEASURED"},
+    "kid_gone_off": {"coalescence.coalescence_off_absorbs_nothing": "UNMEASURED"},
     "patient_walks_to_bed": {"genome.extraction_surgery_yields_sample": "PASS"},
     "host_vanishes": {"spawner.spawner_off_buds_nothing": "UNMEASURED",
                       "spawner.spawner_buds_unfinished": "UNMEASURED"},
