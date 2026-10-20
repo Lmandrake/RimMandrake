@@ -93,7 +93,7 @@ def build():
     rb = {}
     for n in ("DEV", "TEST", "AUTHORING", "SHIP"):
         for x in ids_of(open(ML + "ModsConfig.%s.RULED_2026-10-20.xml" % n, encoding="utf-8").read()): rb.setdefault(x.lower(), []).append(n)
-    for x in ids_of(open(ML + "ModsConfig.PAINT.WAVE2_2026-10-19.xml", encoding="utf-8").read()): rb.setdefault(x.lower(), []).append("PAINT")
+    for x in ids_of(open(ML + "ModsConfig.PAINT.RULED_2026-10-20.xml", encoding="utf-8").read()): rb.setdefault(x.lower(), []).append("PAINT")
     w380 = {x.lower() for x in ids_of(open(ML + "ModsConfig.FULL.WAVE2_380_2026-10-19.xml", encoding="utf-8").read())}
     tsv07 = {}
     for r in csv.DictReader(open(WR + "07_profile_assignment.tsv", encoding="utf-8"), delimiter="\t"): tsv07[r["packageId"].lower()] = r

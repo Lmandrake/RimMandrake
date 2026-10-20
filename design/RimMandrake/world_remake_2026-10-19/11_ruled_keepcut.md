@@ -15,7 +15,7 @@ ModsConfig are untouched. Archive of every mod ever listed: `design/RimMandrake/
 Rule applied: **cut** = leave DEV, TEST and AUTHORING, stay in SHIP; the 4 **DROPs** leave every profile.
 
 ## Wave 3 (outright drops, owner-confirmed by the cut)
-`gravtide.mod` (GravTide), `deon.rimtek.core`, `deon.rimtek.digipal`, `deon.rimtek.docmate`. They were TEST/AUTHORING/SHIP only; now in no profile.
+`gravtide.mod` (GravTide), `deon.rimtek.core`, `deon.rimtek.digipal`, `deon.rimtek.docmate`, and (owner card row 6, 2026-10-19 evening, 13_owner_rulings) `boots.sensiblefactions` (dropped permanently; no retained mod depends on it; removed from AUTHORING; not in PAINT). The first four were TEST/AUTHORING/SHIP only; now in no profile.
 Lifecycle `DROPPED-BY-KEEPCUT` in the archive. Not yet removed from `FULL.LATEST` or the live ModsConfig (a deploy step).
 
 ## Cuts that were already in no profile (6, no list change)
@@ -23,8 +23,7 @@ Lifecycle `DROPPED-BY-KEEPCUT` in the archive. Not yet removed from `FULL.LATEST
 `zacharyfoster.mineralsframework` / `mineralssparkle` (already Wave 2 drops). Ruling recorded; nothing to move.
 
 ## Undecided (blank): left where they are
-- `boots.sensiblefactions`: stays in AUTHORING only. Audit: droppable after the paint; timing is his call.
-- `petetimessix.researchreinvented`: stays in DEV/TEST/AUTHORING/SHIP. Audit wants a DEV-to-TEST demotion; everything is tuned against its research UI.
+- `petetimessix.researchreinvented`: stays in DEV/TEST/AUTHORING/SHIP (owner card row 5: keep in the lean list; no demotion).
 - `vanillaexpanded.vfearchitect`: stays in TEST/AUTHORING/SHIP. Needs the research-retag reference guarded first.
 
 ## Closure checks
