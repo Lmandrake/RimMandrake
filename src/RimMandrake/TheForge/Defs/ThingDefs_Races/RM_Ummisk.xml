@@ -59,6 +59,11 @@
     <label>cilia fringe</label>
     <hitPoints>20</hitPoints>
     <skinCovered>true</skinCovered>
+    <!-- Vanilla requires one frostbite-vulnerable part per body (BodyDef.ConfigErrors "no parts vulnerable to
+         frostbite", logged on the 380 list 2026-10-20). The fringe is the ummisk's foot, so it takes vanilla's
+         SnailFoot value (Odyssey BodyParts_Snail.xml, 5): a lava-edge creature (ComfyTemperatureMin 20) dragged
+         into the cold loses its cilia first. The glass tube banks stay at 0. -->
+    <frostbiteVulnerability>5</frostbiteVulnerability>
     <tags>
       <li>MovingLimbCore</li>
     </tags>
