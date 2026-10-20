@@ -87,6 +87,20 @@ components hold 87% of the tiles. The neighbour-to-neighbour hilliness step aver
 | river sources on Flat / SmallHills | 30 / 14 | 0 / 0 |
 | tiles changed | — | 3,699 hilliness + 34 elevation; 0 settlements; 613 landmark tiles (all checked after, below) |
 
+## Applied 2026-10-20 (live, 324 list)
+
+- **Base:** `ASHKARR_DEV_START_2026-10-20_LOCKED` was loaded, and planet type read back
+  `TidallyLocked`. Live hilliness matched the plan's `before` on 3,699 of 3,699 tiles.
+- **Write:** grouped `world_tile_set` calls plus 34 elevation sets, then one `world_commit`.
+  Read-back: 0 hilliness mismatches, 0 elevation mismatches.
+- **Lint:** `world_lint` gave 32 findings before and 32 after, identical per check
+  (1 single-tile island, 19 settlements with no road).
+- **Saved:** `ASHKARR_DEV_START_2026-10-20_MOUNTAINS.rws` (13.6 MB, sha256 `3e2e04aab10f24af…`,
+  both TidallyLocked fields present). Read offline, it matches the plan with 0 diffs, and biomes,
+  rivers (1,309 links) and settlements (97) are unchanged.
+- **Closed unanswered:** four VEF "New faction" dialogs (Junkers, Mercenaries and two more, from
+  VFE Pirates on the 324 list). Each was closed as *Do nothing*, and they will ask again on the next load.
+
 ## Applying it, and what is owed
 
 Apply live with `world_tile_set` (grouped by value) and one `world_commit`. Base it on
