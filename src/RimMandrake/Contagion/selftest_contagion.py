@@ -464,6 +464,16 @@ class Fake(object):
             self.die(p)
         return {"success": True}
 
+    def t_get_roof_batch(self, rects="", **k):
+        # the live tool's shape: one roof defName (or "None") per cell, row by row (validation reads roofs[0])
+        out = []
+        for r in rects.split(";"):
+            rr = rect(r)
+            for z in range(rr[1], rr[1] + rr[3]):
+                for x in range(rr[0], rr[0] + rr[2]):
+                    out.append("RoofConstructed" if any(inrect(x, z, q) for q in self.roofs) else "None")
+        return {"success": True, "roofs": out}
+
     def t_set_roof_batch(self, ops="", **k):
         n = 0
         for op in ops.split(";"):

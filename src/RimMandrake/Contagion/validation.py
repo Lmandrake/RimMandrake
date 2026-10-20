@@ -1293,10 +1293,12 @@ def burn_forced(t):
                     vrow = rows.get(b["open"]) or {}
                     vx, vz = vrow.get("x"), vrow.get("z")
                     cond_on, wx = _has_cond(t, BURN_COND), _weather_now(t)
-                    vroof = None
+                    vroof, roof_read = None, False
                     if vx is not None and vz is not None:
                         rr = t.bridge_call("jawa/get_roof_batch", rects="%d,%d,1,1" % (vx, vz))
-                        vroof = ((rr or {}).get("roofs") or [None])[0] if isinstance(rr, dict) else None
+                        roofs = (rr.get("roofs") or []) if isinstance(rr, dict) else []
+                        roof_read = bool(roofs)
+                        vroof = roofs[0] if roofs else None
                     _, rep_lines = _inspect(t, _STATE["rep_id"])
                     pulsed = "Burn" in nhd
                     diag = {"visitor_at": [vx, vz], "visitor_roof": vroof, "burn_condition": cond_on,
@@ -1309,6 +1311,9 @@ def burn_forced(t):
                                   % (cond_on, wx, diag))
                         _unmeasured(t, "SITE: the forced Burn was not holding at the end of the dose window and the "
                                        "repulsor is not forcing it (%s): the visitor was never under pressure" % diag)
+                    if not roof_read:
+                        # a failed or empty roof read is ignorance, not open sky (review 2026-10-20)
+                        _unmeasured(t, "the open visitor's roof could not be read (%s): exposure cannot be judged" % diag)
                     if vroof not in (None, "None"):
                         _unmeasured(t, "SITE: the open visitor's cell (%s,%s) is roofed (%s): it was sheltered, not "
                                        "exposed" % (vx, vz, vroof))
