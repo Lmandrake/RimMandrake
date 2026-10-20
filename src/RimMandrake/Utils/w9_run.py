@@ -4,9 +4,14 @@
     python.exe src/RimMandrake/Utils/w9_run.py --apply         write for real
     python.exe src/RimMandrake/Utils/w9_run.py --apply --load WORLDMAP_gen
 
+    python3   src/RimMandrake/Utils/w9_run.py --inputs world/paint_inputs_2026-10-20 --check-inputs
+                                                                 offline validation only, no game
+    python.exe src/RimMandrake/Utils/w9_run.py --inputs world/paint_inputs_2026-10-20   dry run of a bundle
+
     ⚠️ There is NO `--dry`. This block claimed one until 2026-08-21 and argparse
     refused it; the dry run is what you get by passing nothing. The real flags are
-    --apply, --load, --report, --skip-links, --despite-map, --despite-abort.
+    --apply, --load, --report, --skip-links, --despite-map, --despite-abort,
+    --inputs DIR, --feature-def, --check-inputs.
 
 🔴 WINDOWS `python.exe`. The bridge is on Windows loopback; WSL cannot reach it.
 
@@ -61,12 +66,79 @@ from game_paths import SAVES as _SAVES_DIR  # noqa: E402
 import save_played_tiles  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
-TILES = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv")
-LINKS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_links.csv")
-SETTS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_settlements.csv")
-MUTS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_mutators.csv")
-LMKS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_landmarks.csv")
+RECORD_DIR = os.path.join(REPO, "world")
+TILES = os.path.join(RECORD_DIR, "ASHKARR_WORLDMAP_tiles.csv")
+LINKS = os.path.join(RECORD_DIR, "ASHKARR_WORLDMAP_links.csv")
+SETTS = os.path.join(RECORD_DIR, "ASHKARR_WORLDMAP_settlements.csv")
+MUTS = os.path.join(RECORD_DIR, "ASHKARR_WORLDMAP_mutators.csv")
+LMKS = os.path.join(RECORD_DIR, "ASHKARR_WORLDMAP_landmarks.csv")
 EXPECT_TILES = 21872
+FEATURE_DEF_DEFAULT = "WB_MapLabelFeature"
+# The five stamp files, by layer. `--inputs DIR` rebinds all five at once to DIR (G7, runbook
+# §0.5): a remapped bundle is stamped from its own folder instead of overwriting the frozen
+# RECORD (`world/ASHKARR_WORLDMAP_tiles.csv.frozen.json` guards it). Nothing here ever writes
+# a CSV - this script only reads them.
+LAYERS = ("tiles", "links", "settlements", "mutators", "landmarks")
+
+
+def set_inputs(dirpath):
+    """Rebind TILES/LINKS/SETTS/MUTS/LMKS to `dirpath`/ASHKARR_WORLDMAP_<layer>.csv.
+
+    Returns {layer: path}. A missing file is NOT an error here; check_inputs() decides.
+    """
+    global TILES, LINKS, SETTS, MUTS, LMKS
+    d = os.path.abspath(dirpath)
+    p = {k: os.path.join(d, "ASHKARR_WORLDMAP_%s.csv" % k) for k in LAYERS}
+    TILES, LINKS, SETTS, MUTS, LMKS = (p["tiles"], p["links"], p["settlements"],
+                                       p["mutators"], p["landmarks"])
+    return p
+
+
+def inputs_feature_def(dirpath):
+    """The single FeatureDef named by DIR/ASHKARR_WORLDMAP_features.csv, or None.
+
+    A bundle built for a mod list without Worldbuilder cannot use `WB_MapLabelFeature`; its
+    features CSV says which def its labels carry. Two or more defs -> None (ambiguous;
+    stage 6 imports every label under ONE def, so the caller must pass --feature-def).
+    """
+    rows = read_csv(os.path.join(os.path.abspath(dirpath), "ASHKARR_WORLDMAP_features.csv"))
+    if not rows:
+        return None
+    defs = {r.get("def") for r in rows if r.get("def")}
+    return defs.pop() if len(defs) == 1 else None
+
+
+def check_inputs(out):
+    """Offline validation of the five stamp files now bound. -> list of problems ([] = ok).
+
+    No bridge. Catches what would otherwise surface mid-stamp on a live world: a missing
+    layer, a tiles file of the wrong subdivision, a duplicated tile, a header the bridge
+    importer will not read.
+    """
+    need = {"tiles": {"tile", "biome", "region"}, "links": {"kind", "a", "b", "def"},
+            "settlements": {"faction_def", "name", "tile"}, "mutators": {"tile", "mutators"},
+            "landmarks": {"tile", "landmark"}}
+    paths = dict(zip(LAYERS, (TILES, LINKS, SETTS, MUTS, LMKS)))
+    probs = []
+    for k in LAYERS:
+        rows = read_csv(paths[k])
+        if rows is None:
+            probs.append("%s: missing (%s)" % (k, paths[k]))
+            continue
+        cols = set(rows[0].keys()) if rows else set()
+        miss = need[k] - cols
+        if miss:
+            probs.append("%s: missing column(s) %s" % (k, sorted(miss)))
+            continue
+        if k == "tiles":
+            ids = [int(r["tile"]) for r in rows]
+            if len(ids) != EXPECT_TILES or len(set(ids)) != EXPECT_TILES:
+                probs.append("tiles: %d rows / %d distinct, expected %d"
+                             % (len(ids), len(set(ids)), EXPECT_TILES))
+            if any(not r["biome"] for r in rows):
+                probs.append("tiles: %d row(s) with an empty biome" % sum(1 for r in rows if not r["biome"]))
+        w(out, "- input %-11s %6d rows  %s" % (k, len(rows), paths[k]))
+    return probs
 
 
 def read_csv(path):
@@ -204,7 +276,7 @@ def _ask_or_refuse(conflict, out, despite):
     return False
 
 
-def main():
+def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true", help="write for real; default is a dry run")
     ap.add_argument("--load", default=None, help="load this save first and wait for it")
@@ -227,12 +299,44 @@ def main():
                     help="proceed even though the load aborted. Records it loudly in the "
                          "report. Only justified when the WORLD layer has been shown to be "
                          "readable and the abort is downstream of it.")
-    a = ap.parse_args()
+    ap.add_argument("--inputs", default=None, metavar="DIR",
+                    help="stamp from DIR/ASHKARR_WORLDMAP_{tiles,links,settlements,mutators,landmarks}.csv "
+                         "instead of the frozen record in world/ (G7). All five must exist. The record "
+                         "is never written either way.")
+    ap.add_argument("--feature-def", default=None,
+                    help="FeatureDef stage 6 imports the region labels under. Default: the one def "
+                         "named by DIR/ASHKARR_WORLDMAP_features.csv under --inputs, else %s."
+                         % FEATURE_DEF_DEFAULT)
+    ap.add_argument("--check-inputs", action="store_true",
+                    help="validate the stamp files offline and exit; no bridge, no game")
+    a = ap.parse_args(argv)
     apply = bool(a.apply)
 
     report = a.report or os.path.join(REPO, "infrastructure", "output",
                                       "w9_run_%s.md" % time.strftime("%Y-%m-%d_%H%M"))
     out = ["# W9 run - %s (%s)" % (time.strftime("%Y-%m-%d %H:%M"), "APPLY" if apply else "DRY"), ""]
+
+    feature_def = a.feature_def
+    if a.inputs:
+        if not os.path.isdir(a.inputs):
+            print("--inputs %s: not a directory" % a.inputs)
+            return 12
+        set_inputs(a.inputs)
+        feature_def = feature_def or inputs_feature_def(a.inputs)
+        w(out, "- inputs: `%s` (not the record in world/)" % os.path.abspath(a.inputs))
+    feature_def = feature_def or FEATURE_DEF_DEFAULT
+    w(out, "- stage 6 featureDef: `%s`" % feature_def)
+    probs = check_inputs(out)
+    for p in probs:
+        w(out, "- 🔴 input: %s" % p)
+    if a.check_inputs:
+        w(out, "- check-inputs: %s" % ("FAIL" if probs else "ok (offline only - the stamp itself needs a world)"))
+        return 13 if probs else 0
+    if probs and a.inputs:
+        # The record path keeps its old tolerance (stages 4/4b report a missing file and
+        # carry on); a bundle passed by hand must be whole.
+        w(out, "- 🔴 --inputs bundle is incomplete. Stopping before the bridge.")
+        return 13
 
     host, port, token = resolve_endpoint()
     if not token:
@@ -471,7 +575,7 @@ def main():
         # line used to claim — see the module docstring).
         r = rb.call("jawa/world_features_import", {"path": TILES, "apply": apply,
                                                    "expectTiles": EXPECT_TILES,
-                                                   "featureDef": "WB_MapLabelFeature"})
+                                                   "featureDef": feature_def})
         w(out, "- **stage 6 regions**: success=%s %s" % (r.get("success"), str(r.get("message") or r.get("note"))[:200]))
         if not r.get("success"):
             w(out, "- 🔴 stage 6 regions FAILED. Stopping before commit.")
