@@ -29,3 +29,4 @@ Collected at one sitting by question card, one card per biome. Each card showed 
 | Wasteland | A wretched, poisoned basin where history never decays. The land is the monster, and the creatures are its victims. | picked by card |
 | Webwork | So quiet that you know you're in terrible danger. It makes treasure, it eats all, and it's coming for you. | typed |
 | WeepingStones | Bright dry stone and secret weeping shade, where every pool is a gathering. Keep the oasis healthy, or it breeds something wrong. | picked by card |
+| Warscar (Scarlands; not yet in Baroque Biomes) | Poisoned forever, mad beasts, silent guns. Everyone calls it cursed, and everyone who scavenges here learns why. | picked by card |
