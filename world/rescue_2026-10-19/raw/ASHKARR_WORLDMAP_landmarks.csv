@@ -1,0 +1,3009 @@
+tile,landmark,why,name
+3,Cavern,,Beryl's Caves
+6,sw_Sarlacc,,Wahenseum Creature
+7,sw_Sarlacc,,Ouleria Sarlacc
+8,AncientToxVent,,Cobabiarco Tox Vents
+10,Oasis,"the Hutt wells - six named, not 227",Ossuvane
+15,Ruins,,Shoinor Ruins
+16,VEE_GravelBeach,,Busttra Stone-Littered Beach
+22,VEE_SerpentineCanyons,,Deer Eye Canyons
+24,VEE_MeteorCrater,,Kaium Impact Basin
+25,Oasis,the Hutt wells - water is the currency here,Crima Oasis
+30,AncientToxVent,,Blackrock Tox Vents
+33,Cavern,,Ereandhatuay Caverns
+37,VEE_FleshPits,"the superorganism, where it surfaces",Vasalo Anomalous Caverns
+38,DryLake,,Jani Barren Lake
+43,DryLake,,Theeria Sand Pit
+44,sw_Sarlacc,,Caisen Creature
+45,Cavern,,Doistia Caverns
+46,VEE_Cenotes,,Trout Heel Cenote Field
+48,Ruins,,Orangebeetle Ruins
+50,VEE_CactusFields,,Blue Yak Cactus Field
+51,VEE_CactusFields,,Comareiro Cactus Plain
+54,Ruins,,Ruined Purple Falcon
+57,Valley,,Crocodile Valley
+62,VEE_SerpentineCanyons,,Comboa Canyons
+64,sw_Sarlacc,,White Chough Sarlacci Burrow
+65,sw_Sarlacc,,Pit of Red
+66,AncientSmokeVent,,Dinussia's Vice Exhaust Duct
+69,VEE_ContaminatedReservoir,,Gavril's Radioactive Waters
+70,VEE_MeteorCrater,,Haberon Impact Basin
+81,VEE_RelictDelta,,Butgoora Braided Flats
+83,Oasis,,Kelvarrin
+84,Cavern,a mountain you can get inside,Seatre Tunnel
+85,TerraformingScar,,Orange Salmon Scar
+86,VEE_CraterLake,,Teruay Caldera Lake
+92,VEE_DustBowl,,Hegalia Scorched Dustplain
+97,VEE_CactusFields,,Verea Xerophile Garden
+99,VEE_Cenotes,,Ououm Collapsed Limestone Pools
+100,VEE_Cenotes,,Gacam Karst Hollows
+105,VEE_DustBowl,ground that was farmed once and is not any more,Gacó Parched Barrens
+106,VEE_QuicksandPits,,Orangeboar Loose Earth Pockets
+107,Chasm,,Eagle Sinkhole
+111,VEE_CactusFields,,Entussia Prickled Desert
+116,VEE_MeteorCrater,nothing on this world stops a rock,Hadlelia Impact Basin
+117,Ruins,"scavenging ground, and the reason the clan is here",Nehistdos Ruins
+132,AncientSmokeVent,,Caixada Chimneys
+134,DryLake,,Tranca Sand Pit
+142,Oasis,,Threnn Comb
+143,Ruins,,Deadnightingale City
+144,Oasis,,Ummaris
+151,VEE_SerpentineCanyons,,Meinuia Canyons
+152,VEE_JaggedRocks,,Boxigocrou Jagged Ridges
+158,AncientHeatVent,,Banastra Infernal Vents
+159,TerraformingScar,,Engo Rift
+161,AncientHeatVent,,Bardoa Heat Ducts
+162,VEE_Cenotes,,Iñovas Collapsed Limestone Pools
+163,Cavern,,Howard's Caves
+171,VEE_StagnantRivulet,,Magpie Paw Standing Channel
+174,VEE_DryRiver,,Irda's Ear Barren River
+181,Harbor,,Lavego Harbor
+195,sw_Sarlacc,,Sarlacc Pit
+198,VEE_JaggedRocks,,Racam Jagged Ridges
+199,Cliffs,,Delmenunt Wall
+210,sw_Sarlacc,,Hehieran Sarlacc
+213,TerraformingScar,,Allonla Sundering
+214,TerraformingScar,,Atdos Sundering
+219,VEE_SerpentineCanyons,,Hiunia Canyons
+221,VEE_QuicksandPits,,Koberon Loose Earth Pockets
+224,ToxicLake,,Red Toxic Lake
+252,Cavern,,Nagalerbra Cave Network
+260,VEE_PebbleDunes,"gravel desert, harder going than sand",Meevein Pebble Dunes
+262,Ruins,,Beatrice's Collapse
+266,DryLake,,Cambust Sand Pit
+269,Valley,,Orangegiraffe Gulch
+272,VEE_DustBowl,,Asoum Scorched Dustplain
+275,VEE_SaltPlains,,Alotrobrei Saline Flats
+277,Cavern,,Hior Cavern
+279,Hollow,,Termite Heel Hollow
+280,VEE_Cenotes,,Teda Cenote Lakes
+285,VEE_QuicksandPits,,Ler Unstable Ground
+286,VEE_QuicksandPits,,Wombat Hand Quicksand Pits
+291,Cavern,,Gona Cavern
+323,DryLake,,Wasnedio Sand Pit
+327,VEE_Cenotes,,Crouca Cenote Field
+328,VEE_Cenotes,,Funinor Karst Hollows
+330,Cavern,,Alex's Caves
+338,AncientHeatVent,,Asrarrei Heat Vents
+339,Cavern,,Katia's Caves
+340,Cavern,,Blackhyena Caverns
+343,Valley,,Troca Canyon
+348,Valley,,Teler Gully
+362,Valley,,Orange Jellyfish Canyon
+364,Valley,,Thialia Valley
+365,VEE_Cenotes,,Maabe Collapsed Limestone Pools
+378,VEE_JaggedRocks,,Ordio Jagged Rocks
+383,VEE_DryRiver,,Tedum Sand River
+390,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Thihatheroum Dunes
+397,Cavern,,Borba Cave Network
+398,VEE_Cenotes,,Witasunt Water-Filled Cenotes
+415,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Letheus Desiccated Ocean
+428,Cavern,,Megumi's Caves
+437,TerraformingScar,,Cacurpe Scar
+442,TerraformingScar,,Poppy's Sundering
+443,Ruins,,Ivan's Honor
+446,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Neuia Pebble Strand
+448,RUT_ComplexStructures,,Dilapidated Buteraisan
+449,Harbor,,Atereselior Port
+453,VEE_JaggedRocks,,Purplemule Jagged Rocks
+457,AB_TarLakes,"the tar pits, and what is preserved in them",Cammabiscu Tar Lakes
+461,Cliffs,,Owl Wall
+462,Valley,,Masen Canyon
+463,VEE_Cenotes,,Bluebison Cenote Field
+464,VEE_SaltPlains,,Reinum Evaporation Plain
+465,Valley,,Whitepond Vale
+469,VEE_FleshPits,"the superorganism, where it surfaces",Onfenan Flesh Pit Expanse
+476,AB_TarLakes,"the tar pits, and what is preserved in them",Hieron Tar Lakes
+485,TerraformingScar,,Kyle's Delusion
+487,VEE_CactusFields,,Thain Xerophile Garden
+492,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Noteron Wastes
+494,VEE_Cenotes,,Hisum Collapsed Limestone Pools
+497,Cavern,,Sparrowbody Tunnel
+499,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through",Blue Stingray Canyons
+501,Valley,,Braña Valley
+507,VEE_Cenotes,,Hioulus Karst Hollows
+508,Cliffs,,Ourium Cliffs
+513,VEE_Cenotes,,Hardypaw Karst Hollows
+515,Valley,,Edna Ravine
+519,VEE_DustBowl,ground that was farmed once and is not any more,Purple Dust Bowl
+530,VEE_JaggedRocks,,Willa's Jagged Rocks
+533,VEE_Cenotes,,Blueturkey Water-Filled Cenotes
+535,Cavern,,Hinuay Cavern
+541,Cavern,,Tertheistan Cave Network
+547,DryLake,,Heralller Sand Pit
+555,ToxicLake,,Zinaida's Dumping Grounds
+557,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on,Embaixada Chemplant
+575,Cliffs,"the crags break in walls, not slopes",Prime Pig Cliffs
+584,Cavern,,Blue Caverns
+587,Cavern,,Duck Claw Tunnel
+604,VEE_Cenotes,,Itunt Karst Hollows
+606,Cavern,,Otter Shoulder Cavern
+608,Cavern,,Katia's Caves
+609,Ruins,"scavenging ground, and the reason the clan is here",Allen Ruins
+618,FrozenRuins,somebody lived out here once - scavenging ground,Opossum Frozen Ruins
+632,Oasis,,Isk Vaal
+634,HotSprings,geothermal water - the one warm bath on this planet,Stinkbugwrist Hot Springs
+635,VEE_Cenotes,,Dead Chimpanzee Karst Hollows
+639,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Seara Quicksand Dunes
+660,TerraformingScar,,Asdio Fault
+674,VEE_SulfuricLake,"yellow water, and the smell reaches a day out",Breixos Stinging Waters
+675,TerraformingScar,,Dorboduecai Howl
+677,AncientGarrison,,Scarlet's Fort
+678,AncientGarrison,somebody defended this once,Haareera Garrison
+686,TerraformingScar,,The Wound
+707,RUT_ComplexStructures,,Boarheel Ruins
+709,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Thaalberium Pebble Strand
+716,VEE_DryRiver,,Hatler Barren River
+731,VEE_FleshPits,,Chiyoko's Undoing Anomalous Caverns
+758,Archipelago,,Ferret Chain
+762,Oasis,,Quellith
+763,Oasis,,Dessarin Weep
+765,VEE_DryRiver,a watercourse that runs once a decade,Dove's Delight Barren River
+769,TerraformingScar,,Hadley's Wound
+776,Oasis,,Edlium Oasis
+780,VEE_DryRiver,,Youinor Sand River
+788,Cavern,,Black Cavern
+807,Cavern,,Tol Cavern
+809,Cliffs,"the crags break in walls, not slopes",Bad Lemur Cliffs
+819,Cavern,,Toxrarmi Caverns
+827,VEE_DustBowl,,Crica Dust Bowl
+829,Valley,,Allberium Gully
+847,DryLake,,Xigorole Sand Pit
+866,Oasis,,Vulla Catch
+868,VEE_Cenotes,,Onhatna Karst Hollows
+869,Cavern,,Anya's Caves
+871,VEE_Cenotes,,Tramala Karst Hollows
+876,VEE_MeteorCrater,nothing on this world stops a rock,Andleuay Impact Crater
+880,Cliffs,,Michael's End
+882,Valley,,Xigoigal Canyon
+883,VEE_Cenotes,,Roughgrouse Cenote Field
+888,VEE_DryRiver,,Neisium Sand River
+889,DryLake,,Bagoba Salt Flat
+892,Ruins,,Yana's Cataclysm
+894,Ruins,,Ruined Loabe
+899,Crevasse,,Wasoum Break
+903,Cavern,,Green Gull Cavern
+905,Cavern,,Flyheel Caverns
+907,Cavern,,Datran Cave Network
+920,RUT_ComplexStructures,,Maentuay Town
+931,Oasis,"a Hutt well - dug for the holding beside it, and charged for",Goodfox Oasis
+939,Cavern,,Henen Caverns
+969,Valley,,Badger Palm Gully
+971,Valley,,Roraxigo Canyon
+983,TerraformingScar,,Choco Fault
+990,VEE_GravelBeach,,Megascarab Gravel Shore
+992,VEE_FleshPits,"the superorganism, where it surfaces",Badhand Flesh Pit Expanse
+994,AB_TarLakes,"the tar pits, and what is preserved in them",Grayclaw Tar Lakes
+998,Cliffs,,Gabela Wall
+999,VEE_JaggedRocks,,Wana Jagged Rocks
+1001,Cavern,,Omebium Tunnel
+1003,Chasm,,Canbetroso Sinkhole
+1005,Valley,,Buttheler Gorge
+1035,Cavern,,Anfisa's Caves
+1037,VEE_RockRidge,a spine of standing rock,Heder Spine
+1038,VEE_Cenotes,,Black Karst Hollows
+1039,Valley,,Ambas Valley
+1045,Valley,,Tiolia Gulch
+1046,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Bluequail Pebble Strand
+1051,Cliffs,,Gaia Cliffs
+1054,VEE_Cenotes,,Notdio Cenote Lakes
+1055,VEE_Cenotes,,Reinus Cenote Field
+1062,VEE_FleshPits,"the superorganism, where it surfaces",Gogu Flesh Pit Expanse
+1071,Cliffs,,Aremenistia Rampart
+1073,Cliffs,,Isla's End
+1074,Cavern,,Purplechinchilla Cave Network
+1124,VEE_Cenotes,,Butium Cenote Lakes
+1144,Cavern,,Evetean Cavern
+1145,VEE_Cenotes,a roof that fell into the water table,Abeneiro Cenote Lakes
+1151,Hollow,"shelter, if you get there before dark",Stingray's Retirement Hollow
+1153,VEE_RockRidge,a spine of standing rock,Ismonheler Crest
+1156,Cavern,a mountain you can get inside,Maomelalior Cave Network
+1172,Oasis,,Nhar Ellu
+1181,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Terera Wastes
+1192,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Melaler Sinking Dunes
+1200,TerraformingScar,,Tona Scar
+1214,Ruins,,Herus Ruins
+1215,TerraformingScar,,The Rift
+1216,Ruins,,Dilapidated Kangarooneck
+1218,Ruins,,Entbineria Town
+1219,AncientGarrison,,Elkwrist Garrison
+1238,AbandonedColonyTribal,a tribe that did not make it through a dry decade,Prime Dove Village
+1269,VEE_FleshPits,,Colco Anomalous Caverns
+1284,VEE_StoneForest,"wind-cut pillars, a landscape that looks made",Xigoque Craggy Stone Thicket
+1295,CoastalIsland,,Verea Island
+1301,Oasis,,Sillik Face
+1302,Oasis,,Orrindal
+1303,Oasis,a Hutt well - the holding beside it exists because of this water,Tessavorn
+1309,TerraformingScar,,Yana's Folly
+1312,VEE_Cenotes,,Hisberium Cenote Lakes
+1313,Valley,,Cacao Canyon
+1316,Ruins,,Ruined Anerjala
+1331,Cliffs,,Wasbium Rampart
+1332,Chasm,,Gnu Chasm
+1342,Harbor,,Orangeshrub Harbor
+1347,Cavern,,Dinuay Caverns
+1348,Cavern,,Ilarion's Caves
+1362,VEE_JaggedRocks,,Angus's Jagged Ridges
+1363,Cliffs,,Icyelk Rampart
+1375,Valley,,Blackpanda Valley
+1382,Cavern,,Bebaitro Caverns
+1392,Cavern,,Tatyana's Caves
+1393,Valley,,Islabo Gulch
+1399,Cavern,,Badhand Cavern
+1402,Valley,,Loutro Gully
+1405,VEE_Cenotes,,Seara Water-Filled Cenotes
+1408,Cavern,,Ash's Caves
+1411,Cliffs,,Crow Rampart
+1415,AB_QuicksandPits,soft ground under the fungus,Arba Quicksand Pits
+1441,Valley,,Borcur Gorge
+1444,Valley,,Stereistan Valley
+1445,Chasm,,Starling Arm Sinkhole
+1446,VEE_DryRiver,,Herheeredos Barren River
+1455,TerraformingScar,,Allora Sundering
+1460,VEE_DryRiver,,Combo Barren River
+1505,Ruins,"scavenging ground, and the reason the clan is here",Bluewalrus Ruins
+1516,FrozenRuins,somebody lived out here once - scavenging ground,Goneler Ice City
+1558,Ruins,,Ruined Omehaistia
+1560,Valley,"the way through a range, and everyone uses it",Fordos Gully
+1576,TerraformingScar,,Gray Scar
+1602,Crevasse,,Enastela Fissure
+1604,Chasm,a crack too wide to jump and too deep to see,Tobor Fracture
+1610,VEE_PebbleDunes,"gravel desert, harder going than sand",Camño Rolling Pebble Fields
+1621,AncientGarrison,,Old Mouse Armory
+1641,TerraformingScar,somebody tried to fix this planet and failed,Icylion Scar
+1652,Oasis,,Kharrow Spire
+1653,Oasis,,Ulm Sedrath
+1660,Oasis,,Vorsalla
+1661,Oasis,a Hutt well - the holding beside it exists because of this water,Hado Oasis
+1665,Oasis,,Ilvanne
+1667,Oasis,,Ghesh Ammar
+1668,Cavern,,Aran Cavern
+1674,VEE_Cenotes,,Allfinussia Cenote Lakes
+1677,VEE_Cenotes,,Stiseralium Karst Hollows
+1678,Oasis,,Thauay Refuge
+1688,VEE_Cenotes,,Purple Pheasant Karst Hollows
+1689,Cavern,,Leca Tunnel
+1692,Chasm,,Teinum Sinkhole
+1693,VEE_Cenotes,,Snake Elbow Water-Filled Cenotes
+1695,Cavern,,Banastra Cavern
+1704,DryLake,,Alboio Salt Flat
+1708,Cavern,,Youmeen Cavern
+1711,Cavern,,Bluegerbil Cavern
+1715,Cavern,,Grayhorn Cave Network
+1716,Cavern,,Cerabruem Tunnel
+1721,Cavern,,Ania Tunnel
+1748,Chasm,,Nothehien Sinkhole
+1755,Cliffs,,Vasily's End
+1761,Cliffs,,Chetoxque Cliffs
+1762,Cavern,,Farlaistia Cavern
+1765,Cliffs,,Robebar Wall
+1767,Chasm,,Hippopotamus Chasm
+1771,VEE_Cenotes,,Green Collapsed Limestone Pools
+1773,VEE_Cenotes,,Doatrogaiño Collapsed Limestone Pools
+1774,Cavern,,Robaibaitox Caverns
+1775,Cavern,,Green Cave Network
+1776,Valley,,White Echidna Valley
+1779,Valley,,Croio Gully
+1780,VEE_Cenotes,,Larisa's Arrogance Cenote Lakes
+1781,Cavern,,Purplehide Cavern
+1782,VEE_Cenotes,a roof that fell into the water table,Orangeraccoon Collapsed Limestone Pools
+1796,DryLake,,Saio Sand Lake
+1817,VEE_SulfuricLake,"yellow water, and the smell reaches a day out",Celia's Sulfuric Lake
+1837,sw_DeadSarlacc,"the second sarlacc, and it is dead - somebody killed it",Dead Sarlacc
+1840,DryLake,a playa - the salt flat a river dies in,Thedio Sand Lake
+1842,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Whiteboomrat Saline Flats
+1847,Valley,,Irobaaban Valley
+1859,AB_TarLakes,"the tar pits, and what is preserved in them",Magpiefoot Tar Lakes
+1866,AB_TarLakes,"the tar pits, and what is preserved in them",Komaera Tar Lakes
+1875,VEE_GravelBeach,,Okapi Rocky Shoreline
+1904,VEE_Cenotes,,Roundelephant Seal Cenote Lakes
+1907,Cliffs,"the crags break in walls, not slopes",Farfoot Cliffs
+1912,Valley,,Cailexada Gorge
+1942,Cliffs,"the crags break in walls, not slopes",Chinchillanose Rampart
+1969,Cavern,,Veogaban Cavern
+1972,Valley,,Wasla Canyon
+1973,ToxicLake,left over from whatever happened here,Wilfred's Dumping Grounds
+1985,Oasis,,Ennoril
+1986,Oasis,a Hutt well - the holding beside it exists because of this water,Forna Oasis
+1989,Chasm,,Orangeseal Chasm
+1990,Cavern,,Trebo Cavern
+1995,Cliffs,,Inentinum Cliffs
+1997,Chasm,,Coyote Paw Chasm
+2010,AncientWarehouse,,Farfarlia Storehouse
+2011,VEE_DryRiver,,Isen Dry River
+2032,Valley,"the way through a range, and everyone uses it",Thianorinum Valley
+2039,Oasis,"a Hutt well - dug for the holding beside it, and charged for",Lándoa Haven
+2066,VEE_PebbleDunes,"gravel desert, harder going than sand",Green Rolling Pebble Fields
+2112,Chasm,,Eraerantuay Fracture
+2114,VEE_Cenotes,,Omeoum Cenote Lakes
+2119,VEE_Cenotes,,Emlana Cenote Lakes
+2136,ToxicLake,left over from whatever happened here,Zoya's Dumping Grounds
+2139,Cavern,,Bonthnalia Cavern
+2142,Valley,,Todos Valley
+2181,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Peza Salt Plain
+2210,DryLake,a playa - the salt flat a river dies in,Asrecur Sand Lake
+2219,Cliffs,,Choco's Stand Cliffs
+2234,RUT_ComplexStructures,,Varvara's Vice
+2241,VEE_JaggedRocks,,Isis's Jagged Ridges
+2247,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Toera Pebble Strand
+2249,Archipelago,a scatter of rock in the shallows,Primestinkbug Islands
+2250,VEE_RelictDelta,,Dead Stingray Relict Delta
+2277,TerraformingScar,,Miñoca Scar
+2292,Cavern,,Seistia Cavern
+2294,Cavern,,White Cave Network
+2297,VEE_Cenotes,,Green Cenote Lakes
+2312,VEE_Cenotes,,Bebar Cenote Lakes
+2314,Cavern,,Kumiko's Caves
+2318,Valley,,Redrock Gully
+2323,Cavern,,Humberto's Caves
+2345,TerraformingScar,,Youor Scar
+2346,TerraformingScar,,Grim Sundering
+2349,Oasis,the Hutt wells - water is the currency here,Youussia Haven
+2354,VEE_SerpentineCanyons,,Gaborma Canyons
+2358,Valley,,Meera Gully
+2374,Ruins,,Dilapidated Black Eel
+2375,Ruins,,Vela Ruins
+2376,Ruins,,Koor Ruins
+2377,AncientHeatVent,,Tiberium Heat Vents
+2380,Ruins,,Netiium Ruins
+2383,Ruins,,Katten's Bluff
+2403,RUT_GapingDoom,,The Gaping Doom
+2422,Archipelago,,Big Hamster Islands
+2437,Valley,,Olesya's Conceit Valley
+2438,VEE_Cenotes,,Curro Cenote Lakes
+2439,Cavern,,Odile's Deception Tunnel
+2440,Cavern,,Panther Eye Cavern
+2447,DryLake,,Crica Barren Lake
+2451,Valley,,Foren Vale
+2459,VEE_RockRidge,a spine of standing rock,Harsh Duck Ridge
+2462,sw_DeadSarlacc,,Dead Sarlacc
+2463,sw_DeadSarlacc,,Dead Sarlacc
+2468,sw_DeadSarlacc,,Dead Sarlacc
+2473,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Beñabraa Dunes
+2487,Cavern,,Rick's Caves
+2490,Cavern,,Trobo Cave Network
+2500,Cavern,,Eathihaberium Caverns
+2503,Cavern,,Galga Cavern
+2508,Valley,,Mantisear Gully
+2523,VEE_Cenotes,,Peza Collapsed Limestone Pools
+2524,Cavern,,Embaixada Cavern
+2525,Valley,,Josephine's Facade Gully
+2526,Cavern,,Redrat Caverns
+2532,TerraformingScar,,Save Howl
+2535,Cavern,,Green Tunnel
+2539,Cavern,,Hatora Tunnel
+2540,AB_MagmaticQuagmire,"a patch of ground that is not quite solid, on the Scald rim - owner asked for it by name",Leneunt Magmatic Quagmire
+2544,Valley,"the way through a range, and everyone uses it",Verithinor Vale
+2545,AncientGarrison,,Gil's Military Base
+2558,Cavern,,Witleistia Cave Network
+2560,AncientGarrison,somebody defended this once,Fort Isna
+2568,VEE_MeteorCrater,,Icy Parrot Impact Basin
+2577,VEE_DryRiver,,Boamagu Barren River
+2588,Cavern,,Green Dolphin Cavern
+2597,VEE_MeteorCrater,,Hawasen Meteor Crater
+2603,TerraformingScar,,Lereeron Wound
+2604,VEE_SulfuricLake,"yellow water, and the smell reaches a day out",Eveus Acidic Basin
+2607,RUT_ComplexStructures,,Kaalltioinum Ruins
+2609,CoastalIsland,,Canga Island
+2613,VEE_Cenotes,,Vitaly's Ruse Water-Filled Cenotes
+2616,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Velou Rocky Shoreline
+2618,VEE_JaggedRocks,,Delkoia Jagged Rocks
+2619,Cavern,,Tederesinum Cavern
+2620,Cliffs,,Salamander Rampart
+2621,VEE_JaggedRocks,,Pelican's Misstep Jagged Ridges
+2637,AB_TarLakes,"the tar pits, and what is preserved in them",Finuay Asphalt Pits
+2645,VEE_Cenotes,,Bamenda Karst Hollows
+2646,Cavern,,Enthdio Cave Network
+2650,DryLake,,Hareia Dry Lake
+2661,VEE_DustBowl,ground that was farmed once and is not any more,Enler Blasted Expanse
+2664,Cavern,,Dinus Cave Network
+2673,Cavern,,Scuño Cave Network
+2675,VEE_Cenotes,,Erba Water-Filled Cenotes
+2677,AncientGarrison,somebody defended this once,Iñoma Station
+2679,DryLake,,Dabra Salt Flat
+2691,Ruins,"scavenging ground, and the reason the clan is here",Peambenbai Ruins
+2692,VEE_JaggedRocks,,Hawk Hand Jagged Rocks
+2699,VEE_Cenotes,,Combarro Karst Hollows
+2709,Ruins,,Megascarabfoot Ruins
+2715,Ruins,,Adam's Downfall
+2747,Ruins,,Deadkangaroo City
+2766,Cavern,,Paeron Caverns
+2769,Cavern,,Hatistia Cavern
+2793,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Troutchin Silted Creek
+2794,Valley,,Hadhabium Gully
+2800,Hollow,"shelter, if you get there before dark",Bluegiraffe Hollow
+2817,Ruins,,Ruined Stinkbuglip
+2834,AncientHeatVent,,Ternein Heat Vents
+2835,AncientChemfuelRefinery,,Free Wallaby Chemplant
+2836,TerraformingScar,,Gideon's Folly
+2837,VEE_ContaminatedReservoir,,White Zebra Radioactive Waters
+2838,TerraformingScar,,Xosma Scar
+2839,TerraformingScar,,Grim Wound
+2841,VEE_MeteorCrater,,Obrída Meteor Crater
+2870,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Gray Buffalo Wastes
+2880,AbandonedColonyTribal,a tribe that did not make it through a dry decade,Onasistan Camp
+2882,Cavern,a mountain you can get inside,Edbum Tunnel
+2896,TerraformingScar,,Lorenzo's Delusion
+2898,VEE_JaggedRocks,,Green Crane Jagged Ridges
+2910,RUT_ComplexStructures,,Veronica's Undoing
+2920,Oasis,,Tal Quarrow
+2921,Oasis,,Vessik
+2922,Oasis,,Marrukomb
+2925,DryLake,,Camiño Salt Flat
+2928,AncientGarrison,,Fort Sethler
+2935,VEE_SerpentineCanyons,,Entdo Canyons
+2952,Cliffs,,Wise Termite Cliffs
+2966,Cavern,,Onor's Stand Cavern
+2969,VEE_Cenotes,,Entum Cenote Field
+2982,Cavern,,Trara Cave Network
+3007,VEE_Cenotes,,White Eel Collapsed Limestone Pools
+3014,Valley,,Gray Gulch
+3018,VEE_Cenotes,,Meniño Water-Filled Cenotes
+3019,VEE_Cenotes,,Cama Collapsed Limestone Pools
+3021,Valley,,Leneria Canyon
+3024,Cavern,,Otter Arm Caverns
+3027,Valley,,Dorica Canyon
+3030,Cavern,,Erados Caverns
+3040,Valley,,Smallpaw Valley
+3060,VEE_Cenotes,,Onterium Cenote Field
+3061,Valley,,Erithum Gully
+3063,Valley,,Omelor Canyon
+3065,VEE_DryRiver,,Bobra Barren River
+3150,Cliffs,"the crags break in walls, not slopes",Thiarewabum Wall
+3153,Oasis,,Ossik Ring
+3166,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Red Hamster Quicksand Dunes
+3177,VEE_DryRiver,,Heberium Dry River
+3178,Oasis,,Zhurr
+3214,VEE_RedDesert,iron sand on the hot side,Woodpecker's Arrogance Iron-Rich Desert
+3222,RUT_ComplexStructures,,Radoatol Town
+3224,DryLake,,Haterfunlium Dry Lake
+3225,Cavern,,Kofinum Cavern
+3227,Cavern,,Allna Cave Network
+3251,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on,Craggy Condor Plant
+3253,TerraformingScar,,Marulo Scar
+3272,Oasis,,Ashvaneth
+3273,Oasis,,Orrekh
+3274,Oasis,,Selvarrin
+3275,Oasis,,Quenth
+3276,Oasis,,Ithravane
+3277,Oasis,,Nakkar Crest
+3281,VEE_DryRiver,,Onhenan Sand River
+3283,VEE_DryRiver,a watercourse that runs once a decade,Andeaussia Barren River
+3285,VEE_DryRiver,a watercourse that runs once a decade,Itoncroitro Dry River
+3288,VEE_Cenotes,,Terevewasen Collapsed Limestone Pools
+3290,Oasis,,Haenlenora Oasis
+3291,Cavern,,Bacairotas Tunnel
+3292,TerraformingScar,,Spartak's Jackpot Scar
+3293,VEE_DryRiver,,Hardywing Sand River
+3294,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Henoulni Silted Creek
+3311,VEE_Cenotes,,Cerlaño Water-Filled Cenotes
+3319,Valley,,Koium Gorge
+3320,VEE_Cenotes,,Blackstump Cenote Field
+3327,Valley,"the way through a range, and everyone uses it",Whiteshrub Gorge
+3328,VEE_SerpentineCanyons,,Bustbotros Canyons
+3331,Cliffs,,Lenstistan Cliffs
+3334,Cliffs,,Barmeno Rampart
+3340,Valley,,Icyhare Gulch
+3342,VEE_MeteorCrater,nothing on this world stops a rock,Senra Impact Crater
+3351,AncientWarehouse,"sealed, and worth the trip",Tall Hippopotamus Storehouse
+3353,Valley,,Meniño Valley
+3366,VEE_JaggedRocks,,Eveitourin Jagged Ridges
+3367,Cliffs,,Naban Rampart
+3370,VEE_JaggedRocks,,Gobor Jagged Rocks
+3385,VEE_JaggedRocks,,Shoen Jagged Rocks
+3387,Cliffs,,Padio Cliffs
+3390,AncientWarehouse,"sealed, and worth the trip",Notlior Warehouse
+3393,Cavern,,Menchabarboa Tunnel
+3401,Cavern,,Atsholior Tunnel
+3404,Valley,,Tedentieria Valley
+3447,VEE_StagnantRivulet,,Marecur Silted Creek
+3451,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Verheistan Stilled Stream
+3466,Oasis,,Chaol Oasis
+3468,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Elephant Sealshoulder Standing Channel
+3469,Oasis,,Hurrimal
+3473,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Dojados Stagnant Rivulet
+3500,VEE_GravelBeach,,Antpaw Rocky Shoreline
+3501,Crevasse,,Hainuia Fissure
+3506,VEE_GravelBeach,,Tistler Pebble Strand
+3512,Ruins,"scavenging ground, and the reason the clan is here",Lercha City
+3515,VEE_JaggedRocks,,Black Tapir Jagged Rocks
+3521,VEE_JaggedRocks,,Mitonreboa Jagged Rocks
+3530,Ruins,"scavenging ground, and the reason the clan is here",Dilapidated Orangeneedle
+3545,FrozenRuins,somebody lived out here once - scavenging ground,Big Cattle Ice City
+3572,VEE_MeteorCrater,nothing on this world stops a rock,Heristan Impact Crater
+3585,Cavern,,Greenhill Cave Network
+3586,VEE_Cenotes,,Rarga Karst Hollows
+3588,VEE_Cenotes,,Finouinor Collapsed Limestone Pools
+3605,Oasis,,Cindravel
+3608,VEE_JaggedRocks,,Harsh Magpie Jagged Ridges
+3610,Cavern,,Alni Cavern
+3612,Chasm,,Bluehill Fracture
+3614,Chasm,,Banera Sinkhole
+3615,Chasm,,Trobrare Fracture
+3617,Cavern,,Athelor Caverns
+3629,VEE_DryRiver,a watercourse that runs once a decade,Eduard's Fraud Barren River
+3631,Ruins,,Medo Town
+3635,Bay,a harbour the Deepwater Compact could actually use,Gulf of Canebar
+3639,Valley,,Bango Valley
+3640,VEE_Cenotes,,Dueca Cenote Field
+3655,Bay,a harbour the Deepwater Compact could actually use,Ereria Bay
+3666,AncientGarrison,somebody defended this once,Iñoda Garrison
+3678,VEE_RedDesert,iron sand on the hot side,Vasalo Rust-Colored Desert
+3688,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Cóbust Dunes
+3697,Cavern,,Tol Cavern
+3701,ToxicLake,left over from whatever happened here,Hatouluia Poison Lake
+3722,VEE_JaggedRocks,,Small Eland Jagged Ridges
+3724,VEE_JaggedRocks,,Porpoisetooth Jagged Rocks
+3734,Cavern,,Meniño Caverns
+3736,Ruins,"scavenging ground, and the reason the clan is here",Wasisda Town
+3737,Cavern,,Baraloga Tunnel
+3739,Cavern,,Kazumi's Bounty Cave Network
+3752,VEE_JaggedRocks,,Black Seahorse Jagged Rocks
+3758,Cavern,,Kaouanler Tunnel
+3759,VEE_Cenotes,,Toro Cenote Lakes
+3762,Valley,,Orange Hamster Valley
+3763,Valley,,Reera Gully
+3783,DryLake,a playa - the salt flat a river dies in,Barracuda Dry Lake
+3836,VEE_JaggedRocks,,Traga Jagged Rocks
+3837,Cliffs,,Helene's End
+3841,VEE_JaggedRocks,,Halior Jagged Ridges
+3845,VEE_DryRiver,,Blue Sand River
+3855,IceDunes,,Loucergotro Frozen Hills
+3856,Harbor,,Notinor Port
+3861,VEE_JaggedRocks,,Megascarab Chest Jagged Ridges
+3864,Cavern,,Henriette's Caves
+3908,VEE_Cenotes,,Grayshrub Water-Filled Cenotes
+3911,VEE_Cenotes,,Guacamveen's Conceit Collapsed Limestone Pools
+3912,Valley,,Fareel Gully
+3915,VEE_Cenotes,a roof that fell into the water table,Eristia Karst Hollows
+3916,Ruins,"scavenging ground, and the reason the clan is here",Thiasni City
+3924,Ruins,"scavenging ground, and the reason the clan is here",Redcockroach Ruins
+3932,Valley,,Blue Gully
+3934,VEE_Cenotes,,Harshmuffalo Collapsed Limestone Pools
+3935,Cavern,,Antelopewrist Cavern
+3939,Cavern,,Albotra Cavern
+3957,Oasis,,Gubia Oasis
+3959,Valley,,Roughsea Urchin Gulch
+3974,Cavern,a mountain you can get inside,Tregua Tunnel
+3978,AncientGarrison,,Stinkbughead Garrison
+3979,VEE_DryRiver,,Wolverine Talon Dry River
+3992,AncientHeatVent,,Asni Heat Vents
+3993,Ruins,,Andpastlor Ruins
+3995,AncientHeatVent,,Miñoca Thermal Vents
+3997,Valley,"the way through a range, and everyone uses it",Hewaeruay Canyon
+4000,AncientLaunchSite,"The Rust Cathedral - mechanoid ground, permanently at war",Alex's Launch Site
+4001,TerraformingScar,,Marty's Delusion
+4002,TerraformingScar,,Govexasai Scar
+4014,Valley,"the way through a range, and everyone uses it",Thehadcoium Canyon
+4017,DryLake,,Kount Sand Lake
+4018,DryLake,,Neo Barren Lake
+4038,VEE_DryRiver,,Larocom Dry River
+4047,Archipelago,,Trabeirtro Archipelago
+4092,VEE_Cenotes,,Abeneiro Cenote Lakes
+4094,VEE_Cenotes,,Laambbilla Cenote Field
+4095,Cavern,,Veroum Cave Network
+4099,VEE_Cenotes,,Lanhadna Karst Hollows
+4100,Valley,,Laxo Canyon
+4110,Cavern,,Hatevelium Cavern
+4111,Cavern,,Dobium Cave Network
+4142,Chasm,,Veryoueren Fracture
+4144,Valley,,Blackhill Gully
+4148,DryLake,,Bluefeather Barren Lake
+4150,Valley,,Tiooum Valley
+4155,VEE_DryRiver,,Rat Barren River
+4162,VEE_SerpentineCanyons,,Aloquebilsen Canyons
+4188,Cavern,,Vasiñone Tunnel
+4211,Cavern,a mountain you can get inside,Fernanda's Caves
+4218,Cliffs,"the crags break in walls, not slopes",Tollelo Rampart
+4255,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Gaaloisa Saline Flats
+4267,VEE_DryRiver,,Doaasla Sand River
+4293,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Guavasña Dunes
+4299,TerraformingScar,,Troutleg Rift
+4303,AncientQuarry,an old working in an ore province - somebody dug here first,Banzo Mines
+4321,Oasis,the Hutt wells - water is the currency here,Black Megascarab Oasis
+4331,DryLake,a playa - the salt flat a river dies in,Dinbium Sand Pit
+4352,Cavern,a mountain you can get inside,Nadine's Joy Caverns
+4354,Oasis,,Ulvakarr
+4358,Valley,,Binlia Divide
+4360,Ruins,,Gatrabrei Ruins
+4361,Ruins,,Kabium City
+4366,Valley,,Trobo Gulch
+4367,Oasis,"the Hutt wells - six named, not 227",Hiunt Oasis
+4370,Valley,,Loubra Gully
+4372,Oasis,,Dhessa Comb
+4373,Oasis,,Ferrovane
+4375,DryLake,,Abanqueiro Dry Lake
+4377,Valley,,Gnat Gully
+4378,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Binshoia Stagnant Rivulet
+4380,TerraformingScar,,Bico Howl
+4383,VEE_Cenotes,,Orangeswan Karst Hollows
+4389,Valley,,Ereinum Vale
+4390,VEE_Cenotes,,Abeneiro's Finale Collapsed Limestone Pools
+4393,VEE_Cenotes,,Ororbium Cenote Field
+4396,Valley,,Itda Gully
+4397,Cavern,,Caler Tunnel
+4399,Cavern,,Gacamgaol Caverns
+4400,Cavern,,Jonah's Caves
+4401,Cavern,,Laila's Caves
+4406,VEE_Cenotes,,Condor's Ruse Cenote Field
+4408,VEE_Cenotes,,Anuia Cenote Lakes
+4411,Cavern,,Tina's Caves
+4449,Chasm,,Lyrebird's Wonder Sinkhole
+4450,Cavern,,Lorena's Caves
+4453,Cliffs,,Bluefruit Rampart
+4456,Chasm,,Neler Fracture
+4458,Cavern,,Vereralior Cavern
+4461,VEE_JaggedRocks,,Codaeron Jagged Ridges
+4462,Cliffs,,Emu Hip Cliffs
+4466,Cliffs,,Stingray Knee Rampart
+4467,VEE_Cenotes,,Orangeshell Cenote Lakes
+4468,Chasm,,Sharpchough Fracture
+4469,VEE_Cenotes,,Blue Butterfly Karst Hollows
+4470,Cavern,,Toadtooth Caverns
+4472,VEE_Cenotes,,Inlior Cenote Lakes
+4475,Cliffs,,Whiteboulder Cliffs
+4476,Cavern,,Abetolga Tunnel
+4477,Cavern,,Rewitia Caverns
+4479,VEE_Cenotes,,Olcaabru Collapsed Limestone Pools
+4480,Cavern,,Lyra's Caves
+4481,Valley,,Toña Valley
+4482,Cavern,,Trobantro Caverns
+4484,Valley,,Purplefinch Gulch
+4489,VEE_SulfuricLake,"yellow water, and the smell reaches a day out",Inalor Acidic Basin
+4503,VEE_DryRiver,,Purple Sparrow Barren River
+4508,VEE_DryRiver,,Breixos Barren River
+4509,DryLake,,Altederon Barren Lake
+4513,Valley,,Guacam Gully
+4515,VEE_SulfuricLake,"yellow water, and the smell reaches a day out",Eneraterbum Acidic Basin
+4516,Valley,,Panther Nose Divide
+4520,VEE_ResurgentCaldera,,Bluesparrow Resurgent Caldera
+4527,Oasis,,Immeloth
+4530,DryLake,,Onterbum Barren Lake
+4550,VEE_DryRiver,,Croio Dry River
+4592,VEE_Cenotes,,Leca Cenote Field
+4596,Cavern,,Seni Caverns
+4599,Valley,,Red Fly Gulch
+4604,Cavern,,Coro Cavern
+4606,Cavern,,Busto Cave Network
+4607,Valley,,Greenhide Divide
+4611,Cavern,,Hadhinteeria Cave Network
+4612,Cavern,,Gocago Cavern
+4615,Valley,,Primeguanaco Gully
+4623,Ruins,"scavenging ground, and the reason the clan is here",Carlotta's Ruin
+4624,Cavern,,Ludmila's Caves
+4668,Cavern,,Lerba Cavern
+4698,Cliffs,,Zane's End
+4699,Cliffs,,Bad Caterpillar Rampart
+4704,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Laandlor Quicksand Dunes
+4709,VEE_DryRiver,,Trosban Sand River
+4711,VEE_DryRiver,,Purplelake Sand River
+4722,Oasis,,Skarrun
+4730,Bay,a harbour the Deepwater Compact could actually use,Goinum Bay
+4757,VEE_PebbleDunes,"gravel desert, harder going than sand",Andneora Stone-Swept Ridges
+4770,VEE_PebbleDunes,"gravel desert, harder going than sand",Ibala Pebble Dunes
+4778,TerraformingScar,somebody tried to fix this planet and failed,Bud's Scar
+4792,ToxicLake,left over from whatever happened here,Youinor Toxic Lake
+4812,VEE_Cenotes,,Waaten Cenote Field
+4813,Valley,,Biggoldfish Gully
+4814,Cavern,,Trosborbrarei Tunnel
+4825,VEE_DustBowl,ground that was farmed once and is not any more,Lousa Depression
+4833,Cliffs,,Flamingo Cliffs
+4836,VEE_JaggedRocks,,Abrudo Jagged Rocks
+4839,Cavern,,Kenneth's Caves
+4840,VEE_JaggedRocks,,Herler Jagged Rocks
+4860,DryLake,,Tedanba Sand Pit
+4861,VEE_DryRiver,,Hiseria Barren River
+4918,Cliffs,,Cada Wall
+4920,Cliffs,,Orange Wall
+4940,Valley,,Lelaisa Canyon
+4951,RUT_ComplexStructures,,Old Stingray City
+4992,VEE_Cenotes,,Herder Karst Hollows
+4993,Cavern,,Mawityoudio Tunnel
+4994,VEE_Cenotes,,Heonni Collapsed Limestone Pools
+4995,Ruins,"scavenging ground, and the reason the clan is here",Eddos Ruins
+4997,VEE_Cenotes,a roof that fell into the water table,Greenstump Karst Hollows
+4999,VEE_Cenotes,,Gugal Karst Hollows
+5002,VEE_Cenotes,,Megathilior Cenote Lakes
+5013,Valley,,Breichalántran Valley
+5018,Cavern,,Haor Cavern
+5036,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Wathkani Wastes
+5039,Hollow,"shelter, if you get there before dark",Craggy Echidna Hollow
+5041,VEE_DryRiver,,Far Cat Dry River
+5057,VEE_DryRiver,,Eader Dry River
+5064,VEE_DryRiver,a watercourse that runs once a decade,Delba Barren River
+5069,DryLake,a playa - the salt flat a river dies in,Craggy Quail Salt Flat
+5072,TerraformingScar,,Joyce's Sundering
+5076,Ruins,,Barga Town
+5079,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Hismeera Dunes
+5080,Ruins,,Van's Joy Town
+5081,Ruins,,Entinor Town
+5083,Ruins,,Lev's Fraud
+5091,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Susskind's Honor Dunes
+5101,CoastalIsland,,Isle Notla
+5110,RUT_ComplexStructures,,Sharp Iguana Ruins
+5120,RUT_ComplexStructures,,Riku's Ruination
+5122,RUT_ComplexStructures,,Isler Ruins
+5123,Archipelago,,Bríabru Islands
+5126,CoastalIsland,,Blackcod Island
+5127,RUT_ComplexStructures,,Ruined Cheda
+5128,RUT_ComplexStructures,,Ruined Olrabe
+5129,Archipelago,,Heunt Isles
+5130,RUT_ComplexStructures,,Ithwasni Ruins
+5141,Cavern,,Satsuki's Caves
+5143,Chasm,,Eveeria Fracture
+5144,Cliffs,,Ourdo Rampart
+5145,Cavern,,Igor's Caves
+5146,Cavern,a mountain you can get inside,Wastoesni Cavern
+5147,VEE_JaggedRocks,,Sharpape Jagged Ridges
+5152,Cavern,a mountain you can get inside,Spartak's Caves
+5165,Cavern,,Purplebee Cave Network
+5167,VEE_Cenotes,,Embaixada Water-Filled Cenotes
+5168,Cavern,,Guaxoszo Cavern
+5169,Chasm,,Irroisa Fracture
+5173,Cavern,,Gatioum Cave Network
+5174,Chasm,,Lecóñave Fracture
+5175,Chasm,,Bantran Chasm
+5178,VEE_JaggedRocks,,Alototo Jagged Ridges
+5180,Cavern,,Maxwell's Caves
+5182,Cliffs,,Marcam Cliffs
+5183,Cliffs,,Croutrovexa Rampart
+5184,Chasm,,Hieria Sinkhole
+5185,Cliffs,,Brinbreicrou Wall
+5186,Cliffs,,Higaba Cliffs
+5188,Cavern,,Marina's Caves
+5192,Cavern,,Purplecaribou Cave Network
+5194,Valley,,Ambas Divide
+5195,Cavern,,Anunt's Delusion Cavern
+5197,Cavern,,Freevole Tunnel
+5198,Cavern,,Purple Cave Network
+5200,VEE_Cenotes,,Coisia Water-Filled Cenotes
+5214,VEE_DryRiver,,Hido Sand River
+5232,DryLake,,Bire Sand Lake
+5239,VEE_Cenotes,,Hinotera Cenote Lakes
+5300,Archipelago,,Bontehisor Archipelago
+5302,CoastalIsland,,Isle Red
+5321,Cavern,,Toin Tunnel
+5322,Valley,,Cairmila Divide
+5337,Cavern,,Chogoabe Cavern
+5368,sw_Sarlacc,,The Sarlacc
+5369,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Bad Mallard Dunes
+5384,Cavern,,Bonyouera Cavern
+5385,VEE_Cenotes,,Eredo Cenote Lakes
+5386,VEE_Cenotes,,Weasel Hand Karst Hollows
+5388,VEE_Cenotes,,Enhiomela Collapsed Limestone Pools
+5389,Cavern,,Youomeistia Cave Network
+5393,Cavern,,Teeron Cave Network
+5394,Cliffs,,Tonbrin Cliffs
+5396,VEE_Cenotes,,Meus Cenote Field
+5400,Cavern,,Lami Cavern
+5404,Cavern,,Shigeko's Caves
+5405,Valley,,Marabeseacar Canyon
+5406,Cavern,,Thishodos Cavern
+5409,Valley,"the way through a range, and everyone uses it",Lousa Valley
+5415,Cavern,,Butnotbonora Cavern
+5425,VEE_DryRiver,a watercourse that runs once a decade,Ometerhiinor Barren River
+5427,Cavern,,Woodpecker Chest Caverns
+5431,Cavern,,Isinor Tunnel
+5434,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Orangerock Wastes
+5464,Valley,,Thana Gulch
+5468,VEE_DryRiver,,Asza Sand River
+5470,Cliffs,,Hindeldo Cliffs
+5474,VEE_JaggedRocks,,Hidos Jagged Rocks
+5476,VEE_JaggedRocks,,Ourrous Jagged Rocks
+5482,Valley,,Hatistia Valley
+5490,Cliffs,,Lavego Rampart
+5508,VEE_JaggedRocks,,Yak's Destruction Jagged Ridges
+5511,VEE_Cenotes,,Teroum Water-Filled Cenotes
+5512,VEE_Cenotes,,Viktor's Misstep Water-Filled Cenotes
+5516,VEE_Cenotes,,Senra Karst Hollows
+5520,Valley,,Haistan Valley
+5526,Cavern,,Kaera Cavern
+5531,TerraformingScar,somebody tried to fix this planet and failed,Scarlet's Delusion
+5557,Cavern,,Fox Elbow Cave Network
+5600,Cavern,,Black Caverns
+5604,Cavern,,Doasabruca Caverns
+5605,VEE_RockRidge,a spine of standing rock,Orangemole Ridge
+5613,Chasm,,Menba Fracture
+5614,VEE_DustBowl,ground that was farmed once and is not any more,Albogatocam Dust Bowl
+5617,AncientGarrison,somebody defended this once,Fort Ram
+5618,VEE_Cenotes,,Chiyoko's Downfall Karst Hollows
+5620,Cavern,,Tedan Tunnel
+5621,VEE_Cenotes,,Butentberon Water-Filled Cenotes
+5623,Cavern,,Wasp Hip Caverns
+5624,Cavern,,Cógo Cavern
+5625,Ruins,"scavenging ground, and the reason the clan is here",Ruined Gaiñocrou
+5632,Ruins,"scavenging ground, and the reason the clan is here",Ñoiño Ruins
+5651,VEE_Cenotes,,Dinora Cenote Lakes
+5654,Valley,,Parrot Heel Canyon
+5655,VEE_Cenotes,,Eauia Water-Filled Cenotes
+5656,VEE_Cenotes,,Deadram Water-Filled Cenotes
+5667,Valley,,Sheepfang Valley
+5669,VEE_Cenotes,,Kalanni Water-Filled Cenotes
+5697,Cavern,,Howard's Caves
+5703,VEE_DryRiver,,Bocer Barren River
+5706,VEE_DryRiver,,Andora Barren River
+5725,TerraformingScar,,Artyom's Folly
+5727,Cavern,,Miñoca Cavern
+5729,VEE_JaggedRocks,,Hium Jagged Rocks
+5734,Cavern,,Atla Tunnel
+5741,VEE_JaggedRocks,,Vince's Jagged Rocks
+5746,VEE_SerpentineCanyons,,Elena's Mistake Canyons
+5761,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on,Entyouwitera Refinery
+5910,VEE_SerpentineCanyons,,Eruia Canyons
+5920,VEE_Cenotes,,Bigmouth Karst Hollows
+5937,VEE_StoneForest,"wind-cut pillars, a landscape that looks made",Tallnose Rocky Spire Field
+5943,Cavern,,Entros Cavern
+5944,Cavern,,Dora Cave Network
+5946,VEE_Cenotes,,Dadoussia Water-Filled Cenotes
+5951,AncientWarehouse,"sealed, and worth the trip",Oureron Storehouse
+6045,Cavern,,Lowell's Caves
+6047,Cavern,,Funesora Caverns
+6049,Valley,,Forhinstinum Valley
+6056,Cavern,,Busttonro Caverns
+6058,Valley,,White Divide
+6060,Cavern,,Roundllama Caverns
+6061,VEE_Cenotes,,Sanerrobiar Cenote Field
+6069,Valley,,Ash's Downfall Canyon
+6070,Cavern,,Showala Tunnel
+6071,VEE_Cenotes,,Bluejayknee Karst Hollows
+6073,VEE_Cenotes,,Asberon Cenote Lakes
+6074,VEE_Cenotes,,Blackprairie Dog Cenote Lakes
+6080,Valley,,Biguatro Ravine
+6087,VEE_Cenotes,,Netioanunt Cenote Field
+6089,Cavern,,Big Sardine Cave Network
+6093,Ruins,"scavenging ground, and the reason the clan is here",Wisewrist Ruins
+6094,Valley,,Tharafarora Canyon
+6095,Cavern,,Purplekoala Cave Network
+6102,FrozenRuins,somebody lived out here once - scavenging ground,Craggysnake Frozen Ruins
+6211,FrozenRuins,somebody lived out here once - scavenging ground,Sharktalon Frozen Ruins
+6213,VEE_DryRiver,,Dueroño Sand River
+6215,Oasis,,Yeth Ammu
+6219,Oasis,,Kessarel
+6223,Oasis,,Rhon Tavar
+6225,Oasis,,Waeria Oasis
+6226,Ruins,,Ruined Badlip
+6227,Oasis,,Ghurrok Ring
+6229,Oasis,,Lavego Oasis
+6235,VEE_Cenotes,,Smallfang Water-Filled Cenotes
+6238,Oasis,,Karrabesh
+6243,Oasis,,Sarrowen
+6253,DryLake,a playa - the salt flat a river dies in,Curro's Prize Barren Lake
+6291,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Xosagurar Salt Plain
+6303,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Black Evaporation Plain
+6315,VEE_PebbleDunes,"gravel desert, harder going than sand",Asne Rolling Pebble Fields
+6321,Valley,,Eaera Canyon
+6335,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Dados Saline Flats
+6340,DryLake,,Henbutberium Dry Lake
+6358,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Dorio Dunes
+6363,TerraformingScar,,Wahadalora Scar
+6372,VEE_DryRiver,a watercourse that runs once a decade,Raen Dry River
+6381,TerraformingScar,,Human Rift
+6382,TerraformingScar,,Doabiar's Bounty Sundering
+6384,Ruins,,Dilapidated Guatonmigo
+6385,Ruins,,Lenium Ruins
+6386,Ruins,,Washerlaba Ruins
+6390,Ruins,,Esla Ruins
+6422,DryLake,a playa - the salt flat a river dies in,Veeron Salt Flat
+6437,VEE_PebbleDunes,"gravel desert, harder going than sand",Senra Gravel Drifts
+6439,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Camba Dunes
+6441,Valley,,Grayhorn Gully
+6445,Cavern,,Black Tunnel
+6448,Valley,,Uneria Divide
+6450,Valley,,Alboio Canyon
+6452,Ruins,,Alboio Ruins
+6456,Oasis,,Vrettik
+6463,VEE_PebbleDunes,"gravel desert, harder going than sand",Abanqueiro's Folly Gravel Drifts
+6471,TerraformingScar,,Waldo's Howl
+6472,TerraformingScar,,Andomewaum Sundering
+6476,Ruins,,Maasbraga Ruins
+6478,TerraformingScar,,Coistia Sundering
+6479,TerraformingScar,,Toverla Sundering
+6480,Ruins,,Penguinear Town
+6481,RUT_ComplexStructures,,Ruined Gabaaban
+6483,AncientHeatVent,,Tethados Infernal Vents
+6484,AncientHeatVent,,Meistia Infernal Vents
+6485,Ruins,,Dilapidated Snail
+6488,Ruins,,Daler City
+6489,RUT_ComplexStructures,,Artyom's Conceit
+6491,AncientHeatVent,,Lanbum Heat Vents
+6492,RUT_ComplexStructures,,Asbaneveuia Town
+6493,Ruins,,Monbutba Town
+6496,AncientHeatVent,,Orange Infernal Vents
+6497,Ruins,,Ourisithlior Ruins
+6579,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Thshoinor White Barrens
+6633,VEE_DryRiver,,Theouunt Sand River
+6636,Archipelago,a scatter of rock in the shallows,Isle Graybeetle
+6638,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Wasorussia Pebble Strand
+6655,VEE_GravelBeach,,Deadfinger Rocky Shoreline
+6661,RUT_ComplexStructures,,Sharpfox Town
+6664,RUT_ComplexStructures,,Cody's Folly
+6666,RUT_ComplexStructures,,Leler's Jackpot Ruins
+6678,Archipelago,,Brírarbarcrou Archipelago
+6681,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Nelor Wastes
+6695,AncientQuarry,an old working in an ore province - somebody dug here first,Excavation Site
+6696,Ruins,,Scuscuca Town
+6702,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Coistia Dunes
+6712,DryLake,a playa - the salt flat a river dies in,Legua Barren Lake
+6717,Basin,a bowl that collects what little falls,Nelson's Lunacy Basin
+6738,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Orangeneedle Wastes
+6751,Valley,,Tioda Vale
+6764,VEE_MeteorCrater,nothing on this world stops a rock,Youselia Impact Basin
+6791,ToxicLake,left over from whatever happened here,Conoteana Toxic Lake
+6840,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on,Elandcheek Chemplant
+6842,VEE_JaggedRocks,,Greensalamander Jagged Rocks
+6843,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Itomebo Desiccated Ocean
+6854,AncientGarrison,somebody defended this once,Ouunt Garrison
+6878,VEE_MeteorCrater,nothing on this world stops a rock,Thieddo Impact Basin
+6908,DryLake,,Finch Nose Barren Lake
+6909,Archipelago,a scatter of rock in the shallows,Ambas Islands
+6938,VEE_DryRiver,,Dinosaurchin Dry River
+6942,VEE_DryRiver,,Andtedistan Sand River
+6943,DryLake,,Reera Sand Lake
+6952,CoastalIsland,"offshore, and hard to raid",Delhadunor Island
+6953,VEE_GravelBeach,,Bina Rocky Shoreline
+6954,Valley,,Green Salmon Gulch
+6955,Cavern,a mountain you can get inside,Ambbe Caverns
+6965,Harbor,,Graytermite Harbor
+6975,Oasis,,Ammavane
+6977,AbandonedColonyTribal,a tribe that did not make it through a dry decade,Rocanche Village
+6978,DryLake,,Omehadrabium Sand Pit
+6992,Oasis,,Terrin Weep
+6993,Oasis,,Ollun Catch
+6994,Oasis,,Vaskerrin
+6996,Oasis,,Hessamund
+6997,Oasis,,Quorrath
+6998,Oasis,,Brennivar
+6999,Oasis,,Ithlune
+7000,Oasis,,Vorrakesh
+7001,Oasis,,Cindrakomb
+7002,Oasis,,Zoth Pallanne
+7003,Oasis,,Merrowfin
+7004,VEE_DryRiver,a watercourse that runs once a decade,Coraga Sand River
+7013,DryLake,,Redmeerkat Salt Flat
+7014,Ruins,,Helor City
+7017,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Ouora Loose Earth Dunes
+7029,Valley,"the way through a range, and everyone uses it",Babo Canyon
+7031,DryLake,,Felicia's Cataclysm Salt Flat
+7033,AncientGarrison,,Roundshoulder Fort
+7034,DryLake,,Ñotope Sand Pit
+7035,VEE_DryRiver,,Whiteneedle Sand River
+7037,AbandonedColonyTribal,a tribe that did not make it through a dry decade,Atia Camp
+7045,AncientGarrison,,Fort Bren
+7053,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Oulia Silted Creek
+7057,Valley,,Oren Gully
+7069,Bay,a harbour the Deepwater Compact could actually use,Gulf of Lobusttol
+7078,DryLake,,Michael's Delusion Dry Lake
+7079,Valley,,Rrocho Gully
+7080,VEE_Cenotes,,Bascullo Karst Hollows
+7084,TerraformingScar,,The Grand Scar
+7100,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Naarbium Stone-Littered Beach
+7111,Valley,,Greenhorn Ravine
+7118,Valley,,Billa Valley
+7127,VEE_Cenotes,,Ouarda's Delusion Cenote Lakes
+7131,Valley,,Cervexa Valley
+7160,Chasm,a crack too wide to jump and too deep to see,Ennoteron Fracture
+7166,Cliffs,"the crags break in walls, not slopes",Unbium Cliffs
+7168,Chasm,,White Moose Fracture
+7174,VEE_JaggedRocks,ground that cuts boots,Roughcrocodile Jagged Rocks
+7175,Chasm,,Onunt Fracture
+7181,Harbor,,Blackokapi Harbor
+7220,Crevasse,,Bibabo Break
+7223,Valley,,Bilmeaca Gully
+7226,Chasm,,Green Hare Fracture
+7227,Cavern,,Round Panda Cave Network
+7228,Cliffs,,Bilgua Wall
+7230,Cliffs,,Camba Cliffs
+7231,Cliffs,,Lorena's End
+7249,CoastalIsland,"offshore, and hard to raid",Meus Isle
+7255,VEE_JaggedRocks,,Gobreirocom Jagged Rocks
+7256,VEE_Cenotes,,Babar Cenote Field
+7257,VEE_Cenotes,,Bonni Cenote Field
+7261,Cavern,,Dabracam Cave Network
+7262,Cavern,,Oga Cavern
+7263,Cavern,,Neguatros Tunnel
+7265,Valley,,Leforherbo Canyon
+7267,Cavern,,Green Badger Tunnel
+7269,Chasm,,Gray Sinkhole
+7272,Chasm,,Donkey Elbow Chasm
+7273,Cliffs,,Fabio's End
+7276,VEE_JaggedRocks,,Caora Jagged Rocks
+7278,Cavern,,Terhena Tunnel
+7283,Chasm,,Laberium Chasm
+7288,VEE_MeteorCrater,,Free Eagle Impact Crater
+7289,Valley,,Cambiar Valley
+7297,Cavern,,Tedler Cave Network
+7298,Cavern,,Violet's Caves
+7299,Cavern,,Sparrow Tunnel
+7306,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on,Raas Refinery
+7307,VEE_SerpentineCanyons,,Herora Canyons
+7310,Cavern,,Mindy's Caves
+7342,Oasis,,Tannivar
+7343,Valley,,Beepaw Valley
+7344,Oasis,,Essaline
+7362,Cavern,,Hifenorbum Cave Network
+7364,Valley,,Ape Vale
+7370,VEE_DryRiver,,Naomebo Barren River
+7373,Ruins,,Eani Town
+7376,VEE_AlluvialFan,,Black Sediment Fan
+7383,Valley,,Vererelor Gorge
+7385,Cavern,,Shigeko's Caves
+7387,VEE_Cenotes,a roof that fell into the water table,Canca Karst Hollows
+7394,VEE_Cenotes,,Abego Collapsed Limestone Pools
+7396,Valley,,Thioulia Canyon
+7400,AB_MagmaticQuagmire,"a patch of ground that is not quite solid, on the Scald rim - owner asked for it by name",Hibo Magmatic Quagmire
+7401,VEE_DryRiver,,Ocambai Sand River
+7402,DryLake,,Saibrin Barren Lake
+7405,AB_MagmaticQuagmire,"a patch of ground that is not quite solid, on the Scald rim - owner asked for it by name",Purple Toad Magma Sinks
+7418,VEE_Cenotes,,Esin Water-Filled Cenotes
+7452,Cavern,,Delbum Cave Network
+7458,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Biatox Dunes
+7462,TerraformingScar,,The Sundering
+7466,RUT_ComplexStructures,,Zane's Undoing
+7468,RUT_ComplexStructures,,Taras's Retirement
+7469,RUT_ComplexStructures,,Trobo's Honor Ruins
+7477,VEE_Cenotes,,Grayape Cenote Field
+7478,Cavern,,Reicacan Cavern
+7479,Cavern,,Fabio's Caves
+7480,Chasm,,Semyon's Jackpot Fracture
+7481,Cliffs,,Yumiko's End
+7485,VEE_FleshPits,"the superorganism, where it surfaces",Ourberium Anomalous Caverns
+7486,VEE_Cenotes,,Roughpalm Cenote Lakes
+7496,VEE_GravelBeach,,Lalarro Pebble Strand
+7500,CoastalIsland,"offshore, and hard to raid",Isle Gaboca
+7504,VEE_Cenotes,,Monor Collapsed Limestone Pools
+7516,VEE_Cenotes,,Gobar Cenote Lakes
+7517,VEE_Cenotes,,Miñoca Karst Hollows
+7518,VEE_Cenotes,,Berro Karst Hollows
+7523,Cavern,,Ourhinhinna Cavern
+7533,Cavern,,Gilma's Caves
+7537,VEE_Cenotes,,Goler Karst Hollows
+7552,VEE_JaggedRocks,,Black Jagged Rocks
+7553,VEE_JaggedRocks,,Cancaxos Jagged Rocks
+7554,VEE_RockRidge,a spine of standing rock,Banastra Ridge
+7555,Cavern,,Nados Cavern
+7559,Cavern,,Ascrirro Caverns
+7560,Cavern,,Caentwauay Cavern
+7561,Valley,,Abantro Gully
+7577,TerraformingScar,somebody tried to fix this planet and failed,Gabby's Wound
+7602,Cliffs,"the crags break in walls, not slopes",Van's End
+7623,Valley,,Laia Canyon
+7625,Valley,,Allia Canyon
+7628,Cavern,,Far Lemur Cavern
+7629,VEE_Cenotes,,Orange Collapsed Limestone Pools
+7630,Ruins,"scavenging ground, and the reason the clan is here",Ruined White Pigeon
+7637,TerraformingScar,,Rada's Delusion
+7640,Ruins,"scavenging ground, and the reason the clan is here",Smallear Ruins
+7652,VEE_SerpentineCanyons,,Butoulum Canyons
+7657,Oasis,,Ghalluk
+7678,AncientGarrison,,Kado Garrison
+7680,AncientGarrison,,Yuuka's Garrison
+7694,AncientHeatVent,,Red Heat Vents
+7695,RUT_ComplexStructures,,Dilapidated Roughtoe
+7696,RUT_ComplexStructures,,Andrei's Stand
+7697,TerraformingScar,,Mefenouristia Scar
+7698,AncientInfestedSettlement,,Fallen Herseis
+7699,Ruins,,Tallhawk Ruins
+7705,RUT_ComplexStructures,,Green Chicken City
+7734,DryLake,,Macaiduescu Barren Lake
+7751,VEE_MeteorCrater,nothing on this world stops a rock,Lervebraas Impact Crater
+7758,Cliffs,,Primebody Rampart
+7766,Crevasse,,Aardvark Head Crevasse
+7767,IceDunes,,Bairocri Ice Dunes
+7771,RUT_ComplexStructures,,Thiia Ruins
+7772,Bay,a harbour the Deepwater Compact could actually use,Tol Bay
+7777,Archipelago,,Ram Arm Islets
+7778,Oasis,,Norrin Seep
+7779,Oasis,,Kellumar
+7780,Oasis,"the Hutt wells - six named, not 227",Sarrevane
+7781,Oasis,,Umbrevesh
+7782,Oasis,,Corrindath
+7785,VEE_DryRiver,,Alboio Sand River
+7789,Valley,,Iguana Neck Valley
+7790,VEE_SerpentineCanyons,,Sharp Turkey Canyons
+7791,Bay,a harbour the Deepwater Compact could actually use,Smallwing Bay
+7813,Cavern,,Ash's Caves
+7826,Cavern,,Curro Tunnel
+7828,VEE_Cenotes,,Lánira Karst Hollows
+7830,VEE_Cenotes,,Eralium Cenote Lakes
+7831,Cavern,,Theourlor Cavern
+7838,Cliffs,,Ler Cliffs
+7858,DryLake,,Waus Sand Lake
+7875,Cavern,,Pony Caverns
+7877,Cavern,,Norman's Caves
+7881,Cavern,,Kristina's Caves
+7882,VEE_Cenotes,,Red Penguin Karst Hollows
+7884,Cavern,,Reicho Cave Network
+7885,VEE_Cenotes,,Eain Cenote Lakes
+7891,VEE_JaggedRocks,ground that cuts boots,Anlonbum Jagged Ridges
+7897,VEE_DustBowl,ground that was farmed once and is not any more,Combo Dust Bowl
+7899,Valley,,Elk Gulch
+7924,Chasm,,Boboque's Ruination Sinkhole
+7925,Valley,,Allberium Vale
+7956,TerraformingScar,,Oldram Scar
+8005,Ruins,"scavenging ground, and the reason the clan is here",Ruined Oro
+8013,Oasis,,Rhessuk
+8014,Oasis,,Tallaquen
+8036,Valley,,Atinum Gorge
+8038,Valley,,Ñobarbairo Gorge
+8054,VEE_DryRiver,,Abruño Sand River
+8059,TerraformingScar,,Andrea's Scar
+8081,RUT_ComplexStructures,,Bringa Ruins
+8084,Bay,a harbour the Deepwater Compact could actually use,Ouba Bight
+8085,DryLake,,Goitheron Barren Lake
+8096,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Enrada Dunes
+8106,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through",Lorenzo's Canyons
+8132,Oasis,,Ilsevane
+8133,Oasis,,Shaddrek
+8134,Oasis,,Verrinal
+8135,Oasis,,Kaddoth
+8136,Oasis,,Ossendrel
+8137,Oasis,,Thurrakan
+8139,Ruins,,Menda City
+8144,Valley,,Orangehoof Canyon
+8146,Oasis,,Emmavane
+8147,Valley,The Scald Gate - the one breach in the Spine,Olvasrebo Valley
+8149,Oasis,,Rukhessa
+8151,Valley,,Armadillo Nose Divide
+8153,TerraformingScar,,Bluewood Sundering
+8154,Oasis,,Lowthess
+8173,VEE_Cenotes,,Ininor Cenote Lakes
+8174,Valley,,Terora Canyon
+8175,Cavern,,Gavas Cavern
+8177,Valley,,Entunt Gully
+8178,Cavern,,Farhinussia Cave Network
+8184,Chasm,,Roundneck Chasm
+8186,Cavern,,Thlior Cavern
+8187,VEE_Cenotes,,Purpleskin Cenote Lakes
+8188,Valley,,Tioia Canyon
+8189,Cavern,,Hotaru's Caves
+8191,Cavern,,Amaya's Arrogance Cave Network
+8195,Cavern,,Roiroga Cave Network
+8197,Cavern,,Alobreii Cavern
+8212,Cavern,,Enttoan Caverns
+8226,Cavern,,Tasa Cavern
+8229,VEE_JaggedRocks,,Mican Jagged Ridges
+8240,Cavern,,Thiistan Cave Network
+8245,VEE_JaggedRocks,,Oulherlium Jagged Rocks
+8247,Chasm,,Snail Fracture
+8251,Cliffs,,Tocom Rampart
+8252,VEE_Cenotes,,Toguabraulo Collapsed Limestone Pools
+8254,VEE_Cenotes,,Troutcheek Water-Filled Cenotes
+8255,Cavern,,Chinchilla Cavern
+8257,Cavern,,Banastra Cavern
+8260,VEE_Cenotes,,Guabiarxada Water-Filled Cenotes
+8261,VEE_Cenotes,,Cai Collapsed Limestone Pools
+8262,Cavern,,Lonntdo Tunnel
+8272,Oasis,"a Hutt well - dug for the holding beside it, and charged for",Oldshark Oasis
+8295,DryLake,,Sttiium Salt Flat
+8308,Harbor,,Port Riku
+8326,Valley,,Ertedla Canyon
+8366,Crevasse,,Lérebar Crevasse
+8367,VEE_AlluvialFan,,Gazelle Ankle River Spillplain
+8374,Cliffs,"the crags break in walls, not slopes",Goodbody Cliffs
+8378,Cliffs,,Salamander Hip Cliffs
+8380,Cliffs,,Red Rampart
+8444,VEE_Cenotes,,Toxo Water-Filled Cenotes
+8445,Cavern,,Asgaxos Tunnel
+8449,AncientWarehouse,"sealed, and worth the trip",Vaslou Storehouse
+8450,Cavern,,Thiler Tunnel
+8468,Cavern,,Stna Caverns
+8469,Chasm,,Notlia Fracture
+8470,Chasm,,Toin Fracture
+8471,Cavern,,Tico's Caves
+8472,Cavern,,Seago Cave Network
+8474,Cliffs,"the crags break in walls, not slopes",Hare Rampart
+8477,Cavern,,Boreicrou Cavern
+8479,VEE_JaggedRocks,,Breitro Jagged Ridges
+8480,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Leera Dunes
+8500,VEE_Cenotes,,Ourerlium Cenote Field
+8503,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Braña Standing Channel
+8515,Valley,,Matthew's Misstep Vale
+8518,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Red Elk Saline Flats
+8556,VEE_JaggedRocks,,Roman's Jagged Rocks
+8593,VEE_JaggedRocks,,Wallis's Jagged Rocks
+8594,Valley,,Badfinger Gully
+8596,VEE_Cenotes,,Stlonunt Water-Filled Cenotes
+8597,VEE_Cenotes,,Polar Bear Water-Filled Cenotes
+8612,VEE_JaggedRocks,,Greenhuman Jagged Rocks
+8617,Cavern,,Thatohieria Cavern
+8623,Cavern,,Sharp Guinea Pig Caverns
+8696,Cliffs,,Braña Cliffs
+8716,Valley,,Colmea Ravine
+8718,Valley,,Irraalbo Gully
+8719,DryLake,,Wallaby Barren Lake
+8768,Cavern,,Witfareron Cave Network
+8772,Valley,,Goodlemur Canyon
+8773,Cavern,,Esba Tunnel
+8774,VEE_Cenotes,,Thelior Karst Hollows
+8775,Valley,,Eveoubo Valley
+8778,Cavern,,Asbra Cavern
+8792,Cavern,,Badlyrebird Cavern
+8793,VEE_Cenotes,,Queamb Collapsed Limestone Pools
+8794,AncientWarehouse,"sealed, and worth the trip",Margarita's Storehouse
+8795,VEE_Cenotes,,Tasña Karst Hollows
+8796,VEE_MeteorCrater,nothing on this world stops a rock,Trosma Impact Crater
+8799,VEE_Cenotes,,Seara Collapsed Limestone Pools
+8802,VEE_Cenotes,a roof that fell into the water table,Henum Collapsed Limestone Pools
+8817,Cavern,a mountain you can get inside,Merlin's Caves
+8818,VEE_Cenotes,,Erahenistia Water-Filled Cenotes
+8821,Cavern,,Roughshrew Tunnel
+8838,Ruins,,Ruined Atfinler
+8852,AncientHeatVent,,Oneveni Heat Vents
+8853,Ruins,,Orangewing Ruins
+8854,Ruins,,Bilane City
+8856,RUT_ComplexStructures,,Tereveuay Ruins
+8857,RUT_ComplexStructures,,Ruined Farpalm
+8860,Ruins,,Green Hamster City
+8862,Ruins,,Dilapidated Toxo
+8883,CoastalIsland,"offshore, and hard to raid",Isle Oulbo
+8884,CoastalIsland,"offshore, and hard to raid",Bluegnat Island
+8895,Valley,,Basai Gully
+8896,Archipelago,a scatter of rock in the shallows,Hadlonin's Foot Islands
+8898,CoastalIsland,,Red Isle
+8902,RUT_ComplexStructures,,Tycho's Retirement
+8907,RUT_ComplexStructures,,Dilapidated Reirotas
+8944,Cavern,,Otis's Blood Cavern
+8949,Cavern,,Opossum Cavern
+8950,Cavern,,Hawktooth Cavern
+8951,Valley,,Attiount Divide
+8953,Cavern,,Goxoscai Cavern
+8956,Cavern,,Onoum Cavern
+8957,Cavern,,Erebuteria Cavern
+8961,Cavern,,Whitewing Cave Network
+8964,Cavern,,Sehiba Tunnel
+8969,Valley,,Dadio Valley
+8971,VEE_Cenotes,,Blacklake Cenote Lakes
+8973,VEE_DustBowl,ground that was farmed once and is not any more,Grayseal Depression
+9004,VEE_DryRiver,,Camisa Dry River
+9005,Valley,,Cambanisaa Gorge
+9008,DryLake,,Orange Cod Barren Lake
+9010,VEE_DryRiver,,Butbo's Viscera Sand River
+9015,DryLake,,Undos Sand Lake
+9022,VEE_JaggedRocks,,Lein Jagged Rocks
+9023,Chasm,,Lightfall
+9087,Ruins,"scavenging ground, and the reason the clan is here",Dilapidated Gotrarobil
+9126,DryLake,,Hetederon Barren Lake
+9131,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Stler Silted Creek
+9158,Ruins,,Ruined Toouor
+9159,Valley,"the way through a range, and everyone uses it",Veabaniño Gulch
+9167,AncientGarrison,somebody defended this once,Fort Ouhadithbum
+9173,VEE_DryRiver,a watercourse that runs once a decade,Hius Sand River
+9213,Oasis,,Karrunveth
+9214,Oasis,,Aeshvorn
+9222,VEE_DryRiver,a watercourse that runs once a decade,Badgiraffe Dry River
+9224,Cavern,,Allroba Cavern
+9225,VEE_DryRiver,,Isia Sand River
+9230,Oasis,,Dhurrilene
+9239,Oasis,,Vellomar
+9244,VEE_Cenotes,,Evein Water-Filled Cenotes
+9247,VEE_Cenotes,,Xigogoenba Water-Filled Cenotes
+9248,VEE_Cenotes,,Troiro Water-Filled Cenotes
+9251,Valley,,Bearknee Canyon
+9253,VEE_Cenotes,,Tranca Cenote Field
+9254,VEE_Cenotes,,Craggyeagle Karst Hollows
+9257,Cavern,,Isabel's Caves
+9259,VEE_Cenotes,,Hehiera Water-Filled Cenotes
+9262,VEE_Cenotes,,Curxosca Water-Filled Cenotes
+9265,VEE_Cenotes,,Lebo Cenote Field
+9266,CoastalIsland,"offshore, and hard to raid",Kanagoler Island
+9267,Cavern,,Butba Cavern
+9269,VEE_Cenotes,,Minor Collapsed Limestone Pools
+9271,Cavern,,Hiunt Cavern
+9313,Chasm,,Darar Chasm
+9316,Cavern,,Old Shrew Cavern
+9318,Cavern,,Big Heron Tunnel
+9319,Cliffs,,Irgo Cliffs
+9321,VEE_JaggedRocks,,Martin's Jagged Rocks
+9322,Chasm,,Balnecho Sinkhole
+9325,Cavern,,Sandra's Caves
+9326,Cliffs,,Stinkbugheel Cliffs
+9327,Valley,,Reum Gulch
+9331,Cavern,,Roundfang Tunnel
+9334,Valley,,Igo Divide
+9336,Cavern,,Irbebai Caverns
+9338,Valley,,Lolasa's Misstep Gully
+9360,VEE_DryRiver,,Harsharm Dry River
+9364,DryLake,,Anin Sand Pit
+9368,VEE_DryRiver,,Bargalán's Trophy Barren River
+9371,DryLake,,Helia's Trophy Salt Flat
+9372,VEE_DryRiver,,Terlium Sand River
+9373,VEE_DryRiver,,Purpleshrub Sand River
+9377,VEE_DryRiver,,Alboio Sand River
+9379,Valley,,Abeneiro Vale
+9380,VEE_DryRiver,,Camban Dry River
+9419,CoastalIsland,,Daler Isle
+9453,Cavern,,Witlium Caverns
+9456,VEE_Cenotes,a roof that fell into the water table,Edbum Cenote Lakes
+9457,Valley,,Scudo Gully
+9463,Cavern,,Johnson's Caves
+9464,Valley,,Blackmongoose Gorge
+9473,Cavern,,Gerbilfinger Cavern
+9474,VEE_Cenotes,,Badhand Water-Filled Cenotes
+9475,VEE_Cenotes,,Barcolre Collapsed Limestone Pools
+9477,VEE_Cenotes,a roof that fell into the water table,Biarcai Cenote Lakes
+9481,VEE_Cenotes,,Sairebiascu Collapsed Limestone Pools
+9500,Cliffs,"the crags break in walls, not slopes",Icyfoot Cliffs
+9524,Cavern,,Thianlia Cavern
+9528,Cavern,,Lavego Cave Network
+9529,VEE_Cenotes,,Goodpaw Cenote Field
+9539,ToxicLake,left over from whatever happened here,Humberto's Blight
+9548,Cliffs,,Nanami's End
+9552,Cavern,,Verenlonbum Caverns
+9553,AncientWarehouse,"sealed, and worth the trip",Arlene's Storehouse
+9558,AncientGarrison,somebody defended this once,Anya's Base
+9566,Plateau,"high flat ground, and you can see everything from it",Croicam Rise
+9568,Oasis,,Ometeherba Oasis
+9571,TerraformingScar,,Ripley's Scar
+9580,Ruins,,Iguana City
+9581,Ruins,,Dilapidated Andhierala
+9582,Oasis,,Skorrath
+9583,Oasis,,Zarrukh Ring
+9590,Valley,,Greenshell Gully
+9593,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through",Canto Canyons
+9619,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Mo's Retirement Wastes
+9657,ToxicLake,left over from whatever happened here,Whale Palm Poison Lake
+9672,Cavern,,Wisehawk Cavern
+9675,Cavern,,Itgoni Tunnel
+9676,Cavern,,Farkafaror Cavern
+9678,Cavern,,Oliver's Collapse Cave Network
+9692,Cliffs,,Roreito Cliffs
+9693,VEE_JaggedRocks,,Lercha Jagged Ridges
+9699,Cavern,,Irabiar Cave Network
+9700,Cavern,,Biardaza Caverns
+9703,VEE_JaggedRocks,,Takashi's Jagged Ridges
+9708,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Hatdos Salt Plain
+9719,VEE_DryRiver,,Rooum Sand River
+9728,VEE_DryRiver,,Orangeherring Sand River
+9730,Valley,,Hedgehoglip Gully
+9731,VEE_DryRiver,,Camba Sand River
+9776,Cavern,,Isanium Cavern
+9777,Cliffs,,Vexaxosbeol Rampart
+9783,DryLake,,Verler Salt Flat
+9800,Valley,,Lonlia Canyon
+9806,CoastalIsland,"offshore, and hard to raid",Isle Old Grasshopper
+9850,VEE_Cenotes,,Craggymole Water-Filled Cenotes
+9853,VEE_Cenotes,,Gadount Karst Hollows
+9856,Cavern,,Witdio Cavern
+9860,Valley,,Artur's Collapse Valley
+9865,Cavern,,Arelor Cavern
+9873,VEE_Cenotes,,Menla Water-Filled Cenotes
+9879,Cavern,,Lousa Caverns
+9880,VEE_Cenotes,,Witler Water-Filled Cenotes
+9889,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Veeduay Unstable Dunes
+9892,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Roasberium Desiccated Ocean
+9900,VEE_DryRiver,,Smallotter Sand River
+9901,VEE_DryRiver,,Orangedonkey Dry River
+9919,DryLake,,Inium Sand Pit
+9926,DryLake,a playa - the salt flat a river dies in,Ithinor Barren Lake
+9932,AncientChemfuelRefinery,,Oubum Refinery
+9934,Ruins,,Ñogoca Town
+9938,RUT_ComplexStructures,,Tiitoum City
+9939,Ruins,,Cado Ruins
+9940,Ruins,,Matthew's Delusion
+9943,Ruins,,Colreisa Town
+9947,DryLake,a playa - the salt flat a river dies in,Lousa Sand Pit
+9954,DryLake,a playa - the salt flat a river dies in,Ereherarebum Sand Lake
+9961,RUT_ComplexStructures,,Dilapidated Red Shrew
+9968,RUT_ComplexStructures,,Braemtoca Ruins
+9969,RUT_ComplexStructures,,Dilapidated Canto
+9971,RUT_ComplexStructures,,Whiteoctopus Town
+9972,CoastalIsland,,Onora Isle
+9973,IceDunes,,Hevean Ice Mounds
+9974,RUT_ComplexStructures,,Tedtiodio Ruins
+9978,CoastalIsland,,Tolo Island
+9979,VEE_GravelBeach,,Hiveussia Pebble Strand
+9981,RUT_ComplexStructures,,Lándoa Town
+9982,RUT_ComplexStructures,,Abeneiro Ruins
+9987,RUT_ComplexStructures,,Gabela City
+9989,RUT_ComplexStructures,,Thilonen Ruins
+10001,Chasm,,Koala Chest Fracture
+10002,Chasm,,Pelicanchin Fracture
+10007,Chasm,,Goum Sinkhole
+10008,VEE_JaggedRocks,,Wasp Leg Jagged Ridges
+10009,Cliffs,,Laen Rampart
+10015,AB_TarLakes,"the tar pits, and what is preserved in them",Rodaballo Asphalt Pits
+10028,Cavern,,Blue Cave Network
+10029,Chasm,,Brasen Fracture
+10032,VEE_JaggedRocks,,Sharp Turtle Jagged Rocks
+10033,Chasm,,Blackstingray Chasm
+10035,VEE_JaggedRocks,,Dominika's Jagged Rocks
+10038,Cliffs,,Hiroshi's End
+10040,Chasm,,Leler Sinkhole
+10041,VEE_JaggedRocks,,Leira Jagged Rocks
+10042,Cavern,,Thhatussia Caverns
+10045,Cliffs,,Jonah's Finale Cliffs
+10046,Cavern,,Waeron Cave Network
+10048,VEE_JaggedRocks,,Sharp Ram Jagged Rocks
+10050,Cavern,,Camlave Caverns
+10051,VEE_JaggedRocks,,Grayhamster Jagged Rocks
+10053,Cavern,,Gualétra Cavern
+10055,Valley,,Camba Ravine
+10056,VEE_Cenotes,,Orlia Collapsed Limestone Pools
+10057,Valley,,Purpleclaw Gulch
+10059,Cavern,,Purple Caverns
+10060,Valley,,Red Gnat Gully
+10061,VEE_Cenotes,,Lain Collapsed Limestone Pools
+10062,VEE_Cenotes,,Youbum Collapsed Limestone Pools
+10063,VEE_Cenotes,,Ortealdio Cenote Lakes
+10070,DryLake,,Lahatlium Barren Lake
+10075,Valley,,Llamalip Divide
+10091,Valley,,Trocóo Valley
+10161,Crevasse,,Colcar Fissure
+10162,VEE_GravelBeach,,Alllium Pebble Strand
+10182,Cavern,,Itkahadlium Caverns
+10188,VEE_Cenotes,,Edwaseaba Collapsed Limestone Pools
+10201,VEE_FleshPits,"the superorganism, where it surfaces",Blackmagpie Flesh Pits
+10254,Cliffs,"the crags break in walls, not slopes",Lucie's End
+10255,Cavern,,Coberon Cavern
+10257,Cavern,,Nana's Caves
+10261,Valley,,Gray Valley
+10262,Cavern,,Taspecroi Cavern
+10264,Valley,,Ascó Gully
+10265,Valley,,Comareiro Canyon
+10266,VEE_StoneForest,"wind-cut pillars, a landscape that looks made",Ourinum Shattered Monoliths
+10267,Cavern,,Tedhihila Tunnel
+10273,Cavern,,Verna Cavern
+10275,VEE_Cenotes,,Emguatre Collapsed Limestone Pools
+10276,Cavern,,Boneria Cave Network
+10293,VEE_DryRiver,a watercourse that runs once a decade,Shohiberon Sand River
+10311,Cavern,,Youia Cavern
+10325,VEE_Cenotes,,Purple Cenote Field
+10331,Cliffs,,Seago Wall
+10332,AncientGarrison,somebody defended this once,Tona Base
+10339,Cavern,,Isis's Caves
+10344,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Badmule Stone-Littered Beach
+10349,VEE_JaggedRocks,,Reinum Jagged Rocks
+10350,Cavern,,Bilca Cavern
+10355,AncientWarehouse,"sealed, and worth the trip",Isaambrei Warehouse
+10357,Cavern,,Hamsterchin Cavern
+10360,Cavern,,Stanislav's Caves
+10361,Cavern,,Gnatshoulder Cave Network
+10363,Cavern,,Martin's Caves
+10369,VEE_Cenotes,,Asdabust Cenote Lakes
+10370,AncientWarehouse,"sealed, and worth the trip",Fernanda's Storehouse
+10373,VEE_Cenotes,,Wasistan Cenote Lakes
+10374,VEE_Cenotes,,Borne Collapsed Limestone Pools
+10376,Cavern,,Eraarthibium Cave Network
+10377,Cavern,,Barga Cavern
+10378,Valley,,Ouboneron Gully
+10381,Cavern,,Green Cave Network
+10385,Valley,,Banatberon Canyon
+10386,Ruins,"scavenging ground, and the reason the clan is here",Toxxada Ruins
+10387,Chasm,,Oresuay Chasm
+10416,Cavern,,Dahadus Tunnel
+10451,Oasis,"a Hutt well - dug for the holding beside it, and charged for",White Oasis
+10460,Cliffs,,Sterain Rampart
+10462,Valley,,Lacatonca Divide
+10463,VEE_JaggedRocks,,Esder Jagged Ridges
+10465,Chasm,,Blackworm Fracture
+10468,VEE_DustBowl,ground that was farmed once and is not any more,Rodaballo Blasted Expanse
+10472,Chasm,,Unussia Fracture
+10473,Cliffs,,Nedos Cliffs
+10478,Cavern,,Gorar Cavern
+10480,VEE_Cenotes,a roof that fell into the water table,Hawk Karst Hollows
+10481,Valley,,Onouhisor Ravine
+10482,Cavern,,Hummingbird Caverns
+10485,Cavern,,Abanqueiro Cavern
+10486,VEE_RockRidge,a spine of standing rock,Entoberon Ridge
+10489,VEE_Cenotes,,Miñoca Karst Hollows
+10490,Valley,,Meoreraus Valley
+10493,Cavern,,Albert's Ruse Caverns
+10494,VEE_Cenotes,,Blue Partridge Karst Hollows
+10510,VEE_Cenotes,,Banfinin Cenote Field
+10512,VEE_Cenotes,,Biato Cenote Field
+10514,VEE_Cenotes,,Gaomelium Cenote Field
+10516,Cavern,,Ash's Caves
+10518,AncientGarrison,somebody defended this once,Fort Bascucamxos
+10519,Cavern,,Reika's Caves
+10527,Cavern,,Llogalca's Honor Cavern
+10559,Cliffs,,Balé Cliffs
+10587,Cliffs,,Paterareia Cliffs
+10601,Cavern,,Combarro Tunnel
+10677,VEE_DryRiver,,Forda Sand River
+10768,Cavern,a mountain you can get inside,Darby's Ruin Cavern
+10777,Cliffs,"the crags break in walls, not slopes",Bluepenguin Rampart
+10780,VEE_Cenotes,,Wallaby Head Karst Hollows
+10782,VEE_Cenotes,,Icyknee Collapsed Limestone Pools
+10788,Cavern,,Daatoum Cave Network
+10789,VEE_Cenotes,,Enasan Cenote Lakes
+10799,Valley,,Kobium Gully
+10803,Cavern,,Leboaca Cavern
+10804,Valley,,Pelican Valley
+10805,Cavern,,Makoto's Caves
+10806,VEE_Cenotes,a roof that fell into the water table,Colaga Collapsed Limestone Pools
+10904,Cavern,,Panther Cavern
+10905,VEE_Cenotes,,Butmeuia Cenote Lakes
+10906,Valley,,Faralligator Gully
+10919,VEE_Cenotes,,Tooum Collapsed Limestone Pools
+10920,Valley,,Reberium Ravine
+10923,VEE_Cenotes,,Chesa Water-Filled Cenotes
+10926,Valley,,Areesbum Valley
+10929,Valley,,Embaixada Gorge
+10931,Cavern,,Alistair's Caves
+10932,Cavern,,Purpleshell Caverns
+10948,VEE_Cenotes,,Oda Karst Hollows
+10950,VEE_Cenotes,,Lanhenareba Cenote Lakes
+10954,Ruins,"scavenging ground, and the reason the clan is here",Dilapidated Tioler
+10955,Valley,,Tol Divide
+11075,Oasis,,Oon Sarrik
+11077,Oasis,,Ellumen
+11078,Cavern,a mountain you can get inside,Gorar Caverns
+11084,Valley,,Binfunera Valley
+11086,Ruins,,Qualia Town
+11087,Oasis,,Khessrun
+11091,Valley,"the way through a range, and everyone uses it",Onbum Gully
+11097,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Shohisarbum Stagnant Rivulet
+11098,Oasis,,Verrigal
+11100,Oasis,"the Hutt wells - six named, not 227",Ossumel
+11101,Oasis,,Kessukar
+11103,VEE_DryRiver,,Itheria Barren River
+11104,Oasis,,Thallumar
+11105,Oasis,,Ithekk
+11106,TerraformingScar,,Guinea Pig Shoulder Sundering
+11107,Oasis,,Ruvannak
+11109,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Banastra Dunes
+11126,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Snailclaw Dunes
+11169,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Tragua Unstable Dunes
+11183,VEE_ToxicCrater,the poisoned caldera the great river dies into,Terheruay Poisoned Caldera
+11184,DryLake,,Oulus Sand Lake
+11236,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Gocha Wastes
+11240,DryLake,a playa - the salt flat a river dies in,Laen Sand Pit
+11244,AncientHeatVent,,Reordos Infernal Vents
+11245,AncientHeatVent,,Daxos Thermal Vents
+11304,Valley,,Caxigo Canyon
+11305,VEE_DryRiver,,Hinla Sand River
+11309,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Vasalo Stagnant Rivulet
+11312,Ruins,,Teler Ruins
+11315,TerraformingScar,,Blueboulder Sundering
+11316,TerraformingScar,,The Grand Scar
+11330,AncientGarrison,,Alor Station
+11333,Valley,,Hinarehatdos Gully
+11334,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Barga Sluggish Rivulet
+11337,Ruins,,Hibo City
+11339,AncientHeatVent,,Witasheni Infernal Vents
+11340,AncientHeatVent,,Bigsquid Heat Vents
+11341,AncientWarehouse,,Larisa's Storehouse
+11343,AncientHeatVent,,Arehinlia Hell Holes
+11345,Ruins,,Butera Ruins
+11346,Ruins,,Hatbuten City
+11348,RUT_ComplexStructures,,Ruined Hinistia
+11349,Ruins,,Green Panther Ruins
+11350,Ruins,,Makoto's Cataclysm
+11351,Ruins,,Cattlewing Town
+11352,AncientHeatVent,,Banum Heat Vents
+11353,TerraformingScar,,Vile Wound
+11355,RUT_ComplexStructures,,Lercamoo Town
+11356,AncientInfestedSettlement,,Fallen Leentown
+11358,AncientGarrison,,Fort Onla
+11389,DryLake,a playa - the salt flat a river dies in,Iguana's Bluff Dry Lake
+11400,Ruins,,Curira City
+11401,TerraformingScar,,Walter's Fault
+11438,DryLake,,Tona Sand Lake
+11451,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Hisoulgaeria Dunes
+11456,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Irgo White Barrens
+11463,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Rouay Dunes
+11469,RUT_ComplexStructures,,Toxbiien Town
+11471,Oasis,the Hutt wells - water is the currency here,Big Wolverine Refuge
+11496,RUT_ComplexStructures,,Abansa City
+11502,RUT_ComplexStructures,,Dilapidated Cabanbar
+11504,VEE_GravelBeach,,Shoralia Rocky Shoreline
+11515,IceDunes,,Roundtooth Frozen Hills
+11521,CoastalIsland,,Leshoder Island
+11523,RUT_ComplexStructures,,Ruined Badtoe
+11525,RUT_ComplexStructures,,Darogu Ruins
+11527,Crevasse,,Smallporcupine Break
+11534,VEE_GravelBeach,,Red Pheasant Pebble Strand
+11537,DryLake,,Setioum Salt Flat
+11539,Valley,,Alobarei Valley
+11550,VEE_PebbleDunes,"gravel desert, harder going than sand",Tioera Gravel Drifts
+11558,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Tasca Dunes
+11566,VEE_PebbleDunes,"gravel desert, harder going than sand",Tonxigola Gravel Drifts
+11576,Valley,,Black Gulch
+11577,DryLake,,Grasshopperankle Dry Lake
+11585,VEE_DryRiver,a watercourse that runs once a decade,Hiunba Sand River
+11590,AbandonedColonyTribal,a tribe that did not make it through a dry decade,Craneelbow Village
+11690,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on,Cheetah Plant
+11770,Valley,,Deldio Valley
+11775,IceDunes,,Isvedo Frozen Hills
+11777,DryLake,,Marle's Prize Barren Lake
+11778,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Queabei Shingle Coast
+11779,DryLake,,Inforda Sand Pit
+11793,Valley,,Erler Canyon
+11794,VEE_DustBowl,ground that was farmed once and is not any more,Eveunt Blasted Expanse
+11795,Valley,,Olxadaga Ravine
+11796,DryLake,,Wasin Dry Lake
+11812,DryLake,,Ñamaremcroi Barren Lake
+11813,Valley,,Greenboomrat Valley
+11815,VEE_DryRiver,,Inveorlior Sand River
+11817,Crevasse,,Erwitberium Crevasse
+11825,VEE_GravelBeach,,Binistan Stone-Littered Beach
+11830,RUT_ComplexStructures,,Good Toad Ruins
+11834,Oasis,the Hutt wells - water is the currency here,Andor Oasis
+11836,DryLake,,Eastunt Sand Pit
+11837,Valley,,Green Quail Gully
+11843,CoastalIsland,,Abello Isle
+11852,Oasis,,Nessavane
+11853,Oasis,,Orrimund
+11854,Oasis,,Tessikar
+11855,Oasis,,Wennoral
+11856,Oasis,,Ilmarrow
+11857,Oasis,,Quessadrin
+11858,Oasis,,Kharrivane
+11859,Oasis,,Ambrossek
+11860,Oasis,,Ferrinesh
+11861,Oasis,,Sollumvane
+11862,Oasis,,Vashkerel
+11863,Oasis,,Ennavorn
+11871,Ruins,,Gofarinum Ruins
+11872,Ruins,,Youbium Ruins
+11875,Ruins,,Toadcheek Ruins
+11877,Oasis,"a Hutt well - dug for the holding beside it, and charged for",Orange Oasis
+11878,DryLake,,Magpie Sand Lake
+11889,DryLake,,Lándoa Sand Pit
+11890,TerraformingScar,,Lánastre Scar
+11891,VEE_DryRiver,,Hadesereberium Sand River
+11893,AncientGarrison,,Abruño Stronghold
+11894,Valley,,Heeveor Vale
+11895,VEE_DryRiver,a watercourse that runs once a decade,Abanqueiro Barren River
+11897,Ruins,,Roabe City
+11901,Cavern,,Whitelyrebird Cavern
+11903,HotSprings,geothermal water - the one warm bath on this planet,Gray Hot Spring
+11914,Valley,,Abebai Gulch
+11917,VEE_SerpentineCanyons,,Maxo Canyons
+11918,Oasis,,Sarrukesh
+11922,RUT_ComplexStructures,,Minonlanen Town
+11924,VEE_Cenotes,,Jackal Karst Hollows
+11925,Cavern,,Velma's Caves
+11926,Valley,,Tremearocer Gulch
+11936,Cavern,a mountain you can get inside,Comba's Misstep Tunnel
+11937,Valley,,Thiberium Divide
+11945,Valley,"the way through a range, and everyone uses it",Curro Divide
+11964,Valley,,Cervexa Vale
+11993,Cavern,,Flossie's Caves
+11994,Cavern,,Verthdo Cavern
+12009,Cavern,,Weaselchin Cavern
+12011,Cavern,,Vulturehip Cave Network
+12012,VEE_Cenotes,,Ouruay Water-Filled Cenotes
+12013,Valley,,Gabo Valley
+12016,CoastalIsland,"offshore, and hard to raid",Vegabar Island
+12020,Cavern,,Ilarion's Caves
+12022,Chasm,,Laareistia Fracture
+12023,Cavern,,Green Aardvark Tunnel
+12026,Chasm,,Iomarco Sinkhole
+12037,AbandonedColonyTribal,a tribe that did not make it through a dry decade,Green Village
+12080,Valley,,Menba Canyon
+12083,Cavern,,Guao Cavern
+12084,Cliffs,,Caivas Cliffs
+12087,Chasm,a crack too wide to jump and too deep to see,Boga Sinkhole
+12089,Cliffs,,Gideon's End
+12091,Cliffs,,Nehiloneron Rampart
+12115,VEE_JaggedRocks,ground that cuts boots,Paulette's Trophy Jagged Rocks
+12117,Valley,,Chego Gully
+12122,VEE_Cenotes,,Albogobal Karst Hollows
+12124,Cavern,,Hotaru's Joy Tunnel
+12125,Cavern,,Raeria Tunnel
+12126,VEE_Cenotes,,Irleca Cenote Field
+12128,Cliffs,"the crags break in walls, not slopes",Waen Wall
+12130,Cliffs,,Alboñouloo Cliffs
+12131,Chasm,,White Fracture
+12134,Cavern,,Seara Cave Network
+12135,Cavern,,Omi Cavern
+12137,Chasm,,Dolphinarm Fracture
+12141,VEE_Cenotes,,Enuia Water-Filled Cenotes
+12142,Valley,,Sharpbison Gully
+12145,Cavern,,Canga Caverns
+12146,VEE_Cenotes,,Mehina's Jackpot Cenote Lakes
+12148,Cavern,,Abanqueiro Tunnel
+12151,Cavern,,Abeneiro Tunnel
+12187,VEE_Cenotes,,Hender Karst Hollows
+12189,Cavern,,Harshcheek Cave Network
+12190,VEE_Cenotes,,Selanesdo Collapsed Limestone Pools
+12192,Cavern,,Toxo Cavern
+12193,Cavern,,Mongoose Caverns
+12194,VEE_Cenotes,,Ourforeneria Collapsed Limestone Pools
+12197,Valley,,Henrethna Gorge
+12198,Cavern,,Nela Cavern
+12203,VEE_Cenotes,,Greenbug Cenote Field
+12204,Valley,,Hatlaerela Gully
+12205,Cavern,,Asabetros Cave Network
+12208,VEE_Cenotes,,Tiger Palm Water-Filled Cenotes
+12211,VEE_Cenotes,,Otox Cenote Lakes
+12242,Chasm,,Oldhead Chasm
+12243,Chasm,,Laxe Fracture
+12246,Valley,,Duck Valley
+12248,Chasm,,Nebai Fracture
+12249,Chasm,,Kangarooarm Sinkhole
+12252,Hollow,,Youin Hollow
+12253,Chasm,,Redclaw Chasm
+12254,DryLake,,Tola Dry Lake
+12255,Valley,,Isforberon Canyon
+12260,VEE_SerpentineCanyons,,Kirill's Canyons
+12261,Cliffs,,Crouca Cliffs
+12263,Chasm,,Blue Ram Chasm
+12264,Chasm,,Barcam Fracture
+12265,Chasm,,Colmea Chasm
+12267,Chasm,,Oldhead Sinkhole
+12268,VEE_SerpentineCanyons,,Cristina's Canyons
+12273,TerraformingScar,,Marulo Scar
+12304,AncientWarehouse,"sealed, and worth the trip",Shoenba Storehouse
+12312,Valley,"the way through a range, and everyone uses it",Olga Gully
+12363,VEE_DryRiver,,Galga Barren River
+12365,DryLake,,Salmon Heel Salt Flat
+12379,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Caxigo Quicksand Dunes
+12382,DryLake,,Asberon Barren Lake
+12396,AncientQuarry,an old working in an ore province - somebody dug here first,Mabar Mines
+12411,AncientQuarry,the mine the sandcrawlers were stolen from,Red Hedgehog Quarry
+12413,AncientGarrison,,Fort Dodaxos
+12415,Ruins,,Ruined Greenhill
+12417,AbandonedColonyOutlander,"The Setdown - where the dead gravship was found. ADJACENT to the start tile, never on it: the ship needs 4,057 clear cells there",Hinin Outpost
+12444,ToxicLake,left over from whatever happened here,Camla Toxic Lake
+12447,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on,Miñoca Chemplant
+12457,VEE_DustBowl,ground that was farmed once and is not any more,Valentin's Honor Blasted Expanse
+12461,VEE_Cenotes,,Tranvexaga Water-Filled Cenotes
+12463,Oasis,,Brami Oasis
+12468,Cavern,,Abecan Cavern
+12473,DryLake,,Seoristia Sand Pit
+12474,Oasis,,Ollavane
+12476,Oasis,,Heskumar
+12477,Oasis,,Torrinel
+12480,VEE_Cenotes,,Eralor Water-Filled Cenotes
+12484,VEE_Cenotes,,Ambas Water-Filled Cenotes
+12485,VEE_Cenotes,,Harshneck Collapsed Limestone Pools
+12486,Cavern,,Thilonhininor Tunnel
+12487,Cavern,,Youhian Cavern
+12488,VEE_Cenotes,,Goro Cenote Lakes
+12490,Cavern,,Verum Cavern
+12492,Cavern,,Icyleg Caverns
+12493,VEE_Cenotes,,Saibogo Water-Filled Cenotes
+12495,Cavern,,Dalila's Caves
+12497,VEE_Cenotes,,Gnat Wing Karst Hollows
+12498,Cavern,,Hilary's Caves
+12501,VEE_Cenotes,,Goodpalm Collapsed Limestone Pools
+12504,Valley,,Trore Canyon
+12508,Valley,,Rougharm Valley
+12510,Valley,,Orange Eagle Valley
+12548,Cavern,,Irgo Cavern
+12551,Cliffs,,Brabagobi Cliffs
+12553,VEE_JaggedRocks,,Lester's Jagged Rocks
+12554,Cavern,,Mien Cave Network
+12556,Chasm,,Whitellama Fracture
+12557,Chasm,,Xigocabool Sinkhole
+12559,Cavern,,Trobo Cavern
+12560,Cavern,,Tadashi's Caves
+12563,Cliffs,,Alboio Wall
+12568,Cavern,,Whitechicken Tunnel
+12570,VEE_Cenotes,,Emu Cenote Lakes
+12572,VEE_Cenotes,,Brincan Collapsed Limestone Pools
+12573,Cavern,,Cancar Tunnel
+12574,Cavern,,Criño Tunnel
+12575,Valley,,Lándoa Valley
+12577,Chasm,,Redcrow Sinkhole
+12578,Valley,,Recan Gulch
+12580,Cavern,,Bluestump Tunnel
+12595,Valley,,Iguana Neck Valley
+12603,Valley,,Asbustmi Divide
+12609,Valley,,Trangacol Canyon
+12613,DryLake,,Tasca Salt Flat
+12614,DryLake,,Bringa Dry Lake
+12617,Valley,,Rhino's Delight Canyon
+12624,Valley,,Sharptoe Vale
+12630,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Octopus Silted Creek
+12631,Oasis,,Vhelloth
+12632,VEE_DryRiver,,Wendy's Trophy Dry River
+12635,Ruins,,Ruined Bríbra
+12645,Ruins,,Dilapidated Bighead
+12647,TerraformingScar,,Oldweasel Rift
+12693,VEE_Cenotes,,Doen Karst Hollows
+12694,Valley,,Pelán Canyon
+12695,Cavern,,Andleyoudos Tunnel
+12696,Cavern,,Ascam Cavern
+12699,VEE_Cenotes,,Croucam Water-Filled Cenotes
+12702,Cavern,,Negal Cavern
+12703,Cavern,,Yuzuki's Caves
+12704,Cavern,,Terheinum Tunnel
+12706,VEE_Cenotes,,Rontlia Cenote Field
+12708,Cavern,,Sly's Caves
+12710,VEE_Cenotes,,Sena Collapsed Limestone Pools
+12711,Cavern,,Lousa Caverns
+12713,Valley,,Big Pelican Vale
+12715,Valley,,Armeherla Canyon
+12717,Cavern,,Thin Cave Network
+12722,Cavern,,Senen Tunnel
+12723,VEE_Cenotes,,Caler Karst Hollows
+12724,Cavern,,Chaca Tunnel
+12777,VEE_Cenotes,,Haerfinia Water-Filled Cenotes
+12778,Cavern,,Esium Cavern
+12789,VEE_Cenotes,,Doacur Water-Filled Cenotes
+12795,AncientGarrison,somebody defended this once,Oulussia Armory
+12796,Valley,,Anlium Canyon
+12799,VEE_Cenotes,,Purplebeaver Karst Hollows
+12800,Valley,,Iramen Gully
+12818,VEE_DryRiver,,Nequele Dry River
+12819,DryLake,,Doisuay Salt Flat
+12822,Bay,a harbour the Deepwater Compact could actually use,Strangeear Cove
+12825,Valley,,Sharptalon Ravine
+12829,DryLake,,Grayshell Sand Lake
+12830,AncientGarrison,,Roughelbow Fort
+12831,VEE_DryRiver,,Owl Sand River
+12833,Ruins,"scavenging ground, and the reason the clan is here",Bigankle Town
+12834,AncientGarrison,,Hadwalium Garrison
+12846,DryLake,a playa - the salt flat a river dies in,Round Vulture Sand Pit
+12857,VEE_PebbleDunes,"gravel desert, harder going than sand",Greendonkey Gravel Drifts
+12899,Cliffs,"the crags break in walls, not slopes",Dinberium Cliffs
+12908,Cavern,,Nika's Caves
+12909,Valley,,Tasca Valley
+12910,Cavern,,Cara Cavern
+12911,VEE_MeteorCrater,nothing on this world stops a rock,Marvasza Meteor Crater
+12912,Cavern,,Caibe Cave Network
+12914,VEE_Cenotes,,Queño Cenote Lakes
+12916,VEE_Cenotes,,Hebinler Collapsed Limestone Pools
+12927,VEE_JaggedRocks,,Teduia Jagged Rocks
+12936,VEE_DustBowl,ground that was farmed once and is not any more,Funinonda Scorched Dustplain
+12941,VEE_JaggedRocks,,Wade's Jagged Ridges
+12942,Cliffs,,Hinministia Wall
+12943,Cliffs,,Danny's End
+12963,VEE_MeteorCrater,,Teni Meteor Crater
+12968,VEE_DryRiver,,Bluejayfoot Sand River
+13019,Valley,,Partridgetooth Gully
+13023,DryLake,,Lobster Talon Barren Lake
+13030,DryLake,,Orange Salt Flat
+13059,FrozenRuins,somebody lived out here once - scavenging ground,Far Dove Ice City
+13090,VEE_Cenotes,,Notera Cenote Field
+13093,VEE_Cenotes,,Comboa Water-Filled Cenotes
+13095,Valley,,Smallsardine Canyon
+13097,Cavern,,Haruto's Caves
+13099,Valley,,Oldhawk Gorge
+13100,VEE_Cenotes,,Craggystingray Cenote Lakes
+13101,Cavern,,Fenatitheria Cavern
+13103,Cavern,,Teresa's Caves
+13105,Cavern,,Cacaem Tunnel
+13106,VEE_Cenotes,,Dueem Water-Filled Cenotes
+13108,Valley,,Caboas Canyon
+13119,VEE_Cenotes,a roof that fell into the water table,Parrotheel Collapsed Limestone Pools
+13124,VEE_MeteorCrater,,Sea Urchin Nose Impact Crater
+13139,DryLake,,Haithleistia Dry Lake
+13142,VEE_PebbleDunes,"gravel desert, harder going than sand",Istheni Shingle Dunes
+13149,DryLake,a playa - the salt flat a river dies in,Blacklemur Dry Lake
+13155,VEE_MeteorCrater,,Légua Impact Basin
+13168,Hollow,"shelter, if you get there before dark",Bustmabrin Hollow
+13197,IceDunes,,Green Frozen Hills
+13203,Archipelago,a scatter of rock in the shallows,Miñoca Isles
+13220,RUT_ComplexStructures,,Tranban Ruins
+13232,VEE_Cenotes,,Baroscu Collapsed Limestone Pools
+13233,VEE_Cenotes,,Combarro Karst Hollows
+13235,VEE_Cenotes,,Waseada Karst Hollows
+13247,Chasm,,Deltiler Chasm
+13264,TerraformingScar,,The Great Sundering
+13269,Chasm,,Lousa Chasm
+13272,Chasm,,Thiin Sinkhole
+13273,VEE_JaggedRocks,,Oldelbow Jagged Rocks
+13276,Chasm,,Zoboago Sinkhole
+13278,Valley,,Galga Valley
+13279,VEE_Cenotes,,Strangeeagle Karst Hollows
+13283,Cliffs,,Orangestump Rampart
+13284,Chasm,,Redtree Fracture
+13286,Chasm,,Camelhip Sinkhole
+13287,Chasm,,Gogocar Chasm
+13289,Cavern,,Evein Tunnel
+13293,Valley,,Kenta's Ruination Vale
+13294,Cavern,,Farturtle Cave Network
+13297,Valley,,Roundankle Canyon
+13303,Cliffs,,Trebreillo Cliffs
+13334,VEE_Cenotes,,Nantwalium Cenote Lakes
+13348,Oasis,"a Hutt well - dug for the holding beside it, and charged for",Gomacolcam Refuge
+13425,Cavern,,Omentbum Tunnel
+13426,VEE_Cenotes,,Lándoa Cenote Field
+13432,VEE_Cenotes,,Apeknee Collapsed Limestone Pools
+13449,Oasis,"a Hutt well - dug for the holding beside it, and charged for",Vasga Oasis
+13473,DryLake,,Tiunt Barren Lake
+13485,VEE_Cenotes,,Purple Salmon Collapsed Limestone Pools
+13486,Cavern,,Allistan Cavern
+13488,Cavern,,Ñogoem Caverns
+13494,Cavern,,Red Cavern
+13495,Valley,,Wiseelbow Valley
+13496,Cavern,,Galga Tunnel
+13497,Valley,,Tethidio Gorge
+13504,Valley,,Gabrin Ravine
+13509,Cavern,,Tallpaw Caverns
+13510,Cavern,,Crourecan Caverns
+13511,VEE_Cenotes,,Monmeba Cenote Field
+13512,Cavern,,Godio Cave Network
+13513,Ruins,"scavenging ground, and the reason the clan is here",Ruined Zebra
+13514,Cavern,,Kazuko's Caves
+13519,Cavern,,Orangewood Cavern
+13526,VEE_Cenotes,,Balercer Collapsed Limestone Pools
+13527,Cavern,,Rodaballo Cavern
+13531,Valley,,Entveeron Ravine
+13548,VEE_Cenotes,,Allyouorler Karst Hollows
+13550,VEE_Cenotes,,Guabo Cenote Lakes
+13558,VEE_GravelBeach,,Camcai Rocky Shoreline
+13562,DryLake,,Smallfoot Sand Lake
+13569,Cliffs,,Craggylyrebird Cliffs
+13571,Cavern,,Diana's Caves
+13572,Cliffs,,Abeabe Rampart
+13573,Cliffs,,Lewis's End
+13575,VEE_JaggedRocks,,Trobust Jagged Rocks
+13576,VEE_JaggedRocks,,Lercammi Jagged Rocks
+13578,Cliffs,,Erahenbum Cliffs
+13585,VEE_JaggedRocks,,Smith's Jagged Rocks
+13588,VEE_JaggedRocks,,Neberon Jagged Rocks
+13591,Cliffs,,Thaourbum Cliffs
+13593,VEE_Cenotes,,Thacoberium Cenote Field
+13595,Cavern,,Ator Tunnel
+13596,Cavern,,Marta's Ruse Tunnel
+13597,VEE_Cenotes,,Purplemole Cenote Field
+13598,Valley,,Moosecheek Gully
+13599,VEE_Cenotes,,Omela Karst Hollows
+13602,AncientGarrison,somebody defended this once,Coro Armory
+13603,VEE_Cenotes,,Gulou Cenote Lakes
+13604,Cavern,,German's Jewel Caverns
+13605,Valley,,Green Canyon
+13607,VEE_Cenotes,,Graypenguin Collapsed Limestone Pools
+13609,Cavern,,Attimalia Tunnel
+13612,Cavern,,Orangefeather Cave Network
+13614,VEE_Cenotes,,Maqueratas Collapsed Limestone Pools
+13618,VEE_Cenotes,a roof that fell into the water table,Otter Cenote Lakes
+13622,Cavern,,Colmea Cavern
+13627,Cavern,,Red Stork Cave Network
+13644,TerraformingScar,somebody tried to fix this planet and failed,The Grand Wound
+13647,DryLake,,Roora Dry Lake
+13654,Cavern,,Barcam Cave Network
+13700,Cavern,,Hisouen Caverns
+13701,Cliffs,,Xogua Wall
+13702,Cliffs,,Kim's End
+13706,Cliffs,,Deluneria Wall
+13709,Chasm,,Abanqueiro Chasm
+13712,Ruins,"scavenging ground, and the reason the clan is here",Goga Town
+13713,Cavern,,Freefish Cavern
+13719,Cliffs,,Craggyraccoon Cliffs
+13723,Chasm,,Whitepond Chasm
+13724,VEE_Cenotes,,Seahorsearm Karst Hollows
+13725,VEE_Cenotes,,Redporpoise Water-Filled Cenotes
+13727,Valley,,Black Lion Valley
+13735,Cavern,,Eugene's Caves
+13749,VEE_Cenotes,,Greentrunk Cenote Field
+13752,VEE_Cenotes,,Verbutfarunt Cenote Field
+13764,Cavern,,Trudy's Caves
+13767,Valley,,Ant Wrist Gorge
+13768,Cavern,,Barga Caverns
+13769,Cavern,,Dorna Tunnel
+13770,Cavern,,Smallchin Tunnel
+13779,TerraformingScar,,Mouse Scar
+13798,VEE_JaggedRocks,,Bascullo Jagged Rocks
+13799,Cliffs,,Whale Cliffs
+13808,TerraformingScar,,Kouhei's Fault
+13839,Ruins,,Vivian's Jackpot
+13844,Ruins,,Ruined Maxadache
+13868,Ruins,,Mala Ruins
+14023,VEE_Cenotes,,Irga Water-Filled Cenotes
+14026,VEE_MeteorCrater,nothing on this world stops a rock,Telenorora Impact Crater
+14027,Valley,,Heora Canyon
+14046,Cavern,,Banzo Cavern
+14047,Cavern,,Vasalo Tunnel
+14049,Ruins,,Monhinda City
+14136,AncientWarehouse,"sealed, and worth the trip",Vince's Depot
+14147,Cavern,,Graybug Cavern
+14148,Cavern,,Gahalor Cavern
+14149,Cavern,,Goshawk Tunnel
+14150,VEE_Cenotes,,Bluesparrow Cenote Lakes
+14152,Cavern,,Eli's Caves
+14156,Cavern,,Gao Cavern
+14157,Valley,,Gray Grouse Vale
+14161,Cavern,,Yuzuki's Caves
+14166,VEE_Cenotes,a roof that fell into the water table,Badgereye Collapsed Limestone Pools
+14171,Cavern,,Sandra's Caves
+14178,Cavern,,Ascol Cave Network
+14179,VEE_RockRidge,a spine of standing rock,Leoum Ridge
+14181,VEE_RockRidge,a spine of standing rock,Lanla Ridge
+14186,Cavern,,Veeada Tunnel
+14188,VEE_Cenotes,,Komodo Collapsed Limestone Pools
+14200,Valley,,Masencomve Gulch
+14201,Cavern,,Caibanbust Caverns
+14205,Valley,"the way through a range, and everyone uses it",Hinnebum Divide
+14289,Chasm,a crack too wide to jump and too deep to see,Goxo Fracture
+14306,TerraformingScar,,Hadeveba Scar
+14312,Oasis,,Arrukesh
+14314,Oasis,,Nhessul
+14317,Oasis,,Ommarik
+14318,VEE_SerpentineCanyons,,Refenunum Canyons
+14320,Oasis,,Skerrivane
+14321,Valley,,Chacana Valley
+14324,Valley,,Tobaen Divide
+14334,VEE_SerpentineCanyons,,Boyle's Canyons
+14338,Oasis,"the Hutt wells - six named, not 227",Yallumar
+14339,Oasis,,Ulloresh
+14340,Oasis,,Zenniver
+14343,Cavern,,Itora Cave Network
+14346,Oasis,,Tarrukel
+14347,VEE_DryRiver,,Jatiunlia Barren River
+14348,VEE_PebbleDunes,"gravel desert, harder going than sand",Aredos Stone-Swept Ridges
+14429,RUT_ComplexStructures,,Ruined Ñotas
+14442,VEE_DryRiver,,Toxos Dry River
+14446,VEE_SulfuricLake,"yellow water, and the smell reaches a day out",Boagu Yellowmire
+14456,AncientGarrison,,Shun's Lunacy Garrison
+14458,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Sharpwing Sinking Dunes
+14461,AncientGarrison,,Poppy's Fort
+14470,AncientQuarry,an old working in an ore province - somebody dug here first,Gane Quarry
+14481,AncientHeatVent,a heat plume on the hottest world,Ñoisarocam Infernal Vents
+14483,Ruins,,Dilapidated Areberon
+14486,AncientHeatVent,a heat plume on the hottest world,Jackal Hell Holes
+14490,AncientHeatVent,a heat plume on the hottest world,Trebo Hell Holes
+14525,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Rodaballo Saline Flats
+14540,DryLake,,Farfly Salt Flat
+14545,VEE_SerpentineCanyons,,Blue Horse Canyons
+14559,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Herbium Saline Flats
+14564,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Teus Stagnant Rivulet
+14569,Ruins,,Letrocroiro City
+14570,Ruins,,Combo City
+14571,AncientHeatVent,,Camba Thermal Vents
+14572,Ruins,,Berro's Conceit City
+14573,Ruins,,Ruined Curgabar
+14576,Ruins,,Trebo City
+14578,Ruins,,Ida's Misstep
+14579,RUT_ComplexStructures,,Gray Alpaca Ruins
+14580,RUT_ComplexStructures,,Onvershoni Town
+14581,Ruins,,Matvei's Lunacy
+14583,Ruins,,Barga Town
+14586,Ruins,,Bluefruit Ruins
+14588,Ruins,,Tedfensedo City
+14589,AncientGarrison,,Fort Blue Sea Urchin
+14592,RUT_ComplexStructures,,Comareiro Ruins
+14593,Ruins,,Oldelephant Ruins
+14594,RUT_ComplexStructures,,Anfisa's Arrogance
+14595,Ruins,,Smallelephant City
+14596,AncientHeatVent,,Leus Heat Vents
+14598,Ruins,,Ruined Freewhale
+14599,AncientHeatVent,,Louto Infernal Vents
+14624,VEE_MeteorCrater,,Bami Impact Crater
+14698,DryLake,a playa - the salt flat a river dies in,Forla Barren Lake
+14704,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",White Narwhal Salt Plain
+14716,Oasis,the Hutt wells - water is the currency here,Blue Oasis
+14738,RUT_ComplexStructures,,Margarita's Finale Ruins
+14742,RUT_ComplexStructures,,Pesaito Ruins
+14759,VEE_GravelBeach,,Hennotaldo Rocky Shoreline
+14793,DryLake,a playa - the salt flat a river dies in,Athistereria Salt Flat
+14831,VEE_DryRiver,a watercourse that runs once a decade,Purple Muffalo Barren River
+14839,VEE_DryRiver,a watercourse that runs once a decade,Leler Dry River
+14885,Chasm,a crack too wide to jump and too deep to see,Selium Fracture
+14927,Cliffs,,Bren Cliffs
+14952,VEE_JaggedRocks,,Condor Jagged Ridges
+14955,Cliffs,,Gabium Rampart
+15007,Valley,,Hinoum Valley
+15019,Valley,,Fortheandistan Divide
+15020,VEE_GravelBeach,,Penguin Stone-Littered Beach
+15033,Valley,,Wolfchest Gully
+15034,VEE_DryRiver,,Bonthidio Sand River
+15040,VEE_DustBowl,ground that was farmed once and is not any more,Blackaardvark Dust Bowl
+15047,VEE_AlluvialFan,,Hadarbum Sediment Fan
+15064,Bay,a harbour the Deepwater Compact could actually use,Gulf of Dornaenbil
+15067,CoastalIsland,,Redcormorant Island
+15068,Crevasse,,Omeder Break
+15077,Bay,a harbour the Deepwater Compact could actually use,Artheereunt Bight
+15079,VEE_DryRiver,,Thaasistia Barren River
+15086,Oasis,a Hutt well - the holding beside it exists because of this water,Ammeril
+15087,Oasis,,Corrovesh
+15090,Oasis,,Ilkessa
+15091,Oasis,,Thennoral
+15092,Oasis,,Ossimarr
+15093,Oasis,,Sedrakesh
+15094,Oasis,,Vellarin
+15095,Oasis,,Kessivar
+15096,Oasis,,Rhennivane
+15097,Oasis,,Ulvamund
+15098,Oasis,,Tarrivesh
+15099,Oasis,,Nimmoral
+15101,Oasis,,Sarrivane
+15102,Oasis,,Hollunar
+15103,Oasis,,Quorrivesh
+15111,AbandonedColonyTribal,a tribe that did not make it through a dry decade,Bala Village
+15112,VEE_DryRiver,,Croio Barren River
+15114,AncientGarrison,,Coban Base
+15120,DryLake,,Trosbecam Salt Flat
+15122,VEE_DryRiver,,Greenlemur Barren River
+15127,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Temininum Dunes
+15129,TerraformingScar,,Gabil's Jewel Rift
+15130,TerraformingScar,,Dread Scar
+15131,DryLake,,Ithum Salt Flat
+15137,VEE_DryRiver,,Borba Dry River
+15139,VEE_DryRiver,a watercourse that runs once a decade,Teeron Sand River
+15140,VEE_SerpentineCanyons,,Youba Canyons
+15141,Cavern,a mountain you can get inside,Freetooth Tunnel
+15152,Oasis,,Rough Lobster Oasis
+15156,Valley,,Roin Gully
+15157,Oasis,,Sharpankle Oasis
+15159,VEE_Cenotes,,White Water-Filled Cenotes
+15161,Oasis,,Trancuriratran Refuge
+15164,VEE_Cenotes,,Primemole Cenote Field
+15166,Oasis,the Hutt wells - water is the currency here,Thealllium Oasis
+15167,Valley,,Thaoum Gorge
+15168,Cavern,,Choco Cavern
+15173,Bay,a harbour the Deepwater Compact could actually use,Gulf of Camelear
+15176,TerraformingScar,,Lyle's Folly
+15178,Cavern,,Enunt Cave Network
+15181,Valley,"the way through a range, and everyone uses it",Gray Sardine Canyon
+15186,AncientGarrison,,Goxos Armory
+15206,TerraformingScar,,Butallnaan Scar
+15217,Cavern,,Yuliya's Caves
+15220,Cavern,,Gray Caverns
+15222,VEE_Cenotes,,Enhaen Cenote Field
+15233,Cavern,,Jathauay Cavern
+15234,VEE_StoneForest,"wind-cut pillars, a landscape that looks made",Bat Hip Craggy Stone Thicket
+15264,Chasm,,Babustre Fracture
+15267,Cavern,,Eveor Tunnel
+15268,Cavern,,Kaori's Caves
+15271,Cavern,,Lincoln's Caves
+15275,VEE_JaggedRocks,,Dorian's Jagged Rocks
+15277,Cliffs,,Aardvark Foot Wall
+15310,AncientWarehouse,"sealed, and worth the trip",Micóalbo Warehouse
+15328,VEE_JaggedRocks,,Meyouistia Jagged Ridges
+15329,Cliffs,"the crags break in walls, not slopes",Tinaitlor Cliffs
+15337,DryLake,,Tiussia Barren Lake
+15365,VEE_Cenotes,,Evehinan Karst Hollows
+15366,Cavern,,Debby's Caves
+15367,Valley,,Hinouller Canyon
+15368,Cavern,,Tona Cavern
+15373,VEE_JaggedRocks,ground that cuts boots,Hinistan Jagged Rocks
+15374,Cavern,,Ederia Caverns
+15375,VEE_Cenotes,,Grayshrub Karst Hollows
+15377,VEE_JaggedRocks,,Ththaussia Jagged Rocks
+15379,Cavern,,Blueskin Tunnel
+15380,Valley,,Ouora Canyon
+15381,VEE_JaggedRocks,ground that cuts boots,Darcey's Jagged Rocks
+15382,Cavern,,Black Iguana Cavern
+15388,VEE_Cenotes,,Eshisen Cenote Lakes
+15407,VEE_Cenotes,,Terdos Water-Filled Cenotes
+15408,VEE_Cenotes,,Greenclaw Water-Filled Cenotes
+15438,Chasm,,Itheron Sinkhole
+15452,Chasm,,Canle Chasm
+15453,Chasm,,Alligator Sinkhole
+15456,Cliffs,,Canabantrado Rampart
+15458,VEE_JaggedRocks,,Lan's Ruination Jagged Rocks
+15459,VEE_JaggedRocks,,Tona Jagged Ridges
+15461,Cliffs,,Deadnose Cliffs
+15462,Cliffs,,Hadoulbum Wall
+15463,VEE_JaggedRocks,,Oioas Jagged Ridges
+15485,Chasm,,Vebe Sinkhole
+15486,Cliffs,,Oulni Cliffs
+15545,DryLake,,Orbum Salt Flat
+15572,Cavern,,Witinor Cavern
+15574,Valley,,Henbutin Canyon
+15577,Cavern,,Mininourus Caverns
+15581,Valley,,Craggy Condor Gully
+15604,Cavern,,Edlander Cave Network
+15611,Cavern,,Redemu Cavern
+15623,sw_DeadSarlacc,"the second sarlacc, and it is dead - somebody killed it",Dead Sarlacc
+15634,VEE_Cenotes,a roof that fell into the water table,Barborca Cenote Field
+15636,VEE_Cenotes,,Rodaballo Water-Filled Cenotes
+15641,Valley,,Locri Gully
+15642,VEE_Cenotes,,Blue Cenote Lakes
+15643,Cavern,,Natalya's Caves
+15644,Cavern,,Orange Penguin Cavern
+15646,Cavern,,Wise Crow Caverns
+15649,Cavern,,Aristan Cavern
+15655,Valley,,Isjaberon Valley
+15658,Cavern,,Gerbillip Cavern
+15661,VEE_Cenotes,,Cósen Cenote Field
+15663,Cavern,,Arerebo Caverns
+15669,Valley,,Vebutistia Canyon
+15671,VEE_Cenotes,,Ereistia Cenote Field
+15672,Valley,,Heussia Canyon
+15674,Cavern,,Marpe Tunnel
+15676,Cavern,,Diana's Caves
+15679,VEE_Cenotes,,Hisminder Cenote Lakes
+15682,VEE_Cenotes,,Verocan Cenote Field
+15684,AncientGarrison,somebody defended this once,Orange Armory
+15686,VEE_Cenotes,,Tedtieria's Honor Water-Filled Cenotes
+15689,Valley,,Asan Canyon
+15690,Valley,,Abeneiro Valley
+15692,VEE_Cenotes,,Onlium Cenote Field
+15694,Valley,,Abruño Canyon
+15696,Cavern,,Gray Cave Network
+15700,Valley,,Combarro Divide
+15701,Cavern,,Vasilisa's Lunacy Cave Network
+15702,Valley,,Temonntda Gully
+15708,Valley,,Camisa Gully
+15709,Cavern,,Clark's Caves
+15711,Valley,,Heneveinor Valley
+15712,VEE_Cenotes,,Loubi Cenote Field
+15713,Valley,,Bluetail Divide
+15714,Cavern,,Calia Tunnel
+15716,Cavern,,Asleinor Cavern
+15717,VEE_Cenotes,,Camtro Cenote Field
+15719,Valley,,Gabela Canyon
+15724,VEE_Cenotes,,Boabecó Water-Filled Cenotes
+15726,Cavern,,Erin's Fault Cavern
+15727,Cavern,,Bad Wasp Tunnel
+15728,Cavern,,Veora Cave Network
+15729,Cavern,,Cindy's Caves
+15730,Cavern,,Frankie's Caves
+15735,Cavern,,Choco Cave Network
+15738,Cavern,,Laila's Caves
+15739,Cavern,,Berro Cavern
+15743,VEE_JaggedRocks,,Yuliya's Jagged Rocks
+15745,Cliffs,,Canga Rampart
+15748,Cavern,,Lerchaa Cavern
+15751,Cliffs,,Octopusfang Wall
+15770,VEE_DustBowl,ground that was farmed once and is not any more,Tonirbo Dust Bowl
+15775,Plateau,"high flat ground, and you can see everything from it",Allitder Plateau
+15800,DryLake,,Whalehead Salt Flat
+15801,Valley,,Bluejayhip Valley
+15870,VEE_DustBowl,ground that was farmed once and is not any more,Tallshoulder Dust Bowl
+15905,sw_DeadSarlacc,"the second sarlacc, and it is dead - somebody killed it",Dead Sarlacc
+15917,VEE_Cenotes,,Paleium Water-Filled Cenotes
+15919,VEE_Cenotes,,Oulaereor Water-Filled Cenotes
+15924,Cavern,,Reibebiabor Cave Network
+15925,Valley,,Eaberium Ravine
+15927,VEE_Cenotes,,Léxada Cenote Lakes
+15929,Valley,,Cógalbil Valley
+15934,Chasm,,Seevewasinum Fracture
+15935,Chasm,,Balga Fracture
+15937,DryLake,,Gorar Dry Lake
+15938,DryLake,,Quetasgaca Dry Lake
+15951,Chasm,,Hadia Fracture
+15956,Valley,,Isoum Gully
+15957,DryLake,,Strangeshoulder Sand Lake
+15959,VEE_DryRiver,,Hismenistia Barren River
+15960,DryLake,,Toldor Dry Lake
+15962,VEE_DryRiver,,Tall Boar Sand River
+15965,DryLake,,Bonla Barren Lake
+16007,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Grayhedgehog White Barrens
+16035,TerraformingScar,,The Grand Fault
+16052,Valley,,Enscu Valley
+16058,VEE_DryRiver,,Red Buffalo Sand River
+16078,Valley,,Toler Canyon
+16162,Cavern,,Small Seal Cave Network
+16168,VEE_Cenotes,,Neera Cenote Lakes
+16169,VEE_Cenotes,,Badnose Karst Hollows
+16170,Cavern,,Coriveau's Caves
+16260,Cavern,,Chamibe Cavern
+16296,VEE_RockRidge,a spine of standing rock,Hiora Ridge
+16319,VEE_Cenotes,,Red Boomrat Cenote Lakes
+16327,FrozenRuins,somebody lived out here once - scavenging ground,Ruined Quatiodelia
+16331,TerraformingScar,,The Great Scar
+16354,Hollow,"shelter, if you get there before dark",Totros Hollow
+16356,Cavern,a mountain you can get inside,Anteddos Cave Network
+16364,TerraformingScar,,Witterlor Scar
+16400,Ruins,"scavenging ground, and the reason the clan is here",Black Rat Ruins
+16427,AncientWarehouse,"sealed, and worth the trip",Alex's Warehouse
+16441,Cliffs,"the crags break in walls, not slopes",Terena Cliffs
+16442,VEE_JaggedRocks,ground that cuts boots,Ondo Jagged Rocks
+16443,VEE_RockRidge,a spine of standing rock,Quaus Ridge
+16478,TerraformingScar,,Cana Scar
+16483,Oasis,,Ekkumar
+16486,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Cadocaga Stagnant Rivulet
+16487,TerraformingScar,,Takumi's Scar
+16494,TerraformingScar,,Rose's Howl
+16496,RUT_ComplexStructures,,Keiko's Prize
+16497,RUT_ComplexStructures,,Dilapidated Areeria
+16571,VEE_PebbleDunes,"gravel desert, harder going than sand",Mole Stone-Swept Ridges
+16619,Oasis,the Hutt wells - water is the currency here,Nebium Oasis
+16622,Oasis,,Vrass Ullun
+16628,Oasis,,Thossarek
+16629,DryLake,,Letium Sand Pit
+16630,TerraformingScar,,Yoko's Rift
+16635,DryLake,,Gray Heron Barren Lake
+16639,Valley,,Blue Bluejay Canyon
+16642,RUT_ComplexStructures,,Henlium Ruins
+16643,DryLake,,Wasraaldio Barren Lake
+16644,Oasis,,Léro Oasis
+16646,VEE_DryRiver,,Ourthaen Barren River
+16647,VEE_DryRiver,,Haderean Barren River
+16690,DryLake,a playa - the salt flat a river dies in,Grayhoof Salt Flat
+16698,Valley,,Berro Ravine
+16707,VEE_DryRiver,a watercourse that runs once a decade,Goganecho Sand River
+16714,Ruins,,Hummingbird Ruins
+16722,Valley,,Irgo Gorge
+16735,Ruins,,Meniño Ruins
+16737,VEE_SulfuricLake,"yellow water, and the smell reaches a day out",Connor's Stinging Waters
+16740,Ruins,,Orange Aardvark Town
+16745,Ruins,,Canenotussia Ruins
+16755,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Cannexos Desiccated Ocean
+16854,AncientQuarry,an old working in an ore province - somebody dug here first,Cambiar Rock Pits
+16863,DryLake,a playa - the salt flat a river dies in,Cotas Sand Lake
+16870,AncientGarrison,,Fort Shobium
+16871,TerraformingScar,,Rolia Scar
+16882,RUT_ComplexStructures,,Canga Town
+16884,RUT_ComplexStructures,,Necercóne Ruins
+16886,RUT_ComplexStructures,,Dilapidated Oquemea
+16887,VEE_AlluvialFan,the spoil a mountain stream drops when the slope runs out,Isla's Honor Depositional Flats
+16888,CoastalIsland,,Ourarin Islet
+16898,Valley,,Crialbo Gorge
+16902,RUT_ComplexStructures,,Prairie Dog Toe Town
+16903,VEE_SerpentineCanyons,,Oldneck Canyons
+16908,VEE_DryRiver,,Caca Barren River
+16930,Valley,,Binseus Canyon
+16943,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Baboon Ankle Loose Earth Dunes
+16945,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Bluepond Dunes
+16954,Valley,"the way through a range, and everyone uses it",Toxcanbibar Gorge
+16972,VEE_DryRiver,a watercourse that runs once a decade,Nelium Barren River
+16995,VEE_DryRiver,,Bren Barren River
+16996,VEE_DryRiver,,Aserhindio Sand River
+16999,RUT_ComplexStructures,,Ruined Ntler
+17001,Oasis,"a Hutt well - dug for the holding beside it, and charged for",Straouuia Oasis
+17007,Ruins,,Menxosbor Ruins
+17009,Ruins,,Iraisaba City
+17052,ToxicLake,left over from whatever happened here,Purpleskunk Toxic Lake
+17085,TerraformingScar,somebody tried to fix this planet and failed,Roundbarracuda Wound
+17106,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on,Seahorse Wing Plant
+17126,TerraformingScar,,Witen Scar
+17159,DryLake,a playa - the salt flat a river dies in,Légua Sand Lake
+17171,TerraformingScar,somebody tried to fix this planet and failed,Vera's Flaw
+17174,VEE_JaggedRocks,,Chough Jagged Rocks
+17185,Chasm,a crack too wide to jump and too deep to see,Dinbutuia Fracture
+17192,Oasis,,Ashkorrin
+17193,Oasis,,Ithravesh
+17195,Oasis,,Ommavane
+17196,Oasis,,Kellorath
+17197,Oasis,,Vorrinesh
+17198,Oasis,the Hutt wells - water is the currency here,Sessarune
+17199,Oasis,,Rakkavane
+17200,Oasis,,Ennekesh
+17201,VEE_DryRiver,,Greenhill Dry River
+17202,Oasis,,Ullavorn
+17203,Oasis,,Zhol Marrane
+17204,Oasis,,Tessavane
+17205,Oasis,,Kharrosh
+17206,Bay,a harbour the Deepwater Compact could actually use,Braga Bay
+17207,VEE_DryRiver,,Cascubicai Barren River
+17210,Oasis,,Ithrakel
+17211,Bay,a harbour the Deepwater Compact could actually use,Gabela Bay
+17215,Archipelago,,Itallum Archipelago
+17217,VEE_DryRiver,,Nina's Mistake Sand River
+17220,Valley,,Cheetahlip Valley
+17223,Oasis,,Sorrukesh
+17224,Oasis,,Aelvane
+17225,Oasis,"the Hutt wells - six named, not 227",Ossurath
+17230,DryLake,,Zollobrinlán Sand Pit
+17232,Ruins,"scavenging ground, and the reason the clan is here",Harshnose Ruins
+17237,VEE_DryRiver,a watercourse that runs once a decade,Woodpeckerear Dry River
+17240,Oasis,,Verrukan
+17241,Oasis,,Ithamund
+17242,Oasis,,Quellorath
+17243,Oasis,a Hutt well - the holding beside it exists because of this water,Nasserine
+17244,Oasis,,Ravvakesh
+17245,Oasis,,Umberekh
+17246,Oasis,,Sollarrin
+17248,Oasis,,Kellivesh
+17257,Ruins,"scavenging ground, and the reason the clan is here",Greenskin Ruins
+17259,Valley,,Gaerethioum Gully
+17263,Ruins,,Ruined Bluebadger
+17264,Valley,,Thierado Ravine
+17266,AbandonedColonyTribal,a tribe that did not make it through a dry decade,Waspaia Village
+17270,Oasis,,Orravane
+17272,DryLake,,Baa Sand Lake
+17276,AbandonedColonyTribal,a tribe that did not make it through a dry decade,Oldzebra Village
+17278,AncientGarrison,,Violet's Garrison
+17283,Oasis,,Dhessaroth
+17285,Oasis,,Thurrivane
+17288,Cavern,,Sela Caverns
+17292,VEE_SerpentineCanyons,,Larry's Canyons
+17293,Valley,,Wisecobra Gulch
+17297,VEE_SerpentineCanyons,,Prime Goat Canyons
+17299,Cavern,,Dorna Cavern
+17300,Oasis,,Ammukesh
+17306,VEE_Cenotes,,Teduia Collapsed Limestone Pools
+17307,VEE_StagnantRivulet,"standing water, and everything that breeds in it",Thonussia Sluggish Rivulet
+17309,Oasis,,Vegua Oasis
+17312,VEE_DryRiver,,Ñogaboa Sand River
+17319,Valley,,Omeussia Gorge
+17323,Cavern,a mountain you can get inside,Badtooth Cavern
+17324,Valley,,Ereuia Valley
+17330,Oasis,,Tessulmar
+17331,Oasis,,Ollumar
+17335,TerraformingScar,,Iseron Fault
+17346,Hollow,"shelter, if you get there before dark",Turkeyclaw Hollow
+17377,VEE_Cenotes,,Athalior Collapsed Limestone Pools
+17380,Cavern,,Crab Paw Caverns
+17381,Cavern,,Boiño Cave Network
+17409,Cavern,,Comas Cave Network
+17410,Cavern,,Bringa Cavern
+17412,VEE_Cenotes,,Sein Cenote Lakes
+17414,Valley,,Redkoala Gully
+17416,Cavern,,Jellyfish Talon Cavern
+17418,VEE_Cenotes,,Old Scorpion Cenote Field
+17420,Valley,,Engo Gully
+17422,Valley,,Vetrobi Gully
+17424,VEE_Cenotes,,Rara Cenote Lakes
+17427,Valley,,Youlor Divide
+17434,Cliffs,,Baro Wall
+17436,Cavern,,Breicar Caverns
+17439,Cavern,,Labe Tunnel
+17440,Cavern,,Lorentz's Caves
+17441,Cavern,,Trosma Cavern
+17446,Cavern,,Saicroicam Caverns
+17450,VEE_MeteorCrater,nothing on this world stops a rock,Severuia Impact Crater
+17451,Cavern,,Aiko's Caves
+17452,Valley,,Witor Ravine
+17453,Cavern,,Inalller Cavern
+17454,Cavern,,Zebra Tooth Cave Network
+17455,Cavern,,German's Caves
+17457,VEE_Cenotes,,Hiium Cenote Lakes
+17461,AncientWarehouse,"sealed, and worth the trip",Kiriko's Storehouse
+17469,Valley,,Notaresein Gully
+17471,VEE_Cenotes,,Caussia Cenote Lakes
+17473,Cavern,,Ntba Cavern
+17474,Cavern,,Hinium Tunnel
+17475,VEE_Cenotes,,Eainor Cenote Field
+17481,Cavern,,Orange Pigeon Cave Network
+17483,VEE_Cenotes,,Shigeru's Achievement Cenote Lakes
+17484,Cavern,,Deadseal Caverns
+17489,Cavern,,Goma Cavern
+17490,VEE_Cenotes,,Farus Cenote Lakes
+17493,Valley,,Heoroum Ravine
+17496,Valley,,Orouller Gully
+17501,Valley,,Ashininum Valley
+17506,VEE_AlluvialFan,,Breiiracho Sediment Fan
+17507,VEE_DryRiver,,Camba Barren River
+17511,Chasm,,Witin Fracture
+17512,Cavern,,Veroulinor Cavern
+17517,VEE_Cenotes,,Weasel Water-Filled Cenotes
+17522,Cavern,,Thegoium Cavern
+17523,VEE_Cenotes,,Greenape Cenote Lakes
+17525,Cavern,,Doaga Cavern
+17526,Valley,,Cove Canyon
+17527,Cavern,,Tasca Cavern
+17528,VEE_Cenotes,,Varvara's Delusion Cenote Field
+17531,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Purplerock Rocky Shoreline
+17534,Cavern,,Verea Cave Network
+17535,Chasm,,Butouan Fracture
+17537,Chasm,,Comba Fracture
+17538,VEE_JaggedRocks,,Albina's Jagged Ridges
+17539,Cliffs,,Banbanbano Cliffs
+17541,Cavern,,Marbi Tunnel
+17542,Cavern,,Vulture Cheek Cavern
+17545,Cliffs,,Obrinton Wall
+17546,Cliffs,,Mantis Cliffs
+17547,Cliffs,"the crags break in walls, not slopes",Bancam Rampart
+17549,VEE_JaggedRocks,,Sencheñazo Jagged Rocks
+17550,Cavern,,Bluetail Cavern
+17551,Cliffs,,Borir Rampart
+17562,Cliffs,,Hinthaistan Cliffs
+17563,Cavern,,Xavier's Caves
+17564,Cavern,,Tina Cave Network
+17565,Cliffs,,Gray Jaguar Wall
+17567,Cavern,,Mindy's Caves
+17568,Chasm,,Leira Sinkhole
+17571,Cavern,a mountain you can get inside,Isanlium Tunnel
+17574,Cliffs,,Gleb's End
+17575,Chasm,,Chinchilla Mouth Sinkhole
+17576,VEE_JaggedRocks,,Hisinor Jagged Ridges
+17580,VEE_JaggedRocks,,Dmitry's Jagged Rocks
+17602,Cliffs,,Gilma's End
+17607,VEE_Cenotes,,Eveni Water-Filled Cenotes
+17609,Cavern,,Forisoum Cavern
+17613,Cavern,,Blanca's Caves
+17614,Cavern,,Biarbanga Cave Network
+17615,Valley,,Isia Gully
+17617,VEE_Cenotes,,Purplechimpanzee Water-Filled Cenotes
+17684,Valley,,Toxo Divide
+17687,Valley,,Xosdacar Gully
+17688,VEE_Cenotes,,Allna Cenote Lakes
+17694,VEE_MeteorCrater,nothing on this world stops a rock,Blackskunk Impact Crater
+17717,VEE_Cenotes,,Colmea Cenote Lakes
+17722,Chasm,,Llocer Fracture
+17760,Chasm,,Koevela Sinkhole
+17762,Cliffs,,Mallard Leg Cliffs
+17763,Cliffs,,Susumu's Honor Wall
+17765,Chasm,,Xigoba Sinkhole
+17768,Chasm,,Grayhyena Fracture
+17778,Valley,,Asda Canyon
+17779,Cliffs,,Hamster Toe Rampart
+17780,Chasm,,Oyster's Vice Fracture
+17781,Cavern,,Abrubrí Caverns
+17783,Cavern,,Baza Cavern
+17787,VEE_JaggedRocks,,Anita's Fault Jagged Ridges
+17789,VEE_JaggedRocks,,Leinor Jagged Rocks
+17814,Cavern,,Bad Ram Tunnel
+17826,Cavern,,Small Seahorse Cavern
+17828,VEE_FleshPits,"the superorganism, where it surfaces",Philip's Ruination Anomalous Caverns
+17836,Valley,,Iroxigosa's Folly Ravine
+17839,VEE_Cenotes,,Dinan Karst Hollows
+17842,Valley,,Gorilla Paw Valley
+17847,Cliffs,,Moose's Mistake Rampart
+17850,Cavern,,Johnson's Caves
+17851,Chasm,,Lavego Fracture
+17852,Valley,,Iabru Gully
+17853,Cavern,,Yoko's Caves
+17857,Cavern,,Vexador Cave Network
+17859,Cavern,,Butda Tunnel
+17860,Cavern,,Saio Caverns
+17870,Cavern,,Icy Bison Cavern
+17871,Cliffs,,Colgogalgu Cliffs
+17874,Cavern,,Rammouth Caverns
+17876,Cavern,,Redlyrebird Caverns
+17877,VEE_JaggedRocks,,Craggyheel Jagged Rocks
+17878,Chasm,,Round Flamingo Chasm
+17879,Cavern,,Tranmicaga Caverns
+17880,VEE_JaggedRocks,,White Chicken Jagged Rocks
+17883,Cliffs,,Red Cliffs
+17885,Chasm,,Turtlebody Chasm
+17887,Cliffs,,Anya's Lunacy Wall
+17888,Cavern,,Engo Tunnel
+17890,Cavern,,Ungastera Caverns
+17892,VEE_Cenotes,,Oldtooth Cenote Field
+17897,Ruins,"scavenging ground, and the reason the clan is here",Dilapidated Asussia
+17906,Valley,,Bralloto Gully
+17907,Cavern,,Eel Chin Caverns
+17909,VEE_Cenotes,,Rarcholer Cenote Field
+17912,VEE_Cenotes,,Hisbo Karst Hollows
+17913,Cavern,,Combo Cave Network
+17921,Cavern,,Sharpstork Cavern
+17922,VEE_Cenotes,,Bantoncaro Karst Hollows
+17923,VEE_Cenotes,,Butunt Cenote Lakes
+17924,Cavern,,Ambgurei Cave Network
+17926,VEE_Cenotes,,Blackhippopotamus Collapsed Limestone Pools
+17931,VEE_Cenotes,,Baboonhead Cenote Lakes
+17933,VEE_Cenotes,,Erethecana Cenote Field
+17939,Cavern,,Vladislav's Stand Cavern
+17940,Cavern,,Shount Cavern
+17946,Cavern,,Canlouloma Caverns
+17947,Cavern,,Stneera Tunnel
+17949,VEE_MeteorCrater,nothing on this world stops a rock,Veor Impact Basin
+17950,Valley,,Wisekomodo Valley
+17951,VEE_Cenotes,,Peza Cenote Lakes
+17952,Cavern,,Tereron Cave Network
+17953,Valley,,Lercha Gulch
+17957,VEE_Cenotes,,Camelleg Cenote Lakes
+17961,Cavern,,Black Caverns
+17962,Cavern,,Paeria Cave Network
+17965,VEE_MeteorCrater,nothing on this world stops a rock,Eaeaeron Impact Crater
+17966,Cavern,,McFly's Caves
+17967,Cavern,,Black Caverns
+17972,Cavern,,Atthabo Cavern
+17973,Cavern,,Baffin's Caves
+17974,Valley,,Youlenussia Ravine
+17977,Valley,,Mondo Valley
+17978,Cavern,,Evelor Cave Network
+17979,VEE_Cenotes,,Lascubor Cenote Lakes
+17982,Valley,,Saio Valley
+17995,Valley,,Leira Vale
+17998,Valley,,Bargabo Canyon
+17999,DryLake,,Orangeclaw Barren Lake
+18003,DryLake,,Henwasni Dry Lake
+18006,DryLake,,Baialboro Sand Lake
+18031,Valley,,Boar Valley
+18040,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Caro Dunes
+18057,DryLake,,Braña Sand Lake
+18058,Valley,,Orangelark Ravine
+18060,Valley,,Guinea Pig Valley
+18076,Valley,,Zoboulobar Gulch
+18084,VEE_Cenotes,,Légua Cenote Lakes
+18085,Cavern,,Teristia Tunnel
+18092,Valley,,Sethelior Gully
+18094,DryLake,,Notder Salt Flat
+18135,VEE_SulfuricLake,"yellow water, and the smell reaches a day out",Erberon Sulfur Spring
+18139,Valley,,Tiger Heel Gully
+18165,Valley,,Chesai Gorge
+18167,VEE_DryRiver,,Oulior Sand River
+18173,VEE_DryRiver,,Ove Dry River
+18175,Valley,,Breixo Divide
+18176,Valley,,Adoa Canyon
+18179,DryLake,,Big Dog Dry Lake
+18182,Valley,,Notia Divide
+18184,VEE_DryRiver,,Isera Sand River
+18201,Oasis,"a Hutt well - dug for the holding beside it, and charged for",Paula's Finale Refuge
+18250,Archipelago,,Isle Bee Chin
+18251,Oasis,a Hutt well - the holding beside it exists because of this water,Erlor Oasis
+18264,Crevasse,,Coyote Crevasse
+18266,CoastalIsland,,Dinhatgoussia Islet
+18271,VEE_DryRiver,,Hadna Barren River
+18298,DryLake,a playa - the salt flat a river dies in,Toxos Sand Lake
+18349,Valley,,Lyrebird Elbow Gorge
+18351,Oasis,,Ferrukel
+18352,Hollow,"shelter, if you get there before dark",Rachel's Hideout
+18354,Valley,,Bluebug Valley
+18355,Oasis,,Sarrekesh
+18359,Valley,,Isistia Gorge
+18361,Oasis,,Vullumar
+18364,VEE_DryRiver,,Inba Barren River
+18366,DryLake,,Wasfarum's Ruin Sand Pit
+18371,Oasis,,Gacarbreiiño Oasis
+18373,Oasis,,Fevrakesh
+18375,Valley,,Barracuda Lip Gully
+18398,VEE_Cenotes,,Theesmeda Cenote Field
+18399,Cavern,,Sehadbonberon Tunnel
+18406,RUT_ComplexStructures,,Artur's Destruction Ruins
+18409,Valley,,Camcrouxosra Ravine
+18411,Oasis,,Allbo Refuge
+18414,Valley,,Orlor Gully
+18418,CoastalIsland,,Troscarga Island
+18454,VEE_GravelBeach,,Black Gull Gravel Shore
+18456,Harbor,,Wise Rabbit Port
+18522,VEE_GravelBeach,,Eveberium Rocky Shoreline
+18578,VEE_JaggedRocks,,Gnatheel Jagged Ridges
+18616,Archipelago,,Redllama Archipelago
+18621,CoastalIsland,,Xevasmacrou Islet
+18637,Cavern,,Isbium Tunnel
+18644,Valley,,Ivy's Vice Canyon
+18647,Cavern,,Purplerabbit Caverns
+18648,Cavern,,Strangecormorant Cave Network
+18649,Cliffs,,Ealium Cliffs
+18651,Cliffs,"the crags break in walls, not slopes",Espaeria Wall
+18653,Cliffs,,Tedberium Rampart
+18654,Cavern,,Lebum Caverns
+18659,Cliffs,,Marina's End
+18661,Cavern,,Bigmonkey Cavern
+18664,Cliffs,"the crags break in walls, not slopes",Sayuri's End
+18669,VEE_Cenotes,,Ithinum Karst Hollows
+18672,Valley,,Farflamingo Canyon
+18673,VEE_JaggedRocks,ground that cuts boots,Veroum Jagged Ridges
+18683,AncientGarrison,somebody defended this once,Abangalbi Armory
+18688,VEE_JaggedRocks,,Selma's Loss Jagged Rocks
+18690,VEE_JaggedRocks,,Omeera Jagged Rocks
+18691,VEE_JaggedRocks,,Dead Grouse Jagged Ridges
+18704,VEE_RockRidge,a spine of standing rock,Tiger Claw Spine
+18710,Valley,,Crouca Vale
+18712,Ruins,"scavenging ground, and the reason the clan is here",Itoum Ruins
+18713,VEE_Cenotes,,Combarro Karst Hollows
+18720,Hollow,"shelter, if you get there before dark",Black Hollow
+18725,Cavern,,Andio Caverns
+18726,Cavern,,Cambiar Cavern
+18727,Cavern,,Cocolxigoga Tunnel
+18728,Ruins,"scavenging ground, and the reason the clan is here",Isoum City
+18743,VEE_RockRidge,a spine of standing rock,Comboa Ridge
+18755,Valley,,Galga Gulch
+18756,Valley,,Naverus Valley
+18757,VEE_Cenotes,,Curro Cenote Lakes
+18770,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through",Ourforaseron Canyons
+18775,Cavern,a mountain you can get inside,Roman's Fraud Tunnel
+18909,TerraformingScar,,Takumi's Folly
+18921,Cliffs,"the crags break in walls, not slopes",Thiitna Wall
+18932,VEE_SerpentineCanyons,"slot canyons - cover, ambush, and a way through",Tol Canyons
+18947,Cliffs,"the crags break in walls, not slopes",Eaandla Cliffs
+18974,TerraformingScar,,Itler Sundering
+19009,VEE_JaggedRocks,ground that cuts boots,Terhisna Jagged Ridges
+19021,AncientWarehouse,"sealed, and worth the trip",Red's Warehouse
+19074,VEE_JaggedRocks,,Erouren Jagged Ridges
+19079,VEE_MeteorCrater,nothing on this world stops a rock,Ourroder Impact Crater
+19080,Cavern,,Mindy's Caves
+19081,Valley,,Canto's Ruin Gully
+19087,Cavern,,Bluebeetle Tunnel
+19093,Valley,,Quaberon Gully
+19100,VEE_Cenotes,,Areuia Karst Hollows
+19102,Cavern,,Bigheel Caverns
+19103,Cavern,,Reitistia Cave Network
+19104,VEE_Cenotes,,Xadaxoguaca Collapsed Limestone Pools
+19105,Cavern,,Gubia Caverns
+19112,VEE_Cenotes,,Miñoca Water-Filled Cenotes
+19118,Cavern,,Hatbum Cavern
+19141,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on,Dominika's Plant
+19183,Oasis,"a Hutt well - dug for the holding beside it, and charged for",White Lion Haven
+19185,Oasis,,Nessorath
+19189,Oasis,,Ithravorn
+19190,Oasis,,Corrukesh
+19191,Oasis,,Sallivane
+19192,Oasis,,Ummaresh
+19193,Oasis,,Rhossumar
+19194,Oasis,,Tallivesh
+19195,Oasis,,Quessumar
+19198,Oasis,,Orrukesh
+19199,Oasis,,Vennorath
+19203,VEE_DryRiver,,Reindeer's Ruin Sand River
+19213,Cliffs,,Hierealloum Rampart
+19214,Cliffs,,Shun's Pride Cliffs
+19216,Chasm,,Edistia Chasm
+19219,Chasm,,Bovexa Chasm
+19222,Cliffs,"the crags break in walls, not slopes",Caro Cliffs
+19223,Chasm,,Lándoa Chasm
+19224,Cavern,,Hadley's Caves
+19225,Cavern,,Pig Head Cave Network
+19226,Cavern,,Lacalou Cave Network
+19227,Cavern,,Trado Cavern
+19229,Cavern,,Purple Cave Network
+19235,Cliffs,,Salamander Cliffs
+19237,Cliffs,"the crags break in walls, not slopes",Badstork Cliffs
+19238,Cliffs,,Black Dove Cliffs
+19240,Cavern,,Enevebum Cave Network
+19242,VEE_JaggedRocks,,Miñoca Jagged Ridges
+19243,Cavern,,Baabevasla Caverns
+19245,Chasm,,Badbaboon Sinkhole
+19246,Cavern,,Guaxada Caverns
+19251,Chasm,,Otter Toe Fracture
+19252,VEE_JaggedRocks,,Betty's Jagged Rocks
+19254,VEE_JaggedRocks,,Sonia's Jagged Ridges
+19256,Cliffs,,Tereron Cliffs
+19260,Cliffs,,Violet's End
+19261,Chasm,,Orro Chasm
+19263,Cliffs,,Vewawasdos Wall
+19266,Cavern,,Veronika's Caves
+19269,Cliffs,,Bigwrist Wall
+19272,Cliffs,"the crags break in walls, not slopes",Shary's End
+19273,VEE_JaggedRocks,,Snake Tooth Jagged Ridges
+19276,Cavern,,Cat Cavern
+19279,Cavern,,Komodo Caverns
+19285,DryLake,,Foria Sand Lake
+19289,TerraformingScar,,Michael's Delusion
+19290,DryLake,,Orange Mosquito Salt Flat
+19293,VEE_PebbleDunes,"gravel desert, harder going than sand",Dinba Gravel Drifts
+19302,Oasis,,Skessumar
+19303,Oasis,,Zharrukel
+19314,VEE_PebbleDunes,"gravel desert, harder going than sand",Brinñole Gravel Drifts
+19316,VEE_PebbleDunes,"gravel desert, harder going than sand",Mazoiño Gravel Drifts
+19323,TerraformingScar,,Kaunt Scar
+19337,VEE_DryRiver,a watercourse that runs once a decade,Stbutinum Barren River
+19338,AncientChemfuelRefinery,,Douglas's Refinery
+19341,Ruins,,Jackal Ruins
+19342,Ruins,,Dilapidated Onunt
+19345,AncientHeatVent,,Tasca Hell Holes
+19348,Ruins,,Ruined Rount
+19349,TerraformingScar,,Grim Howl
+19350,Ruins,,Vicky's Ruse
+19357,Chasm,a crack too wide to jump and too deep to see,Hainor Chasm
+19365,Cavern,,Entberium Cave Network
+19366,Oasis,,Toxos Oasis
+19368,Valley,,Neheninum Ravine
+19374,Cavern,,Anin Cavern
+19375,Hollow,"shelter, if you get there before dark",Obanbrí Hollow
+19396,Valley,,Omehaus Gorge
+19397,VEE_Cenotes,,Veinor Karst Hollows
+19399,Valley,"the way through a range, and everyone uses it",Alligatorwrist Gully
+19405,Cavern,a mountain you can get inside,Ashiera Cave Network
+19406,Oasis,,Ullukesh
+19408,Oasis,,Thessumar
+19410,Ruins,,Yuuka's Arrogance
+19413,TerraformingScar,,Daichi's Wound
+19422,AncientGarrison,,Xosroga Armory
+19477,TerraformingScar,,The Great Howl
+19482,Valley,,Heronfang Valley
+19490,Valley,,Purple Bear Divide
+19495,LavaLake,the Scald rim volcanics,Icy Lemur Crater
+19505,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Wasba Quicksand Dunes
+19542,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Whitepool Dunes
+19548,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Meeron Dunes
+19604,DryLake,a playa - the salt flat a river dies in,Erelebum Barren Lake
+19646,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Menthaba Loose Earth Dunes
+19652,DryLake,a playa - the salt flat a river dies in,Xigola Sand Lake
+19676,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Elephant Sealankle Dunes
+19688,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Roxigo Loose Earth Dunes
+19713,Cliffs,,Ñore Rampart
+19716,Cliffs,,Odette's End
+19718,VEE_JaggedRocks,,Ourthalium Jagged Rocks
+19750,Cavern,,Thithora Tunnel
+19760,Cliffs,,Ourthahatussia Wall
+19789,Valley,"the way through a range, and everyone uses it",Bluehorn Gulch
+19875,TerraformingScar,somebody tried to fix this planet and failed,Alina's Folly
+19892,Cavern,,Edera Tunnel
+19898,VEE_JaggedRocks,,Cabebaca Jagged Rocks
+19920,Cliffs,,Bondos Cliffs
+19931,Cavern,,Theussia Tunnel
+19934,VEE_DustBowl,ground that was farmed once and is not any more,Choco Parched Barrens
+19940,VEE_JaggedRocks,,Guxos Jagged Rocks
+19953,Chasm,,Guinea Pig Chasm
+19954,Cliffs,,Lavego Wall
+19956,Cavern,,Greenbuffalo Cave Network
+19957,VEE_JaggedRocks,,Itneveria Jagged Rocks
+19959,Cavern,,Lesatros Cave Network
+19961,AncientGarrison,somebody defended this once,Icy Ape Stronghold
+19966,Valley,,Alboio Gully
+19967,VEE_Cenotes,,Kohenerado Collapsed Limestone Pools
+19975,Cavern,,Ardinlior Caverns
+19976,Cavern,,Elephantelbow Cavern
+19984,Cavern,,Carro Tunnel
+19985,VEE_Cenotes,a roof that fell into the water table,Embaixada Collapsed Limestone Pools
+19987,Valley,,Oueron Valley
+19991,Cavern,,Biañoxada Tunnel
+19996,Cavern,,Old Clam Caverns
+20009,Cliffs,,Tedallunt Cliffs
+20018,ToxicLake,left over from whatever happened here,Hatdio Poison Lake
+20032,DryLake,a playa - the salt flat a river dies in,Okapi's Conceit Sand Pit
+20074,VEE_JaggedRocks,,Entlor Jagged Ridges
+20076,VEE_JaggedRocks,,Ntus Jagged Rocks
+20078,Cliffs,,Black Bat Rampart
+20079,Cavern,,Biroca Caverns
+20085,AncientChemfuelRefinery,chemfuel is what a sandcrawler runs on,Robevas Refinery
+20087,VEE_JaggedRocks,,Borne Jagged Ridges
+20088,VEE_JaggedRocks,,White Rabbit Jagged Rocks
+20112,Valley,,Roguamagu Valley
+20116,Cavern,,Croimatra Cavern
+20117,Cavern,,Dolphintalon Tunnel
+20136,Cavern,a mountain you can get inside,Red Tunnel
+20137,VEE_Cenotes,,Crica Water-Filled Cenotes
+20139,VEE_Cenotes,,Entler Cenote Field
+20142,VEE_Cenotes,,Trabreitonro Cenote Lakes
+20143,Cavern,,Redio Cavern
+20253,Valley,,Zaalosea Valley
+20285,Oasis,"a Hutt well - dug for the holding beside it, and charged for",Embaixada Haven
+20315,VEE_SulfuricLake,"yellow water, and the smell reaches a day out",Blackhorn Sulfuric Lake
+20405,Hollow,"shelter, if you get there before dark",Trobo Hollow
+20421,TerraformingScar,somebody tried to fix this planet and failed,Teandni Sundering
+20456,sw_DeadSarlacc,"the second sarlacc, and it is dead - somebody killed it",Dead Sarlacc
+20514,AncientGarrison,somebody defended this once,Hisan Stronghold
+20518,VEE_DryRiver,a watercourse that runs once a decade,Cai Barren River
+20529,Valley,"the way through a range, and everyone uses it",Hewitder Gully
+20584,Valley,,Scuambbust Canyon
+20587,Cliffs,,Camlécomga Cliffs
+20595,Cavern,,Trofim's Caves
+20632,VEE_DryRiver,,Choco Barren River
+20634,Cliffs,,Ouhena Rampart
+20648,DryLake,,Isbium Sand Pit
+20685,VEE_GravelBeach,"shingle, not sand - the shore of a cold sea",Binistia Pebble Strand
+20700,RUT_ComplexStructures,,Cheabanra Town
+20701,Crevasse,,Borba Crevasse
+20705,RUT_ComplexStructures,,Aljados City
+20707,VEE_GravelBeach,,Omeberon Shingle Coast
+20723,Cliffs,,Kaatna Cliffs
+20726,Cliffs,,Caibar Rampart
+20746,DryLake,,Laretoda Barren Lake
+20751,VEE_JaggedRocks,,Sean's Jagged Ridges
+20752,VEE_JaggedRocks,,Yukiko's Jagged Ridges
+20760,VEE_DryRiver,,Nega Barren River
+20767,IceDunes,,Thauay Ice Dunes
+20771,Crevasse,,Redwood Break
+20772,Archipelago,,Biggiraffe Islands
+20777,VEE_DryRiver,,Hatda Sand River
+20781,RUT_ComplexStructures,,Ren's Lunacy Ruins
+20782,Harbor,,Allora Port
+20799,FrozenRuins,somebody lived out here once - scavenging ground,Brinco City
+20800,Cliffs,"the crags break in walls, not slopes",Notvebium Cliffs
+20809,VEE_JaggedRocks,ground that cuts boots,Rozalina's Jagged Rocks
+20814,Cliffs,"the crags break in walls, not slopes",Tioistan Rampart
+20853,AncientWarehouse,"sealed, and worth the trip",Sare Storehouse
+20867,Valley,"the way through a range, and everyone uses it",Vasbrei Valley
+20878,Hollow,"shelter, if you get there before dark",Ordabum Hollow
+20893,FrozenRuins,somebody lived out here once - scavenging ground,Vene Frozen Ruins
+21009,Cavern,,Bad Vole Cavern
+21011,VEE_Cenotes,,Leoño Cenote Lakes
+21012,VEE_Cenotes,,Old Deer Cenote Field
+21013,Valley,,Turkey Finger Valley
+21015,VEE_Cenotes,,Waseron Collapsed Limestone Pools
+21017,Cavern,,Thibum Cave Network
+21020,VEE_Cenotes,,Stbuteron Cenote Field
+21021,VEE_Cenotes,,Tolñoora Karst Hollows
+21022,Valley,,Freedolphin Valley
+21024,Cavern,,Eaberon Cave Network
+21029,VEE_Cenotes,,Eraussia Cenote Lakes
+21031,VEE_Cenotes,,Tondoa Cenote Lakes
+21032,VEE_Cenotes,,Brinira Karst Hollows
+21037,Cavern,,Meoum Cave Network
+21042,Valley,,Whale Knee Canyon
+21044,VEE_Cenotes,,Brabelerre Cenote Lakes
+21045,VEE_Cenotes,,Blue Eel Karst Hollows
+21047,VEE_Cenotes,,Tallear Cenote Field
+21049,Cavern,,Horse Talon Caverns
+21051,Cavern,,Biarol Cave Network
+21053,Cavern,,Timenbuteron Cavern
+21056,VEE_Cenotes,,Ulovecam Cenote Field
+21058,Valley,,Bríto Valley
+21063,VEE_Cenotes,,Miñoca Cenote Lakes
+21065,Cavern,,Alisa's Caves
+21066,VEE_Cenotes,,Mantis Water-Filled Cenotes
+21069,VEE_Cenotes,,Gobeemza Cenote Field
+21070,Valley,,Monla Divide
+21073,Ruins,"scavenging ground, and the reason the clan is here",Asandminbo Town
+21074,Valley,,Donkeyfang Canyon
+21076,VEE_Cenotes,,Purplemouse Water-Filled Cenotes
+21078,Cavern,,Blue Cavern
+21079,VEE_Cenotes,,Seatro Water-Filled Cenotes
+21096,Cavern,,Nonna's Caves
+21102,Valley,,Hippo Valley
+21103,Cavern,,Miñoca Cavern
+21152,Cavern,,Blackwolf Caverns
+21155,Cavern,,Tobanol Cave Network
+21156,Valley,,Bluetarsier Vale
+21157,Valley,,Strangeraven Gulch
+21164,Valley,,Oldguinea Pig Canyon
+21166,Cavern,,Red Cavern
+21189,Cavern,,Resenbalton Tunnel
+21190,VEE_Cenotes,,Carsa's Finale Cenote Field
+21194,VEE_Cenotes,,Roundmouse Cenote Field
+21195,VEE_Cenotes,,Harshbaboon Karst Hollows
+21197,AncientWarehouse,"sealed, and worth the trip",Senne Warehouse
+21198,Valley,,Tount Gully
+21199,Cavern,,Ollie's Caves
+21200,Cavern,,Chemeabe Tunnel
+21202,Cavern,,Alisa's Caves
+21212,Cavern,,Greenbeetle Cavern
+21213,Cavern,,Ivo's Caves
+21219,Cavern,,Blue Caverns
+21220,Cavern,,Dafendio Cavern
+21296,Oasis,,Verrumesh
+21299,TerraformingScar,,Itoueraoum Sundering
+21301,Oasis,,Hollumar
+21302,Oasis,,Sessukel
+21303,VEE_SerpentineCanyons,,Odile's Canyons
+21304,Oasis,,Ammuresh
+21305,Oasis,,Torrukel
+21312,LavaCrater,the Scald rim volcanics - the one volcanic province,Gray Crater
+21318,Valley,,Deadprairie Dog Canyon
+21319,Cavern,,Marat's Caves
+21324,Valley,"the way through a range, and everyone uses it",Breio Valley
+21326,Cavern,,Senra Tunnel
+21354,TerraformingScar,,Ayano's Delusion
+21378,DryLake,,Aren Dry Lake
+21383,VEE_QuicksandDunes,a sink that swallows a sandcrawler,Wasbo Quicksand Dunes
+21392,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Neoum Dunes
+21406,VEE_Cenotes,,Binandandder Cenote Field
+21411,VEE_DryRiver,a watercourse that runs once a decade,Eraia Barren River
+21414,Valley,,Nego Gorge
+21416,Valley,,Greentrunk Canyon
+21417,VEE_DryRiver,a watercourse that runs once a decade,Arewitora Sand River
+21422,Ruins,,Hadda Town
+21427,Valley,,Hamefunistia Valley
+21429,DryLake,,Ermenrola Sand Pit
+21432,Oasis,,Ossivane
+21433,DryLake,,Xelé Sand Pit
+21436,VEE_Cenotes,,Deerfang Karst Hollows
+21441,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Banboa Wastes
+21453,Dunes,the Dune Sea proper - open sand a caravan crosses for days,Purple Dunes
+21484,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Cabi Evaporation Plain
+21507,VEE_SaltPlains,"salt pan, and the reason the Salt is named that",Colcrouscu Saline Flats
+21512,Ruins,,Fabio's Fault
+21513,Ruins,,Ruined Nottedba
+21515,RUT_ComplexStructures,,Doair Town
+21516,AncientInfestedSettlement,,Outhehin
+21517,RUT_ComplexStructures,,Ruined Grayfly
+21518,AncientHeatVent,,Scubalcan Heat Vents
+21520,AncientHeatVent,,Areen Thermal Vents
+21521,RUT_ComplexStructures,,Spiderheel City
+21522,Ruins,,Ruined Macam
+21523,Ruins,,Enteron Ruins
+21524,AncientWarehouse,,Reoulora Depot
+21529,Ruins,,Trout Ear Ruins
+21530,Ruins,,Purplecobra Ruins
+21532,AncientHeatVent,,Roolcroixe Heat Vents
+21533,Ruins,,Ambas Ruins
+21534,Ruins,,Chonagoscu City
+21535,Ruins,,Ruined Barsai
+21536,Ruins,,Cogoca Town
+21538,AncientHeatVent,,Cancom Hell Holes
+21544,Ruins,,Eaeraunt Ruins
+21545,AncientGarrison,,Fort Atcoera
+21547,AncientLaunchSite,,Wasoum Launch Site
+21549,AncientHeatVent,,Far Wombat Heat Ducts
+21561,AncientHeatVent,,Red Heat Vents
+21562,Ruins,,Goomearin Ruins
+21563,AncientHeatVent,,Atuia Hell Holes
+21565,TerraformingScar,,The Scar
+21566,AncientWarehouse,,Colbo Warehouse
+21568,AncientGarrison,,Henler Garrison
+21569,Ruins,,Ruined Delatba
+21570,Ruins,,Veran Town
+21571,RUT_ComplexStructures,,Dilapidated Orheia
+21572,VEE_SulfuricLake,"yellow water, and the smell reaches a day out",Daiki's Yellowmire
+21574,AncientChemfuelRefinery,,Mark's Refinery
+21575,AncientHeatVent,,Manatee Infernal Vents
+21576,TerraformingScar,,Blueclaw Scar
+21580,TerraformingScar,,The Grand Scar
+21586,VEE_PebbleDunes,"gravel desert, harder going than sand",Ereesder Pebble Dunes
+21653,VEE_PebbleDunes,"gravel desert, harder going than sand",Miaban Stone-Swept Ridges
+21684,TerraformingScar,somebody tried to fix this planet and failed,Ash's Howl
+21695,IceDunes,,Unler Ice Dunes
+21722,VEE_RelictDelta,,Otrosbicai Silt Delta
+21723,Harbor,,Craggynewt Harbor
+21742,IceDunes,,Bondio Frozen Hills
+21764,Valley,,Redflamingo Valley
+21768,DryLake,,Blackmole Salt Flat
+21770,Crevasse,,Trosma Break
+21783,VEE_DryRiver,,Waora Dry River
+21790,VEE_DryRiver,,Grayemu Dry River
+21794,VEE_DryRiver,,Vascogo Sand River
+21796,VEE_DryRiver,,Wityoulenberon Barren River
+21802,IceDunes,,Black Frozen Hills
+21812,Crevasse,,Gaarlium Fissure
+21818,VEE_DryRiver,,Baicri Barren River
+21824,DryLake,,Cervexa Barren Lake
+21828,Cavern,,Oysterpalm Cave Network
+21831,Valley,,Binler Ravine
+21837,VEE_GravelBeach,,Badchin Rocky Shoreline
+21844,Crevasse,,Erika's Destruction Fissure
+21865,Harbor,,Lercha Harbor

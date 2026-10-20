@@ -198,6 +198,23 @@ class WorldGrid(object):
         disagree - stop and fix that before writing anything."""
         return sorted({h for h in self.arrays["tileBiome"] if h not in self.biome_by_hash})
 
+    def mutator_entries(self):
+        """[(tile, TileMutatorDef shortHash), ...] in save order, SurfaceLayer only.
+
+        Two parallel arrays (engine SurfaceLayer.SerializeMutators): defs[i] is a
+        2-byte shortHash, tiles[i] a 4-byte tile id - one entry per mutator per tile.
+        The OrbitLayers carry the same element names, hence the surface span.
+        Added 2026-10-19 for world_layers_export.py (same decode worldmap_review.py
+        and save_donor_rewrite.py use)."""
+        d, t = self._read_array("tileMutatorDefs"), self._read_array("tileMutatorTiles")
+        if d is None or t is None:
+            return []
+        hashes = struct.unpack("<%dH" % (len(d) // 2), d)
+        tiles = struct.unpack("<%dI" % (len(t) // 4), t)
+        if len(hashes) != len(tiles):
+            raise RuntimeError("mutator arrays disagree: %d defs vs %d tiles" % (len(hashes), len(tiles)))
+        return list(zip(tiles, hashes))
+
     # -- writing ----------------------------------------------------------
     def set_biome(self, tile_ids, biome_defname):
         if biome_defname not in self.hash_by_biome:
@@ -422,6 +439,51 @@ class WorldObjects(object):
                 "drawCenter": g("drawCenter"), "size": g("maxDrawSizeInTiles"),
                 "span": (lo + m.start(1), lo + m.end(1)),
             })
+        return out
+
+    # -- factions and ideoligions (read-only; added 2026-10-19) ------------
+    def _block(self, tag):
+        a = self.text.find("<%s>" % tag)
+        if a < 0:
+            return None
+        b = self.text.find("</%s>" % tag, a)
+        import xml.etree.ElementTree as ET
+        return ET.fromstring(self.text[a:b + len(tag) + 3])
+
+    def ideos(self):
+        """{"Ideo_<id>": {"id", "name", "culture"}} from world/ideoManager."""
+        im = self._block("ideoManager")
+        out = {}
+        if im is None or im.find("ideos") is None:
+            return out
+        for i in im.find("ideos"):
+            iid = i.findtext("id")
+            out["Ideo_%s" % iid] = {"id": iid, "name": i.findtext("name"),
+                                    "culture": i.findtext("culture")}
+        return out
+
+    def factions(self):
+        """Every faction in world/factionManager/allFactions, in save order.
+
+        🔑 `loadID` is omitted from the XML when it is 0 (Scribe default), so the
+        first faction reads None - it is Faction_0, which settlements reference."""
+        fm = self._block("factionManager")
+        out = []
+        if fm is None:
+            return out
+        for f in fm.find("allFactions"):
+            lid = f.findtext("loadID")
+            lid = int(lid) if lid not in (None, "") else 0
+            ideos = f.find("ideos")
+            prim = ideos.findtext("primaryIdeo") if ideos is not None else None
+            rel = []
+            rels = f.find("relations")
+            for r in (rels if rels is not None else []):
+                rel.append((r.findtext("other"), r.findtext("kind") or "Neutral",
+                            r.findtext("goodwill") or "0"))
+            out.append({"ref": "Faction_%d" % lid, "loadID": lid, "def": f.findtext("def"),
+                        "name": f.findtext("name"), "primaryIdeo": prim,
+                        "hidden": f.findtext("hidden"), "relations": rel})
         return out
 
     def rename_feature(self, index, new_name):
