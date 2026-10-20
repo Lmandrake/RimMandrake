@@ -4080,4 +4080,82 @@
     </modExtensions>
       -->
   </GeneDef>
+
+  <!-- Own head genes for the four species above (were borrowing Cathar/Devolved/Bothan/Kubaz heads). -->
+  <GeneDef ParentName="RimMandrake_GeneHeadBase">
+    <defName>RSW_LasatHead</defName>
+    <label>lasat head</label>
+    <description>Carriers of this gene have the Lasat racial head type.</description>
+    <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_CatharHead</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <forcedHeadTypes>
+      <li>RSW_Lasat_Head</li>
+    </forcedHeadTypes>
+    <displayOrderInCategory>9190</displayOrderInCategory>
+    <symbolPack>
+      <wholeNameSymbols>
+        <li>
+          <symbol>lasat</symbol>
+        </li>
+      </wholeNameSymbols>
+    </symbolPack>
+  </GeneDef>
+  <GeneDef ParentName="RimMandrake_GeneHeadBase">
+    <defName>RSW_MimbaneseHead</defName>
+    <label>mimbanese head</label>
+    <description>Carriers of this gene have the Mimbanese racial head type.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SovDevHead</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <forcedHeadTypes>
+      <li>RSW_Mimbanese_Head</li>
+    </forcedHeadTypes>
+    <displayOrderInCategory>9191</displayOrderInCategory>
+    <symbolPack>
+      <wholeNameSymbols>
+        <li>
+          <symbol>mimbanese</symbol>
+        </li>
+      </wholeNameSymbols>
+    </symbolPack>
+  </GeneDef>
+  <GeneDef ParentName="RimMandrake_GeneHeadBase">
+    <defName>RSW_NelvaanianHead</defName>
+    <label>nelvaanian head</label>
+    <description>Carriers of this gene have the Nelvaanian racial head type.</description>
+    <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_BothanHead</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <forcedHeadTypes>
+      <li>RSW_Nelvaanian_Head</li>
+    </forcedHeadTypes>
+    <displayOrderInCategory>9192</displayOrderInCategory>
+    <symbolPack>
+      <wholeNameSymbols>
+        <li>
+          <symbol>nelvaanian</symbol>
+        </li>
+      </wholeNameSymbols>
+    </symbolPack>
+  </GeneDef>
+  <GeneDef ParentName="RimMandrake_GeneHeadBase">
+    <defName>RSW_OrtolanHead</defName>
+    <label>ortolan head</label>
+    <description>Carriers of this gene have the Ortolan racial head type.</description>
+    <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_JawKubaz</iconPath>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>0</biostatMet>
+    <forcedHeadTypes>
+      <li>RSW_Ortolan_Head</li>
+    </forcedHeadTypes>
+    <displayOrderInCategory>9193</displayOrderInCategory>
+    <symbolPack>
+      <wholeNameSymbols>
+        <li>
+          <symbol>ortolan</symbol>
+        </li>
+      </wholeNameSymbols>
+    </symbolPack>
+  </GeneDef>
 </Defs>

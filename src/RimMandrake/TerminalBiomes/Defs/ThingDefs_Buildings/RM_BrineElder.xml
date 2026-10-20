@@ -123,8 +123,10 @@
     <description>A branching organism of grown salt, rising out of the deepest pool on this floor as a trunk wider than a house before it divides and divides again into faceted limbs that climb away upward into the lighter water. It is alive. Its body is a lattice of ordered ions, and it holds a charge off the brine that sustains it the way a battery holds one — you can feel the water go tight around it before anything happens.\n\nIt cannot leave. The ultra-brine is both where it lives and what it eats, and it has been in this basin since before anything now walking the planet existed. It remembers the arrival of the ones who remade this world, and it remembers it as a change in the chemistry: what went into the water, what stopped coming out of it, what precipitated afterward. It does not know their name and would not find the question interesting.\n\nWhat it wants is novelty. Show it something it has never encountered — a creature, a corpse, a tissue, a mineral, a material it cannot place — and it will pay extraordinarily, once. Show it the same thing again and it has already taken that chemistry into itself, and you have brought it nothing.</description>
     <thingClass>RimMandrake.DivingInteraction.RM_Building_BrineElder</thingClass>
     <graphicData>
-      <texPath>Things/Building/Natural/RM_SaltChimney</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <!-- owner 2026-10-20, greysea_crown_retracted_and_elder_sheet_2026-10-18: B = "accept B C D as random pool"
+           (b = greysea_saltchimney_v1, c/d = greysea_brineelder_v1/v2). No longer borrows RM_SaltChimney. -->
+      <texPath>Things/Building/Natural/RM_BrineElder</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
       <shaderType>Transparent</shaderType>
       <drawSize>(11,11)</drawSize>
       <color>(226,230,236)</color>

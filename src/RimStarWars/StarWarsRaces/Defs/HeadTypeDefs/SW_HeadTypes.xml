@@ -1031,4 +1031,36 @@
     <defName>RSW_shortFurskin_Narrow3</defName>
     <graphicPath>Things/Pawn/Humanlike/Heads/FurCovered_Narrow3_Normal</graphicPath>
   </HeadTypeDef>
+
+  <!-- Own heads for four species that borrowed another species' head (owner picked the new renders B on
+       xeno_heads_new_vs_borrowed_sheet_2026-10-18, 2026-10-20). One head for both genders; full-colour paintings,
+       fitted to the vanilla head canvas by src/RimMandrake/Utils/art/fit_head_canvas.py. -->
+  <HeadTypeDef ParentName="AverageBase">
+    <defName>RSW_Lasat_Head</defName>
+    <graphicPath>RimMandrakeSW/Heads/Lasat/Lasat_Head</graphicPath>
+    <requiredGenes>
+      <li>RSW_LasatHead</li>
+    </requiredGenes>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="AverageBase">
+    <defName>RSW_Mimbanese_Head</defName>
+    <graphicPath>RimMandrakeSW/Heads/Mimbanese/Mimbanese_Head</graphicPath>
+    <requiredGenes>
+      <li>RSW_MimbaneseHead</li>
+    </requiredGenes>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="AverageBase">
+    <defName>RSW_Nelvaanian_Head</defName>
+    <graphicPath>RimMandrakeSW/Heads/Nelvaanian/Nelvaanian_Head</graphicPath>
+    <requiredGenes>
+      <li>RSW_NelvaanianHead</li>
+    </requiredGenes>
+  </HeadTypeDef>
+  <HeadTypeDef ParentName="AverageBase">
+    <defName>RSW_Ortolan_Head</defName>
+    <graphicPath>RimMandrakeSW/Heads/Ortolan/Ortolan_Head</graphicPath>
+    <requiredGenes>
+      <li>RSW_OrtolanHead</li>
+    </requiredGenes>
+  </HeadTypeDef>
 </Defs>
