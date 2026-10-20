@@ -16,7 +16,6 @@
     <li>mlie.nwnrealfogofwar</li>
     <li>owlchemist.cherrypicker</li>
     <li>aoba.framework</li>
-    <li>vanillaexpanded.backgrounds</li>
     <li>thesepeople.ritualattachableoutcomes</li>
     <li>adaptive.storage.framework</li>
     <li>redmattis.betterprerequisites</li>
@@ -39,10 +38,6 @@
     <li>sbz.neatstoragefridge</li>
     <li>sbz.gravshipstorage</li>
     <li>sr.modrimworld.factionalwarcontinued</li>
-    <li>zav.glowstoneforked</li>
-    <li>adaptive.ideology.storage</li>
-    <li>adaptive.primitivestorage</li>
-    <li>adaptive.simplestorage</li>
     <li>mlie.advancedbiomes</li>
     <li>ali.growodysseyplants</li>
     <li>7f.alienworlds</li>
@@ -50,27 +45,18 @@
     <li>unlimitedhugs.allowtool</li>
     <li>duz.almosttherefork</li>
     <li>sarg.alphamemes</li>
-    <li>swablu.ambience</li>
-    <li>vita.campdangers</li>
     <li>xmb.ancientminingindustry.mo</li>
-    <li>asp.halituisamaricanous</li>
     <li>automatic.autolinks</li>
     <li>fuu.autostriponhaul</li>
-    <li>elsov.beliar</li>
     <li>io.github.relvl.rimworld.bestapparel</li>
     <li>ionfrigate12345.coolandgoodambush</li>
     <li>mlie.betterbeggars</li>
     <li>nephlite.advexplosions</li>
     <li>arkymn.bettergrowthmoments</li>
-    <li>zal.betterinfestations</li>
     <li>madeline.modmismatchformatter</li>
     <li>mlie.betterprojectileorigin</li>
-    <li>jm.bettertraders</li>
-    <li>chaoticenrico.bettertrees</li>
     <li>falconne.bwm</li>
     <li>redmattis.biggergravship</li>
-    <li>kopp.biomecompatibilityproject</li>
-    <li>biomesteam.biomesfossils</li>
     <li>biomesteam.coreframework</li>
     <li>zal.biomeskit</li>
     <li>bs.mbifvte</li>
@@ -81,7 +67,6 @@
     <li>iforgotmysocks.caravanadventures</li>
     <li>kapitanoczywisty.changemapedge</li>
     <li>void.charactereditor</li>
-    <li>heatherathebyne.childrenlearnoncaravan</li>
     <li>kearril.choosewheretoland</li>
     <li>kikohi.coloreddeepresources</li>
     <li>petetimessix.compacthediffs</li>
@@ -91,21 +76,13 @@
     <li>greg.customgastypes</li>
     <li>hailuan.customquestframework</li>
     <li>costel.customroomnames</li>
-    <li>dimonsever000.ideologyvirtues</li>
-    <li>east.dancepartycustommusic</li>
-    <li>van.beasts</li>
     <li>darkestdungeon.incidentsounds</li>
     <li>troopersmith1.deathrattle</li>
     <li>mlie.decorativecliffs</li>
     <li>gondragon.defensivepositions</li>
     <li>merthsoft.designatorshapes</li>
     <li>garwel.destroyitem</li>
-    <li>det.avaloi</li>
-    <li>det.boglegs</li>
-    <li>det.brawnum</li>
-    <li>det.buzzers</li>
     <li>det.keshig</li>
-    <li>det.venators</li>
     <li>cometopapa.deteriorated</li>
     <li>lornath.diseaseimmunityprogresstracker</li>
     <li>jecrell.doorsexpanded</li>
@@ -118,13 +95,9 @@
     <li>blues.forge</li>
     <li>yourname.effigys.mod</li>
     <li>carnysenpai.enableoversizedweapons</li>
-    <li>nep.enginesunlimited</li>
-    <li>det.epochsincense</li>
     <li>mandrake.rm.pyrinth</li>
     <li>keshash.extraexplosioneffects</li>
-    <li>eoralmilk.faceaddonframework</li>
     <li>azravos.factioncustomizer</li>
-    <li>mlie.factionraidcooldown</li>
     <li>kosaro.fahrenheitandcelsius</li>
     <li>realify.firefoam</li>
     <li>kathanon.floatsubmenu</li>
@@ -138,13 +111,9 @@
     <li>arcjc007.gravshipexporter</li>
     <li>sk.gravshipraids</li>
     <li>imagitama.rimworldgravshiprangeonmap</li>
-    <li>arti.shrinez</li>
     <li>ael.tua.helmetsaddtoxresistance</li>
-    <li>elsov.highborn</li>
     <li>hazn.huntingtraps</li>
-    <li>hailuan.iwbb</li>
     <li>amegakull.scvrole</li>
-    <li>kxp.ideosymbolsasideograms</li>
     <li>llunak.moreprecepts</li>
     <li>agentblac.makepawnsprisoners</li>
     <li>mlie.incidentdisabler</li>
@@ -165,7 +134,6 @@
     <li>turnovus.biotech.integratedgenes</li>
     <li>jaxe.bubbles</li>
     <li>mlie.interactionareasettings</li>
-    <li>zal.ionweaponry</li>
     <li>mandrake.rsw.jawarules</li>
     <li>jecrell.jecstools</li>
     <li>kikohi.jewelry</li>
@@ -174,39 +142,27 @@
     <li>mlie.justputitoverthere</li>
     <li>linnun.keepconverting</li>
     <li>vaguelysexual.modpackageid.goeshere</li>
-    <li>zal.largeoutpost</li>
-    <li>arcjc007.lasercannon</li>
     <li>costel.layeredapparel</li>
     <li>noneobsidiaexpansion.ledlightsstrip</li>
     <li>mlie.linkablesettings</li>
-    <li>dorbo.watersfx</li>
     <li>mlie.logafterdeferror</li>
-    <li>zylle.mapdesigner</li>
     <li>nozome.mapmodeframework</li>
     <li>m00nl1ght.mappreview</li>
     <li>udon.masslovein</li>
     <li>sirdarkelf.meaningfulencounters</li>
-    <li>mewn.medievalsigns</li>
     <li>mlie.mercerbackpacks</li>
     <li>andromeda.milkyway</li>
     <li>rabiosus.minesight</li>
     <li>cain.mineshaft</li>
-    <li>mlie.miningcoalertspeaker</li>
-    <li>mlie.miningcodrillturret</li>
-    <li>mlie.miningcomms</li>
-    <li>mlie.miningcospaceship</li>
     <li>mandrake.rut.scavengerevents</li>
     <li>hali.modifylandingtile</li>
     <li>deadmano.moodalerts</li>
     <li>acutus.moodchainreaction</li>
-    <li>mlie.morefactioninteraction</li>
     <li>garryflowers.moreslaverystuff</li>
     <li>zylle.morevanillabiomes</li>
     <li>snobi.mutatorworldicons</li>
     <li>oblitus.mylittleplanet</li>
-    <li>radzerp.naturalpaths</li>
     <li>zylle.nightlights</li>
-    <li>nightmare.core</li>
     <li>dingo.noforcedslowdown</li>
     <li>mlie.nomissinggeneicons</li>
     <li>edern.norandomapparelonideoedit</li>
@@ -218,25 +174,20 @@
     <li>coolzie.oocreboost</li>
     <li>alleykat.persistentprecepts</li>
     <li>mlie.perspectivebuildings</li>
-    <li>meltup.polyamorybeds.vanilla</li>
-    <li>xylthixlm.races.core</li>
     <li>mlie.preceptsandmemes</li>
     <li>m00nl1ght.unofficialupdates.preparelanding</li>
     <li>ironscruff.primordialgeysers</li>
     <li>mlie.prisonersshouldfearturrets</li>
-    <li>laureeeeeeeeeeeeeeen.shrooms</li>
     <li>dawnsglow.qualcolor</li>
     <li>ingendum.raiderswarmcompression</li>
     <li>zal.randomgrowthchoices</li>
     <li>wemd.realisticdarknesslight</li>
     <li>mlie.realistichumansounds</li>
-    <li>mlie.recyclethis</li>
     <li>mlie.relevantstatsindescription</li>
     <li>petetimessix.researchreinvented</li>
     <li>scorpio.resourcedictionary</li>
     <li>alma.tossem</li>
     <li>sihv.rombonesport</li>
-    <li>kilokio.rimai.framework</li>
     <li>brrainz.rimbridgeserver</li>
     <li>dubwise.rimefeller</li>
     <li>rimfridge.kv.rw</li>
@@ -246,91 +197,62 @@
     <li>depscian.rimtunes</li>
     <li>mianreplicate.romanceandintimacyontherim</li>
     <li>kupie.isjustdoingitlive.plzdonthateme.roofedscanning</li>
-    <li>ghost.rootsofrimworld</li>
     <li>memegoddess.runandgun</li>
     <li>mandrake.rut.empirepursuit</li>
-    <li>rwnodetree.rwplanetatmosphere</li>
-    <li>moja.salvagerubble</li>
     <li>plusblankplus.scenarioamenderfork</li>
     <li>hellrevenger.searchoption</li>
     <li>avilmask.selfdyeing</li>
     <li>sensiblebedownership.1trickpwnyta</li>
     <li>boots.sensiblefactions</li>
     <li>flyingsloth.scfilthreducer</li>
-    <li>shavius.medieval.flavour</li>
     <li>spacemoth.showknowntechprints</li>
     <li>dark.signs</li>
     <li>usgiyi.slaveoutfits</li>
     <li>mlie.slaverebellionsimproved</li>
     <li>astryl.sleepingbuddies</li>
-    <li>hol.smeltpatch</li>
     <li>weilbyte.snapout</li>
     <li>krelinos.socialexpfromtrade</li>
     <li>mlie.spaceworms</li>
     <li>jpt.speakup</li>
     <li>elshender.stackablechunks</li>
-    <li>balistafreak.standalonehotspring</li>
     <li>amoruch.rimworldstealingmod</li>
     <li>karshou.storagememory</li>
     <li>mandrake.rm.strandedquest</li>
     <li>kas.strongerscaling</li>
     <li>moistestwhale.stuffontablesforked</li>
-    <li>gerrymon.stylizedslavecollar</li>
     <li>mlie.tabsorting</li>
-    <li>ucp.tabletopdecorations</li>
     <li>summersausages2ttv.techlevelenforcement</li>
     <li>propickelz.tinkerbench</li>
-    <li>tsa.torturepod</li>
     <li>smashphil.dropspot</li>
-    <li>mlie.tradeabletrinkets</li>
     <li>automatic.traderships</li>
     <li>kearril.tradingoptionscontinue</li>
-    <li>aelanna.transparentsubstructure</li>
-    <li>xercaine.tribal.furniture</li>
     <li>geojak.tributedemand</li>
     <li>ferny.triumphantresearch</li>
-    <li>trouperton.trystantravellersshuttleschematics</li>
     <li>error277.tunneler.expanded</li>
     <li>marvinkosh.ughyougotme</li>
     <li>madarauchiha.undraftaftertucking</li>
     <li>universalpregnancy.1trickpwnyta</li>
-    <li>nephlite.orbitaltradecolumn</li>
-    <li>vanillaexpanded.vappe</li>
     <li>vanillaexpanded.vaeaccessories</li>
     <li>vanillaexpanded.vanillabackstoriesexpanded</li>
     <li>vanillaexpanded.vbrewe</li>
     <li>vanillaexpanded.vcooke</li>
     <li>vanillaexpanded.vee</li>
     <li>oskarpotocki.vfe.tribals</li>
-    <li>vanillaexpanded.vfecore</li>
     <li>vanillaexpanded.vfearchitect</li>
-    <li>vanillaexpanded.vfeart</li>
     <li>vanillaexpanded.vfefactory</li>
-    <li>vanillaexpanded.vfefarming</li>
-    <li>vanillaexpanded.vfemedical</li>
-    <li>vanillaexpanded.vfepower</li>
-    <li>vanillaexpanded.vfeproduction</li>
     <li>vanillaexpanded.vfepropsanddecor</li>
     <li>vanillaexpanded.vfesecurity</li>
-    <li>vanillaexpanded.vfespacer</li>
     <li>vanillaexpanded.gravship</li>
     <li>vanillaexpanded.helixiengas</li>
-    <li>vanillaexpanded.viehar</li>
     <li>vanillaexpanded.ideo.relicsandartifacts</li>
     <li>vanillaexpanded.vexploratione</li>
     <li>vanillaexpanded.outposts</li>
     <li>vanillaquestsexpanded.generator</li>
     <li>vanillaracesexpanded.archon</li>
-    <li>vanillaracesexpanded.fungoid</li>
     <li>vanillaracesexpanded.genie</li>
-    <li>vanillaracesexpanded.phytokin</li>
     <li>vanillaracesexpanded.saurid</li>
-    <li>vanillaracesexpanded.starjack</li>
     <li>vanillaexpanded.vanillatraitsexpanded</li>
-    <li>vanillaexpanded.vwems</li>
-    <li>gabrieel1482.raidvehicleframework</li>
     <li>ninagoblin.visitsettlements</li>
-    <li>addvans.walktheworld</li>
     <li>ogliss.g223.wanderingcaravans</li>
     <li>addvans.wasdedpawn</li>
     <li>aelanna.weaponracks</li>
@@ -338,7 +260,6 @@
     <li>revolus.whatsmissing</li>
     <li>co.uk.epicguru.whatsthatmod</li>
     <li>winggar.meaningfulparties</li>
-    <li>tleno.wireheadstyle</li>
     <li>fluffy.worktab</li>
     <li>ferny.worldbuilder</li>
     <li>funkyshit.mods.worldedit.alpha</li>
@@ -346,40 +267,25 @@
     <li>mlie.yayoscaravan</li>
     <li>mlie.yayoscombat3</li>
     <li>mlie.yayosmeteor</li>
-    <li>btd.remix.gravshipblueprints</li>
     <li>lazyfridaystudio.genesexpandedeyes</li>
-    <li>nals.facialanimationexperimentals</li>
     <li>7f.alienworlds.tidallylocked</li>
-    <li>xmb.ancienturbanruins.mo</li>
     <li>mandrake.rut.ashkarrlandmarkart</li>
     <li>mandrake.rut.ishkolandmarks</li>
-    <li>m00nl1ght.geologicallandforms.biometransitions</li>
     <li>neronix17.retexture.charactereditor</li>
-    <li>hailuan.customquestframeworkai</li>
     <li>mlie.dungeonpack</li>
-    <li>vesper.egihologramsandprojectors</li>
     <li>jaeger972.factionterritories</li>
     <li>aoba.fortress.industrial</li>
-    <li>sd.fa.geneticheadsframework</li>
     <li>gmmp.dungeon</li>
-    <li>zal.gianttoads</li>
-    <li>icepickgma.invisibledisplaycase</li>
     <li>mandrake.rsw.jawavoice</li>
     <li>neku.largepawns</li>
     <li>lwm.deepstorage</li>
-    <li>smxrez.makeshiftreexamined</li>
-    <li>zacharyfoster.mineralsframework</li>
     <li>mandrake.rsw.cuisine</li>
-    <li>sinnamon.moreritualrewards</li>
     <li>zal.moreutilitypacks</li>
     <li>andromeda.niceresearchtab</li>
     <li>mandrake.rm.planetpresetprime</li>
-    <li>xylthixlm.races.titan</li>
     <li>mlie.preceptsandmemesritualsmodule</li>
     <li>lambda.psykshroom</li>
-    <li>ogliss.thewhitecrayon.quarry</li>
     <li>memegoddess.replacestuff</li>
-    <li>kilokio.rimai.core</li>
     <li>jaxe.rimhud</li>
     <li>zal.spaceports</li>
     <li>co.uk.epicguru.factionloadout</li>
@@ -391,27 +297,15 @@
     <li>scherub.stonecuttingextended</li>
     <li>cyanobot.toddlers</li>
     <li>vanillaexpanded.vchemfuele</li>
-    <li>vanillaexpanded.vcookestews</li>
-    <li>kuhlyus.modpatch.vanillaoutpost</li>
     <li>mrhydralisk.voeadditionaloutposts</li>
     <li>vanillaexpanded.vwel</li>
-    <li>fourtoo.glowingbush</li>
     <li>mandrake.rm.weathersuite</li>
     <li>mandrake.rut.weathersuite</li>
-    <li>zal.comigogreaterswamps</li>
-    <li>mlie.functionalvanillaexpandedprops</li>
-    <li>sd.fa.geneticheadsbiotech</li>
-    <li>sd.fa.geneticheadsmods</li>
     <li>erdelf.humanoidalienraces</li>
-    <li>zacharyfoster.mineralsfrozen</li>
-    <li>zacharyfoster.mineralsrock</li>
-    <li>zacharyfoster.mineralssparkle</li>
     <li>mehni.pickupandhaul</li>
     <li>avius.prisonlabor</li>
-    <li>reel.facialanims</li>
     <li>oskarpotocki.vfe.pirates</li>
     <li>vanillaexpanded.vmemese</li>
-    <li>sd.fa.reelsadjustments</li>
     <li>opa.allspecialistscanwork</li>
     <li>broms.deeporbit</li>
     <li>teiwaz.gtgtradercore</li>
@@ -423,14 +317,9 @@
     <li>tribeagle.simpleslaverycollars</li>
     <li>neronix17.toolbox</li>
     <li>vanillaexpanded.vgeneticse</li>
-    <li>vanillaexpanded.vtexe.facialanims</li>
     <li>oskarpotocki.vanillavehiclesexpanded</li>
-    <li>dmp.vfepirates.warcasketwork</li>
     <li>divinederivative.romance</li>
-    <li>teiwaz.taajg</li>
-    <li>teiwaz.tacac</li>
     <li>brrainz.achtung</li>
-    <li>sd.fa.vteadjustments</li>
     <li>sarg.alphavehiclesneolithic</li>
     <li>kem.beardadjustment</li>
     <li>redmattis.bigsmall.core</li>
@@ -439,19 +328,14 @@
     <li>neronix17.outerrim.core</li>
     <li>neronix17.outland.genetics</li>
     <li>redmattis.optional</li>
-    <li>redmattis.bigweapons</li>
     <li>avilmask.commonsense</li>
     <li>mandrake.rsw.desertvehiclereskin</li>
     <li>lovelydovey.sex.withrosaline</li>
     <li>lovelydovey.recreation.witheuterpe</li>
-    <li>leutiankane.mineablesor</li>
-    <li>leutiankane.mines2patchouterrim</li>
-    <li>neronix17.outerrim.furnitureanddecor</li>
     <li>neronix17.outerrim.galacticempire</li>
     <li>neronix17.outerrim.rebelalliance</li>
     <li>frozensnowfox.complexjobs</li>
     <li>dubwise.dubsbreakmod</li>
-    <li>danzinagri.facialanimationcompatabilityproject</li>
     <li>mandrake.rut.doctrine</li>
     <li>taranchuk.performanceoptimizer</li>
     <li>co.uk.epicguru.meleeanimation</li>
@@ -469,13 +353,11 @@
     <li>mandrake.rut.antiquities</li>
     <li>mandrake.rut.rites</li>
     <li>mandrake.rut.researchretag</li>
-    <li>zylle.sandcastles</li>
     <li>mandrake.rm.patches</li>
     <li>mandrake.rsw.bacta</li>
     <li>mandrake.rsw.patches</li>
     <li>mandrake.rut.patches</li>
     <li>mandrake.rut.pawnflavor</li>
-    <li>btd.gbp.shippack.kotor.vge</li>
     <li>mandrake.rsw.droidworks</li>
     <li>mandrake.rut.droidrepairjobs</li>
     <li>mandrake.rm.wreckedmachines</li>
