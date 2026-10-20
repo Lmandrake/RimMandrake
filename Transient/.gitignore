@@ -489,5 +489,8 @@
 !/worldtex_flatten/measure.py
 !/worldtex_flatten/plan.json
 !/worldtex_flatten/sheet.py
+!/worldtex_v2/gen.py
+!/worldtex_v2/install.py
+!/worldtex_v2/sheet.png
 !/xenotype_review/xenotype_skin_palette_sheet.png
 # --- END PINS ---
