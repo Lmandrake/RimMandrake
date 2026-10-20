@@ -35,7 +35,7 @@ UNDERPASS (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD), plot from origin + (0, 40
      grated steel bridge at x=4)                                                             -> rows UND_SHOT_SOLID, UND_SHOT_GRATE.
   U6 a colonist under U1's deck, the span forced to give way (ProofFell)                     -> row UND_CRUSH_AND_WRECK.
   U7 a stepped pit: west ledge x=1 and east ledge x=4 (z 56..59) at 4 m, core x=2..3 at 7 m; sunken steel bridge (1,57)-(4,57);
-     a colonist on the west ledge ordered to the east ledge                                  -> row UND_SUNKEN_CROSS.
+     a colonist on the west ledge ordered to the east ledge; its path must stand on >= 2 deck squares -> row UND_SUNKEN_CROSS.
   owed: raiders in a 4 m moat walk under (modcheck record), the L4 picture of a pawn passing under a deck.
 WATERS (SUSPENSION_WATERS_BUILD_MAY_BACKTRACK): natural water is wherever the map has it, so the sites are arguments
   (--river / --lake / --sea x1,z1,x2,z2: a straight drag from bank to bank; a row without its argument is UNMEASURED):
@@ -478,8 +478,12 @@ def underpass(ctx):
     kv, txt = proof("ProofBuild", "%s;%s;steel;god" % (xz(P(1, 57)), xz(P(4, 57))))
     kvs, txts = proof("ProofSpan", xz(P(2, 57)))
     f_ = spawn(P(1, 59))
-    kvp, txtp = proof("ProofUnderPath", "%s;%s" % (f_, xz(P(4, 59)))) if f_ else ({}, "no pawn")
-    good = kv.get("ok") == "True" and kvs.get("deckNotches") == "8" and kvp.get("found") == "True"
+    # the WALK reader (ProofPath: squares of the path that carry a deck), not ProofUnderPath (squares a deck passes OVER):
+    # "crossed" means the pawn's path stands on the sunken deck's two core squares (2,57),(3,57). A path found by any other
+    # way (round, or down the 7 m core) is not this row's PASS (review 2026-10-20).
+    kvp, txtp = proof("ProofPath", "%s;%s" % (f_, xz(P(4, 59)))) if f_ else ({}, "no pawn")
+    good = (kv.get("ok") == "True" and kvs.get("deckNotches") == "8" and kvp.get("found") == "True"
+            and int(kvp.get("decked", "0")) >= 2)
     row("UND_sunken_bridge_crossed", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"build": txt, "span": txts, "path": txtp})
     row("UND_raiders_walk_under_moat", "UNMEASURED", {"owed": True, "why": "OWED: a raid into a 4 m moat with a bridge over it, "
         "recorded with modcheck (behaviour is the ruling, not a bug)"})
