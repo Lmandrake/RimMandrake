@@ -1,0 +1,2 @@
+RimWorld 1.6 cannot save a world at Page_SelectStartingSite: the new world lives in Current.CreatingWorld and Current.Game is null until landing, so rimworld/save_game answers 'No game is currently loaded' and GameDataSaveLoader.SaveGame via static_call NREs (MEASURED 2026-10-20 remake run). The first world-bearing checkpoint is the first save after landing; anything that closes the landing page before then (a clear_ui, a stray Escape) discards the painted world with nothing logged — generation #1 was lost exactly that way.
+home: skills/rimworld-world-editing

@@ -1,0 +1,2 @@
+A start tile chosen against the paint record can become illegal once the paint stamps NPC settlements: the engine refuses any start tile adjacent to a settlement (TileFinder.IsValidTileForNewSettlement, FactionBaseAdjacent). Zeddo's Yard 17007 and alternate 1621 both touch Zeddo's Toll (tile 17006) in the paint inputs, so the 2026-10-20 run had to take 17011. Check every candidate start tile against the settlements CSV (distance >= 2) before a run, not at the landing page.
+home: design/RimMandrake/world_remake_2026-10-19/06_remake_runbook.md
