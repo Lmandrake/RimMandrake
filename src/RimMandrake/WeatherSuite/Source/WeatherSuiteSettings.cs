@@ -34,6 +34,13 @@ namespace RimMandrake.StarWars.WeatherSuite
         public static float auroraOverlaySaturation = 0.05f;
         public static float auroraSkyBrightness = 1.15f;
 
+        // AURORAL_UMBRA (owner 2026-10-19): the perpetual aurora on biomes carrying PerpetualAuroraExtension.
+        // PROVISIONAL first-guess numbers: glow 0.35 (vanilla aurora floor 0.25, i.e. a little brighter than the
+        // incident), activity 8 (colour change every ~470 ticks, about 8 s at 1x, vs vanilla permanent 3750).
+        public static bool perpetualAuroraEnabled = true;
+        public static float perpetualAuroraGlow = 0.35f;
+        public static int perpetualAuroraActivity = 8;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -43,6 +50,9 @@ namespace RimMandrake.StarWars.WeatherSuite
             Scribe_Values.Look(ref auroraSkySaturation, "auroraSkySaturation", 0.35f);
             Scribe_Values.Look(ref auroraOverlaySaturation, "auroraOverlaySaturation", 0.05f);
             Scribe_Values.Look(ref auroraSkyBrightness, "auroraSkyBrightness", 1.15f);
+            Scribe_Values.Look(ref perpetualAuroraEnabled, "perpetualAuroraEnabled", true);
+            Scribe_Values.Look(ref perpetualAuroraGlow, "perpetualAuroraGlow", 0.35f);
+            Scribe_Values.Look(ref perpetualAuroraActivity, "perpetualAuroraActivity", 8);
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -140,6 +150,19 @@ namespace RimMandrake.StarWars.WeatherSuite
                 auroraOverlaySaturation = list.Slider(auroraOverlaySaturation, 0.025f, 0.5f);
                 list.Label("  Sky brightness: " + auroraSkyBrightness.ToString("0.00") + " (vanilla: 0.73-1.0)");
                 auroraSkyBrightness = list.Slider(auroraSkyBrightness, 0.73f, 2f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Perpetual aurora (biomes that never lose it)", RimMandrake.Shared.SettingScope.Now, new[] { "perpetualAuroraEnabled", "perpetualAuroraGlow", "perpetualAuroraActivity" }))
+            {
+                list.CheckboxLabeled("Perpetual aurora", ref perpetualAuroraEnabled,
+                    "A biome marked for it (on Ash'karr: the Auroral Umbra) keeps an aurora in its sky at all times, "
+                  + "lighting the ground and lifting moods. Off: the aurora is removed from those maps within an hour "
+                  + "of game time; only the ordinary, occasional aurora event remains.");
+                list.Label("  Light it casts on the ground: " + perpetualAuroraGlow.ToString("0.00") + " (occasional aurora: 0.25; full daylight: 1.00)");
+                perpetualAuroraGlow = list.Slider(perpetualAuroraGlow, 0.05f, 0.8f);
+                list.Label("  Activity (how fast its colours sweep): " + perpetualAuroraActivity + "x (1x = vanilla's slow permanent drift)");
+                perpetualAuroraActivity = Mathf.RoundToInt(list.Slider(perpetualAuroraActivity, 1f, 30f));
                 list.GapLine();
             }
 

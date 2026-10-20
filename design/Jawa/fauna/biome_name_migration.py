@@ -33,9 +33,8 @@ OLD_TO_NEW_BIOME = {
     'AB_MycoticJungle': 'RM_TheRot',
     'AB_OcularForest': 'RM_Contagion',  # RM_ mod built 2026-09-25, CONTAGION_RM_MOD_BUILD_1
                                          # (RUT_Contagion frozen, world-carrying twin, identical content)
-    'AB_PropaneLakes': 'RUT_FuelSnows',  # renamed from RUT_Umbra 2026-09-21,
-                                          # UMBRA_IS_A_REGION_NOT_A_BIOME_1 (Umbra
-                                          # now names the region, not this biome)
+    'AB_PropaneLakes': 'RUT_Umbra',  # the Auroral Umbra; was RUT_FuelSnows 2026-09-21..2026-10-20,
+                                      # renamed back by AURORAL_UMBRA_RENAME_BACK_TO_DARK
     'AB_PyroclasticConflagration': 'RUT_TheForge',
     'AB_RockyCrags': 'RM_Abyss',  # RM_ mod built 2026-09-25, FORSAKENCRAGS_RM_MOD_BUILD_1
     'AB_TarPits': 'RM_TheSump',  # RM_ mod built 2026-09-25, THESUMP_RM_MOD_BUILD_1

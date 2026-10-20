@@ -126,8 +126,9 @@ stays open as a perf-free follow-up.
 **Precipitation (RULED OQ-3, owner's words: *"Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation"*):**
 RM_TheSump, RM_Wasteland, RM_FloodedCanyon, RUT_Sump and RUT_Wasteland have no rain and no snow (weathers zeroed in commit
 `607aecf946`, not yet deployed), so they have no rain source; in Flooded Canyon the flood is the only natural water. Where it snows
-(RUT_FuelSnows, RUT_Umbra) *"Blowing snow melts like water and rain yes. It doesn't snow fuel."*: the snow counts as the same source as
-rain (clean water, same unroofed-cell rule), and Fuel Snows' snow is water, not fuel.
+*"Blowing snow melts like water and rain yes. It doesn't snow fuel."*: snow counts as the same source as rain (clean water, same
+unroofed-cell rule). *(Corrected 2026-10-20: no Ash'karr biome snows now. The one that did, RUT_Umbra — the Auroral Umbra, briefly
+RUT_FuelSnows — rains propane instead, owner 2026-10-19: "it should NOT snow, it should rain propane"; propane rain waters nothing.)*
 
 Twilight Sea is a sea floor and rains in error (`TWILIGHT_SEA_FIX_IT_RAINS_UNDERWATER`); rain there is a defect,
 not a source.
@@ -382,7 +383,7 @@ Bar (ruled S0-6): **≥ 90% of mechanic-off TPS**. Everything else PROPOSED.
 1. Dry-native cycle code (D10): no parent survival path. Delete any "reset growth to 0.5" branch; the parent dies at fruit/burst and sprouts carry the cycle. Sprout count and spawn respect built ground; a cell with no free sprout space ends the line there.
 2. `ruptureChance` rolls Burst only; the contaminated Rupture, Tinder, Slime keep their own odds and the review sheet's "violent top" column is not covered by it.
 3. Wild plants consume their cell's water on fruit (OQ-8), so player water on a wild-plant cell is no longer free; the source-consumption path (D5/D6/D12) applies to all fruiting plants, not only crops.
-4. Rain source: puddle filth persists a few hours after rain; snow in RUT_FuelSnows and RUT_Umbra is a rain-equivalent source. The five no-precipitation biomes carry no rain source at all; the zeroed weathers (`607aecf946`) still need deploying.
+4. Rain source: puddle filth persists a few hours after rain; snow in a listed snowmelt biome is a rain-equivalent source (none listed since 2026-10-20). The five no-precipitation biomes carry no rain source at all; the zeroed weathers (`607aecf946`) still need deploying.
 5. Resting override on the tidally locked world (D14) is now required, not conditional.
 6. Ash-fresh timer restarts on each new seedling; nearbyRadius default 2; vanilla crop no-water ageing x0.1.
 7. Settings B default `vanilla` labelled unsupported; no biome water-label field; class numbers live in biome files with a consistency test.

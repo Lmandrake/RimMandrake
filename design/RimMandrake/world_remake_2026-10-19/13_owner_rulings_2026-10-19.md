@@ -25,3 +25,9 @@ Earlier answers recorded the same evening (no item change):
 - Glass trail for the Ummisk: **NOT wanted**.
 - Rhossak numbers: kept as **PROVISIONAL**.
 - The 155 kept renders: **stay untouched**.
+
+Ruling 18 (appended after the list above; same card set):
+
+| # | question | his answer | what it changes |
+|---|---|---|---|
+| 18 | How should this frozen biome be settled? (the Fuel Snows / Umbra land) | "Back to Umbra, dark": "(2) it's totally dark except for the utterly beautiful and wildly active aurora. Let's call it the Auroral Umbra then. And look back at the original concept sheet to find out about precipitation. It ruled what's solid, liquid, gas at various temperatures." Then: "Yes, there should be a perpetual Auroral activity in that biome. Put that in its def now. Auroral Umbra is the new name, better than Rimefall. And yes, it should NOT snow, it should rain propane (equivalent with chemfuel)." | item `AURORAL_UMBRA_RENAME_BACK_TO_DARK`: `RUT_FuelSnows` renamed back to `RUT_Umbra`, label "Auroral Umbra"; perpetual aurora (Weather Suite, tunable); propane rain, no snow (concept sheet `worldgen_interactive_def.md:151-155,177-179`: propane liquid −188…−42 °C); the RUT_Umbra→RUT_FuelSnows paint remap is cancelled (the save already holds RUT_Umbra on 2,531 tiles) |

@@ -150,12 +150,11 @@ What each layer needs in a rebuild on the 536 list:
 - These need a reading of their own:
   - `RUT_CrackedLands` ×970 goes to `RM_FloodedCanyon`, per the paint list.
   - `RUT_Greentide` ×235 goes to `RM_Greentide`, per the paint list.
-  - `RUT_Umbra` ×2,531 goes to `RUT_FuelSnows`, per the paint list. `RUT_Umbra` is the old defName of
-    `RUT_FuelSnows` (renamed 2026-09-21 by `UMBRA_IS_A_REGION_NOT_A_BIOME_1`: Umbra is a REGION, not a biome) and is
-    kept only as a compat duplicate so these tiles resolve until the paint. Not an open decision. These tiles are
+  - `RUT_Umbra` ×2,531 STAYS `RUT_Umbra` (the Auroral Umbra): the 2026-09-21 rename to `RUT_FuelSnows` was reversed
+    2026-10-20 (`AURORAL_UMBRA_RENAME_BACK_TO_DARK`, owner by card 2026-10-19), so no remap is owed. These tiles are
     the LAND of the Propane Lakes sheet (`design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §0: regions
     Deadstone 861, Umbra 773, Ammonia Flats 692); the propane sea itself is `RUT_PropaneLake` (57 tiles), which
-    merges into `RM_TheChill`. `RUT_FuelSnows` carries one non-ours plant (`PoisonShrub`, §6).
+    merges into `RM_TheChill`. `RUT_Umbra` carries one non-ours plant (`PoisonShrub`, §6).
 
 **What is lost in a fresh world, whatever the inputs:**
 - everything the owner ruled "regenerates": colony, map state, placed things, stock, research, relations
@@ -256,13 +255,13 @@ Measured on the 536 dump (subagent; its own one-off script over `BiomeDef/ThingD
 | biome | non-ours refs |
 |---|---|
 | `RM_Cauldron` | 2 `AM_Dryad_*` (alphamemes) |
-| `RUT_FuelSnows` / `RUT_Umbra` | `PoisonShrub` |
+| `RUT_Umbra` | `PoisonShrub` |
 | `RUT_BlueDesert` | `PoisonPlantTallGrass` |
 | `RUT_Slime` | 2 `GR_*` |
 | `RUT_Cauldron` / `RUT_Wasteland` | **donor C# workers** `BiomesPlus.*`, plus dryads, `VRE_PoluxBush` and `GR_*` |
 | `RUT_CrackedLands`, `RUT_WeepingStones` | workers `VanillaBiomes.*` |
 
-  The `RUT_` ones are frozen twins and are not paint targets, except `RUT_FuelSnows`.
+  The `RUT_` ones are frozen twins and are not paint targets, except `RUT_Umbra` (the Auroral Umbra).
 - **UNMEASURED:**
   - `terrainPatchMakers` resolution;
   - per-biome `WildAnimals_*.xml` coverage (21 files, not mapped one by one);
@@ -278,8 +277,8 @@ Measured on the 536 dump (subagent; its own one-off script over `BiomeDef/ThingD
 
 **Can be done tonight, with the owner present for the hand steps:**
 1. Offline prep, no game:
-   - **(a)** a biome-remap CSV: tiles CSV to `RM_` targets per the paint list (including `RUT_Umbra` →
-     `RUT_FuelSnows`, 2,531 tiles);
+   - **(a)** a biome-remap CSV: tiles CSV to `RM_` targets per the paint list (`RUT_Umbra` stays
+     `RUT_Umbra`: no remap since 2026-10-20);
    - **(b)** rewrite the mutators and landmarks CSVs through `retired_mutators_port_map.json`;
    - **(c)** rewrite the settlements CSV `Jawa_*` → `RUT_Jawa_*`;
    - **(d)** remap `AG_RustedTile` in the gravship layout;

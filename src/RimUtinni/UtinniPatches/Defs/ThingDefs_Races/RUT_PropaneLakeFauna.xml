@@ -44,11 +44,8 @@
   Colder-tolerant than Krissek (ComfyTemperatureMax lower) per the sheet's
   own measured range (median -62.2 C, coldest LAND on the planet) and larger/
   stronger stats matching "yet more powerful ... apex of the line." Lives on
-  RUT_FuelSnows (the land biome, successor to RUT_Umbra per
-  UMBRA_IS_A_REGION_NOT_A_BIOME_1) — wired into BOTH RUT_FuelSnows.xml and
-  its live-continuity duplicate RUT_Umbra.xml (that file's own header:
-  "a full behavioural duplicate... until the terminal repaint"), matching the
-  discipline that file already documents for itself.
+  RUT_Umbra, the Auroral Umbra (the land biome; briefly named RUT_FuelSnows
+  2026-09-21..2026-10-20, renamed back by AURORAL_UMBRA_RENAME_BACK_TO_DARK).
   Solitary (wildGroupSize 1, unlike Krissek's 1~3 pack) — an apex predator,
   not a pack hunter, and this keeps ecoSystemWeight sane against Krissek's
   own Blue Desert population.

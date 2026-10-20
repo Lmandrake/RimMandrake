@@ -2,83 +2,53 @@
 <Defs>
 
   <!--
-    RUT_Umbra — RESTORED 2026-09-21 (UMBRA_IS_A_REGION_NOT_A_BIOME_1 addendum, FOUNDRY)
-    as a live-continuity duplicate of `RUT_FuelSnows`, NOT a revert of the rename.
+    RUT_Umbra - the Auroral Umbra                 UtinniPatches
+    Authored 2026-09-09 (BIOME_OWNERSHIP_WAVE_1) as our own copy of the donor AB_PropaneLakes land
+    tiles; renamed RUT_FuelSnows 2026-09-21; RENAMED BACK 2026-10-20 on the owner's ruling by card
+    (2026-10-19): "it's totally dark except for the utterly beautiful and wildly active aurora. Let's
+    call it the Auroral Umbra then. And look back at the original concept sheet to find out about
+    precipitation." Then, same day: "Yes, there should be a perpetual Auroral activity in that biome.
+    Put that in its def now. Auroral Umbra is the new name, better than Rimefall. And yes, it should
+    NOT snow, it should rain propane (equivalent with chemfuel)." Item: AURORAL_UMBRA_RENAME_BACK_TO_DARK.
 
-    Why: `UMBRA_IS_A_REGION_NOT_A_BIOME_1` deleted this file outright and redeployed
-    with the pruning apply flag, on the recorded (but unverified) claim that 2,531
-    world tiles on the canonical save carried this defName. That claim was CHECKED against the live
-    canonical save, offline, via `worldmap.py`'s WorldGrid decoder (biome shortHash
-    15270, resolved from a def-dump capture taken 2026-09-21T08:56:31Z, before the
-    rename deploy) against `CANONICAL_ASHKARR_START_2026-09-12.rws` —
-    **CONFIRMED: exactly 2,531 tiles carry this shortHash**, and the live deployed
-    Mods folder (checked directly) no longer defines it anywhere — so those tiles'
-    biome was genuinely UNRESOLVABLE on the next load, not a stale/pre-ruling number.
+    Sheet: design/Jawa/worldbuilding/biomes/the_propane_lakes.md (FROZEN; its "not dark, starlit"
+    and "it snows fuel" lines are overruled by the two rulings above). The lake is NOT this biome: it
+    is RM_TheChill (campaign twin RUT_PropaneLake). The canonical save already carries this defName
+    on 2,531 land tiles (census 2026-10-20, tileBiomeDeflate hash 15270), so no repaint is owed for it.
+    A save holding the retired name RUT_FuelSnows by NAME resolves here through RUT_UmbraRenameAliases
+    (Defs/Misc/RUT_UmbraRename_Aliases.xml); world tiles are saved by shortHash and are not covered,
+    but no known save holds the RUT_FuelSnows hash (3528) on any tile.
 
-    This file exists ONLY so that defName resolves again for those tiles until the
-    terminal repaint (`BIOME_PAINT_ONCE_AT_THE_END_1`) reassigns them to
-    `RUT_FuelSnows`. It is a full behavioural duplicate of `RUT_FuelSnows.xml` — same
-    terrain/weather/fauna/flora, nothing re-authored — so any tile still carrying the
-    old name plays exactly as it did before the rename. `RUT_FuelSnows` remains the
-    real, forward-authored def; new content and any future biome-mapping work should
-    target it, not this file. Retire this file again once the terminal repaint has
-    moved every `RUT_Umbra`-tagged tile onto `RUT_FuelSnows` (verify with the same
-    `worldmap.py` check before deleting).
+    MEASURED (sheet SS0, 2026-09-06 export): arc 132-179 (sun 49-76 deg below the horizon), temp
+    p10/median/p90 -73.0/-62.2/-47.8 C - the coldest land on the planet.
 
-    Original 2026-09-09 authoring header (BIOME_OWNERSHIP_WAVE_1), preserved verbatim
-    below for provenance:
+    LIGHT: the engine's own night (the sun is always far below the horizon) plus a PERMANENT aurora:
+    the PerpetualAuroraExtension below makes WeatherSuite's MapComponent_PerpetualAurora keep a
+    permanent RM_WS_DarkAurora condition on every map of this biome (glow, colour sweep speed and an
+    off switch are Mod Settings in Weather Suite; numbers PROVISIONAL).
 
-    RUT_Umbra                                      UtinniPatches - authored 2026-09-09
-    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
-    the_propane_lakes.md (FROZEN). Replaces the donor `AB_PropaneLakes` (Alpha
-    Biomes) on its LAND tiles only — the lake itself is a separate, already-owned
-    worldmap water biome, `RUT_PropaneLake` (57 tiles, `LIQUID_BIOMES_MAP_1`, paint
-    DONE per that sheet's Owed). Named `RUT_Umbra` rather than a "PropaneLakes"
-    variant to avoid colliding with that existing water-biome defName — the sheet's
-    own name for the antistellar cap region IS Umbra (SS0).
-
-    MEASURED (sheet SS0): 2,531 tiles, arc 132-179 (sun 49-76 deg below horizon),
-    temp p10/median/p90 -73.0/-62.2/-47.8 C — the coldest LAND on the planet.
-    Regions Deadstone/Umbra/Ammonia Flats.
-
-    Weather: SS4b and ban 3 rule this directly — "Aurora-clear — the common state.
-    No visibility blockage (owner): starlight and curtain-light; ranged fire works;
-    the sky is the most beautiful on the planet." Fog/Rain/RainyThunderstorm/
-    FoggyRain all zeroed (ban 3 + ban 7 no rain, R-H1); Clear made dominant.
-    SnowGentle/SnowHard kept high, reflavored per the sheet as "fuel snow" (SS4b,
-    hydrocarbon/ammonia precipitation feeding the crystal flora) — not literal
-    water snow, same reskin-in-place pattern The Rot's sheet uses for its own
-    weather. DryThunderstorm kept low ("dry lightning over a fuel field," SS4b) —
-    ban 4 requires ignition to need a hot source or spark, so this stays rare, never
-    dominant.
-
-    animalDensity/plantDensity/diseaseMtbDays kept at the donor's own values (sheet
-    SS0 "Donor inventory taken in" lists these as read-in, not disputed).
-
-    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
-    BiomeFlora_Ashkarr.xml against rosters/the_propane_lakes.json. Ban 1 (no icy
-    dayside analogs) and ban 2 (no kyber) are both roster-level bans already
-    enforced by that JSON's own evictions, not re-checked field-by-field here.
-
-    NOT this pass's scope: `ANCIENT_WAR_LAB_1` (the sealed lab beneath the lake);
-    the electrojet tap building; the crater-event map permanence; the island
-    landmark (tile 5873); any world repaint (paint already DONE for the lake per
-    the sheet's Owed — this def is the land only, un-painted).
-
+    PRECIPITATION, from the original concept sheet's phase ruling
+    (design/Jawa/worldbuilding/worldgen_interactive_def.md:151-155,177-179, owner 2026-08-16):
+    propane is liquid from -188 to -42 C, so across this whole band (-82..-42 C) it falls as RAIN and
+    pools; ethane (liquid -183..-87) stays a gas here; water must never rain or snow on the nightside.
+    So: RUT_PropaneRain, no snow at all. The rain carries rainRate 0 on purpose - it is not water, so
+    it neither puts out fires, nor soaks pawns, nor waters plants. Where it pools: small patches of
+    RM_PropaneShallow (FlowWorks' liquid-propane terrain; propane is the fuel the planet uses where
+    other worlds use chemfuel). Weather weights and the pool threshold are PROVISIONAL first guesses.
   -->
 
   <BiomeDef>
     <defName>RUT_Umbra</defName>
-    <label>Umbra</label>
-    <description>The far end of the world: a black sea of liquid fuel under the brightest sky on the planet, ringed by frozen ammonia flats. It snows fuel. The aurora is the strongest anywhere -- the magnetosphere slamming back together after its rude shock upstream -- so the ice glows green and violet even without a moon. The fast things run in blue flame, because nothing moves fluidly here without burning; the plants are crystal, and grow overnight from what falls.</description>
+    <label>Auroral Umbra</label>
+    <description>The far end of the world, where the sun never rises: black ice that would be utterly dark if the sky ever rested. It never does. The strongest aurora on the planet burns overhead at every hour -- the magnetosphere slamming back together after its rude shock upstream -- sweeping green and violet across the ice, and it is the only light there is. It is cold enough here that propane falls as rain and gathers in clear, still pools that will burn the instant anything hot reaches them. The fast things run in blue flame, because nothing moves fluidly here without burning; the plants are crystal, and regrow overnight.</description>
     <workerClass>BiomeWorker_IceSheet</workerClass>  <!-- was AlphaBiomes.BiomeWorker_PropaneLakes; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
 
     <!-- OWNER RULING 2026-09-19 (RUT_UMBRA_ROADS_RULING_1): the ban STANDS. No
-         roads in the Umbra, same as RUT_ExtremeDesert's "No roads through the deep
+         roads in the Auroral Umbra, same as RUT_ExtremeDesert's "No roads through the deep
          dune". This flag was previously an unexamined default with no sheet behind
          it; it is now ruled and the sheet says so.
-         MEASURED (2026-09-07 link export): 42 Umbra tiles carry stored road links,
-         and 74 of their 78 links run Umbra-to-Umbra - only 4 leave the region. So
+         MEASURED (2026-09-07 link export): 42 tiles carry stored road links,
+         and 74 of their 78 links run internally - only 4 leave the region. So
          the ban costs almost no connectivity: it hides an internal web in the
          coldest land on the planet, not a route to anywhere.
          Nothing is destroyed by this. `potentialRoads` keeps every link in the
@@ -133,18 +103,36 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!-- Where the propane rain gathers: small low pools of liquid propane (FlowWorks terrain; skipped
+         without FlowWorks). Frequency/threshold PROVISIONAL - about 4% of the ground. -->
+    <terrainPatchMakers>
+      <li>
+        <perlinFrequency>0.045</perlinFrequency>
+        <thresholds>
+          <li MayRequire="mandrake.rm.flowworks">
+            <terrain>RM_PropaneShallow</terrain>
+            <min>0.78</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
+    <!-- PROVISIONAL weights (AURORAL_UMBRA_RENAME_BACK_TO_DARK): propane rain about a third of the time,
+         clear otherwise, dry lightning rare (ban 4: ignition needs a spark). No snow of any kind (owner
+         2026-10-19: "it should NOT snow"); no water rain or fog (concept sheet: no water on the nightside). -->
     <baseWeatherCommonalities>
-      <Clear>70</Clear>
-      <SnowGentle>20</SnowGentle>
-      <SnowHard>25</SnowHard>
+      <Clear>60</Clear>
+      <RUT_PropaneRain>30</RUT_PropaneRain>
       <DryThunderstorm>2</DryThunderstorm>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
       <Fog>0</Fog>
       <Rain>0</Rain>
       <RainyThunderstorm>0</RainyThunderstorm>
       <FoggyRain>0</FoggyRain>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <RUT_BurnerAscendant>0.03</RUT_BurnerAscendant>  <!-- the Burners, ascendant — apex of the Blue Desert's line (COMMISSION_LEDGER_CLEANUP_1, §4); mirrored from RUT_FuelSnows.xml per this file's own "full behavioural duplicate" header -->
+      <RUT_BurnerAscendant>0.03</RUT_BurnerAscendant>  <!-- the Burners, ascendant — apex of the Blue Desert's line (COMMISSION_LEDGER_CLEANUP_1, §4) -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
@@ -160,6 +148,9 @@
       <PoisonShrub MayRequire="Mlie.AdvancedBiomes">0.35</PoisonShrub>  <!-- poison shrub -->
     </wildPlants>
     <wildPlantRegrowDays>1</wildPlantRegrowDays>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.WeatherSuite.PerpetualAuroraExtension" />
+    </modExtensions>
   </BiomeDef>
 
 </Defs>

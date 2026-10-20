@@ -2,7 +2,7 @@
 <Defs>
   <!--
     DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
-    mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the frozen campaign twin of the fuel snows and the umbra (RUT_FuelSnows, RUT_Umbra)
+    mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the frozen campaign twin of the Auroral Umbra (RUT_Umbra)
     (src/RimUtinni/UtinniPatches/Defs/BiomeDefs) still named, ported as RM_ defs with the donor's own values so the
     painted planet keeps its ground and flora. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
     provenance kind=donor standin=true) until regenerated; texPaths not served by Alpha Biomes are left as they were.

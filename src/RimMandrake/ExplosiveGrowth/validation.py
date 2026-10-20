@@ -1162,7 +1162,7 @@ FLIPS = [
     ("rainWaterEnabled", True, False),
     ("rainLingerHours", 3.0, 4.0),
     ("rainPuddlesEnabled", True, False),
-    ("snowmeltEnabled", True, False),        # needs RUT_FuelSnows / RUT_Umbra
+    ("snowmeltEnabled", True, False),        # needs a biome in snowmeltBiomes (none listed since 2026-10-20: the Auroral Umbra rains propane)
     ("ashFreshEnabled", True, False),        # needs the Pyrelands ash field
     ("ashFlushDays", 3.0, 4.0),
 ]
