@@ -17,9 +17,10 @@ namespace RimMandrake.Cauldron
     //             animal. The inspect pane always says which (no animal changes behaviour without a readable sign).
     //   * SPROUT — "Where a rhossak lies down to rest, the ground around it sprouts": a resting seed-bearer sometimes
     //             sets a seedling of one of the biome's own wild plants on an empty cell beside it.
-    //   * ROOT  — "three of them standing together long enough can root a whole new grove": three seed-bearers awake
-    //             within groupRadius of each other, clear of every grove tree by groveSpacing, for rootHours unbroken,
-    //             root a young grove tree beside them and all three bind to it.
+    //   * ROOT  — "three of them standing together long enough can root a whole new grove": three seed-bearers within
+    //             groupRadius of each other, clear of every grove tree by groveSpacing, for rootHours of awake time together
+    //             (sleeping together holds the count, being apart resets it), root a young grove tree beside them and all
+    //             three bind to it.
     // The galled rhossak binds but "carries no seed at all" (seedBearing=false): it never sprouts or roots.
     // Each part is a Mod Settings toggle (RM_CauldronSettings.rhossak*). The comp must come AFTER RM_CompHomeTether in
     // the def's comps, so its spawn-time bind overrides the tether's spawn-cell home.
@@ -178,13 +179,17 @@ namespace RimMandrake.Cauldron
                 return;
             }
             Map map = pawn.Map;
-            bool awake = pawn.Awake() && !pawn.Downed && !pawn.InMentalState;
-            List<Pawn> kin = awake ? Kin(pawn) : new List<Pawn>();
-            bool clear = awake && !GroveTreesOn(map).Any(t => RM_RhossakKernel.Within(t.Position.x - pawn.Position.x,
+            bool able = !pawn.Downed && !pawn.InMentalState;
+            bool awake = able && pawn.Awake();
+            // RHOSSAK A6 (2026-10-20): kin count asleep or awake, and sleeping together HOLDS the count instead of resetting
+            // it (RM_RhossakKernel.StepTogetherHeld) — an animal sleeps every day, so "24 unbroken awake hours" was unreachable.
+            List<Pawn> kin = able ? Kin(pawn) : new List<Pawn>();
+            bool clear = able && !GroveTreesOn(map).Any(t => RM_RhossakKernel.Within(t.Position.x - pawn.Position.x,
                 t.Position.z - pawn.Position.z, Props.groveSpacing));
             bool cooled = RM_RhossakKernel.CooledDown(Find.TickManager.TicksGame, lastRootTick, Props.rootCooldownDays);
             bool together = RM_RhossakKernel.Together(true, Props.seedBearing, awake, kin.Count, Props.groupSize, clear, cooled);
-            togetherTicks = RM_RhossakKernel.StepTogether(togetherTicks, together, interval);
+            bool held = able && !awake && RM_RhossakKernel.Together(true, Props.seedBearing, true, kin.Count, Props.groupSize, clear, cooled);
+            togetherTicks = RM_RhossakKernel.StepTogetherHeld(togetherTicks, together, held, interval);
             if (RM_RhossakKernel.ShouldRoot(togetherTicks, Props.rootHours)) TryRoot(pawn, kin);
         }
 
@@ -194,7 +199,7 @@ namespace RimMandrake.Cauldron
             foreach (Thing t in GenRadial.RadialDistinctThingsAround(pawn.Position, pawn.Map, Props.groupRadius, true))
             {
                 if (t is Pawn p && p != pawn && p.def == pawn.def && !p.Dead && !p.Downed && p.Faction == pawn.Faction
-                    && p.Awake() && !p.InMentalState)
+                    && !p.InMentalState)   // asleep or awake: a resting herd-mate is still standing with it (A6)
                     kin.Add(p);
             }
             return kin;

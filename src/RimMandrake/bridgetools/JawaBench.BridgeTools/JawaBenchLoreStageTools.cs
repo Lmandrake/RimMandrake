@@ -33,9 +33,7 @@ namespace JawaBench.BridgeTools
     public sealed partial class JawaBenchTerrainTools
     {
         private static Type LoreStageComponentType() =>
-            AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => { try { return a.GetTypes(); } catch { return Array.Empty<Type>(); } })
-                .FirstOrDefault(t => t.FullName == "RimMandrake.LoreStages.GameComponent_LoreStage");
+            ResolveLiveType("RimMandrake.LoreStages.GameComponent_LoreStage", out _, out _);   // live copy, never a pre-Prepatcher twin
 
         [Tool(
             "jawa/lore_stage_get",

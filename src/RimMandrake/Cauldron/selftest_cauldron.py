@@ -271,6 +271,37 @@ class Fake(object):
             self.wage += d
             self.cloud_tick(d)
             self.chunk(d, old)
+            self.rhossak_tick(d)
+
+    def rhossak_tick(self, d):
+        """RM_CompRhossakGrove + the galls' CompProperties_Spawner, as the grove chain reads them (A5 A6 A7)."""
+        rh = [p for p in self.pawns.values() if p["kind"] == V.RHOSSAK and not p["dead"]]
+        for p in rh:                                       # SPROUT: a resting seed-bearer, one seedling per 7500 ticks asleep
+            if p.get("asleep_until", -1) >= self.ticks:
+                p["sleep"] = p.get("sleep", 0) + d
+                if (p["sleep"] >= 7500 and self.on("rhossakSproutEnabled", "sprout_ignores_toggle")
+                        and "rhossak_no_sprout" not in self.broken):
+                    p["sleep"] = 0
+                    self.new("FakeSeedling", p["x"] + 1, p["z"], plant=True, growth=0.05)
+        trio = None                                        # ROOT: three within 4 cells, none within 6 of a thornwood
+        for p in rh:
+            kin = [q for q in rh if (q["x"] - p["x"]) ** 2 + (q["z"] - p["z"]) ** 2 <= 16]
+            clear = not any((t["x"] - p["x"]) ** 2 + (t["z"] - p["z"]) ** 2 <= 36 for t in self.of(V.THORN))
+            if len(kin) >= 3 and clear:
+                trio = p
+                break
+        self.root_acc = (getattr(self, "root_acc", 0) + d) if trio else 0
+        if (trio and self.root_acc >= 90000 and self.on("rhossakGroveEnabled", "grove_ignores_toggle")
+                and "rhossak_never_roots" not in self.broken):
+            self.root_acc = 0
+            self.new(V.THORN, trio["x"], trio["z"] + 1, growth=0.15, plant=True)
+        for p in self.pawns.values():                      # GALLS: 40 meat every 120000 ticks
+            if p["kind"] == V.GALLED and not p["dead"]:
+                due = p.setdefault("meat_next", p.get("born", 0) + V.GALL_TICKS)
+                if self.ticks >= due:
+                    p["meat_next"] = due + V.GALL_TICKS
+                    if "galls_no_meat" not in self.broken:
+                        self.new(V.GALL_MEAT, p["x"], p["z"], stackCount=V.GALL_COUNT)
 
     WIND = 1.0                                            # the fake map's wind: drift chance 0.4
 
@@ -478,9 +509,18 @@ class Fake(object):
     def t_mod_settings_field(self, typeName=None, action=None, field=None, value=None, **k):
         if field not in self.settings:
             return {"success": False, "message": "no such field"}
+        if "stale_twin" in self.broken:
+            # HARNESS (RHOSSAK A3 LIVE 2026-10-20): an old companion bound the pre-Prepatcher copy of the settings type: its
+            # writes read back but the live code never sees them.
+            twin = self.__dict__.setdefault("twin", dict(self.settings))
+            if action == "set":
+                twin[field] = str(value)
+            return {"success": True, "value": twin[field],
+                    "typeIdentity": {"resolvedVia": "AppDomain", "copiesInAppDomain": 2, "assembly": "RimMandrake.Cauldron"}}
         if action == "set":
             self.settings[field] = str(value)
-        return {"success": True, "value": self.settings[field]}
+        return {"success": True, "value": self.settings[field],
+                "typeIdentity": {"resolvedVia": "GenTypes", "copiesInAppDomain": 2, "assembly": "RimMandrake.Cauldron"}}
 
     def t_map_info(self, **k):
         # map_is_cauldron: the real RM_Cauldron site (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES, live 2026-10-16)
@@ -595,7 +635,8 @@ class Fake(object):
         pid = "P%d" % self.n
         if "kind_missing" in self.broken and kindDef == V.ESKITH:
             return {"success": True, "pawns": [{"id": pid}]}          # reported, never actually there
-        self.pawns[pid] = dict(id=pid, kind=kindDef, x=x, z=z, faction=faction, dead=False, hediffs=[], born=self.ticks)
+        self.pawns[pid] = dict(id=pid, kind=kindDef, x=x, z=z, faction=faction, dead=False, hediffs=[], born=self.ticks,
+                               chain=self.chain)
         return {"success": True, "pawns": [{"id": pid}]}
 
     def t_pawn_force_incapacitate(self, pawn=None, action="kill", **k):
@@ -611,6 +652,7 @@ class Fake(object):
         rows = []
         for p in self.pawns.values():
             if ("rhossak_wanders_off" in self.broken and p["kind"] == V.RHOSSAK and not p.get("off")
+                    and p.get("chain") == "rhossak"            # the bound ones; the grove pad's are penned or asleep
                     and self.ticks - p.get("born", 0) > 3000):
                 p["x"], p["off"] = p["x"] + 40, True           # untethered: it walks away from its tree
             if rr and not inrect(p["x"], p["z"], rr):
@@ -622,8 +664,23 @@ class Fake(object):
             rows.append(row)
         return {"success": True, "pawns": rows}
 
-    def t_pawn_need(self, **k):
+    def t_pawn_need(self, pawn=None, action=None, need=None, level=0.5, **k):
+        p = self.pawns.get(pawn)
+        if p is not None and need == "Rest" and float(level) < 0.2:
+            p["asleep_until"] = self.ticks + 5000         # an emptied Rest need: it lies down where it stands
         return {"success": True}
+
+    def t_comp_read(self, thing=None, comp=None, members=None, **k):
+        p = self.pawns.get(thing)
+        if p is None:
+            return {"success": False, "message": "No thing matched"}
+        if "RhossakGrove" in (comp or ""):
+            bound = self.on("rhossakBindEnabled", "bind_ignores_toggle") and self.of(V.THORN)
+            return {"success": True, "values": {"boundTree": "RM_TwistingThornwood1" if bound else "null"}}
+        if "Spawner" in (comp or "") and p["kind"] == V.GALLED:
+            due = p.setdefault("meat_next", p.get("born", 0) + V.GALL_TICKS)
+            return {"success": True, "values": {"ticksUntilSpawn": str(due - self.ticks)}}
+        return {"success": False, "message": "No comp matches"}
 
     def t_set_draft(self, **k):
         return {"success": True}
@@ -681,6 +738,8 @@ class Fake(object):
         if defName == "Fire":
             rows = [{"id": "F%d" % i, "x": f[0], "z": f[1]} for i, f in enumerate(self.fires)
                     if not rr or inrect(f[0], f[1], rr)]
+        elif defName is None and k.get("group") == "Plant":
+            rows = [t for t in self.things.values() if t.get("plant") and (not rr or inrect(t["x"], t["z"], rr))]
         else:
             rows = [t for t in self.of(defName) if not rr or inrect(t["x"], t["z"], rr)]
         return {"success": True, "scanned": 100, "countMatched": len(rows), "things": [dict(t) for t in rows[:limit]]}
@@ -702,7 +761,7 @@ class Fake(object):
                 continue
             for cx in range(n[0], n[0] + (n[2] if len(n) > 2 else 1)):
                 for cz in range(n[1], n[1] + (n[3] if len(n) > 3 else 1)):
-                    self.new(d, cx, cz, growth=growth, stackCount=1)
+                    self.new(d, cx, cz, growth=growth, stackCount=1, plant=True)
         return {"success": True}
 
     def t_destroy_batch(self, rects="", categories="All", **k):
@@ -874,6 +933,9 @@ BREAKS = {
     "rhossak_no_bind": "rhossak.rhossak_binds_to_thornwood",
     "rhossak_wanders_off": "rhossak.rhossak_stays_by_its_tree",
     "bind_ignores_toggle": "rhossak.rhossak_bind_off_unbinds",
+    "rhossak_no_sprout": "grove.rhossak_sprouts_while_asleep",
+    "rhossak_never_roots": "grove.three_rhossak_root_a_grove",
+    "galls_no_meat": "grove.galled_rhossak_drops_meat",
     "mapgen_no_rig": "ruins.ruin_rig_at_mapgen",
     "mapgen_undressed": "ruins.ruin_site_dressed_at_mapgen",
     "mapgen_tanks_empty": "ruins.ruin_site_dressed_at_mapgen",
@@ -1039,6 +1101,14 @@ def main():
         got = res.get("bloom.bloom_spares_roofed", ("?",))[0]
         if reds or got != "UNMEASURED":
             bad.append("site break %s: expected bloom_spares_roofed UNMEASURED and no red, got %s / %s" % (brk, got, reds))
+    # HARNESS (RHOSSAK A3, LIVE 2026-10-20): the bridge wrote a stale pre-Prepatcher twin of the settings type -> the
+    # bind-off row cannot ask: UNMEASURED, never a FAIL against the mod (the old companion's two red runs).
+    res = run(["stale_twin"])
+    got = res.get("rhossak.rhossak_bind_off_unbinds", ("?",))[0]
+    reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH") and k.startswith("rhossak."))
+    if reds or got != "UNMEASURED":
+        bad.append("harness break stale_twin: expected rhossak_bind_off_unbinds UNMEASURED and no rhossak red, got %s / %s"
+                   % (got, reds))
     # SITE: the Utinni layer is not on the tier -> the shrine row cannot ask: UNMEASURED, never red.
     res = run(["no_utinni"])
     reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))

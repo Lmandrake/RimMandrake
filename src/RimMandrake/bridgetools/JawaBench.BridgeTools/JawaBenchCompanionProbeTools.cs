@@ -245,9 +245,8 @@ namespace JawaBench.BridgeTools
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
-                Type ty = AppDomain.CurrentDomain.GetAssemblies()
-                    .Select(a => { try { return a.GetType(type, false); } catch { return null; } })
-                    .FirstOrDefault(x => x != null);
+                // the LIVE copy, never a pre-Prepatcher twin (see ResolveLiveType, RHOSSAK A3 2026-10-20)
+                Type ty = ResolveLiveType(type, out _, out _);
                 if (ty == null) return Fail("Type not found: " + type);
                 string[] raw = string.IsNullOrEmpty(args) ? new string[0] : args.Split('|');
                 var cands = ty.GetMethods(BindingFlags.Public | BindingFlags.Static)

@@ -31,9 +31,7 @@ namespace JawaBench.BridgeTools
     public sealed partial class JawaBenchTerrainTools
     {
         private static Type CathedralAttitudeComponentType() =>
-            AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => { try { return a.GetTypes(); } catch { return Array.Empty<Type>(); } })
-                .FirstOrDefault(t => t.FullName == "RimMandrake.RustCathedral.Hum.RM_MapComponent_BiomeAttitude");
+            ResolveLiveType("RimMandrake.RustCathedral.Hum.RM_MapComponent_BiomeAttitude", out _, out _);   // live copy, never a pre-Prepatcher twin
 
         [Tool(
             "jawa/cathedral_attitude_set_stage",
