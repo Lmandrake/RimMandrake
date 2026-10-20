@@ -2683,8 +2683,8 @@ def rhossak_chain(t):
         # 600 real ticks. NOT the mod: the deployed DLL's IL (ilprobe) is `ldsfld rhossakBindEnabled; brtrue; ldnull; ret`, so
         # the pane can only say "Bound" while the comp sees True. The bridge wrote a DIFFERENT copy of the static: Prepatcher
         # (VEF/BigAndSmall/yayoAni/CombatAI [PrepatcherField]s) reloads every patched assembly and its dependants, leaving
-        # the pre-patch originals in the AppDomain, and jawa/mod_settings_field took the first FullName match there. HARNESS.
-        # Fixed in JawaBench (ResolveLiveType: GenTypes first, as the def loader resolved the comp); every reply now carries
+        # the pre-patch originals in the AppDomain, and jawa/mod_settings_field took the first FullName match there. Theory:
+        # HARNESS (disproved 2026-10-20b, see below: the fix is live and the row still fails). Changed in JawaBench (ResolveLiveType: GenTypes first, as the def loader resolved the comp); every reply now carries
         # typeIdentity {resolvedVia, copiesInAppDomain}. False theories ruled out on the way: a stale DLL (md5 = repo,
         # srchash = source), a cached inspect string (jawa/inspect_string calls GetInspectString direct, nothing in the list
         # patches it), the static flipping back (read back False during the wait), a second "Bound to" source (none in src
@@ -2700,6 +2700,14 @@ def rhossak_chain(t):
                             and not str(ident.get("resolvedVia") or "").startswith("GenTypes")):
                         _unmeasured(t, "HARNESS: the bridge wrote one of %s loaded copies of the settings type, resolved via %s, "
                                        "not the copy the comp runs" % (ident.get("copiesInAppDomain"), ident.get("resolvedVia")))
+                    # LIVE 2026-10-20b (374 list, Transient/live_testing_2026-10-20b): the ResolveLiveType fix is live
+                    # (typeIdentity GenTypes, copiesInAppDomain 1) and the row STILL FAILS, so the Prepatcher-twin theory
+                    # above does not explain it. Split probes: a rhossak spawned with the setting already off shows no
+                    # bind line (the off path works for it); a rhossak bound while on, then switched off, reads comp
+                    # boundTree null yet its GetInspectString keeps "Bound to twisting thornwood" after +3000 ticks and
+                    # 4 reads (rhossak_a3_probe3.txt); once (probe2) the line was gone at +2800. Vanilla
+                    # InspectStringPartsFromComps has no cache; Harmony on Pawn/ThingWithComps.GetInspectString is
+                    # postfixes only. Mechanism UNRESOLVED.
                     t.wait_ticks(600)
                     line = _rhossak_bind_line(t, ids[RHOSSAK])
                     if line is not None:
