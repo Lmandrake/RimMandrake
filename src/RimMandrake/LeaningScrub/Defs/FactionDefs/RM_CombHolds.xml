@@ -22,10 +22,20 @@
   faction icon is the vanilla town icon, interim; the camp-kit art round is in
   the sprint).
 
-  World presence: the planet is frozen and shipped (CLAUDE.md, worldgen ruling),
-  so this faction exists only in a world made with it on the list. It is added
-  to the default list (startingCountAtWorldCreation 1) for the one-time
-  repaint; camps on a world without it are simply skipped.
+  BANNED 2026-10-20. Owner: "I notice in factions there are Tallmere Combs and
+  Sacrileg Hunters however. We don't want those... same with the Space
+  Exchange." ("Tallmere Combs" is this faction's generated name.) The def is
+  kept ONLY as a tombstone: it is loadID 9 in every ASHKARR_DEV_* save, and a
+  save whose faction has no def loses it on load ("Some factions were null
+  after loading") with dangling references in every other faction's relations.
+  So it stays loadable but banished: hidden (off the Factions tab, comms, quest
+  pickers, trader/visitor arrivals, no leader expected, goodwill frozen),
+  raidsForbidden (hidden alone does not stop enemy raids), off the Configure
+  Factions page, never generated. Registry and checker:
+  src/RimMandrake/Utils/factions/banned_factions.json, banned_factions.py.
+  Delete this def (and its kinds and namers) once no kept save holds it - after
+  the world re-make - see design/RimMandrake/factions_unwanted_and_lingering_2026-10-20.md.
+  The Scrub's farmer camps now belong to OutlanderCivil (RM_ScrubInjections_GenStep.xml).
   ============================================================================
 -->
 <Defs>
@@ -42,8 +52,14 @@
     <basicMemberKind>RM_Comber</basicMemberKind>
     <naturalEnemy>false</naturalEnemy>
     <permanentEnemy>false</permanentEnemy>
-    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
-    <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
+    <!-- banish (banned_factions.json "banish"; checked by selftest_banned_factions.py) -->
+    <hidden>true</hidden>
+    <raidsForbidden>true</raidsForbidden>
+    <canGenerateQuestSites>false</canGenerateQuestSites>
+    <startingCountAtWorldCreation>0</startingCountAtWorldCreation>
+    <maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation>
+    <requiredCountAtGameStart>0</requiredCountAtGameStart>
+    <displayInFactionSelection>false</displayInFactionSelection>
     <configurationListOrderPriority>15</configurationListOrderPriority>
     <colorSpectrum>
       <li>(0.55, 0.62, 0.66)</li>

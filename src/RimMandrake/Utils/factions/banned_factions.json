@@ -1,0 +1,74 @@
+{
+  "_doc": "Banned-faction registry: the FactionDefs the owner does not want in the game. Data, read by src/RimMandrake/Utils/banned_factions.py (check-repo / check-save / check-dump) and its selftest. Design and the engine mechanisms behind every field: design/RimMandrake/factions_unwanted_and_lingering_2026-10-20.md. To ban another faction: add an entry here, then make the def carry the 'banish' field values (our own def: edit it; anyone else's: add a guarded block to the patch file named below), then run python3 src/RimMandrake/Utils/selftest_banned_factions.py.",
+  "patch_file": "src/RimUtinni/UtinniPatches/Patches/FactionSlate/BannedFactions.xml",
+  "banish": {
+    "_doc": "What every banned def must say once loaded. hidden: off the Factions tab, comms console, AllFactionsVisible quest pickers, neutral arrivals (traders, visitors, travelers), worldgen settlement placement, and ShouldHaveLeader (no null-leader ErrorOnce); HasGoodwill false, so goodwill can no longer move it to hostile. raidsForbidden: out of PawnGroupMakerUtility.UsableFactions, the enemy-raid pool, which hidden does NOT block (IncidentWorker_RaidEnemy passes allowHidden:true). startingCountAtWorldCreation 0 + maxConfigurableAtWorldCreation 0: not on the Configure Factions page at all (deliberate here, unlike OnlyOurFactions.xml, which must keep rows). requiredCountAtGameStart 0: not generated on the no-page worldgen path, and VEF faction discovery skips a hidden def whose required count is 0. canGenerateQuestSites false: QuestNode_Root_DistressCall and QuestNode_Root_WorkSite walk AllFactionsListForReading with no hidden or defeated test, and this flag is their only gate.",
+    "hidden": "true",
+    "raidsForbidden": "true",
+    "canGenerateQuestSites": "false",
+    "startingCountAtWorldCreation": "0",
+    "maxConfigurableAtWorldCreation": "0",
+    "requiredCountAtGameStart": "0"
+  },
+  "factions": [
+    {
+      "defName": "RM_Faction_CombHolds",
+      "seen_as": "Tallmere Combs (generated name); label 'comb holds'",
+      "supplier": "ours: RimMandrake Baroque Biomes (Leaning Scrub), src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml",
+      "own_def_file": "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml",
+      "disposition": "banish",
+      "why_kept_loadable": "loadID 9 in all four ASHKARR_DEV_* saves (2026-10-20): deleting the def before those saves are re-made drops the faction on load with 'Some factions were null after loading' and leaves dangling references from every other faction's relations.",
+      "delete_def_when": "no save we keep holds it (check-save reports ABSENT on every keeper), i.e. after the world re-make",
+      "owner": "2026-10-20: \"I notice in factions there are Tallmere Combs and Sacrileg Hunters however. We don't want those... same with the Space Exchange.\""
+    },
+    {
+      "defName": "TradersGuild",
+      "seen_as": "Space Exchange (generated name, NamerFactionTradersGuild)",
+      "supplier": "Odyssey DLC (ludeon.rimworld.odyssey), Data/Odyssey/Defs/FactionDefs/Factions_Misc.xml",
+      "disposition": "banish",
+      "why_kept_loadable": "Every DLC is a prerequisite, and BackCompatibility.FactionManagerPostLoadInit re-creates a TradersGuild faction on EVERY load when none exists, whatever the def says. Removing it is impossible; banishing the instance in place is the only stable state.",
+      "extra": "Core's four orbital trader kinds name it as their faction (Orbital_BulkGoods, Orbital_CombatSupplier, Orbital_Exotic, Orbital_PirateMerchant); the patch removes that <faction> so trade ships arrive factionless, as before Odyssey.",
+      "owner": "2026-10-20: \"I notice in factions there are Tallmere Combs and Sacrileg Hunters however. We don't want those... same with the Space Exchange.\""
+    },
+    {
+      "defName": "CASacrilegHunters",
+      "seen_as": "Sacrileg Hunters",
+      "supplier": "Caravan Adventures (iforgotmysocks.caravanadventures, Workshop 2558957509), cut in Retirement Wave 4",
+      "disposition": "supplier_cut",
+      "why_kept_loadable": "not in any ASHKARR_DEV_* save, so the cut leaves no orphan. A guarded banish block stays in the patch in case the mod is ever brought back; that mod's own C# can still create the faction for its story content, so bringing it back needs a fresh look.",
+      "owner": "2026-10-20: \"I notice in factions there are Tallmere Combs and Sacrileg Hunters however. We don't want those... same with the Space Exchange.\""
+    }
+  ],
+  "orbital_traders_unfactioned": [
+    "Orbital_BulkGoods",
+    "Orbital_CombatSupplier",
+    "Orbital_Exotic",
+    "Orbital_PirateMerchant"
+  ],
+  "reference_allowlist": [
+    {
+      "path": "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml",
+      "why": "the banned def's own tombstone file"
+    },
+    {
+      "path": "src/RimUtinni/UtinniPatches/Patches/FactionSlate/BannedFactions.xml",
+      "why": "the banish patch itself"
+    },
+    {
+      "path": "src/RimUtinni/UtinniPatches/Patches/FactionSlate/OnlyOurFactions.xml",
+      "why": "zeroes startingCountAtWorldCreation on TradersGuild and CASacrilegHunters; consistent with the ban"
+    },
+    {
+      "path": "src/RimUtinni/UtinniPatches/Patches/StatNorm_CaravanAdventures_BossStatsNeutral.xml",
+      "why": "guarded patch on the cut Caravan Adventures; names no faction def today, listed in case it does"
+    },
+    {
+      "path": "src/RimUtinni/UtinniPatches/Patches/GalacticEmpire.xml",
+      "why": "Empire.permanentEnemyToEveryoneExcept lists TradersGuild, so the Empire is not at war with it; harmless for a banished faction, and dropping it would make the Empire hostile to a hidden faction for nothing"
+    },
+    {
+      "path": "src/RimUtinni/ResearchRetag/Defs/ResearchProjectDefs/RUT_Ported_ResearchTrio.xml",
+      "why": "heldByFactionCategoryTags 'TradersGuild' is the Odyssey CATEGORY tag, which happens to equal the defName; every such project also lists Empire (and HuttCartel), measured in the 2026-10-20 dump, so no techprint loses its last holder"
+    }
+  ]
+}

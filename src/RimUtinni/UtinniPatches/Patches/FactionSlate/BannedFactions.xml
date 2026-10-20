@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BannedFactions.xml - the factions the owner does not want, banished at the def.
+     Owner, 2026-10-20: "I notice in factions there are Tallmere Combs and Sacrileg Hunters however. We don't want
+     those... same with the Space Exchange."
+     Registry (data, the source of truth): src/RimMandrake/Utils/factions/banned_factions.json. Checker and selftest:
+     src/RimMandrake/Utils/banned_factions.py, selftest_banned_factions.py. Reasoning, with the 1.6 source behind each
+     field: design/RimMandrake/factions_unwanted_and_lingering_2026-10-20.md.
+
+     Only DONOR and DLC defs are patched here. Our own banned def (RM_Faction_CombHolds) carries the same values in
+     its own file. Each field is set with Conditional replace-or-add, because PatchOperations run before inheritance
+     and a field that lives on the abstract parent is absent from the child at patch time (an Add on the child then
+     wins at inheritance). Each def's block is wrapped in an OUTER Conditional on the def existing, with no nomatch:
+     a def whose mod is not loaded (CASacrilegHunters, Caravan Adventures cut in Wave 4) is a silent no-op.
+
+     What the fields do (1.6 source, read 2026-10-20):
+       hidden                  Faction.Hidden = hidden ?? def.hidden. Off the Factions tab (FactionUIUtility), the comms
+                               console and AllFactionsVisible quest pickers; IncidentWorker_NeutralGroup refuses it
+                               (traders, visitors, travelers); no worldgen or new-faction settlement; ShouldHaveLeader
+                               false; HasGoodwill false, so goodwill can never turn it hostile.
+       raidsForbidden          drops it from PawnGroupMakerUtility.UsableFactions, the enemy-raid pool. hidden does NOT
+                               do this: IncidentWorker_RaidEnemy.TryResolveRaidFaction passes allowHidden:true.
+       canGenerateQuestSites   the only gate in QuestNode_Root_DistressCall / _WorkSite, which walk every faction.
+       startingCount 0, maxConfigurable 0
+                               not on the Configure Factions page at all (FactionGenerator.ConfigurableFactions needs
+                               maxConfigurable > 0). Deliberate for a BANNED def; OnlyOurFactions.xml must never do this
+                               to a def the owner may want back.
+       requiredCountAtGameStart 0
+                               no-page worldgen path; VEF faction discovery skips hidden defs with a required count 0.
+     What a def patch can NOT do: remove a faction already in a save (the engine removes only temporary factions), or
+     stop BackCompatibility.FactionManagerPostLoadInit re-creating TradersGuild on every load while Odyssey is active.
+     The save side is item UNWANTED_FACTIONS_SILENCE_NOT_DELETED.
+-->
+<Patch>
+  <!-- TradersGuild -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="TradersGuild"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="TradersGuild"]/hidden</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]/hidden</xpath>
+            <value><hidden>true</hidden></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]</xpath>
+            <value><hidden>true</hidden></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="TradersGuild"]/raidsForbidden</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]/raidsForbidden</xpath>
+            <value><raidsForbidden>true</raidsForbidden></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]</xpath>
+            <value><raidsForbidden>true</raidsForbidden></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="TradersGuild"]/canGenerateQuestSites</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]/canGenerateQuestSites</xpath>
+            <value><canGenerateQuestSites>false</canGenerateQuestSites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]</xpath>
+            <value><canGenerateQuestSites>false</canGenerateQuestSites></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="TradersGuild"]/startingCountAtWorldCreation</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]/startingCountAtWorldCreation</xpath>
+            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]</xpath>
+            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="TradersGuild"]/maxConfigurableAtWorldCreation</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]/maxConfigurableAtWorldCreation</xpath>
+            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]</xpath>
+            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="TradersGuild"]/requiredCountAtGameStart</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]/requiredCountAtGameStart</xpath>
+            <value><requiredCountAtGameStart>0</requiredCountAtGameStart></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="TradersGuild"]</xpath>
+            <value><requiredCountAtGameStart>0</requiredCountAtGameStart></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <!-- CASacrilegHunters -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/hidden</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/hidden</xpath>
+            <value><hidden>true</hidden></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]</xpath>
+            <value><hidden>true</hidden></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/raidsForbidden</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/raidsForbidden</xpath>
+            <value><raidsForbidden>true</raidsForbidden></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]</xpath>
+            <value><raidsForbidden>true</raidsForbidden></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/canGenerateQuestSites</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/canGenerateQuestSites</xpath>
+            <value><canGenerateQuestSites>false</canGenerateQuestSites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]</xpath>
+            <value><canGenerateQuestSites>false</canGenerateQuestSites></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/startingCountAtWorldCreation</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/startingCountAtWorldCreation</xpath>
+            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]</xpath>
+            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/maxConfigurableAtWorldCreation</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/maxConfigurableAtWorldCreation</xpath>
+            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]</xpath>
+            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/requiredCountAtGameStart</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]/requiredCountAtGameStart</xpath>
+            <value><requiredCountAtGameStart>0</requiredCountAtGameStart></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]</xpath>
+            <value><requiredCountAtGameStart>0</requiredCountAtGameStart></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <!-- Core's four orbital trader kinds name TradersGuild as their faction (MayRequire Odyssey), so with Odyssey every
+       bulk-goods, combat-supplier, exotic and pirate-merchant ship arrives "from the Space Exchange", and
+       IncidentWorker_OrbitalTraderArrival.GetFaction picks the instance with no hidden or defeated test. Removing the
+       element gives the pre-Odyssey behaviour: a factionless ship (CanSpawn returns true when trader.faction is null),
+       and StockGenerator_Techprints with a null faction offers any techprint, so no techprint source is lost. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TraderKindDef[defName="Orbital_BulkGoods"]/faction</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/TraderKindDef[defName="Orbital_BulkGoods"]/faction</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TraderKindDef[defName="Orbital_CombatSupplier"]/faction</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/TraderKindDef[defName="Orbital_CombatSupplier"]/faction</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TraderKindDef[defName="Orbital_Exotic"]/faction</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/TraderKindDef[defName="Orbital_Exotic"]/faction</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TraderKindDef[defName="Orbital_PirateMerchant"]/faction</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/TraderKindDef[defName="Orbital_PirateMerchant"]/faction</xpath>
+    </match>
+  </Operation>
+</Patch>
