@@ -13,12 +13,8 @@
          JAWA_PATCHES_SPLIT_1, and never named several mods this tier's own
          patches actually touch. Every entry below is cited against a file
          that is actually in this mod's Patches/ folder. -->
-    <li>btd.remix.gravshipblueprints</li>                   <!-- BTDGravshipQuest_GrammarFix.xml -->
     <li>IronScruff.PrimordialGeysers</li>                   <!-- BiomeAnimalDanglingRefs_Fix.xml - patches nodes ITS OWN patch creates; must load after -->
-    <li>det.buzzers</li>                                    <!-- BuzzerApostrophe_Fix.xml -->
-    <li>mlie.miningcodrillturret</li>                       <!-- DrillTurret_ShootingJob.xml -->
     <li>Nals.FacialAnimation</li>                           <!-- HeadSetForFA_Revive.xml - supplies the FaceAdjustmentDef TYPE -->
-    <li>DanZinagri.FacialAnimationCompatabilityProject</li> <!-- HeadSetForFA_Revive.xml - creates BS_InsectoidHumanoid_FourArmed_FaceAdjustment; must load after -->
     <li>ab.hoffa</li>                                       <!-- HeadSetForFA_Revive.xml - the mod being revived (not in the current active list; the patch no-ops harmlessly until it is) -->
     <li>Dark.Signs</li>                                     <!-- SignBillboard etc. (9 defs)  ThirdPartySignConfigErrors_Fix.xml -->
 
@@ -26,7 +22,6 @@
          the fix-target donor of a fix mod folded into this Patches/ tree.
          A fold that loses its donor's loadAfter silently no-ops. -->
     <li>vanillaexpanded.gravship</li>                       <!-- Source/GravshipAstronautFix textures - fix target -->
-    <li>vanillaracesexpanded.phytokin</li>                  <!-- Source/PhytokinBarkHeadFix textures - fix target -->
     <li>PeteTimesSix.ResearchReinvented</li>                <!-- Source/ResearchKitEastFix textures - fix target -->
     <li>aw.researchreinvented.retextured</li>               <!-- Source/ResearchKitEastFix textures - fix target's own retexture add-on -->
     <li>vanillaracesexpanded.saurid</li>                    <!-- Source/SauridFrillFix textures - fix target -->

@@ -33,6 +33,5 @@ Ships a deterministic templated-letter baseline per rule — literal English, fa
     <li>brrainz.harmony</li>
     <li>Ludeon.RimWorld</li>
     <li>mandrake.rm.ninefold</li>
-    <li>mlie.factionraidcooldown</li>
   </loadAfter>
 </ModMetaData>

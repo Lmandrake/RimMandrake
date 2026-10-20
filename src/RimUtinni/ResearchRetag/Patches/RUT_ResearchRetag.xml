@@ -213,15 +213,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="AM_MechanoidBeamcasting"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="AM_Cryptoharmonization"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="AM_MechanoidBeamcasting"]/prerequisites</xpath>
-          <value><prerequisites><li>AM_Cryptoharmonization</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="AM_MechanoidBeamcasting"]/prerequisites</xpath>
+            <value><prerequisites><li>AM_Cryptoharmonization</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="AM_MechanoidBeamcasting"]</xpath>
+            <value><prerequisites><li>AM_Cryptoharmonization</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="AM_MechanoidBeamcasting"]</xpath>
-          <value><prerequisites><li>AM_Cryptoharmonization</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -253,15 +260,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="AM_QuantumPulseMessaging"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="AM_Cryptoharmonization"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="AM_QuantumPulseMessaging"]/prerequisites</xpath>
-          <value><prerequisites><li>AM_Cryptoharmonization</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="AM_QuantumPulseMessaging"]/prerequisites</xpath>
+            <value><prerequisites><li>AM_Cryptoharmonization</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="AM_QuantumPulseMessaging"]</xpath>
+            <value><prerequisites><li>AM_Cryptoharmonization</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="AM_QuantumPulseMessaging"]</xpath>
-          <value><prerequisites><li>AM_Cryptoharmonization</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -566,15 +580,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="Biohacking"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="FT_Concrete"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="Biohacking"]/prerequisites</xpath>
-          <value><prerequisites><li>FT_Concrete</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="Biohacking"]/prerequisites</xpath>
+            <value><prerequisites><li>FT_Concrete</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="Biohacking"]</xpath>
+            <value><prerequisites><li>FT_Concrete</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="Biohacking"]</xpath>
-          <value><prerequisites><li>FT_Concrete</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -595,15 +616,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="Bionics"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="ScuttlebugsBiology"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="Bionics"]/prerequisites</xpath>
-          <value><prerequisites><li>ScuttlebugsBiology</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="Bionics"]/prerequisites</xpath>
+            <value><prerequisites><li>ScuttlebugsBiology</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="Bionics"]</xpath>
+            <value><prerequisites><li>ScuttlebugsBiology</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="Bionics"]</xpath>
-          <value><prerequisites><li>ScuttlebugsBiology</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -700,15 +728,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="BoneRefine"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]/prerequisites</xpath>
-          <value><prerequisites><li>BoneRefine</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]/prerequisites</xpath>
+            <value><prerequisites><li>BoneRefine</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]</xpath>
+            <value><prerequisites><li>BoneRefine</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="BoneRefineII"]</xpath>
-          <value><prerequisites><li>BoneRefine</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -747,15 +782,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="CGT_WeaponizedGasShells"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="CGT_WeaponizedGasIEDs"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="CGT_WeaponizedGasShells"]/prerequisites</xpath>
-          <value><prerequisites><li>CGT_WeaponizedGasIEDs</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="CGT_WeaponizedGasShells"]/prerequisites</xpath>
+            <value><prerequisites><li>CGT_WeaponizedGasIEDs</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="CGT_WeaponizedGasShells"]</xpath>
+            <value><prerequisites><li>CGT_WeaponizedGasIEDs</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="CGT_WeaponizedGasShells"]</xpath>
-          <value><prerequisites><li>CGT_WeaponizedGasIEDs</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -794,15 +836,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="ChargedShot"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_droidblasters"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="ChargedShot"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_droidblasters</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="ChargedShot"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_droidblasters</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="ChargedShot"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_droidblasters</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="ChargedShot"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_droidblasters</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -935,15 +984,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="DeepDrilling"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="FT_Chemistry"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="DeepDrilling"]/prerequisites</xpath>
-          <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="DeepDrilling"]/prerequisites</xpath>
+            <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="DeepDrilling"]</xpath>
+            <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="DeepDrilling"]</xpath>
-          <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -1406,15 +1462,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_AdvImplants"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="KOTOR_Research_Spice"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_AdvImplants"]/prerequisites</xpath>
-          <value><prerequisites><li>KOTOR_Research_Spice</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_AdvImplants"]/prerequisites</xpath>
+            <value><prerequisites><li>KOTOR_Research_Spice</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_AdvImplants"]</xpath>
+            <value><prerequisites><li>KOTOR_Research_Spice</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_AdvImplants"]</xpath>
-          <value><prerequisites><li>KOTOR_Research_Spice</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -1540,15 +1603,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_Durasteel"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="FT_Chemistry"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_Durasteel"]/prerequisites</xpath>
-          <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_Durasteel"]/prerequisites</xpath>
+            <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_Durasteel"]</xpath>
+            <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_Durasteel"]</xpath>
-          <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -1558,15 +1628,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_FuelProcessing"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="BreadMoAM_AncientMiningTechniques"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_FuelProcessing"]/prerequisites</xpath>
-          <value><prerequisites><li>BreadMoAM_AncientMiningTechniques</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_FuelProcessing"]/prerequisites</xpath>
+            <value><prerequisites><li>BreadMoAM_AncientMiningTechniques</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_FuelProcessing"]</xpath>
+            <value><prerequisites><li>BreadMoAM_AncientMiningTechniques</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_FuelProcessing"]</xpath>
-          <value><prerequisites><li>BreadMoAM_AncientMiningTechniques</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -1804,15 +1881,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_cloaking"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_bluntmelee"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_cloaking"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_bluntmelee</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_cloaking"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_bluntmelee</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_cloaking"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_bluntmelee</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_cloaking"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_bluntmelee</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -1822,15 +1906,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_plasma"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="OuterRim_MediumInstallations"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_plasma"]/prerequisites</xpath>
-          <value><prerequisites><li>OuterRim_MediumInstallations</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_plasma"]/prerequisites</xpath>
+            <value><prerequisites><li>OuterRim_MediumInstallations</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_plasma"]</xpath>
+            <value><prerequisites><li>OuterRim_MediumInstallations</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_plasma"]</xpath>
-          <value><prerequisites><li>OuterRim_MediumInstallations</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -1851,15 +1942,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_plasmaApplications"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_plasmaApplications"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_hvyblasters</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_plasmaApplications"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_hvyblasters</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_plasmaApplications"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_hvyblasters</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="KOTOR_Research_plasmaApplications"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_hvyblasters</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -1976,15 +2074,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="MM_Research_AncientShipDesigns"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="VGE_GravshipLiving"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="MM_Research_AncientShipDesigns"]/prerequisites</xpath>
-          <value><prerequisites><li>VGE_GravshipLiving</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="MM_Research_AncientShipDesigns"]/prerequisites</xpath>
+            <value><prerequisites><li>VGE_GravshipLiving</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="MM_Research_AncientShipDesigns"]</xpath>
+            <value><prerequisites><li>VGE_GravshipLiving</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="MM_Research_AncientShipDesigns"]</xpath>
-          <value><prerequisites><li>VGE_GravshipLiving</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2048,15 +2153,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="MoisturePump"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="VFE_Res_FarmingTechniques"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="MoisturePump"]/prerequisites</xpath>
-          <value><prerequisites><li>VFE_Res_FarmingTechniques</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="MoisturePump"]/prerequisites</xpath>
+            <value><prerequisites><li>VFE_Res_FarmingTechniques</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="MoisturePump"]</xpath>
+            <value><prerequisites><li>VFE_Res_FarmingTechniques</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="MoisturePump"]</xpath>
-          <value><prerequisites><li>VFE_Res_FarmingTechniques</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2162,15 +2274,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_Armoursmithing"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_Armoursmithing"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_Armoursmithing"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_Armoursmithing"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_Armoursmithing"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2220,15 +2339,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_AstromechDroids"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_AstromechDroids"]/prerequisites</xpath>
-          <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_AstromechDroids"]/prerequisites</xpath>
+            <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_AstromechDroids"]</xpath>
+            <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_AstromechDroids"]</xpath>
-          <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2336,15 +2462,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_DroidEngineering"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="OuterRim_AstromechDroids"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_DroidEngineering"]/prerequisites</xpath>
-          <value><prerequisites><li>OuterRim_AstromechDroids</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_DroidEngineering"]/prerequisites</xpath>
+            <value><prerequisites><li>OuterRim_AstromechDroids</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_DroidEngineering"]</xpath>
+            <value><prerequisites><li>OuterRim_AstromechDroids</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_DroidEngineering"]</xpath>
-          <value><prerequisites><li>OuterRim_AstromechDroids</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2452,15 +2585,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_DroidWeaponSys"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_droidblasters"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_DroidWeaponSys"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_droidblasters</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_DroidWeaponSys"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_droidblasters</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_DroidWeaponSys"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_droidblasters</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_DroidWeaponSys"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_droidblasters</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2564,15 +2704,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_HeavyWeaponry"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_blasters"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_HeavyWeaponry"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_blasters</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_HeavyWeaponry"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_blasters</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_HeavyWeaponry"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_blasters</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_HeavyWeaponry"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_blasters</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2593,15 +2740,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_Jetpacks"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="OuterRim_TechBelts"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_Jetpacks"]/prerequisites</xpath>
-          <value><prerequisites><li>OuterRim_TechBelts</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_Jetpacks"]/prerequisites</xpath>
+            <value><prerequisites><li>OuterRim_TechBelts</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_Jetpacks"]</xpath>
+            <value><prerequisites><li>OuterRim_TechBelts</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_Jetpacks"]</xpath>
-          <value><prerequisites><li>OuterRim_TechBelts</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2734,15 +2888,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_MedicalDroids"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_MedicalDroids"]/prerequisites</xpath>
-          <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_MedicalDroids"]/prerequisites</xpath>
+            <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_MedicalDroids"]</xpath>
+            <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_MedicalDroids"]</xpath>
-          <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2834,15 +2995,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_ProtocolDroids"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_ProtocolDroids"]/prerequisites</xpath>
-          <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_ProtocolDroids"]/prerequisites</xpath>
+            <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_ProtocolDroids"]</xpath>
+            <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_ProtocolDroids"]</xpath>
-          <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2863,15 +3031,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_SecurityDroids"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="ABF_ResearchProject_Synstruct_Infrastructure"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_SecurityDroids"]/prerequisites</xpath>
-          <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_SecurityDroids"]/prerequisites</xpath>
+            <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_SecurityDroids"]</xpath>
+            <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_SecurityDroids"]</xpath>
-          <value><prerequisites><li>ABF_ResearchProject_Synstruct_Infrastructure</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2892,15 +3067,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_StimBelts"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_StimBelts"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_StimBelts"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_StimBelts"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_StimBelts"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -2950,15 +3132,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="OuterRim_Vambraces"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="OuterRim_Vambraces"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_Vambraces"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="OuterRim_Vambraces"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="OuterRim_Vambraces"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -3244,15 +3433,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="ResearchMobileMineralSonar"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="FT_Chemistry"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="ResearchMobileMineralSonar"]/prerequisites</xpath>
-          <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="ResearchMobileMineralSonar"]/prerequisites</xpath>
+            <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="ResearchMobileMineralSonar"]</xpath>
+            <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="ResearchMobileMineralSonar"]</xpath>
-          <value><prerequisites><li>FT_Chemistry</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -3784,15 +3980,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="SynthamideProduction"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="SynthreadProduction"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="SynthamideProduction"]/prerequisites</xpath>
-          <value><prerequisites><li>SynthreadProduction</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="SynthamideProduction"]/prerequisites</xpath>
+            <value><prerequisites><li>SynthreadProduction</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="SynthamideProduction"]</xpath>
+            <value><prerequisites><li>SynthreadProduction</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="SynthamideProduction"]</xpath>
-          <value><prerequisites><li>SynthreadProduction</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -3802,15 +4005,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="SynthyleneAdvComponents"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="SynthyleneComponents"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="SynthyleneAdvComponents"]/prerequisites</xpath>
-          <value><prerequisites><li>SynthyleneComponents</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="SynthyleneAdvComponents"]/prerequisites</xpath>
+            <value><prerequisites><li>SynthyleneComponents</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="SynthyleneAdvComponents"]</xpath>
+            <value><prerequisites><li>SynthyleneComponents</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="SynthyleneAdvComponents"]</xpath>
-          <value><prerequisites><li>SynthyleneComponents</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -3820,15 +4030,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="SynthyleneComponents"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="SynthyleneProduction"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="SynthyleneComponents"]/prerequisites</xpath>
-          <value><prerequisites><li>SynthyleneProduction</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="SynthyleneComponents"]/prerequisites</xpath>
+            <value><prerequisites><li>SynthyleneProduction</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="SynthyleneComponents"]</xpath>
+            <value><prerequisites><li>SynthyleneProduction</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="SynthyleneComponents"]</xpath>
-          <value><prerequisites><li>SynthyleneProduction</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -3856,15 +4073,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="TransportPod"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="FT_Concrete"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="TransportPod"]/prerequisites</xpath>
-          <value><prerequisites><li>FT_Concrete</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="TransportPod"]/prerequisites</xpath>
+            <value><prerequisites><li>FT_Concrete</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="TransportPod"]</xpath>
+            <value><prerequisites><li>FT_Concrete</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="TransportPod"]</xpath>
-          <value><prerequisites><li>FT_Concrete</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -3939,15 +4163,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VAE_MilitaryClothing"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="VAE_WorkAttire"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="VAE_MilitaryClothing"]/prerequisites</xpath>
-          <value><prerequisites><li>VAE_WorkAttire</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="VAE_MilitaryClothing"]/prerequisites</xpath>
+            <value><prerequisites><li>VAE_WorkAttire</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="VAE_MilitaryClothing"]</xpath>
+            <value><prerequisites><li>VAE_WorkAttire</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VAE_MilitaryClothing"]</xpath>
-          <value><prerequisites><li>VAE_WorkAttire</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5091,15 +5322,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VVE_AerialVehicles"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="VVE_BasicVehicles"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="VVE_AerialVehicles"]/prerequisites</xpath>
-          <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="VVE_AerialVehicles"]/prerequisites</xpath>
+            <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="VVE_AerialVehicles"]</xpath>
+            <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VVE_AerialVehicles"]</xpath>
-          <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5109,15 +5347,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VVE_CombatVehicles"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="VVE_BasicVehicles"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="VVE_CombatVehicles"]/prerequisites</xpath>
-          <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="VVE_CombatVehicles"]/prerequisites</xpath>
+            <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="VVE_CombatVehicles"]</xpath>
+            <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VVE_CombatVehicles"]</xpath>
-          <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5127,15 +5372,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VVE_ComplexVehicles"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="VVE_BasicVehicles"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="VVE_ComplexVehicles"]/prerequisites</xpath>
-          <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="VVE_ComplexVehicles"]/prerequisites</xpath>
+            <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="VVE_ComplexVehicles"]</xpath>
+            <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VVE_ComplexVehicles"]</xpath>
-          <value><prerequisites><li>VVE_BasicVehicles</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5192,15 +5444,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VitalsMonitor"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="Tinkering"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="VitalsMonitor"]/prerequisites</xpath>
-          <value><prerequisites><li>Tinkering</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="VitalsMonitor"]/prerequisites</xpath>
+            <value><prerequisites><li>Tinkering</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="VitalsMonitor"]</xpath>
+            <value><prerequisites><li>Tinkering</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VitalsMonitor"]</xpath>
-          <value><prerequisites><li>Tinkering</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5221,15 +5480,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_blasters"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_blasters"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_hvyblasters</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_blasters"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_hvyblasters</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_blasters"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_hvyblasters</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_blasters"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_hvyblasters</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5239,15 +5505,22 @@
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_bluntmelee"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_vibroweapons"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_bluntmelee"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_vibroweapons</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_bluntmelee"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_vibroweapons</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_bluntmelee"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_vibroweapons</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_bluntmelee"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_vibroweapons</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5268,15 +5541,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_czerka"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_czerka"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_czerka"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_czerka"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_czerka"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5429,15 +5709,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_droidshields"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_droidsimple"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_droidshields"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_droidsimple</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_droidshields"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_droidsimple</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_droidshields"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_droidsimple</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_droidshields"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_droidsimple</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5675,15 +5962,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_miniblasters"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_miniblasters</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_miniblasters</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_miniblasters</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_hvyblasters"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_miniblasters</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5751,15 +6045,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_mando"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="OuterRim_HeavyArmour"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_mando"]/prerequisites</xpath>
-          <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_mando"]/prerequisites</xpath>
+            <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_mando"]</xpath>
+            <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_mando"]</xpath>
-          <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5804,15 +6105,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_republic"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="guy762_ResearchKotOR_tusken"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_republic"]/prerequisites</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_republic"]/prerequisites</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_republic"]</xpath>
+            <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_republic"]</xpath>
-          <value><prerequisites><li>guy762_ResearchKotOR_tusken</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5833,15 +6141,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_sith"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="OuterRim_HeavyArmour"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_sith"]/prerequisites</xpath>
-          <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_sith"]/prerequisites</xpath>
+            <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_sith"]</xpath>
+            <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_sith"]</xpath>
-          <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
@@ -5944,15 +6259,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_wookiee"]/prerequisites</xpath>
-        <match Class="PatchOperationReplace">
+        <xpath>Defs[ResearchProjectDef[defName="OuterRim_HeavyArmour"]]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+        <li Class="PatchOperationConditional">
           <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_wookiee"]/prerequisites</xpath>
-          <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_wookiee"]/prerequisites</xpath>
+            <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_wookiee"]</xpath>
+            <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
+          </nomatch>
+        </li>
+          </operations>
         </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="guy762_ResearchKotOR_wookiee"]</xpath>
-          <value><prerequisites><li>OuterRim_HeavyArmour</li></prerequisites></value>
-        </nomatch>
       </li>
       </operations>
     </match>
