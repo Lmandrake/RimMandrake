@@ -42,16 +42,17 @@ My Little Planet (`oblitus.mylittleplanet`) WAS cut: planet coverage is baked in
 
 | faction (in the save) | FactionDef | supplied by | action |
 |---|---|---|---|
-| **Sacrileg Hunters** | `CASacrilegHunters` | **Caravan Adventures** (`iforgotmysocks.caravanadventures`, Workshop 2558957509) | **CUT** (whole mod; it is the mod's only FactionDef). Not in any `ASHKARR_DEV_*` save: no orphan. Its quests, sites and boss content go with it. Lighter alternative if he wants the mod back without the faction: keep it and patch `CASacrilegHunters` `requiredCountAtGameStart` 0 (our `FactionSlate/OnlyOurFactions.xml` already zeroes `startingCountAtWorldCreation`). |
-| **Tallmere Combs** | `RM_Faction_CombHolds` | **our own Leaning Scrub** biome (`src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml`, composed into Baroque Biomes `mandrake.rm.biomes`) | **NOT cut** (cutting the mod cuts Baroque Biomes). In all four dev saves (loadID 9). Owed: `COMB_EXCHANGE_FACTIONS_EXCISE_POLITELY`. |
-| **Space Exchange** | `TradersGuild` | **Odyssey DLC** (`ludeon.rimworld.odyssey`) | **NOT cut** (every DLC is a prerequisite). In `ASHKARR_DEV_START` only (loadID 23, with the hidden `Salvagers` 24); absent from FOUNDERS/LANDED/SHIP. Our patch zeroes `startingCountAtWorldCreation`, but `requiredCountAtGameStart` is 1, so starting the game added it. Owed in the same item. |
+| **Sacrileg Hunters** | `CASacrilegHunters` | **Caravan Adventures** (`iforgotmysocks.caravanadventures`, Workshop 2558957509) | **CUT** (whole mod; it is the mod's only FactionDef). Not in any `ASHKARR_DEV_*` save: no orphan. Its quests, sites and boss content go with it. If the mod ever comes back, `FactionSlate/BannedFactions.xml` already banishes the def (hidden, raidsForbidden, off the page, never generated); the mod's own story code may still create it, so a return needs a fresh look. Design: `design/RimMandrake/factions_unwanted_and_lingering_2026-10-20.md`. |
+| **Tallmere Combs** | `RM_Faction_CombHolds` | **our own Leaning Scrub** biome (`src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml`, composed into Baroque Biomes `mandrake.rm.biomes`) | **NOT cut** (cutting the mod cuts Baroque Biomes). In all four dev saves (loadID 9), with no settlement and no leader. Banished at its own def 2026-10-20 (hidden, raidsForbidden, off the page); the Scrub camps moved to `OutlanderCivil`. Owed: `UNWANTED_FACTIONS_SILENCE_NOT_DELETED` (save side), `COMB_HOLDS_DEF_RETIRE_AFTER_THE_REMAKE`. |
+| **Space Exchange** | `TradersGuild` | **Odyssey DLC** (`ludeon.rimworld.odyssey`) | **NOT cut** (every DLC is a prerequisite). In `ASHKARR_DEV_START` only (loadID 23, with the hidden `Salvagers` 24); absent from FOUNDERS/LANDED/SHIP. Our patch zeroes `startingCountAtWorldCreation`; the world was made through the page, where `requiredCountAtGameStart` is not read, so it did not come from worldgen. 1.6 `BackCompatibility.FactionManagerPostLoadInit` creates `TradersGuild` and `Salvagers` on EVERY load with Odyssey active when none exists, whatever the def says, so it cannot be removed, and the three saves without it gain it on their next load (source; UNMEASURED live). Banished at the def by `FactionSlate/BannedFactions.xml`; owed: `UNWANTED_FACTIONS_SILENCE_NOT_DELETED`. |
 
 **Orphan risk of this wave: none.** No retired mod supplies a faction present in any dev save (Sacrileg Hunters is absent).
-The two that ARE present (Tallmere Combs, Space Exchange) stay loadable because their mods stay. Removing them is a separate,
-owed change: (1) set `requiredCountAtGameStart` 0 (and `startingCountAtWorldCreation` 0 for Comb Holds) and point
-`LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml` `farmerFaction` at another faction; (2) back the saves up to
-`D:\ClaudeWork\backups\` and remove the faction (with its settlements, world pawns and relations) with savegame tooling, or re-make
-START from SHIP once the patch is live. Removing the FactionDef without step 2 orphans loadID 9 in every save.
+The two that ARE present (Tallmere Combs, Space Exchange) stay loadable because their mods stay. They are banished, not
+removed: the engine removes only temporary factions, Odyssey re-creates the Space Exchange on every load, and offline deletion
+from a save is the measured failure in `skills/rimworld-world-editing/references/savegame-editing.md`. The def side landed
+2026-10-20; the save side (hidden + defeated flags, the Space Exchange's orbital settlement removed, through the bridge) is
+`UNWANTED_FACTIONS_SILENCE_NOT_DELETED`. Full reasoning: `design/RimMandrake/factions_unwanted_and_lingering_2026-10-20.md`.
+Deleting `RM_Faction_CombHolds` before no kept save holds it still orphans loadID 9 in every save.
 
 ## Bring one back (any row)
 

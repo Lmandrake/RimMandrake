@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 8 (Source/RM_ScrubInjections.cs): the Scrub's inhabited injections - ruins
-     (dead farmstead with the vaporator techprint, smother-claimed field, hedge homestead) and living camps (the comb
-     holds and a scavenger clan). Reached only through RM_LeaningScrub's extraGenSteps. Order 915: after Plants (900)
+     (dead farmstead with the vaporator techprint, smother-claimed field, hedge homestead) and living camps (vaporator
+     farmers and a scavenger clan). farmerFaction was RM_Faction_CombHolds until the owner banned that faction on
+     2026-10-20 ("We don't want those"); it is now Core's OutlanderCivil, the settled outlanders (the Homestead Defense
+     League in the Utinni layer), an agent default: banned_factions.json. Reached only through RM_LeaningScrub's extraGenSteps. Order 915: after Plants (900)
      and the sweetline trees (910), before Animals (1200). scavengerFactions is empty in this franchise-free tier;
      UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml adds the Jawa clans. Settings: scrubInjectionsEnabled,
      scrubRuinsPerMap, scrubCampsEnabled (new maps only). Numbers PROVISIONAL. -->
@@ -16,7 +18,7 @@
       <thicketDef>RM_VenomvineThicket</thicketDef>
       <blanketDef>RM_SmotherBlanket</blanketDef>
       <studyResearch>RM_WindVaporators</studyResearch>
-      <farmerFaction>RM_Faction_CombHolds</farmerFaction>
+      <farmerFaction>OutlanderCivil</farmerFaction>
       <scavengerFactions />
       <edgeMargin>14</edgeMargin>
       <minSpacing>32</minSpacing>

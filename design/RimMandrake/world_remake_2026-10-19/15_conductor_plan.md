@@ -111,7 +111,8 @@ each configurable def's `startingCountAtWorldCreation` (INFERRED from the 1.6 so
 - **ours, all `req=1 start=1 max=9999 fixedIdeo=True`:** `RUT_Jawa_AscendantHelix`, `_DeepwaterCompact`,
   `_FreeDroidEnclaves`, `_GeonosianFoundryHive`, `_HuttCartel`, `_Junkers`, `_IndigenousTribes`, `_WildsteamClan`
   = **8**, not the "13 rows" 06 S6 cites (the 13 may count rows of the stale checklist that are not FactionDefs;
-  UNMEASURED). Also `RM_Faction_CombHolds` (start 1), hidden `RM_Thozziks`, `RSW_PustuleHornets`,
+  UNMEASURED). Also `RM_Faction_CombHolds` — BANNED 2026-10-20 (owner: *"We don't want those"*), now start 0 / max 0 /
+  hidden, so it is off the page; `banned_factions.py check-save` must not find it live — hidden `RM_Thozziks`, `RSW_PustuleHornets`,
   `RUT_GreentideAntFaction` (req 1, start 0, hidden: owner ruling 7 wants Green Tide present — check it in S7).
 - **vanilla start=1:** OutlanderCivil, TribeCivil, Pirate, Empire + the hidden required set (Ancients, Mechanoid,
   Insect, Entities, HoraxCult …).
