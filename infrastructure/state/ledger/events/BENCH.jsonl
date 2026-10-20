@@ -3266,3 +3266,4 @@
 {"seat":"BENCH","event":"claim","id":"CAULDRON_SOILS_BUILD_DIRT_THAT_BREATHES","ts":"2026-10-20T23:40:13Z","tsn":1792539613516689940}
 {"seat":"BENCH","event":"start","id":"CAULDRON_SOILS_BUILD_DIRT_THAT_BREATHES","ts":"2026-10-20T23:40:13Z","tsn":1792539613921953113}
 {"seat":"BENCH","event":"start","id":"CAULDRON_SOILS_BUILD_DIRT_THAT_BREATHES","ts":"2026-10-20T23:40:15Z","tsn":1792539615871710370}
+{"seat":"BENCH","event":"note","id":"CAULDRON_SOILS_BUILD_DIRT_THAT_BREATHES","text":"4 jobs queued (cauldronsoil{,rich}_breathes_{a,b}); 3 landed, rich_a hit 429 and was requeued. Sheet Transient/biome_ffar/cauldron_soils_sheet_2026-10-20.html served, awaiting owner pick. Install owed after his ruling: art install to Cauldron Textures/Terrain/Cauldron/<def>.png + repoint texturePath.","ts":"2026-10-20T23:51:56Z","tsn":1792540316162214607}
