@@ -141,7 +141,7 @@ VENT_PLANTS = {"RM_CrystalFlower": "StableRing", "RM_BloodBouquet": "ChronicLeak
                "RM_GiantToxicFlower": "RecentBlowout"}
 PADS = {"vent": (0, -85), "fauna": (-45, -45), "suush": (45, -45), "flora": (-45, 0), "yield": (45, 0),
         "bloom": (-45, 45), "water": (0, 45), "fire": (45, 45), "spawn": (0, -45), "gas": (-85, -85), "works": (85, -85),
-        "drift": (85, 85), "rhossak": (-85, 85)}
+        "drift": (85, 85), "rhossak": (-85, 85), "grove": (0, 85)}
 GAS_TAP, TANK, RIG = "RM_VentGasTap", "RM_LiquidTank", "RM_CorrodedFilterRig"     # CAULDRON_MECHANICS_BUILD_1 parts 3/4
 VWORKS, REAGENT, BATTERY = "RM_FilterWorks", "RM_VentReagent", "Battery"          # CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD
 COND, TOXICW, FRESHW = "RM_Liquid_VentCondensate", "RM_Liquid_ToxicWater", "RM_Liquid_FreshWater"
@@ -586,6 +586,7 @@ def _set(t, field, value):
     if not _live(t):
         return
     _ok(r, "mod_settings_field(set %s=%r)" % (field, value))
+    t._type_identity = (r or {}).get("typeIdentity")     # which loaded copy the bridge wrote (RHOSSAK A3, 2026-10-20)
     got = _get_setting(t, field)
     if not _same(got, value):
         _fail("setting %s=%r did not take: read back %r" % (field, value, got))
@@ -1144,8 +1145,8 @@ def settings_chain(t):
                   # OFF arm is masked by the ON arm's vanilla tox residue unless the suite waits it out (the ON arm is
                   # gas.vent_gas_burns_toxic); the ruin kit is worldgen (a fresh Cauldron map).
                   "ventGasDrifts", "ventGasToxicSmoke", "ruinKitEnabled",
-                  # RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD: a sprout needs a SLEEPING rhossak and a 3 h mean wait; a grove needs three awake
-                  # rhossak held together for 24 unbroken in-game hours. Both are owed live rows (ledger note), not driven here.
+                  # RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD: the ON arms are the `grove` chain (A5 a sleeping rhossak sprouts, A6 three
+                  # held together root a grove); this roundtrip only proves the fields persist.
                   "rhossakSproutEnabled", "rhossakGroveEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
@@ -2677,15 +2678,122 @@ def rhossak_chain(t):
                 _note(t, "cells from the tree after 5000 ticks (tether %d)" % RHOSSAK_TETHER, far)
                 if far:
                     _fail("rhossak wandered off its tree: %s cells away" % far)
+        # LIVE 2026-10-20 (Transient/live_testing_2026-10-20a, 380 list, two runs, same verdict): FAIL "rhossakBindEnabled off
+        # but the inspect pane still reads 'Bound to twisting thornwood'", with the bridge's set reading back False across
+        # 600 real ticks. NOT the mod: the deployed DLL's IL (ilprobe) is `ldsfld rhossakBindEnabled; brtrue; ldnull; ret`, so
+        # the pane can only say "Bound" while the comp sees True. The bridge wrote a DIFFERENT copy of the static: Prepatcher
+        # (VEF/BigAndSmall/yayoAni/CombatAI [PrepatcherField]s) reloads every patched assembly and its dependants, leaving
+        # the pre-patch originals in the AppDomain, and jawa/mod_settings_field took the first FullName match there. HARNESS.
+        # Fixed in JawaBench (ResolveLiveType: GenTypes first, as the def loader resolved the comp); every reply now carries
+        # typeIdentity {resolvedVia, copiesInAppDomain}. False theories ruled out on the way: a stale DLL (md5 = repo,
+        # srchash = source), a cached inspect string (jawa/inspect_string calls GetInspectString direct, nothing in the list
+        # patches it), the static flipping back (read back False during the wait), a second "Bound to" source (none in src
+        # or Core). A companion built before ResolveLiveType can still bind the stale twin: this row then says UNMEASURED.
         with _comp(t, "rhossak_bind_off_unbinds", toggle="rhossakBindEnabled"):
             if _live(t):
                 if RHOSSAK not in ids:
                     _unmeasured(t, "no rhossak from the bind row")
                 with _setting(t, "rhossakBindEnabled", False):
+                    ident = getattr(t, "_type_identity", None)
+                    _note(t, "bridge type identity", ident)
+                    if (isinstance(ident, dict) and int(ident.get("copiesInAppDomain") or 0) > 1
+                            and not str(ident.get("resolvedVia") or "").startswith("GenTypes")):
+                        _unmeasured(t, "HARNESS: the bridge wrote one of %s loaded copies of the settings type, resolved via %s, "
+                                       "not the copy the comp runs" % (ident.get("copiesInAppDomain"), ident.get("resolvedVia")))
                     t.wait_ticks(600)
                     line = _rhossak_bind_line(t, ids[RHOSSAK])
                     if line is not None:
-                        _fail("rhossakBindEnabled off but the inspect pane still reads %r" % line)
+                        comp = t.bridge_call("jawa/comp_read", thing=ids[RHOSSAK], comp="RhossakGrove", members="boundTree")
+                        _note(t, "comp state with the bind off", (comp or {}).get("values"))
+                        _fail("rhossakBindEnabled off but the inspect pane still reads %r (comp boundTree %r, bridge %r)"
+                              % (line, ((comp or {}).get("values") or {}).get("boundTree"), ident))
+    _stable(t, body)
+
+
+# --------------------------------------------------------------------------- chain: the rhossak grove (A5 A6 A7)
+# RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD rows A5-A7, on their own pad so a bind failure upstream does not leave them UNMEASURED.
+# A4 (a generated Cauldron map, TEST profile: rhossak spawn wild and none leaves the map in a day) needs a FRESH map,
+# not a pad, and is not scripted here.
+# Scripting A6 found a MOD defect (2026-10-20): rooting required 24 UNBROKEN AWAKE hours and any sleep reset the count,
+# so a herd that sleeps every day could never root. RM_RhossakKernel.StepTogetherHeld: asleep together holds the count.
+RHOSSAK_SPROUT_MTB_H = 3          # RM_CompProperties_RhossakGrove.sproutMtbHours
+RHOSSAK_ROOT_H = 24               # .rootHours
+GALL_MEAT, GALL_COUNT, GALL_TICKS = "Meat_RM_Rhossak", 40, 120000      # the galled rhossak's CompProperties_Spawner
+
+
+def _plants_except(t, rect, skip=(THORN,)):
+    """Plants (ThingRequestGroup Plant) over `rect`, minus `skip` defs; raises on an unreadable result."""
+    r = t.bridge_call("jawa/list_things", group="Plant", rect=rect, limit=200)
+    if not _live(t):
+        return 0
+    _ok(r, "list_things(group=Plant, %s)" % rect)
+    if not r.get("scanned"):
+        _fail("list_things(group=Plant, %s) unreadable: %r" % (rect, r))
+    return sum(1 for w in (r.get("things") or []) if w.get("def") not in skip)
+
+
+@suite.chain("grove")
+def grove_chain(t):
+    _prep(t, "grove")
+    x, z = t.anchor
+    ids = {}
+
+    def body():
+        with _comp(t, "rhossak_grove_site_ready", poison=True):
+            if _live(t):
+                ring = [(x + dx, z + dz) for dx in range(-2, 3) for dz in range(-2, 3) if max(abs(dx), abs(dz)) == 2]
+                t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % c for c in ring), stuff="Steel")
+                walls = _count(t, "Wall", "%d,%d,5,5" % (x - 2, z - 2))
+                if walls < len(ring):
+                    _unmeasured(t, "the pen is open: %d of %d wall cells stand" % (walls, len(ring)))
+                t.bridge_call("jawa/spawn_batch", ops="Hay:%d,%d,75" % (x, z + 1))
+                if _count(t, THORN, _rs(_rect(t))):
+                    _unmeasured(t, "a thornwood stands on the cleared grove pad")
+                ids["trio"] = [_spawn(t, RHOSSAK, x + dx, z) for dx in (-1, 0, 1)]
+                ids["sleeper"] = _spawn(t, RHOSSAK, x - 8, z + 8)
+                ids["galled"] = _spawn(t, GALLED, x + 8, z - 8)
+        with _comp(t, "rhossak_sprouts_while_asleep", toggle="rhossakSproutEnabled"):
+            if _live(t):
+                sx, sz = x - 8, z + 8
+                near = "%d,%d,7,7" % (sx - 3, sz - 3)
+                before = _plants_except(t, near)
+                for _ in range(6):    # 6 x 5000 = 12 h held asleep; mean 3 h -> P(no seedling) = e^-4, ~2%
+                    t.bridge_call("jawa/pawn_need", pawn=ids["sleeper"], action="need", need="Rest", level=0.0)
+                    t.wait_ticks(5000)
+                after = _plants_except(t, near)
+                _note(t, "plants beside the sleeper (before, after 12 h asleep)", [before, after])
+                if after - before < 1:
+                    _fail("a rhossak held asleep 12 h (mean sprout %d h) set no seedling beside it (%d -> %d plants)"
+                          % (RHOSSAK_SPROUT_MTB_H, before, after))
+        with _comp(t, "three_rhossak_root_a_grove", toggle="rhossakGroveEnabled"):
+            if _live(t):
+                around = "%d,%d,7,7" % (x - 3, z - 3)     # the pen and one cell beyond its walls (TryRoot looks 3 cells out)
+                rooted, waited = 0, 0
+                while waited < 2 * 60000 and not rooted:   # 24 h awake at ~16 h awake a day: ~1.5 days
+                    t.wait_ticks(20000)
+                    waited += 20000
+                    rooted = _count(t, THORN, around)
+                _note(t, "thornwood rooted by the penned trio (count, ticks waited)", [rooted, waited])
+                if not rooted:
+                    _fail("three rhossak penned together, clear of any thornwood, rooted none in %d ticks (%d h needed awake)"
+                          % (waited, RHOSSAK_ROOT_H))
+        with _comp(t, "galled_rhossak_drops_meat"):
+            if _live(t):
+                have = _stack_total(t, GALL_MEAT, None)
+                if have < GALL_COUNT:
+                    cr = t.bridge_call("jawa/comp_read", thing=ids["galled"], comp="CompSpawner", members="ticksUntilSpawn")
+                    try:
+                        left = int(float(((cr or {}).get("values") or {}).get("ticksUntilSpawn")))
+                    except (TypeError, ValueError):
+                        _unmeasured(t, "CompSpawner.ticksUntilSpawn unreadable: %r" % (cr,))
+                    if not 0 <= left <= GALL_TICKS:
+                        _fail("the galls' spawner counts %r ticks, not within one %d-tick interval" % (left, GALL_TICKS))
+                    t.wait_ticks(left + 500)
+                    have = _stack_total(t, GALL_MEAT, None)
+                _note(t, "rhossak meat on the map", have)
+                if have < GALL_COUNT:
+                    _fail("no %d %s from the galled rhossak within one %d-tick interval (%d on the map)"
+                          % (GALL_COUNT, GALL_MEAT, GALL_TICKS, have))
     _stable(t, body)
 
 

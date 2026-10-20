@@ -767,9 +767,10 @@ namespace RimMandrake.Cauldron.SelfTest
                     bool want = a.b % 5 != 0 && a.b % 7 != 0 && a.a % 4 + 1 >= 3 && a.b % 3 != 0 && a.c % 4 != 0;
                     if (together != want) return "Together disagrees with its definition";
                     int delta = 1 + a.c % 2500;
-                    acc = RM_RhossakKernel.StepTogether(acc, together, delta);
-                    stretch = together ? stretch + delta : 0;
-                    if (!together) RhossakResets++;
+                    bool held = !together && a.a % 3 == 0;     // asleep together: the stretch pauses (A6, 2026-10-20)
+                    acc = RM_RhossakKernel.StepTogetherHeld(acc, together, held, delta);
+                    stretch = together ? stretch + delta : (held ? stretch : 0);
+                    if (!together && !held) RhossakResets++;
                     if (acc != stretch) return $"together count {acc} != unbroken stretch {stretch}";
                     if (RM_RhossakKernel.ShouldRoot(acc, rootHours) != (stretch >= need)) return "ShouldRoot disagrees with the stretch";
                     if (RM_RhossakKernel.ShouldRoot(acc, rootHours)) { RhossakRoots++; acc = 0; stretch = 0; }
@@ -824,6 +825,18 @@ namespace RimMandrake.Cauldron.SelfTest
                 Check(!RM_RhossakKernel.Together(false, true, true, 2, 3, true, true), "grove off never roots");
                 Check(RM_RhossakKernel.CooledDown(100, -1, 10f) && !RM_RhossakKernel.CooledDown(599999, 0, 10f) && RM_RhossakKernel.CooledDown(600000, 0, 10f), "cooldown cut");
                 Check(RM_RhossakKernel.StepTogether(int.MaxValue - 5, true, 100) == int.MaxValue, "together count saturates");
+                Check(RM_RhossakKernel.StepTogetherHeld(500, false, true, 250) == 500 && RM_RhossakKernel.StepTogetherHeld(500, false, false, 250) == 0
+                      && RM_RhossakKernel.StepTogetherHeld(500, true, true, 250) == 750, "asleep together holds, apart resets, awake together advances");
+                {   // a day-sleeping herd of three, together throughout, roots within ~1.5 days (24 h awake at 16 h awake/day)
+                    int acc2 = 0, t2 = 0; bool rooted = false;
+                    for (; t2 < 3 * 60000 && !rooted; t2 += 250)
+                    {
+                        bool awake2 = (t2 % 60000) < 40000;
+                        acc2 = RM_RhossakKernel.StepTogetherHeld(acc2, awake2, !awake2, 250);
+                        rooted = RM_RhossakKernel.ShouldRoot(acc2, 24f);
+                    }
+                    Check(rooted && t2 <= 100000, "a herd that sleeps 8 h a day must still root (took " + t2 + " ticks)");
+                }
                 Check(RM_RhossakKernel.RootTicks(24f) == 60000 && RM_RhossakKernel.RootTicks(0f) == 1, "RootTicks");
                 Check(RM_RhossakKernel.Within(3, 4, 5f) && !RM_RhossakKernel.Within(3, 4, 4.99f) && !RM_RhossakKernel.Within(0, 0, -1f), "Within");
                 Check(RM_RhossakKernel.NearestIndex(0, 0, new int[0], new int[0], new bool[0]) == -1, "no tree, no bind");

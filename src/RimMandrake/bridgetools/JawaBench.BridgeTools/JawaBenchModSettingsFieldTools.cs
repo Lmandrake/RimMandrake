@@ -44,19 +44,49 @@ namespace JawaBench.BridgeTools
         // Measured 2026-10-04: the full scan of every type in every loaded assembly cost ~0.7 s per call on the 638-mod
         // list, and the MessyConduit matrix made 3,169 of them (88% of a 2,640 s run). A loaded type never unloads, so a
         // hit is cached; a miss is NOT cached (the mod may load later).
+        //
+        // 🔴 RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD A3 (2026-10-20): the type MUST be the copy the game's own code runs. On a list
+        // with Prepatcher (zetrith.prepatcher; VEF, BigAndSmall, yayoAni, CombatAI carry [PrepatcherField]s) every modified
+        // assembly AND every assembly that references one is loaded a SECOND time ("Prepatcher: Setting refonly / Loading
+        // patched assemblies", Reloader.PropagateNeedsReload). The pre-patch originals stay in the AppDomain, earlier in
+        // GetAssemblies() order, so the old "first FullName match in the AppDomain" bound a DEAD copy of
+        // RimMandrake.Cauldron.RM_CauldronSettings: `set rhossakBindEnabled=False` read back False while the live comp kept
+        // reading its own True and the pane kept saying "Bound to twisting thornwood" (two runs, same verdict).
+        // GenTypes.GetTypeInAnyAssembly walks LoadedModManager.RunningMods' loadedAssemblies — the resolver the def loader
+        // used for every comp class — so a static written through it is the static the comp reads. The AppDomain scan is
+        // only a fallback (a type outside every running mod) and skips ReflectionOnly assemblies.
         private static readonly Dictionary<string, Type> SettingsTypeCache = new Dictionary<string, Type>();
+
+        internal static Type ResolveLiveType(string typeName, out string resolvedVia, out int copiesInAppDomain)
+        {
+            copiesInAppDomain = 0;
+            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                try { if (a.GetType(typeName, false) != null) copiesInAppDomain++; }
+                catch { /* an assembly that cannot answer is not a copy we could bind anyway */ }
+            }
+            lock (SettingsTypeCache)
+            {
+                if (SettingsTypeCache.TryGetValue(typeName, out Type cached)) { resolvedVia = "GenTypes(cached)"; return cached; }
+            }
+            Type live = null;
+            try { live = GenTypes.GetTypeInAnyAssembly(typeName); } catch { live = null; }
+            if (live != null)
+            {
+                lock (SettingsTypeCache) SettingsTypeCache[typeName] = live;
+                resolvedVia = "GenTypes";
+                return live;
+            }
+            resolvedVia = "AppDomain";
+            return AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => { try { return !a.ReflectionOnly; } catch { return false; } })
+                .Select(a => { try { return a.GetType(typeName, false); } catch { return null; } })
+                .LastOrDefault(t => t != null);   // last: a reloaded copy is loaded after the original it replaces
+        }
 
         private static Type ResolveSettingsType(string typeName)
         {
-            lock (SettingsTypeCache)
-            {
-                if (SettingsTypeCache.TryGetValue(typeName, out Type cached)) return cached;
-            }
-            Type found = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => { try { return a.GetTypes(); } catch { return Array.Empty<Type>(); } })
-                .FirstOrDefault(t => t.FullName == typeName);
-            if (found != null) lock (SettingsTypeCache) SettingsTypeCache[typeName] = found;
-            return found;
+            return ResolveLiveType(typeName, out _, out _);
         }
 
         private static object FindModSettingsInstance(Type settingsType)
@@ -138,7 +168,9 @@ namespace JawaBench.BridgeTools
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                Type settingsType = ResolveSettingsType(typeName);
+                Type settingsType = ResolveLiveType(typeName, out string resolvedVia, out int copies);
+                // Said out loud in every reply: copies > 1 means a stale twin exists, and resolvedVia must then be GenTypes.
+                var typeIdentity = new { resolvedVia, copiesInAppDomain = copies, assembly = settingsType?.Assembly.GetName().Name };
                 if (settingsType == null)
                 {
                     return Fail("No loaded type '" + typeName + "' found - mod not active, or the name is wrong (pass Type.FullName exactly).");
@@ -165,7 +197,7 @@ namespace JawaBench.BridgeTools
                             instanceFound = instance != null,
                         });
                     }
-                    return (object)new { success = true, action = "list", typeName, count = rows.Count, fields = rows, ticksGame = TicksGameSafe() };
+                    return (object)new { success = true, action = "list", typeName, typeIdentity, count = rows.Count, fields = rows, ticksGame = TicksGameSafe() };
                 }
 
                 if (string.IsNullOrWhiteSpace(field))
@@ -199,7 +231,7 @@ namespace JawaBench.BridgeTools
 
                 if (a == "get")
                 {
-                    return (object)new { success = true, action = "get", field = fi.Name, fieldKind = kind, value = SafeFieldToString(fi.GetValue(target)), ticksGame = TicksGameSafe() };
+                    return (object)new { success = true, action = "get", field = fi.Name, fieldKind = kind, value = SafeFieldToString(fi.GetValue(target)), typeIdentity, ticksGame = TicksGameSafe() };
                 }
 
                 if (a == "set")
@@ -234,6 +266,7 @@ namespace JawaBench.BridgeTools
                         fieldKind = kind,
                         valueBefore = before,
                         valueAfter = SafeFieldToString(fi.GetValue(target)),
+                        typeIdentity,
                         ticksGame = TicksGameSafe(),
                     };
                 }

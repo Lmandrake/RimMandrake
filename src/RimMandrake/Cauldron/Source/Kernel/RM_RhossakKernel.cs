@@ -47,6 +47,16 @@ namespace RimMandrake.Cauldron
             return next > int.MaxValue ? int.MaxValue : (int)next;
         }
 
+        // RHOSSAK A6 (2026-10-20): "standing together long enough" must be reachable by an animal that sleeps every day. With
+        // StepTogether alone any sleep reset the count, so 24 unbroken AWAKE hours never happened and no grove could ever
+        // root. A stretch is now broken only by being APART (or a gate failing): awake together advances it, asleep together
+        // (`held`: the same group, spacing and cooldown, the rhossak resting) holds it where it was.
+        public static int StepTogetherHeld(int acc, bool together, bool held, int delta)
+        {
+            if (together) return StepTogether(acc, true, delta);
+            return held ? acc : 0;
+        }
+
         public static int RootTicks(float rootHours)
         {
             return rootHours <= 0f ? 1 : (int)Math.Ceiling(rootHours * TicksPerHour);

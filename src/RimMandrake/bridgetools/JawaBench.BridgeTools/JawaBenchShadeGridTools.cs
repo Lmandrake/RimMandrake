@@ -25,10 +25,8 @@ namespace JawaBench.BridgeTools
 {
     public sealed partial class JawaBenchTerrainTools
     {
-        private static Type FindTypeByFullName(string fullName) =>
-            AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => { try { return a.GetTypes(); } catch { return Array.Empty<Type>(); } })
-                .FirstOrDefault(t => t.FullName == fullName);
+        // the LIVE copy, never a pre-Prepatcher twin (see ResolveLiveType, RHOSSAK A3 2026-10-20)
+        private static Type FindTypeByFullName(string fullName) => ResolveLiveType(fullName, out _, out _);
 
         private static object ReadMember(object obj, string name)
         {
