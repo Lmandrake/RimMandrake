@@ -144,6 +144,46 @@ namespace RimMandrake.FlowWorks.Pits
 
         public override bool JoinsSpan(Building_SpanDeck other) => other is Building_PitCover;
 
+        /// <summary>FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED (GPT edge read V3): a cover destroyed by damage (fire, shots, a
+        /// blast that kills it before the explosion postfix looks) is no longer ground, so whoever stands on it falls, as the
+        /// blast rule already has everyone fall (owner cards Q5 + Q9). Only a kill: a deconstructed or vanished cover is unchanged.</summary>
+        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+        {
+            Map map = Map;
+            IntVec3 pos = Position;
+            List<Pawn> riders = null;
+            if (!collapsed && map != null && (mode == DestroyMode.KillFinalize || mode == DestroyMode.KillFinalizeLeavingsOnly))
+            {
+                foreach (Thing t in pos.GetThingList(map))
+                {
+                    if (t is Pawn p && !p.Dead && !p.Flying)
+                    {
+                        (riders ?? (riders = new List<Pawn>())).Add(p);
+                    }
+                }
+            }
+            base.DeSpawn(mode);
+            RM_SuperdeepTrapState state = RM_SuperdeepTrap.EngineOf(map)?.SuperdeepTrap;
+            if (riders == null || state == null)
+            {
+                return;
+            }
+            Pawn first = null;
+            foreach (Pawn p in riders)
+            {
+                if (p.Spawned && !p.Dead && p.Position == pos)
+                {
+                    RM_SuperdeepTrap.OnForcedDescent(p, pos, state);
+                    first = first ?? p;
+                }
+            }
+            if (first != null)
+            {
+                Messages.Message("A pit cover broke under " + first.LabelShort + (riders.Count > 1 ? " and others." : "."),
+                    new LookTargets(riders), MessageTypeDefOf.NegativeEvent);
+            }
+        }
+
         public override List<Building_SpanDeck> SpanCells()
         {
             return new List<Building_SpanDeck>(RM_PitCoverUtility.Deck(this));
