@@ -34,8 +34,9 @@ def main():
     if a.cmd == "shift":
         im = Image.open(a.src).convert("RGBA")
         b = bbox(im)
-        if b is None or b[1] + a.dy < 0 or b[3] + a.dy > im.height:
-            sys.exit(f"REFUSED: bbox {b} shifted by {a.dy} leaves the {im.height}px canvas")
+        full = im.getchannel("A").getbbox()  # ANY non-zero alpha, not just the >16 bbox: faint pixels must not be clipped silently
+        if b is None or full[1] + a.dy < 0 or full[3] + a.dy > im.height:
+            sys.exit(f"REFUSED: bbox {full} shifted by {a.dy} leaves the {im.height}px canvas")
         out = Image.new("RGBA", im.size, (0, 0, 0, 0))
         out.paste(im, (0, a.dy))
         out.save(a.out)
