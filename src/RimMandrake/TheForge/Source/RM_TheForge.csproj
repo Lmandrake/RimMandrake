@@ -71,6 +71,7 @@
     <Compile Include="Kernel\RM_SkyKernel.cs" />
     <!-- DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB -->
     <Compile Include="RM_ForgeDhoggurSwell.cs" />
+    <Compile Include="RM_ForgeUmmisk.cs" />
     <Compile Include="Kernel\RM_SwellKernel.cs" />
   </ItemGroup>
 

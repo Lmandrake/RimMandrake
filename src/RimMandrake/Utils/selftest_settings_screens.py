@@ -237,6 +237,7 @@ MODS = {
         "The dhokkur": "Now",
         "Not wired yet (these change nothing)": "Now",
         "The dhoggur": "Now",
+        "The ummisk": "Now",
     }, ()),
     "ShipVermin": ("RM_ShipVerminMod.cs", "RM_ShipVermin.csproj", {
         "Alert and fuel mites": "Now",

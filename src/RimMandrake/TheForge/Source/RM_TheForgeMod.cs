@@ -99,6 +99,9 @@ namespace RimMandrake.TheForge
         public static float dhoggurSwellScale = 3f;
         // Card 2026-10-16 "Only attacks and your colonists": off = only a pawn, turret or trap provokes the swell.
         public static bool dhoggurSwellEnvironmentTriggers = false;
+        // FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND — the ummisk (RM_ForgeUmmisk.cs). Read live.
+        public static bool ummiskLavaEdgeEnabled = true;
+        public static bool ummiskSteamEnabled = true;
         // A cell gains at most one pass per half day, so only a path walked
         // on separate rains wears in.
         public const int DhokkurWearCooldownTicks = 30000;
@@ -172,6 +175,8 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref dhoggurCooldownDays, "dhoggurCooldownDays", 1f);
             Scribe_Values.Look(ref dhoggurSwellScale, "dhoggurSwellScale", 3f);
             Scribe_Values.Look(ref dhoggurSwellEnvironmentTriggers, "dhoggurSwellEnvironmentTriggers", false);
+            Scribe_Values.Look(ref ummiskLavaEdgeEnabled, "ummiskLavaEdgeEnabled", true);
+            Scribe_Values.Look(ref ummiskSteamEnabled, "ummiskSteamEnabled", true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -407,6 +412,16 @@ namespace RimMandrake.TheForge
                 dhoggurCooldownDays = list.Slider(dhoggurCooldownDays, 0f, 5f);
                 list.Label("  Swollen size, health and bite: " + dhoggurSwellScale.ToString("0.0") + "x");
                 dhoggurSwellScale = list.Slider(dhoggurSwellScale, 1f, 5f);
+                list.GapLine();
+            }
+
+            if (Group(list, "The ummisk", RimMandrake.Shared.SettingScope.Now, new[] { "ummiskLavaEdgeEnabled", "ummiskSteamEnabled" }))
+            {
+                list.CheckboxLabeled("Ummisk keeps to the lava edge", ref ummiskLavaEdgeEnabled,
+                    "An ummisk wanders only cells beside open lava, and walks back to the nearest edge when it "
+                  + "strays. With no lava in reach it wanders like any animal. Off: it wanders like any animal.");
+                list.CheckboxLabeled("Ummisk steam cushion", ref ummiskSteamEnabled,
+                    "While an ummisk is on the lava edge, steam puffs up from under it. A look only. Off: no steam.");
                 list.GapLine();
             }
 

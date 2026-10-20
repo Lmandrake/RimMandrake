@@ -6363,3 +6363,8 @@
 {"seat":"FOUNDRY","event":"start","id":"WORLD_LAYERS_RESCUE_THE_SAVE_HAS_MORE","ts":"2026-10-20T02:15:39Z","tsn":1792462539290755151}
 {"seat":"FOUNDRY","event":"lease","id":"WORLD_LAYERS_RESCUE_THE_SAVE_HAS_MORE","action":"renew","token":"FOUNDRY.pid29804.5241f788","ts":"2026-10-20T02:27:02Z","expires":"2026-10-20T03:12:02Z","tsn":1792463222855342551}
 {"seat":"FOUNDRY","event":"implemented","id":"WORLD_LAYERS_RESCUE_THE_SAVE_HAS_MORE","sha":"7da4723159cf","ref":"origin/main","criteria":[],"why":"criteria met offline: files written, round trip identical, gaps reported; fresh-world comparison waits on the remake","ts":"2026-10-20T02:27:32Z","tsn":1792463252194245414}
+{"seat":"FOUNDRY","event":"lease","id":"FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND","action":"take","token":"FOUNDRY.pid29902.8ea70e7e","expires":"2026-10-20T03:14:31Z","ts":"2026-10-20T02:29:31Z","tsn":1792463371844939687}
+{"seat":"FOUNDRY","event":"claim","id":"FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND","ts":"2026-10-20T02:29:32Z","tsn":1792463372127551716}
+{"seat":"FOUNDRY","event":"start","id":"FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND","ts":"2026-10-20T02:29:32Z","tsn":1792463372419993564}
+{"seat":"FOUNDRY","event":"lease","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","action":"take","token":"FOUNDRY.pid29914.8bda25bd","expires":"2026-10-20T03:15:12Z","ts":"2026-10-20T02:30:12Z","tsn":1792463413200053108}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"Wave 2 deploy + cold load","ts":"2026-10-20T02:31:30Z","tsn":1792463490672555277}

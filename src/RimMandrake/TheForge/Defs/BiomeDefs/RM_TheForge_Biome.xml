@@ -261,6 +261,9 @@
       <RM_Julmox>0.4</RM_Julmox>  <!-- julmox - ground herd, tamable -->
       <RM_Jossur>0.06</RM_Jossur>  <!-- jossur - sky apex predator -->
       <RM_Dhuvvox>0.3</RM_Dhuvvox>  <!-- dhuvvox - flash-swarm, small -->
+      <!-- FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND: the ummisk fills the slow-ground slot
+           LavaSnail left (owner's pick 2026-10-20). Weight PROVISIONAL. Defs/ThingDefs_Races/RM_Ummisk.xml. -->
+      <RM_Ummisk>0.25</RM_Ummisk>  <!-- ummisk - ground-slow, lava edge -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

@@ -1,0 +1,17 @@
+[
+ {
+  "id": "rm_ummisk_v1",
+  "rimflow_item_id": "FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND",
+  "target_def": "RM_Ummisk",
+  "target_texpath": "Things/Pawn/Animal/RM_Ummisk/RM_Ummisk",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.9,
+  "facings": "east,south,north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_register": "The Forge: a volcanic massif under doubled furnace light, hard white sun above and seam-red from below; basalt black, ash grey, obsidian gloss in the room, seam-red ONLY where melt actually shows (never on this animal). Heat-adapted and few: no fur, no lush register, nothing lava-native.",
+  "prompt": "RimWorld creature sprite of the ADULT ummisk, a slow, faceless alien of a volcanic mountain that lives on the very edge of lava flows. SCALE: drawSize 1.9 cells; a colonist is about 1 cell wide and 1.8 cells tall, this creature is about knee-to-waist high. CANVAS: 256x256, square, the creature fills about 70% of the frame width. VIEW: orthographic, standing naturally on a transparent background, whole creature in frame, centred. SUBJECT: a lumpy rounded mound made of hundreds of hollow tubes of translucent organic glass packed tightly together like reeds, tallest at the centre, their open mouths at the top, beaded with condensate, faint steam rising from the tube mouths. Underneath, a dark fringe of short cilia, and beneath that a thin cushion of white steam on which it rides. The glass is pale smoky grey-blue with mineral-coloured deposits (ochre, rust, sulphur-pale) silted inside the tubes. No head, no face, no eyes, no mouth, no legs: it is a colony, not an animal body. Owner's words, the design authority: 'Riding on a steam cushion where it touches the lava, the steam rushes through organic glass tubes that extract out the heat and minerals for sustenance. Grows from the silica vapor and temperature differential. A true alien among aliens, slowly wandering the edge of the lava forever. It is not clear whether it has intellect as we know it.'",
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte mineral surface texture, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Never cute. New invented alien creature: draw from this description only; no donor pixels exist or may be used. Shipping sprite for the owner-picked design; replaces a procedural stand-in."
+ }
+]

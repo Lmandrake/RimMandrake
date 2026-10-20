@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND. The ummisk's lava-edge wander, inserted at
+     vanilla's Animal_PreWander tag (the RM_ThinkTree_ShadeSeekingWander shape, CreatureBehaviors).
+     Returns no job for any pawn whose race lacks RM_UmmiskExtension, so every other animal falls
+     through to vanilla wander unchanged. Source: Source/RM_ForgeUmmisk.cs. -->
+<Defs>
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_UmmiskLavaEdge</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.TheForge.RM_JobGiver_UmmiskLavaEdge" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>
