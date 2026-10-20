@@ -6411,3 +6411,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"scratch dir migration","ts":"2026-10-20T08:42:58Z","tsn":1792485778951837764}
 {"seat":"FOUNDRY","event":"note","id":"DEV_SCRATCH_DIRS_MIGRATE_OFF_LODESTARS_LAWN","text":"Six runtime dirs moved to D:\\ClaudeWork\\rimmandrake 2026-10-20 (db2dd6361, 19b041f4a); remaining non-project dev entries: Rimworld, Rimworld_history.bundle, reference, rimtools, govee_scan.ps1; BENCH clone must pull","ts":"2026-10-20T09:05:46Z","tsn":1792487146145796237}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-20T09:05:47Z","tsn":1792487147733685610}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"look at the dev world in game (world map appearance)","why":"owner AFK, asked to get the world looking great; read-only look","ts":"2026-10-20T14:35:42Z","tsn":1792506942711110924}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-20T14:36:25Z","tsn":1792506985554996804}
