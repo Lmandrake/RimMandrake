@@ -82,6 +82,9 @@ namespace RimMandrake.HugeThings
             return n;
         }
 
+        /// <summary>Forget every held crossing (a load: the tick went backwards, so every entry is from a discarded timeline).</summary>
+        public void Clear() => byCreature.Clear();
+
         public void Add(int creature, int mapId, int now, int memoTicks, int[] cells)
         {
             if (cells == null || cells.Length == 0) return;

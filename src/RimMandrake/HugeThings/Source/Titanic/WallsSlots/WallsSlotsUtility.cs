@@ -142,7 +142,10 @@ namespace RimMandrake.TitanicCreatures
             }
             lock (heldGate)
             {
-                if (!held.Any) return;
+                // a load (tick went backwards): crossings held in the discarded timeline must not close ground in this one, the
+                // same rule UnreachableMemo.Sync applies (code review 2026-10-20)
+                if (back) held.Clear();
+                if (!held.Any) { AnyHeld = false; return; }
                 held.Prune(now, TitanClearing.GiveUpMemoTicks, id => CreatureLive(id), id => MapLive(id));
                 AnyHeld = held.Any;
             }
@@ -255,7 +258,8 @@ namespace RimMandrake.TitanicCreatures
         /// offset onto each route cell) from first contact with a blocker until it has been clear for B steps, or the route ends,
         /// so gapped layers within its own length are one crossing (X1) and walls touching its flank count (X8). Rock or a
         /// protected building the route itself digs through (the centre line) makes the crossing forbidden; rock beside the
-        /// route is never part of it and never damaged (X7: a wooden plug between outcrops is wood). Null: no crossing at all.
+        /// route is never part of it and never damaged (X7: a wooden plug between outcrops is wood). A protected building anywhere in the
+        /// swept footprint (centre or flank) also makes it forbidden, since a flank wall is smashed with the rest (X8). Null: no crossing at all.
         /// </summary>
         public static Crossing Probe(Pawn p, List<IntVec3> route)
         {

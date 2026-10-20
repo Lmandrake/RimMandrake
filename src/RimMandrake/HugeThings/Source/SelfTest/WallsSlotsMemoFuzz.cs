@@ -1,7 +1,7 @@
 // HUGE_WALLS_FIX_DECIDER_RETRIES_FOREVER: the walls-and-slots decider's unreachable-destination cooldown (UnreachableMemo) and the
 // pruned held-crossing book (HeldBook), both Verse-free in Kernel/RM_WallsSlotsMemoKernel.cs. Oracles are written here from the
 // requirement, never from the kernel:
-//   memo      a noted (creature, destination) is blocked for exactly UnreachableCooldownTicks, never for another destination or
+//   memo      a noted (creature, destination) is blocked for exactly UnreachableMemo.CooldownTicks, never for another destination or
 //             creature, never after the cooldown; a tick that goes backwards (a load) forgets everything; the table stays bounded
 //             however many creatures note; a memo from the far future never applies.
 //   heldprune expired, dead-creature and other-map entries are pruned and nothing live is; each creature keeps at most
@@ -54,9 +54,12 @@ namespace RimMandrake.HugeThings.SelfTest
             // expired entries are pruned
             m3.Prune(now + n + cd * 2);
             Check(m3.Count == 0, "prune left " + m3.Count + " expired entries");
-            // re-noting after expiry blocks again
-            m.Note(id, dest, now + cd * 3);
-            Check(m.Blocked(id, dest, now + cd * 3 + 1), "re-note after expiry did not block");
+            // re-noting after expiry blocks again (a memo that still holds the expired note, not one a backwards Sync emptied)
+            var m4 = new UnreachableMemo();
+            m4.Note(id, dest, now);
+            Check(!m4.Blocked(id, dest, now + cd + 1), "an expired note still blocks");
+            m4.Note(id, dest, now + cd * 3);
+            Check(m4.Blocked(id, dest, now + cd * 3 + 1), "re-note after expiry did not block");
             return m3.Count.ToString();
         }
 
@@ -87,6 +90,17 @@ namespace RimMandrake.HugeThings.SelfTest
             for (int i = 0; i < creatures; i++) Check(b.EntryCount(1000 + i) <= HeldBook.MaxPerCreature, "creature " + i + " holds " + b.EntryCount(1000 + i));
             int liveMap = r.Next(0, 3);
             b.Prune(now, memo, id => live.Contains(id), map => map == liveMap);
+            // the oracle from the requirement: of each creature's adds, the last MaxPerCreature are kept (no creature eviction:
+            // creatures < MaxCreatures here), and of those exactly the unexpired, live-map entries of a live creature survive
+            for (int i = 0; i < creatures; i++)
+            {
+                int id = 1000 + i;
+                var mine = adds.FindAll(x => x.id == id);
+                int want = 0;
+                for (int k = Math.Max(0, mine.Count - HeldBook.MaxPerCreature); k < mine.Count; k++)
+                    if (live.Contains(id) && mine[k].map == liveMap && mine[k].until > now && mine[k].until - now <= memo) want++;
+                Check(b.EntryCount(id) == want, "creature " + id + " kept " + b.EntryCount(id) + " entries after the prune, the requirement says " + want);
+            }
             // every survivor is unexpired, on the live map, of a live creature; every unexpired live-map live creature entry that
             // was kept under the per-creature cap survives
             var cells = new List<int>();
@@ -133,6 +147,10 @@ namespace RimMandrake.HugeThings.SelfTest
             b.Add(7, 0, now + memo * 40, memo, new[] { 1 });
             b.Prune(now, memo, id => true, map => true);
             Check(b.Count == 0, "a far-future entry survived the prune");
+            // a load clears the book outright
+            b.Add(8, 0, now, memo, new[] { 2 });
+            b.Clear();
+            Check(b.Count == 0 && !b.Any, "Clear left entries");
             // the creature table is bounded
             for (int i = 0; i < HeldBook.MaxCreatures * 3; i++) b.Add(i, 0, now, memo, new[] { i });
             Check(b.CreatureCount <= HeldBook.MaxCreatures, "creature table grew to " + b.CreatureCount);
