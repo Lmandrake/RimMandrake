@@ -371,8 +371,9 @@ def _inspect(t, thing_id):
         return None, ""
     rows = (_ok(r, "inspect_string").get("things") or [])
     if not rows:
-        _fail("inspect_string(%s): the thing is no longer on the map (matched %r of %r examined)"
-              % (thing_id, r.get("matched"), r.get("examined")))
+        # a fixture that is gone (crushed, collapsed, wandered off) leaves nothing to read: the bench's, never a finding
+        _harness("inspect_string(%s): the thing is no longer on the map (matched %r of %r examined)"
+                 % (thing_id, r.get("matched"), r.get("examined")))
     if rows[0].get("error"):
         _harness("inspect_string(%s) unreadable: %r" % (thing_id, rows[:1]))
     return rows[0].get("label"), "\n".join(str(x) for x in (rows[0].get("inspect") or []))
@@ -982,6 +983,10 @@ def repulsor_clear(t):
 
         with _comp(t, "lapses_without_power"):
             if _live(t):
+                # "the condition lapsed" is vacuous unless it was holding when the power went: holds_sky_clear may have read
+                # UNMEASURED (it does not poison the chain), leaving no condition at all to lapse
+                if not _has_cond(t, CLEAR_COND):
+                    _unmeasured(t, "no %s condition was holding before the switch-off: nothing could lapse" % CLEAR_COND)
                 r = t.bridge_call("jawa/power_net", thing=_STATE["rep_id"], forcePowerOn=False)
                 _ok(r, "power_net(off)")
                 if r.get("powerOnAfter"):
@@ -1002,6 +1007,7 @@ def repulsor_clear(t):
 @suite.chain("spawner")
 def spawner(t):
     def body():
+        _STATE.pop("dissolved", None)
         with _comp(t, "site_ready_spawner", poison=True):
             _pad(t, "spawner")
             if _live(t):
@@ -1061,11 +1067,14 @@ def spawner(t):
                 corpses = _things(t, "Corpse_" + UNFINISHED)
                 if corpses:
                     _fail("a corpse persists (%d): death must dissolve it" % len(corpses))
+                _STATE["dissolved"] = True       # the death the mulch row reads really happened (and was ours)
 
         # Owner Q4 (2026-10-15, plain fertilizer): a dead Unfinished leaves Contagion mulch where it dissolved
         # (DeathActionWorker_RM_VanishToMulch). Reads the same death the component above caused.
         with _comp(t, "unfinished_leaves_mulch", toggle="mulchDropsEnabled"):
             if _live(t):
+                if not _STATE.get("dissolved"):
+                    _unmeasured(t, "no Unfinished was seen to die here (the dissolve row did not complete): no mulch could be owed")
                 heaps = _things(t, MULCH, _STATE["host_rect"])
                 if not heaps:
                     _fail("no %s near the dissolved Unfinished" % MULCH)
@@ -1158,6 +1167,7 @@ def _open_pawns(t, x, z):
 @suite.chain("burn_forced")
 def burn_forced(t):
     def body():
+        _STATE.pop("rows_after", None)
         _need_contagion(t)
         with _comp(t, "burn_site_ready", poison=True):
             _pad(t, "burn")
@@ -1207,7 +1217,9 @@ def burn_forced(t):
                 if ordered:
                     _fail("with NO Burn the UV-shy native was ordered to the roof patch: %s" % ordered[:3])
 
-        with _comp(t, "repulsor_forces_burn", toggle="cloudRepulsorEnabled"):
+        # poison: every row below reads or ends the Burn this one forces; if it could not be raised (UNMEASURED) they would see no
+        # Burn at all -- "harmless at zero damage" and "lapses" would pass vacuously, "vanished when burnEnabled went off" would FAIL
+        with _comp(t, "repulsor_forces_burn", poison=True, toggle="cloudRepulsorEnabled"):
             if _live(t):
                 _power_on(t, _STATE["rep_id"])
                 _wait(t, 3300)
@@ -1607,6 +1619,12 @@ def touched(t):
                 row, frow = rows.get(_STATE["touched"]["near"]), rows.get(far)
                 if row is None or not _alive(frow):
                     _unmeasured(t, "the colonist beside the Coalescence / the far control is not readable")
+                # contact needs the Coalescence still standing and the colonist still beside it: a drafted pawn can be shoved off,
+                # and the Coalescence collapses under any Burn -- either leaves no contact to dose
+                if not _things(t, COALESCENCE, _rs(_rect(t))):
+                    _unmeasured(t, "the Coalescence is gone from the pad: there was no contact to dose")
+                if not _alive(row) or abs((row.get("x") or 0) - x) > 4 or abs((row.get("z") or 0) - z) > 4:
+                    _unmeasured(t, "the colonist is no longer beside the Coalescence (at %s,%s, anchor %s,%s)" % (row.get("x"), row.get("z"), x, z))
                 if TOUCHED not in _hdefs(row):
                     _fail("1000 ticks against a Coalescence gave no %s: %s" % (TOUCHED, sorted(_hdefs(row))))
                 near_sev, far_sev = _sev(row, TOUCHED), _sev(frow, TOUCHED)
@@ -1764,6 +1782,7 @@ def _mass_stage(lines):
 @suite.chain("coalescence")
 def coalescence(t):
     def body():
+        _STATE.pop("monstrous", None)
         _need_contagion(t)
         with _comp(t, "coalescence_site_ready", poison=True):
             _pad(t, "coal")
@@ -1881,16 +1900,20 @@ def coalescence(t):
                 m0 = _mass_stage(before)[1]
                 if m0 is None:
                     _unmeasured(t, "Coalescence mass unreadable before the jump: %r" % before)
-                if mass is None or mass <= m0:
+                if mass is None:
+                    _unmeasured(t, "Coalescence mass unreadable after the jump (no Stage line): growth cannot be judged")
+                if mass <= m0:
                     _fail("no passive growth over 7000 ticks (passiveGrowthTicks 6000) (mass %s -> %s)" % (m0, mass))
                 # LIVE 2026-10-08: jawa/pawn_get carries no mental-state field at all, so the old
                 # '"Manhunter" in json.dumps(pawn_get)' test could never pass; and a manhunter runs at
                 # the nearest human, out of a 24-cell rect. Read jawa/pawn_mental.currentState for
                 # every Unfinished on the WHOLE map that was not there before the jump.
                 new = [p for p in _things_pawns(t, UNFINISHED, None) if p["id"] not in known]
-                states = {}
+                states, unread = {}, []
                 for p in new:
                     d = t.bridge_call("jawa/pawn_mental", pawn=p["id"], action="list", limit=1)
+                    if not isinstance(d, dict) or d.get("success") is False:
+                        unread.append(p["id"])          # a failed mental read is ignorance, not "not a manhunter"
                     states[p["id"]] = ((d or {}).get("currentState"), p.get("hostile"), p.get("downed"),
                                        (p.get("x"), p.get("z")))
                 _note(t, "Unfinished new since the jump", states)
@@ -1901,6 +1924,8 @@ def coalescence(t):
                     t.bridge_call("jawa/pawn_force_incapacitate", pawn=k, action="vanish")
                 if not new:
                     _fail("no Unfinished emitted at all after 7000 ticks (stage %s; emit interval 3000)" % stage)
+                if not mad and unread:
+                    _unmeasured(t, "pawn_mental could not be read for %s: manhunter status unknown (%s)" % (unread, states))
                 if not mad:
                     _fail("%d Unfinished emitted after 7000 ticks but none is a manhunter: %s" % (len(new), states))
 
@@ -2200,6 +2225,9 @@ def genome(t):
         with _comp(t, "gestation_dies_producing_one_organ_batch"):
             if _live(t):
                 g = _STATE["g"]
+                # the inject row may have stopped UNMEASURED before a host stood (no key) or with the host dead: nothing to finish
+                if not g.get("host") or not _alive(_rows(t).get(g["host"])):
+                    _unmeasured(t, "no living gestation host (the inject row did not leave one): there is nothing to complete")
                 new = _finish_gestation(t, g["host"], g["rect"])
                 if _alive(_rows(t).get(g["host"])):
                     _fail("the host survived completing its gestation (it is consumed)")
