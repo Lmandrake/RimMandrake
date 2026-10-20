@@ -305,7 +305,7 @@ namespace JawaBench.BridgeTools
                 string mode = page != null ? "page" : (Current.ProgramState == ProgramState.Playing ? "playing" : null);
                 if (mode == null)
                     return Fail("Neither the ideoligion page (Page_ChooseIdeoPreset) is open nor a game running (programState " + Current.ProgramState + ").", new { windows = StartFlowWindows() });
-                if (Find.IdeoManager == null || Faction.OfPlayer == null || Faction.OfPlayer.ideos == null)
+                if (Current.Game == null || Find.IdeoManager == null || Faction.OfPlayer == null || Faction.OfPlayer.ideos == null)
                     return Fail("No IdeoManager / player faction ideos (Ideology inactive?).");
 
                 if (!GameDataSaveLoader.TryLoadIdeo(abs, out Ideo ideo) || ideo == null)
@@ -326,13 +326,13 @@ namespace JawaBench.BridgeTools
                 if (dryRun)
                     return (object)new { success = true, dryRun = true, mode, path = abs, ideo = Describe(ideo), wouldAdvance = mode == "page", note = "id is the file's, not yet reassigned" };
 
+                var assign = mode == "page" ? typeof(Page_ChooseIdeoPreset).GetMethod("AssignIdeoToPlayer", StartFlowInst) : null;
+                if (mode == "page" && assign == null) return Fail("Could not reflect Page_ChooseIdeoPreset.AssignIdeoToPlayer (game version changed?). Nothing registered.");
                 ideo = IdeoGenerator.InitLoadedIdeo(ideo);
                 Page next = null;
                 if (mode == "page")
                 {
                     Find.IdeoManager.classicMode = false;
-                    var assign = typeof(Page_ChooseIdeoPreset).GetMethod("AssignIdeoToPlayer", StartFlowInst);
-                    if (assign == null) return Fail("Could not reflect Page_ChooseIdeoPreset.AssignIdeoToPlayer (game version changed?). Nothing registered.");
                     assign.Invoke(page, new object[] { ideo });
                     Find.IdeoManager.RemoveUnusedStartingIdeos();
                     Find.Scenario.PostIdeoChosen();
