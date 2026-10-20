@@ -61,7 +61,7 @@
     <thingClass>Building</thingClass>
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
-      <texPath>Things/Building/Power/GeothermalPlant</texPath>
+      <texPath>Things/Building/Power/RM_MagmaThermalGenerator/RM_MagmaThermalGenerator</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(6,6)</drawSize>
       <color>(255,170,140)</color>
