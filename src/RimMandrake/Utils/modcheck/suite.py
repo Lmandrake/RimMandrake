@@ -46,6 +46,8 @@ RULES THIS MODULE ENFORCES
 """
 import time
 
+import preconditions as _PC
+
 PASS, FAIL, UNMEASURED = "PASS", "FAIL", "UNMEASURED"
 
 
@@ -134,6 +136,10 @@ class TestContext(object):
         # hunger sets `t.feed = False`. `fed` is the evidence (one id per top-up).
         self.feed = True
         self.fed = []
+        # PRECONDITIONS (opt-in: Suite.preconditions = True): the chain and each component are scopes; a bridge_call reply that
+        # refused or did not take withholds the PASS/FAIL of every component that ends after it in that scope (UNMEASURED,
+        # no finding). None = the old behaviour, exactly.
+        self.pre = None
 
     def _feed_low_colonists(self):
         if not self.feed or self.session is None:
@@ -418,9 +424,12 @@ class TestContext(object):
     def bridge_call(self, tool, **params):
         """The escape valve. A mutation through here still owes its own
         `expect_*` afterward -- this does not pay a read-back for you."""
+        answer = params.pop("_answer", False)    # the reply IS the measurement: the caller judges it (preconditions)
         if not self._guard():
             return None
         r = self.session.call(tool, **params)
+        if self.pre is not None:
+            self.pre.reply(tool, params, r, answer=answer)
         self._record("bridge_call %s" % tool, r)
         if self.watch is not None:
             if tool == "jawa/spawn_pawn":
@@ -659,9 +668,30 @@ class _ComponentCtx(object):
 
     def __enter__(self):
         self.ctx._current = self.component
+        self._scope = None
+        if self.ctx.pre is not None:
+            self._scope = self.ctx.pre.scope(self.component.name)
+            self._scope.__enter__()
         return self.ctx
 
+    def _withheld(self, verdict, detail):
+        """The precondition rule (Suite.preconditions): a PASS/FAIL ended while a fault is pending is UNMEASURED."""
+        if self.ctx.pre is None:
+            return None
+        st, _, det = self.ctx.pre.judge(verdict, "MOD", {"detail": detail})
+        if st != UNMEASURED:
+            return None
+        return "UNMEASURED (a precondition did not hold; %s withheld): %s -- %s" % (
+            verdict, "; ".join("%s: %s" % (x["what"], x["why"]) for x in det["unmeasuredBecause"])[:400], str(detail or "")[:200])
+
     def __exit__(self, exc_type, exc, tb):
+        try:
+            return self._exit(exc_type, exc, tb)
+        finally:
+            if self._scope is not None:
+                self._scope.__exit__(None, None, None)
+
+    def _exit(self, exc_type, exc, tb):
         c = self.component
         if self.ctx.upstream_failed:
             c.verdict = UNMEASURED
@@ -683,12 +713,18 @@ class _ComponentCtx(object):
             self.ctx.upstream_failed = True
             self.ctx.upstream_reason = "an UNMEASURED component ended this chain earlier: " + c.detail[:200]
         elif exc is not None:
-            c.verdict = FAIL
             c.detail = "%s: %s" % (exc_type.__name__, exc)
             self.ctx.upstream_failed = True
-            self.ctx._on_finding(c)
+            why = self._withheld(FAIL, c.detail)
+            if why:
+                c.verdict, c.detail = UNMEASURED, why
+                self.ctx.upstream_reason = "an UNMEASURED component ended this chain earlier: " + why[:200]
+            else:
+                c.verdict = FAIL
+                self.ctx._on_finding(c)
         else:
-            c.verdict = PASS
+            why = self._withheld(PASS, c.detail)
+            c.verdict, c.detail = (UNMEASURED, why) if why else (PASS, c.detail)
         self.ctx.components.append(c)
         self.ctx._current = None
         # Suppress the exception (if any): the CHAIN function continues to
@@ -709,12 +745,27 @@ class Suite(object):
         self.toggles = []         # Mod Settings toggle names this mod has
         self.biome = None         # bland-world runs: re-tile the map to this BiomeDef for the suite (bland_world.retile)
         self.tile_temperature = None   # ... and optionally set the tile temperature (C), e.g. cold-only flora
+        # opt-in (PROOF_VERDICTS_REPAIR_SAME_BUG_EVERY_ROUND): each chain and component is a preconditions scope, so a refused or
+        # non-taking bridge_call can never be scored PASS or FAIL (see preconditions.py, TestContext.pre)
+        self.preconditions = False
 
     def chain(self, name, tick_cap=None):
         """`tick_cap`: a chain that legitimately needs more in-game time than the default situational session
         cap (60000) declares its own total here; the watch still sweeps every chunk and caps each wait."""
         def deco(fn):
-            self.chains.append((name, fn))
+            suite = self
+
+            def chain_fn(t, _fn=fn, _name=name):
+                if not suite.preconditions or getattr(t, "pre", None) is not None:
+                    return _fn(t)
+                t.pre = _PC.Preconditions()
+                try:
+                    with t.pre.scope("chain %s" % _name):
+                        return _fn(t)
+                finally:
+                    t.pre = None
+            chain_fn.__name__, chain_fn.__doc__, chain_fn.__wrapped__ = fn.__name__, fn.__doc__, fn
+            self.chains.append((name, chain_fn))
             if tick_cap:
                 self.chain_caps[name] = int(tick_cap)
             return fn
