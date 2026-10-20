@@ -1,0 +1,28 @@
+{
+ "sheetId": "forge_creature_concepts_sheet_2026-10-20",
+ "posture": "whitelist",
+ "criterion": "The order is the agent's preference: Kettugal first. That ranks fit to the Forge description and readability, not how much fun each is to play.",
+ "reviewStatus": {
+  "state": "prefill",
+  "by": null,
+  "at": null,
+  "evidence": "agent concepts; no human has ruled"
+ },
+ "decisions": {
+  "kettugal": {
+   "decision": "pick",
+   "note": "Agent's lean: ties to 'the toughest alloys', gives a readable sign before the deadliest phase, strongest silhouette at zoom.",
+   "prefill": "pick"
+  },
+  "ummisk": {
+   "decision": "",
+   "note": "Most alien of the three; left for you.",
+   "prefill": ""
+  },
+  "brazzok": {
+   "decision": "",
+   "note": "Cheapest to build, best for lore; left for you.",
+   "prefill": ""
+  }
+ }
+}
