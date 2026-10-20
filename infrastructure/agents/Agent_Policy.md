@@ -14,43 +14,19 @@ repo's jobs is design and which is grind — because that is a judgement about R
 and not a fact about the gateway. Anything in this file that is a claim about model
 *availability* is subordinate to `bin/delegate`, which measures it.
 
-## 🔴 The seat models — owner, 2026-09-29 (replaces the 2026-09-02 Fable ladder);
-## Haiku struck 2026-10-01 — no Haiku model on the gateway (but see the correction below:
-## the ALIAS resolves to Sonnet 5 and works; `fable` is the name that actually 400s)
+## 🔴 The seat models — fleet ladder updated by the owner, 2026-10-20
 
-> **Re-measured 2026-10-07 (GovCloud `/v1/models`):** the gateway now also serves `opus-5-5`; there
-> is no Sonnet 5.5, so `sonnet` = Sonnet 5; `ANTHROPIC_DEFAULT_HAIKU_MODEL` now maps to **Sonnet
-> 4.5**, not Sonnet 5 — so haiku is no longer even the same weights as sonnet, just older ones.
-> Read "Sonnet 5.5" below as Sonnet 5 on this account. Ladder source of truth:
-> `~/dev/Lodestar/claude/global/45-subagents.md`.
+> `opus` for design work and complex code generation; `sonnet` for well-defined coding, prose a
+> human will read and act on, and cross-context judgment; `haiku` (Haiku 5.5) for mechanical bulk
+> work with a checkable outcome: OS-level searches, greps, globs, inventories, file sweeps,
+> extraction, classification, dedup pre-screens. **No Fable.** Pass `model` on every spawn.
+> Haiku 5.5 is served on both JPL GenAI accounts as of 2026-10-20. `haiku` is an alias resolved
+> through `ANTHROPIC_DEFAULT_HAIKU_MODEL`: read the environment (or `~/dev/GenAiSwitch/bin/genai-switch
+> status`, `~/dev/DispatchOpenCode/bin/delegate where`) before trusting a rung; name no account.
+> Ladder source of truth: `~/dev/Lodestar/claude/global/45-subagents.md`.
+> (Superseded 2026-10-20: the 2026-10-01 to 2026-10-07 notes that Haiku was struck or remapped to Sonnet.)
 
-> The owner asked for **Opus 5.5 for design work and complex code generation, Sonnet 5.5 for
-> well-defined coding tasks with checkable outcomes, and the most recent Haiku only for
-> OS-level searches.** Fable is dropped from the ladder entirely (decision taken by question
-> card, 2026-09-29).
-
-**Haiku is gone as a MODEL, and the ruling below is unchanged — but the mechanism stated
-here was wrong and is corrected.** The sanctioned gateway at `$ANTHROPIC_BASE_URL` serves 40
-model ids — only `us-gov.anthropic.claude-{opus-4-8,opus-5,sonnet-4-5-20250929-v1:0,sonnet-5}`,
-three Amazon Nova ids, and a Titan embedder — and carries no Haiku id at all; the entire
-`us.anthropic.*` prefix is dead (HTTP 400). Verify with `~/dev/DispatchOpenCode/bin/delegate
-where`, which asks the gateway and reports "could not ask" separately from "serves nothing".
-
-🔴 **CORRECTED 2026-10-01: `model: haiku` does NOT 400. It resolves to Sonnet 5 and works.**
-This paragraph previously said a haiku spawn "launches and only *then* 400s", which was true
-before the same day's fix and false after it. `ANTHROPIC_DEFAULT_HAIKU_MODEL` is
-`us-gov.anthropic.claude-sonnet-5`, so the alias is remapped and a haiku subagent returns
-normally — measured by spawning one. **An ALIAS IS NOT A MODEL ID**: the thing to check is
-what the alias resolves to, not whether the gateway lists the alias's name. The id that
-genuinely dies is **`fable`**, which the harness expands to `claude-fable-5-1` and which no
-environment key can retarget.
-
-**The ruling stands and is now simply clearer.** `haiku` and `sonnet` currently resolve to the
-*same model*, so the haiku rung is cosmetic rather than cheap — and an escalation ladder that
-retries haiku→sonnet re-runs the same weights. OS-level searches (grep, glob, inventories,
-existence checks) fold into **Sonnet** below, for the original reason: there is no cheaper
-Anthropic rung on this gateway to drop them to. Pass `sonnet`, not `haiku`, so the policy says
-what it means.
+`fable` is the name that genuinely 400s (the harness expands it to a literal id).
 
 BENCH runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
@@ -71,7 +47,7 @@ loud, and dangerous exactly where it is silent.
 
 | Who catches a wrong answer | Use |
 |---|---|
-| It is an **OS-level search** (grep, glob, file inventory) whose result is re-checked | **sonnet** — no cheaper rung exists on this gateway (Haiku struck 2026-10-01) |
+| It is an **OS-level search** (grep, glob, file inventory) whose result is re-checked | **haiku** |
 | A **compiler, selftest, validator or hook**, before anyone reads it | **sonnet** |
 | **Another agent**, who will re-derive it before acting | **sonnet** |
 | **Nobody** — it becomes a recorded fact other work cites | **opus** |
@@ -86,10 +62,8 @@ loud, and dangerous exactly where it is silent.
 | **Opus 5.5** (+fast mode) | `opus` | **Design** — design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation — always as a backgrounded subagent from BENCH. **Complex code generation** — Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. **BENCH's window**, the orchestrator |
 | **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome** — patches, defs, deploys, quicktests, fixes a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches** — greps, globs, censuses, existence checks, inventories (folded in 2026-10-01; see below). FOUNDRY's default |
 
-Fable is not on the ladder (owner, 2026-09-29). **Haiku is not on the ladder either, struck
-2026-10-01: the gateway serves no Haiku id, and the `haiku` alias is remapped to an older Sonnet
-(see the correction above), so it is never cheaper.** Pass `opus` or `sonnet`; verify with the
-`/v1/models` call above before trusting any alias.
+Fable is not on the ladder (owner, 2026-09-29). Pass `opus`, `sonnet` or `haiku`; read the environment
+(`ANTHROPIC_DEFAULT_*_MODEL`) before trusting any alias.
 
 Escalate the **model**, never the ceremony: a hard problem gets a smarter model on
 the same short leash. Put `model: opus` on an item you already know is hard;
@@ -107,7 +81,7 @@ candidate narrowing only, never conclusions, never writing —
 
 | Job | Model |
 |---|---|
-| OS-level search: grep, glob, inventory, "does X exist", fixed-shape census | **sonnet** (folded in 2026-10-01 — the gateway has no Haiku) |
+| OS-level search: grep, glob, inventory, "does X exist", fixed-shape census; extraction/classification with a checkable result | **haiku** |
 | Well-defined coding a compiler, selftest or validator will check | **sonnet** |
 | Sweep where the agent must interpret or classify | **sonnet** |
 | Fan-out whose returns will contradict; adversarial refutation | **sonnet** |
