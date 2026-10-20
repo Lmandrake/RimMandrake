@@ -46,7 +46,19 @@ Our Direct Sun is geometry alone: elevation = 90 − arc from (lat 0, long 0)
 mod and of the clock. The GAME's light (`GenCelestial.CelestialSunGlow`, what decides day/night,
 plant light, solar power) comes from the tidal-lock `SunGlowPatch`, which feeds LONGITUDE into
 vanilla's latitude-shaped sun fudges ("sun peeks around", polar-winter offset at dayOfYear 0). So
-it is fixed in time but not a clean function of arc:
+it is fixed in time but not a clean function of arc.
+
+Mechanism (read from `…\3631364335\Source\PlanetTypeDef.cs` `SunGlowPatch` + RimSage `GenCelestial`):
+the prefix calls vanilla `SurfaceNormal(long)` and `SunPosition(long, 0, 0)` with LONGITUDE in the
+latitude slot, then rotates the sun about the up axis by latitude. Inside `SunPosition`, two vanilla
+fudges written for latitude act on longitude: (a) `SunOffsetFractionFromLatitudeCurve` at dayOfYear 0
+(vanilla's "polar winter" tilt, 0.2 ⇒ the sun dropped 11.3° along −y) — in this frame −y lies toward
+negative longitude, so the WEST rim is lit further round and the EAST rim darker; (b) "sun peeks
+around" bends the sun 19° toward the tile (fading out at |long| 70–75°) plus 17°·(1−|long|/60) inside
+|long| < 60°. Then `clamp01(dot/0.7)` saturates everything with dot ≥ 0.7. It is the mod's own
+shortcut (its comment: *"hacky prefix … meh. it works"*), not our data, and nothing we ship touches it.
+Direct Sun (heat) does NOT supersede it: glow drives `IsDaytime`, plant growth light, solar power,
+darkness mood/accuracy and shadows.
 
 | probe | tile | arc | geometric sun ° | game glow (predicted) | reads as |
 |---|---:|---:|---:|---:|---|
@@ -72,8 +84,15 @@ night. Live confirmation of this table is in §5.
   celestial glow 0.68 → 1.00 → 0.68 → **0.00** → 0.75 — the sun sets. Direct Sun elevation stayed
   35.40° throughout (geometry: 35.4°).
 - **Fix applied live** (the two static calls in §1): `Current` = `TidallyLocked`, patches present =
-  True. **Same scrub after:** glow 0.7535 at all five times, Direct Sun 35.40°. Locked, and no
-  day/night change.
+  True. **Same scrub after:** glow 0.7535 at all five times, Direct Sun 35.40°. 🔴 That constant
+  glow is a FROZEN CACHE, not the lock: 0.7535 is exactly vanilla's glow at the before-fix +15 d
+  sample (2nd Jugust; recomputed offline to 4 digits, as are the other four before-fix values), and
+  every read after the clock was set BACK to tick 3 returned it. The home map is read through
+  `CurCelestialSunGlow(map)`, which PerformanceOptimizer caches (`Optimization_GenCelestial_CurCelestialSunGlow`,
+  a `refreshTick` cache); rewinding the clock leaves the refresh tick in the future (cause of the
+  freeze INFERRED from the DLL's names; the symptom MEASURED). The lock itself is proven by the patches
+  being present and by the scratch maps below, whose fresh maps match the time-independent formula.
+  The home tile under the lock reads 1.00 (port).
 - **Scratch maps** (generated, read, dropped, their world objects 156–159 removed):
 
   | tile | arc | predicted glow | live glow | Direct Sun ° (live) | outdoor °C live / stored |
@@ -83,9 +102,8 @@ night. Live confirmation of this table is in §5.
   | 7821 arc 100 W | 100 | 0.50 | **0.500** | (no sun-heat biome) | 3.4 / 2.2 |
   | 2475 arc 60 E | 60 | 0.87 | **0.873** | 29.97 (geometry 30.0) | 33.6 / 34.8 |
 
-  The port matches the game on every scratch tile. The home map reads 0.7535 where the port says
-  1.00: something on that map scales glow after the patch (our `BiomeGlowPatches` postfix or a
-  condition override are the candidates) — cause UNMEASURED. The ±1.25 °C live-vs-stored offsets
+  The port matches the game on every scratch tile. The home map's 0.7535 is the stale cache above,
+  not a glow scaler (`RUT_ExtremeDesert` carries no `BiomeGlowMultiplierExtension`). The ±1.25 °C live-vs-stored offsets
   flip sign by hemisphere: that is the seasonal term of §3 at this date.
 - **Saved:** `Saves\ASHKARR_DEV_START_2026-10-20_LOCKED.rws` (in-game save, new name), which reads
   `alienWorldsFrameworkPlanetType = TidallyLocked` and `worldPresetName = TidallyLocked`. The
@@ -127,4 +145,5 @@ Restore steps: item `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT`.
 - `SUN_GLOW_DECIDE_WEST_TERMINATOR_SUNBATHING` — owner card: light by geometry or the mod's skew.
 - `LOCKED_SEASONS_DECIDE_FIFTEEN_DEGREE_WOBBLE` — owner card: the ±15 °C seasons.
 - `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT` — ride the next larger-list cold load.
-- The Scald's arc/temperature vs its sheet (§3) goes on the end-of-build paint list, not a repaint now.
+- The Scald's arc/temperature vs its sheet (§3) goes on the end-of-build paint list, not a repaint now:
+  filed as a line in `infrastructure/state/items/BIOME_PAINT_ONCE_AT_THE_END_1.md`.

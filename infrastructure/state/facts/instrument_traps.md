@@ -125,6 +125,13 @@ The general method is the global skill `~/.claude/skills/confident-wrong-numbers
   not rerun. Only an excluded-by-name or off-tier skip is a gap. Read each SKIPPED line's reason
   before alarming (2026-10-13).
 
+- 🔴 **`CurCelestialSunGlow(map)` freezes after the clock is set BACK.** PerformanceOptimizer caches it
+  (`Optimization_GenCelestial_CurCelestialSunGlow`, a refresh-tick cache); after `jawa/time_set_ticks` rewinds
+  the clock, every read returns the last value from the later time. 2026-10-20: a "locked sun" proof read
+  0.7535 at five clock times — exactly vanilla's glow at the +15 d sample taken before the rewind (recomputed
+  offline). For a time scrub call `GenCelestial.CelestialSunGlow(PlanetTile,int)` with explicit ticks, or
+  only move the clock forward. Detail: `design/RimMandrake/world_physics_audit_2026-10-20.md` §5.
+
 ## Doc rot and stale gates
 
 - **A doc can describe defects that were fixed before the doc was written.**
