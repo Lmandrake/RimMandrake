@@ -53,14 +53,14 @@ Columns: **route** = how the conductor does it alone; **default** = the provisio
 | — | install the profile | game down: atomic copy of the frozen PAINT file over live `ModsConfig.xml` (`modset_builder.py`/`modlist_swap.py` have no "apply this file" mode, MEASURED by their argparse); then 06 G2 one-liner, count + sha equal | PAINT.RULED (83, MEASURED parse) | `checkpoint.py restore <d>/C2 --apply --game-is-down` |
 | S2 | cold load + dump | Steam launch; `./game --why "remake cold load" loading`; arm `dump_request.txt`=`all` | — | close game |
 | S3 | 7 subdivisions | `python3 src/RimMandrake/Utils/set_planet_subcount.py 7` after launch; the preset re-load click is a UI button: `rimworld/get_ui_layout` → `rimworld/click_ui_target` | — | — |
-| S4 👤 | scenario **Scenario_Utinni** | **UI only.** No bridge tool selects a scenario (`jawa/scenario_parts_get`/`scenario_part_add` act on a RUNNING game). Route: at `Page_SelectScenario`, `get_ui_layout`, find the row labelled with the scenario's label, `click_ui_target`; if the row is not `actionable`, `system_click.py` at the row rect's centre (from the same layout). UNMEASURED whether rows are actionable. Then `Next` | Scenario_Utinni. Anomaly playstyle: leave the default (difficulty, changeable later in Storyteller settings) | regenerate |
-| S5 👤 | ideology mode | UI: `Page_ChooseIdeoPreset`. See §3 for the pick | **non-classic, load `src/Jawa/ideoligion/The Salvation.rid`** (validate first: `validate_save_artifact.py` exit 0). Fallback if the load dialog cannot be driven: pick any preset, then fix after landing (§3) | regenerate (dev world) |
+| S4 👤 | scenario **Scenario_Utinni** | **`jawa/scenario_select {scenario:"Scenario_Utinni", advance:true}`** from the main menu (opens the page itself) — built 2026-10-20, **live only after the §8 deploy**. Fallback if not deployed: at `Page_SelectScenario`, `get_ui_layout`, find the row labelled with the scenario's label, `click_ui_target`; if the row is not `actionable`, `system_click.py` at the row rect's centre. Then `Next` | Scenario_Utinni. Anomaly playstyle: leave the default (difficulty, changeable later in Storyteller settings) | regenerate |
+| S5 👤 | ideology mode | ⚠️ the page comes **after S10**, not here (`Scenario.GetFirstConfigPage`, 1.6: Storyteller → CreateWorldParams → SelectStartingSite → ChooseIdeoPreset → pawns; §8). At `Page_ChooseIdeoPreset`: **`jawa/ideo_load_rid {path:"D:\\Luke\\dev\\RimMandrake\\src\\Jawa\\ideoligion\\The Salvation.rid"}`** (after the §8 deploy). See §3 for the pick | **non-classic, load `src/Jawa/ideoligion/The Salvation.rid`** (validate first: `validate_save_artifact.py` exit 0). Fallback if the load dialog cannot be driven: pick any preset, then fix after landing (§3) | regenerate (dev world) |
 | S6 👤 | Configure Factions | **no clicks needed for the roster we want** — see §4. Click `Next`/`Generate` via `click_ui_target`; `system_screenshot.py` the page first | accept the default list | `jawa/faction_create` adds a missing faction after S7 |
 | S7 | roster audit | `jawa/list_factions` at `Page_SelectStartingSite` | the 8 `RUT_Jawa_*` present + vanilla required set; anything else noted, not removed | `faction_create` for gaps |
 | S8 | stamp | `python.exe src/RimMandrake/Utils/w9_run.py --inputs <G7 bundle>` dry, then `--apply` | — | regenerate (before C4) |
 | S8b/c | labels, renames, ideos | `jawa/world_features_set` loop; `jawa/faction_name_set`; ideos only if §3 fallback | — | — |
 | S9 👤 | LOOK | `jawa/world_commit`, `world_lint`, `worldview.py <save>` render beside `world/view/ASHKARR_WORLDMAP.biome.equirect.png` | **conductor proceeds** on a lint-clean commit and writes the render path into the morning list; the owner's look is deferred, not skipped (§6). Save world-only (~5 MB) → **C4** | C4 is the return point |
-| S10 👤 | start tile | no tool sets `Find.WorldSelector.selectedTile` (grep of JawaBench, MEASURED). Route: `jawa/world_view` centres the globe on the tile (its own description: "centre the globe on a tile"), then `system_click.py` at the screen centre selects it, then read the selection back from `get_ui_state`/`get_ui_layout` (the start-site panel names the tile) before `Next` | **Zeddo's Yard 17007**; alternates **1621**, **17011** (`PLAYER_START_SITE_1`, proposed) in that order if 17007 refuses (impassable, water) | reload C4 |
+| S10 👤 | start tile | **`jawa/start_site_select {tiles:"17007,1621,17011", advance:true}`** (after the §8 deploy): takes the first tile the game accepts, returns each skipped tile's reason; a proximity confirmation returns `success:false` + `pendingConfirmation` (confirm by `click_ui_target`). Fallback if not deployed: `jawa/world_view` centres the globe on the tile, `system_click.py` at the screen centre, read the selection back from `get_ui_state`/`get_ui_layout` before `Next` | **Zeddo's Yard 17007**; alternates **1621**, **17011** (`PLAYER_START_SITE_1`, proposed) in that order if 17007 refuses (impassable, water) | reload C4 |
 | S11b 👤 | scenario's own starting pawns (chooser page) | `click_ui_target` on `Start` (accept the rolled six) | **keep them** (nothing destroyed; 12 colonists harm nothing on a dev world). Morning call | `jawa/destroy_batch` later, or reload C5 |
 | — | save at once | `rimworld/save_game` → **C5** | — | — |
 | S10b | ship | `print_gravship.py design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.paint.xml --center x,z --apply` (floors per owner ruling 20, 13 file) → **C6** | — | reload C5 |
@@ -92,21 +92,15 @@ via RimSage 2026-10-20):
    so worldgen gives each its own fixed ideo **in either mode**. Route (ii)'s `jawa/faction_ideo_set` pass (never run
    on a fresh world, UNMEASURED) becomes a repair tool, not a required step. (The RECORDED 1-ideo Ash'karr was made
    before these defs carried `fixedIdeo`, or by a path this reading does not cover: UNMEASURED which.)
-3. **Classic skips the ideo page**, so The Salvation cannot be loaded there; there is **no bridge tool that loads a
-   `.rid`** (grep of JawaBench for `.rid`/`LoadIdeo`: only a render tool names it, MEASURED). Non-classic is the only
+3. **Classic skips the ideo page**, so The Salvation cannot be loaded there; `jawa/ideo_load_rid` (built 2026-10-20,
+   §8) loads a `.rid` at that page or into a running game. Non-classic is the only
    native route to the player ideo the founders' `Ideo_20` is remapped onto (S11).
 4. Non-classic is the superset: everything classic offers can still be approximated later; classic cannot be left.
 
-Automation: `Page_ChooseIdeoPreset` → the load button → `Dialog_IdeoList_Load` row "The Salvation" → `click_ui_target`
-(UNMEASURED: actionable or not; fallback `system_click.py` at the layout rect). **Fallback if neither works:** take any
-non-classic preset, land, and record "player ideo is not The Salvation" for the morning; the smallest fix is a new tool
-(spec below), not a regeneration.
-
-**Tool spec (not built; needs a game-down build window): `jawa/ideo_load_rid`** — args `path` (a `.rid` under the
-Ideos folder), `setPlayerPrimary` (bool). Body: `GameDataSaveLoader.TryLoadIdeo(path, out Ideo ideo)`; refuse on false;
-`Find.IdeoManager.Add(ideo)`; if `setPlayerPrimary`, `Faction.OfPlayer.ideos.SetPrimary(ideo)` (or call the existing
-`jawa/ideo_set_primary`); return ideo id, name, meme defNames, precept count read back. ~30 lines in
-`JawaBenchIdeoTools.cs`; prove per `rimbridge-companion`.
+Automation: `jawa/ideo_load_rid` at `Page_ChooseIdeoPreset` (§8). Without the deploy: the load button →
+`Dialog_IdeoList_Load` row "The Salvation" → `click_ui_target` (UNMEASURED: actionable or not; fallback `system_click.py`
+at the layout rect). **Fallback if neither works:** take any non-classic preset, land, then `jawa/ideo_load_rid` in the
+running game (`setPlayerPrimary:true`; colonists keep their ideo until converted) — not a regeneration.
 
 ## 4. S6 Configure Factions — why the default list is the roster
 
@@ -168,3 +162,41 @@ jawa/pawn_relations  {pawn:<Ikee>, action:"list"}                               
 - **G16 FAIL**: fixtures are test maps, not the world; quarantine (a move) makes them unloadable by accident and is
   reversible.
 - Not waivable: G8, G2 (the profile the world is made under), G7 (stamp inputs), G17 (checkpoints).
+
+## 8. New start-flow tools (S4, S5, S10): deploy and verify
+
+Built 2026-10-20 in `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchStartFlowTools.cs` (logic in
+`JawaBenchStartFlowCore.cs`, offline units `python3 src/RimMandrake/Utils/selftest_start_flow_core.py`, 37/37). Built with
+`build.py --gm` (409 tools in the DLL == source; `selftest_tool_metadata.py` PASS). **NOT DEPLOYED**: the game was up
+under another helper. Each tool does what its page's own button does (1.6 source, RimSage), and reads back the state the
+page reads:
+
+| tool | does | read-back |
+|---|---|---|
+| `jawa/scenario_select {scenario, advance, openIfAbsent}` | at the main menu opens `Page_SelectScenario` (as New colony does), sets its private `curScen`; `advance` = the page's own `CanDoNext`/`DoNext` (creates the new `Game`) | `curScen` is the object; `Current.Game.Scenario` after Next; next page open |
+| `jawa/start_site_select {tiles, advance, jumpCamera}` | at `Page_SelectStartingSite`: first candidate `TileFinder.IsValidTileForNewSettlement` accepts → `WorldInterface.SelectedTile` + `GameInitData.startingTile` | both fields, biome, hilliness, landmark; every skipped tile's reason; a proximity confirmation → `success:false` + `pendingConfirmation` |
+| `jawa/ideo_load_rid {path, setPlayerPrimary, allowDuplicateName, dryRun}` | at `Page_ChooseIdeoPreset`: `Page_ChooseIdeoPreset.DoLoad`'s steps (load, new id, player primary + initial ideo, drop unused starting ideos, `PostIdeoChosen`, `classicMode=false`) then advances; in a running game: adds it (+ primary) | `PrimaryIdeo` is it, in `IdeoManager`, `classicMode`, page closed, next page open |
+
+**Page order (1.6, `Scenario.GetFirstConfigPage`):** Storyteller → CreateWorldParams (S3/S6) → SelectStartingSite (S7/S10)
+→ ChooseIdeoPreset (S5) → starting pawns (S11b). S5 therefore runs AFTER S10. Note S8/S9 (stamp, look, C4) run at the
+landing-site page, before S10, as the table has them.
+
+**Deploy (the first game-down window; nothing else needed, no ModsConfig change):**
+1. Game down (`./game` reads `down`; companion DLL is memory-mapped while it runs).
+2. From the seat clone at a commit containing these files: `python3 src/RimMandrake/bridgetools/build.py --gm --apply`
+   → must print `deployed` (no `THIS DEPLOY WOULD REMOVE TOOLS`; if it does, read it, never `--allow-tool-removal`).
+3. Launch as the run already does (S2's cold load). The new tools ride that load: no extra load is spent.
+
+**Verify (at the main menu, before S3; all read-only or refusal paths):**
+1. `python.exe D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\rimbridge_client.py --list-tools` lists all three.
+2. `jawa/start_site_select {tiles:"17007"}` → `success:false`, "landing-site page ... is not open" (refusal path live).
+3. `jawa/ideo_load_rid {path:"D:\\Luke\\dev\\RimMandrake\\src\\Jawa\\ideoligion\\The Salvation.rid", dryRun:true}` →
+   `success:false`, "Neither the ideoligion page ... nor a game running" — proves path resolution + file found (a bad path
+   fails earlier with "No file at"). ⚠️ the mirror must hold the file: `./mirror sync` if unsure.
+4. `jawa/scenario_select {scenario:"Utinni_typo", openIfAbsent:false}` → `success:false`, "No scenario page is open".
+   Then the real S4 call: `{scenario:"Scenario_Utinni", advance:true}` → check `pickReadBack:true`,
+   `gameScenario` = the Utinni scenario name, `nextPage:"Page_SelectStoryteller"`.
+5. S10 / S5 are proven by their own read-backs in the run (`startingTileReadBack == 17007` or a listed refusal;
+   `isPlayerPrimary:true`, `classicMode:false`, `ideo.name` "The Salvation", `nextPage` the pawn page).
+   Any `success:false` → fall back to the UI route in that row and record the response JSON in
+   `D:\ClaudeWork\remake\gates_progress.md`.
