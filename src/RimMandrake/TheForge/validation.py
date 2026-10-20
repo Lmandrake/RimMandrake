@@ -244,7 +244,10 @@ WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabl
 # FORGE_DHOKKUR_WAYS_1 (RM_ForgeDhokkurWays.cs): wired in the C#, but NO component of this suite drives them yet, so
 # they are neither WIRED (the toggle floor would demand a component) nor scaffolding (they do change something).
 UNCOVERED = ["dhokkurWakeEffectsEnabled", "dhokkurPathMemoryEnabled", "dhokkurPassesToPolish", "dhokkurTrailsFade",
-             "dhokkurTrailFadeDays", "dhokkurWallShoveEnabled", "dhokkurShoveMode", "dhokkurShoveDamagePct"]
+             "dhokkurTrailFadeDays", "dhokkurWallShoveEnabled", "dhokkurShoveMode", "dhokkurShoveDamagePct",
+             # FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND (RM_ForgeUmmisk.cs): the ummisk's lava-edge wander and
+             # steam puffs; no component drives them yet (owed live criteria on that item).
+             "ummiskLavaEdgeEnabled", "ummiskSteamEnabled"]
 # FORGE_SPUNSTONE_SOURCES_1: the floatstone-only builds spunstone bonding unlocks besides the keel brace.
 SPUNSTONE_PARTS = ("RM_FloatstoneDoor", "RM_SpunstoneHull")
 SCAFFOLDING = sorted(k for k in SETTINGS_DEFAULTS if k not in WIRED and k not in UNCOVERED)
@@ -1070,7 +1073,7 @@ def biome_wiring(t):
             if _live(t):
                 _need_parse(t)
                 # plants floor 4: the owner's 2026-10-19 cards cut the three IronScruff_* rows (9 -> 6), then
-                # Plant_Fireweed + Plant_MagmaCactus (6 -> 4); animals floor 8 (LavaSnail cut, 10 -> 9).
+                # Plant_Fireweed + Plant_MagmaCactus (6 -> 4); animals floor 8 (LavaSnail cut, 10 -> 9; RM_Ummisk added 2026-10-20, 9 -> 10).
                 if len(expect) < (4 if kind == "plants" else 8):
                     _fail("source parse found %d wild %s rows: parse failure" % (len(expect), kind))
                 missing, skewed, skipped = [], [], []

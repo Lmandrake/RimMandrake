@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Ummisk.xml                 FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND, new 2026-10-20
+
+  The Forge's slow-ground creature, filling the slot LavaSnail left (cut 03ac7f26a).
+  The owner picked UMMISK on forge_creature_concepts_sheet_2026-10-20, with these words
+  (verbatim, the def's design authority):
+    "Riding on a steam cushion where it touches the lava, the steam rushes through organic
+     glass tubes that extract out the heat and minerals for sustenance. Grows from the silica
+     vapor and temperature differential. A true alien among aliens, slowly wandering the edge
+     of the lava forever. It is not clear whether it has intellect as we know it."
+  Concepts: design/RimMandrake/forge_slowground_concepts_2026-10-20.md.
+
+  Invented name, so RM tier, wired inline in RM_TheForge_Biome.xml (Q11a). One home: the Forge.
+
+  How each clause is carried:
+    - lava edge forever: RM_UmmiskExtension + RM_JobGiver_UmmiskLavaEdge (Source/RM_ForgeUmmisk.cs,
+      think-tree insert Defs/ThinkTreeDefs/RM_ThinkTree_UmmiskLavaEdge.xml). Toggle.
+    - steam cushion: RM_CompUmmiskSteam puffs vanilla steam while on the edge. A look only. Toggle.
+    - heat and minerals for sustenance: foodType None, so no Food need (RM_Dhokkur precedent).
+    - grows from silica vapour: hasGenders false, so it never mates; every ummisk on a map
+      arrived with the wild population.
+    - wandering forever: needsRest false, it never sleeps.
+    - no clear intellect: the body has no brain (no ConsciousnessSource part), so it cannot be
+      knocked out; it dies when its dome is destroyed or it takes lethal damage. No face, no head.
+  NOT built: the concept sheet's glass trail (quenching lava into walkable glass). The owner's
+  words do not mention it; it is a question for him, not a build.
+
+  All numbers PROVISIONAL (first guesses, unmeasured in play): size, speed, health, armour,
+  wildness, weights, drawSizes.
+
+  Art: Textures/Things/Pawn/Animal/RM_Ummisk/ (south/east/north, Graphic_Multi). Today a
+  procedural placeholder (src/RimMandrake/Utils/art/ummisk_standin.py, through the art ledger);
+  the real render is artpipe job rm_ummisk_v1 (design/RimMandrake/ummisk_art_2026-10-20.json),
+  pending while Codex image generation returns HTTP 429.
+-->
+<Defs>
+
+  <BodyPartDef>
+    <defName>RM_UmmiskDome</defName>
+    <label>tube dome</label>
+    <hitPoints>40</hitPoints>
+    <skinCovered>false</skinCovered>
+    <bleedRate>0.3</bleedRate>
+    <executionPartPriority>500</executionPartPriority>
+  </BodyPartDef>
+
+  <BodyPartDef>
+    <defName>RM_UmmiskTubeBank</defName>
+    <label>glass tube bank</label>
+    <hitPoints>15</hitPoints>
+    <skinCovered>false</skinCovered>
+    <bleedRate>0.5</bleedRate>
+    <frostbiteVulnerability>0</frostbiteVulnerability>
+  </BodyPartDef>
+
+  <BodyPartDef>
+    <defName>RM_UmmiskCiliaFringe</defName>
+    <label>cilia fringe</label>
+    <hitPoints>20</hitPoints>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+    </tags>
+  </BodyPartDef>
+
+  <BodyPartDef>
+    <defName>RM_UmmiskSteamChamber</defName>
+    <label>steam chamber</label>
+    <hitPoints>12</hitPoints>
+    <skinCovered>false</skinCovered>
+    <bleedRate>0.5</bleedRate>
+  </BodyPartDef>
+
+  <BodyDef>
+    <defName>RM_UmmiskBody</defName>
+    <label>tube colony</label>
+    <corePart>
+      <def>RM_UmmiskDome</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>RM_UmmiskTubeBank</def>
+          <customLabel>front tube bank</customLabel>
+          <coverage>0.14</coverage>
+          <height>Top</height>
+        </li>
+        <li>
+          <def>RM_UmmiskTubeBank</def>
+          <customLabel>rear tube bank</customLabel>
+          <coverage>0.14</coverage>
+          <height>Top</height>
+        </li>
+        <li>
+          <def>RM_UmmiskTubeBank</def>
+          <customLabel>left tube bank</customLabel>
+          <coverage>0.12</coverage>
+          <height>Middle</height>
+        </li>
+        <li>
+          <def>RM_UmmiskTubeBank</def>
+          <customLabel>right tube bank</customLabel>
+          <coverage>0.12</coverage>
+          <height>Middle</height>
+        </li>
+        <li>
+          <def>RM_UmmiskSteamChamber</def>
+          <coverage>0.06</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_UmmiskCiliaFringe</def>
+          <coverage>0.12</coverage>
+          <height>Bottom</height>
+          <groups>
+            <li>RM_UmmiskCilia</li>
+          </groups>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+  <BodyPartGroupDef>
+    <defName>RM_UmmiskCilia</defName>
+    <label>cilia</label>
+  </BodyPartGroupDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Ummisk</defName>
+    <label>ummisk</label>
+    <description>A mound of hollow glass tubes, hundreds of them, packed like reeds and beaded with condensate, gliding along the very lip of the melt on a fringe of cilia. Where it touches the lava the underside flashes to steam, and it rides that cushion: the steam rushes up through the tubes, and the tubes keep what the steam carries -- the heat, and the minerals boiled out of the rock. It grows the way frost grows, out of silica vapour and the difference between too hot and hotter. No one has seen one born. No one has seen one sleep. It follows the edge of the lava wherever the lava goes, slowly, forever, and when the crust freezes over the flows it moves out to the new edge. It has no face. Whether anything in it thinks, in any way we would recognise, no survey has been able to say.</description>
+    <statBases>
+      <MoveSpeed>1.3</MoveSpeed>                  <!-- PROVISIONAL: slow ground -->
+      <Mass>60</Mass>                            <!-- PROVISIONAL -->
+      <Flammability>0</Flammability>
+      <MeatAmount>20</MeatAmount>                <!-- PROVISIONAL -->
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp> <!-- PROVISIONAL: glass, brittle -->
+      <ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+      <ArmorRating_Heat>2.0</ArmorRating_Heat>
+      <ComfyTemperatureMin>20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>160</ComfyTemperatureMax>
+      <Wildness>0.99</Wildness>                   <!-- PROVISIONAL: "a true alien among aliens" -->
+    </statBases>
+    <tools>
+      <li>
+        <label>cilia</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>RM_UmmiskCilia</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.TheForge.CompProperties_UmmiskSteam">
+        <steamIntervalTicks>90</steamIntervalTicks>  <!-- PROVISIONAL -->
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.TheForge.RM_UmmiskExtension">
+        <edgeSearchRadius>40</edgeSearchRadius>      <!-- PROVISIONAL -->
+        <noEdgeRecheckTicks>2500</noEdgeRecheckTicks> <!-- PROVISIONAL -->
+      </li>
+    </modExtensions>
+    <race>
+      <body>RM_UmmiskBody</body>
+      <baseBodySize>0.8</baseBodySize>       <!-- PROVISIONAL -->
+      <baseHealthScale>0.9</baseHealthScale> <!-- PROVISIONAL -->
+      <foodType>None</foodType>
+      <needsRest>false</needsRest>
+      <hasGenders>false</hasGenders>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>200</lifeExpectancy>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+      <bloodDef>Filth_Ash</bloodDef>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Mech_Scyther_Wounded</soundWounded>
+          <soundDeath>Pawn_Mech_Scyther_Death</soundDeath>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>3</minAge>
+          <soundWounded>Pawn_Mech_Scyther_Wounded</soundWounded>
+          <soundDeath>Pawn_Mech_Scyther_Death</soundDeath>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>10</minAge>
+          <soundWounded>Pawn_Mech_Scyther_Wounded</soundWounded>
+          <soundDeath>Pawn_Mech_Scyther_Death</soundDeath>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ummisk</defName>
+    <label>ummisk</label>
+    <race>RM_Ummisk</race>
+    <combatPower>30</combatPower>        <!-- PROVISIONAL -->
+    <wildGroupSize>1~2</wildGroupSize>   <!-- PROVISIONAL -->
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ummisk/RM_Ummisk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>   <!-- PROVISIONAL -->
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ummisk/RM_Ummisk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>   <!-- PROVISIONAL -->
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ummisk/RM_Ummisk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.9</drawSize>   <!-- PROVISIONAL; LavaSnail was 2.1 -->
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
