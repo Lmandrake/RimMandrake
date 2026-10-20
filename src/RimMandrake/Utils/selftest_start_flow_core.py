@@ -16,7 +16,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 
-MIN_UNITS = 37
+MIN_UNITS = 41
 
 
 def main(argv):

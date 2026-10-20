@@ -162,5 +162,25 @@ namespace JawaBench.BridgeTools
             }
             return pick;
         }
+
+        /// <summary>
+        /// Run <paramref name="write"/>, then re-run it while <paramref name="readBackOk"/> is false,
+        /// at most <paramref name="maxAttempts"/> writes in all. Returns the number of writes made
+        /// when the read-back agreed, or -attempts when it never did. Why it exists (world remake,
+        /// 2026-10-20): after start_site_select skipped refused candidates, the selection read back
+        /// -1 while GameInitData.startingTile held the chosen tile; a second write of the same tile
+        /// read back fine. Root cause UNMEASURED; the tool now re-asserts and REPORTS the count, so
+        /// a second write is visible, never silent.
+        /// </summary>
+        public static int WriteUntilReadBack(Action write, Func<bool> readBackOk, int maxAttempts = 3)
+        {
+            if (maxAttempts < 1) maxAttempts = 1;
+            for (int i = 1; i <= maxAttempts; i++)
+            {
+                write();
+                if (readBackOk()) return i;
+            }
+            return -maxAttempts;
+        }
     }
 }
