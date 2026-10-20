@@ -138,13 +138,30 @@ class PB(VH.H):
     """call / hp (the hose probe) / ticks / probe_of on one socket."""
 
 
+# Probe replies that came back success=False (timeout, no frame serviced it, no such tank): a read that never happened reads as
+# an empty dict, and a bar that FAILs over an empty dict measured the probe channel, not the mod. realflow's row() drains this
+# list per row and reads UNMEASURED for a FAIL it could have caused (review 2026-10-20).
+_PROBE_BAD = []
+
+
+def _note_bad(what, r):
+    if len(_PROBE_BAD) < 12:
+        _PROBE_BAD.append({"read": what, "error": str((r or {}).get("error") or (r or {}).get("raw") or r)[:120]})
+
+
 def _tank(B, cell):
     r = B.hp("tank:%d,%d" % tuple(cell))
-    return r if r.get("success") else {}
+    if r.get("success"):
+        return r
+    _note_bad("tank:%d,%d" % tuple(cell), r)
+    return {}
 
 
 def _hose(B, reel):
-    for h in B.hp("census").get("hoses") or []:
+    c = B.hp("census")
+    if c.get("success") is False:
+        _note_bad("census", c)
+    for h in c.get("hoses") or []:
         if tuple(h.get("reel") or ()) == tuple(reel):
             return h
     return {}
@@ -322,12 +339,25 @@ def _set_tank_job(B, cell, job, max_clicks=4):
 def realflow(B, rows):
     """The real-flow bars of hose port step 6 (FINAL §3.6). Each reads the FAR tank's units (G3.11), never the pump's neighbour."""
     def row(rid, ok, detail, cls="MOD", unmeasured=None, bad=None):
+        probe = list(_PROBE_BAD)
+        del _PROBE_BAD[:]
         if not ok and not unmeasured and bad:
             unmeasured = "the scene's buildings were not all built or its pump never powered (build_batch survived < asked): %s" % json.dumps(bad, default=str)[:300]
+        if not ok and not unmeasured and probe:
+            unmeasured = "a probe read never came back (%s): the bar read an empty reply, not the mod" % json.dumps(probe, default=str)[:300]
         unmeasured = unmeasured if not ok else None      # a measured PASS is never turned back into ignorance
         V.row(rows, rid, "UNMEASURED" if unmeasured else ("PASS" if ok else "FAIL"), "SITE" if unmeasured else cls,
               dict(detail, why=unmeasured) if unmeasured else detail)
 
+    def unlaid(*lays):
+        """Why a bar that stands on a laid hose cannot be asked: the lay was refused or never answered (SITE; the H* rows are the
+        ones that prove laying itself)."""
+        for lay_ in lays:
+            if not (lay_ or {}).get("success"):
+                return "the hose was never laid (lay: %s)" % json.dumps(lay_, default=str)[:200]
+        return None
+
+    del _PROBE_BAD[:]
     B.hp("defaults")
     # ---- scene 0: pump -> reel -> hose -> far tank
     s = Scene(B, 0)
@@ -346,7 +376,8 @@ def realflow(B, rows):
     row("NS_hose_carries_real_units", lay.get("success") and link and dt <= RF_DISCOVER and gained > 0
         and gained + hose_took >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10 and (h.get("credits") or 0) > 0 and h.get("netLink"),
         {"lay": lay, "before": t0, "after": t1, "gained": gained, "hoseTook": hose_took, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt,
-         "bound": [RF_DISCOVER, RF_CYCLE], "pumpPoweredAfterTicks": s.powered, "credits": h.get("credits"), "netLink": h.get("netLink")}, bad=s.bad)
+         "bound": [RF_DISCOVER, RF_CYCLE], "pumpPoweredAfterTicks": s.powered, "credits": h.get("credits"), "netLink": h.get("netLink")}, bad=s.bad,
+        unmeasured=unlaid(lay))
     plump, waited = _poll(B, lambda: _hose(B, s.reel).get("state") == "Plump", 300)
     tint = _hose(B, s.reel).get("tintLiquid")
     row("NS_hose_tint_is_carried_liquid", tint == LIQUID_WATER, {"tintLiquid": tint, "want": LIQUID_WATER,
@@ -354,15 +385,19 @@ def realflow(B, rows):
         unmeasured=None if lay.get("success") else "the hose was never laid (lay: %s): no tint to read" % json.dumps(lay, default=str)[:200])
     # power cut: destroy the battery -> no transfer -> flat no later than 1.5 x 250 + releaseTicks + transitionTicks = 905
     plumped_at = B.hp("census").get("tick")
-    B.call("jawa/destroy_batch", rects="%d,%d,1,2" % s.battery, categories="Building")
+    cut = B.call("jawa/destroy_batch", rects="%d,%d,1,2" % s.battery, categories="Building") or {}
     cut_tick = B.hp("census").get("tick")
     flat, w2 = _poll(B, lambda: _hose(B, s.reel).get("state") == "Flat", 1000)
     u_after = _tank(B, s.tank).get("units")
     B.ticks(300)
     u_later = _tank(B, s.tank).get("units")
-    row("NS_hose_plumps_only_from_powered_pump", plump and flat and w2 <= 905 + 10 and u_later == u_after,
+    # the battery that was never destroyed keeps the pump powered (the hose never goes Flat), and an unread tank reads None == None:
+    # both are the staging / the probe, not the mod
+    cut_ok = cut.get("success") is not False and int(cut.get("destroyed") or 0) >= 1
+    row("NS_hose_plumps_only_from_powered_pump", plump and flat and w2 <= 905 + 10 and u_later == u_after and u_after is not None,
         {"plumpedAfterTicks": waited, "flatAfterCut": w2, "bound": 905, "plumpedAtTick": plumped_at, "cutTick": cut_tick,
-         "tankStillAfterCut": [u_after, u_later]}, bad=s.bad)
+         "tankStillAfterCut": [u_after, u_later], "cut": {k: cut.get(k) for k in ("success", "destroyed", "message")}}, bad=s.bad,
+        unmeasured=unlaid(lay) or (None if cut_ok else "the battery was never destroyed (destroy_batch: %s)" % json.dumps(cut, default=str)[:160]))
     # ---- scene 1: a dropped hose carries nothing
     s1 = Scene(B, 1)
     if s1.site(rows, "RF_site1_ready"):
@@ -375,9 +410,10 @@ def realflow(B, rows):
         h1 = _hose(B, s1.reel)
         # can-fail (code review 2026-10-19): "the tank did not change" is vacuous when nothing could have moved -- an unbuilt tank
         # (units None) or an unpowered pump -- so the row first needs a live tank and a powered pump to mean anything
-        if a0 is None or s1.powered is None or s1.bad:
+        if a0 is None or s1.powered is None or s1.bad or st.get("success") is False:
             row("NS_hose_dropped_carries_nothing", False, {"staged": st, "units": [a0, a1], "pumpPoweredAfterTicks": s1.powered, "bad": s1.bad},
-                unmeasured="the dropped-hose scene could not move liquid anyway (tank unread %s, pump powered %s, unbuilt %s)" % (a0 is None, s1.powered is not None, bool(s1.bad)))
+                unmeasured="the dropped-hose scene could not move liquid anyway (tank unread %s, pump powered %s, unbuilt %s, trail not set %s)" % (a0 is None, s1.powered is not None, bool(s1.bad), st.get("success") is False))
+            del _PROBE_BAD[:]
         else:
             row("NS_hose_dropped_carries_nothing", st.get("carry") == "Dropped" and a0 == a1 and not h1.get("netLink"),
                 {"staged": st, "units": [a0, a1], "netLink": h1.get("netLink"), "pumpPoweredAfterTicks": s1.powered})
@@ -387,19 +423,22 @@ def realflow(B, rows):
         s2.pump_scene()
         lay2 = s2.lay()
         B.ticks(260)
-        B.call("jawa/destroy_batch", rects="%d,%d,2,2" % s2.tank, categories="Building")
+        rm2 = B.call("jawa/destroy_batch", rects="%d,%d,2,2" % s2.tank, categories="Building") or {}
         B.ticks(61)
         gone = _hose(B, s2.reel).get("netLink")
         s2.build("RM_LiquidTank:%d,%d" % s2.tank)
         B.ticks(61)                            # the reel's free-end cache re-reads within 60 ticks; the index rebuilds per tick
         found = _hose(B, s2.reel).get("netLink")
-        row("NS_hose_port_removed_discovered", gone is None and found is not None, {"afterRemove": gone, "afterRebuild61": found}, bad=s2.bad,
-            unmeasured=None if lay2.get("success") else "the hose was never laid (lay: %s)" % json.dumps(lay2, default=str)[:200])
+        # a tank that was never destroyed leaves the link up: "gone" reads set, which is the staging, not the hose
+        rm2_ok = rm2.get("success") is not False and int(rm2.get("destroyed") or 0) >= 1
+        row("NS_hose_port_removed_discovered", gone is None and found is not None, {"afterRemove": gone, "afterRebuild61": found,
+            "destroy": {k: rm2.get(k) for k in ("success", "destroyed", "message")}}, bad=s2.bad,
+            unmeasured=unlaid(lay2) or (None if rm2_ok else "the far tank was never destroyed (destroy_batch: %s)" % json.dumps(rm2, default=str)[:160]))
         b0 = _tank(B, s2.tank).get("units") or 0
         B.ticks(260)
         b1 = _tank(B, s2.tank).get("units") or 0
         row("NS_hose_port_removed_moves", b1 - b0 >= UNITS_PER_LEVEL, {"units": [b0, b1]}, bad=s2.bad,
-            unmeasured=None if lay2.get("success") else "the hose was never laid")
+            unmeasured=unlaid(lay2) or (None if rm2_ok else "the far tank was never destroyed, so it was never rebuilt"))
     # ---- scene 3: the pump at the FAR end, the tank beside the reel (M2); bars below were ">= 5" (one level) in the drum era
     s3 = Scene(B, 3)
     if s3.site(rows, "RF_site3_ready"):
@@ -424,7 +463,7 @@ def realflow(B, rows):
         took3 = _held(B, [s3.reel]) - g0
         row("NS_hose_far_end_pump", link and dt <= RF_DISCOVER and c1 - c0 > 0 and c1 - c0 + took3 >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10,
             {"lay": lay3, "units": [c0, c1], "hoseTook": took3, "pumpPoweredAfterTicks": s3.powered, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt, "netLink": link,
-             "net": B.hp("net:%d,%d" % far_pump)}, bad=s3.bad)
+             "net": B.hp("net:%d,%d" % far_pump)}, bad=s3.bad, unmeasured=unlaid(lay3))
     # ---- scene 4: relay chain pump -> reel A -> reel B -> tank (both hoses credited)
     s4 = Scene(B, 4)
     if s4.site(rows, "RF_site4_ready"):
@@ -446,7 +485,8 @@ def realflow(B, rows):
         row("NS_relay_chain_carries", d1 - d0 > 0 and d1 - d0 + took4 >= UNITS_PER_LEVEL and lkb and dtb <= RF_DISCOVER and mt <= RF_CYCLE + 10
             and (ha.get("credits") or 0) > 0 and (hb.get("credits") or 0) > 0,
             {"layA": la, "layB": lb, "relayTo": ha.get("relayTo"), "pumpPoweredAfterTicks": s4.powered, "units": [d0, d1], "hoseTook": took4, "discoveredAfterTicks(B)": dtb,
-             "movedTicksAfterDiscovery": mt, "creditsA": ha.get("credits"), "creditsB": hb.get("credits")}, bad=s4.bad)
+             "movedTicksAfterDiscovery": mt, "creditsA": ha.get("credits"), "creditsB": hb.get("credits")}, bad=s4.bad,
+            unmeasured=unlaid(la, lb))
     # ---- scene 5: pump -> universal pipe run -> reel -> hose -> tank; and two pipe runs never merge through a tank
     s5 = Scene(B, 5)
     if s5.site(rows, "RF_site5_ready"):
@@ -470,7 +510,7 @@ def realflow(B, rows):
         # was read as a FAIL against a bare 10,000 bar -- the same fault f93867b198 fixed in scenes 1-4 and 6
         took5 = _held(B, [reel5]) - k5
         row("NS_pipe_and_hose_one_net", e1 - e0 > 0 and e1 - e0 + took5 >= UNITS_PER_LEVEL,
-            {"lay": lp, "units": [e0, e1], "hoseTook": took5, "net": B.hp("net:%d,%d" % s5.pump)}, bad=s5.bad)
+            {"lay": lp, "units": [e0, e1], "hoseTook": took5, "net": B.hp("net:%d,%d" % s5.pump)}, bad=s5.bad, unmeasured=unlaid(lp))
         # a second pipe run touching a mid tank (and a tank V on it) must stay out of the pump's net
         # A 2x2 tank at (x,z) occupies x..x+1, z..z+1. Live run 6 (2026-10-19) put V at (ox+1, oz+13): its z+1 row is oz+14, one row
         # past the prepared plot (RF_PH=14 -> oz..oz+13), so V was never built (SITE). V now sits WEST of the pipe run, inside the
@@ -489,10 +529,12 @@ def realflow(B, rows):
         # must first see the pump's own hose-fed tank (tank5), and V must really stand, before "V is absent" means anything.
         saw_own, v_built = tuple(tank5) in reached, bool(_tank(B, v))
         mid_built = bool(_tank(B, mid))
-        if not (mid_built and v_built):
+        if not (mid_built and v_built and saw_own):
             # a tank that was not built measures the staging, not the mod: UNMEASURED SITE, with the build_batch reply for the cause
             row("NS_tank_does_not_bridge_pipe_runs", False, {"reached": reached, "secondRunTank": v, "midTankBuilt": mid_built,
-                "secondRunTankBuilt": v_built, "build": bb}, unmeasured="the second pipe run's tanks were not both built (mid %s, V %s)" % (mid_built, v_built))
+                "secondRunTankBuilt": v_built, "probeSawPumpTank": saw_own, "build": bb},
+                unmeasured="the second pipe run's tanks were not both built (mid %s, V %s) or the net probe never saw the pump's own tank (%s): "
+                           "'V is absent' would prove nothing" % (mid_built, v_built, saw_own))
         else:
             row("NS_tank_does_not_bridge_pipe_runs", saw_own and tuple(v) not in reached,
                 {"reached": reached, "secondRunTank": v, "probeSawPumpTank": saw_own, "secondRunTankBuilt": v_built})
@@ -510,7 +552,7 @@ def realflow(B, rows):
         s6.build("RM_HoseReel:%d,%d" % s6.reel, "RM_LiquidTank:%d,%d" % src, "RM_LiquidTank:%d,%d" % s6.tank)
         B.ticks(2)
         fill = B.hp("filltank:%d,%d=%s,%d" % (src + (LIQUID_WATER, FILL_UNITS)))
-        s6.lay()
+        lay6 = s6.lay()
         # the source tank's job must be Empty: a Store tank (the default) never sends (RM_LiquidNet.SettleTick); live run 6
         # left it Store and read 0 moved, which measured the harness, not the mod
         job = _set_tank_job(B, src, "Empty")
@@ -527,10 +569,13 @@ def realflow(B, rows):
             took6 = _held(B, [s6.reel]) - q0
             h6 = _hose(B, s6.reel)
             # 520 ticks hold 2 or 3 settles (phase); each sends PER_CYCLE_CAP; the hose's first fill is part of what left src
+            # a fill that did not land leaves an empty source: nothing could be fed, whatever the hose does
+            nofill = (None if (fill or {}).get("success") is not False and s0 > 0
+                      else "the source tank was never filled (filltank: %s, units %s)" % (json.dumps(fill, default=str)[:160], s0))
             row("NS_tank_feeds_hose", f1 - f0 > 0 and PER_CYCLE_CAP <= f1 - f0 + took6 <= 3 * PER_CYCLE_CAP and s0 - s1u >= f1 - f0 + took6
                 and (h6.get("credits") or 0) > 0,
                 {"units": [f0, f1], "source": [s0, s1u], "hoseTook": took6, "perCycleCap": PER_CYCLE_CAP, "job": job, "fill": fill,
-                 "credits": h6.get("credits"), "netLink": h6.get("netLink")}, bad=s6.bad)
+                 "credits": h6.get("credits"), "netLink": h6.get("netLink")}, bad=s6.bad, unmeasured=unlaid(lay6) or nofill)
 
 
 # ============================================================================ the session
@@ -632,7 +677,10 @@ class Proof(object):
             self.res["mod_hash"], self.res["mod_hash_error"] = None, repr(ex)
         self.gss_active = "mandrake.rm.gimmesomeslack" in running
         on = PKG in running
-        self.row("preflight", "HP1_tier_running_startup_log_clean", "PASS" if ok and on and not pre else "FAIL", "MOD" if on else "SITE",
+        # no game in Playing, or the flowworks tier not on the list, is the SITE: the run measured nothing (UNMEASURED, still aborts the
+        # run below). Only an error naming our namespaces in the startup log is the mod's FAIL.
+        hp1 = "PASS" if ok and on and not pre else ("FAIL" if ok and on else "UNMEASURED")
+        self.row("preflight", "HP1_tier_running_startup_log_clean", hp1, "SITE" if hp1 == "UNMEASURED" else "MOD",
                  {"playing": ok, "flowworks": on, "gimmesomeslack": self.gss_active, "startupErrorsNamingHose": pre[:6]})
         hd = B.hp("defaults")
         B.call("jawa/weather_set", weather="Clear", lockWeather=True)
@@ -640,7 +688,7 @@ class Proof(object):
         B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         self.res["site_calm"] = V.site_calm(B)       # static boring world: storyteller/mental/disease off, wild spawner blocked
         drafted = [p["id"] for p in (B.hp("colonists").get("pawns") or []) if B.hp("pawn:%d=draft" % p["id"]).get("success")]
-        self.row("preflight", "HP2_probes_site_pinned", "PASS" if hd.get("success") else "FAIL", "HARNESS",
+        self.row("preflight", "HP2_probes_site_pinned", "PASS" if hd.get("success") else "UNMEASURED", "HARNESS",
                  {"hoseProbe": hd.get("success"), "colonistsDrafted": drafted})
         if not hd.get("success"):
             raise RuntimeError("the hose probe is dead")
@@ -659,7 +707,7 @@ class Proof(object):
         # review S7: GSS's old proof_all folded a PASSING H0_probe_channel (the matrix runner's own "HoseProbe defaults applied"
         # harness row) into its probe row; HP2_probes_site_pinned is that successor here (it fails on the same hp("defaults")).
         # A FAILING one is not dropped: every hose scene row it would have backed reads FAIL with its detail, so the declared
-        # ids stay fixed and the matrix never passes on a dead probe channel.
+        # ids stay fixed and the matrix never passes on a dead probe channel (UNMEASURED: a dead channel measured the harness).
         dead = [r for r in res.get("rows") or [] if r.get("id") == "H0_probe_channel" and r.get("status") != "PASS"]
         got = res.get("scenes") or {}
         # code review 2026-10-20: a declared scene the runner never returned is a row, not a silence
@@ -668,7 +716,7 @@ class Proof(object):
                 self.row("matrix_hose", "MX_" + s["id"], "UNMEASURED", "HARNESS", "the matrix runner returned no result for this scene")
         for sid, sc in got.items():
             if dead:
-                self.row("matrix_hose", "MX_" + sid, "FAIL", "HARNESS", {"H0_probe_channel": dead[0].get("detail")})
+                self.row("matrix_hose", "MX_" + sid, "UNMEASURED", "HARNESS", {"H0_probe_channel": dead[0].get("detail")})
                 continue
             self.row("matrix_hose", "MX_" + sid, sc.get("status", "UNMEASURED"), "MOD", sc.get("detail") or sc.get("census"))
 
@@ -746,6 +794,12 @@ class Proof(object):
         st["p2"] = p2
         return st
 
+    def _skip_sl(self, prefixes, why):
+        """The save/load rows an early return would leave silent: declared ids read UNMEASURED, never absent."""
+        for rid in DECLARED_ROWS["save_load"]:
+            if rid.split("_")[0] in prefixes:
+                self.row("save_load", rid, "UNMEASURED", "SITE", why)
+
     def save_load(self):
         B = self.B
         carry = self.stage_carry_for_save() if self.want("carry") else {"error": "carry block not run"}
@@ -758,7 +812,8 @@ class Proof(object):
         name = self.args.save_name or "RM_fw_hose_proof_%s" % time.strftime("%Y%m%d%H%M%S")
         before = V._saves_stat()
         if name + ".rws" in before:
-            self.row("save_load", "SL1_save_landed_new_file_only", "FAIL", "HARNESS", "%s.rws exists" % name)
+            self.row("save_load", "SL1_save_landed_new_file_only", "UNMEASURED", "HARNESS", "%s.rws exists" % name)
+            self._skip_sl(("SL2", "SL3", "SL4"), "SL1 could not run: the save name is taken")
             return
         B.call("rimworld/save_game", saveName=name)
         V._wait_saved(name)
@@ -769,6 +824,7 @@ class Proof(object):
         self.res["save"] = name + ".rws"
         self.row("save_load", "SL1_save_landed_new_file_only", "PASS" if ok else "FAIL", "HARNESS", {"new": new, "changed": changed})
         if not ok:
+            self._skip_sl(("SL2", "SL3", "SL4"), "no new save file landed: nothing to read or reload")
             return
         with open(os.path.join(V.SAVES, name + ".rws"), "rb") as f:
             blob = f.read()
@@ -780,10 +836,16 @@ class Proof(object):
         st2 = "PASS" if sl2 else ("UNMEASURED" if no_hose else "FAIL")
         self.row("save_load", "SL2_save_names_no_class_of_ours", st2, "SITE" if st2 == "UNMEASURED" else "MOD",
                  dict(hits, colonistsOnHoseJobsAtSave=hose_jobs, hoseReelStylesInSave=styles, hosesAtSave=0 if no_hose else "some"))
-        B.call("rimworld/load_game", saveName=name)
+        ld = B.call("rimworld/load_game", saveName=name) or {}
+        if ld.get("success") is False:
+            # a refused load leaves the OLD map Playing: SL3/SL4 would compare the live map with itself and PASS vacuously
+            self._skip_sl(("SL3", "SL4"), "rimworld/load_game refused: %s" % json.dumps(ld, default=str)[:200])
+            return
         ok2, waited = V._wait_playing(B)
         if not ok2:
-            self.row("save_load", "SL3_hoses_and_reel_styles_survive", "FAIL", "SITE", {"state": waited})
+            # the load never reached Playing inside the wait budget (a cold full list is slow): the site; a mod's own load error is
+            # Z_log_budget's to catch
+            self._skip_sl(("SL3", "SL4"), "the reload never reached Playing (state %s)" % waited)
             return
         c_b = B.hp("census")       # hoses first, before any tick (a carried reel moves with every tick)
         r1b = {k: VH._carry_view(self._hose_by(c_b, reel1))[k] for k in keys}
@@ -798,12 +860,14 @@ class Proof(object):
         st, cls, laid = sl4_verdict(carry, r1a, r1b, r2a, r2b, carry_a, carry_b), "MOD", {}
         if st == "PASS" and carry.get("p2"):
             # CR5 after load: the carried hose resumes and lands Laid at its target
+            sj = {}
             if r2b.get("carry") == "Dropped":
-                B.hp("startjob:%d,%d=work;%d" % (reel2 + (carry["p2"],)))
+                sj = B.hp("startjob:%d,%d=work;%d" % (reel2 + (carry["p2"],)))
             h, w, seen = self._poll_reel(reel2, lambda x: x.get("carry") == "Laid", 1200)
             laid = {"carry": h.get("carry"), "far": h.get("far"), "pending": h.get("pending"), "ticks": w, "seen": seen}
             if not (laid.get("carry") == "Laid" and tuple(laid.get("far") or ()) == self.CARRY_TARGET2):
-                st = "FAIL"
+                # the resume job that never started (probe refused it) is the harness; a started job that never lands is the mod
+                st = "UNMEASURED" if sj.get("success") is False else "FAIL"
         if st == "UNMEASURED":
             cls = "SITE"
         self.row("save_load", "SL4_carry_states_survive", st, cls,
@@ -826,7 +890,11 @@ class Proof(object):
         B = self.B
         for rid, name in zip(ids, names):
             base = max([x.get("Sequence", 0) for x in (B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}).get("logs") or []] or [0])
-            B.call("rimworld/load_game", saveName=name)
+            ld = B.call("rimworld/load_game", saveName=name) or {}
+            if ld.get("success") is False:
+                # no such save / load refused: the old map stays Playing and would FAIL the row for want of a mid-carry job (SITE)
+                self.row("preport", rid, "UNMEASURED", "SITE", {"save": name, "loadRefused": ld})
+                continue
             ok, waited = V._wait_playing(B)
             B.ticks(60)
             new = [e for e in (B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}).get("logs") or [] if (e.get("Sequence") or 0) > base]
@@ -834,8 +902,10 @@ class Proof(object):
             bad = [t[:200] for t in text if "Cleaning up invalid job state" in t or (("Could not find" in t or "Could not resolve" in t) and VH.names_hose_class(t))]
             jobs = [p.get("job") for p in B.hp("colonists").get("pawns") or []]
             if not ok:
-                # a load that never reached Playing measured the site, not the mod (as SL3 rules it) -- review 2026-10-20
-                self.row("preport", rid, "UNMEASURED", "SITE", {"save": name, "loaded": ok, "loadSeconds": waited, "badLines": bad[:4]})
+                # a load that never reached Playing is the site (the wait budget) -- unless the log names the class/job error this
+                # row exists to catch, which is the mod's FAIL
+                self.row("preport", rid, "FAIL" if bad else "UNMEASURED", "MOD" if bad else "SITE",
+                         {"save": name, "loaded": ok, "loadSeconds": waited, "badLines": bad[:4]})
                 continue
             self.row("preport", rid, "PASS" if not bad and any(str(j).startswith(("RM_CarryHoseEnd", "RM_RetractHose")) for j in jobs) else "FAIL",
                      "MOD", {"save": name, "loaded": ok, "loadSeconds": waited, "badLines": bad[:4], "jobs": jobs})
