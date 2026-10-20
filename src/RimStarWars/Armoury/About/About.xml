@@ -117,7 +117,6 @@ Generated from a live post-patch def dump; load last.</description>
     <li>als.gravtech.bc</li>
     <li>aoba.fortress.industrial</li>
     <li>aoba.warcasket</li>
-    <li>arcjc007.lasercannon</li>
     <li>biomesteam.biomescore</li>
     <li>biomesteam.biomespollutedlands</li>
     <li>brrainz.harmony</li>
@@ -131,15 +130,12 @@ Generated from a live post-patch def dump; load last.</description>
     <li>ludeon.rimworld.royalty</li>
     <li>milkwater.destinymod</li>
     <li>mlie.dungeonpack</li>
-    <li>mlie.miningcospaceship</li>
     <li>mlie.yayoscombat3</li>
-    <li>nephlite.orbitaltradecolumn</li>
     <li>neronix17.outerrim.core</li>
     <li>neronix17.outerrim.droiddepot</li>
     <li>oskarpotocki.vfe.pirates</li>
     <li>sapiently.theyatomicmonsters</li>
     <li>sarg.alphamechs</li>
-    <li>van.beasts</li>
     <li>vanillaexpanded.gravship</li>
     <li>vanillaexpanded.vaewaste</li>
     <li>vanillaexpanded.vfesecurity</li>
@@ -147,7 +143,6 @@ Generated from a live post-patch def dump; load last.</description>
     <li>vanillaexpanded.vwe</li>
     <li>vanillaquestsexpanded.cryptoforge</li>
     <li>xmb.ancientminingindustry.mo</li>
-    <li>xmb.ancienturbanruins.mo</li>
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>fantasyfan.sos2.starwarsship</li>
     <li>guy762.kotordroids</li>

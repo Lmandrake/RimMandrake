@@ -82,6 +82,25 @@ def field_patch(dn, node, value_xml, present):
       </li>""" % {"base": base, "node": node, "val": value_xml}
 
 
+def prereq_guard(guard, inner):
+    """Wrap a prerequisites field patch so it applies only when every NON-vanilla prerequisite it
+    names exists. Retirement Wave 2 (2026-10-19) dropped VFE Farming; Core's MoisturePump was
+    rewired to require VFE_Res_FarmingTechniques, an unresolved cross-reference without the mod.
+    With a guarded prereq absent the def keeps its own prerequisites (vanilla behaviour)."""
+    if not guard:
+        return inner
+    pred = " and ".join(def_xpath(p)[len("Defs/"):] for p in guard)
+    body = "\n".join("  " + l for l in inner.split("\n"))
+    return """      <li Class="PatchOperationConditional">
+        <xpath>Defs[%s]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+%s
+          </operations>
+        </match>
+      </li>""" % (pred, body)
+
+
 def prereq_remove(dn):
     base = def_xpath(dn)
     return """      <li Class="PatchOperationConditional">
@@ -181,7 +200,11 @@ def main():
             if want_pre:
                 val = ("<prerequisites>%s</prerequisites>"
                        % "".join("<li>%s</li>" % escape(p) for p in want_pre))
-                ops.append(field_patch(dn, "prerequisites", val, True))
+                # Only prerequisites defined by Core/DLC are assumed present; any other
+                # (or one absent from CAP) guards the rewrite (prereq_guard).
+                guard = [p for p in want_pre
+                         if not str((live.get(p) or {}).get("packageId") or "").startswith("ludeon.")]
+                ops.append(prereq_guard(guard, field_patch(dn, "prerequisites", val, True)))
             elif not unmeasured:
                 ops.append(prereq_remove(dn))
             n_pre += 1

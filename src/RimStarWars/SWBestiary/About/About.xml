@@ -72,7 +72,6 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer` (retired 2026-10
     <li>mandrake.rm.proximityhatch</li>  <!-- Patches/ProximityHatch - supplies CompProperties_ProximityHatch, EGG_PROXIMITY_HATCH_TRIGGER_1 -->
     <li>mandrake.rm.biomes</li>  <!-- supplies RM_CompProperties_FluidSacs/ProximityPsychicStun/ShardArmor/TameSootheAura + RM_Grappled/RM_Drained hediffs, DEEPS_FAUNA_MECHANICS_1 (mandrake.rm.creaturebehaviors folded in here 2026-09-28) -->
     <li>biomesteam.biomespollutedlands</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->
-    <li>van.beasts</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->
     <li>zylle.morevanillabiomes</li>  <!-- carried from SeasWaterline fold 2026-09-09 -->
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Odyssey</li>

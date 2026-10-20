@@ -98,12 +98,8 @@ Load last.</description>
     <li>Neronix17.OuterRim.DroidDepot</li>                <!-- Outer Rim - Droid Depot -->
     <li>RedMattis.BetterPrerequisites</li>                <!-- Big and Small - Framework -->
     <li>RedMattis.BigSmall.Core</li>                      <!-- Big and Small - Genes &amp; More -->
-    <li>Van.Beasts</li>                                   <!-- Dark Ages : Beasts and Monsters -->
     <li>VanillaExpanded.VAEWaste</li>                     <!-- Vanilla Animals Expanded — Waste Animals -->
     <li>VanillaExpanded.VGeneticsE</li>                   <!-- Vanilla Genetics Expanded -->
     <li>vanillaquestsexpanded.ancients</li>               <!-- Vanilla Quests Expanded - Ancients -->
-    <li>vanillaracesexpanded.phytokin</li>                <!-- Vanilla Races Expanded - Phytokin -->
-    <li>zal.betterinfestations</li>                       <!-- Better Infestations (Continued) -->
-    <li>zal.gianttoads</li>                               <!-- Giant Toads (Continued) -->
   </loadAfter>
 </ModMetaData>

@@ -88,8 +88,8 @@
           <li>ZBiome_Marsh</li>
           <li>TropicalRainforest</li>
           <li>ColdBog</li>
-          <li>COMIGO_GreaterSwamp_Cold</li>
-          <li>COMIGO_GreaterSwamp_Temperate</li>
+          <li MayRequire="zal.comigogreaterswamps">COMIGO_GreaterSwamp_Cold</li>
+          <li MayRequire="zal.comigogreaterswamps">COMIGO_GreaterSwamp_Temperate</li>
           <li>TemperateSwamp</li>
           <li>TropicalSwamp</li>
           <li>Wetland</li>
@@ -120,7 +120,7 @@
 
           <!-- RARE -->
           <li MayRequire="zylle.MoreVanillaBiomes"><key>ZBiome_DesertOasis</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>COMIGO_GreaterSwamp_Tropical</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li MayRequire="zal.comigogreaterswamps"><key>COMIGO_GreaterSwamp_Tropical</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>Volcano</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>LavaField</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>Scarlands</key><value><scoreOffset>-4</scoreOffset></value></li>

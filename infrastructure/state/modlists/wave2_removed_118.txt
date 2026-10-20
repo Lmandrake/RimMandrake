@@ -1,0 +1,119 @@
+# Retirement Wave 2 (prepared 2026-10-19, NOT deployed). packageId<TAB>name<TAB>why
+vanillaexpanded.backgrounds	Vanilla Backgrounds Expanded	05 SAFE
+zav.glowstoneforked	[ZAV] Glowstone	05 SAFE
+adaptive.ideology.storage	Adaptive Ideology Storage	05 SAFE
+adaptive.primitivestorage	Adaptive Primitive Storage	05 SAFE
+adaptive.simplestorage	Adaptive Simple Storage	05 SAFE
+swablu.ambience	Ambient Rim	05 SAFE
+vita.campdangers	Ancient Dangers on Campsites and Encounter maps	05 SAFE
+asp.halituisamaricanous	Astronomy Style Pack	05 SAFE
+elsov.beliar	Beliar Xenotype	05 SAFE
+zal.betterinfestations	Better Infestations (Continued)	05 SAFE
+chaoticenrico.bettertrees	Better Trees	05 SAFE
+kopp.biomecompatibilityproject	Biome Compatibility Project	05 SAFE
+heatherathebyne.childrenlearnoncaravan	Children Learn on Caravan [USE NEW FORK!]	05 SAFE
+dimonsever000.ideologyvirtues	Cybranian - Ideology Virtues	05 SAFE
+east.dancepartycustommusic	Dance Party Custom Music	05 SAFE
+van.beasts	Dark Ages : Beasts and Monsters	05 SAFE
+det.avaloi	Det's Xenotypes - Avaloi	05 SAFE
+det.boglegs	Det's Xenotypes - Boglegs	05 SAFE
+det.brawnum	Det's Xenotypes - Brawnum	05 SAFE
+det.buzzers	Det's Xenotypes - Buzzers	05 SAFE
+det.venators	Det's Xenotypes - Venators	05 SAFE
+nep.enginesunlimited	Engines Unlimited	05 SAFE
+det.epochsincense	Epochs - Incense	05 SAFE
+eoralmilk.faceaddonframework	Face Addon Framework	05 SAFE
+mlie.factionraidcooldown	Faction Raid Cooldown (Continued)	05 SAFE
+arti.shrinez	Guaranteed Ancient Dangers	05 SAFE
+elsov.highborn	Highborn Xenotype	05 SAFE
+hailuan.iwbb	I will be back	05 SAFE
+kxp.ideosymbolsasideograms	Ideology symbols as Ideograms	05 SAFE
+zal.ionweaponry	Ion Weaponry (Continued)	05 SAFE
+zal.largeoutpost	Large Outpost (Continued)	05 SAFE
+arcjc007.lasercannon	Laser Cannon	05 SAFE
+dorbo.watersfx	LiquidSFX	05 SAFE
+mewn.medievalsigns	Medieval Signs	05 SAFE
+mlie.miningcoalertspeaker	MiningCo. Alert speaker (Continued)	05 SAFE
+mlie.miningcodrillturret	MiningCo. DrillTurret (Continued)	05 SAFE
+mlie.miningcomms	MiningCo. MMS (Continued)	05 SAFE
+mlie.miningcospaceship	MiningCo. Spaceship (Continued)	05 SAFE
+mlie.morefactioninteraction	More Faction Interaction (Continued)	05 SAFE
+radzerp.naturalpaths	Natural Paths	05 SAFE
+nightmare.core	Nightmare Core	05 SAFE
+meltup.polyamorybeds.vanilla	Polyamory Beds (Vanilla Edition)	05 SAFE
+xylthixlm.races.core	Posthuman Drift Core Mod	05 SAFE
+laureeeeeeeeeeeeeeen.shrooms	Psilocap Cultivation	05 SAFE
+mlie.recyclethis	Recycle This (Continued)	05 SAFE
+kilokio.rimai.framework	RimAI Framework	05 SAFE
+ghost.rootsofrimworld	Roots of Rimworld	05 SAFE
+rwnodetree.rwplanetatmosphere	RW - Planet Atmosphere	05 SAFE
+moja.salvagerubble	Salvage Rubble	05 SAFE
+shavius.medieval.flavour	Shavius's Medieval Flavour Pack	05 SAFE
+hol.smeltpatch	Smelt More Stuff	05 SAFE
+balistafreak.standalonehotspring	Standalone Hot Spring	05 SAFE
+gerrymon.stylizedslavecollar	Stylized Slave Collars and Headgears	05 SAFE
+ucp.tabletopdecorations	Tabletop Decorations	05 SAFE
+tsa.torturepod	Torture Pod	05 SAFE
+mlie.tradeabletrinkets	Tradeable Trinkets (Continued)	05 SAFE
+aelanna.transparentsubstructure	Transparent Substructure	05 SAFE
+trouperton.trystantravellersshuttleschematics	Trystan Traveller's Shuttle Schematics	05 SAFE
+nephlite.orbitaltradecolumn	Utility Columns	05 SAFE
+vanillaexpanded.vappe	Vanilla Apparel Expanded	05 SAFE
+vanillaexpanded.vfecore	Vanilla Furniture Expanded	05 SAFE
+vanillaexpanded.vfeart	Vanilla Furniture Expanded - Art	05 SAFE
+vanillaexpanded.vfefarming	Vanilla Furniture Expanded - Farming	05 SAFE
+vanillaexpanded.vfemedical	Vanilla Furniture Expanded - Medical Module	05 SAFE
+vanillaexpanded.vfepower	Vanilla Furniture Expanded - Power	05 SAFE
+vanillaexpanded.vfeproduction	Vanilla Furniture Expanded - Production	05 SAFE
+vanillaexpanded.vfespacer	Vanilla Furniture Expanded - Spacer Module	05 SAFE
+vanillaexpanded.viehar	Vanilla Ideology Expanded - Hats and Rags	05 SAFE
+vanillaracesexpanded.fungoid	Vanilla Races Expanded - Fungoid	05 SAFE
+vanillaracesexpanded.phytokin	Vanilla Races Expanded - Phytokin	05 SAFE
+vanillaracesexpanded.starjack	Vanilla Races Expanded - Starjack	05 SAFE
+vanillaexpanded.vwems	Vanilla Weapons Expanded - Makeshift	05 SAFE
+gabrieel1482.raidvehicleframework	VehicleRaid Framework	05 SAFE
+addvans.walktheworld	Walk the World	05 SAFE
+tleno.wireheadstyle	Wirehead Style	05 SAFE
+btd.remix.gravshipblueprints	[BTD] Gravship Blueprints	05 SAFE
+nals.facialanimationexperimentals	[NL] Facial Animation - Experimentals	05 SAFE
+hailuan.customquestframeworkai	Custom Quest Framework-Level AI	05 SAFE
+vesper.egihologramsandprojectors	EGI Holograms and Projectors	05 SAFE
+sd.fa.geneticheadsframework	Genetic Heads Framework for [NL] Facial Animation	05 SAFE
+zal.gianttoads	Giant Toads (Continued)	05 SAFE
+icepickgma.invisibledisplaycase	Invisible Display Case Continued	05 SAFE
+smxrez.makeshiftreexamined	Makeshift: Re-Examined	05 SAFE
+sinnamon.moreritualrewards	More Ritual Rewards	05 SAFE
+xylthixlm.races.titan	Posthuman Drift Titan Xenotype	05 SAFE
+ogliss.thewhitecrayon.quarry	Quarry	05 SAFE
+kilokio.rimai.core	RimAI Core (BETA)	05 SAFE
+vanillaexpanded.vcookestews	Vanilla Cooking Expanded - Stews	05 SAFE
+kuhlyus.modpatch.vanillaoutpost	Vanilla Mining Outpost Patch	05 SAFE
+fourtoo.glowingbush	[42G]Glowing Bushes [Forked]	05 SAFE
+zal.comigogreaterswamps	Comigo's Greater Swamps (Continued)	05 SAFE
+mlie.functionalvanillaexpandedprops	Functional Vanilla Expanded Props (Continued)	05 SAFE
+sd.fa.geneticheadsbiotech	Genetic Biotech for Facial Animation	05 SAFE
+sd.fa.geneticheadsmods	Genetic Mods for Facial Animation	05 SAFE
+zacharyfoster.mineralsfrozen	Minerals Frozen	05 SAFE
+zacharyfoster.mineralsrock	Minerals Rock	05 SAFE
+reel.facialanims	Reel's Facial Animation Textures	05 SAFE
+sd.fa.reelsadjustments	Adjustments for Reel's Facial Animation Textures	05 SAFE
+vanillaexpanded.vtexe.facialanims	Vanilla Textures Expanded - [NL] Facial Animation	05 SAFE
+dmp.vfepirates.warcasketwork	VFE Pirates - Hardworking Warcaskets	05 SAFE
+teiwaz.taajg	[GTG]Traders Accept All Junk Gear	05 SAFE
+teiwaz.tacac	[GTG]Traders Accept Chunks & Corpses	05 SAFE
+sd.fa.vteadjustments	Adjustments for Vanilla Textures Expanded - [NL] Facial Animation	05 SAFE
+redmattis.bigweapons	Big and Small - Weapons	05 SAFE
+leutiankane.mineablesor	LK Mineable Resources Outer Rim	05 SAFE
+leutiankane.mines2patchouterrim	LK Mines 2.0 Compatability[Outer Rim Core]	05 SAFE
+neronix17.outerrim.furnitureanddecor	Outer Rim - Furniture & Decor	05 SAFE
+danzinagri.facialanimationcompatabilityproject	Facial Animation Compatability Project	05 SAFE
+zylle.sandcastles	Sand Castles	05 SAFE
+btd.gbp.shippack.kotor.vge	[BTD] Ship Pack: KotOR Ships VGE	05 SAFE
+jm.bettertraders	Better Traders	07 DROP-DEEPER
+biomesteam.biomesfossils	Biomes! Fossils	07 DROP-DEEPER
+zylle.mapdesigner	Map Designer	07 DROP-DEEPER
+xercaine.tribal.furniture	Tribal Furniture	07 DROP-DEEPER
+xmb.ancienturbanruins.mo	Ancient urban ruins	07 DROP-DEEPER
+m00nl1ght.geologicallandforms.biometransitions	Biome Transitions	07 DROP-DEEPER
+zacharyfoster.mineralsframework	Minerals Framework	owner 2026-10-19: retire Minerals Framework (with its whole family)
+zacharyfoster.mineralssparkle	Minerals Sparkle	owner 2026-10-19: retire Minerals Framework (with its whole family)
