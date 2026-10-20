@@ -1068,5 +1068,11 @@
     <requiredGenes>
       <li>RSW_OrtolanHead</li>
     </requiredGenes>
+    <!-- Full-colour painting, same as Mimbanese: CutoutComplex + all-black _m masks draw it untinted (2026-10-20). -->
+    <modExtensions>
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
+        <shaderType>CutoutComplex</shaderType>
+      </li>
+    </modExtensions>
   </HeadTypeDef>
 </Defs>
