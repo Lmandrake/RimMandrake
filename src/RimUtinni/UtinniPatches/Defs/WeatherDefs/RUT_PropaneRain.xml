@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_PropaneRain.xml        UtinniPatches - AURORAL_UMBRA_RENAME_BACK_TO_DARK, 2026-10-20
+
+  The Auroral Umbra's precipitation. Owner 2026-10-19: "it should NOT snow, it should rain propane
+  (equivalent with chemfuel)." Physics from the original concept sheet
+  (design/Jawa/worldbuilding/worldgen_interactive_def.md:151-152): propane is liquid -188..-42 C,
+  and every Umbra tile is colder than -42 C, so it falls as liquid.
+
+  rainRate 0 ON PURPOSE: vanilla reads rainRate as WATER - it puts out fires, soaks pawns, fills
+  water collectors and (in ExplosiveGrowth) waters plants. Liquid propane does none of that. The
+  falling drops are the vanilla rain overlay, tinted pale blue-grey through the overlay colour
+  (SkyManager tints any overlay with the sky's overlay colour, the trick SlimeRain and AshFall use).
+  Favorability Neutral so it can appear in the first 8 days (WeatherDecider refuses below-Neutral).
+  PROVISIONAL: duration, movement/accuracy figures and colours are first guesses.
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RUT_PropaneRain</defName>
+    <label>propane rain</label>
+    <description>Cold, clear propane falling as rain. It does not wet anything the way water does and it will not put out a fire; it beads on the ice and runs into still pools that are fuel, waiting for a spark.</description>
+    <favorability>Neutral</favorability>
+    <isBad>false</isBad>
+    <perceivePriority>2</perceivePriority>
+    <accuracyMultiplier>0.9</accuracyMultiplier>
+    <moveSpeedMultiplier>0.95</moveSpeedMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <windSpeedFactor>0.8</windSpeedFactor>
+    <ambientSounds>
+      <li>Ambient_Rain</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Rain</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.62,0.66,0.74)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.70,0.74,0.82)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.50,0.54,0.62)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.62,0.66,0.76)</overlay>
+      <saturation>0.75</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.30,0.33,0.40)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.55,0.60,0.70)</overlay>
+      <saturation>0.6</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.20,0.22,0.28)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.52,0.56,0.66)</overlay>
+      <saturation>0.6</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

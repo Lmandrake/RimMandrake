@@ -34,12 +34,9 @@
          the sheet's own "every ancient danger here has already been opened and
          destroyed." Fixed below with RUT_Scarlands' description AND settleWarning
          (the_scarlands.md).
-      3. AB_PropaneLakes ("the Rimefall", 2,531 tiles): donor text asserted an
-         industrial-accident origin for what is terramanufacture's far end (§GM,
-         TERRAMANUFACTURE_CANON_1). Fixed below with land-only text drawn from
-         the_propane_lakes.md §0/§1/§4/§4b (owner approved by card 2026-10-03,
-         PROPANE_LANDS_RENAME_1); it omits the lake (the Chill), the war lab
-         (SSGM ban 8) and the crater ending.
+      3. (AB_PropaneLakes - its patch was removed 2026-10-20: Alpha Biomes is retired so
+         it matched nothing, and the land is our own RUT_Umbra, the Auroral Umbra,
+         whose description lives in its def.)
       4. AB_RockyCrags ("the Abyss", 1,135 tiles): donor text invented a
          rival ancient race ("Forsakens... a mysterious humanoid alien race"),
          corrupting the campaign's one reveal ladder. Fixed below with
@@ -48,15 +45,13 @@
     THE REST OF THE LIST closes the same findings doc's §B "three mods arguing"
     class — donor descriptions under a campaign label, none individually a plot
     leak, all part of "the label-over-donor-voice split" the item names as in scope.
-    Every RUT_ text below is placed verbatim (never edited here); the sole exception
-    is AB_PropaneLakes, documented above.
+    Every RUT_ text below is placed verbatim (never edited here).
 
     NOT PORTED (deliberately, not an oversight):
       - RUT_NightsideIce, RUT_BlueDesert (BiomeGRimond gets it below, but
         RUT_BlueDesert already owns 1,029/1,030 of its own tiles directly),
-        RUT_TwilightSea, RUT_GreySea, RUT_TheScald, RUT_FuelSnows (renamed from
-        RUT_Umbra 2026-09-21, UMBRA_IS_A_REGION_NOT_A_BIOME_1 — Umbra is now the
-        region's name, not this biome's): these already run under their OWN RUT_
+        RUT_TwilightSea, RUT_GreySea, RUT_TheScald, RUT_Umbra (the Auroral
+        Umbra): these already run under their OWN RUT_
         defName on (almost) all their tiles — nothing to port onto, they ARE the
         source.
       - RUT_Jawa_BackgroundWater: isBackgroundBiome, implemented=false, no tile ever
@@ -83,13 +78,6 @@
     </match>
   </Operation>   <!-- "the Rot" - RUT_TheRot -->
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/description</xpath>
-      <value><description>Frozen ground under the brightest sky on the planet, where the cold is far below the point at which fuel turns liquid and a fine snow of hydrocarbon crystals falls without end. Translucent crystal growth rises overnight from what settles, and the aurora lights the ice from above at all hours. The few things that move across it do so in a halo of blue flame.</description></value>
-    </match>
-  </Operation>   <!-- "the Rimefall" [PLOT LEAK 3] - see header note -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/description</xpath>

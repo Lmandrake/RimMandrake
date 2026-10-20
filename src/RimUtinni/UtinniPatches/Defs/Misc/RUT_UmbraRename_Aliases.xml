@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AURORAL_UMBRA_RENAME_BACK_TO_DARK (2026-10-20): RUT_FuelSnows was renamed back to RUT_Umbra (owner,
+  2026-10-19: "Let's call it the Auroral Umbra then"). A save naming RUT_FuelSnows by defName loads it
+  as RUT_Umbra through RM_DefAliasDef (EnvironmentalHazards, RM_DefAliases.cs); skipped when that mod
+  is absent. NOT covered: world tiles, which store a biome shortHash (PlanetLayer.tileBiome resolves
+  an unknown hash to the layer's default biome). Census 2026-10-20: the canonical start save and
+  AREAFIX2 hold RUT_Umbra on 2,531 tiles and RUT_FuelSnows on none.
+-->
+<Defs>
+  <RimMandrake.EnvironmentalHazards.RM_DefAliasDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_UmbraRenameAliases</defName>
+    <aliases>
+      <li><from>RUT_FuelSnows</from><to>RUT_Umbra</to><defType>BiomeDef</defType></li>
+    </aliases>
+  </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+</Defs>

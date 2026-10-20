@@ -73,8 +73,8 @@ checks out of v1.
 
 ### Option A — Remake tonight (your proposal, hardened)
 **Tonight, with you present:** (1) rebuild the mod list = live list minus Wave 1 (39) minus the
-124 drops, minus the 32 evaluation-hostile; (2) offline remaps — biome names (incl. `RUT_Umbra`→`RUT_FuelSnows`,
-2,531 tiles, per the paint list), mutator and landmark ports, faction names, gravship floor, founder;
+124 drops, minus the 32 evaluation-hostile; (2) offline remaps — biome names (`RUT_Umbra` keeps its
+2,531 tiles: the FuelSnows rename was reversed 2026-10-20), mutator and landmark ports, faction names, gravship floor, founder;
 (3) build the missing exporter OR accept older layers; (4) one generate + faction pass + stamp +
 your look; (5) first start save from the stamped world, run through `save_class_census.py`,
 `save_def_census.py` and `save_adoption_check.py`, then a cold reload.

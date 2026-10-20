@@ -64,7 +64,7 @@ the named mod, off in the campaign scenario, per law 6. Tar's row is largely
 | **Astrofuel** | NO — a piped industrial adoption (VGE net) | NO | NO | NO | NO | **NO** — VGE's own synthesizer owns production | none |
 | **Brine** | **NO** — nothing surges brine | **NO** | **NO** | **YES** — Wasteland brine pans (the mod owns the `RUT_WastelandBrine*` terrain family, arch. §2a row 4) | **YES** — the two authored brine seas (registry ruling 5 / `LIQUID_BIOMES_MAP_1`); the Grey Sea is the hypersaline one | **LATER** — a brine well for salt-works play; no scenario owes it yet | GreySea · Wasteland |
 | **Lava** (promoted to v1 by card, 2026-09-24) | **LATER** — Forge eruption events belong to the Forge's own sitting | **NO** — absurd | **YES** — the Forge's `LavaField` flows (map-scale; the painted def IS the face) | **YES** — surface lava on Forge maps (sheet: "lava at the surface") | **NO** — none authored | **NO** — nothing pumps magma | TheForge |
-| **Propane** | **NO** — a cryogenic flood is a freeze-and-ignite weapon | **YES** — the Propane Lakes' native sky, hazard-first (card ruling 8, 2026-09-24; physics ruled: liquefies below −42 °C; `RUT_FuelSnows` is named for it) | **NO** — it pools at the drain, it does not run | **YES** — the authored propane body under Umbra (`RM_TheChill`, TerminalBiomes); canal-connected = infinite source on its maps | **NO further** — the authored body already is the map-scale body; no new world bodies | **YES** — a condenser/cryo-pump in the Propane Lakes; refueling-by-pipe already ruled v1 (`propane_gas_deep_design.md`) | PropaneLake (ground + sky) · FuelSnows (sky), when its row reaches the migration list |
+| **Propane** | **NO** — a cryogenic flood is a freeze-and-ignite weapon | **YES** — the Propane Lakes' native sky, hazard-first (card ruling 8, 2026-09-24; physics ruled: liquefies below −42 °C; the Auroral Umbra, `RUT_Umbra`, rains it — owner 2026-10-19: *"it should NOT snow, it should rain propane"*) | **NO** — it pools at the drain, it does not run | **YES** — the authored propane body under Umbra (`RM_TheChill`, TerminalBiomes); canal-connected = infinite source on its maps | **NO further** — the authored body already is the map-scale body; no new world bodies | **YES** — a condenser/cryo-pump in the Propane Lakes; refueling-by-pipe already ruled v1 (`propane_gas_deep_design.md`) | PropaneLake (ground + sky) · Auroral Umbra `RUT_Umbra` (sky: propane rain, pooling in small `RM_PropaneShallow` patches) |
 
 **Row count: 17 registry liquids in 15 matrix lines** (the slime trio shares one line;
 lava promoted to v1 by card, 2026-09-24). Deferred registry rows get no line, per law 7 —
@@ -74,7 +74,7 @@ annotated in §3 and stays deferred by ruling 10.
 ## 3. Native-liquid table — one row per biome
 
 All 27 painted biomes (arch. §2a/2b) plus the Lantern Deeps (mod 26, not painted) and a
-`RUT_FuelSnows` footnote. **Native** = saturates the ground (G) and/or falls from the sky
+`RUT_Umbra` (Auroral Umbra) footnote. **Native** = saturates the ground (G) and/or falls from the sky
 (S), one liquid or NONE; everything else is a surface guest. All former OPEN rows were
 ruled at the 2026-09-24 sitting (§Open carries the outcomes and provenance). The
 Contagion carries two liquids (RED slime ground + boiling rain sky) by the owner's own
@@ -110,9 +110,7 @@ typed rulings 1 and 6 — the one ruled exception to one-liquid-per-biome.
 | 26 | the Grey Sea (`RM_GreySea`, TerminalBiomes) | **brine** | G | hypersaline, terminal, shrinking fastest |
 | 27 | the Lantern Deeps (`RM_LanternDeeps`, injection layer, not painted) | **NONE** | — | an enclosed cave layer at ≤ −40 °C; nothing saturates, nothing falls |
 
-**Footnote — `RUT_FuelSnows`** (Umbra's land successor, not yet in the migration list per
-arch. §2b): when its row arrives, its native is **propane (S)** — the name is the
-declaration.
+**Footnote — `RUT_Umbra`, the Auroral Umbra** (the cap's land; named `RUT_FuelSnows` 2026-09-21..2026-10-20): its native is **propane (S)** — it rains propane, liquid at every temperature on that land (propane liquid −188…−42 °C, `design/Jawa/worldbuilding/worldgen_interactive_def.md:152`), and the rain pools. It does not snow (owner 2026-10-19).
 
 Tallies: **28 rows · 28 declared** (22 with a liquid, 6 explicit NONE: Stillsand,
 Long Shade, Abyss, Rust Cathedral v1, Warscar, Lantern Deeps) · **0 OPEN** —

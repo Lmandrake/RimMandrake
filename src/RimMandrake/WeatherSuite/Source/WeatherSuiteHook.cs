@@ -274,7 +274,7 @@ namespace RimMandrake.StarWars.WeatherSuite
             Color currentColor = CurrentColor;
             Color sky = Tint(currentColor, WeatherSuiteSettings.auroraSkySaturation, WeatherSuiteSettings.auroraSkyBrightness, RM_WeatherKernel.VanillaSkySaturation);
             Color overlay = Tint(currentColor, WeatherSuiteSettings.auroraOverlaySaturation, WeatherSuiteSettings.auroraSkyBrightness, RM_WeatherKernel.VanillaOverlaySaturation);
-            float glow = Mathf.Max(GenCelestial.CurCelestialSunGlow(map), AuroraGlowFloor);
+            float glow = Mathf.Max(GenCelestial.CurCelestialSunGlow(map), GlowFloor);
             return new SkyTarget(
                 colorSet: new SkyColorSet(
                     sky,
@@ -286,10 +286,79 @@ namespace RimMandrake.StarWars.WeatherSuite
                 lightsourceShineIntensity: 1f);
         }
 
+        // AURORAL_UMBRA (owner 2026-10-19: "perpetual Auroral activity in that biome"): a PERMANENT instance
+        // of this condition is the perpetual aurora MapComponent_PerpetualAurora starts on maps whose biome
+        // carries PerpetualAuroraExtension. Only permanent instances read the perpetual settings, so the
+        // 3-8 hour nightside incident looks exactly as before.
+        protected float GlowFloor => Permanent ? WeatherSuiteSettings.perpetualAuroraGlow : AuroraGlowFloor;
+
+        // Vanilla slows a permanent aurora's colour drift to 3750 ticks per colour (TransitionDurationTicks_Permanent);
+        // the owner asked for a "wildly active" one, so the base tick (colour drift only - a permanent condition has
+        // no TicksLeft to shorten) runs perpetualAuroraActivity times per tick. 1 = vanilla's slow drift.
+        public override void GameConditionTick()
+        {
+            int n = Permanent ? Mathf.Clamp(WeatherSuiteSettings.perpetualAuroraActivity, 1, 30) : 1;
+            for (int i = 0; i < n; i++) base.GameConditionTick();
+        }
+
         private static Color Tint(Color c, float saturation, float brightness, float vanillaSaturation)
         {
             return new Color(RM_WeatherKernel.TintChannel(c.r, saturation, brightness, vanillaSaturation), RM_WeatherKernel.TintChannel(c.g, saturation, brightness, vanillaSaturation),
                 RM_WeatherKernel.TintChannel(c.b, saturation, brightness, vanillaSaturation), c.a);
+        }
+    }
+
+    // AURORAL_UMBRA: marks a biome whose sky is never without the aurora. Generic: any biome may carry it.
+    public class PerpetualAuroraExtension : DefModExtension
+    {
+        public string conditionDef = "RM_WS_DarkAurora";
+    }
+
+    // Keeps a PERMANENT aurora condition on every map whose biome carries PerpetualAuroraExtension, and ends it
+    // when the setting is switched off. Checked at map init and every 2500 ticks (no per-tick work beyond a modulo).
+    public class MapComponent_PerpetualAurora : MapComponent
+    {
+        public MapComponent_PerpetualAurora(Map map) : base(map) { }
+
+        public override void FinalizeInit()
+        {
+            base.FinalizeInit();
+            Sync();
+        }
+
+        public override void MapComponentTick()
+        {
+            if (Find.TickManager.TicksGame % 2500 == 37) Sync();
+        }
+
+        private void Sync()
+        {
+            try
+            {
+                PerpetualAuroraExtension ext = map.Biome?.GetModExtension<PerpetualAuroraExtension>();
+                if (ext == null) return;
+                GameConditionDef def = DefDatabase<GameConditionDef>.GetNamedSilentFail(ext.conditionDef);
+                if (def == null)
+                {
+                    Log.ErrorOnce("[RimMandrake.StarWars.WeatherSuite] perpetual aurora: GameConditionDef '" + ext.conditionDef
+                                  + "' missing on biome " + map.Biome.defName, 0x57A02);
+                    return;
+                }
+                GameCondition permanent = map.gameConditionManager.ActiveConditions.FirstOrDefault(c => c.def == def && c.Permanent);
+                if (WeatherSuiteSettings.perpetualAuroraEnabled)
+                {
+                    if (permanent == null)
+                        map.gameConditionManager.RegisterCondition(GameConditionMaker.MakeConditionPermanent(def));
+                }
+                else if (permanent != null)
+                {
+                    permanent.End();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[RimMandrake.StarWars.WeatherSuite] MapComponent_PerpetualAurora: " + e.Message, 0x57A03);
+            }
         }
     }
 

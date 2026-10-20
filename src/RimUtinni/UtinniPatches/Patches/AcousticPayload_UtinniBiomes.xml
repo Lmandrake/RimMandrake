@@ -1232,37 +1232,6 @@
       <li>RimMandrake: Acoustic Scanner</li>
     </mods>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/BiomeDef[defName="RUT_FuelSnows"]</xpath>
-      <value>
-        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
-          <quietText>Frozen ammonia and fuel snow. The pulse comes back clean and cold.</quietText>
-          <targets>
-            <li>
-              <label>something that never stops burning</label>
-              <reading>A heat in the ice that the cold never touches, moving slowly.</reading>
-              <color>(1, 0.45, 0.3)</color>
-              <weight>3</weight>
-              <pawnRaces>
-                <li>RUT_BurnerAscendant</li>
-              </pawnRaces>
-            </li>
-            <li>
-              <label>void in the ice</label>
-              <reading>The echo falls into a pocket under the frozen flats.</reading>
-              <color>(0.6, 0.6, 0.9)</color>
-              <hiddenCaves>true</hiddenCaves>
-              <cellSampleStride>4</cellSampleStride>
-            </li>
-          </targets>
-        </li>
-      </value>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>RimMandrake: Acoustic Scanner</li>
-    </mods>
-    <match Class="PatchOperationAddModExtension">
       <xpath>/Defs/BiomeDef[defName="RUT_Jawa_BackgroundWater"]</xpath>
       <value>
         <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
@@ -1288,7 +1257,7 @@
       <xpath>/Defs/BiomeDef[defName="RUT_Umbra"]</xpath>
       <value>
         <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
-          <quietText>Frozen ammonia and fuel snow. The pulse comes back clean and cold.</quietText>
+          <quietText>Black ice and pooled propane. The pulse comes back clean and cold.</quietText>
           <targets>
             <li>
               <label>something that never stops burning</label>

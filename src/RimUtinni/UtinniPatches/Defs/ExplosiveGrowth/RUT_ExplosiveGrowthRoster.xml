@@ -98,12 +98,10 @@
       <!-- tree_burst_design_2026-10-17.md §6 (Q8): the Rot follows the wet-biome rulings; its plants' rows are in the RM roster. -->
       <li>RUT_TheRot</li>
     </wetNativeBiomes>
-    <!-- OQ-3 (owner 2026-10-16): "Blowing snow melts like water and rain yes. It doesn't snow fuel." Snow in these two
-         waters like rain (clean water, the same unroofed-cell rule). The five no-precipitation biomes need nothing here. -->
-    <snowmeltBiomes>
-      <li>RUT_FuelSnows</li>
-      <li>RUT_Umbra</li>
-    </snowmeltBiomes>
+    <!-- OQ-3 (owner 2026-10-16): "Blowing snow melts like water and rain yes. It doesn't snow fuel." No Ash'karr biome
+         snows any more: the only one that did, RUT_Umbra (the Auroral Umbra), now rains PROPANE instead (owner 2026-10-19:
+         "it should NOT snow, it should rain propane"), and propane rain (rainRate 0) waters nothing. So no snowmelt biome is
+         listed; the mechanism stays for any biome that adds one. -->
     <!-- OQ-7 (by card): Ash'karr is tidally locked: "always lit means always growing", so a lit plant never rests. -->
     <tidallyLockedWorld>true</tidallyLockedWorld>
   </RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
