@@ -1,0 +1,29 @@
+{
+ "key": "concept",
+ "label": "Which creature fills the Forge's slow-ground slot?",
+ "options": [
+  [
+   "kettugal",
+   "Kettugal (walking crucible)"
+  ],
+  [
+   "ummisk",
+   "Ummisk (glasswake)"
+  ],
+  [
+   "brazzok",
+   "Brazzok (chimney-walker)"
+  ],
+  [
+   "none",
+   "None: try again"
+  ]
+ ],
+ "rows": {
+  "LavaSnail": {
+   "prefill": "kettugal",
+   "why": "agent lean: ties to the alloys line, warns of melt-back, strongest silhouette",
+   "context": "Kettugal: a ceramic bowl of glowing slag on six legs; the first thing to walk off the crust before melt-back; sheared for alloy. Ummisk: a steaming tussock of glassy tubes that drinks the boiling rain and leaves a walkable glass trail over lava edges. Brazzok: a tall living kiln-chimney on stilts streaming a steam banner; herds read as towers. Full brief: design/RimMandrake/forge_slowground_concepts_2026-10-20.md"
+  }
+ }
+}
