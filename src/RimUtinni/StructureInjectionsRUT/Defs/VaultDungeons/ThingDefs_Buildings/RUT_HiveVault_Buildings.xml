@@ -23,7 +23,7 @@
     <thingClass>Building</thingClass>
     <category>Building</category>
     <graphicData>
-      <texPath>StandIn/Things/Building/Linked/WallInsectJelly_Atlas</texPath>
+      <texPath>Things/Building/Linked/WallInsectJelly_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>CornerFiller</linkType>
       <linkFlags>
@@ -74,7 +74,7 @@
       <claimable>false</claimable>
       <canLandGravshipOn>true</canLandGravshipOn>
       <blueprintGraphicData>
-        <texPath>StandIn/Things/Building/Linked/WallInsectJelly_Blueprint_Atlas</texPath>
+        <texPath>Things/Building/Linked/WallInsectJelly_Blueprint_Atlas</texPath>
       </blueprintGraphicData>
     </building>
     <costList>
@@ -109,7 +109,7 @@
     <description>An ancient ship part, torn off of a craft of unknown origin. It might be thousands of years old.\n\nThis one is caked in biomass and insect jelly, the leavings of the hive that nested in its hull.</description>
     <category>Building</category>
     <graphicData>
-      <texPath>StandIn/Things/Building/CrashedInfestedShipPart</texPath>
+      <texPath>Things/Building/CrashedInfestedShipPart</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(6,3)</drawSize>
       <damageData>
@@ -164,7 +164,7 @@
     <description>A chunk of a spacecraft caked in biomass and insect jelly. Can be deconstructed to yield useful steel and jelly.</description>
     <category>Building</category>
     <graphicData>
-      <texPath>StandIn/Things/Building/InfestedShipChunk/InfestedShipChunkA</texPath>
+      <texPath>Things/Building/InfestedShipChunk/InfestedShipChunkA</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
       <damageData>
