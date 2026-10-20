@@ -217,10 +217,6 @@
 			<li>ThingDef/BreadMoAM_Gun_LargeShotgunTurret</li>
 			<li>ThingDef/BreadMoAM_Gun_ShotgunTurret</li>
 			<li>ThingDef/BreadMoAM_Gun_ShotgunTurretN</li>
-			<li>ThingDef/DP_CannonNoEquip</li>
-			<li>ThingDef/DP_ChainVulcan</li>
-			<li>ThingDef/DP_HolyHandGrenade</li>
-			<li>ThingDef/DP_RocketNoEquip</li>
 			<li>ThingDef/FT_Artillery_Mortar</li>
 			<li>ThingDef/FT_Gun_Autocannon</li>
 			<li>ThingDef/FT_Gun_MG</li>
@@ -318,9 +314,6 @@
 			<li>ThingDef/Apparel_PsychicInsanityLance</li>
 			<li>ThingDef/Apparel_PsychicShockLance</li>
 			<li>ThingDef/Apparel_Robe</li>
-			<li>ThingDef/Apparel_SOU_Bonnet</li>
-			<li>ThingDef/Apparel_SOU_VicHM</li>
-			<li>ThingDef/Apparel_SOU_VicScullery</li>
 			<li>ThingDef/Apparel_Sash</li>
 			<li>ThingDef/Apparel_ShardPsychicInsanityLance</li>
 			<li>ThingDef/Apparel_ShardPsychicShockLance</li>
@@ -329,25 +322,10 @@
 			<li>ThingDef/Apparel_TribalA</li>
 			<li>ThingDef/Apparel_VisageMask</li>
 			<li>ThingDef/BS_Nisse_Cap</li>
-			<li>ThingDef/DP_EtherealBelt</li>
-			<li>ThingDef/DP_EtherealCloak</li>
-			<li>ThingDef/DP_FireCultRobe</li>
-			<li>ThingDef/DP_GlitchedRing</li>
-			<li>ThingDef/DP_InsanityLanceUnequip</li>
-			<li>ThingDef/DP_MechSignalArtifact</li>
-			<li>ThingDef/DP_NinjaRobe</li>
-			<li>ThingDef/DP_OrbOfMadness</li>
-			<li>ThingDef/DP_ShroudOfMadness</li>
-			<li>ThingDef/LargeBackpackMC</li>
 			<li>ThingDef/OuterRim_StormtrooperCuirass_Pride</li>
 			<li>ThingDef/OuterRim_StormtrooperHelmet_Pride</li>
 			<li>ThingDef/OuterRim_StormtrooperPauldrons_Pride</li>
-			<li>ThingDef/SGC_Apparel_CommandTower</li>
-			<li>ThingDef/SmallBackpackMC</li>
 			<li>ThingDef/TornadoGenerator</li>
-			<li>ThingDef/VAEA_Apparel_Backpack</li>
-			<li>ThingDef/VAEA_Apparel_BattleBanner</li>
-			<li>ThingDef/VAEA_Apparel_Quiver</li>
 			<li>ThingDef/VFEP_Apparel_Privateer</li>
 			<li>ThingDef/VFEP_Apparel_Rumsuit</li>
 			<li>ThingDef/VGE_Apparel_VacsuitHelmet_Prestige</li>
@@ -1109,7 +1087,6 @@
 			<li>GeneDef/Outland_XenotypeImplanter_HBX_Highborn</li>
 			<li>GeneDef/HBX_Highborn_Metamorphosis</li>
 			<li>GeneDef/HBX_Highborn_Retromorphosis</li>
-			<li>XenotypeDef/KAR_Orc</li>
 			<li>GeneDef/Outland_XenotypeAscension_KAR_Orc</li>
 			<li>AbilityDef/Outland_XenotypeImplanter_KAR_Orc</li>
 			<li>GeneDef/Outland_XenotypeImplanter_KAR_Orc</li>
@@ -1567,7 +1544,6 @@
 			<li>ThingDef/BMAD_ShrinkTurret</li>
 			<li>ThingDef/BreadMoAM_Turret_ShotgunTurret</li>
 			<li>ThingDef/BreadMoAM_Turret_ShotgunTurretN</li>
-			<li>ThingDef/DP_MinigunTurret</li>
 			<li>ThingDef/FT_AutoCannon</li>
 			<li>ThingDef/FT_Maxim4M</li>
 			<li>ThingDef/FT_Turret_Mortar</li>
