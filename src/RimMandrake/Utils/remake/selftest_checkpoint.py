@@ -86,7 +86,7 @@ def main():
     if fails:
         print("FAIL selftest_checkpoint:", *fails, sep="\n  ")
         return 1
-    print("PASS selftest_checkpoint (%d checks)" % 17)
+    print("PASS selftest_checkpoint")
     return 0
 
 

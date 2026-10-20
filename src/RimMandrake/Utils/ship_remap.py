@@ -52,7 +52,7 @@ def remap(root, table):
             else:
                 dn.text = r["to"]; n["thing"] += 1
         if len(things) == 0:
-            things.clear()
+            things.text = None          # not .clear(): that would also drop the element's attributes
     drop = set(table["special_filters_drop"])
     for sf in root.iter("specialFilterStates"):
         for li in list(sf.findall("li")):
@@ -68,6 +68,8 @@ def main():
     ap.add_argument("--table", default=TABLE)
     ap.add_argument("--defs", action="store_true")
     a = ap.parse_args()
+    if not a.defs and not a.dst:
+        ap.error("dst is required unless --defs")
     tree = ET.parse(a.src)
     if a.defs:
         for k, v in layout_defs(tree.getroot()).items():

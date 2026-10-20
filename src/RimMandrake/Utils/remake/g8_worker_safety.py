@@ -60,7 +60,9 @@ class DllIndex:
 
     def owners(self, fullname):
         ns, _, short = fullname.rpartition(".")
-        bs, bn = short.encode(), ns.encode()
+        # CLR #Strings entries are NUL-terminated: bound the name so `BiomeWorker_X` is not "found"
+        # inside `BiomeWorker_X2` (a false SAFE). Leading side left open: suffix-shared strings.
+        bs, bn = short.encode() + b"\x00", ns.encode() + b"\x00"
         hit = set()
         for pkg, fs in self.files.items():
             for f in fs:
@@ -137,6 +139,9 @@ def main(argv=None):
     ap.add_argument("--dump", default=common.default_dump())
     ap.add_argument("--json")
     a = ap.parse_args(argv)
+    if not a.dump or not os.path.isdir(a.dump):
+        print("UNMEASURED no def-dump capture (--dump %s)" % a.dump)
+        return 2
     profile = set(common.load_profile(a.profile))
     man, roots = common.load_capture(a.dump)
     capset = set(roots)

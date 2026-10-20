@@ -131,7 +131,11 @@ def check_inputs(out):
             probs.append("%s: missing column(s) %s" % (k, sorted(miss)))
             continue
         if k == "tiles":
-            ids = [int(r["tile"]) for r in rows]
+            try:
+                ids = [int(r["tile"]) for r in rows]
+            except (TypeError, ValueError):
+                probs.append("tiles: a row has a non-integer tile id")
+                continue
             if len(ids) != EXPECT_TILES or len(set(ids)) != EXPECT_TILES:
                 probs.append("tiles: %d rows / %d distinct, expected %d"
                              % (len(ids), len(set(ids)), EXPECT_TILES))
@@ -151,7 +155,8 @@ def read_csv(path):
     if not os.path.isfile(path):
         return None
     import csv as _csv
-    with io.open(path, encoding="utf-8") as fh:
+    # utf-8-sig: a BOM must not rename the first header; newline="": csv owns embedded newlines.
+    with io.open(path, encoding="utf-8-sig", newline="") as fh:
         return list(_csv.DictReader(fh))
 
 

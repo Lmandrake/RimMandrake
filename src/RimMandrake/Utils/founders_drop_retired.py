@@ -25,7 +25,7 @@ def process(root, inside, outside):
             d = ch.find("def")
             dv = (d.text or "").strip() if d is not None else ""
             tag = ch.tag
-            if tag in ("childhood", "adulthood") and ch.text.strip() in BACKSTORY:
+            if tag in ("childhood", "adulthood") and (ch.text or "").strip() in BACKSTORY:
                 ch.text = BACKSTORY[ch.text.strip()]; n["bs"] += 1
             elif tag.endswith("ControllerComp_faceType") or tag.endswith("ControllerComp_color") or tag.endswith("ControllerComp_secondColor"):
                 parent.remove(ch); n["removed"] += 1

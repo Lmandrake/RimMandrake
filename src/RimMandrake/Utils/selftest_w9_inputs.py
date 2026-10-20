@@ -53,6 +53,18 @@ def main():
         ok(quiet(w9_run.main, ["--inputs", tmp, "--check-inputs"]) == 13, "3b probe: --check-inputs exits 13")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+    # 3c/3d regressions (review 2026-10-20): BOM must not rename the first header; a junk tile id must be a
+    # reported problem, not a ValueError out of --check-inputs.
+    t2 = tempfile.mkdtemp(prefix="w9in_bom_")
+    try:
+        with io.open(os.path.join(t2, "ASHKARR_WORLDMAP_tiles.csv"), "w", encoding="utf-8-sig", newline="") as fh:
+            fh.write("tile,biome,region\nx,Desert,\n")
+        ok(w9_run.read_csv(os.path.join(t2, "ASHKARR_WORLDMAP_tiles.csv"))[0].get("tile") == "x", "3c BOM csv keeps header 'tile'")
+        w9_run.set_inputs(t2)
+        probs = quiet(w9_run.check_inputs, [])
+        ok(any("non-integer tile id" in x for x in probs), "3d junk tile id reported, no crash")
+    finally:
+        shutil.rmtree(t2, ignore_errors=True)
     if not os.path.isdir(BUNDLE):
         print("SKIP 4-6: %s absent" % BUNDLE)
         return 1 if fails else 0
