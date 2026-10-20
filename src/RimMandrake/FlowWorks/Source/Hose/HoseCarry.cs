@@ -80,11 +80,14 @@ namespace RimMandrake.FlowWorks.Hose
             var pts = new List<V2> { Mouth };
             foreach (Cell c in Cells) if (pts.Count == 1 ? V2.Dist(c.Centre, Mouth) > 1e-9 : true) pts.Add(c.Centre);
             var o = new List<V2> { pts[0] };
+            var walked = new HashSet<Cell>(Cells);
             int a = 0;
             while (a < pts.Count - 1)
             {
                 int b = a + 1;
-                for (int j = pts.Count - 1; j > a + 1; j--) if (HoseMath.SegmentClear(w, pts[a], pts[j])) { b = j; break; }
+                // HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE: a taut shortcut never crosses a reel or pump the walk went round
+                for (int j = pts.Count - 1; j > a + 1; j--)
+                    if (HoseMath.SegmentClear(w, pts[a], pts[j]) && HoseMath.SegmentAvoidsBuildings(w, pts[a], pts[j], walked)) { b = j; break; }
                 o.Add(pts[b]);
                 a = b;
             }
