@@ -6413,3 +6413,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-20T09:05:47Z","tsn":1792487147733685610}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"look at the dev world in game (world map appearance)","why":"owner AFK, asked to get the world looking great; read-only look","ts":"2026-10-20T14:35:42Z","tsn":1792506942711110924}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-20T14:36:25Z","tsn":1792506985554996804}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"WORLDMAP_BIOME_APPEARANCE_1 globe shots (world look baseline)","ts":"2026-10-20T14:45:17Z","tsn":1792507517074525231}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"ONE restart: Wave4 324 list + world textures v2 + StarWarsRaces heads","ts":"2026-10-20T14:57:16Z","tsn":1792508236885107739}
