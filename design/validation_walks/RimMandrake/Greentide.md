@@ -44,4 +44,8 @@ RULED OUT: "the density applier runs when a setting is written through the bridg
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"Abundance with teeth: everything grows, and everything sinks. Fight the jungle every day or lose your base to it."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
+
 DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned.

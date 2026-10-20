@@ -34,6 +34,10 @@ Sources: `src/RimMandrake/TheRot/About/About.xml`, `Defs/**`, `Source/RM_TheRotM
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"A cathedral of mushrooms in the dark, generous and hungry. The Rot shares everything, including you."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
+
 No owner north-star bars are drafted for this mod yet.
 
 ## anti-guessing notes

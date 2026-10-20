@@ -23,6 +23,10 @@ Sources: `src/RimMandrake/TheSump/About/About.xml`, `Defs/**`, `Patches/**`, `So
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"Sticky, stinking, slow to move or burn or surrender. The sump hides all and makes you fight it for every action."
+(typed by the owner, 2026-10-20)
+
 No owner north-star bars are drafted for this mod yet.
 
 ## anti-guessing notes

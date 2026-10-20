@@ -30,6 +30,10 @@ X. [S] (human pass) the biome reads as dirty ice, near-empty by design; owner de
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"A frozen highway that nobody stays on. You cross it, dig into it, or go under it."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
+
 No owner north-star bars are drafted for this mod yet.
 
 ## anti-guessing notes

@@ -29,6 +29,10 @@ Run `src/RimMandrake/Webwork/validation.py` (static: `python3 validation.py`); l
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"So quiet that you know you're in terrible danger. It makes treasure, it eats all, and it's coming for you."
+(typed by the owner, 2026-10-20)
+
 No owner north-star bars are drafted for this mod yet.
 
 ## anti-guessing notes

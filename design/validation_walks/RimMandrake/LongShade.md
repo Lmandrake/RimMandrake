@@ -34,6 +34,10 @@ X. [S] (human pass) the biome reads as a sunset desert where shade is the only r
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"Shade is the currency, and every crossing is a gamble. Rest, dash, rest, and never trust a shadow you didn't cast yourself."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
+
 No owner north-star bars are drafted for this mod yet.
 
 ## anti-guessing notes

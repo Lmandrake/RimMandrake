@@ -113,7 +113,8 @@ Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
 least certain. `### the experience` is his to dictate.
 
 ### the experience  (OWNER'S WORDS)
-(not yet dictated)
+"A mutation engine under a red lid, where nothing is finished, including you. When the sky clears, run."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
 
 ### must show
 

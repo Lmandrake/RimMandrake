@@ -99,6 +99,10 @@ Offline: `python3 src/RimMandrake/BlueDesert/selftest_bluedesert.py` runs the su
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"An alien expanse of beautiful blue locking ancient secrets from the depths of time. Mine slowly and carefully or risk your own passion's heat turning everything into a bomb."
+(typed by the owner, 2026-10-20)
+
 DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned. The visual questions (does the krissek's halo read as blue fire, do the flora read as transparent, does the rime road read as pressed ice) are his to rule.
 
 ## anti-guessing notes

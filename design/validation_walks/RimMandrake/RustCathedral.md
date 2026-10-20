@@ -31,6 +31,10 @@ Run `src/RimMandrake/RustCathedral/validation.py` (static: `python3 validation.p
 state: DRAFT
 validated-hash:
 
+### the experience  (OWNER'S WORDS)
+"A maze built by minds you'll never meet, still guarded by their machines. Salvage paradise with a temper."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
+
 No owner north-star bars are drafted for this mod yet.
 
 ## anti-guessing notes

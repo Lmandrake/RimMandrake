@@ -100,7 +100,8 @@ Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
 least certain. `### the experience` is his to dictate.
 
 ### the experience  (OWNER'S WORDS)
-(not yet dictated)
+"Endless leaning grass, endless motion, endless venomvine. Power is free here, but footing is not."
+(chosen by the owner from drafted options, by question card, 2026-10-20)
 
 ### must show
 
