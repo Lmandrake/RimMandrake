@@ -140,8 +140,8 @@
     <wildAnimals>
       <RM_Suush>0.2</RM_Suush>  <!-- suush - the Cauldron's own floating drifter, SUUSH_CAULDRON_DRIFTER_1 -->
       <RM_Garsulix>0.7</RM_Garsulix>  <!-- garsulix - our port of VGE's GR_Beetlefleet (Defs/ThingDefs_Races/RM_Garsulix.xml), donor retired 2026-10-18 -->
-      <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- rhossak (donor "corruptor dryad", renamed in UtinniPatches Cauldron_Rename.xml) -->
-      <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- galled rhossak (donor "tumorous dryad", renamed in Cauldron_Rename.xml) -->
+      <RM_Rhossak>0.4</RM_Rhossak>  <!-- rhossak: our own animal (Defs/ThingDefs_Races/RM_Rhossak.xml), binds to a thornwood; RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD, owner by card 2026-10-19 -->
+      <RM_GalledRhossak>0.4</RM_GalledRhossak>  <!-- galled rhossak: same file, binds, carries no seed -->
       <RM_Visceral MayRequire="mandrake.rut.patches">0.35</RM_Visceral>  <!-- visceral (our port, UtinniPatches RM_Visceral.xml) - medium-pred, keep -->
       <RM_BedBug>0.3</RM_BedBug>  <!-- bedbug - small-pred, keep -->
       <RM_CrystalMit>0.15</RM_CrystalMit>  <!-- crystalmit - small, keep -->

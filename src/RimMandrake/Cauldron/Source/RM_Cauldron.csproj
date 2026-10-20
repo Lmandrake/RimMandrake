@@ -45,6 +45,12 @@
     <FlowWorksDll>$(MSBuildThisFileDirectory)..\..\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll</FlowWorksDll>
   </PropertyGroup>
 
+  <!-- RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD: the rhossak's binding points our RM_CompHomeTether (CreatureBehaviors) at its grove tree, so this
+       mod references CreatureBehaviors' assembly (never copied; About.xml depends on mandrake.rm.creaturebehaviors). -->
+  <PropertyGroup Condition="'$(CreatureBehaviorsDll)' == ''">
+    <CreatureBehaviorsDll>$(MSBuildThisFileDirectory)..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</CreatureBehaviorsDll>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
     <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>
@@ -71,6 +77,8 @@
     <Compile Include="RM_VentGas.cs" />
     <Compile Include="RM_GasTap.cs" />
     <Compile Include="RM_CauldronRuinKit.cs" />
+    <Compile Include="Kernel\RM_RhossakKernel.cs" />
+    <Compile Include="RM_CompRhossakGrove.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -84,6 +92,10 @@
     </Reference>
     <Reference Include="RimMandrakeFlowWorks">
       <HintPath>$(FlowWorksDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>$(CreatureBehaviorsDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">

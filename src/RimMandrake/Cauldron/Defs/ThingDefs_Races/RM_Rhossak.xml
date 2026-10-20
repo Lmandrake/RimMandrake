@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Rhossak.xml                                   RimMandrake: Cauldron
+
+  RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD — owner by card 2026-10-19: "You realize I made that mechanic right? I don't know why you're
+  saying they come from another mod. Make them animals and make them bind."
+
+  The rhossak and the galled rhossak: our own ANIMALS, replacing the Alpha Memes dryads AM_Dryad_Corruptor /
+  AM_Dryad_Tumorous that the Cauldron's roster used to name (that mod is retiring). Invented exotic names, so the
+  RimMandrake tier (Q11a). Name, description and art are the owner's Cauldron sheet rulings of 2026-10-09
+  ("Recreate name and description from art, but art is good." / "...a tumorous version of the above creature."),
+  carried over verbatim from UtinniPatches Cauldron_Rename.xml; the art is his pick B, copied in by
+  src/RimMandrake/Utils/art/rhossak_art.py through the art ledger.
+
+  Not dryads: AnimalThingBase with the vanilla Animal think tree. The donor's dryad think tree sent a tree-less dryad
+  straight off the map (ThinkNode_ConditionalNoConnectedThings -> JobGiver_ExitMapRandom); nothing here does.
+  The binding is RM_CompRhossakGrove (Source/RM_CompRhossakGrove.cs), holding the pawn near its grove tree through
+  our own RM_CompHomeTether (CreatureBehaviors). It must stay listed AFTER the tether.
+
+  Kept from the donor: body, claws/bite, move speed (3 / 2), size 0.667, health 0.8, toxic resistance, comfort range
+  (the Ashkarr pin -63.2..50 from AnimalTolerances_Ashkarr.xml), and the galls as the donor's spawner (40 meat every
+  2 days). Defaults taken where the description is silent are listed in the RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD ledger note.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase" Name="RM_RhossakBase" Abstract="True">
+    <statBases>
+      <ToxicResistance>1</ToxicResistance>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-63.2</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+    </statBases>
+    <uiIconScale>1.5</uiIconScale>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.9</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <herdMigrationAllowed>false</herdMigrationAllowed>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <hasGenders>false</hasGenders>
+      <lifeExpectancy>80</lifeExpectancy>
+      <baseBodySize>0.667</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <trainability>None</trainability>
+      <petness>0</petness>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <!-- ============================== the rhossak ============================== -->
+  <ThingDef ParentName="RM_RhossakBase">
+    <defName>RM_Rhossak</defName>
+    <label>rhossak</label>
+    <description>A stag-shaped thing grown rather than born: its legs, flanks and branching crown are bundles of living root, wound tight and still slowly twisting. Along its back it carries swollen seed-husks that split as they ripen, showing wet red seed packed like teeth. Where a rhossak lies down to rest, the ground around it sprouts; three of them standing together long enough can root a whole new grove. Herds keep well clear of one.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_TwistingThornwood</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MoveSpeed>3</MoveSpeed>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether">
+        <tetherRadius>10</tetherRadius>
+      </li>
+      <li Class="RimMandrake.Cauldron.RM_CompProperties_RhossakGrove">
+        <groveTrees>
+          <li>RM_TwistingThornwood</li>
+        </groveTrees>
+        <seedBearing>true</seedBearing>
+      </li>
+    </comps>
+    <race>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Dryad_Gaumaker_Wounded</soundWounded>
+          <soundCall>Pawn_Dryad_Gaumaker_Call</soundCall>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Rhossak</defName>
+    <label>rhossak</label>
+    <race>RM_Rhossak</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>1</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Rhossak/RM_Rhossak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dryad_Gaumaker/Dessicated_DryadGaumaker</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================== the galled rhossak ============================== -->
+  <ThingDef ParentName="RM_RhossakBase">
+    <defName>RM_GalledRhossak</defName>
+    <label>galled rhossak</label>
+    <description>A rhossak whose root-flesh has turned on itself. Pale, fleshy galls bloom across its trunk-body, its legs and even its antlers, under a skin of hanging moss, and new ones push up faster than old ones slough away. It is slower and gentler than its seed-bearing kin and carries no seed at all. The galls are edible: a meat substitute of questionable origin that nobody asks about twice.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_TwistingThornwood</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MoveSpeed>2</MoveSpeed>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <uiIconScale>1.25</uiIconScale>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether">
+        <tetherRadius>10</tetherRadius>
+      </li>
+      <li Class="RimMandrake.Cauldron.RM_CompProperties_RhossakGrove">
+        <groveTrees>
+          <li>RM_TwistingThornwood</li>
+        </groveTrees>
+        <seedBearing>false</seedBearing>
+      </li>
+      <li Class="CompProperties_Spawner">
+        <thingToSpawn>Meat_RM_Rhossak</thingToSpawn>
+        <spawnCount>40</spawnCount>
+        <spawnIntervalRange>120000</spawnIntervalRange>
+        <writeTimeLeftToSpawn>true</writeTimeLeftToSpawn>
+        <showMessageIfOwned>true</showMessageIfOwned>
+      </li>
+    </comps>
+    <race>
+      <useMeatFrom>RM_Rhossak</useMeatFrom>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Dryad_Wounded</soundWounded>
+          <soundCall>Pawn_Dryad_Call</soundCall>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_GalledRhossak</defName>
+    <label>galled rhossak</label>
+    <race>RM_GalledRhossak</race>
+    <combatPower>30</combatPower>
+    <ecoSystemWeight>1</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_GalledRhossak/RM_GalledRhossak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dryad_Basic/Dessicated_DryadBasic</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

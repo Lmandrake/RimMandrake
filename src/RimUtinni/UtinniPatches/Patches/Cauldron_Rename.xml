@@ -17,6 +17,9 @@
        These supersede the unapplied drafts "tessik" / "tumorous tessik" / "skibbex" in
        design/Jawa/worldbuilding/biomes/noncanon_beast_names_poison_miasma_desert_scar_rot_dune_waste_cracked.md. -->
 
+  <!-- RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD (2026-10-19): the Cauldron now spawns our own RM_Rhossak / RM_GalledRhossak (RimMandrake Cauldron,
+       Defs/ThingDefs_Races/RM_Rhossak.xml), which carry this text themselves; the four ops below only touch the donor defs
+       if Alpha Memes ever loads again, and match nothing otherwise. -->
   <!-- ============== AM_Dryad_Corruptor -> rhossak ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AM_Dryad_Corruptor"]</xpath>

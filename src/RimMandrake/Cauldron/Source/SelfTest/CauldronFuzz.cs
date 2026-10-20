@@ -4,6 +4,7 @@
 //   yield   the growth-scaled metal yield, assay grade and fleck band, the bloom's metal-load dose and eligibility, dewfall beads
 //   prints  the vexxiss print ledger (order, cap, expiry, newest-per-cell, grid clearing) and the fire-warden / water-letter choices
 //   gas     the vent-gas grid (conservation, walls, NonZero, dissipation, burns) over random small maps
+//   rhossak the rhossak's bind pick (vs brute force), the unbroken-stretch rooting count (vs an oracle), sprout/root gates
 //   units   exhaustive truth tables for the small decisions
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
@@ -747,6 +748,91 @@ namespace RimMandrake.Cauldron.SelfTest
             return fails;
         }
 
+        // ---- rhossak (RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD): the bind pick, the unbroken-stretch rooting count, the sprout chance ----------------
+        public static long RhossakRoots, RhossakResets, RhossakBinds, RhossakUnbound;
+
+        private static string RunRhossak(int seed, List<Act> acts)
+        {
+            // An oracle tracks the contiguous together-time independently of the kernel; every step must agree, and a root
+            // must happen exactly when the oracle's stretch reaches RootTicks.
+            float rootHours = 1 + seed % 30;
+            int need = RM_RhossakKernel.RootTicks(rootHours);
+            int acc = 0, stretch = 0;
+            foreach (var a in acts)
+            {
+                Steps++;
+                if (a.kind == 0)
+                {
+                    bool together = RM_RhossakKernel.Together(true, a.b % 5 != 0, a.b % 7 != 0, a.a % 4, 3, a.b % 3 != 0, a.c % 4 != 0);
+                    bool want = a.b % 5 != 0 && a.b % 7 != 0 && a.a % 4 + 1 >= 3 && a.b % 3 != 0 && a.c % 4 != 0;
+                    if (together != want) return "Together disagrees with its definition";
+                    int delta = 1 + a.c % 2500;
+                    acc = RM_RhossakKernel.StepTogether(acc, together, delta);
+                    stretch = together ? stretch + delta : 0;
+                    if (!together) RhossakResets++;
+                    if (acc != stretch) return $"together count {acc} != unbroken stretch {stretch}";
+                    if (RM_RhossakKernel.ShouldRoot(acc, rootHours) != (stretch >= need)) return "ShouldRoot disagrees with the stretch";
+                    if (RM_RhossakKernel.ShouldRoot(acc, rootHours)) { RhossakRoots++; acc = 0; stretch = 0; }
+                }
+                else
+                {
+                    var r = new Random(seed * 31 + a.a);
+                    int n = r.Next(0, 6);
+                    int[] xs = new int[n], zs = new int[n];
+                    bool[] ok = new bool[n];
+                    for (int i = 0; i < n; i++) { xs[i] = r.Next(-50, 50); zs[i] = r.Next(-50, 50); ok[i] = r.Next(4) != 0; }
+                    int px = r.Next(-50, 50), pz = r.Next(-50, 50);
+                    int k = RM_RhossakKernel.NearestIndex(px, pz, xs, zs, ok);
+                    int best = -1; long bd = long.MaxValue;
+                    for (int i = 0; i < n; i++)
+                    {
+                        if (!ok[i]) continue;
+                        long d = (long)(xs[i] - px) * (xs[i] - px) + (long)(zs[i] - pz) * (zs[i] - pz);
+                        if (d < bd) { bd = d; best = i; }
+                    }
+                    if (k != best) return $"NearestIndex {k}, brute force {best}";
+                    if (k < 0) RhossakUnbound++; else RhossakBinds++;
+                }
+            }
+            return null;
+        }
+
+        private static List<string> Rhossak(int n, int baseSeed)
+        {
+            var names = new[] { "step", "bind" };
+            var fails = RunFamily("rhossak", n, baseSeed, seed =>
+            {
+                var r = new Random(seed * 7919 + 37);
+                var acts = new List<Act>();
+                int len = r.Next(4, 120);
+                for (int i = 0; i < len; i++)
+                    acts.Add(new Act { kind = r.Next(5) == 0 ? 1 : 0, a = r.Next(1000), b = r.Next(1000), c = r.Next(100000), names = names });
+                return acts;
+            }, RunRhossak);
+            try
+            {
+                Check(RM_RhossakKernel.ChancePerCheck(0f, 250) == 0f && RM_RhossakKernel.ChancePerCheck(3f, 0) == 0f, "chance is 0 with no mtb or no interval");
+                float c = RM_RhossakKernel.ChancePerCheck(3f, 250);
+                Check(c > 0.03f && c < 0.04f, "ChancePerCheck(3h, 250) ~0.033, got " + c);
+                Check(RM_RhossakKernel.ChancePerCheck(1f, 250) > c, "a shorter mtb must be likelier");
+                Check(!RM_RhossakKernel.ShouldSprout(true, false, true, 0f, 1f), "a galled rhossak (no seed) never sprouts");
+                Check(!RM_RhossakKernel.ShouldSprout(true, true, false, 0f, 1f), "an awake rhossak never sprouts");
+                Check(!RM_RhossakKernel.ShouldSprout(false, true, true, 0f, 1f), "sprouting off never sprouts");
+                Check(RM_RhossakKernel.ShouldSprout(true, true, true, 0.01f, 0.02f) && !RM_RhossakKernel.ShouldSprout(true, true, true, 0.02f, 0.02f), "sprout roll cut");
+                Check(!RM_RhossakKernel.Together(true, false, true, 5, 3, true, true), "a galled rhossak never roots");
+                Check(!RM_RhossakKernel.Together(true, true, true, 1, 3, true, true) && RM_RhossakKernel.Together(true, true, true, 2, 3, true, true), "three means self + two");
+                Check(!RM_RhossakKernel.Together(false, true, true, 2, 3, true, true), "grove off never roots");
+                Check(RM_RhossakKernel.CooledDown(100, -1, 10f) && !RM_RhossakKernel.CooledDown(599999, 0, 10f) && RM_RhossakKernel.CooledDown(600000, 0, 10f), "cooldown cut");
+                Check(RM_RhossakKernel.StepTogether(int.MaxValue - 5, true, 100) == int.MaxValue, "together count saturates");
+                Check(RM_RhossakKernel.RootTicks(24f) == 60000 && RM_RhossakKernel.RootTicks(0f) == 1, "RootTicks");
+                Check(RM_RhossakKernel.Within(3, 4, 5f) && !RM_RhossakKernel.Within(3, 4, 4.99f) && !RM_RhossakKernel.Within(0, 0, -1f), "Within");
+                Check(RM_RhossakKernel.NearestIndex(0, 0, new int[0], new int[0], new bool[0]) == -1, "no tree, no bind");
+                Check(RM_RhossakKernel.NearestIndex(0, 0, new[] { 2, -2 }, new[] { 0, 0 }, new[] { true, true }) == 0, "ties go to the lowest index");
+            }
+            catch (Exception e) { fails.Add("rhossak units: " + e.Message); }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -759,6 +845,7 @@ namespace RimMandrake.Cauldron.SelfTest
                 ("yield", () => Yield(N(3000), S(1))),
                 ("prints", () => Prints(N(4000), S(1))),
                 ("gas", () => Gas(N(3000), S(1))),
+                ("rhossak", () => Rhossak(N(3000), S(1))),
                 ("units", () => Units()),
             };
             foreach (var f in fam)
@@ -781,8 +868,10 @@ namespace RimMandrake.Cauldron.SelfTest
                 if (YieldProbes == 0 || DoseProbes == 0 || BeadFlips == 0 || Remeshes == 0) blind.Add("yield never swept/dosed/flipped/remeshed");
                 if (PrintsEvicted == 0 || PrintsExpired == 0 || GridCleared == 0 || GridKept == 0) blind.Add("prints never evicted/expired/cleared/kept a grid record");
                 if (GasSweeps == 0 || GasDrifts == 0 || GasBurns == 0 || GasOverflows == 0) blind.Add("gas never swept/drifted/burned/overflowed");
+                if (RhossakRoots == 0 || RhossakResets == 0 || RhossakBinds == 0 || RhossakUnbound == 0) blind.Add("rhossak never rooted/reset/bound/stayed unbound");
                 foreach (var b in blind) { Console.WriteLine("FAIL fuzz is blind: " + b); ok = false; }
             }
+            Console.WriteLine($"rhossak: roots {RhossakRoots}, resets {RhossakResets}, binds {RhossakBinds}, unbound {RhossakUnbound}");
             Console.WriteLine($"gas: sweeps {GasSweeps}, drifts {GasDrifts}, burns {GasBurns}, overflows {GasOverflows}");
             Console.WriteLine($"cauldron fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;
