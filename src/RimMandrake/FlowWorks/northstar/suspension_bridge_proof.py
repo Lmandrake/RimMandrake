@@ -109,6 +109,12 @@ def parse(txt):
     return kv
 
 
+def tick_failed(r):
+    """A step_game_ticks reply that is missing or says success=False: the clock never moved, so a row that needed time to pass
+    measured the harness (review 2026-10-20)."""
+    return not isinstance(r, dict) or r.get("success") is False
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("out", nargs="?", default=None)
@@ -255,7 +261,7 @@ def posts(ctx):
     before = pawns_by_id()
     over = kv.get("state") == "Over"
     line = kv.get("line", "")
-    ticks(120)
+    tick_bad = tick_failed(ticks(120))
     kv2, txt2 = proof("ProofSpan", xz(P(3, 0)))
     after = pawns_by_id()
     fell, hurt = 0, 0
@@ -269,8 +275,8 @@ def posts(ctx):
             hurt += 1
     gone = txt2.startswith("SPAN none") or kv2.get("decks") == "0"
     st = "PASS" if over and gone and fell == len([r for r in riders if r]) and hurt >= 1 else "FAIL"
-    if not over or not health_seen(after) or not all(drafted):
-        st = "UNMEASURED"           # never Over, no health block, or a rider not drafted (free to walk off the deck)
+    if not over or not health_seen(after) or not all(drafted) or tick_bad or any(r and r not in after for r in riders):
+        st = "UNMEASURED"           # never Over, no health block, a rider not drafted, the clock never moved, or a rider gone from the read
     row("SB_load_over_rating_whole_span_falls", st,
         {"empty": empty_txt, "before": txt, "inspect_line": line, "after": txt2, "riders": len(riders), "fell": fell, "hurt": hurt,
          "healthSeen": health_seen(after), "drafted": drafted,
@@ -291,13 +297,13 @@ def posts(ctx):
     kv3b, txt3b = proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 8)), xz(P(5, 8))))
     built3 = kv3b.get("ok") == "True"           # no bridge, no railings: neither rail row asks the mod anything (review 2026-10-20)
     rider = spawn(P(2, 8))
-    proof("ProofRails", "%s;off" % xz(P(2, 8)))
+    kvoff, _ = proof("ProofRails", "%s;off" % xz(P(2, 8)))
     kv, txt = proof("ProofKnock", "%s;20" % rider) if rider else ({}, "no pawn")
     st = "PASS" if kv and int(kv.get("fell", "0")) >= 1 else ("FAIL" if kv else "UNMEASURED")
     if kv and kv.get("edge") != "True":
         st = "UNMEASURED"           # no open edge beside the rider: nothing to fall off (SITE)
-    if not built3:
-        st = "UNMEASURED"
+    if not built3 or kvoff.get("on") != "False":
+        st = "UNMEASURED"           # no bridge, or the railings were never switched off ('RAILS none' / refused: SITE)
     row("SB_rails_off_some_fall", st, {"read": txt, "build": txt3b})
     rider2 = spawn(P(3, 8))
     kv0, txt0 = proof("ProofRails", "%s;on" % xz(P(2, 8)))
@@ -306,8 +312,8 @@ def posts(ctx):
     st = "PASS" if good else ("FAIL" if kv else "UNMEASURED")
     if kv and kv.get("edge") != "True":
         st = "UNMEASURED"           # no open edge beside the rider: 0 falls would prove nothing about the rails (SITE)
-    if not built3:
-        st = "UNMEASURED"
+    if not built3 or kv0.get("on") != "True":
+        st = "UNMEASURED"           # no bridge, or the railings were never switched on (SITE)
     row("SB_rails_on_nobody_falls", st, {"rails": txt0, "read": txt, "build": txt3b})
 
     # T4: lose an anchor -> swing-down from that end
@@ -317,7 +323,7 @@ def posts(ctx):
     kvb, txtb = proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 12)), xz(P(5, 12))))
     gone = B.call("jawa/destroy_batch", rects="%d,%d,1,1" % P(0, 12), categories="Building") or {}
     destroyed = gone.get("success") is True and int(gone.get("destroyed") or 0) >= 1
-    ticks(150)
+    tick_bad = tick_failed(ticks(150))
     kv, txt = proof("ProofSwing", "-")   # an empty args string is a 0-param call (no such overload)
     stamps = []
     for tok in txt.split()[1:]:
@@ -331,8 +337,8 @@ def posts(ctx):
     ts = [t for _, t in stamps]
     good = len(stamps) == 4 and xs == sorted(xs) and ts == sorted(ts) and len(set(ts)) == 4
     st = "PASS" if good else "FAIL"
-    if not good and (kvb.get("ok") != "True" or not destroyed):
-        st = "UNMEASURED"           # no bridge stood, or the anchor was never destroyed: no swing was asked for
+    if not good and (kvb.get("ok") != "True" or not destroyed or tick_bad or not txt.startswith("SWING")):
+        st = "UNMEASURED"           # no bridge, anchor never destroyed, clock never moved, or the probe refused: no swing was asked for
     row("SB_anchor_lost_swings_from_that_end", st,
         {"read": txt, "lane": stamps, "build": txtb, "destroy": {k: gone.get(k) for k in ("success", "message", "destroyed")}})
 
@@ -386,7 +392,7 @@ def grate(ctx):
         before = pawns_by_id()
         lit = B.call("jawa/static_call", type=FIRE_TYPE, method="ProofIgnite", args=xz(P(1, dz))) or {}
         lit_txt = str(lit.get("result") or "")
-        ticks(2500)
+        blind = blind or tick_failed(ticks(2500))
         after = pawns_by_id()
         blind = blind or not health_seen(after) or any(r and r not in after for r in riders)
         n = sum(max(0, burns(after.get(r) or {}) - burns(before.get(r) or {})) for r in riders if r)
@@ -413,12 +419,14 @@ def grate(ctx):
     kv, txt = proof("ProofPour", "%s;50;RM_Liquid_FreshWater" % xz(P(2, 28)))
     good = kv.get("rise") == "500" and kv.get("filthAfter") == kv.get("filthBefore")
     row("GRATE_pour_drains_to_body", "PASS" if good and built else ("FAIL" if kv and built else "UNMEASURED"), {"build": txtb, "read": txt})
-    B.call("jawa/spawn_batch", ops="Steel:%d,%d" % P(3, 28))
-    ticks(60)
+    dropped = B.call("jawa/spawn_batch", ops="Steel:%d,%d" % P(3, 28)) or {}
+    tick_bad = tick_failed(ticks(60))
     things = B.call("jawa/list_things", rect="%d,%d,1,1" % P(3, 28), limit=20, includePawns=False) or {}
     names = [t.get("def") or t.get("defName") for t in (things.get("things") or [])]
-    row("GRATE_item_stays_on_deck", ("PASS" if "Steel" in names else ("FAIL" if things.get("success") else "UNMEASURED"))
-        if built else "UNMEASURED", {"things": names, "build": txtb})
+    # the Steel never spawned (or the clock never moved): its absence is the harness, not the grate
+    seen = things.get("success") and dropped.get("success") is not False and not tick_bad
+    row("GRATE_item_stays_on_deck", ("PASS" if "Steel" in names else ("FAIL" if seen else "UNMEASURED"))
+        if built else "UNMEASURED", {"things": names, "build": txtb, "dropped": dropped.get("success"), "tickFailed": tick_bad})
 
 
 def underpass(ctx):
@@ -475,15 +483,15 @@ def underpass(ctx):
             st = "UNMEASURED"       # the deck the shot should cross was never built
         row("UND_shot_%s_deck" % tag, st, {"want": want, "read": txt, "target": txtb})
     e_ = spawn(P(2, 40))
-    proof("ProofPutUnder", "%s;%s" % (e_, xz(P(4, 40))))
+    put_e, _ = proof("ProofPutUnder", "%s;%s" % (e_, xz(P(4, 40)))) if e_ else ({}, "no pawn")
     kv0, _ = proof("ProofFell", "-1,-1")   # an off-map square: the counters only (live 2026-10-19: "" was REFUSED -> {})
     hb = hediffs_of(pawns_of(B).get(e_) or {})
     kv, txt = proof("ProofFell", xz(P(4, 40)))
     ha = hediffs_of(pawns_of(B).get(e_) or {})
     good = kv0 and int(kv.get("crushed", "0")) > int(kv0.get("crushed", "0")) and len(ha or []) > len(hb or [])
     st = "PASS" if good else ("FAIL" if kv else "UNMEASURED")
-    if st == "FAIL" and (not kv0 or ha is None or hb is None):
-        st = "UNMEASURED"           # no counter baseline or no health block: the bar could not be read
+    if st == "FAIL" and (not kv0 or ha is None or hb is None or put_e.get("under") != "True"):
+        st = "UNMEASURED"           # no counter baseline, no health block, or the pawn never stood under the deck: the bar could not be read
     if not u1:
         st = "UNMEASURED"           # no deck over the pawn: nothing could fall on it
     hb, ha = hb or [], ha or []
@@ -504,7 +512,9 @@ def underpass(ctx):
     kvp, txtp = proof("ProofPath", "%s;%s" % (f_, xz(P(4, 59)))) if f_ else ({}, "no pawn")
     good = (kv.get("ok") == "True" and kvs.get("deckNotches") == "8" and kvp.get("found") == "True"
             and int(kvp.get("decked", "0")) >= 2)
-    row("UND_sunken_bridge_crossed", "PASS" if good else ("FAIL" if kv and f_ else "UNMEASURED"), {"build": txt, "span": txts, "path": txtp})
+    # a refused ProofSpan/ProofPath probe reads {} (a read that never happened), not a mod verdict
+    row("UND_sunken_bridge_crossed", "PASS" if good else ("FAIL" if kv and kvs and kvp and f_ else "UNMEASURED"),
+        {"build": txt, "span": txts, "path": txtp})
     row("UND_raiders_walk_under_moat", "UNMEASURED", {"owed": True, "why": "OWED: a raid into a 4 m moat with a bridge over it, "
         "recorded with modcheck (behaviour is the ruling, not a bug)"})
     row("UND_L4_picture_pawn_under_deck", "UNMEASURED", {"owed": True, "why": "OWED: one joint screenshot of a pawn passing under a deck"})
@@ -536,8 +546,10 @@ def waters(ctx):
         o = (B.call("jawa/order_pawn", pawnId=w, x=r[1][0], z=r[1][1], waitTicks=1500, draft=True) or {}) if w else {}
         at = {p.get("id"): ((p.get("end") or {}).get("x"), (p.get("end") or {}).get("z"))   # read-back cell is end{x,z}
               for p in (o.get("pawns") or [])}.get(w)
-        good = kv.get("ok") == "True" and all(e == "True" for e in ex) and kvp.get("found") == "True" and at == r[1]
-        row("WAT_river_cross_no_drift", "PASS" if good else ("FAIL" if kv and w else "UNMEASURED"),
+        good = bool(ex) and kv.get("ok") == "True" and all(e == "True" for e in ex) and kvp.get("found") == "True" and at == r[1]
+        # an exempt read that never came back (None) or an order that returned no pawn row is a read that never happened
+        unread = None in ex or not kvp or at is None
+        row("WAT_river_cross_no_drift", "PASS" if good else ("FAIL" if kv and w and not unread else "UNMEASURED"),
             {"build": txt, "exempt": ex, "path": txtp, "arrived": at})
     else:
         row("WAT_river_cross_no_drift", "UNMEASURED", {"why": "no --river x1,z1,x2,z2 given (this map's river crossing)"})
@@ -567,7 +579,7 @@ def waters(ctx):
         wbuilt[tier] = proof("ProofBuild", "%s;%s;%s;god" % (xz(P(0, z)), xz(P(5, z)), tier))[0].get("ok") == "True"
         hp[tier] = [proof("ProofDeckHp", xz(P(2, z)))[0]]
         B.call("jawa/flowworks_spawn_flood", x=P(2, z - 1)[0], z=P(2, z - 1)[1], fluidDefName="RM_Fluid_Water", volume=30)
-    ticks(5000)
+    flood_tick_bad = tick_failed(ticks(5000))
     for tier, z in (("timber", 64), ("steel", 68)):
         hp[tier].append(proof("ProofDeckHp", xz(P(2, z)))[0])
     t0, t1 = hp["timber"]
@@ -575,7 +587,7 @@ def waters(ctx):
     # both decks must be awash: a timber deck the flood never reached keeps full hp and would read FAIL (SITE, not mod)
     awash = int(t1.get("awash", "0")) > 0 and int(s1.get("awash", "0")) > 0
     good = int(t1.get("hp", "0")) < int(t0.get("max", "0")) and s1.get("hp") == s0.get("hp")
-    built = all(wbuilt.values())          # a deck that never stood neither floods nor holds (hp reads 0 == 0: a vacuous PASS)
+    built = all(wbuilt.values()) and not flood_tick_bad          # (a clock that never moved floods nothing) # a deck that never stood neither floods nor holds (hp reads 0 == 0: a vacuous PASS)
     row("WAT_flood_damages_timber_not_steel", ("PASS" if good else "FAIL") if awash and built else "UNMEASURED",
         {"timber": hp["timber"], "steel": hp["steel"], "built": wbuilt,
          "why": "" if awash and built else "a deck square was not awash (the flood never reached both) or a bridge was not built"})
@@ -612,12 +624,15 @@ def jetty(ctx):
     k1, t1 = proof("ProofSpan", xz(P(2, 73)))
     p2 = rider(P(1, 73))
     k2, t2 = proof("ProofSpan", xz(P(2, 73)))
-    ticks(120)
+    tick_bad = tick_failed(ticks(120))
     k3, t3 = proof("ProofSpan", xz(P(2, 73)))
     ps = pawns_of(B)
     on_floor = [ps.get(p) and (ps[p].get("x"), ps[p].get("z")) in (P(1, 73), P(2, 73)) for p in (p1, p2)]
     good = k1.get("state") == "Ok" and k2.get("state") == "Over" and (t3.startswith("SPAN none") or k3.get("decks") == "0") and all(on_floor)
-    row("JET_overload_drops_whole_at_root", "PASS" if good else ("FAIL" if k1 and p1 and p2 else "UNMEASURED"),
+    # the claim is "an overloaded jetty drops whole": a span that never read Ok then Over (leftover weight, riders under the
+    # rating), or a clock that never moved, asked nothing of the load pass -- UNMEASURED, as T1's LOAD row (review 2026-10-20)
+    asked = k1.get("state") == "Ok" and k2.get("state") == "Over" and not tick_bad
+    row("JET_overload_drops_whole_at_root", "PASS" if good else ("FAIL" if asked and p1 and p2 else "UNMEASURED"),
         {"one": t1, "two": t2, "after": t3, "onFloor": on_floor})
     row("JET_open_edge_drop_on_order", "UNMEASURED", {"owed": True, "why": "OWED: railings off, order the 'Jump into pit' float-menu "
         "job on a pawn on the jetty (no bridge call drives that menu yet); the rail-off knock row (SB_rails_off_some_fall) proves the edge"})

@@ -64,6 +64,62 @@ def main():
                     "WAT_flood_damages_timber_not_steel"):
             if got.get(rid) != "UNMEASURED":
                 fails.append("no bridge built: %s reads %s, want UNMEASURED" % (rid, got.get(rid)))
+        # review 2026-10-20 (round 3): a SITE/harness fault reads UNMEASURED, a genuine mod fault still reads FAIL
+        ocall, ostat = SBP.FakeBridge.call, SBP.FakeBridge.static
+
+        def verdicts(name, only, call=None, static=None):
+            if call:
+                SBP.FakeBridge.call = call
+            if static:
+                SBP.FakeBridge.static = static
+            try:
+                path = os.path.join(d, name + ".json")
+                run(["--mock", path, "--only", only])
+            finally:
+                SBP.FakeBridge.call, SBP.FakeBridge.static = ocall, ostat
+            return {r["id"]: r["detail"].get("mock") for r in json.load(open(path, encoding="utf-8"))["rows"]}
+
+        def noclock(self, tool, **kw):
+            return {"success": False, "message": "no"} if tool == "rimworld/step_game_ticks" else ocall(self, tool, **kw)
+        # the mock's data would PASS regardless of the clock, so each case feeds the answer a never-ticked game would give
+        swing_none = lambda self, m, a: "SWING none" if m == "ProofSwing" else ostat(self, m, a)  # noqa: E731
+        got = verdicts("noclock", "posts", call=noclock, static=swing_none)
+        for rid in ("SB_load_over_rating_whole_span_falls", "SB_anchor_lost_swings_from_that_end"):
+            if got.get(rid) != "UNMEASURED":
+                fails.append("clock never moved: %s reads %s, want UNMEASURED" % (rid, got.get(rid)))
+        got = verdicts("clockswing", "posts", static=swing_none)
+        if got.get("SB_anchor_lost_swings_from_that_end") != "FAIL":
+            fails.append("over-correction: anchor destroyed, clock ran, no swing reads %s, want FAIL" % got.get("SB_anchor_lost_swings_from_that_end"))
+        stays = lambda self, m, a: (ostat(self, m, a).replace("SPAN none", "SPAN tier=steel load=1 rating=120 state=Over decks=2")  # noqa: E731
+                                    if m == "ProofSpan" else ostat(self, m, a))
+        got = verdicts("noclockjet", "jetty", call=noclock, static=stays)
+        if got.get("JET_overload_drops_whole_at_root") != "UNMEASURED":
+            fails.append("clock never moved: jetty row reads %s, want UNMEASURED" % got.get("JET_overload_drops_whole_at_root"))
+        got = verdicts("noclockflood", "waters", call=noclock)
+        if got.get("WAT_flood_damages_timber_not_steel") != "UNMEASURED":
+            fails.append("clock never moved: flood row reads %s, want UNMEASURED" % got.get("WAT_flood_damages_timber_not_steel"))
+        got = verdicts("norails", "posts", static=lambda self, m, a: "RAILS none" if m == "ProofRails" else ostat(self, m, a))
+        for rid in ("SB_rails_off_some_fall", "SB_rails_on_nobody_falls"):
+            if got.get(rid) != "UNMEASURED":
+                fails.append("railings never switched: %s reads %s, want UNMEASURED" % (rid, got.get(rid)))
+        got = verdicts("swingrefused", "posts", static=lambda self, m, a: "REFUSED: x" if m == "ProofSwing" else ostat(self, m, a))
+        if got.get("SB_anchor_lost_swings_from_that_end") != "UNMEASURED":
+            fails.append("refused swing probe reads %s, want UNMEASURED" % got.get("SB_anchor_lost_swings_from_that_end"))
+        got = verdicts("noput", "underpass", static=lambda self, m, a: "REFUSED: x" if m == "ProofPutUnder" else ostat(self, m, a))
+        if got.get("UND_crush_below_and_wreck") == "FAIL":
+            fails.append("a pawn never put under the deck scored a mod FAIL on the crush row")
+        # over-correction guard: a real mod fault (rails off, open edge, nobody falls) must still be FAIL
+        got = verdicts("realfail", "posts", static=lambda self, m, a: ("KNOCK trials=20 fell=0 railed=False edge=True" if m == "ProofKnock"
+                                                                        else ostat(self, m, a)))
+        if got.get("SB_rails_off_some_fall") != "FAIL":
+            fails.append("over-correction: rails off, open edge, 0 of 20 fell reads %s, want FAIL" % got.get("SB_rails_off_some_fall"))
+        # jetty that never read Over (riders under the rating) is UNMEASURED, an Over that does not drop is FAIL
+        got = verdicts("jetnotover", "jetty", static=lambda self, m, a: ostat(self, m, a).replace("state=Over", "state=Ok") if m == "ProofSpan" else ostat(self, m, a))
+        if got.get("JET_overload_drops_whole_at_root") != "UNMEASURED":
+            fails.append("jetty never Over reads %s, want UNMEASURED" % got.get("JET_overload_drops_whole_at_root"))
+        got = verdicts("jetstays", "jetty", static=lambda self, m, a: ostat(self, m, a).replace("SPAN none", "SPAN tier=steel load=1 rating=120 state=Over decks=2") if m == "ProofSpan" else ostat(self, m, a))
+        if got.get("JET_overload_drops_whole_at_root") != "FAIL":
+            fails.append("over-correction: jetty Over but decks stand reads %s, want FAIL" % got.get("JET_overload_drops_whole_at_root"))
     for f in fails:
         print("FAIL " + f)
     print("suspension bridge proof mock: %d rows, %d sections, %s" % (len(ids), len(SBP.SECTIONS), "ok" if not fails else "FAIL"))
