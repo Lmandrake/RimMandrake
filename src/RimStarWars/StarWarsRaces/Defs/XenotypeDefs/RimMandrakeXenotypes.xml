@@ -1125,7 +1125,6 @@
       <li>NakedSpeed</li>
       <li>BS_Diet_Carnivore</li>
       <li>MeleeDamage_Strong</li>
-      <li>RSW_GS_Eyes_Yellow</li>
       <li>Outland_Chest_Fur</li>
       <li>Hair_BaldOnly</li> <!-- painted head carries its own fur; gene hair drew over it (2026-10-20) -->
       <li>RSW_LasatHead</li>
@@ -1138,9 +1137,7 @@
       <li>RSW_Skin_SlateBlue</li>
       <li>Outland_Skin_PaleBrown</li>
       <li>RSW_Skin_MidGray</li>
-      <li>Ears_Pointed</li>
-      <li>RSW_Eyes_BigYellow</li>
-      <li>RSW_Eyes_BigGreen</li>
+      <li>Ears_Human</li> <!-- ears are painted in the head; no attachment ear (2026-10-20) -->
       <li>DarkVision</li>
     </genes>
   </XenotypeDef>
@@ -1154,10 +1151,6 @@
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <nameMaker>RSW_KoTOR_NamerMimbanese</nameMaker>
     <genes>
-      <li>RSW_FacialRidges_bumpy</li>
-      <li>RSW_FacialRidges_broad</li>
-      <li>RSW_Eyes_Big</li>
-      <li>RSW_Brow_Ridged</li>
       <li>RSW_Body_gaunt</li>
       <li>UVSensitivity_Mild</li>
       <li>Aggression_Aggressive</li>
@@ -1375,7 +1368,6 @@
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <nameMaker>RSW_KoTOR_NamerNelvaanian</nameMaker>
     <genes>
-      <li>RSW_Eyes_Big</li>
       <li>RSW_statgene_predator</li>
       <li>RSW_BodySizeGene_big</li>
       <li>NakedSpeed</li>
@@ -1386,7 +1378,7 @@
       <li>RSW_NelvaanianHead</li>
       <li>Hair_InkBlack</li>
       <li>RSW_Skin_SlateBlue</li>
-      <li>Outland_Ears_FlatPointed</li>
+      <li>Ears_Human</li> <!-- ears are painted in the head; no attachment ear (2026-10-20) -->
       <li>RSW_GS_Primitive</li>
       <li>Outland_UnusualSpeech</li>
       <li>AptitudePoor_Plants</li>
@@ -1434,7 +1426,6 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <genes>
-      <li>RSW_Eyes_Big</li>
       <li>RSW_OrtolanHead</li>
       <li>Immunity_Strong</li>
       <li>MinTemp_LargeDecrease</li>
@@ -1442,9 +1433,8 @@
       <li>Beard_NoBeardOnly</li>
       <li>Body_Fat</li>
       <li>Body_Hulk</li>
-      <li>Skin_Blue</li>
-      <li>Outland_Skin_PaleAzure</li>
-      <li>Ears_Floppy</li>
+      <li>Outland_Skin_DeepAzure</li> <!-- only skin gene: (73,107,167) ~ painted head mean (68,101,149); head drawn untinted (2026-10-20) -->
+      <li>Ears_Human</li> <!-- ears are painted in the head; no attachment ear (2026-10-20) -->
       <li>Hands_Pig</li>
       <li>StrongStomach</li>
       <li>RobustDigestion</li>
