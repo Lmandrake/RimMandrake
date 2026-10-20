@@ -1,0 +1,47 @@
+[
+ {
+  "id": "forgeslow_kettugal_v1",
+  "rimflow_item_id": "FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND",
+  "target_def": "RM_Kettugal",
+  "target_texpath": "Things/Pawn/Animal/RM_Kettugal/RM_Kettugal",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.1,
+  "facings": "east",
+  "priority": 30,
+  "background": "transparent",
+  "biome_register": "The Forge: a volcanic massif under doubled furnace light, hard white sun above and seam-red from below; basalt black, ash grey, obsidian gloss in the room, seam-red ONLY where melt actually shows (never on this animal). Heat-adapted and few: no fur, no lush register, nothing lava-native.",
+  "prompt": "RimWorld creature sprite of the ADULT kettugal, a slow alien grazer of a volcanic mountain that carries its food as liquid metal. SCALE: drawSize 2.1 cells; a colonist is about 1 cell wide and 1.8 cells tall, this animal is about knee-to-waist high. CANVAS: 256x256, square, the animal fills most of the frame width. VIEW: orthographic side view facing right (east), standing naturally on a transparent background, whole animal in frame, centred. SUBJECT: a low, wide, heavy creature whose whole back is one thick fired-ceramic bowl, rim level and slightly lipped, the open top holding a shallow pool of glowing orange-white molten slag with a dark crusted skin floating on it. The bowl is carried perfectly level on six short, thick, columnar legs with flat round soles like stacked basalt discs. At the front, below the rim, a long flexible lip-snout of dark leathery hide, curled down toward the ground, made for dipping into lava seams. Two small deep-set amber eyes under a heavy ceramic brow. Hide on the legs and snout is soot-black with ash-grey cracking; the bowl's outer wall is pale buff ceramic, streaked with dribbled cooled metal drips in bronze and gunmetal. The molten pool is the only bright colour on the animal. Patient, unhurried, deliberate posture.",
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte mineral surface texture, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Never cute. New invented alien creature: draw from this description only; no donor pixels exist or may be used. Placeholder concept render for an owner pick."
+ },
+ {
+  "id": "forgeslow_ummisk_v1",
+  "rimflow_item_id": "FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND",
+  "target_def": "RM_Ummisk",
+  "target_texpath": "Things/Pawn/Animal/RM_Ummisk/RM_Ummisk",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.1,
+  "facings": "east",
+  "priority": 30,
+  "background": "transparent",
+  "biome_register": "The Forge: a volcanic massif under doubled furnace light, hard white sun above and seam-red from below; basalt black, ash grey, obsidian gloss in the room, seam-red ONLY where melt actually shows (never on this animal). Heat-adapted and few: no fur, no lush register, nothing lava-native.",
+  "prompt": "RimWorld creature sprite of the ADULT ummisk, a slow alien creature of a volcanic mountain that drinks scalding rain and walks the edges of lava flows. SCALE: drawSize 2.1 cells; a colonist is about 1 cell wide and 1.8 cells tall, this animal is about knee-to-waist high. CANVAS: 256x256, square, the animal fills most of the frame width. VIEW: orthographic side view facing right (east), standing naturally on a transparent background, whole animal in frame, centred. SUBJECT: a domed tussock-shaped body made of hundreds of upright hollow tubes packed together like a bundle of glassy reeds, each tube open at the top and beaded with water, the tubes dark bottle-green to black with wet moss growing between them. Thin wisps of white steam rise from the tube mouths. The whole mound rests on a low skirt fringed with a dense row of many short pale cilia-legs, like a living brush, all touching the ground. Under and behind it the ground it has crossed is a smooth glossy black glass smear. No head and no face: at the front a single horizontal slit lined with small translucent filter plates. Dripping, sodden, heavy with stored water; calm and slow.",
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte mineral surface texture, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Never cute. New invented alien creature: draw from this description only; no donor pixels exist or may be used. Placeholder concept render for an owner pick."
+ },
+ {
+  "id": "forgeslow_brazzok_v1",
+  "rimflow_item_id": "FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND",
+  "target_def": "RM_Brazzok",
+  "target_texpath": "Things/Pawn/Animal/RM_Brazzok/RM_Brazzok",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.1,
+  "facings": "east",
+  "priority": 30,
+  "background": "transparent",
+  "biome_register": "The Forge: a volcanic massif under doubled furnace light, hard white sun above and seam-red from below; basalt black, ash grey, obsidian gloss in the room, seam-red ONLY where melt actually shows (never on this animal). Heat-adapted and few: no fur, no lush register, nothing lava-native.",
+  "prompt": "RimWorld creature sprite of the ADULT brazzok, a slow alien creature of a volcanic mountain shaped like a living chimney. SCALE: drawSize 2.1 cells; a colonist is about 1 cell wide and 1.8 cells tall, this animal is about knee-to-waist high. CANVAS: 256x256, square, the animal fills most of the frame width. VIEW: orthographic side view facing right (east), standing naturally on a transparent background, whole animal in frame, centred. SUBJECT: a tall narrow upright body, taller than it is long, built from a stack of fused ring-shaped segments of dark fired ceramic like a kiln flue, slightly tapering toward the open top, from which a thin pale ribbon of steam streams sideways like a banner. The ring stack rides on four long, jointed, stilt-like legs of black chitin with splayed three-toed feet. At the base of the stack, between the front legs, a broad low mouth like a firebox opening with a faint ember-red glow deep inside, for inhaling ash. Two small eyes set on short stalks on the lowest ring. The ceramic rings are charcoal and rust-brown with ash-grey dust in the joins and a dull iron sheen on the edges. Stately, slow, upright posture.",
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte mineral surface texture, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Never cute. New invented alien creature: draw from this description only; no donor pixels exist or may be used. Placeholder concept render for an owner pick."
+ }
+]
