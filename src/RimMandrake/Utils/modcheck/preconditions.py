@@ -125,11 +125,12 @@ class Preconditions(object):
         if len(f) < MAX_FAULTS:
             f.append({"scope": self.frames[-1]["name"], "what": str(what)[:120], "why": str(why)[:240], "class": cls})
 
-    def adopt(self, frame):
-        """Carry a CLOSED scope's faults into the current one: a staging run in its own scope, whose result a later row
+    def adopt(self, *frames):
+        """Carry CLOSED scopes' faults into the current one: a staging run in its own scope, whose result a later row
         depends on."""
-        for x in (frame or {}).get("faults") or []:
-            self.fault(x.get("what"), x.get("why"), x.get("class", "SITE"))
+        for frame in frames:
+            for x in (frame or {}).get("faults") or []:
+                self.fault(x.get("what"), x.get("why"), x.get("class", "SITE"))
 
     def require(self, ok, what, detail=None, cls="SITE"):
         """A precondition read back: when it does not hold, every PASS/FAIL judged in this scope is withheld."""
