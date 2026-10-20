@@ -247,7 +247,14 @@ def stage_op(defname, stage_index, fields):
     ET.SubElement(outer, "xpath").text = li_xpath
     outer.append(li_exists)
     outer.append(stages_cond)
-    return outer
+    # Guard on the def itself (2026-10-20, PAINT list load): a mod can be active while the def is absent
+    # (Alpha Memes defines AM_*Dreadnought / AM_DisastrousBanquet only when its VFE Pirates / VCE LoadFolder
+    # loads). Branch 3's Add then targets nothing and fails the whole FindMod sequence.
+    outer.tag = "match"
+    guard = ET.Element("li", {"Class": "PatchOperationConditional"})
+    ET.SubElement(guard, "xpath").text = def_xpath
+    guard.append(outer)
+    return guard
 
 
 def build_groups(entries):
