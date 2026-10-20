@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ===== Founders' ported backstories (offline port, 2026-10-20) =====
+       Text, skills, work disables and traits copied verbatim from the donor defs named on each entry
+       (Vanilla Backstories Expanded, VQE The Generator) so the three founder fragments that cite them
+       survive those mods being dropped. spawnCategories is a private category no faction uses, so the
+       pool never hands them to a random pawn. VQE_PowerArchitect02 also gave one VQE_GenetronComponent
+       as a possession; that item belongs to the donor and is deliberately not carried. Fragments still cite the donor names until re-pointed -->
+
+  <!-- donor: VBE_ClonedHeir (Vanilla Backstories Expanded) -->
+  <BackstoryDef>
+    <defName>RUT_Jawa_FounderClonedHeir</defName>
+    <identifier>RUT_Jawa_FounderClonedHeir</identifier>
+    <slot>Childhood</slot>
+    <title>Cloned heir</title>
+    <titleShort>Clone</titleShort>
+    <description>[PAWN_nameDef] was created to replace the missing heir of a noble house, but did not turn out quite right. Despite the best efforts of [PAWN_possessive] tutors, [PAWN_pronoun] was far more interested in bloodshed than the intricacies of the court.
+
+When the heir turned out to be alive after all, [PAWN_nameDef] was discarded to make room for [PAWN_possessive] genetic source.</description>
+    <skillGains>
+      <Melee>4</Melee>
+      <Social>2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Brawler>0</Brawler>
+    </forcedTraits>
+    <spawnCategories>
+      <li>RUT_Jawa_Founders</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- donor: VBE_Standardbearer (Vanilla Backstories Expanded) -->
+  <BackstoryDef>
+    <defName>RUT_Jawa_FounderStandardbearer</defName>
+    <identifier>RUT_Jawa_FounderStandardbearer</identifier>
+    <slot>Adulthood</slot>
+    <title>Standard-bearer</title>
+    <titleShort>Banneret</titleShort>
+    <description>[PAWN_nameDef] was a fearless standard-bearer, entrusted to carry the symbol of [PAWN_possessive] people into conflict. [PAWN_pronoun] was known for [PAWN_possessive] strategic thinking and combat proficiency, able to lead the charge or retreat with the emblem as needed. [PAWN_possessive] contributions earned [PAWN_objective] a privileged position, freeing [PAWN_objective] from tasks like cooking and digging.</description>
+    <skillGains>
+      <Shooting>3</Shooting>
+      <Melee>3</Melee>
+      <Mining>-2</Mining>
+      <Cooking>-2</Cooking>
+      <Social>2</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <disallowedTraits>
+      <Nerves>-1</Nerves>
+    </disallowedTraits>
+    <spawnCategories>
+      <li>RUT_Jawa_Founders</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- donor: VBE_GiftedBurnout (Vanilla Backstories Expanded) -->
+  <BackstoryDef>
+    <defName>RUT_Jawa_FounderGiftedBurnout</defName>
+    <identifier>RUT_Jawa_FounderGiftedBurnout</identifier>
+    <slot>Childhood</slot>
+    <title>Gifted burnout</title>
+    <titleShort>Gifted</titleShort>
+    <description>From a young age, [PAWN_nameDef] was heralded as a genius. The constant testing, training, and praise from surrounding adults was good, but the constant pressure, expectation, and eventual failure exacerbated a long list of mental disorders lying dormant within [PAWN_nameDef]'s mind. [PAWN_pronoun] still retains [PAWN_possessive] training, but making use of it will be difficult for the rest of [PAWN_possessive] life.</description>
+    <skillGains>
+      <Artistic>5</Artistic>
+      <Social>-3</Social>
+      <Intellectual>5</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <TooSmart>0</TooSmart>
+    </forcedTraits>
+    <disallowedTraits>
+      <SlowLearner>0</SlowLearner>
+    </disallowedTraits>
+    <spawnCategories>
+      <li>RUT_Jawa_Founders</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- donor: VQE_PowerArchitect02 (VQE The Generator) -->
+  <BackstoryDef>
+    <defName>RUT_Jawa_FounderPowerArchitect</defName>
+    <identifier>RUT_Jawa_FounderPowerArchitect</identifier>
+    <slot>Adulthood</slot>
+    <title>power architect</title>
+    <titleShort>architect</titleShort>
+    <description>[PAWN_nameDef] specialized in optimizing the power flow within ARC systems. By carefully calibrating the fuel rods, [PAWN_pronoun] was able to significantly extend the reactor's operational time. Despite lacking full knowledge of the ancient mechanisms, [PAWN_nameDef]'s adjustments became the industry standard.</description>
+    <skillGains>
+      <Construction>5</Construction>
+      <Intellectual>3</Intellectual>
+    </skillGains>
+    <workDisables>Artistic</workDisables>
+    <spawnCategories>
+      <li>RUT_Jawa_Founders</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+</Defs>
