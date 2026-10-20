@@ -464,10 +464,11 @@ def realflow(B, rows):
         # past the prepared plot (RF_PH=14 -> oz..oz+13), so V was never built (SITE). V now sits WEST of the pipe run, inside the
         # RF_WEST-prepared strip: (ox-2..ox-1, oz+11..oz+12) touches the pipe cells (ox, oz+11/12) from the other side than mid.
         # Code review 2026-10-20: mid at (ox+1, oz+11) met run 1's last pipe (ox+3, oz+10) only corner to corner, so it touched
-        # ONE run and the row could not fail. At (ox+1, oz+10) it covers ox+1..ox+2, oz+10..oz+11: edge to edge with (ox+3, oz+10)
-        # AND with the second run's (ox, oz+11) -- a real bridge for the mod to refuse.
-        mid, v = (ox + 1, oz + 10), (ox - 2, oz + 11)
-        bb = s5.build("RM_LiquidTank:%d,%d" % mid, "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 11), "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 12),
+        # ONE run and the row could not fail. It now sits WEST of run 1 at (ox+1, oz+8): ox+1..ox+2, oz+8..oz+9, edge to edge with
+        # pipes (ox+3, oz+8/9), clear of the channel (oz+6), the pump (ox+3, oz+7) and reel5's west lead-out (row oz+10). Run 2
+        # is (ox, oz+8/9) on mid's west edge, and V (ox-2..ox-1, oz+8..oz+9) on run 2's west: a real bridge for the mod to refuse.
+        mid, v = (ox + 1, oz + 8), (ox - 2, oz + 8)
+        bb = s5.build("RM_LiquidTank:%d,%d" % mid, "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 8), "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 9),
                       "RM_LiquidTank:%d,%d" % v)
         B.ticks(300)
         net = B.hp("net:%d,%d" % s5.pump)
