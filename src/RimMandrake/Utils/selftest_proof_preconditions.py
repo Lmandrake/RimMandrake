@@ -516,6 +516,33 @@ def part_d():
     st3 = {r["id"]: r["status"] for r in P3.rows}
     check("D preport: refused polls of a loading map are not faults -- both rows PASS",
           st3.get("PP1_preport_midcarry_save_loads") == "PASS" and st3.get("PP2_preport_midretract_save_loads") == "PASS", st3)
+    # review 2026-10-20: HP1 read "no startup errors" off a list_logs the bridge refused, and PASSed on ignorance
+    class PFFake(PreFake):
+        def __init__(self, refuse_logs):
+            PreFake.__init__(self)
+            self.refuse_logs = refuse_logs
+
+        def call(self, tool, **kw):
+            if tool == "jawa/running_mods":
+                return {"success": True, "packageIds": [PH.PKG]}
+            if tool == "rimbridge/list_logs":
+                return {"success": False, "message": "refused (selftest)"} if self.refuse_logs else {"success": True, "logs": []}
+            return PreFake.call(self, tool, **kw)
+    hp1 = {}
+    ow = V._wait_playing
+    V._wait_playing = lambda B, **k: (True, 1)
+    try:
+        for refuse in (False, True):
+            PF = PH.Proof(argparse.Namespace(only=None, preport_save=None, no_fresh_map=True), bridge=PFFake(refuse))
+            with quiet_out():
+                try:
+                    PF.preflight()
+                except Exception:  # noqa: BLE001 - only HP1 is read
+                    pass
+            hp1[refuse] = [r["status"] for r in PF.rows if r["id"] == "HP1_tier_running_startup_log_clean"]
+    finally:
+        V._wait_playing = ow
+    check("D HP1: a healthy startup-log read PASSes, a refused one is UNMEASURED", hp1 == {False: ["PASS"], True: ["UNMEASURED"]}, hp1)
     P4 = PH.Proof(argparse.Namespace(only=None, preport_save=None), bridge=PreFake())
     with quiet_out():
         P4.take("hose", {"rows": [], "aborted": "hose probe dead"})

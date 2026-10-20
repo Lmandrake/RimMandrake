@@ -671,9 +671,11 @@ class Proof(object):
         on = PKG in running
         # no game in Playing, or the flowworks tier not on the list, is the SITE: the run measured nothing (UNMEASURED, still aborts the
         # run below). Only an error naming our namespaces in the startup log is the mod's FAIL.
-        hp1 = "PASS" if ok and on and not pre else ("FAIL" if ok and on else "UNMEASURED")
+        # a startup-log read that was refused or empty-handed saw no errors, which is ignorance, not a clean log (review 2026-10-20)
+        log_read = bool(lg0) and lg0.get("success") is not False
+        hp1 = ("PASS" if not pre and log_read else "FAIL" if pre else "UNMEASURED") if ok and on else "UNMEASURED"
         self.row("preflight", "HP1_tier_running_startup_log_clean", hp1, "SITE" if hp1 == "UNMEASURED" else "MOD",
-                 {"playing": ok, "flowworks": on, "gimmesomeslack": self.gss_active, "startupErrorsNamingHose": pre[:6]})
+                 {"playing": ok, "flowworks": on, "gimmesomeslack": self.gss_active, "startupLogRead": log_read, "startupErrorsNamingHose": pre[:6]})
         hd = B.hp("defaults")
         B.call("jawa/weather_set", weather="Clear", lockWeather=True)
         B.call("jawa/incident_queue_clear")
