@@ -52,6 +52,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!cover.Contains("override float DeckHeightM") && !cover.Contains("override bool FloorBandPassesUnder")
                     && !cover.Contains("override bool Grated"), "can-fail: a cover keeps the base's surface / no-underpass / solid defaults");
                 Assert(cover.Contains("protected override string CollapseSaveKey => \"rmCoverSprung\";"), "old saves keep their sprung flag");
+                // FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED: a killed (not deconstructed) cover drops its riders through the trap
+                Assert(cover.Contains("public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)")
+                    && cover.Contains("(mode == DestroyMode.KillFinalize || mode == DestroyMode.KillFinalizeLeavingsOnly)")
+                    && cover.Contains("RM_SuperdeepTrap.OnForcedDescent(p, pos, state);"), "a cover destroyed by damage drops whoever stood on it");
+                Assert(cover.IndexOf("riders = new List<Pawn>()") < cover.IndexOf("base.DeSpawn(mode);", cover.IndexOf("class Building_PitCover")),
+                    "riders are read while the cover is still spawned (after DeSpawn its cell is empty of it)");
                 Assert(cover.Contains("return RM_SpanUtility.DeckedAt(map, c);"), "IsCovered is the span read (any deck, height ignored)");
                 string b = Src("Pits", "Building_SpanDeck.cs");
                 Assert(b.Contains("public virtual float DeckHeightM => 0f;") && b.Contains("public virtual bool FloorBandPassesUnder => false;"),
