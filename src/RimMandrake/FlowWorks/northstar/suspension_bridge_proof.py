@@ -374,6 +374,9 @@ def grate(ctx):
             fills[tier].append(str(fr.get("result") or fr.get("message") or fr.get("error") or ""))
         proof("ProofBuild", "%s;%s;%s;god" % (xz(P(0, dz)), xz(P(5, dz)), tier))
         riders = [spawn(P(k, dz)) for k in (2, 3, 4)]
+        # drafted, as T1's riders: an undrafted colonist walks away from a lit pit and reads as "not burned" (review 2026-10-20)
+        undrafted = [r for r in riders if r and (B.call("jawa/set_draft", pawnId=r, drafted=True) or {}).get("drafted") is not True]
+        blind = blind or bool(undrafted) or not all(riders)
         before = pawns_by_id()
         lit = B.call("jawa/static_call", type=FIRE_TYPE, method="ProofIgnite", args=xz(P(1, dz))) or {}
         lit_txt = str(lit.get("result") or "")
