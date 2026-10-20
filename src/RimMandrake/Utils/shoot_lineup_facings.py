@@ -61,6 +61,14 @@ def main():
                 call(b, "rimworld/frame_cell_rect", {"x": x - 1, "z": z - 1, "width": w + 2,
                                                      "height": h + 2, "paddingCells": 0})
             call(b, "jawa/clear_ui")
+            # A donor-trimmed save raises one VEF "New faction" dialog after another
+            # (17 on 2026-10-20); clear_ui does not close them. Close every forcePause window.
+            for _ in range(40):
+                ws = call(b, "jawa/window_list_close").get("windows") or []
+                hit = [w for w in ws if w.get("forcePause")]
+                if not hit:
+                    break
+                call(b, "jawa/window_list_close", {"action": "close", "typeName": hit[0]["type"]})
             time.sleep(0.8)
             s = call(b, "jawa/take_screenshot", {"fileName": "%s_%s" % (a.shot, f)})
             out.append((f, r.get("success"), s.get("filePath") or s.get("message")))
