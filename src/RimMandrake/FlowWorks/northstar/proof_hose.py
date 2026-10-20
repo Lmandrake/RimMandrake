@@ -642,7 +642,8 @@ class Proof(object):
         for r in (res or {}).get("rows") or []:
             self.rows.append(dict(r, block=name))
         if (res or {}).get("aborted"):
-            self.row(name, "%s_aborted" % name.upper(), "FAIL", "HARNESS", res["aborted"])
+            # the abort reasons are site/harness (dead probe, reels or site not ready): the run measured nothing, never a FAIL
+            self.row(name, "%s_aborted" % name.upper(), "UNMEASURED", "HARNESS", res["aborted"])
 
     # ---------------------------------------------------------------- preflight
     def preflight(self):
@@ -834,7 +835,8 @@ class Proof(object):
             # a refused load leaves the OLD map Playing: SL3/SL4 would compare the live map with itself and PASS vacuously
             self._skip_sl(("SL3", "SL4"), "rimworld/load_game refused: %s" % json.dumps(ld, default=str)[:200])
             return
-        ok2, waited = V._wait_playing(B)
+        with V.quiet():     # the wait polls a map that is still loading: its refused polls are not SL3/SL4's preconditions
+            ok2, waited = V._wait_playing(B)
         if not ok2:
             # the load never reached Playing inside the wait budget (a cold full list is slow): the site; a mod's own load error is
             # Z_log_budget's to catch
@@ -893,7 +895,8 @@ class Proof(object):
             # no such save / load refused: the old map stays Playing and would FAIL the row for want of a mid-carry job (SITE)
             self.row("preport", rid, "UNMEASURED", "SITE", {"save": name, "loadRefused": ld})
             return
-        ok, waited = V._wait_playing(B)
+        with V.quiet():     # as SL3: polls of a loading map are answered by the wait's own ok, not faults
+            ok, waited = V._wait_playing(B)
         B.ticks(60)
         new = [e for e in (B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}).get("logs") or [] if (e.get("Sequence") or 0) > base]
         text = [str(e.get("Message", "")) for e in new]

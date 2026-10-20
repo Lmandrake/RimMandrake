@@ -237,13 +237,15 @@ def posts(ctx):
     B, P, xz, row, proof, stage, dig, spawn, pawns_by_id, ticks = (ctx[k] for k in ("B", "P", "xz", "row", "proof", "stage", "dig",
                                                                                    "spawn", "pawns_by_id", "ticks"))
     ox, oz = ctx["ox"], ctx["oz"]
-    for dz, n in ((0, 6), (4, 7), (8, 4), (12, 4)):
+
+    def trench(dz, n):
         for i in range(1, n + 1):
             dig(P(i, dz))
-    dig(P(10, 0))
 
+    # each step digs its own trench INSIDE its scope: a refused dig withholds the rows standing on that trench, not the others
     # T1: build, path, load
     with V.scope("T1_build") as t1:
+        trench(0, 6)
         kv, txt = proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 0)), xz(P(7, 0))))
         good = kv.get("ok") == "True" and kv.get("anchors") == "2" and kv.get("decks") == "6"
         row("SB_drag_6_timber_builds", "PASS" if good else "FAIL", {"read": txt})
@@ -307,6 +309,7 @@ def posts(ctx):
 
     # T2: too long for timber (the refusal IS the claim: an ok=False answer is measured, never a fault)
     with V.scope("T2"):
+        trench(4, 7)
         kv, txt = proof("ProofBuild", "%s;%s;timber" % (xz(P(0, 4)), xz(P(8, 4))))
         good = kv.get("ok") == "False" and "at most 6" in txt and kv.get("blueprints") == "0" and kv.get("anchors") == "0"
         row("SB_drag_7_timber_refused", "PASS" if good else "FAIL", {"read": txt})
@@ -314,6 +317,7 @@ def posts(ctx):
     # T3: railings. A fall needs an open edge: a dug square BESIDE the deck (OpenEdgeBeside). Under a 1-wide bridge over a
     # 1-wide trench every dug square is decked, so live 2026-10-19 read edge=False and 0 of 20 fell (SITE): dig z=9 too.
     with V.scope("T3"):
+        trench(8, 4)
         for i in range(1, 5):
             dig(P(i, 9))
         _, txt3b = stage("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 8)), xz(P(5, 8))))
@@ -338,6 +342,7 @@ def posts(ctx):
     # "rects is required", nothing was destroyed and the SWING log read empty (HARNESS). Its Destroy(Vanish) reaches
     # Building_SuspensionAnchor.Destroy -> Notify_SupportLost, the production hook. 4 decks x SwingTicksPerCell 20 < 150 ticks.
     with V.scope("T4"):
+        trench(12, 4)
         _, txtb = stage("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 12)), xz(P(5, 12))))
         gone = B.call("jawa/destroy_batch", rects="%d,%d,1,1" % P(0, 12), categories="Building") or {}
         V.require(int(gone.get("destroyed") or 0) >= 1, "anchor destroyed", {k: gone.get(k) for k in ("success", "message", "destroyed")})
@@ -361,6 +366,7 @@ def posts(ctx):
     # not Bridgeable terrain, so live 2026-10-19 read vanilla's own refusal and the ruled one never ran (SITE). Water in the
     # square makes it bridgeable terrain to vanilla.
     with V.scope("T5"):
+        dig(P(10, 0))
         B.call("jawa/flowworks_excavation_drive", x=P(10, 0)[0], z=P(10, 0)[1], deepenLevels=0, setFill=2)
         kv, txt = proof("ProofVanillaBridge", xz(P(10, 0)))
         good = kv.get("accepted") == "False" and "Use a suspension bridge over dug ground" in txt
@@ -386,11 +392,13 @@ def grate(ctx):
     body; an item stays on the grate)."""
     B, P, xz, row, proof, stage, dig, spawn, pawns_by_id, ticks = (ctx[k] for k in ("B", "P", "xz", "row", "proof", "stage", "dig",
                                                                                    "spawn", "pawns_by_id", "ticks"))
-    for dz in (20, 24, 28):
+    def pit(dz):
         for i in range(1, 5):
             dig(P(i, dz), 4)                                     # 2 m
     counts, fills, builds = {}, {}, {}
     with V.scope("GRATE_fire"):
+        pit(20)                                                  # each scope digs its own pits: a refused dig of one
+        pit(24)                                                  # scene never withholds the other's row
         for dz, tier in ((20, "steelgrated"), (24, "steel")):
             # every fill reply is kept: live 2026-10-19 (run c, same map as runs a/b) the solid-deck CONTROL pit read "REFUSED:
             # fire off or nothing burnable" cut at 60 chars, the "(fluid X, F=n)" cause lost and the fill replies discarded
@@ -422,6 +430,7 @@ def grate(ctx):
         row("GRATE_fire_burns_people_above", "PASS" if g >= 1 and g > s_ else "FAIL",
             {"grateBurns": g, "solidBurns": s_, "reads": counts, "builds": {t: b[1] for t, b in builds.items()}, "fills": fills})
     with V.scope("GRATE_pour_item"):
+        pit(28)
         for i in range(1, 5):                                         # 1 m of water in the 2 m canal: room for the pour
             B.call("jawa/flowworks_excavation_drive", x=P(i, 28)[0], z=P(i, 28)[1], deepenLevels=0, setFill=2)
         _, txtb = stage("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(0, 28)), xz(P(5, 28))))
@@ -440,19 +449,22 @@ def grate(ctx):
 def underpass(ctx):
     """SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD rows (verify L2 x7; raiders and the picture owed)."""
     B, P, xz, row, proof, stage, dig, spawn, ticks = (ctx[k] for k in ("B", "P", "xz", "row", "proof", "stage", "dig", "spawn", "ticks"))
-    for i in range(1, 9):
-        dig(P(i, 40), 8)
-        dig(P(i, 46), 3)
-        dig(P(i, 50), 8)
+    def trench(z, depth):
+        for i in range(1, 9):
+            dig(P(i, z), depth)
+
     # U1 and U5 are 2 wide (x=4..5): the shot rows need a colonist ON a deck square beside the one the gunner is under. Live
     # 2026-10-19 the target stood on (4,41), the ANCHOR (solid ground), so no deck was between them (HARNESS).
     # Each bridge is staged in its own scope and adopted by exactly the rows that stand on it (a vacuous shallow-trench path or
     # an item that "slides" off nothing is withheld, never PASS).
-    with V.scope("U1_build") as u1:
+    with V.scope("U1_build") as u1:       # each bridge's trench is dug inside its own scope, adopted by the rows standing on it
+        trench(40, 8)
         stage("ProofBuild", "%s;%s;steel;god" % (xz(P(4, 39)), xz(P(5, 41))))
     with V.scope("U2_build") as u2:
+        trench(46, 3)
         stage("ProofBuild", "%s;%s;steel;god" % (xz(P(4, 45)), xz(P(4, 47))))
     with V.scope("U5_build") as u5:
+        trench(50, 8)
         stage("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(4, 49)), xz(P(5, 51))))
     with V.scope("U_pawn_a") as fa:
         a_ = spawn(P(1, 40))
@@ -620,10 +632,12 @@ def waters(ctx):
 def jetty(ctx):
     """SUSPENSION_JETTY_BUILD_WALK_THE_PLANK rows (verify L2 x3)."""
     B, P, xz, row, proof, dig, spawn, ticks = (ctx[k] for k in ("B", "P", "xz", "row", "proof", "dig", "spawn", "ticks"))
-    for z in (72, 73, 74):
-        for i in range(1, 5):
-            dig(P(i, z), 8)
+    with V.scope("JET_pit") as pit:
+        for z in (72, 73, 74):
+            for i in range(1, 5):
+                dig(P(i, z), 8)
     with V.scope("JET_two"):
+        V.adopt(pit)
         kv, txt = proof("ProofJetty", "%s;%s;steel;god" % (xz(P(0, 73)), xz(P(2, 73))))
         good = kv.get("ok") == "True" and kv.get("anchors") == "1" and kv.get("decks") == "2"
         row("JET_two_square_steel_accepted", "PASS" if good else "FAIL", {"read": txt})
@@ -632,6 +646,7 @@ def jetty(ctx):
         good = kv3.get("ok") == "False" and "at most 2" in txt3 and kv3.get("blueprints") == "0"
         row("JET_three_square_refused", "PASS" if good else "FAIL", {"read": txt3})
     with V.scope("JET_overload"):
+        V.adopt(pit)
         # drafted, as T1's riders: an undrafted rider walks off before the 120-tick check and the overload never fires (SITE)
         def rider(c):
             pid = spawn(c)
