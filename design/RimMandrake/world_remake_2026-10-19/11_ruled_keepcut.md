@@ -16,7 +16,8 @@ Rule applied: **cut** = leave DEV, TEST and AUTHORING, stay in SHIP; the 4 **DRO
 
 ## Wave 3 (outright drops, owner-confirmed by the cut)
 `gravtide.mod` (GravTide), `deon.rimtek.core`, `deon.rimtek.digipal`, `deon.rimtek.docmate`, and (owner card row 6, 2026-10-19 evening, 13_owner_rulings) `boots.sensiblefactions` (dropped permanently; no retained mod depends on it; removed from AUTHORING; not in PAINT). The first four were TEST/AUTHORING/SHIP only; now in no profile.
-Lifecycle `DROPPED-BY-KEEPCUT` in the archive. Not yet removed from `FULL.LATEST` or the live ModsConfig (a deploy step).
+Real Fog of War (`mlie.nwnrealfogofwar`, owner card 2026-10-19) joined them. Prepared as Retirement Wave 3 in
+`14_wave3_prep.md` (lifecycle `RETIRED-WAVE3` in the archive); not yet removed from `FULL.LATEST` or the live ModsConfig (a deploy step).
 
 ## Cuts that were already in no profile (6, no list change)
 `rm.wreckedmachines`, `rut.greentideraidant`, `rut.rustcathedralroaches`, `rut.shokkweaveeconomy` (ours, not in the 380) and

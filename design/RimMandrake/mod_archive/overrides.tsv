@@ -1,2 +1,8 @@
 packageId	name	name_source	workshop_id	folder_name	author	supported_versions	lifecycle	lifecycle_date	ruling_doc	current_profile	reason	reconsider_when	first_seen_list	last_seen_list
-boots.sensiblefactions							DROPPED-BY-KEEPCUT	2026-10-20	world_remake_2026-10-19/13_owner_rulings_2026-10-19.md	-	owner card row 6: no skill or src uses it, bridge has faction tools; dropped permanently (Wave 3)			
+boots.sensiblefactions							RETIRED-WAVE3	2026-10-20	world_remake_2026-10-19/14_wave3_prep.md	-	owner card row 6 2026-10-19: drop permanently (no skill/src uses it; bridge has faction tools)			
+deon.rimtek.core							RETIRED-WAVE3	2026-10-20	world_remake_2026-10-19/14_wave3_prep.md	-	keep/cut sheet 2026-10-20: DROP (11_ruled_keepcut.md)			
+deon.rimtek.digipal							RETIRED-WAVE3	2026-10-20	world_remake_2026-10-19/14_wave3_prep.md	-	keep/cut sheet 2026-10-20: DROP (11_ruled_keepcut.md)			
+deon.rimtek.docmate							RETIRED-WAVE3	2026-10-20	world_remake_2026-10-19/14_wave3_prep.md	-	keep/cut sheet 2026-10-20: DROP (11_ruled_keepcut.md)			
+gravtide.mod							RETIRED-WAVE3	2026-10-20	world_remake_2026-10-19/14_wave3_prep.md	-	keep/cut sheet 2026-10-20: DROP (11_ruled_keepcut.md)			
+krkr.rule56							ACTIVE-380	2026-10-20	world_remake_2026-10-19/14_wave3_prep.md	SHIP	combat AI only now: Real FoW retired in Wave 3 (owner 2026-10-19), CAI's own fog is off (FogOfWar_Enabled False); kept pending owner call (14 §3)			
+mlie.nwnrealfogofwar							RETIRED-WAVE3	2026-10-20	world_remake_2026-10-19/14_wave3_prep.md	-	"owner card 2026-10-19: ""we should get rid of the Fog of War. I think I'm done with it. It's ugly."" (supersedes Route B)"			
