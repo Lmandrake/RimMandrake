@@ -201,7 +201,8 @@ class Guarded(object):
         except Exception as ex:
             PRE.fault(tool, "raised %r" % ex)
             raise
-        return PRE.reply(tool, kw, r, answer=_answer)
+        PRE.reply(tool, kw, r, answer=_answer)
+        return r if isinstance(r, dict) else {"success": False, "raw": r}
 
     def _probed(self, cmd, r, answer):
         if _channel_dead(r):
