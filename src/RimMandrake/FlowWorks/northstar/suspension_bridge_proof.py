@@ -193,6 +193,7 @@ def main(argv=None):
         bad = [r for r in site_rows if r.get("status") not in (None, "PASS")]
         if bad:
             row("SB_site_ready", "UNMEASURED", {"rect": rect, "site": bad[:3]})
+            only = set()            # unprepared ground: every section would measure the site, not the mod (review 2026-10-20)
     ctx = dict(args=a, B=B, P=P, xz=xz, row=row, proof=proof, dig=dig, spawn=spawn, pawns_by_id=pawns_by_id, ticks=ticks, ox=ox, oz=oz)
     for name in SECTIONS:
         if name in only:
@@ -582,9 +583,13 @@ def jetty(ctx):
     kv3, txt3 = proof("ProofJetty", "%s;%s;steel" % (xz(P(0, 72)), xz(P(3, 72))))
     good = kv3.get("ok") == "False" and "at most 2" in txt3 and kv3.get("blueprints") == "0"
     row("JET_three_square_refused", "PASS" if good else ("FAIL" if kv3 else "UNMEASURED"), {"read": txt3})
-    p1 = spawn(P(2, 73))
+    # drafted, as T1's riders: an undrafted rider walks off before the 120-tick check and the overload never fires (SITE)
+    def rider(c):
+        pid = spawn(c)
+        return pid if pid and (B.call("jawa/set_draft", pawnId=pid, drafted=True) or {}).get("drafted") is True else None
+    p1 = rider(P(2, 73))
     k1, t1 = proof("ProofSpan", xz(P(2, 73)))
-    p2 = spawn(P(1, 73))
+    p2 = rider(P(1, 73))
     k2, t2 = proof("ProofSpan", xz(P(2, 73)))
     ticks(120)
     k3, t3 = proof("ProofSpan", xz(P(2, 73)))

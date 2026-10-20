@@ -343,7 +343,7 @@ def realflow(B, rows):
     plump, waited = _poll(B, lambda: _hose(B, s.reel).get("state") == "Plump", 300)
     tint = _hose(B, s.reel).get("tintLiquid")
     row("NS_hose_tint_is_carried_liquid", tint == LIQUID_WATER, {"tintLiquid": tint, "want": LIQUID_WATER,
-        "tarHalf": "UNMEASURED here: a tar channel needs a fresh map's active fluid (water ran first)"})
+        "tarHalf": "UNMEASURED here: a tar channel needs a fresh map's active fluid (water ran first)"}, bad=s.bad)
     # power cut: destroy the battery -> no transfer -> flat no later than 1.5 x 250 + releaseTicks + transitionTicks = 905
     plumped_at = B.hp("census").get("tick")
     B.call("jawa/destroy_batch", rects="%d,%d,1,2" % s.battery, categories="Building")
@@ -817,7 +817,11 @@ class Proof(object):
             text = [str(e.get("Message", "")) for e in new]
             bad = [t[:200] for t in text if "Cleaning up invalid job state" in t or (("Could not find" in t or "Could not resolve" in t) and VH.names_hose_class(t))]
             jobs = [p.get("job") for p in B.hp("colonists").get("pawns") or []]
-            self.row("preport", rid, "PASS" if ok and not bad and any(str(j).startswith(("RM_CarryHoseEnd", "RM_RetractHose")) for j in jobs) else "FAIL",
+            if not ok:
+                # a load that never reached Playing measured the site, not the mod (as SL3 rules it) -- review 2026-10-20
+                self.row("preport", rid, "UNMEASURED", "SITE", {"save": name, "loaded": ok, "loadSeconds": waited, "badLines": bad[:4]})
+                continue
+            self.row("preport", rid, "PASS" if not bad and any(str(j).startswith(("RM_CarryHoseEnd", "RM_RetractHose")) for j in jobs) else "FAIL",
                      "MOD", {"save": name, "loaded": ok, "loadSeconds": waited, "badLines": bad[:4], "jobs": jobs})
 
     # ---------------------------------------------------------------- Z

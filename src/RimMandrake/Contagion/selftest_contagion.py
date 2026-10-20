@@ -466,6 +466,8 @@ class Fake(object):
 
     def t_get_roof_batch(self, rects="", **k):
         # the live tool's shape: one roof defName (or "None") per cell, row by row (validation reads roofs[0])
+        if "roof_read_fails" in self.broken:
+            return {"success": False, "error": "bridge dropped"}
         out = []
         for r in rects.split(";"):
             rr = rect(r)
@@ -778,6 +780,7 @@ BREAKS = {
     "xref_error": ["log.log_clean"],
     "xref_flood": [],                         # a full page of other mods' errors: UNMEASURED (SITE_EXPECT)
     "jump_noop": None,                        # harness instrument: a jump that did not take (SITE_EXPECT)
+    "roof_read_fails": None,                  # instrument: the roof read fails; with no_dose -> UNMEASURED (SITE_EXPECT)
     "roof_patch_fails": [],                   # SITE: the shelter fixture never landed -> UNMEASURED (SITE_EXPECT)
     "haze_ignores_toggle": ["zhool_haze.conversion_off_turns_nothing"],
     "haze_no_convert": ["zhool_haze.haze_turns_grass_in_place"],
@@ -802,6 +805,8 @@ SITE_EXPECT = {
     "roof_patch_fails": {"burn_forced.burn_site_ready": "UNMEASURED",
                          "burn_forced.burn_doses_the_exposed_visitor": "UNMEASURED"},
     "xref_flood": {"log.log_clean": "UNMEASURED"},
+    # an undosed visitor whose roof cannot be read is ignorance, never a FAIL (review 2026-10-20)
+    "no_dose+roof_read_fails": {"burn_forced.burn_doses_the_exposed_visitor": "UNMEASURED"},
     "jump_noop": {"spawner.spawner_off_buds_nothing": "FAIL", "burn_natural.burn_off_never_schedules": "FAIL"},
     "patient_walks_to_bed": {"genome.extraction_surgery_yields_sample": "PASS"},
     "host_vanishes": {"spawner.spawner_off_buds_nothing": "UNMEASURED",
@@ -826,7 +831,7 @@ def main():
         bad.append("declared %d components but the run produced %d" % (declared, n_comp))
     ok_breaks = 0
     for brk, want in sorted(SITE_EXPECT.items()):
-        res = run([brk])
+        res = run(brk.split("+"))
         got = dict((k, res.get(k, ("ABSENT",))[0]) for k in want)
         if got != want:
             bad.append("site break %-22s expected %s, got %s" % (brk, want, got))
