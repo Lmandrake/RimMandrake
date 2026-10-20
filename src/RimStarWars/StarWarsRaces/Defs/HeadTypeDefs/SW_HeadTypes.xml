@@ -1048,6 +1048,12 @@
     <requiredGenes>
       <li>RSW_MimbaneseHead</li>
     </requiredGenes>
+    <!-- Full-colour painting: CutoutComplex + all-black _m masks draw it untinted (else skin colour multiplies it). -->
+    <modExtensions>
+      <li Class="TabulaRasa.DefModExt_HeadTypeStuff" MayRequire="neronix17.toolbox">
+        <shaderType>CutoutComplex</shaderType>
+      </li>
+    </modExtensions>
   </HeadTypeDef>
   <HeadTypeDef ParentName="AverageBase">
     <defName>RSW_Nelvaanian_Head</defName>
