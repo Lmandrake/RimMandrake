@@ -1,6 +1,7 @@
 using HarmonyLib;
 using RimWorld.Planet;
 using UnityEngine;
+using Verse;
 
 namespace RimMandrake.DivingInteraction
 {
@@ -26,11 +27,44 @@ namespace RimMandrake.DivingInteraction
         public static void Postfix(WorldDrawLayer __instance, ref bool __result)
         {
             if (!__result) return;
-            PlanetLayer mine = __instance.planetLayer;
+            if (HiddenByCoplanarSelection(__instance)) __result = false;
+        }
+
+        public static bool HiddenByCoplanarSelection(WorldDrawLayer layer)
+        {
+            PlanetLayer mine = layer.planetLayer;
             PlanetLayer selected = PlanetLayer.Selected;
-            if (mine == null || selected == null || mine == selected) return;
-            if (Mathf.Abs(mine.Radius - selected.Radius) > 0.01f) return;
-            if ((mine.Origin - selected.Origin).sqrMagnitude > 0.0001f) return;
+            if (mine == null || selected == null || mine == selected) return false;
+            if (Mathf.Abs(mine.Radius - selected.Radius) > 0.01f) return false;
+            if ((mine.Origin - selected.Origin).sqrMagnitude > 0.0001f) return false;
+            return true;
+        }
+    }
+
+    // MEASURED 2026-10-20 (first load with the patch above): the planet drew black and every
+    // world view sat in a "GeneratingPlanet" long event for ~10 minutes, over and over.
+    // WorldRenderer.ShouldRegenerateDirtyLayersInLongEvent asks only whether the PLANET layer is
+    // visible and a terrain draw layer on it is Dirty; RegenerateDirtyLayersNow_Async then skips
+    // draw layers whose Visible is false. A hidden floor terrain layer therefore stays dirty for
+    // ever, DrawWorldLayers queues a fresh long event every frame and returns before rendering.
+    // Rule: a dirty terrain layer that the coplanar rule hides does not ask for a long event.
+    // It regenerates the first time it is shown (its planet layer selected).
+    [HarmonyPatch(typeof(WorldRenderer), "ShouldRegenerateDirtyLayersInLongEvent", MethodType.Getter)]
+    public static class Patch_WorldRenderer_RegenIgnoresHiddenCoplanar
+    {
+        public static void Postfix(ref bool __result)
+        {
+            if (!__result || Find.WorldGrid == null) return;
+            foreach (var kv in Find.WorldGrid.PlanetLayers)
+            {
+                PlanetLayer planetLayer = kv.Value;
+                if (!planetLayer.Visible) continue;
+                foreach (WorldDrawLayer d in planetLayer.WorldDrawLayers)
+                {
+                    if (d.Dirty && d is WorldDrawLayer_Terrain && !Patch_SeabedLayerCoplanarHide.HiddenByCoplanarSelection(d))
+                        return;
+                }
+            }
             __result = false;
         }
     }
