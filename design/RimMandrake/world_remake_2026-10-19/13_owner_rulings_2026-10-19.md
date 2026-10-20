@@ -16,3 +16,12 @@ Authority for each line: `--by-card` (question → picked option). Follow-throug
 | 10 | Open items of the 39 Wave-1 mods | "Move all to v2" | retarget those items to v2 |
 | 11 | Bazaar trade window and in-game LLM voices | "Both to v2" | retarget Bazaar + LLM-voices items to v2; v1 trade = vanilla + loaded trade-UI mods |
 | 12 | Direct Sun on forest maps | "Wait for the crown model in v1" | the tree shade model (tree_shade_model_2026-10-19.md) is v1-gating for Direct Sun |
+| 14 | Stone rule (12_rocks_design.md card 1) | "Each biome names its stones" | item `BIOME_STONES_DESIGN_BASALT_JOINS_THE_BAND` |
+| 15 | Extra stone ideas (cards 2-3) | wanted: basalt for volcanic biomes, deeper stone at superdeep pits, stones that build differently | basalt in `BIOME_STONES_DESIGN_BASALT_JOINS_THE_BAND`; `PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS`; `STONE_BUILDSTATS_TUNE_GRANITE_GETS_RIVALS` |
+| 16 | Hand-placed geological landmarks before the repaint (card 4) | "(1) plus we should get rid of the Fog of War" = plan them for the paint | item `GEO_LANDMARKS_SKETCH_BEFORE_THE_PAINT_DRIES` (before-paint gate) |
+| 17 | Real Fog of War | "we should get rid of the Fog of War. I think I'm done with it. It's ugly." Supersedes the Route B ruling that shipped Real FoW + CAI 5000 together | Retirement Wave 3 (`14_wave3_prep.md`); CAI 5000 stays on the list (recommendation in 14 §3) |
+
+Earlier answers recorded the same evening (no item change):
+- Glass trail for the Ummisk: **NOT wanted**.
+- Rhossak numbers: kept as **PROVISIONAL**.
+- The 155 kept renders: **stay untouched**.

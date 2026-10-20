@@ -1,0 +1,7 @@
+# Retirement Wave 3 (prepared 2026-10-20, NOT deployed). packageId<TAB>name<TAB>why
+mlie.nwnrealfogofwar	(NWN) Real Fog of War (Continued)	owner card 2026-10-19: "we should get rid of the Fog of War. I think I'm done with it. It's ugly." (supersedes Route B)
+gravtide.mod	GravTide	keep/cut sheet 2026-10-20: DROP (11_ruled_keepcut.md)
+deon.rimtek.core	RimTek Core	keep/cut sheet 2026-10-20: DROP (11_ruled_keepcut.md)
+deon.rimtek.digipal	RimTek DigiPal	keep/cut sheet 2026-10-20: DROP (11_ruled_keepcut.md)
+deon.rimtek.docmate	RimTek DocMate	keep/cut sheet 2026-10-20: DROP (11_ruled_keepcut.md)
+boots.sensiblefactions	Sensible Factions	owner card row 6 2026-10-19: drop permanently (no skill/src uses it; bridge has faction tools)
