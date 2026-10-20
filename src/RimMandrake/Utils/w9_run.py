@@ -389,9 +389,21 @@ def main(argv=None):
         conflict = _played_tile_conflict(a.load, out)
         if not _ask_or_refuse(conflict, out, a.despite_map):
             return 5
+        world_screen = False
         if gi.get("status") != "game_loaded":
-            w(out, "- 🔴 no game loaded. Stopping.")
-            return 2
+            # 2026-10-20 remake S8: the runbook stamps at Page_SelectStartingSite (no map yet),
+            # where get_game_info THROWS ("Specified cast is not valid", Find.MapUI null —
+            # rimworld-world-editing §0). The world_* tools reach Find.WorldGrid there, so a
+            # fresh world at the landing-site page counts as loaded: hasCurrentGame + that page.
+            us = rb.call("rimworld/get_ui_state", {})
+            st = us.get("state") or {}
+            wins = " ".join(str(x.get("type")) for x in (us.get("windows") or []) if isinstance(x, dict))
+            if st.get("hasCurrentGame") and "Page_SelectStartingSite" in wins:
+                w(out, "- world screen: hasCurrentGame, Page_SelectStartingSite open (no map) -> stamping a fresh world")
+                world_screen = True
+            else:
+                w(out, "- 🔴 no game loaded. Stopping.")
+                return 2
         # ⏳ The abort is written AFTER `status` flips to game_loaded, so checking
         # immediately reads a clean log and passes a broken load. Measured twice
         # on 2026-08-20: canary passed at t+0 and failed at t+60 on the same load.
@@ -602,7 +614,13 @@ def main(argv=None):
                 w(out, "    - %s: %s" % (name, n))
         w(out, "- stats: %s" % rb.call("jawa/world_stats", {}).get("message"))
 
-        if apply:
+        if apply and world_screen:
+            # 🔴 2026-10-20: `jawa/clear_ui {all:true}` CLOSES Page_SelectStartingSite, which drops
+            # the fresh world (it lives only in Current.CreatingWorld until landing; it cannot be
+            # saved there). It cost remake generation #1. At the world screen: no UI calls at all.
+            w(out, "- world screen: skipped world_view/clear_ui/screenshot (clear_ui would close the "
+                   "landing page and discard the unsaved world). Render from the first save instead.")
+        elif apply:
             rb.call("jawa/world_view", {"show": True, "altitude": 1100, "northUp": True})
             rb.call("jawa/clear_ui", {"all": True})
             shot = rb.call("rimworld/take_screenshot", {})
