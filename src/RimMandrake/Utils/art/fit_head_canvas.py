@@ -17,6 +17,10 @@ usage:
   fit_head_canvas.py fit --stem S --out DIR south.png east.png north.png [--height-ratio 1.10] [--anchor chin|crown]
       scale ONE factor for all facings so the south height = vanilla x ratio, clamped so EVERY facing fits
       the envelope; centre x and chin line come from vanilla. Prints the check of the output.
+      [--facing-scale east=0.92 ...]  a per-facing UNIFORM multiplier on top of the one scale (aspect kept), for
+      facings that disagree with the south (one uniform scale cannot fix a ratio between facings).
+      [--squeeze-x east=0.96 ...]     a per-facing HORIZONTAL-only factor, refused below SQUEEZE_MIN (a visible
+      distortion is a repaint, not a fit).
   (legacy) fit_head_canvas.py --stem S --out DIR south east north  ==  fit
 """
 import argparse
@@ -33,6 +37,7 @@ ENVELOPE_PATH = os.path.join(HERE, "head_envelope.json")
 FACINGS = ("south", "east", "north")
 ALPHA = 20
 CANVAS = 512
+SQUEEZE_MIN = 0.93   # below this a horizontal squeeze reads as distortion: repaint instead
 
 
 def load_envelope(path=ENVELOPE_PATH):
@@ -249,8 +254,22 @@ def fit_scale(crops_frac, env, height_ratio, species=None):
     return s
 
 
+def parse_facing_map(items, name, lo=None):
+    out = {f: 1.0 for f in FACINGS}
+    for it in items or ():
+        k, _, v = it.partition("=")
+        if k not in FACINGS or not v:
+            raise SystemExit(f"--{name} wants FACING=FACTOR with FACING in {FACINGS}, got {it!r}")
+        out[k] = float(v)
+        if out[k] <= 0 or (lo is not None and not lo <= out[k] <= 1.0):
+            raise SystemExit(f"--{name} {it}: factor outside [{lo or 0}, 1]")
+    return out
+
+
 def cmd_fit(a):
     env = load_envelope()
+    fscale = parse_facing_map(a.facing_scale, "facing-scale")
+    squeeze = parse_facing_map(a.squeeze_x, "squeeze-x", SQUEEZE_MIN)
     van = env["vanilla"]
     ims = {f: Image.open(p).convert("RGBA") for f, p in (("south", a.south), ("east", a.east), ("north", a.north))}
     crops, frac = {}, {}
@@ -260,7 +279,7 @@ def cmd_fit(a):
             raise SystemExit(f"{f} is blank")
         box = (round(fb[0] * im.width), round(fb[1] * im.height), round(fb[2] * im.width), round(fb[3] * im.height))
         crops[f] = (im.crop(box), im.width)
-        frac[f] = (fb[2] - fb[0], fb[3] - fb[1])
+        frac[f] = ((fb[2] - fb[0]) * fscale[f] * squeeze[f], (fb[3] - fb[1]) * fscale[f])
     s = fit_scale(frac, env, a.height_ratio, a.species)
     os.makedirs(a.out, exist_ok=True)
     ext = {}
@@ -282,7 +301,8 @@ def cmd_fit(a):
         out.save(p)
         fb = bbox_frac(out)
         ext[f] = dims(fb) if fb else None
-        print(f"{p}  scale x{s:.3f} of source fraction  bbox_px {tuple(round(v * CANVAS) for v in fb) if fb else None}")
+        print(f"{p}  scale x{s:.3f}" + (f" facing x{fscale[f]:.3f}" if fscale[f] != 1 else "")
+              + (f" squeeze-x {squeeze[f]:.3f}" if squeeze[f] != 1 else "") + f"  bbox_px {tuple(round(v * CANVAS) for v in fb) if fb else None}")
     viol, rows = judge({k: v for k, v in ext.items() if v}, env, a.species)
     for f in FACINGS:
         print(f"  {f:5s} {fmt_row(rows, f)}")
@@ -307,6 +327,10 @@ def main(argv=None):
     f.add_argument("--anchor", choices=("chin", "crown"), default="chin",
                    help="chin: every facing's bottom on the vanilla chin; crown: east/north share the south's top "
                         "(use when a facing hangs a trunk or snout below the chin — the Ortolan east case)")
+    f.add_argument("--facing-scale", action="append", metavar="FACING=X",
+                   help="per-facing uniform multiplier on top of the one scale (repeatable)")
+    f.add_argument("--squeeze-x", action="append", metavar="FACING=X",
+                   help=f"per-facing horizontal-only factor, {SQUEEZE_MIN}..1 (repeatable)")
     f.add_argument("--target-h", type=int, help="legacy, ignored: height now comes from --height-ratio")
     f.add_argument("south"); f.add_argument("east"); f.add_argument("north")
     a = ap.parse_args(argv)

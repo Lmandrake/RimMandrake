@@ -76,12 +76,27 @@ Per facing, against the vanilla Average median of THAT facing:
 - `fit` scales all facings by ONE factor (south height = vanilla x `--height-ratio`, default 1.10), clamped so every
   facing fits the width/height maxima, centres on the vanilla centre and seats the chin on the vanilla chin;
   `--anchor crown` keeps east/north on the south's crown line for a facing that hangs a trunk below the chin. It then
-  prints the envelope check of its output. One uniform scale cannot fix facing disagreement (Lasat/Nelvaanian east
-  height, Mimbanese north): those need a repaint or a per-facing decision. The legacy argv form still works.
+  prints the envelope check of its output. One uniform scale cannot fix facing disagreement (a ratio between
+  facings is scale-invariant), so `--facing-scale FACING=X` adds a per-facing UNIFORM multiplier (aspect kept) and
+  `--squeeze-x FACING=X` a horizontal-only factor, refused below `SQUEEZE_MIN` 0.93 (a bigger squeeze is a repaint).
+  The legacy argv form still works.
 - Selftest: `src/RimMandrake/Utils/art/selftest_fit_head_canvas.py` (synthetic cases plus a sanity probe that the
   shipped Mimbanese side profile is flagged).
 
+## Fit applied to the shipped heads (2026-10-20, FOUNDRY, on *"I agree to all your proposed head efforts."*)
+All twelve PNGs refitted from the pre-fit art (git `e9d81b61f`) and installed through `art install`; every species
+now passes `check` (report: `Transient/head_envelope_report_after_fit_2026-10-20.md`). Chin anchor for all four
+(`--anchor crown` broke the chin rules on every species, and the Ortolan side overhang is ears, not a trunk).
+No repaint was needed; masks (`*_{south,east,north}m.png`) are uniform black and geometry-free, so unchanged.
+
+| species | flags (MEASURED after) | south w/h | east w/h | north w/h |
+|---|---|---|---|---|
+| Lasat | `--facing-scale east=0.95 --facing-scale north=1.03` (clamped by the 1.25 front width) | 1.24 / 1.06 | 0.94 / 1.13 | 1.25 / 0.97 |
+| Mimbanese | `--facing-scale north=1.30 --facing-scale east=0.915 --squeeze-x east=0.955` | 0.87 / 1.10 | 0.96 / 1.00 | 0.87 / 1.02 |
+| Nelvaanian | `--facing-scale east=0.93` | 0.89 / 1.10 | 0.97 / 1.13 | 0.80 / 1.19 |
+| Ortolan | `--height-ratio 1.15 --facing-scale east=0.96` (the side is narrow: 1.10 left it under 0.75 width) | 1.06 / 1.15 | 0.76 / 1.24 | 1.09 / 1.15 |
+
+UNMEASURED: how they read in game (`HEADS_VERIFY_SHRUNK_TO_FIT_THE_HATS`).
+
 ## Open (not done here)
-Steps 3–4 of the parent design (strip duplicate attachment genes; the joint hat test). The live state read of
-`curHeadTypeDef` above. Re-fitting the shipped heads waits on the owner choosing between rescale and repaint per
-species.
+Step 4 of the parent design (the joint hat test). The live state read of `curHeadTypeDef` above.

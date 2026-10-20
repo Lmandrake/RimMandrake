@@ -3,10 +3,13 @@
 
 Part 1, synthetic heads: an in-envelope head passes; a wide side profile, a blank facing (UNMEASURED, never a
 pass) and a trunk hanging below the chin are caught; fit clamps an over-wide head into the envelope with one
-scale; the legacy argv form still runs. Part 2, a SANITY PROBE on shipped art: the Mimbanese side profile the
-owner called "far too wide" (2026-10-20) is flagged, so the instrument can see the defect it was built for.
+scale; --facing-scale / --squeeze-x bring a disagreeing side profile into line and a squeeze past SQUEEZE_MIN is
+refused; the legacy argv form still runs. Part 2, a SANITY PROBE on real art: the PRE-FIT Mimbanese heads (read
+from git at PREFIT_REV, since the shipped ones were refitted 2026-10-20) are flagged for the side profile the
+owner called "far too wide", so the instrument can see the defect it was built for; the shipped heads now pass.
 """
 import os
+import subprocess
 import sys
 import tempfile
 
@@ -18,6 +21,8 @@ import fit_head_canvas as F  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 FAILS = []
+PREFIT_REV = "e9d81b61f"   # last commit holding the pre-envelope-fit species heads
+SPECIES = ("Lasat", "Mimbanese", "Nelvaanian", "Ortolan")
 
 
 def check(cond, msg, detail=""):
@@ -98,17 +103,59 @@ with tempfile.TemporaryDirectory() as td:
     check(all(rows[f]["w_ratio"] <= env["limits"]["width_ratio_max"] + 0.01 for f in F.FACINGS),
           "fit honours width_ratio_max", rows)
 
+    # a side profile 1.36x its front (the Mimbanese case): one scale cannot fix it, per-facing factors can
+    side = os.path.join(td, "Side")
+    os.makedirs(side)
+    sp = []
+    for f, (w, h) in {"south": (0.34, 0.47), "east": (0.46, 0.465), "north": (0.26, 0.34)}.items():
+        p = os.path.join(side, f"side_{f}.png")
+        head(p, w, h)
+        sp.append(p)
+    o3 = os.path.join(td, "side_plain")
+    check(F.main(["fit", "--stem", "S_Head", "--out", o3] + sp) == 1, "one uniform scale leaves facing disagreement flagged")
+    o4 = os.path.join(td, "side_fixed")
+    rc = F.main(["fit", "--stem", "S_Head", "--out", o4, "--facing-scale", "north=1.30", "--facing-scale", "east=0.915",
+                 "--squeeze-x", "east=0.955"] + sp)
+    _, ext = F.measure_dir(o4)
+    viol, rows = F.judge(ext, env, "S")
+    check(rc == 0 and not viol, "--facing-scale + --squeeze-x bring the facings into agreement", (rc, viol))
+    try:
+        F.main(["fit", "--stem", "S_Head", "--out", o4, "--squeeze-x", f"east={F.SQUEEZE_MIN - 0.05:.2f}"] + sp)
+        refused = False
+    except SystemExit:
+        refused = True
+    check(refused, "a squeeze below SQUEEZE_MIN is refused (that is a repaint)")
+
     out2 = os.path.join(td, "legacy")
     rc = F.main(["--target-h", "240", "--stem", "L", "--out", out2] + paths)
     check(rc == 0 and len(os.listdir(out2)) == 3, "legacy argv (no subcommand) still fits", os.listdir(out2))
 
-mimb = os.path.join(REPO, "src/RimStarWars/StarWarsRaces/Textures/RimMandrakeSW/Heads/Mimbanese")
-if os.path.isdir(mimb):
-    _, ext = F.measure_dir(mimb)
-    check(("east", "side profile wider than front") in rules(F.judge(ext, env, "Mimbanese")[0]),
-          "SANITY: the shipped Mimbanese side profile is flagged too wide")
-else:
-    print("UNMEASURED sanity probe: Mimbanese head dir absent")
+HEADS = "src/RimStarWars/StarWarsRaces/Textures/RimMandrakeSW/Heads"
+with tempfile.TemporaryDirectory() as td:
+    pre = os.path.join(td, "Mimbanese")
+    os.makedirs(pre)
+    got = 0
+    for f in F.FACINGS:
+        rel = f"{HEADS}/Mimbanese/Mimbanese_Head_{f}.png"
+        r = subprocess.run(["git", "-C", REPO, "show", f"{PREFIT_REV}:{rel}"], capture_output=True)
+        if r.returncode == 0 and r.stdout:
+            with open(os.path.join(pre, os.path.basename(rel)), "wb") as fh:
+                fh.write(r.stdout)
+            got += 1
+    if got == 3:
+        _, ext = F.measure_dir(pre)
+        check(("east", "side profile wider than front") in rules(F.judge(ext, env, "Mimbanese")[0]),
+              "SANITY: the pre-fit Mimbanese side profile is flagged too wide")
+    else:
+        print(f"UNMEASURED sanity probe: pre-fit Mimbanese heads not readable at {PREFIT_REV} ({got}/3)")
+for sp_name in SPECIES:
+    d = os.path.join(REPO, HEADS, sp_name)
+    if os.path.isdir(d):
+        _, ext = F.measure_dir(d)
+        viol = F.judge(ext, env, sp_name)[0]
+        check(not viol, f"shipped {sp_name} heads sit inside the envelope", viol)
+    else:
+        print(f"UNMEASURED: {sp_name} head dir absent")
 
 print(f"{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
 sys.exit(1 if FAILS else 0)
