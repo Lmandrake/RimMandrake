@@ -1,28 +1,36 @@
 {
- "sheetId": "forge_creature_concepts_sheet_2026-10-20",
- "posture": "whitelist",
- "criterion": "The order is the agent's preference: Kettugal first. That ranks fit to the Forge description and readability, not how much fun each is to play.",
- "reviewStatus": {
-  "state": "prefill",
-  "by": null,
-  "at": null,
-  "evidence": "agent concepts; no human has ruled"
- },
- "decisions": {
-  "kettugal": {
-   "decision": "pick",
-   "note": "Agent's lean: ties to 'the toughest alloys', gives a readable sign before the deadliest phase, strongest silhouette at zoom.",
-   "prefill": "pick"
+  "criterion": "The order is the agent's preference: Kettugal first. That ranks fit to the Forge description and readability, not how much fun each is to play.",
+  "decidedCount": 1,
+  "decisions": {
+    "brazzok": {
+      "decision": "",
+      "note": "Cheapest to build, best for lore; left for you.",
+      "prefill": ""
+    },
+    "kettugal": {
+      "at": "2026-10-20T02:27:45.514Z",
+      "decidedAt": "2026-10-20T02:27:45.514Z",
+      "decision": "",
+      "note": "Agent's lean: ties to 'the toughest alloys', gives a readable sign before the deadliest phase, strongest silhouette at zoom.",
+      "prefill": "pick"
+    },
+    "ummisk": {
+      "at": "2026-10-20T02:28:57.819Z",
+      "decidedAt": "2026-10-20T02:27:44.297Z",
+      "decision": "pick",
+      "note": "Riding on a steam cushion where it touches the lava, the steam rushes through organic glass tubes that extract out the heat and minerals for sustenance. Grows from the silica vapor and temperature differential. A true alien among aliens, slowly wandering the edge of the lava forever. It is not clear whether it has intellect as we know it.",
+      "prefill": ""
+    }
   },
-  "ummisk": {
-   "decision": "",
-   "note": "Most alien of the three; left for you.",
-   "prefill": ""
+  "posture": "whitelist",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "agent concepts; no human has ruled",
+    "state": "prefill"
   },
-  "brazzok": {
-   "decision": "",
-   "note": "Cheapest to build, best for lore; left for you.",
-   "prefill": ""
-  }
- }
+  "savedAt": "2026-10-19T19:28:58-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "forge_creature_concepts_sheet_2026-10-20",
+  "writeCount": 14
 }

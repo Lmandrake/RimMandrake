@@ -1376,3 +1376,28 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"game closed for PAINT swap","ts":"2026-10-20T06:47:50Z","tsn":1792478870914007722}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"R1 cold load on PAINT 83","ts":"2026-10-20T06:52:06Z","tsn":1792479126044540166}
 {"seat":"OWNER","event":"file","id":"XENO_HEADS_VERIFY_BALD_AND_BLUSHING","title":"Xeno heads polish: verify live (Lasat/Nelvaanian bald, Mimbanese red body + untinted head, Ortolan east head lowered)","kind":"task","target":"v1","needs":"bridge","for":"FOUNDRY","ownerSaid":"I REALLY want to see a screenshot of aliens with these head types installed.","ts":"2026-10-20T06:53:14Z","tsn":1792479194568092409}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"R2: AREAFIX2 fixture world fails under PAINT (Orbit2 PlanetLayerDef from broms.deeporbit absent) - error storm, closing","ts":"2026-10-20T07:10:23Z","tsn":1792480223676082150}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"closed after R2 error storm","ts":"2026-10-20T07:10:27Z","tsn":1792480227404337239}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"relaunch: PAINT + broms.deeporbit (fixture needs Orbit2 layer) + PawnFlavor fix deployed","ts":"2026-10-20T07:10:46Z","tsn":1792480246269121423}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"final restart: pure PAINT 83 + PawnFlavor guard deployed","ts":"2026-10-20T07:18:12Z","tsn":1792480692770953261}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"down for PAINT restore + deploy","ts":"2026-10-20T07:18:16Z","tsn":1792480696504493242}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"final load on PAINT 83","ts":"2026-10-20T07:18:24Z","tsn":1792480704937969864}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"restart to verify PawnFlavor guard eb2e701cc on PAINT 83","ts":"2026-10-20T07:22:55Z","tsn":1792480975363892303}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"down for PawnFlavor deploy","ts":"2026-10-20T07:22:59Z","tsn":1792480979129826624}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"final load on PAINT 83 (verify)","ts":"2026-10-20T07:23:04Z","tsn":1792480984513140036}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"PAINT 83 up, quicktest map, healthy","ts":"2026-10-20T07:27:28Z","tsn":1792481248993499392}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"remake run: deploy start-flow bridge tools (6294689), then cold load on PAINT","ts":"2026-10-20T07:32:20Z","tsn":1792481540766971207}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"remake run: closed for companion deploy","ts":"2026-10-20T07:32:30Z","tsn":1792481550881198844}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"remake run: cold load on PAINT 83 with new start-flow tools","ts":"2026-10-20T07:34:44Z","tsn":1792481684242117826}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"remake run: READY 209 s, pid 41124","ts":"2026-10-20T07:38:28Z","tsn":1792481908622354273}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"remake run: down to deploy fcc49908d guards before world generation","ts":"2026-10-20T07:41:16Z","tsn":1792482076139320337}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"remake run: relaunch on PAINT after fcc49908d deploy","ts":"2026-10-20T07:48:05Z","tsn":1792482485998763253}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"remake run: READY 202 s pid 6656","ts":"2026-10-20T07:51:38Z","tsn":1792482698474765484}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"remake S14: cold reload proof of ASHKARR_DEV_START","ts":"2026-10-20T08:13:26Z","tsn":1792484006138350344}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"remake S14 cold reload","ts":"2026-10-20T08:13:30Z","tsn":1792484010157172149}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"S14 READY 244 s pid 15192","ts":"2026-10-20T08:17:42Z","tsn":1792484262740809367}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"remake run done: all saved; closing to restore the 374 list","ts":"2026-10-20T08:18:21Z","tsn":1792484301503159134}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"remake run done; game closed, all saves on disk","ts":"2026-10-20T08:18:27Z","tsn":1792484307768361649}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"cold-load 374 to prove dev start save (bridge held)","ts":"2026-10-20T08:20:54Z","tsn":1792484454706382306}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"374 cold load READY (launch_ready rc=0)","ts":"2026-10-20T08:33:34Z","tsn":1792485214068868900}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"374 cold load + DEV_START loaded, paused, healthy","ts":"2026-10-20T08:41:56Z","tsn":1792485716136273854}

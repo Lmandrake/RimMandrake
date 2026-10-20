@@ -6403,3 +6403,11 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"xeno heads + grey sea + dragonsnake enact, restart, head line-up screenshots (live_testing_2026-10-20d)","ts":"2026-10-20T05:49:20Z","tsn":1792475360943364081}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-20T06:45:10Z","tsn":1792478710071178314}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"PAINT list load proof + rehearsal","ts":"2026-10-20T06:46:04Z","tsn":1792478764511815076}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-20T07:28:18Z","tsn":1792481298145825199}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"world remake run (dev world) S0-S14","ts":"2026-10-20T07:31:19Z","tsn":1792481479113335111}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-20T08:18:42Z","tsn":1792484322320377378}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"dev start save on 374","ts":"2026-10-20T08:20:24Z","tsn":1792484424327021305}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-20T08:41:57Z","tsn":1792485717278658287}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"scratch dir migration","ts":"2026-10-20T08:42:58Z","tsn":1792485778951837764}
+{"seat":"FOUNDRY","event":"note","id":"DEV_SCRATCH_DIRS_MIGRATE_OFF_LODESTARS_LAWN","text":"Six runtime dirs moved to D:\\ClaudeWork\\rimmandrake 2026-10-20 (db2dd6361, 19b041f4a); remaining non-project dev entries: Rimworld, Rimworld_history.bundle, reference, rimtools, govee_scan.ps1; BENCH clone must pull","ts":"2026-10-20T09:05:46Z","tsn":1792487146145796237}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-20T09:05:47Z","tsn":1792487147733685610}
