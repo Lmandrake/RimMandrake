@@ -125,3 +125,41 @@ Net on the HOLDs: **4 become droppable with their lone dependant (CQF, VAE Acces
 ## 5. Unmeasured
 
 Save-borne residue of any candidate in `_AREAFIX2` fixtures (run `save_def_census.py` before promoting); `tps_cost` and runtime memory per mod (facts say UNMEASURED); whether `.rid`/`.xtp` ideology files name any candidate (excluded from the src grep: `src/Jawa/ideoligion/The Salvation.rid:404` and `MandrakeJawa.xtp` name ALL 50 MOVE candidates, measured by literal grep, but as the active-mod stamp the editor writes into an ideo file, not as defs used; moving them makes the ideo files load with a missing-mod notice, harmless but re-save the ideo under the new profile); C# string references inside third-party DLLs.
+
+## 6. Our own mods vs the owner's paint rule (2026-10-19: paint profile = only what is NEEDED to represent world, gravship, player characters)
+
+Scope: the 59 `OURS` rows of `07_profile_assignment.tsv` (the remaining of the 62 are not in the DEV/TEST/DEV-INSTR set). Edges are from `mod_facts.jsonl` `dependants_detail`
+(cite `facts:<line>`) and our `modDependencies`. "Needed" = defines or is hard/def-referenced by something that defines biomes, factions, settlements/landmarks, species/pawnkinds/backstories, or the sun geometry.
+Gravship: all gravship defs are third-party (Vanilla Gravship Expanded, GravTide); of ours only `rm.gravshiplanding` touches it and it is a fog-reveal behaviour, not representation.
+
+**PAINT-NEEDED (23)**
+
+| mod | reason (cited) |
+|---|---|
+| `rm.biomes` | the biomes; 2661 defs (facts:547) |
+| `rm.flowworks` | hard dependency of rm.biomes, 108 TerrainDefs (facts:547 needs; 530) |
+| `rm.luminouspigment` | hard_dep of rm.biomes (facts:512) |
+| `rut.patches` | 28 BiomeDefs, factions, scenario; hard needs rm.biomes + rm.weathersuite (facts:522) |
+| `rm.weathersuite`, `rut.weathersuite` | sun/terminator geometry; hard_dep of rut.patches (facts:437, 588). UNMEASURED whether paint reads it; the Direct Sun ruling says geometry decides |
+| `rsw.starwarsraces` | species, xenotypes, pawnkinds (527 defs; facts:507) |
+| `rsw.swbestiary` | creature rosters; rm.biomes has def_ref to it (facts:548) |
+| `rsw.droidworks` | droid pawnkinds used by rut.patches and rsw.injections (facts:526) |
+| `rsw.armoury` | rm.biomes and rm.inhabited def_ref its weapons (facts:508) |
+| `rsw.patches`, `rm.patches` | pawnkind/weather defs and load fixes that rut.patches loads after (facts:521, 519) |
+| `rut.pawnflavor` | faction backstories/traits, i.e. the characters (facts:523) |
+| `rm.inhabited`, `rut.inhabited` | settlements, 294 CharacterDefs, world objects (facts:172, 173) |
+| `rm.injections`, `rsw.injections`, `rut.injections` | TileMutatorDefs and structure GenSteps; rm.inhabited references them (facts:164-166) |
+| `rm.hugethings` | rm.biomes def_ref (facts:546) |
+| `rut.ishkolandmarks`, `rut.ashkarrlandmarkart` | LandmarkDefs and landmark icons: world map content (facts:385, 384) |
+| `rsw.shokk` | FactionDef; hard needs rm.biomes (facts:511) |
+| `rm.planetpresetprime` | creates the world; belongs in AUTHORING not DEV/TEST by 07's own reading (facts:408); NEEDED for the paint only |
+
+**NOT-NEEDED to paint (36)** (stay in SHIP, and in DEV only if a test needs them; none is def-referenced by a needed mod in `dependants_detail`)
+
+`rm.loadtracer`, `rm.rimdefdump` (instruments), `rm.ninefold`, `rm.aftermath`, `rm.visibility`, `rm.graffiti`, `rm.sacredgraffiti`, `rsw.jawarules`, `rut.scavengerevents`, `rm.strandedquest`,
+`rsw.jawavoice`, `rsw.cuisine`, `rsw.desertvehiclereskin`, `rut.doctrine`, `rm.proximityhatch`, `rsw.gizkastowaway`, `rsw.ionweapons`, `rut.shipmemory`, `rut.antiquities`, `rut.rites`,
+`rut.researchretag`, `rsw.bacta`, `rut.droidrepairjobs`, `rm.wreckedmachines`, `rut.pyrelandsmechanics`, `rm.explosiveknockback`, `rm.kineticarms`, `rm.gimmesomeslack`, `rm.oracle`, `rm.property`,
+`rut.birthhatchdemo`, `rut.menushell`, `rm.shipvermin`, `rut.longhunger`, `rut.empirepursuit`, `rm.gravshiplanding`.
+
+**Flagged, need an owner or measurement call (not counted above):** `rut.shokkweaveeconomy` (2 GenSteps for the Webwork biome, no dependants, facts:541: PAINT-NEEDED if the Webwork biome ships in the paint, else NOT), `rut.rustcathedralroaches` (rut.patches def_ref+mayrequire, facts:542: guarded, so NOT-NEEDED unless the roaches belong in the Rust Cathedral roster), `rut.greentideraidant` (a FactionDef and pawnkinds, no dependants, facts:551: NEEDED only if that faction exists at the faction pass), `rm.wreckedmachines` (rsw.armoury patch only; no world content).
+Cross-link: Third-party mods that these needed mods hard/def-reference (Harmony, VEF, Humanoid Alien Races, Big and Small, Outer Rim, Genes, Keshig, Landmarks, Archon/Genie/Saurid, the Tribals/Alpha chain) therefore stay in the paint profile; section 3 stands.
