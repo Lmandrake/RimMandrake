@@ -22,8 +22,8 @@ Output: ONE result JSON northstar/proof_hose_<stamp>.json (mode "live" for a ful
 FlowWorks/validation.py's hose_live_rows at the current mod hash (`modcheck record FlowWorks --result <json>`).
 The manifest the FlowWorks walk names is northstar/manifest.py: v2's rows UNION declared_rows() below.
 
-NOT RUN in the hose port itself (no bridge in that job): this file is built and its control flow is proven offline by
-northstar/selftest_proof_hose.py against a fake bridge; live tuning of the real-flow scene geometry is owed to the first run.
+Its control flow is proven offline by northstar/selftest_proof_hose.py against a fake bridge; it has run live since the port
+(e.g. the 2026-10-19 pass-2 realflow run, Transient/live_session/pass2_20261019T014313/proof_hose_20261019T021252.json).
 """
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
@@ -337,7 +337,7 @@ def realflow(B, rows):
     gained = (t1.get("units") or 0) - (t0.get("units") or 0)
     hose_took = _held(B, [s.reel]) - h0
     row("NS_hose_carries_real_units", lay.get("success") and link and dt <= RF_DISCOVER and gained > 0
-        and gained + hose_took >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10 and h.get("credits", 0) > 0 and h.get("netLink"),
+        and gained + hose_took >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10 and (h.get("credits") or 0) > 0 and h.get("netLink"),
         {"lay": lay, "before": t0, "after": t1, "gained": gained, "hoseTook": hose_took, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt,
          "bound": [RF_DISCOVER, RF_CYCLE], "pumpPoweredAfterTicks": s.powered, "credits": h.get("credits"), "netLink": h.get("netLink")}, bad=s.bad)
     plump, waited = _poll(B, lambda: _hose(B, s.reel).get("state") == "Plump", 300)
@@ -433,7 +433,7 @@ def realflow(B, rows):
         took4 = _held(B, [s4.reel, relay_b]) - k0
         ha, hb = _hose(B, s4.reel), _hose(B, relay_b)
         row("NS_relay_chain_carries", d1 - d0 > 0 and d1 - d0 + took4 >= UNITS_PER_LEVEL and lkb and dtb <= RF_DISCOVER and mt <= RF_CYCLE + 10
-            and ha.get("credits", 0) > 0 and hb.get("credits", 0) > 0,
+            and (ha.get("credits") or 0) > 0 and (hb.get("credits") or 0) > 0,
             {"layA": la, "layB": lb, "relayTo": ha.get("relayTo"), "pumpPoweredAfterTicks": s4.powered, "units": [d0, d1], "hoseTook": took4, "discoveredAfterTicks(B)": dtb,
              "movedTicksAfterDiscovery": mt, "creditsA": ha.get("credits"), "creditsB": hb.get("credits")}, bad=s4.bad)
     # ---- scene 5: pump -> universal pipe run -> reel -> hose -> tank; and two pipe runs never merge through a tank
@@ -463,7 +463,10 @@ def realflow(B, rows):
         # A 2x2 tank at (x,z) occupies x..x+1, z..z+1. Live run 6 (2026-10-19) put V at (ox+1, oz+13): its z+1 row is oz+14, one row
         # past the prepared plot (RF_PH=14 -> oz..oz+13), so V was never built (SITE). V now sits WEST of the pipe run, inside the
         # RF_WEST-prepared strip: (ox-2..ox-1, oz+11..oz+12) touches the pipe cells (ox, oz+11/12) from the other side than mid.
-        mid, v = (ox + 1, oz + 11), (ox - 2, oz + 11)
+        # Code review 2026-10-20: mid at (ox+1, oz+11) met run 1's last pipe (ox+3, oz+10) only corner to corner, so it touched
+        # ONE run and the row could not fail. At (ox+1, oz+10) it covers ox+1..ox+2, oz+10..oz+11: edge to edge with (ox+3, oz+10)
+        # AND with the second run's (ox, oz+11) -- a real bridge for the mod to refuse.
+        mid, v = (ox + 1, oz + 10), (ox - 2, oz + 11)
         bb = s5.build("RM_LiquidTank:%d,%d" % mid, "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 11), "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 12),
                       "RM_LiquidTank:%d,%d" % v)
         B.ticks(300)
@@ -483,7 +486,9 @@ def realflow(B, rows):
     # ---- an external (VE PipeSystem) pipe: visual only. Needs a VE pipe def on the list.
     ve = B.call("jawa/get_defs", defs="ThingDef/VPE_PipeChemfuel") or {}
     row("NS_external_pipe_is_visual_only", False, {"probe": ve.get("foundCount")},
-        unmeasured="no VE PipeSystem pipe on the flowworks tier: the offline kernel row (HoseNetChecks) is the evidence")
+        unmeasured=("no VE PipeSystem pipe on the flowworks tier" if not ve.get("foundCount") else
+                    "a VE pipe def is loaded but no live scene is written for it") +
+                   ": the offline kernel row (HoseNetChecks) is the evidence")
     # ---- scene 6: owner Q7 -- a tank feeds a hose screwed into it, no pump
     s6 = Scene(B, 6)
     if s6.site(rows, "RF_site6_ready"):
@@ -510,7 +515,7 @@ def realflow(B, rows):
             h6 = _hose(B, s6.reel)
             # 520 ticks hold 2 or 3 settles (phase); each sends PER_CYCLE_CAP; the hose's first fill is part of what left src
             row("NS_tank_feeds_hose", f1 - f0 > 0 and PER_CYCLE_CAP <= f1 - f0 + took6 <= 3 * PER_CYCLE_CAP and s0 - s1u >= f1 - f0 + took6
-                and h6.get("credits", 0) > 0,
+                and (h6.get("credits") or 0) > 0,
                 {"units": [f0, f1], "source": [s0, s1u], "hoseTook": took6, "perCycleCap": PER_CYCLE_CAP, "job": job, "fill": fill,
                  "credits": h6.get("credits"), "netLink": h6.get("netLink")}, bad=s6.bad)
 
@@ -643,7 +648,12 @@ class Proof(object):
         # A FAILING one is not dropped: every hose scene row it would have backed reads FAIL with its detail, so the declared
         # ids stay fixed and the matrix never passes on a dead probe channel.
         dead = [r for r in res.get("rows") or [] if r.get("id") == "H0_probe_channel" and r.get("status") != "PASS"]
-        for sid, sc in (res.get("scenes") or {}).items():
+        got = res.get("scenes") or {}
+        # code review 2026-10-20: a declared scene the runner never returned is a row, not a silence
+        for s in (spec or {}).get("scenes") or []:
+            if s["id"] not in got:
+                self.row("matrix_hose", "MX_" + s["id"], "UNMEASURED", "HARNESS", "the matrix runner returned no result for this scene")
+        for sid, sc in got.items():
             if dead:
                 self.row("matrix_hose", "MX_" + sid, "FAIL", "HARNESS", {"H0_probe_channel": dead[0].get("detail")})
                 continue

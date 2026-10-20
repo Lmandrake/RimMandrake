@@ -17,7 +17,8 @@ cover; whole-span collapse with the load shown (parent Q3); vanilla bridges refu
 Scenes (plot coords from --origin, default 140,140; dig by jawa/flowworks_excavation_drive, 8 notches = 4 m):
   T1 a 6-square trench (1..6, 0): timber bridge dragged (0,0)-(7,0), built at once (god)  -> rows BUILD, PATH, LOAD.
   T2 a 7-square trench (1..7, 4): timber drag (0,4)-(8,4), NOT god                        -> row REFUSED_LENGTH.
-  T3 a 4-square trench (1..4, 8): timber bridge (0,8)-(5,8) god; railings off then on     -> rows RAILS_OFF / RAILS_ON.
+  T3 a 4-square trench (1..4, 8), z=9 dug beside it (the open edge): timber bridge (0,8)-(5,8) god; railings off then on
+                                                                                          -> rows RAILS_OFF / RAILS_ON.
   T4 a 4-square trench (1..4, 12): timber bridge (0,12)-(5,12) god; anchor (0,12) destroyed -> row SWING.
   T5 one dug square (10, 0)                                                              -> row VANILLA_REFUSED.
 GRATE (SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP), plot from origin + (0, 20):
@@ -26,7 +27,7 @@ GRATE (SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP), plot from origin + (0, 20):
   G2 a 2 m canal (1..4, 28) holding water under a grated steel bridge; 50 L poured on (2, 28) -> row GRATE_POUR.
   G3 a Steel bar dropped on the grate at (3, 28)                                             -> row GRATE_ITEM_STAYS.
 UNDERPASS (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD), plot from origin + (0, 40):
-  U1 a 4 m trench (1..8, 40), steel bridge across it at x=4 ((4,39)-(4,41)); colonist A on the floor at (1,40) ordered to
+  U1 a 4 m trench (1..8, 40), a 2-wide steel bridge across it at x=4..5 ((4,39)-(5,41)); colonist A on the floor at (1,40) ordered to
      (8,40), colonist B at (4,38) ordered to (4,42)                                          -> rows UND_FLOOR_PATH, UND_BOTH_ARRIVE.
   U2 a 1.5 m trench (1..8, 46), the same bridge at x=4; colonist on the floor at (1,46)    -> row UND_SHALLOW_WALL.
   U3 colonist set under U1's deck (ProofPutUnder) drops a Steel there                      -> row UND_ITEM_SLIDES.
@@ -296,7 +297,10 @@ def posts(ctx):
     kv0, txt0 = proof("ProofRails", "%s;on" % xz(P(2, 8)))
     kv, txt = proof("ProofKnock", "%s;20" % rider2) if rider2 else ({}, "no pawn")
     good = kv and kv.get("railed") == "True" and kv.get("fell") == "0"
-    row("SB_rails_on_nobody_falls", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"rails": txt0, "read": txt})
+    st = "PASS" if good else ("FAIL" if kv else "UNMEASURED")
+    if kv and kv.get("edge") != "True":
+        st = "UNMEASURED"           # no open edge beside the rider: 0 falls would prove nothing about the rails (SITE)
+    row("SB_rails_on_nobody_falls", st, {"rails": txt0, "read": txt})
 
     # T4: lose an anchor -> swing-down from that end
     # destroy_batch takes rects="x,z,w,h" and categories; live 2026-10-19 sent cells=/defName=, the tool answered Fail
@@ -419,7 +423,7 @@ def underpass(ctx):
     # pawn's top level: the old read gave (None, None) for both pawns and scored FAIL
     at = {p.get("id"): ((p.get("end") or {}).get("x"), (p.get("end") or {}).get("z")) for o in (oa, ob) for p in (o.get("pawns") or [])}
     good = at.get(a_) == P(8, 40) and at.get(b_) == P(4, 42)
-    row("UND_both_arrive", "PASS" if good else ("FAIL" if at else "UNMEASURED"), {"a": at.get(a_), "b": at.get(b_)})
+    row("UND_both_arrive", "PASS" if good else ("FAIL" if at and a_ and b_ else "UNMEASURED"), {"a": at.get(a_), "b": at.get(b_)})
     c_ = spawn(P(1, 46))
     kv, txt = proof("ProofUnderPath", "%s;%s" % (c_, xz(P(8, 46)))) if c_ else ({}, "no pawn")
     good = kv.get("found") == "False" or kv.get("decked") == "0"
@@ -506,14 +510,18 @@ def waters(ctx):
     if lk:
         cells = lane(*lk)
         mid = cells[len(cells) // 2]
-        B.call("jawa/spawn_batch", ops="RM_SuspensionTower:%d,%d" % mid)
+        tw = B.call("jawa/spawn_batch", ops="RM_SuspensionTower:%d,%d" % mid) or {}
         kv, txt = proof("ProofBuild", "%s;%s;steel;god" % (xz(lk[0]), xz(lk[1])))
         k1, t1 = proof("ProofSpan", xz(cells[1]))
         k2, t2 = proof("ProofSpan", xz(cells[-2]))
         cap = 10
         good = (kv.get("ok") == "True" and k1.get("span") == "1/2" and k2.get("span") == "2/2"
                 and int(k1.get("decks", "99")) <= cap and int(k2.get("decks", "99")) <= cap)
-        row("WAT_lake_tower_two_spans", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"build": txt, "span1": t1, "span2": t2})
+        # a tower that never spawned leaves one span: that is the SITE, not the mod
+        st = "PASS" if good else ("FAIL" if kv else "UNMEASURED")
+        if not good and tw.get("success") is False:
+            st = "UNMEASURED"
+        row("WAT_lake_tower_two_spans", st, {"build": txt, "span1": t1, "span2": t2, "tower": str(tw)[:160]})
     else:
         row("WAT_lake_tower_two_spans", "UNMEASURED", {"why": "no --lake x1,z1,x2,z2 given (a crossing longer than 10 squares)"})
     hp = {}
@@ -529,10 +537,11 @@ def waters(ctx):
         hp[tier].append(proof("ProofDeckHp", xz(P(2, z)))[0])
     t0, t1 = hp["timber"]
     s0, s1 = hp["steel"]
-    awash = int(t1.get("awash", "0")) + int(s1.get("awash", "0"))
+    # both decks must be awash: a timber deck the flood never reached keeps full hp and would read FAIL (SITE, not mod)
+    awash = int(t1.get("awash", "0")) > 0 and int(s1.get("awash", "0")) > 0
     good = int(t1.get("hp", "0")) < int(t0.get("max", "0")) and s1.get("hp") == s0.get("hp")
     row("WAT_flood_damages_timber_not_steel", ("PASS" if good else "FAIL") if awash else "UNMEASURED",
-        {"timber": hp["timber"], "steel": hp["steel"], "why": "" if awash else "no deck square was awash (the flood never reached it)"})
+        {"timber": hp["timber"], "steel": hp["steel"], "why": "" if awash else "a deck square was not awash (the flood never reached both)"})
     sea = site(a.sea)
     if sea:
         kv, txt = proof("ProofBuild", "%s;%s;steel;god" % (xz(sea[0]), xz(sea[1])))
@@ -567,7 +576,7 @@ def jetty(ctx):
     ps = pawns_of(B)
     on_floor = [ps.get(p) and (ps[p].get("x"), ps[p].get("z")) in (P(1, 73), P(2, 73)) for p in (p1, p2)]
     good = k1.get("state") == "Ok" and k2.get("state") == "Over" and (t3.startswith("SPAN none") or k3.get("decks") == "0") and all(on_floor)
-    row("JET_overload_drops_whole_at_root", "PASS" if good else ("FAIL" if k1 else "UNMEASURED"),
+    row("JET_overload_drops_whole_at_root", "PASS" if good else ("FAIL" if k1 and p1 and p2 else "UNMEASURED"),
         {"one": t1, "two": t2, "after": t3, "onFloor": on_floor})
     row("JET_open_edge_drop_on_order", "UNMEASURED", {"owed": True, "why": "OWED: railings off, order the 'Jump into pit' float-menu "
         "job on a pawn on the jetty (no bridge call drives that menu yet); the rail-off knock row (SB_rails_off_some_fall) proves the edge"})

@@ -460,18 +460,28 @@ check(r["status"] == "UNMEASURED" and r["cls"] == "SITE", "can-fail site: old pi
 
 
 class CrashGame(FakeEventGame):
+    def __init__(self, *a, **kw):
+        FakeEventGame.__init__(self, *a, **kw)
+        self.started = set()
+
     def call(self, tool, **kw):
+        if tool == "jawa/game_condition" and kw.get("action") == "start":
+            self.started.add(kw["condition"])
         if tool == "jawa/cell_temperature":
             raise RuntimeError("bridge dropped")
         return FakeEventGame.call(self, tool, **kw)
 
 
 g = CrashGame()
+raised = False
 try:
     L.b5_cold_snap(FakeEventSession(g))
 except RuntimeError:
-    pass
-check(not g.conds, "can-fail B5: a crash mid-cold still ends ColdSnap + DeepFreeze (left: %s)" % sorted(g.conds))
+    raised = True
+# the crash must have happened WITH the cold running, or "nothing left" proves nothing
+check(raised and g.started and not g.conds,
+      "can-fail B5: a crash mid-cold still ends ColdSnap + DeepFreeze (raised %s, started %s, left %s)"
+      % (raised, sorted(g.started), sorted(g.conds)))
 g = FakeEventGame()
 L.b5_cold_snap(FakeEventSession(g))
 check(g.weather == "Clear", "B5 ends with B0's locked Clear put back")

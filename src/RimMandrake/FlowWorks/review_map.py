@@ -126,7 +126,7 @@ def _nav_cache_write(S, st):
     try:
         with open(_nav_cache_path(), "wb") as f:
             pickle.dump(dict(key=_nav_key(), S=S, st=st), f)
-    except OSError:
+    except (OSError, RuntimeError):   # RuntimeError: rmpaths found no data root; the cache is best-effort
         pass
 
 
@@ -135,7 +135,7 @@ def _nav_cache_read():
     try:
         with open(_nav_cache_path(), "rb") as f:
             d = pickle.load(f)
-    except (OSError, EOFError, pickle.UnpicklingError):
+    except (OSError, RuntimeError, EOFError, pickle.UnpicklingError):   # RuntimeError: no data root (rmpaths)
         return None
     return (d["S"], d["st"]) if d.get("key") == _nav_key() else None
 
@@ -1438,7 +1438,8 @@ class Review(object):
             fs = sorted({c.get("f") for c in rows})
             sc = str(B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PitScorchProof", method="ProofScorchAt",
                             args="%d,%d" % (px + 1, pz + 1)).get("result", ""))
-            strength = float(sc.split("strength=")[1].split()[0]) if "strength=" in sc else None
+            m_str = re.search(r"strength=(-?\d+(?:\.\d+)?)", sc)
+            strength = float(m_str.group(1)) if m_str else None
             pw = [q for q in B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % (ox, oz, VIS.PLOT_W, VIS.PLOT_H), limit=20)
                   .get("pawns") or [] if q.get("isPlayer")]
             want_f = s["fill_level"]
