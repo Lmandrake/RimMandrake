@@ -106,7 +106,7 @@
          plain Building already is. -->
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>StandIn/Things/Building/Natural/Hive</texPath>
+      <texPath>Things/Building/Natural/Hive</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.6</drawSize>
     </graphicData>

@@ -167,7 +167,7 @@
           <drawSize>1.8</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <texPath>Things/Pawn/Animal/Megaspider/RM_Visceral/RM_Visceral</texPath>
           <drawSize>2</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -177,7 +177,7 @@
           <drawSize>2.4</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <texPath>Things/Pawn/Animal/Megaspider/RM_Visceral/RM_Visceral</texPath>
           <drawSize>2.4</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -191,7 +191,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <texPath>Things/Pawn/Animal/Megaspider/RM_Visceral/RM_Visceral</texPath>
           <drawSize>2.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>

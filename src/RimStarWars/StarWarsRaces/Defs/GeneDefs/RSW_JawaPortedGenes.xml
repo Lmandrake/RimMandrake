@@ -16,7 +16,7 @@
     <defName>RSW_UnderdevelopedTeeth</defName>
     <label>underdeveloped teeth</label>
     <description>Carriers of this gene have very weak, underdeveloped teeth, finding eating to be a chore.</description>
-    <iconPath>StandIn/UI/Icons/Genes/AG_UnderdevelopedTeeth</iconPath>
+    <iconPath>UI/Icons/Genes/AG_UnderdevelopedTeeth</iconPath>
     <displayCategory>Miscellaneous</displayCategory>
     <displayOrderInCategory>70</displayOrderInCategory>
     <biostatCpx>1</biostatCpx>
@@ -34,7 +34,7 @@
     <defName>RSW_SurvivalInstinctHigh</defName>
     <label>survival instinct, high</label>
     <description>Carriers of this gene have a strong survival instinct, intuitively knowing where to find the best forage and living off the land.</description>
-    <iconPath>StandIn/UI/Icons/Genes/AG_SurvivalInstinct_High</iconPath>
+    <iconPath>UI/Icons/Genes/AG_SurvivalInstinct_High</iconPath>
     <displayCategory>Miscellaneous</displayCategory>
     <displayOrderInCategory>80</displayOrderInCategory>
     <biostatCpx>1</biostatCpx>
@@ -52,7 +52,7 @@
     <defName>RSW_TableResistance</defName>
     <label>table resistance</label>
     <description>Carriers of this gene have developed a GIGANTIC mental fortitude and are capable of withstanding the greatest torture of all time: eating without a table.</description>
-    <iconPath>StandIn/UI/Icons/Genes/AG_TableResistance</iconPath>
+    <iconPath>UI/Icons/Genes/AG_TableResistance</iconPath>
     <displayCategory>Miscellaneous</displayCategory>
     <displayOrderInCategory>2000</displayOrderInCategory>
     <biostatMet>-1</biostatMet>
@@ -70,7 +70,7 @@
     <defName>RSW_Stinky</defName>
     <label>stinky</label>
     <description>Carriers of this gene generate a very unpleasant aroma that will bother other people.</description>
-    <iconPath>StandIn/UI/Icons/Genes/AG_Stinky</iconPath>
+    <iconPath>UI/Icons/Genes/AG_Stinky</iconPath>
     <displayCategory>Healing</displayCategory>
     <displayOrderInCategory>399.5</displayOrderInCategory>
     <biostatMet>1</biostatMet>
@@ -81,7 +81,7 @@
     <defName>RSW_FrailSkin</defName>
     <label>frail skin</label>
     <description>Carriers of this gene have very frail and thin skin. This confers a small increase to damage received.</description>
-    <iconPath>StandIn/UI/Icons/Genes/AG_FrailSkin</iconPath>
+    <iconPath>UI/Icons/Genes/AG_FrailSkin</iconPath>
     <displayCategory>ResistanceAndWeakness</displayCategory>
     <displayOrderInCategory>-1</displayOrderInCategory>
     <statFactors>
