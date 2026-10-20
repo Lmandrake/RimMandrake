@@ -1,363 +1,375 @@
 {
- "sheetId": "retirement_keepcut_sheet_2026-10-20",
- "posture": "blacklist",
- "criterion": "Grouped by source in the audit's order (DEV/TEST list, DEV demotions, HOLDs, own mods), then audit table order. It ranks provenance only, never worth or risk; a row's risk is in its text and the contested mark.",
- "reviewStatus": {
-  "state": "prefill",
-  "by": null,
-  "at": null,
-  "evidence": "generated from 09_second_look.md audit recommendations; no human has ruled"
- },
- "decisions": {
-  "mlie.betterbeggars": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "gulmadred.breedingritual": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "heatherathebyne.craftingspotslavegear": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "hailuan.customquestframework": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
-   "prefill": "cut"
-  },
-  "thesepeople.ritualattachableoutcomes": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "troopersmith1.deathrattle": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "mlie.dungeonpack": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
-   "prefill": "cut"
-  },
-  "aoba.fortress.neolithic": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "memegoddess.giddyup": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "lts.geg": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "gravtide.mod": {
-   "decision": "cut",
-   "note": "Audit: DROP, owner confirms.",
-   "prefill": "cut"
-  },
-  "ael.tua.helmetsaddtoxresistance": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "hazn.huntingtraps": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "lovelydovey.recreation.witheuterpe": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "timuttie.justleavealready.fork.mitasamodel": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "mlie.mercerbackpacks": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "zacharyfoster.mineralsframework": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "zacharyfoster.mineralssparkle": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "cain.mineshaft": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "garryflowers.moreslaverystuff": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "zal.moreutilitypacks": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "karew.orcclan": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
-   "prefill": "cut"
-  },
-  "mlie.preceptsandmemesritualsmodule": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
-   "prefill": "cut"
-  },
-  "avius.prisonlabor": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "legator.prisonerrealism": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "mlie.prisonersshouldfearturrets": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "lambda.psykshroom": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "ingendum.raiderswarmcompression": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "deon.rimtek.core": {
-   "decision": "cut",
-   "note": "Audit: DROP, owner confirms.",
-   "prefill": "cut"
-  },
-  "deon.rimtek.digipal": {
-   "decision": "cut",
-   "note": "Audit: DROP, owner confirms.",
-   "prefill": "cut"
-  },
-  "deon.rimtek.docmate": {
-   "decision": "cut",
-   "note": "Audit: DROP, owner confirms.",
-   "prefill": "cut"
-  },
-  "sierra.rt.generaltraits": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "mianreplicate.romanceandintimacyontherim": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "telardo.romanceontherim": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "kupie.isjustdoingitlive.plzdonthateme.roofedscanning": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "memegoddess.runandgun": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "tribeagle.simpleslaverycollars": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "petetimessix.simplesidearms": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "rw.mod.simplestairs": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "usgiyi.slaveoutfits": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "scherub.stonecuttingextended": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "summersausages2ttv.techlevelenforcement": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "cyanobot.toddlers": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
-   "prefill": "cut"
-  },
-  "error277.tunneler.expanded": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "universalpregnancy.1trickpwnyta": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
-   "prefill": "cut"
-  },
-  "vanillaexpanded.vaeaccessories": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "vanillaexpanded.ideo.relicsandartifacts": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "aelanna.weaponracks": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "winggar.meaningfulparties": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "04.23.2020": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "ap.huntingmeme": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "mlie.rfrumorhasit": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "sbz.neatstoragefridge": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "sbz.gravshipstorage": {
-   "decision": "cut",
-   "note": "Audit: MOVE-TO-SHIP.",
-   "prefill": "cut"
-  },
-  "oskarpotocki.vfe.tribals": {
-   "decision": "cut",
-   "note": "Audit: demote DEV to TEST. The label 'hard-depends' in 07 is unsupported.",
-   "prefill": "cut"
-  },
-  "petetimessix.researchreinvented": {
-   "decision": "",
-   "note": "Audit says demote DEV to TEST but wants an owner call: everything is tuned against its research UI.",
-   "prefill": ""
-  },
-  "7f.alienworlds": {
-   "decision": "keep",
-   "note": "Audit: keep in AUTHORING; droppable once repaint is finished.",
-   "prefill": "keep"
-  },
-  "7f.alienworlds.tidallylocked": {
-   "decision": "keep",
-   "note": "Audit: same as Alien Worlds Framework.",
-   "prefill": "keep"
-  },
-  "boots.sensiblefactions": {
-   "decision": "",
-   "note": "Audit: DROP-eligible after the paint, not before. Your call on timing.",
-   "prefill": ""
-  },
-  "oblitus.mylittleplanet": {
-   "decision": "keep",
-   "note": "Audit: keep until planet size is baked.",
-   "prefill": "keep"
-  },
-  "broms.deeporbit": {
-   "decision": "keep",
-   "note": "Audit: keep until fixtures retire, then drop.",
-   "prefill": "keep"
-  },
-  "biomesteam.coreframework": {
-   "decision": "keep",
-   "note": "Audit: follows More Vanilla Biomes. The older 05 reason is stale.",
-   "prefill": "keep"
-  },
-  "zylle.morevanillabiomes": {
-   "decision": "keep",
-   "note": "Audit: keep until repaint, then drop both.",
-   "prefill": "keep"
-  },
-  "vanillaexpanded.vfearchitect": {
-   "decision": "",
-   "note": "Audit: needs one check: guard the research-retag reference first.",
-   "prefill": ""
-  },
-  "vanillaexpanded.vfepropsanddecor": {
-   "decision": "keep",
-   "note": "Audit: stays SHIP; no test cost.",
-   "prefill": "keep"
-  },
-  "zal.biomeskit": {
-   "decision": "keep",
-   "note": "Audit: keep with Geysers.",
-   "prefill": "keep"
-  },
-  "rut.shokkweaveeconomy": {
-   "decision": "",
-   "note": "Audit: needed for the paint only if the Webwork biome ships in the paint.",
-   "prefill": ""
-  },
-  "rut.rustcathedralroaches": {
-   "decision": "",
-   "note": "Audit: not needed unless the roaches belong in the Rust Cathedral roster.",
-   "prefill": ""
-  },
-  "rut.greentideraidant": {
-   "decision": "",
-   "note": "Audit: needed only if that faction exists at the faction pass.",
-   "prefill": ""
-  },
-  "rm.wreckedmachines": {
-   "decision": "",
-   "note": "Audit: not needed to paint, but flagged needs-a-call.",
-   "prefill": ""
-  }
- }
+  "criterion": "Grouped by source in the audit's order (DEV/TEST list, DEV demotions, HOLDs, own mods), then audit table order. It ranks provenance only, never worth or risk; a row's risk is in its text and the contested mark.",
+  "decidedCount": 67,
+  "decisions": {
+    "04.23.2020": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "7f.alienworlds": {
+      "decision": "keep",
+      "note": "Audit: keep in AUTHORING; droppable once repaint is finished.",
+      "prefill": "keep"
+    },
+    "7f.alienworlds.tidallylocked": {
+      "decision": "keep",
+      "note": "Audit: same as Alien Worlds Framework.",
+      "prefill": "keep"
+    },
+    "ael.tua.helmetsaddtoxresistance": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "aelanna.weaponracks": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "aoba.fortress.neolithic": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "ap.huntingmeme": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "avius.prisonlabor": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "biomesteam.coreframework": {
+      "decision": "keep",
+      "note": "Audit: follows More Vanilla Biomes. The older 05 reason is stale.",
+      "prefill": "keep"
+    },
+    "boots.sensiblefactions": {
+      "decision": "",
+      "note": "Audit: DROP-eligible after the paint, not before. Your call on timing.",
+      "prefill": ""
+    },
+    "broms.deeporbit": {
+      "decision": "keep",
+      "note": "Audit: keep until fixtures retire, then drop.",
+      "prefill": "keep"
+    },
+    "cain.mineshaft": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "cyanobot.toddlers": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
+      "prefill": "cut"
+    },
+    "deon.rimtek.core": {
+      "decision": "cut",
+      "note": "Audit: DROP, owner confirms.",
+      "prefill": "cut"
+    },
+    "deon.rimtek.digipal": {
+      "decision": "cut",
+      "note": "Audit: DROP, owner confirms.",
+      "prefill": "cut"
+    },
+    "deon.rimtek.docmate": {
+      "decision": "cut",
+      "note": "Audit: DROP, owner confirms.",
+      "prefill": "cut"
+    },
+    "error277.tunneler.expanded": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "garryflowers.moreslaverystuff": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "gravtide.mod": {
+      "decision": "cut",
+      "note": "Audit: DROP, owner confirms.",
+      "prefill": "cut"
+    },
+    "gulmadred.breedingritual": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "hailuan.customquestframework": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
+      "prefill": "cut"
+    },
+    "hazn.huntingtraps": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "heatherathebyne.craftingspotslavegear": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "ingendum.raiderswarmcompression": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "karew.orcclan": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
+      "prefill": "cut"
+    },
+    "kupie.isjustdoingitlive.plzdonthateme.roofedscanning": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "lambda.psykshroom": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "legator.prisonerrealism": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "lovelydovey.recreation.witheuterpe": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "lts.geg": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "memegoddess.giddyup": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "memegoddess.runandgun": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "mianreplicate.romanceandintimacyontherim": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "mlie.betterbeggars": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "mlie.dungeonpack": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
+      "prefill": "cut"
+    },
+    "mlie.mercerbackpacks": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "mlie.preceptsandmemesritualsmodule": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
+      "prefill": "cut"
+    },
+    "mlie.prisonersshouldfearturrets": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "mlie.rfrumorhasit": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "oblitus.mylittleplanet": {
+      "decision": "keep",
+      "note": "Audit: keep until planet size is baked.",
+      "prefill": "keep"
+    },
+    "oskarpotocki.vfe.tribals": {
+      "decision": "cut",
+      "note": "Audit: demote DEV to TEST. The label 'hard-depends' in 07 is unsupported.",
+      "prefill": "cut"
+    },
+    "petetimessix.researchreinvented": {
+      "decision": "",
+      "note": "Audit says demote DEV to TEST but wants an owner call: everything is tuned against its research UI.",
+      "prefill": ""
+    },
+    "petetimessix.simplesidearms": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "rm.wreckedmachines": {
+      "at": "2026-10-20T02:32:35.708Z",
+      "decidedAt": "2026-10-20T02:32:35.708Z",
+      "decision": "cut",
+      "note": "Audit: not needed to paint, but flagged needs-a-call.",
+      "prefill": ""
+    },
+    "rut.greentideraidant": {
+      "at": "2026-10-20T02:32:35.708Z",
+      "decidedAt": "2026-10-20T02:32:35.708Z",
+      "decision": "cut",
+      "note": "Audit: needed only if that faction exists at the faction pass.",
+      "prefill": ""
+    },
+    "rut.rustcathedralroaches": {
+      "at": "2026-10-20T02:32:35.708Z",
+      "decidedAt": "2026-10-20T02:32:35.708Z",
+      "decision": "cut",
+      "note": "Audit: not needed unless the roaches belong in the Rust Cathedral roster.",
+      "prefill": ""
+    },
+    "rut.shokkweaveeconomy": {
+      "at": "2026-10-20T02:32:35.707Z",
+      "decidedAt": "2026-10-20T02:32:35.707Z",
+      "decision": "cut",
+      "note": "Audit: needed for the paint only if the Webwork biome ships in the paint.",
+      "prefill": ""
+    },
+    "rw.mod.simplestairs": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "sbz.gravshipstorage": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "sbz.neatstoragefridge": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "scherub.stonecuttingextended": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "sierra.rt.generaltraits": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "summersausages2ttv.techlevelenforcement": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "telardo.romanceontherim": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "thesepeople.ritualattachableoutcomes": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "timuttie.justleavealready.fork.mitasamodel": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "tribeagle.simpleslaverycollars": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "troopersmith1.deathrattle": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "universalpregnancy.1trickpwnyta": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP. Caveat in the text.",
+      "prefill": "cut"
+    },
+    "usgiyi.slaveoutfits": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "vanillaexpanded.ideo.relicsandartifacts": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "vanillaexpanded.vaeaccessories": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "vanillaexpanded.vfearchitect": {
+      "decision": "",
+      "note": "Audit: needs one check: guard the research-retag reference first.",
+      "prefill": ""
+    },
+    "vanillaexpanded.vfepropsanddecor": {
+      "decision": "keep",
+      "note": "Audit: stays SHIP; no test cost.",
+      "prefill": "keep"
+    },
+    "winggar.meaningfulparties": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "zacharyfoster.mineralsframework": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "zacharyfoster.mineralssparkle": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "zal.biomeskit": {
+      "decision": "keep",
+      "note": "Audit: keep with Geysers.",
+      "prefill": "keep"
+    },
+    "zal.moreutilitypacks": {
+      "decision": "cut",
+      "note": "Audit: MOVE-TO-SHIP.",
+      "prefill": "cut"
+    },
+    "zylle.morevanillabiomes": {
+      "decision": "keep",
+      "note": "Audit: keep until repaint, then drop both.",
+      "prefill": "keep"
+    }
+  },
+  "posture": "blacklist",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated from 09_second_look.md audit recommendations; no human has ruled",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-19T19:32:36-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "retirement_keepcut_sheet_2026-10-20",
+  "writeCount": 3
 }
