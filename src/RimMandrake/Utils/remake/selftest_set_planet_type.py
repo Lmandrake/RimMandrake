@@ -52,6 +52,13 @@ def main():
     rc, out = run(*base, "--apply", "--type", "Default")
     expect(rc == 0 and S.read_current(path)[0] == "Default", f"retype: {out}")
     expect(len([f for f in os.listdir(cfg) if ".bak-" in f]) == 1, "no backup on change")
+    # a sibling setting in the block survives the rewrite
+    open(path, "w", encoding="utf-8").write("<SettingsBlock><ModSettings Class='AlienWorlds.AlienWorldsSettings'>"
+                                            "<selectedPlanetType>Default</selectedPlanetType><other>7</other></ModSettings></SettingsBlock>")
+    rc, out = run(*base, "--apply")
+    expect(rc == 0 and S.read_current(path)[0] == "TidallyLocked" and "<other>7</other>" in open(path, encoding="utf-8").read(), f"sibling lost: {out}")
+    rc, out = run(*base, "--apply", "--type", "a<b")
+    expect(rc == 2 and "REFUSED" in out and S.read_current(path)[0] == "TidallyLocked", f"bad type not refused: {out}")
     # a foreign/garbled file is refused, never overwritten
     open(path, "w").write("<SettingsBlock><ModSettings Class='Other.X'/></SettingsBlock>")
     rc, out = run(*base, "--apply")
