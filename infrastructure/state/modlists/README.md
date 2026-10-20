@@ -42,6 +42,13 @@ included) — a count cannot.
 
 ---
 
+## Rings back on FULL.LATEST, 2026-10-20
+
+`rwnodetree.rwplanetatmosphere` (RW - Planet Atmosphere, Workshop 3272330410) added right after
+`mandrake.rut.empirepursuit`, live and in `FULL.LATEST`. Owner: *"I would also like to add back the
+Rings when we bring back the larger mod list."* Item: `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT`.
+Not added to the SHIP list (he has not said the Rings ship).
+
 ## 🔴 CURRENT MOD SET — three-tier packageId rename, 2026-08-31
 
 **Both saved lists held PRE-RENAME packageIds** (`RENAME_VERIFY_WINDOW_1`, FOUNDRY).
