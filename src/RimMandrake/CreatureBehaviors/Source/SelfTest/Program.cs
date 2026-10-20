@@ -797,6 +797,24 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 }
             });
 
+            Case("world stars: still within a day, 6 degrees a day, one turn a year, frozen when drift is off (WORLD_STARS_REPAIR_STILL_SPINNING_FOR_NOBODY)", () =>
+            {
+                const int day = 60000;
+                long t0 = 3L * RM_WorldStarsMath.TicksPerYear + 17 * day;
+                float a = RM_WorldStarsMath.DriftDegrees(t0, true), b = RM_WorldStarsMath.DriftDegrees(t0 + day, true);
+                Assert(Math.Abs((b - a) - 6f) < 1e-3f, "one day turns the stars " + (b - a) + " degrees, not 6");
+                Assert(Math.Abs(RM_WorldStarsMath.DriftDegrees(t0 + day / 2, true) - a) < 3.01f,
+                    "half a day turned the stars more than 3 degrees: they still wheel daily");
+                Assert(Math.Abs(RM_WorldStarsMath.DriftDegrees(t0 + RM_WorldStarsMath.TicksPerYear, true) - a) < 1e-3f,
+                    "a year later the stars are not back where they were");
+                Assert(RM_WorldStarsMath.DriftDegrees(t0, false) == 0f && RM_WorldStarsMath.DriftDegrees(t0 + 12345, false) == 0f,
+                    "drift off: the stars still move");
+                for (long t = -5L * day; t < 70L * day; t += 7919)
+                {
+                    float d = RM_WorldStarsMath.DriftDegrees(t, true);
+                    Assert(d >= 0f && d < 360f, "drift out of [0,360) at tick " + t + ": " + d);
+                }
+            });
             Case("moving shade: clearing the old rectangle and casting the new leaves no trail", () =>
             {
                 int w = 40, h = 40;
