@@ -188,7 +188,7 @@
     <wildPlants>
       <RM_Fuzz>0.9</RM_Fuzz>  <!-- LEANINGSCRUB_RM_MOD_BUILD_1: renamed from RUT_Fuzz, §7 Q8 -->
       <RSW_JekkaGrass MayRequire="mandrake.rsw.swbestiary">0.5</RSW_JekkaGrass>  <!-- grass -->
-      <Plant_Brambles>0.3</Plant_Brambles>  <!-- brambles -->
+      <!-- Plant_Brambles CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
       <RM_Grellbush>0.3</RM_Grellbush>  <!-- renamed from RUT_Grellbush, §7 Q8 -->
       <RM_Grellspine>0.3</RM_Grellspine>  <!-- renamed from RUT_Grellspine, §7 Q8 -->
       <RM_WildHealroot>0.25</RM_WildHealroot>  <!-- renamed from RUT_WildHealroot, §7 Q8; label kept "wild healroot" -->

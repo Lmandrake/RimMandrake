@@ -178,7 +178,7 @@
       <Plant_Reeds>1.0</Plant_Reeds>  <!-- sarnreed -->
       <RM_Shadefern>0.4</RM_Shadefern>  <!-- shadefern - RULED replacement for the donor AB_GreenRockFern (WEEPING_STONES_DESIGN_SITTING_1 ruling 3) -->
       <RM_Dewshrooms MayRequire="mandrake.rm.biomes">0.4</RM_Dewshrooms>  <!-- dewshrooms; shared with The Rot's kit, left inline pending the shared-plant decision -->
-      <Plant_Ambrosia>0.12</Plant_Ambrosia>  <!-- ambrosia bush -->
+      <!-- Plant_Ambrosia CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
       <!-- WEEPINGSTONES_RM_MOD_BUILD_1 wave 2 — the other 9 invented flora
            rows ruled at WEEPING_STONES_DESIGN_SITTING_1 (2026-09-24). -->
       <RM_Dewblade>1.0</RM_Dewblade>  <!-- dewblade - the baseline green -->

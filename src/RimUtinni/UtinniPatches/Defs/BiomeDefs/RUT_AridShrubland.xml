@@ -196,7 +196,7 @@
     <wildPlants>
       <RM_Fuzz>0.9</RM_Fuzz>  <!-- COMMISSION_LEDGER_CLEANUP_1: the fuzz def landed, replaces the Plant_ShrubLow stand-in -->
       <RSW_JekkaGrass MayRequire="mandrake.rsw.swbestiary">0.5</RSW_JekkaGrass>  <!-- grass -->
-      <Plant_Brambles>0.3</Plant_Brambles>  <!-- brambles -->
+      <!-- Plant_Brambles CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
       <RM_Grellbush>0.3</RM_Grellbush>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces vanilla Plant_Bush -->
       <RM_Grellspine>0.3</RM_Grellspine>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces Biotech's Plant_Ripthorn -->
       <RM_WildHealroot>0.25</RM_WildHealroot>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces vanilla Plant_HealrootWild. Label kept "wild healroot" per PlantNames_Ashkarr.xml (owner 2026-09-05: healroot is already an invented word, not renamed) -->
