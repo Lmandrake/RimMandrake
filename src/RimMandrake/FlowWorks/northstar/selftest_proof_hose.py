@@ -91,6 +91,15 @@ class NetFakeBridge(FakeBridge):
         return FakeBridge.hp(self, cmd, wait_s)
 
 
+def _mk_noload(saves, blob, hoses):
+    class NoLoad(FakeBridge):
+        def call(self, tool, **kw):
+            if tool == "rimworld/load_game":
+                return {"success": False, "message": "no such save"}
+            return FakeBridge.call(self, tool, **kw)
+    return NoLoad(saves, blob, hoses)
+
+
 def run_fake(args_only=None, gss=False, hoses=None, bridge_cls=None):
     import validation_core as V
     import proof_hose as PH
@@ -143,8 +152,8 @@ def main():
 
     P, res = run_fake()
     st0 = {r["id"]: r["status"] for r in res["rows"]}
-    check("tank-bridge row FAILS when the net probe measures nothing (it used to pass on an empty read)",
-          st0.get("NS_tank_does_not_bridge_pipe_runs") == "FAIL", st0.get("NS_tank_does_not_bridge_pipe_runs"))
+    check("tank-bridge row is UNMEASURED (never PASS, never a mod FAIL) when the net probe never sees the pump's own tank",
+          st0.get("NS_tank_does_not_bridge_pipe_runs") == "UNMEASURED", st0.get("NS_tank_does_not_bridge_pipe_runs"))
     with contextlib.redirect_stdout(io.StringIO()):
         _, res_net = run_fake(bridge_cls=NetFakeBridge)
     stn = {r["id"]: r for r in res_net["rows"]}
@@ -219,8 +228,8 @@ def main():
             with contextlib.redirect_stdout(io.StringIO()):
                 Pm.matrix_hose()
             mrows = {r["id"]: r["status"] for r in Pm.rows}
-            check("a failing H0_probe_channel turns every MX_ hose scene FAIL (none PASS on a dead probe)",
-                  len(mrows) == len(scenes) and set(mrows.values()) == {"FAIL"}, mrows)
+            check("a failing H0_probe_channel turns every MX_ hose scene UNMEASURED (none PASS on a dead probe, none a mod FAIL)",
+                  len(mrows) == len(scenes) and set(mrows.values()) == {"UNMEASURED"}, mrows)
             fake.run = lambda a, b, mock=False: {"scenes": scenes, "rows": [{"id": "H0_probe_channel", "status": "PASS"}]}
             Pm.rows = []
             with contextlib.redirect_stdout(io.StringIO()):
@@ -294,6 +303,58 @@ def main():
     r4 = rf_rows(tank_units=500, powered=True)
     check("can-fail: with a full build the same row is a measured FAIL (MOD), nothing moved",
           r4["NS_hose_carries_real_units"]["status"] == "FAIL" and r4["NS_hose_carries_real_units"]["class"] == "MOD", r4["NS_hose_carries_real_units"])
+
+    # review 2026-10-20 (round 3): a SITE/harness fault reads UNMEASURED, a genuine mod fault still reads FAIL
+    class SiteFake(ScenFake):
+        lay_ok = True
+        destroy_ok = True
+        load_ok = True
+
+        def call(self, tool, **kw):
+            if tool == "jawa/destroy_batch":
+                if kw.get("categories") == "Building" and not self.destroy_ok:     # the scenes' own destroys, not the site prep's
+                    return {"success": False, "message": "no"}
+                return {"success": True, "destroyed": 1}
+            if tool == "rimworld/load_game" and not self.load_ok:
+                return {"success": False, "message": "no such save"}
+            return ScenFake.call(self, tool, **kw)
+
+        def hp(self, cmd, wait_s=20.0):
+            if cmd.startswith("lay:") and not self.lay_ok:
+                return {"success": False, "error": "no room for the straight lead-out"}
+            return ScenFake.hp(self, cmd, wait_s)
+
+    def sf_rows(**kw):
+        fb = SiteFake(tempfile.mkdtemp(), b"")
+        for k, v in kw.items():
+            setattr(fb, k, v)
+        with contextlib.redirect_stdout(io.StringIO()):
+            rr = PHm._rf(fb)["rows"]
+        return {r["id"]: r for r in rr}
+    rl = sf_rows(tank_units=500, powered=True, lay_ok=False)
+    for rid in ("NS_hose_carries_real_units", "NS_hose_plumps_only_from_powered_pump", "NS_hose_far_end_pump", "NS_relay_chain_carries",
+                "NS_pipe_and_hose_one_net", "NS_tank_feeds_hose", "NS_hose_port_removed_discovered"):
+        check("a hose that was never laid reads UNMEASURED (SITE), not a mod FAIL: " + rid, rl[rid]["status"] == "UNMEASURED", rl[rid])
+    rok = sf_rows(tank_units=500, powered=True)
+    check("can-fail: a laid hose whose battery cut worked but never went Plump is a measured FAIL",
+          rok["NS_hose_plumps_only_from_powered_pump"]["status"] == "FAIL", rok["NS_hose_plumps_only_from_powered_pump"])
+    rnd = sf_rows(tank_units=500, powered=True, destroy_ok=False)
+    check("a battery / far tank that destroy_batch never removed reads UNMEASURED, not FAIL",
+          rnd["NS_hose_plumps_only_from_powered_pump"]["status"] == "UNMEASURED"
+          and rnd["NS_hose_port_removed_discovered"]["status"] == "UNMEASURED", (rnd["NS_hose_plumps_only_from_powered_pump"]["status"],
+                                                                                  rnd["NS_hose_port_removed_discovered"]["status"]))
+    rpb = sf_rows(tank_units=None, powered=True)
+    check("a tank probe that never answers makes the bar UNMEASURED, not a mod FAIL", rpb["NS_hose_carries_real_units"]["status"] == "UNMEASURED",
+          rpb["NS_hose_carries_real_units"])
+    rf0 = sf_rows(tank_units=500, powered=True)
+    check("can-fail: a live tank, a powered pump and a laid hose that moves nothing is still FAIL",
+          rf0["NS_hose_carries_real_units"]["status"] == "FAIL", rf0["NS_hose_carries_real_units"])
+    # a refused load leaves the old map Playing: SL3/SL4 must not compare it with itself and PASS
+    with contextlib.redirect_stdout(io.StringIO()):
+        _, resld = run_fake(bridge_cls=lambda saves, blob, hoses=None: _mk_noload(saves, blob, hoses))
+    stl = {r["id"]: r["status"] for r in resld["rows"]}
+    check("a refused load_game makes SL3 and SL4 UNMEASURED (declared ids still emitted)",
+          stl.get("SL3_hoses_and_reel_styles_survive") == "UNMEASURED" and stl.get("SL4_carry_states_survive") == "UNMEASURED", stl)
 
     P2, res2 = run_fake(args_only=["realflow"])
     check("a partial run (--only) is mode partial and never certifiable", res2["mode"] == "partial" and res2["certifiable"] is False)
