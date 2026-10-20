@@ -9,9 +9,9 @@ Prep: `design/RimMandrake/world_remake_2026-10-19/14_wave3_prep.md` §4. Base: H
 - [x] 3 deploy plans (flat + --compose biomes), assemblies checked
 - [x] 4 game down; apply; JawaBench build --gm --apply; stale RUT_FuelSnows removed
 - [x] 5 ModsConfig 374 swap (launched 04:42Z)
-- [ ] 6 cold load + baseline compare vs Wave 2 load #3
-- [ ] 7 live checks (Cauldron rows, Ummisk, Auroral Umbra, acceptance L1)
-- [ ] 8 FULL.LATEST (only if clean), release, commit, publish
+- [x] 6 cold load + baseline compare vs Wave 2 load #3 (clean: 0 ours, 0 new)
+- [x] 7 live checks (Cauldron rows, Ummisk, Auroral Umbra, acceptance L1)
+- [x] 8 FULL.LATEST = 374, release, commit, publish
 
 ## Transaction
 - `git pull --rebase`: HEAD 24d8a70b6 == origin/main; `src/` clean (only an untracked GSS proof json).
@@ -76,7 +76,42 @@ Prep: `design/RimMandrake/world_remake_2026-10-19/14_wave3_prep.md` §4. Base: H
     postfixes only (`harmony_Verse.*.json`); "Bound to" exists only at `RM_CompRhossakGrove.cs:239`, which needs the static
     true AND a valid boundTree. Mechanism UNRESOLVED. The false HARNESS comment in `Cauldron/validation.py` was corrected.
 
+- **Cauldron yield + water** (`cauldron_yield_water.txt`): all 10 rows PASS, incl. the previously UNMEASURED
+  `yield_factor_scales`, `yield_toggle_off`, `water_letter_arrives`, `water_letter_cooldown` (e9d3ca356 harness fixes work).
+  `CAULDRON_YIELD_LIVE_RERUN_1` verified and closed.
+- **Ummisk** (`ummisk_probe.py/.txt`, AREAFIX2 with a painted 6x6 LavaDeep pool): A1 no Ummisk error in the log (L1 pass);
+  A2 an ummisk spawned 30 cells away walked to the pool and read on a lava-edge cell 10/10 times over 5000 ticks (pass);
+  the edge-spawned one died to a roof collapse caused by the probe's own `destroy_batch` clearing (SITE; `damage_log`).
+  A4 `pawn_need` list empty (no Food/Rest), gender None, Cut 500 on `RM_UmmiskDome` -> dead (pass).
+  A3 steam puff is a fleck (no state to read): UNMEASURED.
+- **Auroral Umbra** (tile 116138 set to RUT_Umbra at -60 C, fresh Settlement map, defenders killed, 3 colonists; night):
+  - A2 **FAIL (mod)**: permanent `RM_WS_DarkAurora` is there (and Mod Settings off removes it within 2600 ticks, on restores
+    it), but the ground stays **Dark (0%)**: `CurSkyGlow` 0.0 with `perpetualAuroraGlow` 0.35 (`umbra_aurora_a.png`,
+    `umbra_aurora_b.png`: night map, faint blue cast only). Mechanism (RimSage): `SkyManager.CurrentSkyTarget` folds every
+    GameCondition SkyTarget in with `SkyTarget.LerpDarken` (glow = min), so a condition can only darken; `GlowFloor` never
+    brightens anything. Note filed on the item. (The first try on tile 116137 was daytime and then culled as a non-home map.)
+  - A3 pass: 40 `weather_roll_next` rolls = Clear 29, RUT_PropaneRain 11, snow 0; under locked propane rain a pool fire grew
+    1 -> 18 cells in 2000 ticks (not put out).
+  - A4 pass: RM_PropaneShallow on both fresh maps (694 cells on map 1); 0 fires before ignition; snow cells refuse fire.
+  - A5 pass: `CANONICAL_ASHKARR_START_2026-09-12` loads (138 s, read only, never saved): RUT_Umbra 2,531 tiles, 0 log lines
+    name RUT_FuelSnows; Scribe 'Could not load reference' 6,374 (6,287 ThingDef: the known Wave 1 pre-edit debt).
+  - Harness noise: the bridge-made Settlement at tile 116137 had no faction, so the world view logged 1,318 "Error while
+    drawing Settlement (tile=116137)" NREs until it was culled (ours to avoid: generate with a non-Settlement parent).
+- **Acceptance L1** (`acceptance_list.txt`, 109 L1 items): `NONSW_XENOTYPES_SCOPE_1` A1-A4 pass (KAR_Orc CUT live; dump
+  AFTER the patch, 0 refs on 219 xenotypeSets; no red error names the 11; `validate_patch` on the 374 list 0 errors) — item
+  validated and moved to closed. Its selftest's SHIP row still fails on BX_Beliar/DV_Avaloi/DV_Brawnum/DV_Buzzer/HBX_Highborn,
+  whose mods Wave 2 retired: a stale expectation in `selftest_xenotype_cut_nonsw.py`, not the patch.
+- Session log delta (`playerlog_session_delta.txt`): apart from the Settlement-draw harness noise, the AREAFIX2 load's
+  pre-existing SaveableFromNode classes and the pre-existing InputLegacyModule line; 0 exceptions from our mods' runtime.
+
 ## Rollback
 380 list = `ModsConfig.LIVE_BACKUP_20261020_pre_wave3.xml` (== FULL.LATEST at start); Cherry Picker unchanged.
 
 ## End state
+Game UP on the 374 list, main menu, healthy (canonical save never saved). Cherry Picker 1,747. FULL.LATEST = 374.
+Bridge released. Companion TEST grant expires 2026-10-20T09:30Z. Pointers:
+- `RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD` — A1 A2 A5 A6 A7 pass, A3 FAIL with the bridge fix live; NEXT: log, from inside `CompInspectStringExtra`, the static and boundTree it sees for a rhossak bound-then-switched-off (the comp tick reads null, the pane still says Bound).
+- `AURORAL_UMBRA_RENAME_BACK_TO_DARK` — A3 A4 A5 pass, A2 FAIL (LerpDarken); NEXT: light the Umbra through a non-darkening sky route (CurrentSkyTarget postfix gated on the permanent condition, or CompAffectsSky lerpDarken=false) and re-run A2.
+- `FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND` — A1 A2 A4 L1 pass, A3 UNMEASURED; NEXT: watch the steam puff with the owner (or add a fleck counter) and toggle "Ummisk steam cushion".
+- `NONSW_XENOTYPES_SCOPE_1` selftest — SHIP row stale after Wave 2; NEXT: make `selftest_xenotype_cut_nonsw.py` require SHIP keys only for CUT_DEF names present in the live dump.
+- ResearchRetag `forceLoadAfter` minus Real FoW is deployed; NEXT: at the next cold load, confirm ResearchRetag `retag_rows_vs_dump` 5/5 on a map.
