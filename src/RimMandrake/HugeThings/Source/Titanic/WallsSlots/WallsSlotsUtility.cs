@@ -76,6 +76,9 @@ namespace RimMandrake.TitanicCreatures
         private static readonly object heldGate = new object();
         private static readonly HeldBook held = new HeldBook();
         private static int lastPrune = int.MinValue;
+        /// <summary>The newest tick PruneMemos was called with (every call, before the throttle): a load to any earlier tick is a
+        /// backwards step, even one still after the last prune (round-2 review 2026-10-20).</summary>
+        private static int lastSeen = int.MinValue;
         private const int PruneEveryTicks = 600;
         /// <summary>Fast gate for the despawn postfix: no held crossing anywhere costs one static read.</summary>
         internal static volatile bool AnyHeld;
@@ -129,7 +132,8 @@ namespace RimMandrake.TitanicCreatures
         /// of creatures that are dead, despawned, destroyed or on a map that is gone, and expired ones; trim the mote memo.</summary>
         public static void PruneMemos(int now)
         {
-            bool back = now < lastPrune;
+            bool back = now < lastSeen;
+            lastSeen = now;
             if (!back && lastPrune != int.MinValue && now - lastPrune < PruneEveryTicks) return;
             lastPrune = now;
             if (back) lastSaid.Clear();

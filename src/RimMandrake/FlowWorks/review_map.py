@@ -1740,7 +1740,8 @@ class Review(object):
 
     def free_area(self):
         x, z, w, h = FREE["rect"]
-        self.call("jawa/destroy_batch", rects="%d,%d,%d,1" % (x, z, w), categories="All")
+        # rows z..z+1: the stock row is z+1 (109); clearing z alone left the old stacks on a repeat --build (review 2026-10-20)
+        self.call("jawa/destroy_batch", rects="%d,%d,%d,2" % (x, z, w), categories="All")
         for d, n_, c in FREE["stock"]:
             self.call("rimworld/spawn_thing", defName=d, stackCount=n_, x=c[0], z=c[1])
         t, px, pz, pw, ph = FREE["pond"]
