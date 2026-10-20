@@ -22,12 +22,17 @@
       <displayName>RimMandrake: Environmental Hazards Kit</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
     <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.environmentalhazards</li>
-    <li>sarg.alphamemes</li>
+    <li>mandrake.rm.creaturebehaviors</li>
     <li>vanillaexpanded.vgeneticse</li>
   </loadAfter>
   <description>POISONFOREST_RM_MOD_BUILD_1 (Phase A row 10 of the biome-mod-architecture
@@ -70,6 +75,12 @@ metal-load condition on anyone outdoors under open sky. The vexxiss puts out
 fires, goes for whoever started them, and turns the water it wades through
 toxic. Each is a Mod Settings toggle. Not yet built: the vexxiss's wild-shear job.
 
+RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD (owner by card 2026-10-19: "Make them animals and make them bind."): the rhossak
+and the galled rhossak are our own animals (RM_Rhossak, RM_GalledRhossak), no longer Alpha Memes dryads.
+Each binds to the nearest twisting thornwood and stays near it (our CreatureBehaviors home tether, hence
+that dependency); a resting rhossak sprouts the ground; three standing together for a day root a new
+thornwood. The galled rhossak binds but carries no seed, and sheds edible galls. Three Mod Settings toggles.
+
 The vents leak a NEW gas type: flammable vent gas, a drifting cloud on its own grid
 (the engine's gas grid has no room for a fifth gas, so vanilla and other mods' gases
 are never touched). Fire lights it, the burn runs through the cloud and leaves
@@ -88,7 +99,7 @@ patch, so it now needs Harmony. Both are Mod Settings toggles.
 
 ⚠️ Not fully donor-free: the world-map texture (Biomes/PoisonForest, BiomesPlus)
 carries no MayRequire, inherited unchanged from the frozen campaign twin. The
-inline fauna rows (Genetic Rim, Alpha Animals, Alpha Memes, Horrors) are
+inline fauna rows (Genetic Rim, Alpha Animals, Horrors) are
 individually MayRequire'd and degrade gracefully without them.
 
 NOT in this mod: the Star Wars-tier fauna (Neebray, Mynock, GraniteSlug,

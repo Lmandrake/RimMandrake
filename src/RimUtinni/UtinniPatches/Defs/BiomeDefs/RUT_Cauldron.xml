@@ -127,9 +127,9 @@
     <wildAnimals>
       <RSW_Neebray MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Neebray>  <!-- neebray - small-flier, keep -->
       <RM_Garsulix>0.7</RM_Garsulix>  <!-- garsulix: our port of the donor GR_Beetlefleet (RimMandrake Cauldron), donor retired 2026-10-18 -->
-      <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- corruptor dryad - small, keep -->
+      <RM_Rhossak MayRequire="mandrake.rm.cauldron">0.4</RM_Rhossak>  <!-- rhossak (was AM_Dryad_Corruptor): our own animal in RimMandrake Cauldron; RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD 2026-10-19 -->
       <AM_Dryad_Ocular MayRequire="sarg.alphamemes">0.4</AM_Dryad_Ocular>  <!-- ocular dryad - small, keep -->
-      <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- tumorous dryad - small, keep -->
+      <RM_GalledRhossak MayRequire="mandrake.rm.cauldron">0.4</RM_GalledRhossak>  <!-- galled rhossak (was AM_Dryad_Tumorous) -->
       <!-- MULTI-HOMED ON PURPOSE - owner approved 2026-09-22 (BIOME_SPECIFIC_FAUNA_LAW_1):
            the screecher is a real flier (MaxFlightTime 35.0) that MIGRATES from this wetter
            biome into the hot Wasteland to lay. It is the law's own carve-out, not a violation.

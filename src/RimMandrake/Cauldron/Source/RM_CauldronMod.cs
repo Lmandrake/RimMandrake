@@ -75,6 +75,10 @@ namespace RimMandrake.Cauldron
         public static bool vexxissPriesTaps = true;
         public static bool ruinKitEnabled = true;
         public static bool faunaHushEnabled = true;
+        // RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD (owner by card 2026-10-19: "Make them animals and make them bind."): RM_CompRhossakGrove.
+        public static bool rhossakBindEnabled = true;
+        public static bool rhossakSproutEnabled = true;
+        public static bool rhossakGroveEnabled = true;
 
         public override void ExposeData()
         {
@@ -116,6 +120,9 @@ namespace RimMandrake.Cauldron
             Scribe_Values.Look(ref vexxissPriesTaps, "vexxissPriesTaps", true, true);
             Scribe_Values.Look(ref ruinKitEnabled, "ruinKitEnabled", true, true);
             Scribe_Values.Look(ref faunaHushEnabled, "faunaHushEnabled", true, true);
+            Scribe_Values.Look(ref rhossakBindEnabled, "rhossakBindEnabled", true, true);
+            Scribe_Values.Look(ref rhossakSproutEnabled, "rhossakSproutEnabled", true, true);
+            Scribe_Values.Look(ref rhossakGroveEnabled, "rhossakGroveEnabled", true, true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -298,6 +305,23 @@ namespace RimMandrake.Cauldron
                     "WORLDGEN: a Cauldron map made from now on gets one corroded filter rig with its wrecked tanks. "
                     + "Studying the rig teaches the Filter-Works research. Off: no ruin, and the Filter-Works cannot be "
                     + "learned on that map (a rig on another map still teaches it).");
+                list.GapLine();
+            }
+
+            if (Group(list, "Rhossak groves", RimMandrake.Shared.SettingScope.Now, new[] { "rhossakBindEnabled", "rhossakSproutEnabled", "rhossakGroveEnabled" }))
+            {
+                list.CheckboxLabeled("Rhossak bind to a grove tree",
+                    ref rhossakBindEnabled,
+                    "Each rhossak and galled rhossak binds to the nearest twisting thornwood on its map and stays near it; "
+                    + "if the tree dies it binds to the next one. Off: they wander like any wild animal.");
+                list.CheckboxLabeled("Resting rhossak sprout the ground",
+                    ref rhossakSproutEnabled,
+                    "A sleeping rhossak sometimes sets a seedling of the biome's own wild plants on an empty cell beside it. "
+                    + "The galled rhossak carries no seed. Off: nothing sprouts.");
+                list.CheckboxLabeled("Three rhossak root a new grove",
+                    ref rhossakGroveEnabled,
+                    "Three rhossak standing together, a few steps clear of any thornwood, for a whole day root a young thornwood "
+                    + "and bind to it. Off: no new groves.");
                 list.GapLine();
             }
 

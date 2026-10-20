@@ -187,6 +187,7 @@ MODS = {
         "Acid-proof vexxith door": "NextGameStart",
         "Vent gas": "Now",
         "Corroded ruins (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Rhossak groves": "Now",          # RM_CompRhossakGrove reads all three on its 250-tick check
     }, ()),
     "Pyrelands": ("RM_PyrelandsMod.cs", "FireEcologyHook.csproj", {
         "Mod enabled": "Now",

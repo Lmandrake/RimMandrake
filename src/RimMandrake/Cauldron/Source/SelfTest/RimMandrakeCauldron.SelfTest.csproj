@@ -26,6 +26,7 @@
     <Compile Include="..\Kernel\RM_YieldKernel.cs" />
     <Compile Include="..\Kernel\RM_VexxissKernel.cs" />
     <Compile Include="..\Kernel\RM_VentGasKernel.cs" />
+    <Compile Include="..\Kernel\RM_RhossakKernel.cs" />
     <Compile Include="CauldronFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

@@ -595,7 +595,7 @@ class Fake(object):
         pid = "P%d" % self.n
         if "kind_missing" in self.broken and kindDef == V.ESKITH:
             return {"success": True, "pawns": [{"id": pid}]}          # reported, never actually there
-        self.pawns[pid] = dict(id=pid, kind=kindDef, x=x, z=z, faction=faction, dead=False, hediffs=[])
+        self.pawns[pid] = dict(id=pid, kind=kindDef, x=x, z=z, faction=faction, dead=False, hediffs=[], born=self.ticks)
         return {"success": True, "pawns": [{"id": pid}]}
 
     def t_pawn_force_incapacitate(self, pawn=None, action="kill", **k):
@@ -610,6 +610,9 @@ class Fake(object):
         rr = V_rect(rect) if rect else None
         rows = []
         for p in self.pawns.values():
+            if ("rhossak_wanders_off" in self.broken and p["kind"] == V.RHOSSAK and not p.get("off")
+                    and self.ticks - p.get("born", 0) > 3000):
+                p["x"], p["off"] = p["x"] + 40, True           # untethered: it walks away from its tree
             if rr and not inrect(p["x"], p["z"], rr):
                 continue
             row = {"id": p["id"], "kindDef": p["kind"], "x": p["x"], "z": p["z"], "dead": p["dead"],
@@ -770,6 +773,13 @@ class Fake(object):
         return {"success": True, "accepted": True, "nowRunningRequested": True}
 
     def t_inspect_string(self, thingIds=None, **k):
+        p = self.pawns.get(thingIds)
+        if p is not None and p["kind"] in (V.RHOSSAK, V.GALLED):        # RM_CompRhossakGrove.CompInspectStringExtra
+            lines = []
+            if self.on("rhossakBindEnabled", "bind_ignores_toggle"):
+                tree = self.of(V.THORN) and not ("rhossak_no_bind" in self.broken and p["kind"] == V.RHOSSAK)
+                lines = ["Bound to twisting thornwood" if tree else "Unbound: no grove tree on this map"]
+            return {"success": True, "things": [{"id": p["id"], "label": p["kind"], "inspect": lines}]}
         t = self.things.get(thingIds)
         if t is None:
             return {"success": True, "things": []}
@@ -861,6 +871,9 @@ def run(broken=()):
 
 # break -> the component that must go FAIL (and nothing else)
 BREAKS = {
+    "rhossak_no_bind": "rhossak.rhossak_binds_to_thornwood",
+    "rhossak_wanders_off": "rhossak.rhossak_stays_by_its_tree",
+    "bind_ignores_toggle": "rhossak.rhossak_bind_off_unbinds",
     "mapgen_no_rig": "ruins.ruin_rig_at_mapgen",
     "mapgen_undressed": "ruins.ruin_site_dressed_at_mapgen",
     "mapgen_tanks_empty": "ruins.ruin_site_dressed_at_mapgen",
@@ -964,8 +977,9 @@ def source_checks():
         if not re.search(r"\bclass\s+%s\b" % short, blob):
             bad.append("TYPES names %s but Source/ declares no such class" % short)
     # 36/30 since CAULDRON_MECHANICS_BUILD_1 parts 1/3/4/5 (2026-10-16): + 8 vent-gas / tap / ruin / hush toggles and the gas factor.
-    if len(V.DEFAULTS) != 36 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 30:
-        bad.append("parsed %d defaults / %d bools, expected 36 / 30" %
+    # 39/33 since RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD (2026-10-19): + the rhossak bind / sprout / grove toggles.
+    if len(V.DEFAULTS) != 39 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 33:
+        bad.append("parsed %d defaults / %d bools, expected 39 / 33" %
                    (len(V.DEFAULTS), sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool))))
     for needle in ("HeadingPeriodTicks = 60000", "2654435761L", "0x2C1B3C6Du", "h >> 15", "h >> 12", "h % 8u"):
         if needle not in blob and needle not in open(os.path.join(srcdir, "Kernel", "RM_VentGasKernel.cs"), encoding="utf-8").read():
@@ -988,8 +1002,8 @@ def source_checks():
     # 69/8: RM_Bezzul removed (BEZZUL_DELETE_NOT_NEEDED_ANYMORE); RM_FireSpit projectile restored for RM_Zisska (2026-10-16).
     # 68/16/8: RM_TreeMartyr cut (owner, tree tiers sheet 2026-10-18: "Cut and remove from game").
     # 70/16/9: + RM_Garsulix ThingDef and PawnKindDef (owned port of GR_Beetlefleet, e5c1f01e3, Alpha Animals retirement).
-    if len(V.SHIPPED) != 70 or len(V.FLORA) != 16 or len(V.KINDS) != 9:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 70 / 16 / 9); update "
+    if len(V.SHIPPED) != 74 or len(V.FLORA) != 16 or len(V.KINDS) != 11:      # +4 / +2 kinds: RM_Rhossak, RM_GalledRhossak
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 74 / 16 / 11); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 

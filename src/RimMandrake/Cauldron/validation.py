@@ -115,13 +115,17 @@ TYPES = tuple(NS + n for n in (
     # CAULDRON_MECHANICS_BUILD_1 parts 3/4: the vent gas, the gas tap, the ruin kit
     "RM_MapComponent_VentGas", "RM_SectionLayer_VentGas", "RM_CompGasTap", "RM_CompProperties_GasTap",
     "RM_PlaceWorker_OnCauldronVent", "RM_CompCauldronRuinKit", "RM_CompProperties_CauldronRuinKit",
-    "RM_ScattererValidator_CauldronRuinSite"))
+    "RM_ScattererValidator_CauldronRuinSite",
+    # RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD: the rhossak's binding
+    "RM_CompRhossakGrove", "RM_CompProperties_RhossakGrove"))
 
 BIOME = "RM_Cauldron"
 WEATHERS = ("RM_ScatterDusk", "RM_VentBloom", "RM_VapourBank", "RM_Dewfall")
 BLOOM, HEDIFF = "RM_VentBloom", "RM_VentMetalLoad"
 VEXXISS, SUUSH, ZISSKA, ESKITH = "RM_Vexxiss", "RM_Suush", "RM_Zisska", "RM_Eskith"
 NATIVES = (SUUSH, VEXXISS, ZISSKA, ESKITH)             # the biome's own, MayRequire-free wildAnimals rows
+RHOSSAK, GALLED = "RM_Rhossak", "RM_GalledRhossak"        # RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD (owner by card 2026-10-19)
+RHOSSAK_TETHER = 10                                        # RM_CompProperties_HomeTether.tetherRadius on both defs
 THORN, NETTLE = "RM_TwistingThornwood", "RM_RavenNettle"   # RM_TreeMartyr cut (owner, tree tiers sheet 2026-10-18)
 LETTER_LABEL = "Vexxiss poisoning water"
 THORN_MIN, THORN_FULL = 2.0, 12.0
@@ -137,7 +141,7 @@ VENT_PLANTS = {"RM_CrystalFlower": "StableRing", "RM_BloodBouquet": "ChronicLeak
                "RM_GiantToxicFlower": "RecentBlowout"}
 PADS = {"vent": (0, -85), "fauna": (-45, -45), "suush": (45, -45), "flora": (-45, 0), "yield": (45, 0),
         "bloom": (-45, 45), "water": (0, 45), "fire": (45, 45), "spawn": (0, -45), "gas": (-85, -85), "works": (85, -85),
-        "drift": (85, 85)}
+        "drift": (85, 85), "rhossak": (-85, 85)}
 GAS_TAP, TANK, RIG = "RM_VentGasTap", "RM_LiquidTank", "RM_CorrodedFilterRig"     # CAULDRON_MECHANICS_BUILD_1 parts 3/4
 VWORKS, REAGENT, BATTERY = "RM_FilterWorks", "RM_VentReagent", "Battery"          # CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD
 COND, TOXICW, FRESHW = "RM_Liquid_VentCondensate", "RM_Liquid_ToxicWater", "RM_Liquid_FreshWater"
@@ -1112,7 +1116,10 @@ def settings_chain(t):
                   # (this roundtrip only proves the field persists); the toxic-smoke
                   # OFF arm is masked by the ON arm's vanilla tox residue unless the suite waits it out (the ON arm is
                   # gas.vent_gas_burns_toxic); the ruin kit is worldgen (a fresh Cauldron map).
-                  "ventGasDrifts", "ventGasToxicSmoke", "ruinKitEnabled"):
+                  "ventGasDrifts", "ventGasToxicSmoke", "ruinKitEnabled",
+                  # RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD: a sprout needs a SLEEPING rhossak and a 3 h mean wait; a grove needs three awake
+                  # rhossak held together for 24 unbroken in-game hours. Both are owed live rows (ledger note), not driven here.
+                  "rhossakSproutEnabled", "rhossakGroveEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
                 if not _same(_get_setting(t, field), DEFAULTS[field]):
@@ -2576,6 +2583,67 @@ def _cloud_row(t):
             if cos < CLOUD_COS:
                 _fail("the cloud drifted (%.2f, %.2f) but the heading is %d (%d, %d): cos %.2f, it goes the wrong way"
                       % (rx, rz, h, hx, hz, cos))
+    _stable(t, body)
+
+
+# --------------------------------------------------------------------------- chain: the rhossak (RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD)
+# Owner by card 2026-10-19: "Make them animals and make them bind." A rhossak binds to the nearest twisting thornwood and
+# stays near it (RM_CompRhossakGrove points our RM_CompHomeTether at the tree); its inspect pane says which tree, or
+# "Unbound". The donor dryads this replaces walked straight off a tree-less map, so "still near its tree after 5000
+# ticks" is the row that would have caught them.
+
+def _rhossak_bind_line(t, pid):
+    _, lines = _inspect(t, pid)
+    return next((l for l in lines if l.startswith("Bound to") or l.startswith("Unbound")), None)
+
+
+@suite.chain("rhossak")
+def rhossak_chain(t):
+    _prep(t, "rhossak")
+    x, z = t.anchor
+    ids = {}
+
+    def body():
+        with _comp(t, "rhossak_binds_to_thornwood", toggle="rhossakBindEnabled"):
+            if _live(t):
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (THORN, x, z), growth=1.0)
+                if _count(t, THORN, "%d,%d,1,1" % (x, z)) < 1:
+                    _unmeasured(t, "no thornwood stood at the pad centre after set_plants")
+                ids[RHOSSAK] = _spawn(t, RHOSSAK, x + 7, z - 3)
+                ids[GALLED] = _spawn(t, GALLED, x + 7, z + 3)
+                t.wait_ticks(600)
+                got = dict((k, _rhossak_bind_line(t, pid)) for k, pid in ids.items())
+                _note(t, "bind lines", got)
+                bad = dict((k, v) for k, v in got.items()
+                           if not (v or "").startswith("Bound to") or "thornwood" not in (v or "").lower())
+                if bad:
+                    _fail("rhossak not bound to the thornwood 600 ticks after spawning beside it: %s" % bad)
+        with _comp(t, "rhossak_stays_by_its_tree"):
+            if _live(t):
+                if len(ids) < 2:
+                    _unmeasured(t, "no rhossak from the bind row to follow")
+                t.wait_ticks(5000)
+                rows = _rows(t)
+                far = {}
+                for k, pid in ids.items():
+                    row = rows.get(pid)
+                    if not row or row.get("dead"):
+                        _unmeasured(t, "%s is dead or gone (a predator or the site, not the tether): %r" % (k, row))
+                    d = max(abs(row["x"] - x), abs(row["z"] - z))
+                    if d > RHOSSAK_TETHER + 4:
+                        far[k] = d
+                _note(t, "cells from the tree after 5000 ticks (tether %d)" % RHOSSAK_TETHER, far)
+                if far:
+                    _fail("rhossak wandered off its tree: %s cells away" % far)
+        with _comp(t, "rhossak_bind_off_unbinds", toggle="rhossakBindEnabled"):
+            if _live(t):
+                if RHOSSAK not in ids:
+                    _unmeasured(t, "no rhossak from the bind row")
+                with _setting(t, "rhossakBindEnabled", False):
+                    t.wait_ticks(600)
+                    line = _rhossak_bind_line(t, ids[RHOSSAK])
+                    if line is not None:
+                        _fail("rhossakBindEnabled off but the inspect pane still reads %r" % line)
     _stable(t, body)
 
 
