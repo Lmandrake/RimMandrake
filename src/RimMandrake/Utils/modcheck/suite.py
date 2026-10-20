@@ -103,6 +103,29 @@ class _Shot(object):
     n = 0       # process-wide screenshot counter, part of every rect shot's fileName
 
 
+class _ReportingSession(object):
+    """The chain's session while Suite.preconditions is on: EVERY call -- bridge_call, the verbs (clear_area, spawn, wait_ticks'
+    clock steps, set_setting) and a script's own t.session.call -- reports its reply to the chain's Preconditions, so no call
+    path can slip past the rule. `_answer=True` (accepted only here) marks a reply that is the measurement itself."""
+
+    def __init__(self, session, pre):
+        self.__dict__["_s"], self.__dict__["_pre"] = session, pre
+
+    def __getattr__(self, k):
+        return getattr(self._s, k)
+
+    def __setattr__(self, k, v):
+        setattr(self._s, k, v)
+
+    def call(self, tool, _answer=False, **kw):
+        try:
+            r = self._s.call(tool, **kw)
+        except Exception as ex:
+            self._pre.fault(tool, "raised %r" % ex)
+            raise
+        return self._pre.reply(tool, kw, r, answer=_answer)
+
+
 class TestContext(object):
     """The `t` a chain function receives. Wraps a `rimdrive.Session` with the
     verb vocabulary v1 (spec §2). Every verb calls `self._guard()` first --
@@ -319,6 +342,8 @@ class TestContext(object):
                 # fall back to the old single-call, unverified behavior
                 # rather than looping blind.
                 self._record("wait_ticks(%d) [unverifiable clock]" % n, r)
+                if self.pre is not None:
+                    self.pre.fault("wait_ticks(%d)" % n, "clock unverifiable: no tick read before/after the wait")
                 return r
             new_advanced = now - start
             if new_advanced <= advanced:
@@ -330,6 +355,8 @@ class TestContext(object):
         self._record("wait_ticks(%d) -> %d real tick(s) over %d call(s)"
                      % (n, advanced, calls), last)
         if advanced < n:
+            if self.pre is not None:          # the clock did not move: the bench's, never the mod's (withheld, no finding)
+                self.pre.fault("wait_ticks(%d)" % n, "only %d real tick(s) advanced" % advanced)
             raise ExpectationFailed(
                 "wait_ticks(%d) only advanced %d real game tick(s) over %d "
                 "call(s) before giving up -- rimworld/step_game_ticks "
@@ -427,9 +454,10 @@ class TestContext(object):
         answer = params.pop("_answer", False)    # the reply IS the measurement: the caller judges it (preconditions)
         if not self._guard():
             return None
-        r = self.session.call(tool, **params)
-        if self.pre is not None:
-            self.pre.reply(tool, params, r, answer=answer)
+        if isinstance(self.session, _ReportingSession):
+            r = self.session.call(tool, _answer=answer, **params)
+        else:
+            r = self.session.call(tool, **params)
         self._record("bridge_call %s" % tool, r)
         if self.watch is not None:
             if tool == "jawa/spawn_pawn":
@@ -725,6 +753,10 @@ class _ComponentCtx(object):
         else:
             why = self._withheld(PASS, c.detail)
             c.verdict, c.detail = (UNMEASURED, why) if why else (PASS, c.detail)
+            if why:
+                # as an UNMEASURED expectation: the chain's state is no longer known, so later components record UNMEASURED
+                self.ctx.upstream_failed = True
+                self.ctx.upstream_reason = "an UNMEASURED component ended this chain earlier: " + why[:200]
         self.ctx.components.append(c)
         self.ctx._current = None
         # Suppress the exception (if any): the CHAIN function continues to
@@ -759,11 +791,14 @@ class Suite(object):
                 if not suite.preconditions or getattr(t, "pre", None) is not None:
                     return _fn(t)
                 t.pre = _PC.Preconditions()
+                raw = t.session
+                if raw is not None:
+                    t.session = _ReportingSession(raw, t.pre)
                 try:
                     with t.pre.scope("chain %s" % _name):
                         return _fn(t)
                 finally:
-                    t.pre = None
+                    t.session, t.pre = raw, None
             chain_fn.__name__, chain_fn.__doc__, chain_fn.__wrapped__ = fn.__name__, fn.__doc__, fn
             self.chains.append((name, chain_fn))
             if tick_cap:

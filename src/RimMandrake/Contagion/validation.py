@@ -423,9 +423,10 @@ def _restore(t, field):
     if t.session is None:
         return
     try:
-        t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field,
-                       value=str(DEFAULTS[field]))
-        got = t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field)
+        # cleanup after the arm's read: a refused restore is printed, never a withheld verdict of the arm it follows
+        _scall(t, "jawa/mod_settings_field", answer=True, typeName=SETTINGS, action="set", field=field,
+               value=str(DEFAULTS[field]))
+        got = _scall(t, "jawa/mod_settings_field", answer=True, typeName=SETTINGS, action="get", field=field)
         if not _same((got or {}).get("value"), DEFAULTS[field]):
             print("[contagion] RESTORE FAILED %s -> %r" % (field, got), file=sys.stderr, flush=True)
     except Exception as ex:
@@ -664,11 +665,19 @@ def _spawn_repulsor(t, x, z):
     return rows[0]["id"] if rows else None
 
 
+def _scall(t, tool, answer=False, **kw):
+    """t.session.call; `answer=True` marks the reply as data the caller judges (preconditions), and the flag only ever travels
+    through the suite's reporting proxy, never to the game."""
+    if answer and getattr(t, "pre", None) is not None:
+        return t.session.call(tool, _answer=True, **kw)
+    return t.session.call(tool, **kw)
+
+
 def _end_conditions(t):
     for name in (BURN_COND, CLEAR_COND):
         if t.session is not None:
             try:
-                t.session.call("jawa/game_condition", action="end", condition=name)
+                _scall(t, "jawa/game_condition", answer=True, action="end", condition=name)
             except Exception:
                 pass          # 'not active' is a Fail from the tool; nothing to end
 
