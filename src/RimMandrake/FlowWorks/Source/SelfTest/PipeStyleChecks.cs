@@ -156,8 +156,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert((string)t.Element("designationCategory") == "VCHE_PipeNetworks", def + " in the pipe networks tab, got " + (string)t.Element("designationCategory"));
                 }
                 XDocument ad = XDocument.Load(Path.Combine(ModRoot, "Patches", "Machinery", "RM_PipeNetAdapters.xml"));
-                var cats = ad.Descendants("designationCategory").Select(e => e.Value).ToList();
-                Assert(cats.Count == 2 && cats.All(c => c == "VCHE_PipeNetworks"), "both pipe adapters in the pipe networks tab");
+                // every adapter the file ships (chemfuel; the propane one left with Alpha Biomes, eb6b1ec0c8) sits in the tab
+                var adapters = ad.Descendants("defName").Where(e => e.Value.StartsWith("RM_PipeAdapter_")).Select(e => e.Parent).ToList();
+                Assert(adapters.Any(a => (string)a.Element("defName") == "RM_PipeAdapter_Chemfuel"), "the chemfuel pipe adapter shipped");
+                foreach (XElement a in adapters)
+                    Assert((string)a.Element("designationCategory") == "VCHE_PipeNetworks",
+                        (string)a.Element("defName") + " in the pipe networks tab, got " + (string)a.Element("designationCategory"));
                 // can-fail: machines stay with production (pumps, stills are machines, not pipes or storage)
                 XElement pump = Thing(Load("LiquidTypes", "ThingDefs", "RM_LiquidPump.xml"), "RM_LiquidPump");
                 Assert((string)pump.Element("designationCategory") == "Production", "the pump is a machine: Production");

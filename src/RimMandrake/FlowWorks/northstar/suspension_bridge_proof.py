@@ -484,7 +484,7 @@ def underpass(ctx):
     kvp, txtp = proof("ProofPath", "%s;%s" % (f_, xz(P(4, 59)))) if f_ else ({}, "no pawn")
     good = (kv.get("ok") == "True" and kvs.get("deckNotches") == "8" and kvp.get("found") == "True"
             and int(kvp.get("decked", "0")) >= 2)
-    row("UND_sunken_bridge_crossed", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"build": txt, "span": txts, "path": txtp})
+    row("UND_sunken_bridge_crossed", "PASS" if good else ("FAIL" if kv and f_ else "UNMEASURED"), {"build": txt, "span": txts, "path": txtp})
     row("UND_raiders_walk_under_moat", "UNMEASURED", {"owed": True, "why": "OWED: a raid into a 4 m moat with a bridge over it, "
         "recorded with modcheck (behaviour is the ruling, not a bug)"})
     row("UND_L4_picture_pawn_under_deck", "UNMEASURED", {"owed": True, "why": "OWED: one joint screenshot of a pawn passing under a deck"})
@@ -513,11 +513,11 @@ def waters(ctx):
         before = (r[0][0] - (r[1][0] > r[0][0]) + (r[1][0] < r[0][0]), r[0][1] - (r[1][1] > r[0][1]) + (r[1][1] < r[0][1]))
         w = spawn(before)
         kvp, txtp = proof("ProofPath", "%s;%s" % (w, xz(r[1]))) if w else ({}, "no pawn")
-        o = B.call("jawa/order_pawn", pawnId=w, x=r[1][0], z=r[1][1], waitTicks=1500, draft=True) or {}
+        o = (B.call("jawa/order_pawn", pawnId=w, x=r[1][0], z=r[1][1], waitTicks=1500, draft=True) or {}) if w else {}
         at = {p.get("id"): ((p.get("end") or {}).get("x"), (p.get("end") or {}).get("z"))   # read-back cell is end{x,z}
               for p in (o.get("pawns") or [])}.get(w)
         good = kv.get("ok") == "True" and all(e == "True" for e in ex) and kvp.get("found") == "True" and at == r[1]
-        row("WAT_river_cross_no_drift", "PASS" if good else ("FAIL" if kv else "UNMEASURED"),
+        row("WAT_river_cross_no_drift", "PASS" if good else ("FAIL" if kv and w else "UNMEASURED"),
             {"build": txt, "exempt": ex, "path": txtp, "arrived": at})
     else:
         row("WAT_river_cross_no_drift", "UNMEASURED", {"why": "no --river x1,z1,x2,z2 given (this map's river crossing)"})
@@ -563,7 +563,7 @@ def waters(ctx):
         w = spawn(sea[0])
         kvp, txtp = proof("ProofPath", "%s;%s" % (w, xz(sea[1]))) if w else ({}, "no pawn")
         good = kv.get("ok") == "True" and kvp.get("found") == "True"
-        row("WAT_sea_or_backtrack", "PASS" if good else ("FAIL" if kv else "UNMEASURED"),
+        row("WAT_sea_or_backtrack", "PASS" if good else ("FAIL" if kv and w else "UNMEASURED"),
             {"build": txt, "path": txtp, "ifFail": "record the measured reason on FLOWWORKS_BRIDGES_DESIGN_SPAN_ANYTHING and set "
              "suspensionOverSea off (the backtrack rule)"})
     else:
