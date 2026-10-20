@@ -13,7 +13,7 @@ Evidence in the lineup shot `D:\ClaudeWork\screenshots\2026-10-20\heads_lineup_A
 
 | | add-on part | painted into the head |
 |---|---|---|
-| Overlap the body | yes, layer 70 | **also yes**: the 512 px head canvas has margin and the head draws over the body (the Ortolan ears already overlap its body in the shot). UNMEASURED: the canvas-to-world scale; the margin is finite |
+| Overlap the body | yes, layer 70 | **also yes**: the 512 px head canvas has margin and the head draws over the body (the Ortolan ears already overlap its body in the shot). READ: the whole canvas is a 1.5 x 1.5-cell mesh, so the margin is finite (`head_envelope_2026-10-20.md`) |
 | Lines up with our head | **no**: anchored to the vanilla head; this is the Ortolan/Nelvaanian/Lasat defect | yes, by construction |
 | Art quality | one generic ear for every species | ours, per facing |
 | Skin colour | automatic | needs a mask, or the head is drawn as painted (see below) |
@@ -44,7 +44,7 @@ Ortolan today is tinted blue-on-blue, which is why its head is darker than its b
 Headgear is drawn at the vanilla head size and offset. A head wider or taller than vanilla, or with ears/stalks, means the helmet covers the middle and the painted parts stick out around it. Options, cheapest first:
 1. **Hide headgear on the species** (their own gear skips the head graphic, helmets still give stats). Zero art, loses the look.
 2. **Species helmet defs** with their own world textures (a Lasat helmet that fits Lasat). Canonical, a lot of art, one def per helmet per species — only worth it for the few helmets the owner wants seen.
-3. **Scale/offset per head type** if a mod provides it (check Tabula Rasa's `DefModExt_HeadTypeStuff` and the apparel `drawData` scale fields). Cheap if it exists; I have not read it.
+3. **Scale/offset per head type**: does not exist (READ: `DefModExt_HeadTypeStuff` is shader-only, `DrawData.scale` varies by child stage and body type only). Tabula Rasa's `DefModExt_ApparelAlts` (per-head-type worn textures) looks inert in 1.6. Detail: `design/RimStarWars/head_envelope_2026-10-20.md`.
 Painted ears vs attachment ears make little difference here, except that attachment ears (layer 70) might poke through a helmet while painted ones sit under it.
 
 ## Work this implies (not filed or started)
