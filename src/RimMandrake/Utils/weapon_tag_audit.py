@@ -510,9 +510,15 @@ def emit_patch(mapping, path, allow_shrink=False):
     against the 154 on disk. weapon_tag_audit.py REFUSES that write now; capture a dump
     with Jawa_Patches disabled instead.
   """.rstrip(), "-->", ""]
+    # 🔴 2026-10-20, RETIREMENT WAVE 2: every row is wrapped in a def-exists Conditional. The bare
+    # weaponTags Conditional is NOT a guard: with the def gone its nomatch Add targets a missing node
+    # and fails (16 'Patch operation ... failed' lines on the 380 list). With the outer guard a
+    # retired weapon's row matches nothing and logs nothing; behaviour is unchanged while it loads.
     for dn, (role, tg) in sorted(mapping.items()):
         lines += [
             '  <Operation Class="PatchOperationConditional">',
+            '    <xpath>/Defs/ThingDef[defName="%s"]</xpath>' % dn,
+            '    <match Class="PatchOperationConditional">',
             '    <xpath>/Defs/ThingDef[defName="%s"]/weaponTags</xpath>' % dn,
             '    <match Class="PatchOperationAdd">',
             '      <xpath>/Defs/ThingDef[defName="%s"]/weaponTags</xpath>' % dn,
@@ -523,6 +529,7 @@ def emit_patch(mapping, path, allow_shrink=False):
             "      <value><weaponTags>%s</weaponTags></value>"
             % "".join("<li>%s</li>" % t for t in tg),
             "    </nomatch>",
+            "    </match>",
             "  </Operation>",
             "",
         ]

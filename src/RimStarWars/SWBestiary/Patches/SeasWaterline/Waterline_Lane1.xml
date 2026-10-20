@@ -243,6 +243,8 @@
   <!-- DA_LeviathanCrab (Dark Ages: Beasts and Monsters): same missing-
        container shape as the BMT_* block above. -->
   <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]</xpath>
+    <match Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes</xpath>
     <match Class="PatchOperationSequence">
       <operations>
@@ -281,5 +283,6 @@
         <value><race><wildBiomes><Lake>0.38</Lake><Ocean>0.2</Ocean></wildBiomes></race></value>
       </nomatch>
     </nomatch>
+    </match>
   </Operation>
 </Patch>
