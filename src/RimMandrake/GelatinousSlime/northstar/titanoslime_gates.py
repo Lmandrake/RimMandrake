@@ -73,6 +73,7 @@ class G(object):
     def __init__(self):
         from modcheck import reviewmap as RM
         self.B = RM.LiveBridge()
+        self.live = []                           # every pawn this run spawned and has not yet vanished
 
     def call(self, tool, **kw):
         return self.B.call(tool, **kw)
@@ -85,11 +86,22 @@ class G(object):
 
     def gone(self, pid):
         """Vanish a pawn we are done with and CHECK it left (the vanish/kill reply was never read before)."""
+        self.live = [p for p in self.live if re.sub(r"\D", "", p) != re.sub(r"\D", "", str(pid))]
         r = self.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
         # a colonist still HELD inside another slime answers "No pawn matching" (2 per full run): harmless, expected.
         if r.get("destroyedAfter") is not True:
             say("VANISH-MISS %s %s" % (pid, json.dumps(r)[:300]))
         return r
+
+    def sweep(self):
+        """End of a gate, however it ended (PASS, FAIL, early return, Unmeasured): vanish every pawn it spawned and did
+        not already remove, so no manhunting slime, muffalo or colonist leaks into the next gate's log budget."""
+        left, self.live = self.live, []
+        for pid in left:
+            try:
+                self.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")   # "No pawn matching" = already gone
+            except Exception as e:  # noqa: BLE001
+                say("SWEEP-MISS %s %s" % (pid, e))
 
     def ticks(self, n):
         while n > 0:
@@ -125,7 +137,9 @@ class G(object):
         r = self.ok("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=faction, count=count)
         ids = [str(p.get("id")).replace("Thing_", "") for p in (r.get("pawns") or []) if p.get("id")]
         if len(ids) != count:
+            self.live.extend(ids)                # whatever did spawn is still swept
             raise Unmeasured("spawn_pawn %s x%d returned %d ids" % (kind, count, len(ids)))
+        self.live.extend(ids)
         return ids
 
     def tier(self, pid):
@@ -165,6 +179,7 @@ def gate(fn):
             row(fn.__name__, "could_not_ask", "UNMEASURED", "HARNESS", str(e))
         except Exception as e:  # noqa: BLE001
             row(fn.__name__, "script_error", "UNMEASURED", "HARNESS", "%s: %s" % (type(e).__name__, e))
+        g.sweep()
         sent = "TITANO_GATES_SENTINEL %s %d" % (fn.__name__, int(time.time() * 1000))
         g.call("jawa/static_call", type="Verse.Log", method="Warning", args=sent)
         alive = False
