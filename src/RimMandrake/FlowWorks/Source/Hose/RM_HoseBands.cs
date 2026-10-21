@@ -26,6 +26,17 @@ namespace RimMandrake.FlowWorks.Hose
             return HoseBandMath.Band(true, RM_SuperdeepTrap.StepDepthAt(map, eng, c));
         }
 
+        /// <summary>Phase 7, the cover gap: is c a square no hose may lie on (an intact pit cover, P2 answer 3)? StepDepthAt reads
+        /// a cover as ground (band 0), so without this a hose was laid straight over one. A cover only stands over a dug square,
+        /// so a cell with no climb depth costs one lookup.</summary>
+        public static bool Closed(Map map, IntVec3 c)
+        {
+            if (!On || map == null || !c.InBounds(map)) return false;
+            RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+            if (eng == null || eng.ClimbCellCount == 0 || eng.ClimbDepthAt(c) == 0) return false;
+            return HoseBandMath.SurfaceClosed(true, RM_LineCrossing.SurfaceAt(map, c));
+        }
+
         /// <summary>Do cardinal neighbours a and b (bands aB, bB, which differ) share a ramp or a hose-carrying ladder?</summary>
         public static bool Linked(Map map, IntVec3 a, IntVec3 b, int aB, int bB)
         {
@@ -53,6 +64,52 @@ namespace RimMandrake.FlowWorks.Hose
             return m;
         }
 
+        /// <summary>Phase 7 (P9 readout): the level changes along a lay, each counted as a ramp (RM_PitRamp.Joins) or a ladder. A
+        /// diagonal step changes level through the corner the router allowed it by (CordWorld.StepAllowed), so it is judged on
+        /// the cardinal pair through that corner. Nothing dug on the map: zero, one check.</summary>
+        internal static void LevelChanges(Map map, IList<V2> flat, out int ramps, out int ladders)
+        {
+            ramps = ladders = 0;
+            if (!On || map == null || flat == null || flat.Count < 2) return;
+            RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+            if (eng == null || eng.ClimbCellCount == 0) return;
+            // the lay is a polyline: walk each segment at 0.05 cell so no cell it passes is skipped
+            Cell p0 = flat[0].Floor;
+            var prev = new IntVec3(p0.X, 0, p0.Z);
+            for (int i = 1; i < flat.Count; i++)
+            {
+                int k = System.Math.Max(1, (int)System.Math.Ceiling(V2.Dist(flat[i - 1], flat[i]) / 0.05));
+                for (int j = 1; j <= k; j++)
+                {
+                    Cell f = (flat[i - 1] + (flat[i] - flat[i - 1]) * (j / (double)k)).Floor;
+                    var c = new IntVec3(f.X, 0, f.Z);
+                    if (c == prev) continue;
+                    Count(map, prev, c, ref ramps, ref ladders);
+                    prev = c;
+                }
+            }
+        }
+
+        private static void Count(Map map, IntVec3 a, IntVec3 b, ref int ramps, ref int ladders)
+        {
+            int aB = BandAt(map, a), bB = BandAt(map, b);
+            if (aB == bB) return;
+            if (a.x != b.x && a.z != b.z)
+            {
+                // diagonal: through the corner on a's band (then the change is corner -> b) or on b's band (a -> corner)
+                foreach (IntVec3 k in new[] { new IntVec3(a.x, 0, b.z), new IntVec3(b.x, 0, a.z) })
+                {
+                    int kB = BandAt(map, k);
+                    if (kB == aB) { a = k; break; }
+                    if (kB == bB) { b = k; break; }
+                }
+                aB = BandAt(map, a); bB = BandAt(map, b);
+                if (aB == bB) return;
+            }
+            if (RM_PitRamp.Joins(map, a, b, aB, bB)) ramps++;
+            else if (Linked(map, a, b, aB, bB)) ladders++;   // not linked at all: an old lay the router never made; say nothing
+        }
+
         /// <summary>Writes bands and links into a fresh hose world (World()). Only dug squares and their neighbours can differ
         /// from band 0, so a map with nothing dug costs one check.</summary>
         internal static void Apply(Map map, CordWorld w)
@@ -66,6 +123,9 @@ namespace RimMandrake.FlowWorks.Hose
                 for (int x = 0; x < W; x++)
                 {
                     var c = new IntVec3(x, 0, z);
+                    // phase 7: an intact pit cover carries no hose (P2 answer 3), so it is closed like a wall
+                    if (eng.ClimbDepthAt(c) > 0 && HoseBandMath.SurfaceClosed(true, RM_LineCrossing.SurfaceAt(map, c)))
+                        w.SetBlocked(new Cell(x, z), BlockKind.Wall);
                     int b = HoseBandMath.Band(true, RM_SuperdeepTrap.StepDepthAt(map, eng, c));
                     if (b == 0) continue;
                     w.SetBand(new Cell(x, z), b);

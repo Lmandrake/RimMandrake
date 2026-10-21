@@ -25,7 +25,9 @@ namespace RimMandrake.FlowWorks.Machinery
 		public override string GetInspectString()
 		{
 			string s = base.GetInspectString();
-			string cut = RM_PowerCordMath.CutLine(CutByLeaf);
+			// phase 7 (P9): cut by a raised leaf, else the deck it lies on (RM_LineReadoutMath.CordLine)
+			bool leafCut = CutByLeaf;
+			string cut = RM_LineReadoutMath.CordLine(leafCut ? LineSurface.SolidGround : RM_LineCrossing.SurfaceAt(Map, Position), leafCut);
 			if (cut == null)
 			{
 				return s;

@@ -23,5 +23,12 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Endpoint reach by band: a hose end couples to a port (or touches water) only on its own band, so a pump on
         /// the lip does not take a hose end lying on the floor below it.</summary>
         public static bool EndReaches(int endBand, int otherBand) => endBand == otherBand;
+
+        /// <summary>Phase 7, the cover gap (P2 answer 3: a cover carries nothing): may a hose lie on or cross a square of this
+        /// surface at all? Read off the one P2 table, so only a surface the table REFUSES a hose closes it (an intact pit cover);
+        /// a dug square is RampOrLadderOnly (the band rule) and a deck is Allowed. With the rules off nothing is closed.</summary>
+        public static bool SurfaceClosed(bool rulesOn, RimMandrake.FlowWorks.Machinery.LineSurface s) =>
+            rulesOn && RimMandrake.FlowWorks.Machinery.RM_LineCrossingMath.Verdict(RimMandrake.FlowWorks.Machinery.LineKind.Hose, s)
+                == RimMandrake.FlowWorks.Machinery.CrossingVerdict.Refused;
     }
 }

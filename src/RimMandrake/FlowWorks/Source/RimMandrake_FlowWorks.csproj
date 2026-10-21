@@ -270,6 +270,8 @@
     <Compile Include="Machinery\RM_DeckCollapseLinesMath.cs" />
     <Compile Include="Machinery\RM_DeckCollapseLines.cs" />
     <Compile Include="Machinery\RM_PowerCordMath.cs" />
+    <Compile Include="Machinery\RM_LineReadoutMath.cs" />
+    <Compile Include="Machinery\CompPipePoleReadout.cs" />
     <Compile Include="Machinery\Building_RM_PowerCord.cs" />
     <Compile Include="Machinery\RM_PipePoleMath.cs" />
     <Compile Include="Machinery\RM_PipeSpanNetMath.cs" />

@@ -78,6 +78,7 @@
     <Compile Include="..\Machinery\RM_LineDigBreakMath.cs" />
     <Compile Include="LineDigBreakChecks.cs" />
     <Compile Include="..\Machinery\RM_PowerCordMath.cs" />
+    <Compile Include="..\Machinery\RM_LineReadoutMath.cs" />
     <Compile Include="PowerCordChecks.cs" />
     <Compile Include="..\Machinery\RM_DeckCollapseLinesMath.cs" />
     <Compile Include="..\Machinery\RM_PipePoleMath.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="PipeSpanNetChecks.cs" />
     <Compile Include="HoseBandChecks.cs" />
     <Compile Include="PipePoleChecks.cs" />
+    <Compile Include="LineReadoutChecks.cs" />
     <Compile Include="DeckCollapseLinesChecks.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />
     <Compile Include="..\RM_TrenchStrideMath.cs" />
