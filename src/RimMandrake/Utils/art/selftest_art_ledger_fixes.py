@@ -317,6 +317,26 @@ def test_d():
           "retire of the last slot holding a kept picture still needs his words")
 
 
+def test_e():
+    """install --owner-said on an already-live picture records his ruling once, writes nothing else; a different
+    hash is a normal install (the ruling names the NEW sha only)."""
+    import artledger as L
+    tmp = fixture()
+    mod = "src/RimMandrake/FlowWorks"
+    sred = L.store_put_bytes(png((255, 0, 0, 255)))
+    sblue = L.store_put_bytes(png((0, 0, 255, 255)))
+    L.install(mod, "E/Alt.png", sred, reason=WRITER)
+    tgt = tmp / mod / "Textures" / "E/Alt.png"
+    nrul = lambda sha: len(L.cached_index().rulings_by_sha.get(sha, []))
+    r = L.install(mod, "E/Alt.png", sred, owner_said="approved by card")
+    check(r["status"] == "already-live-ruled" and nrul(sred) == 1, "already-live + same hash records exactly one ruling")
+    r = L.install(mod, "E/Alt.png", sred, owner_said="approved by card")
+    check(r["status"] == "already-live" and nrul(sred) == 1, "...and a repeat records nothing more")
+    L.install(mod, "E/Alt.png", sblue, owner_said="actually the blue")
+    check(nrul(sblue) == 1 and nrul(sred) == 1 and L.sha256_file(tgt) == sblue,
+          "a different hash is a real install: the ruling names the new sha only")
+
+
 def main():
     sys.path.insert(0, str(HERE))
     tmp = fixture()
@@ -324,6 +344,7 @@ def main():
     test_a()
     test_c()
     test_d()
+    test_e()
     print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 
