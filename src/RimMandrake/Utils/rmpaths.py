@@ -7,7 +7,7 @@ please stop putting things in Luke\dev\_(filename) directories? dev is my specia
 for Lodestar-managed projects, not a temp dir for your stuff. Find another storage place for
 yourself permanently and use it."*
 
-Resolution (no default path, on purpose — a default is how `D:\Luke\dev\_rmscratch` happened):
+Resolution (no default path, on purpose — a default is how a scratch dir inside the owner's dev tree happened):
   1. `$RM_DATA_ROOT` (systemd units and the Windows scheduled tasks set it; a `/mnt/<d>/...`
      value is translated to `<D>:\...` under Windows python).
   2. POSIX: Lodestar's machine-wide agent storage root —

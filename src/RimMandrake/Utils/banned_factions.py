@@ -263,12 +263,17 @@ def inventory(capture, rws, out=print):
     """Markdown table: every faction in the save, then every FactionDef of ours (packageId mandrake.*) not in it."""
     fdefs = dump_defs(capture, "FactionDef") or {}
     root = ET.parse(rws).getroot()
-    facs = root.find("game/world/factionManager/allFactions").findall("li")
+    allf = root.find("game/world/factionManager/allFactions")
+    if allf is None:
+        out("UNMEASURED %s: no factionManager/allFactions" % rws)
+        return UNMEASURED
+    facs = allf.findall("li")
     lid = lambda f: f.findtext("loadID") or "0"
     pid = ["Faction_" + lid(f) for f in facs if "Player" in (f.findtext("def") or "")]
     pid = pid[0] if pid else None
     owned = {}
-    for o in root.find("game/world/worldObjects/worldObjects").findall("li"):
+    wo = root.find("game/world/worldObjects/worldObjects")
+    for o in (wo.findall("li") if wo is not None else []):
         owned[o.findtext("faction")] = owned.get(o.findtext("faction"), 0) + 1
     insave = {}
     for f in facs:

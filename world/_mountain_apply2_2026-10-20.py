@@ -30,15 +30,19 @@ with RimBridge(host, port, token) as rb:
     print("lint before:", {k: v for k, v in lint0.items() if not isinstance(v, (list, dict))})
     if mism or not APPLY:
         sys.exit(0 if not mism else 2)
+    setfail = 0
     groups = defaultdict(list)
     for t, v in plan["hilliness"].items(): groups[v].append(int(t))
     for v, ts in sorted(groups.items()):
         for i in range(0, len(ts), 1000):
             r = rb.call("jawa/world_tile_set", {"tiles": ",".join(map(str, ts[i:i+1000])), "hilliness": NAMES[v], "readBack": 0})
             print("set", NAMES[v], len(ts[i:i+1000]), r.get("success"), r.get("written"), (r.get("message") or "")[:120])
+            setfail += not r.get("success")
     for t, e in plan["elevation"].items():
         r = rb.call("jawa/world_tile_set", {"tiles": t, "elevation": float(e), "readBack": 0})
-        if not r.get("success"): print("elev fail", t, r.get("message"))
+        if not r.get("success"): print("elev fail", t, r.get("message")); setfail += 1
+    if setfail:   # never commit a half-written plan
+        print("ABORT: %d set call(s) failed; NOT committing (live world holds uncommitted partial edits)" % setfail); sys.exit(3)
     c = rb.call("jawa/world_commit", {}); print("commit", c.get("success"), (c.get("message") or "")[:200])
     back = read(tiles); bad = [r["tile"] for r in back if hv(r) != plan["hilliness"][str(r["tile"])]]
     eb = read(etiles); ebad = [r["tile"] for r in eb if abs(float(r["elevation"]) - plan["elevation"][str(r["tile"])]) > 1]
