@@ -24,3 +24,23 @@ Caveat: donor frames are separate repaints like the other ported sets, so expect
 Alternative if the owner prefers no art: remove the four `flyingAnimation*` blocks (animals then do not animate flight).
 
 Nothing here is UNREACHABLE; no def should be retired.
+
+## Installed (FOUNDRY, 2026-10-20, owner by card "Install donor art")
+
+Card 7:36 PM PDT: *"Four flying creatures (Brezak, Drexl, Thranta, Tibidee) have no flight frames in the game. Install
+donor art?"* -> "Install donor art". 48 donor frames installed via `art.py install --owner-said` (art ledger
+`infrastructure/state/art/events/FOUNDRY.jsonl`) into `src/RimStarWars/SWBestiary/Textures/swanimals/<K>/<K>_Flying_<n>_<facing>.png`;
+256x256 RGBA, facing mapping checked. Kirruk left on vanilla Chicken. NOT deployed (deploy SWBestiary on the next round).
+
+Body drift per set (`flier_frame_registration.py --set <K>`, mask overlap, worst facing; colour cross-check in brackets):
+
+| set | worst facing | body drift px | frac of body | per facing N/E/S body span px | colour px (share) |
+|---|---|---|---|---|---|
+| Brezak | south | 17.0 | 0.107 | 6.4 / 27.1 / 20.6 | 4.1 (56 %) |
+| Drexl | north | 53.0 | 0.306 | 48.2 / 40.1 / 17.9 | 0.0 (50 %) |
+| Thranta | east | 53.2 | 0.443 | 24.1 / 41.0 / 22.3 | 0.0 (46 %) |
+| Tibidee | north | 29.0 | 0.156 | 26.1 / 44.4 / 18.6 | 0.0 (48 %) |
+
+All four read OFFENDER on mask overlap; colour registration says the body is near-static in three. Frames NOT rewritten;
+queue for the body-lock rebuild only after the owner reviews the Sketto strip. Audit doc updated:
+`design/RimMandrake/flier_frame_registration_audit_2026-10-20.md`.
