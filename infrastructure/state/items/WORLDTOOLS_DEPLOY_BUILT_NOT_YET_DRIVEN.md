@@ -1,6 +1,6 @@
 # WORLDTOOLS_DEPLOY_BUILT_NOT_YET_DRIVEN
 
-Deploy the JawaBench companion carrying the world-tools review fixes (commit 47cd70f8e) at the next
+Deploy the JawaBench companion carrying the world-tools review fixes (commits 47cd70f8e + be8bc721b) at the next
 game shutdown, then smoke-test the changed tools live.
 
 - Review that found the defects: `Transient/review_JawaBenchWorldTools_2026-10-20.md` (D1-D9).
