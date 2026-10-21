@@ -71,6 +71,43 @@ namespace RimMandrake.Biomes
             {
                 Log.Warning("[RimMandrake.Biomes] world look patch failed, planet keeps vanilla borders: " + e.Message);
             }
+            ApplyHills("startup");
+        }
+
+        // SOFT HILLS (2026-10-20). Vanilla draws every hilly tile's decal from four SHARED materials
+        // (WorldMaterials.SmallHills/LargeHills/Mountains/ImpassableMountains, World/Hills/*, a 2x2 atlas, white colour, no
+        // biome tint; WorldDrawLayer_Hills). Their brown outlined blots read as stamped hexes on our faces. Ours
+        // (World/RM_Hills/*, src/RimMandrake/Utils/art/world_hill_decals.py) are a dark neutral whose alpha carries soft,
+        // rotation-invariant relief, so a hill takes its biome's own hue. Swapping the texture on the shared material
+        // takes effect at once, without a redraw. Off restores the textures captured here.
+        static readonly string[][] HillMats = {
+            new[] { "SmallHills", "SmallHills" }, new[] { "LargeHills", "LargeHills" },
+            new[] { "Mountains", "Mountains" }, new[] { "ImpassableMountains", "Impassable" } };
+        static readonly Dictionary<string, Texture> VanillaHillTex = new Dictionary<string, Texture>();
+        public static bool hillsApplied;
+
+        public static string ApplyHills(string why)
+        {
+            bool on = RM_BiomesSettings.worldSoftHills;
+            int n = 0;
+            try
+            {
+                foreach (string[] h in HillMats)
+                {
+                    FieldInfo f = typeof(WorldMaterials).GetField(h[0], BindingFlags.Static | BindingFlags.Public);
+                    if (!(f?.GetValue(null) is Material m)) continue;
+                    if (!VanillaHillTex.ContainsKey(h[0])) VanillaHillTex[h[0]] = m.mainTexture;
+                    Texture2D ours = on ? ContentFinder<Texture2D>.Get("World/RM_Hills/" + h[1], false) : null;
+                    m.mainTexture = ours != null ? ours : VanillaHillTex[h[0]];
+                    if (ours != null) n++;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Warning("[RimMandrake.Biomes] soft hills failed, planet keeps vanilla hills: " + e.Message);
+            }
+            hillsApplied = on;
+            return "hills " + (on ? n + "/4 ours" : "vanilla") + " (" + why + ")";
         }
 
         static void RegeneratePostfix(ref IEnumerable __result, WorldDrawLayer_Terrain __instance)
