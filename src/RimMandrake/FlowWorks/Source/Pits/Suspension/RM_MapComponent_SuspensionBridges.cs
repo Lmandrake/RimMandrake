@@ -40,6 +40,12 @@ namespace RimMandrake.FlowWorks.Pits
 		/// Futuristic; null = the default look). Its railings and its wreck are made in it.</summary>
 		public string look;
 
+		/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (R9): the drawbridge leaves of this bridge, each with its own saved state;
+		/// null on an ordinary suspension bridge (and on every bridge in a save from before drawbridges: all lowered).</summary>
+		public List<DrawbridgeLeaf> leaves;
+
+		public bool IsDrawbridge => leaves != null && leaves.Count > 0;
+
 		public List<int> Supports => RM_SuspensionMath.Supports(length, towers);
 
 		public int SpanCount => jetty ? 1 : Supports.Count - 1;
@@ -108,6 +114,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref deckNotches, "deckNotches", 0);
 			Scribe_Values.Look(ref jetty, "jetty", false);
 			Scribe_Values.Look(ref look, "look");
+			Scribe_Collections.Look(ref leaves, "rmDrawbridgeLeaves", LookMode.Deep);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit && towers == null)
 			{
 				towers = new List<int>();
@@ -434,7 +441,7 @@ namespace RimMandrake.FlowWorks.Pits
 			SuspensionBridgeRecord r = RecordAt(c);
 			if (r == null || !r.TryIndexOf(c, out _, out int i))
 			{
-				if (DeckAt(map, c) is Building_SuspensionDeck lone)
+				if (StructuralDeckAt(map, c) is Building_SuspensionDeck lone)
 				{
 					decks.Add(lone);
 				}
@@ -442,7 +449,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			foreach (IntVec3 cell in SpanCellsOf(r, r.SpanOfIndex(i)))
 			{
-				if (DeckAt(map, cell) is Building_SuspensionDeck d)
+				if (StructuralDeckAt(map, cell) is Building_SuspensionDeck d)
 				{
 					decks.Add(d);
 				}
@@ -453,6 +460,14 @@ namespace RimMandrake.FlowWorks.Pits
 		public static Building_SuspensionDeck DeckAt(Map map, IntVec3 c)
 		{
 			return RM_SpanUtility.DeckAt(map, c) as Building_SuspensionDeck;
+		}
+
+		/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (R6): the intact deck STRUCTURE on this square, raised or lowered. Structure
+		/// reads (a span giving way, a swing-down) use this, so a raised leaf still falls with its span; walking reads use DeckAt.</summary>
+		public static Building_SuspensionDeck StructuralDeckAt(Map map, IntVec3 c)
+		{
+			Building_SuspensionDeck d = BuiltAt<Building_SuspensionDeck>(map, c);
+			return d != null && d.Spawned && !d.Collapsed ? d : null;
 		}
 
 		public static T BuiltAt<T>(Map map, IntVec3 c) where T : Thing
@@ -741,13 +756,14 @@ namespace RimMandrake.FlowWorks.Pits
 		public override void MapComponentTick()
 		{
 			int now = Find.TickManager.TicksGame;
+			RM_Drawbridges.Tick(this, now);   // DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS: leaves move, toggles repath at once
 			for (int k = swing.Count - 1; k >= 0; k--)
 			{
 				if (swing[k].tick <= now)
 				{
 					IntVec3 c = swing[k].cell;
 					swing.RemoveAt(k);
-					Building_SuspensionDeck d = DeckAt(map, c);
+					Building_SuspensionDeck d = StructuralDeckAt(map, c);
 					if (d != null)
 					{
 						d.DropAlone();

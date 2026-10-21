@@ -170,6 +170,15 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (design R8): a drawbridge leaf that rose or fell is a crossing that
+		/// appeared or vanished; no path may see the old pocket for up to RebuildMinTicks, so the toggle rebuilds NOW, bypassing
+		/// the tick limit for this one cause. Called from the bridges map component's tick after the toggle, never inside a
+		/// query (the same rule as Tick and UpdatePaused).</summary>
+		public static void ForceRebuild(Map map)
+		{
+			RebuildIfStale(map, RM_SuperdeepTrap.EngineOf(map), true);
+		}
+
 		private static void RebuildIfStale(Map map, RM_MapComponent_Excavation eng, bool paused)
 		{
 			if (map == null || eng == null || !Relative)
