@@ -96,16 +96,24 @@ def check_paused(s, fix=False, settle=0.15):
         time.sleep(settle)
         b = _ticks(s)
         return a, b
-    (a, b), err = _safe(probe)
+    # _safe returns (None, err) when the probe raises: unpack only a real pair, so a
+    # transport error reads UNMEASURED instead of crashing the whole preflight.
+    r, err = _safe(probe)
+    a, b = r if r else (None, None)
     if err or a is None or b is None:
         return Check("paused", UNMEASURED, "ticksGame unreadable: %s" % err)
     if a == b:
         return Check("paused", PASS, "ticksGame frozen at %s over two reads" % a)
     if not fix:
         return Check("paused", FAIL, "ticksGame moved %s -> %s" % (a, b))
-    s.call("rimworld/pause_game", pause=True)
-    (a2, b2), err = _safe(probe)
-    if not err and a2 is not None and a2 == b2:
+    _, err = _safe(s.call, "rimworld/pause_game", pause=True)
+    if err:
+        return Check("paused", UNMEASURED, "pause_game raised: %s" % err)
+    r, err = _safe(probe)
+    a2, b2 = r if r else (None, None)
+    if err or a2 is None or b2 is None:
+        return Check("paused", UNMEASURED, "ticksGame unreadable after pause_game: %s" % err)
+    if a2 == b2:
         return Check("paused", PASS, "was running; paused and PROVED frozen at %s" % a2)
     return Check("paused", FAIL, "pause_game reported success but ticks still moving (%s -> %s)" % (a2, b2))
 
