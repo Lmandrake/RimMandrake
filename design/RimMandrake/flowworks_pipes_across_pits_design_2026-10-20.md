@@ -296,3 +296,14 @@ pick, since A, B and C each fix them differently.
    pipe flows without a pump (a siphon or gravity main; new physics, ~2 agent-days more) · write-in.
 8. **Pipe and hose width (#22) before any line-on-deck art?** Decide width first, at an in-game look with a colonist
    beside a pipe and a hose · ship B with today's art and set width later · write-in.
+
+## Owner's answers (question cards, 2026-10-20 evening)
+
+1. **Approach**, in his words: *"Pipes get a version of the power pole: supports that provide a somewhat saggy hose between them. Same mechanics, just much thicker and less flexible. Same art variation. Otherwise conduit does not cross bridges or moats or pits without this. Can't build there. Digging a pit destroys them."*
+2. **Digging a pit under an existing line:** the line breaks.
+3. **Pit cover:** a cover cannot carry a line.
+4. **Rope bridges:** carry hoses and cords, but not pipes. This was clarified on a follow-up card: hoses and power cords may lie on **any** bridge deck. Only rigid pipe and conduit need pipe poles to cross.
+5. **Hose into a pit:** yes. A hose may run down ramps and hang down ladders into a pit, to drain it or fill it.
+6. **What can cross a drawbridge leaf:** not asked. By answers 1 and 4, hoses and cords may lie on it, while pipe and conduit need poles.
+7. **Gravity**, in his words: *"Tanks already empty by gravity themselves, slowly. That would still be true here. Just extend that: connecting two bodies of water will cause them to slowly flow from one to the other until they level out. Let's see if we can do this"*.
+8. **Width first:** settle a pipe and hose width spec, and judge it in game, before any pipe-pole art is made.
