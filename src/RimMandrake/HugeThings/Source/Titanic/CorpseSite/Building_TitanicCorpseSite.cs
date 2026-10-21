@@ -137,6 +137,8 @@ namespace RimMandrake.TitanicCreatures
         public int CamperCount => campers.Count(p => p != null && p.Spawned);
         public int VisitorsEatenTotal => visitorsEatenTotal;
         public int MeatRemaining => meatRemaining;
+        public IEnumerable<Pawn> Scavengers => scavengers;
+        public IEnumerable<Pawn> Campers => campers;
         public void DebugDailyStep() => ApplyDailySpoilage();
 
         /// <summary>

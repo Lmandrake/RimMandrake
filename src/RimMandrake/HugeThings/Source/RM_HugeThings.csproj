@@ -58,6 +58,7 @@
     <Compile Include="Titanic\CorpseSite\Building_TitanicCorpseSite.cs" />
     <Compile Include="Titanic\CorpseSite\CorpseSiteVisitors.cs" />
     <Compile Include="Titanic\Events\TitanPassage.cs" />
+    <Compile Include="Titanic\Events\TitanValidationHooks.cs" />
     <Compile Include="Titanic\CorpseSite\JobDriver_HarvestTitanicCorpse.cs" />
     <Compile Include="Titanic\CorpseSite\Patch_CorpseSiteConversion.cs" />
     <Compile Include="Titanic\CorpseSite\TitanicCorpseSiteUtility.cs" />
