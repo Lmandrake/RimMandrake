@@ -3,7 +3,7 @@
 Owner, by card 2026-10-20: *"Lopsided tidal-lock daylight: what should light do?" → "Light follows the sun"*.
 Built: `src/RimMandrake/CreatureBehaviors/Source/RM_TidalSunGlowPatch.cs` + `RM_TidalSunGlowMath.cs` (postfix on
 `GenCelestial.CelestialSunGlow(PlanetTile,int)`, active only while the tidal lock is). Day side: glow 0.6 at the
-horizon → 1.0 from 30° elevation, never ≤ 0.6, so `IsDaytime` is always true. Dusk band: 6° below the horizon,
+horizon → 1.0 from 30° elevation, never ≤ 0.6, so `IsDaytime` is always true. Dusk band: 12° below the horizon (owner, by card 2026-10-20 → "12 degrees"; was 6°),
 smoothstep 0.6 → 0. Beyond: **0, forever**. Constant in time, symmetric west/east. Deploy + live check:
 `TIDAL_GLOW_DEPLOY_FOLLOWS_THE_SUN`. Context: `design/RimMandrake/world_physics_audit_2026-10-20.md`.
 
@@ -31,7 +31,7 @@ raw output: `D:\ClaudeWork\rimmandrake\scratch\glowconsumers\`. Donor-mod comps 
 
 ## Consumer table
 
-Constant 0 = night side (and dusk band past ~−6°); constant 0.6–1.0 = day side.
+Constant 0 = night side (and dusk band past −12°); constant 0.6–1.0 = day side.
 
 | consumer (vanilla unless `RM`) | what reads glow | night side, glow 0 forever | day side, 0.6–1.0 forever | intended? | breaks? |
 |---|---|---|---|---|---|
@@ -99,6 +99,8 @@ lamplight). Leave the Cauldron's named photosynthetic underclass as is. A selfte
 
 ## B. DECISION — how far does dusk reach?
 
+**Decided 2026-10-20, owner by card: "How far below the horizon should dusk light reach?" → "12 degrees (Recommended)".** At 12° the Sump is 39% dark tiles (was 61%), median glow 0.02; the Crags 84% (was 98%), median 0. Still 0 night-side-reads-day / 0 day-side-reads-night tiles (selftest). The table below is the evidence the card was put on:
+
 The sheets name a twilight the 6° band does not give:
 
 | biome | sheet says | median sun elevation | glow 0 on tiles, band 6° / 12° / 18° | median glow, 6° / 12° / 18° |
@@ -110,7 +112,7 @@ The sheets name a twilight the 6° band does not give:
 | Slime | *"the terminator's permanent low amber"* | 0.0° | 15% / 1% / 0% | 0.60 |
 
 Real twilight runs to 18° below the horizon (civil 6°, nautical 12°, astronomical 18°). The slider
-`tidalTwilightBandDegrees` already exists; only its default is at stake. Any band keeps every lit-side and night-side
+`tidalTwilightBandDegrees` already exists; only its default was at stake (now 12°). Any band keeps every lit-side and night-side
 rule above; a wider band lifts the Sump and the Crags out of pitch black (still psychologically Dark < 0.3, still too
 dim for sun plants). Item: `TWILIGHT_BAND_DECIDE_HOW_FAR_DUSK_REACHES` (owner card).
 

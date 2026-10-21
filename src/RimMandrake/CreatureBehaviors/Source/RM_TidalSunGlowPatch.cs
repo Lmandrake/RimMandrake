@@ -19,7 +19,7 @@ namespace RimMandrake.CreatureBehaviors
     // patches only while TidallyLocked is the active planet type (PlanetTypeDef.OnActivate/OnDeactivate). Not locked,
     // mod absent, or setting off => vanilla/the mod's value untouched. The owner check is re-read every 2 s of wall
     // time (Environment.TickCount, thread-safe), never per call.
-    // Setting: tidalSunGlowByGeometry (default on), tidalTwilightBandDegrees (default 6).
+    // Setting: tidalSunGlowByGeometry (default on), tidalTwilightBandDegrees (default 12, owner by card 2026-10-20).
     // ════════════════════════════════════════════════════════════════════
     [StaticConstructorOnStartup]
     public static class RM_TidalSunGlowPatch
