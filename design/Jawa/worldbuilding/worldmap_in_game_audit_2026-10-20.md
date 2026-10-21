@@ -51,12 +51,12 @@ The orbit layer is unaffected. Needs a restart.
 `BiomeDefOf.Ocean` and `BiomeDefOf.Lake`, which it matches by identity. Every water tile on this world is
 one of ours (`RM_TwilightSea` 607, `RM_GreySea` 472, `RM_TheScald` 312, `RM_TheChill` 57; 0 vanilla Ocean
 or Lake), so all of them get WorldTerrain. `WorldDrawLayer_Terrain.CalculateInterpolatedVerticesParams`
-then clamps any non-ocean vertex below 0 m to 0 m, which throws the −350 m depth away. On top of that, the
+then clamps any non-ocean vertex below 0 m to 0 m, which throws the −350 m depth away. (Correction from section 6: giving the WorldOcean shader does NOT bring the depth back, because `Custom/WorldOcean` ignores UV0; it only fixes the land-style look.) On top of that, the
 sea faces were replaced on 2026-10-18 (`ede2336a5`) and 2026-10-20 (`7a0d4309f`) by muted grey-green
 colour fields. Before then the seas pointed at `World/Biomes/Ocean`, which in September was World Map
 Enhanced's navy override (that mod is no longer on the list).
 
-**Fix (built, not deployed).** `RM_WorldTerrainShader.cs` now gives every `isWaterBiome` BiomeDef of
+**Fix (deployed and live, section 5).** `RM_WorldTerrainShader.cs` now gives every `isWaterBiome` BiomeDef of
 ours the WorldOcean material. The Grey Sea, Twilight Sea and Scald point back at vanilla
 `World/Biomes/Ocean`, and the Chill points back at its pre-10-18 face `Jawa_SickWater` (our own art).
 No donor art is copied. The unused `RM_GreySea` / `RM_TwilightSea` / `RM_Scald` / `RM_Chill` PNGs stay
@@ -129,8 +129,7 @@ Images: `D:\ClaudeWork\rimmandrake\scratch\worldlook3\` (`F_globe.png`, `G_sea_m
 - **Seas: read as water.** `world ocean shader on 8 water biomes` is in Player.log. Grey, Twilight and Scald
   seas are flat slate-navy with faint darker hexes at depth. They have no shoreline effect or sheen.
 - **Roads: all 1,242 record links live.** `world_links_get`: 2,484 road entries, 2,416 drawn. The 68 not drawn
-  are on `RUT_Umbra` (34 tiles, his ruling RUT_UMBRA_ROADS_RULING_1 stands) and `RM_GelatinousSlime`
-  (9 tiles, `allowRoads=false` from the Slime spec). Stillsand now has `allowRoads=true` (`6d8692254`).
+  were on `RUT_Umbra` (34 tiles) and `RM_GelatinousSlime` (9 tiles, from the Slime spec). *Superseded the same evening: the owner allowed roads on both by card 2026-10-20 (`632771031`), and `UMBRA_SLIME_ROADS_VERIFY_FINALLY_DRAWN` saw them drawn.* Stillsand now has `allowRoads=true` (`6d8692254`).
   Across the desert the Ancient Asphalt Highway shows as short grey dashes. That is the record itself:
   its 153 highway tiles form 46 pieces of 1-9 tiles. Dirt paths are tan on tan and hard to see.
 - **Rings back** (RW - Planet Atmosphere after `mandrake.rut.empirepursuit`): the debris ring draws clear of the
@@ -233,4 +232,4 @@ Results:
   centresByName 71 and featureRowsWithNoRegion []. The live label sizes already equal the CSV on all 71, so nothing was applied.
 - **Calmer faces (WORLD_STIPPLE):** `D:\ClaudeWork\rimmandrake\scratch\live5\V_rust_stipple.png` (Rust Cathedral, altitude 420). The
   mid-zoom white speckle is still there on the faces and comes from the decals. The owner judges.
-- **Roads, rivers, physics:** `world_paths_readable_2026-10-20.md` §5 and `design/RimMandrake/world_physics_audit_2026-10-20.md` §7.
+- **Roads, rivers, physics:** `world_paths_readable_2026-10-20.md` §5 and `design/RimMandrake/world_physics_audit_2026-10-20.md` §9.

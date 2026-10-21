@@ -1,0 +1,2 @@
+With ferny.worldbuilder loaded, Worldbuilder's prefix on GenTemperature.SeasonalShiftAmplitudeAt returns false, so the original body and Alien Worlds' seasonalTempVariationCurve transpiler never run; its postfix applies an axial-tilt table (8.649 C at the home tile). Patching the TidallyLocked def's curve does nothing on the full list: use a Priority.Last postfix returning 0 (RM_TidalNoSeasonsPatch). Measure by jumping the clock and reading seasonal vs outdoor temp.
+home: skills/rimworld-world-editing

@@ -114,12 +114,12 @@ Owed checks:
    cosmetic change, so it is his permission to give. With them on, hills draw as relief rather than
    honeycomb, and the 49% matters less.
 3. **Ashfall / Fall Line** read as one thick X-shaped massif, and the **Ashteeth** as a LargeHills
-   ring around the Anvil. The second pass (below) is the plan for both; it is not applied yet.
+   ring around the Anvil. The second pass (below) rebuilt both and has since been applied.
 4. **Rock landmarks on demoted tiles:** 66 Caverns and 33 Valleys left Mountainous. The live world
    already had 125 Caverns and 101 Valleys on Flat (validity was never enforced at import), but
    `world_lint` after the apply is the check.
 
-## Second pass (planned 2026-10-20, offline; not yet applied)
+## Second pass (planned offline 2026-10-20; APPLIED the same evening in `ASHKARR_DEV_START_2026-10-20_PARITY.rws`, read-back 0 mismatches, `79f95ccf1`; see `worldmap_in_game_audit_2026-10-20.md` section 6)
 
 Owner, 2026-10-20: the mountains are *"better"*, and *"Let's keep working on these biome and mountain
 and river and road issues."* (His *"the honeycomb looks bizarre"* turned out to be the sea-floor layer,

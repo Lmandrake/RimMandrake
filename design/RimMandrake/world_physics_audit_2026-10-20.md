@@ -161,14 +161,14 @@ Restore steps: item `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT`.
   default 250). No def or scenario sets it; the route is the live world: `jawa/world_info_set initialMapSize=325`
   (parameter added, companion not yet deployed), then save. Runbook: `HOME_MAP_SIZE_RESTORE_ROOM_TO_STRETCH`.
 
-## 7. Owed
+## 7. Owed (as of the morning; see sections 8 and 9 for the evening)
 
 - `TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING` — pick the dev save; a load-time guard so the full list cannot load unlocked.
 - `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT` — ride the next larger-list cold load.
 - The Scald's arc/temperature vs its sheet (§3) goes on the end-of-build paint list, not a repaint now:
   filed as a line in `infrastructure/state/items/BIOME_PAINT_ONCE_AT_THE_END_1.md`.
 
-## 7. Live check, 2026-10-20 evening (FOUNDRY, 325-mod list)
+## 9. Live check, 2026-10-20 evening (FOUNDRY, 325-mod list)
 
 Evidence: `D:\ClaudeWork\rimmandrake\scratch\live5\` (`clock.json`, `live_tiles_after_glow.json`, `seasons.json`, `verify2.json`).
 - **Lock on load:** `ASHKARR_DEV_START_2026-10-20_PARITY` loads `TidallyLocked`, preset name `TidallyLocked`, and the tidal patches are present.
