@@ -61,7 +61,30 @@ Verdict key: VALID (checked against the docs/code I read), PARTLY, WEAK. Action:
 
 **Ignore / noted:** none ignored outright. #31 is deferred to the water-engine item. GPT's claims about a Ludeon modder primer (async batched pathing, `PlanetTile`, `PreSwapMap`) are unverified by me; check against the decompile before relying on them.
 
+## GPT's engine claims, checked against the 1.6 decompile (RimSage) and HEAD `99a127889a`
+
+| GPT claim | verdict | evidence |
+|---|---|---|
+| 1.6 pathfinding is batched and multithreaded (#5, #6) | **MEASURED, true** | `Verse/PathFinder.cs:293-311` (`PathFinderTick`: complete last tick's jobs, `GatherData`, schedule), `:371-412` (Unity `job.Schedule`); customizer grid read at schedule time, `PathFinderMapData.cs:290` |
+| a path requested before a toggle can finish after it (#6) | **MEASURED, true** | same: jobs scheduled in one tick complete at the next `PathFinderTick` |
+| FlowWorks offset grids are per request (triage #5/#6) | **MEASURED, corrected** | immutable snapshots per map, keyed on the customizer object, rebuilt when the open-pit set changes (`RM_PitPathing.cs:35-37`); cliff masks key on `ClimbGeneration` inside `GatherData` (`RM_CliffMask.cs:125-129`) |
+| pocket rebuild is rate-limited (#5) | **MEASURED, true** | `RM_PocketGrid.cs:31` (`RebuildMinTicks = 60`), `:216` (skipped unless paused); no force-rebuild entry in that file |
+| 1.6 has foundation and temporary terrain layers (#31) | **MEASURED, true** | `Verse/TerrainGrid.cs:11,15` (`tempGrid`, `foundationGrid`), `:61-67` (temp wins, then foundation when no under layer) |
+| `PlanetTile` for layers (#29) | **MEASURED, exists** | `RimWorld/Planet/PlanetTile.cs:6`, `PlanetLayer.cs:16`; "Ludeon recommends" it is UNMEASURED (primer not read) |
+| `PreSwapMap`/`PostSwapMap` for gravship moves (#29, #30) | **MEASURED, true** | `Verse/Thing.cs:2212-2217`, `ThingComp.cs:326-330`, called from `GravshipUtility.cs:383` and `GravshipPlacementUtility.cs:172` |
+| variable tick intervals (#26) | **MEASURED, true** | `Verse/ThingWithComps.cs:334` `TickInterval(int delta)` |
+| door open/close only clears hostile reachability (D §1) | **MEASURED, true** | `RimWorld/Building_Door.cs:592-598` |
+| the one-cell door-region argument does not cover a 1-3 wide gate (#8) | **PARTLY** | 1.6 has `Building_MultiTileDoor : Building_SupportedDoor` (`RimWorld/Building_MultiTileDoor.cs:6`, Core def at `Buildings_Structure.xml:164`); its region shape is UNMEASURED |
+| GSS restyles `PowerConduit` rather than replacing it (#14) | **MEASURED, true** | `GimmeSomeSlack/Patches/RM_ConduitStyleable.xml:10-12`; no cord/cable/wire ThingDef in GSS or FlowWorks Defs |
+| `Decked` is not virtual (D §2) | **MEASURED, true** | `Pits/Building_SpanDeck.cs:27` |
+| hidden spawned decks keep ThingGrid interactions (#28) | UNMEASURED | an audit is step 1 of the drawbridge build |
+| 1.6 shares batched map data across requests, needing vanilla path invalidation (#5) | UNMEASURED beyond the above | `mapData.GatherData` is per tick; no FlowWorks-specific stale case was read |
+
+Both design docs now open with a `## Ruled design` section built on these marks (2026-10-20).
+
 ## Owner-ruling questions this produces (each can become a card)
+
+All eleven are answered (§Owner's answers above); kept as the record of what was asked.
 1. Hinge bank full: raising waits, or overflow falls?
 2. Two-leaf bridge: each leaf tips to its own hinge, or only one colony-hinged leaf?
 3. Hostile sealed in a pit or captive: keep a drawbridge locked?
