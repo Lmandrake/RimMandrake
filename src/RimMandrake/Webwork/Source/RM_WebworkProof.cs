@@ -191,7 +191,12 @@ namespace RimMandrake.Webwork
                     Pawn colonist = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
                     workgiver = colonist != null && new WorkGiver_Deconstruct().HasJobOnThing(colonist, t, forced: true);
                 }
+                if (!t.Spawned)
+                {
+                    return "REFUSED: the node was gone while the designator waited (site, not the mod)";
+                }
                 int before = WeaveNear(map, weave, cell);
+                RM_CompHarvestYield.lastYieldSpawned = 0;   // a node with no yield comp must not report the previous call's yield
                 t.Destroy(DestroyMode.Deconstruct);
                 int after = WeaveNear(map, weave, cell);
                 int spawned = map.mapPawns.AllPawnsSpawned.Count(p => p.def.defName == "RM_Ollathrix");
