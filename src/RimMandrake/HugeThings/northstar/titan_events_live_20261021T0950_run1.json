@@ -1,0 +1,651 @@
+{
+ "script": "titan_events_live.py",
+ "when": "2026-10-21T02:49:39",
+ "rows": [
+  {
+   "id": "B0_site_made",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "RM_TitanicCorpseSite767361 at 123,129 meat=5040 eaten=0 scav=0 camp=0"
+  },
+  {
+   "id": "A5_both_off",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "scav=0 camp=0 at chance 1 with both toggles off"
+  },
+  {
+   "id": "A3_camp_arrives",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "CamperCount=3; RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_Travel spawned=True; RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_Travel spawned=True; RUT_Jawa_Tribal_Scavenger fac=Jawa Trade Moot ho"
+  },
+  {
+   "id": "A5_scavengers_off",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "scavengers off, chance 1: scav=0 (camps on in the same step: camp=3)"
+  },
+  {
+   "id": "A3_camp_leaves",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A3",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "after camp hours 1: RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=none toil=none spawned=False; RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=none toil=none spawned=False; RUT_Jawa_Tribal_Scavenger fac=Jawa Trade Moot hostile=False lord=none toil=none spawned=False"
+  },
+  {
+   "id": "A5_camps_off",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "camps off, chance 1: camp=0"
+  },
+  {
+   "id": "A2_draw",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "ScavengerCount=3; RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False; RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False; RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False"
+  },
+  {
+   "id": "A2_eat",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "eaten +20, meat -481 (spoilage the rest) with 1 at the site"
+  },
+  {
+   "id": "A5_titan_events_off",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "canFire=False active=False t3OnMap=False eligible=19 [RM_Gorrask:T2,RM_Hwelgrue:T2,RM_GrippingTerror:T3,RM_Reefback:T3,RM_Lanternwhale:T3,RM_ReefbackJuv:T3,RM_Gloomcast:T3,RM_Thurrock:T2,RM_Titanoslim"
+  },
+  {
+   "id": "A4_can_fire",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A4",
+   "status": "UNMEASURED",
+   "cls": "SITE",
+   "detail": "events on but cannot fire here: canFire=False active=True t3OnMap=False eligible=19 [RM_Gorrask:T2,RM_Hwelgrue:T2,RM_GrippingTerror:T3,RM_Reefback:T3,RM_Lanternwhale:T3,RM_ReefbackJuv:T3,RM_Gloomcast:T3,RM_Thurrock:T2,RM_Titanoslime:T3,RSW_Horax:T2,RSW_JungleRancor:T2,RSW_ShadeWhale:T2,RSW_Taozin:T2,RSW_Tibidee:T2,RSW_Zakkeg:T2,RS"
+  }
+ ],
+ "calls": [
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteScavengersEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteScavengersEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10, 'operation': {'OperationId': 'op_2c024a54b03b433e87514c987af94581', 'Status': 'Completed', 'Success': True, 'DurationMs': 49}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteScavengerDailyChance"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteScavengerDailyChance', 'fieldKind': 'static', 'value': '0.35', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10, 'operation': {'OperationId': 'op_16c5fbb9e1e74b53b07ddc7fa9c5dff4', 'Status': 'Completed', 'Success': True, 'DurationMs': 37}, 'state': {'programState': 'Playi"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10, 'operation': {'OperationId': 'op_4e4e803c006f4fefb178256bdd14a45f', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'ha"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampDailyChance"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampDailyChance', 'fieldKind': 'static', 'value': '0.1', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10, 'operation': {'OperationId': 'op_58f988d7d88946639cfb055a76321686', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', '"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampHours"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampHours', 'fieldKind': 'static', 'value': '36', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10, 'operation': {'OperationId': 'op_1d589b8435a54ebd8c4f7ff7d969e293', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasCurr"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanEventsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanEventsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10, 'operation': {'OperationId': 'op_0cd0560407c34de496234bae530cf18a', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/map_info",
+   {},
+   "{'success': True, 'tile': 17011, 'tileValid': True, 'mapId': 0, 'sizeX': 250, 'sizeZ': 250, 'cellCount': 62500, 'tileInfo': {'biome': 'RM_Stillsand', 'hilliness': 'LargeHills', 'hillinessInt': 3, 'elevation': 141.0, 'rainfall': 0.0, 'swampiness': 0.0, 'temperature': 40.4, 'pollution': 0.0, 'waterCovered': False, 'isSurfaceTile': True}, 'mapBiome': 'RM_Stillsand', 'mapBiomeLabel': 'the Stillsand', "
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "KillTitanAt",
+    "args": "RM_Oommok|125,125"
+   },
+   "{'success': True, 'method': 'System.String KillTitanAt(System.String, Verse.IntVec3)', 'result': 'killed RM_Oommok767357 tier=T3 bodySize=36.0 corpse=Corpse_RM_Oommok767360', 'thingArgs': [], 'ticksGame': 10, 'operation': {'OperationId': 'op_7db3c82f201641bdb66f7f7a92b00271', 'Status': 'Completed', 'Success': True, 'DurationMs': 229}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'p"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 300
+   },
+   "{'success': True, 'stepId': 'step_a47910f33141491cb8272b0d8b48eb19', 'status': 'completed', 'requestedTicks': 300, 'completedTicks': 300, 'remainingTicks': 0, 'startTicksGame': 10, 'endTicksGame': 310, 'advancedTicks': 300, 'initialFrame': 65855, 'lastFrame': 66154, 'advancedFrames': 300, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:46:46.7276558+00:00', 'completedAtUtc': '2026-10-"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=5040 eaten=0 scav=0 camp=0', 'thingArgs': [], 'ticksGame': 310, 'operation': {'OperationId': 'op_31addcaa4fe440519830334f144a8aa6', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteScavengersEnabled",
+    "value": "False"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteScavengersEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'False', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 310, 'operation': {'OperationId': 'op_9d00b75bf01c46a19d1085e29512b2d6', 'Status': 'Completed', 'Success': True, 'DurationMs': 44}, 'stat"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampsEnabled",
+    "value": "False"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'False', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 310, 'operation': {'OperationId': 'op_8cf76b53d6d847ec94bae5c2f2e84040', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteScavengerDailyChance",
+    "value": "1.0"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteScavengerDailyChance', 'fieldKind': 'static', 'valueBefore': '0.35', 'valueAfter': '1', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 310, 'operation': {'OperationId': 'op_442e319ea09545a587f8989327396e06', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampDailyChance",
+    "value": "1.0"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampDailyChance', 'fieldKind': 'static', 'valueBefore': '0.1', 'valueAfter': '1', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 310, 'operation': {'OperationId': 'op_89733d0254d743879829091522fd8a0a', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'p"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteDailyStep",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteDailyStep()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=4283 eaten=0 scav=0 camp=0', 'thingArgs': [], 'ticksGame': 310, 'operation': {'OperationId': 'op_0010331ea99a443f8b1071973cc2ea35', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSp"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampsEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 310, 'operation': {'OperationId': 'op_5d6cafd2bb064a168d5a3961716104c3', 'Status': 'Completed', 'Success': True, 'DurationMs': 44}, 'state': {"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampHours",
+    "value": "1.0"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampHours', 'fieldKind': 'static', 'valueBefore': '36', 'valueAfter': '1', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 310, 'operation': {'OperationId': 'op_8679a509eb534fb2970b6218037a521b', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programS"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteDailyStep",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteDailyStep()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3640 eaten=0 scav=0 camp=3 C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_Travel spawned=True] C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_Travel spawne"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_ad1260093f294c1c84a95d9f859608d7', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 571, 'remainingTicks': 429, 'startTicksGame': 310, 'endTicksGame': 881, 'advancedTicks': 571, 'initialFrame': 66183, 'lastFrame': 66754, 'advancedFrames': 572, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:46:55.5172217+00:00', 'completedAtUtc': '2026"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3640 eaten=0 scav=0 camp=3 C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_Travel spawned=True] C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_Travel spawned=T"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_95c567d26c92426383716711618a034a', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 593, 'remainingTicks': 407, 'startTicksGame': 881, 'endTicksGame': 1474, 'advancedTicks': 593, 'initialFrame': 66759, 'lastFrame': 67352, 'advancedFrames': 594, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:47:05.7204349+00:00', 'completedAtUtc': '202"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3640 eaten=0 scav=0 camp=3 C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True] C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_124b3d1db6634f85acc6f2e24306bc55', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 599, 'remainingTicks': 401, 'startTicksGame': 1474, 'endTicksGame': 2073, 'advancedTicks': 599, 'initialFrame': 67357, 'lastFrame': 67956, 'advancedFrames': 600, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:47:15.8120434+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3640 eaten=0 scav=0 camp=3 C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True] C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_c47238a532c04224b2881333d35ab421', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 430, 'remainingTicks': 570, 'startTicksGame': 2073, 'endTicksGame': 2503, 'advancedTicks': 430, 'initialFrame': 67961, 'lastFrame': 68391, 'advancedFrames': 431, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:47:26.0198417+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3640 eaten=0 scav=0 camp=3 C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True] C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_5a529ea40583487cabc3f0f043b3ba17', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 601, 'remainingTicks': 399, 'startTicksGame': 2503, 'endTicksGame': 3104, 'advancedTicks': 601, 'initialFrame': 68396, 'lastFrame': 68997, 'advancedFrames': 602, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:47:37.3050154+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3640 eaten=0 scav=0 camp=3 C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True] C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_cb031f3f15c9490b91405759e9c92f25', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 591, 'remainingTicks': 409, 'startTicksGame': 3104, 'endTicksGame': 3695, 'advancedTicks': 591, 'initialFrame': 69002, 'lastFrame': 69593, 'advancedFrames': 592, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:47:47.404538+00:00', 'completedAtUtc': '202"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3640 eaten=0 scav=0 camp=3 C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint spawned=True] C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_DefendPoint"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_d3d168bed71f4ec38183364374419bbd', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 600, 'remainingTicks': 400, 'startTicksGame': 3695, 'endTicksGame': 4295, 'advancedTicks': 600, 'initialFrame': 69598, 'lastFrame': 70198, 'advancedFrames': 601, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:47:57.4873482+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3640 eaten=0 scav=0 camp=3 C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_Travel spawned=True] C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_Travel spawned=T"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_9c12bacef5fb44d08f1d57008f1db3c4', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 593, 'remainingTicks': 407, 'startTicksGame': 4295, 'endTicksGame': 4888, 'advancedTicks': 593, 'initialFrame': 70203, 'lastFrame': 70796, 'advancedFrames': 594, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:48:07.5706602+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3640 eaten=0 scav=0 camp=3 C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_Travel spawned=True] C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=LordJob_VisitColony toil=LordToil_Travel spawned=T"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_50e711f3a2d44adb9db817b084c733ef', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 597, 'remainingTicks': 403, 'startTicksGame': 4888, 'endTicksGame': 5485, 'advancedTicks': 597, 'initialFrame': 70801, 'lastFrame': 71398, 'advancedFrames': 598, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:48:17.6663007+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3640 eaten=0 scav=0 camp=0 C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=none toil=none spawned=False] C[RSW_DW_KotORDroidColonist_KM1MD fac=Jawa Trade Moot hostile=False lord=none toil=none spawned=False] C[RUT_Jawa_Tribal_Scavenger fac=Jawa Trade Mo"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampsEnabled",
+    "value": "False"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'False', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 5485, 'operation': {'OperationId': 'op_d806ee89eb344bb39c3b5a42df96f12c', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'state': "
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_99c1087e50cc4bde9392e5b9d9f571ac', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 594, 'remainingTicks': 406, 'startTicksGame': 5485, 'endTicksGame': 6079, 'advancedTicks': 594, 'initialFrame': 71406, 'lastFrame': 72000, 'advancedFrames': 595, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:48:27.8032038+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_4e56d2f589214f2ba388f8b4529285d3', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 598, 'remainingTicks': 402, 'startTicksGame': 6079, 'endTicksGame': 6677, 'advancedTicks': 598, 'initialFrame': 72002, 'lastFrame': 72600, 'advancedFrames': 599, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:48:37.8397952+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_8815d27ae2f94ecaaaf8076628e28d1c', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 600, 'remainingTicks': 400, 'startTicksGame': 6677, 'endTicksGame': 7277, 'advancedTicks': 600, 'initialFrame': 72602, 'lastFrame': 73202, 'advancedFrames': 601, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:48:47.8885231+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_4c8e0b2ee84b4e4795b4ae371bf6c8eb', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 596, 'remainingTicks': 404, 'startTicksGame': 7277, 'endTicksGame': 7873, 'advancedTicks': 596, 'initialFrame': 73204, 'lastFrame': 73800, 'advancedFrames': 597, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:48:57.9225272+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_92643f6174e1464aa81d44651af736f6', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 593, 'remainingTicks': 407, 'startTicksGame': 7873, 'endTicksGame': 8466, 'advancedTicks': 593, 'initialFrame': 73802, 'lastFrame': 74395, 'advancedFrames': 594, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:49:07.9617934+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteScavengersEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteScavengersEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 8466, 'operation': {'OperationId': 'op_7ce4e6e67d314d90b641493141b4bdfc', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'sta"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteDailyStep",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteDailyStep()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3093 eaten=0 scav=3 camp=0 S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False] S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False] S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False]', 'thingArgs': [], 'tic"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_ef5650968d60466dacc93abbb487e611', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 598, 'remainingTicks': 402, 'startTicksGame': 8466, 'endTicksGame': 9064, 'advancedTicks': 598, 'initialFrame': 74404, 'lastFrame': 75002, 'advancedFrames': 599, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:49:18.1199046+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3093 eaten=0 scav=3 camp=0 S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False] S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False] S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False]', 'thingArgs': [], 'ticksG"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 1000
+   },
+   "{'success': False, 'stepId': 'step_ea447208aeee4ff696982dc640fe0ef9', 'status': 'timedout', 'requestedTicks': 1000, 'completedTicks': 598, 'remainingTicks': 402, 'startTicksGame': 9064, 'endTicksGame': 9662, 'advancedTicks': 598, 'initialFrame': 75007, 'lastFrame': 75605, 'advancedFrames': 599, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:49:28.2194239+00:00', 'completedAtUtc': '20"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteReport()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=3093 eaten=0 scav=3 camp=0 S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False] S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False] S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=True]', 'thingArgs': [], 'ticksGa"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "SiteDailyStep",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String SiteDailyStep()', 'result': 'sites=1 | RM_TitanicCorpseSite767361 at 123,129 meat=2612 eaten=20 scav=3 camp=0 S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False] S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=False] S[RM_Drazzik tier=None homedHere=True pred=True spawned=True atSite=True]', 'thingArgs': [], 'tic"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "titanEventsEnabled",
+    "value": "False"
+   },
+   "{'success': True, 'action': 'set', 'field': 'titanEventsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'False', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_45aae5bbb96c43548f0ca5f54b078187', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'state': {'pr"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "PassageCanFire",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String PassageCanFire()', 'result': 'canFire=False active=False t3OnMap=False eligible=19 [RM_Gorrask:T2,RM_Hwelgrue:T2,RM_GrippingTerror:T3,RM_Reefback:T3,RM_Lanternwhale:T3,RM_ReefbackJuv:T3,RM_Gloomcast:T3,RM_Thurrock:T2,RM_Titanoslime:T3,RSW_Horax:T2,RSW_JungleRancor:T2,RSW_ShadeWhale:T2,RSW_Taozin:T2,RSW_Tibidee:T2,RSW_Zakkeg:T2,RSW_Thrumbungus:T2,RSW_Reefb"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "titanEventsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'titanEventsEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_c8d26b92ef654fa3a28c944277d5da2c', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'state': {'pr"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "PassageCanFire",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String PassageCanFire()', 'result': 'canFire=False active=True t3OnMap=False eligible=19 [RM_Gorrask:T2,RM_Hwelgrue:T2,RM_GrippingTerror:T3,RM_Reefback:T3,RM_Lanternwhale:T3,RM_ReefbackJuv:T3,RM_Gloomcast:T3,RM_Thurrock:T2,RM_Titanoslime:T3,RSW_Horax:T2,RSW_JungleRancor:T2,RSW_ShadeWhale:T2,RSW_Taozin:T2,RSW_Tibidee:T2,RSW_Zakkeg:T2,RSW_Thrumbungus:T2,RSW_Reefba"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteScavengersEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteScavengersEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_c8de1d53b98246a1a38bd6fd81bf6552', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'stat"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteScavengerDailyChance",
+    "value": "0.35"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteScavengerDailyChance', 'fieldKind': 'static', 'valueBefore': '1', 'valueAfter': '0.35', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_48f0e522b8cc4ef6bcfefc47e95e4304', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'stat"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampsEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_873a89c3c4554af6a7cae95e8ffa9dfb', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': "
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampDailyChance",
+    "value": "0.1"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampDailyChance', 'fieldKind': 'static', 'valueBefore': '1', 'valueAfter': '0.1', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_41474f77cadf4265a322fbf2a2d5e54f', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampHours",
+    "value": "36"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampHours', 'fieldKind': 'static', 'valueBefore': '1', 'valueAfter': '36', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_a4002ba78d254508b545f8d21cadf9ba', 'Status': 'Completed', 'Success': True, 'DurationMs': 46}, 'state': {'program"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "titanEventsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'titanEventsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_6363f51dfbdf45e0893b41f2982fe7d6', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'pro"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteScavengersEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteScavengersEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_716eb1096ab24b33b4b7a57dffd2f1a4', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playin"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteScavengerDailyChance"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteScavengerDailyChance', 'fieldKind': 'static', 'value': '0.35', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_e95f8feeb2c2418faa1d8e963bf9c84b', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Pla"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_9416c0f00d6842d89bfa1298bfe5ef09', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', '"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampDailyChance"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampDailyChance', 'fieldKind': 'static', 'value': '0.1', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_83cb70325ed44366853e4e71a601d523', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing',"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampHours"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampHours', 'fieldKind': 'static', 'value': '36', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_158481c98de84ebabc9584471f97fa2e', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanEventsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanEventsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_6c49cc66d3e045398d3de6c6e63079ec', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasC"
+  ]
+ ]
+}

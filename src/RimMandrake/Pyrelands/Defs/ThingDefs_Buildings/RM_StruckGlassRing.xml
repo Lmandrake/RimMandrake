@@ -44,6 +44,9 @@
       <li Class="CompProperties_Refuelable">
         <fuelCapacity>25</fuelCapacity>
         <fuelConsumptionRate>0</fuelConsumptionRate>
+        <!-- the ring never ticks (tickerType Never): without this, CompProperties_Refuelable.ConfigErrors reports "consume fuel
+             per tick" even at rate 0 (MEASURED 2026-10-21 full-list load). Only the rite empties it. -->
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
         <initialFuelPercent>0</initialFuelPercent>
         <autoRefuelPercent>1</autoRefuelPercent>
         <allowRefuelIfNotEmpty>true</allowRefuelIfNotEmpty>

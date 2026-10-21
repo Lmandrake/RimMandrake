@@ -1,0 +1,361 @@
+{
+ "script": "titan_events_live.py",
+ "when": "2026-10-21T02:50:36",
+ "rows": [
+  {
+   "id": "A5_titan_events_off",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A5",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "canFire=False active=False t3OnMap=False eligible=19 [RM_Gorrask:T2,RM_Hwelgrue:T2,RM_GrippingTerror:T3,RM_Reefback:T3,RM_Lanternwhale:T3,RM_ReefbackJuv:T3,RM_Gloomcast:T3,RM_Thurrock:T2,RM_Titanoslim"
+  },
+  {
+   "id": "A4_pending_and_letter",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A4",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "pending=True kind=RSW_Tibidee arrivalIn=15000; letter {'label': {'RawText': 'Footfall tremors', 'Length': 16, 'StrippedLength': 16}, 'defName': 'ThreatSmall', 'arrivalTick': 9666, 'lookTargets': 'Verse.LookTargets', 'lookTargetIds': []}; fire {'success': True, 'message': 'RM_TitanPassage fired with 222 points.', 'incident"
+  },
+  {
+   "id": "A4_still_pending_through_tremors",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A4",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "pending=True kind=RSW_Tibidee arrivalIn=14400"
+  },
+  {
+   "id": "A4_arrives",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A4",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "pending=False kind=none arrivalIn=-1 arrived=RSW_Tibidee767646 kind=RSW_Tibidee tier=T2 spawned=True homedHere=False lord=LordJob_ExitMapNear pos=3,214"
+  },
+  {
+   "id": "A4_no_second_t3",
+   "item": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "criterion": "A4",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "canFire=True active=True t3OnMap=True eligible=11 [RM_Gorrask:T2,RM_Hwelgrue:T2,RM_Thurrock:T2,RSW_Horax:T2,RSW_JungleRancor:T2,RSW_ShadeWhale:T2,RSW_Taozin:T2,RSW_Tibidee:T2,RSW_Zakkeg:T2,RSW_Thrumbungus:T2,RSW_SandoAquaMonster:T2]"
+  }
+ ],
+ "calls": [
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteScavengersEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteScavengersEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_b0abd73ffeae4d19b1dc3669f629933f', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playin"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteScavengerDailyChance"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteScavengerDailyChance', 'fieldKind': 'static', 'value': '0.35', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_a564200692ac4986854288800ecfa100', 'Status': 'Completed', 'Success': True, 'DurationMs': 46}, 'state': {'programState': 'Pla"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_36802523bd814762a28c1c20e39e3123', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', '"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampDailyChance"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampDailyChance', 'fieldKind': 'static', 'value': '0.1', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_ba0ac98a65894cf0bb693a878c465111', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing',"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampHours"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampHours', 'fieldKind': 'static', 'value': '36', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_93360b6a11c04416b106d96928837fb6', 'Status': 'Completed', 'Success': True, 'DurationMs': 53}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanEventsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanEventsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_bff79f8079064d6cacda50f308fc6416', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "titanEventsEnabled",
+    "value": "False"
+   },
+   "{'success': True, 'action': 'set', 'field': 'titanEventsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'False', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9662, 'operation': {'OperationId': 'op_b87313e47d8d49fd9d9d69dc426fe633', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'pr"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 2
+   },
+   "{'success': True, 'stepId': 'step_901cfc007a1143548c67ff29a48c8560', 'status': 'completed', 'requestedTicks': 2, 'completedTicks': 2, 'remainingTicks': 0, 'startTicksGame': 9662, 'endTicksGame': 9664, 'advancedTicks': 2, 'initialFrame': 78412, 'lastFrame': 78413, 'advancedFrames': 2, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:50:25.1635668+00:00', 'completedAtUtc': '2026-10-21T09"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "PassageCanFire",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String PassageCanFire()', 'result': 'canFire=False active=False t3OnMap=False eligible=19 [RM_Gorrask:T2,RM_Hwelgrue:T2,RM_GrippingTerror:T3,RM_Reefback:T3,RM_Lanternwhale:T3,RM_ReefbackJuv:T3,RM_Gloomcast:T3,RM_Thurrock:T2,RM_Titanoslime:T3,RSW_Horax:T2,RSW_JungleRancor:T2,RSW_ShadeWhale:T2,RSW_Taozin:T2,RSW_Tibidee:T2,RSW_Zakkeg:T2,RSW_Thrumbungus:T2,RSW_Reefb"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "titanEventsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'titanEventsEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 9664, 'operation': {'OperationId': 'op_1c06483cd5e443b8a148f4941c03f572', 'Status': 'Completed', 'Success': True, 'DurationMs': 44}, 'state': {'pr"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 2
+   },
+   "{'success': True, 'stepId': 'step_12d13bfdfa9144388ba75d1c21b23a4e', 'status': 'completed', 'requestedTicks': 2, 'completedTicks': 2, 'remainingTicks': 0, 'startTicksGame': 9664, 'endTicksGame': 9666, 'advancedTicks': 2, 'initialFrame': 78421, 'lastFrame': 78422, 'advancedFrames': 2, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:50:25.3122306+00:00', 'completedAtUtc': '2026-10-21T09"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "PassageCanFire",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String PassageCanFire()', 'result': 'canFire=True active=True t3OnMap=False eligible=19 [RM_Gorrask:T2,RM_Hwelgrue:T2,RM_GrippingTerror:T3,RM_Reefback:T3,RM_Lanternwhale:T3,RM_ReefbackJuv:T3,RM_Gloomcast:T3,RM_Thurrock:T2,RM_Titanoslime:T3,RSW_Horax:T2,RSW_JungleRancor:T2,RSW_ShadeWhale:T2,RSW_Taozin:T2,RSW_Tibidee:T2,RSW_Zakkeg:T2,RSW_Thrumbungus:T2,RSW_Reefbac"
+  ],
+  [
+   "jawa/letter_list",
+   {},
+   "{'success': True, 'count': 8, 'letters': [{'label': {'RawText': 'Area revealed', 'Length': 13, 'StrippedLength': 13}, 'defName': 'NeutralEvent', 'arrivalTick': 1, 'lookTargets': 'Verse.LookTargets', 'lookTargetIds': []}, {'label': {'RawText': 'Entering the Terminator Front', 'Length': 29, 'StrippedLength': 29}, 'defName': 'NeutralEvent', 'arrivalTick': 3, 'lookTargetIds': []}, {'label': {'RawText'"
+  ],
+  [
+   "jawa/fire_incident",
+   {
+    "incidentDef": "RM_TitanPassage",
+    "forced": true
+   },
+   "{'success': True, 'message': 'RM_TitanPassage fired with 222 points.', 'incident': 'RM_TitanPassage', 'category': 'Misc', 'canFireNow': True, 'forced': True, 'fired': True, 'windowsOpened': [], 'blockedByDialog': False, 'points': 221.598236, 'ticksGame': 9666, 'operation': {'OperationId': 'op_92ca3436def94c129766ced28d5288c6', 'Status': 'Completed', 'Success': True, 'DurationMs': 61}, 'state': {'p"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "PassageReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String PassageReport()', 'result': 'pending=True kind=RSW_Tibidee arrivalIn=15000', 'thingArgs': [], 'ticksGame': 9666, 'operation': {'OperationId': 'op_07e41c46b26b46bca2a8bf15db0f97bd', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 9666}}"
+  ],
+  [
+   "jawa/letter_list",
+   {},
+   "{'success': True, 'count': 9, 'letters': [{'label': {'RawText': 'Area revealed', 'Length': 13, 'StrippedLength': 13}, 'defName': 'NeutralEvent', 'arrivalTick': 1, 'lookTargets': 'Verse.LookTargets', 'lookTargetIds': []}, {'label': {'RawText': 'Entering the Terminator Front', 'Length': 29, 'StrippedLength': 29}, 'defName': 'NeutralEvent', 'arrivalTick': 3, 'lookTargetIds': []}, {'label': {'RawText'"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 600
+   },
+   "{'success': True, 'stepId': 'step_edd4618a04f84eb18f33b378d829df6d', 'status': 'completed', 'requestedTicks': 600, 'completedTicks': 600, 'remainingTicks': 0, 'startTicksGame': 9666, 'endTicksGame': 10266, 'advancedTicks': 600, 'initialFrame': 78441, 'lastFrame': 79040, 'advancedFrames': 600, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:50:25.646542+00:00', 'completedAtUtc': '2026-"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "PassageReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String PassageReport()', 'result': 'pending=True kind=RSW_Tibidee arrivalIn=14400', 'thingArgs': [], 'ticksGame': 10266, 'operation': {'OperationId': 'op_7670f93a76cd4e49a676f222f2cddce9', 'Status': 'Completed', 'Success': True, 'DurationMs': 46}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 10266}}"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "PassageArriveNow",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String PassageArriveNow()', 'result': 'pending=True kind=RSW_Tibidee arrivalIn=0', 'thingArgs': [], 'ticksGame': 10266, 'operation': {'OperationId': 'op_38a2d6bebd964386baa91565e8a7d333', 'Status': 'Completed', 'Success': True, 'DurationMs': 44}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 10266}}"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 5
+   },
+   "{'success': True, 'stepId': 'step_e6bd29cf734c4e608634534cb9149e71', 'status': 'completed', 'requestedTicks': 5, 'completedTicks': 5, 'remainingTicks': 0, 'startTicksGame': 10266, 'endTicksGame': 10271, 'advancedTicks': 5, 'initialFrame': 79048, 'lastFrame': 79052, 'advancedFrames': 5, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:50:35.7631832+00:00', 'completedAtUtc': '2026-10-21T"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "PassageReport",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String PassageReport()', 'result': 'pending=False kind=none arrivalIn=-1 arrived=RSW_Tibidee767646 kind=RSW_Tibidee tier=T2 spawned=True homedHere=False lord=LordJob_ExitMapNear pos=3,214', 'thingArgs': [], 'ticksGame': 10271, 'operation': {'OperationId': 'op_3b1062f24ed649eca5a1b32d9f534574', 'Status': 'Completed', 'Success': True, 'DurationMs': 38}, 'state': {"
+  ],
+  [
+   "jawa/spawn_pawn",
+   {
+    "kindDef": "RM_Oommok",
+    "faction": "none",
+    "count": 1
+   },
+   "{'success': True, 'message': 'Spawned 1/1 RM_Oommok in faction (none).', 'spawnedCount': 1, 'failedCount': 0, 'substitutedCount': 0, 'pawns': [{'ok': True, 'id': 'RM_Oommok767647', 'name': 'Oommok', 'kindRequested': 'RM_Oommok', 'kindActual': 'RM_Oommok', 'kindSubstituted': False, 'hostile': False, 'x': 5, 'z': 2, 'spawned': True, 'xenotypeApplied': True}], 'ticksGame': 10271, 'operation': {'Opera"
+  ],
+  [
+   "rimworld/step_game_ticks",
+   {
+    "ticks": 2
+   },
+   "{'success': True, 'stepId': 'step_1bac805d4b8f4fce85e44b4787604182', 'status': 'completed', 'requestedTicks': 2, 'completedTicks': 2, 'remainingTicks': 0, 'startTicksGame': 10271, 'endTicksGame': 10273, 'advancedTicks': 2, 'initialFrame': 79061, 'lastFrame': 79062, 'advancedFrames': 2, 'initialTimeSpeed': 'Paused', 'startedAtUtc': '2026-10-21T09:50:36.1596029+00:00', 'completedAtUtc': '2026-10-21T"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "PassageCanFire",
+    "args": ""
+   },
+   "{'success': True, 'method': 'System.String PassageCanFire()', 'result': 'canFire=True active=True t3OnMap=True eligible=11 [RM_Gorrask:T2,RM_Hwelgrue:T2,RM_Thurrock:T2,RSW_Horax:T2,RSW_JungleRancor:T2,RSW_ShadeWhale:T2,RSW_Taozin:T2,RSW_Tibidee:T2,RSW_Zakkeg:T2,RSW_Thrumbungus:T2,RSW_SandoAquaMonster:T2]', 'thingArgs': [], 'ticksGame': 10273, 'operation': {'OperationId': 'op_a24d39ef37bf49de97d0a2"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteScavengersEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteScavengersEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_27504af934ec4d328f117d06a97ac028', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'sta"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteScavengerDailyChance",
+    "value": "0.35"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteScavengerDailyChance', 'fieldKind': 'static', 'valueBefore': '0.35', 'valueAfter': '0.35', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_30cac7ff36a3419487e943dd050e2398', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, '"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_799d88a13ab34fab9ca88fe10e73ff45', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': "
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampDailyChance",
+    "value": "0.1"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampDailyChance', 'fieldKind': 'static', 'valueBefore': '0.1', 'valueAfter': '0.1', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_779034ee90dc43b0b357111eb99897e1', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state':"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "corpseSiteCampHours",
+    "value": "36"
+   },
+   "{'success': True, 'action': 'set', 'field': 'corpseSiteCampHours', 'fieldKind': 'static', 'valueBefore': '36', 'valueAfter': '36', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_cf8bb376d29b486d9fae27f0e3a80e37', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'progr"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "titanEventsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'titanEventsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_ac3dc95a72404bc6a0e69192af0bf437', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'pr"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteScavengersEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteScavengersEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_307d0e5894884c1b9b40ef716d5a3bdd', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playi"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteScavengerDailyChance"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteScavengerDailyChance', 'fieldKind': 'static', 'value': '0.35', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_91e87896c96146e7a498ee2ce4d6b3f4', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Pl"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_6b9cb0598a174c499e36eea3ad3cdf9e', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', "
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampDailyChance"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampDailyChance', 'fieldKind': 'static', 'value': '0.1', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_d8640514003d4fefb6e7eb8e08c74190', 'Status': 'Completed', 'Success': True, 'DurationMs': 46}, 'state': {'programState': 'Playing'"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "corpseSiteCampHours"
+   },
+   "{'success': True, 'action': 'get', 'field': 'corpseSiteCampHours', 'fieldKind': 'static', 'value': '36', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_0c95e0f2a1bd4fef9cc6de2658e73dfa', 'Status': 'Completed', 'Success': True, 'DurationMs': 46}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanEventsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanEventsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 10273, 'operation': {'OperationId': 'op_337897d990c549c6bc221f085b89bb5b', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'has"
+  ]
+ ]
+}
