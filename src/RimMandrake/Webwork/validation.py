@@ -604,6 +604,10 @@ def _build_suite():
             if _live(t):
                 if not text.startswith("HARVEST"):
                     _unmeasured(t, "ProofHarvest gave no answer: %r" % text[:160]); return
+                if "designatable False" in text and re.search(r"after (\d+) ticks", text) and int(re.search(r"after (\d+) ticks", text).group(1)) >= 250:
+                    # Real Fog of War never let the designator see the node within the 250-tick wait: a SITE/HARNESS
+                    # miss, not the mod refusing to be cut. Scoring it FAIL read a fog timeout as a mod result.
+                    _unmeasured(t, "HARNESS/SITE: the Deconstruct designator never saw the node within the fog-of-war wait: %s" % text[:200]); return
                 if not ("designatable True" in text and "workgiver True" in text and "yield 3" in text
                         and "weaveNear 0->3" in text and "spawned 1" in text):
                     raise ExpectationFailed("cutting an anchor line did not designate/yield 3/spawn: %s" % text)
@@ -739,8 +743,47 @@ class _MockSession:
         return {"success": True}
 
 
+class _MockHarvestSession(_MockSession):
+    """--mock: map_mechanics against a game whose Real Fog of War never lets the Deconstruct designator see the node.
+    Every earlier proof answers as a working mod; ProofHarvest answers the 250-tick timeout verdict."""
+
+    def call(self, tool, **kw):
+        if tool == "jawa/static_call":
+            m, a = kw.get("method"), kw.get("args") or ""
+            self.calls.append((tool, kw))
+            if m == "ProofNest":
+                return {"success": True, "result": "NEST biomeGateRefuses True | placed 1 | walls 0->1 | x" if a == "true"
+                        else "NEST placed -1 | walls 0->0 | x"}
+            if m == "ProofRelay":
+                return {"success": True, "result": {"true|1": "RELAY intervalDays 25 | 0->1", "true|0.5": "RELAY intervalDays 12.5 | 0->1",
+                                                    "false|1": "RELAY mother False | 0->0"}.get(a, "RELAY")}
+            if m == "ProofEmergent":
+                return {"success": True, "result": "EMERGENT spawned %d manhunter True" % (1 if a in ("true|1|1|Vanish", "true|0.5|2|Vanish") else 0)}
+            if m == "ProofHarvest":
+                return {"success": True, "result": "HARVEST designatable False (after 250 ticks) | workgiver False | yield 0 | weaveNear 0->0 | spawned 0"}
+        return super(_MockHarvestSession, self).call(tool, **kw)
+
+
+def mock_harvest_fog_timeout():
+    """A fog-of-war wait that timed out is UNMEASURED (site/harness), never a mod FAIL on creep_web_harvest."""
+    from runner import run_suite
+    chains = list(suite.chains)
+    try:
+        suite.chains[:] = [c for c in chains if c[0] == "map_mechanics"]
+        res = run_suite(suite, _MockHarvestSession(), anchor=(50, 50))
+    finally:
+        suite.chains[:] = chains
+    comps = [c for ch in res.get("chains", []) for c in (ch.get("components") or [])]
+    c = [x for x in comps if x.get("name") == "creep_web_harvest"]
+    ok = bool(c) and str(c[0].get("verdict", "")).upper() == "UNMEASURED" and "fog-of-war" in str(c[0].get("detail", "")) \
+        and not [x for x in comps if str(x.get("verdict", "")).upper() == "FAIL"]
+    print("MOCK harvest fog timeout: %s (%s)" % ("PASS" if ok else "FAIL", [(x.get("name"), x.get("verdict")) for x in comps][:8]))
+    return ok
+
+
 def mock_run():
     from runner import run_suite  # modcheck package dir is on sys.path via _UTILS/modcheck
+    harvest_ok = mock_harvest_fog_timeout()
     fake = _MockSession()
     suite.chains[:] = [c for c in suite.chains if c[0] == "web_terrain_weather"]
     res = run_suite(suite, fake, anchor=(50, 50))
@@ -749,6 +792,7 @@ def mock_run():
     bad = [c for c in comps if v(c) not in ("PASS", "UNMEASURED") or (v(c) == "UNMEASURED" and c.get("name") != "generated_webwork_map")]
     calls = sum(1 for tl, kw in fake.calls if tl == "jawa/static_call")
     ok = len(comps) == 6 and not bad and calls == 7
+    ok = harvest_ok and ok
     print("MOCK: %s (%d components, %d proof calls, problems=%s)" % ("PASS" if ok else "FAIL", len(comps), calls,
                                                                     [(c.get("name"), c.get("verdict"), c.get("detail")) for c in bad][:4]))
     return 0 if ok else 1

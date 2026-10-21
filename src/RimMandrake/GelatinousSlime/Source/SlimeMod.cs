@@ -240,12 +240,12 @@ namespace RimMandrake.GelatinousSlime
                 list.GapLine();
             }
 
-            if (Group(list, "Joining Water ring", RimMandrake.Shared.SettingScope.Now, new[] { "joiningWaterEnabled" }))
+            if (Group(list, "Joining Water ring (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.Now, new[] { "joiningWaterEnabled" }))
             {
-                list.CheckboxLabeled("Joining Water ring", ref joiningWaterEnabled,
+                list.CheckboxLabeled("Joining Water ring (affects newly generated maps)", ref joiningWaterEnabled,
                     "On (default): a newly generated slime map holds a ring of hand-prints pressed into hardened slime, where the clan's "
                     + "Joining Water rite can be held, and the rite shares one person's lasting hurts out among the ring as weak, passing ones. "
-                    + "Off: no ring is placed on maps generated afterwards, and the rite shares nothing on any map, rings already placed included.");
+                    + "Off: no ring is placed on maps generated afterwards, and the rite shares nothing on any map, rings already placed included. WORLDGEN-AFFECTING: the ring changes only maps generated afterwards, never one that already exists (the rite switch takes effect at once).");
                 list.GapLine();
             }
 

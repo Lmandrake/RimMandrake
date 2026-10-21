@@ -213,7 +213,7 @@ MODS = {
         "Flavour": "Now",
         "Slimification and fields": "Now",
         "Ruined farms (WORLDGEN-AFFECTING)": "NewMapsOnly",
-        "Joining Water ring": "Now",
+        "Joining Water ring (WORLDGEN-AFFECTING)": "Now",
         "Visitors": "Now",
         "Creatures and the slime pit": "Now",
         "Titanoslime chunks and the archive vat": "Now",
