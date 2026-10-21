@@ -105,9 +105,9 @@ breachers aim at **the winch**, and **some raids bring their own planks**.
 - **Structural support** (the anchors) and **operating machinery** (the winch, its power) are separate things. Losing
   structure runs the existing suspension swing-down/collapse (`Building_SuspensionDeck.cs`, whole-span collapse; that
   path drops riders, it is a collapse). Structural failure wins over any movement in progress.
-- **Losing the winch** (destroyed or burnt) does not collapse anything: the leaf **freezes where it is**, the same rule
-  as steel losing power. (The pre-ruling text "a destroyed winch drops the leaf" is withdrawn; it contradicted the
-  freeze ruling. If he wants a crash-down on winch loss, see Q2.)
+- **Losing the winch** (destroyed or burnt) while its leaf is up **crashes the leaf down** to lowered at once, and
+  anything under it is hit (owner's follow-up answer, 2026-10-20). The deck is not destroyed: it is ground again. Steel
+  that loses only its power still **freezes where it is**.
 - Fire: a timber leaf burns raised or lowered; a burnt deck square collapses the span (today's rule).
 - **Hidden geometry (GPT #28).** A raised far-end square must stop being a target, a fire cell, a repair job or a
   blocker. Making `Decked` false changes only the readers that go through `DeckAt`, not `ThingGrid` queries. The
@@ -222,7 +222,7 @@ ESTIMATE 8 to 11 agent-days plus art.
 Live rows (minimal list, about 1 day): RAISE_PATH (a colonist re-routes at once), RAISE_TIPS_RIDERS (six raiders on a
 3-wide leaf, one free bank square: one lands, five fall), RAISE_SPARES_UNDERPASS (a pawn beneath is untouched),
 LOWER_ONLY_FROM_WINCH, TWO_LEAF_TIPS_OWN_HINGE, HOSTILE_LOCKS (queued auto-lower cancelled when a raid spawns; a trapped
-hostile does not lock), STEEL_UNPOWERED_FREEZES, WINCH_LOST_FREEZES, RAID_UP (decoy outside, winch inside; legal
+hostile does not lock), STEEL_UNPOWERED_FREEZES, WINCH_LOST_CRASHES (a destroyed winch crashes its raised leaf down on a pawn under it), RAID_UP (decoy outside, winch inside; legal
 progress, no job loop), RAID_PLANK (interrupted carrier makes no duplicate crossing), SAVE_MIDRAISE.
 
 

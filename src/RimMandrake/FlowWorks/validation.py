@@ -1085,8 +1085,7 @@ def sprinklers(t):
 # §Owner's follow-up answers). Offline: the C# SelfTest cases of phases 1-6 (Source/SelfTest/DrawbridgeChecks.cs). Live: the
 # eleven R13 rows of northstar/drawbridge_proof.py (phase 6b), read from its newest result at the current mod hash and deployed
 # DLL (driver_rows_at), else UNMEASURED naming the driver. The driver needs the OWED C# class RM_DrawbridgeProofs
-# (drawbridge_proof.OWED_PROOFS); until it ships, a live run writes every row UNMEASURED/HARNESS. R13's WINCH_LOST_FREEZES is
-# WINCH_LOST_CRASHES since the owner's follow-up (a destroyed winch crashes the leaf down; steel without power still freezes).
+# (drawbridge_proof.OWED_PROOFS); until it ships, a live run writes every row UNMEASURED/HARNESS.
 DRAWBRIDGE_CASES = [
     "Drawbridge_P1_materials_timber_and_steel_only", "Drawbridge_P1_split_one_leaf_or_two_each_hinged_on_its_own_bank",
     "Drawbridge_P1_leaf_is_rigid_off_its_seat_and_reversible", "Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise",
@@ -1235,7 +1234,10 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         "suspensionBridgesBuildable", "suspensionWeightCollapse", "suspensionAnchorLossFalls",
                         "vanillaBridgeRefusedOverDug", "suspensionOwnPeopleFall", "grateFirePasses", "grateDrainsSpills",
                         "suspensionWalkUnder", "sunkenBridges", "suspensionOverWater", "suspensionOverSea",
-                        "floodsDamageLightBridges"]
+                        "floodsDamageLightBridges",
+                        # RM_DrawbridgeSettings registered 2026-10-20 (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS): its live rows are
+                        # northstar/drawbridge_proof.py (owed to its first live run), not yet a toggle chain
+                        "drawbridgesEnabled", "raidsBringPlanks"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))

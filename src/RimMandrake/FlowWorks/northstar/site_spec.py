@@ -210,6 +210,11 @@ SETTINGS = {
         "suspensionOwnPeopleFall": True, "grateFirePasses": True, "grateDrainsSpills": True, "suspensionWalkUnder": True,
         "sunkenBridges": True, "suspensionOverWater": True, "suspensionOverSea": True, "floodsDamageLightBridges": True,
     },
+    # DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (design R11; own static class, scribed from ExposeData)
+    "RimMandrake.FlowWorks.Pits.RM_DrawbridgeSettings": {
+        "drawbridgesEnabled": True, "raiseSpeed": 1.0, "maxLeafTimber": 4, "maxLeafSteel": 8, "raidsBringPlanks": True,
+        "raidPlankChance": 0.35,
+    },
     # FISH_ROLL_MEND_PONDS_BORN_BARREN
     "RimMandrake.FlowWorks.RM_WaterMendSettings": {
         "waterBodyMendsEnabled": True, "fishRollOnGrowth": True, "fishReturnOnRefill": True, "fishingZoneReturnOnRefill": True,
@@ -234,6 +239,7 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Swimming.RM_SwimSettings": os.path.join("Swimming", "RM_Swim.cs"),
     "RimMandrake.FlowWorks.RM_WaterMendSettings": "RM_WaterBodyMendGame.cs",
     "RimMandrake.FlowWorks.Pits.RM_SuspensionSettings": os.path.join("Pits", "Suspension", "RM_SuspensionSettings.cs"),
+    "RimMandrake.FlowWorks.Pits.RM_DrawbridgeSettings": os.path.join("Pits", "Drawbridge", "RM_DrawbridgeSettings.cs"),
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.
