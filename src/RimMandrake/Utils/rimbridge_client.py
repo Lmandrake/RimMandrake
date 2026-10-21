@@ -707,8 +707,12 @@ class RimBridge:
         except RimBridgeError as ex:
             answered = " failed: " in str(ex)          # the server replied with an error: outcome known
             status = "error" if answered else ("INDETERMINATE" if mutating else "lost")
+            timed_out = "timed out" in str(ex).lower()
+            # outcome/transport/timeout folded in from the retired rimdrive.obs_events (design 08 P5)
+            outcome = "error" if answered else ("timeout" if timed_out else "lost")
             _evidence({"ev": "end", "cid": cid, "status": status, "ms": int((time.time() - t0) * 1000),
-                       "error": str(ex)[:300], "t": _ev_now()})
+                       "error": str(ex)[:300], "t": _ev_now(), "outcome": outcome, "timeout": timed_out,
+                       "transport": "ok" if answered else outcome})
             if mutating and status == "INDETERMINATE":
                 try:
                     _inflight_write(dict(start, status="INDETERMINATE", error=str(ex)[:300]))
@@ -726,8 +730,10 @@ class RimBridge:
                 except OSError:
                     pass
             raise
+        ok_success = out.get("success") if isinstance(out, dict) else None
         _evidence({"ev": "end", "cid": cid, "status": "ok", "ms": int((time.time() - t0) * 1000), "t": _ev_now(),
-                   "success": out.get("success") if isinstance(out, dict) else None})
+                   "success": ok_success, "outcome": "reply_fail" if ok_success is False else "ok",
+                   "timeout": False, "transport": "ok"})
         _inflight_clear(cid)
         _ACTIVE.discard(cid)
         return out

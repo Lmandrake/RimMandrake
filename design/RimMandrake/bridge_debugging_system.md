@@ -203,7 +203,7 @@ Maturity scale: **built** (code exists, selftests offline) → **deployed** (in 
 
 | piece | what | MEASURED state |
 |---|---|---|
-| `rimdrive/session.py` → `rimdrive/obs_events.py` | `call_start`/`call_end` per call, never blocks/raises | built; **newest run file in `D:\ClaudeWork\rimmandrake\obs\runs` is 2026-10-06T06:08** (42 files) |
+| `rimbridge_client.py` evidence log (`bridge_calls.jsonl`) | `start`/`end` per call; `end` carries `outcome`, `timeout`, `transport` | **RETIRED 2026-10-21 (design 08 P5):** `rimdrive/obs_events.py` is a no-op shim; its fields moved into the evidence log, read by `telemetry bridge`. Old run files in `D:\ClaudeWork\rimmandrake\obs\runs` stay readable |
 | `modcheck/obs_summary.py` | calls/min by tool and outcome, p50/p95, UNFINISHED calls, timeline setup/ticks/tool/idle | built, offline |
 | `rimbridge_client.py` session log `bridge_sessions.jsonl` | one row per client session (script, calls, seconds) | live: 1,259 rows; 151 today |
 | `northstar_driver/bridge_utilization.py` | ACTIVE ∩ HELD / HELD | built |
