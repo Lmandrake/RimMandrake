@@ -592,7 +592,9 @@ namespace RimMandrake.FlowWorks.Swimming
 			}
 		}
 
-		private static void DrownMessage(Pawn p)
+		/// <summary>"X is drowning." for our own creatures, at most once per 2500 ticks each. Also called by RM_PitFillEffects
+		/// while deep swimming is off (this file's Tick then skips everyone).</summary>
+		internal static void DrownMessage(Pawn p)
 		{
 			if (!Ours(p))
 			{

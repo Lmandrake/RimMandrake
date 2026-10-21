@@ -277,6 +277,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "tired undrafted swimmers head for footing; drafted obey");
                 string fe = RiverSwitchFlipChecks.Src("RM_PitFillEffects.cs");
                 Assert(fe.Contains("float w = Swimming.RM_SwimWater.WaterMetresAt(map, eng, n);"), "footing reads natural water too");
+                // review 2026-10-21: RM_Swim.Tick (the message site for dug cells too) skips everyone with swimming off
+                Assert(fe.Contains("if (!Swimming.RM_SwimWater.On)") && fe.Contains("Swimming.RM_Swim.DrownMessage(p);")
+                    && sw.Contains("if (!on || p.Flying || wadeableOff"), "a pit drowning is announced with swimming switched off");
                 string route = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitPathing.cs"));
                 Assert(route.Contains("customizer = Swimming.RM_SwimPathing.Combine(pawn.Map, pit ? customizer : null, swim);"), "the swim grid rides every path request");
                 string eng = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
