@@ -190,6 +190,14 @@ LOWER_ONLY_FROM_WINCH, TWO_LEAF_TIPS_OWN_HINGE, HOSTILE_LOCKS (queued auto-lower
 hostile does not lock), STEEL_UNPOWERED_FREEZES, WINCH_LOST_FREEZES, RAID_UP (decoy outside, winch inside; legal
 progress, no job loop), RAID_PLANK (interrupted carrier makes no duplicate crossing), SAVE_MIDRAISE.
 
+
+## Owner's follow-up answers (question cards, 2026-10-20, late evening). These override the Ruled design where they differ.
+
+- **Planks:** art only. This was settled earlier: *"part of its art, not an actual item you can misplace"*.
+- **Winch destroyed:** the leaf **crashes down**, and anything under it is hit. This replaces "a lost winch freezes the leaf". A steel bridge that loses power still freezes.
+- **Two-leaf bridges:** each leaf has its own winch house on its own bank.
+- **Bridge across the gravship edge:** the bridge **collapses** on launch, and anyone on it falls.
+
 ## Open owner questions (each a question card)
 
 1. **What do the drawbridge planks do?** Art only (drawn beside the bridge, no use) · a 1-wide footway a colonist lays
