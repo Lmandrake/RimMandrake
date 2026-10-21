@@ -43,6 +43,7 @@
     <Compile Include="RM_BiomesMod.cs" />
     <Compile Include="RM_PlantDrawOrder.cs" />
     <Compile Include="RM_WorldTerrainShader.cs" />
+    <Compile Include="RM_WorldLook.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -53,6 +53,11 @@ namespace RimMandrake.Biomes
         // more southern one draws in front (RM_PlantDrawOrder.cs). Draw order only; applies at once on running maps.
         public static bool plantDrawOrderSouthInFront = true;
 
+        // WORLDMAP_BORDER_BLEND (2026-10-20): soft gradients between neighbouring land biomes on the planet, and seas that
+        // deepen away from the coast (RM_WorldLook.cs). Looks only; the world is untouched. Applies at once.
+        public static bool worldBorderBlend = true;
+        public static bool worldSeaDepth = true;
+
         public static RM_BiomesSettings Instance;
 
         // Roster keys whose own mod gates its mechanics on Enabled(key), added by that mod at startup by reflection
@@ -71,6 +76,8 @@ namespace RimMandrake.Biomes
             Scribe_Collections.Look(ref enabled, "enabled", LookMode.Value, LookMode.Value);
             Scribe_Values.Look(ref ownedCaravanCarriers, "ownedCaravanCarriers", true);
             Scribe_Values.Look(ref plantDrawOrderSouthInFront, "plantDrawOrderSouthInFront", true);
+            Scribe_Values.Look(ref worldBorderBlend, "worldBorderBlend", true);
+            Scribe_Values.Look(ref worldSeaDepth, "worldSeaDepth", true);
             if (enabled == null) enabled = new Dictionary<string, bool>();
         }
     }
@@ -132,7 +139,14 @@ namespace RimMandrake.Biomes
                 plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
                 RM_PlantDrawOrder.Reprint();
             }
+            if (worldLookShown != RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth)
+            {
+                worldLookShown = RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth;
+                if (Current.ProgramState == ProgramState.Playing) Find.World?.renderer?.SetAllLayersDirty();
+            }
         }
+
+        string worldLookShown = "True/True";
 
         // MOD_OPTIONS_RETROFIT_1: per-entry toggles live in the Scribed RM_BiomesSettings.enabled dictionary (absent key = on).
         // Scope AUDITED against the read site (2026-10-10): RM_BiomesGate.Apply writes BiomeDef.generatesNaturally, which only
@@ -202,6 +216,18 @@ namespace RimMandrake.Biomes
                     + "whatever their sizes. Without it a giant mushroom on a higher draw layer covers a southern neighbour.\n\n"
                     + "Draw order only. Ground cover stays under every plant; pawns and items stay on top. "
                     + "Other mods' biomes are not touched.\n\nDefault: on. Takes effect at once on running maps.");
+                list.GapLine();
+            }
+
+            if (string.IsNullOrWhiteSpace(searchQuery)
+                || RimMandrake.Shared.SettingsKitCore.Matches("world map planet borders blend sea depth water coast", searchQuery))
+            {
+                list.CheckboxLabeled("Planet: soft borders between biomes [now]", ref RM_BiomesSettings.worldBorderBlend,
+                    "On the world map, the edge between two land biomes fades over half a tile on each side instead of "
+                    + "a hard hex line.\n\nLooks only. Default: on. Takes effect at once (the planet redraws).");
+                list.CheckboxLabeled("Planet: seas deepen away from the coast [now]", ref RM_BiomesSettings.worldSeaDepth,
+                    "On the world map, water is lighter near the shore and darker far from it.\n\nLooks only; tile "
+                    + "elevations are not changed. Default: on. Takes effect at once (the planet redraws).");
                 list.GapLine();
             }
 
