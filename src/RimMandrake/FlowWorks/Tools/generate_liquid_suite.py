@@ -1088,7 +1088,9 @@ LIQUID_DEF_ROWS = {
         "flammable": True,
         "igniteTemp": 40,  # [INVENTED] matches the propane terrain's own extension value
         "terrainSuite": {"shallow": "RM_PropaneShallow", "deep": "RM_PropaneDeep"},
-        # No canalFluid: RM_Fluid_Propane does not exist yet, same gap as brine.
+        # Canal form since PROPANE_CANAL_WIRE_STILL_NO_FLUID: a pump, hose or tank pours it into a dug channel as
+        # RM_Fluid_Propane (FlowWorks_PitFluids.xml), and a channel cell pumps back out as this row.
+        "canalFluid": "RM_Fluid_Propane",
         "worldTag": "RM_Liquid_Propane",  # frozen world's propane lake under Umbra, LIQUID_BIOMES_MAP_1
         "bottled": {"bottle": "RM_Bottle_Propane", 
                     "bucket": "RM_Bucket_Propane", "barrel": "RM_Barrel_Propane"},

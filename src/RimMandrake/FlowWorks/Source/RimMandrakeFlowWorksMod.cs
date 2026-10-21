@@ -769,7 +769,7 @@ namespace RimMandrake.FlowWorks
             .Name("liquidHeatPushEnabled", "Boiling and icy liquid warm or chill the room they are in")
             .Name("waterBodyTypeFlipFixEnabled", "Water changing type keeps the game's water-body counts right")
             .Name("canalFireEnabled", "Flammable liquid in channels and ponds can be lit")
-            .Name("chemfuelInfernoEnabled", "Chemfuel burns like gasoline").Name("astrofuelDetonationEnabled", "Astrofuel detonates")
+            .Name("chemfuelInfernoEnabled", "Chemfuel and propane burn like gasoline").Name("astrofuelDetonationEnabled", "Astrofuel detonates")
             .Name("pitDrowningEnabled", "Water over the head drowns whoever cannot swim")
             .Name("slimeSlipEnabled", "Slime is so slippery it is nearly impossible to cross")
             .Name("pitExposureEnabled", "An open pit leaves whoever is in it exposed to the elements")
@@ -1247,17 +1247,17 @@ namespace RimMandrake.FlowWorks
                     "Rain on an open burning cell has a small chance to put it out every second; a downpour clears an "
                   + "open channel in about half an hour, though a cell still burning beside it can relight it. "
                   + "Roofed cells are untouched. Off: rain does nothing to burning liquid.");
-                list.CheckboxLabeled("Chemfuel burns like gasoline", ref chemfuelInfernoEnabled,
-                    "Lit chemfuel in a channel goes up like a moat of gasoline: the fire races along it in seconds, the "
+                list.CheckboxLabeled("Chemfuel and propane burn like gasoline", ref chemfuelInfernoEnabled,
+                    "Lit chemfuel or liquid propane in a channel goes up like a moat of gasoline: the fire races along it in seconds, the "
                   + "flames stand tall, the heat is fierce, anything that can burn within a few cells of it catches, and "
-                  + "the chemfuel burns away within a minute. Off: chemfuel creeps and smoulders for days like oil.");
+                  + "the fuel burns away within a minute. The sliders below set both. Off: both creep and smoulder for days like oil.");
                 using (Dependent(list, "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate"))
                 {
-                    list.Label("Chemfuel fire intensity (heat, reach, size of the fires it starts): x" + chemfuelIntensity.ToString("F2"));
+                    list.Label("Chemfuel and propane fire intensity (heat, reach, size of the fires it starts): x" + chemfuelIntensity.ToString("F2"));
                     chemfuelIntensity = list.Slider(chemfuelIntensity, 0.25f, 3f);
-                    list.Label("Chemfuel fire spread speed: x" + chemfuelSpreadSpeed.ToString("F2"));
+                    list.Label("Chemfuel and propane fire spread speed: x" + chemfuelSpreadSpeed.ToString("F2"));
                     chemfuelSpreadSpeed = list.Slider(chemfuelSpreadSpeed, 0.25f, 4f);
-                    list.Label("Chemfuel burn-down: a fill level every " + (RM_FuelFireMath.InfernoTicksPerLevelAt(chemfuelBurnRate) / 60f).ToString("F1") + " s");
+                    list.Label("Chemfuel and propane burn-down: a fill level every " + (RM_FuelFireMath.InfernoTicksPerLevelAt(chemfuelBurnRate) / 60f).ToString("F1") + " s");
                     chemfuelBurnRate = list.Slider(chemfuelBurnRate, 0.25f, 4f);
                 }
                 list.CheckboxLabeled("Astrofuel detonates", ref astrofuelDetonationEnabled,

@@ -100,6 +100,30 @@
     <recededTerrain>Mud</recededTerrain>
   </RimMandrake.FlowWorks.FluidDef>
 
+  <!-- PROPANE_CANAL_WIRE_STILL_NO_FLUID: the canal form of RM_Liquid_Propane (the propane lake's liquid), so a propane
+       tank, pump or hose fills a cut instead of spilling. Burns as an INFERNO, like chemfuel: a thin, volatile fuel
+       goes up fast and burns away quickly (it shares chemfuel's "burns like gasoline" settings). It never lights
+       itself: the propane hard ban (no ignition without a hot source or spark) holds because only a vanilla Fire or a
+       blast lights a liquid cell (RM_LiquidFire). No surfaceLook of its own: RM_LiquidSurface gives it the
+       RM_Liquid_Propane row's look (the lake's medium-pale grey). PROVISIONAL: fireKind, fireFrontTicksPerCell 2 and ticksPerTile 60
+       copied from chemfuel. -->
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_Propane</defName>
+    <label>liquid propane</label>
+    <fireKind>Inferno</fireKind>
+    <fireFrontTicksPerCell>2</fireFrontTicksPerCell>
+    <floodTerrain>RM_Fill_Propane_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_Propane_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_Propane_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_Propane_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>60</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
   <!-- BOILING_ICY_CANAL_FLUIDS_1: hot/cold feed RM_LiquidHeat (FluidDef.hot/cold). ticksPerTile PROVISIONAL (water-thin, 60). -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_BoilingWater</defName>

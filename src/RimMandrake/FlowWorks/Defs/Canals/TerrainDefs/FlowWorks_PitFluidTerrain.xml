@@ -399,6 +399,111 @@
     </tags>
   </TerrainDef>
 
+  <!-- PROPANE_CANAL_WIRE_STILL_NO_FLUID: RM_Fluid_Propane's fill ladder, cloned from chemfuel's tiers (same
+       pathCost/passability per tier); the propane lake's medium-pale grey (owner, 2026-10-06). -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Propane_Trace</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>knee-deep liquid propane (under 0.75 m)</label>
+    <description>Liquid propane standing ankle-to-knee deep. Wading it is easy. Bitterly cold, it smokes off in a pale haze; a spark sets it off.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(168,168,171)</color>
+    <pathCost>100</pathCost>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Propane_Half</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>shallow liquid propane (about 1 m)</label>
+    <description>Liquid propane standing knee-to-waist deep. Wading it is slow work. Bitterly cold, it smokes off in a pale haze; a spark sets it off.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(168,168,171)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Propane_Brim</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>chest-deep liquid propane (about 1.5 m)</label>
+    <description>Liquid propane standing chest-deep. Crossing it is punishing, but anyone can stand in it. Bitterly cold, it smokes off in a pale haze; a spark sets it off.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(168,168,171)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Propane_Superdeep</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>deep liquid propane (2 m or more)</label>
+    <description>Liquid propane filling a very deep pit. Whatever falls in is held there, and the liquid propane goes to work on it. Bitterly cold, it smokes off in a pale haze; a spark sets it off.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(168,168,171)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Astrofuel_Trace</defName>
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held

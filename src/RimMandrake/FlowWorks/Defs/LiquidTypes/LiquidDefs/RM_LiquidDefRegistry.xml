@@ -454,6 +454,7 @@
       <shallow>RM_PropaneShallow</shallow>
       <deep>RM_PropaneDeep</deep>
     </terrainSuite>
+    <canalFluid>RM_Fluid_Propane</canalFluid>
     <bottled>
       <bottle>RM_Bottle_Propane</bottle>
       <litresPerBottle>1.5</litresPerBottle>
