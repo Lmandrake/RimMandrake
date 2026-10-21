@@ -1,0 +1,1 @@
+A deploy_custom_mods --compose biomes is all-or-nothing: it ships every committed change in every folded folder whatever seat made it (2026-10-21 it carried BENCH's CreatureBehaviors, GelatinousSlime and Webwork DLLs). The tool has no seat markers; before --apply read its DLL '~' lines and name the seats in the report. Only uncommitted work is out of bounds (CHARTER).
