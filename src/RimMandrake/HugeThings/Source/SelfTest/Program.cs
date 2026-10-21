@@ -1,7 +1,7 @@
 // Huge Things offline fuzz entry: the plant half (HugeThingsFuzz), the titan half (TitanicFuzz, merged from Titanic Creatures
 // 2026-10-07) and the seam between them (HugeTitanFuzz). Knobs (forwarded by selftest_hugethings_fuzz.py): --fuzz-scale F
 // (multiplies every case count; must be > 0), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME, where NAME is
-// any|full|boundary|symmetry|ledger|planner|items|root|cache|damage|hitbox|determinism (plants), tier|yield|crush|pool (titans) or
+// any|full|boundary|symmetry|ledger|planner|items|root|cache|damage|hitbox|determinism (plants), tier|yield|crush|pool|visitors (titans) or
 // smash|smashstep|gates|titandeterminism (the seam) or clearing|line|lane|clearingdeterminism (titan breakthrough clearing) or
 // breadth|gap|table|sandwich|plug|monotone|restless|trench|wallsdeterminism or memo|heldprune (walls-and-slots decider memos) (big creatures vs walls and slots).
 using System;

@@ -4,6 +4,7 @@
 //   yield  sub-linear butcher factor: bounds, monotone in size, total yield never shrinks as the beast grows
 //   crush  the crush table decision, wake damage monotone in tier, roof rule, T3 outright-destroy only for buildings
 //   pool   T3 corpse-site pool: daily spoilage and per-session harvest conserve units and always terminate
+//   visitors  corpse-site scavengers/camps drain the pool; the titan-event gate (card #5) and the footfall warning band
 // A failing case is printed as `family seed N: message`; --fuzz-seed N replays it. PROVISIONAL numbers (tier floors 4/8/20, crush 20/60,
 // spoilage 0.15/0.08, yield floor 0.15) are BENCH-draft tuning; the properties here hold for any value in the settings sliders.
 using System;
@@ -338,6 +339,12 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                     int w = RM_TitanicKernel.WarningTicks(h);
                     Check(w >= 625 && w <= 180000, "warning ticks outside [625, 3 days]");
                     Check(RM_TitanicKernel.WarningTicks(float.NaN) == 625 && RM_TitanicKernel.WarningTicks(float.PositiveInfinity) == 625, "a non-finite warning setting escaped");
+                    // a huge finite setting is the 3-day cap, not an overflowed cast landing on the floor
+                    foreach (float big in new[] { 1e15f, 1e30f, float.MaxValue, F(r, 72f, 1e12f) })
+                        Check(RM_TitanicKernel.WarningTicks(big) == 180000, $"WarningTicks({big}) = {RM_TitanicKernel.WarningTicks(big)}, want the 3-day cap");
+                    Check(RM_TitanicKernel.WarningTicks(-1e30f) == 625, "a hugely negative warning setting is not the floor");
+                    float hh = F(r, 0.25f, 72f);
+                    Check(RM_TitanicKernel.WarningTicks(hh) == (int)Math.Round(hh * 2500.0), $"WarningTicks({hh}) is not hours x 2500 inside the band");
                 }
                 catch (Exception e) { fails.Add($"visitors seed {seed}: {e.Message}"); }
             }
