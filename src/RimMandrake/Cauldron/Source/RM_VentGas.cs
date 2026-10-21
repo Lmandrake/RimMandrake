@@ -231,10 +231,14 @@ namespace RimMandrake.Cauldron
             }
         }
 
+        // Dirties each gassy cell through MapMeshDirty, which returns when the map's drawer has no sections yet. Vanilla's
+        // WholeMapChanged has no such guard: on a map whose drawer was never built (a load that failed in FinalizeLoading,
+        // 2026-10-21 RM_TestSite_cauldron_v1) it threw NRE and the drift row's ClearOf fixture died with it.
         public void ClearAll()
         {
+            byte[] d = cells.Density;
+            for (int i = 0; i < d.Length; i++) if (d[i] != 0) dirty(i);
             cells.Clear();
-            map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.Gas);
         }
 
         public override void ExposeData()
