@@ -91,7 +91,14 @@ ROW_SHOWS = {
 }
 # bars only an extension chain claims (selftest_extensions asserts this list is exactly the difference)
 EXTENSION_ONLY_BARS = ["canal_fire_reaches_reservoir", "reservoir_recharge_progress_visible", "sluice_gate_state_legible",
-                       "spikes_read_distinct", "still_water_one_surface_height"]
+                       "spikes_read_distinct", "still_water_one_surface_height",
+                       # the 16 bars accepted at the 2026-10-20 sitting: claimed by UNMEASURED live components only
+                       "climbing_gear_reads_as_kit", "deep_water_pawn_swims", "geared_pawn_climbs_out",
+                       "geared_pawn_scales_built_wall", "half_metre_water_reads_as_silt", "jump_into_pit_lands_unhurt",
+                       "limitless_body_marked", "pawn_walks_under_deck", "pipe_meets_building_centre",
+                       "pit_cover_unlike_bridge", "portable_ladder_leans_on_its_wall", "pump_hose_joins_at_side_port",
+                       "raiders_never_shelter_in_a_cage", "suspension_bridge_reads_hung", "trench_wall_cover_shown",
+                       "wall_ladder_rides_on_rails"]
 
 # core row -> the Mod Settings toggle it flips (both sides proven in the same row or its pair)
 ROW_TOGGLES = {
@@ -525,6 +532,138 @@ def pump_ports_one_per_side(t):
                "both linked); a second reel at the north port and a hose end at a corner read uncoupled; a pipe at a corner "
                "and one on a side are both on its net and drawn under to its centre; one port drawn per side by eye "
                "(FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE)")
+
+
+# The rest of the 16 bars accepted at the 2026-10-20 sitting (commit 70f488619; SELFTEST_SWEEP_FIX_FOUR_REDS_REMAIN): each
+# is claimed by ONE live component that reports UNMEASURED naming its live check, after the C# SelfTest cases that already
+# prove its mechanism offline. Nothing here is a PASS: every bar below stays owed live work (EXTENSION_ONLY_BARS).
+# Look bars ("reads as") are judged by eye on a staged frame; mechanism bars by a state read through the bridge.
+WATER_LADDER_CASES = ["P14_one_ladder_maps_metres_to_def_for_every_rung"]
+
+
+@suite.chain("water_ladder_silt")
+def water_ladder_silt(t):
+    """Offline: 0.5 m of water maps to RM_WaterThin (the silt rung), 1 m to WaterShallow. 0 ticks, no bridge."""
+    _bar_chain(t, "water_ladder_selftest_ran", WATER_LADDER_CASES, "water_silt_live", "half_metre_water_reads_as_silt",
+               "a dug channel filled to 0.5 m beside one filled to 1 m on a review map: the 0.5 m squares read grey-brown "
+               "silt (terrain RM_WaterThin), the 1 m squares the first blue (WaterShallow), judged by eye "
+               "(POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD)")
+
+
+SWIM_CASES = ["Swim_pawn_dropped_in_deep_water", "Swim_swimmer_vs_nonswimmer_in_2m_8m_and_lake_water",
+              "Swim_who_swims_by_race_gene_and_load", "Swim_wired_at_call_sites"]
+
+
+@suite.chain("deep_water_swims")
+def deep_water_swims(t):
+    """Offline: a swimmer in water 2 m or deeper swims, a non-swimmer never enters it. 0 ticks, no bridge."""
+    _bar_chain(t, "swim_selftest_ran", SWIM_CASES, "swim_live", "deep_water_pawn_swims",
+               "a colonist ordered into a 3 m dug pool: drawn at the surface, head and shoulders above it, never on the floor "
+               "nor standing on top of it, judged by eye on a staged frame; RM_Swim reads him swimming (DEEP_WATER_BUILD_SWIM_OR_SINK)")
+
+
+def _trench_cover_selftest():
+    """The trench-cover C# SelfTest (SelfTestTrench, net8.0); raise UNMEASURED when it could not run, FAIL when it failed."""
+    import subprocess
+    runner = os.path.join(os.path.dirname(os.path.dirname(HERE)), "RimMandrake", "Utils", "selftest_flowworks_trench_cover.py")
+    r = subprocess.run([sys.executable, runner], capture_output=True, text=True, timeout=1200)
+    out = (r.stderr or "") + (r.stdout or "")
+    if "UNMEASURED" in out and r.returncode != 0:
+        raise ExpectationFailed("UNMEASURED: the trench-cover SelfTest did not run: %s" % out[-300:])
+    if r.returncode != 0:
+        raise ExpectationFailed("trench-cover SelfTest failed (rc=%s): %s" % (r.returncode, out[-300:]))
+
+
+@suite.chain("trench_cover_and_raiders")
+def trench_cover_and_raiders(t):
+    """Offline: the trench-wall cover table (SelfTestTrench). No bridge."""
+    with t.component("trench_cover_selftest_ran"):
+        if t._guard():
+            _trench_cover_selftest()
+    t.upstream_failed = False
+    with t.component("trench_cover_live", shows=["trench_wall_cover_shown"]):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: live check owed -- a raider aiming at a colonist waist-deep in a 1 m hole "
+                                    "and at one chest-deep in a 1.5 m hole: the hit-chance breakdown shows a 'trench wall' "
+                                    "cover line, larger for the chest-deep one (TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT)")
+    # the cage guard (RM_TrenchCover.IsCageFor, setting trenchAiAvoidsCages) has NO offline case yet: the live read is all of it
+    with t.component("trench_cage_live", shows=["raiders_never_shelter_in_a_cage"]):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: live check owed -- a raid on a map with a climbable trench and a sheer 4 m "
+                                    "pocket beside it: every raider that takes cover in the dug ground stands on a square "
+                                    "with a way out, none in the pocket; the TRENCH hit-report line reads cage=False for each "
+                                    "(RM_TrenchCover.IsCageFor; TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT Q5)")
+
+
+PIT_GEAR_CASES = ["PitAccess_climbing_gear_climbs_every_step", "PitAccess_gear_is_slow_only_past_the_natural_limit",
+                  "PitAccess_portable_ladder_reach", "PitAccess_defs_and_settings_shipped", "PitAccess_call_sites_wired"]
+
+
+@suite.chain("pit_access_gear_ladders")
+def pit_access_gear_ladders(t):
+    """Offline: climbing gear climbs out of a sheer pit, a portable ladder reaches only so deep. 0 ticks, no bridge."""
+    _bar_chain(t, "pit_access_selftest_ran", PIT_GEAR_CASES, "climb_out_live", "geared_pawn_climbs_out",
+               "a colonist wearing RM_ClimbingGear dropped on the floor of a sheer 4 m pit with no ladder: BEFORE frame on the "
+               "floor, AFTER frame on the ground beside it, position read from game state (PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS)")
+    t.upstream_failed = False
+    with t.component("portable_ladder_live", shows=["portable_ladder_leans_on_its_wall"]):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: live check owed -- RM_LadderPortable set in a 2 m pit leans diagonally against "
+                                    "the wall it serves and a colonist climbs out by it; one set against a wall too tall for it "
+                                    "lies flat and gives no way out, judged by eye and read from game state")
+    with t.component("climbing_gear_look", shows=["climbing_gear_reads_as_kit"]):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: look owed -- RM_ClimbingGear on the ground and worn reads as one belt-or-"
+                                    "backpack kit of ropes, small grappling hooks and climbing claws, judged by eye on a "
+                                    "staged frame (art ledger)")
+
+
+WALL_CLIMB_CASES = ["WallClimb_unroofed_on_both_sides_and_the_wall", "WallClimb_gear_required_raiders_by_setting",
+                    "WallClimb_is_slow_x20", "WallClimb_routes_only_when_shorter", "WallClimb_wiring"]
+
+
+@suite.chain("wall_scaling_gear")
+def wall_scaling_gear(t):
+    """Offline: a pawn with climbing gear scales an unroofed built wall, slowly; one without cannot. 0 ticks, no bridge."""
+    _bar_chain(t, "wall_climb_selftest_ran", WALL_CLIMB_CASES, "wall_climb_live", "geared_pawn_scales_built_wall",
+               "two colonists on one side of an unroofed doorless built wall, one wearing RM_ClimbingGear, both ordered to a "
+               "cell on the far side: BEFORE/AFTER frames show the geared one across and the other not, read from game state "
+               "(WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS)")
+
+
+SUSPENSION_CASES = ["Suspension_spans_supports_and_swing_order", "Suspension_deck_built_over_the_hole_floor",
+                    "Underpass_band_step_clearance_and_sunken_height", "Underpass_wiring_masks_sites_not_tunnels",
+                    "SpanBase_cover_is_the_trap_tier_of_the_base", "SpanBase_cover_read_is_decked_surface_no_underpass"]
+
+
+@suite.chain("suspension_bridges_and_covers")
+def suspension_bridges_and_covers(t):
+    """Offline: a suspension deck hangs between end supports over a hole, pawns pass beneath, a cover is the trap tier."""
+    _bar_chain(t, "suspension_selftest_ran", SUSPENSION_CASES, "under_deck_live", "pawn_walks_under_deck",
+               "a colonist on the floor of a 2 m trench crossed by an RM_SuspensionBridge deck, ordered to the far side: "
+               "BEFORE frame on one side of the deck, AFTER on the other, having walked beneath it, position read from game "
+               "state (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD; UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL)")
+    t.upstream_failed = False
+    with t.component("suspension_look", shows=["suspension_bridge_reads_hung"]):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: look owed -- an RM_SuspensionBridge over a dug hole reads as a deck hung "
+                                    "between anchors at its two ends, not a floor tile or the game's own bridge, judged by eye "
+                                    "(SUSPENSION_ART_RESKIN_HE_SEES_FIRST)")
+    with t.component("cover_vs_bridge_look", shows=["pit_cover_unlike_bridge"]):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: look owed -- a pit cover and a suspension bridge side by side: the cover "
+                                    "passes for ground, the bridge reads as a built crossing, judged by eye")
+
+
+@suite.chain("pipes_meet_centre")
+def pipes_meet_centre(t):
+    """Offline: a pipe or hose beside a tank or machine is drawn on beneath it to its centre. 0 ticks, no bridge."""
+    _bar_chain(t, "pipe_centre_selftest_ran", ["PipeStub_1x1_runs_edge_to_centre",
+                                               "PipeStub_multicell_enters_at_edge_then_turns_to_centre",
+                                               "PipeStub_wiring_shipped"], "pipe_centre_live", "pipe_meets_building_centre",
+               "a pipe and a hose each meeting a tank, a pump, a tap and a sprinkler: each drawn running on beneath it to its "
+               "centre, seen through its see-through margins and hidden by its solid body, never stopping at its edge, "
+               "judged by eye at play zoom (PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE)")
 
 
 # FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (owner 2026-10-16): dev-placed flow source and flow sink (Source/MapControls/).
