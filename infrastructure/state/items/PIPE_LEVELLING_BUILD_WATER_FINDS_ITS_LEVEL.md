@@ -16,6 +16,14 @@ Passive gravity levelling between world bodies: `design/RimMandrake/flowworks_pi
   convergence tolerance, thresholded repaint, invalidation on topology change.
 ESTIMATE 3 to 5 agent-days after a 0.5-day feasibility read of the solver's per-body API.
 
+## criteria
+
+- A1 L0: offline built baa270b9e8+0ac23150a2: SelfTest LEVELLING_* (Source/SelfTest/LevellingChecks.cs) green: exact volume incl. limitless net, energy never rises, two-body gap never grows or flips, no link reverses, no exchange between liquids; 300-scene fuzz all reach a fixed point; 1-square vs 100-square basin, ten parallel links, same-body loop, siphon, exposed intake, water/oil, dry receiver, sea to brim.
+- A2 L0: budget case: 200 bodies (40 of 40,000 squares), 400 links, 64 links per cycle: kernel 89 us per 250-tick cycle; feasibility written in the design doc's ### Levelling feasibility.
+- A3 L1: 325x325 map, two 40,000-cell basins, 200 links: live tick time and allocations of RM_Levelling.Tick (the dug-run walk is unmeasured offline).
+- A4 L2: two ponds of unequal height joined by a hose with two open ends level out (HoseNetProbe levelMoves > 0, surfaces within 1 cm), the hose reads "Levelling: flowing" then "level".
+- A5 L2: a water pond and an oil pit joined the same way exchange nothing; the hose reads "different liquids never mix".
+
 ## verify
 - L0: feasibility note — which solver call gives a body's surface and accepts a bounded transfer.
 - L1: selftests — 1-cell vs 100-cell basin at different floors converge to one surface, volume conserved; ten parallel
