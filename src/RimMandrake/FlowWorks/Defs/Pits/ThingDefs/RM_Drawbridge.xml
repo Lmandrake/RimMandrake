@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 3 (design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md R2,
+       owner follow-ups 2026-10-20): the winch house of one drawbridge leaf, built beside the leaf's hinge anchor on its own
+       bank. PLACEHOLDER ART: the anchor's own texture until the commissioned drawbridge art lands (its texPaths will be in the
+       design doc's art section); no drawbridge art is generated or queued here. Costs are proposals. -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_DrawbridgeWinch_Timber</defName>
+    <label>timber drawbridge winch house</label>
+    <description>The hand winch that raises and lowers one leaf of a timber drawbridge. Build it beside the anchor the leaf is hinged on. A colonist turns it to raise or lower the leaf. If it is destroyed while the leaf is up, the leaf crashes down on anything beneath it.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_DrawbridgeWinch</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <pathCost>30</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <hasInteractionCell>false</hasInteractionCell>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <costList>
+      <WoodLog>60</WoodLog>
+    </costList>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>1200</WorkToBuild>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <building>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DrawbridgeExtension">
+        <tier>Timber</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_DrawbridgeWinch_Steel</defName>
+    <label>steel drawbridge winch house</label>
+    <description>The powered winch that raises and lowers one leaf of a steel drawbridge. Build it beside the anchor the leaf is hinged on and connect it to power. A colonist throws its lever; the motor does the rest. Without power the leaf stops where it is. If it is destroyed while the leaf is up, the leaf crashes down on anything beneath it.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_DrawbridgeWinch</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <pathCost>30</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <hasInteractionCell>false</hasInteractionCell>
+    <tickerType>Normal</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <costList>
+      <Steel>80</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <WorkToBuild>1800</WorkToBuild>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>150</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+    </comps>
+    <building>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <researchPrerequisites>
+      <li>Electricity</li>
+    </researchPrerequisites>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DrawbridgeExtension">
+        <tier>Steel</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <JobDef>
+    <defName>RM_WorkDrawbridge</defName>
+    <driverClass>RimMandrake.FlowWorks.Pits.JobDriver_WorkDrawbridge</driverClass>
+    <reportString>working the drawbridge at TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <!-- Same work type as flicking a switch (BasicWorker): working a drawbridge is an order the player gave. -->
+  <WorkGiverDef>
+    <defName>RM_WorkDrawbridgeGiver</defName>
+    <label>work drawbridges</label>
+    <giverClass>RimMandrake.FlowWorks.Pits.WorkGiver_Drawbridge</giverClass>
+    <workType>BasicWorker</workType>
+    <verb>work</verb>
+    <gerund>working a drawbridge</gerund>
+    <priorityInType>110</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

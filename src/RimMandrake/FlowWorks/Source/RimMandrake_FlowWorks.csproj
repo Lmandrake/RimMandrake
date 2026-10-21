@@ -226,6 +226,7 @@
     <Compile Include="RM_SuspensionMath.cs" />
     <Compile Include="RM_DrawbridgeMath.cs" />
     <Compile Include="Pits\Drawbridge\RM_Drawbridges.cs" />
+    <Compile Include="Pits\Drawbridge\RM_DrawbridgeControl.cs" />
   </ItemGroup>
 
   <!-- ManyWaters, merged 2026-09-16. Namespace

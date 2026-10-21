@@ -229,6 +229,87 @@ namespace RimMandrake.FlowWorks
 			return targetRaised ? progress >= fullTicks : progress <= 0;
 		}
 
+		// ── Phase 3: control (R2, R4, owner follow-ups 2026-10-20) ─────────────────────────────────
+
+		/// <summary>A player order waiting for a colonist to carry it out at the winch (or, for a raise, at the far anchor).</summary>
+		public const int OrderNone = 0;
+		public const int OrderRaise = 1;
+		public const int OrderLower = 2;
+
+		/// <summary>How often (ticks) the map's free-hostile count is re-read for peace/locked mode.</summary>
+		public const int ModeCheckInterval = 60;
+
+		/// <summary>A steel lever throw: the colonist sets the powered drive going and leaves (ticks).</summary>
+		public const int LeverTicks = 60;
+
+		/// <summary>The wall-ladder rule (answer 3): a leaf raises from either bank and lowers only from its winch (control) bank.</summary>
+		public static bool MayWorkFrom(bool onControlBank, bool raise)
+		{
+			return raise || onControlBank;
+		}
+
+		/// <summary>Whether the drive can move the leaf now: steel needs power (and freezes without it, review answer 4); timber
+		/// needs a colonist at the winch this step. No winch house: nothing moves it.</summary>
+		public static bool DriveMoves(SuspensionTier t, bool hasWinch, bool powered, bool worked)
+		{
+			if (!hasWinch)
+			{
+				return false;
+			}
+			return IsPowered(t) ? powered : worked;
+		}
+
+		/// <summary>A steel leaf with a winch but no power is frozen where it is (it holds; no hand fallback, no drop).</summary>
+		public static bool FrozenFor(SuspensionTier t, bool hasWinch, bool powered)
+		{
+			return IsPowered(t) && hasWinch && !powered;
+		}
+
+		/// <summary>R4 + review answer 3: only a FREE hostile locks a drawbridge: an active hostile threat that is neither held by
+		/// the pit engine (trapped) nor a prisoner/captive.</summary>
+		public static bool IsFreeHostile(bool hostileActiveThreat, bool trappedInPit, bool prisonerOrCaptive)
+		{
+			return hostileActiveThreat && !trappedInPit && !prisonerOrCaptive;
+		}
+
+		/// <summary>Peace mode (no free hostile): a leaf that is up (or going up) and not held raised lowers itself for the
+		/// colony; locked mode never starts one.</summary>
+		public static bool ShouldAutoLower(bool locked, bool holdRaised, int progress, bool targetRaised, bool autoLowering)
+		{
+			return !locked && !holdRaised && !autoLowering && (progress > 0 || targetRaised);
+		}
+
+		/// <summary>Locking cancels a pending automatic lower (R4: the switch is atomic); the leaf goes back to raised.</summary>
+		public static bool ShouldCancelAutoLower(bool locked, bool autoLowering)
+		{
+			return locked && autoLowering;
+		}
+
+		/// <summary>A raise ordered in peace is a deliberate one and holds the leaf up; a raise ordered while locked comes down
+		/// again (peace mode) once the threat is gone; a lower order always clears the hold.</summary>
+		public static bool HoldAfterOrder(bool raise, bool locked, bool holdBefore)
+		{
+			return raise ? (!locked || holdBefore) : false;
+		}
+
+		/// <summary>Owner follow-up (2026-10-20): a destroyed winch house crashes its leaf down. True when the crash hits
+		/// anything (the leaf was off its seat); a lowered leaf has nothing to crash.</summary>
+		public static bool WinchLossCrashes(int progress)
+		{
+			return progress > 0;
+		}
+
+		/// <summary>R11 lock readout.</summary>
+		public static string LockLine(bool locked, int freeHostiles, bool holdRaised)
+		{
+			if (locked)
+			{
+				return "Locked: " + freeHostiles + " free hostile" + (freeHostiles == 1 ? "" : "s") + " on the map; it moves only when ordered";
+			}
+			return holdRaised ? "Peace: held raised by order" : "Peace: lowers itself for your people";
+		}
+
+
 		/// <summary>R11 readout: "lowered", "raised", "raising 40%", "lowering 60%".</summary>
 		public static string StateLine(int progress, bool targetRaised, int fullTicks, bool frozen)
 		{

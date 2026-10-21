@@ -31,6 +31,15 @@ namespace RimMandrake.FlowWorks.Pits
 		public bool holdRaised;
 		/// <summary>The tip rule (R3) has run for the raise now under way; cleared when the leaf is fully lowered again.</summary>
 		public bool tipCommitted;
+		/// <summary>Phase 3: a player order (RM_DrawbridgeMath.Order*) waiting for a colonist at the winch (or, raising, at the
+		/// far anchor).</summary>
+		public int pendingOrder;
+		/// <summary>Phase 3, R4: this lower was started by peace mode (not ordered); locking cancels it.</summary>
+		public bool autoLowering;
+		/// <summary>Phase 3: the winch house this leaf hangs on (one per leaf, on its own hinge bank). Null: none built (or lost).</summary>
+		public Building_DrawbridgeWinch winch;
+		/// <summary>A colonist is at the hand winch until this tick (not saved: a reload resumes the job, which sets it again).</summary>
+		public int workedUntilTick = -1;
 
 		public LeafSpan Span => new LeafSpan(first, last, hingeAtFirst);
 
@@ -46,6 +55,9 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref frozen, "frozen", false);
 			Scribe_Values.Look(ref holdRaised, "holdRaised", false);
 			Scribe_Values.Look(ref tipCommitted, "tipCommitted", false);
+			Scribe_Values.Look(ref pendingOrder, "pendingOrder", 0);
+			Scribe_Values.Look(ref autoLowering, "autoLowering", false);
+			Scribe_References.Look(ref winch, "winch");
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				version = RM_DrawbridgeMath.LeafRecordVersion;
@@ -160,14 +172,27 @@ namespace RimMandrake.FlowWorks.Pits
 			return l != null && RM_DrawbridgeMath.IsRaised(l.Span, i, l.progress, FullTicks(r, l));
 		}
 
-		/// <summary>Set a leaf's target. Phase 1 is the order itself; who may give it and from which bank is phase 3's.</summary>
-		public static void Order(SuspensionBridgeRecord r, DrawbridgeLeaf l, bool raise)
+		/// <summary>Phase 3: the player's order. A colonist carries it out (WorkGiver_Drawbridge): raising from either bank,
+		/// lowering only from the winch bank. A raise ordered in peace holds the leaf up; one ordered while locked comes down
+		/// again once the threat is gone; a lower clears the hold.</summary>
+		public static void Order(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, bool raise)
 		{
 			if (r == null || l == null)
 			{
 				return;
 			}
+			bool locked = FreeHostileCount(map, true) > 0;
+			l.holdRaised = RM_DrawbridgeMath.HoldAfterOrder(raise, locked, l.holdRaised);
+			l.pendingOrder = raise ? RM_DrawbridgeMath.OrderRaise : RM_DrawbridgeMath.OrderLower;
+			l.autoLowering = false;
+		}
+
+		/// <summary>Dev only: set the target directly (the drive still has to move it).</summary>
+		public static void DevSetTarget(DrawbridgeLeaf l, bool raise)
+		{
 			l.targetRaised = raise;
+			l.holdRaised = raise;
+			l.pendingOrder = RM_DrawbridgeMath.OrderNone;
 		}
 
 		/// <summary>From the bridges map component's tick: move every leaf that is not at its target and may move.</summary>
@@ -188,7 +213,19 @@ namespace RimMandrake.FlowWorks.Pits
 				foreach (DrawbridgeLeaf l in r.leaves)
 				{
 					int full = FullTicks(r, l);
-					if (l.frozen || RM_DrawbridgeMath.AtTarget(l.progress, l.targetRaised, full))
+					Mode(comp.map, r, l, now);
+					Building_DrawbridgeWinch w = l.winch != null && l.winch.Spawned ? l.winch : null;
+					bool powered = w != null && w.Powered;
+					l.frozen = RM_DrawbridgeMath.FrozenFor(r.tier, w != null, powered);
+					if (RM_DrawbridgeMath.AtTarget(l.progress, l.targetRaised, full))
+					{
+						if (l.progress == 0)
+						{
+							l.autoLowering = false;
+						}
+						continue;
+					}
+					if (l.frozen || !RM_DrawbridgeMath.DriveMoves(r.tier, w != null, powered, now <= l.workedUntilTick))
 					{
 						continue;
 					}
@@ -483,6 +520,269 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
+		// ── Phase 3: control mode (R4), winch loss ───────────────────────────────────────────────
+
+		/// <summary>Per map: [0] the free-hostile count, [1] the tick it was read (weak: a dropped map is not kept alive).</summary>
+		private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, int[]> hostileRead =
+			new System.Runtime.CompilerServices.ConditionalWeakTable<Map, int[]>();
+
+		/// <summary>Free hostiles on the map (R4, review answer 3): active hostile threats to the colony that the pit engine does
+		/// not hold trapped and that are not prisoners. fresh: count now (the commit-time check); else the count is re-read at
+		/// most every ModeCheckInterval ticks.</summary>
+		public static int FreeHostileCount(Map map, bool fresh)
+		{
+			if (map == null)
+			{
+				return 0;
+			}
+			int now = Find.TickManager?.TicksGame ?? 0;
+			int[] read = hostileRead.GetValue(map, _ => new[] { 0, int.MinValue / 2 });
+			if (!fresh && now - read[1] < RM_DrawbridgeMath.ModeCheckInterval)
+			{
+				return read[0];
+			}
+			int n = 0;
+			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+			{
+				if (!p.HostileTo(Faction.OfPlayer))
+				{
+					continue;
+				}
+				bool threat = GenHostility.IsActiveThreatTo(p, Faction.OfPlayer);
+				if (RM_DrawbridgeMath.IsFreeHostile(threat, threat && RM_SuperdeepTrap.IsTrapped(p), p.IsPrisoner))
+				{
+					n++;
+				}
+			}
+			read[0] = n;
+			read[1] = now;
+			return n;
+		}
+
+		/// <summary>R4 for one leaf: locking cancels a pending automatic lower (back to raised); in peace a leaf that is up and
+		/// not held lowers itself, the hostile check made again at the moment it commits.</summary>
+		private static void Mode(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, int now)
+		{
+			bool locked = FreeHostileCount(map, false) > 0;
+			if (RM_DrawbridgeMath.ShouldCancelAutoLower(locked, l.autoLowering))
+			{
+				l.targetRaised = true;
+				l.autoLowering = false;
+				return;
+			}
+			if (RM_DrawbridgeMath.ShouldAutoLower(locked, l.holdRaised, l.progress, l.targetRaised, l.autoLowering)
+				&& l.pendingOrder != RM_DrawbridgeMath.OrderRaise && FreeHostileCount(map, true) == 0)
+			{
+				l.targetRaised = false;
+				l.autoLowering = true;
+			}
+		}
+
+		/// <summary>A winch house was built: it takes the leaf whose hinge anchor it stands beside (one winch per leaf).</summary>
+		public static void LinkWinch(Building_DrawbridgeWinch w)
+		{
+			RM_MapComponent_SuspensionBridges comp = RM_MapComponent_SuspensionBridges.Of(w.Map);
+			if (comp == null)
+			{
+				return;
+			}
+			foreach (SuspensionBridgeRecord r in comp.Bridges)
+			{
+				if (!r.IsDrawbridge)
+				{
+					continue;
+				}
+				foreach (DrawbridgeLeaf l in r.leaves)
+				{
+					if (l.winch != null && l.winch.Spawned)
+					{
+						continue;
+					}
+					for (int lane = 0; lane < r.width; lane++)
+					{
+						if (w.Position.AdjacentToCardinal(r.Cell(lane, HingeIndex(l))))
+						{
+							l.winch = w;
+							return;
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>The leaf (and its bridge) a winch house works, or false.</summary>
+		public static bool LeafOfWinch(Building_DrawbridgeWinch w, out SuspensionBridgeRecord rec, out DrawbridgeLeaf leaf)
+		{
+			rec = null;
+			leaf = null;
+			RM_MapComponent_SuspensionBridges comp = w?.Map == null ? null : RM_MapComponent_SuspensionBridges.Of(w.Map);
+			if (comp == null)
+			{
+				return false;
+			}
+			foreach (SuspensionBridgeRecord r in comp.Bridges)
+			{
+				if (r.IsDrawbridge)
+				{
+					foreach (DrawbridgeLeaf l in r.leaves)
+					{
+						if (l.winch == w)
+						{
+							rec = r;
+							leaf = l;
+							return true;
+						}
+					}
+				}
+			}
+			return false;
+		}
+
+		/// <summary>Owner follow-up (2026-10-20): a destroyed winch house crashes its leaf down, and anything under it is hit.
+		/// Steel losing only its power still freezes (Tick).</summary>
+		public static void Notify_WinchLost(Map map, Building_DrawbridgeWinch w)
+		{
+			RM_MapComponent_SuspensionBridges comp = RM_MapComponent_SuspensionBridges.Of(map);
+			if (comp == null)
+			{
+				return;
+			}
+			foreach (SuspensionBridgeRecord r in comp.Bridges)
+			{
+				if (!r.IsDrawbridge)
+				{
+					continue;
+				}
+				foreach (DrawbridgeLeaf l in r.leaves)
+				{
+					if (l.winch != w)
+					{
+						continue;
+					}
+					l.winch = null;
+					if (RM_DrawbridgeMath.WinchLossCrashes(l.progress))
+					{
+						Crash(map, r, l);
+					}
+				}
+			}
+		}
+
+		public static int CrashCount;
+		public static int CrashHits;
+
+		/// <summary>The leaf slams down to lowered at once: everyone on its squares (down in the hole under it; nobody rides a
+		/// raised leaf) is hit like a falling bridge square. The deck is not destroyed; it is ground again.</summary>
+		public static void Crash(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)
+		{
+			List<Pawn> hit = new List<Pawn>();
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				for (int i = l.first; i <= l.last; i++)
+				{
+					foreach (Thing t in r.Cell(lane, i).GetThingList(map))
+					{
+						if (t is Pawn p && !p.Dead && !p.Flying)
+						{
+							hit.Add(p);
+						}
+					}
+				}
+			}
+			l.progress = 0;
+			l.targetRaised = false;
+			l.tipCommitted = false;
+			l.autoLowering = false;
+			l.holdRaised = false;
+			l.pendingOrder = RM_DrawbridgeMath.OrderNone;
+			Apply(map, r, l);
+			foreach (Pawn p in hit)
+			{
+				if (!p.Spawned || p.Dead)
+				{
+					continue;
+				}
+				var dinfo = new DamageInfo(DamageDefOf.Crush, Rand.RangeInclusive(RM_SuspensionMath.CrushDamageMin, RM_SuspensionMath.CrushDamageMax),
+					0f, -1f, null, null, null, DamageInfo.SourceCategory.Collapse);
+				dinfo.SetBodyRegion(BodyPartHeight.Top, BodyPartDepth.Outside);
+				p.TakeDamage(dinfo);
+				CrashHits++;
+			}
+			CrashCount++;
+			Messages.Message("A drawbridge lost its winch house and crashed down" + (hit.Count > 0 ? " on " + hit.Count + "." : "."),
+				new TargetInfo(r.Cell(0, l.first), map), MessageTypeDefOf.NegativeEvent);
+		}
+
+		/// <summary>The readout lines for one leaf (R11).</summary>
+		public static string InspectLine(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)
+		{
+			int full = FullTicks(r, l);
+			int n = FreeHostileCount(map, false);
+			string s = "Drawbridge leaf: " + RM_DrawbridgeMath.StateLine(l.progress, l.targetRaised, full, l.frozen);
+			if (l.frozen)
+			{
+				s += " (no power)";
+			}
+			if (l.winch == null || !l.winch.Spawned)
+			{
+				s += "\nNo winch house: build one beside the hinge anchor";
+			}
+			if (l.pendingOrder != RM_DrawbridgeMath.OrderNone)
+			{
+				s += "\nWaiting for a colonist to " + (l.pendingOrder == RM_DrawbridgeMath.OrderRaise ? "raise" : "lower (winch bank only)") + " it";
+			}
+			return s + "\n" + RM_DrawbridgeMath.LockLine(n > 0, n, l.holdRaised);
+		}
+
+		/// <summary>The player's controls for one leaf: raise, lower (carried out by a colonist), hold raised.</summary>
+		public static IEnumerable<Gizmo> Gizmos(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)
+		{
+			if (map == null || r == null || l == null)
+			{
+				yield break;
+			}
+			yield return new Command_Action
+			{
+				defaultLabel = "Raise drawbridge",
+				defaultDesc = "A colonist raises this leaf, from either bank (timber by hand at the winch, steel by its powered winch). "
+					+ "Anyone on it is tipped onto the hinge bank; whoever finds no room falls into the pit. Raised in peacetime, it stays up; "
+					+ "raised while hostiles are about, it lowers itself for your people once they are gone.",
+				icon = TexCommand.ForbidOff,
+				action = () => Order(map, r, l, true),
+			};
+			yield return new Command_Action
+			{
+				defaultLabel = "Lower drawbridge",
+				defaultDesc = "A colonist lowers this leaf. Only from the winch house's bank.",
+				icon = TexCommand.ForbidOn,
+				action = () => Order(map, r, l, false),
+			};
+			yield return new Command_Toggle
+			{
+				defaultLabel = "Hold raised",
+				defaultDesc = "In peacetime a drawbridge lowers itself for your people. Hold raised keeps it up.",
+				icon = TexCommand.HoldOpen,
+				isActive = () => l.holdRaised,
+				toggleAction = () => l.holdRaised = !l.holdRaised,
+			};
+		}
+
+		/// <summary>The gizmos a selected deck square shows: its leaf's controls, then the dev tools.</summary>
+		public static IEnumerable<Gizmo> DeckGizmos(Map map, SuspensionBridgeRecord r, IntVec3 at)
+		{
+			if (r != null && r.IsDrawbridge && r.TryIndexOf(at, out _, out int i) && LeafOf(r, i) is DrawbridgeLeaf l)
+			{
+				foreach (Gizmo g in Gizmos(map, r, l))
+				{
+					yield return g;
+				}
+			}
+			foreach (Gizmo g in DevGizmos(map, r))
+			{
+				yield return g;
+			}
+		}
+
 		/// <summary>Phase 1 has no player controls yet (phase 3 adds the winch job and the sided orders): god-mode gizmos to make
 		/// a bridge a drawbridge and to raise or lower each leaf, for the functional script and a joint look.</summary>
 		public static IEnumerable<Gizmo> DevGizmos(Map map, SuspensionBridgeRecord r)
@@ -515,7 +815,7 @@ namespace RimMandrake.FlowWorks.Pits
 				yield return new Command_Action
 				{
 					defaultLabel = "DEV: " + (l.targetRaised ? "lower" : "raise") + " leaf " + (k + 1),
-					action = () => Order(r, l, !l.targetRaised),
+					action = () => DevSetTarget(l, !l.targetRaised),
 				};
 			}
 		}

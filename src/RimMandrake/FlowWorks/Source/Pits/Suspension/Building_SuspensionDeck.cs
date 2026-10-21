@@ -270,6 +270,10 @@ namespace RimMandrake.FlowWorks.Pits
 			string s = base.GetInspectString();
 			SuspensionBridgeRecord r = Record;
 			string line = r == null ? "Suspension bridge (" + RM_SuspensionMath.TierLabel(Tier) + ")" : Bridges.InspectLines(r, Position);
+			if (r != null && r.IsDrawbridge && r.TryIndexOf(Position, out _, out int li) && RM_Drawbridges.LeafOf(r, li) is DrawbridgeLeaf leaf)
+			{
+				line += "\n" + RM_Drawbridges.InspectLine(Map, r, leaf);   // DRAWBRIDGE (R11)
+			}
 			return s.NullOrEmpty() ? line : s + "\n" + line;
 		}
 
@@ -284,7 +288,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				yield return rail;
 			}
-			foreach (Gizmo g in RM_Drawbridges.DevGizmos(Map, Record))
+			foreach (Gizmo g in RM_Drawbridges.DeckGizmos(Map, Record, Position))
 			{
 				yield return g;
 			}
