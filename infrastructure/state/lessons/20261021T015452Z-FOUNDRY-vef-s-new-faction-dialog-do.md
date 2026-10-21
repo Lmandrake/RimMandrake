@@ -1,0 +1,1 @@
+VEF's new-faction dialog: 'Do nothing' (Skip) writes nothing and the pop-up returns on every load; only 'Don't ask for this faction again' (Ignore) writes NewFactionSpawningState.ignoredFactions, and only a save made after it keeps it (2026-10-20, PARITY -> PARITY_QUIET).
