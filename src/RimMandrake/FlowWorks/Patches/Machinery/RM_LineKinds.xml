@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE P1 (design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md): vanilla
+     conduit is a RIGID line. Tagged on the PowerConduit def node before inheritance, so HiddenConduit and WaterproofConduit
+     (ParentName="PowerConduit") inherit the tag. Gimme Some Slack restyles PowerConduit (a ThingStyleDef per look); the tag
+     is on the def, never on a style, so a restyled conduit is still rigid (review answer 5). RM_UniversalPipe carries its
+     own tag in Defs/Machinery/RM_LiquidLogistics.xml. -->
+<Patch>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/ThingDef[defName="PowerConduit"]</xpath>
+    <value>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_LineKindExtension">
+        <kind>RigidConduit</kind>
+      </li>
+    </value>
+  </Operation>
+</Patch>

@@ -161,6 +161,7 @@ FEATURES = [
     ("set", r"^(suspensionWeightCollapse|suspensionLoadMultiplier|suspensionLengthMultiplier|suspensionAnchorLossFalls|suspensionOwnPeopleFall|floodsDamageLightBridges)$", "Bridge load, collapse and flood damage", M + "state-read by ProofSpan/ProofFell/ProofFloodHours; a collapse is not a scene to stage"),
     ("set", r"^(grateFirePasses|grateDrainsSpills)$", "Grated decks pass fire and drain spills", M + S + "bars_bridge_kinds shows the grated decks; fire and drain are state-read by ProofGrate/ProofPour"),
     ("set", r"^pipesUnderToCentre$", "Pipes run under to the centre", M + "pipe-routing switch; no frozen station lays pipe under a deck"),
+    ("set", r"^lineCrossingRulesEnabled$", "Rigid pipe and conduit need solid ground", M + "build-rule switch (PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE); L1 table in SelfTest LineCrossingChecks, live rows owed (L2)"),
     ("set", r"^(trenchCoverEnabled|trenchCoverStrength|trenchCoverCap|trenchAiAvoidsCages)$", "Trench cover", M + S + "bars_trench (waist- and chest-deep colonist with a shooter); numbers read by ProofTrenchCover"),
     ("set", r"^(portableLadderEnabled|portableLadderMaxLevels|climbingGearEnabled|climbingGearSlowness|pitRescueLadderEnabled)$", "Portable ladder and climbing gear", M + S + "bars_access (portable ladder in a pit and on a 4 m wall, gear worn and on the ground)"),
     ("set", r"^(pitJumpLandsSafe|pitTeleportLandsSafe)$", "Jumping or teleporting into a pit lands safe", M + "state read (live_session g_pit_access); nothing to look at"),

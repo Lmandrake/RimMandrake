@@ -140,6 +140,7 @@ SETTINGS = {
         "litresPerFilth": 400.0, "liquidTheftEnabled": True, "liquidTheftGoodwillPerDay": 2.0, "liquidTheftSightRange": 12.0,
         "pipeLinksIntoMachines": True, "joinFittings": False,   # HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY (art only; fittings OFF until the owner rules)
         "pipesUnderToCentre": True,   # PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (art only)
+        "lineCrossingRulesEnabled": True,   # PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE P2 (RM_LineCrossing)
     },
     # the flexible hose's section (moved from Gimme Some Slack at the hose port, 2026-10-11); Scribed with a `hose_` key prefix.
     # String fields (defaultLook) are not in this bool/float table; hoseSettingsImported is an internal flag.

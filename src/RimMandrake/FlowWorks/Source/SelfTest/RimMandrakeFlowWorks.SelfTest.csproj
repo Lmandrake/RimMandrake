@@ -73,6 +73,8 @@
     <Compile Include="SpanBaseChecks.cs" />
     <Compile Include="..\RM_DrawbridgeMath.cs" />
     <Compile Include="DrawbridgeChecks.cs" />
+    <Compile Include="..\Machinery\RM_LineCrossingMath.cs" />
+    <Compile Include="LineCrossingChecks.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />
     <Compile Include="..\RM_TrenchStrideMath.cs" />
     <Compile Include="..\RM_CliffMaskMath.cs" />
