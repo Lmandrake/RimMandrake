@@ -98,6 +98,13 @@ namespace RimMandrake.TheRot
                 TryClaim(p);
             }
             if (!carrier) return;
+            // A carrier whose claim was released (see TryClaim) and that later reappears must not ping as a second core.
+            RM_WorldComponent_SwallowedCore wc = RM_WorldComponent_SwallowedCore.Get;
+            if (wc != null && wc.carrierId != p.ThingID)
+            {
+                carrier = false;
+                return;
+            }
             // the ping clock (an engine appearing pings at once, else every interval) is RM_TheRotKernel.PingDue, offline-fuzzed
             if (RM_TheRotKernel.PingDue(ref nextPingTick, ref engineSeen, Find.TickManager.TicksGame, EngineOn(p.Map) != null, PingIntervalTicks))
             {
@@ -109,6 +116,13 @@ namespace RimMandrake.TheRot
         {
             // who carries the world's one core is RM_TheRotKernel.Claim (offline-fuzzed); the cap and tile reads stay here
             RM_WorldComponent_SwallowedCore w = RM_WorldComponent_SwallowedCore.Get;
+            // A carrier that left the game without dying (its map closed after a caravan visit, it walked off the edge, it was
+            // vanished) never runs Notify_Killed, so the world's one core would stay claimed by nobody forever. If no living
+            // pawn on any map, caravan or transporter holds the recorded id, the core goes back into the world.
+            if (w != null && !w.spent && !w.carrierId.NullOrEmpty() && w.carrierId != p.ThingID && !CarrierStillExists(w.carrierId))
+            {
+                w.carrierId = null;
+            }
             bool worldOk = w != null && !w.spent && p.Faction == null;
             bool firstClaim = worldOk && w.carrierId.NullOrEmpty();
             RM_TheRotKernel.ClaimResult r = RM_TheRotKernel.Claim(w != null, w != null && w.spent, p.Faction != null, w?.carrierId, p.ThingID,
@@ -126,6 +140,15 @@ namespace RimMandrake.TheRot
                     return true;
                 default: return false;
             }
+        }
+
+        public static bool CarrierStillExists(string thingId)
+        {
+            foreach (Pawn o in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive)
+            {
+                if (o.ThingID == thingId) return true;
+            }
+            return false;
         }
 
         public static Building_GravEngine EngineOn(Map map)
