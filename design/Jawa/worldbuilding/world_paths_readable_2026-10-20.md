@@ -71,7 +71,7 @@ and fill ΔE 21.5. The highway on Abyss has casing 4.8 and fill ΔE 106. Vanilla
 river BANK clears WCAG ≥ 3.4 on every face at every gradient position. The river WATER at the owner's middle and
 terminus colours (t ≥ 0.5) stays within ΔE 9.5-19 of the faces it crosses, so on those stretches only the bank carries
 the line. Darker anchors in the same hues would clear it (search: jungle about #1F1F00-#2E2E00, terminus about
-#00293D). That is a change to his palette, so it is his decision and is not made here.
+#00293D). **Decided and applied 2026-10-20** (owner card: River gradient blends into land -> Darken, same hues): middle #7A7A2E -> #2E2E00, terminus #3D4A52 -> #00293D, headwater unchanged. Re-run: min fill dE 33.5 (was 9.5), min bank contrast 3.37:1 (unchanged), every gradient position PASS on every crossed biome (table: `D:\ClaudeWork\rimmandrake\scratch\ownercards\river_gradient_contrast.txt`). Needs the rebuilt FlowWorks DLL live; the live settings file holds no saved colours, so the new defaults apply.
 
 ## 4. Not covered
 

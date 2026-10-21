@@ -49,7 +49,7 @@ def evaluate(st,cross,faces,seas):
                          'worst_biome':worst[1],'worst_core_wcag':worst[2],'worst_casing_wcag':worst[3],'worst_core_dE':worst[4],'pass':bool(worst[0]>=1.0)})
     return rows
 # FlowWorks River Colours (RM_RiverColorsSettings defaults; owner 2026-09-06) - live on the 325 list since 2026-10-16
-GRADIENT=[(0xE0/255,0x31/255,0x1C/255),(0x7A/255,0x7A/255,0x2E/255),(0x3D/255,0x4A/255,0x52/255)]
+GRADIENT=[(0xE0/255,0x31/255,0x1C/255),(0x2E/255,0x2E/255,0x00/255),(0x00/255,0x29/255,0x3D/255)]  # darkened 2026-10-20 (owner card: Darken, same hues); was 7A7A2E / 3D4A52
 BANK_SHADE=0.22
 def gradient(t):
     a,b,c=[np.array(x) for x in GRADIENT]

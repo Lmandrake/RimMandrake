@@ -26,8 +26,8 @@ namespace RimMandrake.FlowWorks.RiverColors
         public static bool riverColorsEnabled = true;
 
         public static Color headwaterColor = new Color(0xE0 / 255f, 0x31 / 255f, 0x1C / 255f);
-        public static Color jungleColor = new Color(0x7A / 255f, 0x7A / 255f, 0x2E / 255f);
-        public static Color terminusColor = new Color(0x3D / 255f, 0x4A / 255f, 0x52 / 255f);
+        public static Color jungleColor = new Color(0x2E / 255f, 0x2E / 255f, 0x00 / 255f);
+        public static Color terminusColor = new Color(0x00 / 255f, 0x29 / 255f, 0x3D / 255f);
 
         /// <summary>Called from RimMandrakeFlowWorksSettings.ExposeData, inside its PatchApplier Before/AfterExpose pair.</summary>
         public static void ExposeData()
@@ -36,9 +36,9 @@ namespace RimMandrake.FlowWorks.RiverColors
             Scribe_Values.Look(ref headwaterColor, "riverColors_headwaterColor",
                 new Color(0xE0 / 255f, 0x31 / 255f, 0x1C / 255f));
             Scribe_Values.Look(ref jungleColor, "riverColors_jungleColor",
-                new Color(0x7A / 255f, 0x7A / 255f, 0x2E / 255f));
+                new Color(0x2E / 255f, 0x2E / 255f, 0x00 / 255f));
             Scribe_Values.Look(ref terminusColor, "riverColors_terminusColor",
-                new Color(0x3D / 255f, 0x4A / 255f, 0x52 / 255f));
+                new Color(0x00 / 255f, 0x29 / 255f, 0x3D / 255f));
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/Color setting, read from the field initialisers.
