@@ -4,7 +4,7 @@ Owner, 2026-10-20, looking at the in-game map: *"Strangely I see what looks like
 towards the Anvil. Looks like a river, but it isn't. And the river is shown brown and red. Odd colors for roads and
 rivers."*
 
-**What changed (401fee537, built, offline only):**
+**What changed (c94bb0c92 Baroque Biomes + tools, 59e61a395 FlowWorks; built, offline only; the ledger title's 401fee537 was rebased away):**
 - **Baroque Biomes `RM_WorldPaths.cs`:** the Stone road layer changes from slate (0.15, 0.25, 0.25) to grey-brown
   (0.18, 0.15, 0.12). The slate was the "blue road": a 69-tile StoneRoad network from the Scald shore into the Anvil.
   When FlowWorks colours are off, the fallback water is now blue-grey.
