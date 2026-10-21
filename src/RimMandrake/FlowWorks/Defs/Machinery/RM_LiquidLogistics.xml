@@ -71,6 +71,10 @@
     </comps>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.Machinery.RM_UniversalPipeExtension" />
+      <!-- PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE P1/P2: rigid; never on a dug square, a cover or any deck (RM_LineCrossing) -->
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_LineKindExtension">
+        <kind>RigidPipe</kind>
+      </li>
     </modExtensions>
   </ThingDef>
 

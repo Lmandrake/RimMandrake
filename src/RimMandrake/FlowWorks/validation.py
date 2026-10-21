@@ -1237,7 +1237,10 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         "floodsDamageLightBridges",
                         # RM_DrawbridgeSettings registered 2026-10-20 (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS): its live rows are
                         # northstar/drawbridge_proof.py (owed to its first live run), not yet a toggle chain
-                        "drawbridgesEnabled", "raidsBringPlanks"]
+                        "drawbridgesEnabled", "raidsBringPlanks",
+                        # PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 1 (2026-10-21): live rows owed on the item (L2), not yet a
+                        # toggle chain
+                        "lineCrossingRulesEnabled"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))

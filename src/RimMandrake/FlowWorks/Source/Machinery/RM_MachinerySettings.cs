@@ -82,6 +82,12 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// SectionLayer_RM_PipeCentreStubs; RM_MapComponent_Hoses.DrawPortStub). Art only.</summary>
 		public static bool pipesUnderToCentre = true;
 
+		/// <summary>PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE P2 (design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md): the
+		/// line crossing rules (RM_LineCrossing). On: rigid pipe and conduit are built on solid ground only (never a dug square,
+		/// a pit cover or any bridge deck); a flexible line (power cord) may lie on any bridge deck, rope included; a cover
+		/// carries nothing. Off: lines take the engine's affordance rules alone (a timber deck admits pipe, rope admits none).</summary>
+		public static bool lineCrossingRulesEnabled = true;
+
 		private static List<string> disabledMachines = new List<string>();
 
 		public static string KeyOf(ThingDef def)
@@ -115,6 +121,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref pipeLinksIntoMachines, "pipeLinksIntoMachines", true);
 			Scribe_Values.Look(ref joinFittings, "joinFittings", false);
 			Scribe_Values.Look(ref pipesUnderToCentre, "pipesUnderToCentre", true);
+			Scribe_Values.Look(ref lineCrossingRulesEnabled, "lineCrossingRulesEnabled", true);
 			Scribe_Values.Look(ref litresPerFilth, "litresPerFilth", 400);
 			// model 2 saved this in 200 L units under "unitsPerFilth": read once when the new key was never written
 			if (Scribe.mode == LoadSaveMode.LoadingVars && Scribe.loader.curXmlParent?["litresPerFilth"] == null
@@ -187,6 +194,10 @@ namespace RimMandrake.FlowWorks.Machinery
 				}
 				Find.WindowStack.Add(new FloatMenu(opts));
 			}
+			list.CheckboxLabeled("Rigid pipe and conduit need solid ground; cords lie on any bridge deck", ref lineCrossingRulesEnabled,
+				"On: pipe and power conduit cannot be built on a dug square (pit, trench, canal, moat), a pit cover or any bridge deck: "
+			  + "they are rigid. A flexible power cord may lie on any bridge deck, rope included. A pit cover carries no lines. "
+			  + "A frame that ends up on such a square is cancelled and refunded. Off: lines follow the game's ground rules alone.");
 			bool linksWas = pipeLinksIntoMachines, fitWas = joinFittings, underWas = pipesUnderToCentre;
 			list.CheckboxLabeled("Pipes run right up to the tanks and machines they join (art only)", ref pipeLinksIntoMachines,
 				"On: a pipe beside a tank, pump or still draws its run on to the shared edge, so you can see it joins. Off: it ends in a cap short of it. Needs a restart to take effect if it was off at startup.");

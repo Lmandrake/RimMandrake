@@ -261,6 +261,8 @@
     <Compile Include="Machinery\RM_LiquidSpill.cs" />
     <Compile Include="Machinery\RM_LiquidTheft.cs" />
     <Compile Include="Machinery\RM_MachinerySettings.cs" />
+    <Compile Include="Machinery\RM_LineCrossingMath.cs" />
+    <Compile Include="Machinery\RM_LineCrossing.cs" />
     <Compile Include="Machinery\PipeStyles.cs" />
     <Compile Include="Machinery\PipeLook.cs" />
     <Compile Include="Machinery\LiquidJoinRule.cs" />
