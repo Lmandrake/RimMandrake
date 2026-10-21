@@ -45,6 +45,7 @@
     <Compile Include="RM_WorldTerrainShader.cs" />
     <Compile Include="RM_WorldLook.cs" />
     <Compile Include="RM_WorldPaths.cs" />
+    <Compile Include="RM_WorldLandmarks.cs" />
   </ItemGroup>
 
   <ItemGroup>
