@@ -445,7 +445,8 @@ namespace RimMandrake.LeaningScrub
                 {
                     list.CheckboxLabeled("The Lean: one locked wind heading per map", ref leanEnabled,
                         "Each map of a biome that leans (the Leaning Scrub) keeps one wind heading for "
-                        + "its whole life. Off: the two effects below never apply.");
+                        + "its whole life. Off: the effects below never apply, nor do the wall wakes, the "
+                        + "walking and shedding venomvine, or the Gale dust's downwind stream.");
                     list.CheckboxLabeled("Lean: wild prey smell people upwind of them", ref leanScentEnabled,
                         "A wild non-predator bolts from a person standing upwind of it within the range "
                         + "below. Approach from downwind and it never knows you are there.");

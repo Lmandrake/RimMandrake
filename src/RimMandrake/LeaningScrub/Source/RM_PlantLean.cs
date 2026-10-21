@@ -150,11 +150,14 @@ namespace RimMandrake.LeaningScrub
             cachedExt = ext;
         }
 
-        // Forget the cached map (settings changed, proof hook). The next print re-reads it.
+        // Forget the cached map (settings changed, proof hook). The next print re-reads it. The counters reset here too:
+        // with the toggle off Face() returns before Refresh(), so counts left from an earlier lean-on print would
+        // otherwise survive into ProofLean("off") and read as "faced with the toggle off".
         public static void Invalidate()
         {
             cachedMap = null;
             cachedExt = null;
+            FacedEast = FacedWest = RolledOnLeanMap = 0;
         }
 
         private static bool ArtLeansWest(Plant plant)
