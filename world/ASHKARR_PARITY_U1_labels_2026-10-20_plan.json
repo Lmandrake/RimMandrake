@@ -1,0 +1,2162 @@
+{
+ "what": "U1 region labels: canonical size by name; label on the member tile nearest the biggest piece's centroid. Apply: world/_parity_apply_2026-10-20.py u1",
+ "source": {
+  "dev": "dev.rws",
+  "canon": "canon.rws"
+ },
+ "counts": {
+  "features": 71,
+  "sizeChanges": 68,
+  "beforeOffOwnTile": 0,
+  "beforeOffBiggestPiece": 1
+ },
+ "features": [
+  {
+   "name": "Pan",
+   "uid": 29,
+   "tiles": 79,
+   "pieces": [
+    79
+   ],
+   "before": {
+    "drawCenter": [
+     -60.1358376,
+     79.4492645,
+     -8.34384823
+    ],
+    "size": 11.9990625,
+    "tileUnderLabel": 8915,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 4.235
+   },
+   "after": {
+    "centerOnTile": 15395,
+    "drawCenter": [
+     -61.714,
+     78.6568,
+     -2.1202
+    ],
+    "size": 12.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Sporefields",
+   "uid": 30,
+   "tiles": 255,
+   "pieces": [
+    255
+   ],
+   "before": {
+    "drawCenter": [
+     33.9844017,
+     94.0280228,
+     1.29915631
+    ],
+    "size": 21.5577717,
+    "tileUnderLabel": 10174,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 11.391
+   },
+   "after": {
+    "centerOnTile": 12205,
+    "drawCenter": [
+     52.1641,
+     85.1752,
+     4.9087
+    ],
+    "size": 22.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Pale Flats",
+   "uid": 31,
+   "tiles": 60,
+   "pieces": [
+    60
+   ],
+   "before": {
+    "drawCenter": [
+     -60.6777458,
+     -79.3644638,
+     -4.2011447
+    ],
+    "size": 10.4570551,
+    "tileUnderLabel": 8988,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 2.525
+   },
+   "after": {
+    "centerOnTile": 12226,
+    "drawCenter": [
+     -58.1418,
+     -81.3359,
+     -2.0024
+    ],
+    "size": 10.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Wither",
+   "uid": 32,
+   "tiles": 72,
+   "pieces": [
+    72
+   ],
+   "before": {
+    "drawCenter": [
+     47.5573235,
+     -87.4733353,
+     -9.21270084
+    ],
+    "size": 11.4551296,
+    "tileUnderLabel": 9029,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 3.654
+   },
+   "after": {
+    "centerOnTile": 12247,
+    "drawCenter": [
+     52.1641,
+     -85.1752,
+     -4.9087
+    ],
+    "size": 11.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Deadstone",
+   "uid": 33,
+   "tiles": 2051,
+   "pieces": [
+    2051
+   ],
+   "before": {
+    "drawCenter": [
+     -32.2593346,
+     50.3331718,
+     80.1478348
+    ],
+    "size": 61.1387558,
+    "tileUnderLabel": 11012,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 35.109
+   },
+   "after": {
+    "centerOnTile": 18891,
+    "drawCenter": [
+     -45.0594,
+     -13.9251,
+     88.1802
+    ],
+    "size": 61.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Ammonia Flats",
+   "uid": 34,
+   "tiles": 818,
+   "pieces": [
+    818
+   ],
+   "before": {
+    "drawCenter": [
+     24.6035824,
+     30.9774933,
+     91.8304214
+    ],
+    "size": 38.6109428,
+    "tileUnderLabel": 10994,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 4.926
+   },
+   "after": {
+    "centerOnTile": 16382,
+    "drawCenter": [
+     16.7168,
+     34.5881,
+     92.3266
+    ],
+    "size": 39.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Dune Sea",
+   "uid": 35,
+   "tiles": 1692,
+   "pieces": [
+    1692
+   ],
+   "before": {
+    "drawCenter": [
+     -19.9215107,
+     47.0995026,
+     -85.9224472
+    ],
+    "size": 55.5307999,
+    "tileUnderLabel": 11298,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 32.805
+   },
+   "after": {
+    "centerOnTile": 13175,
+    "drawCenter": [
+     33.0796,
+     -9.1814,
+     -93.9225
+    ],
+    "size": 56.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Ashfall Range",
+   "uid": 36,
+   "tiles": 324,
+   "pieces": [
+    324
+   ],
+   "before": {
+    "drawCenter": [
+     80.1478348,
+     -32.2593307,
+     -50.3331718
+    ],
+    "size": 24.3000011,
+    "tileUnderLabel": 11479,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 19.329
+   },
+   "after": {
+    "centerOnTile": 2475,
+    "drawCenter": [
+     86.6305,
+     0.0,
+     -49.9515
+    ],
+    "size": 24.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Sunreach",
+   "uid": 37,
+   "tiles": 795,
+   "pieces": [
+    700,
+    95
+   ],
+   "before": {
+    "drawCenter": [
+     78.8077393,
+     -53.8280754,
+     29.8266506
+    ],
+    "size": 38.0642548,
+    "tileUnderLabel": 10552,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 16.004
+   },
+   "after": {
+    "centerOnTile": 14936,
+    "drawCenter": [
+     84.5452,
+     -30.3386,
+     43.9509
+    ],
+    "size": 38.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Dew Belt",
+   "uid": 38,
+   "tiles": 362,
+   "pieces": [
+    268,
+    92,
+    1,
+    1
+   ],
+   "before": {
+    "drawCenter": [
+     -98.6786499,
+     -9.44043446,
+     -13.0817461
+    ],
+    "size": 25.685503,
+    "tileUnderLabel": 11853,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 6.559
+   },
+   "after": {
+    "centerOnTile": 19184,
+    "drawCenter": [
+     -96.4286,
+     -21.3482,
+     -15.6776
+    ],
+    "size": 26.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Nightspill",
+   "uid": 39,
+   "tiles": 853,
+   "pieces": [
+    853
+   ],
+   "before": {
+    "drawCenter": [
+     -87.221611,
+     19.1185894,
+     44.9974213
+    ],
+    "size": 39.4283218,
+    "tileUnderLabel": 12010,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 19.295
+   },
+   "after": {
+    "centerOnTile": 1706,
+    "drawCenter": [
+     -88.4327,
+     -14.4068,
+     44.4084
+    ],
+    "size": 39.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Frostcaps",
+   "uid": 40,
+   "tiles": 254,
+   "pieces": [
+    254
+   ],
+   "before": {
+    "drawCenter": [
+     -33.9751244,
+     83.9169235,
+     42.4425011
+    ],
+    "size": 21.5154591,
+    "tileUnderLabel": 10059,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 11.967
+   },
+   "after": {
+    "centerOnTile": 17918,
+    "drawCenter": [
+     -13.9561,
+     86.9516,
+     47.3778
+    ],
+    "size": 22.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Cracklands",
+   "uid": 41,
+   "tiles": 227,
+   "pieces": [
+    227
+   ],
+   "before": {
+    "drawCenter": [
+     6.98026896,
+     89.4659653,
+     -44.0994835
+    ],
+    "size": 20.3397999,
+    "tileUnderLabel": 9373,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 9.681
+   },
+   "after": {
+    "centerOnTile": 2507,
+    "drawCenter": [
+     -2.2983,
+     94.7348,
+     -31.938
+    ],
+    "size": 20.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Pyrelands",
+   "uid": 42,
+   "tiles": 63,
+   "pieces": [
+    37,
+    26
+   ],
+   "before": {
+    "drawCenter": [
+     -65.8493576,
+     59.333744,
+     -46.2711906
+    ],
+    "size": 10.7152929,
+    "tileUnderLabel": 9384,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 5.862
+   },
+   "after": {
+    "centerOnTile": 7372,
+    "drawCenter": [
+     -59.7353,
+     57.4134,
+     -55.9946
+    ],
+    "size": 11.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Twilight Sea",
+   "uid": 43,
+   "tiles": 852,
+   "pieces": [
+    852
+   ],
+   "before": {
+    "drawCenter": [
+     -97.8800354,
+     13.4257507,
+     -15.3937731
+    ],
+    "size": 39.4052048,
+    "tileUnderLabel": 11840,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 13.917
+   },
+   "after": {
+    "centerOnTile": 12680,
+    "drawCenter": [
+     -95.5686,
+     29.35,
+     2.2867
+    ],
+    "size": 39.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Capwood",
+   "uid": 44,
+   "tiles": 75,
+   "pieces": [
+    75
+   ],
+   "before": {
+    "drawCenter": [
+     59.8335991,
+     48.172718,
+     64.0076294
+    ],
+    "size": 11.6913433,
+    "tileUnderLabel": 9481,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 9.317
+   },
+   "after": {
+    "centerOnTile": 12725,
+    "drawCenter": [
+     49.7579,
+     60.3696,
+     62.2869
+    ],
+    "size": 12.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Umbra",
+   "uid": 45,
+   "tiles": 802,
+   "pieces": [
+    802
+   ],
+   "before": {
+    "drawCenter": [
+     10.6151457,
+     -23.8352814,
+     96.524437
+    ],
+    "size": 38.2314682,
+    "tileUnderLabel": 10743,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 11.656
+   },
+   "after": {
+    "centerOnTile": 13966,
+    "drawCenter": [
+     -6.7505,
+     -12.9855,
+     98.9232
+    ],
+    "size": 38.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Glare",
+   "uid": 46,
+   "tiles": 879,
+   "pieces": [
+    879
+   ],
+   "before": {
+    "drawCenter": [
+     11.0130148,
+     66.2180862,
+     -74.106514
+    ],
+    "size": 40.0247116,
+    "tileUnderLabel": 11363,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 3.412
+   },
+   "after": {
+    "centerOnTile": 14615,
+    "drawCenter": [
+     13.6072,
+     70.3741,
+     -69.7304
+    ],
+    "size": 40.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Sootreach",
+   "uid": 47,
+   "tiles": 433,
+   "pieces": [
+    433
+   ],
+   "before": {
+    "drawCenter": [
+     7.0163002,
+     -77.0215988,
+     63.3736115
+    ],
+    "size": 28.0916824,
+    "tileUnderLabel": 10778,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 6.96
+   },
+   "after": {
+    "centerOnTile": 2740,
+    "drawCenter": [
+     18.593,
+     -76.3504,
+     61.8459
+    ],
+    "size": 28.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "The Verge",
+   "uid": 48,
+   "tiles": 171,
+   "pieces": [
+    171
+   ],
+   "before": {
+    "drawCenter": [
+     46.8524017,
+     -76.3199387,
+     44.4726982
+    ],
+    "size": 17.6535397,
+    "tileUnderLabel": 10591,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 15.784
+   },
+   "after": {
+    "centerOnTile": 2134,
+    "drawCenter": [
+     20.6577,
+     -89.8061,
+     38.8345
+    ],
+    "size": 18.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Long Sand",
+   "uid": 49,
+   "tiles": 721,
+   "pieces": [
+    721
+   ],
+   "before": {
+    "drawCenter": [
+     -46.8524017,
+     -76.3199387,
+     -44.4726982
+    ],
+    "size": 36.2494469,
+    "tileUnderLabel": 10451,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 7.271
+   },
+   "after": {
+    "centerOnTile": 7547,
+    "drawCenter": [
+     -42.091,
+     -83.9495,
+     -34.3632
+    ],
+    "size": 36.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Kiln",
+   "uid": 50,
+   "tiles": 878,
+   "pieces": [
+    878
+   ],
+   "before": {
+    "drawCenter": [
+     -25.9114285,
+     -61.6082153,
+     -74.3693161
+    ],
+    "size": 40.0019379,
+    "tileUnderLabel": 11183,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 21.817
+   },
+   "after": {
+    "centerOnTile": 16602,
+    "drawCenter": [
+     9.0926,
+     -70.9829,
+     -69.8481
+    ],
+    "size": 40.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Damp",
+   "uid": 51,
+   "tiles": 230,
+   "pieces": [
+    230
+   ],
+   "before": {
+    "drawCenter": [
+     89.46595,
+     -44.0994873,
+     -6.98026896
+    ],
+    "size": 20.4737644,
+    "tileUnderLabel": 9788,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 13.839
+   },
+   "after": {
+    "centerOnTile": 20639,
+    "drawCenter": [
+     77.2488,
+     -63.4597,
+     2.3424
+    ],
+    "size": 20.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Ashwood",
+   "uid": 52,
+   "tiles": 69,
+   "pieces": [
+    69
+   ],
+   "before": {
+    "drawCenter": [
+     -72.4029541,
+     -36.3202324,
+     58.6205788
+    ],
+    "size": 11.2139416,
+    "tileUnderLabel": 8803,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 10.828
+   },
+   "after": {
+    "centerOnTile": 21156,
+    "drawCenter": [
+     -57.2958,
+     -46.4655,
+     67.5141
+    ],
+    "size": 11.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Scorch",
+   "uid": 53,
+   "tiles": 90,
+   "pieces": [
+    58,
+    16,
+    16
+   ],
+   "before": {
+    "drawCenter": [
+     21.2248859,
+     20.0684452,
+     -95.6267319
+    ],
+    "size": 12.8072243,
+    "tileUnderLabel": 8862,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 9.039
+   },
+   "after": {
+    "centerOnTile": 16739,
+    "drawCenter": [
+     5.222,
+     32.033,
+     -94.5866
+    ],
+    "size": 13.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Grey Sea",
+   "uid": 54,
+   "tiles": 617,
+   "pieces": [
+    617
+   ],
+   "before": {
+    "drawCenter": [
+     96.1667404,
+     13.2509689,
+     -23.9611969
+    ],
+    "size": 33.5333061,
+    "tileUnderLabel": 11534,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 13.379
+   },
+   "after": {
+    "centerOnTile": 8888,
+    "drawCenter": [
+     99.0521,
+     13.5563,
+     -2.2134
+    ],
+    "size": 34.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Rimewall",
+   "uid": 55,
+   "tiles": 338,
+   "pieces": [
+    338
+   ],
+   "before": {
+    "drawCenter": [
+     -33.1574974,
+     90.7629929,
+     25.6988125
+    ],
+    "size": 24.8194504,
+    "tileUnderLabel": 10039,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 11.188
+   },
+   "after": {
+    "centerOnTile": 9335,
+    "drawCenter": [
+     -13.7482,
+     93.3962,
+     32.9869
+    ],
+    "size": 25.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Slough",
+   "uid": 56,
+   "tiles": 148,
+   "pieces": [
+    148
+   ],
+   "before": {
+    "drawCenter": [
+     4.28156853,
+     99.887764,
+     -1.36018956
+    ],
+    "size": 16.42346,
+    "tileUnderLabel": 10186,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 2.431
+   },
+   "after": {
+    "centerOnTile": 18081,
+    "drawCenter": [
+     2.2364,
+     99.8169,
+     -5.6197
+    ],
+    "size": 16.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Combs",
+   "uid": 57,
+   "tiles": 360,
+   "pieces": [
+    360
+   ],
+   "before": {
+    "drawCenter": [
+     -44.6717262,
+     79.1549683,
+     -41.6732178
+    ],
+    "size": 25.6144485,
+    "tileUnderLabel": 10129,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 3.728
+   },
+   "after": {
+    "centerOnTile": 13347,
+    "drawCenter": [
+     -44.2815,
+     82.5427,
+     -35.0122
+    ],
+    "size": 26.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Glass Reach",
+   "uid": 58,
+   "tiles": 172,
+   "pieces": [
+    172
+   ],
+   "before": {
+    "drawCenter": [
+     -74.3969193,
+     66.1586075,
+     9.2685318
+    ],
+    "size": 17.7050838,
+    "tileUnderLabel": 10024,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 12.039
+   },
+   "after": {
+    "centerOnTile": 8921,
+    "drawCenter": [
+     -60.6929,
+     79.3644,
+     4.2022
+    ],
+    "size": 18.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Dry Marches",
+   "uid": 59,
+   "tiles": 387,
+   "pieces": [
+    387
+   ],
+   "before": {
+    "drawCenter": [
+     71.0699997,
+     62.8399315,
+     -31.5899792
+    ],
+    "size": 26.5576267,
+    "tileUnderLabel": 10297,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 9.829
+   },
+   "after": {
+    "centerOnTile": 8527,
+    "drawCenter": [
+     58.6346,
+     72.403,
+     -36.3289
+    ],
+    "size": 27.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Gray Crags",
+   "uid": 60,
+   "tiles": 577,
+   "pieces": [
+    577
+   ],
+   "before": {
+    "drawCenter": [
+     90.4035339,
+     24.2527256,
+     35.1677895
+    ],
+    "size": 32.428112,
+    "tileUnderLabel": 11644,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 8.658
+   },
+   "after": {
+    "centerOnTile": 7743,
+    "drawCenter": [
+     84.305,
+     35.8956,
+     40.0522
+    ],
+    "size": 32.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Sunward Scrub",
+   "uid": 61,
+   "tiles": 154,
+   "pieces": [
+    154
+   ],
+   "before": {
+    "drawCenter": [
+     47.3736458,
+     85.1917725,
+     -22.269907
+    ],
+    "size": 16.7530594,
+    "tileUnderLabel": 10215,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 3.419
+   },
+   "after": {
+    "centerOnTile": 5357,
+    "drawCenter": [
+     42.9042,
+     88.4625,
+     -18.2652
+    ],
+    "size": 17.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Sinkground",
+   "uid": 62,
+   "tiles": 276,
+   "pieces": [
+    276
+   ],
+   "before": {
+    "drawCenter": [
+     -29.9386768,
+     -95.3926315,
+     -1.31282198
+    ],
+    "size": 22.4278831,
+    "tileUnderLabel": 10388,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 4.797
+   },
+   "after": {
+    "centerOnTile": 1433,
+    "drawCenter": [
+     -32.1267,
+     -94.3743,
+     7.8339
+    ],
+    "size": 22.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Coldstone",
+   "uid": 63,
+   "tiles": 57,
+   "pieces": [
+    57
+   ],
+   "before": {
+    "drawCenter": [
+     -50.3331718,
+     -80.1478348,
+     32.2593307
+    ],
+    "size": 10.192276,
+    "tileUnderLabel": 10465,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 8.484
+   },
+   "after": {
+    "centerOnTile": 13713,
+    "drawCenter": [
+     -37.511,
+     -88.4446,
+     27.7576
+    ],
+    "size": 10.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Sweatwood",
+   "uid": 64,
+   "tiles": 93,
+   "pieces": [
+    93
+   ],
+   "before": {
+    "drawCenter": [
+     -81.1425476,
+     -57.2450523,
+     -11.6880465
+    ],
+    "size": 13.0189295,
+    "tileUnderLabel": 10517,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 3.387
+   },
+   "after": {
+    "centerOnTile": 13769,
+    "drawCenter": [
+     -79.3969,
+     -57.8758,
+     -18.6152
+    ],
+    "size": 13.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Ashen Wastes",
+   "uid": 65,
+   "tiles": 202,
+   "pieces": [
+    202
+   ],
+   "before": {
+    "drawCenter": [
+     52.0209198,
+     -80.5811691,
+     28.2536297
+    ],
+    "size": 19.1871052,
+    "tileUnderLabel": 10583,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 9.855
+   },
+   "after": {
+    "centerOnTile": 13815,
+    "drawCenter": [
+     35.6174,
+     -87.8986,
+     31.7054
+    ],
+    "size": 19.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Scour",
+   "uid": 66,
+   "tiles": 234,
+   "pieces": [
+    234
+   ],
+   "before": {
+    "drawCenter": [
+     13.0817461,
+     -98.6786499,
+     9.44043446
+    ],
+    "size": 20.6510296,
+    "tileUnderLabel": 10622,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 7.265
+   },
+   "after": {
+    "centerOnTile": 13856,
+    "drawCenter": [
+     23.5988,
+     -97.139,
+     2.6658
+    ],
+    "size": 21.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Thornbelt",
+   "uid": 67,
+   "tiles": 502,
+   "pieces": [
+    502
+   ],
+   "before": {
+    "drawCenter": [
+     33.9751244,
+     -83.9169312,
+     -42.4425011
+    ],
+    "size": 30.2472324,
+    "tileUnderLabel": 10672,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 17.479
+   },
+   "after": {
+    "centerOnTile": 5832,
+    "drawCenter": [
+     59.9201,
+     -75.0733,
+     -27.8135
+    ],
+    "size": 30.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Lantern Deeps",
+   "uid": 68,
+   "tiles": 57,
+   "pieces": [
+    57
+   ],
+   "before": {
+    "drawCenter": [
+     -23.0697327,
+     -43.3851967,
+     87.082222
+    ],
+    "size": 10.192276,
+    "tileUnderLabel": 10862,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 3.559
+   },
+   "after": {
+    "centerOnTile": 6006,
+    "drawCenter": [
+     -17.591,
+     -46.7993,
+     86.6047
+    ],
+    "size": 10.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Stillwood",
+   "uid": 69,
+   "tiles": 142,
+   "pieces": [
+    142
+   ],
+   "before": {
+    "drawCenter": [
+     7.01630068,
+     77.0215988,
+     63.3736115
+    ],
+    "size": 16.0871067,
+    "tileUnderLabel": 10932,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 6.122
+   },
+   "after": {
+    "centerOnTile": 17975,
+    "drawCenter": [
+     -2.3425,
+     77.2343,
+     63.4773
+    ],
+    "size": 16.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Rust Cathedral",
+   "uid": 70,
+   "tiles": 236,
+   "pieces": [
+    236
+   ],
+   "before": {
+    "drawCenter": [
+     14.792058,
+     13.2610502,
+     -97.9951172
+    ],
+    "size": 20.7390938,
+    "tileUnderLabel": 11350,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 4.249
+   },
+   "after": {
+    "centerOnTile": 21547,
+    "drawCenter": [
+     9.4785,
+     8.7443,
+     -99.165
+    ],
+    "size": 21.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "The Breaks",
+   "uid": 71,
+   "tiles": 153,
+   "pieces": [
+    99,
+    54
+   ],
+   "before": {
+    "drawCenter": [
+     66.1586075,
+     -9.26853085,
+     -74.3969116
+    ],
+    "size": 16.6985779,
+    "tileUnderLabel": 11540,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 6.639
+   },
+   "after": {
+    "centerOnTile": 11550,
+    "drawCenter": [
+     74.1144,
+     -11.013,
+     -66.2252
+    ],
+    "size": 17.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "The Abandoned Mines",
+   "uid": 72,
+   "tiles": 34,
+   "pieces": [
+    34
+   ],
+   "before": {
+    "drawCenter": [
+     86.7217941,
+     -7.7887044,
+     -49.1616096
+    ],
+    "size": 7.87178469,
+    "tileUnderLabel": 9172,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 7.472
+   },
+   "after": {
+    "centerOnTile": 16883,
+    "drawCenter": [
+     89.0324,
+     -19.7589,
+     -41.0222
+    ],
+    "size": 10.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Frostvein",
+   "uid": 73,
+   "tiles": 61,
+   "pieces": [
+    61
+   ],
+   "before": {
+    "drawCenter": [
+     64.2969742,
+     -35.6186638,
+     67.7858047
+    ],
+    "size": 10.5438375,
+    "tileUnderLabel": 11671,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 4.928
+   },
+   "after": {
+    "centerOnTile": 14899,
+    "drawCenter": [
+     65.1709,
+     -27.1684,
+     70.814
+    ],
+    "size": 11.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Dew Horn",
+   "uid": 74,
+   "tiles": 491,
+   "pieces": [
+    491
+   ],
+   "before": {
+    "drawCenter": [
+     -95.3926315,
+     -1.31282198,
+     -29.9386768
+    ],
+    "size": 29.9140015,
+    "tileUnderLabel": 11834,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 12.368
+   },
+   "after": {
+    "centerOnTile": 2485,
+    "drawCenter": [
+     -86.6305,
+     0.0,
+     -49.9515
+    ],
+    "size": 30.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Cratercrown",
+   "uid": 75,
+   "tiles": 174,
+   "pieces": [
+    174
+   ],
+   "before": {
+    "drawCenter": [
+     -74.0401917,
+     -15.3778486,
+     -65.4172897
+    ],
+    "size": 17.8077221,
+    "tileUnderLabel": 11945,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 4.808
+   },
+   "after": {
+    "centerOnTile": 17340,
+    "drawCenter": [
+     -74.9216,
+     -8.762,
+     -65.6504
+    ],
+    "size": 18.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Scald",
+   "uid": 76,
+   "tiles": 312,
+   "pieces": [
+    312
+   ],
+   "before": {
+    "drawCenter": [
+     -71.5115356,
+     -13.4465094,
+     -68.5791092
+    ],
+    "size": 23.8457527,
+    "tileUnderLabel": 11942,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 12.751
+   },
+   "after": {
+    "centerOnTile": 8506,
+    "drawCenter": [
+     -57.4968,
+     -2.3448,
+     -81.7839
+    ],
+    "size": 24.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Twilight Crags",
+   "uid": 77,
+   "tiles": 384,
+   "pieces": [
+    205,
+    168,
+    11
+   ],
+   "before": {
+    "drawCenter": [
+     -94.0280228,
+     -1.29915631,
+     33.9844017
+    ],
+    "size": 26.4544907,
+    "tileUnderLabel": 12082,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 16.847
+   },
+   "after": {
+    "centerOnTile": 7276,
+    "drawCenter": [
+     -90.4923,
+     -30.9694,
+     29.1897
+    ],
+    "size": 26.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Fanground",
+   "uid": 78,
+   "tiles": 70,
+   "pieces": [
+    70
+   ],
+   "before": {
+    "drawCenter": [
+     -28.1723347,
+     95.0338211,
+     -13.1400528
+    ],
+    "size": 11.2949104,
+    "tileUnderLabel": 10072,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 11.282
+   },
+   "after": {
+    "centerOnTile": 15509,
+    "drawCenter": [
+     -46.4989,
+     87.2037,
+     -15.2764
+    ],
+    "size": 11.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Tallow Ground",
+   "uid": 79,
+   "tiles": 129,
+   "pieces": [
+    129
+   ],
+   "before": {
+    "drawCenter": [
+     66.2180862,
+     74.106514,
+     -11.0130148
+    ],
+    "size": 15.3330526,
+    "tileUnderLabel": 10291,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 0.857
+   },
+   "after": {
+    "centerOnTile": 10287,
+    "drawCenter": [
+     68.0447,
+     72.4259,
+     -11.1541
+    ],
+    "size": 15.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Blight",
+   "uid": 80,
+   "tiles": 140,
+   "pieces": [
+    140
+   ],
+   "before": {
+    "drawCenter": [
+     26.1437321,
+     -95.4141312,
+     -14.5057821
+    ],
+    "size": 15.9734163,
+    "tileUnderLabel": 10613,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 8.278
+   },
+   "after": {
+    "centerOnTile": 5778,
+    "drawCenter": [
+     11.1356,
+     -98.0481,
+     -16.2042
+    ],
+    "size": 16.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Fall Line",
+   "uid": 81,
+   "tiles": 155,
+   "pieces": [
+    155
+   ],
+   "before": {
+    "drawCenter": [
+     74.0401917,
+     15.3778486,
+     -65.4172745
+    ],
+    "size": 16.8073654,
+    "tileUnderLabel": 11436,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 5.639
+   },
+   "after": {
+    "centerOnTile": 9180,
+    "drawCenter": [
+     79.4568,
+     8.3438,
+     -60.1415
+    ],
+    "size": 26.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Cinderdark",
+   "uid": 82,
+   "tiles": 153,
+   "pieces": [
+    153
+   ],
+   "before": {
+    "drawCenter": [
+     60.8176613,
+     -44.1267281,
+     65.9674683
+    ],
+    "size": 16.6985779,
+    "tileUnderLabel": 9652,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 19.527
+   },
+   "after": {
+    "centerOnTile": 11650,
+    "drawCenter": [
+     74.9174,
+     -13.1151,
+     64.9259
+    ],
+    "size": 17.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Blindwood",
+   "uid": 83,
+   "tiles": 145,
+   "pieces": [
+    145
+   ],
+   "before": {
+    "drawCenter": [
+     -73.645546,
+     23.9671726,
+     63.243
+    ],
+    "size": 16.2561531,
+    "tileUnderLabel": 11978,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 5.676
+   },
+   "after": {
+    "centerOnTile": 7116,
+    "drawCenter": [
+     -75.6994,
+     15.1792,
+     63.5547
+    ],
+    "size": 16.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Knuckles",
+   "uid": 84,
+   "tiles": 219,
+   "pieces": [
+    219
+   ],
+   "before": {
+    "drawCenter": [
+     -15.2894659,
+     98.2256241,
+     10.7559481
+    ],
+    "size": 19.9781761,
+    "tileUnderLabel": 10084,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 3.39
+   },
+   "after": {
+    "centerOnTile": 13336,
+    "drawCenter": [
+     -15.1359,
+     98.6996,
+     5.4117
+    ],
+    "size": 20.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Mould Marches",
+   "uid": 85,
+   "tiles": 123,
+   "pieces": [
+    123
+   ],
+   "before": {
+    "drawCenter": [
+     35.1677895,
+     90.4035339,
+     24.2527256
+    ],
+    "size": 14.9722242,
+    "tileUnderLabel": 10258,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 0.509
+   },
+   "after": {
+    "centerOnTile": 10258,
+    "drawCenter": [
+     35.1892,
+     90.4036,
+     24.2676
+    ],
+    "size": 15.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Salt Gate",
+   "uid": 86,
+   "tiles": 16,
+   "pieces": [
+    16
+   ],
+   "before": {
+    "drawCenter": [
+     -72.5383682,
+     54.040638,
+     -42.6084251
+    ],
+    "size": 6.0,
+    "tileUnderLabel": 8311,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 1.3
+   },
+   "after": {
+    "centerOnTile": 3447,
+    "drawCenter": [
+     -71.0051,
+     56.137,
+     -42.5078
+    ],
+    "size": 10.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Fever Wood",
+   "uid": 87,
+   "tiles": 81,
+   "pieces": [
+    81
+   ],
+   "before": {
+    "drawCenter": [
+     -61.6015816,
+     33.7937584,
+     -71.1402893
+    ],
+    "size": 12.1500006,
+    "tileUnderLabel": 11919,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 4.585
+   },
+   "after": {
+    "centerOnTile": 18382,
+    "drawCenter": [
+     -61.6559,
+     40.0053,
+     -67.8095
+    ],
+    "size": 12.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Stepwood",
+   "uid": 88,
+   "tiles": 85,
+   "pieces": [
+    85
+   ],
+   "before": {
+    "drawCenter": [
+     -77.0215988,
+     -63.3736115,
+     7.01630068
+    ],
+    "size": 12.4463854,
+    "tileUnderLabel": 10362,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 4.158
+   },
+   "after": {
+    "centerOnTile": 19076,
+    "drawCenter": [
+     -79.5868,
+     -60.547,
+     -0.0
+    ],
+    "size": 12.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Anvil",
+   "uid": 89,
+   "tiles": 349,
+   "pieces": [
+    333,
+    16
+   ],
+   "before": {
+    "drawCenter": [
+     -10.6151457,
+     -23.8352814,
+     -96.524437
+    ],
+    "size": 25.2200813,
+    "tileUnderLabel": 11228,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 8.886
+   },
+   "after": {
+    "centerOnTile": 19331,
+    "drawCenter": [
+     -9.4785,
+     -8.7443,
+     -99.165
+    ],
+    "size": 25.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Fuelmere",
+   "uid": 90,
+   "tiles": 72,
+   "pieces": [
+    72
+   ],
+   "before": {
+    "drawCenter": [
+     64.2651062,
+     -9.32221699,
+     76.0319748
+    ],
+    "size": 11.4551296,
+    "tileUnderLabel": 11679,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 14.534
+   },
+   "after": {
+    "centerOnTile": 19844,
+    "drawCenter": [
+     55.4545,
+     -34.1208,
+     75.8984
+    ],
+    "size": 11.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Sunshelf",
+   "uid": 91,
+   "tiles": 68,
+   "pieces": [
+    68
+   ],
+   "before": {
+    "drawCenter": [
+     -34.9893761,
+     -91.1072388,
+     21.7481556
+    ],
+    "size": 11.1323853,
+    "tileUnderLabel": 10475,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 0.664
+   },
+   "after": {
+    "centerOnTile": 10475,
+    "drawCenter": [
+     -35.0123,
+     -91.1073,
+     21.7624
+    ],
+    "size": 11.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Cinders",
+   "uid": 92,
+   "tiles": 112,
+   "pieces": [
+    112
+   ],
+   "before": {
+    "drawCenter": [
+     81.4538879,
+     -46.9003448,
+     -34.1082268
+    ],
+    "size": 14.2870569,
+    "tileUnderLabel": 11483,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 2.23
+   },
+   "after": {
+    "centerOnTile": 20677,
+    "drawCenter": [
+     82.8811,
+     -47.3848,
+     -29.7556
+    ],
+    "size": 14.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Salt",
+   "uid": 93,
+   "tiles": 249,
+   "pieces": [
+    138,
+    93,
+    12,
+    2,
+    2,
+    1,
+    1
+   ],
+   "before": {
+    "drawCenter": [
+     97.9951172,
+     -14.792058,
+     -13.2610512
+    ],
+    "size": 21.3026409,
+    "tileUnderLabel": 11519,
+    "onOwnTile": true,
+    "onBiggestPiece": false,
+    "arcFromBigCentroidDeg": 30.269
+   },
+   "after": {
+    "centerOnTile": 21691,
+    "drawCenter": [
+     90.8399,
+     36.3902,
+     -20.588
+    ],
+    "size": 21.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Hollow Verge",
+   "uid": 94,
+   "tiles": 40,
+   "pieces": [
+    40
+   ],
+   "before": {
+    "drawCenter": [
+     -44.4726982,
+     -46.8524017,
+     -76.3199387
+    ],
+    "size": 8.53814983,
+    "tileUnderLabel": 11099,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 8.131
+   },
+   "after": {
+    "centerOnTile": 3961,
+    "drawCenter": [
+     -56.145,
+     -42.5005,
+     -71.0032
+    ],
+    "size": 10.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Grinding Floor",
+   "uid": 95,
+   "tiles": 79,
+   "pieces": [
+    79
+   ],
+   "before": {
+    "drawCenter": [
+     -87.4766922,
+     -47.5242271,
+     9.32405281
+    ],
+    "size": 11.9990625,
+    "tileUnderLabel": 9558,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 8.196
+   },
+   "after": {
+    "centerOnTile": 2536,
+    "drawCenter": [
+     -93.3147,
+     -35.6521,
+     4.6145
+    ],
+    "size": 12.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Hanging Wood",
+   "uid": 96,
+   "tiles": 165,
+   "pieces": [
+    165
+   ],
+   "before": {
+    "drawCenter": [
+     -27.0818176,
+     -90.6564255,
+     32.3374062
+    ],
+    "size": 17.3410645,
+    "tileUnderLabel": 10481,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 5.131
+   },
+   "after": {
+    "centerOnTile": 19966,
+    "drawCenter": [
+     -20.5988,
+     -90.8278,
+     36.4142
+    ],
+    "size": 17.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Chalk Marches",
+   "uid": 97,
+   "tiles": 57,
+   "pieces": [
+    57
+   ],
+   "before": {
+    "drawCenter": [
+     -17.2537403,
+     -98.259819,
+     -6.71355581
+    ],
+    "size": 10.192276,
+    "tileUnderLabel": 13652,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 6.354
+   },
+   "after": {
+    "centerOnTile": 523,
+    "drawCenter": [
+     -26.0357,
+     -95.8148,
+     -11.9021
+    ],
+    "size": 10.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Notch",
+   "uid": 98,
+   "tiles": 56,
+   "pieces": [
+    56
+   ],
+   "before": {
+    "drawCenter": [
+     90.4035339,
+     -24.2527256,
+     -35.1677895
+    ],
+    "size": 10.1024752,
+    "tileUnderLabel": 11500,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 10.073
+   },
+   "after": {
+    "centerOnTile": 14726,
+    "drawCenter": [
+     81.8233,
+     -38.823,
+     -42.3996
+    ],
+    "size": 10.0,
+    "sizeSource": "canonical by name"
+   }
+  },
+  {
+   "name": "Quiet Ground",
+   "uid": 99,
+   "tiles": 43,
+   "pieces": [
+    43
+   ],
+   "before": {
+    "drawCenter": [
+     64.8060226,
+     31.4104023,
+     69.3635178
+    ],
+    "size": 8.85254192,
+    "tileUnderLabel": 11740,
+    "onOwnTile": true,
+    "onBiggestPiece": true,
+    "arcFromBigCentroidDeg": 4.121
+   },
+   "after": {
+    "centerOnTile": 1920,
+    "drawCenter": [
+     69.3397,
+     32.8969,
+     64.1077
+    ],
+    "size": 10.0,
+    "sizeSource": "canonical by name"
+   }
+  }
+ ]
+}
