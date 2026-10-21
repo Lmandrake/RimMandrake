@@ -1,0 +1,1 @@
+winbuild.py stages FlowWorks Source/ only: running the built SelfTest from D:\ClaudeWork\rimmandrake\build\FlowWorks fails every case that reads Defs/, Patches/, Tools/ or other mods (Could not find file ...). Copy Defs Patches Languages About into the stage first, and read the remaining FAILs as staging gaps (path in the message), not regressions.
