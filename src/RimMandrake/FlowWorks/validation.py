@@ -861,7 +861,7 @@ def container_styles(t):
 # them: across every result made AT the current mod hash, the newest row per id wins (a later FAIL overrides an earlier PASS);
 # a row no such result carries is UNMEASURED naming the driver. T21 / T22 are thirst rows the sprinkler driver measures, so
 # both chains read one pool. Same contract as core_live_rows: never PASS from a stale or missing result.
-DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json")
+DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json", "lines_result_*.json")
 DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
 
 
@@ -1136,6 +1136,84 @@ def drawbridges(t):
                     raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
     t.upstream_failed = False   # the live rows only read result files: an offline FAIL above must not blank them
     _driver_live_report(t, DRAWBRIDGE_LIVE, "drawbridge_proof.py", "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS")
+
+
+# PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE (design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md §Ruled design P1-P9)
+# and POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS. Offline: the C# SelfTest cases of phases 1-7 and the cord (the files in
+# LINES_CASE_FILES; selftest_lines_proof checks the list against them). Live: the nine rows of northstar/lines_proof.py, read
+# from its newest result at the current mod hash and deployed DLL (driver_rows_at), else UNMEASURED naming the driver. The
+# driver calls the C# class RM_LineProofs (contracts: lines_proof.OWED_PROOFS); against a deployed FlowWorks without it, a
+# live run writes every row UNMEASURED/HARNESS.
+LINES_CASE_FILES = ("LineCrossingChecks.cs", "LineDigBreakChecks.cs", "DeckCollapseLinesChecks.cs", "PipePoleChecks.cs", "PipeSpanNetChecks.cs", "HoseBandChecks.cs", "LineReadoutChecks.cs", "PowerCordChecks.cs")
+LINES_CASES = [
+    "LineCrossing_P2_table_every_kind_by_every_surface",
+    "LineCrossing_P2_rigid_only_on_solid_ground_cover_carries_nothing",
+    "LineCrossing_P2_surface_deck_wins_over_the_hole_under_it",
+    "LineCrossing_P2_every_refusal_has_a_reason_every_allow_none",
+    "LineCrossing_P1_style_change_does_not_change_permission",
+    "LineCrossing_P2_gates_at_placement_rebuild_and_frame_completion",
+    "LineDigBreak_cancelled_or_refused_dig_breaks_nothing", "LineDigBreak_commit_breaks_rigid_and_cords_once_never_hose",
+    "LineDigBreak_repeat_commit_is_idempotent", "LineDigBreak_liquid_net_splits_where_the_pipe_broke",
+    "DeckCollapse_cord_drops_one_live_fallen_wire_and_the_net_splits_once", "DeckCollapse_repeat_teardown_is_idempotent",
+    "DeckCollapse_unpowered_or_disconnected_cord_shocks_nobody", "DeckCollapse_hose_across_a_collapsed_deck_is_reeled_in",
+    "DeckCollapse_every_collapse_path_clears_through_ClearDeckTop", "DeckCollapse_GSS_shock_seam_is_soft_and_load_safe",
+    "PipePole_P3_support_on_solid_ground_only_refused_on_deck_cover_dug", "PipePole_P3_span_length_cap_follows_the_slider",
+    "PipePole_P3_sag_at_the_slider_extremes", "PipePole_P3_span_is_not_walkable_and_not_in_pawn_topology",
+    "PipePole_P4_dig_kills_the_pole_so_its_spans_fall", "PipePole_P3_settings_and_the_gss_seam_line_up",
+    "PipeSpan_P3_edge_joins_two_60pct_components_cap_after_join_refused",
+    "PipeSpan_P3_edge_joins_two_40pct_components_accepted_as_one",
+    "PipeSpan_P3_one_logical_edge_no_duplicate_cardinal_or_reverse_span",
+    "PipeSpan_P3_ring_of_two_pole_routes_cut_in_turn", "PipeSpan_P3_cut_span_splits_the_net_once",
+    "PipeSpan_P3_production_wiring_adapter_callback_join_order", "HoseBand_P5_refuses_a_dug_square_without_ramp_or_ladder",
+    "HoseBand_P5_routes_lip_ramp_floor", "HoseBand_P5_routes_lip_ladder_floor_and_raised_ladder_leaves_it_hanging",
+    "HoseBand_P5_endpoint_reach_respects_band", "HoseBand_P5_newly_dug_square_replans_or_retracts_once",
+    "HoseBand_P2_pit_cover_carries_no_hose", "HoseBand_P5_no_bands_leaves_gss_signatures_unchanged",
+    "LineReadout_P9_four_cases_read_apart", "LineReadout_P9_counts_and_dry_pole",
+    "LineReadout_P9_adapters_print_the_lines", "PipePoleGravship_P8_aboard_span_rekeys_on_landing",
+    "PipePoleGravship_P8_edge_span_coils_and_no_support_loss", "PowerCord_def_is_a_FlexCord_power_transmitter_of_its_own",
+    "PowerCord_placeable_on_rope_timber_steel_decks_and_leaf_refused_dug_and_cover",
+    "PowerCord_restyled_conduit_still_refused_on_decks", "PowerCord_dig_break_catches_the_cord_def",
+    "PowerCord_leaf_raise_disconnects_lower_rejoins_the_power_net",
+    "PowerCord_deck_collapse_destroys_it_and_records_the_fallen_wire_first"]
+LINES_LIVE = [
+    ("ROPE_DECK_RIGID_REFUSED_FLEX_OK", None, "on a rope deck square the placement gate refuses a pipe and a conduit and accepts "
+     "a power cord; a hose to the far bank is laid over >= 3 deck squares"),
+    ("COVER_CARRIES_NO_HOSE", None, "an intact pit cover reads hoseClosed and a hose to the far bank lies on no cover square"),
+    ("POLE_SPAN_CARRIES_LIQUID", None, "two tanks joined only by a strung pipe-pole span share one liquid net (tank B in tank A's "
+     "store); destroying a pole splits it"),
+    ("DIG_UNDER_PIPE_SPLITS_NET", None, "a square dug under a pipe destroys that pipe once and splits the net; a second dig "
+     "breaks nothing"),
+    ("CORD_DECK_LAMP_LIT", None, "a cord across a timber deck powers a lamp on the far bank; the deck cord reads 'Lying on a "
+     "bridge deck.'"),
+    ("LEAF_RAISED_LAMP_DARK", None, "a raised drawbridge leaf cuts its cord (lamp dark, 'Disconnected:' readout); lowered, the "
+     "lamp lights again"),
+    ("COLLAPSE_CORD_SHOCKS_ONCE", None, "a collapsing deck drops its powered cord as a live fallen wire: the net split exactly "
+     "once, a colonist on a fallen square shocked"),
+    ("LADDER_HOSE_DRAINS_RAISED_STAYS", None, "a hose down a ladder with an Intake end drains the pit into the tank; raising the "
+     "ladder leaves the hose laid, unmoved"),
+    ("DIG_REROUTES_LAID_HOSE", None, "a pit dug under a laid hose: within one corridor check it re-routes round the pit, "
+     "still laid"),
+]
+
+
+@suite.chain("lines")
+def lines(t):
+    """Offline: pipe-pole phases 1-7 and the power cord (LINES_CASES), 0 ticks, no bridge. Live rows: read from the newest
+    lines_proof results at the current mod hash (driver_rows_at), else UNMEASURED naming the driver."""
+    cases = {}
+    with t.component("lines_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for name in LINES_CASES:
+        with t.component(name):
+            if t._guard():
+                got = cases.get(name)
+                if got != "ok":
+                    raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
+    t.upstream_failed = False   # the live rows only read result files: an offline FAIL above must not blank them
+    import lines_proof as _LP  # noqa: E402  (pure python: the row to item map)
+    for item in ("PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE", "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS"):
+        _driver_live_report(t, [r for r in LINES_LIVE if _LP.ROW_ITEM[r[0]] == item], "lines_proof.py", item)
 
 
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
