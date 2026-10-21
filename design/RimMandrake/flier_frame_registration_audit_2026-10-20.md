@@ -5,7 +5,7 @@ Offline, read-only. Instrument: `src/RimMandrake/Utils/art/flier_frame_registrat
 
 ## Result
 
-37 (def, prefix) flip-book sets reference `flyingAnimationFramePathPrefix` in `src/` (male and female prefixes counted separately, shared art counted per def). 22 have 2+ frames on disk; **18 are OFFENDERS** (body moves >= 2 px AND >= 2% of body size between frames in at least one facing). Worst: RSW_Sketto south (103.8 px, 1.7x its body size - frame 3 is a different pose), RSW_PekoPeko female east (132.5 px), RM_FireHawk north (84 px). Five defs declare 4-8 frames but ship none in `src/` (MISSING: RM_Kirruk, RSW_Brezak, RSW_Drexl, RSW_Thranta, RSW_Tibidee); 10 sets are single-frame (no animation, nothing to jitter).
+37 (def, prefix) flip-book sets reference `flyingAnimationFramePathPrefix` in `src/` (male and female prefixes counted separately, shared art counted per def). 22 have 2+ frames on disk; **18 are OFFENDERS** (body moves >= 2 px AND >= 2% of body size between frames in at least one facing). Worst: RSW_Sketto south (103.8 px, 1.7x its body size - frame 3 is a different pose), RSW_PekoPeko female east (132.5 px), RM_FireHawk north (84 px). Five defs declared 4-8 frames but shipped none in `src/` (RM_Kirruk uses vanilla Chicken frames; Brezak, Drexl, Thranta, Tibidee got donor frames 2026-10-20, section at the end); 10 sets are single-frame (no animation, nothing to jitter).
 
 **The dominant cause is not sub-pixel registration: the generated frames are separate repaints, so the body itself is redrawn (position, pose, even facing of the head) in different frames.** Seen directly in the strips: Uvak south frame 3 is a different drawing from frames 1/2/4; Sketto south frame 3 is a foreshortened re-pose; FireHawk north head/torso sit at different heights every frame; Urusai and PekoPeko likewise. Re-registering by translation fixes only the translation share; a re-posed body needs the `flyer_lock` plate recipe (below).
 
@@ -43,11 +43,11 @@ Offline, read-only. Instrument: `src/RimMandrake/Utils/art/flier_frame_registrat
 | RM_Kirruk | `Chicken_Flying_` | WeepingStones | 0 | - | - | - | - | - | - | MISSING |
 | RSW_Beldon | `BeldonC_Flying_` | SWBestiary | 3 | north | 0.0 | 0.000 | 0.0 | 0.0 | 0.0 | OK |
 | RSW_BloodletterPetrel | `BloodletterPetrel_Flying_` | SWBestiary | 1 | - | - | - | - | - | - | SINGLE |
-| RSW_Brezak | `Brezak_Flying_` | SWBestiary | 0 | - | - | - | - | - | - | MISSING |
+| RSW_Brezak | `Brezak_Flying_` | SWBestiary | 4 | south | 17.0 | 0.107 | 17.0 | 20.6 | 33.5 | OFFENDER |
 | RSW_CanCell | `CanCell_Flying_` | SWBestiary | 4 | north | 0.0 | 0.000 | 0.0 | 3.3 | 27.5 | OK |
 | RSW_ColonyPustuleHornet | `PustuleHornet_Flying_` | SWBestiary | 1 | - | - | - | - | - | - | SINGLE |
 | RSW_ColonyPustuleHornetQueen | `PustuleHornetQueen_Flying_` | SWBestiary | 1 | - | - | - | - | - | - | SINGLE |
-| RSW_Drexl | `Drexl_Flying_` | SWBestiary | 0 | - | - | - | - | - | - | MISSING |
+| RSW_Drexl | `Drexl_Flying_` | SWBestiary | 4 | north | 53.0 | 0.306 | 53.0 | 48.2 | 52.0 | OFFENDER |
 | RSW_PustuleHornet | `PustuleHornet_Flying_` | SWBestiary | 1 | - | - | - | - | - | - | SINGLE |
 | RSW_PustuleHornetQueen | `PustuleHornetQueen_Flying_` | SWBestiary | 1 | - | - | - | - | - | - | SINGLE |
 | RSW_PustuleHornetSpawned | `PustuleHornet_Flying_` | SWBestiary | 1 | - | - | - | - | - | - | SINGLE |
@@ -55,8 +55,8 @@ Offline, read-only. Instrument: `src/RimMandrake/Utils/art/flier_frame_registrat
 | RSW_Screecher | `Screecher_Flying_` | SWBestiary | 1 | - | - | - | - | - | - | SINGLE |
 | RSW_SmogMoth | `SmogMoth_Flying_` | SWBestiary | 1 | - | - | - | - | - | - | SINGLE |
 | RSW_Strill | `Strill_Flying_` | SWBestiary | 1 | - | - | - | - | - | - | SINGLE |
-| RSW_Thranta | `Thranta_Flying_` | SWBestiary | 0 | - | - | - | - | - | - | MISSING |
-| RSW_Tibidee | `Tibidee_Flying_` | SWBestiary | 0 | - | - | - | - | - | - | MISSING |
+| RSW_Thranta | `Thranta_Flying_` | SWBestiary | 4 | east | 53.2 | 0.443 | 53.2 | 41.0 | 59.5 | OFFENDER |
+| RSW_Tibidee | `Tibidee_Flying_` | SWBestiary | 4 | north | 29.0 | 0.156 | 29.0 | 26.1 | 77.0 | OFFENDER |
 
 ## Tools that align, crop, centre, scale, trim or validate sprites (flip-book relevance)
 
@@ -104,3 +104,18 @@ Verdicts: LOCKED (all <= 1 px and 0.5 deg; parts <= 1.5 px / 1 deg), DRIFT, RE-P
 **Instrument finding**: the mask-overlap figure above (`body drift px`) over-reports where broad wings survive the opening. Colour registration finds the body pixel-static already (0 px at 37-64 % share) in Urusai (all facings), Neebray (all), Convor m/f north/east and PekoPeko male north/south: those are not body-drift offenders; Convor south moves 2-3 px (translation only) and PekoPeko male east mixes a 512 frame with 256 ones.
 
 **Held** (owner feedback first, 2026-10-20): Bogwing, Krizzak, Shyrack, Whisperbird/ScrapNestBird have draft configs, not installed; Urusai, Neebray, Convor m/f, FireWasp, PekoPeko male and Beldon not started.
+
+## The four MISSING sets installed (2026-10-20, owner by card "Install donor art")
+
+Card, 2026-10-20 7:36 PM PDT: *"Four flying creatures (Brezak, Drexl, Thranta, Tibidee) have no flight frames in the
+game. Install donor art?"* -> **"Install donor art"**. The donor frames (Mlie Star Wars Animal Collection bundle,
+extracted at `D:\ClaudeWork\rimmandrake\build\mlie_extract\swanimals\`) were renamed to the capitalised paths
+the defs declare and installed through `art.py install` (48 files, 256x256 RGBA, real alpha; east faces right, north
+is the back, south the face, checked by eye against the grounded art). Their rows in the table above are re-measured
+on the installed files (`flier_frame_registration.py --set <K>`); Kirruk stays on vanilla Chicken frames.
+Colour registration, the cross-check this document trusts where broad wings survive the opening, puts the body at
+**0.0 px** in Drexl, Thranta and Tibidee (46-50 % share) and **4.1 px** in Brezak (56 %), so the mask-overlap
+numbers likely over-report here too; none was run through `flier_body_stabilize.py` (no `protect` annotation yet).
+They are donor cartoon-style frames on painterly regenerated grounded art, so the style changes at take-off.
+Not rewritten (the guards refuse bbox rewriting of `_Flying_` sets); candidates for the body-lock rebuild after the
+owner reviews the Sketto strip.
