@@ -39,7 +39,7 @@ namespace RimMandrake.Biomes
                 // material. Vanilla gives WorldOcean to Ocean/Lake by def identity only, so every
                 // sea of ours drew as flat land: WorldTerrain, and the terrain layer clamps any
                 // non-ocean vertex below 0 m to 0 m, throwing the -350 m depth away. Seen in game
-                // as the grey Grey Sea. WorldOcean reads that depth from the mesh uvs.
+                // as the grey Grey Sea. The vanilla WorldOcean shader ignores UV0/depth (measured live 2026-10-20), so shore/deep tinting comes from our two coloured overlay layers in RM_WorldLook.cs.
                 if (b.isWaterBiome)
                 {
                     Material w = new Material(WorldMaterials.WorldOcean);
