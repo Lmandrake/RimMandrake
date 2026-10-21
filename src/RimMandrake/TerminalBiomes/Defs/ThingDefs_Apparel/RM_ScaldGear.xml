@@ -16,19 +16,14 @@
     a roof                 free, vanilla, stops the clock dead
     the still day          free, the lock's own 12-24h Clear burst
     RM_Apparel_ScaldWrap   Neolithic, tailoring bench, no research  <- HERE
-    Royal Rind gear        Neolithic — NOT BUILT, see below
+    RM_Apparel_RindCoat    Neolithic, in Greentide (see below)
     RM_Apparel_BoilSuit    Industrial, RM_ScaldWorking research     <- HERE
     Odyssey vacsuit        vanilla ArmorRating_Heat 0.66 + helmet 0.66, no patch
 
-  🔴 RM_Apparel_RindCoat IS DELIBERATELY ABSENT, and this is a real
-  dependency, not an oversight. It is made of `RM_RoyalRind`, a stuff
-  rendered from the greatbole's fruit at a butcher table — and NEITHER the
-  fruit item nor the rind stuff nor the recipe exists anywhere in src/
-  (re-checked 2026-09-26). They are owed by the Greentide's own build
-  (greatbole_harvest_spec.md §9 items 4-5). When they land, the rind coat
-  and the rind stuff's own protection offsets go in with them, in one XML
-  pass, per that spec's §5a. Adding a coat now with no material to make it
-  from would ship a recipe nobody can run.
+  The Royal Rind rung is NOT in this file: RM_Apparel_RindCoat lives with
+  its material in Greentide (Defs/ThingDefs/RM_GreatboleHarvest_Items.xml,
+  built 018801d35e, GREATBOLE_HARVEST_LADDER_1) — Neolithic, Shell,
+  ArmorRating_Heat 0.60, tailoring bench, 60 RM_RoyalRind.
 
   ⚠️ EVERY PROTECTION NUMBER HERE IS INVENTED and taken from the spec's
   §5 table. Protection is ONE stat, vanilla ArmorRating_Heat
