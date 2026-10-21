@@ -55,7 +55,8 @@ namespace RimMandrake.Biomes
         public static string lastInfo = "never built";
 
         static readonly FieldInfo SubMeshesField = AccessTools.Field(typeof(WorldDrawLayerBase), "subMeshes");
-        static readonly Dictionary<WorldDrawLayer_Terrain, List<LayerSubMesh>> Ours = new Dictionary<WorldDrawLayer_Terrain, List<LayerSubMesh>>();
+        // weak: a world reload drops its layers (WorldDrawLayerBase.Dispose destroys their meshes); a strong map would pin every dead layer
+        static readonly System.Runtime.CompilerServices.ConditionalWeakTable<WorldDrawLayer_Terrain, List<LayerSubMesh>> Ours = new System.Runtime.CompilerServices.ConditionalWeakTable<WorldDrawLayer_Terrain, List<LayerSubMesh>>();
         static readonly Dictionary<BiomeDef, Material> BlendMats = new Dictionary<BiomeDef, Material>();
 
         static RM_WorldLook()
@@ -82,10 +83,12 @@ namespace RimMandrake.Biomes
             RemoveOurs(layer);
             foreach (object o in inner) yield return o;
             if (layer.planetLayer == null || !layer.planetLayer.IsRootSurface) yield break;
+            List<LayerSubMesh> lastMine = new List<LayerSubMesh>();
             try
             {
                 var sb = new StringBuilder();
                 var mine = new List<LayerSubMesh>();
+                lastMine = mine;
                 if (RM_BiomesSettings.worldSeaDepth) sb.Append(BuildSea(layer, mine));
                 if (RM_BiomesSettings.worldBorderBlend) sb.Append(" ").Append(BuildBlend(layer, mine));
                 var subs = SubMeshes(layer);
@@ -95,11 +98,13 @@ namespace RimMandrake.Biomes
                     sm.FinalizeMesh(MeshParts.All);
                     subs.Add(sm);
                 }
-                Ours[layer] = mine;
+                Ours.Remove(layer);
+                Ours.Add(layer, mine);
                 lastInfo = sb.ToString().Trim();
             }
             catch (Exception e)
             {
+                foreach (LayerSubMesh sm in lastMine) { SubMeshes(layer).Remove(sm); if (sm.mesh != null) UnityEngine.Object.Destroy(sm.mesh); }
                 lastInfo = "failed: " + e;
                 Log.ErrorOnce("[RimMandrake.Biomes] world look failed, planet keeps vanilla borders: " + e, 0x52574c31);
             }
