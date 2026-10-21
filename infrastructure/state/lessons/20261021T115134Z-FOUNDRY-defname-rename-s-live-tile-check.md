@@ -1,0 +1,1 @@
+A defName rename's live-tile check must cover EVERY keeper save, not only the canonical one: the 2026-10-20 dev saves (ASHKARR_DEV_*) carry RM_Wasteland x1853 / RM_NightsideIce x1506 on tiles while the canonical carries the RUT_ twins. worldmap.WorldGrid(save).census() against today's dump answers it offline in seconds; unresolved()==[] is the sanity probe.
