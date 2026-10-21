@@ -430,6 +430,7 @@
       <li>MinTemp_SmallIncrease</li>
       <li>BS_Diet_Carnivore</li>
       <li>ToxResist_Total</li>
+      <li>PsychicAbility_Enhanced</li>
       <li>FireResistant</li>
       <li>Outland_DeceleratedPregnancy</li>
       <li>Beard_NoBeardOnly</li>
@@ -1435,7 +1436,6 @@
       <li>Body_Hulk</li>
       <li>Outland_Skin_DeepAzure</li> <!-- only skin gene: (73,107,167) ~ painted head mean (68,101,149); head drawn untinted (2026-10-20) -->
       <li>Ears_Human</li> <!-- ears are painted in the head; no attachment ear (2026-10-20) -->
-      <li>Hands_Pig</li>
       <li>StrongStomach</li>
       <li>RobustDigestion</li>
       <li>Learning_Slow</li>
@@ -1536,9 +1536,6 @@
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <genes>
       <li>RSW_Body_gaunt</li>
-      <li>PsychicAbility_Enhanced</li>
-      <li>Turn_Gene_LatentPsychic</li>
-      <li>Turn_Gene_FastNeuralHeat</li>
       <li>Turn_Gene_TraitGrandeur</li>
       <li>MaxTemp_SmallDecrease</li>
       <li>BS_Diet_Carnivore</li>
