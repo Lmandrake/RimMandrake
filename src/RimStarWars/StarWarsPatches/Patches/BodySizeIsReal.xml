@@ -70,6 +70,11 @@
   large. Their frailty is still carried by their own genes.
 
   🔴 SUPERSEDED IN PART, 2026-08-22 — OUR OWN FIVE GENES ARE NOW MECHANICAL TOO.
+  (Lost 2026-08-23 when 7707a6aca regenerated SW_Genes.xml from the donor; restored
+  2026-10-20 at the source, gen_races_mod.SIZE_GENES_REAL, and held by
+  src/RimMandrake/Utils/selftest_size_genes_real.py. After this file's swaps only eight
+  xenotypes still carry one: Nelvaanian _big 1.20; Bothan, Defel, Gand, Geonosian
+  Variants, Selkath, Snivvian, Sullustan _small 0.80.)
   `RSW_BodySizeGene_big/bigger/biggest/small/smaller` were rewritten from
   `SM_Cosmetic_BodySizeOffset` to `SM_BodySizeOffset` in
   `src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml`, on the owner's
