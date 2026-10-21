@@ -100,8 +100,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--site", default="", help="cell X,Z for the titan corpse (default: map centre, then offsets)")
     ap.add_argument("--t3", default="RM_Oommok")
+    ap.add_argument("--passage-only", action="store_true", help="skip the corpse-site blocks (a site already stands)")
     ap.add_argument("--out", default=os.path.join(REPO, "src", "RimMandrake", "HugeThings", "northstar",
-                                                  "titan_events_live_%s.json" % time.strftime("%Y%m%d")))
+                                                  "titan_events_live_%s.json" % time.strftime("%Y%m%dT%H%M")))
     a = ap.parse_args()
     from rimbridge_client import RimBridge, discover_from_log
     host, port, token = discover_from_log()
@@ -113,7 +114,7 @@ def main():
             return 2
         print("  snapshot %r" % snap, flush=True)
         try:
-            body(R, a)
+            passage(R, a) if a.passage_only else body(R, a)
         finally:
             for f, v in snap.items():
                 R.put(f, v)
@@ -237,10 +238,15 @@ def body(R, a):
 
 
 def passage(R, a):
+    # IncidentWorker.CanFireNow caches its CanFireNowSub answer per game tick (lastCheckCanRunTick): on a paused game two asks
+    # in one tick return the FIRST answer, so every toggle flip is followed by a tick before asking again (run 1, 2026-10-21,
+    # read the off-answer back as "cannot fire" with events on).
     R.put("titanEventsEnabled", False)
+    R.ticks(2)
     ok, txt = R.hook("PassageCanFire")
     R.row("A5_titan_events_off", "A5", "PASS" if ok and "canFire=False" in txt else ("FAIL" if ok else "UNMEASURED"), "MOD", txt[:200])
     R.put("titanEventsEnabled", True)
+    R.ticks(2)
     ok, txt = R.hook("PassageCanFire")
     if not ok or "canFire=True" not in txt:
         R.row("A4_can_fire", "A4", "UNMEASURED", "SITE", "events on but cannot fire here: %s" % txt[:300])
@@ -263,6 +269,7 @@ def passage(R, a):
     R.row("A4_arrives", "A4", "PASS" if good else "FAIL", "MOD", rep[:300])
     # the one-T3-per-map law: a live T3 on the map leaves no T3 among the eligible kinds
     r = R.call("jawa/spawn_pawn", kindDef=a.t3, faction="none", count=1)
+    R.ticks(2)
     ok, txt = R.hook("PassageCanFire")
     if not ok or "t3OnMap=True" not in txt:
         R.row("A4_no_second_t3", "A4", "UNMEASURED", "HARNESS", "spawn %s: %s; %s" % (a.t3, str(r)[:120], txt[:200]))
