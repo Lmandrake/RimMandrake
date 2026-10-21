@@ -1,5 +1,19 @@
 # GPT skeptical review: drawbridge + pipes-across-pits (2026-10-20)
 
+## Owner's answers to the review questions (question cards, 2026-10-20 evening)
+
+1. **Tipping overflow:** anyone who doesn't fit on the hinge bank falls into the pit.
+2. **Two-leaf bridge:** each leaf tips toward its own hinge.
+3. **Trapped hostiles:** only free hostiles lock drawbridges. A hostile trapped in a pit or cell does not.
+4. **Steel bridge, power lost:** it freezes where it is.
+5. **GSS-restyled vanilla power conduit:** this is rigid conduit, so it crosses only by poles. A separate flexible power cord is what lies on decks.
+6. **Lines on a raising leaf:** hoses and cords disconnect when the leaf raises and rejoin when it lowers.
+7. **Ladder raised with a hose hanging:** the hose stays, hanging down the wall.
+8. **Pipe pole on a deck:** not allowed. Poles stand on solid ground only.
+9. **Old saves with lines across pits:** *"Can't happen. We don't have any."* No migration rule is needed.
+10. **Siphon:** *"Yes, always"*. Passive levelling flow may cross a crest.
+11. **Different liquids joined:** *"Whatever we ruled about mixing in a canal happens."*
+
 Owner, 2026-10-20: *"Send the new pipe and hose drawbridge and pit crossing logic to GPT for review and skeptical improvement."*
 
 Sent: `flowworks_drawbridge_design_2026-10-20.md`, `flowworks_pipes_across_pits_design_2026-10-20.md` (their Owner's answers ruled and fixed), plus `flowworks_bridges_design_2026-10-17.md`, `PIT_SUPERDEEP_COLLAPSE_1.md`, `gss_flowworks_rulings_2026-10-11.md`. Model gpt-6.1-sol, high effort. GPT read text only, not source: its engine points are required checks, not observations. Evidence, not authority.
