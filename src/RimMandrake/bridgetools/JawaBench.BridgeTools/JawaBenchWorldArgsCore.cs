@@ -158,5 +158,90 @@ namespace JawaBench.BridgeTools
                     bad.Add(kv.Key + "=" + kv.Value.Value.ToString(CultureInfo.InvariantCulture));
             return bad;
         }
+
+        // ------------------------------------------------------------------
+        //  jawa/world_features_import planning (FEATURES_IMPORT_FIX_REGIONS_SEEING_DOUBLE,
+        //  2026-10-20): with clearExisting=false the tool used to create a NEW feature for
+        //  every CSV region even when one of that name already existed - 71 regions became
+        //  142, each name twice. Regions are now matched BY NAME (ordinal) and updated in
+        //  place; a name carried by two existing features is ambiguous and refused.
+        // ------------------------------------------------------------------
+
+        public sealed class FeatureImportPlan
+        {
+            /// <summary>CSV region names with no existing feature of that name: created.</summary>
+            public readonly List<string> Create = new List<string>();
+            /// <summary>CSV region name -> index into the existing feature list: updated in place.</summary>
+            public readonly Dictionary<string, int> Update = new Dictionary<string, int>(StringComparer.Ordinal);
+            /// <summary>"name x N" for CSV names that match more than one existing feature: refuse.</summary>
+            public readonly List<string> Ambiguous = new List<string>();
+            /// <summary>Existing features deleted first (clearExisting=true only).</summary>
+            public int Removed;
+            /// <summary>Existing features the CSV does not name, left exactly as they were.</summary>
+            public int Untouched;
+        }
+
+        public static FeatureImportPlan PlanFeatureImport(IList<string> csvRegions, IList<string> existingNames,
+                                                          bool clearExisting)
+        {
+            var p = new FeatureImportPlan();
+            int existing = existingNames == null ? 0 : existingNames.Count;
+            var byName = new Dictionary<string, List<int>>(StringComparer.Ordinal);
+            if (!clearExisting)
+                for (int i = 0; i < existing; i++)
+                {
+                    var nm = existingNames[i];
+                    if (string.IsNullOrEmpty(nm)) continue;
+                    List<int> l;
+                    if (!byName.TryGetValue(nm, out l)) { l = new List<int>(); byName[nm] = l; }
+                    l.Add(i);
+                }
+            else p.Removed = existing;
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var nm in csvRegions ?? new List<string>())
+            {
+                if (string.IsNullOrEmpty(nm) || !seen.Add(nm)) continue;
+                List<int> hits;
+                if (!byName.TryGetValue(nm, out hits)) p.Create.Add(nm);
+                else if (hits.Count == 1) p.Update[nm] = hits[0];
+                else p.Ambiguous.Add(nm + " x" + hits.Count);
+            }
+            p.Untouched = clearExisting ? 0 : existing - p.Update.Count;
+            return p;
+        }
+
+        /// <summary>
+        /// The FeatureDef new regions are created as. An explicit name must exist. With none
+        /// given the default is "Region", and when THAT does not exist on the loaded list the
+        /// call is refused naming the defs the existing features use - never a silent pick.
+        /// When nothing will be created no def is needed: returns "" (and still refuses a
+        /// named def that does not exist). Returns null with <paramref name="error"/> set on refusal.
+        /// </summary>
+        public static string ResolveFeatureDef(string requested, Func<string, bool> exists,
+                                               IList<string> existingDefNames, int toCreate, out string error)
+        {
+            error = null;
+            var inUse = new Dictionary<string, int>(StringComparer.Ordinal);
+            foreach (var d in existingDefNames ?? new List<string>())
+            {
+                var k = string.IsNullOrEmpty(d) ? "(none)" : d;
+                inUse[k] = inUse.TryGetValue(k, out var c) ? c + 1 : 1;
+            }
+            var used = new List<string>();
+            foreach (var kv in inUse) used.Add(kv.Key + " x" + kv.Value);
+            string usedText = used.Count == 0 ? "no existing features" : "existing features use " + string.Join(", ", used);
+            var req = (requested ?? "").Trim();
+            if (req.Length > 0)
+            {
+                if (exists(req)) return req;
+                error = "REFUSING: no FeatureDef '" + req + "' on this mod list (" + usedText + ").";
+                return null;
+            }
+            if (toCreate == 0) return "";
+            if (exists("Region")) return "Region";
+            error = "REFUSING: " + toCreate + " region(s) must be created and no featureDef was given; the default " +
+                    "'Region' does not exist on this mod list (" + usedText + "). Pass featureDef explicitly.";
+            return null;
+        }
     }
 }

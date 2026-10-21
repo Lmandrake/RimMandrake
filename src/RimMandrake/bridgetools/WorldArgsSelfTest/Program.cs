@@ -114,6 +114,38 @@ namespace JawaBench.BridgeTools
             U("nonfinite.names_only_bad", nf.Count == 2 && nf[0] == "elevation=NaN" && nf[1].StartsWith("temperature="), string.Join(";", nf));
             U("nonfinite.none", C.NonFinite().Count == 0 && C.NonFinite(null).Count == 0);
 
+            // ---------------- features import: match by name, never double (FEATURES_IMPORT_FIX_REGIONS_SEEING_DOUBLE)
+            var ex = new List<string> { "Pan", "Slough", "Knuckles", null, "Old" };
+            var fp = C.PlanFeatureImport(new List<string> { "Pan", "Slough", "Knuckles", "Newland" }, ex, false);
+            U("fimport.update_by_name", fp.Update.Count == 3 && fp.Update["Pan"] == 0 && fp.Update["Knuckles"] == 2, string.Join(",", fp.Update.Keys));
+            U("fimport.create_only_new", fp.Create.Count == 1 && fp.Create[0] == "Newland", string.Join(",", fp.Create));
+            U("fimport.untouched_counted", fp.Untouched == 2 && fp.Removed == 0 && fp.Ambiguous.Count == 0, fp.Untouched + "/" + fp.Removed);
+            var names71 = Enumerable.Range(0, 71).Select(i => "R" + i).ToList();
+            fp = C.PlanFeatureImport(names71, names71, false);
+            U("fimport.rerun_71_stays_71", fp.Create.Count == 0 && fp.Update.Count == 71 && fp.Untouched == 0, fp.Create.Count + " created");
+            fp = C.PlanFeatureImport(names71, names71, true);
+            U("fimport.clear_creates_all", fp.Create.Count == 71 && fp.Update.Count == 0 && fp.Removed == 71, fp.Create.Count + "/" + fp.Removed);
+            fp = C.PlanFeatureImport(new List<string> { "Pan" }, new List<string> { "Pan", "Pan" }, false);
+            U("fimport.duplicate_existing_refused", fp.Ambiguous.Count == 1 && fp.Ambiguous[0] == "Pan x2" && fp.Update.Count == 0, string.Join(",", fp.Ambiguous));
+            fp = C.PlanFeatureImport(new List<string> { "Pan", "Pan", "" }, new List<string>(), false);
+            U("fimport.csv_dupes_once", fp.Create.Count == 1, fp.Create.Count.ToString());
+            fp = C.PlanFeatureImport(new List<string> { "pan" }, new List<string> { "Pan" }, false);
+            U("fimport.name_match_is_ordinal", fp.Create.Count == 1 && fp.Update.Count == 0, fp.Create.Count.ToString());
+
+            Func<string, bool> fullList = d => d == "Desert" || d == "Ocean";
+            var used = Enumerable.Repeat("Desert", 71).ToList();
+            string ferr;
+            var fdn = C.ResolveFeatureDef(null, fullList, used, 3, out ferr);
+            U("fdef.missing_default_refused", fdn == null && ferr.Contains("'Region' does not exist") && ferr.Contains("Desert x71"), ferr);
+            fdn = C.ResolveFeatureDef(null, fullList, used, 0, out ferr);
+            U("fdef.no_create_needs_no_def", fdn == "" && ferr == null, ferr);
+            fdn = C.ResolveFeatureDef("Region", fullList, used, 0, out ferr);
+            U("fdef.named_missing_refused_even_updating", fdn == null && ferr.Contains("no FeatureDef 'Region'"), ferr);
+            fdn = C.ResolveFeatureDef(" Desert ", fullList, used, 3, out ferr);
+            U("fdef.explicit_ok", fdn == "Desert" && ferr == null, fdn);
+            fdn = C.ResolveFeatureDef(null, d => d == "Region", new List<string>(), 3, out ferr);
+            U("fdef.default_when_present", fdn == "Region", fdn);
+
             Console.WriteLine("U-count " + n);
             return 0;
         }
