@@ -1,0 +1,1 @@
+A RimWorld mid cold-load ignores a graceful taskkill (no window to close); /F is the only stop, and costs nothing then since no game state exists. A DLL deploy while the game runs is silently refused by the file lock: compare md5 of the game copy before trusting a '~' line.

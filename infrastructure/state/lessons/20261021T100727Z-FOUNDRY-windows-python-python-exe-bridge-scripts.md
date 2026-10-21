@@ -1,0 +1,1 @@
+Windows python (python.exe) bridge scripts die at import with RmDataRootUnset unless RM_DATA_ROOT reaches them: export RM_DATA_ROOT='D:\ClaudeWork\rimmandrake' WSLENV=RM_DATA_ROOT:$WSLENV (any other env a script reads, e.g. a size cap, needs its own WSLENV entry too).
