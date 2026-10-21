@@ -15,5 +15,11 @@ Found in `design/RimStarWars/face_art_reassessment_2026-10-21.md` §7: Facial An
 - NOT listed (owner question, cosmetic): `RSW_MandrakeJawa` and `RSW_Jawa_Xeno_Gamorrean` wear vanilla heads and are absent from his config (his config's `Human-Jawa_Xeno_Gamorrean` is the pre-rename name). Adding them would change how they look today.
 
 ## Verify
-- L1 offline, done: `python3 src/RimStarWars/StarWarsRaces/selftest_fa_optout.py` checks that every src/ xenotype whose genes force an RSW_ head is listed (41 of 41), that every listed name exists, that the owner config is a subset (68 of 68), and that the FA DLL has the target method. Planted defects are caught. `validate_patch.py --defs` reports 0 errors.
+- L0 offline, done: `python3 src/RimStarWars/StarWarsRaces/selftest_fa_optout.py` checks that every src/ xenotype whose genes force an RSW_ head is listed (41 of 41), that every listed name exists, that the owner config is a subset (68 of 68), and that the FA DLL has the target method. Planted defects are caught. `validate_patch.py --defs` reports 0 errors.
 - L2 live, owed: deploy StarWarsRaces. Rename the FA config aside so FA starts fresh, load a quicktest with FA active, and spawn a painted-head species (for example Rodian, Twi'lek, Sith Kissai). The head must show no FA eyes or mouth, and the log must show `[RimMandrake.StarWarsRaces] Harmony: patched 1, missing 0`. Then restore the owner's config.
+
+## criteria
+
+- A1 L0: `python3 src/RimStarWars/StarWarsRaces/selftest_fa_optout.py` PASS (every RSW_-head xenotype listed, owner config a subset, FA target present, plants caught); `RimMandrakeStarWarsRaces.dll` builds with its `.srchash`
+- A2 L1: after deploy, a load with FA active logs `[RimMandrake.StarWarsRaces] Harmony: patched 1, missing 0`, and a load without FA logs no error from StarWarsRaces
+- A3 L2: on a fresh FA config, a spawned Rodian, Twi'lek and Sith Kissai show no FA eyes or mouth; with the setting off, FA draws on them again
