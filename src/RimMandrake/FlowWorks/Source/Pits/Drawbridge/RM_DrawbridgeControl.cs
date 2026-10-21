@@ -29,8 +29,8 @@ namespace RimMandrake.FlowWorks.Pits
 	/// <summary>
 	/// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 3 (R2, owner follow-ups 2026-10-20): the winch house of ONE leaf, built on the
 	/// leaf's own hinge bank beside its hinge anchor (a two-leaf bridge has one on each bank). Timber: a hand winch a colonist
-	/// turns. Steel: powered (CompPowerTrader); without power its leaf freezes where it is. Destroyed (or taken down) while its
-	/// leaf is up, the leaf crashes down and hits anything under it.
+	/// turns. Steel: powered (CompPowerTrader); without power its leaf freezes where it is. Gone from the map any way (destroyed,
+	/// deconstructed, flown off on a gravship) while its leaf is up, the leaf crashes down and hits anything under it.
 	/// </summary>
 	public class Building_DrawbridgeWinch : Building
 	{
@@ -75,14 +75,28 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
-		public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+		/// <summary>Every way off the map passes here (Destroy, deconstruct and kill call DeSpawn; a gravship launch despawns
+		/// without destroying, WillReplace; the winch is not minifiable). The leaf stays behind on the map, so this is a lost winch: the leaf crashes and the
+		/// link is cleared (idempotent: a second call finds no leaf on this winch). A map removed whole takes winch and leaf
+		/// together and despawns nothing.</summary>
+		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
 			Map map = Map;
-			bool wasSpawned = Spawned;
-			base.Destroy(mode);
-			if (wasSpawned && map != null)
+			base.DeSpawn(mode);
+			if (map != null)
 			{
 				RM_Drawbridges.Notify_WinchLost(map, this);
+			}
+		}
+
+		/// <summary>Landed with a gravship (the SAME instance respawns on the new map, GSS GS-1): a winch that flew is unlinked
+		/// already; it takes a leaf on the landing map if it came down beside one's hinge anchor, as a newly built one does.</summary>
+		public override void PostSwapMap()
+		{
+			base.PostSwapMap();
+			if (Spawned && !RM_Drawbridges.LeafOfWinch(this, out _, out _))
+			{
+				RM_Drawbridges.LinkWinch(this);
 			}
 		}
 

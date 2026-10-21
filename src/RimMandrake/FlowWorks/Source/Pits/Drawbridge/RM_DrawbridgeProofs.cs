@@ -281,6 +281,31 @@ namespace RimMandrake.FlowWorks.Pits
 			return "POWER powered=" + w.Powered + " winch=True";
 		}
 
+		/// <summary>"x,z" (a winch house's square): despawn it WITHOUT destroying, as GravshipUtility.GenerateGravship does to
+		/// every ship thing (DestroyMode.WillReplace), then discard it (it flew away). The production loss hook is the winch's
+		/// own DeSpawn. → "DESPAWN ok=T|F linkedBefore=T|F linkedAfter=T|F"</summary>
+		public static string ProofWinchDespawn(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !Cell(arg, out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be x,z (a winch house square) on the current map";
+			}
+			Building_DrawbridgeWinch w = c.GetThingList(map).OfType<Building_DrawbridgeWinch>().FirstOrDefault();
+			if (w == null)
+			{
+				return "DESPAWN ok=False linkedBefore=False linkedAfter=False";
+			}
+			bool before = RM_Drawbridges.LeafOfWinch(w, out _, out DrawbridgeLeaf l);
+			w.DeSpawn(DestroyMode.WillReplace);
+			bool after = l != null && l.winch == w;
+			if (!w.Destroyed)
+			{
+				w.Destroy(DestroyMode.Vanish);
+			}
+			return "DESPAWN ok=True linkedBefore=" + before + " linkedAfter=" + after;
+		}
+
 		/// <summary>"x,z": the production tip plan for that leaf if it left its seat now (Tip with a preview: nobody moved).
 		/// → "PREVIEW riders=N land=L fall=F free=S" (free = legal landing squares on the hinge bank within TipReach)</summary>
 		public static string ProofTipPreview(string arg)

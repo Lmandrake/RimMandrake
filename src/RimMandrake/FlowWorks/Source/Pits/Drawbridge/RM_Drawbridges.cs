@@ -767,7 +767,8 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 
 		/// <summary>Owner follow-up (2026-10-20): a destroyed winch house crashes its leaf down, and anything under it is hit.
-		/// Steel losing only its power still freezes (Tick).</summary>
+		/// Called on ANY despawn of the winch (RM_DrawbridgeMath.WinchDepartureCrashes); a bridge torn loose at the same gravship
+		/// launch has already fallen and is only unlinked. Steel losing only its power still freezes (Tick).</summary>
 		public static void Notify_WinchLost(Map map, Building_DrawbridgeWinch w)
 		{
 			RM_MapComponent_SuspensionBridges comp = RM_MapComponent_SuspensionBridges.Of(map);
@@ -788,7 +789,8 @@ namespace RimMandrake.FlowWorks.Pits
 						continue;
 					}
 					l.winch = null;
-					if (RM_DrawbridgeMath.WinchLossCrashes(l.progress))
+					bool tornLoose = GravshipUtility.generatingGravship && RM_Patch_GravshipLaunch_Bridges.TornLoose.Contains(r);
+					if (RM_DrawbridgeMath.WinchDepartureCrashes(l.progress, tornLoose))
 					{
 						Crash(map, r, l);
 					}

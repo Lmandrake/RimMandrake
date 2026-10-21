@@ -1,5 +1,5 @@
-"""The drawbridge functional script runs every path offline (drawbridge_proof.py --mock, FakeBridge): all eleven R13 rows are
-written, every mock verdict is PASS, and no mock row claims a live verdict. Can-fail, one per row: a FakeBridge fault that
+"""The drawbridge functional script runs every path offline (drawbridge_proof.py --mock, FakeBridge): all twelve rows (the eleven R13 rows
+plus WINCH_DESPAWN_CRASHES) are written, every mock verdict is PASS, and no mock row claims a live verdict. Can-fail, one per row: a FakeBridge fault that
 breaks the ruled behaviour turns that row's mock verdict FAIL. The MOD/SITE/HARNESS split (PROOF_VERDICTS_REPAIR_SAME_BUG_
 EVERY_ROUND): the owed C# proof class missing, a clock that never moved, a site that is not the scene and raiders that
 never came near each read UNMEASURED with the right class, never a mod FAIL. Proves the SCRIPT, never the game.
@@ -27,6 +27,7 @@ CAN_FAIL = {
     "trapped_locks": ("HOSTILE_LOCKS", "FAIL", "MOD"),
     "freeze_ignored": ("STEEL_UNPOWERED_FREEZES", "FAIL", "MOD"),
     "no_crash": ("WINCH_LOST_CRASHES", "FAIL", "MOD"),
+    "despawn_stale": ("WINCH_DESPAWN_CRASHES", "FAIL", "MOD"),
     "raid_loop": ("RAID_UP", "FAIL", "MOD"),
     "dup_plank": ("RAID_PLANK", "FAIL", "MOD"),
     "replay_tip": ("SAVE_MIDRAISE", "FAIL", "MOD"),
@@ -53,7 +54,7 @@ def main():
         if rc != 0:
             fails.append("clean mock exit %s: %s" % (rc, txt.strip().splitlines()[-1]))
         if list(rows) != DP.ROW_IDS:
-            fails.append("rows %s, want the eleven R13 rows in order %s" % (list(rows), DP.ROW_IDS))
+            fails.append("rows %s, want the twelve rows in order %s" % (list(rows), DP.ROW_IDS))
         for rid, r in rows.items():
             if r["status"] != "SKIP":
                 fails.append("%s: a mock row claimed a live verdict (%s)" % (rid, r["status"]))

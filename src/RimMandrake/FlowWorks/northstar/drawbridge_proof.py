@@ -40,6 +40,8 @@ the drag's first end, unless said):
                                                            -> HOSTILE_LOCKS (raiseSpeed 0.25 for the section, restored)
   I  z=50  timber 1-wide (0,50)-(5,50), 4 m trench; leaf raised, a colonist in the hole under it, winch destroyed
                                                            -> WINCH_LOST_CRASHES
+  L  z=62  timber 1-wide (0,62)-(5,62), 4 m trench; leaf raised, a colonist in the hole under it, the winch DESPAWNED without
+     being destroyed (the gravship launch's WillReplace despawn, ProofWinchDespawn) -> WINCH_DESPAWN_CRASHES
   J  z=56  a 2-square gap (1..2, 56) 4 m deep, two hostile carriers on the east bank -> RAID_PLANK
   K  island at origin+(30,70): ring at Chebyshev 5..6 dug 2 m (raid_trench_proof's scene), a steel drawbridge east across
      the ring (c+4,c)-(c+7,c) with its winch on the island, a player decoy (sandbags) outside at (c+14, c+4), the leaf
@@ -90,7 +92,8 @@ DEEP = 8          # notches: 4 m
 FULL_STEEL = 120  # RM_DrawbridgeMath.PoweredTicksPerLeaf at raiseSpeed 1
 
 ROW_IDS = ["RAISE_PATH", "RAISE_TIPS_RIDERS", "RAISE_SPARES_UNDERPASS", "LOWER_ONLY_FROM_WINCH", "TWO_LEAF_TIPS_OWN_HINGE",
-           "HOSTILE_LOCKS", "STEEL_UNPOWERED_FREEZES", "WINCH_LOST_CRASHES", "RAID_UP", "RAID_PLANK", "SAVE_MIDRAISE"]
+           "HOSTILE_LOCKS", "STEEL_UNPOWERED_FREEZES", "WINCH_LOST_CRASHES",
+           "WINCH_DESPAWN_CRASHES", "RAID_UP", "RAID_PLANK", "SAVE_MIDRAISE"]
 
 # The C# the rows call (RM_DrawbridgeProofs; selftest_drawbridge_proof checks each method exists and answers its word). One
 # string arg each (the RM_SuspensionProofs convention: ';' inside), one line out: a word then key=value tokens; "REFUSED: why"
@@ -108,6 +111,8 @@ OWED_PROOFS = {
     "ProofWorkJob": "pawnId;x,z -> WorkGiver_Drawbridge.JobOnThing for that pawn on that leaf's winch and far anchor (forced). "
                     "'WORK job=T|F spot=winch|far|none raise=T|F why=..'",
     "ProofWinchPower": "x,z;on|off -> the leaf's winch CompPowerTrader.PowerOn forced (and held) on/off. 'POWER powered=T|F'",
+    "ProofWinchDespawn": "x,z (a winch square) -> DeSpawn(WillReplace) as GenerateGravship does, then discard. 'DESPAWN ok=T|F "
+                         "linkedBefore=T|F linkedAfter=T|F'",
     "ProofTipPreview": "x,z -> the R11 readout's tip preview for that leaf. 'PREVIEW riders=N land=L fall=F free=S'",
     "ProofGivePlank": "pawnId;lipx,z;farx,z -> give the pawn an RM_RaidPlank and start RM_LayRaidPlank over that gap (production "
                       "PlankJob). 'GIVE ok=T|F job=.. plank=thingId reserved=T|F'",
@@ -636,6 +641,32 @@ def winch_lost_crashes(ctx):
         {"after": t1, "crashes": crashes, "hits": hits, "hediffs": [len(h0 or []), len(h1 or [])], "band": tb})
 
 
+def winch_despawn_crashes(ctx):
+    """PROVE scene I's staging at z=62, but the winch house leaves WITHOUT being destroyed: ProofWinchDespawn (DeSpawn
+    WillReplace, the despawn a gravship launch gives every ship thing; review 7d97084652 found only Destroy reported).
+    EXPECT linkedBefore and not linkedAfter (the link cleared), progress 0 at once, CrashCount +1, CrashHits >= 1.
+    LIES: a winch never linked (linkedBefore False) proves nothing (SITE); a victim on the bank is never under the leaf."""
+    P, xz, row, dproof, sproof, ticks, spawn = _c(ctx, "P", "xz", "row", "dproof", "sproof", "ticks", "spawn")
+    for i in range(1, 5):
+        ctx["dig"](P(i, 62))
+    kv, txt = ctx["build"]("L", P(0, 62), P(5, 62), "timber")
+    winch = (kv.get("winchAt") or "").split("|")[0]
+    V.require(re.match(r"^-?\d+,-?\d+$", winch or ""), "winch cell known", txt, cls="HARNESS")
+    dproof("ProofDevSet", "%s;raise;instant" % xz(P(2, 62)))
+    victim = spawn(P(2, 62), draft=True)
+    kb, tb = sproof("ProofBand", victim, answer=True)
+    V.require(kb and kb.get("view") != "deck", "victim is down in the hole", tb)
+    c0 = ctx["counters"]()
+    kd, td = dproof("ProofWinchDespawn", winch, answer=True)
+    V.require(kd and kd.get("ok") == "True" and kd.get("linkedBefore") == "True", "a linked winch was despawned", td)
+    ticks(10)
+    k1, t1 = ctx["leaf"](P(2, 62))
+    c1 = ctx["counters"]()
+    crashes, hits = ctx["delta"](c0, c1, "CrashCount"), ctx["delta"](c0, c1, "CrashHits")
+    good = kd.get("linkedAfter") == "False" and num(k1, "progress") == 0 and crashes == 1 and (hits or 0) >= 1
+    row("WINCH_DESPAWN_CRASHES", "PASS" if good else "FAIL", {"despawn": td, "after": t1, "crashes": crashes, "hits": hits})
+
+
 def raid_up(ctx):
     """PROVE raid_trench_proof's island (ring dug 2 m at Chebyshev 5..6), a steel drawbridge east across it with its winch on
     the island, raised; a player decoy outside; 4 raiders in LordJob_AssaultColony 25 east; --raid-ticks sampled every 250.
@@ -771,7 +802,7 @@ def _health(p):
 SCENES = {"RAISE_PATH": raise_path, "RAISE_TIPS_RIDERS": raise_tips_riders, "RAISE_SPARES_UNDERPASS": raise_spares_underpass,
           "LOWER_ONLY_FROM_WINCH": lower_only_from_winch, "TWO_LEAF_TIPS_OWN_HINGE": two_leaf_tips_own_hinge,
           "HOSTILE_LOCKS": hostile_locks, "STEEL_UNPOWERED_FREEZES": steel_unpowered_freezes,
-          "WINCH_LOST_CRASHES": winch_lost_crashes, "RAID_UP": raid_up, "RAID_PLANK": raid_plank, "SAVE_MIDRAISE": save_midraise}
+          "WINCH_LOST_CRASHES": winch_lost_crashes, "WINCH_DESPAWN_CRASHES": winch_despawn_crashes, "RAID_UP": raid_up, "RAID_PLANK": raid_plank, "SAVE_MIDRAISE": save_midraise}
 
 
 # ====================================================================== offline stand-in
@@ -790,13 +821,14 @@ class FakeBridge(object):
       trapped_locks    MOD: a trapped hostile counts as free                   -> HOSTILE_LOCKS FAIL
       freeze_ignored   MOD: unpowered steel keeps moving                       -> STEEL_UNPOWERED_FREEZES FAIL
       no_crash         MOD: a destroyed winch leaves the leaf up               -> WINCH_LOST_CRASHES FAIL
+      despawn_stale    MOD: a winch despawned without destroying keeps its link -> WINCH_DESPAWN_CRASHES FAIL
       raid_loop        MOD: raider jobs are ended over and over, no progress   -> RAID_UP FAIL
       far_reaches_winch the far bank has a path round to the winch (SITE)     -> LOWER_ONLY_FROM_WINCH UNMEASURED/SITE
       far_raiders      the raiders never come near (SITE)                      -> RAID_UP UNMEASURED/SITE
       dup_plank        MOD: the interrupted carrier's plank is laid as well    -> RAID_PLANK FAIL
       replay_tip       MOD: the load replays the tip                           -> SAVE_MIDRAISE FAIL"""
     FAULTS = ("far_reaches_winch", "no_proofs", "noclock", "two_free", "tip_all_fall", "no_repath", "underpass_tipped", "lower_from_far",
-              "tip_colony_bank", "trapped_locks", "freeze_ignored", "no_crash", "raid_loop", "far_raiders", "dup_plank",
+              "tip_colony_bank", "trapped_locks", "freeze_ignored", "no_crash", "despawn_stale", "raid_loop", "far_raiders", "dup_plank",
               "replay_tip")
 
     def __init__(self, faults=()):
@@ -1092,6 +1124,21 @@ class FakeBridge(object):
                 return "REFUSED: not a leaf"
             l["powered"] = a[1] == "on" and l["winch"] is not None
             return "POWER powered=%s" % l["powered"]
+        if m == "ProofWinchDespawn":
+            w = cell(a[0])
+            hit = [q for q in self.leaves if q["winch"] == w]
+            if "despawn_stale" not in self.f:
+                for q in hit:
+                    q["winch"] = None
+                    if q["progress"] > 0:
+                        victims = [p for p in self.pawns.values() if p.get("under") and q["z0"] <= p["z"] <= q["z1"]
+                                   and q["first"] <= p["x"] <= q["last"]]
+                        for p in victims:
+                            p["hediffs"].append("Crush")
+                        self.cnt["CrashHits"] += len(victims)
+                        self.cnt["CrashCount"] += 1
+                        q.update(progress=0, target="lowered", tip=False, auto=False, hold=False)
+            return "DESPAWN ok=%s linkedBefore=%s linkedAfter=%s" % (bool(hit), bool(hit), bool(hit) and "despawn_stale" in self.f)
         if m == "ProofTipPreview":
             if l is None:
                 return "REFUSED: not a leaf"

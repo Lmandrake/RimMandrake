@@ -18,9 +18,14 @@ namespace RimMandrake.FlowWorks.Pits
 	{
 		public static int Collapsed;
 
+		/// <summary>The bridges torn loose at the launch now under way (refilled by each launch; read only while
+		/// GravshipUtility.generatingGravship): a winch flying off from one of these finds no leaf left to crash.</summary>
+		public static readonly HashSet<SuspensionBridgeRecord> TornLoose = new HashSet<SuspensionBridgeRecord>();
+
 		[HarmonyPrefix]
 		public static void Prefix(Building_GravEngine engine)
 		{
+			TornLoose.Clear();
 			Map map = engine?.Map;
 			RM_MapComponent_SuspensionBridges comp = map == null ? null : RM_MapComponent_SuspensionBridges.Of(map);
 			if (comp == null)
@@ -34,6 +39,7 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					continue;
 				}
+				TornLoose.Add(r);
 				for (int span = 0; span < r.SpanCount; span++)
 				{
 					foreach (int i in r.SpanIndices(span))
