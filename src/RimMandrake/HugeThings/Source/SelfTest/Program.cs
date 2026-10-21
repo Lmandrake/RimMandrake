@@ -13,7 +13,7 @@ namespace RimMandrake.HugeThings.SelfTest
     {
         private static readonly string[] PlantFamilies =
             { "any", "full", "boundary", "symmetry", "ledger", "planner", "items", "root", "cache", "damage", "hitbox", "determinism" };
-        private static readonly string[] TitanFamilies = { "tier", "yield", "crush", "pool" };
+        private static readonly string[] TitanFamilies = { "tier", "yield", "crush", "pool", "visitors" };
 
         private static int Main(string[] args)
         {

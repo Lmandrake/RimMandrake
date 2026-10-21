@@ -91,6 +91,20 @@ namespace RimMandrake.TitanicCreatures
                 ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
         }
 
+        /// <summary>TITAN_CAMPS_SCAVENGERS_EVENTS_1: the tier a race's grown adult reaches (base size times its largest life-stage
+        /// factor) - what decides whether a race is a titan for the titan event and a non-titan for the scavenger draw.</summary>
+        public static TitanicTier AdultTier(ThingDef raceDef)
+        {
+            if (raceDef?.race == null) return TitanicTier.None;
+            float maxFactor = 1f;
+            if (raceDef.race.lifeStageAges != null)
+                foreach (LifeStageAge a in raceDef.race.lifeStageAges)
+                    if (a?.def != null && a.def.bodySizeFactor > maxFactor) maxFactor = a.def.bodySizeFactor;
+            RM_TitanicTierDef t = Thresholds;
+            return (TitanicTier)RM_TitanicKernel.TierFor(raceDef.race.baseBodySize * maxFactor, t.t1MinBodySize, t.t2MinBodySize,
+                t.t3MinBodySize, ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
+        }
+
         /// <summary>
         /// The runtime tier for one pawn right now - the authority every
         /// other system in this mod reads.

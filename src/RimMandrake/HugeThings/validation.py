@@ -29,8 +29,9 @@ CHAINS
   crush_rules        each RM_CrushRuleDef reads back as the XML says (chunks and the giant trunk protected).
   wake               an Elephant (T1) walking a lane leaves rubble and tramples fragile plants; a Rat does neither; `wakeEnabled`
                      off = neither; the crush multiplier scales the blow.
-  not_driven         click selection, pawn hitbox, save/load re-link, T2 roofs/walls, T3 corpse site, yield curve, roof
-                     slow-down, Large Pawns footprint, the titan-vs-giant smash, titan breakthrough clearing: UNMEASURED, each with its reason.
+  not_driven         click selection, pawn hitbox, save/load re-link, T2 roofs/walls, T3 corpse site and its scavengers/camps,
+                     the titan passage event, yield curve, roof slow-down, Large Pawns footprint, the titan-vs-giant smash, titan
+                     breakthrough clearing: UNMEASURED, each with its reason.
 
 LIST: needs mandrake.rm.biomes (TheRot folded in) beside this mod for RM_Nogtyl. STATIC: `python3 validation.py`
 -> `STATIC: PASS (0 findings)`; needs no game.
@@ -65,6 +66,10 @@ DEFAULTS = {"giantPlantsEnabled": True, "plantTrunkEnabled": True, "plantSelecti
             "corpseSiteEnabled": True, "corpseSiteHarvestMeatPerSession": 25, "corpseSiteHarvestLeatherPerSession": 10,
             "corpseSiteMeatSpoilagePerDay": 0.15, "corpseSiteLeatherSpoilagePerDay": 0.08,
             "corpseSiteWorkHoursPerSession": 1.0,
+            # TITAN_CAMPS_SCAVENGERS_EVENTS_1 (cards #4/#5 2026-09-09; numbers PROVISIONAL, FOUNDRY 2026-10-21)
+            "corpseSiteScavengersEnabled": True, "corpseSiteScavengerDailyChance": 0.35, "corpseSiteScavengerMax": 3,
+            "corpseSiteVisitorMeatPerDay": 20, "corpseSiteCampsEnabled": True, "corpseSiteCampDailyChance": 0.1,
+            "corpseSiteCampHours": 36.0, "titanEventsEnabled": True, "titanEventWarningHours": 6.0,
             # BIG_CREATURES_DESIGN_WALLS_AND_SLOTS phase 1 (owner cards 2026-10-18: x2 squeeze at half width, breadth 2 breaks
             # thin walls, titans step over narrow trenches); live chains in northstar/walls_slots_live.py.
             "wallsSlotsEnabled": True, "squeezeEnabled": True, "squeezeSlowdownAtHalf": 2.0, "trampleBudgetPerBreadth": 100.0,
@@ -216,6 +221,24 @@ def static_checks():
             bad.append("TitanClearingUtility.cs lacks %s" % needle)
     if "HugeGates.Wake(giantAnimalsEnabled, wakeEnabled, titanClearingEnabled)" not in src:
         bad.append("TitanClearingActive is no longer giant animals AND the wake AND its own toggle")
+    # TITAN_CAMPS_SCAVENGERS_EVENTS_1: the visitor draw sits in the site's daily step behind its toggles, the passage incident
+    # only schedules (tremors first), and the gate is card #5's kernel function.
+    if ("IncidentDef", "RM_TitanPassage") not in defs:
+        bad.append("IncidentDef RM_TitanPassage not shipped")
+    site = re.sub(r"//[^\n]*", "", read("Source", "Titanic", "CorpseSite", "Building_TitanicCorpseSite.cs"))
+    for needle in ("DailyVisitors()", "CorpseScavengersActive", "CorpseCampsActive", "RM_TitanicKernel.VisitorTake",
+                   "RM_TitanicKernel.ScavengerCount", "rmScavengers", "rmCampers"):
+        if needle not in site:
+            bad.append("Building_TitanicCorpseSite.cs lacks %s" % needle)
+    vis = re.sub(r"//[^\n]*", "", read("Source", "Titanic", "CorpseSite", "CorpseSiteVisitors.cs"))
+    for needle in ("AdultTier(k.race) == TitanicTier.None", "predator", "HostileTo(Faction.OfPlayer)", "LordJob_VisitColony"):
+        if needle not in vis:
+            bad.append("CorpseSiteVisitors.cs lacks %s" % needle)
+    tp = re.sub(r"//[^\n]*", "", read("Source", "Titanic", "Events", "TitanPassage.cs"))
+    for needle in ("TitanEventsActive", "RM_TitanicKernel.TitanEventEligible", "RM_TitanicKernel.WarningTicks", "DoShake",
+                   "LordJob_ExitMapNear", "T3OnMap", "comp.Schedule("):
+        if needle not in tp:
+            bad.append("TitanPassage.cs lacks %s" % needle)
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "HugeThings.md")):
         bad.append("walk missing")
     if os.path.isdir(os.path.join(HERE, "..", "TitanicCreatures", "About")):
@@ -654,6 +677,16 @@ def _build_suite():
                  "needs a T1/T2 race beside a Rot giant; the trunk is an impassable edifice, so this is vanilla pathing"),
                 ("t3_corpse_becomes_a_harvest_site", "corpseSiteEnabled",
                  "needs a bodySize >= 20 corpse and several harvest work sessions"),
+                ("corpse_site_draws_scavengers_that_eat", "corpseSiteScavengersEnabled",
+                 "needs a T3 corpse site on a map whose biome homes a predator; drive Building_TitanicCorpseSite.DebugDailyStep with "
+                 "the chance at 100% and read ScavengerCount > 0, then MeatRemaining falling by VisitorsEatenTotal; offline: titanic fuzz `visitors`"),
+                ("corpse_site_camp_comes_and_goes", "corpseSiteCampsEnabled",
+                 "needs a T3 corpse site and a non-hostile humanlike faction; DebugDailyStep at camp chance 100% reads CamperCount > 0 "
+                 "and the camp's lord leaves after corpseSiteCampHours"),
+                ("titan_passage_tremors_then_crossing", "titanEventsEnabled",
+                 "needs a T2+ race homed in another biome than the test map's; fire RM_TitanPassage, read "
+                 "MapComponent_TitanPassages.HasPending, DebugArriveNow, then LastArrived spawned with an ExitMapNear lord; "
+                 "offline: titanic fuzz `visitors` checks the card #5 gate and the warning floor"),
                 ("butcher_yield_curve_reduces_t1_t2_yield", "yieldCurveEnabled",
                  "needs a butcher job on a tiered corpse compared with an untiered same-mass control"),
                 ("thick_roof_route_excluded", "roofAvoidanceEnabled",

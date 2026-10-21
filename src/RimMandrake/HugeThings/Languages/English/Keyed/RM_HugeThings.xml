@@ -90,4 +90,16 @@
   <RM_WallsSlots_Restlessness>Restless {0}%</RM_WallsSlots_Restlessness>
   <RM_WallsSlots_WallStops>Holds big creatures up to breadth {0} ({1} thick here)</RM_WallsSlots_WallStops>
   <RM_WallsSlots_WallStopsNone>Too thin to hold a big creature ({0} thick here)</RM_WallsSlots_WallStopsNone>
+  <RM_HugeThings_CorpseVisitorMeat>  Meat each scavenger or camper takes per day: {0} (provisional)</RM_HugeThings_CorpseVisitorMeat>
+  <RM_HugeThings_CorpseScavengers>  Scavengers are drawn to the remains</RM_HugeThings_CorpseScavengers>
+  <RM_HugeThings_CorpseScavengers_Desc>Once a day the remains may draw wild predators of this map's own biomes (never a titan). They eat from the meat pool while they stay near it, and they are dangerous to anyone harvesting. Off: nothing comes.</RM_HugeThings_CorpseScavengers_Desc>
+  <RM_HugeThings_CorpseScavengerChance>    Daily chance of a scavenger draw: {0}% (provisional)</RM_HugeThings_CorpseScavengerChance>
+  <RM_HugeThings_CorpseScavengerMax>    Most scavengers in one draw: {0} (provisional)</RM_HugeThings_CorpseScavengerMax>
+  <RM_HugeThings_CorpseCamps>  Other people camp at the remains</RM_HugeThings_CorpseCamps>
+  <RM_HugeThings_CorpseCamps_Desc>Rarely, a small party of a faction that is not hostile to you walks in, camps beside the remains for a while and cuts their share of the meat, then leaves. Off: no camps.</RM_HugeThings_CorpseCamps_Desc>
+  <RM_HugeThings_CorpseCampChance>    Daily chance of a camp: {0}% (provisional)</RM_HugeThings_CorpseCampChance>
+  <RM_HugeThings_CorpseCampHours>    How long a camp stays: {0} hours (provisional)</RM_HugeThings_CorpseCampHours>
+  <RM_HugeThings_TitanEvents>Titans from elsewhere pass through, with warning</RM_HugeThings_TitanEvents>
+  <RM_HugeThings_TitanEvents_Desc>A titan (size tier 2 or 3) that lives in some other biome, never this map's own, may cross your map edge to edge. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.</RM_HugeThings_TitanEvents_Desc>
+  <RM_HugeThings_TitanWarning>  Tremor warning before it arrives: {0} hours (provisional)</RM_HugeThings_TitanWarning>
 </LanguageData>
