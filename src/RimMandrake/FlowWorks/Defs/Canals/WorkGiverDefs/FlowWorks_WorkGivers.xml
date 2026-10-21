@@ -36,4 +36,19 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: carry out an ordered ladder raise/lower (flick's work type and slot). -->
+  <WorkGiverDef>
+    <defName>RM_OperateLadderWorkGiver</defName>
+    <label>raise and lower ladders</label>
+    <giverClass>RimMandrake.FlowWorks.WorkGiver_RM_OperateLadder</giverClass>
+    <workType>BasicWorker</workType>
+    <verb>move</verb>
+    <gerund>moving a ladder</gerund>
+    <canBeDoneWhileDrafted>true</canBeDoneWhileDrafted>
+    <priorityInType>499</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
 </Defs>

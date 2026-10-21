@@ -86,6 +86,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!RM_PitTrapMath.LadderUsable(true, false, true, false), "slid down: a prisoner (not breaking out) still stays");
                 Assert(RM_PitTrapMath.LadderUsable(false, true, true, true), "can-fail: the setting off makes slid-up count as down");
             });
+            // FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE (bar wall_ladder_rides_on_rails; he typed 2026-10-20: "It can be raised
+            // from either below or above. But it can only be lowered from above.")
+            Case("LadderRails_raise_either_side_lower_only_from_above", () =>
+            {
+                Assert(RM_LadderWallMath.MayOperate(true, true), "raise from above");
+                Assert(RM_LadderWallMath.MayOperate(true, false), "raise from below");
+                Assert(RM_LadderWallMath.MayOperate(false, true), "lower from above");
+                Assert(!RM_LadderWallMath.MayOperate(false, false), "can-fail: lower from below is refused");
+            });
+            Case("LadderRails_gizmo_job_and_ai_ask_the_rule", () =>
+            {
+                string u = RiverSwitchFlipChecks.Src("Superdeep/RM_LadderUtility.cs");
+                // gizmo: orders, never moves; a lower nobody could stand above for is refused
+                RiverSwitchFlipChecks.Has(u, @"toggleAction = \(\) => Order\(!wantRaised\),", "the button orders the move");
+                RiverSwitchFlipChecks.Has(u, @"if \(wantRaised && !RM_LadderWallMath\.MayOperate\(false, RM_LadderUtility\.TopStandable\(parent\)\)\)\s*\{\s*cmd\.Disable\(",
+                    "the button refuses a lower with no standing room above");
+                Assert(!System.Text.RegularExpressions.Regex.IsMatch(u, @"toggleAction = \(\) => SetRaised"), "can-fail: the button no longer moves the ladder itself");
+                // AI: the work giver offers only an allowed, reachable side; only designated ladders are scanned
+                RiverSwitchFlipChecks.Has(u, @"if \(RM_LadderWallMath\.MayOperate\(toRaised, true\) && TopStandable\(ladder\)", "above is offered only when the rule allows it");
+                RiverSwitchFlipChecks.Has(u, @"if \(RM_LadderWallMath\.MayOperate\(toRaised, false\) && pawn\.CanReach\(ladder\.Position, PathEndMode\.OnCell, danger\)",
+                    "below is offered only when the rule allows it (a raise)");
+                RiverSwitchFlipChecks.Has(u, @"if \(!RM_LadderUtility\.StandCellFor\(pawn, t, comp\.wantRaised\)\.IsValid\)", "no allowed side: no job");
+                RiverSwitchFlipChecks.Has(u, @"foreach \(Designation des in pawn\.Map\.designationManager\.SpawnedDesignationsOfDef\(d\)\)", "only ordered ladders");
+                // job: re-checks where the pawn actually stands before moving the ladder
+                RiverSwitchFlipChecks.Has(u, @"bool above = pawn\.Position == RM_LadderUtility\.TopCell\(job\.targetA\.Thing\);\s*if \(comp == null \|\| !RM_LadderWallMath\.MayOperate\(comp\.wantRaised, above\)\)\s*\{\s*EndJobWith\(JobCondition\.Incompletable\);",
+                    "the job refuses a lower from below");
+                RiverSwitchFlipChecks.Has(u, @"comp\.SetRaised\(comp\.wantRaised\);", "the job is what moves it");
+                RiverSwitchFlipChecks.Has(u, @"return ladder\.Position \+ ladder\.Rotation\.FacingCell;", "above = the wall's top square the ladder faces");
+                RiverSwitchFlipChecks.Has(u, @"Scribe_Values\.Look\(ref wantRaised, ""rmLadderWantRaised"", raised\);", "the order is saved; an old save orders nothing");
+            });
             Case("LadderWall_call_sites", () =>
             {
                 string u = RiverSwitchFlipChecks.Src("Superdeep/RM_LadderUtility.cs");

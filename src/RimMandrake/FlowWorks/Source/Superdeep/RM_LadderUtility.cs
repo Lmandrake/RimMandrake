@@ -3,6 +3,7 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.FlowWorks
 {
@@ -147,6 +148,151 @@ namespace RimMandrake.FlowWorks
 		{
 			return ladder != null && RM_LadderWallMath.Faces(ladder.Rotation.AsInt, other.x - ladder.Position.x, other.z - ladder.Position.z);
 		}
+
+		/// <summary>FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: "above" is the wall's top square, the one the ladder faces.</summary>
+		public static IntVec3 TopCell(Thing ladder)
+		{
+			return ladder.Position + ladder.Rotation.FacingCell;
+		}
+
+		/// <summary>Can anyone stand above this ladder at all (its top square on the map and standable)?</summary>
+		public static bool TopStandable(Thing ladder)
+		{
+			if (ladder == null || !ladder.Spawned)
+			{
+				return false;
+			}
+			IntVec3 top = TopCell(ladder);
+			return top.InBounds(ladder.Map) && top.Standable(ladder.Map);
+		}
+
+		/// <summary>Where <paramref name="pawn"/> should stand to move <paramref name="ladder"/> to <paramref name="toRaised"/>:
+		/// above (the top square) or, only when RM_LadderWallMath.MayOperate allows it from below, the ladder's own square;
+		/// the nearer reachable side wins. Invalid when no allowed side is reachable (a pawn in the pit cannot lower it).</summary>
+		public static IntVec3 StandCellFor(Pawn pawn, Thing ladder, bool toRaised)
+		{
+			IntVec3 best = IntVec3.Invalid;
+			Danger danger = pawn.NormalMaxDanger();
+			if (RM_LadderWallMath.MayOperate(toRaised, true) && TopStandable(ladder)
+				&& pawn.CanReach(TopCell(ladder), PathEndMode.OnCell, danger))
+			{
+				best = TopCell(ladder);
+			}
+			if (RM_LadderWallMath.MayOperate(toRaised, false) && pawn.CanReach(ladder.Position, PathEndMode.OnCell, danger)
+				&& (!best.IsValid || (pawn.Position - ladder.Position).LengthHorizontalSquared < (pawn.Position - best).LengthHorizontalSquared))
+			{
+				best = ladder.Position;
+			}
+			return best;
+		}
+
+		/// <summary>Drops a pending operate order (the state was reached, or the order was taken back).</summary>
+		public static void ClearOrder(Thing ladder)
+		{
+			DesignationDef d = RimMandrakeFlowWorks_DefOf.RM_OperateLadder;
+			Designation des = d != null && ladder != null && ladder.Spawned ? ladder.Map.designationManager.DesignationOn(ladder, d) : null;
+			if (des != null)
+			{
+				ladder.Map.designationManager.RemoveDesignation(des);
+			}
+		}
+	}
+
+	/// <summary>FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: the colonist half of the gizmo's order. Offers a ladder only with a
+	/// pending order and a reachable side the rule allows (RM_LadderUtility.StandCellFor); a pawn down in the pit is never
+	/// offered a lower. Only designated ladders are scanned: nobody moves a ladder unordered.</summary>
+	public class WorkGiver_RM_OperateLadder : WorkGiver_Scanner
+	{
+		public override PathEndMode PathEndMode => PathEndMode.Touch;
+
+		public override Danger MaxPathDanger(Pawn pawn)
+		{
+			return Danger.Deadly;
+		}
+
+		public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
+		{
+			DesignationDef d = RimMandrakeFlowWorks_DefOf.RM_OperateLadder;
+			if (d == null)
+			{
+				yield break;
+			}
+			foreach (Designation des in pawn.Map.designationManager.SpawnedDesignationsOfDef(d))
+			{
+				yield return des.target.Thing;
+			}
+		}
+
+		public override bool ShouldSkip(Pawn pawn, bool forced = false)
+		{
+			DesignationDef d = RimMandrakeFlowWorks_DefOf.RM_OperateLadder;
+			return d == null || !pawn.Map.designationManager.AnySpawnedDesignationOfDef(d);
+		}
+
+		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
+		{
+			RM_CompLadder comp = t.TryGetComp<RM_CompLadder>();
+			if (comp == null || comp.Props.portable || comp.wantRaised == comp.raised
+				|| pawn.Map.designationManager.DesignationOn(t, RimMandrakeFlowWorks_DefOf.RM_OperateLadder) == null)
+			{
+				return false;
+			}
+			if (t.IsForbidden(pawn) || !pawn.CanReserve(t, 1, -1, null, forced))
+			{
+				return false;
+			}
+			if (!RM_LadderUtility.StandCellFor(pawn, t, comp.wantRaised).IsValid)
+			{
+				if (!comp.wantRaised)
+				{
+					JobFailReason.Is("RMFlow_LadderLowerTopUnreachable".Translate());
+				}
+				return false;
+			}
+			return true;
+		}
+
+		public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
+		{
+			RM_CompLadder comp = t.TryGetComp<RM_CompLadder>();
+			IntVec3 stand = comp == null ? IntVec3.Invalid : RM_LadderUtility.StandCellFor(pawn, t, comp.wantRaised);
+			return stand.IsValid ? JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_OperateLadderJob, t, stand) : null;
+		}
+	}
+
+	/// <summary>FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: walk to the chosen side (B), work the rails a moment, then move the
+	/// ladder only if RM_LadderWallMath.MayOperate allows it from where the pawn actually stands.</summary>
+	public class JobDriver_RM_OperateLadder : JobDriver
+	{
+		private RM_CompLadder Comp => job.targetA.Thing?.TryGetComp<RM_CompLadder>();
+
+		public override bool TryMakePreToilReservations(bool errorOnFailed)
+		{
+			return pawn.Reserve(job.targetA, job, 1, -1, null, errorOnFailed);
+		}
+
+		protected override IEnumerable<Toil> MakeNewToils()
+		{
+			this.FailOnDespawnedOrNull(TargetIndex.A);
+			this.FailOn(() => Comp == null || Comp.wantRaised == Comp.raised
+				|| Map.designationManager.DesignationOn(job.targetA.Thing, RimMandrakeFlowWorks_DefOf.RM_OperateLadder) == null);
+			yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
+			yield return Toils_General.Wait(90, TargetIndex.A).WithProgressBarToilDelay(TargetIndex.A);
+			Toil work = ToilMaker.MakeToil("RM_OperateLadder");
+			work.initAction = () =>
+			{
+				RM_CompLadder comp = Comp;
+				bool above = pawn.Position == RM_LadderUtility.TopCell(job.targetA.Thing);
+				if (comp == null || !RM_LadderWallMath.MayOperate(comp.wantRaised, above))
+				{
+					EndJobWith(JobCondition.Incompletable);
+					return;
+				}
+				comp.SetRaised(comp.wantRaised);
+			};
+			work.defaultCompleteMode = ToilCompleteMode.Instant;
+			yield return work;
+		}
 	}
 
 	/// <summary>
@@ -158,7 +304,14 @@ namespace RimMandrake.FlowWorks
 	/// states for the ladder)... The ladder should be clickable by the user: ladder up, ladder down. No need to have
 	/// the colonists automatically move them up and down."</i> Lowered: pawns path down into the pit by it and back
 	/// out, and haulers fetch what lies on the floor (RM_PitPathing's entry veto credits only a usable ladder).
-	/// Raised: nobody climbs it, either way. Only the player's gizmo moves it; no job or AI ever does. Scribed.
+	/// Raised: nobody climbs it, either way. Scribed.
+	///
+	/// FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE — he typed 2026-10-20 (bar wall_ladder_rides_on_rails): <i>"It can be
+	/// raised from either below or above. But it can only be lowered from above."</i> So a ladder is moved by a person at
+	/// it: the player's gizmo ORDERS the move (a designation, like flicking a switch), and a colonist carries it out
+	/// standing above (the wall's top square) or below (the ladder's own square). RM_LadderWallMath.MayOperate is the one
+	/// rule; the gizmo refuses a lower nobody could stand above for, the work giver offers only a side the rule allows,
+	/// and the job re-checks where the pawn actually stands. Colonists still never move a ladder unordered.
 	/// </summary>
 	public class RM_CompProperties_Ladder : CompProperties
 	{
@@ -181,6 +334,10 @@ namespace RimMandrake.FlowWorks
 	public class RM_CompLadder : ThingComp
 	{
 		public bool raised;
+
+		/// <summary>FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: the state the player ordered; a colonist carries it out
+		/// (WorkGiver_RM_OperateLadder). Equal to <see cref="raised"/> when nothing is pending.</summary>
+		public bool wantRaised;
 
 		/// <summary>PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: this ladder has been turned to its wall once (scribed). A save made
 		/// before ladders turned has false, so its first load turns it; after that a reload keeps the saved rotation, so a
@@ -228,6 +385,8 @@ namespace RimMandrake.FlowWorks
 			}
 			raised = value;
 			RM_LadderUtility.StateVersion++;
+			wantRaised = value;
+			RM_LadderUtility.ClearOrder(parent);
 			if (parent.Spawned)
 			{
 				parent.Map.mapDrawer.MapMeshDirty(parent.Position, (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things);
@@ -251,14 +410,48 @@ namespace RimMandrake.FlowWorks
 			{
 				yield break;
 			}
-			yield return new Command_Toggle
+			// FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: the button orders the move; a colonist makes it from a side
+			// RM_LadderWallMath.MayOperate allows. Ordering a lower is refused when no one could ever stand above it.
+			Command_Toggle cmd = new Command_Toggle
 			{
-				defaultLabel = (raised ? "RMFlow_LadderUp" : "RMFlow_LadderDown").Translate(),
+				defaultLabel = (wantRaised ? "RMFlow_LadderUp" : "RMFlow_LadderDown").Translate().ToString()
+					+ (wantRaised != raised ? " " + "RMFlow_LadderOrdered".Translate().ToString() : ""),
 				defaultDesc = "RMFlow_LadderToggleDesc".Translate(),
-				icon = raised ? TexCommand.ForbidOn : TexCommand.ForbidOff,
-				isActive = () => !raised,
-				toggleAction = () => SetRaised(!raised),
+				icon = wantRaised ? TexCommand.ForbidOn : TexCommand.ForbidOff,
+				isActive = () => !wantRaised,
+				toggleAction = () => Order(!wantRaised),
 			};
+			if (wantRaised && !RM_LadderWallMath.MayOperate(false, RM_LadderUtility.TopStandable(parent)))
+			{
+				cmd.Disable("RMFlow_LadderLowerOnlyFromAbove".Translate());
+			}
+			yield return cmd;
+			if (Prefs.DevMode)
+			{
+				yield return new Command_Action
+				{
+					defaultLabel = "DEV: ladder " + (raised ? "down" : "up") + " now",
+					action = () => SetRaised(!raised),
+				};
+			}
+		}
+
+		/// <summary>The player's order: the ladder should end <paramref name="toRaised"/>. Adds (or, when it already is in
+		/// that state, removes) the operate designation; the state itself changes only when a colonist works it.</summary>
+		public void Order(bool toRaised)
+		{
+			wantRaised = toRaised;
+			if (wantRaised == raised)
+			{
+				RM_LadderUtility.ClearOrder(parent);
+				return;
+			}
+			DesignationManager dm = parent.Spawned ? parent.Map.designationManager : null;
+			DesignationDef d = RimMandrakeFlowWorks_DefOf.RM_OperateLadder;
+			if (dm != null && d != null && dm.DesignationOn(parent, d) == null)
+			{
+				dm.AddDesignation(new Designation(parent, d));
+			}
 		}
 
 		public override string CompInspectStringExtra()
@@ -292,6 +485,7 @@ namespace RimMandrake.FlowWorks
 		{
 			base.PostExposeData();
 			Scribe_Values.Look(ref raised, "rmLadderRaised", false);
+			Scribe_Values.Look(ref wantRaised, "rmLadderWantRaised", raised);   // after raised: an old save orders nothing
 			Scribe_Values.Look(ref hung, "rmLadderHung", false);
 		}
 	}

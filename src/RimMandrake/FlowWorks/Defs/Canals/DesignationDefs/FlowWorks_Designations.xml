@@ -16,4 +16,13 @@
     <texturePath>Designations/Haul</texturePath>
   </DesignationDef>
 
+  <!-- FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: the player's order to raise or lower a wall ladder (vanilla's flick art:
+       a colonist goes and works it, like a switch). -->
+  <DesignationDef>
+    <defName>RM_OperateLadder</defName>
+    <texturePath>Designations/Flick</texturePath>
+    <targetType>Thing</targetType>
+    <designateCancelable>false</designateCancelable>
+  </DesignationDef>
+
 </Defs>

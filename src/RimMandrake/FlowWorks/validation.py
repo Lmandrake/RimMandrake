@@ -473,6 +473,23 @@ def limitless_endless(t):
                "river square by mouseover (FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY)")
 
 
+# FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE (bar wall_ladder_rides_on_rails; he typed 2026-10-20: "It can be raised from
+# either below or above. But it can only be lowered from above."). Offline: the rule and the gizmo / work giver / job call
+# sites (Source/SelfTest/LadderWallChecks.cs). The rails ART half of the bar is the art ledger's, judged by eye.
+LADDER_RAIL_CASES = ["LadderRails_raise_either_side_lower_only_from_above", "LadderRails_gizmo_job_and_ai_ask_the_rule"]
+
+
+@suite.chain("ladder_rails_raise_lower")
+def ladder_rails_raise_lower(t):
+    """Offline: a wall ladder is raised from above or below, lowered only from above. 0 ticks, no bridge."""
+    _bar_chain(t, "ladder_rails_selftest_ran", LADDER_RAIL_CASES, "ladder_rails_live", "wall_ladder_rides_on_rails",
+               "a lowered wall ladder in a 3 m pit (RM_PromotionProofs.ProofLadder x,z,order_raise / order_lower / read): "
+               "(1) ordered up with the only colonist in the pit -> he walks to the ladder square and it reads raised; "
+               "(2) ordered down with him still in the pit -> no job, it stays raised (want=False ordered=True); "
+               "(3) a second colonist on the rim -> walks to top= and it reads lowered; (4) ordered up from the rim -> "
+               "raised; the rails drawn on each of N/S/E/W walls by eye (FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE)")
+
+
 # FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (owner 2026-10-16): dev-placed flow source and flow sink (Source/MapControls/).
 # Offline proof of the rate math, a source and a sink driven through the production kernel with its ledger balanced every
 # pulse, and the wiring incl. the mapControlsEnabled master switch gating the pulse (Source/SelfTest/MapControlChecks.cs).

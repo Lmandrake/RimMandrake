@@ -15,6 +15,14 @@
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
+  <!-- FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: raise a wall ladder from above or below; lower it only from above. -->
+  <JobDef>
+    <defName>RM_OperateLadderJob</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_OperateLadder</driverClass>
+    <reportString>moving TargetA on its rails.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
   <!-- SUPERDEEP_PRISON_ROOM_1: capture a held person from the lip, never by entering the pit. -->
   <JobDef>
     <defName>RM_CaptureDown</defName>

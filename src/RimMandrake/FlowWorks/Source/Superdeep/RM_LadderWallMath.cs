@@ -61,5 +61,15 @@ namespace RimMandrake.FlowWorks
 		{
 			return Faces(rot, dx, dz) && RM_CliffMaskMath.LadderJoins(ladderD, otherD);
 		}
+
+		/// <summary>FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE — he typed 2026-10-20 (bar wall_ladder_rides_on_rails): <i>"It can
+		/// be raised from either below or above. But it can only be lowered from above."</i> May a pawn standing above (on the
+		/// wall's top square, the one the ladder faces) or below (on the ladder's own pit square) move the ladder to the
+		/// raised state <paramref name="toRaised"/>? Raising: either side. Lowering: only from above, so nobody in the pit
+		/// can let a slid-up ladder down to climb out. The gizmo, the work giver and the job all ask this one rule.</summary>
+		public static bool MayOperate(bool toRaised, bool fromAbove)
+		{
+			return toRaised || fromAbove;
+		}
 	}
 }
