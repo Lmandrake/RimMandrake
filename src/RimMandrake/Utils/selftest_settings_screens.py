@@ -803,6 +803,7 @@ MODS = {
     }, ()),
     "WeepingStones": ("RM_WeepingStonesSettings.cs", "RM_WeepingStones.csproj", {
         "Stocked pools": "Now",
+        "Netting breeders": "Now",   # net job reads netThrowRange/netMaxThrows at throw time
         "Vhorrin and vizhik odds": "NextPulse",
         "Walking condenser": "Now",
         "Condenser season length": "NextPulse",
