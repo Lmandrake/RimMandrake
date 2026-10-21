@@ -15,7 +15,7 @@
     <category>Building</category>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <graphicData>
-      <texPath>Things/Building/Misc/RitualSpot</texPath>
+      <texPath>Things/Building/Misc/RM_StruckGlassRing/RM_StruckGlassRing</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
       <color>(222, 210, 178)</color>
