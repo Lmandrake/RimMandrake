@@ -37,6 +37,37 @@
    "facing_height_tol": 0.3
   }
  },
+ "species_render": {
+  "_doc": "How big the ENGINE draws each species' head, as a multiple of the canvas frame (the vanilla head box is a body-size-1.0 head). engine_head_scale is READ from Big and Small's BSCache.GetHeadRenderSize at default settings (fit_head_canvas.bs_render_size of size_offset; the selftest recomputes it) and measured_live is the MEASURED best-fit scale of the shipped PNG against the live 2026-10-20 lineup screenshot (D:\\ClaudeWork\\rimmandrake\\scratch\\live5\\PHONE_lineup_bare.png, masked NCC, 0.02 steps, all three facings). onscreen_skull_target is the OWNER's on-screen south skull height in human-skull units; null = not ruled, and the art stays at canvas ratio 1.0. Setting it makes `fit --species` default to target/engine_head_scale and `check` centre the skull band there. Design: design/RimStarWars/head_envelope_2026-10-20.md.",
+  "Lasat": {
+   "size_offset": 0.75,
+   "size_source": "HalfJotunFrame (SM_BodySizeOffset +0.75; BodySizeIsReal.xml replaces RSW_BodySizeGene_bigger)",
+   "engine_head_scale": 1.369,
+   "measured_live": 1.36,
+   "onscreen_skull_target": null
+  },
+  "Mimbanese": {
+   "size_offset": 0.0,
+   "size_source": "no size gene",
+   "engine_head_scale": 1.0,
+   "measured_live": 1.0,
+   "onscreen_skull_target": null
+  },
+  "Nelvaanian": {
+   "size_offset": 0.2,
+   "size_source": "RSW_BodySizeGene_big (SM_Cosmetic_BodySizeOffset +0.2)",
+   "engine_head_scale": 1.107,
+   "measured_live": 1.09,
+   "onscreen_skull_target": null
+  },
+  "Ortolan": {
+   "size_offset": 0.0,
+   "size_source": "no size gene (Fat/Hulk body types do not scale the head: B&S scaleBodyTypes is off by default)",
+   "engine_head_scale": 1.0,
+   "measured_live": 1.0,
+   "onscreen_skull_target": null
+  }
+ },
  "vanilla": {
   "south": {
    "l": 0.3203,
