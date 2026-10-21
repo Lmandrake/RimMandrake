@@ -139,11 +139,29 @@ can wipe it). It was on every full list through Wave 1 (498) and dropped in Wave
 DEV, PAINT. Registry: KEEP-TEMPORARILY-THEN-PHASE-OUT, owner C18 "measure real memory cost first".
 Restore steps: item `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT`.
 
-## 6. Owed
+## 6. Owner decisions by card, 2026-10-20, and what was built (offline)
+
+- **Light** ("Lopsided tidal-lock daylight" → "Light follows the sun"): `RM_TidalSunGlowPatch` +
+  `RM_TidalSunGlowMath` (CreatureBehaviors) postfix `CelestialSunGlow(PlanetTile,int)` only while
+  `7f.alienworlds.tidallylocked` has its patch on it: glow = 0.6 + 0.4·min(1, sin e / sin 30°) for sun
+  elevation e > 0, a 6° dusk band (smoothstep to 0.6) below the horizon, 0 beyond; constant in time, symmetric.
+  Setting `tidalSunGlowByGeometry` (on) + dusk-band slider. Offline (`world_physics_audit.py`, selftest
+  `remake/selftest_tidal_sun_glow.py`): 0 night-side tiles read day and 0 day-side tiles read night (mod: 450 /
+  1,794 unrounded; 448 / 1,796 rounded, §2); home 17011 = 1.00. Live check + deploy: `TIDAL_GLOW_DEPLOY_FOLLOWS_THE_SUN`.
+- **Seasons** ("Every tile swings ~15 C" → "Remove the swing"): `CreatureBehaviors/Patches/RM_TidalLock_NoSeasons.xml`
+  flattens the TidallyLocked def's `seasonalTempVariationCurve` to 0 (FindMod + Conditional guarded; validate_patch
+  `--live --defs`: 1 match, 0 errors). Stored tile temperatures are untouched: both dev saves equal the painted
+  record on all 21,872 tiles (max |Δ| 0.0). The Scald line stays on `BIOME_PAINT_ONCE_AT_THE_END_1`. Live check:
+  `LOCKED_SEASONS_DEPLOY_CALENDAR_GOES_FLAT`.
+- **Home map size** ("250x250 vs 325x325" → "Back to 325"): the size every later home map (gravship landing,
+  settling) is generated at is the scribed `WorldInfo.initialMapSize`. `CANONICAL_ASHKARR_START_2026-09-12.rws`
+  reads 325; every `ASHKARR_DEV_*_2026-10-20` save reads 250 (made through a new game, `GameInitData.mapSize`
+  default 250). No def or scenario sets it; the route is the live world: `jawa/world_info_set initialMapSize=325`
+  (parameter added, companion not yet deployed), then save. Runbook: `HOME_MAP_SIZE_RESTORE_ROOM_TO_STRETCH`.
+
+## 7. Owed
 
 - `TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING` — pick the dev save; a load-time guard so the full list cannot load unlocked.
-- `SUN_GLOW_DECIDE_WEST_TERMINATOR_SUNBATHING` — owner card: light by geometry or the mod's skew.
-- `LOCKED_SEASONS_DECIDE_FIFTEEN_DEGREE_WOBBLE` — owner card: the ±15 °C seasons.
 - `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT` — ride the next larger-list cold load.
 - The Scald's arc/temperature vs its sheet (§3) goes on the end-of-build paint list, not a repaint now:
   filed as a line in `infrastructure/state/items/BIOME_PAINT_ONCE_AT_THE_END_1.md`.
