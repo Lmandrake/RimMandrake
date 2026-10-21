@@ -186,10 +186,29 @@ def style_fields(style, s):
     return w, z(det), None
 
 
+# Calm pass (2026-10-20, STIPPLE research): the "crust" family carried 1-4 px grain (emboss + fine bands) that a minified
+# texture turns into sparkle at mid zoom. These faces get their detail low-passed (Gaussian sigma in px, periodic) and
+# then re-scaled to the same sd, so colour, mean and neighbour contrast are untouched; only the <=5 px grain is gone.
+CALM = {"RustCathedral": 3.0, "Forge": 3.0, "Greentide": 3.0, "Warscar": 3.0, "Miasma": 3.0, "FeverWood": 3.0,
+        "Cauldron": 2.6, "CrackedLands": 2.6, "Slime": 2.6, "LeaningScrub": 2.6, "Pyrelands": 2.6, "Contagion": 2.6,
+        "Sump": 2.2}
+CALM_SD = 0.65      # and their total sd is cut to this fraction (floor CALM_SD_MIN, the spec's lower bound + margin)
+CALM_SD_MIN = 3.6
+
+
+def gblur(a, sigma):
+    k = np.sqrt(_FX ** 2 + _FY ** 2) / N          # cycles per pixel
+    return np.real(np.fft.ifft2(np.fft.fft2(a) * np.exp(-2 * (np.pi * sigma) ** 2 * k ** 2)))
+
+
 def make(key):
     base, sec, style, tsd, s, _p, _f = F[key]
     b = H(base); m = H(sec)
     w, det, extra = style_fields(style, s * 1000)
+    if key in CALM:
+        det = z(gblur(det, CALM[key]))
+        if extra: extra = (extra[0], gblur(extra[1], CALM[key]))
+        tsd = max(CALM_SD_MIN, tsd * CALM_SD)
     img = b[None, None, :] * (1 - w[..., None]) + m[None, None, :] * w[..., None]
     lum = det[..., None] * (0.35 + 0.65 * img / max(img.mean(), 1))         # detail scales with brightness
     if extra and extra[0] == "veins":
