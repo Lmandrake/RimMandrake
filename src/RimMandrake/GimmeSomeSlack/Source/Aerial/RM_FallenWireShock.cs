@@ -78,6 +78,57 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     }
                 }
             }
+            ExternalContacts(map, contacts, tips);
+        }
+
+        // ------------------------------------------------------------------ live wires another mod dropped
+        /// <summary>PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 3: other mods' live fallen wires (FlowWorks: a powered power cord a
+        /// collapsing bridge deck dropped into the hole). Each source answers, for a map, its live contact cells (cell -> that
+        /// wire's live tip); they shock and ignite exactly like an aerial strand, under the same settings. The types are
+        /// BCL + Verse only, so a caller needs no reference to this assembly: FlowWorks finds this by name (soft reflection),
+        /// the mirror of how this file finds FlowWorks' liquid fire. The source owns liveness; this side never caches it beyond
+        /// one contact rebuild.</summary>
+        private static readonly List<Func<Map, IEnumerable<KeyValuePair<IntVec3, IntVec3>>>> liveWireSources =
+            new List<Func<Map, IEnumerable<KeyValuePair<IntVec3, IntVec3>>>>();
+
+        /// <summary>State read: contact cells the external sources gave at the last rebuild (all maps).</summary>
+        public static int externalContacts;
+        public static int LiveWireSourceCount => liveWireSources.Count;
+
+        /// <summary>Public entry point for another mod's live fallen wires. Registering the same delegate twice is a no-op.</summary>
+        public static void RegisterLiveWireSource(Func<Map, IEnumerable<KeyValuePair<IntVec3, IntVec3>>> source)
+        {
+            if (source != null && !liveWireSources.Contains(source)) liveWireSources.Add(source);
+        }
+
+        /// <summary>Public entry point: a source's live wires on this map changed; rebuild the contacts on the next tick.</summary>
+        public static void LiveWiresChanged(Map map)
+        {
+            map?.GetComponent<RM_MapComponent_Aerial>()?.MarkContactsDirty();
+        }
+
+        private static void ExternalContacts(Map map, Dictionary<int, IntVec3> contacts, List<IntVec3> tips)
+        {
+            externalContacts = 0;
+            for (int s = 0; s < liveWireSources.Count; s++)
+            {
+                try
+                {
+                    IEnumerable<KeyValuePair<IntVec3, IntVec3>> got = liveWireSources[s](map);
+                    if (got == null) continue;
+                    foreach (KeyValuePair<IntVec3, IntVec3> kv in got)
+                    {
+                        if (!kv.Key.InBounds(map)) continue;
+                        contacts[map.cellIndices.CellToIndex(kv.Key)] = kv.Value.InBounds(map) ? kv.Value : kv.Key;
+                        externalContacts++;
+                        if (kv.Value.InBounds(map) && !tips.Contains(kv.Value)) tips.Add(kv.Value);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.ErrorOnce("[GimmeSomeSlack] an external live-wire source threw; its wires are skipped: " + e, 0x6A5E8 + s);
+                }
+            }
         }
 
         private static IntVec3 CellOf(P2 p) => new IntVec3((int)Math.Floor(p.X), 0, (int)Math.Floor(p.Z));

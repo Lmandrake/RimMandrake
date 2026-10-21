@@ -85,7 +85,8 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE P2 (design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md): the
 		/// line crossing rules (RM_LineCrossing). On: rigid pipe and conduit are built on solid ground only (never a dug square,
 		/// a pit cover or any bridge deck); a flexible line (power cord) may lie on any bridge deck, rope included; a cover
-		/// carries nothing; a committed dig breaks the pipe, conduit or cord on its square once (RM_LineDigBreak, phase 2). Off: lines
+		/// carries nothing; a committed dig breaks the pipe, conduit or cord on its square once (RM_LineDigBreak, phase 2); a collapsing
+		/// deck reels in its hoses and drops its cords as a live wire (RM_DeckCollapseLines, phase 3). Off: lines
 		/// take the engine's affordance rules alone (a timber deck admits pipe, rope admits none) and a dig leaves them standing.</summary>
 		public static bool lineCrossingRulesEnabled = true;
 
@@ -199,8 +200,10 @@ namespace RimMandrake.FlowWorks.Machinery
 				"On: pipe and power conduit cannot be built on a dug square (pit, trench, canal, moat), a pit cover or any bridge deck: "
 			  + "they are rigid. A flexible power cord may lie on any bridge deck, rope included. A pit cover carries no lines. "
 			  + "A frame that ends up on such a square is cancelled and refunded. Digging a square breaks the pipe, conduit or cord "
-			  + "on it when the cut is made (not when it is ordered); the materials drop as salvage. Off: lines follow the game's "
-			  + "ground rules alone, and digging leaves them standing.");
+			  + "on it when the cut is made (not when it is ordered); the materials drop as salvage. A bridge deck that collapses reels in "
+			  + "the hoses across it, and a powered cord it drops lies in the hole as a live wire (it shocks through Gimme Some Slack's "
+			  + "fallen-wire setting, when that mod is loaded). Off: lines follow the game's ground rules alone, digging leaves them "
+			  + "standing, and a collapsing deck only destroys what stands on it.");
 			bool linksWas = pipeLinksIntoMachines, fitWas = joinFittings, underWas = pipesUnderToCentre;
 			list.CheckboxLabeled("Pipes run right up to the tanks and machines they join (art only)", ref pipeLinksIntoMachines,
 				"On: a pipe beside a tank, pump or still draws its run on to the shared edge, so you can see it joins. Off: it ends in a cap short of it. Needs a restart to take effect if it was off at startup.");
