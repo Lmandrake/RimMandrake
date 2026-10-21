@@ -589,6 +589,12 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					continue;
 				}
+				// the drop is only ever into open hole: a square still decked (the leaf did not lift there, or another deck
+				// stands on it) or undug is ground, and the overflow simply stays on it
+				if (!RM_PitPathing.IsOpenHole(map, eng, p.Position))
+				{
+					continue;
+				}
 				int drop = r.deckNotches > 0 ? System.Math.Max(0, eng.ClimbDepthAt(p.Position) - r.deckNotches) : -1;
 				RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state, drop);
 				FellCount++;
