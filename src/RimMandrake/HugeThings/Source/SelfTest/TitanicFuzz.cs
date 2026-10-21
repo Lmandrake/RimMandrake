@@ -299,6 +299,51 @@ namespace RimMandrake.TitanicCreatures.SelfTest
             return fails;
         }
 
+        // TITAN_CAMPS_SCAVENGERS_EVENTS_1: visitors (scavengers, a camp) drain the pool alongside harvest and spoilage, a draw
+        // never brings a pack to a picked-clean site, and the titan-event gate restates card #5 and the one-T3 spacing law.
+        private static List<string> Visitors(int cases, int seed0)
+        {
+            var fails = new List<string>();
+            for (int c = 0; c < cases; c++)
+            {
+                int seed = seed0 + c; var r = new Random(seed); Cases++;
+                try
+                {
+                    int meat0 = r.Next(0, 4000), meat = meat0, per = r.Next(1, 60), max = r.Next(1, 7);
+                    long eaten = 0, spoiled = 0; int days = 0;
+                    while (meat > 0 && days < 5000)
+                    {
+                        Steps++;
+                        int n = RM_TitanicKernel.ScavengerCount(meat, per, max);
+                        Check(n >= 1 && n <= max, $"scavenger count {n} outside 1..{max} with meat left");
+                        Check((long)(n - 1) * per < meat, "a draw brought more scavengers than the meat left can feed");
+                        int visitors = r.Next(0, n + 1);
+                        int take = RM_TitanicKernel.VisitorTake(meat, visitors, per);
+                        Check(take >= 0 && take <= meat && take <= (long)visitors * per, "visitor take out of range");
+                        Check(visitors == 0 || take > 0, "visitors at a non-empty site took nothing");
+                        meat -= take; eaten += take;
+                        int lm = RM_TitanicKernel.SpoilLoss(meat, 0.02f);
+                        meat -= lm; spoiled += lm; days++;
+                    }
+                    Check(meat == 0 && eaten + spoiled == meat0, "visitor pool not conserved or never drained");
+                    Check(RM_TitanicKernel.ScavengerCount(0, per, max) == 0, "an empty site drew scavengers");
+                    Check(RM_TitanicKernel.VisitorTake(100, int.MaxValue, int.MaxValue) == 100, "huge visitor numbers overflowed");
+                    Check(RM_TitanicKernel.VisitorTake(100, 3, 0) == 0 && RM_TitanicKernel.VisitorTake(100, -1, 5) == 0, "non-positive visitors took meat");
+
+                    int tier = r.Next(0, 4); bool here = r.Next(2) == 0, some = r.Next(2) == 0, season = r.Next(2) == 0, t3 = r.Next(2) == 0;
+                    bool spec = tier >= 2 && !here && some && season && !(tier == 3 && t3);
+                    Check(RM_TitanicKernel.TitanEventEligible(tier, here, some, season, t3) == spec, "titan event gate disagrees with card #5");
+                    Check(!RM_TitanicKernel.TitanEventEligible(tier, true, true, true, false), "a titan homed here arrived as an event");
+                    float h = F(r, -10f, 200f);
+                    int w = RM_TitanicKernel.WarningTicks(h);
+                    Check(w >= 625 && w <= 180000, "warning ticks outside [625, 3 days]");
+                    Check(RM_TitanicKernel.WarningTicks(float.NaN) == 625 && RM_TitanicKernel.WarningTicks(float.PositiveInfinity) == 625, "a non-finite warning setting escaped");
+                }
+                catch (Exception e) { fails.Add($"visitors seed {seed}: {e.Message}"); }
+            }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -313,6 +358,7 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                 ("yield", () => Yield(N(2000), S(1))),
                 ("crush", () => Crush(N(2000), S(1))),
                 ("pool", () => Pool(N(1500), S(1))),
+                ("visitors", () => Visitors(N(1500), S(1))),
             };
             foreach (var f in fam)
             {

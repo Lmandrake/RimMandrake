@@ -180,6 +180,46 @@ namespace RimMandrake.TitanicCreatures
             return Math.Max(0, Math.Min(remaining, perSession));
         }
 
+        // --- TITAN_CAMPS_SCAVENGERS_EVENTS_1 (cards #4 and #5, owner 2026-09-09) ------------------------------------------------
+
+        /// <summary>Units a site's visitors (drawn scavengers, a camp's people) eat or carry off in one day: each takes up to
+        /// perVisitorPerDay, never more than is left, never negative (long arithmetic, so a huge setting cannot overflow).</summary>
+        public static int VisitorTake(int remaining, int visitors, int perVisitorPerDay)
+        {
+            if (remaining <= 0 || visitors <= 0 || perVisitorPerDay <= 0) return 0;
+            long want = (long)visitors * perVisitorPerDay;
+            return (int)Math.Min(remaining, want);
+        }
+
+        /// <summary>How many scavengers one draw brings: at least one while meat is left, at most `max`, and never more than the
+        /// meat left can feed for a day (a nearly picked-clean site draws one, not a pack).</summary>
+        public static int ScavengerCount(int meatRemaining, int perVisitorPerDay, int max)
+        {
+            if (meatRemaining <= 0 || max <= 0) return 0;
+            int per = Math.Max(1, perVisitorPerDay);
+            long need = ((long)meatRemaining + per - 1) / per;
+            return (int)Math.Max(1, Math.Min(max, need));
+        }
+
+        /// <summary>Card #5: "Titans roam only where the rosters home them; anywhere else they arrive as scripted events with
+        /// warning." A race may walk in as a footfall-warned titan event only when it is a titan (adult tier T2 or T3), the map's
+        /// biome does not home it, some biome does (no orphan or test race), the season suits it, and (spacing law, one T3 per
+        /// map) no T3 already stands on the map when it is itself T3.</summary>
+        public static bool TitanEventEligible(int adultTier, bool homedHere, bool homedSomewhere, bool seasonOk, bool t3OnMap)
+        {
+            if (adultTier < T2 || homedHere || !homedSomewhere || !seasonOk) return false;
+            return !(adultTier == T3 && t3OnMap);
+        }
+
+        /// <summary>The footfall warning before a titan arrives, in ticks: the setting's hours (2500 ticks each), never below a
+        /// quarter hour, so the tremors always come first.</summary>
+        public static int WarningTicks(float hours)
+        {
+            float h = Finite(hours) ? hours : 0f;
+            long t = (long)Math.Round(h * 2500.0);
+            return (int)Math.Max(625L, Math.Min(t, 60000L * 3));
+        }
+
         /// <summary>
         /// TITAN_ROOF_AVOIDANCE_1 (B3.5 / D3.1 / D1.4): the anchor cells a titan's route must not use, because its footprint there
         /// (anchor + [offMinX..offMaxX] x [offMinZ..offMaxZ]) would overlap a thick-roofed cell. thick[i] is cell i = z*w + x of a

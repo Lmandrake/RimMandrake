@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Text;
 using RimWorld;
 using UnityEngine;
+using System.Linq;
 using Verse;
 using RimMandrake.HugeThings;
 
@@ -18,11 +20,9 @@ namespace RimMandrake.TitanicCreatures
     /// per Defs/ThingDefs/RM_TitanicCorpseSite.xml (4x4, matching the T3
     /// footprint).
     ///
-    /// SCOPED DOWN, follow-up owed (see build report): "camps" and "scavenger
-    /// draw" from the ruling are NOT implemented here - both require naming an
-    /// actual faction/pawnkind to spawn, which is out of this engine-only
-    /// build's scope (no creature or faction is named anywhere in the item).
-    /// The spoilage clock and the multi-session harvest ARE implemented.
+    /// TITAN_CAMPS_SCAVENGERS_EVENTS_1 adds the other two: once a day a "scavenger draw" (wild predators of the map's own
+    /// biomes) and, rarely, a "camp" (a non-hostile faction's people) may come; while they are near the site they eat into
+    /// the meat pool (CorpseSiteVisitors). Both have their own Mod Settings toggles under the corpse-site group.
     /// </summary>
     public class Building_TitanicCorpseSite : Building
     {
@@ -32,6 +32,8 @@ namespace RimMandrake.TitanicCreatures
         private ThingDef leatherDef;
         private int leatherRemaining;
         private int lastSpoilageTick = -1;
+        private List<Pawn> scavengers = new List<Pawn>();
+        private List<Pawn> campers = new List<Pawn>();
 
         private const int TicksPerSpoilageStep = RM_TitanicKernel.TicksPerDay;
         // Defaults live in RM_TitanicCreaturesSettings (meat spoils faster
@@ -91,6 +93,7 @@ namespace RimMandrake.TitanicCreatures
         /// </summary>
         private void ApplyDailySpoilage()
         {
+            DailyVisitors();
             int meatLoss = RM_TitanicKernel.SpoilLoss(meatRemaining, RM_HugeThingsSettings.corpseSiteMeatSpoilagePerDay);
             int leatherLoss = RM_TitanicKernel.SpoilLoss(leatherRemaining, RM_HugeThingsSettings.corpseSiteLeatherSpoilagePerDay);
             meatRemaining = Mathf.Max(0, meatRemaining - meatLoss);
@@ -100,6 +103,41 @@ namespace RimMandrake.TitanicCreatures
                 Destroy();
             }
         }
+
+        /// <summary>TITAN_CAMPS_SCAVENGERS_EVENTS_1: visitors near the site take their day's share of the meat, then the day's
+        /// rolls for a new scavenger draw and a camp (never while the last ones are still here).</summary>
+        private void DailyVisitors()
+        {
+            scavengers.RemoveAll(p => p == null || p.Dead || p.Destroyed);
+            campers.RemoveAll(p => p == null || p.Dead || p.Destroyed || !p.Spawned);
+            int near = 0;
+            foreach (Pawn p in scavengers) if (CorpseSiteVisitors.AtSite(p, this)) near++;
+            foreach (Pawn p in campers) if (CorpseSiteVisitors.AtSite(p, this)) near++;
+            int per = RM_HugeThingsSettings.corpseSiteVisitorMeatPerDay;
+            int take = RM_TitanicKernel.VisitorTake(meatRemaining, near, per);
+            meatRemaining = Mathf.Max(0, meatRemaining - take);
+            visitorsEatenTotal += take;
+            if (meatRemaining <= 0 || Map == null) return;
+            if (RM_HugeThingsSettings.CorpseScavengersActive && !scavengers.Any(p => p.Spawned)
+                && Rand.Chance(RM_HugeThingsSettings.corpseSiteScavengerDailyChance))
+            {
+                int n = RM_TitanicKernel.ScavengerCount(meatRemaining, per, RM_HugeThingsSettings.corpseSiteScavengerMax);
+                scavengers.AddRange(CorpseSiteVisitors.DrawScavengers(this, n));
+            }
+            if (RM_HugeThingsSettings.CorpseCampsActive && campers.Count == 0 && Rand.Chance(RM_HugeThingsSettings.corpseSiteCampDailyChance))
+            {
+                campers.AddRange(CorpseSiteVisitors.MakeCamp(this));
+            }
+        }
+
+        private int visitorsEatenTotal;
+
+        /// <summary>Debug/validation hook: the visitors this site tracks, and what they have eaten so far.</summary>
+        public int ScavengerCount => scavengers.Count(p => p != null && p.Spawned);
+        public int CamperCount => campers.Count(p => p != null && p.Spawned);
+        public int VisitorsEatenTotal => visitorsEatenTotal;
+        public int MeatRemaining => meatRemaining;
+        public void DebugDailyStep() => ApplyDailySpoilage();
 
         /// <summary>
         /// One work session's worth of extraction - never the whole pool, so
@@ -154,8 +192,15 @@ namespace RimMandrake.TitanicCreatures
             Scribe_Defs.Look(ref leatherDef, "leatherDef");
             Scribe_Values.Look(ref leatherRemaining, "leatherRemaining");
             Scribe_Values.Look(ref lastSpoilageTick, "lastSpoilageTick", -1);
+            Scribe_Collections.Look(ref scavengers, "rmScavengers", LookMode.Reference);
+            Scribe_Collections.Look(ref campers, "rmCampers", LookMode.Reference);
+            Scribe_Values.Look(ref visitorsEatenTotal, "rmVisitorsEaten", 0);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
+                if (scavengers == null) scavengers = new List<Pawn>();
+                if (campers == null) campers = new List<Pawn>();
+                scavengers.RemoveAll(p => p == null);
+                campers.RemoveAll(p => p == null);
                 // CORPSE_SITE_SAFETY_1 (B3.12): a pool whose def no longer loads is zeroed (an empty site is removed on its next
                 // rare tick, never during load).
                 if ((meatDef == null && meatRemaining > 0) || (leatherDef == null && leatherRemaining > 0))
@@ -181,6 +226,12 @@ namespace RimMandrake.TitanicCreatures
             sb.Append("RM_TitanicCorpseSite_Source".Translate(sourceLabel));
             sb.AppendLine();
             sb.Append("RM_TitanicCorpseSite_Remaining".Translate(meatRemaining, leatherRemaining));
+            int sc = scavengers.Count(p => CorpseSiteVisitors.AtSite(p, this)), cm = campers.Count(p => CorpseSiteVisitors.AtSite(p, this));
+            if (sc + cm > 0)
+            {
+                sb.AppendLine();
+                sb.Append("RM_TitanicCorpseSite_Visitors".Translate(sc, cm));
+            }
             return sb.ToString();
         }
     }

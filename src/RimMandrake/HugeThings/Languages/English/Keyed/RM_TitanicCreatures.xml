@@ -2,4 +2,18 @@
 <LanguageData>
   <RM_TitanicCorpseSite_Source>Remains of: {0}</RM_TitanicCorpseSite_Source>
   <RM_TitanicCorpseSite_Remaining>Remaining: {0} meat, {1} leather</RM_TitanicCorpseSite_Remaining>
+  <RM_TitanicCorpseSite_Visitors>At the remains: {0} scavengers, {1} campers</RM_TitanicCorpseSite_Visitors>
+  <RM_TitanicCorpseSite_Scavengers>{0} have caught the scent of the {1} and are coming to feed.</RM_TitanicCorpseSite_Scavengers>
+  <RM_TitanicCorpseSite_CampLabel>Camp at the remains</RM_TitanicCorpseSite_CampLabel>
+  <RM_TitanicCorpseSite_CampText>A party from {0} has come to camp by the {1} and cut their share of it. They will stay a while, then go.</RM_TitanicCorpseSite_CampText>
+  <RM_TitanPassage_TremorLabel>Footfall tremors</RM_TitanPassage_TremorLabel>
+  <RM_TitanPassage_TremorText>The ground shudders in slow, heavy beats from the {0}. Something enormous is walking this way, and it does not live here.\n\nWhatever it is will cross the map. Anything built in its path may not survive it.</RM_TitanPassage_TremorText>
+  <RM_TitanPassage_TremorStronger>The tremors are growing stronger.</RM_TitanPassage_TremorStronger>
+  <RM_TitanPassage_Faded>The tremors fade. Whatever it was has turned away.</RM_TitanPassage_Faded>
+  <RM_TitanPassage_ArriveLabel>Titan: {0}</RM_TitanPassage_ArriveLabel>
+  <RM_TitanPassage_ArriveText>A {0} has walked onto the map. It is passing through, and it will not go around what stands in its way.</RM_TitanPassage_ArriveText>
+  <RM_TitanPassage_North>north</RM_TitanPassage_North>
+  <RM_TitanPassage_South>south</RM_TitanPassage_South>
+  <RM_TitanPassage_East>east</RM_TitanPassage_East>
+  <RM_TitanPassage_West>west</RM_TitanPassage_West>
 </LanguageData>

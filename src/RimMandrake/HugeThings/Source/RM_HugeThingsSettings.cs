@@ -68,6 +68,17 @@ namespace RimMandrake.HugeThings
         public static float corpseSiteLeatherSpoilagePerDay = 0.08f;
         // 2500 ticks == 1 in-game hour (GenDate.TicksPerHour).
         public static float corpseSiteWorkHoursPerSession = 1f;
+        // TITAN_CAMPS_SCAVENGERS_EVENTS_1 (card #4 "camps, spoilage, scavenger draw"; card #5 "events with warning (footfall
+        // tremors first)"). PROVISIONAL first-guess numbers (FOUNDRY, 2026-10-21), to be tuned live.
+        public static bool corpseSiteScavengersEnabled = true;
+        public static float corpseSiteScavengerDailyChance = 0.35f;
+        public static int corpseSiteScavengerMax = 3;
+        public static int corpseSiteVisitorMeatPerDay = 20;
+        public static bool corpseSiteCampsEnabled = true;
+        public static float corpseSiteCampDailyChance = 0.1f;
+        public static float corpseSiteCampHours = 36f;
+        public static bool titanEventsEnabled = true;
+        public static float titanEventWarningHours = 6f;
 
         // --- What is live (master AND detail) -----------------------------------------------------------------------------------
         public static bool PlantTrunkActive => HugeGates.Plant(giantPlantsEnabled, plantTrunkEnabled);
@@ -89,6 +100,9 @@ namespace RimMandrake.HugeThings
         public static bool RoofAvoidanceActive => HugeGates.Animal(giantAnimalsEnabled, roofAvoidanceEnabled);
         public static bool YieldCurveActive => HugeGates.Animal(giantAnimalsEnabled, yieldCurveEnabled);
         public static bool CorpseSiteActive => HugeGates.Animal(giantAnimalsEnabled, corpseSiteEnabled);
+        public static bool CorpseScavengersActive => HugeGates.Animal(giantAnimalsEnabled, corpseSiteEnabled) && corpseSiteScavengersEnabled;
+        public static bool CorpseCampsActive => HugeGates.Animal(giantAnimalsEnabled, corpseSiteEnabled) && corpseSiteCampsEnabled;
+        public static bool TitanEventsActive => HugeGates.Animal(giantAnimalsEnabled, titanEventsEnabled);
 
         public override void ExposeData()
         {
@@ -137,6 +151,15 @@ namespace RimMandrake.HugeThings
             Scribe_Values.Look(ref corpseSiteMeatSpoilagePerDay, "corpseSiteMeatSpoilagePerDay", 0.15f);
             Scribe_Values.Look(ref corpseSiteLeatherSpoilagePerDay, "corpseSiteLeatherSpoilagePerDay", 0.08f);
             Scribe_Values.Look(ref corpseSiteWorkHoursPerSession, "corpseSiteWorkHoursPerSession", 1f);
+            Scribe_Values.Look(ref corpseSiteScavengersEnabled, "corpseSiteScavengersEnabled", true);
+            Scribe_Values.Look(ref corpseSiteScavengerDailyChance, "corpseSiteScavengerDailyChance", 0.35f);
+            Scribe_Values.Look(ref corpseSiteScavengerMax, "corpseSiteScavengerMax", 3);
+            Scribe_Values.Look(ref corpseSiteVisitorMeatPerDay, "corpseSiteVisitorMeatPerDay", 20);
+            Scribe_Values.Look(ref corpseSiteCampsEnabled, "corpseSiteCampsEnabled", true);
+            Scribe_Values.Look(ref corpseSiteCampDailyChance, "corpseSiteCampDailyChance", 0.1f);
+            Scribe_Values.Look(ref corpseSiteCampHours, "corpseSiteCampHours", 36f);
+            Scribe_Values.Look(ref titanEventsEnabled, "titanEventsEnabled", true);
+            Scribe_Values.Look(ref titanEventWarningHours, "titanEventWarningHours", 6f);
             if (Scribe.mode == LoadSaveMode.PostLoadInit || Scribe.mode == LoadSaveMode.LoadingVars) Sanitize();
         }
 
@@ -170,6 +193,12 @@ namespace RimMandrake.HugeThings
             corpseSiteWorkHoursPerSession = RM_TitanicKernel.SaneSetting(corpseSiteWorkHoursPerSession, 0.25f, 6f, 1f);
             corpseSiteMeatSpoilagePerDay = RM_TitanicKernel.SaneSetting(corpseSiteMeatSpoilagePerDay, 0.02f, 0.5f, 0.15f);
             corpseSiteLeatherSpoilagePerDay = RM_TitanicKernel.SaneSetting(corpseSiteLeatherSpoilagePerDay, 0.02f, 0.5f, 0.08f);
+            corpseSiteScavengerDailyChance = RM_TitanicKernel.SaneSetting(corpseSiteScavengerDailyChance, 0f, 1f, 0.35f);
+            corpseSiteScavengerMax = RM_TitanicKernel.SaneSetting(corpseSiteScavengerMax, 1, 8);
+            corpseSiteVisitorMeatPerDay = RM_TitanicKernel.SaneSetting(corpseSiteVisitorMeatPerDay, 5, 100);
+            corpseSiteCampDailyChance = RM_TitanicKernel.SaneSetting(corpseSiteCampDailyChance, 0f, 1f, 0.1f);
+            corpseSiteCampHours = RM_TitanicKernel.SaneSetting(corpseSiteCampHours, 6f, 120f, 36f);
+            titanEventWarningHours = RM_TitanicKernel.SaneSetting(titanEventWarningHours, 0.5f, 24f, 6f);
         }
 
         private static Vector2 settingsScroll;
@@ -322,7 +351,7 @@ namespace RimMandrake.HugeThings
                 list.GapLine();
             }
 
-            if (Group(list, "Titanic corpse sites", RimMandrake.Shared.SettingScope.Now, new[] { "corpseSiteEnabled", "corpseSiteHarvestMeatPerSession", "corpseSiteHarvestLeatherPerSession", "corpseSiteMeatSpoilagePerDay", "corpseSiteLeatherSpoilagePerDay", "corpseSiteWorkHoursPerSession" }))
+            if (Group(list, "Titanic corpse sites", RimMandrake.Shared.SettingScope.Now, new[] { "corpseSiteEnabled", "corpseSiteHarvestMeatPerSession", "corpseSiteHarvestLeatherPerSession", "corpseSiteMeatSpoilagePerDay", "corpseSiteLeatherSpoilagePerDay", "corpseSiteWorkHoursPerSession", "corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteScavengerMax", "corpseSiteVisitorMeatPerDay", "corpseSiteCampsEnabled", "corpseSiteCampDailyChance", "corpseSiteCampHours" }))
             {
                 if (giantAnimalsEnabled)
                 {
@@ -339,6 +368,39 @@ namespace RimMandrake.HugeThings
                         corpseSiteMeatSpoilagePerDay = list.Slider(corpseSiteMeatSpoilagePerDay, 0.02f, 0.5f);
                         list.Label("RM_HugeThings_CorpseLeatherSpoil".Translate((corpseSiteLeatherSpoilagePerDay * 100f).ToString("0")));
                         corpseSiteLeatherSpoilagePerDay = list.Slider(corpseSiteLeatherSpoilagePerDay, 0.02f, 0.5f);
+                        list.Label("RM_HugeThings_CorpseVisitorMeat".Translate(corpseSiteVisitorMeatPerDay.ToString()));
+                        corpseSiteVisitorMeatPerDay = (int)list.Slider(corpseSiteVisitorMeatPerDay, 5f, 100f);
+                        list.CheckboxLabeled("RM_HugeThings_CorpseScavengers".Translate(), ref corpseSiteScavengersEnabled, "RM_HugeThings_CorpseScavengers_Desc".Translate());
+                        if (corpseSiteScavengersEnabled)
+                        {
+                            list.Label("RM_HugeThings_CorpseScavengerChance".Translate((corpseSiteScavengerDailyChance * 100f).ToString("0")));
+                            corpseSiteScavengerDailyChance = list.Slider(corpseSiteScavengerDailyChance, 0f, 1f);
+                            list.Label("RM_HugeThings_CorpseScavengerMax".Translate(corpseSiteScavengerMax.ToString()));
+                            corpseSiteScavengerMax = (int)list.Slider(corpseSiteScavengerMax, 1f, 8f);
+                        }
+                        list.CheckboxLabeled("RM_HugeThings_CorpseCamps".Translate(), ref corpseSiteCampsEnabled, "RM_HugeThings_CorpseCamps_Desc".Translate());
+                        if (corpseSiteCampsEnabled)
+                        {
+                            list.Label("RM_HugeThings_CorpseCampChance".Translate((corpseSiteCampDailyChance * 100f).ToString("0")));
+                            corpseSiteCampDailyChance = list.Slider(corpseSiteCampDailyChance, 0f, 1f);
+                            list.Label("RM_HugeThings_CorpseCampHours".Translate(corpseSiteCampHours.ToString("0")));
+                            corpseSiteCampHours = list.Slider(corpseSiteCampHours, 6f, 120f);
+                        }
+                    }
+                }
+                else list.Label("Turn on giant animals to change these.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Titan events", RimMandrake.Shared.SettingScope.NextPulse, new[] { "titanEventsEnabled", "titanEventWarningHours" }))
+            {
+                if (giantAnimalsEnabled)
+                {
+                    list.CheckboxLabeled("RM_HugeThings_TitanEvents".Translate(), ref titanEventsEnabled, "RM_HugeThings_TitanEvents_Desc".Translate());
+                    if (titanEventsEnabled)
+                    {
+                        list.Label("RM_HugeThings_TitanWarning".Translate(titanEventWarningHours.ToString("0.0")));
+                        titanEventWarningHours = list.Slider(titanEventWarningHours, 0.5f, 24f);
                     }
                 }
                 else list.Label("Turn on giant animals to change these.");
