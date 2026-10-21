@@ -9,9 +9,10 @@
 Run from the repo root with python.exe on the minimal list; the bridge must be held. Exit 0 = every row PASS; 1 = a FAIL;
 2 = a row could not be measured. WRITTEN OFFLINE 2026-10-20 (BENCH, owner asleep): every row is OWED to its first live run.
 
-THE ROWS NEED A C# PROOF CLASS THAT DOES NOT EXIST YET (owed, see OWED_PROOFS): RimMandrake.FlowWorks.Pits.RM_DrawbridgeProofs.
-A live run first asks it one question (ProofLeaf on an off-map cell); while the class is missing every row is written
-UNMEASURED/HARNESS naming it, and nothing is staged. What already exists and is used as is: RM_SuspensionProofs (ProofBuild,
+The rows' C# proof class is RimMandrake.FlowWorks.Pits.RM_DrawbridgeProofs (FlowWorks Source/Pits/Drawbridge/
+RM_DrawbridgeProofs.cs; contracts in OWED_PROOFS). A live run first asks it one question (ProofLeaf on an off-map cell);
+if the loaded FlowWorks predates it, every row is written UNMEASURED/HARNESS naming it, and nothing is staged. Used as is
+beside it: RM_SuspensionProofs (ProofBuild,
 ProofPath, ProofPutUnder, ProofBand), jawa/static_call on RM_Drawbridges.RaisedAt / FreeHostileCount / Locked and
 RM_SuperdeepTrap.IsTrapped (typed args, '|'-separated), jawa/mod_settings_field get/set on RM_Drawbridges' public static
 counters and RM_DrawbridgeSettings.raiseSpeed, jawa/destroy_batch, jawa/kill_hostiles, jawa/lord_assault_spawn,
@@ -78,7 +79,7 @@ if UTILS not in sys.path:
     sys.path.insert(0, UTILS)
 import validation_core as V  # noqa: E402  (preconditions: scope / require / guard; pure python, no bridge at import)
 
-DPROOF = "RimMandrake.FlowWorks.Pits.RM_DrawbridgeProofs"       # OWED (C#): see OWED_PROOFS
+DPROOF = "RimMandrake.FlowWorks.Pits.RM_DrawbridgeProofs"       # C#: contracts in OWED_PROOFS
 SPROOF = "RimMandrake.FlowWorks.Pits.RM_SuspensionProofs"
 DB = "RimMandrake.FlowWorks.Pits.RM_Drawbridges"
 DBS = "RimMandrake.FlowWorks.Pits.RM_DrawbridgeSettings"
@@ -91,8 +92,9 @@ FULL_STEEL = 120  # RM_DrawbridgeMath.PoweredTicksPerLeaf at raiseSpeed 1
 ROW_IDS = ["RAISE_PATH", "RAISE_TIPS_RIDERS", "RAISE_SPARES_UNDERPASS", "LOWER_ONLY_FROM_WINCH", "TWO_LEAF_TIPS_OWN_HINGE",
            "HOSTILE_LOCKS", "STEEL_UNPOWERED_FREEZES", "WINCH_LOST_CRASHES", "RAID_UP", "RAID_PLANK", "SAVE_MIDRAISE"]
 
-# The C# the rows need and the game does not have yet. One string arg each (the RM_SuspensionProofs convention: ';' inside),
-# one line out: a word then key=value tokens; "REFUSED: why" on bad args. Phase 6b is Python only (no C# in this phase).
+# The C# the rows call (RM_DrawbridgeProofs; selftest_drawbridge_proof checks each method exists and answers its word). One
+# string arg each (the RM_SuspensionProofs convention: ';' inside), one line out: a word then key=value tokens; "REFUSED: why"
+# on bad args.
 OWED_PROOFS = {
     "ProofMakeDrawbridge": "x1,z1;x2,z2;timber|steel;A|B;winch -> RM_SuspensionProofs.ProofBuild(god) then MakeDrawbridge(colony "
                            "bank A|B); 'winch' spawns one winch house per leaf beside its hinge anchor (LinkWinch). "
@@ -195,7 +197,7 @@ def main(argv=None):
 
     # ------------------------------------------------------------------ helpers (every reply reaches V.PRE through the guard)
     def dproof(method, arg, answer=False):
-        """One RM_DrawbridgeProofs read. A refused static_call (the class is owed), a REFUSED answer or a reply with no
+        """One RM_DrawbridgeProofs read. A refused static_call (the class not loaded), a REFUSED answer or a reply with no
         key=value is a HARNESS fault of the open scope, unless `answer=True` ('LEAF none' is a measurement)."""
         return _static(DPROOF, method, arg, answer)
 
@@ -327,7 +329,7 @@ def main(argv=None):
     if probe.get("success") is not True:
         res["owedWhy"] = str(probe.get("error") or probe.get("message") or probe)[:300]
         for rid in only:
-            row(rid, "UNMEASURED", {"why": "OWED C#: %s is not in the loaded FlowWorks (%s); phase 6b wrote the rows only"
+            row(rid, "UNMEASURED", {"why": "%s is not in the loaded FlowWorks (%s): deploy a FlowWorks built with it"
                                            % (DPROOF, res["owedWhy"][:120]), "owedProofs": sorted(OWED_PROOFS)}, cls="HARNESS")
         res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         save()
@@ -771,7 +773,7 @@ class FakeBridge(object):
     """A small drawbridge world model answering in the shapes the live tools and the OWED proofs are specified to: leaves
     with progress, winches with power, pawns with cells and health, the counters. It knows nothing about the game; a mock
     verdict proves the script's control flow and its MOD/SITE/HARNESS split only. `faults` inject one wrong behaviour each:
-      no_proofs        RM_DrawbridgeProofs is not loaded (the state today): every row UNMEASURED/HARNESS, none FAIL
+      no_proofs        RM_DrawbridgeProofs is not loaded (an old deploy): every row UNMEASURED/HARNESS, none FAIL
       noclock          step_game_ticks refuses: every row that waits on the clock is UNMEASURED/HARNESS
       two_free         the tip preview reads free=2 (the site is not the scene): RAISE_TIPS_RIDERS UNMEASURED/SITE
       tip_all_fall     MOD: riders all fall though a bank square is free      -> RAISE_TIPS_RIDERS FAIL
