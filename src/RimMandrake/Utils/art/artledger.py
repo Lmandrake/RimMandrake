@@ -981,7 +981,7 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
                       "or a mechanical reason (artpipe-collect | script:<path>)")
     old_sha = sha256_file(target) if target.is_file() else None
     if old_sha == sha:
-        if owner_said and not ruling_id and not dry_run and not idx.rulings_by_sha.get(sha):
+        if owner_said and not ruling_id and not dry_run and not idx.protected(sha):
             # his words about the picture already in place (an alternate he approved by card): record the ruling, write nothing
             w = Writer({e["id"] for e in idx.events})
             rl = {"id": det_id("ruling-cli", sha, owner_said), "type": "ruling", "target": {"sha": sha},
