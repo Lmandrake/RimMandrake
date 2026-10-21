@@ -79,6 +79,11 @@ and 0 non-adjacent links. `world_lint` findings went from 32 to 21. I saved the 
 TidallyLocked present). `…_MOUNTAINS` is untouched. The river heads that the mountain pass raised
 for the leftover rivers are now hills with no stream.
 
+**River dashes (MEASURED, fixed `e7adc75e3`).** Rivers drew as broken dashes because the §6 border-blend
+overlays sat at the rivers' height (+0.01) and write depth, so they hid the river on every biome-border tile.
+The links were whole (0 asymmetric, 0 non-adjacent, 100% of the record). `blendLift` is now 0.003, under the hills
+(+0.005) and the rivers. Detail and before/after images: `world_paths_readable_2026-10-20.md` §5.
+
 **Still open: record roads that draw nothing.** 196 record road links (392 tile entries) lie on
 `RM_Stillsand` and 49 entries on `RUT_Umbra`, and both biomes have `allowRoads=false`. They are stored
 but never drawn, so the roads on screen stop dead at the edge of the substellar desert. The Umbra ban
