@@ -52,11 +52,53 @@ def _load():
     return _cache
 
 
+# the seven Alpha Biomes plants RM_Cauldron diverged into owned RM_ defs (CAULDRON_RULED_CONTENT_1, 2026-09-29; the
+# defining file's comment says "the seven" without listing them, so they are named here)
+CAULDRON_SEVEN = {'AB_BloodBouquet', 'AB_CrystalFlower', 'AB_GiantAgariTox', 'AB_GiantToxicFlower', 'AB_KeeningCordax',
+                  'AB_RavenNettle', 'AB_RedBugloss'}
+_alias = None
+
+
+def renamed_ours():
+    """{old name: RM_ twin} for names whose def was renamed or ported into RM_ and no longer exists under the old name:
+    RUT_X -> RM_X (2026-10-16: the Rot spore-kit flora became RM_ twins, but rosters, FAMILIES and plant_pool still say
+    RUT_) and AB_X -> RM_X (Alpha Biomes retired 2026-10-16; the twin's own file names the donor, or is the Cauldron
+    port). Scanned from the defs on disk, never guessed; cached."""
+    global _alias
+    if _alias is None:
+        import glob
+        import re
+        pat = re.compile(r'<defName>((?:RUT|RM)_[^<]+)</defName>')
+        defined, texts = set(), {}
+        for f in glob.glob(os.path.join(ROOT, 'src', '**', '*.xml'), recursive=True):
+            try:
+                with open(f, encoding='utf-8', errors='ignore') as fh:
+                    txt = fh.read()
+            except OSError:
+                continue
+            for n in pat.findall(txt):
+                defined.add(n)
+                if n.startswith('RM_'):
+                    texts.setdefault(n, []).append(txt)
+        _alias = {}
+        for n in sorted(defined):
+            if n.startswith('RM_') and 'RUT_' + n[3:] not in defined:
+                _alias['RUT_' + n[3:]] = n
+        for n, tl in texts.items():
+            old = 'AB_' + n[3:]
+            if any(old in t for t in tl) or old in CAULDRON_SEVEN:
+                _alias[old] = n
+    return _alias
+
+
 def resolve(name):
-    """(known, target): known False = not a donor name, leave it alone; target None = donor-only, drop."""
+    """(known, target): known False = not a donor name, leave it alone; target None = donor-only, drop.
+    A RUT_ name whose def was renamed to RM_ resolves to the RM_ twin (renamed_ours)."""
     m = _load()
     if name in m:
         return True, m[name]
+    if name.startswith(('RUT_', 'AB_')) and name in renamed_ours():
+        return True, renamed_ours()[name]
     return False, name
 
 
