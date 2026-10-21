@@ -184,8 +184,10 @@ Images (full resolution and phone pairs): `D:\ClaudeWork\rimmandrake\scratch\wor
   shader's properties.
 - **The values.** The values above were tuned live on this load and are the committed defaults. A load of the final DLL
   has not yet confirmed them by eye.
-- **Not changed.** The stippled hex look inside some biomes at mid zoom (Rust Cathedral, Hollow Verge) is the faces and
-  hill decals, not borders.
+- **Not changed.** The stippled look inside some biomes at mid zoom is not the borders.
+  - **Hill decals.** Where it is hills, `HILL_DECALS_VERIFY_NO_MORE_COOKIE_CUTTERS` replaces them with our soft shading.
+  - **Rust Cathedral.** Its white speckle is Odyssey landmark icons: 155 of its 236 tiles carry one, and a landmark tile
+    draws no hill. The decision on them is `LANDMARK_ICONS_DECIDE_THE_REAL_SPECKLE`.
 
 **Factions (`UNWANTED_FACTIONS_SILENCE_NOT_DELETED`).**
 - **The def side** was already live: Tallmere Combs and the Space Exchange are hidden in `jawa/list_factions`.
