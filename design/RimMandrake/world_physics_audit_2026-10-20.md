@@ -184,7 +184,10 @@ Evidence: `D:\ClaudeWork\rimmandrake\scratch\live5\` (`clock.json`, `live_tiles_
   or the save restores it. `GenTemperature.SeasonalShiftAmplitudeAt` cannot be read: `jawa/static_call` refuses
   `PlanetTile` arguments.
 - **Rings:** ring drawn with the debris texture, clear of the surface. With Rings on, the process ran WS 6.5 GB, private 17.9 GB,
-  peak WS 9.8 GB (first load) and WS 7.7 GB, private 17.7 GB (second load). No Rings-off load ran this session, so the delta is UNMEASURED.
+  peak WS 9.8 GB (first load) and WS 7.7 GB, private 17.7 GB (second load). Rings-off baseline (FOUNDRY, 2026-10-20 21:05-21:15, 324-mod list without `rwnodetree.rwplanetatmosphere`, PARITY_QUIET
+  loaded paused, ~10 min at the map): WS 7.70 GB, private 16.86 GB, peak WS 9.74 GB. Same point with Rings on (round 2,
+  20:52): WS 7.60 GB, private 17.32 GB, peak 9.62 GB. So the atmosphere mod costs about 0.5 GB private and nothing
+  measurable in working set; the peak happens during loading either way. Log: `D:\ClaudeWork\rimmandrake\scratch\live6\mem_norings.log`.
   `RW_PlanetAtmosphere` logs no errors. 12 benign "shader not supported" lines come from the Metal bundle.
 - **Atmosphere shell A/B** (`ATMO_pair_limb.png`, `ATMO_pair_globe.png`, left original and right LIMB-TEST minh/maxh 100/108):
   - **Gains with LIMB-TEST:** a real blue limb and night-side shading east of the terminator.
