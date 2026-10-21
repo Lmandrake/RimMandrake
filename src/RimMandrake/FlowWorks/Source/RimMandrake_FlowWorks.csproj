@@ -265,6 +265,8 @@
     <Compile Include="Machinery\RM_LineCrossing.cs" />
     <Compile Include="Machinery\RM_LineDigBreakMath.cs" />
     <Compile Include="Machinery\RM_LineDigBreak.cs" />
+    <Compile Include="Machinery\RM_PowerCordMath.cs" />
+    <Compile Include="Machinery\Building_RM_PowerCord.cs" />
     <Compile Include="Machinery\PipeStyles.cs" />
     <Compile Include="Machinery\PipeLook.cs" />
     <Compile Include="Machinery\LiquidJoinRule.cs" />

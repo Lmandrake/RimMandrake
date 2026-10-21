@@ -351,6 +351,7 @@ namespace RimMandrake.FlowWorks.Pits
 			RM_PocketGrid.ForceRebuild(map);
 			RepathOver(map, changed);
 			map.GetComponent<Hose.RM_MapComponent_Hoses>()?.InvalidateEnds();   // phase 5: hoses on the leaf cut / rejoin now
+			Machinery.Building_RM_PowerCord.Notify_LeafToggled(map, changed);   // power cords on the leaf split / rejoin the power net now
 		}
 
 		/// <summary>A pawn whose path crosses a changed square, or whose path is still being computed (1.6 batches path jobs: a
@@ -890,8 +891,8 @@ namespace RimMandrake.FlowWorks.Pits
 
 		// ── Phase 5: lines on a leaf (review answer 6) ───────────────────────────────────────────
 
-		/// <summary>Is any of these cells a raised drawbridge leaf square? A flexible line (hose; the power cord of
-		/// POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS reads this too) lying over one is disconnected while it is up.</summary>
+		/// <summary>Is any of these cells a raised drawbridge leaf square? A flexible line (hose, HoseEnds.Read; power cord,
+		/// Building_RM_PowerCord.TransmitsPowerNow) lying over one is disconnected while it is up.</summary>
 		public static bool LineCutAt(Map map, IEnumerable<IntVec3> cells)
 		{
 			if (map == null || cells == null || !AnyRaised(map))

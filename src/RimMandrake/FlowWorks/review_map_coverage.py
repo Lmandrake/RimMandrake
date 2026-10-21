@@ -168,6 +168,7 @@ FEATURES = [
     ("gizmo", r'^"(Raise drawbridge|Lower drawbridge|Hold raised)"$', "Drawbridge raise/lower/hold buttons", M + "winch gizmos; driven by drawbridge_proof.py"),
     ("gizmo", r"^label$", "Drawbridge build buttons (Designator_Drawbridge's label argument)", M + "Architect build buttons for the timber/steel drawbridge; drawbridge_proof.py builds through them"),
     ("set", r"^pipesUnderToCentre$", "Pipes run under to the centre", M + "pipe-routing switch; no frozen station lays pipe under a deck"),
+    ("def", r"^ThingDef/RM_PowerCord$", "Flexible power cord (lies on any bridge deck and a drawbridge leaf)", M + "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS; no frozen station has a deck to lay it on; L1 in SelfTest PowerCordChecks, live rows owed (L2: lamp across a timber deck, leaf raise/lower)"),
     ("set", r"^lineCrossingRulesEnabled$", "Rigid pipe and conduit need solid ground", M + "build-rule switch (PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE); L1 table in SelfTest LineCrossingChecks, live rows owed (L2)"),
     ("set", r"^(trenchCoverEnabled|trenchCoverStrength|trenchCoverCap|trenchAiAvoidsCages)$", "Trench cover", M + S + "bars_trench (waist- and chest-deep colonist with a shooter); numbers read by ProofTrenchCover"),
     ("set", r"^(portableLadderEnabled|portableLadderMaxLevels|climbingGearEnabled|climbingGearSlowness|pitRescueLadderEnabled)$", "Portable ladder and climbing gear", M + S + "bars_access (portable ladder in a pit and on a 4 m wall, gear worn and on the ground)"),
