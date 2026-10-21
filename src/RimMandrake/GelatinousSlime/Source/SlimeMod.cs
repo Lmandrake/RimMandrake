@@ -77,6 +77,11 @@ namespace RimMandrake.GelatinousSlime
         // Off: a cut titanoslime stops leaking gelatids.
         public static bool titanoslimeSheds = true;
 
+        // Devour size cap (TITANOSLIME_SLIME_BIOME_1): multiplies the def's prey gate
+        // (preyBodySizeFraction 0.5 = prey up to half the slime's own BodySize, owner
+        // ruling #3, 2026-09-21). 1 = shipped; 0.5..2, so the gate spans 0.25..1.0.
+        public static float titanoslimePreySizeFactor = 1f;
+
         // ── SLIMIFICATION / FARMS / VISITORS (GELATINOUSSLIME_SETTINGS_SWITCHES_1) ──
         // Off = a body you can stand on: no film is applied, none grows, and
         // anything already on a pawn only wipes off or leaches away.
@@ -155,6 +160,7 @@ namespace RimMandrake.GelatinousSlime
             Scribe_Values.Look(ref titanoslimeReversible, "titanoslimeReversible", false, true);
             Scribe_Values.Look(ref titanoslimeMaxStage, "titanoslimeMaxStage", 5, true);
             Scribe_Values.Look(ref titanoslimeSheds, "titanoslimeSheds", true, true);
+            Scribe_Values.Look(ref titanoslimePreySizeFactor, "titanoslimePreySizeFactor", 1f, true);
             Scribe_Values.Look(ref slimificationEnabled, "slimificationEnabled", true, true);
             Scribe_Values.Look(ref slimificationClockDays, "slimificationClockDays", 7f, true);
             Scribe_Values.Look(ref fieldConversionEnabled, "fieldConversionEnabled", true, true);
@@ -289,7 +295,7 @@ namespace RimMandrake.GelatinousSlime
                 list.GapLine();
             }
 
-            if (Group(list, "The titanoslime", RimMandrake.Shared.SettingScope.Now, new[] { "titanoslimeEngulfs", "titanoslimeGrows", "titanoslimeReversible", "titanoslimeSheds", "titanoslimeMaxStage" }))
+            if (Group(list, "The titanoslime", RimMandrake.Shared.SettingScope.Now, new[] { "titanoslimeEngulfs", "titanoslimeGrows", "titanoslimeReversible", "titanoslimeSheds", "titanoslimeMaxStage", "titanoslimePreySizeFactor" }))
             {
                 list.Label("A titanic green slime that swallows pawns whole and grows on what "
                            + "it absorbs. With every box below unticked it is still a large, "
@@ -312,6 +318,10 @@ namespace RimMandrake.GelatinousSlime
                     + "gelatids as you fight it, losing mass with each one.");
                 list.Label("Largest stage it can reach: " + MaxStageLabel());
                 titanoslimeMaxStage = Mathf.RoundToInt(list.Slider(titanoslimeMaxStage, 1f, 5f));
+                list.Label("Largest prey it can swallow: " + PreySizeLabel() + ". Anything bigger is "
+                           + "slammed instead; at the default a young one takes a colonist and only a "
+                           + "grown one takes a thrumbo.");
+                titanoslimePreySizeFactor = Mathf.Round(list.Slider(titanoslimePreySizeFactor, 0.5f, 2f) * 20f) / 20f;
                 list.GapLine();
             }
 
@@ -383,6 +393,13 @@ namespace RimMandrake.GelatinousSlime
                 : " changes apply to what is on the map now"));
             RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
             return true;
+        }
+
+        private static string PreySizeLabel()
+        {
+            float f = RM_TitanKernel.PreyFraction(0.5f, titanoslimePreySizeFactor);
+            return "up to " + f.ToString("0.00") + "x its own body size"
+                + (Mathf.Approximately(titanoslimePreySizeFactor, 1f) ? " (default)" : "");
         }
 
         private static string MaxStageLabel()

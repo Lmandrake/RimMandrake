@@ -32,7 +32,9 @@ namespace RimMandrake.GelatinousSlime
         public float massCap = 80f;
 
         /// <summary>Prey gate: prey.BodySize must be at or below this fraction
-        /// of the slime's own BodySize. "Nearly any size" is earned by growing.</summary>
+        /// of the slime's own BodySize. "Nearly any size" is earned by growing.
+        /// Multiplied by SlimeSettings.titanoslimePreySizeFactor (default 1) and
+        /// clamped to 0.05-1.0 by RM_TitanKernel.PreyFraction.</summary>
         public float preyBodySizeFraction = 0.5f;
 
         /// <summary>One held thing per this much of the slime's BodySize
@@ -408,7 +410,7 @@ namespace RimMandrake.GelatinousSlime
             if (self == null || p == null) return false;
             return RM_TitanKernel.CanEngulf(SlimeSettings.titanoslimeEngulfs, self.Spawned, self.Dead, self.Downed, p.Spawned, p.Dead,
                 p.RaceProps != null && p.RaceProps.IsFlesh,   // mechanoids are slammed, never swallowed
-                p == self, p.BodySize, self.BodySize, Props.preyBodySizeFraction, innerContainer.Count, Capacity,
+                p == self, p.BodySize, self.BodySize, RM_TitanKernel.PreyFraction(Props.preyBodySizeFraction, SlimeSettings.titanoslimePreySizeFactor), innerContainer.Count, Capacity,
                 p.ParentHolder is RM_CompEngulfer, p.def == self.def);
         }
 

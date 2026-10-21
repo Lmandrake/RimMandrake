@@ -227,7 +227,7 @@ def preflight(g, S, fresh):
     mi = g.ok("jawa/map_info")
     S["cx"], S["cz"] = int(mi.get("sizeX", 250)) // 2, int(mi.get("sizeZ", 250)) // 2
     for f, v in (("titanoslimeEngulfs", True), ("titanoslimeGrows", True), ("titanoslimeReversible", False),
-                 ("titanoslimeMaxStage", 5), ("titanoslimeSheds", True)):
+                 ("titanoslimeMaxStage", 5), ("titanoslimeSheds", True), ("titanoslimePreySizeFactor", 1)):
         g.setting(f, v)
     c = g.call("jawa/static_call", type="Verse.Log", method="Clear")   # reset Verse.Log's 10,000-message cap
     say("Verse.Log.Clear: %s" % c.get("success"))
@@ -540,6 +540,23 @@ def g5(g, S):
     ok = "canEngulf=False" in e_off and "canEngulf=True" in e_on and rel.get("spawned") == "True" and held == "0"
     row("g5", "engulfs_toggle_gate_and_midhold_release", "PASS" if ok else "FAIL", None if ok else "MOD",
         "off:%s on:%s | after switch-off held=%s muffalo spawned=%s" % (e_off.split()[0], e_on.split()[0], held, rel.get("spawned")))
+    # devour size cap (titanoslimePreySizeFactor): a stage-1 (BodySize 6) refuses a prey above 3 at the shipped x1
+    # and swallows it at x2 (gate 6). Positive control: the prey's own BodySize must be read and sit in (3, 6].
+    d = g.spawn(KIND, x + 6, z + 4)[0]
+    g.proof("ProofSetMass", d, 0)
+    big = g.spawn("Thrumbo", x + 9, z + 4)[0]
+    pb = float(g.read(big).get("bodySize", "nan"))
+    if not 3.0 < pb <= 6.0:
+        raise Unmeasured("thrumbo BodySize %s is not in (3, 6]: the cap row would prove nothing" % pb)
+    c_def = g.proof("ProofEngulf", d, big)
+    g.setting("titanoslimePreySizeFactor", 2)
+    try:
+        c_two = g.proof("ProofEngulf", d, big)
+    finally:
+        g.setting("titanoslimePreySizeFactor", 1)
+    ok = "canEngulf=False" in c_def and "canEngulf=True" in c_two
+    row("g5", "prey_size_cap_x1_refuses_x2_swallows", "PASS" if ok else "FAIL", None if ok else "MOD",
+        "prey BodySize %.2f vs stage-1 6: x1 %s | x2 %s" % (pb, c_def.split()[0], c_two.split()[0]))
     # sheds
     c = g.spawn(KIND, x + 12, z)[0]
     g.proof("ProofSetMass", c, 0)

@@ -344,7 +344,8 @@ case to support — it is untameable and unhaulable.
   same loaded-def edit Large Pawns performs on its table; no Harmony), `titanoslimeEngulfs` (bool,
   default on; off → the engulf tool always slams), `titanoslimeGrows` (bool, default on; off →
   `absorbedMass` frozen at spawn value), `titanoslimeMaxStage` (1–5, default 5),
-  `titanoslimeSheds` (bool, default on). All-off degrades to a slow, big, slam-only predator that
+  `titanoslimeSheds` (bool, default on), `titanoslimePreySizeFactor` (0.5–2, default 1; multiplies
+  the prey gate, clamped to 0.05–1.0 of its own BodySize — added 2026-10-21). All-off degrades to a slow, big, slam-only predator that
   still works.
 
 ## 6. Roster placement

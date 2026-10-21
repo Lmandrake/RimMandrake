@@ -383,6 +383,20 @@ namespace RimMandrake.GelatinousSlime.SelfTest
                 if (got) EngulfOk++; else EngulfNo++;
             }
             Check(RM_TitanKernel.CanEngulf(true, true, false, false, true, false, true, false, 5f, 10f, 0.5f, 0, 1, false, false) && !RM_TitanKernel.CanEngulf(true, true, false, false, true, false, true, false, 5.01f, 10f, 0.5f, 0, 1, false, false), "prey size boundary is at exactly half");
+            // devour size cap setting: 1 = shipped half; clamped to (0.05, 1]; bad settings fall back to 1; a colonist
+            // (1.0) fits a young stage-1 (6) at default, a thrumbo (4.0) needs the cap raised; prey never out-sizes the slime
+            Check(RM_TitanKernel.PreyFraction(0.5f, 1f) == 0.5f && RM_TitanKernel.PreyFraction(0.5f, 2f) == 1f && RM_TitanKernel.PreyFraction(0.5f, 5f) == 1f
+                  && RM_TitanKernel.PreyFraction(0.5f, 0.5f) == 0.25f && RM_TitanKernel.PreyFraction(0.5f, 0f) == 0.5f && RM_TitanKernel.PreyFraction(0.5f, float.NaN) == 0.5f
+                  && RM_TitanKernel.PreyFraction(0.01f, 1f) == 0.05f, "PreyFraction values");
+            Check(RM_TitanKernel.CanEngulf(true, true, false, false, true, false, true, false, 1f, 6f, RM_TitanKernel.PreyFraction(0.5f, 1f), 0, 1, false, false), "default gate refuses a colonist to a stage-1");
+            Check(!RM_TitanKernel.CanEngulf(true, true, false, false, true, false, true, false, 4f, 6f, RM_TitanKernel.PreyFraction(0.5f, 1f), 0, 1, false, false)
+                  && RM_TitanKernel.CanEngulf(true, true, false, false, true, false, true, false, 4f, 6f, RM_TitanKernel.PreyFraction(0.5f, 2f), 0, 1, false, false), "cap x2 does not open a thrumbo to a stage-1");
+            Check(RM_TitanKernel.CanEngulf(true, true, false, false, true, false, true, false, 4f, 40f, RM_TitanKernel.PreyFraction(0.5f, 1f), 0, 10, false, false), "a colossus at default refuses a thrumbo");
+            for (int k = 0; k < 40; k++)
+            {
+                float f = (float)(r.NextDouble() * 4 - 0.5), pf = RM_TitanKernel.PreyFraction(0.5f, f);
+                Check(pf > 0f && pf <= 1f, $"PreyFraction {pf} out of (0,1] at factor {f}");
+            }
             // digestion, struggle, burst
             float pd = 0f;
             for (float s = 0f; s < 12f; s += 0.3f) { int d = RM_TitanKernel.DigestTicks(s * 40f); Check(d >= 60 && d >= pd, "DigestTicks under a second or not monotone"); pd = d; }
