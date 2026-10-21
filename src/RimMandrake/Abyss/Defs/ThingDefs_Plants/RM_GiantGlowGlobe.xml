@@ -25,6 +25,7 @@
     </graphicData>
     <plant>
       <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <wildClusterRadius>10</wildClusterRadius>
       <wildClusterWeight>7.5</wildClusterWeight>
       <visualSizeRange>1.5~2</visualSizeRange>

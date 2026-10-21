@@ -26,6 +26,7 @@
     </graphicData>
     <plant>
       <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <visualSizeRange>2~2.8</visualSizeRange>
       <sowResearchPrerequisites>
         <li>TreeSowing</li>

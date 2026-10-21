@@ -67,6 +67,8 @@
     </graphicData>
     <fillPercent>0.35</fillPercent>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
@@ -143,6 +145,8 @@
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <growDays>8</growDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
@@ -299,6 +303,8 @@
     </graphicData>
     <fillPercent>0.5</fillPercent>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <growDays>25</growDays>
       <fertilityMin>0.1</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
@@ -325,6 +331,8 @@
     </graphicData>
     <fillPercent>0.3</fillPercent>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <growDays>14</growDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
@@ -357,6 +365,8 @@
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <growDays>12</growDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
@@ -407,6 +417,8 @@
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <growDays>10</growDays>
       <harvestWork>160</harvestWork>
       <harvestYield>8</harvestYield>

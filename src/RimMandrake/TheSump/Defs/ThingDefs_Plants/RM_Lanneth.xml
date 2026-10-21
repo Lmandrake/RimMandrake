@@ -14,8 +14,8 @@
 
   Ban §9 (RM_SumpFlora.xml header): no Sump plant emits light. The pods are
   painted luminous — translucent amber wax catching lamp-garden light — but
-  carry no glower. Chemotroph posture identical to the siblings (growMinGlow 0,
-  completelyIgnoreFertility, minGrowthTemperature -8). Wild only: no sowTags.
+  carry no glower. Chemotroph posture identical to the siblings (growMinGlow 0 and
+  growOptimalGlow 0, completelyIgnoreFertility, minGrowthTemperature -8). Wild only: no sowTags.
   Numbers INVENTED-BUILD.
 -->
 <Defs>
@@ -39,7 +39,7 @@
     </ingestible>
     <plant>
       <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>1</growOptimalGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <minGrowthTemperature>-8</minGrowthTemperature>

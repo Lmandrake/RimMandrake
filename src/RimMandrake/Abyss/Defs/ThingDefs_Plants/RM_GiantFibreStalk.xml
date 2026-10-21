@@ -26,6 +26,7 @@
     </statBases>
     <plant>
       <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <growDays>14</growDays>
       <harvestWork>1200</harvestWork>
       <harvestYield>10</harvestYield>

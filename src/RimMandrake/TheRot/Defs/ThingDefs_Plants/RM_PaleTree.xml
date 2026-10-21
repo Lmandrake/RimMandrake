@@ -73,6 +73,8 @@
     <pathCost>42</pathCost>
     <pathCostIgnoreRepeat>false</pathCostIgnoreRepeat>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <fertilityMin>0.08</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <soundHarvesting>Harvest_Tree</soundHarvesting>

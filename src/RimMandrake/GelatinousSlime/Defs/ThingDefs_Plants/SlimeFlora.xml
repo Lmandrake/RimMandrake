@@ -92,7 +92,8 @@
       <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
       <maxOptimalGrowthTemperature>38</maxOptimalGrowthTemperature>
       <maxGrowthTemperature>50</maxGrowthTemperature>
-      <growMinGlow>0.31</growMinGlow>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
     </plant>
   </ThingDef>
 
@@ -133,7 +134,8 @@
       <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
       <maxOptimalGrowthTemperature>38</maxOptimalGrowthTemperature>
       <maxGrowthTemperature>50</maxGrowthTemperature>
-      <growMinGlow>0.31</growMinGlow>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
     </plant>
   </ThingDef>
 
@@ -171,7 +173,8 @@
       <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
       <maxOptimalGrowthTemperature>38</maxOptimalGrowthTemperature>
       <maxGrowthTemperature>50</maxGrowthTemperature>
-      <growMinGlow>0.31</growMinGlow>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
     </plant>
   </ThingDef>
 

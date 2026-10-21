@@ -11,12 +11,13 @@
   sweep found 0 hits for any of these 9 names anywhere else in the repo.
 
   Ban #3 (roster doc §0, sheet §6): every native plant here is a chemotroph
-  feeding on the tar's energy, never the sun — growMinGlow 0 and
-  completelyIgnoreFertility true on every row, same mechanism wick-plant
-  already proved out (PlantUtility.GrowthRateFactorFor_Light/_Fertility,
-  documented in RUT_Plant_Wick.xml's own header, read again this pass, not
-  re-derived). minGrowthTemperature -8 on every row for the same reason
-  wick-plant carries it: sheet §0's measured range (p10/median/p90
+  feeding on the tar's energy, never the sun — growMinGlow 0 AND
+  growOptimalGlow 0, plus completelyIgnoreFertility true, on every row.
+  Both glow fields must be 0: the light factor is
+  InverseLerp(growMinGlow, growOptimalGlow, glow), which is 0 at glow 0 when
+  optimal is left at 1, so the plant would never grow and die after 7.5 days
+  (vanilla Glowstool's pattern; DARK_FLORA_FIX_WILTS_WITHOUT_A_SUN, selftest
+  test_plant_glow_halfset). minGrowthTemperature -8 on every row: sheet §0's measured range (p10/median/p90
   -4.3/1.2/14.9 degC) sits mostly above -8, so nothing here needs artificial
   heat to grow through ordinary Sump cold. Ban §9: nothing below emits light
   (no glowRadius, no GlowerProps) — the wick-garden/derrick lamps stay the
@@ -94,7 +95,7 @@
     </ingestible>
     <plant>
       <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>1</growOptimalGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <minGrowthTemperature>-8</minGrowthTemperature>
@@ -144,7 +145,7 @@
     </ingestible>
     <plant>
       <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>1</growOptimalGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <minGrowthTemperature>-8</minGrowthTemperature>
@@ -183,7 +184,7 @@
     </ingestible>
     <plant>
       <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>1</growOptimalGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <minGrowthTemperature>-8</minGrowthTemperature>
@@ -220,7 +221,7 @@
     <plant>
       <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 4 WoodLog; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>1</growOptimalGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <minGrowthTemperature>-8</minGrowthTemperature>
@@ -253,7 +254,7 @@
     </statBases>
     <plant>
       <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>1</growOptimalGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <minGrowthTemperature>-8</minGrowthTemperature>
@@ -282,7 +283,7 @@
     </statBases>
     <plant>
       <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>1</growOptimalGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <minGrowthTemperature>-8</minGrowthTemperature>
@@ -316,7 +317,7 @@
     </statBases>
     <plant>
       <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>1</growOptimalGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <minGrowthTemperature>-8</minGrowthTemperature>
@@ -354,7 +355,7 @@
     </statBases>
     <plant>
       <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>1</growOptimalGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <minGrowthTemperature>-8</minGrowthTemperature>
@@ -384,7 +385,7 @@
     </statBases>
     <plant>
       <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>1</growOptimalGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <minGrowthTemperature>-8</minGrowthTemperature>
