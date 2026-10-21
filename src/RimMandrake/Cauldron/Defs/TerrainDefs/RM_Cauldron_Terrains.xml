@@ -9,16 +9,16 @@
     this repo (BiomesPlus's own source is not in vendor/mod_sources — net-new
     content, not a field-for-field port, per the item's own §6). Same shape
     as RM_TheRotGrass/RM_TheRotSoilRich (src/RimMandrake/TheRot/Defs/TerrainDefs/
-    RM_TheRot_GroundTerrains.xml): NaturalTerrainBase parent, reuses vanilla
-    Core's own Soil/SoilRich texturePaths so this mod ships zero new terrain
-    art and zero new terrain dependency.
+    RM_TheRot_GroundTerrains.xml): NaturalTerrainBase parent. Own dark, gassy
+    soil art since 2026-10-20 (owner's pick on cauldron_soils_sheet_2026-10-20,
+    CAULDRON_SOILS_BUILD_DIRT_THAT_BREATHES).
   -->
 
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_CauldronSoil</defName>
     <label>poison soil</label>
     <description>Ground laced through with the cold, metal-rich exhalations of the forest floor. Plantable, but nothing that grows here does so quickly.</description>
-    <texturePath>Terrain/Surfaces/Soil</texturePath>
+    <texturePath>Terrain/Surfaces/RM_CauldronSoil</texturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>315</renderPrecedence>
     <pathCost>3</pathCost>
@@ -44,7 +44,7 @@
     <defName>RM_CauldronSoilRich</defName>
     <label>rich poison soil</label>
     <description>Dense, blackened ground where the vented gas has settled longest — the richest soil the Poison Forest has to offer, and the most saturated.</description>
-    <texturePath>Terrain/Surfaces/SoilRich</texturePath>
+    <texturePath>Terrain/Surfaces/RM_CauldronSoilRich</texturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>335</renderPrecedence>
     <pathCost>2</pathCost>
