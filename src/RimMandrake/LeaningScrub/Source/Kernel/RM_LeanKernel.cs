@@ -80,6 +80,42 @@ namespace RimMandrake.LeaningScrub
             oz = z + (int)Math.Round(dirZ * k);
         }
 
+        // ── SCRUB_WIND_BUILD_LEAN_ON_PURPOSE: the visible lean (RM_PlantLean.cs) ──
+        // Vanilla Plant.Print mirrors every plant mesh on a coin flip (Rand.Bool). On a leaning map a listed plant's mesh is
+        // mirrored exactly when its art's own lean disagrees with the wind, so every listed plant on the map shows one lean.
+        // Art leans EAST (screen right) unless its texture is listed as leaning west; the wind leans west only when the
+        // downwind vector points west (x < 0). A due north/south wind has no screen lean and resolves EAST, one way, never mixed.
+        public static bool WindLeansWest(float downwindX) { return downwindX < 0f; }
+
+        // The mirror decision for one mesh: true = flip the UVs.
+        public static bool FaceFlip(bool windWest, bool artWest) { return windWest != artWest; }
+
+        // What the player sees after the flip: the art's lean, mirrored when flipped. Always equals windWest under FaceFlip.
+        public static bool VisibleWest(bool artWest, bool flip) { return artWest != flip; }
+
+        // "Things/Plant/RM_Fuzz/RM_Fuzz_c" -> "RM_Fuzz_c". Cache-build time only (it allocates).
+        public static string TextureName(string path)
+        {
+            if (path == null) return "";
+            int i = path.LastIndexOf('/');
+            return i < 0 ? path : path.Substring(i + 1);
+        }
+
+        // Per-variant west-leaning flags for a graphic's sub-texture paths, from the biome's list of west-leaning texture
+        // names (case-sensitive, like ContentFinder). Null when no variant is listed, so the caller can skip the peek.
+        public static bool[] WestByVariant(IList<string> variantPaths, ICollection<string> westNames)
+        {
+            if (variantPaths == null || variantPaths.Count == 0 || westNames == null || westNames.Count == 0) return null;
+            bool[] west = new bool[variantPaths.Count];
+            bool any = false;
+            for (int i = 0; i < west.Length; i++)
+            {
+                west[i] = westNames.Contains(TextureName(variantPaths[i]));
+                any |= west[i];
+            }
+            return any ? west : null;
+        }
+
         // The Shed V: for each distance d in 1..length the V is 2*(d/3)+1 cells wide; every cell passes one chance roll. The cells
         // that pass are appended (the caller still filters bounds and walkability).
         public static void ShedCells(int rootX, int rootZ, float dirX, float dirZ, int length, float cellChance, Func<float> roll, List<int> outX, List<int> outZ)

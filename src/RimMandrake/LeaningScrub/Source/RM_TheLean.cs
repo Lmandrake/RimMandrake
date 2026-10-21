@@ -35,6 +35,56 @@ namespace RimMandrake.LeaningScrub
     // ════════════════════════════════════════════════════════════════════
     public class RM_LeanExtension : DefModExtension
     {
+        // SCRUB_WIND_BUILD_LEAN_ON_PURPOSE (owner card 2026-10-20, biome_bars_sitting §5.1): the plants that face the wind
+        // on this biome's maps instead of mirroring at random (RM_PlantLean.cs). Data, never hardcoded defNames.
+        public List<ThingDef> leanPlants = new List<ThingDef>();
+
+        // Texture names (file name, no extension) of the variants whose own art leans WEST (screen left). Every other
+        // variant of a listed plant is taken to lean east. selftest_scrub_wind.py measures the PNGs against this list.
+        public List<string> westLeaningTextures = new List<string>();
+
+        [Unsaved(false)] private bool[] leansByIndex;
+        [Unsaved(false)] private HashSet<string> westSet;
+
+        public bool Leans(ThingDef def)
+        {
+            if (leansByIndex == null)
+            {
+                leansByIndex = new bool[DefDatabase<ThingDef>.DefCount];
+                foreach (ThingDef d in leanPlants)
+                {
+                    if (d != null && d.index < leansByIndex.Length)
+                    {
+                        leansByIndex[d.index] = true;
+                    }
+                }
+            }
+            return def != null && def.index < leansByIndex.Length && leansByIndex[def.index];
+        }
+
+        public HashSet<string> WestSet => westSet ?? (westSet = new HashSet<string>(westLeaningTextures ?? new List<string>()));
+
+        public override IEnumerable<string> ConfigErrors()
+        {
+            foreach (string e in base.ConfigErrors())
+            {
+                yield return e;
+            }
+            foreach (ThingDef d in leanPlants)
+            {
+                if (d != null && d.plant == null)
+                {
+                    yield return "RM_LeanExtension.leanPlants lists " + d.defName + ", which is not a plant";
+                }
+            }
+            foreach (string n in westLeaningTextures)
+            {
+                if (n.NullOrEmpty() || n.Contains("/"))
+                {
+                    yield return "RM_LeanExtension.westLeaningTextures entry '" + n + "' must be a bare texture name";
+                }
+            }
+        }
     }
 
     public class RM_MapComponent_Lean : MapComponent

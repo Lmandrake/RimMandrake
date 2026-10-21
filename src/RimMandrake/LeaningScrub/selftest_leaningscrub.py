@@ -293,9 +293,11 @@ class Fake(object):
         if want == ["BiomeDef/RM_LeaningScrub"]:
             table = [{"weather": w, "commonality": c} for w, c in
                      (("RM_ScrubWind", 28), ("RM_ScrubWindFog", 40), ("RM_Stall", 3), ("RM_Gale", 7),
-                      ("DryThunderstorm", 1), ("Rain", 0))]
+                      ("RM_ScrubDryThunderstorm", 1), ("RM_ScrubGrayPall", 1), ("RM_ScrubOvercast", 5), ("Rain", 0))]
             if "no_weather_entry" in self.broken:
                 table = [r for r in table if r["weather"] != "RM_Gale"]
+            if "stock_overcast" in self.broken:
+                table = [r for r in table if r["weather"] != "RM_ScrubOvercast"] + [{"weather": "Overcast", "commonality": 5}]
             plants = [{"plant": n, "commonality": 0.1} for n in
                       ("RM_Fuzz", "RM_VenomvineThicket", "RM_DrippingVenomvine", "RM_TwitcherVenomvine",
                        "RM_HollowVenomvine", "RM_CrownVenomvine", "RM_Whipfuzz", "RM_Cruststar")
@@ -305,6 +307,13 @@ class Fake(object):
                 "defName": "RM_LeaningScrub", "fields": {
                     "baseWeatherCommonalities": table, "animalDensity": 1.8, "wildPlants": plants,
                     "modExtensions": ext}}]}
+        if want and all(w.startswith("WeatherDef/RM_Scrub") for w in want):
+            rows = []
+            for w in want:
+                n = w.split("/", 1)[1]
+                off = 0.0 if ("twin_calm" in self.broken and n == "RM_ScrubGrayPall") else 0.4
+                rows.append({"defName": n, "fields": {"windSpeedOffset": off, "windSpeedFactor": 1.0}})
+            return {"success": True, "foundCount": len(rows), "notFound": [], "defs": rows}
         if want == ["ThingDef/%s" % V.TREE]:
             return {"success": True, "foundCount": 1, "notFound": [],
                     "defs": [{"defName": V.TREE, "fields": {"label": "sweetline tree"}}]}
@@ -390,6 +399,17 @@ class Fake(object):
                                                      "FAIL: a six-fire blaze sent no stamper toward it")}
             return {"success": True, "result": ("FAIL: fireStampEnabled off but the herd answered" if on
                                                  else "PASS off sent=0 stamped=0")}
+        if method == "ProofLean":
+            if args == "off":
+                return {"success": True, "result": "FAIL faced with the toggle off east=0 west=40" if "lean_ignores_toggle" in self.broken
+                        else "PASS east=0 west=0 rolled=12"}
+            return {"success": True, "result": "FAIL mixed lean east=3 west=37" if "lean_mixed" in self.broken
+                    else "PASS east=0 west=40 rolled=12 windWest=True"}
+        if method == "ProofGale":
+            if self.weather != "RM_Gale":
+                return {"success": True, "result": "UNMEASURED the Gale is not the current weather"}
+            return {"success": True, "result": "FAIL RM_Gale does not carry RM_WeatherOverlay_GaleDust" if "gale_no_overlay" in self.broken
+                    else "PASS weather=RM_Gale art=PLACEHOLDER (vanilla fog sheet) drew=True"}
         if method == "ProofRipple":
             hides = (args != "off" and "ripple_never" not in self.broken) or (args == "off" and "ripple_ignores_toggle" in self.broken)
             if args != "off":
@@ -706,6 +726,11 @@ BREAKS = {
     "creep_ignores_toggle": "islands.creep_toggle_off",
     "creep_ignores_cap": "islands.creep_cap_stops",
     "no_exempt": "islands.growth_exempt_from_explosive_growth",
+    "stock_overcast": "defs.biome_weather_table",
+    "twin_calm": "windlean.twins_carry_wind",
+    "lean_mixed": "windlean.lean_faces_wind",
+    "lean_ignores_toggle": "windlean.lean_toggle_off_vanilla",
+    "gale_no_overlay": "windlean.gale_dust_overlay",
 }
 for _form, _plant in V.FORMS:
     BREAKS["%s_never" % _form] = "forms.%s_acts" % _form

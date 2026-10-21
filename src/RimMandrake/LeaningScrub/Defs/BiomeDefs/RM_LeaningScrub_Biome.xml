@@ -152,14 +152,16 @@
       <RM_ScrubWindFog>40</RM_ScrubWindFog>
       <RM_Stall>3</RM_Stall>
       <RM_Gale>7</RM_Gale>
-      <DryThunderstorm>1</DryThunderstorm>
+      <!-- SCRUB_WIND_BUILD_LEAN_ON_PURPOSE part 3 (owner card 2026-10-20): the windy twins replace stock DryThunderstorm,
+           GrayPall and Overcast at the same commonalities (WeatherDefs/RM_LeaningScrub_WindyTwins.xml). -->
+      <RM_ScrubDryThunderstorm>1</RM_ScrubDryThunderstorm>
       <SnowGentle>0</SnowGentle>
       <SnowHard>0</SnowHard>
       <Rain>0</Rain>
       <RainyThunderstorm>0</RainyThunderstorm>
       <FoggyRain>0</FoggyRain>
-      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
-      <Overcast MayRequire="Ludeon.RimWorld.Odyssey">5</Overcast>
+      <RM_ScrubGrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</RM_ScrubGrayPall>
+      <RM_ScrubOvercast>5</RM_ScrubOvercast>
     </baseWeatherCommonalities>
     <wildAnimals>
       <RM_Vurra MayRequire="mandrake.rsw.swbestiary">0.7</RM_Vurra>  <!-- vurra - our port of the donor terrorworm (RSW_DesertPortMisc_Races.xml), Q9 -->
@@ -238,7 +240,31 @@
     <modExtensions>
       <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 2: the Lean - each map locks one wind
            heading (Source/RM_TheLean.cs). -->
-      <li Class="RimMandrake.LeaningScrub.RM_LeanExtension" />
+      <li Class="RimMandrake.LeaningScrub.RM_LeanExtension">
+        <!-- SCRUB_WIND_BUILD_LEAN_ON_PURPOSE part 1 (owner card 2026-10-20): these fuzz and scrub plants face the map's
+             wind instead of mirroring at random (Source/RM_PlantLean.cs). Venomvine forms and trees stay vanilla. -->
+        <leanPlants>
+          <li>RM_Fuzz</li>
+          <li>RM_Whipfuzz</li>
+          <li>RM_Tanglefuzz</li>
+          <li>RM_Pillowmoss</li>
+          <li>RM_Grellbush</li>
+          <li>RM_Grellspine</li>
+          <li>RM_Cruststar</li>
+        </leanPlants>
+        <!-- Variants whose own art leans west (top drawn left of the base). MEASURED from the PNGs 2026-10-20; every
+             listed plant's other variants lean east or stand upright. selftest_scrub_wind.py re-measures this list. -->
+        <westLeaningTextures>
+          <li>RM_Fuzz_c</li>
+          <li>RM_Fuzz_e</li>
+          <li>RM_Whipfuzz_c</li>
+          <li>RM_Pillowmoss_c</li>
+          <li>RM_Grellbush_a</li>
+          <li>RM_Grellspine_b</li>
+          <li>RM_Grellspine_c</li>
+          <li>RM_Cruststar_d</li>
+        </westLeaningTextures>
+      </li>
       <!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH (design/RimMandrake/venomvine_design_2026-10-16.md §10 RULED): this biome grows
            venomvine islands (about 15% of open ground, Q1) with rarer forms as rooms (Q4), and lets venomvine creep slowly
            downwind to a map cap (22%, Q3). Room roles: §5 "room?" column. Numbers here are shape, PROVISIONAL; the
