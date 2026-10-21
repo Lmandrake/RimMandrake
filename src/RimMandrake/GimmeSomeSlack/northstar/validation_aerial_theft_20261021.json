@@ -1,0 +1,469 @@
+{
+ "mod": "GimmeSomeSlack",
+ "mode": "theft",
+ "script": "validation_aerial.py",
+ "tier": "the live list (env.running)",
+ "started": "2026-10-21T01:08:18",
+ "rows": [
+  {
+   "id": "PT_A2_drain_no_witness_no_letter",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tap": {
+     "id": 768882,
+     "ourNet": 280679978,
+     "victimNet": 419131054,
+     "victimFaction": "Homestead Defense League",
+     "outputW": 500,
+     "powerOn": true,
+     "lastStolenW": 500,
+     "stolenTotalWd": 2.5,
+     "connected": true,
+     "connectFaction": "New Arrivals"
+    },
+    "caughtCount": [
+     "2",
+     "2"
+    ],
+    "built": [
+     3,
+     18,
+     1,
+     3,
+     1
+    ],
+    "batteries": [
+     "Battery768861",
+     "Battery768862",
+     "Battery768863"
+    ]
+   }
+  },
+  {
+   "id": "PT_A2_letter",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "letter": {
+     "label": {
+      "RawText": "Power theft discovered",
+      "Length": 22,
+      "StrippedLength": 22
+     },
+     "defName": "NegativeEvent",
+     "arrivalTick": 64400,
+     "lookTargets": "Verse.LookTargets",
+     "lookTargetIds": [
+      "RM_PowerTapClamp768882",
+      "Human768894"
+     ]
+    },
+    "caughtCount": [
+     "2",
+     "3"
+    ],
+    "witness": [
+     "Human768894",
+     "Human768899"
+    ],
+    "victim": "OutlanderCivil",
+    "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\power_theft_live_20261021\\PT_A2_letter_and_clamp.png"
+   }
+  },
+  {
+   "id": "PT_A2_letter_targets",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lookTargetIds": [
+     "RM_PowerTapClamp768882",
+     "Human768894"
+    ],
+    "clamp": [
+     "RM_PowerTapClamp768882"
+    ],
+    "witness": [
+     "Human768894",
+     "Human768899"
+    ],
+    "bar": "the letter jumps to the clamp AND the witness"
+   }
+  },
+  {
+   "id": "PT_A2_caught_once",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "caughtCount": [
+     "3",
+     "3"
+    ],
+    "letters": 3
+   }
+  },
+  {
+   "id": "PT_A3_goodwill_day",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "goodwill": [
+     -4,
+     -6
+    ],
+    "goodwillCharged": [
+     "-4",
+     "-6"
+    ],
+    "perDay": 2,
+    "played": 60300,
+    "chargeAtPlayed": 60050,
+    "chargeShot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\power_theft_live_20261021\\PT_A3_goodwill_charge_message_day.png",
+    "taps": [
+     {
+      "id": 768882,
+      "ourNet": 280679978,
+      "victimNet": 419131054,
+      "victimFaction": "Homestead Defense League",
+      "outputW": 500,
+      "powerOn": true,
+      "lastStolenW": 500,
+      "stolenTotalWd": 507.3982,
+      "connected": true,
+      "connectFaction": "New Arrivals"
+     }
+    ]
+   }
+  },
+  {
+   "id": "PT_A3_removed_stops",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "goodwill": [
+     -6,
+     -6
+    ],
+    "goodwillCharged": [
+     "-6",
+     "-6"
+    ],
+    "clampLeft": [],
+    "played": 60300,
+    "stop": "clamp removed (it has no switch)"
+   }
+  }
+ ],
+ "origin": [
+  20,
+  120
+ ],
+ "scene": {
+  "rect": [
+   20,
+   120,
+   30,
+   22
+  ],
+  "bats": [
+   [
+    24,
+    128
+   ],
+   [
+    26,
+    128
+   ],
+   [
+    28,
+    128
+   ]
+  ],
+  "run": [
+   [
+    24,
+    130
+   ],
+   [
+    25,
+    130
+   ],
+   [
+    26,
+    130
+   ],
+   [
+    27,
+    130
+   ],
+   [
+    28,
+    130
+   ],
+   [
+    29,
+    130
+   ],
+   [
+    30,
+    130
+   ],
+   [
+    31,
+    130
+   ],
+   [
+    32,
+    130
+   ],
+   [
+    33,
+    130
+   ],
+   [
+    34,
+    130
+   ],
+   [
+    35,
+    130
+   ],
+   [
+    36,
+    130
+   ],
+   [
+    37,
+    130
+   ],
+   [
+    38,
+    130
+   ],
+   [
+    39,
+    130
+   ],
+   [
+    40,
+    130
+   ],
+   [
+    41,
+    130
+   ]
+  ],
+  "clamp": [
+   34,
+   129
+  ],
+  "ours": [
+   [
+    34,
+    126
+   ],
+   [
+    34,
+    125
+   ],
+   [
+    34,
+    124
+   ]
+  ],
+  "lamp": [
+   35,
+   123
+  ],
+  "witness": [
+   34,
+   134
+  ]
+ },
+ "env": {
+  "running": 325,
+  "gssAssembly": [
+   {
+    "mvid": "fb946c7b-d9bd-4557-823f-d2f3a32bf939",
+    "version": "0.1.0.0",
+    "fileBytes": -1,
+    "fileExists": false,
+    "claimedBy": [
+     "mandrake.rm.gimmesomeslack"
+    ]
+   }
+  ],
+  "map": "RM_Stillsand",
+  "size": [
+   250,
+   250
+  ],
+  "tick": 63971
+ },
+ "settings": {
+  "theftGoodwill": "True",
+  "theftGoodwillPerDay": "2",
+  "theftSightRange": "12",
+  "tapsEnabled": "True",
+  "tapEvents": "True",
+  "tapRate": "500"
+ },
+ "victim": {
+  "defName": "OutlanderCivil",
+  "name": "Homestead Defense League",
+  "goodwill": -4,
+  "hostile": false
+ },
+ "clampsRemovedFirst": [
+  "RM_PowerTapClamp767501",
+  "RM_PowerTapClamp767575"
+ ],
+ "witnessLord": {
+  "success": true,
+  "message": null,
+  "error": null
+ },
+ "catch": {
+  "tick": 64571,
+  "goodwill0": -4,
+  "goodwillCharged0": "-4",
+  "caughtCount": [
+   "2",
+   "2",
+   "3"
+  ],
+  "witness": [
+   "Human768894",
+   "Human768899"
+  ],
+  "clamp": [
+   "RM_PowerTapClamp768882"
+  ]
+ },
+ "screenshots": [
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\power_theft_live_20261021\\PT_A2_letter_and_clamp.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\power_theft_live_20261021\\PT_A3_goodwill_charge_message_day.png"
+ ],
+ "phases": [
+  {
+   "phase": "catch",
+   "at": "2026-10-21T01:08:26"
+  },
+  {
+   "phase": "day",
+   "at": "2026-10-21T01:08:59"
+  },
+  {
+   "phase": "day",
+   "at": "2026-10-21T01:10:29"
+  },
+  {
+   "phase": "day",
+   "at": "2026-10-21T01:12:08"
+  },
+  {
+   "phase": "stop",
+   "at": "2026-10-21T01:15:21"
+  }
+ ],
+ "aborted": null,
+ "day": {
+  "since": 64571,
+  "chargeShot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\power_theft_live_20261021\\PT_A3_goodwill_charge_message_day.png",
+  "siteEvents": [
+   {
+    "tick": 66571,
+    "detail": "mental state TargetedInsultingSpree",
+    "subject": 470530
+   },
+   {
+    "tick": 75811,
+    "detail": "downed (health 1)",
+    "subject": 470521
+   },
+   {
+    "tick": 77791,
+    "detail": "downed (health 1)",
+    "subject": 470521
+   },
+   {
+    "tick": 79471,
+    "detail": "mental state Wander_Sad",
+    "subject": 1250
+   },
+   {
+    "tick": 81031,
+    "detail": "downed (health 1)",
+    "subject": 470521
+   },
+   {
+    "tick": 82771,
+    "detail": "downed (health 1)",
+    "subject": 470521
+   },
+   {
+    "tick": 84811,
+    "detail": "downed (health 1)",
+    "subject": 470521
+   },
+   {
+    "tick": 86791,
+    "detail": "downed (health 1)",
+    "subject": 470521
+   },
+   {
+    "tick": 88771,
+    "detail": "downed (health 1)",
+    "subject": 470521
+   },
+   {
+    "tick": 90811,
+    "detail": "downed (health 1)",
+    "subject": 470521
+   },
+   {
+    "tick": 91351,
+    "detail": "food category Starving",
+    "subject": 669116
+   }
+  ],
+  "played": 60300,
+  "done": true,
+  "chargeAtPlayed": 60050,
+  "goodwill1": -6,
+  "goodwillCharged1": "-6",
+  "taps": [
+   {
+    "id": 768882,
+    "ourNet": 280679978,
+    "victimNet": 419131054,
+    "victimFaction": "Homestead Defense League",
+    "outputW": 500,
+    "powerOn": true,
+    "lastStolenW": 500,
+    "stolenTotalWd": 507.3982,
+    "connected": true,
+    "connectFaction": "New Arrivals"
+   }
+  ]
+ },
+ "stopFrom": {
+  "goodwill": -6,
+  "goodwillCharged": "-6",
+  "tick": 124871,
+  "clampLeft": []
+ },
+ "stop": {
+  "since": 124871,
+  "chargeShot": null,
+  "siteEvents": [
+   {
+    "tick": 166551,
+    "detail": "downed (health 1)",
+    "subject": 669116
+   }
+  ],
+  "played": 60300,
+  "done": true
+ }
+}

@@ -10,6 +10,7 @@ jawa/mod_settings_field, answered by RM_MapComponent_Aerial on its next frame), 
     python.exe validation_aerial.py --save-load NAME            # M16: links + span states survive save/load
     python.exe validation_aerial.py --removal-check NAME        # M9b: a save WITH anchors on a tier WITHOUT the mod
     python.exe validation_aerial.py --merge OUT base.json [more.json ...]   # one 'live' result for modcheck record
+    python.exe validation_aerial.py --theft catch|day|stop --out R.json   # POWER_THEFT A2/A3 (phases share R.json)
 
 Batch order (one session): validation.py --live --fresh-map, validation.py --save-load A (a cords-only save, so M9
 stays the clean check), THEN this --live and --save-load B, then the tier swap and both removal checks.
@@ -82,10 +83,15 @@ class A(V.Bridge):
         self.call("jawa/clear_ui", all=True)
         self.call("rimworld/frame_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=1)
         time.sleep(2.0)
+        t_call = time.time()
         r = self.call("jawa/take_screenshot", fileName=name)
         src = r.get("filePath")
-        for _ in range(10):
-            if src and os.path.exists(src):
+        # wait for a FRESH file: the game writes at end of frame, and a same-named shot from an earlier run already
+        # "exists", so an exists-only wait copied the stale picture (live 2026-10-21, PT_A3 charge shot showed the
+        # previous attempt's message)
+        for _ in range(20):
+            if src and os.path.exists(src) and os.path.getmtime(src) >= t_call - 1.0:
+                time.sleep(0.5)
                 break
             time.sleep(0.5)
         try:
@@ -667,6 +673,283 @@ def run_flips(args):
     return res
 
 
+# ============================================================================ PT: power theft (--theft)
+# POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK A2/A3, ported from BENCH's ad-hoc Transient/bench_live_20261011/gss_live_checks.py +
+# gss_theft_day.py (2026-10-11) after b6241f975 changed the letter (says REMOVE: the clamp has no CompFlickable, C5) and the
+# goodwill clock (counts DRAINING ticks, C7; caught once per faction, C8). Three phases, one result file (--out) carried
+# between them, so no single call outlives a 10-minute foreground budget:
+#   --theft catch   build a non-player battery grid + a player clamp biting it + witnesses 5 cells away -> A2 rows
+#   --theft day     play until one in-game day of draining has elapsed since the catch (resumable: re-run until it
+#                   reports done) -> A3 rows: goodwill fell by theftGoodwillPerDay, our charge counter moved by the same
+#   --theft stop    remove the clamp, play one more day -> A3 stop row: goodwill and the counter do not move
+# LEARNED:
+#   * (BENCH 2026-10-11) one 60,500-tick rimworld/step_game_ticks hit its 120 s timeout after ~7,200 ticks, so "a day"
+#     never elapsed (HARNESS). B.ticks (validation_core: clockgate safe_advance, 2,500-tick chunks) is the road now.
+#   * (BENCH) "switching the clamp off" is not a thing: the stop control is REMOVAL (no CompFlickable; C5 fixed the letter).
+#   * jawa/letter_list carries the label + lookTargetIds but NOT the body; the body text is checked offline (O7 vs
+#     PowerTheftConsequences.StopAdvice) and by eye on the opened-letter screenshot.
+#   * The goodwill "reason" (HistoryEventDef RM_PowerTheftCaught, label "power theft") is only on screen, in vanilla's
+#     "relations changed" message: no bridge tool reads Messages or HistoryEventsManager. The day phase therefore steps the
+#     last stretch in 250-tick events and screenshots the moment our charge counter moves (the message is on screen then).
+THEFT = "RimMandrake.GimmeSomeSlack.Aerial.PowerTheftConsequences"
+PT_DAY = 60000
+PT_SLOP = 300                                    # the catch event + one 250-tick event window
+PT_WALL_S = 420                                  # wall budget per day/stop call (re-run to resume)
+
+
+def _pt_scene(sx, sz):
+    """Cells of the theft scene from an origin (sx, sz): an E-W victim conduit run at z=sz+10, three victim batteries south
+    of it, the clamp on the run's south side, our own conduit + a lamp further south, witnesses 5 cells north of the clamp."""
+    return {"rect": (sx, sz, 30, 22), "bats": [(sx + 4, sz + 8), (sx + 6, sz + 8), (sx + 8, sz + 8)],
+            "run": [(x, sz + 10) for x in range(sx + 4, sx + 22)], "clamp": (sx + 14, sz + 9),
+            "ours": [(sx + 14, sz + 6), (sx + 14, sz + 5), (sx + 14, sz + 4)], "lamp": (sx + 15, sz + 3),
+            "witness": (sx + 14, sz + 14)}
+
+
+def _pt_stat(B, f):
+    return B.call("jawa/mod_settings_field", typeName=THEFT, action="get", field=f).get("value")
+
+
+def _pt_faction(B, dn):
+    return next((f for f in B.call("jawa/list_factions").get("factions") or [] if f.get("defName") == dn), None)
+
+
+def _pt_tick(B):
+    return B.call("rimworld/get_game_info").get("ticksGame")
+
+
+def _pt_victim(facs):
+    """A non-player, non-hostile, visible faction whose goodwill can still fall (Outlander first, as BENCH)."""
+    ok = [f for f in facs if not f.get("isPlayer") and not f.get("hostile") and not f.get("permanentEnemy")
+          and not f.get("hidden") and (f.get("goodwill") is None or f.get("goodwill") > -80)]
+    return next((f for f in ok if str(f.get("defName", "")).startswith("Outlander")), None) or (ok[0] if ok else None)
+
+
+def _pt_ids(B, defn, rect):
+    lt = B.call("jawa/list_things", defName=defn, rect="%d,%d,%d,%d" % tuple(rect), limit=20)
+    return [t.get("id") or t.get("thingId") for t in lt.get("things") or []]
+
+
+def theft_catch(B, rows, res):
+    gi = B.call("jawa/map_info")
+    sx, sz = res.get("origin") or (20, 20)       # a corner, away from the quicktest colonists at the map centre
+    S = _pt_scene(sx, sz)
+    res["scene"] = S
+    rm = B.call("jawa/running_mods", assembly="RimMandrakeGimmeSomeSlack", details=False)
+    res["env"] = {"running": rm.get("count"), "gssAssembly": (rm.get("assembly") or {}).get("matches"), "map": gi.get("mapBiome"),
+                  "size": [gi.get("sizeX"), gi.get("sizeZ")], "tick": _pt_tick(B)}
+    B.ap("defaults")
+    res["settings"] = {f: B.call("jawa/mod_settings_field", typeName="RimMandrake.GimmeSomeSlack.Aerial.AerialSettings",
+                                 action="get", field=f).get("value") for f in ("theftGoodwill", "theftGoodwillPerDay", "theftSightRange",
+                                                                              "tapsEnabled", "tapEvents", "tapRate")}
+    facs = B.call("jawa/list_factions").get("factions") or []
+    vic = _pt_victim(facs)
+    res["victim"] = vic and {k: vic.get(k) for k in ("defName", "name", "goodwill", "hostile")}
+    if not vic:
+        V.row(rows, "PT_A2_letter", "UNMEASURED", "SITE", "no non-hostile, visible, non-player faction in this world")
+        return
+    nf = vic["defName"]
+    # every clamp already on the map goes first: live 2026-10-21 a clamp left at an earlier --origin was still draining the
+    # same faction (and caught), so the global goodwillCharged counter read -4 for "one day" -- two clamps x 2, no mod bug
+    old = B.call("jawa/list_things", defName="RM_PowerTapClamp", rect="0,0,%d,%d" % (gi.get("sizeX") or 250, gi.get("sizeZ") or 250),
+                 limit=50).get("things") or []
+    for t in old:
+        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t["x"], t["z"]), categories="All")
+    res["clampsRemovedFirst"] = [t.get("id") for t in old]
+    r = "%d,%d,%d,%d" % S["rect"]
+    B.call("jawa/destroy_batch", rects=r, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:" + r)
+    B.call("jawa/set_fog", action="unfog", rect=r)
+    B.call("jawa/set_roof_batch", ops="None:" + r)
+    b = [B.call("jawa/build_batch", ops=V.ops("Battery", S["bats"], rot=0), faction=nf, wipeExisting=False),
+         B.call("jawa/build_batch", ops=V.ops("PowerConduit", S["run"]), faction=nf, wipeExisting=False),
+         B.call("jawa/build_batch", ops="RM_PowerTapClamp:%d,%d" % S["clamp"], faction="player", wipeExisting=False),
+         B.call("jawa/build_batch", ops=V.ops("PowerConduit", S["ours"]), faction="player", wipeExisting=False),
+         B.call("jawa/build_batch", ops="StandingLamp:%d,%d" % S["lamp"], faction="player", wipeExisting=False)]
+    B.call("jawa/map_commit")
+    bats = _pt_ids(B, "Battery", S["rect"])
+    for bid in bats:
+        B.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
+    clamp = _pt_ids(B, "RM_PowerTapClamp", S["rect"])
+    gw0 = vic.get("goodwill")
+    # the control needs a map with no victim pawn in sight range: live 2026-10-21 a stray visitor from an earlier attempt
+    # (walking to the map edge) caught the clamp during the "no witness" control, so wait them out or call it SITE
+    near = []
+    for _ in range(12):
+        near = [(p["id"], p.get("x"), p.get("z")) for p in B.call("jawa/pawn_census").get("pawns") or []
+                if p.get("faction") == nf and p.get("x") is not None
+                and ((p["x"] - S["clamp"][0]) ** 2 + (p["z"] - S["clamp"][1]) ** 2) ** 0.5 <= float(res["settings"]["theftSightRange"]) + 4]
+        if not near:
+            break
+        B.ticks(250)
+    if near:
+        V.row(rows, "PT_A2_drain_no_witness_no_letter", "UNMEASURED", "SITE", {"victimPawnsNearClamp": near, "fix": "--origin elsewhere"})
+        return
+    cc0 = _pt_stat(B, "caughtCount")
+    # control first: draining with NO witness on the map must not catch (the letter needs a pawn of THEIRS that sees it)
+    B.ticks(300)
+    cc_ctrl = _pt_stat(B, "caughtCount")
+    taps = B.ap("census").get("taps") or []
+    # list_things says "RM_PowerTapClamp767378", the probe's census says 767378 (live 2026-10-21: a bare == never matched)
+    tap = next((t for t in taps if clamp and str(clamp[0]).endswith(str(t.get("id")))), None)
+    V.row(rows, "PT_A2_drain_no_witness_no_letter",
+          "PASS" if tap and (tap.get("lastStolenW") or 0) > 0 and cc_ctrl == cc0 else ("UNMEASURED" if not tap else "FAIL"), "MOD",
+          {"tap": tap, "caughtCount": [cc0, cc_ctrl], "built": [x.get("survived") for x in b], "batteries": bats})
+    wit = B.call("jawa/spawn_pawn", kindDef="Villager", x=S["witness"][0], z=S["witness"][1], faction=nf, count=2)
+    wids = [p.get("id") or p.get("thingId") for p in wit.get("pawns") or []]
+    # a lordless visitor's first job is Goto the map edge (live 2026-10-21: out of 12-cell sight before the next 250-tick
+    # drain event, so nobody ever caught it); a defend lord on the witness cell keeps them looking at the clamp
+    lord = B.call("jawa/lord_defend_spawn", pawns=",".join(wids), point="%d,%d" % S["witness"], wanderRadius=2.0,
+                  defendRadius=3.0, addFleeToil=False) if wids else {}
+    res["witnessLord"] = {k: lord.get(k) for k in ("success", "message", "error")}
+    B.ticks(300)
+    cc1 = _pt_stat(B, "caughtCount")
+    letters = [l for l in B.call("jawa/letter_list").get("letters") or [] if "Power theft" in json.dumps(l)]
+    lt = letters[-1] if letters else {}
+    ids = [str(x) for x in lt.get("lookTargetIds") or []]
+    ends = lambda n: any(i.endswith(str(n)) for i in ids)   # noqa: E731  ThingID "RM_PowerTapClamp50026" vs id 50026
+    res["catch"] = {"tick": _pt_tick(B), "goodwill0": gw0, "goodwillCharged0": _pt_stat(B, "goodwillCharged"),
+                    "caughtCount": [cc0, cc_ctrl, cc1], "witness": wids, "clamp": clamp}
+    shot = B.shot("PT_A2_letter_and_clamp", (S["clamp"][0] - 6, S["clamp"][1] - 6, 13, 13))
+    res.setdefault("screenshots", []).append(shot)
+    V.row(rows, "PT_A2_letter", "PASS" if letters and int(cc1 or 0) == int(cc_ctrl or 0) + 1 else "FAIL", "MOD",
+          {"letter": lt, "caughtCount": [cc_ctrl, cc1], "witness": wids, "victim": nf, "shot": shot})
+    V.row(rows, "PT_A2_letter_targets", "PASS" if clamp and ends(clamp[0]) and any(ends(w) for w in wids) else
+          ("UNMEASURED" if not letters else "FAIL"), "MOD",
+          {"lookTargetIds": ids, "clamp": clamp, "witness": wids, "bar": "the letter jumps to the clamp AND the witness"})
+    # a second witness of the SAME faction later does not re-catch (once per clamp per faction, C8)
+    B.ticks(500)
+    V.row(rows, "PT_A2_caught_once", "PASS" if _pt_stat(B, "caughtCount") == cc1 else "FAIL", "MOD",
+          {"caughtCount": [cc1, _pt_stat(B, "caughtCount")], "letters": len([l for l in B.call("jawa/letter_list").get("letters") or []
+                                                                            if "Power theft" in json.dumps(l)])})
+
+
+# the quicktest colony on the owner's full list starves, dehydrates and walks into pits during a day of play (live
+# 2026-10-21: Captain downed by RM_PitDrowning 0.6); none of it is this mod's, all of it stops the clock governor
+PT_SITE_HEDIFFS = ("RM_PitDrowning", "DBHDehydration", "Malnutrition", "Heatstroke", "Hypothermia", "BloodLoss")
+
+
+def _pt_calm(B):
+    """Fill every colonist's needs and strip PT_SITE_HEDIFFS; returns the refused removals. The owner's full-list quicktest colony sits at 'minor break risk x5', and a break
+    stops the clock governor (live 2026-10-21: InsultingSpree after 1,440 ticks of the first day chunk)."""
+    refused = []
+    B.call("jawa/kill_hostiles")                 # a raid landed mid-day (live 2026-10-21: Hutt Cartel enforcers)
+    for p in B.call("jawa/pawn_census").get("pawns") or []:
+        if not p.get("isColonist"):
+            continue
+        # jawa/pawn_refresh_needs only re-walks WHICH needs exist (it fills nothing; live 2026-10-21 the colony starved
+        # through it); pawn_need sets the level. Needs a pawn lacks are refused harmlessly.
+        for nd in ("Food", "Rest", "Joy", "Mood", "DBHThirst", "Hygiene", "Bladder"):
+            B.call("jawa/pawn_need", pawn=p["id"], action="need", need=nd, level=1.0)
+        for h in (B.call("jawa/pawn_get", pawn=p["id"]).get("pawns") or [{}])[0].get("hediffs") or []:
+            if h.get("def") in PT_SITE_HEDIFFS:
+                r = B.call("jawa/pawn_health", pawn=p["id"], action="remove", hediff=h["def"])
+                if r.get("success") is not True:
+                    refused.append((p["id"], h["def"], str(r.get("message") or r.get("error"))[:60]))
+    return refused
+
+
+def _pt_play(B, res, key, target, since_tick):
+    """Advance until ticksGame - since_tick >= target or the wall budget is spent (played is MEASURED from ticksGame, so a
+    crashed call loses nothing). The last 2,500 ticks run in 250-tick events, and the first event that moves
+    goodwillCharged is screenshotted (vanilla's "relations changed (power theft)" message). A governor stop for a colonist's
+    mental break is a SITE event: ended, colony calmed, recorded, play resumes; any other stop halts the phase."""
+    cg = V.VC._clockgate()
+    st = res.setdefault(key, {"since": since_tick, "chargeShot": None, "siteEvents": []})
+    st.pop("halted", None)
+    _pt_calm(B)
+    w0 = time.time()
+    st["played"] = _pt_tick(B) - since_tick
+    while st["played"] < target and time.time() - w0 < PT_WALL_S:
+        left = target - st["played"]
+        step = 250 if left <= 2500 else min(2500, left - 2500)
+        g0 = _pt_stat(B, "goodwillCharged")
+        try:
+            B.ticks(step)
+        except cg.GovernorStop as g:
+            r = g.result if isinstance(g.result, dict) else {}
+            by = r.get("stopBy") or {}
+            det, who = str(by.get("detail") or r), by.get("subjectId")
+            st["siteEvents"].append({"tick": _pt_tick(B), "detail": det[:200], "subject": who})
+            if (det.startswith("mental") or det.startswith("food")) and who:
+                B.call("jawa/pawn_mental", pawn=who, action="end")
+                _pt_calm(B)
+            elif det.startswith("downed") and who and not _pt_calm(B) and not any(
+                    p.get("downed") for p in B.call("jawa/pawn_census").get("pawns") or [] if p.get("isColonist")):
+                pass                                     # healed: the downed colonist is up again
+            else:
+                st["halted"] = det[:200]
+                break
+        st["played"] = _pt_tick(B) - since_tick
+        if step == 250 and st["chargeShot"] is None and _pt_stat(B, "goodwillCharged") != g0:
+            st["chargeShot"] = B.shot("PT_A3_goodwill_charge_message_" + key, tuple(res["scene"]["rect"]))
+            st["chargeAtPlayed"] = st["played"]
+            res.setdefault("screenshots", []).append(st["chargeShot"])
+    st["done"] = st["played"] >= target
+    return st
+
+
+def theft_day(B, rows, res):
+    if not res.get("catch"):
+        V.row(rows, "PT_A3_goodwill_day", "UNMEASURED", "HARNESS", "run --theft catch first (same --out)")
+        return
+    st = _pt_play(B, res, "day", PT_DAY + PT_SLOP, res["catch"]["tick"])
+    print("day: played %d / %d, site events %s" % (st["played"], PT_DAY + PT_SLOP, st["siteEvents"]), flush=True)
+    if not st["done"]:
+        return
+    nf = res["victim"]["defName"]
+    gw0, gc0 = res["catch"]["goodwill0"], res["catch"]["goodwillCharged0"]
+    f = _pt_faction(B, nf) or {}
+    gw1, gc1 = f.get("goodwill"), _pt_stat(B, "goodwillCharged")
+    per = int(float(res["settings"].get("theftGoodwillPerDay") or 0))
+    taps = B.ap("census").get("taps") or []
+    res["day"].update({"goodwill1": gw1, "goodwillCharged1": gc1, "taps": taps})
+    dc = int(gc1 or 0) - int(gc0 or 0)
+    V.row(rows, "PT_A3_goodwill_day", "PASS" if gw0 is not None and gw1 is not None and dc == -per and gw0 - gw1 == per else "FAIL",
+          "MOD", {"goodwill": [gw0, gw1], "goodwillCharged": [gc0, gc1], "perDay": per, "played": st["played"],
+                  "chargeAtPlayed": st.get("chargeAtPlayed"), "chargeShot": st.get("chargeShot"), "taps": taps})
+
+
+def theft_stop(B, rows, res):
+    if not (res.get("day") or {}).get("done"):
+        V.row(rows, "PT_A3_removed_stops", "UNMEASURED", "HARNESS", "run --theft day to done first (same --out)")
+        return
+    if not res.get("stopFrom"):
+        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % tuple(res["scene"]["clamp"]), categories="All")
+        res["stopFrom"] = {"goodwill": (_pt_faction(B, res["victim"]["defName"]) or {}).get("goodwill"),
+                           "goodwillCharged": _pt_stat(B, "goodwillCharged"), "tick": _pt_tick(B),
+                           "clampLeft": _pt_ids(B, "RM_PowerTapClamp", res["scene"]["rect"])}
+    st = _pt_play(B, res, "stop", PT_DAY + PT_SLOP, res["stopFrom"]["tick"])
+    print("stop: played %d / %d" % (st["played"], PT_DAY + PT_SLOP), flush=True)
+    if not st["done"]:
+        return
+    a = res["stopFrom"]
+    gw2, gc2 = (_pt_faction(B, res["victim"]["defName"]) or {}).get("goodwill"), _pt_stat(B, "goodwillCharged")
+    V.row(rows, "PT_A3_removed_stops", "PASS" if not a["clampLeft"] and gw2 == a["goodwill"] and gc2 == a["goodwillCharged"] else "FAIL",
+          "MOD", {"goodwill": [a["goodwill"], gw2], "goodwillCharged": [a["goodwillCharged"], gc2], "clampLeft": a["clampLeft"],
+                  "played": st["played"], "stop": "clamp removed (it has no switch)"})
+
+
+def run_theft(args):
+    global SHOTS
+    SHOTS = os.path.join(V.REPO, "Transient", "power_theft_live_" + time.strftime("%Y%m%d"))
+    B = A()
+    prior = {}
+    if args.out and os.path.exists(args.out):
+        with open(args.out, encoding="utf-8") as f:
+            prior = json.load(f)
+    res = prior or {"mod": V.MOD, "mode": "theft", "script": "validation_aerial.py", "tier": "the live list (env.running)",
+                    "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": []}
+    rows = res["rows"]
+    if args.origin and not res.get("origin"):
+        res["origin"] = [int(v) for v in args.origin.split(",")]
+    phase = args.theft
+    {"catch": theft_catch, "day": theft_day, "stop": theft_stop}[phase](B, rows, res)
+    res.setdefault("phases", []).append({"phase": phase, "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
+    res["aborted"] = None
+    return res
+
+
 # ============================================================================ M16 / M9b
 def _aerial_set(c):
     pos = {a["id"]: (a["x"], a["z"]) for a in c.get("anchors") or []}
@@ -810,11 +1093,16 @@ def main(argv=None):
     ap.add_argument("--save-load", default=None, metavar="NAME")
     ap.add_argument("--removal-check", default=None, metavar="NAME")
     ap.add_argument("--merge", nargs="+", default=None, metavar="OUT IN")
+    ap.add_argument("--theft", choices=("catch", "day", "stop"), default=None,
+                    help="POWER_THEFT A2/A3 in phases sharing one --out (day/stop resume until done)")
+    ap.add_argument("--origin", default=None, metavar="X,Z", help="--theft catch: scene origin (default 20,20)")
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
     if a.merge:
         return merge(a.merge[0], a.merge[1:])
-    if a.save_load:
+    if a.theft:
+        res = run_theft(a)
+    elif a.save_load:
         res = run_save_load(a)
     elif a.removal_check:
         res = run_removal_check(a)
