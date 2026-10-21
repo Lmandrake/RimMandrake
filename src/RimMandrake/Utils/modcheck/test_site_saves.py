@@ -72,7 +72,8 @@ SITES = {
                   "minColonists": 3, "biome": "RM_Contagion", "builder": "Contagion/prep_site.py",
                   "suites": ["northstar_driver/cli.py run --mod Contagion --plan src/RimMandrake/Contagion/northstar_plan.py"
                              " (on-Contagion arm only; needs the arm split first)"]},
-    "leaningscrub": {"save": "RM_TestSite_leaningscrub_v1", "profile": "danger", "size": 250, "temp": (0.0, 32.0),
+    # v2 (2026-10-21): v1 was saved with Alpha Biomes + VFE Insectoids 2 (retired donors); its load died in FinalizeLoading.
+    "leaningscrub": {"save": "RM_TestSite_leaningscrub_v2", "profile": "danger", "size": 250, "temp": (0.0, 32.0),
                      "minColonists": 3, "biome": "RM_LeaningScrub", "builder": "LeaningScrub/prep_site.py",
                      "suites": ["northstar_driver/cli.py run --mod LeaningScrub --plan "
                                 "src/RimMandrake/LeaningScrub/northstar_plan.py"]},
@@ -373,6 +374,33 @@ def _wait(pred, budget_s, sleep):
     return None
 
 
+LOAD_BROKEN = ("Error in Map.FinalizeLoading", "Error while loading a map", "Error while loading game",
+               "Could not resolve cross refs")
+
+
+def _journal_seq(call):
+    """The bridge journal's latest sequence number (0 when unreadable)."""
+    try:
+        lg = call("rimbridge/list_logs", limit=1, minimumLevel="trace") or {}
+        return max([int(x.get("Sequence", 0)) for x in lg.get("logs") or []] or [0])
+    except Exception:              # noqa: BLE001 - a missing baseline only widens the scan
+        return 0
+
+
+def _load_errors(call, after_seq):
+    """The LOAD_BROKEN lines the journal holds after `after_seq` (errors only, so the 1,000-entry ring keeps them)."""
+    try:
+        lg = call("rimbridge/list_logs", afterSequence=after_seq, limit=1000, minimumLevel="error") or {}
+    except Exception as ex:        # noqa: BLE001
+        return ["(journal unreadable: %s)" % type(ex).__name__]
+    hits = []
+    for x in lg.get("logs") or []:
+        m = str(x.get("Message", "")).split("\n")[0]
+        if any(k in m for k in LOAD_BROKEN) and m[:80] not in hits:
+            hits.append(m[:80])
+    return hits
+
+
 def load_site(call, site, budget_s=420, sleep=time.sleep, check=True, name=None):
     """Load the site save from the MAIN MENU (loading over a live game NREs in the teardown: northstar_site.py), wait for
     Playing + a current map, make the site map current, re-apply the map-only quiet profile and the calm sky (a load
@@ -389,6 +417,7 @@ def load_site(call, site, budget_s=420, sleep=time.sleep, check=True, name=None)
             rec["problems"].append("main menu not reached within 180 s")
             rec["verified"] = False
             return rec
+    seq0 = _journal_seq(call)
     try:
         # ignoreModCompatibility: a registered site save is a fixed fixture whose own mod list is not the tier's. The calm
         # site RM_TestSite_calm_v1 records 22 mods incl. Alpha Animals (sarg.alphaanimals), absent from the 21-mod
@@ -403,6 +432,12 @@ def load_site(call, site, budget_s=420, sleep=time.sleep, check=True, name=None)
         rec["problems"].append("no Playing map within %ds of load_game %s" % (budget_s, name))
         rec["verified"] = False
         return rec
+    broken = _load_errors(call, seq0)
+    if broken:
+        # LIVE 2026-10-21: RM_TestSite_leaningscrub_v1 (saved with retired donors) threw in Map.FinalizeLoading, every
+        # read-back below still came back clean, and the site read "verified" on a map that then could not reach the main
+        # menu (Update() NRE every frame). A load that logged one of these is broken whatever check_map says.
+        rec["problems"].append("the load logged %s" % broken)
     reg = read_registry().get(site) or {}
     if reg.get("tile") is not None:
         mid = reg.get("mapId")

@@ -449,6 +449,7 @@ FlowWorks/northstar/review/*   # review sheet + decisions + shots kept beside th
 FlowWorks/northstar/*   # RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
 HugeThings/northstar/*   # live scripts + result JSONs (titan_events_live.py, walls_slots_live.py): repo tools, never game content
 Cauldron/northstar/*   # live result JSONs: evidence, not game content
+LeaningScrub/northstar/*   # live result JSONs (bystanders chain 2026-10-21): evidence, not game content
 # --- FlowWorks review MAP data: read by review_map.py on the Windows side, never game content (2026-10-05) ---
 FlowWorks/review_map_stations_visuals.json   # visuals station data for the review map builder; not game content
 # --- Tentacle twitch wiring: held until the owner accepts the split art (owner "Both twitch", by card 2026-10-15) ---
