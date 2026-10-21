@@ -1574,3 +1574,8 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"relaunch on full 325 list after DLL deploy","ts":"2026-10-21T10:40:23Z","tsn":1792579223769009487}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"switch to biomes_sprint tier for the live rows; full list restored at the end","ts":"2026-10-21T10:41:21Z","tsn":1792579281730627750}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"biomes_sprint tier (22) for Struck Glass / Cauldron / Scrub rows","ts":"2026-10-21T10:42:42Z","tsn":1792579362563869044}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"broken map (scrub site v1 FinalizeLoading NRE) - restart tier","ts":"2026-10-21T11:02:50Z","tsn":1792580570802400668}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"relaunch biomes_sprint 22","ts":"2026-10-21T11:02:52Z","tsn":1792580572313251248}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"tier work done; restoring the owner's full list + R3","ts":"2026-10-21T11:08:31Z","tsn":1792580911010771708}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"full 325 list relaunch for R3","ts":"2026-10-21T11:08:54Z","tsn":1792580934115589318}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"full 325 list up, R3 loaded","ts":"2026-10-21T11:29:06Z","tsn":1792582146882699820}
