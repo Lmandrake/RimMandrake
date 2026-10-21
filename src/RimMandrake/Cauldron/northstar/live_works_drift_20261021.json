@@ -1,0 +1,1587 @@
+{
+  "mod": "Cauldron",
+  "mode": "live",
+  "started_utc": "2026-10-21T10:03:37Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
+  "bars": [
+    {
+      "id": "works.works_site_ready",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: the works site did not stand: works 0 battery 0 tanks at x []",
+      "evidenceFull": "UNMEASURED: the works site did not stand: works 0 battery 0 tanks at x []"
+    },
+    {
+      "id": "works.works_refines_condensate",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "works.works_filters_toxic_water",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "works.works_stops_without_power",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "upstream failed -- this chain's state is meaningless",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless"
+    },
+    {
+      "id": "drift.gas_heading_is_daily_and_map_seeded",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "drift.gas_drift_chance_follows_wind",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "drift.gas_cloud_moves_along_heading",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: static_call RimMandrake.Cauldron.RM_MapComponent_VentGas.ClearOf(current) refused: {'success': False, 'message': 'Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref DC80C9D8] <- at Verse.MapDrawer.WholeMapChanged (System.UInt64 change) [0x",
+      "evidenceFull": "UNMEASURED: static_call RimMandrake.Cauldron.RM_MapComponent_VentGas.ClearOf(current) refused: {'success': False, 'message': 'Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref DC80C9D8] <- at Verse.MapDrawer.WholeMapChanged (System.UInt64 change) [0x00016] in <61e4173561894da49d210260257b5097>:0 <- at RimMandrake.Cauldron.RM_MapComponent_VentGas.ClearAll () [0x00020] in <2b504cc66d734ea4b4385b6254b3cc97>:0 <- at RimMandrake.Cauldron.RM_MapComponent_VentGas.ClearOf (Verse.Map map) [0x0001c] in <2b504cc66d734ea4b4385b6254b3cc97>:0 <- (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&) <- at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <51fded79cd284d4d911c5949aff4cb21>:0', 'operation': {'OperationId': 'op_9a671654c34c4a8d9114c227e0794064', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 979}}"
+    },
+    {
+      "id": "load.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "load.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "load.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "load.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "load.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "load.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "load.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "load.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "load.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "load.skipped#9",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "ruins.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "ruins.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "ruins.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "weather.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "weather.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#9",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#10",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#11",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#12",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#13",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#14",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#15",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "settings.skipped#16",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "items.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "items.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "acid.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "acid.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "acid.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "fauna.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "fauna.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "suush.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "suush.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "flora.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "flora.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "flora.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "flora.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "yield.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "yield.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "yield.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "yield.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "bloom.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "bloom.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "bloom.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "bloom.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "bloom.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "bloom.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "bloom.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "water.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "water.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "water.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "water.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "water.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "water.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "fire.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "fire.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "vents.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "vents.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "vents.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "vents.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "vents.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "vents.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "vents.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "gas.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "gas.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "gas.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "gas.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "gas.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "gas.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "rhossak.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "rhossak.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "rhossak.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "grove.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "grove.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "grove.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "grove.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    },
+    {
+      "id": "log.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains works,drift)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "545 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=958 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "was running; paused and PROVED frozen at 974",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "19 active, sha256 8a230846af8eb93f (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "works",
+    "drift"
+  ],
+  "chains_skipped": [
+    "load",
+    "ruins",
+    "weather",
+    "settings",
+    "items",
+    "acid",
+    "fauna",
+    "suush",
+    "flora",
+    "yield",
+    "bloom",
+    "water",
+    "fire",
+    "vents",
+    "gas",
+    "rhossak",
+    "grove",
+    "log"
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "components": [
+    {
+      "chain": "works",
+      "name": "works_site_ready",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: the works site did not stand: works 0 battery 0 tanks at x []",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "works",
+      "name": "works_refines_condensate",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "works",
+      "name": "works_filters_toxic_water",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "works",
+      "name": "works_stops_without_power",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "upstream failed -- this chain's state is meaningless",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "drift",
+      "name": "gas_heading_is_daily_and_map_seeded",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "drift",
+      "name": "gas_drift_chance_follows_wind",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "drift",
+      "name": "gas_cloud_moves_along_heading",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: static_call RimMandrake.Cauldron.RM_MapComponent_VentGas.ClearOf(current) refused: {'success': False, 'message': 'Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref DC80C9D8] <- at Verse.MapDrawer.WholeMapChanged (System.UInt64 change) [0x00016] in <61e4173561894da49d210260257b5097>:0 <- at RimMandrake.Cauldron.RM_MapComponent_VentGas.ClearAll () [0x00020] in <2b504cc66d734ea4b4385b6254b3cc97>:0 <- at RimMandrake.Cauldron.RM_MapComponent_VentGas.ClearOf (Verse.Map map) [0x0001c] in <2b504cc66d734ea4b4385b6254b3cc97>:0 <- (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&) <- at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <51fded79cd284d4d911c5949aff4cb21>:0', 'operation': {'OperationId': 'op_9a671654c34c4a8d9114c227e0794064', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 979}}",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "load",
+      "name": "skipped#9",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ruins",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "weather",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "weather",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#9",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#10",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#11",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#12",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#13",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#14",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#15",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#16",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "items",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "items",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "acid",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "acid",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "acid",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fauna",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fauna",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suush",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suush",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "yield",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "yield",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "yield",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "yield",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "water",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fire",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vents",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gas",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rhossak",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rhossak",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rhossak",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "grove",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "grove",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "grove",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "grove",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "log",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains works,drift)",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 2,
+    "FAIL": 0,
+    "UNMEASURED": 90
+  },
+  "all_green": false,
+  "timing": {
+    "n": 215,
+    "total_ms": 10438.918,
+    "mean_ms": 48.5531,
+    "p50_ms": 49.8424,
+    "p95_ms": 55.4888,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 62,
+        "mean_ms": 49.443,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 8,
+        "mean_ms": 14.764,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 3,
+        "mean_ms": 49.1459,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.5574,
+        "errors": 0
+      },
+      "rimworld/pause_game": {
+        "n": 1,
+        "mean_ms": 19.1238,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 50.1266,
+        "errors": 0
+      },
+      "jawa/dlc_status": {
+        "n": 1,
+        "mean_ms": 50.1268,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 47,
+        "mean_ms": 48.8663,
+        "errors": 0
+      },
+      "jawa/site_state": {
+        "n": 1,
+        "mean_ms": 50.264,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 7,
+        "mean_ms": 49.5103,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 1,
+        "mean_ms": 49.6083,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 6,
+        "mean_ms": 54.915,
+        "errors": 0
+      },
+      "jawa/set_roof_batch": {
+        "n": 4,
+        "mean_ms": 44.2459,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 2,
+        "mean_ms": 55.2999,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 10,
+        "mean_ms": 49.1204,
+        "errors": 0
+      },
+      "jawa/pawn_health": {
+        "n": 3,
+        "mean_ms": 48.3385,
+        "errors": 0
+      },
+      "jawa/pawn_mental": {
+        "n": 12,
+        "mean_ms": 48.1737,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 33,
+        "mean_ms": 49.9776,
+        "errors": 0
+      },
+      "jawa/set_draft": {
+        "n": 6,
+        "mean_ms": 49.7088,
+        "errors": 0
+      },
+      "jawa/destroy_bulk": {
+        "n": 1,
+        "mean_ms": 55.6593,
+        "errors": 0
+      },
+      "jawa/build_batch": {
+        "n": 1,
+        "mean_ms": 54.6834,
+        "errors": 0
+      },
+      "jawa/safe_advance": {
+        "n": 1,
+        "mean_ms": 188.7685,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 3,
+        "mean_ms": 50.2676,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "2651d600511ea8ec3dcf94269c9546c30a99dacc05f032dd658919abb6e7fb5e"
+}
