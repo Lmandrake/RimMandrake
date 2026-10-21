@@ -861,7 +861,7 @@ def container_styles(t):
 # them: across every result made AT the current mod hash, the newest row per id wins (a later FAIL overrides an earlier PASS);
 # a row no such result carries is UNMEASURED naming the driver. T21 / T22 are thirst rows the sprinkler driver measures, so
 # both chains read one pool. Same contract as core_live_rows: never PASS from a stale or missing result.
-DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json")
+DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json")
 DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
 
 
@@ -1079,6 +1079,64 @@ def sprinklers(t):
                     raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
     t.upstream_failed = False   # the live rows only read result files: an offline FAIL above must not blank them
     _driver_live_report(t, SPRINKLER_LIVE, "sprinkler_live.py", "SPRINKLER_HEADS_BUILD_PUMP_REQUIRED")
+
+
+# DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md §Ruled design R1-R13 and
+# §Owner's follow-up answers). Offline: the C# SelfTest cases of phases 1-6 (Source/SelfTest/DrawbridgeChecks.cs). Live: the
+# eleven R13 rows of northstar/drawbridge_proof.py (phase 6b), read from its newest result at the current mod hash and deployed
+# DLL (driver_rows_at), else UNMEASURED naming the driver. The driver needs the OWED C# class RM_DrawbridgeProofs
+# (drawbridge_proof.OWED_PROOFS); until it ships, a live run writes every row UNMEASURED/HARNESS. R13's WINCH_LOST_FREEZES is
+# WINCH_LOST_CRASHES since the owner's follow-up (a destroyed winch crashes the leaf down; steel without power still freezes).
+DRAWBRIDGE_CASES = [
+    "Drawbridge_P1_materials_timber_and_steel_only", "Drawbridge_P1_split_one_leaf_or_two_each_hinged_on_its_own_bank",
+    "Drawbridge_P1_leaf_is_rigid_off_its_seat_and_reversible", "Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise",
+    "Drawbridge_P1_structure_reads_see_a_raised_leaf", "Drawbridge_P1_toggle_forces_pocket_rebuild_and_repath",
+    "Drawbridge_P1_raise_never_collapses", "Drawbridge_P1_leaf_record_saves_per_leaf_versioned",
+    "Drawbridge_P2_tip_order_nearest_hinge_then_cell", "Drawbridge_P2_six_riders_one_free_square_one_lands_five_fall",
+    "Drawbridge_P2_landings_never_through_a_wall_and_within_reach",
+    "Drawbridge_P2_tip_wiring_once_per_raise_band_aware_overflow_falls", "Drawbridge_P3_sides_raise_either_lower_winch_only",
+    "Drawbridge_P3_drive_timber_hands_steel_power_freezes", "Drawbridge_P3_winch_lost_crashes_down_and_hits",
+    "Drawbridge_P3_one_winch_per_leaf_on_its_own_bank", "Drawbridge_P3_peace_auto_lowers_free_hostiles_lock",
+    "Drawbridge_P4_raid_plank_fits_and_commits_once", "Drawbridge_P4_raiders_trench_hand_off_and_winch",
+    "Drawbridge_P5_hoses_on_a_leaf_cut_while_raised_rejoin_lowered", "Drawbridge_P5_gravship_edge_bridge_collapses_at_launch",
+    "Drawbridge_P5_length_by_material_from_settings", "Drawbridge_P6_gate_never_open_on_a_raised_leaf_locked_only_by_order",
+    "Drawbridge_P6_real_build_buttons", "Drawbridge_P6_art_contract_paths_with_stand_ins"]
+DRAWBRIDGE_LIVE = [
+    ("RAISE_PATH", None, "a colonist holding a path over a lowered steel leaf; raised: the production path no longer crosses "
+     "it, ToggleCount and RepathCount rise within 10 ticks"),
+    ("RAISE_TIPS_RIDERS", None, "six hostile riders on a 3-wide leaf, one free hinge-bank square: one lands on the bank, "
+     "five fall into the hole, all still hostile"),
+    ("RAISE_SPARES_UNDERPASS", None, "a colonist under the deck keeps its cell and health; the rider on it tips"),
+    ("LOWER_ONLY_FROM_WINCH", None, "the WorkGiver gives a far-bank colonist a raise job but no lower job; the winch-bank "
+     "colonist gets the lower job"),
+    ("TWO_LEAF_TIPS_OWN_HINGE", None, "an 8-square timber bridge is two leaves; each rider tips to its own leaf's hinge bank"),
+    ("HOSTILE_LOCKS", None, "a raid cancels a pending auto-lower (target back to raised); a hostile trapped in a pit does "
+     "not lock (FreeHostileCount 0)"),
+    ("STEEL_UNPOWERED_FREEZES", None, "a steel leaf part-way up stays put while its winch is unpowered; moves on when powered"),
+    ("WINCH_LOST_CRASHES", None, "a destroyed winch house crashes its raised leaf down at once and hurts the pawn under it"),
+    ("RAID_UP", None, "raised leaf, winch inside, decoy outside: raiders make legal progress (winch jobs, planks, trench, "
+     "decoy) and no job loop"),
+    ("RAID_PLANK", None, "an interrupted plank carrier makes no duplicate crossing: exactly one plank crossing laid"),
+    ("SAVE_MIDRAISE", None, "saved and loaded mid-raise: progress kept, the tip not replayed, the raise completes"),
+]
+
+
+@suite.chain("drawbridges")
+def drawbridges(t):
+    """Offline: drawbridge phases 1-6 (DrawbridgeChecks.cs cases), 0 ticks, no bridge. Live R13 rows: read from the newest
+    drawbridge_proof results at the current mod hash (driver_rows_at), else UNMEASURED naming the driver."""
+    cases = {}
+    with t.component("drawbridge_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for name in DRAWBRIDGE_CASES:
+        with t.component(name):
+            if t._guard():
+                got = cases.get(name)
+                if got != "ok":
+                    raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
+    t.upstream_failed = False   # the live rows only read result files: an offline FAIL above must not blank them
+    _driver_live_report(t, DRAWBRIDGE_LIVE, "drawbridge_proof.py", "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS")
 
 
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
