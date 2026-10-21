@@ -1,0 +1,1 @@
+RM_PitDrowning is not evidence of a pit: RM_Swim adds the same hediff on natural water. Before suspecting pit pathing, read flowworks_excavation_report excavatedCellCount (0 = no pit on the map). Jawas are the small band (H 0.5 m), so vanilla shallow water is over their heads.
