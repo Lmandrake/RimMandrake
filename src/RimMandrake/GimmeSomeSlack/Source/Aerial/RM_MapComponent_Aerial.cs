@@ -39,6 +39,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public int ShockCellCount => shockCells.Count;
         /// <summary>Set by every lay change (DirtyCell); the next tick rebuilds the contacts instead of waiting for the sweep.</summary>
         private bool contactsDirty;
+        /// <summary>RM_FallenWireShock.LiveWiresChanged: another mod's live fallen wires moved; rebuild contacts next tick.</summary>
+        public void MarkContactsDirty() => contactsDirty = true;
 
         public int netRepairs, roofCuts, explosionCuts, autoLinks, watchdogRuns;
         /// <summary>State read (AerialProbe census): what the ground layer printed per section of THIS map at its last

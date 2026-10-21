@@ -174,13 +174,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: every leaf toggle reaches the cords");
             });
 
-            Case("PowerCord_deck_collapse_destroys_it_fallen_live_wire_not_yet", () =>
+            Case("PowerCord_deck_collapse_destroys_it_and_records_the_fallen_wire_first", () =>
             {
-                // P4: a collapsing deck destroys the cords on it (ClearDeckTop kills every building on the square). The fallen live
-                // wire (RM_FallenWireShock) is PIPE_POLES phase 3 and is NOT built: this case pins today's behaviour only.
+                // P4: a collapsing deck destroys the cords on it (ClearDeckTop kills every building on the square), and BEFORE that
+                // records the dropped cord for the live-wire shock (PIPE_POLES phase 3; DeckCollapseLinesChecks holds the rest).
                 string comp = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");
                 string clear = Body(comp, "public static void ClearDeckTop(Map map, IntVec3 c)");
                 Assert(clear.Contains("if (t is Building || t.def.IsBlueprint || t.def.IsFrame)") && clear.Contains("DestroyMode.KillFinalize"), "can-fail: the cord is destroyed with the deck");
+                int hook = clear.IndexOf("RM_DeckCollapseLines.OnDeckCleared(map, c);", StringComparison.Ordinal);
+                Assert(hook > 0 && hook < clear.IndexOf("DestroyMode.KillFinalize", StringComparison.Ordinal), "can-fail: the fallen cord is recorded while it still stands");
                 Assert(Body(comp, "public void CollapseSpan(Building_SuspensionDeck from, string how)").Contains("ClearDeckTop(map, d.Position)"), "on every square of the span");
             });
         }

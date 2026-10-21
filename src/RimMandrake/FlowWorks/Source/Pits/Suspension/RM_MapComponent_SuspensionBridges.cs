@@ -603,9 +603,13 @@ namespace RimMandrake.FlowWorks.Pits
 			return ps;
 		}
 
-		/// <summary>Buildings standing on a falling deck square (railings included) are destroyed; items stay and fall with it.</summary>
+		/// <summary>Buildings standing on a falling deck square (railings included) are destroyed; items stay and fall with it.
+		/// Every collapse path clears its squares here, so the deck (the support) owns the line teardown: first the cords on the
+		/// square are recorded as a fallen wire and the hoses across it are reeled in (RM_DeckCollapseLines, PIPE_POLES phase 3),
+		/// then everything is destroyed.</summary>
 		public static void ClearDeckTop(Map map, IntVec3 c)
 		{
+			RimMandrake.FlowWorks.Machinery.RM_DeckCollapseLines.OnDeckCleared(map, c);
 			List<Thing> things = new List<Thing>(c.GetThingList(map));
 			foreach (Thing t in things)
 			{
