@@ -39,6 +39,7 @@ Every behaviour has a Mod Settings switch; defaults are the shipped behaviour.</
     <li>
       <packageId>mandrake.rsw.armoury</packageId>
       <displayName>Jawa Armoury Rebalance</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

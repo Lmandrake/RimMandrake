@@ -132,7 +132,13 @@ def main():
                    if "SelfTest" not in f.parts and f.name != "Building_SuspensionDeck.cs"), "suspension Drop gained another caller"
     assert "!RM_SpanUtility.DeckedAt(map, n)" in method_body(sus_text, "public static IntVec3 OpenEdgeBeside(Map map, IntVec3 c)"), \
         "OpenEdgeBeside no longer excludes decked (covered) cells: the edge fall could pass through a cover"
-    for f in sorted({f for f, _ in callers} - {"Pits/Building_SpanDeck.cs", "Superdeep/RM_SuperdeepTrap.cs", susp}):
+    # Building_PitCover.DeSpawn (2026-10-20): the riders descend only AFTER base.DeSpawn removed the cover itself, so the cell
+    # is open when they fall -- the same ordering rule as the deck's Collapse, pinned instead of regex-guarded.
+    pc = "Pits/Building_PitCover.cs"
+    pc_text = (SRC / pc).read_text(encoding="utf-8")
+    pc_body = method_body(pc_text, "public override void DeSpawn(DestroyMode mode")
+    assert 0 <= pc_body.find("base.DeSpawn(mode)") < pc_body.find("OnForcedDescent("), "PitCover sends riders down before the cover is despawned"
+    for f in sorted({f for f, _ in callers} - {"Pits/Building_SpanDeck.cs", "Superdeep/RM_SuperdeepTrap.cs", susp, pc}):
         probs += open_pit_guard_probs((SRC / f).read_text(encoding="utf-8"), f)
     assert not probs, "a forced descent can pass through an intact cover: %s" % probs
     held = method_body(trap, "public static bool IsHeldAt(Pawn p, IntVec3 c)")

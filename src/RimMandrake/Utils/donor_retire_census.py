@@ -30,6 +30,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 SRC = REPO / "src"
 sys.path.insert(0, str(REPO / "src/RimMandrake/Utils/art"))
+sys.path.insert(0, str(REPO / "src/RimMandrake/Utils"))
+import game_paths  # noqa: E402  the one path seam
 
 # The retiring set: biome_sprint_kickoff_2026-10-15 §0.5.1 + DONOR_DEFS_PORT_TO_OURS_1's ten smaller donors.
 DONORS = [
@@ -41,7 +43,7 @@ DONORS = [
 # inactive mods whose OWN content paths our defs name (not retextures of base-game art): such a path is missing in game
 CONTENT_DONORS = {"vanillaexpanded.vplantsesucculents"}
 SKIP_DIRS = ("src/RimMandrake/FlowWorks/",)          # not ours to touch (coordinator, 2026-10-18)
-MODSCONFIG = Path("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml")
+MODSCONFIG = Path(game_paths.MODS_CONFIG)
 
 
 def _donor_of(text: str):

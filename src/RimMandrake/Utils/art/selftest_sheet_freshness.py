@@ -208,7 +208,9 @@ def main() -> int:
     else:
         r = FR.verify_html(PYR, html=built.stdout)
         st = r["stale"]
-        check(not r["fresh"] and len(st) == r["rows"] == 9, f"Pyrelands 2026-10-14 sheet as built: {len(st)} of {r['rows']} rows STALE")
+        # The sheet is frozen but the art it is checked against is LIVE: later installs (2026-10-16 facings batch, ...) legitimately
+        # made 2 of the 9 rows match again (7 of 9 stale on 2026-10-20). The proof is that the verifier still flags stale rows.
+        check(not r["fresh"] and 0 < len(st) <= r["rows"] == 9, f"Pyrelands 2026-10-14 sheet as built: {len(st)} of {r['rows']} rows STALE")
         check(any("RM_BarbslingerSpike.png" in w and "render pyr_barbslinger_spike" in w for w in st.get("PYR_BarbslingerSpike", [])),
               "its spike row says the installed RM_BarbslingerSpike.png is shown only as a render")
     print(f"{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")

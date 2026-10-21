@@ -39,6 +39,11 @@ def main():
             dd.mkdir(exist_ok=True, parents=True)
             sp = dd / f"{name}.html"
             sp.write_text(html)
+            # The donor creatures this fixture names left the def dump when the donors retired (2026-10-19), so name-based
+            # game-art detection is blind to them; link the picture folder so the PIXEL probe (cut-out sprite) still sees art.
+            imgs = SRC.with_name(SRC.stem + "_img")
+            if imgs.is_dir() and not (dd / imgs.name).exists():
+                (dd / imgs.name).symlink_to(imgs)
             dj = json.loads(json.dumps(d if d is not None else dec))
             dj["sheetId"] = name
             dp = dd / f"{name}.decisions.json"

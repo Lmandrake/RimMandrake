@@ -45,7 +45,7 @@ def check_source(src, sigs, name="<src>"):
             if tool not in sigs:
                 out.append("%s:%d unknown tool %s" % (name, n.lineno, tool))
                 continue
-            bad = [k.arg for k in n.keywords if k.arg and k.arg not in sigs[tool]]
+            bad = [k.arg for k in n.keywords if k.arg and k.arg != "_answer" and k.arg not in sigs[tool]]  # _answer: the harness proxy's flag, dropped before send (validation_core)
             if bad:
                 out.append("%s:%d %s has no parameter %s (declared: %s)" % (name, n.lineno, tool, bad, sigs[tool]))
     return out

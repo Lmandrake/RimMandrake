@@ -56,8 +56,8 @@ SETTINGS_CS = os.path.join(SRC, "RimMandrakeFlowWorksMod.cs")
 ADAPTER_CS = os.path.join(SRC, "RM_MapComponent_Excavation.cs")
 KERNEL_CS = os.path.join(SRC, "RM_FlowKernel.cs")
 EP = os.path.join(ROOT, "src", "RimUtinni", "EmpirePursuit", "Source")
-OWNER_SETTINGS = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/"
-                  "Mod_FlowWorks_RimMandrakeFlowWorksMod.xml")
+import game_paths  # noqa: E402  the one path seam (HERE is on sys.path above)
+OWNER_SETTINGS = os.path.join(game_paths.LOCALLOW, "Config", "Mod_FlowWorks_RimMandrakeFlowWorksMod.xml")
 CONTROL_REV = "c82dd1c08^"
 TAG = hashlib.sha1(os.path.realpath(ROOT).encode()).hexdigest()[:8]
 STAGE = os.path.join(winbuild.BUILD_ROOT, "VV_PILOT1_" + TAG)

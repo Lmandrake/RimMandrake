@@ -609,9 +609,11 @@ SELFTEST_ROSTER = (
 # eye. It stays in this set because the check must keep flagging it honestly, NOT
 # because the art is bad. ⛔ Do not "fix" this row by loosening
 # FACING_HEIGHT_MAX_RATIO. Item: ORRAY_FACING_HEIGHT_REGRESSION_1.
+# Flamefang, Bolotaur and Orray left this set 2026-10-20: their N/S/E were redrawn and installed by the owner's
+# 2026-10-16 "Facings stand tall" batch and the 2026-10-07 Long Shade picks, and no longer flag (re-measured).
 HEIGHT_MUST_FLAG = {
-    "FrozenAnooba_m", "Flamefang", "Bolotaur", "FrozenFireWasp",
-    "GR_Mantistanis", "Orray",
+    "FrozenAnooba_m", "FrozenFireWasp",
+    "GR_Mantistanis",
 }
 # Dalgo moved FLAG -> PASS 2026-10-12: PROVISIONAL art (commit 68ee19c27d) accepted by owner
 # card 2026-10-12; the new Dalgo_east passes facing_height_consistency. Revisit after his
@@ -623,7 +625,7 @@ HEIGHT_MUST_FLAG = {
 # ✅ Anooba_f moved FLAG -> PASS 2026-10-08: the owner picked new art (Leaning Scrub sheet, column L,
 # installed via the art ledger at 3acc6123b). MEASURED 1.247 now (east 0.758, north 0.945, south 0.914
 # of canvas); the old flagged set is gone from disk. Anooba_m keeps its old art and stays flagged.
-HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "FireHawk", "Zeer", "Anooba_f", "Dalgo"}
+HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "FireHawk", "Zeer", "Anooba_f", "Dalgo", "Flamefang", "Bolotaur", "Orray"}
 
 # Height ratios that moved for the WRONG reason and are pinned to an exact number
 # so the selftest fails loudly whether they worsen OR are quietly "fixed" by moving
@@ -652,7 +654,10 @@ OUTLINE_MAX_FLAGGED_FILES = 5
 # PROVISIONAL art accepted by owner card 2026-10-12, revisit after his in-game look.
 # Commit 68ee19c27d added these three keyline flags (Bolotaur/FurnaceBeast/Zeer, unchanged
 # since, were the prior 3); they are expected and excluded from the cap, which is NOT raised.
-OUTLINE_PROVISIONAL_FLAGGED = {"Dalgo_east.png", "Orray_east.png", "RM_FE_Quickgrass_b.png"}
+# 2026-10-20: GizkaW_east (set D, 10-15) and the RM_FE plants EmberGrassA / QuickgrassA / ScorchFruit (bulk-accepted
+# renders 10-18, icons enact 10-19) keyline-flag too; owner-accepted art, same revisit.
+OUTLINE_PROVISIONAL_FLAGGED = {"Dalgo_east.png", "Orray_east.png", "RM_FE_Quickgrass_b.png", "GizkaW_east.png",
+                               "RM_FE_EmberGrassA.png", "RM_FE_QuickgrassA.png", "RM_FE_ScorchFruit.png"}
 
 # Facings whose visible content touches a canvas edge and is clipped, re-measured
 # 2026-09-18. The previous pin, `Nuna_f_east.png`, is GONE and legitimately so —

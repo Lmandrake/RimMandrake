@@ -63,9 +63,14 @@ def patch_findings(xml_text):
     return probs + ["no Remove for %s" % x for x in ALL if x not in covered]
 
 
+# Donors retired from the list by the 2026-10-19/20 waves (karew.orcclan left in Wave 4, 4c96e58c5); the SHIP legitimately
+# drops their cut keys with them -- the xenotype and scenario no longer load, so there is nothing to cut.
+RETIRED_WITH_DONOR = {"BX_Beliar", "DV_Avaloi", "DV_Brawnum", "DV_Buzzer", "HBX_Highborn", "KAR_Orc", "XylTitan", "BX_BeliarStart"}
+
+
 def ship_findings(text):
     keys = set(re.findall(r"<li>([^<]+)</li>", text))
-    out = ["missing XenotypeDef/%s" % x for x in CUT_DEF if "XenotypeDef/%s" % x not in keys]
+    out = ["missing XenotypeDef/%s" % x for x in CUT_DEF if "XenotypeDef/%s" % x not in keys and x not in RETIRED_WITH_DONOR]
     out += ["kept def cut: XenotypeDef/%s" % x for x in KEPT if "XenotypeDef/%s" % x in keys]
     out += ["bare key %s" % x for x in ALL if x in keys]
     for x in ALL:
@@ -73,7 +78,7 @@ def ship_findings(text):
                   "GeneDef/Outland_XenotypeImplanter_%s", "GeneDef/%s_Metamorphosis", "GeneDef/%s_Retromorphosis"):
             if k % x not in keys:
                 out.append("missing companion " + k % x)
-    out += ["missing ScenarioDef/%s" % s for s in SCENARIOS if "ScenarioDef/%s" % s not in keys]
+    out += ["missing ScenarioDef/%s" % s for s in SCENARIOS if "ScenarioDef/%s" % s not in keys and s not in RETIRED_WITH_DONOR]
     return out
 
 
@@ -153,7 +158,7 @@ def main():
                                                                  ptext)) != [])
     check("mutant: Remove swapped for Add reds", patch_findings(
         ptext.replace('<match Class="PatchOperationRemove">', '<match Class="PatchOperationAdd">', 1)) != [])
-    check("mutant: a dropped typed key reds", ship_findings(ship.replace("<li>XenotypeDef/KAR_Orc</li>", "")) != [])
+    check("mutant: a dropped typed key reds", ship_findings(ship.replace("<li>XenotypeDef/DV_Bogleg</li>", "")) != [])
     check("mutant: cutting a kept def reds", ship_findings(ship + "<li>XenotypeDef/VRE_Fungoid</li>") != [])
     check("mutant: a bare DV_Buzzer key reds", ship_findings(ship + "<li>DV_Buzzer</li>") != [])
     check("mutant: a CharacterDef race of KAR_Orc reds", ref_findings([("a.xml", "<race>KAR_Orc</race>")]) != [])

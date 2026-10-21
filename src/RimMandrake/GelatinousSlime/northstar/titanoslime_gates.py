@@ -276,8 +276,7 @@ def g2(g, S):
     name = "RM_titano_gate2"
     g.ok("rimworld/save_game", saveName=name)
     say("saved; loading %s" % name)
-    sp = os.path.join(os.environ.get("USERPROFILE", r"C:\Users\Mandrake"), "AppData", "LocalLow", "Ludeon Studios",
-                      "RimWorld by Ludeon Studios", "Saves", name + ".rws")
+    sp = os.path.join(__import__("game_paths").SAVES, name + ".rws")
     if not os.path.exists(sp) or time.time() - os.path.getmtime(sp) > 120:
         raise Unmeasured("save %s not written (stat %s)" % (name, sp))
     lr = g.call("rimworld/load_game_ready", saveName=name)
@@ -658,8 +657,7 @@ def g8(g, S):
 
 
 GATES = [g1, g2, g3, g4, g5, g6, g7, g8]
-PLAYER_LOG = os.path.join(os.environ.get("USERPROFILE", r"C:\Users\Mandrake"), "AppData", "LocalLow", "Ludeon Studios",
-                          "RimWorld by Ludeon Studios", "Player.log")
+PLAYER_LOG = __import__("game_paths").PLAYER_LOG
 
 
 def log_errors():
