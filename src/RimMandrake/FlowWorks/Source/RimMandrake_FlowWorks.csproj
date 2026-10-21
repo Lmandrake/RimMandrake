@@ -269,6 +269,8 @@
     <Compile Include="Machinery\RM_DeckCollapseLines.cs" />
     <Compile Include="Machinery\RM_PowerCordMath.cs" />
     <Compile Include="Machinery\Building_RM_PowerCord.cs" />
+    <Compile Include="Machinery\RM_PipePoleMath.cs" />
+    <Compile Include="Machinery\RM_PipePoles.cs" />
     <Compile Include="Machinery\PipeStyles.cs" />
     <Compile Include="Machinery\PipeLook.cs" />
     <Compile Include="Machinery\LiquidJoinRule.cs" />

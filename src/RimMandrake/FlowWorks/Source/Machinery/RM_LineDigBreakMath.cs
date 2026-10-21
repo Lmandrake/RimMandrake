@@ -17,6 +17,11 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// cancelled job or a cut the cap refused never reaches this, so it breaks nothing.</summary>
 		public static bool IsCommit(int depthBefore, int depthAfter) => depthAfter > depthBefore;
 
+		/// <summary>Phase 4 (P4: "A pole that loses its ground (dug, destroyed) drops its spans"): a pipe pole on a dug square is
+		/// KILLED, so Gimme Some Slack's anchor teardown drops each span's half at the surviving pole (a fallen pipe), exactly
+		/// once; every other line is deconstructed for salvage as before.</summary>
+		public static bool KilledOnDig(LineKind k) => k == LineKind.PipePole;
+
 		/// <summary>The lines one committed cut on one square breaks: every tagged line of a breaking kind that is still standing.
 		/// Rules off, no commit, untagged things (kindOf null) and things already gone (destroyed by an earlier commit or anything
 		/// else) give nothing, so calling this again for the same square is a no-op: the teardown is idempotent.</summary>

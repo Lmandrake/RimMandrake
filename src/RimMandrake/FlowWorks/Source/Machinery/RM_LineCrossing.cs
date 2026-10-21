@@ -23,7 +23,8 @@ namespace RimMandrake.FlowWorks.Machinery
 	///   * Frame.CompleteConstruction (RM_Patch_LineCrossingFrame): a deck or cover can be built over a planned line without
 	///     any terrain change, so the frame is checked again when it completes, and cancelled (refunded) if it may not stand.
 	/// Setting RM_MachinerySettings.lineCrossingRulesEnabled; off, lines take the engine's affordance rules alone.
-	/// Not here (later phases): digging under a BUILT line (P4), pipe poles (P3), the hose router's ramp/ladder rule (P5).
+	/// Pipe poles (P3, phase 4) ride these gates as LineKind.PipePole: solid ground only. Not here: the hose router's
+	/// ramp/ladder rule (P5); digging under a BUILT line is RM_LineDigBreak (P4).
 	/// </summary>
 	public static class RM_LineCrossing
 	{

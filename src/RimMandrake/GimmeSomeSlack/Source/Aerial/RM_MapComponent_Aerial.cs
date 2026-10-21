@@ -70,7 +70,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public void QueueAutoLink(CompAerialAnchor a) { if (!pendingAuto.Contains(a)) { pendingAuto.Add(a); pendingSince[a] = Find.TickManager.TicksGame; } }
         public bool IsAutoLinkPending(CompAerialAnchor a) => pendingAuto.Contains(a);
 
-        public void Notify_SpansChanged() => ClearSpanMeshes();      // local drops re-sign themselves every frame (DrawLocalDrops)
+        public void Notify_SpansChanged()
+        {
+            ClearSpanMeshes();      // local drops re-sign themselves every frame (DrawLocalDrops)
+            AerialLineProfiles.FireSpansChanged(map);   // phase-5 seam: FlowWorks' pipe edge rebuilds on any span change
+        }
 
         /// <summary>GPT source read 2026-10-06 A18: the cached span meshes are Unity objects; clearing the cache used to drop them
         /// without Object.Destroy (a leak per span per change).</summary>
@@ -254,8 +258,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 pendingSince.Remove(a);
                 if (!AerialSettings.enabled || !AerialSettings.autoLink) continue;
                 // stage 2 (design 2.3): auto-link only links to a run of the SAME look; linking two looks by hand is a bridge
-                var others = AutoLinkCandidates(StylePicker.LookOfThing(a.parent), a, a.Position);
-                int pick = AerialMath.AutoLinkPick(a.Info(), others.Select(o => o.Info()).ToList(), AerialSettings.Range);
+                var others = AutoLinkCandidates(AerialLineProfiles.LookOfThing(a.parent), a, a.Position, a.Kind);
+                int pick = AerialMath.AutoLinkPick(a.Info(), others.Select(o => o.Info()).ToList(), a.Range);
                 if (pick < 0) continue;
                 if (CompAerialAnchor.TryLink(a, others.First(o => o.thingIDNumber == pick).parent) == LinkVerdict.Ok) autoLinks++;
             }
@@ -264,8 +268,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>The anchors auto-link may pick for a pole of <paramref name="look"/> at <paramref name="at"/>: same look only
         /// (design 2.3). Shared by the real auto-link and the placement ghost's preview line (GPT pre-release C11: the ghost
         /// used to pick from every anchor, so its line could point at a pole the real link would never take).</summary>
-        public List<CompAerialAnchor> AutoLinkCandidates(string look, CompAerialAnchor self, IntVec3 at) =>
-            Anchors.Where(o => o != self && o.Position != at && StylePicker.LookOfThing(o.parent) == look).ToList();
+        public List<CompAerialAnchor> AutoLinkCandidates(string look, CompAerialAnchor self, IntVec3 at, AerialLineKind kind = AerialLineKind.Power) =>
+            Anchors.Where(o => o != self && o.Position != at && o.Kind == kind && AerialLineProfiles.LookOfThing(o.parent) == look).ToList();
 
         public static int NetId(PowerNet n) => n == null ? -1 : System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(n) & 0x7fffffff;
 
@@ -291,6 +295,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             foreach (CompAerialAnchor a in Anchors)
                 foreach (SpanLink l in a.links)
                 {
+                    if (!AerialKinds.CarriesPower(a.Kind)) break;   // phase 4: a pipe span has no power net to repair
                     if (l.other == null || !l.other.Spawned || !AerialMath.Owns(a.thingIDNumber, l.other.thingIDNumber)) continue;
                     if (l.changedTick >= now - 2) continue;
                     reads.Add(new SpanNetRead { Span = pairs.Count, State = l.state, NetA = NetId(NetOf(a)), NetB = NetId(NetOf(l.other)) });
@@ -522,7 +527,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     SpanMesh m = MeshFor(a, l.other, spanY);
                     if (m == null || !m.rect.Overlaps(view)) continue;
                     bool swung = SwingOf(a, l.other, out BlastSwing bs, out int age);
-                    if (sway || swung)
+                    if ((sway || swung) && AerialKinds.Sways(a.Kind))   // phase 4: a pipe span is rigid, it never sways
                     {
                         float amp = 0.12f * Mathf.Max(AerialSettings.swayStrength, 0.25f);
                         m.Sway(sway ? time : 0f, sway ? wind : 0f, sway ? 0.12f * AerialSettings.swayStrength : 0f, swung ? age : -1, bs.kick, bs.side, amp);
@@ -534,7 +539,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 }
                 // B11/B21: a cut / orphaned wire is ONE cable from the insulator down to the break on the ground, in the
                 // span's own material and width (the ground layer prints only the frayed end at its tip)
-                Material own = a.fallen.Count > 0 ? AerialMaterials.For(AerialMaterials.LookOf(a)).Span : null;
+                Material own = a.fallen.Count > 0 ? AerialMaterials.AnchorMats(a).Span : null;
                 if (own != null)
                     foreach (FallenCord f in a.fallen)
                     {
@@ -572,6 +577,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static void LocalConnections(CompAerialAnchor a, List<Thing> r)
         {
             r.Clear();
+            if (!AerialKinds.CarriesPower(a.Kind)) return;   // phase 4: a pipe pole hangs no drop wires to the devices beside it
             CompPower pc = a.PowerComp;
             if (pc?.connectChildren != null)
                 foreach (CompPower c in pc.connectChildren)
@@ -757,7 +763,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// when the anchor moves or the look's width changes).</summary>
         public Mesh WireMesh(CompAerialAnchor a, FallenCord f, float y)
         {
-            float w = AerialMaterials.For(AerialMaterials.LookOf(a)).Width;
+            float w = AerialMaterials.AnchorMats(a).Width;
             int sig = Gen.HashCombineInt(a.Position.GetHashCode(), Mathf.RoundToInt(w * 1000f));
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialMaterials.AttachZ(a) * 1000f));
             if (drops.TryGetValue(f, out var kv) && kv.Key == sig) return kv.Value;
@@ -802,7 +808,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             long key = ((long)a.thingIDNumber << 32) ^ (uint)b.thingIDNumber;
             int sig = Gen.HashCombineInt(a.Position.GetHashCode(), b.Position.GetHashCode());
-            sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialSettings.sag * 1000f) * 7 + AerialSettings.maxStrands);
+            sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialLineProfiles.SagFor(a.Kind) * 1000f) * 7 + AerialSettings.maxStrands);
+            sig = Gen.HashCombineInt(sig, (int)a.Kind + (AerialSettings.dripLoops ? 16 : 0));
             // per-build style: the span's look (AerialMaterials.SpanLookOf) and BOTH poles' looks (their insulator rows)
             AerialMaterials.LookMats lm = AerialMaterials.SpanMats(a, b);
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(lm.Width * 1000f));
@@ -849,12 +856,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             double len = Math.Max(0.01, Vector3.Distance(ba, bb));
             m.dir = new P2((bb.x - ba.x) / len, (bb.z - ba.z) / len);
             // B23: one wire per insulator, each ending exactly on an insulator tip of each pole
-            m.ends = AerialMath.SpanStrands(new P2(ba.x, ba.z), AerialMaterials.InsulatorsFor(a), new P2(bb.x, bb.z), AerialMaterials.InsulatorsFor(b), m.seed, AerialSettings.maxStrands);
+            // phase 4: per kind (a pipe span: one strand, its own sag, no drip loop)
+            AerialLineKind kind = a.Kind;
+            float sagK = AerialLineProfiles.SagFor(kind);
+            m.ends = AerialMath.SpanStrands(new P2(ba.x, ba.z), AerialMaterials.InsulatorsFor(a), new P2(bb.x, bb.z), AerialMaterials.InsulatorsFor(b), m.seed, AerialKinds.StrandCap(kind, AerialSettings.maxStrands));
             foreach (AerialMath.SpanStrand s in m.ends)
             {
-                List<P2> c = AerialSettings.dripLoops
-                    ? AerialMath.SpanCurveDrip(s.A, s.B, AerialSettings.sag * s.SagMul, AerialSettings.DripDepth, AerialSettings.DripReach)
-                    : AerialMath.SpanCurve(s.A, s.B, AerialSettings.sag * s.SagMul);
+                List<P2> c = AerialKinds.Drips(kind, AerialSettings.dripLoops)
+                    ? AerialMath.SpanCurveDrip(s.A, s.B, sagK * s.SagMul, AerialSettings.DripDepth, AerialSettings.DripReach)
+                    : AerialMath.SpanCurve(s.A, s.B, sagK * s.SagMul);
                 m.strands.Add(c);
                 // sway pins by the projected fraction (drip-loop samples are not uniform in t)
                 m.strandTs.Add(c.Select(q => AerialMath.ProjectT(s.A, s.B, q)).ToArray());

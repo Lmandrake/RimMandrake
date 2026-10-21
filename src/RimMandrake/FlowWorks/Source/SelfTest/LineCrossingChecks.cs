@@ -39,25 +39,26 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private const CrossingVerdict Y = CrossingVerdict.Allowed, N = CrossingVerdict.Refused, R = CrossingVerdict.RampOrLadderOnly;
 
-        // The design's P2 table, typed out here from the ruled text (rows: surface; columns: pipe, conduit, cord, hose).
+        // The design's P2 table, typed out here from the ruled text (rows: surface; columns: pipe, conduit, cord, hose), plus the
+        // P3 pipe-pole support column (phase 4, review answer 8: supports on solid ground only).
         private static readonly (LineSurface s, CrossingVerdict[] v)[] Table =
         {
-            (LineSurface.SolidGround,    new[] { Y, Y, Y, Y }),
-            (LineSurface.Excavated,      new[] { N, N, N, R }),
-            (LineSurface.Cover,          new[] { N, N, N, N }),
-            (LineSurface.Deck,           new[] { N, N, Y, Y }),
-            (LineSurface.RopeDeck,       new[] { N, N, Y, Y }),
-            (LineSurface.DrawbridgeLeaf, new[] { N, N, Y, Y }),
+            (LineSurface.SolidGround,    new[] { Y, Y, Y, Y, Y }),
+            (LineSurface.Excavated,      new[] { N, N, N, R, N }),
+            (LineSurface.Cover,          new[] { N, N, N, N, N }),
+            (LineSurface.Deck,           new[] { N, N, Y, Y, N }),
+            (LineSurface.RopeDeck,       new[] { N, N, Y, Y, N }),
+            (LineSurface.DrawbridgeLeaf, new[] { N, N, Y, Y, N }),
         };
 
-        private static readonly LineKind[] Kinds = { LineKind.RigidPipe, LineKind.RigidConduit, LineKind.FlexCord, LineKind.Hose };
+        private static readonly LineKind[] Kinds = { LineKind.RigidPipe, LineKind.RigidConduit, LineKind.FlexCord, LineKind.Hose, LineKind.PipePole };
 
         public static void Run(Action<string, Action> Case)
         {
             Case("LineCrossing_P2_table_every_kind_by_every_surface", () =>
             {
                 Assert(Enum.GetValues(typeof(LineKind)).Length == RM_LineCrossingMath.KindCount && Kinds.Length == RM_LineCrossingMath.KindCount,
-                    "four line kinds");
+                    "four line kinds and the pipe-pole support (phase 4)");
                 Assert(Enum.GetValues(typeof(LineSurface)).Length == RM_LineCrossingMath.SurfaceCount && Table.Length == RM_LineCrossingMath.SurfaceCount,
                     "can-fail: a new surface must get a row in this table");
                 int cells = 0;
@@ -70,7 +71,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         cells++;
                     }
                 }
-                Assert(cells == 24, "24 cells checked");
+                Assert(cells == 30, "30 cells checked");
             });
 
             Case("LineCrossing_P2_rigid_only_on_solid_ground_cover_carries_nothing", () =>

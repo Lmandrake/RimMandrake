@@ -120,6 +120,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         public int MaxLinks => Ext.maxLinks;
 
+        /// <summary>Phase 4: what this anchor's spans carry (AerialAnchorExtension.lineKind).</summary>
+        public AerialLineKind Kind => Ext.lineKind;
+
+        /// <summary>This anchor's longest span, cells (per kind: AerialLineProfiles.RangeFor).</summary>
+        public float Range => AerialLineProfiles.RangeFor(Kind);
+
         /// <summary>Partners whose span is UP and who stand on this map: what the power postfix appends.</summary>
         public IEnumerable<CompAerialAnchor> LivePartners
         {
@@ -167,14 +173,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         /// <summary>How many wires the span between these two anchors carries (the same count SpanMesh draws).</summary>
         public static int WiresBetween(CompAerialAnchor a, CompAerialAnchor b) =>
-            AerialMath.StrandCount(AerialMaterials.InsulatorsFor(a).Count, AerialMaterials.InsulatorsFor(b).Count, AerialSettings.maxStrands);
+            AerialMath.StrandCount(AerialMaterials.InsulatorsFor(a).Count, AerialMaterials.InsulatorsFor(b).Count, AerialKinds.StrandCap(a.Kind, AerialSettings.maxStrands));
 
         public static int FactionKey(Thing t) => t.Faction == null ? -1 : t.Faction.loadID;
 
         public AnchorInfo Info() => new AnchorInfo
         {
             Id = thingIDNumber, X = Position.x, Z = Position.z, Faction = FactionKey(parent), MaxLinks = MaxLinks,
-            Roofed = Spawned && Map.roofGrid.Roofed(Position),
+            Roofed = Spawned && Map.roofGrid.Roofed(Position), Kind = Kind,
             Linked = links.Where(l => l.other != null).Select(l => l.other.thingIDNumber).ToList(),
         };
 
@@ -306,7 +312,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             // GPT review 2026-10-08 #16: a span never joins two maps (LivePartners would ignore it, leaving a dead slot)
             if (a.Map != b.Map) return LinkVerdict.Gone;
             AnchorInfo bi = Of(b) is CompAerialAnchor bb ? bb.Info() : new AnchorInfo { Id = b.thingIDNumber, X = b.Position.x, Z = b.Position.z, Faction = FactionKey(b), IsAnchor = false };
-            return AerialMath.CanLink(a.Info(), bi, AerialSettings.Range);
+            return AerialMath.CanLink(a.Info(), bi, a.Range);
         }
 
         public static LinkVerdict TryLink(CompAerialAnchor a, Thing target)
@@ -386,11 +392,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
             if (Faction != Faction.OfPlayer) yield break;
+            bool pipe = Kind == AerialLineKind.Pipe;
             yield return new Command_Action
             {
-                defaultLabel = "Link wire",
-                defaultDesc = "String an overhead wire from this anchor to another of your masts or brackets within " +
-                              AerialSettings.Range.ToString("0") + " cells. Linked anchors share one power grid. Wires may pass over roofed rooms; the anchors themselves must stand under open sky.",
+                defaultLabel = pipe ? "Link pipe span" : "Link wire",
+                defaultDesc = pipe
+                    ? "Hang an overhead pipe from this pole to another of your pipe poles within " + Range.ToString("0") +
+                      " cells. The span crosses pits, trenches and canals; it is not walkable. The poles must stand under open sky."
+                    : "String an overhead wire from this anchor to another of your masts or brackets within " +
+                      Range.ToString("0") + " cells. Linked anchors share one power grid. Wires may pass over roofed rooms; the anchors themselves must stand under open sky.",
                 icon = IconLink,
                 action = () => Find.Targeter.BeginTargeting(new TargetingParameters
                 {
@@ -399,7 +409,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 }, t =>
                 {
                     LinkVerdict v = t.Thing != null ? TryLink(this, t.Thing) : LinkVerdict.NotAnchor;
-                    if (v != LinkVerdict.Ok) Messages.Message("Cannot link: " + VerdictText(v), parent, MessageTypeDefOf.RejectInput, false);
+                    if (v != LinkVerdict.Ok) Messages.Message("Cannot link: " + VerdictText(v, Kind), parent, MessageTypeDefOf.RejectInput, false);
                     else SoundDefOf.Tick_High.PlayOneShotOnCamera();
                 }),
                 Disabled = links.Count >= MaxLinks,
@@ -409,8 +419,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 yield return new Command_Action
                 {
-                    defaultLabel = "Unlink wire",
-                    defaultDesc = "Take down one wire (the cable is coiled, not dropped).",
+                    defaultLabel = pipe ? "Unlink pipe span" : "Unlink wire",
+                    defaultDesc = pipe ? "Take down one pipe span (it is lowered and stacked, not dropped)." : "Take down one wire (the cable is coiled, not dropped).",
                     icon = IconUnlink,
                     action = () => Find.WindowStack.Add(new FloatMenu(links.Where(l => l.other != null).Select(l =>
                     {
@@ -464,17 +474,22 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             List<CompAerialAnchor> sel = Find.Selector.SelectedObjects.OfType<Thing>().Select(Of)
                 .Where(b => b != null && b.Spawned && b.Faction == Faction.OfPlayer).ToList();   // GPT read A4: never string someone else's anchors
             var byId = sel.ToDictionary(b => b.thingIDNumber);
-            foreach ((int a, int b) in AerialMath.MinimumSpanningLinks(sel.Select(s => s.Info()).ToList(), AerialSettings.Range))
-                TryLink(byId[a], byId[b].parent);
+            // phase 4: one spanning forest per kind, each at its own range (a pipe pole never links to a power mast)
+            foreach (IGrouping<AerialLineKind, CompAerialAnchor> g in sel.GroupBy(s => s.Kind))
+                foreach ((int a, int b) in AerialMath.MinimumSpanningLinks(g.Select(s => s.Info()).ToList(), AerialLineProfiles.RangeFor(g.Key)))
+                    TryLink(byId[a], byId[b].parent);
         }
 
-        public static string VerdictText(LinkVerdict v)
+        public static string VerdictText(LinkVerdict v) => VerdictText(v, AerialLineKind.Power);
+
+        public static string VerdictText(LinkVerdict v, AerialLineKind kind)
         {
             switch (v)
             {
-                case LinkVerdict.OutOfRange: return "too far (longest span " + AerialSettings.Range.ToString("0") + " cells).";
+                case LinkVerdict.OutOfRange: return "too far (longest " + AerialLineProfiles.Noun(kind) + " " + AerialLineProfiles.RangeFor(kind).ToString("0") + " cells).";
+                case LinkVerdict.WrongKind: return "overhead pipe and power wire never share poles: pipe poles link only to pipe poles.";
                 case LinkVerdict.Foreign: return "that belongs to someone else. Linking would merge their grid with yours; use a power-tap clamp.";
-                case LinkVerdict.NotAnchor: return "wires only run between masts and wall brackets.";
+                case LinkVerdict.NotAnchor: return kind == AerialLineKind.Pipe ? "pipe spans only hang between pipe poles." : "wires only run between masts and wall brackets.";
                 case LinkVerdict.FullA: return "this anchor has no free insulator.";
                 case LinkVerdict.FullB: return "that anchor has no free insulator.";
                 case LinkVerdict.Roofed: return "an anchor under a roof cannot hold a wire.";
@@ -489,14 +504,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             string s = base.CompInspectStringExtra();
             int up = links.Count(l => l.state == SpanState.Up), cut = links.Count(l => l.state == SpanState.Cut);
-            string mine = "Wires: " + up + "/" + MaxLinks + (cut > 0 ? ", " + cut + " cut" : "") + (fallen.Count > 0 ? ", " + fallen.Count + " lying on the ground" : "");
+            string mine = (Kind == AerialLineKind.Pipe ? "Pipe spans: " : "Wires: ") + up + "/" + MaxLinks + (cut > 0 ? ", " + cut + " cut" : "") + (fallen.Count > 0 ? ", " + fallen.Count + " lying on the ground" : "");
             return s.NullOrEmpty() ? mine : s + "\n" + mine;
         }
 
         public override void PostDrawExtraSelectionOverlays()
         {
             base.PostDrawExtraSelectionOverlays();
-            float r = Mathf.Min(AerialSettings.Range, GenRadial.MaxRadialPatternRadius - 0.01f);
+            float r = Mathf.Min(Range, GenRadial.MaxRadialPatternRadius - 0.01f);
             GenDraw.DrawRadiusRing(Position, r);
         }
     }

@@ -22,13 +22,54 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// <summary>Up = strung and carrying power; Cut = parted (explosion / roof): both halves lie at their anchors.</summary>
     public enum SpanState { Up, Cut }
 
-    public enum LinkVerdict { Ok, Self, AlreadyLinked, OutOfRange, FullA, FullB, Foreign, NotAnchor, Roofed, Gone }
+    public enum LinkVerdict { Ok, Self, AlreadyLinked, OutOfRange, FullA, FullB, Foreign, NotAnchor, Roofed, Gone, WrongKind }
+
+    /// <summary>PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4: what an overhead span carries. Power (masts, lamp masts, wall
+    /// brackets: joins power nets) or Pipe (FlowWorks pipe poles: no power, a thicker, stiffer span). Set per anchor def on
+    /// AerialAnchorExtension.lineKind; a span only ever joins two anchors of one kind.</summary>
+    public enum AerialLineKind { Power = 0, Pipe = 1 }
+
+    /// <summary>Per-kind span numbers (pure). The power numbers are AerialSettings'; the pipe numbers are FlowWorks' Mod
+    /// Settings, handed over through AerialLineProfiles.RegisterPipeProfile. The defaults here apply only until (or unless)
+    /// FlowWorks registers, and must equal FlowWorks' RM_PipePoleMath defaults (its SelfTest compiles both and checks).</summary>
+    public static class AerialKinds
+    {
+        public const float PowerSpanMin = 4f, PowerSpanMax = 40f;
+        /// <summary>Owner, pipes-across-pits ruling (proposal max span 12).</summary>
+        public const float PipeMaxSpanDefault = 12f;
+        /// <summary>Owner by card 2026-10-20 (line widths spec): "about a third of GSS wire sag, about 2% of span".</summary>
+        public const float PipeSagDefault = 0.02f;
+        /// <summary>Sanity bounds on whatever is registered (the slider bounds are FlowWorks').</summary>
+        public const float PipeSpanMin = 2f, PipeSpanMax = 30f, PipeSagMax = 0.15f;
+
+        public static float Clamp(float v, float lo, float hi) => float.IsNaN(v) ? lo : (v < lo ? lo : (v > hi ? hi : v));
+
+        /// <summary>Longest span of this kind, cells.</summary>
+        public static float RangeFor(AerialLineKind k, float powerMaxSpan, float pipeMaxSpan) =>
+            k == AerialLineKind.Pipe ? Clamp(pipeMaxSpan, PipeSpanMin, PipeSpanMax) : Clamp(powerMaxSpan, PowerSpanMin, PowerSpanMax);
+
+        /// <summary>Sag factor of this kind (fraction of the span length).</summary>
+        public static float SagFor(AerialLineKind k, float powerSag, float pipeSag) =>
+            k == AerialLineKind.Pipe ? Clamp(pipeSag, 0f, PipeSagMax) : (float.IsNaN(powerSag) || powerSag < 0f ? 0f : powerSag);
+
+        /// <summary>The deepest point of a span below its chord, cells: SpanCurve's sag at t = 0.5.</summary>
+        public static double SagDepth(double spanLength, double sagFactor) => Math.Max(0, sagFactor) * Math.Max(0, spanLength);
+
+        /// <summary>A pipe is one rigid run: one strand, no drip loop, no wind sway (it is not a wire).</summary>
+        public static int StrandCap(AerialLineKind k, int maxStrands) => k == AerialLineKind.Pipe ? 1 : maxStrands;
+        public static bool Drips(AerialLineKind k, bool dripSetting) => k == AerialLineKind.Power && dripSetting;
+        public static bool Sways(AerialLineKind k) => k == AerialLineKind.Power;
+        /// <summary>Only a power anchor joins a power net or draws drop wires to the devices beside it.</summary>
+        public static bool CarriesPower(AerialLineKind k) => k == AerialLineKind.Power;
+    }
 
     /// <summary>What the link rules need to know about one anchor (or a candidate target).</summary>
     public class AnchorInfo
     {
         public int Id, X, Z, Faction, MaxLinks;
         public bool Roofed;
+        /// <summary>What the anchor's spans carry; a span joins one kind only (phase 4).</summary>
+        public AerialLineKind Kind = AerialLineKind.Power;
         /// <summary>False for anything that is not one of our anchors (their conduit, a battery): never a link target.</summary>
         public bool IsAnchor = true;
         public List<int> Linked = new List<int>();
@@ -133,6 +174,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             if (a.Id == b.Id) return LinkVerdict.Self;
             if (!b.IsAnchor || !a.IsAnchor) return LinkVerdict.NotAnchor;
+            if (a.Kind != b.Kind) return LinkVerdict.WrongKind;
             if (a.Faction != b.Faction) return LinkVerdict.Foreign;
             if (a.Linked.Contains(b.Id) || b.Linked.Contains(a.Id)) return LinkVerdict.AlreadyLinked;
             if (a.Roofed || b.Roofed) return LinkVerdict.Roofed;
@@ -173,7 +215,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 {
                     AnchorInfo a = sel[i], b = sel[j];
                     if (a.Linked.Contains(b.Id) || b.Linked.Contains(a.Id)) continue;
-                    if (a.Faction != b.Faction || a.Roofed || b.Roofed || !a.IsAnchor || !b.IsAnchor) continue;
+                    if (a.Faction != b.Faction || a.Kind != b.Kind || a.Roofed || b.Roofed || !a.IsAnchor || !b.IsAnchor) continue;
                     if (!InRange(a.X, a.Z, b.X, b.Z, range)) continue;
                     long dx = a.X - b.X, dz = a.Z - b.Z;
                     edges.Add((dx * dx + dz * dz, a.Id < b.Id ? a : b, a.Id < b.Id ? b : a));

@@ -15,7 +15,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             Map map = Find.CurrentMap;
             if (map == null) return;
-            float r = Mathf.Min(AerialSettings.Range, GenRadial.MaxRadialPatternRadius - 0.01f);
+            AerialLineKind kind = AerialLineProfiles.KindOf(def);   // phase 4: a pipe pole rings and previews at the pipe range
+            float range = AerialLineProfiles.RangeFor(kind);
+            float r = Mathf.Min(range, GenRadial.MaxRadialPatternRadius - 0.01f);
             GenDraw.DrawRadiusRing(center, r);
             if (!AerialSettings.autoLink) return;
             RM_MapComponent_Aerial comp = map.GetComponent<RM_MapComponent_Aerial>();
@@ -23,12 +25,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             var self = new AnchorInfo
             {
                 Id = -1, X = center.x, Z = center.z, Faction = Faction.OfPlayer.loadID,
-                MaxLinks = def.GetModExtension<AerialAnchorExtension>()?.maxLinks ?? 4, Roofed = map.roofGrid.Roofed(center),
+                MaxLinks = def.GetModExtension<AerialAnchorExtension>()?.maxLinks ?? 4, Roofed = map.roofGrid.Roofed(center), Kind = kind,
             };
-            // C11: the same candidates as the real auto-link: anchors of the look this pole will be built in
+            // C11: the same candidates as the real auto-link: anchors of the look (and kind) this pole will be built in
             ThingStyleDef picked = (Find.DesignatorManager.SelectedDesignator as Designator_Build)?.ThingStyleDefNonPreceptSource;
-            var others = comp.AutoLinkCandidates(StylePicker.LookOfStyle(picked) ?? StylePicker.DefaultLook, null, center);
-            int pick = AerialMath.AutoLinkPick(self, others.Select(o => o.Info()).ToList(), AerialSettings.Range);
+            var others = comp.AutoLinkCandidates(AerialLineProfiles.LookOfPick(def, picked), null, center, kind);
+            int pick = AerialMath.AutoLinkPick(self, others.Select(o => o.Info()).ToList(), range);
             if (pick < 0) return;
             CompAerialAnchor o2 = others.First(o => o.thingIDNumber == pick);
             float y = AltitudeLayer.MetaOverlays.AltitudeFor();

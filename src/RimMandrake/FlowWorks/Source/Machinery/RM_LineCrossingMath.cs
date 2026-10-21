@@ -18,6 +18,9 @@ namespace RimMandrake.FlowWorks.Machinery
 		FlexCord = 2,
 		/// <summary>The FlowWorks hose (a route laid from a reel, not a buildable def: its router reads this table).</summary>
 		Hose = 3,
+		/// <summary>Phase 4 (P3): a pipe pole, the SUPPORT of an overhead pipe span (RM_PipePole). Not a line on the ground, but it
+		/// rides the same gates: supports stand on solid ground only, never a deck, a cover or a dug square (review answer 8).</summary>
+		PipePole = 4,
 	}
 
 	/// <summary>P2's rows: what a square is, as a line sees it. A deck or cover over a dug square is the deck or cover; a
@@ -57,7 +60,7 @@ namespace RimMandrake.FlowWorks.Machinery
 
 	public static class RM_LineCrossingMath
 	{
-		public const int KindCount = 4;
+		public const int KindCount = 5;
 		public const int SurfaceCount = 6;
 
 		/// <summary>Cords and hoses bend; pipe and conduit do not.</summary>
@@ -69,6 +72,11 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// ladder (answer 5); a cord never lies in one.</summary>
 		public static CrossingVerdict Verdict(LineKind k, LineSurface s)
 		{
+			if (k == LineKind.PipePole)
+			{
+				// P3, review answer 8: a pole stands on solid ground only (GSS anchors need only Light, which a pit floor has)
+				return s == LineSurface.SolidGround ? CrossingVerdict.Allowed : CrossingVerdict.Refused;
+			}
 			switch (s)
 			{
 				case LineSurface.SolidGround:
@@ -111,6 +119,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				case LineKind.RigidPipe: return "Pipe";
 				case LineKind.RigidConduit: return "Conduit";
 				case LineKind.FlexCord: return "A power cord";
+				case LineKind.PipePole: return "A pipe pole";
 				default: return "A hose";
 			}
 		}
@@ -124,6 +133,10 @@ namespace RimMandrake.FlowWorks.Machinery
 				return null;
 			}
 			string who = KindLabel(k);
+			if (k == LineKind.PipePole)
+			{
+				return "A pipe pole stands on solid ground only: never on a bridge deck, a pit cover or a dug square.";
+			}
 			switch (s)
 			{
 				case LineSurface.Cover:
