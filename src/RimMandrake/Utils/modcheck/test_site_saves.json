@@ -12,36 +12,36 @@
  },
  "cauldron": {
   "biome": "RM_Cauldron",
-  "builtUtc": "2026-10-17T02:18:55Z",
-  "bytes": 13252294,
+  "builtUtc": "2026-10-21T10:52:06Z",
+  "bytes": 13049762,
   "census": {
    "natives": {
-    "RM_Eskith": 0,
-    "RM_Suush": 1,
+    "RM_Eskith": 3,
+    "RM_Suush": 0,
     "RM_Vexxiss": 0,
     "RM_Zisska": 0
    },
    "probe": {
-    "vents": 6
+    "vents": 5
    }
   },
   "censusAfterLoad": {
    "natives": {
-    "RM_Eskith": 0,
-    "RM_Suush": 1,
+    "RM_Eskith": 3,
+    "RM_Suush": 0,
     "RM_Vexxiss": 0,
     "RM_Zisska": 0
    },
    "probe": {
-    "vents": 6
+    "vents": 5
    }
   },
   "head": null,
   "loadVerified": true,
   "mapId": 1,
-  "outdoorAtSave": 4.904888,
+  "outdoorAtSave": 6.805504,
   "profile": "danger",
-  "save": "RM_TestSite_cauldron_v1",
+  "save": "RM_TestSite_cauldron_v2",
   "tile": 3
  },
  "contagion": {

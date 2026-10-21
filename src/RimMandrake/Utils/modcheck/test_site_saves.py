@@ -61,7 +61,8 @@ SITES = {
     # BIOME_SPRINT_PROVE_SCRUB_SETS_PACE: a scratch-world RM_Cauldron patch, danger-cleaned (wildlife and vents stay).
     # Single source: src/RimMandrake/Cauldron/site_spec.py site_entry() (selftest_cauldron_site.py compares the two).
     # `builder` = the module whose build_site_save(session, work_dir) `build cauldron` runs.
-    "cauldron": {"save": "RM_TestSite_cauldron_v1", "profile": "danger", "size": 250, "temp": (0.0, 30.0),
+    # v2 (2026-10-21): v1 was saved with VEF loaded and biomes_sprint then lacked it, so its load died in FinalizeLoading.
+    "cauldron": {"save": "RM_TestSite_cauldron_v2", "profile": "danger", "size": 250, "temp": (0.0, 30.0),
                  "minColonists": 3, "biome": "RM_Cauldron", "builder": "Cauldron/prep_site.py",
                  "suites": ["northstar_driver/cli.py run --mod Cauldron --plan src/RimMandrake/Cauldron/northstar_plan.py"]},
     # Same recipe, shared in biome_site.py. Single sources: <Biome>/site_spec.py site_entry() (each biome's
