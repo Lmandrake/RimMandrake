@@ -113,7 +113,8 @@ def main():
     water = np.array([pv.is_water[t] for t in owner.ravel()]).reshape(H, W)
     img[water] = img[water] * 0.5 + np.array([0.05, 0.09, 0.20]) * 255 * 0.5      # RM_WorldLook deep film
     # soft borders: blur, used only where the biome changes within ~0.5 tile
-    bid = np.vectorize(lambda t: hash(pv.biome[t]) % 100000)(owner)
+    bmap = {}   # biome -> small int (python's str hash can collide and would hide an edge)
+    bid = np.vectorize(lambda t: bmap.setdefault(pv.biome[t], len(bmap)))(owner)
     edge = np.zeros((H, W), bool)
     edge[:, 1:] |= bid[:, 1:] != bid[:, :-1]; edge[1:] |= bid[1:] != bid[:-1]
     r = max(2, int(0.45 * spacing * ppu))

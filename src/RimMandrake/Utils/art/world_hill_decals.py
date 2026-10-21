@@ -151,6 +151,9 @@ def report(res):
 
 
 def install(out, dry):
+    pre = check(out, False)
+    if report(pre):
+        print("install refused: the files in %s fail the spec check (run gen)" % out); return 1
     bad = 0
     for name in SPEC:
         stage = os.path.join(REPO, "Transient", "hill_decals_stage", name + ".png")   # art.py wants a file inside the clone

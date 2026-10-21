@@ -98,6 +98,8 @@ namespace RimMandrake.Biomes
                     if (!(f?.GetValue(null) is Material m)) continue;
                     if (!VanillaHillTex.ContainsKey(h[0])) VanillaHillTex[h[0]] = m.mainTexture;
                     Texture2D ours = on ? ContentFinder<Texture2D>.Get("World/RM_Hills/" + h[1], false) : null;
+                    if (on && ours == null)
+                        Log.WarningOnce("[RimMandrake.Biomes] soft hills: World/RM_Hills/" + h[1] + " not found (is the mod that ships it loaded?); vanilla " + h[0] + " kept", 0x524c4833 + h[0].GetHashCode());
                     m.mainTexture = ours != null ? ours : VanillaHillTex[h[0]];
                     if (ours != null) n++;
                 }

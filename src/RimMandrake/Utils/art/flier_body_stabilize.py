@@ -186,6 +186,8 @@ def find_part(ref, frm, pmask) -> dict:
         if mx > best[0]:
             best = (mx, deg, loc)
     score, deg, loc = best
+    if score < 0:                                          # every rotation was skipped: nothing was matched
+        return {"ok": False}
     # refine the location to sub-pixel with a parabola fit on the best rotation's score map
     tpl, msk = _rot(tpl0, deg, (cx0 - x0, cy0 - y0)), _rot(msk0, deg, (cx0 - x0, cy0 - y0))
     r = np.nan_to_num(cv2.matchTemplate(g_frm, tpl, cv2.TM_CCORR_NORMED, mask=msk), nan=-1)
@@ -338,6 +340,10 @@ def main(argv=None) -> int:
         order = [ref] + [i for i in range(len(frames)) if i != ref]
         fr = [frames[i] for i in order]
         mask = body_mask_from(fc, fr[0])
+        if int(mask.sum()) < 30:
+            print(f"UNMEASURED {a.set} {facing}: the protect polygons cover {int(mask.sum())} opaque px of frame {ref + 1}")
+            worst_rc = max(worst_rc, 2)
+            continue
         res = measure_facing(fr, mask, fc.get("parts"))
         for r, i in zip(res["rows"], order):
             r["frame"] = i + 1

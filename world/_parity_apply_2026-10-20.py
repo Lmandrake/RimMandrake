@@ -21,6 +21,7 @@ PLANS = {"u1": "ASHKARR_PARITY_U1_labels_2026-10-20_plan.json",
          "u4": "ASHKARR_PARITY_U4_riverdist_2026-10-20_plan.json",
          "labels70": "ASHKARR_LABELS70_2026-10-20_plan.json"}
 which, out = sys.argv[1], sys.argv[2]; APPLY = "--apply" in sys.argv
+os.makedirs(out, exist_ok=True)
 plan = json.load(open(os.path.join(WORLD, PLANS[which]), encoding="utf-8"))
 host, port, token = resolve_endpoint()
 def dump(name, obj): open(os.path.join(out, name), "w", encoding="utf-8").write(json.dumps(obj, default=str, indent=1))
