@@ -9,7 +9,9 @@ every frame (+25, 0, -25, 0 deg).
   MOVED    frame 3's body translated (+3, -2) px and turned 4 deg about its centre: ECC and FEATURES recover the
            motion at the body centre within 1 px and 0.5 deg of the truth; PARTS within 1.5 px / 1 deg; verdict DRIFT
   REPOSED  frame 3's body replaced by a different drawing: verdict RE-POSED (no rigid transform explains it)
-The MOVED and REPOSED cases are the sanity probe: the instrument is shown able to fail.
+  LINES    the owner's eye-line / shoulder-line check: LEVEL on the static body; a +3 px bob of frame 3's body is
+           seen as dy 3 on both lines (MOVING); the whole flier turned 4 deg is seen as a 4 deg (+/-1.5) angle change on both lines
+The MOVED, REPOSED and LINES bob/turn cases are the sanity probe: the instrument is shown able to fail.
 """
 from __future__ import annotations
 
@@ -125,6 +127,30 @@ def main() -> int:
     other = np.ascontiguousarray(np.flipud(other))               # a different drawing / pose
     r = run(frames(lambda k: other if k == 2 else B))
     check("REPOSED verdict RE-POSED", r["verdict"] == "RE-POSED", f"{r['verdict']} rho {r['worst']['rho_min']}")
+    # Owner's line test: eye line and shoulder line must stay put on a static body and must SEE a bob and a turn.
+    # the body annotation hugs the body here, as the real sets' do (BODY_POLY is loose and takes in wing pixels)
+    fc = {"protect": [[[67, 30], [93, 30], [95, 80], [92, 150], [68, 150], [65, 80]]], "eyes": [[74, 38], [86, 38]],
+          "wings": [{"poly": [[0, 10], [67, 10], [67, 110], [0, 110]], "hinge": [66, 70]},
+                    {"poly": [[93, 10], [160, 10], [160, 110], [93, 110]], "hinge": [94, 70]}]}
+    lc = S.line_check(frames(lambda k: B), fc, "south", 0)
+    w = lc["worst"]
+    check("LINES static LEVEL", lc["verdict"] == "LEVEL", f"{lc['verdict']} {w}")
+    bob = cv2.warpAffine(B, np.float32([[1, 0, 0], [0, 1, 3]]), (N, N), flags=cv2.INTER_NEAREST)
+    lc = S.line_check(frames(lambda k: bob if k == 2 else B), fc, "south", 0)
+    for n in ("eye", "shoulder"):
+        dy = lc["lines"][n]["rows"][2].get("dy")
+        check(f"LINES bob +3 px seen on the {n} line", dy is not None and abs(dy - 3.0) < 0.5, f"dy {dy}")
+    check("LINES bob verdict MOVING", lc["verdict"] == "MOVING", lc["verdict"])
+    # a whole flier turned 4 deg (body and wing roots together); the angle resolution is ~0.5 px over the line's
+    # length, so the probe uses lines of 20 px and more and asks for the turn within 1.5 deg
+    fc["eyes"] = [[70, 40], [90, 40]]
+    fr = frames(lambda k: B)
+    fr[2] = cv2.warpAffine(fr[2], cv2.getRotationMatrix2D((80, 80), 4.0, 1.0), (N, N), flags=cv2.INTER_CUBIC)
+    lc = S.line_check(fr, fc, "south", 0)
+    for n in ("eye", "shoulder"):
+        dd = lc["lines"][n]["rows"][2].get("ddeg")
+        check(f"LINES 4 deg turn seen on the {n} line", dd is not None and abs(abs(dd) - 4.0) < 1.5, f"ddeg {dd}")
+    check("LINES turn verdict MOVING", lc["verdict"] == "MOVING", lc["verdict"])
     print("FAIL" if FAILS else "PASS", "selftest_flier_body_stabilize", FAILS or "")
     return 1 if FAILS else 0
 
