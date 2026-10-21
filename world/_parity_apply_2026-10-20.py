@@ -9,24 +9,50 @@ Causes: design/Jawa/worldbuilding/parity_causes_2026-10-20.md.
   u2  tile mutators  : world_mutators_set remove (28,280) then add (123 stamp entries that never landed)
   labels70  region labels x0.70 displayed width (owner card 2026-10-20); needs u1 applied first
   u4  river flow     : world_links_import clearFirst on the mouth-first CSV (same edges, same defs)
+
+Label centres (u1, labels70) are compared by ANGLE, not per axis: the engine stores
+GetTileCenter (vertex mean, radius ~99.989) and the plans hold the lat/long spelling of the
+same tile. Tolerance and its measurement: src/RimMandrake/Utils/label_centre_check.py.
+
+OFFLINE dry run (u1 | labels70 only, no bridge): ... <which> <outdir> --save <path.rws>
+  python3 world/_parity_apply_2026-10-20.py labels70 /tmp/x --save "/mnt/c/.../X.rws"
 """
 import sys, json, os
 from collections import defaultdict
-sys.path.insert(0, r"\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils")
-from rimbridge_client import RimBridge, resolve_endpoint
+if os.name == "nt":
+    UTILS = r"\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils"
+    WORLD = r"\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\world"
+else:
+    WORLD = os.path.dirname(os.path.abspath(__file__))
+    UTILS = os.path.join(WORLD, "..", "src", "RimMandrake", "Utils")
+sys.path.insert(0, UTILS)
+import label_centre_check as LC
 
-WORLD = r"\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\world"
 PLANS = {"u1": "ASHKARR_PARITY_U1_labels_2026-10-20_plan.json",
          "u2": "ASHKARR_PARITY_U2_mutators_2026-10-20_plan.json",
          "u4": "ASHKARR_PARITY_U4_riverdist_2026-10-20_plan.json",
          "labels70": "ASHKARR_LABELS70_2026-10-20_plan.json"}
 which, out = sys.argv[1], sys.argv[2]; APPLY = "--apply" in sys.argv
+SAVE = sys.argv[sys.argv.index("--save") + 1] if "--save" in sys.argv else None
 os.makedirs(out, exist_ok=True)
 plan = json.load(open(os.path.join(WORLD, PLANS[which]), encoding="utf-8"))
-host, port, token = resolve_endpoint()
 def dump(name, obj): open(os.path.join(out, name), "w", encoding="utf-8").write(json.dumps(obj, default=str, indent=1))
 def chunks(xs, n):
     for i in range(0, len(xs), n): yield xs[i:i + n]
+
+if SAVE:
+    if which not in ("u1", "labels70") or APPLY:
+        sys.exit("--save is an offline DRY RUN of u1/labels70 only")
+    live = LC.read_save_features(SAVE)
+    for phase in ("before", "after"):
+        m = LC.check_labels(plan["features"], live, phase)
+        dump("offline_%s_%s.json" % (which, phase), m)
+        print("%s offline vs %s: %d features, save != plan %s on %d" % (which, os.path.basename(SAVE),
+              len(plan["features"]), phase, len(m)), m[:5])
+    sys.exit(0)
+
+from rimbridge_client import RimBridge, resolve_endpoint
+host, port, token = resolve_endpoint()
 
 with RimBridge(host, port, token) as rb:
     def lint(tag):
@@ -50,13 +76,7 @@ with RimBridge(host, port, token) as rb:
 
     mism = []
     if which in ("u1", "labels70"):
-        live = features()
-        for f in plan["features"]:
-            l = live.get(f["name"]); b = f["before"]
-            if l is None: mism.append((f["name"], "missing live")); continue
-            dc = l["drawCenter"]; got = (dc["x"], dc["y"], dc["z"])
-            if max(abs(a - c) for a, c in zip(got, b["drawCenter"])) > 0.01 or (b["size"] is not None and abs(l["maxDrawSizeInTiles"] - b["size"]) > 0.01):
-                mism.append((f["name"], got, l["maxDrawSizeInTiles"]))
+        mism = LC.check_labels(plan["features"], features(), "before")
         print("%s: %d features, live != before on %d" % (which, len(plan["features"]), len(mism)), mism[:5])
     elif which == "u2":
         need = defaultdict(set)
@@ -110,11 +130,7 @@ with RimBridge(host, port, token) as rb:
 
     bad = []
     if which in ("u1", "labels70"):
-        live = features()
-        for f in plan["features"]:
-            l, a = live[f["name"]], f["after"]; dc = l["drawCenter"]
-            if (a["size"] is not None and abs(l["maxDrawSizeInTiles"] - a["size"]) > 0.01) or max(abs(x - y) for x, y in zip((dc["x"], dc["y"], dc["z"]), a["drawCenter"])) > 0.05:
-                bad.append(f["name"])
+        bad = LC.check_labels(plan["features"], features(), "after")
     elif which == "u2":
         need = defaultdict(set)
         for m, ts in plan["remove"].items():
