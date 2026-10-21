@@ -24,7 +24,7 @@
     <tickerType>Rare</tickerType>
     <size>(4,4)</size>
     <graphicData>
-      <texPath>Things/Building/RubblePile</texPath>
+      <texPath>Things/Building/RM_TitanicCorpseSite</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(4,4)</drawSize>
     </graphicData>
