@@ -1,0 +1,1 @@
+A loadAfter check that names a COMPOSED member's packageId (e.g. mandrake.rm.webwork, folded into mandrake.rm.biomes) is checking a dead edge: resolve the runtime id with biomes_compose.folded_ids() first. lint_webwork_defs' ww-economy check went red for 10 days because About.xml was correctly changed to the composite id on 2026-10-11 (038d5f65c2) and the lint was not.

@@ -28,6 +28,7 @@ import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import biomes_compose  # noqa: E402
 import lint_mod_defs  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
@@ -288,8 +289,11 @@ def main(argv):
     if os.path.isdir(eco):
         about = read(os.path.join(eco, "About", "About.xml"))
         la = re.search(r"<loadAfter>(.*?)</loadAfter>", about, flags=re.S)
-        if not la or "mandrake.rm.webwork" not in la.group(1):
-            E("ww-economy", "ShokkweaveEconomy does not load after mandrake.rm.webwork: its Shokkweave relabel would be overwritten by the thrixweave one")
+        # Webwork is composed into mandrake.rm.biomes (Biomes.compose.json), so its own packageId never loads and an
+        # edge naming it does nothing: the order is only real against the RUNTIME id (about_load_order_lint folds the same way).
+        ww_id = biomes_compose.folded_ids(SRC).get("mandrake.rm.webwork", "mandrake.rm.webwork")
+        if not la or ww_id not in la.group(1).lower():
+            E("ww-economy", f"ShokkweaveEconomy does not load after {ww_id} (Webwork's runtime packageId): its Shokkweave relabel would be overwritten by the thrixweave one")
         for p in glob.glob(os.path.join(eco, "Patches", "*.xml")):
             t = read(p)
             if "Hyperweave" in t and "ThingDef[defName=\"Hyperweave\"]" in t and "PatchOperationReplace" not in t and "PatchOperationAdd" not in t:
