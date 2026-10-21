@@ -14,25 +14,30 @@ Same source as `world_label_curve.py`: `<world><grid><layers><values>
 21,872 ushorts, one per tile, storing each tile's `WorldFeature.uniqueID`
 directly. Joined on **uniqueID**, never list index (`WORLDVIEW_MISLABEL_FALLOUT_1`).
 
-## The coordinate transform -- MEASURED, not assumed
+## The coordinate transform -- from the ENGINE SOURCE, not from a fit
 
-`drawCenter` is a raw engine `Vector3(x, y, z)` at radius 100 (confirmed: every
-stored vector's magnitude is ~99.99-100.0). This codebase's own `worldgeom.py`
-builds tile-center unit vectors as
-`vec = (cos(lat)*cos(lon), sin(lat), cos(lat)*sin(lon))` from a CSV of tile
-positions exported live from the same engine. Comparing the two directly gives
-near-ZERO or negative dot products even for the two features already verified
-correct -- the two conventions disagree on the sign of z (equivalently, on the
-handedness of longitude). Negating z brings both known-good features into close
-alignment (dot 0.978 and 0.996; see `_selfcheck_transform`, which runs on every
-invocation and refuses to proceed if it doesn't hold):
+`drawCenter` is a raw engine `Vector3(x, y, z)` at radius 100. The engine's own
+inverse is `PlanetLayer.LongLatOf` (1.6 source):
 
-    ours_vec = normalize((x, y, -z) / 100)
-    raw_vec  = (ours_vec.x * 100, ours_vec.y * 100, -ours_vec.z * 100)
+    lon = atan2(x, -z),  lat = asin(y / radius)
 
-This is a coordinate-convention fact about comparing worldgeom.py's vectors to
-a raw Vector3, not a bug in either. Nothing here writes a raw engine value
-without going through `vec_to_raw`.
+and `worldgeom.py` builds `vec = (cos(lat)cos(lon), sin(lat), cos(lat)sin(lon))`
+from the CSV that `jawa/world_tile_export` wrote with that same LongLatOf. So
+
+    raw = R * (vec.z, vec.y, -vec.x)          (vec_to_raw)
+    vec = (-raw.z, raw.y, raw.x) / R          (raw_to_vec)
+
+🔴 Until 2026-10-20 this module used `vec = (x, y, -z)` -- a REFLECTION, fitted
+so that two hand-picked "known good" labels (Fall Line, The Breaks) lined up.
+Both of them happen to sit where the two frames nearly agree, so the check
+could not tell the frames apart. Measured 2026-10-20
+(`design/Jawa/worldbuilding/parity_causes_2026-10-20.md`): in the engine frame
+every label of the pre-2026-10-09 canonical save AND every label the engine
+itself placed on the 2026-10-20 dev world (`world_features_import` puts it on a
+member tile's `GetTileCenter`) sits within 0.14 deg of its own tiles -- 0 wrong
+-- while the old frame called 52 of 63 wrong. The 2026-10-09 "fix" written by
+this module with the old frame moved 60 canonical labels OFF their regions.
+`_selfcheck_transform` now asserts the LongLatOf identity on real tiles.
 
 ## What "wrong" means for a single-piece region
 
@@ -103,15 +108,10 @@ import worldgeom  # noqa: E402
 RADIUS = 100.0
 N_TILES = 21872
 
-# The two features an earlier pass (FALL_LINE_MAJOR_REGION_LABEL_1 / the
-# 2026-09-21 sizing note) already checked by hand and confirmed correct.
-# Used only to self-verify the coordinate transform above -- never as a
-# source of any numeric threshold.
-KNOWN_GOOD = {"Fall Line": 0.9, "The Breaks": 0.9}
-
-# MEASURED gap in the sorted dist_to_nearest_member list (see module docstring):
-# 9 features cluster at 0.30-4.08 deg, Fall Line (prior hand-verified) at 2.43,
-# then nothing until 6.32. 5.0 sits in that gap.
+# Engine frame, 2026-10-20: every correctly placed label measured within 0.14 deg
+# of one of its own tiles (mean tile arc ~1.48 deg); a misplaced one is tens of
+# degrees off. 5.0 stays as the tolerance: a label within ~3 tiles of its
+# region is on it.
 FOOTPRINT_TOL_DEG = 5.0
 
 
@@ -121,8 +121,9 @@ def parse_vec3(s):
 
 
 def raw_to_vec(raw3):
+    """Engine Vector3 -> worldgeom unit vector (inverse of LongLatOf's frame)."""
     x, y, z = raw3
-    v = np.array([x, y, -z]) / RADIUS
+    v = np.array([-z, y, x]) / RADIUS
     n = np.linalg.norm(v)
     if n < 1e-9:
         raise SystemExit("degenerate drawCenter %r" % (raw3,))
@@ -130,8 +131,16 @@ def raw_to_vec(raw3):
 
 
 def vec_to_raw(v):
+    """worldgeom unit vector -> engine Vector3 at radius 100."""
     x, y, z = (float(c) for c in v)
-    return (x * RADIUS, y * RADIUS, -z * RADIUS)
+    return (z * RADIUS, y * RADIUS, -x * RADIUS)
+
+
+def engine_longlat(raw3):
+    """PlanetLayer.LongLatOf on a raw Vector3: (lon, lat) in degrees."""
+    x, y, z = raw3
+    r = (x * x + y * y + z * z) ** 0.5
+    return degrees(np.arctan2(x, -z)), degrees(np.arcsin(y / r))
 
 
 def fmt_raw(raw3):
@@ -195,37 +204,20 @@ import xml.etree.ElementTree as ET  # noqa: E402
 
 
 def _selfcheck_transform(ordered, tiles_by_uid, geo):
-    """Refuse to proceed unless BOTH already-hand-verified features (a) align
-    with the transform (dot check) AND (b) would NOT be re-flagged wrong by
-    the footprint-distance test below -- the second check is what caught the
-    first (wrong) version of this test flagging Fall Line as broken."""
-    found = 0
-    for f in ordered:
-        want = KNOWN_GOOD.get(f["name"])
-        if want is None:
-            continue
-        found += 1
-        tiles = tiles_by_uid.get(f["uid"], [])
-        comps = components(tiles, geo)
-        c = centroid(comps[0], geo)
-        dcv = raw_to_vec(parse_vec3(f["drawCenter_raw"]))
-        dot = float(np.dot(c, dcv))
-        if dot < want:
-            raise SystemExit(
-                "TRANSFORM SELF-CHECK FAILED for %r: dot=%.4f (want > %.2f). "
-                "Refusing to trust drawCenter<->vec conversion -- do not "
-                "proceed on this data." % (f["name"], dot, want))
-        tv = geo.vec[comps[0]]
-        dist = float(np.degrees(np.arccos(np.clip(tv @ dcv, -1, 1).max())))
-        if dist > FOOTPRINT_TOL_DEG:
-            raise SystemExit(
-                "WRONGNESS SELF-CHECK FAILED for %r: dist_to_nearest_member="
-                "%.2f deg > tolerance %.1f -- this feature was already "
-                "hand-verified correct; a check that re-flags it is broken, "
-                "not the data." % (f["name"], dist, FOOTPRINT_TOL_DEG))
-    if not found:
-        raise SystemExit("self-check features (%s) not found on this save -- "
-                          "refusing to run unverified" % sorted(KNOWN_GOOD))
+    """Refuse to proceed unless vec_to_raw/raw_to_vec reproduce the engine's
+    PlanetLayer.LongLatOf on real tiles: the lat/lon worldgeom holds for a tile
+    WAS written by LongLatOf, so LongLatOf(vec_to_raw(vec[t])) must give it back.
+    (The old check -- two hand-picked labels -- passed in the WRONG frame.)"""
+    for t in (0, 100, 5000, 12345, geo.n - 1):
+        lon, lat = engine_longlat(vec_to_raw(geo.vec[t]))
+        dlon = (lon - float(geo.lon[t]) + 180.0) % 360.0 - 180.0
+        if abs(lat - float(geo.lat[t])) > 0.01 or abs(dlon) > 0.01:
+            raise SystemExit("TRANSFORM SELF-CHECK FAILED on tile %d: LongLatOf gives "
+                              "(%.4f, %.4f), worldgeom has (%.4f, %.4f)"
+                              % (t, lon, lat, geo.lon[t], geo.lat[t]))
+        back = raw_to_vec(vec_to_raw(geo.vec[t]))
+        if float(np.dot(back, geo.vec[t])) < 0.999999:
+            raise SystemExit("TRANSFORM SELF-CHECK FAILED: raw_to_vec does not invert vec_to_raw")
 
 
 def build_audit(save_path):

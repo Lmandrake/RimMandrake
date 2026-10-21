@@ -18,7 +18,8 @@ It is **not** the frozen record: `world/ASHKARR_WORLDMAP_*.csv` is untouched.
 | tiles | 19,119 tiles: each frozen `RUT_` twin → its `RM_` survivor per `biome_paint_list.md` (25 pairs). Kept: `RUT_Umbra` ×2,531 (Auroral Umbra, owner 2026-10-19), `RM_Pyrelands` ×222 (the old `ZBiome_Grasslands` tiles). The 44 hash-56104 tiles are `RUT_TheForge` → `RM_TheForge` |
 | settlements | `biome` column synced to the remapped tile (92 rows); faction defs already `RUT_Jawa_*` |
 | mutators | the five unresolvable names (49 entries), table below; 24 tiles left with no mutator are dropped from the CSV |
-| landmarks, links | unchanged (all resolve) |
+| landmarks | unchanged (all resolve) |
+| links | same 326 river / 1,242 road edges and defs; **river rows re-ordered and re-oriented mouth-first** (2026-10-20, U4) so `world_links_import` rebuilds the canonical `riverDist` exactly (the record's export order flattened it to max 5). Generator: `src/RimMandrake/Utils/parity_fix_plans.py`; cause: `design/Jawa/worldbuilding/parity_causes_2026-10-20.md` |
 | factions | 4 defs not on PAINT dropped (no settlement uses them), with their relation entries |
 | features | the 71 labels: `WB_MapLabelFeature` → `Desert` (PROVISIONAL, below) |
 | landforms | not copied: Geological Landforms names, no def type on the PAINT list, never stamped by w9 |
