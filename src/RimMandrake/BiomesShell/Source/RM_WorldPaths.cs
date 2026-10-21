@@ -28,8 +28,10 @@ namespace RimMandrake.Biomes
     //  * the five vanilla RoadWorldLayerDef colours and the vanilla RoadDef/RiverDef widths below;
     //  * rivers drawn with the ROAD material (hard edge, same look rules as roads, queues 3520/3530 kept so roads
     //    still cross over rivers), with a dark bank: the bank is the water colour x bankShade. The WATER colour stays
-    //    whatever FlowWorks' River Colours chose (the owner's gradient); only a river still in vanilla riverColor
-    //    gets riverWater (bright azure).
+    //    whatever FlowWorks' River Colours chose (water by biome, 2026-10-20); only a river still in vanilla riverColor
+    //    gets riverWater (the same blue-grey).
+    // Roads are earth tones under a dark casing (owner 2026-10-20: a slate stone road on the Scald shore "looks like a
+    // river, but it isn't"); no road layer is blue or teal, so blue reads as water only.
     // Values chosen by contrast against every face each tier crosses on the dev world (all tiers clear casing
     // WCAG >= 3 and fill dE76 >= 20 on every crossed land face, day side): design/Jawa/worldbuilding/world_paths_readable_2026-10-20.md.
     [StaticConstructorOnStartup]
@@ -39,8 +41,8 @@ namespace RimMandrake.Biomes
         public static readonly Dictionary<string, Color> LayerColor = new Dictionary<string, Color>
         {
             { "Outline", new Color(0.05f, 0.04f, 0.035f) },   // near-black warm casing, every road
-            { "Dirt",    new Color(0.30f, 0.16f, 0.07f) },    // umber: dirt path and dirt road (kept clear of the red/orange river headwaters)
-            { "Stone",   new Color(0.15f, 0.25f, 0.25f) },    // slate: stone road
+            { "Dirt",    new Color(0.30f, 0.16f, 0.07f) },    // umber: dirt path and dirt road
+            { "Stone",   new Color(0.18f, 0.15f, 0.12f) },    // grey-brown: stone road (was slate (0.15,0.25,0.25), read as a blue river on the Scald shore, owner 2026-10-20)
             { "Gravel",  new Color(0.80f, 0.50f, 0.00f) },    // gold: ancient asphalt road / highway fill
             { "Asphalt", new Color(0.10f, 0.07f, 0.05f) },    // dark centre line on the gold
         };
@@ -60,8 +62,8 @@ namespace RimMandrake.Biomes
             { "Creek", 0.32f }, { "River", 0.46f }, { "LargeRiver", 0.62f }, { "HugeRiver", 0.82f },
         };
 
-        public static Color32 riverWater = new Color32(15, 84, 217, 255);   // (0.06, 0.33, 0.85)
-        public static Color32 riverBank = new Color32(5, 13, 46, 255);      // (0.02, 0.05, 0.18)
+        public static Color32 riverWater = new Color32(20, 41, 77, 255);    // (0.08, 0.16, 0.30): the same blue-grey as FlowWorks' default water
+        public static Color32 riverBank = new Color32(4, 9, 17, 255);       // riverWater x bankShade
         public static float bankShade = 0.22f;   // bank of a river another mod coloured = its water colour x this
         static readonly Color32 VanillaRiver = new Color32(73, 82, 100, 255);   // WorldDrawLayer_Rivers.riverColor
 
@@ -144,7 +146,7 @@ namespace RimMandrake.Biomes
         }
 
         // Runs LAST (Priority.Last) so it sees the colour any other prefix chose. FlowWorks' River Colours
-        // (RM_RiverColors.cs, the owner's 2026-09-06 gradient: red headwater, brackish jungle, toxic terminus) sets the
+        // (RM_RiverColors.cs: blue-grey water, tinted inside the Contagion, Miasma, Wasteland and Rust Cathedral) sets the
         // water colour per tile; that colour is KEPT, and only the bank becomes a dark shade of it. Only when nobody
         // recoloured the river (the colour is still vanilla riverColor) does the water get riverWater.
         static void GeneratePathsPrefix(WorldDrawLayer_Paths __instance, LayerSubMesh subMesh, ref Color32 color)
