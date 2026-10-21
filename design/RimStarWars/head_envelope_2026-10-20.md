@@ -72,7 +72,7 @@ median of THAT facing measured by the same detector:
   skull chin 0.25 below the vanilla chin and facing height ±30% (its back view carries a nape below the dome that the
   trunk hides on the front, so the north skull reads ~1.24x; the north is seated on the south's CROWN instead).
 - `known_violations`: a real defect left visible, owned by an item. `check` prints it as KNOWN, and FAILS once it no
-  longer occurs (stale), so the entry cannot outlive the defect. One: the Ortolan side view (below).
+  longer occurs (stale), so the entry cannot outlive the defect. None today (the Ortolan side view was repainted, below).
 
 ## What the tool does now (`src/RimMandrake/Utils/art/fit_head_canvas.py`)
 - `skull_mass()`: alpha mask; largest inscribed radius R by erosion depth; morphological OPENING with radius 0.55 R
@@ -108,13 +108,15 @@ chin lower than vanilla):
 | Lasat | `--facing-scale north=1.10` | 1.00, +0.00, +0.00 | 1.02, +0.02, 0.00 | 0.91, -0.09, 0.00 |
 | Mimbanese | `--facing-scale east=0.935 --squeeze-x east=0.93 --facing-scale north=1.40` | 1.00, 0.00, 0.00 | 0.93, -0.07, 0.00 | 0.99, -0.01, 0.00 |
 | Nelvaanian | `--facing-scale east=0.89 --squeeze-x east=0.93` | 0.99, -0.01, 0.00 | 0.90, -0.10, 0.00 | 0.90, -0.10, 0.00 |
-| Ortolan | `--anchor north-crown --facing-scale east=0.80 --facing-scale north=0.98` | 0.99, 0.00, 0.00 | **0.74**, -0.26, 0.00 | 1.24 (nape), 0.00, +0.24 |
+| Ortolan | `--anchor north-crown --facing-scale north=0.98` (east = repainted ear) | 1.00, 0.00, 0.00 | 0.94, -0.06, 0.00 | 1.24 (nape), 0.00, +0.25 |
 
 Before (the bbox-seated 6d77ea123, same detector) the Ortolan skull was 0.70x vanilla on the south with its chin 0.43 of
 a vanilla head ABOVE the vanilla chin (0.60 on the side, 0.25 on the back): the ear tips had been seated as the chin.
-**Ortolan side view (KNOWN, `ORTOLAN_SIDE_EAR_REDRAW_OUTGROWS_ITS_CANVAS`):** its ear is ~25% longer than the front
-ear, so at vanilla skull height it runs off the canvas bottom; the side is drawn at 0.74x until the ear is repainted
-(cosmetic, so the owner's permission comes first).
+**Ortolan side view (repainted 2026-10-20, owner by card: "Ortolan side-view ear ~25% longer than the front ear … Repaint
+that ear shorter?" -> "Repaint the ear"):** the east ear was shortened with `editing-images` from the pre-fit `e9d81b61f`
+art (skull, eye, trunk, palette kept) so its tip ends level with the trunk tip, as on the front; refitted with the same
+one-scale fit as south/north, no east facing-scale. The side skull is now 0.94x vanilla (was 0.74x) and the
+`known_violations` entry is deleted; `check` passes all four species without it.
 
 UNMEASURED: how they read in game (`HEADS_VERIFY_SHRUNK_TO_FIT_THE_HATS`).
 

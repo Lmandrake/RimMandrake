@@ -206,13 +206,6 @@
   }
  },
  "known_violations": {
-  "_doc": "Violations that are REAL and stay visible (check prints them as KNOWN and does not fail on them; a known violation that no longer occurs FAILS as stale, so this list cannot outlive the defect). Each names the item that owns the fix. Not a limit change.",
-  "Ortolan": [
-   [
-    "east",
-    "skull too short",
-    "ORTOLAN_SIDE_EAR_REDRAW_OUTGROWS_ITS_CANVAS: the side-view ear is ~25% longer than the front-view ear, so with the skull at vanilla height it runs off the canvas bottom; the side view is drawn at 0.74 of vanilla skull height until the ear is repainted (cosmetic: owner permission first)"
-   ]
-  ]
+  "_doc": "Violations that are REAL and stay visible (check prints them as KNOWN and does not fail on them; a known violation that no longer occurs FAILS as stale, so this list cannot outlive the defect). Each names the item that owns the fix. Not a limit change."
  }
 }
