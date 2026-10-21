@@ -278,7 +278,7 @@
     </match>
   </Operation>
 
-  <!-- RM_PaleTree, quellan tree (6 wide): PaleTree_A 4 contact cells, PaleTree_B 5 contact cells, PaleTree_b 3 contact cells, PaleTree_c 9 contact cells, PaleTree_d 4 contact cells, PaleTree_e 5 contact cells -->
+  <!-- RM_PaleTree, quellan tree (6 wide): PaleTree_A 4 contact cells, PaleTree_b 3 contact cells, PaleTree_c 9 contact cells, PaleTree_d 4 contact cells, PaleTree_e 5 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_PaleTree"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -294,15 +294,6 @@
               <contact>
                 <li>(-1,0)</li><li>(1,0)</li>
                 <li>(0,1)</li><li>(1,1)</li>
-              </contact>
-            </li>
-            <li>
-              <texture>PaleTree_B</texture>
-              <opaqueMin>(0.0352,0.0195)</opaqueMin>
-              <opaqueMax>(0.9805,0.9727)</opaqueMax>
-              <contact>
-                <li>(-1,0)</li><li>(1,0)</li>
-                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li>
               </contact>
             </li>
             <li>

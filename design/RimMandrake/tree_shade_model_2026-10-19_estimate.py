@@ -12,7 +12,8 @@ E is the median sun elevation from each biome sheet. Seeded; runs ~15 min (pure 
 """
 import json,sqlite3,math,random
 import numpy as np
-D="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/"
+import sys; sys.path.insert(0,"/home/mandrake/rm/foundry/src/RimMandrake/Utils"); import game_paths
+D=game_paths.DUMP_ROOT.rstrip("/\\")+"/"
 bd={b['defName']:b for b in json.load(open(D+"captures/2026-10-19T11-23-54Z/defs/BiomeDef.json"))['defs']}
 c=sqlite3.connect(D+"defs.sqlite")
 def vs(n):

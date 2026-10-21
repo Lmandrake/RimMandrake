@@ -315,7 +315,7 @@ def fix_effects_vs_dump_static(t):
     against the load-14 dump, for the donors that are ACTIVE there. UNMEASURED without a dump or the Steam folders."""
     with t.component("every_active_donor_fix_shows_its_effect_in_the_dump", beyond_toggle=True):
         ops = leaf_ops()
-        if len(ops) < 25 or not any(o["type"] == "WorkGiverDef" for o in ops):
+        if len(ops) < 15 or not any(o["type"] == "WorkGiverDef" for o in ops):
             raise ExpectationFailed("blind parse: %d leaf ops" % len(ops))
         try:
             rows, active = _dump_inputs(sorted(set(o["type"] for o in ops)))

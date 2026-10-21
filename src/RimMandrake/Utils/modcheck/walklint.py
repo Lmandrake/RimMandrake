@@ -110,8 +110,8 @@ def find_walks(repo_root):
         return out
     for tier in sorted(os.listdir(base)):
         tdir = os.path.join(base, tier)
-        if not os.path.isdir(tdir):
-            continue
+        if not os.path.isdir(tdir) or tier.startswith("_"):
+            continue  # _drafts/ holds agent-drafted must-show lines, not walks: no subject: header by design
         for name in sorted(os.listdir(tdir)):
             if name.endswith(".md"):
                 out.append(os.path.join(tdir, name))

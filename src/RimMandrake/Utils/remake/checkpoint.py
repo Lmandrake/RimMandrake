@@ -39,7 +39,7 @@ try:
     import game_paths  # noqa: E402
     LOCALLOW_DEFAULT = game_paths.LOCALLOW
 except Exception:  # pragma: no cover
-    LOCALLOW_DEFAULT = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
+    LOCALLOW_DEFAULT = ""  # unreachable in practice: game_paths is beside this package
 ROOT_DEFAULT = "/mnt/d/ClaudeWork/remake"
 FULL_LATEST = os.path.join(REPO, "infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml")
 CHERRY = "Mod_3521312241_Mod_CherryPicker.xml"

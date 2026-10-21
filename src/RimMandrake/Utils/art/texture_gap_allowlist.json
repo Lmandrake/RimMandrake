@@ -1,41 +1,4 @@
 {
  "frozen": "2026-10-10",
- "entries": [
-  {
-   "texPath": "BMT_Caverns/Terrains/MycelialSoil",
-   "class": "INACTIVE",
-   "owed": "inert: Biomes! Caverns is not in the active list, so the donor def never loads; remove the patch/def when the donor is formally dropped",
-   "added": "2026-10-10",
-   "defs": [
-    "src/RimUtinni/FungalSoilTrade/Defs/ThingDefs_Items/RUT_FungalSoil.xml"
-   ]
-  },
-  {
-   "texPath": "BMT_Caverns/Things/Animal/BeardedYak/Dessicated_BeardedYak",
-   "class": "INACTIVE",
-   "owed": "inert: Biomes! Caverns is not in the active list, so the donor def never loads; remove the patch/def when the donor is formally dropped",
-   "added": "2026-10-10",
-   "defs": [
-    "src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml"
-   ]
-  },
-  {
-   "texPath": "BMT_Caverns/Things/Animal/FreezerFrog/Dessicated_FreezertFrog",
-   "class": "INACTIVE",
-   "owed": "inert: Biomes! Caverns is not in the active list, so the donor def never loads; remove the patch/def when the donor is formally dropped",
-   "added": "2026-10-10",
-   "defs": [
-    "src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml"
-   ]
-  },
-  {
-   "texPath": "BMT_Caverns/Things/Animal/GlarralPenguin/Dessicated_GlarralPenguin",
-   "class": "INACTIVE",
-   "owed": "inert: Biomes! Caverns is not in the active list, so the donor def never loads; remove the patch/def when the donor is formally dropped",
-   "added": "2026-10-10",
-   "defs": [
-    "src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml"
-   ]
-  }
- ]
+ "entries": []
 }

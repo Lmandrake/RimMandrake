@@ -94,6 +94,7 @@ def main():
                 for dt in ("FactionDef", "PawnKindDef")}
     except Exception as e:
         print("UNMEASURED: no readable def dump: %s" % e)
+        print("UNMEASURED, not a pass or a fail")
         return 2
     refs = dump_refs(rows)
     # Sanity probe (can fail): the dump must show xenotypeSets at all -- PirateWaster with a non-empty set, and a
@@ -105,6 +106,7 @@ def main():
     if not sets or n_sets < 100:
         print("UNMEASURED: sanity probe failed (PirateWaster xenotypeSet empty=%s, %d defs with a set; dump cannot see xenotypeSets)"
               % (not sets, n_sets))
+        print("UNMEASURED, not a pass or a fail")   # the runner's verdict phrase (rc 2 alone reads as FAIL)
         return 2
     post_patch = not any(x == "Waster" for _, n, _, x in refs if n == "PirateWaster")
     print("dump is %s our patch (PirateWaster %s Waster; %d xenotypeSet defs read)"

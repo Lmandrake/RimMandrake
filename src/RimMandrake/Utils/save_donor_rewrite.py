@@ -252,7 +252,8 @@ def line_span(raw, start, end):
 # the tile array, its order and every other byte of the file are untouched. A mapping row with new=null is left on
 # its tiles (the load drops it) and reported.
 MAP_JSON = os.path.join(SRC, "design", "RimMandrake", "retired_mutators_port_map.json")
-CAPTURES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/"
+import game_paths  # noqa: E402  the one path seam (HERE is on sys.path above)
+CAPTURES = game_paths.CAPTURES.rstrip("/\\") + "/"
 OLD_CAPTURE = "2026-08-29T13-30-02Z"   # the 584-mod set the canonical save was made under (donors loaded)
 NEW_CAPTURE = "2026-10-19T11-55-43Z"   # the donor-free set the ports will load into
 

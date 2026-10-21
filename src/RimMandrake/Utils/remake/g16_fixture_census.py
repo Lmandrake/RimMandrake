@@ -37,7 +37,7 @@ try:
     import game_paths
     SAVES = game_paths.SAVES
 except Exception:  # pragma: no cover
-    SAVES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"
+    SAVES = ""  # unreachable in practice: game_paths is beside this package
 
 
 def tools(save, modlist, out, stem):

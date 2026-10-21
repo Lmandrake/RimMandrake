@@ -1,5 +1,5 @@
 {
- "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); supplemented offline from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census), 523 tools, refreshed 2026-10-10; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in /home/mandrake/rm/bench/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +3 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +7 tools from C# [Tool] attributes in /home/mandrake/.seat-tmp/BENCH/claude-1000/-home-mandrake-rm-bench/ad1e252d-0853-4c98-a210-c848bbcfe7f8/scratchpad/head/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
+ "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); supplemented offline from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census), 523 tools, refreshed 2026-10-10; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in /home/mandrake/rm/bench/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +2 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +1 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +3 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +7 tools from C# [Tool] attributes in /home/mandrake/.seat-tmp/BENCH/claude-1000/-home-mandrake-rm-bench/ad1e252d-0853-4c98-a210-c848bbcfe7f8/scratchpad/head/src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default; +3 tools from C# [Tool] attributes in ../../bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
  "tools": {
   "deepfire/add_coat": {
    "parameters": [
@@ -1179,6 +1179,16 @@
    "required": [
     "ideo"
    ]
+  },
+  "jawa/ideo_load_rid": {
+   "parameters": [
+    "allowDuplicateName",
+    "dryRun",
+    "path",
+    "setPlayerPrimary"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/ideo_of": {
    "parameters": [
@@ -2468,6 +2478,15 @@
    "parameters": [],
    "required": []
   },
+  "jawa/scenario_select": {
+   "parameters": [
+    "advance",
+    "openIfAbsent",
+    "scenario"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/screenshot_mode": {
    "parameters": [
     "enabled"
@@ -2984,6 +3003,15 @@
    ],
    "required": []
   },
+  "jawa/start_site_select": {
+   "parameters": [
+    "advance",
+    "jumpCamera",
+    "tiles"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/startup_types": {
    "parameters": [
     "excludeVanilla",
@@ -3473,6 +3501,7 @@
     "clearExisting",
     "expectTiles",
     "featureDef",
+    "featuresPath",
     "path"
    ],
    "required": []
@@ -3498,6 +3527,7 @@
   "jawa/world_info_set": {
    "parameters": [
     "allowNonPersistent",
+    "initialMapSize",
     "landmarkDensity",
     "name",
     "overallPopulation",

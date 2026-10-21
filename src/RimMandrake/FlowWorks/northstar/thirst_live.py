@@ -1417,8 +1417,7 @@ def main(argv=None, bridge=None):
             B.call("jawa/spawn_batch", ops="RM_BlueIce:%d,%d,5" % (CX + 2, CZ))
             B.call("jawa/spawn_batch", ops="RM_BucketEmpty:%d,%d,1" % (CX + 2, CZ + 1), stuff="WoodLog")
             laid26 = count("RM_BlueIce") > 0 and count("RM_BucketEmpty") > 0     # read back: a refused spawn is not a mod fault
-            logp = os.path.join(os.environ.get("USERPROFILE", r"C:\Users\Mandrake"), "AppData", "LocalLow", "Ludeon Studios",
-                                "RimWorld by Ludeon Studios", "Player.log")
+            logp = __import__("game_paths").PLAYER_LOG
             try:
                 log0 = os.path.getsize(logp)
             except OSError:

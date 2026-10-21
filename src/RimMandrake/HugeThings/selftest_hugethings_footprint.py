@@ -44,7 +44,7 @@ EXPECTED = {
     "RM_GiantAgarilux": {"GiantAgarilux_A": 0, "GiantAgarilux_b": 0, "GiantAgarilux_c": 3},   # b/c added 2026-10-19 (same sheet); _c touches 3 cells, so it is no longer root-only
     "RM_Ullumbra": {"RM_Ullumbra_a": 2, "RM_Ullumbra_b": 2, "RM_Ullumbra_c": 1},   # new Rot mushroom, owner 2026-10-19
     "RM_WitchesOyster": {"WitchesOyster_A": 9, "WitchesOyster_b": 3, "WitchesOyster_c": 8},   # folder installed 80b9b9f7c
-    "RM_PaleTree": {"PaleTree_A": 4, "PaleTree_B": 5, "PaleTree_b": 3, "PaleTree_c": 9, "PaleTree_d": 4, "PaleTree_e": 5},   # B/C installed 80b9b9f7c, later picks via art ledger
+    "RM_PaleTree": {"PaleTree_A": 4, "PaleTree_b": 3, "PaleTree_c": 9, "PaleTree_d": 4, "PaleTree_e": 5},   # PaleTree_B retired 2026-10-19 (case-twin of _b, 0cccafd27)
 }
 # Before this rework every giant blocked a trunkWidth x trunkDepth column north of its root (minus the root):
 BEFORE = {"RM_AgariluxPrime": 15, "RM_DribblingCap": 8, "RM_Nogtyl": 8, "RM_Arpeau": 3, "RM_ArbuscularMycorrhiza": 8,

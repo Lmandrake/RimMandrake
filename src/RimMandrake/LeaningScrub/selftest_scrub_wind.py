@@ -6,8 +6,8 @@ What a machine can check without the game:
          plants; every west-leaning name is a real variant PNG of a listed plant; and the art agrees with the list:
          re-measured from the PNGs, a variant leaning clearly west (top drawn left of the base by >= 4.5% of the canvas)
          must be listed, one leaning clearly east must not be. RM_PlantLean.cs names no defName (selection is data).
-  gale   RM_Gale carries RM_WeatherOverlay_GaleDust; no RM_GaleDust texture is installed (unreviewed art never ships:
-         the overlay runs on its honestly-marked placeholder until review).
+  gale   RM_Gale carries RM_WeatherOverlay_GaleDust; the owner-picked RM_GaleDust art (pick A, installed 2026-10-20) is
+         present, so the overlay does not run on a missing texture.
   calm   the biome table carries no stock weather above 0 (incl. Overcast, GrayPall, DryThunderstorm); every windy twin
          exists, blows (windSpeedOffset > 0, factor not under 1) and replaced its stock row at the same commonality; and
          against the vanilla 1.6 Data, when present, each twin copies its stock def's fields except the wind and words.
@@ -122,9 +122,8 @@ def findings(d):
     if gale is None or not any((li.text or "").strip().endswith("RM_WeatherOverlay_GaleDust")
                                for li in gale.findall("overlayClasses/li")):
         bad.append("gale: RM_Gale carries no RM_WeatherOverlay_GaleDust overlay")
-    if d["gale_tex"]:
-        bad.append("gale: RM_GaleDust art is installed (%s) - only reviewed art ships; remove this check when the "
-                   "owner has reviewed it" % d["gale_tex"])
+    if not d["gale_tex"]:
+        bad.append("gale: no RM_GaleDust texture is installed (the owner's pick A, 2026-10-20) - the overlay has nothing to draw")
     # ---- calm days
     table = {}
     for c in d["biome"].iter("baseWeatherCommonalities"):
@@ -194,7 +193,7 @@ BREAKS = {
     "non-plant listed": lambda d: ET.SubElement(lean_ext(d["biome"]).find("leanPlants"), "li").__setattr__("text", "RM_NoSuchPlant"),
     "hardcoded defName": lambda d: d.__setitem__("cs", d["cs"] + '\nstatic string x = "RM_Fuzz";'),
     "gale overlay gone": lambda d: d["weathers"]["RM_Gale"].remove(d["weathers"]["RM_Gale"].find("overlayClasses")),
-    "unreviewed art installed": lambda d: d.__setitem__("gale_tex", ["RM_GaleDust_A.png"]),
+    "owner-picked gale art removed": lambda d: d.__setitem__("gale_tex", []),
     "stock Overcast back": lambda d: _set_row(d, "Overcast", "5"),
     "twin calm": lambda d: d["weathers"]["RM_ScrubOvercast"].find("windSpeedOffset").__setattr__("text", "0"),
     "twin unlisted": lambda d: _set_row(d, "RM_ScrubGrayPall", "0"),

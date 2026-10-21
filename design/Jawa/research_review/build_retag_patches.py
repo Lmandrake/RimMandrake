@@ -149,6 +149,8 @@ RETIRED_SOURCE_MODS = {
     "Dark Ages : Crypts and Tombs",   # van.dacrypts
     "Dedicated Turrets",              # clown.dedicatedturrets
     "Shield Generators",              # neronix17.shieldgenerators
+    "ReGrowth 2",                     # retired 2026-10-18 (460a7fe81): its patches and rows left the ship
+    "Vanilla Factions Expanded - Insectoids 2",   # retired 2026-10-18 (c3e7e84a8)
 }
 
 

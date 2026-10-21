@@ -38,7 +38,9 @@ STEAM = Path("/mnt/c/Program Files (x86)/Steam/steamapps")
 ROOTS = [STEAM / "common/RimWorld/Mods", STEAM / "workshop/content/294100"]
 GAME_DATA = STEAM / "common/RimWorld/Data"
 MANAGED = STEAM / "common/RimWorld/RimWorldWin64_Data/Managed"
-MODSCONFIG = Path("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import game_paths  # noqa: E402  the one path seam
+MODSCONFIG = Path(game_paths.MODS_CONFIG)
 CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "rm_save_class_census_types.v2.json"
 UNREADABLE: list[str] = []  # DLLs dnfile could not read: their types are invisible, so "unknown" may be false
 

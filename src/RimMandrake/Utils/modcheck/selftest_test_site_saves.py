@@ -150,9 +150,9 @@ check("4 two downed colonists fail the standing-colonist bar", any("standing col
 
 # 5. a save is never overwritten
 d = tempfile.mkdtemp()
-open(os.path.join(d, "RM_TestSite_calm_v1.rws"), "w").close()
+open(os.path.join(d, T.SITES["calm"]["save"] + ".rws"), "w").close()   # the CURRENT calm save name (v2 since 2026-10-17), never a hard-coded version
 try:
-    T.save_site(lambda *a, **k: {}, "RM_TestSite_calm_v1", d, sleep=lambda s: None)
+    T.save_site(lambda *a, **k: {}, T.SITES["calm"]["save"], d, sleep=lambda s: None)
     check("5 save refuses an existing name", False)
 except RuntimeError as ex:
     check("5 save refuses an existing name", "never overwritten" in str(ex))

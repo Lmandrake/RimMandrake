@@ -31,7 +31,8 @@ ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 MAP = os.path.join(ROOT, "design", "RimMandrake", "retired_mutators_port_map.json")
 EH_SRC = os.path.join(ROOT, "src", "RimMandrake", "EnvironmentalHazards", "Source")
-CAPTURES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/"
+import game_paths  # noqa: E402  the one path seam (HERE is on sys.path above)
+CAPTURES = game_paths.CAPTURES.rstrip("/\\") + "/"
 
 fails, notes = [], []
 
