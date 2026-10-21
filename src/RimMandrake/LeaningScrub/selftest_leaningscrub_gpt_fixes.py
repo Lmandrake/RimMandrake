@@ -71,7 +71,7 @@ def main():
     # SCRUB_THORN_FIX_COOLDOWN_PAID_FOR_NOTHING
     check("SCRUB_THORN_FIX_COOLDOWN_PAID_FOR_NOTHING: Scratch reports whether damage was dealt",
           "private static bool Scratch(" in f)
-    sweep = method_body(f, "public void SweepThorns(int now)")
+    sweep = method_body(f, "public void SweepThorns(int now")
     for clock in ("nextThornTick", "nextLitterTick"):
         check("SCRUB_THORN_FIX_COOLDOWN_PAID_FOR_NOTHING: %s set only after a landed Scratch" % clock,
               re.search(r"if \(Scratch\([^;]*\)\)\s*\{\s*%s\[p\] =" % clock, sweep) is not None)
@@ -107,6 +107,33 @@ def main():
     refuse, destroy = pl.find("return false;"), pl.find("t.Destroy();")
     check("SCRUB_GENSTEP_FIX_TIDIES_THEN_QUITS: occupied cell refused before anything is destroyed",
           0 < refuse < destroy, (refuse, destroy))
+
+    # SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL: proof hooks leave a played map's own fires, plants, steel and colonists alone
+    fs = read("RM_FireStamp.cs")
+    stamp = method_body(fs, "public static string ProofStamp(string arg)")
+    clear = method_body(fs, "internal static void ClearNewFires(")
+    check("SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL: ProofStamp snapshots fires and clears only new ones",
+          "HashSet<int> firesBefore = FireIds(map);" in stamp and "ClearNewFires(map, firesBefore, spot, 30f)" in stamp
+          and "!before.Contains(f.thingIDNumber)" in clear and "f.Position.InHorDistOf(spot, 30f)) f.Destroy()" not in stamp)
+    pyre = method_body(read("RM_CallingPyre.cs"), "public static string ProofPyre(string arg)")
+    snap, ign = pyre.find("RM_FireStampProof.FireIds(map)"), pyre.find("RM_CallingPyre.Ignite(")
+    check("SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL: ProofPyre snapshots fires before Ignite and clears only new ones",
+          0 < snap < ign and "RM_FireStampProof.ClearNewFires(map, firesBefore, spot, 30f)" in pyre
+          and "f.Position.InHorDistOf(spot, 30f)) f.Destroy()" not in pyre, (snap, ign))
+    vf = read("RM_VenomvineForms.cs")
+    stand = method_body(vf, "private static Plant Stand(")
+    check("SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL: Stand despawns a bystander plant instead of destroying it",
+          "old.DeSpawn();" in stand and "c.GetPlant(map)?.Destroy();" not in stand)
+    form = method_body(vf, "public static string ProofForm(string args)")
+    check("SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL: ProofForm restores displaced plants after cleanup",
+          form.rfind("Restore(map, displaced);") > form.rfind("made[i].Destroy();") > 0)
+    check("SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL: hoard proof counts and destroys only steel it made",
+          "!steelBefore.Contains(t.thingIDNumber)" in form)
+    check("SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL: sworn proof sweeps only its own two colonists",
+          "comp.SweepThorns(now, new HashSet<Pawn> { marked, bare });" in form
+          and "(only != null && !only.Contains(p))" in method_body(vf, "public void SweepThorns("))
+    check("SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL: FindSpot rejects a disc holding items",
+          "o.GetFirstItem(map) != null" in method_body(vf, "private static IntVec3 FindSpot(Map map)"))
 
     print("%d failed" % len(fails) if fails else "all ok")
     return 1 if fails else 0

@@ -277,11 +277,9 @@ namespace RimMandrake.LeaningScrub
                     }
                     if (!spot.IsValid) return "UNMEASURED: no unroofed flammable plant on this map";
                 }
+                HashSet<int> firesBefore = RM_FireStampProof.FireIds(map);
                 int lit = RM_CallingPyre.Ignite(map, spot, 6f, RM_PyreKernel.FireCount(0), null);
-                foreach (Thing f in new List<Thing>(map.listerThings.ThingsOfDef(ThingDefOf.Fire)))
-                {
-                    if (!f.Destroyed && f.Position.InHorDistOf(spot, 30f)) f.Destroy();
-                }
+                RM_FireStampProof.ClearNewFires(map, firesBefore, spot, 30f);   // only the rite's fires, never the map's own
                 PawnKindDef kind = RM_CallingPyre.StamperKind();
                 int came = -1, raging = 0;
                 if (kind != null)

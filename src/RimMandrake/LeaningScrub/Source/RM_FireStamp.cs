@@ -282,6 +282,24 @@ namespace RimMandrake.LeaningScrub
             return arg.Substring(0, at);
         }
 
+        // Fires present before a proof ran. Cleanup removes only fires born during the proof (the fixture's and anything
+        // they spread to), so a played map's own fires inside the radius survive (SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL).
+        internal static HashSet<int> FireIds(Map map)
+        {
+            var ids = new HashSet<int>();
+            foreach (Thing f in map.listerThings.ThingsOfDef(ThingDefOf.Fire)) ids.Add(f.thingIDNumber);
+            return ids;
+        }
+
+        internal static void ClearNewFires(Map map, HashSet<int> before, IntVec3 spot, float radius)
+        {
+            if (map == null || !spot.IsValid) return;
+            foreach (Thing f in new List<Thing>(map.listerThings.ThingsOfDef(ThingDefOf.Fire)))
+            {
+                if (!f.Destroyed && !before.Contains(f.thingIDNumber) && f.Position.InHorDistOf(spot, radius)) f.Destroy();
+            }
+        }
+
         private static int Fires(Map map, IntVec3 at, int n, List<Thing> made)
         {
             int lit = 0;
@@ -316,6 +334,7 @@ namespace RimMandrake.LeaningScrub
             bool savedMod = RM_LeaningScrubSettings.modEnabled, savedStamp = RM_LeaningScrubSettings.fireStampEnabled;
             var made = new List<Thing>();
             IntVec3 spot = IntVec3.Invalid;
+            HashSet<int> firesBefore = FireIds(map);
             try
             {
                 RM_LeaningScrubSettings.modEnabled = true;
@@ -357,11 +376,7 @@ namespace RimMandrake.LeaningScrub
             finally
             {
                 foreach (Thing t in made) { if (!t.Destroyed) t.Destroy(); }
-                foreach (Thing f in new List<Thing>(map.listerThings.ThingsOfDef(ThingDefOf.Fire)))
-                {
-                    // anything the fixture's fires spread to while it ran
-                    if (!f.Destroyed && spot.IsValid && f.Position.InHorDistOf(spot, 30f)) f.Destroy();
-                }
+                ClearNewFires(map, firesBefore, spot, 30f);   // anything the fixture's fires spread to while it ran
                 RM_LeaningScrubSettings.modEnabled = savedMod;
                 RM_LeaningScrubSettings.fireStampEnabled = savedStamp;
             }
