@@ -1,0 +1,1 @@
+./publish refuses (PreToolUse ledger-writer hook) when the commit message comes from -F <file> or $(cat file) and the ledger shard is a named path; pass the message inline with -m "..." (multi-line literal) and it publishes.
