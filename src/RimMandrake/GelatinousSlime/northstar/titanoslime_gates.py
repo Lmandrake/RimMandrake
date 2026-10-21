@@ -400,7 +400,13 @@ def g3(g, S):
         return
     s, c, px, pz, before, r, f = done
     if not before:   # a colonist that spawned wearing and holding nothing cannot show gear dropped: the site, not the mod
-        raise Unmeasured("absorbed colonist %s wore and held nothing: the gear-drop check would prove nothing" % c)
+        row("g3", "timer_absorbs_no_corpse_gear_mass_food", "UNMEASURED", "SITE",
+            "absorbed colonist %s wore and held nothing: the gear-drop check would prove nothing" % c)
+        for ps, pc, *_ in pairs:                 # the same clean-up as below: no leak into later log budgets
+            g.gone(ps)
+            if pc != c:
+                g.gone(pc)
+        return
     me = [p for p in g.pawns() if str(p.get("id")).replace("Thing_", "") == s]
     if not me:
         raise Unmeasured("absorbing slime %s not on the map" % s)
@@ -475,6 +481,7 @@ def g4(g, S):
 
     for rev in (False, True):
         g.setting("titanoslimeReversible", rev)
+        pid = None
         try:
             x, z = site(S, 17 + int(rev))
             pid = g.spawn(KIND, x, z)[0]
@@ -491,6 +498,8 @@ def g4(g, S):
                 "stage %s -> %s, shed %d, health %s, mass %s" % (st0, r["stage"], shed, r["health"], r["mass"]))
         finally:
             g.setting("titanoslimeReversible", False)
+            if pid is not None:
+                g.gone(pid)                      # the cut slime goes too: no leak into g5's log budget
 
 
 @gate
