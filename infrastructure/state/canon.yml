@@ -1611,14 +1611,53 @@ assailant_reveal_arc:
     once and for all. Only the sad shattered remains of the assailants will
     survive as homages to patient hatred. Then there is the fear that the
     empire might get ahold of it and use it against civilian populations
-    like they did with the Death Star." Reconciling the strike with the
-    player's own lab dive is owed (CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE).
+    like they did with the Death Star." How the strike and the player's own
+    lab dive relate: strike_or_dive_src below.
+  strike_or_dive_ruled: true
+  strike_or_dive_src: >
+    Owner, 2026-10-12 (ledger, CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE), his
+    words: "You're right. (2) and now we need to build a hook as to why the
+    players would go in there. Rakatan technology I'd say. It's got the
+    Hyperdrive needed for the Utinni to finally leave the planet, an ancient
+    Rakatan one that will fit the Utinni." Option (2) as the ledger records
+    it: "one or the other — strike (full Cathedral trust, lab lost) OR go in
+    and defy the Cathedral." So the strike and the dive are either/or. The
+    hook for going in is the ancient Rakatan hyperdrive in the lab, which
+    fits the Utinni and lets it leave the planet. Open parts (the cost of
+    defiance, where the choice falls, what leaving means for an open-ended
+    v1): dungeons_arc_spec.md §2.9.
+  breakout_ruled: true
+  breakout_src: >
+    Owner, 2026-10-12, by question card (ledger,
+    WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE): "Specimen choice vs breakout →
+    Breakout always starts; choice sets how bad; If containment fails →
+    Reinfection spreads". The option text recorded with it: "failure =
+    reinfection spreads from the lake across the world over seasons, game
+    continues harder." Builds on card 3 of 2026-10-10, typed: "Player decides
+    what to do. Then there is the start of a breakout. Then a chance to
+    recover or fail." Still open: what the specimen choices are, and what a
+    recovery leaves (dungeons_arc_spec.md §2.9).
   superseded:
     - value: "a separate flesh complex adjacent to tile 20853 in deep Umbra"
       why: >
         dungeons_arc_spec.md §2.2 (2026-08-30 binding) sited the impact-point
         complex beside vault V6. The 2026-10-10 card 5 ruling makes the
         impact site and the war lab one place, beneath the Chill.
+crater_event:
+  sekkulaath_reach_ruled: true
+  sekkulaath_reach_src: >
+    Owner, 2026-10-12, by question card (ledger,
+    SEKKULAATH_RISING_DESIGN_CRATER_EVENT): "How far does the sekkulaath
+    rising reach? → Its region only, permanently". The option text recorded
+    with it: "damage confined to its own region, permanently (Wildsteam sites
+    damaged, a handful of regional sites close for good); elsewhere only
+    threat rises." Builds on card 19 of 2026-10-10 (re-asked), typed: "(1)
+    appears rageful and dangerous, harms local Wildsteam sites, makes certain
+    world sites no longer accessible. Shows "the whole world is now upset and
+    more dangerous" and this is merely the shadow of the Assailants
+    re-arrival." The whole sekkulaath rises once, in the crater event. Which
+    Wildsteam sites and which regional sites are still unnamed:
+    design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md F4.
 deep_desert_tribes:
   fire_identity_ruled: true
   fire_identity_src: >

@@ -330,7 +330,9 @@ Junkers refuse and refute all of it.
   dives, venting and stabilization ops, sealing attempts, Junker-brokered access. The one
   questline where alignment runs by conscience instead of tribe.
 - 🔴 **The waste run — the gravship disposal dilemma.** The players can haul the terrifying
-  waste elsewhere, but can never leave the planet. Every destination is a moral verdict:
+  waste elsewhere on the planet, but not off it: the only hyperdrive that fits the
+  Utinni is the ancient Rakatan one in the war lab (owner 2026-10-12,
+  `dungeons_arc_spec.md` §2.6). Every destination is a moral verdict:
   1. **Drop it on the Empire** — an act of war dressed as sanitation. Does the planet
      really want to declare WAR on the Empire?
   2. **Freeze it on the cold side** — the honest coward's option.

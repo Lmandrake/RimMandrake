@@ -15,6 +15,13 @@ capability is the dormant F4 build (`kits/fever_wood_kit_spec.md` F4,
 `RUT_TenantEmergenceSpawner`, mass/tentacle defs and art still owed). Story text calls it
 the sekkulaath, never "the Tenant" (collides with the ship's nine tenants).
 
+## Ruled 2026-10-12 (owner, by question card)
+*"How far does the sekkulaath rising reach? → Its region only, permanently"*.
+Propagated to `kits/fever_wood_kit_spec.md` F4, `the_propane_lakes.md` §8,
+`dungeons_arc_spec.md` §2.2 and canon.yml `crater_event.sekkulaath_reach_src`.
+Still unruled: the named Wildsteam sites, the closed regional sites, what "threat
+rises" means elsewhere (open list in F4).
+
 ## verify
 - [ ] Owner rules the affected Wildsteam sites and closed world sites; the event is
   specified as one IncidentDef riding the crater event.

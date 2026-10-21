@@ -28,6 +28,7 @@ exonym in all authored player-facing text.
 | **RULED** (owner sittings, do not re-litigate) | site families, thaw-gate concept, guardian register, learning chain/endgame, vault count+siting+type mix, concentric grammar doctrine, wake/loot/leave payoff ladder, LARGE maps, template-then-hand-finish authoring route — all cited below with their canon.yml/item-history source |
 | **DRAFTED FOR REAL, this pass** | this doc's narrative/site writeup for both dungeons; the content-palette-to-defName assignment (§2.3, §3.4); the map-layout CONCEPTS (§2.4, §3.3); one illustrative KCSG `StructureLayoutDef` skeleton (§3.5); the quicktest-proven verify bar (§3.6) |
 | **RULED 2026-09-01** (owner, via BENCH cards) | thaw trigger = QuestNode + map signal; power core = vanilla `AIPersonaCore`; vaults 325×325; V5 gets a new organic landmark; `RUT_` tier for all dungeon defNames; KCSG pawn symbol = `SymbolDef`+`pawnKindDef`; territories mod = Faction Territories (§2.7, §3.8, §3.9) |
+| **RULED 2026-10-12** (owner, ledger; §2.1, §2.6) | the Cradle strike and the lab dive are either/or, and the hook for going in is an ancient Rakatan hyperdrive that fits the Utinni; the breakout always starts and the specimen choice sets how bad; a failed containment spreads reinfection. Open parts: §2.9 |
 | **HELD FOR OWNER** | exact KCSG authoring of all templates and all seven maps; dialogue/letters for the reveal beat, the wake/loot/leave branches, and the ship-claim thread; per-vault hand-finish set-pieces; the territorial-access conflict mechanic (its own item); the bridge placement writes for the seven sites |
 
 ## 1. Shared spine
@@ -93,8 +94,18 @@ hideous mutations and adaptations the other way too. Two immoral forces locked
 in lethal combat, and an emergency system activation that froze the whole
 place a LONG time ago when containment was detected... but it was far too
 late."* The specimens (card 3, typed): *"Player decides what to do. Then there
-is the start of a breakout. Then a chance to recover or fail."* That beat is
-owed design: `WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`.
+is the start of a breakout. Then a chance to recover or fail."*
+
+**The breakout, RULED 2026-10-12** (owner, by question card, ledger
+`WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`): *"Specimen choice vs breakout →
+Breakout always starts; choice sets how bad; If containment fails →
+Reinfection spreads"*. The option text recorded with the ruling: *"failure =
+reinfection spreads from the lake across the world over seasons, game
+continues harder."* So the player's choice never prevents the breakout; it
+sets its severity. A failed recovery does not end the game: the Assailant
+spreads outward from the lake over seasons and the game goes on, harder.
+What the choices are, and what a successful recovery leaves, are still open
+(§2.9).
 
 ### 2.2 Site — beneath the Chill, in the Umbra
 
@@ -106,7 +117,11 @@ Region **The Umbra** is the named gazetteer region (`ASHKARR_WORLD_DEFINITION.md
 The Cracking Station) are "the last waypoint, rumor carriers" (owner ruling,
 `ASSAILANT_FLESH_DUNGEON_1` history 2026-08-30). The
 entry gate is the war lab's, not a separate one: the lake's ending (or an
-early blast) reveals it, and the Spire's command codes open it (§2.6). Bridge
+early blast) reveals it, and the Spire's command codes open it (§2.6). The
+lake's ending is also when the Fever Wood's sekkulaath rises; its damage is confined
+to its own region, permanently (owner by question card 2026-10-12: *"How far
+does the sekkulaath rising reach? → Its region only, permanently"*; design in
+`biomes/kits/fever_wood_kit_spec.md` F4). Bridge
 placement stays HELD FOR OWNER/FOUNDRY at a down-window
 (`rimworld-world-editing`'s `world_commit`, one driver at a time).
 
@@ -214,8 +229,18 @@ children," the droids.**
   once and for all. Only the sad shattered remains of the assailants will
   survive as homages to patient hatred. Then there is the fear that the empire
   might get ahold of it and use it against civilian populations like they did
-  with the Death Star."* How the Cradle strike sits beside the player's own
-  dive into the lab is owed: `CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`.
+  with the Death Star."*
+- **Strike OR dive, never both — RULED 2026-10-12** (owner, ledger
+  `CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`, his words): *"You're right. (2) and
+  now we need to build a hook as to why the players would go in there.
+  Rakatan technology I'd say. It's got the Hyperdrive needed for the Utinni to
+  finally leave the planet, an ancient Rakatan one that will fit the Utinni."*
+  Option (2), as the ledger records it: *"one or the other — strike (full
+  Cathedral trust, lab lost) OR go in and defy the Cathedral."* So the player
+  chooses. Letting the Cradle strike keeps the Cathedral's full trust and
+  loses the lab and everything in it. Going in defies the Cathedral, and the
+  reason to go in is an ancient Rakatan hyperdrive inside, the one that fits
+  the Utinni and is what it needs to leave the planet. Open parts: §2.9.
 
 Register: the Rust Cathedral SPEAKS (has a voice, treats the droids as its
 children); FDE nightside refugees are the last waypoint before the site.
@@ -283,6 +308,18 @@ to the quest at build.
   sky: black with lift-smoke, every voice on every band counting losses, and
   the count never finishing. There. It is closed. Do not ask me to open it
   again tonight."
+
+### 2.9 Open questions from the 2026-10-12 rulings (for the owner, not decided)
+
+These are agent-drafted questions. Nothing below is ruled.
+
+1. **What does defying the Cathedral cost?** Trust lost, hostility, the droids' standing, the Hutt-knowledge deal (§2.6 chain)?
+2. **Where is the choice made?** Before the player enters (refuse the strike), or can the player go in first and call the strike later?
+3. **Is the hyperdrive the only way off the planet?** If so, the strike branch leaves the Utinni planet-bound for good. Does that stand?
+4. **Does leaving the planet end the game?** v1 is ruled open-ended, nothing rolls credits (`design/Jawa/campaign/CAMPAIGN_ARC_GATHER.md` G14). What happens after the hyperdrive is fitted is unruled. So is how it relates to the older "punch through the orbital blockade" endgame (`desert_world_design.md` §4-Orbital).
+5. **What are the specimen choices**, and how does each one set the breakout's severity?
+6. **What does a successful recovery leave behind** on the planet? A failure leaves reinfection spreading over seasons. Can that spread be pushed back later?
+7. **Does the breakout happen on the strike branch at all**, or does the strike end the lab's specimens outright?
 
 ## 3. `VAULT_DUNGEON_BUILD_1` — the six Forsaken vaults
 

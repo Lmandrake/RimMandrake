@@ -269,14 +269,18 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
   - **The Fever Wood's sekkulaath rises in this event** (card 19 re-asked, typed):
     *"(1) appears rageful and dangerous, harms local Wildsteam sites, makes certain
     world sites no longer accessible. Shows "the whole world is now upset and more
-    dangerous" and this is merely the shadow of the Assailants re-arrival."* Owed
-    design: `SEKKULAATH_RISING_DESIGN_CRATER_EVENT`.
+    dangerous" and this is merely the shadow of the Assailants re-arrival."* Its
+    reach, ruled 2026-10-12 by question card: *"Its region only, permanently"*
+    (canon.yml `crater_event.sekkulaath_reach_src`). Which sites it harms or closes
+    is still owed: `SEKKULAATH_RISING_DESIGN_CRATER_EVENT`.
   - **What the lab holds and what is done with it** (cards 1–3, 11): the original
     Assailants, fully armed, frozen mid-combat with the Rakatan experiments; the
-    player decides their fate, then a breakout, then recover or fail
-    (`WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`); and the Rust Cathedral wants the
-    Cradle to strike this lab (`CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`). Quotes in
-    `../dungeons_arc_spec.md` §2.1 and §2.6.
+    player decides their fate, then a breakout, then recover or fail; and the Rust
+    Cathedral wants the Cradle to strike this lab. Ruled 2026-10-12: the breakout
+    always starts and the choice sets how bad; a failed containment spreads
+    reinfection. The strike and the dive are either/or, and the reason to go in is
+    an ancient Rakatan hyperdrive that fits the Utinni. Quotes in
+    `../dungeons_arc_spec.md` §2.1 and §2.6, open parts §2.9.
 
 ## 9. Artistic theme
 

@@ -37,7 +37,9 @@ Rakatan structure being DIGESTED") → core (embedded witness +
 trust → Cathedral trust → Cathedral reveals the location → Cathedral wants the
 Cradle as its pyrrhic strike against the Assailant (target: the war lab, owner
 2026-10-10 card 11) → releasing that knowledge to the Hutts needs a deal
-protecting the droids. Cathedral trust grants ENTRY to the Spire, where the
+protecting the droids. The strike and the player's dive are either/or (owner
+2026-10-12); the dive's hook is an ancient Rakatan hyperdrive that fits the
+Utinni (`dungeons_arc_spec.md` §2.6). Cathedral trust grants ENTRY to the Spire, where the
 codes that open the war lab are taken (card 7).
 
 **Held for the owner** (creative lock-in, per `FUTURE_VECTORS.md`'s own

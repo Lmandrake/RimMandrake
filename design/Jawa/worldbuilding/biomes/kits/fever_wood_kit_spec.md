@@ -135,6 +135,17 @@ so that, once, the whole animal comes up through the mud. That moment is RULED:
 *"(1) appears rageful and dangerous, harms local Wildsteam sites, makes certain
 world sites no longer accessible. Shows "the whole world is now upset and more
 dangerous" and this is merely the shadow of the Assailants re-arrival."*
+Its reach, ruled 2026-10-12 by question card: *"How far does the sekkulaath
+rising reach? → Its region only, permanently"*. The option text recorded with
+it: *"damage confined to its own region, permanently (Wildsteam sites damaged, a
+handful of regional sites close for good); elsewhere only threat rises."*
+(canon.yml `crater_event.sekkulaath_reach_src`.)
+
+**Open, for the owner (agent-drafted, not decided):** which Wildsteam sites in
+the Fever Wood's region it damages, and how; which regional world sites close
+for good, and how many make "a handful"; what "threat rises" means elsewhere
+(a storyteller threat bump, raids, both?); how the rising reads in the crater
+cut-scene.
 
 **Engine route.** Defs + art + the emergence machinery, gated OFF:
 
@@ -151,8 +162,8 @@ dangerous" and this is merely the shadow of the Assailants re-arrival."*
   oil-sheen). Rides the art queue, listed here so the item's "built in full"
   is complete.
 - **The gate**: the emergence spawner def is referenced by NOTHING in this
-  kit. The emergence *event* rides the crater event; its design (the Wildsteam
-  site damage, the closed world sites) is owed in
+  kit. The emergence *event* rides the crater event; its reach is ruled (region
+  only, permanently, above) and the named sites are owed in
   `SEKKULAATH_RISING_DESIGN_CRATER_EVENT`. This kit's deliverable is that the
   event is one IncidentDef of XML.
 

@@ -17,6 +17,12 @@ Sources: `design/Jawa/story_sitting_cards_2026-10-10.md` RULINGS round 1;
 `design/Jawa/worldbuilding/dungeons_arc_spec.md` §2.1; `ANCIENT_WAR_LAB_1`.
 Interlocks: `CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`, `ASSAILANT_WARLAB_BUILD_MERGE`.
 
+## Ruled 2026-10-12 (owner, by question card)
+*"Specimen choice vs breakout → Breakout always starts; choice sets how bad; If
+containment fails → Reinfection spreads"*. Propagated to `dungeons_arc_spec.md`
+§2.1 and canon.yml `assailant_reveal_arc.breakout_src`. Still unruled: what the
+choices are and what a recovery leaves (spec §2.9 questions 5–7).
+
 ## verify
 - [ ] A design sitting with the owner rules what the choices are, what starts the
   breakout, and what "recover" and "fail" each leave behind on the planet.
