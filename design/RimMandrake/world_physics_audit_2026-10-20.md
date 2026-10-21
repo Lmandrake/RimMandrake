@@ -165,3 +165,30 @@ Restore steps: item `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT`.
 - `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT` — ride the next larger-list cold load.
 - The Scald's arc/temperature vs its sheet (§3) goes on the end-of-build paint list, not a repaint now:
   filed as a line in `infrastructure/state/items/BIOME_PAINT_ONCE_AT_THE_END_1.md`.
+
+## 7. Live check, 2026-10-20 evening (FOUNDRY, 325-mod list)
+
+Evidence: `D:\ClaudeWork\rimmandrake\scratch\live5\` (`clock.json`, `live_tiles_after_glow.json`, `seasons.json`, `verify2.json`).
+- **Lock on load:** `ASHKARR_DEV_START_2026-10-20_PARITY` loads `TidallyLocked`, preset name `TidallyLocked`, and the tidal patches are present.
+  `SunPositionUnmodified`, `CurSunPositionInWorldSpace` and `CelestialSunGlow` are owned by `7f.alienworlds.tidallylocked`.
+- **Uncached clock (forward steps only, before the light patch was deployed):** home glow 1.00 and Direct Sun 35.40° at
+  ticks 2243, 17395, 32986, 47995 and 63582 (one game day). The sun does not commute.
+- **Light follows the sun (CreatureBehaviors built at 3742c2b6b):** `mandrake.rm.creaturebehaviors.tidalsunglow` sits beside the lock on
+  `CelestialSunGlow`. Fresh scratch maps read 18631 0.60, 7724 0.74, 7821 0.00 and 2475 1.00 (0.9996). Home 17011 reads 1.00, as predicted.
+  ⚠️ The scratch maps on Blackstar settlement tiles log pawn-generation NREs (`Error while resolving symbol "pawn"`, PostMapInit for
+  Orwell/Sliverwar, then a draw-error run). They stop when the map drops.
+- 🔴 **Seasons are NOT flat after the NoSeasons patch.** Home 17011 `seasonalTemp` went 36.951 → 37.170 over +15,705 ticks forward.
+  That is the same +0.22 °C per 6 h as before the deploy. Either the patch did not reach the curve Alien Worlds installs,
+  or the save restores it. `GenTemperature.SeasonalShiftAmplitudeAt` cannot be read: `jawa/static_call` refuses
+  `PlanetTile` arguments.
+- **Rings:** ring drawn with the debris texture, clear of the surface. With Rings on, the process ran WS 6.5 GB, private 17.9 GB,
+  peak WS 9.8 GB (first load) and WS 7.7 GB, private 17.7 GB (second load). No Rings-off load ran this session, so the delta is UNMEASURED.
+  `RW_PlanetAtmosphere` logs no errors. 12 benign "shader not supported" lines come from the Metal bundle.
+- **Atmosphere shell A/B** (`ATMO_pair_limb.png`, `ATMO_pair_globe.png`, left original and right LIMB-TEST minh/maxh 100/108):
+  - **Gains with LIMB-TEST:** a real blue limb and night-side shading east of the terminator.
+  - **Costs with LIMB-TEST:** haze dulls the surface colours and labels, and 🔴 the near side of the ring disappears where it
+    crosses the globe (the shell draws over it), plus a thin white arc on the right limb.
+  - **Kept:** the original `TRUE-GLORIOUS-RING` config (md5 ac1e8fa4). The owner picks; the LIMB file stays in `deployed/config/`.
+- **Map size:** `jawa/world_info_set initialMapSize=325`, saved as `ASHKARR_DEV_START_2026-10-20_PARITY_QUIET.rws`
+  (file reads `(325, 1, 325)`). The same save ignores VFE's Junkers, Mercenaries and Roaming monstrosities. "Do nothing" does not persist, and
+  "Don't ask for this faction again" writes `NewFactionSpawningState.ignoredFactions` (63 entries). A reload showed no dialog.

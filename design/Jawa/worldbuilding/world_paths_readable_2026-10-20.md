@@ -77,3 +77,16 @@ the line. Darker anchors in the same hues would clear it (search: jungle about #
 
 The night side (lighting is not modelled), the Perlin wiggle on roads, and the river shader's own specular are not in
 the offline preview. The live check decides.
+
+## 5. Live check, 2026-10-20 evening (FOUNDRY, 325-mod list, `ASHKARR_DEV_START_2026-10-20_PARITY`)
+
+Images: `D:\ClaudeWork\rimmandrake\scratch\live5\` (`P_desert_roads_ON/OFF.png`, `P_coast_close_ON/OFF.png`,
+`R_85_pair.png` (top off, bottom on), `V_rivers_85.png` after the darker FlowWorks river colours, `V_umbra_roads.png`, `V_slime_roads.png`).
+- Player.log: `readable world paths ON (startup): 5 road layer colours, 12 road widths, 4 river widths, river material swap on`.
+- ON: dark casing, umber dirt, slate stone, gold highway. Rivers draw with dark banks, and the bank is darker than the water.
+- Toggle (`jawa/mod_settings_field` `worldReadablePaths` false, `RM_WorldPaths.Apply`, `jawa/world_commit lazy`): the vanilla
+  pale roads and faint gradient rivers come back. Toggling on restores the readable look. Both directions redraw live.
+- 🔴 **Rivers read as dashes.** At altitude 200 most river courses (tile 85 region) draw as broken segments with gaps,
+  not one line, both with the old and with the darker FlowWorks colours. The highway dashes are the 46-piece record; for the rivers the cause is
+  UNMEASURED (record pieces, or the mesh at tile joins). Filed `RIVER_DASHES_MEASURE_MORSE_CODE_WATER`.
+- Roads now draw on RUT_Umbra and RM_GelatinousSlime (`UMBRA_SLIME_ROADS_VERIFY_FINALLY_DRAWN`).

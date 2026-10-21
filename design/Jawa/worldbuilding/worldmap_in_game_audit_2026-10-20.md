@@ -207,3 +207,23 @@ Images (full resolution and phone pairs): `D:\ClaudeWork\rimmandrake\scratch\wor
   TidallyLocked present, check-save PASS). `…_FACTIONS.rws` holds the factions step alone.
 - **Watch on the globe after u1:** the big "Dune Sea" label now sits over Anvil and Rust Cathedral. Either that is where
   its canonical centre is, or the canon is wrong. The owner should look.
+
+## Live check, 2026-10-20 evening (FOUNDRY)
+
+Two cold loads on the 325 list: about 10 min and about 11 min to the bridge. Deployed:
+- StarWarsRaces heads (cb6e354c2, then the e44d193f0 Ortolan ear)
+- GreentideRaidAnt
+- FlowWorks (pit cover, then darker rivers)
+- HugeThings
+- Baroque Biomes compose (readable paths, calmer faces, Cauldron soils, Umbra/Slime roads, CreatureBehaviors light and NoSeasons, fliers' flip-books)
+- UtinniPatches (PlantTolerances RM_ twins)
+- JawaBench `--gm` at HEAD
+
+Results:
+- **Player.log:** `world ocean shader on 8 water biomes` is present. The first exceptions are the pre-existing `CannibalPirate`/`PirateYttakin` ConfigErrors,
+  and every other startup exception was in the earlier log too. Null-texture lines: 5 then 4 at the menu.
+- **Label stamp (STAMP_LABELS):** the `jawa/world_features_import` dry run with `featuresPath` reads 71 regions, sizesByName 71,
+  centresByName 71 and featureRowsWithNoRegion []. The live label sizes already equal the CSV on all 71, so nothing was applied.
+- **Calmer faces (WORLD_STIPPLE):** `D:\ClaudeWork\rimmandrake\scratch\live5\V_rust_stipple.png` (Rust Cathedral, altitude 420). The
+  mid-zoom white speckle is still there on the faces and comes from the decals. The owner judges.
+- **Roads, rivers, physics:** `world_paths_readable_2026-10-20.md` §5 and `design/RimMandrake/world_physics_audit_2026-10-20.md` §7.
