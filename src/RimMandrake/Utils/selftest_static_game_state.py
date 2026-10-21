@@ -103,6 +103,7 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimb.cs::byMap": "disposed and cleared by RM_WallClimbMemo.ClearAll at every Game.FinalizeInit; a grid also expires after 250 ticks",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimb.cs::lastSeenTick": "the time-went-back detector itself; reset by ClearAll at every Game.FinalizeInit",
     "src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs::profiles": "a 60-tick cache with a now >= stamp guard: at worst one second of a recomputable swim profile, never saved state",
+    "src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs::lastDrownMsg": "a 2500-tick message dedupe with a tick >= last guard: a stamp from a later save never mutes the warning",
     "src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs::lastWarn": "written and never read (dead store), so it gates nothing",
     "src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs::shoreJob": "a hit needs the pawn's CURRENT job to carry the stored job loadID, which after a load is only the same saved shore job",
     "src/RimMandrake/FlowWorks/Source/Swimming/RM_Swim.cs::grids": "Map reference; maps gone from Find.Maps disposed and removed by PruneDeadMaps",
