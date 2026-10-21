@@ -110,6 +110,43 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // goes, so it must not stop the ladder job (live pass 2c: a drafted climbing-gear wearer did).
                 RiverSwitchFlipChecks.Has(a, @"!c\.InMentalState && !c\.Drafted && !c\.WorkTypeIsDisabled\(WorkTypeDefOf\.Doctor\)", "only a rescuer who would go cancels the ladder");
             });
+            // FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT (bar jump_into_pit_lands_unhurt; he typed 2026-10-20: "plus flying creatures
+            // can simply fly in/out, jumping creatures jump in or out, floating creatures float in/out")
+            Case("PitTravel_fly_jump_float_cross_freely_and_never_fall", () =>
+            {
+                Assert(RM_PitAccessMath.CrossesPitsFreely(true, false, false, false), "a flyer crosses freely, setting or not");
+                Assert(RM_PitAccessMath.CrossesPitsFreely(false, true, true, false), "a jumper crosses freely");
+                Assert(RM_PitAccessMath.CrossesPitsFreely(false, true, false, true), "a floater crosses freely");
+                Assert(!RM_PitAccessMath.CrossesPitsFreely(false, true, false, false), "can-fail: a walker does not");
+                Assert(!RM_PitAccessMath.CrossesPitsFreely(false, false, true, true), "setting off: jumpers and floaters are walkers");
+                Assert(!RM_PitAccessMath.FallHurts(true, true, true), "a free traveller is never hurt arriving");
+                Assert(RM_PitAccessMath.FallHurts(true, false, true), "can-fail: a walker pushed in still falls");
+                Assert(RM_PitAccessMath.FallHurts(true, true, false), "setting off: the old rule (only the airborne are spared)");
+                Assert(!RM_PitAccessMath.FallHurts(false, false, true), "fall damage off: nobody");
+            });
+            Case("PitTravel_every_trap_mask_reach_and_fall_read_asks_it", () =>
+            {
+                string g = Src("Superdeep", "RM_PocketGrid.cs");
+                RiverSwitchFlipChecks.Has(g, @"return RM_PitAccessMath\.CrossesPitsFreely\(CanFly\(p\), RimMandrakeFlowWorksSettings\.pitFreeTravelEnabled,", "the pawn read is the selftested rule");
+                RiverSwitchFlipChecks.Has(g, @"public class RM_PitTravelExtension : DefModExtension\s*\{\s*public bool jumps;\s*public bool floats;", "the race marker");
+                foreach (string f in new[] { "RM_SuperdeepTrap.cs", "RM_CliffMask.cs", "RM_TrenchStride.cs", "RM_RaiderTrench.cs", "RM_FallRails.cs" })
+                {
+                    string t = Src("Superdeep", f);
+                    Assert(t.Contains("RM_PocketGrid.FreePitTraveller("), "reads the free-traveller rule: " + f);
+                    Assert(!t.Contains("RM_PocketGrid.CanFly("), "can-fail: no pit read asks CanFly alone: " + f);
+                }
+                string tr = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                RiverSwitchFlipChecks.Has(tr, @"if \(RM_PitAccessMath\.FallHurts\(RimMandrakeFlowWorksSettings\.fallDamageEnabled, RM_PocketGrid\.FreePitTraveller\(p\),",
+                    "the one fall-damage site spares them");
+                Assert(System.Text.RegularExpressions.Regex.Matches(tr, @"!p\.Flying && !\(RimMandrakeFlowWorksSettings\.pitFreeTravelEnabled && RM_PocketGrid\.FreePitTraveller\(p\)\)").Count
+                    + System.Text.RegularExpressions.Regex.Matches(tr, @"!p\.Flying\s*&& !\(RimMandrakeFlowWorksSettings\.pitFreeTravelEnabled && RM_PocketGrid\.FreePitTraveller\(p\)\)").Count >= 2,
+                    "both arrival detectors (the tick pass and ResolveArrivalNow) skip them");
+                string pp = Src("Superdeep", "RM_PitPathing.cs");
+                RiverSwitchFlipChecks.Has(pp, @"if \(RimMandrakeFlowWorksSettings\.pitFreeTravelEnabled && RM_PocketGrid\.FreePitTraveller\(p\)\)\s*\{\s*eng\.SuperdeepTrap\.NoteHandledArrival\(p, p\.Position\);",
+                    "a flyer set down in a pit is not a fall");
+                string s = Src("RimMandrakeFlowWorksMod.cs");
+                Assert(s.Contains("Scribe_Values.Look(ref pitFreeTravelEnabled,") && s.Contains("\"pitFreeTravelEnabled\""), "the setting is saved and listed");
+            });
             Case("PitAccess_defs_and_settings_shipped", () =>
             {
                 string d = Src("..", "Defs", "Canals", "ThingDefs", "FlowWorks_PitAccess.xml");

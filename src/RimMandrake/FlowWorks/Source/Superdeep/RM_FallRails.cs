@@ -94,7 +94,7 @@ namespace RimMandrake.FlowWorks
 		/// Flyers are never refused.</summary>
 		public static bool RefusesWalkedStep(Pawn pawn, RM_MapComponent_Excavation eng, IntVec3 next)
 		{
-			if (!On || pawn == null || pawn.Flying || RM_PocketGrid.CanFly(pawn))
+			if (!On || pawn == null || pawn.Flying || RM_PocketGrid.FreePitTraveller(pawn))
 			{
 				return false;
 			}

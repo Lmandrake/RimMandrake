@@ -584,6 +584,12 @@ namespace RimMandrake.FlowWorks
 			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS (owner 2026-10-18: "jump packs and other leaping abilities allow
 			// entrance/exit immediately"): a deliberate jump (no stun) lands on its feet, however deep; the detector must not count
 			// the arrival either (it would see a forced descent on its next pass).
+			// FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT: a flyer, jumper or floater set down in a pit is not falling.
+			if (RimMandrakeFlowWorksSettings.pitFreeTravelEnabled && RM_PocketGrid.FreePitTraveller(p))
+			{
+				eng.SuperdeepTrap.NoteHandledArrival(p, p.Position);
+				return;
+			}
 			bool deliberate = __instance.def?.pawnFlyer == null || __instance.def.pawnFlyer.stunDurationTicksRange == IntRange.Zero;
 			if (RM_PitAccessMath.LandsSafely(deliberate, RimMandrakeFlowWorksSettings.pitJumpLandsSafe, false, false))
 			{

@@ -113,7 +113,7 @@ SETTINGS = {
         "pitScorchFadeDays": 20.0,                              # visual principles 1-5 (belt_fwvisuals 2026-10-05)
         "trenchCoverEnabled": True, "trenchCoverStrength": 1.0, "trenchCoverCap": 0.9, "trenchAiAvoidsCages": True,   # TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT
         "portableLadderEnabled": True, "portableLadderMaxLevels": 6, "climbingGearEnabled": True, "climbingGearSlowness": 3.0,
-        "pitJumpLandsSafe": True, "pitTeleportLandsSafe": True, "pitRescueLadderEnabled": True,   # PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS
+        "pitJumpLandsSafe": True, "pitTeleportLandsSafe": True, "pitFreeTravelEnabled": True, "pitRescueLadderEnabled": True,   # PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS
     },
     "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings": {
         "riverSteamEnabled": True, "puffRateMultiplier": 1.0,

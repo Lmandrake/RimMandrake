@@ -48,6 +48,23 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>A landing that never falls: a deliberate jump (a flyer with no stun: jump packs, longjump, leaping abilities)
 		/// or a teleport (skip), each under its own setting. A throw (a stun flyer: blast knockback) still falls.</summary>
+		/// <summary>FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT — he typed 2026-10-20 (bar jump_into_pit_lands_unhurt): <i>"plus
+		/// flying creatures can simply fly in/out, jumping creatures jump in or out, floating creatures float in/out"</i>. A
+		/// creature that can fly (MaxFlightTime, Core 1.6) always crosses pit walls freely, as before; one marked as a jumper or
+		/// a floater (RM_PitTravelExtension on its race) does too while the setting is on. Free = never held, never stuck
+		/// behind a wall, never hurt by arriving on a pit floor.</summary>
+		public static bool CrossesPitsFreely(bool canFly, bool settingOn, bool jumps, bool floats)
+		{
+			return canFly || (settingOn && (jumps || floats));
+		}
+
+		/// <summary>Does a fall onto a pit floor hurt this pawn? Fall damage on, and not a creature that flies, jumps or floats
+		/// in (with the setting off, only a pawn airborne at that moment is spared, which the detector already skips).</summary>
+		public static bool FallHurts(bool fallDamageOn, bool crossesFreely, bool settingOn)
+		{
+			return fallDamageOn && !(settingOn && crossesFreely);
+		}
+
 		public static bool LandsSafely(bool deliberateJump, bool jumpSafeOn, bool teleport, bool teleportSafeOn)
 		{
 			return (deliberateJump && jumpSafeOn) || (teleport && teleportSafeOn);

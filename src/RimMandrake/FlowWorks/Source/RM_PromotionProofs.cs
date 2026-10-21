@@ -76,6 +76,28 @@ namespace RimMandrake.FlowWorks
 				+ " enabled=" + RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled;
 		}
 
+		/// <summary>FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT, a STATE read (never a flight watch: owner 2026-09-25). arg = "x,z":
+		/// the first pawn standing there -> "PITTRAVEL pawn=<label> canFly=b jumps=b floats=b free=b held=b flying=b". Free
+		/// travellers are never held and take no fall on arriving.</summary>
+		public static string ProofPitTravel(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !TryCell(arg, 0, out IntVec3 c))
+			{
+				return "REFUSED: arg must be x,z on a current map";
+			}
+			Pawn p = c.GetFirstPawn(map);
+			if (p == null)
+			{
+				return "PITTRAVEL cell=" + c.x + "," + c.z + " pawn=none";
+			}
+			RM_PitTravelExtension ext = p.def.GetModExtension<RM_PitTravelExtension>();
+			return "PITTRAVEL cell=" + c.x + "," + c.z + " pawn=" + p.LabelShort.Replace(' ', '_') + " canFly=" + RM_PocketGrid.CanFly(p)
+				+ " jumps=" + (ext != null && ext.jumps) + " floats=" + (ext != null && ext.floats)
+				+ " free=" + RM_PocketGrid.FreePitTraveller(p) + " held=" + RM_SuperdeepTrap.IsHeld(p) + " flying=" + p.Flying
+				+ " setting=" + RimMandrakeFlowWorksSettings.pitFreeTravelEnabled;
+		}
+
 		/// <summary>LADDER_PRISON_DOOR_1. arg = "x,z,op", op raise | lower | order_raise | order_lower | read. Writes RM_CompLadder.raised the
 		/// way the gizmo does and reads it back with the inspect line a player sees:
 		/// "LADDER cell=x,z present=b raised=b inspect=...".</summary>

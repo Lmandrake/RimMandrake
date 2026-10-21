@@ -593,7 +593,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			// RM_CliffMask.Swap's own exceptions, which keep vanilla's array: a flyer, a pawn too wide for its pocket.
-			if (RM_PocketGrid.CanFly(p) || RM_SuperdeepTrap.InOwnPocketTooNarrow(p))
+			if (RM_PocketGrid.FreePitTraveller(p) || RM_SuperdeepTrap.InOwnPocketTooNarrow(p))
 			{
 				return;
 			}

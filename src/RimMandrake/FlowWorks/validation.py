@@ -490,6 +490,25 @@ def ladder_rails_raise_lower(t):
                "raised; the rails drawn on each of N/S/E/W walls by eye (FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE)")
 
 
+# FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT (bar jump_into_pit_lands_unhurt; he typed 2026-10-20: "plus flying creatures can
+# simply fly in/out, jumping creatures jump in or out, floating creatures float in/out"). Offline: the free-traveller rule,
+# the fall rule and every trap / mask / reach / fall call site (Source/SelfTest/PitAccessChecks.cs). The jump-pack and skip
+# halves were built by PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS (PitAccess_jumps_and_skips_land_safely). Flight is NEVER
+# live-watched (owner 2026-09-25): the live row is a STATE read (RM_PromotionProofs.ProofPitTravel), the look waits for him.
+PIT_TRAVEL_CASES = ["PitTravel_fly_jump_float_cross_freely_and_never_fall", "PitTravel_every_trap_mask_reach_and_fall_read_asks_it",
+                    "PitAccess_jumps_and_skips_land_safely"]
+
+
+@suite.chain("pit_travel_fly_jump_float")
+def pit_travel_fly_jump_float(t):
+    """Offline: jump packs, skips, flyers, jumpers and floaters arrive in a pit unhurt and are never held. 0 ticks."""
+    _bar_chain(t, "pit_travel_selftest_ran", PIT_TRAVEL_CASES, "pit_travel_live", "jump_into_pit_lands_unhurt",
+               "state reads only, no flight watched: a colonist jump-packed (extensions.py jump landing) and one skipped into "
+               "a 3 m pit read health unchanged and descents +0; a MaxFlightTime animal and a race marked RM_PitTravelExtension "
+               "(jumps / floats) placed on a pit floor read ProofPitTravel free=True held=False, and a thrown one "
+               "(ProofForcedFlyer) takes no fall damage (FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT)")
+
+
 # FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (owner 2026-10-16): dev-placed flow source and flow sink (Source/MapControls/).
 # Offline proof of the rate math, a source and a sink driven through the production kernel with its ledger balanced every
 # pulse, and the wiring incl. the mapControlsEnabled master switch gating the pulse (Source/SelfTest/MapControlChecks.cs).
@@ -984,7 +1003,7 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         # PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (built 2026-10-18, registered in site_spec by the F2 settings
                         # audit): their live rows are owed on the items (A1-A5), not yet a toggle chain
                         "trenchCoverEnabled", "trenchAiAvoidsCages", "portableLadderEnabled", "climbingGearEnabled",
-                        "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitRescueLadderEnabled", "pipesUnderToCentre",
+                        "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "pitRescueLadderEnabled", "pipesUnderToCentre",
                         # registered 2026-10-19 (settings audit catch-up): wall climb, raider trench, swim, water mend. Live
                         # rows are owed on their items; not yet a toggle chain
                         "wallClimbEnabled", "raidersMayClimbWalls", "wallClimbAutoRoute", "raidersCarryClimbingGear",
