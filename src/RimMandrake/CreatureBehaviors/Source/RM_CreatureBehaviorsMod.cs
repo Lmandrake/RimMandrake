@@ -332,6 +332,11 @@ namespace RimMandrake.CreatureBehaviors
     //      view's stars stop wheeling round the world every day and drift
     //      once a year (6° a day); drift off freezes them. Off: vanilla, the
     //      stars turn daily with the sun. Rendering only.
+    //  51. tidalSunGlowByGeometry / tidalTwilightBandDegrees — RM_TidalSunGlowPatch
+    //      (SUN_GLOW_DECIDE_WEST_TERMINATOR_SUNBATHING, owner by card 2026-10-20).
+    //      On (and only while the planet is tidally locked): daylight is a pure
+    //      function of the sun's angle, symmetric west/east, with a dusk band of
+    //      the given width below the horizon. Off: the Alien Worlds mod's light.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -418,6 +423,8 @@ namespace RimMandrake.CreatureBehaviors
         public static float pinnedSunSkyStrength = 1f;
         public static bool worldStarsPinned = true;
         public static bool worldStarsYearlyDrift = true;
+        public static bool tidalSunGlowByGeometry = true;
+        public static float tidalTwilightBandDegrees = RM_TidalSunGlowMath.DefaultTwilightBandDegrees;
         public static bool falseShadeAmbushEnabled = true;
         // CREATURE_JOB_INTERRUPTION_POLICY_1 (RM_AmbushJobPolicy): wild ambush predators also take wild animal prey.
         public static bool ambushWildPreyEnabled = true;
@@ -653,6 +660,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref pinnedSunSkyStrength, "pinnedSunSkyStrength", 1f);
             Scribe_Values.Look(ref worldStarsPinned, "worldStarsPinned", true);
             Scribe_Values.Look(ref worldStarsYearlyDrift, "worldStarsYearlyDrift", true);
+            Scribe_Values.Look(ref tidalSunGlowByGeometry, "tidalSunGlowByGeometry", true);
+            Scribe_Values.Look(ref tidalTwilightBandDegrees, "tidalTwilightBandDegrees", RM_TidalSunGlowMath.DefaultTwilightBandDegrees);
             Scribe_Values.Look(ref falseShadeAmbushEnabled, "falseShadeAmbushEnabled", true);
             Scribe_Values.Look(ref ambushWildPreyEnabled, "ambushWildPreyEnabled", true);
             Scribe_Values.Look(ref sunHeatEnabled, "sunHeatEnabled", true);
@@ -1039,7 +1048,7 @@ namespace RimMandrake.CreatureBehaviors
                   + "in it like the shadow of a rock. Off: its shadow is only something its riders follow.");
                 list.GapLine();
             }
-            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "worldStarsPinned", "worldStarsYearlyDrift", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade", "WorldStars" }))
+            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "worldStarsPinned", "worldStarsYearlyDrift", "tidalSunGlowByGeometry", "tidalTwilightBandDegrees", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade", "WorldStars", "TidalSunGlow" }))
             {
                 list.CheckboxLabeled("Pinned sun (golden hour)", ref pinnedSunEnabled,
                     "On: a biome built with a pinned sun (the Long Shade) keeps one fixed sunset sky "
@@ -1055,6 +1064,17 @@ namespace RimMandrake.CreatureBehaviors
                 {
                     list.CheckboxLabeled("    Stars drift once a year", ref worldStarsYearlyDrift,
                         "On: the stars drift slowly, one full turn per year (6 degrees a day). Off: they never move.");
+                }
+                list.CheckboxLabeled("Tidally locked world: light follows the sun", ref tidalSunGlowByGeometry,
+                    "On: on a tidally locked planet, how bright the day is depends only on how high the sun stands over "
+                  + "the place: full light from 30 degrees up, dimmer toward the edge of the day side, a short dusk just "
+                  + "past it, then night. East and west edges match. Only acts while the planet is tidally locked. "
+                  + "Off: the light the Alien Worlds tidal-lock mod computes, where the east edge of the day side reads "
+                  + "dark and the west edge of the night side reads lit.");
+                if (tidalSunGlowByGeometry)
+                {
+                    list.Label("    Dusk band past the edge of day: " + tidalTwilightBandDegrees.ToString("0") + " degrees");
+                    tidalTwilightBandDegrees = list.Slider(tidalTwilightBandDegrees, 0f, 18f);
                 }
                 list.CheckboxLabeled("False-shade ambush (the mirrak)", ref falseShadeAmbushEnabled,
                     "On: a flat ambusher lying in the open looks like shade to animals looking for "

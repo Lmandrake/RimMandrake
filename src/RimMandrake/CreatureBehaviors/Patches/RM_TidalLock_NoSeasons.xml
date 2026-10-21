@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LOCKED_SEASONS_DECIDE_FIFTEEN_DEGREE_WOBBLE. Owner, by card 2026-10-20: "Every tile swings ~15 C with the
+  seasons: what should seasons do?" -> "Remove the swing".
+
+  Alien Worlds transpiles vanilla GenTemperature.SeasonalShiftAmplitudeAt to read the ACTIVE planet type's
+  seasonalTempVariationCurve (FieldPatcher, set in PlanetTypeDef.OnActivate when the curve is non-null). The
+  TidallyLocked def ships 0:15 / 1:15 / 2:5, i.e. +-15 C seasons on every tile, opposite sign per hemisphere.
+  A tidally locked planet with no axial tilt has none: this flattens the curve to 0 (kept NON-null, so the
+  framework still installs it instead of falling back to vanilla's latitude seasons). Each tile then holds its
+  painted average all year (daily swing is already off under the lock).
+
+  Guarded: FindMod on the tidal-lock mod's name (a top-level MayRequire is ignored), then a Conditional on the
+  node, so it is silent when the mod or the field is absent. Takes effect at the next load (activation).
+  Design: design/RimMandrake/world_physics_audit_2026-10-20.md §3.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alien Worlds - Tidally Locked</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/AlienWorlds.TidallyLocked.PlanetTypeDef[defName="TidallyLocked"]/seasonalTempVariationCurve</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/AlienWorlds.TidallyLocked.PlanetTypeDef[defName="TidallyLocked"]/seasonalTempVariationCurve</xpath>
+        <value>
+          <seasonalTempVariationCurve>
+            <points>
+              <li>0.0, 0</li>
+              <li>2.0, 0</li>
+            </points>
+          </seasonalTempVariationCurve>
+        </value>
+      </match>
+    </match>
+  </Operation>
+</Patch>

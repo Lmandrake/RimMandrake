@@ -815,6 +815,32 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     Assert(d >= 0f && d < 360f, "drift out of [0,360) at tick " + t + ": " + d);
                 }
             });
+            Case("tidal sun glow: day side reads day, night side night, west = east, home tile full (SUN_GLOW_DECIDE_WEST_TERMINATOR_SUNBATHING)", () =>
+            {
+                const float band = RM_TidalSunGlowMath.DefaultTwilightBandDegrees;
+                float prev = -1f;
+                for (double e = -90.0; e <= 90.0; e += 0.05)
+                {
+                    float g = RM_TidalSunGlowMath.GlowFromElevation(e, band);
+                    Assert(g >= prev - 1e-6f, "glow not monotone in elevation at " + e);
+                    Assert(g >= 0f && g <= 1f, "glow out of [0,1] at " + e + ": " + g);
+                    if (e > 1e-6) Assert(g > RM_TidalSunGlowMath.DayNightThreshold, "sun up " + e + " deg reads night: " + g);
+                    else Assert(g <= RM_TidalSunGlowMath.DayNightThreshold, "sun down " + e + " deg reads day: " + g);
+                    if (e <= -band) Assert(g == 0f, "below the dusk band (" + e + ") glow " + g + " is not 0");
+                    prev = g;
+                }
+                for (double lat = -85; lat <= 85; lat += 5)
+                    for (double lon = 0; lon <= 180; lon += 5)
+                        Assert(RM_TidalSunGlowMath.GlowAt(lat, lon, band) == RM_TidalSunGlowMath.GlowAt(lat, -lon, band)
+                            && RM_TidalSunGlowMath.GlowAt(lat, lon, band) == RM_TidalSunGlowMath.GlowAt(-lat, lon, band),
+                            "glow not symmetric at lat " + lat + " lon " + lon);
+                Assert(RM_TidalSunGlowMath.GlowFromElevation(35.4, band) > 0.99f, "home tile 17011 (sun 35.4 deg) not full day");
+                Assert(RM_TidalSunGlowMath.GlowAt(0, 90, band) <= 0.6f && RM_TidalSunGlowMath.GlowAt(0, -90, band) <= 0.6f,
+                    "a terminator reads day");
+                Assert(RM_TidalSunGlowMath.GlowAt(0, 80, band) > 0.6f && RM_TidalSunGlowMath.GlowAt(0, -80, band) > 0.6f,
+                    "arc 80 (sun 10 deg up) reads night");
+                Assert(RM_TidalSunGlowMath.GlowFromElevation(-3.0, 0f) == 0f, "dusk band 0: below the horizon is not dark");
+            });
             Case("moving shade: clearing the old rectangle and casting the new leaves no trail", () =>
             {
                 int w = 40, h = 40;

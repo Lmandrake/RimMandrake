@@ -18,6 +18,10 @@ Per tile it computes, from engine-truth lat/long (`world/world_tiles_sub7b.csv`,
              dayPercent 0.5 pinned). 🔴 It is NOT a clean cos(arc): vanilla's
              "sun peeks around" fudges are evaluated at signed LONGITUDE, so the west
              terminator (long -90) reads lit and the east one (+90) nearly dark.
+  glow_geo   OUR replacement (RimMandrake.CreatureBehaviors RM_TidalSunGlowPatch, owner by card
+             2026-10-20 "Light follows the sun"): a line-for-line port of RM_TidalSunGlowMath —
+             0.6 + 0.4*min(1, sin(e)/sin 30°) for e > 0, a 6° smoothstep dusk band to 0.6 below
+             the horizon, 0 beyond. What the game reads while the lock is active and the setting on.
   t_save     the tile's stored average temperature (what the game reads; daily swing is
              off under the tidal lock, the seasonal swing is NOT — see season_amp)
   t_intent   the owner's ruled curve on arc, [70,58,38,14,-22,-58,-80] at arc 0..180,
@@ -116,6 +120,37 @@ def glow_tidal(lat, lon):
     return max(0.0, min(1.0, dot(norm(n), rhs) / 0.7))
 
 
+DAY_THRESHOLD = 0.6        # GenCelestial.IsDaytime: glow > 0.6
+FULL_DAY_ELEV = 30.0       # RM_TidalSunGlowMath.FullDayElevationDegrees
+TWILIGHT_BAND = 6.0        # RM_TidalSunGlowMath.DefaultTwilightBandDegrees
+
+
+def glow_geo(lat, lon, band=TWILIGHT_BAND):
+    """RM_TidalSunGlowMath.GlowAt, ported line for line."""
+    e = 90.0 - arc_deg(lat, lon)
+    if e > 0:
+        f = min(1.0, math.sin(e * D2R) / math.sin(FULL_DAY_ELEV * D2R))
+        return DAY_THRESHOLD + (1 - DAY_THRESHOLD) * f
+    if band <= 0 or e <= -band:
+        return 0.0
+    t = (e + band) / band
+    return DAY_THRESHOLD * t * t * (3 - 2 * t)
+
+
+def day_night_mismatch(tiles, glow):
+    """(night-side tiles reading daytime, day-side tiles reading night) for a glow(lat, lon) function, over
+    (lat, lon) pairs. Day side = arc < 90; daytime = glow > 0.6 (vanilla IsDaytime)."""
+    lit_night = dark_day = 0
+    for lat, lon in tiles:
+        arc = arc_deg(lat, lon)
+        g = glow(lat, lon)
+        if arc > 90 and g > DAY_THRESHOLD:
+            lit_night += 1
+        elif arc < 90 and g <= DAY_THRESHOLD:
+            dark_day += 1
+    return lit_night, dark_day
+
+
 def arc_deg(lat, lon):
     return math.degrees(math.acos(max(-1, min(1, math.cos(lon * D2R) * math.cos(lat * D2R)))))
 
@@ -148,7 +183,7 @@ def main(argv=None):
         el = g.get("tileElevation", t)
         ts = g.get("tileTemperature", t)
         out.append(dict(tile=t, lat=lat, lon=lon, arc=round(arc, 2), elev_geo=round(90 - arc, 2),
-                        glow_mod=round(glow_tidal(lat, lon), 3), t_save=ts,
+                        glow_mod=round(glow_tidal(lat, lon), 3), glow_geo=round(glow_geo(lat, lon), 3), t_save=ts,
                         t_intent=round(t_intent(arc, el), 1), elev_m=el, biome=names[t]))
     for o in out:
         o["dT"] = round(o["t_save"] - o["t_intent"], 1)
@@ -175,17 +210,19 @@ def main(argv=None):
     start = dict(st[0]); start["probe"] = "start 17011"; sample.append(start)
 
     print(f"save tiles {len(out)}  unresolved biome hashes {len(unresolved)}")
-    hdr = "probe          tile   lat    lon    arc  elevGeo glowMod  tSave tIntent   dT biome"
+    hdr = "probe          tile   lat    lon    arc  elevGeo glowMod glowGeo  tSave tIntent   dT biome"
     print(hdr)
     for o in sample:
         print(f"{o['probe']:<14}{o['tile']:>5} {o['lat']:6.1f} {o['lon']:6.1f} {o['arc']:6.1f} {o['elev_geo']:6.1f}"
-              f"  {o['glow_mod']:5.2f} {o['t_save']:6.1f} {o['t_intent']:6.1f} {o['dT']:5.1f} {o['biome']}")
+              f"  {o['glow_mod']:5.2f}   {o['glow_geo']:5.2f} {o['t_save']:6.1f} {o['t_intent']:6.1f} {o['dT']:5.1f} {o['biome']}")
 
     # glow vs geometry, planet-wide
     lit_night = [o for o in out if o["arc"] > 90 and o["glow_mod"] > 0.6]
     dark_day = [o for o in out if o["arc"] < 90 and o["glow_mod"] <= 0.6]
     print(f"\nnight-side tiles (arc>90) the game calls DAYTIME (glow>0.6): {len(lit_night)}"
           f"  | day-side tiles (arc<90) it calls night: {len(dark_day)}")
+    gn, gd = day_night_mismatch([(o["lat"], o["lon"]) for o in out], glow_geo)
+    print(f"with RM_TidalSunGlowPatch (glowGeo): night-side reading DAYTIME {gn} | day-side reading night {gd}")
 
     # per-biome temperature vs intent
     by = {}
@@ -204,7 +241,8 @@ def main(argv=None):
             flagged.append((b, len(L), big))
     if a.json:
         json.dump(dict(sample=sample, unresolved=unresolved, flagged=flagged,
-                       lit_night=len(lit_night), dark_day=len(dark_day)), open(a.json, "w"), indent=1)
+                       lit_night=len(lit_night), dark_day=len(dark_day),
+                       geo_lit_night=gn, geo_dark_day=gd), open(a.json, "w"), indent=1)
     return 0
 
 

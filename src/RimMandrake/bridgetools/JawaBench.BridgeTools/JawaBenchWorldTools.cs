@@ -2766,7 +2766,11 @@ namespace JawaBench.BridgeTools
                 "WorldInfo.ExposeData - they revert on the next load - so this tool REFUSES " +
                 "them unless allowNonPersistent=true, and flags them in the result when it " +
                 "does write them. Changing seedString or planetCoverage does NOT regenerate " +
-                "anything; it only edits the label the save carries.",
+                "anything; it only edits the label the save carries. initialMapSize (scribed) is " +
+                "the size of every home map generated from now on - gravship landing, settling, " +
+                "debug generate (GetOrGenerateMapUtility / GravshipUtility read it); maps that " +
+                "already exist keep their size. Must be one of the new-game sizes " +
+                "(Dialog_AdvancedGameConfig.MapSizes: 200-325).",
             ResultDescription = "success, changed[], refused[], info read back.")]
         public static async Task<object> WorldInfoSet(
             IRimBridgeContext ctx,
@@ -2776,7 +2780,8 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Planet-wide pollution 0-1.")] float? pollution = null,
             [ToolParameter(Description = "overallPopulation - NOT PERSISTED.")] string overallPopulation = null,
             [ToolParameter(Description = "landmarkDensity - NOT PERSISTED.")] string landmarkDensity = null,
-            [ToolParameter(Description = "Permit writing the two non-persisted fields.")] bool allowNonPersistent = false)
+            [ToolParameter(Description = "Permit writing the two non-persisted fields.")] bool allowNonPersistent = false,
+            [ToolParameter(Description = "Square home-map size for maps generated from now on (200/225/250/275/300/325). 0 = unchanged.")] int initialMapSize = 0)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -2792,6 +2797,15 @@ namespace JawaBench.BridgeTools
                     float p = Mathf.Clamp01(pollution.Value);
                     w.pollution = p;
                     changed.Add(p == pollution.Value ? "pollution" : "pollution (clamped " + pollution.Value + " -> " + p + ")");
+                }
+                // HOME_MAP_SIZE_RESTORE_ROOM_TO_STRETCH (owner, by card 2026-10-20: back to 325). WorldInfo.initialMapSize is
+                // scribed and is what every later home map is generated at; GameInitData.mapSize only matters
+                // inside a new game's first map, and players never start a new game.
+                if (initialMapSize != 0)
+                {
+                    if (Array.IndexOf(Dialog_AdvancedGameConfig.MapSizes, initialMapSize) < 0)
+                        refused.Add("initialMapSize " + initialMapSize + " (not one of " + string.Join("/", Dialog_AdvancedGameConfig.MapSizes) + ")");
+                    else { w.initialMapSize = new IntVec3(initialMapSize, 1, initialMapSize); changed.Add("initialMapSize"); }
                 }
 
                 // 🔴 Same shape as the fix on jawa/faction_relations_set: Enum.Parse ALSO
