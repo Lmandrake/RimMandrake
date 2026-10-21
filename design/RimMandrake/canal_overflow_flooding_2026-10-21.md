@@ -45,7 +45,7 @@ engine refuses every litre above the brim.
 | rain (`ApplyRain`) | **skipped**: `RoomNotches(i) <= 0`, so the cell takes nothing | `RM_MapComponent_Excavation.cs:~3013` |
 | natural source / river | **no head**. A limitless body sits at its own brim and never pushes above it | `RM_LiquidStock` |
 | fill-in displacement | **destroyed and disclosed** (`ReportOverflow`, `overflowDestroyedTotal`). This is the owner's 2026-09-16 rule: *"if it would 'overflow' it is destroyed"* | `flowworks_mod_definition.md` §5 |
-| `Flood_FlowWorks` release (hot kits, `RM_HotLiquid.Release`) | spends volume only on dug cells, or as temp terrain over open natural water. **Dry ground is never a candidate** (`CanLiquidEnter` = excavated or natural liquid) | `Flood_FlowWorks.cs:274-315` |
+| `Flood_FlowWorks` release (hot kits, `RM_HotLiquid.Release`) | spends volume only on dug cells. **Dry ground is never a candidate** (`CanLiquidEnter` = excavated or natural liquid). Undug natural water is refused too, one gate earlier (`:295`), so the P14 "spill over open natural water" temp-terrain branch is effectively unreachable. GPT caught this and we confirmed it by reading the code; the in-file comment is wrong | `Flood_FlowWorks.cs:274-315` |
 | CrackedLands canyon flood (driver) | raises F on dug cells through `TryFloodDriverCell`. On undug ground it writes its own **permanent** `WaterMovingShallow` wall, timed by its own clock | `CrackedLands/Source/RM_MapComponent_CanyonFlood.cs` header |
 
 ### 1.3 What "overfilled" means in our model
@@ -137,7 +137,8 @@ Let a release whose seed is a brimming lip treat undug, open ground as a candida
   by timer, not by soak or evaporation, so receding is an undisclosed destroy. It has no return to the
   channel and does not merge with a second spill. It is one Thing per release, so a pump that keeps
   overflowing spawns a stream of them.
-- **Good as stage-0 scaffolding and as the "burst" kit path. Not the model.**
+- **Not the model, and not scaffolding either.** It carries its own accounting faults (§6 item 15). It
+  stays the hot-kit burst path until the sheet replaces it.
 
 ### Option C — A sheet-water layer in the depth engine (RECOMMENDED)
 Add one more grid to `RM_MapComponent_Excavation`: **`sheetGrid`** (`ushort` dL per cell of water
@@ -186,8 +187,8 @@ same principle the depth engine already lives by.
      Path cost and SoakingWet come from vanilla.
    - *Pool* (> 15 cm, only possible where walls hold it): the fluid's existing `fillTerrainVeryShallow`
      look.
-6. **Sleep.** A cell whose |Δh| < ε for 4 pulses leaves the active set. Its losses are then integrated
-   lazily (`lastTouchedTick`) when anything wakes it. A neighbour change, a new spill or a terrain or
+6. **Sleep.** A cell with no significant incident flux and no pending boundary work for 4 pulses stops
+   *flowing* (§6 item 3). Its losses still run every pulse, never lazily on wake. A neighbour change, a new spill or a terrain or
    edifice change wakes it (`map.events.TerrainChanged` and `BuildingSpawned`/`BuildingDespawned`, the
    same hooks vanilla `Flood` uses).
 
@@ -285,7 +286,8 @@ vanilla `TorrentialRainFlood`.
   `selftest_flowworks_sheet_oracle.py`, exact to the dL like the `RM_LevelSolve` twin.
 - **Offline tests:**
   1. Conservation over 10k pulses: in = sheet + returned + soaked + evaporated + absorbed + burned.
-  2. Finite extent: V spreads to at most ⌈V/r⌉ cells.
+  2. Finite extent: growth stops once every frontier cell is at or below retention, and the final wet
+     count is at most ⌈V/q_min⌉, where q_min is the minimum receive quantum (§6 item 6).
   3. Order independence: shuffled input order gives the same output.
   4. Walls and doors block, grates pass.
   5. Return-to-channel drains fully.
@@ -328,8 +330,8 @@ vanilla `TorrentialRainFlood`.
   mechanism gets its script, and every live session writes into it).
 
 ### Stage 4 — live acceptance (joint, or once the bridge is free; never on the owner's game without the bridge)
-1. A pump into a full canal on flat soil puts a sheet at the lip within one pulse. The extent stays at or
-   under ⌈V/r⌉, and the litre ledger closes to the dL.
+1. A pump into a full canal on flat soil puts a sheet at the lip within one pulse. The extent stays
+   finite (§6 item 6), and the litre ledger closes to the dL.
 2. The pump stops and the canal is drawn down, and the sheet runs back.
 3. A wall ring holds a pool, and a door holds the pool (D4).
 4. A lit chemfuel spill carries the front across the sheet and burns it away. A water spill puts out a
@@ -374,4 +376,129 @@ vanilla `TorrentialRainFlood`.
 ---
 
 ## 6. GPT review and what we took/rejected
-PENDING (consult running)
+
+Consulted 2026-10-21. The run used `gpt_consult.py` (gpt-6.1-sol, high effort), with this doc,
+`Flood_FlowWorks.cs`, `FluidDef.cs` and `RM_LevelSolve.cs` inlined. The answer is a Transient record and
+is not kept. Its verdict: *"Keep the engine-owned volume layer, but do not approve Option C as
+written."* The direction stands. **Where this section and §3–§4 disagree, this section wins.** The build
+item carries these amendments.
+
+### Taken (they amend §3–§5)
+1. **Atomic integer-dL transfers and one hydraulic interface (GPT's #1).** Every inflow does
+   offer → accepted dL → debit exactly that amount. The existing boolean / whole-notch
+   `DriverFillOutcome` is not enough for partial sheet acceptance, so the driver API grows an
+   `accepted dL` return. Sheets, dug cells and natural bodies expose one *head + room* interface. The sheet
+   is positive head above 0, and dug water is at or below 0. Sheet→canal and sheet→limited-lake are
+   **internal transfers** inside the ledger, not exits. A full limited lake **refuses**, and never
+   swallows past its capacity. Only a limitless body is a sink, and that sink is disclosed.
+2. **Overlay-first renderer, and temp-terrain writes only behind a proven ownership gate (GPT's #2).**
+   We confirmed the removal queue has no ownership: `TempTerrainManager.Tick` dequeues and calls
+   `RemoveTempTerrain(cell)` on whatever is there. So "redraw next pulse" fixes the picture but not the
+   side effects: crops already destroyed, filth already washed, fires already put out. Stage 1 therefore
+   draws **every** sheet tier as a `SectionLayer` overlay and applies effects from the grid in our own
+   code. These effects cover path cost through a pathing hook or vanilla-parity numbers, the SoakingWet
+   thought, deterioration, extinguishing and crops per D3.
+   - Temp-terrain pictures become a later, optional stage, after the integration spike shows they are
+     safe.
+   - Pool tiers need dedicated **temporary** clones. `FluidDef.ConfigErrors` requires most existing fill
+     tiers to be non-temporary, so they can never be written over undug ground.
+   - Fuel sheets must not inherit water's `extinguishesFire`.
+3. **Losses on the pulse, never lazily on wake (GPT's #3).** Reconstructing evaporation on wake from
+   *current* temperature and roof is wrong. Sleep now only skips *flow*: a cell is asleep when it has no
+   significant incident flux and no pending boundary work, not merely zero Δh. Losses still run on every
+   occupied cell each pulse, which costs O(occupied) at one multiply-add per cell.
+4. **Persist everything a continuation needs (GPT's #3).** The scribed state is:
+   - `sheetGrid`, fluid identity, loss remainders and hysteresis state
+   - the relief salt and kernel version, and the pulse phase
+   
+   The acceptance test is *continue-uninterrupted vs. save/load-then-continue gives identical future
+   trajectories*, not just an equal hash.
+5. **Receiver caps, fluid arbitration, occupied-cell cap (GPT's #4).**
+   - Destination room is resolved before commit, and rejected flux stays with its sender. Nothing is
+     ever clamped after the fact.
+   - Two fluids reaching an empty cell in one pulse are settled by a stable rule (lower fluid-palette
+     index, then lower donor cell index), and the loser stays upstream.
+   - The cap counts **occupied** cells (`maxWetCells`), with new cells reserved deterministically. A
+     separate cap bounds work per pulse.
+   - Lowering either cap in settings never deletes water. Already-wet cells keep draining, and only new
+     wetting is refused.
+6. **Retention is moisture, not trapped mobile water.** Water below retention depth is *held moisture*.
+   It does not flow, it only soaks or evaporates, and it is drawn as the faintest film. The §4 claim
+   "the sheet runs back" is restated: mobile water returns, and held moisture dries where it is. The
+   §4-stage-0 extent test "≤ ⌈V/r⌉ cells" was **false**: 401 dL at r = 200 can wet five cells. It is
+   replaced by *"the extent stops growing once every frontier cell is at or below retention, and the
+   final wet count is bounded by ⌈V/r_min_receive⌉"*, with a minimum receive quantum so a donor cannot
+   make dust-thin new cells.
+7. **Underlying ground is read from authoritative state, never from the exposed picture.** Eligibility,
+   permeability and `originalTerrain` capture read the base and foundation layers and the engine's
+   `IsNaturalLiquid`, never `TerrainAt`. That way our own water picture cannot make a cell look like a
+   lake.
+8. **Local, not teleporting, spill.** The surplus enters at the lip cells nearest the inflow (the pump
+   outlet, or the rained-on cell), walking the connected body outward. It is not split evenly over every
+   lip of a long canal. The lip set is cached per body and invalidated on dig/fill.
+9. **More topology wake-ups.** Door, sluice or grate state changes, dig/fill under a wet cell,
+   floor/foundation changes and roof changes all wake cells. Subscriptions are re-made after load, and
+   reconciliation writes never schedule more work.
+10. **Stages reordered:**
+    - Stage 0 is a **build-pinned integration spike**. It writes and removes temp terrain over crops,
+      floors, filth, fire, ice, vanilla floods and fishing zones on the 1.6 assembly, and records the
+      mutation, mesh and path cost.
+    - Stage 1 is the **water-only kernel and transfer ledger** (no losses, fire or irrigation). Then come
+      persistence and settings transitions, then losses and effects, then other fluids, fire and
+      defaults.
+    - Explosion and fire-effect budgets are counted separately. A bounded kernel does not bound a burning
+      carpet.
+11. **Precedent we missed: *Dynamic Flooding* (TrueBlueSwablu, Steam 3144491125).** GPT reports it as a
+    separate flood layer with building blockers, recession, plant effects and cleanup-before-removal. It
+    targets 1.4/1.5. **UNVERIFIED by us**: it is not installed (our About search over both mod roots
+    found it nowhere), and exact conservation and 1.6 support are unknown. Stage 0 reads its listing and
+    source for terrain-ownership lessons before we write ours.
+12. **Perf claims made honest.** "48k integer ops" becomes *48k neighbour evaluations plus all
+    integration work*. The acceptance runs cover 250² and 325² maps, concentrated and scattered spills,
+    and the full modpack. Kernel time, total pulse time, frame spikes, allocations, dirty sections and
+    terrain writes are recorded separately. The 1 ms target stays provisional.
+13. **Pin the rounding.** The rules are: fixed integer hash with a persisted salt, checked 64-bit
+    intermediates, flux remainders allocated in stable order, and no dead zone from `/5` plus ε that
+    strands water. Anisotropy and convergence time are measured, and spread and drain *times* get
+    targets, because K × pulse sets gameplay speed.
+14. **New owner decisions:**
+    - **D8:** does the exact level-surface ruling (*"VERY smooth water"*) extend to sheets? Yes means
+      basin levelling by priority-flood. No means the diffusion kernel.
+    - **D9:** are retention and micro-relief physical rules or cosmetic? They decide where puddles stay.
+    - **D10:** temp-slot priority, cold weather (a sheet stays liquid below 0 °C, or freezes into its own
+      ice tier), and what lowering a cap does.
+    - **D1 is softened, per GPT:** the default stays *his* rule (destroyed and disclosed) unless he
+      supersedes it.
+    - **D7:** turning OFF never makes standing water vanish silently. OFF stops new spills, and existing
+      sheets keep draining. The "Dry all" action is a disclosed purge.
+15. **Existing `Flood_FlowWorks` accounting faults, filed with the build so they do not migrate into the
+    sheet:**
+    - Expiry, an empty frontier or a missing def can destroy a release with `remainingVolume > 0`, which
+      is an undisclosed exit.
+    - The float-notch `remainingVolume` does not match the dL engine.
+    - Refused/HandsOff cells are not saved, so eligibility changes on reload (the in-file comment already
+      admits this).
+    - Global `Rand` makes the walk nondeterministic.
+    
+    `Flood_FlowWorks` is therefore **not** stage-0 scaffolding (this reverses §3 Option B's "good as
+    scaffolding").
+
+### Checked by us, against GPT's open questions
+- **FreezeManager does not touch our sheet.** It tests `c.GetTerrain(map).canFreeze`, the top terrain
+  with temp winning (`Verse/FreezeManager.cs:108`). Melting removes temp terrain only where the terrain
+  *is* `ThinIce` (`CanEverMelt`). So a `canFreeze=false` sheet picture is never frozen or melted away.
+  Under the overlay-first renderer it is moot anyway.
+- **The `WaterBodyTracker` early-out is conditional, as GPT says.** It compares old and new
+  `waterBodyType`. A None sheet over None ground skips the body branch, but replacing a water-typed
+  terrain does not. It is moot under the overlay renderer and stays a row in the integration spike.
+
+### Rejected
+- **GPT's "floating point does not automatically mean nondeterminism; reject SWE on value, not on
+  that".** The correction is accepted, and so is its conclusion. Option D stays rejected on complexity
+  and value: no elevation on the map means momentum gives the player nothing to read.
+- **Persistent virtual pipes (saved edge discharges).** Rejected for v1: more saved state and damping
+  calibration, for a dynamic effect that a flat map cannot show. Revisit only if D8 asks for surge
+  behaviour.
+- **Factorio-style unrestricted reservoir merging for sheets.** Rejected, because it spreads sheets
+  implausibly far. GPT also says this. We keep only its boundary-transfer lesson, which item 1 already
+  takes.
