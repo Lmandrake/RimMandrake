@@ -37,8 +37,8 @@ namespace RimMandrake.FlowWorks
 	/// into one or two LEAVES (R1): a leaf no longer than its material allows (Mod Settings, defaults timber 4, steel 8); a
 	/// longer deck is two leaves, one hinged on each bank, each tipping toward its own hinge.
 	///
-	/// A leaf's movement is a progress count in ticks, 0 = lowered, FullTicks = raised. Raising lifts the TIP first: the
-	/// squares that stop being ground are counted from the tip back to the hinge (RaisedSquares). Raising is a reversible
+	/// A leaf's movement is a progress count in ticks, 0 = lowered, FullTicks = raised. A leaf is rigid: off its seat
+	/// (any progress) none of its squares is ground (RaisedSquares); its riders tip to the hinge bank first. Raising is a reversible
 	/// state change and never a collapse (R3). Numbers are the design's proposals, never measurements.
 	/// Compiled into the FlowWorks SelfTest (DrawbridgeChecks).
 	/// </summary>
@@ -115,31 +115,106 @@ namespace RimMandrake.FlowWorks
 			return ticks < length ? length : ticks;
 		}
 
-		/// <summary>How many squares (counted from the tip) are no longer ground at this progress: any progress at all lifts the
-		/// tip off its bank, so 1 tick in is one square raised; full progress is every square.</summary>
+		/// <summary>How many squares are no longer ground at this progress. A leaf is one rigid plank on its hinge: the moment
+		/// it leaves its seat (any progress at all) it is a tilting slope that nobody stands on, so EVERY square of it stops being
+		/// ground at once, and it is ground again only when fully lowered. (Phase 2: this replaces phase 1's tip-first count,
+		/// which left the hinge squares walkable on a tilted leaf and could not honour "tips towards hinged side".)</summary>
 		public static int RaisedSquares(int progress, int fullTicks, int length)
 		{
-			if (progress <= 0 || length < 1)
-			{
-				return 0;
-			}
-			if (fullTicks < 1 || progress >= fullTicks)
-			{
-				return length;
-			}
-			int sq = (int)(((long)progress * length + fullTicks - 1) / fullTicks); // ceil
-			return sq < 1 ? 1 : sq > length ? length : sq;
+			return progress <= 0 || length < 1 ? 0 : length;
 		}
 
 		/// <summary>Is this deck index raised (not ground) at this progress?</summary>
 		public static bool IsRaised(LeafSpan leaf, int index, int progress, int fullTicks)
 		{
-			if (!leaf.Contains(index))
+			return leaf.Contains(index) && RaisedSquares(progress, fullTicks, leaf.Length) > 0;
+		}
+
+		// ── Phase 2: the tip rule (R3) ──────────────────────────────────────────────────────────────
+
+		/// <summary>How far (cardinal steps from the hinge bank's anchor squares) a tipped rider can land (proposal). Beyond it
+		/// there is no legal bank square and the rider falls.</summary>
+		public const int TipReach = 3;
+
+		/// <summary>One pawn riding the leaf: its distance from the hinge (squares) and its cell index (the tie-break).</summary>
+		public struct Rider
+		{
+			public int Id;
+			public int FromHinge;
+			public int CellIndex;
+
+			public Rider(int id, int fromHinge, int cellIndex)
 			{
-				return false;
+				Id = id;
+				FromHinge = fromHinge;
+				CellIndex = cellIndex;
 			}
-			int raised = RaisedSquares(progress, fullTicks, leaf.Length);
-			return leaf.FromHinge(index) >= leaf.Length - raised;
+		}
+
+		/// <summary>R3 order: nearest the hinge first, ties by cell index, then id (fully deterministic).</summary>
+		public static List<Rider> TipOrder(IEnumerable<Rider> riders)
+		{
+			List<Rider> l = new List<Rider>(riders);
+			l.Sort((a, b) => a.FromHinge != b.FromHinge ? a.FromHinge.CompareTo(b.FromHinge)
+				: a.CellIndex != b.CellIndex ? a.CellIndex.CompareTo(b.CellIndex) : a.Id.CompareTo(b.Id));
+			return l;
+		}
+
+		/// <summary>The legal landing squares on the hinge bank, nearest first: a breadth-first walk from the anchor squares
+		/// through passable squares (never through a wall or a closed gate: `passable` says), at most `reach` steps, keeping the
+		/// squares that are `free` (standable, no pawn). Ties within one step keep the walk's order (starts first, then the
+		/// neighbour order given).</summary>
+		public static List<int> BankLandings(IList<int> starts, System.Func<int, IEnumerable<int>> neighbours, System.Func<int, bool> passable,
+			System.Func<int, bool> free, int reach)
+		{
+			List<int> landings = new List<int>();
+			HashSet<int> seen = new HashSet<int>();
+			List<int> frontier = new List<int>();
+			foreach (int s in starts)
+			{
+				if (seen.Add(s) && passable(s))
+				{
+					frontier.Add(s);
+				}
+			}
+			for (int step = 0; step <= reach && frontier.Count > 0; step++)
+			{
+				List<int> next = new List<int>();
+				foreach (int c in frontier)
+				{
+					if (free(c))
+					{
+						landings.Add(c);
+					}
+					if (step == reach)
+					{
+						continue;
+					}
+					foreach (int n in neighbours(c))
+					{
+						if (seen.Add(n) && passable(n))
+						{
+							next.Add(n);
+						}
+					}
+				}
+				frontier = next;
+			}
+			return landings;
+		}
+
+		/// <summary>Assign landings to riders in tip order: the k-th rider takes the k-th landing; riders past the last landing
+		/// are the overflow and fall (review answer 1). Returns rider id → landing cell, or -1 for a faller.</summary>
+		public static Dictionary<int, int> AssignTips(IEnumerable<Rider> riders, IList<int> landings)
+		{
+			Dictionary<int, int> to = new Dictionary<int, int>();
+			int k = 0;
+			foreach (Rider r in TipOrder(riders))
+			{
+				to[r.Id] = k < landings.Count ? landings[k] : -1;
+				k++;
+			}
+			return to;
 		}
 
 		/// <summary>One drive step toward the target. Returns the new progress (clamped to 0..fullTicks).</summary>

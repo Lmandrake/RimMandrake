@@ -63,26 +63,84 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_DrawbridgeMath.SplitLeaves(1, 4, 0, true) == null, "no leaf length: not a drawbridge");
             });
 
-            Case("Drawbridge_P1_raise_lifts_the_tip_first_and_is_reversible", () =>
+            Case("Drawbridge_P1_leaf_is_rigid_off_its_seat_and_reversible", () =>
             {
-                LeafSpan a = new LeafSpan(1, 4, true);   // hinge beside index 1, tip at 4
+                LeafSpan a = new LeafSpan(1, 4, true);
                 int full = RM_DrawbridgeMath.FullTicks(SuspensionTier.Timber, 4, 1f);
                 Assert(full == 4 * RM_DrawbridgeMath.HandTicksPerSquare, "timber: about 4 s per square");
                 Assert(RM_DrawbridgeMath.FullTicks(SuspensionTier.Steel, 8, 1f) == RM_DrawbridgeMath.PoweredTicksPerLeaf, "steel: about 2 s per leaf");
-                Assert(!RM_DrawbridgeMath.IsRaised(a, 4, 0, full), "lowered: nothing raised");
-                Assert(RM_DrawbridgeMath.IsRaised(a, 4, 1, full) && !RM_DrawbridgeMath.IsRaised(a, 3, 1, full),
-                    "can-fail: one tick in, the TIP has left the far bank and only the tip");
-                Assert(RM_DrawbridgeMath.RaisedSquares(full / 4, full, 4) == 1 && RM_DrawbridgeMath.RaisedSquares(full / 4 + 1, full, 4) == 2,
-                    "squares rise one per quarter of the travel");
-                for (int i = 1; i <= 4; i++) Assert(RM_DrawbridgeMath.IsRaised(a, i, full, full), "raised: every square up");
+                for (int i = 1; i <= 4; i++) Assert(!RM_DrawbridgeMath.IsRaised(a, i, 0, full), "lowered: nothing raised");
+                for (int i = 1; i <= 4; i++) Assert(RM_DrawbridgeMath.IsRaised(a, i, 1, full),
+                    "can-fail (phase 2): one tick off its seat, EVERY square of the leaf has stopped being ground (a tilted plank)");
                 Assert(!RM_DrawbridgeMath.IsRaised(a, 5, full, full) && !RM_DrawbridgeMath.IsRaised(a, 0, full, full), "only the leaf's own squares");
-                LeafSpan b = new LeafSpan(5, 7, false);  // hinge beside 7 (the far bank), tip at 5
-                Assert(RM_DrawbridgeMath.IsRaised(b, 5, 1, 300) && !RM_DrawbridgeMath.IsRaised(b, 7, 1, 300), "a far-bank leaf lifts ITS tip (index 5) first");
-                int p = RM_DrawbridgeMath.Step(0, true, full, 5);
-                Assert(p == 5 && RM_DrawbridgeMath.Step(full - 2, true, full, 5) == full && RM_DrawbridgeMath.Step(3, false, full, 5) == 0, "steps clamp");
+                Assert(RM_DrawbridgeMath.Step(0, true, full, 5) == 5 && RM_DrawbridgeMath.Step(full - 2, true, full, 5) == full
+                    && RM_DrawbridgeMath.Step(3, false, full, 5) == 0, "steps clamp");
                 Assert(RM_DrawbridgeMath.AtTarget(0, false, full) && !RM_DrawbridgeMath.AtTarget(0, true, full), "at target");
                 Assert(RM_DrawbridgeMath.StateLine(0, false, full, false) == "lowered" && RM_DrawbridgeMath.StateLine(full, true, full, false) == "raised"
                     && RM_DrawbridgeMath.StateLine(full / 2, true, full, true) == "raising 50% (stopped)", "readout");
+            });
+
+            Case("Drawbridge_P2_tip_order_nearest_hinge_then_cell", () =>
+            {
+                var order = RM_DrawbridgeMath.TipOrder(new[]
+                {
+                    new RM_DrawbridgeMath.Rider(1, 3, 50), new RM_DrawbridgeMath.Rider(2, 0, 90), new RM_DrawbridgeMath.Rider(3, 0, 10),
+                    new RM_DrawbridgeMath.Rider(4, 2, 7),
+                });
+                Assert(order[0].Id == 3 && order[1].Id == 2 && order[2].Id == 4 && order[3].Id == 1, "can-fail: hinge-near first, ties by cell");
+                LeafSpan far = new LeafSpan(5, 7, false);
+                Assert(far.FromHinge(7) == 0 && far.FromHinge(5) == 2, "a far-bank leaf counts from ITS hinge (review answer 2)");
+            });
+
+            Case("Drawbridge_P2_six_riders_one_free_square_one_lands_five_fall", () =>
+            {
+                // a 7x7 bank, x along, z across; the anchor at (3,0); walls everywhere but the anchor and one square beside it
+                const int W = 7;
+                Func<int, IEnumerable<int>> nb = i => Nbrs(i, W, W);
+                var open = new HashSet<int> { 3, 3 + W };   // the anchor square and the square behind it
+                var occupied = new HashSet<int> { 3 };      // a guard already stands on the anchor square
+                List<int> landings = RM_DrawbridgeMath.BankLandings(new[] { 3 }, nb, i => open.Contains(i), i => !occupied.Contains(i), RM_DrawbridgeMath.TipReach);
+                Assert(landings.Count == 1 && landings[0] == 3 + W, "one free legal square");
+                var riders = new List<RM_DrawbridgeMath.Rider>();
+                for (int k = 0; k < 6; k++) riders.Add(new RM_DrawbridgeMath.Rider(100 + k, k / 3, 200 + k));
+                Dictionary<int, int> to = RM_DrawbridgeMath.AssignTips(riders, landings);
+                int landed = 0, fell = 0;
+                foreach (var kv in to) { if (kv.Value >= 0) landed++; else fell++; }
+                Assert(landed == 1 && fell == 5, "can-fail: six riders, one free bank square: one lands, five fall (RAISE_TIPS_RIDERS)");
+                Assert(to[100] == 3 + W, "the rider nearest the hinge (lowest cell) gets it");
+            });
+
+            Case("Drawbridge_P2_landings_never_through_a_wall_and_within_reach", () =>
+            {
+                const int W = 9;
+                Func<int, IEnumerable<int>> nb = i => Nbrs(i, W, W);
+                // a wall row at z=1 except nothing: the free ground beyond it is unreachable
+                Func<int, bool> pass = i => i / W != 1;
+                List<int> l = RM_DrawbridgeMath.BankLandings(new[] { 4 }, nb, pass, i => i != 4, RM_DrawbridgeMath.TipReach);
+                foreach (int c in l) Assert(c / W == 0, "can-fail: nobody is moved through a wall");
+                Assert(l.Count == 6, "z=0 row within 3 steps of x=4, minus the anchor: x=1..3, 5..7");
+                Assert(l[0] == 3 || l[0] == 5, "nearest first");
+                List<int> wide = RM_DrawbridgeMath.BankLandings(new[] { 4 }, nb, i => true, i => i != 4, RM_DrawbridgeMath.TipReach);
+                foreach (int c in wide) Assert(Math.Abs(c % W - 4) + c / W <= RM_DrawbridgeMath.TipReach, "no landing past the reach");
+            });
+
+            Case("Drawbridge_P2_tip_wiring_once_per_raise_band_aware_overflow_falls", () =>
+            {
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                string tick = Body(db, "public static void Tick(RM_MapComponent_SuspensionBridges comp, int now)");
+                int tip = tick.IndexOf("fallers = Tip(comp.map, r, l);"), apply = tick.IndexOf("Apply(comp.map, r, l);"), fall = tick.IndexOf("Fall(comp.map, r, fallers);");
+                Assert(tip > 0 && apply > tip && fall > apply, "can-fail: riders tip BEFORE the squares open, the overflow falls AFTER");
+                Assert(tick.Contains("if (l.progress > 0 && !l.tipCommitted)") && tick.Contains("l.tipCommitted = true;"), "the tip is committed once per raise");
+                string t = Body(db, "public static List<Pawn> Tip(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)");
+                Assert(t.Contains("RM_MapComponent_SuspensionBridges.PawnsOn(map, c)"), "riders by band (PawnsOn skips the floor band underneath)");
+                Assert(t.Contains("int hinge = HingeIndex(l);") && Body(db, "public static int HingeIndex(DrawbridgeLeaf l)").Contains("l.hingeAtFirst ? l.first - 1 : l.last + 1"),
+                    "each leaf tips toward its OWN hinge");
+                Assert(t.Contains("!door.Open") && t.Contains("bridgeDeck.Contains(c)"), "never through a closed gate or across the bridge");
+                Assert(t.Contains("p.Notify_Teleported(true, true);") && !t.Contains("SetFaction") && !t.Contains("TakeDamage"),
+                    "tipped riders keep faction and take no landing damage");
+                Assert(t.Contains("colonyBank && p.HostileTo(Faction.OfPlayer)") && t.Contains("pulled++"), "hostiles tipped onto the colony bank count as pulled inside");
+                string f = Body(db, "public static void Fall(Map map, SuspensionBridgeRecord r, List<Pawn> fallers)");
+                Assert(f.Contains("RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state, drop);"), "the overflow falls through the ordinary descent event");
             });
 
             Case("Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise", () =>
@@ -133,8 +191,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Drawbridge_P1_raise_never_collapses", () =>
             {
                 string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
-                string code = StripComments(db);
-                foreach (string bad in new[] { "Collapse(", "CollapseSpan(", "DropAlone(", ".Destroy(", "OnForcedDescent(", "LandWreck(" })
+                string code = StripComments(db.Replace(Body(db, "public static void Fall(Map map, SuspensionBridgeRecord r, List<Pawn> fallers)"), ""));
+                Assert(!code.Contains("OnForcedDescent("), "only the overflow (Fall) ever descends");
+                foreach (string bad in new[] { "Collapse(", "CollapseSpan(", "DropAlone(", ".Destroy(", "LandWreck(" })
                 {
                     Assert(!code.Contains(bad), "can-fail: a raise or lower must never call " + bad + " (R3)");
                 }
@@ -158,6 +217,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string can = Body(db, "public static bool CanBeDrawbridge(SuspensionBridgeRecord r, out string why)");
                 Assert(can.Contains("IsDrawbridgeTier(r.tier)") && can.Contains("r.jetty") && can.Contains("r.towers"), "timber/steel, no jetty, no towers");
             });
+        }
+
+        private static IEnumerable<int> Nbrs(int i, int w, int h)
+        {
+            int x = i % w, z = i / w;
+            if (x > 0) yield return i - 1;
+            if (x < w - 1) yield return i + 1;
+            if (z > 0) yield return i - w;
+            if (z < h - 1) yield return i + w;
         }
 
         private static string StripComments(string s)

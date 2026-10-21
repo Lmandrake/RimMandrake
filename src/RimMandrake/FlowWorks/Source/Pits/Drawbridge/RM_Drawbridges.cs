@@ -193,11 +193,23 @@ namespace RimMandrake.FlowWorks.Pits
 						continue;
 					}
 					l.progress = RM_DrawbridgeMath.Step(l.progress, l.targetRaised, full, TickInterval);
+					// R3: the moment the leaf leaves its seat its riders tip to the hinge bank (once per raise: tipCommitted is
+					// saved, so a reload mid-raise never tips again); the overflow falls once the squares are open hole
+					List<Pawn> fallers = null;
+					if (l.progress > 0 && !l.tipCommitted)
+					{
+						fallers = Tip(comp.map, r, l);
+						l.tipCommitted = true;
+					}
 					if (l.progress == 0)
 					{
 						l.tipCommitted = false;
 					}
 					Apply(comp.map, r, l);
+					if (fallers != null && fallers.Count > 0)
+					{
+						Fall(comp.map, r, fallers);
+					}
 				}
 			}
 		}
@@ -288,7 +300,190 @@ namespace RimMandrake.FlowWorks.Pits
 				RepathCount++;
 			}
 		}
-			/// <summary>Phase 1 has no player controls yet (phase 3 adds the winch job and the sided orders): god-mode gizmos to make
+			// ── Phase 2: the tip rule (R3) ──────────────────────────────────────────────────────────────
+
+		/// <summary>Read by the functional script: pawns tipped onto a bank, hostiles tipped onto the colony bank ("pulled
+		/// inside", answer 2), and overflow riders that fell.</summary>
+		public static int TippedCount;
+		public static int PulledInside;
+		public static int FellCount;
+
+		/// <summary>The colony bank: the first leaf made is the colony's (MakeDrawbridge adds it first).</summary>
+		public static bool ColonyBankAtFirst(SuspensionBridgeRecord r)
+		{
+			return !r.IsDrawbridge || r.leaves[0].hingeAtFirst;
+		}
+
+		/// <summary>The bridge index of the anchor squares this leaf hinges on.</summary>
+		public static int HingeIndex(DrawbridgeLeaf l)
+		{
+			return l.hingeAtFirst ? l.first - 1 : l.last + 1;
+		}
+
+		/// <summary>R3: everyone riding the leaf (chosen by band: PawnsOn skips the floor band underneath, flyers and the dead)
+		/// goes, nearest the hinge first, to the nearest free standable square on the hinge bank reachable from the anchors
+		/// without passing a wall, a closed door or the bridge itself, keeping faction, gear and job-free; no fall damage. Items
+		/// slide to the hinge bank, or stay (and go down with the leaf) when it is full. Returns the overflow, who fall once the
+		/// squares are hole (Fall). Never a collapse: no deck is destroyed.</summary>
+		public static List<Pawn> Tip(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)
+		{
+			List<Pawn> fallers = new List<Pawn>();
+			if (map == null)
+			{
+				return fallers;
+			}
+			LeafSpan span = l.Span;
+			CellIndices ci = map.cellIndices;
+			List<RM_DrawbridgeMath.Rider> riders = new List<RM_DrawbridgeMath.Rider>();
+			Dictionary<int, Pawn> byId = new Dictionary<int, Pawn>();
+			List<Thing> items = new List<Thing>();
+			HashSet<IntVec3> bridgeDeck = new HashSet<IntVec3>();
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				for (int i = 1; i <= r.length - 2; i++)
+				{
+					bridgeDeck.Add(r.Cell(lane, i));
+				}
+				for (int i = l.first; i <= l.last; i++)
+				{
+					IntVec3 c = r.Cell(lane, i);
+					foreach (Pawn p in RM_MapComponent_SuspensionBridges.PawnsOn(map, c))
+					{
+						if (!byId.ContainsKey(p.thingIDNumber))
+						{
+							byId[p.thingIDNumber] = p;
+							riders.Add(new RM_DrawbridgeMath.Rider(p.thingIDNumber, span.FromHinge(i), ci.CellToIndex(c)));
+						}
+					}
+					foreach (Thing t in c.GetThingList(map))
+					{
+						if (t.def.category == ThingCategory.Item)
+						{
+							items.Add(t);
+						}
+					}
+				}
+			}
+			int hinge = HingeIndex(l);
+			List<int> starts = new List<int>();
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				IntVec3 a = r.Cell(lane, hinge);
+				if (a.InBounds(map))
+				{
+					starts.Add(ci.CellToIndex(a));
+				}
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			System.Func<int, IEnumerable<int>> neighbours = idx => Cardinals(map, ci.IndexToCell(idx));
+			System.Func<int, bool> passable = idx =>
+			{
+				IntVec3 c = ci.IndexToCell(idx);
+				if (bridgeDeck.Contains(c) || !c.Walkable(map))
+				{
+					return false;
+				}
+				if (c.GetDoor(map) is Building_Door door && !door.Open)
+				{
+					return false;   // never through a closed gate or door
+				}
+				return eng == null || eng.ClimbDepthAt(c) == 0 || RM_SpanUtility.DeckedAt(map, c);
+			};
+			System.Func<int, bool> free = idx =>
+			{
+				IntVec3 c = ci.IndexToCell(idx);
+				return c.Standable(map) && c.GetFirstPawn(map) == null && c.GetDoor(map) == null;
+			};
+			List<int> landings = RM_DrawbridgeMath.BankLandings(starts, neighbours, passable, free, RM_DrawbridgeMath.TipReach);
+			Dictionary<int, int> to = RM_DrawbridgeMath.AssignTips(riders, landings);
+			bool colonyBank = l.hingeAtFirst == ColonyBankAtFirst(r);
+			int tipped = 0, pulled = 0;
+			foreach (RM_DrawbridgeMath.Rider rd in RM_DrawbridgeMath.TipOrder(riders))
+			{
+				Pawn p = byId[rd.Id];
+				if (to[rd.Id] < 0)
+				{
+					fallers.Add(p);
+					continue;
+				}
+				p.Position = ci.IndexToCell(to[rd.Id]);
+				p.Notify_Teleported(true, true);
+				tipped++;
+				if (colonyBank && p.HostileTo(Faction.OfPlayer))
+				{
+					pulled++;
+				}
+			}
+			if (items.Count > 0 && starts.Count > 0)
+			{
+				HashSet<IntVec3> bank = new HashSet<IntVec3>();
+				foreach (int idx in RM_DrawbridgeMath.BankLandings(starts, neighbours, passable, i => ci.IndexToCell(i).Standable(map),
+					RM_DrawbridgeMath.TipReach))
+				{
+					bank.Add(ci.IndexToCell(idx));
+				}
+				IntVec3 h = ci.IndexToCell(starts[0]);
+				foreach (Thing t in items)
+				{
+					if (t.Destroyed || !t.Spawned)
+					{
+						continue;
+					}
+					IntVec3 was = t.Position;
+					t.DeSpawn();
+					if (!GenPlace.TryPlaceThing(t, h, map, ThingPlaceMode.Near, null, c => bank.Contains(c), null, RM_DrawbridgeMath.TipReach + 1))
+					{
+						GenSpawn.Spawn(t, was, map);   // the bank is full: it goes down with the leaf
+					}
+				}
+			}
+			TippedCount += tipped;
+			PulledInside += pulled;
+			if (tipped + fallers.Count > 0)
+			{
+				string msg = "The drawbridge tipped " + tipped + " onto its hinge bank" + (pulled > 0 ? " (" + pulled + " hostile pulled inside)" : "")
+					+ (fallers.Count > 0 ? "; " + fallers.Count + " found no room and fell into the pit." : ".");
+				List<Thing> look = new List<Thing>(byId.Values);
+				Messages.Message(msg, new LookTargets(look), fallers.Count > 0 ? MessageTypeDefOf.NegativeEvent : MessageTypeDefOf.NeutralEvent);
+			}
+			return fallers;
+		}
+
+		private static IEnumerable<int> Cardinals(Map map, IntVec3 c)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				IntVec3 n = c + GenAdj.CardinalDirections[i];
+				if (n.InBounds(map))
+				{
+					yield return map.cellIndices.CellToIndex(n);
+				}
+			}
+		}
+
+		/// <summary>The overflow falls through the pit's ordinary descent event (fall damage by metres, the pit's own rules), from
+		/// the deck's height on a sunken bridge. Called after Apply, when their squares are already open hole.</summary>
+		public static void Fall(Map map, SuspensionBridgeRecord r, List<Pawn> fallers)
+		{
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			RM_SuperdeepTrapState state = eng?.SuperdeepTrap;
+			if (state == null)
+			{
+				return;
+			}
+			foreach (Pawn p in fallers)
+			{
+				if (p == null || !p.Spawned || p.Dead || p.Flying)
+				{
+					continue;
+				}
+				int drop = r.deckNotches > 0 ? System.Math.Max(0, eng.ClimbDepthAt(p.Position) - r.deckNotches) : -1;
+				RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state, drop);
+				FellCount++;
+			}
+		}
+
+		/// <summary>Phase 1 has no player controls yet (phase 3 adds the winch job and the sided orders): god-mode gizmos to make
 		/// a bridge a drawbridge and to raise or lower each leaf, for the functional script and a joint look.</summary>
 		public static IEnumerable<Gizmo> DevGizmos(Map map, SuspensionBridgeRecord r)
 		{
