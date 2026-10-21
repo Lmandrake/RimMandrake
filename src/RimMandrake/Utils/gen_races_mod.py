@@ -1201,12 +1201,17 @@ OWNER_GENE_REMOVALS = {
     "RSW_RimMandrakeNelvaanian": ["AptitudePoor_Intellectual"],   # slow-witted removed
     "RSW_RimMandrakeTaung": ["Outland_AcceleratedAgeing"],       # sourced lifespan 85 y
     "RSW_RimMandrakeUgnaught": ["RSW_lifespan_double"],          # replaced by quad below
+    # XENOTYPE_CANON_CORRECTION_1 patterns 8 and 4, 2026-10-21 (non-cosmetic, ruling 2026-09-15)
+    "RSW_RimMandrakeRakata": ["PsychicAbility_Enhanced", "Turn_Gene_LatentPsychic",
+                              "Turn_Gene_FastNeuralHeat"],       # post-plague Rakata are Force-blind
+    "RSW_RimMandrakeOrtolan": ["Hands_Pig"],                     # canon: dexterous articulated digits
 }
 
 # Genes ADDED to the shipped list (after removals), same ruling: "sourced figure wins".
 # Ugnaught canon is 200+ years / "centuries"; double is 160 on a baseline of 80, quad is 320.
 OWNER_GENE_ADDITIONS = {
     "RSW_RimMandrakeUgnaught": ["RSW_lifespan_quad"],
+    "RSW_RimMandrakeDevaronian": ["PsychicAbility_Enhanced"],    # Force-sensitivity "higher frequency"
 }
 
 # Description sentences appended to the shipped description (owner 2026-10-18: Gand and
