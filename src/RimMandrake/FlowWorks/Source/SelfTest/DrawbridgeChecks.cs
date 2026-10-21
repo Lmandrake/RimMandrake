@@ -128,7 +128,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
                 string tick = Body(db, "public static void Tick(RM_MapComponent_SuspensionBridges comp, int now)");
-                int tip = tick.IndexOf("fallers = Tip(comp.map, r, l);"), apply = tick.IndexOf("Apply(comp.map, r, l);"), fall = tick.IndexOf("Fall(comp.map, r, fallers);");
+                int tip = tick.IndexOf("fallers = Tip(comp.map, r, l);"), apply = tick.IndexOf("Apply(comp.map, r, l);", Math.Max(tip, 0)), fall = tick.IndexOf("Fall(comp.map, r, fallers);");
                 Assert(tip > 0 && apply > tip && fall > apply, "can-fail: riders tip BEFORE the squares open, the overflow falls AFTER");
                 Assert(tick.Contains("if (l.progress > 0 && !l.tipCommitted)") && tick.Contains("l.tipCommitted = true;"), "the tip is committed once per raise");
                 string t = Body(db, "public static List<Pawn> Tip(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)");
@@ -214,11 +214,55 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
                 string mode = Body(db, "private static void Mode(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, int now)");
                 Assert(mode.Contains("FreeHostileCount(map, true) == 0"), "can-fail: the hostile check is made again when the lower commits (atomic)");
-                Assert(!mode.Contains("l.targetRaised = true;\n\t\t\t\tl.autoLowering = true") && !mode.Contains("OrderRaise;"),
+                Assert(!mode.Contains("l.targetRaised = true; l.autoLowering = true") && !mode.Contains("OrderRaise;"),
                     "a hostile's arrival never raises a leaf by itself");
                 string count = Body(db, "public static int FreeHostileCount(Map map, bool fresh)");
                 Assert(count.Contains("RM_SuperdeepTrap.IsTrapped(p)") && count.Contains("p.IsPrisoner") && count.Contains("GenHostility.IsActiveThreatTo"),
                     "the pit engine's own trapped test and prisoners");
+            });
+
+            Case("Drawbridge_P4_raid_plank_fits_and_commits_once", () =>
+            {
+                Assert(RM_DrawbridgeMath.RaidPlankFits(new[] { 0, 6, 6, 6, 0 }, 4), "a 3-square moat between level banks takes a plank");
+                Assert(!RM_DrawbridgeMath.RaidPlankFits(new[] { 0, 6, 6, 6, 6, 6, 0 }, 4), "can-fail: 5 squares is past the span limit");
+                Assert(!RM_DrawbridgeMath.RaidPlankFits(new[] { 0, 6, 6, 2 }, 4), "can-fail: banks at different heights");
+                Assert(!RM_DrawbridgeMath.RaidPlankFits(new[] { 0, 0, 0 }, 4) && !RM_DrawbridgeMath.RaidPlankFits(new[] { 0, 0 }, 4), "no hole, no plank");
+                Assert(RM_DrawbridgeMath.RaidPlankCount(1) == 1 && RM_DrawbridgeMath.RaidPlankCount(8) == 2 && RM_DrawbridgeMath.RaidPlankCount(0) == 0,
+                    "one plank per four raiders");
+                var led = new RM_DrawbridgeMath.PlankLedger();
+                long line = RM_DrawbridgeMath.PlankLedger.LineKey(40, 10);
+                Assert(line == RM_DrawbridgeMath.PlankLedger.LineKey(10, 40), "a line is the same from either end");
+                Assert(led.TryCommit(7, line) && led.Laid == 1, "the first commit lays it");
+                Assert(!led.TryCommit(7, RM_DrawbridgeMath.PlankLedger.LineKey(1, 2)), "can-fail: the same plank is never laid twice (RAID_PLANK)");
+                Assert(!led.TryCommit(8, line), "can-fail: a second plank on a planked line is refused");
+                Assert(led.Laid == 1, "counted exactly once");
+            });
+
+            Case("Drawbridge_P4_raiders_trench_hand_off_and_winch", () =>
+            {
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                string repath = Body(db, "public static void RepathOver(Map map, List<IntVec3> changed)");
+                Assert(repath.Contains("p.jobs.EndCurrentJob(JobCondition.InterruptForced);"), "can-fail: a raider's job over the leaf is ended (GPT #12)");
+                string raid = Src("Pits", "Drawbridge", "RM_DrawbridgeRaid.cs");
+                string give = Body(raid, "protected override Job TryGiveJob(Pawn pawn)");
+                Assert(give.Contains("TraverseMode.PassAllDestroyableThings") && give.Contains("return null; // the colony is reachable"),
+                    "the winch giver acts only when the colony is cut off");
+                Assert(give.Contains("RM_RaiderTrench.IsSiege(pawn)"), "sieges never");
+                string wj = Body(raid, "public static Job WinchJob(Pawn pawn, Building_DrawbridgeWinch winch)");
+                Assert(wj.Contains("DigUtility.PassBlockerJob") && wj.Contains("JobDefOf.AttackMelee") && wj.Contains("CastPositionFinder.TryFindCastPosition"),
+                    "walk and dig to it, hit it; from the far bank only shoot it");
+                string patch = File.ReadAllText(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_SpanMath.cs")), "..", "Patches", "RaiderTrench", "FlowWorks_RaiderTrenchDuties.xml"));
+                Assert(patch.Contains("<li Class=\"RimMandrake.FlowWorks.Pits.JobGiver_RM_DrawbridgeWinch\" />")
+                    && patch.Split("JobGiver_RM_DrawbridgeWinch").Length - 1 == 2, "in the Sapper and Breaching duties only");
+                string trench = Src("Superdeep", "RM_RaiderTrench.cs");
+                string cross = Body(trench, "public static Job TryCross(Pawn p)");
+                Assert(cross.IndexOf("RM_RaidPlanks.PlankJob(p, plan.cells, plan.depths)") > 0
+                    && cross.IndexOf("RM_RaidPlanks.PlankJob") < cross.IndexOf("JumpJob(p, plan, k)"), "a carried plank is tried before the jump");
+                string lay = Body(raid, "public static bool TryLay(Pawn p, IntVec3 lip, IntVec3 far)");
+                Assert(lay.IndexOf("TryCommit(plank.thingIDNumber, line)") < lay.IndexOf("plank.Destroy(") && lay.Contains("raidPlank = true"),
+                    "commit first, then the plank is used up and a raid-plank span is laid");
+                string drv = Body(raid, "protected override IEnumerable<Toil> MakeNewToils()");
+                Assert(drv.IndexOf("Toils_General.Wait") < drv.IndexOf("RM_RaidPlanks.TryLay"), "the commit is the job's last step: an interrupted carrier lays nothing");
             });
 
             Case("Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise", () =>
@@ -268,8 +312,10 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("Drawbridge_P1_raise_never_collapses", () =>
             {
-                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
-                string code = StripComments(db.Replace(Body(db, "public static void Fall(Map map, SuspensionBridgeRecord r, List<Pawn> fallers)"), ""));
+                // the RAW file (Src collapses whitespace, which would leave no line ends for the comment strip)
+                string raw = File.ReadAllText(RiverSwitchFlipChecks.SrcPath(Path.Combine("Pits", "Drawbridge", "RM_Drawbridges.cs")));
+                string code = StripComments(raw.Replace(Body(raw, "public static void Fall(Map map, SuspensionBridgeRecord r, List<Pawn> fallers)"), ""));
+                Assert(code.Contains("public static void Tick(") && code.Contains("NotifyToggled("), "the strip kept the code (can-fail guard on the guard)");
                 Assert(!code.Contains("OnForcedDescent("), "only the overflow (Fall) ever descends");
                 foreach (string bad in new[] { "Collapse(", "CollapseSpan(", "DropAlone(", ".Destroy(", "LandWreck(" })
                 {

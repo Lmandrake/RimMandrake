@@ -26,4 +26,21 @@
       <li Class="RimMandrake.FlowWorks.JobGiver_RM_CrossTrench" />
     </value>
   </Operation>
+  <!-- DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 4 (R5, answer 6 "1+3"): sappers and breachers go for the winch house of a raised
+       leaf. BEFORE the vanilla sapper / breaching givers; it returns null unless the colony is cut off even through destroyable
+       things, so a colony reachable by land is sapped and breached as vanilla does it. -->
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/DutyDef[defName="Breaching"]/thinkNode/subNodes/li[@Class="JobGiver_AIBreaching"]</xpath>
+    <order>Prepend</order>
+    <value>
+      <li Class="RimMandrake.FlowWorks.Pits.JobGiver_RM_DrawbridgeWinch" />
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/DutyDef[defName="Sapper"]/thinkNode/subNodes/li[@Class="JobGiver_AISapper"]</xpath>
+    <order>Prepend</order>
+    <value>
+      <li Class="RimMandrake.FlowWorks.Pits.JobGiver_RM_DrawbridgeWinch" />
+    </value>
+  </Operation>
 </Patch>

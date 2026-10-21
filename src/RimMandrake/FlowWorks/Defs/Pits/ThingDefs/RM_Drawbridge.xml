@@ -112,4 +112,68 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- DRAWBRIDGE phase 4 (R5): a raider's plank. PLACEHOLDER ART: vanilla wood logs / the timber deck until the commissioned
+       RM_RaidPlank and RM_RaidPlank_Laid pictures pass review (design doc art contract). -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_RaidPlank</defName>
+    <label>raid plank</label>
+    <description>A long plank raiders carry to lay across a moat.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/WoodLog</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>6</MarketValue>
+      <Mass>8</Mass>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_RaidPlank_Laid</defName>
+    <label>raid plank</label>
+    <description>A plank raiders laid across the moat. It holds one or two people at a time; it burns and breaks like a light bridge.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>Basic</linkType>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>8</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+      <claimable>false</claimable>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Timber</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <JobDef>
+    <defName>RM_LayRaidPlank</defName>
+    <driverClass>RimMandrake.FlowWorks.Pits.JobDriver_RM_LayRaidPlank</driverClass>
+    <reportString>laying a plank across the moat.</reportString>
+  </JobDef>
+
 </Defs>

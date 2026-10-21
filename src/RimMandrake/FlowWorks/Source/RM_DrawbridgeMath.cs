@@ -310,6 +310,82 @@ namespace RimMandrake.FlowWorks
 		}
 
 
+		// ── Phase 4: raiders (R5) ───────────────────────────────────────────────────────────────
+
+		/// <summary>The longest gap a raid plank spans (squares of hole between the two banks): a timber leaf's default.</summary>
+		public const int RaidPlankMaxSpan = 4;
+
+		/// <summary>Ticks a raider spends laying a plank at the lip (proposal: 3 s).</summary>
+		public const int RaidPlankLayTicks = 180;
+
+		/// <summary>Does a raid plank fit this crossing line? depths[0] and depths[last] are the two banks, every square between
+		/// is hole: both banks at the same height, at least one square of hole, no more than maxSpan.</summary>
+		public static bool RaidPlankFits(int[] depths, int maxSpan)
+		{
+			if (depths == null || depths.Length < 3)
+			{
+				return false;
+			}
+			int last = depths.Length - 1;
+			if (depths[0] != depths[last] || last - 1 > maxSpan)
+			{
+				return false;
+			}
+			for (int i = 1; i < last; i++)
+			{
+				if (depths[i] <= depths[0])
+				{
+					return false;   // not a hole below the banks: no gap for a plank to span here
+				}
+			}
+			return true;
+		}
+
+		/// <summary>How many planks a raid of this size brings, when it brings any (one per four raiders, at least one).</summary>
+		public static int RaidPlankCount(int raiders)
+		{
+			return raiders <= 0 ? 0 : (raiders + 3) / 4;
+		}
+
+		/// <summary>R5 / GPT #13: each plank is laid in ONE transaction, counted exactly once. A carrier interrupted before the
+		/// commit lays nothing and keeps the plank; a second commit of the same plank, or a commit on a line already laid, is
+		/// refused. Per map, never saved (a laid plank is a bridge record; an unlaid one is an item).</summary>
+		public sealed class PlankLedger
+		{
+			private readonly HashSet<int> committed = new HashSet<int>();
+			private readonly HashSet<long> laidLines = new HashSet<long>();
+
+			public int Laid => committed.Count;
+
+			public static long LineKey(int lipCell, int farCell)
+			{
+				int a = lipCell < farCell ? lipCell : farCell, b = lipCell < farCell ? farCell : lipCell;
+				return ((long)a << 32) | (uint)b;
+			}
+
+			public bool CanCommit(int plankId, long line)
+			{
+				return !committed.Contains(plankId) && !laidLines.Contains(line);
+			}
+
+			public bool TryCommit(int plankId, long line)
+			{
+				if (!CanCommit(plankId, line))
+				{
+					return false;
+				}
+				committed.Add(plankId);
+				laidLines.Add(line);
+				return true;
+			}
+
+			/// <summary>A laid plank was destroyed: its line may be planked again.</summary>
+			public void Release(long line)
+			{
+				laidLines.Remove(line);
+			}
+		}
+
 		/// <summary>R11 readout: "lowered", "raised", "raising 40%", "lowering 60%".</summary>
 		public static string StateLine(int progress, bool targetRaised, int fullTicks, bool frozen)
 		{

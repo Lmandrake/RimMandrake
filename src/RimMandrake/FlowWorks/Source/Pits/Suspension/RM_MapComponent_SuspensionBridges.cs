@@ -46,6 +46,9 @@ namespace RimMandrake.FlowWorks.Pits
 
 		public bool IsDrawbridge => leaves != null && leaves.Count > 0;
 
+		/// <summary>DRAWBRIDGE phase 4 (R5): a raider's plank laid across a moat (no anchors; ordinary load, fire and breaking).</summary>
+		public bool raidPlank;
+
 		public List<int> Supports => RM_SuspensionMath.Supports(length, towers);
 
 		public int SpanCount => jetty ? 1 : Supports.Count - 1;
@@ -115,6 +118,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref jetty, "jetty", false);
 			Scribe_Values.Look(ref look, "look");
 			Scribe_Collections.Look(ref leaves, "rmDrawbridgeLeaves", LookMode.Deep);
+			Scribe_Values.Look(ref raidPlank, "rmRaidPlank", false);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit && towers == null)
 			{
 				towers = new List<int>();

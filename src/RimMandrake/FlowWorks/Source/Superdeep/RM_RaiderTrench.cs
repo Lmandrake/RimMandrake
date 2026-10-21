@@ -484,6 +484,12 @@ namespace RimMandrake.FlowWorks
 				return null;
 			}
 			RememberLip(p, plan.cells[0]);
+			// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 4 (R5): a raider carrying a plank lays it first when the gap fits
+			Job plank = Pits.RM_RaidPlanks.PlankJob(p, plan.cells, plan.depths);
+			if (plank != null)
+			{
+				return plank;
+			}
 			// The owner's order (RM_RaiderTrenchMath.Choose): jump, else ladders (the shallower pits), else breach by fill.
 			Job jump = RM_RaiderTrenchSettings.raiderJumpsEnabled ? JumpJob(p, plan, k) : null;
 			bool toolUser = ToolUser(p);
