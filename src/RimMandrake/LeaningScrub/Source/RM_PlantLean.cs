@@ -140,11 +140,7 @@ namespace RimMandrake.LeaningScrub
             {
                 return;
             }
-            // The heading may lock here, inside Print's seeded Rand state: push/pop so the plant's own stream is untouched.
-            Rand.PushState();
-            Vector2 down = lean.Downwind;
-            Rand.PopState();
-            cachedWindWest = RM_LeanKernel.WindLeansWest(down.x);
+            cachedWindWest = RM_LeanKernel.WindLeansWest(lean.Downwind.x);   // geometry only: consumes no Rand
             RM_LeanExtension ext = map.Biome.GetModExtension<RM_LeanExtension>();
             if (!ReferenceEquals(ext, lastExt))
             {
@@ -257,7 +253,8 @@ namespace RimMandrake.LeaningScrub
                 int east = RM_PlantLean.FacedEast, west = RM_PlantLean.FacedWest;
                 bool windWest = RM_LeanKernel.WindLeansWest(lean.Downwind.x);
                 string s = " east=" + east + " west=" + west + " rolled=" + RM_PlantLean.RolledOnLeanMap
-                    + " windWest=" + windWest + " downwind=" + lean.Downwind.ToString("F2");
+                    + " windWest=" + windWest + " downwind=" + lean.Downwind.ToString("F2")
+                    + " sunBearing=" + lean.SunBearingDegrees.ToString("F1") + " heading=" + lean.HeadingDegrees.ToString("F1");
                 if (off)
                 {
                     return (east + west == 0 ? "PASS" : "FAIL faced with the toggle off") + s;

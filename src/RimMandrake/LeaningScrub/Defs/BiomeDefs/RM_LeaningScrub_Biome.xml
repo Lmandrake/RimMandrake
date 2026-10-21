@@ -264,6 +264,10 @@
           <li>RM_Grellspine_c</li>
           <li>RM_Cruststar_d</li>
         </westLeaningTextures>
+        <!-- Owner card 2026-10-20 17:28 ("Wind dir -> Point it at the sun, snap to a side"): the wind blows from the tile
+             toward the substellar point; Ash'karr's is (0, 0), as in RM_PinnedSunExtension and the WeatherSuite. -->
+        <substellarLatitude>0</substellarLatitude>
+        <substellarLongitude>0</substellarLongitude>
       </li>
       <!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH (design/RimMandrake/venomvine_design_2026-10-16.md §10 RULED): this biome grows
            venomvine islands (about 15% of open ground, Q1) with rarer forms as rooms (Q4), and lets venomvine creep slowly

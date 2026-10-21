@@ -36,7 +36,7 @@ The Gale
 - `galeRaidWeightingEnabled` exists, defaults on and is writable. → settings.galeRaidWeightingEnabled_roundtrip
 
 The Lean
-- Each map of this biome locks one wind heading for its whole life. → UNCOVERED: applies only to a map whose biome carries `RM_LeanExtension` and `RM_MapComponent_Lean` caches that answer on first use; the baroque_wave0 quicktest map is not a Scrub map; needs a Scrub site (LEANING_SCRUB_LEAN_SITE_1)
+- Each map of this biome takes one wind heading from its tile toward the substellar point (owner card 2026-10-20, "Point it at the sun, snap to a side"); scent, fire and the plant lean share it, and the lean shows on the closer side, east or west (due north/south ties go east). → UNCOVERED: applies only to a map whose biome carries `RM_LeanExtension` and `RM_MapComponent_Lean` caches that answer on first use; the baroque_wave0 quicktest map is not a Scrub map; needs a Scrub site (LEANING_SCRUB_LEAN_SITE_1)
 - A wild non-predator bolts from a person standing upwind of it within `leanScentRange`; downwind it never knows. → UNCOVERED: same Scrub-site gap (LEANING_SCRUB_LEAN_SITE_1)
 - Fire spread picks downwind cells `leanFireBias` of the time. → UNCOVERED: same Scrub-site gap, and a statistical effect (LEANING_SCRUB_LEAN_SITE_1)
 - `leanEnabled` exists, defaults on and is writable. → settings.leanEnabled_roundtrip
