@@ -35,7 +35,10 @@ namespace RimMandrake.Biomes
     {
         public static float blendStrength = 1f;     // alpha = strength * share of the neighbour biome at a corner
         public static float blendInner = 0.35f;     // inner ring (alpha 0) at this fraction of centre->corner
-        public static float blendLift = 0.01f;      // drawn this far above the terrain surface
+        // Drawn this far above the terrain surface. MUST stay under hills (+0.005, WorldDrawLayer_Hills) and rivers
+        // (+0.01, WorldDrawLayer_Rivers.FinalizePoint): these overlays write depth, so at 0.01 they hid every river and
+        // hill on a biome-border tile and rivers drew as dashes (RIVER_DASHES_MEASURE_MORSE_CODE_WATER, 2026-10-20).
+        public static float blendLift = 0.003f;
         public static float blendUvScale = 0.1f;    // uv = position * scale (the pollution layer's value)
         public static string blendShader = "WorldOverlayTransparentLit";
         public static int blendQueue = 3505;        // above terrain (3500), under hills (3510) and rivers (3520)
