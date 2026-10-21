@@ -306,6 +306,362 @@ def overlay(frames: list[np.ndarray], mask: np.ndarray, res: dict, out: Path, ti
     sheet.save(out)
 
 
+# ---------------------------------------------------------------------------------------------------------------
+# Owner's line test (2026-10-20, card answer): "Draw a line through the eyes of each of these pictures, and then
+# another line between their shoulders. Those lines should be level, not moving up and down with wing flaps."
+#
+# Anchor points are FOUND in the reference (master) frame, then each point is DETECTED AGAIN in every frame by a masked
+# template match (TM_CCOEFF_NORMED on edge-weighted grey, sub-pixel parabola) - never copied from the config, never
+# mapped through a transform, so a body that moves between frames moves the lines.
+#   eye line       south: the two eyes; east (profile, one eye): the eye and the snout tip on the eye's row. Eye centres
+#                  come from the set config's per-facing `eyes` (placed by a person on the master, like `hinge`); with
+#                  none, a black-hat dark-spot detector guesses (it picked horns and crests on painted heads, so the
+#                  six rebuilt sets carry placed eyes);
+#                  north (from behind, eyes hidden): the two head-side edges one fifth down the head.
+#   shoulder line  north/south: the two wing roots (the person-drawn `hinge` of each wing in the set config), each
+#                  moved inward onto the body by up to 0.7 patch radius (the hinge itself sits on the body/wing edge);
+#                  east (one wing visible): the wing root and the chest front on the same row.
+# The match mask is the body (`protect` polygons, plus everything outside the `wings` polygons, background included so
+# silhouette edges count); wing pixels never drive a match.
+# Reported per frame: the line midpoint's vertical offset from the reference frame (px, + = down) and the change of
+# the line's angle (deg). LEVEL when every frame is within LINE_TOL_PX and LINE_TOL_DEG.
+LINE_TOL_PX, LINE_TOL_DEG = 1.0, 0.5
+LINE_MATCH_MIN = 0.5
+
+
+def _body_match_mask(fc: dict, shape) -> np.ndarray:
+    prot = FC.poly_mask(shape, fc.get("protect"))
+    wings = FC.poly_mask(shape, [w["poly"] for w in fc.get("wings", [])])
+    return prot | ~wings
+
+
+def _head_region(fc: dict, facing: str, ref: np.ndarray) -> np.ndarray:
+    body = FC.poly_mask(ref.shape[:2], fc.get("protect")) & (ref[..., 3] > 128)
+    ys, xs = np.nonzero(body)
+    out = np.zeros_like(body)
+    if not len(xs):
+        return out
+    if facing == "east":                                   # east faces right: the head is the front of the body
+        x0 = xs.max() - 0.4 * (xs.max() - xs.min())
+        out[ys[xs >= x0], xs[xs >= x0]] = True
+    else:                                                  # north/south: the head is the top of the body
+        y1 = ys.min() + max(12, 0.22 * (ys.max() - ys.min()))
+        out[ys[ys <= y1], xs[ys <= y1]] = True
+    return out
+
+
+def _dark_spots(ref: np.ndarray, region: np.ndarray) -> list[tuple[float, int, int]]:
+    """Local maxima of a black-hat (dark spot) response inside REGION, strongest first: (score, x, y)."""
+    L = cv2.cvtColor(np.ascontiguousarray(ref[..., :3]), cv2.COLOR_RGB2GRAY).astype(np.float32)
+    ys, xs = np.nonzero(region)
+    hw = max(8, int(xs.max() - xs.min() + 1)) if len(xs) else 8
+    k = max(5, (hw // 5) | 1)
+    bh = cv2.morphologyEx(L, cv2.MORPH_BLACKHAT, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (k, k)))
+    inner = cv2.erode(region.astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
+    bh = cv2.GaussianBlur(bh, (3, 3), 0) * inner
+    peaks = (bh == cv2.dilate(bh, np.ones((k, k), np.uint8))) & (bh > 0.3 * (bh.max() or 1))
+    py, px = np.nonzero(peaks)
+    return sorted(((float(bh[y, x]), int(x), int(y)) for x, y in zip(px, py)), reverse=True)
+
+
+def eye_points(fc: dict, facing: str, ref: np.ndarray):
+    head = _head_region(fc, facing, ref)
+    ys, xs = np.nonzero(head)
+    if len(xs) < 20:
+        return None, "no head"
+    alpha = ref[..., 3] > 128
+    if facing == "north":                                  # eyes hidden from behind: the head's two side edges
+        y = int(ys.min() + 0.2 * (ys.max() - ys.min()))
+        row = np.nonzero(alpha[y] & _body_match_mask(fc, ref.shape[:2])[y])[0]
+        axis = xs.mean()
+        left, right = row[row < axis], row[row >= axis]
+        if not len(left) or not len(right):
+            return None, "no head edges"
+        # contiguous run through the axis: the head itself, not a wing at the same row
+        lx = int(axis)
+        while lx - 1 >= 0 and alpha[y, lx - 1]:
+            lx -= 1
+        rx = int(axis)
+        while rx + 1 < alpha.shape[1] and alpha[y, rx + 1]:
+            rx += 1
+        return [(float(lx), float(y)), (float(rx), float(y))], "head edges (eyes hidden from behind)"
+    eyes = fc.get("eyes")                                  # person-placed eye centres in the master, when given
+    if eyes and facing == "south" and len(eyes) >= 2:
+        a, b = sorted(eyes[:2])
+        return [(float(a[0]), float(a[1])), (float(b[0]), float(b[1]))], "eyes (placed on the master)"
+    if eyes and facing == "east":
+        ex, ey = int(round(eyes[0][0])), int(round(eyes[0][1]))
+        tx = ex
+        while tx + 1 < alpha.shape[1] and any(alpha[max(0, ey - 2):ey + 3, tx + 1]):
+            tx += 1
+        return [(float(eyes[0][0]), float(eyes[0][1])), (float(tx), float(eyes[0][1]))], \
+            "eye (placed on the master) + snout tip"
+    spots = _dark_spots(ref, head)
+    if facing == "east":
+        # the eye sits high in the head and behind the snout; the open mouth is low, the nostril at the tip
+        xback = xs.max() - 0.3 * (xs.max() - xs.min())
+        upper = [s for s in spots if s[2] <= np.median(ys) and s[1] <= xback]
+        if not upper:
+            return None, "no eye spot"
+        _, ex, ey = upper[0]
+        tx = ex
+        while tx + 1 < alpha.shape[1] and any(alpha[max(0, ey - 2):ey + 3, tx + 1]):
+            tx += 1
+        return [(float(ex), float(ey)), (float(tx), float(ey))], "eye + snout tip (profile)"
+    axis, hw = xs.mean(), xs.max() - xs.min() + 1
+    best = None
+    for i, (s1, x1, y1) in enumerate(spots[:30]):
+        for s2, x2, y2 in spots[i + 1:30]:
+            dx, dy = abs(x2 - x1), abs(y2 - y1)
+            if (dx < 0.12 * hw or dx > 0.9 * hw or dy > 0.2 * dx or (x1 - axis) * (x2 - axis) >= 0
+                    or abs((x1 + x2) / 2 - axis) > 0.12 * hw):    # two eyes: level-ish, either side of the head axis
+                continue
+            score = s1 + s2 - 0.5 * abs(s1 - s2) - 2.0 * abs((x1 + x2) / 2 - axis)
+            if best is None or score > best[0]:
+                best = (score, (x1, y1), (x2, y2))
+    if best is None:
+        return None, "no eye pair"
+    a, b = sorted([best[1], best[2]])
+    return [(float(a[0]), float(a[1])), (float(b[0]), float(b[1]))], "eyes"
+
+
+def shoulder_points(fc: dict, facing: str, ref: np.ndarray):
+    hinges = [w["hinge"] for w in fc.get("wings", []) if w.get("hinge")]
+    if facing != "east":
+        if len(hinges) < 2:
+            return None, "fewer than two wing roots"
+        a, b = sorted(hinges[:2])
+        # the hinge sits ON the silhouette edge where body meets wing: a patch there slides along the edge (aperture
+        # problem) and half of it is wing. Each point is moved inward along the shoulder line onto textured body.
+        r = max(6, round(0.045 * ref.shape[1]))
+        gap = math.hypot(b[0] - a[0], b[1] - a[1]) or 1.0
+        k = min(0.7 * r, gap / 4) / gap
+        ux, uy = (b[0] - a[0]) * k, (b[1] - a[1]) * k
+        return [(float(a[0] + ux), float(a[1] + uy)), (float(b[0] - ux), float(b[1] - uy))], \
+            "wing roots (just inside the body)"
+    if not hinges:
+        return None, "no wing root"
+    hx, hy = map(int, hinges[0])
+    alpha = ref[..., 3] > 128
+    # In profile both shoulders sit on one spot, and the flapping wing covers the root itself on one stroke or the
+    # other (it is squashed through the shoulder row across its whole x-range). So the line is drawn across the chest
+    # AT the wing root, on body the wing never covers: the chest front on the root's row, and the chest underside
+    # below a point one patch-radius behind it.
+    x = hx
+    while x + 1 < alpha.shape[1] and alpha[hy, x + 1]:
+        x += 1
+    r = max(6, round(0.045 * alpha.shape[1]))
+    bx = min(x - 2, max(x - r, hx + r))
+    by = hy
+    while by + 1 < alpha.shape[0] and alpha[by + 1, bx]:
+        by += 1
+    if by - hy < 3:
+        return None, "no chest below the wing root"
+    return [(float(x), float(hy)), (float(bx), float(by))], "chest front + chest underside at the wing root (profile)"
+
+
+def track_point(g_ref: np.ndarray, g_frm: np.ndarray, mmask: np.ndarray, pt, r: int, search: int) -> dict:
+    h, w = g_ref.shape
+    x, y = int(round(pt[0])), int(round(pt[1]))
+    x0, x1, y0, y1 = max(0, x - r), min(w, x + r + 1), max(0, y - r), min(h, y + r + 1)
+    tpl, msk = g_ref[y0:y1, x0:x1], mmask[y0:y1, x0:x1].astype(np.float32)
+    if msk.sum() < 20:
+        return {"ok": False}
+    sx0, sy0 = max(0, x0 - search), max(0, y0 - search)
+    win = g_frm[sy0:min(h, y1 + search), sx0:min(w, x1 + search)]
+    if win.shape[0] < tpl.shape[0] or win.shape[1] < tpl.shape[1]:
+        return {"ok": False}
+    res = np.nan_to_num(cv2.matchTemplate(win, tpl, cv2.TM_CCOEFF_NORMED, mask=msk), nan=-1, posinf=-1, neginf=-1)
+    _, mx, _, (lx, ly) = cv2.minMaxLoc(res)
+    ox = oy = 0.0
+    if 0 < lx < res.shape[1] - 1:
+        a, b, c = res[ly, lx - 1], res[ly, lx], res[ly, lx + 1]
+        ox = 0.5 * (a - c) / (a - 2 * b + c) if (a - 2 * b + c) != 0 else 0.0
+    if 0 < ly < res.shape[0] - 1:
+        a, b, c = res[ly - 1, lx], res[ly, lx], res[ly + 1, lx]
+        oy = 0.5 * (a - c) / (a - 2 * b + c) if (a - 2 * b + c) != 0 else 0.0
+    whole = {"score": float(mx), "pt": [sx0 + lx + ox + (pt[0] - x0), sy0 + ly + oy + (pt[1] - y0)]}
+    # Occlusion vote: a flapping wing can cover part of the patch (east wing roots on the downstroke). The patch is
+    # also cut into tiles, each matched on its own; the point moves by the MEDIAN displacement of the tiles that match
+    # well, and needs a quorum that agree within 1 px. A whole-patch match the tiles disagree with is not used.
+    t = max(6, (2 * r) // 3)
+    votes = []
+    for ty in range(y0, y1 - t + 1, max(2, t // 2)):
+        for tx in range(x0, x1 - t + 1, max(2, t // 2)):
+            tm = mmask[ty:ty + t, tx:tx + t].astype(np.float32)
+            tp = g_ref[ty:ty + t, tx:tx + t]
+            if tm.mean() < 0.6 or float(tp[tm > 0].std()) < 4.0:      # mostly wing, or featureless: cannot vote
+                continue
+            wx0, wy0 = max(0, tx - search), max(0, ty - search)
+            sw = g_frm[wy0:min(h, ty + t + search), wx0:min(w, tx + t + search)]
+            rr = np.nan_to_num(cv2.matchTemplate(sw, tp, cv2.TM_CCOEFF_NORMED, mask=tm), nan=-1, posinf=-1, neginf=-1)
+            _, sc, _, (qx, qy) = cv2.minMaxLoc(rr)
+            if sc >= 0.85:
+                votes.append((wx0 + qx - tx, wy0 + qy - ty))
+    if len(votes) >= 3:
+        v = np.array(votes, np.float32)
+        med = np.median(v, 0)
+        agree = np.all(np.abs(v - med) <= 1.0, 1)
+        if agree.sum() >= max(3, 0.4 * len(v)):
+            dx, dy = v[agree].mean(0)
+            wdx, wdy = whole["pt"][0] - pt[0], whole["pt"][1] - pt[1]
+            if math.hypot(wdx - dx, wdy - dy) <= 1.0:            # whole-patch fit agrees: keep its sub-pixel value
+                dx, dy = wdx, wdy
+            q = _ecc_refine(g_ref, g_frm, mmask, pt, r, dx, dy)
+            if q is not None:
+                dx, dy = q
+            return {"ok": True, "score": whole["score"], "votes": int(agree.sum()), "of": len(v),
+                    "refined": q is not None, "pt": [pt[0] + float(dx), pt[1] + float(dy)]}
+    return {**whole, "ok": False, "votes": 0, "of": len(votes)}
+
+
+def _ecc_refine(g_ref, g_frm, mmask, pt, r, dx, dy):
+    """Sub-pixel, rotation-aware refinement of one point: ECC (MOTION_EUCLIDEAN) over a disc of radius 2r around it,
+    masked to the body, started from the matched translation. Kept only when it lands within 1 px of the match (a wing
+    in the disc can pull ECC; the occlusion-voted match is the guard)."""
+    h, w = g_ref.shape
+    disc = np.zeros((h, w), np.uint8)
+    cv2.circle(disc, (int(round(pt[0])), int(round(pt[1]))), 2 * r, 1, -1)
+    m = (disc.astype(bool) & mmask).astype(np.uint8) * 255
+    if m.sum() < 255 * 40:
+        return None
+    W = np.float32([[1, 0, dx], [0, 1, dy]])
+    try:
+        _, W = cv2.findTransformECC(g_ref, g_frm, W, cv2.MOTION_EUCLIDEAN,
+                                    (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 200, 1e-5), m, 3)
+    except cv2.error:
+        return None
+    nx = W[0, 0] * pt[0] + W[0, 1] * pt[1] + W[0, 2] - pt[0]
+    ny = W[1, 0] * pt[0] + W[1, 1] * pt[1] + W[1, 2] - pt[1]
+    if math.hypot(nx - dx, ny - dy) > 1.0:
+        return None
+    return float(nx), float(ny)
+
+
+def line_check(frames: list[np.ndarray], fc: dict, facing: str, ref_idx: int) -> dict:
+    """Eye line and shoulder line in every frame (frames in natural order; ref_idx = the master)."""
+    ref = frames[ref_idx]
+    W = ref.shape[1]
+    r, search = max(6, round(0.045 * W)), max(12, round(0.12 * W))
+    mmask = _body_match_mask(fc, ref.shape[:2])
+    g_ref = grey_edges(ref)
+    out = {"lines": {}, "worst": {}}
+    for name, finder in (("eye", eye_points), ("shoulder", shoulder_points)):
+        pts, label = finder(fc, facing, ref)
+        if pts is None:
+            out["lines"][name] = {"label": label, "ok": False}
+            continue
+        rows = []
+        for k, frm in enumerate(frames):
+            g = grey_edges(frm)
+            tr = [track_point(g_ref, g, mmask, p, r, search) for p in pts]
+            ok = all(t.get("ok") for t in tr)
+            row = {"frame": k + 1, "ok": ok, "scores": [round(t.get("score", 0.0), 3) for t in tr]}
+            if all("pt" in t for t in tr):
+                (ax, ay), (bx, by) = tr[0]["pt"], tr[1]["pt"]
+                ax, ay, bx, by = map(float, (ax, ay, bx, by))
+                row.update(pts=[[round(ax, 2), round(ay, 2)], [round(bx, 2), round(by, 2)]], mid_y=(ay + by) / 2,
+                           deg=math.degrees(math.atan2(by - ay, bx - ax)))
+            rows.append(row)
+        base = rows[ref_idx]
+        wdy = wdeg = 0.0
+        lost = False
+        for row in rows:
+            if "mid_y" not in row or "mid_y" not in base:
+                lost = True
+                continue
+            row["dy"] = round(float(row["mid_y"] - base["mid_y"]), 2)
+            row["ddeg"] = round(float((row["deg"] - base["deg"] + 180) % 360 - 180), 2)
+            if not row["ok"]:                                # a point not found: no number from this frame
+                lost = True
+                continue
+            wdy, wdeg = max(wdy, abs(row["dy"])), max(wdeg, abs(row["ddeg"]))
+        out["lines"][name] = {"label": label, "ok": not lost, "ref_pts": [list(p) for p in pts],
+                              "tilt_deg": round(base.get("deg", 0.0), 2), "rows": rows}
+        bl = math.hypot(pts[1][0] - pts[0][0], pts[1][1] - pts[0][1])
+        # a short line (close-set eyes, a profile chest) turns a sub-pixel wobble into degrees: the angle tolerance is
+        # the larger of LINE_TOL_DEG and the angle that lifts one end by LINE_TOL_PX
+        out["worst"][name] = {"dy_px": round(wdy, 2), "ddeg": round(wdeg, 2), "baseline_px": round(bl, 1),
+                              "tol_deg": round(max(LINE_TOL_DEG, math.degrees(math.atan2(LINE_TOL_PX, bl or 1))), 2)}
+    ws = out["worst"].values()
+    if any(not v.get("ok") for v in out["lines"].values()):
+        out["verdict"] = "UNMEASURED"
+    elif all(v["dy_px"] <= LINE_TOL_PX and v["ddeg"] <= v["tol_deg"] for v in ws):
+        out["verdict"] = "LEVEL"
+    else:
+        out["verdict"] = "MOVING"
+    return out
+
+
+def _font(sz: int):
+    from PIL import ImageFont
+    for p in ("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", "DejaVuSansMono.ttf"):
+        try:
+            return ImageFont.truetype(p, sz)
+        except OSError:
+            pass
+    return ImageFont.load_default(size=sz)
+
+
+LINE_COLS = {"eye": (0, 235, 255), "shoulder": (255, 215, 0)}
+
+
+def lines_sheet(set_name: str, facings: list[tuple[str, list[np.ndarray], dict, int]], tile: int = 256) -> Image.Image:
+    """One contact sheet for a set: a row per facing, a column per frame; on every frame the eye line (cyan) and the
+    shoulder line (yellow) drawn through the points found IN THAT FRAME and extended across the tile, the reference
+    frame's line as a thin white guide, and the numbers printed underneath."""
+    f_title, f_txt = _font(18), _font(13)
+    ncol = max(len(fr) for _, fr, _, _ in facings) if facings else 1
+    txt_h, head_h, title_h = 52, 22, 30
+    sheet = Image.new("RGB", (ncol * tile, title_h + len(facings) * (head_h + tile + txt_h)), (40, 36, 32))
+    d = ImageDraw.Draw(sheet)
+    d.text((6, 5), f"{set_name}: eye line (cyan), shoulder line (yellow); white = master frame's line", fill=(255, 255, 255),
+           font=f_title)
+    y = title_h
+    for facing, frames, lc, ref_idx in facings:
+        wv = lc["worst"]
+        summ = "  ".join(f"{n} worst {wv[n]['dy_px']}px {wv[n]['ddeg']}deg" for n in wv)
+        d.text((6, y + 3), f"{facing.upper()}  {lc['verdict']}  (master frame {ref_idx + 1})  {summ}", fill=(255, 235, 200),
+               font=f_txt)
+        y += head_h
+        for i, fr in enumerate(frames):
+            ox = i * tile
+            s = tile / fr.shape[1]
+            bg = Image.new("RGBA", (fr.shape[1], fr.shape[0]), (118, 118, 118, 255))
+            bg.alpha_composite(Image.fromarray(fr, "RGBA"))
+            sheet.paste(bg.convert("RGB").resize((tile, tile), Image.LANCZOS), (ox, y))
+            if i == ref_idx:
+                d.rectangle([ox, y, ox + tile - 1, y + tile - 1], outline=(255, 255, 255), width=2)
+            lines = []
+            for n, L in lc["lines"].items():
+                if not L.get("rows"):
+                    lines.append(f"{n}: {L['label']}")
+                    continue
+                base, row = L["rows"][ref_idx], L["rows"][i]
+                for rr, col, wdt in ((base, (255, 255, 255), 1), (row, LINE_COLS[n], 2)):
+                    if "pts" not in rr or not rr.get("ok"):
+                        continue
+                    (ax, ay), (bx, by) = rr["pts"]
+                    if math.hypot(bx - ax, by - ay) < 1e-6:
+                        continue
+                    # the line through both points, extended to 0.6 canvas widths about its midpoint
+                    mx_, my_ = (ax + bx) / 2, (ay + by) / 2
+                    ln = math.hypot(bx - ax, by - ay)
+                    ux, uy = (bx - ax) / ln, (by - ay) / ln
+                    half = max(ln / 2 + 8, 0.3 * fr.shape[1])
+                    d.line([(ox + (mx_ - ux * half) * s, y + (my_ - uy * half) * s),
+                            (ox + (mx_ + ux * half) * s, y + (my_ + uy * half) * s)], fill=col, width=wdt)
+                for px, py in row.get("pts", []):
+                    d.ellipse([ox + px * s - 3, y + py * s - 3, ox + px * s + 3, y + py * s + 3],
+                              outline=LINE_COLS[n] if row.get("ok") else (255, 40, 40), width=2)
+                lines.append(f"{n[:3]} dy {row.get('dy', float('nan')):+.2f}px  {row.get('ddeg', float('nan')):+.2f}deg"
+                             + ("" if row.get("ok") else " LOST"))
+            for j, t in enumerate([f"frame {i + 1}"] + lines):
+                d.text((ox + 4, y + tile + 2 + j * 16), t, fill=(255, 255, 255), font=f_txt)
+        y += tile + txt_h
+    return sheet
+
+
 def load_set(name: str, src: Path | None, facing: str):
     cfg = json.loads((HERE / "flyer_cutout_sets" / f"{name}.json").read_text())
     folder = Path(src) if src else REPO / cfg["folder"]
@@ -317,14 +673,23 @@ def load_set(name: str, src: Path | None, facing: str):
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--set", required=True, help="a flyer_cutout_sets/<Set>.json name (holds the body annotation)")
+    ap.add_argument("--set", required=True, nargs="+",
+                    help="flyer_cutout_sets/<Set>.json name(s) (hold the body annotation); several only with --lines")
     ap.add_argument("--src", type=Path, help="read frames here instead of the set's Textures folder")
     ap.add_argument("--facing", choices=("north", "east", "south"))
     ap.add_argument("--ref", type=int, help="reference frame (default: the set's master for that facing, else 1)")
     ap.add_argument("--overlay", type=Path, help="write the body overlay strip(s); facing is appended")
     ap.add_argument("--json", type=Path)
+    ap.add_argument("--lines", type=Path, metavar="DIR",
+                    help="owner's line test instead: eye line + shoulder line on every frame; writes DIR/<Set>_lines.png "
+                         "per set, DIR/flier_lines_all.png when several sets, DIR/flier_lines.json")
     a = ap.parse_args(argv)
+    if a.lines:
+        return main_lines(a)
     out, worst_rc = {}, 0
+    if len(a.set) != 1:
+        ap.error("several --set names need --lines")
+    a.set = a.set[0]
     for facing in ([a.facing] if a.facing else ["north", "east", "south"]):
         cfg, fc, paths, frames = load_set(a.set, a.src, facing)
         if not fc.get("protect"):
@@ -361,6 +726,46 @@ def main(argv=None) -> int:
     if a.json:
         a.json.write_text(json.dumps(out, indent=1, default=float))
     return worst_rc
+
+
+def main_lines(a) -> int:
+    a.lines.mkdir(parents=True, exist_ok=True)
+    report, sheets, rc = {}, [], 0
+    for name in a.set:
+        facs = []
+        for facing in ([a.facing] if a.facing else ["north", "east", "south"]):
+            cfg, fc, paths, frames = load_set(name, a.src, facing)
+            if len({f.shape for f in frames}) != 1 or len(frames) < 2:
+                print(f"UNMEASURED {name} {facing}: {len(frames)} frames of mixed or single size")
+                rc = max(rc, 2)
+                continue
+            ref_idx = (a.ref or fc.get("master", 1)) - 1
+            lc = line_check(frames, fc, facing, ref_idx)
+            facs.append((facing, frames, lc, ref_idx))
+            wv = lc["worst"]
+            print(f"{lc['verdict']:10} {name} {facing} (master {ref_idx + 1}): "
+                  + "; ".join(f"{n} [{lc['lines'][n]['label']}] worst {wv[n]['dy_px']} px / {wv[n]['ddeg']} deg"
+                              if n in wv else f"{n} [{lc['lines'][n]['label']}]" for n in lc["lines"]))
+            report.setdefault(name, {})[facing] = {"verdict": lc["verdict"], "worst": wv, "master": ref_idx + 1,
+                                                   "lines": lc["lines"]}
+            rc = max(rc, {"LEVEL": 0, "MOVING": 1}.get(lc["verdict"], 2))
+        sh = lines_sheet(name, facs)
+        p = a.lines / f"{name}_lines.png"
+        sh.save(p)
+        sheets.append(sh)
+        print("sheet", p)
+    if len(sheets) > 1:
+        W = max(s.width for s in sheets)
+        big = Image.new("RGB", (W, sum(s.height for s in sheets)), (40, 36, 32))
+        y = 0
+        for s in sheets:
+            big.paste(s, (0, y))
+            y += s.height
+        p = a.lines / "flier_lines_all.png"
+        big.save(p)
+        print("combined", p)
+    (a.lines / "flier_lines.json").write_text(json.dumps(report, indent=1, default=float))
+    return rc
 
 
 if __name__ == "__main__":
