@@ -240,7 +240,8 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true,
+                    // A bad or off-grid id is part of the ask that was not read (re-review R5).
+                    success = errors.Count == 0,
                     count = outp.Count,
                     requested = ids.Count,
                     truncated = skipped,
@@ -531,13 +532,20 @@ namespace JawaBench.BridgeTools
                     acted = CameraJumper.TryHideWorld();
                 }
 
-                int centered = -1;
+                int centered = -1; string centerError = null;
                 var cam = Find.WorldCameraDriver;
-                if (show && centerTile >= 0 && Find.WorldGrid != null
-                    && centerTile < Find.WorldGrid.TilesCount && cam != null)
+                // An off-grid centerTile or a JumpTo throw used to be skipped with success=true
+                // (re-review 2026-10-20 R6); both now fail the call, by name.
+                if (show && centerTile >= 0)
                 {
-                    try { cam.JumpTo(centerTile); centered = centerTile; }
-                    catch (Exception e) { Log.Warning("[JawaBench] world_view: JumpTo failed: " + e.Message); }
+                    if (Find.WorldGrid == null || centerTile >= Find.WorldGrid.TilesCount)
+                        centerError = "centerTile " + centerTile + " is off the grid.";
+                    else if (cam == null) centerError = "No world camera driver.";
+                    else
+                    {
+                        try { cam.JumpTo(centerTile); centered = centerTile; }
+                        catch (Exception e) { centerError = "JumpTo failed: " + e.GetType().Name + ": " + e.Message; }
+                    }
                 }
 
                 // `altitude` is a public field but WorldCameraDriver.Update lerps it
@@ -571,8 +579,9 @@ namespace JawaBench.BridgeTools
                 bool worldSelectedAfter = WorldRendererUtility.WorldSelected;
                 return (object)new
                 {
-                    success = worldSelectedAfter == show,
+                    success = worldSelectedAfter == show && centerError == null,
                     requested = show ? "planet" : "map",
+                    centerError,
                     acted,
                     worldSelectedBefore = before,
                     worldSelectedAfter,
@@ -705,7 +714,7 @@ namespace JawaBench.BridgeTools
                 "success, dryRun, rows, applied (rows actually written, real runs only), " +
                 "wouldApply (rows that WOULD write, dry runs only), biomeSkipped (rows refused " +
                 "outright for an unresolved biome name - nothing in the row was written), " +
-                "skipped, badCells (present but unparseable or non-finite, real runs only), " +
+                "skipped, badCells (present but unparseable or non-finite; dry runs count them too), " +
                 "rowsWithNothingWritten, unknownBiomes[], errors[], sample[]. success is false " +
                 "if ANY row was skipped/refused or any cell failed, not only when nothing landed.")]
         public static async Task<object> WorldTileImport(
@@ -787,7 +796,19 @@ namespace JawaBench.BridgeTools
                         continue;
                     }
 
-                    if (!apply) { wouldApply++; continue; }
+                    if (!apply)
+                    {
+                        // A dry run parses every present cell too, so it predicts the real run's
+                        // badCells instead of promising a clean write (re-review R3).
+                        float dv; Hilliness dh;
+                        foreach (var kvc in new[] { Tuple.Create("elev_m", elevS), Tuple.Create("temp_c", tempS), Tuple.Create("rain_mm", rainS),
+                                                    Tuple.Create("swampiness", swS), Tuple.Create("pollution", poS) })
+                            if (kvc.Item2 != null && !F(kvc.Item2, out dv))
+                            { badCells++; if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable " + kvc.Item1 + " '" + kvc.Item2 + "', would not be written"); }
+                        if (hiS != null && !TryHilliness(hiS, out dh))
+                        { badCells++; if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable hilliness '" + hiS + "', would not be written"); }
+                        wouldApply++; continue;
+                    }
 
                     int fieldsWritten = 0;
                     if (bd != null) { t.PrimaryBiome = bd; fieldsWritten++; }
@@ -1112,7 +1133,7 @@ namespace JawaBench.BridgeTools
                 }
                 return (object)new
                 {
-                    success = true, count = outp.Count, requested = ids.Count,
+                    success = errors.Count == 0, count = outp.Count, requested = ids.Count,
                     limitHit = unexamined > 0,
                     unexaminedAfterLimit = unexamined,
                     limit = Math.Max(1, limit),
@@ -1381,7 +1402,7 @@ namespace JawaBench.BridgeTools
                 "adjacency and would write a link between distant tiles on both endpoints. " +
                 "clearFirst clears existing links on the touched tiles AND the mirror entries " +
                 "on their neighbours, so nothing is left one-sided - and REFUSES (clearing nothing) " +
-                "when any row is malformed or names an unknown def. " +
+                "when any row is malformed, names an unknown def, or pairs off-grid/non-adjacent tiles. " +
                 "Does not redraw; call jawa/world_commit after.",
             ResultDescription = "success (false on ANY malformed, off-grid, non-adjacent, unknown-def or silently " +
                 "refused row), dryRun, rows, rivers, roads, nonAdjacentRefused, silentlyRefused, malformedRows, " +
@@ -1445,13 +1466,29 @@ namespace JawaBench.BridgeTools
                 }
 
                 // Clearing is destructive and a remove cannot be undone from this tool: an
-                // import that cannot lay every row it names must not clear first.
-                if (clearFirst && apply && (unknown.Count > 0 || malformed > 0))
-                    return Fail("REFUSING clearFirst: " + unknownRows + " row(s) name unknown defs (" +
-                                string.Join(", ", unknown.Take(10).ToArray()) + ") and " + malformed +
-                                " row(s) are malformed. Clearing first would delete links this file cannot " +
-                                "replace. Nothing was cleared or laid. Fix the file, or run without clearFirst.",
-                                refused);
+                // import that cannot lay every row it names must not clear first. That covers
+                // off-grid and non-adjacent pairs too, which the lay loop refuses only AFTER the
+                // clear has already wiped their tiles (re-review 2026-10-20 R1).
+                if (clearFirst && apply)
+                {
+                    var preNbrs = new List<PlanetTile>(); var unlayable = new List<object>();
+                    foreach (var p in pending)
+                    {
+                        string pe1, pe2;
+                        if (SurfaceTileAt(p.Item2, out pe1) == null || SurfaceTileAt(p.Item3, out pe2) == null)
+                        { unlayable.Add(new { from = p.Item2, to = p.Item3, why = "off the grid" }); continue; }
+                        preNbrs.Clear(); grid.GetTileNeighbors(p.Item2, preNbrs);
+                        if (!preNbrs.Any(x => x.tileId == p.Item3))
+                            unlayable.Add(new { from = p.Item2, to = p.Item3, why = "not adjacent" });
+                    }
+                    if (unknown.Count > 0 || malformed > 0 || unlayable.Count > 0)
+                        return Fail("REFUSING clearFirst: " + unknownRows + " row(s) name unknown defs (" +
+                                    string.Join(", ", unknown.Take(10).ToArray()) + "), " + malformed +
+                                    " row(s) are malformed and " + unlayable.Count + " pair(s) are off-grid or not adjacent. " +
+                                    "Clearing first would delete links this file cannot replace. Nothing was cleared or laid. " +
+                                    "Fix the file, or run without clearFirst.",
+                                    new { refused, unlayable = unlayable.Take(30).ToList() });
+                }
 
                 if (clearFirst && apply)
                 {
@@ -1842,7 +1879,7 @@ namespace JawaBench.BridgeTools
                 }
                 return (object)new
                 {
-                    success = true, count = outp.Count, requested = ids.Count,
+                    success = errors.Count == 0, count = outp.Count, requested = ids.Count,
                     limitHit = unexamined > 0,
                     unexaminedAfterLimit = unexamined,
                     limit = Math.Max(1, limit),
@@ -2428,6 +2465,20 @@ namespace JawaBench.BridgeTools
                 {
                     if (o == null || !want.Contains(o.ID)) continue;
                     matched.Add(o.ID);
+                    // The stacking collision world_objects_add refuses (finding #37): moving a
+                    // map-capable object onto a tile that already holds another (re-review R4).
+                    if (tile >= 0 && o.def != null && o.def.canHaveMap && o.Tile.tileId != tile)
+                    {
+                        var occupant = Find.WorldObjects.ObjectsAt(new PlanetTile(tile, Find.WorldGrid.Surface))
+                            .FirstOrDefault(q => q != o && q.def != null && q.def.canHaveMap);
+                        if (occupant != null)
+                        {
+                            errors.Add("Object " + o.ID + ": refused - map-capable " + occupant.def.defName + " (id " + occupant.ID +
+                                       ") already occupies tile " + tile + "; nothing on this object was changed.");
+                            back.Add(WorldObjectRow(o));
+                            continue;
+                        }
+                    }
                     try
                     {
                         // `changed` counts objects where a field ACTUALLY moved, judged by a
@@ -4798,7 +4849,7 @@ namespace JawaBench.BridgeTools
                 if (!apply)
                     return new
                     {
-                        success = true, dryRun = true,
+                        success = badTile == 0, dryRun = true,
                         rows = csv.Rows.Count, regions = byName.Count,
                         tilesNamed = byName.Values.Sum(q => q.Count),
                         tilesLeftUnnamed = blank, unparseableTiles = badTile,
@@ -4929,8 +4980,12 @@ namespace JawaBench.BridgeTools
 
                 return new
                 {
+                    // A row whose tile id is unparseable or off the grid was dropped before any
+                    // write; the apply result used to omit it entirely (re-review R2).
                     success = liveNamed == namedBaseline + newlyNamed
-                           && wf.features.Count == featuresBaseline + byName.Count,
+                           && wf.features.Count == featuresBaseline + byName.Count
+                           && badTile == 0,
+                    unparseableTiles = badTile,
                     message = "created " + byName.Count + " region(s), removed " + removed +
                               ", assigned " + assigned + " tile(s); grid reports " + liveNamed +
                               " named tile(s) across " + wf.features.Count + " feature(s).",
