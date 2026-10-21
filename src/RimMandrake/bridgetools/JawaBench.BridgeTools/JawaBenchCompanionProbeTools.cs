@@ -229,7 +229,7 @@ namespace JawaBench.BridgeTools
             Description =
                 "Invoke a PUBLIC STATIC method by type FullName + method name, for pure helpers a mod " +
                 "script needs to exercise (e.g. RM_ZennaqLightning.Redirect). args = '|'-separated, " +
-                "coerced by the parameter type: int/float/bool/string, IntVec3 as 'x,y,z' (or 'x,z'), " +
+                "coerced by the parameter type: int/float/double/bool/string, IntVec3 as 'x,y,z' (or 'x,z'), " +
                 "Map as 'current' or a map index, ThingDef/any Def by defName, Thing/Pawn (or any Thing " +
                 "subclass) by exact ThingID ('Human123') or bare thingIDNumber, current map first then every " +
                 "map - refused with candidates when absent or not of the parameter's type. Instance methods and " +
@@ -266,6 +266,7 @@ namespace JawaBench.BridgeTools
                     {
                         if (pt == typeof(int)) vals[i] = int.Parse(a, CultureInfo.InvariantCulture);
                         else if (pt == typeof(float)) vals[i] = float.Parse(a, CultureInfo.InvariantCulture);
+                        else if (pt == typeof(double)) vals[i] = double.Parse(a, CultureInfo.InvariantCulture);
                         else if (pt == typeof(bool)) vals[i] = bool.Parse(a);
                         else if (pt == typeof(string)) vals[i] = a;
                         else if (pt == typeof(IntVec3))
