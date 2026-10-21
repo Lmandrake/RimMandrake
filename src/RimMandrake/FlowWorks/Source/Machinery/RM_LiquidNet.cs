@@ -201,8 +201,9 @@ namespace RimMandrake.FlowWorks.Machinery
 				{
 					yield break;
 				}
-				// a tank attaches through a pipe cardinal to it or under it; a machine through one 8-way around it or under it
-				IEnumerable<IntVec3> around = RoleOfThing(t) == RM_NetRole.Tank ? GenAdj.CellsAdjacentCardinal(t) : GenAdj.CellsAdjacent8Way(t);
+				// he typed 2026-10-20: "A solid pipe must only be adjacent and is then drawn undernead to the center of the object":
+				// every member (tank or machine) attaches through a pipe 8-way around it (corners included) or under it
+				IEnumerable<IntVec3> around = GenAdj.CellsAdjacent8Way(t);
 				foreach (IntVec3 c in around.Concat(t.OccupiedRect()))
 				{
 					if (c.InBounds(map) && HasPipe(c, map))
@@ -215,7 +216,8 @@ namespace RimMandrake.FlowWorks.Machinery
 			public IEnumerable<object> PipeTanks(object pipeCell)
 			{
 				var c = (IntVec3)pipeCell;
-				return ThingsIn(GenAdj.CellsAdjacentCardinal(c, Rot4.North, IntVec2.One).Concat(new[] { c }), null, RM_NetRole.Tank).Distinct();
+				// the mirror of OriginPipeCells: a tank 8-way around (corners included) or on a pipe cell
+				return ThingsIn(GenAdj.CellsAdjacent8Way(c, Rot4.North, IntVec2.One).Concat(new[] { c }), null, RM_NetRole.Tank).Distinct();
 			}
 
 			public IEnumerable<object> PipeMachines(object pipeCell)

@@ -11,7 +11,7 @@ namespace RimMandrake.FlowWorks.Machinery
     /// HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY (owner 2026-10-16): "The pipe needs connectors that show where it's connecting. Same
     /// thing if you build a pipe alongside a tank but not under it: the pipe looks like it doesn't even connect, but it should."
     /// The draw hooks for every liquid join, matching the net's own attach rules (RM_LiquidNetKernel: a pipe attaches to a tank
-    /// cardinal to or under it, to a machine 8-way or under it; a machine touches a tank 8-way):
+    /// 8-way around or under it, tank and machine alike (owner 2026-10-20); a machine touches a tank 8-way):
     ///   * pipeLinksIntoMachines (on): a pipe cell beside a tank or machine runs its arm on to the shared edge (the linked
     ///     atlas's join tile) instead of ending in a cap short of it. Pure mesh, no art of its own.
     ///   * joinFittings (OFF until the owner rules on the art): a flange where a pipe meets a tank or machine, a coupler where a
@@ -233,14 +233,13 @@ namespace RimMandrake.FlowWorks.Machinery
                     Thing t = l[i];
                     if (!RM_LiquidNet.IsPipe(t)) continue;
                     if (RM_LiquidJoins.PartnerAt(c, map) != null) break;   // a pipe under a tank or machine is hidden already
-                    // FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE: a pipe joins a machine across a corner too (the net is 8-way for
-                    // machines, cardinal for tanks), so it draws its under-run to the centre from there as well (CornerStub)
+                    // FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE: a pipe joins any tank or machine across a corner too (the net is
+                    // 8-way for every member), so it draws its under-run to the centre from there as well (CornerStub)
                     for (int di = 0; di < 8; di++)
                     {
                         IntVec3 d = di < 4 ? GenAdj.CardinalDirections[di] : GenAdj.DiagonalDirections[di - 4];
                         Thing b = RM_LiquidJoins.PartnerAt(c + d, map);
                         if (b == null) continue;
-                        if (di >= 4 && RM_LiquidNet.RoleOfKind(b) != RM_NetRole.Machine) continue;
                         CellRect r = b.OccupiedRect();
                         double[] poly = di < 4 ? LiquidJoinRule.CentreStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height)
                             : LiquidJoinRule.CornerStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height);

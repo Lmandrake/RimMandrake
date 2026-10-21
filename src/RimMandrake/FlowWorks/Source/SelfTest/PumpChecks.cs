@@ -68,7 +68,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
                 // a rigid pipe joins a machine (the pump included) 8-way or under, as ruled before (pipe_meets_building_centre)
-                RiverSwitchFlipChecks.Has(net, @"IEnumerable<IntVec3> around = RoleOfThing\(t\) == RM_NetRole\.Tank \? GenAdj\.CellsAdjacentCardinal\(t\) : GenAdj\.CellsAdjacent8Way\(t\);",
+                RiverSwitchFlipChecks.Has(net, @"IEnumerable<IntVec3> around = GenAdj\.CellsAdjacent8Way\(t\);",
                     "a pipe joins a pump wherever adjacent");
                 Assert(!net.Contains("PipeJoins") && !net.Contains("RM_PumpPortMath"), "can-fail: no pump-only pipe rule in the net");
                 string hp = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "HosePorts.cs"));
