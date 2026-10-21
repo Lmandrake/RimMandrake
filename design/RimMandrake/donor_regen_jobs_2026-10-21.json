@@ -1,0 +1,47 @@
+{
+ "generated": "2026-10-21T03:05",
+ "item": "DONOR_COATS_REDRAW_SIX_HUNDRED_TO_GO",
+ "note": "hand-written rows (not in the biome audit): Struck Glass ring (PYRELANDS_STRUCK_GLASS_RITE_BUILD_1 owes a sand-ring job) and the titanic corpse site (HugeThings, vanilla RubblePile placeholder). Owner standing order 2026-10-20: 'art regen everywhere we know we need'.",
+ "rows": [
+  {
+   "rimflow_item_id": "PYRELANDS_STRUCK_GLASS_RITE_BUILD_1",
+   "target_def": "RM_StruckGlassRing",
+   "channel": "codex",
+   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+   "biome_register": "pyrelands register: bare grey-black ash plains under a storm sky; the subject keeps its own pale colours",
+   "ask": "new",
+   "why": "Pyrelands: EXTERNAL (vanilla Things/Building/Misc/RitualSpot, tinted; item says sand-ring art job owed)",
+   "kind": "building",
+   "biomes": [
+    "RM_Pyrelands"
+   ],
+   "priority": 10,
+   "canvas_w": 1024,
+   "canvas_h": 1024,
+   "background": "transparent",
+   "facings": [],
+   "id": "dregen_RM_StruckGlassRing_RitualSpot_v1",
+   "prompt": "RimWorld floor-mark sprite seen from directly above, vanilla top-down view: a rough hand-poured ring of pale glass sand lying flat on the ground, about three paces across. The ring is a thick uneven band of fine sand the colour of bleached bone and pale straw, with a faint glassy glitter of tiny translucent grains catching the light; the band is lumpy and irregular where it was poured by hand, thicker in places, with small scattered spills of loose sand just outside and inside it. The centre of the ring is empty and fully transparent, and everything outside the ring is fully transparent. Flat on the ground, no height, no stones, no shards. One object, centred, filling most of the square canvas.",
+   "target_texpath": "Things/Building/Misc/RitualSpot"
+  },
+  {
+   "rimflow_item_id": "TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+   "target_def": "RM_TitanicCorpseSite",
+   "channel": "codex",
+   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+   "biome_register": "the subject keeps its own colours in the biome's natural light; muted, matte, painterly",
+   "ask": "new",
+   "why": "HugeThings: PLACEHOLDER (vanilla Things/Building/RubblePile, def comment says placeholder art)",
+   "kind": "building",
+   "biomes": [],
+   "priority": 12,
+   "canvas_w": 1024,
+   "canvas_h": 1024,
+   "background": "transparent",
+   "facings": [],
+   "id": "dregen_RM_TitanicCorpseSite_RubblePile_v1",
+   "prompt": "RimWorld building sprite seen from above in the vanilla three-quarter view: the titanic remains, the collapsed carcass of an enormous beast lying on the ground, filling a four-by-four cell footprint. A great low mound of weathered hide draped over a huge arching ribcage, a few massive curved rib bones and a thick spine ridge breaking through the hide, exposed dark red-brown meat at torn edges, dull leathery greys and browns with bone-white highlights. It reads as a decaying landmark worth days of butchering, not a monster: no eyes, no face visible, no blood pools. One object, centred, silhouette inside its square footprint.",
+   "target_texpath": "Things/Building/RubblePile"
+  }
+ ]
+}
