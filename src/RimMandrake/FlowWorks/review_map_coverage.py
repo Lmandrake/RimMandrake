@@ -160,6 +160,13 @@ FEATURES = [
     ("set", r"^(suspensionBridgesBuildable|suspensionOverWater|suspensionOverSea|vanillaBridgeRefusedOverDug|sunkenBridges|suspensionWalkUnder)$", "Where bridges may be built and walked", M + "build-rule switches, state-read by ProofBuild/ProofUnderPath; no extra scene"),
     ("set", r"^(suspensionWeightCollapse|suspensionLoadMultiplier|suspensionLengthMultiplier|suspensionAnchorLossFalls|suspensionOwnPeopleFall|floodsDamageLightBridges)$", "Bridge load, collapse and flood damage", M + "state-read by ProofSpan/ProofFell/ProofFloodHours; a collapse is not a scene to stage"),
     ("set", r"^(grateFirePasses|grateDrainsSpills)$", "Grated decks pass fire and drain spills", M + S + "bars_bridge_kinds shows the grated decks; fire and drain are state-read by ProofGrate/ProofPour"),
+    # DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (phases 1-6a): no frozen station; the functional script is northstar/drawbridge_proof.py
+    ("def", r"^ThingDef/RM_(DrawbridgeWinch_(Timber|Steel)|DrawbridgeGate)$", "Drawbridges: timber/steel winch house and gate leaf", M + "proved by northstar/drawbridge_proof.py (rows owed their first live run); no frozen station stages a drawbridge"),
+    ("def", r"^(JobDef/RM_WorkDrawbridge|WorkGiverDef/RM_WorkDrawbridgeGiver)$", "Work-drawbridge order (raise/lower at the winch)", M + "pawn job; proved by drawbridge_proof.py, no frozen station"),
+    ("def", r"^(ThingDef/RM_RaidPlank(_Laid)?|JobDef/RM_LayRaidPlank)$", "Raid planks raiders lay across a trench", M + "raider AI; proved by drawbridge_proof.py, no frozen station stages a raid"),
+    ("set", r"^(drawbridgesEnabled|raiseSpeed|maxLeafTimber|maxLeafSteel|raidsBringPlanks|raidPlankChance)$", "Drawbridge switches, speed, leaf length, raid planks", M + "state-read by drawbridge_proof.py (RM_DrawbridgeSettings)"),
+    ("gizmo", r'^"(Raise drawbridge|Lower drawbridge|Hold raised)"$', "Drawbridge raise/lower/hold buttons", M + "winch gizmos; driven by drawbridge_proof.py"),
+    ("gizmo", r"^label$", "Drawbridge build buttons (Designator_Drawbridge's label argument)", M + "Architect build buttons for the timber/steel drawbridge; drawbridge_proof.py builds through them"),
     ("set", r"^pipesUnderToCentre$", "Pipes run under to the centre", M + "pipe-routing switch; no frozen station lays pipe under a deck"),
     ("set", r"^lineCrossingRulesEnabled$", "Rigid pipe and conduit need solid ground", M + "build-rule switch (PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE); L1 table in SelfTest LineCrossingChecks, live rows owed (L2)"),
     ("set", r"^(trenchCoverEnabled|trenchCoverStrength|trenchCoverCap|trenchAiAvoidsCages)$", "Trench cover", M + S + "bars_trench (waist- and chest-deep colonist with a shooter); numbers read by ProofTrenchCover"),
@@ -295,8 +302,8 @@ FEATURES = [
     ("def", r"^(TerrainDef/RM_(Water|Slime)_|(ThingDef/)?RM_(Bottle|Bucket|Barrel)_(Rust|Verdigris|Amber|Violet|Chalk)Water$)",
      "Coloured waters and slimes", "many_waters"),
     # RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW (2026-10-16): its settings section had no coverage row
-    ("set", r"^(riverColorsEnabled|headwaterColor|jungleColor|terminusColor)$", "River colours",
-     M + "the planet-map river gradient, read on the world map"),
+    ("set", r"^(riverColorsEnabled|waterColor|contagionColor|miasmaColor|wastelandColor|rustCathedralColor)$", "River colours",
+     M + "the planet-map river water colour (tinted in four biomes), read on the world map"),
     # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: behaviour with no look of its own (a need bar, a hediff, jobs)
     ("def", r"^(NeedDef/RM_Thirst|HediffDef/RM_Dehydration|ThoughtDef/RM_Thought_(Thirsty|Parched|Dehydrated|DrankDistilled)"
             r"|JobDef/RM_(DrinkFromTerrain|DrinkFromTank|AdministerWater)|WorkGiverDef/RM_AdministerWater(Prisoner)?"
