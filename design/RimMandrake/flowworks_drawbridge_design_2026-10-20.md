@@ -194,8 +194,15 @@ from `infrastructure/artpipe/art_lists/flowworks_drawbridge_2026-10-20.json` (28
 Which raised view to draw: the leaf rotates up about its hinge, so a span running **north** from its hinge shows its
 `_Face` to the camera, a span running **south** shows its `_Underside`, east/west show `_Edge`. The raised art is drawn
 1 lane wide and 4 cells tall; the code draws one copy per lane and scales its height to the leaf length (a steel leaf
-over 4 cells is stretched). **Not commissioned:** a mid-raise picture (the spec does not animate the raise), styled
-looks (Scrapper/Industrial/Modern/Futuristic; the base material art comes first), raid planks in steel, a crash-down
+over 4 cells is stretched).
+
+**The four looks**, as the suspension bridge ships them (`ThingStyleDef` per part per look, `Machinery/PipeLook.cs`):
+`RimMandrake/FlowWorks/Drawbridge/<Look>/` with `<Look>` = `Scrapper`, `Industrial`, `Modern`, `Futuristic`, holding
+`RM_DrawbridgeWinch_<M>` (Graphic_Multi, per material because the drive differs), `RM_DrawbridgeLeafUp_Face/_Underside/_Edge`,
+`RM_DrawbridgeGate_Closed/_Open` (`_south`, `_east`) and `RM_DrawbridgePlanks`; same sizes as the table. 56 jobs from
+`infrastructure/artpipe/art_lists/flowworks_drawbridge_looks_2026-10-20.json`.
+
+**Not commissioned:** a mid-raise picture (the spec does not animate the raise), raid planks in steel, a crash-down
 wreck (`RM_SuspensionWreck` exists).
 
 ### R13. Build order, cost, live rows
