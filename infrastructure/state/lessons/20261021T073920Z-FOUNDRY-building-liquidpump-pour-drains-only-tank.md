@@ -1,0 +1,1 @@
+Building_LiquidPump POUR drains only a tank marked Dump: a Store RM_LiquidTank beside a powered pour-mode pump reads running=True moved=0 forever; stage it with ProofTank '<x,z>;Dump;<LiquidDef>;<units>' (fuel_moat_propane L1 2026-10-21)

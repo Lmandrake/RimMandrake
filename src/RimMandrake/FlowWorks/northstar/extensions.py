@@ -2556,6 +2556,105 @@ def fuel_moat_astrofuel(t):
         _sc(t, RUT_BLAST, "ProofCancel", " ")
 
 
+PROPANE_FLUID, PROPANE_LIQUID, PROPANE_LAKE = "RM_Fluid_Propane", "RM_Liquid_Propane", "RM_PropaneShallow"
+PROPANE_FILL = "RM_Fill_Propane_"      # RM_Fill_Propane_Trace / _Half / _Brim / _Superdeep (FlowWorks_PitFluidTerrain.xml)
+SPILL_FILTH = "RM_Filth_LiquidSpill"   # RM_LiquidSpill's fallback filth: propane has no spillFilth of its own
+
+
+def _fill_terrains(t, cells):
+    """[(fill, terrain)] per cell: fill from the engine's report, terrain from rimworld/get_cell_info. L1 2026-10-21
+    (HARNESS): jawa/flowworks_excavation_report carries NO terrain key (depth, fill, isExcavated, ...), so reading
+    "terrain" there gave None on three RM_Fill_Propane_Trace cells and FAILed a fill that had worked."""
+    out = []
+    for x, z in cells:
+        r = _rep(t, x, z)
+        ci = t.bridge_call("rimworld/get_cell_info", x=x, z=z) or {}
+        out.append((r.get("fill"), (ci.get("cell") or {}).get("terrainDefName")))
+    return out
+
+
+@suite.chain("fuel_moat_propane")
+def fuel_moat_propane(t):
+    """PROPANE_CANAL_WIRE_STILL_NO_FLUID (ea9a592d4), plot F. Propane got a canal FluidDef (RM_Fluid_Propane, Inferno):
+    A2 a powered pump in pour mode empties a propane-holding tank into a dry D2 3-cell channel, and every wet cell takes
+    RM_Fill_Propane_* terrain with no RM_Filth_LiquidSpill near the pump (before the FluidDef, it spilled);
+    A3 a cut dug off a painted RM_PropaneShallow pond (natural lake terrain, classified by RM_FluidIdentity) forms a
+    propane body and fills with RM_Fill_Propane_*, not water;
+    A4 a D2 propane run never lights itself (2500 ticks, canal fire ON) nor under an EMP blast beside it, and an
+    ordinary vanilla Fire (ProofTorch = GenSpawn ThingDefOf.Fire, the shipping Fire.SpawnSetup hook) on the soil beside
+    its east end lights it as an inferno. live8 (2026-10-21) proved the lit half only with the ProofIgnite igniter."""
+    x0, z0 = _prep_plot(t, "F")
+    t.expect("fire", {"def": "Fire"})          # the torch, and the inferno's halo, are vanilla Fire on purpose
+    ch = _line(x0 + 3, z0 + 1, 3)
+    pump, tank, batt = (x0 + 4, z0 + 2), (x0 + 4, z0 + 3), (x0 + 8, z0 + 3)
+    pond = (x0 + 12, z0 + 1, 4, 4)
+    cut = _channel_from(x0 + 16, z0 + 2, 5)
+    run = _line(x0 + 3, z0 + 9, 8)
+    torch = (x0 + 11, z0 + 9)                  # soil, directly east of run[-1]
+    emp = (x0 + 6, z0 + 11)                    # soil, two cells off the run's south bank
+    _dig_run(t, ch, 2)
+    _stage(t, "jawa/build_batch", ops="RM_LiquidPump:%d,%d;RM_LiquidTank:%d,%d" % (pump + tank), faction="player")
+    with t.component("propane_tank_pours_into_channel", beyond_toggle=True):
+        # Dump, not Store: the pump's POUR drains only a tank marked Dump (Building_LiquidPump summary). L1 2026-10-21
+        # (HARNESS): a Store tank gave "running=True moved=0 tank=RM_Liquid_Propane:30000" for 1000 ticks.
+        staged = _tank_set(t, tank, "Dump", PROPANE_LIQUID, 3 * UNITS_PER_LEVEL)
+        _stage(t, "jawa/build_batch", ops="Battery:%d,%d" % batt, faction="player")
+        bat = ((t.bridge_call("jawa/list_things", defName="Battery", rect=_rect(batt[0], batt[1], 1, 2), limit=2) or {})
+               .get("things") or [{}])[0].get("id")
+        t.bridge_call("jawa/battery_set", thing=bat, mode="setPct", value=1.0)
+        k0 = _kv(_sc(t, NS_PROOF, "ProofPump", "%d,%d;pour" % pump))
+        t.wait_ticks(1000)
+        k1 = _kv(_sc(t, NS_PROOF, "ProofPump", "%d,%d" % pump))
+        ft = _fill_terrains(t, ch)
+        spill = t.bridge_call("jawa/list_things", defName=SPILL_FILTH, rect=_rect(x0, z0, 12, 7), limit=20) or {}
+        _frame(t, x0 + 2, z0, 8, 6, "F_propane_pumped")
+        if t._guard():
+            wet = [(f, tr) for f, tr in ft if (f or 0) >= 1]
+            if not wet and k1.get("running") != "True":
+                raise ExpectationFailed("UNMEASURED: the pump never ran (%s -> %s; tank %s)" % (k0, k1, staged))
+            _expect(len(wet) >= 1, "pour mode put no propane in the dry channel: %s pump %s" % (ft, k1))
+            _expect(all(str(tr).startswith(PROPANE_FILL) for _, tr in wet), "pumped propane is not RM_Fill_Propane_*: %s" % ft)
+            _expect(spill.get("success") is True and not spill.get("things"),
+                    "propane spilled beside the pump: %r" % (spill.get("things") or spill))
+    with t.component("propane_lake_cut_holds_propane", beyond_toggle=True):
+        _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (PROPANE_LAKE, _rect(*pond)))
+        _expect_body_fluid(t, pond[0] + 2, pond[1] + 2, PROPANE_FLUID)
+        _dig_run(t, cut, 1)
+        _wait(t, 6 * PULSE)
+        ft = _fill_terrains(t, cut)
+        _frame(t, pond[0], pond[1], 10, 4, "F_propane_lake_cut")
+        if t._guard():
+            # wet = any fill terrain, not F>=1: L1 2026-10-21 the D1 cut read F=0 on all 5 cells yet every one was
+            # RM_Fill_Propane_Trace (a sub-level film; a dry cut is RM_Channel_Empty), so F>=1 called real liquid "nothing"
+            wet = [(f, tr) for f, tr in ft if (f or 0) >= 1 or str(tr).startswith("RM_Fill_")]
+            _expect(len(wet) >= 1, "the cut off the propane pond took nothing in 6 pulses: %s" % ft)
+            _expect(all(str(tr).startswith(PROPANE_FILL) for _, tr in wet), "the lake cut holds another fluid: %s" % ft)
+    _fuel_run(t, run, PROPANE_FLUID)
+    with _setting(t, "canalFireEnabled", True), _setting(t, "explosionIgnitesLiquidEnabled", True):
+        with t.component("propane_never_self_ignites", beyond_toggle=True):
+            t.wait_ticks(2500)
+            a = _things_at(t, INFERNO_FLAME, run) | _things_at(t, FLAME, run)
+            _boom(t, emp, "EMP")
+            t.wait_ticks(250)
+            b = _things_at(t, INFERNO_FLAME, run) | _things_at(t, FLAME, run)
+            st = _state(t, run)
+            if t._guard():
+                _expect(not a, "propane lit itself with no fire or blast: %s" % sorted(a))
+                _expect(not b, "an EMP blast beside the run lit propane: %s" % sorted(b))
+                _expect(all((f or 0) == 2 for _, f in st), "the unlit run lost propane: %s" % st)
+        with t.component("propane_vanilla_fire_lights_inferno", beyond_toggle=True):
+            tr = _sc(t, FIRE_PROOF, "ProofTorch", "%d,%d" % torch)
+            if t._guard() and "fire=True" not in tr:
+                raise ExpectationFailed("UNMEASURED: no vanilla Fire spawned beside the run: %r" % tr)
+            t.wait_ticks(150)
+            big = _things_at(t, INFERNO_FLAME, run)
+            _frame(t, x0 + 2, z0 + 7, 11, 5, "F_propane_fire")
+            if t._guard():
+                _expect(run[-1] in big, "a vanilla Fire beside the run's east end did not light it as an inferno: %s" % sorted(big))
+                _expect(len(big) == len(run), "inferno on %d/%d cells 150 ticks after the fire" % (len(big), len(run)))
+        _extinguish_all(t)
+
+
 @suite.chain("pit_prison_room")
 def pit_prison_room(t):
     """SUPERDEEP_PRISON_ROOM_1 (73408b80e). A 3x3 D=4 pit ringed by open ground is its OWN room (split from the lip),
