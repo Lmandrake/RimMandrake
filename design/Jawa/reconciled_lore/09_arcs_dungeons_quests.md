@@ -74,8 +74,10 @@
   over it and the crater they excavated around it [owner 2026-10-10, story
   sitting card 5]. The original Assailants wait there, fully armed, frozen
   mid-combat with the Rakatan experiments, and the Rust Cathedral wants the
-  Cradle to strike them (canon.yml `assailant_reveal_arc` `site_src`,
-  `strike_target_src`).
+  Cradle to strike them. The strike and the player's dive are either/or; the
+  reason to go in is an ancient Rakatan hyperdrive that fits the Utinni [owner
+  2026-10-12] (canon.yml `assailant_reveal_arc` `site_src`,
+  `strike_target_src`, `strike_or_dive_src`, `breakout_src`).
 - **The Rust Cathedral** — a map made of treasure whose costs are acid-read
   hazards, the densest Arsenal ground, and sacrilege against the Free Droid
   Enclaves (~10 sacred structures, −15 each, hostility hysteresis;

@@ -33,9 +33,11 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   war lab over it, and eventually excavated a huge site around the impact crater"*
   (card 5; full quote canon.yml `assailant_reveal_arc.site_src`). Inside wait the
   original Assailants, fully armed, frozen mid-combat with the Rakatan experiments
-  (cards 1–2). Owed: the specimens' choice → breakout → recover-or-fail
-  (`WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`), the Cradle strike on this lab vs the
-  player's dive (`CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`), the Imperial garrison
+  (cards 1–2). Ruled 2026-10-12: the Cradle strike and the player's dive are
+  either/or, and the hook for going in is an ancient Rakatan hyperdrive that fits
+  the Utinni; the breakout always starts, the specimen choice sets how bad
+  (`dungeons_arc_spec.md` §2.1, §2.6). Owed: the specimen choices and what a
+  recovery leaves (`WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`), the Imperial garrison
   after an early blast (`WARLAB_GARRISON_DESIGN_EARLY_BLAST`), and merging the two
   builds (`ASSAILANT_WARLAB_BUILD_MERGE`). Rulings recorded in
   `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §8 (2026-10-10 amendment).
