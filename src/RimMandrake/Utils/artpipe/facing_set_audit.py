@@ -149,6 +149,9 @@ def main(argv):
                 paths.append(hits[-1])
     else:
         paths = [Path(p) for p in args]
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'art'))
+    import flier_guard as FG
+    FG.refuse_fliers('facing_set_audit.py', args, paths)
     if len(paths) < 2:
         print("need at least two facings"); return 2
 

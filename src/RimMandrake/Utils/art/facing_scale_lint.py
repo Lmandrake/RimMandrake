@@ -54,6 +54,7 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[3]
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
+import flier_guard as FG  # noqa: E402
 
 CAL = HERE / "facing_scale_calibration.json"
 GAME_DATA = Path("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data")
@@ -847,6 +848,7 @@ def main(argv=None) -> int:
         print("\n".join(md.splitlines()[:3 + 2 + 30]))
         return 1 if any(r["verdict"] != "ok" for r in rows) else 0
     if a.cmd == "reseat":
+        FG.refuse_fliers('facing_scale_lint.py reseat', a.files)
         import artledger as AL
         from PIL import Image
         for f in a.files:
@@ -861,6 +863,7 @@ def main(argv=None) -> int:
             print(json.dumps({"file": f, **info}))
         return 0
     rows = json.loads(Path(a.json).read_text())
+    FG.refuse_fliers('facing_scale_lint.py fix', [str(v) for r in rows for v in (r.values() if isinstance(r, dict) else [r]) if isinstance(v, str)], a.defs.split(','))
     res = fix(rows, set(a.defs.split(",")), Path(a.out), a.owner_said, a.dry_run)
     print(json.dumps(res, indent=1))
     return 0
