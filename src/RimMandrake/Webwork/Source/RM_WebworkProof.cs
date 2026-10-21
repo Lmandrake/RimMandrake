@@ -260,5 +260,113 @@ namespace RimMandrake.Webwork
             bool present = cell.InBounds(map) && cell.GetThingList(map).Any(t => t.def.defName.StartsWith("RM_Webwork_"));
             return "READ nodePresent " + present + " | weaveNear " + WeaveNear(map, weave, cell) + " | lastYield " + RM_CompHarvestYield.lastYieldSpawned;
         }
+
+        private static bool Flag(string[] a, int i, bool dflt)
+        {
+            return a.Length > i && bool.TryParse(a[i].Trim(), out bool b) ? b : dflt;
+        }
+
+        private static float Num(string[] a, int i, float dflt)
+        {
+            return a.Length > i && float.TryParse(a[i].Trim(), System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out float f) ? f : dflt;
+        }
+
+        /// <summary>WEBWORK_TERRAIN_WEATHER_PASS_1. "network|carpet|density" = webNetworkEnabled / siteCarpetEnabled /
+        /// localWebDensityMultiplier for the call. Runs RM_GenStep_WebworkWeb's placement on the current map (the biome gate is
+        /// reported, not applied, as ProofNest does) and reads what it laid. "WEB biomeGateRefuses B | placed B | sites N |
+        /// cables A->B | strands A->B | carpet N | carpetOutsideSites N | cableBlocksPlants B | cablePath N | strandPath N |
+        /// strandSticky B".</summary>
+        public static string ProofWebNetwork(string args)
+        {
+            Map map = Map;
+            if (map == null) return "REFUSED: no current map";
+            string[] a = (args ?? "").Split('|');
+            bool wasNet = RM_WebworkSettings.webNetworkEnabled, wasCarpet = RM_WebworkSettings.siteCarpetEnabled;
+            float wasDensity = RM_WebworkSettings.localWebDensityMultiplier;
+            ThingDef cable = DefDatabase<ThingDef>.GetNamedSilentFail(RM_GenStep_WebworkWeb.CableDefName);
+            ThingDef strand = DefDatabase<ThingDef>.GetNamedSilentFail(RM_GenStep_WebworkWeb.StrandDefName);
+            if (cable == null || strand == null) return "REFUSED: web defs missing";
+            try
+            {
+                RM_WebworkSettings.webNetworkEnabled = Flag(a, 0, true);
+                RM_WebworkSettings.siteCarpetEnabled = Flag(a, 1, true);
+                RM_WebworkSettings.localWebDensityMultiplier = Num(a, 2, 1f);
+                var step = new RM_GenStep_WebworkWeb();
+                int k0 = Count(map, cable.defName), s0 = Count(map, strand.defName);
+                bool isWebwork = map.Biome?.defName == RM_GenStep_WebworkNest.WebworkBiomeDefName;
+                if (!isWebwork) step.Generate(map, default(GenStepParams));          // must lay nothing off-biome
+                int k1 = Count(map, cable.defName);
+                RM_GenStep_WebworkWeb.Result r = step.PlaceWeb(map);
+                int k2 = Count(map, cable.defName), s2 = Count(map, strand.defName);
+                int outside = 0;
+                foreach (IntVec3 c in r.carpetCells)
+                {
+                    bool near = false;
+                    for (int i = 0; i < r.sites.Count && !near; i++)
+                    {
+                        int rad = r.carpetRadii[i] + 1;
+                        near = (c - r.sites[i]).LengthHorizontalSquared <= rad * rad;
+                    }
+                    if (!near) outside++;
+                }
+                return "WEB biomeGateRefuses " + (isWebwork ? "n/a" : (k1 == k0).ToString()) + " | placed " + r.placed
+                    + " | sites " + r.sites.Count + " | cables " + k0 + "->" + k2 + " | strands " + s0 + "->" + s2
+                    + " | carpet " + r.carpetCells.Count + " | carpetOutsideSites " + outside
+                    + " | cableBlocksPlants " + cable.BlocksPlanting() + " | cablePath " + cable.pathCost
+                    + " | strandPath " + strand.pathCost
+                    + " | strandSticky " + strand.comps.Any(cp => cp.GetType().Name == "RM_CompProperties_AdhesiveSlick");
+            }
+            finally
+            {
+                RM_WebworkSettings.webNetworkEnabled = wasNet;
+                RM_WebworkSettings.siteCarpetEnabled = wasCarpet;
+                RM_WebworkSettings.localWebDensityMultiplier = wasDensity;
+            }
+        }
+
+        /// <summary>WEBWORK_TERRAIN_WEATHER_PASS_1. "enabled|commonality[|keep]" = webfallEnabled / webfallCommonality for the call.
+        /// Re-applies the startup gate to RM_Webwork's weather table, reads webfall's row and share, then forces webfall on the
+        /// current map and reads it back (the previous weather is restored, and the table re-applied from the real settings).
+        /// "WEBFALL def B | overlayMat B | inBiome C | share P | forcedEvent B | glowCap F | forcedNow NAME".</summary>
+        public static string ProofWebfall(string args)
+        {
+            Map map = Map;
+            if (map == null) return "REFUSED: no current map";
+            string[] a = (args ?? "").Split('|');
+            BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail(RM_GenStep_WebworkNest.WebworkBiomeDefName);
+            WeatherDef webfall = DefDatabase<WeatherDef>.GetNamedSilentFail(RM_WebworkStartupGate.WebfallDefName);
+            if (biome == null || webfall == null) return "WEBFALL def " + (webfall != null) + " | REFUSED: biome or weather missing";
+            bool wasOn = RM_WebworkSettings.webfallEnabled;
+            float wasC = RM_WebworkSettings.webfallCommonality;
+            WeatherDef prev = map.weatherManager.curWeather;
+            string forced = "none";
+            float inBiome, share;
+            try
+            {
+                RM_WebworkSettings.webfallEnabled = Flag(a, 0, true);
+                RM_WebworkSettings.webfallCommonality = Num(a, 1, 6f);
+                RM_WebworkStartupGate.ApplyWebfall(biome, webfall);
+                inBiome = biome.baseWeatherCommonalities.Where(rec => rec.weather == webfall).Sum(rec => rec.commonality);
+                float all = biome.baseWeatherCommonalities.Sum(rec => rec.commonality);
+                share = all > 0f ? inBiome / all : 0f;
+                if (inBiome > 0f)
+                {
+                    map.weatherManager.TransitionTo(webfall);
+                    forced = map.weatherManager.curWeather?.defName ?? "null";
+                }
+            }
+            finally
+            {
+                RM_WebworkSettings.webfallEnabled = wasOn;
+                RM_WebworkSettings.webfallCommonality = wasC;
+                RM_WebworkStartupGate.ApplyWebfall(biome, webfall);
+                if (!Flag(a, 2, false) && prev != null && map.weatherManager.curWeather != prev) map.weatherManager.TransitionTo(prev); // "|true" keeps webfall on to LOOK at
+            }
+            return "WEBFALL def True | overlayMat " + (RM_WebworkArt.WebfallMat != null) + " | inBiome " + inBiome.ToString("0.##")
+                + " | share " + share.ToString("0.###") + " | forcedEvent " + webfall.canOccurAsRandomForcedEvent
+                + " | glowCap " + webfall.maxGlow.ToString("0.##") + " | forcedNow " + forced
+                + " | installedArt " + (RM_WebworkArt.Installed.Count == 0 ? "none" : string.Join(",", RM_WebworkArt.Installed));
+        }
     }
 }

@@ -16,11 +16,15 @@ CHAINS
   nest_egg_state      the nest wall carries the relay comp, the clutch mines to the egg, the egg is inert contraband
                       with NO hatcher comp (ban 1), the ollathrix is dormant-capable with the turret comp.
   scald_binding       the sun-scald hediff resolves to the CreatureBehaviors class (hard dependency).
+  web_terrain_weather WEBWORK_TERRAIN_WEATHER_PASS_1: the web laid at mapgen (cables, local webs, silk carpet only near
+                      spider sites) and webfall (in the biome's weather table, forceable), each toggle's off arm.
   map_mechanics       nest placement at mapgen, the 20-30 day re-lay, emergent spawn on destroy, the creep-web
                       harvest (Deconstruct -> thrixweave + emergent spawn), sun-scald in sun,
                       loom spit: UNMEASURED, each says what it needs.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
+MOCK:   `python3 validation.py --mock` -> runs the web_terrain_weather chain against a fake session that answers like a
+        game where the mod works, so the chain's plumbing and parsing are exercised offline.
 """
 import os
 import re
@@ -172,6 +176,76 @@ def _traction_lance_findings():
     return bad
 
 
+WEB_DEFS = {"ThingDef": ("RM_Webwork_Cable", "RM_Webwork_Strand"), "TerrainDef": ("RM_Webwork_SilkCarpet",),
+            "WeatherDef": ("RM_Webfall",), "GenStepDef": ("RM_WebworkWebScatter",)}
+
+
+def _web_terrain_weather_findings():
+    """WEBWORK_TERRAIN_WEATHER_PASS_1, offline half (parsed from the XML and C#)."""
+    bad = []
+    have = set(SHIPPED)
+    for ty, names in WEB_DEFS.items():
+        for n in names:
+            if (ty, n) not in have:
+                bad.append("%s/%s not defined" % (ty, n))
+    if bad:
+        return bad
+    root = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_WebworkWebNetwork.xml")).getroot()
+    things = dict((d.findtext("defName"), d) for d in root.findall("ThingDef"))
+    cable, strand = things["RM_Webwork_Cable"], things["RM_Webwork_Strand"]
+    for n, d in (("RM_Webwork_Cable", cable), ("RM_Webwork_Strand", strand)):
+        if d.findtext("passability") != "Standable" or not int(d.findtext("pathCost") or 0) > 0:
+            bad.append("%s must be Standable with a pathCost > 0 (slow, never impassable: a line must not cut the map)" % n)
+        if (d.findtext("building/isEdifice") or "").lower() != "false" or float(d.findtext("fillPercent") or 1) != 0:
+            bad.append("%s must be a non-edifice with fillPercent 0, or it blocks the trees (the jungle must stay a jungle)" % n)
+        comps = "|".join(li.get("Class", "") for li in d.findall("comps/li"))
+        if "RM_CompProperties_SenseWebNode" not in comps:
+            bad.append("%s is not part of the sense-web" % n)
+        tex = d.findtext("graphicData/texPath") or ""
+        if not os.path.isfile(os.path.join(HERE, "Textures", tex + ".png")):
+            bad.append("%s stand-in texPath %s has no PNG in this mod" % (n, tex))
+    if not int(cable.findtext("pathCost")) > int(strand.findtext("pathCost")):
+        bad.append("the cable (main structure) must cost more to cross than a local web")
+    ccomps = "|".join(li.get("Class", "") for li in cable.findall("comps/li"))
+    if "RM_CompProperties_HarvestYield" not in ccomps or cable.find("modExtensions/li[@Class='RimMandrake.CreatureBehaviors.RM_ChewableExtension']") is None:
+        bad.append("RM_Webwork_Cable must be cuttable for thrixweave and chewable by beetles")
+    if "RM_CompProperties_AdhesiveSlick" not in "|".join(li.get("Class", "") for li in strand.findall("comps/li")) \
+            or strand.findtext("tickerType") != "Normal":
+        bad.append("RM_Webwork_Strand must carry the adhesive (and tick Normal, which RM_CompAdhesiveSlick needs)")
+    terr = ET.parse(os.path.join(HERE, "Defs", "TerrainDefs", "RM_WebworkSilkCarpet.xml")).getroot().find("TerrainDef")
+    if (terr.findtext("natural") or "").lower() != "true" or not float(terr.findtext("fertility") or 0) > 0:
+        bad.append("RM_Webwork_SilkCarpet must be natural with fertility > 0 (a site sits under the canopy, not in a clearing)")
+    b = _biome()
+    if any(li.findtext("terrain") == "RM_Webwork_SilkCarpet" for li in b.findall("terrainsByFertility/li")):
+        bad.append("silk carpet is painted biome-wide (terrainsByFertility); it belongs only at spider sites")
+    wc = b.find("baseWeatherCommonalities")
+    if wc is None or wc.find("RM_Webfall") is None:
+        bad.append("RM_Webwork's weather table has no RM_Webfall row")
+    wf = ET.parse(os.path.join(HERE, "Defs", "WeatherDefs", "RM_Webfall.xml")).getroot().find("WeatherDef")
+    if (wf.findtext("canOccurAsRandomForcedEvent") or "").lower() != "false":
+        bad.append("RM_Webfall must not occur as a random forced event (mechanics promised only inside our biome)")
+    if wf.find("maxGlow") is not None and float(wf.findtext("maxGlow")) < 1:
+        bad.append("RM_Webfall lowers the sky glow: that would open the light-moat, which only overcast may do")
+    if any(float(wf.findtext(f) or 0) > 0 for f in ("rainRate", "snowRate", "sandRate")):
+        bad.append("RM_Webfall builds up rain/snow/sand")
+    if "RimMandrake.Webwork.RM_WeatherOverlay_Webfall" not in [li.text for li in wf.findall("overlayClasses/li")]:
+        bad.append("RM_Webfall does not use the webfall overlay")
+    gs = ET.parse(os.path.join(HERE, "Defs", "MapGeneration", "RM_WebworkWebScatter.xml")).getroot().find("GenStepDef")
+    if not int(gs.findtext("order")) > 325:
+        bad.append("RM_WebworkWebScatter must run after the nest (324) and the urraveth skeleton (325)")
+    if "<li>RM_WebworkWebScatter</li>" not in _read(os.path.join("Patches", "RM_WebworkWebScatter_MapGenPatch.xml")):
+        bad.append("RM_WebworkWebScatter is not added to MapCommonBase")
+    gen = _read(os.path.join("Source", "RM_GenStep_WebworkWeb.cs"))
+    if "WebworkBiomeDefName" not in gen.split("public override void Generate", 1)[1].split("PlaceWeb", 1)[0]:
+        bad.append("RM_GenStep_WebworkWeb.Generate does not gate on the Webwork biome before laying anything")
+    for want in ("RM_Webwork_Cable", "RM_Webwork_Strand", "RM_Webwork_SilkCarpet"):
+        if '"%s"' % want not in gen:
+            bad.append("RM_GenStep_WebworkWeb never names %s" % want)
+    if '"RM_Webwork_Cable"' not in _read(os.path.join("Source", "RM_WebworkStartupGate.cs")):
+        bad.append("webHarvestEnabled does not reach RM_Webwork_Cable (startup gate harvest list)")
+    return bad
+
+
 def static_checks():
     bad = []
     # WEBWORK_HEAT_SHADE_BUILD_1: the biome declares an overhead sun-heat kind (state read lives in the live chain)
@@ -202,7 +276,7 @@ def static_checks():
         if fn.endswith(".cs") and 'Compile Include="%s"' % fn not in proj:
             bad.append("%s is not in the csproj (compiles into nothing)" % fn)
     kinds = set(t for t, _n in SHIPPED)
-    for need in ("BiomeDef", "ThingDef", "PawnKindDef", "HediffDef", "GenStepDef", "SoundDef", "DamageDef"):
+    for need in ("BiomeDef", "ThingDef", "PawnKindDef", "HediffDef", "GenStepDef", "SoundDef", "DamageDef", "TerrainDef", "WeatherDef"):
         if need not in kinds:
             bad.append("no %s parsed" % need)
     b = _biome()
@@ -218,7 +292,9 @@ def static_checks():
     # WEBWORK_BASE_PORT_BUILD_1: structures, front extension, thrixweave rename, butcher yield (parsed from the XML)
     bad.extend(_base_port_findings())
     bad.extend(_traction_lance_findings())
-    for cls in ("RM_GenStep_WebworkNest", "RM_CompEggClutchRelay", "RM_CompEmergentSpawnOnDestroy", "RM_BiomeWorker_Webwork"):
+    bad.extend(_web_terrain_weather_findings())
+    for cls in ("RM_GenStep_WebworkNest", "RM_CompEggClutchRelay", "RM_CompEmergentSpawnOnDestroy", "RM_BiomeWorker_Webwork",
+                "RM_GenStep_WebworkWeb", "RM_WeatherOverlay_Webfall"):
         if not any(("class %s" % cls) in _read(os.path.join("Source", f)) for f in os.listdir(os.path.join(HERE, "Source")) if f.endswith(".cs")):
             bad.append("class %s not found in Source/" % cls)
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "Webwork.md")):
@@ -549,12 +625,138 @@ def _build_suite():
                 if _live(t):
                     _unmeasured(t, why)
 
+    def _field(text, key):
+        """The token after `key ` in a proof line (the next ' | ' ends it)."""
+        if (key + " ") not in text:
+            return None
+        return text.split(key + " ", 1)[1].split(" |", 1)[0].strip()
+
+    def _arrow(text, key):
+        v = _field(text, key)
+        try:
+            a, b = v.split("->")
+            return int(a), int(b)
+        except (AttributeError, ValueError):
+            return None
+
+    @suite.chain("web_terrain_weather")
+    def web_terrain_weather(t):
+        """WEBWORK_TERRAIN_WEATHER_PASS_1. Runs RM_GenStep_WebworkWeb's placement and the webfall gate on the CURRENT map
+        through RM_WebworkProof (static_call); each proof sets its settings for the call and restores them."""
+        with t.component("web_network_laid", toggle="webNetworkEnabled"):
+            text = _wp(t, "ProofWebNetwork", "true|true|1")
+            if _live(t):
+                if not text.startswith("WEB"):
+                    _unmeasured(t, "ProofWebNetwork gave no answer: %r" % text[:160]); return
+                if _field(text, "biomeGateRefuses") == "False":
+                    raise ExpectationFailed("the web GenStep laid web on a non-Webwork map: %s" % text)
+                k, st = _arrow(text, "cables"), _arrow(text, "strands")
+                if _field(text, "placed") != "True" or not k or k[1] <= k[0] or not st or st[1] <= st[0]:
+                    raise ExpectationFailed("the placement laid no cables or no local webs: %s" % text)
+                if not int(_field(text, "sites") or 0) >= 1 or not int(_field(text, "carpet") or 0) > 0:
+                    raise ExpectationFailed("no spider site or no silk carpet: %s" % text)
+                if _field(text, "carpetOutsideSites") != "0":
+                    raise ExpectationFailed("silk carpet laid away from every spider site: %s" % text)
+                if _field(text, "cableBlocksPlants") != "False":
+                    raise ExpectationFailed("a cable blocks trees (the jungle would be cut into stripes): %s" % text)
+                if _field(text, "strandSticky") != "True":
+                    raise ExpectationFailed("the local web carries no adhesive: %s" % text)
+            off = _wp(t, "ProofWebNetwork", "false|true|1")
+            if _live(t):
+                k = _arrow(off, "cables")
+                if _field(off, "placed") != "False" or (k and k[0] != k[1]):
+                    raise ExpectationFailed("webNetworkEnabled off still laid web: %s" % off)
+        with t.component("silk_carpet_toggle", toggle="siteCarpetEnabled"):
+            text = _wp(t, "ProofWebNetwork", "true|false|1")
+            if _live(t) and not (_field(text, "placed") == "True" and _field(text, "carpet") == "0"):
+                raise ExpectationFailed("siteCarpetEnabled off still laid carpet (or laid nothing): %s" % text)
+        with t.component("local_web_density_zero_lays_none", toggle="localWebDensityMultiplier", beyond_toggle=True):
+            text = _wp(t, "ProofWebNetwork", "true|true|0")
+            if _live(t):
+                st = _arrow(text, "strands")
+                if not st or st[0] != st[1]:
+                    raise ExpectationFailed("density 0 still laid local webs: %s" % text)
+        with t.component("webfall_in_biome_and_occurs", toggle="webfallEnabled"):
+            text = _wp(t, "ProofWebfall", "true|6")
+            if _live(t):
+                if not text.startswith("WEBFALL"):
+                    _unmeasured(t, "ProofWebfall gave no answer: %r" % text[:160]); return
+                if _field(text, "def") != "True" or _field(text, "inBiome") != "6":
+                    raise ExpectationFailed("webfall is not in RM_Webwork's weather table at 6: %s" % text)
+                if _field(text, "forcedNow") != "RM_Webfall":
+                    raise ExpectationFailed("webfall could not be made the current weather: %s" % text)
+                if _field(text, "forcedEvent") != "False" or _field(text, "glowCap") != "1":
+                    raise ExpectationFailed("webfall can be forced onto other biomes or dims the sun: %s" % text)
+                if _field(text, "overlayMat") != "True":
+                    raise ExpectationFailed("the webfall overlay has no material (nothing would drift): %s" % text)
+            off = _wp(t, "ProofWebfall", "false|6")
+            if _live(t) and not (_field(off, "inBiome") == "0" and _field(off, "forcedNow") == "none"):
+                raise ExpectationFailed("webfallEnabled off still leaves webfall in the table: %s" % off)
+        with t.component("webfall_commonality_scales", toggle="webfallCommonality", beyond_toggle=True):
+            text = _wp(t, "ProofWebfall", "true|12")
+            if _live(t) and _field(text, "inBiome") != "12":
+                raise ExpectationFailed("webfallCommonality 12 did not reach the table: %s" % text)
+        with t.component("generated_webwork_map", beyond_toggle=True):
+            if _live(t):
+                _unmeasured(t, "the bridge cannot generate an RM_Webwork map (our biome sits on 0 tiles until the one end-paint, "
+                               "CLAUDE.md); the placement is proven through PlaceWeb on the current map above")
+
     return suite
 
 
 suite = _build_suite() if Suite is not None else None
 
+
+class _MockSession:
+    """--mock: answers like a game where the web and webfall work, so web_terrain_weather's plumbing runs offline."""
+
+    def __init__(self):
+        self.calls = []
+        self.cables = self.strands = 0
+
+    def sweep(self):
+        return None
+
+    def call(self, tool, **kw):
+        self.calls.append((tool, kw))
+        if tool == "jawa/static_call":
+            m, a = kw.get("method"), (kw.get("args") or "").split("|")
+            if m == "ProofWebNetwork":
+                net, carpet, dens = a[0] == "true", a[1] == "true", float(a[2])
+                k0, s0 = self.cables, self.strands
+                if net:
+                    self.cables += 400
+                    self.strands += int(250 * dens)
+                return {"success": True, "result": "WEB biomeGateRefuses True | placed %s | sites %d | cables %d->%d | strands %d->%d | "
+                        "carpet %d | carpetOutsideSites 0 | cableBlocksPlants False | cablePath 30 | strandPath 14 | strandSticky True"
+                        % (net, 4 if net else 0, k0, self.cables, s0, self.strands, 300 if (net and carpet) else 0)}
+            if m == "ProofWebfall":
+                on, c = a[0] == "true", float(a[1])
+                inb = c if on else 0
+                return {"success": True, "result": "WEBFALL def True | overlayMat True | inBiome %s | share 0.08 | forcedEvent False | "
+                        "glowCap 1 | forcedNow %s | installedArt none" % (("%g" % inb), "RM_Webfall" if inb > 0 else "none")}
+            return {"success": True, "result": "OK"}
+        return {"success": True}
+
+
+def mock_run():
+    from runner import run_suite  # modcheck package dir is on sys.path via _UTILS/modcheck
+    fake = _MockSession()
+    suite.chains[:] = [c for c in suite.chains if c[0] == "web_terrain_weather"]
+    res = run_suite(suite, fake, anchor=(50, 50))
+    comps = [c for ch in res.get("chains", []) for c in (ch.get("components") or [])]
+    v = lambda c: str(c.get("verdict", "")).upper()
+    bad = [c for c in comps if v(c) not in ("PASS", "UNMEASURED") or (v(c) == "UNMEASURED" and c.get("name") != "generated_webwork_map")]
+    calls = sum(1 for tl, kw in fake.calls if tl == "jawa/static_call")
+    ok = len(comps) == 6 and not bad and calls == 7
+    print("MOCK: %s (%d components, %d proof calls, problems=%s)" % ("PASS" if ok else "FAIL", len(comps), calls,
+                                                                    [(c.get("name"), c.get("verdict"), c.get("detail")) for c in bad][:4]))
+    return 0 if ok else 1
+
 if __name__ == "__main__":
+    if "--mock" in sys.argv:
+        sys.path.insert(0, os.path.join(HERE, "..", "Utils", "modcheck"))
+        sys.exit(mock_run())
     problems = static_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:

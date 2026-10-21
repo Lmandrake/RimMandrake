@@ -684,6 +684,144 @@ namespace RimMandrake.Webwork.SelfTest
             return fails;
         }
 
+        // ════════════════════════ webnet (WEBWORK_TERRAIN_WEATHER_PASS_1) ════════════════════════
+        public static long NetSites, NetCables, NetCarpet, NetCramped;
+
+        /// <summary>Random map sizes, nests and blocked-cell masks through RM_WebNetKernel, checked against restated rules: sites
+        /// inside the margin, spaced, accepted by the mask, nest first; the spanning tree joins every site with n-1 edges and is no
+        /// longer than a star from any site; every raster is 8-connected, repeat-free, starts and ends on its endpoints and never
+        /// strays further from the chord than the sag plus one; through-cables end on the map border; carpet only within r+1 and
+        /// always within r; the strand budget is monotone, zero at zero; strand offsets stay in reach and never (0,0).</summary>
+        private static List<string> WebNet(int cases, int seed0)
+        {
+            var fails = new List<string>();
+            for (int k = 0; k < cases; k++)
+            {
+                int seed = seed0 + k;
+                try
+                {
+                    var rng = new Random(seed);
+                    int w = rng.Next(10, 300), h = rng.Next(10, 300);
+                    bool hasNest = rng.Next(4) != 0;
+                    (int x, int z)? nest = hasNest ? (rng.Next(0, w), rng.Next(0, h)) : ((int, int)?)null;
+                    double blockedFrac = rng.NextDouble() * 0.6;
+                    var mask = new HashSet<(int, int)>();
+                    Func<int, int, bool> ok = (x, z) =>
+                    {
+                        Steps++;
+                        if (mask.Contains((x, z))) return false;
+                        return new Random(x * 7919 + z * 104729 + seed).NextDouble() >= blockedFrac;
+                    };
+                    int extra = rng.Next(0, 6);
+                    var krng = new Random(seed * 31 + 7);
+                    var sites = RM_WebNetKernel.PlanSites(nest, w, h, extra, krng, ok);
+                    Cases++;
+                    NetSites += sites.Count;
+                    if (hasNest) Check(sites.Count >= 1 && sites[0] == nest.Value, "nest is not site 0");
+                    else Check(sites.Count <= extra, "sites without a nest exceed extra");
+                    Check(sites.Count <= (hasNest ? 1 : 0) + extra, "more sites than asked for");
+                    if (w <= 2 * RM_WebNetKernel.SiteMargin || h <= 2 * RM_WebNetKernel.SiteMargin)
+                    {
+                        NetCramped++;
+                        Check(sites.Count == (hasNest ? 1 : 0), "a cramped map got extra sites");
+                    }
+                    for (int i = hasNest ? 1 : 0; i < sites.Count; i++)
+                    {
+                        var s = sites[i];
+                        Check(RM_WebNetKernel.InMargin(s.x, s.z, w, h, RM_WebNetKernel.SiteMargin), "site outside the margin");
+                        Check(ok(s.x, s.z), "site the mask refuses");
+                        for (int j = 0; j < i; j++)
+                        {
+                            double d = Math.Sqrt(Math.Pow(s.x - sites[j].x, 2) + Math.Pow(s.z - sites[j].z, 2));
+                            Check(d >= RM_WebNetKernel.MinSiteSpacing, "two sites closer than the spacing: " + d);
+                        }
+                    }
+                    // spanning tree
+                    var edges = RM_WebNetKernel.SpanningEdges(sites);
+                    Check(edges.Count == Math.Max(0, sites.Count - 1), "spanning tree has " + edges.Count + " edges for " + sites.Count + " sites");
+                    var parent = Enumerable.Range(0, sites.Count).ToArray();
+                    int Find(int a) { while (parent[a] != a) a = parent[a] = parent[parent[a]]; return a; }
+                    double treeLen = 0;
+                    foreach (var e in edges)
+                    {
+                        Check(e.a != e.b && e.a >= 0 && e.b >= 0 && e.a < sites.Count && e.b < sites.Count, "bad edge");
+                        int ra = Find(e.a), rb = Find(e.b);
+                        Check(ra != rb, "spanning tree has a cycle");
+                        parent[ra] = rb;
+                        treeLen += Math.Sqrt(RM_WebNetKernel.Dist2(sites[e.a].x, sites[e.a].z, sites[e.b].x, sites[e.b].z));
+                    }
+                    for (int i = 1; i < sites.Count; i++) Check(Find(i) == Find(0), "spanning tree leaves a site disconnected");
+                    for (int c = 0; c < sites.Count; c++)
+                    {
+                        double star = 0;
+                        for (int i = 0; i < sites.Count; i++) star += Math.Sqrt(RM_WebNetKernel.Dist2(sites[c].x, sites[c].z, sites[i].x, sites[i].z));
+                        Check(treeLen <= star + 1e-6, "spanning tree longer than a star");
+                    }
+                    // through-cables
+                    var segs = RM_WebNetKernel.ThroughSegments(sites, w, h, RM_WebNetKernel.ThroughCables, krng);
+                    Check(segs.Count == 2 * RM_WebNetKernel.ThroughCables, "through segments " + segs.Count);
+                    for (int i = 0; i < segs.Count; i += 2)
+                    {
+                        var e0 = segs[i].a; var e1 = segs[i + 1].b;
+                        Check(segs[i].b == segs[i + 1].a, "a through-cable's halves do not meet");
+                        foreach (var e in new[] { e0, e1 })
+                        {
+                            Check(e.x >= 0 && e.z >= 0 && e.x < w && e.z < h, "through-cable end out of bounds");
+                            Check(e.x == 0 || e.z == 0 || e.x == w - 1 || e.z == h - 1 || e == segs[i].b, "through-cable does not reach the border: " + e + " on " + w + "x" + h);
+                        }
+                    }
+                    // rasters of every segment
+                    var all = new List<((int x, int z) a, (int x, int z) b)>();
+                    foreach (var e in edges) all.Add((sites[e.a], sites[e.b]));
+                    all.AddRange(segs);
+                    foreach (var seg in all)
+                    {
+                        int len = (int)Math.Sqrt(RM_WebNetKernel.Dist2(seg.a.x, seg.a.z, seg.b.x, seg.b.z));
+                        float sag = RM_WebNetKernel.Sag(len, krng.NextDouble(), krng.Next(2) == 0);
+                        Check(Math.Abs(sag) <= RM_WebNetKernel.SagMax * len + 1e-4 && Math.Abs(sag) >= RM_WebNetKernel.SagMin * len - 1e-4, "sag out of range");
+                        var cells = RM_WebNetKernel.Raster(seg.a.x, seg.a.z, seg.b.x, seg.b.z, sag);
+                        NetCables += cells.Count;
+                        Check(cells.Count >= 1 && cells[0] == seg.a && cells[cells.Count - 1] == seg.b, "raster does not run endpoint to endpoint");
+                        Check(cells.Distinct().Count() == cells.Count, "raster repeats a cell");
+                        for (int i = 1; i < cells.Count; i++)
+                            Check(Math.Max(Math.Abs(cells[i].x - cells[i - 1].x), Math.Abs(cells[i].z - cells[i - 1].z)) == 1, "raster not 8-connected at " + i);
+                        double L = Math.Sqrt(RM_WebNetKernel.Dist2(seg.a.x, seg.a.z, seg.b.x, seg.b.z));
+                        foreach (var c in cells)
+                        {
+                            double dev = L > 0 ? Math.Abs((c.x - seg.a.x) * (seg.b.z - seg.a.z) - (c.z - seg.a.z) * (seg.b.x - seg.a.x)) / L
+                                               : Math.Sqrt(RM_WebNetKernel.Dist2(c.x, c.z, seg.a.x, seg.a.z));
+                            Check(dev <= Math.Abs(sag) + 1.5, "raster strays " + dev + " from its chord (sag " + sag + ")");
+                        }
+                    }
+                    // carpet
+                    int r = RM_WebNetKernel.CarpetRadius(krng);
+                    Check(r >= RM_WebNetKernel.CarpetRadiusMin && r <= RM_WebNetKernel.CarpetRadiusMax, "carpet radius " + r);
+                    for (int dx = -r - 3; dx <= r + 3; dx++)
+                        for (int dz = -r - 3; dz <= r + 3; dz++)
+                        {
+                            int hsh = krng.Next();
+                            bool on = RM_WebNetKernel.CarpetAt(dx, dz, r, hsh);
+                            long d2 = (long)dx * dx + (long)dz * dz;
+                            if (on) NetCarpet++;
+                            if (d2 <= (long)r * r) Check(on, "a cell inside the carpet radius is bare");
+                            if (d2 > (long)(r + 1) * (r + 1)) Check(!on, "carpet beyond r+1 at " + dx + "," + dz);
+                        }
+                    // strands
+                    float m1 = (float)(krng.NextDouble() * 3), m2 = m1 + (float)(krng.NextDouble() * 3);
+                    Check(RM_WebNetKernel.StrandBudget(w, h, 0f) == 0 && RM_WebNetKernel.StrandBudget(w, h, -1f) == 0, "strands at density 0");
+                    Check(RM_WebNetKernel.StrandBudget(w, h, m1) <= RM_WebNetKernel.StrandBudget(w, h, m2), "strand budget not monotone");
+                    var off = RM_WebNetKernel.StrandOffset(krng);
+                    Check(!(off.dx == 0 && off.dz == 0) && Math.Abs(off.dx) <= RM_WebNetKernel.StrandReach && Math.Abs(off.dz) <= RM_WebNetKernel.StrandReach, "strand offset " + off);
+                }
+                catch (Exception ex)
+                {
+                    fails.Add("webnet seed " + seed + ": " + ex.Message);
+                    if (fails.Count >= 5) break;
+                }
+            }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -695,6 +833,7 @@ namespace RimMandrake.Webwork.SelfTest
                 ("urraveth", () => Urraveth(N(5000), S(1))),
                 ("relay", () => Relay(N(4000), S(1))),
                 ("tables", () => Tables(Math.Max(1, N(100)), S(1))),
+                ("webnet", () => WebNet(N(3000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -716,6 +855,11 @@ namespace RimMandrake.Webwork.SelfTest
             {
                 Console.WriteLine($"relay reached: lays {Lays}, dying-nest checks {Dying}");
                 if (!oneSeed.HasValue && scale >= 1 && (Lays == 0 || Dying == 0)) { Console.WriteLine("FAIL relay fuzz never reached a path (blind)"); ok = false; }
+            }
+            if (only == null || only == "webnet")
+            {
+                Console.WriteLine($"webnet reached: sites {NetSites}, cable cells {NetCables}, carpet cells {NetCarpet}, cramped maps {NetCramped}");
+                if (!oneSeed.HasValue && scale >= 1 && (NetSites == 0 || NetCables == 0 || NetCarpet == 0 || NetCramped == 0)) { Console.WriteLine("FAIL webnet fuzz never reached a path (blind)"); ok = false; }
             }
             Console.WriteLine($"webwork fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;

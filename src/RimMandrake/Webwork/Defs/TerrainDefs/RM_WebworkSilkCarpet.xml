@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_TERRAIN_WEATHER_PASS_1. The fine silk carpet, ONLY at spider "sites" (owner, 2026-10-12: "the finer carpet where
+  the spiders have "sites" they use"). Laid by RM_GenStep_WebworkWeb within a 4-6 cell radius (plus a rough one-cell rim)
+  of each site: the nest (RM_GenStep_WebworkNest) and two or three further sites the owners use. Never painted biome-wide:
+  RM_Webwork's terrainsByFertility is untouched, so the floor everywhere else is the jungle's own mud and soil.
+
+  Fertility is kept (0.8): trees and undergrowth still grow through the carpet, so a site sits under the canopy, not in a
+  sunlit clearing the owners could not stand in. Natural, so it is never built or removed by the player as a floor;
+  takes no footprints. Burns back to soil (fire is what drives the owners off a site).
+
+  Art: stand-in = the vanilla carpet texture tinted dead-silk cream (Terrain/Surfaces/Carpet, which exists). RM_WebworkArt
+  swaps in the contract path Terrain/Surfaces/RM_Webwork_SilkCarpet the moment it is installed.
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_Webwork_SilkCarpet</defName>
+    <label>silk carpet</label>
+    <description>Layer on layer of fine silk, packed flat across the ground where the owners rest and feed. Soft underfoot, and every footfall on it carries.</description>
+    <texturePath>Terrain/Surfaces/Carpet</texturePath>
+    <color>(0.90, 0.87, 0.78)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>335</renderPrecedence>
+    <pathCost>0</pathCost>
+    <fertility>0.8</fertility>
+    <natural>true</natural>
+    <takeFootprints>false</takeFootprints>
+    <burnedDef>Soil</burnedDef>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Diggable</li>
+    </affordances>
+    <statBases>
+      <Beauty>1</Beauty>
+      <Cleanliness>0</Cleanliness>
+      <Flammability>0.4</Flammability>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

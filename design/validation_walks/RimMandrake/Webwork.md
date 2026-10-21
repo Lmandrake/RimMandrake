@@ -21,6 +21,9 @@ Sources: `src/RimMandrake/Webwork/About/About.xml` description, `Defs/**`, `Sour
 - Destroying a comp-carrying harvest thing may spawn an ollathrix. → UNCOVERED: statistical, and no shipped def carries the comp yet
 - Ollathrix take sun-scald in open sun and fire the loom spit. → UNCOVERED: needs a spawned ollathrix, light and ticks or a target
 - `generateOnWorldgen` decides whether the biome competes for tiles. → UNCOVERED: inert (no worldgen feature, frozen world)
+- A Webwork map is laid with thick web cables (slow to climb, never impassable, trees still grow through them), thinner sticky local webs near them, and silk carpet only within a few cells of the spider sites; the step lays nothing off-biome, and each of webNetworkEnabled / siteCarpetEnabled / localWebDensityMultiplier=0 turns its part off. → web_terrain_weather.web_network_laid
+- Webfall sits in RM_Webwork's weather table at webfallCommonality, can be made the current weather, never dims the sun (the light-moat holds), and is gone with webfallEnabled off. → web_terrain_weather.webfall_in_biome_and_occurs
+- The web and carpet appear on a really GENERATED Webwork map. → UNCOVERED: the bridge cannot generate an RM_Webwork map (biome on 0 tiles until the end paint); PlaceWeb runs on the current map instead
 
 ## the walk
 Run `src/RimMandrake/Webwork/validation.py` (static: `python3 validation.py`); live via the modcheck suite on a tier that loads `mandrake.rm.biomes` (or standalone with CreatureBehaviors).
