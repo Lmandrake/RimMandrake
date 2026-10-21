@@ -144,7 +144,7 @@ SETTINGS = {
     # the flexible hose's section (moved from Gimme Some Slack at the hose port, 2026-10-11); Scribed with a `hose_` key prefix.
     # String fields (defaultLook) are not in this bool/float table; hoseSettingsImported is an internal flag.
     "RimMandrake.FlowWorks.Hose.RM_HoseSettings": {
-        "enabled": True, "tankModesEnabled": True, "tankLitresPerCycle": 2000.0, "freeEndRolesEnabled": True, "dumpLitresPerCycle": 1000.0, "hoseHoldsLiquid": True, "hoseLitresPerCell": 5.0, "minBendRadius": 1.2, "plumpAmount": 1.0, "transitionTicks": 30.0, "releaseTicks": 500.0,
+        "enabled": True, "tankModesEnabled": True, "tankLitresPerCycle": 2000.0, "freeEndRolesEnabled": True, "dumpLitresPerCycle": 1000.0, "gravityLevellingEnabled": True, "levellingLitresPerCycle": 1000.0, "hoseHoldsLiquid": True, "hoseLitresPerCell": 5.0, "minBendRadius": 1.2, "plumpAmount": 1.0, "transitionTicks": 30.0, "releaseTicks": 500.0,
         "minPlumpDwell": 600.0, "thickness": 1.0, "maxLength": 40.0, "maxLengthDefaults": 1.0, "couplingSpacing": 8.0, "handlingTime": 1.0,
         "windCellsPerSecond": 3.0, "autoResumeDroppedHose": True, "slack": 1.0, "tintByContents": True, "fillWobble": True,
         "hoseSettingsImported": False,

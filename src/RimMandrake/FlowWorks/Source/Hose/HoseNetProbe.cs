@@ -96,7 +96,8 @@ namespace RimMandrake.FlowWorks.Hose
                     return "{\"success\":true,\"cmd\":" + S(cmd) + ",\"origin\":" + S(o.def.defName) + ",\"links\":" + RM_HoseLinks.For(map).All.Count +
                            ",\"tanks\":[" + string.Join(",", rows) + "],\"componentBuilds\":" + RM_LiquidNet.Components(map).Builds + ",\"revisionBumps\":" + RM_LiquidNet.Bumps + ",\"settles\":" + RM_LiquidNet.Settles + ",\"settledUnits\":" + RM_LiquidNet.SettledUnits +
                            ",\"dumpedUnits\":" + RM_LiquidNet.DumpedUnits + ",\"spilledUnits\":" + RM_LiquidSpill.SpilledUnits + ",\"hoseDrainedUnits\":" + RM_LiquidSpill.DrainedUnits +
-                           ",\"moves\":" + RM_LiquidTransfer.Moves + ",\"putBacks\":" + RM_LiquidTransfer.PutBacks + ",\"theftCaught\":" + RM_LiquidTheft.caught + ",\"theftGoodwill\":" + RM_LiquidTheft.goodwillCharged + ",\"tooLarge\":" + B(r.Truncated) + ",\"indexRebuilds\":" + RM_HoseLinks.Rebuilds + "}";
+                           ",\"moves\":" + RM_LiquidTransfer.Moves + ",\"putBacks\":" + RM_LiquidTransfer.PutBacks + ",\"theftCaught\":" + RM_LiquidTheft.caught + ",\"theftGoodwill\":" + RM_LiquidTheft.goodwillCharged + ",\"tooLarge\":" + B(r.Truncated) + ",\"indexRebuilds\":" + RM_HoseLinks.Rebuilds +
+                           ",\"levelCycles\":" + RM_Levelling.Cycles + ",\"levelLinks\":" + RM_Levelling.LastLinks + ",\"levelMoves\":" + RM_Levelling.Moves + ",\"levelMovedDl\":" + RM_Levelling.MovedDl + "}";
                 }
             }
             return null;

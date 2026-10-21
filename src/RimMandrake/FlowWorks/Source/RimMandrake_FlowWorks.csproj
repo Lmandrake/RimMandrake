@@ -247,6 +247,7 @@
     <Compile Include="LiquidTypes\Building_LiquidPump.cs" />
     <Compile Include="Machinery\RM_LiquidNetKernel.cs" />
     <Compile Include="Machinery\RM_LiquidNet.cs" />
+    <Compile Include="Machinery\RM_Levelling.cs" />
     <Compile Include="Machinery\RM_PumpPortMath.cs" />
     <Compile Include="Machinery\RM_LiquidTransfer.cs" />
     <Compile Include="Machinery\RM_LiquidSpill.cs" />

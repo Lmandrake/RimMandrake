@@ -865,6 +865,8 @@ namespace RimMandrake.FlowWorks.Hose
             string endLine = relay == null ? "\nFree end: " + this.FreeEnd().Describe() + "." : "";
             if (relay == null && RM_HoseSettings.freeEndRolesEnabled)
                 endLine += (heldUnits > 0 ? " Holding " + RM_Volume.FormatUnits(heldUnits) + " " + heldLiquid?.label + "." : "") + " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
+            // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (design P9): what passive levelling did at this end last cycle
+            endLine += Machinery.RM_Levelling.Readout(parent.Map, this);
             return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ")." + endLine + order;
         }
     }
