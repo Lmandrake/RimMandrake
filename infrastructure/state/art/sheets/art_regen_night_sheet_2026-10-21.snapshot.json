@@ -1,0 +1,1115 @@
+{
+ "biome": "SUBJECTS_art_regen_night",
+ "built": "2026-10-21T03:13:33-0700",
+ "census": "Transient/biome_ffar/art_regen_night.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 325 active",
+ "rows": {
+  "Force_KyberCrystal": {
+   "columns": {
+    "A": {
+     "single": "205fecf445825c4d305ddb90d97adf8855638ef0f8b589b60f6841d54ae0f661"
+    },
+    "B": {
+     "single": "99a528802c5e9a8cb143bd7bd123d92da287e5fb460978ed65ca038dabcf0ffb"
+    },
+    "C": {
+     "single": "d4630ea3d04c5053892964598788793044079e25af62bc26b9c83994e383e605"
+    },
+    "D": {
+     "single": "f6cc08f29a3a94e4bfe8451ad98b5e6b1ccd455c87e38e8b4e2fb61d13620ea9"
+    },
+    "E": {
+     "single": "29fe6cf87611b5fa4fe69c93f9f3ceee59c2f6002980ddba8d3495c41ee6b07d"
+    },
+    "F": {
+     "single": "54c57b2fe7ea837b652f9230eedbdd31c7c89315ca224366ebcdfb1932c87895"
+    },
+    "G": {
+     "single": "00811a0b18b6e8ff8b78eb7b9e45919aa44d5909f025dcfb1b3c6e6251f2880f"
+    },
+    "H": {
+     "single": "605f39b58453779975c0f45931766d2400a2015bbcba5f637d5f520acbecbc7f"
+    },
+    "I": {
+     "single": "e89142a8e59f96a0676735b166fac8b13dd99fc19e5be3332f363d7df7a6688b"
+    },
+    "J": {
+     "single": "69c8749b66dbd7b21643364f36440a463a2c715da5c39215cb6f3039a23a79a9"
+    },
+    "K": {
+     "single": "3862becf7df995a9c95e73f805696ac5333ca00e5f680771cd776213027b8fee"
+    },
+    "L": {
+     "single": "37d997d39fa16adde05fd31f26abba4fa8f4ba7ffc41db8cd46f4ddbd6e924ee"
+    },
+    "M": {
+     "single": "55ad324c1e9a8cdf9bcdf4d469b8a17852a2d8d36d7f2de735b4719673b2b5af"
+    },
+    "N": {
+     "single": "96c4779ac33cb78466df074f8ae697ff05846154a21b90d53d690897022c4db0"
+    },
+    "O": {
+     "single": "b9933a8c59092204d2c908cbd555aa8d8f53bb50081c10c1ca2e2c5d77c18456"
+    },
+    "P": {
+     "single": "1f37d6f7c2dcf6aedb2ddc5d9518f96711380ae1126edb0d81c71f8c18f6df50"
+    },
+    "Q": {
+     "single": "9b5720e34f286e54cc9fc703b281295da211f0d6099ac5f2030ca563e3bcdab2"
+    },
+    "R": {
+     "single": "f2bef535c36ccbdc75c9f1923bfeeb11634c31010ad56f66a189478f08c752ae"
+    },
+    "S": {
+     "single": "e5bbce2c9e0270e11ad4b01a020735fc779f4e2fa0cc15a0c2995258f1390074"
+    },
+    "T": {
+     "single": "f6a40658739246824fe10fd5ea6956dba7bae930256bacdc03b0a202a80db7ff"
+    },
+    "U": {
+     "single": "e66430c2ba1de6a56f389558c81efd678eb043d55d50db50789f3035afb724ed"
+    },
+    "V": {
+     "single": "b108734ef13a36dddd817180e7e9df78578249113fb0b3210ddf7cb4b1bdcfde"
+    },
+    "W": {
+     "single": "7879e23b42bc2db800a8bfb106e5d0dbcf14e5a199f6bba73a1fd8b3698b8b2c"
+    },
+    "X": {
+     "single": "704dea9cd6106751978a4c733a8a61dea1e2f354fd3187c3858c0cccf5ccdd0f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/Crystal/Synthetic",
+    "B": "Things/Item/Resource/Crystal/Synthetic",
+    "C": "Things/Item/Resource/Crystal/Synthetic",
+    "D": "Things/Item/Resource/Crystal/Synthetic",
+    "E": "Things/Item/Resource/Crystal/Synthetic",
+    "F": "Things/Item/Resource/Crystal/Synthetic",
+    "G": "Things/Item/Resource/Crystal/Synthetic",
+    "H": "Things/Item/Resource/Crystal/Synthetic",
+    "I": "Things/Item/Resource/Crystal/Synthetic",
+    "J": "Things/Item/Resource/Crystal/Synthetic",
+    "K": "Things/Item/Resource/Crystal/Synthetic",
+    "L": "Things/Item/Resource/Crystal/Synthetic",
+    "M": "Things/Item/Resource/Crystal/Synthetic",
+    "N": "Things/Item/Resource/Crystal/Synthetic",
+    "O": "Things/Item/Resource/Crystal/Synthetic",
+    "P": "Things/Item/Resource/Crystal/Synthetic",
+    "Q": "Things/Item/Resource/Crystal/Synthetic",
+    "R": "Things/Item/Resource/Crystal/Synthetic",
+    "S": "Things/Item/Resource/Crystal/Synthetic",
+    "T": "Things/Item/Resource/Crystal/Synthetic",
+    "U": "Things/Item/Resource/Crystal/Synthetic",
+    "V": "Things/Item/Resource/Crystal/Synthetic",
+    "W": "Things/Item/Resource/Crystal/Synthetic",
+    "X": "Things/Item/Resource/Crystal/Synthetic"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant crystal_1 (1 of 24) \u2014 Armoury",
+    "B": "IN GAME \u2014 random variant crystal_10 (2 of 24) \u2014 Armoury",
+    "C": "IN GAME \u2014 random variant crystal_11 (3 of 24) \u2014 Armoury",
+    "D": "IN GAME \u2014 random variant crystal_12 (4 of 24) \u2014 Armoury",
+    "E": "IN GAME \u2014 random variant crystal_13 (5 of 24) \u2014 Armoury",
+    "F": "IN GAME \u2014 random variant crystal_14 (6 of 24) \u2014 Armoury",
+    "G": "IN GAME \u2014 random variant crystal_15 (7 of 24) \u2014 Armoury",
+    "H": "IN GAME \u2014 random variant crystal_16 (8 of 24) \u2014 Armoury",
+    "I": "IN GAME \u2014 random variant crystal_17 (9 of 24) \u2014 Armoury",
+    "J": "IN GAME \u2014 random variant crystal_18 (10 of 24) \u2014 Armoury",
+    "K": "IN GAME \u2014 random variant crystal_2 (11 of 24) \u2014 Armoury",
+    "L": "IN GAME \u2014 random variant crystal_3 (12 of 24) \u2014 Armoury",
+    "M": "IN GAME \u2014 random variant crystal_4 (13 of 24) \u2014 Armoury",
+    "N": "IN GAME \u2014 random variant crystal_5 (14 of 24) \u2014 Armoury",
+    "O": "IN GAME \u2014 random variant crystal_6 (15 of 24) \u2014 Armoury",
+    "P": "IN GAME \u2014 random variant crystal_7 (16 of 24) \u2014 Armoury",
+    "Q": "IN GAME \u2014 random variant crystal_8 (17 of 24) \u2014 Armoury",
+    "R": "IN GAME \u2014 random variant crystal_9 (18 of 24) \u2014 Armoury",
+    "S": "IN GAME \u2014 random variant crystal_gem (19 of 24) \u2014 Armoury",
+    "T": "IN GAME \u2014 random variant crystal_heart (20 of 24) \u2014 Armoury",
+    "U": "IN GAME \u2014 random variant crystal_mantle (21 of 24) \u2014 Armoury",
+    "V": "IN GAME \u2014 random variant crystal_pearl (22 of 24) \u2014 Armoury",
+    "W": "IN GAME \u2014 random variant crystal_styg (23 of 24) \u2014 Armoury",
+    "X": "IN GAME \u2014 random variant crystal_wateringcan (24 of 24) \u2014 Armoury"
+   },
+   "pools": [
+    "Things/Item/Resource/Crystal/Synthetic"
+   ],
+   "res": "Things/Item/Resource/Crystal/Synthetic",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X"
+   ],
+   "shownBase": [],
+   "subject_key": "force_kybercrystal"
+  },
+  "RM_Aaklac": {
+   "columns": {
+    "A": {
+     "single": "9dc32e5f9760eb161b7b13491a2267951c4da4756d2072ab693cfa24796b6243"
+    },
+    "B": {
+     "single": "0349bd90d9c240c2793c66611c305832aa3e583f537ce08324b08acd477b6b00"
+    },
+    "C": {
+     "single": "7fed6adb710fb45732e7441413f1bb50a6cac9d00d7e9cfa1c6ff1b0db02575a"
+    },
+    "D": {
+     "single": "74312c18ca9279412ba612215ae34f0240ee433e16e78116f04f3bbab63eda1e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_Aaklac",
+    "B": "Things/Plants/AB_Aaklac",
+    "C": "Things/Plants/AB_Aaklac",
+    "D": "Things/Plants/AB_Aaklac"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_AaklacA (1 of 3) \u2014 Webwork",
+    "B": "IN GAME \u2014 random variant AB_AaklacB (2 of 3) \u2014 Webwork",
+    "C": "IN GAME \u2014 random variant AB_AaklacC (3 of 3) \u2014 Webwork",
+    "D": "shipped, shadowed \u2014 random variant AB_AaklacA (1 of 1) \u2014 UtinniPatches"
+   },
+   "pools": [
+    "Things/Plants/AB_Aaklac"
+   ],
+   "res": "Things/Plants/AB_Aaklac",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "aaklac"
+  },
+  "RM_AlienGrass": {
+   "columns": {
+    "A": {
+     "single": "fbafeb39b6ccc3f6130964ed603aa09b0f3ea2a572131e08b28c9dce4b722b22"
+    },
+    "B": {
+     "single": "76bcd1742dcb18e9b8fed38678e4d95fb610d10aefbe95e4de66f717e5892afe"
+    },
+    "C": {
+     "single": "60062da74515a612b433456e7b6b6bf51c457e4fb31ce87b727586c19a5953fe"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/GU_AlienGrass",
+    "B": "Things/Plants/GU_AlienGrass",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant GU_AlienGrassA (1 of 1) \u2014 Contagion",
+    "B": "shipped, shadowed \u2014 random variant GU_AlienGrassA (1 of 1) \u2014 UtinniPatches",
+    "C": "render legacy_5c328a8d_ab_aliengrass_v1"
+   },
+   "pools": [
+    "Things/Plants/GU_AlienGrass"
+   ],
+   "res": "Things/Plants/GU_AlienGrass",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "aliengrass"
+  },
+  "RM_AlienTree": {
+   "columns": {
+    "A": {
+     "single": "c9143e725051959bbf436dc89b2d8a4215422b1912037159fa2ed74b33075087"
+    },
+    "B": {
+     "single": "70cadbcf04a3afba64146e5c19e4c7f603158887ca4e75eeed915707df303c02"
+    },
+    "C": {
+     "single": "287aa0c296215f3cdfd68e7483ab5dbaa964b2cb90cc713fc2c5f3dfbe8dbfa7"
+    },
+    "D": {
+     "single": "a93e6f6ab57ed8da6b886427359950b474ae7d70056c9d8f43452459222540fb"
+    },
+    "E": {
+     "single": "3d9f1bfd4434dd2e903a677dc112ec9f146261d87c7762d5d646c9239483560b"
+    },
+    "F": {
+     "single": "e2d34c8b0a8b5563b369fd3a97457257225a498054576847453e79f2f494390b"
+    },
+    "G": {
+     "single": "d58b8a54bb17f77810bf6ce0dab9a895752f87be81fad19c975ce7e30a909d06"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_OcularTree",
+    "B": "Things/Plants/AB_OcularTree",
+    "C": "Things/Plants/AB_OcularTree",
+    "D": "Things/Plants/AB_OcularTree",
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_OcularTreeA (1 of 3) \u2014 Contagion",
+    "B": "IN GAME \u2014 random variant AB_OcularTreeB (2 of 3) \u2014 Contagion",
+    "C": "IN GAME \u2014 random variant AB_OcularTreeC (3 of 3) \u2014 Contagion",
+    "D": "shipped, shadowed \u2014 random variant AB_OcularTreeA (1 of 1) \u2014 UtinniPatches",
+    "E": "render dregen_RM_AlienTree_Polluted_ABPollutedAlienTree_v1",
+    "F": "render legacy_1ad92027_ab_alientree_v1",
+    "G": "render alientree_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_OcularTree"
+   ],
+   "res": "Things/Plants/AB_OcularTree",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "alientree"
+  },
+  "RM_ArbuscularMycorrhiza": {
+   "columns": {
+    "A": {
+     "single": "9fd5e040481b955152d5cff26e80c5275b104c0d5433016273e9c7d099185caf"
+    },
+    "B": {
+     "single": "ff638bf35f30dd9f8b6135bd2b602c0c8c009e7173ef7eed74d8dc7e9895eddd"
+    },
+    "C": {
+     "single": "26f5253c27051bac99e8d3c31ad8015290fb751bf70899683c11c82a4b6a2772"
+    },
+    "D": {
+     "single": "58275beaa21c92733dc56a9e1c64798119c868ff532d02bc83a11f9a8e9f71b6"
+    },
+    "E": {
+     "single": "91e165acfe5e1f7815edaf94270ad574028a5fba9256bb5d3105015f1b3dc934"
+    },
+    "F": {
+     "single": "dcd2dcbfce7e121a4e685d2ff294a8f5d27d3a5cdfc0ea3b7795fea885b44ac7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_ArbuscularMycorrhiza",
+    "B": "Things/Plants/AB_ArbuscularMycorrhiza",
+    "C": "Things/Plants/AB_ArbuscularMycorrhiza",
+    "D": "Things/Plants/AB_ArbuscularMycorrhiza",
+    "E": "Things/Plants/AB_ArbuscularMycorrhiza",
+    "F": "Things/Plants/AB_ArbuscularMycorrhiza"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_ArbuscularMycorrhizaA (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AB_ArbuscularMycorrhizaB (2 of 4) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AB_ArbuscularMycorrhizaC (3 of 4) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant AB_ArbuscularMycorrhizaD (4 of 4) \u2014 TheRot",
+    "E": "shipped, shadowed \u2014 random variant AB_ArbuscularMycorrhizaA (1 of 1) \u2014 UtinniPatches",
+    "F": "render rot_arbuscularmycorrhiza_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_ArbuscularMycorrhiza"
+   ],
+   "res": "Things/Plants/AB_ArbuscularMycorrhiza",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "arbuscularmycorrhiza"
+  },
+  "RM_CrystalHorn": {
+   "columns": {
+    "A": {
+     "single": "f97707a917007c818f930454fa01a08b6445b720fb59293eb3880cf47e1cefba"
+    },
+    "B": {
+     "single": "3d977004ed7b86923767e16449cd85c735f77b3dc928e16d12aac12295474246"
+    },
+    "C": {
+     "single": "59c1053d6f12ef5a9e08e5786d401852b6dee9ff6a6bca39c800add345530aa5"
+    },
+    "D": {
+     "single": "48e60a5026e36efdfeb8b2612a4bf09224a73ec8656465edbb7378f143ed239d"
+    },
+    "E": {
+     "single": "8d73505e5d2f433d868bacb87a3cba1844ab47e8e4435533349d5c8c87c4fd38"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_CrystalHorn",
+    "B": "Things/Plants/AB_CrystalHorn",
+    "C": "Things/Plants/AB_CrystalHorn",
+    "D": "Things/Plants/AB_CrystalHorn",
+    "E": "Things/Plants/AB_CrystalHorn"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_CrystalHornA (1 of 3) \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant AB_CrystalHornB (2 of 3) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant AB_CrystalHornC (3 of 3) \u2014 TerminalBiomes",
+    "D": "shipped, shadowed \u2014 random variant AB_CrystalHornA (1 of 1) \u2014 UtinniPatches",
+    "E": "render legacy_855da17f_ab_crystalhorn_v1"
+   },
+   "pools": [
+    "Things/Plants/AB_CrystalHorn"
+   ],
+   "res": "Things/Plants/AB_CrystalHorn",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "crystalhorn"
+  },
+  "RM_DribblingCap": {
+   "columns": {
+    "A": {
+     "single": "c8ea9993f5a3954ab3ceac3764631799d7924cd363221d11f112b52e195df4a9"
+    },
+    "B": {
+     "single": "a1cc2985b9c3e526b4a648fcd895208ea421ad6c02c6e8063bd468517dbb10bd"
+    },
+    "C": {
+     "single": "723aa5da929a06e6e67a5f4640ec3c738aff2fffc1260b6138fc2503e2f67a2f"
+    },
+    "D": {
+     "single": "eaaa4d3e13a7c0f4be0d134c89fac1aa522b4264637e71b868b9cf6fbd87317b"
+    },
+    "E": {
+     "single": "df90dbdd3b5717d583fd8e67d2a6367b2943c2e23534926a36ba92fcc7583cac"
+    },
+    "F": {
+     "single": "89ed71432ca3caa6f5f13cbde05281d31ea575a13fb4933086ecaa1442ec7912"
+    },
+    "G": {
+     "single": "18378be6d43e8091775a68713cf39822a263b590b52b98ba0d29d321d887ba8c"
+    },
+    "H": {
+     "single": "cd270c5f37c9f5f0b27af0eadabbbd9aef7aed1ae967f2192fe7fdcd34ad840a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_DribblingCap",
+    "B": "Things/Plants/AB_DribblingCap",
+    "C": "Things/Plants/AB_DribblingCap",
+    "D": "Things/Plants/AB_DribblingCap",
+    "E": "Things/Plants/AB_DribblingCap",
+    "F": "Things/Plants/AB_DribblingCap",
+    "G": "Things/Plants/AB_DribblingCap",
+    "H": "Things/Plants/AB_DribblingCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_DribblingCapA (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AB_DribblingCapB (2 of 4) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AB_DribblingCapC (3 of 4) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant AB_DribblingCapD (4 of 4) \u2014 TheRot",
+    "E": "shipped, shadowed \u2014 random variant AB_DribblingCapA (1 of 1) \u2014 UtinniPatches",
+    "F": "render rotvar_ab_dribblingcap_a_v1",
+    "G": "render rotvar_ab_dribblingcap_b_v1",
+    "H": "render rot_dribblingcap_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_DribblingCap"
+   ],
+   "res": "Things/Plants/AB_DribblingCap",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "dribblingcap"
+  },
+  "RM_FrostLeaf": {
+   "columns": {
+    "A": {
+     "single": "eebbb18e4f411d0af66bbaacbe1834a2b28e26293dbeffb644693dcdd010ce40"
+    },
+    "B": {
+     "single": "94c68215d5be59b7b1a6212fd71f9265e3c793ab03e0aea10403f8fc4e39e4d7"
+    },
+    "C": {
+     "single": "cd197c120116f28ae6e7244abf313947afb32617982663799188c99a062d7841"
+    },
+    "D": {
+     "single": "df3351cd6691fe3d4599abc8778778bc6c116c32fbaedb861590d8364aea6d74"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_FrostLeaf",
+    "B": "Things/Plants/AB_FrostLeaf",
+    "C": "Things/Plants/AB_FrostLeaf",
+    "D": "Things/Plants/AB_FrostLeaf"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_FrostLeafA (1 of 3) \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant AB_FrostLeafB (2 of 3) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant AB_FrostLeafC (3 of 3) \u2014 TerminalBiomes",
+    "D": "render legacy_252d1b0c_ab_frostleaf_v1"
+   },
+   "pools": [
+    "Things/Plants/AB_FrostLeaf"
+   ],
+   "res": "Things/Plants/AB_FrostLeaf",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "frostleaf"
+  },
+  "RM_GiantAgarilux": {
+   "columns": {
+    "A": {
+     "single": "865acc39ad31e0376214641b585ed7269586663e7f08f407a242d3b7a2a18bc1"
+    },
+    "B": {
+     "single": "3f5f8ecdf02def8952782c0f5ef97f93696a5ea97a51cca1c2de2978b2abae64"
+    },
+    "C": {
+     "single": "7fc6feb0154afb14ac9f49dbf1d45f2c73aaa02a1e94cfdf49de975ba1cccec1"
+    },
+    "D": {
+     "single": "93903a9ba070f46990f0ef7d783a35cee4c22ab9c2bf038c76e825a7940c1a41"
+    },
+    "E": {
+     "single": "f316cfdc76321d184a7ffc5fdde04cf1cfdb7591f7819e9fbee554244ff50441"
+    },
+    "F": {
+     "single": "489c2e116801adcce94a9fbda481f2ebb43fb505e711a40a96bfb46d49c6c3b6"
+    },
+    "G": {
+     "single": "c8d84de13250c8ce3e94451554fcfbe9c5d27fc98e671b8746b14a18c274a216"
+    },
+    "H": {
+     "single": "38612d849a7ac6f8a15ddb882140c5623895ae463ba5414e9fc6c3e2e7e8dc0c"
+    },
+    "I": {
+     "single": "faa6d7e31322f0351f7e4782271edcab79dd5d175f24a9ca5f00700b537a39d0"
+    },
+    "J": {
+     "single": "36b0e1fb28b9ba8eb86c21c8d53313a01380a9883b6deff57238ef5eafde0a80"
+    },
+    "K": {
+     "single": "6a392571840af974a39d220490e80769f63598fbf42949d16b776720a822e8fc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_GiantAgarilux",
+    "B": "Things/Plants/AB_GiantAgarilux",
+    "C": "Things/Plants/AB_GiantAgarilux",
+    "D": "Things/Plants/AB_GiantAgarilux",
+    "E": "Things/Plants/AB_GiantAgarilux",
+    "F": "Things/Plants/AB_GiantAgarilux",
+    "G": "Things/Plants/AB_GiantAgarilux",
+    "H": "Things/Plants/AB_GiantAgarilux",
+    "I": "Things/Plants/AB_GiantAgarilux",
+    "J": "Things/Plants/AB_GiantAgarilux",
+    "K": "Things/Plants/AB_GiantAgarilux"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_GiantAgariluxA (1 of 6) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AB_GiantAgariluxB (2 of 6) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AB_GiantAgariluxC (3 of 6) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant AB_GiantAgariluxD (4 of 6) \u2014 TheRot",
+    "E": "IN GAME \u2014 random variant AB_GiantAgariluxE (5 of 6) \u2014 TheRot",
+    "F": "IN GAME \u2014 random variant AB_GiantAgariluxF (6 of 6) \u2014 TheRot",
+    "G": "shipped, shadowed \u2014 random variant AB_GiantAgariluxA (1 of 1) \u2014 UtinniPatches",
+    "H": "render rotvar_ab_giantagarilux_a_v1",
+    "I": "render rotvar_ab_giantagarilux_b_v1 \u2014 grader flagged (advisory)",
+    "J": "render rotvar_ab_giantagarilux_b_v2",
+    "K": "render rot_giantagarilux_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_GiantAgarilux"
+   ],
+   "res": "Things/Plants/AB_GiantAgarilux",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
+   ],
+   "shownBase": [],
+   "subject_key": "giantagarilux"
+  },
+  "RM_HalfAlienTree": {
+   "columns": {
+    "A": {
+     "single": "d8403fb9e4294cdf3ac02cb7a1943d4f49e5483ede499ba5df676556e014c6d8"
+    },
+    "B": {
+     "single": "437741f63865ce4e2c87429f5a1c1d199cc7910e387c880ae62654a672968c30"
+    },
+    "C": {
+     "single": "5779966f32ad841197b87a3a0b67fd017487152ea9a28441acfb75b5a810da94"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_HalfAlienTree",
+    "B": "Things/Plants/AB_HalfAlienTree",
+    "C": "Things/Plants/AB_HalfAlienTree"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_HalfAlienTreeA (1 of 2) \u2014 Contagion",
+    "B": "IN GAME \u2014 random variant AB_HalfAlienTreeB (2 of 2) \u2014 Contagion",
+    "C": "render legacy_49ade7bd_ab_halfalientree_v1"
+   },
+   "pools": [
+    "Things/Plants/AB_HalfAlienTree"
+   ],
+   "res": "Things/Plants/AB_HalfAlienTree",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "halfalientree"
+  },
+  "RM_LilacBeacon": {
+   "columns": {
+    "A": {
+     "single": "fac1237e6a7046368c547b18d453bf3064e7e4be5297ac1a01c613058602b58b"
+    },
+    "B": {
+     "single": "4fcd82077ed0c3f73b02ba5f4a345bda3ec84341de2e10b553658b997ce7bc72"
+    },
+    "C": {
+     "single": "e87dd3bfe9c0c67e4283c5a030d62ba0da4a8a4165c2128b5f1648b3b9234930"
+    },
+    "D": {
+     "single": "6f0033eb37e49046c0e5542a506445b18b6b8765874a88b135169dcb74911205"
+    },
+    "E": {
+     "single": "05b8e73fe481e9851897647040168932d87515ca04bea59f2b678607cc620e08"
+    },
+    "F": {
+     "single": "37606983c611688874f37f10f06e21f54ae84a00c4d729acd0c6ecf6bc5fb6ce"
+    },
+    "G": {
+     "single": "d0c0f977d67534c1e192a19d614db98ae53eaa30839434de87a95381d70d5e2f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_LilacBeacon",
+    "B": "Things/Plants/AB_LilacBeacon",
+    "C": "Things/Plants/AB_LilacBeacon",
+    "D": "Things/Plants/AB_LilacBeacon",
+    "E": "Things/Plants/AB_LilacBeacon",
+    "F": "Things/Plants/AB_LilacBeacon",
+    "G": "Things/Plants/AB_LilacBeacon"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_LilacBeaconA (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AB_LilacBeaconB (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AB_LilacBeaconC (3 of 3) \u2014 TheRot",
+    "D": "shipped, shadowed \u2014 random variant AB_LilacBeaconA (1 of 1) \u2014 UtinniPatches",
+    "E": "render rotvar_ab_lilacbeacon_a_v1",
+    "F": "render rotvar_ab_lilacbeacon_b_v1",
+    "G": "render rot_lilacbeacon_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_LilacBeacon"
+   ],
+   "res": "Things/Plants/AB_LilacBeacon",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "lilacbeacon"
+  },
+  "RM_MangrovePalm": {
+   "columns": {
+    "A": {
+     "single": "ac8703df9d9140b3e3d42a01799906bdf62b43f3a11d0ecc70217c8acc677b01"
+    },
+    "B": {
+     "single": "f7ee5d8b365c085c5adc0ef65a9bc0cace81ab480a4ff626999763488e2770ea"
+    },
+    "C": {
+     "single": "30ca2a6f27399984924bbbc8318adf39b036b7f2aeae1634cf893a8b063f6f8f"
+    },
+    "D": {
+     "single": "f3adaebdf3832ed31da13263bc813c3557b684ee375c41ffde5ced88e7d9d159"
+    },
+    "E": {
+     "single": "879bd3f2715cf8a13b9b4a890cb46369bab9587bc0db5ff0f6d6d2da9ba7945e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_MangrovePalm",
+    "B": "Things/Plants/AB_MangrovePalm",
+    "C": "Things/Plants/AB_MangrovePalm",
+    "D": "StandIn/Things/Plants/AB_MangrovePalmLeafless",
+    "E": "StandIn/Things/Plants/AB_MangrovePalmLeafless"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_MangrovePalmA (1 of 2) \u2014 Miasma",
+    "B": "IN GAME \u2014 random variant AB_MangrovePalmB (2 of 2) \u2014 Miasma",
+    "C": "render legacy_09d525ff_ab_mangrovepalm_v1",
+    "D": "IN GAME \u2014 random variant AB_MangrovePalmA (1 of 2) \u2014 Miasma",
+    "E": "IN GAME \u2014 random variant AB_MangrovePalmB (2 of 2) \u2014 Miasma"
+   },
+   "pools": [
+    "StandIn/Things/Plants/AB_MangrovePalmLeafless",
+    "Things/Plants/AB_MangrovePalm"
+   ],
+   "res": "Things/Plants/AB_MangrovePalm",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "mangrovepalm"
+  },
+  "RM_MangroveTree": {
+   "columns": {
+    "A": {
+     "single": "eab5a128170c856f065eabfb21f349e0e2a346dbfd51f1db1ce7771a86d54936"
+    },
+    "B": {
+     "single": "f6b89ecb3a2c1b20ac0c032a39ce4185ba42cc7c388f68c323b589995d01ab80"
+    },
+    "C": {
+     "single": "3518850397a75ff33c25bdcacfd961e1b4d0134f1dfc7415a69d15ace362d3e8"
+    },
+    "D": {
+     "single": "76c18b147c268db6a6e894844ce05bc97c3c5eea10e77816e2ab488dd6e87345"
+    },
+    "E": {
+     "single": "0b5cf76c3bf7c817d0c03462d36c6273c3a3f3db1c2a266aded7e2821d70ce8b"
+    },
+    "F": {
+     "single": "17a3c17bac0caaee4b55ac5cd9dbd706f82ca7db02cb995c1a30e3da72c3b12c"
+    },
+    "G": {
+     "single": "ccb3883fde2dc2ba909b9c4592efdff88eaca68cd08767f3bf37f9e5d52695f1"
+    },
+    "H": {
+     "single": "956413a6e968758f9b5593a3e2a9167302ae2bbfa3dbb894c812089ae25941d2"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_MangroveTree",
+    "B": "Things/Plants/AB_MangroveTree",
+    "C": "Things/Plants/AB_MangroveTree",
+    "D": "Things/Plants/AB_MangroveTree",
+    "E": "Things/Plants/AB_MangroveTree",
+    "F": "StandIn/Things/Plants/AB_MangroveTreeLeafless",
+    "G": "StandIn/Things/Plants/AB_MangroveTreeLeafless",
+    "H": "StandIn/Things/Plants/AB_MangroveTreeLeafless"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_MangroveTreeA (1 of 3) \u2014 Miasma",
+    "B": "IN GAME \u2014 random variant AB_MangroveTreeB (2 of 3) \u2014 Miasma",
+    "C": "IN GAME \u2014 random variant AB_MangroveTreeC (3 of 3) \u2014 Miasma",
+    "D": "shipped, shadowed \u2014 random variant AB_MangroveTreeA (1 of 1) \u2014 UtinniPatches",
+    "E": "render legacy_f357f477_ab_mangrovetree_v1",
+    "F": "IN GAME \u2014 random variant AB_MangroveTreeA (1 of 3) \u2014 Miasma",
+    "G": "IN GAME \u2014 random variant AB_MangroveTreeB (2 of 3) \u2014 Miasma",
+    "H": "IN GAME \u2014 random variant AB_MangroveTreeC (3 of 3) \u2014 Miasma"
+   },
+   "pools": [
+    "StandIn/Things/Plants/AB_MangroveTreeLeafless",
+    "Things/Plants/AB_MangroveTree"
+   ],
+   "res": "Things/Plants/AB_MangroveTree",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "mangrovetree"
+  },
+  "RM_ParasiticMangrove": {
+   "columns": {
+    "A": {
+     "single": "cf07cdb7856d36e3324d7cbfa31a4f5127ca7f2ff2c5f11f7ebb9edea9fe03ac"
+    },
+    "B": {
+     "single": "85fe74b105d72ccc0420896dcd26132013c91dffc895bd0f809f8ae8689ce658"
+    },
+    "C": {
+     "single": "121818f77756ea1faf5e24b68a05c41ca52f49a67809c51e4f327c9bd92a64fe"
+    },
+    "D": {
+     "single": "aa79d23511a78fb71dbb73e327a95d0bf4c7b4c615499865fa42d19156d010cf"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_ParasiticMangrove",
+    "B": "Things/Plants/AB_ParasiticMangrove",
+    "C": "Things/Plants/AB_ParasiticMangrove",
+    "D": "Things/Plants/AB_ParasiticMangrove"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_ParasiticMangroveA (1 of 3) \u2014 Miasma",
+    "B": "IN GAME \u2014 random variant AB_ParasiticMangroveB (2 of 3) \u2014 Miasma",
+    "C": "IN GAME \u2014 random variant AB_ParasiticMangroveC (3 of 3) \u2014 Miasma",
+    "D": "render legacy_600fea9d_ab_parasiticmangrove_v1"
+   },
+   "pools": [
+    "Things/Plants/AB_ParasiticMangrove"
+   ],
+   "res": "Things/Plants/AB_ParasiticMangrove",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "parasiticmangrove"
+  },
+  "RM_Slimecasia": {
+   "columns": {
+    "A": {
+     "single": "3923af77dab03b42c528ca8d610b954e7f57e04693bef06515475fbecc66fa35"
+    },
+    "B": {
+     "single": "b3c6d1ff4aaafb93fe05a00c857c97e1c0fb22d3cb4cb787eff07ea12d842e60"
+    },
+    "C": {
+     "single": "ffb692324378a0bebaaaa8d2ed0832dbb4643e35a2cf744af6e17b4b74a0ce83"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_Slimecasia",
+    "B": "Things/Plants/AB_Slimecasia",
+    "C": "Things/Plants/AB_Slimecasia"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_SlimecasiaA (1 of 2) \u2014 GelatinousSlime",
+    "B": "IN GAME \u2014 random variant AB_SlimecasiaB (2 of 2) \u2014 GelatinousSlime",
+    "C": "render legacy_0eb66037_ab_slimecasia_v1"
+   },
+   "pools": [
+    "Things/Plants/AB_Slimecasia"
+   ],
+   "res": "Things/Plants/AB_Slimecasia",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "slimecasia"
+  },
+  "RM_SlimyFern": {
+   "columns": {
+    "A": {
+     "single": "c118834bdb5a06f6191e67390f85f84c7434bd20f7fa02321ae27725ce0da981"
+    },
+    "B": {
+     "single": "443cd8e5785bd003845c72e98bb572d42ec13dca3447d267f1560634edcbdc2c"
+    },
+    "C": {
+     "single": "7c4d8c18e06abb7f401527f1658d330039a956a1ecf702a40e4fd9c32ab3b3cb"
+    },
+    "D": {
+     "single": "49b0e11a49f5f5fbf479d2cbc800d0174702c35fb0609cb69e421a8b6b8dfccf"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_SlimyFern",
+    "B": "Things/Plants/AB_SlimyFern",
+    "C": "Things/Plants/AB_SlimyFern",
+    "D": "Things/Plants/AB_SlimyFern"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_SlimyFernA (1 of 3) \u2014 GelatinousSlime",
+    "B": "IN GAME \u2014 random variant AB_SlimyFernB (2 of 3) \u2014 GelatinousSlime",
+    "C": "IN GAME \u2014 random variant AB_SlimyFernC (3 of 3) \u2014 GelatinousSlime",
+    "D": "render legacy_2ec8696f_ab_slimyfern_v1"
+   },
+   "pools": [
+    "Things/Plants/AB_SlimyFern"
+   ],
+   "res": "Things/Plants/AB_SlimyFern",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "slimyfern"
+  },
+  "RM_SlimyPholiota": {
+   "columns": {
+    "A": {
+     "single": "284a05d102ead19ce36bfd60814fa8af674eeacccbe737e6aa02884451442e7d"
+    },
+    "B": {
+     "single": "68a0d9b951e23c13c3549fad510e6d6562ebad8e9a278d76272ce8d913422ae9"
+    },
+    "C": {
+     "single": "bebc09fd621e941e944e19bbd30afd9f6b1c0a45141f9c71539edbc8425cc65b"
+    },
+    "D": {
+     "single": "5abcb8fc4914806a12b0e1f30aae9b1d128f32710403aacc8c9a79c308e3d64c"
+    },
+    "E": {
+     "single": "130633d36a4db6dfdb28d1fc3889b9f24503c6e0798298c3b57af2ac706bcef1"
+    },
+    "F": {
+     "single": "b9cb4014d23ccfcbd739aacd475690b1def96864b8134a90db5d661397cadc85"
+    },
+    "G": {
+     "single": "25e8c5b5a5c024b466559689633c5d13b31f1c334f0c89546b440bffb1e71260"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_SlimyPholiota",
+    "B": "Things/Plants/AB_SlimyPholiota",
+    "C": "Things/Plants/AB_SlimyPholiota",
+    "D": "Things/Plants/AB_SlimyPholiota",
+    "E": "Things/Plants/AB_SlimyPholiota",
+    "F": "Things/Plants/AB_SlimyPholiota",
+    "G": "Things/Plants/AB_SlimyPholiota"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_SlimyPholiotaA (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AB_SlimyPholiotaA copy (2 of 4) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant AB_SlimyPholiotaB (3 of 4) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant AB_SlimyPholiotaC (4 of 4) \u2014 TheRot",
+    "E": "render rotvar_ab_slimypholiota_a_v1",
+    "F": "render rotvar_ab_slimypholiota_b_v1",
+    "G": "render rot_slimypholiota_v2"
+   },
+   "pools": [
+    "Things/Plants/AB_SlimyPholiota"
+   ],
+   "res": "Things/Plants/AB_SlimyPholiota",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "slimypholiota"
+  },
+  "RM_SlimyTree": {
+   "columns": {
+    "A": {
+     "single": "eebc23287de3885457eeec0d3a72dd5757ed2f83ec7a4e1e6538e1f5651fbfb9"
+    },
+    "B": {
+     "single": "5d9727842440b6f17f8596eb31d852a54d33932d17bcef855c079eb8412b8904"
+    },
+    "C": {
+     "single": "3603902eb0cb307d670aa8cdaf554acedebfb73a9fe7811f6dae90c8b6757a40"
+    },
+    "D": {
+     "single": "fe85569b51ee9d65e5b7e4284629d4d84a7436508ff1ace7cc0d57e65c9a10cd"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_SlimyTree",
+    "B": "Things/Plants/AB_SlimyTree",
+    "C": "Things/Plants/AB_SlimyTree",
+    "D": "Things/Plants/AB_SlimyTree"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_SlimyTreeA (1 of 3) \u2014 GelatinousSlime",
+    "B": "IN GAME \u2014 random variant AB_SlimyTreeB (2 of 3) \u2014 GelatinousSlime",
+    "C": "IN GAME \u2014 random variant AB_SlimyTreeC (3 of 3) \u2014 GelatinousSlime",
+    "D": "render legacy_64e19b48_ab_slimytree_v1"
+   },
+   "pools": [
+    "Things/Plants/AB_SlimyTree"
+   ],
+   "res": "Things/Plants/AB_SlimyTree",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "slimytree"
+  },
+  "RM_StruckGlassRing": {
+   "columns": {
+    "A": {
+     "single": "77cd3a3c1fdfcf4e89392dc266b16f20883dffebb7f6285bfa9637cec59a1a98"
+    },
+    "B": {
+     "single": "4b94b985595ad24b5398231be869325fb910436c616c0bfad34faad1a51feb5b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/Misc/RM_StruckGlassRing/RM_StruckGlassRing",
+    "B": "Things/Building/Misc/RM_StruckGlassRing/RM_StruckGlassRing"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render RM_StruckGlassRing"
+   },
+   "pools": [],
+   "res": "Things/Building/Misc/RM_StruckGlassRing/RM_StruckGlassRing",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "struckglassring"
+  },
+  "RM_TallSlimyGrass": {
+   "columns": {
+    "A": {
+     "single": "5f7040cda35d8829313ebed87b6898d270851374edc129535cfc76260d20ed02"
+    },
+    "B": {
+     "single": "af2a8d8f20ab58cc4d0a4426404c1007a68b569c186808a866652fe45ff8de0d"
+    },
+    "C": {
+     "single": "8857c80d807618b22b7adbee511548bf9745430a6fabaad8998db56ab6c0c0fd"
+    },
+    "D": {
+     "single": "2e75b78addc3a38873cab44f8cc7b3e702f268881836594ddde86fcb70d19003"
+    },
+    "E": {
+     "single": "7d9651538d17128007f185e3eeb584ef3e88d375db5c31a5dae0b098c382dec0"
+    },
+    "F": {
+     "single": "7f7689a8174c9864451409cca9d7003e78c383c876f2be12d8be4254e98b5121"
+    },
+    "G": {
+     "single": "87c20a6d4997c3c3f1c766d3a9dbfaa88a8847c96404a21bc7123db70690b512"
+    },
+    "H": {
+     "single": "aaaaa07a8591e7359be447bb664c8f2566732a22508c96a9043a6825e42e5b33"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plants/AB_SlimeGrass",
+    "B": "Things/Plants/AB_SlimeGrass",
+    "C": "Things/Plants/AB_SlimeGrass",
+    "D": "Things/Plants/AB_SlimeGrass",
+    "E": "Things/Plants/AB_SlimeGrass",
+    "F": "Things/Plants/AB_SlimeGrass",
+    "G": "Things/Plants/AB_SlimeGrass",
+    "H": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant AB_SlimeGrassA (1 of 2) \u2014 GelatinousSlime",
+    "B": "IN GAME \u2014 random variant AB_SlimeGrassB (2 of 2) \u2014 GelatinousSlime",
+    "C": "render dregen_RM_Slime_Grass_SoilRich_v1",
+    "D": "render slime_slimegrass_var_b",
+    "E": "render slime_slimegrass_var_c",
+    "F": "render slime_slimegrass_var_d",
+    "G": "render RM_SlimeGrass",
+    "H": "render legacy_909d0580_ab_tallslimygrass_v1"
+   },
+   "pools": [
+    "Things/Plants/AB_SlimeGrass"
+   ],
+   "res": "Things/Plants/AB_SlimeGrass",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "tallslimygrass"
+  },
+  "RM_TitanicCorpseSite": {
+   "columns": {
+    "A": {
+     "single": "3ad9775cc0655c9ac3cb86e7b3a3e199c1eafbb2eccb3c0efeea285b417c99b1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/RM_TitanicCorpseSite"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_TitanicCorpseSite_a (1 of 1) \u2014 HugeThings"
+   },
+   "pools": [
+    "Things/Building/RM_TitanicCorpseSite"
+   ],
+   "res": "Things/Building/RM_TitanicCorpseSite",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "titaniccorpsesite"
+  }
+ },
+ "sheetId": "art_regen_night_sheet_2026-10-21",
+ "snapshotId": "56dd818bae88c3e9"
+}
