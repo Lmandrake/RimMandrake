@@ -51,33 +51,33 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
-            // FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE (bar pump_port_takes_pipe_or_hose; owner card 2026-10-20: "One port per
-            // side, either kind" -- each side takes a pipe or a hose, not both)
-            Case("PumpPorts_one_per_side_pipe_or_hose", () =>
+            // FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE (bar pump_hose_joins_at_side_port; he typed 2026-10-20: "No. a HOSE must
+            // connect at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of
+            // the object as ruled previously.")
+            Case("PumpPorts_hose_at_a_side_port", () =>
             {
                 Assert(RM_PumpPortMath.SideOf(0, 1) == 0 && RM_PumpPortMath.SideOf(1, 0) == 1 && RM_PumpPortMath.SideOf(0, -1) == 2
-                    && RM_PumpPortMath.SideOf(-1, 0) == 3, "four sides, Rot4 order");
-                Assert(RM_PumpPortMath.SideOf(1, 1) < 0 && RM_PumpPortMath.SideOf(0, 0) < 0 && RM_PumpPortMath.SideOf(0, 2) < 0, "a corner is no side");
-                Assert(RM_PumpPortMath.PipeJoins(0, 1) && RM_PumpPortMath.PipeJoins(0, 0), "a pipe on a side or under joins");
-                Assert(!RM_PumpPortMath.PipeJoins(1, 1) && !RM_PumpPortMath.PipeJoins(-1, -1), "can-fail: a pipe across a corner does not");
-                Assert(RM_PumpPortMath.HoseMayTake(2, false, 50, new int[0]), "a free side takes a hose");
-                Assert(!RM_PumpPortMath.HoseMayTake(2, true, 50, new int[0]), "can-fail: a side with a pipe takes no hose");
-                Assert(!RM_PumpPortMath.HoseMayTake(2, false, 50, new[] { 40 }), "a second hose on a side is refused (lower id keeps it)");
-                Assert(RM_PumpPortMath.HoseMayTake(2, false, 40, new[] { 50 }), "the first hose keeps its side");
-                Assert(!RM_PumpPortMath.HoseMayTake(-1, false, 40, new int[0]), "a hose on a corner is refused");
+                    && RM_PumpPortMath.SideOf(-1, 0) == 3, "four ports, Rot4 order");
+                Assert(RM_PumpPortMath.SideOf(1, 1) < 0 && RM_PumpPortMath.SideOf(0, 0) < 0 && RM_PumpPortMath.SideOf(0, 2) < 0, "a corner is no port");
+                Assert(RM_PumpPortMath.HoseMayTake(2, 50, new int[0]), "a free port takes a hose");
+                Assert(!RM_PumpPortMath.HoseMayTake(-1, 40, new int[0]), "can-fail: a hose on a corner is refused");
+                Assert(!RM_PumpPortMath.HoseMayTake(2, 50, new[] { 40 }), "a second hose at a port is refused (lower id keeps it)");
+                Assert(RM_PumpPortMath.HoseMayTake(2, 40, new[] { 50 }), "the first hose keeps its port");
             });
-            Case("PumpPorts_net_and_hose_couplings_ask_the_rule", () =>
+            Case("PumpPorts_pipes_join_adjacent_hoses_at_ports", () =>
             {
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
-                RiverSwitchFlipChecks.Has(net, @"if \(t is Building_LiquidPump && !RM_PumpPortMath\.PipeJoins\(c\.x - t\.Position\.x, c\.z - t\.Position\.z\)\)",
-                    "the pump's pipe cells are its sides");
-                RiverSwitchFlipChecks.Has(net, @"\.Where\(m => !\(m is Building_LiquidPump bp\) \|\| RM_PumpPortMath\.PipeJoins\(", "and the pipe side agrees");
+                // a rigid pipe joins a machine (the pump included) 8-way or under, as ruled before (pipe_meets_building_centre)
+                RiverSwitchFlipChecks.Has(net, @"IEnumerable<IntVec3> around = RoleOfThing\(t\) == RM_NetRole\.Tank \? GenAdj\.CellsAdjacentCardinal\(t\) : GenAdj\.CellsAdjacent8Way\(t\);",
+                    "a pipe joins a pump wherever adjacent");
+                Assert(!net.Contains("PipeJoins") && !net.Contains("RM_PumpPortMath"), "can-fail: no pump-only pipe rule in the net");
                 string hp = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "HosePorts.cs"));
                 RiverSwitchFlipChecks.Has(hp, @"if \(t is RimMandrake\.FlowWorks\.LiquidTypes\.Building_LiquidPump pump && !PumpSideTakes\(pump, ReelSideOn\(pump, r\), r\)\)",
-                    "a reel couples to a pump only on a free side");
-                RiverSwitchFlipChecks.Has(hp, @"&& !PumpSideTakes\(pump, EndSideOn\(pump, end\),", "a hose end couples to a pump only on a free side");
-                RiverSwitchFlipChecks.Has(hp, @"return RimMandrake\.FlowWorks\.Machinery\.RM_PumpPortMath\.HoseMayTake\(side, pipe, id, others\.ToArray\(\)\);",
+                    "a reel couples to a pump only at a free side port");
+                RiverSwitchFlipChecks.Has(hp, @"&& !PumpSideTakes\(pump, EndSideOn\(pump, end\),", "a hose end couples to a pump only at a free side port");
+                RiverSwitchFlipChecks.Has(hp, @"return RimMandrake\.FlowWorks\.Machinery\.RM_PumpPortMath\.HoseMayTake\(side, id, others\.ToArray\(\)\);",
                     "the gate is the selftested rule");
+                Assert(!hp.Contains("HasPipe("), "can-fail: a pipe never blocks a hose port");
                 RiverSwitchFlipChecks.Has(hp, @"if \(RawFind\(o, out _, out _, out _\) == pump", "other hoses are read geometrically (no recursion)");
             });
             Case("Pump_lake_to_canal_with_no_tank", () =>

@@ -1,11 +1,12 @@
 namespace RimMandrake.FlowWorks.Machinery
 {
     /// <summary>
-    /// FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE — owner card 2026-10-20 (bar pump_port_takes_pipe_or_hose): "One port per side,
-    /// either kind" (each side takes a pipe or a hose, not both). A pump has four ports, one on each cardinal side. A pipe joins
-    /// a pump only on a side (or under it, where it runs on to a side); never across a corner. A hose couples to a side only
-    /// when no pipe holds that side and no other hose already does (the lower thing id keeps it, so the verdict never flips
-    /// with list order). Verse-free; the SelfTest compiles this production file.
+    /// FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE (bar pump_hose_joins_at_side_port) — he typed 2026-10-20: <i>"No. a HOSE must
+    /// connect at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of the
+    /// object as ruled previously."</i> A pump has four hose ports, one on each cardinal side; a hose (a reel's body or a laid
+    /// hose's free end) couples only at a free port, one hose to a port (the lower thing id keeps it, so the verdict never
+    /// flips with list order). Rigid pipes are NOT ports: they join a pump wherever they are adjacent (8-way, as for every
+    /// machine: RM_LiquidNet) and draw under it to its centre. Verse-free; the SelfTest compiles this production file.
     /// </summary>
     public static class RM_PumpPortMath
     {
@@ -20,17 +21,11 @@ namespace RimMandrake.FlowWorks.Machinery
             return -1;
         }
 
-        /// <summary>Does a pipe cell at offset (dx, dz) from the pump join it? On a side, or under it (0, 0).</summary>
-        public static bool PipeJoins(int dx, int dz)
+        /// <summary>May the hose <paramref name="hoseId"/> couple at the port on <paramref name="side"/>? Only at a side port
+        /// (never a corner), and only if no other hose at that port has a lower id. A pipe beside the port does not take it.</summary>
+        public static bool HoseMayTake(int side, int hoseId, int[] otherHoseIdsOnSide)
         {
-            return (dx == 0 && dz == 0) || SideOf(dx, dz) >= 0;
-        }
-
-        /// <summary>May the hose <paramref name="hoseId"/> couple on <paramref name="side"/>? Only on a side, never where a pipe
-        /// already holds it, and only if no other hose on that side has a lower id.</summary>
-        public static bool HoseMayTake(int side, bool pipeOnSide, int hoseId, int[] otherHoseIdsOnSide)
-        {
-            if (side < 0 || pipeOnSide)
+            if (side < 0)
             {
                 return false;
             }
