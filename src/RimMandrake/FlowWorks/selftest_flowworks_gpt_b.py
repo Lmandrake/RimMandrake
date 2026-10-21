@@ -139,7 +139,7 @@ def run_swim_patch() -> None:
     fills = {d.findtext("defName") for d in root.findall("TerrainDef") if (d.findtext("defName") or "").startswith("RM_Fill_")}
     check("sanity: FlowWorks declares the fill ladders", len(fills) >= 50, "found %d" % len(fills))
     want = {n for n in fills if not n.startswith(("RM_Fill_Water_", "RM_Fill_IcyWater_"))}
-    check("swim patch: every hazardous fill tier is marked (44)", names == want and len(names) == 44,
+    check("swim patch: every hazardous fill tier is marked (48)", names == want and len(names) == 48,
           "hits %d, missing %s, extra %s" % (len(names), sorted(want - names)[:4], sorted(names - want)[:4]))
     check("swim patch: plain and icy water stay swimmable",
           not any(n.startswith(("RM_Fill_Water_", "RM_Fill_IcyWater_")) for n in names))

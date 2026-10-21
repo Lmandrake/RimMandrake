@@ -11,6 +11,7 @@ What is checked here (the data half; the burn arithmetic is the C# SelfTest's Fu
   2. the astrofuel adoption patch's LiquidDef names RM_Fluid_Astrofuel;
   3. every named canal fluid exists, owns all four fill terrains, and those terrains exist;
   4. chemfuel burns as an Inferno, astrofuel as a Detonation (the two fire kinds the owner asked for);
+     propane (PROPANE_CANAL_WIRE_STILL_NO_FLUID) names RM_Fluid_Propane, an Inferno with its own four fill terrains;
   5. the Verse half of RM_LiquidFire.cs holds the shapes the C# SelfTest cannot reach: the detonation queue runs every
      tick inside both per-tick budgets, a planned cell is never re-queued, the inferno burns at its own rate, and both
      fires raise RM_FuelFireEvents.
@@ -76,6 +77,17 @@ def case_registry(reg: str, gen: str) -> list[str]:
     return errs
 
 
+def case_propane_registry(reg: str, gen: str) -> list[str]:
+    """PROPANE_CANAL_WIRE_STILL_NO_FLUID: the propane row names its canal fluid, in the registry and the generator."""
+    errs = []
+    if liquid_canal(reg, "RM_Liquid_Propane") != "RM_Fluid_Propane":
+        errs.append("registry: RM_Liquid_Propane has no canalFluid RM_Fluid_Propane (a propane tank spills instead of filling a cut)")
+    block = gen.split('"defName": "RM_Liquid_Propane"', 1)[-1].split('"bottled"', 1)[0]   # the row up to its bottles
+    if '"canalFluid": "RM_Fluid_Propane"' not in block:
+        errs.append("generator table: the propane LiquidDef row does not name RM_Fluid_Propane (a regenerate would drop it)")
+    return errs
+
+
 def case_astro(astro: str) -> list[str]:
     return [] if liquid_canal(astro, "RM_Liquid_Astrofuel") == "RM_Fluid_Astrofuel" else [
         "astrofuel adoption patch: RM_Liquid_Astrofuel has no canalFluid RM_Fluid_Astrofuel"]
@@ -85,7 +97,7 @@ def case_fluids(fl: str, ter: str) -> list[str]:
     errs = []
     f = fluids(fl)
     t = terrain_names(ter)
-    want = {"RM_Fluid_Chemfuel": "Inferno", "RM_Fluid_Astrofuel": "Detonation"}
+    want = {"RM_Fluid_Chemfuel": "Inferno", "RM_Fluid_Astrofuel": "Detonation", "RM_Fluid_Propane": "Inferno"}
     for name, kind in want.items():
         el = f.get(name)
         if el is None:
@@ -109,6 +121,10 @@ def main() -> int:
          lambda: case_registry(reg.replace("<canalFluid>RM_Fluid_Chemfuel</canalFluid>", ""), gen)),
         ("astrofuel_patch_names_canal_fluid", lambda: case_astro(astro),
          lambda: case_astro(astro.replace("<canalFluid>RM_Fluid_Astrofuel</canalFluid>", ""))),
+        ("propane_registry_names_canal_fluid", lambda: case_propane_registry(reg, gen),
+         lambda: case_propane_registry(reg.replace("<canalFluid>RM_Fluid_Propane</canalFluid>", ""), gen)),
+        ("propane_fill_ladder_exists", lambda: case_fluids(fl, ter),
+         lambda: case_fluids(fl, ter.replace("<defName>RM_Fill_Propane_Brim</defName>", "<defName>x</defName>"))),
         ("fuel_fluids_exist_with_fire_kinds", lambda: case_fluids(fl, ter),
          lambda: case_fluids(fl.replace("<fireKind>Inferno</fireKind>", "<fireKind>Detonation</fireKind>"), ter)),
     ]

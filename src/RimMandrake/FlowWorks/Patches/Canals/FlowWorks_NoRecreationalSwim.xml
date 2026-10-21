@@ -2,15 +2,15 @@
 <!--
   CANAL_SWIM_VERIFY_POISON_POOL_PARTY (GPT C9-F8), 2026-10-15. The canal/pit fill ladders are ParentName="WaterShallow"
   and keep the "Water" tag, so vanilla JoyGiver_GoSwimming (cell validator: IsWater AND Standable) offered a bored
-  colonist a recreational swim in oil, poison, blood, fuel, boiling water, slime or tar. The marker
+  colonist a recreational swim in oil, poison, blood, fuel, propane, boiling water, slime or tar. The marker
   RM_NoRecreationalSwimExtension is what RM_Patch_JoyGiver_GoSwimming_NoSandSwim vetoes on (target cell or any cell of
   the swim queue). Plain water and icy water stay swimmable (vanilla's own temperature rule decides those).
   Our own defs, declared in Defs/Canals/TerrainDefs/FlowWorks_PitFluidTerrain.xml, FlowWorks_SlimeTerrain.xml and
-  FlowWorks_Terrain.xml (tar): 4 tiers each, so the xpath matches 44 defs on every load.
+  FlowWorks_Terrain.xml (tar): 4 tiers each, so the xpath matches 48 defs on every load (44 + propane, PROPANE_CANAL_WIRE_STILL_NO_FLUID).
 -->
 <Patch>
   <Operation Class="PatchOperationAddModExtension">
-    <xpath>Defs/TerrainDef[starts-with(defName, "RM_Fill_Oil_") or starts-with(defName, "RM_Fill_Poison_") or starts-with(defName, "RM_Fill_Blood_") or starts-with(defName, "RM_Fill_Chemfuel_") or starts-with(defName, "RM_Fill_Astrofuel_") or starts-with(defName, "RM_Fill_BoilingWater_") or starts-with(defName, "RM_Fill_Slime") or starts-with(defName, "RM_Fill_Tar_")]</xpath>
+    <xpath>Defs/TerrainDef[starts-with(defName, "RM_Fill_Oil_") or starts-with(defName, "RM_Fill_Poison_") or starts-with(defName, "RM_Fill_Blood_") or starts-with(defName, "RM_Fill_Chemfuel_") or starts-with(defName, "RM_Fill_Astrofuel_") or starts-with(defName, "RM_Fill_Propane_") or starts-with(defName, "RM_Fill_BoilingWater_") or starts-with(defName, "RM_Fill_Slime") or starts-with(defName, "RM_Fill_Tar_")]</xpath>
     <value>
       <li Class="RimMandrake.FlowWorks.ManyWaters.RM_NoRecreationalSwimExtension" />
     </value>
