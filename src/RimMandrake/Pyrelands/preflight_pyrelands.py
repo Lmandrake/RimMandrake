@@ -86,6 +86,8 @@ DEFAULTS = {
     "freshBurnBonusEnabled": True, "freshBurnBonus": 0.5, "freshBurnDays": 6.0, "rainFadesBurnBonus": True,
     "rainFadeBudgetHours": 12.0, "blackRainWaterHours": 24,
     "ambientAshEnabled": True, "ambientAshShare": 1.0, "ambientAshHeavy": False, "wildPlantRegrowDaysOverride": 0.0,
+    "struckGlassEnabled": True, "struckGlassBlastRadius": 7.9, "struckGlassMayHitBuildings": True,
+    "struckGlassRingOnNewMaps": True,
 }
 
 # (repo DLL, deployed DLL relative to the Mods folder, owning packageId)
