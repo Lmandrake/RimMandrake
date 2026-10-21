@@ -1,0 +1,1 @@
+A FlowWorks cut can hold real liquid at F=0: a D1 cut off a limited pond read fill 0 on all cells while every one was RM_Fill_*_Trace (sub-level film; a dry cut is RM_Channel_Empty) - judge 'wet' by fill terrain, not F>=1 (2026-10-21)

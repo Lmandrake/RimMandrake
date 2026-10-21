@@ -1,0 +1,1 @@
+jawa/flowworks_excavation_report has NO terrain key (depth, fill, isExcavated, source/sink only): read a cell's terrain from rimworld/get_cell_info cell.terrainDefName; r.get('terrain') is always None (2026-10-21)
