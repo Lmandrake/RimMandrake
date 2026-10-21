@@ -4735,9 +4735,16 @@ namespace JawaBench.BridgeTools
                 "and assign every tile to its region. Blank region cells are left unnamed on " +
                 "purpose - an unnamed tile is a design choice, not a gap. Existing features " +
                 "are cleared first by default so the roster matches the file exactly rather " +
-                "than accumulating. Dry run by default.",
+                "than accumulating. With clearExisting=false a region whose NAME an existing " +
+                "feature already carries is UPDATED IN PLACE (same feature, id, def, label " +
+                "size and centre unless featuresPath overrides them; its membership becomes " +
+                "exactly the file's tiles), only new names are created, and features the " +
+                "file does not name are left untouched. REFUSES a name two existing features " +
+                "share, and a missing FeatureDef (the default 'Region' does not exist on every " +
+                "mod list). Dry run by default.",
             ResultDescription =
-                "created, tilesAssigned, and a per-region tile count READ BACK off the grid " +
+                "regionsCreated / regionsUpdated / existingSkipped (not named by the file, untouched) / featuresRemoved, " +
+                "tilesAssigned, tilesReleased, and a per-region tile count READ BACK off the grid " +
                 "after the write. Run jawa/world_commit afterwards; label text is invalidated " +
                 "here via textsCreated, which world_commit does not do.")]
         public static async Task<object> WorldFeaturesImport(
@@ -4751,12 +4758,14 @@ namespace JawaBench.BridgeTools
                 "Refuse unless WorldGrid.TilesCount equals this. 0 = no check.", DefaultValue = 0)]
             int expectTiles = 0,
             [ToolParameter(Description =
-                "FeatureDef to create each region as. Default 'Region'.", DefaultValue = "Region")]
-            string featureDef = "Region",
+                "FeatureDef NEW regions are created as. Omitted = 'Region' if that def exists, " +
+                "otherwise the call is refused naming the defs the existing features use (e.g. " +
+                "'Desert' on the full list). Not needed when every region is an update.")]
+            string featureDef = null,
             [ToolParameter(Description =
                 "Delete every existing feature first so the roster matches the file exactly. " +
                 "On by default - leaving the generated regions in place gives a planet with " +
-                "two overlapping naming schemes.", DefaultValue = true)]
+                "two overlapping naming schemes. false = update same-named features in place.", DefaultValue = true)]
             bool clearExisting = true,
             [ToolParameter(Description =
                 "Optional features CSV keyed by `name` (ASHKARR_WORLDMAP_features.csv). Its optional " +
@@ -4776,9 +4785,6 @@ namespace JawaBench.BridgeTools
                                 expectTiles + ".");
                 var wf = Find.World.features;
                 if (wf == null || wf.features == null) return Fail("No feature manager on this world.");
-
-                var fd = DefDatabase<FeatureDef>.GetNamedSilentFail((featureDef ?? "Region").Trim());
-                if (fd == null) return Fail("No FeatureDef '" + featureDef + "'.", DefSuggestions<FeatureDef>(featureDef));
 
                 string err; var csv = ReadTileCsv2(path, out err);
                 if (csv == null) return Fail(err);
@@ -4846,6 +4852,23 @@ namespace JawaBench.BridgeTools
                                     string.Join("; ", featBadCells.Take(8).ToArray()));
                 }
 
+                // Match by NAME (Verse-free, unit-tested in WorldArgsSelfTest): update in place,
+                // create only new names, refuse a name two existing features share. Dry run and
+                // apply refuse identically, so a dry run predicts the apply.
+                var plan = JawaBenchWorldArgsCore.PlanFeatureImport(byName.Keys.ToList(),
+                                                                     wf.features.Select(q => q.name).ToList(), clearExisting);
+                if (plan.Ambiguous.Count > 0)
+                    return Fail("REFUSING: " + plan.Ambiguous.Count + " region name(s) are carried by more than one " +
+                                "existing feature, so an in-place update cannot pick one: " +
+                                string.Join(", ", plan.Ambiguous.Take(12).ToArray()) +
+                                ". Use clearExisting=true, or remove the duplicates with world_features_set first.");
+                string defErr;
+                var defName = JawaBenchWorldArgsCore.ResolveFeatureDef(featureDef,
+                    d => DefDatabase<FeatureDef>.GetNamedSilentFail(d) != null,
+                    wf.features.Select(q => q.def == null ? null : q.def.defName).ToList(), plan.Create.Count, out defErr);
+                if (defName == null) return Fail(defErr, DefSuggestions<FeatureDef>(featureDef ?? "Region"));
+                var fd = defName.Length == 0 ? null : DefDatabase<FeatureDef>.GetNamed(defName);
+
                 if (!apply)
                     return new
                     {
@@ -4854,7 +4877,10 @@ namespace JawaBench.BridgeTools
                         tilesNamed = byName.Values.Sum(q => q.Count),
                         tilesLeftUnnamed = blank, unparseableTiles = badTile,
                         existingFeatures = wf.features.Count,
-                        wouldDeleteExisting = clearExisting ? wf.features.Count : 0,
+                        wouldDeleteExisting = plan.Removed,
+                        wouldCreate = plan.Create.Count, wouldUpdate = plan.Update.Count,
+                        wouldSkipExisting = plan.Untouched,
+                        featureDef = defName.Length == 0 ? "(none needed: nothing is created)" : defName,
                         sizesByName = sizeByName.Count, centresByName = centreByName.Count,
                         featureRowsWithNoRegion = featRowsUnmatched,
                         preview = byName.OrderByDescending(q => q.Value.Count)
@@ -4881,8 +4907,12 @@ namespace JawaBench.BridgeTools
                 var priorFeatures = wf.features.ToList();
                 var priorTileFeature = new WorldFeature[n];
                 for (int i = 0; i < n; i++) { var t0 = grid[i]; priorTileFeature[i] = t0 != null ? t0.feature : null; }
+                // An in-place update changes an existing feature's label too: keep those for rollback.
+                var priorCentre = priorFeatures.Select(q => q.drawCenter).ToList();
+                var priorSize = priorFeatures.Select(q => q.maxDrawSizeInTiles).ToList();
 
-                int assigned = 0, newlyNamed = 0, reassigned = 0, sizesApplied = 0, centresApplied = 0;
+                int assigned = 0, newlyNamed = 0, reassigned = 0, unchanged = 0, released = 0;
+                int sizesApplied = 0, centresApplied = 0;
                 var centresOffRegion = new List<string>();
                 try
                 {
@@ -4894,19 +4924,45 @@ namespace JawaBench.BridgeTools
                         wf.features.Clear();
                     }
 
+                    // Existing same-named features are reused (plan.Update indexes the PRE-call
+                    // list, which clearExisting=true leaves empty of updates); only new names are made.
                     var made = new Dictionary<string, WorldFeature>(StringComparer.Ordinal);
+                    var updated = new HashSet<WorldFeature>();
                     foreach (var kv in byName)
                     {
+                        int idx;
+                        if (plan.Update.TryGetValue(kv.Key, out idx))
+                        {
+                            made[kv.Key] = priorFeatures[idx];
+                            updated.Add(priorFeatures[idx]);
+                            continue;
+                        }
                         var f = new WorldFeature(fd, grid.Surface);
                         f.name = kv.Key;
                         wf.features.Add(f);
                         made[kv.Key] = f;
                     }
 
+                    // An updated region's membership becomes exactly the file's tiles: a tile it
+                    // holds that the file leaves blank is released (one grid pass). A tile the file
+                    // gives to another region is reassigned in the loop below.
+                    if (updated.Count > 0)
+                    {
+                        var listed = new bool[n];
+                        foreach (var kv in byName) foreach (var tile in kv.Value) listed[tile] = true;
+                        for (int i = 0; i < n; i++)
+                        {
+                            var t = grid[i];
+                            if (t != null && t.feature != null && !listed[i] && updated.Contains(t.feature))
+                            { t.feature = null; released++; }
+                        }
+                    }
+
                     // newlyNamed: assignments that turned an UNNAMED tile named. With
                     // clearExisting=false a tile that already carried a feature (or a tile the CSV
                     // lists twice) is reassigned without adding a named tile, so comparing the grid
                     // against namedBaseline + assigned failed a correct run (review 2026-10-20 D8a).
+                    // unchanged: the tile already belonged to this very feature (an in-place update).
                     foreach (var kv in byName)
                     {
                         var f = made[kv.Key];
@@ -4914,13 +4970,17 @@ namespace JawaBench.BridgeTools
                         {
                             var t = grid[tile];
                             if (t == null) continue;
-                            if (t.feature == null) newlyNamed++; else reassigned++;
+                            if (t.feature == null) newlyNamed++;
+                            else if (t.feature == f) unchanged++;
+                            else reassigned++;
                             t.feature = f;
                             assigned++;
                         }
                         // Centre the label on the region's own tiles, or every label
                         // draws at the origin and the planet reads as one big blur.
-                        if (kv.Value.Count > 0)
+                        // An UPDATED feature keeps its own centre and size (they may be
+                        // the canonical U1 values); only featuresPath overrides them.
+                        if (kv.Value.Count > 0 && !updated.Contains(f))
                         {
                             var mid = kv.Value[kv.Value.Count / 2];
                             f.drawCenter = grid.GetTileCenter(mid);
@@ -4952,6 +5012,8 @@ namespace JawaBench.BridgeTools
                 {
                     wf.features.Clear();
                     wf.features.AddRange(priorFeatures);
+                    for (int i = 0; i < priorFeatures.Count; i++)
+                    { priorFeatures[i].drawCenter = priorCentre[i]; priorFeatures[i].maxDrawSizeInTiles = priorSize[i]; }
                     for (int i = 0; i < n; i++) { var t0 = grid[i]; if (t0 != null) t0.feature = priorTileFeature[i]; }
                     wf.textsCreated = false;
                     return Fail("Import threw mid-write (" + ex.GetType().Name + ": " + ex.Message + "). ROLLED BACK: the " +
@@ -4982,15 +5044,19 @@ namespace JawaBench.BridgeTools
                 {
                     // A row whose tile id is unparseable or off the grid was dropped before any
                     // write; the apply result used to omit it entirely (re-review R2).
-                    success = liveNamed == namedBaseline + newlyNamed
-                           && wf.features.Count == featuresBaseline + byName.Count
+                    success = liveNamed == namedBaseline + newlyNamed - released
+                           && wf.features.Count == featuresBaseline + plan.Create.Count
                            && badTile == 0,
                     unparseableTiles = badTile,
-                    message = "created " + byName.Count + " region(s), removed " + removed +
-                              ", assigned " + assigned + " tile(s); grid reports " + liveNamed +
-                              " named tile(s) across " + wf.features.Count + " feature(s).",
-                    regionsCreated = byName.Count, featuresRemoved = removed,
+                    message = "created " + plan.Create.Count + " region(s), updated " + plan.Update.Count +
+                              " in place, skipped " + plan.Untouched + " existing the file does not name, removed " + removed +
+                              "; assigned " + assigned + " tile(s), released " + released + "; grid reports " +
+                              liveNamed + " named tile(s) across " + wf.features.Count + " feature(s).",
+                    regionsCreated = plan.Create.Count, regionsUpdated = plan.Update.Count,
+                    existingSkipped = plan.Untouched, featuresRemoved = removed,
+                    featureDef = defName.Length == 0 ? "(none needed: nothing was created)" : defName,
                     tilesAssigned = assigned, tilesNewlyNamed = newlyNamed, tilesReassigned = reassigned,
+                    tilesUnchanged = unchanged, tilesReleased = released,
                     tilesNamedOnGrid = liveNamed,
                     tilesLeftUnnamed = n - liveNamed,
                     sizesApplied, centresApplied, centresOffRegion,
