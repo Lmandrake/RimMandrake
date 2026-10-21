@@ -981,6 +981,17 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
                       "or a mechanical reason (artpipe-collect | script:<path>)")
     old_sha = sha256_file(target) if target.is_file() else None
     if old_sha == sha:
+        if owner_said and not ruling_id and not dry_run and not idx.rulings_by_sha.get(sha):
+            # his words about the picture already in place (an alternate he approved by card): record the ruling, write nothing
+            w = Writer({e["id"] for e in idx.events})
+            rl = {"id": det_id("ruling-cli", sha, owner_said), "type": "ruling", "target": {"sha": sha},
+                  "verdict": "keep", "by": "owner", "said": owner_said, "via": "art install (owner words)",
+                  "trust": "ruled", "subject_key": ""}
+            w.add(rl)
+            added = list(w.buf)
+            w.flush()
+            _absorb(added)
+            return {"status": "already-live-ruled", "path": str(target), "new": sha, "ruling": rl["id"]}
         return {"status": "already-live", "path": str(target), "new": sha}
     old_protected = bool(old_sha and idx.protected(old_sha))
     if old_protected and not (ruling or owner_said):
