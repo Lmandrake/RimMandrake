@@ -2,7 +2,7 @@
  "set": "Uvak",
  "folder": "src/RimStarWars/SWBestiary/Textures/swanimals/Uvak",
  "prefix": "Uvak_Flying_",
- "note": "masters: north 2, east 4, south 3 - the painted frames that match the grounded Uvak_* art; south 1/2/4 and east 1 were flat donor cartoons and are gone. South upstroke half-folds the wings (scale 0.55): the spread span does not fit the 256 canvas raised.",
+ "note": "masters: north 2, east 4, south 3 - the painted frames that match the grounded Uvak_* art; south 1/2/4 and east 1 were flat donor cartoons and are gone. South upstroke half-folds the wings (scale 0.55): the spread span does not fit the 256 canvas raised. East frame 3 downstroke is sy 0.25 (wing low over the back): the old sy -0.35 flip mirrored the membrane under the body and bared the plate's wing-root spike and membrane stub (mangled). Run Uvak_cleanup.py on the build output (hip-feather strays).",
  "facings": {
   "north": {
    "master": 2,
@@ -216,9 +216,9 @@
        0.5
       ],
       [
-       4,
+       0,
        1.0,
-       -0.35
+       0.25
       ],
       [
        0,
