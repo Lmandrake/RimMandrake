@@ -196,7 +196,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             list.CheckboxLabeled("Live fallen wires shock whoever touches them", ref fallenWireShock,
                 "Anyone, colonists included, who touches a live wire lying on the ground is thrown back and knocked out for a couple " +
                 "of hours. Only a weak heart (artery blockage, a heart attack, or a damaged heart) is killed. A dead wire is harmless. " +
-                "Also covers a powered FlowWorks power cord dropped into a pit by a collapsing bridge. Applies now.");
+                "Also covers a powered Flow Works power cord dropped into a pit by a collapsing bridge. Applies now.");
             using (Dependent(list, "fallenWireKnockback"))
             {
             list.Label("Shock throws the victim back: " + fallenWireKnockback + " cell(s)");

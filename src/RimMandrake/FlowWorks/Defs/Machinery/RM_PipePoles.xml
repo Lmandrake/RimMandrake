@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4 (design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md §P3):
+     the pipe pole. Owner, answer 1: "Pipes get a version of the power pole: supports that provide a somewhat saggy hose between
+     them. Same mechanics, just much thicker and less flexible. Same art variation."
+     * Mechanics: a Gimme Some Slack aerial anchor of kind Pipe (CompProperties_AerialAnchor + AerialAnchorExtension lineKind Pipe):
+       GSS's links, auto-link, span mesh, cut / re-string and fallen halves, with no power comp (a pipe span never joins a power
+       net), one strand, no drip loop, no sway. Range and sag are FlowWorks Mod Settings (pipePoleMaxSpan, pipePoleSag) handed to
+       GSS at startup (Source/Machinery/RM_PipePoles.cs). MayRequire GSS on every def here: without GSS nothing here loads.
+     * Ground: solid ground only, never a bridge deck, a pit cover or a dug square (review answer 8): LineKind PipePole on the
+       phase-1 gates (placement, frame completion, auto-rebuild; a committed dig KILLS the pole so its spans fall) plus
+       PlaceWorker_PipePole (always, whatever the crossing switch). A span is never walking ground, a deck or pawn topology.
+     * Art: NONE commissioned (owner: no pole art before LINE_WIDTH_JUDGE_ARMS_NOT_INCLUDED). Stand-ins that exist: the GSS mast of
+       the same look, tinted steel-blue so a pipe pole never reads as a power mast. Art contract (installed by `art install` once
+       judged; then each style's texPath below is pointed at it): RimMandrake/FlowWorks/PipePole/<Look>/PipePole (pole, 2x4 like
+       the mast) and RimMandrake/FlowWorks/PipePole/<Look>/PipeSpan (span strip, looked up SILENTLY by GSS's PipeMats until it
+       exists; until then the span draws the look's wire at the pipe's 0.22-cell width).
+     * Looks: the pipe's four (PipeStyles.Looks), picked on the build button through PipeLook (RM_PipePole_<Look>). -->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.gimmesomeslack">
+    <defName>RM_PipePole</defName>
+    <label>pipe pole</label>
+    <description>A stout steel post with a saddle clamp at the top. Two pipe poles hang a stiff overhead pipe between them, so a pipe line can cross a pit, trench, canal or moat without touching it. Poles must stand on solid ground under open sky, never on a bridge deck, a pit cover or a dug square; the pipe overhead is not walkable. Digging out a pole's square knocks it down. Pick its look on the build button.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>14</pathCost>
+    <fillPercent>0.15</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <drawOffscreen>true</drawOffscreen>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <designationCategory>VCHE_PipeNetworks</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories><li>BuildingsMisc</li></thingCategories>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <repairEffect>Repair</repairEffect>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <color>(170,182,196)</color>
+      <shadowData><volume>(0.25, 1.6, 0.25)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+    <uiIconScale>0.9</uiIconScale>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>800</WorkToBuild>
+      <Flammability>0.2</Flammability>
+      <Mass>12</Mass>
+    </statBases>
+    <costList>
+      <Steel>40</Steel>
+    </costList>
+    <building>
+      <ai_chillDestination>false</ai_chillDestination>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_NotUnderRoof</li>
+      <li>RimMandrake.FlowWorks.Machinery.PlaceWorker_PipePole</li>
+      <li>RimMandrake.GimmeSomeSlack.Aerial.PlaceWorker_AerialRange</li>
+    </placeWorkers>
+    <comps>
+      <li Class="CompProperties_Styleable" />
+      <!-- no CompProperties_Power: a pipe pole is never a power building, so no power net ever visits it -->
+      <li Class="RimMandrake.GimmeSomeSlack.Aerial.CompProperties_AerialAnchor" />
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.GimmeSomeSlack.Aerial.AerialAnchorExtension">
+        <lineKind>Pipe</lineKind>
+        <maxLinks>3</maxLinks>   <!-- PROVISIONAL: a run in, a run out, one branch -->
+        <attachZ>2.66</attachZ>  <!-- the stand-in mast's crossarm height; re-measure from the pole art when it lands -->
+        <insulatorSpread>0</insulatorSpread>
+        <spanWidth>0.22</spanWidth>   <!-- RM_PipePoleMath.SpanWidthCells: the pipe's 30 cm (owner's widths card 2026-10-20) -->
+        <spanTexPath>RimMandrake/FlowWorks/PipePole/{look}/PipeSpan</spanTexPath>
+      </li>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_LineKindExtension">
+        <kind>PipePole</kind>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingStyleDef MayRequire="mandrake.rm.gimmesomeslack">
+    <defName>RM_PipePole_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <color>(170,182,196)</color>
+      <shadowData><volume>(0.25, 1.6, 0.25)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef MayRequire="mandrake.rm.gimmesomeslack">
+    <defName>RM_PipePole_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <color>(170,182,196)</color>
+      <shadowData><volume>(0.25, 1.6, 0.25)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef MayRequire="mandrake.rm.gimmesomeslack">
+    <defName>RM_PipePole_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <color>(170,182,196)</color>
+      <shadowData><volume>(0.25, 1.6, 0.25)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef MayRequire="mandrake.rm.gimmesomeslack">
+    <defName>RM_PipePole_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <color>(170,182,196)</color>
+      <shadowData><volume>(0.25, 1.6, 0.25)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+</Defs>

@@ -43,6 +43,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Brackets();
             Terminals();
             Round3();
+            PipeKind();
             Console.WriteLine($"aerial: {mine - mineFails}/{mine} checks passed");
         }
 
@@ -397,6 +398,44 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             C(AerialMath.TapStolenPerTick(500, 1000 * k, 600, k, true, true) == 0, "tapping our own net steals nothing");
             C(AerialMath.TapStolenPerTick(500, 1000 * k, 600, k, false, false) == 0, "taps disabled in settings: 0");
             C(Math.Abs(AerialMath.TapStolenPerTick(500, -100 * k, 300 * k, k, false, true) - 200 * k) < 1e-12, "deficit 100 W + 300 W-ticks stored: 200 W this tick");
+        }
+
+        // ------------------------------------------------------------------ PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4: span kinds
+        private static AnchorInfo P(int id, int x, int z, int max = 2, params int[] linked)
+        {
+            AnchorInfo a = A(id, x, z, 0, max, linked);
+            a.Kind = AerialLineKind.Pipe;
+            return a;
+        }
+
+        private static void PipeKind()
+        {
+            C(AerialMath.CanLink(P(1, 0, 0), A(2, 5, 0), 20) == LinkVerdict.WrongKind, "a pipe pole never links to a power mast (no pipe on a power grid)");
+            C(AerialMath.CanLink(A(1, 0, 0), P(2, 5, 0), 20) == LinkVerdict.WrongKind, "a power mast never links to a pipe pole");
+            C(AerialMath.CanLink(P(1, 0, 0), P(2, 5, 0), 12) == LinkVerdict.Ok, "two pipe poles in range link");
+            float r12 = AerialKinds.RangeFor(AerialLineKind.Pipe, 20f, AerialKinds.PipeMaxSpanDefault);
+            C(r12 == 12f && AerialMath.CanLink(P(1, 0, 0), P(2, 12, 0), r12) == LinkVerdict.Ok
+              && AerialMath.CanLink(P(1, 0, 0), P(2, 13, 0), r12) == LinkVerdict.OutOfRange, "pipe span cap: 12 links, 13 refused (power's 20 does not apply)");
+            C(AerialKinds.RangeFor(AerialLineKind.Power, 20f, 12f) == 20f, "power range stays the power slider's");
+            C(AerialKinds.RangeFor(AerialLineKind.Pipe, 20f, 999f) == AerialKinds.PipeSpanMax && AerialKinds.RangeFor(AerialLineKind.Pipe, 20f, -5f) == AerialKinds.PipeSpanMin
+              && AerialKinds.RangeFor(AerialLineKind.Pipe, 20f, float.NaN) == AerialKinds.PipeSpanMin, "a registered pipe range is bounded (garbage cannot make a 999-cell pipe)");
+            C(AerialKinds.SagFor(AerialLineKind.Pipe, 0.06f, 0.02f) == 0.02f && AerialKinds.SagFor(AerialLineKind.Power, 0.06f, 0.02f) == 0.06f, "sag per kind");
+            C(AerialKinds.SagFor(AerialLineKind.Pipe, 0.06f, 1f) == AerialKinds.PipeSagMax && AerialKinds.SagFor(AerialLineKind.Pipe, 0.06f, -1f) == 0f, "pipe sag bounded");
+            C(AerialKinds.PipeSagDefault < 0.06f / 2f, "owner's widths card: pipe sag about a third of the wire's 6%");
+            // sag at the extremes, through the production curve
+            List<P2> flat = AerialMath.SpanCurve(new P2(0, 0), new P2(12, 0), AerialKinds.SagFor(AerialLineKind.Pipe, 0.06f, 0f));
+            C(flat.All(q => Math.Abs(q.Z) < 1e-12), "pipe sag 0: the span is a straight chord");
+            List<P2> deep = AerialMath.SpanCurve(new P2(0, 0), new P2(12, 0), AerialKinds.SagFor(AerialLineKind.Pipe, 0.06f, 0.06f));
+            C(Math.Abs(deep.Min(q => q.Z) + 0.72) < 1e-6 && Math.Abs(AerialKinds.SagDepth(12, 0.06) - 0.72) < 1e-12, "pipe sag 6% over 12 cells: 0.72 cells deep at mid-span");
+            C(deep[0].Z == 0 && deep[deep.Count - 1].Z == 0, "the pipe ends stay on the insulators at any sag");
+            C(AerialKinds.StrandCap(AerialLineKind.Pipe, 3) == 1 && AerialKinds.StrandCap(AerialLineKind.Power, 3) == 3, "a pipe span is one strand");
+            C(!AerialKinds.Drips(AerialLineKind.Pipe, true) && AerialKinds.Drips(AerialLineKind.Power, true) && !AerialKinds.Sways(AerialLineKind.Pipe)
+              && !AerialKinds.CarriesPower(AerialLineKind.Pipe) && AerialKinds.CarriesPower(AerialLineKind.Power), "a pipe: no drip loop, no sway, no power");
+            var mixed = new List<AnchorInfo> { P(1, 0, 0), P(2, 8, 0), A(3, 4, 0), A(4, 12, 0) };
+            List<(int, int)> mst = AerialMath.MinimumSpanningLinks(mixed, 20);
+            C(mst.Count == 2 && mst.Contains((1, 2)) && mst.Contains((3, 4)), "auto-link selected never joins kinds (pipe 1-2, power 3-4)");
+            var others = new List<AnchorInfo> { A(2, 1, 0), P(3, 6, 0) };
+            C(AerialMath.AutoLinkPick(P(1, 0, 0), others, 12) == 3, "a new pipe pole auto-links to the nearest PIPE pole, skipping a nearer mast");
         }
 
         // ------------------------------------------------------------------ a checker that cannot fail proves nothing

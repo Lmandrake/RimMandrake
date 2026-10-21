@@ -141,6 +141,7 @@ SETTINGS = {
         "pipeLinksIntoMachines": True, "joinFittings": False,   # HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY (art only; fittings OFF until the owner rules)
         "pipesUnderToCentre": True,   # PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (art only)
         "lineCrossingRulesEnabled": True,   # PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE P2 (RM_LineCrossing)
+        "pipePolesEnabled": True, "pipePoleMaxSpan": 12.0, "pipePoleSag": 0.02,   # PIPE_POLES phase 4 (RM_PipePoles; sag: owner's widths card)
     },
     # the flexible hose's section (moved from Gimme Some Slack at the hose port, 2026-10-11); Scribed with a `hose_` key prefix.
     # String fields (defaultLook) are not in this bool/float table; hoseSettingsImported is an internal flag.

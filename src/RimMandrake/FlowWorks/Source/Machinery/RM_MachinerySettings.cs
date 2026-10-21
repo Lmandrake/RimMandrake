@@ -90,6 +90,14 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// take the engine's affordance rules alone (a timber deck admits pipe, rope admits none) and a dig leaves them standing.</summary>
 		public static bool lineCrossingRulesEnabled = true;
 
+		/// <summary>PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4 (P3): pipe poles (RM_PipePole, with Gimme Some Slack) carry a pipe
+		/// overhead across pits, trenches and canals. Off: the pole leaves the architect menu; poles already built stay strung.</summary>
+		public static bool pipePolesEnabled = true;
+		/// <summary>Longest pipe span, cells (owner's proposal 12; RM_PipePoleMath bounds 4-20). Read live by GSS.</summary>
+		public static float pipePoleMaxSpan = 12f;
+		/// <summary>Pipe span sag, fraction of its length (owner's widths card: about 2%, a third of the wire's; bounds 0-6%).</summary>
+		public static float pipePoleSag = 0.02f;
+
 		private static List<string> disabledMachines = new List<string>();
 
 		public static string KeyOf(ThingDef def)
@@ -124,6 +132,9 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref joinFittings, "joinFittings", false);
 			Scribe_Values.Look(ref pipesUnderToCentre, "pipesUnderToCentre", true);
 			Scribe_Values.Look(ref lineCrossingRulesEnabled, "lineCrossingRulesEnabled", true);
+			Scribe_Values.Look(ref pipePolesEnabled, "pipePolesEnabled", true);
+			Scribe_Values.Look(ref pipePoleMaxSpan, "pipePoleMaxSpan", 12f);
+			Scribe_Values.Look(ref pipePoleSag, "pipePoleSag", 0.02f);
 			Scribe_Values.Look(ref litresPerFilth, "litresPerFilth", 400);
 			// model 2 saved this in 200 L units under "unitsPerFilth": read once when the new key was never written
 			if (Scribe.mode == LoadSaveMode.LoadingVars && Scribe.loader.curXmlParent?["litresPerFilth"] == null
@@ -204,6 +215,18 @@ namespace RimMandrake.FlowWorks.Machinery
 			  + "the hoses across it, and a powered cord it drops lies in the hole as a live wire (it shocks through Gimme Some Slack's "
 			  + "fallen-wire setting, when that mod is loaded). Off: lines follow the game's ground rules alone, digging leaves them "
 			  + "standing, and a collapsing deck only destroys what stands on it.");
+			list.CheckboxLabeled("Pipe poles carry pipe overhead across pits, trenches and canals (needs Gimme Some Slack's overhead lines on)", ref pipePolesEnabled,
+				"On: a pipe pole (Pipe networks menu) hangs a stiff overhead pipe to another pipe pole, using Gimme Some Slack's overhead "
+			  + "lines. Poles stand on solid ground only, never on a bridge deck, a pit cover or a dug square; a span is not walkable. "
+			  + "Digging out a pole's square knocks it down and its spans fall. Off: the pole leaves the build menu; poles already built "
+			  + "stay strung. The art is a stand-in until the pipe widths are judged in game.");
+			if (pipePolesEnabled)
+			{
+				list.Label(RM_PipePoleMath.SpanLabel(pipePoleMaxSpan), -1f, (TipSignal?)"How far one pipe span may reach between two poles. Applies now to new links; spans already strung stay.");
+				pipePoleMaxSpan = RM_PipePoleMath.ClampSpan(list.Slider(pipePoleMaxSpan, RM_PipePoleMath.MaxSpanMin, RM_PipePoleMath.MaxSpanMax));
+				list.Label(RM_PipePoleMath.SagLabel(pipePoleSag), -1f, (TipSignal?)"How far a pipe span hangs at its middle. Power wires hang about 6%; a pipe is stiffer. Art only; applies now.");
+				pipePoleSag = RM_PipePoleMath.ClampSag(UnityEngine.Mathf.Round(list.Slider(pipePoleSag, RM_PipePoleMath.SagMin, RM_PipePoleMath.SagMax) * 1000f) / 1000f);
+			}
 			bool linksWas = pipeLinksIntoMachines, fitWas = joinFittings, underWas = pipesUnderToCentre;
 			list.CheckboxLabeled("Pipes run right up to the tanks and machines they join (art only)", ref pipeLinksIntoMachines,
 				"On: a pipe beside a tank, pump or still draws its run on to the shared edge, so you can see it joins. Off: it ends in a cap short of it. Needs a restart to take effect if it was off at startup.");

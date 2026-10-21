@@ -15,6 +15,8 @@ namespace RimMandrake.FlowWorks.Machinery
 	/// mode (salvage drops, no auto-rebuild blueprint, no "destroyed" alert). The liquid net splits through the normal despawn
 	/// path (RM_Patch_NetTopologyDespawn bumps the revision); the power net through vanilla's. Blueprints and frames of lines
 	/// are left to vanilla: TerrainGrid.DoTerrainChangedEffects cancels them through the phase-1 CanBuildOnTerrain gate.
+	/// A pipe pole (phase 4) is killed instead (RM_LineDigBreakMath.KilledOnDig), so Gimme Some Slack drops its spans
+	/// (a fallen half lies at each surviving pole) and the pipe edge goes with them.
 	/// A hose is not touched here: its re-plan-or-cut belongs to the hose router's depth rule (P5, the item's phase 6).
 	/// Setting RM_MachinerySettings.lineCrossingRulesEnabled; off, a dig leaves lines standing (the pre-ruling behaviour).
 	/// </summary>
@@ -37,7 +39,15 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				if (!t.Destroyed)
 				{
-					t.Destroy(DestroyMode.Deconstruct);
+					LineKind? k = KindOfBuilt(t);
+					if (k != null && RM_LineDigBreakMath.KilledOnDig(k.Value))
+					{
+						t.Destroy(DestroyMode.KillFinalize);   // phase 4: a pipe pole that loses its ground drops its spans
+					}
+					else
+					{
+						t.Destroy(DestroyMode.Deconstruct);
+					}
 					broken++;
 				}
 			}

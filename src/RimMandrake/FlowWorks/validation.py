@@ -1240,7 +1240,9 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         "drawbridgesEnabled", "raidsBringPlanks",
                         # PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 1 (2026-10-21): live rows owed on the item (L2), not yet a
                         # toggle chain
-                        "lineCrossingRulesEnabled"]
+                        "lineCrossingRulesEnabled",
+                        # PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4 (2026-10-21): pipe poles need GSS; live rows owed (L2)
+                        "pipePolesEnabled"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))

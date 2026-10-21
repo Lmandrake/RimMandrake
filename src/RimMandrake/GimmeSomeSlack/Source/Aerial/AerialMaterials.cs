@@ -82,6 +82,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             CordMaterials.EnsureCurrent();
             byLook.Clear();
+            pipeMats.Clear();
             topMats.Clear();
             // the DEFAULT look's set stays in the old globals: hookup cables to switches (ConduitVisuals, stage 2 styles them)
             // and the probes' "look"/"spanPath" fields read it
@@ -136,7 +137,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         /// <summary>The look an anchor is drawn in (its own style; an unstyled legacy anchor draws the default look).</summary>
-        public static string LookOf(CompAerialAnchor a) => a?.parent == null ? Look : StylePicker.LookOfThing(a.parent);
+        public static string LookOf(CompAerialAnchor a) => a?.parent == null ? Look : AerialLineProfiles.LookOfThing(a.parent);
 
         /// <summary>The look a span between two anchors draws in. The run rule keeps a run in one look, so both ends nearly
         /// always agree; when they do not (the moment between a new link and its run check) the larger run wins, a tie goes
@@ -152,7 +153,41 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return ConduitStyles.SpanLook(la, ra.Area, ra.Oldest, lb, rb.Area, rb.Oldest, StylePicker.DefaultLook);
         }
 
-        public static LookMats SpanMats(CompAerialAnchor a, CompAerialAnchor b) => For(SpanLookOf(a, b));
+        public static LookMats SpanMats(CompAerialAnchor a, CompAerialAnchor b) =>
+            a != null && a.Kind == AerialLineKind.Pipe ? PipeMats(a.Ext, LookOf(a)) : For(SpanLookOf(a, b));
+
+        /// <summary>The cable an anchor's own fallen halves draw in: its span material (a pipe pole's pipe span).</summary>
+        public static LookMats AnchorMats(CompAerialAnchor a) =>
+            a != null && a.Kind == AerialLineKind.Pipe ? PipeMats(a.Ext, LookOf(a)) : For(LookOf(a));
+
+        private static readonly Dictionary<string, LookMats> pipeMats = new Dictionary<string, LookMats>();
+
+        /// <summary>PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4: a pipe span. Its texture is the def's art-contract path
+        /// (spanTexPath, "{look}" filled in), looked up silently; until that art is installed (no pole art before
+        /// LINE_WIDTH_JUDGE_ARMS_NOT_INCLUDED) it draws the look's wire as a stand-in. Width: the def's spanWidth (the pipe's
+        /// 30 cm, owner's line widths card 2026-10-20), never the wire's.</summary>
+        public static LookMats PipeMats(AerialAnchorExtension ext, string look)
+        {
+            if (!AerialStyles.IsLook(look)) look = "Scrapper";
+            string contract = ext?.spanTexPath.NullOrEmpty() == false ? ext.spanTexPath.Replace("{look}", look) : null;
+            float width = ext != null && ext.spanWidth > 0f ? ext.spanWidth : WidthOf(look);
+            string key = look + "|" + contract + "|" + width.ToString("0.000");
+            if (pipeMats.TryGetValue(key, out LookMats m)) return m;
+            LookMats wire = For(look);
+            m = new LookMats { Look = look, Width = width };
+            if (contract != null && Exists(contract))
+            {
+                m.SpanPath = contract;
+                m.Span = Tiled(contract, null, true);
+            }
+            if (m.Span == null)
+            {
+                m.SpanPath = wire.SpanPath;   // stand-in: the look's wire, drawn at the pipe's width
+                m.Span = wire.Span;
+            }
+            pipeMats[key] = m;
+            return m;
+        }
 
         // ------------------------------------------------------------------ poles: geometry by (look, building)
         // Stage 1 of the per-build style design: no shared ThingDef is edited any more. Each anchor draws its own style's

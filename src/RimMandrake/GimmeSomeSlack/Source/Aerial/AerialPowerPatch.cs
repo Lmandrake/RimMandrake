@@ -53,10 +53,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             if (AerialPowerScope.depth <= 0 || t == null || !CompAerialAnchor.IsAnchorDef(t.def)) return;
             CompAerialAnchor a = CompAerialAnchor.Of(t);
-            if (a == null || a.links.Count == 0) return;
+            if (a == null || a.links.Count == 0 || !AerialKinds.CarriesPower(a.Kind)) return;   // phase 4: pipe spans carry no power
             List<IntVec3> extra = null;
             foreach (CompAerialAnchor p in a.LivePartners)
-                (extra ??= new List<IntVec3>()).Add(p.Position);
+                if (p.Kind == a.Kind) (extra ??= new List<IntVec3>()).Add(p.Position);
             if (extra == null) return;
             AerialPowerScope.appendedCalls++;
             var all = new List<IntVec3>(__result);

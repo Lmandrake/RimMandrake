@@ -27,5 +27,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>The mast head drawn ABOVE pawns at the span altitude (null: none, e.g. the wall bracket).</summary>
         public string topTexPath;
         public float topOffsetZ = 1.0f;
+        /// <summary>PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4: what this anchor's spans carry. Power (default) joins power
+        /// nets; Pipe (FlowWorks' pipe pole) never touches power and links only to other pipe anchors.</summary>
+        public AerialLineKind lineKind = AerialLineKind.Power;
+        /// <summary>Span cable width, cells; 0 = the look's wire width (AerialMaterials.WidthOf).</summary>
+        public float spanWidth;
+        /// <summary>Art-contract path of the span texture, "{look}" replaced by the anchor's look. Looked up SILENTLY: until
+        /// the art is installed the span draws the look's wire as a stand-in (no def names an uninstalled path).</summary>
+        public string spanTexPath;
     }
 }
