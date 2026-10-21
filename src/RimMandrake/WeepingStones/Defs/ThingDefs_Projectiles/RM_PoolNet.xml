@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEEPINGSTONES_NET_TARGET_FLEES_1 (2026-10-21) - the thrown net RM_JobDriver_NetPoolBreeder launches.
+  Owner, 2026-10-07: "It's supposed to depend on how fast they are. Whether the net can hit the right place."
+  Flight is vanilla Projectile (Verse/Projectile.cs): travel time = distance / (speed / 100) ticks, destination fixed at
+  launch; RM_Projectile_PoolNet only replaces the landing roll with "is the target still under the net".
+  Shape copied from vanilla BaseGrenadeProjectile (Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrialGrenades.xml).
+  speed 14 is INVENTED (a grenade is 12): a 6-cell throw lands in 43 ticks, in which a fleeing skarrin
+  (~0.13 cells/tick, the 2026-10-03 live poke) covers ~5.6 cells and is missed; a grazing one is not.
+  ART OWED: the texture is a stand-in (vanilla grenade projectile); RM_PoolNet wants its own spread-net sprite.
+-->
+<Defs>
+  <ThingDef>
+    <defName>RM_Projectile_PoolNet</defName>
+    <label>thrown net</label>
+    <category>Projectile</category>
+    <altitudeLayer>Projectile</altitudeLayer>
+    <thingClass>RimMandrake.WeepingStones.RM_Projectile_PoolNet</thingClass>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>False</useHitPoints>
+    <neverMultiSelect>True</neverMultiSelect>
+    <graphicData>
+      <texPath>Things/Projectile/Grenade</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+    </graphicData>
+    <projectile>
+      <speed>14</speed>
+      <arcHeightFactor>0.4</arcHeightFactor>
+      <shadowSize>0.6</shadowSize>
+    </projectile>
+  </ThingDef>
+</Defs>

@@ -26,6 +26,10 @@ namespace RimMandrake.WeepingStones
         // Per-pulse chance that a stocked vizhik escapes its pen. Shipped 0.05. 0-0.25.
         public static float vizhikEscapeChance = 0.05f;
 
+        // WEEPINGSTONES_NET_TARGET_FLEES_1: the NET throw. Range (cells) a handler throws from, and throws per job before giving up.
+        public static int netThrowRange = 6;
+        public static int netMaxThrows = 4;
+
         // WEEPINGSTONES_WALKING_CONDENSER_1: master switch and season length (days) for the walking condenser.
         public static bool condenserEnabled = true;
         public static float condenserSeasonDays = 15f;
@@ -45,6 +49,8 @@ namespace RimMandrake.WeepingStones
             Scribe_Values.Look(ref stockedPoolsEnabled, "stockedPoolsEnabled", true);
             Scribe_Values.Look(ref vhorrinOddsMultiplier, "vhorrinOddsMultiplier", 1f);
             Scribe_Values.Look(ref vizhikEscapeChance, "vizhikEscapeChance", 0.05f);
+            Scribe_Values.Look(ref netThrowRange, "netThrowRange", 6);
+            Scribe_Values.Look(ref netMaxThrows, "netMaxThrows", 4);
             Scribe_Values.Look(ref condenserEnabled, "condenserEnabled", true);
             Scribe_Values.Look(ref condenserSeasonDays, "condenserSeasonDays", 15f);
             Scribe_Values.Look(ref condenserQuestsEnabled, "condenserQuestsEnabled", true);
@@ -125,6 +131,21 @@ namespace RimMandrake.WeepingStones
                   + "per-pool bookkeeping, and the STOCK/FEED/HARVEST/CULL jobs. On by default: "
                   + "the full loop is built. Wild fishing (the ruled gentle six) and the "
                   + "bestiary/cuisine content itself are never affected by this setting.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Netting breeders", RimMandrake.Shared.SettingScope.Now, new[] { "netThrowRange", "netMaxThrows" }))
+            {
+                list.Label("Net throw range: " + netThrowRange + " cells (shipped 6)",
+                    -1f, (TipSignal?)("How far a handler throws a net from. Aim falls off with distance the way a shot does "
+                       + "(the handler's shooting accuracy), and a longer throw flies longer, so a moving animal has more time "
+                       + "to get out from under it. Shorter is surer but means walking closer first."));
+                netThrowRange = Mathf.RoundToInt(list.Slider(netThrowRange, 3f, 12f));
+
+                list.Label("Throws per attempt: " + netMaxThrows + " (shipped 4)",
+                    -1f, (TipSignal?)("How many nets a handler throws before giving up on that animal for now. Whether a "
+                       + "net lands depends on aim and on how fast the animal is moving - a fleeing flier is rarely caught."));
+                netMaxThrows = Mathf.RoundToInt(list.Slider(netMaxThrows, 1f, 8f));
                 list.GapLine();
             }
 

@@ -25,6 +25,7 @@
     <Compile Include="..\Kernel\RM_PoolKernel.cs" />
     <Compile Include="..\Kernel\RM_CondenserKernel.cs" />
     <Compile Include="..\Kernel\RM_ClaimKernel.cs" />
+    <Compile Include="..\Kernel\RM_NetKernel.cs" />
     <Compile Include="WeepingStonesFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

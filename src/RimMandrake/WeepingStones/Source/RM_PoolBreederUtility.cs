@@ -27,14 +27,34 @@ namespace RimMandrake.WeepingStones
 			"RM_Loomu", "RM_Huldu", "RM_Ivvol",
 		};
 
-		/// <summary>WEEPINGSTONES_STOCK_JOB_LOOP_1: a wild target keeps wandering (or flees) while the handler walks up and
-		/// waits, so FailOnCannotTouch ends NET/CULL with the target still alive. Hold it in place for the job's span.</summary>
+		/// <summary>WEEPINGSTONES_STOCK_JOB_LOOP_1: freezes a target for a job's span. CULL still uses it; NET no longer does -
+		/// since WEEPINGSTONES_NET_TARGET_FLEES_1 a target is held only by a net that actually landed (RM_Projectile_PoolNet).</summary>
 		public static void HoldStill(Pawn target, Pawn handler, int ticks)
 		{
 			if (target != null && target.Spawned && !target.Dead)
 			{
 				target.stances.stunner.StunFor(ticks, handler, false, false);
 			}
+		}
+
+		// WEEPINGSTONES_NET_TARGET_FLEES_1: a pawn RM_Projectile_PoolNet landed on, by thingIDNumber -> the tick its
+		// entanglement ends. Not saved: a load mid-throw restarts the job, and the stun it pairs with is saved by vanilla.
+		private static readonly Dictionary<int, int> nettedUntil = new Dictionary<int, int>();
+
+		public static void MarkNetted(Pawn target, int ticks)
+		{
+			nettedUntil[target.thingIDNumber] = Find.TickManager.TicksGame + ticks;
+		}
+
+		public static bool IsNetted(Pawn target)
+		{
+			return target != null && nettedUntil.TryGetValue(target.thingIDNumber, out int until)
+				&& Find.TickManager.TicksGame < until;
+		}
+
+		public static void ClearNetted(Pawn target)
+		{
+			if (target != null) nettedUntil.Remove(target.thingIDNumber);
 		}
 
 		public static string BreedingStockDefNameFor(string pawnKindDefName)

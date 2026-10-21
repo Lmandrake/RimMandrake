@@ -4,6 +4,7 @@
 //              terrain grid, plus the ancient condenser's water accumulator
 //   claim      the condenser quests' exclusive claim over a mock quest manager (RM_ClaimKernel)
 //   slot       the faction-slot resolution vs an explicit-scan oracle
+//   net        the NET throw's flight time and landing cover (RM_NetKernel) vs a moving-target oracle
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
 using System.Collections.Generic;
@@ -640,6 +641,45 @@ namespace RimMandrake.WeepingStones.SelfTest
 
         public static List<string> Slot(int n, int baseSeed) { return Family("slot", n, baseSeed, SlotCase); }
 
+        // ---- net: the NET throw's landing geometry (RM_NetKernel), WEEPINGSTONES_NET_TARGET_FLEES_1 ----------------
+        // A target runs straight away from its aimed cell at v cells/tick, moving a whole cell at a time the way a pawn
+        // does; the net lands after FlightTicks. Oracle: it is caught iff it is still within the radius then.
+        public static long NCaught, NOutran;
+        private static string NetCase(int seed)
+        {
+            var r = new Random(seed);
+            float d = 1f + (float)r.NextDouble() * 11f, speed = 6f + (float)r.NextDouble() * 20f, v = r.Next(4) == 0 ? 0f : (float)r.NextDouble() * 0.2f;
+            int t = RM_NetKernel.FlightTicks(d, speed);
+            Check(t == Math.Max(1, (int)Math.Ceiling(d / (speed / 100f))), $"FlightTicks({d},{speed})={t} is not vanilla's ceil(d/(speed/100))");
+            Check(RM_NetKernel.FlightTicks(d + 1f, speed) >= t, "a longer throw must not land sooner");
+            int dirx = r.Next(3) - 1, dirz = dirx == 0 ? (r.Next(2) == 0 ? 1 : -1) : 0;
+            int moved = (int)Math.Floor(v * t);
+            Steps += t;
+            bool caught = RM_NetKernel.NetCovers(moved * dirx, moved * dirz, 0, 0, RM_NetKernel.DefaultNetRadius);
+            bool oracle = moved <= RM_NetKernel.DefaultNetRadius;
+            Check(caught == oracle, $"v {v} t {t} moved {moved}: NetCovers {caught} vs oracle {oracle}");
+            if (RM_NetKernel.OutrunsNet(v, t, RM_NetKernel.DefaultNetRadius)) Check(v * t > RM_NetKernel.DefaultNetRadius, "OutrunsNet without covering the radius");
+            else Check(caught, $"OutrunsNet says caught but the target moved {moved} cells");
+            if (v == 0f) Check(caught, "a still target under an on-target net escaped");
+            if (caught) NCaught++; else NOutran++;
+            return null;
+        }
+
+        public static List<string> Net(int n, int baseSeed)
+        {
+            // fixed facts first
+            int cover = 0;
+            for (int x = -3; x <= 3; x++) for (int z = -3; z <= 3; z++) if (RM_NetKernel.NetCovers(x, z, 0, 0, RM_NetKernel.DefaultNetRadius)) cover++;
+            Check(cover == 5, $"a radius-1 net must cover the landing cell and its 4 cardinal neighbours, covers {cover}");
+            Check(!RM_NetKernel.NetCovers(RM_NetKernel.MissOffsetMin, 0, 0, 0, RM_NetKernel.DefaultNetRadius), "a missed aim (MissOffsetMin) must land beyond the net's spread");
+            int t6 = RM_NetKernel.FlightTicks(6f, 14f);
+            Check(t6 == 43, $"6-cell throw at speed 14 should land in 43 ticks, got {t6}");
+            Check(RM_NetKernel.OutrunsNet(0.13f, t6, RM_NetKernel.DefaultNetRadius), "a fleeing skarrin (0.13 c/t, live 2026-10-03) must outrun a 6-cell throw");
+            Check(!RM_NetKernel.OutrunsNet(0f, t6, RM_NetKernel.DefaultNetRadius), "a still skarrin must be catchable");
+            Check(RM_NetKernel.InThrowRange(6f, 6f) && !RM_NetKernel.InThrowRange(6.01f, 6f), "InThrowRange is inclusive");
+            return Family("net", n, baseSeed, NetCase);
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -652,6 +692,7 @@ namespace RimMandrake.WeepingStones.SelfTest
                 ("condenser", () => Condenser(N(1500), S(1))),
                 ("claim", () => Claim(N(3000), S(1))),
                 ("slot", () => Slot(N(5000), S(1))),
+                ("net", () => Net(N(5000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -665,10 +706,10 @@ namespace RimMandrake.WeepingStones.SelfTest
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             Console.WriteLine($"reached: pool pulses {PPulses}, starvations {PStarve}, emergences {PEmerge}, escapes {PEscape}, vhorrin gauges {PVhorrinStates}; condenser waits {CWait}, walks {CWalk}, arrivals {CArrive}, no-site {CNoSite}, pools dried {CDried}, pools grown {CGrown}");
-            Console.WriteLine($"reached: claim offers {QOffers}, accepts {QAccepts}, withdrawn {QWithdrawn}, rival withdraws {QRivalWithdraws}, successes {QSuccess}; slot hits {SlotHits}, none {SlotNull}, preferred {SlotPreferred}");
+            Console.WriteLine($"reached: claim offers {QOffers}, accepts {QAccepts}, withdrawn {QWithdrawn}, rival withdraws {QRivalWithdraws}, successes {QSuccess}; slot hits {SlotHits}, none {SlotNull}, preferred {SlotPreferred}; net caught {NCaught}, outran {NOutran}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
-                if (PStarve == 0 || PEmerge == 0 || PEscape == 0 || CWait == 0 || CWalk == 0 || CArrive == 0 || CNoSite == 0 || CDried == 0 || QAccepts == 0 || QWithdrawn == 0 || QSuccess == 0 || SlotHits == 0 || SlotNull == 0 || SlotPreferred == 0)
+                if (PStarve == 0 || PEmerge == 0 || PEscape == 0 || CWait == 0 || CWalk == 0 || CArrive == 0 || CNoSite == 0 || CDried == 0 || QAccepts == 0 || QWithdrawn == 0 || QSuccess == 0 || SlotHits == 0 || SlotNull == 0 || SlotPreferred == 0 || NCaught == 0 || NOutran == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
             Console.WriteLine($"weepingstones fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
