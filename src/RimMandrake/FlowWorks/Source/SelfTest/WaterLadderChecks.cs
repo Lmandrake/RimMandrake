@@ -129,7 +129,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                         }
                     }
                 }
-                // The one left is a SPILL over open natural water (a flood in vanilla's sense), never a dug square.
+                // The one left is a spill onto an undug natural-water base under a non-water top (thin ice; open water is
+                // refused in CanFloodInto), a flood in vanilla's sense, never a dug square.
                 Assert(hits.Count == 1 && hits[0].StartsWith("Flood_FlowWorks.cs:"), "SetTempTerrain sites: " + string.Join(", ", hits));
                 string fl = RiverSwitchFlipChecks.Src("Flood_FlowWorks.cs");
                 RiverSwitchFlipChecks.Has(fl, @"if \(fluidDef\.floodTerrain == null \|\| !fluidDef\.floodTerrain\.temporary\) \{ placedLookup\.Add\(c\);",

@@ -365,11 +365,13 @@ namespace RimMandrake.FlowWorks
 					return;
 				}
 			}
-			// P14 (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD): this is a SPILL over open natural water, the one temp-layer write
-			// left in FlowWorks, and it is a flood in vanilla's sense (laid, queued for removal, the ground restored). Dug
-			// squares never reach here (the policy above sends them through the engine, which stages on the base layer). A
-			// liquid whose own tiers are base-layer defs (every one but water) cannot spill this way: hands off, as on a
-			// refused cell.
+			// P14 (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD): the one temp-layer write left in FlowWorks, a flood in vanilla's
+			// sense (laid, queued for removal, the ground restored). Dug squares never reach here (the policy above sends them
+			// through the engine, which stages on the base layer). Nor does OPEN natural water: CanFloodInto refuses an undug
+			// IsWater cell, and CanLiquidEnter refuses undug ground whose base is not water. So this runs only on an undug cell
+			// whose BASE is natural water under a non-water top layer: Odyssey's ThinIce (temporary, not tagged Water), which
+			// this write replaces. Effectively rare (canal_overflow_flooding_2026-10-21.md table). A liquid whose own tiers are
+			// base-layer defs (every one but water) cannot spill this way: hands off, as on a refused cell.
 			if (fluidDef.floodTerrain == null || !fluidDef.floodTerrain.temporary)
 			{
 				placedLookup.Add(c);   // never offered again; spends no volume
