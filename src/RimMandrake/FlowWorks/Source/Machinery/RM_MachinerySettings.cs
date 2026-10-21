@@ -210,10 +210,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			list.CheckboxLabeled("Rigid pipe and conduit need solid ground; cords lie on any bridge deck", ref lineCrossingRulesEnabled,
 				"On: pipe and power conduit cannot be built on a dug square (pit, trench, canal, moat), a pit cover or any bridge deck: "
 			  + "they are rigid. A flexible power cord may lie on any bridge deck, rope included. A pit cover carries no lines. "
-			  + "A frame that ends up on such a square is cancelled and refunded. Digging a square breaks the pipe, conduit or cord "
+			  + "A hose goes into a dug square only down a ramp or a ladder (a raised ladder still holds it), never over a sheer wall, "
+			  + "and its end couples only to a pump, tank or water on its own level; a hose already laid across a newly dug square "
+			  + "re-routes or reels in. A frame that ends up on such a square is cancelled and refunded. Digging a square breaks the pipe, conduit or cord "
 			  + "on it when the cut is made (not when it is ordered); the materials drop as salvage. A bridge deck that collapses reels in "
 			  + "the hoses across it, and a powered cord it drops lies in the hole as a live wire (it shocks through Gimme Some Slack's "
-			  + "fallen-wire setting, when that mod is loaded). Off: lines follow the game's ground rules alone, digging leaves them "
+			  + "fallen-wire setting, when that mod is loaded). Off: lines (and hoses) follow the game's ground rules alone, digging leaves them "
 			  + "standing, and a collapsing deck only destroys what stands on it.");
 			list.CheckboxLabeled("Pipe poles carry pipe overhead across pits, trenches and canals (needs Gimme Some Slack's overhead lines on)", ref pipePolesEnabled,
 				"On: a pipe pole (Pipe networks menu) hangs a stiff overhead pipe to another pipe pole, using Gimme Some Slack's overhead "

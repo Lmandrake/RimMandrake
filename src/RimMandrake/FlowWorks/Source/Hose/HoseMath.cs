@@ -710,6 +710,9 @@ namespace RimMandrake.FlowWorks.Hose
                     // a 43-cell route laid 35 cells long by squeezing between diagonal stubs)
                     if (!ends && c.X != prev.X && c.Z != prev.Z && !w.IsWalkable(new Cell(c.X, prev.Z)) && !w.IsWalkable(new Cell(prev.X, c.Z)))
                         return false;
+                    // PIPE_POLES phase 6 (design §P5): the hose never drops down (or climbs) a sheer wall between bands; it
+                    // crosses only a ramp or ladder link. Ends included: an end's own half cell is never on another band.
+                    if (!w.StepAllowed(prev, c)) return false;
                     prev = c;
                     if (!ends && WallDepth(w, q) > ClipTolerance) return false;
                 }
@@ -1208,6 +1211,8 @@ namespace RimMandrake.FlowWorks.Hose
                     Cell q = c + d;
                     if (!w.InBounds(q) || !Ok(q)) continue;
                     if (d.X != 0 && d.Z != 0 && !(Ok(new Cell(c.X + d.X, c.Z)) && Ok(new Cell(c.X, c.Z + d.Z)))) continue;
+                    // PIPE_POLES phase 6 (design §P5): into or out of a dug square only across a ramp or ladder link
+                    if (!w.StepAllowed(c, q)) continue;
                     double step = d.X != 0 && d.Z != 0 ? 1.414 : 1.0;
                     double nl = len[c] + step;
                     if (lengthBound > 0 && nl + H(q) > lengthBound) continue;

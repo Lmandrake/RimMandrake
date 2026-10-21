@@ -330,10 +330,15 @@ namespace RimMandrake.FlowWorks.Hose
         /// sends the hose back to a planned route (design section 8: the obstacle moved it).</summary>
         internal bool TrailWalkable(CordWorld w)
         {
+            Cell? prev = null;
             foreach (IntVec3 c in trail)
             {
                 var k = new Cell(c.x, c.z);
                 if (!Rect.Contains(k) && !w.IsWalkable(k)) return false;
+                // PIPE_POLES phase 6 (design §P5): a walked hose whose trail now steps between bands off a ramp or ladder (a
+                // square dug under it, a ramp removed) is not walkable any more; the tick falls back to the planned route
+                if (prev.HasValue && !w.StepAllowed(prev.Value, k)) return false;
+                prev = k;
             }
             return true;
         }
