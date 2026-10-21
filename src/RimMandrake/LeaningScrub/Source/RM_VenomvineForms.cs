@@ -612,7 +612,9 @@ namespace RimMandrake.LeaningScrub
         }
 
         // ── marked thorns and thorn litter: one pawn pass ──
-        public void SweepThorns(int now)
+        // `only` (proof hook only; the shipped tick passes null) limits the pass to the fixture's own pawns, so a proof
+        // never scratches a real colonist standing in marked thorns elsewhere on the map.
+        public void SweepThorns(int now, HashSet<Pawn> only = null)
         {
             if (!RM_LeaningScrubSettings.modEnabled)
             {
@@ -628,7 +630,7 @@ namespace RimMandrake.LeaningScrub
             for (int i = 0; i < tmpPawns.Count; i++)
             {
                 Pawn p = tmpPawns[i];
-                if (p.Dead || !p.Spawned || p.Flying || IsImmune(p))
+                if (p.Dead || !p.Spawned || p.Flying || IsImmune(p) || (only != null && !only.Contains(p)))
                 {
                     continue;
                 }
@@ -996,7 +998,7 @@ namespace RimMandrake.LeaningScrub
                 foreach (IntVec3 o in GenRadial.RadialCellsAround(c, 12f, true))
                 {
                     if (!o.InBounds(map) || !o.Standable(map) || o.Roofed(map) || o.GetFirstPawn(map) != null
-                        || o.GetEdifice(map) != null || map.fertilityGrid.FertilityAt(o) < 0.7f
+                        || o.GetEdifice(map) != null || o.GetFirstItem(map) != null || map.fertilityGrid.FertilityAt(o) < 0.7f
                         || map.thingGrid.ThingAt(o, ThingDefOf.Fire) != null) { ok = false; break; }
                 }
                 if (ok) return c;
@@ -1004,11 +1006,19 @@ namespace RimMandrake.LeaningScrub
             return IntVec3.Invalid;
         }
 
-        private static Plant Stand(Map map, string defName, IntVec3 c, float growth, List<Thing> made)
+        // A plant already on the fixture cell (a grass blade, a colonist's crop) is DESPAWNED and put back by Restore, never
+        // destroyed (SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL).
+        private static Plant Stand(Map map, string defName, IntVec3 c, float growth, List<Thing> made, List<KeyValuePair<Plant, IntVec3>> displaced)
         {
             ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
             if (def == null) return null;
-            c.GetPlant(map)?.Destroy();
+            Plant old = c.GetPlant(map);
+            if (old != null && !made.Contains(old))
+            {
+                old.DeSpawn();
+                displaced.Add(new KeyValuePair<Plant, IntVec3>(old, c));
+            }
+            else old?.Destroy();
             Plant p = (Plant)ThingMaker.MakeThing(def);
             p.Growth = growth;
             GenSpawn.Spawn(p, c, map);
@@ -1022,6 +1032,17 @@ namespace RimMandrake.LeaningScrub
             GenSpawn.Spawn(p, c, map);
             made.Add(p);
             return p;
+        }
+
+        private static void Restore(Map map, List<KeyValuePair<Plant, IntVec3>> displaced)
+        {
+            foreach (KeyValuePair<Plant, IntVec3> kv in displaced)
+            {
+                Plant p = kv.Key;
+                if (p.Destroyed || p.Spawned) continue;
+                if (kv.Value.InBounds(map) && kv.Value.GetPlant(map) == null) GenSpawn.Spawn(p, kv.Value, map);
+                else p.Destroy();   // the cell is held by something the proof could not undo: discard rather than leak a despawned plant
+            }
         }
 
         private static int Injuries(Pawn p)
@@ -1060,6 +1081,7 @@ namespace RimMandrake.LeaningScrub
             string form = parts[0];
             bool on = parts.Length < 2 || parts[1] != "off";
             var made = new List<Thing>();
+            var displaced = new List<KeyValuePair<Plant, IntVec3>>();
             bool sMod = RM_LeaningScrubSettings.modEnabled, sRear = RM_LeaningScrubSettings.rearingEnabled,
                 sWalk = RM_LeaningScrubSettings.walkingEnabled, sHoard = RM_LeaningScrubSettings.hoardEnabled,
                 sQuench = RM_LeaningScrubSettings.quenchEnabled, sSworn = RM_LeaningScrubSettings.swornSparesMarkedEnabled,
@@ -1076,7 +1098,7 @@ namespace RimMandrake.LeaningScrub
                     case "rearing":
                     {
                         RM_LeaningScrubSettings.rearingEnabled = on;
-                        Plant st = Stand(map, "RM_RearingVenomvine", spot, 1f, made);
+                        Plant st = Stand(map, "RM_RearingVenomvine", spot, 1f, made, displaced);
                         if (st == null) return "FAIL: RM_RearingVenomvine did not resolve";
                         RM_CompRearing r = st.GetComp<RM_CompRearing>();
                         if (r == null) return "FAIL: RM_RearingVenomvine carries no RM_CompRearing";
@@ -1093,13 +1115,13 @@ namespace RimMandrake.LeaningScrub
                         HediffDef mark = DefDatabase<HediffDef>.GetNamedSilentFail("RM_SwornSapMarked");
                         if (mark == null) return "FAIL: RM_SwornSapMarked did not resolve";
                         IntVec3 a = spot, b = spot + new IntVec3(3, 0, 0);
-                        if (Stand(map, "RM_SwornVenomvine", a, 1f, made) == null) return "FAIL: RM_SwornVenomvine did not resolve";
-                        Stand(map, "RM_SwornVenomvine", b, 1f, made);
+                        if (Stand(map, "RM_SwornVenomvine", a, 1f, made, displaced) == null) return "FAIL: RM_SwornVenomvine did not resolve";
+                        Stand(map, "RM_SwornVenomvine", b, 1f, made, displaced);
                         Pawn marked = Colonist(map, a, made);
                         Pawn bare = Colonist(map, b, made);
                         marked.health.AddHediff(mark);
                         int m0 = Injuries(marked), b0 = Injuries(bare);
-                        comp.SweepThorns(now);
+                        comp.SweepThorns(now, new HashSet<Pawn> { marked, bare });
                         int m1 = Injuries(marked), b1 = Injuries(bare);
                         string st = string.Format("marked {0}->{1} bare {2}->{3}", m0, m1, b0, b1);
                         if (b1 <= b0) return "UNMEASURED: the unmarked control took no scratch (thorns inert?) " + st;
@@ -1109,10 +1131,12 @@ namespace RimMandrake.LeaningScrub
                     case "hoard":
                     {
                         RM_LeaningScrubSettings.hoardEnabled = on;
-                        Plant st = Stand(map, "RM_HoardVenomvine", spot, 1f, made);
+                        Plant st = Stand(map, "RM_HoardVenomvine", spot, 1f, made, displaced);
                         if (st == null) return "FAIL: RM_HoardVenomvine did not resolve";
                         RM_CompHoard h = st.GetComp<RM_CompHoard>();
                         if (h == null) return "FAIL: RM_HoardVenomvine carries no RM_CompHoard";
+                        var steelBefore = new HashSet<int>();
+                        foreach (Thing t in map.listerThings.ThingsOfDef(ThingDefOf.Steel)) steelBefore.Add(t.thingIDNumber);
                         Thing steel = ThingMaker.MakeThing(ThingDefOf.Steel);
                         steel.stackCount = 7;
                         GenPlace.TryPlaceThing(steel, spot + new IntVec3(1, 0, 0), map, ThingPlaceMode.Direct);
@@ -1126,7 +1150,8 @@ namespace RimMandrake.LeaningScrub
                         int back = 0;
                         foreach (Thing t in map.listerThings.ThingsOfDef(ThingDefOf.Steel))
                         {
-                            if (t.Position.InHorDistOf(pos, 4f)) { back += t.stackCount; made.Add(t); }
+                            // only steel the fixture made: a colonist's stack nearby is neither counted nor destroyed
+                            if (!steelBefore.Contains(t.thingIDNumber) && t.Position.InHorDistOf(pos, 4f)) { back += t.stackCount; made.Add(t); }
                         }
                         string s2 = string.Format("held={0} steelGone={1} steelBackOnCut={2}", heldNow, steelGone, back);
                         if (on)
@@ -1140,7 +1165,7 @@ namespace RimMandrake.LeaningScrub
                     case "quench":
                     {
                         RM_LeaningScrubSettings.quenchEnabled = on;
-                        Plant st = Stand(map, "RM_QuenchVenomvine", spot, 1f, made);
+                        Plant st = Stand(map, "RM_QuenchVenomvine", spot, 1f, made, displaced);
                         if (st == null) return "FAIL: RM_QuenchVenomvine did not resolve";
                         RM_CompQuench q = st.GetComp<RM_CompQuench>();
                         if (q == null) return "FAIL: RM_QuenchVenomvine carries no RM_CompQuench";
@@ -1161,8 +1186,8 @@ namespace RimMandrake.LeaningScrub
                         ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail("RM_WalkingVenomvine");
                         if (def == null) return "FAIL: RM_WalkingVenomvine did not resolve";
                         IntVec3 tail = spot + new IntVec3(-1, 0, 0);
-                        Stand(map, "RM_WalkingVenomvine", tail, 1f, made);
-                        Stand(map, "RM_WalkingVenomvine", spot, 1f, made);
+                        Stand(map, "RM_WalkingVenomvine", tail, 1f, made, displaced);
+                        Stand(map, "RM_WalkingVenomvine", spot, 1f, made, displaced);
                         IntVec3 d1 = spot + new IntVec3(1, 0, 0), d2 = spot + new IntVec3(2, 0, 0);
                         if (!def.CanEverPlantAt(d1, map) || !def.CanEverPlantAt(d2, map))
                             return "UNMEASURED: the cells downwind of the fixture cannot hold the plant (temperature?)";
@@ -1184,7 +1209,7 @@ namespace RimMandrake.LeaningScrub
                         RM_LeaningScrubSettings.sheddingEnabled = on;
                         ThingDef litter = DefDatabase<ThingDef>.GetNamedSilentFail("RM_ThornLitter");
                         if (litter == null) return "FAIL: RM_ThornLitter did not resolve";
-                        if (Stand(map, "RM_SheddingVenomvine", spot, 1f, made) == null) return "FAIL: RM_SheddingVenomvine did not resolve";
+                        if (Stand(map, "RM_SheddingVenomvine", spot, 1f, made, displaced) == null) return "FAIL: RM_SheddingVenomvine did not resolve";
                         int before = CountDefIn(map, litter, spot, 11f);
                         comp.Shed(new Vector2(1f, 0f));
                         int after = CountDefIn(map, litter, spot, 11f);
@@ -1228,6 +1253,7 @@ namespace RimMandrake.LeaningScrub
                 {
                     if (made[i] != null && !made[i].Destroyed) made[i].Destroy();
                 }
+                Restore(map, displaced);
             }
         }
     }
