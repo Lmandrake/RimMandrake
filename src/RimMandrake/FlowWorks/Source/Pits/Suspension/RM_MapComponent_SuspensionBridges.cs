@@ -1028,7 +1028,10 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					return;   // another built tower stands there (a rebuild blueprint or frame holds nothing up)
 				}
-				r.towers.Remove(i);
+				if (!r.towers.Remove(i))
+				{
+					return;   // never one of this bridge's supports (a tower refused on a drawbridge, Notify_TowerBuilt): nothing swings
+				}
 			}
 			if (!RM_SuspensionSettings.suspensionAnchorLossFalls)
 			{
