@@ -514,7 +514,7 @@ def pit_travel_fly_jump_float(t):
 # ruled previously."). Offline: the port rule, hose couplings gated, pipes unchanged (Source/SelfTest/PumpChecks.cs). The
 # drawn port and coupling art is the look half, judged by eye.
 PUMP_PORT_CASES = ["PumpPorts_hose_at_a_side_port", "PumpPorts_pipes_join_adjacent_hoses_at_ports",
-                   "PipeStub_corner_adjacent_runs_under_to_centre"]
+                   "PipeStub_corner_adjacent_runs_under_to_centre", "PipeStub_tank_corner_joins_and_runs_under"]
 
 
 @suite.chain("pump_ports_one_per_side")

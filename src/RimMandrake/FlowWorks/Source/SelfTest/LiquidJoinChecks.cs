@@ -133,10 +133,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(m != null && m.Length == 8 && Near(m[6], 7) && Near(m[7], 7), "multi-cell: on to the footprint's centre");
                 Assert(LiquidJoinRule.CornerStub(5, 5, 1, 1, 6, 5, 2, 2) == null, "edge-adjacent too: CentreStub draws it, not the corner");
                 Assert(LiquidJoinRule.CornerStub(5, 5, 1, 1, 8, 8, 1, 1) == null, "not touching: nothing");
-                // the section layer draws it for machines (the net joins them 8-way), never for tanks (cardinal only)
                 string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
                 Assert(joins.Contains(": LiquidJoinRule.CornerStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height);"), "can-fail: the layer prints corner stubs");
-                Assert(joins.Contains("if (di >= 4 && RM_LiquidNet.RoleOfKind(b) != RM_NetRole.Machine) continue;"), "corners only where the net joins");
+            });
+            // the same ruling for every object, tanks included: "A solid pipe must only be adjacent and is then drawn undernead
+            // to the center of the object"
+            Case("PipeStub_tank_corner_joins_and_runs_under", () =>
+            {
+                string net = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidNet.cs"));
+                Assert(net.Contains("IEnumerable<IntVec3> around = GenAdj.CellsAdjacent8Way(t);"), "every member, tank included, attaches 8-way");
+                Assert(!net.Contains("RM_NetRole.Tank ? GenAdj.CellsAdjacentCardinal(t)"), "can-fail: a tank is no longer cardinal-only");
+                Assert(net.Contains("return ThingsIn(GenAdj.CellsAdjacent8Way(c, Rot4.North, IntVec2.One).Concat(new[] { c }), null, RM_NetRole.Tank).Distinct();"),
+                    "a pipe finds a tank across a corner (the mirror)");
+                string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
+                Assert(!joins.Contains("RoleOfKind(b) != RM_NetRole.Machine) continue;"), "can-fail: the corner run is drawn for tanks too");
+                // a 2x2 tank at (6,6): a pipe at its north-east corner (8,8) elbows west then south to (7,7)
+                double[] t = LiquidJoinRule.CornerStub(8, 8, -1, -1, 6, 6, 2, 2);
+                Assert(t != null && Near(t[t.Length - 2], 7) && Near(t[t.Length - 1], 7), "a tank's corner pipe runs under to its centre");
             });
             Case("PipeStub_wiring_shipped", () =>
             {

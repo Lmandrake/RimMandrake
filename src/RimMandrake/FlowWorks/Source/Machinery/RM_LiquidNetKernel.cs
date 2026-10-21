@@ -5,7 +5,7 @@
 //
 //   conductors  universal-pipe CELLS (they conduct cardinally), relay REELS, and each live hose LINK (one conductor). A
 //               COMPONENT is a connected set of conductors.
-//   members     tanks and machines ATTACH to every component they touch (a pipe cardinal to or under a tank, a pipe 8-way
+//   members     tanks and machines ATTACH to every component they touch (a pipe 8-way around or under a tank (owner 2026-10-20), a pipe 8-way
 //               around or under a machine, a hose end coupled to either) and never conduct: a tank between two pipe runs is
 //               in both and the runs do not merge; a tank-hose-tank pair is one component of one conductor.
 //   ports       a hose's free end with a role (Intake / Outflow, rev 2 §3.4) attaches to its hose's component as a PORT.
@@ -57,9 +57,9 @@ namespace RimMandrake.FlowWorks.Machinery
         RM_NetRole RoleOf(object v);
         /// <summary>Tanks touching a member 8-way (a machine's touch store), excluding the member itself.</summary>
         IEnumerable<object> OriginTanks(object member);
-        /// <summary>Pipe cells a member attaches through: cardinal or under for a tank, 8-way or under for a machine.</summary>
+        /// <summary>Pipe cells a member attaches through: 8-way around it or under it, tank and machine alike (owner 2026-10-20).</summary>
         IEnumerable<object> OriginPipeCells(object member);
-        /// <summary>Tanks cardinal to, then on, a pipe cell.</summary>
+        /// <summary>Tanks 8-way around, then on, a pipe cell.</summary>
         IEnumerable<object> PipeTanks(object pipeCell);
         /// <summary>Machines 8-way around, or on, a pipe cell.</summary>
         IEnumerable<object> PipeMachines(object pipeCell);
