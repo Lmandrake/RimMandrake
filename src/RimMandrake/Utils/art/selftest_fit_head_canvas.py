@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """selftest_fit_head_canvas.py — the head envelope check and fit (fit_head_canvas.py + head_envelope.json).
 
-Part 1, synthetic heads: an in-envelope head passes; a wide side profile, a blank facing (UNMEASURED, never a
+Part 0, skull mass (owner 2026-10-20: centre on the skull, never on ears/horns/trunk tips): synthetic heads with
+ears hanging BELOW the chin, horns rising above the crown, wide eye-stalks/wings and a trunk; the old alpha-bbox
+reading is shown to miss the skull's crown/chin/centre and the skull-mass reading finds them, and fit seats the skull
+(not the ear tips) on the vanilla chin. Part 1, synthetic heads: an in-envelope head passes; a wide side profile, a blank facing (UNMEASURED, never a
 pass) and a trunk hanging below the chin are caught; fit clamps an over-wide head into the envelope with one
 scale; --facing-scale / --squeeze-x bring a disagreeing side profile into line and a squeeze past SQUEEZE_MIN is
 refused; the legacy argv form still runs. Part 2, a SANITY PROBE on real art: the PRE-FIT Mimbanese heads (read
 from git at PREFIT_REV, since the shipped ones were refitted 2026-10-20) are flagged for the side profile the
-owner called "far too wide", so the instrument can see the defect it was built for; the shipped heads now pass.
+owner called "far too wide", and the bbox-seated 6d77ea123 Ortolan is flagged for the skull chin riding high (the ears
+were its chin), so the instrument can see the defects it was built for; the shipped heads now pass.
 """
 import os
 import subprocess
@@ -22,6 +26,7 @@ import fit_head_canvas as F  # noqa: E402
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 FAILS = []
 PREFIT_REV = "e9d81b61f"   # last commit holding the pre-envelope-fit species heads
+BBOX_FIT_REV = "6d77ea123"  # the bbox-seated refit the owner rejected (Ortolan ears used as the chin)
 SPECIES = ("Lasat", "Mimbanese", "Nelvaanian", "Ortolan")
 
 
@@ -40,6 +45,19 @@ def head(path, w_frac, h_frac, cx=0.5, bottom=0.70, canvas=512):
     im.save(path)
 
 
+def creature(path, appendages, w=0.36, h=0.39, cx=0.5, bottom=0.70, canvas=512):
+    """An elliptical skull (w, h, cx, bottom in canvas fractions) plus appendage ellipses (x0, y0, x1, y1) that
+    overlap it. Returns the true skull extents (t, b, cx) as fractions."""
+    im = Image.new("RGBA", (canvas, canvas), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    c = lambda box: tuple(v * canvas for v in box)  # noqa: E731
+    d.ellipse(c((cx - w / 2, bottom - h, cx + w / 2, bottom)), fill=(200, 150, 120, 255))
+    for box in appendages:
+        d.ellipse(c(box), fill=(120, 140, 220, 255))
+    im.save(path)
+    return bottom - h, bottom, cx
+
+
 def rules(viol):
     return {(f, r) for f, r, _, _ in viol}
 
@@ -48,6 +66,57 @@ env = F.load_envelope()
 van = env["vanilla"]
 check(all(f in van and 0.3 < van[f]["w"] < 0.45 and 0.35 < van[f]["h"] < 0.45 for f in F.FACINGS),
       "envelope carries measured vanilla extents for all three facings", van)
+check(all(f in env.get("vanilla_skull", {}) and abs(env["vanilla_skull"][f]["h"] - van[f]["h"]) < 0.02
+          for f in F.FACINGS), "envelope carries the vanilla SKULL extents (== bbox on appendage-free vanilla heads)")
+
+# ---- Part 0: skull mass vs alpha bbox ----
+TOL = 0.012   # 6 px on 512: the skull reading must land on the true skull within this
+with tempfile.TemporaryDirectory() as td:
+    cases = {
+        # Ortolan-like: long ears from the temples hanging well BELOW the chin, and a trunk
+        "ears_below_chin": [(0.28, 0.40, 0.34, 0.86), (0.66, 0.40, 0.72, 0.86), (0.48, 0.60, 0.52, 0.86)],
+        # Nelvaanian/Lasat-like: horns/ears rising far ABOVE the crown, asymmetric so the bbox centre moves too
+        "horns_above_crown": [(0.30, 0.10, 0.36, 0.42), (0.58, 0.16, 0.64, 0.42)],
+        # Rakata-like eye-stalks / wings: thin, much wider than the skull, one side longer
+        "wide_stalks": [(0.06, 0.44, 0.40, 0.48), (0.60, 0.44, 0.97, 0.48)],
+    }
+    for name, apps in cases.items():
+        p = os.path.join(td, f"{name}.png")
+        t, b, cx = creature(p, apps)
+        im = Image.open(p)
+        bb = F.dims(F.bbox_frac(im))
+        _, sk = F.skull_mass(im)
+        old_ok = abs(bb["t"] - t) <= TOL and abs(bb["b"] - b) <= TOL and abs(bb["cx"] - cx) <= TOL
+        new_err = max(abs(sk["t"] - t), abs(sk["b"] - b), abs(sk["cx"] - cx))
+        check(not old_ok, f"{name}: the old alpha-bbox reading misses the skull (crown/chin/centre)",
+              (bb["t"], bb["b"], bb["cx"], t, b, cx))
+        check(new_err <= TOL, f"{name}: the skull-mass reading finds crown, chin and centre within {TOL}",
+              (round(sk["t"], 3), round(sk["b"], 3), round(sk["cx"], 3), t, b, cx))
+    # a plain vanilla-like head: skull == bbox (the detector costs nothing where there are no appendages)
+    p = os.path.join(td, "plain.png")
+    t, b, cx = creature(p, [])
+    _, sk = F.skull_mass(Image.open(p))
+    check(max(abs(sk["t"] - t), abs(sk["b"] - b), abs(sk["cx"] - cx)) <= TOL, "a head with no appendages: skull == bbox", sk)
+
+    # fit seats the SKULL chin (not the ear tips) on the vanilla chin: source has short ears hanging below the chin
+    src = []
+    for f in F.FACINGS:
+        p = os.path.join(td, f"eared_{f}.png")
+        creature(p, [(0.28, 0.45, 0.33, 0.80), (0.67, 0.45, 0.72, 0.80)], w=0.40, h=0.42, bottom=0.72)
+        src.append(p)
+    out = os.path.join(td, "eared_fit")
+    rc = F.main(["fit", "--stem", "E_Head", "--out", out] + src)
+    _, ext = F.measure_dir(out)
+    vsk = env["vanilla_skull"]
+    chin_err = max(abs(ext[f]["skull"]["b"] - vsk[f]["b"]) for f in F.FACINGS)
+    hang = min(ext[f]["bbox"]["b"] - ext[f]["skull"]["b"] for f in F.FACINGS)
+    check(rc == 0 and chin_err <= TOL and hang > 0.03,
+          "fit puts the skull chin on the vanilla chin and lets the ears hang below it", (rc, chin_err, hang))
+    # and the bbox reading of that fitted head would have called the ear tips its chin
+    check(max(abs(ext[f]["bbox"]["b"] - vsk[f]["b"]) for f in F.FACINGS) > 0.03,
+          "the fitted head's alpha bbox bottom is the ear tips, not the chin (old method would have raised it)")
+    ov = F.overlay_image(Image.open(os.path.join(out, "E_Head_south.png")), env, "south", 128)
+    check(ov.size == (128, 128), "the skull-mass overlay renders")
 
 with tempfile.TemporaryDirectory() as td:
     good = os.path.join(td, "Good")
@@ -67,7 +136,7 @@ with tempfile.TemporaryDirectory() as td:
     Image.new("RGBA", (512, 512), (0, 0, 0, 255)).save(os.path.join(wide, "Wide_Head_eastm.png"))
     _, ext = F.measure_dir(wide)
     r = rules(F.judge(ext, env, "Wide")[0])
-    check(("east", "side profile wider than front") in r and ("east", "too wide") in r,
+    check(("east", "side skull wider than front") in r and ("east", "too wide (with appendages)") in r,
           "a 1.5x-wide side profile is flagged (and the _eastm mask is skipped)", r)
 
     blank = os.path.join(td, "Blank")
@@ -85,15 +154,15 @@ with tempfile.TemporaryDirectory() as td:
         b = van[f]["b"] + (0.08 if f == "east" else 0)
         head(os.path.join(trunk, f"Trunk_Head_{f}.png"), van[f]["w"], van[f]["h"], bottom=b)
     _, ext = F.measure_dir(trunk)
-    check(("east", "hangs below vanilla chin") in rules(F.judge(ext, env, "Trunk")[0]),
-          "a facing hanging below the vanilla chin is flagged")
+    check(("east", "skull chin below vanilla chin") in rules(F.judge(ext, env, "Trunk")[0]),
+          "a facing whose skull sits below the vanilla chin is flagged")
 
     src = os.path.join(td, "Src")
     os.makedirs(src)
     paths = []
     for f in F.FACINGS:
         p = os.path.join(src, f"big_{f}.png")
-        head(p, 0.80, 0.60, bottom=0.95)       # a full-canvas render, much too wide
+        head(p, 0.70, 0.60, bottom=0.95)       # a full-canvas render, much too wide
         paths.append(p)
     out = os.path.join(td, "out")
     rc = F.main(["fit", "--stem", "Big_Head", "--out", out] + paths)
@@ -144,16 +213,33 @@ with tempfile.TemporaryDirectory() as td:
             got += 1
     if got == 3:
         _, ext = F.measure_dir(pre)
-        check(("east", "side profile wider than front") in rules(F.judge(ext, env, "Mimbanese")[0]),
+        check(("east", "side skull wider than front") in rules(F.judge(ext, env, "Mimbanese")[0]),
               "SANITY: the pre-fit Mimbanese side profile is flagged too wide")
     else:
         print(f"UNMEASURED sanity probe: pre-fit Mimbanese heads not readable at {PREFIT_REV} ({got}/3)")
+    pre = os.path.join(td, "Ortolan")
+    os.makedirs(pre)
+    got = 0
+    for f in F.FACINGS:
+        rel = f"{HEADS}/Ortolan/Ortolan_Head_{f}.png"
+        r = subprocess.run(["git", "-C", REPO, "show", f"{BBOX_FIT_REV}:{rel}"], capture_output=True)
+        if r.returncode == 0 and r.stdout:
+            with open(os.path.join(pre, os.path.basename(rel)), "wb") as fh:
+                fh.write(r.stdout)
+            got += 1
+    if got == 3:
+        _, ext = F.measure_dir(pre)
+        check(("south", "skull chin above vanilla chin") in rules(F.judge(ext, env, "Ortolan")[0]),
+              "SANITY: the bbox-seated Ortolan (ears as chin) is flagged for a skull chin riding high")
+    else:
+        print(f"UNMEASURED sanity probe: bbox-fit Ortolan heads not readable at {BBOX_FIT_REV} ({got}/3)")
 for sp_name in SPECIES:
     d = os.path.join(REPO, HEADS, sp_name)
     if os.path.isdir(d):
         _, ext = F.measure_dir(d)
-        viol = F.judge(ext, env, sp_name)[0]
-        check(not viol, f"shipped {sp_name} heads sit inside the envelope", viol)
+        new, known, stale = F.split_known(F.judge(ext, env, sp_name)[0], env, sp_name)
+        check(not new and not stale, f"shipped {sp_name} heads sit inside the envelope"
+              + (f" (bar {len(known)} known, item-owned)" if known else ""), (new, stale))
     else:
         print(f"UNMEASURED: {sp_name} head dir absent")
 

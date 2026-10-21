@@ -58,43 +58,63 @@ Ratios to the vanilla Average median (full table: `Transient/head_envelope_repor
 Every species is 1.20x vanilla height on the south: that is the old `--target-h 240` default (240/200).
 
 ## The envelope (PROPOSED limits, MEASURED base) — data in `src/RimMandrake/Utils/art/head_envelope.json`
-Per facing, against the vanilla Average median of THAT facing:
-- width 0.75–**1.25x**, height 0.85–**1.25x** (the 25% is the ear/crest/stalk allowance; a hat covers 1.0x);
-- above the vanilla crown at most **0.25** of a vanilla head height; below the vanilla chin at most **0.06**
-  (and the chin no more than 0.06 above it) — the neck seat is fixed by `headOffset`, so the chin must sit there;
-- centre x within **0.03** of canvas (15 px);
-- at least **0.02** of canvas clear of every edge;
-- facings agree: east and north height within **±10%** of south; north width within **±15%** of south; east width at
-  most **1.20x** south (vanilla is 1.09x).
-- `species_overrides` in the JSON lets the owner grant one species more (the Rakata eye-stalks will need width
-  ~2x on south/north); none granted yet. A snout/trunk species needs a `below_chin_max` override or a repaint.
+Since the owner's skull-mass ruling (below) every rule reads one of two extents per facing, against the vanilla Average
+median of THAT facing measured by the same detector:
+- the **SKULL** (bulk head mass, appendages removed): height 0.85–**1.25x** the vanilla skull; chin within **0.06** of a
+  vanilla head height of the vanilla chin (either way) — the neck seat is fixed by `headOffset`, so the chin must sit
+  there; centroid within **0.03** of canvas of the vanilla centre; facings agree: east and north skull height within
+  **±10%** of south, north skull width within **±15%** of south, east skull width at most **1.20x** south;
+- the **BBOX** (alpha>20, appendages included) carries the appendage allowance: width 0.75–**1.25x**, at most **0.25**
+  above the vanilla crown and **0.25** below the vanilla chin (`appendage_below_chin_max`), and at least **0.02** of
+  canvas clear of every edge (the canvas edge is a hard limit: nothing draws beyond it).
+- `species_overrides` (PROPOSED by FOUNDRY 2026-10-20 under the ruling's "ears free"; the owner may move any number):
+  Lasat bbox width 1.65 and 0.40 above the crown (its ears); Ortolan bbox width 1.55, 0.80 below the chin (its ears),
+  skull chin 0.25 below the vanilla chin and facing height ±30% (its back view carries a nape below the dome that the
+  trunk hides on the front, so the north skull reads ~1.24x; the north is seated on the south's CROWN instead).
+- `known_violations`: a real defect left visible, owned by an item. `check` prints it as KNOWN, and FAILS once it no
+  longer occurs (stale), so the entry cannot outlive the defect. One: the Ortolan side view (below).
 
 ## What the tool does now (`src/RimMandrake/Utils/art/fit_head_canvas.py`)
-- `measure PNG...` bbox fractions; `vanilla DIR --write` re-measures the extracted Core heads into the JSON;
-- `check HEAD_DIR... [--report MD]` judges each species dir per facing (masks `*_southm.png` skipped, a blank or
-  missing facing is UNMEASURED, never a pass), exit 1 on any violation;
-- `fit` scales all facings by ONE factor (south height = vanilla x `--height-ratio`, default 1.10), clamped so every
-  facing fits the width/height maxima, centres on the vanilla centre and seats the chin on the vanilla chin;
-  `--anchor crown` keeps east/north on the south's crown line for a facing that hangs a trunk below the chin. It then
-  prints the envelope check of its output. One uniform scale cannot fix facing disagreement (a ratio between
-  facings is scale-invariant), so `--facing-scale FACING=X` adds a per-facing UNIFORM multiplier (aspect kept) and
-  `--squeeze-x FACING=X` a horizontal-only factor, refused below `SQUEEZE_MIN` 0.93 (a bigger squeeze is a repaint).
-  The legacy argv form still works.
-- Selftest: `src/RimMandrake/Utils/art/selftest_fit_head_canvas.py` (synthetic cases plus a sanity probe that the
-  shipped Mimbanese side profile is flagged).
+- `skull_mass()`: alpha mask; largest inscribed radius R by erosion depth; morphological OPENING with radius 0.55 R
+  (removes everything thinner: ears, horns, crests, eye-stalks, trunks, hair strands); largest central connected mass
+  (the core); then a row-width walk off the core's top and bottom — a run that ENDS within the opening radius is the
+  chin point or dome edge the opening rounded off and is given back, a run still going is a trunk/horn/stalk and is
+  not (the crown walk reaches half as far: a dome is blunt, a muzzle can be long). Crown/chin = top/bottom of that
+  mass, cx = its centroid. Vanilla heads (no appendages) read the same as their bbox to within 2 px.
+- `measure PNG...` bbox and skull; `vanilla DIR --write` re-measures the extracted Core heads (bbox and skull);
+  `check HEAD_DIR... [--report MD]` (masks `*_southm.png` skipped, blank or missing facing UNMEASURED, exit 1 on a new
+  or stale violation); `overlay HEAD_DIR... --out PNG` tints the skull mass green with the skull box yellow, the bbox
+  cyan and the vanilla head box red, to LOOK at what the detector picked; `lineup HEAD_DIR... --vanilla-dir D --out PNG`
+  shows the species beside a vanilla head at true scale with the vanilla head box red in every cell.
+- `fit` scales all facings by ONE factor (south SKULL height = vanilla skull x `--height-ratio`, default 1.0), clamped
+  so every facing fits the skull height, bbox width and canvas-margin limits; it puts the skull centroid on the vanilla
+  centre and the skull chin on the vanilla chin (one translation-only re-seat after re-measuring the output), so ears,
+  horns and trunks hang free. `--anchor crown` puts east/north on the south's skull crown, `--anchor north-crown` only
+  the north. One uniform scale cannot fix facing disagreement, so `--facing-scale FACING=X` (uniform) and
+  `--squeeze-x FACING=X` (horizontal, refused below 0.93) remain. Legacy argv still works.
+- Selftest `src/RimMandrake/Utils/art/selftest_fit_head_canvas.py`: synthetic heads with ears hanging below the chin
+  (plus a trunk), horns above the crown and wide eye-stalks — the old bbox reading misses each skull, the skull reading
+  finds crown/chin/centre within 6 px; fit seats the skull chin, not the ear tips; sanity probes that the pre-fit
+  Mimbanese side and the bbox-seated 6d77ea123 Ortolan are flagged; the shipped heads pass (bar the known one).
 
-## Fit applied to the shipped heads (2026-10-20, FOUNDRY, on *"I agree to all your proposed head efforts."*)
-All twelve PNGs refitted from the pre-fit art (git `e9d81b61f`) and installed through `art install`; every species
-now passes `check` (report: `Transient/head_envelope_report_after_fit_2026-10-20.md`). Chin anchor for all four
-(`--anchor crown` broke the chin rules on every species, and the Ortolan side overhang is ears, not a trunk).
-No repaint was needed; masks (`*_{south,east,north}m.png`) are uniform black and geometry-free, so unchanged.
+## Fit applied to the shipped heads (2026-10-20, FOUNDRY, skull-mass seated)
+All twelve PNGs refitted from the ORIGINAL pre-fit art (git `e9d81b61f`, no compounded resize) and installed through
+`art install` on the owner's ruling. Masks (`*_{south,east,north}m.png`) are uniform black and geometry-free, so
+unchanged. Skull ratios to vanilla (MEASURED by `check`); crown/chin offsets in vanilla head heights (+ = crown higher /
+chin lower than vanilla):
 
-| species | flags (MEASURED after) | south w/h | east w/h | north w/h |
+| species | flags | south skull h, crown, chin | east | north |
 |---|---|---|---|---|
-| Lasat | `--facing-scale east=0.95 --facing-scale north=1.03` (clamped by the 1.25 front width) | 1.24 / 1.06 | 0.94 / 1.13 | 1.25 / 0.97 |
-| Mimbanese | `--facing-scale north=1.30 --facing-scale east=0.915 --squeeze-x east=0.955` | 0.87 / 1.10 | 0.96 / 1.00 | 0.87 / 1.02 |
-| Nelvaanian | `--facing-scale east=0.93` | 0.89 / 1.10 | 0.97 / 1.13 | 0.80 / 1.19 |
-| Ortolan | `--height-ratio 1.15 --facing-scale east=0.96` (the side is narrow: 1.10 left it under 0.75 width) | 1.06 / 1.15 | 0.76 / 1.24 | 1.09 / 1.15 |
+| Lasat | `--facing-scale north=1.10` | 1.00, +0.00, +0.00 | 1.02, +0.02, 0.00 | 0.91, -0.09, 0.00 |
+| Mimbanese | `--facing-scale east=0.935 --squeeze-x east=0.93 --facing-scale north=1.40` | 1.00, 0.00, 0.00 | 0.93, -0.07, 0.00 | 0.99, -0.01, 0.00 |
+| Nelvaanian | `--facing-scale east=0.89 --squeeze-x east=0.93` | 0.99, -0.01, 0.00 | 0.90, -0.10, 0.00 | 0.90, -0.10, 0.00 |
+| Ortolan | `--anchor north-crown --facing-scale east=0.80 --facing-scale north=0.98` | 0.99, 0.00, 0.00 | **0.74**, -0.26, 0.00 | 1.24 (nape), 0.00, +0.24 |
+
+Before (the bbox-seated 6d77ea123, same detector) the Ortolan skull was 0.70x vanilla on the south with its chin 0.43 of
+a vanilla head ABOVE the vanilla chin (0.60 on the side, 0.25 on the back): the ear tips had been seated as the chin.
+**Ortolan side view (KNOWN, `ORTOLAN_SIDE_EAR_REDRAW_OUTGROWS_ITS_CANVAS`):** its ear is ~25% longer than the front
+ear, so at vanilla skull height it runs off the canvas bottom; the side is drawn at 0.74x until the ear is repainted
+(cosmetic, so the owner's permission comes first).
 
 UNMEASURED: how they read in game (`HEADS_VERIFY_SHRUNK_TO_FIT_THE_HATS`).
 
@@ -103,4 +123,4 @@ Step 4 of the parent design (the joint hat test). The live state read of `curHea
 
 ## Owner ruling 2026-10-20 (centre on the skull mass)
 
-Owner: "Please record that when looking at head art you must center the head regardless of additional appendages such as horns, ears, or anything else. The bulk of the head must be searched for detectable chins (or bottom of skull mass) vs top of head ignoring these extensions." The chin-seated bounding-box fit applied 2026-10-20 (6d77ea123) used ear tips as the bottom on at least the Ortolan, so crown/chin must be re-measured on the skull mass and the four species re-fitted. Appendages are judged separately from the skull.
+Owner: "Please record that when looking at head art you must center the head regardless of additional appendages such as horns, ears, or anything else. The bulk of the head must be searched for detectable chins (or bottom of skull mass) vs top of head ignoring these extensions." The chin-seated bounding-box fit (6d77ea123) used ear tips as the bottom on the Ortolan. Done the same day: the tool, envelope and fit above now register on the skull mass; appendages are judged separately (bbox allowance).
