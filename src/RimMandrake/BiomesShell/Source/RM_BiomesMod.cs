@@ -62,6 +62,10 @@ namespace RimMandrake.Biomes
         // Looks only; hilliness is untouched. Applies at once.
         public static bool worldSoftHills = true;
 
+        // SUN-LIT PEAKS (owner by card 2026-10-20, WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS): hills and mountains drawn as
+        // peak clusters turned to face the substellar point (RM_WorldPeaks.cs). Looks only. Applies at once (redraw).
+        public static bool worldSunPeaks = true;
+
         // WORLD_PATHS_READABLE (2026-10-20): road colours/widths and river colour/width/material on the planet
         // (RM_WorldPaths.cs). Looks only; links are untouched. Applies at once.
         public static bool worldReadablePaths = true;
@@ -95,6 +99,7 @@ namespace RimMandrake.Biomes
             Scribe_Values.Look(ref worldBorderBlend, "worldBorderBlend", true);
             Scribe_Values.Look(ref worldSeaDepth, "worldSeaDepth", true);
             Scribe_Values.Look(ref worldSoftHills, "worldSoftHills", true);
+            Scribe_Values.Look(ref worldSunPeaks, "worldSunPeaks", true);
             Scribe_Values.Look(ref worldReadablePaths, "worldReadablePaths", true);
             Scribe_Values.Look(ref worldSoftLandmarks, "worldSoftLandmarks", true);
             Scribe_Values.Look(ref worldLandmarkSize, "worldLandmarkSize", 0.6f);
@@ -167,6 +172,11 @@ namespace RimMandrake.Biomes
                 if (Current.ProgramState == ProgramState.Playing) Find.World?.renderer?.SetAllLayersDirty();
             }
             if (RM_WorldLook.hillsApplied != RM_BiomesSettings.worldSoftHills) RM_WorldLook.ApplyHills("settings changed");
+            if (peaksShown != RM_BiomesSettings.worldSunPeaks)
+            {
+                peaksShown = RM_BiomesSettings.worldSunPeaks;
+                if (Current.ProgramState == ProgramState.Playing) Find.World?.renderer?.SetAllLayersDirty();
+            }
             if (RM_WorldPaths.applied != RM_BiomesSettings.worldReadablePaths)
             {
                 RM_WorldPaths.Apply("settings changed");
@@ -175,6 +185,7 @@ namespace RimMandrake.Biomes
         }
 
         string worldLookShown = "True/True";
+        bool peaksShown = true;
 
         // MOD_OPTIONS_RETROFIT_1: per-entry toggles live in the Scribed RM_BiomesSettings.enabled dictionary (absent key = on).
         // Scope AUDITED against the read site (2026-10-10): RM_BiomesGate.Apply writes BiomeDef.generatesNaturally, which only
@@ -260,6 +271,12 @@ namespace RimMandrake.Biomes
                     "On the world map, hills and mountains draw as soft dark relief that takes the colour of the land "
                     + "under them, instead of the vanilla brown outlined blots.\n\nLooks only; which tiles are hilly is "
                     + "not changed. Default: on. Takes effect at once.");
+                list.CheckboxLabeled("Planet: sun-lit mountain peaks [now]", ref RM_BiomesSettings.worldSunPeaks,
+                    "On the world map, hills and mountains draw as clusters of peaks with a lit side and a shaded side, "
+                    + "every one turned to face the sun (the substellar point), with long shadows near the terminator and snow "
+                    + "where the land is cold. Tiles with a road or river show no peak, so routes stay readable. Off restores the "
+                    + "previous hill drawing (see soft hill shading).\n\nLooks only; which tiles are hilly is not changed. "
+                    + "Default: on. Takes effect at once (the planet redraws).");
                 list.CheckboxLabeled("Planet: readable roads and rivers [now]", ref RM_BiomesSettings.worldReadablePaths,
                     "On the world map, roads get a dark casing and a colour per kind (umber dirt, slate stone, gold "
                     + "ancient highway) and rivers get a dark bank and a hard edge, a little wider (their colour stays FlowWorks' River Colours where that is on, else bright blue). "
