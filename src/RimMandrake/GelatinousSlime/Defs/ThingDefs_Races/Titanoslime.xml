@@ -22,11 +22,10 @@
     belt-and-braces guard — while the stage index is locked, AgeTickInterval
     returns early and no birthday ever fires (MEASURED, Pawn_AgeTracker).
 
-    ART IS OWED (spec §7): one 1024px three-facing set at the texPath below,
-    a glassy bright-green HILL of jelly with faint half-dissolved "entries"
-    inside. Never eyes, never a mouth, never limbs. Until it lands the sprite
-    renders magenta, which is deliberate and honest — the texPath is what binds
-    the art, so the PNGs drop in later without touching this file.
+    ART (spec §7): one three-facing set at the texPath below, a glassy
+    bright-green HILL of jelly with faint half-dissolved "entries" inside.
+    Never eyes, never a mouth, never limbs. Installed 48b217923d (artpipe
+    renders, Textures/Things/Pawn/Animal/Titanoslime/RM_Titanoslime_*.png).
   -->
 
   <ThingDef ParentName="AnimalThingBase">
