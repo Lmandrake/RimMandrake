@@ -1,0 +1,1 @@
+A building's 'lost' hook on Destroy() misses a gravship launch: GenerateGravship DeSpawns every ship thing with DestroyMode.WillReplace and never destroys it. Put loss hooks on DeSpawn (Destroy reaches it too) and check generatingGravship for the fly-together case.
