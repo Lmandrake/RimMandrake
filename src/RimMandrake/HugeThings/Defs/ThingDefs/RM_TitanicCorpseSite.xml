@@ -6,11 +6,8 @@
     Patch_Corpse_SpawnSetup_TitanicSite) - never placed by the player, hence
     no designationCategory/costList/constructible block.
 
-    PLACEHOLDER ART: texPath borrowed from vanilla RubblePile
-    (Things/Building/RubblePile, Graphic_Single) purely for a large,
-    decaying-mound silhouette that exists on disk today - not a
-    creature-specific corpse sprite. Needs real art before this ships to a
-    player; flagged in the build report.
+    Art: our titanic-remains render (dregen_RM_TitanicCorpseSite_RubblePile_v1,
+    accepted-for-now 2026-10-21), a Graphic_Random folder of one variant.
 
     size (4,4) matches the T3 tier's own footprint ceiling (both this mod's
     tier table and Large Pawns' hard 4x4 ceiling per the decompile).

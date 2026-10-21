@@ -5,7 +5,7 @@
      One old, empty ring is laid on each new Pyrelands map by GenStep_StruckGlassRing; more can be laid out from the Ideology tab,
      since the rite works on any map in a storm. RM_GlassSand is the Stillsand item; Pyrelands already yields it from shovelled
      sand (ScorchableGround.xml) without a hard dependency, same as here.
-     ART OWED: the placeholder is vanilla's ritual-spot mark, tinted glass-sand pale. All numbers PROVISIONAL. -->
+     Art: our sand-ring render (dregen_RM_StruckGlassRing_RitualSpot_v1, accepted-for-now 2026-10-21; drawn untinted). All numbers PROVISIONAL. -->
 <Defs>
   <ThingDef ParentName="BuildingBase">
     <defName>RM_StruckGlassRing</defName>
@@ -18,7 +18,6 @@
       <texPath>Things/Building/Misc/RM_StruckGlassRing/RM_StruckGlassRing</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
-      <color>(222, 210, 178)</color>
     </graphicData>
     <size>(3,3)</size>
     <rotatable>false</rotatable>
