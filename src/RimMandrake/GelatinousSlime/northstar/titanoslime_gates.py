@@ -399,6 +399,8 @@ def g3(g, S):
             [g.proof("ProofFind", re.sub(r"\D", "", c))[:120] for _, c, *_ in pairs])
         return
     s, c, px, pz, before, r, f = done
+    if not before:   # a colonist that spawned wearing and holding nothing cannot show gear dropped: the site, not the mod
+        raise Unmeasured("absorbed colonist %s wore and held nothing: the gear-drop check would prove nothing" % c)
     me = [p for p in g.pawns() if str(p.get("id")).replace("Thing_", "") == s]
     if not me:
         raise Unmeasured("absorbing slime %s not on the map" % s)
@@ -455,6 +457,10 @@ def g4(g, S):
 
     def cut_to_half(pid):
         shed = 0
+        # positive controls (as g5's sheds row): an unreadable kind key or cuts that never land read shed 0 blind
+        if not any((p.get("kind") or p.get("kindDef")) == KIND for p in g.pawns()):
+            raise Unmeasured("list_pawns exposes no kind/kindDef for %s: cannot count gelatids" % KIND)
+        h0 = float(g.read(pid)["health"])
         base = len([p for p in g.pawns() if (p.get("kind") or p.get("kindDef")) == "RM_Gelatid"])
         for _ in range(60):
             r = g.read(pid)
@@ -462,7 +468,10 @@ def g4(g, S):
                 break
             g.call("jawa/damage", damageDef="Cut", amount=12, thingId=pid, armorPenetration=1.0)
         shed = len([p for p in g.pawns() if (p.get("kind") or p.get("kindDef")) == "RM_Gelatid"]) - base
-        return shed, g.read(pid)
+        after = g.read(pid)
+        if not (after.get("dead") == "True" or float(after.get("health", h0)) < h0):
+            raise Unmeasured("cuts did not land (health %s -> %s): a shed count proves nothing" % (h0, after.get("health")))
+        return shed, after
 
     for rev in (False, True):
         g.setting("titanoslimeReversible", rev)
