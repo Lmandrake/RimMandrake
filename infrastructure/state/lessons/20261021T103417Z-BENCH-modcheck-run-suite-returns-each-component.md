@@ -1,0 +1,1 @@
+modcheck run_suite returns each component's result under the key 'verdict' (PASS/FAIL/UNMEASURED), not 'status'; a --mock harness that reads c['status'] sees None and FAILs every row. Read verdict, and prove the mock can fail by feeding it one broken proof line.
