@@ -1579,3 +1579,4 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"tier work done; restoring the owner's full list + R3","ts":"2026-10-21T11:08:31Z","tsn":1792580911010771708}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"full 325 list relaunch for R3","ts":"2026-10-21T11:08:54Z","tsn":1792580934115589318}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"full 325 list up, R3 loaded","ts":"2026-10-21T11:29:06Z","tsn":1792582146882699820}
+{"seat":"OWNER","event":"close","id":"CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE","sha":"cfa2f408545c","reason":"Verify bar met: the 2026-10-12 ruling (strike OR dive; Rakatan hyperdrive hook) is now in dungeons_arc_spec.md §2.6 and canon.yml assailant_reveal_arc.strike_or_dive_src (cfa2f408545c). Open follow-ups for the owner: spec §2.9 Q1-4.","perRuling":"CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE","ts":"2026-10-21T11:30:37Z","tsn":1792582237260878966}
