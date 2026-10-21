@@ -26,12 +26,15 @@ namespace RimMandrake.Miasma
     // RM_StrandingPoolsExtension). Duplicating a Miasma-only copy of any of
     // those switches here would either do nothing (the shared class only
     // ever reads the shared statics) or silently diverge from what that
-    // mod's own settings screen already promises a player. So this screen
-    // ships only the standard worldgen-rarity slider every biome-worker mod
-    // ships, plus an honest pointer to where the mechanic toggles actually
-    // live — a per-mechanic toggle for content this screen does not itself
-    // gate would be a settings screen that lies (NightsideIce's own
-    // reasoning, same shape here).
+    // mod's own settings screen already promises a player. So those six get
+    // no switch here, only an honest pointer to where their toggles live — a
+    // per-mechanic toggle for content this screen does not itself gate would
+    // be a settings screen that lies (NightsideIce's own reasoning, same
+    // shape here). What this screen DOES carry: the worldgen-rarity slider,
+    // and the switches for the mechanics this assembly implements itself
+    // (succession, young call, predation, pollination gate, deformation,
+    // bozzuga, lastvine, attar, flotsam, decay cells, rotting bed, mother's
+    // price), each defined below.
     //
     // STATIC FIELD, read from the biome worker which runs during worldgen
     // with no Mod instance handy — same pattern as every sibling.
