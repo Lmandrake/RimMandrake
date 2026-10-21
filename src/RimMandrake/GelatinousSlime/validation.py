@@ -98,7 +98,7 @@ SETTINGS = "RimMandrake.GelatinousSlime.SlimeSettings"
 FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": True,
           "titanoslimeSpawnFactor": 1, "titanoslimeEngulfs": True, "titanoslimeGrows": True,
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
-          "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
+          "titanoslimeMaxStage": 5, "titanoslimeSheds": True, "titanoslimePreySizeFactor": 1,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
           "fieldConversionRate": 1, "farmRuinsEnabled": True, "joiningWaterEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "pitSolvent": True, "sealBreach": True, "chunkBomb": True, "chunkShelfDays": 1.5, "archiveResurrection": True}
 suite.toggles = list(FIELDS)
@@ -1244,7 +1244,7 @@ def settings_flip(t):
     # every field has a write+read-back component or an effect component above; these close the rest
     for field, off in (("rarityFactor", 0), ("titanoslimeSpawnFactor", 0), ("flavorEntryRecorded", False),
                        ("titanoslimeEngulfs", False), ("titanoslimeGrows", False),
-                       ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
+                       ("titanoslimeReversible", True), ("titanoslimePreySizeFactor", 2), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
                        ("farmRuinsEnabled", False), ("joiningWaterEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("pitSolvent", False), ("sealBreach", False), ("chunkBomb", False), ("chunkShelfDays", 3), ("archiveResurrection", False)):

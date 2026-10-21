@@ -44,6 +44,15 @@ namespace RimMandrake.GelatinousSlime
             return say;
         }
 
+        // The prey gate actually applied: the def's fraction times the devour-size-cap setting, clamped to
+        // (0.05, 1.0] so prey can never out-size the slime, and a bad settings file cannot disarm or invert it.
+        public static float PreyFraction(float propsFraction, float settingFactor)
+        {
+            if (float.IsNaN(settingFactor) || settingFactor <= 0f) settingFactor = 1f;
+            float f = propsFraction * settingFactor;
+            return f < 0.05f ? 0.05f : (f > 1f ? 1f : f);
+        }
+
         public static int Capacity(float bodySize, float bodySizePerHeldThing) { return Math.Max(1, (int)Math.Floor(bodySize / bodySizePerHeldThing)); }
 
         public static bool CanEngulf(bool engulfsOn, bool selfSpawned, bool selfDead, bool selfDowned, bool preySpawned, bool preyDead, bool preyFlesh,
