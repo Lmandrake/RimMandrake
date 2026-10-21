@@ -84,6 +84,18 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>The reel's coupled neighbour (null when none), the side it is on and its kind.</summary>
         internal static Thing Find(CompHoseReel r, out Cell side, out Cell contact, out HosePortKind kind)
         {
+            Thing t = RawFind(r, out side, out contact, out kind);
+            if (t is RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump pump && !PumpSideTakes(pump, ReelSideOn(pump, r), r))
+            {
+                kind = HosePortKind.None;
+                return null;
+            }
+            return t;
+        }
+
+        /// <summary>The geometric coupling of a reel's body, before the pump's one-port-per-side gate.</summary>
+        private static Thing RawFind(CompHoseReel r, out Cell side, out Cell contact, out HosePortKind kind)
+        {
             side = contact = new Cell(0, 0);
             kind = HosePortKind.None;
             Map map = r.parent.Map;
@@ -118,6 +130,63 @@ namespace RimMandrake.FlowWorks.Hose
         /// <paramref name="end"/> (the same rule as the reel side, the end cell treated as a 1x1 reel). A thing standing ON the
         /// end cell counts too (a hose pushed into a tank's footprint couples to it). Null = none.</summary>
         internal static Thing FindAt(Map map, IntVec3 end, Thing exclude, out Cell side, out HosePortKind kind)
+        {
+            Thing t = RawFindAt(map, end, exclude, out side, out kind);
+            if (t is RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump pump
+                && !PumpSideTakes(pump, EndSideOn(pump, end), (exclude as ThingWithComps)?.GetComp<CompHoseReel>()))
+            {
+                kind = HosePortKind.None;
+                return null;
+            }
+            return t;
+        }
+
+        // ---------------------------------------------------------------- FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE
+        /// <summary>The pump side a reel's body touches (RM_PumpPortMath.SideOf), or -1 when it touches only a corner.</summary>
+        private static int ReelSideOn(Thing pump, CompHoseReel r)
+        {
+            CellRect rc = r.parent.OccupiedRect();
+            for (int s = 0; s < 4; s++)
+            {
+                IntVec3 n = pump.Position + new Rot4(s).FacingCell;
+                if (rc.Contains(n)) return s;
+            }
+            return -1;
+        }
+
+        /// <summary>The pump side a free end at <paramref name="end"/> lies on, or -1 (a corner, or pushed onto the pump itself).</summary>
+        private static int EndSideOn(Thing pump, IntVec3 end)
+        {
+            return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.SideOf(end.x - pump.Position.x, end.z - pump.Position.z);
+        }
+
+        /// <summary>Owner card 2026-10-20, "One port per side, either kind": may <paramref name="self"/> (a reel, by its body or
+        /// its free end) couple on <paramref name="side"/> of <paramref name="pump"/>? Not on a corner, not where a pipe holds
+        /// the side, and not where another hose with a lower id already couples (read geometrically, so no recursion).</summary>
+        private static bool PumpSideTakes(Thing pump, int side, CompHoseReel self)
+        {
+            Map map = pump.Map;
+            if (map == null || side < 0) return false;
+            IntVec3 sc = pump.Position + new Rot4(side).FacingCell;
+            bool pipe = sc.InBounds(map) && RimMandrake.FlowWorks.Machinery.RM_LiquidNet.HasPipe(sc, map);
+            var others = new List<int>();
+            RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
+            if (comp != null)
+            {
+                foreach (CompHoseReel o in comp.OrderedReels())
+                {
+                    if (o == null || o == self || o.parent == null || !o.parent.Spawned) continue;
+                    if (RawFind(o, out _, out _, out _) == pump && ReelSideOn(pump, o) == side) others.Add(o.parent.thingIDNumber);
+                    else if (o.laid && o.far.IsValid && comp.RelayOf(o) == null && RawFindAt(map, o.far, o.parent, out _, out _) == pump && EndSideOn(pump, o.far) == side)
+                        others.Add(o.parent.thingIDNumber);
+                }
+            }
+            int id = self?.parent != null ? self.parent.thingIDNumber : int.MaxValue;
+            return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.HoseMayTake(side, pipe, id, others.ToArray());
+        }
+
+        /// <summary>The geometric coupling of a free end, before the pump's one-port-per-side gate.</summary>
+        private static Thing RawFindAt(Map map, IntVec3 end, Thing exclude, out Cell side, out HosePortKind kind)
         {
             side = new Cell(0, 0);
             kind = HosePortKind.None;
