@@ -52,7 +52,7 @@ with RimBridge(host, port, token) as rb:
             l = live.get(f["name"]); b = f["before"]
             if l is None: mism.append((f["name"], "missing live")); continue
             dc = l["drawCenter"]; got = (dc["x"], dc["y"], dc["z"])
-            if max(abs(a - c) for a, c in zip(got, b["drawCenter"])) > 0.01 or abs(l["maxDrawSizeInTiles"] - b["size"]) > 0.01:
+            if max(abs(a - c) for a, c in zip(got, b["drawCenter"])) > 0.01 or (b["size"] is not None and abs(l["maxDrawSizeInTiles"] - b["size"]) > 0.01):
                 mism.append((f["name"], got, l["maxDrawSizeInTiles"]))
         print("u1: %d features, live != before on %d" % (len(plan["features"]), len(mism)), mism[:5])
     elif which == "u2":
@@ -87,8 +87,9 @@ with RimBridge(host, port, token) as rb:
         live = features()
         for f in plan["features"]:
             a = f["after"]
-            r = rb.call("jawa/world_features_set", {"action": "update", "featureId": live[f["name"]]["uniqueID"],
-                                                    "maxDrawSizeInTiles": float(a["size"]), "centerOnTile": int(a["centerOnTile"])})
+            args = {"action": "update", "featureId": live[f["name"]]["uniqueID"], "centerOnTile": int(a["centerOnTile"])}
+            if a["size"] is not None: args["maxDrawSizeInTiles"] = float(a["size"])
+            r = rb.call("jawa/world_features_set", args)
             if not r.get("success"): print("set fail", f["name"], (r.get("message") or "")[:120])
     elif which == "u2":
         for m, ts in sorted(plan["remove"].items()):
@@ -109,7 +110,7 @@ with RimBridge(host, port, token) as rb:
         live = features()
         for f in plan["features"]:
             l, a = live[f["name"]], f["after"]; dc = l["drawCenter"]
-            if abs(l["maxDrawSizeInTiles"] - a["size"]) > 0.01 or max(abs(x - y) for x, y in zip((dc["x"], dc["y"], dc["z"]), a["drawCenter"])) > 0.05:
+            if (a["size"] is not None and abs(l["maxDrawSizeInTiles"] - a["size"]) > 0.01) or max(abs(x - y) for x, y in zip((dc["x"], dc["y"], dc["z"]), a["drawCenter"])) > 0.05:
                 bad.append(f["name"])
     elif which == "u2":
         need = defaultdict(set)

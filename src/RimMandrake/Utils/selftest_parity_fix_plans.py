@@ -58,6 +58,9 @@ eq_edges = [(0, 1), (1, 2), (2, 4), (1, 4), (4, 5)]
 eq_target = {0: 0, 1: 1, 2: 2, 4: 3, 5: 3}
 o2, m2 = P.river_lay_order(eq_edges, eq_target)
 check(not m2, "lay order mismatches on second graph %r" % m2)
+# the real caller passes worldview.read_river_distances' per-tile LIST, not a dict
+o3, m3 = P.river_lay_order(edges, [0, 1, 2, 3, 3, 4])
+check(not m3 and len(o3) == len(edges), "per-tile list target must work (%r)" % m3)
 # file order a->b as exported (not mouth-first) flattens the network: the cause
 flat = P.simulate_overlay([(1, 0), (2, 1), (3, 2)])
 check(max(flat.values()) == 1, "simulate_overlay should show the flattening (got %r)" % dict(flat))

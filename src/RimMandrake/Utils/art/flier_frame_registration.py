@@ -275,15 +275,20 @@ def measure_set(files_by_dir: dict[str, list[Path]]) -> dict:
 
 # ---------------------------------------------------------------- discovery
 
-def _enclosing_name(root: ET.Element, el: ET.Element, fallback: str) -> str:
+def _enclosing(root: ET.Element, el: ET.Element) -> tuple[str | None, ET.Element | None]:
+    """(defName, the def element) of the nearest ancestor that has a defName, else (None, None)."""
     pm = {c: p for p in root.iter() for c in p}
     cur = el
     while cur in pm:
         cur = pm[cur]
         dn = cur.find("defName")
         if dn is not None and dn.text:
-            return dn.text.strip()
-    return fallback
+            return dn.text.strip(), cur
+    return None, None
+
+
+def _enclosing_name(root: ET.Element, el: ET.Element, fallback: str) -> str:
+    return _enclosing(root, el)[0] or fallback
 
 
 def discover(repo: Path = REPO) -> list[dict]:
@@ -296,13 +301,14 @@ def discover(repo: Path = REPO) -> list[dict]:
             root = ET.parse(x).getroot()
         except (ET.ParseError, OSError):
             continue
-        counts = {el.tag: el for el in root.iter() if el.tag == "flyingAnimationFrameCount"}
         for el in root.iter():
             if el.tag not in ("flyingAnimationFramePathPrefix", "flyingAnimationFramePathPrefixFemale") or not (el.text or "").strip():
                 continue
             pre = el.text.strip()
-            name = _enclosing_name(root, el, x.stem)
-            cnt_el = next((c for c in root.iter("flyingAnimationFrameCount")), None)
+            dn, owner = _enclosing(root, el)
+            name = dn or x.stem
+            # the count of THIS def, not the first one in the file (a file can hold several fliers)
+            cnt_el = next(owner.iter("flyingAnimationFrameCount"), None) if owner is not None else None
             declared = int(cnt_el.text) if cnt_el is not None and (cnt_el.text or "").isdigit() else None
             files = {d: [] for d in DIRS}
             folder = None
