@@ -30,6 +30,7 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[3]
 sys.path.insert(0, str(HERE))
 import facing_scale_lint as L  # noqa: E402
+import flier_guard as FG  # noqa: E402
 
 DEFAULT_ROWS = REPO / "Transient/facing_rescale_2026-10-16/after2.json"
 CODEX = REPO / "skills/generating-images/scripts/codex_image.py"
@@ -230,8 +231,10 @@ def main(argv=None) -> int:
     ap.add_argument("--timeout", type=int, default=150)
     ap.add_argument("--raw", type=Path)
     a = ap.parse_args(argv)
+    FG.refuse_fliers('facing_regen.py', a.row, a.out, a.raw)
     a.out = a.out.resolve()
     row = find_row(a.rows, a.row)
+    FG.refuse_fliers('facing_regen.py', row.get('texPath'))
     a.out.mkdir(parents=True, exist_ok=True)
     if a.cmd == "gen":
         return gen(row, a.facing, a.out, a.extra, a.pose, a.timeout)

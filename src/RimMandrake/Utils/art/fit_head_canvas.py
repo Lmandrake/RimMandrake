@@ -40,6 +40,9 @@ import sys
 from collections import deque
 
 import numpy as np
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import flier_guard as FG  # noqa: E402
 from PIL import Image, ImageDraw
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -609,6 +612,8 @@ def main(argv=None):
     ln.add_argument("--vanilla-dir", required=True, help="extracted Core head PNGs (<stem>_<facing>.png)")
     ln.add_argument("--vanilla-stem", default="Male_Average_Normal"); ln.add_argument("--title")
     a = ap.parse_args(argv)
+    if a.cmd == "fit":
+        FG.refuse_fliers('fit_head_canvas.py fit', a.stem, a.out, a.south, a.east, a.north)
     return {"measure": cmd_measure, "vanilla": cmd_vanilla, "check": cmd_check, "fit": cmd_fit,
             "overlay": cmd_overlay, "lineup": cmd_lineup}[a.cmd](a) or 0
 

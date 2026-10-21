@@ -15,6 +15,9 @@ import sys
 
 from PIL import Image
 
+sys.path.insert(0, __import__('os').path.dirname(__import__('os').path.abspath(__file__)))
+import flier_guard as FG  # noqa: E402
+
 
 def bbox(im):
     return im.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox()
@@ -31,6 +34,7 @@ def main():
     m.add_argument("ref")
     m.add_argument("out")
     a = ap.parse_args()
+    FG.refuse_fliers('head_facing_fix.py', a.src if a.cmd == 'shift' else a.ref, a.out)
     if a.cmd == "shift":
         im = Image.open(a.src).convert("RGBA")
         b = bbox(im)
