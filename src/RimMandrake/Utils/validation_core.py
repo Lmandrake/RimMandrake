@@ -529,7 +529,9 @@ def _wait_playing(B, budget_s=240, leave_s=30):
         time.sleep(0.5)
     while time.time() - t0 < budget_s:
         st = B.call("rimworld/get_ui_state").get("programState")
-        if st == "Playing" and B.call("jawa/map_info").get("success"):
+        # a poll: "No current map" while the load finishes is an answer, not a fault (live 2026-10-21 drawbridge SAVE_MIDRAISE
+        # went UNMEASURED/HARNESS on exactly this refusal while every read after the load succeeded)
+        if st == "Playing" and B.call("jawa/map_info", _answer=True).get("success"):
             return True, int(time.time() - t0)
         time.sleep(2)
     return False, st

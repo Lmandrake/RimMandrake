@@ -56,7 +56,7 @@ namespace RimMandrake.Webwork
         {
             Map map = Map;
             if (map == null) return "REFUSED: no current map";
-            string[] a = (args ?? "").Split('|');
+            string[] a = (args ?? "").Split(new[] { '|', ';' });   // ';' too: jawa/static_call splits args on '|' into PARAMETERS, so a one-string proof is reachable only with ';' (live 2026-10-21)
             bool mother = a.Length > 0 && bool.TryParse(a[0], out bool m) && m;
             float mult = a.Length > 1 && float.TryParse(a[1], System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture, out float f) ? f : 1f;
@@ -115,7 +115,7 @@ namespace RimMandrake.Webwork
         {
             Map map = Map;
             if (map == null) return "REFUSED: no current map";
-            string[] a = (args ?? "").Split('|');
+            string[] a = (args ?? "").Split(new[] { '|', ';' });   // ';' too: jawa/static_call splits args on '|' into PARAMETERS, so a one-string proof is reachable only with ';' (live 2026-10-21)
             var inv = System.Globalization.CultureInfo.InvariantCulture;
             bool enabled = !(a.Length > 0 && a[0].Trim().ToLowerInvariant() == "false");
             float chance = a.Length > 1 && float.TryParse(a[1], System.Globalization.NumberStyles.Float, inv, out float c) ? c : 1f;
@@ -286,7 +286,7 @@ namespace RimMandrake.Webwork
         {
             Map map = Map;
             if (map == null) return "REFUSED: no current map";
-            string[] a = (args ?? "").Split('|');
+            string[] a = (args ?? "").Split(new[] { '|', ';' });   // ';' too: jawa/static_call splits args on '|' into PARAMETERS, so a one-string proof is reachable only with ';' (live 2026-10-21)
             bool wasNet = RM_WebworkSettings.webNetworkEnabled, wasCarpet = RM_WebworkSettings.siteCarpetEnabled;
             float wasDensity = RM_WebworkSettings.localWebDensityMultiplier;
             ThingDef cable = DefDatabase<ThingDef>.GetNamedSilentFail(RM_GenStep_WebworkWeb.CableDefName);
@@ -338,7 +338,7 @@ namespace RimMandrake.Webwork
         {
             Map map = Map;
             if (map == null) return "REFUSED: no current map";
-            string[] a = (args ?? "").Split('|');
+            string[] a = (args ?? "").Split(new[] { '|', ';' });   // ';' too: jawa/static_call splits args on '|' into PARAMETERS, so a one-string proof is reachable only with ';' (live 2026-10-21)
             BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail(RM_GenStep_WebworkNest.WebworkBiomeDefName);
             WeatherDef webfall = DefDatabase<WeatherDef>.GetNamedSilentFail(RM_WebworkStartupGate.WebfallDefName);
             if (biome == null || webfall == null) return "WEBFALL def " + (webfall != null) + " | REFUSED: biome or weather missing";

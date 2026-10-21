@@ -533,7 +533,9 @@ def _build_suite():
                     raise ExpectationFailed("RM_Webwork_SunScald hediffClass is %r, not RM_Hediff_SunScald (mandrake.rm.creaturebehaviors)" % (f.get("hediffClass"),))
 
     def _wp(t, method, args):
-        r = t.bridge_call("jawa/static_call", type="RimMandrake.Webwork.RM_WebworkProof", method=method, args=args)
+        # jawa/static_call splits args on '|' into PARAMETERS; every RM_WebworkProof method takes ONE string, so the proof
+        # args travel ';'-joined (live 2026-10-21: '|' answered "No public static ProofWebNetwork with 3 params")
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Webwork.RM_WebworkProof", method=method, args=args.replace("|", ";"))
         return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
 
     def _num(text, key):
@@ -724,7 +726,7 @@ class _MockSession:
     def call(self, tool, **kw):
         self.calls.append((tool, kw))
         if tool == "jawa/static_call":
-            m, a = kw.get("method"), (kw.get("args") or "").split("|")
+            m, a = kw.get("method"), re.split(r"[|;]", kw.get("args") or "")
             if m == "ProofWebNetwork":
                 net, carpet, dens = a[0] == "true", a[1] == "true", float(a[2])
                 k0, s0 = self.cables, self.strands
@@ -749,7 +751,7 @@ class _MockHarvestSession(_MockSession):
 
     def call(self, tool, **kw):
         if tool == "jawa/static_call":
-            m, a = kw.get("method"), kw.get("args") or ""
+            m, a = kw.get("method"), (kw.get("args") or "").replace(";", "|")
             self.calls.append((tool, kw))
             if m == "ProofNest":
                 return {"success": True, "result": "NEST biomeGateRefuses True | placed 1 | walls 0->1 | x" if a == "true"

@@ -204,7 +204,7 @@ def main(argv=None):
         return _static(DPROOF, method, arg, answer)
 
     def counters():
-        kv, _ = lproof("ProofLineCounters", "")
+        kv, _ = lproof("ProofLineCounters", "-")   # jawa/static_call reads args="" as ZERO params (live 2026-10-21); the arg is ignored
         return {k: num(kv, k) for k in ("broken", "commits", "cordsDropped", "hosesCut", "tore", "liveFalls", "liveHalves",
                                         "leafReconnects", "netBumps", "shocks")}
 
@@ -292,7 +292,7 @@ def main(argv=None):
             row(rid, "UNMEASURED", {"why": "no game in Playing"}, cls="HARNESS")
         return 2
     # the owed C# first: one question, answered or not. Missing, nothing is staged and every row names what is owed.
-    probe = B.call("jawa/static_call", type=LPROOF, method="ProofLineCounters", args="", _answer=True) or {}
+    probe = B.call("jawa/static_call", type=LPROOF, method="ProofLineCounters", args="-", _answer=True) or {}
     if probe.get("success") is not True:
         res["owedWhy"] = str(probe.get("error") or probe.get("message") or probe)[:300]
         for rid in only:
