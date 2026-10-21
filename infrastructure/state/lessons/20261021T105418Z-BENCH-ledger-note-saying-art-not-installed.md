@@ -1,0 +1,1 @@
+A ledger note saying art is 'not installed' can be wrong from the day it is written: SCALD_SHEET_REDOS_1's 10-09 and 10-10 notes said none of the redo renders were installed, but f80d22d334, 7577e889ef and ae9493dd99 had installed all five subjects on 10-07. Before carrying forward any 'still owed' art claim, run git log -S on the texPath, or on the defName's texture folder.
