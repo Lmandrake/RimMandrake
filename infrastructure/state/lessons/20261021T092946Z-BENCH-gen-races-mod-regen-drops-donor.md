@@ -1,0 +1,1 @@
+gen_races_mod regen drops donor Force genes (OuterRim_ForceInsensitive for Rakata, Force_Gene_LatentForceUser) and selftest_gen_races_mod is red from generator drift before any xeno edit; validate_patch --defs is UNMEASURABLE on WSL for def files
