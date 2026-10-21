@@ -815,6 +815,42 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     Assert(d >= 0f && d < 360f, "drift out of [0,360) at tick " + t + ": " + d);
                 }
             });
+            Case("world sun: pinned toward the substellar point, identical at any two ticks, vanilla at the main menu (WORLD_STARS_REPAIR_STILL_SPINNING_FOR_NOBODY)", () =>
+            {
+                // Vanilla's daily sun (GenCelestial.SunPositionUnmodified at latitude 0, equinox): (0,0,-1) turned about +Y
+                // by (dayPercent - 0.5) * 360. The postfix replaces it, while playing, with the substellar direction.
+                Func<long, float[]> vanilla = t =>
+                {
+                    double a = ((t % 60000) / 60000.0 - 0.5) * 2.0 * Math.PI;
+                    return new[] { (float)(-Math.Sin(a)), 0f, (float)(-Math.Cos(a)) };
+                };
+                Func<long, bool, bool, float[]> sun = (t, on, playing) =>
+                {
+                    if (!RM_WorldStarsMath.PinsWorldSun(on, playing)) return vanilla(t);
+                    RM_WorldStarsMath.SubstellarDirection(0.0, 0.0, out float x, out float y, out float z);
+                    return new[] { x, y, z };
+                };
+                const long t1 = 7L * 60000 + 3000, t2 = t1 + 60000 + 17777;   // a day and a bit apart, different hour
+                float[] a1 = sun(t1, true, true), a2 = sun(t2, true, true);
+                Assert(a1[0] == a2[0] && a1[1] == a2[1] && a1[2] == a2[2], "pinned sun differs between two ticks");
+                float[] v1 = vanilla(t1), v2 = vanilla(t2);
+                Assert(Math.Abs(v1[0] - v2[0]) + Math.Abs(v1[2] - v2[2]) > 0.1f, "probe: vanilla's sun did not move between the ticks");
+                Assert(Math.Abs(a1[0]) < 1e-6f && Math.Abs(a1[1]) < 1e-6f && Math.Abs(a1[2] + 1f) < 1e-6f,
+                    "substellar (0,0) is not (0,0,-1), the vector Alien Worlds freezes the sun at");
+                float[] e = sun(t1, true, false), o = sun(t2, false, true);
+                Assert(e[0] == v1[0] && e[2] == v1[2], "main menu (Entry) does not keep vanilla's sun");
+                Assert(o[0] == v2[0] && o[2] == v2[2], "setting off does not keep vanilla's sun");
+                // Round trip through PlanetLayer.LongLatOf's formula: the direction points AT the substellar tile.
+                for (double lat = -80; lat <= 80; lat += 20)
+                    for (double lon = -170; lon <= 170; lon += 34)
+                    {
+                        RM_WorldStarsMath.SubstellarDirection(lat, lon, out float x, out float y, out float z);
+                        double lon2 = Math.Atan2(x, -z) * 180.0 / Math.PI, lat2 = Math.Asin(y) * 180.0 / Math.PI;
+                        Assert(Math.Abs(lat2 - lat) < 1e-3 && Math.Abs(lon2 - lon) < 1e-3,
+                            "direction for (" + lat + "," + lon + ") reads back as (" + lat2 + "," + lon2 + ")");
+                        Assert(Math.Abs(x * x + y * y + z * z - 1f) < 1e-5f, "substellar direction not unit length");
+                    }
+            });
             Case("tidal sun glow: day side reads day, night side night, west = east, home tile full (SUN_GLOW_DECIDE_WEST_TERMINATOR_SUNBATHING)", () =>
             {
                 const float band = RM_TidalSunGlowMath.DefaultTwilightBandDegrees;
