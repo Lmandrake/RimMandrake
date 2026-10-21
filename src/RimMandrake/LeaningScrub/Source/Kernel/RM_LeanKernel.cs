@@ -84,8 +84,22 @@ namespace RimMandrake.LeaningScrub
         // Vanilla Plant.Print mirrors every plant mesh on a coin flip (Rand.Bool). On a leaning map a listed plant's mesh is
         // mirrored exactly when its art's own lean disagrees with the wind, so every listed plant on the map shows one lean.
         // Art leans EAST (screen right) unless its texture is listed as leaning west; the wind leans west only when the
-        // downwind vector points west (x < 0). A due north/south wind has no screen lean and resolves EAST, one way, never mixed.
-        public static bool WindLeansWest(float downwindX) { return downwindX < 0f; }
+        // downwind vector points west. A due north/south wind has no screen lean and resolves EAST, one way, never mixed.
+        // Owner card 2026-10-20 17:28 ("Point it at the sun, snap to a side"): the lean shows on whichever side, east or
+        // west, is closer to the heading. TIE (wind due north or south, |x| under TieX, which also absorbs float noise
+        // such as sin(180 deg) = -8.7e-8): EAST, always. Documented and tested in LeaningScrubPlantLeanCheck.
+        public const float TieX = 1e-4f;
+        public static bool WindLeansWest(float downwindX) { return downwindX < -TieX; }
+
+        // The wind blows TOWARD the sun. Sun bearing: degrees clockwise from north (RM_MapComponent_PinnedSun.SunGeometry,
+        // DuneWindBearing.SunBearingDegrees). Heading: this kernel's math angle, degrees counter-clockwise from +x (east),
+        // in [0, 360). Map x = east, z = north, so heading = 90 - bearing.
+        public static float HeadingFromSunBearing(float sunBearingDeg)
+        {
+            double h = (90.0 - sunBearingDeg) % 360.0;
+            if (h < 0) h += 360.0;
+            return (float)h;
+        }
 
         // The mirror decision for one mesh: true = flip the UVs.
         public static bool FaceFlip(bool windWest, bool artWest) { return windWest != artWest; }

@@ -11,10 +11,10 @@ namespace RimMandrake.LeaningScrub
     // ════════════════════════════════════════════════════════════════════
     // LEANINGSCRUB_MECHANICS_BUILD_1 part 2 — the Lean (v1).
     //
-    // Each map whose biome carries RM_LeanExtension locks one wind heading the
-    // first time it is asked for, and keeps it for the life of the map
-    // (Scribed on RM_MapComponent_Lean). v1 scope, per the item: two local
-    // patches, no hunting-AI rewrite.
+    // Each map whose biome carries RM_LeanExtension has one wind heading: from
+    // its tile toward the substellar point (owner card 2026-10-20, "Point it at
+    // the sun, snap to a side"), derived from planet geometry, never rolled or
+    // saved. v1 scope, per the item: two local patches, no hunting-AI rewrite.
     //
     //   Scent  JobGiver_AnimalFlee.TryGiveJob postfix. Vanilla wild animals
     //          flee only fire and alwaysFlee things (RimSage, decompiled
@@ -42,6 +42,12 @@ namespace RimMandrake.LeaningScrub
         // Texture names (file name, no extension) of the variants whose own art leans WEST (screen left). Every other
         // variant of a listed plant is taken to lean east. selftest_scrub_wind.py measures the PNGs against this list.
         public List<string> westLeaningTextures = new List<string>();
+
+        // Owner, by card 2026-10-20 17:28 ("Wind dir → Point it at the sun, snap to a side"): the wind blows from the
+        // map's tile toward this substellar point. Ash'karr's is (0, 0), the same point RM_PinnedSunExtension and the
+        // WeatherSuite use.
+        public float substellarLatitude = 0f;
+        public float substellarLongitude = 0f;
 
         [Unsaved(false)] private bool[] leansByIndex;
         [Unsaved(false)] private HashSet<string> westSet;
@@ -89,8 +95,10 @@ namespace RimMandrake.LeaningScrub
 
     public class RM_MapComponent_Lean : MapComponent
     {
-        private float headingDegrees = -1f;
         private bool? applies;
+        private bool resolved;
+        private float headingDegrees;
+        private float sunBearingDegrees;
         private Vector2 cachedDir;
 
         public RM_MapComponent_Lean(Map map) : base(map)
@@ -109,33 +117,40 @@ namespace RimMandrake.LeaningScrub
             }
         }
 
-        // Unit vector the wind blows TOWARD, in map x/z.
+        // Unit vector the wind blows TOWARD, in map x/z. SCRUB_WIND_BUILD_LEAN_ON_PURPOSE (owner card 2026-10-20 17:28,
+        // "Point it at the sun, snap to a side"): toward the substellar point, a pure function of the tile, so it needs
+        // no save and every consumer (scent, fire, ripple, creep, the plant lean, the Gale dust) shares one wind. The
+        // bearing is CreatureBehaviors' own RM_MapComponent_PinnedSun.SunGeometry, never new maths.
         public Vector2 Downwind
         {
             get
             {
-                if (headingDegrees < 0f)
+                if (!resolved)
                 {
-                    headingDegrees = RM_LeanKernel.LockHeading(headingDegrees, Rand.Range(0f, 360f));
-                    cachedDir = Vector2.zero;
-                }
-                if (cachedDir == Vector2.zero)
-                {
-                    RM_LeanKernel.Direction(headingDegrees, out float dirX, out float dirZ);
-                    cachedDir = new Vector2(dirX, dirZ);
+                    Resolve();
                 }
                 return cachedDir;
             }
         }
 
-        public override void ExposeData()
+        public float HeadingDegrees { get { if (!resolved) Resolve(); return headingDegrees; } }
+        public float SunBearingDegrees { get { if (!resolved) Resolve(); return sunBearingDegrees; } }
+
+        private void Resolve()
         {
-            base.ExposeData();
-            Scribe_Values.Look(ref headingDegrees, "rmLeanHeadingDegrees", -1f);
-            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            resolved = true;
+            float bearing = 0f;   // no world tile (never a Scrub map in practice): due north, documented tie -> east lean
+            RM_LeanExtension ext = map.Biome?.GetModExtension<RM_LeanExtension>();
+            if (ext != null && Find.WorldGrid != null && map.Tile.Valid)
             {
-                cachedDir = Vector2.zero;
+                Vector2 longLat = Find.WorldGrid.LongLatOf(map.Tile);
+                RimMandrake.CreatureBehaviors.RM_MapComponent_PinnedSun.SunGeometry(longLat.y, longLat.x,
+                    ext.substellarLatitude, ext.substellarLongitude, out bearing, out float _);
             }
+            sunBearingDegrees = bearing;
+            headingDegrees = RM_LeanKernel.HeadingFromSunBearing(bearing);
+            RM_LeanKernel.Direction(headingDegrees, out float dirX, out float dirZ);
+            cachedDir = new Vector2(dirX, dirZ);
         }
 
         public static RM_MapComponent_Lean For(Map map)

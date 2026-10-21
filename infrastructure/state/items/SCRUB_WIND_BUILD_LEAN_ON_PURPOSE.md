@@ -25,6 +25,15 @@ the Scrub's wind as weather twins.
   `LeaningScrubPlantLeanCheck.cs` covers 720 heading×art cases. `validation.py` gets the `windlean` chain (4 rows) and
   twins in `biome_weather_table`.
 
+## wind heading ruling (owner card 2026-10-20 17:28: "Wind dir → Point it at the sun, snap to a side")
+- The heading is no longer rolled. It runs from the tile toward the substellar point
+  (`RM_LeanExtension.substellarLatitude/Longitude`, Ash'karr (0,0)), using CreatureBehaviors'
+  `RM_MapComponent_PinnedSun.SunGeometry`; it is not saved. Scent, fire, ripple, creep, the plant lean and the Gale dust
+  all read `RM_MapComponent_Lean.Downwind`, so there is one wind.
+- Side: east or west, whichever is closer to the heading (`RM_LeanKernel.WindLeansWest`). A due north or south tie
+  (|x| < 1e-4) goes EAST. `LeaningScrubPlantLeanCheck.SunBearingToSide` tests bearing → heading → side, the ties and a
+  planet sweep.
+
 ## owed
 - Live: windlean rows need a Leaning Scrub map (LEANING_SCRUB_LEAN_SITE_1); on another map the lean rows read UNMEASURED.
 - Owner: judge the look (lean read, Gale dust) at a joint session. Review the Gale dust art, then install it with
