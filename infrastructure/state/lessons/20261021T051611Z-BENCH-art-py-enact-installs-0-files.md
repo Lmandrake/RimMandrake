@@ -1,0 +1,1 @@
+art.py enact installs 0 files when the row's live texPath is a vanilla/Core slot (e.g. Cauldron soils used Terrain/Surfaces/Soil): art install the pick to a new mod-owned rel path and repoint the def's texturePath.

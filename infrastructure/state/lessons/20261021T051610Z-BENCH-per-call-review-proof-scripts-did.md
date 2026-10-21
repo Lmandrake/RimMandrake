@@ -1,0 +1,1 @@
+Per-call review of proof scripts did not converge: three fresh reviews in a row each found NEW site-scored-as-FAIL call sites. Fix structurally (modcheck/preconditions.py scopes withhold PASS/FAIL after any refused or non-taking call), then review; stop a review loop that finds the same bug class twice.
