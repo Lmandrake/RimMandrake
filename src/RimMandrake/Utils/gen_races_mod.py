@@ -122,7 +122,7 @@ RESCUE_XENOTYPE_OVERRIDE = {"OuterRim_Jawa": "RSW_MandrakeJawa"}
 
 # Owner ruling 2026-08-15. Miraluka is not built. It was also the only def in
 # the set whose geneClass lived in a donor assembly (OuterRimDiversity.
-# Gene_NoEyes), so dropping it leaves this mod with no compiled code at all.
+# Gene_NoEyes), so dropping it leaves this mod with no DONOR code (its one assembly is our own FA opt-out, dd394d076b).
 DROP_SPECIES = {"Miraluka"}
 
 # The Jawa move out of Jawa_Patches. Left side is the old defName, right side
@@ -184,6 +184,10 @@ DEPENDENCIES = [
     ("LazyFridayStudio.GenesExpandedEyes", "[LFS] Genes Expanded - Eyes",
      "https://steamcommunity.com/sharedfiles/filedetails/?id=2922457045"),
 ]
+# dd394d076b (FACE_OPTOUT_REPAIR_ONLY_AT_HOME): the mod now ships an assembly
+# (Assemblies/RimMandrakeStarWarsRaces.dll, the Facial Animation opt-out postfix), so
+# Harmony is a hard dependency: listed LAST in modDependencies, FIRST in loadAfter.
+HARMONY_DEP = ("brrainz.harmony", "Harmony", "steam://url/CommunityFilePage/2009463077")
 # loadAfter opens with these four (the original hard dependencies), then SOFT_AFTER.
 LOAD_AFTER_DEPS = 4
 # Reached only by a handful of genes or mod extensions, but reached: declared as
@@ -1113,22 +1117,24 @@ The RSW_MandrakeJawa xenotype and its four genes - skittish, hooded face, and th
 
 Nothing generic was copied. Genes that belong to Biotech, Core, Outland Genetics, Integrated Genes, LFS Genes Expanded - Eyes and Big and Small remain theirs; those mods are dependencies and must stay installed.
 
-Contains no compiled code."""
+One small assembly: it keeps the Facial Animation mod from drawing its animated face over our painted heads (a Mod Settings switch; it does nothing when Facial Animation is not installed)."""
 
 
 def write_about(n_species, n_swx, n_or):
     deps = ""
-    for pid, name, url in DEPENDENCIES:
+    for pid, name, url in DEPENDENCIES + [HARMONY_DEP]:
         deps += "    <li>\n      <packageId>%s</packageId>\n" % pid
         deps += "      <displayName>%s</displayName>\n" % _xesc(name)
         if url:
             deps += "      <steamWorkshopUrl>%s</steamWorkshopUrl>\n" % url
         deps += "    </li>\n"
     after = "".join("    <li>%s</li>\n" % p
-                    for p in [d[0] for d in DEPENDENCIES[:LOAD_AFTER_DEPS]] + SOFT_AFTER)
+                    for p in [HARMONY_DEP[0]]
+                    + [d[0] for d in DEPENDENCIES[:LOAD_AFTER_DEPS]] + SOFT_AFTER)
     after += WAVE81_COMMENT + "".join("    <li>%s</li>\n" % p for p in WAVE81_AFTER)
-    _after = [d[0] for d in DEPENDENCIES[:LOAD_AFTER_DEPS]] + SOFT_AFTER + WAVE81_AFTER
-    _undeclared = [d[0] for d in DEPENDENCIES if d[0] not in _after]
+    _after = ([HARMONY_DEP[0]] + [d[0] for d in DEPENDENCIES[:LOAD_AFTER_DEPS]]
+              + SOFT_AFTER + WAVE81_AFTER)
+    _undeclared = [d[0] for d in DEPENDENCIES + [HARMONY_DEP] if d[0] not in _after]
     if _undeclared:
         raise SystemExit("dependency missing from loadAfter: %s" % _undeclared)
     # 🔑 Count what the mod SHIPS, not what this run rebuilt. Six species have no
