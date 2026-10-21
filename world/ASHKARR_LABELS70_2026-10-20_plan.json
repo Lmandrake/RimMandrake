@@ -1,0 +1,1981 @@
+{
+ "what": "LABELS70: displayed label width x0.70 of the U1 canonical sizes (owner card 2026-10-20 7:36 PM PDT 'Smaller, about 70%'); centres unchanged. Requires U1 applied. Apply: world/_parity_apply_2026-10-20.py labels70",
+ "source": {
+  "u1Plan": "ASHKARR_PARITY_U1_labels_2026-10-20_plan.json"
+ },
+ "scale": 0.7,
+ "curve": {
+  "knots": [
+   [
+    10.0,
+    15.0
+   ],
+   [
+    25.0,
+    40.0
+   ],
+   [
+    50.0,
+    90.0
+   ],
+   [
+    100.0,
+    150.0
+   ],
+   [
+    200.0,
+    200.0
+   ]
+  ],
+  "floorEffectiveTiles": 15.0
+ },
+ "counts": {
+  "features": 71,
+  "sizeChanges": 62,
+  "atFloor": 23
+ },
+ "atFloor": [
+  "Ashwood",
+  "Capwood",
+  "Chalk Marches",
+  "Coldstone",
+  "Fanground",
+  "Fever Wood",
+  "Frostvein",
+  "Fuelmere",
+  "Grinding Floor",
+  "Hollow Verge",
+  "Lantern Deeps",
+  "Notch",
+  "Pale Flats",
+  "Pan",
+  "Pyrelands",
+  "Quiet Ground",
+  "Salt Gate",
+  "Scorch",
+  "Stepwood",
+  "Sunshelf",
+  "Sweatwood",
+  "The Abandoned Mines",
+  "Wither"
+ ],
+ "features": [
+  {
+   "name": "Pan",
+   "uid": 29,
+   "tiles": 79,
+   "before": {
+    "centerOnTile": 15395,
+    "drawCenter": [
+     -61.714,
+     78.6568,
+     -2.1202
+    ],
+    "size": 12.0,
+    "effectiveWidthTiles": 18.33
+   },
+   "after": {
+    "centerOnTile": 15395,
+    "drawCenter": [
+     -61.714,
+     78.6568,
+     -2.1202
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Sporefields",
+   "uid": 30,
+   "tiles": 255,
+   "before": {
+    "centerOnTile": 12205,
+    "drawCenter": [
+     52.1641,
+     85.1752,
+     4.9087
+    ],
+    "size": 22.0,
+    "effectiveWidthTiles": 35.0
+   },
+   "after": {
+    "centerOnTile": 12205,
+    "drawCenter": [
+     52.1641,
+     85.1752,
+     4.9087
+    ],
+    "size": 15.7,
+    "effectiveWidthTiles": 24.5,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Pale Flats",
+   "uid": 31,
+   "tiles": 60,
+   "before": {
+    "centerOnTile": 12226,
+    "drawCenter": [
+     -58.1418,
+     -81.3359,
+     -2.0024
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0
+   },
+   "after": {
+    "centerOnTile": 12226,
+    "drawCenter": [
+     -58.1418,
+     -81.3359,
+     -2.0024
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Wither",
+   "uid": 32,
+   "tiles": 72,
+   "before": {
+    "centerOnTile": 12247,
+    "drawCenter": [
+     52.1641,
+     -85.1752,
+     -4.9087
+    ],
+    "size": 11.0,
+    "effectiveWidthTiles": 16.67
+   },
+   "after": {
+    "centerOnTile": 12247,
+    "drawCenter": [
+     52.1641,
+     -85.1752,
+     -4.9087
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Deadstone",
+   "uid": 33,
+   "tiles": 2051,
+   "before": {
+    "centerOnTile": 18891,
+    "drawCenter": [
+     -45.0594,
+     -13.9251,
+     88.1802
+    ],
+    "size": 61.0,
+    "effectiveWidthTiles": 103.2
+   },
+   "after": {
+    "centerOnTile": 18891,
+    "drawCenter": [
+     -45.0594,
+     -13.9251,
+     88.1802
+    ],
+    "size": 41.12,
+    "effectiveWidthTiles": 72.24,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Ammonia Flats",
+   "uid": 34,
+   "tiles": 818,
+   "before": {
+    "centerOnTile": 16382,
+    "drawCenter": [
+     16.7168,
+     34.5881,
+     92.3266
+    ],
+    "size": 39.0,
+    "effectiveWidthTiles": 68.0
+   },
+   "after": {
+    "centerOnTile": 16382,
+    "drawCenter": [
+     16.7168,
+     34.5881,
+     92.3266
+    ],
+    "size": 28.8,
+    "effectiveWidthTiles": 47.6,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Dune Sea",
+   "uid": 35,
+   "tiles": 1692,
+   "before": {
+    "centerOnTile": 13175,
+    "drawCenter": [
+     33.0796,
+     -9.1814,
+     -93.9225
+    ],
+    "size": 56.0,
+    "effectiveWidthTiles": 97.2
+   },
+   "after": {
+    "centerOnTile": 13175,
+    "drawCenter": [
+     33.0796,
+     -9.1814,
+     -93.9225
+    ],
+    "size": 39.02,
+    "effectiveWidthTiles": 68.04,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Ashfall Range",
+   "uid": 36,
+   "tiles": 324,
+   "before": {
+    "centerOnTile": 2475,
+    "drawCenter": [
+     86.6305,
+     0.0,
+     -49.9515
+    ],
+    "size": 24.0,
+    "effectiveWidthTiles": 38.33
+   },
+   "after": {
+    "centerOnTile": 2475,
+    "drawCenter": [
+     86.6305,
+     0.0,
+     -49.9515
+    ],
+    "size": 17.1,
+    "effectiveWidthTiles": 26.83,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Sunreach",
+   "uid": 37,
+   "tiles": 795,
+   "before": {
+    "centerOnTile": 14936,
+    "drawCenter": [
+     84.5452,
+     -30.3386,
+     43.9509
+    ],
+    "size": 38.0,
+    "effectiveWidthTiles": 66.0
+   },
+   "after": {
+    "centerOnTile": 14936,
+    "drawCenter": [
+     84.5452,
+     -30.3386,
+     43.9509
+    ],
+    "size": 28.1,
+    "effectiveWidthTiles": 46.2,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Dew Belt",
+   "uid": 38,
+   "tiles": 362,
+   "before": {
+    "centerOnTile": 19184,
+    "drawCenter": [
+     -96.4286,
+     -21.3482,
+     -15.6776
+    ],
+    "size": 26.0,
+    "effectiveWidthTiles": 42.0
+   },
+   "after": {
+    "centerOnTile": 19184,
+    "drawCenter": [
+     -96.4286,
+     -21.3482,
+     -15.6776
+    ],
+    "size": 18.64,
+    "effectiveWidthTiles": 29.4,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Nightspill",
+   "uid": 39,
+   "tiles": 853,
+   "before": {
+    "centerOnTile": 1706,
+    "drawCenter": [
+     -88.4327,
+     -14.4068,
+     44.4084
+    ],
+    "size": 39.0,
+    "effectiveWidthTiles": 68.0
+   },
+   "after": {
+    "centerOnTile": 1706,
+    "drawCenter": [
+     -88.4327,
+     -14.4068,
+     44.4084
+    ],
+    "size": 28.8,
+    "effectiveWidthTiles": 47.6,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Frostcaps",
+   "uid": 40,
+   "tiles": 254,
+   "before": {
+    "centerOnTile": 17918,
+    "drawCenter": [
+     -13.9561,
+     86.9516,
+     47.3778
+    ],
+    "size": 22.0,
+    "effectiveWidthTiles": 35.0
+   },
+   "after": {
+    "centerOnTile": 17918,
+    "drawCenter": [
+     -13.9561,
+     86.9516,
+     47.3778
+    ],
+    "size": 15.7,
+    "effectiveWidthTiles": 24.5,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Cracklands",
+   "uid": 41,
+   "tiles": 227,
+   "before": {
+    "centerOnTile": 2507,
+    "drawCenter": [
+     -2.2983,
+     94.7348,
+     -31.938
+    ],
+    "size": 20.0,
+    "effectiveWidthTiles": 31.67
+   },
+   "after": {
+    "centerOnTile": 2507,
+    "drawCenter": [
+     -2.2983,
+     94.7348,
+     -31.938
+    ],
+    "size": 14.3,
+    "effectiveWidthTiles": 22.17,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Pyrelands",
+   "uid": 42,
+   "tiles": 63,
+   "before": {
+    "centerOnTile": 7372,
+    "drawCenter": [
+     -59.7353,
+     57.4134,
+     -55.9946
+    ],
+    "size": 11.0,
+    "effectiveWidthTiles": 16.67
+   },
+   "after": {
+    "centerOnTile": 7372,
+    "drawCenter": [
+     -59.7353,
+     57.4134,
+     -55.9946
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Twilight Sea",
+   "uid": 43,
+   "tiles": 852,
+   "before": {
+    "centerOnTile": 12680,
+    "drawCenter": [
+     -95.5686,
+     29.35,
+     2.2867
+    ],
+    "size": 39.0,
+    "effectiveWidthTiles": 68.0
+   },
+   "after": {
+    "centerOnTile": 12680,
+    "drawCenter": [
+     -95.5686,
+     29.35,
+     2.2867
+    ],
+    "size": 28.8,
+    "effectiveWidthTiles": 47.6,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Capwood",
+   "uid": 44,
+   "tiles": 75,
+   "before": {
+    "centerOnTile": 12725,
+    "drawCenter": [
+     49.7579,
+     60.3696,
+     62.2869
+    ],
+    "size": 12.0,
+    "effectiveWidthTiles": 18.33
+   },
+   "after": {
+    "centerOnTile": 12725,
+    "drawCenter": [
+     49.7579,
+     60.3696,
+     62.2869
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Umbra",
+   "uid": 45,
+   "tiles": 802,
+   "before": {
+    "centerOnTile": 13966,
+    "drawCenter": [
+     -6.7505,
+     -12.9855,
+     98.9232
+    ],
+    "size": 38.0,
+    "effectiveWidthTiles": 66.0
+   },
+   "after": {
+    "centerOnTile": 13966,
+    "drawCenter": [
+     -6.7505,
+     -12.9855,
+     98.9232
+    ],
+    "size": 28.1,
+    "effectiveWidthTiles": 46.2,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Glare",
+   "uid": 46,
+   "tiles": 879,
+   "before": {
+    "centerOnTile": 14615,
+    "drawCenter": [
+     13.6072,
+     70.3741,
+     -69.7304
+    ],
+    "size": 40.0,
+    "effectiveWidthTiles": 70.0
+   },
+   "after": {
+    "centerOnTile": 14615,
+    "drawCenter": [
+     13.6072,
+     70.3741,
+     -69.7304
+    ],
+    "size": 29.5,
+    "effectiveWidthTiles": 49.0,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Sootreach",
+   "uid": 47,
+   "tiles": 433,
+   "before": {
+    "centerOnTile": 2740,
+    "drawCenter": [
+     18.593,
+     -76.3504,
+     61.8459
+    ],
+    "size": 28.0,
+    "effectiveWidthTiles": 46.0
+   },
+   "after": {
+    "centerOnTile": 2740,
+    "drawCenter": [
+     18.593,
+     -76.3504,
+     61.8459
+    ],
+    "size": 20.32,
+    "effectiveWidthTiles": 32.2,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "The Verge",
+   "uid": 48,
+   "tiles": 171,
+   "before": {
+    "centerOnTile": 2134,
+    "drawCenter": [
+     20.6577,
+     -89.8061,
+     38.8345
+    ],
+    "size": 18.0,
+    "effectiveWidthTiles": 28.33
+   },
+   "after": {
+    "centerOnTile": 2134,
+    "drawCenter": [
+     20.6577,
+     -89.8061,
+     38.8345
+    ],
+    "size": 12.9,
+    "effectiveWidthTiles": 19.83,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Long Sand",
+   "uid": 49,
+   "tiles": 721,
+   "before": {
+    "centerOnTile": 7547,
+    "drawCenter": [
+     -42.091,
+     -83.9495,
+     -34.3632
+    ],
+    "size": 36.0,
+    "effectiveWidthTiles": 62.0
+   },
+   "after": {
+    "centerOnTile": 7547,
+    "drawCenter": [
+     -42.091,
+     -83.9495,
+     -34.3632
+    ],
+    "size": 26.7,
+    "effectiveWidthTiles": 43.4,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Kiln",
+   "uid": 50,
+   "tiles": 878,
+   "before": {
+    "centerOnTile": 16602,
+    "drawCenter": [
+     9.0926,
+     -70.9829,
+     -69.8481
+    ],
+    "size": 40.0,
+    "effectiveWidthTiles": 70.0
+   },
+   "after": {
+    "centerOnTile": 16602,
+    "drawCenter": [
+     9.0926,
+     -70.9829,
+     -69.8481
+    ],
+    "size": 29.5,
+    "effectiveWidthTiles": 49.0,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Damp",
+   "uid": 51,
+   "tiles": 230,
+   "before": {
+    "centerOnTile": 20639,
+    "drawCenter": [
+     77.2488,
+     -63.4597,
+     2.3424
+    ],
+    "size": 20.0,
+    "effectiveWidthTiles": 31.67
+   },
+   "after": {
+    "centerOnTile": 20639,
+    "drawCenter": [
+     77.2488,
+     -63.4597,
+     2.3424
+    ],
+    "size": 14.3,
+    "effectiveWidthTiles": 22.17,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Ashwood",
+   "uid": 52,
+   "tiles": 69,
+   "before": {
+    "centerOnTile": 21156,
+    "drawCenter": [
+     -57.2958,
+     -46.4655,
+     67.5141
+    ],
+    "size": 11.0,
+    "effectiveWidthTiles": 16.67
+   },
+   "after": {
+    "centerOnTile": 21156,
+    "drawCenter": [
+     -57.2958,
+     -46.4655,
+     67.5141
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Scorch",
+   "uid": 53,
+   "tiles": 90,
+   "before": {
+    "centerOnTile": 16739,
+    "drawCenter": [
+     5.222,
+     32.033,
+     -94.5866
+    ],
+    "size": 13.0,
+    "effectiveWidthTiles": 20.0
+   },
+   "after": {
+    "centerOnTile": 16739,
+    "drawCenter": [
+     5.222,
+     32.033,
+     -94.5866
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Grey Sea",
+   "uid": 54,
+   "tiles": 617,
+   "before": {
+    "centerOnTile": 8888,
+    "drawCenter": [
+     99.0521,
+     13.5563,
+     -2.2134
+    ],
+    "size": 34.0,
+    "effectiveWidthTiles": 58.0
+   },
+   "after": {
+    "centerOnTile": 8888,
+    "drawCenter": [
+     99.0521,
+     13.5563,
+     -2.2134
+    ],
+    "size": 25.3,
+    "effectiveWidthTiles": 40.6,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Rimewall",
+   "uid": 55,
+   "tiles": 338,
+   "before": {
+    "centerOnTile": 9335,
+    "drawCenter": [
+     -13.7482,
+     93.3962,
+     32.9869
+    ],
+    "size": 25.0,
+    "effectiveWidthTiles": 40.0
+   },
+   "after": {
+    "centerOnTile": 9335,
+    "drawCenter": [
+     -13.7482,
+     93.3962,
+     32.9869
+    ],
+    "size": 17.8,
+    "effectiveWidthTiles": 28.0,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Slough",
+   "uid": 56,
+   "tiles": 148,
+   "before": {
+    "centerOnTile": 18081,
+    "drawCenter": [
+     2.2364,
+     99.8169,
+     -5.6197
+    ],
+    "size": 16.0,
+    "effectiveWidthTiles": 25.0
+   },
+   "after": {
+    "centerOnTile": 18081,
+    "drawCenter": [
+     2.2364,
+     99.8169,
+     -5.6197
+    ],
+    "size": 11.5,
+    "effectiveWidthTiles": 17.5,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Combs",
+   "uid": 57,
+   "tiles": 360,
+   "before": {
+    "centerOnTile": 13347,
+    "drawCenter": [
+     -44.2815,
+     82.5427,
+     -35.0122
+    ],
+    "size": 26.0,
+    "effectiveWidthTiles": 42.0
+   },
+   "after": {
+    "centerOnTile": 13347,
+    "drawCenter": [
+     -44.2815,
+     82.5427,
+     -35.0122
+    ],
+    "size": 18.64,
+    "effectiveWidthTiles": 29.4,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Glass Reach",
+   "uid": 58,
+   "tiles": 172,
+   "before": {
+    "centerOnTile": 8921,
+    "drawCenter": [
+     -60.6929,
+     79.3644,
+     4.2022
+    ],
+    "size": 18.0,
+    "effectiveWidthTiles": 28.33
+   },
+   "after": {
+    "centerOnTile": 8921,
+    "drawCenter": [
+     -60.6929,
+     79.3644,
+     4.2022
+    ],
+    "size": 12.9,
+    "effectiveWidthTiles": 19.83,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Dry Marches",
+   "uid": 59,
+   "tiles": 387,
+   "before": {
+    "centerOnTile": 8527,
+    "drawCenter": [
+     58.6346,
+     72.403,
+     -36.3289
+    ],
+    "size": 27.0,
+    "effectiveWidthTiles": 44.0
+   },
+   "after": {
+    "centerOnTile": 8527,
+    "drawCenter": [
+     58.6346,
+     72.403,
+     -36.3289
+    ],
+    "size": 19.48,
+    "effectiveWidthTiles": 30.8,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Gray Crags",
+   "uid": 60,
+   "tiles": 577,
+   "before": {
+    "centerOnTile": 7743,
+    "drawCenter": [
+     84.305,
+     35.8956,
+     40.0522
+    ],
+    "size": 32.0,
+    "effectiveWidthTiles": 54.0
+   },
+   "after": {
+    "centerOnTile": 7743,
+    "drawCenter": [
+     84.305,
+     35.8956,
+     40.0522
+    ],
+    "size": 23.68,
+    "effectiveWidthTiles": 37.8,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Sunward Scrub",
+   "uid": 61,
+   "tiles": 154,
+   "before": {
+    "centerOnTile": 5357,
+    "drawCenter": [
+     42.9042,
+     88.4625,
+     -18.2652
+    ],
+    "size": 17.0,
+    "effectiveWidthTiles": 26.67
+   },
+   "after": {
+    "centerOnTile": 5357,
+    "drawCenter": [
+     42.9042,
+     88.4625,
+     -18.2652
+    ],
+    "size": 12.2,
+    "effectiveWidthTiles": 18.67,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Sinkground",
+   "uid": 62,
+   "tiles": 276,
+   "before": {
+    "centerOnTile": 1433,
+    "drawCenter": [
+     -32.1267,
+     -94.3743,
+     7.8339
+    ],
+    "size": 22.0,
+    "effectiveWidthTiles": 35.0
+   },
+   "after": {
+    "centerOnTile": 1433,
+    "drawCenter": [
+     -32.1267,
+     -94.3743,
+     7.8339
+    ],
+    "size": 15.7,
+    "effectiveWidthTiles": 24.5,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Coldstone",
+   "uid": 63,
+   "tiles": 57,
+   "before": {
+    "centerOnTile": 13713,
+    "drawCenter": [
+     -37.511,
+     -88.4446,
+     27.7576
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0
+   },
+   "after": {
+    "centerOnTile": 13713,
+    "drawCenter": [
+     -37.511,
+     -88.4446,
+     27.7576
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Sweatwood",
+   "uid": 64,
+   "tiles": 93,
+   "before": {
+    "centerOnTile": 13769,
+    "drawCenter": [
+     -79.3969,
+     -57.8758,
+     -18.6152
+    ],
+    "size": 13.0,
+    "effectiveWidthTiles": 20.0
+   },
+   "after": {
+    "centerOnTile": 13769,
+    "drawCenter": [
+     -79.3969,
+     -57.8758,
+     -18.6152
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Ashen Wastes",
+   "uid": 65,
+   "tiles": 202,
+   "before": {
+    "centerOnTile": 13815,
+    "drawCenter": [
+     35.6174,
+     -87.8986,
+     31.7054
+    ],
+    "size": 19.0,
+    "effectiveWidthTiles": 30.0
+   },
+   "after": {
+    "centerOnTile": 13815,
+    "drawCenter": [
+     35.6174,
+     -87.8986,
+     31.7054
+    ],
+    "size": 13.6,
+    "effectiveWidthTiles": 21.0,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Scour",
+   "uid": 66,
+   "tiles": 234,
+   "before": {
+    "centerOnTile": 13856,
+    "drawCenter": [
+     23.5988,
+     -97.139,
+     2.6658
+    ],
+    "size": 21.0,
+    "effectiveWidthTiles": 33.33
+   },
+   "after": {
+    "centerOnTile": 13856,
+    "drawCenter": [
+     23.5988,
+     -97.139,
+     2.6658
+    ],
+    "size": 15.0,
+    "effectiveWidthTiles": 23.33,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Thornbelt",
+   "uid": 67,
+   "tiles": 502,
+   "before": {
+    "centerOnTile": 5832,
+    "drawCenter": [
+     59.9201,
+     -75.0733,
+     -27.8135
+    ],
+    "size": 30.0,
+    "effectiveWidthTiles": 50.0
+   },
+   "after": {
+    "centerOnTile": 5832,
+    "drawCenter": [
+     59.9201,
+     -75.0733,
+     -27.8135
+    ],
+    "size": 22.0,
+    "effectiveWidthTiles": 35.0,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Lantern Deeps",
+   "uid": 68,
+   "tiles": 57,
+   "before": {
+    "centerOnTile": 6006,
+    "drawCenter": [
+     -17.591,
+     -46.7993,
+     86.6047
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0
+   },
+   "after": {
+    "centerOnTile": 6006,
+    "drawCenter": [
+     -17.591,
+     -46.7993,
+     86.6047
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Stillwood",
+   "uid": 69,
+   "tiles": 142,
+   "before": {
+    "centerOnTile": 17975,
+    "drawCenter": [
+     -2.3425,
+     77.2343,
+     63.4773
+    ],
+    "size": 16.0,
+    "effectiveWidthTiles": 25.0
+   },
+   "after": {
+    "centerOnTile": 17975,
+    "drawCenter": [
+     -2.3425,
+     77.2343,
+     63.4773
+    ],
+    "size": 11.5,
+    "effectiveWidthTiles": 17.5,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Rust Cathedral",
+   "uid": 70,
+   "tiles": 236,
+   "before": {
+    "centerOnTile": 21547,
+    "drawCenter": [
+     9.4785,
+     8.7443,
+     -99.165
+    ],
+    "size": 21.0,
+    "effectiveWidthTiles": 33.33
+   },
+   "after": {
+    "centerOnTile": 21547,
+    "drawCenter": [
+     9.4785,
+     8.7443,
+     -99.165
+    ],
+    "size": 15.0,
+    "effectiveWidthTiles": 23.33,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "The Breaks",
+   "uid": 71,
+   "tiles": 153,
+   "before": {
+    "centerOnTile": 11550,
+    "drawCenter": [
+     74.1144,
+     -11.013,
+     -66.2252
+    ],
+    "size": 17.0,
+    "effectiveWidthTiles": 26.67
+   },
+   "after": {
+    "centerOnTile": 11550,
+    "drawCenter": [
+     74.1144,
+     -11.013,
+     -66.2252
+    ],
+    "size": 12.2,
+    "effectiveWidthTiles": 18.67,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "The Abandoned Mines",
+   "uid": 72,
+   "tiles": 34,
+   "before": {
+    "centerOnTile": 16883,
+    "drawCenter": [
+     89.0324,
+     -19.7589,
+     -41.0222
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0
+   },
+   "after": {
+    "centerOnTile": 16883,
+    "drawCenter": [
+     89.0324,
+     -19.7589,
+     -41.0222
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Frostvein",
+   "uid": 73,
+   "tiles": 61,
+   "before": {
+    "centerOnTile": 14899,
+    "drawCenter": [
+     65.1709,
+     -27.1684,
+     70.814
+    ],
+    "size": 11.0,
+    "effectiveWidthTiles": 16.67
+   },
+   "after": {
+    "centerOnTile": 14899,
+    "drawCenter": [
+     65.1709,
+     -27.1684,
+     70.814
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Dew Horn",
+   "uid": 74,
+   "tiles": 491,
+   "before": {
+    "centerOnTile": 2485,
+    "drawCenter": [
+     -86.6305,
+     0.0,
+     -49.9515
+    ],
+    "size": 30.0,
+    "effectiveWidthTiles": 50.0
+   },
+   "after": {
+    "centerOnTile": 2485,
+    "drawCenter": [
+     -86.6305,
+     0.0,
+     -49.9515
+    ],
+    "size": 22.0,
+    "effectiveWidthTiles": 35.0,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Cratercrown",
+   "uid": 75,
+   "tiles": 174,
+   "before": {
+    "centerOnTile": 17340,
+    "drawCenter": [
+     -74.9216,
+     -8.762,
+     -65.6504
+    ],
+    "size": 18.0,
+    "effectiveWidthTiles": 28.33
+   },
+   "after": {
+    "centerOnTile": 17340,
+    "drawCenter": [
+     -74.9216,
+     -8.762,
+     -65.6504
+    ],
+    "size": 12.9,
+    "effectiveWidthTiles": 19.83,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Scald",
+   "uid": 76,
+   "tiles": 312,
+   "before": {
+    "centerOnTile": 8506,
+    "drawCenter": [
+     -57.4968,
+     -2.3448,
+     -81.7839
+    ],
+    "size": 24.0,
+    "effectiveWidthTiles": 38.33
+   },
+   "after": {
+    "centerOnTile": 8506,
+    "drawCenter": [
+     -57.4968,
+     -2.3448,
+     -81.7839
+    ],
+    "size": 17.1,
+    "effectiveWidthTiles": 26.83,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Twilight Crags",
+   "uid": 77,
+   "tiles": 384,
+   "before": {
+    "centerOnTile": 7276,
+    "drawCenter": [
+     -90.4923,
+     -30.9694,
+     29.1897
+    ],
+    "size": 26.0,
+    "effectiveWidthTiles": 42.0
+   },
+   "after": {
+    "centerOnTile": 7276,
+    "drawCenter": [
+     -90.4923,
+     -30.9694,
+     29.1897
+    ],
+    "size": 18.64,
+    "effectiveWidthTiles": 29.4,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Fanground",
+   "uid": 78,
+   "tiles": 70,
+   "before": {
+    "centerOnTile": 15509,
+    "drawCenter": [
+     -46.4989,
+     87.2037,
+     -15.2764
+    ],
+    "size": 11.0,
+    "effectiveWidthTiles": 16.67
+   },
+   "after": {
+    "centerOnTile": 15509,
+    "drawCenter": [
+     -46.4989,
+     87.2037,
+     -15.2764
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Tallow Ground",
+   "uid": 79,
+   "tiles": 129,
+   "before": {
+    "centerOnTile": 10287,
+    "drawCenter": [
+     68.0447,
+     72.4259,
+     -11.1541
+    ],
+    "size": 15.0,
+    "effectiveWidthTiles": 23.33
+   },
+   "after": {
+    "centerOnTile": 10287,
+    "drawCenter": [
+     68.0447,
+     72.4259,
+     -11.1541
+    ],
+    "size": 10.8,
+    "effectiveWidthTiles": 16.33,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Blight",
+   "uid": 80,
+   "tiles": 140,
+   "before": {
+    "centerOnTile": 5778,
+    "drawCenter": [
+     11.1356,
+     -98.0481,
+     -16.2042
+    ],
+    "size": 16.0,
+    "effectiveWidthTiles": 25.0
+   },
+   "after": {
+    "centerOnTile": 5778,
+    "drawCenter": [
+     11.1356,
+     -98.0481,
+     -16.2042
+    ],
+    "size": 11.5,
+    "effectiveWidthTiles": 17.5,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Fall Line",
+   "uid": 81,
+   "tiles": 155,
+   "before": {
+    "centerOnTile": 9180,
+    "drawCenter": [
+     79.4568,
+     8.3438,
+     -60.1415
+    ],
+    "size": 26.0,
+    "effectiveWidthTiles": 42.0
+   },
+   "after": {
+    "centerOnTile": 9180,
+    "drawCenter": [
+     79.4568,
+     8.3438,
+     -60.1415
+    ],
+    "size": 18.64,
+    "effectiveWidthTiles": 29.4,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Cinderdark",
+   "uid": 82,
+   "tiles": 153,
+   "before": {
+    "centerOnTile": 11650,
+    "drawCenter": [
+     74.9174,
+     -13.1151,
+     64.9259
+    ],
+    "size": 17.0,
+    "effectiveWidthTiles": 26.67
+   },
+   "after": {
+    "centerOnTile": 11650,
+    "drawCenter": [
+     74.9174,
+     -13.1151,
+     64.9259
+    ],
+    "size": 12.2,
+    "effectiveWidthTiles": 18.67,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Blindwood",
+   "uid": 83,
+   "tiles": 145,
+   "before": {
+    "centerOnTile": 7116,
+    "drawCenter": [
+     -75.6994,
+     15.1792,
+     63.5547
+    ],
+    "size": 16.0,
+    "effectiveWidthTiles": 25.0
+   },
+   "after": {
+    "centerOnTile": 7116,
+    "drawCenter": [
+     -75.6994,
+     15.1792,
+     63.5547
+    ],
+    "size": 11.5,
+    "effectiveWidthTiles": 17.5,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Knuckles",
+   "uid": 84,
+   "tiles": 219,
+   "before": {
+    "centerOnTile": 13336,
+    "drawCenter": [
+     -15.1359,
+     98.6996,
+     5.4117
+    ],
+    "size": 20.0,
+    "effectiveWidthTiles": 31.67
+   },
+   "after": {
+    "centerOnTile": 13336,
+    "drawCenter": [
+     -15.1359,
+     98.6996,
+     5.4117
+    ],
+    "size": 14.3,
+    "effectiveWidthTiles": 22.17,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Mould Marches",
+   "uid": 85,
+   "tiles": 123,
+   "before": {
+    "centerOnTile": 10258,
+    "drawCenter": [
+     35.1892,
+     90.4036,
+     24.2676
+    ],
+    "size": 15.0,
+    "effectiveWidthTiles": 23.33
+   },
+   "after": {
+    "centerOnTile": 10258,
+    "drawCenter": [
+     35.1892,
+     90.4036,
+     24.2676
+    ],
+    "size": 10.8,
+    "effectiveWidthTiles": 16.33,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Salt Gate",
+   "uid": 86,
+   "tiles": 16,
+   "before": {
+    "centerOnTile": 3447,
+    "drawCenter": [
+     -71.0051,
+     56.137,
+     -42.5078
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0
+   },
+   "after": {
+    "centerOnTile": 3447,
+    "drawCenter": [
+     -71.0051,
+     56.137,
+     -42.5078
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Fever Wood",
+   "uid": 87,
+   "tiles": 81,
+   "before": {
+    "centerOnTile": 18382,
+    "drawCenter": [
+     -61.6559,
+     40.0053,
+     -67.8095
+    ],
+    "size": 12.0,
+    "effectiveWidthTiles": 18.33
+   },
+   "after": {
+    "centerOnTile": 18382,
+    "drawCenter": [
+     -61.6559,
+     40.0053,
+     -67.8095
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Stepwood",
+   "uid": 88,
+   "tiles": 85,
+   "before": {
+    "centerOnTile": 19076,
+    "drawCenter": [
+     -79.5868,
+     -60.547,
+     -0.0
+    ],
+    "size": 12.0,
+    "effectiveWidthTiles": 18.33
+   },
+   "after": {
+    "centerOnTile": 19076,
+    "drawCenter": [
+     -79.5868,
+     -60.547,
+     -0.0
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Anvil",
+   "uid": 89,
+   "tiles": 349,
+   "before": {
+    "centerOnTile": 19331,
+    "drawCenter": [
+     -9.4785,
+     -8.7443,
+     -99.165
+    ],
+    "size": 25.0,
+    "effectiveWidthTiles": 40.0
+   },
+   "after": {
+    "centerOnTile": 19331,
+    "drawCenter": [
+     -9.4785,
+     -8.7443,
+     -99.165
+    ],
+    "size": 17.8,
+    "effectiveWidthTiles": 28.0,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Fuelmere",
+   "uid": 90,
+   "tiles": 72,
+   "before": {
+    "centerOnTile": 19844,
+    "drawCenter": [
+     55.4545,
+     -34.1208,
+     75.8984
+    ],
+    "size": 11.0,
+    "effectiveWidthTiles": 16.67
+   },
+   "after": {
+    "centerOnTile": 19844,
+    "drawCenter": [
+     55.4545,
+     -34.1208,
+     75.8984
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Sunshelf",
+   "uid": 91,
+   "tiles": 68,
+   "before": {
+    "centerOnTile": 10475,
+    "drawCenter": [
+     -35.0123,
+     -91.1073,
+     21.7624
+    ],
+    "size": 11.0,
+    "effectiveWidthTiles": 16.67
+   },
+   "after": {
+    "centerOnTile": 10475,
+    "drawCenter": [
+     -35.0123,
+     -91.1073,
+     21.7624
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Cinders",
+   "uid": 92,
+   "tiles": 112,
+   "before": {
+    "centerOnTile": 20677,
+    "drawCenter": [
+     82.8811,
+     -47.3848,
+     -29.7556
+    ],
+    "size": 14.0,
+    "effectiveWidthTiles": 21.67
+   },
+   "after": {
+    "centerOnTile": 20677,
+    "drawCenter": [
+     82.8811,
+     -47.3848,
+     -29.7556
+    ],
+    "size": 10.1,
+    "effectiveWidthTiles": 15.17,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Salt",
+   "uid": 93,
+   "tiles": 249,
+   "before": {
+    "centerOnTile": 21691,
+    "drawCenter": [
+     90.8399,
+     36.3902,
+     -20.588
+    ],
+    "size": 21.0,
+    "effectiveWidthTiles": 33.33
+   },
+   "after": {
+    "centerOnTile": 21691,
+    "drawCenter": [
+     90.8399,
+     36.3902,
+     -20.588
+    ],
+    "size": 15.0,
+    "effectiveWidthTiles": 23.33,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Hollow Verge",
+   "uid": 94,
+   "tiles": 40,
+   "before": {
+    "centerOnTile": 3961,
+    "drawCenter": [
+     -56.145,
+     -42.5005,
+     -71.0032
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0
+   },
+   "after": {
+    "centerOnTile": 3961,
+    "drawCenter": [
+     -56.145,
+     -42.5005,
+     -71.0032
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Grinding Floor",
+   "uid": 95,
+   "tiles": 79,
+   "before": {
+    "centerOnTile": 2536,
+    "drawCenter": [
+     -93.3147,
+     -35.6521,
+     4.6145
+    ],
+    "size": 12.0,
+    "effectiveWidthTiles": 18.33
+   },
+   "after": {
+    "centerOnTile": 2536,
+    "drawCenter": [
+     -93.3147,
+     -35.6521,
+     4.6145
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Hanging Wood",
+   "uid": 96,
+   "tiles": 165,
+   "before": {
+    "centerOnTile": 19966,
+    "drawCenter": [
+     -20.5988,
+     -90.8278,
+     36.4142
+    ],
+    "size": 17.0,
+    "effectiveWidthTiles": 26.67
+   },
+   "after": {
+    "centerOnTile": 19966,
+    "drawCenter": [
+     -20.5988,
+     -90.8278,
+     36.4142
+    ],
+    "size": 12.2,
+    "effectiveWidthTiles": 18.67,
+    "atFloor": false,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Chalk Marches",
+   "uid": 97,
+   "tiles": 57,
+   "before": {
+    "centerOnTile": 523,
+    "drawCenter": [
+     -26.0357,
+     -95.8148,
+     -11.9021
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0
+   },
+   "after": {
+    "centerOnTile": 523,
+    "drawCenter": [
+     -26.0357,
+     -95.8148,
+     -11.9021
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Notch",
+   "uid": 98,
+   "tiles": 56,
+   "before": {
+    "centerOnTile": 14726,
+    "drawCenter": [
+     81.8233,
+     -38.823,
+     -42.3996
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0
+   },
+   "after": {
+    "centerOnTile": 14726,
+    "drawCenter": [
+     81.8233,
+     -38.823,
+     -42.3996
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  },
+  {
+   "name": "Quiet Ground",
+   "uid": 99,
+   "tiles": 43,
+   "before": {
+    "centerOnTile": 1920,
+    "drawCenter": [
+     69.3397,
+     32.8969,
+     64.1077
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0
+   },
+   "after": {
+    "centerOnTile": 1920,
+    "drawCenter": [
+     69.3397,
+     32.8969,
+     64.1077
+    ],
+    "size": 10.0,
+    "effectiveWidthTiles": 15.0,
+    "atFloor": true,
+    "sizeSource": "U1 canonical x 0.70 displayed width"
+   }
+  }
+ ]
+}
