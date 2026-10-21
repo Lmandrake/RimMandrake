@@ -60,6 +60,7 @@ MODS = {
         "Big creatures: walls, slots and roofs": "Now",   # BIG_CREATURES_DESIGN_WALLS_AND_SLOTS: read at each path start, strike and tick
         "Yield curve": "Now",
         "Titanic corpse sites": "Now",
+        "Titan events": "NextPulse",   # TITAN_CAMPS_SCAVENGERS_EVENTS_1 (70cc1a28a): read when the storyteller offers RM_TitanPassage
     }, ()),
     "GimmeSomeSlack#Cables": ("GimmeSomeSlackMod.cs", "RimMandrake_GimmeSomeSlack.csproj", {
         "Messy cords and default style": "Now",
