@@ -19,5 +19,8 @@ st = Path(__file__).resolve().parents[4] / "Transient/facing_regen_batch_2026-10
 if st.exists():
     items = json.loads(st.read_text())["items"]
     owners = {k for k, v in items.items() if v["status"] == "installed" and k.split("/")[-1] in R.SHARED_BASENAMES}
-    assert owners == R.PLAIN_SLUG_OWNERS, owners
+    # later batches installed more colour variants under hashed slugs (correct); the plain-slug owners must stay installed + plain
+    assert R.PLAIN_SLUG_OWNERS <= owners, owners
+    for k in owners - R.PLAIN_SLUG_OWNERS:
+        assert R.slug(row(k)) != k.split("/")[-1], k
 print("selftest_facing_regen_slug OK")
