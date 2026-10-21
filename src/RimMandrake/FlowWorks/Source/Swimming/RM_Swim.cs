@@ -599,7 +599,9 @@ namespace RimMandrake.FlowWorks.Swimming
 				return;
 			}
 			int tick = Find.TickManager.TicksGame;
-			if (lastDrownMsg.TryGetValue(p.thingIDNumber, out int last) && tick - last < 2500)
+			// tick >= last: after loading an OLDER save in the same session the stamp is in the future, and a bare
+			// tick - last < 2500 would mute "X is drowning." (the readable sign) until the clock passed it
+			if (lastDrownMsg.TryGetValue(p.thingIDNumber, out int last) && tick >= last && tick - last < 2500)
 			{
 				return;
 			}
