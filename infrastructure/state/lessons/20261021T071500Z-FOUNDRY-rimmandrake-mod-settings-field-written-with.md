@@ -1,0 +1,1 @@
+A RimMandrake Mod Settings field written with jawa/mod_settings_field does NOT fire the mod's WriteSettings side effects: Biomes world toggles (worldBiomeSwirls etc.) only redraw on WriteSettings' SetAllLayersDirty, so follow the set with jawa/world_commit redraw=true lazy=true or the toggle looks dead (60 px changed vs 214k with the redraw) (live8 2026-10-21)

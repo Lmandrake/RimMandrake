@@ -1,0 +1,1 @@
+python.exe bridge scripts and preflight O13 need RM_DATA_ROOT passed through WSLENV (export RM_DATA_ROOT='D:\ClaudeWork\rimmandrake' WSLENV=RM_DATA_ROOT); but the same export makes WSL python3 tools create a literal 'D:\ClaudeWork\rimmandrake' folder in the clone (backslash path read as relative) - set it per python.exe call, not for python3 (live8 2026-10-21)

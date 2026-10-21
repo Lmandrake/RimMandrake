@@ -1,0 +1,1156 @@
+{
+ "script": "live_session.py",
+ "mode": "live",
+ "env": {
+  "partial": true
+ },
+ "zones": {
+  "owner": [
+   18,
+   157,
+   216,
+   78
+  ],
+  "covers": [
+   15,
+   15,
+   26,
+   10
+  ],
+  "access": [
+   47,
+   15,
+   40,
+   14
+  ],
+  "digdepth": [
+   93,
+   15,
+   12,
+   8
+  ],
+  "reservoir": [
+   111,
+   15,
+   16,
+   26
+  ],
+  "grenade": [
+   133,
+   15,
+   20,
+   10
+  ],
+  "raillip": [
+   159,
+   15,
+   16,
+   14
+  ],
+  "ride": [
+   181,
+   15,
+   6,
+   6
+  ],
+  "tanks": [
+   193,
+   15,
+   12,
+   6
+  ],
+  "readout": [
+   228,
+   15,
+   22,
+   16
+  ],
+  "ice": [
+   15,
+   47,
+   16,
+   8
+  ],
+  "flood": [
+   37,
+   47,
+   18,
+   10
+  ],
+  "suspension": [
+   61,
+   47,
+   40,
+   16
+  ],
+  "props": [
+   107,
+   47,
+   30,
+   10
+  ],
+  "trench": [
+   15,
+   15,
+   30,
+   16
+  ],
+  "climb": [
+   51,
+   15,
+   46,
+   12
+  ],
+  "sprinkler": [
+   103,
+   15,
+   16,
+   86
+  ],
+  "l2": [
+   125,
+   15,
+   30,
+   18
+  ],
+  "l2b": [
+   161,
+   15,
+   30,
+   18
+  ],
+  "l6": [
+   197,
+   15,
+   30,
+   18
+  ],
+  "l4": [
+   15,
+   107,
+   30,
+   18
+  ],
+  "l5": [
+   51,
+   107,
+   30,
+   18
+  ],
+  "thirst": [
+   15,
+   15,
+   96,
+   42
+  ]
+ },
+ "timing": {
+  "validation_v2.py": 310.6,
+  "B1": 311.3,
+  "tank_tall": [
+   "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=160000",
+   "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=320000"
+  ],
+  "readouts": {
+   "dug_dry": "OK Hole 1 m \u00b7 Water 0.00 m (0 L)",
+   "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+   "pond": "OK Hole 2 m \u00b7 Water 1.17 m (2,333 L)",
+   "ground": "OK -",
+   "lake": "OK Endless (about 2 m deep)"
+  },
+  "B2": 4.3,
+  "total_s": 315.7
+ },
+ "rows": [
+  {
+   "id": "validation_v2:L1_fresh_map",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:L2_tier_live",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:L3_defs_live",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E1a_cadence_shipped",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:L4_site_ready",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:S1_dig_ladder",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:S1n_superdeep_is_max",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:S1p_pit_is_grid_only",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:S2_fill_clamp",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:S3_classification",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:S4_sink_band",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:S5_sticky_limitless",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:S6_digToDepth_gate",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:A0_instrument",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E2_twins_identical",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E2_channels_fill_every_direction",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E2_dry_ring",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E3b_recession_shipped",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E5_sink_drains",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E5_inner_holds",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E2s_shared_source_both_fill",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E3_budget_exhaustion",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E3n_budget_off_supplies",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E5n_sinks_off",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E5_sinks_back_on",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E2_rerun_determinism",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:G_every_cell_vs_oracle",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:J_workgiver_selection",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:J_orders_accepted",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E4_engine_off",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E1b_pulse_clamp",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E1c_cadence_real_scheduler",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E4_engine_on_scheduled",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E6n_rain_toggle_off",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E7a_fillin_displaces",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E7b_overflow_sanctioned",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E8_player_dig",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E6_roof_readback",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E6_rain_fills_unroofed",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:P1_width_matrix",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:P2_fillin_releases_large",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:P3_walk_in_held",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:P3f_forced_entry_falls",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:P4_ladder_frees",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:P4f_ladder_frees_forced",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:P4b_ladder_raised_strands",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:P5n_own_faction_carveout",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X1_pawn_height_ladder",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X2_pawn_lowers_walking_in",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X3_pawn_rises_walking_out",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X4_pit_wall_over_head",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X5_slime_occupant_below_surface",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X7_tar_front_lags_water",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X6_two_fluids_distinct",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X7n_viscosity_off",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X8_cover_hides_pit",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X9_cover_deck_uniform",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:X10_canal_fire",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:T0n_fluid_switch_refused",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:E9_log_budget",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "validation_v2:Z_settings_restored",
+   "item": "VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "-",
+   "detail": {
+    "rc": 0,
+    "src": "Transient/live8_ls\\validation_v2_result.json"
+   },
+   "block": "B1",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_fall_damage_A1",
+   "item": "FALL_DAMAGE_BUILD_DEEP_DROPS_KILL",
+   "criterion": "A1",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "label": "A deep fall can kill",
+    "why": "label below the fold: get_ui_layout reads only the visible rows of the scrolled list",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792566641.png",
+    "textChars": 2003
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_pit_room_A1",
+   "item": "PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER",
+   "criterion": "A1",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "label": "A pit room's floor is at least",
+    "why": "label below the fold: get_ui_layout reads only the visible rows of the scrolled list",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792566641.png",
+    "textChars": 2003
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_pit_alert_A1",
+   "item": "PIT_ALERT_BUILD_RED_MEANS_HELP",
+   "criterion": "A1",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "label": "Red alert: a colonist stuck in a pit",
+    "why": "label below the fold: get_ui_layout reads only the visible rows of the scrolled list",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792566641.png",
+    "textChars": 2003
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_beach_ring_A1",
+   "item": "BEACH_RING_RETIRE_DRAINED_MEANS_DRY",
+   "criterion": "A1",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "label": "Shore shelf",
+    "why": "label below the fold: get_ui_layout reads only the visible rows of the scrolled list",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792566641.png",
+    "textChars": 2003
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_dialog_fall_guardrails_A2",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A2",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "label": "Guardrails and fences stop falls off a lip",
+    "why": "label below the fold: get_ui_layout reads only the visible rows of the scrolled list",
+    "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\live_session_settings_1792566641.png",
+    "textChars": 2003
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_guardrail_disk_roundtrip",
+   "item": "FALL_GUARDRAILS_BUILD_REAL_OBJECT",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "before": "True",
+    "fileHadFalse": true
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_tank_tall_twice",
+   "item": "TANK_TALL_BUILD_TWICE_THE_DRINK",
+   "criterion": "live",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "short": 160000.0,
+    "tall": 320000.0,
+    "offered": 10000000,
+    "placed": [
+     true,
+     true
+    ]
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_sea_never_dry",
+   "item": "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "lake": "OK Endless (about 2 m deep)",
+    "lakeRect": [
+     232,
+     20,
+     18,
+     11
+    ],
+    "edgeCell": "WaterDeep:249,25,1,1",
+    "sticky": "True",
+    "why": "",
+    "lakeBody": {
+     "id": 14,
+     "limitless": true,
+     "cellCount": 198,
+     "stock": 792.0,
+     "capacity": 792.0
+    }
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_drainable_not_endless",
+   "item": "FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY",
+   "criterion": "A1",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "marked": [],
+    "reads": {
+     "dug_dry": "OK Hole 1 m \u00b7 Water 0.00 m (0 L)",
+     "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+     "pond": "OK Hole 2 m \u00b7 Water 1.17 m (2,333 L)"
+    },
+    "bar": "limitless_body_marked: a pond, canal or pit carries no Endless mark"
+   },
+   "block": "B2",
+   "eyes": false
+  },
+  {
+   "id": "B2_readout_two_numbers_and_sea",
+   "item": "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "reads": {
+     "dug_dry": "OK Hole 1 m \u00b7 Water 0.00 m (0 L)",
+     "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+     "pond": "OK Hole 2 m \u00b7 Water 1.17 m (2,333 L)",
+     "ground": "OK -",
+     "lake": "OK Endless (about 2 m deep)"
+    },
+    "wording": "owner looks at these strings (V8 kept by card)"
+   },
+   "block": "B2",
+   "eyes": true
+  },
+  {
+   "id": "B2_readout_metres_litres",
+   "item": "LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": {
+    "canal": "OK Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+    "pond": "OK Hole 2 m \u00b7 Water 1.17 m (2,333 L)",
+    "eyes": "settings UI by eye: B2 dialog screenshot"
+   },
+   "block": "B2",
+   "eyes": true
+  }
+ ],
+ "notes": [],
+ "args": {
+  "dry_run": false,
+  "mock": false,
+  "list": false,
+  "only": "B1,B2",
+  "skip": "",
+  "frame_budget_ms": 150.0,
+  "player_log": "",
+  "no_owner_save": true,
+  "out_dir": "Transient/live8_ls"
+ }
+}

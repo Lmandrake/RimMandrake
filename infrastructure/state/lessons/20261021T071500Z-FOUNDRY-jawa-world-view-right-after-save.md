@@ -1,0 +1,1 @@
+jawa/world_view right after a save load: the first screenshot catches the camera mid-lerp from the colony map (a close tile view, not the globe); throw away the first shot or wait longer than 3 s before it
