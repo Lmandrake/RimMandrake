@@ -4604,7 +4604,15 @@ namespace JawaBench.BridgeTools
                 "Delete every existing feature first so the roster matches the file exactly. " +
                 "On by default - leaving the generated regions in place gives a planet with " +
                 "two overlapping naming schemes.", DefaultValue = true)]
-            bool clearExisting = true)
+            bool clearExisting = true,
+            [ToolParameter(Description =
+                "Optional features CSV keyed by `name` (ASHKARR_WORLDMAP_features.csv). Its optional " +
+                "columns override the computed label per region BY NAME: `size` (or " +
+                "`maxDrawSizeInTiles`) sets the label size, `centerTile` (or `centerOnTile`) puts " +
+                "the label on that tile's centre. A blank cell or a missing column keeps the computed " +
+                "value. Its `drawCenter` column is NOT read (exported in a mirrored frame; see " +
+                "design/Jawa/worldbuilding/parity_causes_2026-10-20.md U1). Omit for the old behaviour.")]
+            string featuresPath = null)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -4640,6 +4648,51 @@ namespace JawaBench.BridgeTools
                     lst.Add(tile);
                 }
 
+                // Canonical label size / centre by NAME (parity U1, 2026-10-20). Absent file =
+                // the computed values below, exactly as before.
+                var sizeByName = new Dictionary<string, float>(StringComparer.Ordinal);
+                var centreByName = new Dictionary<string, int>(StringComparer.Ordinal);
+                var featRowsUnmatched = new List<string>();
+                var featBadCells = new List<string>();
+                if (!string.IsNullOrEmpty(featuresPath))
+                {
+                    string ferr; var fcsv = ReadTileCsv2(featuresPath, out ferr, false);
+                    if (fcsv == null) return Fail("featuresPath: " + ferr);
+                    if (!fcsv.Col.ContainsKey("name"))
+                        return Fail("featuresPath CSV has no 'name' column. Header: " + string.Join(",", fcsv.Header.ToArray()));
+                    string sizeCol = fcsv.Col.ContainsKey("size") ? "size"
+                                   : fcsv.Col.ContainsKey("maxDrawSizeInTiles") ? "maxDrawSizeInTiles" : null;
+                    string centreCol = fcsv.Col.ContainsKey("centerTile") ? "centerTile"
+                                     : fcsv.Col.ContainsKey("centerOnTile") ? "centerOnTile" : null;
+                    foreach (var row in fcsv.Rows)
+                    {
+                        var nm = (Cell(fcsv, row, "name") ?? "").Trim();
+                        if (nm.Length == 0) continue;
+                        if (!byName.ContainsKey(nm)) { featRowsUnmatched.Add(nm); continue; }
+                        var sv = sizeCol == null ? null : Cell(fcsv, row, sizeCol);
+                        if (sv != null)
+                        {
+                            float s;
+                            if (float.TryParse(sv, System.Globalization.NumberStyles.Float,
+                                               System.Globalization.CultureInfo.InvariantCulture, out s) && s > 0f)
+                                sizeByName[nm] = s;
+                            else featBadCells.Add(nm + ":" + sizeCol + "=" + sv);
+                        }
+                        var cv = centreCol == null ? null : Cell(fcsv, row, centreCol);
+                        if (cv != null)
+                        {
+                            int ct;
+                            if (int.TryParse(cv, out ct) && ct >= 0 && ct < grid.TilesCount) centreByName[nm] = ct;
+                            else featBadCells.Add(nm + ":" + centreCol + "=" + cv);
+                        }
+                    }
+                    // A bad cell is refused, not skipped: a silently computed label is the regression
+                    // this column exists to prevent.
+                    if (featBadCells.Count > 0)
+                        return Fail("featuresPath: " + featBadCells.Count + " unparseable size/centre cell(s): " +
+                                    string.Join("; ", featBadCells.Take(8).ToArray()));
+                }
+
                 if (!apply)
                     return new
                     {
@@ -4649,6 +4702,8 @@ namespace JawaBench.BridgeTools
                         tilesLeftUnnamed = blank, unparseableTiles = badTile,
                         existingFeatures = wf.features.Count,
                         wouldDeleteExisting = clearExisting ? wf.features.Count : 0,
+                        sizesByName = sizeByName.Count, centresByName = centreByName.Count,
+                        featureRowsWithNoRegion = featRowsUnmatched,
                         preview = byName.OrderByDescending(q => q.Value.Count)
                                         .Take(12).Select(q => new { region = q.Key, tiles = q.Value.Count }).ToList(),
                         note = "DRY RUN - nothing was written. Pass apply=true.",
@@ -4684,7 +4739,8 @@ namespace JawaBench.BridgeTools
                     made[kv.Key] = f;
                 }
 
-                int assigned = 0;
+                int assigned = 0, sizesApplied = 0, centresApplied = 0;
+                var centresOffRegion = new List<string>();
                 foreach (var kv in byName)
                 {
                     var f = made[kv.Key];
@@ -4711,6 +4767,17 @@ namespace JawaBench.BridgeTools
                         // vanilla == sqrt(A) * 1.354. The old 2.2 was 1.63x vanilla:
                         // MEASURED live max 99.6 (Deadstone), Dune Sea 90.5, mean 34.1.
                         f.maxDrawSizeInTiles = Math.Max(6f, (float)Math.Sqrt(kv.Value.Count) * 1.35f);
+                    }
+                    // featuresPath overrides, by name (canonical sizes are the 2026-10-09
+                    // card-approved curve, WORLD_LABEL_SIZE_HIERARCHY_1; centres the tile
+                    // nearest the biggest piece's centroid).
+                    float cs; int cc;
+                    if (sizeByName.TryGetValue(kv.Key, out cs)) { f.maxDrawSizeInTiles = cs; sizesApplied++; }
+                    if (centreByName.TryGetValue(kv.Key, out cc))
+                    {
+                        f.drawCenter = grid.GetTileCenter(cc);
+                        centresApplied++;
+                        if (!kv.Value.Contains(cc)) centresOffRegion.Add(kv.Key + "@" + cc);
                     }
                 }
 
@@ -4744,10 +4811,13 @@ namespace JawaBench.BridgeTools
                     regionsCreated = byName.Count, featuresRemoved = removed,
                     tilesAssigned = assigned, tilesNamedOnGrid = liveNamed,
                     tilesLeftUnnamed = n - liveNamed,
+                    sizesApplied, centresApplied, centresOffRegion,
+                    featureRowsWithNoRegion = featRowsUnmatched,
                     regions = wf.features.Select(q => new
                     {
                         id = q.uniqueID, name = q.name,
                         tiles = counts.ContainsKey(q.uniqueID) ? counts[q.uniqueID] : 0,
+                        size = q.maxDrawSizeInTiles,
                     }).OrderByDescending(q => q.tiles).ToList(),
                     note = "textsCreated was reset here, which is what rebuilds the DRAWN labels. " +
                            "Still run jawa/world_commit for the draw layers themselves.",

@@ -50,69 +50,9 @@ KEEP_DERIVED = {"RM_SeaCoast"}
 # ---------------------------------------------------------------------------
 # U4: river lay order
 # ---------------------------------------------------------------------------
-def simulate_overlay(order):
-    """riverDist after laying `order` [(from, to), ...] with OverlayRiver's rule.
-    A repeated edge is a no-op (OverlayRiver returns early on an existing link)."""
-    d = defaultdict(int)
-    seen = set()
-    for a, b in order:
-        k = (a, b) if a < b else (b, a)
-        if k in seen:
-            continue
-        seen.add(k)
-        d[b] = max(d[b], d[a] + 1)
-    return d
-
-
-def river_lay_order(edges, target):
-    """Order and orient every edge once so simulate_overlay reproduces `target`
-    on every endpoint. Greedy: always raise a tile by one link without
-    overshooting its target, preferring lays that finish a tile from a finished
-    neighbour; never finish a tile while it still owes an equal-valued
-    neighbour its link (that neighbour must take it at target-1). Returns
-    (order, mismatches) where mismatches lists (tile, got, want)."""
-    edges = [tuple(e) for e in edges]
-    adj = defaultdict(set)
-    for a, b in edges:
-        adj[a].add(b)
-        adj[b].add(a)
-    left = set((a, b) if a < b else (b, a) for a, b in edges)
-    d = defaultdict(int)
-    order = []
-
-    def unlaid(x, y):
-        return ((x, y) if x < y else (y, x)) in left
-
-    while True:
-        best = None
-        for e in left:
-            for a, b in (e, e[::-1]):
-                if not (d[a] + 1 <= target[b] and d[a] + 1 > d[b]):
-                    continue
-                exact = d[a] + 1 == target[b]
-                if exact and any(unlaid(b, c) and c != a and target[c] == target[b]
-                                 and d[c] < target[c] for c in adj[b]):
-                    continue
-                key = (not exact, d[a] != target[a], target[b], a, b)
-                if best is None or key < best[0]:
-                    best = (key, a, b, e)
-        if best is None:
-            break
-        _, a, b, e = best
-        d[b] = d[a] + 1
-        order.append((a, b))
-        left.discard(e)
-    for e in sorted(left):                      # links that carry no distance
-        for a, b in (e, e[::-1]):
-            if d[a] + 1 <= d[b]:
-                order.append((a, b))
-                break
-        else:
-            order.append(e)                     # will overshoot; reported below
-    got = simulate_overlay(order)
-    tiles = set(t for e in edges for t in e)
-    mism = sorted((t, got[t], target[t]) for t in tiles if got[t] != target[t])
-    return order, mism
+# simulate_overlay / river_lay_order live in river_lay.py (numpy-free, so w9_run.py
+# can lay the same order at stamp time).
+from river_lay import simulate_overlay, river_lay_order  # noqa: E402,F401
 
 
 # ---------------------------------------------------------------------------

@@ -63,9 +63,12 @@ own tile. The import's middle-row tile is a median of 8.1 degrees from the regio
 pieces) is the one label that is not on its biggest piece. The plan stores each label's position
 and size before the change, and the tile under it.
 
-**Owed on the stamp side** (not done here; it needs a JawaBench rebuild with the game closed):
-`world_features_import` should take size and centre columns, so a re-stamp gives these values
-without a second pass.
+**Stamp side (done 2026-10-20, source + staging build; live deploy owed):** `world_features_import`
+takes `featuresPath`, a features CSV keyed by name whose optional `size` and `centerTile` columns
+override the computed label (its `drawCenter` column is never read: it holds the mirrored-frame
+positions). The bundle's features CSV carries both (`paint_inputs_build.add_label_centres`, from the
+U1 plan) and `w9_run.py` stage 6 passes it. With no features file the import computes
+`max(6, sqrt(tiles) * 1.35)` as before. Selftest: `src/RimMandrake/Utils/selftest_w9_stamp_parity.py`.
 
 ## U2. Mutators: 28,616 entries the stamp never wrote
 
@@ -102,8 +105,10 @@ authored world. They are in the removal list by the frozen-world rule. The plan'
 that never landed (River 37, Coast 36, RiverIsland 12, Oasis 10, Headwater 9, ...). Most were
 pushed out of a shared slot by a rolled entry. Anything that still fails to land shows up in the
 read-back as a conflict inside the record itself. This also clears the icon clutter from Mutator
-World Icons. **Stamp-side fix owed:** `w9_run.py` should strip every mutator that is not in its
-input, in a stage 3 before 4b, and keep only `KEEP_DERIVED`.
+World Icons. **Stamp side (done 2026-10-20):** `w9_run.py` stage 4a strips every live (tile, mutator) its
+input does not hold, keeping only `KEEP_DERIVED` (`RM_SeaCoast`). It runs after stage 4, so it
+also takes the mutators `AddLandmark` rolls, and before 4b, so the input's entries find their
+shared slots free. A truncated live read stops the run rather than strip from a partial view.
 
 ## U4. River flow: the importer laid rivers in export order, not mouth-first
 
@@ -137,3 +142,11 @@ them live. The edges and defs are the same, which the plan builder checks before
 same order now replaces the river rows of `world/paint_inputs_2026-10-20/ASHKARR_WORLDMAP_links.csv`
 (same edge set; the builder asserted that), so a re-stamp lays them right.
 `world/ASHKARR_WORLDMAP_links.csv` is the record and is left as it is.
+
+**Stamp side (done 2026-10-20):** the row order no longer has to be right. `w9_run.py` stage 2
+reads `DIR/ASHKARR_WORLDMAP_riverdist.csv` (tile, river_dist: the canonical values, written by
+`paint_inputs_build.write_river_dist` from the U4 plan) and lays the river rows in the order
+`river_lay.order_links_mouth_first` finds, refusing if that order misses any tile. The mouth
+cannot be inferred from geometry instead: 3 of the 11 canonical mouths are neither the lowest
+tile nor the largest-river leaf of their system. With no riverdist file, stage 2 lays the file
+order as before and warns.
