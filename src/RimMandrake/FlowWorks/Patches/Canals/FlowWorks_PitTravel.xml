@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT (owner, typed 2026-10-20: "plus flying creatures can simply fly in/out, jumping
+  creatures jump in or out, floating creatures float in/out"; tagging by card 2026-10-20: "2 now, (1) later during the animal
+  normalization pass"). Races tagged FROM LORE (their description / canon entry); one line of evidence each, and what was left
+  out, in design/RimMandrake/pit_travel_jumpers_floaters_2026-10-20.md. Read by RM_PocketGrid.FreePitTraveller (setting
+  pitFreeTravelEnabled). Flyers (MaxFlightTime > 0) need no tag. Each block is Conditional: a race whose mod is not loaded
+  matches nothing and the patch stays silent.
+-->
+<Patch>
+  <!-- floaters: gas-filled or hovering creatures that rise clear of the ground -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Bulloo" or defName="RM_ColossalAerofleet" or defName="RM_InfectedAerofleet" or defName="RM_OcularJelly" or defName="RM_Gawpsack" or defName="RM_Drifter" or defName="RM_Garsulix"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_Bulloo" or defName="RM_ColossalAerofleet" or defName="RM_InfectedAerofleet" or defName="RM_OcularJelly" or defName="RM_Gawpsack" or defName="RM_Drifter" or defName="RM_Garsulix"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_PitTravelExtension">
+          <floats>true</floats>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- jumpers: creatures whose lore has them hop, bound or leap -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Huldu" or defName="RM_Sipper" or defName="RSW_Tooke" or defName="RSW_FrogDog" or defName="RSW_SandLeaper" or defName="RSW_CaveLemming"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_Huldu" or defName="RM_Sipper" or defName="RSW_Tooke" or defName="RSW_FrogDog" or defName="RSW_SandLeaper" or defName="RSW_CaveLemming"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_PitTravelExtension">
+          <jumps>true</jumps>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
