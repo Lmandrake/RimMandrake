@@ -114,8 +114,9 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Owner R13 (2026-10-17): <i>"Any natural body of water that is supposed to be 'clearly limitless' should be so
 		/// marked, so players aren't shocked."</i> The mark a sea or edge river square carries (wording: unified depth spec
-		/// §4.3). A limited body never carries it, nor any other limited/limitless indicator (ruling 35, narrowed).</summary>
-		public const string LimitlessMark = "Open water, never runs dry";
+		/// §4.3). A limited body never carries it, nor any other limited/limitless indicator (ruling 35, narrowed). Wording, he
+		/// typed 2026-10-20 (bar limitless_body_marked): <i>"it should simply say Endless, for simplicity"</i>.</summary>
+		public const string LimitlessMark = "Endless";
 
 		/// <summary>A floor or hole depth for a player: to the notch (0.5 m), "7 m", "3.5 m".</summary>
 		public static string FormatFloorMetres(int notches)
@@ -151,7 +152,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>A limitless square's readout (sea, edge river): the mark and its depth as a picture, never a litre count
-		/// (unified depth spec §5.3): "Open water, never runs dry (about 2 m deep)".</summary>
+		/// (unified depth spec §5.3): "Endless (about 2 m deep)".</summary>
 		public static string LimitlessReadout(int floorNotches)
 		{
 			return floorNotches > 0 ? LimitlessMark + " (about " + FormatFloorMetres(floorNotches) + " deep)" : LimitlessMark;

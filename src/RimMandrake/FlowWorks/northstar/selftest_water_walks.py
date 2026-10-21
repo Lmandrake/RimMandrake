@@ -45,7 +45,8 @@ check("readout: wet canal sheet -> 1,670 dL", r and r["kind"] == "water" and r["
 r = R("OK Hole 2 m · Water 1.74 m (3,474 L)")
 check("readout: thousands separator -> 34,740 dL", r and r["dl"] == 34740 and r["hole_m"] == 2.0, r)
 check("readout: dry dug square is 0 dL, not unread", (R("OK Hole 0.5 m · Water 0.00 m (0 L)") or {}).get("dl") == 0)
-check("readout: limitless mark has no litres", (R("OK Open water, never runs dry (about 2 m deep)") or {}).get("kind") == "limitless")
+check("readout: limitless mark has no litres", (R("OK Endless (about 2 m deep)") or {}).get("kind") == "limitless")
+check("readout: the retired wording is flagged old", (R("OK Open water, never runs dry (about 2 m deep)") or {}).get("old_wording") is True)
 check("readout: undug ground is kind none", (R("OK -") or {}).get("kind") == "none")
 check("readout: refusal / empty / junk are None, never a zero", R("REFUSED out of bounds") is None and R("") is None and R("OK nonsense") is None
       and R(None) is None)

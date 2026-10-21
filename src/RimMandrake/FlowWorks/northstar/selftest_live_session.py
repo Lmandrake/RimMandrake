@@ -279,9 +279,11 @@ check(got.get("B4_cover_120") == "UNMEASURED" and got.get("B4_cover_220") == "UN
       "a colonist that is not drafted (left the deck) makes the row UNMEASURED, never 'held': %s" % got)
 
 # 8c. HARNESS_ROWS (2026-10-19): B2 sea, B5 ice, B6 flood verdicts can go red, and say UNMEASURED when they could not ask
-OPEN = dict(kind="limitless", text="Open water: never runs dry")
+OPEN = dict(kind="limitless", text="Endless (about 2 m deep)")
+OLDW = dict(kind="limitless", text="Open water, never runs dry", old_wording=True)
 LIM = dict(kind="water", text="Hole 2 m, water 2 m (3,000 L)")
-check(L.sea_verdict(OPEN, True, "True")[0] == "PASS", "sea: an edge lake reading limitless is PASS")
+check(L.sea_verdict(OPEN, True, "True")[0] == "PASS", "sea: an edge lake reading Endless is PASS")
+check(L.sea_verdict(OLDW, True, "True")[:2] == ("FAIL", "MOD"), "can-fail sea: the retired 'Open water' wording is FAIL (bar says Endless)")
 check(L.sea_verdict(LIM, True, "True")[:2] == ("FAIL", "MOD"), "can-fail sea: an edge lake reading limited is FAIL/MOD")
 check(L.sea_verdict(LIM, False, "True")[:2] == ("UNMEASURED", "SITE"), "sea: paint short of the edge is UNMEASURED/SITE")
 check(L.sea_verdict(LIM, True, "False")[:2] == ("UNMEASURED", "SITE"), "sea: sticky-limitless off is UNMEASURED/SITE")

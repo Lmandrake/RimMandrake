@@ -115,8 +115,10 @@ def parse_readout(txt):
         return None
     if s in ("", "-"):
         return dict(kind="none") if s == "-" else None
-    if s.startswith("Open water"):
+    if s.startswith("Endless"):           # bar limitless_body_marked: he typed 2026-10-20, "it should simply say Endless"
         return dict(kind="limitless", text=s)
+    if s.startswith("Open water"):        # the retired wording: still a limitless mark, but the bar's word is Endless
+        return dict(kind="limitless", text=s, old_wording=True)
     m = _READOUT_WATER.search(s)
     if not m:
         return None

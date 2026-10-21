@@ -213,7 +213,7 @@ SETTINGS = {
     # FISH_ROLL_MEND_PONDS_BORN_BARREN
     "RimMandrake.FlowWorks.RM_WaterMendSettings": {
         "waterBodyMendsEnabled": True, "fishRollOnGrowth": True, "fishReturnOnRefill": True, "fishingZoneReturnOnRefill": True,
-        "waterBodySplitEnabled": True, "waterPlantGraceEnabled": True, "waterPlantDeepToleranceMetres": 1.0, "waterPlantGraceHours": 24.0,
+        "waterBodySplitEnabled": True, "waterPlantGraceEnabled": True, "freezeCountMendEnabled": True, "waterPlantDeepToleranceMetres": 1.0, "waterPlantGraceHours": 24.0,
     },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)

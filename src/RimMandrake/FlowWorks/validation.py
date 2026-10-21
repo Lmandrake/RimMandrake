@@ -441,6 +441,38 @@ def ladder_hung_on_wall(t):
                                     "(PIT_LADDER_REDRAW_HUNG_ON_THE_WALL; review map hold_ladder / hold_ladder_raised)")
 
 
+def _bar_chain(t, ran_id, cases, live_id, bar, owed):
+    """The 2026-10-20 bar-fix chains: the C# SelfTest cases that prove the mechanism offline, then ONE live component
+    that claims the bar (shows=) and reports UNMEASURED naming the live check until a bridge session runs it (owed)."""
+    got = {}
+    with t.component(ran_id):
+        if t._guard():
+            got = _selftest_cases()
+    for name in cases:
+        with t.component(name):
+            if t._guard():
+                if got.get(name) != "ok":
+                    raise ExpectationFailed("%s: %s" % (name, got.get(name) or "case missing from the SelfTest output"))
+    t.upstream_failed = False   # the live row only names what is owed: an offline FAIL above must not blank it
+    with t.component(live_id, shows=[bar]):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: live check owed -- " + owed)
+
+
+# FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY (bar limitless_body_marked; he typed 2026-10-20: "it should simply say
+# Endless, for simplicity"). Offline: the mark, the drainable readouts and the call site (Source/SelfTest/RewireChecks.cs).
+ENDLESS_CASES = ["Readout_limitless_says_Endless", "Readout_two_numbers_and_the_limitless_mark"]
+
+
+@suite.chain("limitless_endless")
+def limitless_endless(t):
+    """Offline: never-drying water reads "Endless", drainable water never does. 0 ticks, no bridge."""
+    _bar_chain(t, "endless_selftest_ran", ENDLESS_CASES, "endless_live", "limitless_body_marked",
+               "northstar/live_session.py block B2 (rows B2_readout_sea_never_dry + B2_readout_drainable_not_endless): "
+               "an edge-touching painted sea reads 'Endless', the dug dry square, canal and pond beside it do not; plus a "
+               "river square by mouseover (FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY)")
+
+
 # FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (owner 2026-10-16): dev-placed flow source and flow sink (Source/MapControls/).
 # Offline proof of the rate math, a source and a sink driven through the production kernel with its ledger balanced every
 # pulse, and the wiring incl. the mapControlsEnabled master switch gating the pulse (Source/SelfTest/MapControlChecks.cs).
@@ -943,7 +975,7 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         "deepSwimEnabled", "swimOpenWaterEnabled", "humanlikesSwim", "mechanoidsSink", "animalsAvoidDeepWater",
                         "tiredSwimmersHeadForShore", "deepSwimJoyEnabled", "shallowWaterDrowningEnabled",
                         "waterBodyMendsEnabled", "fishRollOnGrowth", "fishReturnOnRefill", "fishingZoneReturnOnRefill",
-                        "waterBodySplitEnabled", "waterPlantGraceEnabled",
+                        "waterBodySplitEnabled", "waterPlantGraceEnabled", "freezeCountMendEnabled",
                         # RM_SuspensionSettings registered 2026-10-19 (SETTINGS_REGISTRY_FILL_FOUR_SECTIONS_UNSEEN): the suspension
                         # items' live rows are owed on them (B4); not yet a toggle chain
                         "suspensionBridgesBuildable", "suspensionWeightCollapse", "suspensionAnchorLossFalls",
