@@ -1,0 +1,1 @@
+IncidentWorker.CanFireNow caches CanFireNowSub per game tick (lastCheckCanRunTick): on a paused game, flipping a toggle and asking again in the same tick returns the old answer. Step a tick between asks (titan_events_live.py run 1 read 'cannot fire' with events on).
