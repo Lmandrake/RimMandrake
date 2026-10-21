@@ -1,0 +1,1 @@
+A note saying UNBLOCKED is not an unblock: WORLDMAP_BIOME_APPEARANCE_1 carried an OWNER note 'UNBLOCKED 2026-10-20' while its 2026-09-28 block event stood, so rimflow kept rendering it BLOCKED. When work resumes on a blocked item, run rimflow unblock in the same act; sweeps should grep notes for 'unblock' on BLOCKED items.
