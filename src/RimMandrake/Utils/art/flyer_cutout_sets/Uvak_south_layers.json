@@ -1,0 +1,40 @@
+{
+ "set": "Uvak_south_layers",
+ "folder": "src/RimStarWars/SWBestiary/Textures/swanimals/Uvak",
+ "prefix": "Uvak_Flying_",
+ "note": "FLIER_AFTERNOON_EXPERIMENT_PROVE_STILL_TORSO (2026-10-21): layered south bake by flier_layer_bake.py. NOT an install config: the frames it describes live only in the agent-storage scratch. Source master = Uvak_Flying_3_south.png at 842bca0^ (our own artpipe painting, sha256 3f01973a...). Baked frame 1 is the master pose, so master = 1 here (the stabilizer's reference frame). protect = the rigid body (tail, head, neck, shoulders, torso, legs); each wing = master pixels inside its poly and outside protect. seam = the pinned flank attachment line (rotation axis); leading_edge = shoulder -> wrist (the fold compresses the fingers toward it).",
+ "facings": {
+  "south": {
+   "master": 1,
+   "source_master": "Uvak_Flying_3_south.png",
+   "source_master_sha256": "3f01973ae07101e76d2db6266629549b4daab8a94bf0104ceec6477da23be67c",
+   "order": "under",
+   "seam_px": 2,
+   "protect": [[[117, 20], [128, 22], [127, 30], [122, 40], [124, 49], [133, 47], [141, 50], [151, 54], [157, 62],
+                [156, 80], [153, 89], [158, 91], [158, 100], [159, 112], [158, 126], [155, 136], [156, 150], [154, 162],
+                [146, 165], [136, 162], [134, 146], [120, 146], [120, 162], [110, 165], [101, 161], [101, 140], [98, 132],
+                [97, 116], [98, 100], [101, 92], [105, 89], [105, 72], [101, 56], [101, 40], [105, 28]]],
+   "wings": [
+    {"id": "wing_left", "poly": [[0, 60], [112, 60], [112, 250], [0, 250]], "hinge": [100, 96], "sign": -1,
+     "seam": [[100, 95], [98, 134]], "leading_edge": [[100, 92], [44, 126]], "occlusion": "under"},
+    {"id": "wing_right", "poly": [[144, 60], [256, 60], [256, 250], [144, 250]], "hinge": [157, 96], "sign": 1,
+     "seam": [[157, 95], [157, 136]], "leading_edge": [[157, 92], [212, 126]], "occlusion": "under"}
+   ],
+   "eyes": [[133.4, 64.2], [150.5, 62.9]],
+   "landmarks": [{"id": "eye_left", "role": "head", "xy": [133.4, 64.2]},
+                 {"id": "eye_right", "role": "head", "xy": [150.5, 62.9]},
+                 {"id": "sternum", "role": "torso", "xy": [128, 128]},
+                 {"id": "tail_tip", "role": "torso", "xy": [122, 25]}],
+   "layer_bake": {
+    "projection": "south: wing plane turns about its flank seam (an axis in the picture plane); the in-plane span shrinks by cos(theta) and the out-of-plane depth d*sin(theta) projects as a screen rise of lift_k per px (camera elevation ~37 deg, the art convention)",
+    "lift_k": 0.8,
+    "keys": [[0, 1.0], [-12, 1.0], [-4, 0.9], [22, 0.8], [48, 0.74], [62, 0.76], [40, 0.86], [16, 0.95]],
+    "distal_lag": 0.06,
+    "distal_gain": 1.12,
+    "span_px": 100,
+    "shade_rise": 0.06,
+    "shade_turn": 0.10
+   }
+  }
+ }
+}
