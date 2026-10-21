@@ -164,6 +164,12 @@ edge 4 to 6 d plus art after the width look; hose transitions 1 to 1.5 d; power 
 solver 3 to 5 d. Live: pipe and cord on a rope deck; overload the span and read both nets split; dig under a pipe;
 drain a pit through a ladder hose; level two ponds of unequal height, then two of different liquids.
 
+
+## Owner's follow-up answers (question cards, 2026-10-20, late evening). These override the Ruled design where they differ.
+
+- **Cord on a flooded deck:** cords are insulated. Flooding does not short them or cut them.
+- **Canals:** any dug channel blocks rigid pipe and conduit, the way a pit does, whatever its depth. A pit, a trench or a canal of any depth needs pipe poles to cross.
+
 ## Open owner questions (each a question card)
 
 1. **A deck goes under water with a power cord on it.** The cord shorts and stops carrying power until dry · the cord
