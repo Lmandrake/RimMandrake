@@ -170,6 +170,34 @@ the leaf upright, height scaled to its length, 4 facings. Gate: closed (leaf upr
 stacked beside the bridge. Search `artpipe_state.py find` and the sheets' `.decisions.json` before queuing any art; art
 is a separate item, as `SUSPENSION_ART_RESKIN_HE_SEES_FIRST` was.
 
+**Art contract (BENCH, 2026-10-20; the builder reads texture paths from here).** Owner: *"commission the art for the
+bridges so it will be ready for you by the time you need it."* Searched first: no drawbridge, winch, bascule, gangplank
+or raid-plank art existed (`artpipe_state.py find`, the done jobs, every `Transient/biome_ffar/*.decisions.json`).
+All paths are texPaths under `src/RimMandrake/FlowWorks/Textures/`, 256 px per cell like the suspension art. Queued
+from `infrastructure/artpipe/art_lists/flowworks_drawbridge_2026-10-20.json` (28 jobs); until each passes review and
+`art install`, the path does not exist on disk, so the builder ships a stand-in or guards for a missing texture.
+`<M>` is `Timber` or `Steel`.
+
+| picture | texPath | graphic | canvas / size |
+|---|---|---|---|
+| leaf lowered | `Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_<M>_Atlas` (+ railing edge) | existing, reused | no new art |
+| winch house (timber hand-crank; steel motor house) | `Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_<M>` | Graphic_Multi `_south/_east/_north`; front (chains) faces the leaf | 384×384, 1×1 footprint, drawSize 1.5 |
+| leaf raised, deck face toward camera | `Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_<M>_Face` | single, drawn by code at the hinge | 256×1024 = 1 lane × 4 cells, hinge at the bottom edge |
+| leaf raised, underside toward camera | `…/Drawbridge/RM_DrawbridgeLeafUp_<M>_Underside` | as above | as above |
+| leaf raised, edge-on (span runs east/west; flip for west) | `…/Drawbridge/RM_DrawbridgeLeafUp_<M>_Edge` | as above | as above |
+| gate leaf closed / open | `…/Drawbridge/RM_DrawbridgeGate_<M>_Closed`, `…_Open` | Graphic_Multi `_south` (face-on) and `_east` (edge-on); north reuses south | 256×384 per lane, drawSize 1×1.5 |
+| planks beside the bridge (art only) | `…/Drawbridge/RM_DrawbridgePlanks_<M>` | single | 256×256, 1 cell |
+| raid plank, carried/dropped item | `Things/Item/FlowWorks/RM_RaidPlank` | single | 256×256 |
+| raid plank laid across the pit | `…/Drawbridge/RM_RaidPlank_Laid` (one per cell) + `…/Drawbridge/RM_RaidPlank_LaidEnd` (each bank end, hooks at the top) | single, rotated with the span | 256×256 each |
+| command icons | `UI/Commands/FlowWorks/RM_DrawbridgeRaise`, `…/RM_DrawbridgeLower`, `…/RM_DrawbridgeHoldRaised` | UI | 256×256 |
+
+Which raised view to draw: the leaf rotates up about its hinge, so a span running **north** from its hinge shows its
+`_Face` to the camera, a span running **south** shows its `_Underside`, east/west show `_Edge`. The raised art is drawn
+1 lane wide and 4 cells tall; the code draws one copy per lane and scales its height to the leaf length (a steel leaf
+over 4 cells is stretched). **Not commissioned:** a mid-raise picture (the spec does not animate the raise), styled
+looks (Scrapper/Industrial/Modern/Futuristic; the base material art comes first), raid planks in steel, a crash-down
+wreck (`RM_SuspensionWreck` exists).
+
 ### R13. Build order, cost, live rows
 
 ESTIMATE 8 to 11 agent-days plus art.
