@@ -1,0 +1,1 @@
+A build that lands without updating infrastructure/state/items/<ID>.md gets re-briefed as new work: WORLD_STARS part 1 (de96af3987) was recorded only in a ledger note, and the next brief asked for it again. Before building, run 'git log -S <setting or class name>' and 'rimflow show <ID>' history; after building, append a ## Built section to the item file.
