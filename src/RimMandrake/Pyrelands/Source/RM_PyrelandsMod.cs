@@ -224,15 +224,16 @@ namespace RimMandrake.Pyrelands
         /// "Mod enabled" reaches its mechanics through PyrelandsMechanicsGate.On: ash dusting and scorch-fruit (FireTickMayRoll),
         /// ashfall, the fresh-burn stamp (BurnStampMay), ambient ash, plant growth stages, the wild-plant allowlist, scorched
         /// ruins, the burn line, fire-hawks, the furnace-beast thermal circuit, the fire clock, migration and the herd seeder,
-        /// and burrowers. Independent, as the master's own tooltip says or because the read site does not consult the gate:
-        /// the ash-field water/fertility numbers, regrowth pace, biome placement, the restart-time
+        /// burrowers, and ash-field watering (its only read sites, FertilityPostfix and the ash-field tick, check the gate).
+        /// Independent, as the master's own tooltip says or because the read site does not consult the gate:
+        /// dry deep-ash fertility (written into the terrain def at startup), regrowth pace, biome placement, the restart-time
         /// giants/ullai, sand shovelling, the cross-biome opt-in (its own master). Sub-switches
         /// replace the old "hide when off" blocks: the controls now stay visible, greyed, values kept.</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("pyrelandsEnabled", "ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled", "freshBurnBonusEnabled",
                      "ambientAshEnabled", "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "scorchedRuinsEnabled", "burnLineEnabled",
                      "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled", "furnaceWorldMigrationEnabled", "furnaceHerdCount",
-                     "burrowOnFireEnabled", "struckGlassEnabled", "struckGlassRingOnNewMaps")
+                     "burrowOnFireEnabled", "struckGlassEnabled", "struckGlassRingOnNewMaps", "ashWaterFertilityEnabled")
             .Declare("struckGlassEnabled", "struckGlassBlastRadius", "struckGlassMayHitBuildings")
             .Declare("ashDustingEnabled", "ashDustingChance")
             .Declare("scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap")
@@ -268,7 +269,8 @@ namespace RimMandrake.Pyrelands
         public static void ResetAllFields() { ResetFields(new List<string>(shippedDefaults.Keys).ToArray()); }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string setting, read from the field
-        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        // initialisers. MUST stay after every PUBLIC static field initialiser in this class (C# runs them in textual order);
+        // the private UI-state statics below it are not snapshotted.
         private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
 
         private static Dictionary<string, object> SnapshotDefaults()
@@ -401,6 +403,8 @@ namespace RimMandrake.Pyrelands
                   + "feeds it for a few days. Hover a deep-ash cell to see \"watered\" and \"fresh burn\". Every number here is provisional.");
                 list.Label("Dry deep-ash fertility: " + ashDryFertility.ToStringPercent());
                 ashDryFertility = list.Slider(ashDryFertility, 0f, 1f);
+                using (Dependent(list, "ashWaterFertilityEnabled", "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours"))
+                {
                 list.CheckboxLabeled("Water makes deep ash fertile", ref ashWaterFertilityEnabled,
                     "Deep ash counts as watered beside a filled FlowWorks channel (the channel cell and its 8 neighbours), near standing "
                   + "water, mud or a riverbank, and everywhere outdoors during a Black Rain and for a while after. Off: deep ash is dry "
@@ -413,6 +417,7 @@ namespace RimMandrake.Pyrelands
                     ashNaturalWaterRadius = Mathf.RoundToInt(list.Slider(ashNaturalWaterRadius, 0f, 5f));
                     list.Label("Black Rain waters the field for " + blackRainWaterHours + " hours after it ends (0 = it does not water)");
                     blackRainWaterHours = Mathf.RoundToInt(list.Slider(blackRainWaterHours, 0f, 72f));
+                }
                 }
                 list.Gap();
                 using (Dependent(list, "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus", "rainFadeBudgetHours"))
