@@ -234,12 +234,19 @@ def own_path(ext_tp: str, dn: str) -> str:
     return "/".join(parts)
 
 
-LETTER = re.compile(r"(?:_var([a-z])|_([a-h]))(?:_v\d+|_redo|_tint|_|$)")
+LETTER = re.compile(r"(?:_var([a-z])|_var([1-7])|_([a-h]))(?:_v\d+|_redo|_tint|_|$)")
 
 
 def job_letter(jid: str) -> str | None:
+    """The Graphic_Random letter a job fills. `_varN` (an "add variants" note: contagion_RustPuff_var1..3) ADDS
+    beside the existing picture, so var1 -> b, var2 -> c ...; mapping it to `a` aimed every variant at the kept
+    master (2026-10-21)."""
     m = LETTER.search(re.sub(r"_(north|south|east|west|single)$", "", jid))
-    return (m.group(1) or m.group(2)) if m else None
+    if not m:
+        return None
+    if m.group(2):
+        return chr(ord("a") + int(m.group(2)))
+    return m.group(1) or m.group(3)
 
 
 def random_dest(repo: "Repo", mod: str, folder: str, jid: str) -> tuple[str | None, str]:
@@ -251,7 +258,8 @@ def random_dest(repo: "Repo", mod: str, folder: str, jid: str) -> tuple[str | No
     if not files:
         return f"{mod}/Textures/{folder}/{folder.rsplit('/', 1)[-1]}_{letter}.png", f"random_{letter}"
     if len(files) == 1:
-        m = re.fullmatch(r"(.*?)(_?)([a-zA-Z])", files[0]) if (re.search(r"_[a-z]$", files[0]) or len(files[0]) == 1) else None
+        # a lone RustPuff_A is <base>_<letter> as surely as a lone RM_X_a (uppercase was refused, 2026-10-21)
+        m = re.fullmatch(r"(.*?)(_?)([a-zA-Z])", files[0]) if (re.search(r"_[a-zA-Z]$", files[0]) or len(files[0]) == 1) else None
         pre, sep, last = (m.group(1), m.group(2), m.group(3)) if m else (None, None, None)
     else:
         pre = os.path.commonprefix(files)
