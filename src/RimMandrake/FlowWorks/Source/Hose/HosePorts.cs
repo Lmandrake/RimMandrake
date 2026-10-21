@@ -160,15 +160,14 @@ namespace RimMandrake.FlowWorks.Hose
             return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.SideOf(end.x - pump.Position.x, end.z - pump.Position.z);
         }
 
-        /// <summary>Owner card 2026-10-20, "One port per side, either kind": may <paramref name="self"/> (a reel, by its body or
-        /// its free end) couple on <paramref name="side"/> of <paramref name="pump"/>? Not on a corner, not where a pipe holds
-        /// the side, and not where another hose with a lower id already couples (read geometrically, so no recursion).</summary>
+        /// <summary>He typed 2026-10-20, "a HOSE must connect at one of the four sides": may <paramref name="self"/> (a reel, by
+        /// its body or its free end) couple at the port on <paramref name="side"/> of <paramref name="pump"/>? Not on a corner,
+        /// and not where another hose with a lower id already couples (read geometrically, so no recursion). Pipes are not
+        /// ports (they join wherever adjacent) and never block a hose.</summary>
         private static bool PumpSideTakes(Thing pump, int side, CompHoseReel self)
         {
             Map map = pump.Map;
             if (map == null || side < 0) return false;
-            IntVec3 sc = pump.Position + new Rot4(side).FacingCell;
-            bool pipe = sc.InBounds(map) && RimMandrake.FlowWorks.Machinery.RM_LiquidNet.HasPipe(sc, map);
             var others = new List<int>();
             RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
             if (comp != null)
@@ -182,7 +181,7 @@ namespace RimMandrake.FlowWorks.Hose
                 }
             }
             int id = self?.parent != null ? self.parent.thingIDNumber : int.MaxValue;
-            return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.HoseMayTake(side, pipe, id, others.ToArray());
+            return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.HoseMayTake(side, id, others.ToArray());
         }
 
         /// <summary>The geometric coupling of a free end, before the pump's one-port-per-side gate.</summary>

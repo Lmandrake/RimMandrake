@@ -334,8 +334,9 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 - [ ] `pipe_meets_building_centre` — a pipe or hose that meets a tank, pump, tap or sprinkler reads as running on
       beneath it to its centre: seen through its see-through margins, hidden by its solid body, never stopping short
       at its edge.
-- [ ] `pump_port_takes_pipe_or_hose` — a pump shows one clear port on each of its four sides, and each port takes
-      either a pipe or a hose, never both; a pipe or a hose joined to a port meets it with a visible coupling.
+- [ ] `pump_hose_joins_at_side_port` — a pump shows one clear port on each of its four sides; a hose joins a pump only
+      at one of those ports, one hose to a port, meeting it with a visible coupling; a rigid pipe joins a pump wherever it
+      is adjacent to it, corners included, and is drawn running on underneath to the pump's centre.
 
 ### cannot show
 
@@ -448,7 +449,7 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `pawn_walks_under_deck` | R8 amendment, "only for these new bridges uniquely, NOT actual tunnels."; accepted at the 2026-10-20 sitting |
 | `pit_cover_unlike_bridge` | the bridges design: covers are the hidden trap tier of the same span base, with their own look (Q8); accepted at the 2026-10-20 sitting |
 | `pipe_meets_building_centre` | owner 2026-10-18, "draw pipes as though they are connected into the centers of all pipe-receiving items"; accepted at the 2026-10-20 sitting |
-| `pump_port_takes_pipe_or_hose` | owner 2026-10-18, "a more squarish device with a clear place for pumps to join … connectable from any angle"; card 2026-10-20, "One port per side, either kind" (each side takes a pipe or a hose, not both). Renamed from `pump_port_takes_pipe_and_hose`, which read as both at once |
+| `pump_hose_joins_at_side_port` | owner 2026-10-18, "a more squarish device with a clear place for pumps to join … connectable from any angle"; he typed 2026-10-20 (correcting the card "One port per side, either kind"): *"No. a HOSE must connect at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of the object as ruled previously."* Renamed from `pump_port_takes_pipe_or_hose` (earlier `pump_port_takes_pipe_and_hose`), which made a pipe take a port |
 
 ## proposed bars (NOT hash-bound — proposals for his sitting)
 
