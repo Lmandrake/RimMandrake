@@ -1,0 +1,1 @@
+rimworld/set_camera_zoom rootSize does not give a predictable px/cell (9 and 7 both gave ~457 px/cell, 30 gave ~17); for any on-screen size measurement use jawa/artboard_capture with an explicit ppc instead of a screenshot.

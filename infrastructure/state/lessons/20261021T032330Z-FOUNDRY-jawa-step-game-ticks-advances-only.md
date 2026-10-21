@@ -1,0 +1,1 @@
+jawa/step_game_ticks advances only ~50 ticks/s on the 325-mod full list (506 of 2000 in a 10 s call): an 8-day plant survival run is ~2.6 h. Prove plant-light mechanics from the inspect string instead (a light-limited plant reads 'needs light level N%').
