@@ -160,7 +160,7 @@ for i,MODE in enumerate(MODES):
     y=HEAD+i*ROWH; canvas.paste(render(BEFORE),(0,y)); canvas.paste(render(AFTER),(W+12,y))
     dr.text((12,y+W+8),'%s: tile %d (%s)'%({'scald':'Scald shore, stone road toward the Anvil','anvil':'the Anvil','toxic':'tinted river (story biome)','desert':'desert roads','coast':'coast'}.get(MODE,MODE),C,pv.biome[C].replace('RM_','')),fill=(215,205,185),font=fs)
 y=HEAD+ROWH*len(MODES)+6; x=16
-leg=[('dirt',D.NEW['layers']['Dirt']),('stone',D.NEW['layers']['Stone']),('highway',D.NEW['layers']['Gravel']),('water',D.WATER)]+[(b.replace('RM_',''),c) for b,c in D.BIOME_WATER.items()]
+leg=[('dirt',D.NEW['layers']['Dirt']),('stone',D.NEW['layers']['Stone']),('old asphalt',D.NEW['layers']['Gravel']),('water',D.WATER)]+[(b.replace('RM_',''),c) for b,c in D.BIOME_WATER.items()]
 for k,(name,c) in enumerate(leg):
     if k==4: x=16; y+=34
     cc=tuple(int(v) for v in D.T(c)*255); dr.rectangle((x,y,x+40,y+20),fill=cc,outline=(30,24,21),width=4); dr.text((x+48,y-1),name,fill=(235,225,205),font=fs); x+=48+int(dr.textlength(name,font=fs))+22

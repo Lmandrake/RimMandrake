@@ -32,6 +32,8 @@ namespace RimMandrake.Biomes
     //    gets riverWater (the same blue-grey).
     // Roads are earth tones under a dark casing (owner 2026-10-20: a slate stone road on the Scald shore "looks like a
     // river, but it isn't"); no road layer is blue or teal, so blue reads as water only.
+    // The ancient highway is old asphalt, left broken in pieces as the record has it (owner: "old asphalt broken from
+    // long ago"); its pieces are deliberately not joined.
     // Values chosen by contrast against every face each tier crosses on the dev world (all tiers clear casing
     // WCAG >= 3 and fill dE76 >= 20 on every crossed land face, day side): design/Jawa/worldbuilding/world_paths_readable_2026-10-20.md.
     [StaticConstructorOnStartup]
@@ -43,8 +45,8 @@ namespace RimMandrake.Biomes
             { "Outline", new Color(0.05f, 0.04f, 0.035f) },   // near-black warm casing, every road
             { "Dirt",    new Color(0.30f, 0.16f, 0.07f) },    // umber: dirt path and dirt road
             { "Stone",   new Color(0.18f, 0.15f, 0.12f) },    // grey-brown: stone road (was slate (0.15,0.25,0.25), read as a blue river on the Scald shore, owner 2026-10-20)
-            { "Gravel",  new Color(0.80f, 0.50f, 0.00f) },    // gold: ancient asphalt road / highway fill
-            { "Asphalt", new Color(0.10f, 0.07f, 0.05f) },    // dark centre line on the gold
+            { "Gravel",  new Color(0.08f, 0.08f, 0.085f) },   // old asphalt: ancient road / highway fill, dark grey-black (owner 2026-10-20: "it should show as old asphalt broken from long ago", not gold)
+            { "Asphalt", new Color(0.42f, 0.41f, 0.38f) },    // pale worn stripe down the old asphalt
         };
 
         public static readonly Dictionary<string, Dictionary<string, float>> RoadWidth = new Dictionary<string, Dictionary<string, float>>
@@ -52,8 +54,8 @@ namespace RimMandrake.Biomes
             { "DirtPath",              new Dictionary<string, float> { { "Outline", 0.46f }, { "Dirt", 0.26f } } },
             { "DirtRoad",              new Dictionary<string, float> { { "Outline", 0.62f }, { "Dirt", 0.42f } } },
             { "StoneRoad",             new Dictionary<string, float> { { "Outline", 0.64f }, { "Stone", 0.44f } } },
-            { "AncientAsphaltRoad",    new Dictionary<string, float> { { "Outline", 0.78f }, { "Gravel", 0.58f }, { "Asphalt", 0.10f } } },
-            { "AncientAsphaltHighway", new Dictionary<string, float> { { "Outline", 1.00f }, { "Gravel", 0.80f }, { "Asphalt", 0.14f } } },
+            { "AncientAsphaltRoad",    new Dictionary<string, float> { { "Outline", 0.78f }, { "Gravel", 0.58f }, { "Asphalt", 0.14f } } },
+            { "AncientAsphaltHighway", new Dictionary<string, float> { { "Outline", 1.00f }, { "Gravel", 0.80f }, { "Asphalt", 0.20f } } },
         };
 
         // widthOnWorld; the water itself is drawn 0.2 narrower (vanilla), so a creek at 0.32 shows a thin water line.

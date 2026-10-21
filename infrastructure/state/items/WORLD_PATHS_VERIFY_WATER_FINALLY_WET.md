@@ -8,6 +8,9 @@ rivers."*
 - **Baroque Biomes `RM_WorldPaths.cs`:** the Stone road layer changes from slate (0.15, 0.25, 0.25) to grey-brown
   (0.18, 0.15, 0.12). The slate was the "blue road": a 69-tile StoneRoad network from the Scald shore into the Anvil.
   When FlowWorks colours are off, the fallback water is now blue-grey.
+- **Ancient highway:** it is now old asphalt, not gold. Owner, 2026-10-20: *"Instead of the strange yellow highlights it
+  should show as old asphalt broken from long ago"*. The fill is dark grey-black with a pale worn centre stripe. The
+  broken pieces are intended and are not joined.
 - **FlowWorks River Colours:** the elevation gradient is gone. That gradient was the brown and red rivers, because its
   anchors matched no tile. Rivers are now blue-grey water (0.08, 0.16, 0.30), tinted only in four biomes: RM_Contagion
   blood red, RM_Miasma brackish, RM_Wasteland toxic green, RM_RustCathedral verdigris. The scribe keys are new.

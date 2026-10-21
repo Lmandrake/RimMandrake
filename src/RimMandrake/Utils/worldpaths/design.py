@@ -24,13 +24,14 @@ VANILLA={'layers':{'Outline':(0.1,0.1,0.1),'Dirt':(0.5,0.4,0.3),'Stone':(0.4,0.4
           'AncientAsphaltRoad':[('Outline',0.65),('Gravel',0.5),('Asphalt',0.25)],'AncientAsphaltHighway':[('Outline',0.95),('Gravel',0.8),('Asphalt',0.55)]},
  'river_core':(73/255,82/255,100/255),'river_bank':(73/255,82/255,100/255),
  'rivers':{'Creek':0.2,'River':0.4,'LargeRiver':0.6,'HugeRiver':0.8}}
-NEW={'layers':{'Outline':(0.05,0.04,0.035),'Dirt':(0.30,0.16,0.07),'Stone':(0.18,0.15,0.12),'Gravel':(0.80,0.50,0.00),'Asphalt':(0.10,0.07,0.05)},
+NEW={'layers':{'Outline':(0.05,0.04,0.035),'Dirt':(0.30,0.16,0.07),'Stone':(0.18,0.15,0.12),'Gravel':(0.08,0.08,0.085),'Asphalt':(0.42,0.41,0.38)},
  'roads':{'DirtPath':[('Outline',0.46),('Dirt',0.26)],'DirtRoad':[('Outline',0.62),('Dirt',0.42)],'StoneRoad':[('Outline',0.64),('Stone',0.44)],
-          'AncientAsphaltRoad':[('Outline',0.78),('Gravel',0.58),('Asphalt',0.10)],'AncientAsphaltHighway':[('Outline',1.0),('Gravel',0.80),('Asphalt',0.14)]},
+          'AncientAsphaltRoad':[('Outline',0.78),('Gravel',0.58),('Asphalt',0.14)],'AncientAsphaltHighway':[('Outline',1.0),('Gravel',0.80),('Asphalt',0.20)]},
  'river_core':(0.08,0.16,0.30),'river_bank':(0.08*0.22,0.16*0.22,0.30*0.22),
  'rivers':{'Creek':0.32,'River':0.46,'LargeRiver':0.62,'HugeRiver':0.82}}
 # What the live game draws today (2026-10-20 deploy): slate stone road, gradient rivers. The 'before' of preview.py.
-NOW_LIVE=dict(NEW,layers=dict(NEW['layers'],Stone=(0.15,0.25,0.25)))
+NOW_LIVE=dict(NEW,layers=dict(NEW['layers'],Stone=(0.15,0.25,0.25),Gravel=(0.80,0.50,0.00),Asphalt=(0.10,0.07,0.05)),
+              roads=dict(NEW['roads'],AncientAsphaltRoad=[('Outline',0.78),('Gravel',0.58),('Asphalt',0.10)],AncientAsphaltHighway=[('Outline',1.0),('Gravel',0.80),('Asphalt',0.14)]))
 def tier_colours(st,kind,d):
     if kind=='river': return T(st['river_core']),T(st['river_bank'])
     steps=st['roads'][d]; fill=[s for s in steps if s[0]!='Outline']
