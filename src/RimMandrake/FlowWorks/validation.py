@@ -509,6 +509,22 @@ def pit_travel_fly_jump_float(t):
                "(ProofForcedFlyer) takes no fall damage (FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT)")
 
 
+# FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE (bar pump_port_takes_pipe_or_hose; owner card 2026-10-20: "One port per side,
+# either kind"). Offline: the side rule, the net's pipe joins and the hose couplings (Source/SelfTest/PumpChecks.cs). The
+# drawn port and coupling art is the look half, judged by eye.
+PUMP_PORT_CASES = ["PumpPorts_one_per_side_pipe_or_hose", "PumpPorts_net_and_hose_couplings_ask_the_rule"]
+
+
+@suite.chain("pump_ports_one_per_side")
+def pump_ports_one_per_side(t):
+    """Offline: each pump side takes one pipe or one hose, never both, never across a corner. 0 ticks, no bridge."""
+    _bar_chain(t, "pump_ports_selftest_ran", PUMP_PORT_CASES, "pump_ports_live", "pump_port_takes_pipe_or_hose",
+               "a powered RM_LiquidPump with a pipe run on its east side and a reel couples on its north side (hose net probe "
+               "reads both linked); a second reel on north and a hose end laid on the east (piped) side read uncoupled; a pipe "
+               "diagonal to the pump is not on its net; one port drawn per side with a coupling by eye "
+               "(FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE)")
+
+
 # FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (owner 2026-10-16): dev-placed flow source and flow sink (Source/MapControls/).
 # Offline proof of the rate math, a source and a sink driven through the production kernel with its ledger balanced every
 # pulse, and the wiring incl. the mapControlsEnabled master switch gating the pulse (Source/SelfTest/MapControlChecks.cs).

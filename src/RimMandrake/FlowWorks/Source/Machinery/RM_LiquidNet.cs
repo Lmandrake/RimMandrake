@@ -205,6 +205,11 @@ namespace RimMandrake.FlowWorks.Machinery
 				IEnumerable<IntVec3> around = RoleOfThing(t) == RM_NetRole.Tank ? GenAdj.CellsAdjacentCardinal(t) : GenAdj.CellsAdjacent8Way(t);
 				foreach (IntVec3 c in around.Concat(t.OccupiedRect()))
 				{
+					// FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE: a pump's pipe ports are its four sides (and under it), never a corner
+					if (t is Building_LiquidPump && !RM_PumpPortMath.PipeJoins(c.x - t.Position.x, c.z - t.Position.z))
+					{
+						continue;
+					}
 					if (c.InBounds(map) && HasPipe(c, map))
 					{
 						yield return c;
@@ -221,7 +226,9 @@ namespace RimMandrake.FlowWorks.Machinery
 			public IEnumerable<object> PipeMachines(object pipeCell)
 			{
 				var c = (IntVec3)pipeCell;
-				return ThingsIn(GenAdj.CellsAdjacent8Way(c, Rot4.North, IntVec2.One).Concat(new[] { c }), null, RM_NetRole.Machine).Distinct();
+				// FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE: the mirror of OriginPipeCells (a pump never joins a pipe across a corner)
+				return ThingsIn(GenAdj.CellsAdjacent8Way(c, Rot4.North, IntVec2.One).Concat(new[] { c }), null, RM_NetRole.Machine)
+					.Where(m => !(m is Building_LiquidPump bp) || RM_PumpPortMath.PipeJoins(c.x - bp.Position.x, c.z - bp.Position.z)).Distinct();
 			}
 
 			public IEnumerable<object> PipeNeighbours(object pipeCell)
