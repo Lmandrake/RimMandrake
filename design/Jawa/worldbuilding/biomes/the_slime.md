@@ -255,3 +255,7 @@ draining, potable. No meteorological water rain, ever (R-H1).
   decay-drake substitution), Cherry Picker check UNMEASURED.
 - **Def tails check** — the biome's own strays, if any, per the standing instrument;
   not yet measured for this def.
+
+## Roads
+
+Roads are allowed on `RM_GelatinousSlime` (and `RUT_Slime`) because the hand-made world record has road links there. Owner, 2026-10-20, by card: "Roads hidden on 34 Umbra tiles and 9 Gelatinous Slime tiles because the biome specs ban roads" -> "Allow roads on both"; also "For now just replicate where we had roads before".
