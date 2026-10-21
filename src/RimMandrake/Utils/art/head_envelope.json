@@ -38,14 +38,14 @@
   }
  },
  "species_render": {
-  "_doc": "How big the ENGINE draws each species' head, as a multiple of the canvas frame (the vanilla head box is a body-size-1.0 head). engine_head_scale = fit_head_canvas.bs_render_size(size_offset, head_size_multiplier): Big and Small's BSCache.GetHeadRenderSize at default settings (READ, decompile) times SM_HeadSize_Cosmetic, which is set IN THE DEF as a statOffset on the species' head gene in src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml (owner card 2026-10-20 'How should head sizes be set?' -> 'Tune in the def'). size_offset is SM_BodySizeOffset + SM_Cosmetic_BodySizeOffset (render reads both; only SM_BodySizeOffset is mechanical). onscreen_skull_target is the on-screen south skull height in human-skull units the def is tuned to; the art stays at canvas ratio 1.0, so engine_head_scale must equal it (src/RimMandrake/Utils/art/selftest_head_scale_from_defs.py recomputes every value from the defs). measured_live is the MEASURED best-fit scale of the shipped PNG against the live 2026-10-20 lineup screenshot (D:\\ClaudeWork\\rimmandrake\\scratch\\live5\\PHONE_lineup_bare.png, masked NCC, 0.02 steps, all three facings), taken with head_size_multiplier measured_with_head_mult in force; it is history until the live re-measure. Design: design/RimStarWars/head_envelope_2026-10-20.md.",
+  "_doc": "How big the ENGINE draws each species' head, as a multiple of the canvas frame (the vanilla head box is a body-size-1.0 head). engine_head_scale = fit_head_canvas.bs_render_size(size_offset, head_size_multiplier): Big and Small's BSCache.GetHeadRenderSize at default settings (READ, decompile) times SM_HeadSize_Cosmetic, which is set IN THE DEF as a statOffset on the species' head gene in src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml (owner card 2026-10-20 'How should head sizes be set?' -> 'Tune in the def'). size_offset is SM_BodySizeOffset + SM_Cosmetic_BodySizeOffset (render reads both; only SM_BodySizeOffset is mechanical). onscreen_skull_target is the on-screen south skull height in human-skull units the def is tuned to; the art stays at canvas ratio 1.0, so engine_head_scale must equal it (src/RimMandrake/Utils/art/selftest_head_scale_from_defs.py recomputes every value from the defs). measured_live is the MEASURED best-fit scale of the shipped PNG against the live lineup (2026-10-20 night, after 47a707a35 deployed: D:\\ClaudeWork\\rimmandrake\\scratch\\live6\\lineup_bare_tall.png, jawa/artboard_capture at 101 px/cell, masked NCC median over three facings; Lasat by widest-row width (NCC fails on the body-overlapped head, south NCC agrees at 1.18), calibrated on Mimbanese where both methods read 0.98), taken with head_size_multiplier measured_with_head_mult in force. The instrument reads about 2% low (Mimbanese 0.98 for a 1.00 target), so Lasat 1.18 and Nelvaanian 1.03 match the 1.205 / 1.052 targets. Design: design/RimStarWars/head_envelope_2026-10-20.md.",
   "Lasat": {
    "size_offset": 0.75,
    "size_source": "HalfJotunFrame (SM_BodySizeOffset +0.75, real; BodySizeIsReal.xml replaces RSW_BodySizeGene_bigger)",
    "head_size_multiplier": 0.88,
    "engine_head_scale": 1.205,
-   "measured_live": 1.36,
-   "measured_with_head_mult": 1.0,
+   "measured_live": 1.18,
+   "measured_with_head_mult": 0.88,
    "onscreen_skull_target": 1.2
   },
   "Mimbanese": {
@@ -53,7 +53,7 @@
    "size_source": "no size gene",
    "head_size_multiplier": 1.0,
    "engine_head_scale": 1.0,
-   "measured_live": 1.0,
+   "measured_live": 0.98,
    "measured_with_head_mult": 1.0,
    "onscreen_skull_target": 1.0
   },
@@ -62,8 +62,8 @@
    "size_source": "RSW_BodySizeGene_big (SM_BodySizeOffset +0.2, real since SIZE_GENES_RECONCILE_LOST_IN_REGEN; render unchanged)",
    "head_size_multiplier": 0.95,
    "engine_head_scale": 1.052,
-   "measured_live": 1.09,
-   "measured_with_head_mult": 1.0,
+   "measured_live": 1.03,
+   "measured_with_head_mult": 0.95,
    "onscreen_skull_target": 1.05
   },
   "Ortolan": {
