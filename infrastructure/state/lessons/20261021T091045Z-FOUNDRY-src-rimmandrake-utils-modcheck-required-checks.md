@@ -1,0 +1,1 @@
+src/RimMandrake/Utils/modcheck/required_checks.py ignores --help: any argv other than --check/--mod REBUILDS and writes required_checks.json (~90 s). Read its docstring for usage; use --check to test staleness.
