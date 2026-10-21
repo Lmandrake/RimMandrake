@@ -1508,3 +1508,4 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"memory baseline load at the map (Rings off; never saved)","ts":"2026-10-21T04:05:26Z","tsn":1792555526045701670}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"memory baseline measured; restoring the 325 list with Rings","ts":"2026-10-21T04:15:46Z","tsn":1792556146582897538}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"restore full 325 list with Rings and leave the game up on the R2 save","ts":"2026-10-21T04:15:55Z","tsn":1792556155830973526}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"full 325 list restored (Rings on); R2 save loaded, paused","ts":"2026-10-21T04:37:13Z","tsn":1792557433193373383}
