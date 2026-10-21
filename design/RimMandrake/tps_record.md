@@ -7,6 +7,10 @@ and the record must answer **"was it slow at 3 pm yesterday, and why"**.
 
 ## Answering "was it slow at T"
 
+**Start with `telemetry at "<T>" --span 10m`** (the `telemetry` skill): TPS, host memory, disks, bridge
+load and every deploy/incident event around the moment, from the recorded store, with the game down or up.
+Come here for the window-by-window TPS timeline and its incidents once that points at the game:
+
 ```
 python3 src/RimMandrake/Utils/tps_record.py --at "yesterday 15:00"                 # 10 min either side
 python3 src/RimMandrake/Utils/tps_record.py --at "2026-10-09 21:30" --span 30m
