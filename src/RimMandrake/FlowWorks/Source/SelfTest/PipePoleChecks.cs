@@ -222,8 +222,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                     XElement st = doc.Root.Elements("ThingStyleDef").SingleOrDefault(e => (string)e.Element("defName") == PipeStyles.StyleDefName("RM_PipePole", look));
                     Assert(st != null && (string)st.Attribute("MayRequire") == "mandrake.rm.gimmesomeslack", "style for " + look);
                     string tex = st.Element("graphicData").Element("texPath").Value;
-                    string png = Path.Combine(ModRoot(), "..", "GimmeSomeSlack", "Textures", tex.Replace('/', Path.DirectorySeparatorChar) + ".png");
-                    Assert(File.Exists(png), "can-fail: the stand-in exists on disk: " + png);
+                    // the stand-in PNG on disk: the winbuild stage copies no Textures folder, so on a stage this half is
+                    // selftest_flowworks_pipe_pole_art.py's (WSL, the real tree); here only the path's shape is checked
+                    Assert(tex.StartsWith("RimMandrake/GimmeSomeSlack/Aerial/Styles/" + look + "/", StringComparison.Ordinal), "stand-in path for " + look + ": " + tex);
+                    string texRoot = Path.Combine(ModRoot(), "..", "GimmeSomeSlack", "Textures");
+                    string png = Path.Combine(texRoot, tex.Replace('/', Path.DirectorySeparatorChar) + ".png");
+                    Assert(!Directory.Exists(texRoot) || File.Exists(png), "can-fail: the stand-in exists on disk: " + png);
                 }
             });
         }

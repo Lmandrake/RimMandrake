@@ -11,7 +11,6 @@ namespace RimMandrake.FlowWorks.Machinery
 		public static bool TransmitsNow(bool compTransmits, bool leafRaisedUnder) => compTransmits && !leafRaisedUnder;
 
 		/// <summary>The inspect line of a cut cord (null while it carries power).</summary>
-		public static string CutLine(bool leafRaisedUnder) =>
-			leafRaisedUnder ? "Disconnected: the drawbridge leaf under it is raised. It rejoins when the leaf is lowered." : null;
+		public static string CutLine(bool leafRaisedUnder) => leafRaisedUnder ? RM_LineReadoutMath.CordLeafCut : null;
 	}
 }

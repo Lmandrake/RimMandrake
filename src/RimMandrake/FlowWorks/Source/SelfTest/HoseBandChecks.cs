@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimMandrake.FlowWorks.Hose;
+using RimMandrake.FlowWorks.Machinery;
 using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -211,6 +212,38 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // can-fail: a dig away from the corridor (its box padded 2) does not move the hash
                 CordWorld away = Pit(10, 12, 13, 15);
                 Assert(Corridor(away, lay) == h0 || lay.Flat.Any(p => p.Z > 10), "can-fail: a dig far off the corridor moved the hash");
+            });
+
+            Case("HoseBand_P2_pit_cover_carries_no_hose", () =>
+            {
+                // phase 7, the cover gap: StepDepthAt reads an intact cover as ground (band 0), so a hose was laid over it. The
+                // rule is the P2 table's own Hose row: only a surface it REFUSES closes the square
+                Assert(HoseBandMath.SurfaceClosed(true, LineSurface.Cover), "an intact pit cover carried a hose");
+                foreach (LineSurface ok in new[] { LineSurface.SolidGround, LineSurface.Deck, LineSurface.RopeDeck, LineSurface.DrawbridgeLeaf, LineSurface.Excavated })
+                    Assert(!HoseBandMath.SurfaceClosed(true, ok), "a hose was closed off " + ok + " (decks carry hoses; a dug square is the ramp/ladder rule)");
+                Assert(!HoseBandMath.SurfaceClosed(false, LineSurface.Cover), "can-fail: the rules switch off still closed a cover");
+                // routing: a covered trench (cover = closed, its pit under it band 4) full height, no ramp: no route over it
+                CordWorld covered = Trench(10, 13);
+                for (int x = 10; x <= 13; x++) for (int z = 0; z < H; z++) covered.SetBlocked(new Cell(x, z), BlockKind.Wall);
+                Assert(HoseMath.CheckInstall(covered, Reel, new Cell(18, 7), Len) == "no route", "a hose crossed a covered trench");
+                // can-fail: the pre-fix world (a cover read as band-0 ground, open) routes straight over it
+                Assert(HoseMath.CheckInstall(new CordWorld(W, H), Reel, new Cell(18, 7), Len) == null, "can-fail: the old cover-as-ground world refused");
+                // a laid hose that a new cover is built under: its corridor hash moves, so the 250-tick check re-plans or retracts
+                var open0 = new CordWorld(W, H);
+                HoseLay lay = HoseMath.Lay(open0, Reel.Mouth, new Cell(20, 7).Centre, new HoseShapeParams { MaxLength = Len }, 3);
+                Assert(lay.Ok, "the open lay failed: " + lay.Reason);
+                var cov = new CordWorld(W, H);
+                for (int x = 10; x <= 12; x++) for (int z = 6; z <= 8; z++) { cov.SetBand(new Cell(x, z), 0); cov.SetBlocked(new Cell(x, z), BlockKind.Wall); }
+                Assert(Corridor(open0, lay) != Corridor(cov, lay), "a cover built under a laid hose did not move its corridor");
+                Assert(HoseMath.CheckReplan(cov, Reel, new Cell(20, 7), Len, false, null) == null, "a hose with a way round the cover was reeled in");
+                // production wiring: the snapshot and the live per-cell read close the same squares
+                string bands = Src("Hose", "RM_HoseBands.cs");
+                string apply = Body(bands, "internal static void Apply(");
+                Assert(apply.Contains("HoseBandMath.SurfaceClosed(true, RM_LineCrossing.SurfaceAt(map, c))") && apply.Contains("w.SetBlocked(new Cell(x, z), BlockKind.Wall)"),
+                    "World() (RM_HoseBands.Apply) does not close a pit cover");
+                Assert(Body(bands, "public static bool Closed(").Contains("HoseBandMath.SurfaceClosed(true, RM_LineCrossing.SurfaceAt(map, c))"), "RM_HoseBands.Closed is not the table rule");
+                string live = Body(Src("Hose", "RM_MapComponent_Hoses.cs"), "internal ulong LiveCellSig(");
+                Assert(live.Contains("RM_HoseBands.Closed(map, c)) walk = false"), "LiveCellSig does not close a pit cover (live and snapshot hashes would drift)");
             });
 
             Case("HoseBand_P5_no_bands_leaves_gss_signatures_unchanged", () =>

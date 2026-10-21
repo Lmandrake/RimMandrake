@@ -845,6 +845,18 @@ namespace RimMandrake.FlowWorks.Hose
                 GenDraw.DrawCircleOutline(new Vector3((float)Rect.Mouth.X, AltitudeLayer.MetaOverlays.AltitudeFor(), (float)Rect.Mouth.Z), MaxLength);   // from the mouth, as the install check measures (C8a-F4)
         }
 
+        /// <summary>PIPE_POLES phase 7 (design §P9): a laid hose's crossing lines: disconnected by a raised drawbridge leaf, else
+        /// the ramps and ladders it changes level by (RM_HoseBands.LevelChanges over its lay). Empty when there is nothing to say.</summary>
+        internal string CrossingLines()
+        {
+            if (!parent.Spawned || !laid) return "";
+            if (Pits.RM_Drawbridges.HoseCut(this)) return "\n" + Machinery.RM_LineReadoutMath.HoseLeafCut;
+            if (lay == null) return "";
+            RM_HoseBands.LevelChanges(parent.Map, lay.Flat, out int ramps, out int ladders);
+            string s = Machinery.RM_LineReadoutMath.HoseLevelLine(ramps, ladders);
+            return s == null ? "" : "\n" + s;
+        }
+
         public override string CompInspectStringExtra()
         {
             Thing p = parent.Spawned ? Port() : null;
@@ -872,7 +884,7 @@ namespace RimMandrake.FlowWorks.Hose
                 endLine += (heldUnits > 0 ? " Holding " + RM_Volume.FormatUnits(heldUnits) + " " + heldLiquid?.label + "." : "") + " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
             // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (design P9): what passive levelling did at this end last cycle
             endLine += Machinery.RM_Levelling.Readout(parent.Map, this);
-            return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ")." + endLine + order;
+            return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ")." + CrossingLines() + endLine + order;
         }
     }
 }

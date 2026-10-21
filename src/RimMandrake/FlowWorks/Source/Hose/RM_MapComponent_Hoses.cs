@@ -153,6 +153,7 @@ namespace RimMandrake.FlowWorks.Hose
                 else if (ed == null && t != null && t.IsWater && !HasImpassableThing(c)) extra = 3f;
                 else if (ed != null && CompHoseReelOf(ed) != null) extra = HoseMath.BuildingCrossCost;
                 else walk = false;
+                if (walk && RM_HoseBands.Closed(map, c)) walk = false;   // phase 7: a pit cover carries no hose (World(): RM_HoseBands.Apply)
             }
             List<Thing> l = c.GetThingList(map);
             for (int i = 0; i < l.Count; i++)
