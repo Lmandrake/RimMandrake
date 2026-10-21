@@ -1,0 +1,128 @@
+{
+ "script": "drawbridge_proof.py",
+ "started": "2026-10-21T14:18:27",
+ "rows": [
+  {
+   "id": "RAISE_PATH",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": "PATH found=True cells=10 decked=6",
+    "after": "PATH found=True cells=22 decked=0",
+    "raisedAt": "True",
+    "toggles": 1,
+    "repaths": 1
+   }
+  },
+  {
+   "id": "RAISE_TIPS_RIDERS",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "preview": "PREVIEW riders=6 land=4 fall=2 free=4",
+    "devSet": "DEVSET target=raised progress=0",
+    "leafAfter": "LEAF leaf=1/1 progress=0 full=120 target=raised raised=0/4 frozen=False winch=False powered=False hold=True auto=False pending=none tip=False hinge=A version=1",
+    "tipped": 0,
+    "fell": 0,
+    "onBank": 0,
+    "inHole": 6,
+    "stillHostile": 6,
+    "cells": [
+     [
+      141,
+      164
+     ],
+     [
+      141,
+      165
+     ],
+     [
+      141,
+      166
+     ],
+     [
+      142,
+      164
+     ],
+     [
+      142,
+      165
+     ],
+     [
+      142,
+      166
+     ]
+    ]
+   }
+  },
+  {
+   "id": "SAVE_MIDRAISE",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "save": "RM_DRAWBRIDGE_MIDRAISE_20261021T141856",
+    "before": "LEAF leaf=1/1 progress=100 full=480 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "afterLoad": "LEAF leaf=1/1 progress=100 full=480 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "end": "LEAF leaf=1/1 progress=480 full=480 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "tipDeltaLoad": 0,
+    "tipDeltaEnd": 0,
+    "rider": [
+     [
+      140,
+      158
+     ],
+     [
+      140,
+      158
+     ]
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-21/drawbridge_live_rerun2.json",
+  "origin": "140,140",
+  "fresh_map": true,
+  "only": "RAISE_PATH,RAISE_TIPS_RIDERS,SAVE_MIDRAISE",
+  "raid_ticks": 3000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofDevSet",
+  "ProofGivePlank",
+  "ProofInterrupt",
+  "ProofLeaf",
+  "ProofMakeDrawbridge",
+  "ProofOrder",
+  "ProofPlankLedger",
+  "ProofTipPreview",
+  "ProofWinchDespawn",
+  "ProofWinchPower",
+  "ProofWorkJob"
+ ],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "5bdf217054cd4d10ff6569302132bfb494d828b9414b5053571ed00898bbd328",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "db9e922a715a415f74fd3708b9ef8b93b74f95db39a58b4c0079379580a00032"
+ },
+ "midraiseSave": "RM_DRAWBRIDGE_MIDRAISE_20261021T141856",
+ "finished": "2026-10-21T14:19:05"
+}

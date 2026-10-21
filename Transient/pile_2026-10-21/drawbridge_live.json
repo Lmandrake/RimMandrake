@@ -1,0 +1,718 @@
+{
+ "script": "drawbridge_proof.py",
+ "started": "2026-10-21T14:11:27",
+ "rows": [
+  {
+   "id": "RAISE_PATH",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "before": "PATH found=True cells=10 decked=6",
+    "after": "PATH found=True cells=22 decked=0",
+    "raisedAt": "True",
+    "toggles": 1,
+    "repaths": 1,
+    "verdictWithheld": "PASS",
+    "unmeasuredBecause": [
+     {
+      "scope": "RAISE_PATH",
+      "what": "jawa/order_pawn",
+      "why": "refused: 0/1 pawn(s) standing on (148,146) after 7 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human9839. Pass undraftAfter=true or undraft them yourself.",
+      "class": "HARNESS"
+     }
+    ]
+   }
+  },
+  {
+   "id": "RAISE_TIPS_RIDERS",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "preview": "PREVIEW riders=6 land=4 fall=2 free=4",
+    "tipped": 0,
+    "fell": 0,
+    "onBank": 0,
+    "inHole": 6,
+    "stillHostile": 6,
+    "cells": [
+     [
+      141,
+      164
+     ],
+     [
+      141,
+      165
+     ],
+     [
+      141,
+      166
+     ],
+     [
+      142,
+      164
+     ],
+     [
+      142,
+      165
+     ],
+     [
+      142,
+      166
+     ]
+    ],
+    "verdictWithheld": "FAIL",
+    "unmeasuredBecause": [
+     {
+      "scope": "RAISE_TIPS_RIDERS",
+      "what": "preview: six riders, one free bank square",
+      "why": "PREVIEW riders=6 land=4 fall=2 free=4",
+      "class": "SITE"
+     }
+    ]
+   }
+  },
+  {
+   "id": "RAISE_SPARES_UNDERPASS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "underBefore": [
+     142,
+     172
+    ],
+    "underAfter": [
+     142,
+     172
+    ],
+    "band": "BAND under=False onDeck=False passes=False view=floor deckNotches=-1",
+    "riderAt": [
+     140,
+     172
+    ],
+    "tipped": 1
+   }
+  },
+  {
+   "id": "LOWER_ONLY_FROM_WINCH",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "farRaise": "WORK job=True spot=winch raise=True why=-",
+    "farLower": "WORK job=True spot=winch raise=False why=-",
+    "winchLower": "WORK job=True spot=winch raise=False why=-",
+    "leaf": "LEAF leaf=1/1 progress=960 full=960 target=raised raised=4/4 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "noWalkRound": "PATH found=False cells=0 decked=0"
+   }
+  },
+  {
+   "id": "TWO_LEAF_TIPS_OWN_HINGE",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "build": "DRAW ok=False leaves=0 tier=timber hinges=- winchAt=- firstAt=- reason=build:BUILD_ok=False_anchors=0_decks=0_blueprints=0_reason=A_timber_suspension_bridge_spans_at_most_6_squares_between_supports_(this_span:_8)._Build_a_tower_on_the_hole_floor_to_go_further.",
+    "rider1": [
+     142,
+     178
+    ],
+    "rider2": [
+     147,
+     178
+    ],
+    "verdictWithheld": "FAIL",
+    "unmeasuredBecause": [
+     {
+      "scope": "TWO_LEAF_TIPS_OWN_HINGE",
+      "what": "G drawbridge built",
+      "why": "DRAW ok=False leaves=0 tier=timber hinges=- winchAt=- firstAt=- reason=build:BUILD_ok=False_anchors=0_decks=0_blueprints=0_reason=A_timber_suspension_bridge_spans_at_most_6_squares_between_supports_(this_span:_8)._Build_a_tower_on_the_hole_",
+      "class": "SITE"
+     },
+     {
+      "scope": "TWO_LEAF_TIPS_OWN_HINGE",
+      "what": "two leaves, one hinge per bank",
+      "why": "DRAW ok=False leaves=0 tier=timber hinges=- winchAt=- firstAt=- reason=build:BUILD_ok=False_anchors=0_decks=0_blueprints=0_reason=A_timber_suspension_bridge_spans_at_most_6_squares_between_supports_(this_span:_8)._Build_a_tower_on_the_hole_",
+      "class": "SITE"
+     },
+     {
+      "scope": "TWO_LEAF_TIPS_OWN_HINGE",
+      "what": "ProofDevSet accepted its args",
+      "why": "REFUSED: not a drawbridge leaf square",
+      "class": "HARNESS"
+     },
+     {
+      "scope": "TWO_LEAF_TIPS_OWN_HINGE",
+      "what": "ProofDevSet answered",
+      "why": "REFUSED: not a drawbridge leaf square",
+      "class": "HARNESS"
+     },
+     {
+      "scope": "TWO_LEAF_TIPS_OWN_HINGE",
+      "what": "ProofDevSet accepted its args",
+      "why": "REFUSED: not a drawbridge leaf square",
+      "class": "HARNESS"
+     },
+     {
+      "scope": "TWO_LEAF_TIPS_OWN_HINGE",
+      "what": "ProofDevSet answered",
+      "why": "REFUSED: not a drawbridge leaf square",
+      "class": "HARNESS"
+     }
+    ]
+   }
+  },
+  {
+   "id": "HOSTILE_LOCKS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "freeBefore": "7",
+    "raisedLocked": "LEAF leaf=1/1 progress=480 full=480 target=raised raised=4/4 frozen=False winch=True powered=True hold=False auto=False pending=none tip=True hinge=A version=1",
+    "autoLowering": "LEAF leaf=1/1 progress=445 full=480 target=lowered raised=4/4 frozen=False winch=True powered=True hold=False auto=True pending=none tip=True hinge=A version=1",
+    "afterRaid": "LEAF leaf=1/1 progress=465 full=480 target=raised raised=4/4 frozen=False winch=True powered=True hold=False auto=False pending=none tip=True hinge=A version=1",
+    "trappedFree": "0",
+    "locked": "False"
+   }
+  },
+  {
+   "id": "STEEL_UNPOWERED_FREEZES",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "partWay": "LEAF leaf=1/1 progress=30 full=120 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "unpowered": "LEAF leaf=1/1 progress=30 full=120 target=raised raised=6/6 frozen=True winch=True powered=False hold=True auto=False pending=none tip=True hinge=A version=1",
+    "repowered": "LEAF leaf=1/1 progress=120 full=120 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1"
+   }
+  },
+  {
+   "id": "WINCH_LOST_CRASHES",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "after": "LEAF leaf=1/1 progress=0 full=960 target=lowered raised=0/4 frozen=False winch=False powered=False hold=False auto=False pending=none tip=False hinge=A version=1",
+    "crashes": 1,
+    "hits": 1,
+    "hediffs": [
+     5,
+     6
+    ],
+    "band": "BAND under=False onDeck=False passes=False view=floor deckNotches=-1"
+   }
+  },
+  {
+   "id": "WINCH_DESPAWN_CRASHES",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "despawn": "DESPAWN ok=True linkedBefore=True linkedAfter=False",
+    "after": "LEAF leaf=1/1 progress=0 full=960 target=lowered raised=0/4 frozen=False winch=False powered=False hold=False auto=False pending=none tip=False hinge=A version=1",
+    "crashes": 1,
+    "hits": 1
+   }
+  },
+  {
+   "id": "RAID_UP",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "winchJobs": 0,
+    "planksLaid": 0,
+    "reached": [],
+    "cameNear": [
+     "Human10109",
+     "Human10116",
+     "Human10122",
+     "Human10147"
+    ],
+    "hostileJobsEnded": 0,
+    "ticks": 3000
+   }
+  },
+  {
+   "id": "RAID_PLANK",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "give1": "GIVE ok=True job=RM_LayRaidPlank plank=10255 reserved=False",
+    "interrupt": "INT ended=True dropped=True",
+    "give2": "GIVE ok=True job=RM_LayRaidPlank plank=10256 reserved=False",
+    "ledger": "PLEDGER crossings=1 laidCells=2 reserved=1",
+    "laid": 1
+   }
+  },
+  {
+   "id": "SAVE_MIDRAISE",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "save": "RM_DRAWBRIDGE_MIDRAISE_20261021T141212",
+    "before": "LEAF leaf=1/1 progress=100 full=480 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "afterLoad": "LEAF leaf=1/1 progress=100 full=480 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "end": "LEAF leaf=1/1 progress=480 full=480 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "tipDeltaLoad": 0,
+    "tipDeltaEnd": 0,
+    "rider": [
+     [
+      140,
+      158
+     ],
+     [
+      140,
+      158
+     ]
+    ],
+    "verdictWithheld": "PASS",
+    "unmeasuredBecause": [
+     {
+      "scope": "SAVE_MIDRAISE",
+      "what": "jawa/map_info",
+      "why": "refused: No current map. These tools are map-scoped; use the planet-scoped world tool family instead.",
+      "class": "HARNESS"
+     }
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-21/drawbridge_live.json",
+  "origin": "140,140",
+  "fresh_map": true,
+  "only": "",
+  "raid_ticks": 3000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofDevSet",
+  "ProofGivePlank",
+  "ProofInterrupt",
+  "ProofLeaf",
+  "ProofMakeDrawbridge",
+  "ProofOrder",
+  "ProofPlankLedger",
+  "ProofTipPreview",
+  "ProofWinchDespawn",
+  "ProofWinchPower",
+  "ProofWorkJob"
+ ],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "5bdf217054cd4d10ff6569302132bfb494d828b9414b5053571ed00898bbd328",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "db9e922a715a415f74fd3708b9ef8b93b74f95db39a58b4c0079379580a00032"
+ },
+ "raidSamples": [
+  {
+   "t": 250,
+   "raiders": [
+    [
+     "Human10109",
+     184,
+     209,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     184,
+     209,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     195,
+     221,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     194,
+     223,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 500,
+   "raiders": [
+    [
+     "Human10109",
+     174,
+     203,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     173,
+     203,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     193,
+     223,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     193,
+     224,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 750,
+   "raiders": [
+    [
+     "Human10109",
+     162,
+     204,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     163,
+     205,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     193,
+     223,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     193,
+     224,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 1000,
+   "raiders": [
+    [
+     "Human10109",
+     161,
+     205,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     174,
+     203,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     193,
+     223,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     193,
+     224,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 1250,
+   "raiders": [
+    [
+     "Human10109",
+     161,
+     205,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     182,
+     211,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     193,
+     223,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     193,
+     224,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 1500,
+   "raiders": [
+    [
+     "Human10109",
+     161,
+     205,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     176,
+     217,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     190,
+     223,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     193,
+     224,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 1750,
+   "raiders": [
+    [
+     "Human10109",
+     161,
+     205,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     163,
+     217,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     176,
+     223,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     185,
+     217,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 2000,
+   "raiders": [
+    [
+     "Human10109",
+     161,
+     205,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     161,
+     207,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     166,
+     217,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     177,
+     206,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 2250,
+   "raiders": [
+    [
+     "Human10109",
+     161,
+     205,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     161,
+     207,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     166,
+     217,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     172,
+     203,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 2500,
+   "raiders": [
+    [
+     "Human10109",
+     157,
+     202,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     161,
+     207,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     166,
+     217,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     172,
+     203,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 2750,
+   "raiders": [
+    [
+     "Human10109",
+     157,
+     202,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     161,
+     207,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     166,
+     217,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     172,
+     203,
+     false,
+     false
+    ]
+   ]
+  },
+  {
+   "t": 3000,
+   "raiders": [
+    [
+     "Human10109",
+     157,
+     202,
+     false,
+     false
+    ],
+    [
+     "Human10116",
+     161,
+     207,
+     false,
+     false
+    ],
+    [
+     "Human10122",
+     166,
+     217,
+     false,
+     false
+    ],
+    [
+     "Human10147",
+     172,
+     203,
+     false,
+     false
+    ]
+   ]
+  }
+ ],
+ "midraiseSave": "RM_DRAWBRIDGE_MIDRAISE_20261021T141212",
+ "finished": "2026-10-21T14:12:19"
+}

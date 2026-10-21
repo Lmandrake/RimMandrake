@@ -1,0 +1,1 @@
+A scene that walls a bank must read the build's winchAt and spare it: drawbridge_proof scene E's bank walls replaced the winch house, so the steel leaf sat unpowered (winch=False) and tipped nobody — a SITE fault that read as a MOD FAIL until the leaf state was put in the row detail. Put the acted-on object's state read-back in every row's detail (2026-10-21).

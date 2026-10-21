@@ -1,0 +1,262 @@
+{
+ "chains": [
+  {
+   "name": "web_terrain_weather",
+   "components": [
+    {
+     "name": "web_network_laid",
+     "toggle": "webNetworkEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWebNetwork(System.String)",
+        "result": "WEB biomeGateRefuses True | placed True | sites 3 | cables 0->445 | strands 0->250 | carpet 242 | carpetOutsideSites 0 | cableBlocksPlants False | cablePath 30 | strandPath 14 | strandSticky True",
+        "thingArgs": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_4eed5d7624694a6d95bfdfe1a081bf30",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 189
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWebNetwork(System.String)",
+        "result": "WEB biomeGateRefuses True | placed False | sites 0 | cables 445->445 | strands 250->250 | carpet 0 | carpetOutsideSites 0 | cableBlocksPlants False | cablePath 30 | strandPath 14 | strandSticky True",
+        "thingArgs": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_27a44c85dd33405f92e912fa46f0965b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 33
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "silk_carpet_toggle",
+     "toggle": "siteCarpetEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWebNetwork(System.String)",
+        "result": "WEB biomeGateRefuses True | placed True | sites 2 | cables 445->818 | strands 250->500 | carpet 0 | carpetOutsideSites 0 | cableBlocksPlants False | cablePath 30 | strandPath 14 | strandSticky True",
+        "thingArgs": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_fa212f1e007e49adb7666c03aa1c8842",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 31
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "local_web_density_zero_lays_none",
+     "toggle": "localWebDensityMultiplier",
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWebNetwork(System.String)",
+        "result": "WEB biomeGateRefuses True | placed True | sites 2 | cables 818->1246 | strands 500->500 | carpet 141 | carpetOutsideSites 0 | cableBlocksPlants False | cablePath 30 | strandPath 14 | strandSticky True",
+        "thingArgs": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_b01f1150fb2c434e86686acbdfd3dbc3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 90
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "webfall_in_biome_and_occurs",
+     "toggle": "webfallEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWebfall(System.String)",
+        "result": "WEBFALL def True | overlayMat True | inBiome 6 | share 0.08 | forcedEvent False | glowCap 1 | forcedNow RM_Webfall | installedArt none",
+        "thingArgs": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_de44d717bd07494cb3706cd23f84e32d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 16
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWebfall(System.String)",
+        "result": "WEBFALL def True | overlayMat True | inBiome 0 | share 0 | forcedEvent False | glowCap 1 | forcedNow none | installedArt none",
+        "thingArgs": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_060bfa7f88294e83920d1181b1f0674d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 7
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "webfall_commonality_scales",
+     "toggle": "webfallCommonality",
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWebfall(System.String)",
+        "result": "WEBFALL def True | overlayMat True | inBiome 12 | share 0.148 | forcedEvent False | glowCap 1 | forcedNow RM_Webfall | installedArt none",
+        "thingArgs": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_3db78665ed324c9096d8f778968ef9e5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 8
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "generated_webwork_map",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the bridge cannot generate an RM_Webwork map (our biome sits on 0 tiles until the one end-paint, CLAUDE.md); the placement is proven through PlaceWeb on the current map above",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\design\\validation_walks\\RimMandrake\\Webwork.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}
