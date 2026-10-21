@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PYRELANDS_STRUCK_GLASS_RITE_BUILD_1. The site of the Struck Glass rite: a rough ring of glass sand on the ground, stamped out
+     during a lightning storm (owner, typed 2026-10-01; input glass sand by card 2026-10-15). Colonists haul glass sand into it
+     (CompRefuelable, no burn-down: fuelConsumptionRate 0); the rite needs it full and empties it (RM_StruckGlass.cs).
+     One old, empty ring is laid on each new Pyrelands map by GenStep_StruckGlassRing; more can be laid out from the Ideology tab,
+     since the rite works on any map in a storm. RM_GlassSand is the Stillsand item; Pyrelands already yields it from shovelled
+     sand (ScorchableGround.xml) without a hard dependency, same as here.
+     ART OWED: the placeholder is vanilla's ritual-spot mark, tinted glass-sand pale. All numbers PROVISIONAL. -->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_StruckGlassRing</defName>
+    <label>glass ring</label>
+    <description>A rough ring of glass sand poured onto the ground, a hand's width across and a few paces round. Under a lightning storm the ring is stamped out, hard, until none of it is left in the shape it was poured; something in the sky is said to like that very much, and to answer it.\n\nHaul glass sand into the ring until it is whole. An old ring like this, long since scattered, is sometimes found on bare ash in the Pyrelands, with a crater off across the plain.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <graphicData>
+      <texPath>Things/Building/Misc/RitualSpot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <color>(222, 210, 178)</color>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <useHitPoints>false</useHitPoints>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <clearBuildingArea>false</clearBuildingArea>
+    <designationCategory>Ideology</designationCategory>
+    <uiOrder>2100</uiOrder>
+    <statBases>
+      <WorkToBuild>300</WorkToBuild>
+      <Beauty>1</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>true</claimable>
+      <deconstructible>true</deconstructible>
+      <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+    </building>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelCapacity>25</fuelCapacity>
+        <fuelConsumptionRate>0</fuelConsumptionRate>
+        <initialFuelPercent>0</initialFuelPercent>
+        <autoRefuelPercent>1</autoRefuelPercent>
+        <allowRefuelIfNotEmpty>true</allowRefuelIfNotEmpty>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
+        <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
+        <showFuelGizmo>true</showFuelGizmo>
+        <fuelLabel>glass sand</fuelLabel>
+        <fuelGizmoLabel>Glass sand</fuelGizmoLabel>
+        <fuelFilter>
+          <thingDefs>
+            <li>RM_GlassSand</li>
+          </thingDefs>
+        </fuelFilter>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

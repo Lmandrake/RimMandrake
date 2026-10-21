@@ -201,6 +201,8 @@ MODS = {
         "Giants and herds (restart)": "NextGameStart",
         "Burrowers": "Now",
         "Sand shovelling": "Now",
+        "The Struck Glass rite": "Now",
+        "Struck Glass ring (new maps)": "NewMapsOnly",
         "Cross-biome ash accumulation": "Now",
         "Ash field": "Now",
     }, ()),
