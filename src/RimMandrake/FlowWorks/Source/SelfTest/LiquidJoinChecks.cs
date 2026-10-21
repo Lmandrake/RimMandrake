@@ -113,6 +113,31 @@ namespace RimMandrake.FlowWorks.SelfTest
                 try { LiquidJoinRule.CentreStub(5, 5, 1, 1, 6, 6, 1, 1); } catch (ArgumentException) { threw = true; }
                 Assert(threw, "can-fail: a diagonal stub is refused");
             });
+            // FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE (he typed 2026-10-20: "A solid pipe must only be adjacent and is then drawn
+            // undernead to the center of the object as ruled previously."): a pipe joined across a corner runs under to the centre too
+            Case("PipeStub_corner_adjacent_runs_under_to_centre", () =>
+            {
+                // 1x1 pump at (6,6); pipe at (5,5) on its south-west corner: east to x=6.5, then north to the centre (6.5,6.5)
+                double[] p = LiquidJoinRule.CornerStub(5, 5, 1, 1, 6, 6, 1, 1);
+                Assert(p != null && p.Length == 6, "an elbow: 3 points");
+                Assert(Near(p[0], 6) && Near(p[1], 5.5) && Near(p[2], 6.5) && Near(p[3], 5.5) && Near(p[4], 6.5) && Near(p[5], 6.5),
+                    $"(6,5.5) -> (6.5,5.5) -> centre (6.5,6.5), got {string.Join(",", p)}");
+                // every corner of a 1x1 ends at its centre
+                foreach (var (dx, dz) in new[] { (1, 1), (1, -1), (-1, 1), (-1, -1) })
+                {
+                    double[] q = LiquidJoinRule.CornerStub(5, 5, dx, dz, 5 + dx, 5 + dz, 1, 1);
+                    Assert(q != null && Near(q[q.Length - 2], 5.5 + dx) && Near(q[q.Length - 1], 5.5 + dz), $"({dx},{dz}): ends at the centre");
+                }
+                // a 2x2 machine at (6,6)-(7,7), pipe at its south-west corner (5,5): elbow then sideways to (7,7)
+                double[] m = LiquidJoinRule.CornerStub(5, 5, 1, 1, 6, 6, 2, 2);
+                Assert(m != null && m.Length == 8 && Near(m[6], 7) && Near(m[7], 7), "multi-cell: on to the footprint's centre");
+                Assert(LiquidJoinRule.CornerStub(5, 5, 1, 1, 6, 5, 2, 2) == null, "edge-adjacent too: CentreStub draws it, not the corner");
+                Assert(LiquidJoinRule.CornerStub(5, 5, 1, 1, 8, 8, 1, 1) == null, "not touching: nothing");
+                // the section layer draws it for machines (the net joins them 8-way), never for tanks (cardinal only)
+                string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
+                Assert(joins.Contains(": LiquidJoinRule.CornerStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height);"), "can-fail: the layer prints corner stubs");
+                Assert(joins.Contains("if (di >= 4 && RM_LiquidNet.RoleOfKind(b) != RM_NetRole.Machine) continue;"), "corners only where the net joins");
+            });
             Case("PipeStub_wiring_shipped", () =>
             {
                 string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));

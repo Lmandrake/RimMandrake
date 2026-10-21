@@ -70,6 +70,27 @@ namespace RimMandrake.FlowWorks.Machinery
             return bend ? new[] { ex, ez, kx, kz, mx, mz } : new[] { ex, ez, mx, mz };
         }
 
+        /// <summary>
+        /// He typed 2026-10-20: <i>"A solid pipe must only be adjacent and is then drawn undernead to the center of the object
+        /// as ruled previously."</i> The corner case of <see cref="CentreStub"/>: a pipe on (cx, cz) that touches the footprint
+        /// (bx, bz, bw, bh) ONLY across a corner, (dx, dz) a unit diagonal. Pipes run square, so the stub is an elbow: out of the
+        /// pipe cell's east/west edge to the column of the diagonal cell, then straight into the footprint to the depth of its
+        /// centre, then sideways to the centre. Null when the diagonal cell is not in the footprint, or when the pipe also
+        /// touches it along an edge (CentreStub draws that one).
+        /// </summary>
+        public static double[] CornerStub(int cx, int cz, int dx, int dz, int bx, int bz, int bw, int bh)
+        {
+            if (Math.Abs(dx) != 1 || Math.Abs(dz) != 1) throw new ArgumentException("a corner stub enters from a diagonal");
+            bool In(int x, int z) => x >= bx && x < bx + bw && z >= bz && z < bz + bh;
+            if (!In(cx + dx, cz + dz) || In(cx + dx, cz) || In(cx, cz + dz)) return null;
+            double ex = cx + 0.5 + dx * 0.5, ez = cz + 0.5;
+            double colX = cx + dx + 0.5;
+            double mx = bx + bw / 2.0, mz = bz + bh / 2.0;
+            var pts = new System.Collections.Generic.List<double> { ex, ez, colX, ez, colX, mz };
+            if (Math.Abs(colX - mx) > 1e-9) { pts.Add(mx); pts.Add(mz); }
+            return pts.ToArray();
+        }
+
         /// <summary>One straight axis-aligned piece of a stub, drawn as a plane of the pipe's straight atlas tile: centre, its
         /// length along the run (at most 1 cell, the tile's own length) and whether the run is east-west. U0/U1 crop the
         /// tile along the run so a piece shorter than a cell shows a slice, not a squashed tile.</summary>

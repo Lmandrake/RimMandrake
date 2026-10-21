@@ -233,12 +233,17 @@ namespace RimMandrake.FlowWorks.Machinery
                     Thing t = l[i];
                     if (!RM_LiquidNet.IsPipe(t)) continue;
                     if (RM_LiquidJoins.PartnerAt(c, map) != null) break;   // a pipe under a tank or machine is hidden already
-                    foreach (IntVec3 d in GenAdj.CardinalDirections)
+                    // FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE: a pipe joins a machine across a corner too (the net is 8-way for
+                    // machines, cardinal for tanks), so it draws its under-run to the centre from there as well (CornerStub)
+                    for (int di = 0; di < 8; di++)
                     {
+                        IntVec3 d = di < 4 ? GenAdj.CardinalDirections[di] : GenAdj.DiagonalDirections[di - 4];
                         Thing b = RM_LiquidJoins.PartnerAt(c + d, map);
                         if (b == null) continue;
+                        if (di >= 4 && RM_LiquidNet.RoleOfKind(b) != RM_NetRole.Machine) continue;
                         CellRect r = b.OccupiedRect();
-                        double[] poly = LiquidJoinRule.CentreStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height);
+                        double[] poly = di < 4 ? LiquidJoinRule.CentreStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height)
+                            : LiquidJoinRule.CornerStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height);
                         foreach (LiquidJoinRule.StubPiece p in LiquidJoinRule.StubPieces(poly))
                         {
                             Material m = StraightMat(t, p.EastWest);
