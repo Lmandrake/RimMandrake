@@ -1,0 +1,1 @@
+A tool run from WSL with RM_DATA_ROOT unset or a Windows-style path literal (D:\ClaudeWork\rimmandrake) creates a directory NAMED that string inside the repo root (found holding player-log archives and launch receipts, 2026-10-20); the path must be resolved through the agent-storage helper (/mnt/d/ClaudeWork on WSL) and a stray repo-root dir moved out, never committed.
