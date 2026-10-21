@@ -159,6 +159,13 @@
       <texPath>Things/Pawn/Humanlike/Apparel/Duster/Duster</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
+    <!-- RULED Neolithic (owner 2026-09-25, scald_steam_and_hazards_spec.md §5a):
+         the grub fight for the fruit is the whole gate, no research.
+         ApparelNoQualityBase defaults techLevel to Medieval, so it is set here. -->
+    <techLevel>Neolithic</techLevel>
+    <thingCategories>
+      <li>ApparelMisc</li>
+    </thingCategories>
     <apparel>
       <bodyPartGroups>
         <li>Torso</li>
@@ -172,11 +179,18 @@
       <tags>
         <li>Greatbole</li>
       </tags>
+      <canBeDesiredForIdeo>false</canBeDesiredForIdeo>
+      <defaultOutfitTags>
+        <li>Worker</li>
+      </defaultOutfitTags>
       <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Duster/Duster</wornGraphicPath>
     </apparel>
     <statBases>
       <MaxHitPoints>180</MaxHitPoints>
-      <MarketValue>320</MarketValue>
+      <!-- No explicit MarketValue: 320 sold the coat for a fifth of its 60
+           rind (60 x 28 = 1680). Vanilla derives it from cost + work. -->
+      <!-- WorkToMake INVENTED; unset it is the StatDef default of 1 (instant). -->
+      <WorkToMake>9000</WorkToMake>
       <Mass>2.6</Mass>
       <Flammability>0.4</Flammability>
       <!-- Gear matrix row 58 ("moderate") ruled ArmorRating_Heat 0.45 and
