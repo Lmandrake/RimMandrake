@@ -1,0 +1,1 @@
+./publish REFUSED on a FlowWorks DLL/.srchash conflict (another seat pushed a DLL first): recover with git reset --soft HEAD~1, unstage, git checkout -- the DLL pair (your own build output only), ./sync, rebuild with winbuild.py on the synced source, rerun the C# selftest, ./publish again. Never pick a side's DLL.
