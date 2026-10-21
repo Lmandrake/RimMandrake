@@ -1,0 +1,1 @@
+preflight_bridge O13 deploy_match compares against the D:\Luke\dev\RimMandrake mirror (origin/main), so commits pushed by another clone after your deploy show as drift; and MayRequire-rewritten deployed copies (UtinniPatches BiomeDefs, ShokkweaveEconomy) always differ by design - trust deploy_custom_mods' own VERIFIED line for those

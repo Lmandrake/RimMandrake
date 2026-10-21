@@ -1,0 +1,1 @@
+modset_builder.py refuses every --apply while a stale deployed/config/ModsConfig.swap-active.json from an old swap is present (2026-10-19 flowworks record blocked 2026-10-21); after checking the live list is the owner's (parse activeMods == FULL.LATEST) move the stale record aside, then --apply; --restore deletes swap-active.json when done
