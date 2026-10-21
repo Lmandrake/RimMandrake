@@ -417,7 +417,7 @@ def main(argv=None):
         p.add_argument("--expect-id", action="append", help="packageId that must be active (repeat)")
         p.add_argument("--allow-unmeasured", action="store_true")
         p.add_argument("--mock-skip-site", action="store_true", help="skip plan.preflight (offline selftests)")
-        p.add_argument("--pipeline", action="store_true", help="pipelined call_many (UNPROVEN live)")
+        p.add_argument("--pipeline", action="store_true", help="pipelined call_many (correct but no faster: 1 reply/frame, pipecheck.py 2026-10-21)")
         if name == "run":
             p.add_argument("--plan", help="python plan module registering @bar functions")
             p.add_argument("--out")

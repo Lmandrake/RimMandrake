@@ -2,9 +2,11 @@
 
 TimedTransport wraps ONE RimBridge socket (opened once, reused for every call),
 records per-call wall time, and offers call_many(): send N requests back-to-back,
-then collect N responses by id. Pipelining is OPT-IN (pipeline=True) because the
-bridge's behaviour under pipelined requests has NOT been proven live; with it off,
-call_many is a plain loop on the same socket (still no spawn/reconnect cost).
+then collect N responses by id. Pipelining is OPT-IN (pipeline=True) and buys NOTHING:
+MEASURED 2026-10-21 by pipecheck.py (full list, 3 live runs) it is correct (30/30 replies,
+all stable fields match serial) but runs at 16.6 ms/call exactly like serial, speedup
+0.98-1.00 -- the bridge answers one request per frame. With it off, call_many is a plain
+loop on the same socket (still no spawn/reconnect cost); that is the fast path.
 
 MockTransport + MockGame implement the same `.call/.list_tools/.call_many` surface
 over an in-memory game, so preflight/bars/selftests run with the game down.
