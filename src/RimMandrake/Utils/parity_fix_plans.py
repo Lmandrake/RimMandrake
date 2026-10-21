@@ -120,6 +120,8 @@ def label_plan(dev_feats, canon_feats, geo):
     rows = []
     for f in dev_feats:
         comps = A.components(f["tiles"], geo)
+        if not comps:
+            raise SystemExit("U1: feature %r has no tiles on the save" % f["name"])
         big = comps[0]
         c = A.centroid(big, geo)
         tv = geo.vec[big]
@@ -137,8 +139,9 @@ def label_plan(dev_feats, canon_feats, geo):
                        "arcFromBigCentroidDeg": round(A.arc_deg(c, cur), 3)},
             "after": {"centerOnTile": tile,
                       "drawCenter": [round(x, 4) for x in A.vec_to_raw(geo.vec[tile])],
-                      "size": cf["size"] if cf else f["size"],
-                      "sizeSource": "canonical by name" if cf else "kept (no canonical name)"},
+                      "size": cf["size"] if cf and cf["size"] is not None else f["size"],
+                      "sizeSource": ("canonical by name" if cf and cf["size"] is not None
+                                     else "kept (no canonical name or size)")},
         })
     return rows
 
@@ -163,7 +166,7 @@ def main():
                   "the biggest piece's centroid. Apply: world/_parity_apply_%s.py u1" % DATE,
           "source": {"dev": os.path.basename(a.dev), "canon": os.path.basename(a.canon)},
           "counts": {"features": len(rows),
-                     "sizeChanges": sum(1 for r in rows if r["before"]["size"] is None
+                     "sizeChanges": sum(1 for r in rows if r["before"]["size"] is None or r["after"]["size"] is None
                                         or abs(r["after"]["size"] - r["before"]["size"]) > 0.01),
                      "beforeOffOwnTile": sum(1 for r in rows if not r["before"]["onOwnTile"]),
                      "beforeOffBiggestPiece": sum(1 for r in rows if not r["before"]["onBiggestPiece"])},
@@ -212,6 +215,8 @@ def main():
     pv_d = worldview.PlanetView(a.dev)
     C = worldview.read_river_distances(pv_c.grid)
     D = worldview.read_river_distances(pv_d.grid)
+    if C is None or D is None:
+        raise SystemExit("U4: a save has no tileRiverDistancesDeflate block")
     ec = {tuple(sorted((o, n))): dfn for o, n, dfn, _ in pv_c.rivers}
     ed = {tuple(sorted((o, n))): dfn for o, n, dfn, _ in pv_d.rivers}
     if ec != ed:
@@ -220,6 +225,7 @@ def main():
     if mism:
         raise SystemExit("U4: lay order cannot reproduce canonical riverDist on %d tiles: %s" % (len(mism), mism[:5]))
     rtiles = sorted(set(t for e in ed for t in e))
+    rset = set(rtiles)
     links_out = os.path.join(od, "ASHKARR_PARITY_U4_links_mouthfirst_%s.csv" % DATE)
     roads = [r for r in csv.DictReader(open(os.path.join(PAINT, "ASHKARR_WORLDMAP_links.csv"), encoding="utf-8"))
              if r["kind"] == "road"]
@@ -238,7 +244,7 @@ def main():
                      "tilesChanging": sum(1 for t in rtiles if C[t] != D[t]),
                      "canonMaxOnRivers": max(C[t] for t in rtiles),
                      "devMaxOnRivers": max(D[t] for t in rtiles),
-                     "canonOffRiverNonzero": sum(1 for t in range(len(C)) if C[t] and t not in set(rtiles))},
+                     "canonOffRiverNonzero": sum(1 for t in range(len(C)) if C[t] and t not in rset)},
           "before": {str(t): D[t] for t in rtiles},
           "after": {str(t): C[t] for t in rtiles}}
     json.dump(u4, open(os.path.join(od, "ASHKARR_PARITY_U4_riverdist_%s_plan.json" % DATE), "w"), indent=1)

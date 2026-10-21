@@ -311,8 +311,8 @@ def check_dir(d, from_src=False):
 def gen(out):
     os.makedirs(os.path.join(out, "tex"), exist_ok=True); os.makedirs(os.path.join(out, "tile3x3"), exist_ok=True)
     for k in F:
-        a = make(k); Image.fromarray(a, "RGB").save(os.path.join(out, "tex", k + ".png"), optimize=True)
-        t = Image.new("RGB", (3 * N, 3 * N)); im = Image.fromarray(a, "RGB")
+        a = make(k); Image.fromarray(a).save(os.path.join(out, "tex", k + ".png"), optimize=True)
+        t = Image.new("RGB", (3 * N, 3 * N)); im = Image.fromarray(a)
         for i in range(3):
             for j in range(3): t.paste(im, (i * N, j * N))
         t.resize((768, 768), Image.LANCZOS).save(os.path.join(out, "tile3x3", k + ".png"))

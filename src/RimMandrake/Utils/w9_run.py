@@ -678,9 +678,10 @@ def main(argv=None):
         # AddLandmark rolls more in stage 4; stage 3 clears only stale Coast, 4b only adds.
         # KEEP_DERIVED (RM_SeaCoast) is geography-derived and stays.
         mut = read_csv(MUTS)
-        if mut is None:
-            w(out, "- ⚠️ **stage 4a strip**: no mutators input - nothing to compare against, "
-                   "nothing stripped")
+        if not mut:
+            # None = never authored; [] = an empty/truncated file, which would strip EVERY rolled entry
+            w(out, "- ⚠️ **stage 4a strip**: %s - nothing to compare against, nothing stripped"
+                 % ("no mutators input" if mut is None else "mutators input has 0 rows"))
         else:
             try:
                 live = read_live_mutators(rb, wi.get("tilesCount") or EXPECT_TILES)
@@ -707,9 +708,10 @@ def main(argv=None):
                         gone += len(chunk)
                 left = rolled_mutators(read_live_mutators(rb, wi.get("tilesCount") or EXPECT_TILES),
                                        stamp_mutator_entries(mut))
-                w(out, "- **stage 4a strip**: removed %d rolled entr(ies) over %d def(s); kept %d "
+                nleft = sum(len(v) for v in left.values())
+                w(out, "- %s**stage 4a strip**: removed %d rolled entr(ies) over %d def(s); kept %d "
                        "KEEP_DERIVED; rolled entries left on read-back: %d"
-                     % (gone, len(strip), kept, sum(len(v) for v in left.values())))
+                     % ("🔴 " if nleft else "", gone, len(strip), kept, nleft))
 
         # ---- stage 4b: the derived mutators --------------------------------
         # 🔴 AFTER landmarks, because AddLandmark also rolls the def's own mutatorChances

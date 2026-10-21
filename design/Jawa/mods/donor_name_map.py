@@ -86,7 +86,8 @@ def renamed_ours():
                 _alias['RUT_' + n[3:]] = n
         for n, tl in texts.items():
             old = 'AB_' + n[3:]
-            if any(old in t for t in tl) or old in CAULDRON_SEVEN:
+            whole = re.compile(r'(?<![A-Za-z0-9_])' + re.escape(old) + r'(?![A-Za-z0-9_])')   # AB_Foo is not AB_FooBar
+            if any(whole.search(t) for t in tl) or old in CAULDRON_SEVEN:
                 _alias[old] = n
     return _alias
 
@@ -166,6 +167,12 @@ def retarget_text(txt):
     import re
     chunks = txt.split('\n\n')
     out, seen_new, rt, dr, dd = [], set(), 0, 0, 0
+    # a chunk already keyed on OUR name stays; a donor chunk that retargets onto it is the duplicate
+    for ch in chunks:
+        if '<Operation' in ch:
+            nm = re.findall(r'<xpath>/Defs/ThingDef\[defName="([^"]+)"\]', ch)
+            if nm and not resolve(nm[0])[0]:
+                seen_new.add(nm[0])
     for ch in chunks:
         if '<Operation' not in ch:
             out.append(ch)

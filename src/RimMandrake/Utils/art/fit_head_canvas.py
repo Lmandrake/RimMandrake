@@ -541,6 +541,8 @@ def cmd_fit(a):
     ims = {f: Image.open(p).convert("RGBA") for f, p in (("south", a.south), ("east", a.east), ("north", a.north))}
     meas = {}
     for f, im in ims.items():
+        if im.width != im.height:
+            raise SystemExit(f"{f} canvas {im.size} is not square: the fit maps fractions with the width only")
         meas[f] = measure_image(im)
         if not meas[f] or not meas[f]["skull"]:
             raise SystemExit(f"{f} is blank")
@@ -563,13 +565,17 @@ def cmd_fit(a):
         y = ty - (k[ref] * W - bb_px[1]) * ky
         out = _place(im, bb_px, ky, kx, x, y)
         # one translation-only correction: re-measure the skull on the output (detection is near scale-invariant)
-        got = measure_image(out)["skull"]
+        got = (measure_image(out) or {}).get("skull")
+        if not got:
+            raise SystemExit(f"{f}: the placed head fell off the {CANVAS}px canvas (scale x{s:.3f}); nothing written")
         x += tx - got["cx"] * CANVAS
         y += ty - got[ref] * CANVAS
         out = _place(im, bb_px, ky, kx, x, y)
         p = os.path.join(a.out, f"{a.stem}_{f}.png")
-        out.save(p)
         ext[f] = measure_image(out)
+        if not ext[f] or not ext[f]["skull"]:
+            raise SystemExit(f"{f}: the re-seated head fell off the {CANVAS}px canvas; {p} not written")
+        out.save(p)
         if f == "south":
             crown_y = ext[f]["skull"]["t"] * CANVAS
         print(f"{p}  scale x{s:.3f} ({why})" + (f" facing x{fscale[f]:.3f}" if fscale[f] != 1 else "")

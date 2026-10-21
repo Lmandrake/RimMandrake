@@ -43,6 +43,8 @@ def river_lay_order(edges, target):
     neighbour its link (that neighbour must take it at target-1). Returns
     (order, mismatches) where mismatches lists (tile, got, want)."""
     edges = [tuple(e) for e in edges]
+    if not hasattr(target, "items"):          # a per-tile list/array (worldview.read_river_distances)
+        target = enumerate(target)
     target = defaultdict(int, target)
     adj = defaultdict(set)
     for a, b in edges:
