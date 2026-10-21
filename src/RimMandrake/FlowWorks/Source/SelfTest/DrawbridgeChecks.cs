@@ -143,6 +143,84 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(f.Contains("RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state, drop);"), "the overflow falls through the ordinary descent event");
             });
 
+            Case("Drawbridge_P3_sides_raise_either_lower_winch_only", () =>
+            {
+                Assert(RM_DrawbridgeMath.MayWorkFrom(true, true) && RM_DrawbridgeMath.MayWorkFrom(false, true), "a raise works from either bank");
+                Assert(RM_DrawbridgeMath.MayWorkFrom(true, false) && !RM_DrawbridgeMath.MayWorkFrom(false, false),
+                    "can-fail: a lower works only from the winch bank (LOWER_ONLY_FROM_WINCH)");
+                string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
+                string job = Body(c, "public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)");
+                Assert(job.Contains("RM_DrawbridgeMath.MayWorkFrom(t is Building_DrawbridgeWinch, raise)"), "the work giver offers a lower only at the winch");
+                string spots = Body(c, "private static IEnumerable<(SuspensionBridgeRecord r, DrawbridgeLeaf l, Thing spot)> Spots(Map map)");
+                Assert(spots.Contains("raise ? FarAnchor(map, r, l) : null"), "the far anchor is a work spot for a raise only");
+                Assert(c.Contains("|| !RM_DrawbridgeMath.MayWorkFrom(job.targetA.Thing is Building_DrawbridgeWinch, raise))"),
+                    "the driver re-checks the side when the colonist arrives (the order commits there)");
+            });
+
+            Case("Drawbridge_P3_drive_timber_hands_steel_power_freezes", () =>
+            {
+                Assert(RM_DrawbridgeMath.DriveMoves(SuspensionTier.Timber, true, false, true) && !RM_DrawbridgeMath.DriveMoves(SuspensionTier.Timber, true, true, false),
+                    "can-fail: timber moves only while a colonist turns the winch");
+                Assert(RM_DrawbridgeMath.DriveMoves(SuspensionTier.Steel, true, true, false) && !RM_DrawbridgeMath.DriveMoves(SuspensionTier.Steel, true, false, true),
+                    "can-fail: steel moves on power, never by hand (no hand fallback)");
+                Assert(!RM_DrawbridgeMath.DriveMoves(SuspensionTier.Timber, false, true, true), "no winch house: nothing moves it");
+                Assert(RM_DrawbridgeMath.FrozenFor(SuspensionTier.Steel, true, false) && !RM_DrawbridgeMath.FrozenFor(SuspensionTier.Steel, true, true)
+                    && !RM_DrawbridgeMath.FrozenFor(SuspensionTier.Timber, true, false), "steel without power freezes (STEEL_UNPOWERED_FREEZES)");
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                string tick = Body(db, "public static void Tick(RM_MapComponent_SuspensionBridges comp, int now)");
+                Assert(tick.IndexOf("l.frozen = RM_DrawbridgeMath.FrozenFor(") < tick.IndexOf("RM_DrawbridgeMath.Step(") && tick.Contains("if (l.frozen ||"),
+                    "a frozen leaf holds where it is");
+                Assert(tick.Contains("now <= l.workedUntilTick"), "the hand winch moves only while worked");
+            });
+
+            Case("Drawbridge_P3_winch_lost_crashes_down_and_hits", () =>
+            {
+                Assert(RM_DrawbridgeMath.WinchLossCrashes(1) && !RM_DrawbridgeMath.WinchLossCrashes(0), "a leaf off its seat crashes; a lowered one has nothing to crash");
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                string lost = Body(db, "public static void Notify_WinchLost(Map map, Building_DrawbridgeWinch w)");
+                Assert(lost.Contains("Crash(map, r, l);") && !lost.Contains("frozen = true"),
+                    "can-fail: owner follow-up: a destroyed winch CRASHES the leaf (the withdrawn rule froze it)");
+                string crash = Body(db, "public static void Crash(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)");
+                Assert(crash.Contains("l.progress = 0;") && crash.Contains("Apply(map, r, l);") && crash.Contains("p.TakeDamage(dinfo);"),
+                    "it slams down to lowered and hits anything under it");
+                string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
+                Assert(Body(c, "public override void Destroy(DestroyMode mode = DestroyMode.Vanish)").Contains("RM_Drawbridges.Notify_WinchLost(map, this);"),
+                    "the winch house reports its loss");
+            });
+
+            Case("Drawbridge_P3_one_winch_per_leaf_on_its_own_bank", () =>
+            {
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                string link = Body(db, "public static void LinkWinch(Building_DrawbridgeWinch w)");
+                Assert(link.Contains("if (l.winch != null && l.winch.Spawned)") && link.Contains("AdjacentToCardinal(r.Cell(lane, HingeIndex(l)))"),
+                    "can-fail: a winch takes only a leaf with no winch, beside THAT leaf's hinge anchor");
+                Assert(db.Contains("Scribe_References.Look(ref winch, \"winch\");"), "the leaf keeps a stable reference to its winch (R9)");
+            });
+
+            Case("Drawbridge_P3_peace_auto_lowers_free_hostiles_lock", () =>
+            {
+                Assert(RM_DrawbridgeMath.IsFreeHostile(true, false, false), "a free hostile");
+                Assert(!RM_DrawbridgeMath.IsFreeHostile(true, true, false) && !RM_DrawbridgeMath.IsFreeHostile(true, false, true),
+                    "can-fail: a hostile trapped in a pit or held prisoner does not lock (review answer 3)");
+                Assert(RM_DrawbridgeMath.ShouldAutoLower(false, false, 50, true, false), "peace: a raised leaf lowers itself");
+                Assert(!RM_DrawbridgeMath.ShouldAutoLower(true, false, 50, true, false), "can-fail: locked: it never lowers by itself");
+                Assert(!RM_DrawbridgeMath.ShouldAutoLower(false, true, 50, true, false), "hold raised keeps it up in peace");
+                Assert(!RM_DrawbridgeMath.ShouldAutoLower(false, false, 0, false, false), "already down: nothing to do");
+                Assert(RM_DrawbridgeMath.ShouldCancelAutoLower(true, true) && !RM_DrawbridgeMath.ShouldCancelAutoLower(true, false),
+                    "locking cancels a pending automatic lower (HOSTILE_LOCKS)");
+                Assert(RM_DrawbridgeMath.HoldAfterOrder(true, false, false) && !RM_DrawbridgeMath.HoldAfterOrder(true, true, false)
+                    && !RM_DrawbridgeMath.HoldAfterOrder(false, false, true), "a peacetime raise holds; a locked raise comes down after; lower clears");
+                Assert(RM_DrawbridgeMath.LockLine(true, 2, false).StartsWith("Locked: 2 free hostiles"), "the readout says why it is locked");
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                string mode = Body(db, "private static void Mode(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, int now)");
+                Assert(mode.Contains("FreeHostileCount(map, true) == 0"), "can-fail: the hostile check is made again when the lower commits (atomic)");
+                Assert(!mode.Contains("l.targetRaised = true;\n\t\t\t\tl.autoLowering = true") && !mode.Contains("OrderRaise;"),
+                    "a hostile's arrival never raises a leaf by itself");
+                string count = Body(db, "public static int FreeHostileCount(Map map, bool fresh)");
+                Assert(count.Contains("RM_SuperdeepTrap.IsTrapped(p)") && count.Contains("p.IsPrisoner") && count.Contains("GenHostility.IsActiveThreatTo"),
+                    "the pit engine's own trapped test and prisoners");
+            });
+
             Case("Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise", () =>
             {
                 string b = Src("Pits", "Building_SpanDeck.cs");
