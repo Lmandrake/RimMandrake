@@ -67,6 +67,8 @@
     <Compile Include="RM_TwitcherLash.cs" />
     <Compile Include="RM_SmotherCraft.cs" />
     <Compile Include="RM_TheLean.cs" />
+    <Compile Include="RM_PlantLean.cs" />
+    <Compile Include="RM_WeatherOverlay_GaleDust.cs" />
     <Compile Include="RM_VenomvineRooms.cs" />
     <Compile Include="RM_RunwayBloom.cs" />
     <Compile Include="RM_SweetlineStation.cs" />

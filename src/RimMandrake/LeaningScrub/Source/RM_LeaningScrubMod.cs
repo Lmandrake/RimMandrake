@@ -71,6 +71,9 @@ namespace RimMandrake.LeaningScrub
         public static float leanFireBias = 0.5f;
         // part 2 windbreak calm wakes (RM_Ripple.cs InWindbreakLee): in a wall's lee the ripple behaves as in the Stall.
         public static bool leanWakesEnabled = true;
+        // SCRUB_WIND_BUILD_LEAN_ON_PURPOSE (RM_PlantLean.cs, RM_WeatherOverlay_GaleDust.cs).
+        public static bool leanPlantsEnabled = true;
+        public static bool galeDustOverlayEnabled = true;
 
         // ── LEANINGSCRUB_GPT_ENRICHMENT_1 (RM_VenomvineRooms.cs,
         //    RM_RunwayBloom.cs, RM_SweetlineStation.cs) ──
@@ -203,6 +206,8 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref fireStampEnabled, "fireStampEnabled", true, true);
             Scribe_Values.Look(ref rippleEnabled, "rippleEnabled", true, true);
             Scribe_Values.Look(ref leanWakesEnabled, "leanWakesEnabled", true, true);
+            Scribe_Values.Look(ref leanPlantsEnabled, "leanPlantsEnabled", true, true);
+            Scribe_Values.Look(ref galeDustOverlayEnabled, "galeDustOverlayEnabled", true, true);
             Scribe_Values.Look(ref rippleMaxBodySize, "rippleMaxBodySize", 0.6f, true);
             Scribe_Values.Look(ref stallHuntEnabled, "stallHuntEnabled", true, true);
             Scribe_Values.Look(ref callingPyreEnabled, "callingPyreEnabled", true, true);
@@ -246,9 +251,9 @@ namespace RimMandrake.LeaningScrub
         /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: the master switch and each per-feature toggle with what it governs.
         /// "Mod enabled" gates every other setting (all read sites test modEnabled first), so turning it off greys the rest and keeps their values.</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
-            .Declare("modEnabled", "venomvinePassabilityEnabled", "stallFreezeEnabled", "stallFreezeMaxBodySize", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays", "galeRaidWeightingEnabled", "galeRaidWeightFactor", "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor", "smotherCraftEnabled", "smotherDays", "smotherYieldFactor", "leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanWakesEnabled", "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled", "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineGuardiansEnabled", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineProximityCharge", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "visslerArmFoodEnabled", "fireStampEnabled", "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor", "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled", "rearingEnabled", "rearingHours", "walkingEnabled", "walkingMaxCellsPerMap", "hoardEnabled", "hoardGrowInHours", "hoardKeepsDeadGear", "quenchEnabled", "quenchRecoveryDays", "swornSparesMarkedEnabled", "sheddingEnabled", "stranglerEnabled", "stranglerDamageFactor", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "sheddingLength", "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance", "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap")
+            .Declare("modEnabled", "venomvinePassabilityEnabled", "stallFreezeEnabled", "stallFreezeMaxBodySize", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays", "galeRaidWeightingEnabled", "galeRaidWeightFactor", "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor", "smotherCraftEnabled", "smotherDays", "smotherYieldFactor", "leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanWakesEnabled", "leanPlantsEnabled", "galeDustOverlayEnabled", "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled", "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineGuardiansEnabled", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineProximityCharge", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "visslerArmFoodEnabled", "fireStampEnabled", "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor", "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled", "rearingEnabled", "rearingHours", "walkingEnabled", "walkingMaxCellsPerMap", "hoardEnabled", "hoardGrowInHours", "hoardKeepsDeadGear", "quenchEnabled", "quenchRecoveryDays", "swornSparesMarkedEnabled", "sheddingEnabled", "stranglerEnabled", "stranglerDamageFactor", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "sheddingLength", "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance", "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap")
             .Declare("sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineGuardiansEnabled", "sweetlineGuardianMaxPerTree", "sweetlineHarvestDisturbance", "sweetlineForgivenessDays", "sweetlineProximityCharge", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance")
-            .Declare("leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias")
+            .Declare("leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanPlantsEnabled")
             .Declare("stallFreezeEnabled", "stallFreezeMaxBodySize")
             .Declare("galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays")
             .Declare("galeRaidWeightingEnabled", "galeRaidWeightFactor")
@@ -362,9 +367,9 @@ namespace RimMandrake.LeaningScrub
                 list.GapLine();
             }
 
-            if (Group(list, "The Stall and the Gale", RimMandrake.Shared.SettingScope.Now, new[] { "stallFreezeEnabled", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "stallFreezeMaxBodySize", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays" }))
+            if (Group(list, "The Stall and the Gale", RimMandrake.Shared.SettingScope.Now, new[] { "stallFreezeEnabled", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeDustOverlayEnabled", "stallFreezeMaxBodySize", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays" }))
             {
-                using (Dependent(list, "stallFreezeEnabled", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "stallFreezeMaxBodySize", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays"))
+                using (Dependent(list, "stallFreezeEnabled", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeDustOverlayEnabled", "stallFreezeMaxBodySize", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays"))
                 {
                     list.Label("The Stall and the Gale (the wind calendar). The two weathers always run; "
                         + "these switch off what they do beyond wind, sound and sky.");
@@ -383,6 +388,9 @@ namespace RimMandrake.LeaningScrub
                     galeTurbineSurgeFactor = list.Slider(galeTurbineSurgeFactor, 1f, 2f);
                     list.Label("Turbine breakdown, mean days between (0 = never): " + galeTurbineBreakdownMtbDays.ToString("0.0"));
                     galeTurbineBreakdownMtbDays = list.Slider(galeTurbineBreakdownMtbDays, 0f, 20f);
+                    list.CheckboxLabeled("Gale: driven dust and fuzz on screen", ref galeDustOverlayEnabled,
+                        "While the Gale blows, a sheet of dust and torn fuzz streams across the map with the "
+                        + "wind. Off: the Gale keeps its sound and effects but the air looks clear.");
                     list.GapLine();
                 }
             }
@@ -431,9 +439,9 @@ namespace RimMandrake.LeaningScrub
                 }
             }
 
-            if (Group(list, "The Lean (wind heading)", RimMandrake.Shared.SettingScope.Now, new[] { "leanEnabled", "leanScentEnabled", "leanFireEnabled", "leanScentRange", "leanFireBias" }))
+            if (Group(list, "The Lean (wind heading)", RimMandrake.Shared.SettingScope.Now, new[] { "leanEnabled", "leanScentEnabled", "leanFireEnabled", "leanPlantsEnabled", "leanScentRange", "leanFireBias" }))
             {
-                using (Dependent(list, "leanEnabled", "leanScentEnabled", "leanFireEnabled", "leanScentRange", "leanFireBias"))
+                using (Dependent(list, "leanEnabled", "leanScentEnabled", "leanFireEnabled", "leanPlantsEnabled", "leanScentRange", "leanFireBias"))
                 {
                     list.CheckboxLabeled("The Lean: one locked wind heading per map", ref leanEnabled,
                         "Each map of a biome that leans (the Leaning Scrub) keeps one wind heading for "
@@ -448,6 +456,9 @@ namespace RimMandrake.LeaningScrub
                         + "and creeps against it.");
                     list.Label("Downwind fire bias: " + (leanFireBias * 100f).ToString("0") + "%");
                     leanFireBias = list.Slider(leanFireBias, 0f, 1f);
+                    list.CheckboxLabeled("Lean: the fuzz and scrub lean with the wind", ref leanPlantsEnabled,
+                        "On a leaning map the fuzz and scrub plants all lean one way, downwind, instead of "
+                        + "facing left or right at random. Off: vanilla's random facing.");
                     list.GapLine();
                 }
             }
@@ -784,6 +795,7 @@ namespace RimMandrake.LeaningScrub
         {
             base.WriteSettings();
             RM_RegrowingHarvest.Apply();
+            RM_PlantLean.RedrawMaps();   // the lean toggle shows at once instead of as sections happen to redraw
         }
 
         public override string SettingsCategory()

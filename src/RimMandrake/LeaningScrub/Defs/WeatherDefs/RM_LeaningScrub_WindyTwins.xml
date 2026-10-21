@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LeaningScrub_WindyTwins.xml     SCRUB_WIND_BUILD_LEAN_ON_PURPOSE part 3
+
+  Owner, by card 2026-10-20 (design/RimMandrake/biome_bars_sitting_2026-10-20.md §5.3): "give Overcast, GrayPall and
+  DryThunderstorm the Scrub's wind as weather twins, so the rule 'the wind never stops' holds."
+
+  Each twin is its stock weather copied field for field (1.6 Data, read 2026-10-20), with only the wind changed, the
+  way RM_ScrubWind twins Clear and RM_ScrubWindFog twins Fog (RM_LeaningScrub_Weather.xml). The biome swaps them in at
+  the stock rows' commonalities. windSpeedOffset > 0 makes WindManager remap the wind into [offset, max]:
+    RM_ScrubOvercast        Overcast + the ordinary day's wind (offset 0.5, Clear's twin's) and its wind-borne chorus.
+    RM_ScrubGrayPall        GrayPall with its 0.5 wind damper removed and the wind-fog's floor (offset 0.4). Anomaly:
+                            its thought and monolith gate ride along, so the def loads only with Anomaly.
+    RM_ScrubDryThunderstorm DryThunderstorm already blows at factor 1.5 / offset 1.25, above the Scrub's floor; the twin
+                            keeps those and exists so the biome table carries no stock weather at all.
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RM_ScrubOvercast</defName>
+    <label>windy overcast</label>
+    <description>Thick clouds obscure the sky, reducing light levels. Under them the wind still runs, and every stand of fuzz still leans the same way.</description>
+    <isBad>false</isBad>
+    <perceivePriority>1</perceivePriority>
+    <maxGlow>0.95</maxGlow>
+    <windSpeedOffset>0.5</windSpeedOffset>
+    <ambientSounds>
+      <li>Ambient_Wind_Clear</li>
+      <li>Ambient_DayInsects_Jungle</li>
+      <li>Ambient_NightInsects_Jungle</li>
+    </ambientSounds>
+    <skyColorsDay>
+      <sky>(0.8,0.8,0.8)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.7,0.7)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <WeatherDef MayRequire="Ludeon.RimWorld.Anomaly">
+    <defName>RM_ScrubGrayPall</defName>
+    <label>gray pall</label>
+    <isBad>true</isBad>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <minMonolithLevel>1</minMonolithLevel>
+    <canOccurInAmbientHorror>true</canOccurInAmbientHorror>
+    <description>A gritty fog rides in on the wind. The smell is rotten and acidic. This unnatural weather creates feelings of dread.</description>
+    <favorability>Bad</favorability>
+    <perceivePriority>3</perceivePriority>
+    <windSpeedOffset>0.4</windSpeedOffset>
+    <accuracyMultiplier>0.8</accuracyMultiplier>
+    <transitionTicksOverride>600</transitionTicksOverride>
+    <weatherThought>GrayPall</weatherThought>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_GrayPallFog</li>
+    </overlayClasses>
+    <commonalityRainfallFactor>
+      <points>
+        <li>(0, 0)</li>
+        <li>(1300, 1)</li>
+      </points>
+    </commonalityRainfallFactor>
+    <skyColorsDay>
+      <sky>(0.482,0.603,0.682)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.25,0.2,0.2)</overlay>
+      <saturation>0.75</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.482,0.603,0.682)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.25,0.2,0.2)</overlay>
+      <saturation>0.75</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.15,0.1,0.1)</overlay>
+      <saturation>0.75</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.15,0.1,0.1)</overlay>
+      <saturation>0.75</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_ScrubDryThunderstorm</defName>
+    <label>dry thunderstorm</label>
+    <isBad>false</isBad>
+    <description>Dry thunderstorms are dangerous because the lightning can start fires and there is no rain to put them out. On the plain the wind drives every fire downwind.</description>
+    <temperatureRange>0~999</temperatureRange>
+    <windSpeedFactor>1.5</windSpeedFactor>
+    <windSpeedOffset>1.25</windSpeedOffset>
+    <favorability>VeryBad</favorability>
+    <perceivePriority>2</perceivePriority>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+    </ambientSounds>
+    <durationRange>15000~40000</durationRange>
+    <eventMakers>
+      <li>
+        <averageInterval>1200</averageInterval>
+        <eventClass>WeatherEvent_LightningFlash</eventClass>
+      </li>
+      <li>
+        <averageInterval>1200</averageInterval>
+        <eventClass>WeatherEvent_LightningStrike</eventClass>
+      </li>
+    </eventMakers>
+    <skyColorsDay>
+      <sky>(0.8,0.8,0.8)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.7,0.7)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

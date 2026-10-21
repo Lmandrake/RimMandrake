@@ -67,7 +67,7 @@ DEFAULTS = {
     "twitcherLashEnabled": True, "twitcherLashDamageFactor": 1.0, "twitcherLashRecoveryFactor": 1.0,
     "smotherCraftEnabled": True, "smotherDays": 30.0, "smotherYieldFactor": 1.0,
     "leanEnabled": True, "leanScentEnabled": True, "leanScentRange": 16.0, "leanFireEnabled": True,
-    "leanFireBias": 0.5,
+    "leanFireBias": 0.5, "leanPlantsEnabled": True, "galeDustOverlayEnabled": True,
     "drippingRegrowEnabled": True, "crownMobEnabled": True, "runwayBloomEnabled": True,
     "sweetlineStationsEnabled": True, "sweetlineVisitorsEnabled": True, "sweetlineVisitIntervalDays": 8.0,
     "visslerArmFoodEnabled": True,
@@ -637,12 +637,12 @@ def defs_chain(t):
                 _unmeasured(t, "post-patch weather table unreadable: %r" % table)
             w = dict((x.get("weather"), x.get("commonality") or 0) for x in table)
             _note(t, "BiomeDef weather table", w)
-            missing = [n for n in ("RM_ScrubWind", "RM_ScrubWindFog", "RM_Stall", "RM_Gale")
+            missing = [n for n in ("RM_ScrubWind", "RM_ScrubWindFog", "RM_Stall", "RM_Gale") + WINDY_TWINS
                        if not w.get(n)]
             if missing:
                 _fail("owned weather(s) absent or zero in the biome table: %s" % missing)
             calm = [n for n in ("Clear", "Fog", "Rain", "RainyThunderstorm", "FoggyRain",
-                                "SnowGentle", "SnowHard") if w.get(n)]
+                                "SnowGentle", "SnowHard") + tuple(TWINNED_STOCK) if w.get(n)]
             if calm:
                 _fail("stock weather with commonality > 0 (ban 5: every ordinary day carries wind): %s"
                       % calm)
@@ -674,6 +674,54 @@ def defs_chain(t):
                 _unmeasured(t, "BiomeDef.modExtensions unreadable: %r" % ext)
             if not any(str(e).endswith("RM_LeanExtension") for e in ext):
                 _fail("RM_LeaningScrub carries no RM_LeanExtension (the Lean never applies): %r" % ext)
+
+
+# --------------------------------------------------------------------------- chain: windlean
+
+# SCRUB_WIND_BUILD_LEAN_ON_PURPOSE part 3 (owner card 2026-10-20): stock weather -> the Scrub's windy twin.
+TWINNED_STOCK = {"Overcast": "RM_ScrubOvercast", "GrayPall": "RM_ScrubGrayPall",
+                 "DryThunderstorm": "RM_ScrubDryThunderstorm"}
+WINDY_TWINS = tuple(sorted(TWINNED_STOCK.values()))
+
+
+@suite.chain("windlean")
+def windlean_chain(t):
+    """SCRUB_WIND_BUILD_LEAN_ON_PURPOSE (biome_bars_sitting_2026-10-20 §5.1-5.3). The lean rows need a Leaning Scrub map
+    (LEANING_SCRUB_LEAN_SITE_1): on any other map the hook answers UNMEASURED, never PASS. The look is the owner's."""
+    with _comp(t, "twins_carry_wind"):
+        if _live(t):
+            f, _ = _get_defs(t, ";".join("WeatherDef/" + n for n in WINDY_TWINS), "windSpeedOffset,windSpeedFactor")
+            calm = {}
+            for n in WINDY_TWINS:
+                row = f.get(n)
+                if not isinstance(row, dict):
+                    _unmeasured(t, "twin %s unreadable: %r" % (n, row))
+                off, fac = row.get("windSpeedOffset"), row.get("windSpeedFactor")
+                if not isinstance(off, (int, float)) or off <= 0 or (isinstance(fac, (int, float)) and fac < 1):
+                    calm[n] = (off, fac)
+            _note(t, "twin wind", f)
+            if calm:
+                _fail("a windy twin can fall calm (windSpeedOffset <= 0 or factor < 1): %s" % calm)
+    _proof(t, "lean_faces_wind", "RM_PlantLeanProof", "ProofLean", "on", "plant lean (on)", "leanPlantsEnabled")
+    _proof(t, "lean_toggle_off_vanilla", "RM_PlantLeanProof", "ProofLean", "off", "plant lean (off)", "leanPlantsEnabled")
+    try:
+        with _comp(t, "gale_dust_overlay", toggle="galeDustOverlayEnabled"):
+            if _live(t):
+                _lock_weather(t, "RM_Gale")
+                _wait(t, 120)      # the overlay ticks with the weather: give it a few hundred frames under the Gale
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_GaleDustProof",
+                              method="ProofGale", args="on")
+            if _live(t):
+                txt = str((r or {}).get("result") or (r or {}).get("value") or r)
+                _note(t, "gale dust overlay", txt[:300])
+                if txt.startswith("FAIL"):
+                    _fail("gale dust overlay: %s" % txt[:400])
+                if not txt.startswith("PASS"):
+                    _unmeasured(t, "gale dust overlay did not answer PASS/FAIL: %s" % txt[:200])
+                if "PLACEHOLDER" in txt:
+                    _note(t, "gale dust art", "PLACEHOLDER: vanilla fog sheet until the queued art is reviewed")
+    finally:
+        _unlock_weather(t)
 
 
 # --------------------------------------------------------------------------- chain: patches
