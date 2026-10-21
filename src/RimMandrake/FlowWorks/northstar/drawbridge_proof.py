@@ -34,7 +34,7 @@ the drag's first end, unless said):
                                                            -> RAISE_TIPS_RIDERS (six hostile riders)
   F  z=32  steel  1-wide (0,32)-(5,32), 4 m trench; a colonist put UNDER (2,32), a rider on (3,32)
                                                            -> RAISE_SPARES_UNDERPASS
-  G  z=38  timber 1-wide (0,38)-(9,38), trench 1..8 (two leaves of 4, a winch on each bank)
+  G  z=38  timber 1-wide (0,38)-(7,38), trench 1..6 (two leaves of 3, a winch on each bank; timber spans cap at 6)
                                                            -> TWO_LEAF_TIPS_OWN_HINGE
   H  z=44  steel  1-wide (0,44)-(5,44); a 2x2 4 m pit at (10..11, 44..45) to trap a hostile in
                                                            -> HOSTILE_LOCKS (raiseSpeed 0.25 for the section, restored)
@@ -402,7 +402,10 @@ def raise_path(ctx):
     kv0, t0 = sproof("ProofPath", "%s;%s" % (walker, xz(P(8, 6))))
     V.require(kv0.get("found") == "True" and num(kv0, "decked", 0) >= 6, "lowered: the deck is the path", t0)
     c0 = ctx["counters"]()
-    B.call("jawa/order_pawn", pawnId=walker, x=P(8, 6)[0], z=P(8, 6)[1], waitTicks=1, draft=True)   # holds a path now
+    # holds a path now. The walker is meant to be mid-walk, so the tool's success=false ("0/1 standing on ...") is the expected
+    # answer, not a refusal (live 2026-10-21 it UNMEASURED the row); the bar is that the order was taken
+    ordr = B.call("jawa/order_pawn", _answer=True, pawnId=walker, x=P(8, 6)[0], z=P(8, 6)[1], waitTicks=1, draft=True)
+    V.require(all((p or {}).get("orderAccepted") for p in (ordr.get("pawns") or [{}])), "walker took the order", ordr, cls="HARNESS")
     dproof("ProofDevSet", "%s;raise" % xz(P(3, 6)))
     ticks(10)
     raised = typed(DB, "RaisedAt", "current|%s" % xz(P(3, 6)))
@@ -418,25 +421,32 @@ def raise_path(ctx):
 def raise_tips_riders(ctx):
     """PROVE six hostile riders on a 3-wide steel leaf, the hinge bank walled to ONE free square (ProofTipPreview reads it),
     raised by ProofDevSet; positions from list_pawns 10 ticks later.
-    EXPECT TippedCount +1 and FellCount +5; exactly one rider on the hinge bank (x <= 0), five on dug leaf squares, all six
-    still hostile. LIES: a free square the tip rule cannot use (behind the anchor) leaves 0 landers and reads FAIL: the
+    EXPECT TippedCount +land and FellCount +fall (the preview's split); that many riders on the hinge bank (x <= 0), the rest on dug
+    leaf squares, all six still hostile. LIES: a free square the tip rule cannot use (behind the anchor) leaves 0 landers and reads FAIL: the
     preview's free=1 is the precondition, so a site the mod rightly refuses is SITE, not MOD."""
     P, xz, row, dproof, ticks, spawn = _c(ctx, "P", "xz", "row", "dproof", "ticks", "spawn")
     for z in (24, 25, 26):
         for i in range(1, 5):
             ctx["dig"](P(i, z))
-    ctx["build"]("E", P(0, 24), P(5, 26), "steel")
+    kvb, _tb = ctx["build"]("E", P(0, 24), P(5, 26), "steel")
     ctx["power"](P(2, 25), True)
-    bank = [P(x, z) for x in range(-4, 0) for z in range(22, 29) if (x, z) != (-1, 25)]
+    # never wall over the winch house (live 2026-10-21: the bank walls replaced it, leaving winch=False powered=False and a
+    # frozen leaf that tipped nobody: SITE, not the tip rule)
+    winch = {tuple(int(v) for v in w.split(",")) for w in str(kvb.get("winchAt") or "").split("|") if "," in w}
+    bank = [P(x, z) for x in range(-4, 0) for z in range(22, 29) if (x, z) != (-1, 25) and P(x, z) not in winch]
     ctx["walls"](bank + [P(x, z) for x in range(0, 6) for z in (23, 27)])
     riders = [spawn(P(i, z), kind="Mercenary_Gunner", faction=_hostile(ctx)) for i, z in ((1, 24), (1, 25), (1, 26), (2, 24),
                                                                                          (2, 25), (2, 26))]
     V.require(all(riders), "six riders spawned", riders)
     kvp, tp = dproof("ProofTipPreview", xz(P(2, 25)))
-    V.require(num(kvp, "riders") == 6 and num(kvp, "free") == 1, "preview: six riders, one free bank square", tp)
+    # live 2026-10-21: the mod's preview reads free=4 land=4 fall=2 here (the hinge bank's own deck-end squares x=0 count as
+    # landing ground beside the walled-in (-1,25)), so the bar follows the preview's land/fall split instead of a fixed 1/5
+    V.require(num(kvp, "riders") == 6 and num(kvp, "free", 0) >= 1, "preview: six riders, a free bank square", tp)
+    land, fall = num(kvp, "land", -1), num(kvp, "fall", -1)
     c0 = ctx["counters"]()
-    dproof("ProofDevSet", "%s;raise" % xz(P(2, 25)))
+    _dv, tdev = dproof("ProofDevSet", "%s;raise" % xz(P(2, 25)))
     ticks(10)
+    _kl, tleaf = ctx["leaf"](P(2, 25))
     ps = ctx["pawns"]()
     c1 = ctx["counters"]()
     tipped, fell = ctx["delta"](c0, c1, "TippedCount"), ctx["delta"](c0, c1, "FellCount")
@@ -445,9 +455,10 @@ def raise_tips_riders(ctx):
     on_bank = sum(1 for c in cells if c[0] is not None and c[0] <= P(0, 0)[0])
     in_hole = sum(1 for c in cells if c[0] is not None and P(1, 0)[0] <= c[0] <= P(4, 0)[0] and P(0, 24)[1] <= c[1] <= P(0, 26)[1])
     still = sum(1 for r in riders if (ps.get(r) or {}).get("hostile"))
-    good = tipped == 1 and fell == 5 and on_bank == 1 and in_hole == 5 and still == 6
+    good = land >= 1 and tipped == land and fell == fall and on_bank == land and in_hole == fall and still == 6
     row("RAISE_TIPS_RIDERS", "PASS" if good else "FAIL",
-        {"preview": tp, "tipped": tipped, "fell": fell, "onBank": on_bank, "inHole": in_hole, "stillHostile": still, "cells": cells})
+        {"preview": tp, "devSet": tdev, "leafAfter": tleaf, "tipped": tipped, "fell": fell, "onBank": on_bank, "inHole": in_hole,
+         "stillHostile": still, "cells": cells})
 
 
 def _hostile(ctx):
@@ -505,8 +516,14 @@ def lower_only_from_winch(ctx):
     V.require(kl.get("target") == "raised" and num(kl, "progress", -1) == num(kl, "full", -2), "leaf staged raised", tl)
     # precondition (SITE, never a mod FAIL): with the leaf raised the far-bank pawn has no path to the winch side, else the real
     # scanner may rightly hand it the lower job by walking round and the 'none' below proves nothing
+    # both cells the winch (P(-1,0)) is worked from: (-2,0) behind it AND (0,0), the hinge-bank lip. Live 2026-10-21 only
+    # (-2,0) was asked; it read found=False while the production WorkGiver still found the winch reachable, i.e. the far
+    # pawn could reach the lip by the trench floor (colonists are not held by a pit: RM_SuperdeepTrap.Captures carve-out)
     kvp, tp = ctx["sproof"]("ProofPath", "%s;%s" % (f, xz(P(-2, 0))), answer=True)
-    V.require(kvp.get("found") == "False", "far bank cannot reach the winch side with the leaf raised", tp, cls="SITE")
+    kvl, tpl = ctx["sproof"]("ProofPath", "%s;%s" % (f, xz(P(0, 0))), answer=True)
+    tp = "behind=%s | lip=%s" % (tp, tpl)
+    V.require(kvp.get("found") == "False" and kvl.get("found") == "False",
+              "far bank cannot reach the winch side with the leaf raised", tp, cls="SITE")
     dproof("ProofOrder", "%s;lower" % xz(P(2, 0)))
     fl, tfl = dproof("ProofWorkJob", "%s;%s" % (pid_num(f), xz(P(2, 0))))
     wl, twl = dproof("ProofWorkJob", "%s;%s" % (pid_num(w), xz(P(2, 0))))
@@ -515,22 +532,24 @@ def lower_only_from_winch(ctx):
 
 
 def two_leaf_tips_own_hinge(ctx):
-    """PROVE a timber bridge of 8 interior squares (two leaves of 4, a winch on each bank), a drafted rider on each leaf,
+    """PROVE a timber bridge of 6 interior squares (two leaves of 3, a winch on each bank), a drafted rider on each leaf,
     both raised (ProofDevSet instant; staging, the drive is not the claim).
-    EXPECT 2 leaves hinged A and B; rider 1 lands on bank A (x <= 0), rider 2 on bank B (x >= 9). LIES: both riders on bank A
+    EXPECT 2 leaves hinged A and B; rider 1 lands on bank A (x <= 0), rider 2 on bank B (x >= 7). LIES: both riders on bank A
     would mean 'tip to the colony bank', the ruled-out reading; a one-leaf split makes the row UNMEASURED (SITE)."""
     P, xz, row, dproof, spawn = _c(ctx, "P", "xz", "row", "dproof", "spawn")
-    for i in range(1, 9):
+    # 6 interior squares, not 8: a timber suspension span is capped at 6 between supports (RM_SuspensionMath) while a timber
+    # leaf is capped at 4, so 5..6 is the only timber two-leaf range (live 2026-10-21: the 8-square scene was refused, SITE)
+    for i in range(1, 7):
         ctx["dig"](P(i, 38))
-    kv, txt = ctx["build"]("G", P(0, 38), P(9, 38), "timber")
+    kv, txt = ctx["build"]("G", P(0, 38), P(7, 38), "timber")
     V.require(kv.get("leaves") == "2" and kv.get("hinges") == "A,B", "two leaves, one hinge per bank", txt)
-    r1, r2 = spawn(P(2, 38), draft=True), spawn(P(7, 38), draft=True)
+    r1, r2 = spawn(P(2, 38), draft=True), spawn(P(5, 38), draft=True)
     dproof("ProofDevSet", "%s;raise;instant" % xz(P(2, 38)))
-    dproof("ProofDevSet", "%s;raise;instant" % xz(P(7, 38)))
+    dproof("ProofDevSet", "%s;raise;instant" % xz(P(5, 38)))
     ps = ctx["pawns"]()
     a1, a2 = ctx["at"](ps.get(r1)), ctx["at"](ps.get(r2))
     V.require(a1[0] is not None and a2[0] is not None, "both riders in the read", [a1, a2], cls="HARNESS")
-    good = a1[0] is not None and a2[0] is not None and a1[0] <= P(0, 0)[0] and a2[0] >= P(9, 0)[0]
+    good = a1[0] is not None and a2[0] is not None and a1[0] <= P(0, 0)[0] and a2[0] >= P(7, 0)[0]
     row("TWO_LEAF_TIPS_OWN_HINGE", "PASS" if good else "FAIL", {"build": txt, "rider1": a1, "rider2": a2})
 
 
@@ -812,7 +831,7 @@ class FakeBridge(object):
     verdict proves the script's control flow and its MOD/SITE/HARNESS split only. `faults` inject one wrong behaviour each:
       no_proofs        RM_DrawbridgeProofs is not loaded (an old deploy): every row UNMEASURED/HARNESS, none FAIL
       noclock          step_game_ticks refuses: every row that waits on the clock is UNMEASURED/HARNESS
-      two_free         the tip preview reads free=2 (the site is not the scene): RAISE_TIPS_RIDERS UNMEASURED/SITE
+      no_free          the tip preview reads free=0 (no landing square: the site is not the scene): RAISE_TIPS_RIDERS UNMEASURED/SITE
       tip_all_fall     MOD: riders all fall though a bank square is free      -> RAISE_TIPS_RIDERS FAIL
       no_repath        MOD: a toggle re-paths nobody                           -> RAISE_PATH FAIL
       underpass_tipped MOD: the pawn under the deck is moved by the raise     -> RAISE_SPARES_UNDERPASS FAIL
@@ -827,7 +846,7 @@ class FakeBridge(object):
       far_raiders      the raiders never come near (SITE)                      -> RAID_UP UNMEASURED/SITE
       dup_plank        MOD: the interrupted carrier's plank is laid as well    -> RAID_PLANK FAIL
       replay_tip       MOD: the load replays the tip                           -> SAVE_MIDRAISE FAIL"""
-    FAULTS = ("far_reaches_winch", "no_proofs", "noclock", "two_free", "tip_all_fall", "no_repath", "underpass_tipped", "lower_from_far",
+    FAULTS = ("far_reaches_winch", "no_proofs", "noclock", "no_free", "tip_all_fall", "no_repath", "underpass_tipped", "lower_from_far",
               "tip_colony_bank", "trapped_locks", "freeze_ignored", "no_crash", "despawn_stale", "raid_loop", "far_raiders", "dup_plank",
               "replay_tip")
 
@@ -865,7 +884,7 @@ class FakeBridge(object):
         bank_x = l["ax"] if (l["hinge"] == "A" or "tip_colony_bank" in self.f) else l["bx"]
         step = -1 if bank_x == l["ax"] else 1
         free = [(bank_x + step * k, z) for k in range(0, 4) for z in range(l["z0"] - 1, l["z1"] + 2)]
-        free = [c for c in free if c not in self.walls and c[0] != l["ax"] and c[0] != l["bx"]]
+        free = [c for c in free if c not in self.walls and c != l["winch"] and c[0] != l["ax"] and c[0] != l["bx"]]
         if "tip_all_fall" in self.f:
             free = []
         for i in sorted(riders, key=lambda i: abs(self.pawns[i]["x"] - bank_x)):
@@ -966,7 +985,10 @@ class FakeBridge(object):
             p = self.pawns.get(kw.get("pawnId"))
             if p:
                 p["pathing"] = True
-            return {"success": True, "pawns": [{"id": kw.get("pawnId"), "end": {"x": p and p["x"], "z": p and p["z"]}}]}
+            # the live shape (JawaBenchTerrainTools order_pawn): success only when every pawn ARRIVED within waitTicks; a walker
+            # still under way answers success=false with orderAccepted=true per pawn
+            return {"success": False, "arrivedCount": 0, "pawns": [{"id": kw.get("pawnId"), "orderAccepted": bool(p),
+                                                                     "end": {"x": p and p["x"], "z": p and p["z"]}}]}
         if tool == "jawa/list_pawns":
             return {"pawns": [dict(id=i, x=p["x"] if not p.get("dead") else None, z=p["z"] if not p.get("dead") else None,
                                    hostile=p["hostile"], dead=p.get("dead", False), downed=False,
@@ -1143,7 +1165,7 @@ class FakeBridge(object):
             if l is None:
                 return "REFUSED: not a leaf"
             riders = sum(1 for p in self.pawns.values() if l["z0"] <= p["z"] <= l["z1"] and l["first"] <= p["x"] <= l["last"])
-            free = 2 if "two_free" in self.f else 1
+            free = 0 if "no_free" in self.f else 1
             return "PREVIEW riders=%d land=%d fall=%d free=%d" % (riders, min(free, riders), max(0, riders - free), free)
         if m == "ProofGivePlank":
             gap = (a[1], a[2])
