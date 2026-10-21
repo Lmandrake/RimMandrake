@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
+using UnityEngine;
 using Verse.AI;
 
 namespace RimMandrake.FlowWorks.Pits
@@ -62,6 +63,17 @@ namespace RimMandrake.FlowWorks.Pits
 			if (wasSpawned && map != null)
 			{
 				RM_Drawbridges.Notify_WinchLost(map, this);
+			}
+		}
+
+		/// <summary>Phase 6 (R12): the winch house draws its leaf upright while it is raised, and the art planks beside it.
+		/// Its own picture is printed with the map mesh (drawerType MapMeshAndRealTime), so the base draw is not repeated.</summary>
+		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+		{
+			if (RM_Drawbridges.LeafOfWinch(this, out SuspensionBridgeRecord r, out DrawbridgeLeaf l))
+			{
+				RM_DrawbridgeArt.DrawLeafUp(Map, r, l);
+				RM_DrawbridgeArt.DrawPlanks(Map, r, l);
 			}
 		}
 
@@ -270,6 +282,41 @@ namespace RimMandrake.FlowWorks.Pits
 			};
 			work.defaultCompleteMode = ToilCompleteMode.Never;
 			yield return work;
+		}
+	}
+
+	/// <summary>
+	/// Phase 6 (R7): the gate leaf, a door in the wall line beside a leaf's hinge anchor (one per lane). Not vanilla door
+	/// semantics: it opens for nobody while its leaf is off its seat (the far side is a pit), and while the map is LOCKED (a
+	/// free hostile, R4) it opens only when the player holds it open (the order, given at the gate on the hinge bank). In
+	/// peace it is an ordinary door for its own faction. Not beside a drawbridge, or drawbridges off: a plain door.
+	/// </summary>
+	public class Building_DrawbridgeGate : Building_Door
+	{
+		public override bool PawnCanOpen(Pawn p)
+		{
+			if (!base.PawnCanOpen(p))
+			{
+				return false;
+			}
+			if (!RM_DrawbridgeSettings.drawbridgesEnabled || !RM_Drawbridges.LeafOfGate(this, out SuspensionBridgeRecord r, out DrawbridgeLeaf l))
+			{
+				return true;
+			}
+			return RM_DrawbridgeMath.GateOpensFor(RM_Drawbridges.Locked(Map), l.progress > 0, HoldOpen);
+		}
+
+		public override string GetInspectString()
+		{
+			string s = base.GetInspectString();
+			if (!RM_Drawbridges.LeafOfGate(this, out SuspensionBridgeRecord r, out DrawbridgeLeaf l))
+			{
+				return s;
+			}
+			string line = l.progress > 0 ? "Gate: shut (the leaf is up)"
+				: RM_Drawbridges.Locked(Map) ? (HoldOpen ? "Gate: held open by order" : "Gate: locked (hostiles on the map); hold it open to pass")
+				: "Gate: opens for your people";
+			return s.NullOrEmpty() ? line : s + "\n" + line;
 		}
 	}
 }

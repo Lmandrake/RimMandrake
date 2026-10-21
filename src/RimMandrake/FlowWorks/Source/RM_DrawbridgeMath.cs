@@ -386,6 +386,17 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>Phase 6 (R7): may the gate leaf open (for a pawn the door's own faction rules already let through)? Never
+		/// while its leaf is off its seat; while locked only when the player holds it open; in peace, yes.</summary>
+		public static bool GateOpensFor(bool locked, bool leafUp, bool holdOpen)
+		{
+			if (leafUp)
+			{
+				return false;
+			}
+			return !locked || holdOpen;
+		}
+
 		/// <summary>R11 readout: "lowered", "raised", "raising 40%", "lowering 60%".</summary>
 		public static string StateLine(int progress, bool targetRaised, int fullTicks, bool frozen)
 		{

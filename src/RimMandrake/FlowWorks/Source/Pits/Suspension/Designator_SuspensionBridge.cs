@@ -26,6 +26,9 @@ namespace RimMandrake.FlowWorks.Pits
 
 		public override bool Visible => RM_SuspensionSettings.suspensionBridgesBuildable && base.Visible;
 
+		/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6: this button places a drawbridge (timber or steel).</summary>
+		protected virtual bool Drawbridge => false;
+
 		public override string Desc => base.Desc + "\n\nDrag from solid ground, across a dug hole, to solid ground: 1 to 3 squares wide, at most "
 			+ RM_SuspensionMath.MaxLength(Tier, RM_SuspensionSettings.suspensionLengthMultiplier)
 			+ " squares between supports (plan a tower on the hole floor first to go further). Anchors go on both ends and are built first.";
@@ -109,6 +112,12 @@ namespace RimMandrake.FlowWorks.Pits
 					continue;
 				}
 				string why = Plan(map, r, dragged);
+				// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6: a drawbridge button cuts the planned bridge into leaves (no towers,
+				// no longer than two leaves of its material), the colony's leaf hinged on the home bank
+				if (why == null && Drawbridge && !RM_Drawbridges.MakeDrawbridge(r, RM_Drawbridges.ColonyEndIsFirst(map, r), out string dwhy))
+				{
+					why = "Not a drawbridge: " + dwhy + ".";
+				}
 				if (why == null)
 				{
 					Place(map, r);
@@ -285,6 +294,41 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 				FleckMaker.ThrowMetaPuffs(GenAdj.OccupiedRect(c, rot, d.Size), map);
 			}
+		}
+	}
+
+	/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6 (R1, answer 7/8): the drawbridge build buttons. The same drag as the
+	/// suspension bridge of that material; the planned bridge is cut into one leaf (or two, one hinged on each bank) by the
+	/// material's longest leaf (Mod Settings). Build a winch house beside each leaf's hinge anchor to work it.</summary>
+	public abstract class Designator_Drawbridge : Designator_SuspensionBridge
+	{
+		protected Designator_Drawbridge(ThingDef deck, string label) : base(deck)
+		{
+			defaultLabel = label;
+		}
+
+		protected override bool Drawbridge => true;
+
+		public override bool Visible => RM_DrawbridgeSettings.drawbridgesEnabled && base.Visible;
+
+		public override string Desc => "A suspension bridge whose deck raises on a winch, so the moat under it is a whole pit again.\n\n"
+			+ "Drag it like a suspension bridge, from solid ground across a dug hole to solid ground, 1 to 3 squares wide, with no towers. "
+			+ "Up to " + RM_Drawbridges.MaxLeaf(Tier) + " squares it is one leaf hinged on your bank; up to " + (2 * RM_Drawbridges.MaxLeaf(Tier))
+			+ " it is two leaves, one hinged on each bank. Build a winch house beside each leaf's hinge anchor"
+			+ (RM_DrawbridgeMath.IsPowered(Tier) ? " and give it power" : "") + ". It raises from either bank and lowers only from the winch's.";
+	}
+
+	public class Designator_Drawbridge_Timber : Designator_Drawbridge
+	{
+		public Designator_Drawbridge_Timber() : base(DefDatabase<ThingDef>.GetNamed("RM_SuspensionDeck_Timber"), "timber drawbridge")
+		{
+		}
+	}
+
+	public class Designator_Drawbridge_Steel : Designator_Drawbridge
+	{
+		public Designator_Drawbridge_Steel() : base(DefDatabase<ThingDef>.GetNamed("RM_SuspensionDeck_Steel"), "steel drawbridge")
+		{
 		}
 	}
 

@@ -304,6 +304,51 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "a bridge longer than two leaves of its material is refused");
             });
 
+            Case("Drawbridge_P6_gate_never_open_on_a_raised_leaf_locked_only_by_order", () =>
+            {
+                Assert(RM_DrawbridgeMath.GateOpensFor(false, false, false), "peace, leaf down: a door for its people");
+                Assert(!RM_DrawbridgeMath.GateOpensFor(false, true, true) && !RM_DrawbridgeMath.GateOpensFor(true, true, true),
+                    "can-fail: never while the leaf is up, even held open");
+                Assert(!RM_DrawbridgeMath.GateOpensFor(true, false, false) && RM_DrawbridgeMath.GateOpensFor(true, false, true),
+                    "can-fail: locked, it opens for nobody automatically, only by the player's hold-open order");
+                string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
+                Assert(c.Contains("public class Building_DrawbridgeGate : Building_Door"), "a custom door (R7), not vanilla semantics");
+                string open = Body(c, "public override bool PawnCanOpen(Pawn p)");
+                Assert(open.IndexOf("base.PawnCanOpen(p)") < open.IndexOf("GateOpensFor("), "the door's own faction rules first, then the bridge's mode");
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                Assert(Body(db, "private static void Mode(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, int now)").Contains("map.reachability?.ClearCache();"),
+                    "a lock or unlock re-reads reachability (gates change)");
+            });
+
+            Case("Drawbridge_P6_real_build_buttons", () =>
+            {
+                string d = Src("Pits", "Suspension", "Designator_SuspensionBridge.cs");
+                Assert(d.Contains("public class Designator_Drawbridge_Timber : Designator_Drawbridge") && d.Contains("public class Designator_Drawbridge_Steel : Designator_Drawbridge"),
+                    "timber and steel drawbridge buttons");
+                Assert(!d.Contains("Designator_Drawbridge_Rope") && !d.Contains("Designator_Drawbridge_Heavy"), "can-fail: no rope or heavy drawbridge");
+                Assert(d.Contains("if (why == null && Drawbridge && !RM_Drawbridges.MakeDrawbridge(r, RM_Drawbridges.ColonyEndIsFirst(map, r), out string dwhy))"),
+                    "can-fail: the drag is cut into leaves BEFORE it is placed, or refused");
+                Assert(Body(d, "public abstract class Designator_Drawbridge : Designator_SuspensionBridge").Contains("RM_DrawbridgeSettings.drawbridgesEnabled"),
+                    "the buttons follow \"Drawbridges can be built\"");
+                string patch = File.ReadAllText(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_SpanMath.cs")), "..", "Patches", "Pits", "RM_SuspensionBridges.xml"));
+                Assert(patch.Contains("<li>RimMandrake.FlowWorks.Pits.Designator_Drawbridge_Timber</li>") && patch.Contains("<li>RimMandrake.FlowWorks.Pits.Designator_Drawbridge_Steel</li>"),
+                    "in the Structure tab");
+            });
+
+            Case("Drawbridge_P6_art_contract_paths_with_stand_ins", () =>
+            {
+                string a = Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs");
+                Assert(a.Contains("public const string Dir = \"Things/Building/FlowWorks/Drawbridge/\";") && a.Contains("\"RM_DrawbridgeLeafUp_\""),
+                    "the design doc's contract paths");
+                Assert(a.Contains("ContentFinder<Texture2D>.Get(p, false)") && !a.Contains("Get(p, true)"), "can-fail: looked up silently (no red error before install)");
+                Assert(a.Contains("\"Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_\" + Material(t)"), "a stand-in that exists on disk");
+                Assert(Body(a, "public static LeafView ViewFor(Rot4 spanFromHinge)").Contains("spanFromHinge == Rot4.North ? LeafView.Face : spanFromHinge == Rot4.South ? LeafView.Underside : LeafView.Edge"),
+                    "north face, south underside, east/west edge (contract)");
+                string xml = File.ReadAllText(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_SpanMath.cs")), "..", "Defs", "Pits", "ThingDefs", "RM_Drawbridge.xml"));
+                Assert(!xml.Contains("Things/Building/FlowWorks/Drawbridge/"), "can-fail: no def names an uninstalled texture (it would load pink)");
+                Assert(!xml.Contains("MinifiedThing") && !xml.Contains("<defName>RM_DrawbridgePlanks"), "the art planks are never an item (answer 1)");
+            });
+
             Case("Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise", () =>
             {
                 string b = Src("Pits", "Building_SpanDeck.cs");

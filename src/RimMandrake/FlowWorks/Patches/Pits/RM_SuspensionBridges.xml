@@ -13,6 +13,8 @@
       <li>RimMandrake.FlowWorks.Pits.Designator_SuspensionBridge_HeavyGrated</li>
       <li>RimMandrake.FlowWorks.Pits.Designator_SuspensionJetty_Steel</li>
       <li>RimMandrake.FlowWorks.Pits.Designator_SuspensionJetty_Heavy</li>
+      <li>RimMandrake.FlowWorks.Pits.Designator_Drawbridge_Timber</li>   <!-- DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6 -->
+      <li>RimMandrake.FlowWorks.Pits.Designator_Drawbridge_Steel</li>
     </value>
   </Operation>
 </Patch>

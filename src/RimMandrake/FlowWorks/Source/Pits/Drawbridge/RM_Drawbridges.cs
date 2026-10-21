@@ -132,6 +132,31 @@ namespace RimMandrake.FlowWorks.Pits
 			return why == null;
 		}
 
+		/// <summary>Which end of a planned bridge is the colony's: the one in the home area when only one is; else the one nearer
+		/// the colony's buildings (their mean position); else end A.</summary>
+		public static bool ColonyEndIsFirst(Map map, SuspensionBridgeRecord r)
+		{
+			IntVec3 a = r.Cell(0, 0), b = r.Cell(0, r.length - 1);
+			Area home = map?.areaManager?.Home;
+			if (home != null && a.InBounds(map) && b.InBounds(map) && home[a] != home[b])
+			{
+				return home[a];
+			}
+			List<Building> mine = map?.listerBuildings?.allBuildingsColonist;
+			if (mine == null || mine.Count == 0)
+			{
+				return true;
+			}
+			long sx = 0, sz = 0;
+			foreach (Building bd in mine)
+			{
+				sx += bd.Position.x;
+				sz += bd.Position.z;
+			}
+			IntVec3 c = new IntVec3((int)(sx / mine.Count), 0, (int)(sz / mine.Count));
+			return a.DistanceToSquared(c) <= b.DistanceToSquared(c);
+		}
+
 		/// <summary>Cut the bridge into leaves (lowered). colonyBankAtFirst: the single leaf (or the larger one) hinges on anchor A.</summary>
 		public static bool MakeDrawbridge(SuspensionBridgeRecord r, bool colonyBankAtFirst, out string why)
 		{
@@ -553,6 +578,15 @@ namespace RimMandrake.FlowWorks.Pits
 
 		// ── Phase 3: control mode (R4), winch loss ───────────────────────────────────────────────
 
+		private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, int[]> lastLocked =
+			new System.Runtime.CompilerServices.ConditionalWeakTable<Map, int[]>();
+
+		/// <summary>Is this map locked (any free hostile, R4)?</summary>
+		public static bool Locked(Map map)
+		{
+			return FreeHostileCount(map, false) > 0;
+		}
+
 		/// <summary>Per map: [0] the free-hostile count, [1] the tick it was read (weak: a dropped map is not kept alive).</summary>
 		private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, int[]> hostileRead =
 			new System.Runtime.CompilerServices.ConditionalWeakTable<Map, int[]>();
@@ -595,6 +629,12 @@ namespace RimMandrake.FlowWorks.Pits
 		private static void Mode(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, int now)
 		{
 			bool locked = FreeHostileCount(map, false) > 0;
+			int[] seen = lastLocked.GetValue(map, _ => new[] { -1 });
+			if (seen[0] != (locked ? 1 : 0))
+			{
+				seen[0] = locked ? 1 : 0;
+				map.reachability?.ClearCache();   // phase 6: drawbridge gates open for nobody while locked (R4, R7)
+			}
 			if (RM_DrawbridgeMath.ShouldCancelAutoLower(locked, l.autoLowering))
 			{
 				l.targetRaised = true;
@@ -639,6 +679,38 @@ namespace RimMandrake.FlowWorks.Pits
 					}
 				}
 			}
+		}
+
+		/// <summary>Phase 6 (R7): the leaf a gate stands at: the gate is cardinally beside one of the leaf's hinge anchors.</summary>
+		public static bool LeafOfGate(Building gate, out SuspensionBridgeRecord rec, out DrawbridgeLeaf leaf)
+		{
+			rec = null;
+			leaf = null;
+			RM_MapComponent_SuspensionBridges comp = gate?.Map == null ? null : RM_MapComponent_SuspensionBridges.Of(gate.Map);
+			if (comp == null)
+			{
+				return false;
+			}
+			foreach (SuspensionBridgeRecord r in comp.Bridges)
+			{
+				if (!r.IsDrawbridge)
+				{
+					continue;
+				}
+				foreach (DrawbridgeLeaf l in r.leaves)
+				{
+					for (int lane = 0; lane < r.width; lane++)
+					{
+						if (gate.Position.AdjacentToCardinal(r.Cell(lane, HingeIndex(l))))
+						{
+							rec = r;
+							leaf = l;
+							return true;
+						}
+					}
+				}
+			}
+			return false;
 		}
 
 		/// <summary>The leaf (and its bridge) a winch house works, or false.</summary>
@@ -778,21 +850,21 @@ namespace RimMandrake.FlowWorks.Pits
 				defaultDesc = "A colonist raises this leaf, from either bank (timber by hand at the winch, steel by its powered winch). "
 					+ "Anyone on it is tipped onto the hinge bank; whoever finds no room falls into the pit. Raised in peacetime, it stays up; "
 					+ "raised while hostiles are about, it lowers itself for your people once they are gone.",
-				icon = TexCommand.ForbidOff,
+				icon = RM_DrawbridgeArt.Icon("RM_DrawbridgeRaise", TexCommand.ForbidOff),
 				action = () => Order(map, r, l, true),
 			};
 			yield return new Command_Action
 			{
 				defaultLabel = "Lower drawbridge",
 				defaultDesc = "A colonist lowers this leaf. Only from the winch house's bank.",
-				icon = TexCommand.ForbidOn,
+				icon = RM_DrawbridgeArt.Icon("RM_DrawbridgeLower", TexCommand.ForbidOn),
 				action = () => Order(map, r, l, false),
 			};
 			yield return new Command_Toggle
 			{
 				defaultLabel = "Hold raised",
 				defaultDesc = "In peacetime a drawbridge lowers itself for your people. Hold raised keeps it up.",
-				icon = TexCommand.HoldOpen,
+				icon = RM_DrawbridgeArt.Icon("RM_DrawbridgeHoldRaised", TexCommand.HoldOpen),
 				isActive = () => l.holdRaised,
 				toggleAction = () => l.holdRaised = !l.holdRaised,
 			};

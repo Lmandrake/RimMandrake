@@ -23,6 +23,7 @@
     <selectable>true</selectable>
     <hasInteractionCell>false</hasInteractionCell>
     <tickerType>Never</tickerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
     <designationCategory>Structure</designationCategory>
     <costList>
       <WoodLog>60</WoodLog>
@@ -60,6 +61,7 @@
     <selectable>true</selectable>
     <hasInteractionCell>false</hasInteractionCell>
     <tickerType>Normal</tickerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
     <designationCategory>Structure</designationCategory>
     <costList>
       <Steel>80</Steel>
@@ -89,6 +91,33 @@
         <tier>Steel</tier>
       </li>
     </modExtensions>
+  </ThingDef>
+
+  <!-- DRAWBRIDGE phase 6 (R7): the gate leaf, built in the wall line beside a leaf's hinge anchor (one per lane). PLACEHOLDER
+       ART: the vanilla simple door until RM_DrawbridgeGate_<M>_Closed/_Open pass review (design doc art contract). -->
+  <ThingDef ParentName="DoorBase">
+    <defName>RM_DrawbridgeGate</defName>
+    <label>drawbridge gate</label>
+    <description>A heavy gate for the bank end of a drawbridge. In peacetime it opens for your people like a door. While hostiles are free on the map it stays shut unless you hold it open, and it never opens while its drawbridge leaf is raised. Build it beside the anchor the leaf is hinged on.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_DrawbridgeGate</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Door/DoorSimple_Mover</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
+    <stuffCategories>
+      <li>Woody</li>
+      <li>Metallic</li>
+    </stuffCategories>
+    <costStuffCount>40</costStuffCount>
+    <statBases>
+      <WorkToBuild>1400</WorkToBuild>
+      <MaxHitPoints>260</MaxHitPoints>
+    </statBases>
+    <designationCategory>Structure</designationCategory>
   </ThingDef>
 
   <JobDef>
