@@ -31,6 +31,7 @@ CAN_FAIL = {
     "dup_plank": ("RAID_PLANK", "FAIL", "MOD"),
     "replay_tip": ("SAVE_MIDRAISE", "FAIL", "MOD"),
     "two_free": ("RAISE_TIPS_RIDERS", "UNMEASURED", "SITE"),
+    "far_reaches_winch": ("LOWER_ONLY_FROM_WINCH", "UNMEASURED", "SITE"),
     "far_raiders": ("RAID_UP", "UNMEASURED", "SITE"),
 }
 TICKLESS = {"LOWER_ONLY_FROM_WINCH", "TWO_LEAF_TIPS_OWN_HINGE"}

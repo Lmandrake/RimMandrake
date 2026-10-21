@@ -488,6 +488,8 @@ def lower_only_from_winch(ctx):
     P, xz, row, dproof, spawn = _c(ctx, "P", "xz", "row", "dproof", "spawn")
     for i in range(1, 5):
         ctx["dig"](P(i, 0))
+    # a corridor walled edge to edge (z=-1/z=1 x=-2..9, capped at x=-3/x=10): the far bank reaches the winch side ONLY over the leaf
+    ctx["walls"]([P(x, z) for x in range(-2, 10) for z in (-1, 1)] + [P(-3, 0), P(10, 0)])
     ctx["build"]("A", P(0, 0), P(5, 0), "timber")
     w = spawn(P(-2, 0))
     f = spawn(P(7, 0))
@@ -496,11 +498,15 @@ def lower_only_from_winch(ctx):
     dproof("ProofDevSet", "%s;raise;instant" % xz(P(2, 0)))
     kl, tl = ctx["leaf"](P(2, 0))
     V.require(kl.get("target") == "raised" and num(kl, "progress", -1) == num(kl, "full", -2), "leaf staged raised", tl)
+    # precondition (SITE, never a mod FAIL): with the leaf raised the far-bank pawn has no path to the winch side, else the real
+    # scanner may rightly hand it the lower job by walking round and the 'none' below proves nothing
+    kvp, tp = ctx["sproof"]("ProofPath", "%s;%s" % (f, xz(P(-2, 0))), answer=True)
+    V.require(kvp.get("found") == "False", "far bank cannot reach the winch side with the leaf raised", tp, cls="SITE")
     dproof("ProofOrder", "%s;lower" % xz(P(2, 0)))
     fl, tfl = dproof("ProofWorkJob", "%s;%s" % (pid_num(f), xz(P(2, 0))))
     wl, twl = dproof("ProofWorkJob", "%s;%s" % (pid_num(w), xz(P(2, 0))))
     good = fr.get("job") == "True" and fl.get("job") == "False" and wl.get("job") == "True"
-    row("LOWER_ONLY_FROM_WINCH", "PASS" if good else "FAIL", {"farRaise": tfr, "farLower": tfl, "winchLower": twl, "leaf": tl})
+    row("LOWER_ONLY_FROM_WINCH", "PASS" if good else "FAIL", {"farRaise": tfr, "farLower": tfl, "winchLower": twl, "leaf": tl, "noWalkRound": tp})
 
 
 def two_leaf_tips_own_hinge(ctx):
@@ -785,10 +791,11 @@ class FakeBridge(object):
       freeze_ignored   MOD: unpowered steel keeps moving                       -> STEEL_UNPOWERED_FREEZES FAIL
       no_crash         MOD: a destroyed winch leaves the leaf up               -> WINCH_LOST_CRASHES FAIL
       raid_loop        MOD: raider jobs are ended over and over, no progress   -> RAID_UP FAIL
+      far_reaches_winch the far bank has a path round to the winch (SITE)     -> LOWER_ONLY_FROM_WINCH UNMEASURED/SITE
       far_raiders      the raiders never come near (SITE)                      -> RAID_UP UNMEASURED/SITE
       dup_plank        MOD: the interrupted carrier's plank is laid as well    -> RAID_PLANK FAIL
       replay_tip       MOD: the load replays the tip                           -> SAVE_MIDRAISE FAIL"""
-    FAULTS = ("no_proofs", "noclock", "two_free", "tip_all_fall", "no_repath", "underpass_tipped", "lower_from_far",
+    FAULTS = ("far_reaches_winch", "no_proofs", "noclock", "two_free", "tip_all_fall", "no_repath", "underpass_tipped", "lower_from_far",
               "tip_colony_bank", "trapped_locks", "freeze_ignored", "no_crash", "raid_loop", "far_raiders", "dup_plank",
               "replay_tip")
 
@@ -998,7 +1005,7 @@ class FakeBridge(object):
                 pid, dest = arg.split(";")
                 l = self._leaf_at(*(int(v) for v in dest.split(","))) or next(
                     (q for q in self.leaves if q["z0"] == int(dest.split(",")[1])), None)
-                if l and l["progress"] > 0:
+                if l and l["progress"] > 0 and "far_reaches_winch" not in self.f:
                     return "PATH found=False cells=0 decked=0"
                 return "PATH found=True cells=9 decked=%d" % (l["last"] - l["first"] + 1 if l else 0)
             if m == "ProofPutUnder":
