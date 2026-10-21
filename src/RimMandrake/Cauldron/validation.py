@@ -2329,7 +2329,10 @@ def _w_status(t, wid):
     # HARNESS LESSON (A5, live 2026-10-19c): the inspect string leads with VANILLA's CompPowerTrader line "Power needed: 350 W" (shown
     # whenever the works is on the grid) and the Refuelable line; the converter's own status ("Out of fuel", "No power", "Idle",
     # "Turning ...") comes after. Taking lines[0] read the power draw as the status and failed A5 although the works was fine.
-    stat = [x for x in ls if not x.startswith(("Processed", "Pending", "Power needed", "Filter cartridge", "Cartridge"))]
+    # HARNESS LESSON (live 2026-10-21): on a net with a battery vanilla's CompPower adds "Grid excess: -350 W (597 Wd stored)",
+    # which then read as the status: powered() passed at 0 ticks and works_refines_condensate FAILed on 'not Out of fuel'.
+    stat = [x for x in ls if not x.startswith(("Processed", "Pending", "Power needed", "Filter cartridge", "Cartridge",
+                                               "Grid excess", "Not connected to a power grid"))]
     return (stat[0] if stat else ""), (proc[0] if proc else "")
 
 
@@ -2365,17 +2368,21 @@ def works_chain(t):
     def body():
         with _comp(t, "works_site_ready", poison=True):
             if _live(t):
-                _ok(t.bridge_call("jawa/build_batch", faction="player", wipeExisting=False,
-                                  ops="%s:%d,%d;%s:%d,%d;%s:%d,%d;%s:%d,%d" % (
-                                      VWORKS, x, z, BATTERY, x, z + 2, TANK, pos["in"][0], pos["in"][1],
-                                      TANK, pos["out"][0], pos["out"][1])), "build_batch(works site)")
+                # HARNESS 2026-10-21: the reply was dropped, so "0 works 0 battery 0 tanks" could not say why; keep it
+                bb = t.bridge_call("jawa/build_batch", faction="player", wipeExisting=False,
+                                   ops="%s:%d,%d;%s:%d,%d;%s:%d,%d;%s:%d,%d" % (
+                                       VWORKS, x, z, BATTERY, x, z + 2, TANK, pos["in"][0], pos["in"][1],
+                                       TANK, pos["out"][0], pos["out"][1]))
+                _note(t, "build_batch(works site) reply", str(bb)[:600])
+                _ok(bb, "build_batch(works site)")
                 t.wait_ticks(5)
                 rect = _rs(_rect(t))
                 w = _things(t, VWORKS, rect)
                 b = _things(t, BATTERY, rect)
                 tanks = dict((tk["x"], tk) for tk in _things(t, TANK, rect))
                 if not w or not b or pos["in"][0] not in tanks or pos["out"][0] not in tanks:
-                    _unmeasured(t, "the works site did not stand: works %d battery %d tanks at x %s" % (len(w), len(b), sorted(tanks)))
+                    _unmeasured(t, "the works site did not stand: works %d battery %d tanks at x %s; build_batch said %s"
+                                % (len(w), len(b), sorted(tanks), str(bb)[:300]))
                 ids.update(works=w[0]["id"], batt=b[0]["id"], tin=tanks[pos["in"][0]]["id"], tout=tanks[pos["out"][0]]["id"])
                 _ok(t.bridge_call("jawa/battery_set", thing=ids["batt"], mode="setPct", value=1.0), "battery_set(1.0)")
                 _w_tank(t, pos["in"][0], pos["in"][1], COND, 16000)
