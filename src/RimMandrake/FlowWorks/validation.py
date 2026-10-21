@@ -1084,8 +1084,8 @@ def sprinklers(t):
 # DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md §Ruled design R1-R13 and
 # §Owner's follow-up answers). Offline: the C# SelfTest cases of phases 1-6 (Source/SelfTest/DrawbridgeChecks.cs). Live: the
 # eleven R13 rows of northstar/drawbridge_proof.py (phase 6b), read from its newest result at the current mod hash and deployed
-# DLL (driver_rows_at), else UNMEASURED naming the driver. The driver needs the OWED C# class RM_DrawbridgeProofs
-# (drawbridge_proof.OWED_PROOFS); until it ships, a live run writes every row UNMEASURED/HARNESS.
+# DLL (driver_rows_at), else UNMEASURED naming the driver. The driver calls the C# class RM_DrawbridgeProofs (contracts:
+# drawbridge_proof.OWED_PROOFS); against a deployed FlowWorks without it, a live run writes every row UNMEASURED/HARNESS.
 DRAWBRIDGE_CASES = [
     "Drawbridge_P1_materials_timber_and_steel_only", "Drawbridge_P1_split_one_leaf_or_two_each_hinged_on_its_own_bank",
     "Drawbridge_P1_leaf_is_rigid_off_its_seat_and_reversible", "Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise",

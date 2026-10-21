@@ -262,6 +262,7 @@ namespace RimMandrake.FlowWorks.Pits
 					}
 					Mode(comp.map, r, l, now);
 					Building_DrawbridgeWinch w = l.winch != null && l.winch.Spawned ? l.winch : null;
+					w?.HoldProofPower();
 					bool powered = w != null && w.Powered;
 					l.frozen = RM_DrawbridgeMath.FrozenFor(r.tier, w != null, powered);
 					if (RM_DrawbridgeMath.AtTarget(l.progress, l.targetRaised, full))
@@ -417,8 +418,9 @@ namespace RimMandrake.FlowWorks.Pits
 		/// goes, nearest the hinge first, to the nearest free standable square on the hinge bank reachable from the anchors
 		/// without passing a wall, a closed door or the bridge itself, keeping faction, gear and job-free; no fall damage. Items
 		/// slide to the hinge bank, or stay (and go down with the leaf) when it is full. Returns the overflow, who fall once the
-		/// squares are hole (Fall). Never a collapse: no deck is destroyed.</summary>
-		public static List<Pawn> Tip(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)
+		/// squares are hole (Fall). Never a collapse: no deck is destroyed. preview (4 slots): the plan only, nothing moved:
+		/// riders, landers, fallers, free bank squares (RM_DrawbridgeProofs.ProofTipPreview reads the production plan).</summary>
+		public static List<Pawn> Tip(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, int[] preview = null)
 		{
 			List<Pawn> fallers = new List<Pawn>();
 			if (map == null)
@@ -489,6 +491,22 @@ namespace RimMandrake.FlowWorks.Pits
 			};
 			List<int> landings = RM_DrawbridgeMath.BankLandings(starts, neighbours, passable, free, RM_DrawbridgeMath.TipReach);
 			Dictionary<int, int> to = RM_DrawbridgeMath.AssignTips(riders, landings);
+			if (preview != null && preview.Length >= 4)
+			{
+				int land = 0;
+				foreach (int v in to.Values)
+				{
+					if (v >= 0)
+					{
+						land++;
+					}
+				}
+				preview[0] = riders.Count;
+				preview[1] = land;
+				preview[2] = riders.Count - land;
+				preview[3] = landings.Count;
+				return fallers;
+			}
 			bool colonyBank = l.hingeAtFirst == ColonyBankAtFirst(r);
 			int tipped = 0, pulled = 0;
 			foreach (RM_DrawbridgeMath.Rider rd in RM_DrawbridgeMath.TipOrder(riders))

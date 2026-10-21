@@ -46,6 +46,26 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
+		/// <summary>The functional script's power override (RM_DrawbridgeProofs.ProofWinchPower): 0 none, 1 held on, 2 held off.
+		/// Saved, so a proof's save/load keeps its staging; never set in play.</summary>
+		public int proofPower;
+
+		/// <summary>Re-assert a proof's held power state on the trader (the drive calls this before reading Powered).</summary>
+		internal void HoldProofPower()
+		{
+			CompPowerTrader c = proofPower == 0 ? null : GetComp<CompPowerTrader>();
+			if (c != null && c.PowerOn != (proofPower == 1))
+			{
+				c.PowerOn = proofPower == 1;
+			}
+		}
+
+		public override void ExposeData()
+		{
+			base.ExposeData();
+			Scribe_Values.Look(ref proofPower, "rmProofPower", 0);
+		}
+
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
 			base.SpawnSetup(map, respawningAfterLoad);

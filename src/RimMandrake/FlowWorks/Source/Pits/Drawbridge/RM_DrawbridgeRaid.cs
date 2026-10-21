@@ -233,23 +233,24 @@ namespace RimMandrake.FlowWorks.Pits
 			return cells[cells.Count - 1].Standable(map);
 		}
 
-		/// <summary>The commit: re-read the line, take the plank out of the carrier's hands exactly once, lay the span.</summary>
-		public static bool TryLay(Pawn p, IntVec3 lip, IntVec3 far)
+		/// <summary>The crossing line from lip to far bank (cardinal only) and each square's step depth, lip first.</summary>
+		public static bool LineOf(Map map, IntVec3 lip, IntVec3 far, out List<IntVec3> cells, out int[] depths)
 		{
-			Map map = p?.Map;
+			cells = null;
+			depths = null;
 			if (map == null || !lip.InBounds(map) || !far.InBounds(map))
 			{
 				return false;
 			}
 			IntVec3 step = far - lip;
-			if (step.x != 0 && step.z != 0)
+			if ((step.x != 0 && step.z != 0) || step == IntVec3.Zero)
 			{
 				return false;   // planks are laid along a cardinal line
 			}
 			int n = System.Math.Abs(step.x) + System.Math.Abs(step.z);
 			IntVec3 dir = new IntVec3(System.Math.Sign(step.x), 0, System.Math.Sign(step.z));
-			List<IntVec3> cells = new List<IntVec3>();
-			int[] depths = new int[n + 1];
+			cells = new List<IntVec3>();
+			depths = new int[n + 1];
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			for (int i = 0; i <= n; i++)
 			{
@@ -257,6 +258,19 @@ namespace RimMandrake.FlowWorks.Pits
 				cells.Add(c);
 				depths[i] = eng == null ? 0 : RM_SuperdeepTrap.StepDepthAt(map, eng, c);
 			}
+			return true;
+		}
+
+		/// <summary>The commit: re-read the line, take the plank out of the carrier's hands exactly once, lay the span.</summary>
+		public static bool TryLay(Pawn p, IntVec3 lip, IntVec3 far)
+		{
+			Map map = p?.Map;
+			if (!LineOf(map, lip, far, out List<IntVec3> cells, out int[] depths))
+			{
+				return false;
+			}
+			int n = cells.Count - 1;
+			IntVec3 dir = cells[1] - cells[0];
 			Thing plank = CarriedPlank(p);
 			if (plank == null || !LineFree(map, cells, depths))
 			{

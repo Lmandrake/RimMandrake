@@ -64,7 +64,7 @@ def main():
             if r.get("detail", {}).get("mock") != want or r.get("class") != cls:
                 fails.append("can-fail %s: %s reads %s/%s, want %s/%s" % (fault, rid, r.get("detail", {}).get("mock"),
                                                                           r.get("class"), want, cls))
-        # the state today: RM_DrawbridgeProofs is owed C#. Every row UNMEASURED/HARNESS, none FAIL, exit 2
+        # RM_DrawbridgeProofs not in the loaded FlowWorks (an old deploy): every row UNMEASURED/HARNESS, none FAIL, exit 2
         rc, got, _ = run(d, "no_proofs", "--mock-faults", "no_proofs")
         if rc != 2 or list(got) != DP.ROW_IDS or any((r["detail"].get("mock"), r["class"]) != ("UNMEASURED", "HARNESS")
                                                        for r in got.values()):
@@ -91,6 +91,19 @@ def main():
     if not cases or sorted(cases) != sorted(VAL.DRAWBRIDGE_CASES):
         fails.append("validation.DRAWBRIDGE_CASES drifted from DrawbridgeChecks.cs: missing %s, extra %s"
                      % (sorted(set(cases) - set(VAL.DRAWBRIDGE_CASES)), sorted(set(VAL.DRAWBRIDGE_CASES) - set(cases))))
+    # the C# proof class has every method the rows call, each answering the word its contract names (can-fail: a method
+    # missing or renamed, or a reply word drifted from OWED_PROOFS, is caught here instead of as HARNESS on a live run)
+    prf = open(os.path.join(fw, "Source", "Pits", "Drawbridge", "RM_DrawbridgeProofs.cs"), encoding="utf-8").read()
+    if "public static class RM_DrawbridgeProofs" not in prf or "namespace RimMandrake.FlowWorks.Pits" not in prf:
+        fails.append("RM_DrawbridgeProofs is not public static in RimMandrake.FlowWorks.Pits (DPROOF %s)" % DP.DPROOF)
+    for m_, contract in sorted(DP.OWED_PROOFS.items()):
+        if "public static string %s(string arg)" % m_ not in prf:
+            fails.append("RM_DrawbridgeProofs.%s(string) missing" % m_)
+        word = re.search(r"'([A-Z]+) ", contract)
+        if word and '"%s ' % word.group(1) not in prf:
+            fails.append("RM_DrawbridgeProofs.%s never answers %s" % (m_, word.group(1)))
+    if '"LEAF none"' not in prf:
+        fails.append("ProofLeaf off a leaf must answer 'LEAF none' (the preflight probe asks an off-map square)")
     if "drawbridge_result_*.json" not in VAL.DRIVER_RESULTS:
         fails.append("validation.DRIVER_RESULTS does not read drawbridge_result_*.json")
     for f in fails:

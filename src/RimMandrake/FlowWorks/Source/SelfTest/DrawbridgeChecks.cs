@@ -131,7 +131,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int tip = tick.IndexOf("fallers = Tip(comp.map, r, l);"), apply = tick.IndexOf("Apply(comp.map, r, l);", Math.Max(tip, 0)), fall = tick.IndexOf("Fall(comp.map, r, fallers);");
                 Assert(tip > 0 && apply > tip && fall > apply, "can-fail: riders tip BEFORE the squares open, the overflow falls AFTER");
                 Assert(tick.Contains("if (l.progress > 0 && !l.tipCommitted)") && tick.Contains("l.tipCommitted = true;"), "the tip is committed once per raise");
-                string t = Body(db, "public static List<Pawn> Tip(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)");
+                string t = Body(db, "public static List<Pawn> Tip(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, int[] preview = null)");
                 Assert(t.Contains("RM_MapComponent_SuspensionBridges.PawnsOn(map, c)"), "riders by band (PawnsOn skips the floor band underneath)");
                 Assert(t.Contains("int hinge = HingeIndex(l);") && Body(db, "public static int HingeIndex(DrawbridgeLeaf l)").Contains("l.hingeAtFirst ? l.first - 1 : l.last + 1"),
                     "each leaf tips toward its OWN hinge");
