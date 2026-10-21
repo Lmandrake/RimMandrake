@@ -86,7 +86,12 @@ Images: `D:\ClaudeWork\rimmandrake\scratch\live5\` (`P_desert_roads_ON/OFF.png`,
 - ON: dark casing, umber dirt, slate stone, gold highway. Rivers draw with dark banks, and the bank is darker than the water.
 - Toggle (`jawa/mod_settings_field` `worldReadablePaths` false, `RM_WorldPaths.Apply`, `jawa/world_commit lazy`): the vanilla
   pale roads and faint gradient rivers come back. Toggling on restores the readable look. Both directions redraw live.
-- 🔴 **Rivers read as dashes.** At altitude 200 most river courses (tile 85 region) draw as broken segments with gaps,
-  not one line, both with the old and with the darker FlowWorks colours. The highway dashes are the 46-piece record; for the rivers the cause is
-  UNMEASURED (record pieces, or the mesh at tile joins). Filed `RIVER_DASHES_MEASURE_MORSE_CODE_WATER`.
+- **Rivers read as dashes: fixed (`e7adc75e3`).** The river data was whole: `world_links_validate` gave 0 asymmetric, 0 non-adjacent,
+  and 1,568/1,568 record links present. The 326 river links form 11 connected pieces, the same in the record and the U4 file.
+  The cause was the border blend in `RM_WorldLook.cs`. Its overlays sat at `blendLift` +0.01 above the terrain, the same height
+  as `WorldDrawLayer_Rivers.FinalizePoint` (+0.01), and they write depth. On every biome-border tile (7,567 of them) the overlay
+  won the depth test and hid the river, and the hill blots under it too (+0.005). Roads sit at +0.02 and were not hidden.
+  `blendLift` is now 0.003. Live check, same view, only that value changed:
+  `D:\ClaudeWork\rimmandrake\scratch\riverdashes\rd_before_4271.png` (dashes) and `rd_after_lift003_4271.png` (whole lines).
+  Wide view: `rd_after_wide_16490.png`.
 - Roads now draw on RUT_Umbra and RM_GelatinousSlime (`UMBRA_SLIME_ROADS_VERIFY_FINALLY_DRAWN`).
