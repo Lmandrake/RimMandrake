@@ -58,6 +58,10 @@ namespace RimMandrake.Biomes
         public static bool worldBorderBlend = true;
         public static bool worldSeaDepth = true;
 
+        // WORLD_PATHS_READABLE (2026-10-20): road colours/widths and river colour/width/material on the planet
+        // (RM_WorldPaths.cs). Looks only; links are untouched. Applies at once.
+        public static bool worldReadablePaths = true;
+
         public static RM_BiomesSettings Instance;
 
         // Roster keys whose own mod gates its mechanics on Enabled(key), added by that mod at startup by reflection
@@ -78,6 +82,7 @@ namespace RimMandrake.Biomes
             Scribe_Values.Look(ref plantDrawOrderSouthInFront, "plantDrawOrderSouthInFront", true);
             Scribe_Values.Look(ref worldBorderBlend, "worldBorderBlend", true);
             Scribe_Values.Look(ref worldSeaDepth, "worldSeaDepth", true);
+            Scribe_Values.Look(ref worldReadablePaths, "worldReadablePaths", true);
             if (enabled == null) enabled = new Dictionary<string, bool>();
         }
     }
@@ -142,6 +147,11 @@ namespace RimMandrake.Biomes
             if (worldLookShown != RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth)
             {
                 worldLookShown = RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth;
+                if (Current.ProgramState == ProgramState.Playing) Find.World?.renderer?.SetAllLayersDirty();
+            }
+            if (RM_WorldPaths.applied != RM_BiomesSettings.worldReadablePaths)
+            {
+                RM_WorldPaths.Apply("settings changed");
                 if (Current.ProgramState == ProgramState.Playing) Find.World?.renderer?.SetAllLayersDirty();
             }
         }
@@ -220,7 +230,7 @@ namespace RimMandrake.Biomes
             }
 
             if (string.IsNullOrWhiteSpace(searchQuery)
-                || RimMandrake.Shared.SettingsKitCore.Matches("world map planet borders blend sea depth water coast", searchQuery))
+                || RimMandrake.Shared.SettingsKitCore.Matches("world map planet borders blend sea depth water coast roads rivers highway", searchQuery))
             {
                 list.CheckboxLabeled("Planet: soft borders between biomes [now]", ref RM_BiomesSettings.worldBorderBlend,
                     "On the world map, the edge between two land biomes fades over half a tile on each side instead of "
@@ -228,6 +238,11 @@ namespace RimMandrake.Biomes
                 list.CheckboxLabeled("Planet: seas deepen away from the coast [now]", ref RM_BiomesSettings.worldSeaDepth,
                     "On the world map, water is lighter near the shore and darker far from it.\n\nLooks only; tile "
                     + "elevations are not changed. Default: on. Takes effect at once (the planet redraws).");
+                list.CheckboxLabeled("Planet: readable roads and rivers [now]", ref RM_BiomesSettings.worldReadablePaths,
+                    "On the world map, roads get a dark casing and a colour per kind (umber dirt, slate stone, gold "
+                    + "ancient highway) and rivers get a dark bank and a hard edge, a little wider (their colour stays FlowWorks' River Colours where that is on, else bright blue). "
+                    + "Off restores the vanilla road and river look.\n\nLooks only; which tiles have roads or rivers is "
+                    + "not changed. Default: on. Takes effect at once (the planet redraws).");
                 list.GapLine();
             }
 
