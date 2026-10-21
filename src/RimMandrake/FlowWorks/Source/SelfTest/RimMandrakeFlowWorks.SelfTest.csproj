@@ -81,6 +81,8 @@
     <Compile Include="PowerCordChecks.cs" />
     <Compile Include="..\Machinery\RM_DeckCollapseLinesMath.cs" />
     <Compile Include="..\Machinery\RM_PipePoleMath.cs" />
+    <Compile Include="..\Machinery\RM_PipeSpanNetMath.cs" />
+    <Compile Include="PipeSpanNetChecks.cs" />
     <Compile Include="PipePoleChecks.cs" />
     <Compile Include="DeckCollapseLinesChecks.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />

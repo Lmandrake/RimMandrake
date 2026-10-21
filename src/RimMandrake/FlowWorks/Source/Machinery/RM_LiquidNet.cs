@@ -237,7 +237,18 @@ namespace RimMandrake.FlowWorks.Machinery
 						yield return n;
 					}
 				}
+				// PIPE_POLES phase 5: the pole-to-pole span edges (and each pole's fitting), built once per revision
+				IList<object> extra = SpanEdges.At(c);
+				for (int i = 0; i < extra.Count; i++)
+				{
+					yield return extra[i];
+				}
 			}
+
+			private RM_PipeSpanEdges spanEdges;
+
+			/// <summary>This revision's pipe-span edges (RM_PipePoles.EdgesFor); none while pipes or pipe poles are off.</summary>
+			public RM_PipeSpanEdges SpanEdges => spanEdges ?? (spanEdges = PipesEnabled ? RM_PipePoles.EdgesFor(map) : RM_PipeSpanEdges.Empty);
 
 			public IList<RM_NetLink> LinksAt(object v)
 			{
@@ -249,6 +260,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		private sealed class NetState
 		{
 			public int revision;
+			public bool polesOn = RM_MachinerySettings.pipePolesEnabled;
 			public readonly RM_NetTopologyCache cache = new RM_NetTopologyCache();
 		}
 
@@ -285,6 +297,12 @@ namespace RimMandrake.FlowWorks.Machinery
 		{
 			RM_HoseLinks links = RM_HoseLinks.For(map);
 			NetState s = StateOf(map);
+			if (s.polesOn != RM_MachinerySettings.pipePolesEnabled)
+			{
+				// PIPE_POLES phase 5: switching pipe poles on or off adds or removes every span edge: a new revision
+				s.polesOn = RM_MachinerySettings.pipePolesEnabled;
+				s.revision++;
+			}
 			long key = RM_LiquidNetKernel.RevisionKey(s.revision, RM_MachinerySettings.universalPipesEnabled, RM_HoseSettings.enabled, RM_MachinerySettings.liquidTheftEnabled);
 			return s.cache.Get(key, () => new RM_NetComponents(new MapGraph(map, links)));
 		}
