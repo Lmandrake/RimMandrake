@@ -1,0 +1,1 @@
+publish refused on a DLL-only conflict in a dirty clone: without stash or merge, git checkout origin/main -- <their non-overlapping files>, git reset --mixed origin/main, rebuild the DLL with winbuild.py on the merged source, recommit by pathspec, ./publish. Never pick either side's DLL.
