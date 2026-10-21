@@ -211,14 +211,15 @@
     "arcFromBigCentroidDeg": 32.805
    },
    "after": {
-    "centerOnTile": 13175,
+    "centerOnTile": 2363,
     "drawCenter": [
-     33.0796,
-     -9.1814,
-     -93.9225
+     41.9146,
+     -27.4141,
+     -86.541
     ],
     "size": 56.0,
-    "sizeSource": "canonical by name"
+    "sizeSource": "canonical by name",
+    "centreSource": "owner card 2026-10-20 10:09 PM \"Centre of the Dune Sea\": most interior tile (10.6 deg from the edge), DUNE_SEA_LABEL_REPAIR_CENTRE"
    }
   },
   {

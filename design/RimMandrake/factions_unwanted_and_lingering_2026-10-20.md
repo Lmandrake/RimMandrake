@@ -182,14 +182,10 @@ total FactionDefs in dump: 70  ours: 15
 `hidden`, `raidsForbidden`, `canGenerateQuestSites false`, start/max/required `0/0/0`,
 `displayInFactionSelection false`. The header says why it is still there.
 
-**The Scrub camps.** The camps of `RM_ScrubInjections` named it as `farmerFaction`. They now name Core's
-`OutlanderCivil`.
-- **Why OutlanderCivil:** the settled outlanders (the Homestead Defense League in the Utinni layer) are the nearest
-  existing people to "vaporator farmers".
-- **This is an agent default, and the owner may pick another.** The alternative is no farmer camps at all
-  (`farmerFaction` empty, scavenger camps only).
-- **The faction pick is his call.** The camps already skip a faction that is missing, defeated or hostile
-  (`LivingFaction`).
+**The Scrub camps.** The camps of `RM_ScrubInjections` named it as `farmerFaction`. Owner, by card 2026-10-20
+10:05 PM: "Remove the camps" (`FARMER_CAMPS_EXCISE_COMBS_LEFTOVERS`). `farmerFaction` is now unset, so no farmer camps
+are built (`TryCamp` skips a null faction); the scavenger camps stay. The live dev world held no Comb Holds world
+objects (0 of 138, 2026-10-20), so nothing was removed from the planet.
 
 **Delete the def, its 3 kinds and 2 namers** once no kept save holds it: `COMB_HOLDS_DEF_RETIRE_AFTER_THE_REMAKE`.
 
