@@ -1983,6 +1983,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             NetComponentChecks.Run(Case);      // liquid networks L2: components per topology revision (NetComponentChecks.cs)
             PlanChecks.Run(Case);              // liquid networks L3: fill/draw plans, split levels, consumer rotation (PlanChecks.cs)
             SettleChecks.Run(Case);            // liquid networks L4: tank jobs and the settle (SettleChecks.cs)
+            LevellingChecks.Run(Case);         // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL: passive gravity levelling (LevellingChecks.cs)
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
             DeepDigChecks.Run(Case);           // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT + DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (DeepDigChecks.cs)
             RelativeRulesChecks.Run(Case);     // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: R7 relative rules V2-V6 (RelativeRulesChecks.cs)

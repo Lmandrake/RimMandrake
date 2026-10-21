@@ -101,6 +101,7 @@
     <Compile Include="..\RM_WallFaceMath.cs" />
     <Compile Include="..\RM_FlowKernel.cs" />
     <Compile Include="..\RM_LevelSolve.cs" />
+    <Compile Include="..\RM_LevellingMath.cs" />
     <Compile Include="..\RM_LevelPour.cs" />
     <Compile Include="..\MapControls\RM_MapControlMath.cs" />
     <Compile Include="..\TakenByLand\RM_TakenByLandKernel.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="NetComponentChecks.cs" />
     <Compile Include="PlanChecks.cs" />
     <Compile Include="SettleChecks.cs" />
+    <Compile Include="LevellingChecks.cs" />
     <Compile Include="PumpChecks.cs" />
     <Compile Include="VolumeChecks.cs" />
     <Compile Include="RewireChecks.cs" />
