@@ -1,0 +1,28 @@
+[
+ {
+  "id": "RM_GaleDust_A_v1",
+  "rimflow_item_id": "SCRUB_WIND_BUILD_LEAN_ON_PURPOSE",
+  "target_texpath": "Weather/RM_GaleDust_A",
+  "prompt": "A seamless tileable weather texture seen from straight above: wind-driven dust and torn pale plant fuzz streaming hard from left to right across the whole frame. Long thin streaks of fine grit and soft white-grey fibre tufts, densest in loose diagonal bands, each streak fading in at its upwind end and stretching out downwind. Every streak that leaves the right edge continues from the left edge, and every band that leaves the bottom continues from the top, so the image repeats with no visible seam. Bright pale grey wisps on a pure black field between them; the black stays pure black between every streak.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "background": "#000000",
+  "priority": 80,
+  "style_notes": "Weather overlay for the Leaning Scrub's Gale (Source/RM_WeatherOverlay_GaleDust.cs). Grayscale only: brightness becomes opacity at install (black = clear air), so the streaks carry all the shape. Painterly vanilla-RimWorld register, soft, never photographic grain. Tiles in both axes and pans fast, so no single feature may stand out as a repeating landmark. NOT installed until the owner reviews it; the game runs on a marked placeholder meanwhile.",
+  "oversize_reason": "full-screen tiling weather overlay, not a sprite: it spans the whole map view",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_GaleDust_B_v1",
+  "rimflow_item_id": "SCRUB_WIND_BUILD_LEAN_ON_PURPOSE",
+  "target_texpath": "Weather/RM_GaleDust_B",
+  "prompt": "A seamless tileable weather texture seen from straight above: a second, finer layer of wind-driven dust for the same gale, streaming from left to right. Many short fine grit streaks and scattered single fuzz fibres, more even and sparser than a dust band, a few slightly curled fibres tumbling. Every streak that leaves the right edge continues from the left edge, and every streak that leaves the bottom continues from the top, so the image repeats with no visible seam. Pale grey-white marks on a pure black field; the black stays pure black between every mark.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "background": "#000000",
+  "priority": 80,
+  "style_notes": "Second sheet of the Gale overlay (_MainTex2), panned slower and a few degrees off the first so the streaks shear. Grayscale only: brightness becomes opacity at install. Painterly vanilla-RimWorld register. NOT installed until the owner reviews it.",
+  "oversize_reason": "full-screen tiling weather overlay, not a sprite: it spans the whole map view",
+  "biome_neutral": true
+ }
+]
