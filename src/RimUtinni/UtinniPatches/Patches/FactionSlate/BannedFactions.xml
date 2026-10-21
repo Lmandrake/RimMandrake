@@ -2,6 +2,8 @@
 <!-- BannedFactions.xml - the factions the owner does not want, banished at the def.
      Owner, 2026-10-20: "I notice in factions there are Tallmere Combs and Sacrileg Hunters however. We don't want
      those... same with the Space Exchange."
+     Owner, 2026-10-20, by question card: "Celestial Rogues is another faction you may not want. Ban it too?" ->
+     "Ban Celestial Rogues" (Salvagers).
      Registry (data, the source of truth): src/RimMandrake/Utils/factions/banned_factions.json. Checker and selftest:
      src/RimMandrake/Utils/banned_factions.py, selftest_banned_factions.py. Reasoning, with the 1.6 source behind each
      field: design/RimMandrake/factions_unwanted_and_lingering_2026-10-20.md.
@@ -27,7 +29,7 @@
        requiredCountAtGameStart 0
                                no-page worldgen path; VEF faction discovery skips hidden defs with a required count 0.
      What a def patch can NOT do: remove a faction already in a save (the engine removes only temporary factions), or
-     stop BackCompatibility.FactionManagerPostLoadInit re-creating TradersGuild on every load while Odyssey is active.
+     stop BackCompatibility.FactionManagerPostLoadInit re-creating TradersGuild and Salvagers on every load while Odyssey is active.
      The save side is item UNWANTED_FACTIONS_SILENCE_NOT_DELETED.
 -->
 <Patch>
@@ -173,6 +175,81 @@
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]</xpath>
+            <value><requiredCountAtGameStart>0</requiredCountAtGameStart></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <!-- Salvagers ("The Celestial Rogues"), Odyssey. Owner by card 2026-10-20: "Ban Celestial Rogues". Re-created on every
+       load by BackCompatibility like TradersGuild, so the instance is banished, never removed. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Salvagers"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="Salvagers"]/hidden</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]/hidden</xpath>
+            <value><hidden>true</hidden></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]</xpath>
+            <value><hidden>true</hidden></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="Salvagers"]/raidsForbidden</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]/raidsForbidden</xpath>
+            <value><raidsForbidden>true</raidsForbidden></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]</xpath>
+            <value><raidsForbidden>true</raidsForbidden></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="Salvagers"]/canGenerateQuestSites</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]/canGenerateQuestSites</xpath>
+            <value><canGenerateQuestSites>false</canGenerateQuestSites></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]</xpath>
+            <value><canGenerateQuestSites>false</canGenerateQuestSites></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="Salvagers"]/startingCountAtWorldCreation</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]/startingCountAtWorldCreation</xpath>
+            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]</xpath>
+            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="Salvagers"]/maxConfigurableAtWorldCreation</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]/maxConfigurableAtWorldCreation</xpath>
+            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]</xpath>
+            <value><maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/FactionDef[defName="Salvagers"]/requiredCountAtGameStart</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]/requiredCountAtGameStart</xpath>
+            <value><requiredCountAtGameStart>0</requiredCountAtGameStart></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="Salvagers"]</xpath>
             <value><requiredCountAtGameStart>0</requiredCountAtGameStart></value>
           </nomatch>
         </li>

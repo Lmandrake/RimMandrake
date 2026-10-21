@@ -37,6 +37,14 @@
       "disposition": "supplier_cut",
       "why_kept_loadable": "not in any ASHKARR_DEV_* save, so the cut leaves no orphan. A guarded banish block stays in the patch in case the mod is ever brought back; that mod's own C# can still create the faction for its story content, so bringing it back needs a fresh look.",
       "owner": "2026-10-20: \"I notice in factions there are Tallmere Combs and Sacrileg Hunters however. We don't want those... same with the Space Exchange.\""
+    },
+    {
+      "defName": "Salvagers",
+      "seen_as": "The Celestial Rogues (generated name, NamerFactionSalvagers); label 'salvagers'",
+      "supplier": "Odyssey DLC (ludeon.rimworld.odyssey), Data/Odyssey/Defs/FactionDefs/Factions_Misc.xml",
+      "disposition": "banish",
+      "why_kept_loadable": "Every DLC is a prerequisite, and BackCompatibility.FactionManagerPostLoadInit re-creates a Salvagers faction (FactionDefOf.Salvagers, on the Orbit layer) on EVERY load when none exists, whatever the def says. Banishing the instance in place is the only stable state. Odyssey C# also reads the instance: QuestNode_Root_OrbitalFugitive generates Salvager_Elite and a Combat group with Faction.OfSalvagers; GenStepDefs OrbitalFugitivePlatform and Opportunity_OrbitalWreck_Salvagers name factionDef Salvagers. Those quest/site pawns are NOT stopped by the def banish (owner decision, design doc section 8).",
+      "owner": "2026-10-20, by question card: 'Celestial Rogues is another faction you may not want. Ban it too?' -> 'Ban Celestial Rogues'"
     }
   ],
   "orbital_traders_unfactioned": [

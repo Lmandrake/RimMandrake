@@ -157,7 +157,8 @@ total FactionDefs in dump: 70  ours: 15
   - **Re-created on load whatever the def says:** HoraxCult and Entities (Anomaly), TradersGuild and Salvagers
     (Odyssey), and Empire (Royalty, only if `world.info.factions` is null).
   - **Salvagers ("The Celestial Rogues")** is Odyssey's hidden permanent enemy. `arrivalLayerWhitelist` is `Orbit`
-    only, so it never reaches a surface map. The owner did not name it, so it is left alone.
+    only, so it never reaches a surface map. **Banned by the owner's card, 2026-10-20** ("Celestial Rogues is another
+    faction you may not want. Ban it too?" -> "Ban Celestial Rogues"); see §5 Celestial Rogues.
 - **The two lingering problems**:
   - **Tallmere Combs:** no settlements, no leader, and visible.
   - **The Space Exchange:** visible, with an orbital `SpaceSettlement`, owning the orbital traders.
@@ -226,6 +227,28 @@ behaviour.
   research project our mods hold through the `TradersGuild` category tag also lists Empire (measured in the dump,
   32 projects), so none loses its last holder.
 
+### Celestial Rogues — `Salvagers` (Odyssey DLC)
+
+Banned by the owner's card, 2026-10-20: *"Celestial Rogues is another faction you may not want. Ban it too?"* ->
+**"Ban Celestial Rogues"**. Same recipe as the Space Exchange, because the same engine path keeps it alive:
+`BackCompatibility.FactionManagerPostLoadInit` re-creates a `Salvagers` faction on the Orbit layer on every load
+when none exists (`FactionDefOf.Salvagers`, RimSage 2026-10-20). Removing it is impossible; it is banished in place.
+
+- **The def** (Odyssey `Factions_Misc.xml`) already had `hidden`, `canGenerateQuestSites false`,
+  `displayInFactionSelection false`, `permanentEnemy`, Orbit-only arrival. The banish block in `BannedFactions.xml`
+  adds `raidsForbidden` (out of the enemy-raid pool, which `hidden` does not close), start/max/required `0/0/0`.
+- **In the saves** (capture `2026-10-21T01-39-11Z`, read only): loadID 24 'The Celestial Rogues', hostile, leader
+  present (`fixedLeaderKinds` Salvager_Elite), **0 settlements and 0 world objects** in `ASHKARR_DEV_START`,
+  `_FACTIONS` and **`_PARITY_QUIET`**; absent from SHIP and FOUNDERS (gained on their next load, per source).
+  `check-save` reports it LIVE (not defeated) in all three START saves. The save step is
+  `CELESTIAL_ROGUES_SILENCE_GROUNDED_IN_ORBIT`.
+- **What the banish does NOT stop: Odyssey content that spawns its pawns directly.** `QuestNode_Root_OrbitalFugitive`
+  (quest `OrbitalFugitive`, weight 1) generates a `Salvager_Elite` and a Combat group with `Faction.OfSalvagers`;
+  GenStepDefs `OrbitalFugitivePlatform` (`GenStep_OrbitalPlatform`) and `Opportunity_OrbitalWreck_Salvagers`
+  (`GenStep_SitePawns`, "Hostile salvagers") name `factionDef Salvagers`; an ancient-crate ThingSetMaker uses the
+  `Salvager_Pirate` kind. Defeated and hidden do not gate pawn generation, so orbital sites can still hold
+  "salvager" pawns. Whether those go too is §8 decision 4. Nothing outside these names it (RimSage, 2026-10-20).
+
 ## 6. The general guard
 
 1. **The registry is data:** `src/RimMandrake/Utils/factions/banned_factions.json`.
@@ -255,7 +278,7 @@ behaviour.
    in the patch if not), run the selftest, deploy, then `check-dump` and `check-save` after the next load.
 
 Measured today:
-- **check-repo:** PASS.
+- **check-repo:** PASS (4 registry entries after Salvagers, 2026-10-20; selftest 17/17).
 - **check-dump on the pre-change capture:** FAIL on all 3 defs and the 4 traders, as expected. This is the baseline
   the post-deploy run must turn green.
 - **check-save:** LIVE for `RM_Faction_CombHolds` in all four saves, and for `TradersGuild` in START, which owns a
@@ -271,13 +294,16 @@ Measured today:
 | SHIP / LANDED / FOUNDERS gain `TradersGuild` + `Salvagers` on first load (source); banish it there too | the same sitting, per save | same item |
 | shipped world: the Configure Factions page no longer offers either (max 0), so a re-made world never holds Comb Holds; Odyssey still adds the Space Exchange on its first load, so the remake runbook S7 now requires `check-save` PASS (banish it there) | at the re-make | `06_remake_runbook.md` S7/G15 edited |
 | VEF: the shipped save's `ignoredFactions` should hold every absent, offerable def (3 today), or players get pop-ups | at the re-make | noted in the runbook item, not filed separately |
+| Celestial Rogues (`Salvagers`): deploy UtinniPatches, `check-dump` PASS; dev saves `jawa/faction_flags_set faction=Salvagers hidden=true defeated=true`, save, `check-save` PASS | same load round / bridge sitting | `CELESTIAL_ROGUES_SILENCE_GROUNDED_IN_ORBIT` |
 | delete `RM_Faction_CombHolds` + its kinds and namers | after no kept save holds it | `COMB_HOLDS_DEF_RETIRE_AFTER_THE_REMAKE` |
 
 ## 8. Decisions left to the owner (agent defaults taken, all reversible)
 
 1. **Who farms the Scrub's vaporators now?** The default is `OutlanderCivil` (the Homestead Defense League). The
    alternative is no farmer camps at all.
-2. **Salvagers ("The Celestial Rogues"):** left as Odyssey made them (hidden, orbit-only raider). One registry entry
-   bans it if he wants it gone.
+2. **Salvagers ("The Celestial Rogues"):** ruled 2026-10-20 by card, banned (§5).
 3. **The three VEF offers** (`GR_RoamingMonstrosities`, `VFEP_Junkers`, `VFEP_Mercenaries`): add them, ban them, or
    ignore them in the shipped world.
+4. **Celestial Rogues' pawns at Odyssey orbital sites** (the `OrbitalFugitive` quest, the orbital-wreck salvager
+   guards): keep them as anonymous orbital pirates, or cut that content (zero the quest's `rootSelectionWeight`,
+   remove the salvager GenStep). Default taken: kept, because the card banned the faction, not the content.
