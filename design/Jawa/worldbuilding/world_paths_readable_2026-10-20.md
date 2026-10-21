@@ -19,11 +19,9 @@ rivers", default on). Offline tools: `src/RimMandrake/Utils/worldpaths/` (`cross
 - **Rivers**: `WorldDrawLayer_Rivers`, two meshes: `RiversBorder` (queue 3520, width `widthOnWorld`, `_Alpha` 0.8) and
   `Rivers` (3530, width `widthOnWorld − 0.2`, specular), shader `Custom/Rivers`, both coloured with ONE hard-coded
   `riverColor` (73,82,100). `RiverDef` has no colour field. A creek at the vanilla 0.2 has no water mesh at all.
-- **Our FlowWorks River Colours** (`src/RimMandrake/FlowWorks/Source/RiverColors/RM_RiverColors.cs`, the owner's
-  2026-09-06 gradient, red headwater → brackish jungle → toxic terminus) is a `GeneratePaths` prefix that replaces
-  `riverColor` per tile. It joined the live list on 2026-10-16, when it merged into FlowWorks. Before that it was a standalone mod that was not on the September list.
-  Its three biome anchors (`AB_OcularForest`, `AB_FeraliskInfestedJungle`, `Wasteland`) match no tile of the dev world,
-  so every river is coloured by elevation alone. Most river tiles therefore get the brackish olive-khaki middle colours.
+- **Our FlowWorks River Colours** (`src/RimMandrake/FlowWorks/Source/RiverColors/RM_RiverColors.cs`) is a `GeneratePaths`
+  prefix that replaces `riverColor` per tile. It joined the live list on 2026-10-16, when it merged into FlowWorks. Since
+  2026-10-20 it colours by biome (§6).
 - **Screen model** (fitted on the 2026-10-20 shots, day side, within ~5% for faces and paths alike): screen channel =
   1 − (1 − c)^2.5. Check: the model puts the gradient at t = 0.75 at (171,179,131). The river measured over Greentide in
   `H_coast_close.png` is (170,182,145).
@@ -49,7 +47,7 @@ three lists. Road values were vanilla then and are vanilla now. Three things cha
 |---|---|---|---|
 | Outline (casing, every road) | 0.1 grey | (0.05, 0.04, 0.035) | (30,24,21) |
 | Dirt | (0.5, 0.4, 0.3) | umber (0.30, 0.16, 0.07) | (150,90,42) |
-| Stone | 0.4 grey | slate (0.15, 0.25, 0.25) | (85,130,130) |
+| Stone | 0.4 grey | grey-brown (0.18, 0.15, 0.12) | (99,85,69) |
 | Gravel (highway fill) | 0.5 grey | gold (0.80, 0.50, 0.00) | (250,209,0) |
 | Asphalt (centre line) | 0.3 grey | (0.10, 0.07, 0.05) | dark line |
 
@@ -63,15 +61,10 @@ three lists. Road values were vanilla then and are vanilla now. Three things cha
 
 Rivers `widthOnWorld`: Creek 0.2→0.32, River 0.4→0.46, LargeRiver 0.6→0.62, HugeRiver 0.8→0.82. Rivers are drawn with
 a copy of the ROAD material at their own queues (3520/3530), so they get the same hard edge and roads still cross over
-them. The bank is the water colour × 0.22. The water colour stays FlowWorks' gradient. Only a river left in vanilla
-`riverColor` gets azure (0.06, 0.33, 0.85).
+them. The bank is the water colour × 0.22. The water colour is FlowWorks' (§6). Only a river left in vanilla
+`riverColor` gets the same blue-grey (0.08, 0.16, 0.30).
 
-Worst case per tier (proposed): dirt on Flooded Canyon has casing 7.0 and fill ΔE 26.9. Stone on Cauldron has casing 6.2
-and fill ΔE 21.5. The highway on Abyss has casing 4.8 and fill ΔE 106. Vanilla fails every tier on fill ΔE (5-10). The
-river BANK clears WCAG ≥ 3.4 on every face at every gradient position. The river WATER at the owner's middle and
-terminus colours (t ≥ 0.5) stays within ΔE 9.5-19 of the faces it crosses, so on those stretches only the bank carries
-the line. Darker anchors in the same hues would clear it (search: jungle about #1F1F00-#2E2E00, terminus about
-#00293D). **Decided and applied 2026-10-20** (owner card: River gradient blends into land -> Darken, same hues): middle #7A7A2E -> #2E2E00, terminus #3D4A52 -> #00293D, headwater unchanged. Re-run: min fill dE 33.5 (was 9.5), min bank contrast 3.37:1 (unchanged), every gradient position PASS on every crossed biome (table: `D:\ClaudeWork\rimmandrake\scratch\ownercards\river_gradient_contrast.txt`). Needs the rebuilt FlowWorks DLL live; the live settings file holds no saved colours, so the new defaults apply.
+Worst case per tier, and the river water: §6.
 
 ## 4. Not covered
 
@@ -83,7 +76,7 @@ the offline preview. The live check decides.
 Images: `D:\ClaudeWork\rimmandrake\scratch\live5\` (`P_desert_roads_ON/OFF.png`, `P_coast_close_ON/OFF.png`,
 `R_85_pair.png` (top off, bottom on), `V_rivers_85.png` after the darker FlowWorks river colours, `V_umbra_roads.png`, `V_slime_roads.png`).
 - Player.log: `readable world paths ON (startup): 5 road layer colours, 12 road widths, 4 river widths, river material swap on`.
-- ON: dark casing, umber dirt, slate stone, gold highway. Rivers draw with dark banks, and the bank is darker than the water.
+- ON (before §6): dark casing, umber dirt, slate stone, gold highway. Rivers draw with dark banks, and the bank is darker than the water.
 - Toggle (`jawa/mod_settings_field` `worldReadablePaths` false, `RM_WorldPaths.Apply`, `jawa/world_commit lazy`): the vanilla
   pale roads and faint gradient rivers come back. Toggling on restores the readable look. Both directions redraw live.
 - **Rivers read as dashes: fixed (`e7adc75e3`).** The river data was whole: `world_links_validate` gave 0 asymmetric, 0 non-adjacent,
@@ -95,3 +88,31 @@ Images: `D:\ClaudeWork\rimmandrake\scratch\live5\` (`P_desert_roads_ON/OFF.png`,
   `D:\ClaudeWork\rimmandrake\scratch\riverdashes\rd_before_4271.png` (dashes) and `rd_after_lift003_4271.png` (whole lines).
   Wide view: `rd_after_wide_16490.png`.
 - Roads now draw on RUT_Umbra and RM_GelatinousSlime (`UMBRA_SLIME_ROADS_VERIFY_FINALLY_DRAWN`).
+
+## 6. Roads in earth tones, rivers as water (2026-10-20, after the owner looked)
+
+Owner, 2026-10-20, looking at the in-game map: *"Strangely I see what looks like a blue road on the Scald's shore towards
+the Anvil. Looks like a river, but it isn't. And the river is shown brown and red. Odd colors for roads and rivers."*
+
+- **The blue "road" is a StoneRoad.** In `ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R2.rws` the roads touching the
+  Scald's shore are StoneRoad (all but 3 of 33 links). A 69-tile stone-road network runs from 9 Scald-shore tiles into
+  19 Anvil tiles. Its slate fill (0.15, 0.25, 0.25) draws as teal (85,130,130) inside the dark casing, which looks like a
+  river with a bank.
+- **The brown and red rivers are FlowWorks' gradient.** Its anchors match no tile, so every river is coloured by
+  elevation within its own network: red (#E0311C) at the top, olive-brown (#2E2E00, darkened by card that same day) in
+  the middle, dark blue-teal at the bottom. RM_WorldPaths only darkens the bank to water × 0.22, so a red river gets a
+  maroon bank. Both colours come from the gradient.
+- **Now.** Roads use earth tones under the dark casing: umber dirt, grey-brown stone (0.18, 0.15, 0.12) on screen
+  (99,85,69), and the gold highway. No road layer is blue or teal. Rivers are blue-grey water (0.08, 0.16, 0.30) on
+  screen (47,90,150). They take a tint only inside a biome whose sheet says its water is not clean: RM_Contagion blood red
+  (R-H7 "the red water"), RM_Miasma brackish, RM_Wasteland toxic green (the dead-river salt basins), RM_RustCathedral
+  verdigris (the captured coolant river). The tint stops at the biome border, so the Contagion's water reaches the
+  lowlands clean. This replaces the 09-06 elevation gradient and the "Darken, same hues" card of the same day. The
+  Mod Settings switch and the colour sliders stay. The sliders use new scribe keys.
+- **Contrast** (`design.py`, every crossed land face at p10, mean and p90): stone has a fill dE of at least 22.3 (on The
+  Forge) and casing at least 5.0:1. Water has a fill dE of at least 44.0 and bank at least 5.2:1. Each tint against its
+  own biome has a fill dE of at least 37.9 and bank at least 5.9:1. Dirt and stone differ by dE 31.9. All PASS. Table:
+  `D:\ClaudeWork\rimmandrake\scratch\pathcolors\contrast_2026-10-20.txt`.
+- **Preview** (offline; live on the left, proposed on the right; desert, Scald shore, Anvil, Miasma river):
+  `D:\ClaudeWork\rimmandrake\scratch\pathcolors\preview_paths_2026-10-20.png`
+  (`preview.py <save> desert,scald,anvil,toxic`).

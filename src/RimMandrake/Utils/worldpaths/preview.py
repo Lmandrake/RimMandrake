@@ -12,7 +12,7 @@ from PIL import Image,ImageDraw,ImageFont
 REPO=_os.path.dirname(_os.path.dirname(_os.path.dirname(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))))
 sys.path.insert(0,REPO+'/src/RimMandrake/Utils'); sys.path.insert(0,_os.path.dirname(_os.path.abspath(__file__)))
 import worldview as WV, design as D
-SAVE=sys.argv[1]; MODE=sys.argv[2]   # desert|coast
+SAVE=sys.argv[1]; MODES=sys.argv[2].split(',')   # desert|coast|scald|anvil|toxic, comma-separated: one row each
 pv=WV.PlanetView(SAVE); g=pv.geom
 X=json.load(open(OUT+'/crossings.json'))
 dump=json.load(open(os.path.join(WV.DEFAULT_DUMP,'BiomeDef.json'))); tex={x['defName']:x['fields'].get('texture') for x in dump['defs']}
@@ -24,22 +24,35 @@ roads_at={};
 for a,b,d,_ in pv.roads: roads_at.setdefault(a,[]).append(d); roads_at.setdefault(b,[]).append(d)
 riv_at={}
 for a,b,d,_ in pv.rivers: riv_at.setdefault(a,[]).append(d); riv_at.setdefault(b,[]).append(d)
-def score(t,rad=0.25):
-    v=g.vec[t]; near=np.where(g.vec@v>math.cos(rad))[0]
-    if MODE=='desert':
-        return sum(pv.biome[u] in ('RM_Stillsand','RM_LongShade') for u in near)*0.2+sum(len(roads_at.get(u,[])) for u in near)+5*sum('AncientAsphaltHighway' in roads_at.get(u,[]) for u in near)
-    return sum(len(riv_at.get(u,[])) for u in near)*2+sum(len(roads_at.get(u,[])) for u in near)+30*min(sum(bool(pv.is_water[u]) for u in near),15)/15
-cands=sorted(set(list(roads_at)+list(riv_at)))[::3]
-if MODE=='desert': cands=[t for t in cands if pv.biome[t] in ('RM_Stillsand','RM_LongShade')]
-else: cands=[t for t in cands if t in riv_at and any(pv.is_water[u] for u in g.neighbours(t))]
-C=max(cands,key=score); lat,lon=g.latlon_of(g.vec[C])
-print(MODE,'centre tile',C,pv.biome[C],round(lat,1),round(lon,1),file=sys.stderr)
-SS=2; PW=900*SS; SPAN=float(os.environ.get('SPAN','0.30'))   # radians half-width
-ax=g.vec[C]; north=np.array([0,1.0,0]); east=np.cross(north,ax); east/=np.linalg.norm(east); nn=np.cross(ax,east)
+fname={i:pv.feature_name(i) for i in set(pv.feature_idx.tolist()) if i!=0xFFFF}
+def feature_tiles(sub): return [t for t in range(pv.n) if pv.feature_idx[t]!=0xFFFF and sub in fname[pv.feature_idx[t]].lower()]
+def centre_for(MODE):
+    def score(t,rad=0.25):
+        v=g.vec[t]; near=np.where(g.vec@v>math.cos(rad))[0]
+        if MODE=='desert':
+            return sum(pv.biome[u] in ('RM_Stillsand','RM_LongShade') for u in near)*0.2+sum(len(roads_at.get(u,[])) for u in near)+5*sum('AncientAsphaltHighway' in roads_at.get(u,[]) for u in near)
+        if MODE=='scald':   # the Scald's shore where the stone road runs toward the Anvil (owner 2026-10-20)
+            return sum('StoneRoad' in roads_at.get(u,[]) for u in near)+3*min(sum(bool(pv.is_water[u]) for u in near),12)
+        if MODE=='toxic':
+            return sum(len(riv_at.get(u,[])) for u in near if pv.biome[u] in D.BIOME_WATER)
+        return sum(len(riv_at.get(u,[])) for u in near)*2+sum(len(roads_at.get(u,[])) for u in near)+30*min(sum(bool(pv.is_water[u]) for u in near),15)/15
+    if MODE=='anvil':
+        an=feature_tiles('anvil'); v=np.mean([g.vec[t] for t in an],0); return int(np.argmax(g.vec@(v/np.linalg.norm(v))))
+    cands=sorted(set(list(roads_at)+list(riv_at)))[::3]
+    if MODE=='desert': cands=[t for t in cands if pv.biome[t] in ('RM_Stillsand','RM_LongShade')]
+    elif MODE=='scald':
+        sc=set(feature_tiles('scald')); cands=[t for t in roads_at if 'StoneRoad' in roads_at[t] and any(u in sc for u in g.neighbours(t))]
+    elif MODE=='toxic': cands=[t for t in riv_at if pv.biome[t] in D.BIOME_WATER]
+    else: cands=[t for t in cands if t in riv_at and any(pv.is_water[u] for u in g.neighbours(t))]
+    return max(cands,key=score)
+SS=2; PW=int(os.environ.get('PANEL','560'))*SS; SPAN=float(os.environ.get('SPAN','0.30'))   # radians half-width
+def set_view(C):
+    global ax,east,nn,vis,corners
+    ax=g.vec[C]; north=np.array([0,1.0,0]); east=np.cross(north,ax); east/=np.linalg.norm(east); nn=np.cross(ax,east)
+    vis=np.where(g.vec@ax>math.cos(SPAN*1.6))[0]
+    corners={t:g.corners(t) for t in vis}
 sc=PW/2/SPAN
 def proj(v): return (PW/2+sc*(v@east), PW/2-sc*(v@nn))
-vis=np.where(g.vec@ax>math.cos(SPAN*1.6))[0]
-corners={t:g.corners(t) for t in vis}
 def face_layer():
     im=Image.new('RGB',(PW,PW),(0,0,0)); 
     byb={}
@@ -117,7 +130,7 @@ def render(st):
     for which in ('bank','core'):
         for t,L in rv.items():
             if t not in corners: continue
-            water=D.gradient(river_t.get(t,0.5))
+            water=D.gradient(river_t.get(t,0.5)) if st.get('gradient') else D.water_for(pv.biome[t])
             v=water*st['bank_shade'] if (which=='bank' and st.get('bank_shade')) else water
             nodes=[(u,st['rivers'][d]-(0.2 if which=='core' else 0)) for u,d in L]
             draw_paths(dr,t,nodes,D.T(v)*255,True,True)
@@ -135,16 +148,21 @@ def render(st):
             smooth=len(set(grp[d] for _,d in L))==1
             draw_paths(dr,t,ws,colr,False,smooth)
     return im.resize((PW//SS,PW//SS),Image.LANCZOS)
-A=render(dict(D.VANILLA,bank_shade=None)); B=render(dict(D.NEW,bank_shade=D.BANK_SHADE))
-W=PW//SS; canvas=Image.new('RGB',(2*W+12,W+150),(24,22,20)); canvas.paste(A,(0,60)); canvas.paste(B,(W+12,60))
-dr=ImageDraw.Draw(canvas)
-try: fnt=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',30); fs=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',22)
+BEFORE=dict(D.NOW_LIVE,bank_shade=D.BANK_SHADE,gradient=True); AFTER=dict(D.NEW,bank_shade=D.BANK_SHADE)
+W=PW//SS; HEAD=56; ROWH=W+40
+canvas=Image.new('RGB',(2*W+12,HEAD+ROWH*len(MODES)+120),(24,22,20)); dr=ImageDraw.Draw(canvas)
+try: fnt=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',26); fs=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',19)
 except Exception: fnt=fs=ImageFont.load_default()
-dr.text((16,14),'NOW (vanilla roads, FlowWorks river colours)',fill=(235,225,205),font=fnt); dr.text((W+28,14),'PROPOSED',fill=(235,225,205),font=fnt)
-leg=[('dirt path/road',D.NEW['layers']['Dirt']),('stone road',D.NEW['layers']['Stone']),('ancient highway',D.NEW['layers']['Gravel']),('river',D.GRADIENT[1])]
-x=W+28
-for name,c in leg:
-    cc=tuple(int(v) for v in D.T(c)*255); dr.rectangle((x,W+80,x+44,W+100),fill=cc,outline=(30,24,21),width=4); dr.text((x+54,W+76),name,fill=(235,225,205),font=fs); x+=54+int(dr.textlength(name,font=fs))+26
-dr.text((16,W+76),'%s: tile %d (%s), %.0f°N %.0f°E. Day-side colour model; no Perlin wiggle.'%(MODE,C,pv.biome[C].replace('RM_',''),lat,lon),fill=(190,180,160),font=fs)
-dr.text((16,W+112),'Offline approximation of the in-game world map; the live check decides.',fill=(150,140,125),font=fs)
-p=OUT+'/preview_%s.png'%MODE; canvas.save(p); print(p)
+dr.text((16,14),'NOW (live)',fill=(235,225,205),font=fnt); dr.text((W+28,14),'PROPOSED',fill=(235,225,205),font=fnt)
+for i,MODE in enumerate(MODES):
+    C=centre_for(MODE); lat,lon=g.latlon_of(g.vec[C]); set_view(C)
+    print(MODE,'centre tile',C,pv.biome[C],round(lat,1),round(lon,1),file=sys.stderr)
+    y=HEAD+i*ROWH; canvas.paste(render(BEFORE),(0,y)); canvas.paste(render(AFTER),(W+12,y))
+    dr.text((12,y+W+8),'%s: tile %d (%s)'%({'scald':'Scald shore, stone road toward the Anvil','anvil':'the Anvil','toxic':'tinted river (story biome)','desert':'desert roads','coast':'coast'}.get(MODE,MODE),C,pv.biome[C].replace('RM_','')),fill=(215,205,185),font=fs)
+y=HEAD+ROWH*len(MODES)+6; x=16
+leg=[('dirt',D.NEW['layers']['Dirt']),('stone',D.NEW['layers']['Stone']),('highway',D.NEW['layers']['Gravel']),('water',D.WATER)]+[(b.replace('RM_',''),c) for b,c in D.BIOME_WATER.items()]
+for k,(name,c) in enumerate(leg):
+    if k==4: x=16; y+=34
+    cc=tuple(int(v) for v in D.T(c)*255); dr.rectangle((x,y,x+40,y+20),fill=cc,outline=(30,24,21),width=4); dr.text((x+48,y-1),name,fill=(235,225,205),font=fs); x+=48+int(dr.textlength(name,font=fs))+22
+dr.text((16,y+40),'Offline day-side model, no Perlin wiggle; the live check decides.',fill=(150,140,125),font=fs)
+p=os.environ.get('OUTPNG') or OUT+'/preview_%s.png'%'_'.join(MODES); canvas.save(p); print(p)
