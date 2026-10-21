@@ -90,7 +90,6 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/RM_TrenchCover.cs::castCandidateOccupant": "ThreadStatic, set in a Harmony prefix and restored in the finalizer of the same CastPositionPreference call",
     "src/RimMandrake/FlowWorks/Source/RM_TrenchCover.cs::searching": "ThreadStatic, set in TryFindCastPosition's prefix and restored in its finalizer: null outside the call",
     "src/RimMandrake/FlowWorks/Source/RM_WaterBodyMendGame.cs::ctxMap": "ThreadStatic, set by the prefix of the one method whose transpiled call reads it, so a stale value is always overwritten before any read",
-    "src/RimMandrake/FlowWorks/Source/RiverColors/RM_RiverColors.cs::tilePosition": "rebuilt whenever Find.World is not the cached World instance",
     "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_MapComponent_Sprinklers.cs::cachedMap": "one-slot cache hit only on Map reference identity",
     "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_MapComponent_Sprinklers.cs::cachedComp": "hit only when cachedComp.map == the asked Map reference",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs::ladderScratch": "per-call scratch: AllLadders clears it before filling",
