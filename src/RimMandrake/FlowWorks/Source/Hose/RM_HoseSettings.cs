@@ -29,6 +29,12 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>PROVISIONAL (rev 2 §3.2, §3.5): LITRES a Dump tank drains out of Outflow ends per 250-tick settle with no pump
         /// (the slow drain; a pump on Pour is the fast one). 1,000 L = one level.</summary>
         public static int dumpLitresPerCycle = 1000;
+        /// <summary>PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (owner answer 7, 2026-10-20: <i>"connecting two bodies of water will
+        /// cause them to slowly flow from one to the other until they level out"</i>; on by default): a network whose open hose
+        /// ends lie in two bodies of the same liquid lets the higher run down into the lower, no pump (RM_Levelling).</summary>
+        public static bool gravityLevellingEnabled = true;
+        /// <summary>PROVISIONAL: LITRES one hose link carries per 250-tick cycle while levelling (1,000 L, the Dump drain's rate).</summary>
+        public static int levellingLitresPerCycle = 1000;
         /// <summary>Liquid networks L8 (rev 2 §3.7, owner Q2: real): a hose holds a little of what it carries and empties it out of
         /// its open end when it stops (a cleanable spill on ground). Off: hoses hold nothing (anything held drains at once).</summary>
         public static bool hoseHoldsLiquid = true;
@@ -39,6 +45,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Tank units (decilitres) per settle, per Dump drain, per hose cell: the litre settings at their read sites.</summary>
         public static int TankUnitsPerCycle => RM_Volume.Units(tankLitresPerCycle);
         public static int DumpUnitsPerCycle => RM_Volume.Units(dumpLitresPerCycle);
+        public static int LevellingUnitsPerCycle => RM_Volume.Units(levellingLitresPerCycle);
         public static float HoseUnitsPerCell => hoseLitresPerCell * RM_Volume.UnitsPerLitre;
 
         /// <summary>Model-2 settings stored these three in 200 L units under the old keys: read once into litres when the new key
@@ -101,6 +108,8 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref tankLitresPerCycle, "hose_tankLitresPerCycle", 2000);
             Scribe_Values.Look(ref freeEndRolesEnabled, "hose_freeEndRolesEnabled", true);
             Scribe_Values.Look(ref dumpLitresPerCycle, "hose_dumpLitresPerCycle", 1000);
+            Scribe_Values.Look(ref gravityLevellingEnabled, "hose_gravityLevellingEnabled", true);
+            Scribe_Values.Look(ref levellingLitresPerCycle, "hose_levellingLitresPerCycle", 1000);
             Scribe_Values.Look(ref hoseHoldsLiquid, "hose_hoseHoldsLiquid", true);
             Scribe_Values.Look(ref hoseLitresPerCell, "hose_hoseLitresPerCell", 5f);
             if (Scribe.mode == LoadSaveMode.LoadingVars) MigrateLegacyLitres();
@@ -172,7 +181,7 @@ namespace RimMandrake.FlowWorks.Hose
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works hose", ResetAllFields);
 
-            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankLitresPerCycle", "freeEndRolesEnabled", "dumpLitresPerCycle", "hoseHoldsLiquid", "hoseLitresPerCell", "plumpAmount", "thickness", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
+            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankLitresPerCycle", "freeEndRolesEnabled", "dumpLitresPerCycle", "gravityLevellingEnabled", "levellingLitresPerCycle", "hoseHoldsLiquid", "hoseLitresPerCell", "plumpAmount", "thickness", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
             {
             list.CheckboxLabeled("Flexible hoses (master switch)", ref enabled,
                 "Thick, stiff sack-cloth hoses laid from a hose reel. They lie flat when empty and plump up while liquid flows. " +
@@ -198,6 +207,16 @@ namespace RimMandrake.FlowWorks.Hose
             }
             list.Label("Dump tank drain with no pump: " + RM_Volume.FormatLitres(dumpLitresPerCycle) + " per pump cycle (a pump set to Pour is faster)");
             dumpLitresPerCycle = Mathf.RoundToInt(list.Slider(dumpLitresPerCycle, 100f, 5000f) / 100f) * 100;
+            list.CheckboxLabeled("Water finds its level through hoses (no pump)", ref gravityLevellingEnabled,
+                "On: when a network's open hose ends (Intake or Outflow) lie in two bodies of the same liquid - ponds, pits, canals, " +
+                "the sea - the higher one slowly runs down into the lower until their surfaces match, over a hill too (a siphon). " +
+                "Different liquids never mix; a dry pit takes the liquid that reaches it. A network with a running pump is left to " +
+                "the pump. Off: only pumps move liquid between bodies.");
+            using (Dependent(list, "levellingLitresPerCycle"))
+            {
+                list.Label("Levelling flow: " + RM_Volume.FormatLitres(levellingLitresPerCycle) + " per hose link per pump cycle");
+                levellingLitresPerCycle = Mathf.RoundToInt(list.Slider(levellingLitresPerCycle, 100f, 10000f) / 100f) * 100;
+            }
             list.Label("Plump amount: " + plumpAmount.ToString("0.0") + "x");
             plumpAmount = Mathf.Round(list.Slider(plumpAmount, 0f, 1.5f) * 10f) / 10f;
             list.Label("Hose thickness: " + thickness.ToString("0.00") + "x (art only; 1 = the standard hose)");
@@ -274,10 +293,12 @@ namespace RimMandrake.FlowWorks.Hose
             .Declare("enabled", "tintByContents", "fillWobble", "handlingTime", "windCellsPerSecond", "autoResumeDroppedHose")
             .Declare("tankModesEnabled", "tankLitresPerCycle")
             .Declare("hoseHoldsLiquid", "hoseLitresPerCell")
+            .Declare("gravityLevellingEnabled", "levellingLitresPerCycle")
             .Independent("freeEndRolesEnabled", "dumpLitresPerCycle", "plumpAmount", "thickness", "transitionTicks", "releaseTicks", "minPlumpDwell",
                          "minBendRadius", "maxLength", "maxLengthDefaults", "couplingSpacing", "slack", "defaultLook")
             .Name("enabled", "Flexible hoses (master switch)").Name("tankModesEnabled", "Tank jobs: Store / Fill / Empty / Dump")
-            .Name("hoseHoldsLiquid", "Hoses hold liquid and spill it when they stop");
+            .Name("hoseHoldsLiquid", "Hoses hold liquid and spill it when they stop")
+            .Name("gravityLevellingEnabled", "Water finds its level through hoses (no pump)");
 
         private static object GetField(string n) => typeof(RM_HoseSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
         private static void SetField(string n, object v) => typeof(RM_HoseSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.SetValue(null, v);

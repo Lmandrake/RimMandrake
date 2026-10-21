@@ -126,7 +126,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(tank, @"public bool TakesFromMachines => EffectiveMode != Machinery\.RM_TankMode\.Empty;", "Empty takes nothing from pumps and machines");
                 RiverSwitchFlipChecks.Has(tank, @"public bool GivesToMachines => EffectiveMode != Machinery\.RM_TankMode\.Dump;", "Dump gives nothing to machines");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"if \(Find\.TickManager\.TicksGame % RM_PumpMath\.CycleTicks == 7\) \{ Machinery\.RM_LiquidNet\.SettleTick\(map\);", "the settle runs once per pump cycle");
+                RiverSwitchFlipChecks.Has(ex, @"if \(Find\.TickManager\.TicksGame % RM_PumpMath\.CycleTicks == 7\) \{ Machinery\.RM_Levelling\.Tick\(map\); Machinery\.RM_LiquidNet\.SettleTick\(map\);", "the settle runs once per pump cycle, right after passive levelling (PIPE_LEVELLING)");
             });
         }
     }

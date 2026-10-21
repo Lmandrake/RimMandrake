@@ -2591,8 +2591,10 @@ namespace RimMandrake.FlowWorks
 			base.MapComponentTick();
 			// liquid networks L4 (rev 2 §3.2): tank jobs settle once per pump cycle (here, not in the hose component, which a
 			// missing save-skip patch removes; tank-to-tank moves also run over rigid pipe with no hose at all)
+			// PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL: passive levelling between bodies runs first, on the same cycle
 			if (Find.TickManager.TicksGame % RM_PumpMath.CycleTicks == 7)
 			{
+				Machinery.RM_Levelling.Tick(map);
 				Machinery.RM_LiquidNet.SettleTick(map);
 				Machinery.RM_LiquidTheft.TheftTick(map);
 			}

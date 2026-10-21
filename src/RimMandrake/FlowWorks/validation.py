@@ -983,6 +983,9 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         # PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (2026-10-13): its live rows are the climb proof owed on
                         # the item (design §8.6), not yet a toggle chain
                         "pitRelativeClimbEnabled",
+                        # PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (2026-10-20): its live rows (two ponds level; pond and oil
+                        # pit do not) are owed on the item, not yet a toggle chain
+                        "gravityLevellingEnabled",
                         # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (2026-10-16): its live row is liquid_checks.pond_depth_verdict (L8, run
                         # with the bridge, selftested offline), not yet a toggle chain
                         "pondDepthEnabled", "pondHeadRuleEnabled",

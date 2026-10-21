@@ -383,6 +383,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             "credit site: pond return (pump)",
             // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: a sprinkler head's hourly draw to its spray (a Sink)
             "credit site: sprinkler draw",
+            // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL: passive levelling between two bodies through a hose route
+            "credit site: levelling",
         };
 
         // review day 3: the decilitre movers (TryPourDl, TryDebitDl, CreditDl, TryReturnDl) joined the list; a site calling one
