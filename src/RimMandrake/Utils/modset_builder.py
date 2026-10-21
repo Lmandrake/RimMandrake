@@ -665,7 +665,12 @@ TIERS["biomes_sprint"] = {
                "composed into mandrake.rm.biomes with the everyday growth bands (the former mandrake.rut.plantgrowth, "
                "absorbed 2026-10-16); both standalone packageIds forbidden" if _EG_FOLDED else
                "NOT yet folded (EXPLOSIVE_GROWTH_MERGE_COMES_HOME), so the standalone mandrake.rm.explosivegrowth loads"),
-    "want": list(TIERS["ratchet_pilot"]["want"]) + ["mandrake.rm.hugethings"]
+    # VEF core (2026-10-21): Baroque Biomes' donor ports name VEF classes (VEF.Plants.DualCropExtension,
+    # VEF.AnimalBehaviours.CompProperties_AnimalProduct) and About.xml does not declare it, so without this the 19-mod
+    # load discarded those defs and RM_TestSite_cauldron_v1 (saved with VEF) died in Map.FinalizeLoading.
+    # mandrake.rut.rites: the Pyrelands Struck Glass rite (RUT_StruckGlass.xml) lives there.
+    "want": list(TIERS["ratchet_pilot"]["want"]) + ["mandrake.rm.hugethings",
+                                                     "oskarpotocki.vanillafactionsexpanded.core", "mandrake.rut.rites"]
             + ([] if _EG_FOLDED else ["mandrake.rm.explosivegrowth"]),
     "forbid": list(TIERS["ratchet_pilot"]["forbid"]) + ["sarg.alphaanimals", "daria40k.alphaanimalspatchoutposts"]
               + (["mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"] if _EG_FOLDED else []),
