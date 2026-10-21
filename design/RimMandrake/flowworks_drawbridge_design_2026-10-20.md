@@ -302,3 +302,14 @@ time one pocket-grid rebuild on the largest dug test map. If a rebuild is slow, 
    sappers and breachers at the winch first · Also let raiders bring their own gangplanks (C's mirror).
 7. **How long can it be?** One leaf up to 4 squares · Two leaves meeting, up to 8 · As long as the bridge type allows.
 8. **Which types get a drawbridge?** Timber and steel · Steel and heavy only · Every type except rope.
+
+## Owner's answers (question cards, 2026-10-20 18:19 PDT)
+
+1. **Design:** *"All of those, with the planks laid beside the bridge (part of its art, not an actual item you can misplace)"*. That means A (bascule with winch), B (gate leaf) and C (gangplank) together, with the planks drawn as part of the bridge's art rather than carried as an item.
+2. **Occupant when it raises:** *"tips towards hinged side, pulls enemies inside"*.
+3. **Sides:** like the wall ladder. It raises from either side and lowers only from the winch side.
+4. **Power:** timber is hand-winched; steel is powered.
+5. **Auto-lower:** *"(2) when there are no hostiles on map, (3+1) when hostiles appear"*. With no hostiles on the map, it lowers like a door for friendlies. Once hostiles appear, it locks and moves only when ordered.
+6. **Raiders:** *"1+3"*. Raiders use the trench rules and sappers go for the winch. Some raids also bring their own planks.
+7. **Length:** set by material.
+8. **Types:** timber and steel.
