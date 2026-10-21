@@ -14,9 +14,12 @@ Also the same chain family has cull (`job_cull`: 0 vhorrin left, 0 meat) and sto
 
 ## criteria
 
-- A handler ordered to net a wild stockable pawn on a quicktest map ends with the pawn gone and exactly one breeding-stock item, in at least 5 of 5 tries.
-- The `job_net` chain goes green without any change to the test.
+- A0 L0: offline - WeepingStones builds 0/0; `selftest_weepingstones_fuzz.py` family `net` and `selftest_weepingstones.py` pass (DONE d110033b2f).
+- A1 L1: a handler ordered to net a wild, NON-FLEEING stockable pawn on a quicktest map ends with the pawn gone and exactly one breeding-stock item, in at least 5 of 5 tries.
+- A2 L1: the `job_net` chain goes green without any change to the test.
 
 ## Watch out
+
+Since d110033b2f capture is a thrown vanilla Projectile (`RM_Projectile_PoolNet`): a FLEEING target outruns the net by design (owner's ruling), so a 5-of-5 run needs a target that is not fleeing. Read the target's job before calling a red a driver bug.
 
 The ruling above changes feel (how hard it is to farm the pools).
