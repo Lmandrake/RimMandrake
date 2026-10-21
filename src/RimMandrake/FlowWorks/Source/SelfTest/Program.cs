@@ -2025,6 +2025,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
             DrawbridgeChecks.Run(Case);        // DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS: leaves, raise state, forced repath, never Collapse (DrawbridgeChecks.cs)
             LineCrossingChecks.Run(Case);      // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE: line tag + P2 crossing table, style never changes permission (LineCrossingChecks.cs)
+            LineDigBreakChecks.Run(Case);      // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 2: a committed dig breaks lines once, a cancel breaks nothing (LineDigBreakChecks.cs)
             SuspensionBridgeChecks.Run(Case);  // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: drag validator, spans, load, falls, wiring (SuspensionBridgeChecks.cs)
             ThirstChecks.Run(Case);            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst math, shipped defs, DBH bridge patch (ThirstChecks.cs)
             PondDepthChecks.Run(Case);         // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: ponds shallow out, one surface across connected water (PondDepthChecks.cs)

@@ -1507,6 +1507,8 @@ namespace RimMandrake.FlowWorks
 				RM_PitRooms.NotifyPitnessChanged(map, c);
 			}
 			RM_PitRooms.NotifyDepthCrossed(map, c, before, d);
+			// PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 2 (P4): the cut has committed; the lines on this square break, once.
+			Machinery.RM_LineDigBreak.OnDigCommitted(map, c, before, d);
 			return d;
 		}
 
