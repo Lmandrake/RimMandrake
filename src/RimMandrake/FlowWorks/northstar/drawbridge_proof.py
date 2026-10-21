@@ -20,7 +20,7 @@ rimworld/save_game + rimworld/load_game_ready.
 Owner rulings this proves (2026-10-20, by card unless quoted): raise from either side, lower only from the winch side; riders
 *"tip towards hinged side, pulls enemies inside"*, overflow falls; underpass untouched; peace auto-lower, any FREE hostile
 locks (trapped ones do not), lock cancels a pending auto-lower; timber by hand, steel powered, steel without power freezes;
-a destroyed winch crashes its leaf down and hits what is under it (follow-up, replacing R13's WINCH_LOST_FREEZES); two leaves
+a destroyed winch crashes its leaf down and hits what is under it (follow-up); two leaves
 each tip to their own hinge; raiders use the trench rules + go for the winch + some bring planks laid exactly once.
 
 Scenes (plot coords from --origin, default 140,140; dig by jawa/flowworks_excavation_drive, 8 notches = 4 m; hinge = bank A,
