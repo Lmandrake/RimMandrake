@@ -1,0 +1,2 @@
+Custom/WorldOcean ignores mesh UV0: a sea fed depths from 0 to -100000 m drew byte-identical pixels, so giving a sea the ocean material does not bring its depth back (WorldTerrain clamps non-ocean vertices below 0 m, a different problem). Shore/deep shading needs an overlay (RM_WorldLook films), not the shader; the comment in RM_WorldTerrainShader.cs saying WorldOcean reads depth from the uvs is wrong.
+home: skills/rimworld-world-editing

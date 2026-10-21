@@ -1,0 +1,2 @@
+Flier flip-books must be registered on the BODY, not the alpha bbox (owner 2026-10-20: wings flap while the body stays static): bbox registration couples wing motion to body motion. Most shipped frames are repaints with a re-posed body, so translate-only fixes fail; use flyer_cutout plate + wing layers, check with flier_body_stabilize, never alpha-bbox tools (flier_guard refuses them).
+home: skills/rimworld-sprite-facings

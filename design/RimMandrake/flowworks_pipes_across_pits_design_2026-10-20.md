@@ -170,7 +170,7 @@ drain a pit through a ladder hose; level two ponds of unequal height, then two o
 - **Cord on a flooded deck:** cords are insulated. Flooding does not short them or cut them.
 - **Canals:** any dug channel blocks rigid pipe and conduit, the way a pit does, whatever its depth. A pit, a trench or a canal of any depth needs pipe poles to cross.
 
-## Open owner questions (each a question card)
+## Owner questions as asked (ANSWERED, see the next section)
 
 1. **A deck goes under water with a power cord on it.** The cord shorts and stops carrying power until dry · the cord
    keeps working · write-in.

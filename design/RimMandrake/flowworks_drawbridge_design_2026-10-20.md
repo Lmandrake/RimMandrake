@@ -198,7 +198,7 @@ progress, no job loop), RAID_PLANK (interrupted carrier makes no duplicate cross
 - **Two-leaf bridges:** each leaf has its own winch house on its own bank.
 - **Bridge across the gravship edge:** the bridge **collapses** on launch, and anyone on it falls.
 
-## Open owner questions (each a question card)
+## Owner questions as asked (ANSWERED, see the next section)
 
 1. **What do the drawbridge planks do?** Art only (drawn beside the bridge, no use) · a 1-wide footway a colonist lays
    or pulls at the bank, drawn stacked when pulled, never an item · write-in.

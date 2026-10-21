@@ -1,0 +1,2 @@
+Two draw layers on one sphere z-fight: WorldDrawLayer.Visible is true for an unselected layer, so RM_SeabedLayer (same radius as the surface) drew grey ring hexes through the planet (the honeycomb). Hiding it with Visible=false left its terrain layer Dirty forever and WorldRenderer queued a GeneratingPlanet long event every frame (black planet, ~10 min); the dirty check must ignore hidden coplanar layers.
+home: skills/rimworld-world-editing
