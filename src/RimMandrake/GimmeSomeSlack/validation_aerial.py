@@ -24,6 +24,7 @@ LEARNED (each line is a check below):
 """
 import json
 import os
+import re
 import shutil
 import sys
 import time
@@ -826,11 +827,49 @@ def theft_catch(B, rows, res):
 
 # the quicktest colony on the owner's full list starves, dehydrates and walks into pits during a day of play (live
 # 2026-10-21: Captain downed by RM_PitDrowning 0.6); none of it is this mod's, all of it stops the clock governor
-PT_SITE_HEDIFFS = ("RM_PitDrowning", "DBHDehydration", "Malnutrition", "Heatstroke", "Hypothermia", "BloodLoss")
+# RM_SwimExhaustion is on the list because stripping RM_PitDrowning alone is not a rescue: RM_Swim.KeepsHeadUp is false
+# while exhaustion is 1, so a pawn left in the same cell starts drowning again at once (2026-10-21, Captain re-downed every
+# ~2,000 ticks; RM_PitDrowning is RM_Swim's hediff on NATURAL water too, not evidence of a pit - read
+# flowworks_excavation_report excavatedCellCount first).
+PT_SITE_HEDIFFS = ("RM_PitDrowning", "RM_SwimExhaustion", "DBHDehydration", "Malnutrition", "Heatstroke", "Hypothermia",
+                   "BloodLoss")
+# heuristic, by defName (no bridge tool exposes TerrainDef.IsWater): a pawn standing on one of these is walked ashore
+PT_WET_TERRAIN = re.compile(r"Water|Marsh|Mud|Brine|Ocean|Sea|Lake|River|Bog|Swamp", re.I)
+
+
+def _pt_ashore(B, p, r=10):
+    """Walk a colonist standing on wet terrain to the nearest dry cell it can reach (drafted, so it holds there instead of
+    wading straight back in; it stays drafted for the rest of the phase, which this backdrop colony does not need).
+    Returns None when already dry, else {"from", "to", "terrain", "ok"}; to=None means no dry reachable cell in range.
+    The game is not unpaused here: the walk happens in the next B.ticks."""
+    x, z = p.get("x"), p.get("z")
+    if x is None or z is None:
+        return None
+    cells = {}
+    for run in str(B.call("jawa/get_terrain_batch", rects="%d,%d,%d,%d" % (x - r, z - r, 2 * r + 1, 2 * r + 1)).get("ops") or "").split(";"):
+        if ":" not in run:
+            continue
+        d, nums = run.rsplit(":", 1)
+        rx, rz, w = (int(v) for v in nums.split(",")[:3])
+        for i in range(w):
+            cells[(rx + i, rz)] = d
+    here = cells.get((x, z), "")
+    if here and not PT_WET_TERRAIN.search(here):
+        return None
+    out = {"from": [x, z], "terrain": here, "to": None, "ok": False}
+    dry = sorted((c for c, d in cells.items() if not PT_WET_TERRAIN.search(d)), key=lambda c: (c[0] - x) ** 2 + (c[1] - z) ** 2)
+    for cx, cz in dry[:6]:                       # canGo is computed before the order; an unreachable Goto is "accepted"
+        o = B.call("jawa/order_pawn", pawnId=p["id"], x=cx, z=cz, draft=True, waitTicks=0, unpause=False)
+        row = (o.get("pawns") or [{}])[0]
+        if row.get("canGo") and row.get("ok"):
+            out.update(to=[cx, cz], ok=True, dryTerrain=cells[(cx, cz)])
+            break
+    return out
 
 
 def _pt_calm(B):
-    """Fill every colonist's needs and strip PT_SITE_HEDIFFS; returns the refused removals. The owner's full-list quicktest colony sits at 'minor break risk x5', and a break
+    """Fill every colonist's needs, strip PT_SITE_HEDIFFS and walk anyone on wet terrain ashore (_pt_ashore); returns the
+    refused removals and failed rescues. The owner's full-list quicktest colony sits at 'minor break risk x5', and a break
     stops the clock governor (live 2026-10-21: InsultingSpree after 1,440 ticks of the first day chunk)."""
     refused = []
     B.call("jawa/kill_hostiles")                 # a raid landed mid-day (live 2026-10-21: Hutt Cartel enforcers)
@@ -846,6 +885,9 @@ def _pt_calm(B):
                 r = B.call("jawa/pawn_health", pawn=p["id"], action="remove", hediff=h["def"])
                 if r.get("success") is not True:
                     refused.append((p["id"], h["def"], str(r.get("message") or r.get("error"))[:60]))
+        a = _pt_ashore(B, p)                     # after the strip: a still-downed pawn cannot walk, and says so here
+        if a is not None and not a["ok"]:
+            refused.append((p["id"], "ashore", json.dumps(a)[:60]))
     return refused
 
 
