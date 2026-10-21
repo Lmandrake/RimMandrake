@@ -212,10 +212,11 @@ namespace RimMandrake.TitanicCreatures
         }
 
         /// <summary>The footfall warning before a titan arrives, in ticks: the setting's hours (2500 ticks each), never below a
-        /// quarter hour, so the tremors always come first.</summary>
+        /// quarter hour, so the tremors always come first, never above three days. The hours are clamped BEFORE the cast: an
+        /// out-of-range double-to-long cast is unspecified (Mono gives long.MinValue, which read as the quarter-hour floor).</summary>
         public static int WarningTicks(float hours)
         {
-            float h = Finite(hours) ? hours : 0f;
+            double h = Finite(hours) ? Math.Max(0.0, Math.Min(hours, 72.0)) : 0.0;
             long t = (long)Math.Round(h * 2500.0);
             return (int)Math.Max(625L, Math.Min(t, 60000L * 3));
         }
