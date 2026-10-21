@@ -1,0 +1,602 @@
+{
+ "schema": 1,
+ "rows": [
+  {
+   "key": "DB_Winch_Timber",
+   "part": "Winch",
+   "look": "Timber",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "winch house \u2014 timber (hand-cranked)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeWinch_Timber",
+   "jobs": [
+    "RM_DrawbridgeWinch_Timber_south",
+    "RM_DrawbridgeWinch_Timber_east",
+    "RM_DrawbridgeWinch_Timber_north"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber.png"
+   ]
+  },
+  {
+   "key": "DB_LeafUp_Timber_Face",
+   "part": "LeafUpFace",
+   "look": "Timber",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "raised leaf, deck face toward camera \u2014 timber (1 lane \u00d7 4 cells)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Face"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeLeafUp_Timber_Face",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Timber_Face"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+   ]
+  },
+  {
+   "key": "DB_LeafUp_Timber_Underside",
+   "part": "LeafUpUnderside",
+   "look": "Timber",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "raised leaf, underside toward camera \u2014 timber (1 lane \u00d7 4 cells)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Underside"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeLeafUp_Timber_Underside",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Timber_Underside"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+   ]
+  },
+  {
+   "key": "DB_LeafUp_Timber_Edge",
+   "part": "LeafUpEdge",
+   "look": "Timber",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "raised leaf, edge-on \u2014 timber (1 lane \u00d7 4 cells)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Edge"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeLeafUp_Timber_Edge",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Timber_Edge"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+   ]
+  },
+  {
+   "key": "DB_Gate_Timber_Closed",
+   "part": "GateClosed",
+   "look": "Timber",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "bank gate closed \u2014 timber (one lane)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Closed"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeGate_Timber_Closed",
+   "jobs": [
+    "RM_DrawbridgeGate_Timber_Closed_south",
+    "RM_DrawbridgeGate_Timber_Closed_east"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber.png"
+   ]
+  },
+  {
+   "key": "DB_Gate_Timber_Open",
+   "part": "GateOpen",
+   "look": "Timber",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "bank gate open \u2014 timber (one lane)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Open"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeGate_Timber_Open",
+   "jobs": [
+    "RM_DrawbridgeGate_Timber_Open_south",
+    "RM_DrawbridgeGate_Timber_Open_east"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber.png"
+   ]
+  },
+  {
+   "key": "DB_Planks_Timber",
+   "part": "Planks",
+   "look": "Timber",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "planks stacked beside the bridge \u2014 timber (art only)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Timber"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgePlanks_Timber",
+   "jobs": [
+    "RM_DrawbridgePlanks_Timber"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+   ]
+  },
+  {
+   "key": "DB_Winch_Steel",
+   "part": "Winch",
+   "look": "Steel",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "winch house \u2014 steel (powered motor house)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeWinch_Steel",
+   "jobs": [
+    "RM_DrawbridgeWinch_Steel_south",
+    "RM_DrawbridgeWinch_Steel_east",
+    "RM_DrawbridgeWinch_Steel_north"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel.png"
+   ]
+  },
+  {
+   "key": "DB_LeafUp_Steel_Face",
+   "part": "LeafUpFace",
+   "look": "Steel",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "raised leaf, deck face toward camera \u2014 steel (1 lane \u00d7 4 cells)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Face"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeLeafUp_Steel_Face",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Steel_Face"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel.png"
+   ]
+  },
+  {
+   "key": "DB_LeafUp_Steel_Underside",
+   "part": "LeafUpUnderside",
+   "look": "Steel",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "raised leaf, underside toward camera \u2014 steel (1 lane \u00d7 4 cells)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Underside"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeLeafUp_Steel_Underside",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Steel_Underside"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel.png"
+   ]
+  },
+  {
+   "key": "DB_LeafUp_Steel_Edge",
+   "part": "LeafUpEdge",
+   "look": "Steel",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "raised leaf, edge-on \u2014 steel (1 lane \u00d7 4 cells)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeLeafUp_Steel_Edge",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Steel_Edge"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel.png"
+   ]
+  },
+  {
+   "key": "DB_Gate_Steel_Closed",
+   "part": "GateClosed",
+   "look": "Steel",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "bank gate closed \u2014 steel (one lane)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Closed"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeGate_Steel_Closed",
+   "jobs": [
+    "RM_DrawbridgeGate_Steel_Closed_south",
+    "RM_DrawbridgeGate_Steel_Closed_east"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel.png"
+   ]
+  },
+  {
+   "key": "DB_Gate_Steel_Open",
+   "part": "GateOpen",
+   "look": "Steel",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "bank gate open \u2014 steel (one lane)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Open"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeGate_Steel_Open",
+   "jobs": [
+    "RM_DrawbridgeGate_Steel_Open_south",
+    "RM_DrawbridgeGate_Steel_Open_east"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel.png"
+   ]
+  },
+  {
+   "key": "DB_Planks_Steel",
+   "part": "Planks",
+   "look": "Steel",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "planks stacked beside the bridge \u2014 steel (art only)",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Steel"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgePlanks_Steel",
+   "jobs": [
+    "RM_DrawbridgePlanks_Steel"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel.png"
+   ]
+  },
+  {
+   "key": "DB_RaidPlank_Item",
+   "part": "RaidPlankItem",
+   "look": "Raider",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "raid plank \u2014 carried / dropped item",
+   "resources": [
+    "Things/Item/FlowWorks/RM_RaidPlank"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "^RM_RaidPlank$",
+   "jobs": [
+    "RM_RaidPlank"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "DB_RaidPlank_Laid",
+   "part": "RaidPlankLaid",
+   "look": "Raider",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "raid plank laid across the pit \u2014 one cell segment",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_Laid"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_RaidPlank_Laid$",
+   "jobs": [
+    "RM_RaidPlank_Laid"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "DB_RaidPlank_LaidEnd",
+   "part": "RaidPlankLaidEnd",
+   "look": "Raider",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "raid plank laid \u2014 bank end with hooks",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_LaidEnd"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+   },
+   "former": [],
+   "render_match": "RM_RaidPlank_LaidEnd",
+   "jobs": [
+    "RM_RaidPlank_LaidEnd"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "DB_Icon_Raise",
+   "part": "IconRaise",
+   "look": "UI",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "command icon \u2014 Raise",
+   "resources": [
+    "UI/Commands/FlowWorks/RM_DrawbridgeRaise"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "UI command icon: no world size; shown at one cell only to judge legibility"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeRaise_Icon",
+   "jobs": [
+    "RM_DrawbridgeRaise_Icon"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "DB_Icon_Lower",
+   "part": "IconLower",
+   "look": "UI",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "command icon \u2014 Lower",
+   "resources": [
+    "UI/Commands/FlowWorks/RM_DrawbridgeLower"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "UI command icon: no world size; shown at one cell only to judge legibility"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeLower_Icon",
+   "jobs": [
+    "RM_DrawbridgeLower_Icon"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "DB_Icon_HoldRaised",
+   "part": "IconHoldRaised",
+   "look": "UI",
+   "variant": "",
+   "section": "Drawbridge",
+   "label": "command icon \u2014 HoldRaised",
+   "resources": [
+    "UI/Commands/FlowWorks/RM_DrawbridgeHoldRaised"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "UI command icon: no world size; shown at one cell only to judge legibility"
+   },
+   "former": [],
+   "render_match": "RM_DrawbridgeHoldRaised_Icon",
+   "jobs": [
+    "RM_DrawbridgeHoldRaised_Icon"
+   ],
+   "reference_textures": []
+  }
+ ],
+ "lead_html": "<p>Drawbridge art, first pass (owner, 2026-10-20: <i>\u201ccommission the art for the bridges so it will be ready for you by the time you need it.\u201d</i>). Timber and steel, matched to the suspension bridge beside each row. The lowered leaf reuses the suspension deck, so it is not here. Pick or reject per row; nothing is installed until you rule.</p>"
+}
