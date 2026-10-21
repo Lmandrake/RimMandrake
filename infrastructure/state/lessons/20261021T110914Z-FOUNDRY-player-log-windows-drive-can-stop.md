@@ -1,0 +1,1 @@
+Player.log on the Windows drive can stop growing for minutes while the game runs normally (seen 2026-10-21 at main menu after a tier load). Before calling the log dead or the game hung, emit a sentinel (validation_core.log_alive) and take an OS screenshot; read errors from rimbridge/list_logs meanwhile.

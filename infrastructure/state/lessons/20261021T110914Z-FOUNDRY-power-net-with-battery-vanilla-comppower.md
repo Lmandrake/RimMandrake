@@ -1,0 +1,1 @@
+On a power net with a battery, vanilla CompPower adds 'Grid excess: X W (Y Wd stored)' to a building's inspect string; a status parser that skips only 'Power needed' reads it as the building's status (Cauldron works_refines_condensate false FAIL, 2026-10-21).

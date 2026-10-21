@@ -1,0 +1,1 @@
+Vanilla MapDrawer.WholeMapChanged has no null guard on sections (MapMeshDirty has one): a mod calling it on a map whose drawer was never built (e.g. a load that threw in FinalizeLoading) NREs. Dirty cells through MapMeshDirty instead (Cauldron RM_VentGas.ClearAll, b7898abd9).
