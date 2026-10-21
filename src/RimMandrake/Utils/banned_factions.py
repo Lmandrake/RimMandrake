@@ -14,7 +14,9 @@ design/RimMandrake/factions_unwanted_and_lingering_2026-10-20.md.
                           a markdown table of every faction in the save (and every FactionDef of ours) with its
                           flags, counts, what its def lets it do, settlements, leader and relation to the player.
   check-dump <capture>    a def-dump capture (DefDump/captures/<id>): each banned def present in the running game has
-                          the banish values, and the orbital traders name no faction. The post-deploy proof.
+                          the banish values, the orbital traders name no faction, and the registry's content_cut
+                          holds (no quest, linked site GenStep or ThingSetMaker generates a cut faction's pawns).
+                          The post-deploy proof. check-repo also asserts each content_cut op is in the patch.
 
 Exit 0 pass, 1 fail, 2 UNMEASURED (an instrument that saw nothing: no factions parsed, no defs in the dump).
 """
@@ -116,6 +118,70 @@ def references(root_dir, names, allow):
     return hits
 
 
+def content_cut_repo(reg, patch_path):
+    """Each content_cut route has its op in the patch: a quest's rootSelectionWeight set to 0 on both branches, a
+    GenStepDef's linkWithSite removed, a ThingSetMakerDef's pawn option removed."""
+    cc = reg.get("content_cut")
+    if not cc:
+        return []
+    ops = []
+    for el in ET.parse(patch_path).getroot().iter():
+        cls = el.get("Class") or ""
+        if cls in ("PatchOperationReplace", "PatchOperationAdd", "PatchOperationRemove"):
+            val = el.find("value")
+            ops.append((cls, (el.findtext("xpath") or "").strip(),
+                        {c.tag: (c.text or "").strip() for c in val} if val is not None else {}))
+    bad = []
+    for q in cc.get("quests_zero_weight", []):
+        rep = [v for c, x, v in ops if c == "PatchOperationReplace"
+               and x == '/Defs/QuestScriptDef[defName="%s"]/rootSelectionWeight' % q]
+        add = [v for c, x, v in ops if c == "PatchOperationAdd" and x == '/Defs/QuestScriptDef[defName="%s"]' % q
+               and "rootSelectionWeight" in v]
+        if not rep or not add or any(_norm(v.get("rootSelectionWeight")) != "0" for v in rep + add):
+            bad.append("QuestScriptDef %s: rootSelectionWeight is not set to 0 (Replace and nomatch Add) in the patch" % q)
+    for g in cc.get("gensteps_unlinked", []):
+        if not any(c == "PatchOperationRemove" and x == '/Defs/GenStepDef[defName="%s"]/linkWithSite' % g
+                   for c, x, _ in ops):
+            bad.append("GenStepDef %s: linkWithSite is not removed in the patch" % g)
+    for t in cc.get("thingsetmaker_pawn_options_removed", []):
+        want = '/Defs/ThingSetMakerDef[defName="%s"]/root/options/li[thingSetMaker/pawnKind="%s"]' % (t["def"], t["pawnKind"])
+        if not any(c == "PatchOperationRemove" and x == want for c, x, _ in ops):
+            bad.append("ThingSetMakerDef %s: the %s option is not removed in the patch" % (t["def"], t["pawnKind"]))
+    return bad
+
+
+def content_cut_dump(reg, capture):
+    """(bad, measured). The loaded defs: each listed quest has weight 0, each listed GenStepDef has no site link, and
+    no linked GenStepDef (outside gensteps_unreachable) or any ThingSetMakerDef generates a banned faction or kind."""
+    cc = reg.get("content_cut")
+    if not cc:
+        return [], True
+    qd, gd, td = (dump_defs(capture, t) for t in ("QuestScriptDef", "GenStepDef", "ThingSetMakerDef"))
+    if not qd or not gd or not td:
+        return [], False
+    bad = []
+    facs, kinds = set(cc.get("factions", [])), set(cc.get("pawn_kinds", []))
+    for q in cc.get("quests_zero_weight", []):
+        d = qd.get(q)
+        if d is not None and float(d["fields"].get("rootSelectionWeight") or 0) != 0:
+            bad.append("QuestScriptDef %s: rootSelectionWeight is %r, want 0" % (q, d["fields"].get("rootSelectionWeight")))
+    for g in cc.get("gensteps_unlinked", []):
+        d = gd.get(g)
+        if d is not None and d["fields"].get("linkWithSite"):
+            bad.append("GenStepDef %s: still linked to site %s" % (g, d["fields"]["linkWithSite"]))
+    skip = set(cc.get("gensteps_unreachable", {}))
+    for dn, d in gd.items():
+        gs = d["fields"].get("genStep") or {}
+        if dn not in skip and d["fields"].get("linkWithSite") and isinstance(gs, dict) and gs.get("factionDef") in facs:
+            bad.append("GenStepDef %s (site %s) generates faction %s" % (dn, d["fields"]["linkWithSite"], gs["factionDef"]))
+    rx = re.compile(r'"pawnKind": "(%s)"' % "|".join(re.escape(k) for k in sorted(kinds))) if kinds else None
+    for dn, d in td.items():
+        m = rx.search(json.dumps(d["fields"])) if rx else None
+        if m:
+            bad.append("ThingSetMakerDef %s still generates pawn kind %s" % (dn, m.group(1)))
+    return bad, True
+
+
 def check_repo(reg, root_dir=ROOT, out=print):
     want = reg["_banish_fields"]
     bad = []
@@ -147,6 +213,7 @@ def check_repo(reg, root_dir=ROOT, out=print):
     for t in reg.get("orbital_traders_unfactioned", []):
         if t not in removed:
             bad.append("TraderKindDef %s: <faction> is not removed in %s" % (t, reg["patch_file"]))
+    bad.extend(content_cut_repo(reg, patch_path))
     names = {f["defName"] for f in reg["factions"]}
     for rel, name, where in references(root_dir, names, reg.get("reference_allowlist", [])):
         bad.append("%s names banned faction %s (%s); point it at a wanted faction, or allowlist it in the registry "
@@ -251,10 +318,14 @@ def check_dump(reg, capture, out=print):
         d = tdefs.get(t)
         if d is not None and d["fields"].get("faction"):
             bad.append("TraderKindDef %s still names faction %s" % (t, d["fields"]["faction"]))
+    cbad, measured = content_cut_dump(reg, capture)
+    bad.extend(cbad)
     out("%s: %d FactionDefs, %d TraderKindDefs" % (capture, len(fdefs), len(tdefs)))
+    if not measured:
+        out("  UNMEASURED content_cut: QuestScriptDef/GenStepDef/ThingSetMakerDef missing or empty in the capture")
     for b in bad:
         out("  FAIL " + b)
-    return FAIL if bad else PASS
+    return FAIL if bad else (PASS if measured else UNMEASURED)
 
 
 # ---------------------------------------------------------------- inventory

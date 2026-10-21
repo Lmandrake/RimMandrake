@@ -6,7 +6,8 @@ same with the Space Exchange.") can raid, trade, visit or show in a list.
    and nothing under src/ names a banned def outside the reasoned allowlist.
 2. The checker can SEE: each check is run on a fixture built to fail it, and must fail (a guard that cannot fail is
    not a guard). Fixtures: a repo whose patch drops one field, a repo with a GenStep naming a banned faction, a save
-   with a LIVE banned faction, a save with it BANISHED, a save with no factions (UNMEASURED), a dump before and after.
+   with a LIVE banned faction, a save with it BANISHED, a save with no factions (UNMEASURED), a dump before and after,
+   and the salvager content cut (patch op dropped, a dump still generating a cut faction or pawn kind).
 Offline, no game files. Reasoning: design/RimMandrake/factions_unwanted_and_lingering_2026-10-20.md."""
 import copy
 import json
@@ -60,7 +61,7 @@ def write(tmp, name, text):
     return p
 
 
-def make_dump(tmp, name, reg, banished):
+def make_dump(tmp, name, reg, banished, content=True):
     cap = os.path.join(tmp, name)
     os.makedirs(os.path.join(cap, "defs"))
     fields = dict(reg["_banish_fields"]) if banished else {"hidden": False, "raidsForbidden": False}
@@ -72,7 +73,29 @@ def make_dump(tmp, name, reg, banished):
            for t in reg["orbital_traders_unfactioned"]]
     json.dump({"defs": facs}, open(os.path.join(cap, "defs", "FactionDef.json"), "w"))
     json.dump({"defs": trd}, open(os.path.join(cap, "defs", "TraderKindDef.json"), "w"))
+    if content:
+        cc = reg["content_cut"]
+        quests = [{"defName": q, "fields": {"rootSelectionWeight": 0 if banished else 1}} for q in cc["quests_zero_weight"]]
+        quests.append({"defName": "OpportunitySite_Other", "fields": {"rootSelectionWeight": 1}})
+        steps = [{"defName": g, "fields": {"linkWithSite": None if banished else "Site_X",
+                                           "genStep": {"factionDef": cc["factions"][0]}}} for g in cc["gensteps_unlinked"]]
+        steps += [{"defName": g, "fields": {"linkWithSite": "Site_Q", "genStep": {"factionDef": cc["factions"][0]}}}
+                  for g in cc["gensteps_unreachable"]]
+        steps.append({"defName": "Wreck", "fields": {"linkWithSite": "Site_X", "genStep": {"factionDef": "AncientsHostile"}}})
+        tsm = [{"defName": t["def"], "fields": {"root": {"options": [
+            {"thingSetMaker": {"pawnKind": "TradersGuild_Citizen"}}]
+            + ([] if banished else [{"thingSetMaker": {"pawnKind": t["pawnKind"]}}])}}}
+            for t in cc["thingsetmaker_pawn_options_removed"]]
+        for name, defs in (("QuestScriptDef", quests), ("GenStepDef", steps), ("ThingSetMakerDef", tsm)):
+            json.dump({"defs": defs}, open(os.path.join(cap, "defs", name + ".json"), "w"))
     return cap
+
+
+def add_defs(cap, def_type, extra):
+    p = os.path.join(cap, "defs", def_type + ".json")
+    data = json.load(open(p))
+    data["defs"].extend(extra)
+    json.dump(data, open(p, "w"))
 
 
 def main():
@@ -156,6 +179,33 @@ def main():
         cap_bad = make_dump(tmp, "dump_bad", reg, banished=False)
         check("check-dump PASSES after the banish", bf.check_dump(reg, cap_ok, out=quiet) == bf.PASS)
         check("check-dump FAILS before it", bf.check_dump(reg, cap_bad, out=quiet) == bf.FAIL)
+        # 5. salvager content cut (owner by card 2026-10-20: "Cut them")
+        cap_tsm = make_dump(tmp, "dump_tsm", reg, banished=True)
+        add_defs(cap_tsm, "ThingSetMakerDef", [{"defName": "Y", "fields": {"root": {"options": [
+            {"thingSetMaker": {"pawnKind": reg["content_cut"]["pawn_kinds"][-1]}}]}}}])
+        check("check-dump FAILS on any ThingSetMakerDef that makes a cut pawn kind",
+              bf.check_dump(reg, cap_tsm, out=quiet) == bf.FAIL)
+        cap_gs = make_dump(tmp, "dump_gs", reg, banished=True)
+        add_defs(cap_gs, "GenStepDef", [{"defName": "Z", "fields": {"linkWithSite": "Site_Y",
+                                                                     "genStep": {"factionDef": "Salvagers"}}}])
+        check("check-dump FAILS on an unlisted site GenStep that makes a cut faction",
+              bf.check_dump(reg, cap_gs, out=quiet) == bf.FAIL)
+        cap_nc = make_dump(tmp, "dump_nc", reg, banished=True, content=False)
+        check("check-dump without quest/genstep/thingsetmaker defs -> UNMEASURED",
+              bf.check_dump(reg, cap_nc, out=quiet) == bf.UNMEASURED)
+        for label, frm, to in (
+                ("quest weight", '<value><rootSelectionWeight>0</rootSelectionWeight></value>\n      </match>',
+                 '<value><rootSelectionWeight>1</rootSelectionWeight></value>\n      </match>'),
+                ("genstep unlink", '<xpath>/Defs/GenStepDef[defName="Opportunity_OrbitalWreck_Salvagers"]/linkWithSite</xpath>\n    </match>',
+                 '<xpath>/Defs/GenStepDef[defName="X"]/linkWithSite</xpath>\n    </match>'),
+                ("pod option", 'li[thingSetMaker/pawnKind="Salvager_Pirate"]</xpath>\n    </match>',
+                 'li[thingSetMaker/pawnKind="X"]</xpath>\n    </match>')):
+            b = patch_text.replace(frm, to, 1)
+            check("fixture edit applied: " + label, b != patch_text)
+            rr = os.path.join(tmp, "rc_" + label.replace(" ", "_"))
+            make_repo(rr, reg, b)
+            check("check-repo FAILS when the content cut loses its " + label,
+                  bf.check_repo(reg, root_dir=rr, out=quiet) == bf.FAIL)
         check("check-dump on a missing capture -> UNMEASURED",
               bf.check_dump(reg, os.path.join(tmp, "nope"), out=quiet) == bf.UNMEASURED)
     finally:

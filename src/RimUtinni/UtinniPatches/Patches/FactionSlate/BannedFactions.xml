@@ -285,4 +285,45 @@
       <xpath>/Defs/TraderKindDef[defName="Orbital_PirateMerchant"]/faction</xpath>
     </match>
   </Operation>
+  <!-- Salvager CONTENT cut. Owner, 2026-10-20, by question card: "Odyssey orbital fugitive quest and salvager wreck
+       sites still spawn Celestial Rogues pawns; keep?" -> "Cut them". The banish above does not gate pawn generation,
+       so every route that makes a salvager pawn is closed at its own def. The def-dump scan of 2026-10-21T04-26-37Z
+       (every def naming Salvagers or a salvager pawnkind) plus RimSage C# (Faction.OfSalvagers, PawnKindDefOf.
+       Salvager_Elite) found exactly three routes; each is the registry's "content_cut" list, asserted by
+       banned_factions.py. Nothing is deleted: the defs stay loadable for saves.
+       1. QuestScriptDef OrbitalFugitive (QuestNode_Root_OrbitalFugitive makes a Salvager_Elite plus a Combat group of
+          Faction.OfSalvagers). rootSelectionWeight 0 makes IsRootRandomSelected false, so NaturalRandomQuestChooser
+          never picks it; no IncidentDef or other quest names it. Its site's GenStep OrbitalFugitivePlatform is reached
+          only through this quest, so it goes dark with it.
+       2. GenStepDef Opportunity_OrbitalWreck_Salvagers (GenStep_SitePawns, "Hostile salvagers"). Unlinked from the
+          Opportunity_OrbitalWreck site part (SitePartDef.ExtraGenSteps gathers GenStepDefs by linkWithSite). The wreck
+          itself, its prefabs and loot (GenStepDef Opportunity_OrbitalWreck) are untouched.
+       3. ThingSetMakerDef Reward_MalfunctioningTransportPod: the live Salvager_Pirate option (weight 2) is removed; the
+          supplies, food and Space Exchange corpse options remain. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/QuestScriptDef[defName="OrbitalFugitive"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/QuestScriptDef[defName="OrbitalFugitive"]/rootSelectionWeight</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/QuestScriptDef[defName="OrbitalFugitive"]/rootSelectionWeight</xpath>
+        <value><rootSelectionWeight>0</rootSelectionWeight></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/QuestScriptDef[defName="OrbitalFugitive"]</xpath>
+        <value><rootSelectionWeight>0</rootSelectionWeight></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GenStepDef[defName="Opportunity_OrbitalWreck_Salvagers"]/linkWithSite</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/GenStepDef[defName="Opportunity_OrbitalWreck_Salvagers"]/linkWithSite</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingSetMakerDef[defName="Reward_MalfunctioningTransportPod"]/root/options/li[thingSetMaker/pawnKind="Salvager_Pirate"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingSetMakerDef[defName="Reward_MalfunctioningTransportPod"]/root/options/li[thingSetMaker/pawnKind="Salvager_Pirate"]</xpath>
+    </match>
+  </Operation>
 </Patch>
