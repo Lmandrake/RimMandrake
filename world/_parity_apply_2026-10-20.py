@@ -1,4 +1,4 @@
-"""python.exe _parity_apply_2026-10-20.py <u1|u2|u4> <outdir> [--apply]
+"""python.exe _parity_apply_2026-10-20.py <u1|u2|u4|labels70> <outdir> [--apply]
 
 Applies one world-parity fix plan (built by src/RimMandrake/Utils/parity_fix_plans.py) to the
 LIVE world through the bridge. Dry run by default: reads the live world, checks every plan
@@ -7,6 +7,7 @@ Causes: design/Jawa/worldbuilding/parity_causes_2026-10-20.md.
 
   u1  region labels  : world_features_set maxDrawSizeInTiles + centerOnTile, per feature (by name)
   u2  tile mutators  : world_mutators_set remove (28,280) then add (123 stamp entries that never landed)
+  labels70  region labels x0.70 displayed width (owner card 2026-10-20); needs u1 applied first
   u4  river flow     : world_links_import clearFirst on the mouth-first CSV (same edges, same defs)
 """
 import sys, json, os
@@ -17,7 +18,8 @@ from rimbridge_client import RimBridge, resolve_endpoint
 WORLD = r"\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\world"
 PLANS = {"u1": "ASHKARR_PARITY_U1_labels_2026-10-20_plan.json",
          "u2": "ASHKARR_PARITY_U2_mutators_2026-10-20_plan.json",
-         "u4": "ASHKARR_PARITY_U4_riverdist_2026-10-20_plan.json"}
+         "u4": "ASHKARR_PARITY_U4_riverdist_2026-10-20_plan.json",
+         "labels70": "ASHKARR_LABELS70_2026-10-20_plan.json"}
 which, out = sys.argv[1], sys.argv[2]; APPLY = "--apply" in sys.argv
 plan = json.load(open(os.path.join(WORLD, PLANS[which]), encoding="utf-8"))
 host, port, token = resolve_endpoint()
@@ -46,7 +48,7 @@ with RimBridge(host, port, token) as rb:
         return set((m or {}).get("def") if isinstance(m, dict) else m for m in (row.get("mutators") or []))
 
     mism = []
-    if which == "u1":
+    if which in ("u1", "labels70"):
         live = features()
         for f in plan["features"]:
             l = live.get(f["name"]); b = f["before"]
@@ -54,7 +56,7 @@ with RimBridge(host, port, token) as rb:
             dc = l["drawCenter"]; got = (dc["x"], dc["y"], dc["z"])
             if max(abs(a - c) for a, c in zip(got, b["drawCenter"])) > 0.01 or (b["size"] is not None and abs(l["maxDrawSizeInTiles"] - b["size"]) > 0.01):
                 mism.append((f["name"], got, l["maxDrawSizeInTiles"]))
-        print("u1: %d features, live != before on %d" % (len(plan["features"]), len(mism)), mism[:5])
+        print("%s: %d features, live != before on %d" % (which, len(plan["features"]), len(mism)), mism[:5])
     elif which == "u2":
         need = defaultdict(set)
         for m, ts in plan["remove"].items():
@@ -83,7 +85,7 @@ with RimBridge(host, port, token) as rb:
     if mism or not APPLY:
         sys.exit(0 if not mism else 2)
 
-    if which == "u1":
+    if which in ("u1", "labels70"):
         live = features()
         for f in plan["features"]:
             a = f["after"]
@@ -106,7 +108,7 @@ with RimBridge(host, port, token) as rb:
     c = rb.call("jawa/world_commit", {}); print("commit", c.get("success"), (c.get("message") or "")[:200])
 
     bad = []
-    if which == "u1":
+    if which in ("u1", "labels70"):
         live = features()
         for f in plan["features"]:
             l, a = live[f["name"]], f["after"]; dc = l["drawCenter"]

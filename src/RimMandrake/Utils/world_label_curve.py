@@ -77,6 +77,43 @@ def curve(tile_count: int) -> int:
     return round(max(FLOOR, sqrt(tile_count) * K))
 
 
+# --- displayed-size scale (owner card 2026-10-20 7:36 PM PDT, "Smaller, about 70%") -------------
+# RimWorld/Planet/WorldFeature.cs EffectiveDrawSizeCurve; the label's width on the globe is
+# EffectiveDrawSize tiles. A SimpleCurve, so it clamps flat outside its end points: below
+# maxDrawSizeInTiles 10 a label is still 15 tiles wide -- that is the floor, and it cannot shrink.
+DRAW_SIZE_CURVE = ((10.0, 15.0), (25.0, 40.0), (50.0, 90.0), (100.0, 150.0), (200.0, 200.0))
+LABEL_DISPLAY_SCALE = 0.70   # displayed label width relative to the canonical sizes (1.0 = none)
+
+
+def effective_draw_size(mds: float) -> float:
+    """Displayed label width in tiles for a maxDrawSizeInTiles (engine curve, clamped)."""
+    x = float(mds)
+    if x <= DRAW_SIZE_CURVE[0][0]:
+        return DRAW_SIZE_CURVE[0][1]
+    if x >= DRAW_SIZE_CURVE[-1][0]:
+        return DRAW_SIZE_CURVE[-1][1]
+    for (x0, y0), (x1, y1) in zip(DRAW_SIZE_CURVE, DRAW_SIZE_CURVE[1:]):
+        if x0 <= x <= x1:
+            return y0 + (y1 - y0) * (x - x0) / (x1 - x0)
+
+
+def max_draw_for_effective(eff: float) -> float:
+    """Inverse of effective_draw_size (monotone, piecewise linear). Below the floor -> 10."""
+    if eff <= DRAW_SIZE_CURVE[0][1]:
+        return DRAW_SIZE_CURVE[0][0]
+    if eff >= DRAW_SIZE_CURVE[-1][1]:
+        return DRAW_SIZE_CURVE[-1][0]
+    for (x0, y0), (x1, y1) in zip(DRAW_SIZE_CURVE, DRAW_SIZE_CURVE[1:]):
+        if y0 <= eff <= y1:
+            return x0 + (x1 - x0) * (eff - y0) / (y1 - y0)
+
+
+def scaled_max_draw(mds: float, scale: float = LABEL_DISPLAY_SCALE) -> float:
+    """maxDrawSizeInTiles whose DISPLAYED width is `scale` x that of `mds` (2 decimals).
+    Floored at the engine's 15-tile minimum, so a label already at/near it stays at 10."""
+    return round(max_draw_for_effective(scale * effective_draw_size(mds)), 2)
+
+
 def read_tile_counts_by_feature_uid(root: ET.Element) -> Counter:
     """Decode the surface layer's tileFeatureDeflate: uniqueID -> tile count."""
     layers = root.find(".//world/grid/layers")

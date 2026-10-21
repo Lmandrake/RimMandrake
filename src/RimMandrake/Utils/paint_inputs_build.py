@@ -37,6 +37,8 @@ F = "ASHKARR_WORLDMAP_%s.csv"
 # Parity fixes carried into every rebuild (design/Jawa/worldbuilding/parity_causes_2026-10-20.md).
 U1_PLAN = os.path.join(REPO, "world/ASHKARR_PARITY_U1_labels_2026-10-20_plan.json")
 U4_PLAN = os.path.join(REPO, "world/ASHKARR_PARITY_U4_riverdist_2026-10-20_plan.json")
+import world_label_curve as wlc  # noqa: E402
+LABEL_SCALE = wlc.LABEL_DISPLAY_SCALE   # displayed label width vs canonical; 1.0 = no shrink
 COPIED = ("tiles", "links", "settlements", "mutators", "landmarks", "factions", "features")
 
 # (layer, column, def type, splitter) - every def-bearing column a written CSV carries.
@@ -213,8 +215,9 @@ def build(src, out, tab, pm, log):
     for r in feat:
         r["def"] = fd
     fields, ncentre = add_label_centres(fields, feat, U1_PLAN)
+    nscaled = apply_label_scale(feat, U1_PLAN)
     write(os.path.join(out, F % "features"), fields, feat)
-    log["features"] = {"rows": len(feat), "def": [old, fd], "centerTile": ncentre}
+    log["features"] = {"rows": len(feat), "def": [old, fd], "centerTile": ncentre, "sizeScale": [LABEL_SCALE, nscaled]}
 
 
 def add_label_centres(fields, feat, plan_path):
@@ -231,6 +234,20 @@ def add_label_centres(fields, feat, plan_path):
     for r in feat:
         r["centerTile"] = str(plan[r["name"]])
     return (fields if "centerTile" in fields else list(fields) + ["centerTile"]), len(feat)
+
+
+def apply_label_scale(feat, plan_path, scale=None):
+    """Owner card 2026-10-20 ('Smaller, about 70%'): the `size` column = the U1 canonical size by
+    name, re-derived so the DISPLAYED label width is LABEL_SCALE x that (world_label_curve, floored
+    at the engine's 15-tile minimum). Same numbers as world/ASHKARR_LABELS70_2026-10-20_plan.json.
+    scale 1.0 = canonical sizes unchanged. -> rows set."""
+    scale = LABEL_SCALE if scale is None else scale
+    size = {f["name"]: float(f["after"]["size"])
+            for f in json.load(io.open(plan_path, encoding="utf-8"))["features"]}
+    for r in feat:
+        r["size"] = ("%g" % (size[r["name"]] if scale == 1.0
+                             else wlc.scaled_max_draw(size[r["name"]], scale)))
+    return len(feat)
 
 
 def write_river_dist(out, plan_path):
