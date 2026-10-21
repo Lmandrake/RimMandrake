@@ -265,6 +265,45 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(drv.IndexOf("Toils_General.Wait") < drv.IndexOf("RM_RaidPlanks.TryLay"), "the commit is the job's last step: an interrupted carrier lays nothing");
             });
 
+            Case("Drawbridge_P5_hoses_on_a_leaf_cut_while_raised_rejoin_lowered", () =>
+            {
+                string ends = Src("Hose", "HoseEnds.cs");
+                string read = Body(ends, "public static HoseFreeEnd Read(CompHoseReel r)");
+                Assert(read.Contains("if (Pits.RM_Drawbridges.HoseCut(r)) return e;"), "can-fail: a hose over a raised leaf has no end (disconnected)");
+                Assert(read.IndexOf("HoseCut(r)") < read.IndexOf("e.Cell = r.far;"), "the cut is read before the end is joined");
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                string cut = Body(db, "public static bool LineCutAt(Map map, IEnumerable<IntVec3> cells)");
+                Assert(cut.Contains("StructuralDeckAt(map, c)") && cut.Contains("d.Raised"), "cut = a raised leaf square under the line; lowered, it rejoins");
+                Assert(Body(db, "public static void NotifyToggled(Map map, List<IntVec3> changed)").Contains("InvalidateEnds()"),
+                    "a toggle re-reads every hose end at once");
+                string hoses = Src("Hose", "RM_MapComponent_Hoses.cs");
+                Assert(Body(hoses, "public void InvalidateEnds()").Contains("ends.Clear();"), "the 60-tick end cache is dropped");
+                Assert(!db.Contains("RouteCells("), "a cut hose never re-routes across the opened moat");
+            });
+
+            Case("Drawbridge_P5_gravship_edge_bridge_collapses_at_launch", () =>
+            {
+                string g = Src("Pits", "Drawbridge", "RM_DrawbridgeGravship.cs");
+                Assert(g.Contains("[HarmonyPatch(typeof(GravshipUtility), nameof(GravshipUtility.GenerateGravship))]") && g.Contains("[HarmonyPrefix]"),
+                    "can-fail: runs before the ship's things are gathered");
+                string pre = Body(g, "public static void Prefix(Building_GravEngine engine)");
+                Assert(pre.Contains("comp.CollapseSpan(d,") && pre.Contains("TouchesShip(r, ship)"), "a bridge touching the ship collapses, riders fall");
+                Assert(Body(g, "public static bool TouchesShip(SuspensionBridgeRecord r, HashSet<IntVec3> ship)").Contains("for (int lane = 0; lane < r.width; lane++)"),
+                    "every lane and both anchors count");
+            });
+
+            Case("Drawbridge_P5_length_by_material_from_settings", () =>
+            {
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                string max = Body(db, "public static int MaxLeaf(SuspensionTier t)");
+                Assert(max.Contains("RM_DrawbridgeSettings.maxLeafTimber") && max.Contains("RM_DrawbridgeSettings.maxLeafSteel") && max.Contains("default: return 0;"),
+                    "can-fail: leaf length is the material's setting; rope and heavy have none");
+                string set = Src("Pits", "Drawbridge", "RM_DrawbridgeSettings.cs");
+                Assert(set.Contains("public static int maxLeafTimber = 4;") && set.Contains("public static int maxLeafSteel = 8;"), "defaults timber 4, steel 8");
+                Assert(Body(db, "public static bool CanBeDrawbridge(SuspensionBridgeRecord r, out string why)").Contains("SplitLeaves(1, r.length - 2, MaxLeaf(r.tier), true) == null"),
+                    "a bridge longer than two leaves of its material is refused");
+            });
+
             Case("Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise", () =>
             {
                 string b = Src("Pits", "Building_SpanDeck.cs");

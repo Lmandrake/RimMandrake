@@ -516,6 +516,14 @@ namespace RimMandrake.FlowWorks.Hose
         // ------------------------------------------------------------------ S4: free-end kind, events, reel art
         private readonly Dictionary<CompHoseReel, HoseCarryState> seenCarry = new Dictionary<CompHoseReel, HoseCarryState>();
         private readonly Dictionary<CompHoseReel, KeyValuePair<int, HoseFreeEnd>> ends = new Dictionary<CompHoseReel, KeyValuePair<int, HoseFreeEnd>>();
+
+        /// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 5: a drawbridge leaf moved; every cached free end is read again now
+        /// (a hose lying on the leaf disconnects or rejoins without waiting out the 60-tick cache).</summary>
+        public void InvalidateEnds()
+        {
+            ends.Clear();
+            RelayVersion++;
+        }
         private readonly Dictionary<CompHoseReel, HoseEndKind> placedKind = new Dictionary<CompHoseReel, HoseEndKind>();
 
         /// <summary>The reel's free end (design section 7), re-read at most every 60 ticks or when the end moved.</summary>

@@ -41,6 +41,9 @@ namespace RimMandrake.FlowWorks.Hose
             var e = new HoseFreeEnd { Cell = IntVec3.Invalid, Kind = HoseEndKind.None };
             Map map = r?.parent?.Map;
             if (map == null || !r.laid || !r.far.IsValid) return e;
+            // DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 5 (review answer 6): a hose lying over a raised drawbridge leaf is
+            // disconnected (no end) while the leaf is up, and rejoins when it is lowered; it never re-routes across the moat
+            if (Pits.RM_Drawbridges.HoseCut(r)) return e;
             e.Cell = r.far;
             RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
             e.Relay = comp?.RelayOf(r);

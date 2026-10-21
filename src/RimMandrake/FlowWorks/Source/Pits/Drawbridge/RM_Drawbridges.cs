@@ -324,6 +324,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Swimming.RM_SwimPathing.Bump(map);
 			RM_PocketGrid.ForceRebuild(map);
 			RepathOver(map, changed);
+			map.GetComponent<Hose.RM_MapComponent_Hoses>()?.InvalidateEnds();   // phase 5: hoses on the leaf cut / rejoin now
 		}
 
 		/// <summary>A pawn whose path crosses a changed square, or whose path is still being computed (1.6 batches path jobs: a
@@ -795,6 +796,67 @@ namespace RimMandrake.FlowWorks.Pits
 				isActive = () => l.holdRaised,
 				toggleAction = () => l.holdRaised = !l.holdRaised,
 			};
+		}
+
+		// ── Phase 5: lines on a leaf (review answer 6) ───────────────────────────────────────────
+
+		/// <summary>Is any of these cells a raised drawbridge leaf square? A flexible line (hose; the power cord of
+		/// POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS reads this too) lying over one is disconnected while it is up.</summary>
+		public static bool LineCutAt(Map map, IEnumerable<IntVec3> cells)
+		{
+			if (map == null || cells == null || !AnyRaised(map))
+			{
+				return false;
+			}
+			foreach (IntVec3 c in cells)
+			{
+				Building_SuspensionDeck d = RM_MapComponent_SuspensionBridges.StructuralDeckAt(map, c);
+				if (d != null && d.Raised)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>Any leaf on the map off its seat (the cheap gate before a per-cell read).</summary>
+		public static bool AnyRaised(Map map)
+		{
+			RM_MapComponent_SuspensionBridges comp = RM_MapComponent_SuspensionBridges.Of(map);
+			if (comp == null)
+			{
+				return false;
+			}
+			foreach (SuspensionBridgeRecord r in comp.Bridges)
+			{
+				if (r.IsDrawbridge)
+				{
+					foreach (DrawbridgeLeaf l in r.leaves)
+					{
+						if (l.progress > 0)
+						{
+							return true;
+						}
+					}
+				}
+			}
+			return false;
+		}
+
+		/// <summary>A laid hose whose walked trail (or, for a planned hose with no trail, the straight line from reel to end)
+		/// crosses a raised leaf square.</summary>
+		public static bool HoseCut(Hose.CompHoseReel r)
+		{
+			Map map = r?.parent?.Map;
+			if (map == null || !r.laid || !AnyRaised(map))
+			{
+				return false;
+			}
+			if (r.trail != null && r.trail.Count > 0)
+			{
+				return LineCutAt(map, r.trail);
+			}
+			return LineCutAt(map, GenSight.PointsOnLineOfSight(r.parent.Position, r.far));
 		}
 
 		/// <summary>The gizmos a selected deck square shows: its leaf's controls, then the dev tools.</summary>
