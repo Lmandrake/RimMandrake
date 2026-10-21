@@ -49,6 +49,7 @@
     <Compile Include="RM_WorldStarsPatch.cs" />
     <Compile Include="RM_TidalSunGlowMath.cs" />
     <Compile Include="RM_TidalSunGlowPatch.cs" />
+    <Compile Include="RM_TidalNoSeasonsPatch.cs" />
     <Compile Include="RM_VerminPressureExtension.cs" />
     <Compile Include="RM_MapComponent_VerminPopulation.cs" />
     <Compile Include="RM_CompProperties_VerminBreeder.cs" />
