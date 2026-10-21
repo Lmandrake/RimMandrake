@@ -230,6 +230,7 @@
     <Compile Include="Pits\Drawbridge\RM_DrawbridgeSettings.cs" />
     <Compile Include="Pits\Drawbridge\RM_DrawbridgeRaid.cs" />
     <Compile Include="Pits\Drawbridge\RM_DrawbridgeGravship.cs" />
+    <Compile Include="Pits\Drawbridge\RM_DrawbridgeArt.cs" />
   </ItemGroup>
 
   <!-- ManyWaters, merged 2026-09-16. Namespace
