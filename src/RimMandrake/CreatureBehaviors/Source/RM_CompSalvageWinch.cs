@@ -111,22 +111,11 @@ namespace RimMandrake.CreatureBehaviors
             if (t is Pawn dp && (dp.Dead || !dp.Downed)) { Release("lost"); return; }
             if (t.Position.AdjacentTo8WayOrInside(parent)) { Release("arrived"); return; }
             if (!GenSight.LineOfSight(parent.Position, t.Position, map, skipFirstCell: true)) { Release("wall"); return; }
-            IntVec3 next = RM_CompTetherPull.NextCellToward(t.Position, parent.Position);
-            if (!next.IsValid || !next.InBounds(map) || !next.Walkable(map)
-                || (next.GetEdifice(map) is Building b && b.def.Fillage == FillCategory.Full))
+            // The one forced move (RM_CompTetherPull.ForcedStepToward); the winch reports any block as "obstacle".
+            if (RM_CompTetherPull.ForcedStepToward(t, parent.Position, map) != null)
             {
                 Release("obstacle");
                 return;
-            }
-            if (t is Pawn p)
-            {
-                p.Position = next;
-                p.Notify_Teleported(endCurrentJob: true, resetTweenedPos: false);
-            }
-            else
-            {
-                t.DeSpawn();
-                GenSpawn.Spawn(t, next, map);
             }
             nextReelTick = Find.TickManager.TicksGame + ReelIntervalTicks;
         }

@@ -263,19 +263,12 @@ namespace RimMandrake.CreatureBehaviors
                 Snap(p.LabelShortCap + " fought the line until it parted", "struggle");
                 return;
             }
-            IntVec3 next = NextCellToward(p.Position, parent.Position);
-            if (!next.IsValid || !next.InBounds(map) || !next.Walkable(map))
+            string blocked = ForcedStepToward(p, parent.Position, map);
+            if (blocked != null)
             {
-                Release("The line drags " + p.LabelShort + " against an obstacle and goes slack.", "obstacle");
+                Release("The line drags " + p.LabelShort + " against an obstacle and goes slack.", blocked);
                 return;
             }
-            if (next.GetEdifice(map) is Building b && b.def.Fillage == FillCategory.Full)
-            {
-                Release("The line drags " + p.LabelShort + " against an obstacle and goes slack.", "wall");
-                return;
-            }
-            p.Position = next;
-            p.Notify_Teleported(endCurrentJob: true, resetTweenedPos: false);
             if (p.stances != null)
             {
                 p.stances.stunner.StunFor(ReelIntervalTicks + 5, parent, addBattleLog: false, showMote: false);
@@ -293,6 +286,28 @@ namespace RimMandrake.CreatureBehaviors
             {
                 ReelStep();
             }
+        }
+
+        /// <summary>THE forced move, shared by every reel (tether, capstan, lance, salvage winch): one cell along the
+        /// line from <paramref name="t"/> toward <paramref name="anchor"/>. A pawn moves the way vanilla teleports one
+        /// (Position + Notify_Teleported); any other thing is despawned and respawned on the next cell.</summary>
+        /// <returns>null when it moved; "obstacle" (off-map or unwalkable) or "wall" (Full-fillage edifice) when it did not.</returns>
+        public static string ForcedStepToward(Thing t, IntVec3 anchor, Map map)
+        {
+            IntVec3 next = NextCellToward(t.Position, anchor);
+            if (!next.IsValid || !next.InBounds(map) || !next.Walkable(map)) return "obstacle";
+            if (next.GetEdifice(map) is Building b && b.def.Fillage == FillCategory.Full) return "wall";
+            if (t is Pawn p)
+            {
+                p.Position = next;
+                p.Notify_Teleported(endCurrentJob: true, resetTweenedPos: false);
+            }
+            else
+            {
+                t.DeSpawn();
+                GenSpawn.Spawn(t, next, map);
+            }
+            return null;
         }
 
         public static IntVec3 NextCellToward(IntVec3 from, IntVec3 to)
