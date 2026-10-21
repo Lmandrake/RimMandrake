@@ -346,6 +346,11 @@ namespace RimMandrake.CreatureBehaviors
     //      flare (drawn ZTest Always, additive) is blanked while the line from the
     //      camera to the sun passes through the planet. Off: the flare as that mod
     //      draws it. Rendering only; does nothing without Planet Atmosphere.
+    //  54. worldSunPinned — RM_WorldSunPatch (WORLD_STARS_REPAIR_STILL_SPINNING_FOR_NOBODY,
+    //      part 2). On: in the planet view the sun disc and the planet's lit side
+    //      stay pointed at the substellar point instead of turning once a day.
+    //      Off: vanilla (or the Alien Worlds tidal-lock sun when that is active).
+    //      Rendering only.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -433,6 +438,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool worldStarsPinned = true;
         public static bool worldStarsYearlyDrift = true;
         public static bool sunFlareHiddenBehindPlanet = true;
+        public static bool worldSunPinned = true;
         public static bool tidalSunGlowByGeometry = true;
         public static float tidalTwilightBandDegrees = RM_TidalSunGlowMath.DefaultTwilightBandDegrees;
         public static bool tidalLockNoSeasons = true;
@@ -672,6 +678,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref worldStarsPinned, "worldStarsPinned", true);
             Scribe_Values.Look(ref worldStarsYearlyDrift, "worldStarsYearlyDrift", true);
             Scribe_Values.Look(ref sunFlareHiddenBehindPlanet, "sunFlareHiddenBehindPlanet", true);
+            Scribe_Values.Look(ref worldSunPinned, "worldSunPinned", true);
             Scribe_Values.Look(ref tidalSunGlowByGeometry, "tidalSunGlowByGeometry", true);
             Scribe_Values.Look(ref tidalTwilightBandDegrees, "tidalTwilightBandDegrees", RM_TidalSunGlowMath.DefaultTwilightBandDegrees);
             Scribe_Values.Look(ref tidalLockNoSeasons, "tidalLockNoSeasons", true);
@@ -1061,7 +1068,7 @@ namespace RimMandrake.CreatureBehaviors
                   + "in it like the shadow of a rock. Off: its shadow is only something its riders follow.");
                 list.GapLine();
             }
-            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "worldStarsPinned", "worldStarsYearlyDrift", "sunFlareHiddenBehindPlanet", "tidalSunGlowByGeometry", "tidalTwilightBandDegrees", "tidalLockNoSeasons", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade", "WorldStars", "TidalSunGlow", "TidalNoSeasons", "Seasons" }))
+            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "worldSunPinned", "worldStarsPinned", "worldStarsYearlyDrift", "sunFlareHiddenBehindPlanet", "tidalSunGlowByGeometry", "tidalTwilightBandDegrees", "tidalLockNoSeasons", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade", "WorldStars", "WorldSun", "TidalSunGlow", "TidalNoSeasons", "Seasons" }))
             {
                 list.CheckboxLabeled("Pinned sun (golden hour)", ref pinnedSunEnabled,
                     "On: a biome built with a pinned sun (the Long Shade) keeps one fixed sunset sky "
@@ -1070,6 +1077,10 @@ namespace RimMandrake.CreatureBehaviors
                   + "with the real sun again.");
                 list.Label("Golden-hour sky strength: " + pinnedSunSkyStrength.ToStringPercent());
                 pinnedSunSkyStrength = list.Slider(pinnedSunSkyStrength, 0f, 1f);
+                list.CheckboxLabeled("Planet view: the sun holds still", ref worldSunPinned,
+                    "On: in the planet view the sun and the lit half of the world stay fixed over the point straight "
+                  + "below the sun, as on a tidally locked world. Off: the sun goes round the planet once a day as in the "
+                  + "base game (or as the Alien Worlds tidal-lock mod sets it, when that is active).");
                 list.CheckboxLabeled("Planet view: stars hold still", ref worldStarsPinned,
                     "On: in the planet view the stars no longer wheel round the world every day as if it were "
                   + "spinning; they hold still around the fixed sun. Off: the stars turn once a day as in the base game.");
