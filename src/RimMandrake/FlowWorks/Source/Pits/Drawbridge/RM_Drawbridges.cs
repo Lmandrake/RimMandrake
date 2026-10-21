@@ -3,6 +3,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace RimMandrake.FlowWorks.Pits
 {
@@ -83,12 +84,19 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>Set by the functional script / proofs: how many toggles forced a repath, and how many pawns were re-pathed.</summary>
 		public static int ToggleCount;
 		public static int RepathCount;
+		public static int HostileJobsEnded;
 
-		public static float SpeedMultiplier => 1f;
+		public static float SpeedMultiplier => RM_DrawbridgeSettings.raiseSpeed;
 
+		/// <summary>The longest leaf of this material (Mod Settings; 0 = not a drawbridge material).</summary>
 		public static int MaxLeaf(SuspensionTier t)
 		{
-			return RM_DrawbridgeMath.DefaultMaxLeaf(t);
+			switch (t)
+			{
+				case SuspensionTier.Timber: return RM_DrawbridgeSettings.maxLeafTimber;
+				case SuspensionTier.Steel: return RM_DrawbridgeSettings.maxLeafSteel;
+				default: return 0;
+			}
 		}
 
 		public static int FullTicks(SuspensionBridgeRecord r, DrawbridgeLeaf l)
@@ -213,6 +221,20 @@ namespace RimMandrake.FlowWorks.Pits
 				foreach (DrawbridgeLeaf l in r.leaves)
 				{
 					int full = FullTicks(r, l);
+					if (!RM_DrawbridgeSettings.drawbridgesEnabled)
+					{
+						// R11 all off: a suspension bridge stuck lowered; a raised leaf is set down (no crash, nobody hit)
+						if (l.progress > 0 || l.targetRaised)
+						{
+							l.progress = 0;
+							l.targetRaised = false;
+							l.tipCommitted = false;
+							l.autoLowering = false;
+							l.pendingOrder = RM_DrawbridgeMath.OrderNone;
+							Apply(comp.map, r, l);
+						}
+						continue;
+					}
 					Mode(comp.map, r, l, now);
 					Building_DrawbridgeWinch w = l.winch != null && l.winch.Spawned ? l.winch : null;
 					bool powered = w != null && w.Powered;
@@ -328,6 +350,14 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 				if (!hit)
 				{
+					continue;
+				}
+				if (p.HostileTo(Faction.OfPlayer) && p.GetLord() != null && p.jobs?.curJob != null)
+				{
+					// R5 / GPT #12: a raider's job holding a path over the leaf is ended, so its duty thinks again (and, with
+					// nothing reachable, the trench rules or the winch givers take over)
+					p.jobs.EndCurrentJob(JobCondition.InterruptForced);
+					HostileJobsEnded++;
 					continue;
 				}
 				LocalTargetInfo dest = pf.Destination;

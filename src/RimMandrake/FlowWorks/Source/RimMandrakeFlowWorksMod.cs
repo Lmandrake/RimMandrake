@@ -710,6 +710,7 @@ namespace RimMandrake.FlowWorks
             Pits.RM_SuspensionSettings.ExposeData();        // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS (bridges design §9)
             RM_WallClimbSettings.ExposeData();              // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS
             RM_RaiderTrenchSettings.ExposeData();           // RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP
+            Pits.RM_DrawbridgeSettings.ExposeData();        // DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (design R11)
             Swimming.RM_SwimSettings.ExposeData();   // DEEP_WATER_BUILD_SWIM_OR_SINK (owner R12)
             RM_WaterMendSettings.ExposeData();       // FISH_ROLL_MEND_PONDS_BORN_BARREN (engine doc §2.3; Q5a/Q6a defaults)
             RimMandrake.Shared.PatchApplier.AfterExpose();
@@ -1905,6 +1906,7 @@ namespace RimMandrake.FlowWorks
             Pits.RM_SuspensionSettings.DoSettingsSection(list);
             RM_WallClimbSettings.DoSettingsSection(list);
             RM_RaiderTrenchSettings.DoSettingsSection(list);
+            Pits.RM_DrawbridgeSettings.DoSettingsSection(list);
             Swimming.RM_SwimSettings.DoSettingsSection(list);
             RM_WaterMendSettings.DoSettingsSection(list);
             }
