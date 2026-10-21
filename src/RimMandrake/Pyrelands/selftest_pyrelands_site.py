@@ -289,7 +289,7 @@ class FakeGame(object):
                 for t, r in sorted(self.world.items()):
                     w.writerow([t, r["lat"], r["long"], r["biome"], r["elevation"], r["temperature"],
                                 r["rainfall"], r["hilliness"], 0, 0, 0, 0, 0, 0, "", -1,
-                                "True" if r["waterCovered"] else "False", r["roadCount"], r["riverCount"],
+                                1 if r["waterCovered"] else 0, r["roadCount"], r["riverCount"],   # the live export's 1/0
                                 len(r["mutators"])])
             return {"success": True, "path": p["path"], "tilesTotal": len(self.world)}
         if tool == "jawa/world_neighbors":

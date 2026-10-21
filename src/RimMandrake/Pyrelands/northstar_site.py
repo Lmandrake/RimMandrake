@@ -150,6 +150,18 @@ def fresh_quicktest_world(s, budget_s=420, sleep=time.sleep):
 
 # ------------------------------------------------------------------ step 2/11: choose the tile (raw fields)
 
+def _flag(v, path, tile):
+    """The live jawa/world_tile_export writes waterCovered as 1/0 (MEASURED 2026-10-21, Transient/test_site_saves/
+    leaningscrub_site); comparing to "true" read every ocean tile as land, so Scrub/Cauldron sites were built on
+    re-tiled sea (SCRUB_WILDLIFE_PROVE_NOBODY_CAME). Any other spelling is refused, never guessed."""
+    s = str(v if v is not None else "").strip().lower()
+    if s in ("1", "true"):
+        return True
+    if s in ("0", "false"):
+        return False
+    raise Unmeasured("tile export %s: waterCovered %r on tile %s is neither 1/0 nor true/false" % (path, v, tile))
+
+
 def read_tile_csv(path):
     rows = {}
     with open(path, newline="", encoding="utf-8") as f:
@@ -157,7 +169,7 @@ def read_tile_csv(path):
             rows[int(r["tile"])] = {
                 "lat": float(r["lat"]), "long": float(r["long"]), "biome": r["biome"],
                 "hilliness": r["hilliness"],
-                "waterCovered": str(r.get("waterCovered", "")).lower() == "true",
+                "waterCovered": _flag(r.get("waterCovered"), path, r["tile"]),
                 "riverCount": int(float(r.get("riverCount") or 0)),
                 "roadCount": int(float(r.get("roadCount") or 0)),
                 "mutatorCount": int(float(r.get("mutatorCount") or 0)),
