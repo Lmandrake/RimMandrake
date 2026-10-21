@@ -1,0 +1,1 @@
+An OWNER-seat ledger note's text= field is an agent's gloss of a card option, not his words; only the ownerSaid / byCard fields are verbatim. The 2026-10-12 story rulings had no sitting doc at all (ledger only), so a card ruling with no doc write-back is invisible to every doc grep. Quote byCard/ownerSaid and label text= as 'option text recorded with it'.
