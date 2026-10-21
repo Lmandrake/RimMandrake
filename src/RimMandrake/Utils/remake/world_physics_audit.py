@@ -20,7 +20,7 @@ Per tile it computes, from engine-truth lat/long (`world/world_tiles_sub7b.csv`,
              terminator (long -90) reads lit and the east one (+90) nearly dark.
   glow_geo   OUR replacement (RimMandrake.CreatureBehaviors RM_TidalSunGlowPatch, owner by card
              2026-10-20 "Light follows the sun"): a line-for-line port of RM_TidalSunGlowMath —
-             0.6 + 0.4*min(1, sin(e)/sin 30°) for e > 0, a 6° smoothstep dusk band to 0.6 below
+             0.6 + 0.4*min(1, sin(e)/sin 30°) for e > 0, a 12° smoothstep dusk band to 0.6 below
              the horizon, 0 beyond. What the game reads while the lock is active and the setting on.
   t_save     the tile's stored average temperature (what the game reads; daily swing is
              off under the tidal lock, the seasonal swing is NOT — see season_amp)
@@ -122,7 +122,7 @@ def glow_tidal(lat, lon):
 
 DAY_THRESHOLD = 0.6        # GenCelestial.IsDaytime: glow > 0.6
 FULL_DAY_ELEV = 30.0       # RM_TidalSunGlowMath.FullDayElevationDegrees
-TWILIGHT_BAND = 6.0        # RM_TidalSunGlowMath.DefaultTwilightBandDegrees
+TWILIGHT_BAND = 12.0       # RM_TidalSunGlowMath.DefaultTwilightBandDegrees (owner, by card 2026-10-20: 12°)
 
 
 def glow_geo(lat, lon, band=TWILIGHT_BAND):

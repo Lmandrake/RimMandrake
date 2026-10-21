@@ -25,8 +25,9 @@ namespace RimMandrake.CreatureBehaviors
         /// <summary>Sun elevation (degrees) at and above which the day is at full glow.</summary>
         public const float FullDayElevationDegrees = 30f;
 
-        /// <summary>Default width (degrees below the horizon) of the dusk band on the night-side rim.</summary>
-        public const float DefaultTwilightBandDegrees = 6f;
+        /// <summary>Default width (degrees below the horizon) of the dusk band on the night-side rim. 12 = nautical
+        /// twilight: owner, by card 2026-10-20 ("How far below the horizon should dusk light reach?" -> "12 degrees").</summary>
+        public const float DefaultTwilightBandDegrees = 12f;
 
         /// <summary>Great-circle arc (degrees) from the substellar point (lat 0, long 0) to (lat, lon).</summary>
         public static double ArcDegrees(double latDeg, double lonDeg)

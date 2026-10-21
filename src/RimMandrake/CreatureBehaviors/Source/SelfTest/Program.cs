@@ -840,6 +840,21 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(RM_TidalSunGlowMath.GlowAt(0, 80, band) > 0.6f && RM_TidalSunGlowMath.GlowAt(0, -80, band) > 0.6f,
                     "arc 80 (sun 10 deg up) reads night");
                 Assert(RM_TidalSunGlowMath.GlowFromElevation(-3.0, 0f) == 0f, "dusk band 0: below the horizon is not dark");
+                // TWILIGHT_BAND_DECIDE_HOW_FAR_DUSK_REACHES: owner, by card 2026-10-20 -> "12 degrees" (nautical).
+                Assert(band == 12f, "default dusk band is " + band + ", the owner's card says 12");
+                // Continuous across the band at every slider width: no step at the horizon or at -band.
+                foreach (float w in new[] { 1f, 6f, 12f, 18f })
+                {
+                    float last = RM_TidalSunGlowMath.GlowFromElevation(-90.0, w);
+                    for (double e = -90.0 + 0.01; e <= 90.0; e += 0.01)
+                    {
+                        float g = RM_TidalSunGlowMath.GlowFromElevation(e, w);
+                        // smoothstep's steepest slope is 1.5 * 0.6 / band per degree; the day side's is ~0.014
+                        Assert(Math.Abs(g - last) < 0.01f * 0.9f / w + 0.0005f, "glow jumps " + (g - last) + " at " + e + " deg, band " + w);
+                        last = g;
+                    }
+                }
+                Assert(Math.Abs(RM_TidalSunGlowMath.GlowFromElevation(-6.0, 12f) - 0.3f) < 1e-4f, "mid-band (-6 of 12) is not half of 0.6");
             });
             Case("moving shade: clearing the old rectangle and casting the new leaves no trail", () =>
             {

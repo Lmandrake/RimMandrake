@@ -144,7 +144,7 @@ Restore steps: item `PLANET_RINGS_RESTORE_DEBRIS_STILL_IN_ORBIT`.
 - **Light** ("Lopsided tidal-lock daylight" → "Light follows the sun"): `RM_TidalSunGlowPatch` +
   `RM_TidalSunGlowMath` (CreatureBehaviors) postfix `CelestialSunGlow(PlanetTile,int)` only while
   `7f.alienworlds.tidallylocked` has its patch on it: glow = 0.6 + 0.4·min(1, sin e / sin 30°) for sun
-  elevation e > 0, a 6° dusk band (smoothstep to 0.6) below the horizon, 0 beyond; constant in time, symmetric.
+  elevation e > 0, a 12° dusk band (owner by card 2026-10-20; was 6°) (smoothstep to 0.6) below the horizon, 0 beyond; constant in time, symmetric.
   Setting `tidalSunGlowByGeometry` (on) + dusk-band slider. Offline (`world_physics_audit.py`, selftest
   `remake/selftest_tidal_sun_glow.py`): 0 night-side tiles read day and 0 day-side tiles read night (mod: 450 /
   1,794 unrounded; 448 / 1,796 rounded, §2); home 17011 = 1.00. Live check + deploy: `TIDAL_GLOW_DEPLOY_FOLLOWS_THE_SUN`.
