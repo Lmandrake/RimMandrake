@@ -331,10 +331,29 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                     Check(RM_TitanicKernel.VisitorTake(100, int.MaxValue, int.MaxValue) == 100, "huge visitor numbers overflowed");
                     Check(RM_TitanicKernel.VisitorTake(100, 3, 0) == 0 && RM_TitanicKernel.VisitorTake(100, -1, 5) == 0, "non-positive visitors took meat");
 
-                    int tier = r.Next(0, 4); bool here = r.Next(2) == 0, some = r.Next(2) == 0, season = r.Next(2) == 0, t3 = r.Next(2) == 0;
-                    bool spec = tier >= 2 && !here && some && season && !(tier == 3 && t3);
-                    Check(RM_TitanicKernel.TitanEventEligible(tier, here, some, season, t3) == spec, "titan event gate disagrees with card #5");
-                    Check(!RM_TitanicKernel.TitanEventEligible(tier, true, true, true, false), "a titan homed here arrived as an event");
+                    int tier = r.Next(0, 4);
+                    bool optOut = r.Next(4) == 0, here = r.Next(2) == 0, season = r.Next(2) == 0, t3 = r.Next(2) == 0;
+                    bool hasList = r.Next(2) == 0, onList = r.Next(2) == 0, seaMap = r.Next(2) == 0;
+                    int seaHomes = r.Next(0, 3), landHomes = r.Next(0, 3);
+                    bool sea = RM_TitanicKernel.IsSeaCreature(seaHomes, landHomes);
+                    Check(sea == (seaHomes > 0 && landHomes == 0), "sea creature test is not 'homed only in seas'");
+                    bool spec = !optOut && tier >= 2 && sea == seaMap && season && (hasList ? onList : here) && !(tier == 3 && t3);
+                    Check(RM_TitanicKernel.TitanEventEligible(tier, optOut, sea, seaMap, hasList, onList, here, season, t3) == spec,
+                        "titan passage gate disagrees with the 2026-10-21 card");
+                    // the owner's sentences, one check each, every other input free
+                    Check(!RM_TitanicKernel.TitanEventEligible(tier, optOut, true, false, hasList, onList, here, season, t3),
+                        "a sea creature walked onto dry land");
+                    Check(!RM_TitanicKernel.TitanEventEligible(tier, optOut, false, true, hasList, onList, here, season, t3),
+                        "a land creature swam past on a sea map");
+                    Check(!RM_TitanicKernel.TitanEventEligible(tier, true, sea, seaMap, hasList, onList, here, season, t3),
+                        "an opted-out biome (Rust Cathedral) drew a passage");
+                    Check(!RM_TitanicKernel.TitanEventEligible(tier, optOut, sea, seaMap, true, false, true, season, t3),
+                        "a biome with a passage list drew a giant not on it");
+                    Check(!RM_TitanicKernel.TitanEventEligible(tier, optOut, sea, seaMap, false, true, false, season, t3),
+                        "a biome without a passage list drew a giant its own roster does not home");
+                    Check(RM_TitanicKernel.TitanEventEligible(2, false, seaMap, seaMap, hasList, true, true, true, t3),
+                        "a T2 giant from the biome's own hints, matching water, in season, was refused");
+                    Check(!RM_TitanicKernel.IsSeaCreature(0, 0), "a race homed nowhere counted as a sea creature");
                     float h = F(r, -10f, 200f);
                     int w = RM_TitanicKernel.WarningTicks(h);
                     Check(w >= 625 && w <= 180000, "warning ticks outside [625, 3 days]");

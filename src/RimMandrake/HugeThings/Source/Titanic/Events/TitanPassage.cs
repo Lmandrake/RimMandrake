@@ -14,10 +14,11 @@ namespace RimMandrake.TitanicCreatures
     /// they arrive as scripted events/quests with warning (footfall tremors first). Wake damage applies to any structure including
     /// the player's - that is the point."
     ///
-    /// The incident only SCHEDULES: it picks a titan race some biome homes but this map's biomes do not, sends the tremor letter,
-    /// and hands the passage to MapComponent_TitanPassages, which shakes the camera with growing force through the warning hours
-    /// and then walks the titan across the map edge to edge (vanilla LordJob_ExitMapNear, the herd-migration shape). The wake
-    /// does the rest. No race or biome is named: the rosters decide who comes.
+    /// The incident only SCHEDULES: it picks a titan from this map biome's own hints (its RM_TitanPassageExtension passage list,
+    /// else its own roster; sea giants only on sea maps, land giants only on land; owner by card 2026-10-21), sends the tremor
+    /// letter, and hands the passage to MapComponent_TitanPassages, which shakes the camera with growing force through the
+    /// warning hours and then walks the titan across the map edge to edge (vanilla LordJob_ExitMapNear, the herd-migration
+    /// shape). The wake does the rest. No race or biome is named in code: the biome data decides who comes.
     /// </summary>
     public class IncidentWorker_TitanPassage : IncidentWorker
     {
@@ -46,16 +47,71 @@ namespace RimMandrake.TitanicCreatures
 
     public static class TitanPassageUtility
     {
-        /// <summary>Card #5's gate, per race: RM_TitanicKernel.TitanEventEligible over the live biome commonalities.</summary>
+        public const string SeabedLayerDefName = "RM_SeabedLayer";
+        public const string SeabedFloorExtensionName = "RM_SeabedFloorExtension";
+
+        /// <summary>The 2026-10-21 card's gate, per kind: RM_TitanicKernel.TitanEventEligible over the live biome commonalities.
+        /// A calf kind of a titan race is judged by its race's adult tier, so it qualifies ("Calves are ok").</summary>
         public static bool Eligible(PawnKindDef k, Map map, bool t3OnMap)
         {
-            if (k?.race?.race == null || !k.RaceProps.Animal || k.RaceProps.Dryad) return false;
+            if (k?.race?.race == null || map == null || !k.RaceProps.Animal || k.RaceProps.Dryad) return false;
             int tier = (int)TitanicTierUtility.AdultTier(k.race);
             if (tier < RM_TitanicKernel.T2) return false;
+            bool optedOut = map.Biomes.Any(b => b?.GetModExtension<RM_TitanPassageExtension>()?.none == true);
+            bool hasList = false, onList = false;
+            foreach (BiomeDef b in map.Biomes)
+            {
+                List<PawnKindDef> list = b?.GetModExtension<RM_TitanPassageExtension>()?.passers;
+                if (list == null || list.Count == 0) continue;
+                hasList = true;
+                if (list.Contains(k)) onList = true;
+            }
             bool here = map.Biomes.Any(b => b.CommonalityOfAnimal(k) > 0f);
-            bool some = DefDatabase<BiomeDef>.AllDefsListForReading.Any(b => b.CommonalityOfAnimal(k) > 0f);
             bool season = map.mapTemperature.SeasonAndOutdoorTemperatureAcceptableFor(k.race);
-            return RM_TitanicKernel.TitanEventEligible(tier, here, some, season, t3OnMap);
+            return RM_TitanicKernel.TitanEventEligible(tier, optedOut, IsSeaCreature(k), IsSeaMap(map), hasList, onList, here,
+                season, t3OnMap);
+        }
+
+        /// <summary>A sea biome: a water biome (Grey Sea, Twilight Sea, the Scald, the Chill...) or a seabed floor, whose cast is
+        /// its sea's (RM_SeabedFloorLife copies it at startup). The floor test is by extension type name on purpose: this
+        /// assembly must not depend on DivingInteraction.</summary>
+        public static bool IsSeaBiome(BiomeDef b)
+        {
+            if (b == null) return false;
+            if (b.isWaterBiome) return true;
+            if (b.modExtensions != null)
+                foreach (DefModExtension e in b.modExtensions)
+                    if (e != null && e.GetType().Name == SeabedFloorExtensionName) return true;
+            return false;
+        }
+
+        /// <summary>A sea map: its own biome is a sea biome, or it lies on the seabed planet layer (name test, as
+        /// RM_SurfaceHome.IsSeabedMap).</summary>
+        public static bool IsSeaMap(Map map)
+        {
+            if (map == null) return false;
+            if (map.Tile.Valid && map.Tile.Layer?.Def?.defName == SeabedLayerDefName) return true;
+            return IsSeaBiome(map.Biome);
+        }
+
+        private static Dictionary<PawnKindDef, bool> seaCache;
+
+        /// <summary>A sea creature: homed in at least one biome, and only ever in sea biomes. Cached per kind (rosters are fixed
+        /// after def load).</summary>
+        public static bool IsSeaCreature(PawnKindDef k)
+        {
+            if (k == null) return false;
+            if (seaCache == null) seaCache = new Dictionary<PawnKindDef, bool>();
+            if (seaCache.TryGetValue(k, out bool v)) return v;
+            int sea = 0, land = 0;
+            foreach (BiomeDef b in DefDatabase<BiomeDef>.AllDefsListForReading)
+            {
+                if (b.CommonalityOfAnimal(k) <= 0f) continue;
+                if (IsSeaBiome(b)) sea++; else land++;
+            }
+            v = RM_TitanicKernel.IsSeaCreature(sea, land);
+            seaCache[k] = v;
+            return v;
         }
 
         public static bool T3OnMap(Map map)

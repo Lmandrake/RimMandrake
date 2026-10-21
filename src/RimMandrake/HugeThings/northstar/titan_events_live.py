@@ -248,6 +248,14 @@ def passage(R, a):
     R.put("titanEventsEnabled", True)
     R.ticks(2)
     ok, txt = R.hook("PassageCanFire")
+    # the 2026-10-21 water law, read straight off the pool: on a land map no eligible kind is tagged :sea, on a sea map none
+    # is tagged :land (run of 2026-10-21 on R3 Stillsand listed RM_Reefback, RM_Lanternwhale, RSW_ShadeWhale... on foot)
+    if ok and " eligible=" in txt and "seaMap=" in txt:
+        sea_map = "seaMap=True" in txt
+        wrong = ":land" if sea_map else ":sea"
+        R.row("A4_water_law", "A4", "FAIL" if wrong in txt else "PASS", "MOD", txt[:300])
+    else:
+        R.row("A4_water_law", "A4", "UNMEASURED", "HARNESS", "PassageCanFire carries no seaMap= (old DLL?): %s" % txt[:200])
     if not ok or "canFire=True" not in txt:
         R.row("A4_can_fire", "A4", "UNMEASURED", "SITE", "events on but cannot fire here: %s" % txt[:300])
         return
@@ -264,7 +272,10 @@ def passage(R, a):
     R.hook("PassageArriveNow")
     R.ticks(5)
     ok, rep = R.hook("PassageReport")
-    good = ok and "pending=False" in rep and " arrived=" in rep and "spawned=True" in rep and "homedHere=False" in rep \
+    # TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT (owner, by card 2026-10-21): the pool is the map biome's own hints (passage list,
+    # else its own roster), so homedHere=True is now normal; the old "homedHere=False" bar encoded card #5's rule and is
+    # gone. What must hold is the water law: a sea giant never walks a land map, a land giant never swims a sea map.
+    good = ok and "pending=False" in rep and " arrived=" in rep and "spawned=True" in rep and "seaMatch=True" in rep \
         and "lord=LordJob_ExitMapNear" in rep and (" tier=T2" in rep or " tier=T3" in rep)
     R.row("A4_arrives", "A4", "PASS" if good else "FAIL", "MOD", rep[:300])
     # the one-T3-per-map law: a live T3 on the map leaves no T3 among the eligible kinds
