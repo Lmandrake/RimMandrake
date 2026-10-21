@@ -166,6 +166,8 @@ FEATURES = [
     ("def", r"^(ThingDef/RM_RaidPlank(_Laid)?|JobDef/RM_LayRaidPlank)$", "Raid planks raiders lay across a trench", M + "raider AI; proved by drawbridge_proof.py, no frozen station stages a raid"),
     ("set", r"^(drawbridgesEnabled|raiseSpeed|maxLeafTimber|maxLeafSteel|raidsBringPlanks|raidPlankChance)$", "Drawbridge switches, speed, leaf length, raid planks", M + "state-read by drawbridge_proof.py (RM_DrawbridgeSettings)"),
     ("gizmo", r'^"(Raise drawbridge|Lower drawbridge|Hold raised)"$', "Drawbridge raise/lower/hold buttons", M + "winch gizmos; driven by drawbridge_proof.py"),
+    # before the hose reel's catch-all "DEV:" rule (first match wins): these are the drawbridge's own god-mode buttons
+    ("gizmo", r'^"DEV: (make drawbridge"|" \+ \(l\.targetRaised)', "Drawbridge god-mode buttons (make drawbridge, raise/lower leaf N)", M + "dev-mode gizmos on a bridge anchor; drawbridge_proof.py drives the same calls through RM_DrawbridgeProofs"),
     ("gizmo", r"^label$", "Drawbridge build buttons (Designator_Drawbridge's label argument)", M + "Architect build buttons for the timber/steel drawbridge; drawbridge_proof.py builds through them"),
     ("set", r"^pipesUnderToCentre$", "Pipes run under to the centre", M + "pipe-routing switch; no frozen station lays pipe under a deck"),
     ("def", r"^ThingDef/RM_PowerCord$", "Flexible power cord (lies on any bridge deck and a drawbridge leaf)", M + "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS; no frozen station has a deck to lay it on; L1 in SelfTest PowerCordChecks, live rows owed (L2: lamp across a timber deck, leaf raise/lower)"),

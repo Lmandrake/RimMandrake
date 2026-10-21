@@ -299,6 +299,25 @@ namespace RimMandrake.FlowWorks
 			return progress > 0;
 		}
 
+		/// <summary>A winch house left the map any way at all (destroyed, deconstructed, flown off on a gravship, despawned by anything else) while
+		/// its leaf stayed: that is a lost winch, and the leaf crashes per WinchLossCrashes. The one exception is a winch whose
+		/// bridge was itself torn loose at that same launch (RM_Patch_GravshipLaunch_Bridges): its span already fell, so there
+		/// is no leaf left to crash; the link is only cleared. Deconstructing counts as losing it (the ruled general rule; a
+		/// lower-then-release on deconstruct is unruled, put to the owner).</summary>
+		public static bool WinchDepartureCrashes(int progress, bool bridgeTornLooseAtLaunch)
+		{
+			return !bridgeTornLooseAtLaunch && WinchLossCrashes(progress);
+		}
+
+		/// <summary>A tower may join a bridge's supports only when the bridge is not a drawbridge (a leaf swings from a bank,
+		/// never from a tower: CanBeDrawbridge). Read at placement, at frame completion and at a rebuild.</summary>
+		public static bool TowerMayJoin(bool isDrawbridge)
+		{
+			return !isDrawbridge;
+		}
+
+		public const string TowerOnDrawbridgeRefused = "A drawbridge cannot stand on towers: its leaves swing from the banks.";
+
 		/// <summary>R11 lock readout.</summary>
 		public static string LockLine(bool locked, int freeHostiles, bool holdRaised)
 		{

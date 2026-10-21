@@ -1080,10 +1080,18 @@ namespace RimMandrake.FlowWorks.Pits
 			return t;
 		}
 
-		/// <summary>A tower was built (a rebuilt one included) in the middle of a bridge: it is one of that bridge's supports again.</summary>
+		/// <summary>A tower was built (a rebuilt one included) in the middle of a bridge: it is one of that bridge's supports again.
+		/// Never a drawbridge's (placement refuses it, PlaceWorker_SuspensionOverHole; a frame or rebuild blueprint laid before
+		/// the bridge became a drawbridge is refused here, with the same reason).</summary>
 		public void Notify_TowerBuilt(Building_SuspensionTower t)
 		{
 			SuspensionBridgeRecord r = RecordAt(t.Position);
+			if (r != null && !RM_DrawbridgeMath.TowerMayJoin(r.IsDrawbridge))
+			{
+				Messages.Message(RM_DrawbridgeMath.TowerOnDrawbridgeRefused + " This tower holds nothing up.", new TargetInfo(t.Position, map),
+					MessageTypeDefOf.RejectInput, false);
+				return;
+			}
 			if (r != null && !r.jetty && r.TryIndexOf(t.Position, out _, out int i) && i > 0 && i < r.length - 1 && !r.towers.Contains(i))
 			{
 				r.towers.Add(i);

@@ -184,8 +184,54 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(crash.Contains("l.progress = 0;") && crash.Contains("Apply(map, r, l);") && crash.Contains("p.TakeDamage(dinfo);"),
                     "it slams down to lowered and hits anything under it");
                 string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
-                Assert(Body(c, "public override void Destroy(DestroyMode mode = DestroyMode.Vanish)").Contains("RM_Drawbridges.Notify_WinchLost(map, this);"),
+                Assert(Body(c, "public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)").Contains("RM_Drawbridges.Notify_WinchLost(map, this);"),
                     "the winch house reports its loss");
+            });
+
+            Case("Drawbridge_P3_winch_gone_any_way_crashes_and_unlinks", () =>
+            {
+                // the review (7d97084652): only Destroy reported; a gravship launch DeSpawns (WillReplace) without destroying,
+                // leaving a stale leaf.winch and no crash. Every despawn now reports; destroy reaches it through DeSpawn.
+                Assert(RM_DrawbridgeMath.WinchDepartureCrashes(5, false), "flown off / deconstructed / any despawn while up: crash (ruled general rule)");
+                Assert(!RM_DrawbridgeMath.WinchDepartureCrashes(0, false), "a lowered leaf has nothing to crash");
+                Assert(!RM_DrawbridgeMath.WinchDepartureCrashes(5, true), "can-fail: a bridge torn loose at the same launch already fell; no second crash");
+                string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
+                Assert(!c.Contains("public override void Destroy(DestroyMode mode"), "can-fail: the loss hook sits on Destroy only (a gravship despawn never fires it)");
+                string despawn = Body(c, "public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)");
+                Assert(despawn.Contains("base.DeSpawn(mode);") && !despawn.Contains("mode ==") && !despawn.Contains("Destroyed"),
+                    "every despawn mode reports, not just a kill or a destroy");
+                string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
+                string lost = Body(db, "public static void Notify_WinchLost(Map map, Building_DrawbridgeWinch w)");
+                int unlink = lost.IndexOf("l.winch = null;", StringComparison.Ordinal);
+                Assert(lost.Contains("if (l.winch != w)") && unlink >= 0 && unlink < lost.IndexOf("Crash(map, r, l);", StringComparison.Ordinal),
+                    "idempotent: the link is cleared before the crash, and a second call finds no leaf on this winch");
+                Assert(lost.Contains("RM_DrawbridgeMath.WinchDepartureCrashes(l.progress, tornLoose)")
+                    && lost.Contains("GravshipUtility.generatingGravship && RM_Patch_GravshipLaunch_Bridges.TornLoose.Contains(r)"),
+                    "the launch exception is read only during the launch, from the bridges that launch tore loose");
+                string g = Src("Pits", "Drawbridge", "RM_DrawbridgeGravship.cs");
+                string pre = Body(g, "public static void Prefix(Building_GravEngine engine)");
+                Assert(pre.IndexOf("TornLoose.Clear();", StringComparison.Ordinal) >= 0
+                    && pre.IndexOf("TornLoose.Add(r);", StringComparison.Ordinal) < pre.IndexOf("comp.CollapseSpan(d,", StringComparison.Ordinal),
+                    "each launch refills the torn-loose set before collapsing");
+                string swap = Body(c, "public override void PostSwapMap()");
+                Assert(swap.Contains("!RM_Drawbridges.LeafOfWinch(this, out _, out _)") && swap.Contains("RM_Drawbridges.LinkWinch(this);"),
+                    "a winch that landed re-keys to a leaf beside it on the landing map, as a new one does (GSS GS-1 PostSwapMap)");
+            });
+
+            Case("Drawbridge_P1_tower_mid_span_refused", () =>
+            {
+                Assert(RM_DrawbridgeMath.TowerMayJoin(false) && !RM_DrawbridgeMath.TowerMayJoin(true), "can-fail: a drawbridge takes no tower");
+                Assert(RM_DrawbridgeMath.TowerOnDrawbridgeRefused.Contains("cannot stand on towers"), "the rejection says why");
+                string pw = Body(Src("Pits", "Suspension", "Designator_SuspensionBridge.cs"), "public class PlaceWorker_SuspensionOverHole : PlaceWorker");
+                Assert(pw.Contains("RM_DrawbridgeMath.TowerMayJoin(RM_MapComponent_SuspensionBridges.Of(map)?.RecordAt(loc)?.IsDrawbridge ?? false)")
+                    && pw.Contains("return RM_DrawbridgeMath.TowerOnDrawbridgeRefused;"),
+                    "can-fail: placement over a drawbridge (a raised leaf is not decked) is refused");
+                string built = Body(Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs"), "public void Notify_TowerBuilt(Building_SuspensionTower t)");
+                int refuse = built.IndexOf("!RM_DrawbridgeMath.TowerMayJoin(r.IsDrawbridge)", StringComparison.Ordinal);
+                Assert(refuse >= 0 && refuse < built.IndexOf("r.towers.Add(i);", StringComparison.Ordinal),
+                    "can-fail: a frame completed or a rebuild finished on a drawbridge is not added to its supports");
+                Assert(Body(Src("Pits", "Drawbridge", "RM_Drawbridges.cs"), "public static bool CanBeDrawbridge(SuspensionBridgeRecord r, out string why)")
+                    .Contains("a drawbridge cannot stand on towers"), "the forming rule still refuses a bridge on towers");
             });
 
             Case("Drawbridge_P3_one_winch_per_leaf_on_its_own_bank", () =>

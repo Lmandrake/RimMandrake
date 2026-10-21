@@ -559,6 +559,13 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return "Build the tower first, then drag the suspension bridge over it.";
 			}
+			// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS: a raised leaf (or a deck square not built yet) is not decked, so the read above
+			// lets a tower through; the drawbridge itself refuses it
+			if (checkingDef == RM_SuspensionDefOf.RM_SuspensionTower
+				&& !RM_DrawbridgeMath.TowerMayJoin(RM_MapComponent_SuspensionBridges.Of(map)?.RecordAt(loc)?.IsDrawbridge ?? false))
+			{
+				return RM_DrawbridgeMath.TowerOnDrawbridgeRefused;
+			}
 			return true;
 		}
 	}

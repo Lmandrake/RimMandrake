@@ -1095,6 +1095,7 @@ DRAWBRIDGE_CASES = [
     "Drawbridge_P2_landings_never_through_a_wall_and_within_reach",
     "Drawbridge_P2_tip_wiring_once_per_raise_band_aware_overflow_falls", "Drawbridge_P3_sides_raise_either_lower_winch_only",
     "Drawbridge_P3_drive_timber_hands_steel_power_freezes", "Drawbridge_P3_winch_lost_crashes_down_and_hits",
+    "Drawbridge_P3_winch_gone_any_way_crashes_and_unlinks", "Drawbridge_P1_tower_mid_span_refused",
     "Drawbridge_P3_one_winch_per_leaf_on_its_own_bank", "Drawbridge_P3_peace_auto_lowers_free_hostiles_lock",
     "Drawbridge_P4_raid_plank_fits_and_commits_once", "Drawbridge_P4_raiders_trench_hand_off_and_winch",
     "Drawbridge_P5_hoses_on_a_leaf_cut_while_raised_rejoin_lowered", "Drawbridge_P5_gravship_edge_bridge_collapses_at_launch",
@@ -1113,6 +1114,8 @@ DRAWBRIDGE_LIVE = [
      "not lock (FreeHostileCount 0)"),
     ("STEEL_UNPOWERED_FREEZES", None, "a steel leaf part-way up stays put while its winch is unpowered; moves on when powered"),
     ("WINCH_LOST_CRASHES", None, "a destroyed winch house crashes its raised leaf down at once and hurts the pawn under it"),
+    ("WINCH_DESPAWN_CRASHES", None, "a winch house despawned without being destroyed (a gravship launch's WillReplace) "
+     "unlinks and crashes its raised leaf, hurting the pawn under it"),
     ("RAID_UP", None, "raised leaf, winch inside, decoy outside: raiders make legal progress (winch jobs, planks, trench, "
      "decoy) and no job loop"),
     ("RAID_PLANK", None, "an interrupted plank carrier makes no duplicate crossing: exactly one plank crossing laid"),
