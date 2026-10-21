@@ -2030,6 +2030,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             DeckCollapseLinesChecks.Run(Case); // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 3: a collapsing deck drops its cords as a live wire once and reels in its hoses (DeckCollapseLinesChecks.cs)
             PipePoleChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4: pipe pole support rule, span cap, sag extremes, not pawn topology (PipePoleChecks.cs)
             PipeSpanNetChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 5: the liquid net's pole-to-pole edge, cap after join, ring cut, one rebuild per cut (PipeSpanNetChecks.cs)
+            HoseBandChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 6: hoses into pits only by ramp or ladder, band-aware end reach, raised ladder hangs, dig re-plans once (HoseBandChecks.cs)
             SuspensionBridgeChecks.Run(Case);  // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: drag validator, spans, load, falls, wiring (SuspensionBridgeChecks.cs)
             ThirstChecks.Run(Case);            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst math, shipped defs, DBH bridge patch (ThirstChecks.cs)
             PondDepthChecks.Run(Case);         // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: ponds shallow out, one surface across connected water (PondDepthChecks.cs)

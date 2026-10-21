@@ -73,6 +73,7 @@ namespace RimMandrake.Shared.Slack
                     Cell q = c + d;
                     if (!Ok(q)) continue;
                     if (d.X != 0 && d.Z != 0 && !(Ok(new Cell(c.X + d.X, c.Z)) && Ok(new Cell(c.X, c.Z + d.Z)))) continue;
+                    if (!w.StepAllowed(c, q)) continue;   // phase 6: bands (no bands = always allowed)
                     double ng = top.g + (d.X != 0 && d.Z != 0 ? 1.414 : 1.0) + w.ExtraCost(q);
                     if (!g.TryGetValue(q, out double old) || ng < old - 1e-12)
                     {
@@ -133,6 +134,7 @@ namespace RimMandrake.Shared.Slack
                     if (!w.InBounds(q)) continue;
                     bool diag = d.X != 0 && d.Z != 0;
                     if (diag && !(Open(c) && Open(q) && Open(new Cell(c.X + d.X, c.Z)) && Open(new Cell(c.X, c.Z + d.Z)))) continue;
+                    if (!w.StepAllowed(c, q)) continue;
                     double ng = top.g + (diag ? 1.414 : 1.0) + (Open(q) ? w.ExtraCost(q) : DiveCost);
                     if (!g.TryGetValue(q, out double old) || ng < old - 1e-12)
                     {
@@ -157,9 +159,14 @@ namespace RimMandrake.Shared.Slack
         private static bool Clear(CordWorld w, V2 a, V2 b, V2 p0, V2 p1, HashSet<Cell> onPath = null)
         {
             int n = (int)(V2.Dist(a, b) / 0.05) + 2;
+            Cell prevCell = a.Floor;
             for (int i = 0; i < n; i++)
             {
                 V2 s = a + (b - a) * (i / (double)(n - 1));
+                // phase 6: a shortcut never steps between bands except across a link (ramp, ladder)
+                Cell sc = s.Floor;
+                if (!w.StepAllowed(prevCell, sc)) return false;
+                prevCell = sc;
                 if (V2.Dist(s, p0) <= 0.3 || V2.Dist(s, p1) <= 0.3) continue;
                 if (w.Clearance(s) <= 0.2) return false;
                 // GSS pre-release A5: a shortcut never enters a costed cell (a tree) the A* route went around; the route's

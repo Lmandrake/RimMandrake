@@ -61,10 +61,13 @@ namespace RimMandrake.FlowWorks.Hose
             if (!c.InBounds(map)) return null;
             TerrainDef t = c.GetTerrain(map);
             if (t != null && t.IsWater) return t;
+            int band = RM_HoseBands.BandAt(map, c);
             foreach (IntVec3 d in GenAdj.CardinalDirections)
             {
                 IntVec3 n = c + d;
                 if (!n.InBounds(map)) continue;
+                // PIPE_POLES phase 6: water touched across a sheer wall (a lip end beside a half-full pit) is out of reach
+                if (!HoseBandMath.EndReaches(band, RM_HoseBands.BandAt(map, n))) continue;
                 TerrainDef tn = n.GetTerrain(map);
                 if (tn != null && tn.IsWater) return tn;
             }

@@ -83,6 +83,7 @@
     <Compile Include="..\Machinery\RM_PipePoleMath.cs" />
     <Compile Include="..\Machinery\RM_PipeSpanNetMath.cs" />
     <Compile Include="PipeSpanNetChecks.cs" />
+    <Compile Include="HoseBandChecks.cs" />
     <Compile Include="PipePoleChecks.cs" />
     <Compile Include="DeckCollapseLinesChecks.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
     <Compile Include="..\Hose\HoseMath.cs" />
+    <Compile Include="..\Hose\HoseBandMath.cs" />
     <Compile Include="..\Hose\HoseRelay.cs" />
     <Compile Include="..\Hose\ReelIntakeGeometry.cs" />
     <Compile Include="..\Hose\HoseStyles.cs" />

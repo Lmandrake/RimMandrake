@@ -197,10 +197,14 @@ namespace RimMandrake.FlowWorks.Hose
             foreach (Thing t in end.GetThingList(map))
                 if (t != exclude && Classify(t) != HosePortKind.None && (on == null || t.thingIDNumber < on.thingIDNumber)) on = t;
             if (on != null) { kind = Classify(on); return on; }
+            // PIPE_POLES phase 6 (design §P5): endpoint reach is by band; a port beside the end on another band (a pump on the
+            // lip over a hose end on the pit floor) is not beside it at all
+            int endBand = RM_HoseBands.BandAt(map, end);
             foreach (Cell pc in rect.Perimeter())
             {
                 var c = new IntVec3(pc.X, 0, pc.Z);
                 if (!c.InBounds(map)) continue;
+                if (!HoseBandMath.EndReaches(endBand, RM_HoseBands.BandAt(map, c))) continue;
                 List<Thing> l = c.GetThingList(map);
                 for (int i = 0; i < l.Count; i++)
                 {

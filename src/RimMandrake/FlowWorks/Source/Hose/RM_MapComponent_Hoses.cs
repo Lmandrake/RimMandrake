@@ -121,6 +121,7 @@ namespace RimMandrake.FlowWorks.Hose
             }
             foreach (Plant p in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
                 if (p.def.plant != null && p.def.plant.IsTree) cw.SetExtraCost(new Cell(p.Position.x, p.Position.z), 1.5f);
+            RM_HoseBands.Apply(map, cw);   // PIPE_POLES phase 6: depth bands, ramp/ladder links (design §P5)
             world = cw;
             worldTick = now;
             return cw;
@@ -156,12 +157,22 @@ namespace RimMandrake.FlowWorks.Hose
             List<Thing> l = c.GetThingList(map);
             for (int i = 0; i < l.Count; i++)
                 if (l[i] is Plant p && p.def.plant != null && p.def.plant.IsTree) { extra = 1.5f; break; }
-            return SigOf(walk, door, extra);
+            // PIPE_POLES phase 6: the band and the ramp/ladder links, as World() writes them (RM_HoseBands), so a dug square
+            // on a laid hose's corridor moves its hash and the 250-tick check re-plans or reels it in
+            int band = RM_HoseBands.BandAt(map, c);
+            return SigOf(walk, door, extra, band, RM_HoseBands.On && (band != 0 || AnyDugNeighbour(c)) ? RM_HoseBands.LinkMask(map, c, band) : 0);
         }
 
-        /// <summary>CordSig.CellSig's formula over the three facts it reads (SelfTest HoseCorridorSigChecks pins the two together).</summary>
-        internal static ulong SigOf(bool walkable, bool door, float extra) =>
-            (ulong)(walkable ? 1 : 2) ^ (door ? 4UL : 0UL) ^ ((ulong)Math.Round(extra * 16) << 3);
+        private bool AnyDugNeighbour(IntVec3 c)
+        {
+            for (int r = 0; r < 4; r++)
+                if (RM_HoseBands.BandAt(map, new IntVec3(c.x + CordWorld.CardX[r], 0, c.z + CordWorld.CardZ[r])) != 0) return true;
+            return false;
+        }
+
+        /// <summary>CordSig.CellSig's formula (the same shared CordSig.Of, so the live read and the snapshot cannot drift).</summary>
+        internal static ulong SigOf(bool walkable, bool door, float extra, int band = 0, int linkMask = 0) =>
+            CordSig.Of(walkable, door, extra, band, linkMask);
 
         /// <summary>CorridorHash over the live map (LiveCellSig), equal to CorridorHash(World(), lay) while nothing changed.</summary>
         internal ulong CorridorHashLive(HoseLay lay)
