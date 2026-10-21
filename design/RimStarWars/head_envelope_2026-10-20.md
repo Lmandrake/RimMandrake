@@ -100,3 +100,7 @@ UNMEASURED: how they read in game (`HEADS_VERIFY_SHRUNK_TO_FIT_THE_HATS`).
 
 ## Open (not done here)
 Step 4 of the parent design (the joint hat test). The live state read of `curHeadTypeDef` above.
+
+## Owner ruling 2026-10-20 (centre on the skull mass)
+
+Owner: "Please record that when looking at head art you must center the head regardless of additional appendages such as horns, ears, or anything else. The bulk of the head must be searched for detectable chins (or bottom of skull mass) vs top of head ignoring these extensions." The chin-seated bounding-box fit applied 2026-10-20 (6d77ea123) used ear tips as the bottom on at least the Ortolan, so crown/chin must be re-measured on the skull mass and the four species re-fitted. Appendages are judged separately from the skull.

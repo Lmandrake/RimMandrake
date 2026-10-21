@@ -1,0 +1,1 @@
+Head art fit: centre and size on the SKULL MASS (top of head to detected chin/skull bottom), never the alpha bounding box; ears, horns, crests, stalks and other appendages are ignored when finding crown/chin. Owner 2026-10-20: the blue (Ortolan) head sat too high because its ears were used as the chin.
