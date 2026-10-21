@@ -18,6 +18,8 @@
     </graphicData>
     <selectable>true</selectable>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <maxMeshCount>1</maxMeshCount>
@@ -49,6 +51,8 @@
     </graphicData>
     <selectable>true</selectable>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <maxMeshCount>1</maxMeshCount>
@@ -79,6 +83,8 @@
     <selectable>true</selectable>
     <pathCost>60</pathCost>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <maxMeshCount>1</maxMeshCount>
@@ -120,6 +126,8 @@
     </graphicData>
     <selectable>true</selectable>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <maxMeshCount>1</maxMeshCount>
@@ -158,6 +166,8 @@
     </graphicData>
     <selectable>true</selectable>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <maxMeshCount>1</maxMeshCount>
@@ -198,6 +208,8 @@
     </graphicData>
     <selectable>true</selectable>
     <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <maxMeshCount>1</maxMeshCount>

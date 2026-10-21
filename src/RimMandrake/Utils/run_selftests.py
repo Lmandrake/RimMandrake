@@ -184,7 +184,9 @@ NOT_STANDALONE: dict[str, str] = {}
 
 # Lints the suite must always carry: a rename or move that drops one out of discovery is a hard error.
 # selftest_placeholder_lint.py — no shipped def draws a geometric placeholder (owner rule 2026-10-07 22:33 PDT).
-REQUIRED = {"src/RimMandrake/Utils/art/selftest_placeholder_lint.py"}
+# selftest_plant_glow_halfset.py — no plant sets growMinGlow 0 with growOptimalGlow > 0 (dies in the dark; DARK_FLORA_FIX_WILTS_WITHOUT_A_SUN).
+REQUIRED = {"src/RimMandrake/Utils/art/selftest_placeholder_lint.py",
+            "src/RimMandrake/Utils/selftest_plant_glow_halfset.py"}
 if os.environ.get("RM_SELFTEST_REPO_ROOT"):
     REQUIRED = set()   # a fixture repo (selftest_run_selftests_evidence.py) carries no shipped lints
 

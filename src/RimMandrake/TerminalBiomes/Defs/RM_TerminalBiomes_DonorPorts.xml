@@ -36,6 +36,7 @@
       <maxGrowthTemperature>10</maxGrowthTemperature>
       <neverBlightable>true</neverBlightable>
       <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <fertilitySensitivity>0</fertilitySensitivity>
       <fertilityMin>0.25</fertilityMin>
       <wildClusterRadius>4</wildClusterRadius>
@@ -78,6 +79,7 @@
       <maxGrowthTemperature>10</maxGrowthTemperature>
       <neverBlightable>true</neverBlightable>
       <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <fertilitySensitivity>0</fertilitySensitivity>
       <fertilityMin>0</fertilityMin>
       <wildClusterRadius>4</wildClusterRadius>
