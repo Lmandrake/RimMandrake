@@ -13,9 +13,9 @@ namespace RimMandrake.FlowWorks.RiverColors
     /// file under a `riverColors_` key prefix (keys unique across that file; selftest_flowworks_river_colors.py checks),
     /// and its window draws DoSettingsSection.
     ///
-    /// The one mechanism (Patch_WorldDrawLayer_Paths_GeneratePaths) substitutes a per-tile gradient colour for the
-    /// planet-view river mesh. The three anchor colours are RGB sliders with a live swatch; the switch reverts to the
-    /// game's single flat river colour. Defaults = shipped behaviour (on, the owner's palette). Nothing here touches
+    /// The one mechanism (Patch_WorldDrawLayer_Paths_GeneratePaths) substitutes a per-tile water colour (by biome) for the
+    /// planet-view river mesh. The water colours are RGB sliders with a live swatch; the switch reverts to the
+    /// game's single flat river colour. Defaults = shipped behaviour (on, the 2026-10-20 water palette). Nothing here touches
     /// worldgen: the colours are read when the planet's river layer is generated, which happens when the world is drawn
     /// afresh (a load), so every setting is labelled [next game start]. The player's values from the old standalone
     /// mod's settings file are not imported (as with the River Works merge): a player who tuned them sees the shipped
@@ -25,20 +25,24 @@ namespace RimMandrake.FlowWorks.RiverColors
     {
         public static bool riverColorsEnabled = true;
 
-        public static Color headwaterColor = new Color(0xE0 / 255f, 0x31 / 255f, 0x1C / 255f);
-        public static Color jungleColor = new Color(0x2E / 255f, 0x2E / 255f, 0x00 / 255f);
-        public static Color terminusColor = new Color(0x00 / 255f, 0x29 / 255f, 0x3D / 255f);
+        // RIVER_WATER_BY_BIOME (2026-10-20): water everywhere, a story tint inside four biomes (RM_RiverColors.cs).
+        // Supersedes the 2026-09-06 headwater/jungle/terminus gradient and its 2026-10-20 darkening; new scribe keys, so a
+        // player's old gradient values are not read.
+        public static Color waterColor = new Color(0.08f, 0.16f, 0.30f);          // cool blue-grey
+        public static Color contagionColor = new Color(0.36f, 0.03f, 0.04f);      // blood red
+        public static Color miasmaColor = new Color(0.16f, 0.14f, 0.04f);         // brackish olive-brown
+        public static Color wastelandColor = new Color(0.14f, 0.24f, 0.06f);      // toxic green
+        public static Color rustCathedralColor = new Color(0.04f, 0.20f, 0.16f);  // verdigris coolant
 
         /// <summary>Called from RimMandrakeFlowWorksSettings.ExposeData, inside its PatchApplier Before/AfterExpose pair.</summary>
         public static void ExposeData()
         {
             Scribe_Values.Look(ref riverColorsEnabled, "riverColors_enabled", true);
-            Scribe_Values.Look(ref headwaterColor, "riverColors_headwaterColor",
-                new Color(0xE0 / 255f, 0x31 / 255f, 0x1C / 255f));
-            Scribe_Values.Look(ref jungleColor, "riverColors_jungleColor",
-                new Color(0x2E / 255f, 0x2E / 255f, 0x00 / 255f));
-            Scribe_Values.Look(ref terminusColor, "riverColors_terminusColor",
-                new Color(0x00 / 255f, 0x29 / 255f, 0x3D / 255f));
+            Scribe_Values.Look(ref waterColor, "riverColors_waterColor", new Color(0.08f, 0.16f, 0.30f));
+            Scribe_Values.Look(ref contagionColor, "riverColors_contagionColor", new Color(0.36f, 0.03f, 0.04f));
+            Scribe_Values.Look(ref miasmaColor, "riverColors_miasmaColor", new Color(0.16f, 0.14f, 0.04f));
+            Scribe_Values.Look(ref wastelandColor, "riverColors_wastelandColor", new Color(0.14f, 0.24f, 0.06f));
+            Scribe_Values.Look(ref rustCathedralColor, "riverColors_rustCathedralColor", new Color(0.04f, 0.20f, 0.16f));
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/Color setting, read from the field initialisers.
@@ -91,20 +95,21 @@ namespace RimMandrake.FlowWorks.RiverColors
 
             if (Group(list, "River colouring", new[] { "riverColorsEnabled" }))
             {
-                list.CheckboxLabeled("Colour rivers by position", ref riverColorsEnabled,
-                    "On (default): planet-map rivers run red at the headwaters, brackish green/brown through the jungle and "
-                  + "a toxic brown/blue at the dead-river ends, blended along each river. Off: rivers draw with the game's "
-                  + "own single flat colour. The planet's river layer is rebuilt when the world is drawn afresh (a load), "
-                  + "not the moment a setting changes. Never changes the world itself, only how its rivers are painted.");
+                list.CheckboxLabeled("Colour rivers by biome", ref riverColorsEnabled,
+                    "On (default): planet-map rivers draw as blue-grey water, tinted only inside the biomes whose water "
+                  + "is not clean: blood red in the Contagion, brackish in the Miasma, toxic green in the Wasteland, "
+                  + "verdigris in the Rust Cathedral. Off: rivers draw with the game's own single flat colour. The "
+                  + "planet's river layer is rebuilt when the world is drawn afresh (a load), not the moment a setting "
+                  + "changes. Never changes the world itself, only how its rivers are painted.");
             }
 
-            if (Group(list, "Gradient colours", new[] { "headwaterColor", "jungleColor", "terminusColor" }))
+            if (Group(list, "Water colours", new[] { "waterColor", "contagionColor", "miasmaColor", "wastelandColor", "rustCathedralColor" }))
             {
-                list.Label("Red at the headwaters, fading through this colour in the jungle "
-                  + "reaches, ending in this colour at the dead-river termini.");
-                ColorSection(list, "Headwater colour (red spore-toxin country)", ref headwaterColor);
-                ColorSection(list, "Jungle colour (brackish green/brown)", ref jungleColor);
-                ColorSection(list, "Terminus colour (toxic brown/blue salt flats)", ref terminusColor);
+                ColorSection(list, "River water (everywhere else)", ref waterColor);
+                ColorSection(list, "Contagion (blood red)", ref contagionColor);
+                ColorSection(list, "Miasma (brackish)", ref miasmaColor);
+                ColorSection(list, "Wasteland (toxic)", ref wastelandColor);
+                ColorSection(list, "Rust Cathedral (verdigris coolant)", ref rustCathedralColor);
             }
         }
 

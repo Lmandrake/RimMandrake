@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -9,9 +6,8 @@ using Verse;
 
 namespace RimMandrake.FlowWorks.RiverColors
 {
-    // WORLD_RIVER_COLORS_1 (design/Jawa/worldbuilding/, owner 2026-09-06, verbatim:
-    // "Red rivers in the mountains, turning immediately to brackish green/brown in the
-    // jungles, and a toxic brown/blue near their end.").
+    // WORLD_RIVER_COLORS_1 (owner 2026-09-06) gave every river an elevation gradient; RIVER_WATER_BY_BIOME (below,
+    // 2026-10-20) replaced it with water by biome after the owner saw it in game.
     //
     // MECHANISM (read off decompiled 1.6 source via mcp__rimsage__read_csharp_symbol,
     // never guessed):
@@ -29,14 +25,8 @@ namespace RimMandrake.FlowWorks.RiverColors
     //   constant colour for the whole world. So no mesh-authoring change is needed:
     //   only the colour ARGUMENT has to vary per tile.
     //
-    // DECISION: classify by tile at draw time, not by chained RiverDef.degradeChild.
-    // The colour decision already happens once per tile inside Regenerate()'s loop
-    // (`surfaceTile.tile` is right there), and RiverDef instances are shared,
-    // engine-wide singletons -- degradeChild chains would need a NEW headwater/
-    // jungle/terminus RiverDef and reassigned spawnFlowThreshold tuning to reproduce
-    // what a live tile query gets for free. Classifying per tile is also what makes
-    // the gradient continuous (owner, 2026-09-06: "add a gradient to it") instead of a
-    // hard 3-colour seam at each RiverDef boundary.
+    // DECISION: classify by tile at draw time, not by chained RiverDef.degradeChild: the colour decision already
+    // happens once per tile inside Regenerate()'s loop, and RiverDef instances are shared engine-wide singletons.
     //
     // THE PATCH: WorldDrawLayer_Paths.GeneratePaths is one non-virtual method shared
     // by every WorldDrawLayer_Paths subclass (WorldDrawLayer_Roads calls it too), so
@@ -60,145 +50,34 @@ namespace RimMandrake.FlowWorks.RiverColors
     // [HarmonyPatch] class in this assembly, this one included, under the Harmony id mandrake.rm.flowworks.
     // Settings are the "River colours" section of FlowWorks' Mod Settings (RM_RiverColorsSettings).
 
-    public static class RiverGradient
+    // RIVER_WATER_BY_BIOME (2026-10-20). Owner, looking at the in-game map: "the river is shown brown and red. Odd
+    // colors for roads and rivers." The 2026-09-06 gradient coloured EVERY river by elevation (red high, olive-brown
+    // middle), because its three anchors (AB_OcularForest, AB_FeraliskInfestedJungle, Wasteland) match no tile of the
+    // planet. Now a river is WATER (cool blue-grey) everywhere, and only inside the biomes whose sheet says its water is
+    // not clean does it take that biome's tint (design/Jawa/worldbuilding/biomes/):
+    //   RM_Contagion     blood red    -- the_contagion.md R-H7 "The red water sterilizes on the way down"
+    //   RM_Miasma        brackish     -- the_miasma.md: the dying sea's muck channels, "everything ends up here"
+    //   RM_Wasteland     toxic green  -- wasteland.md: hypersaline salt basins, the dead-river termini
+    //   RM_RustCathedral verdigris    -- the_rust_cathedral.md: the captured river is its coolant canals
+    // The tint stops at the biome border (each tile draws its own half of every river link), which is the story: the
+    // Contagion's water arrives in the lowlands clean. The bank is drawn by Baroque Biomes' RM_WorldPaths (water x 0.22).
+    // Colour contrast: fill dE76 >= 20 and bank WCAG >= 3:1 against every face it crosses (world_paths_readable doc).
+    public static class RiverTint
     {
-        // The owner's palette (item spec + the 2026-09-06 gradient amendment):
-        // red headwater -> brackish green/brown jungle -> toxic brown/blue terminus,
-        // interpolated continuously rather than three hard bands.
-        //
-        // MOD_OPTIONS_RETROFIT_1: the three anchor colours are now owned by
-        // RM_RiverColorsSettings (FlowWorks' Mod Settings, RGB sliders + swatch); these
-        // are read live in ColorFor below, not cached here.
-
-        // Grounded biome anchors (design/Jawa/worldbuilding/biomes/*.md; real defNames,
-        // measured live via `measure csv` against world/ASHKARR_WORLDMAP_tiles.csv --
-        // never invented): AB_OcularForest is "the Contagion" (the_contagion.md, red
-        // spore/toxin runoff), AB_FeraliskInfestedJungle is the on-river "vicious
-        // jungle" (ASHKARR_WORLD_DEFINITION.md hydrology), Wasteland is the dead salt
-        // plain every river branch ends in (wasteland.md).
-        private const string HeadwaterBiome = "AB_OcularForest";
-        private const string JungleBiome = "AB_FeraliskInfestedJungle";
-        private const string TerminusBiome = "Wasteland";
-
-        // Rebuilt lazily, once per world (guarded by the World instance so a save
-        // load / world regen invalidates the old graph automatically).
-        private static World cachedWorld;
-        private static Dictionary<int, float> tilePosition;
-
         public static Color32 ColorFor(PlanetTile tile)
         {
-            EnsureBuilt();
-            float t = 0.5f;
-            if (tilePosition != null)
-                tilePosition.TryGetValue(tile.tileId, out t);
-            return Lerp3(
-                RM_RiverColorsSettings.headwaterColor,
-                RM_RiverColorsSettings.jungleColor,
-                RM_RiverColorsSettings.terminusColor,
-                t);
-        }
-
-        private static void EnsureBuilt()
-        {
-            World world = Find.World;
-            if (world == null || world == cachedWorld)
-                return;
-            cachedWorld = world;
-            tilePosition = BuildTilePositions(world);
-        }
-
-        // One pass over every surface tile's potentialRivers, union-find into
-        // networks (mirrors the same connected-components approach the offline
-        // worldview.py mock used against the same river link data, so the in-game
-        // result and the mock the owner reviewed first agree), then per network:
-        // biome anchors pin t at 0 / 0.5 / 1, every other tile on that network gets
-        // its elevation position normalized against the network's own min/max.
-        private static Dictionary<int, float> BuildTilePositions(World world)
-        {
-            // WorldGrid.grid (World.cs:33) indexes straight to SurfaceTile
-            // (WorldGrid.cs:69: `public SurfaceTile this[int tileID] => surface[tileID];`),
-            // so no PlanetLayer/Tile cast is needed here.
-            WorldGrid grid = world.grid;
-            var parent = new Dictionary<int, int>();
-
-            int Find_(int x)
+            WorldGrid grid = Find.World?.grid;
+            BiomeDef biome = null;
+            if (grid != null && tile.tileId >= 0 && tile.tileId < grid.TilesCount)
+                biome = grid[tile.tileId]?.PrimaryBiome;
+            switch (biome?.defName)
             {
-                while (parent[x] != x)
-                {
-                    parent[x] = parent[parent[x]];
-                    x = parent[x];
-                }
-                return x;
+                case "RM_Contagion": return RM_RiverColorsSettings.contagionColor;
+                case "RM_Miasma": return RM_RiverColorsSettings.miasmaColor;
+                case "RM_Wasteland": return RM_RiverColorsSettings.wastelandColor;
+                case "RM_RustCathedral": return RM_RiverColorsSettings.rustCathedralColor;
+                default: return RM_RiverColorsSettings.waterColor;
             }
-            void Union(int a, int b)
-            {
-                int ra = Find_(a), rb = Find_(b);
-                if (ra != rb)
-                    parent[ra] = rb;
-            }
-
-            for (int i = 0; i < grid.TilesCount; i++)
-            {
-                SurfaceTile st = grid[i];
-                if (st?.potentialRivers == null)
-                    continue;
-                if (!parent.ContainsKey(i))
-                    parent[i] = i;
-                foreach (SurfaceTile.RiverLink link in st.potentialRivers)
-                {
-                    int j = link.neighbor.tileId;
-                    if (!parent.ContainsKey(j))
-                        parent[j] = j;
-                    Union(i, j);
-                }
-            }
-
-            if (parent.Count == 0)
-                return null;
-
-            var byRoot = new Dictionary<int, List<int>>();
-            // Snapshot: Find_ path-compresses (writes parent[]), and Mono's
-            // Dictionary bumps its version on overwrite, so enumerating
-            // parent.Keys live would throw InvalidOperationException.
-            foreach (int tileId in new List<int>(parent.Keys))
-            {
-                int r = Find_(tileId);
-                if (!byRoot.TryGetValue(r, out List<int> list))
-                    byRoot[r] = list = new List<int>();
-                list.Add(tileId);
-            }
-
-            var result = new Dictionary<int, float>();
-            foreach (List<int> net in byRoot.Values)
-            {
-                float hi = float.NegativeInfinity, lo = float.PositiveInfinity;
-                foreach (int tileId in net)
-                {
-                    float e = grid[tileId].elevation;
-                    if (e > hi) hi = e;
-                    if (e < lo) lo = e;
-                }
-                float span = (hi - lo) > 0.01f ? (hi - lo) : 1f;
-                foreach (int tileId in net)
-                {
-                    BiomeDef biome = grid[tileId].PrimaryBiome;
-                    string defName = biome?.defName;
-                    float t;
-                    if (defName == HeadwaterBiome) t = 0f;
-                    else if (defName == TerminusBiome) t = 1f;
-                    else if (defName == JungleBiome) t = 0.5f;
-                    else t = Mathf.Clamp01((hi - grid[tileId].elevation) / span);
-                    result[tileId] = t;
-                }
-            }
-            return result;
-        }
-
-        private static Color32 Lerp3(Color32 a, Color32 b, Color32 c, float t)
-        {
-            if (t <= 0.5f)
-                return Color32.Lerp(a, b, t / 0.5f);
-            return Color32.Lerp(b, c, (t - 0.5f) / 0.5f);
         }
     }
 
@@ -212,7 +91,7 @@ namespace RimMandrake.FlowWorks.RiverColors
         public static void Prefix(WorldDrawLayer_Paths __instance, PlanetTile tile, ref Color32 color)
         {
             if (RM_RiverColorsSettings.riverColorsEnabled && __instance is WorldDrawLayer_Rivers)
-                color = RiverGradient.ColorFor(tile);
+                color = RiverTint.ColorFor(tile);
         }
     }
 }

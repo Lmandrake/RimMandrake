@@ -10,6 +10,7 @@ proven (it needs a world-map look with the owner). Checks here what goes silentl
     FlowWorks' settings file, every field the patch reads exists, and its [PatchFeature] names a real bool field;
   * no standalone Harmony bootstrap survives (RM_FlowWorksHarmony applies the whole assembly);
   * the RiverColors mod folder and packageId are gone, and no modset tier still wants mandrake.rut.rivercolors.
+  * every biome tint (RIVER_WATER_BY_BIOME) names a BiomeDef we ship.
 Sanity probes: the scribe-key regex must see a key we know exists (swaleEnabled), and the field regex riverColorsEnabled.
 """
 import glob
@@ -66,12 +67,18 @@ def main():
     check("[PatchFeature] names a real bool switch", m is not None and m.group(1) in fields and
           re.search(r"public static bool %s\b" % (m.group(1) if m else "-"), settings) is not None)
     check("patch scoped to WorldDrawLayer_Rivers (roads untouched)", "__instance is WorldDrawLayer_Rivers" in patch)
-    # FLOWWORKS_RIVERCOLOR_FIX_DICT_SELF_ENUM: Find_ path-compresses parent[], and Mono's Dictionary bumps its
-    # version on an overwrite, so `foreach (... in parent.Keys)` calling Find_ throws on any real river net.
-    check("sanity: union-find Find_ path-compresses parent[]", "parent[x] = parent[parent[x]];" in patch)
-    check("union-find roots enumerate a snapshot, never live parent.Keys",
-          re.search(r"foreach\s*\(\s*int\s+\w+\s+in\s+parent\.Keys\s*\)", patch) is None
-          and "new List<int>(parent.Keys)" in patch)
+    # RIVER_WATER_BY_BIOME (2026-10-20): every tint keys on a BiomeDef we ship. The gradient's anchors
+    # (AB_OcularForest, AB_FeraliskInfestedJungle, Wasteland) matched no tile, so every river fell to elevation colours.
+    tints = re.findall(r'case "(\w+)": return RM_RiverColorsSettings\.(\w+);', patch)
+    check("sanity: tint regex sees RM_Contagion", any(t == "RM_Contagion" for t, _ in tints), tints)
+    shipped = set()
+    for p in glob.glob(os.path.join(REPO, "src", "**", "*.xml"), recursive=True):
+        if "/Defs/" in p.replace("\\", "/"):
+            shipped.update(re.findall(r"<BiomeDef[^>]*>\s*<defName>(\w+)</defName>", open(p, encoding="utf-8", errors="replace").read()))
+    check("sanity: BiomeDef scan sees RM_Greentide", "RM_Greentide" in shipped, len(shipped))
+    check("every tint biome is a BiomeDef we ship", all(t in shipped for t, _ in tints), [t for t, _ in tints if t not in shipped])
+    check("default water is not vanilla riverColor (73,82,100), so RM_WorldPaths keeps it",
+          "waterColor = new Color(73" not in settings)
     check("no standalone Harmony bootstrap or old namespace survives",
           "new Harmony(" not in patch + settings and "RimMandrake.Utinni.RiverColors" not in patch + settings + csproj)
     check("settings default on (shipped behaviour)", re.search(r"public static bool riverColorsEnabled = true;", settings))
