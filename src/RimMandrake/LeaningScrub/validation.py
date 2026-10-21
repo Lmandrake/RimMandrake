@@ -1513,6 +1513,7 @@ def bloom_chain(t):
 # --------------------------------------------------------------------------- chain: stamp
 
 STAMP_DISC = 22     # RM_FireStampProof.DiscClear: radius the proof needs standable, unroofed, pawn- and fire-free
+PADS["bystamp"] = (-55, 55)   # bystanders chain: a 46-cell square clear of the site colonists at the centre
 PADS["stamp"] = (0, 0)    # the map centre: the 46-cell square overlaps the fuel/spawn pads (chains run in turn, each clears its own)
 
 
@@ -1692,6 +1693,120 @@ def forms_chain(t):
                         _fail("%s (%s): %s" % (form, mode, txt[:400]))
                     if not txt.startswith("PASS"):
                         _unmeasured(t, "%s proof did not answer PASS/FAIL: %s" % (form, txt[:200]))
+
+
+# --------------------------------------------------------------------------- chain: bystanders
+
+def _ids(t, rect=None, **kw):
+    """{thing id} for list_things(kw) over `rect`; raises on a truncated or unreadable listing (never an empty set)."""
+    q = dict(kw, limit=5000)
+    if rect:
+        q["rect"] = rect
+    r = _ok(t.bridge_call("jawa/list_things", **q), "list_things(%s)" % kw)
+    things = r.get("things") or []
+    if r.get("isCompleteList") is False or (r.get("countMatched") or 0) > len(things):
+        _unmeasured(t, "list_things(%s) truncated: %s of %s" % (kw, len(things), r.get("countMatched")))
+    return set(x.get("id") for x in things if x.get("id") is not None)
+
+
+@suite.chain("bystanders")
+def bystanders_chain(t):
+    """SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL A1 (749eea3aa): the stamp, pyre and forms proof hooks touch only what they
+    made. Before 749eea3aa their cleanup destroyed every fire within 30 cells, the plant on a fixture cell, every steel
+    stack within 4 cells and scratched any colonist on sworn thorns anywhere. Each row stages a bystander INSIDE the
+    hook's cleanup reach but OUTSIDE the clear disc the hook demands (else the hook rightly answers UNMEASURED), runs the
+    hook, and reads the bystander back by id. The game stays paused throughout, so nothing else moves a bystander.
+    LIES: forms' FindSpot picks its own cell, so whether a plant stood on it is not known; the row counts every plant on
+    the map (paused: only the hook can change the count) and the fixture's venomvines are excluded by def."""
+    # stamp: its own pad (LIVE 2026-10-21 the map-centre "stamp" pad held the site's drafted colonists, so DiscClear
+    # refused it), 22-cell clear disc; ClearNewFires reaches 30 -> a map fire at 26 cells must survive
+    _prep(t, "bystamp", size=2 * STAMP_DISC - 6)
+    try:
+        with _comp(t, "bystander_fire_survives_stamp"):
+            if _live(t):
+                x, z = t.anchor
+                fx, fz = x + 26, z
+                t.bridge_call("jawa/destroy_batch", rects=_rs((fx - 1, fz - 1, 3, 3)), categories="All")
+                t.bridge_call("jawa/spawn_batch", ops="Fire:%d,%d" % (fx, fz))
+                before = _ids(t, _rs((fx, fz, 1, 1)), defName="Fire")
+                _note(t, "bystander fire at (%d,%d) ids" % (fx, fz), sorted(before))
+                if not before:
+                    _unmeasured(t, "no fire stood at (%d,%d) after spawn_batch: nothing to protect" % (fx, fz))
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_FireStampProof",
+                                  method="ProofStamp", args="on@%d,%d" % (x, z))
+                txt = str((r or {}).get("result") or (r or {}).get("value") or r)
+                _note(t, "stamp proof (on) with a bystander fire", txt[:300])
+                after = _ids(t, _rs((fx, fz, 1, 1)), defName="Fire")
+                if not txt.startswith("PASS"):
+                    _unmeasured(t, "stamp proof did not PASS with the bystander present: %s" % txt[:200])
+                if not before <= after:
+                    _fail("the stamp proof's cleanup destroyed the map's own fire at (%d,%d): %s -> %s" % (fx, fz, sorted(before), sorted(after)))
+                t.bridge_call("jawa/destroy_batch", rects=_rs((fx - 1, fz - 1, 3, 3)), categories="All")
+    finally:
+        _unlock_weather(t)
+    # pyre: crop patch on the bloom pad, Ignite radius 6, cleanup 30 -> a map fire 12 cells off must survive
+    _crop_patch(t)
+    with _comp(t, "bystander_fire_survives_pyre"):
+        if _live(t):
+            x, z = t.anchor
+            fx, fz = x, z + 12
+            t.bridge_call("jawa/spawn_batch", ops="Fire:%d,%d" % (fx, fz))
+            before = _ids(t, _rs((fx, fz, 1, 1)), defName="Fire")
+            if not before:
+                _unmeasured(t, "no fire stood at (%d,%d) after spawn_batch: nothing to protect" % (fx, fz))
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_CallingPyreProof",
+                              method="ProofPyre", args="fire@%d,%d" % (x, z))
+            txt = str((r or {}).get("result") or (r or {}).get("value") or r)
+            _note(t, "pyre proof (fire) with a bystander fire", txt[:300])
+            after = _ids(t, _rs((fx, fz, 1, 1)), defName="Fire")
+            if not txt.startswith("PASS"):
+                _unmeasured(t, "pyre proof did not PASS with the bystander present: %s" % txt[:200])
+            if not before <= after:
+                _fail("the pyre proof's cleanup destroyed the map's own fire at (%d,%d)" % (fx, fz))
+    _clear_fuzz_patch(t)
+    _unlock_weather(t)
+    # forms: a steel stack, a colonist standing in unmarked sworn thorns, and every plant on the map
+    _prep(t, "sweetline")
+    sx, sz = t.anchor
+    venom = set(d for _f, d in FORMS)
+    with _comp(t, "bystanders_survive_forms"):
+        if _live(t):
+            t.bridge_call("jawa/spawn_batch", ops="Steel:%d,%d,50" % (sx - 4, sz))
+            t.bridge_call("jawa/set_plants", ops="RM_SwornVenomvine:%d,%d,1,1" % (sx + 4, sz), growth=1.0)
+            col = _spawn(t, "Colonist", sx + 4, sz, faction="player")
+            steel = _ids(t, _rs((sx - 4, sz, 1, 1)), defName="Steel")
+            thorn = _ids(t, _rs((sx + 4, sz, 1, 1)), defName="RM_SwornVenomvine")
+            if not steel or not thorn:
+                _unmeasured(t, "bystander steel %s / sworn thorn %s did not stand" % (sorted(steel), sorted(thorn)))
+            hurt0 = len(_hediffs(_rows(t, health=True).get(col)))
+            n0 = _ok(t.bridge_call("jawa/list_things", group="Plant", limit=1), "list_things(Plant)").get("countMatched")
+            v0 = sum(_count(t, d) for d in venom)
+            answers = {}
+            for form in ("rearing", "hoard", "sworn", "quench", "walking", "shedding"):
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_VenomvineFormsProof",
+                                  method="ProofForm", args="%s|on" % form)
+                answers[form] = str((r or {}).get("result") or (r or {}).get("value") or r)[:160]
+            _note(t, "forms proofs with bystanders", answers)
+            n1 = _ok(t.bridge_call("jawa/list_things", group="Plant", limit=1), "list_things(Plant)").get("countMatched")
+            v1 = sum(_count(t, d) for d in venom)
+            steel1 = _ids(t, _rs((sx - 4, sz, 1, 1)), defName="Steel")
+            hurt1 = len(_hediffs(_rows(t, health=True).get(col)))
+            _note(t, "plants (all, venomvine) before -> after; steel ids; colonist hediffs",
+                  [n0, v0, n1, v1, sorted(steel), sorted(steel1), hurt0, hurt1])
+            if any(not a.startswith("PASS") for a in answers.values()):
+                _unmeasured(t, "a forms proof did not PASS with bystanders present: %s" % answers)
+            if n0 is None or n1 is None:
+                _unmeasured(t, "plant census unreadable: %s -> %s" % (n0, n1))
+            bad = []
+            if (n1 - v1) < (n0 - v0):
+                bad.append("plants other than the fixture's venomvines %d -> %d" % (n0 - v0, n1 - v1))
+            if not steel <= steel1:
+                bad.append("the bystander steel stack %s is gone (%s)" % (sorted(steel), sorted(steel1)))
+            if hurt1 > hurt0:
+                bad.append("the colonist on sworn thorns gained hediffs (%d -> %d)" % (hurt0, hurt1))
+            if bad:
+                _fail("; ".join(bad))
+            t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="All")
 
 
 # --------------------------------------------------------------------------- chain: the four further forms

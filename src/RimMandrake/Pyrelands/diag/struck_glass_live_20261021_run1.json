@@ -1,0 +1,66 @@
+{
+ "utc": "2026-10-21T10:58:04Z",
+ "rows": [
+  {
+   "id": "A1.defs",
+   "status": "FAIL",
+   "evidence": {
+    "found": [
+     "RUT_StruckGlassPattern,PreceptDef/RUT_Ritual_StruckGlass,RitualOutcomeEffectDef/RUT_StruckGlassOutcome,ThingDef/RM_StruckGlassRing"
+    ],
+    "notFound": [
+     "RitualPatternDef/RUT_StruckGlassPattern,PreceptDef/RUT_Ritual_StruckGlass,RitualOutcomeEffectDef/RUT_StruckGlassOutcome,ThingDef/RM_StruckGlassRing"
+    ]
+   }
+  },
+  {
+   "id": "A1.ring",
+   "status": "FAIL",
+   "evidence": {
+    "tile": 5,
+    "mapId": 2,
+    "rings": [
+     [
+      "RM_StruckGlassRing116293",
+      60,
+      22,
+      "Northstar Cauldron"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "A2.gate_empty_ring",
+   "status": "PASS",
+   "evidence": {
+    "reason": "The ring is not whole: it needs 25 glass sand (it holds 0). Glass sand comes from shovelling sand."
+   }
+  },
+  {
+   "id": "A2.gate_full_no_storm",
+   "status": "PASS",
+   "evidence": {
+    "refuel": "{'success': True, 'thing': 'RM_StruckGlassRing116293', 'def': 'RM_StruckGlassRing', 'fuelBefore': 0.0, 'fuelAfter': 25.0, 'capacity': 25.0, 'hasFuel': True, 'fields': {}, 'missing': [], 'ticksGame': 1",
+    "reason": "There is no lightning storm. The glass is only stamped out under lightning."
+   }
+  },
+  {
+   "id": "A2.gate_full_in_storm",
+   "status": "PASS",
+   "evidence": {
+    "reason": "null"
+   }
+  },
+  {
+   "id": "home",
+   "evidence": {
+    "colonists": [
+     "Human116307",
+     "Human116310",
+     "Human116313"
+    ],
+    "previousMapId": 1
+   }
+  }
+ ]
+}
