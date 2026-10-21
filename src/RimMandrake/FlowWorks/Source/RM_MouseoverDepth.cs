@@ -69,7 +69,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (owner R4; wording V8, veto-able): "Hole 7 m (ledge 4 m) · Water 2.37 m
 		/// (4,740 L)" for a dug square (dry ones too) or a limited pond square, from the solver's numbers
-		/// (RM_MapComponent_Excavation.DepthReadoutAt); "Open water, never runs dry" over a sea or edge river (R13); else
+		/// (RM_MapComponent_Excavation.DepthReadoutAt); "Endless" over a sea or river (R13; wording 2026-10-20); else
 		/// null. A natural liquid terrain the engine does not track as a source reads its full floor.</summary>
 		public static string DepthSuffix(Map map, IntVec3 c)
 		{

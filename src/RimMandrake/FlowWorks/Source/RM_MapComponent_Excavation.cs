@@ -1388,7 +1388,7 @@ namespace RimMandrake.FlowWorks
 		/// solver's numbers, or null when the square is neither dug nor natural liquid. A dug square: "Hole 7 m (ledge 4 m) ·
 		/// Water 2.37 m (4,740 L)" (water = its own decilitres; a dry dug square reads Water 0.00 m). A limited pond square: the
 		/// same, the hole being its natural floor and the water the pond's surface over it. A limitless square (sea, edge
-		/// river): "Open water, never runs dry" (R13), never a litre count.</summary>
+		/// river): "Endless" (R13; wording 2026-10-20), never a litre count.</summary>
 		public string DepthReadoutAt(IntVec3 c)
 		{
 			if (!c.InBounds(map))

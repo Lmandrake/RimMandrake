@@ -758,7 +758,7 @@ def b2_readouts(s):
     """DEPTH_READOUT A2 / LIQUID_DEPTH A2: the mouseover strings over a dug dry cell, a filled canal, a dug pond, dry
     ground and a painted lake that TOUCHES the east map edge (the readout zone is edge-flush, plan_zones), so it is
     limitless by wetness (LAKE_GROUNDWATER_REFILL_BUILD_WETNESS_CUT, 392300ef0d: every map-edge body is limitless) and
-    its readout must say the sea never runs dry. A lake that did not reach the edge, or stickyLimitlessEnabled off, is
+    its readout must say "Endless" (bar limitless_body_marked). A lake that did not reach the edge, or stickyLimitlessEnabled off, is
     UNMEASURED/SITE (sea_verdict)."""
     rect = s.zones["readout"]
     x, z, _w, _h = rect
@@ -794,6 +794,12 @@ def b2_readouts(s):
     s.row("B2_readout_sea_never_dry", "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE", "A2", sst, scls,
           dict(lake=reads.get("lake"), lakeRect=lake, edgeCell=edge[:60], sticky=sticky, why=swhy,
                lakeBody={k: lake_body.get(k) for k in ("id", "limitless", "cellCount", "stock", "capacity")}), "B2")
+    marked = [k for k in ("dug_dry", "canal", "pond") if "endless" in str(reads.get(k) or "").lower()]
+    nst = "UNMEASURED" if st == "UNMEASURED" else ("FAIL" if marked else "PASS")
+    s.row("B2_readout_drainable_not_endless", "FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY", "A1", nst,
+          "MOD" if nst == "FAIL" else "HARNESS" if nst != "PASS" else "MOD",
+          dict(marked=marked, reads={k: reads.get(k) for k in ("dug_dry", "canal", "pond")},
+               bar="limitless_body_marked: a pond, canal or pit carries no Endless mark"), "B2")
     s.row("B2_readout_two_numbers_and_sea", "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE", "A2", st, "MOD" if st == "FAIL" else "HARNESS" if st != "PASS" else "MOD",
           dict(reads=reads, wording="owner looks at these strings (V8 kept by card)"), "B2", eyes=True)
     st2 = st if st == "UNMEASURED" else ("PASS" if all(" m " in str(v) and " L)" in str(v) for k, v in reads.items() if k in ("canal", "pond")) else "FAIL")
@@ -803,7 +809,7 @@ def b2_readouts(s):
 
 def sea_verdict(lake, edge_painted, sticky):
     """B2_readout_sea_never_dry -> (status, class, why). lake = parse_readout of the lake square (None = unread).
-    PASS: the edge-touching lake reads limitless ('Open water ...'). FAIL/MOD: it reads as a limited body although its
+    PASS: the edge-touching lake reads "Endless" (bar limitless_body_marked). FAIL/MOD: it reads as a limited body although its
     paint reached the map edge with sticky-limitless on. UNMEASURED/SITE: unread, the paint never reached the edge
     column, or stickyLimitlessEnabled is off (then a limited read is the mod's design, not a defect)."""
     if lake is None:
@@ -812,8 +818,10 @@ def sea_verdict(lake, edge_painted, sticky):
         return "UNMEASURED", "SITE", "the painted lake does not reach the map-edge column (read back)"
     if str(sticky) not in ("True", "true", "1"):
         return "UNMEASURED", "SITE", "stickyLimitlessEnabled is %r: an edge body is limited by design" % (sticky,)
-    if lake.get("kind") == "limitless":
+    if lake.get("kind") == "limitless" and str(lake.get("text") or "").startswith("Endless"):
         return "PASS", "MOD", ""
+    if lake.get("kind") == "limitless":
+        return "FAIL", "MOD", "an edge-touching lake read %r: limitless, but not the word Endless" % lake.get("text")
     return "FAIL", "MOD", "an edge-touching lake read %r, not limitless" % (lake.get("text") or lake.get("kind"))
 
 

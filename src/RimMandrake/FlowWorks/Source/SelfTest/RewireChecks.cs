@@ -148,6 +148,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(lf, @"long took = dl > 0 \? ex\.BurnOffDl\(c, dl\) : 0;", "burned in dL");
             });
 
+            // FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY (bar limitless_body_marked; he typed 2026-10-20: "it should simply
+            // say Endless, for simplicity"): water that never runs dry reads "Endless"; a drainable square never does.
+            Case("Readout_limitless_says_Endless", () =>
+            {
+                Assert(RM_Volume.LimitlessMark == "Endless", "the mark is the one word Endless: " + RM_Volume.LimitlessMark);
+                Assert(RM_Volume.LimitlessReadout(0) == "Endless", "no floor: just Endless: " + RM_Volume.LimitlessReadout(0));
+                Assert(RM_Volume.LimitlessReadout(4) == "Endless (about 2 m deep)", "with a floor: " + RM_Volume.LimitlessReadout(4));
+                foreach (string line in new[] { RM_Volume.Readout(4, 0, 20000), RM_Volume.Readout(14, 8, 47400), RM_Volume.Readout(2, 0, 0) })
+                    Assert(line.IndexOf("Endless", StringComparison.OrdinalIgnoreCase) < 0, "a drainable readout never says Endless: " + line);
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"else if \(IsLimitlessWaterAt\(c, body\)\) \{ return RM_Volume\.LimitlessReadout\(hole\); \}", "only a limitless body takes the mark");
+                RiverSwitchFlipChecks.Has(ex, @"t\.IsRiver \|\| t\.defName\.IndexOf\(""Ocean""", "a river or the ocean outside any body reads limitless");
+            });
             Case("Readout_two_numbers_and_the_limitless_mark", () =>
             {
                 int U = RM_Volume.UnitsPerLevel;
@@ -168,7 +181,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_Volume.LimitlessReadout(4).StartsWith(RM_Volume.LimitlessMark) && RM_Volume.LimitlessReadout(4).IndexOf(" L)") < 0,
                     "limitless: the mark, never a litre count: " + RM_Volume.LimitlessReadout(4));
                 foreach (string line in new[] { RM_Volume.Readout(4, 0, w4), RM_Volume.Readout(4, 0, 0), RM_Volume.Readout(14, 8, 47400) })
-                    Assert(line.IndexOf("never runs dry", StringComparison.OrdinalIgnoreCase) < 0 && line.IndexOf("limit", StringComparison.OrdinalIgnoreCase) < 0,
+                    Assert(line.IndexOf("endless", StringComparison.OrdinalIgnoreCase) < 0 && line.IndexOf("limit", StringComparison.OrdinalIgnoreCase) < 0,
                         "a limited readout carries no limited/limitless indicator: " + line);
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"else if \(IsLimitlessWaterAt\(c, body\)\) \{ return RM_Volume\.LimitlessReadout\(hole\); \}", "the readout marks limitless bodies");
