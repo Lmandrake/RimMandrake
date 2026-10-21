@@ -280,6 +280,8 @@ MODS = {
         "Creeping front and thrixweave (restart)": "NextGameStart",
         "Urraveth remains: new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "The dead giant (urraveth remains)": "Now",
+        "Web network on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Webfall weather (restart)": "NextGameStart",
     }, ()),
     "Warcasket": ("RM_WarcasketSettings.cs", "RM_Warcasket.csproj", {
         "Warcasket master switch": "Now",

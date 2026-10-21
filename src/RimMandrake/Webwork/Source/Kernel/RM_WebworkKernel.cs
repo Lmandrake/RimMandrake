@@ -1,4 +1,4 @@
-// Webwork kernel: the Verse-free decisions of the urraveth remains, the egg-clutch relay, the emergent spawn, the biome score and
+// Webwork kernel: the Verse-free decisions of the urraveth remains, the egg-clutch relay, the emergent spawn, the biome score, the web-network layout (RM_WebNetKernel) and
 // the nest/site placement tests. The mod calls these with the same expressions it used inline; src/RimMandrake/Utils/
 // selftest_webwork_fuzz.py compiles THIS file (no RimWorld/Unity) and fuzzes it. A `using Verse;` here breaks that build on purpose.
 using System;
@@ -257,6 +257,188 @@ namespace RimMandrake.Webwork
             return BaseScore
                  + (temperature - TempMin) * DegreeWeight
                  + (rainfall - RainMin) / RainfallDivisor;
+        }
+    }
+
+    /// <summary>
+    /// WEBWORK_TERRAIN_WEATHER_PASS_1: the Verse-free layout of a Webwork map's web. Spider sites (the nest plus a few more), the
+    /// cable network between them (a spanning tree plus through-cables edge to edge), each cable rasterised as an
+    /// 8-connected sagging line, the silk-carpet disc at each site, and the local-web budget. RM_GenStep_WebworkWeb places
+    /// what this plans; the fuzz checks the plan's invariants. Numbers are invented first values (live-balance pass owed).
+    /// </summary>
+    public static class RM_WebNetKernel
+    {
+        public const int SiteMargin = 12;
+        public const int MinSiteSpacing = 28;
+        public const int ExtraSitesMin = 2, ExtraSitesMax = 3;
+        public const int CarpetRadiusMin = 4, CarpetRadiusMax = 6;
+        public const int ThroughCables = 2;
+        public const float StrandsPerCell = 0.004f;
+        public const int StrandReach = 3;
+        public const float SagMin = 0.03f, SagMax = 0.08f;
+
+        public static bool InMargin(int x, int z, int w, int h, int margin)
+        {
+            return x >= margin && z >= margin && x < w - margin && z < h - margin;
+        }
+
+        public static long Dist2(int ax, int az, int bx, int bz)
+        {
+            long dx = ax - bx, dz = az - bz;
+            return dx * dx + dz * dz;
+        }
+
+        public static bool Spaced(int x, int z, List<(int x, int z)> sites, int minSpacing)
+        {
+            long m = (long)minSpacing * minSpacing;
+            foreach (var s in sites) if (Dist2(x, z, s.x, s.z) < m) return false;
+            return true;
+        }
+
+        /// <summary>The nest first (when there is one), then up to `extra` more sites: inside the margin, spaced from every
+        /// earlier site, and accepted by `ok` (the map's standability test). Rejection sampling; may return fewer on a
+        /// cramped map, never one that breaks the margin or the spacing.</summary>
+        public static List<(int x, int z)> PlanSites((int x, int z)? nest, int w, int h, int extra, Random rng,
+            Func<int, int, bool> ok, int attempts = 300)
+        {
+            var sites = new List<(int x, int z)>();
+            if (nest.HasValue) sites.Add(nest.Value);
+            if (w <= 2 * SiteMargin || h <= 2 * SiteMargin) return sites;
+            int added = 0;
+            for (int i = 0; i < attempts && added < extra; i++)
+            {
+                int x = rng.Next(SiteMargin, w - SiteMargin), z = rng.Next(SiteMargin, h - SiteMargin);
+                if (!Spaced(x, z, sites, MinSiteSpacing)) continue;
+                if (ok != null && !ok(x, z)) continue;
+                sites.Add((x, z));
+                added++;
+            }
+            return sites;
+        }
+
+        /// <summary>Prim's minimum spanning tree over the sites: n-1 index pairs joining them all.</summary>
+        public static List<(int a, int b)> SpanningEdges(List<(int x, int z)> sites)
+        {
+            var edges = new List<(int a, int b)>();
+            int n = sites.Count;
+            if (n < 2) return edges;
+            var inTree = new bool[n];
+            var best = new long[n];
+            var from = new int[n];
+            for (int i = 0; i < n; i++) { best[i] = long.MaxValue; from[i] = -1; }
+            best[0] = 0;
+            for (int k = 0; k < n; k++)
+            {
+                int u = -1;
+                for (int i = 0; i < n; i++) if (!inTree[i] && (u < 0 || best[i] < best[u])) u = i;
+                inTree[u] = true;
+                if (from[u] >= 0) edges.Add((from[u], u));
+                for (int v = 0; v < n; v++)
+                {
+                    if (inTree[v]) continue;
+                    long d = Dist2(sites[u].x, sites[u].z, sites[v].x, sites[v].z);
+                    if (d < best[v]) { best[v] = d; from[v] = u; }
+                }
+            }
+            return edges;
+        }
+
+        /// <summary>Where a ray from (x,z) along (dx,dz) leaves the map, clamped to the last in-bounds cell.</summary>
+        public static (int x, int z) RayToEdge(int x, int z, double dx, double dz, int w, int h)
+        {
+            double t = double.MaxValue;
+            if (dx > 1e-9) t = Math.Min(t, (w - 1 - x) / dx);
+            if (dx < -1e-9) t = Math.Min(t, -x / dx);
+            if (dz > 1e-9) t = Math.Min(t, (h - 1 - z) / dz);
+            if (dz < -1e-9) t = Math.Min(t, -z / dz);
+            if (t == double.MaxValue) t = 0;
+            int ex = (int)Math.Round(x + dx * t), ez = (int)Math.Round(z + dz * t);
+            return (Math.Max(0, Math.Min(w - 1, ex)), Math.Max(0, Math.Min(h - 1, ez)));
+        }
+
+        /// <summary>`count` through-cables, each an edge-to-edge line through a site (or the centre when there is none), returned as
+        /// two segments that meet at that site.</summary>
+        public static List<((int x, int z) a, (int x, int z) b)> ThroughSegments(List<(int x, int z)> sites, int w, int h, int count, Random rng)
+        {
+            var segs = new List<((int x, int z), (int x, int z))>();
+            for (int k = 0; k < count; k++)
+            {
+                (int x, int z) s = sites.Count > 0 ? sites[rng.Next(sites.Count)] : (w / 2, h / 2);
+                double ang = rng.NextDouble() * Math.PI;
+                double dx = Math.Cos(ang), dz = Math.Sin(ang);
+                segs.Add((RayToEdge(s.x, s.z, dx, dz, w, h), s));
+                segs.Add((s, RayToEdge(s.x, s.z, -dx, -dz, w, h)));
+            }
+            return segs;
+        }
+
+        /// <summary>The sag of a cable of this length: a fraction SagMin..SagMax of it, either side (u in [0,1), sign from flip).</summary>
+        public static float Sag(int length, double u, bool flip)
+        {
+            float f = (float)(SagMin + (SagMax - SagMin) * Math.Max(0, Math.Min(1, u)));
+            return (flip ? -1f : 1f) * f * length;
+        }
+
+        /// <summary>A line from (x0,z0) to (x1,z1) bowed sideways by `sag` cells at its middle (a sine arc), as 8-connected
+        /// cells with no repeats, starting at the first point and ending at the second.</summary>
+        public static List<(int x, int z)> Raster(int x0, int z0, int x1, int z1, float sag)
+        {
+            var cells = new List<(int x, int z)>();
+            var seen = new HashSet<(int, int)>();
+            int n = Math.Max(Math.Abs(x1 - x0), Math.Abs(z1 - z0));
+            double len = Math.Sqrt(Dist2(x0, z0, x1, z1));
+            double px = len > 0 ? -(z1 - z0) / len : 0, pz = len > 0 ? (x1 - x0) / len : 0;
+            (int x, int z) prev = (x0, z0);
+            Add(cells, seen, prev);
+            int steps = Math.Max(1, n);
+            for (int i = 1; i <= steps; i++)
+            {
+                double t = (double)i / steps;
+                double off = (i == steps) ? 0 : sag * Math.Sin(Math.PI * t);
+                var c = ((int)Math.Round(x0 + (x1 - x0) * t + px * off), (int)Math.Round(z0 + (z1 - z0) * t + pz * off));
+                if (i == steps) c = (x1, z1);
+                // bridge any gap so the line stays 8-connected
+                while (Math.Max(Math.Abs(c.Item1 - prev.x), Math.Abs(c.Item2 - prev.z)) > 1)
+                {
+                    prev = (prev.x + Math.Sign(c.Item1 - prev.x), prev.z + Math.Sign(c.Item2 - prev.z));
+                    Add(cells, seen, prev);
+                }
+                prev = c;
+                Add(cells, seen, prev);
+            }
+            return cells;
+        }
+
+        private static void Add(List<(int x, int z)> cells, HashSet<(int, int)> seen, (int x, int z) c)
+        {
+            if (seen.Add((c.x, c.z))) cells.Add(c);
+        }
+
+        public static int CarpetRadius(Random rng) { return rng.Next(CarpetRadiusMin, CarpetRadiusMax + 1); }
+
+        /// <summary>Is the cell (dx,dz) from a site of carpet radius r carpeted? Everything within r; a rough rim one cell further
+        /// where the cell hash says so; never beyond r+1.</summary>
+        public static bool CarpetAt(int dx, int dz, int r, int cellHash)
+        {
+            long d2 = (long)dx * dx + (long)dz * dz;
+            if (d2 <= (long)r * r) return true;
+            if (d2 <= (long)(r + 1) * (r + 1)) return (cellHash & 1) == 0;
+            return false;
+        }
+
+        /// <summary>How many local webs a w x h map gets at this density multiplier (0 or less: none).</summary>
+        public static int StrandBudget(int w, int h, float multiplier)
+        {
+            if (multiplier <= 0f || w <= 0 || h <= 0) return 0;
+            return (int)Math.Round((double)w * h * StrandsPerCell * multiplier);
+        }
+
+        /// <summary>A strand's offset from its anchor cell: each axis in [-StrandReach, StrandReach], never (0,0).</summary>
+        public static (int dx, int dz) StrandOffset(Random rng)
+        {
+            int dx, dz;
+            do { dx = rng.Next(-StrandReach, StrandReach + 1); dz = rng.Next(-StrandReach, StrandReach + 1); } while (dx == 0 && dz == 0);
+            return (dx, dz);
         }
     }
 }

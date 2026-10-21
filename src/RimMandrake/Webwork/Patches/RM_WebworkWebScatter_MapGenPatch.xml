@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_TERRAIN_WEATHER_PASS_1. Adds the web-network step to the shared base generator. RM_GenStep_WebworkWeb returns at
+  once unless map.Biome is RM_Webwork, so every other biome's maps are unchanged. Every def it names (RM_Webwork_Cable,
+  RM_Webwork_Strand, RM_Webwork_SilkCarpet, RM_Webwork_NestWall) is owned by this mod: no MayRequire.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <value>
+      <li>RM_WebworkWebScatter</li>
+    </value>
+  </Operation>
+
+</Patch>

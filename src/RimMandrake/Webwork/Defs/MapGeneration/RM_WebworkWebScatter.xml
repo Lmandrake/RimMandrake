@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_TERRAIN_WEATHER_PASS_1. Wires RM_GenStep_WebworkWeb (cables, local webs, silk carpet at spider sites). The class
+  self-gates on map.Biome.defName == "RM_Webwork", so the global add in Patches/RM_WebworkWebScatter_MapGenPatch.xml no-ops
+  on every other biome's maps (the RM_WebworkNestScatter pattern).
+
+  order 326: after the nest (324, it is site 0 and the cables run to it) and the urraveth skeleton (325, the cables route
+  around its pieces), after rock (200) so a cable never lays into a mountain, before plants so the jungle grows back
+  over and through the web.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WebworkWebScatter</defName>
+    <order>326</order>
+    <genStep Class="RimMandrake.Webwork.RM_GenStep_WebworkWeb" />
+  </GenStepDef>
+
+</Defs>

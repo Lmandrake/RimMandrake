@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_TERRAIN_WEATHER_PASS_1. Webfall (owner, 2026-10-12: "Webfall weather is cool."). Shed silk drifting down out of
+  the canopy in slow, pale skeins. A RM_Webwork weather only: listed in that biome's baseWeatherCommonalities (commonality
+  set at startup from RM_WebworkSettings.webfallCommonality; webfallEnabled off removes the row) and
+  canOccurAsRandomForcedEvent false, so no forced-weather event drops it on another biome's map.
+
+  Mechanics, deliberately small: ranged accuracy x0.85 (the drift hangs in the air) and nothing else. The sky's glow is
+  NOT lowered (no maxGlow, day colours near Clear): webfall is not overcast, so it never opens the light-moat (kit spec:
+  "weather/overcast is the ONLY moat-off" - this is not one of those). No snow, rain or sand buildup.
+
+  Overlay: RimMandrake.Webwork.RM_WeatherOverlay_Webfall, a slow dual panner. Stand-in = a copy of the vanilla gentle-snow
+  material; RM_WebworkArt swaps in the contract texture Weather/RM_WebfallOverlay when it is installed. Sound: the existing
+  vanilla Ambient_Wind_Fog bed (no new audio asset). Sky colours are invented first values.
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RM_Webfall</defName>
+    <label>webfall</label>
+    <description>Shed silk drifts down out of the canopy in slow, pale skeins. It hangs in the air and spoils a long shot.</description>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <temperatureRange>-999~999</temperatureRange>
+    <durationRange>8000~30000</durationRange>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <accuracyMultiplier>0.85</accuracyMultiplier>
+    <windSpeedFactor>0.4</windSpeedFactor>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>RimMandrake.Webwork.RM_WeatherOverlay_Webfall</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.97,0.96,0.92)</sky>
+      <shadow>(0.70,0.72,0.70)</shadow>
+      <overlay>(0.92,0.90,0.84)</overlay>
+      <saturation>1</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.7,0.7,0.7)</overlay>
+      <saturation>1</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>1</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.32,0.32,0.32)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>1</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

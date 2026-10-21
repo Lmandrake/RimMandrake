@@ -6,7 +6,7 @@ examines) through the production load / creak / collapse / cascade kernel agains
 egg-clutch relay timer against a ledger (relay), and gridded tables for the emergent-spawn gate, biome score, margins, outline ring,
 rounding and the Mod Settings ranges (tables). Built through winbuild.stage_build (dotnet.exe is Windows-native), then run.
 
-    python3 src/RimMandrake/Utils/selftest_webwork_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only urraveth|relay|tables]
+    python3 src/RimMandrake/Utils/selftest_webwork_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only urraveth|relay|tables|webnet]
 
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """

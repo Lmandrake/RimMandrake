@@ -131,6 +131,9 @@
       <FoggyRain>3</FoggyRain>
       <SnowGentle>0</SnowGentle>
       <SnowHard>0</SnowHard>
+      <!-- WEBWORK_TERRAIN_WEATHER_PASS_1: webfall (Defs/WeatherDefs/RM_Webfall.xml). RM_WebworkStartupGate rewrites this
+           number from RM_WebworkSettings.webfallCommonality, or removes the row when webfallEnabled is off. -->
+      <RM_Webfall>6</RM_Webfall>
     </baseWeatherCommonalities>
 
     <!-- WEBWORK_SOUNDSCAPE_1: "eerily silent" (this def's own description

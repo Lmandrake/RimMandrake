@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_WebworkWebNetwork.xml          Webwork - WEBWORK_TERRAIN_WEATHER_PASS_1
+  ============================================================================
+  Owner, 2026-10-12: "Some silk carpet is ok but it should still look like a jungle with web shit through it. Thick
+  powerful cables running through are the main portions with thinner local webs and the finer carpet where the spiders
+  have "sites" they use."
+
+  The two web layers a Webwork map is LAID with at map generation (RM_GenStep_WebworkWeb, order 326). The carpet is
+  Defs/TerrainDefs/RM_WebworkSilkCarpet.xml. The older anchor line / sheet web / gutter (RM_WebworkStructures.xml) stay
+  as they were: they are the creeping front's things on a NEIGHBOUR's map, and changing them would change how those
+  maps look.
+
+  RM_Webwork_Cable   the main structure. Laid in continuous lines: a spanning tree between the spider sites plus two
+                     through-cables edge to edge. SLOW, never impassable (pathCost 30, a climb-over): an impassable line
+                     would cut a map into pockets. Walking ALONG a line ignores the repeated cost (vanilla
+                     pathCostIgnoreRepeat), which is the mites' and the owners' road. Not an edifice and fillPercent 0, so a
+                     tree still grows in the same cell: the jungle stays a jungle with web through it. Cut with the vanilla
+                     Deconstruct (webHarvestEnabled) for one thrixweave a cell; beetles chew it (RM_ChewableExtension); it
+                     is part of the sense-web; a cut can wake the emergent ollathrix (3%).
+  RM_Webwork_Strand  the thinner local web, scattered within a few cells of cables and sites. pathCost 14 and an always-on
+                     adhesive coat (RM_Webwork_Slick at a third of the sheet web's dose per scan): it slows and sticks, it
+                     does not hold on one touch. Too fine to gather (no thrixweave); a cut still rings the line (1%).
+
+  Art: stand-ins only. Each texPath below is an EXISTING picture; RM_WebworkArt swaps in the art-contract path
+  (Things/Building/Natural/RM_Webwork_Cable, .../RM_Webwork_Strand) the moment it is installed, silently, with no def
+  change. Numbers are invented first values for the live-balance pass.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_Webwork_Cable</defName>
+    <label>web cable</label>
+    <description>A rope of silk as thick as a man's thigh, slung from trunk to trunk and down through the undergrowth, hardened by years of the mother's tending. The whole web hangs off cables like this one. Climbing over one is slow work, and it is felt.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_Webwork_Anchor</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <rotatable>false</rotatable>
+    <fillPercent>0</fillPercent>
+    <passability>Standable</passability>
+    <pathCost>30</pathCost>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>400</WorkToBuild>
+      <Flammability>1.2</Flammability>
+    </statBases>
+    <killedLeavings>
+      <Hyperweave>1</Hyperweave>
+    </killedLeavings>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ChewableExtension" />
+    </modExtensions>
+    <comps>
+      <li Class="RimMandrake.Webwork.RM_CompProperties_HarvestYield">
+        <yield>Hyperweave</yield>
+        <count>1</count>
+      </li>
+      <li Class="RimMandrake.Webwork.RM_CompProperties_EmergentSpawnOnDestroy" />
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_Webwork_Strand</defName>
+    <label>local web</label>
+    <description>Fine threads strung low between stems and cables, near-invisible in the green gloom and tacky with silk-sap. It will not hold a man on one touch, but it slows him, and the web knows he is there.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_Webwork_Web</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <rotatable>false</rotatable>
+    <fillPercent>0</fillPercent>
+    <passability>Standable</passability>
+    <pathCost>14</pathCost>
+    <tickerType>Normal</tickerType> <!-- RM_CompAdhesiveSlick ticks on CompTick, self-throttled (60-tick hash interval) -->
+    <statBases>
+      <MaxHitPoints>15</MaxHitPoints>
+      <WorkToBuild>80</WorkToBuild>
+      <Flammability>1.6</Flammability>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Webwork.RM_CompProperties_EmergentSpawnOnDestroy">
+        <spawnChance>0.01</spawnChance>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_AdhesiveSlick">
+        <slickHediff>RM_Webwork_Slick</slickHediff>
+        <radiusCells>0</radiusCells>
+        <severityPerScan>0.017</severityPerScan>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

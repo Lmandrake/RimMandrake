@@ -52,6 +52,14 @@ namespace RimMandrake.Webwork
 		public static float urravethWarningHours = 6f;
 		public static float urravethCollapseDamageMultiplier = 1f;
 
+		// WEBWORK_TERRAIN_WEATHER_PASS_1: the web a Webwork map is laid with (RM_GenStep_WebworkWeb: cables, local webs, silk
+		// carpet at spider sites; map generation) and webfall (RM_WebworkStartupGate: the biome's weather row; next game start).
+		public static bool webNetworkEnabled = true;
+		public static bool siteCarpetEnabled = true;
+		public static float localWebDensityMultiplier = 1f;
+		public static bool webfallEnabled = true;
+		public static float webfallCommonality = 6f;
+
 		public override void ExposeData()
 		{
 			base.ExposeData();
@@ -69,6 +77,11 @@ namespace RimMandrake.Webwork
 			Scribe_Values.Look(ref urravethThrixweavePerPiece, "urravethThrixweavePerPiece", 8);
 			Scribe_Values.Look(ref urravethWarningHours, "urravethWarningHours", 6f);
 			Scribe_Values.Look(ref urravethCollapseDamageMultiplier, "urravethCollapseDamageMultiplier", 1f);
+			Scribe_Values.Look(ref webNetworkEnabled, "webNetworkEnabled", true);
+			Scribe_Values.Look(ref siteCarpetEnabled, "siteCarpetEnabled", true);
+			Scribe_Values.Look(ref localWebDensityMultiplier, "localWebDensityMultiplier", 1f);
+			Scribe_Values.Look(ref webfallEnabled, "webfallEnabled", true);
+			Scribe_Values.Look(ref webfallCommonality, "webfallCommonality", 6f);
 		}
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -213,6 +226,33 @@ namespace RimMandrake.Webwork
                 urravethWarningHours = list.Slider(urravethWarningHours, 1f, 24f);
                 list.Label("Collapse damage: " + urravethCollapseDamageMultiplier.ToString("0.00") + "x (vanilla thin-roof collapse)");
                 urravethCollapseDamageMultiplier = list.Slider(urravethCollapseDamageMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Web network on new maps (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "webNetworkEnabled", "siteCarpetEnabled", "localWebDensityMultiplier" }))
+            {
+                list.CheckboxLabeled("Lay the web on new Webwork maps", ref webNetworkEnabled,
+                    "MAP-GENERATION-AFFECTING. On: a new RM_Webwork map is laid with thick web cables between the spiders' "
+                  + "sites and out to the map edges (slow to climb over, cut for thrixweave, felt by the web), thinner sticky "
+                  + "local webs near them, and silk carpet at the sites. Off: none of it generates. A map already generated "
+                  + "is never changed either way.");
+                list.CheckboxLabeled("Silk carpet at spider sites", ref siteCarpetEnabled,
+                    "MAP-GENERATION-AFFECTING. On: the ground within a few cells of each spider site (the nest and two or three "
+                  + "more) is fine silk carpet. Off: the sites keep the jungle's own floor; the cables still run to them.");
+                list.Label("Local web density: " + localWebDensityMultiplier.ToString("0.00")
+                    + "x (shipped default about 250 local webs on a 250x250 map; 0 = none)");
+                localWebDensityMultiplier = list.Slider(localWebDensityMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Webfall weather (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "webfallEnabled", "webfallCommonality" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Webfall happens in the Webwork", ref webfallEnabled,
+                    "On: shed silk drifts down out of the canopy as a Webwork weather (ranged accuracy x0.85; it does not "
+                  + "darken the sky, so the owners' light-moat holds). Off: webfall never occurs. Applies at startup.");
+                list.Label("Webfall commonality: " + webfallCommonality.ToString("0.0")
+                    + " (against Clear 50, Fog 5, Rain 5 in the same biome; shipped default 6)");
+                webfallCommonality = list.Slider(webfallCommonality, 0f, 30f);
                 list.GapLine();
             }
 
