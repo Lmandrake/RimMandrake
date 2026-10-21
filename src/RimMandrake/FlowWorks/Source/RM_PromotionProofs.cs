@@ -76,7 +76,7 @@ namespace RimMandrake.FlowWorks
 				+ " enabled=" + RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled;
 		}
 
-		/// <summary>LADDER_PRISON_DOOR_1. arg = "x,z,op", op raise | lower | read. Writes RM_CompLadder.raised the
+		/// <summary>LADDER_PRISON_DOOR_1. arg = "x,z,op", op raise | lower | order_raise | order_lower | read. Writes RM_CompLadder.raised the
 		/// way the gizmo does and reads it back with the inspect line a player sees:
 		/// "LADDER cell=x,z present=b raised=b inspect=...".</summary>
 		public static string ProofLadder(string arg)
@@ -110,8 +110,18 @@ namespace RimMandrake.FlowWorks
 			{
 				comp.SetRaised(false);
 			}
+			// FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: order_raise / order_lower place the player's order (the gizmo's
+			// Order); a colonist then carries it out from a side the rule allows. want= and ordered= read the order back.
+			else if (op == "order_raise" || op == "order_lower")
+			{
+				comp.Order(op == "order_raise");
+			}
 			string inspect = (comp.CompInspectStringExtra() ?? "none").Replace(' ', '_');
-			return "LADDER cell=" + c.x + "," + c.z + " present=True raised=" + comp.raised + " inspect=" + inspect;
+			bool ordered = RimMandrakeFlowWorks_DefOf.RM_OperateLadder != null
+				&& map.designationManager.DesignationOn(comp.parent, RimMandrakeFlowWorks_DefOf.RM_OperateLadder) != null;
+			return "LADDER cell=" + c.x + "," + c.z + " present=True raised=" + comp.raised + " want=" + comp.wantRaised
+				+ " ordered=" + ordered + " top=" + RM_LadderUtility.TopCell(comp.parent).x + "," + RM_LadderUtility.TopCell(comp.parent).z
+				+ " inspect=" + inspect;
 		}
 
 		/// <summary>FLOWWORKS_FORCED_PIT_FALL_ROW_1. arg = "pawnId,x,z". Launches the pawn as a vanilla

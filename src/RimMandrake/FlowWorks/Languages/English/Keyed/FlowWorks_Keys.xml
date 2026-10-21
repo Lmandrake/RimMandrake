@@ -25,7 +25,10 @@
   <!-- FLOWWORKS_LADDER_RAISE_LOWER_1: owner, "ladder up, ladder down". -->
   <RMFlow_LadderUp>Ladder up</RMFlow_LadderUp>
   <RMFlow_LadderDown>Ladder down</RMFlow_LadderDown>
-  <RMFlow_LadderToggleDesc>Raise or lower this ladder. Lowered, people climb down into the pit and back up by it, and haulers fetch what lies on the pit floor. Raised, nobody climbs it either way, and anyone down there stays down there. Colonists never move a ladder on their own.</RMFlow_LadderToggleDesc>
+  <RMFlow_LadderToggleDesc>Raise or lower this ladder. Lowered, people climb down into the pit and back up by it, and haulers fetch what lies on the pit floor. Raised, nobody climbs it either way, and anyone down there stays down there. A colonist moves it when ordered: it can be raised from above or below, but lowered only from above. Colonists never move a ladder on their own.</RMFlow_LadderToggleDesc>
+  <RMFlow_LadderOrdered>(ordered)</RMFlow_LadderOrdered>
+  <RMFlow_LadderLowerOnlyFromAbove>Can only be lowered from above, and nobody can stand at its top.</RMFlow_LadderLowerOnlyFromAbove>
+  <RMFlow_LadderLowerTopUnreachable>Can only be lowered from above: cannot reach its top.</RMFlow_LadderLowerTopUnreachable>
   <RMFlow_LadderRaisedInspect>Slid up onto the rim: nobody can climb down or out.</RMFlow_LadderRaisedInspect>
   <RMFlow_LadderLoweredPrisonInspect>Ladder down: your people climb; prisoners only in a prison break.</RMFlow_LadderLoweredPrisonInspect>
   <RMFlow_LadderLoweredInspect>Ladder down: anyone can climb.</RMFlow_LadderLoweredInspect>
