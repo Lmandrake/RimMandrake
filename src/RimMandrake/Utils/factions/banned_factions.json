@@ -43,10 +43,24 @@
       "seen_as": "The Celestial Rogues (generated name, NamerFactionSalvagers); label 'salvagers'",
       "supplier": "Odyssey DLC (ludeon.rimworld.odyssey), Data/Odyssey/Defs/FactionDefs/Factions_Misc.xml",
       "disposition": "banish",
-      "why_kept_loadable": "Every DLC is a prerequisite, and BackCompatibility.FactionManagerPostLoadInit re-creates a Salvagers faction (FactionDefOf.Salvagers, on the Orbit layer) on EVERY load when none exists, whatever the def says. Banishing the instance in place is the only stable state. Odyssey C# also reads the instance: QuestNode_Root_OrbitalFugitive generates Salvager_Elite and a Combat group with Faction.OfSalvagers; GenStepDefs OrbitalFugitivePlatform and Opportunity_OrbitalWreck_Salvagers name factionDef Salvagers. Those quest/site pawns are NOT stopped by the def banish (owner decision, design doc section 8).",
+      "why_kept_loadable": "Every DLC is a prerequisite, and BackCompatibility.FactionManagerPostLoadInit re-creates a Salvagers faction (FactionDefOf.Salvagers, on the Orbit layer) on EVERY load when none exists, whatever the def says. Banishing the instance in place is the only stable state. Odyssey C# also reads the instance: QuestNode_Root_OrbitalFugitive generates Salvager_Elite and a Combat group with Faction.OfSalvagers; GenStepDefs OrbitalFugitivePlatform and Opportunity_OrbitalWreck_Salvagers name factionDef Salvagers. The def banish does not stop those pawns; the routes are cut separately, see content_cut.",
       "owner": "2026-10-20, by question card: 'Celestial Rogues is another faction you may not want. Ban it too?' -> 'Ban Celestial Rogues'"
     }
   ],
+  "content_cut": {
+    "_doc": "Content that spawns a banned faction's PAWNS directly, which the def banish does not gate (hidden/defeated do not stop pawn generation). Each route is closed by a guarded op in patch_file; check-repo asserts the op exists, check-dump asserts the loaded def and sweeps every GenStepDef and ThingSetMakerDef for any other route. Found by scanning def dump 2026-10-21T04-26-37Z for every def naming the faction or one of pawn_kinds, plus RimSage C# (Faction.OfSalvagers, PawnKindDefOf.Salvager_Elite: only QuestNode_Root_OrbitalFugitive and BackCompatibility).",
+    "owner": "2026-10-20, by question card: 'Odyssey orbital fugitive quest and salvager wreck sites still spawn Celestial Rogues pawns; keep?' -> 'Cut them'",
+    "factions": ["Salvagers"],
+    "pawn_kinds": ["Salvager_Elite", "Salvager_Pirate", "Salvager_Scrapper", "VFEP_Salvager_Warcasket"],
+    "quests_zero_weight": ["OrbitalFugitive"],
+    "gensteps_unlinked": ["Opportunity_OrbitalWreck_Salvagers"],
+    "thingsetmaker_pawn_options_removed": [
+      {"def": "Reward_MalfunctioningTransportPod", "pawnKind": "Salvager_Pirate"}
+    ],
+    "gensteps_unreachable": {
+      "OrbitalFugitivePlatform": "linked to the OrbitalFugitivePlatform site part, which only the OrbitalFugitive quest creates; that quest's weight is 0"
+    }
+  },
   "orbital_traders_unfactioned": [
     "Orbital_BulkGoods",
     "Orbital_CombatSupplier",

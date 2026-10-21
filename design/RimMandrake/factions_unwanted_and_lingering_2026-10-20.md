@@ -242,12 +242,24 @@ when none exists (`FactionDefOf.Salvagers`, RimSage 2026-10-20). Removing it is 
   `_FACTIONS` and **`_PARITY_QUIET`**; absent from SHIP and FOUNDERS (gained on their next load, per source).
   `check-save` reports it LIVE (not defeated) in all three START saves. The save step is
   `CELESTIAL_ROGUES_SILENCE_GROUNDED_IN_ORBIT`.
-- **What the banish does NOT stop: Odyssey content that spawns its pawns directly.** `QuestNode_Root_OrbitalFugitive`
-  (quest `OrbitalFugitive`, weight 1) generates a `Salvager_Elite` and a Combat group with `Faction.OfSalvagers`;
-  GenStepDefs `OrbitalFugitivePlatform` (`GenStep_OrbitalPlatform`) and `Opportunity_OrbitalWreck_Salvagers`
-  (`GenStep_SitePawns`, "Hostile salvagers") name `factionDef Salvagers`; an ancient-crate ThingSetMaker uses the
-  `Salvager_Pirate` kind. Defeated and hidden do not gate pawn generation, so orbital sites can still hold
-  "salvager" pawns. Whether those go too is §8 decision 4. Nothing outside these names it (RimSage, 2026-10-20).
+- **Its pawns are cut from Odyssey content too** — owner by card, 2026-10-20: *"Odyssey orbital fugitive quest and
+  salvager wreck sites still spawn Celestial Rogues pawns; keep?"* -> **"Cut them"**. Hidden and defeated do not gate
+  pawn generation, so each route is closed at its own def (guarded ops at the end of `BannedFactions.xml`; nothing
+  deleted). The routes are every def in dump `2026-10-21T04-26-37Z` naming `Salvagers` or a salvager kind
+  (`Salvager_Elite`, `_Pirate`, `_Scrapper`, VFE Pirates' `VFEP_Salvager_Warcasket`), plus RimSage C#:
+  - quest `OrbitalFugitive` (`QuestNode_Root_OrbitalFugitive` makes a `Salvager_Elite` and a Combat group of
+    `Faction.OfSalvagers`): `rootSelectionWeight` 0, so `IsRootRandomSelected` is false and the natural chooser never
+    picks it. No IncidentDef or quest names it. Its site's GenStep `OrbitalFugitivePlatform` is reached only through it.
+    **Lost:** the whole "hunt the orbital fugitive" quest and its gravtech-device reward.
+  - GenStepDef `Opportunity_OrbitalWreck_Salvagers` ("Hostile salvagers"): `linkWithSite` removed, so the
+    `Opportunity_OrbitalWreck` site no longer gathers it. **Lost:** only the hostile guards. The wreck, its prefabs
+    and loot (GenStepDef `Opportunity_OrbitalWreck`, `AncientsHostile`) are untouched.
+  - ThingSetMakerDef `Reward_MalfunctioningTransportPod`: the live `Salvager_Pirate` option (weight 2 of 20) removed.
+    **Lost:** that pod no longer holds a live pirate; supplies, food and corpse options remain, so no loot is removed.
+  The salvager kinds still exist in the faction's own `pawnGroupMakers` and as its world-pawn leader, which nothing
+  above can reach. `banned_factions.py` asserts all of it (registry `content_cut`; check-repo for the ops, check-dump
+  for the loaded defs plus a sweep of every site GenStep and ThingSetMaker). Deploy and live proof:
+  `SALVAGER_CONTENT_PROVE_ROGUES_GROUNDED` (see the ledger).
 
 ## 6. The general guard
 
@@ -304,6 +316,6 @@ Measured today:
 2. **Salvagers ("The Celestial Rogues"):** ruled 2026-10-20 by card, banned (§5).
 3. **The three VEF offers** (`GR_RoamingMonstrosities`, `VFEP_Junkers`, `VFEP_Mercenaries`): add them, ban them, or
    ignore them in the shipped world.
-4. **Celestial Rogues' pawns at Odyssey orbital sites** (the `OrbitalFugitive` quest, the orbital-wreck salvager
-   guards): keep them as anonymous orbital pirates, or cut that content (zero the quest's `rootSelectionWeight`,
-   remove the salvager GenStep). Default taken: kept, because the card banned the faction, not the content.
+4. **Celestial Rogues' pawns at Odyssey orbital sites:** ruled 2026-10-20 by card, **cut** (*"Cut them"*): the
+   `OrbitalFugitive` quest is zero-weighted, the wreck's salvager guards unlinked and the transport pod's live pirate
+   removed (§5).
