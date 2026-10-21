@@ -1,0 +1,1 @@
+review_map.py --plan (run to refresh COVERAGE.md) also rewrites northstar/review/map/KEYSHEET.md and keysheet.html, and on 2026-10-21 it downgraded 4 stations from 'works in game' to 'built, not yet seen' (88: 13->9 works). Commit only COVERAGE.md unless the keysheet change is understood.
