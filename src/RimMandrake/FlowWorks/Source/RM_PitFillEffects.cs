@@ -75,6 +75,12 @@ namespace RimMandrake.FlowWorks
 					if (add > 0f)
 					{
 						HealthUtility.AdjustSeverity(p, drowning, add);
+						// The readable sign (no-vanishing rule): RM_Swim.Tick sends "X is drowning." for dug cells too, but it skips
+						// every pawn while deep swimming is switched off, so with swimming off this pass sends it itself.
+						if (!Swimming.RM_SwimWater.On)
+						{
+							Swimming.RM_Swim.DrownMessage(p);
+						}
 					}
 				}
 				if (poison && fluid != null && fluid.toxicPerDayAtBrim > 0f && HediffDefOf.ToxicBuildup != null)
