@@ -46,6 +46,7 @@
     <Compile Include="RM_WorldLook.cs" />
     <Compile Include="RM_WorldPaths.cs" />
     <Compile Include="RM_WorldLandmarks.cs" />
+    <Compile Include="RM_WorldPeaks.cs" />
   </ItemGroup>
 
   <ItemGroup>
