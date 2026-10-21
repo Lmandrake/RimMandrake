@@ -361,6 +361,11 @@ def resolve_job(repo: Repo, j):
         mod = d.split("/Textures/", 1)[0]
         if not (REPO / d).is_file() and mod in repo.mods_with("StandIn/" + rel):
             b = strip_facing(rel)
+            # a Graphic_Random stand-in: the XML draws the FOLDER (StandIn/<dir>), never the variant file, so the
+            # repoint is folder -> folder (otherwise "no editable XML draws it" strands every variant, 2026-10-21)
+            folder = b.rsplit("/", 1)[0] if "/" in b else ""
+            if folder and not repo.drawn.get("StandIn/" + b) and repo.drawn.get("StandIn/" + folder):
+                b = folder
             return d, "install_to-standin", {"kind": "standin", "from": "StandIn/" + b, "to": b}, True
         subj = j.get("target_def") or ""
         if not ours_for(repo, rel, subj):
