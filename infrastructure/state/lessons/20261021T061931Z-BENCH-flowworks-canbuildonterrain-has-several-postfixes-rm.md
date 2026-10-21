@@ -1,0 +1,1 @@
+FlowWorks CanBuildOnTerrain has several postfixes (RM_Patch_SuspensionAffordance lends Light on timber/steel/heavy decks, RM_Patch_FlowDoorOnWetCanal) that only ever flip false->true; a refusal rule on that gate must be [HarmonyPriority(Priority.Last)] or a timber deck re-admits what it refused (PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE).
