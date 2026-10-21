@@ -224,6 +224,8 @@
     <Compile Include="Pits\Suspension\RM_SuspensionSettings.cs" />
     <Compile Include="RM_SpanMath.cs" />
     <Compile Include="RM_SuspensionMath.cs" />
+    <Compile Include="RM_DrawbridgeMath.cs" />
+    <Compile Include="Pits\Drawbridge\RM_Drawbridges.cs" />
   </ItemGroup>
 
   <!-- ManyWaters, merged 2026-09-16. Namespace

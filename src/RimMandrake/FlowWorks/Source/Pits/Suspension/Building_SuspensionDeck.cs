@@ -129,6 +129,12 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
+		/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS: this square of a drawbridge leaf is up (derived from its leaf record by
+		/// RM_Drawbridges.Apply and on spawn; never saved on the deck: the leaf record is the one saved state, R9).</summary>
+		internal bool leafRaised;
+
+		public override bool Raised => leafRaised;
+
 		public RM_MapComponent_SuspensionBridges Bridges => Map?.GetComponent<RM_MapComponent_SuspensionBridges>();
 
 		public SuspensionBridgeRecord Record => Bridges?.RecordAt(Position);
@@ -165,6 +171,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				map.GetComponent<RM_MapComponent_SuspensionBridges>()?.Notify_DeckBuilt(this);
 			}
+			leafRaised = RM_Drawbridges.RaisedAt(map, Position);   // DRAWBRIDGE: a reload (or a rebuilt square) reads its leaf
 			RM_MapComponent_SuspensionBridges.DirtyAround(map, Position);
 			RM_SuspensionWaters.Notify_DeckChanged(map, Position);
 		}
@@ -190,6 +197,10 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>A sunken deck draws a ledge shadow over itself so it reads as down in the hole, not on the surface.</summary>
 		public override void Print(SectionLayer layer)
 		{
+			if (leafRaised)
+			{
+				return;   // DRAWBRIDGE (R12): a raised square draws empty; the winch house draws the leaf upright
+			}
 			if (Graphic is Graphic_Linked linked && linked.SubGraphic != null)
 			{
 				RM_SuspensionDeckLink.Print(layer, this);   // SUSPENSION_DECK_LINKED_NO_SEAMS
@@ -272,6 +283,10 @@ namespace RimMandrake.FlowWorks.Pits
 			if (rail != null)
 			{
 				yield return rail;
+			}
+			foreach (Gizmo g in RM_Drawbridges.DevGizmos(Map, Record))
+			{
+				yield return g;
 			}
 		}
 	}

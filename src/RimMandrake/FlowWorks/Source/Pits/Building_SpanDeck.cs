@@ -23,8 +23,12 @@ namespace RimMandrake.FlowWorks.Pits
 	{
 		protected bool collapsed;
 
-		/// <summary>Intact and on the map: the cell is walking ground at DeckHeightM.</summary>
-		public bool Decked => !collapsed && Spawned;
+		/// <summary>Intact, on the map and not raised: the cell is walking ground at DeckHeightM.</summary>
+		public bool Decked => !collapsed && Spawned && !Raised;
+
+		/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS (design R13.2): a drawbridge leaf square that is up. It is still built
+		/// (structure, save, repair) but is not ground: the hole under it is whole again. Only drawbridge decks override it.</summary>
+		public virtual bool Raised => false;
 
 		public bool Collapsed => collapsed;
 
