@@ -48,16 +48,16 @@ three lists. Road values were vanilla then and are vanilla now. Three things cha
 | Outline (casing, every road) | 0.1 grey | (0.05, 0.04, 0.035) | (30,24,21) |
 | Dirt | (0.5, 0.4, 0.3) | umber (0.30, 0.16, 0.07) | (150,90,42) |
 | Stone | 0.4 grey | grey-brown (0.18, 0.15, 0.12) | (99,85,69) |
-| Gravel (highway fill) | 0.5 grey | gold (0.80, 0.50, 0.00) | (250,209,0) |
-| Asphalt (centre line) | 0.3 grey | (0.10, 0.07, 0.05) | dark line |
+| Gravel (highway fill) | 0.5 grey | old asphalt (0.08, 0.08, 0.085) | (47,47,50) |
+| Asphalt (centre line) | 0.3 grey | worn pale grey (0.42, 0.41, 0.38) | (189,186,177) |
 
 | road | vanilla Outline/fill(/Asphalt) | new |
 |---|---|---|
 | DirtPath | 0.35 / 0.20 | 0.46 / 0.26 |
 | DirtRoad | 0.55 / 0.40 | 0.62 / 0.42 |
 | StoneRoad | 0.55 / 0.40 | 0.64 / 0.44 |
-| AncientAsphaltRoad | 0.65 / 0.50 / 0.25 | 0.78 / 0.58 / 0.10 |
-| AncientAsphaltHighway | 0.95 / 0.80 / 0.55 | 1.00 / 0.80 / 0.14 |
+| AncientAsphaltRoad | 0.65 / 0.50 / 0.25 | 0.78 / 0.58 / 0.14 |
+| AncientAsphaltHighway | 0.95 / 0.80 / 0.55 | 1.00 / 0.80 / 0.20 |
 
 Rivers `widthOnWorld`: Creek 0.2→0.32, River 0.4→0.46, LargeRiver 0.6→0.62, HugeRiver 0.8→0.82. Rivers are drawn with
 a copy of the ROAD material at their own queues (3520/3530), so they get the same hard edge and roads still cross over
@@ -103,7 +103,13 @@ the Anvil. Looks like a river, but it isn't. And the river is shown brown and re
   the middle, dark blue-teal at the bottom. RM_WorldPaths only darkens the bank to water × 0.22, so a red river gets a
   maroon bank. Both colours come from the gradient.
 - **Now.** Roads use earth tones under the dark casing: umber dirt, grey-brown stone (0.18, 0.15, 0.12) on screen
-  (99,85,69), and the gold highway. No road layer is blue or teal. Rivers are blue-grey water (0.08, 0.16, 0.30) on
+  (99,85,69). No road layer is blue or teal.
+  **The ancient highway is old asphalt, not gold.** Owner, 2026-10-20 (card on the highway's 46 pieces): *"Instead of
+  the strange yellow highlights it should show as old asphalt broken from long ago"*. Fill is dark grey-black (0.08, 0.08,
+  0.085), on screen (47,47,50). Down its middle runs a pale worn stripe (0.42, 0.41, 0.38), widths 0.20 on the highway and
+  0.14 on the ancient road. The road layers take one flat colour each, so the worn look is that stripe, not patches. The
+  record's broken pieces are the intended look and are not joined. The fill difference is at least 39.2 and its own
+  contrast at least 3.6:1 (worst on Abyss). It sits 21.8 from stone. Rivers are blue-grey water (0.08, 0.16, 0.30) on
   screen (47,90,150). They take a tint only inside a biome whose sheet says its water is not clean: RM_Contagion blood red
   (R-H7 "the red water"), RM_Miasma brackish, RM_Wasteland toxic green (the dead-river salt basins), RM_RustCathedral
   verdigris (the captured coolant river). The tint stops at the biome border, so the Contagion's water reaches the
