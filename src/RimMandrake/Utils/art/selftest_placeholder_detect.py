@@ -125,10 +125,12 @@ def run() -> int:
     check(len(tp) == len(pos), f"geometric detector catches {len(tp)}/{len(pos)} known circles",
           [n for n, _ in pos if n not in tp])
     neg = []
-    for k in ("AloeVera", "JadePlant", "ScorchedStars"):
-        neg += glob.glob(str(P.SRC / f"RimUtinni/UtinniPatches/Textures/Things/Plant/{k}/*.png"))
+    # AloeVera/JadePlant were retired 2026-10-16 (PLANT_TIER); ScorchedStars now lives in RM_ twins
+    for rel in ("RimMandrake/Scarlands/Textures/Things/Plant/RM_ScorchedStars",
+                "RimMandrake/Wasteland/Textures/Things/Plant/RM_WastelandScorchedStars"):
+        neg += glob.glob(str(P.SRC / rel / "*.png"))
     neg += real
-    check(len(neg) >= 10, "probe can see the low-colour real sprites (AloeVera/JadePlant/ScorchedStars/Orruhmu)", len(neg))
+    check(len(neg) >= 6, "probe can see the low-colour real sprites (ScorchedStars x2 / Orruhmu)", len(neg))
     fp = [f for f in neg if P.is_placeholder(f)]
     check(not fp, f"0/{len(neg)} low-colour real sprites read as placeholder", fp[:3])
     if arts:

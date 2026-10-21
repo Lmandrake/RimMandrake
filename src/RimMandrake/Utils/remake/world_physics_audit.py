@@ -168,7 +168,11 @@ def main(argv=None):
         o = dict(nearest(la, lo))
         o["probe"] = label
         sample.append(o)
-    start = dict(out[17011]); start["probe"] = "start 17011"; sample.append(start)
+    st = [o for o in out if o["tile"] == 17011]   # by tile id, never by row position
+    if not st:
+        print("REFUSED: start tile 17011 not in the geometry CSV")
+        return 2
+    start = dict(st[0]); start["probe"] = "start 17011"; sample.append(start)
 
     print(f"save tiles {len(out)}  unresolved biome hashes {len(unresolved)}")
     hdr = "probe          tile   lat    lon    arc  elevGeo glowMod  tSave tIntent   dT biome"

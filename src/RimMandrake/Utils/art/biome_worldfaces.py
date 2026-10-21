@@ -282,6 +282,8 @@ def check_dir(d, from_src=False):
     pairs = neighbour_pairs(); nb = []
     for (a, b), n in sorted(pairs.items(), key=lambda t: -t[1]):
         if n < 5: continue
+        if "mean" not in res[a] or "mean" not in res[b]:   # a face that failed to load as RGB: already counted, cannot be measured
+            nb.append({"a": a, "b": b, "edges": n, "dE": None, "ok": False}); continue
         de = float(np.linalg.norm(lab(res[a]["mean"]) - lab(res[b]["mean"])))
         nb.append({"a": a, "b": b, "edges": n, "dE": round(de, 1), "ok": de >= NEIGHBOUR_MIN_DE})
     return res, nb, fails + sum(not x["ok"] for x in nb)
@@ -315,7 +317,7 @@ def report(res, nb, fails):
         if st.get("bad"): print("FAIL", k, st["bad"])
     sds = [v["sd"] for v in res.values() if "sd" in v]; blks = [v["blk"] for v in res.values() if "blk" in v]
     print(f"faces {len(res)}  sd {min(sds)}-{max(sds)}  blk max {max(blks)}  "
-          f"neighbour pairs {len(nb)} (min dE {min(x['dE'] for x in nb)})  fails {fails}")
+          f"neighbour pairs {len(nb)} (min dE {min((x['dE'] for x in nb if x['dE'] is not None), default='UNMEASURED')})  fails {fails}")
     for x in nb:
         if not x["ok"]: print("NEIGHBOUR", x)
 
