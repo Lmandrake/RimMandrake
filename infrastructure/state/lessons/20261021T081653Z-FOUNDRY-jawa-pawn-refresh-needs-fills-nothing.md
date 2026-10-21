@@ -1,0 +1,1 @@
+jawa/pawn_refresh_needs fills NOTHING (it only re-walks which needs exist); a 'calm the colony' step built on it let the quicktest colony starve through a full day (2026-10-21). Set levels with jawa/pawn_need action=need need=Food level=1 (and Rest/Joy/Mood...).

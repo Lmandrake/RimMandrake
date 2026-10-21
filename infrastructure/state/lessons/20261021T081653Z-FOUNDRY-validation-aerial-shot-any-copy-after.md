@@ -1,0 +1,1 @@
+validation_aerial A.shot (and any copy-after-take_screenshot helper) waited only for the game's file to EXIST; a same-named shot from an earlier run already exists, so it copied the STALE picture (PT_A3 charge shot showed the previous attempt's message, 2026-10-21). Wait for mtime >= call time (fixed in validation_aerial.py A.shot); audit other shot helpers that reuse names.
