@@ -1,0 +1,1 @@
+rm-memwatch.service ExecStart runs /home/mandrake/rm/bench/src/RimMandrake/Utils/memwatch.py straight from the BENCH clone (not the D: mirror): an uncommitted BENCH edit to memwatch.py is live at the next 1-min timer tick. Keep its CLI flags (--no-host etc.) accepted when retiring features.
