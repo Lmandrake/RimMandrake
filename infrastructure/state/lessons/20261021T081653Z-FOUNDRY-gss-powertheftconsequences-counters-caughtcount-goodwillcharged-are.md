@@ -1,0 +1,1 @@
+GSS PowerTheftConsequences counters (caughtCount, goodwillCharged) are GLOBAL statics: a clamp left on the map from an earlier scene (moved --origin) kept draining and charging the same faction, so one day read -4 not -2 (2026-10-21). A theft scene must remove every RM_PowerTapClamp on the map first (validation_aerial theft_catch does).
