@@ -208,9 +208,8 @@ holds.
 - [ ] `pit_depth_ladder_legible` — undug ground and dry holes 0.5 m, 1 m, 1.5 m, 2 m, 4 m and
       8 m deep, side by side, are each distinguishable from the others by looking, without a
       tooltip.
-- [ ] `pawn_height_ladder_legible` — pawns standing on undug ground and on the floors of dry
-      holes 0.5 m, 1 m, 1.5 m and 2 m deep sit progressively lower at every deeper step, and a
-      pawn on the floor of a hole deeper than 2 m sits no higher than one on a 2 m floor.
+- [ ] `pawn_height_ladder_legible` — a colonist sits lower in each deeper hole, from undug ground down through dry
+      holes 0.5 m, 1 m, 1.5 m, 2 m and 4 m deep, and sits no lower in any hole deeper than 4 m.
 - [ ] `pawn_lowers_on_deeper_cell` (change) — the same pawn is drawn visibly lower relative to
       the rim in the AFTER frame, after moving onto a deeper cell.
 - [ ] `pawn_rises_on_shallower_cell` (change) — the same pawn is drawn visibly higher in the
@@ -288,6 +287,56 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 - [ ] `tank_feeds_hose_without_pump` — a tank with a hose screwed into it passes its liquid on through the hose with no
       pump (owner ruling 2026-10-11).
 
+**Limitless bodies** (the narrowed `limited_vs_limitless_legible`)
+- [ ] `limitless_body_marked` — the depth readout over a body of water that never runs dry (the sea, a river, a lake
+      fed from off the map) reads "Endless"; the readout over a pond, canal, pit or any lake that can be drawn down
+      carries no such mark.
+
+**The water ladder and swimming**
+- [ ] `half_metre_water_reads_as_silt` — water about 0.5 m deep reads as grey-brown silty water; 1 m is the first
+      depth that reads blue.
+- [ ] `deep_water_pawn_swims` — a pawn in water 2 m or deeper is drawn swimming at the surface, head and shoulders
+      above it, never walking on the floor beneath it nor standing on top of it.
+
+**Trench cover**
+- [ ] `trench_wall_cover_shown` — a shooter's hit chance on a pawn standing in a dug hole shows a "trench wall" cover
+      line, and the figure is larger for a pawn chest-deep below the lip than for one waist-deep.
+- [ ] `raiders_never_shelter_in_a_cage` — raiders seeking cover take trench squares they can climb out of and never
+      step down into a sheer pocket they could not leave, read from the game's state.
+
+**Pit access — ladders, gear, jumps**
+- [ ] `wall_ladder_rides_on_rails` — the permanent pit ladder is drawn on rails fixed to the wall it serves, on each
+      of the four sides of a pit; it can be raised from below or from above, but lowered only from above.
+- [ ] `portable_ladder_leans_on_its_wall` — a portable ladder set in a pit leans diagonally against the wall it
+      serves; one set against a wall too tall for it lies flat and gives no way out.
+- [ ] `climbing_gear_reads_as_kit` — climbing gear reads as one belt-or-backpack kit of ropes, small grappling hooks
+      and climbing claws, on the ground and worn.
+- [ ] `geared_pawn_climbs_out` (change) — a colonist wearing climbing gear is on the floor of a sheer pit with no
+      ladder in the BEFORE frame and on the ground beside it in the AFTER frame.
+- [ ] `jump_into_pit_lands_unhurt` — a pawn who jumps (jump pack) or skips into a pit arrives on its floor with no
+      fall injury, read from the game's state; flying creatures fly in and out, jumping creatures jump in or out, and
+      floating creatures float in and out.
+
+**Wall scaling**
+- [ ] `geared_pawn_scales_built_wall` (change) — a pawn wearing climbing gear is on one side of an unroofed built wall
+      in the BEFORE frame and on the other side in the AFTER frame, with no door in the wall; the same pawn without
+      the gear cannot.
+
+**Suspension bridges and pit covers**
+- [ ] `suspension_bridge_reads_hung` — a suspension bridge reads as a deck hung between anchors at its two ends over a
+      dug hole, not as a floor tile or the game's own bridge.
+- [ ] `pawn_walks_under_deck` (change) — a pawn on the floor of a hole is on one side of a suspension deck overhead in
+      the BEFORE frame and on the other side in the AFTER frame, having walked beneath it.
+- [ ] `pit_cover_unlike_bridge` — a pit cover never looks like a suspension bridge: the cover passes for ground (the
+      bars `pit_covered_invisible` and `pit_covered_seam_at_max_zoom` judge it), the bridge reads as a built crossing.
+
+**Pipes, ports and hoses**
+- [ ] `pipe_meets_building_centre` — a pipe or hose that meets a tank, pump, tap or sprinkler reads as running on
+      beneath it to its centre: seen through its see-through margins, hidden by its solid body, never stopping short
+      at its edge.
+- [ ] `pump_port_takes_pipe_or_hose` — a pump shows one clear port on each of its four sides, and each port takes
+      either a pipe or a hose, never both; a pipe or a hose joined to a port meets it with a visible coupling.
+
 ### cannot show
 
 - [ ] `never_liquid_on_open_ground` — liquid standing on undug ground outside both the
@@ -343,7 +392,7 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `slime_reads_as_viscous_not_water` | *"so slippery that it is nearly impossible to cross"* |
 | `slime_occupant_below_surface` | *"escape from the pit takes a great deal of time"*; his rejection of a pawn *"staring at the camera"* |
 | `pit_depth_ladder_legible` | the depth ruling: *"All depths must be visually legible and differentiable graphically."*; re-stated in metres when colonist digs went past 2 m (2026-10-17, by card: default deepest dig 8 m) |
-| `pawn_height_ladder_legible` | the depth ruling: *"They should be low enough that it is visually clear how they could not possibly climb out"*; past 2 m the pawn stops sinking further (a picture rule of the 2026-10-17 depth rebuild) |
+| `pawn_height_ladder_legible` | the depth ruling: *"They should be low enough that it is visually clear how they could not possibly climb out"*; the pawn keeps sinking down to 4 m and no lower beyond (card 2026-10-20, "Keep sinking to 4 m"; it stopped at 2 m in the 2026-10-17 depth rebuild) |
 | `pawn_lowers_on_deeper_cell` | the depth ruling: *"The pawn should visibly rise up and lower down as they move over the depths."* |
 | `pawn_rises_on_shallower_cell` | the same sentence, the other direction |
 | `pit_reads_as_hole` | *"we need a big dark pit"*; ruling 33 *"walls with depth, not a flat tile"* |
@@ -384,6 +433,22 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `tank_feeds_hose_without_pump` | owner, typed 2026-10-11: *"Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed."* |
 | `never_tank_bridges_pipe_runs` | FlowWorks' net rule: a tank is an endpoint, two runs never merge through it (RM_LiquidNet) |
 | `never_external_pipe_carries` | design FINAL §3.1 (G1.7): VE/DBH couplings stay visual |
+| `limitless_body_marked` | R13, owner said 2026-10-17: "Any natural body of water that is supposed to be 'clearly limitless' should be so marked, so players aren't shocked."; wording, he typed 2026-10-20: *"it should simply say Endless, for simplicity"* |
+| `half_metre_water_reads_as_silt` | card 2026-10-18, "How should 0.5 m water look → Keep grey silt"; accepted at the 2026-10-20 sitting |
+| `deep_water_pawn_swims` | R12 (pawns may swim in water 2 m or deeper); accepted at the 2026-10-20 sitting |
+| `trench_wall_cover_shown` | owner 2026-10-18, "This updates/replaces the old ruling that digging does not change shooting"; card "Any dug hole with a wall"; accepted at the 2026-10-20 sitting |
+| `raiders_never_shelter_in_a_cage` | canal cover design Q5 (raiders use trenches, with the cage check); accepted at the 2026-10-20 sitting |
+| `wall_ladder_rides_on_rails` | owner 2026-10-18, "one permanent that you install on a wall that raises and lowers to open and close access"; he typed 2026-10-20: *"It can be raised from either below or above. But it can only be lowered from above."* |
+| `portable_ladder_leans_on_its_wall` | owner 2026-10-18, "a personally carriable ladder placed into the pit (if not too deep)"; his look at the diagonal art; accepted at the 2026-10-20 sitting |
+| `climbing_gear_reads_as_kit` | owner 2026-10-18 by card (the gear is one item of all of these); accepted at the 2026-10-20 sitting |
+| `geared_pawn_climbs_out` | "Climbing gear a pawn has that allows them to scale"; accepted at the 2026-10-20 sitting |
+| `jump_into_pit_lands_unhurt` | "jump packs and other leaping abilities allow entrance/exit immediately"; he typed 2026-10-20: *"plus flying creatures can simply fly in/out, jumping creatures jump in or out, floating creatures float in/out"* |
+| `geared_pawn_scales_built_wall` | owner 2026-10-18 by card: built walls too, colonists and raiders, slowly, both ways; accepted at the 2026-10-20 sitting |
+| `suspension_bridge_reads_hung` | owner 2026-10-17, "These are not 'Bridges' in the sense Rimworld normally uses … Something that shows they're not pier/pyle-type bridges over water."; accepted at the 2026-10-20 sitting |
+| `pawn_walks_under_deck` | R8 amendment, "only for these new bridges uniquely, NOT actual tunnels."; accepted at the 2026-10-20 sitting |
+| `pit_cover_unlike_bridge` | the bridges design: covers are the hidden trap tier of the same span base, with their own look (Q8); accepted at the 2026-10-20 sitting |
+| `pipe_meets_building_centre` | owner 2026-10-18, "draw pipes as though they are connected into the centers of all pipe-receiving items"; accepted at the 2026-10-20 sitting |
+| `pump_port_takes_pipe_or_hose` | owner 2026-10-18, "a more squarish device with a clear place for pumps to join … connectable from any angle"; card 2026-10-20, "One port per side, either kind" (each side takes a pipe or a hose, not both). Renamed from `pump_port_takes_pipe_and_hose`, which read as both at once |
 
 ## proposed bars (NOT hash-bound — proposals for his sitting)
 
@@ -391,72 +456,14 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 validated-hash does not cover it and `modcheck` does not read it. A proposal becomes a bar only when he accepts it at a
 sitting (`FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING`); it then moves, with a `- [ ]` checkbox and a provenance row, into
 `## north star`, and that move is itself an edit he re-validates. Sitting sheet:
-`design/RimMandrake/flowworks_bars_sitting_2026-10-18.md`.
-
-**R13 — the narrowed limitless bar** (replaces the cut `limited_vs_limitless_legible`)
-- `limitless_body_marked` — the depth readout over a body of water that never runs dry (the sea, a river, a lake fed
-  from off the map) says so in words; the readout over a pond, canal, pit or any lake that can be drawn down carries no
-  such mark. *Source: R13, owner said 2026-10-17: "Any natural body of water that is supposed to be 'clearly limitless'
-  should be so marked, so players aren't shocked."*
-
-**The water ladder and swimming**
-- `half_metre_water_reads_as_silt` — water about 0.5 m deep reads as grey-brown silty water; 1 m is the first depth
-  that reads blue. *Source: card 2026-10-18, "How should 0.5 m water look → Keep grey silt".*
-- `deep_water_pawn_swims` — a pawn in water 2 m or deeper is drawn swimming at the surface, head and shoulders above
-  it, never walking on the floor beneath it nor standing on top of it. *Source: R12 (pawns may swim in water 2 m or
-  deeper).*
-
-**Trench cover**
-- `trench_wall_cover_shown` — a shooter's hit chance on a pawn standing in a dug hole shows a "trench wall" cover line,
-  and the figure is larger for a pawn chest-deep below the lip than for one waist-deep. *Source: owner 2026-10-18,
-  "This updates/replaces the old ruling that digging does not change shooting"; card "Any dug hole with a wall".*
-- `raiders_never_shelter_in_a_cage` — raiders seeking cover take trench squares they can climb out of and never step
-  down into a sheer pocket they could not leave, read from the game's state. *Source: canal cover design Q5 (raiders
-  use trenches, with the cage check).*
-
-**Pit access — ladders, gear, jumps**
-- `wall_ladder_rides_on_rails` — the permanent pit ladder is drawn on rails fixed to the wall it serves, raised and
-  lowered, from each of the four sides of a pit. *Source: owner 2026-10-18, "one permanent that you install on a wall
-  that raises and lowers to open and close access".*
-- `portable_ladder_leans_on_its_wall` — a portable ladder set in a pit leans diagonally against the wall it serves; one
-  set against a wall too tall for it lies flat and gives no way out. *Source: owner 2026-10-18, "a personally carriable
-  ladder placed into the pit (if not too deep)"; his look at the diagonal art.*
-- `climbing_gear_reads_as_kit` — climbing gear reads as one belt-or-backpack kit of ropes, small grappling hooks and
-  climbing claws, on the ground and worn. *Source: owner 2026-10-18 by card (the gear is one item of all of these).*
-- `geared_pawn_climbs_out` (change) — a colonist wearing climbing gear is on the floor of a sheer pit with no ladder in
-  the BEFORE frame and on the ground beside it in the AFTER frame. *Source: "Climbing gear a pawn has that allows them
-  to scale".*
-- `jump_into_pit_lands_unhurt` — a pawn who jumps (jump pack) or skips into a pit arrives on its floor with no fall
-  injury, read from the game's state. *Source: "jump packs and other leaping abilities allow entrance/exit
-  immediately".*
-
-**Wall scaling**
-- `geared_pawn_scales_built_wall` (change) — a pawn wearing climbing gear is on one side of an unroofed built wall in
-  the BEFORE frame and on the other side in the AFTER frame, with no door in the wall; the same pawn without the gear
-  cannot. *Source: owner 2026-10-18 by card: built walls too, colonists and raiders, slowly, both ways.*
-
-**Suspension bridges and pit covers**
-- `suspension_bridge_reads_hung` — a suspension bridge reads as a deck hung between anchors at its two ends over a
-  dug hole, not as a floor tile or the game's own bridge. *Source: owner 2026-10-17, "These are not 'Bridges' in the
-  sense Rimworld normally uses … Something that shows they're not pier/pyle-type bridges over water."*
-- `pawn_walks_under_deck` (change) — a pawn on the floor of a hole is on one side of a suspension deck overhead in the
-  BEFORE frame and on the other side in the AFTER frame, having walked beneath it. *Source: R8 amendment, "only for
-  these new bridges uniquely, NOT actual tunnels."*
-- `pit_cover_unlike_bridge` — a pit cover never looks like a suspension bridge: the cover passes for ground (the bars
-  `pit_covered_invisible` and `pit_covered_seam_at_max_zoom` judge it), the bridge reads as a built crossing.
-  *Source: the bridges design: covers are the hidden trap tier of the same span base, with their own look (Q8).*
+`design/RimMandrake/flowworks_bars_sitting_2026-10-18.md`; his answers:
+`design/RimMandrake/flowworks_bars_answers_2026-10-20.md`. Proposals 6-21 were accepted at the 2026-10-20 sitting and
+moved into the north star; one remains.
 
 **Pipes, ports and hoses**
-- `pipe_meets_building_centre` — a pipe or hose that meets a tank, pump, tap or sprinkler reads as running on beneath
-  it to its centre: seen through its see-through margins, hidden by its solid body, never stopping short at its edge.
-  *Source: owner 2026-10-18, "draw pipes as though they are connected into the centers of all pipe-receiving items".*
-- `pump_port_takes_pipe_and_hose` — a pump shows a clear port on each of its four sides, and a hose and a solid pipe
-  joined to it at the same time each meet a port with a visible coupling. *Source: owner 2026-10-18, "a more squarish
-  device with a clear place for pumps to join … connectable from any angle".*
-- `hose_and_pipe_girth_sensible` — side by side at a pump, a tank, a tap and a sprinkler, with a colonist beside them,
-  a hose and a solid pipe look sized for each other, for the port they enter and for the colonist. *Source: owner
-  2026-10-18, "we need to do a live game walk of the hoses vs pipes to make sure the diameters are sensible." His
-  numbers for what "sensible" is are owed at the sitting.*
+- `hose_and_pipe_girth_sensible` — side by side at a pump, a tank, a tap and a sprinkler, with a colonist beside them, a hose and a solid pipe look sized for each other, for the port they enter and for the colonist. *Source: owner 2026-10-18, "we need to do a live game walk of the hoses vs pipes to make sure the diameters are sensible." His numbers for what "sensible" is are owed at the sitting.* **Not accepted — 2026-10-20 he typed:** *"Both pipe and hose art need a better
+  definition of width. Colonists don't have arms. Need an in-game look"*. A width spec is owed, and the bar is judged at
+  an in-game look: `HOSE_PIPE_WALK_JUDGE_GIRTH_IN_GAME`.
 
 ## anti-guessing notes
 - ✅ **The DRAFT banner that used to open `## north star` was false and is deleted** (2026-09-17).
