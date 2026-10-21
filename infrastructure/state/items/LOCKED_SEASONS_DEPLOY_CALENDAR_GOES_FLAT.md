@@ -14,4 +14,15 @@ Built offline in 3742c2b6bc29 (closes `LOCKED_SEASONS_DECIDE_FIFTEEN_DEGREE_WOBB
 - After a load of the LOCKED dev save: `jawa/static_call RimWorld.GenTemperature SeasonalShiftAmplitudeAt 17011` = 0, and
   `AverageTemperatureAtTileForTwelfth` is the same for all 12 twelfths on 17011 and one southern tile.
 
-NEXT: after the CreatureBehaviors deploy and a load of the LOCKED dev save, read SeasonalShiftAmplitudeAt on 17011 and confirm 0.
+## 2026-10-20 night: why the patch did nothing on the full list (audit §8)
+Measured live: no daily term (outdoor == seasonal at 39 points), seasonal amplitude 8.649 C at 17011 on every sample.
+Worldbuilder's prefix on `GenTemperature.SeasonalShiftAmplitudeAt` skips the body (and with it Alien Worlds' curve
+transpiler); its postfix applies the axial-tilt curve (Normal). Fix: `RM_TidalNoSeasonsPatch` (Priority.Last postfix,
+0 while locked; setting `tidalLockNoSeasons`, default on).
+
+## verify (replaces the one above)
+- After deploy + load of `ASHKARR_DEV_START_2026-10-20_PARITY_QUIET`: `jawa/harmony_patches Verse.GenTemperature` lists
+  `mandrake.rm.creaturebehaviors.tidalnoseasons` on SeasonalShiftAmplitudeAt; run
+  `D:\ClaudeWork\rimmandrake\scratch\seasonsdusk\sample.py`: `seasonal` = 40.4 at every point.
+
+NEXT: deploy CreatureBehaviors (compose biomes) with the game down, load PARITY_QUIET, run sample.py and confirm seasonal = 40.4 flat.

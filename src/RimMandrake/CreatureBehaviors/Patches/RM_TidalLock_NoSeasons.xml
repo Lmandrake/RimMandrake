@@ -10,6 +10,10 @@
   framework still installs it instead of falling back to vanilla's latitude seasons). Each tile then holds its
   painted average all year (daily swing is already off under the lock).
 
+  With Worldbuilder loaded (the full list) this curve is NOT read: Worldbuilder's prefix skips the method body and
+  its postfix uses its axial-tilt curve (measured 2026-10-20, audit §8). RM_TidalNoSeasonsPatch (C#, Priority.Last)
+  zeroes the amplitude on that backend; this patch covers the standalone one.
+
   Guarded: FindMod on the tidal-lock mod's name (a top-level MayRequire is ignored), then a Conditional on the
   node, so it is silent when the mod or the field is absent. Takes effect at the next load (activation).
   Design: design/RimMandrake/world_physics_audit_2026-10-20.md §3.

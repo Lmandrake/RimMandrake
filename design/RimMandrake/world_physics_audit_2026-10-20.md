@@ -120,11 +120,13 @@ on all 21,872 tiles (max |Δ| ≤ 1 °C: none), and track the ruled curve
   (median 46), and 7.8 °C under the curve on every tile.
 - Smaller local departures (|Δ| > 5 °C): RM_TwilightSea 83, RM_TheRot 61, RM_Abyss 45, RUT_Umbra 19,
   RM_FloodedCanyon 17 tiles — authored in the record, not drift.
-- 🔴 **Seasons still swing ±15 °C everywhere.** Under the tidal lock the daily swing is off
-  (`includeDailyVariations = false`) but vanilla `GenTemperature.OffsetFromSeasonCycle` still runs,
-  with the planet def's `seasonalTempVariationCurve` (0:15, 1:15, 2:5) evaluated at |lat|/90 —
-  i.e. 15 °C amplitude on every tile, opposite sign per hemisphere. A tidally locked planet with no
-  axial tilt has no seasons; this is an owner question, not a silent fix.
+- 🔴 **Seasons still swing.** Under the tidal lock the daily swing is off, but vanilla
+  `GenTemperature.OffsetFromSeasonCycle` still runs with `SeasonalShiftAmplitudeAt(tile)`. Which curve feeds that
+  amplitude depends on the backend: standalone, Alien Worlds' transpiler reads the TidallyLocked def's
+  `seasonalTempVariationCurve` (0:15, 1:15, 2:5 → 15 °C on every tile); **with Worldbuilder loaded (the full list),
+  Worldbuilder replaces the method and uses its axial-tilt curve (Normal = 3/4/28, by sin(latitude))**, measured
+  8.649 °C at the home tile (§8). A tidally locked planet with no axial tilt has no seasons; owner ruled "Remove the
+  swing" (§6).
 - Under the `Default` planet (§1) vanilla's latitude seasonality and a ±7 °C day/night swing apply.
 
 ## 4. The Rings
@@ -192,3 +194,27 @@ Evidence: `D:\ClaudeWork\rimmandrake\scratch\live5\` (`clock.json`, `live_tiles_
 - **Map size:** `jawa/world_info_set initialMapSize=325`, saved as `ASHKARR_DEV_START_2026-10-20_PARITY_QUIET.rws`
   (file reads `(325, 1, 325)`). The same save ignores VFE's Junkers, Mercenaries and Roaming monstrosities. "Do nothing" does not persist, and
   "Don't ask for this faction again" writes `NewFactionSpawningState.ignoredFactions` (63 entries). A reload showed no dialog.
+
+## 8. Why seasons stayed after the NoSeasons patch, and the fix (FOUNDRY, 2026-10-20 night)
+
+Evidence: `D:\ClaudeWork\rimmandrake\scratch\seasonsdusk\samples.json` (`sample.py`), PARITY_QUIET save, 325-mod list.
+- **Measurement:** the clock was jumped forward (`jawa/time_set_ticks`, then 2 stepped ticks so the tile-temperature cache
+  refreshes) to 25 hourly points across one day and then once a day for 15 days; at each point `outdoorTemp` and
+  `seasonalTemp` were read at a home-map cell.
+  - Daily term and noise: **none.** `outdoor == seasonal` at all 39 points (the lock drops `OffsetFromSunCycle` and the
+    Perlin daily noise).
+  - Seasonal term: **all of it.** Solving `seasonal = 40.4 − A·cos(2π(day/60 − 10/12))` gives A = **8.649 °C at every
+    point** (36.96 °C on day 1 → 48.33 °C on day 15). The +0.22 °C per 6 h was this term.
+- **Mechanism** (`jawa/harmony_patches Verse.GenTemperature`; Worldbuilder source
+  `…\3522102833\1.6\Source\HarmonyPatches\GenTemperature_SeasonalShiftAmplitudeAt_Patch.cs`): `SeasonalShiftAmplitudeAt`
+  has Worldbuilder's prefix, which returns false, so the original body never runs, and Alien Worlds' transpiler, which
+  lives in that body, never runs either. Worldbuilder's priority-MaxValue postfix then sets the amplitude from its
+  axial-tilt table. Normal tilt = vanilla's 3/4/28 curve at `DistanceFromEquatorNormalized` = sin(15.92°) = 0.274 → 8.649.
+  BiomesCore adds a priority-400 postfix after it. `RM_TidalLock_NoSeasons.xml` applied (the def curve), but nothing read it.
+  ⚠️ The ±15 °C in §3 was the standalone-backend figure; on the full list the swing is the tilt curve (3 °C at the
+  equator, 28 °C at the poles).
+- **Fix:** `RM_TidalNoSeasonsPatch` (CreatureBehaviors) adds a `Priority.Last` postfix on `SeasonalShiftAmplitudeAt`
+  that returns 0 while the tidal lock is active. Setting `tidalLockNoSeasons` (default on). The XML patch stays for the
+  standalone backend.
+- **Readback owed after deploy:** the same sampler gives `seasonal` = 40.4 at every point (A = 0).
+
