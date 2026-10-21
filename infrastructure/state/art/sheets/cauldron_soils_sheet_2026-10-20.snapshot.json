@@ -1,6 +1,6 @@
 {
  "biome": "SUBJECTS_cauldron_soils",
- "built": "2026-10-20T16:51:24-0700",
+ "built": "2026-10-20T18:11:01-0700",
  "census": "Transient/biome_ffar/cauldron_soils.subjects.json",
  "census_git_head": null,
  "loadOrder": "live ModsConfig.xml: 325 active",
@@ -34,7 +34,11 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "51331a6acab00aebe97a37717b32a8c8cad66f2079bd43ead565dbfbf5c9648d",
+    "54bfa6eac352ccc1b716e362a2f0239fc1e6df77e8772cf504d402fedc936727",
+    "aafaebbcefca9dc7ffbf6d899c3e528c2d180f9953ee8231c1383db6592b6945"
+   ],
    "subject_key": "cauldronsoil"
   },
   "RM_CauldronSoilRich": {
@@ -44,23 +48,32 @@
     },
     "B": {
      "single": "0146dc5f521296cd0afc42f8961f44c61b79121e0abefd9d4b0f6913091044a4"
+    },
+    "C": {
+     "single": "0299d6a1e7fac7fcad444770b43f10fe2150bcd1c3ba75afae56d890abfbc879"
     }
    },
    "graphic_of": {
     "A": "_byname",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "render cauldronsoilrich_breathes_b",
-    "B": "render dregen_RM_CauldronSoilRich_SoilRich_v1"
+    "B": "render dregen_RM_CauldronSoilRich_SoilRich_v1",
+    "C": "render cauldronsoilrich_breathes_a"
    },
    "pools": [],
    "res": null,
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0146dc5f521296cd0afc42f8961f44c61b79121e0abefd9d4b0f6913091044a4",
+    "8fa5484f3f51989addce2ddfed8ffc9cdb310b719e618bef49c9780660d96d01"
+   ],
    "subject_key": "cauldronsoilrich"
   }
  },

@@ -1,0 +1,37 @@
+{
+ "biome": "SUBJECTS_gale_dust",
+ "built": "2026-10-20T18:05:45-0700",
+ "census": "Transient/biome_ffar/gale_dust.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 325 active",
+ "rows": {
+  "RM_Gale": {
+   "columns": {
+    "A": {
+     "single": "f2faddd3d2465b27ae567bf5c7f70b61843734f8fbf07b603894f59d5e83e553"
+    },
+    "B": {
+     "single": "d67f0b4adac9fe5da209af47fc05935a35d837f3ade6669a4ee05a9579413e32"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "render RM_GaleDust_A_v1",
+    "B": "render RM_GaleDust_B_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "gale"
+  }
+ },
+ "sheetId": "gale_dust_sheet_2026-10-20",
+ "snapshotId": "b76956d1d188fdbf"
+}
