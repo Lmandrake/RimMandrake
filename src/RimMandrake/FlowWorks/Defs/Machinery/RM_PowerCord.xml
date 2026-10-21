@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS (design/RimMandrake/flowworks_pipes_across_pits_design_2026-10-20.md §P1-P4,
+  owner review answer 5 by card 2026-10-20: the GSS-restyled vanilla PowerConduit is rigid conduit and crosses only by poles;
+  a separate flexible power cord is what lies on decks).
+  * RM_PowerCord carries power like a conduit (CompPowerTransmitter) and is tagged FlexCord (RM_LineKindExtension), so the
+    phase-1 crossing table lets it lie on any deck (rope included) and a lowered drawbridge leaf, and refuses dug squares and
+    pit covers; the phase-2 dig break (RM_LineDigBreak) destroys it when a dig commits under it.
+  * Its own def (ParentName BuildingBase, never PowerConduit): a child of PowerConduit would inherit the RigidConduit tag of
+    Patches/Machinery/RM_LineKinds.xml.
+  * Building_RM_PowerCord stops transmitting while the drawbridge leaf under it is raised (RM_Drawbridges.LineCutAt) and
+    rejoins when it is lowered (RM_Drawbridges.NotifyToggled re-registers it with the power net).
+  ART: the vanilla conduit atlas is the stand-in until LINE_WIDTH_JUDGE_ARMS_NOT_INCLUDED settles the look (width ruling:
+    cord = the GSS overhead wire). isPowerConduit + a Transmitter link make Gimme Some Slack draw it as its messy cord on its
+    own (ConduitVisuals: every isPowerConduit def with a Transmitter link drawer is a candidate), so no new texture is named.
+  PROVISIONAL: cost, work, hit points.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_PowerCord</defName>
+    <label>power cord</label>
+    <description>A flexible, insulated power cord. It carries power like a conduit, and unlike a rigid conduit it bends, so it may lie across any bridge deck, a rope bridge included, and over a drawbridge leaf. A raised leaf pulls the cord apart until the leaf comes down again. It cannot lie in a dug pit, trench or canal or on a pit cover, and digging under it breaks it.</description>
+    <thingClass>RimMandrake.FlowWorks.Machinery.Building_RM_PowerCord</thingClass>
+    <category>Building</category>
+    <noRightClickDraftAttack>true</noRightClickDraftAttack>
+    <graphicData>
+      <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>   <!-- ART: stand-in, see the header -->
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>Transmitter</linkType>
+      <linkFlags>
+        <li>PowerConduit</li>
+      </linkFlags>
+      <damageData>
+        <rect>(0,0.35,1,0.3)</rect>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Linked/PowerConduit_MenuIcon</uiIconPath>   <!-- ART: stand-in -->
+    <uiIconScale>0.7</uiIconScale>
+    <building>
+      <isPowerConduit>true</isPowerConduit>
+      <ai_chillDestination>false</ai_chillDestination>
+      <isInert>true</isInert>
+      <isEdifice>false</isEdifice>
+      <canLandGravshipOn>true</canLandGravshipOn>
+      <blueprintGraphicData>
+        <texPath>Things/Building/Linked/PowerConduit_Blueprint_Atlas</texPath>
+      </blueprintGraphicData>
+      <canConstructInCorner>true</canConstructInCorner>
+    </building>
+    <drawerType>MapMeshOnly</drawerType>
+    <altitudeLayer>Conduits</altitudeLayer>
+    <passability>Standable</passability>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>   <!-- PROVISIONAL -->
+      <WorkToBuild>35</WorkToBuild>
+      <Flammability>0.8</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <drawStyleCategory>Conduits</drawStyleCategory>
+    <costList>
+      <Steel>1</Steel>   <!-- PROVISIONAL -->
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTransmitter</compClass>
+        <transmitsPower>true</transmitsPower>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_Conduit</li>
+    </placeWorkers>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>   <!-- rope lends no Light: RM_LineCrossing.FlexOnDeck grants the deck exception -->
+    <designationCategory>Power</designationCategory>
+    <uiOrder>2001</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
+    <clearBuildingArea>false</clearBuildingArea>
+    <researchPrerequisites>
+      <li>Electricity</li>
+    </researchPrerequisites>
+    <replaceTags>
+      <li>Conduit</li>
+    </replaceTags>
+    <modExtensions>
+      <!-- PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE P1/P2: flexible; any deck incl. rope and a lowered leaf, never a dug square or a cover -->
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_LineKindExtension">
+        <kind>FlexCord</kind>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

@@ -77,6 +77,8 @@
     <Compile Include="LineCrossingChecks.cs" />
     <Compile Include="..\Machinery\RM_LineDigBreakMath.cs" />
     <Compile Include="LineDigBreakChecks.cs" />
+    <Compile Include="..\Machinery\RM_PowerCordMath.cs" />
+    <Compile Include="PowerCordChecks.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />
     <Compile Include="..\RM_TrenchStrideMath.cs" />
     <Compile Include="..\RM_CliffMaskMath.cs" />
