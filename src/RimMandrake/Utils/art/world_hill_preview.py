@@ -7,7 +7,7 @@ size, random rotation, centre jitter, random 2x2 atlas cell) < rivers (+0.01, da
 < landmarks (drawAboveRoads ones at +0.025, Odyssey icons). Faces are sampled with uv = position x 0.1 (the
 pollution/blend layers' mapping; the WorldTerrain shader's own span is UNMEASURED), so face grain is indicative.
 
-usage: python3 world_hill_preview.py --region "Rust Cathedral" --hills DIR --out PNG [--landmarks DIR] [--tiles 26]
+usage: python3 world_hill_preview.py --region "Rust Cathedral" --hills DIR --out PNG [--landmarks DIR] [--tiles 26] [--lm-scale 0.6 --lm-alpha 0.55]
   DIR holds SmallHills/LargeHills/Mountains/Impassable.png (a 2x2 atlas each). Save: world/ASHKARR_DEV_START_2026-10-20.rws
   with both 2026-10-20 mountain plans applied (the live hilliness after MOUNTAINS and MOUNTAINS2).
 """
@@ -66,6 +66,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--region", required=True); ap.add_argument("--hills", required=True); ap.add_argument("--out", required=True)
     ap.add_argument("--landmarks"); ap.add_argument("--tiles", type=float, default=26.0)
+    # RM_WorldLandmarks (soft landmark icons): quad size x lm-scale about its centre, alpha x lm-alpha
+    ap.add_argument("--lm-scale", type=float, default=1.0); ap.add_argument("--lm-alpha", type=float, default=1.0)
     ap.add_argument("--width", type=int, default=1100); ap.add_argument("--height", type=int, default=900)
     ap.add_argument("--title", default="")
     a = ap.parse_args()
@@ -164,8 +166,9 @@ def main():
             ax, az = (int(x) for x in re.findall(r"\d+", atls or "(1,1)")[:2]) if atls else (1, 1)
             cw, chh = L.width // ax, L.height // az
             ci, cj = rng.integers(0, ax), rng.integers(0, az)
-            s = max(2, int(tsz * float(sc or 1)))
+            s = max(2, int(tsz * float(sc or 1) * a.lm_scale))
             q = L.crop((ci * cw, cj * chh, ci * cw + cw, cj * chh + chh)).resize((s, s), Image.LANCZOS).rotate(rng.uniform(0, 360), Image.BICUBIC)
+            if a.lm_alpha < 1: q.putalpha(q.getchannel("A").point(lambda v: int(v * a.lm_alpha)))
             x, y = proj(V[t])
             if 0 <= x - s / 2 and 0 <= y - s / 2 and x + s / 2 < W and y + s / 2 < H: canvas.alpha_composite(q, (int(x - s / 2), int(y - s / 2)))
         if miss: print("landmarks with no icon offline (not drawn):", ", ".join(sorted(miss)))

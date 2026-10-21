@@ -66,6 +66,14 @@ namespace RimMandrake.Biomes
         // (RM_WorldPaths.cs). Looks only; links are untouched. Applies at once.
         public static bool worldReadablePaths = true;
 
+        // SOFT LANDMARK ICONS (owner by card 2026-10-20, LANDMARK_ICONS_DECIDE_THE_REAL_SPECKLE): Odyssey landmark icons
+        // draw smaller and fainter on the planet, back to full near the ground (RM_WorldLandmarks.cs). Looks only; which
+        // tiles carry landmarks is untouched. Applies at once.
+        public static bool worldSoftLandmarks = true;
+        public static float worldLandmarkSize = 0.6f;
+        public static float worldLandmarkOpacity = 0.55f;
+        public static bool worldLandmarksFullClose = true;
+
         public static RM_BiomesSettings Instance;
 
         // Roster keys whose own mod gates its mechanics on Enabled(key), added by that mod at startup by reflection
@@ -88,6 +96,10 @@ namespace RimMandrake.Biomes
             Scribe_Values.Look(ref worldSeaDepth, "worldSeaDepth", true);
             Scribe_Values.Look(ref worldSoftHills, "worldSoftHills", true);
             Scribe_Values.Look(ref worldReadablePaths, "worldReadablePaths", true);
+            Scribe_Values.Look(ref worldSoftLandmarks, "worldSoftLandmarks", true);
+            Scribe_Values.Look(ref worldLandmarkSize, "worldLandmarkSize", 0.6f);
+            Scribe_Values.Look(ref worldLandmarkOpacity, "worldLandmarkOpacity", 0.55f);
+            Scribe_Values.Look(ref worldLandmarksFullClose, "worldLandmarksFullClose", true);
             if (enabled == null) enabled = new Dictionary<string, bool>();
         }
     }
@@ -253,6 +265,22 @@ namespace RimMandrake.Biomes
                     + "ancient highway) and rivers get a dark bank and a hard edge, a little wider (their colour stays FlowWorks' River Colours where that is on, else bright blue). "
                     + "Off restores the vanilla road and river look.\n\nLooks only; which tiles have roads or rivers is "
                     + "not changed. Default: on. Takes effect at once (the planet redraws).");
+                list.CheckboxLabeled("Planet: soft landmark icons [now]", ref RM_BiomesSettings.worldSoftLandmarks,
+                    "On the world map, landmark icons (ruins, vents, caves, cliffs...) draw smaller and fainter, so a region "
+                    + "full of them no longer reads as speckle over its land, rivers and roads.\n\nLooks only; every "
+                    + "landmark stays on its tile and keeps its name and inspect text. Default: on. Takes effect at once.");
+                if (RM_BiomesSettings.worldSoftLandmarks)
+                {
+                    RM_BiomesSettings.worldLandmarkSize = list.SliderLabeled("    Landmark icon size: "
+                        + (RM_BiomesSettings.worldLandmarkSize * 100f).ToString("0") + "% (default 60%)",
+                        RM_BiomesSettings.worldLandmarkSize, 0.2f, 1f, 0.5f, "Size of a landmark icon against the vanilla size.");
+                    RM_BiomesSettings.worldLandmarkOpacity = list.SliderLabeled("    Landmark icon opacity: "
+                        + (RM_BiomesSettings.worldLandmarkOpacity * 100f).ToString("0") + "% (default 55%)",
+                        RM_BiomesSettings.worldLandmarkOpacity, 0.1f, 1f, 0.5f, "Opacity of a landmark icon; 100% is vanilla.");
+                    list.CheckboxLabeled("    Full-size icons when zoomed in close", ref RM_BiomesSettings.worldLandmarksFullClose,
+                        "Zooming in towards the ground brings landmark icons back to their vanilla size and opacity, so one "
+                        + "is easy to find and read where you look at single tiles.\n\nDefault: on.");
+                }
                 list.GapLine();
             }
 
