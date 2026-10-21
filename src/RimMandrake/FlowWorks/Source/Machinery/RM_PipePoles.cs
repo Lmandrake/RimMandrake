@@ -18,8 +18,10 @@ namespace RimMandrake.FlowWorks.Machinery
 	/// A span is two link records on the two pole comps, never a Thing on the cells it crosses: it is not walking ground, not a
 	/// climb exit, not a deck and not in pawn topology or RM_SpanUtility.DeckAt (P3 "Not ground, not support").
 	///
-	/// NOT here (phase 5): the liquid net's long-range edge. <see cref="UpSpans"/> and the span-change callback
-	/// (<see cref="SpansChangedCount"/>) are the seam it will read.
+	/// Phase 5: the liquid net's long-range edge. <see cref="EdgesFor"/> turns <see cref="UpSpans"/> into pipe-neighbour pairs
+	/// (RM_PipeSpanEdges, one logical edge per span between the two poles' join cells) that RM_LiquidNet.MapGraph walks with the
+	/// cardinal ones, so the component cap counts the joined net; <see cref="OnSpansChanged"/> bumps the net's revision when
+	/// the strung span set changed.
 	/// </summary>
 	[StaticConstructorOnStartup]
 	public static class RM_PipePoles
@@ -48,7 +50,102 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		public static float Sag() => RM_PipePoleMath.ClampSag(RM_MachinerySettings.pipePoleSag);
 
-		private static void OnSpansChanged(Map map) => SpansChangedCount++;
+		/// <summary>State reads (phase 5): liquid-net rebuilds a span change caused; callbacks that changed nothing.</summary>
+		public static int NetBumps, NoChange;
+
+		private sealed class SpanSig
+		{
+			public ulong last;
+			public bool known;
+		}
+
+		private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, SpanSig> sigs =
+			new System.Runtime.CompilerServices.ConditionalWeakTable<Map, SpanSig>();
+
+		/// <summary>GSS calls this on every span topology change, of any kind (link, unlink, cut, re-string, an anchor gone or
+		/// landed). The liquid net rebuilds only when the strung PIPE span set changed, so one cut is one rebuild.</summary>
+		internal static void OnSpansChanged(Map map)
+		{
+			SpansChangedCount++;
+			if (map == null)
+			{
+				return;
+			}
+			List<KeyValuePair<Thing, Thing>> spans = UpSpans(map);
+			var ids = new List<KeyValuePair<long, long>>(spans.Count);
+			foreach (KeyValuePair<Thing, Thing> sp in spans)
+			{
+				ids.Add(new KeyValuePair<long, long>(sp.Key.thingIDNumber, sp.Value.thingIDNumber));
+			}
+			SpanSig st = sigs.GetValue(map, _ => new SpanSig());
+			if (RM_PipeSpanNetMath.Changed(ref st.last, ref st.known, RM_PipeSpanNetMath.Signature(ids)))
+			{
+				NetBumps++;
+				RM_LiquidNet.Bump(map);
+			}
+			else
+			{
+				NoChange++;
+			}
+		}
+
+		/// <summary>A pole's pipe cells in join order: under it, then cardinal, then diagonal (a pole is a fitting: a pipe joins it
+		/// 8-way or under, owner 2026-10-20). The first is the pole's join cell, where its spans land.</summary>
+		public static IList<object> JoinCells(Thing pole)
+		{
+			var l = new List<object>();
+			if (pole == null || !pole.Spawned)
+			{
+				return l;
+			}
+			Map map = pole.Map;
+			foreach (IntVec3 c in pole.OccupiedRect())
+			{
+				if (RM_LiquidNet.HasPipe(c, map))
+				{
+					l.Add(c);
+				}
+			}
+			foreach (IntVec3[] dirs in new[] { GenAdj.CardinalDirections, GenAdj.DiagonalDirections })
+			{
+				for (int i = 0; i < dirs.Length; i++)
+				{
+					IntVec3 c = pole.Position + dirs[i];
+					if (c.InBounds(map) && !pole.OccupiedRect().Contains(c) && RM_LiquidNet.HasPipe(c, map))
+					{
+						l.Add(c);
+					}
+				}
+			}
+			return l;
+		}
+
+		/// <summary>State read: the last edge table built (span edges, fitting edges).</summary>
+		public static int LastAerialEdges, LastFittingEdges;
+
+		/// <summary>The span edges the liquid net walks this revision (none while pipe poles are switched off).</summary>
+		public static RM_PipeSpanEdges EdgesFor(Map map)
+		{
+			if (map == null || !RM_MachinerySettings.pipePolesEnabled)
+			{
+				return RM_PipeSpanEdges.Empty;
+			}
+			List<KeyValuePair<Thing, Thing>> spans = UpSpans(map);
+			if (spans.Count == 0)
+			{
+				return RM_PipeSpanEdges.Empty;
+			}
+			var pairs = new List<KeyValuePair<object, object>>(spans.Count);
+			foreach (KeyValuePair<Thing, Thing> sp in spans)
+			{
+				pairs.Add(new KeyValuePair<object, object>(sp.Key, sp.Value));
+			}
+			RM_PipeSpanEdges e = RM_PipeSpanEdges.Build(pairs, p => JoinCells(p as Thing),
+				(a, b) => ((IntVec3)a).AdjacentToCardinal((IntVec3)b));
+			LastAerialEdges = e.AerialEdges;
+			LastFittingEdges = e.FittingEdges;
+			return e;
+		}
 
 		/// <summary>Hand GSS live getters for the pipe kind's longest span and sag, and listen for span changes. GSS absent: a
 		/// quiet no-op (the pole def does not load without it either).</summary>
@@ -83,6 +180,39 @@ namespace RimMandrake.FlowWorks.Machinery
 			catch (Exception e)
 			{
 				Log.Warning("[FlowWorks] pipe pole hand-over to Gimme Some Slack failed; pipe poles use GSS's defaults: " + e.Message);
+			}
+		}
+
+		public const string GssAerialComp = "RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_Aerial";
+
+		/// <summary>State read: span redraws asked of GSS (the sag slider moved).</summary>
+		public static int Redraws;
+
+		/// <summary>The sag slider moved: GSS drops its span meshes and re-prints the ground shadows on every map
+		/// (RM_MapComponent_Aerial.Notify_SettingsChanged, found by name: no GSS reference). GSS absent: nothing to redraw.</summary>
+		public static void RedrawSpans()
+		{
+			if (Current.ProgramState != ProgramState.Playing || Find.Maps == null)
+			{
+				return;
+			}
+			try
+			{
+				foreach (Map map in Find.Maps)
+				{
+					foreach (MapComponent c in map.components)
+					{
+						if (c != null && c.GetType().FullName == GssAerialComp)
+						{
+							c.GetType().GetMethod("Notify_SettingsChanged", BindingFlags.Public | BindingFlags.Instance, null, Type.EmptyTypes, null)?.Invoke(c, null);
+							Redraws++;
+						}
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log.ErrorOnce("[FlowWorks] pipe span redraw (Gimme Some Slack) threw: " + e.Message, 0x5A1E9E);
 			}
 		}
 

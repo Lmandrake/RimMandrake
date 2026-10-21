@@ -270,6 +270,7 @@
     <Compile Include="Machinery\RM_PowerCordMath.cs" />
     <Compile Include="Machinery\Building_RM_PowerCord.cs" />
     <Compile Include="Machinery\RM_PipePoleMath.cs" />
+    <Compile Include="Machinery\RM_PipeSpanNetMath.cs" />
     <Compile Include="Machinery\RM_PipePoles.cs" />
     <Compile Include="Machinery\PipeStyles.cs" />
     <Compile Include="Machinery\PipeLook.cs" />

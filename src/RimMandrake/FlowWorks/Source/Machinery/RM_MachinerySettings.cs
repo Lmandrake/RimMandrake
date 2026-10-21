@@ -225,7 +225,12 @@ namespace RimMandrake.FlowWorks.Machinery
 				list.Label(RM_PipePoleMath.SpanLabel(pipePoleMaxSpan), -1f, (TipSignal?)"How far one pipe span may reach between two poles. Applies now to new links; spans already strung stay.");
 				pipePoleMaxSpan = RM_PipePoleMath.ClampSpan(list.Slider(pipePoleMaxSpan, RM_PipePoleMath.MaxSpanMin, RM_PipePoleMath.MaxSpanMax));
 				list.Label(RM_PipePoleMath.SagLabel(pipePoleSag), -1f, (TipSignal?)"How far a pipe span hangs at its middle. Power wires hang about 6%; a pipe is stiffer. Art only; applies now.");
+				float sagWas = pipePoleSag;
 				pipePoleSag = RM_PipePoleMath.ClampSag(UnityEngine.Mathf.Round(list.Slider(pipePoleSag, RM_PipePoleMath.SagMin, RM_PipePoleMath.SagMax) * 1000f) / 1000f);
+				if (pipePoleSag != sagWas)
+				{
+					RM_PipePoles.RedrawSpans();   // the span shadows on the ground re-print now, not at the next unrelated dirty
+				}
 			}
 			bool linksWas = pipeLinksIntoMachines, fitWas = joinFittings, underWas = pipesUnderToCentre;
 			list.CheckboxLabeled("Pipes run right up to the tanks and machines they join (art only)", ref pipeLinksIntoMachines,
