@@ -381,6 +381,20 @@ namespace RimMandrake.FlowWorks
 			return maxFlightTime != null && p.GetStatValue(maxFlightTime, true, 250) > 0f;
 		}
 
+		/// <summary>FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT: flies (CanFly), or a jumping or floating creature
+		/// (RM_PitTravelExtension on its race) with pitFreeTravelEnabled on: crosses pit walls freely, never held, never
+		/// falls (RM_PitAccessMath.CrossesPitsFreely). Every trap, mask, reach and fall read asks this, not CanFly.</summary>
+		public static bool FreePitTraveller(Pawn p)
+		{
+			if (p == null)
+			{
+				return false;
+			}
+			RM_PitTravelExtension ext = RimMandrakeFlowWorksSettings.pitFreeTravelEnabled ? p.def.GetModExtension<RM_PitTravelExtension>() : null;
+			return RM_PitAccessMath.CrossesPitsFreely(CanFly(p), RimMandrakeFlowWorksSettings.pitFreeTravelEnabled,
+				ext != null && ext.jumps, ext != null && ext.floats);
+		}
+
 		private RM_PocketGridMath.Labels BandOf(int k)
 		{
 			int b = RM_PocketGridMath.BandFor(k, BandCount);
@@ -688,5 +702,15 @@ namespace RimMandrake.FlowWorks
 		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: on an APPAREL def (climbing gear), the wearer climbs any pit wall,
 		/// slowly (RimMandrakeFlowWorksSettings.climbingGearSlowness per level).</summary>
 		public bool scalesAnyWall;
+	}
+
+	/// <summary>FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT (he typed 2026-10-20: "jumping creatures jump in or out, floating
+	/// creatures float in/out"): on a race's ThingDef, marks a creature that jumps or floats in and out of any pit, like a
+	/// flyer (RM_PocketGrid.FreePitTraveller). The engine has no floater flag and no jumping-animal flag, so the race says
+	/// so. A leaper (RM_ClimbAbility.leaper: hares, cats) only climbs one level more; this is the free kind.</summary>
+	public class RM_PitTravelExtension : DefModExtension
+	{
+		public bool jumps;
+		public bool floats;
 	}
 }

@@ -239,7 +239,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     && mask.Contains("job.connectivity = m.band[band].AsReadOnly()"), "per-request swap of job.connectivity");
                 Assert(mask.Contains("RM_CliffMaskMath.AllowedBits(") && mask.Contains("RM_PocketGrid.EffectiveDepth("),
                     "the masks use the selftested bits over the pocket grid's own depth input");
-                Assert(mask.Contains("RM_PocketGrid.CanFly(p)"), "flyers keep vanilla's mask");
+                Assert(mask.Contains("RM_PocketGrid.FreePitTraveller(p)"), "flyers (and jumpers, floaters: FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT) keep vanilla's mask");
                 Assert(!mask.Contains("vanilla[idx] =") && !mask.Contains("data[") , "vanilla's array is never written");
                 string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
                 Assert(trap.Contains("RM_ClimbJoins.ForPawn(") && trap.Contains("bool everyone = RM_CliffMask.On"),
@@ -574,9 +574,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(l.IsPocketCell(2, 2) && !RM_PocketGridMath.WideEverywhere(l, hole, wide), "the hole is a pocket too narrow for it");
                 Assert(!RM_PocketGridMath.Trapped(true, false, RM_PocketGridMath.WideEverywhere(l, hole, wide)), "so it is not trapped");
                 string mask = Src("Superdeep", "RM_CliffMask.cs");
-                Assert(mask.Contains("RM_PocketGrid.CanFly(p) || RM_SuperdeepTrap.InOwnPocketTooNarrow(p)"), "the masks step aside for it");
+                Assert(mask.Contains("RM_PocketGrid.FreePitTraveller(p) || RM_SuperdeepTrap.InOwnPocketTooNarrow(p)"), "the masks step aside for it");
                 string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
-                Assert(trap.Contains("RM_PocketGrid.CanFly(pawn) || RM_SuperdeepTrap.InOwnPocketTooNarrow(pawn)"), "the step floor lets it out");
+                Assert(trap.Contains("RM_PocketGrid.FreePitTraveller(pawn) || RM_SuperdeepTrap.InOwnPocketTooNarrow(pawn)"), "the step floor lets it out");
             });
 
             Case("Ramp_spawn_and_despawn_reach_the_masks", () =>

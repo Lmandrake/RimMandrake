@@ -75,7 +75,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			if (RM_PocketGrid.CanFly(p))
+			if (RM_PocketGrid.FreePitTraveller(p))
 			{
 				return false;
 			}

@@ -321,7 +321,7 @@ namespace RimMandrake.FlowWorks
 			}
 			// PIT_REACH_VERIFY_FLYERS_AND_GIANTS (GPT C3-F5): a pawn too wide for the pocket it stands in is not held there, so
 			// it routes on vanilla's connectivity, as a flyer does, and the step floor lets it out (RelativeStepAllowed).
-			if (p != null && (RM_PocketGrid.CanFly(p) || RM_SuperdeepTrap.InOwnPocketTooNarrow(p)))
+			if (p != null && (RM_PocketGrid.FreePitTraveller(p) || RM_SuperdeepTrap.InOwnPocketTooNarrow(p)))
 			{
 				return;
 			}

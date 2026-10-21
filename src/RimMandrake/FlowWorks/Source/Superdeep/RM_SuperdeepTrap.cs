@@ -179,7 +179,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			return RM_PitTrapMath.HeldRelative(true, inPocket, Captures(p), RM_PocketGrid.CanFly(p),
+			return RM_PitTrapMath.HeldRelative(true, inPocket, Captures(p), RM_PocketGrid.FreePitTraveller(p),
 				RM_LadderRules.LadderLetsOut(p.Map, c, p), g.WideAt(k, comp, c, RequiredWidth(p)));
 		}
 
@@ -246,7 +246,7 @@ namespace RimMandrake.FlowWorks
 			}
 			// With the cliff masks on, the step rule is physics for everyone (design §8.1): the pathfinder refuses a colonist's
 			// cliff too, so reachability must agree for every pawn but flyers. Without them, only pawns the hole captures.
-			if (p != null && (RM_PocketGrid.CanFly(p) || (!RM_CliffMask.On && !Captures(p))))
+			if (p != null && (RM_PocketGrid.FreePitTraveller(p) || (!RM_CliffMask.On && !Captures(p))))
 			{
 				return false;
 			}
@@ -381,7 +381,9 @@ namespace RimMandrake.FlowWorks
 		internal static void OnDescent(Pawn p, IntVec3 cell, RM_SuperdeepTrapState state, int drop = -1)
 		{
 			float dmg = 0f;
-			if (RimMandrakeFlowWorksSettings.fallDamageEnabled)
+			// FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT: a creature that flies, jumps or floats in is never hurt by arriving.
+			if (RM_PitAccessMath.FallHurts(RimMandrakeFlowWorksSettings.fallDamageEnabled, RM_PocketGrid.FreePitTraveller(p),
+				RimMandrakeFlowWorksSettings.pitFreeTravelEnabled))
 			{
 				// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V3): damage by METRES FALLEN, in both climb modes: today's fall
 				// up to 2 m (linear: drop ÷ 2 m), +50 % a metre past it, capped at 4× (settings). Never by the cell's depth, never by
@@ -587,7 +589,7 @@ namespace RimMandrake.FlowWorks
 					&& RimMandrakeFlowWorksSettings.superdeepCaptureEnabled
 					&& IsFallingArrival(map, eng, p, prev, pos)
 					&& !Pits.RM_PitCoverUtility.IsCovered(map, pos)
-					&& !p.Flying)
+					&& !p.Flying && !(RimMandrakeFlowWorksSettings.pitFreeTravelEnabled && RM_PocketGrid.FreePitTraveller(p)))
 				{
 					// FLOWWORKS_PIT_FALL_ONLY_FORCED_1: who falls is decided by HOW the pawn arrived.
 					bool walked = walkedInto.TryGetValue(p, out IntVec3 w) && w == pos;
@@ -670,6 +672,7 @@ namespace RimMandrake.FlowWorks
 			IntVec3 pos = p.Position;
 			if (prev != pos && RimMandrakeFlowWorksSettings.superdeepCaptureEnabled && IsFallingArrival(map, eng, p, prev, pos)
 				&& !Pits.RM_PitCoverUtility.IsCovered(map, pos) && !p.Flying
+				&& !(RimMandrakeFlowWorksSettings.pitFreeTravelEnabled && RM_PocketGrid.FreePitTraveller(p))
 				&& RM_PitTrapMath.DescentFalls(false, RM_LadderRules.LadderLetsOut(map, pos, p), p.Faction == Faction.OfPlayer,
 					RM_SuperdeepTrap.Captures(p)))
 			{
@@ -851,7 +854,7 @@ namespace RimMandrake.FlowWorks
 			bool everyone = RM_CliffMask.On;
 			// PIT_REACH_VERIFY_FLYERS_AND_GIANTS (GPT C3-F5): a pawn too wide for the pocket it stands in is not held there
 			// (IsHeldAtRelative's width rule), so the floor lets it climb out, as the masks do (RM_CliffMask.Swap).
-			if (everyone ? RM_PocketGrid.CanFly(pawn) || RM_SuperdeepTrap.InOwnPocketTooNarrow(pawn) : !RM_SuperdeepTrap.IsHeld(pawn))
+			if (everyone ? RM_PocketGrid.FreePitTraveller(pawn) || RM_SuperdeepTrap.InOwnPocketTooNarrow(pawn) : !RM_SuperdeepTrap.IsHeld(pawn))
 			{
 				return true;
 			}
@@ -985,7 +988,7 @@ namespace RimMandrake.FlowWorks
 			if (RM_CliffMask.On)
 			{
 				// Physics for everyone (design §8.1): a pocket with no way out for this pawn never reaches the map edge.
-				if (RM_PocketGrid.CanFly(p) || !c.InBounds(p.Map))
+				if (RM_PocketGrid.FreePitTraveller(p) || !c.InBounds(p.Map))
 				{
 					return;
 				}
@@ -1076,7 +1079,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			// PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.2: "Climbs out of steps up to K deep."), for anyone in a hole.
-			if (relative && !RM_PocketGrid.CanFly(__instance))
+			if (relative && !RM_PocketGrid.FreePitTraveller(__instance))
 			{
 				// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: climbing gear climbs any wall, slowly.
 				string climb = RM_PocketGrid.ClimbsOnGear(__instance) ? "RMFlow_ClimbsAnyWall".Translate().ToString()
