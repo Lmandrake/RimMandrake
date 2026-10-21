@@ -45,6 +45,9 @@ def main():
     good.append(case("a read call writes start+end with tool, args hash, identity",
                      [x["ev"] for x in r] == ["start", "end"] and r[0]["tool"] == "rimworld/get_game_info" and
                      r[0].get("args_sha256") and r[0].get("pid") and r[1]["status"] == "ok", r))
+    good.append(case("an ok end row carries outcome/transport/timeout (folded from obs_events)",
+                     r[1].get("outcome") == "ok" and r[1].get("transport") == "ok" and r[1].get("timeout") is False,
+                     r[1]))
 
     b = bridge(C.RimBridgeError("timed out after 30s waiting for the bridge"))
     try:
@@ -53,6 +56,9 @@ def main():
         pass
     good.append(case("a lost READ reply is recorded but blocks nothing", rows()[-1]["status"] == "lost" and
                      not C.outstanding_indeterminate(), rows()[-1]))
+    good.append(case("a timed-out end row reads outcome=timeout, timeout=True",
+                     rows()[-1].get("outcome") == "timeout" and rows()[-1].get("timeout") is True and
+                     rows()[-1].get("transport") == "timeout", rows()[-1]))
 
     b = bridge(C.RimBridgeError("timed out after 30s waiting for the bridge"))
     try:
