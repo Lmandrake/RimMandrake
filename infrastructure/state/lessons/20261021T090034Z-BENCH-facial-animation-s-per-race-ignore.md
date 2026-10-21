@@ -1,0 +1,1 @@
+Facial Animation's per-race ignore list is a USER Config file (Mod_1635901197_FacialAnimationMod.xml), not shipped content: editing it fixes the owner's game only, and every player install would draw FA faces over our painted heads. Ship the exclusion in a mod. (2026-10-21)

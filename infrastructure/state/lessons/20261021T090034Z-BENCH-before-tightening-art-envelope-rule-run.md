@@ -1,0 +1,1 @@
+Before tightening an art envelope rule, run the game's OWN assets through it: the head chin tolerance 0.06 failed 7 of 35 vanilla/DLC heads (Male Narrow, Biotech wide furskin); 0.08 is the floor that passes all. A rule vanilla fails is miscalibrated, not strict. (face_art_reassessment_2026-10-21)
