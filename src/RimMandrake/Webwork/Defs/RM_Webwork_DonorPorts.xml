@@ -89,7 +89,7 @@
       <Beauty>10</Beauty>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_Aaklac</texPath>
+      <texPath>Things/Plants/AB_Aaklac</texPath>
             <graphicClass>Graphic_Random</graphicClass>
       <drawSize>1.5</drawSize>
       <shadowData>

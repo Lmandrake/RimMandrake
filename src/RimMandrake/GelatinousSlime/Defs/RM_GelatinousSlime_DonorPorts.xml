@@ -87,7 +87,7 @@
     </statBases>
     <pathCost>15</pathCost>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_SlimeGrass</texPath>
+      <texPath>Things/Plants/AB_SlimeGrass</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
@@ -112,7 +112,7 @@
     <label>slimy fern</label>
     <description>Although at first sight this seems to be an independent plant, its roots are intricately interconnected with the rest of the gelatinous superorganism.</description>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_SlimyFern</texPath>
+      <texPath>Things/Plants/AB_SlimyFern</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>
@@ -133,7 +133,7 @@
     <label>slimy tree</label>
     <description>This tree doesn't seem to be entirely solid. Upon further examination, it isn't an independent entity, its roots fusing seamlessly with the hardened gelatinous ground.</description>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_SlimyTree</texPath>
+      <texPath>Things/Plants/AB_SlimyTree</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <altitudeLayer>BuildingOnTop</altitudeLayer>
@@ -157,7 +157,7 @@
     <label>slimecasia</label>
     <description>Although at first sight this seems to be an independent plant, its roots are intricately interconnected with the rest of the gelatinous superorganism.</description>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_Slimecasia</texPath>
+      <texPath>Things/Plants/AB_Slimecasia</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>2</drawSize>
     </graphicData>

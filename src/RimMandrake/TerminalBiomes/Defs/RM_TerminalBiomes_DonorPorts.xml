@@ -17,7 +17,7 @@
       <ThingDef>RawBerries</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_CrystalHorn</texPath>
+      <texPath>Things/Plants/AB_CrystalHorn</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.55, 0.17, 0.15)</volume>
@@ -60,7 +60,7 @@
       <ThingDef>Hay</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_FrostLeaf</texPath>
+      <texPath>Things/Plants/AB_FrostLeaf</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.55, 0.17, 0.15)</volume>
