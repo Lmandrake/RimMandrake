@@ -1,0 +1,1 @@
+jawa/world_tile_export writes waterCovered as 1/0 but Pyrelands read_tile_csv compared it to 'true' and its selftest fixture wrote True/False, so the fixture passed while every live biome site picker took ocean tiles as land (Scrub v2 = re-tiled ocean tile 3). Fixture encodings must be copied from a real export, not imagined. Fixed 283644b90.

@@ -1,0 +1,1 @@
+Deployed jawa/list_pawns faction=none returned 0 rows on a map holding 20 factionless wild animals (2026-10-21, full list); filter wildlife client-side from an unfiltered list_pawns (faction is None and intelligence == Animal) until the deployed filter is re-proved.
