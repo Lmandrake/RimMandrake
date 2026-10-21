@@ -34,6 +34,9 @@ PAINTLIST = os.path.join(REPO, "infrastructure/state/facts/biome_paint_list.md")
 SRC = os.path.join(REPO, "world/rescue_2026-10-19/ported")
 OUT = os.path.join(REPO, "world/paint_inputs_2026-10-20")
 F = "ASHKARR_WORLDMAP_%s.csv"
+# Parity fixes carried into every rebuild (design/Jawa/worldbuilding/parity_causes_2026-10-20.md).
+U1_PLAN = os.path.join(REPO, "world/ASHKARR_PARITY_U1_labels_2026-10-20_plan.json")
+U4_PLAN = os.path.join(REPO, "world/ASHKARR_PARITY_U4_riverdist_2026-10-20_plan.json")
 COPIED = ("tiles", "links", "settlements", "mutators", "landmarks", "factions", "features")
 
 # (layer, column, def type, splitter) - every def-bearing column a written CSV carries.
@@ -183,10 +186,12 @@ def build(src, out, tab, pm, log):
     write(os.path.join(out, F % "landmarks"), fields, kept)
     log["landmarks"] = {"rows_in": len(lmk), "rows_out": len(kept),
                         "actions": [[a, b, n] for (a, b), n in sorted(acts.items())]}
-    # links: unchanged
+    # links: unchanged. Their row order does not decide riverDist any more: w9_run.py lays the
+    # rivers mouth-first from the river_dist table written next to them (parity U4).
     fields, links = read(os.path.join(src, F % "links"))
     write(os.path.join(out, F % "links"), fields, links)
     log["links"] = {"rows": len(links)}
+    log["riverdist"] = write_river_dist(out, U4_PLAN)
     # factions: drop, and strip relations naming a dropped ref
     fields, fac = read(os.path.join(src, F % "factions"))
     drop = tab["factions_drop"]
@@ -207,8 +212,34 @@ def build(src, out, tab, pm, log):
     old = sorted({r["def"] for r in feat})
     for r in feat:
         r["def"] = fd
+    fields, ncentre = add_label_centres(fields, feat, U1_PLAN)
     write(os.path.join(out, F % "features"), fields, feat)
-    log["features"] = {"rows": len(feat), "def": [old, fd]}
+    log["features"] = {"rows": len(feat), "def": [old, fd], "centerTile": ncentre}
+
+
+def add_label_centres(fields, feat, plan_path):
+    """Parity U1: add a `centerTile` column (the U1 plan's `after.centerOnTile`, by name) so
+    stage 6 (`world_features_import featuresPath=`) puts every label on its region's middle.
+    The `size` column already carries the canonical sizes. -> (fields, rows given a centre).
+    Refuses a plan name that is not a row here, or a row the plan does not cover."""
+    plan = {f["name"]: f["after"]["centerOnTile"]
+            for f in json.load(io.open(plan_path, encoding="utf-8"))["features"]}
+    names_ = {r["name"] for r in feat}
+    if set(plan) != names_:
+        raise SystemExit("U1 plan names != features names: plan-only %s, csv-only %s"
+                         % (sorted(set(plan) - names_)[:5], sorted(names_ - set(plan))[:5]))
+    for r in feat:
+        r["centerTile"] = str(plan[r["name"]])
+    return (fields if "centerTile" in fields else list(fields) + ["centerTile"]), len(feat)
+
+
+def write_river_dist(out, plan_path):
+    """Parity U4: DIR/ASHKARR_WORLDMAP_riverdist.csv (tile,river_dist) - the canonical
+    riverDist on every river tile, the target w9_run.py lays the links to. -> row count."""
+    after = json.load(io.open(plan_path, encoding="utf-8"))["after"]
+    rows = [{"tile": t, "river_dist": after[t]} for t in sorted(after, key=int)]
+    write(os.path.join(out, F % "riverdist"), ["tile", "river_dist"], rows)
+    return len(rows)
 
 
 def resolve(d, by, tab):

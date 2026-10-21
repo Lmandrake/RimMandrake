@@ -19,9 +19,9 @@ It is **not** the frozen record: `world/ASHKARR_WORLDMAP_*.csv` is untouched.
 | settlements | `biome` column synced to the remapped tile (92 rows); faction defs already `RUT_Jawa_*` |
 | mutators | the five unresolvable names (49 entries), table below; 24 tiles left with no mutator are dropped from the CSV |
 | landmarks | unchanged (all resolve) |
-| links | same 326 river / 1,242 road edges and defs; **river rows re-ordered and re-oriented mouth-first** (2026-10-20, U4) so `world_links_import` rebuilds the canonical `riverDist` exactly (the record's export order flattened it to max 5). Generator: `src/RimMandrake/Utils/parity_fix_plans.py`; cause: `design/Jawa/worldbuilding/parity_causes_2026-10-20.md` |
+| links | same 326 river / 1,242 road edges and defs; river rows re-ordered and re-oriented mouth-first (2026-10-20, U4). `ASHKARR_WORLDMAP_riverdist.csv` (335 rows, the canonical `riverDist` per river tile) is what `w9_run.py` stage 2 lays the rivers to, so the row order no longer decides it (the record's export order flattened it to max 5). Cause: `design/Jawa/worldbuilding/parity_causes_2026-10-20.md` |
 | factions | 4 defs not on PAINT dropped (no settlement uses them), with their relation entries |
-| features | the 71 labels: `WB_MapLabelFeature` → `Desert` (PROVISIONAL, below) |
+| features | the 71 labels: `WB_MapLabelFeature` → `Desert` (PROVISIONAL, below); `centerTile` column added from the U1 plan, so stage 6 sets each label's canonical `size` and centre by name (U1) |
 | landforms | not copied: Geological Landforms names, no def type on the PAINT list, never stamped by w9 |
 
 ## Decisions that need the owner (PROVISIONAL defaults, all reversible)
