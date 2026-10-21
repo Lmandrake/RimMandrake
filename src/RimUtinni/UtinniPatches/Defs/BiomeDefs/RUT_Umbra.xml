@@ -43,20 +43,11 @@
     <description>The far end of the world, where the sun never rises: black ice that would be utterly dark if the sky ever rested. It never does. The strongest aurora on the planet burns overhead at every hour -- the magnetosphere slamming back together after its rude shock upstream -- sweeping green and violet across the ice, and it is the only light there is. It is cold enough here that propane falls as rain and gathers in clear, still pools that will burn the instant anything hot reaches them. The fast things run in blue flame, because nothing moves fluidly here without burning; the plants are crystal, and regrow overnight.</description>
     <workerClass>BiomeWorker_IceSheet</workerClass>  <!-- was AlphaBiomes.BiomeWorker_PropaneLakes; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
 
-    <!-- OWNER RULING 2026-09-19 (RUT_UMBRA_ROADS_RULING_1): the ban STANDS. No
-         roads in the Auroral Umbra, same as RUT_ExtremeDesert's "No roads through the deep
-         dune". This flag was previously an unexamined default with no sheet behind
-         it; it is now ruled and the sheet says so.
-         MEASURED (2026-09-07 link export): 42 tiles carry stored road links,
-         and 74 of their 78 links run internally - only 4 leave the region. So
-         the ban costs almost no connectivity: it hides an internal web in the
-         coldest land on the planet, not a route to anywhere.
-         Nothing is destroyed by this. `potentialRoads` keeps every link in the
-         world data (2,470 across the planet, unchanged); the flag only decides
-         whether they DRAW. Flipping this to true restores all 42 tiles with no
-         re-authoring, should the Assailant/Rakata-vault pilgrimage ever want a
-         road in. -->
-    <allowRoads>false</allowRoads>
+    <!-- OWNER RULING 2026-10-20, by card ("Roads hidden on 34 Umbra tiles and 9 Gelatinous Slime
+         tiles because the biome specs ban roads" -> "Allow roads on both"): roads are allowed
+         because the hand-made world record has road links on these tiles ("For now just
+         replicate where we had roads before"). -->
+    <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <allowFarmingCamps>true</allowFarmingCamps>
     <animalDensity>0.5</animalDensity>

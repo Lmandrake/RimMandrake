@@ -522,8 +522,8 @@ papered over):
    the one breach of the shielding in the design is Route 6's, made by Imperial
    ordnance and paid for by the Empire on the spot.
 
-Nothing else collided: the ten hard bans are untouched (no kyber, no visibility
-penalty, no rain, no tanker economy, no roads in the Umbra, no icy analogs, the
+Nothing else collided: the hard bans are untouched (no kyber, no visibility
+penalty, no rain, no tanker economy, no icy analogs, the
 war-legacy split holds — the lab's contents stay study subjects on every route,
 and no route puts weapon-fauna in the biome), and the island, the pipes, the tap
 and the Slurrypede are all left exactly where the sheet put them.

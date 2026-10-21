@@ -75,7 +75,8 @@
          stone; RM_SlimeCompressor is the only route to building blocks. -->
     <hasBedrock>false</hasBedrock>
     <noGravel>true</noGravel>
-    <allowRoads>false</allowRoads>
+    <!-- OWNER RULING 2026-10-20, by card: "Allow roads on both" (Umbra and Slime); the hand-made world record has road links here. -->
+    <allowRoads>true</allowRoads>
     <!-- MustTranslate raw string, not a keyed lookup (Verse: BiomeDef.settleWarning). -->
     <settleWarning>Settling on the gelatinous slime will begin converting every person and animal on the map, colonists included. Deserts, arid shrubland and the salt ocean halt and reverse the conversion; wet country does not. Do not settle here without a dry road out.</settleWarning>
 

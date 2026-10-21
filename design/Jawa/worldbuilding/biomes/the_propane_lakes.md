@@ -179,14 +179,7 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
    material here is the study subject, never resident weapon-fauna.
 9. 🔴 **The recognizability rule applies**; the icon carve-out protects in-universe
    references.
-10. 🔴 **No roads in the Umbra** (owner, 2026-09-19, `RUT_UMBRA_ROADS_RULING_1`) — the
-   same ban `RUT_ExtremeDesert` carries for the deep dune. `RUT_Umbra` sets
-   `allowRoads=false`; nothing walks a highway across the far end of the world.
-   MEASURED (2026-09-07 link export): the ban hides 42 tiles' links, 74 of whose 78
-   connections run Umbra-to-Umbra — only 4 leave the region, so almost no
-   connectivity is lost. World data is untouched (`potentialRoads` keeps every link);
-   the flag decides only whether they draw, so the Assailant/Rakata-vault pilgrimage
-   can be given a road later with a one-line change and no re-authoring.
+10. 🔴 **Roads are allowed in the Umbra** (owner, 2026-10-20, by card: "Roads hidden on 34 Umbra tiles and 9 Gelatinous Slime tiles because the biome specs ban roads" -> "Allow roads on both"; also "For now just replicate where we had roads before") — the hand-made world record has road links there. `RUT_Umbra` sets `allowRoads=true`.
 
 ## 7. Uniquely available
 
