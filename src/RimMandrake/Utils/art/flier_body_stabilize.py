@@ -8,10 +8,16 @@ like that." So nothing here uses an alpha bbox, an alpha centroid, a whole-image
 The body is located the way video stabilisers locate the static scene, restricted to the body and with the moving
 wings rejected as outliers, and three independent estimators must agree:
 
-  ECC      OpenCV findTransformECC (Evangelidis & Psarakis 2008, "Parametric image alignment using enhanced
-           correlation coefficient maximization"), MOTION_EUCLIDEAN, with inputMask = the BODY region of the
-           reference frame, on edge-weighted grey (gradient magnitude), so the fit is driven by the body's edges and
-           interior detail. Gives dx, dy, angle and the correlation rho (rho < 0.6 = the body is a different drawing).
+  ECC      OpenCV findTransformECCWithMask (Evangelidis & Psarakis 2008, "Parametric image alignment using enhanced
+           correlation coefficient maximization"), MOTION_EUCLIDEAN, with templateMask = the BODY region of the
+           reference frame and inputMask = all of the frame, on edge-weighted grey (gradient magnitude), so the fit is
+           driven by the body's edges and interior detail. Gives dx, dy, angle and the correlation rho.
+           MASK SEMANTICS (fixed 2026-10-21, GPT review): findTransformECC's `inputMask` is a validity mask for the
+           INPUT image before warping, in input-image coordinates. It is NOT a reference-space region. The old call
+           passed the reference body mask there, so a body that moved in the frame was fitted over the wrong pixels.
+           The installed OpenCV (5.0.0 in the cvenv) has findTransformECCWithMask, whose `templateMask` is the
+           reference-space region we mean; when a build lacks it, ECC is not run at all (UNMEASURED), never
+           misused.
   FEATURES SIFT keypoints (Lowe 2004) inside the body region, matched by descriptor (ratio test 0.8), then
            estimateAffinePartial2D with RANSAC (4-DOF similarity; wings and re-shaded pixels are rejected as
            outliers). The pipeline is the point-feature stabiliser of learnopencv
@@ -24,13 +30,37 @@ wings rejected as outliers, and three independent estimators must agree:
            (TM_CCORR_NORMED with the part's own mask) over a +/-12 deg rotation sweep; the part-to-part line gives the
            body's pitch independently of the other two estimators.
 
-The BODY region of the reference frame comes from the set's annotation (flyer_cutout_sets/<Set>.json `protect`
-polygons, which a person drew around head, torso, legs and tail) intersected with alpha > 128. With no annotation
-the tool refuses: it does not guess a body from image statistics.
+The BODY region of the reference frame is the cut-out PLATE region of the set's annotation
+(flyer_cutout_sets/<Set>.json): the `protect` polygons PLUS everything outside the `wings` polygons, intersected with
+alpha > 128. That is what flyer_cutout keeps fixed. Several east annotations put `protect` around the head and neck
+only, so `protect` alone would measure a head and call the flier locked. COVERAGE is then required: body pixels at
+every wing root (hinge) and body reaching past the roots away from the head (torso/hips). A head-only mask is
+UNMEASURED. With no annotation the tool refuses: it does not guess a body from image statistics.
 
-Verdict per facing: LOCKED when every frame's body is within 1 px and 0.5 deg of the reference on ECC and FEATURES
-(and PARTS within 1.5 px / 1 deg), DRIFT when a rigid body moved more than that, RE-POSED when the body is not the
-same drawing (ECC rho < 0.6 or fewer than 8 feature inliers): no rigid transform describes it.
+Verdict per facing:
+  LOCKED             every frame measured with confidence (ECC rho >= 0.6, >= 8 feature inliers, both body parts
+                     matched at score >= 0.8) and within 1 px and 0.5 deg on ECC and FEATURES, feature scale within
+                     1 px at the body's radius, and PARTS within 1.5 px / 1 deg.
+  DRIFT              a confidently measured body moved, turned or rescaled more than that.
+  APPEARANCE CHANGED supported residual evidence only: the reference is measurable (its own features self-match),
+                     and after the best available alignment (ECC, FEATURES, identity) more than 20% of body pixels
+                     still differ by more than 16 levels (fixture-calibrated starting values). No rigid transform tried explains the body.
+  UNMEASURED         the estimators failed (ECC error, too few inliers, a part not found) without that residual
+                     evidence, or the body mask fails coverage. This is LOW CONFIDENCE, not a finding. Before
+                     2026-10-21 these cases were reported as RE-POSED.
+
+Two gates that do not depend on the localiser (GPT review 2026-10-21, design/RimMandrake/
+flier_authoring_architecture_2026-10-21.md):
+  EXPORTED-PNG BODY EQUALITY  re-reads the frames from disk (the files the game loads, after every post-build
+                     step such as Uvak_cleanup.py) and compares the plate region's pixels that are opaque in EVERY
+                     frame byte for byte against the master frame (a pixel opaque only in some frames is a soft rim
+                     with a wing passing behind it); an interior body pixel that turns non-opaque counts as changed. Pixels a near ("over") wing can cover in that frame are excused: the wing
+                     polygon swept through its configured pose is the envelope, and the excused count is reported.
+                     IDENTICAL / CHANGED n px / UNMEASURED.
+  WING MOTION        the silhouette outside the body region must change meaningfully across the cycle. The largest
+                     pairwise change must be >= 20% of the wing area (symmetric difference over union), and no two
+                     consecutive frames may be near copies (< 2%). FLAPS / WINGS STILL. A body-only gate passes a set
+                     of identical copies; this one does not.
 
 Usage (needs OpenCV; re-runs itself under <agent storage>/rimmandrake/build/cvenv when cv2 is missing):
   flier_body_stabilize.py --set Sketto [--src DIR] [--facing F] [--overlay OUT.png] [--json OUT.json]
@@ -71,6 +101,24 @@ import flyer_cutout as FC  # noqa: E402
 TOL_PX, TOL_DEG = 1.0, 0.5
 PART_TOL_PX, PART_TOL_DEG = 1.5, 1.0
 RHO_MIN, INLIERS_MIN = 0.6, 8
+PART_SCORE_MIN = 0.8                # masked TM_CCORR_NORMED of a body part; below it the part is "not found"
+RESID_MAX, RESID_LEVEL = 0.20, 16   # APPEARANCE CHANGED: > 20% of body px differ by > 16 levels after alignment.
+                                    # Starting values from the selftest fixture (identical body, wings inside a loose
+                                    # mask: 6%; a different drawing: 30%), not a perceptual standard.
+ROOT_MIN_PX, TORSO_MIN_SHARE = 20, 0.15
+WING_MIN_CHANGE, WING_MIN_STEP = 0.20, 0.02
+HAVE_ECC_WITH_MASK = hasattr(cv2, "findTransformECCWithMask")
+
+
+def ecc_masked(template, image, template_mask, W, motion, crit, gauss):
+    """ECC with the region given in TEMPLATE (reference) coordinates: findTransformECCWithMask(templateMask=REGION,
+    inputMask=all valid). Raises cv2.error when this OpenCV lacks it: passing a reference-space mask as
+    findTransformECC's inputMask is the bug this replaces."""
+    if not HAVE_ECC_WITH_MASK:
+        raise cv2.error(f"OpenCV {cv2.__version__} has no findTransformECCWithMask; ECC not run")
+    tm = template_mask.astype(np.uint8) * 255 if template_mask.dtype == bool else template_mask
+    im = np.full(image.shape[:2], 255, np.uint8)
+    return cv2.findTransformECCWithMask(template, image, tm, im, W, motion, crit, gauss)
 
 
 def grey_edges(rgba: np.ndarray) -> np.ndarray:
@@ -134,11 +182,68 @@ def est_ecc(ref, frm, mask, init=None) -> dict:
         W = np.float32([[math.cos(r), -math.sin(r), e["dx"]], [math.sin(r), math.cos(r), e["dy"]]])
     crit = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 300, 1e-6)
     try:
-        rho, W = cv2.findTransformECC(t, i, W, cv2.MOTION_EUCLIDEAN, crit, mask.astype(np.uint8) * 255, 3)
+        rho, W = ecc_masked(t, i, mask, W, cv2.MOTION_EUCLIDEAN, crit, 3)
     except cv2.error as exc:
-        return {"ok": False, "rho": 0.0, "error": str(exc).splitlines()[-1][:120]}
-    # findTransformECC's W maps template coords into the input image: the body's pose in this frame
-    return {"ok": rho >= RHO_MIN, "rho": float(rho), "M": W, **_euclid(W)}
+        return {"ok": False, "converged": False, "rho": 0.0, "error": str(exc).splitlines()[-1][:120]}
+    # W maps template coords into the input image: the body's pose in this frame
+    return {"ok": rho >= RHO_MIN, "converged": True, "rho": float(rho), "M": W, **_euclid(W)}
+
+
+def residual_share(ref, frm, mask, M) -> float:
+    """Share of body pixels (MASK, reference coords) that still differ by > RESID_LEVEL in any channel after FRM is
+    sampled through M (template -> input map; None = identity). The residual evidence behind APPEARANCE CHANGED."""
+    W = np.eye(2, 3, dtype=np.float32) if M is None else np.float32(M)
+    h, w = ref.shape[:2]
+    warped = cv2.warpAffine(frm, W, (w, h), flags=cv2.INTER_LINEAR | cv2.WARP_INVERSE_MAP,
+                            borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0, 0))
+    d = np.abs(warped.astype(np.int16) - ref.astype(np.int16)).max(-1)
+    n = int(mask.sum())
+    return float(((d > RESID_LEVEL) & mask).sum()) / max(n, 1)
+
+
+def plate_region(fc: dict, shape) -> np.ndarray:
+    """Where flyer_cutout keeps the master's pixels: the protect polygons plus everything outside the wing polygons."""
+    prot = FC.poly_mask(shape, fc.get("protect"))
+    wings = FC.poly_mask(shape, [w["poly"] for w in fc.get("wings", [])])
+    return prot | ~wings
+
+
+def _head_point(fc: dict, facing: str, mask: np.ndarray):
+    eyes = fc.get("eyes")
+    if eyes:
+        return float(np.mean([e[0] for e in eyes])), float(np.mean([e[1] for e in eyes]))
+    ys, xs = np.nonzero(mask)
+    if facing == "east":                                     # east faces right: the head is the front
+        sel = xs >= np.percentile(xs, 95)
+    else:                                                    # north/south: the head is at the top
+        sel = ys <= np.percentile(ys, 5)
+    return float(xs[sel].mean()), float(ys[sel].mean())
+
+
+def coverage(fc: dict, facing: str, mask: np.ndarray) -> dict:
+    """Does the body mask cover the rigid anatomy, not just the head? Body pixels within one patch radius of every
+    wing root, and >= TORSO_MIN_SHARE of the body farther from the head than the nearest root (the torso/hips)."""
+    ys, xs = np.nonzero(mask)
+    hinges = [w["hinge"] for w in fc.get("wings", []) if w.get("hinge")]
+    out = {"ok": True, "why": []}
+    if not len(xs):
+        return {"ok": False, "why": ["empty body mask"]}
+    if not hinges:
+        return {"ok": False, "why": ["no wing root (hinge) annotated"]}
+    r = max(6, round(0.045 * mask.shape[1]))
+    roots = [int(((xs - hx) ** 2 + (ys - hy) ** 2 <= r * r).sum()) for hx, hy in hinges]
+    out["root_px"] = roots
+    if min(roots) < ROOT_MIN_PX:
+        out["ok"] = False
+        out["why"].append(f"wing root not covered ({min(roots)} body px within {r} px of a hinge)")
+    hx_, hy_ = _head_point(fc, facing, mask)
+    d_root = min(math.hypot(hx - hx_, hy - hy_) for hx, hy in hinges)
+    share = float((np.hypot(xs - hx_, ys - hy_) > d_root).mean())
+    out["torso_share"] = round(share, 3)
+    if share < TORSO_MIN_SHARE:
+        out["ok"] = False
+        out["why"].append(f"body stops at the head ({share:.0%} of it lies past the wing roots)")
+    return out
 
 
 def split_parts(mask: np.ndarray) -> dict:
@@ -205,8 +310,11 @@ def find_part(ref, frm, pmask) -> dict:
 
 def est_parts(ref, frm, parts: dict) -> dict:
     res = {n: find_part(ref, frm, m) for n, m in parts.items()}
+    for p in res.values():                                 # a best match below the floor is "not found", not a fix
+        if p.get("ok") and p["score"] < PART_SCORE_MIN:
+            p["ok"], p["why"] = False, f"score {p['score']:.2f} < {PART_SCORE_MIN}"
     f, b = res.get("front", {}), res.get("back", {})
-    out = {"parts": res}
+    out = {"parts": res, "all_ok": all(p.get("ok") for p in res.values())}
     if f.get("ok") and b.get("ok"):
         a0 = math.degrees(math.atan2(f["ref_c"][1] - b["ref_c"][1], f["ref_c"][0] - b["ref_c"][0]))
         a1 = math.degrees(math.atan2(f["c"][1] - b["c"][1], f["c"][0] - b["c"][0]))
@@ -217,14 +325,19 @@ def est_parts(ref, frm, parts: dict) -> dict:
 
 
 def body_mask_from(cfg_facing: dict, ref: np.ndarray) -> np.ndarray:
-    m = FC.poly_mask(ref.shape[:2], cfg_facing.get("protect")) & (ref[..., 3] > 128)
-    return m
+    """The plate region (protect + outside every wing polygon), opaque in the reference frame; see the docstring."""
+    return plate_region(cfg_facing, ref.shape[:2]) & (ref[..., 3] > 128)
 
 
-def measure_facing(frames: list[np.ndarray], mask: np.ndarray, named_parts: dict | None = None) -> dict:
+def measure_facing(frames: list[np.ndarray], mask: np.ndarray, named_parts: dict | None = None,
+                   cover: dict | None = None) -> dict:
+    """COVER: coverage() of MASK (None = not checked, e.g. a bare fixture)."""
     ref = frames[0]
     ys, xs = np.nonzero(mask)
     cx, cy = float(xs.mean()), float(ys.mean())          # centre of the ANNOTATED body, for reporting motion there
+    radius = float(np.hypot(xs - cx, ys - cy).max())     # a scale error s moves the body's rim by |s - 1| * radius
+    self_feat = est_features(ref, ref, mask)
+    ref_measurable = self_feat.get("inliers", 0) >= INLIERS_MIN
     parts = split_parts(mask)
     for n, box in (named_parts or {}).items():
         m = np.zeros_like(mask)
@@ -244,30 +357,140 @@ def measure_facing(frames: list[np.ndarray], mask: np.ndarray, named_parts: dict
                 mx, my = body_motion_at(e["M"], cx, cy)
                 row[name]["body_px"] = round(math.hypot(mx, my), 3)
         rows.append(row)
-    worst = {"ecc_px": 0.0, "ecc_deg": 0.0, "feat_px": 0.0, "feat_deg": 0.0, "parts_px": 0.0, "parts_deg": 0.0,
-             "rho_min": 1.0, "inliers_min": 10 ** 9}
-    reposed = False
+    worst = {"ecc_px": 0.0, "ecc_deg": 0.0, "feat_px": 0.0, "feat_deg": 0.0, "scale_px": 0.0, "parts_px": 0.0,
+             "parts_deg": 0.0, "rho_min": 1.0, "inliers_min": 10 ** 9}
+    changed, low, moved = [], [], []
     for r in rows[1:]:
         e, f, p = r["ecc"], r["features"], r["parts"]
-        if not e.get("ok") or not f.get("ok"):
-            reposed = True
         worst["rho_min"] = min(worst["rho_min"], e.get("rho") or 0.0)
         worst["inliers_min"] = min(worst["inliers_min"], f.get("inliers") or 0)
-        if e.get("body_px") is not None:
-            worst["ecc_px"] = max(worst["ecc_px"], e["body_px"]); worst["ecc_deg"] = max(worst["ecc_deg"], abs(e["deg"]))
-        if f.get("body_px") is not None:
-            worst["feat_px"] = max(worst["feat_px"], f["body_px"]); worst["feat_deg"] = max(worst["feat_deg"], abs(f["deg"]))
-        if p.get("shift") is not None:
-            worst["parts_px"] = max(worst["parts_px"], p["shift"]); worst["parts_deg"] = max(worst["parts_deg"], abs(p["deg"]))
-    if reposed:
-        verdict = "RE-POSED"
-    elif (worst["ecc_px"] <= TOL_PX and worst["ecc_deg"] <= TOL_DEG and worst["feat_px"] <= TOL_PX
-          and worst["feat_deg"] <= TOL_DEG and worst["parts_px"] <= PART_TOL_PX and worst["parts_deg"] <= PART_TOL_DEG):
-        verdict = "LOCKED"
-    else:
+        confident = bool(e.get("ok") and f.get("ok") and r["_parts"].get("all_ok") and p.get("shift") is not None)
+        if not confident:
+            # Estimator failure is not anatomy. APPEARANCE CHANGED needs residual evidence: a measurable reference
+            # and no candidate alignment that brings the body back.
+            cands = [None] + [x["M"] for x in (r["_ecc"], r["_feat"]) if x.get("M") is not None]
+            res = min(residual_share(ref, frames[r["frame"] - 1], mask, M) for M in cands)
+            r["residual"] = round(res, 3)
+            why = [n for n, ok in (("ECC", e.get("ok")), ("features", f.get("ok")), ("parts", r["_parts"].get("all_ok")))
+                   if not ok]
+            if ref_measurable and res > RESID_MAX:
+                changed.append((r["frame"], why, res))
+            else:
+                low.append((r["frame"], why, res))
+            continue
+        sc_px = abs((f.get("scale") or 1.0) - 1.0) * radius
+        worst["scale_px"] = max(worst["scale_px"], sc_px)
+        worst["ecc_px"] = max(worst["ecc_px"], e["body_px"]); worst["ecc_deg"] = max(worst["ecc_deg"], abs(e["deg"]))
+        worst["feat_px"] = max(worst["feat_px"], f["body_px"]); worst["feat_deg"] = max(worst["feat_deg"], abs(f["deg"]))
+        worst["parts_px"] = max(worst["parts_px"], p["shift"]); worst["parts_deg"] = max(worst["parts_deg"], abs(p["deg"]))
+        if not (e["body_px"] <= TOL_PX and abs(e["deg"]) <= TOL_DEG and f["body_px"] <= TOL_PX
+                and abs(f["deg"]) <= TOL_DEG and sc_px <= TOL_PX and p["shift"] <= PART_TOL_PX
+                and abs(p["deg"]) <= PART_TOL_DEG):
+            moved.append(r["frame"])
+    why = []
+    if changed:
+        verdict = "APPEARANCE CHANGED"
+        why = [f"frame {k}: {', '.join(w)} failed and {s:.0%} of the body still differs after alignment"
+               for k, w, s in changed]
+    elif moved:
         verdict = "DRIFT"
-    return {"verdict": verdict, "worst": {k: round(v, 3) for k, v in worst.items()}, "rows": rows,
-            "body_centre": [round(cx, 1), round(cy, 1)]}
+    elif low or (cover is not None and not cover["ok"]):
+        verdict = "UNMEASURED"
+        why = [f"frame {k}: {', '.join(w)} failed, residual {s:.0%} is not evidence of change"
+               + ("" if ref_measurable else " (reference too featureless to self-match)") for k, w, s in low]
+        if cover is not None and not cover["ok"]:
+            why += cover["why"]
+    else:
+        verdict = "LOCKED"
+    return {"verdict": verdict, "why": why, "worst": {k: round(v, 3) for k, v in worst.items()}, "rows": rows,
+            "body_centre": [round(cx, 1), round(cy, 1)], "ref_self_inliers": self_feat.get("inliers", 0),
+            "coverage": cover}
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Gates independent of the localiser (GPT review 2026-10-21): exported-PNG body equality and wing motion.
+def _wing_envelopes(fc: dict, shape, n: int) -> list[np.ndarray]:
+    """Per frame, every pixel a NEAR ("over") wing may paint: its whole polygon (minus protect) bent through that
+    frame's configured pose the way flyer_cutout.compose_facing bends the wing, dilated 2 px for resampling. An
+    over-approximation, so excusing these pixels can only hide a change, never invent one; the count is reported."""
+    prot = FC.poly_mask(shape, fc.get("protect"))
+    wing_all = FC.poly_mask(shape, [w["poly"] for w in fc.get("wings", [])])
+    body = prot | ~wing_all
+    default = fc.get("order", "under")
+    out = [np.zeros(shape, bool) for _ in range(n)]
+    for wg in fc.get("wings", []):
+        if wg.get("order", default) != "over":
+            continue
+        layer = np.zeros((*shape, 4), np.uint8)
+        layer[FC.poly_mask(shape, [wg["poly"]]) & ~prot] = 255
+        for k, pose in enumerate(FC.poses_of(wg, n)):
+            pose = list(pose) + [1.0, 1.0][len(pose) - 1:]
+            deg, sc, sy = pose[0], pose[1], pose[2] if len(pose) > 2 else 1.0
+            fall = int(wg.get("falloff", fc.get("falloff", round(FC.FALLOFF * shape[1]))))
+            m = FC.bend(layer, body, wg["hinge"], deg * wg.get("sign", 1), sc, sy, fall)[..., 3] > 0
+            for _ in range(2):
+                m = FC._dilate8(m)
+            out[k] |= m
+    return out
+
+
+def exported_body_equality(paths: list[Path], fc: dict, ref_idx: int) -> dict:
+    """Re-read the EXPORTED frames from disk and compare the plate region's opaque pixels with the master frame's,
+    byte for byte (RGBA; only pixels opaque in the master, so RGB under zero alpha never counts)."""
+    if not fc.get("wings") or not fc.get("protect"):
+        return {"verdict": "UNMEASURED", "why": "no cut-out annotation (protect + wings)"}
+    frames = [np.asarray(Image.open(p).convert("RGBA")) for p in paths]
+    if len({f.shape for f in frames}) != 1:
+        return {"verdict": "UNMEASURED", "why": "mixed canvas sizes"}
+    ref = frames[ref_idx]
+    plate = plate_region(fc, ref.shape[:2])
+    amin = np.min([f[..., 3] for f in frames], 0)
+    # Solid body = opaque in EVERY exported frame. A pixel opaque only in some frames is the plate's soft rim (or a
+    # transparent plate pixel) with a wing passing behind it: compositing, not the body (measured 2026-10-21: 277 of
+    # 279 first-pass "changes" on the six rebuilt sets were exactly that, on wing edges and rims).
+    region = plate & (amin == 255)
+    # ...but an ERASED body pixel also drops out of "opaque in every frame". A blob of such pixels (opaque in the
+    # master, not in some frame) whose 1 px ring is all solid body is interior, not rim: it counts as changed.
+    cand = plate & (ref[..., 3] == 255) & (amin < 255)
+    holes = np.zeros_like(cand)
+    nlab, lab = cv2.connectedComponents(cand.astype(np.uint8), connectivity=8)
+    for i in range(1, nlab):
+        blob = lab == i
+        ring = cv2.dilate(blob.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool) & ~blob
+        if ring.any() and region[ring].all():
+            holes |= blob
+    try:
+        env = _wing_envelopes(fc, ref.shape[:2], len(frames))
+    except SystemExit as exc:                               # pose count does not match the frame count
+        return {"verdict": "UNMEASURED", "why": str(exc)}
+    changed, excused, per = 0, 0, []
+    for k, fr in enumerate(frames):
+        diff = ((fr != ref).any(-1) & region) | (holes & (fr[..., 3] < 255))
+        exc = diff & (env[k] | env[ref_idx])
+        bad = diff & ~exc
+        per.append({"frame": k + 1, "changed_px": int(bad.sum()), "excused_px": int(exc.sum())})
+        changed += int(bad.sum())
+        excused += int(exc.sum())
+    v = "IDENTICAL" if changed == 0 else f"CHANGED {changed} px"
+    return {"verdict": v, "region_px": int(region.sum()), "changed_px": changed, "excused_under_near_wing_px": excused,
+            "interior_holes_px": int(holes.sum()), "frames": per}
+
+
+def wing_motion(frames: list[np.ndarray], fc: dict, ref_idx: int) -> dict:
+    """The silhouette outside the body region must change across the cycle (symmetric difference over union)."""
+    ref = frames[ref_idx]
+    body = plate_region(fc, ref.shape[:2]) & (ref[..., 3] > 128) if fc.get("wings") else np.zeros(ref.shape[:2], bool)
+    sil = [(f[..., 3] > 128) & ~body for f in frames]
+
+    def d(a, b):
+        u = int((a | b).sum())
+        return float((a ^ b).sum()) / u if u else 0.0
+    n = len(sil)
+    pair = max((d(sil[i], sil[j]) for i in range(n) for j in range(i + 1, n)), default=0.0)
+    steps = [d(sil[i], sil[(i + 1) % n]) for i in range(n)]
+    ok = pair >= WING_MIN_CHANGE and min(steps) >= WING_MIN_STEP
+    return {"verdict": "FLAPS" if ok else "WINGS STILL", "max_pair_change": round(pair, 3),
+            "min_step_change": round(min(steps), 3), "steps": [round(s, 3) for s in steps]}
 
 
 def overlay(frames: list[np.ndarray], mask: np.ndarray, res: dict, out: Path, title: str) -> None:
@@ -526,9 +749,9 @@ def _ecc_refine(g_ref, g_frm, mmask, pt, r, dx, dy):
     if m.sum() < 255 * 40:
         return None
     W = np.float32([[1, 0, dx], [0, 1, dy]])
-    try:
-        _, W = cv2.findTransformECC(g_ref, g_frm, W, cv2.MOTION_EUCLIDEAN,
-                                    (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 200, 1e-5), m, 3)
+    try:                                                   # the disc is a REFERENCE-space region: templateMask
+        _, W = ecc_masked(g_ref, g_frm, m, W, cv2.MOTION_EUCLIDEAN,
+                          (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 200, 1e-5), 3)
     except cv2.error:
         return None
     nx = W[0, 0] * pt[0] + W[0, 1] * pt[1] + W[0, 2] - pt[0]
@@ -692,8 +915,8 @@ def main(argv=None) -> int:
     a.set = a.set[0]
     for facing in ([a.facing] if a.facing else ["north", "east", "south"]):
         cfg, fc, paths, frames = load_set(a.set, a.src, facing)
-        if not fc.get("protect"):
-            print(f"UNMEASURED {a.set} {facing}: no body annotation (protect polygons) in the set config")
+        if not fc.get("protect") or not fc.get("wings"):
+            print(f"UNMEASURED {a.set} {facing}: no body annotation (protect + wings polygons) in the set config")
             worst_rc = max(worst_rc, 2)
             continue
         sizes = {f.shape for f in frames}
@@ -709,20 +932,28 @@ def main(argv=None) -> int:
             print(f"UNMEASURED {a.set} {facing}: the protect polygons cover {int(mask.sum())} opaque px of frame {ref + 1}")
             worst_rc = max(worst_rc, 2)
             continue
-        res = measure_facing(fr, mask, fc.get("parts"))
+        res = measure_facing(fr, mask, fc.get("parts"), coverage(fc, facing, mask))
         for r, i in zip(res["rows"], order):
             r["frame"] = i + 1
         wv = res["worst"]
+        eq, wm = exported_body_equality(paths, fc, ref), wing_motion(frames, fc, ref)
         print(f"{res['verdict']:8} {a.set} {facing} (ref frame {ref + 1}): ECC {wv['ecc_px']} px / {wv['ecc_deg']} deg "
-              f"(rho min {wv['rho_min']}), features {wv['feat_px']} px / {wv['feat_deg']} deg (inliers min "
-              f"{wv['inliers_min']}), parts {wv['parts_px']} px / {wv['parts_deg']} deg")
+              f"(rho min {wv['rho_min']}), features {wv['feat_px']} px / {wv['feat_deg']} deg / scale {wv['scale_px']} px "
+              f"(inliers min {wv['inliers_min']}), parts {wv['parts_px']} px / {wv['parts_deg']} deg"
+              + (f"  [{'; '.join(res['why'])}]" if res["why"] else "")
+              + f" | exported-PNG body {eq['verdict']}" + (f" ({eq['excused_under_near_wing_px']} px under the near wing excused)"
+                                                          if eq.get("excused_under_near_wing_px") else "")
+              + f" | wings {wm['verdict']} (max change {wm['max_pair_change']}, min step {wm['min_step_change']})")
         if a.overlay:
             p = a.overlay.with_name(f"{a.overlay.stem}_{facing}{a.overlay.suffix}")
             overlay(fr, mask, res, p, f"{a.set} {facing}: {res['verdict']} (frames in order {[i + 1 for i in order]})")
             print("overlay", p)
-        out[facing] = {"verdict": res["verdict"], "worst": wv, "ref": ref + 1,
+        out[facing] = {"verdict": res["verdict"], "why": res["why"], "worst": wv, "ref": ref + 1,
+                       "coverage": res["coverage"], "exported_body": eq, "wings": wm,
                        "rows": [{k: v for k, v in r.items() if not k.startswith("_")} for r in res["rows"]]}
-        worst_rc = max(worst_rc, 0 if res["verdict"] == "LOCKED" else 1)
+        worst_rc = max(worst_rc, {"LOCKED": 0, "UNMEASURED": 2}.get(res["verdict"], 1),
+                       0 if eq["verdict"] == "IDENTICAL" else (2 if eq["verdict"] == "UNMEASURED" else 1),
+                       0 if wm["verdict"] == "FLAPS" else 1)
     if a.json:
         a.json.write_text(json.dumps(out, indent=1, default=float))
     return worst_rc
@@ -743,12 +974,19 @@ def main_lines(a) -> int:
             lc = line_check(frames, fc, facing, ref_idx)
             facs.append((facing, frames, lc, ref_idx))
             wv = lc["worst"]
+            eq, wm = exported_body_equality(paths, fc, ref_idx), wing_motion(frames, fc, ref_idx)
             print(f"{lc['verdict']:10} {name} {facing} (master {ref_idx + 1}): "
                   + "; ".join(f"{n} [{lc['lines'][n]['label']}] worst {wv[n]['dy_px']} px / {wv[n]['ddeg']} deg"
-                              if n in wv else f"{n} [{lc['lines'][n]['label']}]" for n in lc["lines"]))
+                              if n in wv else f"{n} [{lc['lines'][n]['label']}]" for n in lc["lines"])
+                  + f" | exported-PNG body {eq['verdict']}"
+                  + (f" ({eq['excused_under_near_wing_px']} px under the near wing excused)"
+                     if eq.get("excused_under_near_wing_px") else "")
+                  + f" | wings {wm['verdict']} (max change {wm['max_pair_change']}, min step {wm['min_step_change']})")
             report.setdefault(name, {})[facing] = {"verdict": lc["verdict"], "worst": wv, "master": ref_idx + 1,
-                                                   "lines": lc["lines"]}
-            rc = max(rc, {"LEVEL": 0, "MOVING": 1}.get(lc["verdict"], 2))
+                                                   "lines": lc["lines"], "exported_body": eq, "wings": wm}
+            rc = max(rc, {"LEVEL": 0, "MOVING": 1}.get(lc["verdict"], 2),
+                     0 if eq["verdict"] == "IDENTICAL" else (2 if eq["verdict"] == "UNMEASURED" else 1),
+                     0 if wm["verdict"] == "FLAPS" else 1)
         sh = lines_sheet(name, facs)
         p = a.lines / f"{name}_lines.png"
         sh.save(p)
