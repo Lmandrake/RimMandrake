@@ -76,8 +76,12 @@ namespace RimMandrake.TitanicCreatures
             bool can = def.Worker.CanFireNow(new IncidentParms { target = map });
             bool t3 = TitanPassageUtility.T3OnMap(map);
             var kinds = DefDatabase<PawnKindDef>.AllDefsListForReading.Where(k => TitanPassageUtility.Eligible(k, map, t3)).ToList();
-            return "canFire=" + can + " active=" + RM_HugeThingsSettings.TitanEventsActive + " t3OnMap=" + t3 + " eligible=" + kinds.Count
-                   + " [" + string.Join(",", kinds.Select(k => k.defName + ":" + TitanicTierUtility.AdultTier(k.race))) + "]";
+            var ext = map.Biome?.GetModExtension<RM_TitanPassageExtension>();
+            string hints = ext == null ? "roster" : ext.none ? "none" : "list" + (ext.passers?.Count ?? 0);
+            return "canFire=" + can + " active=" + RM_HugeThingsSettings.TitanEventsActive + " t3OnMap=" + t3
+                   + " biome=" + map.Biome?.defName + " seaMap=" + TitanPassageUtility.IsSeaMap(map) + " hints=" + hints
+                   + " eligible=" + kinds.Count + " [" + string.Join(",", kinds.Select(k => k.defName + ":"
+                   + TitanicTierUtility.AdultTier(k.race) + (TitanPassageUtility.IsSeaCreature(k) ? ":sea" : ":land"))) + "]";
         }
 
         public static string PassageReport()
@@ -94,6 +98,7 @@ namespace RimMandrake.TitanicCreatures
                 sb.Append(" arrived=").Append(a.ThingID).Append(" kind=").Append(a.kindDef.defName)
                   .Append(" tier=").Append(TitanicTierUtility.AdultTier(a.def)).Append(" spawned=").Append(a.Spawned)
                   .Append(" homedHere=").Append(map.Biomes.Any(b => b.CommonalityOfAnimal(a.kindDef) > 0f))
+                  .Append(" seaMatch=").Append(TitanPassageUtility.IsSeaCreature(a.kindDef) == TitanPassageUtility.IsSeaMap(map))
                   .Append(" lord=").Append(lord?.LordJob?.GetType().Name ?? "none")
                   .Append(" pos=").Append(a.Position.x).Append(',').Append(a.Position.z);
             }

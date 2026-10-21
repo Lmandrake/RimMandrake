@@ -201,15 +201,25 @@ namespace RimMandrake.TitanicCreatures
             return (int)Math.Max(1, Math.Min(max, need));
         }
 
-        /// <summary>Card #5: "Titans roam only where the rosters home them; anywhere else they arrive as scripted events with
-        /// warning." A race may walk in as a footfall-warned titan event only when it is a titan (adult tier T2 or T3), the map's
-        /// biome does not home it, some biome does (no orphan or test race), the season suits it, and (spacing law, one T3 per
-        /// map) no T3 already stands on the map when it is itself T3.</summary>
-        public static bool TitanEventEligible(int adultTier, bool homedHere, bool homedSomewhere, bool seasonOk, bool t3OnMap)
+        /// <summary>TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT (owner, by card 2026-10-21): "Calves are ok. Sea creatures are not on dry
+        /// land. Opposite can happen in sea biomes. Only sea creatures not land creatures. Every biome should have something like
+        /// this. ... A few exceptions such as rust cathedral and dark side biomes. Only if giants can exist there. Should draw
+        /// from the hints of their own biome always of course." A race may walk (or swim) in as a footfall-warned titan passage
+        /// only when: the map's biome has not opted out; it is a titan by its ADULT tier (T2 or T3, so a calf kind of a titan
+        /// race qualifies); its water-ness matches the map's (sea giants only on a sea map, land giants only on land); it comes
+        /// from the map biome's own hints, which are the biome's passage list when it has one and its own roster otherwise; the
+        /// season suits it; and (spacing law, one T3 per map) no T3 already stands on the map when it is itself T3.</summary>
+        public static bool TitanEventEligible(int adultTier, bool biomeOptedOut, bool seaCreature, bool seaMap,
+            bool biomeHasPassageList, bool onPassageList, bool homedHere, bool seasonOk, bool t3OnMap)
         {
-            if (adultTier < T2 || homedHere || !homedSomewhere || !seasonOk) return false;
+            if (biomeOptedOut || adultTier < T2 || seaCreature != seaMap || !seasonOk) return false;
+            if (!(biomeHasPassageList ? onPassageList : homedHere)) return false;
             return !(adultTier == T3 && t3OnMap);
         }
+
+        /// <summary>A sea creature is a race homed in at least one biome, every one of them a sea biome. A race homed nowhere is
+        /// not a sea creature (and is never drawn: no biome hints it).</summary>
+        public static bool IsSeaCreature(int seaHomes, int landHomes) => seaHomes > 0 && landHomes == 0;
 
         /// <summary>The footfall warning before a titan arrives, in ticks: the setting's hours (2500 ticks each), never below a
         /// quarter hour, so the tremors always come first, never above three days. The hours are clamped BEFORE the cast: an

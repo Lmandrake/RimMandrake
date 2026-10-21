@@ -57,6 +57,7 @@
     <!-- the titan half, merged from Titanic Creatures 2026-10-07: namespace RimMandrake.TitanicCreatures kept (saves name its types) -->
     <Compile Include="Titanic\CorpseSite\Building_TitanicCorpseSite.cs" />
     <Compile Include="Titanic\CorpseSite\CorpseSiteVisitors.cs" />
+    <Compile Include="Titanic\Events\RM_TitanPassageExtension.cs" />
     <Compile Include="Titanic\Events\TitanPassage.cs" />
     <Compile Include="Titanic\Events\TitanValidationHooks.cs" />
     <Compile Include="Titanic\CorpseSite\JobDriver_HarvestTitanicCorpse.cs" />
