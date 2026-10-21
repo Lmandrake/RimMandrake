@@ -230,6 +230,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int refuse = built.IndexOf("!RM_DrawbridgeMath.TowerMayJoin(r.IsDrawbridge)", StringComparison.Ordinal);
                 Assert(refuse >= 0 && refuse < built.IndexOf("r.towers.Add(i);", StringComparison.Ordinal),
                     "can-fail: a frame completed or a rebuild finished on a drawbridge is not added to its supports");
+                // review pass 2 (2026-10-21): the refused tower, deconstructed, still swung the whole drawbridge down
+                // (Notify_SupportLost re-added it with WithTower and queued both sides)
+                Assert(Body(Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs"), "public void Notify_SupportLost(IntVec3 c)")
+                    .Contains("if (!r.towers.Remove(i))"), "can-fail: losing a tower that never held the bridge swings nothing down");
                 Assert(Body(Src("Pits", "Drawbridge", "RM_Drawbridges.cs"), "public static bool CanBeDrawbridge(SuspensionBridgeRecord r, out string why)")
                     .Contains("a drawbridge cannot stand on towers"), "the forming rule still refuses a bridge on towers");
             });
