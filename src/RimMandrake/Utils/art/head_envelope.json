@@ -1,5 +1,5 @@
 {
- "_doc": "Painted-head envelope. 'vanilla*' blocks are MEASURED (fit_head_canvas.py vanilla <dir of extracted Core heads> --write; 2026-10-20 from RimWorldWin64_Data/resources.assets, 128 px canvases, alpha>20). 'limits' are the PROPOSED allowances (FOUNDRY 2026-10-20, owner approved the effort, not each number): ratios are to the vanilla Average-head median per facing; overhangs are fractions of vanilla head height; tolerances are canvas fractions. species_overrides: {species dir name: {limit: value}} for a species the owner rules may exceed a limit (e.g. Rakata eye-stalks). Design: design/RimStarWars/head_envelope_2026-10-20.md.",
+ "_doc": "Painted-head envelope. 'vanilla*' blocks are MEASURED (fit_head_canvas.py vanilla <dir of extracted Core heads> --write; 2026-10-20 from RimWorldWin64_Data/resources.assets, 128 px canvases, alpha>20). 'limits' are the PROPOSED allowances (FOUNDRY 2026-10-20, owner approved the effort, not each number): ratios are to the vanilla Average-head median per facing; overhangs are fractions of vanilla head height; tolerances are canvas fractions. species_overrides: {species dir name: {limit: value}} for a species the owner rules may exceed a limit (e.g. Rakata eye-stalks). SKULL vs BBOX (owner 2026-10-20, centre on the skull mass): 'vanilla_skull' is the same Average heads measured by the skull-mass detector; height_ratio_*, below_chin_max, chin_rise_max, center_x_tol and the facing tolerances judge the SKULL against it; width_ratio_*, top_overhang_max (above the vanilla crown), appendage_below_chin_max (below the vanilla chin, in vanilla skull heights) and canvas_margin judge the appendage-inclusive BBOX. Design: design/RimStarWars/head_envelope_2026-10-20.md.",
  "vanilla_groups": {
   "average": [
    "_Average_",
@@ -16,6 +16,7 @@
   "height_ratio_min": 0.85,
   "top_overhang_max": 0.25,
   "below_chin_max": 0.06,
+  "appendage_below_chin_max": 0.25,
   "chin_rise_max": 0.06,
   "center_x_tol": 0.03,
   "facing_height_tol": 0.1,
@@ -23,7 +24,19 @@
   "east_width_vs_south_max": 1.2,
   "canvas_margin": 0.02
  },
- "species_overrides": {},
+ "species_overrides": {
+  "_doc": "PROPOSED (FOUNDRY 2026-10-20) under the owner's skull-mass ruling ('center the head regardless of additional appendages such as horns, ears, or anything else'): the SKULL is sized and seated to vanilla, and the ears of these species are left free beyond the general appendage allowance. Ortolan below_chin_max/facing_height_tol: its back view (north) carries a nape below the dome that the trunk hides on the front, so its north skull reads ~1.27x the south; the facings are aligned on the CROWN (fit --anchor north-crown) and the nape hangs below the vanilla chin. The owner may move any number.",
+  "Lasat": {
+   "width_ratio_max": 1.65,
+   "top_overhang_max": 0.4
+  },
+  "Ortolan": {
+   "width_ratio_max": 1.55,
+   "appendage_below_chin_max": 0.8,
+   "below_chin_max": 0.25,
+   "facing_height_tol": 0.3
+  }
+ },
  "vanilla": {
   "south": {
    "l": 0.3203,
@@ -135,5 +148,71 @@
     0.4141
    ]
   }
+ },
+ "vanilla_skull": {
+  "south": {
+   "l": 0.3164,
+   "t": 0.3047,
+   "r": 0.6836,
+   "b": 0.7021,
+   "w": 0.3672,
+   "h": 0.3984,
+   "cx": 0.5,
+   "n": 8,
+   "w_range": [
+    0.3633,
+    0.3789
+   ],
+   "h_range": [
+    0.3965,
+    0.4062
+   ]
+  },
+  "east": {
+   "l": 0.3008,
+   "t": 0.3027,
+   "r": 0.6982,
+   "b": 0.6973,
+   "w": 0.3975,
+   "h": 0.3945,
+   "cx": 0.5049,
+   "n": 8,
+   "w_range": [
+    0.3672,
+    0.4062
+   ],
+   "h_range": [
+    0.3887,
+    0.3984
+   ]
+  },
+  "north": {
+   "l": 0.3184,
+   "t": 0.3047,
+   "r": 0.6836,
+   "b": 0.7031,
+   "w": 0.3652,
+   "h": 0.3984,
+   "cx": 0.5003,
+   "n": 8,
+   "w_range": [
+    0.3633,
+    0.3789
+   ],
+   "h_range": [
+    0.3965,
+    0.4062
+   ]
+  }
+ },
+ "known_violations": {
+  "_doc": "Violations that are REAL and stay visible (check prints them as KNOWN and does not fail on them; a known violation that no longer occurs FAILS as stale, so this list cannot outlive the defect). Each names the item that owns the fix. Not a limit change.",
+  "Ortolan": [
+   [
+    "east",
+    "skull too short",
+    "ORTOLAN_SIDE_EAR_REDRAW_OUTGROWS_ITS_CANVAS: the side-view ear is ~25% longer than the front-view ear, so with the skull at vanilla height it runs off the canvas bottom; the side view is drawn at 0.74 of vanilla skull height until the ear is repainted (cosmetic: owner permission first)"
+   ]
+  ]
  }
 }
