@@ -1,0 +1,490 @@
+[
+ {
+  "id": "RM_DrawbridgeWinch_Timber_Scrapper",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, one-cell footprint: a drawbridge winch house, hand-cranked: a horizontal chain drum turned by a crank handle at each end, a ratchet wheel and pawl; a small roofed housing over the drum; two heavy chains leave the drum at the machine's front.",
+  "canvas_w": 384,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1, drawSize 1.5x1.5. Graphic_Multi; the front (chains) faces the leaf. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Scrapper look of the FlowWorks suspension bridge: mismatched salvaged warm-brown wooden boards, rust-orange copper and tin patch plates nailed over them, tan hemp rope lashing at every joint, scavenged and hand-made. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeWinch_Timber",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeWinch_Timber_{facing}.png",
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeWinch_Steel_Scrapper",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, one-cell footprint: a drawbridge winch house, powered: an enclosed motor driving a chain drum through a reduction gear, a short power conduit stub at the back, a small indicator lamp; a small roofed housing over the drum; two heavy chains leave the drum at the machine's front.",
+  "canvas_w": 384,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1, drawSize 1.5x1.5. Graphic_Multi; the front (chains) faces the leaf. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Scrapper look of the FlowWorks suspension bridge: mismatched salvaged warm-brown wooden boards, rust-orange copper and tin patch plates nailed over them, tan hemp rope lashing at every joint, scavenged and hand-made. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeWinch_Steel",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeWinch_Steel_{facing}.png",
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Face_Scrapper",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen face-on: its walking surface stands vertical toward the viewer, the same deck surface as the suspension bridge of this look, chain fixings at both top corners with taut chain running back, hinge plates across the bottom. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Scrapper look of the FlowWorks suspension bridge: mismatched salvaged warm-brown wooden boards, rust-orange copper and tin patch plates nailed over them, tan hemp rope lashing at every joint, scavenged and hand-made. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Face",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Face.png"
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Underside_Scrapper",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen face-on from its back: the underside framing, two side beams with cross-braces between them, hinge knuckles at the bottom. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Scrapper look of the FlowWorks suspension bridge: mismatched salvaged warm-brown wooden boards, rust-orange copper and tin patch plates nailed over them, tan hemp rope lashing at every joint, scavenged and hand-made. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Underside",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Underside.png"
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Edge_Scrapper",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen exactly edge-on from the side: a tall narrow slab about a quarter of the canvas width thick, centred, full height, hinge knuckle at the bottom, a taut chain leaving its top and running off to the right. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Scrapper look of the FlowWorks suspension bridge: mismatched salvaged warm-brown wooden boards, rust-orange copper and tin patch plates nailed over them, tan hemp rope lashing at every joint, scavenged and hand-made. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Edge",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Edge.png"
+ },
+ {
+  "id": "RM_DrawbridgeGate_Closed_Scrapper",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, a one-cell gate set in a wall line at a drawbridge's bank: two posts joined by a lintel with a small pulley and chain; the gate leaf hangs closed between the posts, filling the opening from the ground to the lintel.",
+  "canvas_w": 256,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1 per lane, drawSize 1x1.5; posts at the left and right canvas edges. South = gate seen face-on; east = gate seen exactly edge-on in strict side profile; north reuses south. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Scrapper look of the FlowWorks suspension bridge: mismatched salvaged warm-brown wooden boards, rust-orange copper and tin patch plates nailed over them, tan hemp rope lashing at every joint, scavenged and hand-made. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeGate_Closed",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeGate_Closed_{facing}.png",
+  "facings": [
+   "south",
+   "east"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeGate_Open_Scrapper",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, a one-cell gate set in a wall line at a drawbridge's bank: two posts joined by a lintel with a small pulley and chain; the gate leaf is hoisted up and tucked high under the lintel, the opening between the posts clear to walk through.",
+  "canvas_w": 256,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1 per lane, drawSize 1x1.5; posts at the left and right canvas edges. South = gate seen face-on; east = gate seen exactly edge-on in strict side profile; north reuses south. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Scrapper look of the FlowWorks suspension bridge: mismatched salvaged warm-brown wooden boards, rust-orange copper and tin patch plates nailed over them, tan hemp rope lashing at every joint, scavenged and hand-made. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeGate_Open",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeGate_Open_{facing}.png",
+  "facings": [
+   "south",
+   "east"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgePlanks_Scrapper",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building detail sprite: a neat stack of spare drawbridge deck boards lying flat on the ground beside the bridge, tied down, long axis running top to bottom, seen from almost straight above, filling about 80% of the canvas.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "style_notes": "1x1 cell, Graphic_Single, art only. Built in the Scrapper look of the FlowWorks suspension bridge: mismatched salvaged warm-brown wooden boards, rust-orange copper and tin patch plates nailed over them, tan hemp rope lashing at every joint, scavenged and hand-made. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgePlanks",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgePlanks.png"
+ },
+ {
+  "id": "RM_DrawbridgeWinch_Timber_Industrial",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, one-cell footprint: a drawbridge winch house, hand-cranked: a horizontal chain drum turned by a crank handle at each end, a ratchet wheel and pawl; a small roofed housing over the drum; two heavy chains leave the drum at the machine's front.",
+  "canvas_w": 384,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1, drawSize 1.5x1.5. Graphic_Multi; the front (chains) faces the leaf. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Industrial look of the FlowWorks suspension bridge: riveted dark-grey diamond-plate steel, black steel housings, yellow-and-black hazard stripe bands on edges and housings, heavy bolts. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Timber",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Timber_{facing}.png",
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeWinch_Steel_Industrial",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, one-cell footprint: a drawbridge winch house, powered: an enclosed motor driving a chain drum through a reduction gear, a short power conduit stub at the back, a small indicator lamp; a small roofed housing over the drum; two heavy chains leave the drum at the machine's front.",
+  "canvas_w": 384,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1, drawSize 1.5x1.5. Graphic_Multi; the front (chains) faces the leaf. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Industrial look of the FlowWorks suspension bridge: riveted dark-grey diamond-plate steel, black steel housings, yellow-and-black hazard stripe bands on edges and housings, heavy bolts. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Steel",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Steel_{facing}.png",
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Face_Industrial",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen face-on: its walking surface stands vertical toward the viewer, the same deck surface as the suspension bridge of this look, chain fixings at both top corners with taut chain running back, hinge plates across the bottom. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Industrial look of the FlowWorks suspension bridge: riveted dark-grey diamond-plate steel, black steel housings, yellow-and-black hazard stripe bands on edges and housings, heavy bolts. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Face",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Face.png"
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Underside_Industrial",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen face-on from its back: the underside framing, two side beams with cross-braces between them, hinge knuckles at the bottom. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Industrial look of the FlowWorks suspension bridge: riveted dark-grey diamond-plate steel, black steel housings, yellow-and-black hazard stripe bands on edges and housings, heavy bolts. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Underside",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Underside.png"
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Edge_Industrial",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen exactly edge-on from the side: a tall narrow slab about a quarter of the canvas width thick, centred, full height, hinge knuckle at the bottom, a taut chain leaving its top and running off to the right. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Industrial look of the FlowWorks suspension bridge: riveted dark-grey diamond-plate steel, black steel housings, yellow-and-black hazard stripe bands on edges and housings, heavy bolts. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Edge",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Edge.png"
+ },
+ {
+  "id": "RM_DrawbridgeGate_Closed_Industrial",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, a one-cell gate set in a wall line at a drawbridge's bank: two posts joined by a lintel with a small pulley and chain; the gate leaf hangs closed between the posts, filling the opening from the ground to the lintel.",
+  "canvas_w": 256,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1 per lane, drawSize 1x1.5; posts at the left and right canvas edges. South = gate seen face-on; east = gate seen exactly edge-on in strict side profile; north reuses south. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Industrial look of the FlowWorks suspension bridge: riveted dark-grey diamond-plate steel, black steel housings, yellow-and-black hazard stripe bands on edges and housings, heavy bolts. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Closed",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Closed_{facing}.png",
+  "facings": [
+   "south",
+   "east"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeGate_Open_Industrial",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, a one-cell gate set in a wall line at a drawbridge's bank: two posts joined by a lintel with a small pulley and chain; the gate leaf is hoisted up and tucked high under the lintel, the opening between the posts clear to walk through.",
+  "canvas_w": 256,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1 per lane, drawSize 1x1.5; posts at the left and right canvas edges. South = gate seen face-on; east = gate seen exactly edge-on in strict side profile; north reuses south. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Industrial look of the FlowWorks suspension bridge: riveted dark-grey diamond-plate steel, black steel housings, yellow-and-black hazard stripe bands on edges and housings, heavy bolts. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Open",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Open_{facing}.png",
+  "facings": [
+   "south",
+   "east"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgePlanks_Industrial",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building detail sprite: a neat stack of spare drawbridge deck boards lying flat on the ground beside the bridge, tied down, long axis running top to bottom, seen from almost straight above, filling about 80% of the canvas.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "style_notes": "1x1 cell, Graphic_Single, art only. Built in the Industrial look of the FlowWorks suspension bridge: riveted dark-grey diamond-plate steel, black steel housings, yellow-and-black hazard stripe bands on edges and housings, heavy bolts. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgePlanks",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgePlanks.png"
+ },
+ {
+  "id": "RM_DrawbridgeWinch_Timber_Modern",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, one-cell footprint: a drawbridge winch house, hand-cranked: a horizontal chain drum turned by a crank handle at each end, a ratchet wheel and pawl; a small roofed housing over the drum; two heavy chains leave the drum at the machine's front.",
+  "canvas_w": 384,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1, drawSize 1.5x1.5. Graphic_Multi; the front (chains) faces the leaf. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Modern look of the FlowWorks suspension bridge: smooth pale grey concrete and brushed zinc panels, bright red steel edge rails and housings, a thin yellow dashed marking line, clean civic engineering. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Timber",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Timber_{facing}.png",
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeWinch_Steel_Modern",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, one-cell footprint: a drawbridge winch house, powered: an enclosed motor driving a chain drum through a reduction gear, a short power conduit stub at the back, a small indicator lamp; a small roofed housing over the drum; two heavy chains leave the drum at the machine's front.",
+  "canvas_w": 384,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1, drawSize 1.5x1.5. Graphic_Multi; the front (chains) faces the leaf. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Modern look of the FlowWorks suspension bridge: smooth pale grey concrete and brushed zinc panels, bright red steel edge rails and housings, a thin yellow dashed marking line, clean civic engineering. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Steel",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Steel_{facing}.png",
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Face_Modern",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen face-on: its walking surface stands vertical toward the viewer, the same deck surface as the suspension bridge of this look, chain fixings at both top corners with taut chain running back, hinge plates across the bottom. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Modern look of the FlowWorks suspension bridge: smooth pale grey concrete and brushed zinc panels, bright red steel edge rails and housings, a thin yellow dashed marking line, clean civic engineering. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Face",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Face.png"
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Underside_Modern",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen face-on from its back: the underside framing, two side beams with cross-braces between them, hinge knuckles at the bottom. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Modern look of the FlowWorks suspension bridge: smooth pale grey concrete and brushed zinc panels, bright red steel edge rails and housings, a thin yellow dashed marking line, clean civic engineering. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Underside",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Underside.png"
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Edge_Modern",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen exactly edge-on from the side: a tall narrow slab about a quarter of the canvas width thick, centred, full height, hinge knuckle at the bottom, a taut chain leaving its top and running off to the right. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Modern look of the FlowWorks suspension bridge: smooth pale grey concrete and brushed zinc panels, bright red steel edge rails and housings, a thin yellow dashed marking line, clean civic engineering. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Edge",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Edge.png"
+ },
+ {
+  "id": "RM_DrawbridgeGate_Closed_Modern",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, a one-cell gate set in a wall line at a drawbridge's bank: two posts joined by a lintel with a small pulley and chain; the gate leaf hangs closed between the posts, filling the opening from the ground to the lintel.",
+  "canvas_w": 256,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1 per lane, drawSize 1x1.5; posts at the left and right canvas edges. South = gate seen face-on; east = gate seen exactly edge-on in strict side profile; north reuses south. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Modern look of the FlowWorks suspension bridge: smooth pale grey concrete and brushed zinc panels, bright red steel edge rails and housings, a thin yellow dashed marking line, clean civic engineering. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Closed",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Closed_{facing}.png",
+  "facings": [
+   "south",
+   "east"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeGate_Open_Modern",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, a one-cell gate set in a wall line at a drawbridge's bank: two posts joined by a lintel with a small pulley and chain; the gate leaf is hoisted up and tucked high under the lintel, the opening between the posts clear to walk through.",
+  "canvas_w": 256,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1 per lane, drawSize 1x1.5; posts at the left and right canvas edges. South = gate seen face-on; east = gate seen exactly edge-on in strict side profile; north reuses south. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Modern look of the FlowWorks suspension bridge: smooth pale grey concrete and brushed zinc panels, bright red steel edge rails and housings, a thin yellow dashed marking line, clean civic engineering. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Open",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Open_{facing}.png",
+  "facings": [
+   "south",
+   "east"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgePlanks_Modern",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building detail sprite: a neat stack of spare drawbridge deck boards lying flat on the ground beside the bridge, tied down, long axis running top to bottom, seen from almost straight above, filling about 80% of the canvas.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "style_notes": "1x1 cell, Graphic_Single, art only. Built in the Modern look of the FlowWorks suspension bridge: smooth pale grey concrete and brushed zinc panels, bright red steel edge rails and housings, a thin yellow dashed marking line, clean civic engineering. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgePlanks",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgePlanks.png"
+ },
+ {
+  "id": "RM_DrawbridgeWinch_Timber_Futuristic",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, one-cell footprint: a drawbridge winch house, hand-cranked: a horizontal chain drum turned by a crank handle at each end, a ratchet wheel and pawl; a small roofed housing over the drum; two heavy chains leave the drum at the machine's front.",
+  "canvas_w": 384,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1, drawSize 1.5x1.5. Graphic_Multi; the front (chains) faces the leaf. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Futuristic look of the FlowWorks suspension bridge: smooth white and pale-grey composite panels with rounded corners, thin glowing cyan light lines set into the panels, slim dark-grey joints. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Timber",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Timber_{facing}.png",
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeWinch_Steel_Futuristic",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, one-cell footprint: a drawbridge winch house, powered: an enclosed motor driving a chain drum through a reduction gear, a short power conduit stub at the back, a small indicator lamp; a small roofed housing over the drum; two heavy chains leave the drum at the machine's front.",
+  "canvas_w": 384,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1, drawSize 1.5x1.5. Graphic_Multi; the front (chains) faces the leaf. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Futuristic look of the FlowWorks suspension bridge: smooth white and pale-grey composite panels with rounded corners, thin glowing cyan light lines set into the panels, slim dark-grey joints. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Steel",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Steel_{facing}.png",
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Face_Futuristic",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen face-on: its walking surface stands vertical toward the viewer, the same deck surface as the suspension bridge of this look, chain fixings at both top corners with taut chain running back, hinge plates across the bottom. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Futuristic look of the FlowWorks suspension bridge: smooth white and pale-grey composite panels with rounded corners, thin glowing cyan light lines set into the panels, slim dark-grey joints. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Face",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Face.png"
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Underside_Futuristic",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen face-on from its back: the underside framing, two side beams with cross-braces between them, hinge knuckles at the bottom. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Futuristic look of the FlowWorks suspension bridge: smooth white and pale-grey composite panels with rounded corners, thin glowing cyan light lines set into the panels, slim dark-grey joints. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Underside",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Underside.png"
+ },
+ {
+  "id": "RM_DrawbridgeLeafUp_Edge_Futuristic",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite: a raised drawbridge leaf standing upright on its hinge, one lane wide and four cells tall, seen exactly edge-on from the side: a tall narrow slab about a quarter of the canvas width thick, centred, full height, hinge knuckle at the bottom, a taut chain leaving its top and running off to the right. It fills the full canvas height.",
+  "canvas_w": 256,
+  "canvas_h": 1024,
+  "style_notes": "One lane x 4 cells tall; hinge at the BOTTOM edge. Drawn by code at the winch, height scaled to leaf length, one copy per lane. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Futuristic look of the FlowWorks suspension bridge: smooth white and pale-grey composite panels with rounded corners, thin glowing cyan light lines set into the panels, slim dark-grey joints. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Edge",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Edge.png"
+ },
+ {
+  "id": "RM_DrawbridgeGate_Closed_Futuristic",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, a one-cell gate set in a wall line at a drawbridge's bank: two posts joined by a lintel with a small pulley and chain; the gate leaf hangs closed between the posts, filling the opening from the ground to the lintel.",
+  "canvas_w": 256,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1 per lane, drawSize 1x1.5; posts at the left and right canvas edges. South = gate seen face-on; east = gate seen exactly edge-on in strict side profile; north reuses south. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Futuristic look of the FlowWorks suspension bridge: smooth white and pale-grey composite panels with rounded corners, thin glowing cyan light lines set into the panels, slim dark-grey joints. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeGate_Closed",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeGate_Closed_{facing}.png",
+  "facings": [
+   "south",
+   "east"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgeGate_Open_Futuristic",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building sprite, a one-cell gate set in a wall line at a drawbridge's bank: two posts joined by a lintel with a small pulley and chain; the gate leaf is hoisted up and tucked high under the lintel, the opening between the posts clear to walk through.",
+  "canvas_w": 256,
+  "canvas_h": 384,
+  "style_notes": "Footprint 1x1 per lane, drawSize 1x1.5; posts at the left and right canvas edges. South = gate seen face-on; east = gate seen exactly edge-on in strict side profile; north reuses south. RimWorld building camera: orthographic, about 35 degrees above horizontal, the top face fully visible and lit; height above the footprint extends upward on the canvas. Built in the Futuristic look of the FlowWorks suspension bridge: smooth white and pale-grey composite panels with rounded corners, thin glowing cyan light lines set into the panels, slim dark-grey joints. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeGate_Open",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeGate_Open_{facing}.png",
+  "facings": [
+   "south",
+   "east"
+  ]
+ },
+ {
+  "id": "RM_DrawbridgePlanks_Futuristic",
+  "rimflow_item_id": "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS",
+  "prompt": "RimWorld building detail sprite: a neat stack of spare drawbridge deck boards lying flat on the ground beside the bridge, tied down, long axis running top to bottom, seen from almost straight above, filling about 80% of the canvas.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "style_notes": "1x1 cell, Graphic_Single, art only. Built in the Futuristic look of the FlowWorks suspension bridge: smooth white and pale-grey composite panels with rounded corners, thin glowing cyan light lines set into the panels, slim dark-grey joints. Clean painterly vanilla-RimWorld rendering, matte surfaces, a thin dark edge line around each part, soft overhead-front light, nothing painted on the ground around it, a genuinely transparent background.",
+  "priority": 70,
+  "background": "transparent",
+  "no_subject": "drawbridge defs are not built yet (DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS); texPath contract in flowworks_drawbridge_design_2026-10-20.md \u00a7R12",
+  "target_texpath": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgePlanks",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgePlanks.png"
+ }
+]
