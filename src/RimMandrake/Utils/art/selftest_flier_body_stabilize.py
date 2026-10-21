@@ -8,13 +8,20 @@ every frame (+25, 0, -25, 0 deg).
   STATIC   body pixels identical in every frame: verdict LOCKED, every estimator <= 0.05 px / 0.05 deg
   MOVED    frame 3's body translated (+3, -2) px and turned 4 deg about its centre: ECC and FEATURES recover the
            motion at the body centre within 1 px and 0.5 deg of the truth; PARTS within 1.5 px / 1 deg; verdict DRIFT
-  REPOSED  frame 3's body replaced by a different drawing: verdict RE-POSED (no rigid transform explains it)
+  REPOSED  frame 3's body replaced by a different drawing: verdict APPEARANCE CHANGED (residual evidence: no
+           alignment tried brings the body back)
   LINES    the owner's eye-line / shoulder-line check: LEVEL on the static body; a +3 px bob of frame 3's body is
            seen as dy 3 on both lines (MOVING); the whole flier turned 4 deg is seen as a 4 deg (+/-1.5) angle change on both lines
+  GPT-REVIEW (2026-10-21) cases the old code got wrong, each naming the old result: estimator failure on an unchanged
+           body (UNMEASURED, was RE-POSED); ECC region as templateMask at a 20 px shift; head-only protect with a
+           moving torso (coverage fails; plate region sees DRIFT); exported-PNG body equality (a post-build edit is
+           CHANGED 9 px; a near wing over the body is excused and counted); wing motion (identical copies are WINGS
+           STILL although the body reads LOCKED).
 The MOVED, REPOSED and LINES bob/turn cases are the sanity probe: the instrument is shown able to fail.
 """
 from __future__ import annotations
 
+import json
 import math
 import sys
 from pathlib import Path
@@ -94,6 +101,105 @@ def run(fr):
     return S.measure_facing(fr, mask)
 
 
+def gpt_review_cases(B):
+    """Cases the tool got wrong before the 2026-10-21 GPT review (design/RimMandrake/
+    flier_authoring_architecture_2026-10-21.md). Each says what the old code did."""
+    import tempfile
+    from PIL import Image
+    # (b) estimator failure on an UNCHANGED body is low confidence, not anatomy. Old: any ECC/feature failure was
+    # RE-POSED. The failure is forced (SIFT reports too few inliers) so the classification is tested, not luck.
+    real = S.est_features
+    S.est_features = lambda ref, frm, mask: ({"ok": False, "inliers": 3, "keypoints": 50} if frm is not ref
+                                             else real(ref, frm, mask))
+    try:
+        r = run(frames(lambda k: B))
+    finally:
+        S.est_features = real
+    check("ESTIMATOR FAIL on an unchanged body -> UNMEASURED (old: RE-POSED)", r["verdict"] == "UNMEASURED",
+          f"{r['verdict']} {r['why']}")
+
+    # (a) ECC region in TEMPLATE coordinates. Old call put the reference mask in findTransformECC's inputMask
+    # (input-image coords): at a 20 px body shift it read 0.23 px off at rho 0.918 (measured 2026-10-21).
+    mv = cv2.warpAffine(B, np.float32([[1, 0, 20], [0, 1, 0]]), (N, N), flags=cv2.INTER_NEAREST)
+    fr = frames(lambda k: mv if k == 2 else B)
+    mask = S.FC.poly_mask((N, N), [BODY_POLY]) & (fr[0][..., 3] > 128)
+    e = S.est_ecc(fr[0], fr[2], mask, np.float32([[1, 0, 21], [0, 1, -1]]))
+    err = math.hypot(e.get("dx", 99) - 20, e.get("dy", 99)) if e.get("M") is not None else 99
+    check("ECC templateMask: 20 px shift within 0.1 px, rho >= 0.95 (old inputMask: 0.23 px, rho 0.918)",
+          err <= 0.1 and e.get("rho", 0) >= 0.95, f"err {err:.3f} rho {e.get('rho')}")
+
+    # (c) head-only protect (the east annotations): the body is the PLATE region, so a torso that moves under a still
+    # head is seen. Old body_mask_from = protect only: the head, LOCKED.
+    fc = {"protect": [[[64, 24], [96, 24], [96, 54], [64, 54]]],                  # head box only
+          "wings": [{"poly": [[0, 40], [66, 40], [66, 112], [0, 112]], "hinge": [66, 70]},
+                    {"poly": [[94, 40], [160, 40], [160, 112], [94, 112]], "hinge": [94, 70]}]}
+    lower = B.copy()
+    lower[56:] = np.roll(B, 3, axis=0)[56:]                                       # torso and tail down 3 px
+    fr = frames(lambda k: lower if k == 2 else B)
+    old_mask = S.FC.poly_mask((N, N), fc["protect"]) & (fr[0][..., 3] > 128)
+    new_mask = S.body_mask_from(fc, fr[0])
+    cov_old, cov_new = S.coverage(fc, "south", old_mask), S.coverage(fc, "south", new_mask)
+    check("COVERAGE head-only mask fails (wing roots / torso not covered)", not cov_old["ok"], str(cov_old))
+    check("COVERAGE plate-region mask passes", cov_new["ok"], str(cov_new))
+    r_blind = S.measure_facing(fr, old_mask, None, None)
+    check("HEAD-ONLY mask without the coverage check reads LOCKED (the old blind spot, shown)",
+          r_blind["verdict"] == "LOCKED", r_blind["verdict"])
+    r_old = S.measure_facing(fr, old_mask, None, cov_old)
+    r_new = S.measure_facing(fr, new_mask, None, cov_new)
+    check("HEAD-ONLY protect + moving torso: head-only mask is UNMEASURED (old: LOCKED)", r_old["verdict"] == "UNMEASURED",
+          r_old["verdict"])
+    check("HEAD-ONLY protect + moving torso: plate-region mask sees it (DRIFT/APPEARANCE CHANGED)",
+          r_new["verdict"] in ("DRIFT", "APPEARANCE CHANGED"), f"{r_new['verdict']} {r_new['why']}")
+
+    # (d) body equality on EXPORTED PNGs. Old: flyer_cutout's plate_identical compared in-memory frames, so a
+    # post-build step (Uvak_cleanup.py) touching the body was invisible.
+    fcx = {"protect": [BODY_POLY], "order": "under",
+           "wings": [{"poly": [[0, 20], [62, 20], [60, 120], [0, 120]], "hinge": [62, 70], "cycle": {"amp": 25}},
+                     {"poly": [[98, 20], [160, 20], [160, 120], [100, 120]], "hinge": [98, 70], "sign": -1,
+                      "cycle": {"amp": 25}}]}
+    master = frames(lambda k: B)[1]
+    comp, _plate, _cov = S.FC.compose_facing(master, fcx, 4)
+    with tempfile.TemporaryDirectory() as td:
+        paths = [Path(td) / f"F_{i + 1}_south.png" for i in range(4)]
+        for p, a in zip(paths, comp):
+            Image.fromarray(a, "RGBA").save(p)
+        eq = S.exported_body_equality(paths, fcx, 0)
+        check("EXPORTED body IDENTICAL on a clean cut-out bake", eq["verdict"] == "IDENTICAL", str(eq)[:200])
+        a = np.asarray(Image.open(paths[2]).convert("RGBA")).copy()
+        a[125:128, 79:82, :3] = 255 - a[125:128, 79:82, :3]                    # a "cleanup" touches 9 body px
+        Image.fromarray(a, "RGBA").save(paths[2])
+        eq = S.exported_body_equality(paths, fcx, 0)
+        check("EXPORTED body CHANGED 9 px after a post-build edit (old: invisible)", eq["changed_px"] == 9,
+              f"{eq['verdict']}")
+        a = np.asarray(Image.open(paths[1]).convert("RGBA")).copy()
+        a[100:102, 75:77, 3] = 0                                                 # 4 interior body px erased
+        Image.fromarray(a, "RGBA").save(paths[1])
+        eq = S.exported_body_equality(paths, fcx, 0)
+        check("EXPORTED body: 4 erased interior px are CHANGED too (not dropped as 'soft rim')", eq["changed_px"] == 13,
+              f"{eq['verdict']} holes {eq.get('interior_holes_px')}")
+        # a near ("over") wing crossing the body is excused inside its swept envelope, and counted
+        fco = json.loads(json.dumps(fcx))
+        fco["falloff"] = 0
+        fco["wings"][0].update(order="over", cycle={"amp": 25, "bias": 165})       # swung over onto the body
+        comp, _p, _c = S.FC.compose_facing(master, fco, 4)
+        for p, a in zip(paths, comp):
+            Image.fromarray(a, "RGBA").save(p)
+        eq = S.exported_body_equality(paths, fco, 0)
+        check("EXPORTED body: near wing over the body is excused and counted, not CHANGED",
+              eq["verdict"] == "IDENTICAL" and eq["excused_under_near_wing_px"] > 0, str(eq)[:200])
+
+    # (e) wing-motion gate. Old: a set of identical copies passed every body gate (the Beldon lesson).
+    still = frames(lambda k: B)
+    still = [still[1]] * 4
+    fcw = {"protect": [BODY_POLY], "wings": fcx["wings"]}
+    wm = S.wing_motion(still, fcw, 0)
+    check("WINGS identical copies -> WINGS STILL (old: LOCKED and nothing else)", wm["verdict"] == "WINGS STILL", str(wm))
+    check("WINGS identical copies are LOCKED on the body (why a separate gate is needed)",
+          run(still)["verdict"] == "LOCKED")
+    wm = S.wing_motion(frames(lambda k: B), fcw, 0)
+    check("WINGS flapping fixture -> FLAPS", wm["verdict"] == "FLAPS", str(wm))
+
+
 def main() -> int:
     B = body_layer()
     r = run(frames(lambda k: B))
@@ -126,7 +232,9 @@ def main() -> int:
     other = body_layer(seed=99)
     other = np.ascontiguousarray(np.flipud(other))               # a different drawing / pose
     r = run(frames(lambda k: other if k == 2 else B))
-    check("REPOSED verdict RE-POSED", r["verdict"] == "RE-POSED", f"{r['verdict']} rho {r['worst']['rho_min']}")
+    check("REPOSED verdict APPEARANCE CHANGED (residual evidence)", r["verdict"] == "APPEARANCE CHANGED",
+          f"{r['verdict']} {r['why']}")
+    gpt_review_cases(B)
     # Owner's line test: eye line and shoulder line must stay put on a static body and must SEE a bob and a turn.
     # the body annotation hugs the body here, as the real sets' do (BODY_POLY is loose and takes in wing pixels)
     fc = {"protect": [[[67, 30], [93, 30], [95, 80], [92, 150], [68, 150], [65, 80]]], "eyes": [[74, 38], [86, 38]],
