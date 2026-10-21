@@ -8,7 +8,8 @@ Status key: MEASURED / READ (decompiled or def source) / PROPOSED (an agent's nu
 - `HeadTypeDef.GetGraphic` builds a `Graphic_Multi` with draw size `Vector2.one`; the head node draws it on
   `HumanlikeMeshPoolUtility.GetHumanlikeHeadSetForPawn` = a **1.5 x 1.5** world-unit mesh (x Biotech life-stage
   `headSizeFactor`). The texture is stretched over that mesh whatever its pixel size, so **a head's drawn size is
-  its alpha bbox as a fraction of its canvas**. Vanilla is 128 px, ours 512 px; fractions compare directly.
+  its alpha bbox as a fraction of its canvas, times the Big and Small head render scale** (next section; 1.0 for a
+  pawn with no size offset). Vanilla is 128 px, ours 512 px; fractions compare directly.
   This answers the earlier UNMEASURED "canvas-to-world scale": the full canvas is 1.5 cells, and the canvas edge is
   a hard limit (nothing draws beyond it).
 - Head position: `PawnRenderer.BaseHeadOffsetAt` = `BodyTypeDef.headOffset` (Male (0.04, 0.34), Female/Hulk
@@ -17,7 +18,65 @@ Status key: MEASURED / READ (decompiled or def source) / PROPOSED (an agent's nu
   `beardOffsetXEast`, `eyeOffsetEastWest` (AverageBase hair/beard (1.5,1.5); NarrowBase hair (1.3,1.5)).
 - **Headgear uses the same head mesh** (`PawnRenderNode_Apparel.MeshSetFor`, `useHeadMesh`), so a hat covers the
   vanilla head extent in the same canvas frame; whatever we paint outside it shows around the hat.
-  `DrawData.scale` exists on render nodes but varies only by child stage and `bodyTypeScales`, not head type.
+  In vanilla, `DrawData.scale` varies only by child stage and `bodyTypeScales`, not head type; Big and Small
+  multiplies it by body size (below).
+
+## Canvas frame vs on screen: Big and Small scales the head with body size (READ + MEASURED 2026-10-20)
+**The vanilla head box is the head of a body-size-1.0 pawn.** Every envelope ratio in this doc is in that CANVAS frame.
+On screen, Big and Small (workshop 2925432336, `1.6/Base/Assemblies/BigAndSmall.dll`, ilspycmd decompile in
+`D:\ClaudeWork\rimmandrake\scratch\headscale\bs\src\`) multiplies the head node's scale in a `RenderingPatches`
+postfix by `BSCache.headRenderSize` (body node by `bodyRenderSize`). At default settings (no B&S settings file exists in
+the live Config, so `headPowLarge` 0.8, `headPowSmall` 0.65, `visualLarger/SmallerMult` 1, `scaleBodyTypes` false), for
+an adult humanlike with size offset o (`SM_BodySizeOffset` + `SM_Cosmetic_BodySizeOffset`, base body size 1):
+- body = (1+o)^0.7 if o>0, (1+o)^0.75 if o<0; head = max(body-0.5, body^0.8) if body>1, else body^0.65;
+  head x= `SM_HeadSize_Cosmetic` (a stat, base 1.0, that a gene's `statOffsets` can move: a per-species head-scale knob).
+- Body types (Fat, Hulk, Thin) do NOT scale the head (`scaleBodyTypes` off). Head-slot apparel rides on the head node, so
+  hats scale with the head (seen in `D:\ClaudeWork\rimmandrake\scratch\live5\PHONE_lineup_hat.png`).
+- Implemented as `fit_head_canvas.bs_render_size()`; the selftest recomputes every species' value from it.
+
+MEASURED: masked normalized cross-correlation of each shipped PNG, rescaled in 0.02 steps, against the live 2026-10-20
+lineup (`D:\ClaudeWork\rimmandrake\scratch\live5\PHONE_lineup_bare.png`, 100.8 px per cell, so a x1.0 head mesh is
+151 px; game launched 18:30, after the 18:04 install, so it shows the shipped art). Script
+`D:\ClaudeWork\rimmandrake\scratch\headscale\match.py`.
+
+| species | size source | body x | head x (formula) | head x (live, S/E/N) | NCC |
+|---|---|---|---|---|---|
+| Human | none | 1.00 | 1.00 | reference | |
+| Lasat | `HalfJotunFrame` +0.75 (`BodySizeIsReal.xml`) | 1.48 | **1.369** | 1.36 / 1.36 / 1.36 | 0.71-0.95 |
+| Mimbanese | none | 1.00 | 1.00 | 1.00 / 1.00 / 1.00 | 0.94-0.97 |
+| Nelvaanian | `RSW_BodySizeGene_big` +0.20 (cosmetic) | 1.14 | **1.107** | 1.08 / 1.10 / 1.08 | 0.94-0.97 |
+| Ortolan | none (Fat/Hulk do not scale it) | 1.00 | 1.00 | 1.00 / 1.00 / 1.00 | 0.94-0.96 |
+
+So in game the on-screen skull is, in human-skull units (canvas ratio x engine scale; bbox includes appendages):
+
+| species | south skull h / w | south bbox w / h | why it reads the way it does next to a human |
+|---|---|---|---|
+| Lasat | 1.37 / 1.27 | 2.02 / 1.72 | engine scale: the only real "bigger head" |
+| Mimbanese | 1.00 / 0.78 | 0.81 / 1.02 | its skull is narrow (0.78 w) on a Thin body, and the human beside it wears hair, which spans ~1.5x its skull width (eyeballed from the screenshot, UNMEASURED by tool) |
+| Nelvaanian | 1.10 / 0.72 | 1.04 / 1.28 | engine scale x1.11, narrow muzzle |
+| Ortolan | 1.00 / 1.25 | 1.52 / 1.64 | NOT engine scale: a broad dome (1.25 w) plus pendulous ears (bbox 1.5 w, 1.6 h) on a Fat/Hulk body, as the canon "broad rounded dome continuous with the neckless body" asks |
+
+**Correction to the live agent's reading:** the head follows body size only for the two species with a size offset
+(Lasat, Nelvaanian). The Ortolan's "much larger" and the Mimbanese's "smaller" are the art's proportions, not a scale.
+
+**The canon gives no head-to-human ratio** for any of the four (`design/RimStarWars/canon_references/{lasat,mimbanese,
+nelvaanian,ortolan}/description.md`: Lasat >= 2 m, Nelvaanian 1.5 m F / 2 m M, Ortolan "squat", Mimbanese no number).
+So the on-screen size is the owner's call; `species_render.<species>.onscreen_skull_target` in `head_envelope.json` is
+`null` (unruled) for all four.
+
+**How to apply a ruling (PROPOSED, cleanest first):**
+1. **Keep the art in the canvas frame (skull 1.0) and set the size in the def**: a `SM_HeadSize_Cosmetic` statOffset on
+   the species' head gene (`RSW_LasatHead` etc. in `src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml`) multiplies
+   the head only. Example: Lasat -0.12 gives 1.369 x 0.88 = **1.20** human skulls (about its >= 2 m canon stature vs a
+   1.8 m human, still under its x1.48 body). No art, hat or envelope change; reversible in one line. Then record
+   `engine_head_scale` = formula x multiplier.
+2. Or refit the art: set `onscreen_skull_target`; `fit --species S` then defaults its height ratio to target /
+   engine scale (Lasat 1.0 -> canvas 0.730, Nelvaanian 1.0 -> 0.903) and `check` centres the size bands there. This
+   costs a refit + `art install` and shrinks hats' fit relative to the head; prefer 1.
+3. Do nothing: B&S's own head-grows-slower-than-body curve already keeps heads proportionate (Lasat head/body 0.93).
+
+`lineup --onscreen` draws each species at its engine scale beside the human head box:
+`D:\ClaudeWork\rimmandrake\scratch\headscale\lineup_onscreen.png`.
 
 ## Tabula Rasa (READ, ilspycmd decompile of workshop 1660622094 `1.6/Assemblies/TabulaRasa.dll`)
 - `DefModExt_HeadTypeStuff` has exactly two fields: `useSkinShader` (default true) and `shaderType`

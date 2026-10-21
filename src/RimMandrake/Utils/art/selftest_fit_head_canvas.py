@@ -10,8 +10,11 @@ scale; --facing-scale / --squeeze-x bring a disagreeing side profile into line a
 refused; the legacy argv form still runs. Part 2, a SANITY PROBE on real art: the PRE-FIT Mimbanese heads (read
 from git at PREFIT_REV, since the shipped ones were refitted 2026-10-20) are flagged for the side profile the
 owner called "far too wide", and the bbox-seated 6d77ea123 Ortolan is flagged for the skull chin riding high (the ears
-were its chin), so the instrument can see the defects it was built for; the shipped heads now pass.
+were its chin), so the instrument can see the defects it was built for; the shipped heads now pass. Part 3, canvas
+frame vs on screen: the Big and Small head-scale formula, species_render agreeing with it and with the live
+measurement, and an on-screen target driving fit's height ratio, check's band and lineup --onscreen.
 """
+import json
 import os
 import subprocess
 import sys
@@ -242,6 +245,54 @@ for sp_name in SPECIES:
               + (f" (bar {len(known)} known, item-owned)" if known else ""), (new, stale))
     else:
         print(f"UNMEASURED: {sp_name} head dir absent")
+
+# ---- Part 3: canvas frame vs on-screen (Big and Small scales the head with body size) ----
+b, h = F.bs_render_size(0.75)
+check(abs(b - 1.48) < 0.005 and abs(h - 1.369) < 0.002, "B&S formula: HalfJotun +0.75 -> body x1.48, head x1.369", (b, h))
+check(F.bs_render_size(0.0) == (1.0, 1.0), "B&S formula: no size offset draws the head at x1.0")
+check(F.bs_render_size(-0.35)[1] < 1, "B&S formula: a small frame shrinks the head")
+sr = {k: v for k, v in env.get("species_render", {}).items() if not k.startswith("_")}
+check(set(SPECIES) <= set(sr), "species_render covers the four painted species", sorted(sr))
+for sp_name, r in sr.items():
+    want = F.bs_render_size(r["size_offset"])[1]
+    check(abs(r["engine_head_scale"] - want) < 0.002, f"{sp_name}: engine_head_scale is the B&S formula of its size offset",
+          (r["engine_head_scale"], want))
+    check(abs(r["measured_live"] - r["engine_head_scale"]) <= 0.03,
+          f"{sp_name}: the live-measured head scale agrees with the formula within 0.03", r)
+check(all(F.canvas_target(env, s) is None or sr[s]["onscreen_skull_target"] is not None for s in sr),
+      "no canvas target without an owner on-screen target")
+env2 = json.loads(json.dumps(env))
+env2["species_render"]["Lasat"]["onscreen_skull_target"] = 1.0
+ct = F.canvas_target(env2, "Lasat")
+check(abs(ct - 1 / 1.369) < 0.002, "an on-screen target 1.0 on a x1.369 head asks the canvas for x0.730", ct)
+lim2 = F.limits_for(env2, "Lasat")
+check(abs(lim2["height_ratio_max"] - env["limits"]["height_ratio_max"] * ct) < 1e-9
+      and F.limits_for(env, "Lasat")["height_ratio_max"] == env["limits"]["height_ratio_max"],
+      "the size bands are centred on the canvas target only when a target is set")
+_orig_load = F.load_envelope
+F.load_envelope = lambda path=None: env2
+try:
+    with tempfile.TemporaryDirectory() as td:
+        src = []
+        for f in F.FACINGS:
+            p = os.path.join(td, f"t_{f}.png")
+            head(p, van[f]["w"], van[f]["h"], bottom=van[f]["b"])
+            src.append(p)
+        out = os.path.join(td, "Lasat")
+        rc = F.main(["fit", "--species", "Lasat", "--stem", "Lasat_Head", "--out", out] + src)
+        _, ext = F.measure_dir(out)
+        hr = ext["south"]["skull"]["h"] / env["vanilla_skull"]["south"]["h"]
+        check(rc == 0 and abs(hr - ct) < 0.02, "fit --species with a target sizes the skull to the canvas target", (rc, hr, ct))
+        vd = os.path.join(td, "van")
+        os.makedirs(vd)
+        for f in F.FACINGS:
+            head(os.path.join(vd, f"V_{f}.png"), van[f]["w"], van[f]["h"], bottom=van[f]["b"])
+        sheet = os.path.join(td, "lineup.png")
+        F.main(["lineup", out, "--vanilla-dir", vd, "--vanilla-stem", "V", "--out", sheet, "--cell", "100", "--onscreen"])
+        check(Image.open(sheet).size[0] == 2 * round(100 * 1.369), "lineup --onscreen widens cells to the largest engine scale",
+              Image.open(sheet).size)
+finally:
+    F.load_envelope = _orig_load
 
 print(f"{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
 sys.exit(1 if FAILS else 0)

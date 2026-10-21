@@ -30,6 +30,13 @@ usage:
       [--squeeze-x east=0.96 ...]     a per-facing HORIZONTAL-only factor, refused below SQUEEZE_MIN (a visible
       distortion is a repaint, not a fit).
   (legacy) fit_head_canvas.py --stem S --out DIR south east north  ==  fit
+
+CANVAS FRAME vs ON SCREEN (2026-10-20): the vanilla head box is the head of a body-size-1.0 pawn. Big and Small
+multiplies the head node's scale by its headRenderSize (bs_render_size), so a Lasat (HalfJotunFrame, +0.75) draws
+its head x1.37 and a Nelvaanian (+0.20) x1.11 (both MEASURED live by template match). Every ratio above is in the
+CANVAS frame; head_envelope.json `species_render` carries each species' engine_head_scale and the owner's
+onscreen_skull_target (null = not ruled). With a target set, `fit --species S` defaults its height ratio to
+target / engine scale and `check` centres the skull height band on it; `lineup --onscreen` draws the engine scale.
 """
 import argparse
 import glob
@@ -213,9 +220,41 @@ def facing_files(head_dir):
     return out
 
 
+def bs_render_size(size_offset, head_mult=1.0, base_body_size=1.0):
+    """(body, head) render scale Big and Small draws an ADULT humanlike at, for a body-size offset (SM_BodySizeOffset
+    + SM_Cosmetic_BodySizeOffset) on a race of base_body_size, at B&S's default settings (READ 2026-10-20, ilspycmd
+    of workshop 2925432336 1.6/Base/Assemblies/BigAndSmall.dll, BSCache.GetBodyRenderSize / GetHeadRenderSize and
+    BSSettings defaults: headPowLarge 0.8, headPowSmall 0.65, visualLarger/SmallerMult 1, scaleBodyTypes false).
+    RenderingPatches multiplies the head node's DrawData scale by `head`; head-slot apparel rides on the head node,
+    so hats scale with it. head_mult is SM_HeadSize_Cosmetic (stat base 1.0; a gene statOffset moves it)."""
+    lin = max((base_body_size + size_offset) / base_body_size, 0.2)
+    body = lin ** 0.7 if lin > 1 else lin ** 0.75 if lin < 1 else 1.0
+    head = max(body - 0.5, body ** 0.8) if body > 1 else body ** 0.65
+    return body, head * head_mult
+
+
+def render_for(env, species=None):
+    """The species_render entry: how big the ENGINE draws this species' head (engine_head_scale, x the canvas frame)
+    and the owner's on-screen skull target (onscreen_skull_target, in human-skull units; null = not ruled)."""
+    r = env.get("species_render", {}).get(species or "")
+    return r if isinstance(r, dict) else {}
+
+
+def canvas_target(env, species=None):
+    """The south skull height ratio the ART must carry in the canvas frame so the skull shows at the owner's
+    on-screen target: onscreen_skull_target / engine_head_scale. None while no target is set (canvas ratio 1.0)."""
+    r = render_for(env, species)
+    t = r.get("onscreen_skull_target")
+    return None if t is None else t / r.get("engine_head_scale", 1.0)
+
+
 def limits_for(env, species=None):
     lim = dict(env["limits"])
     lim.update(env.get("species_overrides", {}).get(species or "", {}))
+    ct = canvas_target(env, species)
+    if ct is not None:   # the size bands are on-screen sizes: centre them on the species' canvas target, not 1.0
+        for k in ("height_ratio_min", "height_ratio_max", "width_ratio_min", "width_ratio_max"):
+            lim[k] *= ct
     return lim
 
 
@@ -348,20 +387,28 @@ def cmd_lineup(a):
     env = load_envelope()
     cols = [("vanilla", {f: os.path.join(a.vanilla_dir, f"{a.vanilla_stem}_{f}.png") for f in FACINGS})]
     cols += [(os.path.basename(os.path.normpath(d)), facing_files(d)) for d in a.dirs]
+    # --onscreen: each species drawn at its ENGINE head scale (species_render), about the mesh centre, so the sheet
+    # shows what the game shows; the red box stays the human (scale 1.0) head box
+    scale = {name: (render_for(env, name).get("engine_head_scale", 1.0) if a.onscreen else 1.0) for name, _ in cols}
     c, top = a.cell, 22
-    sheet = Image.new("RGBA", (c * len(cols), c * 3 + top), (96, 96, 96, 255))
+    cc = round(c * max(scale.values()))
+    pad = (cc - c) / 2
+    sheet = Image.new("RGBA", (cc * len(cols), cc * 3 + top), (96, 96, 96, 255))
     d = ImageDraw.Draw(sheet)
     if a.title:
         d.text((4, 4), a.title, fill=(255, 255, 255, 255))
     for i, (name, files) in enumerate(cols):
+        n = round(c * scale[name])
         for j, f in enumerate(FACINGS):
-            x, y = i * c, top + j * c
+            x, y = i * cc, top + j * cc
             if f in files and os.path.exists(files[f]):
-                sheet.alpha_composite(Image.open(files[f]).convert("RGBA").resize((c, c), Image.LANCZOS), (x, y))
+                sheet.alpha_composite(Image.open(files[f]).convert("RGBA").resize((n, n), Image.LANCZOS),
+                                      (x + (cc - n) // 2, y + (cc - n) // 2))
             v = env["vanilla"][f]
-            d.rectangle((x + v["l"] * c, y + v["t"] * c, x + v["r"] * c - 1, y + v["b"] * c - 1),
+            d.rectangle((x + pad + v["l"] * c, y + pad + v["t"] * c, x + pad + v["r"] * c - 1, y + pad + v["b"] * c - 1),
                         outline=(230, 30, 30, 255), width=2)
-            d.text((x + 4, y + 4), f"{name} {f}", fill=(255, 255, 255, 255))
+            d.text((x + 4, y + 4), f"{name} {f}" + (f" x{scale[name]:.2f}" if a.onscreen else ""),
+                   fill=(255, 255, 255, 255))
     sheet.convert("RGB").save(a.out)
     print(f"lineup {a.out}")
 
@@ -432,6 +479,11 @@ def cmd_check(a):
         new, known, stale = split_known(viol, env, sp)
         bad += bool(new or stale)
         print(f"{'FAIL' if new or stale else 'OK  '} {sp}" + (f" ({len(known)} known)" if known else ""))
+        rr = render_for(env, sp)
+        if rr and "south" in rows:
+            es = rr.get("engine_head_scale", 1.0)
+            print(f"     engine head scale x{es:.3f} -> on-screen south skull h x{rows['south']['h_ratio'] * es:.2f} "
+                  f"of a human skull (target {rr.get('onscreen_skull_target') or 'not ruled'})")
         for f in FACINGS:
             print(f"     {f:5s} {fmt_row(rows, f)}")
         for f, rule, val, lim in viol:
@@ -546,6 +598,13 @@ def cmd_fit(a):
         meas[f] = measure_image(im)
         if not meas[f] or not meas[f]["skull"]:
             raise SystemExit(f"{f} is blank")
+    if a.height_ratio is None:
+        ct = canvas_target(env, a.species)
+        a.height_ratio = 1.0 if ct is None else ct
+        if ct is not None:
+            rr = render_for(env, a.species)
+            print(f"height ratio x{ct:.3f} from species_render[{a.species}]: on-screen target "
+                  f"{rr['onscreen_skull_target']} / engine head scale {rr.get('engine_head_scale', 1.0)}")
     s, why = fit_scale(meas, fscale, squeeze, env, a.height_ratio, a.species)
     os.makedirs(a.out, exist_ok=True)
     ext, crown_y = {}, None
@@ -600,7 +659,9 @@ def main(argv=None):
     f = sub.add_parser("fit")
     f.add_argument("--stem", required=True); f.add_argument("--out", required=True)
     f.add_argument("--species", help="key into species_overrides (defaults to none)")
-    f.add_argument("--height-ratio", type=float, default=1.0, help="south SKULL height / vanilla south skull height")
+    f.add_argument("--height-ratio", type=float, default=None,
+                   help="south SKULL height / vanilla south skull height, in the CANVAS frame. Default: "
+                        "species_render[--species] onscreen_skull_target / engine_head_scale when a target is set, else 1.0")
     f.add_argument("--anchor", choices=("chin", "crown", "north-crown"), default="chin",
                    help="chin: every facing's skull chin on the vanilla chin; crown: east/north skull crown on the "
                         "south's skull crown line; north-crown: only the north on the south's crown (a back view whose "
@@ -617,6 +678,8 @@ def main(argv=None):
     ln.add_argument("dirs", nargs="+"); ln.add_argument("--out", required=True); ln.add_argument("--cell", type=int, default=256)
     ln.add_argument("--vanilla-dir", required=True, help="extracted Core head PNGs (<stem>_<facing>.png)")
     ln.add_argument("--vanilla-stem", default="Male_Average_Normal"); ln.add_argument("--title")
+    ln.add_argument("--onscreen", action="store_true",
+                    help="draw each species at its species_render engine_head_scale (what the game shows), not the canvas frame")
     a = ap.parse_args(argv)
     if a.cmd == "fit":
         FG.refuse_fliers('fit_head_canvas.py fit', a.stem, a.out, a.south, a.east, a.north)
