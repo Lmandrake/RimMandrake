@@ -110,7 +110,7 @@
       <Nutrition>0.5</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_GiantAgarilux</texPath>
+      <texPath>Things/Plants/AB_GiantAgarilux</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.1, 0.1, 0.26)</volume>
@@ -210,7 +210,7 @@
       <Nutrition>0.35</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_LilacBeacon</texPath>
+      <texPath>Things/Plants/AB_LilacBeacon</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -352,7 +352,7 @@
       <Nutrition>0.5</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_ArbuscularMycorrhiza</texPath>
+      <texPath>Things/Plants/AB_ArbuscularMycorrhiza</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.1, 0.1, 0.26)</volume>
@@ -402,7 +402,7 @@
       <Nutrition>0.5</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_SlimyPholiota</texPath>
+      <texPath>Things/Plants/AB_SlimyPholiota</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.1, 0.1, 0.26)</volume>
@@ -500,7 +500,7 @@
       <Nutrition>0.5</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_DribblingCap</texPath>
+      <texPath>Things/Plants/AB_DribblingCap</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.1, 0.1, 0.26)</volume>
