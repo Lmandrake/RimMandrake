@@ -548,6 +548,9 @@ MODS = {
     "GravshipLanding": ("GravshipLandingMod.cs", "RM_GravshipLanding.csproj", {
         "Landing reveal (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
+    "StarWarsRaces": ("RSW_StarWarsRacesMod.cs", "RSW_StarWarsRaces.csproj", {
+        "Facial Animation": "Now",
+    }, ()),
     "LoreStages": ("RM_LoreStagesMod.cs", "RM_LoreStages.csproj", {
         "Staged lore text": "Now",
     }, ()),

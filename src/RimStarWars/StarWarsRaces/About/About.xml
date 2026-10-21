@@ -23,7 +23,7 @@ The RSW_MandrakeJawa xenotype and its four genes - skittish, hooded face, and th
 
 Nothing generic was copied. Genes that belong to Biotech, Core, Outland Genetics, Integrated Genes, LFS Genes Expanded - Eyes and Big and Small remain theirs; those mods are dependencies and must stay installed.
 
-Contains no compiled code.</description>
+One small assembly: it keeps the Facial Animation mod from drawing its animated face over our painted heads (a Mod Settings switch; it does nothing when Facial Animation is not installed).</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld.Biotech</packageId>
@@ -59,8 +59,14 @@ Contains no compiled code.</description>
       <displayName>[LFS] Genes Expanded - Eyes</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2922457045</steamWorkshopUrl>
     </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+    </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>Ludeon.RimWorld.Biotech</li>
     <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
     <li>Neronix17.Outland.Genetics</li>

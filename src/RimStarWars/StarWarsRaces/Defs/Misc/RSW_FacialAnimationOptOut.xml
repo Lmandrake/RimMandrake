@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    FACE_OPTOUT_REPAIR_ONLY_AT_HOME. Facial Animation (Nals, workshop 1635901197) draws its anime face on every Human
+    unless the race-xenotype key is ticked off in ITS OWN settings file (IgnoreEnableAnimationForRaceXenoTypeListAA);
+    it reads no def, extension or patchable XML. So the opt-out ships here as data, and Source/RSW_FacialAnimationOptOut.cs
+    postfixes FacialAnimationModSettings.ShouldDrawRaceXenoType to return false for these xenotypes. Without FA the
+    postfix is never applied (its Prepare finds no target) and this def is inert.
+    The list is the owner's 68 Human-RSW_* entries (his 2026-10-19 config) plus Sith Kissai, which wears an RSW_ head and
+    was missing there. RSW_MandrakeJawa and RSW_Jawa_Xeno_Gamorrean wear vanilla heads and are NOT listed: adding them
+    would change how they look today (cosmetic; owner question).
+    Coverage of every xenotype in src/ that wears an RSW_ HeadTypeDef is held by selftest_fa_optout.py.
+  -->
+  <RimMandrake.StarWars.Races.RSW_FacialAnimationOptOutDef>
+    <defName>RSW_FacialAnimationOptOut</defName>
+    <label>Facial Animation opt-out</label>
+    <xenotypes>
+      <li>RSW_RimMandrakeAbednedo</li>
+      <li>RSW_RimMandrakeAnzati</li>
+      <li>RSW_RimMandrakeAqualish</li>
+      <li>RSW_RimMandrakeArkanian</li>
+      <li>RSW_RimMandrakeBith</li>
+      <li>RSW_RimMandrakeBothan</li>
+      <li>RSW_RimMandrakeCathar</li>
+      <li>RSW_RimMandrakeCerean</li>
+      <li>RSW_RimMandrakeChadraFan</li>
+      <li>RSW_RimMandrakeChagrian</li>
+      <li>RSW_RimMandrakeChiss</li>
+      <li>RSW_RimMandrakeDathomirian</li>
+      <li>RSW_RimMandrakeDefel</li>
+      <li>RSW_RimMandrakeDevaronian</li>
+      <li>RSW_RimMandrakeDuros</li>
+      <li>RSW_RimMandrakeEchani</li>
+      <li>RSW_RimMandrakeEwok</li>
+      <li>RSW_RimMandrakeFalleen</li>
+      <li>RSW_RimMandrakeFeeorin</li>
+      <li>RSW_RimMandrakeGamorrean</li>
+      <li>RSW_RimMandrakeGand</li>
+      <li>RSW_RimMandrakeGeonosianVariants</li>
+      <li>RSW_RimMandrakeGungan</li>
+      <li>RSW_RimMandrakeHerglic</li>
+      <li>RSW_RimMandrakeHutt</li>
+      <li>RSW_RimMandrakeIktotchi</li>
+      <li>RSW_RimMandrakeIridonian</li>
+      <li>RSW_RimMandrakeIthorian</li>
+      <li>RSW_RimMandrakeJawa</li>
+      <li>RSW_RimMandrakeKaleesh</li>
+      <li>RSW_RimMandrakeKaminoan</li>
+      <li>RSW_RimMandrakeKelDor</li>
+      <li>RSW_RimMandrakeKlatoonian</li>
+      <li>RSW_RimMandrakeKubaz</li>
+      <li>RSW_RimMandrakeLasat</li>
+      <li>RSW_RimMandrakeMimbanese</li>
+      <li>RSW_RimMandrakeMirialan</li>
+      <li>RSW_RimMandrakeMonCalamari</li>
+      <li>RSW_RimMandrakeMuun</li>
+      <li>RSW_RimMandrakeNagai</li>
+      <li>RSW_RimMandrakeNautolan</li>
+      <li>RSW_RimMandrakeNeimoidian</li>
+      <li>RSW_RimMandrakeNelvaanian</li>
+      <li>RSW_RimMandrakeNikto</li>
+      <li>RSW_RimMandrakeOrtolan</li>
+      <li>RSW_RimMandrakePantoran</li>
+      <li>RSW_RimMandrakePyke</li>
+      <li>RSW_RimMandrakeQuarren</li>
+      <li>RSW_RimMandrakeRakata</li>
+      <li>RSW_RimMandrakeRodian</li>
+      <li>RSW_RimMandrakeSelkath</li>
+      <li>RSW_RimMandrakeSithKissai</li>  <!-- not in the owner's 2026-10-19 FA config; added 2026-10-21 -->
+      <li>RSW_RimMandrakeSithMassassi</li>
+      <li>RSW_RimMandrakeSithZ</li>
+      <li>RSW_RimMandrakeSnivvian</li>
+      <li>RSW_RimMandrakeSullustan</li>
+      <li>RSW_RimMandrakeTaung</li>
+      <li>RSW_RimMandrakeTogorian</li>
+      <li>RSW_RimMandrakeTogruta</li>
+      <li>RSW_RimMandrakeTrandoshan</li>
+      <li>RSW_RimMandrakeTusken</li>
+      <li>RSW_RimMandrakeTwilek</li>
+      <li>RSW_RimMandrakeUgnaught</li>
+      <li>RSW_RimMandrakeUmbaran</li>
+      <li>RSW_RimMandrakeWeequay</li>
+      <li>RSW_RimMandrakeWookiee</li>
+      <li>RSW_RimMandrakeYoderForceGremlin</li>
+      <li>RSW_RimMandrakeZeltron</li>
+      <li>RSW_RimMandrakeZygerrian</li>
+    </xenotypes>
+  </RimMandrake.StarWars.Races.RSW_FacialAnimationOptOutDef>
+</Defs>
