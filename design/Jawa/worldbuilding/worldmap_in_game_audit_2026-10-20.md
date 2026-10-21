@@ -142,3 +142,68 @@ Images: `D:\ClaudeWork\rimmandrake\scratch\worldlook3\` (`F_globe.png`, `G_sea_m
   in the compiled WorldTerrain shader and is UNMEASURED.
 - **Log hygiene:** in the first load, 9,520 `null texture passed to GUI.DrawTexture` lines from the looping
   loading screen hit Verse's message cap. The second load has 77.
+
+## 6. Soft borders, shaded seas, banished factions, and the world passes (2026-10-20, evening, 325 list)
+
+Images (full resolution and phone pairs): `D:\ClaudeWork\rimmandrake\scratch\worldlook4\`. For the phone:
+`PHONE_1_borders_and_coast_close.png`, `PHONE_2_mid_zoom.png`, `PHONE_3_globe.png`, `PHONE_4_seas.png`,
+`PHONE_5_mutators_parity.png` (each is before | after).
+
+**How a face is drawn (MEASURED, source + live).**
+- `WorldDrawLayer_Terrain` builds one submesh per biome material. Each tile is a fan of its own vertices, and UV0 holds
+  (vertex elevation, unclamped elevation, 0). No triangle crosses a tile edge, so a biome border is always a hard hex edge.
+- The face texture is not mapped by mesh UVs. `Custom/WorldTerrain` exposes `_MainTex`, `_SecondaryTex`, `_MaskTex` and
+  `_Blend`, and projects `_MainTex` in the shader. The global `_MacroTex` (`World/WorldMacro`) adds large-scale variation.
+  How many hexes one face spans is fixed inside the compiled shader and is still UNMEASURED.
+- `Custom/WorldOcean` exposes only `_MainTex` and `_MacroTex`. 🔴 **It ignores UV0.** A sea re-fed depths from 0 down to
+  -100,000 m drew byte-identical pixels, so no depth can reach the ocean shader. Our flat -350 m seas cannot be shaded
+  through it.
+
+**Fix: `src/RimMandrake/BiomesShell/Source/RM_WorldLook.cs` (Baroque Biomes, 4d3d87e64).**
+- **The mechanism.** A postfix wraps `WorldDrawLayer_Terrain.Regenerate`. After vanilla has built the surface layer, it
+  appends overlay submeshes. They draw on `Custom/WorldOverlayTransparentLit`, which reads vertex alpha. It is
+  the pollution layer's method: per-tile polygons, vertex alpha, uv = position × 0.1.
+- **Borders.** A land tile next to another land biome is drawn again once per neighbouring biome, with that biome's face.
+  - **Alpha:** at each corner, the alpha is that biome's share of the 3 tiles meeting there. An inner ring at 0.35 of the
+    radius has alpha 0.
+  - **Result:** a corner has the same colour seen from either side, so the border becomes a gradient about one tile wide.
+  - **Size:** 9,453 overlays on 7,567 border tiles.
+  - **Render queue:** 3505, above the terrain (3500) and under the hills (3510).
+- **Seas.** Every water tile gets two films over a white texture. A shallow teal film (0.40, 0.62, 0.72; alpha 0.40)
+  fades out over 1 tile from the coast. A deep navy film (0.05, 0.09, 0.20; alpha 0.50) fades in over 4 tiles.
+  The films cover 1,448 water tiles, shaded from 1,212 coast vertices. Tile elevations and textures are unchanged.
+- **Mod Settings.** "Planet: soft borders between biomes" and "Planet: seas deepen away from the coast" are both on by
+  default and take effect at once.
+- **Tuning live.** `jawa/static_call RimMandrake.Biomes.RM_WorldLook Set "<field>|<value>"`, then `jawa/world_commit`
+  (redraw only). `Info` prints the last build and the values. `ShaderProps "<WorldMaterials field>"` lists a world
+  shader's properties.
+- **The values.** The values above were tuned live on this load and are the committed defaults. A load of the final DLL
+  has not yet confirmed them by eye.
+- **Not changed.** The stippled hex look inside some biomes at mid zoom (Rust Cathedral, Hollow Verge) is the faces and
+  hill decals, not borders.
+
+**Factions (`UNWANTED_FACTIONS_SILENCE_NOT_DELETED`).**
+- **The def side** was already live: Tallmere Combs and the Space Exchange are hidden in `jawa/list_factions`.
+- **The save side, through the bridge:**
+  - `faction_flags_set hidden=true defeated=true` on `RM_Faction_CombHolds` and `TradersGuild`;
+  - the Space Exchange's orbital `SpaceSettlement` (id 155, "Luminary Dock") removed.
+- **The checks:** `banned_factions.py check-dump` on capture `2026-10-20T19-38-14Z` PASS, and `check-save` PASS (both
+  BANISHED, CASacrilegHunters ABSENT).
+- **The three VEF offers** (Junkers, Mercenaries, Roaming monstrosities) were answered **Do nothing**. They come back on
+  every load until he decides (design §8.3).
+
+**World passes on top of that, through the bridge (each run as a dry run first, which found 0 mismatches).**
+- **Second mountain pass** (`MOUNTAINS2_PLAN_DEPLOY_805_TILES_PACKED`): 805 hilliness tiles plus 4 elevations. Read-back:
+  0 mismatches.
+- **u1, label sizes and centres** (`WORLD_LABELS_RESTORE_SIZES_MIRROR_WAS_OURS`): 71 features. Read-back: 2 small
+  centre offsets, which are under 0.2 world units with the sizes correct:
+  - Slough: z -5.44 against the planned -5.62;
+  - Knuckles: x -15.07 against the planned -15.14.
+- **u2, mutators** (`WORLD_MUTATORS_PRUNE_28K_STOWAWAYS`): 28,280 removed and 123 restored. Read-back: 0 mismatches.
+- **u4, rivers** (`WORLD_RIVERS_REPAIR_DOWNHILL_AT_LAST`): 326 river and 1,242 road links re-imported. Read-back: 0
+  mismatches.
+- **world_lint:** 21 findings before and after every step.
+- **The save:** all of it is in **`ASHKARR_DEV_START_2026-10-20_PARITY.rws`** (13.56 MB, sha256 `894120f8939deb8e…`,
+  TidallyLocked present, check-save PASS). `…_FACTIONS.rws` holds the factions step alone.
+- **Watch on the globe after u1:** the big "Dune Sea" label now sits over Anvil and Rust Cathedral. Either that is where
+  its canonical centre is, or the canon is wrong. The owner should look.
