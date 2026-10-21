@@ -130,6 +130,7 @@ FEATURES = [
     ("set", r"^(spikesEnabled|spikeDamageMultiplier|spikeMinDropMetres)$", "Spikes", "pit_spikes"),
     ("def", r"^ThingDef/RM_Spikes$", "Pit spikes", "pit_spikes"),
     ("set", r"^pitGuardrailEnabled$", "Guardrails and fences stop falls (FALL_GUARDRAILS_BUILD_REAL_OBJECT)", "pit_fall"),
+    ("set", r"^pitFreeTravelEnabled$", "Flyers, jumpers and floaters cross pits freely, no fall", M + "no frozen station stages a flyer or jumper over a pit; proved by the functional script"),
     ("def", r"^ThingDef/RM_PitGuardrail$", "Pit guardrail", "pit_fall"),
     ("tex", r"RM_Spikes\.png$", "Spike art", "pit_spikes"),
     ("set", r"^(pitDrowningEnabled|pitDrowningRateMultiplier|pitDrowningHeadFraction|pitDrowningLyingFraction|poisonFillEnabled)$", "Flooding a pit drowns or poisons",
@@ -141,6 +142,7 @@ FEATURES = [
     ("set", r"^(ladderRequiredToExitEnabled|ladderPrisonDoorEnabled|ladderRaiseLowerEnabled|pitLadderSlowness)$",
      "Ladders", "hold_ladder_raised"),
     ("def", r"^ThingDef/RM_Ladder$", "Ladder", "hold_ladder"),
+    ("def", r"^(DesignationDef/RM_OperateLadder|JobDef/RM_OperateLadderJob|WorkGiverDef/RM_OperateLadderWorkGiver)$", "Operate-ladder order (raise from above or below, lower from above)", "hold_ladder_raised"),
     # REVIEW_MAP_COVERAGE_FILL_ABOUT_NINETY_ROWS: raider/climb behaviour is read from state, not a staged scene
     ("def", r"^JobDef/(RM_RaiderSetLadder|RM_RaiderFillTrench)$", "Raiders cross a trench with a ladder or fill it", M + "raider AI jobs; proved by the functional script (RaiderTrenchChecks), no frozen station stages a raid"),
     ("def", r"^JobDef/RM_ClimbOverWall$", "Climbing over a wall", M + "pawn job; proved by WallClimbChecks, no frozen station stages a wall climb"),
@@ -231,6 +233,7 @@ FEATURES = [
     ("set", r"^waterBodyTypeFlipFixEnabled$", "Water-body count fix",
      M + "fixes vanilla bookkeeping when water changes type; nothing on the map to look at"),
     ("set", r"^(hoseHoldsLiquid|hoseLitresPerCell|litresPerFilth)$", "A hose holds liquid and spills it", "liquid_spill"),
+    ("set", r"^(gravityLevellingEnabled|levellingLitresPerCycle)$", "Hoses level two bodies of the same liquid by gravity", M + "PIPE_LEVELLING: live rows owed; no frozen station stages two linked bodies yet"),
     ("def", r"^ThingDef/RM_Filth_", "Spilled liquid and tracked tar", "liquid_spill"),
     ("tex", r"Filth/RM_FilthTar", "Tar filth art", "liquid_spill"),
     ("def", r"^(ThingDef/RM_UniversalPipe|ThingStyleDef/RM_UniversalPipe_|DesignationCategoryDef/VCHE_PipeNetworks)",
