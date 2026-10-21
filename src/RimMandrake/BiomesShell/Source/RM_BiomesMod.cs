@@ -58,6 +58,10 @@ namespace RimMandrake.Biomes
         public static bool worldBorderBlend = true;
         public static bool worldSeaDepth = true;
 
+        // BIOME SWIRLS (owner by card 2026-10-20, WORLD_FACES_REDRAW_ABYSS_ROT_RUST): a continuous swirl layer drawn over the
+        // whole of the Abyss and The Rot on the planet (RM_WorldLook.BuildSwirls). Looks only. Applies at once.
+        public static bool worldBiomeSwirls = true;
+
         // SOFT HILLS (2026-10-20): our own hill decal art on the planet's shared hill materials (RM_WorldLook.ApplyHills).
         // Looks only; hilliness is untouched. Applies at once.
         public static bool worldSoftHills = true;
@@ -98,6 +102,7 @@ namespace RimMandrake.Biomes
             Scribe_Values.Look(ref plantDrawOrderSouthInFront, "plantDrawOrderSouthInFront", true);
             Scribe_Values.Look(ref worldBorderBlend, "worldBorderBlend", true);
             Scribe_Values.Look(ref worldSeaDepth, "worldSeaDepth", true);
+            Scribe_Values.Look(ref worldBiomeSwirls, "worldBiomeSwirls", true);
             Scribe_Values.Look(ref worldSoftHills, "worldSoftHills", true);
             Scribe_Values.Look(ref worldSunPeaks, "worldSunPeaks", true);
             Scribe_Values.Look(ref worldReadablePaths, "worldReadablePaths", true);
@@ -166,9 +171,9 @@ namespace RimMandrake.Biomes
                 plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
                 RM_PlantDrawOrder.Reprint();
             }
-            if (worldLookShown != RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth)
+            if (worldLookShown != RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/" + RM_BiomesSettings.worldBiomeSwirls)
             {
-                worldLookShown = RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth;
+                worldLookShown = RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/" + RM_BiomesSettings.worldBiomeSwirls;
                 if (Current.ProgramState == ProgramState.Playing) Find.World?.renderer?.SetAllLayersDirty();
             }
             if (RM_WorldLook.hillsApplied != RM_BiomesSettings.worldSoftHills) RM_WorldLook.ApplyHills("settings changed");
@@ -184,7 +189,7 @@ namespace RimMandrake.Biomes
             }
         }
 
-        string worldLookShown = "True/True";
+        string worldLookShown = "True/True/True";
         bool peaksShown = true;
 
         // MOD_OPTIONS_RETROFIT_1: per-entry toggles live in the Scribed RM_BiomesSettings.enabled dictionary (absent key = on).
@@ -259,7 +264,7 @@ namespace RimMandrake.Biomes
             }
 
             if (string.IsNullOrWhiteSpace(searchQuery)
-                || RimMandrake.Shared.SettingsKitCore.Matches("world map planet borders blend sea depth water coast roads rivers highway hills mountains", searchQuery))
+                || RimMandrake.Shared.SettingsKitCore.Matches("world map planet borders blend sea depth water coast roads rivers highway hills mountains swirls abyss rot", searchQuery))
             {
                 list.CheckboxLabeled("Planet: soft borders between biomes [now]", ref RM_BiomesSettings.worldBorderBlend,
                     "On the world map, the edge between two land biomes fades over half a tile on each side instead of "
@@ -267,6 +272,10 @@ namespace RimMandrake.Biomes
                 list.CheckboxLabeled("Planet: seas deepen away from the coast [now]", ref RM_BiomesSettings.worldSeaDepth,
                     "On the world map, water is lighter near the shore and darker far from it.\n\nLooks only; tile "
                     + "elevations are not changed. Default: on. Takes effect at once (the planet redraws).");
+                list.CheckboxLabeled("Planet: swirls over the Abyss and The Rot [now]", ref RM_BiomesSettings.worldBiomeSwirls,
+                    "On the world map, a continuous layer of swirls is drawn across the whole of each of these biomes: pale, "
+                    + "eerie currents over the near-black Abyss and wild-coloured swirls over The Rot. It fades out across the "
+                    + "biome's border.\n\nLooks only. Default: on. Takes effect at once (the planet redraws).");
                 list.CheckboxLabeled("Planet: soft hill shading [now]", ref RM_BiomesSettings.worldSoftHills,
                     "On the world map, hills and mountains draw as soft dark relief that takes the colour of the land "
                     + "under them, instead of the vanilla brown outlined blots.\n\nLooks only; which tiles are hilly is "

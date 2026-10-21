@@ -24,6 +24,8 @@ from PIL import Image, ImageDraw
 N = 512
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../.."))
 NEIGHBOUR_MIN_DE = 10.0
+SWIRL_OWNER = ("Abyss I had envisioned as far darker still with eerie swirling within it. The Rot should have a lot more "
+               "texture and swirls of wild colors.")
 OWNER = "I would like us to simply generate the art for our own biome mods rather than rely on world map enhanced."
 
 # key: (base, secondary, style, target_sd, seed, provisional, [ (mod, texname), ... ])
@@ -36,11 +38,11 @@ F = {
  "Wasteland":     ("#9a9282", "#b2ad9e", "salt",   5.0, 4, False, [("RimMandrake/Wasteland", "RM_Wasteland"), (U, "RUT_Wasteland")]),
  "SleepingIce":   ("#b4b9c0", "#9097a3", "ice",    4.5, 5, False, [("RimMandrake/NightsideIce", "RM_SleepingIce"), (U, "RUT_SleepingIce")]),
  "Umbra":         ("#4c5464", "#4e5e60", "ice",    4.0, 6, True,  [(U, "RUT_Umbra")]),
- "Abyss":         ("#43455a", "#4c5468", "crust",  5.0, 7, False, [("RimMandrake/Abyss", "RM_Abyss"), (U, "RUT_Abyss")]),
+ "Abyss":         ("#15151d", "#1c2130", "abyss", 5.0, 7, False, [("RimMandrake/Abyss", "RM_Abyss"), (U, "RUT_Abyss")]),
  "BlueDesert":    ("#6e86a2", "#8296ae", "dunes",  4.0, 8, False, [("RimMandrake/BlueDesert", "RM_BlueDesert"), (U, "RUT_BlueDesert")]),
  "CrackedLands":  ("#8a5240", "#96644e", "cracks", 7.0, 9, False, [("RimMandrake/CrackedLands", "RM_CrackedLands"), (U, "RUT_CrackedLands")]),
  "Cauldron":      ("#55574a", "#5e5a4e", "crust",  6.0, 10, False, [("RimMandrake/Cauldron", "RM_Cauldron"), (U, "RUT_Cauldron")]),
- "RustCathedral": ("#7c4e3a", "#6a4a3e", "crust",  7.0, 11, False, [("RimMandrake/RustCathedral", "RM_RustCathedral"), (U, "RUT_RustCathedral")]),
+ "RustCathedral": ("#6e3c28", "#3e2a22", "machinery", 15.0, 11, False, [("RimMandrake/RustCathedral", "RM_RustCathedral"), (U, "RUT_RustCathedral")]),
  "Greentide":     ("#5a7450", "#667c54", "canopy", 7.5, 12, False, [("RimMandrake/Greentide", "RM_Greentide"), (U, "RUT_Greentide")]),
  "WeepingStones": ("#a6a192", "#7e8478", "weep",   6.5, 13, False, [("RimMandrake/WeepingStones", "RM_WeepingStones"), (U, "RUT_WeepingStones")]),
  "Pyrelands":     ("#8e7a50", "#6e6454", "bands",  6.5, 14, False, [("RimMandrake/Pyrelands", "RM_Pyrelands")]),
@@ -52,7 +54,7 @@ F = {
  "Forge":         ("#524a4a", "#5e4a42", "veins",  7.5, 20, False, [("RimMandrake/TheForge", "RM_Forge"), (U, "RUT_Forge")]),
  "FeverWood":     ("#4e5a32", "#5a5c34", "canopy", 7.5, 21, False, [("RimMandrake/FeverWood", "RM_FeverWood"), (U, "RUT_FeverWood")]),
  "Sump":          ("#484640", "#55503e", "crust",  5.0, 22, False, [("RimMandrake/TheSump", "RM_Sump"), (U, "RUT_Sump")]),
- "TheRot":        ("#968aa0", "#a8a0a4", "crust",  5.5, 23, False, [("RimMandrake/TheRot", "RM_TheRot"), (U, "RUT_TheRot")]),
+ "TheRot":        ("#5e4a6a", "#6a4058", "rot",    13.0, 23, False, [("RimMandrake/TheRot", "RM_TheRot"), (U, "RUT_TheRot")]),
  "LanternDeeps":  ("#3c4660", "#46505a", "crust",  5.0, 24, True,  [("RimMandrake/LanternDeeps", "RM_LanternDeeps")]),
  "ChillCrater":   ("#42465a", "#3a4050", "ice",    4.5, 25, True,  [("RimMandrake/TerminalBiomes", "RM_ChillCrater")]),
  # sea-floor layer: land-style rock/sediment, no ripple (spec 6.4)
@@ -189,7 +191,7 @@ def style_fields(style, s):
 # Calm pass (2026-10-20, STIPPLE research): the "crust" family carried 1-4 px grain (emboss + fine bands) that a minified
 # texture turns into sparkle at mid zoom. These faces get their detail low-passed (Gaussian sigma in px, periodic) and
 # then re-scaled to the same sd, so colour, mean and neighbour contrast are untouched; only the <=5 px grain is gone.
-CALM = {"RustCathedral": 3.0, "Forge": 3.0, "Greentide": 3.0, "Warscar": 3.0, "Miasma": 3.0, "FeverWood": 3.0,
+CALM = {"Forge": 3.0, "Greentide": 3.0, "Warscar": 3.0, "Miasma": 3.0, "FeverWood": 3.0,
         "Cauldron": 2.6, "CrackedLands": 2.6, "Slime": 2.6, "LeaningScrub": 2.6, "Pyrelands": 2.6, "Contagion": 2.6,
         "Sump": 2.2}
 CALM_SD = 0.65      # and their total sd is cut to this fraction (floor CALM_SD_MIN, the spec's lower bound + margin)
@@ -201,8 +203,185 @@ def gblur(a, sigma):
     return np.real(np.fft.ifft2(np.fft.fft2(a) * np.exp(-2 * (np.pi * sigma) ** 2 * k ** 2)))
 
 
+# Owner say-so overrides of the calm spec (2026-10-20, WORLD_FACES_REDRAW_ABYSS_ROT_RUST): "Abyss I had envisioned as far
+# darker still with eerie swirling within it. The Rot should have a lot more texture and swirls of wild colors. ... I
+# really liked the harsh rusty machinery". These three are judged by these bounds instead of the spec's.
+OVERRIDE = {"Abyss": {"val": (14, 45), "sd": (2, 9)},
+            "TheRot": {"sd": (8, 18), "sat": 75, "blk": 6.0},
+            "RustCathedral": {"sd": (10, 20), "sat": 72, "blk": 6.0}}
+
+
+def curl_lic(seed, lo, hi, steps=14, h=1.6, vlo=1.2, vhi=3.5, vamp=60.0):
+    """Swirls: periodic noise smeared along the streamlines of a periodic curl field (a line-integral convolution).
+    psi's extrema become eddies; streaks run around them. Wraps exactly at N."""
+    psi = band(vlo, vhi, seed) * vamp
+    vx = (np.roll(psi, -1, 0) - np.roll(psi, 1, 0)) * 0.5
+    vy = -(np.roll(psi, -1, 1) - np.roll(psi, 1, 1)) * 0.5
+    sp = np.sqrt(vx * vx + vy * vy) + 1e-6
+    vx, vy = vx / sp * h, vy / sp * h
+    f0 = band(lo, hi, seed + 1)
+    acc = f0.copy(); fa = f0; fb = f0
+    for i in range(1, steps + 1):
+        fa = warp(fa, vx, vy); fb = warp(fb, -vx, -vy)
+        wgt = 1.0 - i / (steps + 1)
+        acc += wgt * (fa + fb)
+    return z(acc), psi
+
+
+def style_abyss(base, sec, s):
+    """Near-black basin floor; a faint cold swirl in the face itself (the overlay carries the bold one)."""
+    b = H(base); m = H(sec)
+    lic, _ = curl_lic(s + 1, 18, 60, steps=12)
+    mott = z(warped(3, 9, s + 2, 6))
+    w = np.clip(0.5 + 0.25 * mott + 0.15 * lic, 0, 1)
+    img = b * (1 - w[..., None]) + m * w[..., None]
+    fil = ridge(lic, 1.6)
+    img = img + H("#3a4a5e")[None, None, :] * (0.35 * fil)[..., None] * (0.5 + 0.5 * np.clip(mott, 0, None))[..., None]
+    img = img + (gblur(z(warped(20, 60, s + 3, 3)), 1.2) * 1.6)[..., None]
+    return img
+
+
+WILD = ["#9a2ab0", "#d02a7a", "#7ac020", "#20a8a0", "#e09020", "#6a3ad0", "#c03030", "#30a050"]
+
+
+def wild_colour(t):
+    """t in [0,1) -> a cyclic walk through the wild palette, smooth."""
+    pal = np.array([H(c) for c in WILD]); n = len(pal)
+    x = (t % 1.0) * n; i0 = np.floor(x).astype(int) % n; i1 = (i0 + 1) % n; f = (x - np.floor(x))[..., None]
+    f = f * f * (3 - 2 * f)
+    return pal[i0] * (1 - f) + pal[i1] * f
+
+
+def style_rot(base, sec, s):
+    """Rich, lumpy rot: crust and pustule relief, and swirled pools of wild colour bleeding through a bruised base."""
+    b = H(base); m = H(sec)
+    lic, _ = curl_lic(s + 1, 10, 30, steps=10, vlo=2, vhi=6)
+    hue = 0.5 + 0.18 * z(warped(2, 5, s + 2, 8)) + 0.10 * lic
+    col = wild_colour(hue)
+    mott = z(warped(4, 12, s + 3, 5))
+    w = np.clip(0.5 + 0.3 * mott, 0, 1)
+    img = b * (1 - w[..., None]) + m * w[..., None]
+    pool = np.clip(0.45 + 0.35 * z(warped(3, 10, s + 4, 10)) + 0.2 * lic, 0, 1)[..., None]
+    img = img * (1 - 0.7 * pool) + col * 0.7 * pool
+    crust = gblur(z(warped(20, 55, s + 5, 4)), 1.0)
+    pus = gblur(np.clip(z(warped(14, 34, s + 6, 3)) - 1.3, 0, None), 1.0)
+    relief = 0.55 * emboss(crust) + 0.35 * crust + 0.5 * z(pus) + 0.25 * emboss(pus)
+    return img + (z(relief) * 1.0)[..., None]
+
+
+def _disc(hmap, cx, cy, r, val, teeth=0):
+    yy, xx = np.mgrid[0:N, 0:N]
+    dx = (xx - cx + N / 2) % N - N / 2; dy = (yy - cy + N / 2) % N - N / 2
+    d = np.sqrt(dx * dx + dy * dy); ang = np.arctan2(dy, dx)
+    rr = r + (np.clip(np.sin(ang * teeth) * 3, -1, 1) * 2.5 if teeth else 0)
+    gear = d < rr
+    hmap[gear] = np.maximum(hmap[gear], val)
+    hmap[(d < r * 0.62) & (d > r * 0.45)] -= 0.5      # sunken ring
+    hmap[d < r * 0.22] = val + 0.6                     # hub
+    return hmap
+
+
+def style_machinery(base, sec, s):
+    """Bold harsh rusty machinery at planet scale: riveted plate fields with dark seams, heavy pipe runs with collars,
+    geared drums, and rust weeping down from them. Feature scale 6-80 px, no grain under ~3 px (calmer than 0f01bd5f7)."""
+    r = np.random.default_rng(s)
+    hm = np.zeros((N, N))
+    # plate field: bands of plates, each its own height, seams between
+    ys = np.sort(r.choice(np.arange(0, N, 8), 7, replace=False))
+    for bi in range(len(ys)):
+        y0, y1 = ys[bi], ys[(bi + 1) % len(ys)] + (N if bi == len(ys) - 1 else 0)
+        xs = np.sort(r.choice(np.arange(0, N, 8), r.integers(3, 7), replace=False))
+        for xi in range(len(xs)):
+            x0, x1 = xs[xi], xs[(xi + 1) % len(xs)] + (N if xi == len(xs) - 1 else 0)
+            lv = r.uniform(-0.6, 0.8)
+            yr = np.arange(y0, y1) % N; xr = np.arange(x0, x1) % N
+            hm[np.ix_(yr, xr)] = lv
+            hm[np.ix_(yr, xr[:3])] = -1.4; hm[np.ix_(yr[:3], xr)] = -1.4     # seams
+    # pipes: full-length runs (seamless by construction), cylinder profile, collars
+    pipe_tint = np.zeros((N, N))
+    for k in range(4):
+        horiz = k % 2 == 0; c = r.integers(0, N); wdt = r.integers(5, 11)
+        prof = np.zeros(N); idx = (np.arange(-wdt, wdt + 1) + c) % N
+        prof[idx] = 1.6 + 1.2 * np.sqrt(np.clip(1 - (np.arange(-wdt, wdt + 1) / (wdt + 0.5)) ** 2, 0, 1))
+        coll = np.zeros(N); step = r.integers(48, 96); off = r.integers(0, step)
+        for q in range(off, N, step): coll[np.arange(q, q + 6) % N] = 0.7
+        P = (prof[:, None] * (1 + 0)) if horiz else prof[None, :]
+        C = coll[None, :] if horiz else coll[:, None]
+        P = np.broadcast_to(P, (N, N)); C = np.broadcast_to(C, (N, N))
+        mask = P > 0
+        hm = np.where(mask, np.maximum(hm, P + C * mask), hm)
+        pipe_tint = np.where(mask, 1.0 if k in (1, 4) else 0.5, pipe_tint)
+    # geared drums
+    for k in range(5):
+        hm = _disc(hm, r.integers(0, N), r.integers(0, N), r.integers(18, 40), 2.4, teeth=r.integers(10, 18))
+    hm = gblur(hm, 1.3)
+    shade = emboss(hm, (0.6, 0.8))
+    occl = z(gblur(hm, 6.0) - hm)                                   # crevices dark
+    rust = z(warped(3, 10, s + 5, 8)); ox = z(warped(10, 30, s + 6, 4))
+    weep = gblur(np.clip(warped(16, 40, s + 7, 3, ax=1.0, ay=0.12), 0.9, None), 1.0)
+    dark, mid, light, iron = H("#2a170f"), H(base), H("#c06a34"), H("#4e3c36")
+    t = np.clip(0.52 + 0.32 * shade - 0.28 * occl + 0.08 * rust - 0.10 * z(weep), 0, 1)[..., None]
+    img = np.where(t < 0.55, dark * (1 - t / 0.55) + mid * (t / 0.55), mid * (1 - (t - 0.55) / 0.45) + light * ((t - 0.55) / 0.45))
+    img = img * (1 - 0.45 * pipe_tint[..., None] * (pipe_tint[..., None] > 0.9)) + iron * 0.45 * pipe_tint[..., None] * (pipe_tint[..., None] > 0.9)
+    img = img + (H(sec) - H(base))[None, None, :] * np.clip(0.35 * ox, 0, 1)[..., None]
+    return img
+
+
+# Biome-wide swirl overlays (RM_WorldLook.BuildSwirls draws World/RM_Swirls/<key> over every tile of the biome, UVs
+# continuous across it). RGBA: the alpha IS the swirl. Shipped in TerminalBiomes beside RM_Hills.
+SWIRL_MOD = "RimMandrake/TerminalBiomes"
+SWIRL_REL = "World/RM_Swirls/{}.png"
+
+
+def swirl_abyss(seed):
+    """Eerie pale currents over the near-black Abyss: thin rim-lit filaments wound round slow eddies, a faint cold glow."""
+    lic, psi = curl_lic(seed, 3, 9, steps=28, h=2.2, vlo=0.8, vhi=2.0)
+    # streamlines: contours of the stream function wind round its extrema as nested whirlpool rings; the LIC term
+    # wobbles them so they read as currents, not a contour plot
+    sl = np.sin(z(psi) * 7.0 + 0.8 * lic)
+    fil = ridge(sl, 1.7) * np.clip(0.4 + 0.6 * (0.5 + 0.5 * lic), 0, 1)
+    gate = np.clip(0.35 + 0.65 * z(warped(1.2, 3, seed + 7, 20)), 0, 1) ** 1.5   # currents come and go, in patches
+    glow = gblur(fil, 5.0)
+    a = np.clip(0.50 * fil * gate + 0.30 * (glow / (glow.max() + 1e-9)) * gate, 0, 0.6)
+    tint = np.clip(0.5 + 0.5 * z(warped(2, 5, seed + 8, 10)), 0, 1)[..., None]
+    rgb = H("#9fc4d8") * (1 - tint) + H("#c8d2ff") * tint
+    return rgb, a
+
+
+def swirl_rot(seed):
+    """Wild-coloured swirls over The Rot: broad marbled bands whose hue walks the wild palette, with brighter edges."""
+    lic, psi = curl_lic(seed, 4, 14, steps=18, h=2.0, vlo=1.2, vhi=3.2)
+    bands = 0.5 + 0.5 * np.sin(lic * 2.2)
+    hue = 0.5 + 0.30 * z(warped(1.5, 4, seed + 3, 16)) + 0.12 * lic
+    rgb = np.clip(wild_colour(hue) * 1.15, 0, 255)
+    edge = ridge(z(np.sin(lic * 2.2)), 2.0)
+    rgb = rgb * (1 - 0.35 * edge[..., None]) + H("#f0d8ff") * 0.35 * edge[..., None]
+    gate = np.clip(0.6 + 0.4 * z(warped(1.5, 4, seed + 9, 20)), 0, 1)
+    a = np.clip((0.22 + 0.55 * bands ** 2 + 0.3 * edge) * gate, 0, 0.9)
+    return rgb, a
+
+
+SWIRLS = {"Abyss": (swirl_abyss, 7001), "TheRot": (swirl_rot, 23001)}
+
+
+def make_swirl(key):
+    fn, seed = SWIRLS[key]
+    rgb, a = fn(seed)
+    out = np.dstack([np.clip(np.rint(rgb), 0, 255), np.clip(np.rint(a * 255), 0, 255)]).astype(np.uint8)
+    return out
+
+
+CUSTOM = {"abyss": style_abyss, "rot": style_rot, "machinery": style_machinery}
+
+
 def make(key):
     base, sec, style, tsd, s, _p, _f = F[key]
+    if style in CUSTOM:
+        img = CUSTOM[style](base, sec, s * 1000)
+        mean = img.reshape(-1, 3).mean(0); dev = img - mean
+        a = tsd / max(dev.reshape(-1, 3).std(0).mean(), 1e-6)
+        out = mean * 0.5 + H(base) * 0.5 + dev * a
+        return np.clip(np.rint(out), 0, 255).astype(np.uint8)
     b = H(base); m = H(sec)
     w, det, extra = style_fields(style, s * 1000)
     if key in CALM:
@@ -238,14 +417,15 @@ def stats(a):
 
 
 def verdict(key, st, shape):
-    bad = []
+    bad = []; o = OVERRIDE.get(key, {})
     if shape != (N, N, 3): bad.append(f"shape {shape}")
-    if not 3 <= st["sd"] <= 9: bad.append(f"sd {st['sd']}")
-    if st["blk"] > 2.5: bad.append(f"blk {st['blk']}")
+    sdlo, sdhi = o.get("sd", (3, 9))
+    if not sdlo <= st["sd"] <= sdhi: bad.append(f"sd {st['sd']}")
+    if st["blk"] > o.get("blk", 2.5): bad.append(f"blk {st['blk']}")
     if st["seam"] > 2 * st["nbr"] + 0.5: bad.append(f"seam {st['seam']} > 2x nbr {st['nbr']}")
-    if st["sat"] > 60: bad.append(f"sat {st['sat']}%")
-    vmax = 140 if key in WATER else (205 if key in BRIGHT_OK else 170)
-    if not 60 <= st["val"] <= vmax: bad.append(f"val {st['val']} not in 60-{vmax}")
+    if st["sat"] > o.get("sat", 60): bad.append(f"sat {st['sat']}%")
+    vmin, vmax = o.get("val", (60, 140 if key in WATER else (205 if key in BRIGHT_OK else 170)))
+    if not vmin <= st["val"] <= vmax: bad.append(f"val {st['val']} not in {vmin}-{vmax}")
     if key in WATER and not (st["mean"][2] > st["mean"][0]): bad.append("water not cool")
     return bad
 
@@ -326,6 +506,15 @@ def gen(out):
             for b_ in range(3): sh.paste(small, (x + a_ * 80, y + 18 + b_ * 80))
         d.text((x, y), k + (" *" if F[k][5] else ""), fill=(235, 230, 220))
     sh.save(os.path.join(out, "sheet.png"))
+    os.makedirs(os.path.join(out, "swirls"), exist_ok=True)
+    for k in SWIRLS:
+        sw = make_swirl(k); Image.fromarray(sw, "RGBA").save(os.path.join(out, "swirls", k + ".png"), optimize=True)
+        face = Image.open(os.path.join(out, "tex", k + ".png")).convert("RGBA")
+        comp = Image.alpha_composite(face, Image.fromarray(sw, "RGBA"))
+        t = Image.new("RGB", (3 * N, 3 * N))
+        for i in range(3):
+            for j in range(3): t.paste(comp.convert("RGB"), (i * N, j * N))
+        t.resize((768, 768), Image.LANCZOS).save(os.path.join(out, "tile3x3", k + "_swirl.png"))
     res, nb, fails = check_dir(out)
     json.dump({"faces": res, "neighbours": nb}, open(os.path.join(out, "stats.json"), "w"), indent=1)
     return res, nb, fails
@@ -341,9 +530,11 @@ def report(res, nb, fails):
         if not x["ok"]: print("NEIGHBOUR", x)
 
 
-def install(dry):
+def install(dry, only=None):
     out = storage_root(); bad = 0
     for k, v in F.items():
+        if only and k not in only: continue
+        os.makedirs(os.path.join(REPO, "Transient", "biome_worldfaces_stage"), exist_ok=True)
         src = os.path.join(out, "tex", k + ".png")
         stage = os.path.join(REPO, "Transient", "biome_worldfaces_stage", k + ".png")   # art.py wants a file inside the clone
         os.makedirs(os.path.dirname(stage), exist_ok=True); open(stage, "wb").write(open(src, "rb").read())
@@ -354,15 +545,25 @@ def install(dry):
             x = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO)
             o = (x.stdout + x.stderr).strip().splitlines(); bad += x.returncode != 0
             print(x.returncode, mod, rel, (o[-1] if o else "")[:110])
+    for k in SWIRLS:
+        src = os.path.join(out, "swirls", k + ".png")
+        stage = os.path.join(REPO, "Transient", "biome_worldfaces_stage", "swirl_" + k + ".png")
+        open(stage, "wb").write(open(src, "rb").read())
+        cmd = [sys.executable, os.path.join(REPO, "src/RimMandrake/Utils/art/art.py"), "install", SWIRL_MOD, SWIRL_REL.format(k),
+               "--file", os.path.relpath(stage, REPO), "--owner-said", SWIRL_OWNER] + (["--dry-run"] if dry else [])
+        x = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO)
+        o = (x.stdout + x.stderr).strip().splitlines(); bad += x.returncode != 0
+        print(x.returncode, SWIRL_MOD, SWIRL_REL.format(k), (o[-1] if o else "")[:110])
     print("install failures", bad); return bad
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=["gen", "check", "install"])
     ap.add_argument("--out"); ap.add_argument("--src", action="store_true"); ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--only", help="install: comma-separated face keys (swirls always go)")
     a = ap.parse_args()
     if a.cmd == "gen":
         r = gen(a.out or storage_root()); report(*r); sys.exit(1 if r[2] else 0)
     if a.cmd == "check":
         r = check_dir(a.out or storage_root(), from_src=a.src); report(*r); sys.exit(1 if r[2] else 0)
-    sys.exit(1 if install(a.dry_run) else 0)
+    sys.exit(1 if install(a.dry_run, set(a.only.split(",")) if a.only else None) else 0)

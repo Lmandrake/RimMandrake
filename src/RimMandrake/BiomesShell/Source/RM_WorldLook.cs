@@ -52,6 +52,18 @@ namespace RimMandrake.Biomes
         public static string seaShader = "WorldOverlayTransparentLit";
         public static int seaQueue = 3502;          // above the ocean (3500), under the border blend (3505)
 
+        // 3. BIOME SWIRLS (owner by card 2026-10-20, WORLD_FACES_REDRAW_ABYSS_ROT_RUST: "Biome-wide swirl layer"). Every tile
+        //    of a listed biome is drawn again with that biome's swirl texture (World/RM_Swirls/<name>, RGBA, alpha = the
+        //    swirl) on the transparent lit overlay. UVs are the vertex position projected onto ONE tangent plane per biome
+        //    (at the mean of its tile centres), so the swirls run continuously across the whole biome with no tile seams and
+        //    no pole stretch. Vertex alpha = swirlStrength x share of that biome among the tiles meeting at the corner, so
+        //    the layer fades out across the biome border instead of stopping on a hex line.
+        public static string swirlBiomes = "RM_Abyss=Abyss,RUT_Abyss=Abyss,RM_TheRot=TheRot,RUT_TheRot=TheRot";
+        public static float swirlStrength = 1f;
+        public static float swirlUvScale = 0.035f;  // texture repeats per world unit (radius 100 planet): ~25 units per repeat
+        public static float swirlLift = 0.004f;     // over the border blend (+0.003), under hills (+0.005) and rivers (+0.01)
+        public static int swirlQueue = 3506;        // over the border blend (3505), under hills (3510)
+
         public static string lastInfo = "never built";
 
         static readonly FieldInfo SubMeshesField = AccessTools.Field(typeof(WorldDrawLayerBase), "subMeshes");
@@ -130,6 +142,7 @@ namespace RimMandrake.Biomes
                 lastMine = mine;
                 if (RM_BiomesSettings.worldSeaDepth) sb.Append(BuildSea(layer, mine));
                 if (RM_BiomesSettings.worldBorderBlend) sb.Append(" ").Append(BuildBlend(layer, mine));
+                if (RM_BiomesSettings.worldBiomeSwirls) sb.Append(" ").Append(BuildSwirls(layer, mine));
                 var subs = SubMeshes(layer);
                 foreach (LayerSubMesh sm in mine)
                 {
@@ -399,6 +412,115 @@ namespace RimMandrake.Biomes
             }
         }
 
+        // ---------------------------------------------------------------- biome swirls
+        static readonly Dictionary<string, Material> SwirlMats = new Dictionary<string, Material>();
+
+        static Dictionary<BiomeDef, string> SwirlMap()
+        {
+            var map = new Dictionary<BiomeDef, string>();
+            foreach (string pair in (swirlBiomes ?? "").Split(','))
+            {
+                string[] kv = pair.Split('=');
+                if (kv.Length != 2) continue;
+                BiomeDef b = DefDatabase<BiomeDef>.GetNamedSilentFail(kv[0].Trim());
+                if (b != null && !b.isWaterBiome) map[b] = kv[1].Trim();
+            }
+            return map;
+        }
+
+        static Material SwirlMat(string name)
+        {
+            if (SwirlMats.TryGetValue(name, out Material m)) return m;
+            Texture2D tex = ContentFinder<Texture2D>.Get("World/RM_Swirls/" + name, false);
+            if (tex == null)
+                Log.WarningOnce("[RimMandrake.Biomes] biome swirls: World/RM_Swirls/" + name + " not found (is the mod that ships it loaded?); no swirls there", 0x52535731 + name.GetHashCode());
+            else
+            {
+                tex.wrapMode = TextureWrapMode.Repeat;
+                m = new Material(ResolveShader(blendShader)) { mainTexture = tex, renderQueue = swirlQueue };
+            }
+            SwirlMats[name] = m;   // null is cached too: one warning, then skip
+            return m;
+        }
+
+        static string BuildSwirls(WorldDrawLayer_Terrain layer, List<LayerSubMesh> mine)
+        {
+            PlanetLayer pl = layer.planetLayer;
+            Dictionary<BiomeDef, string> map = SwirlMap();
+            if (map.Count == 0) return "swirls: no listed biome loaded";
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            // one tangent frame per biome, at the mean of its tile centres
+            var sum = new Dictionary<BiomeDef, Vector3>();
+            var tiles = new List<int>();
+            for (int i = 0; i < pl.TilesCount; i++)
+            {
+                BiomeDef a = pl[i].PrimaryBiome;
+                if (a == null || !map.ContainsKey(a)) continue;
+                tiles.Add(i);
+                sum.TryGetValue(a, out Vector3 s);
+                sum[a] = s + pl.GetTileCenter(i);
+            }
+            if (tiles.Count == 0) return "swirls: 0 tiles of " + map.Count + " listed biomes";
+            var frame = new Dictionary<BiomeDef, Vector3[]>();
+            foreach (var kv in sum)
+            {
+                Vector3 n = kv.Value.sqrMagnitude > 1e-6f ? kv.Value.normalized : Vector3.up;
+                Vector3 t = Vector3.Cross(n, Mathf.Abs(n.y) < 0.9f ? Vector3.up : Vector3.right).normalized;
+                frame[kv.Key] = new[] { t, Vector3.Cross(n, t).normalized };
+            }
+            var current = new Dictionary<Material, LayerSubMesh>();
+            var verts = new List<Vector3>();
+            var nbs = new List<PlanetTile>();
+            var nbVerts = new List<List<Vector3>>();
+            float windSign = 0f;
+            int drawn = 0, missing = 0;
+            foreach (int i in tiles)
+            {
+                BiomeDef a = pl[i].PrimaryBiome;
+                Material mat = SwirlMat(map[a]);
+                if (mat == null) { missing++; continue; }
+                pl.GetTileVertices(i, verts);
+                if (verts.Count < 3) continue;
+                Vector3 center = pl.GetTileCenter(i);
+                if (windSign == 0f)
+                    windSign = Mathf.Sign(Vector3.Dot(Vector3.Cross(verts[1] - verts[2], verts[0] - verts[2]), center));
+                pl.GetTileNeighbors(i, nbs);
+                while (nbVerts.Count < nbs.Count) nbVerts.Add(new List<Vector3>());
+                for (int k = 0; k < nbs.Count; k++) pl.GetTileVertices(nbs[k].tileId, nbVerts[k]);
+                if (!current.TryGetValue(mat, out LayerSubMesh sm) || sm.verts.Count > 38000)
+                {
+                    sm = new LayerSubMesh(new Mesh(), mat);
+                    current[mat] = sm;
+                    mine.Add(sm);
+                }
+                Vector3[] f = frame[a];
+                int b0 = sm.verts.Count;
+                Vector3 pc = center + center.normalized * swirlLift;
+                sm.verts.Add(pc);
+                sm.uvs.Add(new Vector3(Vector3.Dot(center, f[0]) * swirlUvScale, Vector3.Dot(center, f[1]) * swirlUvScale, 0f));
+                sm.colors.Add(new Color32(255, 255, 255, (byte)Mathf.RoundToInt(Mathf.Clamp01(swirlStrength) * 255f)));
+                for (int j = 0; j < verts.Count; j++)
+                {
+                    int total = 1, same = 1;
+                    for (int k = 0; k < nbs.Count; k++)
+                    {
+                        if (!nbVerts[k].Contains(verts[j])) continue;
+                        total++;
+                        if (pl[nbs[k].tileId].PrimaryBiome == a) same++;
+                    }
+                    Vector3 p = verts[j] + verts[j].normalized * swirlLift;
+                    sm.verts.Add(p);
+                    sm.uvs.Add(new Vector3(Vector3.Dot(verts[j], f[0]) * swirlUvScale, Vector3.Dot(verts[j], f[1]) * swirlUvScale, 0f));
+                    sm.colors.Add(new Color32(255, 255, 255, (byte)Mathf.RoundToInt(Mathf.Clamp01(swirlStrength * same / total) * 255f)));
+                }
+                for (int j = 0; j < verts.Count; j++)
+                    Tri(sm, b0, b0 + 1 + j, b0 + 1 + (j + 1) % verts.Count, center, windSign);
+                drawn++;
+            }
+            return "swirls: " + drawn + " tiles in " + sum.Count + " biomes" + (missing > 0 ? ", " + missing + " without texture" : "")
+                   + ", " + sw.ElapsedMilliseconds + " ms";
+        }
+
         static void Tri(LayerSubMesh sm, int a, int b, int c, Vector3 center, float windSign)
         {
             // order (c, b, a) like vanilla, then flip if the facing differs from vanilla's
@@ -420,6 +542,7 @@ namespace RimMandrake.Biomes
             f.SetValue(null, v);
             BlendMats.Clear();
             FlatMats.Clear();
+            SwirlMats.Clear();
             return key + " = " + f.GetValue(null);
         }
 
@@ -428,7 +551,8 @@ namespace RimMandrake.Biomes
             var sb = new StringBuilder(lastInfo);
             foreach (FieldInfo f in typeof(RM_WorldLook).GetFields(BindingFlags.Static | BindingFlags.Public))
                 if (f.Name != "lastInfo") sb.Append(" | ").Append(f.Name).Append('=').Append(f.GetValue(null));
-            sb.Append(" | blend=").Append(RM_BiomesSettings.worldBorderBlend).Append(" seaDepth=").Append(RM_BiomesSettings.worldSeaDepth);
+            sb.Append(" | blend=").Append(RM_BiomesSettings.worldBorderBlend).Append(" seaDepth=").Append(RM_BiomesSettings.worldSeaDepth)
+              .Append(" swirls=").Append(RM_BiomesSettings.worldBiomeSwirls);
             return sb.ToString();
         }
 
