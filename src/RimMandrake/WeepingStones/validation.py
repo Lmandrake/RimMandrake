@@ -1289,8 +1289,16 @@ def job_net(t):
     """NET: a handler nets a wild stockable pawn and it becomes its carryable breeding-stock item
     (RM_JobDriver_NetPoolBreeder). Wild pawn gone, exactly one RM_SkarrinBreedingStock appears.
 
-    The 2026-10-03 failure (the wild skarrin fled the handler and left the map) is fixed in the driver:
-    RM_PoolBreederUtility.HoldStill stuns the target for the approach + net (WEEPINGSTONES_STOCK_JOB_LOOP_1)."""
+    2026-10-03 the wild skarrin fled and left the map before a 200-tick touch-and-wait finished; a HoldStill stun
+    for the whole job (WEEPINGSTONES_STOCK_JOB_LOOP_1) papered over it. Owner 2026-10-07 ruled the channel out:
+    capture depends on the target's speed and whether the net lands. Since WEEPINGSTONES_NET_TARGET_FLEES_1
+    (2026-10-21) the handler THROWS a vanilla Projectile (RM_Projectile_PoolNet) from <= netThrowRange cells, aimed
+    by vanilla ShotReport.HitFactorFromShooter; it takes the target only if the target is still within 1 cell of the
+    landing cell, then stuns it for bagging. Up to netMaxThrows throws per job. No HoldStill on NET any more.
+    PREDICTION for the next live run: a grazing skarrin is caught in 1-2 throws well inside 900 ticks; a FLEEING
+    one (0.13 cells/tick) outruns every 6-cell throw (43 ticks of flight), so a red here with "1 wild skarrin left"
+    means the skarrin was moving - read its job/state before blaming the driver. Base game + DLC ship no net
+    item or class (searched 2026-10-21): "the game's net mechanics" = vanilla projectile flight + aim."""
     # RULED OUT: a defName/counting mismatch -- the precondition reads 1 RM_Skarrin by the same kindDef key and
     #   RM_SkarrinBreedingStock resolves live (defs_resolve PASS); LIVE 2026-10-07 the handler vanished too.
     _enter(t)

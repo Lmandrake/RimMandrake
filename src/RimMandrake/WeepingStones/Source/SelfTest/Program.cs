@@ -1,5 +1,5 @@
 // WeepingStones offline fuzz entry. Knobs (forwarded by selftest_weepingstones_fuzz.py): --fuzz-scale F (multiplies every case
-// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (pool|condenser|claim|slot).
+// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (pool|condenser|claim|slot|net).
 using System;
 
 namespace RimMandrake.WeepingStones.SelfTest

@@ -57,6 +57,7 @@
     <Compile Include="RM_PoolBreederUtility.cs" />
     <Compile Include="RM_WorkGiver_NetPoolBreeder.cs" />
     <Compile Include="RM_JobDriver_NetPoolBreeder.cs" />
+    <Compile Include="RM_Projectile_PoolNet.cs" />
     <Compile Include="RM_WorkGiver_StockPoolPen.cs" />
     <Compile Include="RM_JobDriver_StockPoolPen.cs" />
     <Compile Include="RM_WorkGiver_FeedPoolPen.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Kernel\RM_PoolKernel.cs" />
     <Compile Include="Kernel\RM_CondenserKernel.cs" />
     <Compile Include="Kernel\RM_ClaimKernel.cs" />
+    <Compile Include="Kernel\RM_NetKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

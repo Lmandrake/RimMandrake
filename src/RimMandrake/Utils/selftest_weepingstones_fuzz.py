@@ -6,7 +6,7 @@ walking condenser's phase machine, pool growth and drying (condenser), the conde
 the faction-slot resolution (slot). The project is built through winbuild.stage_build (dotnet.exe is
 Windows-native), then run.
 
-    python3 src/RimMandrake/Utils/selftest_weepingstones_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only pool|condenser|claim|slot]
+    python3 src/RimMandrake/Utils/selftest_weepingstones_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only pool|condenser|claim|slot|net]
 
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """
