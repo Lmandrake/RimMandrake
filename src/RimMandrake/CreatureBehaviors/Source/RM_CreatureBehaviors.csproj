@@ -47,6 +47,7 @@
     <Compile Include="RM_AmbushJobPolicy.cs" />
     <Compile Include="RM_WorldStarsMath.cs" />
     <Compile Include="RM_WorldStarsPatch.cs" />
+    <Compile Include="RM_SunFlareOcclusionPatch.cs" />
     <Compile Include="RM_TidalSunGlowMath.cs" />
     <Compile Include="RM_TidalSunGlowPatch.cs" />
     <Compile Include="RM_TidalNoSeasonsPatch.cs" />

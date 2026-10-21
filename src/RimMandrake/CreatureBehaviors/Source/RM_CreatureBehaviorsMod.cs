@@ -341,6 +341,11 @@ namespace RimMandrake.CreatureBehaviors
     //      owner by card 2026-10-20 "Remove the swing"). On (and only while the
     //      planet is tidally locked): seasonal amplitude 0 on every tile, after
     //      Worldbuilder's and BiomesCore's patches. Off: their seasons.
+    //  53. sunFlareHiddenBehindPlanet — RM_SunFlareOcclusionPatch (owner 2026-10-20:
+    //      "the sun shining THROUGH the planet"). On: Planet Atmosphere's lens
+    //      flare (drawn ZTest Always, additive) is blanked while the line from the
+    //      camera to the sun passes through the planet. Off: the flare as that mod
+    //      draws it. Rendering only; does nothing without Planet Atmosphere.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -427,6 +432,7 @@ namespace RimMandrake.CreatureBehaviors
         public static float pinnedSunSkyStrength = 1f;
         public static bool worldStarsPinned = true;
         public static bool worldStarsYearlyDrift = true;
+        public static bool sunFlareHiddenBehindPlanet = true;
         public static bool tidalSunGlowByGeometry = true;
         public static float tidalTwilightBandDegrees = RM_TidalSunGlowMath.DefaultTwilightBandDegrees;
         public static bool tidalLockNoSeasons = true;
@@ -665,6 +671,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref pinnedSunSkyStrength, "pinnedSunSkyStrength", 1f);
             Scribe_Values.Look(ref worldStarsPinned, "worldStarsPinned", true);
             Scribe_Values.Look(ref worldStarsYearlyDrift, "worldStarsYearlyDrift", true);
+            Scribe_Values.Look(ref sunFlareHiddenBehindPlanet, "sunFlareHiddenBehindPlanet", true);
             Scribe_Values.Look(ref tidalSunGlowByGeometry, "tidalSunGlowByGeometry", true);
             Scribe_Values.Look(ref tidalTwilightBandDegrees, "tidalTwilightBandDegrees", RM_TidalSunGlowMath.DefaultTwilightBandDegrees);
             Scribe_Values.Look(ref tidalLockNoSeasons, "tidalLockNoSeasons", true);
@@ -1054,7 +1061,7 @@ namespace RimMandrake.CreatureBehaviors
                   + "in it like the shadow of a rock. Off: its shadow is only something its riders follow.");
                 list.GapLine();
             }
-            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "worldStarsPinned", "worldStarsYearlyDrift", "tidalSunGlowByGeometry", "tidalTwilightBandDegrees", "tidalLockNoSeasons", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade", "WorldStars", "TidalSunGlow", "TidalNoSeasons", "Seasons" }))
+            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "worldStarsPinned", "worldStarsYearlyDrift", "sunFlareHiddenBehindPlanet", "tidalSunGlowByGeometry", "tidalTwilightBandDegrees", "tidalLockNoSeasons", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade", "WorldStars", "TidalSunGlow", "TidalNoSeasons", "Seasons" }))
             {
                 list.CheckboxLabeled("Pinned sun (golden hour)", ref pinnedSunEnabled,
                     "On: a biome built with a pinned sun (the Long Shade) keeps one fixed sunset sky "
@@ -1071,6 +1078,10 @@ namespace RimMandrake.CreatureBehaviors
                     list.CheckboxLabeled("    Stars drift once a year", ref worldStarsYearlyDrift,
                         "On: the stars drift slowly, one full turn per year (6 degrees a day). Off: they never move.");
                 }
+                list.CheckboxLabeled("Planet view: no sun flare through the planet", ref sunFlareHiddenBehindPlanet,
+                    "On: when the sun is behind the planet, its lens flare (the streak and halo from the Planet Atmosphere "
+                  + "mod) is not drawn across the dark side. Off: the flare is drawn whenever the sun is on screen, even "
+                  + "through the planet. Does nothing without Planet Atmosphere.");
                 list.CheckboxLabeled("Tidally locked world: light follows the sun", ref tidalSunGlowByGeometry,
                     "On: on a tidally locked planet, how bright the day is depends only on how high the sun stands over "
                   + "the place: full light from 30 degrees up, dimmer toward the edge of the day side, a dusk band "
