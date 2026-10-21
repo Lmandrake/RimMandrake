@@ -163,6 +163,23 @@ namespace JawaBench.BridgeTools
             };
         }
 
+        /// <summary>
+        /// The ONE tile-id parser every world tool uses (review 2026-10-20 D1/D6): clamps a
+        /// 'from-to' range to the live grid before allocating, caps ids per call, and names
+        /// every dropped token or off-grid id in <paramref name="errors"/>. The hand-rolled
+        /// loops it replaces hung the main thread on "0-2147483647" and dropped typos silently.
+        /// </summary>
+        private static List<int> TileIdsArg(string tiles, string range, List<string> errors)
+        {
+            return JawaBenchWorldArgsCore.ParseTileIds(tiles, range,
+                Find.WorldGrid != null ? Find.WorldGrid.TilesCount : 0, errors);
+        }
+
+        private static KeyValuePair<string, float?> Arg(string name, float? v)
+        {
+            return new KeyValuePair<string, float?>(name, v);
+        }
+
         private static bool TryHilliness(string s, out Hilliness h)
         {
             h = Hilliness.Flat;
@@ -203,25 +220,8 @@ namespace JawaBench.BridgeTools
                 if (Find.World == null || Find.WorldGrid == null)
                     return Fail("No world is loaded.");
 
-                var ids = new List<int>();
                 var errors = new List<string>();
-
-                if (!string.IsNullOrEmpty(tiles))
-                    foreach (var part in tiles.Split(','))
-                    {
-                        int v;
-                        if (int.TryParse(part.Trim(), out v)) ids.Add(v);
-                        else errors.Add("Not a tile id: '" + part.Trim() + "'");
-                    }
-
-                if (!string.IsNullOrEmpty(range))
-                {
-                    var bits = range.Split('-');
-                    int a, b;
-                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
-                    { for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i); }
-                    else errors.Add("Bad range '" + range + "', expected 'from-to'.");
-                }
+                var ids = TileIdsArg(tiles, range, errors);
 
                 if (ids.Count == 0 && errors.Count == 0)
                     return Fail("Give 'tiles' and/or 'range'.");
@@ -258,7 +258,8 @@ namespace JawaBench.BridgeTools
                 "Write per-tile scalars over a list and/or range of world tiles. Any field left " +
                 "null is untouched. Fields: biome (BiomeDef defName), elevation, hilliness " +
                 "(Flat|SmallHills|LargeHills|Mountainous|Impassable, or 0-5), temperature, " +
-                "rainfall, swampiness, pollution. " +
+                "rainfall, swampiness, pollution. NaN/Infinity are refused before any write; " +
+                "a 'range' is clipped to the grid and the clip is reported in errors. " +
                 "DOES NOT REDRAW: RimWorld has no per-tile visual invalidation except pollution, " +
                 "so call jawa/world_commit once after a batch. Doing it per write would " +
                 "regenerate the whole planet mesh every tile.",
@@ -302,6 +303,14 @@ namespace JawaBench.BridgeTools
                     && !rainfall.HasValue && !swampiness.HasValue && !pollution.HasValue)
                     return Fail("Nothing to write - every field was null.");
 
+                // 🔴 NaN passes every range test below (`NaN < lo || NaN > hi` is false) and
+                // Mathf.Clamp returns it unchanged, so it was written live; Infinity clamps to
+                // the edge and hides the caller's bug. Refuse both before touching a tile.
+                var nonFinite = JawaBenchWorldArgsCore.NonFinite(Arg("elevation", elevation), Arg("temperature", temperature),
+                    Arg("rainfall", rainfall), Arg("swampiness", swampiness), Arg("pollution", pollution));
+                if (nonFinite.Count > 0)
+                    return Fail("Refusing non-finite value(s): " + string.Join(", ", nonFinite.ToArray()) + ". Nothing was written.");
+
                 // 🔴 swampiness and pollution are QUANTIZED BY THE SAVEGAME, not merely
                 // conventionally 0-1: SurfaceLayer.ExposeData serializes swampiness as
                 // (byte)Clamp(round(v*255),0,255) and pollution as
@@ -331,19 +340,9 @@ namespace JawaBench.BridgeTools
                 if (rainfall.HasValue && (rainfall.Value < 0f || rainfall.Value > 65535f))
                 { float v = Mathf.Clamp(rainfall.Value, 0f, 65535f); clamped.Add("rainfall " + rainfall.Value + " -> " + v + " (savegame stores rainfall in one ushort; negatives become 0)"); rainfall = v; }
 
-                var ids = new List<int>();
                 var errors = new List<string>();
-                if (!string.IsNullOrEmpty(tiles))
-                    foreach (var part in tiles.Split(','))
-                    { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); else errors.Add("Not a tile id: '" + part.Trim() + "'"); }
-                if (!string.IsNullOrEmpty(range))
-                {
-                    var bits = range.Split('-'); int a, b;
-                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
-                    { for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i); }
-                    else errors.Add("Bad range '" + range + "'.");
-                }
-                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.", errors);
+                var ids = TileIdsArg(tiles, range, errors);
+                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range' naming at least one tile on the grid.", errors);
 
                 int written = 0;
                 foreach (var id in ids)
@@ -601,6 +600,9 @@ namespace JawaBench.BridgeTools
         {
             public List<string> Header = new List<string>();
             public List<string[]> Rows = new List<string[]>();
+            /// <summary>1-based FILE line of each row: blank lines are skipped, so a row's
+            /// index + 2 is not its line once one has been (review 2026-10-20 D8).</summary>
+            public List<int> LineNos = new List<int>();
             public Dictionary<string, int> Col = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         }
 
@@ -648,6 +650,7 @@ namespace JawaBench.BridgeTools
             {
                 if (string.IsNullOrEmpty(lines[i])) continue;
                 csv.Rows.Add(SplitCsvLine(lines[i]));
+                csv.LineNos.Add(i + 1);
             }
             return csv;
         }
@@ -677,10 +680,12 @@ namespace JawaBench.BridgeTools
             if (prop != null && prop.CanWrite) prop.SetValue(wo, name, null);
         }
 
+        // Finite-only (review 2026-10-20 D5): float.TryParse accepts "NaN" and "Infinity",
+        // and NaN survives Mathf.Clamp, so a NaN cell used to be written live. A non-finite
+        // cell now reads as UNPARSEABLE here and in world_tile_validate.
         private static bool F(string s, out float v)
         {
-            return float.TryParse(s, System.Globalization.NumberStyles.Float,
-                                  System.Globalization.CultureInfo.InvariantCulture, out v);
+            return JawaBenchWorldArgsCore.TryParseFiniteFloat(s, out v);
         }
 
         [Tool(
@@ -700,7 +705,9 @@ namespace JawaBench.BridgeTools
                 "success, dryRun, rows, applied (rows actually written, real runs only), " +
                 "wouldApply (rows that WOULD write, dry runs only), biomeSkipped (rows refused " +
                 "outright for an unresolved biome name - nothing in the row was written), " +
-                "skipped, unknownBiomes[], errors[], sample[].")]
+                "skipped, badCells (present but unparseable or non-finite, real runs only), " +
+                "rowsWithNothingWritten, unknownBiomes[], errors[], sample[]. success is false " +
+                "if ANY row was skipped/refused or any cell failed, not only when nothing landed.")]
         public static async Task<object> WorldTileImport(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -730,6 +737,7 @@ namespace JawaBench.BridgeTools
                 var biomeCache = new Dictionary<string, BiomeDef>(StringComparer.OrdinalIgnoreCase);
                 var sample = new List<object>();
                 int applied = 0, wouldApply = 0, biomeSkipped = 0, skipped = 0, rows = 0, clampedCells = 0;
+                int badCells = 0, nothingWritten = 0;
 
                 foreach (var row in csv.Rows)
                 {
@@ -781,7 +789,8 @@ namespace JawaBench.BridgeTools
 
                     if (!apply) { wouldApply++; continue; }
 
-                    if (bd != null) t.PrimaryBiome = bd;
+                    int fieldsWritten = 0;
+                    if (bd != null) { t.PrimaryBiome = bd; fieldsWritten++; }
                     // Clamped to the SAVEGAME's representable ranges for the same reason
                     // swampiness and pollution are, and by the same encodings read out of
                     // SurfaceLayer.ExposeData: elevation is stored as (elev + 8192) in one
@@ -794,18 +803,18 @@ namespace JawaBench.BridgeTools
                     // just per-field instead of per-row.
                     if (elevS != null)
                     {
-                        if (F(elevS, out fv)) { if (fv < -8192f || fv > 57343f) clampedCells++; t.elevation = Mathf.Clamp(fv, -8192f, 57343f); }
-                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable elev_m '" + elevS + "', field not written");
+                        if (F(elevS, out fv)) { if (fv < -8192f || fv > 57343f) clampedCells++; t.elevation = Mathf.Clamp(fv, -8192f, 57343f); fieldsWritten++; }
+                        else { badCells++; if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable elev_m '" + elevS + "', field not written"); }
                     }
                     if (tempS != null)
                     {
-                        if (F(tempS, out fv)) { if (fv < -300f || fv > 6253.5f) clampedCells++; t.temperature = Mathf.Clamp(fv, -300f, 6253.5f); }
-                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable temp_c '" + tempS + "', field not written");
+                        if (F(tempS, out fv)) { if (fv < -300f || fv > 6253.5f) clampedCells++; t.temperature = Mathf.Clamp(fv, -300f, 6253.5f); fieldsWritten++; }
+                        else { badCells++; if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable temp_c '" + tempS + "', field not written"); }
                     }
                     if (rainS != null)
                     {
-                        if (F(rainS, out fv)) { if (fv < 0f || fv > 65535f) clampedCells++; t.rainfall = Mathf.Clamp(fv, 0f, 65535f); }
-                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable rain_mm '" + rainS + "', field not written");
+                        if (F(rainS, out fv)) { if (fv < 0f || fv > 65535f) clampedCells++; t.rainfall = Mathf.Clamp(fv, 0f, 65535f); fieldsWritten++; }
+                        else { badCells++; if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable rain_mm '" + rainS + "', field not written"); }
                     }
                     // Clamped for the same reason as world_tile_set: the savegame stores
                     // swampiness in one byte and pollution in one ushort, both scaled from
@@ -813,27 +822,33 @@ namespace JawaBench.BridgeTools
                     // while every read-back and the validator report it as having landed.
                     if (swS != null)
                     {
-                        if (F(swS, out fv)) { if (fv < 0f || fv > 1f) clampedCells++; t.swampiness = Mathf.Clamp01(fv); }
-                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable swampiness '" + swS + "', field not written");
+                        if (F(swS, out fv)) { if (fv < 0f || fv > 1f) clampedCells++; t.swampiness = Mathf.Clamp01(fv); fieldsWritten++; }
+                        else { badCells++; if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable swampiness '" + swS + "', field not written"); }
                     }
                     if (poS != null)
                     {
-                        if (F(poS, out fv)) { if (fv < 0f || fv > 1f) clampedCells++; t.pollution = Mathf.Clamp01(fv); }
-                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable pollution '" + poS + "', field not written");
+                        if (F(poS, out fv)) { if (fv < 0f || fv > 1f) clampedCells++; t.pollution = Mathf.Clamp01(fv); fieldsWritten++; }
+                        else { badCells++; if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable pollution '" + poS + "', field not written"); }
                     }
                     if (hiS != null)
                     {
                         Hilliness h;
-                        if (TryHilliness(hiS, out h)) t.hilliness = h;
-                        else if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable hilliness '" + hiS + "', field not written");
+                        if (TryHilliness(hiS, out h)) { t.hilliness = h; fieldsWritten++; }
+                        else { badCells++; if (errors.Count < 20) errors.Add("Row " + rows + ": unparseable hilliness '" + hiS + "', field not written"); }
                     }
-                    applied++;
+                    // A row whose every present field failed to parse wrote NOTHING; it used to
+                    // count as applied anyway (review 2026-10-20 D7).
+                    if (fieldsWritten > 0) applied++;
+                    else { nothingWritten++; if (errors.Count < 20) errors.Add("Row " + rows + ": no field written"); }
                 }
 
                 return (object)new
                 {
                     // Derived (2026-09-09 hardening): an apply that wrote nothing is a failure.
-                    success = !apply || applied > 0,
+                    // And (review 2026-10-20 D7) any refused row or unparseable cell is too -
+                    // they were reported but success ignored them, so no script could see it.
+                    success = (!apply || applied > 0) && skipped == 0 && biomeSkipped == 0
+                              && badCells == 0 && nothingWritten == 0,
                     dryRun = !apply,
                     path,
                     header = string.Join(",", csv.Header.ToArray()),
@@ -843,6 +858,8 @@ namespace JawaBench.BridgeTools
                     biomeSkipped,
                     skipped,
                     clampedCells,
+                    badCells,
+                    rowsWithNothingWritten = nothingWritten,
                     tilesCount = grid.TilesCount,
                     unknownBiomes = unknownBiomes.ToList(),
                     note = apply
@@ -1071,17 +1088,9 @@ namespace JawaBench.BridgeTools
             {
                 if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
 
-                var ids = new List<int>(); var errors = new List<string>();
-                if (!string.IsNullOrEmpty(tiles))
-                    foreach (var part in tiles.Split(','))
-                    { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
-                if (!string.IsNullOrEmpty(range))
-                {
-                    var bits = range.Split('-'); int a, b;
-                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
-                        for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
-                }
-                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
+                var errors = new List<string>();
+                var ids = TileIdsArg(tiles, range, errors);
+                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range' naming at least one tile on the grid.", errors);
 
                 // 🔴 `count < requested` is AMBIGUOUS here and used to be the only signal:
                 // onlyLinked legitimately drops rows, so a caller could not tell a filtered
@@ -1155,9 +1164,13 @@ namespace JawaBench.BridgeTools
                     if (rd == null) return Fail("No RoadDef '" + def + "'.", DefSuggestions<RoadDef>(def));
                 }
 
-                var ids = new List<int>();
-                foreach (var part in (path ?? "").Split(','))
-                { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
+                // 🔴 A dropped token used to make its two neighbours consecutive, so
+                // "14,abc,7368" tried to link 14->7368 (review 2026-10-20 D6). The path is
+                // ORDERED: any bad or off-grid token refuses the whole call before a write.
+                var pathErrors = new List<string>();
+                var ids = TileIdsArg(path, null, pathErrors);
+                if (pathErrors.Count > 0)
+                    return Fail("Refusing the whole path - a dropped id would join its neighbours into a pair you did not ask for.", pathErrors);
                 if (ids.Count < 2) return Fail("Give at least two tile ids in 'path'.");
 
                 var refused = new List<object>(); int laid = 0; int refusedByPriority = 0;
@@ -1232,16 +1245,17 @@ namespace JawaBench.BridgeTools
                 "means editing SurfaceTile.potentialRivers / potentialRoads directly, and " +
                 "on BOTH endpoints or the link survives from the other side. " +
                 "Clears every link on the named tiles, or only the segment between a " +
-                "specific pair when 'to' is given. Does not redraw; call jawa/world_commit.",
-            ResultDescription = "success, removedEntries, tilesTouched, notFound[] (requested " +
-                "ids matching no live surface tile), and a read-back.")]
+                "specific pair when 'to' is given - 'to' REFUSES unless exactly one tile is named. " +
+                "Does not redraw; call jawa/world_commit.",
+            ResultDescription = "success, removedEntries, tilesTouched, nothingRemoved, notFound[] (requested " +
+                "ids matching no live surface tile), errors[] (bad tokens, off-grid ids, clipped range), and a read-back.")]
         public static async Task<object> WorldLinksClear(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "'river', 'road', or 'both'. Default both.")] string kind = "both",
             [ToolParameter(Description = "Comma-separated tile ids to clear.")] string tiles = null,
             [ToolParameter(Description = "Inclusive range 'from-to'.")] string range = null,
-            [ToolParameter(Description = "If given with a single tile in 'tiles', remove only the segment between them (both directions).")] int to = -1,
+            [ToolParameter(Description = "With exactly ONE tile in 'tiles', remove only the segment between them (both directions). Refused with 2+ tiles.")] int to = -1,
             [ToolParameter(Description = "Read back at most this many tiles. Default 8.")] int readBack = 8)
         {
             return await ctx.MainThread.InvokeAsync(() =>
@@ -1251,17 +1265,17 @@ namespace JawaBench.BridgeTools
                 bool doRoads = kind == "both" || string.Equals(kind, "road", StringComparison.OrdinalIgnoreCase);
                 if (!doRivers && !doRoads) return Fail("kind must be 'river', 'road' or 'both'.");
 
-                var ids = new List<int>();
-                if (!string.IsNullOrEmpty(tiles))
-                    foreach (var part in tiles.Split(','))
-                    { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
-                if (!string.IsNullOrEmpty(range))
-                {
-                    var bits = range.Split('-'); int a, b;
-                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
-                        for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
-                }
-                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
+                var errors = new List<string>();
+                var ids = TileIdsArg(tiles, range, errors);
+                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range' naming at least one tile on the grid.", errors);
+                // 🔴 `to` was honoured only when exactly ONE id was given; with two or more
+                // it was silently ignored and EVERY link on those tiles was wiped (review
+                // 2026-10-20 D2). Refuse the combination rather than guess which was meant.
+                if (to >= 0 && ids.Count != 1)
+                    return Fail("'to' removes ONE segment and needs exactly one tile in 'tiles' (got " + ids.Count +
+                                " ids). Nothing was cleared. Drop 'to' to clear every link on these tiles.", errors);
+                if (to < -1)
+                    return Fail("'to' must be a tile id or -1 (got " + to + "). Nothing was cleared.");
 
                 int removed = 0; var touched = new HashSet<int>();
 
@@ -1331,9 +1345,12 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = notFound.Count == 0, kind, removedEntries = removed,
+                    success = notFound.Count == 0 && errors.Count == 0, kind, removedEntries = removed,
                     tilesTouched = touched.Count,
-                    notFound,
+                    // A clear that found nothing to remove stays success (clear-before-lay is
+                    // idempotent by design) but is now machine-visible (review 2026-10-20 D7).
+                    nothingRemoved = removed == 0,
+                    notFound, errors,
                     note = "Both endpoints were cleared. Nothing is visible until jawa/world_commit.",
                     tiles = back, ticksGame = TicksGameSafe(),
                 };
@@ -1363,9 +1380,12 @@ namespace JawaBench.BridgeTools
                 "Non-adjacent pairs are REFUSED: OverlayRiver/OverlayRoad do not check " +
                 "adjacency and would write a link between distant tiles on both endpoints. " +
                 "clearFirst clears existing links on the touched tiles AND the mirror entries " +
-                "on their neighbours, so nothing is left one-sided. " +
+                "on their neighbours, so nothing is left one-sided - and REFUSES (clearing nothing) " +
+                "when any row is malformed or names an unknown def. " +
                 "Does not redraw; call jawa/world_commit after.",
-            ResultDescription = "success, dryRun, rows, rivers, roads, nonAdjacentRefused, refused[], unknownDefs[].")]
+            ResultDescription = "success (false on ANY malformed, off-grid, non-adjacent, unknown-def or silently " +
+                "refused row), dryRun, rows, rivers, roads, nonAdjacentRefused, silentlyRefused, malformedRows, " +
+                "offGridRows, unknownDefRows, refused[] (first 30), unknownDefs[].")]
         public static async Task<object> WorldLinksImport(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1387,8 +1407,10 @@ namespace JawaBench.BridgeTools
                     return Fail("Links CSV needs columns kind,a,b,def. Header: " + string.Join(",", csv.Header.ToArray()));
 
                 var unknown = new HashSet<string>(); var refused = new List<object>();
-                int rivers = 0, roads = 0, rows = 0;
+                int rivers = 0, roads = 0, rows = 0, malformed = 0, unknownRows = 0;
                 var pending = new List<Tuple<bool, int, int, string>>();
+                var riverDefs = new Dictionary<string, RiverDef>();
+                var roadDefs = new Dictionary<string, RoadDef>();
 
                 foreach (var row in csv.Rows)
                 {
@@ -1396,12 +1418,40 @@ namespace JawaBench.BridgeTools
                     var k = Cell(csv, row, "kind"); var aS = Cell(csv, row, "a");
                     var bS = Cell(csv, row, "b"); var dS = Cell(csv, row, "def");
                     int a, b;
-                    if (k == null || aS == null || bS == null || dS == null
+                    bool isRiver = k != null && k.Equals("river", StringComparison.OrdinalIgnoreCase);
+                    bool isRoad = k != null && k.Equals("road", StringComparison.OrdinalIgnoreCase);
+                    // A kind that is neither used to be laid as a ROAD.
+                    if ((!isRiver && !isRoad) || aS == null || bS == null || dS == null
                         || !int.TryParse(aS, out a) || !int.TryParse(bS, out b))
-                    { refused.Add(new { row = rows, why = "malformed" }); continue; }
-                    bool isRiver = k.Equals("river", StringComparison.OrdinalIgnoreCase);
+                    { malformed++; if (refused.Count < 30) refused.Add(new { row = rows, why = "malformed (needs kind river|road, integer a and b, def)" }); continue; }
+
+                    // 🔴 Defs are resolved HERE, before clearFirst deletes anything (review
+                    // 2026-10-20 D9): an unknown def used to be discovered only in the lay
+                    // loop, AFTER its tiles had been cleared, so the old link was destroyed
+                    // and nothing replaced it.
+                    bool known;
+                    if (isRiver)
+                    {
+                        if (!riverDefs.ContainsKey(dS)) riverDefs[dS] = DefDatabase<RiverDef>.GetNamedSilentFail(dS);
+                        known = riverDefs[dS] != null;
+                    }
+                    else
+                    {
+                        if (!roadDefs.ContainsKey(dS)) roadDefs[dS] = DefDatabase<RoadDef>.GetNamedSilentFail(dS);
+                        known = roadDefs[dS] != null;
+                    }
+                    if (!known) { unknown.Add(dS); unknownRows++; continue; }
                     pending.Add(Tuple.Create(isRiver, a, b, dS));
                 }
+
+                // Clearing is destructive and a remove cannot be undone from this tool: an
+                // import that cannot lay every row it names must not clear first.
+                if (clearFirst && apply && (unknown.Count > 0 || malformed > 0))
+                    return Fail("REFUSING clearFirst: " + unknownRows + " row(s) name unknown defs (" +
+                                string.Join(", ", unknown.Take(10).ToArray()) + ") and " + malformed +
+                                " row(s) are malformed. Clearing first would delete links this file cannot " +
+                                "replace. Nothing was cleared or laid. Fix the file, or run without clearFirst.",
+                                refused);
 
                 if (clearFirst && apply)
                 {
@@ -1446,14 +1496,14 @@ namespace JawaBench.BridgeTools
                 // Rivers first, in file order (mouth-first is the file's responsibility),
                 // then roads - matching the order vanilla's own worldgen steps use.
                 var inbrs = new List<PlanetTile>();
-                int nonAdjacent = 0, silentlyRefused = 0;
+                int nonAdjacent = 0, silentlyRefused = 0, offGrid = 0;
                 foreach (var pass in new[] { true, false })
                     foreach (var p in pending)
                     {
                         if (p.Item1 != pass) continue;
                         string e1, e2;
                         var ta = SurfaceTileAt(p.Item2, out e1); var tb = SurfaceTileAt(p.Item3, out e2);
-                        if (ta == null || tb == null) { if (refused.Count < 30) refused.Add(new { from = p.Item2, to = p.Item3, why = e1 ?? e2 }); continue; }
+                        if (ta == null || tb == null) { offGrid++; if (refused.Count < 30) refused.Add(new { from = p.Item2, to = p.Item3, why = e1 ?? e2 }); continue; }
 
                         // WorldGrid.OverlayRiver/OverlayRoad do NOT check adjacency - read from
                         // the 1.6 source - so a CSV naming two distant tiles would write a link
@@ -1477,8 +1527,7 @@ namespace JawaBench.BridgeTools
                         // GetRoadDef cannot hit their non-neighbour Log.Error path.
                         if (p.Item1)
                         {
-                            var rv = DefDatabase<RiverDef>.GetNamedSilentFail(p.Item4);
-                            if (rv == null) { unknown.Add(p.Item4); continue; }
+                            var rv = riverDefs[p.Item4];   // resolved and non-null, checked at parse
                             if (apply)
                             {
                                 grid.OverlayRiver(p.Item2, p.Item3, rv);
@@ -1494,8 +1543,7 @@ namespace JawaBench.BridgeTools
                         }
                         else
                         {
-                            var rd = DefDatabase<RoadDef>.GetNamedSilentFail(p.Item4);
-                            if (rd == null) { unknown.Add(p.Item4); continue; }
+                            var rd = roadDefs[p.Item4];    // resolved and non-null, checked at parse
                             if (apply)
                             {
                                 grid.OverlayRoad(p.Item2, p.Item3, rd);
@@ -1515,11 +1563,17 @@ namespace JawaBench.BridgeTools
                 {
                     // Derived (2026-09-09 hardening): unknown defs, non-adjacent refusals, or
                     // an apply that laid nothing all mean the import did not do what was asked.
-                    success = unknown.Count == 0 && nonAdjacent == 0 && (!apply || rivers + roads > 0),
+                    // And (review 2026-10-20 D7) malformed rows, off-grid ids and Overlay's
+                    // silent priority refusals: each was reported, but success ignored it.
+                    success = unknown.Count == 0 && nonAdjacent == 0 && malformed == 0 && offGrid == 0
+                              && silentlyRefused == 0 && (!apply || rivers + roads > 0),
                     dryRun = !apply, path, rows, rivers, roads,
                     clearedFirst = clearFirst && apply,
                     nonAdjacentRefused = nonAdjacent,
                     silentlyRefused,
+                    malformedRows = malformed,
+                    offGridRows = offGrid,
+                    unknownDefRows = unknownRows,
                     unknownDefs = unknown.ToList(), refused,
                     laidNote = apply
                         ? "`rivers`/`roads` are READ BACK off the grid after each Overlay call, not counted from the calls made."
@@ -1769,16 +1823,9 @@ namespace JawaBench.BridgeTools
             return await ctx.MainThread.InvokeAsync(() =>
             {
                 if (Find.World == null || Find.WorldGrid == null) return Fail("No world is loaded.");
-                var ids = new List<int>(); var errors = new List<string>();
-                if (!string.IsNullOrEmpty(tiles))
-                    foreach (var part in tiles.Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
-                if (!string.IsNullOrEmpty(range))
-                {
-                    var bits = range.Split('-'); int a, b;
-                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
-                        for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
-                }
-                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
+                var errors = new List<string>();
+                var ids = TileIdsArg(tiles, range, errors);
+                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range' naming at least one tile on the grid.", errors);
 
                 // Same ambiguity world_links_get was fixed for: onlyWithMutators legitimately
                 // drops rows, so `count < requested` alone could not distinguish a filtered
@@ -1814,7 +1861,8 @@ namespace JawaBench.BridgeTools
                 "the actual effect lives. Writing mutatorsNullable directly would skip all of " +
                 "that. Use action='clear' to strip every mutator from the named tiles. " +
                 "Does not redraw; call jawa/world_commit.",
-            ResultDescription = "success, added, removed, and a read-back of each tile.")]
+            ResultDescription = "success (false on any per-tile error, bad id token or unknown def), added, removed, " +
+                "displaced/conflict counts, unknownDefs[], errors[], and a read-back of each tile.")]
         public static async Task<object> WorldMutatorsSet(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1845,18 +1893,11 @@ namespace JawaBench.BridgeTools
                     if (defs.Count == 0) return Fail("No known TileMutatorDef in '" + mutators + "'.", unknown);
                 }
 
-                var ids = new List<int>();
-                if (!string.IsNullOrEmpty(tiles))
-                    foreach (var part in tiles.Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
-                if (!string.IsNullOrEmpty(range))
-                {
-                    var bits = range.Split('-'); int a, b;
-                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
-                        for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
-                }
-                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
+                var errors = new List<string>();
+                var ids = TileIdsArg(tiles, range, errors);
+                if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range' naming at least one tile on the grid.", errors);
 
-                int added = 0, removed = 0; var errors = new List<string>();
+                int added = 0, removed = 0;
                 // 🔴 Tile.AddMutator IS DESTRUCTIVE AND SAYS NOTHING. Read from the 1.6
                 // source: for every mutator already on the tile that shares a category with
                 // the incoming one, it REMOVES that mutator when the incoming priority is
@@ -1943,7 +1984,9 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     // Derived (2026-09-09 hardening): any per-row error means not a clean success.
-                    success = errors.Count == 0, action, added, removed,
+                    // An unknown def named beside known ones is part of the ask that did not
+                    // happen, so it fails the call too (review 2026-10-20 D7).
+                    success = errors.Count == 0 && unknown.Count == 0, action, added, removed,
                     // Uncapped, over EVERY tile written - not just the `readBack` sample.
                     displacedCount = displacedN,
                     displacedByDef = displacedBy.OrderByDescending(k => k.Value).ToDictionary(k => k.Key, k => k.Value),
@@ -2127,12 +2170,12 @@ namespace JawaBench.BridgeTools
                     if (ld == null) return Fail("No LandmarkDef '" + def + "'.", DefSuggestions<LandmarkDef>(def));
                 }
 
-                var ids = new List<int>();
-                foreach (var part in (tiles ?? "").Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
-                if (ids.Count == 0) return Fail("Give 'tiles'.");
+                var errors = new List<string>();
+                var ids = TileIdsArg(tiles, null, errors);
+                if (ids.Count == 0) return Fail("Give 'tiles' naming at least one tile on the grid.", errors);
 
                 int added = 0, removed = 0;
-                var validity = new List<object>(); var errors = new List<string>();
+                var validity = new List<object>();
                 var overwrote = new List<object>();
                 var displacedMutators = new List<object>(); int displacedMutatorsN = 0;
                 var surface = Find.WorldGrid.Surface;
@@ -2281,9 +2324,11 @@ namespace JawaBench.BridgeTools
             {
                 if (Find.World == null || Find.WorldObjects == null) return Fail("No world is loaded.");
 
-                var want = new HashSet<int>();
-                if (!string.IsNullOrEmpty(tiles))
-                    foreach (var part in tiles.Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) want.Add(v); }
+                // A filter whose every token was a typo used to become NO filter and list the
+                // whole planet (review 2026-10-20 D6).
+                var tileErrors = new List<string>();
+                var want = new HashSet<int>(JawaBenchWorldArgsCore.ParseIntList(tiles, "a tile id", tileErrors));
+                if (tileErrors.Count > 0) return Fail("Bad 'tiles' filter.", tileErrors);
 
                 var byDef = new Dictionary<string, int>();
                 var byFaction = new Dictionary<string, int>();
@@ -2336,7 +2381,9 @@ namespace JawaBench.BridgeTools
                 "the reference graph stay intact. Any field left null is untouched. " +
                 "Setting a faction that does not exist is refused rather than nulling it.",
             ResultDescription = "success (false if any id was not found or a field failed to write), " +
-                "changed, notFound[] (ids matching no live world object), errors[], objects[] read back.")]
+                "changed (objects where a field actually moved, by before/after read), unchanged " +
+                "(already held every value asked for), notFound[] (ids matching no live world object), " +
+                "errors[], objects[] read back. Refuses when no field is given or an id token is not an integer.")]
         public static async Task<object> WorldObjectsSet(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -2361,14 +2408,21 @@ namespace JawaBench.BridgeTools
                                     "Refusing rather than leaving the object factionless - a null-faction Settlement is destroyed on load.");
                 }
 
-                var want = new HashSet<int>();
-                foreach (var part in (ids ?? "").Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) want.Add(v); }
+                // 🔴 With no field given this used to change nothing and answer success=true,
+                // changed=N (review 2026-10-20 D3).
+                if (tile < 0 && fac == null && name == null)
+                    return Fail("Nothing to write - give tile, faction and/or name.");
+                if (tile < -1) return Fail("tile must be a tile id or -1 (got " + tile + ").");
+
+                var idErrors = new List<string>();
+                var want = new HashSet<int>(JawaBenchWorldArgsCore.ParseIntList(ids, "a world object id", idErrors));
+                if (idErrors.Count > 0) return Fail("Refusing - nothing was written.", idErrors);
                 if (want.Count == 0) return Fail("Give 'ids'.");
 
                 if (tile >= 0 && (Find.WorldGrid == null || tile >= Find.WorldGrid.TilesCount))
                     return Fail("Tile " + tile + " out of range.");
 
-                int changed = 0; var back = new List<object>(); var errors = new List<string>();
+                int changed = 0, unchanged = 0; var back = new List<object>(); var errors = new List<string>();
                 var matched = new HashSet<int>();
                 foreach (var o in Find.WorldObjects.AllWorldObjects.ToList())
                 {
@@ -2376,15 +2430,25 @@ namespace JawaBench.BridgeTools
                     matched.Add(o.ID);
                     try
                     {
+                        // `changed` counts objects where a field ACTUALLY moved, judged by a
+                        // before/after read, not objects visited (review 2026-10-20 D3).
+                        var st = o as Settlement;
+                        int tileBefore = o.Tile.tileId; var facBefore = o.Faction;
+                        string nameBefore = st != null ? st.Name : null;
                         if (tile >= 0) o.Tile = new PlanetTile(tile, Find.WorldGrid.Surface);
                         if (fac != null) o.SetFaction(fac);
                         if (name != null)
                         {
-                            var st = o as Settlement;
                             if (st != null) st.Name = name;
                             else errors.Add("Object " + o.ID + " is not a Settlement; name ignored.");
                         }
-                        changed++;
+                        if (tile >= 0 && o.Tile.tileId != tile)
+                            errors.Add("Object " + o.ID + ": tile reads " + o.Tile.tileId + " after the write, not " + tile + ".");
+                        if (fac != null && o.Faction != fac)
+                            errors.Add("Object " + o.ID + ": faction did not take.");
+                        bool moved = o.Tile.tileId != tileBefore || o.Faction != facBefore
+                                     || (st != null && st.Name != nameBefore);
+                        if (moved) changed++; else unchanged++;
                         back.Add(WorldObjectRow(o));
                     }
                     catch (Exception e) { errors.Add("Object " + o.ID + ": " + e.GetType().Name + ": " + e.Message); }
@@ -2399,7 +2463,7 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = notFound.Count == 0 && errors.Count == 0,
-                    changed, requested = want.Count, notFound, errors,
+                    changed, unchanged, requested = want.Count, notFound, errors,
                     note = "Call jawa/world_commit - FastTileFinder caches settlement tiles.",
                     objects = back, ticksGame = TicksGameSafe(),
                 };
@@ -2590,7 +2654,9 @@ namespace JawaBench.BridgeTools
                 "base game does not expose. drawCenter is a world-space Vector3; pass " +
                 "centerOnTile to have it computed from a tile instead. " +
                 "Sets Find.WorldFeatures.textsCreated=false so the label text is rebuilt - " +
-                "without that the OLD text keeps drawing however the data changed.",
+                "without that the OLD text keeps drawing however the data changed. " +
+                "REFUSES, writing nothing, on an unknown action, a centerOnTile off the grid, a " +
+                "NaN/Infinity drawAngle or size, or any bad/off-grid id in tiles/range.",
             ResultDescription = "success, action, featureId, tilesAssigned, notFound[] " +
                 "(requested ids matching no live surface tile), feature read back.")]
         public static async Task<object> WorldFeaturesSet(
@@ -2615,6 +2681,26 @@ namespace JawaBench.BridgeTools
 
                 bool create = string.Equals(action, "create", StringComparison.OrdinalIgnoreCase);
                 bool del = string.Equals(action, "delete", StringComparison.OrdinalIgnoreCase);
+                bool upd = string.Equals(action, "update", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(action, "assign", StringComparison.OrdinalIgnoreCase);
+                // Review 2026-10-20 D4: an unknown action ('rename', a typo) used to fall
+                // through as 'update' and answer success=true.
+                if (!create && !del && !upd)
+                    return Fail("action must be create|update|assign|delete (got '" + action + "'). Nothing was written.");
+
+                // EVERY argument is validated before anything is written, so a refused call
+                // leaves no half-made feature behind (D4: a failed create used to leave an
+                // empty feature in wf.features).
+                if (centerOnTile < -1 || centerOnTile >= grid.TilesCount)
+                    return Fail("centerOnTile " + centerOnTile + " is off the grid 0.." + (grid.TilesCount - 1) +
+                                " (-1 leaves the centre). Nothing was written.");
+                var nonFinite = JawaBenchWorldArgsCore.NonFinite(Arg("drawAngle", drawAngle), Arg("maxDrawSizeInTiles", maxDrawSizeInTiles));
+                if (nonFinite.Count > 0)
+                    return Fail("Refusing non-finite value(s): " + string.Join(", ", nonFinite.ToArray()) + ". Nothing was written.");
+                var idErrors = new List<string>();
+                var ids = del ? new List<int>() : TileIdsArg(tiles, range, idErrors);
+                if (idErrors.Count > 0)
+                    return Fail("Bad 'tiles'/'range' - nothing was written.", idErrors);
 
                 WorldFeature f = null;
                 if (create)
@@ -2656,18 +2742,9 @@ namespace JawaBench.BridgeTools
                 if (name != null) f.name = name;
                 if (drawAngle.HasValue) f.drawAngle = drawAngle.Value;
                 if (maxDrawSizeInTiles.HasValue) f.maxDrawSizeInTiles = maxDrawSizeInTiles.Value;
-                if (centerOnTile >= 0 && centerOnTile < grid.TilesCount)
+                if (centerOnTile >= 0)   // range-checked above
                     f.drawCenter = grid.GetTileCenter(centerOnTile);
 
-                var ids = new List<int>();
-                if (!string.IsNullOrEmpty(tiles))
-                    foreach (var part in tiles.Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
-                if (!string.IsNullOrEmpty(range))
-                {
-                    var bits = range.Split('-'); int a, b;
-                    if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
-                        for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
-                }
                 // 🔴 Same shape as the fix on jawa/world_objects_set: a tile id in `tiles`/
                 // `range` that matches no live surface tile used to vanish inside a bare
                 // `if (t == null) continue;` with no trace anywhere - this tool did not
@@ -2689,7 +2766,7 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = notFound.Count == 0, action = create ? "create" : "update",
+                    success = notFound.Count == 0, action = create ? "create" : action.ToLowerInvariant(),
                     featureId = f.uniqueID,
                     tilesAssigned = assigned,
                     notFound,
@@ -2789,10 +2866,18 @@ namespace JawaBench.BridgeTools
                 var w = Find.World.info;
                 var changed = new List<string>(); var refused = new List<string>();
 
+                // Review 2026-10-20 D7: a call naming no field used to answer success=true.
+                if (name == null && seedString == null && !pollution.HasValue && overallPopulation == null
+                    && landmarkDensity == null && initialMapSize == 0)
+                    return Fail("Nothing to write - every field was left at its default.");
+
                 if (name != null) { w.name = name; changed.Add("name"); }
                 if (seedString != null) { w.seedString = seedString; changed.Add("seedString"); }
                 // Clamped: WorldInfo.pollution is the planet-wide 0-1 dial the generator reads.
-                if (pollution.HasValue)
+                // D5: NaN survives Clamp01 and was written live; refuse non-finite.
+                if (pollution.HasValue && !JawaBenchWorldArgsCore.IsFinite(pollution.Value))
+                    refused.Add("pollution " + pollution.Value + " (not a finite number)");
+                else if (pollution.HasValue)
                 {
                     float p = Mathf.Clamp01(pollution.Value);
                     w.pollution = p;
@@ -3204,8 +3289,11 @@ namespace JawaBench.BridgeTools
             return await ctx.MainThread.InvokeAsync(() =>
             {
                 if (Find.World == null || Find.WorldObjects == null) return Fail("No world is loaded.");
-                var want = new HashSet<int>();
-                foreach (var part in (ids ?? "").Split(',')) { int v; if (int.TryParse(part.Trim(), out v)) want.Add(v); }
+                // A typo'd token used to be dropped silently (review 2026-10-20 D6). This is
+                // destructive, so a bad token refuses the whole call before anything goes.
+                var idErrors = new List<string>();
+                var want = new HashSet<int>(JawaBenchWorldArgsCore.ParseIntList(ids, "a world object id", idErrors));
+                if (idErrors.Count > 0) return Fail("Refusing - nothing was removed.", idErrors);
                 if (want.Count == 0) return Fail("Give 'ids'.");
 
                 int removed = 0; var errors = new List<string>(); var gone = new List<object>();
@@ -4364,7 +4452,7 @@ namespace JawaBench.BridgeTools
                     var tileS = Cell(csv, row, "tile");
                     int tile;
                     if (!int.TryParse(tileS, out tile) || tile < 0 || tile >= grid.TilesCount)
-                    { refused.Add(new { row = r + 2, name = nm, reason = "tile '" + tileS + "' is not a valid tile id" }); continue; }
+                    { refused.Add(new { row = csv.LineNos[r], name = nm, reason = "tile '" + tileS + "' is not a valid tile id" }); continue; }
 
                     Faction fac;
                     if (!factionCache.TryGetValue(fdName ?? "", out fac))
@@ -4389,7 +4477,7 @@ namespace JawaBench.BridgeTools
                               "picking the first would silently land on the wrong one"
                             : "no LIVE faction of that def in this world - a settlement " +
                               "with a null faction is destroyed on load";
-                        refused.Add(new { row = r + 2, name = nm, factionDef = fdName, reason });
+                        refused.Add(new { row = csv.LineNos[r], name = nm, factionDef = fdName, reason });
                         continue;
                     }
 
@@ -4414,13 +4502,13 @@ namespace JawaBench.BridgeTools
                     }
                     if (wod == null)
                     {
-                        refused.Add(new { row = r + 2, name = nm, worldObjectDef = wodName,
+                        refused.Add(new { row = csv.LineNos[r], name = nm, worldObjectDef = wodName,
                                            reason = "world_object_def '" + wodName + "' is not a loaded WorldObjectDef" });
                         continue;
                     }
                     if (!wod.canHaveFaction)
                     {
-                        refused.Add(new { row = r + 2, name = nm, worldObjectDef = wodName,
+                        refused.Add(new { row = csv.LineNos[r], name = nm, worldObjectDef = wodName,
                                            reason = "WorldObjectDef '" + wod.defName + "' has canHaveFaction=false - " +
                                                     "it cannot take a faction_def" });
                         continue;
@@ -4687,8 +4775,8 @@ namespace JawaBench.BridgeTools
                         if (sv != null)
                         {
                             float s;
-                            if (float.TryParse(sv, System.Globalization.NumberStyles.Float,
-                                               System.Globalization.CultureInfo.InvariantCulture, out s) && s > 0f)
+                            // Finite-only (review 2026-10-20 D8b): "Infinity" passed `s > 0f`.
+                            if (JawaBenchWorldArgsCore.TryParseFiniteFloat(sv, out s) && s > 0f)
                                 sizeByName[nm] = s;
                             else featBadCells.Add(nm + ":" + sizeCol + "=" + sv);
                         }
@@ -4736,63 +4824,87 @@ namespace JawaBench.BridgeTools
                 int namedBefore = 0;
                 for (int i = 0; i < n; i++) { var t0 = grid[i]; if (t0 != null && t0.feature != null) namedBefore++; }
 
-                if (clearExisting)
-                {
-                    // Clear membership in ONE grid pass, then drop the features.
-                    for (int i = 0; i < n; i++) { var t = grid[i]; if (t != null) t.feature = null; }
-                    removed = wf.features.Count;
-                    wf.features.Clear();
-                }
+                // Snapshot for rollback (review 2026-10-20 D8c): clearExisting wipes the grid and
+                // the feature list BEFORE creation, so a throw mid-create used to leave the planet
+                // unlabelled. Restore exactly what was there and say so.
+                var priorFeatures = wf.features.ToList();
+                var priorTileFeature = new WorldFeature[n];
+                for (int i = 0; i < n; i++) { var t0 = grid[i]; priorTileFeature[i] = t0 != null ? t0.feature : null; }
 
-                var made = new Dictionary<string, WorldFeature>(StringComparer.Ordinal);
-                foreach (var kv in byName)
-                {
-                    var f = new WorldFeature(fd, grid.Surface);
-                    f.name = kv.Key;
-                    wf.features.Add(f);
-                    made[kv.Key] = f;
-                }
-
-                int assigned = 0, sizesApplied = 0, centresApplied = 0;
+                int assigned = 0, newlyNamed = 0, reassigned = 0, sizesApplied = 0, centresApplied = 0;
                 var centresOffRegion = new List<string>();
-                foreach (var kv in byName)
+                try
                 {
-                    var f = made[kv.Key];
-                    foreach (var tile in kv.Value)
+                    if (clearExisting)
                     {
-                        var t = grid[tile];
-                        if (t == null) continue;
-                        t.feature = f;
-                        assigned++;
+                        // Clear membership in ONE grid pass, then drop the features.
+                        for (int i = 0; i < n; i++) { var t = grid[i]; if (t != null) t.feature = null; }
+                        removed = wf.features.Count;
+                        wf.features.Clear();
                     }
-                    // Centre the label on the region's own tiles, or every label
-                    // draws at the origin and the planet reads as one big blur.
-                    if (kv.Value.Count > 0)
+
+                    var made = new Dictionary<string, WorldFeature>(StringComparer.Ordinal);
+                    foreach (var kv in byName)
                     {
-                        var mid = kv.Value[kv.Value.Count / 2];
-                        f.drawCenter = grid.GetTileCenter(mid);
-                        // Scale the label to the region it names. Left unset, every
-                        // label draws at the same size and a 63-tile region shouts
-                        // as loudly as a 1,692-tile sea. sqrt because the label is a
-                        // LENGTH across an AREA of tiles.
-                        // 2.2f -> 1.35f, owner 2026-09-07 ("the labels are now HUUUGE").
-                        // Vanilla FeatureWorker uses bestTileDist * 2 * 1.2 = 2.4*r,
-                        // and for a roughly circular region r = sqrt(A)/sqrt(pi), so
-                        // vanilla == sqrt(A) * 1.354. The old 2.2 was 1.63x vanilla:
-                        // MEASURED live max 99.6 (Deadstone), Dune Sea 90.5, mean 34.1.
-                        f.maxDrawSizeInTiles = Math.Max(6f, (float)Math.Sqrt(kv.Value.Count) * 1.35f);
+                        var f = new WorldFeature(fd, grid.Surface);
+                        f.name = kv.Key;
+                        wf.features.Add(f);
+                        made[kv.Key] = f;
                     }
-                    // featuresPath overrides, by name (canonical sizes are the 2026-10-09
-                    // card-approved curve, WORLD_LABEL_SIZE_HIERARCHY_1; centres the tile
-                    // nearest the biggest piece's centroid).
-                    float cs; int cc;
-                    if (sizeByName.TryGetValue(kv.Key, out cs)) { f.maxDrawSizeInTiles = cs; sizesApplied++; }
-                    if (centreByName.TryGetValue(kv.Key, out cc))
+
+                    // newlyNamed: assignments that turned an UNNAMED tile named. With
+                    // clearExisting=false a tile that already carried a feature (or a tile the CSV
+                    // lists twice) is reassigned without adding a named tile, so comparing the grid
+                    // against namedBaseline + assigned failed a correct run (review 2026-10-20 D8a).
+                    foreach (var kv in byName)
                     {
-                        f.drawCenter = grid.GetTileCenter(cc);
-                        centresApplied++;
-                        if (!kv.Value.Contains(cc)) centresOffRegion.Add(kv.Key + "@" + cc);
+                        var f = made[kv.Key];
+                        foreach (var tile in kv.Value)
+                        {
+                            var t = grid[tile];
+                            if (t == null) continue;
+                            if (t.feature == null) newlyNamed++; else reassigned++;
+                            t.feature = f;
+                            assigned++;
+                        }
+                        // Centre the label on the region's own tiles, or every label
+                        // draws at the origin and the planet reads as one big blur.
+                        if (kv.Value.Count > 0)
+                        {
+                            var mid = kv.Value[kv.Value.Count / 2];
+                            f.drawCenter = grid.GetTileCenter(mid);
+                            // Scale the label to the region it names. Left unset, every
+                            // label draws at the same size and a 63-tile region shouts
+                            // as loudly as a 1,692-tile sea. sqrt because the label is a
+                            // LENGTH across an AREA of tiles.
+                            // 2.2f -> 1.35f, owner 2026-09-07 ("the labels are now HUUUGE").
+                            // Vanilla FeatureWorker uses bestTileDist * 2 * 1.2 = 2.4*r,
+                            // and for a roughly circular region r = sqrt(A)/sqrt(pi), so
+                            // vanilla == sqrt(A) * 1.354. The old 2.2 was 1.63x vanilla:
+                            // MEASURED live max 99.6 (Deadstone), Dune Sea 90.5, mean 34.1.
+                            f.maxDrawSizeInTiles = Math.Max(6f, (float)Math.Sqrt(kv.Value.Count) * 1.35f);
+                        }
+                        // featuresPath overrides, by name (canonical sizes are the 2026-10-09
+                        // card-approved curve, WORLD_LABEL_SIZE_HIERARCHY_1; centres the tile
+                        // nearest the biggest piece's centroid).
+                        float cs; int cc;
+                        if (sizeByName.TryGetValue(kv.Key, out cs)) { f.maxDrawSizeInTiles = cs; sizesApplied++; }
+                        if (centreByName.TryGetValue(kv.Key, out cc))
+                        {
+                            f.drawCenter = grid.GetTileCenter(cc);
+                            centresApplied++;
+                            if (!kv.Value.Contains(cc)) centresOffRegion.Add(kv.Key + "@" + cc);
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    wf.features.Clear();
+                    wf.features.AddRange(priorFeatures);
+                    for (int i = 0; i < n; i++) { var t0 = grid[i]; if (t0 != null) t0.feature = priorTileFeature[i]; }
+                    wf.textsCreated = false;
+                    return Fail("Import threw mid-write (" + ex.GetType().Name + ": " + ex.Message + "). ROLLED BACK: the " +
+                                priorFeatures.Count + " prior feature(s) and every tile's membership were restored; nothing from this call remains.");
                 }
 
                 // 🔴 The label commit. Separate from world_commit on purpose.
@@ -4817,13 +4929,14 @@ namespace JawaBench.BridgeTools
 
                 return new
                 {
-                    success = liveNamed == namedBaseline + assigned
+                    success = liveNamed == namedBaseline + newlyNamed
                            && wf.features.Count == featuresBaseline + byName.Count,
                     message = "created " + byName.Count + " region(s), removed " + removed +
                               ", assigned " + assigned + " tile(s); grid reports " + liveNamed +
                               " named tile(s) across " + wf.features.Count + " feature(s).",
                     regionsCreated = byName.Count, featuresRemoved = removed,
-                    tilesAssigned = assigned, tilesNamedOnGrid = liveNamed,
+                    tilesAssigned = assigned, tilesNewlyNamed = newlyNamed, tilesReassigned = reassigned,
+                    tilesNamedOnGrid = liveNamed,
                     tilesLeftUnnamed = n - liveNamed,
                     sizesApplied, centresApplied, centresOffRegion,
                     featureRowsWithNoRegion = featRowsUnmatched,
