@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_StruckGlass.xml                mandrake.rut.rites - PYRELANDS_STRUCK_GLASS_RITE_BUILD_1
+
+  The Struck Glass, Zizzik's found rite of the Pyrelands (feeding, by breakage). Owner, typed 2026-10-01: "Struck Glass. Make a
+  ~ring of the lightning glass, and then during any lightning storm step on them violently to break them. Triggers a REALLY
+  powerful lightning blast somewhere randomly on the map (maybe even the ship) and utter delight within the god."
+  Input revised by card 2026-10-15: glass sand (RM_GlassSand, the Stillsand item); the fulgurite input is gone.
+  Spec: design/Jawa/worldbuilding/biomes/pyrelands_bedazzle_review_2026-10-01.md section 6 R1; register
+  design/Jawa/salvation_rites_2026-10-01.md B9.
+
+  XML only. Every worker is the RM tier's engine in mandrake.rm.pyrelands (Source/RM_StruckGlass.cs), which never names a faith;
+  the faith is data here, the same split as RUT_JoiningWater.xml and RUT_NineFaults.xml. Gates: mandrake.rm.pyrelands and Ideology.
+  Outcomes are cohesion only (shared memories by quality): Zizzik's delight is the Narrator's to voice and shows only through
+  events; no hediff, no stat, no power. Not wired into The Salvation's ideoligion here: discovery (the found-rites row, the
+  rubbing, RUT_ResearchMod_GrantRite) is unbuilt for every found rite, and adding the precept to the campaign ideo is a .rid /
+  save step, as for the siblings. All numbers PROVISIONAL.
+-->
+<Defs>
+
+  <ThoughtDef MayRequire="mandrake.rm.pyrelands,Ludeon.RimWorld.Ideology">
+    <defName>RUT_WeBrokeTheGlass</defName>
+    <thoughtClass>Thought_AttendedRitual</thoughtClass>
+    <durationDays>6</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages>
+      <li>
+        <label>we broke the glass</label>
+        <description>We stamped the ring out under the storm until our feet ached, and the sky came down in answer. It was terrible and it was ours.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef MayRequire="mandrake.rm.pyrelands,Ludeon.RimWorld.Ideology">
+    <defName>RUT_TheSkyLaughed</defName>
+    <thoughtClass>Thought_AttendedRitual</thoughtClass>
+    <durationDays>8</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages>
+      <li>
+        <label>the sky laughed</label>
+        <description>The glass broke under us all at once and the strike that followed shook the ground for a mile. Whatever lives in the lightning was delighted. So were we.</description>
+        <baseMoodEffect>7</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <PreceptDef MayRequire="mandrake.rm.pyrelands,Ludeon.RimWorld.Ideology">
+    <defName>RUT_Ritual_StruckGlass</defName>
+    <label>Struck Glass</label>
+    <description>Under any lightning storm, worshippers stamp out a ring of glass sand until none of it holds its shape. The breaking delights the storm, and it answers with one great strike somewhere on the land: never aimed, and never kind about where.</description>
+    <issue>Ritual</issue>
+    <impact>Medium</impact>
+    <iconPath>UI/Icons/Rituals/RitualScarification</iconPath>
+    <preceptClass>Precept_Ritual</preceptClass>
+    <ritualPatternBase>RUT_StruckGlassPattern</ritualPatternBase>
+    <allowDuplicates>false</allowDuplicates>
+    <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+    <canGenerateAsSpecialPrecept>false</canGenerateAsSpecialPrecept>
+    <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+    <notifyPlayerOnOpportunity>false</notifyPlayerOnOpportunity>
+  </PreceptDef>
+
+  <RitualPatternDef MayRequire="mandrake.rm.pyrelands,Ludeon.RimWorld.Ideology">
+    <defName>RUT_StruckGlassPattern</defName>
+    <ritualBehavior>RUT_StruckGlassBehavior</ritualBehavior>
+    <ritualObligationTargetFilter>RUT_StruckGlassRing</ritualObligationTargetFilter>
+    <ritualOutcomeEffect>RUT_StruckGlassOutcome</ritualOutcomeEffect>
+    <canStartAnytime>true</canStartAnytime>
+    <alwaysStartAnytime>true</alwaysStartAnytime>
+    <shortDescOverride>Struck Glass</shortDescOverride>
+    <descOverride>Worshippers stamp out a ring of glass sand during a lightning storm, and the storm answers with one really powerful strike at a random spot on the map.</descOverride>
+    <ritualExplanation>Hold it at a full ring of glass sand, and only while a lightning storm is overhead (an ordinary thunderstorm, a dry one, or Cinderfall). Everyone stamps the glass until it is gone; the ring is left empty. When it ends, one lightning strike far stronger than any ordinary one falls somewhere on the map at random: open ground, a field, a house, the ship. Nobody chooses where.</ritualExplanation>
+  </RitualPatternDef>
+
+  <RitualObligationTargetFilterDef MayRequire="mandrake.rm.pyrelands,Ludeon.RimWorld.Ideology">
+    <defName>RUT_StruckGlassRing</defName>
+    <workerClass>RimMandrake.Pyrelands.RM_RitualObligationTargetWorker_StruckGlassRing</workerClass>
+  </RitualObligationTargetFilterDef>
+
+  <RitualBehaviorDef MayRequire="mandrake.rm.pyrelands,Ludeon.RimWorld.Ideology">
+    <defName>RUT_StruckGlassBehavior</defName>
+    <durationTicks>2500</durationTicks>
+    <roles /><!-- Dialog_BeginRitual.CreateRitualRoleAssignments foreach-es behavior.def.roles; null NREs the rite start -->
+    <spectatorsLabel>Stampers</spectatorsLabel>
+    <spectatorGerund>stamp the glass</spectatorGerund>
+    <stages>
+      <li>
+        <defaultDuty>Spectate</defaultDuty>
+        <essential>True</essential>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>1</percentage>
+          </li>
+        </endTriggers>
+      </li>
+    </stages>
+  </RitualBehaviorDef>
+
+  <RitualOutcomeEffectDef MayRequire="mandrake.rm.pyrelands,Ludeon.RimWorld.Ideology">
+    <defName>RUT_StruckGlassOutcome</defName>
+    <description>The ring is stamped out and one really powerful lightning strike falls at a random spot on the map, whatever the quality. A better rite leaves the clan closer for it.</description>
+    <workerClass>RimMandrake.Pyrelands.RM_RitualOutcomeEffectWorker_StruckGlass</workerClass>
+    <startingQuality>0.3</startingQuality>
+    <comps>
+      <li Class="RitualOutcomeComp_ParticipantCount">
+        <label>stampers</label>
+        <curve>
+          <points>
+            <li>(1, 0.0)</li>
+            <li>(4, 0.3)</li>
+            <li>(8, 0.5)</li>
+          </points>
+        </curve>
+      </li>
+    </comps>
+    <outcomeChances>
+      <li>
+        <chance>0.2</chance>
+        <label>Poor</label>
+        <description>The {0} was ragged. The glass broke anyway, and the sky answered anyway.</description>
+        <positivityIndex>-1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.4</chance>
+        <label>Fair</label>
+        <description>The {0} held. The glass broke and the sky answered.</description>
+        <positivityIndex>1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.3</chance>
+        <label>Good</label>
+        <description>The {0} was fierce, and everyone felt the strike in their teeth.</description>
+        <memory>RUT_WeBrokeTheGlass</memory>
+        <positivityIndex>2</positivityIndex>
+      </li>
+      <li>
+        <chance>0.1</chance>
+        <label>Excellent</label>
+        <description>The {0} will be told of. The glass went all at once and the sky laughed.</description>
+        <memory>RUT_TheSkyLaughed</memory>
+        <positivityIndex>3</positivityIndex>
+      </li>
+    </outcomeChances>
+    <modExtensions>
+      <li Class="RimMandrake.Pyrelands.RM_StruckGlassExtension">
+        <fireChance>0.6</fireChance>
+        <damage>Bomb</damage>
+      </li>
+    </modExtensions>
+  </RitualOutcomeEffectDef>
+
+</Defs>

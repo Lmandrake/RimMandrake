@@ -70,6 +70,12 @@ namespace RimMandrake.Pyrelands
 
         public static bool plantGrowthStagesEnabled = true;
 
+        // PYRELANDS_STRUCK_GLASS_RITE_BUILD_1 (RM_StruckGlass.cs): the Struck Glass rite's engine. PROVISIONAL numbers.
+        public static bool struckGlassEnabled = true;
+        public static float struckGlassBlastRadius = 7.9f;
+        public static bool struckGlassMayHitBuildings = true;
+        public static bool struckGlassRingOnNewMaps = true;
+
         // PYRELANDS_SCORCHED_RUINS_1: GenStep_ScorchPyrelandsRuins (FireEcologyHook.cs)
         // reads this at mapgen time, per new map — flip it and the NEXT map generated
         // honors it immediately, no restart needed (a map already on disk is untouched).
@@ -161,6 +167,10 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref biomeGenerationEnabled, "biomeGenerationEnabled", true);
             Scribe_Values.Look(ref wildPlantAllowlistEnabled, "wildPlantAllowlistEnabled", true);
             Scribe_Values.Look(ref plantGrowthStagesEnabled, "plantGrowthStagesEnabled", true);
+            Scribe_Values.Look(ref struckGlassEnabled, "struckGlassEnabled", true);
+            Scribe_Values.Look(ref struckGlassBlastRadius, "struckGlassBlastRadius", 7.9f);
+            Scribe_Values.Look(ref struckGlassMayHitBuildings, "struckGlassMayHitBuildings", true);
+            Scribe_Values.Look(ref struckGlassRingOnNewMaps, "struckGlassRingOnNewMaps", true);
             Scribe_Values.Look(ref scorchedRuinsEnabled, "scorchedRuinsEnabled", true);
             Scribe_Values.Look(ref burnLineEnabled, "burnLineEnabled", true);
             Scribe_Values.Look(ref fireHawkSpreadEnabled, "fireHawkSpreadEnabled", true);
@@ -222,7 +232,8 @@ namespace RimMandrake.Pyrelands
             .Declare("pyrelandsEnabled", "ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled", "freshBurnBonusEnabled",
                      "ambientAshEnabled", "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "scorchedRuinsEnabled", "burnLineEnabled",
                      "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled", "furnaceWorldMigrationEnabled", "furnaceHerdCount",
-                     "burrowOnFireEnabled")
+                     "burrowOnFireEnabled", "struckGlassEnabled", "struckGlassRingOnNewMaps")
+            .Declare("struckGlassEnabled", "struckGlassBlastRadius", "struckGlassMayHitBuildings")
             .Declare("ashDustingEnabled", "ashDustingChance")
             .Declare("scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap")
             .Declare("ashfallAccumulationEnabled", "ashfallRateMultiplier")
@@ -244,6 +255,7 @@ namespace RimMandrake.Pyrelands
             .Name("ambientAshEnabled", "Ash drifts in the air in clear weather").Name("furnaceThermalEnabled", "Furnace-beast thermal circuit")
             .Name("furnaceWorldMigrationEnabled", "Furnace-beast world migration").Name("ullaiEnabled", "Ullai herds")
             .Name("sandShovelEnabled", "Shovel sand")
+            .Name("struckGlassEnabled", "The Struck Glass rite")
             .Name("crossBiomeEnabled", "Enable outside the Pyrelands biome");
 
         private static object GetField(string n) => typeof(RM_PyrelandsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
@@ -580,6 +592,37 @@ namespace RimMandrake.Pyrelands
                 list.Label("Glass sand per shovelled cell: " + sandShovelYieldMultiplier.ToStringPercent());
                 sandShovelYieldMultiplier = list.Slider(sandShovelYieldMultiplier, 0.25f, 3f);
                 }
+                list.GapLine();
+            }
+
+            if (Group(list, "The Struck Glass rite", RimMandrake.Shared.SettingScope.Now, new[] { "struckGlassEnabled", "struckGlassBlastRadius", "struckGlassMayHitBuildings" }))
+            {
+                using (Dependent(list, "struckGlassEnabled", "struckGlassBlastRadius", "struckGlassMayHitBuildings"))
+                {
+    list.CheckboxLabeled("The Struck Glass rite", ref struckGlassEnabled,
+                    "A ring of glass sand, stamped out during a lightning storm, calls one really powerful lightning strike onto a random "
+                  + "spot on the map (the ship included). It is a risk, never aimed. The rite itself is a ritual of the faith that knows it; "
+                  + "this switch is the engine under it. Off: the ritual cannot start at any ring.");
+                using (Dependent(list, "struckGlassBlastRadius", "struckGlassMayHitBuildings"))
+                {
+                    list.Label("Blast radius: " + struckGlassBlastRadius.ToString("0.0") + " cells (vanilla lightning: 1.9; provisional default 7.9)");
+                    struckGlassBlastRadius = list.Slider(struckGlassBlastRadius, 1.9f, 14.9f);
+                    list.CheckboxLabeled("The strike may fall on buildings and the ship", ref struckGlassMayHitBuildings,
+                        "Shipped default: ON, as ruled (\"maybe even the ship\"). Off: the strike looks for a spot with no building within "
+                      + "its blast, and only falls among buildings if the map has no such spot.");
+                }
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Struck Glass ring (new maps)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "struckGlassRingOnNewMaps" }))
+            {
+            using (Dependent(list, "struckGlassRingOnNewMaps"))
+            {
+    list.CheckboxLabeled("An old glass ring lies on each new Pyrelands map", ref struckGlassRingOnNewMaps,
+                    "Map-generation-affecting: one old, empty ring of glass sand is laid on bare ash when a Pyrelands map is made. "
+                  + "Off: none is laid (rings can still be built from the Ideology tab). An existing map is untouched.");
+            }
                 list.GapLine();
             }
 

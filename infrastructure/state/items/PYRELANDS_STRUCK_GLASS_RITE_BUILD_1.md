@@ -15,3 +15,9 @@ Zizzik's cap is waived (owner: *"Just leave them all for now"*). Art: the glass 
 
 ## verify
 - The rite cannot start outside a lightning storm (reason line shown); a completed rite produces exactly one powerful strike at a random cell with its letter; no hediff or stat appears on anyone.
+
+## built (FOUNDRY, 2026-10-21)
+- Engine `src/RimMandrake/Pyrelands/Source/RM_StruckGlass.cs`; ring `Defs/ThingDefs_Buildings/RM_StruckGlassRing.xml` (3x3, CompRefuelable holding 25 `RM_GlassSand`, no burn-down; buildable from the Ideology tab); `GenStep_StruckGlassRing` (order 970, Pyrelands `extraGenSteps`) lays one old empty ring on bare ash per new map, player-owned on a home map.
+- Rite `src/RimUtinni/Rites/Defs/RUT_StruckGlass.xml`: precept, pattern, behaviour, outcome, two memories. Start gate: a full ring AND current weather has a lightning event maker (thunderstorm, dry thunderstorm, Cinderfall); the gizmo reason line names whichever is missing. Completion: the ring is emptied, one bolt plus a Bomb explosion (radius 7.9, fire 60%, falloff) lands on a random cell (under built roofs too, never overhead rock); the outcome letter names the cell, its distance from the ring and what stood in the blast.
+- Settings (Pyrelands): rite on/off, blast radius, "may fall on buildings and the ship", the ring on new maps (map-generation-affecting). All numbers PROVISIONAL.
+- Assumed: the stamping is the vanilla Spectate duty for now; no discovery wiring (the found-rites row and `RUT_ResearchMod_GrantRite` are unbuilt for every found rite), and the precept is not in The Salvation's `.rid`, same as the Joining Water. Art: placeholder is vanilla `Things/Building/Misc/RitualSpot`, tinted; sand-ring art job is still to file.

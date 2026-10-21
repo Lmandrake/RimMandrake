@@ -37,4 +37,18 @@
     <order>965</order>
   </GenStepDef>
 
+  <!--
+    PYRELANDS_STRUCK_GLASS_RITE_BUILD_1: one old, empty ring of glass sand on bare ash per new Pyrelands map (the Struck Glass
+    rite's found site). Same RM_Pyrelands <extraGenSteps> wiring as above, so Pyrelands maps only. order=970 runs after the
+    ruin scorch sweep (965), so the ring is not counted as an unowned ruin building and lands on the finished ground.
+    Gated by RM_PyrelandsSettings.struckGlassRingOnNewMaps (map-generation-affecting).
+  -->
+  <GenStepDef>
+    <defName>RM_StruckGlassRing</defName>
+    <order>970</order>
+    <genStep Class="RimMandrake.Pyrelands.GenStep_StruckGlassRing">
+      <ringDef>RM_StruckGlassRing</ringDef>
+    </genStep>
+  </GenStepDef>
+
 </Defs>
