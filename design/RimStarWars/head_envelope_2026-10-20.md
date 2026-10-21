@@ -44,7 +44,7 @@ lineup (`D:\ClaudeWork\rimmandrake\scratch\live5\PHONE_lineup_bare.png`, 100.8 p
 | Human | none | 1.00 | 1.00 | reference | |
 | Lasat | `HalfJotunFrame` +0.75 (`BodySizeIsReal.xml`) | 1.48 | **1.369** | 1.36 / 1.36 / 1.36 | 0.71-0.95 |
 | Mimbanese | none | 1.00 | 1.00 | 1.00 / 1.00 / 1.00 | 0.94-0.97 |
-| Nelvaanian | `RSW_BodySizeGene_big` +0.20 (cosmetic) | 1.14 | **1.107** | 1.08 / 1.10 / 1.08 | 0.94-0.97 |
+| Nelvaanian | `RSW_BodySizeGene_big` +0.20 (cosmetic when measured; real since SIZE_GENES_RECONCILE_LOST_IN_REGEN, same render) | 1.14 | **1.107** | 1.08 / 1.10 / 1.08 | 0.94-0.97 |
 | Ortolan | none (Fat/Hulk do not scale it) | 1.00 | 1.00 | 1.00 / 1.00 / 1.00 | 0.94-0.96 |
 
 So in game the on-screen skull is, in human-skull units (canvas ratio x engine scale; bbox includes appendages):
@@ -61,10 +61,28 @@ So in game the on-screen skull is, in human-skull units (canvas ratio x engine s
 
 **The canon gives no head-to-human ratio** for any of the four (`design/RimStarWars/canon_references/{lasat,mimbanese,
 nelvaanian,ortolan}/description.md`: Lasat >= 2 m, Nelvaanian 1.5 m F / 2 m M, Ortolan "squat", Mimbanese no number).
-So the on-screen size is the owner's call; `species_render.<species>.onscreen_skull_target` in `head_envelope.json` is
-`null` (unruled) for all four.
+So the on-screen size is the owner's call. He ruled it by card (below, "Tune in the def").
 
-**How to apply a ruling (PROPOSED, cleanest first):**
+**RULED 2026-10-20 7:25 PM PDT, owner by card: "How should head sizes be set?" -> "Tune in the def".** Option 1 below is
+applied: a `SM_HeadSize_Cosmetic` statOffset on the head gene in `SW_Genes.xml`; art untouched (canvas 1.0), so the
+on-screen skull = B&S head rule x multiplier. Targets are FOUNDRY's numbers from the brief (Lasat ~1.20, Nelvaanian
+~1.05, Mimbanese and Ortolan 1.00); records in `head_envelope.json` `species_render`, recomputed from the defs by
+`src/RimMandrake/Utils/art/selftest_head_scale_from_defs.py` (`species_size.py` prints every xenotype's size):
+
+| species | real body size | render offset | B&S head rule | `SM_HeadSize_Cosmetic` | on-screen skull (was) |
+|---|---|---|---|---|---|
+| Lasat | 1.75 (`HalfJotunFrame`) | +0.75 | x1.369 | 0.88 (-0.12) | **1.20** (1.37) |
+| Nelvaanian | 1.20 (`RSW_BodySizeGene_big`, now real) | +0.20 | x1.107 | 0.95 (-0.05) | **1.05** (1.11) |
+| Mimbanese | 1.00 | 0 | x1.000 | 1.00 | 1.00 (1.00) |
+| Ortolan | 1.00 (Fat/Hulk do not scale the head) | 0 | x1.000 | 1.00 | 1.00 (1.00) |
+
+Making the Nelvaanian gene real does not move its sprite: B&S renders from mechanical + cosmetic offset together
+(`BSCache`: `totalCosmeticSize` adds `SM_BodySizeOffset`). Mimbanese (narrow skull on Thin) and Ortolan (broad dome on
+Fat/Hulk) read as art proportion, not scale, so they need no multiplier. Hats: `RenderingPatches` scales the
+`PawnRenderNode_Head`, and head apparel is drawn under the head node, so the multiplier shrinks the hat with the skull
+(READ, and seen in `PHONE_lineup_hat.png` for the body-size case). UNMEASURED in game until the live line-up.
+
+**The options as they were weighed (option 1 taken):**
 1. **Keep the art in the canvas frame (skull 1.0) and set the size in the def**: a `SM_HeadSize_Cosmetic` statOffset on
    the species' head gene (`RSW_LasatHead` etc. in `src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml`) multiplies
    the head only. Example: Lasat -0.12 gives 1.369 x 0.88 = **1.20** human skulls (about its >= 2 m canon stature vs a

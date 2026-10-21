@@ -254,20 +254,24 @@ check(F.bs_render_size(-0.35)[1] < 1, "B&S formula: a small frame shrinks the he
 sr = {k: v for k, v in env.get("species_render", {}).items() if not k.startswith("_")}
 check(set(SPECIES) <= set(sr), "species_render covers the four painted species", sorted(sr))
 for sp_name, r in sr.items():
-    want = F.bs_render_size(r["size_offset"])[1]
-    check(abs(r["engine_head_scale"] - want) < 0.002, f"{sp_name}: engine_head_scale is the B&S formula of its size offset",
+    want = F.bs_render_size(r["size_offset"], r.get("head_size_multiplier", 1.0))[1]
+    check(abs(r["engine_head_scale"] - want) < 0.002,
+          f"{sp_name}: engine_head_scale is the B&S formula of its size offset x its head multiplier",
           (r["engine_head_scale"], want))
-    check(abs(r["measured_live"] - r["engine_head_scale"]) <= 0.03,
-          f"{sp_name}: the live-measured head scale agrees with the formula within 0.03", r)
+    then = F.bs_render_size(r["size_offset"], r.get("measured_with_head_mult", 1.0))[1]
+    check(abs(r["measured_live"] - then) <= 0.03,
+          f"{sp_name}: the live-measured head scale agrees with the formula (multiplier then in force) within 0.03", r)
 check(all(F.canvas_target(env, s) is None or sr[s]["onscreen_skull_target"] is not None for s in sr),
       "no canvas target without an owner on-screen target")
 env2 = json.loads(json.dumps(env))
-env2["species_render"]["Lasat"]["onscreen_skull_target"] = 1.0
+env2["species_render"]["Lasat"].update(onscreen_skull_target=1.0, engine_head_scale=1.369)  # synthetic: no def multiplier
+env0 = json.loads(json.dumps(env))
+env0["species_render"]["Lasat"]["onscreen_skull_target"] = None
 ct = F.canvas_target(env2, "Lasat")
 check(abs(ct - 1 / 1.369) < 0.002, "an on-screen target 1.0 on a x1.369 head asks the canvas for x0.730", ct)
 lim2 = F.limits_for(env2, "Lasat")
 check(abs(lim2["height_ratio_max"] - env["limits"]["height_ratio_max"] * ct) < 1e-9
-      and F.limits_for(env, "Lasat")["height_ratio_max"] == env["limits"]["height_ratio_max"],
+      and F.limits_for(env0, "Lasat")["height_ratio_max"] == env["limits"]["height_ratio_max"],
       "the size bands are centred on the canvas target only when a target is set")
 _orig_load = F.load_envelope
 F.load_envelope = lambda path=None: env2

@@ -947,6 +947,67 @@ def wire_surnames(bytype):
     return n
 
 
+# 🔴 SIZE GENES ARE REAL (owner, 2026-08-22: "I'd like it to affect carrying capacity,
+# food, melee, etc. just as you say. Let's use this stuff right."). The donor ships
+# every RSW_BodySizeGene_* as SM_Cosmetic_BodySizeOffset (sprite only, mechanical size
+# 1.0). 1c3a673fe hand-edited them to SM_BodySizeOffset; 7707a6aca's regeneration
+# rebuilt them from the donor and silently put the cosmetic stat back
+# (SIZE_GENES_RECONCILE_LOST_IN_REGEN). So the change lives HERE, at the source, and
+# selftest_size_genes_real.py fails if any of them is cosmetic again.
+# defName suffix -> (SM_BodySizeOffset, biostatMet, description). Largest 1.70 stays
+# under B&S's 1.99 BS_Giant (giant-weapon) threshold.
+SIZE_GENES_REAL = {
+    "big":      (0.2, -1, "Body size 1.20 against a baseliner's 1.00. Real size: carrying "
+                          "capacity, food, melee and health scale all move with it."),
+    "bigger":   (0.5, -2, "Body size 1.50 against a baseliner's 1.00. Real size: carrying "
+                          "capacity, food, melee and health scale all move with it."),
+    "biggest":  (0.7, -3, "Body size 1.70 against a baseliner's 1.00. Real size: carrying "
+                          "capacity, food, melee and health scale all move with it."),
+    "small":    (-0.2, 3, "Body size 0.80 against a baseliner's 1.00. Real size: eats less, "
+                          "carries less, hits lighter."),
+    "smaller":  (-0.5, 5, "Body size 0.50 against a baseliner's 1.00. Real size: eats much "
+                          "less, carries much less, hits much lighter."),
+    # No xenotype carries _smallest (2026-10-20); Yoda's species uses BS_RabbitFrame
+    # (0.40, BodySizeIsReal.xml). Kept real so no cosmetic size gene exists to be
+    # picked by mistake; metabolism +6 continues the +3/+5 step (FOUNDRY's number).
+    "smallest": (-0.7, 6, "Body size 0.30 against a baseliner's 1.00. Real size: eats very "
+                          "little, carries very little, hits very lightly."),
+}
+
+
+def make_size_genes_real(bytype):
+    """Rewrite the donor's cosmetic RSW_BodySizeGene_* into real (mechanical) size."""
+    seen = set()
+    for e in bytype.get("GeneDef", []):
+        name = e.findtext("defName") or ""
+        if not name.startswith(DEF_PREFIX + "BodySizeGene_"):
+            continue
+        suffix = name[len(DEF_PREFIX + "BodySizeGene_"):]
+        if suffix not in SIZE_GENES_REAL:
+            raise SystemExit("size gene %s has no SIZE_GENES_REAL row: decide it" % name)
+        off, met, desc = SIZE_GENES_REAL[suffix]
+        so = e.find("statOffsets")
+        if so is None:
+            so = ET.SubElement(e, "statOffsets")
+        for c in list(so):
+            if c.tag in ("SM_Cosmetic_BodySizeOffset", "SM_BodySizeOffset"):
+                so.remove(c)
+        ET.SubElement(so, "SM_BodySizeOffset").text = repr(off)
+        bm = e.find("biostatMet")
+        if bm is None:
+            bm = ET.SubElement(e, "biostatMet")
+        bm.text = str(met)
+        d = e.find("description")
+        if d is None:
+            d = ET.SubElement(e, "description")
+        d.text = desc
+        seen.add(suffix)
+    missing = set(SIZE_GENES_REAL) - seen
+    if missing and bytype.get("GeneDef"):
+        print("  size genes not rebuilt this run (carried as shipped): %s"
+              % ", ".join(sorted(missing)), file=sys.stderr)
+
+
 def apply_overrides(bytype, texhits):
     """Edits we own that used to be PatchOperations against a donor def. Now
     that the def IS ours the patch has nowhere to apply, so the change is made
@@ -957,6 +1018,7 @@ def apply_overrides(bytype, texhits):
     would make one roll in three look painted on rather than lit.
     """
     wire_surnames(bytype)
+    make_size_genes_real(bytype)
     for e in bytype.get("HeadTypeDef", []):
         if _key(e) in HEAD_KEEP_NO_SKIN_SHADER:
             continue

@@ -389,7 +389,7 @@
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RSW_BodySizeGene_big</defName>
     <label>Big Frame</label>
-    <description>taller-than-normal</description>
+    <description>Body size 1.20 against a baseliner's 1.00. Real size: carrying capacity, food, melee and health scale all move with it.</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
@@ -398,14 +398,14 @@
     <biostatCpx>1</biostatCpx>
     <biostatMet>-1</biostatMet>
     <statOffsets>
-      <SM_Cosmetic_BodySizeOffset>0.2</SM_Cosmetic_BodySizeOffset>
+      <SM_BodySizeOffset>0.2</SM_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RSW_BodySizeGene_bigger</defName>
     <label>Bigger Frame</label>
-    <description>wookiee size</description>
+    <description>Body size 1.50 against a baseliner's 1.00. Real size: carrying capacity, food, melee and health scale all move with it.</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
@@ -414,14 +414,14 @@
     <biostatCpx>1</biostatCpx>
     <biostatMet>-2</biostatMet>
     <statOffsets>
-      <SM_Cosmetic_BodySizeOffset>0.5</SM_Cosmetic_BodySizeOffset>
+      <SM_BodySizeOffset>0.5</SM_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RSW_BodySizeGene_biggest</defName>
     <label>Biggest Frame</label>
-    <description>hutt size</description>
+    <description>Body size 1.70 against a baseliner's 1.00. Real size: carrying capacity, food, melee and health scale all move with it.</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
@@ -430,55 +430,55 @@
     <biostatCpx>1</biostatCpx>
     <biostatMet>-3</biostatMet>
     <statOffsets>
-      <SM_Cosmetic_BodySizeOffset>0.7</SM_Cosmetic_BodySizeOffset>
+      <SM_BodySizeOffset>0.7</SM_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RSW_BodySizeGene_small</defName>
     <label>Small Frame</label>
-    <description>shorter-than-normal</description>
+    <description>Body size 0.80 against a baseliner's 1.00. Real size: eats less, carries less, hits lighter.</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BodySizeSmall</iconPath>
     <displayOrderInCategory>764</displayOrderInCategory>
     <biostatCpx>1</biostatCpx>
-    <biostatMet>1</biostatMet>
+    <biostatMet>3</biostatMet>
     <statOffsets>
-      <SM_Cosmetic_BodySizeOffset>-0.2</SM_Cosmetic_BodySizeOffset>
+      <SM_BodySizeOffset>-0.2</SM_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RSW_BodySizeGene_smaller</defName>
     <label>Smaller Frame</label>
-    <description>jawa size</description>
+    <description>Body size 0.50 against a baseliner's 1.00. Real size: eats much less, carries much less, hits much lighter.</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BodySizeSmaller</iconPath>
     <displayOrderInCategory>763</displayOrderInCategory>
     <biostatCpx>1</biostatCpx>
-    <biostatMet>2</biostatMet>
+    <biostatMet>5</biostatMet>
     <statOffsets>
-      <SM_Cosmetic_BodySizeOffset>-0.5</SM_Cosmetic_BodySizeOffset>
+      <SM_BodySizeOffset>-0.5</SM_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
     <defName>RSW_BodySizeGene_smallest</defName>
     <label>Smallest Frame</label>
-    <description>yoda size</description>
+    <description>Body size 0.30 against a baseliner's 1.00. Real size: eats very little, carries very little, hits very lightly.</description>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BodySizeSmallest</iconPath>
     <displayOrderInCategory>762</displayOrderInCategory>
     <biostatCpx>1</biostatCpx>
-    <biostatMet>3</biostatMet>
+    <biostatMet>6</biostatMet>
     <statOffsets>
-      <SM_Cosmetic_BodySizeOffset>-0.7</SM_Cosmetic_BodySizeOffset>
+      <SM_BodySizeOffset>-0.7</SM_BodySizeOffset>
     </statOffsets>
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
@@ -4093,6 +4093,10 @@
       <li>RSW_Lasat_Head</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9190</displayOrderInCategory>
+    <!-- Head size in the def (owner card 2026-10-20 "How should head sizes be set?" -> "Tune in the def"): engine head 1.369 x 0.88 = 1.20 human skulls. Head only (Big and Small SM_HeadSize_Cosmetic; hats ride the head). Table: src/RimMandrake/Utils/art/head_envelope.json species_render. -->
+    <statOffsets>
+      <SM_HeadSize_Cosmetic>-0.12</SM_HeadSize_Cosmetic>
+    </statOffsets>
     <symbolPack>
       <wholeNameSymbols>
         <li>
@@ -4131,6 +4135,10 @@
       <li>RSW_Nelvaanian_Head</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9192</displayOrderInCategory>
+    <!-- Head size in the def (owner card 2026-10-20 "How should head sizes be set?" -> "Tune in the def"): engine head 1.107 x 0.95 = 1.05 human skulls. Head only (Big and Small SM_HeadSize_Cosmetic; hats ride the head). Table: src/RimMandrake/Utils/art/head_envelope.json species_render. -->
+    <statOffsets>
+      <SM_HeadSize_Cosmetic>-0.05</SM_HeadSize_Cosmetic>
+    </statOffsets>
     <symbolPack>
       <wholeNameSymbols>
         <li>
