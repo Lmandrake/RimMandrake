@@ -1,0 +1,7 @@
+# project: RimStarWars/StarWarsRaces/Source/RSW_StarWarsRaces.csproj
+# dll: 3b732b8005e45e6257053942be210019d4f85194b3fe5c74a75d58d7b5168165
+1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs
+28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
+6085c73d43eaf263d1afb362b2fabb16c1d9a0e9e4de76744d6aa21640b00f33 RSW_FacialAnimationOptOut.cs
+9d14dede923d6e1b170947d71fb2c873db51f00697cc6824fb886eb90cd95827 RSW_StarWarsRacesMod.cs
+d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs
