@@ -98,6 +98,11 @@ def main(argv=None, bridge=None):
     driver_stamp.stamp(res, B.call)      # validation.py reads a result only at the current mod hash AND deployed DLL
     if mock:
         res["mode"] = "mock"             # never 'live': validation.py must refuse a result no game produced
+    else:
+        # HARNESS (belt live 2026-10-22): run on a fresh quicktest map, a dormant map-gen Hive stopped safe_advance at
+        # arm; the site is calmed first (the calm-save route already is calm; this is a no-op there)
+        import validation_core as _VC
+        res["site_calm"] = _VC.site_calm(B)
     # 2026-10-18 (SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING): ExplosiveGrowthAPI.IsSoaked is in the composed mandrake.rm.biomes
     # mod; the 11-mod flowworks tier does not load it, so soaked() reads None there: SITE, not HARNESS.
     _run = (res.get("env") or {}).get("running")

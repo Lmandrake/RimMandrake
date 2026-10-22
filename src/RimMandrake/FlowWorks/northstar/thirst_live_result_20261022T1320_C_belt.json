@@ -1,0 +1,354 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-22T12:42:51",
+ "rows": [
+  {
+   "id": "T16_living_slime",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobsOn": [
+     "RM_DrinkFromTerrain"
+    ],
+    "hediffs": {
+     "RM_Dehydration": 0.0015,
+     "RM_SlimePurge": 1.0,
+     "RM_Slimification": 0.31
+    },
+    "memories": [
+     "SoakingWet",
+     "RM_Thought_DrankSlime"
+    ],
+    "jobsOff": [
+     "GotoWander"
+    ],
+    "bad": [],
+    "notRun": "a Gelatinous Slime biome map: RM_Slime_Liquid painted on the calm site (the drink rule is the terrain's)"
+   }
+  },
+  {
+   "id": "T20_bucket_drunk_dry",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "pourTankUnreadable": false,
+    "drinks": 10,
+    "trace": [
+     [
+      true,
+      "RM_DrinkFromContainer",
+      0.596
+     ],
+     [
+      true,
+      "RM_DrinkFromContainer",
+      0.596
+     ],
+     [
+      true,
+      "RM_DrinkFromContainer",
+      0.598
+     ]
+    ],
+    "dirtyOrEmpty": 1,
+    "tank": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=100",
+    "units": [
+     100,
+     205
+    ],
+    "pour": {
+     "accepted": true,
+     "afterJobDef": "RM_EmptyIntoTankJob",
+     "message": null
+    },
+    "inspect": "Can't hold: Acid. | Partly drunk: 4.5 L taken out.",
+    "bad": []
+   }
+  },
+  {
+   "id": "T23_fill_tank_is_the_order",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tank": "TANK mode=Fill effective=Fill liquid=RM_Liquid_Brine units=100",
+    "units": [
+     100,
+     250
+    ],
+    "brineBuckets": 3,
+    "jobsFill": [
+     "RM_FillBottleJob",
+     "RM_EmptyIntoTankJob",
+     "RM_FillBottleJob"
+    ],
+    "jobsStore": [
+     "Wait_Wander",
+     "Wait_MaintainPosture",
+     "GotoWander",
+     "Wait_Wander",
+     "Wait_MaintainPosture",
+     "GotoWander",
+     "Wait_MaintainPosture",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_MaintainPosture",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander"
+    ],
+    "brineBucketsAfterStore": 0,
+    "droppedAtSwitch": 0,
+    "brineAt": [],
+    "storeTankUnits": 100,
+    "bad": []
+   }
+  },
+  {
+   "id": "T25_snow_to_water",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "snowSet": {
+     "success": true,
+     "cellsChanged": 64
+    },
+    "jobs": [
+     "RM_GatherSnow",
+     "Clean"
+    ],
+    "bucketsSnow": 1,
+    "snowAfter": null,
+    "meltTicks": 5000,
+    "followed": [
+     "RM_BucketSnow268850"
+    ],
+    "meltTrace": [
+     {
+      "t": 500,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 5.0687685,
+      "warmTicks": "750",
+      "inspect": [
+       "Melting: 15%"
+      ]
+     },
+     {
+      "t": 1000,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 4.70579767,
+      "warmTicks": "1250",
+      "inspect": [
+       "Melting: 25%"
+      ]
+     },
+     {
+      "t": 1500,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 4.42763758,
+      "warmTicks": "1750",
+      "inspect": [
+       "Melting: 35%"
+      ]
+     },
+     {
+      "t": 2000,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 4.160999,
+      "warmTicks": "2250",
+      "inspect": [
+       "Melting: 45%"
+      ]
+     },
+     {
+      "t": 2500,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 3.906472,
+      "warmTicks": "2750",
+      "inspect": [
+       "Melting: 55%"
+      ]
+     },
+     {
+      "t": 3000,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 3.66461277,
+      "warmTicks": "3250",
+      "inspect": [
+       "Melting: 65%"
+      ]
+     },
+     {
+      "t": 3500,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 3.4359355,
+      "warmTicks": "3750",
+      "inspect": [
+       "Melting: 75%"
+      ]
+     },
+     {
+      "t": 4000,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 3.16937661,
+      "warmTicks": "4250",
+      "inspect": [
+       "Melting: 85%"
+      ]
+     },
+     {
+      "t": 4500,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 2.97210145,
+      "warmTicks": "4750",
+      "inspect": [
+       "Melting: 95%"
+      ]
+     },
+     {
+      "t": 5000,
+      "snow": [],
+      "fresh": 1
+     }
+    ],
+    "temp": 5.60314131,
+    "jobsPond": [
+     "RM_FillBottleJob",
+     "Wait_Wander"
+    ],
+    "bad": [],
+    "notRun": "snow depth drop 0.4 (read back is a sample only)"
+   }
+  },
+  {
+   "id": "T26_ice_block_bill",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobs": [
+     "DoBill",
+     "GotoWander"
+    ],
+    "made": [
+     {
+      "id": "RM_Bucket_FreshWater304474",
+      "stuff": "WoodLog",
+      "label": "Wooden bucketed fresh water"
+     }
+    ],
+    "blueIceLeft": 0,
+    "logErrors": [],
+    "bad": []
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/thirst_C.json",
+  "only": "T16,T20,T23,T25,T26,T29",
+  "site": "150,130",
+  "log": "",
+  "reload_site": "calm",
+  "dry_run": false,
+  "mock": false,
+  "mock_faults": "",
+  "t25_empties": 1
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "77cd778941b152c46490c667102391c3a2360153ea0ccbf0f0e71f7cff22322e"
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "running": 14,
+ "site": {
+  "rect": "150,130,40,40",
+  "paintedWaterRuns": 0,
+  "bottlesOnMap": [],
+  "draftedOwn": 21
+ },
+ "governorStops": [
+  "safe_advance stopped after 60 of 100 tick(s): downed: downed (health 0.49)"
+ ]
+}
