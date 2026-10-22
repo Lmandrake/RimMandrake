@@ -27,7 +27,8 @@ namespace RimMandrake.TheRot
     //   sporeAllergy(+Incidence)  sporeAllergy: the RM_Disease_SporeAllergy pair, on/off and chance factor
     //   guardianGroves, paleTreeSpawn, ambrosyxSpawn: the wild-spawn rows leave RM_TheRot's wildPlants at startup (restart)
     //   crossBiome*: opt-in donor (RM_TheRot's extensions) for non-Rot maps; Coverage scales their intensity
-    //   healthSharing: the wound-link / kin-mending comps patched onto the five Alpha Animals bodies are removed again
+    //   healthSharing: the wound-link / kin-mending comps on the five RM_ bodies (chittik, gromma, rennok natively;
+    //                  durrok, mullgoth by Patches/RotSpecies_WoundSharing.xml) are removed again
     //                  at startup when off (restart to apply) - ROT_WOUND_SHARING_WIRING_1
     // ════════════════════════════════════════════════════════════════════
     public class RM_TheRotSettings : ModSettings
@@ -487,7 +488,7 @@ namespace RimMandrake.TheRot
             }
         }
 
-        private static readonly string[] HealthSharingBodies = { "AA_Swarmling", "AA_Agaripod", "AA_Agaripawn", "AA_Wildpod", "AA_Wildpawn", "RM_Agaripod", "RM_Agaripawn" };
+        private static readonly string[] HealthSharingBodies = { "RM_Chittik", "RM_Agaripod", "RM_Agaripawn", "RM_Durrok", "RM_Mullgoth" };
         private static readonly string[] GuardianGroveRows = { "RM_AgelessCap", "RM_RegenerantVeil", "RM_EuphoricCrown", "RM_FalseFruit" };
     }
 
