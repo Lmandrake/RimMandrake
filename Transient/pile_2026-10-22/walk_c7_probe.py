@@ -27,6 +27,14 @@ for a in sys.argv[1:]:
         dst = os.path.join(REPO, "Transient", "pile_2026-10-22", "walk_preview", nm + ".png")
         shutil.copyfile(src, dst) if src else None
         print("shot", nm, src and dst, "" if src else json.dumps(res)[:200])
+    elif a.startswith("gizmos:"):
+        x, z = [int(v) for v in a[7:].split(",")]
+        B.call("rimworld/clear_selection")
+        B.call("rimworld/click_cell", x=x, z=z)
+        for g in (B.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []:
+            print("  gizmo", g.get("gizmoId") or g.get("id"), "|", g.get("label"), "|", (g.get("disabledReason") or "")[:60])
+    elif a.startswith("exec:"):
+        print(a, json.dumps(B.call("rimworld/execute_gizmo", gizmoId=a[5:]))[:300])
     elif a == "hugeclear":
         print("hugeclear", V.clear_huge_plants(B))
     elif a == "pawns":

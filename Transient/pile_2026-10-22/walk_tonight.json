@@ -646,7 +646,7 @@
      ]
     }
    ],
-   "setup": "overflow ships OFF (global Mod Setting). ON only here: dev action 'RMFlowWorks / Canal overflow: switch on/off (test)' or jawa/mod_settings_field RimMandrake.FlowWorks.Sheet.RM_SheetSettings sheetOverflowEnabled=True; HE shuts S1 with the pump on and unpauses until terrace 1 spills. TURN IT OFF AFTER (same action / value False, read back False); never save with it ON.",
+   "setup": "overflow ships OFF (global Mod Setting). ON only here (dev action 'RMFlowWorks / Canal overflow: switch on/off (test)' or jawa/mod_settings_field RimMandrake.FlowWorks.Sheet.RM_SheetSettings sheetOverflowEnabled=True). The staged plot does not spill by itself (rehearsed: nothing feeds terrace 1 over its brim), so the seat spills: walk_c7_probe.py 'call:jawa/static_call:{\"type\":\"RimMandrake.FlowWorks.Sheet.RM_SheetProofs\",\"method\":\"ProofSheetSpill\",\"args\":\"175,117;40000;Pump\"}' ticks:250. TURN IT OFF AFTER (same action / value False, read back False); never save with it ON.",
    "look": "the spill sheet on the field",
    "decisions": [
     {

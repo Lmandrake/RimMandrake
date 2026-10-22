@@ -56,6 +56,12 @@
 - c8eb3b2c83 (15:44), 8d6a1913ab (15:5x), 29d29cbc9d (16:03). Fixer G's asks on c8eb3b2c83: deep_lake_proof refill PASS
   (noted on DRAWDOWN_DIAGNOSE_THIRTEEN_BEFORE_TWELVE); raid_trench depth 8 RAID_FILL_CAUSEWAY FAIL but SITE-disturbed (Mechanoid
   lord, colonists shot across) -> noted on CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP, calm rerun owed.
+- 16:13 d84d296f3d, 16:26 195c2fe9bc: Transient/pile_2026-10-22/walk_redeploy.sh (committed DLL pair from origin/main only,
+  relaunch, reload b, Player.log scan): 0 error lines each; stops 1 + 6 re-checked (ponds unpoked 640000/160000); b re-saved
+  in place 16:15 and 16:27 (original md5 unchanged).
+- 16:29 4d833ad1bd (sheet/glow/fire review fixes): redeployed, 0 log errors; stop 11 REHEARSED on it: the staged plot never
+  spills by itself (S0 held open 1 h, ledger in=0) -> stop 11 now spills 40,000 dL via ProofSheetSpill (29 wet squares);
+  overflow set back OFF (read back False), b reloaded and re-saved 16:31.
 
 ## Final state
-- pending
+- (see the last lines of this file)

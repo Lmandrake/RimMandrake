@@ -157,7 +157,11 @@ Camera: `python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto 
 - setup: overflow ships OFF (master switch, global Mod Setting, not per map) and stays OFF for stops 1-10. Turn it ON only
   here, on map R: dev menu "RMFlowWorks / Canal overflow: switch on/off (test)" (message says ON), or seat:
   `python.exe Transient/pile_2026-10-22/walk_c7_probe.py 'call:jawa/mod_settings_field:{"typeName":"RimMandrake.FlowWorks.Sheet.RM_SheetSettings","action":"set","field":"sheetOverflowEnabled","value":"True"}'`.
-  Then HE shuts S1 with the pump on and unpauses until terrace 1 spills.
+  ⚠ REHEARSED 16:30: "S1 shut with the pump on" does NOT spill — nothing feeds terrace 1 above its brim (the bank pump
+  fills the sprinkler tank; S0 held open for an in-game hour: sheet ledger in=0). So the seat makes the spill:
+  `python.exe Transient/pile_2026-10-22/walk_c7_probe.py 'call:jawa/static_call:{"type":"RimMandrake.FlowWorks.Sheet.RM_SheetProofs","method":"ProofSheetSpill","args":"175,117;40000;Pump"}' ticks:250`
+  (the production Offer path; 40,000 dL accepted, 250 ticks later 29 wet squares: 22 sheet + 7 film, max 1,699 dL),
+  then HE looks and unpauses to watch it spread/soak. Rehearsal capture: walk_preview/zz_overflow_rehearsal2.png.
 - **TURN IT OFF AFTER** (it is saved in Mod Settings, so it outlives the save): the same dev action again (message says OFF),
   or the seat command with `"value":"False"`, then read back (`"action":"get"` -> "False"). Do not save the game with it ON.
 - known open: OVERFLOW_DIAGNOSE_FIRST_WET_RUN (rain spill, return-to-pit, ledger rows FAIL in the proof) — the look is still his.
