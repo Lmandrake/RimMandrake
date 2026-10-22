@@ -52,12 +52,12 @@ namespace RimMandrake.EnvironmentalHazards
     // canopy)" — `AB_MangroveTree`/`AB_ParasiticMangrove`, not
     // `AB_MangrovePalm` (roster's own RM_Ilbareen row recasts that species
     // around dying-in-place as a salt-line gauge, a different mechanism from
-    // the flowering bargain). 🔴 MIASMA_FAUNA_FLOOR_ROSTER_1 has since added
-    // the same modExtension onto RM_Thessamor/RM_Quennath (MIASMA_FLORA_ROSTER_1's
-    // real replacements for those two donor rows in mandrake.rm.miasma) —
-    // both pairs of operations now live in RUT_Miasma_PollinationGate.xml,
-    // the AB_ pair for the frozen campaign twin's still-live wildPlants and
-    // the RM_ pair for the franchise-free mod's own flora.
+    // the flowering bargain). The franchise-free mod's own replacements,
+    // RM_Thessamor/RM_Quennath, carry this modExtension inline in
+    // Miasma/Defs/ThingDefs_Plants/RM_Miasma_Mangals.xml; only the donor
+    // pair for the frozen campaign twin's wildPlants is still patched, in
+    // RimUtinni's RUT_Miasma_PollinationGate.xml. This file names no donor
+    // def or package in code: the gate binds by modExtension, not by name.
     public class RM_PollinationGateExtension : DefModExtension
     {
         public ThingDef pollinatorRace;
