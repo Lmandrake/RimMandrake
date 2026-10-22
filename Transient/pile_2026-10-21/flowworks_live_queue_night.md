@@ -27,3 +27,9 @@ Bridge: taken by BENCH (FlowWorks live queue: fallen cord, pit cover, pitfall). 
   Camera framed on (7,94,216,77); hour ~10.5, Clear locked, hostiles killed. Game UP, bridge HELD for the owner walk. Player.log: no exceptions storm (harvest --stale-ok: 6 cross-refs + 1 texture path on the 14-mod tier).
 - 03:58Z owner: staged map unusable (no labels). Rebuilding with review_map.py: --plan, then --build --fresh-map --only visuals first.
 - 04:30Z review map visuals block (39/39) built, labels 461 pinned, saved RM_fw_review_20261021; owner finished walk. Gallery not built. Resuming queue.
+- 04:35Z sluice fix committed with clean-clone DLL c922fd3a3f00 (not yet deployed). Running lines_proof live (loaded DLL = f76aafe build with item fixes).
+- 04:45Z ITEM 1 CLOSED f76aafe3ac76 (live PASS, wreck not cleared). LADDER_HOSE FAIL once in full run, PASS alone -> filed LADDER_HOSE_DIAGNOSE_RETRACTS_ON_A_WHIM. Next: items 2/3 rows (pit cover kill, pitfall save round trip).
+- 05:05Z FlowWorks c922+proof-surface DLL deployed, game relaunched. Running COVER_BREAK_DROPS_RIDER + PITFALL_SAVED_ARRIVAL_FALLS (new lines_proof rows).
+- 05:15Z COVER_BREAK_DROPS_RIDER live PASS (lines_pit_run1.json). PITFALL row UNMEASURED/HARNESS: load_game_ready answered mid-load; row now waits for Playing + polls ProofTrap. Rerunning.
+- 05:30Z PITFALL row FAIL/MOD live: FinalizeInit called superdeepTrap.ResetDetector() after every load, wiping the scribed lastCell. Fix: removed. Built (clean clone), deploy at next restart. Meanwhile staging gates+hoses on current game for sluice look + joins close-ups.
+- 05:50Z SLUICE closed c922fd3a3f00 (north rim black live). 15 join close-ups in joins_live/ (pinned; camera floor is rootSize 8, so crops of full-res shots at ~114 px/cell). Restarting for the ResetDetector fix.
