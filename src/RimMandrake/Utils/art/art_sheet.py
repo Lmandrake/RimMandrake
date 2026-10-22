@@ -2628,6 +2628,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     slots = L.scan_def_slots()
     order, fp = load_order()
     rows = b["rows"]
+    tidy_notes: dict = {}          # row key -> what rationalize_row tidied (shown on that row only)
     # FRESHNESS BY CONSTRUCTION (ART_SHEET_REDESIGN_FRESH_OR_REFUSE): the census is a CACHED location list (census.json was
     # an Oct-7 capture while this was written; the GSS sheet of 2026-10-11 showed a pre-rename texPath from an Oct-4 one).
     # Every row of ours — creatures and plants alike — takes its texPaths from the src XML NOW; the census only fills in
@@ -2799,7 +2800,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                     kept_cols.append(c)
             g["cols"] = [c for c in kept_cols if not any(h and h in c.get("label", "") for h in HIDE_SETS)]
         purged_hidden[r["key"]] = n_hidden
-        _tidy = rationalize_row(r, graphics, rationalize=bool((b or {}).get("rationalize")))
+        tidy_notes[r["key"]] = rationalize_row(r, graphics, rationalize=bool((b or {}).get("rationalize")))
         graphics = [g for g in graphics if g["cols"]] or graphics[:0]
         # primary = first body graphic with pictures, else first graphic; name renders are offered to it too
         prim = next((g for g in graphics if g["res"] and g["role"] == "body"), graphics[0] if graphics else None)
@@ -3009,7 +3010,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
                 "pool": bool(g.get("pool")) and lane == "slot", "lane": lane, "slot": slot_,
                 # a creature's adult body can BECOME a random pool (enact adds alternateGraphics) — owner 2026-10-21
-                "poolable": lane == "slot" and not g.get("pool") and gi == 0 and r["kind"] == "fauna"
+                "poolable": lane == "slot" and not g.get("pool") and gi == 0
+                            and (r["kind"] == "fauna" or (slot_ or {}).get("kind") == "adult")
                             and not g.get("flip") and bool(set(facings) & {"south", "east", "north"}),
                 "prior": prior, **flip,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
@@ -3095,7 +3097,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                        + (f"{n_sets} picture set(s)" + (f" across {len(gitems)} graphics" if len(gitems) > 1 else "")
                           if gitems else "no pictures")),
             "tier": tier, "tierText": tier_text, "canonTag": canon_tag,
-            "flags": flags + ([f"tidied before review: {t}" for t in _tidy] if _tidy else []),
+            "flags": flags + [f"tidied before review: {t}" for t in tidy_notes.get(key) or []],
             "fresh": _fresh_mark(fresh, key),
             "prefillShort": _prefill_short(source, why),
             "prefill": letter, "prefillWhy": why, "prefillSource": source,
