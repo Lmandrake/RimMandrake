@@ -414,7 +414,10 @@ def review_class():
             B.call("jawa/review_label", action="clear", tag=TAG)
             for p in placed:
                 x, z, w, h = p["rect"]
-                rects = [(x - 2, z - 6, w + 4, h + 12)]
+                # 2026-10-22 night walk (SITE): x-4, not x-2 -- a reel's outlet faces west on every rotation, so a reel at a plot's
+                # west edge needs ~3.5 cells for its lead-out + U-turn; C3's reel park met map limestone at x 8-9 ("no room for the
+                # straight lead-out"). Neighbouring plots stay >= 2 cells apart after the margin.
+                rects = [(x - 4, z - 6, w + 8, h + 12)]
                 e = p["sc"].get("edge_drain")
                 if e == "west":
                     rects.append((0, z, x, h))

@@ -1,0 +1,14 @@
+You are an art director for a RimWorld mod (top-down 2D, ~100 px per map cell in these crops). The mod "FlowWorks" adds liquid pipes (1-cell linked "conduit-like" graphics, four looks: Scrapper=copper/rust, Industrial=dark steel, Modern=red, Futuristic=pale blue), 2x2 liquid tanks (a squat horizontal skid tank and a tall upright tank), a 1x1 pump with flanges on 4 sides, sprinkler heads that sit ON a pipe cell, 1x1 taps placed beside a pipe, pipe poles that carry an overhead span over a ditch, and flexible hoses laid from a 2x2 hose reel to a tank/pump/pipe end.
+
+The owner's order tonight: "Hoses need to be twice as thick, too thin to see now. Solid pipes ... should be reduced. Really study how the hoses and pipes connect up. Make it look great."
+
+Attached contact sheets (each sheet = the same layout in the four looks, top to bottom):
+1 sheet_A: pipe shapes left->right: straight E-W, straight N-S, bend, T, cross.
+2 sheet_B: left = squat tank with a pipe arriving from the WEST on the tank's lower footprint row, plus a stray 2-cell pipe stub above it (ignore the stub); right = tall tank with a pipe arriving from the EAST.
+3 sheet_E: a pipe run with two taps on the cells just SOUTH of it, and one tap at the pipe's east end.
+4 sheet_F: two pipe poles with an overhead span over a dug ditch; ground pipes arrive from west and east.
+5 sheet_H1: two hose reels on the left; top hose goes to a pump, bottom hose to a squat tank (the reel nozzle is on the reel's WEST side; the target is EAST).
+6 sheet_H2: top = plump hose (liquid flowing) reel->tank; bottom = flat hose reel->pipe end.
+7 sheet_girth_pawn: colonists beside pipes and hoses for scale.
+
+For EACH join (pipe-pipe straight/bend/T/cross/end cap, pipe->tank, pipe->tall tank, pipe->tap, pipe->pole/overhead span, hose->reel, hose->pump, hose->tank, hose->pipe end, flat vs plump hose), say concretely: what looks wrong or unconvincing, and how it SHOULD look (geometry: where the line should end, what fitting/flange/riser should be drawn, girths as a fraction of a cell, colours/contrast). Rank the top 12 problems by how much they hurt the look. Be specific and brief (bullets). Also: is the relative girth (pipe ~0.10 cell, hose ~0.18-0.25 cell, pawn body ~0.35 cell) sensible, and what would you set?
