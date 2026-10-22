@@ -444,6 +444,118 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Pulse(s, w, p, rep);
 				Assert(rep.TierChanged.Count > 0, "the purge reports the pictures to clear");
 			});
+
+			// FlowWorks GPT review 2026-10-22 (RM_SheetMath.cs:459): a consumer replaying TierChanged IN ORDER must end on each
+			// cell's real tier. Purge then refill before the next pulse used to report (None→Film) then (old→None) and clear
+			// the refilled cell's picture. Fuzzed with purges, refills and draining canals so in-pulse dry-then-wet is hit too.
+			Case("Sheet_tier_reports_replay_in_order_to_the_real_tier_after_purge_and_refill", () =>
+			{
+				var p = new Params();
+				var s = new State(10, 10, 1u);
+				var w = new World(10, 10);
+				ResolveSpills(s, w, p, new[] { Offer(5000, Water, Source.Pump, 55) });
+				var rep = new PulseReport();
+				var picture = new Tier[100];
+				void Replay() { foreach (var (c, from, to) in rep.TierChanged) picture[c] = to; }
+				Pulse(s, w, p, rep); Replay();
+				Assert(picture[55] != Tier.None, "a wet cell has a picture");
+				PurgeAll(s);
+				ResolveSpills(s, w, p, new[] { Offer(5000, Water, Source.Pump, 55) }); // refilled before the pulse reports the purge
+				Pulse(s, w, p, rep); Replay();
+				Assert(picture[55] == s.Tiers[55] && picture[55] != Tier.None, $"refilled cell shows {picture[55]}, real tier {s.Tiers[55]}");
+				var r = new Random(31);
+				for (int round = 0; round < 40; round++)
+				{
+					var wr = RandomWorld(r, 16, 16, true);
+					var sr = new State(16, 16, (uint)round);
+					var pic = new Tier[256];
+					for (int t = 0; t < 120; t++)
+					{
+						if (t % 7 == 0) ResolveSpills(sr, wr, p, new[] { Offer(r.Next(100, 6000), Water, Source.Rain, r.Next(256), r.Next(256)) });
+						if (t % 23 == 22) { PurgeAll(sr); ResolveSpills(sr, wr, p, new[] { Offer(3000, Water, Source.Pump, r.Next(256)) }); }
+						Pulse(sr, wr, p, rep);
+						foreach (var (c, from, to) in rep.TierChanged) pic[c] = to;
+						for (int c = 0; c < 256; c++)
+							Assert(pic[c] == sr.Tiers[c], $"round {round} pulse {t}: cell {c} replays to {pic[c]}, real tier {sr.Tiers[c]}");
+					}
+				}
+			});
+
+			// FlowWorks GPT review 2026-10-22 (RM_SheetMath.cs:390): a water-filled DOOR beside a sink or receiver drained at
+			// full rate, bypassing DoorLeakPermille (D4). Now each door edge passes at most that share of the mobile water.
+			Case("Sheet_a_door_beside_a_drain_leaks_slowly_too", () =>
+			{
+				long Drained(Kind cell, Kind drain)
+				{
+					var w = new World(5, 3);
+					for (int c = 0; c < 15; c++) w.Kinds[c] = Kind.Blocked;
+					int at = Idx(w, 2, 1), to = Idx(w, 3, 1);
+					w.Kinds[at] = cell; w.Kinds[to] = drain;
+					w.RoomDl[to] = 1000000; w.BodyFluid[to] = Water;
+					var p = new Params();
+					var s = new State(5, 3, 9u);
+					ResolveSpills(s, w, p, new[] { Offer(6000, Water, Source.Pump, at) });
+					Pulse(s, w, p, null);
+					Assert(s.LedgerCloses, "ledger");
+					return s.Returned + s.JoinedLake;
+				}
+				var pp = new Params();
+				long mobile = 6000 - pp.RetentionDl, slow = mobile * pp.DoorLeakPermille / 1000;
+				foreach (Kind drain in new[] { Kind.Sink, Kind.Receiver })
+				{
+					long open = Drained(Kind.Open, drain), door = Drained(Kind.Door, drain);
+					Assert(open == mobile, $"{drain}: open ground beside it drains all its mobile water in a pulse ({open})");
+					Assert(door == slow, $"{drain}: a door drains only DoorLeakPermille of it ({door}, want {slow})");
+				}
+			});
+
+			// FlowWorks GPT review 2026-10-22 (RM_SheetMath.cs:267,278,509): every pulse allocated two map-sized bool arrays and
+			// scanned the whole map, even dry or asleep. Now the working memory is reused and a dry map returns at once.
+			Case("Sheet_pulse_allocates_nothing_in_steady_state", () =>
+			{
+				var w = new World(250, 250);
+				var p = new Params();
+				var dry = new State(250, 250, 1u);
+				Pulse(dry, w, p, null);
+				long a0 = GC.GetAllocatedBytesForCurrentThread();
+				for (int i = 0; i < 200; i++) Pulse(dry, w, p, null);
+				long dryBytes = GC.GetAllocatedBytesForCurrentThread() - a0;
+				var s = new State(250, 250, 2u);
+				Ring(w, 100, 100, 130, 130, Kind.Blocked);
+				for (int x = 101; x <= 129; x++) ResolveSpills(s, w, p, new[] { Offer(3000, Water, Source.Rain, Idx(w, x, 115)) });
+				Run(s, w, p, 80); // a walled puddle: levelled, then asleep
+				var rep = new PulseReport();
+				Pulse(s, w, p, rep);
+				long a1 = GC.GetAllocatedBytesForCurrentThread();
+				for (int i = 0; i < 200; i++) Pulse(s, w, p, rep);
+				long wetBytes = GC.GetAllocatedBytesForCurrentThread() - a1;
+				Console.WriteLine($"      200 pulses allocate: dry map {dryBytes} B, settled 29×29 puddle {wetBytes} B (was ~25 MB: 2 × 62.5 kB a pulse)");
+				Assert(dryBytes < 4096 && wetBytes < 64 * 1024, $"steady pulses must not allocate per pulse (dry {dryBytes} B, wet {wetBytes} B)");
+				Assert(s.LedgerCloses, "ledger");
+			});
+
+			Case("Sheet_preview_matches_what_the_spill_accepts", () =>
+			{
+				var r = new Random(5);
+				for (int round = 0; round < 200; round++)
+				{
+					var w = RandomWorld(r, 12, 12, false);
+					var p = new Params { MaxWetCells = r.Next(1, 30), SheetCapDl = r.Next(200, 3000) };
+					var s = new State(12, 12, 3u);
+					for (int t = 0; t < 10; t++)
+					{
+						var lips = new int[r.Next(1, 6)];
+						for (int i = 0; i < lips.Length; i++) lips[i] = r.Next(-2, 146);
+						var o = Offer(r.Next(1, 20000), r.Next(4) == 0 ? Chemfuel : Water, Source.Pump, lips);
+						int pre = PreviewSpill(s, w, p, o);
+						ulong h = Hash(s);
+						Assert(Hash(s) == h, "preview changes nothing");
+						int got = ResolveSpills(s, w, p, new[] { o })[0];
+						Assert(pre == got, $"round {round}: preview {pre} vs accepted {got}");
+						Pulse(s, w, p, null);
+					}
+				}
+			});
 		}
 	}
 }

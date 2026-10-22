@@ -157,6 +157,7 @@ namespace RimMandrake.FlowWorks
 			public long Returned, JoinedLake, Soaked, Evaporated, Burned, Purged;
 			internal readonly List<int> Occ = new List<int>(); // wet cells, ascending; rebuilt on load
 			internal readonly List<(int cell, Tier was)> Dried = new List<(int, Tier)>(); // reported by the next pulse; not saved (a dry cell has no picture to keep)
+			internal readonly Scratch Work = new Scratch(); // per-pulse working memory, reused (never saved, never part of the state)
 
 			public State(int w, int h, uint salt)
 			{
@@ -171,6 +172,43 @@ namespace RimMandrake.FlowWorks
 			public long TotalOut => Returned + JoinedLake + Soaked + Evaporated + Burned + Purged;
 			public int WetCount => Occ.Count;
 			public bool LedgerCloses => TotalIn == Standing + TotalOut;
+		}
+
+		/// <summary>FlowWorks GPT review 2026-10-22: the pulse's working memory, allocated once per state and reused, so a pulse
+		/// allocates nothing in steady state and never scans the whole map (touched cells are a list, seen cells a stamp).</summary>
+		internal sealed class Scratch
+		{
+			public bool[] TouchMark;
+			public readonly List<int> TouchList = new List<int>();
+			public int[] SeenStamp;
+			public int SeenGen;
+			public readonly List<int> Comp = new List<int>();
+			public readonly Stack<int> Stack = new Stack<int>();
+			public readonly List<Flux> Props = new List<Flux>();
+			public readonly List<Flux> Acc = new List<Flux>();
+			public readonly Dictionary<int, byte> Winner = new Dictionary<int, byte>();
+			public readonly Dictionary<int, int> Reserved = new Dictionary<int, int>();
+			public readonly Dictionary<int, int> Credit = new Dictionary<int, int>();
+			public readonly List<int> Keys = new List<int>();
+			public readonly int[] F4 = new int[4], Nb4 = new int[4], Want = new int[4];
+
+			public void Ensure(int n)
+			{
+				if (TouchMark == null || TouchMark.Length != n) { TouchMark = new bool[n]; SeenStamp = new int[n]; SeenGen = 0; TouchList.Clear(); }
+			}
+
+			public int NextSeenGen()
+			{
+				if (++SeenGen == int.MaxValue) { Array.Clear(SeenStamp, 0, SeenStamp.Length); SeenGen = 1; }
+				return SeenGen;
+			}
+		}
+
+		private static void Touch(State s, int c)
+		{
+			Scratch k = s.Work;
+			if (k.TouchMark[c]) return;
+			k.TouchMark[c] = true; k.TouchList.Add(c);
 		}
 
 		// ── relief (§3 step 2, §6 item 13): a fixed integer hash with a persisted salt ──
@@ -235,6 +273,31 @@ namespace RimMandrake.FlowWorks
 			return accepted;
 		}
 
+		/// <summary>The dL <see cref="ResolveSpills"/> would accept for this one offer right now, changing nothing. A caller
+		/// that can only debit in steps (or must check before it removes from a store) asks this first, then offers exactly
+		/// what it can debit; the accept is then exact because nothing else runs in between.</summary>
+		public static int PreviewSpill(State s, World w, Params p, SpillOffer o)
+		{
+			if (o.AmountDl <= 0 || o.Fluid == 0 || o.LipNearestFirst == null) return 0;
+			int left = o.AmountDl, wet = s.Occ.Count;
+			var room = new Dictionary<int, int>();
+			foreach (int c in o.LipNearestFirst)
+			{
+				if (left == 0) break;
+				if (c < 0 || c >= s.Dl.Length || !World.HoldsSheet(w.Kinds[c])) continue;
+				if (!Compatible(s.Fluid[c], o.Fluid)) continue;
+				if (s.Tiers[c] == Tier.Ice) continue;
+				bool seen = room.TryGetValue(c, out int r);
+				if (!seen) r = p.SheetCapDl - s.Dl[c];
+				if (!seen && s.Dl[c] == 0) { if (wet >= p.MaxWetCells) continue; wet++; }
+				if (r <= 0) continue;
+				int take = Math.Min(r, left);
+				room[c] = r - take;
+				left -= take;
+			}
+			return o.AmountDl - left;
+		}
+
 		private static int CompareOffers(SpillOffer a, SpillOffer b)
 		{
 			int r = a.Fluid.CompareTo(b.Fluid); if (r != 0) return r;
@@ -256,34 +319,40 @@ namespace RimMandrake.FlowWorks
 
 		// ── the pulse ──
 
-		private struct Flux { public int From, To, Dl, MinNew; public byte Fluid; }
+		internal struct Flux { public int From, To, Dl, MinNew; public byte Fluid; }
 
 		/// <summary>One engine pulse: freeze/thaw (D10), K relax sweeps, basin levelling (D8), return/absorb, losses on every wet cell, tiers, crop timer, sleep.
 		/// Spills are resolved before it by <see cref="ResolveSpills"/>.</summary>
 		public static void Pulse(State s, World w, Params p, PulseReport rep)
 		{
 			rep?.Clear();
-			int n = s.Dl.Length;
-			var touched = new bool[n];
+			// drying that happened BEFORE this pulse (PurgeAll, or anything else between pulses) is reported first, so a
+			// consumer replaying TierChanged in order never sees a refilled cell's new tier followed by its old drying
+			FlushDried(s, rep);
+			if (s.Occ.Count == 0) { s.Pulse++; return; } // a dry map costs nothing
+			Scratch k = s.Work;
+			k.Ensure(s.Dl.Length);
 			Freeze(s, w, p, rep);
-			for (int k = 0; k < p.SweepsPerPulse; k++) Sweep(s, w, p, touched);
-			if (p.LevelBasins) Level(s, w, p, touched);
-			ReturnAndAbsorb(s, w, p, rep, touched);
+			for (int i = 0; i < p.SweepsPerPulse; i++) Sweep(s, w, p);
+			if (p.LevelBasins) Level(s, w, p);
+			ReturnAndAbsorb(s, w, p, rep);
 			Losses(s, w, p, rep);
 			Tiers(s, p, rep);
 			// sleep counters: every wet cell with no flux this pulse gets calmer; a touched one wakes itself and its
 			// neighbours (a neighbour that moved may have opened a gradient)
 			foreach (int c in s.Occ)
-				if (!touched[c]) s.Calm[c] = (byte)Math.Min(255, s.Calm[c] + 1);
-			for (int c = 0; c < n; c++) if (touched[c]) WakeAround(s, w, c);
+				if (!k.TouchMark[c]) s.Calm[c] = (byte)Math.Min(255, s.Calm[c] + 1);
+			foreach (int c in k.TouchList) { WakeAround(s, w, c); k.TouchMark[c] = false; }
+			k.TouchList.Clear();
 			s.Pulse++;
 		}
 
-		private static void Sweep(State s, World w, Params p, bool[] touched)
+		private static void Sweep(State s, World w, Params p)
 		{
 			int W = s.W, H = s.H;
-			var props = new List<Flux>();
-			var f4 = new int[4]; var nb4 = new int[4];
+			Scratch k = s.Work;
+			var props = k.Props; props.Clear();
+			int[] f4 = k.F4, nb4 = k.Nb4;
 			int donors = 0;
 			// Phase A: proposals from the snapshot (nothing is applied until phase D, so order cannot matter)
 			foreach (int i in s.Occ)
@@ -315,7 +384,7 @@ namespace RimMandrake.FlowWorks
 				if (sum > mobile)
 				{
 					// virtual-pipes outflow limit in integers; the remainder 1 dL each in N,E,S,W order
-					long given = 0; var want = (int[])f4.Clone();
+					long given = 0; int[] want = k.Want; Array.Copy(f4, want, 4);
 					for (int d = 0; d < 4; d++) { f4[d] = (int)(want[d] * (long)mobile / sum); given += f4[d]; }
 					for (int d = 0; d < 4 && given < mobile; d++) if (f4[d] < want[d]) { f4[d]++; given++; }
 				}
@@ -332,13 +401,13 @@ namespace RimMandrake.FlowWorks
 			}
 			if (props.Count == 0) return;
 			// Phase B: fluid arbitration on dry receivers: the lowest fluid id wins; the loser stays upstream
-			var winner = new Dictionary<int, byte>();
+			var winner = k.Winner; winner.Clear();
 			foreach (var fx in props)
 				if (s.Dl[fx.To] == 0 && (!winner.TryGetValue(fx.To, out byte b) || fx.Fluid < b)) winner[fx.To] = fx.Fluid;
 			// Phase C: receiver room and the wet-cell cap resolved before commit, in donor-index then N,E,S,W order
-			var reserved = new Dictionary<int, int>();
+			var reserved = k.Reserved; reserved.Clear();
 			int wet = s.Occ.Count;
-			var acc = new List<Flux>(props.Count);
+			var acc = k.Acc; acc.Clear();
 			foreach (var fx0 in props)
 			{
 				Flux fx = fx0;
@@ -362,7 +431,7 @@ namespace RimMandrake.FlowWorks
 				s.Dl[fx.From] -= fx.Dl;
 				if (s.Dl[fx.To] == 0) { s.Occ.Add(fx.To); added = true; }
 				s.Dl[fx.To] += fx.Dl; s.Fluid[fx.To] = fx.Fluid;
-				touched[fx.From] = touched[fx.To] = true;
+				Touch(s, fx.From); Touch(s, fx.To);
 				WakeAround(s, w, fx.To);
 			}
 			Compact(s, added);
@@ -370,15 +439,19 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>§3 step 3 / §6 item 1: mobile water beside a Receiver with room drains into it (internal transfer,
 		/// reported for the engine to credit); beside a Sink it joins the lake (disclosed). A full or foreign-fluid
-		/// receiver refuses.</summary>
-		private static void ReturnAndAbsorb(State s, World w, Params p, PulseReport rep, bool[] touched)
+		/// receiver refuses. A DOOR cell drains through each edge at most DoorLeakPermille of its mobile water (at least 1 dL)
+		/// per pulse, the same slow leak as its sweeps (D4; FlowWorks GPT review 2026-10-22: it used to drain at full rate).</summary>
+		private static void ReturnAndAbsorb(State s, World w, Params p, PulseReport rep)
 		{
-			var credit = new Dictionary<int, int>();
+			Scratch k = s.Work;
+			var credit = k.Credit; credit.Clear();
 			foreach (int i in s.Occ)
 			{
 				if (!World.HoldsSheet(w.Kinds[i])) continue;
 				if (s.Tiers[i] == Tier.Ice) continue;
 				int mobile = s.Dl[i] - p.RetentionDl;
+				int edgeCap = w.Kinds[i] == Kind.Door && mobile > 0
+					? (int)Math.Max(1L, (long)mobile * p.DoorLeakPermille / 1000) : int.MaxValue;
 				for (int d = 0; d < 4 && mobile > 0; d++)
 				{
 					int j = Neighbour(s.W, s.H, i, d);
@@ -387,19 +460,23 @@ namespace RimMandrake.FlowWorks
 					if (kj != Kind.Receiver && kj != Kind.Sink) continue;
 					if (!Compatible(w.BodyFluid[j], s.Fluid[i])) continue;
 					int give;
-					if (kj == Kind.Sink) { give = mobile; s.JoinedLake += give; }
+					if (kj == Kind.Sink) { give = Math.Min(mobile, edgeCap); s.JoinedLake += give; }
 					else
 					{
-						give = Math.Min(mobile, w.RoomDl[j]);
+						give = Math.Min(Math.Min(mobile, edgeCap), w.RoomDl[j]);
 						if (give <= 0) continue;
 						w.RoomDl[j] -= give; s.Returned += give;
 						if (w.BodyFluid[j] == 0) w.BodyFluid[j] = s.Fluid[i];
 						credit.TryGetValue(j, out int c0); credit[j] = c0 + give;
 					}
-					s.Dl[i] -= give; mobile -= give; touched[i] = true;
+					s.Dl[i] -= give; mobile -= give; Touch(s, i);
 				}
 			}
-			if (rep != null) { var keys = new List<int>(credit.Keys); keys.Sort(); foreach (int k in keys) rep.Returned.Add((k, credit[k])); }
+			if (rep != null && credit.Count > 0)
+			{
+				var keys = k.Keys; keys.Clear(); keys.AddRange(credit.Keys); keys.Sort();
+				foreach (int key in keys) rep.Returned.Add((key, credit[key]));
+			}
 			Compact(s, false);
 		}
 
@@ -442,7 +519,9 @@ namespace RimMandrake.FlowWorks
 		/// D3 crop timer: consecutive pulses at CropStandMinTier or above; fires once at CropKillPulses; resets below.</summary>
 		private static void Tiers(State s, Params p, PulseReport rep)
 		{
-			// cells that dried this pulse are no longer in Occ but may still carry a tier: they are swept by Compact
+			// cells that dried during this pulse are reported FIRST (FlowWorks GPT review 2026-10-22): a cell that dried in one
+			// sweep and was wetted again in a later one is None now, so the loop below reports its new tier AFTER its drying
+			FlushDried(s, rep);
 			foreach (int c in s.Occ)
 			{
 				if (s.Tiers[c] == Tier.Ice) continue; // D10: ice holds its tier until Freeze thaws it; the crop timer pauses
@@ -455,6 +534,10 @@ namespace RimMandrake.FlowWorks
 				}
 				else s.Stand[c] = 0;
 			}
+		}
+
+		private static void FlushDried(State s, PulseReport rep)
+		{
 			if (rep != null)
 				foreach (var (c, was) in s.Dried) rep.TierChanged.Add((c, was, Tier.None));
 			s.Dried.Clear();
@@ -503,16 +586,18 @@ namespace RimMandrake.FlowWorks
 		/// the spreading onto new ground (finite extent, §6 item 6); this removes its slow tail and its 1-dL staircase.
 		/// Conserves each puddle to the dL. A puddle whose every cell is asleep is skipped (levelling is idempotent).
 		/// Over-cap cells (a lowered cap, D10) are left out and drain by the sweeps.</summary>
-		private static void Level(State s, World w, Params p, bool[] touched)
+		private static void Level(State s, World w, Params p)
 		{
-			var seen = new bool[s.Dl.Length];
-			var comp = new List<int>();
-			var stack = new Stack<int>();
+			Scratch k = s.Work;
+			int[] seen = k.SeenStamp;
+			int gen = k.NextSeenGen();
+			var comp = k.Comp;
+			var stack = k.Stack; stack.Clear();
 			foreach (int seed in s.Occ)
 			{
-				if (seen[seed] || !LevelMember(s, w, p, seed)) continue;
+				if (seen[seed] == gen || !LevelMember(s, w, p, seed)) continue;
 				comp.Clear();
-				seen[seed] = true; stack.Push(seed);
+				seen[seed] = gen; stack.Push(seed);
 				bool awake = false;
 				while (stack.Count > 0)
 				{
@@ -522,12 +607,12 @@ namespace RimMandrake.FlowWorks
 					for (int d = 0; d < 4; d++)
 					{
 						int j = Neighbour(s.W, s.H, c, d);
-						if (j < 0 || seen[j] || s.Fluid[j] != s.Fluid[seed] || !LevelMember(s, w, p, j)) continue;
-						seen[j] = true; stack.Push(j);
+						if (j < 0 || seen[j] == gen || s.Fluid[j] != s.Fluid[seed] || !LevelMember(s, w, p, j)) continue;
+						seen[j] = gen; stack.Push(j);
 					}
 				}
 				if (!awake || comp.Count < 2) continue;
-				LevelPuddle(s, p, comp, touched);
+				LevelPuddle(s, p, comp);
 			}
 		}
 
@@ -535,7 +620,7 @@ namespace RimMandrake.FlowWorks
 			s.Dl[c] >= p.RetentionDl && s.Dl[c] <= p.SheetCapDl && s.Tiers[c] != Tier.Ice
 			&& (w.Kinds[c] == Kind.Open || w.Kinds[c] == Kind.Grate);
 
-		private static void LevelPuddle(State s, Params p, List<int> comp, bool[] touched)
+		private static void LevelPuddle(State s, Params p, List<int> comp)
 		{
 			int m = comp.Count, R = p.RetentionDl, cap = p.SheetCapDl;
 			var rel = new long[m];
@@ -573,7 +658,7 @@ namespace RimMandrake.FlowWorks
 				int c = comp[k];
 				if (next[k] == s.Dl[c]) continue;
 				s.Dl[c] = next[k];
-				touched[c] = true;
+				Touch(s, c);
 			}
 		}
 
