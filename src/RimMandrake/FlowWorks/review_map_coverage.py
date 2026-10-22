@@ -468,6 +468,11 @@ def check_targets(S, river_ids, rules=FEATURES):
     return bad
 
 
+# sanity floor per kind (measured 2026-10-22: 492 defs, 328 settings, 45 gizmos, 488 textures): an inventory that cannot see
+# the mod (moved Defs/, renamed Source/) would otherwise read "0 uncovered" -- a blind pass
+INVENTORY_FLOOR = {"def": 250, "set": 150, "gizmo": 20, "tex": 250}
+
+
 def write(S, path=OUT, items=None):
     import review_map_rivers as RV
     river_ids = [s["id"] for s in RV.STATIONS]
@@ -477,6 +482,8 @@ def write(S, path=OUT, items=None):
     num = {s["id"]: s["n"] for s in S}
     kinds = ("def", "set", "gizmo", "tex")
     count = {k: sum(1 for it in items if it[0] == k) for k in kinds}
+    blind = ["inventory saw only %d %s items (floor %d): the instrument is blind, not the mod covered" % (count[k], k, f)
+             for k, f in sorted(INVENTORY_FLOOR.items()) if count[k] < f]
     shown = set(num) & {r[3] for r in FEATURES}
     no_station = [s for s in S if s["id"] not in shown]
     md = ["# FlowWorks review map - feature coverage", "",
@@ -506,6 +513,8 @@ def write(S, path=OUT, items=None):
                       "**%d**. Rule targets that name no station: **%d**." % (
                           count["def"], count["set"], count["gizmo"], count["tex"], len(items), len(got),
                           len(S), len(river_ids), len(unc), len(bad)), ""]
+    if blind:
+        md += ["## INVENTORY BLIND (fails the plan)", ""] + ["- " + b_ for b_ in blind] + [""]
     if unc:
         md += ["## UNCOVERED (add a rule or a station)", ""] + ["- %s `%s` (%s)" % it for it in unc] + [""]
     if bad:
@@ -535,5 +544,5 @@ def write(S, path=OUT, items=None):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         f.write("\n".join(md))
-    return dict(path=path, items=len(items), features=len(got), uncovered=len(unc) + len(bad),
+    return dict(path=path, items=len(items), features=len(got), uncovered=len(unc) + len(bad) + len(blind),
                 matrix=len(matrix))
