@@ -15,8 +15,33 @@ namespace RimMandrake.FlowWorks.Sheet
 	{
 		public static bool sheetOverflowEnabled = false;
 
+		// stage 3: per-inflow switches (D1, D2). Off: that inflow behaves as before (refused at the brim / disclosed).
+		public static bool spillFromPumps = true;
+		public static bool spillFromRain = true;
+		public static bool spillFromFloods = true;
+		public static bool spillFromFillIn = true;
+		public static bool spillFromGravity = true;
+
 		// shipped value of every public static setting above (RM_SettingsReset); MUST stay below the last setting field
 		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_SheetSettings));
+
+		/// <summary>Does a spill from <paramref name="from"/> enter the sheet now (master switch and that inflow's switch)?</summary>
+		public static bool SpillsFrom(RM_SheetMath.Source from)
+		{
+			if (!sheetOverflowEnabled)
+			{
+				return false;
+			}
+			switch (from)
+			{
+				case RM_SheetMath.Source.Pump: return spillFromPumps;
+				case RM_SheetMath.Source.Rain: return spillFromRain;
+				case RM_SheetMath.Source.Flood: return spillFromFloods;
+				case RM_SheetMath.Source.FillIn: return spillFromFillIn;
+				case RM_SheetMath.Source.Gravity: return spillFromGravity;
+				default: return false;
+			}
+		}
 
 		public static void ResetAll()
 		{
@@ -26,6 +51,11 @@ namespace RimMandrake.FlowWorks.Sheet
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref sheetOverflowEnabled, "sheetOverflowEnabled", false);
+			Scribe_Values.Look(ref spillFromPumps, "sheetSpillFromPumps", true);
+			Scribe_Values.Look(ref spillFromRain, "sheetSpillFromRain", true);
+			Scribe_Values.Look(ref spillFromFloods, "sheetSpillFromFloods", true);
+			Scribe_Values.Look(ref spillFromFillIn, "sheetSpillFromFillIn", true);
+			Scribe_Values.Look(ref spillFromGravity, "sheetSpillFromGravity", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)

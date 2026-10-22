@@ -136,6 +136,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             if (args.Length > 0 && args[0] == "--sheet")
             {
                 SheetWaterChecks.Run(Case);
+                FloodReleaseChecks.Run(Case);
                 Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
                 return Fail.Count == 0 ? 0 : 1;
             }
@@ -2053,6 +2054,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             WaterLadderChecks.Run(Case);       // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (P14): one water ladder, base-layer dug water, migration (WaterLadderChecks.cs)
             WaterLookChecks.Run(Case);         // WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: deep navy tint steps, wet-wall shadow band, settings (WaterLookChecks.cs)
             SheetWaterChecks.Run(Case);        // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 0: the sheet-water kernel (SheetWaterChecks.cs)
+            FloodReleaseChecks.Run(Case);      // CANAL_OVERFLOW step 1: Flood_FlowWorks' four accounting faults fixed (FloodReleaseChecks.cs)
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");

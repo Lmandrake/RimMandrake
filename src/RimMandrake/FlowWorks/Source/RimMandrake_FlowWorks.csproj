@@ -132,6 +132,7 @@
     <Compile Include="RM_PitFillEffects.cs" />
     <Compile Include="RM_SlimeMath.cs" />
     <Compile Include="RM_SheetMath.cs" />
+    <Compile Include="RM_FloodReleaseMath.cs" />
     <Compile Include="Sheet\RM_MapComponent_Sheet.cs" />
     <Compile Include="Sheet\RM_SheetSettings.cs" />
     <Compile Include="Sheet\SectionLayer_RMSheetWater.cs" />
