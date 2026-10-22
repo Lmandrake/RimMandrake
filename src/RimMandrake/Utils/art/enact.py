@@ -978,9 +978,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         mine_at = I.ts(v.get("at"))
                         # an owner keep of that live picture from ANOTHER row, or from a LATER ruling on this row in
                         # another decisions file (re-enacting an old file must not undo his newer pick)
-                        prot = [k for k in idx.protected(live) if (k.get("target") or {}).get("row") != row
-                                or (k.get("via") != I.rel_via(decisions) and mine_at and I.ts(k.get("at"))
-                                    and I.ts(k.get("at")) > mine_at)]
+                        prot = [k for k in idx.protected(live) if keep_blocks_pick(k, row, mine_at, I.rel_via(decisions))]
                         if prot:
                             P["conflicts"].append(f"{row}: {mod.rsplit('/', 1)[-1]}/{r} holds {live[:12]}, owner-kept "
                                                   f"on {Path(prot[0].get('via') or '').name or 'another ruling'}; "
@@ -1067,7 +1065,10 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         P["retire"].append({"row": row, "mod": m, "rel": r, "sha": live})
             P["retire"] += retire_replaced(idx, row, v, cols, picks, protect_here, P["install"])
         # ── 3 queue / 6 todo
-        if decided and not is_cut and (dec == "redo" or note):
+        # a note typed on a row he never clicked a letter on is still his ruling: it is followed or listed as a TODO,
+        # never dropped (bug 2026-10-22, picks_dessicated RSW_Taozin: "The grub imagery obviously should not by in the
+        # adult category..." vanished from the plan because only decided rows reached this step)
+        if not is_cut and ((decided and dec == "redo") or note):
             at = v.get("at") or ""
             # a note reopened because its art jobs were withdrawn still owes its picture, even when --mark-done
             # recorded its rename/description half
@@ -1318,6 +1319,24 @@ def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] 
 
 
 # ──────────────────────────────────────────────────────────── applying ──
+
+def keep_blocks_pick(k: dict, row: str, mine_at, via: str) -> bool:
+    """Does owner keep K on the live picture stop his pick on ROW (made at MINE_AT, in decisions file VIA) installing?
+      * a keep from ANOTHER row: yes;
+      * a keep on THIS row from another decisions file: only when it is newer than his pick;
+      * a row-less keep (`art install --owner-said`, e.g. the 2026-10-16 rescale card): only when it is newer than his
+        pick, or either time is unknown. (bug 2026-10-22, picks_dessicated: 13 picks of his made that night were refused
+        over 2026-10-16 mechanical rescale installs; and the ledger stamps rulings `ts`, never `at`, so the
+        newer-than test never fired at all.)"""
+    k_at = I.ts(k.get("at") or k.get("ts"))
+    krow = (k.get("target") or {}).get("row")
+    newer = bool(mine_at and k_at and k_at > mine_at)
+    if krow == row:
+        return k.get("via") != via and newer
+    if not krow:
+        return not (mine_at and k_at) or newer
+    return True
+
 
 def redo_ref_shas(q: dict, idx: L.Index | None = None) -> list[str]:
     """The ONE picture a redraw attaches as anatomy guidance, or none:
