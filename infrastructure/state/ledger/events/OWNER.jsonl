@@ -1665,3 +1665,5 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch fw_gss_sitting with throttle fix","ts":"2026-10-22T04:56:41Z","tsn":1792645001728493739}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"main menu, bridge answering","ts":"2026-10-22T04:57:35Z","tsn":1792645055569912231}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH reach map live proof done; game closed","ts":"2026-10-22T04:58:44Z","tsn":1792645124401809238}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"review scenarios live build: launch on fw_gss_sitting","ts":"2026-10-22T05:00:30Z","tsn":1792645230450857939}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"main menu, bridge answering","ts":"2026-10-22T05:01:33Z","tsn":1792645293418491569}

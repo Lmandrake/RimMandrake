@@ -1,0 +1,189 @@
+{
+ "RM_DrawbridgePlanks_Futuristic_rd1a": {
+  "coverage": 0.729,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgePlanks_Futuristic_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DBPlanks_Futuristic",
+  "status": "PASS"
+ },
+ "RM_DrawbridgePlanks_Industrial_rd1a": {
+  "coverage": 0.75,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgePlanks_Industrial_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DBPlanks_Industrial",
+  "status": "PASS"
+ },
+ "RM_DrawbridgePlanks_Modern_rd1a": {
+  "coverage": 0.796,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgePlanks_Modern_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DBPlanks_Modern",
+  "status": "PASS"
+ },
+ "RM_DrawbridgePlanks_Scrapper_rd1a": {
+  "coverage": 0.758,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgePlanks_Scrapper_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DBPlanks_Scrapper",
+  "status": "PASS"
+ },
+ "RM_DrawbridgePlanks_Steel_rd1a": {
+  "coverage": 0.793,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgePlanks_Steel_rd1a.png",
+  "raw_size": [
+   1254,
+   1254
+  ],
+  "row": "RD_DBPlanks_Steel",
+  "status": "PASS"
+ },
+ "RM_DrawbridgePlanks_Timber_rd1a": {
+  "coverage": 0.779,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgePlanks_Timber_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DBPlanks_Timber",
+  "status": "PASS"
+ },
+ "RM_RaidPlank_Item_rd1a": {
+  "coverage": 0.264,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_RaidPlank_Item_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_RaidPlank_Item",
+  "status": "PASS"
+ },
+ "RM_RaidPlank_LaidEnd_rd1a": {
+  "coverage": 0.299,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_RaidPlank_LaidEnd_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_RaidPlank_LaidEnd",
+  "status": "PASS"
+ },
+ "RM_RaidPlank_Laid_rd1a": {
+  "coverage": 0.762,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_RaidPlank_Laid_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_RaidPlank_Laid",
+  "status": "PASS"
+ },
+ "RM_SuspensionTower_Futuristic_rd1a": {
+  "coverage": 0.369,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionTower_Futuristic_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Tower_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionTower_Futuristic_rd1b": {
+  "coverage": 0.394,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionTower_Futuristic_rd1b.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Tower_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionTower_Industrial_rd1a": {
+  "coverage": 0.369,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionTower_Industrial_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Tower_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionTower_Industrial_rd1b": {
+  "coverage": 0.501,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionTower_Industrial_rd1b.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Tower_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionTower_Modern_rd1a": {
+  "coverage": 0.36,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionTower_Modern_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Tower_Modern",
+  "status": "PASS"
+ },
+ "RM_SuspensionTower_Modern_rd1b": {
+  "coverage": 0.246,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionTower_Modern_rd1b.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Tower_Modern",
+  "status": "PASS"
+ },
+ "RM_SuspensionTower_Scrapper_rd1a": {
+  "coverage": 0.357,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionTower_Scrapper_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Tower_Scrapper",
+  "status": "PASS"
+ },
+ "RM_SuspensionTower_Scrapper_rd1b": {
+  "coverage": 0.418,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionTower_Scrapper_rd1b.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Tower_Scrapper",
+  "status": "PASS"
+ }
+}
