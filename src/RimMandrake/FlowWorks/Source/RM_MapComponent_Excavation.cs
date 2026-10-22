@@ -251,6 +251,13 @@ namespace RimMandrake.FlowWorks
 
 		public float OverflowDestroyedTotal => overflowDestroyedTotal;
 
+		/// <summary>Owner card 2026-10-22 ("Count silently, show in ledger"): what released floods (a heat-kit release, a forge
+		/// flood, a tar belch) had nowhere to go, in dL. Counted with the overflow exit (destroyed), shown in the liquid ledger
+		/// readout (Mod Settings, spilled-water section), never messaged.</summary>
+		private long releaseLostDl;
+
+		public long ReleaseLostDl => releaseLostDl;
+
 		public int ExcavatedCellCount => excavatedCells.Count;
 		/// <summary>Read-only view of the excavated set (LIQUID_HEAT_PUSH_1). Never mutate while iterating.</summary>
 		public IEnumerable<IntVec3> ExcavatedCells => excavatedCells;
@@ -884,6 +891,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref nextPulseTick, "RM_nextPulseTick", -1);
 			Scribe_Values.Look(ref pulseCount, "RM_pulseCount", 0L);
 			Scribe_Values.Look(ref overflowDestroyedTotal, "RM_overflowDestroyedTotal", 0f);
+			Scribe_Values.Look(ref releaseLostDl, "RM_releaseLostDl", 0L);
 			Scribe_Values.Look(ref legacyRehydrationDone, "RM_legacyRehydrationDone", false);
 			// PHASE 4. Everything persistent the stock model adds is scribed
 			// here: the original-terrain record, the bodies (their sticky
@@ -2589,13 +2597,22 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES: liquid with truly nowhere to go is the disclosed loss (owner: overflow
 		/// destroys only where the game announces the amount): counted with the fill-in overflow and announced in litres.</summary>
-		public void ReportLiquidLost(IntVec3 at, long dl, string what)
+		public void ReportLiquidLost(IntVec3 at, long dl, string what) => ReportLiquidLost(at, dl, what, false);
+
+		/// <summary><paramref name="silent"/> (a released flood's remainder, owner card 2026-10-22 "Count silently, show in
+		/// ledger"): counted exactly as the announced loss and in <see cref="ReleaseLostDl"/>, with no message.</summary>
+		public void ReportLiquidLost(IntVec3 at, long dl, string what, bool silent)
 		{
 			if (dl <= 0)
 			{
 				return;
 			}
 			NotifyOverflowDestroyed(dl / (float)RM_LevelSolve.U);
+			if (silent)
+			{
+				releaseLostDl += dl;
+				return;
+			}
 			Messages.Message(what + " had nowhere to go: " + RM_Volume.FormatLitres(dl / (double)RM_Volume.UnitsPerLitre) + " were lost. "
 				+ "Lost this way on this map so far: " + RM_Volume.FormatLitres(overflowDestroyedTotal * (double)RM_Volume.LitresPerLevel) + ".",
 				new TargetInfo(at, map), MessageTypeDefOf.NeutralEvent, false);

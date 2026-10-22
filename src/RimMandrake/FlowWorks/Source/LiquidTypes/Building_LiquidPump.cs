@@ -457,18 +457,19 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				{
 					return viaOutflow;
 				}
-				// CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 1 (D2): backed up against a brimming canal of water, the level
-				// spills over that canal's lip as sheet water (switch off, or the sheet full: refused, backed up as before)
-				if (Sheet.RM_MapComponent_Sheet.PumpSpillOutlet(Map, cells, cd, units, out IntVec3 spillAt))
+				// CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 1 (D2): backed up against a brimming canal of its own liquid, the
+				// level spills over that canal's lip as a sheet (every FlowWorks liquid, owner 2026-10-22: "Build for all flowworks
+				// liquids."; switch off, or the sheet full: refused, backed up as before)
+				foreach (Building_LiquidTank st in tanks)
 				{
-					foreach (Building_LiquidTank st in tanks)
+					LiquidDef sp = st.storedLiquid;
+					FluidDef spf = sp?.canalFluid;
+					if (spf == null || !st.CanProvide(units) || !Sheet.RM_MapComponent_Sheet.PumpSpillOutlet(Map, cells, cd, units, spf, out IntVec3 spillAt))
 					{
-						LiquidDef sp = st.storedLiquid;
-						if (sp?.canalFluid != RimMandrakeFlowWorks_DefOf.RM_Fluid_Water || !st.CanProvide(units))
-						{
-							continue;
-						}
-						if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k => st.CanProvide(k), k => st.TryRemoveLiquid(k), k => st.TryAddLiquid(sp, k)), Sheet.RM_MapComponent_Sheet.SpillLeg(Map, spillAt, RM_SheetMath.Source.Pump), out _) == units)
+						continue;
+					}
+					{
+						if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k => st.CanProvide(k), k => st.TryRemoveLiquid(k), k => st.TryAddLiquid(sp, k)), Sheet.RM_MapComponent_Sheet.SpillLeg(Map, spillAt, spf, RM_SheetMath.Source.Pump), out _) == units)
 						{
 							Machinery.RM_LiquidNet.Credit(this, st, sp, units, RM_PumpMath.CycleTicks);   // credit site: pump overflow spill
 							Stamp(units);

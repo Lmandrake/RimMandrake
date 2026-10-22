@@ -33,6 +33,10 @@ namespace RimMandrake.FlowWorks.Sheet
 		public static bool pawnEffectsEnabled = true;      // path cost + SoakingWet at sheet depth; drowning in deep standing water
 		public static bool putsOutFireEnabled = true;      // water sheets put out fire
 
+		// all liquids (owner 2026-10-22: "Build for all flowworks liquids.")
+		public static bool otherLiquidsSpillEnabled = true; // every FlowWorks liquid spills, not only water (each by its FluidDef)
+		public static bool fuelSpillsBurnEnabled = true;    // D5: spilled fuel spreads and burns (its own setting)
+
 		// tuning (defaults = shipped). Whole numbers where the bridge sets them (jawa/mod_settings_field).
 		public static int sheetCapCm = 50;                 // the deepest a sheet stands (a walled yard); lowering it deletes nothing
 		public static int maxWetSquares = 4000;            // the most squares spilled water may cover on one map
@@ -83,6 +87,8 @@ namespace RimMandrake.FlowWorks.Sheet
 			Scribe_Values.Look(ref irrigateEnabled, "sheetIrrigates", true);
 			Scribe_Values.Look(ref pawnEffectsEnabled, "sheetPawnEffects", true);
 			Scribe_Values.Look(ref putsOutFireEnabled, "sheetPutsOutFire", true);
+			Scribe_Values.Look(ref otherLiquidsSpillEnabled, "sheetOtherLiquidsSpill", true);
+			Scribe_Values.Look(ref fuelSpillsBurnEnabled, "sheetFuelSpillsBurn", true);
 			Scribe_Values.Look(ref sheetCapCm, "sheetCapCm", 50);
 			Scribe_Values.Look(ref maxWetSquares, "sheetMaxWetSquares", 4000);
 			Scribe_Values.Look(ref retentionCm, "sheetRetentionCm", 1f);
@@ -108,8 +114,16 @@ namespace RimMandrake.FlowWorks.Sheet
 			list.CheckboxLabeled("Overfilled channels spill water onto the ground", ref sheetOverflowEnabled,
 				"On: water that a full channel cannot take runs over the edge as a thin sheet on the ground around it. The sheet "
 				+ "spreads until it is about 1 cm deep, lies level, runs back into any channel, pit or pond with room, soaks in and "
-				+ "dries. Every litre is counted. Water only, for now. Off: a full channel refuses the water as before. Water already "
+				+ "dries. Every litre is counted. Off: a full channel refuses the water as before. Water already "
 				+ "spilled keeps draining away; turning this off never deletes it.");
+			list.CheckboxLabeled("  Every liquid spills, not only water (fuel, oil, tar, slime, blood...)", ref otherLiquidsSpillEnabled,
+				"Each spills by its own nature: thick liquids soak in and dry slowly, propane boils off, poison poisons whoever "
+				+ "stands in it, and different liquids never mix (a square holding one refuses another). Off: only water spills; "
+				+ "a full channel of anything else refuses as before.");
+			list.CheckboxLabeled("  Spilled fuel spreads and burns", ref fuelSpillsBurnEnabled,
+				"A fire or a blast on or beside spilled fuel lights it; the fire runs across the spill at the fuel's own speed, into "
+				+ "any channel of fuel it touches and back, and burns the spill away (chemfuel fast, oil and tar slowly, astrofuel "
+				+ "explodes). Burned fuel is counted in the ledger below. Needs 'Burning liquid' on.");
 			list.Label("Which water spills (each needs the switch above):");
 			list.CheckboxLabeled("  Pumps pouring into a full channel", ref spillFromPumps,
 				"Off: a pump backed up against a full channel stays backed up, as before.");
@@ -128,7 +142,8 @@ namespace RimMandrake.FlowWorks.Sheet
 			list.CheckboxLabeled("  Water that soaks in waters the ground (Explosive Growth)", ref irrigateEnabled,
 				"Only when the Explosive Growth mod is loaded.");
 			list.CheckboxLabeled("  Pawns wade (slower, soaking wet) and can drown lying in deep water", ref pawnEffectsEnabled);
-			list.CheckboxLabeled("  Spilled water puts out fire", ref putsOutFireEnabled);
+			list.CheckboxLabeled("  Spilled water puts out fire", ref putsOutFireEnabled,
+				"Any spill that does not burn puts out a fire standing in it; spilled fuel never does.");
 			list.Label("Tuning (the defaults are the shipped game; loss rates are first guesses, to be tuned):");
 			sheetCapCm = Mathf.RoundToInt(list.SliderLabeled("Deepest a sheet can stand: " + sheetCapCm + " cm", sheetCapCm, 5f, 100f, 0.5f,
 				"Only a walled yard gets this deep. Lowering it stops further filling; water already deeper stays and drains away."));

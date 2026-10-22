@@ -615,6 +615,95 @@ namespace RimMandrake.FlowWorks.SelfTest
 					}
 				}
 			});
+
+			// owner 2026-10-22 "Build for all flowworks liquids.": each liquid's sheet rule comes from its own FluidDef
+			Case("Sheet_all_liquids_each_follow_their_own_FluidDef", () =>
+			{
+				FluidRule water = RM_SheetFluidMath.RuleFor(false, false, false, 60, -1, -1);
+				Assert(water.InfiltrationPermille == 1000 && water.EvaporationPermille == 1000 && !water.NeverFreezes && water.FreezeDeciC == 0,
+					"water soaks and dries at the ground's rate and freezes at 0 C");
+				FluidRule tar = RM_SheetFluidMath.RuleFor(true, false, false, 360, -1, -1);
+				Assert(tar.InfiltrationPermille == 166 && tar.EvaporationPermille == 166 && tar.NeverFreezes,
+					"tar (6x thicker) soaks and dries at a sixth, and a fuel never freezes: " + tar.InfiltrationPermille);
+				FluidRule slime = RM_SheetFluidMath.RuleFor(false, false, true, 480, -1, -1);
+				Assert(slime.InfiltrationPermille == 125 && slime.NeverFreezes, "slime is thick and slippery: slow, never freezes");
+				FluidRule boiling = RM_SheetFluidMath.RuleFor(false, true, false, 60, -1, -1);
+				Assert(boiling.EvaporationPermille == 3000 && boiling.NeverFreezes, "a hot liquid dries 3x and never freezes");
+				FluidRule propane = RM_SheetFluidMath.RuleFor(true, false, false, 60, 0, 2000);
+				Assert(propane.InfiltrationPermille == 0 && propane.EvaporationPermille == 20000, "an authored percent overrides (propane boils off)");
+				FluidRule glacial = RM_SheetFluidMath.RuleFor(false, false, false, 100000, -1, -1);
+				Assert(glacial.InfiltrationPermille == 100, "the viscosity floor is 10%");
+				Assert(RM_SheetFluidMath.PutsOutFire(false) && !RM_SheetFluidMath.PutsOutFire(true), "only a liquid that does not burn puts fire out");
+			});
+
+			// D5: a burning spill loses liquid to the 'burned' exit, conserving the ledger to the dL; a square burned dry leaves
+			Case("Sheet_D5_fuel_burns_away_counted_and_the_front_runs_at_the_fuel_speed", () =>
+			{
+				var w = new World(10, 3);
+				w.Fluids[Chemfuel] = RM_SheetFluidMath.RuleFor(true, false, false, 60, -1, -1);
+				var p = new Params();
+				var s = new State(10, 3, 9u);
+				int[] acc = ResolveSpills(s, w, p, new[] { Offer(3000, Chemfuel, Source.Flood, Idx(w, 4, 1)) });
+				Assert(acc[0] == 3000, "the fuel spill is accepted");
+				Run(s, w, p, 4);
+				int c = s.Occ[0];
+				int had = s.Dl[c];
+				Assert(Burn(s, c, 100) == 100 && s.Burned == 100 && s.LedgerCloses, "a partial burn is counted as burned");
+				Assert(Burn(s, c, int.MaxValue) == had - 100 && s.Dl[c] == 0 && !s.Occ.Contains(c) && s.LedgerCloses,
+					"burning a square dry takes exactly what stood there and the square leaves the wet set");
+				Assert(Burn(s, c, 50) == 0 && Burn(s, -1, 50) == 0, "nothing burns where nothing stands");
+				Run(s, w, p, 20);
+				// the inferno rate: a level (U dL) every 300 ticks at burn rate 1, carried exactly across 60-tick checks
+				int tpl = RM_FuelFireMath.InfernoTicksPerLevelAt(1f), a = 0, sum = 0;
+				for (int k = 0; k < 5; k++) sum += RM_SheetFluidMath.BurnDue(ref a, 60, tpl, RM_LevelSolve.U);
+				Assert(tpl == 300 && sum == RM_LevelSolve.U && a == 0, "five 60-tick checks of an inferno burn exactly one level: " + sum);
+				int tday = RM_FireMath.TicksPerCanalLevel(1f); a = 0; sum = 0;
+				for (int k = 0; k < 1000; k++) sum += RM_SheetFluidMath.BurnDue(ref a, 60, tday, RM_LevelSolve.U);
+				Assert(sum == RM_LevelSolve.U, "ruling 7: a thousand checks of 60 ticks (one day) burn one notch of oil: " + sum);
+				Assert(!RM_SheetFluidMath.FrontReaches(1000, 1119, 120, 1f) && RM_SheetFluidMath.FrontReaches(1000, 1120, 120, 1f),
+					"the front reaches the next square fireFrontTicksPerCell after this one lit");
+				Assert(RM_SheetFluidMath.FrontReaches(1000, 1060, 120, 2f), "a faster front (the speed dial) gets there sooner");
+			});
+
+			// all liquids: a canal or pond of another liquid never takes a spill back, and a spill next to it stays itself
+			Case("Sheet_a_body_of_another_liquid_refuses_the_return", () =>
+			{
+				var w = new World(8, 3);
+				int body = Idx(w, 5, 1);
+				w.Kinds[body] = Kind.Receiver; w.RoomDl[body] = 100000; w.BodyFluid[body] = Water;
+				var p = new Params();
+				var s = new State(8, 3, 4u);
+				ResolveSpills(s, w, p, new[] { Offer(6000, Chemfuel, Source.Pump, Idx(w, 4, 1)) });
+				Run(s, w, p, 200);
+				Assert(s.Returned == 0 && w.RoomDl[body] == 100000, "a water channel takes no chemfuel");
+				w.BodyFluid[body] = Chemfuel;
+				Run(s, w, p, 50);
+				Assert(s.Returned > 0 && s.LedgerCloses, "a chemfuel channel beside it takes its own liquid back");
+			});
+
+			// wiring (source text): the owner's two rulings of 2026-10-22 are in the production entries
+			Case("Sheet_all_liquids_and_silent_release_loss_are_wired", () =>
+			{
+				string sheet = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs"));
+				string set = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_SheetSettings.cs"));
+				string flood = RiverSwitchFlipChecks.Src("Flood_FlowWorks.cs");
+				string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+				string fire = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_SheetFire.cs"));
+				Assert(set.Contains("public static bool sheetOverflowEnabled = false;"), "the master switch still ships OFF");
+				Assert(set.Contains("public static bool otherLiquidsSpillEnabled = true;") && set.Contains("public static bool fuelSpillsBurnEnabled = true;"),
+					"all liquids and D5 fuel fire have their own settings");
+				Assert(sheet.Contains("(fluid == Water || RM_SheetSettings.otherLiquidsSpillEnabled)") && !sheet.Contains("fluid != null && fluid == Water;"),
+					"every liquid is accepted, not only water");
+				Assert(sheet.Contains("RM_StockMath.FluidsCompatible(held != null, held, fluid)") && sheet.Contains("RM_StockMath.FluidsCompatible(held != null, held, f)"),
+					"the lip walk and the engine credit refuse another liquid (fluids never mix)");
+				Assert(sheet.Contains("RM_SheetFluidMath.RuleFor(Burnable(f), f.hot, f.slipperiness > 0f, f.ticksPerTile"), "each liquid's rule is its FluidDef's");
+				Assert(fire.Contains("RM_SheetMath.Burn(state, i, dl)") && fire.Contains("RM_SheetSettings.fuelSpillsBurnEnabled"),
+					"fuel burns through the counted exit, behind its own setting");
+				string end = flood.Substring(flood.IndexOf("private void EndRelease()"));
+				Assert(end.Contains("silent: true"), "a release's lost remainder is counted silently (owner card 2026-10-22)");
+				Assert(ex.Contains("releaseLostDl += dl;") && ex.Contains("Scribe_Values.Look(ref releaseLostDl"), "it is counted and saved");
+				Assert(sheet.Contains("released floods with nowhere to go lost"), "the liquid ledger readout shows it");
+			});
 		}
 	}
 }

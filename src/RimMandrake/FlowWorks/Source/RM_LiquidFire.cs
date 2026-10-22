@@ -1211,6 +1211,7 @@ namespace RimMandrake.FlowWorks
 			}
 			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
 			ex?.LiquidFire.NotifyFireAt(map, ex, __instance.Position);
+			Sheet.RM_MapComponent_Sheet.NotifyFireAt(map, __instance.Position);   // D5: a burnable spill beside it lights too
 		}
 	}
 
@@ -1225,6 +1226,10 @@ namespace RimMandrake.FlowWorks
 			if (map == null)
 			{
 				return;
+			}
+			if (RimMandrakeFlowWorksSettings.canalFireEnabled && RM_FireMath.ExplosionIgnites(explosion.damType?.defName))
+			{
+				Sheet.RM_MapComponent_Sheet.Of(map)?.TryLight(c);   // D5: a flame or bomb blast lights a burnable spill it touches
 			}
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
 			if (ex == null || (ex.LiquidFire.BurningCount == 0 && ex.LiquidFire.PendingCount == 0

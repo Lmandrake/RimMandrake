@@ -40,6 +40,28 @@ namespace RimMandrake.FlowWorks.Sheet
 			}
 		}
 
+		private static readonly System.Collections.Generic.Dictionary<(FluidDef, Tier), Material> byFluid =
+			new System.Collections.Generic.Dictionary<(FluidDef, Tier), Material>();
+
+		/// <summary>All liquids (owner 2026-10-22): a spill of another liquid takes that liquid's own colour (its brim fill
+		/// terrain's), deeper tiers more opaque; water keeps the water materials.</summary>
+		private static Material MatFor(FluidDef f, Tier t)
+		{
+			TerrainDef look = f == null || f == RimMandrakeFlowWorks_DefOf.RM_Fluid_Water ? null : (f.fillTerrainBrim ?? f.floodTerrain);
+			if (look == null || t == Tier.None)
+			{
+				return Mat(t);
+			}
+			if (!byFluid.TryGetValue((f, t), out Material m))
+			{
+				Color col = look.color;
+				col.a = t == Tier.Film ? 0.30f : t == Tier.Sheet ? 0.55f : 0.72f;
+				m = MaterialPool.MatFrom(BaseContent.WhiteTex, ShaderDatabase.Transparent, col);
+				byFluid[(f, t)] = m;
+			}
+			return m;
+		}
+
 		public override void Regenerate()
 		{
 			ClearSubMeshes(MeshParts.All);
@@ -52,7 +74,8 @@ namespace RimMandrake.FlowWorks.Sheet
 			float y = AltitudeLayer.TerrainScatter.AltitudeFor() + 0.002f;
 			foreach (IntVec3 c in section.CellRect)
 			{
-				Material m = Mat(s.TierAt(c));
+				Tier tier = s.TierAt(c);
+				Material m = tier == Tier.Ice ? Mat(tier) : MatFor(s.FluidAt(c), tier);
 				if (m == null)
 				{
 					continue;

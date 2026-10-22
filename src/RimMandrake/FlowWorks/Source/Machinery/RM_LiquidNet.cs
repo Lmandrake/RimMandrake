@@ -810,7 +810,7 @@ namespace RimMandrake.FlowWorks.Machinery
 							long head = Sheet.RM_MapComponent_Sheet.GravityProbe(map, end, System.Math.Min(left, tank.storedUnits), fluid);
 							if (head > 0)
 							{
-								RM_TransferLeg lip = Sheet.RM_MapComponent_Sheet.SpillLeg(map, end, RM_SheetMath.Source.Gravity);
+								RM_TransferLeg lip = Sheet.RM_MapComponent_Sheet.SpillLeg(map, end, fluid, RM_SheetMath.Source.Gravity);
 								if (RM_LiquidTransfer.Move((int)head, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(liquid, k)), lip, out RM_MoveOutcome gm) > 0)
 								{
 									CreditRoute(map, comps.RouteIn(c, tank, port), liquid, gm.Moved, RM_PumpMath.CycleTicks, FillFrom(tank, liquid));   // credit site: gravity overflow

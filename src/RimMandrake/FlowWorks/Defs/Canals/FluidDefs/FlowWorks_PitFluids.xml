@@ -110,6 +110,10 @@
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Propane</defName>
     <label>liquid propane</label>
+    <!-- CANAL_OVERFLOW (all liquids, owner 2026-10-22): spilled propane boils off fast, so a lit propane spill is a flash,
+         not a pool (spec §3 fire). PROVISIONAL 20x water's drying rate; nothing soaks in. -->
+    <sheetSoakPercent>0</sheetSoakPercent>
+    <sheetEvaporationPercent>2000</sheetEvaporationPercent>
     <fireKind>Inferno</fireKind>
     <fireFrontTicksPerCell>2</fireFrontTicksPerCell>
     <floodTerrain>RM_Fill_Propane_Trace</floodTerrain>

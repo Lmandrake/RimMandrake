@@ -718,6 +718,26 @@ namespace RimMandrake.FlowWorks
 			return sum;
 		}
 
+		/// <summary>D5 (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>): a burning cell of a burnable spill loses
+		/// up to <paramref name="dl"/>; the burned dL is GONE, counted in <see cref="State.Burned"/> (a disclosed exit). The
+		/// cell's neighbours wake (a lowered cell lets mobile liquid run in). Returns the dL burned. The caller must not be
+		/// iterating <see cref="State.Occ"/> (a cell burned dry is compacted out).</summary>
+		public static int Burn(State s, int cell, int dl)
+		{
+			if (cell < 0 || cell >= s.Dl.Length || dl <= 0) return 0;
+			int take = Math.Min(dl, s.Dl[cell]);
+			if (take <= 0) return 0;
+			s.Dl[cell] -= take; s.Burned += take;
+			for (int d = 0; d < 4; d++)
+			{
+				int j = Neighbour(s.W, s.H, cell, d);
+				if (j >= 0) s.Calm[j] = 0;
+			}
+			s.Calm[cell] = 0;
+			if (s.Dl[cell] == 0) Compact(s, false);
+			return take;
+		}
+
 		// ── persistence (§6 item 4): everything a continuation needs, versioned ──
 
 		public static byte[] Save(State s)
@@ -772,5 +792,42 @@ namespace RimMandrake.FlowWorks
 			foreach (byte b in Save(s)) { h ^= b; h *= 1099511628211UL; }
 			return h;
 		}
+	}
+
+	/// <summary>D5 widened (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>): every FlowWorks liquid spills as a
+	/// sheet, and each follows its own FluidDef. Verse-free, so the selftest proves the mapping: the component feeds it the
+	/// FluidDef's fields.</summary>
+	public static class RM_SheetFluidMath
+	{
+		/// <summary>The kernel rule for a fluid from its properties. Viscosity is <paramref name="ticksPerTile"/> (water 60): a
+		/// thicker liquid soaks in and dries slower by 60 / ticksPerTile (floor 10%). A hot liquid dries 3x faster. A liquid
+		/// that is not burnable, not hot and not slippery freezes like water at 0 °C (water, icy water, blood, poisoned water);
+		/// fuels, slimes and hot liquids never freeze. An authored percent (0 or more) overrides the derived one.</summary>
+		public static RM_SheetMath.FluidRule RuleFor(bool burnable, bool hot, bool slippery, int ticksPerTile, int soakPercent,
+			int evapPercent)
+		{
+			int v = ticksPerTile <= 60 ? 1000 : Math.Max(100, 60000 / ticksPerTile);
+			bool freezes = !burnable && !hot && !slippery;
+			return new RM_SheetMath.FluidRule
+			{
+				InfiltrationPermille = soakPercent >= 0 ? soakPercent * 10 : v,
+				EvaporationPermille = evapPercent >= 0 ? evapPercent * 10 : (hot ? 3 * v : v),
+				FreezeDeciC = 0,
+				NeverFreezes = !freezes,
+			};
+		}
+
+		/// <summary>A standing sheet of this liquid puts out a fire on its square: any liquid that does not burn.</summary>
+		public static bool PutsOutFire(bool burnable) => !burnable;
+
+		/// <summary>The burning front reaches a neighbouring square of burnable spill <paramref name="ticksPerCell"/> (scaled by
+		/// the front speed) after the square it comes from lit: RM_FireMath.FrontDue, the one front of every burnable liquid.</summary>
+		public static bool FrontReaches(int litTick, int now, int ticksPerCell, float speed) =>
+			now >= RM_FireMath.FrontDue(litTick, ticksPerCell, speed);
+
+		/// <summary>dL a burning square loses over <paramref name="ticks"/>: one notch (<paramref name="dlPerNotch"/>) every
+		/// <paramref name="ticksPerNotch"/>, the remainder carried in <paramref name="acc"/> (RM_FireMath.DlDue).</summary>
+		public static int BurnDue(ref int acc, int ticks, int ticksPerNotch, int dlPerNotch) =>
+			(int)Math.Min(int.MaxValue, RM_FireMath.DlDue(ref acc, ticks, ticksPerNotch, dlPerNotch));
 	}
 }

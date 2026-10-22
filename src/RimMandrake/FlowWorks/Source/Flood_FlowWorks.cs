@@ -297,7 +297,8 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>§6 item 15: the ONE way a release ends. What it still holds is offered to the sheet once more, and the
-		/// rest is disclosed as lost (counted with the fill-in overflow and announced in litres), never dropped silently.</summary>
+		/// rest is disclosed as lost: counted with the fill-in overflow and shown in the liquid ledger readout (owner card
+		/// 2026-10-22: counted silently, no message), never dropped uncounted.</summary>
 		private void EndRelease()
 		{
 			Map map = Map;
@@ -311,7 +312,8 @@ namespace RimMandrake.FlowWorks
 				RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
 				if (ex != null)
 				{
-					ex.ReportLiquidLost(Position, lost, "A released flood of " + (fluidDef?.label ?? "a removed liquid"));
+					// owner card 2026-10-22 "Count silently, show in ledger": counted, shown in the liquid ledger readout, no message
+					ex.ReportLiquidLost(Position, lost, "A released flood of " + (fluidDef?.label ?? "a removed liquid"), silent: true);
 				}
 				else
 				{
