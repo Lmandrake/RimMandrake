@@ -1656,3 +1656,5 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"bridge answers on 5174 after relaunch","ts":"2026-10-22T04:38:54Z","tsn":1792643934969881872}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"restart to deploy FlowWorks ResetDetector-on-load fix","ts":"2026-10-22T04:45:31Z","tsn":1792644331413820330}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch for PITFALL_SAVED_ARRIVAL_FALLS","ts":"2026-10-22T04:45:42Z","tsn":1792644342111012145}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"bridge answers after relaunch","ts":"2026-10-22T04:46:28Z","tsn":1792644388243078650}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"FlowWorks live queue finished; closing to restore the full mod list","ts":"2026-10-22T04:48:01Z","tsn":1792644481852217926}
