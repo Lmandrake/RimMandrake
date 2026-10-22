@@ -34,6 +34,9 @@ namespace RimMandrake.FlowWorks.Machinery
             // picker once its style defs (Defs/Rivers/RM_BankWeirStyles.xml, RM_BankWeir_<Look>) are loaded
             if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(PipeStyles.StyleDefName(PipeStyles.WeirDef, PipeStyles.Scrapper)) != null)
                 Core.Register(new[] { PipeStyles.WeirDef }, PipeStyles.StyleDefName);
+            // owner card 2026-10-22 (pumps E/F/G): the liquid pump joins once RM_LiquidPumpStyles.xml is loaded
+            if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(PipeStyles.StyleDefName(PipeStyles.PumpDef, PipeStyles.Scrapper)) != null)
+                Core.Register(new[] { PipeStyles.PumpDef }, PipeStyles.StyleDefName);
             PipeStyleIndex.core = Core;
         }
 
@@ -192,7 +195,7 @@ namespace RimMandrake.FlowWorks.Machinery
             yield return new Command_Action
             {
                 defaultLabel = "Choose style",
-                defaultDesc = "Change how this tank looks (scrapper, industrial, modern, futuristic): this tank, or every selected tank. " +
+                defaultDesc = "Change how this " + parent.def.label + " looks (scrapper, industrial, modern, futuristic): this one, or every selected one. " +
                               "Free and instant; it changes art only, never cost, capacity or function.",
                 icon = parent.StyleDef?.UIIcon ?? (Texture2D)parent.def.uiIcon,
                 action = () =>
@@ -205,9 +208,9 @@ namespace RimMandrake.FlowWorks.Machinery
                         ThingStyleDef sd = PipeLook.StyleFor(parent.def, look);
                         if (sd == null) continue;
                         string l = look;
-                        opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : "") + ": this tank", () => SetLook(parent, l), sd.UIIcon, Color.white));
+                        opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : "") + ": this " + parent.def.label, () => SetLook(parent, l), sd.UIIcon, Color.white));
                         if (sel.Count > 1)
-                            opts.Add(new FloatMenuOption(look + ": every selected tank (" + sel.Count + ")", () =>
+                            opts.Add(new FloatMenuOption(look + ": every selected one (" + sel.Count + ")", () =>
                             {
                                 foreach (Thing t in sel) SetLook(t, l);
                             }, sd.UIIcon, Color.white));

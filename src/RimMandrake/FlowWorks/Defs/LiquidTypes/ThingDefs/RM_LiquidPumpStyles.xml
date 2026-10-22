@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The liquid pump's four looks (owner card 2026-10-22: install pumps E Industrial, F Modern, G Futuristic; Scrapper keeps
+     today's pump). Picked on the build button through the shared style picker (Machinery/PipeLook.cs registers
+     PipeStyles.PumpDef once these load) and changed on a built pump by its Choose style gizmo (CompTankLook). No
+     StyleCategoryDef lists these, so no ideoligion can hand them out. A style never moves the drawing (drawSize = the pump's). -->
+<Defs>
+
+  <ThingStyleDef>
+    <defName>RM_LiquidPump_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidPump</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_LiquidPump_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Pump/Industrial/RM_LiquidPump</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_LiquidPump_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_LiquidPump_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Pump/Futuristic/RM_LiquidPump</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+</Defs>
