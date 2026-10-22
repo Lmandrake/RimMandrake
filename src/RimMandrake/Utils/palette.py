@@ -340,6 +340,9 @@ def main():
     if a.check:
         problems, cut_provenance = check(p, a.dump)
         n = len(self_defs(p))
+        if n == 0:
+            print("check: UNMEASURED -- the palette names no defs, so nothing was checked")
+            return 1
         if cut_provenance:
             print("\n%s" % cut_provenance)
         if problems:
