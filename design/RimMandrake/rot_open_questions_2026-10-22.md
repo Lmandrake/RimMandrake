@@ -57,6 +57,8 @@ with no Star Wars content.
 **Recommended: 1** — the Rot is where their behaviour was ruled and where they are most often met; the two holes
 it opens are ordinary roster work.
 
+**ANSWERED 2026-10-22 by question card, write-in:** *"Like needs to move. Wait until biome reviews. But you are right they should not be like this."* = leave them until each biome's review sitting (no eviction now); he agrees the multi-homing is wrong and they will move at the sittings.
+
 ---
 
 ## Q2. The warm mat versus "no biome-specific heat"
@@ -84,6 +86,8 @@ and the Rot also has a second biome-only warmth: fresh Rot produce gives off hea
 
 **Recommended: 1** — the September ruling is specific and deliberate, and the October one names the sun; a one-line
 clarification is cheaper than either rebuild.
+
+**ANSWERED 2026-10-22 by question card, write-in:** *"Make it work anywhere but it not naturally occurs in the rot. Can be installed on the gravship to help with heating in cold places as a reward. Needs food. Would grow in other biomes if tended with food. Rot doesn't require feeding due to sharing lore."* = a new design (filed as a build item).
 
 ---
 
