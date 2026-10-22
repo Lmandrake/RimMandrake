@@ -69,12 +69,10 @@ type in workerClass is a hard dependency the RimMandrake tier may not
 assume) plus its own two floor TerrainDefs (RM_RustCathedral_CrackedMetalSoil,
 RM_RustCathedral_PolymerFloor — own defNames, no donor ParentName chain).
 
-⚠️ Not texture-free: those two TerrainDefs and the biome's own world-map icon
-still point at Alpha Biomes' own pixels (no art pipeline pass has run for
-this biome's floor yet), so sarg.alphabiomes ships as a hard modDependency
-rather than an optional MayRequire — same disclosed trade RM_Miasma makes
-for its own flora textures. A future pass can generate this mod's own art
-and drop the dependency; nothing here blocks that.
+Floor art: those two TerrainDefs and the biome's own world-map icon use pixels
+copied into this mod's own Textures/ folder (the Alpha Biomes originals; Alpha Biomes is
+no longer in the mod list and is NOT a dependency). No art pipeline pass has run for
+this biome's floor yet; a future pass can replace the copied pixels (only texturePath moves).
 
 The absorbed kit's fishing consequences (RM_CoolantEelCatch, the sole entry in
 this biome's fishTypes) and wall-tier scatter (forceRockTypes plus two

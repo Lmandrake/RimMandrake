@@ -8,17 +8,11 @@
   changes that defName). These two OWN TerrainDefs remove that def
   dependency: no ParentName chain into an Alpha Biomes def, own defNames.
 
-  TEXTURE RELIANCE IS NOT REMOVED, and is disclosed rather than hidden: both
-  texturePaths below point at the SAME pixels Alpha Biomes ships
-  (Terrain/Surfaces/AB_SoilOnCrackedMetal, Terrain/Surfaces/AB_Polymer —
-  vendor/mod_sources/AlphaBiomes_src/1.6/Defs/TerrainDefs/
-  Terrain_MechanoidIntrusion.xml), so sarg.alphabiomes ships as a hard
-  modDependency in About.xml — same trade RM_Miasma already makes for 96.5%
-  of its flora textures, for the same reason: no art pipeline pass has run
-  for this biome's floor yet, and a magenta/missing floor texture is worse
-  than an honest, disclosed donor-texture dependency. A future pass can
-  generate this mod's own floor art and drop the dependency; nothing here
-  blocks that (only texturePath moves).
+  TEXTURE ORIGIN: both texturePaths point at pixels copied from Alpha Biomes
+  (Terrain/Surfaces/AB_SoilOnCrackedMetal, Terrain/Surfaces/AB_Polymer) into this
+  mod's own Textures/ folder, so Alpha Biomes (retired from the mod list) is NOT
+  a dependency of this mod. No art pipeline pass has run for this biome's floor
+  yet; a future pass can generate its own floor art (only texturePath moves).
 
   Field values (edgeType/renderPrecedence/statBases/affordances/fertility)
   copied from the donor def (same source file) since this mod's own biome

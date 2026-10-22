@@ -89,7 +89,6 @@
       <MaxHitPoints>70</MaxHitPoints>
       <Flammability>0.8</Flammability>
     </statBases>
-    <ingestible/>
     <ingestible>
       <preferability>NeverForNutrition</preferability>
     </ingestible>
@@ -139,7 +138,6 @@
       <MaxHitPoints>60</MaxHitPoints>
       <Flammability>0.7</Flammability>
     </statBases>
-    <ingestible/>
     <ingestible>
       <preferability>NeverForNutrition</preferability>
     </ingestible>
