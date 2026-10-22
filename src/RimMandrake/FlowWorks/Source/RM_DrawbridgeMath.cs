@@ -436,4 +436,95 @@ namespace RimMandrake.FlowWorks
 			return frozen ? s + " (stopped)" : s;
 		}
 	}
+
+	/// <summary>
+	/// DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS: the texPath candidates of every drawbridge picture, best first, for a material
+	/// (Timber/Steel) and a look (Scrapper/Industrial/Modern/Futuristic; null = no looks loaded). The suspension bridge's rule
+	/// (RM_SuspensionStyles.xml): the look's picture wins; a part the look has no picture for falls back to the material's
+	/// picture. Names follow the installed art (bridge_art_redraw, 2026-10-21): material files are &lt;part&gt;_&lt;M&gt;[_&lt;view&gt;], look
+	/// files &lt;part&gt;_&lt;view|state&gt;_&lt;Look&gt; (the winch keeps its material in the look name, as its drive differs). Pure:
+	/// the game reads the first candidate that exists (RM_DrawbridgeArt); selftest_flowworks_drawbridge_art.py checks them on disk.
+	/// </summary>
+	public static class DrawbridgeArtPaths
+	{
+		public const string Dir = "Things/Building/FlowWorks/Drawbridge/";
+		public static readonly string[] Looks = { "Scrapper", "Industrial", "Modern", "Futuristic" };
+		public static readonly string[] LeafViews = { "Face", "Underside", "Edge" };
+		public const string RaidPlankLaid = Dir + "RM_RaidPlank_Laid";
+		public const string RaidPlankLaidEnd = Dir + "RM_RaidPlank_LaidEnd";
+
+		public static string Material(SuspensionTier t)
+		{
+			return t == SuspensionTier.Steel ? "Steel" : "Timber";
+		}
+
+		private static string[] LookThenMaterial(string look, string lookPath, string materialPath)
+		{
+			return look == null ? new[] { materialPath } : new[] { lookPath, materialPath };
+		}
+
+		/// <summary>The raised leaf, one view (Face, Underside, Edge); a single picture.</summary>
+		public static string[] LeafUp(SuspensionTier t, string look, string view)
+		{
+			return LookThenMaterial(look, Dir + "RM_DrawbridgeLeafUp_" + view + "_" + look, Dir + "RM_DrawbridgeLeafUp_" + Material(t) + "_" + view);
+		}
+
+		/// <summary>The art planks beside the hinge; a single picture.</summary>
+		public static string[] Planks(SuspensionTier t, string look)
+		{
+			return LookThenMaterial(look, Dir + "RM_DrawbridgePlanks_" + look, Dir + "RM_DrawbridgePlanks_" + Material(t));
+		}
+
+		/// <summary>The winch house; a Graphic_Multi base path (_south/_east/_north).</summary>
+		public static string[] Winch(SuspensionTier t, string look)
+		{
+			return LookThenMaterial(look, Dir + "RM_DrawbridgeWinch_" + Material(t) + "_" + look, Dir + "RM_DrawbridgeWinch_" + Material(t));
+		}
+
+		/// <summary>The gate leaf shut or open; a base path with _south (face-on; north reuses it) and _east (edge-on).</summary>
+		public static string[] Gate(SuspensionTier t, string look, bool open)
+		{
+			string state = open ? "Open" : "Closed";
+			return LookThenMaterial(look, Dir + "RM_DrawbridgeGate_" + state + "_" + look, Dir + "RM_DrawbridgeGate_" + Material(t) + "_" + state);
+		}
+
+		/// <summary>The gate's facing file for a door rotation: a door in an east-west wall turns North and shows its face
+		/// (_south); in a north-south wall it turns East and shows its edge (_east).</summary>
+		public static string GateFacing(bool rotationHorizontal)
+		{
+			return rotationHorizontal ? "_east" : "_south";
+		}
+
+		public enum RaidPlankPiece
+		{
+			None,
+			Mid,
+			EndNear,
+			EndFar,
+		}
+
+		/// <summary>Which picture a laid raid plank square draws: its record runs lip (index 0) to far bank (length-1), planks
+		/// lie on 1..length-2. The two end squares draw the end piece (hooks biting the bank), the rest the mid piece; a
+		/// one-square plank draws the end hooked to the lip.</summary>
+		public static RaidPlankPiece PieceAt(int index, int length)
+		{
+			int last = length - 2;
+			if (index < 1 || index > last)
+			{
+				return RaidPlankPiece.None;
+			}
+			if (index == 1)
+			{
+				return RaidPlankPiece.EndNear;
+			}
+			return index == last ? RaidPlankPiece.EndFar : RaidPlankPiece.Mid;
+		}
+
+		/// <summary>The art's top edge (the end piece's hooks) points back toward the lip (index 0) for the near end, else along
+		/// the record toward the far bank.</summary>
+		public static bool TopTowardLip(RaidPlankPiece p)
+		{
+			return p == RaidPlankPiece.EndNear;
+		}
+	}
 }

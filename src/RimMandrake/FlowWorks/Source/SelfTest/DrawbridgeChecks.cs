@@ -388,15 +388,69 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Drawbridge_P6_art_contract_paths_with_stand_ins", () =>
             {
                 string a = Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs");
-                Assert(a.Contains("public const string Dir = \"Things/Building/FlowWorks/Drawbridge/\";") && a.Contains("\"RM_DrawbridgeLeafUp_\""),
+                Assert(DrawbridgeArtPaths.Dir == "Things/Building/FlowWorks/Drawbridge/" && a.Contains("DrawbridgeArtPaths.LeafUp("),
                     "the design doc's contract paths");
                 Assert(a.Contains("ContentFinder<Texture2D>.Get(p, false)") && !a.Contains("Get(p, true)"), "can-fail: looked up silently (no red error before install)");
                 Assert(a.Contains("\"Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_\" + Material(t)"), "a stand-in that exists on disk");
                 Assert(Body(a, "public static LeafView ViewFor(Rot4 spanFromHinge)").Contains("spanFromHinge == Rot4.North ? LeafView.Face : spanFromHinge == Rot4.South ? LeafView.Underside : LeafView.Edge"),
                     "north face, south underside, east/west edge (contract)");
                 string xml = File.ReadAllText(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_SpanMath.cs")), "..", "Defs", "Pits", "ThingDefs", "RM_Drawbridge.xml"));
-                Assert(!xml.Contains("Things/Building/FlowWorks/Drawbridge/"), "can-fail: no def names an uninstalled texture (it would load pink)");
+                // every Drawbridge/ texPath a def names is installed: selftest_flowworks_drawbridge_art.py (this staging has no Textures/)
                 Assert(!xml.Contains("MinifiedThing") && !xml.Contains("<defName>RM_DrawbridgePlanks"), "the art planks are never an item (answer 1)");
+            });
+
+            Case("Drawbridge_Looks_paths_look_first_then_material", () =>
+            {
+                foreach (SuspensionTier t in new[] { SuspensionTier.Timber, SuspensionTier.Steel })
+                {
+                    string m = t == SuspensionTier.Steel ? "Steel" : "Timber";
+                    foreach (string look in DrawbridgeArtPaths.Looks)
+                    {
+                        string[] leaf = DrawbridgeArtPaths.LeafUp(t, look, "Face");
+                        Assert(leaf.Length == 2 && leaf[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeLeafUp_Face_" + look
+                            && leaf[1] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeLeafUp_" + m + "_Face", "can-fail: leaf look first, then material: " + string.Join(",", leaf));
+                        Assert(DrawbridgeArtPaths.Planks(t, look)[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgePlanks_" + look, "planks per look");
+                        Assert(DrawbridgeArtPaths.Winch(t, look)[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeWinch_" + m + "_" + look,
+                            "can-fail: a look's winch keeps its material (the drive differs)");
+                        Assert(DrawbridgeArtPaths.Gate(t, look, false)[0] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeGate_Closed_" + look
+                            && DrawbridgeArtPaths.Gate(t, look, true)[1] == DrawbridgeArtPaths.Dir + "RM_DrawbridgeGate_" + m + "_Open", "gate look then material");
+                    }
+                    Assert(DrawbridgeArtPaths.LeafUp(t, null, "Edge").Length == 1, "no looks loaded: the material's picture only");
+                }
+                Assert(DrawbridgeArtPaths.GateFacing(false) == "_south" && DrawbridgeArtPaths.GateFacing(true) == "_east",
+                    "a door turned North (east-west wall) shows its face (north reuses south); turned East, its edge");
+            });
+
+            Case("Drawbridge_Looks_raid_plank_pieces", () =>
+            {
+                // record: lip 0, planks 1..length-2, far bank length-1
+                Assert(DrawbridgeArtPaths.PieceAt(0, 6) == DrawbridgeArtPaths.RaidPlankPiece.None && DrawbridgeArtPaths.PieceAt(5, 6) == DrawbridgeArtPaths.RaidPlankPiece.None,
+                    "can-fail: the banks draw nothing");
+                Assert(DrawbridgeArtPaths.PieceAt(1, 6) == DrawbridgeArtPaths.RaidPlankPiece.EndNear && DrawbridgeArtPaths.PieceAt(4, 6) == DrawbridgeArtPaths.RaidPlankPiece.EndFar,
+                    "an end piece on each bank end");
+                Assert(DrawbridgeArtPaths.PieceAt(2, 6) == DrawbridgeArtPaths.RaidPlankPiece.Mid && DrawbridgeArtPaths.PieceAt(3, 6) == DrawbridgeArtPaths.RaidPlankPiece.Mid, "mid pieces between");
+                Assert(DrawbridgeArtPaths.PieceAt(1, 3) == DrawbridgeArtPaths.RaidPlankPiece.EndNear, "a one-square plank hooks the lip");
+                Assert(DrawbridgeArtPaths.TopTowardLip(DrawbridgeArtPaths.RaidPlankPiece.EndNear) && !DrawbridgeArtPaths.TopTowardLip(DrawbridgeArtPaths.RaidPlankPiece.EndFar),
+                    "can-fail: each end's hooks point at its own bank");
+            });
+
+            Case("Drawbridge_Looks_wired_at_the_draw_sites", () =>
+            {
+                string a = Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs");
+                Assert(Body(a, "public static void DrawLeafUp(").Contains("LeafUp(r.tier, LookOf(r), ViewFor(spanFromHinge))"), "can-fail: the raised leaf reads its bridge's look");
+                Assert(Body(a, "public static void DrawPlanks(").Contains("Planks(r.tier, LookOf(r))"), "the planks read the look");
+                Assert(Body(a, "public static string LookOf(").Contains("r.look"), "the look is the bridge's own");
+                string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
+                Assert(c.Contains("lookGraphic = RM_DrawbridgeArt.Winch(Tier, look) ?? base.Graphic;"), "can-fail: the winch house draws its look");
+                string gate = Body(c, "public class Building_DrawbridgeGate : Building_Door");
+                Assert(gate.Contains("RM_DrawbridgeArt.DrawGate(this, drawLoc, artTier, artLook, OpenPct >= 0.5f)") && gate.Contains("base.DrawAt(drawLoc, flip);"),
+                    "can-fail: the gate draws its art, the vanilla door only where none exists");
+                string d = Src("Pits", "Suspension", "Building_SuspensionDeck.cs");
+                string print = Body(d, "public override void Print(SectionLayer layer)");
+                Assert(print.IndexOf("RM_DrawbridgeArt.PrintRaidPlank(layer, this, Record)") > 0
+                    && print.IndexOf("RM_DrawbridgeArt.PrintRaidPlank(layer, this, Record)") < print.IndexOf("RM_SuspensionDeckLink.Print"),
+                    "can-fail: a laid raid plank draws its own pieces, not the deck atlas");
+                Assert(Body(a, "public static bool PrintRaidPlank(").Contains("r.raidPlank"), "only a raid plank record");
             });
 
             Case("Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise", () =>
