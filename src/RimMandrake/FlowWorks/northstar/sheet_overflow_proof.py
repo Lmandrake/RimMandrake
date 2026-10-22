@@ -424,6 +424,33 @@ def _poll(ctx, fn, bound_pulses):
     return v, waited
 
 
+def _tank_job(B, cell, want, max_clicks=4):
+    """Cycle the tank's 'Job:' gizmo until its label reads `want` (god mode on for the clicks, selection cleared after)."""
+    out = {"clicks": 0, "ok": False}
+    B.call("rimworld/set_god_mode", enabled=True)
+    try:
+        B.call("rimworld/clear_selection")
+        B.call("rimworld/click_cell", x=cell[0], z=cell[1])
+        for _ in range(max_clicks + 1):
+            gz = (B.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
+            g = next((q for q in gz if str(q.get("label") or "").startswith("Job:")), None)
+            if g is None:
+                out["labels"] = [q.get("label") for q in gz][:20]
+                return out
+            out["label"] = g.get("label")
+            if g.get("label") == want:
+                out["ok"] = True
+                return out
+            r = B.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id")) or {}
+            out["clicks"] += 1
+            if r.get("success") is False:
+                out["error"] = str(r)[:200]
+                return out
+        return out
+    finally:
+        B.call("rimworld/clear_selection")
+
+
 # ====================================================================== the rows
 def pump_spill(ctx):
     """PROVE a brim-full 1-notch canal x=1..6; pump (0,0) beside it on Pour (ProofPump 'pour'), tank (0,-2) holding 3 levels,
@@ -446,9 +473,20 @@ def pump_spill(ctx):
     u0 = B.hp("tank:%d,%d" % tank).get("units")
     V.require(u0 == 3 * U, "the tank holds 3 levels", u0)
     l0 = ledger()
+    # HARNESS (belt live 2026-10-22): with power polled the pump still read running=False, inspect "Pouring into the channel:
+    # no tank is set to Dump (pouring only drains Dump tanks)". The tank's job is cycled to Dump by its own gizmo
+    # (liquid_checks' gizmo_cycle recipe) and read back from the label.
+    dump = {"ok": True, "mock": "the fake has no gizmos"} if ctx["a"].mock else _tank_job(B, tank, "Job: Dump")
+    V.require(dump.get("ok"), "the tank's job is Dump", dump, cls="SITE")
     pp = B.call("jawa/static_call", type=NPROOF, method="ProofPump", args="%s;pour" % xz(pump)) or {}
-    powered = B.hp("pump:%d,%d" % pump).get("powered")
-    V.require(powered is True, "the pump powered", powered, cls="SITE")
+    # HARNESS (belt live 2026-10-22, two runs UNMEASURED 'the pump powered: False'): a freshly built powered consumer reads
+    # PowerOn=false for ~100-170 ticks on vanilla's net (proof_hose measured; the skill's timing rule) -- poll up to 400
+    powered, waited_p = B.hp("pump:%d,%d" % pump).get("powered"), 0
+    while powered is not True and waited_p < 400:
+        ctx["ticks"](20)
+        waited_p += 20
+        powered = B.hp("pump:%d,%d" % pump).get("powered")
+    V.require(powered is True, "the pump powered", {"powered": powered, "afterTicks": waited_p}, cls="SITE")
     got, waited = _poll(ctx, lambda: (ld(l0, ledger(), "inPump") or 0) > 0, 4)
     l1 = ledger()
     u1 = B.hp("tank:%d,%d" % tank).get("units")
