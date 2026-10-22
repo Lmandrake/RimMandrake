@@ -20,7 +20,7 @@ namespace RimMandrake.SeaShores
     // answer is computed one way only.
     public static class RM_SeaShoreUtility
     {
-        private static Dictionary<BiomeDef, RM_SeaShoreExtension> seas;
+        private static volatile Dictionary<BiomeDef, RM_SeaShoreExtension> seas;
 
         // Terrain -> sea, but ONLY for terrain no other sea and no vanilla
         // water shares. Two of our seas resolve to plain WaterOceanDeep; if
@@ -31,6 +31,8 @@ namespace RimMandrake.SeaShores
 
         private static readonly List<PlanetTile> tmpNeighbours = new List<PlanetTile>();
 
+        private static readonly object cacheLock = new object();
+
         private static void EnsureCache()
         {
             if (seas != null)
@@ -38,28 +40,40 @@ namespace RimMandrake.SeaShores
                 return;
             }
 
-            seas = new Dictionary<BiomeDef, RM_SeaShoreExtension>();
-            var seaTerrains = new List<RM_SeaKernel.SeaTerrains<BiomeDef, TerrainDef>>();
-
-            foreach (BiomeDef biome in DefDatabase<BiomeDef>.AllDefsListForReading)
+            // Worldgen can reach this from more than one thread: build into locals and publish `seas` LAST, so a reader that sees
+            // `seas` non-null always sees the finished terrainToSea too.
+            lock (cacheLock)
             {
-                RM_SeaShoreExtension ext = biome.GetModExtension<RM_SeaShoreExtension>();
-                if (ext == null)
+                if (seas != null)
                 {
-                    continue;
+                    return;
                 }
-                seas[biome] = ext;
-                seaTerrains.Add(new RM_SeaKernel.SeaTerrains<BiomeDef, TerrainDef>
-                    { Sea = biome, Deep = DeepTerrainOf(biome), Shallow = ShallowTerrainOf(biome) });
-            }
 
-            terrainToSea = RM_SeaKernel.BuildTerrainKeys(seaTerrains, new[]
-            {
-                TerrainDefOf.WaterOceanDeep,
-                TerrainDefOf.WaterOceanShallow,
-                TerrainDefOf.WaterDeep,
-                TerrainDefOf.WaterShallow
-            });
+                var built = new Dictionary<BiomeDef, RM_SeaShoreExtension>();
+                var seaTerrains = new List<RM_SeaKernel.SeaTerrains<BiomeDef, TerrainDef>>();
+
+                foreach (BiomeDef biome in DefDatabase<BiomeDef>.AllDefsListForReading)
+                {
+                    RM_SeaShoreExtension ext = biome.GetModExtension<RM_SeaShoreExtension>();
+                    if (ext == null)
+                    {
+                        continue;
+                    }
+                    built[biome] = ext;
+                    seaTerrains.Add(new RM_SeaKernel.SeaTerrains<BiomeDef, TerrainDef>
+                        { Sea = biome, Deep = DeepTerrainOf(biome), Shallow = ShallowTerrainOf(biome) });
+                }
+
+                terrainToSea = RM_SeaKernel.BuildTerrainKeys(seaTerrains, new[]
+                {
+                    TerrainDefOf.WaterOceanDeep,
+                    TerrainDefOf.WaterOceanShallow,
+                    TerrainDefOf.WaterDeep,
+                    TerrainDefOf.WaterShallow
+                });
+                System.Threading.Thread.MemoryBarrier();
+                seas = built;
+            }
         }
 
         public static RM_SeaShoreExtension ExtensionOf(BiomeDef biome)

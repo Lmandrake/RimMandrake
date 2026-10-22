@@ -63,6 +63,8 @@ namespace RimMandrake.GelatinousSlime
         private int cachedNearestTile = -1;
         private int cachedNearestDist = -1;
         private int cachedNearestAtTick = -1;
+        // True when the last readout could not be measured at all (no map position, no world): ignorance, not "none exist".
+        private bool worldReadoutUnmeasured;
 
         public CompProperties_GeneSeeker Props
         {
@@ -124,7 +126,11 @@ namespace RimMandrake.GelatinousSlime
             else
             {
                 RefreshWorldReadoutIfNeeded();
-                if (cachedNearestTile >= 0)
+                if (worldReadoutUnmeasured)
+                {
+                    sb.Append("\nUNMEASURED: this scanner reads the world only from a map.");
+                }
+                else if (cachedNearestTile >= 0)
                 {
                     sb.Append("\nNearest reading body: ").Append(cachedNearestDist)
                       .Append(" tiles away. Caravan there to extract.");
@@ -186,6 +192,7 @@ namespace RimMandrake.GelatinousSlime
             cachedNearestAtTick = now;
             cachedNearestTile = -1;
             cachedNearestDist = -1;
+            worldReadoutUnmeasured = true;
 
             if (SlimeDefs.GelatinousSlime == null || Find.WorldGrid == null)
             {
@@ -196,6 +203,7 @@ namespace RimMandrake.GelatinousSlime
             {
                 return;
             }
+            worldReadoutUnmeasured = false;
 
             PlanetLayer layer = from.Layer;
             List<Tile> tiles = layer.Tiles;

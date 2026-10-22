@@ -145,6 +145,7 @@ namespace RimMandrake.GelatinousSlime
 
             Widgets.BeginScrollView(outer, ref scroll, inner);
             float y = 0f;
+            GeneDef chosenGene = null;
             for (int i = 0; i < genes.Count; i++)
             {
                 GeneDef gene = genes[i];
@@ -168,17 +169,23 @@ namespace RimMandrake.GelatinousSlime
                 Rect buttonRect = new Rect(row.xMax - 126f, row.y + 5f, 120f, row.height - 10f);
                 if (Widgets.ButtonText(buttonRect, "Ask for this"))
                 {
-                    Action<GeneDef> callback = onChosen;
-                    Close();
-                    if (callback != null)
-                    {
-                        callback(gene);
-                    }
-                    return;
+                    // Never return between BeginScrollView and EndScrollView: it leaks the GUI clip and scroll stacks.
+                    chosenGene = gene;
+                    break;
                 }
                 y += RowHeight;
             }
             Widgets.EndScrollView();
+            if (chosenGene != null)
+            {
+                Action<GeneDef> callback = onChosen;
+                Close();
+                if (callback != null)
+                {
+                    callback(chosenGene);
+                }
+                return;
+            }
 
             Rect cancel = new Rect(inRect.width / 2f - 70f, inRect.height - 34f, 140f, 30f);
             if (Widgets.ButtonText(cancel, "Cancel"))
