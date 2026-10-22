@@ -14,10 +14,10 @@ namespace RimMandrake.FlowWorks.Machinery
     /// 8-way around or under it, tank and machine alike (owner 2026-10-20); a machine touches a tank 8-way):
     ///   * pipeLinksIntoMachines (on): a pipe cell beside a tank or machine runs its arm on to the shared edge (the linked
     ///     atlas's join tile) instead of ending in a cap short of it. Pure mesh, no art of its own.
-    ///   * joinFittings (OFF until the owner rules on the art): a flange where a pipe meets a tank or machine, a coupler where a
+    ///   * joinFittings (ON: owner card 2026-10-22, PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID): a flange where a pipe meets a tank or machine, a coupler where a
     ///     machine shares an edge with a tank, and a saddle (hose on a pipe) / flange (hose beside a pipe) at a hose's port.
-    ///     Art: RimMandrake/FlowWorks/Joins/&lt;Look&gt;/{Flange,Coupler,Saddle}; until it is installed every piece draws the hose's
-    ///     Coupling_Bare as a placeholder.
+    ///     Art: RimMandrake/FlowWorks/Joins/&lt;Look&gt;/{Flange,Coupler,Saddle}, installed for all four looks 2026-10-22; a
+    ///     missing piece would draw the hose's Coupling_Bare as a placeholder.
     /// Geometry: LiquidJoinRule (Verse-free, selftested).
     /// </summary>
     [StaticConstructorOnStartup]
