@@ -112,6 +112,7 @@ namespace JawaBench.BridgeTools
                 // in the sibling file already guards this; this file was the
                 // only offender, at 4 sites.
                 if (string.IsNullOrEmpty(skill)) return Fail("Give a SkillDef.");
+                if (!JawaBenchWorldArgsCore.IsFinite(xp)) return Fail("xp must be finite.");
 
                 var sDef = DefDatabase<SkillDef>.GetNamedSilentFail(skill);
                 if (sDef == null) return Fail("No SkillDef named '" + skill + "'.", new { suggestions = DefSuggestions<SkillDef>(skill) });
@@ -493,6 +494,7 @@ namespace JawaBench.BridgeTools
                 var m = (mode ?? "").Trim().ToLowerInvariant();
                 if (m == "hemogen")
                 {
+                    if (!JawaBenchWorldArgsCore.IsFinite(offset)) return Fail("offset must be finite.");
                     var gene = p.genes.GetFirstGeneOfType<Gene_Hemogen>();
                     if (gene == null)
                         return Fail(p.LabelShortCap + " has no Gene_Hemogen gene. GeneUtility.OffsetHemogen would silently do nothing.");
@@ -908,6 +910,11 @@ namespace JawaBench.BridgeTools
 
                 if (map == null) return Fail("Could not determine a map to place on - the source has no map and no 'at' was given.");
                 if (!center.IsValid) return Fail("Could not determine a placement cell - the source is unspawned and no 'at' was given.");
+
+                // Checked BEFORE SplitOff: an off-grid 'at' would fail placement after the source was already
+                // reduced, and an exception inside TryPlaceThing would orphan the split piece for good.
+                if (!center.InBounds(map))
+                    return Fail("Placement cell (" + center.x + "," + center.z + ") is outside map " + map.Index + " (" + map.Size.x + "x" + map.Size.z + "). Nothing moved.");
 
                 int stackBefore = found.stackCount;
                 var piece = found.SplitOff(count);
