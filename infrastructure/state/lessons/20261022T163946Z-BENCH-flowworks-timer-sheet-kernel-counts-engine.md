@@ -1,0 +1,1 @@
+A FlowWorks timer the sheet kernel counts in engine PULSES (RM_SheetMath Params.CropKillPulses, D3's 1-week crop drowning) cannot be aged by a jawa/time_set_ticks clock jump: a jump runs no pulse. Test it by compressing the delay (a setting) per debug_process 'compress first', never by jumping the clock.
