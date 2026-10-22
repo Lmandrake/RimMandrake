@@ -43,9 +43,15 @@ namespace RimMandrake.FlowWorks
         public static float pulseIntervalTicks = 250f;
         public static float flowPerPulse = 1f;
         public static bool digToDepthEnabled = true;
-        // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT (owner R5, 2026-10-17, by card): "default max colonist dig 8 m, a setting from
-        // 2 to 20 m". In notches (0.5 m); shown in metres. Lowering it never shallows a square already dug.
-        public static float maxDigDepth = 16f;   // = RM_DigDepthMath.DefaultMaxDigDepth (a literal: site_spec reads it)
+        // The COLONIST dig cap. PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT (owner R5, 2026-10-17): a setting from 2 to 20 m.
+        // DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL (owner card 2026-10-21, "Colonists 2 m, machines deeper"): shipped 2 m.
+        // In notches (0.5 m); shown in metres. Lowering it never shallows a square already dug. The field keeps its name:
+        // bridge stagers set it by name.
+        public static float maxDigDepth = 4f;   // = RM_DigDepthMath.DefaultMaxDigDepth (a literal: site_spec reads it)
+        // DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: machine labour (mechanoids, droids; RM_DigLabor) digs past the colonist cap,
+        // to its own cap (shipped 20 m, the ceiling). Off: machines dig like colonists.
+        public static bool machineDigEnabled = true;
+        public static float maxMachineDigDepth = 40f;   // = RM_DigDepthMath.DefaultMachineDigDepth
         // DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (V1 default, veto-able): each half-metre costs 3,200 x the notch being cut.
         // Off: flat past 2 m (every deeper notch costs the 2 m notch's 12,800).
         public static bool digCostRisesWithDepth = true;
@@ -489,8 +495,13 @@ namespace RimMandrake.FlowWorks
         public static int PondMudTicks => Mathf.RoundToInt(Mathf.Clamp(pondMudDays, 0f, 30f) * 60000f);
         /// <summary>POND_DEPTH: terrain restages per pulse (the §8 cost guard), at least one.</summary>
         public static int PondStageWritesPerPulse => Mathf.Clamp(Mathf.RoundToInt(pondStageWritesPerPulse), 1, 5000);
-        /// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the colonist dig cap in notches (4..40; default 16 = 8 m).</summary>
+        /// <summary>The colonist dig cap in notches (4..40; default 4 = 2 m; DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL).</summary>
         public static int MaxDigDepth => RM_DigDepthMath.ClampCap(maxDigDepth);
+        /// <summary>The machine dig cap in notches as set (4..40; default 40 = 20 m). Its EFFECTIVE value is never below the
+        /// colonist cap: <see cref="MachineDigDepth"/>.</summary>
+        public static int MaxMachineDigDepth => RM_DigDepthMath.ClampCap(maxMachineDigDepth);
+        /// <summary>How deep machine labour digs now (the colonist cap when machine digging is off).</summary>
+        public static int MachineDigDepth => RM_DigDepthMath.CapFor(true, MaxDigDepth, machineDigEnabled, MaxMachineDigDepth);
         public static int DeepBedMaxDepth => Mathf.Clamp(Mathf.RoundToInt(deepBedMaxDepth), RM_Volume.LevelsPerSquare, RM_BedMath.MaxBedCeiling);
         public static int LakeShoreShelfNotches => Mathf.Clamp(Mathf.RoundToInt(lakeShoreShelfMetres * 2f), 0, 4);
         public static int LakeWayOutNotches => Mathf.Clamp(Mathf.RoundToInt(lakeWayOutMetres * 2f), 0, 8);
@@ -510,7 +521,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pulseIntervalTicks, "pulseIntervalTicks", 250f);
             Scribe_Values.Look(ref flowPerPulse, "flowPerPulse", 1f);
             Scribe_Values.Look(ref digToDepthEnabled, "digToDepthEnabled", true);
-            Scribe_Values.Look(ref maxDigDepth, "maxDigDepth", 16f);
+            Scribe_Values.Look(ref maxDigDepth, "maxDigDepth", 4f);
+            Scribe_Values.Look(ref machineDigEnabled, "machineDigEnabled", true);
+            Scribe_Values.Look(ref maxMachineDigDepth, "maxMachineDigDepth", 40f);
             Scribe_Values.Look(ref digCostRisesWithDepth, "digCostRisesWithDepth", true);
             Scribe_Values.Look(ref liquidCorrosionEnabled, "liquidCorrosionEnabled", true);
             Scribe_Values.Look(ref liquidIgnitionEnabled, "liquidIgnitionEnabled", true);
@@ -758,13 +771,14 @@ namespace RimMandrake.FlowWorks
             .Declare("trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap", "trenchAiAvoidsCages")
             .Declare("digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled")
             .Declare("digRockGroundEnabled", "digRockWorkMultiplier")
-            .Declare("digToDepthEnabled", "maxDigDepth", "digCostRisesWithDepth")
+            .Declare("digToDepthEnabled", "maxDigDepth", "digCostRisesWithDepth", "machineDigEnabled")
+            .Declare("machineDigEnabled", "maxMachineDigDepth")
             .Declare("digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent")
             .Declare("liquidDrillingEnabled", "drillUnitsPerCycle")
             .Declare("swaleEnabled", "swaleRateMultiplier")
             .Independent("pulseIntervalTicks", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled",
                          "pitDrowningHeadFraction")
-            .Name("depthEngineEnabled", "Depth engine").Name("digToDepthEnabled", "Dig deeper")
+            .Name("depthEngineEnabled", "Depth engine").Name("digToDepthEnabled", "Dig deeper").Name("machineDigEnabled", "Machines dig deeper")
             .Name("pondDepthEnabled", "Ponds shallow out before they turn to mud")
                         .Name("refillEnabled", "Bodies refill").Name("rainFillsExcavationsEnabled", "Rain fills open excavations")
             .Name("viscosityEnabled", "Thick liquids flow slower than water")
@@ -908,7 +922,7 @@ namespace RimMandrake.FlowWorks
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works excavation, flow and pit", ResetAllFields);
 
-            if (Section(list, "Excavation and flow", new[] { "depthEngineEnabled", "digToDepthEnabled", "maxDigDepth", "digCostRisesWithDepth", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "mouseoverDepthEnabled" }))
+            if (Section(list, "Excavation and flow", new[] { "depthEngineEnabled", "digToDepthEnabled", "maxDigDepth", "machineDigEnabled", "maxMachineDigDepth", "digCostRisesWithDepth", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "mouseoverDepthEnabled" }))
             {
 
             list.CheckboxLabeled("Show liquid depth and litres under the mouse", ref mouseoverDepthEnabled,
@@ -928,19 +942,32 @@ namespace RimMandrake.FlowWorks
                 "Digging a channel that is already dug cuts it another half-metre further down, to the deepest dig set "
               + "below; \"Dig to depth\" does it in one order. From 2 m a cut is a pit. Each half-metre costs more labour "
               + "than the last. Off: channels are half a metre only.");
-            using (Dependent(list, "maxDigDepth", "digCostRisesWithDepth"))
+            using (Dependent(list, "maxDigDepth", "digCostRisesWithDepth", "machineDigEnabled"))
             {
-                list.Label("Deepest colonist dig: " + RM_Volume.FormatFloorMetres(MaxDigDepth) + " (2 m to 20 m; shipped 8 m)",
-                    tooltip: "How far down colonists may dig a channel or pit, in half-metre steps. Natural lake floors are not "
-                           + "affected (they have their own setting). Lowering this never fills in a square already dug deeper: "
-                           + "it stays as deep as it is, and only further digging stops.");
+                list.Label("Deepest colonist dig: " + RM_Volume.FormatFloorMetres(MaxDigDepth) + " (2 m to 20 m; shipped 2 m)",
+                    tooltip: "How far down colonists may dig a channel or pit, in half-metre steps. Machine labour (mechanoids "
+                           + "such as a tunneler, and droids) may dig deeper: see below. A deeper order waits for a machine. "
+                           + "Natural lake floors are not affected (they have their own setting). Lowering this never fills in a "
+                           + "square already dug deeper: it stays as deep as it is, and only further digging stops.");
                 maxDigDepth = list.Slider(maxDigDepth, RM_DigDepthMath.MinMaxDigDepth, RM_DigDepthMath.MaxDigCeiling);
                 maxDigDepth = MaxDigDepth;   // snap to the half-metre
+                list.CheckboxLabeled("Machines dig deeper", ref machineDigEnabled,
+                    "On (shipped): mechanoids and droids digging a channel or pit may go past the colonist limit, to the "
+                  + "machine limit below. Off: machines stop where colonists stop, and an order deeper than that is cancelled.");
+                using (Dependent(list, "maxMachineDigDepth"))
+                {
+                    list.Label("Deepest machine dig: " + RM_Volume.FormatFloorMetres(MachineDigDepth) + " (2 m to 20 m; shipped 20 m)",
+                        tooltip: "How far down machine labour may dig, in half-metre steps. Never shallower than the colonist "
+                               + "limit: set below it, machines dig as deep as colonists. Each half-metre still costs more labour "
+                               + "than the last; a machine's mining speed sets how fast.");
+                    maxMachineDigDepth = list.Slider(maxMachineDigDepth, RM_DigDepthMath.MinMaxDigDepth, RM_DigDepthMath.MaxDigCeiling);
+                    maxMachineDigDepth = MaxMachineDigDepth;   // snap to the half-metre
+                }
                 list.CheckboxLabeled("Each half-metre deeper costs more", ref digCostRisesWithDepth,
                     "On (shipped): cutting the n-th half-metre takes 3,200 x n work, so the first half-metre is 3,200 and "
                   + "the half-metre from 7.5 m to 8 m is 51,200; a square dug to 8 m is about "
                   + RM_DigDepthMath.DiggerDays(RM_DigDepthMath.WorkToDig(0, 16, true)).ToString("0.#") + " digger-days of soil "
-                  + "for one colonist at mining speed 100%. Off: every half-metre below 2 m costs the same as the one at 2 m "
+                  + "for one digger at mining speed 100%. Off: every half-metre below 2 m costs the same as the one at 2 m "
                   + "(12,800), so the same square is about "
                   + RM_DigDepthMath.DiggerDays(RM_DigDepthMath.WorkToDig(0, 16, false)).ToString("0.#") + " digger-days. "
                   + "Rock ground multiplies either.");

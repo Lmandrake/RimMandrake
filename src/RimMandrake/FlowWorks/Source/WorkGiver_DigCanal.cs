@@ -62,7 +62,7 @@ namespace RimMandrake.FlowWorks
 			// P14: a wet dug square's water is base terrain now; only undug water makes the designation stale.
 			bool stale = (terrain.IsWater && !(eng != null && eng.IsExcavated(c)))
 				|| c.GetEdifice(pawn.Map) != null
-				|| !RM_DigDepthMath.MayDeepen(depth, RM_ExcavationDepth.MaxDigDepth)
+				|| !RM_DigDepthMath.MayDeepen(depth, RM_DigLabor.DesignationCap)
 				|| (target > 0 && depth >= target)
 				|| (depth == RM_ExcavationDepth.Surface && !terrain.IsSoil && !(RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockOfTerrain(terrain) != null))
 				|| (depth != RM_ExcavationDepth.Surface && !RimMandrakeFlowWorksSettings.digToDepthEnabled)
@@ -71,6 +71,17 @@ namespace RimMandrake.FlowWorks
 			if (stale)
 			{
 				des.Delete();
+				return false;
+			}
+			// DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL (owner card 2026-10-21, "Colonists 2 m, machines deeper"): the order is
+			// valid (someone may dig it: the stale test above holds it to the designation cap), only not by THIS digger. Keep
+			// the designation for machine labour; say why on the right-click.
+			int myCap = RM_DigLabor.CapFor(pawn);
+			if (!RM_DigDepthMath.MayDeepen(depth, myCap)
+				|| (depth == RM_ExcavationDepth.Surface && eng != null && eng.FirstCutDepthAt(c, myCap) < 0))
+			{
+				JobFailReason.Is(RM_DigLabor.RefusalFor(pawn, depth == RM_ExcavationDepth.Surface ? myCap : depth)
+					?? "Deeper than this digger may go.");
 				return false;
 			}
 			return pawn.CanReserve(c, 1, -1, ReservationLayerDefOf.Floor, forced);

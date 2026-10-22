@@ -1304,7 +1304,8 @@ suite.toggles += [t for t in ["sprinklersEnabled", "sprinklerNonWaterEffects", "
 EXTENSION_TOGGLES_OWED = ["fallDamageEnabled", "liquidCorrosionEnabled",
                           "liquidDrillingEnabled", "liquidIgnitionEnabled", "liquidWorksRuinStockEnabled",
                           "liquidWorksRuinsEnabled", "pipeAdaptersEnabled",
-                          "superdeepShootingRuleEnabled", "typedLiquidShoresEnabled"]
+                          "superdeepShootingRuleEnabled", "typedLiquidShoresEnabled",
+                          "machineDigEnabled"]   # DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: needs a staged colony mech (design §8)
 # Every bool switch the C# settings sections expose (northstar/settings_registry.py) is either on the toggle floor above
 # or named here. These were never on it (a gap older than the hose port, listed so it cannot grow unseen).
 TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDeathEnabled", "pitGuardrailEnabled", "excavationLoadRepairEnabled", "excavationWallMaterialEnabled",

@@ -55,6 +55,10 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Set when this job's cut landed (DoEffect): only then may the finish action re-designate a dig-to square.</summary>
 		private bool cutLanded;
 
+		/// <summary>DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: the cut was refused at this digger's cap (a setting changed mid-job)
+		/// while someone else may still dig the square. Vanilla deleted the designation; the finish action puts it back.</summary>
+		private bool cutRefusedButOwed;
+
 		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT, "dig to N m": vanilla's AffectFloor deletes the designation after each
 		/// cut (RimWorld/JobDriver_AffectFloor.cs). One designation, one notch, as before; a square with a dig-to target gets its
 		/// designation back after a landed cut while it is still above its target and the cap, so the next pawn (or this one)
@@ -63,6 +67,16 @@ namespace RimMandrake.FlowWorks
 		{
 			AddFinishAction(delegate (Verse.AI.JobCondition cond)
 			{
+				if (cutRefusedButOwed && Map != null && job.targetA.IsValid)
+				{
+					IntVec3 rc = job.targetA.Cell;
+					if (Map.designationManager.DesignationAt(rc, RimMandrakeFlowWorks_DefOf.RM_DigCanal) == null
+						&& Map.designationManager.DesignationAt(rc, RimMandrakeFlowWorks_DefOf.RM_FillInCanal) == null)
+					{
+						Map.designationManager.AddDesignation(new Designation(rc, RimMandrakeFlowWorks_DefOf.RM_DigCanal));
+					}
+					return;
+				}
 				if (!cutLanded || Map == null || !job.targetA.IsValid)
 				{
 					return;
@@ -100,8 +114,11 @@ namespace RimMandrake.FlowWorks
 			if (excavation != null)
 			{
 				int before = excavation.ExcavatedDepthAt(c);
-				int after = excavation.Deepen(c);
+				// DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: the cut is held to THIS digger's cap (colonist 2 m, machine deeper), so a
+				// job taken before a setting change cannot overshoot.
+				int after = excavation.DeepenWithin(c, RM_DigLabor.CapFor(pawn));
 				cutLanded = after > before;
+				cutRefusedButOwed = after == before && RM_DigDepthMath.MayDeepen(before, RM_DigLabor.DesignationCap);
 				// FLOWWORKS_QUARRY_DIGGING_1: a cut that went deeper may turn up something the land holds.
 				if (after > before)
 				{

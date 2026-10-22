@@ -4,16 +4,18 @@ namespace RimMandrake.FlowWorks
 {
 	/// <summary>
 	/// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT (plan P5) and DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (plan P6): how deep a colonist may
-	/// dig and what each cut costs. Owner R5 (2026-10-17, by card): <i>default max colonist dig 8 m, a setting from 2 to 20 m;
-	/// the 0.5 m dig step stays; lakes keep their own floors.</i> V1 (default, veto-able): keep today's curve, 3,200 × the
+	/// dig and what each cut costs. Owner R5 (2026-10-17, by card): <i>a setting from 2 to 20 m; the 0.5 m dig step stays;
+	/// lakes keep their own floors.</i> DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL (owner card 2026-10-21): colonists 2 m by
+	/// default, machine labour (mechanoids, droids) deeper, to its own cap (default 20 m). V1 (default, veto-able): keep today's curve, 3,200 × the
 	/// notch being cut.
 	///
 	/// Three numbers that used to be one (the old <c>MaxDepth = Superdeep = 4</c> of RM_ExcavationDepth) and are now separate:
 	///   • <see cref="PitDepth"/> (4 notches = 2 m): the ABSOLUTE "pit" the T0 rules still read (rooms, spikes, shooting,
 	///     exposure, the OFF-branch trap). P7 (PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE) makes those relative; nothing here may
 	///     add a new reader of it.
-	///   • the dig CAP (a Mod Setting, <see cref="DefaultMaxDigDepth"/> 16 = 8 m, <see cref="MinMaxDigDepth"/>..
-	///     <see cref="MaxDigCeiling"/>): how far a colonist's dig goes. Lowering it never shallows a cell already dug.
+	///   • the dig CAPS (Mod Settings, <see cref="MinMaxDigDepth"/>..<see cref="MaxDigCeiling"/>): the colonist cap
+	///     (<see cref="DefaultMaxDigDepth"/> 4 = 2 m) and the machine cap (<see cref="DefaultMachineDigDepth"/> 40 = 20 m);
+	///     <see cref="CapFor"/> picks one digger's, <see cref="DesignationCap"/> the deepest anyone may go. Lowering it never shallows a cell already dug.
 	///   • <see cref="MaxDigCeiling"/> (40 = 20 m): the deepest any dug square can legitimately be; the load repair clamps
 	///     to it, never to the setting.
 	/// Lake floors are none of these (RM_BedMath, to 125 m).
@@ -28,8 +30,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The lowest the cap setting goes: 2 m (today's dig, T0).</summary>
 		public const int MinMaxDigDepth = 4;
 
-		/// <summary>Owner R5: the default cap, 8 m.</summary>
-		public const int DefaultMaxDigDepth = 16;
+		/// <summary>DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL (owner card 2026-10-21, "Colonists 2 m, machines deeper"): the default
+		/// COLONIST cap, 2 m (was R5's 8 m).</summary>
+		public const int DefaultMaxDigDepth = 4;
+
+		/// <summary>DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: the default MACHINE cap (mechanoids, droids), 20 m (the ceiling).</summary>
+		public const int DefaultMachineDigDepth = 40;
 
 		/// <summary>Owner R5: the highest the cap setting goes, 20 m. Also the deepest a dug square may hold on load.</summary>
 		public const int MaxDigCeiling = 40;
@@ -89,6 +95,20 @@ namespace RimMandrake.FlowWorks
 		public static bool MayDeepen(int depth, int cap)
 		{
 			return depth < cap && depth < MaxDigCeiling;
+		}
+
+		/// <summary>DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: one digger's cap. Machine labour (with machine digging on) digs to the
+		/// machine cap but never shallower than a colonist; everyone else to the colonist cap.</summary>
+		public static int CapFor(bool isMachine, int colonistCap, bool machineDigOn, int machineCap)
+		{
+			return isMachine && machineDigOn && machineCap > colonistCap ? machineCap : colonistCap;
+		}
+
+		/// <summary>The deepest ANYONE may dig now: what a designation, a dig-to target and the stale test are held to. A 2 m
+		/// square ordered to 6 m is valid work, only not for a colonist.</summary>
+		public static int DesignationCap(int colonistCap, bool machineDigOn, int machineCap)
+		{
+			return CapFor(true, colonistCap, machineDigOn, machineCap);
 		}
 
 		/// <summary>"Dig to N m": the target held to 1..cap (a target past the cap digs to the cap).</summary>

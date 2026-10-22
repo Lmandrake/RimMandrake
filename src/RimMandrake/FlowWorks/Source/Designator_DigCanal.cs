@@ -17,7 +17,7 @@ namespace RimMandrake.FlowWorks
 			defaultLabel = "Dig canal";
 			defaultDesc = "Carve a channel half a metre deeper. Designating a channel that is "
 				+ "already dug deepens it another half-metre, down to the deepest dig set in this mod's settings "
-				+ "(8 m as shipped); from 2 m a cut is a pit. \"Dig to depth\" orders the whole depth at once. "
+				+ "(as shipped, colonists 2 m; mechanoids and droids 20 m); from 2 m a cut is a pit. \"Dig to depth\" orders the whole depth at once. "
 				+ "Liquid fills the deepest cells first and overflows into shallower ones. "
 				+ "A channel dug into the strip along the map edge is a SINK: liquid reaching "
 				+ "it leaves the map, which is how you empty a canal on purpose. Bare rock ground "
@@ -87,7 +87,9 @@ namespace RimMandrake.FlowWorks
 				return "Already water.";
 			}
 			int depth = eng != null ? eng.ExcavatedDepthAt(c) : RM_ExcavationDepth.DepthOfDryTerrain(terrain);
-			int cap = RM_ExcavationDepth.MaxDigDepth;
+			// DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: an order is held to the deepest ANYONE may dig (machine labour past the
+			// colonist cap); the work giver holds each digger to its own.
+			int cap = RM_DigLabor.DesignationCap;
 			if (depth != RM_ExcavationDepth.Surface)
 			{
 				if (!RM_DigDepthMath.MayDeepen(depth, cap))
@@ -176,12 +178,12 @@ namespace RimMandrake.FlowWorks
 		{
 			defaultLabel = "Dig to depth";
 			defaultDesc = "Order squares dug down to a chosen depth in one go, half a metre a cut, as deep as this mod's settings "
-				+ "allow (8 m as shipped). Pick the depth when you select this tool. Squares already ordered take the new depth. "
+				+ "allow (as shipped, colonists 2 m; mechanoids and droids 20 m: a deeper order waits for one). Pick the depth when you select this tool. Squares already ordered take the new depth. "
 				+ "Each cut costs what \"Dig canal\" costs at that depth: deeper is slower. Get in and out with a ladder or ramps.";
 			hotKey = null;
 		}
 
-		public static int Target => RM_DigDepthMath.ClampTarget(chosenTarget, RM_ExcavationDepth.MaxDigDepth);
+		public static int Target => RM_DigDepthMath.ClampTarget(chosenTarget, RM_DigLabor.DesignationCap);
 
 		public override string Label => "Dig to " + RM_Volume.FormatFloorMetres(Target);
 
@@ -192,13 +194,14 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			var options = new System.Collections.Generic.List<FloatMenuOption>();
-			int cap = RM_ExcavationDepth.MaxDigDepth;
+			int cap = RM_DigLabor.DesignationCap;
+			int colonistCap = RM_ExcavationDepth.MaxDigDepth;
 			for (int n = 1; n <= cap; n++)
 			{
 				int pick = n;
 				options.Add(new FloatMenuOption("Dig to " + RM_Volume.FormatFloorMetres(n)
 					+ " (" + RM_DigDepthMath.DiggerDays(RM_DigDepthMath.WorkToDig(0, n, RimMandrakeFlowWorksSettings.digCostRisesWithDepth)).ToString("0.#")
-					+ " digger-days a square of soil)", delegate
+					+ " digger-days a square of soil" + (n > colonistCap ? "; machines only past " + RM_Volume.FormatFloorMetres(colonistCap) : "") + ")", delegate
 				{
 					chosenTarget = pick;
 					base.ProcessInput(ev);

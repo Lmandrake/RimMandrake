@@ -24,7 +24,11 @@ Every river mechanic reads the river current, which is copied from the map's riv
 
 ## Counts
 
-Inventory: 492 defs, 328 Mod Settings fields, 44 gizmo labels, 321 textures = 1185 items, grouped into 239 features. Stations: 88 on the main map + 8 on map R + the V block (39 plots). Uncovered items: **0**. Rule targets that name no station: **0**.
+Inventory: 492 defs, 331 Mod Settings fields, 44 gizmo labels, 321 textures = 1188 items, grouped into 239 features. Stations: 88 on the main map + 8 on map R + the V block (39 plots). Uncovered items: **1**. Rule targets that name no station: **0**.
+
+## UNCOVERED (add a rule or a station)
+
+- set `reachSeesWallsAndCliffs` (Source/RimMandrakeFlowWorksMod.cs)
 
 ## Feature inventory -> station
 
@@ -39,7 +43,7 @@ Inventory: 492 defs, 328 Mod Settings fields, 44 gizmo labels, 321 textures = 11
 | 7 | Tank look art | tex | 55 | RM_LiquidTank.png, RM_LiquidTank.png, RM_LiquidTank.png, RM_LiquidTank.png, RM_LiquidTankTall.png, RM_LiquidTankTall.png, RM_LiquidTankTall.png, RM_LiquidTankTall.png, RM_UniversalCargoTank.png, RM_UniversalCargoTank.png, RM_UniversalCargoTank.png, RM_UniversalCargoTank.png, RM_UniversalCargoTankXTa ... (16 in all) | Textures |
 | 8 | Dig canal icon | tex | 13 | RM_DigCanal.png | Textures |
 | 9 | Fill in icon | tex | 14 | RM_FillInCanal.png | Textures |
-| 10 | Dig deeper, to the dig cap (8 m shipped), each half-metre dearer | set | 13 | digCostRisesWithDepth, digToDepthEnabled, maxDigDepth | Source/RimMandrakeFlowWorksMod.cs |
+| 10 | Dig deeper: colonists to 2 m, machines to 20 m (shipped), each half-metre dearer | set | 13 | digCostRisesWithDepth, digToDepthEnabled, machineDigEnabled, maxDigDepth, maxMachineDigDepth | Source/RimMandrakeFlowWorksMod.cs |
 | 11 | Fill-in and its push-back | set | 14 | fillInDisplacementEnabled, fillInEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 12 | Digging turns up minerals | set | 16 | digFindBudgetPercent, digFindChanceMultiplier, digFindLetterEnabled, digFindsEnabled, digFindsLocalOnly | Source/RimMandrakeFlowWorksMod.cs |
 | 13 | Digging rock takes longer and drops chunks (soil less) | set | 13 | digRockChunkMultiplier, digRockChunksEnabled, digRockGroundEnabled, digRockWorkMultiplier, digSoilChunkPercent | Source/RimMandrakeFlowWorksMod.cs |

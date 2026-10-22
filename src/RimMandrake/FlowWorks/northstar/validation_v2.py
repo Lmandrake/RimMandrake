@@ -2348,14 +2348,17 @@ def _in_any(c, rects):
 
 # ---------------------------------------------------------------------------- phase S (0 ticks)
 def phase_S(L, args):
-    # PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the dig cap is a Mod Setting (8 m shipped). Phase S's ladder rows (S1n, S6)
-    # prove the cap at its 2 m setting, the four-depth ladder they were written for; restored after (restore_settings
-    # also covers it). The 8 m rows (the 4/7/7/4 square) are P10's.
+    # The colonist dig cap is a Mod Setting, 2 m shipped (DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL; machines dig deeper).
+    # Phase S's ladder rows (S1n, S6) prove the cap at 2 m, the four-depth ladder they were written for, with machine
+    # digging OFF so the bridge dig (the designation cap) stops at 2 m too; restored after (restore_settings also
+    # covers it). The 8 m rows (the 4/7/7/4 square) are P10's.
     L.sset(S_FW, "maxDigDepth", 4.0)
+    L.sset(S_FW, "machineDigEnabled", False)
     try:
         _phase_S_body(L, args)
     finally:
-        L.sset(S_FW, "maxDigDepth", 16.0)
+        L.sset(S_FW, "maxDigDepth", 4.0)
+        L.sset(S_FW, "machineDigEnabled", True)
 
 
 def _phase_S_body(L, args):

@@ -1030,7 +1030,7 @@ def g_dig_depth(s):
         hole = fnum(txt.split("Hole", 1)[1].strip().split()[0].replace(",", ""))
     st = "UNMEASURED" if hole is None else ("PASS" if abs(hole - 8.0) < 0.01 else "FAIL")
     s.row("B4_dig_8m_readout", "PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT", "A2", st, "MOD" if st != "UNMEASURED" else "HARNESS",
-          dict(readout=txt[:160], owed="'a colonist digs it by Dig to depth' is the P10 walk: job read below"), "B4")
+          dict(readout=txt[:160], owed="'machine labour digs it by Dig to depth' (colonists stop at 2 m: DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL) is the P10 walk: job read below"), "B4")
     # jawa/flowworks_job_probe reports the designator and WorkGiver verdicts only, NO work total (its ResultDescription):
     # the old row read workTotal/work/... off it and could never answer. The dig job prices each cut with
     # RM_ExcavationDepth.WorkToDeepen(current) = RM_DigDepthMath.WorkToCut(current + 1, digCostRisesWithDepth): read that
