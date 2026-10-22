@@ -7,9 +7,9 @@
   actually carries until Phase B repaints the planet onto `RM_TheChill`; deleting it
   before then destroys the save, so it stays as it is, byte-for-byte, below. From this
   moment every CONTENT fix for the Propane Lake lands in `mandrake.rm.terminalbiomes`
-  only, never here. `RM_TheChill` repoints its water terrains off the donor
-  `AB_PropaneLake`/`AB_SolidPropane` this def still carries onto its own
-  `RM_TheChillDeep`/`RM_SolidPropane` — this def is NOT changed to match.
+  only, never here. This def's water terrains were repointed off the retired donor
+  `AB_PropaneLake`/`AB_SolidPropane` (Alpha Biomes, retired 2026-10-18) onto the
+  RM_ pair `RM_TheChillDeep`/`RM_SolidPropane`, the same ones `RM_TheChill` uses.
   ============================================================================
   RUT_PropaneLake.xml                    UtinniPatches · authored 2026-09-06
   ============================================================================
@@ -51,18 +51,13 @@
   water one) — so this restates the Ocean/Lake water-biome shape directly,
   the same pattern as the other three defs this item authors.
 
-  Water terrain: REUSES the donor's own AB_PropaneLake / AB_SolidPropane
-  terrain defs rather than inventing new ones — unlike the Scald, which
-  needed a genuinely new mechanic (the boiling-lift burn), the propane
-  lake's distinct liquid ALREADY EXISTS as a shipped, working TerrainDef
-  (waterBodyType None — correctly not recognised as drinkable water by
-  DBH or anything else, matching "propane, not water"; tags ['Water'],
-  Impassable, pathCost 300, avoidWander true, canFreeze false — read off
-  the live dump this pass). waterDeepTerrain -> AB_PropaneLake (the liquid
-  centre); waterShallowTerrain -> AB_SolidPropane (the frozen margin crust,
-  Standable, pathCost 12) — physically the correct pairing for a phase-line
-  lake (R-H6b: propane liquefies at −42 C, so the shallow/cold edge freezes
-  solid while the deep centre stays liquid).
+  Water terrain: originally REUSED the donor's AB_PropaneLake / AB_SolidPropane
+  terrain defs (waterBodyType None - correctly not recognised as drinkable water,
+  matching "propane, not water"); now the RM_ port: waterDeepTerrain ->
+  RM_TheChillDeep (the liquid centre), waterShallowTerrain -> RM_SolidPropane (the
+  frozen margin crust) - physically the correct pairing for a phase-line lake
+  (R-H6b: propane liquefies at -42 C, so the shallow/cold edge freezes solid while
+  the deep centre stays liquid).
 
   fishTypes: WAS left EMPTY (2026-09-06 reconciliation pass); now carries a
   real table, authored SEA_FLOOR_AND_CATCH_PASS_1 2026-09-24 per the
