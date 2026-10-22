@@ -47,6 +47,21 @@ check("ponds still closing at the bound: UNMEASURED", W.ponds_level_verdict(3, (
 check("ponds level but never read flowing: FAIL", W.ponds_level_verdict(5, (900, 0), (450, 450), 9, True, False)[0] == "FAIL")
 check("no-mix: nothing moved + readout: PASS", W.ponds_nomix_verdict(0, (5, 1), (5, 1), True, "different liquids never mix")[0] == "PASS")
 check("can-fail no-mix: moved: FAIL", W.ponds_nomix_verdict(2, (5, 1), (4, 2), True, "")[0] == "FAIL")
+PP = "PUMPPORTS N=none E=reel:14:c S=free:15:c+free:16:r W=pipe coupled=2 corner=1 cornerCoupled=0"
+sd, nm = W.ports_parse(PP)
+check("ports parse: sides and counts", sd["S"] == ["free:15:c", "free:16:r"] and sd["N"] == [] and nm["cornerCoupled"] == 0)
+check("ports: pipe W + coupled reel E: PASS", W.ports_sides_verdict(sd)[0] == "PASS")
+check("can-fail ports: reel on E refused: FAIL", W.ports_sides_verdict(dict(sd, E=["reel:14:r"]))[0] == "FAIL")
+check("ports: no pipe staged: UNMEASURED/SITE", W.ports_sides_verdict(dict(sd, W=[])) == ("UNMEASURED", "SITE"))
+check("ports: lower id kept, other refused: PASS", W.ports_one_per_side_verdict(sd)[0] == "PASS")
+check("can-fail ports: both coupled: FAIL", W.ports_one_per_side_verdict(dict(sd, S=["free:15:c", "free:16:c"]))[0] == "FAIL")
+check("can-fail ports: higher id kept: FAIL", W.ports_one_per_side_verdict(dict(sd, S=["free:15:r", "free:16:c"]))[0] == "FAIL")
+check("ports: one end only: UNMEASURED/SITE", W.ports_one_per_side_verdict(dict(sd, S=["free:15:c"])) == ("UNMEASURED", "SITE"))
+check("ports: corner refused: PASS", W.ports_corner_verdict(nm)[0] == "PASS")
+check("can-fail ports: corner coupled: FAIL", W.ports_corner_verdict(dict(nm, cornerCoupled=1))[0] == "FAIL")
+check("ports: unread: UNMEASURED/HARNESS", W.ports_corner_verdict({}) == ("UNMEASURED", "HARNESS"))
+check("no-mix: enum word readout: PASS", W.ponds_nomix_verdict(0, (5, 1), (5, 1), True, " | DifferentLiquids")[0] == "PASS")
+check("no hook is listed missing", W.MISSING_HOOKS == {})
 check("every row names an item and a criterion", all(W.ROW_ITEM.get(r) and W.ROW_ITEM[r][1] for r in W.ROW_IDS))
 check("every row belongs to one scene", sorted(sum(W.SCENE_ROWS.values(), [])) == sorted(W.ROW_IDS))
 
@@ -62,7 +77,11 @@ EXPECT = {"": {}, "no_worker": {"COVER_DECON_DROPS_RIDER": ("UNMEASURED", "SITE"
           "store_only": {"TANKS_JOINED_ONE_LEVEL": ("FAIL", "MOD")},
           "no_link": {"PONDS_DIFFERENT_LIQUIDS_NO_MIX": ("UNMEASURED", "SITE"), "PONDS_HOSE_LEVEL": ("UNMEASURED", "SITE")},
           "mixes": {"PONDS_DIFFERENT_LIQUIDS_NO_MIX": ("FAIL", "MOD")},
-          "no_level": {"PONDS_HOSE_LEVEL": ("FAIL", "MOD")}}
+          "no_level": {"PONDS_HOSE_LEVEL": ("FAIL", "MOD")},
+          "no_levellink": {},
+          "port_shared": {"PORTS_ONE_HOSE_PER_SIDE": ("FAIL", "MOD")},
+          "corner_couples": {"PORTS_CORNER_REFUSED": ("FAIL", "MOD")},
+          "no_lay": {"PORTS_ONE_HOSE_PER_SIDE": ("UNMEASURED", "SITE"), "PORTS_CORNER_REFUSED": ("UNMEASURED", "SITE")}}
 tmp = tempfile.mkdtemp()
 for fault, want in EXPECT.items():
     out = os.path.join(tmp, "wg_%s.json" % (fault or "clean"))
