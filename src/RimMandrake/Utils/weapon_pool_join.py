@@ -186,7 +186,7 @@ def main():
             "label": label, "weaponMoney": [lo, hi], "tags": tags,
             "poolSize": len(pool_by_name), "withinBudget": len(within_budget),
             "unpriced": len(unpriced), "rangedInPool": len(ranged), "meleeInPool": len(melee),
-            "rangedOnly": ranged_only, "thinPool": thin_pool,
+            "rangedOnly": ranged_only, "thinPool": thin_pool, "emptyPool": not within_budget,
             "lowGenerateAllowChance": [{"def": wn, "chance": gac} for wn, gac in low_chance],
             "thinPoolWithLowChance": thin_low_chance,
             "meleeSample": melee[:5], "rangedSample": ranged[:5],
@@ -199,6 +199,9 @@ def main():
             flag.append("THIN POOL (%d) WITH generateAllowChance<1 (%s)"
                         % (len(within_budget),
                            ", ".join("%s@%.2f" % (n, c) for n, c in low_chance)))
+        if not within_budget:
+            flag.append("EMPTY within-budget pool (pool %d, unpriced %d): the join cannot attribute it -- check pricing" %
+                        (len(pool_by_name), len(unpriced)))
         if not flag:
             flag.append("neither mechanism implicated by this join")
 
@@ -214,7 +217,7 @@ def main():
           % (thin_low_chance_count, len(want)))
     both = sum(1 for r in results.values() if r["rangedOnly"] and r["thinPoolWithLowChance"])
     neither = sum(1 for r in results.values()
-                  if not r["rangedOnly"] and not r["thinPoolWithLowChance"])
+                  if not r["rangedOnly"] and not r["thinPoolWithLowChance"] and not r["emptyPool"])
     print("%d kind(s) match BOTH candidate mechanisms; %d match NEITHER (needs another look)."
           % (both, neither))
 
