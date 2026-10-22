@@ -133,7 +133,7 @@ FEATURES = [
     ("set", r"^pitFreeTravelEnabled$", "Flyers, jumpers and floaters cross pits freely, no fall", M + "no frozen station stages a flyer or jumper over a pit; proved by the functional script"),
     ("set", r"^reachSeesWallsAndCliffs$", "Reach map sees built walls and cliffs, agreeing with the depth engine", M + "no frozen station stages a walled-off reach; proved by the functional script reach_map_proof.py (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE)"),
     ("def", r"^ThingDef/RM_PitGuardrail$", "Pit guardrail", "pit_fall"),
-    ("tex", r"RM_Spikes\.png$", "Spike art", "pit_spikes"),
+    ("tex", r"RM_Spikes(/RM_Spikes_[a-z])?\.png$", "Spike art (three random variants)", "pit_spikes"),
     ("set", r"^(pitDrowningEnabled|pitDrowningRateMultiplier|pitDrowningHeadFraction|pitDrowningLyingFraction|poisonFillEnabled)$", "Flooding a pit drowns or poisons",
      "pit_flood"),
     ("def", r"^HediffDef/(RM_PitDrowning|RM_SwimExhaustion)$", "Drowning; swim exhaustion (P12)", "pit_flood"),
@@ -169,6 +169,8 @@ FEATURES = [
     ("gizmo", r'^"(Raise drawbridge|Lower drawbridge|Hold raised)"$', "Drawbridge raise/lower/hold buttons", M + "winch gizmos; driven by drawbridge_proof.py"),
     # before the hose reel's catch-all "DEV:" rule (first match wins): these are the drawbridge's own god-mode buttons
     ("gizmo", r'^"DEV: (make drawbridge"|" \+ \(l\.targetRaised)', "Drawbridge god-mode buttons (make drawbridge, raise/lower leaf N)", M + "dev-mode gizmos on a bridge anchor; drawbridge_proof.py drives the same calls through RM_DrawbridgeProofs"),
+    ("tex", r"Things/Building/FlowWorks/Drawbridge/", "Drawbridge winch, gate and raised-leaf art (per material and look)", M + "no frozen station stages a drawbridge; judged on the bridge_art_redraw sheets, drawn by drawbridge_proof.py scenes"),
+    ("tex", r"UI/Commands/FlowWorks/RM_Drawbridge", "Drawbridge lower/hold-raised button icons", M + "winch gizmo icons; driven by drawbridge_proof.py"),
     ("gizmo", r"^label$", "Drawbridge build buttons (Designator_Drawbridge's label argument)", M + "Architect build buttons for the timber/steel drawbridge; drawbridge_proof.py builds through them"),
     ("set", r"^pipesUnderToCentre$", "Pipes run under to the centre", M + "pipe-routing switch; no frozen station lays pipe under a deck"),
     ("def", r"^ThingDef/RM_PowerCord$", "Flexible power cord (lies on any bridge deck and a drawbridge leaf)", M + "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS; no frozen station has a deck to lay it on; L1 in SelfTest PowerCordChecks, live rows owed (L2: lamp across a timber deck, leaf raise/lower)"),

@@ -55,7 +55,7 @@ CORE_LIVE_IDS = [
     "P5n_own_faction_carveout",
     "X1_pawn_height_ladder", "X2_pawn_lowers_walking_in", "X3_pawn_rises_walking_out", "X4_pit_wall_over_head",
     "X5_slime_occupant_below_surface", "X7_tar_front_lags_water", "X6_two_fluids_distinct", "X7n_viscosity_off",
-    "X8_cover_hides_pit", "X9_cover_deck_uniform", "X10_canal_fire", "T0n_fluid_switch_refused", "E9_log_budget", "Z_settings_restored",
+    "X8_cover_hides_pit", "X9_cover_deck_uniform", "X8b_cover_occupant_stays_below", "X10_canal_fire", "T0n_fluid_switch_refused", "E9_log_budget", "Z_settings_restored",
 ]
 
 # core row -> the north-star bars (design/validation_walks/RimMandrake/FlowWorks.md `## north star`) whose
@@ -1156,7 +1156,9 @@ DRAWBRIDGE_CASES = [
     "Drawbridge_P4_raid_plank_fits_and_commits_once", "Drawbridge_P4_raiders_trench_hand_off_and_winch",
     "Drawbridge_P5_hoses_on_a_leaf_cut_while_raised_rejoin_lowered", "Drawbridge_P5_gravship_edge_bridge_collapses_at_launch",
     "Drawbridge_P5_length_by_material_from_settings", "Drawbridge_P6_gate_never_open_on_a_raised_leaf_locked_only_by_order",
-    "Drawbridge_P6_real_build_buttons", "Drawbridge_P6_art_contract_paths_with_stand_ins"]
+    "Drawbridge_P6_real_build_buttons", "Drawbridge_P6_art_contract_paths_with_stand_ins",
+    "Drawbridge_Looks_paths_look_first_then_material", "Drawbridge_Looks_raid_plank_pieces",
+    "Drawbridge_Looks_wired_at_the_draw_sites"]
 DRAWBRIDGE_LIVE = [
     ("RAISE_PATH", None, "a colonist holding a path over a lowered steel leaf; raised: the production path no longer crosses "
      "it, ToggleCount and RepathCount rise within 10 ticks"),
