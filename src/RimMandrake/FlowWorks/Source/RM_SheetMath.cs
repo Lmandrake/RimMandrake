@@ -117,6 +117,10 @@ namespace RimMandrake.FlowWorks
 			public readonly int[] TempDeciC;       // D10: outdoor/room temperature in tenths of °C (default 20 °C)
 			public FluidRule[] Fluids = new FluidRule[256];
 
+			/// <summary>Stage 1 (§6 item 1): the engine's atomic credit for a Receiver: (cell, wanted dL, fluid) → dL it actually
+			/// took (0..wanted). Null offline: <see cref="RoomDl"/> alone decides. The sheet debits exactly what it returns.</summary>
+			public Func<int, int, byte, int> Credit;
+
 			public World(int w, int h)
 			{
 				W = w; H = h;
@@ -135,6 +139,7 @@ namespace RimMandrake.FlowWorks
 				Array.Copy(SoakMilliDl, c.SoakMilliDl, SoakMilliDl.Length); Array.Copy(EvapMilliDl, c.EvapMilliDl, EvapMilliDl.Length);
 				Array.Copy(TempDeciC, c.TempDeciC, TempDeciC.Length);
 				c.Fluids = (FluidRule[])Fluids.Clone();
+				c.Credit = Credit;
 				return c;
 			}
 
@@ -465,6 +470,11 @@ namespace RimMandrake.FlowWorks
 					{
 						give = Math.Min(Math.Min(mobile, edgeCap), w.RoomDl[j]);
 						if (give <= 0) continue;
+						if (w.Credit != null)
+						{
+							give = Math.Max(0, Math.Min(give, w.Credit(j, give, s.Fluid[i])));
+							if (give <= 0) continue;
+						}
 						w.RoomDl[j] -= give; s.Returned += give;
 						if (w.BodyFluid[j] == 0) w.BodyFluid[j] = s.Fluid[i];
 						credit.TryGetValue(j, out int c0); credit[j] = c0 + give;
@@ -683,6 +693,19 @@ namespace RimMandrake.FlowWorks
 			int k = 0;
 			for (int i = 0; i < l.Count; i++) if (k == 0 || l[k - 1] != l[i]) l[k++] = l[i];
 			l.RemoveRange(k, l.Count - k);
+		}
+
+		/// <summary>Stage 1: a wet cell the engine has taken over (dug under the sheet, a pond re-formed under it) hands up to
+		/// <paramref name="dl"/> of its water to the engine: an internal transfer (Returned) the caller has ALREADY credited,
+		/// or, into a limitless body, the disclosed "joined the lake". Returns the dL handed over.</summary>
+		public static int HandOver(State s, int cell, int dl, bool toLake)
+		{
+			int take = Math.Min(dl, s.Dl[cell]);
+			if (take <= 0) return 0;
+			s.Dl[cell] -= take;
+			if (toLake) s.JoinedLake += take; else s.Returned += take;
+			Compact(s, false);
+			return take;
 		}
 
 		/// <summary>"Dry all spilled liquid now" (§3, §6 item 14 D7): a disclosed purge, never a silent one.</summary>

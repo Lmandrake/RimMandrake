@@ -431,6 +431,64 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(s.LedgerCloses, "ledger");
 			});
 
+			// Stage 1 (§6 item 1): offer → accepted dL. A probe equals the commit and changes nothing.
+			Case("Sheet_preview_changes_nothing_and_counts_a_duplicate_lip_once", () =>
+			{
+				var r = new Random(11);
+				for (int t = 0; t < 200; t++)
+				{
+					var w = RandomWorld(r, 12, 12, false);
+					var p = new Params { MaxWetCells = 1 + r.Next(30), SheetCapDl = 200 + r.Next(3000) };
+					var s = new State(12, 12, (uint)t);
+					for (int k = 0; k < 3; k++)
+						ResolveSpills(s, w, p, new[] { Offer(r.Next(20000), Water, Source.Rain, r.Next(144), r.Next(144)) });
+					var lips = new int[1 + r.Next(6)];
+					for (int k = 0; k < lips.Length; k++) lips[k] = r.Next(144);
+					lips[lips.Length - 1] = lips[0]; // a duplicate lip must not be counted twice by the probe
+					SpillOffer o = Offer(r.Next(60000), Water, Source.Pump, lips);
+					ulong h0 = Hash(s);
+					int probe = PreviewSpill(s, w, p, o);
+					Assert(Hash(s) == h0, "a probe changed the state");
+					int got = ResolveSpills(s, w, p, new[] { o })[0];
+					Assert(probe == got, $"probe {probe} != commit {got} (case {t})");
+					Assert(s.LedgerCloses, "ledger");
+				}
+			});
+
+			// Stage 1 (§6 item 1): the engine's credit is atomic; the sheet debits exactly what the receiver took
+			Case("Sheet_engine_credit_partial_and_refused_conserve_to_the_dL", () =>
+			{
+				var w = new World(20, 5);
+				var p = new Params { ReliefDl = 0 };
+				for (int x = 0; x < 20; x++) w.Kinds[Idx(w, x, 0)] = Kind.Receiver;
+				for (int x = 0; x < 20; x++) w.RoomDl[Idx(w, x, 0)] = int.MaxValue / 4;
+				long engineTook = 0; int calls = 0;
+				w.Credit = (cell, want, fluid) =>
+				{
+					calls++;
+					int took = cell % 3 == 0 ? 0 : cell % 3 == 1 ? want / 3 : want; // refused, partial, whole
+					engineTook += took;
+					return took;
+				};
+				var s = new State(20, 5, 9u);
+				ResolveSpills(s, w, p, new[] { Offer(40000, Water, Source.FillIn, Idx(w, 10, 2), Idx(w, 9, 2), Idx(w, 11, 2)) });
+				Run(s, w, p, 300);
+				Assert(calls > 0 && engineTook > 0, $"the engine was asked and took some: calls {calls} took {engineTook} returned {s.Returned} wet {s.WetCount} standing {s.Standing} soaked {s.Soaked}");
+				Assert(s.Returned == engineTook, $"returned {s.Returned} must equal what the engine took {engineTook}");
+				Assert(s.TotalIn == 30000 && s.LedgerCloses, "three lips x the 0.5 m cap took 30000; the ledger closes with a partial and refusing receiver: in " + s.TotalIn);
+			});
+
+			Case("Sheet_hand_over_to_the_engine_is_counted_and_never_overdraws", () =>
+			{
+				var w = new World(10, 10);
+				var p = new Params();
+				var s = new State(10, 10, 4u);
+				ResolveSpills(s, w, p, new[] { Offer(3000, Water, Source.FillIn, 55) });
+				Assert(HandOver(s, 55, 1000, false) == 1000 && s.Returned == 1000 && s.LedgerCloses, "a part handed to a dug cell");
+				Assert(HandOver(s, 55, 99999, true) == 2000 && s.JoinedLake == 2000 && s.WetCount == 0, "the rest into a lake, no more");
+				Assert(HandOver(s, 55, 5, false) == 0 && s.LedgerCloses, "a dry cell hands over nothing");
+			});
+
 			Case("Sheet_dry_all_is_a_disclosed_purge", () =>
 			{
 				var w = new World(10, 10);
