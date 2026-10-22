@@ -394,9 +394,11 @@ def measure_facing(frames: list[np.ndarray], mask: np.ndarray, named_parts: dict
                for k, w, s in changed]
     elif moved:
         verdict = "DRIFT"
-    elif low or (cover is not None and not cover["ok"]):
+    elif low or len(frames) < 2 or (cover is not None and not cover["ok"]):
         verdict = "UNMEASURED"
-        why = [f"frame {k}: {', '.join(w)} failed, residual {s:.0%} is not evidence of change"
+        if len(frames) < 2:
+            why.append("only %d frame: nothing to compare the reference against, so LOCKED would be vacuous" % len(frames))
+        why += [f"frame {k}: {', '.join(w)} failed, residual {s:.0%} is not evidence of change"
                + ("" if ref_measurable else " (reference too featureless to self-match)") for k, w, s in low]
         if cover is not None and not cover["ok"]:
             why += cover["why"]
