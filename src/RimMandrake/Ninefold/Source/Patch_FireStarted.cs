@@ -89,13 +89,14 @@ namespace RimMandrake.Ninefold
         {
             if (instigator == null)
             {
-                if (ticks - lastNaturalCreditTick < RateLimitWindowTicks) return false;
+                // ticks < last means a save with an earlier clock was loaded in this process: the stored stamp is stale, not recent
+                if (ticks >= lastNaturalCreditTick && ticks - lastNaturalCreditTick < RateLimitWindowTicks) return false;
                 lastNaturalCreditTick = ticks;
                 return true;
             }
 
             if (lastCreditedTick.TryGetValue(instigator, out int last) &&
-                ticks - last < RateLimitWindowTicks)
+                ticks >= last && ticks - last < RateLimitWindowTicks)
             {
                 return false;
             }

@@ -20,22 +20,9 @@
 //     own FloatMenuOptionProviders depends on never touches the Pawn/
 //     Faction object's own fields - only reference identity.
 //
-// ONE THING IS EXTRACTED, not called: ClaimEngine.ResolveClaim's own
-// winner-picking order (strength desc, then specificity desc, then
-// timestamp desc) lives inside a PRIVATE method (Specificity()) and an
-// inline lambda passed to List<T>.Sort() - neither is reachable from
-// outside the class, and the containing public method (ResolveClaim
-// itself) cannot be exercised offline at all (see .csproj header). Picking
-// a winner from a list of ClaimResolution values is exactly the kind of
-// ordering logic that silently breaks on an edit (a swapped
-// CompareTo argument order, a wrong sign) with no error - it just quietly
-// resolves the wrong claimant forever. PickWinner() below is a
-// byte-for-byte transcription of ClaimEngine.cs's own
-// `candidates.Sort(...); return candidates[0];` tail, as of 2026-09-02,
-// operating on REAL ClaimResolution/ClaimantRef values (not reimplemented
-// data shapes - only the comparator itself is copied). If ClaimEngine's
-// own comparator is ever edited, this file must be re-diffed against it by
-// hand; there is no way to make a test import a private method.
+// ClaimEngine.ResolveClaim's winner-picking order (strength desc, then specificity desc, then
+// timestamp desc) lives in RM_PropertyKernel.Order/Specificity, which this project compiles from production
+// source; PickWinner() below calls them directly. ResolveClaim itself cannot run offline (no live Game).
 //
 // Run:
 //   python3 src/RimMandrake/Utils/selftest_property_fabric.py
@@ -77,34 +64,13 @@ namespace RimMandrake.Property.SelfTest
                 throw new Exception($"{msg}: got {got}, want {want}");
         }
 
-        // EXTRACTED from ClaimEngine.cs's private Specificity() method,
-        // byte-for-byte as of 2026-09-02.
-        private static int Specificity(ClaimantRef c)
-        {
-            switch (c.Kind)
-            {
-                case ClaimantKind.Pawn: return 2;
-                case ClaimantKind.Commons: return 1;
-                default: return 0;
-            }
-        }
-
-        // EXTRACTED from ClaimEngine.ResolveClaim's own
-        // `candidates.Sort(...); return candidates[0];` tail, byte-for-byte
-        // as of 2026-09-02 (see this file's own header for why the real
-        // method cannot be called directly).
+        // ClaimEngine.ResolveClaim sorts with RM_PropertyKernel.Order over RM_PropertyKernel.Specificity (both compiled into this
+        // project from production source), so the test calls those directly - no transcription to drift out of step.
         private static ClaimResolution PickWinner(List<ClaimResolution> candidates)
         {
-            candidates.Sort((a, b) =>
-            {
-                int byStrength = b.EffectiveStrength.CompareTo(a.EffectiveStrength);
-                if (byStrength != 0) return byStrength;
-
-                int bySpecificity = Specificity(b.Claimant).CompareTo(Specificity(a.Claimant));
-                if (bySpecificity != 0) return bySpecificity;
-
-                return b.TimestampTicks.CompareTo(a.TimestampTicks);
-            });
+            candidates.Sort((a, b) => RM_PropertyKernel.Order(
+                a.EffectiveStrength, RM_PropertyKernel.Specificity((byte)a.Claimant.Kind), a.TimestampTicks,
+                b.EffectiveStrength, RM_PropertyKernel.Specificity((byte)b.Claimant.Kind), b.TimestampTicks));
             return candidates[0];
         }
 
