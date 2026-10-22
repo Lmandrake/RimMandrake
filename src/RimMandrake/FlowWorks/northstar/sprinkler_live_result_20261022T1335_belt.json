@@ -1,0 +1,427 @@
+{
+ "script": "sprinkler_live.py",
+ "started": "2026-10-22T12:55:09",
+ "rows": [
+  {
+   "id": "sprinkler.draws_and_wets",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "units": [
+     99875,
+     99750
+    ],
+    "drop": 125,
+    "cells": 25,
+    "inspect": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+    "pulseAfterTicks": 2500,
+    "sprayedUnits": [
+     250,
+     375
+    ],
+    "soakedCovered": true,
+    "soakedFar": false,
+    "bad": []
+   }
+  },
+  {
+   "id": "sprinkler.no_pressure",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "pumpOff": "No pressure: no pump on this network",
+    "units": [
+     99750,
+     99750
+    ],
+    "pumpBackOn": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+    "bad": [],
+    "how": "the pump stops through liquidPumpEnabled (Building_LiquidPump.Running), not a despawn: a despawn by cell also destroys the pipe under it"
+   }
+  },
+  {
+   "id": "sprinkler_switch_flips.flip_sprinklersEnabled",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "inspect": "Sprinklers are off in Mod Settings",
+    "units": [
+     99625,
+     99625
+    ]
+   }
+  },
+  {
+   "id": "sprinkler.dries_when_starved",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "last": [
+     "Dry: nothing in the tanks on this network",
+     false
+    ],
+    "ticks": 2500,
+    "wetBefore": true
+   }
+  },
+  {
+   "id": "sprinkler.thick_clogs",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "inspect": "Clogged: tar too thick to spray",
+    "units": [
+     50000,
+     50000
+    ]
+   }
+  },
+  {
+   "id": "sprinkler.walls_stop_spray",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "behindWall": [
+     [
+      125,
+      171
+     ],
+     false
+    ],
+    "openSide": [
+     [
+      125,
+      166
+     ],
+     true
+    ],
+    "inspect": "Spraying fresh water \u00b7 10.5 L/h \u00b7 21 cells"
+   }
+  },
+  {
+   "id": "T22_no_brine_spray",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "brineOnly": "Dry: nothing in the tanks on this network",
+    "withFresh": "Spraying fresh water \u00b7 9 L/h \u00b7 18 cells",
+    "brineUnits": [
+     50000,
+     50000
+    ],
+    "freshUnits": 19910,
+    "bad": []
+   }
+  },
+  {
+   "id": "sprinkler.acid_hurts_fuel_puddles",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "acid": "Spraying acid water \u00b7 12.5 L/h \u00b7 25 cells",
+    "harm": [
+     3.989,
+     4.907,
+     4.586
+    ],
+    "fuel": "Spraying chemfuel \u00b7 12.5 L/h \u00b7 25 cells",
+    "filth": [
+     0,
+     4
+    ],
+    "bad": [],
+    "notRun": "the chemfuel arm with the setting off"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/sprinkler_full.json",
+  "only": "",
+  "dry_run": false,
+  "mock": false,
+  "mock_faults": "",
+  "origin": "120,140"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "77cd778941b152c46490c667102391c3a2360153ea0ccbf0f0e71f7cff22322e"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brullith36278",
+    "RM_Brullith36279",
+    "RM_Brullith36282",
+    "RM_Dustveil36285",
+    "RM_Dustveil36289",
+    "RM_Illoth36283",
+    "RM_MycoidColossus36284",
+    "RM_MycoidColossus36290",
+    "RM_Shambles36276",
+    "RM_Shambles36280",
+    "RM_Shambles36286",
+    "RM_Shambles36291",
+    "RM_Thozzik36281",
+    "RM_ThozzikColonyQueen36277",
+    "RM_ThozzikQueen36287",
+    "RM_ThozzikQueen36288"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive3178"
+    ],
+    [
+     "GlowPod",
+     "GlowPod3193"
+    ],
+    [
+     "Hive",
+     "Hive3194"
+    ],
+    [
+     "GlowPod",
+     "GlowPod3203"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "net0": {
+  "tank": [
+   120,
+   140
+  ],
+  "pump": [
+   123,
+   140
+  ],
+  "head": [
+   125,
+   140
+  ],
+  "covered": [
+   126,
+   141
+  ],
+  "far": [
+   130,
+   144
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead38140",
+  "pumpId": "RM_LiquidPump38139"
+ },
+ "net1": {
+  "tank": [
+   120,
+   154
+  ],
+  "pump": [
+   123,
+   154
+  ],
+  "head": [
+   125,
+   154
+  ],
+  "covered": [
+   126,
+   155
+  ],
+  "far": [
+   130,
+   158
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead125401",
+  "pumpId": "RM_LiquidPump125400"
+ },
+ "net2": {
+  "tank": [
+   120,
+   168
+  ],
+  "pump": [
+   123,
+   168
+  ],
+  "head": [
+   125,
+   168
+  ],
+  "covered": [
+   126,
+   169
+  ],
+  "far": [
+   130,
+   172
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead137550",
+  "pumpId": "RM_LiquidPump137549"
+ },
+ "net3": {
+  "tank": [
+   120,
+   182
+  ],
+  "pump": [
+   123,
+   182
+  ],
+  "head": [
+   125,
+   182
+  ],
+  "covered": [
+   126,
+   183
+  ],
+  "far": [
+   130,
+   186
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead149305",
+  "pumpId": "RM_LiquidPump149304"
+ },
+ "net4": {
+  "tank": [
+   120,
+   196
+  ],
+  "pump": [
+   123,
+   196
+  ],
+  "head": [
+   125,
+   196
+  ],
+  "covered": [
+   126,
+   197
+  ],
+  "far": [
+   130,
+   200
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead171586",
+  "pumpId": "RM_LiquidPump171585"
+ },
+ "net5": {
+  "tank": [
+   120,
+   210
+  ],
+  "pump": [
+   123,
+   210
+  ],
+  "head": [
+   125,
+   210
+  ],
+  "covered": [
+   126,
+   211
+  ],
+  "far": [
+   130,
+   214
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead203018",
+  "pumpId": "RM_LiquidPump203017"
+ },
+ "ended": "2026-10-22T12:58:32"
+}

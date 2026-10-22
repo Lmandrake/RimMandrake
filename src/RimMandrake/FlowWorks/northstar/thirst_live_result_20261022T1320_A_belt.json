@@ -1,0 +1,286 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-22T12:37:26",
+ "rows": [
+  {
+   "id": "T7_no_dbh_clean_log",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "exceptionLines": 0,
+    "naming": [],
+    "firstException": null
+   }
+  },
+  {
+   "id": "T1_provider_line",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "measuredArm": "no Dubs on the list -> Own (no DBHThirst NeedDef loaded)",
+    "armOk": true,
+    "why": "the bar needs three mod lists (no DBH / Lite+Thirst / Lite alone); this run had one"
+   }
+  },
+  {
+   "id": "T2_one_thirst_need",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "perColonist": {
+     "Human93": [
+      1,
+      0
+     ],
+     "Human96": [
+      1,
+      0
+     ],
+     "Human99": [
+      1,
+      0
+     ]
+    },
+    "bad": {}
+   }
+  },
+  {
+   "id": "T3_need_falls",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": 0.9,
+    "after": 0.700002551,
+    "drop": 0.2,
+    "expect": 0.2,
+    "heatScaling": false,
+    "ticks": 15000
+   }
+  },
+  {
+   "id": "T10_terrain_drink",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobAtTick": 60,
+    "jobsSeen": [
+     "RM_DrinkFromTerrain"
+    ],
+    "levels": [
+     0.2,
+     0.694
+    ],
+    "trace": [
+     [
+      "RM_DrinkFromTerrain",
+      0.198
+     ],
+     [
+      "RM_DrinkFromTerrain",
+      0.198
+     ],
+     [
+      "RM_DrinkFromTerrain",
+      0.196
+     ],
+     [
+      "GotoWander",
+      0.694
+     ]
+    ],
+    "offJobsSeen": [
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander"
+    ],
+    "bad": []
+   }
+  },
+  {
+   "id": "T9_animals_drink",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "animals": [
+     [
+      "PlayerColony",
+      "Muffalo124131"
+     ],
+     [
+      "none",
+      "Muffalo124132"
+     ]
+    ],
+    "levels": {
+     "Muffalo124131": [
+      0.25,
+      0.7160004
+     ],
+     "Muffalo124132": [
+      0.25,
+      0.718000352
+     ]
+    },
+    "rose": {
+     "Muffalo124131": true,
+     "Muffalo124132": true
+    },
+    "bottlesOnMap": 0,
+    "inferred": "no bottle on the map: a rise beside the pond is a terrain drink (the job is not on the bridge)"
+   }
+  },
+  {
+   "id": "T11_autofill_skips_salt",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "fresh": [
+     0,
+     3
+    ],
+    "salt": [
+     0,
+     0
+    ],
+    "jobsSeen": [
+     "RM_FillBottleJob",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander"
+    ]
+   }
+  },
+  {
+   "id": "T12_no_routine_salt",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobsSalt": [
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander"
+    ],
+    "jobsAfterBottle": [
+     "Ingest"
+    ],
+    "bottleGone": true,
+    "saltBottles": 0,
+    "level0": 0.2,
+    "bad": []
+   }
+  },
+  {
+   "id": "T13_desperate_toxic_last",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobsAt005": [
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_MaintainPosture",
+     "Wait_Wander",
+     "GotoWander"
+    ],
+    "jobsAt0": [
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_MaintainPosture",
+     "RM_DrinkFromTerrain"
+    ],
+    "levelAfter": 0.25,
+    "hediffs": {
+     "RM_SheenCoating": 0.0312266666,
+     "RM_Dehydration": 0.009000001,
+     "ToxicBuildup": 0.119733334
+    },
+    "jobsWithBottle": [
+     "Ingest"
+    ],
+    "bad": []
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/thirst_A.json",
+  "only": "T7,T1,T2,T3,T10,T9,T11,T12,T13",
+  "site": "150,130",
+  "log": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log",
+  "reload_site": "calm",
+  "dry_run": false,
+  "mock": false,
+  "mock_faults": "",
+  "t25_empties": 1
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "77cd778941b152c46490c667102391c3a2360153ea0ccbf0f0e71f7cff22322e"
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "running": 14,
+ "site": {
+  "rect": "150,130,40,40",
+  "paintedWaterRuns": 0,
+  "bottlesOnMap": [],
+  "draftedOwn": 3
+ },
+ "governorStops": [
+  "safe_advance stopped after 1320 of 1500 tick(s): downed: downed (health 0.49)",
+  "safe_advance stopped after 900 of 1500 tick(s): death: died: ToxicBuildup"
+ ],
+ "settings_after": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "ended": "2026-10-22T12:40:36"
+}
