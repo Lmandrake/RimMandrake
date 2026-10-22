@@ -217,11 +217,18 @@ namespace RimMandrake.FlowWorks.Machinery
 			  + "the hoses across it, and a powered cord it drops lies in the hole as a live wire (it shocks through Gimme Some Slack's "
 			  + "fallen-wire setting, when that mod is loaded). Off: lines (and hoses) follow the game's ground rules alone, digging leaves them "
 			  + "standing, and a collapsing deck only destroys what stands on it.");
-			list.CheckboxLabeled("Pipe poles carry pipe overhead across pits, trenches and canals (needs Gimme Some Slack's overhead lines on)", ref pipePolesEnabled,
+			bool polesWere = pipePolesEnabled;
+			list.CheckboxLabeled("Pipe poles carry pipe overhead across pits, trenches and canals (needs Gimme Some Slack loaded)", ref pipePolesEnabled,
 				"On: a pipe pole (Pipe networks menu) hangs a stiff overhead pipe to another pipe pole, using Gimme Some Slack's overhead "
 			  + "lines. Poles stand on solid ground only, never on a bridge deck, a pit cover or a dug square; a span is not walkable. "
-			  + "Digging out a pole's square knocks it down and its spans fall. Off: the pole leaves the build menu; poles already built "
-			  + "stay strung. The art is a stand-in until the pipe widths are judged in game.");
+			  + "Digging out a pole's square knocks it down and its spans fall. This is the pipe poles' own switch: Gimme Some Slack's "
+			  + "power-lines switch does not touch them. Off: the pole leaves the build menu, new poles do not link, built spans are not "
+			  + "drawn and carry no liquid; they stay strung and come back when switched on. The art is a stand-in until the pipe widths "
+			  + "are judged in game.");
+			if (pipePolesEnabled != polesWere)
+			{
+				RM_PipePoles.RedrawSpans();   // the span shadows on the ground follow the switch now
+			}
 			if (pipePolesEnabled)
 			{
 				list.Label(RM_PipePoleMath.SpanLabel(pipePoleMaxSpan), -1f, (TipSignal?)"How far one pipe span may reach between two poles. Applies now to new links; spans already strung stay.");

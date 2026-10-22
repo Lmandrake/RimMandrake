@@ -28,7 +28,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             bounds = section.CellRect;
         }
 
-        public override bool Visible => AerialSettings.enabled;
+        public override bool Visible => AerialLineProfiles.AnyKindOn;
 
         public override CellRect GetBoundaryRect() => bounds;
 
@@ -44,7 +44,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 float cordY = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;
                 foreach (CompAerialAnchor a in comp.Anchors)
                 {
-                    if (!section.CellRect.Contains(a.Position)) continue;
+                    if (!section.CellRect.Contains(a.Position) || !AerialLineProfiles.KindOn(a.Kind)) continue;
                     if (AerialMaterials.Shadow != null)
                         foreach (SpanLink l in a.links)
                         {

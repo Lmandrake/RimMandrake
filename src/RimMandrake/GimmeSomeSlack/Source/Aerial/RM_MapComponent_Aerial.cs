@@ -256,7 +256,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 }
                 pendingAuto.Remove(a);
                 pendingSince.Remove(a);
-                if (!AerialSettings.enabled || !AerialSettings.autoLink) continue;
+                if (!AerialLineProfiles.KindBehaviour(a.Kind, AerialSettings.autoLink)) continue;   // each kind's own switch
                 // stage 2 (design 2.3): auto-link only links to a run of the SAME look; linking two looks by hand is a bridge
                 var others = AutoLinkCandidates(AerialLineProfiles.LookOfThing(a.parent), a, a.Position, a.Kind);
                 int pick = AerialMath.AutoLinkPick(a.Info(), others.Select(o => o.Info()).ToList(), a.Range);
@@ -330,10 +330,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>GS-5: coil any wire whose two ends belong to different owners (a pole was claimed or captured).</summary>
         public int OwnerMismatchSweep()
         {
-            if (!AerialSettings.enabled || !AerialSettings.cutWiresOnOwnerChange) return 0;
+            if (!AerialLineProfiles.AnyKindOn) return 0;
             int cut = 0;
             foreach (CompAerialAnchor a in Anchors.ToList())
             {
+                if (!AerialLineProfiles.KindBehaviour(a.Kind, AerialSettings.cutWiresOnOwnerChange)) continue;
                 foreach (CompAerialAnchor o in a.links.Select(l => l.other).Where(o => o != null && CompAerialAnchor.FactionKey(o.parent) != CompAerialAnchor.FactionKey(a.parent)).ToList())
                     if (CompAerialAnchor.Unlink(a, o)) cut++;
             }
@@ -506,7 +507,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             AerialProbe.Service(map, this);
             lastSpanDraws = lastSwayDraws = lastTopDraws = lastGlowDraws = lastDropDraws = 0;
-            if (!AerialSettings.enabled || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
+            if (!AerialLineProfiles.AnyKindOn || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
             CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(3);
             float wind = map.windManager.WindSpeed;
             bool sway = WireSway.Active(map, out lastSwayReason);
@@ -514,6 +515,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             float spanY = SpanAltitude;
             foreach (CompAerialAnchor a in Anchors)
             {
+                if (!AerialLineProfiles.KindOn(a.Kind)) continue;   // each kind's own switch: the power master hides wires only
                 Material top = AerialMaterials.Top(AerialMaterials.TopPathFor(a));
                 if (top != null && view.Contains(a.Position))
                 {
@@ -549,6 +551,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                         lastDropDraws++;
                     }
             }
+            if (!AerialSettings.enabled) return;   // drops, clamps and live-end glow are power-only
             DrawLocalDrops(view);
             DrawTaps(view);
             DrawFallenGlow();

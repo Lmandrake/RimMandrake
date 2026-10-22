@@ -9,7 +9,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// the range ring and a preview line to the anchor auto-link would choose (design 2.4).</summary>
     public class PlaceWorker_AerialRange : PlaceWorker
     {
-        public override bool IsBuildDesignatorVisible(BuildableDef def) => AerialSettings.enabled;
+        // PIPE_POLE_SWITCH_DECIDE_HOSTAGE_TO_WIRES: each kind's own switch (a pipe pole is FlowWorks', not the power master's)
+        public override bool IsBuildDesignatorVisible(BuildableDef def) => AerialLineProfiles.KindOn(AerialLineProfiles.KindOf(def as ThingDef));
 
         public override void DrawGhost(ThingDef def, IntVec3 center, Rot4 rot, Color ghostCol, Thing thing = null)
         {
@@ -19,7 +20,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             float range = AerialLineProfiles.RangeFor(kind);
             float r = Mathf.Min(range, GenRadial.MaxRadialPatternRadius - 0.01f);
             GenDraw.DrawRadiusRing(center, r);
-            if (!AerialSettings.autoLink) return;
+            if (!AerialLineProfiles.KindBehaviour(kind, AerialSettings.autoLink)) return;   // the same rule as the real auto-link
             RM_MapComponent_Aerial comp = map.GetComponent<RM_MapComponent_Aerial>();
             if (comp == null) return;
             var self = new AnchorInfo

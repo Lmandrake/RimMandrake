@@ -149,7 +149,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
             list.CheckboxLabeled("Aerial power lines (master switch)", ref enabled,
                 "Masts, lamp masts and wall brackets carry power over open ground on sagging overhead wires. Off: they leave the " +
-                "architect menu and wires are hidden. Anchors already built stay and keep carrying power, so no save breaks.");
+                "architect menu and wires are hidden. Anchors already built stay and keep carrying power, so no save breaks. " +
+                "This switch covers power lines only: FlowWorks' pipe poles have their own switch in FlowWorks' Mod Settings.");
             list.Label("Longest span: " + maxSpan.ToString("0") + " cells");
             maxSpan = Mathf.Round(list.Slider(maxSpan, 8f, 40f));
             using (Dependent(list, "sag", "autoLink"))
@@ -255,7 +256,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: master switches, from each setting's READ SITE (2026-10-14).
         /// "enabled" gates the span draw (sag, drip loops, sway), auto-link, the fallen-wire shock/ignition, the wire-down alert,
-        /// the owner-change cut and the clamps. Independent (read with the master off): longest span and wires per span (the
+        /// the owner-change cut and the clamps, for POWER anchors only: a pipe pole reads FlowWorks' own switch instead
+        /// (AerialLineProfiles.KindOn / KindBehaviour; owner by card 2026-10-21, "Their own switch."). Independent (read with the master off): longest span and wires per span (the
         /// anchor's manual link gizmos and strand count), the gravship flight rule, and both blast rules. Sway strength is not
         /// under the sway mode: a kinetic swing reads it with sway off. Clamp chain: tapsEnabled -> tapRate, tapEvents;
         /// tapEvents -> theftGoodwill (TapEvents.Raise -> PowerTheftConsequences.OnDrained) -> per-day loss, sight range.</summary>

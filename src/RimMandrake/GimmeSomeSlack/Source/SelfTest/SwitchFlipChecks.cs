@@ -62,6 +62,43 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   "both blast paths pass explosionsCut and kineticSway");
             Check(Regex.IsMatch(tap, @"TapStolenPerTick\(AerialSettings\.tapRate,[^;]*AerialSettings\.tapsEnabled"), "the tap passes tapRate and tapsEnabled");
             Check(Regex.IsMatch(comp, @"AerialMath\.Sway\([^;]*AerialSettings\.swayStrength"), "the span sway passes swayStrength");
+
+            // PIPE_POLE_SWITCH_DECIDE_HOSTAGE_TO_WIRES (owner by card 2026-10-21: "Their own switch."): a pipe pole obeys FlowWorks'
+            // pipe-pole switch, a power anchor GSS's power master, and neither the other's
+            foreach (bool power in new[] { false, true })
+                foreach (bool pipe in new[] { false, true })
+                    foreach (bool sub in new[] { false, true })
+                    {
+                        Check(AerialKinds.KindOn(AerialLineKind.Power, power, pipe) == power, $"power anchor on = the power master ({power},{pipe})");
+                        Check(AerialKinds.KindOn(AerialLineKind.Pipe, power, pipe) == pipe, $"pipe pole on = its own switch, never the power master ({power},{pipe})");
+                        Check(AerialKinds.KindBehaviour(AerialLineKind.Power, power, pipe, sub) == (power && sub), "a power behaviour needs the master and its setting");
+                        Check(AerialKinds.KindBehaviour(AerialLineKind.Pipe, power, pipe, sub) == pipe, "a pipe behaviour reads only the pipe switch (the power settings are greyed with the master)");
+                    }
+            // every gate the item listed reads the anchor's own kind, not the bare power master
+            string Src(string f) => File.ReadAllText(Path.Combine(dir, f));
+            string place = Src("PlaceWorkers_Aerial.cs"), ground = Src("SectionLayer_RM_AerialGround.cs"), restring = Src("RestringJob.cs"),
+                   alert = Src("Alert_WireDown.cs");
+            Check(place.Contains("IsBuildDesignatorVisible(BuildableDef def) => AerialLineProfiles.KindOn(AerialLineProfiles.KindOf(def as ThingDef))"),
+                  "anchor build button: each kind's own switch");
+            Check(place.Contains("AerialLineProfiles.KindBehaviour(kind, AerialSettings.autoLink)"), "the ghost's preview line follows the real auto-link rule");
+            Check(Regex.IsMatch(comp, @"void MapComponentUpdate\(\)[\s\S]{0,400}!AerialLineProfiles\.AnyKindOn")
+                  && Regex.IsMatch(comp, @"foreach \(CompAerialAnchor a in Anchors\)\s*\{\s*if \(!AerialLineProfiles\.KindOn\(a\.Kind\)\) continue;"),
+                  "span draw: runs while any kind is on, skips an anchor whose kind is off");
+            Check(Regex.IsMatch(comp, @"if \(!AerialSettings\.enabled\) return;[^\n]*\n\s*DrawLocalDrops\(view\);\s*DrawTaps\(view\);\s*DrawFallenGlow\(\);"),
+                  "drops, clamps and live-end glow stay behind the power master");
+            Check(comp.Contains("if (!AerialLineProfiles.KindBehaviour(a.Kind, AerialSettings.autoLink)) continue;")
+                  && anchor.Contains("AerialLineProfiles.KindBehaviour(Kind, AerialSettings.autoLink)) comp?.QueueAutoLink(this);"),
+                  "auto-link (queue and process) per kind");
+            Check(comp.Contains("if (!AerialLineProfiles.KindBehaviour(a.Kind, AerialSettings.cutWiresOnOwnerChange)) continue;"), "owner-change cut per kind");
+            Check(ground.Contains("public override bool Visible => AerialLineProfiles.AnyKindOn;")
+                  && ground.Contains("!AerialLineProfiles.KindOn(a.Kind)) continue;"), "ground layer: visible for any kind, prints only kinds that are on");
+            Check(restring.Contains("!AerialLineProfiles.AnyKindOn || !pawn.Map.designationManager")
+                  && restring.Contains("a == null || !AerialLineProfiles.KindOn(a.Kind)")
+                  && restring.Contains("AerialLineProfiles.KindOn(ta.Kind)) || !Restringing.Designated(TargetThingA)"), "re-string per kind");
+            Check(alert.Contains("AerialLineProfiles.KindBehaviour(a.Kind, AerialSettings.wireDownAlert)")
+                  && alert.Contains("GetReport() => AerialLineProfiles.AnyKindOn"), "wire-down alert per kind");
+            Check(!Regex.IsMatch(place + ground + restring + alert, @"AerialSettings\.enabled(?! && AerialSettings\.tapsEnabled)"),
+                  "no bare power-master read left in the placeworkers, ground layer, re-string or alert (the clamp keeps its own)");
         }
 
         private static string AerialSourceDir()
