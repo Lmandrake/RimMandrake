@@ -562,7 +562,9 @@ def assert_bland(session, expected_ids=()):
     if strangers:
         problems.append("strangers present: %s" % strangers)
     fires = session.call("jawa/list_things", defName="Fire")
-    if fires.get("countMatched"):
+    if fires.get("success") is False or "countMatched" not in fires:
+        problems.append("fire list unreadable (%s): cannot call the map fire-free" % str(fires.get("message") or fires)[:120])
+    elif fires.get("countMatched"):
         problems.append("fires burning: %d" % fires["countMatched"])
     # A dead colonist that is one of the session's OWN fixtures (a test walker the litter teardown killed)
     # is not contamination: MEASURED 2026-10-01, that teardown is what made earlier "everyone is dead"

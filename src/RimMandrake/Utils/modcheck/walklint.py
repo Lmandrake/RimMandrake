@@ -307,6 +307,10 @@ def main(argv=None):
     n_fail = sum(1 for f in findings if f[0] == FAIL)
     n_warn = sum(1 for f in findings if f[0] == WARN)
     print("%d FAIL, %d WARN" % (n_fail, n_warn))
+    if counts["walks"] == 0 or counts["packageids"] == 0:      # the module's own named failure mode: a glob that matched nothing
+        print("walklint: UNMEASURED -- indexed %d walks / %d packageIds under %s; zero findings means nothing"
+              % (counts["walks"], counts["packageids"], repo_root))
+        return 2
     return 1 if n_fail else 0
 
 
