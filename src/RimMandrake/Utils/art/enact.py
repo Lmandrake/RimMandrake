@@ -1134,6 +1134,10 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 # his note on this row was already carried out (mark-done / moved to notes_followed): a leftover
                 # "redo" letter must not re-fire it. Only a NEW open note (not marked done) queues again.
                 P["done"].append(f"{row}: note already carried out — redo not re-queued")
+                if note and (sheet, row, note) in done_marks:
+                    # carried out by hand: the note leaves the open notes like any followed note (RSW_Kaadu 2026-10-22
+                    # stayed open after --mark-done, ready to re-fire on the next enact)
+                    P["followed"][row] = {"note": v.get("note"), "by": ["mark-done"]}
             elif dec == "redo":
                 P["queue"].append({"row": row, "names": names, "note": note, "srow": srow, "v": v})
                 if note and DEF_ASK.search(note) and (sheet, row, note) not in done_marks:
@@ -1167,6 +1171,13 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 want.append({"kind": "facings", "slot": fa.get("slot") or prim, "n": 1, "base": fa.get("from"),
                              "how": "draw the missing facing(s) " + ", ".join(fa["faces"]), "faces": fa["faces"]})
             for w in want:
+                if w["kind"] == "slot" and note and (sheet, row, note) in done_marks:
+                    # his note on this row was carried out by hand (--mark-done) and it covers the row's slot redraws
+                    # too (RSW_Kaadu 2026-10-22: "Just use female also for male at this point" — the male and
+                    # male-swimming slots were filled with the female art, so no redraw job may be filed for them)
+                    P["done"].append(f"{row}: slot {w['slot'] and w['slot'].rsplit('/', 1)[-1]} — carried out by hand "
+                                     f"with the note (--mark-done)")
+                    continue
                 aid = L.det_id("ask", sheet, row, json.dumps(w, sort_keys=True))[:8]
                 have = [j for j in jobs if str(j.get("id", "")).startswith(f"enact_{aid}_")]
                 if have:

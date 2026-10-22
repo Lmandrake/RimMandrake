@@ -12,7 +12,17 @@
       "at": "2026-10-22T04:32:18.848Z",
       "decidedAt": "2026-10-22T04:31:29.042Z",
       "decision": "redo",
-      "note": "D has a good East. A has good South. Redo North.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T04:32:18.848Z",
+          "followed_by": [
+            "picks1redo_akk_v1_north"
+          ],
+          "note": "D has a good East. A has good South. Redo North.",
+          "when": "2026-10-22T00:06:44-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "f363735147ca399ffa3ca6506cc2e6027732eb34512ce4550b2c426a468cd5e6",
@@ -76,7 +86,19 @@
       "at": "2026-10-22T04:34:07.872Z",
       "decidedAt": "2026-10-22T04:33:23.746Z",
       "decision": "redo",
-      "note": "Look carefully at the two Donor images with Ewoks in them. Delete the art that look like two ponies together. The face has a very thick strange mouth, not horse-like.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T04:34:07.872Z",
+          "followed_by": [
+            "picks1redo_bordok_v1_north",
+            "picks1redo_bordok_v1_south",
+            "picks1redo_bordok_v1_east"
+          ],
+          "note": "Look carefully at the two Donor images with Ewoks in them. Delete the art that look like two ponies together. The face has a very thick strange mouth, not horse-like.",
+          "when": "2026-10-22T00:06:44-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "8c21f0bada163f68721a9df4d3a29538f5e387382dda01ce1a3ba4857d6df8dc",
@@ -98,7 +120,17 @@
       "at": "2026-10-22T04:39:07.797Z",
       "decidedAt": "2026-10-22T04:39:00.923Z",
       "decision": "redo",
-      "note": "N needs regeneration, other directions look good",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T04:39:07.797Z",
+          "followed_by": [
+            "picks1redo_brezak_v1_north"
+          ],
+          "note": "N needs regeneration, other directions look good",
+          "when": "2026-10-22T00:06:44-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "fe950c93a78a8c39a23ddf4274e947e218c9a07c3b8f4cf14a7fced05e79082a",
@@ -253,7 +285,19 @@
       "at": "2026-10-22T06:20:06.176Z",
       "decidedAt": "2026-10-22T06:19:52.696Z",
       "decision": "redo",
-      "note": "Look closely at the canon art. They have this huge bone structure on thier head. Make sure tyou do too. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:20:06.176Z",
+          "followed_by": [
+            "picks1redo_gualaar_v1_north",
+            "picks1redo_gualaar_v1_south",
+            "picks1redo_gualaar_v1_east"
+          ],
+          "note": "Look closely at the canon art. They have this huge bone structure on thier head. Make sure tyou do too. ",
+          "when": "2026-10-22T00:06:44-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "077eac553147869f",
       "schema": 2,
@@ -336,7 +380,18 @@
       "at": "2026-10-22T06:22:28.359Z",
       "decidedAt": "2026-10-22T06:22:07.299Z",
       "decision": "B",
-      "note": "Generate North and South",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:22:28.359Z",
+          "followed_by": [
+            "picks1redo_insectomorph_v1_north",
+            "picks1redo_insectomorph_v1_south"
+          ],
+          "note": "Generate North and South",
+          "when": "2026-10-22T00:06:44-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "ec3215970c08dd14f76d9afa2b45cf1eaecd5c3e4d576ed2defe229802c770bf",
@@ -408,7 +463,17 @@
       "at": "2026-10-22T06:24:59.061Z",
       "decidedAt": "2026-10-22T06:24:44.494Z",
       "decision": "redo",
-      "note": "Just use female also for male at this point",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:24:59.061Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Just use female also for male at this point",
+          "when": "2026-10-22T00:07:18-0700"
+        }
+      ],
       "picks": {
         "swanimals/Kaadu/Kaadu_f": "C"
       },
@@ -486,7 +551,19 @@
       "at": "2026-10-22T06:29:54.835Z",
       "decidedAt": "2026-10-22T06:29:39.425Z",
       "decision": "redo",
-      "note": "B is closest but it needs the treatment that makes the different facings the same size.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:29:54.835Z",
+          "followed_by": [
+            "picks1set_kelldragon_v1_east",
+            "picks1set_kelldragon_v1_north",
+            "picks1set_kelldragon_v1_south"
+          ],
+          "note": "B is closest but it needs the treatment that makes the different facings the same size.",
+          "when": "2026-10-22T00:06:44-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "5a1ab3e1b25f9d5b6f469841cc295b64d4dc578f2e296c4f9d55ef66aa9a843d",
@@ -661,7 +738,19 @@
       "at": "2026-10-22T06:33:19.470Z",
       "decidedAt": "2026-10-22T06:33:08.021Z",
       "decision": "redo",
-      "note": "Like a vulture lion, look closely at the Canon",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:33:19.470Z",
+          "followed_by": [
+            "picks1redo_mastiffphalone_v1_south",
+            "picks1redo_mastiffphalone_v1_north",
+            "picks1redo_mastiffphalone_v1_east"
+          ],
+          "note": "Like a vulture lion, look closely at the Canon",
+          "when": "2026-10-22T00:06:44-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "077eac553147869f",
       "schema": 2,
@@ -992,7 +1081,17 @@
     "RSW_Taozin": {
       "at": "2026-10-22T06:39:17.527Z",
       "decision": "A",
-      "note": "The grub imagery obviously should not by in the adult category...",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:39:17.527Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "The grub imagery obviously should not by in the adult category...",
+          "when": "2026-10-22T00:06:44-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "76eecb90b04db40a24754fca8a37835f726fc6c46c2efb1cbbc11058a18343f0",
@@ -1081,7 +1180,18 @@
       "at": "2026-10-22T06:41:08.888Z",
       "decidedAt": "2026-10-22T06:40:47.663Z",
       "decision": "redo",
-      "note": "Try again based on Option A, East Facing (the only decent one... make North and South of that!)",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:41:08.888Z",
+          "followed_by": [
+            "picks1redo_tibidee_v1_north",
+            "picks1redo_tibidee_v1_south"
+          ],
+          "note": "Try again based on Option A, East Facing (the only decent one... make North and South of that!)",
+          "when": "2026-10-22T00:06:44-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "077eac553147869f",
       "schema": 2,
@@ -1196,7 +1306,17 @@
       "at": "2026-10-22T06:43:23.676Z",
       "decidedAt": "2026-10-22T06:43:17.461Z",
       "decision": "B",
-      "note": "Combine B and C to get what you need",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:43:23.676Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Combine B and C to get what you need",
+          "when": "2026-10-22T00:06:44-0700"
+        }
+      ],
       "prefill": "A",
       "reject": {},
       "retire": {},
