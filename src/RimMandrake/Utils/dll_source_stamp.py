@@ -125,7 +125,8 @@ def ls_tree(rev, path, repo):
         ["git", "ls-tree", "-r", "--name-only", rev, "--", path],
         cwd=repo, capture_output=True, text=True)
     if r.returncode != 0:
-        return []
+        # an empty list here reads as "no stamps / no sources": check_head would print nothing and exit 0
+        raise RuntimeError("git ls-tree %s -- %s failed: %s" % (rev, path, r.stderr.strip()))
     return [ln for ln in r.stdout.splitlines() if ln]
 
 
