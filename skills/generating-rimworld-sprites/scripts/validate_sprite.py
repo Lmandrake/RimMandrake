@@ -463,7 +463,11 @@ def main() -> int:
     if not ref_path.is_file():
         print(f"ERROR no such reference: {ref_path}", file=sys.stderr)
         return 2
-    ref = measure(ref_path)
+    try:
+        ref = measure(ref_path)
+    except Exception as e:            # noqa: BLE001 - an unreadable PNG is unusable input (2), never a verdict (1)
+        print(f"ERROR cannot read reference {ref_path}: {e}", file=sys.stderr)
+        return 2
 
     if args.upright_cylinder and not args.candidate:
         lvl, msg = cylinder_finding(ref_path)
@@ -481,7 +485,11 @@ def main() -> int:
     if not cand_path.is_file():
         print(f"ERROR no such candidate: {cand_path}", file=sys.stderr)
         return 2
-    cand = measure(cand_path)
+    try:
+        cand = measure(cand_path)
+    except Exception as e:            # noqa: BLE001 - same: exit 2, not a "not shippable" traceback
+        print(f"ERROR cannot read candidate {cand_path}: {e}", file=sys.stderr)
+        return 2
 
     describe(ref)
     print()
