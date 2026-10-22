@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Compile Include="..\Kernel\RM_WebworkKernel.cs" />
+    <Compile Include="..\Kernel\RM_WebworkSiegeKernel.cs" />
     <Compile Include="WebworkFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

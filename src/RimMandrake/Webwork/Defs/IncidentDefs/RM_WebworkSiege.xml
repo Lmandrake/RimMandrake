@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WebworkSiege.xml        Webwork · WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE
+  The Webwork siege (design/RimMandrake/webwork_spider_siege_2026-10-22.md). Owner, 2026-10-22: "Make a webwork event
+  into neighboring biomes where spiders come in and start spinning webs as a map attack. Their version of a raid. Siege".
+  Neighbour-of-the-Webwork and "is this map shaded" cannot be said in XML: RM_IncidentWorker_WebworkSiege checks both
+  (fails closed where the shade grid cannot answer) and is gated by RM_WebworkSettings.siegeEnabled.
+  No canOccurOnAllPlanetLayers: surface maps only (vanilla default). Pacing numbers are PROVISIONAL (2026-10-03 ruling).
+  The letter is written by the worker (it names the spider count); letterDef here is the fallback shape only.
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RM_WebworkSiege</defName>
+    <label>Webwork siege</label>
+    <workerClass>RimMandrake.Webwork.RM_IncidentWorker_WebworkSiege</workerClass>
+    <category>ThreatBig</category>
+    <letterDef>ThreatBig</letterDef>
+    <letterLabel>The Webwork comes out</letterLabel>
+    <letterText>The web has come out of the Webwork. Ollathrix are spinning toward the colony.</letterText>
+    <baseChance>1.2</baseChance>            <!-- PROVISIONAL -->
+    <earliestDay>20</earliestDay>           <!-- PROVISIONAL -->
+    <minRefireDays>20</minRefireDays>       <!-- PROVISIONAL -->
+    <minThreatPoints>300</minThreatPoints>  <!-- PROVISIONAL -->
+    <pointsScaleable>true</pointsScaleable>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+  </IncidentDef>
+
+</Defs>
