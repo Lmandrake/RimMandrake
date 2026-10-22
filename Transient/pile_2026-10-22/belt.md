@@ -83,3 +83,9 @@ Started 08:48 PDT. Tier fw_gss_sitting, DLL 41fb948b5e. Owner save RM_fw_walkthr
 - 10:56 pond_pump --fresh-map start
 - 11:08 pond_pump: HARNESS fixes (no site_calm after fresh map -> Hive stopped arm; unfed colonists Starving in the multi-day refill wait -> feed per chunk); run 4: 2 PASS / 1 UNMEASURED (draw receded no cell) — northstar/pond_pump_result_20261022T1115_belt.json
 - 11:09 thirst_live T4,T5 PASS (salt 0.695x) + sprinkler_live T22 PASS -> SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING A1/A2 verified (L3)
+- 11:10 publish blocked: another helper's dirty OWNER.jsonl vs origin (reset --keep refused); my e7c05788f9 local, retry later. river_site.py for SUSPENSION_WATERS rows start
+- 11:12 river_site.py: 13 river tiles tried, all rejected 'no current with a fast lane' (fast=0) -> no river map; WAT_river/lake/sea rows stay UNMEASURED (SITE)
+- 11:12 validation_v2 --live --fresh-map start
+- 11:15 redeployed FlowWorks from HEAD ee9fa61fbc (DRAWDOWN fix + shelfCell, pump looks committed, pipe atlases) via deploy_custom_mods --apply (worktree FlowWorks clean); relaunched
+- 11:20 validation_v2 --live --fresh-map on ee9fa61fbc: 61 PASS / 1 UNMEASURED (S6_digToDepth_gate: probe cells fogged, SITE), 323 s — northstar/validation_v2_result_20261022T1145_belt.json. deep_lake rerun for DRAWDOWN fix
+- 11:24 deep_lake on ee9fa61fbc (HARNESS: wetnessCutoffEnabled off for the run): run3 4P/2F (hollow: abyss 0 on a flat map = SITE; refill hash FAIL), run4 5P/2F (refill hash FAIL again, walks_out FAIL) -> noted on DRAWDOWN item as a probable regression of the refill

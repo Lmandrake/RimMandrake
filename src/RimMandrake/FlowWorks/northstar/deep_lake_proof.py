@@ -191,7 +191,10 @@ def main():
     ok, _ = V._wait_playing(B, leave_s=0)
     if ok:
         res["site_calm"] = V.site_calm(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: map-gen hostiles/hives stop safe_advance at arm
-    FIELDS = ("deepBedsEnabled", "lakeDepthScale", "deepBedMaxDepth", "drainableLakeMaxCells", "pondBedHollowEnabled",
+    # HARNESS (belt live 2026-10-22): LAKE_GROUNDWATER_REFILL (392300ef0d) makes an inland lake limitless past a rainfall-keyed
+    # cell cutoff (600 wet / 5000 temperate): on a wet fresh map the 5,184-square lake read limitless=True deepest=0 and every
+    # row judged a lake that cannot drain. The proof turns the wetness cut off for its run (restored with the rest).
+    FIELDS = ("wetnessCutoffEnabled", "deepBedsEnabled", "lakeDepthScale", "deepBedMaxDepth", "drainableLakeMaxCells", "pondBedHollowEnabled",
               "recessionEnabled", "refillWaitsForOccupants")
     before = {f: sget(f) for f in FIELDS}
     res["settings_before"] = before
@@ -201,7 +204,7 @@ def main():
             return 2
         for f, v in (("deepBedsEnabled", True), ("lakeDepthScale", 2.0), ("deepBedMaxDepth", 20),
                      ("drainableLakeMaxCells", 40000), ("pondBedHollowEnabled", True), ("recessionEnabled", True),
-                     ("refillWaitsForOccupants", False)):
+                     ("refillWaitsForOccupants", False), ("wetnessCutoffEnabled", False)):
             if sset(f, v).get("success") is False:   # an unset knob = the owner's value, not the proof's: every row below is suspect
                 row("DL_site", "UNMEASURED", "HARNESS", {"why": "mod_settings_field set refused", "field": f})
                 return 2
