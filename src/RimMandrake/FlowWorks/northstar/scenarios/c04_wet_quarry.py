@@ -36,6 +36,7 @@ SETUP = dict(
     markers=[("PlaceMeter", 16, 14, ""), ("PlaceMeter", 1, 36, ""), ("PlaceMeter", 10, 20, "")],
     pawns=[("Colonist", 12, 18, "player", "drafted")],
     pawn_ops=[(12, 18, "wear", "RM_ClimbingGear")],
+    designate=[("RM_DigCanal", 15, 15, 1, 1)],                              # past the 2 m colonist cap: waits for a machine
 )
 
 SCENARIO = scenario(
@@ -45,7 +46,8 @@ SCENARIO = scenario(
     start="mark the drain-canal extension (Architect > Orders > Dig canal along the labelled strip) and unpause",
     try_=["START: designate the labelled 70-cell strip, unpause: a colonist digs it; about 1 in 70 dug tiles leaves a "
           "lump (a letter the first time); soil digs faster than rock and rock drops chunks",
-          "order a dig deeper than 2 m: a colonist must refuse (2 m cap, owner 2026-10-21) - see DEFERRED",
+          "the sump floor (3 m) carries a 'Dig canal' order: an undrafted colonist will not take it (2 m colonist cap, "
+          "owner 2026-10-21; right-click says it needs machine labour) and the order stays for a machine",
           "stop the pump (the deliberate flood): the sump rises half a metre at a time from LOW toward HIGH and the "
           "workbench; the miner wades, then swims; restart it and the level falls",
           "raise the rail ladder from below, lower it from above (only from above); the geared miner climbs a sheer "
@@ -79,11 +81,11 @@ SCENARIO = scenario(
             staged("rail ladder on the sump's west wall, lowered", "ladder", "lower", (14, 16), "poked"),
             staged("ramp from the D1 bench to the rim", "build", "RM_PitRamp", (20, 33), "poked"),
             staged("wrecked pumping station on the rim", "build", "RM_PumpingStation_Wrecked", (36, 37), "look"),
-            deferred("a colonist refusing a dig past 2 m", "owner ruled the 2 m colonist cap tonight; the shipped code "
-                     "cap is still maxDigDepth 16 levels (8 m) as read 2026-10-21, so the refusal cannot show yet",
-                     DEEP_DIG_ITEM, (1, 1)),
-            deferred("machine digging past 2 m (the sump)", "droids / ridable machines dig deeper: not built",
-                     DEEP_DIG_ITEM, (1, 3)),
+            staged("a colonist refusing a dig past 2 m (the sump floor's order waits for a machine)", "designate",
+                   "RM_DigCanal", (15, 15), "poked"),
+            deferred("machine digging past 2 m (the sump)", "machine labour digs to 20 m (built 2026-10-21, "
+                     "design/RimMandrake/machine_dig_2026-10-21.md); a colony Tunneler under a mechanitor is not staged "
+                     "here yet, and the ridable digging rig is not built", DEEP_DIG_ITEM, (1, 3)),
             deferred("deepstone stratum finds", "unbuilt", "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS", (37, 1))],
     exercises={"dig_canal": "poked", "dig_finds": "poked", "pit_ramp": "poked", "pit_pocket": "poked",
                "look_walls": "look", "look_pit": "look", "flow_drains": "demonstrated", "carry_industry": "look",

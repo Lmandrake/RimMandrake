@@ -53,7 +53,8 @@ W, TAR = "RM_Fluid_Water", "RM_Fluid_Tar"
 
 # Tonight's owner rulings every scenario respects (owner, 2026-10-21; quoted in the design and the brief)
 RULINGS = {
-    "dig2m": "colonists dig to 2 m; deeper holes are machine-dug (machine dig not built: DEFERRED)",
+    "dig2m": "colonists dig to 2 m; deeper holes are machine-dug (mechanoids and droids dig to 20 m, built 2026-10-21; "
+             "the ridable digging rig is not built: DEFERRED)",
     "girth": "pipes half as thick / hoses much thinner: art being redrawn; the CURRENT art is shown",
     "overflow": "canal overflow ships in 1.0 but only Stage 0 (offline kernel) exists: DEFERRED",
     "reach": "reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE)",

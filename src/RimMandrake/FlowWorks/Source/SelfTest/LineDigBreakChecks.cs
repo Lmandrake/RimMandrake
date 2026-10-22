@@ -69,7 +69,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(sq.All(t => !t.Gone), "a line went missing without a commit");
                 // the commit point: one production call, inside Deepen, after the grid write and after every early return
                 string ex = Src("RM_MapComponent_Excavation.cs");
-                string deepen = Body(ex, "public byte Deepen(IntVec3 c)");
+                string deepen = Body(ex, "public byte DeepenWithin(IntVec3 c, int cap)");   // DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: the one-arg Deepen forwards here
                 int write = deepen.IndexOf("depthGrid[i] = d;", StringComparison.Ordinal);
                 int call = deepen.IndexOf("RM_LineDigBreak.OnDigCommitted(map, c, before, d)", StringComparison.Ordinal);
                 Assert(write > 0 && call > write, "OnDigCommitted is not called after Deepen's grid write");

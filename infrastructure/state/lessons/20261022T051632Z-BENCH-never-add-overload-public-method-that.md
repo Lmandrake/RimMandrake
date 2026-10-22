@@ -1,0 +1,1 @@
+Never add an overload to a public method that a bridge tool reflects by name: JawaBench calls type.GetMethod("Deepen") on RM_MapComponent_Excavation, and a second Deepen overload makes it throw AmbiguousMatchException at runtime (no compile error). Give the new variant its own name (DeepenWithin). Check with: grep -rn 'GetMethod("<Name>"\|"<Name>"' src/ before overloading.

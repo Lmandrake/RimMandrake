@@ -675,11 +675,18 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>POND_BED (owner by card 2026-10-14): the depth a first cut here would make (RM_Volume.FirstCutDepth), -1 when
-		/// the dig is refused. The designator, the work giver and Deepen share it.</summary>
+		/// the dig is refused. The designator, the work giver and Deepen share it. Held to the designation cap (the deepest
+		/// anyone may dig: DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL); the work giver asks again with the digger's own cap.</summary>
 		public int FirstCutDepthAt(IntVec3 c)
 		{
+			return FirstCutDepthAt(c, RM_DigLabor.DesignationCap);
+		}
+
+		/// <summary><see cref="FirstCutDepthAt(IntVec3)"/> under one digger's cap.</summary>
+		public int FirstCutDepthAt(IntVec3 c, int cap)
+		{
 			return RM_Volume.FirstCutDepth(NaturalBedDepthAt(c), RimMandrakeFlowWorksSettings.pondBedHollowEnabled,
-				RM_ExcavationDepth.MaxDigDepth, RimMandrakeFlowWorksSettings.digToDepthEnabled);
+				cap, RimMandrakeFlowWorksSettings.digToDepthEnabled);
 		}
 
 		/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1: a grid of the wrong size is zeroed; say so, once per grid. A null
@@ -971,10 +978,11 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>Does this square still owe cuts toward its dig-to target under today's cap?</summary>
+		/// <summary>Does this square still owe cuts toward its dig-to target under today's caps (anyone's: a colonist-stopped
+		/// order waits for machine labour)?</summary>
 		public bool DigToOwesWork(IntVec3 c)
 		{
-			return RM_DigDepthMath.DigToOwesWork(ExcavatedDepthAt(c), DigTargetAt(c), RM_ExcavationDepth.MaxDigDepth);
+			return RM_DigDepthMath.DigToOwesWork(ExcavatedDepthAt(c), DigTargetAt(c), RM_DigLabor.DesignationCap);
 		}
 
 		/// <summary>Drop targets whose square carries no dig designation any more (cancelled, finished, or never placed).</summary>
@@ -1457,10 +1465,17 @@ namespace RimMandrake.FlowWorks
 
 		// ── digging ───────────────────────────────────────────────────────
 
-		/// <summary>Deepen a cell by one notch (0.5 m), to the dig cap at most (PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the Mod
-		/// Setting, default 8 m). Returns the new D. LAW 1: this is the only thing that ever sets D, and it only ever goes
-		/// down. A cell already deeper than a lowered cap is left as it is (never shallowed).</summary>
+		/// <summary>Deepen a cell by one notch (0.5 m), to the designation cap at most (the deepest anyone may dig: debug
+		/// actions and bridge digs). A pawn's cut goes through <see cref="DeepenWithin"/> (a separate name: bridge tools reflect GetMethod("Deepen"), which an overload makes ambiguous) with its own cap.</summary>
 		public byte Deepen(IntVec3 c)
+		{
+			return DeepenWithin(c, RM_DigLabor.DesignationCap);
+		}
+
+		/// <summary>Deepen a cell by one notch (0.5 m), to <paramref name="cap"/> at most (DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL:
+		/// the digger's cap, colonist 2 m / machine 20 m shipped). Returns the new D. LAW 1: this is the only thing that ever
+		/// sets D, and it only ever goes down. A cell already deeper than a lowered cap is left as it is (never shallowed).</summary>
+		public byte DeepenWithin(IntVec3 c, int cap)
 		{
 			if (!c.InBounds(map))
 			{
@@ -1468,7 +1483,7 @@ namespace RimMandrake.FlowWorks
 			}
 			int i = map.cellIndices.CellToIndex(c);
 			byte d = depthGrid[i];
-			if (!RM_DigDepthMath.MayDeepen(d, RM_ExcavationDepth.MaxDigDepth))
+			if (!RM_DigDepthMath.MayDeepen(d, cap))
 			{
 				return d;
 			}
@@ -1483,7 +1498,7 @@ namespace RimMandrake.FlowWorks
 				// POND_BED (owner by card 2026-10-14: "Dig deeper from the bed"): a dry bed square's first cut starts at the
 				// bed's depth and goes one deeper; a bed already as deep as digging goes is left alone.
 				int first = RM_Volume.FirstCutDepth(IsNaturalBed(c) ? bedGrid[i] : 0, RimMandrakeFlowWorksSettings.pondBedHollowEnabled,
-					RM_ExcavationDepth.MaxDigDepth, RimMandrakeFlowWorksSettings.digToDepthEnabled);
+					cap, RimMandrakeFlowWorksSettings.digToDepthEnabled);
 				if (first < 0)
 				{
 					return d;

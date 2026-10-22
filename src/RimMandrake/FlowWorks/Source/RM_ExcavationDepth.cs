@@ -39,10 +39,11 @@ namespace RimMandrake.FlowWorks
 		public const byte Superdeep = 4;
 
 		// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT (owner R5, 2026-10-17): the dig cap is no longer Superdeep. MaxDepth is deleted
-		// so that no reader can keep meaning both: the absolute pit is Superdeep (= RM_DigDepthMath.PitDepth), the cap is
-		// MaxDigDepth (a Mod Setting, default 8 m, 2 to 20 m), the deepest a dug square may hold is MaxDigCeiling (20 m).
+		// so that no reader can keep meaning both: the absolute pit is Superdeep (= RM_DigDepthMath.PitDepth), the colonist cap is
+		// MaxDigDepth (a Mod Setting, default 2 m since DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL; machines go deeper), the deepest a dug square may hold is MaxDigCeiling (20 m).
 
-		/// <summary>The colonist dig cap in notches, from the Mod Setting (default 16 = 8 m, range 4..40).</summary>
+		/// <summary>The COLONIST dig cap in notches, from the Mod Setting (default 4 = 2 m, range 4..40). Machine labour digs
+		/// deeper (RM_DigLabor.CapFor); designations are held to RM_DigLabor.DesignationCap.</summary>
 		public static int MaxDigDepth => RimMandrakeFlowWorksSettings.MaxDigDepth;
 
 		/// <summary>The deepest a dug square may be (20 m): the load repair's clamp. Lowering the cap never shallows a cell.</summary>

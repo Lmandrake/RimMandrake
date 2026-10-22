@@ -134,6 +134,7 @@
     <Compile Include="Swale\RM_Swale.cs" />
     <Compile Include="RM_ExcavationDepth.cs" />
     <Compile Include="RM_DigDepthMath.cs" />
+    <Compile Include="RM_DigLabor.cs" />
     <Compile Include="RM_MapComponent_Excavation.cs" />
     <!-- The §5 stock arithmetic, Verse-free on purpose so Source/SelfTest/
          can compile the PRODUCTION file in directly. See its header. -->

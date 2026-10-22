@@ -66,10 +66,11 @@ Three caps, all in notches (0.5 m), all Verse-free in `RM_DigDepthMath`:
   today. New, after it: if this pawn's cap stops it (`!MayDeepen(depth, CapFor(pawn))`, or a pond-bed first cut deeper
   than its cap) → `return false` **without deleting** — a machine may still take it. `JobFailReason.Is("needs a
   machine to dig deeper than 2 m")` so the colonist's right-click explains.
-- `JobDriver_DigCanal.DoEffect`: `excavation.Deepen(c, RM_DigLabor.CapFor(pawn))` — the cut itself refuses past the
+- `JobDriver_DigCanal.DoEffect`: `excavation.DeepenWithin(c, RM_DigLabor.CapFor(pawn))` — the cut itself refuses past the
   digger's cap (belt and braces: a job taken before a setting change cannot overshoot).
 - `RM_MapComponent_Excavation.Deepen(c)` keeps its signature (debug action, bridge) and means the designation cap;
-  `Deepen(c, cap)` is the new overload.
+  the capped cut is `DeepenWithin(c, cap)` — a separate NAME, not an overload: JawaBench's excavation_drive reflects
+  `type.GetMethod("Deepen")`, which an overload makes ambiguous (AmbiguousMatchException).
 - Designator "Dig to": the float menu runs to the designation cap; options past the colonist cap say
   "(machines only)". Refusal text names which cap stops the square.
 - No new JobDef, no new work type: a colony Tunneler already has Mining; droids have the work tab.
@@ -93,7 +94,8 @@ All-off degrades gracefully: everyone stops at the colonist cap.
 | `northstar/validation_v2.py` phase S | sets 4.0 then **restores 16.0** | restore to the shipped value (4.0) |
 | `northstar/live_session.py` `g_dig_depth` (B4) | a square *dug* to 8 m by bridge `dig` | the bridge dig is not a pawn: it reads the designation cap, so the 8 m readout row stands; its "a colonist digs it" note becomes "a machine digs it" |
 | `review_map_coverage.py`, `review/map/COVERAGE.md` | "8 m shipped" | "2 m for colonists, 20 m for machines" |
-| `scenarios/c04_wet_quarry.py` | "2 m dig refusal" DEFERRED because the code cap was 8 m | becomes a staged poke once built; "machine digging past 2 m" stays DEFERRED until a live proof (a mech must be staged) — or becomes staged if a Tunneler can be spawned by the stager |
+| `scenarios/c04_wet_quarry.py` | "2 m dig refusal" DEFERRED because the code cap was 8 m | DONE: staged as a `designate` RM_DigCanal on the 3 m sump floor (the order waits for a machine); "machine digging past 2 m" stays DEFERRED until a colony Tunneler is staged |
+| `extensions.py` / `validation.py` / `selftest_flowworks_northstar.py` | the toggle floor and the 209-toggle count | DONE: `machineDigEnabled` on the floor, named in `EXTENSION_TOGGLES_OWED`; 210 toggles |
 | `scenarios/common.py` `dig2m` note | "machine dig not built" | "machine dig built; live proof owed" |
 | 8 m proof holes and trap heights | staged by bridge dig, not by colonists | unaffected (bridge dig is not a colonist); any proof that waits for a **colonist** to dig past 2 m must spawn a Tunneler or set the colonist cap |
 

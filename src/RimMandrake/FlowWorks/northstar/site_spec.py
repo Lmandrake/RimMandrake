@@ -42,7 +42,8 @@ SETTINGS = {
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": {
         "depthEngineEnabled": True, "pulseIntervalTicks": 250.0, "flowPerPulse": 1.0,
         "digToDepthEnabled": True,
-        "maxDigDepth": 16.0, "digCostRisesWithDepth": True,   # PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: 8 m cap; P6 curve
+        "maxDigDepth": 4.0, "digCostRisesWithDepth": True,   # colonist cap 2 m (DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL); P6 curve
+        "machineDigEnabled": True, "maxMachineDigDepth": 40.0,   # machine labour digs to 20 m
         "liquidCorrosionEnabled": True, "liquidIgnitionEnabled": True,
         "fillInEnabled": True, "fillInDisplacementEnabled": True, "sourceBudgetEnabled": True,
         "stickyLimitlessEnabled": True, "wetnessCutoffEnabled": True, "recessionEnabled": True, "refillEnabled": True,

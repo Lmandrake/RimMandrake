@@ -254,10 +254,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Math.Abs(RM_RelativeRulesMath.FallScaleNotches(12) - 3f) < 1e-6 && RM_RelativeRulesMath.FallScaleNotches(40) == 4f,
                     "a 6 m drop is 3 times the 2 m fall; never more than 4 (P7 V3)");
                 Assert(RM_WallFaceMath.NorthFaceHeight(12) == RM_WallFaceMath.NorthMax && RM_WallFaceMath.SouthLining(12) > 0f, "wall faces clamp past 4");
-                // a 12-deep bed under a 2 m dig cap can never be dug from; under the 8 m default it is dug one deeper
-                // (PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT); a canal beside it runs into it by water height (head)
+                // a 12-deep bed under a 2 m dig cap (the colonist default) can never be dug from; under an 8 m cap (machine
+                // labour, DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL) it is dug one deeper; a canal beside it runs into it by head
                 Assert(RM_Volume.FirstCutDepth(12, true, 4) == -1, "digging from a bed deeper than a dig goes is refused");
-                Assert(RM_Volume.FirstCutDepth(12, true, RM_DigDepthMath.DefaultMaxDigDepth) == 13 && RM_Volume.FirstCutDepth(16, true, 16) == -1,
+                Assert(RM_Volume.FirstCutDepth(12, true, RM_DigDepthMath.DefaultMaxDigDepth) == -1
+                    && RM_Volume.FirstCutDepth(12, true, RM_DigDepthMath.DefaultMachineDigDepth) == 13, "a colonist (2 m) may not dig a 6 m bed; a machine (20 m) may");
+                Assert(RM_Volume.FirstCutDepth(12, true, 16) == 13 && RM_Volume.FirstCutDepth(16, true, 16) == -1,
                     "an 8 m cap digs a 6 m bed one deeper, and refuses an 8 m bed");
                 Assert(RM_Volume.RunsIntoBed(4, 1, 12) && RM_Volume.RunsIntoBed(1, 1, 5) && !RM_Volume.RunsIntoBed(4, 4, 0), "a canal's water above a deep bed's floor runs in");
                 string dep = RiverSwitchFlipChecks.Src("RM_ExcavationDepth.cs");

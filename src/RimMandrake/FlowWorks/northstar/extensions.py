@@ -50,7 +50,7 @@ S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 # (2026-10-02) retired PitsSettings: trapTriggerEnabled + fallDamageEnabled moved into the FlowWorks class;
 # escapeEnabled and pitCellExposureEnabled died with the building pit (their chains are deleted).
 FW_TOGGLES = [
-    "depthEngineEnabled", "digToDepthEnabled",
+    "depthEngineEnabled", "digToDepthEnabled", "machineDigEnabled",   # machineDig: DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL (owed)
     "liquidCorrosionEnabled", "liquidIgnitionEnabled",
     "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled",
     "stickyLimitlessEnabled", "recessionEnabled", "refillEnabled",

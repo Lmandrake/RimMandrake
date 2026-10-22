@@ -1,5 +1,6 @@
 // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT (plan P5) and DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (plan P6) of
-// FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG. Owner R5 (2026-10-17, by card): default max colonist dig 8 m, settable 2 to 20 m; the
+// FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG. Owner R5 (2026-10-17, by card): a dig cap settable 2 to 20 m (DEEP_DIG_BUILD_DROIDS_
+// TAKE_THE_SHOVEL, owner card 2026-10-21: colonists 2 m shipped, machine labour 20 m); the
 // 0.5 m dig step stays; lakes keep their own floors; the dig cost curve stays 3,200 x the notch being cut; lowering the cap
 // never shallows a dug cell; the dig job, work-giver and designator read the depth GRID. Arithmetic is the PRODUCTION
 // Verse-free code (RM_DigDepthMath, RM_PocketGridMath, RM_PitTrapMath, RM_CliffMaskMath, the exact kernel on plain arrays);
@@ -77,15 +78,15 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             Case("DeepDig_cap_setting_2_8_20_and_never_shallows", () =>
             {
-                // the setting: 2 m .. 20 m in half-metre steps, 8 m shipped
+                // the setting: 2 m .. 20 m in half-metre steps; colonists 2 m shipped (DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL)
                 Assert(RM_DigDepthMath.ClampCap(4f) == 4 && RM_DigDepthMath.ClampCap(16f) == 16 && RM_DigDepthMath.ClampCap(40f) == 40,
                     "cap 2 m / 8 m / 20 m read back as 4 / 16 / 40 notches");
                 Assert(RM_Volume.FormatFloorMetres(RM_DigDepthMath.ClampCap(4f)) == "2 m" && RM_Volume.FormatFloorMetres(RM_DigDepthMath.ClampCap(16f)) == "8 m"
                     && RM_Volume.FormatFloorMetres(RM_DigDepthMath.ClampCap(40f)) == "20 m", "and say 2 m / 8 m / 20 m");
                 Assert(RM_DigDepthMath.ClampCap(1f) == 4 && RM_DigDepthMath.ClampCap(99f) == 40 && RM_DigDepthMath.ClampCap(15.6f) == 16
-                    && RM_DigDepthMath.ClampCap(float.NaN) == 16, "held to 2..20 m and snapped to the half-metre");
-                Assert(RM_DigDepthMath.DefaultMaxDigDepth == 16 && RM_DigDepthMath.PitDepth == RM_PitTrapMath.Superdeep
-                    && RM_DigDepthMath.MaxDigCeiling == 40, "8 m default; the pit (2 m) is its own constant");
+                    && RM_DigDepthMath.ClampCap(float.NaN) == 4, "held to 2..20 m and snapped to the half-metre");
+                Assert(RM_DigDepthMath.DefaultMaxDigDepth == 4 && RM_DigDepthMath.DefaultMachineDigDepth == 40 && RM_DigDepthMath.PitDepth == RM_PitTrapMath.Superdeep
+                    && RM_DigDepthMath.MaxDigCeiling == 40, "colonists 2 m, machines 20 m by default; the pit (2 m) is its own constant");
                 // each cap stops the dig exactly there, at every setting
                 foreach (int cap in new[] { 4, 16, 40 })
                 {
@@ -107,15 +108,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(old[0] == 4, "sanity: a clamp at the cap would shallow (that is the bug the ceiling prevents)");
                 // the wiring: setting, default, slider range, repair clamp, Deepen gate; MaxDepth is gone
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
-                RiverSwitchFlipChecks.Has(set, @"public static float maxDigDepth = 16f;", "the cap setting, 8 m shipped");
-                Assert(RM_DigDepthMath.DefaultMaxDigDepth == 16, "the literal is the default constant");
-                RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref maxDigDepth, ""maxDigDepth"", 16f\);", "saved");
+                RiverSwitchFlipChecks.Has(set, @"public static float maxDigDepth = 4f;", "the colonist cap setting, 2 m shipped");
+                Assert(RM_DigDepthMath.DefaultMaxDigDepth == 4, "the literal is the default constant");
+                RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref maxDigDepth, ""maxDigDepth"", 4f\);", "saved");
                 RiverSwitchFlipChecks.Has(set, @"maxDigDepth = list\.Slider\(maxDigDepth, RM_DigDepthMath\.MinMaxDigDepth, RM_DigDepthMath\.MaxDigCeiling\);", "slider 2..20 m");
                 RiverSwitchFlipChecks.Has(set, @"list\.Label\(""Deepest colonist dig: "" \+ RM_Volume\.FormatFloorMetres\(MaxDigDepth\)", "settings text in metres");
-                RiverSwitchFlipChecks.Has(set, @"\.Declare\(""digToDepthEnabled"", ""maxDigDepth"", ""digCostRisesWithDepth""\)", "greys with Dig deeper");
+                RiverSwitchFlipChecks.Has(set, @"\.Declare\(""digToDepthEnabled"", ""maxDigDepth"", ""digCostRisesWithDepth"", ""machineDigEnabled""\)", "greys with Dig deeper");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"RM_ExcavationSanityMath\.Repair\(depthGrid, fillGrid, fluidGrid, fluidPalette\.Count, RM_ExcavationDepth\.MaxDigCeiling\);", "repair clamps to the ceiling");
-                RiverSwitchFlipChecks.Has(ex, @"if \(!RM_DigDepthMath\.MayDeepen\(d, RM_ExcavationDepth\.MaxDigDepth\)\) \{ return d; \}", "Deepen stops at the cap and writes nothing");
+                RiverSwitchFlipChecks.Has(ex, @"if \(!RM_DigDepthMath\.MayDeepen\(d, cap\)\) \{ return d; \}", "Deepen stops at the digger's cap and writes nothing");
                 RiverSwitchFlipChecks.Has(ex, @"Scribe_Collections\.Look\(ref digTargets, ""RM_digTargets"", LookMode\.Value, LookMode\.Value", "dig-to orders are saved");
                 string src = Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs"));
                 foreach (string f in Directory.GetFiles(src, "*.cs", SearchOption.AllDirectories))
@@ -139,7 +140,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         + uses.Count + " terrain reads, " + grid.Count + " grid-first");
                 }
                 string wg = RiverSwitchFlipChecks.Src("WorkGiver_DigCanal.cs");
-                RiverSwitchFlipChecks.Has(wg, @"\|\| !RM_DigDepthMath\.MayDeepen\(depth, RM_ExcavationDepth\.MaxDigDepth\) \|\| \(target > 0 && depth >= target\)", "work-giver: cap and target");
+                RiverSwitchFlipChecks.Has(wg, @"\|\| !RM_DigDepthMath\.MayDeepen\(depth, RM_DigLabor\.DesignationCap\) \|\| \(target > 0 && depth >= target\)", "work-giver: designation cap and target");
                 string ds = RiverSwitchFlipChecks.Src("Designator_DigCanal.cs");
                 RiverSwitchFlipChecks.Has(ds, @"public class Designator_DigCanalTo : Designator_DigCanal", "the dig-to-N designator exists");
                 RiverSwitchFlipChecks.Has(ds, @"public override string Label => ""Dig to "" \+ RM_Volume\.FormatFloorMetres\(Target\);", "labelled in metres");
@@ -149,6 +150,60 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(jd, @"if \(ex\.DigToOwesWork\(c\) && RimMandrakeFlowWorksSettings\.digToDepthEnabled\)", "and the order re-designates until its target");
                 string patch = File.ReadAllText(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs")), "..", "Patches", "FlowWorks_OrdersPatch.xml"));
                 Assert(patch.Contains("<li>RimMandrake.FlowWorks.Designator_DigCanalTo</li>"), "the dig-to designator is on the Orders tab");
+            });
+
+            Case("DeepDig_colonists_2m_machines_deeper", () =>
+            {
+                // DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL (owner card 2026-10-21, "Colonists 2 m, machines deeper")
+                int col = RM_DigDepthMath.DefaultMaxDigDepth, mach = RM_DigDepthMath.DefaultMachineDigDepth;
+                Assert(RM_DigDepthMath.CapFor(false, col, true, mach) == 4 && RM_DigDepthMath.CapFor(true, col, true, mach) == 40,
+                    "shipped: a colonist 2 m, a machine 20 m");
+                Assert(!RM_DigDepthMath.MayDeepen(4, RM_DigDepthMath.CapFor(false, col, true, mach))
+                    && RM_DigDepthMath.MayDeepen(4, RM_DigDepthMath.CapFor(true, col, true, mach)), "can-fail: at 2 m the colonist stops, the machine cuts on");
+                Assert(RM_DigDepthMath.CapFor(true, col, false, mach) == 4, "machine digging off: machines stop where colonists stop");
+                Assert(RM_DigDepthMath.CapFor(true, 16, true, 8) == 16 && RM_DigDepthMath.CapFor(false, 16, true, 40) == 16,
+                    "a machine is never held shallower than a colonist; the machine cap never lifts a colonist");
+                Assert(RM_DigDepthMath.DesignationCap(col, true, mach) == 40 && RM_DigDepthMath.DesignationCap(col, false, mach) == 4,
+                    "an order is held to the deepest anyone may dig");
+                // a 2 m square ordered to 4 m: still owes work (for a machine) — the order is not stale
+                Assert(RM_DigDepthMath.DigToOwesWork(4, 8, RM_DigDepthMath.DesignationCap(col, true, mach))
+                    && !RM_DigDepthMath.DigToOwesWork(4, 8, RM_DigDepthMath.DesignationCap(col, false, mach)), "the order waits for a machine; with machines off it is done");
+                // colonist then machine on one square: 4 cuts, then 4 more
+                var d = new byte[1];
+                var (c1, _) = DigTo(d, new[] { 0 }, 8, RM_DigDepthMath.CapFor(false, col, true, mach));
+                Assert(d[0] == 4 && c1 == 4, "the colonist stops at 2 m: " + d[0]);
+                var (c2, _) = DigTo(d, new[] { 0 }, 8, RM_DigDepthMath.CapFor(true, col, true, mach));
+                Assert(d[0] == 8 && c2 == 4, "the machine takes it to 4 m: " + d[0]);
+                // the wiring: who is machine labour, the per-digger cut, the kept designation, the settings
+                string lab = RiverSwitchFlipChecks.Src("RM_DigLabor.cs");
+                RiverSwitchFlipChecks.Has(lab, @"public class RM_MachineDigger : DefModExtension", "the opt-in extension");
+                RiverSwitchFlipChecks.Has(lab, @"if \(race\.IsMechanoid\) \{ return true; \}", "mechanoids are machine labour");
+                RiverSwitchFlipChecks.Has(lab, @"pawn\.def\.HasModExtension<RM_MachineDigger>\(\) \|\| \(race\.FleshType != null && race\.FleshType\.HasModExtension<RM_MachineDigger>\(\)\)", "race or flesh type opts in");
+                Assert(!Regex.IsMatch(lab, @"RSW_|Droidworks|Mech_Tunneler"), "FlowWorks names no franchise or vanilla def");
+                string wg = RiverSwitchFlipChecks.Src("WorkGiver_DigCanal.cs");
+                RiverSwitchFlipChecks.Has(wg, @"int myCap = RM_DigLabor\.CapFor\(pawn\); if \(!RM_DigDepthMath\.MayDeepen\(depth, myCap\) \|\| \(depth == RM_ExcavationDepth\.Surface && eng != null && eng\.FirstCutDepthAt\(c, myCap\) < 0\)\) \{ JobFailReason\.Is\(", "a capped digger refuses with a reason");
+                int del = wg.IndexOf("des.Delete();"), mine = wg.IndexOf("int myCap");
+                Assert(del > 0 && mine > del && wg.IndexOf("des.Delete();", mine) < 0, "the per-digger refusal keeps the designation (only the stale test deletes)");
+                string jd = RiverSwitchFlipChecks.Src("JobDriver_DigCanal.cs");
+                RiverSwitchFlipChecks.Has(jd, @"int after = excavation\.DeepenWithin\(c, RM_DigLabor\.CapFor\(pawn\)\);", "the cut is held to the digger's cap");
+                RiverSwitchFlipChecks.Has(jd, @"cutRefusedButOwed = after == before && RM_DigDepthMath\.MayDeepen\(before, RM_DigLabor\.DesignationCap\);", "a refused cut is noted");
+                RiverSwitchFlipChecks.Has(jd, @"if \(cutRefusedButOwed && Map != null && job\.targetA\.IsValid\)", "and its order put back");
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                Assert(!Regex.IsMatch(ex, @"public byte Deepen\(IntVec3 c, int"), "no Deepen overload: bridge tools reflect GetMethod(\"Deepen\")");
+                RiverSwitchFlipChecks.Has(ex, @"public byte Deepen\(IntVec3 c\) \{ return DeepenWithin\(c, RM_DigLabor\.DesignationCap\); \}", "debug/bridge Deepen uses the designation cap");
+                RiverSwitchFlipChecks.Has(ex, @"RM_DigDepthMath\.DigToOwesWork\(ExcavatedDepthAt\(c\), DigTargetAt\(c\), RM_DigLabor\.DesignationCap\)", "orders owe work to anyone's cap");
+                string ds = RiverSwitchFlipChecks.Src("Designator_DigCanal.cs");
+                Assert(Regex.Matches(ds, @"RM_DigLabor\.DesignationCap").Count >= 3, "the designator offers depths to the designation cap");
+                Assert(!ds.Contains("8 m as shipped"), "no '8 m as shipped' text survives");
+                string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                RiverSwitchFlipChecks.Has(set, @"public static bool machineDigEnabled = true;", "machine digging shipped on");
+                RiverSwitchFlipChecks.Has(set, @"public static float maxMachineDigDepth = 40f;", "machine cap 20 m shipped");
+                RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref machineDigEnabled, ""machineDigEnabled"", true\); Scribe_Values\.Look\(ref maxMachineDigDepth, ""maxMachineDigDepth"", 40f\);", "both saved");
+                RiverSwitchFlipChecks.Has(set, @"\.Declare\(""machineDigEnabled"", ""maxMachineDigDepth""\)", "the machine cap greys with its switch");
+                RiverSwitchFlipChecks.Has(set, @"""Deepest machine dig: "" \+ RM_Volume\.FormatFloorMetres\(MachineDigDepth\)", "the label shows the effective machine cap");
+                Assert(!set.Contains("shipped 8 m"), "no 'shipped 8 m' settings text survives");
+                string proj = File.ReadAllText(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs")), "RimMandrake_FlowWorks.csproj"));
+                Assert(proj.Contains(@"<Compile Include=""RM_DigLabor.cs"" />"), "RM_DigLabor.cs is compiled");
             });
 
             Case("DeepDig_cost_curve_numbers_measured", () =>
@@ -181,9 +236,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 const int W = 8, H = 8;
                 var (ring, core) = Square(W, 2, 2);
                 var depth = new byte[W * H];
-                // two drags of "Dig to": the ring to 4 m, the core to 7 m — 16 designations, 152 cuts, under the 8 m default
-                var r1 = DigTo(depth, ring, 8, RM_DigDepthMath.DefaultMaxDigDepth);
-                var r2 = DigTo(depth, core, 14, RM_DigDepthMath.DefaultMaxDigDepth);
+                // two drags of "Dig to": the ring to 4 m, the core to 7 m — 16 designations, 152 cuts, dug by machine labour
+                // (the 20 m default; colonists stop at 2 m since DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL)
+                var r1 = DigTo(depth, ring, 8, RM_DigDepthMath.DefaultMachineDigDepth);
+                var r2 = DigTo(depth, core, 14, RM_DigDepthMath.DefaultMachineDigDepth);
                 Assert(ring.Count + core.Count == 16 && r1.cuts + r2.cuts == 152, "16 orders, 152 cuts: " + (r1.cuts + r2.cuts));
                 Assert(ring.All(c => depth[c] == 8) && core.All(c => depth[c] == 14), "4 4 4 4 / 4 7 7 4 / 4 7 7 4 / 4 4 4 4");
                 // a 2 m cap could not: every square stops at 2 m
