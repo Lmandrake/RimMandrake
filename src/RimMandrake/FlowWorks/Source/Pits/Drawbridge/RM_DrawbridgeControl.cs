@@ -227,6 +227,18 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					continue;
 				}
+				// WINCH_REACH_DIAGNOSE_CANREACH_FIBS: CanReach is vanilla regions AND the depth-only pocket grid, and walls plus a
+				// trench can cut a route neither projection sees alone. Only A* sees the joint graph, so the job needs an
+				// executable path (as WinchJob does for raiders). Cheap checks above run first; this runs only while a leaf
+				// needs hands.
+				using (PawnPath path = pawn.Map.pathFinder.FindPathNow(pawn.Position, t, TraverseParms.For(pawn, Danger.Deadly),
+					null, PathEndMode.Touch))
+				{
+					if (path == null || !path.Found)
+					{
+						continue;
+					}
+				}
 				Job job = JobMaker.MakeJob(RM_DrawbridgeDefOf.RM_WorkDrawbridge, t);
 				job.count = s.r.leaves.IndexOf(s.l);
 				return job;
