@@ -5,7 +5,8 @@ Owner order (2026-10-22 ~00:00 PDT): "Hoses need to be twice as thick, too thin 
 ## Status
 - [x] Phase 1 deploy (00:50)
 - [x] Phase 2 proofs (01:25)
-- [ ] Phase 3 joints study
+- [x] Phase 3 joints study (02:00)
+- [x] Walkthrough save RM_fw_walkthrough_20261022 (02:10)
 
 ## Phase 1 — deploy
 - Game closed (stamped), deployed FlowWorks (238 files incl. a peer's uncommitted text-only Defs/Keyed edits, all parse), GimmeSomeSlack (DLL), SWBestiary (29), HugeThings, PyrelandsMechanics, SolarMirrors, StructureInjectionsRUT, UtinniPatches (41), Warcasket, WasteRun — all VERIFIED in sync. FlowWorks DLL md5 repo==game 6ad35094.
@@ -72,3 +73,6 @@ Measured girths (px at 101 px/cell): pipe 8-10 (0.08-0.10 cell) all looks; flat 
 01:38 scenario map built on 5c92b4a9cf (10/10 staged; soak MOVED C2 fill 4->3 on 351 cells, C7 colonist, C12 thrumbo; 4 hose lays failed: st3 x2 'no room for straight lead-out', st4 'no route', st10 lead-out). Joints gallery built at x68-235 z194-244 (Transient/pile_2026-10-22/joints_gallery.py); shooting crops at ~101 px/cell (rootSize 6)
 01:55 shots done: 44 crops Transient/pile_2026-10-22/joints/jg_<section>_<look>.png (~101 px/cell, rootSize 6) + sheets sheet_<section>.jpg; pawn girth sheet_girth_pawn.jpg. First-look findings (mine, pre-GPT): reel lead-out leaves WEST and U-loops back to an east target (all looks); plump hose draws THINNER/darker than flat (Strand_Plump band rows 19-50 of 64, liquid tint replaces look colour); pipe->tank meets the tank's LOWER row under the skid, not the W/E flange the hose uses; taps beside/at the end of a pipe: no joint, pipe draws end caps; pole span: ground pipe stops with end caps short of the pole (no riser), overhead span drawn as a dark power-line wire on insulator poles (reads electrical); pump has one look only; Scrapper hose brown-on-soil low contrast; GSS draws a lone 6-cell PowerConduit run as a looping tangle (no vanilla conduit to compare on this tier).
 01:51 defect list D1-D12 + UI/UX written
+01:54 C2 soak drop (4->3 on 351 cells) presumed SITE, unproven: the moat's staged water levelling into connected dry dug cells (ditch/necks). Signs corrected 7a043dc7a4; scenarios_map margin 4e45fdd94e. Final walkthrough rebuild starting.
+
+02:10 FINAL: redeployed origin/main 5ebfd259b2 (FlowWorks DLL c7de4631; includes the fixer's D1 plump-strip fix 5ebfd259b2/27586425d9 and machines-off keeps the order 9aef556eff), rebuilt map C fresh: 10/10 staged, C3 reel park now lays (margin fix), still failing: C4 st4 'no route', C10 ledger 'no room for the straight lead-out' (D2). Soak MOVED C2/C7/C12 (as before). Plump hose now reads fat on the C3 reel park (Transient/pile_2026-10-22/joints/wt_C3_reels.png). Saved via save_guard RM_fw_walkthrough_20261022.rws (375 keepers unchanged), keysheet regenerated, camera framed on C2 (map C's first plot; C1/C11 are map R, NOT built tonight). Game UP, bridge held by BENCH, ModsConfig left on fw_gss_sitting (md5 2fca0dd9) per coordinator.

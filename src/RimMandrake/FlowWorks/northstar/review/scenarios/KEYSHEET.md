@@ -1,10 +1,10 @@
 # FlowWorks composite review scenarios - key sheet
 
-Load **RM_fw_scenarios_20261021** (map C) and **RM_fw_scenarios_rivers_20261021 (not saved yet)** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to reset. Raids live in **RM_fw_composite_raid**, rain in **RM_fw_composite_rain** (load the branch, never the main save, for those pokes).
+Load **RM_fw_walkthrough_20261022** (map C) and **RM_fw_scenarios_rivers_20261021 (not saved yet)** (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. **Every plot is still until your first poke: its START.** Reload the save to reset. Raids live in **RM_fw_composite_raid**, rain in **RM_fw_composite_rain** (load the branch, never the main save, for those pokes).
 
 Each scenario has a gold title label (number, name, START, what to look for), its try lines under the plot, small rust labels on every part a poke touches, violet **DEFERRED** labels on every piece not built yet, and in-save sign books (a Novel; mouse over it, press i) at its north-west corner and at each DEFERRED piece - the books survive a plain load with no agent.
 
-Tonight's rulings carried: colonists dig to 2 m; deeper holes are machine-dug (mechanoids and droids dig to 20 m, built 2026-10-21; the ridable digging rig is not built: DEFERRED); pipes half as thick / hoses much thinner: art being redrawn; the CURRENT art is shown; canal overflow ships in 1.0 but only Stage 0 (offline kernel) exists: DEFERRED; reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE); a fallen cord lands walkable (fix built).
+Tonight's rulings carried: colonists dig to 2 m; deeper holes are machine-dug (mechanoids and droids dig to 20 m, built 2026-10-21; the ridable digging rig is not built: DEFERRED); pipes half as thick and hoses twice the 10-21 girth (owner 2026-10-22 00:00), both built; a FLOWING hose still draws too thin (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL); canal overflow ships in 1.0 but only Stage 0 (offline kernel) exists: DEFERRED; reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE); a fallen cord lands walkable (fix built).
 
 | # | scenario | map | plot (x,z,w,h) | look | staged / DEFERRED | goto |
 |---|---|---|---|---|---|---|
@@ -65,7 +65,7 @@ Grow a crop on dry ground three steps above a river: caught, lifted, carried ove
 | remote field hose (Industrial), Plump | staged | look |  |
 | a second hose crossing it at right angles | staged | look |  |
 | overflow onto the field (D2/D3) | DEFERRED | DEFERRED | Stage 1+ unbuilt; terrace 1's brim is one notch from spilling, so leaving S1 shut with the pump on will spill once it lands - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
-| half-girth pipes, much thinner hoses | DEFERRED | DEFERRED | pipes and hoses show TODAY's art; the half-girth pipe and much thinner hose are being redrawn (PIPE_GIRTH_TUNE_HALF_AS_THICK, HOSE_GIRTH_TUNE_MUCH_THINNER) - builds under `PIPE_GIRTH_TUNE_HALF_AS_THICK` |
+| flowing hose girth, joint flanges | DEFERRED | DEFERRED | pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing (plump) hose still draws thinner than an empty one, and pipe/hose joints have no flanges yet (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL, PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID) - builds under `HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL` |
 | terrace 2's front frozen half way | DEFERRED | DEFERRED | a canal levels itself: no frozen half front survives the soak; staged dry, opening S1 shows the front - builds under `design §3 C1 (deviation)` |
 
 Exercises (17 ids): 5 poked, 12 look.
@@ -174,7 +174,7 @@ Hobb is in a 4 m sheer pit in the middle of a maze. Float him out: pond water, b
 | pump power as a GSS power cord | DEFERRED | DEFERRED | a vanilla conduit stands in: no staging surface lays an RM_PowerCord from a script yet - builds under `POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS` |
 | swim-out of a flooded sheer pit (Stage 0 live: out only at the brim) | staged | poked | Transient/scenarios_stage0_20261021T220318.json: 2 m FAIL, brim PASS |
 | machine digging Hobb's pit | DEFERRED | DEFERRED | 4 m is past the 2 m colonist cap (owner 2026-10-21); the pit is staged, a machine dig order is not built - builds under `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL` |
-| thinner hose art | DEFERRED | DEFERRED | pipes and hoses show TODAY's art; the half-girth pipe and much thinner hose are being redrawn (PIPE_GIRTH_TUNE_HALF_AS_THICK, HOSE_GIRTH_TUNE_MUCH_THINNER) - builds under `HOSE_GIRTH_TUNE_MUCH_THINNER` |
+| flowing hose girth | DEFERRED | DEFERRED | pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing (plump) hose still draws thinner than an empty one, and pipe/hose joints have no flanges yet (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL, PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID) - builds under `HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL` |
 
 Exercises (32 ids): 16 poked, 16 look.
 
@@ -263,7 +263,7 @@ A caravan fuel stop: cargo tanks, a filling bay, a tapped neighbour's tank, a bu
 | spill pad: liquid spill + tracked tar | staged | look |  |
 | fuel overflow spreads and burns (D5) | DEFERRED | DEFERRED | overflow Stage 1+ is unbuilt (only the Stage 0 offline kernel exists); the canal stands below its brim so a second Dump will spill once it lands - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED` |
 | an acid canal beside the chemfuel | DEFERRED | DEFERRED | moved to C6 (where corrosion lives); the no-mix poke needs only water against chemfuel - builds under `design §3 C5 layout` |
-| half-girth pipe art | DEFERRED | DEFERRED | pipes and hoses show TODAY's art; the half-girth pipe and much thinner hose are being redrawn (PIPE_GIRTH_TUNE_HALF_AS_THICK, HOSE_GIRTH_TUNE_MUCH_THINNER) - builds under `PIPE_GIRTH_TUNE_HALF_AS_THICK` |
+| pipe-to-tank flanges | DEFERRED | DEFERRED | pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing (plump) hose still draws thinner than an empty one, and pipe/hose joints have no flanges yet (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL, PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID) - builds under `PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID` |
 
 Exercises (24 ids): 14 poked, 10 look.
 
