@@ -149,7 +149,7 @@ def _tank(B, cell):
 def _hose(B, reel):
     c = B.hp("census")
     for h in c.get("hoses") or []:
-        if tuple(h.get("reel") or ()) == tuple(reel):
+        if V.reel_at(h.get("reel"), reel):
             return h
     return {}
 
@@ -220,7 +220,7 @@ class Scene(object):
     def pump_scene(self, reel=True, tank=True):
         self.water()
         self.build("RM_LiquidPump:%d,%d" % self.pump, "Battery:%d,%d" % self.battery,
-                   "RM_HoseReel:%d,%d" % self.reel if reel else None, "RM_LiquidTank:%d,%d" % self.tank if tank else None)
+                   V.reel_west(self.reel) if reel else None, "RM_LiquidTank:%d,%d" % self.tank if tank else None)
         self.B.ticks(2)
         self.charge()
         self.powered = _powered(self.B, self.pump)
@@ -446,7 +446,7 @@ def _rf_scene3(B, rows, row):
     for x, z in far_ch:
         B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=2, setFill=-1)
         B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=2)
-    s3.build("RM_HoseReel:%d,%d" % s3.reel, "RM_LiquidTank:%d,%d" % tank_at_reel, "RM_LiquidPump:%d,%d" % far_pump,
+    s3.build(V.reel_west(s3.reel), "RM_LiquidTank:%d,%d" % tank_at_reel, "RM_LiquidPump:%d,%d" % far_pump,
              "Battery:%d,%d" % far_bat)
     B.ticks(2)
     s3.battery = far_bat
@@ -472,7 +472,7 @@ def _rf_scene4(B, rows, row):
     ox, oz = s4.o
     relay_b, tank_b = (ox + 13, oz + 8), (ox + 23, oz + 9)
     s4.pump_scene(tank=False)
-    s4.build("RM_HoseReel:%d,%d" % relay_b, "RM_LiquidTank:%d,%d" % tank_b)
+    s4.build(V.reel_west(relay_b), "RM_LiquidTank:%d,%d" % tank_b)
     B.ticks(2)
     # A is aimed ONTO B's own south-west footprint cell, the way a relay is made (validation_hose RL3: the hose ends on
     # B's intake, relayTo = B); 2026-10-11 the first live run aimed it at the cell WEST of B, which is a free end, not a relay
@@ -501,7 +501,7 @@ def _rf_scene5(B, rows, row):
     reel5 = (ox + 4, oz + 10)                               # the reel beside the pipe's last cell (west edge on (ox+3, oz+10))
     tank5 = (ox + 17, oz + 10)
     s5.build("RM_LiquidPump:%d,%d" % s5.pump, "Battery:%d,%d" % s5.battery, *["RM_UniversalPipe:%d,%d" % c for c in pipe])
-    s5.build("RM_HoseReel:%d,%d" % reel5, "RM_LiquidTank:%d,%d" % tank5)
+    s5.build(V.reel_west(reel5), "RM_LiquidTank:%d,%d" % tank5)
     B.ticks(2)
     s5.charge()
     s5.powered = _powered(B, s5.pump)
@@ -555,7 +555,7 @@ def _rf_scene6(B, rows, row):
         return
     ox, oz = s6.o
     src = (ox + 3, oz + 10)
-    s6.build("RM_HoseReel:%d,%d" % s6.reel, "RM_LiquidTank:%d,%d" % src, "RM_LiquidTank:%d,%d" % s6.tank)
+    s6.build(V.reel_west(s6.reel), "RM_LiquidTank:%d,%d" % src, "RM_LiquidTank:%d,%d" % s6.tank)
     B.ticks(2)
     fill = B.hp("filltank:%d,%d=%s,%d" % (src + (LIQUID_WATER, FILL_UNITS)))
     s6.lay()
@@ -767,7 +767,7 @@ class Proof(object):
         reel1, tgt1 = VH.CREEL, VH.CTARGET
         reel2, tgt2 = self.CARRY_REEL2, self.CARRY_TARGET2
         st = {"reel1": list(reel1), "reel2": list(reel2)}
-        br = B.call("jawa/build_batch", ops="RM_HoseReel:%d,%d" % reel2, faction="player", wipeExisting=False) or {}
+        br = B.call("jawa/build_batch", ops=V.reel_west(reel2), faction="player", wipeExisting=False) or {}
         reel2_built = br.get("success") is not False and (br.get("survived") is None or br.get("survived") >= 1)
         B.ticks(2)
         pawns = [p for p in B.hp("colonists").get("pawns") or [] if not p.get("downed")]

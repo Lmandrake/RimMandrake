@@ -719,12 +719,18 @@ def _gizmo_cycle(w, cell, prefix, want, max_clicks=4):
         B.call("rimworld/clear_selection")
 
 
+
+def _reel_west(c):
+    """validation_core.reel_west without the bridge-side import: the reel turns since a98046cbe9 and a bare op builds it
+    NORTH; built West one square east keeps the 2x2 on [c, c+(1,1)] with the west outlet these scenes were proven with."""
+    return "RM_HoseReel:%d,%d,3" % (c[0] + 1, c[1])
+
 def _pump_rig(w, g):
     """Pump + battery + two hose reels: hose A from reelA to g["intake"] set Intake, hose B from reelB to g["outflow"]
     set Outflow. Shared by S3 and S5 part G. Returns staging notes (empty when every step read back right)."""
     notes = []
-    r = w.build("RM_LiquidPump:%d,%d;RM_HoseReel:%d,%d;RM_HoseReel:%d,%d;Battery:%d,%d" % (
-        g["pump"] + g["reelA"] + g["reelB"] + g["battery"]))
+    r = w.build(";".join(["RM_LiquidPump:%d,%d" % g["pump"], _reel_west(g["reelA"]), _reel_west(g["reelB"]),
+                          "Battery:%d,%d" % g["battery"]]))
     if r.get("survived") is not None and r.get("survived") < 4:
         notes.append("build: %s" % str(r.get("failed"))[:200])
     w.ticks(2)
@@ -753,7 +759,7 @@ def _pump_rig(w, g):
     ra = _gizmo_cycle(w, g["reelA"], "Free end:", "Free end: Intake")
     rb = _gizmo_cycle(w, g["reelB"], "Free end:", "Free end: Outflow")
     for reel, want in ((g["reelA"], "Intake"), (g["reelB"], "Outflow")):
-        rid = next((h.get("id") for h in w.hp("census").get("hoses") or [] if tuple(h.get("reel") or ()) == tuple(reel)), None)
+        rid = next((h.get("id") for h in w.hp("census").get("hoses") or [] if tuple(h.get("reel") or ()) in (tuple(reel), (reel[0] + 1, reel[1]))), None)
         got = ((w.call("jawa/comp_read", thing="RM_HoseReel%s" % rid, comp="CompHoseReel", members="freeEndRole") or {})
                .get("values") or {}).get("freeEndRole")
         if str(got) != want:
@@ -791,7 +797,7 @@ def _hose_held(w, g=None):
     g = g or s3_geom()
     tot = 0.0
     for reel in (g["reelA"], g["reelB"]):
-        lt = w.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,1,1" % reel, limit=2) or {}
+        lt = w.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,1" % reel, limit=2) or {}
         tid = ((lt.get("things") or [{}])[0]).get("id")
         v = ((w.call("jawa/comp_read", thing=tid, comp="CompHoseReel", members="heldUnits") or {}).get("values") or {})
         try:

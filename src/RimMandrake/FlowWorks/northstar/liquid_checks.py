@@ -65,6 +65,12 @@ FW_PKG = "mandrake.rm.flowworks"
 
 # ============================================================================ pure logic (selftest_liquid_checks.py)
 
+
+def _reel_west(c):
+    """validation_core.reel_west without the bridge-side import: the reel turns since a98046cbe9 and a bare op builds it
+    NORTH; built West one square east keeps the 2x2 on [c, c+(1,1)] with the west outlet these scenes were proven with."""
+    return "RM_HoseReel:%d,%d,3" % (c[0] + 1, c[1])
+
 def _QS():
     """The shared quiet isolated test-site profile (Utils/modcheck/quiet_site.py)."""
     d = os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "Utils"), "modcheck")
@@ -540,7 +546,7 @@ def main(argv=None):
             canal = [pa.P(16 + k, 9) for k in range(3)]
             for c in canal:
                 dig(c, 2)
-            pa.build("RM_LiquidTank:%d,%d" % pa.north_tank, "RM_HoseReel:%d,%d" % pa.reel)
+            pa.build("RM_LiquidTank:%d,%d" % pa.north_tank, _reel_west(pa.reel))
             B.ticks(2)
             ft = B.hp("filltank:%d,%d=%s,%d" % (pa.north_tank + (WATER, FILL_UNITS)))
             lay = pa.lay(pa.P(15, 9))
@@ -589,7 +595,7 @@ def main(argv=None):
         s = Plot(xz(a.origin_l6))
         if not s.ready("L6_site_ready", extra_h=6):
             return
-        s.build("RM_LiquidTank:%d,%d" % s.north_tank, "RM_HoseReel:%d,%d" % s.reel)
+        s.build("RM_LiquidTank:%d,%d" % s.north_tank, _reel_west(s.reel))
         build("RM_LiquidTank:%d,%d" % s.tank, faction=nf)
         B.ticks(2)
         ft = B.hp("filltank:%d,%d=%s,%d" % (s.tank + (WATER, FILL_UNITS)))
@@ -646,7 +652,7 @@ def main(argv=None):
         s = Plot(xz(a.origin_l4))
         if not s.ready("L4_site_ready"):
             return
-        s.build("RM_LiquidTank:%d,%d" % s.north_tank, "RM_HoseReel:%d,%d" % s.reel)
+        s.build("RM_LiquidTank:%d,%d" % s.north_tank, _reel_west(s.reel))
         sb = s.build("RM_UniversalCargoTank:%d,%d" % s.tank)
         B.ticks(2)
         ship_def = "RM_UniversalCargoTank"
@@ -685,7 +691,7 @@ def main(argv=None):
         if not s.ready("L5_site_ready"):
             return
         s.water()
-        s.build("RM_LiquidPump:%d,%d" % s.pump, "Battery:%d,%d" % s.battery, "RM_HoseReel:%d,%d" % s.reel)
+        s.build("RM_LiquidPump:%d,%d" % s.pump, "Battery:%d,%d" % s.battery, _reel_west(s.reel))
         B.ticks(2)
         s.charge()
         pw = PH._powered(B, s.pump)

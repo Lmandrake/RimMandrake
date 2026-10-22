@@ -58,6 +58,8 @@ SITE = (X0 - 8, Z0 - 2, 46, 28)
 REELS = [(X0 + 7 * i, Z0) for i in range(4)]        # one per look, 2x2 each, 7 cells apart
 MODE = ["build", "build", "god", "god"]
 LAY_TO = [(x + 1, Z0 + 12) for x, _ in REELS]       # straight north, ~11 cells: well inside the default hose length
+# The reel turns since a98046cbe9: every reel here is placed NORTH (rot 0, written out) so its hose leaves the north outlet
+# straight up to LAY_TO; Position (census "reel") stays the footprint's south-west square, as REELS/LEGACY_AT name it.
 REINSTALL_AT = (X0 + 3, Z0 + 16)                    # the Industrial reel moves here (reeled in first)
 RELAY_TO = (X0 + 14, Z0 + 20)
 LEGACY_AT = (X0 + 24, Z0 + 16)                      # built by jawa/build_batch: no designator, no style
@@ -185,7 +187,7 @@ def run_live(args):
     A.ticks(2)
 
     # ---------------------------------------------------------------- R1: menu pick -> designator -> blueprint / god building
-    placed = [(l, c, m, A.ap("place:RM_HoseReel:%s:%d,%d:%s" % (l, c[0], c[1], m))) for l, c, m in zip(LOOKS, REELS, MODE)]
+    placed = [(l, c, m, A.ap("place:RM_HoseReel:%s:%d,%d:0:%s" % (l, c[0], c[1], m))) for l, c, m in zip(LOOKS, REELS, MODE)]
     bad = [(l, m, r.get("designatorStyle"), (r.get("made") or {}).get("kind"), (r.get("made") or {}).get("rawStyle"), r.get("error"))
            for l, c, m, r in placed if not r.get("success") or r.get("designatorStyle") != "RM_HoseReel_" + l
            or (r.get("made") or {}).get("kind") != ("blueprint" if m == "build" else "building")
@@ -265,7 +267,7 @@ def run_live(args):
           {"reinstall": ri, "after": {k: moved.get(k) for k in ("id", "rawStyle", "look", "reelTex", "laid")}, "art": e})
 
     # ---------------------------------------------------------------- R7: legacy reel (no style stored) draws the default look
-    bb = A.call("jawa/build_batch", ops="RM_HoseReel:%d,%d" % LEGACY_AT, faction="player", wipeExisting=False)
+    bb = A.call("jawa/build_batch", ops="RM_HoseReel:%d,%d,0" % LEGACY_AT, faction="player", wipeExisting=False)
     A.ticks(3)
     H.hp("lay:%d,%d,%d,%d" % (LEGACY_AT[0], LEGACY_AT[1], LEGACY_LAY[0], LEGACY_LAY[1]))
     A.ticks(5)

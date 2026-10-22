@@ -418,6 +418,23 @@ def ops(defn, cells, rot=None):
     return ";".join("%s:%d,%d%s" % (defn, c[0], c[1], "" if rot is None else ",%d" % rot) for c in cells)
 
 
+# FlowWorks' hose reel turns (4 facings) since a98046cbe9 and a bare build op builds it NORTH. The proofs were laid out
+# with the old always-WEST outlet and the reel's 2x2 on [c, c+(1,1)]; a 2x2 built West is placed one square EAST of that
+# footprint (GenAdj.AdjustForRotation), so its Position -- and HoseProbe census "reel" -- is c + (1, 0). Stage reels with
+# reel_west / reel_west_ops and find them with reel_at; probes that take "any square of the reel" need nothing.
+def reel_west(c):
+    return "RM_HoseReel:%d,%d,3" % (c[0] + 1, c[1])
+
+
+def reel_west_ops(cells):
+    return ";".join(reel_west(c) for c in cells)
+
+
+def reel_at(pos, c):
+    """True when a reel whose Position is `pos` is the one staged at footprint corner `c` (built North or West)."""
+    return tuple(pos or ()) in (tuple(c), (c[0] + 1, c[1]))
+
+
 # Verse.Log stops ALL managed logging after 10,000 messages ("Reached max messages limit"; skills/rimbridge traps.md), and on
 # the owner's full list a chatty conversation mod reaches that inside one session: every later Log.Warning/Error is dropped,
 # so RimBridge's journal goes silent and a log-budget row reads "0 errors" while seeing nothing (2026-10-11: proof_hose Z
