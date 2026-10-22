@@ -1,0 +1,1 @@
+validation_hose's FlowWorks_HosePipeWalk_* frames in Transient/fw_hoses_walk (and owner_review_stage/hoses_*) are MOCK placeholders (flat green 'MOCK SCREENSHOT' frames, every date 10-18..10-21) — they look like a capture set by name and size. Count colours or open one before using any as evidence; real join close-ups need system_screenshot.py or the bridge.
