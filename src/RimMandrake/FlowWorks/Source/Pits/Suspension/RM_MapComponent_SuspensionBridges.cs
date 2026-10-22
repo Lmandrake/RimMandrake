@@ -1253,7 +1253,8 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			Map map = p.Map;
 			IntVec3 c = p.Position;
-			if (DeckAt(map, c) == null || RM_SuspensionUnderpass.InFloorBand(p))
+			Building_SuspensionDeck deckHere = DeckAt(map, c);
+			if (deckHere == null || RM_SuspensionUnderpass.InFloorBand(p))
 			{
 				return false;   // not on a deck (a pawn under it, in the floor band, is already down in the hole)
 			}
@@ -1273,7 +1274,8 @@ namespace RimMandrake.FlowWorks.Pits
 			p.pather?.StopDead();
 			p.Position = open;
 			p.Notify_Teleported(true, true);
-			RM_SuperdeepTrap.OnForcedDescent(p, open, state, ex.ClimbDepthAt(open));
+			// a sunken deck's rider falls from the deck's height, as Drop and Collapse already count it
+			RM_SuperdeepTrap.OnForcedDescent(p, open, state, System.Math.Max(0, ex.ClimbDepthAt(open) - deckHere.DeckNotches));
 			Messages.Message(p.LabelShort + " was " + why + " off the edge of a suspension bridge.", new LookTargets(p),
 				MessageTypeDefOf.NegativeEvent);
 			return true;
