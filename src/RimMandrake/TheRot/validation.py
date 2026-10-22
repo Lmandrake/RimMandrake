@@ -16,9 +16,15 @@ CHAINS
                      carrier dies, pings do not move the log. Landing ping UNMEASURED (needs a gravship landing).
   unjoining          ROT_UNJOINING_DRAUGHT_1: the draught purges parasites + a symbiont (one husk, one scar, purge), only purges
                      a clean patient, and forces a metalhorror implant to emerge.
-  dustveil           DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED: MaxFlightTime > 0 live and the silk defs resolve; the
-                     Pawn_FlightTracker state read and the flip-book cycle are UNMEASURED (no tool yet; flight is seen only
-                     with the owner present).
+  dustveil           DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED: MaxFlightTime > 0 live and the silk defs resolve; A2 is a
+                     Pawn_FlightTracker STATE read (jawa/pawn_flight action=report) on a moth spawned while PAUSED and
+                     destroyed before any tick, against a non-flier control; the flip-book cycle is UNMEASURED (flight is
+                     seen only with the owner present).
+  living_mat_root    ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD: a fed root spreads and eats, its room warms toward
+                     min(outdoor+18, 21 C) and never past 21, a starved root dies back (RM_LivingMatRootProof).
+  wound_link         ROT_WOUNDLINK_FIX_DROPPED_AT_THE_DOOR A2/A3: RM_Chittik (and RM_Durrok/RM_Mullgoth, when
+                     mandrake.rsw.swbestiary loads) carry CompProperties_WoundLink live, a control reads notFound; a Cut
+                     on one chittik's carapace mirrors to kin 2 cells away with woundLinkEnabled ON and not with it OFF.
   map_mechanics      the ten toggled mechanics: UNMEASURED, each naming what it needs (a generated RM_TheRot map, ticks, a game condition).
 
 STATIC (also): ambrosyx_checks -- AMBROSYX_SOURCE_BUILD_DISH_BEFORE_SHROOM: some non-abstract plant of this mod has
@@ -31,8 +37,12 @@ STATIC (also): dustveil_checks -- DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED: RM_D
                      RM_MothSilk (a Fabric); --planted also turns it red on four planted defects.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
+MOCK:   `python3 validation.py --mock` -> runs wound_link, dustveil and living_mat_root against a fake game, clean and
+        with 12 planted defects (MOCK_EXPECT); each defect must turn ITS row FAIL, or UNMEASURED when it blinds the
+        instrument (control reads present, clock running, wrong map).
 """
 import fnmatch
+import json
 import os
 import re
 import sys
@@ -44,6 +54,7 @@ SETTINGS = "RimMandrake.TheRot.RM_TheRotSettings"
 BIOME = "RM_TheRot"
 WORKER = "RM_BiomeWorker_TheRot"
 CONTROL_ABSENT = "ThingDef/TheRotNoSuchDef_ZZ"
+LINK_DAMAGE, LINK_AMOUNT, LINK_PART = "Cut", 14, "RM_CarapaceTheRot"   # wound_link: 14 > the 8 gate; carapace 60 HP
 _FIELD = re.compile(r"public\s+static\s+(bool|int|float|string)\s+(\w+)\s*=\s*([^;]+);")
 _HOLD_FILE = os.path.join(HERE, "..", "..", "DEPLOY_HOLD.txt")
 
@@ -599,12 +610,73 @@ def _build_suite():
                 if not isinstance(r, dict) or r.get("success") is False or int(r.get("foundCount", 0)) != 2:
                     raise ExpectationFailed("RM_MothSilk / RM_Dustveil do not both resolve: %r" % (r,))
         with t.component("flight_tracker_state_read", beyond_toggle=True):
+            # DUSTVEIL A2. `jawa/pawn_flight action=report` is READ-ONLY (JawaBenchFlightTools.cs): Pawn_FlightTracker
+            # CanEverFly / Flying / flightState, no write. The moth is spawned with the game PAUSED, read and destroyed
+            # before any tick; a non-flier (RM_Chittik) is the control that proves the instrument can say false.
+            # Owner ruling: no flight is started, no tick runs with the moth spawned, no screenshot is taken.
             if _live(t):
-                _unmeasured(t, "needs a JawaBench [Tool] reading Pawn_FlightTracker.CanEverFly on a spawned RM_Dustveil "
-                               "(a state read, never a flight hunt); the shearing yield needs a tame adult and 5 days")
+                _flight_state_read(t)
         with t.component("flip_book_frames_cycle", beyond_toggle=True):
             if _live(t):
                 _unmeasured(t, "frames Dustveil_Flying_1..5 are queued in artpipe; the cycle is judged live only WITH the owner")
+
+    def _ticks(t):
+        r = t.session.call("rimworld/get_game_info")
+        try:
+            return int((r or {}).get("ticksGame"))
+        except (TypeError, ValueError):
+            return None
+
+    def _spawn_one(t, kind, x, z):
+        r = t.bridge_call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction="none", count=1)
+        pid = ((((r or {}).get("pawns") or [{}])[0]) or {}).get("id") if isinstance(r, dict) else None
+        if pid and hasattr(t.session, "track"):
+            t.session.track("pawn", pid, x=x, z=z)
+        return pid
+
+    def _flight_state_read(t):
+        t.session.call("rimworld/pause_game", pause=True)
+        x, z = t.anchor
+        t0 = _ticks(t)
+        moth = ctrl = None
+        rows = {}
+        try:
+            moth = _spawn_one(t, "RM_Dustveil", x, z)
+            ctrl = _spawn_one(t, "RM_Chittik", x + 3, z)
+            for pid in (moth, ctrl):
+                if pid:
+                    r = t.session.call("jawa/pawn_flight", action="report", pawn=pid)
+                    got = ((r or {}).get("pawns") or []) if isinstance(r, dict) else []
+                    rows[pid] = got[0] if got and isinstance(got[0], dict) else None
+        finally:
+            for pid, cx in ((moth, x), (ctrl, x + 3)):
+                if pid:
+                    t.session.call("jawa/destroy_batch", rects="%d,%d,1,1" % (cx, z), categories="All")
+        t1 = _ticks(t)
+        if t0 is None or t1 is None:
+            _unmeasured(t, "ticksGame unreadable, so 'no tick with the moth spawned' is unproven (%r, %r)" % (t0, t1))
+            return
+        if t1 != t0:
+            _unmeasured(t, "the game was NOT paused: %d tick(s) ran with RM_Dustveil spawned (owner ruling: state read "
+                           "only); the read is void" % (t1 - t0))
+            return
+        if not moth or not ctrl:
+            _unmeasured(t, "spawn_pawn gave no id (moth %r, control %r)" % (moth, ctrl))
+            return
+        m, c = rows.get(moth), rows.get(ctrl)
+        if not m or not c or "canEverFly" not in m or "canEverFly" not in c or not m.get("hasTracker", True):
+            _unmeasured(t, "pawn_flight report carries no canEverFly / tracker: moth %r control %r"
+                           % (str(m)[:120], str(c)[:120]))
+            return
+        if c.get("canEverFly") is not False:
+            _unmeasured(t, "the non-flier control RM_Chittik reads canEverFly=%r: the instrument cannot say false"
+                           % (c.get("canEverFly"),))
+            return
+        if m.get("canEverFly") is not True:
+            raise ExpectationFailed("RM_Dustveil spawned with canEverFly=%r (maxFlightTimeStat %r, maxFlightTicks %r): "
+                                    "the tracker says the moth cannot fly" % (m.get("canEverFly"),
+                                                                              m.get("maxFlightTimeStat"),
+                                                                              m.get("maxFlightTicks")))
 
     @suite.chain("map_mechanics")
     def map_mechanics(t):
@@ -852,12 +924,291 @@ def _build_suite():
             if _live(t):
                 _unmeasured(t, "needs an RM_TheRot map; first poke: ProofStage then ProofSweeps 5|fed there, food must not move")
 
+
+    CB_SETTINGS = "RimMandrake.CreatureBehaviors.RM_CreatureBehaviorsSettings"
+    LINK_CONTROL = "ThingDef/ZZ_NoSuchDef_Probe"
+
+    def _cuts(row, part=None):
+        """Total severity of the Cut injuries on a list_pawns health row (optionally on one BodyPartDef)."""
+        hs = ((row or {}).get("health") or {}).get("hediffs") or []
+        return sum(float(h.get("severity") or 0) for h in hs
+                   if isinstance(h, dict) and h.get("def") == LINK_DAMAGE and (part is None or h.get("part") == part))
+
+    def _link_defs(t, names):
+        r = t.bridge_call("jawa/get_defs", defs=";".join(["ThingDef/" + n for n in names] + [LINK_CONTROL]),
+                          fields="comps", deep=True, limit=len(names) + 2)
+        if not _live(t):
+            return None
+        if not isinstance(r, dict) or r.get("success") is False:
+            raise ExpectationFailed("get_defs failed: %r" % (r,))
+        if not any("ZZ_NoSuchDef_Probe" in str(x) for x in (r.get("notFound") or [])):
+            _unmeasured(t, "the control %s did not read notFound: the instrument cannot say absent (%r)"
+                           % (LINK_CONTROL, r.get("notFound")))
+            return None
+        rows = dict((d.get("defName"), json.dumps((d.get("fields") or {}).get("comps"), default=str))
+                    for d in (r.get("defs") or []) if isinstance(d, dict))
+        if rows and not any("CompProperties" in b for b in rows.values()):
+            _unmeasured(t, "get_defs comps carry no class names, so a missing WoundLink comp is invisible: %s"
+                           % str(rows)[:160])
+            return None
+        return rows
+
+    def _wound_pair(t, dz):
+        """Two wild RM_Chittik 2 cells apart (kin radius 12); one Cut of LINK_AMOUNT to A's carapace (no brain, so it
+        mirrors); both health rows read back. Returns a dict, or None after an UNMEASURED."""
+        x, z = t.anchor
+        z += dz
+        t.bridge_call("jawa/destroy_batch", rects="%d,%d,6,3" % (x - 1, z - 1), categories="All")
+        a = _spawn_one(t, "RM_Chittik", x, z)
+        b = _spawn_one(t, "RM_Chittik", x + 2, z)
+        if not _live(t):
+            return None
+        if not a or not b:
+            _unmeasured(t, "spawn_pawn gave no RM_Chittik id (%r, %r)" % (a, b))
+            return None
+
+        def rows():
+            r = t.bridge_call("jawa/list_pawns", limit=50, includeHealth=True, rect="%d,%d,6,3" % (x - 1, z - 1))
+            return dict((p.get("id"), p) for p in ((r or {}).get("pawns") or []) if isinstance(p, dict))
+        base = rows()
+        if a not in base or b not in base:
+            _unmeasured(t, "list_pawns did not read back both chittiks (%s)" % sorted(base)[:6])
+            return None
+        if "health" not in base[b]:
+            _unmeasured(t, "list_pawns returned no health block: the instrument is blind to injuries")
+            return None
+        d = t.bridge_call("jawa/damage", damageDef=LINK_DAMAGE, amount=LINK_AMOUNT, thingId=a, armorPenetration=1.0,
+                          bodyPart=LINK_PART)
+        after = rows()
+        out = {"a": a, "b": b, "aCut": _cuts(after.get(a), LINK_PART), "bCut": _cuts(after.get(b), LINK_PART),
+               "bCutAny": _cuts(after.get(b)), "bBefore": _cuts(base.get(b)), "damage": str(d)[:200]}
+        t._record("wound pair dz=%d" % dz, out)
+        if out["bBefore"] > 0:
+            _unmeasured(t, "the recipient carried a Cut before the hit: %r" % (out,))
+            return None
+        if out["aCut"] + out["bCutAny"] < 8.0:
+            _unmeasured(t, "the hit left under the 8-severity gate on the victim (it never mirrors by design): %r" % (out,))
+            return None
+        return out
+
+    @suite.chain("wound_link")
+    def wound_link(t):
+        """ROT_WOUNDLINK_FIX_DROPPED_AT_THE_DOOR A2/A3 (runbook 2026-10-22 rows 2.1, 2.2). The comp is
+        CreatureBehaviors' RM_CompWoundLink; the live switch is RM_CreatureBehaviorsSettings.woundLinkEnabled
+        (TheRot's healthSharing strips the comps at STARTUP only, so it cannot be flipped live)."""
+        state = {}
+        with t.component("chittik_carries_wound_link", beyond_toggle=True):
+            rows = _link_defs(t, ["RM_Chittik"])
+            if rows is not None and _live(t):
+                if "RM_Chittik" not in rows:
+                    raise ExpectationFailed("ThingDef/RM_Chittik does not resolve live")
+                if "CompProperties_WoundLink" not in rows["RM_Chittik"]:
+                    raise ExpectationFailed("RM_Chittik carries no CompProperties_WoundLink live (healthSharing off at "
+                                            "startup strips it; else the def lost it): %s" % rows["RM_Chittik"][:200])
+        with t.component("wound_shared_with_kin_when_on", beyond_toggle=True):
+            if _live(t):
+                g = t.session.call("jawa/mod_settings_field", typeName=CB_SETTINGS, action="get", field="woundLinkEnabled")
+                state["prev"] = (g or {}).get("value") if isinstance(g, dict) else None
+                if state["prev"] is None:
+                    _unmeasured(t, "woundLinkEnabled unreadable on %s: %r" % (CB_SETTINGS, g))
+                else:
+                    t.set_setting(CB_SETTINGS, {"woundLinkEnabled": "true"})
+            res = _wound_pair(t, 0) if _live(t) else None
+            if res is not None and _live(t):
+                if res["aCut"] <= 0:
+                    _unmeasured(t, "the victim shows no Cut on %s after the hit: the damage did not land where read %r"
+                                   % (LINK_PART, res))
+                elif not res["bCut"] > 0:
+                    raise ExpectationFailed("sharing ON: the kin 2 cells away received no %s on %s: %r"
+                                            % (LINK_DAMAGE, LINK_PART, res))
+        try:
+            with t.component("no_share_when_off", beyond_toggle=True):
+                if _live(t):
+                    t.set_setting(CB_SETTINGS, {"woundLinkEnabled": "false"})
+                res = _wound_pair(t, 4) if _live(t) else None
+                if res is not None and _live(t):
+                    if res["aCut"] <= 0:
+                        _unmeasured(t, "the victim shows no Cut after the OFF-arm hit: %r" % (res,))
+                    elif res["bCutAny"] > 0:
+                        raise ExpectationFailed("sharing OFF: the kin still received a wound: %r" % (res,))
+        finally:
+            if t.session is not None:
+                if state.get("prev") is not None:
+                    t.session.call("jawa/mod_settings_field", typeName=CB_SETTINGS, action="set",
+                                   field="woundLinkEnabled", value=str(state["prev"]))
+                x, z = t.anchor
+                t.session.call("jawa/destroy_batch", rects="%d,%d,6,7" % (x - 1, z - 1), categories="All")
+        with t.component("bestiary_kin_carry_wound_link", beyond_toggle=True):
+            rows = _link_defs(t, ["RM_Durrok", "RM_Mullgoth"])
+            if rows is not None and _live(t):
+                absent = [n for n in ("RM_Durrok", "RM_Mullgoth") if n not in rows]
+                lacking = [n for n in ("RM_Durrok", "RM_Mullgoth") if n in rows and "CompProperties_WoundLink" not in rows[n]]
+                if lacking:
+                    raise ExpectationFailed("%s resolve but carry no CompProperties_WoundLink (Patches/"
+                                            "RotSpecies_WoundSharing.xml did not apply)" % lacking)
+                if absent:
+                    _unmeasured(t, "%s not loaded: they live in mandrake.rsw.swbestiary, absent from this tier" % absent)
+
     return suite
 
 
 suite = _build_suite() if Suite is not None else None
 
+class _MockRotSession(object):
+    """--mock: answers like a game where wound_link, dustveil and living_mat_root work. `broken` plants ONE defect:
+    nocomp (chittik lost the comp), noshare (ON arm mirrors nothing), offleaks (OFF arm still mirrors), blindctrl
+    (get_defs control reads present), nobestiary (Durrok/Mullgoth absent), grounded (moth canEverFly false),
+    ctrlflies (the non-flier control reads true), ticking (the clock runs while the moth is spawned), nospread
+    (5 fed sweeps lay 4 cells), hot (the mat room passes 21 C), nodieback (a starved root keeps its cells),
+    rotmap (staged on an RM_TheRot map)."""
+
+    def __init__(self, broken=None):
+        self.broken, self.calls, self.ticks, self.n = broken, [], 1000, 0
+        self.pawns, self.link_on, self.grown, self.room = {}, True, 0, 5.0
+
+    def track(self, *a, **k):
+        return None
+
+    def sweep(self):
+        return None
+
+    def call(self, tool, **kw):
+        self.calls.append((tool, kw))
+        b = self.broken
+        if b == "ticking" and any(p["kind"] == "RM_Dustveil" for p in self.pawns.values()):
+            self.ticks += 60       # an unpaused game: the clock runs between any two calls while the moth is spawned
+        if tool == "rimworld/get_game_info":
+            return {"success": True, "ticksGame": self.ticks}
+        if tool == "jawa/get_defs":
+            names = [d.split("/", 1)[1] for d in (kw.get("defs") or "").split(";") if d]
+            if kw.get("fields") == "statBases":
+                return {"success": True, "foundCount": 1, "notFound": [],
+                        "defs": [{"defName": "RM_Dustveil", "fields": {"statBases": [{"stat": "MaxFlightTime", "value": 6}]}}]}
+            known = {"RM_Chittik", "RM_MothSilk", "RM_Dustveil"} | (set() if b == "nobestiary" else {"RM_Durrok", "RM_Mullgoth"})
+            if b == "blindctrl":
+                known.add("ZZ_NoSuchDef_Probe")
+            rows, nf = [], []
+            for n in names:
+                if n not in known:
+                    nf.append("ThingDef/" + n)
+                    continue
+                comps = [{"Class": "CompProperties_Milkable"}]
+                if not (b == "nocomp" and n == "RM_Chittik"):
+                    comps.append({"Class": "RimMandrake.CreatureBehaviors.CompProperties_WoundLink"})
+                rows.append({"defName": n, "fields": {"comps": comps, "defName": n}})
+            return {"success": True, "foundCount": len(rows), "notFound": nf, "defs": rows}
+        if tool == "jawa/mod_settings_field":
+            if kw.get("action") == "set":
+                self.link_on = str(kw.get("value")).lower() == "true"
+                return {"success": True}
+            return {"success": True, "value": "True" if self.link_on else "False"}
+        if tool == "jawa/spawn_pawn":
+            self.n += 1
+            pid = "Mock%d" % self.n
+            self.pawns[pid] = {"kind": kw.get("kindDef"), "x": kw.get("x"), "z": kw.get("z"), "hediffs": []}
+            return {"success": True, "pawns": [{"id": pid, "kindDef": kw.get("kindDef"), "name": pid}]}
+        if tool == "jawa/list_pawns":
+            return {"success": True, "pawns": [{"id": k, "kindDef": v["kind"], "health": {"hediffs": list(v["hediffs"])}}
+                                               for k, v in self.pawns.items()]}
+        if tool == "jawa/damage":
+            a = self.pawns[kw["thingId"]]
+            sev = float(kw.get("amount"))
+            kin = [v for k, v in self.pawns.items() if k != kw["thingId"] and v["kind"] == a["kind"]
+                   and abs(v["x"] - a["x"]) <= 12 and abs(v["z"] - a["z"]) <= 1]
+            share = 0.6 * sev if ((self.link_on and b != "noshare") or (not self.link_on and b == "offleaks")) and kin else 0.0
+            a["hediffs"].append({"def": kw.get("damageDef"), "part": kw.get("bodyPart"), "severity": sev - share})
+            for v in kin if share else []:
+                v["hediffs"].append({"def": kw.get("damageDef"), "part": kw.get("bodyPart"), "severity": share})
+            return {"success": True}
+        if tool == "jawa/destroy_batch":
+            x, z, w, h = [int(v) for v in kw.get("rects").split(",")]
+            for k in [k for k, v in self.pawns.items() if x <= v["x"] < x + w and z <= v["z"] < z + h]:
+                del self.pawns[k]
+            return {"success": True}
+        if tool == "jawa/pawn_flight":
+            p = self.pawns.get(kw.get("pawn"))
+            fly = p is not None and ((p["kind"] == "RM_Dustveil" and b != "grounded") or b == "ctrlflies")
+            return {"success": True, "pawns": [{"id": kw.get("pawn"), "hasTracker": True, "canEverFly": fly,
+                                                "flying": False, "flightState": "Grounded", "maxFlightTimeStat": 6 if fly else 0}]}
+        if tool == "jawa/static_call" and kw.get("type") == "RimMandrake.TheRot.RM_LivingMatRootProof":
+            m, a = kw.get("method"), (kw.get("args") or "").split("|")
+            if m == "ProofStage":
+                return {"success": True, "result": "STAGED at 50,50 | rot %s | food 10.0" % (b == "rotmap")}
+            n, fed = int(a[0]), a[1] == "fed"
+            g0, r0 = self.grown, self.room
+            if fed:
+                self.grown = min(25, self.grown + (n - 1 if b == "nospread" and n == 5 else n))
+                if self.grown >= 15:
+                    self.room = 23.0 if b == "hot" else min(21.0, self.room + 0.5 * n)
+                status = "fed; warming this room toward 21C"
+            else:
+                self.grown = self.grown if b == "nodieback" else max(0, self.grown - n)
+                status = "starving; dying back"
+            return {"success": True, "result": "ROOT 0 | rot False | food 10.00->8.00 ate %.3f | grown %d->%d | room %.1f->%.1f "
+                    "(mat %d/25) | outdoor 5.0 | %s" % (2.0 if fed else 0.0, g0, self.grown, r0, self.room, self.grown, status)}
+        return {"success": True}
+
+
+MOCK_EXPECT = {
+    # broken -> {chain/component: verdict it MUST read}; every other listed row of a clean run must PASS.
+    None: {"wound_link/chittik_carries_wound_link": "PASS", "wound_link/wound_shared_with_kin_when_on": "PASS",
+           "wound_link/no_share_when_off": "PASS", "wound_link/bestiary_kin_carry_wound_link": "PASS",
+           "dustveil/flight_stat_live": "PASS", "dustveil/silk_defs_live": "PASS",
+           "dustveil/flight_tracker_state_read": "PASS", "dustveil/flip_book_frames_cycle": "UNMEASURED",
+           "living_mat_root/fed_root_spreads_and_eats": "PASS", "living_mat_root/mat_room_warms_to_cap": "PASS",
+           "living_mat_root/starved_root_dies_back": "PASS", "living_mat_root/rot_root_eats_nothing": "UNMEASURED"},
+    "nocomp": {"wound_link/chittik_carries_wound_link": "FAIL"},
+    "noshare": {"wound_link/chittik_carries_wound_link": "PASS", "wound_link/wound_shared_with_kin_when_on": "FAIL"},
+    "offleaks": {"wound_link/wound_shared_with_kin_when_on": "PASS", "wound_link/no_share_when_off": "FAIL"},
+    "blindctrl": {"wound_link/chittik_carries_wound_link": "UNMEASURED"},
+    "nobestiary": {"wound_link/no_share_when_off": "PASS", "wound_link/bestiary_kin_carry_wound_link": "UNMEASURED"},
+    "grounded": {"dustveil/flight_tracker_state_read": "FAIL"},
+    "ctrlflies": {"dustveil/flight_tracker_state_read": "UNMEASURED"},
+    "ticking": {"dustveil/flight_tracker_state_read": "UNMEASURED"},
+    "nospread": {"living_mat_root/fed_root_spreads_and_eats": "FAIL"},
+    "hot": {"living_mat_root/fed_root_spreads_and_eats": "PASS", "living_mat_root/mat_room_warms_to_cap": "FAIL"},
+    "nodieback": {"living_mat_root/mat_room_warms_to_cap": "PASS", "living_mat_root/starved_root_dies_back": "FAIL"},
+    "rotmap": {"living_mat_root/fed_root_spreads_and_eats": "UNMEASURED"},
+}
+MOCK_CHAINS = ("wound_link", "dustveil", "living_mat_root")
+
+
+def mock_run():
+    """Each planted defect turns ITS row red (or UNMEASURED when it blinds the instrument); a clean mock is green.
+    Also checks the moth never sees a tick and every spawned pawn is destroyed again, and the wound-link switch is
+    restored to what it read."""
+    from runner import run_suite
+    chains = list(suite.chains)
+    bad = []
+    try:
+        for broken, want in MOCK_EXPECT.items():
+            sess = _MockRotSession(broken)
+            suite.chains[:] = [c for c in chains if c[0] in MOCK_CHAINS]
+            res = run_suite(suite, sess, anchor=(50, 50))
+            got = dict(("%s/%s" % (ch.get("name"), c.get("name")), str(c.get("verdict", "")).upper())
+                       for ch in res.get("chains", []) for c in (ch.get("components") or []))
+            for row, v in want.items():
+                if got.get(row) != v:
+                    bad.append("%s: %s read %s, want %s" % (broken, row, got.get(row), v))
+            if broken is None:
+                if sess.pawns:
+                    bad.append("clean: %d mock pawn(s) left spawned: %s" % (len(sess.pawns), sorted(sess.pawns)))
+                if not sess.link_on:
+                    bad.append("clean: woundLinkEnabled not restored to True")
+                if [c for c in sess.calls if c[0] == "jawa/pawn_flight" and c[1].get("action") != "report"]:
+                    bad.append("clean: a pawn_flight call other than action=report")
+                if [c for c in sess.calls if c[0] in ("rimworld/step_game_ticks", "jawa/safe_advance", "rimworld/take_screenshot")]:
+                    bad.append("clean: the chains advanced the clock or took a screenshot")
+    finally:
+        suite.chains[:] = chains
+    print("MOCK: %s (%d planted cases)%s" % ("FAIL" if bad else "PASS", len(MOCK_EXPECT), "".join("\n  - " + b for b in bad)))
+    return 0 if not bad else 1
+
+
 if __name__ == "__main__":
+    if "--mock" in sys.argv:
+        sys.path.insert(0, os.path.join(HERE, "..", "Utils", "modcheck"))
+        sys.exit(mock_run())
     if "--planted" in sys.argv:
         res = planted_ambrosyx() + planted_dustveil()
         for name, ok in res:
