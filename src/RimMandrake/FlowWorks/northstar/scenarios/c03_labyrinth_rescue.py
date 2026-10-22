@@ -110,7 +110,7 @@ SCENARIO = scenario(
                    (22, 13), "poked", "Transient/scenarios_stage0_20261021T220318.json: 2 m FAIL, brim PASS"),
             deferred("machine digging Hobb's pit", "4 m is past the 2 m colonist cap (owner 2026-10-21); the pit is "
                      "staged, a machine dig order is not built", DEEP_DIG_ITEM, (7, 37)),
-            deferred("thinner hose art", GIRTH_NOTE, "HOSE_GIRTH_TUNE_MUCH_THINNER", (1, 39))],
+            deferred("flowing hose girth", GIRTH_NOTE, "HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL", (1, 39))],
     exercises={"hose_maze": "poked", "hose_maze_walled": "poked", "hose_relay": "poked", "hose_states": "look",
                "hose_reel": "look", "hose_styles": "look", "hose_reels_laid": "look", "hose_deploy_by_hand": "poked",
                "hose_dropped": "look", "hose_into_pond": "poked", "pit_flood": "poked", "pump_pour": "poked",

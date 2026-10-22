@@ -57,15 +57,17 @@ W, TAR = "RM_Fluid_Water", "RM_Fluid_Tar"
 RULINGS = {
     "dig2m": "colonists dig to 2 m; deeper holes are machine-dug (mechanoids and droids dig to 20 m, built 2026-10-21; "
              "the ridable digging rig is not built: DEFERRED)",
-    "girth": "pipes half as thick / hoses much thinner: art being redrawn; the CURRENT art is shown",
+    "girth": "pipes half as thick and hoses twice the 10-21 girth (owner 2026-10-22 00:00), both built; a FLOWING hose "
+             "still draws too thin (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL)",
     "overflow": "canal overflow ships in 1.0 but only Stage 0 (offline kernel) exists: DEFERRED",
     "reach": "reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE)",
     "cord": "a fallen cord lands walkable (fix built)",
 }
 DEEP_DIG_ITEM = "DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL"
 OVERFLOW_ITEM = "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED"
-GIRTH_NOTE = "pipes and hoses show TODAY's art; the half-girth pipe and much thinner hose are being redrawn " \
-             "(PIPE_GIRTH_TUNE_HALF_AS_THICK, HOSE_GIRTH_TUNE_MUCH_THINNER)"
+GIRTH_NOTE = "pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing (plump) hose still " \
+             "draws thinner than an empty one, and pipe/hose joints have no flanges yet (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL, " \
+             "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID)"
 
 
 # ------------------------------------------------------------------------------------------------ geometry helpers
