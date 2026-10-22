@@ -875,7 +875,7 @@ namespace RimMandrake.FlowWorks
         /// A search hits when the query matches the section title or any of its setting names (case-insensitive);
         /// non-matching sections vanish, and a search opens every matching section.
         /// </summary>
-        private static bool Section(Listing_Standard list, string title, string[] names)
+        private static bool Section(Listing_Standard list, string title, string[] names, bool gap = true)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
             if (searching)
@@ -883,7 +883,11 @@ namespace RimMandrake.FlowWorks
                 bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
                 foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
                 if (!hit) return false;
+                searchHits++;
             }
+            // The separator belongs to the section (BLEED_WELL_STRINGS_RENAME_TAP_RETIRED, live 2026-10-22): drawn outside it,
+            // every section a search hid left its GapLine behind, and "bleed" drew ~15 blank separator rows above the hit.
+            if (gap) list.GapLine();
             bool open = searching || !collapsedSections.Contains(title);
             Text.Font = GameFont.Medium;
             if (list.ButtonText((open ? "- " : "+ ") + title))
@@ -894,6 +898,22 @@ namespace RimMandrake.FlowWorks
             if (open) DrawSectionReset(list, names);
             return open;
         }
+
+        /// <summary>A block another settings class draws whole (its own GapLine and header). It has no Section of its own, so
+        /// a search keeps it only when the query is in its header: unfiltered, every search ended in screens of unrelated
+        /// settings and the hit was below them (BLEED_WELL_STRINGS_RENAME_TAP_RETIRED). The header text is the block's first
+        /// Label, restated here; selftest_settings_search.py fails when the two drift.</summary>
+        private static void Block(Listing_Standard list, string header, System.Action<Listing_Standard> draw)
+        {
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                if (!RimMandrake.Shared.SettingsKitCore.Matches(header, searchQuery)) return;
+                searchHits++;
+            }
+            draw(list);
+        }
+
+        private static int searchHits;
 
         public void DoWindowContents(Rect inRect)
         {
@@ -919,10 +939,13 @@ namespace RimMandrake.FlowWorks
             try
             {
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
-            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            string query = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            if (query != searchQuery) scrollPosition = Vector2.zero;   // a new search starts at its first hit, not mid-list
+            searchQuery = query;
+            searchHits = 0;
             RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works excavation, flow and pit", ResetAllFields);
 
-            if (Section(list, "Digging", new[] { "mouseoverDepthEnabled", "digToDepthEnabled", "maxDigDepth", "machineDigEnabled", "maxMachineDigDepth", "digCostRisesWithDepth" }))
+            if (Section(list, "Digging", new[] { "mouseoverDepthEnabled", "digToDepthEnabled", "maxDigDepth", "machineDigEnabled", "maxMachineDigDepth", "digCostRisesWithDepth" }, gap: false))
             {
 
             list.CheckboxLabeled("Show liquid depth and litres under the mouse", ref mouseoverDepthEnabled,
@@ -968,7 +991,6 @@ namespace RimMandrake.FlowWorks
             }
             }
 
-            list.GapLine();
             if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent" }))
             {
             list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
@@ -1014,7 +1036,6 @@ namespace RimMandrake.FlowWorks
             // ── CRACKEDLANDS_MECHANICS_BUILD_1 §1 — the swale ─────────────
             }
 
-            list.GapLine();
             if (Section(list, "Water engine: flow and levelling", new[] { "depthEngineEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelExactEnabled", "levelSetEnabled", "disabledFluids" }))
             {
             list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
@@ -1113,7 +1134,6 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            list.GapLine();
             if (Section(list, "Corrosive and flammable liquids (lightly tested)", new[] { "liquidCorrosionEnabled", "liquidIgnitionEnabled" }))
             {
             list.Label("These two have had little play in a live game. They are on by default; turn one off if it "
@@ -1135,7 +1155,6 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             }
 
-            list.GapLine();
             if (Section(list, "Ponds, lakes, rain and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
@@ -1320,7 +1339,6 @@ namespace RimMandrake.FlowWorks
             // ── LIQUID_HEAT_PUSH_1: hot and icy liquid ──────────────────────
             }
 
-            list.GapLine();
             if (Section(list, "Hot and icy liquid", new[] { "liquidHeatPushEnabled", "liquidHeatStrength", "waterBodyTypeFlipFixEnabled" }))
             {
             list.CheckboxLabeled("Boiling and icy liquid warm or chill the room they are in", ref liquidHeatPushEnabled,
@@ -1342,7 +1360,6 @@ namespace RimMandrake.FlowWorks
             // ── PHASE 6: fire ───────────────────────────────────────────────
             }
 
-            list.GapLine();
             if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "astrofuelDetonationEnabled", "astrofuelBlastScale" }))
             {
             list.CheckboxLabeled("Flammable liquid in channels and ponds can be lit", ref canalFireEnabled,
@@ -1401,7 +1418,6 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             }
 
-            list.GapLine();
             if (Section(list, "Pits and climbing", new[] { "superdeepCaptureEnabled", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "portableLadderEnabled", "portableLadderMaxLevels", "climbingGearEnabled", "climbingGearSlowness", "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitFreeTravelEnabled", "reachSeesWallsAndCliffs", "pitRescueLadderEnabled", "pitWalkNormalEnabled" }))
             {
             list.Label("A pit is any dug pocket nothing can climb out of, nothing more: there is no pit building. "
@@ -1512,7 +1528,6 @@ namespace RimMandrake.FlowWorks
               + "Off: every step on dug ground costs its depth.");
             }
 
-            list.GapLine();
             if (Section(list, "Falls, spikes and guardrails", new[] { "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitGuardrailEnabled" }))
             {
             list.CheckboxLabeled("Falling into a pit deals damage", ref fallDamageEnabled,
@@ -1565,7 +1580,6 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            list.GapLine();
             if (Section(list, "Pit prisoners, sluice gates and grates", new[] { "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled" }))
             {
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
@@ -1606,7 +1620,6 @@ namespace RimMandrake.FlowWorks
               + "prisoner. A shut sluice gate holds liquid back; the grate passes liquid open or shut. Off: a sluice gate holds like an ordinary door.");
             }
 
-            list.GapLine();
             if (Section(list, "Drowning, poison, slime and exposure", new[] { "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier" }))
             {
             list.CheckboxLabeled("Water over the head drowns whoever cannot swim", ref pitDrowningEnabled,
@@ -1668,7 +1681,6 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            list.GapLine();
             if (Section(list, "Concealed pits", new[] { "blastsBreakPitCovers", "trapTriggerEnabled", "trapSensitivityMultiplier" }))
             {
             list.CheckboxLabeled("Blasts break concealed pits", ref blastsBreakPitCovers,
@@ -1686,7 +1698,6 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            list.GapLine();
             if (Section(list, "Shooting at pits and trench cover", new[] { "superdeepShootingRuleEnabled", "shootingCliffMetres", "trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap", "trenchAiAvoidsCages" }))
             {
             list.CheckboxLabeled("A cliff edge limits who can shoot whom", ref superdeepShootingRuleEnabled,
@@ -1728,7 +1739,6 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            list.GapLine();
             if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled" }))
             {
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
@@ -1822,7 +1832,6 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             }
 
-            list.GapLine();
             if (Section(list, "Bottles, buckets, barrels: fill, use, wash", new[] { "bottleLoopEnabled", "bottleDirtyStageEnabled", "bottleRevertEnabled" }))
             {
             list.Label("An empty container filled at a matching liquid's shore becomes a filled one; "
@@ -1853,7 +1862,6 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             }
 
-            list.GapLine();
             if (Section(list, "Tanks, pumps, pipes and hoses", new[] { "tankLoopEnabled", "tankCapacityMultiplier", "liquidPumpEnabled" }))
             {
             list.Label("A patched-together scavenger tank: a big fixed store of ONE liquid at a "
@@ -1886,11 +1894,10 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             }
 
-            Machinery.RM_MachinerySettings.DoSettingsSection(list);
-            Hose.RM_HoseSettings.DoSettingsSection(list);
-            Machinery.Kits.RM_KitSettings.DoSettingsSection(list);
+            Block(list, "Pipes, stills and found works (universal pipes, adapters, ruined works)", Machinery.RM_MachinerySettings.DoSettingsSection);
+            Block(list, "Hoses (and the tank Job button)", Hose.RM_HoseSettings.DoSettingsSection);
+            Block(list, "Liquid kits (what biome kits borrow: baths, reactions, hot floods, residue)", Machinery.Kits.RM_KitSettings.DoSettingsSection);
 
-            list.GapLine();
             if (Section(list, "Drilling and bleed wells", new[] { "liquidDrillingEnabled", "drillYieldChanceMultiplier", "drillUnitsPerCycle" }))
             {
             list.Label("Some maps sit on a liquid you never see "
@@ -1927,7 +1934,6 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             }
 
-            list.GapLine();
             if (Section(list, "Typed bodies of water", new[] { "typedLiquidShoresEnabled" }))
             {
             list.Label("Some named seas and lakes on the planet are made of something other "
@@ -1946,7 +1952,6 @@ namespace RimMandrake.FlowWorks
             // ── FLOWWORKS_QUARRY_DIGGING_1 — what a canal cut turns up ────
             }
 
-            list.GapLine();
             if (Section(list, "Swales", new[] { "swaleEnabled", "swaleRateMultiplier" }))
             {
             list.CheckboxLabeled("A watered swale enriches the ground around it", ref swaleEnabled,
@@ -1963,19 +1968,19 @@ namespace RimMandrake.FlowWorks
             }
 
             // ── Rivers (River Works, merged 2026-10-05) ───────────────────
-            Rivers.RM_RiversSettingsWindow.DoSettingsSection(list);
-            RiverColors.RM_RiverColorsSettings.DoSettingsSection(list);
-            Quarry.RM_QuarrySettings.DoSettingsSection(list);
-            MapControls.RM_MapControlSettings.DoSettingsSection(list);
-            Thirst.RM_ThirstSettings.DoSettingsSection(list);
-            Sprinklers.RM_SprinklerSettings.DoSettingsSection(list);
-            Sheet.RM_SheetSettings.DoSettingsSection(list);
-            Pits.RM_SuspensionSettings.DoSettingsSection(list);
-            RM_WallClimbSettings.DoSettingsSection(list);
-            RM_RaiderTrenchSettings.DoSettingsSection(list);
-            Pits.RM_DrawbridgeSettings.DoSettingsSection(list);
-            Swimming.RM_SwimSettings.DoSettingsSection(list);
-            RM_WaterMendSettings.DoSettingsSection(list);
+            Block(list, "Rivers", Rivers.RM_RiversSettingsWindow.DoSettingsSection);
+            Block(list, "River colours (planet map)", RiverColors.RM_RiverColorsSettings.DoSettingsSection);
+            Block(list, "Rivers carry minerals (sluice box, panning)", Quarry.RM_QuarrySettings.DoSettingsSection);
+            Block(list, "Map controls (flow source, sink, meter, level holder, timer, map-edge setter, current painter, thermostat)", MapControls.RM_MapControlSettings.DoSettingsSection);
+            Block(list, "Thirst", Thirst.RM_ThirstSettings.DoSettingsSection);
+            Block(list, "Sprinklers", Sprinklers.RM_SprinklerSettings.DoSettingsSection);
+            Block(list, "Canal overflow", Sheet.RM_SheetSettings.DoSettingsSection);
+            Block(list, "Suspension bridges", Pits.RM_SuspensionSettings.DoSettingsSection);
+            Block(list, "Climbing over walls", RM_WallClimbSettings.DoSettingsSection);
+            Block(list, "Raiders against trenches", RM_RaiderTrenchSettings.DoSettingsSection);
+            Block(list, "Drawbridges", Pits.RM_DrawbridgeSettings.DoSettingsSection);
+            Block(list, "Swimming in deep water", Swimming.RM_SwimSettings.DoSettingsSection);
+            Block(list, "Fish, fishing zones and water plants in ponds that rise and fall", RM_WaterMendSettings.DoSettingsSection);
             }
             catch (System.Exception ex)
             {
@@ -1990,6 +1995,8 @@ namespace RimMandrake.FlowWorks
                 Text.Font = GameFont.Small;
                 Text.Anchor = TextAnchor.UpperLeft;
             }
+            if (drawFailure == null && !string.IsNullOrWhiteSpace(searchQuery) && searchHits == 0)
+                list.Label("No setting matches \"" + searchQuery.Trim() + "\".");
             if (drawFailure != null)
             {
                 list.Gap();
