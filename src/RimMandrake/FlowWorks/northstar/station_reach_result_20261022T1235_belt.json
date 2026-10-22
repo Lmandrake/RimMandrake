@@ -1,0 +1,213 @@
+{
+ "script": "station_reach_live.py",
+ "started": "2026-10-22T12:23:31",
+ "rows": [
+  {
+   "id": "STATION_DRAWS_AT_4",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "STATION_REACH_CENTRE_RETHINK_FOOTPRINT",
+   "detail": {
+    "after": "PUMP running=True moved=6 pour=False tank=RM_Liquid_FreshWater:55000",
+    "water": [
+     [
+      2,
+      2,
+      2
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ],
+    "tankUnits": 55000,
+    "off": 4
+   }
+  },
+  {
+   "id": "STATION_SKIPS_AT_5",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "STATION_REACH_CENTRE_RETHINK_FOOTPRINT",
+   "detail": {
+    "after": "PUMP running=True moved=0 pour=False tank=empty:0",
+    "water": [
+     [
+      2,
+      2,
+      2
+     ],
+     [
+      2,
+      2,
+      2
+     ]
+    ],
+    "tankUnits": 0,
+    "off": 5
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/station_1.json",
+  "origin": "60,30",
+  "fresh_map": true
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Locust35585",
+    "Locust35588",
+    "Megascarab35586",
+    "Megascarab35589",
+    "Megaspider35584",
+    "RM_Brogg35596",
+    "RM_Brogg35610",
+    "RM_Brogg35611",
+    "RM_Brullith35594",
+    "RM_Brullith35609",
+    "RM_Chittik35605",
+    "RM_Chittik35606",
+    "RM_Chittik35607",
+    "RM_Chittik35608",
+    "RM_Illoth35597",
+    "RM_Illoth35602",
+    "RM_MycoidColossus35595",
+    "RM_MycoidColossus35599",
+    "RM_Shambles35593",
+    "RM_Shambles35604",
+    "RM_Thozzik35600",
+    "RM_Thozzik35601",
+    "RM_ThozzikColonyQueen35598",
+    "RM_ThozzikColonyQueen35603",
+    "Spelopede35583",
+    "Spelopede35587"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive35575"
+    ],
+    [
+     "GlowPod",
+     "GlowPod35592"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "scenes": {
+  "A": {
+   "st": [
+    64,
+    34
+   ],
+   "tank": [
+    66,
+    34
+   ],
+   "bat": [
+    60,
+    34
+   ],
+   "chan": [
+    [
+     64,
+     39
+    ],
+    [
+     65,
+     39
+    ],
+    [
+     66,
+     39
+    ]
+   ],
+   "off": 4,
+   "build": "{'success': True, 'placed': 5, 'survived': 5, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCount': 0, 'placeWorkerWarnings': [], 'qualityIgnoredForDefs': [], 'message': '5 placed.', 'note': 'Walls create NO roof - roof separately. Run",
+   "draw": "PUMP running=False moved=0 pour=False tank=empty:0",
+   "water0": [
+    2,
+    2,
+    2
+   ],
+   "after": "PUMP running=True moved=6 pour=False tank=RM_Liquid_FreshWater:55000",
+   "water1": [
+    0,
+    0,
+    0
+   ],
+   "kv": {
+    "running": "True",
+    "moved": "6",
+    "pour": "False",
+    "tank": "RM_Liquid_FreshWater:55000"
+   }
+  },
+  "B": {
+   "st": [
+    84,
+    34
+   ],
+   "tank": [
+    86,
+    34
+   ],
+   "bat": [
+    80,
+    34
+   ],
+   "chan": [
+    [
+     84,
+     40
+    ],
+    [
+     85,
+     40
+    ],
+    [
+     86,
+     40
+    ]
+   ],
+   "off": 5,
+   "build": "{'success': True, 'placed': 5, 'survived': 5, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCount': 0, 'placeWorkerWarnings': [], 'qualityIgnoredForDefs': [], 'message': '5 placed.', 'note': 'Walls create NO roof - roof separately. Run",
+   "draw": "PUMP running=False moved=0 pour=False tank=empty:0",
+   "water0": [
+    2,
+    2,
+    2
+   ],
+   "after": "PUMP running=True moved=0 pour=False tank=empty:0",
+   "water1": [
+    2,
+    2,
+    2
+   ],
+   "kv": {
+    "running": "True",
+    "moved": "0",
+    "pour": "False",
+    "tank": "empty:0"
+   }
+  }
+ },
+ "finished": "2026-10-22T12:24:01"
+}
