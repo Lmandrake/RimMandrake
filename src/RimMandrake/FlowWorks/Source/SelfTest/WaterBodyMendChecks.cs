@@ -600,7 +600,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			{
 				// SplitAfterRemoval's 8-ring shortcut against a full component count on every cell of random grids
 				var r = new Random(77);
-				int checks = 0, walked = 0;
+				int checks = 0, walked = 0, realSplits = 0;
 				for (int s = 0; s < 2000; s++)
 				{
 					int w = r.Next(1, 10), h = r.Next(1, 10);
@@ -615,6 +615,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 						var after = Pieces(g, w, h);
 						int want = after.Count - before.Count + 1;   // pieces the removed square's body became (0 when it was alone)
 						var got = RM_WaterBodyMath.SplitAfterRemoval(c, w, h, x => g[x]);
+						if (want >= 2) realSplits++;
 						int gotN = got == null ? (before[whose].Count == 1 ? 0 : 1) : got.Count;
 						if (gotN != want) throw new Exception($"seed {s} cell {c}: {gotN} pieces, want {want}");
 						if (got != null) walked++;
@@ -622,7 +623,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 						checks++;
 					}
 				}
-				Console.WriteLine($"      {checks} removals, {walked} real splits");
+				Console.WriteLine($"      {checks} removals, {walked} walked, {realSplits} real splits");
+				// review 2026-10-22: can-fail on the input, so a generator that never cuts a piece in two cannot pass silently
+				Assert(realSplits > 0, "the random grids must contain removals that really split a piece (" + realSplits + ")");
 			});
 
 			Case("Plants_pump_cycle_reeds_live_dry_spell_kills_after_grace", () =>
