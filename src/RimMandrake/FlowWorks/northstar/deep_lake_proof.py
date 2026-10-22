@@ -194,8 +194,14 @@ def main():
     # HARNESS (belt live 2026-10-22): LAKE_GROUNDWATER_REFILL (392300ef0d) makes an inland lake limitless past a rainfall-keyed
     # cell cutoff (600 wet / 5000 temperate): on a wet fresh map the 5,184-square lake read limitless=True deepest=0 and every
     # row judged a lake that cannot drain. The proof turns the wetness cut off for its run (restored with the rest).
+    # HARNESS (fixer G 2026-10-22, DL_refill_restores_exact_shape FAIL x2 after the shelfCell fix): the colonist rows tick the
+    # game ~4,000 ticks between drain and refill, and with pondDepthEnabled (default ON) every live pulse runs StagePond on this
+    # limited still-water body instead of Recede/Restore: it re-lays the wet squares as part-depth stage water (recorded
+    # original, NOT on the receded stack), so the proof's LIFO refill (SettleRecession) left them staged and the terrain hash
+    # differed. Before the shelfCell fix those rows were UNMEASURED and nothing ticked (PASS). The proof drives the
+    # full-or-empty recession, so the live pulses must run that same model: pondDepthEnabled off for the run, restored after.
     FIELDS = ("wetnessCutoffEnabled", "deepBedsEnabled", "lakeDepthScale", "deepBedMaxDepth", "drainableLakeMaxCells", "pondBedHollowEnabled",
-              "recessionEnabled", "refillWaitsForOccupants")
+              "recessionEnabled", "refillWaitsForOccupants", "pondDepthEnabled")
     before = {f: sget(f) for f in FIELDS}
     res["settings_before"] = before
     try:
@@ -204,7 +210,7 @@ def main():
             return 2
         for f, v in (("deepBedsEnabled", True), ("lakeDepthScale", 2.0), ("deepBedMaxDepth", 20),
                      ("drainableLakeMaxCells", 40000), ("pondBedHollowEnabled", True), ("recessionEnabled", True),
-                     ("refillWaitsForOccupants", False), ("wetnessCutoffEnabled", False)):
+                     ("refillWaitsForOccupants", False), ("wetnessCutoffEnabled", False), ("pondDepthEnabled", False)):
             if sset(f, v).get("success") is False:   # an unset knob = the owner's value, not the proof's: every row below is suspect
                 row("DL_site", "UNMEASURED", "HARNESS", {"why": "mod_settings_field set refused", "field": f})
                 return 2

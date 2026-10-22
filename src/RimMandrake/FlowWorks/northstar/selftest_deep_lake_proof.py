@@ -64,5 +64,13 @@ check("shelfCell: any dry square past the notch, not depth == 5 exactly",
       "d > RM_Volume.LevelsPerSquare && (!shelfCell.IsValid || d < shelfDepth" in _cs
       and "d == RM_Volume.LevelsPerSquare + 1 && (!shelfCell.IsValid" not in _cs)
 
+# DRAWDOWN refill follow-up (HARNESS, fixer G): the colonist rows tick the game between drain and refill; with the pond depth
+# model on, live pulses StagePond the body (part-depth stage water off the receded stack) and the LIFO refill cannot undo it.
+# The proof must hold pondDepthEnabled off for its run AND restore it (it is in FIELDS, the restore list).
+_py = open(os.path.join(HERE, "deep_lake_proof.py"), encoding="utf-8").read()
+check("the proof holds the pond depth model off while it ticks (live pulses run the model the proof drives)",
+      '("pondDepthEnabled", False)' in _py)
+check("and restores it after (pondDepthEnabled is in FIELDS)", '"refillWaitsForOccupants", "pondDepthEnabled")' in _py)
+
 print("%d failed" % len(fails))
 sys.exit(1 if fails else 0)
