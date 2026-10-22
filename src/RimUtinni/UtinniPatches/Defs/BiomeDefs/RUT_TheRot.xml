@@ -147,8 +147,8 @@
            names were never a coverage gap — they are the owner's own 2026-09-10
            sitting ruling ("move" to the Rot, decisions_propagated.json) for species
            already ported into our own tier by BMT_FAUNA_ABSORPTION_1
-           (RSW_BiomesTeamPort_Races.xml) or, for AA_AnimaColossus, already an active
-           donor def (sarg.alphaanimals) that was simply never wired. Wiring under the
+           (RSW_BiomesTeamPort_Races.xml); AA_AnimaColossus was dropped from the Rot cast
+           (owner card 2026-10-22: retired donor, no port). Wiring under the
            OWNED name, not the dead `BMT_`/donor name. RSW_PustuleHornetQueen/
            RSW_ColonyPustuleHornetQueen/RSW_PustuleHornetSpawned are moved IN from
            RUT_Wastes.xml (removed there in this same pass) per that same ruling —

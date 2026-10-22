@@ -36,7 +36,6 @@ look inhabited.
 |---|---|
 | agaripawn | `AA_Agaripawn` |
 | agaripod | `AA_Agaripod` |
-| anima colossus | `AA_AnimaColossus` |
 | animalisk | `AA_Animalisk` |
 | wildpawn | `AA_Wildpawn` |
 | wildpod | `AA_Wildpod` |
