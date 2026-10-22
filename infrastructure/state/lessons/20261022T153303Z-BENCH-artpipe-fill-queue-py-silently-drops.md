@@ -1,0 +1,1 @@
+artpipe fill_queue.py silently DROPS canon_reference on a row filed with no_subject/--no-subject (the no-subject branch returns before canon refs are read); a reskin-by-reference of no-def art (e.g. per-look pump art) must have canon_reference patched into the pending job JSON before the daemon claims it, or the model draws blind.

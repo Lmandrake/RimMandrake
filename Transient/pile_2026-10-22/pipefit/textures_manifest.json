@@ -1,0 +1,334 @@
+{
+ "rows": [
+  {
+   "key": "PipeAtlas_Scrapper",
+   "label": "pipe atlas, scrapper look (tees, crosses, couplings, end caps)",
+   "part": "atlas",
+   "look": "Scrapper",
+   "variant": "A",
+   "section": "pipe atlas",
+   "resources": [
+    "RimMandrake/FlowWorks/Pipe/Scrapper/UniversalPipe_Atlas"
+   ],
+   "render_match": "pipefit_atlas_scrapper_",
+   "reference_textures": [
+    {
+     "path": "Transient/pile_2026-10-22/pipefit/comp/Scrapper_layout.png",
+     "size": {
+      "drawSize": [
+       9,
+       7
+      ],
+      "footprint": [
+       9,
+       7
+      ],
+      "source": "a 9x7-cell test layout drawn from the DRAFT atlas the way Graphic_Linked tiles it"
+     }
+    },
+    {
+     "path": "Transient/pile_2026-10-22/pipefit/comp/Scrapper_live_layout.png",
+     "size": {
+      "drawSize": [
+       9,
+       7
+      ],
+      "footprint": [
+       9,
+       7
+      ],
+      "source": "the same layout from the LIVE atlas (today's look, for comparison)"
+     }
+    }
+   ],
+   "size": {
+    "drawSize": [
+     4,
+     4
+    ],
+    "footprint": [
+     4,
+     4
+    ],
+    "source": "linked pipe atlas (Graphic_Linked): 4x4 tiles of 176 px, each tile one cell"
+   }
+  },
+  {
+   "key": "PipeAtlas_Industrial",
+   "label": "pipe atlas, industrial look (tees, crosses, couplings, end caps)",
+   "part": "atlas",
+   "look": "Industrial",
+   "variant": "A",
+   "section": "pipe atlas",
+   "resources": [
+    "RimMandrake/FlowWorks/Pipe/Industrial/UniversalPipe_Atlas"
+   ],
+   "render_match": "pipefit_atlas_industrial_",
+   "reference_textures": [
+    {
+     "path": "Transient/pile_2026-10-22/pipefit/comp/Industrial_layout.png",
+     "size": {
+      "drawSize": [
+       9,
+       7
+      ],
+      "footprint": [
+       9,
+       7
+      ],
+      "source": "a 9x7-cell test layout drawn from the DRAFT atlas the way Graphic_Linked tiles it"
+     }
+    },
+    {
+     "path": "Transient/pile_2026-10-22/pipefit/comp/Industrial_live_layout.png",
+     "size": {
+      "drawSize": [
+       9,
+       7
+      ],
+      "footprint": [
+       9,
+       7
+      ],
+      "source": "the same layout from the LIVE atlas (today's look, for comparison)"
+     }
+    }
+   ],
+   "size": {
+    "drawSize": [
+     4,
+     4
+    ],
+    "footprint": [
+     4,
+     4
+    ],
+    "source": "linked pipe atlas (Graphic_Linked): 4x4 tiles of 176 px, each tile one cell"
+   }
+  },
+  {
+   "key": "PipeAtlas_Modern",
+   "label": "pipe atlas, modern look (tees, crosses, couplings, end caps)",
+   "part": "atlas",
+   "look": "Modern",
+   "variant": "A",
+   "section": "pipe atlas",
+   "resources": [
+    "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas"
+   ],
+   "render_match": "pipefit_atlas_modern_",
+   "reference_textures": [
+    {
+     "path": "Transient/pile_2026-10-22/pipefit/comp/Modern_layout.png",
+     "size": {
+      "drawSize": [
+       9,
+       7
+      ],
+      "footprint": [
+       9,
+       7
+      ],
+      "source": "a 9x7-cell test layout drawn from the DRAFT atlas the way Graphic_Linked tiles it"
+     }
+    },
+    {
+     "path": "Transient/pile_2026-10-22/pipefit/comp/Modern_live_layout.png",
+     "size": {
+      "drawSize": [
+       9,
+       7
+      ],
+      "footprint": [
+       9,
+       7
+      ],
+      "source": "the same layout from the LIVE atlas (today's look, for comparison)"
+     }
+    }
+   ],
+   "size": {
+    "drawSize": [
+     4,
+     4
+    ],
+    "footprint": [
+     4,
+     4
+    ],
+    "source": "linked pipe atlas (Graphic_Linked): 4x4 tiles of 176 px, each tile one cell"
+   }
+  },
+  {
+   "key": "PipeAtlas_Futuristic",
+   "label": "pipe atlas, futuristic look (tees, crosses, couplings, end caps)",
+   "part": "atlas",
+   "look": "Futuristic",
+   "variant": "A",
+   "section": "pipe atlas",
+   "resources": [
+    "RimMandrake/FlowWorks/Pipe/Futuristic/UniversalPipe_Atlas"
+   ],
+   "render_match": "pipefit_atlas_futuristic_",
+   "reference_textures": [
+    {
+     "path": "Transient/pile_2026-10-22/pipefit/comp/Futuristic_layout.png",
+     "size": {
+      "drawSize": [
+       9,
+       7
+      ],
+      "footprint": [
+       9,
+       7
+      ],
+      "source": "a 9x7-cell test layout drawn from the DRAFT atlas the way Graphic_Linked tiles it"
+     }
+    },
+    {
+     "path": "Transient/pile_2026-10-22/pipefit/comp/Futuristic_live_layout.png",
+     "size": {
+      "drawSize": [
+       9,
+       7
+      ],
+      "footprint": [
+       9,
+       7
+      ],
+      "source": "the same layout from the LIVE atlas (today's look, for comparison)"
+     }
+    }
+   ],
+   "size": {
+    "drawSize": [
+     4,
+     4
+    ],
+    "footprint": [
+     4,
+     4
+    ],
+    "source": "linked pipe atlas (Graphic_Linked): 4x4 tiles of 176 px, each tile one cell"
+   }
+  },
+  {
+   "key": "PumpLook_Industrial",
+   "label": "liquid pump, industrial look",
+   "part": "pump",
+   "look": "Industrial",
+   "variant": "A",
+   "section": "pump looks",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Industrial/RM_LiquidPump"
+   ],
+   "render_match": "pumplook_industrial_v1c",
+   "reference_textures": [
+    {
+     "path": "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Machinery/RM_LiquidPump.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "the LIVE pump (Scrapper look), every look today"
+     }
+    }
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_LiquidPump.xml: Graphic_Single drawSize (1,1), size (1,1)"
+   }
+  },
+  {
+   "key": "PumpLook_Modern",
+   "label": "liquid pump, modern look",
+   "part": "pump",
+   "look": "Modern",
+   "variant": "A",
+   "section": "pump looks",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump"
+   ],
+   "render_match": "pumplook_modern_v1c",
+   "reference_textures": [
+    {
+     "path": "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Machinery/RM_LiquidPump.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "the LIVE pump (Scrapper look), every look today"
+     }
+    }
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_LiquidPump.xml: Graphic_Single drawSize (1,1), size (1,1)"
+   }
+  },
+  {
+   "key": "PumpLook_Futuristic",
+   "label": "liquid pump, futuristic look",
+   "part": "pump",
+   "look": "Futuristic",
+   "variant": "A",
+   "section": "pump looks",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Futuristic/RM_LiquidPump"
+   ],
+   "render_match": "pumplook_futuristic_v1c",
+   "reference_textures": [
+    {
+     "path": "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Machinery/RM_LiquidPump.png",
+     "size": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "the LIVE pump (Scrapper look), every look today"
+     }
+    }
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_LiquidPump.xml: Graphic_Single drawSize (1,1), size (1,1)"
+   }
+  }
+ ],
+ "lead_html": "<p>Owner, by card 2026-10-22 (<i>May we draft replacements for FlowWorks pipe art?</i> &rarr; <b>Draft all of it</b>): a DRAFT pipe atlas per look with real 3-way (tee) and 4-way (cross) fittings, ONE coupling per joint (where two cells meet) instead of three or four bands per cell, and an end cap matched to each look; plus Industrial, Modern and Futuristic looks of the live 4-port pump (today every look shows the rusty one). The REFERENCE pictures beside each atlas row show a test layout drawn from the draft and the same layout from today's atlas. Pick a column or note what to change. Nothing is installed; a pump look also needs a small def/C# change after your pick. Item PIPE_FITTINGS_REDRAW_NO_MORE_LADDERS; study Transient/pile_2026-10-22/joints_study.md (D9, D10, D11). The joint fittings (flange, coupler, saddle) are on their own sheet, joint_fittings_sheet_2026-10-22.</p>"
+}
