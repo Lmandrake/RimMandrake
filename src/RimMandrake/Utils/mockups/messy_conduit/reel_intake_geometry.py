@@ -16,6 +16,11 @@ Rule measured here (alpha > 128, the reel drawn at the defs' drawSize centred on
     the cell centre. The hose's coupling face meets the outline there.
 Depth = outline position minus the footprint edge along the outward normal (cells; + = outside the edge).
 
+REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED (owner card 2026-10-22, "install all 16"): north and south have pictures of their own
+(Reel_<art>_north / _south beside the west art). Each is measured TURNED INTO THE WEST PICTURE'S FRAME (north rot90 ccw,
+south rot90 cw: its outlet on the left), so every table row is in the frame HoseReelRect.ToArt/FromArt already use, and
+the C# keeps one set of rules. Frames: 0 = west (east is it mirrored), 1 = north, 2 = south; 8 rows per frame.
+
 Run: python3 src/RimMandrake/Utils/mockups/messy_conduit/reel_intake_geometry.py   (rewrites the .cs; deterministic)
      ... --check   exit 1 when the committed .cs no longer matches the installed art / drawSize (selftest_reel_ports.py)
      ... --out P   write the generated .cs to P instead
@@ -33,6 +38,7 @@ TEX = os.path.join(MOD, "Textures", "RimMandrake", "FlowWorks", "Hose")
 OUT = os.path.join(MOD, "Source", "Hose", "ReelIntakeGeometry.cs")
 LOOKS = [("Scrapper", ""), ("Industrial", "Styles/Industrial/"), ("Modern", "Styles/Modern/"), ("Futuristic", "Styles/Futuristic/")]
 ARTS = ["Reel_PumpHookup", "Reel_Deployed"]   # index 0 = stored (hose reeled in), 1 = deployed (hose laid)
+FRAMES = [("", 0, "west"), ("_north", 1, "north"), ("_south", -1, "south")]   # file suffix, np.rot90 k into the west frame
 DEFS = [os.path.join(MOD, "Defs", "Hose", "RM_HoseReel.xml"), os.path.join(MOD, "Defs", "Hose", "RM_HoseReelStyles.xml")]
 NOZZLE_PX = 6
 BAND = 0.12
@@ -72,8 +78,8 @@ def outline(a, side, perp):
     return float(np.median(hits)) if hits else None
 
 
-def measure(path):
-    a = np.array(Image.open(path).convert("RGBA"))[..., 3] > 128
+def measure(path, k=0):
+    a = np.rot90(np.array(Image.open(path).convert("RGBA"))[..., 3] > 128, k)
     n = a.shape[0]
     umin = min(np.nonzero(a[v])[0][0] for v in range(n) if a[v].any())
     rows = [v for v in range(n) if a[v].any() and np.nonzero(a[v])[0][0] <= umin + NOZZLE_PX]
@@ -103,13 +109,18 @@ def measure(path):
 
 def generate():
     lines, tips = [], []
-    for li, (look, folder) in enumerate(LOOKS):
+    for suffix, k, fname in FRAMES:
+      for li, (look, folder) in enumerate(LOOKS):
         for ai, art in enumerate(ARTS):
-            inlet, out, tip = measure(os.path.join(TEX, folder + art + ".png"))
+            art = art + suffix
+            p = os.path.join(TEX, folder + art + ".png")
+            if not os.path.exists(p):
+                raise SystemExit("missing reel art %s (every look needs west, north and south pictures)" % p)
+            inlet, out, tip = measure(p, k)
             row = [inlet[0], inlet[1]]
             for side in "ENS":
-                for k in range(2):
-                    row += list(out[(side, k)])
+                for cell in range(2):
+                    row += list(out[(side, cell)])
             lines.append("            { " + ", ".join("%.3f" % x for x in row) + " },   // " + look + " " + art)
             tips.append("            { %.3f, %.3f },   // %s %s" % (tip[0], tip[1], look, art))
     cs = '''using System;
@@ -122,6 +133,9 @@ namespace RimMandrake.FlowWorks.Hose
     /// stored Reel_PumpHookup and laid Reel_Deployed, drawSize ''' + ('%g' % DRAW) + '''). Do not hand-edit: re-run the script.
     /// Owner, station 42 (2026-10-04): "pipe does NOT hook up properly to the next reel station". Where a relay hose's
     /// coupling face meets the drawn reel, per approach side, in cells from the 2x2 footprint centre:
+    /// REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED: rows come in three frames (0 west/east, 1 north, 2 south; 8 rows each); a
+    /// north or south picture is measured turned into the west picture's frame (outlet on the left), so callers read every
+    /// row in the frame HoseReelRect.ToArt/FromArt use for that facing.
     ///   row = { westInletDz, westInletDepth, E0 perp, E0 depth, E1 perp, E1 depth, N0.., N1.., S0.., S1.. }
     /// perp = offset along the edge from the footprint centre (x for N/S, z for E); depth = outline minus the footprint edge
     /// along the outward normal (+ = outside). West: the art's one brass inlet (both west cells couple to it).
@@ -141,24 +155,30 @@ namespace RimMandrake.FlowWorks.Hose
             return i < 0 ? 0 : i;
         }
 
-        private static int Row(string look, bool deployed) => LookIndex(look) * 2 + (deployed ? 1 : 0);
+        /// <summary>The picture frame a reel facing (Rot4 int: 0 N, 1 E, 2 S, 3 W) is drawn from: 1 north, 2 south, else 0
+        /// (west; east is the west picture mirrored).</summary>
+        public static int Frame(int rot) { int r = ((rot % 4) + 4) % 4; return r == 0 ? 1 : r == 2 ? 2 : 0; }
 
-        /// <summary>The west inlet: (dz from the footprint centre, depth beyond the west edge).</summary>
-        public static void WestInlet(string look, bool deployed, out double dz, out double depth)
+        private static int Row(string look, bool deployed, int rot = 3) => Frame(rot) * RowCount + LookIndex(look) * 2 + (deployed ? 1 : 0);
+
+        /// <summary>The (art-frame) west inlet: (dz from the footprint centre, depth beyond the west edge), for the picture
+        /// a reel facing <paramref name="rot"/> shows.</summary>
+        public static void WestInlet(string look, bool deployed, out double dz, out double depth, int rot = 3)
         {
-            int r = Row(look, deployed);
+            int r = Row(look, deployed, rot);
             dz = table[r, 0];
             depth = table[r, 1];
         }
 
         /// <summary>side 0 = E, 1 = N, 2 = S; cell 0 = the lower-coordinate edge cell, 1 = the higher.</summary>
-        public static void Edge(string look, bool deployed, int side, int cell, out double perp, out double depth)
+        public static void Edge(string look, bool deployed, int side, int cell, out double perp, out double depth, int rot = 3)
         {
-            int r = Row(look, deployed), c = 2 + (side * 2 + cell) * 2;
+            int r = Row(look, deployed, rot), c = 2 + (side * 2 + cell) * 2;
             perp = table[r, c];
             depth = table[r, c + 1];
         }
 
+        /// <summary>Rows per frame (4 looks x stored/laid).</summary>
         public const int RowCount = 8;
 
         /// <summary>The reel drawSize the tables were measured at (= every reel def's; the generator refuses otherwise).</summary>
@@ -170,10 +190,10 @@ namespace RimMandrake.FlowWorks.Hose
         };
 
         /// <summary>HOSE_ENDS_FIX_MISSES_THE_PORTS: the drawn nozzle's tip, (dx, dz) cells from the 2x2 footprint centre, for
-        /// this look's stored or laid art. The laid hose's end coupling meets it; the hose leaves it westward.</summary>
-        public static void OutletTip(string look, bool deployed, out double dx, out double dz)
+        /// this look's stored or laid art, in the art frame of the picture facing <paramref name="rot"/> shows. The laid hose's end coupling meets it; the hose leaves it westward.</summary>
+        public static void OutletTip(string look, bool deployed, out double dx, out double dz, int rot = 3)
         {
-            int r = Row(look, deployed);
+            int r = Row(look, deployed, rot);
             dx = outlet[r, 0];
             dz = outlet[r, 1];
         }

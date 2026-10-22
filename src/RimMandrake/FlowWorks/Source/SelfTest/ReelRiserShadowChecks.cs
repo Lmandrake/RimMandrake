@@ -69,19 +69,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 V2[] want = { new V2(0, 1), new V2(1, 0), new V2(0, -1), new V2(-1, 0) };
                 foreach (string look in ReelIntakeGeometry.Looks)
                 {
-                    ReelIntakeGeometry.OutletTip(look, true, out double dx, out double dz);
                     var tips = new List<V2>();
                     for (int rot = 0; rot < 4; rot++)
                     {
                         var r = new HoseReelRect(10, 10, 2, 2) { Look = look, Rot = rot };
                         V2 u = r.Outward.Value, tip = r.NozzleTip - r.Centre, mouth = r.Mouth;
                         Assert(Near(u, want[rot]), look + " " + Facing[rot] + ": outlet faces " + u + ", want " + want[rot]);
-                        HoseReelRect.ArtPose(rot, out float ang, out bool mirror, out bool standIn);
-                        // the picture's nozzle (dx, dz), mirrored then turned exactly as the plane is drawn, IS the tip
-                        V2 drawn = Cw(new V2(mirror ? -dx : dx, dz), ang);
+                        HoseReelRect.ArtPose(rot, out float ang, out bool mirror);
+                        Assert(ang == 0f && mirror == (rot == 1), Facing[rot] + ": the picture is drawn unturned, mirrored only facing east");
+                        // REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED: the facing's own picture's nozzle, measured in its art frame
+                        // (west/east: the west art, mirrored east; north/south: their own art turned into that frame), lands on the tip
+                        ReelIntakeGeometry.OutletTip(look, true, out double dx, out double dz, rot);
+                        V2 drawn = rot == 1 ? new V2(-dx, dz) : rot == 0 ? new V2(dz, -dx) : rot == 2 ? new V2(-dz, dx) : new V2(dx, dz);
                         Assert(Near(drawn, tip, 1e-6), look + " " + Facing[rot] + ": the tip " + tip + " is where the drawn nozzle lands " + drawn);
-                        Assert(Near(Cw(new V2(mirror ? 1 : -1, 0), ang), u, 1e-6), look + " " + Facing[rot] + ": the drawn outlet points the outlet's way");
-                        Assert(standIn == (rot == 0 || rot == 2), Facing[rot] + ": stand-in picture flag " + standIn);
+                        Assert(tip.X * u.X + tip.Z * u.Z > 0.5, look + " " + Facing[rot] + ": the drawn nozzle sits on the outlet side (" + tip + ")");
                         // the routing start sits inside the footprint, in the outlet-side cells, at the nozzle's height across the outlet
                         Assert(r.Contains(mouth.Floor), look + " " + Facing[rot] + ": the hose starts inside the reel " + mouth);
                         Cell edge = r.EdgeCells(new Cell((int)u.X, (int)u.Z))[0];
@@ -140,10 +141,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                         var e = new HoseReelRect(20, 20, 2, 2) { Rot = 1 };
                         V2 pe = HoseRelay.DrawnEnd(e, new Cell(22, 21), look, dep, out _);
                         Assert(Near(pe, new V2(22 + depth, 21 + perp)), look + " east relay: the mirrored inlet at " + pe);
-                        // north-facing (turned): the inlet is on the NORTH side
+                        // north-facing (its own picture, measured turned into the art frame): the inlet is on the NORTH side
+                        ReelIntakeGeometry.WestInlet(look, dep, out double nPerp, out double nDepth, 0);
                         var n = new HoseReelRect(20, 20, 2, 2) { Rot = 0 };
                         V2 pn = HoseRelay.DrawnEnd(n, new Cell(20, 22), look, dep, out V2 inn);
-                        Assert(Near(pn, new V2(21 + perp, 22 + depth)) && Near(inn, new V2(0, -1)), look + " north relay: the turned inlet at " + pn);
+                        Assert(Near(pn, new V2(21 + nPerp, 22 + nDepth)) && Near(inn, new V2(0, -1)), look + " north relay: the north picture's inlet at " + pn);
                         // can-fail: an east-facing relay's WEST side is no longer the inlet (it is the picture's east outline)
                         V2 pew = HoseRelay.DrawnEnd(e, new Cell(19, 20), look, dep, out _);
                         Assert(!Near(pew, pw, 1e-6) || Math.Abs(perp) < 1e-6, look + " can-fail: the mirrored relay's west side reads the outline, not the inlet");
@@ -165,7 +167,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(comp.Contains("Rot = parent.Rotation.AsInt"), "the reel's rect carries its rotation");
                 Assert(comp.Contains("\"rmReelFacing\"") && comp.Contains("parent.Rotation = Rot4.West") && comp.Contains("parent.Position += IntVec3.East"),
                     "a reel saved before it turned loads facing west, footprint kept");
-                Assert(comp.Contains("Placeholder picture for this facing"), "north/south say their picture is a placeholder");
+                Assert(!comp.Contains("Placeholder picture"), "north/south have their own pictures: no placeholder line (REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED)");
+                Assert(g.Contains("\"_north\", \"_south\"") && g.Contains("Reel_Deployed"), "the graphic loads each art's _north / _south picture");
                 string pw = Src("Hose", "PlaceWorker_HoseReelOutlet.cs");
                 Assert(pw.Contains("public override void DrawGhost(") && pw.Contains("Rot = rot.AsInt") && pw.Contains("r.Outward"),
                     "the preview reads the ghost's rotation and the outlet");

@@ -1140,7 +1140,7 @@ namespace RimMandrake.FlowWorks.Hose
             Graphic g = r.parent.Graphic;
             if (!(g is Graphic_HoseReel gr)) return "stored (graphic class is " + (g?.GetType().Name ?? "null") + ", not Graphic_HoseReel)";
             if (r.carry == HoseCarryState.Stored && !r.laid) return "stored";
-            return gr.HasDeployed && gr.MatAt(Rot4.North, r.parent) != gr.MatSingle ? "deployed" : "stored (stand-in: Reel_Deployed art missing)";
+            return gr.HasDeployed && gr.MatAt(Rot4.West, r.parent) != gr.MatSingle ? "deployed" : "stored (stand-in: Reel_Deployed art missing)";
         }
 
         /// <summary>A fitting whose working end is at <paramref name="end"/> pointing along <paramref name="d"/>: its centre

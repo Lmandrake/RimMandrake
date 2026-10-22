@@ -1579,8 +1579,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>The way the reel's outlet faces, as a Rot4 int (0 N, 1 E, 2 S, 3 W). Default (a rect built without one) = 3,
         /// west: the drawn picture's own outlet, the only facing before 2026-10-22.</summary>
         public int Rot { get => (rotCode + 3) % 4; set => rotCode = (((value % 4) + 4) % 4 + 1) % 4; }
-        /// <summary>A west-art offset (dx, dz) from the footprint centre, turned to this facing: east = the picture mirrored,
-        /// north = the picture turned 90 degrees clockwise (stand-in art), south = turned 90 degrees anticlockwise (stand-in).</summary>
+        /// <summary>An art-frame offset (dx, dz) from the footprint centre, turned to this facing: east = the west picture
+        /// mirrored; north / south = the frame turned 90 degrees clockwise / anticlockwise. REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED:
+        /// north and south now have pictures of their own, drawn UNTURNED, and ReelIntakeGeometry measures each of them turned
+        /// into this same frame (frame 1 / 2), so this mapping lands their measured points where they are drawn.</summary>
         internal V2 FromArt(double dx, double dz)
         {
             switch (Rot)
@@ -1591,18 +1593,14 @@ namespace RimMandrake.FlowWorks.Hose
                 default: return new V2(dx, dz);
             }
         }
-        /// <summary>How the one (west-outlet) picture is drawn for a facing, matching <see cref="FromArt"/>: the angle the plane
-        /// turns clockwise seen from above (RimWorld's Rot4.AsAngle sense), whether its u is mirrored, and whether the facing
-        /// has no picture of its own (north and south: the west picture turned is a STAND-IN until the owed art exists).</summary>
-        public static void ArtPose(int rot, out float angle, out bool mirror, out bool standIn)
+        /// <summary>How a facing's picture is drawn: the angle the plane turns clockwise seen from above (RimWorld's
+        /// Rot4.AsAngle sense) and whether its u is mirrored. REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED (owner card 2026-10-22,
+        /// "install all 16"): north and south draw their own pictures (Reel_*_north / _south) unturned; east is the west
+        /// picture mirrored (owner card); west as drawn. The north/south stand-in (the west picture turned) is gone.</summary>
+        public static void ArtPose(int rot, out float angle, out bool mirror)
         {
-            switch (((rot % 4) + 4) % 4)
-            {
-                case 1: angle = 0f; mirror = true; standIn = false; return;     // east: the west picture mirrored (owner card)
-                case 0: angle = 90f; mirror = false; standIn = true; return;    // north: turned, west outlet -> north
-                case 2: angle = 270f; mirror = false; standIn = true; return;   // south: turned, west outlet -> south
-                default: angle = 0f; mirror = false; standIn = false; return;   // west: the picture as drawn
-            }
+            angle = 0f;
+            mirror = ((rot % 4) + 4) % 4 == 1;   // east: the west picture mirrored
         }
         /// <summary>The inverse of <see cref="FromArt"/>: a world offset from the centre, in the west picture's frame.</summary>
         internal V2 ToArt(double x, double z)
@@ -1623,7 +1621,7 @@ namespace RimMandrake.FlowWorks.Hose
             get
             {
                 if (!HasNozzle) return Centre;
-                ReelIntakeGeometry.OutletTip(Look, true, out double dx, out double dz);
+                ReelIntakeGeometry.OutletTip(Look, true, out double dx, out double dz, Rot);
                 return Centre + FromArt(dx, dz);
             }
         }

@@ -909,9 +909,7 @@ namespace RimMandrake.FlowWorks.Hose
             string conn = p != null ? "Connected to " + p.LabelShort + " (" + portKind.ToString().ToLower() + ")."
                         : feeders.Count > 0 ? "Relay: fed by the hose from another reel" + (feeders.Count > 1 ? " (+" + (feeders.Count - 1) + " more)" : "") + "."
                         : "Not connected: build it beside a pipe or tank, or lay another reel's hose onto it.";
-            // REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST: north/south have no picture of their own yet (art owed); say so, plainly
-            HoseReelRect.ArtPose(parent.Rotation.AsInt, out _, out _, out bool standIn);
-            if (Rect.HasNozzle) conn += "\nHose leaves to the " + new[] { "north", "east", "south", "west" }[parent.Rotation.AsInt] + "." + (standIn ? " (Placeholder picture for this facing.)" : "");
+            if (Rect.HasNozzle) conn += "\nHose leaves to the " + new[] { "north", "east", "south", "west" }[parent.Rotation.AsInt] + ".";
             string order = pending == HosePendingOrder.Deploy ? "\nOrdered: deploy the hose."
                          : pending == HosePendingOrder.Move ? "\nOrdered: move the hose end."
                          : pending == HosePendingOrder.Retract ? "\nOrdered: retract the hose." : "";
