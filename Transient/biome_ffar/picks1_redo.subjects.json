@@ -1,0 +1,503 @@
+{
+ "schema": 1,
+ "generated": "2026-10-22T00:39:05-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_picks1_redo"
+ ],
+ "biomes": {
+  "SUBJECTS_picks1_redo": {
+   "label": "Picks 1 of 3 \u2014 redo round",
+   "slug": "picks1_redo",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Picks 1 of 3 \u2014 redo round \u2014 game art",
+   "lead_html": "<p>Picks 1 of 3, redo round: only the art made for your notes on the first sitting (2026-10-22). Akk, Brezak, Tibidee and Insectomorph show ONE assembled set each: the facings you approved plus the new ones drawn from them, sized to match. KellDragon is your B with north and south rescaled to the east's size. Bordok, Gualaar, the bull jungle rancor and the mastiff phalone are fresh canon redraws (Bordok's pony painting is deleted from its canon references). Boarwolf juvenile and Grazer female are the slot redraws you asked for. Kaadu male now uses the female art, so it is not here.</p>",
+   "rows": [
+    {
+     "key": "RSW_Akk",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "akk",
+     "defNames": [
+      "RSW_Akk"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "picks1set_akk_v1_east",
+      "picks1set_akk_v1_north",
+      "picks1set_akk_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/akk",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Akk/Akk",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Akk"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Akk found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RSW_Bordok",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bordok",
+     "defNames": [
+      "RSW_Bordok"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "picks1redo_bordok_v1_east",
+      "picks1redo_bordok_v1_north",
+      "picks1redo_bordok_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/bordok",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Bordok/Bordok",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Bordok"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Bordok found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RSW_Brezak",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "brezak",
+     "defNames": [
+      "RSW_Brezak"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "picks1set_brezak_v1_east",
+      "picks1set_brezak_v1_north",
+      "picks1set_brezak_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/brezak",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Brezak/Brezak",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Brezak"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Brezak found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RSW_Gualaar",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "gualaar",
+     "defNames": [
+      "RSW_Gualaar"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "picks1redo_gualaar_v1_east",
+      "picks1redo_gualaar_v1_north",
+      "picks1redo_gualaar_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/gualaar",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimStarWars/SWBestiary/Gualaar/Gualaar",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Gualaar"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Gualaar found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RSW_JungleRancor",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Jungle Rancor",
+     "defNames": [
+      "RSW_JungleRancor"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "picks1redo_bullrancor_v1_east",
+      "picks1redo_bullrancor_v1_north",
+      "picks1redo_bullrancor_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/junglerancor",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/JungleRancor/BullRancor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_JungleRancor"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_JungleRancor found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RSW_KellDragon",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "kell dragon",
+     "defNames": [
+      "RSW_KellDragon"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "picks1set_kelldragon_v1_east",
+      "picks1set_kelldragon_v1_north",
+      "picks1set_kelldragon_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/kelldragon",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/KellDragon/KellDragon",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_KellDragon"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_KellDragon found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RSW_MastiffPhalone",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "mastiff phalone",
+     "defNames": [
+      "RSW_MastiffPhalone"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "picks1redo_mastiffphalone_v1_east",
+      "picks1redo_mastiffphalone_v1_north",
+      "picks1redo_mastiffphalone_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/mastiffphalone",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/MastiffPhalone/MastiffPhalone",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_MastiffPhalone"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_MastiffPhalone found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RSW_Tibidee",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "tibidee",
+     "defNames": [
+      "RSW_Tibidee"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "picks1set_tibidee_v1_east",
+      "picks1set_tibidee_v1_north",
+      "picks1set_tibidee_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/tibidee",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Tibidee/Tibidee",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Tibidee"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Tibidee found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RSW_Insectomorph",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "insectomorph",
+     "defNames": [
+      "RSW_Insectomorph"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "picks1set_insectomorph_v1_east",
+      "picks1set_insectomorph_v1_north",
+      "picks1set_insectomorph_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/insectomorph",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimStarWars/SWBestiary/Insectomorph/Insectomorph",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Insectomorph"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Insectomorph found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RSW_Boarwolf",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Boar-wolf",
+     "defNames": [
+      "RSW_Boarwolf"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "enact_9c204ea3_boarwolf_v1_east",
+      "enact_9c204ea3_boarwolf_v1_north",
+      "enact_9c204ea3_boarwolf_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/boarwolf",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Boarwolf/Boarwolf",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Boarwolf"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Boarwolf found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RSW_Grazer",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "grazer",
+     "defNames": [
+      "RSW_Grazer"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "picks1set_grazer_f_v1_east",
+      "picks1set_grazer_f_v1_north",
+      "picks1set_grazer_f_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/grazerdomestic",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Grazer/Grazer_m",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Grazer"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Grazer found"
+     },
+     "reopen": true
+    }
+   ],
+   "hide_sets": [
+    "enact_e5019365_grazer_v1",
+    "picks1redo_grazer_f_v1",
+    "donorart_akk_v3",
+    "donorport_boarwolf_v1",
+    "enact_redo_boarwolf_j_v2",
+    "donorart_brezak_v1",
+    "donorart_grazer",
+    "offbiome_gualaar_v2",
+    "canonregen_insectomorph",
+    "donorart_kelldragon",
+    "standtall_b1_mastiffphalone",
+    "donorart_mastiffphalone",
+    "dregen_RSW_Tibidee",
+    "gapall_Tibidee",
+    "picks1redo_akk_v1",
+    "picks1redo_brezak_v1",
+    "picks1redo_insectomorph_v1",
+    "picks1redo_tibidee_v1",
+    "picks1master_insectomorph"
+   ]
+  }
+ }
+}
