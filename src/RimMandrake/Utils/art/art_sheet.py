@@ -413,6 +413,8 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
                 continue      # filed FOR another graphic (job `slot`: Boarwolf_j, not Boarwolf): its slot's lane takes it
             if not bound and look_lane_target(fam, resset, _live_res(idx)):
                 continue      # filed for a sibling look's texPath: that look's own lane takes it (look_lane_target)
+            if not bound and filed_for_other_texture(fam, parts[-1]):
+                continue      # filed for ANOTHER texture (a grub, a _j life stage, the other sex): never this lane's
             fac = v.get("facing")
             if fac not in FACINGS:
                 fm = re.search(r"_(north|east|south|west)(_r\d+)?$", job)
@@ -1212,6 +1214,18 @@ def _texpath_of_family(fam: str) -> str | None:
                 if isinstance(j, dict) and j.get("id") and isinstance(j.get("target_texpath"), str):
                     _FAM_TEX.setdefault(FAM_RE.sub("", str(j["id"]).lower()), j["target_texpath"])
     return _FAM_TEX.get(fam.lower())
+
+
+def filed_for_other_texture(fam: str, lane_base: str) -> bool:
+    """A render joined to a lane only by NAME whose job was filed (target_texpath) for a different texture: its stem is
+    neither the lane's nor a prefix of it (Taozin -> Taozin_m keeps; Taozin_j, TaozinGrub, Kaadu_f leave). Owner,
+    2026-10-22, RSW_Taozin: *"The grub imagery obviously should not by in the adult category..."* — 7 grub/_j renders
+    (target RSW_TaozinGrub, swanimals/Taozin/Taozin_j) were offered as the ADULT picture."""
+    t = _texpath_of_family(fam)
+    if not t:
+        return False
+    a, b = S.stem(t.rsplit("/", 1)[-1]).lower(), S.stem(lane_base).lower()
+    return a != b and not b.startswith(a)
 
 
 CORPSE_ROLE = "dessicated corpse (RotStage Dessicated)"
