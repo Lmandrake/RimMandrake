@@ -213,6 +213,46 @@ namespace RimMandrake.FlowWorks
 			return (int)Math.Ceiling(Math.Max(1, work) / rate);
 		}
 
+		/// <summary>CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP: the work of shovelling ONE level of spoil into a trench square, the same at
+		/// every depth: half the first notch's cut (RM_DigDepthMath.WorkPerNotch / 2). Tipping earth down into a hole is not
+		/// cutting and lifting it out, so the deep-dig cost curve (3,200 x the notch) does not apply: priced on it, one level
+		/// at 4 m took a gunner (MiningSpeed 0.336) ~22,400 ticks and a 4 m ring never got one square filled before the raid
+		/// left (~t+28,000, belt 2026-10-22). At this price that gunner shovels a level in ~2,800 ticks.</summary>
+		public const int FillWorkPerLevel = RM_DigDepthMath.WorkPerNotch / 2;
+
+		/// <summary>How many raiders shovel into one causeway square at once (each its own level; the last one re-checks the
+		/// square's target first, so the step is never over-filled). One a square left the rest of the raid waiting at the lip.</summary>
+		public const int MaxFillersPerSquare = 3;
+
+		/// <summary>Ticks for a raid to shovel the whole causeway of a line: the squares one after another (the next square is
+		/// reached only over the last one), each square's levels shared among <paramref name="fillers"/> raiders.</summary>
+		public static int BreachTicks(int[] d, int[] t, int ticksPerLevel, int fillers)
+		{
+			int f = Math.Max(1, fillers);
+			long total = 0;
+			for (int i = 0; i < d.Length; i++)
+			{
+				int levels = Math.Max(0, d[i] - t[i]);
+				total += (long)((levels + f - 1) / f) * ticksPerLevel;
+			}
+			return (int)Math.Min(int.MaxValue, total);
+		}
+
+		/// <summary>One crossing point per raid, kept while the raid works it. <paramref name="have"/>: a lip is remembered,
+		/// set at <paramref name="tick"/>. A lip expired after <paramref name="cacheTicks"/> is replaced by the offered one; a
+		/// live lip that the raid is still given work on (<paramref name="workedHere"/>) is renewed, so a breach that takes
+		/// longer than the cache is not abandoned: CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP's 4 raiders each shovelled a DIFFERENT
+		/// line, because every later raider re-planned from its own lip once the first lip was 2,500 ticks old.
+		/// Returns the tick to store, or -1 to leave the memory as it is.</summary>
+		public static int LipTick(bool have, int tick, int now, int cacheTicks, bool sameLip, bool workedHere)
+		{
+			if (!have || now - tick >= cacheTicks)
+			{
+				return now;
+			}
+			return sameLip && workedHere ? now : -1;
+		}
+
 		/// <summary>"Some may have jump packs": does this raider arrive with one? A stable hash of its id against the share, so
 		/// a reload or a re-roll never changes who has one.</summary>
 		public static bool GetsJumpPack(int pawnId, float share)
