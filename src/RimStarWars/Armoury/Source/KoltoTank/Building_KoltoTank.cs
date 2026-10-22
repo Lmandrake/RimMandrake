@@ -123,8 +123,12 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
             pawn = enteringPawn;
             state = KoltoTankState.StartFilling;
             KoltoTankComp.StartFilling();
-            enteringPawn.health.AddHediff(hediffOnEntry);
-            enteringPawn.apparel.MoveAllToInventory();
+            if (hediffOnEntry != null)
+            {
+                enteringPawn.health.AddHediff(hediffOnEntry);
+            }
+            // A downed animal carried in has no apparel tracker; the NRE here fired AFTER the pawn was inside.
+            enteringPawn.apparel?.MoveAllToInventory();
         }
         return true;
     }
@@ -198,7 +202,7 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
             }
             PawnComponentsUtility.AddComponentsForSpawn(pawnItem);
             pawnItem.filth.GainFilth(filthSlime);
-            if (pawnItem.RaceProps.IsFlesh)
+            if (pawnItem.RaceProps.IsFlesh && hediffOnExit != null)
             {
                 pawnItem.health.AddHediff(hediffOnExit);
             }
