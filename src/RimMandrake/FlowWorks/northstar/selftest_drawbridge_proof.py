@@ -35,7 +35,7 @@ CAN_FAIL = {
     "far_reaches_winch": ("LOWER_ONLY_FROM_WINCH", "UNMEASURED", "SITE"),
     "far_raiders": ("RAID_UP", "UNMEASURED", "SITE"),
 }
-TICKLESS = {"LOWER_ONLY_FROM_WINCH", "TWO_LEAF_TIPS_OWN_HINGE"}
+TICKLESS = {"TWO_LEAF_TIPS_OWN_HINGE"}   # LOWER_ONLY_FROM_WINCH ticks since 2026-10-22 (1.6 pathfinder settle)
 
 
 def run(d, name, *argv):
