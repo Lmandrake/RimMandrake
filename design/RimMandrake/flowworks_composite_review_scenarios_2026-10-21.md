@@ -58,9 +58,10 @@ hole), so he judges FlowWorks by whether the goal is reachable and how it looks 
   limit; droids / ridable machines dig deeper"*). Any staged hole deeper than 2 m is labelled "machine-dug" and its
   dig order is never left for a colonist. Machine digging itself is `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL` (re-scope
   owed): **DEFERRED** where a scenario wants him to order one.
-- **Pipes half as thick, hoses much thinner** are being redrawn (`PIPE_GIRTH_TUNE_HALF_AS_THICK`,
-  `HOSE_GIRTH_TUNE_MUCH_THINNER`); every scenario shows lines at play zoom beside colonists so the girth is judged in
-  context, not on a pad. Line spec: `design/RimMandrake/flowworks_line_widths_2026-10-20.md`.
+- **Pipes half as thick** (built, `PIPE_GIRTH_TUNE_HALF_AS_THICK`) and **hoses twice the 10-21 girth** (owner 2026-10-22:
+  *"Hoses need to be twice as thick, too thin to see now."*; built, `HOSE_GIRTH_TUNE_MUCH_THINNER`); a flowing hose plumps
+  wider than an empty one (`HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL`). Every scenario shows lines at play zoom beside colonists so
+  the girth is judged in context, not on a pad. Line spec: `design/RimMandrake/flowworks_line_widths_2026-10-20.md`.
 - **The four looks are spread, not galleried.** Each scenario is built in one look (C3 Scrapper, C4/C5 Industrial, C7
   Modern, C8 Futuristic...) and C1's sprinkler net shows all four side by side, so every look is seen *working*.
 - **Laws held:** one Direct Sun (no per-biome heat: the sun-pan still and the pit's exposure only read the vanilla

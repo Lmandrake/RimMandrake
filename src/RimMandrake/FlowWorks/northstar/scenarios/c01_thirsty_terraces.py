@@ -99,7 +99,7 @@ SCENARIO = scenario(
             staged("a second hose crossing it at right angles", "hose", None, (20, 14), "look"),
             deferred("overflow onto the field (D2/D3)", "Stage 1+ unbuilt; terrace 1's brim is one notch from "
                      "spilling, so leaving S1 shut with the pump on will spill once it lands", OVERFLOW_ITEM, (31, 2)),
-            deferred("flowing hose girth, joint flanges", GIRTH_NOTE, "HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL", (31, 5)),
+            deferred("joint flanges", GIRTH_NOTE, "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID", (31, 5)),
             deferred("terrace 2's front frozen half way", "a canal levels itself: no frozen half front survives the "
                      "soak; staged dry, opening S1 shows the front", "design §3 C1 (deviation)", (31, 8))],
     exercises={"flow_spreads": "poked", "look_canal": "look", "land_swale": "poked", "land_deepsand": "look",

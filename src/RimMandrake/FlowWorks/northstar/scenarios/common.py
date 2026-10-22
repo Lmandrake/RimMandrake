@@ -65,9 +65,9 @@ RULINGS = {
 }
 DEEP_DIG_ITEM = "DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL"
 OVERFLOW_ITEM = "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED"
-GIRTH_NOTE = "pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing (plump) hose still " \
-             "draws thinner than an empty one, and pipe/hose joints have no flanges yet (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL, " \
-             "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID)"
+GIRTH_NOTE = "pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22), and a flowing hose plumps " \
+             "wider than an empty one (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL, built 2026-10-22 night); pipe/hose joints have no " \
+             "flanges yet (PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID)"
 
 
 # ------------------------------------------------------------------------------------------------ geometry helpers

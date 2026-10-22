@@ -8,8 +8,7 @@ GPT #13 (misleading dead end, destination gauge, relay-loop poke).
 Route lengths are MEASURED offline by route_len() in the selftest (never typed here): the short way through d1 must
 fit one 40-cell hose, the long way (d1 walled) must need the relay and fit two.
 """
-from .common import (scenario, staged, deferred, perimeter, walls, hline, vline, W, LPROOF, MAPCTL, DEEP_DIG_ITEM,
-                     GIRTH_NOTE)
+from .common import (scenario, staged, deferred, perimeter, walls, hline, vline, W, LPROOF, MAPCTL, DEEP_DIG_ITEM)
 
 SIZE = (40, 40)
 REEL_O1 = (6, 30)
@@ -109,8 +108,7 @@ SCENARIO = scenario(
             staged("swim-out of a flooded sheer pit (Stage 0 live: out only at the brim)", "pawns", "Colonist",
                    (22, 13), "poked", "Transient/scenarios_stage0_20261021T220318.json: 2 m FAIL, brim PASS"),
             deferred("machine digging Hobb's pit", "4 m is past the 2 m colonist cap (owner 2026-10-21); the pit is "
-                     "staged, a machine dig order is not built", DEEP_DIG_ITEM, (7, 37)),
-            deferred("flowing hose girth", GIRTH_NOTE, "HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL", (1, 39))],
+                     "staged, a machine dig order is not built", DEEP_DIG_ITEM, (7, 37))],
     exercises={"hose_maze": "poked", "hose_maze_walled": "poked", "hose_relay": "poked", "hose_states": "look",
                "hose_reel": "look", "hose_styles": "look", "hose_reels_laid": "look", "hose_deploy_by_hand": "poked",
                "hose_dropped": "look", "hose_into_pond": "poked", "pit_flood": "poked", "pump_pour": "poked",
