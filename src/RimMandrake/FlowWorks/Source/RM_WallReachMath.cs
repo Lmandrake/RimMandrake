@@ -307,6 +307,18 @@ namespace RimMandrake.FlowWorks
 			return (q & (q - 1)) == 0;
 		}
 
+		/// <summary>WALL_REACH_TUNE_REBUILDS_TENFOLD: may this paused frame rebuild unthrottled? Only when the clock is stopped
+		/// (its tick equals the previous paused frame's) AND the labels' stamp moved since that frame: a write made while
+		/// paused (a dev tool, bridge staging). Time stepped under the pause flag (the bridge's safe_advance, the dev step
+		/// button: DoSingleTick inside a paused frame) moves the tick, and an idle frame between two step bursts moves neither
+		/// tick nor stamp (the burst's own changes were seen by the frame that ran it): both stay throttled. Before this, every
+		/// paused frame rebuilt every stale labelling: ~1 build per tick on the 2026-10-22 residual soak (8 labellings, ~8
+		/// ticks a frame) against the throttle's 8 per 60 ticks.</summary>
+		public static bool PausedUnthrottled(int now, int lastPausedFrameTick, long stamp, long lastPausedFrameStamp)
+		{
+			return now == lastPausedFrameTick && stamp != lastPausedFrameStamp;
+		}
+
 		/// <summary>Should a stale labelling be rebuilt now? Throttled to once per <paramref name="minTicks"/> unless forced (a
 		/// breach, a drawbridge toggle, a gate lock or hold, a swim terrain change) or paused (no tick will ever pass).</summary>
 		public static bool RebuildDue(bool stale, bool forced, bool paused, int now, int builtTick, int minTicks)

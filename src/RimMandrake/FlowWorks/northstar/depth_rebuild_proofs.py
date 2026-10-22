@@ -472,7 +472,8 @@ def main():
                      "afterGracePlus1h": n3, "ticksAfterRefill": 70 + g_ticks})
                 row("P13_reeds_control_left_dry_die", "PASS" if n3["control"] < n0["control"] else "INFO",
                     {"start": n0["control"], "afterGracePlus1h": n3["control"]})
-                row("P13_fish_rows", "UNMEASURED", {"why": "no bridge read of vanilla WaterBody fish types / fishing zones (owed: a ProofWaterBody static surface)"})
+                row("P13_fish_rows", "UNMEASURED", {"why": "not read here: the fish roll and catch rows are live_session.py B4 "
+                                                             "(B4_reservoir_fish_rolled, jawa/fishing + map_zones)"})
     finally:
         for (t, f), v in before.items():
             if v is not None:

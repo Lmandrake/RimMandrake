@@ -69,6 +69,9 @@ namespace RimMandrake.FlowWorks
 			public int builds;
 			public double lastMs, maxMs, totalMs;
 			public int firstBuiltTick = int.MinValue;
+			public int pausedFrameTick = int.MinValue;   // the tick and stamp the last paused frame left (PausedUnthrottled)
+			public long pausedFrameStamp = long.MinValue;
+			public int steppedFrames;                    // paused frames whose clock had moved (time stepped under the pause)
 			// ladder joins, per (grid, pawn) for one tick and one ladder state
 			public int ladderTick = int.MinValue;
 			public int ladderVersion = -1;
@@ -339,7 +342,30 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>From RM_PocketGrid.Tick (every map tick) and UpdatePaused / ForceRebuild (paused = unthrottled): re-read the
+		/// <summary>From RM_PocketGrid.UpdatePaused (every frame while the game is paused). WALL_REACH_TUNE_REBUILDS_TENFOLD:
+		/// unthrottled only for a write made while the clock is stopped (RM_WallReachMath.PausedUnthrottled); a stepped frame
+		/// (safe_advance, the dev step button) or an idle frame between step bursts runs the throttled Tick. The first paused
+		/// frame after time ran only records, so a write made paused is seen at most one frame later, never 60 ticks later.
+		/// The stamp is recorded after Tick (whose door re-read can move it), so the next frame compares against what this
+		/// one left.</summary>
+		public static void PausedFrame(Map map)
+		{
+			if (map == null || !On || !states.TryGetValue(map, out MapState st))
+			{
+				return;
+			}
+			int now = Find.TickManager?.TicksGame ?? 0;
+			if (now != st.pausedFrameTick)
+			{
+				st.steppedFrames++;
+			}
+			bool unthrottled = RM_WallReachMath.PausedUnthrottled(now, st.pausedFrameTick, StampOf(map, st), st.pausedFrameStamp);
+			Tick(map, unthrottled);
+			st.pausedFrameTick = now;
+			st.pausedFrameStamp = StampOf(map, st);
+		}
+
+		/// <summary>From RM_PocketGrid.Tick (every map tick), PausedFrame and ForceRebuild (paused = unthrottled): re-read the
 		/// doors, drop labellings nobody asked for in DropUnusedTicks (only classes of pawns now asking are kept), rebuild the
 		/// stale ones when due. Never inside a query.</summary>
 		public static void Tick(Map map, bool paused)
@@ -706,7 +732,8 @@ namespace RimMandrake.FlowWorks
 			return "WALLREACH entries=" + st.entries.Count + " builds=" + st.builds + " overTicks=" + span
 				+ " per1000=" + (span > 0 ? (st.builds * 1000.0 / span).ToString("0.00") : "-")
 				+ " lastMs=" + st.lastMs.ToString("0.000") + " maxMs=" + st.maxMs.ToString("0.000")
-				+ " meanMs=" + (st.builds > 0 ? (st.totalMs / st.builds).ToString("0.000") : "-");
+				+ " meanMs=" + (st.builds > 0 ? (st.totalMs / st.builds).ToString("0.000") : "-")
+				+ " steppedFrames=" + st.steppedFrames;
 		}
 
 		/// <summary>"" -> "WALLREACH on=b entries=N builds=N … queries=N vetoes=N | RESIDUAL fails=N outOfScope=N stale=N
