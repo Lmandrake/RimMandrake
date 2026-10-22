@@ -46,9 +46,8 @@ ladder, accelerated rot/decay, warm living ground, living food-preparation heat,
 sharing between kin, guardian groves (defended tea-source mushrooms), the pale tree door-ajar
 spawn, and the spore-cloud incident. Two terrains (`RM_TheRotGrass`, `RM_TheRotSoilRich`) are
 this mod's own — donor Alpha Biomes terrains are no longer referenced for the natural ground.
-Two allergy diseases and thirteen flora stay MayRequire'd on `sarg.alphabiomes` per the Q9
-donor-content shape (porting them to our own tier rides `DONOR_DEFS_PORT_TO_OURS_1`, not this
-build); eight fauna rows stay MayRequire'd on `sarg.alphaanimals` for the same reason.
+No Alpha Biomes or Alpha Animals def is referenced any more: the allergy diseases, flora and
+fauna the Rot once borrowed are owned `RM_` ports (donor retirement, 2026-10-18).
 
 Live proof is OWED at publish time — see the item's own step 5.</description>
 </ModMetaData>
