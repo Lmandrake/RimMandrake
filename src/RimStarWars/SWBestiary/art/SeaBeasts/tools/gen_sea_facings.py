@@ -85,11 +85,13 @@ def main():
         print("usage: gen_sea_facings.py <slug> ...   unknown: %s" % bad, file=sys.stderr)
         return 2
     jobs = [(s, f) for s in slugs for f in ("south", "north")]
+    failed = 0
     with ThreadPoolExecutor(max_workers=WORKERS) as ex:
         for res in ex.map(one, jobs):
             print(res, flush=True)
-    print("DONE")
-    return 0
+            failed += res.startswith("FAIL")
+    print("DONE" if not failed else "DONE with %d FAILED raw(s)" % failed)
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
