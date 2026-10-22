@@ -1,0 +1,853 @@
+{
+ "script": "pit_rescue_live.py",
+ "started": "2026-10-22T11:59:35",
+ "rows": [
+  {
+   "id": "RESCUE_LADDER_QUEUED",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "detail": {
+    "queuedAt": 250,
+    "builtAt": 2750,
+    "outAt": 4250,
+    "last": {
+     "t": 4250,
+     "ladder": [
+      [
+       "RM_LadderPortable",
+       157,
+       36
+      ]
+     ],
+     "victim": [
+      [
+       157,
+       37
+      ],
+      true,
+      false,
+      true
+     ],
+     "rescuers": [
+      [
+       "Human11985",
+       {
+        "x": 167,
+        "z": 37
+       },
+       "Wait_Wander"
+      ],
+      [
+       "Human11988",
+       {
+        "x": 153,
+        "z": 33
+       },
+       "GotoWander"
+      ]
+     ]
+    },
+    "assist": {
+     "t": 2000,
+     "frame": "Frame_RM_LadderPortable12001",
+     "order": {
+      "accepted": true,
+      "afterJobDef": "FinishFrame"
+     }
+    },
+    "controlRescuedAt": 1250
+   }
+  },
+  {
+   "id": "RESCUE_LADDER_BUILT",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "detail": {
+    "queuedAt": 250,
+    "builtAt": 2750,
+    "outAt": 4250,
+    "last": {
+     "t": 4250,
+     "ladder": [
+      [
+       "RM_LadderPortable",
+       157,
+       36
+      ]
+     ],
+     "victim": [
+      [
+       157,
+       37
+      ],
+      true,
+      false,
+      true
+     ],
+     "rescuers": [
+      [
+       "Human11985",
+       {
+        "x": 167,
+        "z": 37
+       },
+       "Wait_Wander"
+      ],
+      [
+       "Human11988",
+       {
+        "x": 153,
+        "z": 33
+       },
+       "GotoWander"
+      ]
+     ]
+    },
+    "assist": {
+     "t": 2000,
+     "frame": "Frame_RM_LadderPortable12001",
+     "order": {
+      "accepted": true,
+      "afterJobDef": "FinishFrame"
+     }
+    },
+    "controlRescuedAt": 1250
+   }
+  },
+  {
+   "id": "RESCUE_COLONIST_OUT",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "detail": {
+    "queuedAt": 250,
+    "builtAt": 2750,
+    "outAt": 4250,
+    "last": {
+     "t": 4250,
+     "ladder": [
+      [
+       "RM_LadderPortable",
+       157,
+       36
+      ]
+     ],
+     "victim": [
+      [
+       157,
+       37
+      ],
+      true,
+      false,
+      true
+     ],
+     "rescuers": [
+      [
+       "Human11985",
+       {
+        "x": 167,
+        "z": 37
+       },
+       "Wait_Wander"
+      ],
+      [
+       "Human11988",
+       {
+        "x": 153,
+        "z": 33
+       },
+       "GotoWander"
+      ]
+     ]
+    },
+    "assist": {
+     "t": 2000,
+     "frame": "Frame_RM_LadderPortable12001",
+     "order": {
+      "accepted": true,
+      "afterJobDef": "FinishFrame"
+     }
+    },
+    "controlRescuedAt": 1250
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/rescue_4.json",
+  "origin": "150,30",
+  "fresh_map": false,
+  "ticks": 7000
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "control": "Human11992",
+ "scene": {
+  "victim": "Human11982",
+  "rescuers": [
+   "Human11985",
+   "Human11988"
+  ],
+  "incap": "{'success': True, 'action': 'downed', 'allowBleedingWoundsHonoured': False, 'downedBefore': False, 'deadBefore': False, 'downedAfter': True, 'deadAfter': False, 'changed': True, 'hediffCount': 3, 'tic"
+ },
+ "assist": {
+  "t": 2000,
+  "frame": "Frame_RM_LadderPortable12001",
+  "order": {
+   "accepted": true,
+   "afterJobDef": "FinishFrame"
+  }
+ },
+ "trail": [
+  {
+   "t": 250,
+   "ladder": [
+    [
+     "Blueprint_RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 164,
+      "z": 37
+     },
+     "Clean"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 162,
+      "z": 41
+     },
+     "Clean"
+    ]
+   ]
+  },
+  {
+   "t": 500,
+   "ladder": [
+    [
+     "Blueprint_RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 168,
+      "z": 42
+     },
+     "Wait_MaintainPosture"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 165,
+      "z": 40
+     },
+     "Clean"
+    ]
+   ]
+  },
+  {
+   "t": 750,
+   "ladder": [
+    [
+     "Blueprint_RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 156,
+      "z": 41
+     },
+     "HaulToContainer"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 167,
+      "z": 42
+     },
+     "Clean"
+    ]
+   ]
+  },
+  {
+   "t": 1000,
+   "ladder": [
+    [
+     "Frame_RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 156,
+      "z": 37
+     },
+     "Wait"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 167,
+      "z": 42
+     },
+     "Clean"
+    ]
+   ]
+  },
+  {
+   "t": 1250,
+   "ladder": [
+    [
+     "Frame_RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 156,
+      "z": 37
+     },
+     "Wait"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 167,
+      "z": 42
+     },
+     "Wait"
+    ]
+   ]
+  },
+  {
+   "t": 1500,
+   "ladder": [
+    [
+     "Frame_RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 156,
+      "z": 37
+     },
+     "Wait"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 167,
+      "z": 42
+     },
+     "Wait"
+    ]
+   ]
+  },
+  {
+   "t": 1750,
+   "ladder": [
+    [
+     "Frame_RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 156,
+      "z": 37
+     },
+     "Wait"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 167,
+      "z": 42
+     },
+     "Wait"
+    ]
+   ]
+  },
+  {
+   "t": 2000,
+   "ladder": [
+    [
+     "Frame_RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 156,
+      "z": 37
+     },
+     "Wait"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 167,
+      "z": 42
+     },
+     "Wait"
+    ]
+   ]
+  },
+  {
+   "t": 2250,
+   "ladder": [
+    [
+     "Frame_RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 156,
+      "z": 37
+     },
+     "FinishFrame"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 167,
+      "z": 42
+     },
+     "Wait"
+    ]
+   ]
+  },
+  {
+   "t": 2500,
+   "ladder": [
+    [
+     "Frame_RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 156,
+      "z": 37
+     },
+     "FinishFrame"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 167,
+      "z": 42
+     },
+     "Wait"
+    ]
+   ]
+  },
+  {
+   "t": 2750,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 157,
+      "z": 37
+     },
+     "Clean"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 167,
+      "z": 42
+     },
+     "Wait"
+    ]
+   ]
+  },
+  {
+   "t": 3000,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 157,
+      "z": 37
+     },
+     "Clean"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 167,
+      "z": 42
+     },
+     "Wait"
+    ]
+   ]
+  },
+  {
+   "t": 3250,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 157,
+      "z": 36
+     },
+     "GotoWander"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 163,
+      "z": 41
+     },
+     "GotoWander"
+    ]
+   ]
+  },
+  {
+   "t": 3500,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 157,
+      "z": 36
+     },
+     "GotoWander"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 158,
+      "z": 38
+     },
+     "GotoWander"
+    ]
+   ]
+  },
+  {
+   "t": 3750,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     36
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 159,
+      "z": 37
+     },
+     "GotoWander"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 155,
+      "z": 35
+     },
+     "GotoWander"
+    ]
+   ]
+  },
+  {
+   "t": 4000,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     36
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 164,
+      "z": 37
+     },
+     "GotoWander"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 153,
+      "z": 33
+     },
+     "Wait_Wander"
+    ]
+   ]
+  },
+  {
+   "t": 4250,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     157,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     157,
+     37
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human11985",
+     {
+      "x": 167,
+      "z": 37
+     },
+     "Wait_Wander"
+    ],
+    [
+     "Human11988",
+     {
+      "x": 153,
+      "z": 33
+     },
+     "GotoWander"
+    ]
+   ]
+  }
+ ],
+ "finished": "2026-10-22T12:01:11"
+}
