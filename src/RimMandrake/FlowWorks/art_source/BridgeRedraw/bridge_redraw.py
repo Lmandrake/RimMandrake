@@ -439,41 +439,57 @@ def guides():
 
 
 # --------------------------------------------------------------------------------------------------------------- gen
-def gen(wave, only, workers, timeout):
+def gen(wave, only, workers, timeout, budget=120):
+    """Run every pending job of the wave on a pool of worker homes (one job per home at a time). A job not STARTED within
+    `budget` seconds is deferred, so one call ends inside the 600 s silence limit; run again to continue."""
+    import queue
     RAW.mkdir(parents=True, exist_ok=True)
     js = [j for j in JOBS if (wave is None or j["wave"] == wave) and (not only or j["id"] in only)]
     js = [j for j in js if not (RAW / f"{j['id']}.png").is_file()]
-    # one job per worker home at a time: homes are assigned round-robin over this batch
-    for n, j in enumerate(js):
-        j["_home"] = n % workers
-    print(f"gen: {len(js)} job(s), {workers} workers", flush=True)
-    with ThreadPoolExecutor(workers) as ex:      # one batch of <= workers per call, so a call ends inside 600 s
-        for jid, st in ex.map(lambda j: _run_slot(j, timeout), js[:workers]):
-            print(jid, st, flush=True)
-    if len(js) > workers:
-        print(f"gen: {len(js) - workers} more queued — run again", flush=True)
+    homes = queue.Queue()
+    for h in WORKER_HOMES[:workers]:
+        homes.put(h)
+    t0 = time.time()
+    print(f"gen: {len(js)} job(s), {workers} workers, start budget {budget}s", flush=True)
+
+    def one(j):
+        h = homes.get()
+        try:
+            if time.time() - t0 > budget:
+                return j["id"], "deferred"
+            return _run_slot(j, h, timeout)
+        finally:
+            homes.put(h)
+
+    left = 0
+    with ThreadPoolExecutor(workers) as ex:
+        for jid, st in ex.map(one, js):
+            left += st == "deferred"
+            if st != "deferred":
+                print(jid, st, flush=True)
+    print(f"gen: {left} deferred — run again" if left else "gen: wave complete", flush=True)
 
 
-def _run_slot(j, timeout):
+def _run_slot(j, home, timeout):
     out = RAW / f"{j['id']}.png"
     w, h = j["gen"]
     prompt = j["prompt"] + f" Output size {w}x{h} pixels."
-    home = HOMES / WORKER_HOMES[j["_home"]]
     cmd = CI + (["edit"] if j["images"] else ["generate"]) + ["--model", "gpt-6.1-sol", "--timeout", str(timeout),
-                                                             "--codex-home", str(home), "--out", str(out), "--prompt", prompt]
+                                                             "--codex-home", str(HOMES / home), "--out", str(out),
+                                                             "--prompt", prompt]
     missing = [i for i in j["images"] if not Path(i).is_file()]
     if missing:
         return j["id"], f"MISSING IMAGE {missing}"
     for i in j["images"]:
         cmd += ["--image", i]
-    t0 = time.time()
+    t1 = time.time()
     try:
         with open(RAW / f"{j['id']}.log", "w") as lf:
             rc = subprocess.run(cmd, stdout=lf, stderr=subprocess.STDOUT, timeout=timeout + 20).returncode
     except subprocess.TimeoutExpired:
         return j["id"], "TIMEOUT"
     ok = out.is_file() and out.stat().st_size > 0
-    return j["id"], f"{'OK' if ok else 'FAIL rc=%d' % rc} {time.time() - t0:.0f}s"
+    return j["id"], f"{'OK' if ok else 'FAIL rc=%d' % rc} {time.time() - t1:.0f}s ({home})"
 
 
 # ---------------------------------------------------------------------------------------------------------- finalize
@@ -624,7 +640,7 @@ def main():
     a = sp.add_parser("list"); a.add_argument("--wave", type=int)
     sp.add_parser("guides")
     a = sp.add_parser("gen"); a.add_argument("--wave", type=int); a.add_argument("--only", nargs="*", default=[])
-    a.add_argument("--workers", type=int, default=9); a.add_argument("--timeout", type=int, default=500)
+    a.add_argument("--workers", type=int, default=9); a.add_argument("--timeout", type=int, default=420)
     a = sp.add_parser("finalize"); a.add_argument("--wave", type=int)
     sp.add_parser("manifest")
     a = ap.parse_args()

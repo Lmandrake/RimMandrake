@@ -1,4 +1,202 @@
 {
+ "RM_DrawbridgeLeafUp_Edge_Futuristic_rd1a": {
+  "coverage": 0.157,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Edge_Futuristic_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Futuristic_Edge",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Edge_Industrial_rd1a": {
+  "coverage": 0.105,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Edge_Industrial_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Industrial_Edge",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Edge_Modern_rd1a": {
+  "coverage": 0.117,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Edge_Modern_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Modern_Edge",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Edge_Scrapper_rd1a": {
+  "coverage": 0.158,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Edge_Scrapper_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Scrapper_Edge",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Face_Futuristic_rd1a": {
+  "coverage": 0.819,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Face_Futuristic_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Futuristic_Face",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Face_Industrial_rd1a": {
+  "coverage": 0.823,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Face_Industrial_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Industrial_Face",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Face_Modern_rd1a": {
+  "coverage": 0.812,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Face_Modern_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Modern_Face",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Face_Scrapper_rd1a": {
+  "coverage": 0.819,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Face_Scrapper_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Scrapper_Face",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Steel_Edge_rd1a": {
+  "coverage": 0.119,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Steel_Edge_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Steel_Edge",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Steel_Face_rd1a": {
+  "coverage": 0.828,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Steel_Face_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Steel_Face",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Steel_Underside_rd1a": {
+  "coverage": 0.819,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Steel_Underside_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Steel_Underside",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Timber_Edge_rd1a": {
+  "coverage": 0.101,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Timber_Edge_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Timber_Edge",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Timber_Face_rd1a": {
+  "coverage": 0.826,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Timber_Face_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Timber_Face",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Timber_Underside_rd1a": {
+  "coverage": 0.804,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Timber_Underside_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Timber_Underside",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Underside_Futuristic_rd1a": {
+  "coverage": 0.795,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Underside_Futuristic_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Futuristic_Underside",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Underside_Industrial_rd1a": {
+  "coverage": 0.825,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Underside_Industrial_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Industrial_Underside",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Underside_Modern_rd1a": {
+  "coverage": 0.807,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Underside_Modern_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Modern_Underside",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeLeafUp_Underside_Scrapper_rd1a": {
+  "coverage": 0.807,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeLeafUp_Underside_Scrapper_rd1a.png",
+  "raw_size": [
+   512,
+   2048
+  ],
+  "row": "RD_Leaf_Scrapper_Underside",
+  "status": "PASS"
+ },
  "RM_DrawbridgePlanks_Futuristic_rd1a": {
   "coverage": 0.729,
   "findings": [],
