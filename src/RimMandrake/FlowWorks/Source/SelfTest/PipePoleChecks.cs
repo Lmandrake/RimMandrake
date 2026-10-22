@@ -175,6 +175,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(aerial.Any(a => planted.Contains(a)), "sanity probe: the aerial-name scan can see a planted name");
             });
 
+            Case("PipePole_D5_ground_pipe_reaches_the_pole_and_the_span_is_the_looks_pipe", () =>
+            {
+                // joints study 2026-10-22 D5: the ground pipe stopped in a cap half a cell short of the pole, and the span drew the
+                // look's power wire ("reads as an electric line")
+                string j = Src("Machinery", "RM_LiquidJoins.cs");
+                Assert(System.Text.RegularExpressions.Regex.IsMatch(j, @"PartnerAt\(c, parent\.Map\) != null\s*\|\| \(RM_MachinerySettings\.pipePolesEnabled && RM_LiquidJoins\.PipePoleAt\(c, parent\.Map\)\)\) __result = true;"),
+                    "a pipe's atlas links toward a pipe pole beside it");
+                Assert(j.Contains("t is Building && t.def.GetModExtension<RM_LineKindExtension>()?.kind == LineKind.PipePole"), "only a BUILT pole (not its blueprint) draws the arm");
+                // the PipeSpan.png files: selftest_flowworks_pipe_pole_art.py (this stage copies no Textures)
+            });
+
             Case("PipePole_P4_dig_kills_the_pole_so_its_spans_fall", () =>
             {
                 Assert(RM_LineDigBreakMath.KilledOnDig(LineKind.PipePole) && RM_LineDigBreakMath.BreaksOnDig(LineKind.PipePole), "a dug-out pole breaks, killed");

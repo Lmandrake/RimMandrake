@@ -38,6 +38,24 @@ def fails(paths):
     return bad
 
 
+FW_TEX = os.path.join(HERE, "Textures")
+
+
+def span_fails(looks=LOOKS, root=FW_TEX):
+    root_el = ET.parse(DEFS).getroot()
+    contract = None
+    for el in root_el.iter("spanTexPath"):
+        contract = (el.text or "").strip()
+    if not contract or "{look}" not in contract:
+        return ["no spanTexPath with {look} in RM_PipePoles.xml"]
+    bad = []
+    for look in looks:
+        png = os.path.join(root, *contract.replace("{look}", look).split("/")) + ".png"
+        if not os.path.isfile(png):
+            bad.append("span art missing for %s: %s" % (look, png))
+    return bad
+
+
 def main():
     paths = texpaths()
     styles = [n for n, _ in paths if n and n.startswith("RM_PipePole_")]
@@ -47,9 +65,14 @@ def main():
     if sorted(styles) != sorted("RM_PipePole_" + l for l in LOOKS):
         errs.append("style defs are not the four looks: %r" % styles)
     errs += fails(paths)
+    # D5 (joints study 2026-10-22): the span art contract (spanTexPath, FlowWorks' own Textures) is installed for every look:
+    # a pipe span draws the look's pipe (art_source/PipeSpan/make_pipe_span.py), never GSS's power wire stand-in.
+    errs += span_fails()
     canfail = fails([("canfail", "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/NoSuchMast")])
     if not canfail:
         errs.append("can-fail: a missing PNG was not reported")
+    if not span_fails(("NoSuchLook",)):
+        errs.append("can-fail: a missing span PNG was not reported")
     if "--canfail" in sys.argv:
         errs = canfail
     for e in errs:
