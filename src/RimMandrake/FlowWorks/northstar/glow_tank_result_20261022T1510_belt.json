@@ -1,0 +1,215 @@
+{
+ "script": "glow_tank_live.py",
+ "started": "2026-10-22T14:32:11",
+ "rows": [
+  {
+   "id": "GLOWTANK_SALT_DRAWN_ONE_UNIT",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "GLOW_TANK_LIQUID_FEED_1",
+   "detail": {
+    "saltDrawn": 0,
+    "saltInspect": [
+     "Power needed: 180 W",
+     "Grid excess: -180 W (599 Wd stored)",
+     "Fuel: 0 / 1",
+     "Growing season here now.",
+     "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run)."
+    ],
+    "fresh": [
+     20000,
+     20000,
+     [
+      "Power needed: 180 W",
+      "Grid excess: -180 W (599 Wd stored)",
+      "Fuel: 0 / 1",
+      "Growing season here now.",
+      "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run)."
+     ]
+    ],
+    "brine": [
+     20000,
+     20000,
+     [
+      "Power needed: 180 W",
+      "Grid excess: -180 W (599 Wd stored)",
+      "Fuel: 0 / 1",
+      "Growing season here now.",
+      "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run)."
+     ]
+    ]
+   }
+  },
+  {
+   "id": "GLOWTANK_SALT_CROP_GROWS",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "GLOW_TANK_LIQUID_FEED_1",
+   "detail": {
+    "saltGrowth": [
+     0.0,
+     0.0
+    ],
+    "freshGrowth": [
+     0.0,
+     0.0
+    ],
+    "saltUnits": [
+     20000,
+     20000,
+     20000
+    ]
+   }
+  },
+  {
+   "id": "GLOWTANK_SETTING_OFF_NO_LINE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "GLOW_TANK_LIQUID_FEED_1",
+   "detail": {
+    "inspectOff": [
+     "Power needed: 180 W",
+     "Grid excess: -180 W (581 Wd stored)",
+     "Fuel: 0 / 1",
+     "Growing season here now."
+    ],
+    "restoredTo": "True"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/glow_1.json",
+  "origin": "60,150",
+  "fresh_map": true,
+  "ticks": 6000
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brogg49441",
+    "RM_Brogg49442",
+    "RM_Brogg49448",
+    "RM_Brogg49449",
+    "RM_Dustveil49447",
+    "RM_Shambles49443",
+    "RM_Shambles49445",
+    "RM_Shambles49454",
+    "RM_Thozzik49450",
+    "RM_Thozzik49453",
+    "RM_ThozzikColony49451",
+    "RM_ThozzikQueen49444",
+    "RM_ThozzikQueen49446",
+    "RM_ThozzikQueen49452"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "scenes": {
+  "S": {
+   "gt": [
+    64,
+    152
+   ],
+   "bat": [
+    61,
+    152
+   ],
+   "tank": [
+    66,
+    152
+   ],
+   "build": "{'success': True, 'placed': 5, 'survived': 5, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCount': 0, 'placeWorkerWarnings': [], 'qual",
+   "gid": "RM_GlowTank49967",
+   "refuel": "{'success': True, 'thing': 'RM_GlowTank49967', 'def': 'RM_GlowTank', 'fuelBefore': 0.0, 'fuelAfter': 1.0, 'capacity': 1.0, 'hasFuel': True, 'fields': {}, 'missi",
+   "units0": 20000,
+   "plant": "{'success': True, 'message': 'Planted 4, cleared 0.', 'planted': 4, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 0.1, 'errors': [],",
+   "units1": 20000,
+   "inspect1": [
+    "Power needed: 180 W",
+    "Grid excess: -180 W (599 Wd stored)",
+    "Fuel: 0 / 1",
+    "Growing season here now.",
+    "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run)."
+   ],
+   "growth1": 0.0,
+   "growth2": 0.0,
+   "units2": 20000
+  },
+  "F": {
+   "gt": [
+    64,
+    162
+   ],
+   "bat": [
+    61,
+    162
+   ],
+   "tank": [
+    66,
+    162
+   ],
+   "build": "{'success': True, 'placed': 5, 'survived': 5, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCount': 0, 'placeWorkerWarnings': [], 'qual",
+   "gid": "RM_GlowTank49972",
+   "refuel": "{'success': True, 'thing': 'RM_GlowTank49972', 'def': 'RM_GlowTank', 'fuelBefore': 0.0, 'fuelAfter': 1.0, 'capacity': 1.0, 'hasFuel': True, 'fields': {}, 'missi",
+   "units0": 20000,
+   "plant": "{'success': True, 'message': 'Planted 4, cleared 0.', 'planted': 4, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 0.1, 'errors': [],",
+   "units1": 20000,
+   "inspect1": [
+    "Power needed: 180 W",
+    "Grid excess: -180 W (599 Wd stored)",
+    "Fuel: 0 / 1",
+    "Growing season here now.",
+    "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run)."
+   ],
+   "growth1": 0.0,
+   "growth2": 0.0,
+   "units2": 20000
+  },
+  "B": {
+   "gt": [
+    64,
+    172
+   ],
+   "bat": [
+    61,
+    172
+   ],
+   "tank": [
+    66,
+    172
+   ],
+   "build": "{'success': True, 'placed': 5, 'survived': 5, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCount': 0, 'placeWorkerWarnings': [], 'qual",
+   "gid": "RM_GlowTank49977",
+   "refuel": "{'success': True, 'thing': 'RM_GlowTank49977', 'def': 'RM_GlowTank', 'fuelBefore': 0.0, 'fuelAfter': 1.0, 'capacity': 1.0, 'hasFuel': True, 'fields': {}, 'missi",
+   "units0": 20000,
+   "plant": "{'success': True, 'message': 'Planted 4, cleared 0.', 'planted': 4, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 0.1, 'errors': [],",
+   "units1": 20000,
+   "inspect1": [
+    "Power needed: 180 W",
+    "Grid excess: -180 W (599 Wd stored)",
+    "Fuel: 0 / 1",
+    "Growing season here now.",
+    "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run)."
+   ],
+   "growth1": 0.0,
+   "growth2": 0.0,
+   "units2": 20000
+  }
+ },
+ "finished": "2026-10-22T14:34:30"
+}
