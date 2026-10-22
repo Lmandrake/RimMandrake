@@ -67,8 +67,8 @@ namespace RimMandrake.FlowWorks.Hose
         public static float minBendRadius = 1.2f;
         /// <summary>How much a charged hose swells, straightens and wobbles (0 = no visible change).</summary>
         public static float plumpAmount = 1f;
-        /// <summary>Hose thickness, x the shipped width (HoseMath.WidthScale); 1 = the thin hose of HOSE_GIRTH_TUNE_MUCH_THINNER
-        /// (0.09 cell flat). Range ThicknessMin-ThicknessMax.</summary>
+        /// <summary>Hose thickness, x the shipped width (HoseMath.WidthScale); 1 = the shipped hose (0.18 cell flat; owner
+        /// 2026-10-22: "Hoses need to be twice as thick"). Range ThicknessMin-ThicknessMax.</summary>
         public static float thickness = 1f;
         /// <summary>Flat-to-plump blend time, ticks.</summary>
         public static int transitionTicks = 30;
@@ -148,8 +148,8 @@ namespace RimMandrake.FlowWorks.Hose
         /// here; a hand-kept copy of every default used to sit here).</summary>
         public static void ResetToDefaults() => ResetAllFields();
 
-        /// <summary>Thickness slider range: 0.75x (0.068 cell) to 2x (0.18 cell, still under the old 0.38 hose).</summary>
-        public const float ThicknessMin = 0.75f, ThicknessMax = 2f;
+        /// <summary>Thickness slider range: 0.5x (0.09 cell, the 2026-10-21 thin hose) to 2x (0.36 cell, about the old 0.38 hose).</summary>
+        public const float ThicknessMin = 0.5f, ThicknessMax = 2f;
 
         /// <summary>Push the thickness setting into HoseMath (clamped ThicknessMin-ThicknessMax).</summary>
         public static void ApplyThickness() => HoseMath.WidthScale = Mathf.Clamp(thickness, ThicknessMin, ThicknessMax);

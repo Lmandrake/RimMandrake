@@ -100,8 +100,9 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         /// <summary>How far a drawn relay end may sit from the footprint edge (cells): the reel art overhangs or falls short
-        /// of its 2x2 footprint by up to ~0.3 cell, and the hose ends on the drawing, not in the air beside it.</summary>
-        public const double EndTolerance = 0.35;
+        /// of its 2x2 footprint, and the hose ends on the drawing, not in the air beside it. 0.35 for the 10-05 art at drawSize
+        /// 2.8; the 2026-10-21 art at 2.15 draws up to ~0.7 inside the edge (HOSE_ENDS_FIX_MISSES_THE_PORTS).</summary>
+        public const double EndTolerance = 0.75;
 
         /// <summary>The straight run the hose makes into its end coupling (cells), so the coupling's axis is the intake's.</summary>
         public const double EndStraight = 0.6;

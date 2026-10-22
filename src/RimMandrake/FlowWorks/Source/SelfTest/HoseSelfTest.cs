@@ -40,6 +40,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Replan();
             Round4();
             Round5();
+            PortEnds();
             Console.WriteLine($"hose: {mine - mineFails}/{mine} checks passed");
         }
 
@@ -49,9 +50,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             double wire = HoseMath.WireVisibleWidth;
             double f = HoseMath.VisibleWidth(0, 1), p = HoseMath.VisibleWidth(1, 1);
             C(wire > 0.05 && wire < 0.12, "wire visible width is the strand's band (" + wire.ToString("0.000") + ")");
-            // HOSE_GIRTH_TUNE_MUCH_THINNER (owner 2026-10-21): flat 0.08-0.10 cell, a little over a wire, under the rigid pipe
-            C(f >= 0.08 && f <= 0.10 && f > wire, "flat hose is 0.08-0.10 cell and over a wire (" + f.ToString("0.000") + ", " + (f / wire).ToString("0.00") + "x)");
-            C(p > f * 1.1 && p < 0.12, "plump hose is visibly swollen over flat, under 0.12 (" + p.ToString("0.000") + " vs " + f.ToString("0.000") + ")");
+            // owner 2026-10-22: "Hoses need to be twice as thick, too thin to see now." -- flat 0.16-0.20 cell (2x the 0.09 thin hose)
+            C(f >= 0.16 && f <= 0.20 && f > 2 * wire, "flat hose is 0.16-0.20 cell, over twice a wire (" + f.ToString("0.000") + ", " + (f / wire).ToString("0.00") + "x)");
+            C(p > f * 1.1 && p < 0.26, "plump hose is visibly swollen over flat, under 0.26 (" + p.ToString("0.000") + " vs " + f.ToString("0.000") + ")");
             C(Math.Abs(HoseMath.VisibleWidth(0.5, 1) - (f + p) / 2) < 1e-9, "visible width blends linearly in the eased blend");
             C(Math.Abs(HoseMath.VisibleWidth(1, 0) - f) < 1e-9, "plump amount 0 = no swelling");
             C(Math.Abs(HoseMath.MeshWidthFlat(f) * HoseMath.FlatBand - f) < 1e-9 && Math.Abs(HoseMath.MeshWidthPlump(p) * HoseMath.PlumpBand - p) < 1e-9,
@@ -524,7 +525,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             var sp = new HoseShapeParams { MaxLength = 30 };
             // the hose leaves the 2x2 reel at its brass outlet nozzle (west side), inside the footprint, not at the centre
             V2 m0 = reel.Mouth, c0 = reel.Centre;
-            C(reel.Contains(m0.Floor) && m0.X < c0.X - 0.9 && new HoseReelRect(4, 4, 1, 1).Mouth.X == 4.5,
+            C(reel.Contains(m0.Floor) && m0.X < c0.X - 0.5 && new HoseReelRect(4, 4, 1, 1).Mouth.X == 4.5,
                 "r4 reel: the hose leaves the 2x2 reel at its outlet nozzle, west side (" + (m0.X - c0.X).ToString("0.00") + ", " + (m0.Z - c0.Z).ToString("0.00") + " from the centre); a 1x1 reel keeps its centre");
             // station 22: the short way out fits a 30-cell hose and is laid clear of every wall
             CordWorld w = StationMaze(null);
@@ -621,6 +622,62 @@ namespace RimMandrake.FlowWorks.SelfTest
             return w;
         }
 
+        // ------------------------------------------------------------------ HOSE_ENDS_FIX_MISSES_THE_PORTS (owner 2026-10-21)
+        /// <summary>Owner, live walk on C5 Fuel Depot: "Hose attached to tank and reel broken. No longer following old logic of
+        /// attaching at attachment points (or graphics no longer support that)". The reel's coupling sat at a constant nozzle
+        /// (u 9/256 at drawSize 2.8) after two art installs moved the drawn nozzle ~0.5 cell; the tank end coupled half a cell
+        /// beside the drawn flange. The pixel side (table vs texture) is selftest_reel_ports.py; these pin the geometry.</summary>
+        private static void PortEnds()
+        {
+            // reel: per look, the laid hose's coupling meets that look's measured nozzle, inside the west cell, and the looks differ
+            var tips = new List<V2>();
+            foreach (string look in ReelIntakeGeometry.Looks)
+            {
+                var rr = new HoseReelRect(10, 10, 2, 2) { Look = look };
+                ReelIntakeGeometry.OutletTip(look, true, out double dx, out double dz);
+                V2 tip = rr.NozzleTip, mouth = rr.Mouth, c = rr.Centre;
+                tips.Add(tip - c);
+                C(V2.Dist(tip, c + new V2(dx, dz)) < 1e-9 && dx > -1.0 && dx < -0.5 && Math.Abs(dz) < 0.5,
+                    "ports: " + look + " reel's coupling meets its measured nozzle (" + dx.ToString("0.000") + ", " + dz.ToString("0.000") + ")");
+                C(rr.Contains(mouth.Floor) && mouth.Floor.X == rr.X0 && Math.Abs(mouth.Z - tip.Z) < 1e-9,
+                    "ports: " + look + " reel's hose starts at the nozzle's height inside the west cell");
+            }
+            C(tips.Distinct().Count() > 1, "ports: the nozzle is measured per look, not one constant");
+            C(new HoseReelRect(10, 10, 2, 2).NozzleTip.X == new HoseReelRect(10, 10, 2, 2) { Look = "Scrapper" }.NozzleTip.X,
+                "ports: a reel with no look reads the base (Scrapper) art");
+            C(Math.Abs(ReelIntakeGeometry.DrawSize - 2.15) < 1e-9, "ports: the reel tables were measured at the defs' drawSize 2.15");
+
+            // tank: a hose end west of a 2x2 tank (cell (19,20), tank at (20,20)) couples on the flange at the centre line
+            for (int k = 0; k < TankPortGeometry.Looks.Length; k++)
+            {
+                string look = TankPortGeometry.Looks[k];
+                C(TankPortGeometry.PortPoint(look, 20, 20, 2, 2, 1, 0, out V2 pw) && Math.Abs(pw.X - 20) < 1e-9 && Math.Abs(pw.Z - 21) < 0.1,
+                    "ports: " + look + " tank's west flange is on the west edge at the centre line (" + pw.X.ToString("0.00") + ", " + pw.Z.ToString("0.00") + ")");
+                C(TankPortGeometry.PortPoint(look, 20, 20, 2, 2, -1, 0, out V2 pe) && Math.Abs(pe.X - 22) < 1e-9 && Math.Abs(pe.Z - pw.Z) < 1e-9,
+                    "ports: " + look + " tank's east flange mirrors the west");
+            }
+            C(!TankPortGeometry.PortPoint("Scrapper", 20, 20, 2, 2, 0, 1, out _) && !TankPortGeometry.PortPoint("Scrapper", 20, 20, 2, 3, 1, 0, out _),
+                "ports: north/south sides and other footprints keep the shared edge's midpoint");
+
+            // the drawn hose ends on the port, arriving along its axis (no loop, no sideways meet), the rest untouched
+            TankPortGeometry.PortPoint("Scrapper", 20, 20, 2, 2, 1, 0, out V2 port);
+            var axis = new V2(1, 0);
+            var hose = new List<V2>();
+            for (int i = 0; i <= 8; i++) hose.Add(new V2(11.5 + i, 20.5));   // laid straight east, end cell (19,20) centre
+            List<V2> on = HoseMath.EndOnPort(hose, port - axis * 0.5, axis, 1.2);
+            V2 last = on[on.Count - 1], before = on[on.Count - 2];
+            V2 coupling = last + axis * 0.5;   // DrawEnds: the port coupling sits half a cell past the end, facing the port
+            C(V2.Dist(coupling, port) < 1e-9, "ports: the end coupling lands on the tank's flange (" + coupling.X.ToString("0.00") + ", " + coupling.Z.ToString("0.00") + ")");
+            V2 dLast = (last - before).Norm();
+            C(dLast.X * axis.X + dLast.Z * axis.Z > 0.98, "ports: the hose arrives along the port's axis (" + dLast.X.ToString("0.00") + ", " + dLast.Z.ToString("0.00") + ")");
+            bool monotone = true;
+            for (int i = 1; i < on.Count; i++) if (on[i].X < on[i - 1].X - 1e-9) monotone = false;
+            C(monotone, "ports: the re-aimed end never doubles back (no loop)");
+            C(V2.Dist(on[0], hose[0]) < 1e-9 && on.Take(6).Zip(hose.Take(6), (a, b) => V2.Dist(a, b)).Max() < 1e-9, "ports: the hose before the last run is untouched");
+            C(HoseMath.EndOnPort(new List<V2> { new V2(0, 0), new V2(0.5, 0) }, new V2(1, 1), axis, 1.2).Count == 2,
+                "ports: a hose shorter than the run is left as laid");
+        }
+
         // ------------------------------------------------------------------ round 5 (owner 2026-10-04)
         private static void Round5()
         {
@@ -628,7 +685,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             // owner 2026-10-05: the hose starts at the reel's brass outlet nozzle (west side), not under the drum
             var reel = new HoseReelRect(6 + SX, 5 + SZ, 2, 2);
             V2 m = reel.Mouth, c = reel.Centre, tip = reel.NozzleTip;
-            C(reel.Contains(m.Floor) && m.X - c.X < -0.9 && Math.Abs(m.Z - c.Z) < 0.15 && tip.X < reel.X0 - 0.2 && Math.Abs(tip.Z - m.Z) < 1e-9
+            C(reel.Contains(m.Floor) && m.X - c.X < -0.5 && Math.Abs(m.Z - c.Z) < 0.35 && tip.X <= c.X - 0.5 && Math.Abs(tip.Z - m.Z) < 1e-9
                 && reel.HasNozzle && !new HoseReelRect(4, 4, 1, 1).HasNozzle,
                 "nozzle: the hose starts on the west edge at the outlet's height (" + (m.X - c.X).ToString("0.00") + ", " + (m.Z - c.Z).ToString("0.00") + " from the centre) and the coupling meets the nozzle tip "
                 + (tip.X - c.X).ToString("0.00") + " from the centre; a 1x1 reel has no nozzle");
@@ -636,7 +693,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             CordWorld ow = Open(30, 30);
             var r2 = new HoseReelRect(10, 20, 2, 2);
             HoseLay ls = HoseMath.Lay(ow, r2.Mouth, new V2(11.5, 6.5), new HoseShapeParams { MaxLength = 30 }, 4);
-            C(ls.Ok && V2.Dist(ls.Flat[0], r2.Mouth) < 1e-6 && Math.Abs(ls.Flat[0].Z - (r2.Centre.Z + HoseReelRect.MouthDZ)) < 1e-6,
+            C(ls.Ok && V2.Dist(ls.Flat[0], r2.Mouth) < 1e-6 && Math.Abs(ls.Flat[0].Z - r2.NozzleTip.Z) < 1e-6,
                 "nozzle: a hose laid south still starts at the outlet (" + ls.Flat[0].Z.ToString("0.00") + ")");
 
             // station 34 (old 22) with the owner's walls, read cell for cell off 20261004210108_1.jpg: the north-east gap

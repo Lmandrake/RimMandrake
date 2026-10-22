@@ -171,7 +171,7 @@ namespace RimMandrake.FlowWorks.Hose
             get
             {
                 CellRect rc = parent.OccupiedRect();
-                return new HoseReelRect(rc.minX, rc.minZ, rc.Width, rc.Height);
+                return new HoseReelRect(rc.minX, rc.minZ, rc.Width, rc.Height) { Look = HoseLook.LookOfThing(parent) };   // the nozzle is measured per look
             }
         }
 

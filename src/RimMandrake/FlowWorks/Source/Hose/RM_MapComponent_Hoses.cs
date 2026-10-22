@@ -631,6 +631,13 @@ namespace RimMandrake.FlowWorks.Hose
                 bool settled = !pi.Wobbling && (pi.Blend <= 0 || pi.Blend >= 1);
                 // a transitioning pose depends only on the game tick, so it is cached per tick (a paused game stops re-meshing every frame)
                 string key = (settled ? (pi.Blend >= 1 ? "P" : "F") : "T" + Find.TickManager.TicksGame) + r.layKey + "@" + RankOf(r);
+                // HOSE_ENDS_FIX_MISSES_THE_PORTS: an end coupled to a tank's drawn port bends onto it (TankPortGeometry), so the
+                // coupling DrawEnds puts half a cell past the end sits on the flange, not half a cell beside it
+                if (r.laid && r.carry != HoseCarryState.Retracting && PortEnd(r, out V2 portAt, out V2 portAxis))
+                {
+                    pts = HoseMath.EndOnPort(pts, portAt - portAxis * 0.5, portAxis, 1.2);
+                    key += "|p" + portAt.X.ToString("0.000") + "," + portAt.Z.ToString("0.000");
+                }
                 // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)
                 List<int> joints = Layered().Joints.TryGetValue(r.parent.thingIDNumber, out List<int> kept) ? kept : lay.Joints;
                 // S4: winding in, the laid pose is cut at the wound fraction (rebuilt per frame only while winding)
@@ -860,6 +867,20 @@ namespace RimMandrake.FlowWorks.Hose
         /// footprint (LiquidJoinRule.CentreStub), in the hose band -- below the building layer, so the building's opaque body
         /// hides it and its see-through margins show it. Pipes are the section layer's (SectionLayer_RM_PipeCentreStubs).
         /// </summary>
+        /// <summary>HOSE_ENDS_FIX_MISSES_THE_PORTS: the drawn port the reel's laid free end couples to (a 2x2 universal tank's
+        /// west/east flange, TankPortGeometry) and the axis into it; false = the shared edge's midpoint, as before.</summary>
+        internal bool PortEnd(CompHoseReel r, out V2 port, out V2 axis)
+        {
+            port = axis = default(V2);
+            HoseFreeEnd fe = FreeEndOf(r);
+            if (fe.Kind != HoseEndKind.Port || fe.PortKind != HosePortKind.Tank || fe.Port == null || !fe.Port.Spawned) return false;
+            if (fe.Port.def.defName != TankPortGeometry.TankDef) return false;   // the one tank whose port table is measured
+            CellRect rect = fe.Port.OccupiedRect();
+            if (!TankPortGeometry.PortPoint(RimMandrake.FlowWorks.Machinery.PipeLook.LookOfThing(fe.Port), rect.minX, rect.minZ, rect.Width, rect.Height, fe.PortSide.X, fe.PortSide.Z, out port)) return false;
+            axis = new V2(fe.PortSide.X, fe.PortSide.Z);
+            return true;
+        }
+
         private void DrawPortStub(CompHoseReel r, HoseFreeEnd fe, HoseLookMats hm, float vis, float y)
         {
             if (!RimMandrake.FlowWorks.Machinery.RM_MachinerySettings.pipesUnderToCentre) return;
@@ -873,7 +894,10 @@ namespace RimMandrake.FlowWorks.Hose
             stubMeshes.TryGetValue(r, out StubCache sc);
             if (sc == null || sc.cell != fe.Cell || sc.sx != sx || sc.sz != sz || sc.rect != rect || sc.w != w || sc.y != y)
             {
-                double[] poly = RimMandrake.FlowWorks.Machinery.LiquidJoinRule.CentreStub(fe.Cell.x, fe.Cell.z, sx, sz, rect.minX, rect.minZ, rect.Width, rect.Height);
+                // a hose on a tank's drawn port runs on from the flange straight to the centre (it is on the centre line)
+                double[] poly = PortEnd(r, out V2 pa, out _)
+                    ? new[] { pa.X, pa.Z, rect.minX + rect.Width / 2.0, rect.minZ + rect.Height / 2.0 }
+                    : RimMandrake.FlowWorks.Machinery.LiquidJoinRule.CentreStub(fe.Cell.x, fe.Cell.z, sx, sz, rect.minX, rect.minZ, rect.Width, rect.Height);
                 if (sc == null) stubMeshes[r] = sc = new StubCache();
                 if (sc.mesh != null) UnityEngine.Object.Destroy(sc.mesh);
                 sc.mesh = null;
