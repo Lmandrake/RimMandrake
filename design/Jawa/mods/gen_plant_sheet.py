@@ -106,6 +106,8 @@ def decide(r, biomes, wood_lifeline):
 def main():
     rows = list(csv.DictReader(open(CSV, encoding='utf-8')))
     tiles = tile_counts()
+    if not rows or not tiles:
+        sys.exit(f'REFUSED: {len(rows)} candidate rows, {len(tiles)} biomes with tiles - blind input; {OUT} left as it was')
 
     # Wood safety, done in two passes so R3 protects only what actually matters.
     # Pass 1: decide with NO lifelines, to see which plants R1 would really cut.
@@ -374,30 +376,31 @@ async function idbGet(){ try{ const db=await idb(); return await new Promise(res
   const q=db.transaction('h','readonly').objectStore('h').get(IKEY); q.onsuccess=()=>res(q.result||null); q.onerror=()=>res(null); }); }catch(e){ return null; } }
 
 async function adopt(h, {write=true}={}){
-  fileHandle = h;
+  fileHandle = h; fileBlocked = false; carriedDec = {};
   try{ const f = await h.getFile(); const txt = await f.text();
     if(txt.trim()){ const j = JSON.parse(txt);
       for(const k of Object.keys(j)) if(!['posture','postureMeaning','savedBy','savedAt','decidedCount','total','decisions'].includes(k)) carried[k]=j[k];
       // 🔴 THE FILE FILLS GAPS; IT NEVER OVERWRITES THIS SESSION'S WORK.
       if(j.decisions) for(const d in j.decisions){
+        if(!state[d]) carriedDec[d] = j.decisions[d];   // not on this sheet: keep the owner's row
         if(state[d] && j.decisions[d].touched && !state[d].touched){
           state[d]={s:j.decisions[d].decision,note:j.decisions[d].note||'',touched:true}; } }
     }
-  }catch(e){}
+  }catch(e){ fileBlocked = true; setLink('the linked file is not valid JSON - NOT overwriting it; use Copy JSON', true); }
   await idbPut(h); render(); if(write) await writeFile();
 }
 
 // A whole-file writer must carry through top-level keys it does not own.
-let carried = {};
+let carried = {}, carriedDec = {}, fileBlocked = false;   // carriedDec: file rows for plants not on this sheet
 async function writeFile(){
-  if(!fileHandle) return;
+  if(!fileHandle || fileBlocked) return;
   const touched = Object.values(state).filter(s=>s.touched).length;
   const total = ITEMS.length;
   // refuse a truncating write
   if(total < 50){ setLink('refused — implausible row count', true); return; }
   try{
     const w = await fileHandle.createWritable();
-    await w.write(JSON.stringify(Object.assign({}, carried, payload()), null, 2));
+    await w.write(JSON.stringify(Object.assign({}, carried, payload(), {decisions: Object.assign({}, carriedDec, payload().decisions)}), null, 2));
     await w.close();
     setLink('saved ' + new Date().toLocaleTimeString() + ' · ' + touched + ' of ' + total + ' touched');
   }catch(e){ setLink('write failed: ' + e.message, true); }

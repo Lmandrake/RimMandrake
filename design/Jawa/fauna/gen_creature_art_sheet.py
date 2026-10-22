@@ -106,8 +106,11 @@ def main() -> int:
     if os.path.exists(DECISIONS):
         try:
             prior = json.load(open(DECISIONS, encoding='utf-8'))
-        except ValueError:
-            prior = {}
+        except ValueError as e:
+            # an unreadable decisions file is the OWNER's data: building a sheet over {} would
+            # let his next autosave replace it with defaults
+            print(f'REFUSED: {DECISIONS} is not valid JSON ({e}); fix or restore it first', file=sys.stderr)
+            return 2
 
     items, missing_sprite, flagged = [], 0, 0
     for d, c in cast.items():
@@ -130,6 +133,10 @@ def main() -> int:
             'state': state, 'field': field, 'why': why,
             'sev': max([_sev(f, px, ct, fl) for f in flags], default=0.0), 'img': img,
         })
+    if not items:
+        print(f'REFUSED: 0 cast creatures matched sprite_features.csv (cast {len(cast)}, features {len(feat)}) '
+              f'- UNMEASURED, not an empty review; {OUT} left as it was', file=sys.stderr)
+        return 2
     items.sort(key=lambda i: (-i['sev'], i['id']))
 
     html_out = PAGE.replace('__DATA__', json.dumps(items)) \
