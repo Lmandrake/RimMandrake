@@ -1270,6 +1270,29 @@ def t_transition_is_a_unit_and_terminal_means_terminal():
     assert live.state == "ready", live.state
 
 
+def t_a_refused_claim_on_a_terminal_item_changes_nothing_in_the_projection():
+    """🔴 `claim` used to set owner/claim_ts BEFORE the terminal gate refused it, so the
+    non-strict projection (what every board renders) showed a closed item re-owned.
+    The ledger keeps the refused event; the projection must not act on it."""
+    for verb, kw, state in (("close", {"sha": "abc1234"}, "done"),
+                            ("drop", {"reason": "no"}, "dropped")):
+        iid = "TERMINAL_CLAIM_%s_1" % state.upper()
+        evs = [filed(iid, for_="BUILD"),
+               ev(seat="BUILD", event="claim", id=iid, ts="2026-08-20T00:00:00Z"),
+               ev(seat="BUILD", event=verb, id=iid, ts="2026-08-20T01:00:00Z", **kw)]
+        before = model.replay(evs).items[iid]
+        owner, cts = before.owner, before.claim_ts
+        w = model.replay(evs + [ev(seat="OWNER", event="claim", id=iid,
+                                   ts="2026-08-21T00:00:00Z")])    # non-strict
+        it = w.items[iid]
+        assert len(w.errors) == 1, "the terminal claim was not refused: %r" % w.errors
+        assert it.state == state, it.state
+        assert (it.owner, it.claim_ts) == (owner, cts), (
+            "a refused claim on a %s item still changed the projection: owner %r->%r "
+            "claim_ts %r->%r" % (state, owner, it.owner, cts, it.claim_ts))
+        assert not w.contested_claims, w.contested_claims
+
+
 # ---------------------------------------------------------------------------
 # THE OVERRIDE NOTICE MUST DESCRIBE **THIS** EVENT
 # ---------------------------------------------------------------------------

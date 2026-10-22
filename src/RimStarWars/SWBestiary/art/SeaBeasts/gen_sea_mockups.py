@@ -110,7 +110,10 @@ def one(job):
     return f"FAIL {out.name}: {tail[0][:120]}"
 
 jobs = [(n, i + 1, p) for n, ps in CREATURES.items() for i, p in enumerate(ps)]
+failed = 0
 with ThreadPoolExecutor(max_workers=1) as ex:
     for res in ex.map(one, jobs):
         print(res, flush=True)
-print("DONE")
+        failed += res.startswith("FAIL")
+print("DONE" if not failed else "DONE with %d FAILED mockup(s)" % failed)
+sys.exit(1 if failed else 0)
