@@ -759,7 +759,7 @@ class Proof(object):
         if self.res.get("aborted"):
             return                                           # the SHARED placeholder row stays, honestly UNMEASURED
         B = self.B
-        self.rows = [r for r in self.rows if r.get("id") != "S12d_D4_pending_queue_save"]
+        self.rows[:] = [r for r in self.rows if r.get("id") != "S12d_D4_pending_queue_save"]   # in place: res["rows"] IS this list
         built = VS.s12d_stage(B)
         name = (self.args.save_name or "RM_gss_proof_%s" % time.strftime("%Y%m%d%H%M%S")) + "_d4"
         self.res["save_d4"] = name + ".rws"
