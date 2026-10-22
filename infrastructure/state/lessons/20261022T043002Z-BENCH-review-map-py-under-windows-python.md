@@ -1,0 +1,1 @@
+review_map.py under Windows python.exe spends minutes in human_review derive_status os.walk over \\wsl paths before any output (the --save step alone took >280 s on 2026-10-21; WSL python3 does it in seconds but cannot reach the bridge). Give review_map --save / --labels a 590 s timeout, run -u, and do not read silence as a hang until then.
