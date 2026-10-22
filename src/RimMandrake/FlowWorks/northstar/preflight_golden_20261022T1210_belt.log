@@ -1,0 +1,24 @@
+FAIL       P-L1 running: list != tier flowworks: +['oskarpotocki.vanillafactionsexpanded.core', 'mandrake.rm.luminouspigment', 'mandrake.rm.biomes'] -[]; disk ModsConfig (next load): list != tier flowworks: +['oskarpotocki.vanillafactionsexpanded.core', 'mandrake.rm.luminouspigment', 'mandrake.rm.biomes'] -[]
+PASS       P-L2 646 log lines scanned, no FlowWorks error
+PASS       P-B1 545 tools; bridge held by BENCH
+PASS       P-B2 map 0 250x250 tile 73698 == sidecar
+PASS       P-B3 all 4 FlowWorks tools registered
+PASS       P-B4 348 fields at shipped defaults (1 internal flag(s) not compared)
+PASS       P-S1 11 plots match the manifest cell by cell
+FAIL       P-S2 D_pond capacity=50.0 want 125.0; D_pond stock=50.0 want 125.0; K_pond capacity=8.0 want 20.0; K_pond stock=8.0 want 20.0; S_pond capacity=32.0 want 80.0; S_pond stock=32.0 want 80.0
+PASS       P-S3 no excavation, no flow totals, no flood Thing
+PASS       P-E1 Clear, no conditions, incident queue empty
+PASS       P-E2 57 check cells 10..45 C; PermanentSummer
+FAIL       P-E3 paused PASS (ticksGame frozen at 35061 over two reads); no_modal FAIL (open blocking windows: ['VEF.Factions.Dialog_NewFactionSpawning']); dev_god_mode PASS (dev on); step_rate PASS (meanTickTime 0.0 ms)
+FAIL       P-E4 autosave every 0.25 day(s) -- the working map must never be saved (want >= 14.0; jawa/prefs autosaveIntervalDays=14)
+FAIL       P-E6 ordered list: running: list != tier flowworks: +['oskarpotocki.vanillafactionsexpanded.core', 'mandrake.rm.luminouspigment', 'mandrake.rm.biomes'] -[]; disk ModsConfig (next load): list != tier flowworks: +['oskarpotocki.vanillafactionsexpanded.core', 'mandrake.rm.luminouspigment', 'mandrake.rm.biomes'] -[]
+PASS       P-E7 nextPulseTick 35251; step(250) exact, paused
+FAIL       P-E8 screenWidth 3467 != 2516; screenHeight 1826 != 1252
+PASS       P-E5 mean 43.1 var 1220.3
+REFUSED P-L1 (live list == tier (ordered); five DLCs; mandrake.rm.pits absent): running: list != tier flowworks: +['oskarpotocki.vanillafactionsexpanded.core', 'mandrake.rm.luminouspigment', 'mandrake.rm.biomes'] -[]; disk ModsConfig (next load): list != tier flowworks: +['oskarpotocki.vanillafactionsexpanded.core', 'mandrake.rm.luminouspigment', 'mandrake.rm.biomes'] -[]
+REFUSED P-S2 (every authored body == its manifest record): D_pond capacity=50.0 want 125.0; D_pond stock=50.0 want 125.0; K_pond capacity=8.0 want 20.0; K_pond stock=8.0 want 20.0; S_pond capacity=32.0 want 80.0; S_pond stock=32.0 want 80.0
+REFUSED P-E3 (paused (proved); step rate measured; no open window; dev mode on): paused PASS (ticksGame frozen at 35061 over two reads); no_modal FAIL (open blocking windows: ['VEF.Factions.Dialog_NewFactionSpawning']); dev_god_mode PASS (dev on); step_rate PASS (meanTickTime 0.0 ms)
+REFUSED P-E4 (map pawn roster empty; autosave off): autosave every 0.25 day(s) -- the working map must never be saved (want >= 14.0; jawa/prefs autosaveIntervalDays=14)
+REFUSED P-E6 (loaded assembly identity == deployed DLL; ordered active list == tier): ordered list: running: list != tier flowworks: +['oskarpotocki.vanillafactionsexpanded.core', 'mandrake.rm.luminouspigment', 'mandrake.rm.biomes'] -[]; disk ModsConfig (next load): list != tier flowworks: +['oskarpotocki.vanillafactionsexpanded.core', 'mandrake.rm.luminouspigment', 'mandrake.rm.biomes'] -[]
+REFUSED P-E8 (render profile == sidecar): screenWidth 3467 != 2516; screenHeight 1826 != 1252
+DIRTY SITE: 17 rows, 6 FAIL, 0 UNMEASURED
