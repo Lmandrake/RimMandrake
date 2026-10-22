@@ -74,6 +74,7 @@
   <RMFlow_PumpNoRoom>no dug channel beside it has room</RMFlow_PumpNoRoom>
   <RMFlow_PumpToOutflow>pumped {0} out of an outflow hose end</RMFlow_PumpToOutflow>
   <RMFlow_PumpPouredOutflow>poured {0} out of an outflow hose end</RMFlow_PumpPouredOutflow>
+  <RMFlow_PumpPouredOverflow>the canal is full: {0} spilled over its edge</RMFlow_PumpPouredOverflow>
   <RMFlow_PumpNoDumpTank>no tank is set to Dump (pouring only drains Dump tanks)</RMFlow_PumpNoDumpTank>
   <RMFlow_PumpOutflowBlocked>outflow blocked: filling tanks instead</RMFlow_PumpOutflowBlocked>
   <RMFlow_PumpOtherPouring>another pump on this network is pouring</RMFlow_PumpOtherPouring>

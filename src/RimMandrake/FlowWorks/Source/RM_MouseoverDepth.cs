@@ -83,6 +83,12 @@ namespace RimMandrake.FlowWorks
 			{
 				return line;
 			}
+			// CANAL_OVERFLOW stage 1: spilled sheet water on an undug square
+			line = Sheet.RM_MapComponent_Sheet.ReadoutAt(map, c);
+			if (line != null)
+			{
+				return line;
+			}
 			TerrainDef t = c.GetTerrain(map);
 			if (t == null || RM_LiquidBottleUtility.LiquidAt(t) == null)
 			{

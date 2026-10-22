@@ -457,6 +457,26 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				{
 					return viaOutflow;
 				}
+				// CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 1 (D2): backed up against a brimming canal of water, the level
+				// spills over that canal's lip as sheet water (switch off, or the sheet full: refused, backed up as before)
+				if (Sheet.RM_MapComponent_Sheet.PumpSpillOutlet(Map, cells, cd, units, out IntVec3 spillAt))
+				{
+					foreach (Building_LiquidTank st in tanks)
+					{
+						LiquidDef sp = st.storedLiquid;
+						if (sp?.canalFluid != RimMandrakeFlowWorks_DefOf.RM_Fluid_Water || !st.CanProvide(units))
+						{
+							continue;
+						}
+						if (RM_LiquidTransfer.Move(units, RM_TransferLeg.Store(k => st.CanProvide(k), k => st.TryRemoveLiquid(k), k => st.TryAddLiquid(sp, k)), Sheet.RM_MapComponent_Sheet.SpillLeg(Map, spillAt, RM_SheetMath.Source.Pump), out _) == units)
+						{
+							Machinery.RM_LiquidNet.Credit(this, st, sp, units, RM_PumpMath.CycleTicks);   // credit site: pump overflow spill
+							Stamp(units);
+							Moved++;
+							return "RMFlow_PumpPouredOverflow".Translate(sp.label);
+						}
+					}
+				}
 				// P4 (PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD): backed up against brimming cells of a liquid it holds, the
 				// pump is still feeding them, so they stay flow-order inputs (after a load nothing else re-marks them).
 				for (int c = 0; c < cells.Count; c++)
