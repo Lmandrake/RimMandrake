@@ -393,11 +393,11 @@ python3 skills/rimworld-start-prep/scripts/sync_mod_state.py --apply    # write
 
 Dry-run by default — running it bare **is** the plan. There is no `--plan` flag.
 
-**Ask the owner before running it with `--apply`.** It is a one-line question at
-the point in §5 where the list has stopped moving: *"the saves record N mods and
-the live list has M — sync them so the mismatch dialog stays quiet?"* It is their
-call, because silencing that dialog is a judgement about whether the difference
-is understood.
+**Decide `--apply` yourself, and log it** — a delegated technical call
+(`design/RimMandrake/delegation_policy.md`; `--why "delegated: technical"`), taken at
+the point in §5 where the list has stopped moving and only when you can say why the
+saves' N mods differ from the live list's M: silencing that dialog is a judgement
+about whether the difference is understood.
 
 ⛔ **Never `--apply` to make an UNEXPLAINED mismatch go away.** The dialog is the
 only cheap warning that a save and the mod list have parted company. Silence it

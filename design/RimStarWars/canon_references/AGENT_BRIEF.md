@@ -160,8 +160,9 @@ Source of truth for which droids are in scope: the `in repo` column of
 ## 🔴 What a regen is validated against — owner ruled 2026-09-15
 
 **Sourced canon plus the visual brief IS the target.** The owner does not rule every entry;
-he rules only where canon is ambiguous, where he wants to depart from canon deliberately, or
-where a regen is contested. So an empty `## ruling` section does **not** mean the entry is
+he rules where he wants to depart from canon deliberately; where canon is ambiguous or a regen
+is contested, an art-judge agent decides first (`design/RimMandrake/delegation_policy.md`, owner 2026-10-22)
+and he reviews the curated result. So an empty `## ruling` section does **not** mean the entry is
 unusable — it means canon stands unopposed.
 
 Consequence for you: the entry must be good enough to be judged against directly. Which is
@@ -219,8 +220,8 @@ the prose, the checklist follows the images.
 | **engine limit** | the shader or mask pipeline cannot express it | new art, or a mask with more channels |
 | **rig limit** | the pawn skeleton cannot express it | nothing; retarget the goal |
 
-⛔ **Cosmetic changes need the owner's permission** before they are made — they can break
-animated faces. Recording a limit is not the same as fixing it.
+Recording a limit is not the same as fixing it: a fix is a cosmetic change, judged by a second agent
+against `design/RimMandrake/art_judge_brief.md` (owner, 2026-10-22) — and it must not break animated faces.
 
 ## What to report
 

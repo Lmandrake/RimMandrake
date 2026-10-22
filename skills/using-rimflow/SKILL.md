@@ -131,6 +131,9 @@ authority, so nothing lands in `ownerSaid` by mistake:
 | `--per-ruling <item-id\|event>` | `perRuling` | yes | a standing ruling of his, cited by its item id or ledger event (e.g. `OWNER.jsonl:<tsn>`) instead of re-quoting it. **A ruling stands until he changes it.** Refused if it has spaces (that is a quote, not a reference). |
 | `--why "…"` | `why` | **no** | your own reason in your own words (a self-initiated restart, an investigation note). Grants nothing; combine with any of the above. |
 
+- **A delegated decision** (`design/RimMandrake/delegation_policy.md`, owner 2026-10-22) is
+  `--why "delegated: <class>"` — ours, not his. ⛔ Never `--per-ruling` the delegation
+  item to make it read as OWNER: the ruling authorises the class, not the call.
 - rimflow still checks the quote's **shape** only: a question or bare assent ("yes") is
   refused as `--owner-said` — quote the instruction, or use `--by-card`.
 - `note --owner-said` stamps the WHOLE event as OWNER-authored; use bare `note` (plus

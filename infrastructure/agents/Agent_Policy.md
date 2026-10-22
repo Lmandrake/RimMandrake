@@ -51,7 +51,7 @@ loud, and dangerous exactly where it is silent.
 | A **compiler, selftest, validator or hook**, before anyone reads it | **sonnet** |
 | **Another agent**, who will re-derive it before acting | **sonnet** |
 | **Nobody** — it becomes a recorded fact other work cites | **opus** |
-| **Only the owner's eye** — art, the world, prose he reads | **opus**, and it goes to him |
+| **Only taste** — art, the world, prose he reads | **opus** judge agent (not the maker), then his curated review — `design/RimMandrake/delegation_policy.md` |
 
 ⛔ If you cannot name the catcher, you are on row 3. "It'll be obvious" is not a catcher.
 

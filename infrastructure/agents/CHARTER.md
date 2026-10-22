@@ -106,8 +106,10 @@ until someone crosses the line.
 
 ## Decisions
 
-The owner decides. A ruling is one dated line in `infrastructure/state/canon.yml`
-(numbers, rosters — every value with a `src:`) or on the item (scope). A reversal
+Agents decide nearly everything, art included (owner, 2026-10-22); only
+`design/RimMandrake/delegation_policy.md` §2 still needs him. Taste calls go to a judge agent, every
+delegated call is logged `--why "delegated: <class>"` and reaches him in a daily digest. A ruling is one
+dated line in `infrastructure/state/canon.yml` (numbers, rosters — every value with a `src:`) or on the item (scope). A reversal
 **replaces** the old line in the same commit and propagates to every file naming the
 item, same commit. A ruling under 24 h old is a draft — reversible without ceremony.
 
