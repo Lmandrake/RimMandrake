@@ -20,7 +20,7 @@
         <li>Custom3</li>
       </linkFlags>
       <damageData>
-        <rect>(0,0.35,1,0.3)</rect>
+        <rect>(0,0.43,1,0.14)</rect>
       </damageData>
     </graphicData>
   </ThingStyleDef>
@@ -37,7 +37,7 @@
         <li>Custom3</li>
       </linkFlags>
       <damageData>
-        <rect>(0,0.35,1,0.3)</rect>
+        <rect>(0,0.43,1,0.14)</rect>
       </damageData>
     </graphicData>
   </ThingStyleDef>
@@ -54,7 +54,7 @@
         <li>Custom3</li>
       </linkFlags>
       <damageData>
-        <rect>(0,0.35,1,0.3)</rect>
+        <rect>(0,0.43,1,0.14)</rect>
       </damageData>
     </graphicData>
   </ThingStyleDef>
@@ -71,7 +71,7 @@
         <li>Custom3</li>
       </linkFlags>
       <damageData>
-        <rect>(0,0.35,1,0.3)</rect>
+        <rect>(0,0.43,1,0.14)</rect>
       </damageData>
     </graphicData>
   </ThingStyleDef>

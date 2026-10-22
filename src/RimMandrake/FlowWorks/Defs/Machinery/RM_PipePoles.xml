@@ -81,7 +81,7 @@
         <maxLinks>3</maxLinks>   <!-- PROVISIONAL: a run in, a run out, one branch -->
         <attachZ>2.66</attachZ>  <!-- the stand-in mast's crossarm height; re-measure from the pole art when it lands -->
         <insulatorSpread>0</insulatorSpread>
-        <spanWidth>0.22</spanWidth>   <!-- RM_PipePoleMath.SpanWidthCells: the pipe's 30 cm (owner's widths card 2026-10-20) -->
+        <spanWidth>0.14</spanWidth>   <!-- RM_PipePoleMath.SpanWidthCells: the ground pipe atlas's girth (PIPE_GIRTH_TUNE_HALF_AS_THICK, 2026-10-21) -->
         <spanTexPath>RimMandrake/FlowWorks/PipePole/{look}/PipeSpan</spanTexPath>
       </li>
       <li Class="RimMandrake.FlowWorks.Machinery.RM_LineKindExtension">
