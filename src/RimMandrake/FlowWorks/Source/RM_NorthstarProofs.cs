@@ -685,5 +685,217 @@ namespace RimMandrake.FlowWorks
 			int rolled = eng.DigDiscovery?.ResetRolled(map, r) ?? 0;
 			return "RESET cells=" + cells + " levels=" + levels + " rolled=" + rolled + " left=" + left;
 		}
+
+		/// <summary>The hose reel whose footprint holds <paramref name="c"/>, or null.</summary>
+		private static Hose.CompHoseReel ReelAt(Map map, IntVec3 c)
+		{
+			Hose.RM_MapComponent_Hoses comp = map.GetComponent<Hose.RM_MapComponent_Hoses>();
+			if (comp == null)
+			{
+				return null;
+			}
+			foreach (Hose.CompHoseReel r in comp.OrderedReels())
+			{
+				if (r?.parent != null && r.parent.Spawned && r.parent.OccupiedRect().Contains(c))
+				{
+					return r;
+				}
+			}
+			return null;
+		}
+
+		/// <summary>PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A4/A5. arg "x,z" (a cell of a hose reel's footprint): what the
+		/// last levelling cycle did at that hose's open end, as the enum word RM_Levelling.StateOf holds (None = the end was in no
+		/// link last cycle), plus the process counters. Read only. "LEVELLINK reel=id state=W role=R laid=b cycles=n links=n
+		/// moves=n movedDl=n", or "REFUSED: ...".</summary>
+		public static string ProofLevelLink(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !Cell(arg, out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be x,z on the current map";
+			}
+			Hose.CompHoseReel reel = ReelAt(map, c);
+			if (reel == null)
+			{
+				return "REFUSED: no hose reel at " + c;
+			}
+			RM_LevelLinkState? s = Machinery.RM_Levelling.StateOf(map, reel);
+			return "LEVELLINK reel=" + reel.parent.thingIDNumber + " state=" + (s.HasValue ? s.Value.ToString() : "None")
+				+ " role=" + reel.freeEndRole + " laid=" + reel.laid + " cycles=" + Machinery.RM_Levelling.Cycles
+				+ " links=" + Machinery.RM_Levelling.LastLinks + " moves=" + Machinery.RM_Levelling.Moves
+				+ " movedDl=" + Machinery.RM_Levelling.MovedDl;
+		}
+
+		/// <summary>FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE A4. arg "x,z" (the pump): per side N/E/S/W, what sits at that port.
+		/// Each entry is reel:id:c|r (a reel's BODY on that side cell), free:id:c|r (a laid hose's free END on that side cell)
+		/// or pipe (a rigid pipe there: pipes are no ports and never block one), '+'-joined, or none; c = the shipping
+		/// HosePorts.Find/FindAt couples it to this pump, r = refused (the side is taken by a lower id). Hoses touching only a
+		/// corner are counted apart (corner=n, cornerCoupled=n must be 0). Read only. "PUMPPORTS N=.. E=.. S=.. W=.. coupled=n
+		/// corner=n cornerCoupled=n", or "REFUSED: ...".</summary>
+		public static string ProofPumpPorts(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !Cell(arg, out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be x,z on the current map";
+			}
+			Building_LiquidPump pump = c.GetFirstBuilding(map) as Building_LiquidPump;
+			if (pump == null)
+			{
+				return "REFUSED: no RM_LiquidPump at " + c;
+			}
+			Hose.RM_MapComponent_Hoses comp = map.GetComponent<Hose.RM_MapComponent_Hoses>();
+			var sides = new System.Collections.Generic.List<string>[4];
+			for (int s = 0; s < 4; s++)
+			{
+				sides[s] = new System.Collections.Generic.List<string>();
+			}
+			int coupled = 0, corner = 0, cornerCoupled = 0;
+			CellRect around = pump.OccupiedRect().ExpandedBy(1);
+			if (comp != null)
+			{
+				foreach (Hose.CompHoseReel r in comp.OrderedReels())
+				{
+					if (r?.parent == null || !r.parent.Spawned)
+					{
+						continue;
+					}
+					string id = r.parent.thingIDNumber.ToString();
+					CellRect body = r.parent.OccupiedRect();
+					bool bodyCoupled = Hose.HosePorts.Find(r, out _, out _, out _) == pump;
+					int bodySide = -1;
+					for (int s = 0; s < 4; s++)
+					{
+						if (body.Contains(pump.Position + new Rot4(s).FacingCell))
+						{
+							bodySide = s;
+							break;
+						}
+					}
+					if (bodySide >= 0)
+					{
+						sides[bodySide].Add("reel:" + id + ":" + (bodyCoupled ? "c" : "r"));
+					}
+					else if (body.Overlaps(around) && !body.Overlaps(pump.OccupiedRect()))
+					{
+						corner++;
+						if (bodyCoupled) cornerCoupled++;
+					}
+					if (bodyCoupled)
+					{
+						coupled++;
+					}
+					if (r.laid && r.far.IsValid && comp.RelayOf(r) == null && around.Contains(r.far))
+					{
+						bool endCoupled = Hose.HosePorts.FindAt(map, r.far, r.parent, out _, out _) == pump;
+						int endSide = Machinery.RM_PumpPortMath.SideOf(r.far.x - pump.Position.x, r.far.z - pump.Position.z);
+						if (endSide >= 0)
+						{
+							sides[endSide].Add("free:" + id + ":" + (endCoupled ? "c" : "r"));
+						}
+						else if (r.far != pump.Position)
+						{
+							corner++;
+							if (endCoupled) cornerCoupled++;
+						}
+						if (endCoupled)
+						{
+							coupled++;
+						}
+					}
+				}
+			}
+			for (int s = 0; s < 4; s++)
+			{
+				IntVec3 n = pump.Position + new Rot4(s).FacingCell;
+				if (!n.InBounds(map))
+				{
+					continue;
+				}
+				foreach (Thing t in n.GetThingList(map))
+				{
+					if (Machinery.RM_LiquidNet.IsPipe(t))
+					{
+						sides[s].Add("pipe");
+						break;
+					}
+				}
+			}
+			string[] names = { "N", "E", "S", "W" };
+			var sb = new System.Text.StringBuilder("PUMPPORTS");
+			for (int s = 0; s < 4; s++)
+			{
+				sb.Append(' ').Append(names[s]).Append('=').Append(sides[s].Count == 0 ? "none" : string.Join("+", sides[s]));
+			}
+			return sb.Append(" coupled=").Append(coupled).Append(" corner=").Append(corner).Append(" cornerCoupled=").Append(cornerCoupled).ToString();
+		}
+
+		/// <summary>WRITES. PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A3 (perf) stager: arg "x;z;w;h;levels;fill;FluidDef" digs
+		/// every cell of the rect to <c>levels</c> notches through the engine's own Deepen (the bridge dig's call) and sets
+		/// fill F through TrySetDriverFill (fill 0 = dry). Two 40,000-square basins are staged in strips (one call per strip
+		/// keeps the main-thread call short). "BASIN cells=n dug=n filled=n refused=n maxDepth=n", or "REFUSED: ...".</summary>
+		public static string ProofStageBasin(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length != 7 || !int.TryParse(a[0], out int x) || !int.TryParse(a[1], out int z)
+				|| !int.TryParse(a[2], out int w) || !int.TryParse(a[3], out int h) || !int.TryParse(a[4], out int levels)
+				|| !int.TryParse(a[5], out int fill) || w <= 0 || h <= 0 || levels <= 0 || fill < 0 || fill > levels)
+			{
+				return "REFUSED: arg must be x;z;w;h;levels;fill;FluidDef with 0<=fill<=levels on the current map";
+			}
+			if ((long)w * h > 20000)
+			{
+				return "REFUSED: at most 20000 cells per call (stage in strips)";
+			}
+			FluidDef fluid = fill > 0 ? DefDatabase<FluidDef>.GetNamedSilentFail(a[6]) : null;
+			if (fill > 0 && fluid == null)
+			{
+				return "REFUSED: no FluidDef " + a[6];
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (eng == null)
+			{
+				return "REFUSED: no excavation engine on the current map";
+			}
+			CellRect r = new CellRect(x, z, w, h);
+			if (!r.FullyContainedWithin(new CellRect(0, 0, map.Size.x, map.Size.z)))
+			{
+				return "REFUSED: rect " + x + "," + z + " " + w + "x" + h + " leaves the map";
+			}
+			int cells = 0, dug = 0, filled = 0, refused = 0, maxDepth = 0;
+			foreach (IntVec3 c in r)
+			{
+				cells++;
+				int d = eng.ExcavatedDepthAt(c);
+				for (int i = 0; i < levels && d < levels; i++)
+				{
+					int nd = eng.Deepen(c);
+					if (nd <= d)
+					{
+						break;
+					}
+					d = nd;
+				}
+				if (d >= levels)
+				{
+					dug++;
+				}
+				maxDepth = System.Math.Max(maxDepth, d);
+				if (fill > 0 || eng.FillAt(c) > 0)
+				{
+					if (eng.TrySetDriverFill(c, fill, fluid))
+					{
+						filled++;
+					}
+					else
+					{
+						refused++;
+					}
+				}
+			}
+			return "BASIN cells=" + cells + " dug=" + dug + " filled=" + filled + " refused=" + refused + " maxDepth=" + maxDepth;
+		}
 	}
 }
