@@ -200,6 +200,13 @@ namespace RimMandrake.StructureInjections
             // the PLAN says to clear rather than hardcoding one rect/mode
             // here - a template's own `ctx:clear()` blob clears land in the
             // same list, in the same "before anything" position.
+            // PAINT and FLOORCOLOR parse (RimplacePlan) but nothing here applies them: say so rather than read as success
+            if (plan.Paint.Count > 0)
+                Log.Warning("[RimMandrake.StructureInjections] plan " + sourceLabel + " has " + plan.Paint.Count +
+                            " PAINT line(s); this DLL does not apply paint - skipped.");
+            if (plan.FloorColor.Count > 0)
+                Log.Warning("[RimMandrake.StructureInjections] plan " + sourceLabel + " has " + plan.FloorColor.Count +
+                            " FLOORCOLOR line(s); this DLL does not apply floor colour - skipped.");
             foreach (var c in plan.Clears)
                 RunItem(sourceLabel, "CLEAR", c.Mode + "@(" + c.X + "," + c.Z + ")", () => ExecuteClear(map, c, dx, dz));
 
