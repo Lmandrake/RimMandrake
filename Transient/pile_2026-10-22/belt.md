@@ -130,3 +130,4 @@ Started 08:48 PDT. Tier fw_gss_sitting, DLL 41fb948b5e. Owner save RM_fw_walkthr
 - 13:09 regression on ee9fa61fbc: drawbridge_proof 12/12 PASS; suspension_bridge_proof 26 PASS / 0 FAIL / 8 UNMEASURED (same owed/water rows) — northstar/*_belt_ee9fa61fbc.json
 - 13:13 regression on ee9fa61fbc: trench_cover 6 PASS, climb 14 PASS + 1 owed, lines_proof 11/11 PASS — northstar/*_belt_ee9fa61fbc.json
 - 13:41 NEW flow_bignet_live.py (FLOW_ORDER A4): 6400-square network, pulse cost 4.2-4.8 ms/pulse (dry), but the edge source never fed it (map-edge sink band between source and plot eats the front): UNMEASURED/SITE, noted on the item — src/RimMandrake/FlowWorks/northstar/flow_bignet_result_20261022T1345_belt.json
+- 13:41 log finding (watchdog flagged the loop): 'RM_SuspensionRailing is madeFromStuff but stuff=null' x20 from PlaceRailing's god path -> filed RAILING_MATERIAL_FIX_MADE_OF_NOTHING (FOUNDRY)
