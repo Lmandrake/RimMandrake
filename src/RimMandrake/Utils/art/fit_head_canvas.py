@@ -607,7 +607,7 @@ def cmd_fit(a):
                   f"{rr['onscreen_skull_target']} / engine head scale {rr.get('engine_head_scale', 1.0)}")
     s, why = fit_scale(meas, fscale, squeeze, env, a.height_ratio, a.species)
     os.makedirs(a.out, exist_ok=True)
-    ext, crown_y = {}, None
+    ext, crown_y, pending = {}, None, []
     for f in FACINGS:
         im, bb, k = ims[f], meas[f]["bbox"], meas[f]["skull"]
         W = im.width
@@ -634,11 +634,13 @@ def cmd_fit(a):
         ext[f] = measure_image(out)
         if not ext[f] or not ext[f]["skull"]:
             raise SystemExit(f"{f}: the re-seated head fell off the {CANVAS}px canvas; {p} not written")
-        out.save(p)
+        pending.append((p, out))   # saved only once EVERY facing seated: no half-written species set
         if f == "south":
             crown_y = ext[f]["skull"]["t"] * CANVAS
         print(f"{p}  scale x{s:.3f} ({why})" + (f" facing x{fscale[f]:.3f}" if fscale[f] != 1 else "")
               + (f" squeeze-x {squeeze[f]:.3f}" if squeeze[f] != 1 else ""))
+    for p, out in pending:
+        out.save(p)
     viol, rows = judge({k: v for k, v in ext.items() if v}, env, a.species)
     for f in FACINGS:
         print(f"  {f:5s} {fmt_row(rows, f)}")

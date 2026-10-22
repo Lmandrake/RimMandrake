@@ -1851,7 +1851,14 @@ def write_prefill(rows, meta, override=False):
         try:
             with open(DECISIONS, encoding="utf-8") as fh:
                 existing = json.load(fh)
-        except (OSError, ValueError):
+            if not isinstance(existing, dict):
+                raise ValueError("top level is not an object")
+        except (OSError, ValueError) as exc:
+            # An unreadable file may still hold the owner's decisions; only an explicit override may replace it.
+            if not override:
+                die("the decisions file %s is unreadable (%s) - it may hold the owner's decisions, "
+                    "so the pre-fill will not replace it.\n  If you truly mean it: "
+                    "--i-know-this-overwrites-the-owners-decisions" % (DECISIONS, exc))
             existing = {}
     if existing.get("savedBy") and not override:
         die("this decisions file has ALREADY been written by the sheet "
