@@ -1,0 +1,98 @@
+{
+ "script": "reach_map_proof.py",
+ "started": "2026-10-22T07:42:33",
+ "rows": [
+  {
+   "id": "REACH_WINCH_SITE",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "far": "REACHPAIR canReach=False found=False veto=True inScope=True cls=2 band=2 agree=True",
+    "winchSide": "REACHPAIR canReach=True found=True veto=False inScope=True cls=2 band=2 agree=True"
+   }
+  },
+  {
+   "id": "REACH_LOCKED_GATE",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "locked": "REACHPAIR canReach=False found=False veto=True inScope=True cls=2 band=2 agree=True",
+    "unlocked": "REACHPAIR canReach=True found=True veto=False inScope=True cls=2 band=2 agree=True",
+    "bridge": "DRAW ok=True leaves=1 tier=steel hinges=A winchAt=- firstAt=162,180 reason=-",
+    "freeHostiles": "2"
+   }
+  },
+  {
+   "id": "REACH_ANIMAL_DOOR_TRENCH",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "wildMuffalo": "REACHPAIR canReach=False found=False veto=True inScope=True cls=14 band=3 agree=True",
+    "colonist": "REACHPAIR canReach=True found=True veto=False inScope=True cls=2 band=2 agree=True"
+   }
+  },
+  {
+   "id": "REACH_NONSWIMMER_MOAT",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "nonSwimmer": "REACHPAIR canReach=False found=False veto=True inScope=True cls=18 band=1 agree=True",
+    "tried": [
+     {
+      "kind": "Mech_Militor",
+      "read": "REACHPAIR canReach=False found=False veto=True inScope=True cls=18 band=1 agree=True"
+     }
+    ]
+   }
+  },
+  {
+   "id": "REACH_RESIDUAL_READ",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "WALLREACH on=True entries=7 builds=1712 overTicks=792 per1000=2161.62 lastMs=1.068 maxMs=36.751 meanMs=1.417 queries=38430 vetoes=131 | RESIDUAL fails=0 outOfScope=0 stale=0 residual=0 byKey=[] byDoor=[]"
+   }
+  },
+  {
+   "id": "REACH_RESIDUAL_SOAK",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "the owner's residual measurement: ProofReachReset, a long soak on a dug walled colony on his full list, then ProofReach; residual per 1000 ticks is the number"
+   }
+  }
+ ],
+ "args": {
+  "out": "src/RimMandrake/FlowWorks/northstar/reach_map_proof_result_20261022T0750_reuse.json",
+  "origin": "150,150",
+  "fresh_map": false,
+  "only": ""
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "8ba54a22cf87e3f9091164dac059d46ae756f85cfc1298fc24c57247a85dc029",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "e661f30b80d29c6d731bed52cd79838cf8b3fd398a7f20fbe92eba3b1e2d12fe"
+ },
+ "settings_before": {
+  "reachSeesWallsAndCliffs": "True"
+ },
+ "timing_before": "POCKETTIME cells=62500 | plain rebuilds=108 overTicks=1105 per1000=97.74 lastMs=10.675 maxMs=29.212 meanMs=6.346 bandMs=1.621,1.812,1.614,1.572,1.588,1.931 | WALLREACH entries=7 builds=697 overTicks=442 per1000=1576.92 lastMs=1.095 maxMs=36.751 meanMs=1.478",
+ "timing_after": "POCKETTIME cells=62500 | plain rebuilds=213 overTicks=1455 per1000=146.39 lastMs=5.697 maxMs=30.483 meanMs=6.408 bandMs=0.939,0.932,0.896,0.883,0.877,0.888 | floor0 rebuilds=49 overTicks=205 per1000=239.02 lastMs=5.592 maxMs=16.864 meanMs=6.045 bandMs=0.943,0.904,0.896,0.935,0.911,0.876 | WALLREACH entries=7 builds=1712 overTicks=792 per1000=2161.62 lastMs=1.068 maxMs=36.751 meanMs=1.417"
+}
