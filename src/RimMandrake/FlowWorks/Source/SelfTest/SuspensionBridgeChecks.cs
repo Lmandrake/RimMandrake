@@ -144,7 +144,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     && patches.Contains("typeof(Designator_FillInCanal)"), "dig, deepen and fill-in are refused under a bridge");
                 Assert(Src("Superdeep", "RM_FallRails.cs").Contains("t is Pits.Building_SuspensionRailing"), "a railing is a rail for falls and throws");
                 string mod = Src("RimMandrakeFlowWorksMod.cs");
-                Assert(mod.Contains("Pits.RM_SuspensionSettings.ExposeData();") && mod.Contains("Pits.RM_SuspensionSettings.DoSettingsSection(list);"),
+                Assert(mod.Contains("Pits.RM_SuspensionSettings.ExposeData();") && mod.Contains("Pits.RM_SuspensionSettings.DoSettingsSection);"),
                     "the Suspension bridges settings section is saved and drawn");
                 Assert(Src("Pits", "Suspension", "RM_SuspensionSettings.cs").Contains("list.Label(\"Suspension bridges\");"), "section title");
                 string defs = ModFile("Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml");

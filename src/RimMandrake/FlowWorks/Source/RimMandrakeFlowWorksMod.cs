@@ -875,7 +875,7 @@ namespace RimMandrake.FlowWorks
         /// A search hits when the query matches the section title or any of its setting names (case-insensitive);
         /// non-matching sections vanish, and a search opens every matching section.
         /// </summary>
-        private static bool Section(Listing_Standard list, string title, string[] names, bool gap = true)
+        private static bool Section(Listing_Standard list, string title, string[] names)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
             if (searching)
@@ -887,7 +887,7 @@ namespace RimMandrake.FlowWorks
             }
             // The separator belongs to the section (BLEED_WELL_STRINGS_RENAME_TAP_RETIRED, live 2026-10-22): drawn outside it,
             // every section a search hid left its GapLine behind, and "bleed" drew ~15 blank separator rows above the hit.
-            if (gap) list.GapLine();
+            if (sectionsDrawn++ > 0) list.GapLine();   // none above the first one shown
             bool open = searching || !collapsedSections.Contains(title);
             Text.Font = GameFont.Medium;
             if (list.ButtonText((open ? "- " : "+ ") + title))
@@ -914,6 +914,7 @@ namespace RimMandrake.FlowWorks
         }
 
         private static int searchHits;
+        private static int sectionsDrawn;
 
         public void DoWindowContents(Rect inRect)
         {
@@ -943,9 +944,10 @@ namespace RimMandrake.FlowWorks
             if (query != searchQuery) scrollPosition = Vector2.zero;   // a new search starts at its first hit, not mid-list
             searchQuery = query;
             searchHits = 0;
+            sectionsDrawn = 0;
             RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works excavation, flow and pit", ResetAllFields);
 
-            if (Section(list, "Digging", new[] { "mouseoverDepthEnabled", "digToDepthEnabled", "maxDigDepth", "machineDigEnabled", "maxMachineDigDepth", "digCostRisesWithDepth" }, gap: false))
+            if (Section(list, "Digging", new[] { "mouseoverDepthEnabled", "digToDepthEnabled", "maxDigDepth", "machineDigEnabled", "maxMachineDigDepth", "digCostRisesWithDepth" }))
             {
 
             list.CheckboxLabeled("Show liquid depth and litres under the mouse", ref mouseoverDepthEnabled,

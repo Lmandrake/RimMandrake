@@ -1199,7 +1199,7 @@ def run_flowworks_main():
         ("a name dropped from its section array", lambda c, p: (c.replace(f', "{names[-1]}" }})', ' })', 1), p), "no section"),
         ("a setting in two sections", lambda c, p: (c.replace(second.group(0), second.group(0) + f'"{names[0]}", ', 1), p), "two sections"),
         ("a section names a non-setting", lambda c, p: (c.replace(f', "{names[-1]}" }})', ', "notASettingAtAll" })', 1), p), "not a Scribed setting"),
-        ("a Section's closing brace lost", lambda c, p: (c.replace("            }\n\n            list.GapLine();\n            if (Section(", "\n            list.GapLine();\n            if (Section(", 1), p), "swallows|unbalanced"),
+        ("a Section's closing brace lost", lambda c, p: (c.replace("            }\n\n            if (Section(", "\n            if (Section(", 1), p), "swallows|unbalanced"),
         ("Reset-all removed", lambda c, p: (c.replace("SettingsKitMastersDrawer.ResetAllButton", "SettingsKitMastersDrawer.ResetAllButtn"), p), "Reset-all"),
         ("kit dropped from the csproj", lambda c, p: (c, p.replace("SettingsKitMastersDrawer.cs", "SettingsKitMastersDrawr.cs")), "SettingsKitMastersDrawer.cs"),
         ("the draw guard removed", lambda c, p: (c.replace("drawFailure", "drawFailur3"), p), "not guarded"),
@@ -1207,8 +1207,8 @@ def run_flowworks_main():
          lambda c, p: (c.replace("catch (System.Exception ex)", "catch (System.ArgumentException ex)", 1), p), "not guarded"),
         ("list.End moved inside the try",
          lambda c, p: (c.replace("            list.End();\n            Widgets.EndScrollView();", "            Widgets.EndScrollView();", 1)
-                       .replace("            RM_WaterMendSettings.DoSettingsSection(list);\n            }\n            catch",
-                                "            RM_WaterMendSettings.DoSettingsSection(list);\n            list.End();\n            }\n            catch", 1), p),
+                       .replace("RM_WaterMendSettings.DoSettingsSection);\n            }\n            catch",
+                                "RM_WaterMendSettings.DoSettingsSection);\n            list.End();\n            }\n            catch", 1), p),
          "not guarded"),
     ]
     for label, f, want in plants:

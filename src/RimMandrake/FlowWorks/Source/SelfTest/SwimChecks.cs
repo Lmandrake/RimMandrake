@@ -285,7 +285,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string eng = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 Assert(eng.Contains("Swimming.RM_Swim.Tick(map, this);"), "the swim pass ticks");
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
-                Assert(set.Contains("Swimming.RM_SwimSettings.ExposeData();") && set.Contains("Swimming.RM_SwimSettings.DoSettingsSection(list);")
+                Assert(set.Contains("Swimming.RM_SwimSettings.ExposeData();") && set.Contains("Swimming.RM_SwimSettings.DoSettingsSection);")
                     && set.Contains("Swimming.RM_SwimWater.Reapply();"), "settings scribed, drawn, re-applied on save");
                 // review day 3: "on the screen" reads the settings section only (the Scribe line's "ref n," matched it before,
                 // so the check could not fail once "scribed" passed)

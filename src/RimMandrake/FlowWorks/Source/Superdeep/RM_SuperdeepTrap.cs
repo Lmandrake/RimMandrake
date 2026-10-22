@@ -1059,6 +1059,22 @@ namespace RimMandrake.FlowWorks
 			return w != null && w.Spawned && w.Map == map && w.Position == start ? w : null;
 		}
 
+		/// <summary>Answer <paramref name="f"/> as if <paramref name="p"/> were starting a walk (a probe of StartPath's pawnless
+		/// CanReach: RM_RaiderTrench.ProofJobTrace).</summary>
+		public static T As<T>(Pawn p, System.Func<T> f)
+		{
+			Pawn was = walker;
+			walker = p;
+			try
+			{
+				return f();
+			}
+			finally
+			{
+				walker = was;
+			}
+		}
+
 		[HarmonyPrefix]
 		public static void Prefix(Pawn ___pawn, out Pawn __state)
 		{
