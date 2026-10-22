@@ -104,6 +104,7 @@
     <Compile Include="Hose\HoseNetProbe.cs" />
     <Compile Include="Hose\HosePorts.cs" />
     <Compile Include="Hose\Graphic_HoseReel.cs" />
+    <Compile Include="Hose\PlaceWorker_HoseReelOutlet.cs" />
     <Compile Include="Hose\HoseStyles.cs" />
     <Compile Include="Hose\HoseCarry.cs" />
     <Compile Include="Hose\HoseLive.cs" />

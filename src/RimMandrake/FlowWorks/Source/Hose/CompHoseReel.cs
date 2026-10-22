@@ -171,7 +171,7 @@ namespace RimMandrake.FlowWorks.Hose
             get
             {
                 CellRect rc = parent.OccupiedRect();
-                return new HoseReelRect(rc.minX, rc.minZ, rc.Width, rc.Height) { Look = HoseLook.LookOfThing(parent) };   // the nozzle is measured per look
+                return new HoseReelRect(rc.minX, rc.minZ, rc.Width, rc.Height) { Look = HoseLook.LookOfThing(parent), Rot = parent.Rotation.AsInt };   // the nozzle is measured per look; the outlet faces the reel's rotation
             }
         }
 
@@ -208,6 +208,16 @@ namespace RimMandrake.FlowWorks.Hose
             // written in step with carry BEFORE rmHoseLaid is scribed (it used to be recomputed after, so had no effect)
             if (Scribe.mode == LoadSaveMode.Saving) laid = HoseCarryLoad.IsLaid(carry);
             Scribe_Values.Look(ref laid, "rmHoseLaid");
+            // REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST: a reel saved before the reel turned (no rmReelFacing) was unrotatable, so it
+            // loads facing North; its outlet was west, so it is turned West, and moved one square east so a 2x2 keeps its
+            // footprint (GenAdj.AdjustForRotation shifts an even-width rect one square west for West).
+            int facingVersion = Scribe.mode == LoadSaveMode.Saving ? 1 : 0;
+            Scribe_Values.Look(ref facingVersion, "rmReelFacing", 0);
+            if (Scribe.mode == LoadSaveMode.LoadingVars && facingVersion == 0 && parent.Rotation == Rot4.North)
+            {
+                parent.Rotation = Rot4.West;
+                if (parent.def.Size.x % 2 == 0) parent.Position += IntVec3.East;
+            }
             Scribe_Values.Look(ref far, "rmHoseFar", IntVec3.Invalid);
             Scribe_Values.Look(ref end, "rmHoseEnd", HoseEnd.Open);
             Scribe_Values.Look(ref freeEndRole, "rmFreeEndRole", Machinery.RM_FreeEndRole.Capped);
@@ -899,6 +909,9 @@ namespace RimMandrake.FlowWorks.Hose
             string conn = p != null ? "Connected to " + p.LabelShort + " (" + portKind.ToString().ToLower() + ")."
                         : feeders.Count > 0 ? "Relay: fed by the hose from another reel" + (feeders.Count > 1 ? " (+" + (feeders.Count - 1) + " more)" : "") + "."
                         : "Not connected: build it beside a pipe or tank, or lay another reel's hose onto it.";
+            // REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST: north/south have no picture of their own yet (art owed); say so, plainly
+            HoseReelRect.ArtPose(parent.Rotation.AsInt, out _, out _, out bool standIn);
+            if (Rect.HasNozzle) conn += "\nHose leaves to the " + new[] { "north", "east", "south", "west" }[parent.Rotation.AsInt] + "." + (standIn ? " (Placeholder picture for this facing.)" : "");
             string order = pending == HosePendingOrder.Deploy ? "\nOrdered: deploy the hose."
                          : pending == HosePendingOrder.Move ? "\nOrdered: move the hose end."
                          : pending == HosePendingOrder.Retract ? "\nOrdered: retract the hose." : "";

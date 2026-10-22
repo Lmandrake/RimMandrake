@@ -1205,7 +1205,7 @@ def drawbridges(t):
 # from its newest result at the current mod hash and deployed DLL (driver_rows_at), else UNMEASURED naming the driver. The
 # driver calls the C# class RM_LineProofs (contracts: lines_proof.OWED_PROOFS); against a deployed FlowWorks without it, a
 # live run writes every row UNMEASURED/HARNESS.
-LINES_CASE_FILES = ("LineCrossingChecks.cs", "LineDigBreakChecks.cs", "DeckCollapseLinesChecks.cs", "PipePoleChecks.cs", "PipeSpanNetChecks.cs", "HoseBandChecks.cs", "LineReadoutChecks.cs", "PowerCordChecks.cs")
+LINES_CASE_FILES = ("LineCrossingChecks.cs", "LineDigBreakChecks.cs", "DeckCollapseLinesChecks.cs", "PipePoleChecks.cs", "PipeSpanNetChecks.cs", "HoseBandChecks.cs", "LineReadoutChecks.cs", "PowerCordChecks.cs", "ReelRiserShadowChecks.cs")
 LINES_CASES = [
     "LineCrossing_P2_table_every_kind_by_every_surface",
     "LineCrossing_P2_rigid_only_on_solid_ground_cover_carries_nothing",
@@ -1221,6 +1221,7 @@ LINES_CASES = [
     "PipePole_P3_support_on_solid_ground_only_refused_on_deck_cover_dug", "PipePole_P3_span_length_cap_follows_the_slider",
     "PipePole_P3_sag_at_the_slider_extremes", "PipePole_P3_span_is_not_walkable_and_not_in_pawn_topology",
     "PipePole_P4_dig_kills_the_pole_so_its_spans_fall", "PipePole_P3_settings_and_the_gss_seam_line_up",
+    "PipePole_D5_ground_pipe_reaches_the_pole_and_the_span_is_the_looks_pipe",
     "PipeSpan_P3_edge_joins_two_60pct_components_cap_after_join_refused",
     "PipeSpan_P3_edge_joins_two_40pct_components_accepted_as_one",
     "PipeSpan_P3_one_logical_edge_no_duplicate_cardinal_or_reverse_span",
@@ -1235,7 +1236,12 @@ LINES_CASES = [
     "PowerCord_placeable_on_rope_timber_steel_decks_and_leaf_refused_dug_and_cover",
     "PowerCord_restyled_conduit_still_refused_on_decks", "PowerCord_dig_break_catches_the_cord_def",
     "PowerCord_leaf_raise_disconnects_lower_rejoins_the_power_net",
-    "PowerCord_deck_collapse_destroys_it_and_records_the_fallen_wire_first"]
+    "PowerCord_deck_collapse_destroys_it_and_records_the_fallen_wire_first",
+    # owner cards 2026-10-22: REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST, PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID, HOSE_GIRTH_TUNE_MUCH_THINNER
+    "ReelFacing_outlet_nozzle_and_picture_turn_with_the_reel", "ReelFacing_target_on_the_outlet_side_lays_with_no_U_loop",
+    "ReelFacing_relay_inlet_turns_with_the_relay", "ReelFacing_def_rotatable_west_default_preview_and_legacy_saves",
+    "PipeTankRiser_ends_on_the_hose_flange_not_under_the_skid", "PipeTankRiser_wiring_link_stops_layer_prints_flange_follows",
+    "HoseShadow_empty_is_darker_and_wider_full_unchanged"]
 LINES_LIVE = [
     ("ROPE_DECK_RIGID_REFUSED_FLEX_OK", None, "on a rope deck square the placement gate refuses a pipe and a conduit and accepts "
      "a power cord; a hose to the far bank is laid over >= 3 deck squares"),

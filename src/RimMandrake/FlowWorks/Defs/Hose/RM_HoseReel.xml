@@ -20,7 +20,12 @@
     <pathCost>30</pathCost>
     <fillPercent>0.3</fillPercent>
     <size>(2,2)</size>
-    <rotatable>false</rotatable>
+    <!-- REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST (owner card 2026-10-22, "Player turns the reel"): the reel turns; its outlet,
+         nozzle and picture turn with it (Graphic_HoseReel, HoseReelRect.Rot). West is the picture as drawn and the default;
+         east is it mirrored; north/south use the west picture turned as a stand-in until their pictures are drawn. -->
+    <rotatable>true</rotatable>
+    <defaultPlacingRot>West</defaultPlacingRot>
+    <placeWorkers><li>RimMandrake.FlowWorks.Hose.PlaceWorker_HoseReelOutlet</li></placeWorkers>
     <selectable>true</selectable>
     <designationCategory>VCHE_PipeNetworks</designationCategory>   <!-- ruling #4 (2026-10-11): hoses go where pipes go (Defs/Machinery/RM_PipeNetworksTab.xml) -->
     <minifiedDef>MinifiedThing</minifiedDef>

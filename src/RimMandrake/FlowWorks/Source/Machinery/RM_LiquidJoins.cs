@@ -61,6 +61,20 @@ namespace RimMandrake.FlowWorks.Machinery
             return null;
         }
 
+        /// <summary>PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID: true when the pipe on <paramref name="c"/> meets <paramref name="b"/> (the
+        /// partner on c + d) as a riser onto the drawn flange: a 2x2 universal tank on the pipe's west or east (the one tank whose
+        /// ports are measured, TankPortGeometry, as the hose's PortEnd). portZ = the flange's height, the hose's end point.</summary>
+        public static bool RiserInto(IntVec3 c, IntVec3 d, Thing b, out double portZ)
+        {
+            portZ = 0;
+            if (b == null || d.z != 0 || d.x == 0 || b.def.defName != Hose.TankPortGeometry.TankDef) return false;
+            CellRect r = b.OccupiedRect();
+            if (!Hose.TankPortGeometry.PortPoint(PipeLook.LookOfThing(b), r.minX, r.minZ, r.Width, r.Height, d.x, d.z, out var port)) return false;
+            if (c.z < r.minZ || c.z > r.maxZ) return false;
+            portZ = port.Z;
+            return true;
+        }
+
         /// <summary>D5 (joints study 2026-10-22): a built pipe pole (never its blueprint or frame) on cell c. The net already joins
         /// a pipe beside it (RM_PipePoles.JoinCells); without this the ground pipe ended in a cap half a cell short of the pole.</summary>
         public static bool PipePoleAt(IntVec3 c, Map map)
@@ -164,6 +178,8 @@ namespace RimMandrake.FlowWorks.Machinery
                             if (m == null) continue;
                             LiquidJoinRule.Flange(d.x, d.z, out double ox, out double oz, out double ang);
                             Vector3 p = c.ToVector3Shifted() + new Vector3((float)ox, 0f, (float)oz);
+                            if (RM_MachinerySettings.pipeLinksIntoMachines && RM_LiquidJoins.RiserInto(c, d, RM_LiquidJoins.PartnerAt(c + d, map), out double pz))
+                                p.z = (float)pz;   // PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID: on the riser's end, the drawn flange
                             p.y = yPipe;
                             Printer_Plane.PrintPlane(this, p, new Vector2(s, s), m, -(float)ang);
                         }
@@ -213,7 +229,10 @@ namespace RimMandrake.FlowWorks.Machinery
             relevantChangeTypes = MapMeshFlagDefOf.Buildings;
         }
 
-        public override bool Visible => RM_MachinerySettings.pipesUnderToCentre;
+        public override bool Visible => RM_MachinerySettings.pipesUnderToCentre || RM_MachinerySettings.pipeLinksIntoMachines;
+
+        /// <summary>State read: riser polylines printed by the last regeneration of any section (PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID).</summary>
+        public static int lastRisers;
 
         /// <summary>State read: stub pieces printed by the last regeneration of any section (probe / live look).</summary>
         public static int lastPieces;
@@ -233,14 +252,15 @@ namespace RimMandrake.FlowWorks.Machinery
         public override void Regenerate()
         {
             ClearSubMeshes(MeshParts.All);
-            if (!RM_MachinerySettings.pipesUnderToCentre)
+            bool under = RM_MachinerySettings.pipesUnderToCentre, risers = RM_MachinerySettings.pipeLinksIntoMachines;
+            if (!under && !risers)
             {
                 FinalizeMesh(MeshParts.All);
                 return;
             }
             Map map = Map;
             float y = AltitudeLayer.FloorEmplacement.AltitudeFor() - 0.002f;
-            int n = 0;
+            int n = 0, nr = 0;
             foreach (IntVec3 c in section.CellRect)
             {
                 List<Thing> l = c.GetThingList(map);
@@ -257,7 +277,14 @@ namespace RimMandrake.FlowWorks.Machinery
                         Thing b = RM_LiquidJoins.PartnerAt(c + d, map);
                         if (b == null) continue;
                         CellRect r = b.OccupiedRect();
-                        double[] poly = di < 4 ? LiquidJoinRule.CentreStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height)
+                        double[] poly;
+                        if (di < 4 && risers && RM_LiquidJoins.RiserInto(c, d, b, out double portZ))
+                        {
+                            poly = LiquidJoinRule.RiserStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height, portZ, under);
+                            nr++;
+                        }
+                        else if (!under) continue;
+                        else poly = di < 4 ? LiquidJoinRule.CentreStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height)
                             : LiquidJoinRule.CornerStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height);
                         foreach (LiquidJoinRule.StubPiece p in LiquidJoinRule.StubPieces(poly))
                         {
@@ -281,6 +308,7 @@ namespace RimMandrake.FlowWorks.Machinery
                 }
             }
             lastPieces = n;
+            lastRisers = nr;
             FinalizeMesh(MeshParts.All);
         }
     }
@@ -295,6 +323,10 @@ namespace RimMandrake.FlowWorks.Machinery
         {
             if (__result || !RM_MachinerySettings.pipeLinksIntoMachines || parent == null || !parent.Spawned) return;
             if (!RM_LiquidNet.IsPipe(parent)) return;
+            Thing partner = RM_LiquidJoins.PartnerAt(c, parent.Map);
+            // PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID: a pipe meeting a 2x2 tank's flange stops its own arm at its centre; the riser
+            // (SectionLayer_RM_PipeCentreStubs) carries it to the flange's height and on to the flange
+            if (partner != null && RM_LiquidJoins.RiserInto(parent.Position, c - parent.Position, partner, out _)) return;
             if (RM_LiquidJoins.PartnerAt(c, parent.Map) != null
                 || (RM_MachinerySettings.pipePolesEnabled && RM_LiquidJoins.PipePoleAt(c, parent.Map))) __result = true;
         }
