@@ -43,7 +43,11 @@ Started 08:48 PDT. Tier fw_gss_sitting, DLL 41fb948b5e. Owner save RM_fw_walkthr
 
 
 ## NEXT
-(pending)
+- Deployed FlowWorks DLL = HEAD ee9fa61fbc (deploy_custom_mods FlowWorks --apply, worktree FlowWorks was clean). Tier fw_gss_sitting 14 mods, marker deployed/config/ModsConfig.swap-active.json kept. companion_profile test until 2026-10-23T07:00Z.
+- Waiting on fixers for re-prove: CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (raid_trench_proof --direct --depth 8), SPILL_DIAGNOSE_TEN_THOUSAND_GONE_DRY (liquid_checks --only L5), DRAWDOWN refill hash (deep_lake_proof --fresh-map), OVERFLOW_DIAGNOSE_FIRST_WET_RUN (sheet_overflow_proof --fresh-map), SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING (suspension_settings_live.py).
+- On any new FlowWorks DLL commit: plan deploy, game down, --apply only when `git status src/RimMandrake/FlowWorks` (non-py) is clean, else copy the committed DLL pair only (git show HEAD:...), relaunch via Steam, rerun lines_proof + the item's proof.
+- Owed, unscripted or blocked: SUSPENSION_WATERS A1 (no river tile with a fast lane), A3 flood (decks never awash), GRATE A4 slime, PIT_TEMPERATURE A2-A4, HOSE matrix width bar (re-baseline after his girth pick), walk_gaps PONDS rig (proof author), extension_proof (preflight refuses on this tier/autosave).
+- End of day: reload RM_fw_walkthrough_20261022 (load-checked clean at ~12:26), `bridge take --force --for "holding for the owner's walkthrough"`.
 - 08:49 lines_proof --fresh-map start (validation_core post-reveal plant sweep)
 - 08:53 drawbridge_proof --fresh-map start
 - 08:58 drawbridge_proof --fresh-map: 12/12 PASS (Fingerspike arrival recovered as SITE) — northstar/drawbridge_result_20261022T0915_belt.json; verified DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS L2 pass (no criteria registered on the item, run recorded only)
