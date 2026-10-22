@@ -1,6 +1,6 @@
 ---
 name: rimworld-canon-references
-description: Grade Star Wars creature, species and droid work against design/RimStarWars/canon_references/ — 137 entries whose sourced canon plus visual brief IS the acceptance target, so appearance is READ from the entry instead of invented, `## Must show` is the pass bar and `## Engine limits` says which parts of canon may not be asked for at all. Use before generating, regenerating, reskinning or judging any Star Wars creature/species/droid sprite; before writing or correcting a xenotype, PawnKindDef or ThingDef for one; when a review says a species looks wrong; before calling an appearance defect fixable, because the rig-limit class cannot be fixed at all and art chasing it is pure waste; and before any cosmetic change, which needs the owner's permission first.
+description: Grade Star Wars creature, species and droid work against design/RimStarWars/canon_references/ — 137 entries whose sourced canon plus visual brief IS the acceptance target, so appearance is READ from the entry instead of invented, `## Must show` is the pass bar and `## Engine limits` says which parts of canon may not be asked for at all. Use before generating, regenerating, reskinning or judging any Star Wars creature/species/droid sprite; before writing or correcting a xenotype, PawnKindDef or ThingDef for one; when a review says a species looks wrong; before calling an appearance defect fixable, because the rig-limit class cannot be fixed at all and art chasing it is pure waste; and before any cosmetic change, which a second agent judges against design/RimMandrake/art_judge_brief.md.
 ---
 
 # Canon references — the entry is the target, not your memory
@@ -143,9 +143,9 @@ applies regardless.
 ## 4. An empty `## ruling` means canon stands unopposed
 
 Measured 2026-09-16 across all 137 entries: **25 carry a ruling, 112 are empty.**
-Empty is the normal state and the entry is fully usable — the owner rules only on
-ambiguity, a deliberate departure from canon, or a contested regen
-(`AGENT_BRIEF.md`, his ruling of 2026-09-15).
+Empty is the normal state and the entry is fully usable — the owner rules on a
+deliberate departure from canon (`AGENT_BRIEF.md`, his ruling of 2026-09-15); ambiguity
+and contested regens go to an art-judge agent first (`design/RimMandrake/delegation_policy.md`, 2026-10-22).
 
 ⛔ **Never block, defer or downgrade work because an entry is "unruled".** That
 reading turns 112 complete briefs into blockers.
@@ -170,21 +170,19 @@ sourcing error.
 
 ---
 
-## 5. ⛔ Cosmetic changes need the owner's permission FIRST
+## 5. Cosmetic changes are judged by a second agent, not asked of the owner
 
-The rule and its reason (they can break animated faces) are in `CLAUDE.md`. What
-it means at the moment you are about to act:
+Owner, 2026-10-22: *"Nearly everything including art."* The policy is
+`design/RimMandrake/delegation_policy.md`; the constraints are
+`design/RimMandrake/art_judge_brief.md` (which keeps the old rule's reason: a pawn
+cosmetic change must not break animated faces). At the moment you are about to act:
 
-| you are about to… | permission needed? |
+| you are about to… | what it needs |
 |---|---|
-| record a finding, limit or contradiction **in the entry** | no — recording is not fixing |
-| add/remove/swap a head, eye, skin, hair or body gene | **yes** |
-| change a `texPath`, or replace shipped art with a regen | **yes** |
-| edit a non-cosmetic def field the entry flags (lifespan, aptitude, namer) | still gated by your queue item, not by this rule |
-
-Raise it or file it per your window file (`infrastructure/agents/BENCH.md` /
-`FOUNDRY.md`). Recording a limit is not the same as fixing it, and neither is
-having found a good reason.
+| record a finding, limit or contradiction **in the entry** | nothing — recording is not fixing |
+| add/remove/swap a head, eye, skin, hair or body gene | a judge agent's KEEP (brief §F), logged `--why "delegated: cosmetic"` |
+| change a `texPath`, or replace shipped art with a regen | a judge agent's KEEP; never over a picture he KEPT (that stays his) |
+| depart from canon deliberately, or write an entry's `## ruling` | the owner (policy §2) |
 
 ---
 
@@ -225,8 +223,8 @@ missing repo art, not a dangling reference.
   route, the 2000px-image trap that kills a session, the write-incrementally rule:
   `canon_references/AGENT_BRIEF.md`. It is the operating doc; this file only says
   how to *consume* what it produces.
-- **The owner's library-wide rulings** — the three defect classes, the cosmetic
-  gate, what an empty ruling means: `CLAUDE.md > What is where`. Restated nowhere,
+- **The owner's library-wide rulings** — the three defect classes, what an empty
+  ruling means: `CLAUDE.md > What is where`. Restated nowhere,
   pointed at from here.
 - **Sprite craft** → `generating-rimworld-sprites`. **Genes, heads and why a
   species "has no art"** → `rimworld-xenotypes`. **Finding the art on disk** →

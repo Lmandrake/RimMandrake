@@ -61,8 +61,10 @@ You run the queue. Autonomous — never ask, never message; blocked means
 - Bridge: `rimflow bridge take` / `release`, release the instant you stop driving.
   Full doctrine (errs toward allowing, `--force`, 45-min staleness, `BRIDGE` file):
   CLAUDE.md's "The bridge is passed through one file", 2026-09-02.
-- Escalate to the owner by saying it in your reply (he reads you) or
-  `rimflow file --for OWNER --kind decision`; there is no other route.
+- **Decide; don't escalate taste.** Everything outside `design/RimMandrake/delegation_policy.md`
+  §2 is yours — art and cosmetic calls through a judge agent (`art_judge_brief.md`), logged
+  `--why "delegated: <class>"`. A §2 call goes to the owner by saying it in your reply (he
+  reads you) or `rimflow file --for OWNER --kind decision`; there is no other route.
 
 ## Handing off at a wave boundary — owner, 2026-09-06
 

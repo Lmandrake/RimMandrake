@@ -224,6 +224,14 @@ title attached — `B58 (the dead Jawa pawnkind)`, never bare.
   (2026-09-09) — delete wrong content, fix every inbound reference in the same change; a
   one-line pointer only for content that MOVED.
 
+## 🔑 Agents decide nearly everything, art included — owner, 2026-10-22
+
+*"Nearly everything including art. An agent can absolutely ask another agent for an art ruling based on some prose
+constraints and requirements we can draft."* Taste calls go to a judge agent (not the maker); every delegated call is
+logged `--why "delegated: <class>"`, never as his approval, and reaches him in a daily digest. Only the short list in
+`design/RimMandrake/delegation_policy.md` §2 still needs him (north-star bars, irreversible acts on others' work,
+replacing art he kept, changing his rulings, outward/paid acts, flyer live tests).
+
 ## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
 
 ## Git
@@ -265,7 +273,8 @@ stay tracked; pin anything else with `python3 src/RimMandrake/Utils/transient_pi
 
 **Art is judged against the canon library, and canon is the target** (owner, 2026-09-15):
 `design/RimStarWars/canon_references/` (`AGENT_BRIEF.md` is the operating doc; count the
-entries, never cite a number). ⛔ **Cosmetic changes need his permission first.** Art goes
+entries, never cite a number). Art and cosmetic changes are judged by a second agent against
+`design/RimMandrake/art_judge_brief.md` (delegated, below). Art goes
 through the art ledger's `art install` only. **Check for existing regenerated art before queuing more:** search
 `artpipe_state.py find` and sheets' `.decisions.json` first (*"I actually already saw beautiful art for giant
 leaf somewhere in a review sheet"*). Detail: `standing_rulings.md`.

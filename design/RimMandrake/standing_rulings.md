@@ -281,12 +281,13 @@ python3 src/RimMandrake/Utils/code_review_status.py list               every rec
 `design/RimStarWars/canon_references/` holds the canon entries (creatures, species, droid
 chassis; count it, never cite a number) — each with sourced canon, a visual brief written against real reference images, a
 `## Must show` checklist and `## Engine limits`. **An empty `## ruling` means canon stands
-unopposed, not that the entry is unusable**; he rules only on ambiguity, deliberate
-departures and contested regens. `AGENT_BRIEF.md` there is the operating doc. 🔴 Keep the
+unopposed, not that the entry is unusable**; he rules on deliberate departures from canon;
+ambiguity and contested regens go to the art judge first (`delegation_policy.md`). `AGENT_BRIEF.md` there is the operating doc. 🔴 Keep the
 three defect classes apart — a **missing gene** is edited in the def, an **engine limit**
 needs new art or more mask channels, and a **rig limit** (Ithorian neck, Kaminoan
 proportions, Muun body, Lasat legs) cannot be fixed at all, so art chasing it is waste.
-⛔ **Cosmetic changes need his permission first** — they can break animated faces.
+Art and cosmetic changes are delegated (owner, 2026-10-22, `delegation_policy.md`): a judge agent applies
+`art_judge_brief.md`, which keeps the old rule's reason — a pawn cosmetic change must not break animated faces.
 🔑 **Every art review sheet shows the canon reference images and the entry's `## Must show`
 beside each row whenever the subject has a canon entry** (owner, 2026-10-04); a row without one
 says so. Since 2026-10-04 art goes through the art ledger and its `art install` only
