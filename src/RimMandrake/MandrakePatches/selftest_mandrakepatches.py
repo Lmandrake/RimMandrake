@@ -200,6 +200,11 @@ def main():
     if FAILS:
         print("\n%d MandrakePatches selftest(s) FAILED" % len(FAILS))
         return 1
+    if not rows:
+        # the dump half never ran (unreadable dump, or an empty one): say so in the runner's own
+        # phrase, never "all passed" - a skipped check is not a pass.
+        print("\nUNMEASURED, not a pass or a fail (fix effects vs dump did not run)")
+        return 0
     print("\nall MandrakePatches selftests passed")
     return 0
 

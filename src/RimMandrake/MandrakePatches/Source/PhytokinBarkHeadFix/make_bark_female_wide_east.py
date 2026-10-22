@@ -131,7 +131,9 @@ def main():
         return 1
 
     os.makedirs(OUT_DIR, exist_ok=True)
-    _tw.copy(os.path.join(DONOR, SUSPECT), OUT)   # bytes, not a re-encode
+    if not _tw.copy(os.path.join(DONOR, SUSPECT), OUT):   # bytes, not a re-encode
+        print(f"NOT WRITTEN - art ledger refused {OUT}")   # False = refused/kept
+        return 1
     print(f"OK -> {OUT}")
     return 0
 
