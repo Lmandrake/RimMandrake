@@ -1,0 +1,1 @@
+A ledger criterion's level L1 is NOT 'selftest': most FlowWorks L1 criteria read 'in game ...'. Read the criterion text before recording a selftest as its verify; a selftest pass on a live criterion is a note, not a verify.
