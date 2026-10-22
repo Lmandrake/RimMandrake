@@ -1,0 +1,414 @@
+{
+ "set": "Whisperbird",
+ "folder": "/mnt/d/ClaudeWork/rimmandrake/scratch/whisperbird_modern_flight/masters",
+ "prefix": "Whisperbird_Flying_",
+ "note": "2026-10-22 BENCH, owner on facings_regen_picks: 'A + B is good, but your flying art is old and not modern.' Still-body rebuild: master (frame 1, and copies as frames 2-4 so the set counts 4) of each facing = the grounded art he picked, A south 33ef93331abf, A east 6d3e36508719, B north ef8cec0cad2b (art store shas); wings beat DOWN from that raised pose. folder is agent storage scratch: rebuild by copying those three PNGs there as Whisperbird_Flying_{1..4}_<facing>.png.",
+ "facings": {
+  "south": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      118,
+      78
+     ],
+     [
+      146,
+      78
+     ],
+     [
+      148,
+      122
+     ],
+     [
+      116,
+      122
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       0,
+       8
+      ],
+      [
+       118,
+       8
+      ],
+      [
+       118,
+       78
+      ],
+      [
+       114,
+       126
+      ],
+      [
+       60,
+       140
+      ],
+      [
+       0,
+       104
+      ]
+     ],
+     "hinge": [
+      112,
+      104
+     ],
+     "sign": 1,
+     "poses": [
+      [
+       0,
+       1.0
+      ],
+      [
+       22,
+       0.96
+      ],
+      [
+       44,
+       0.9
+      ],
+      [
+       22,
+       0.96
+      ]
+     ]
+    },
+    {
+     "poly": [
+      [
+       146,
+       8
+      ],
+      [
+       256,
+       8
+      ],
+      [
+       256,
+       104
+      ],
+      [
+       200,
+       140
+      ],
+      [
+       150,
+       126
+      ],
+      [
+       146,
+       78
+      ]
+     ],
+     "hinge": [
+      148,
+      104
+     ],
+     "sign": -1,
+     "poses": [
+      [
+       0,
+       1.0
+      ],
+      [
+       22,
+       0.96
+      ],
+      [
+       44,
+       0.9
+      ],
+      [
+       22,
+       0.96
+      ]
+     ]
+    }
+   ]
+  },
+  "north": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      116,
+      76
+     ],
+     [
+      140,
+      76
+     ],
+     [
+      142,
+      130
+     ],
+     [
+      114,
+      130
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       0,
+       8
+      ],
+      [
+       120,
+       8
+      ],
+      [
+       120,
+       76
+      ],
+      [
+       116,
+       134
+      ],
+      [
+       60,
+       140
+      ],
+      [
+       0,
+       104
+      ]
+     ],
+     "hinge": [
+      116,
+      100
+     ],
+     "sign": 1,
+     "poses": [
+      [
+       0,
+       1.0
+      ],
+      [
+       22,
+       0.96
+      ],
+      [
+       44,
+       0.9
+      ],
+      [
+       22,
+       0.96
+      ]
+     ]
+    },
+    {
+     "poly": [
+      [
+       138,
+       8
+      ],
+      [
+       256,
+       8
+      ],
+      [
+       256,
+       104
+      ],
+      [
+       200,
+       140
+      ],
+      [
+       140,
+       134
+      ],
+      [
+       138,
+       76
+      ]
+     ],
+     "hinge": [
+      140,
+      100
+     ],
+     "sign": -1,
+     "poses": [
+      [
+       0,
+       1.0
+      ],
+      [
+       22,
+       0.96
+      ],
+      [
+       44,
+       0.9
+      ],
+      [
+       22,
+       0.96
+      ]
+     ]
+    }
+   ]
+  },
+  "east": {
+   "master": 1,
+   "order": "over",
+   "protect": [
+    [
+     [
+      210,
+      93
+     ],
+     [
+      256,
+      93
+     ],
+     [
+      256,
+      128
+     ],
+     [
+      200,
+      128
+     ],
+     [
+      201,
+      106
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       0,
+       12
+      ],
+      [
+       160,
+       12
+      ],
+      [
+       172,
+       68
+      ],
+      [
+       172,
+       120
+      ],
+      [
+       130,
+       128
+      ],
+      [
+       92,
+       134
+      ],
+      [
+       50,
+       112
+      ],
+      [
+       0,
+       92
+      ]
+     ],
+     "hinge": [
+      162,
+      124
+     ],
+     "sign": 1,
+     "poses": [
+      [
+       0,
+       1.0,
+       1.0
+      ],
+      [
+       0,
+       1.0,
+       0.5
+      ],
+      [
+       4,
+       1.0,
+       -0.45
+      ],
+      [
+       0,
+       1.0,
+       0.5
+      ]
+     ]
+    },
+    {
+     "poly": [
+      [
+       160,
+       56
+      ],
+      [
+       248,
+       56
+      ],
+      [
+       248,
+       93
+      ],
+      [
+       210,
+       93
+      ],
+      [
+       204,
+       101
+      ],
+      [
+       160,
+       101
+      ]
+     ],
+     "hinge": [
+      186,
+      101
+     ],
+     "sign": 1,
+     "order": "under",
+     "poses": [
+      [
+       0,
+       1.0,
+       1.0
+      ],
+      [
+       0,
+       1.0,
+       0.6
+      ],
+      [
+       0,
+       1.0,
+       0.3
+      ],
+      [
+       0,
+       1.0,
+       0.6
+      ]
+     ]
+    }
+   ],
+   "falloff": 0
+  }
+ }
+}
