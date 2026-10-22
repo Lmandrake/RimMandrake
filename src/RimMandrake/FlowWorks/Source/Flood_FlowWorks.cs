@@ -45,7 +45,9 @@ namespace RimMandrake.FlowWorks
 	{
 		private FluidDef fluidDef;
 
-		private float remainingVolume;
+		/// <summary>CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED step 1 (§6 item 15): the release's books in whole decilitres
+		/// (RM_FloodReleaseMath, selftested). Replaces the float-notch <c>remainingVolume</c>; every exit is counted.</summary>
+		private RM_FloodReleaseMath.Ledger ledger = RM_FloodReleaseMath.Ledger.Start(0);
 
 		/// <summary>Tiles this release expects to place; fixes its expand rate,
 		/// its recede stagger and its expiry. Set once at spawn, then scribed.</summary>
@@ -57,6 +59,10 @@ namespace RimMandrake.FlowWorks
 		/// dedupe set, rehydrated into <see cref="placedLookup"/> on load.</summary>
 		private List<IntVec3> placedCells = new List<IntVec3>();
 
+		/// <summary>§6 item 15: cells the release offered and was refused (or kept its hands off). SCRIBED, so a reload
+		/// rebuilds <see cref="placedLookup"/> from both lists and eligibility does not change across a save.</summary>
+		private List<IntVec3> refusedCells = new List<IntVec3>();
+
 		/// <summary>Cells whose cardinal neighbours may still be floodable. The
 		/// seed cell starts here and is never itself flooded -- same shape as
 		/// vanilla's initial-cell set, which seeds from river cells and floods
@@ -64,6 +70,18 @@ namespace RimMandrake.FlowWorks
 		private List<IntVec3> frontier = new List<IntVec3>();
 
 		private readonly HashSet<IntVec3> placedLookup = new HashSet<IntVec3>();
+
+		/// <summary>§6 item 15: the walk's own draw counter (RM_FloodReleaseMath.Pick over thingIDNumber), never the global Rand.</summary>
+		private long walkStep;
+
+		/// <summary>The walk has ended with liquid left: the release now offers it to the sheet (canal overflow) each
+		/// <see cref="DrainIntervalTicks"/> until the sheet takes none, then discloses the rest.</summary>
+		private bool draining;
+
+		/// <summary>The front has cooled to glass already (it cools once, however the release ends).</summary>
+		private bool frontCooled;
+
+		private const int DrainIntervalTicks = 250;
 
 		/// <summary>Only reached by a flood whose fluidDef went missing; a real
 		/// one is destroyed on the next tick before this ever divides anything.</summary>
@@ -83,20 +101,12 @@ namespace RimMandrake.FlowWorks
 		/// tile per TicksPerTile, for every tile it can pay for.</summary>
 		private int FloodingTicks => TicksPerTile * Mathf.Max(1, estimatedFloodedTiles);
 
+		private long PerTileDl => RM_FloodReleaseMath.PerTileDl(fluidDef != null ? fluidDef.volumePerTile : 1f);
+
 		/// <summary>Tiles this release can actually pay for. Vanilla estimated
 		/// (seed cells x FloodWidthRange.max), which for a single-seeded canal
 		/// release is 12 regardless of how much fluid the source holds.</summary>
-		private int PayableTiles
-		{
-			get
-			{
-				if (fluidDef == null || fluidDef.volumePerTile <= 0f)
-				{
-					return 1;
-				}
-				return Mathf.Max(1, Mathf.CeilToInt(remainingVolume / fluidDef.volumePerTile));
-			}
-		}
+		private int PayableTiles => RM_FloodReleaseMath.PayableTiles(ledger.Remaining, PerTileDl);
 
 		/// <summary>Past this the flood is done or provably stuck, and must not
 		/// keep ticking into every save. FloodingTicks is exactly the time needed
@@ -109,33 +119,69 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Exposed for the bridge debug-report surface.</summary>
 		public int FloodedTileCount => floodedTileCount;
 
-		public float RemainingVolume => remainingVolume;
+		/// <summary>What the release still holds, in notches (the bridge debug-report surface reads this float).</summary>
+		public float RemainingVolume => ledger.Remaining / (float)RM_FloodReleaseMath.U;
+
+		public long RemainingDl => ledger.Remaining;
+
+		/// <summary>The release's books (dL): given, placed, spilled onto the ground as sheet water, disclosed as lost.</summary>
+		public string LedgerLine => "in " + ledger.In + " dL = placed " + ledger.Placed + " + spilled " + ledger.Spilled + " + lost "
+			+ ledger.Lost + " + held " + ledger.Remaining + (ledger.Closes ? "" : " (LEDGER OPEN: a bug)");
 
 		/// <summary>Exposed for the bridge debug-report surface: the tick this
 		/// flood gives up, which is the thing finding 2's fix has to be watched
 		/// against live.</summary>
 		public int ExpiresAtTick => ExpiryTick;
 
+		/// <summary><paramref name="volume"/> in notches (the contract other mods call); held as whole dL from here on.</summary>
 		public void Configure(FluidDef fluid, float volume)
 		{
+			ConfigureDl(fluid, RM_FloodReleaseMath.NotchesToDl(volume));
+		}
+
+		public void ConfigureDl(FluidDef fluid, long dl)
+		{
 			fluidDef = fluid;
-			remainingVolume = volume;
+			ledger = RM_FloodReleaseMath.Ledger.Start(dl);
 		}
 
 		public override void ExposeData()
 		{
 			base.ExposeData();
 			Scribe_Defs.Look(ref fluidDef, "fluidDef");
-			Scribe_Values.Look(ref remainingVolume, "remainingVolume", 0f);
+			if (ledger == null)
+			{
+				ledger = RM_FloodReleaseMath.Ledger.Start(0);
+			}
+			Scribe_Values.Look(ref ledger.In, "releaseInDl", -1L);
+			Scribe_Values.Look(ref ledger.Placed, "placedDl", 0L);
+			Scribe_Values.Look(ref ledger.Spilled, "spilledDl", 0L);
+			Scribe_Values.Look(ref ledger.Lost, "lostDl", 0L);
+			Scribe_Values.Look(ref ledger.Remaining, "remainingDl", 0L);
+			if (Scribe.mode == LoadSaveMode.LoadingVars && ledger.In < 0)
+			{
+				// a save from before the dL ledger: its float-notch remainder becomes the whole of this release's books
+				float legacy = 0f;
+				Scribe_Values.Look(ref legacy, "remainingVolume", 0f);
+				ledger = RM_FloodReleaseMath.Ledger.Start(RM_FloodReleaseMath.NotchesToDl(legacy));
+			}
 			Scribe_Values.Look(ref estimatedFloodedTiles, "estimatedFloodedTiles", 0);
 			Scribe_Values.Look(ref floodedTileCount, "floodedTileCount", 0);
+			Scribe_Values.Look(ref walkStep, "walkStep", 0L);
+			Scribe_Values.Look(ref draining, "draining", false);
+			Scribe_Values.Look(ref frontCooled, "frontCooled", false);
 			Scribe_Collections.Look(ref placedCells, "placedCells", LookMode.Value);
+			Scribe_Collections.Look(ref refusedCells, "refusedCells", LookMode.Value);
 			Scribe_Collections.Look(ref frontier, "frontier", LookMode.Value);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (placedCells == null)
 				{
 					placedCells = new List<IntVec3>();
+				}
+				if (refusedCells == null)
+				{
+					refusedCells = new List<IntVec3>();
 				}
 				if (frontier == null)
 				{
@@ -145,6 +191,10 @@ namespace RimMandrake.FlowWorks
 				for (int i = 0; i < placedCells.Count; i++)
 				{
 					placedLookup.Add(placedCells[i]);
+				}
+				for (int i = 0; i < refusedCells.Count; i++)
+				{
+					placedLookup.Add(refusedCells[i]);
 				}
 			}
 		}
@@ -160,6 +210,7 @@ namespace RimMandrake.FlowWorks
 			}
 			estimatedFloodedTiles = PayableTiles;
 			placedCells.Clear();
+			refusedCells.Clear();
 			placedLookup.Clear();
 			frontier.Clear();
 			frontier.Add(Position);
@@ -171,45 +222,58 @@ namespace RimMandrake.FlowWorks
 			// removed mod, a save-compat gap) silently destroyed this flood every
 			// tick with nothing in the log -- indistinguishable from ordinary
 			// volume exhaustion. Only log the genuinely-unexpected case.
+			// §6 item 15: and what it still held is DISCLOSED (EndRelease), never dropped.
 			if (fluidDef == null || fluidDef.floodTerrain == null)
 			{
 				Log.ErrorOnce("[RimMandrake.FlowWorks] a Flood_FlowWorks has no fluidDef or no " +
-					"floodTerrain (a removed mod's FluidDef?) -- destroying.", thingIDNumber ^ 0x3);
-				Destroy();
+					"floodTerrain (a removed mod's FluidDef?) -- ending it; what it held is counted as lost.", thingIDNumber ^ 0x3);
+				EndRelease();
 				return;
 			}
-			if (remainingVolume <= 0f)
+			if (ledger.Remaining <= 0)
 			{
 				// SUMP_TAR_HYDROLOGY_1 ruling 3: a release that spent its whole
 				// reservoir is the "self-limits" case the ruling names -- cool
 				// its own outer edge before it goes.
 				CoolFrontToGlass();
-				Destroy();
+				EndRelease();
 				return;
 			}
 			// Fixed 2026-09-02 (FLUID_CANAL_FLOOD_TUNING_GAPS_1 finding 2): a
 			// flood walled in before its volume ran out ticked forever and
 			// scribed into every save. Every tile it already placed is already
-			// queued for removal, so an expired flood still drains correctly;
-			// nothing leaks.
+			// queued for removal, so an expired flood still drains correctly.
+			// §6 item 15: what it still holds goes to the sheet or is disclosed (EndRelease) -- never a silent exit.
 			//
 			// Deliberately NOT cooled: a release reaching this branch is
 			// provably STUCK (still had volume left, still had frontier left,
 			// and ran out the clock anyway), not a healthy release that spread
 			// itself out -- ruling 3's "self-limits" language describes the
-			// other two Destroy() paths in this method, not this one.
+			// other two ends in this method, not this one.
 			if (Find.TickManager.TicksGame > ExpiryTick)
 			{
-				Destroy();
+				EndRelease();
 				return;
 			}
 			// Nowhere left to grow from at all: provably finished or provably
-			// walled in, and either way there is nothing for a later tick to do.
-			// This IS the "walls itself in" half of ruling 3's self-limiting case.
+			// walled in. This IS the "walls itself in" half of ruling 3's self-limiting case.
+			// CANAL_OVERFLOW (D2, owner card 2026-10-22): what is left spills over the lip as sheet water, offered again each
+			// drain interval while the sheet takes some; the rest is disclosed.
 			if (frontier.Count == 0)
 			{
-				CoolFrontToGlass();
-				Destroy();
+				if (!draining)
+				{
+					CoolFrontToGlass();
+					draining = true;
+				}
+				else if (!this.IsHashIntervalTick(DrainIntervalTicks))
+				{
+					return;
+				}
+				if (!DrainToSheet())
+				{
+					EndRelease();
+				}
 				return;
 			}
 			if (!this.IsHashIntervalTick(TicksPerTile))
@@ -219,10 +283,58 @@ namespace RimMandrake.FlowWorks
 			SpreadOneTile();
 		}
 
+		/// <summary>Offer what the release still holds to the sheet at its seed (the lips nearest it). True when the sheet
+		/// took some (the release waits and offers again), false when it took none.</summary>
+		private bool DrainToSheet()
+		{
+			Map map = Map;
+			if (map == null || fluidDef == null || ledger.Remaining <= 0)
+			{
+				return false;
+			}
+			long got = Sheet.RM_MapComponent_Sheet.SpillRelease(map, Position, ledger.Remaining, fluidDef);
+			return ledger.Spill(got) > 0;
+		}
+
+		/// <summary>§6 item 15: the ONE way a release ends. What it still holds is offered to the sheet once more, and the
+		/// rest is disclosed as lost (counted with the fill-in overflow and announced in litres), never dropped silently.</summary>
+		private void EndRelease()
+		{
+			Map map = Map;
+			if (ledger.Remaining > 0 && map != null)
+			{
+				if (fluidDef != null)
+				{
+					DrainToSheet();
+				}
+				long lost = ledger.Lose();
+				RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
+				if (ex != null)
+				{
+					ex.ReportLiquidLost(Position, lost, "A released flood of " + (fluidDef?.label ?? "a removed liquid"));
+				}
+				else
+				{
+					Log.Warning("[RimMandrake.FlowWorks] a release ended with " + lost + " dL nowhere to go and no depth engine to count it.");
+				}
+			}
+			else if (ledger.Remaining > 0)
+			{
+				ledger.Lose();
+				Log.Warning("[RimMandrake.FlowWorks] a release off any map ended holding liquid; counted lost: " + LedgerLine);
+			}
+			if (!ledger.Closes)
+			{
+				Log.ErrorOnce("[RimMandrake.FlowWorks] release ledger does not close: " + LedgerLine, thingIDNumber ^ 0x5);
+			}
+			Destroy();
+		}
+
 		/// <summary>One tile per expand interval, exactly as the base engine did.
 		/// A frontier cell with no floodable neighbour left is dropped rather
 		/// than re-examined every interval, so the walk cost falls as the
-		/// release closes out.</summary>
+		/// release closes out. §6 item 15: every draw is RM_FloodReleaseMath.Pick over this release's id and step counter
+		/// (scribed), so the walk is the same on every machine and across a save.</summary>
 		private void SpreadOneTile()
 		{
 			Map map = Map;
@@ -240,7 +352,8 @@ namespace RimMandrake.FlowWorks
 			int attempts = frontier.Count;
 			while (attempts-- > 0 && frontier.Count > 0)
 			{
-				int pick = Rand.Range(0, frontier.Count);
+				long step = walkStep++;
+				int pick = RM_FloodReleaseMath.Pick(thingIDNumber, step, 0, frontier.Count);
 				IntVec3 from = frontier[pick];
 				IntVec3 target = IntVec3.Invalid;
 				int seen = 0;
@@ -254,7 +367,7 @@ namespace RimMandrake.FlowWorks
 					// Reservoir sample: every eligible neighbour equally likely,
 					// in one pass and with no allocation.
 					seen++;
-					if (Rand.Range(0, seen) == 0)
+					if (RM_FloodReleaseMath.Pick(thingIDNumber, step, 1 + i, seen) == 0)
 					{
 						target = n;
 					}
@@ -332,38 +445,44 @@ namespace RimMandrake.FlowWorks
 			// FLOOD_DRIVER_OWNERSHIP_CONTRACT_1: an excavated cell belongs to the depth engine. Writing the
 			// flood's temp terrain there gave the cell two owners — the engine's ApplyFillTerrain stripped it
 			// (floodTerrain counts as engine-owned), and this release's queued removal later stripped the
-			// engine's own fill. So the release goes through the driver API instead, and a Refused (liquid
+			// engine's own fill. So the release goes through the engine instead, and a refusal (liquid
 			// switched off, or another liquid standing) means hands off — never a fallback terrain write.
 			RM_StockMath.FloodCellPolicy policy = RM_StockMath.FloodPolicy(
 				excavation != null && excavation.IsExcavated(c), RimMandrakeFlowWorksSettings.legacyFloodViaEngineEnabled);
 			if (policy == RM_StockMath.FloodCellPolicy.HandsOff)
 			{
 				// P6a (FLOOD_SWITCH_RACE_MEND_ENGINE_OFF): switched off, a spill never writes onto the engine's cell.
-				placedLookup.Add(c);   // never offered again; spends no volume
+				Refuse(c);   // never offered again (saved); spends no volume
 				return;
 			}
 			if (policy == RM_StockMath.FloodCellPolicy.ViaEngine)
 			{
-				// P5 (FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL): fill only the levels the release can pay for, and debit every
-				// level added at volumePerTile each (RM_StockMath, selftested) - not one level for a full-depth fill.
-				int oldFill = excavation.FillAt(c);
-				int target = RM_StockMath.FloodFillTarget(excavation.DepthAt(c), oldFill, remainingVolume, fluidDef.volumePerTile);
-				RM_MapComponent_Excavation.DriverFillOutcome outcome =
-					excavation.TrySetDriverFillOutcome(c, target, fluidDef);
-				if (outcome == RM_MapComponent_Excavation.DriverFillOutcome.Applied)
+				// CANAL_OVERFLOW step 1 (§6 item 15, replaces P5's float-notch rule): the square takes exactly the dL the engine
+				// pours (RM_FloodReleaseMath.DugPourDl: never more than the release holds, whole notches in whole-notch mode),
+				// and exactly that is debited. A brimming square of the same liquid is passed through at no cost.
+				long cellRoom = excavation.DepthAt(c) * RM_FloodReleaseMath.U - excavation.WaterDlAt(c);
+				FluidDef held = excavation.FluidAt(c);
+				bool same = held == null || held == fluidDef;
+				if (cellRoom <= 0 && same)
 				{
-					placedCells.Add(c);
-					placedLookup.Add(c);
-					frontier.Add(c);
-					floodedTileCount++;
-					remainingVolume -= RM_StockMath.FloodLevelDebit(oldFill, excavation.FillAt(c), fluidDef.volumePerTile);
+					Reached(c);
 					return;
 				}
-				if (outcome == RM_MapComponent_Excavation.DriverFillOutcome.Refused)
+				long want = RM_FloodReleaseMath.DugPourDl(ledger.Remaining, cellRoom, RM_MapComponent_Excavation.LevelExact);
+				if (want > 0 && excavation.PourRoomDl(c, fluidDef, want) == want && excavation.TryPourDl(c, fluidDef, want))
 				{
-					placedLookup.Add(c);   // never offered again; spends no volume
+					Reached(c);
+					ledger.Place(want);
 					return;
 				}
+				if (want == 0 && same && cellRoom > 0)
+				{
+					// whole-notch water and less than a notch left: the walk is done; what is left drains to the sheet
+					frontier.Clear();
+					return;
+				}
+				Refuse(c);   // never offered again (saved); spends no volume
+				return;
 			}
 			// P14 (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD): the one temp-layer write left in FlowWorks, a flood in vanilla's
 			// sense (laid, queued for removal, the ground restored). Dug squares never reach here (the policy above sends them
@@ -374,17 +493,29 @@ namespace RimMandrake.FlowWorks
 			// base-layer defs (every one but water) cannot spill this way: hands off, as on a refused cell.
 			if (fluidDef.floodTerrain == null || !fluidDef.floodTerrain.temporary)
 			{
-				placedLookup.Add(c);   // never offered again; spends no volume
+				placedLookup.Add(c);
+				refusedCells.Add(c);   // never offered again (saved); spends no volume
 				return;
 			}
 			int recedeStagger = Mathf.Max(0, estimatedFloodedTiles - floodedTileCount);
 			map.terrainGrid.SetTempTerrain(c, fluidDef.floodTerrain);
 			map.tempTerrain.QueueRemoveTerrain(c, spawnedTick + FloodingTicks + fluidDef.floodedTicks + recedeStagger);
+			Reached(c);
+			ledger.Place(RM_FloodReleaseMath.SurfaceDebitDl(ledger.Remaining, PerTileDl));
+		}
+
+		private void Reached(IntVec3 c)
+		{
 			placedCells.Add(c);
 			placedLookup.Add(c);
 			frontier.Add(c);
 			floodedTileCount++;
-			remainingVolume -= fluidDef.volumePerTile;
+		}
+
+		private void Refuse(IntVec3 c)
+		{
+			placedLookup.Add(c);
+			refusedCells.Add(c);
 		}
 
 		/// <summary>SUMP_TAR_HYDROLOGY_1 ruling 3. Writes <see
@@ -400,10 +531,11 @@ namespace RimMandrake.FlowWorks
 		/// chemfuel or the slimes.</summary>
 		private void CoolFrontToGlass()
 		{
-			if (fluidDef == null || fluidDef.coolsToGlassEdge == null)
+			if (frontCooled || fluidDef == null || fluidDef.coolsToGlassEdge == null)
 			{
 				return;
 			}
+			frontCooled = true;
 			Map map = Map;
 			if (map == null)
 			{
@@ -436,9 +568,8 @@ namespace RimMandrake.FlowWorks
 		/// cells the release offered and was Refused or kept HandsOff, and
 		/// engine-Applied channel cells, so such a neighbour does not by itself
 		/// make it a front cell (another neighbour outside the set still does).
-		/// Refused and HandsOff cells are NOT saved: on load placedLookup is
-		/// rebuilt from placedCells alone, so after a save/load such a neighbour
-		/// reads as unreached and the cell beside it IS a front cell. That gives
+		/// Refused and HandsOff cells ARE saved (refusedCells, §6 item 15), so a
+		/// save/load rebuilds the same set and the front is the same. That gives
 		/// the release's own outer rim at
 		/// whatever moment it stopped growing, map-edge cells included (an
 		/// out-of-bounds neighbour is never in <see cref="placedLookup"/>

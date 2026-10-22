@@ -206,6 +206,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="..\RM_SheetMath.cs" />
     <Compile Include="SheetWaterChecks.cs" />
+    <Compile Include="..\RM_FloodReleaseMath.cs" />
+    <Compile Include="FloodReleaseChecks.cs" />
     <Compile Include="..\Rivers\RM_RiverMath.cs" />
     <Compile Include="RiverSwitchFlipChecks.cs" />
     <Compile Include="RiverWashChecks.cs" />

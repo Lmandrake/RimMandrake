@@ -77,16 +77,17 @@ SITES = [
          [r"driverInputs\.Prune\("], "the prune goes through RM_DriverInputs.Prune", absent=[r"driverInputTick"], old='driverInputTick.Remove(k);'),
 
     # ── P5 5dcae23f0 FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL ──
+    # (P5's float-notch rule, FloodFillTarget + FloodLevelDebit, was replaced by the dL ledger: CANAL_OVERFLOW step 1, §6 item 15)
     Site("P5", "Flood_FlowWorks.cs",
          [r"private void PlaceFluid\(", r"if \( policy == RM_StockMath\.FloodCellPolicy\.ViaEngine \)"],
-         [r"remainingVolume -= RM_StockMath\.FloodLevelDebit\( oldFill , excavation\.FillAt\( c \) , fluidDef\.volumePerTile \)",
-          r"int target = RM_StockMath\.FloodFillTarget\( excavation\.DepthAt\( c \) , oldFill , remainingVolume , fluidDef\.volumePerTile \)",
-          r"excavation\.TrySetDriverFillOutcome\( c , target , fluidDef \)"],
-         "the engine branch fills to FloodFillTarget and debits FloodLevelDebit",
-         absent=[r"remainingVolume -= fluidDef\.volumePerTile", r"TrySetDriverFillOutcome\( c , excavation\.DepthAt"], old='remainingVolume -= fluidDef.volumePerTile;'),
+         [r"ledger\.Place\( want \)",
+          r"long want = RM_FloodReleaseMath\.DugPourDl\( ledger\.Remaining , cellRoom , RM_MapComponent_Excavation\.LevelExact \)",
+          r"excavation\.TryPourDl\( c , fluidDef , want \)"],
+         "the engine branch pours exactly DugPourDl's dL and debits exactly that",
+         absent=[r"remainingVolume -= ", r"TrySetDriverFillOutcome\( c , excavation\.DepthAt"], old='remainingVolume -= fluidDef.volumePerTile;'),
     Site("P5", "Flood_FlowWorks.cs", [r"private void PlaceFluid\(", r"if \( policy == RM_StockMath\.FloodCellPolicy\.ViaEngine \)"],
-         [r"int target = RM_StockMath\.FloodFillTarget\("],
-         "the fill target comes from FloodFillTarget (probe: delete the target call)"),
+         [r"long want = RM_FloodReleaseMath\.DugPourDl\("],
+         "the pour amount comes from DugPourDl (probe: delete the amount call)"),
     Site("P5", "Flood_FlowWorks.cs", [r"private void SpreadOneTile\(\)"], [r"PlaceFluid\( map , target , excavation \)"],
          "the spread reaches PlaceFluid"),
     Site("P5", "Flood_FlowWorks.cs", [r"protected override void Tick\(\)"], [r"SpreadOneTile\( \)"],
@@ -95,12 +96,12 @@ SITES = [
     # ── P6a 57b4b4120 FLOOD_SWITCH_RACE_MEND_ENGINE_OFF ──
     Site("P6a", "Flood_FlowWorks.cs", [r"private void PlaceFluid\("],
          [r"RM_StockMath\.FloodPolicy\( excavation != null && excavation\.IsExcavated\( c \) , RimMandrakeFlowWorksSettings\.legacyFloodViaEngineEnabled \)",
-          r"if \( policy == RM_StockMath\.FloodCellPolicy\.HandsOff \) \{ placedLookup\.Add\( c \) ; return ; \}"],
+          r"if \( policy == RM_StockMath\.FloodCellPolicy\.HandsOff \) \{ Refuse\( c \) ; return ; \}"],
          "placement asks FloodPolicy and returns hands-off before any temp-terrain write",
          absent=[r"legacyFloodViaEngineEnabled && excavation"], old='if (RimMandrakeFlowWorksSettings.legacyFloodViaEngineEnabled && excavation != null && excavation.IsExcavated(c)) { }',
          order=(r"FloodCellPolicy\.HandsOff", r"SetTempTerrain")),
     Site("P6a", "Flood_FlowWorks.cs", [r"private void PlaceFluid\("],
-         [r"if \( policy == RM_StockMath\.FloodCellPolicy\.HandsOff \) \{ placedLookup\.Add\( c \) ; return ; \}"],
+         [r"if \( policy == RM_StockMath\.FloodCellPolicy\.HandsOff \) \{ Refuse\( c \) ; return ; \}"],
          "the hands-off early return (probe: delete the HandsOff branch)"),
 
     # ── FLOOD_SWITCH_OFF_PROVE_SPILLS_GO_NOWHERE: the settings line for legacyFloodViaEngineEnabled says that with it
@@ -210,6 +211,16 @@ SITES = [
           r"Sheet\.RM_MapComponent_Sheet\.SpillLeg\( Map , spillAt ,"],
          "a pump backed up against a brimming canal of water spills its level over the lip",
          order=(r"Sheet\.RM_MapComponent_Sheet\.PumpSpillOutlet\(", r"ex\.NoteDriverBackedUp\( cells\[c\] \)")),
+    # ── OVF2 CANAL_OVERFLOW step 1: a release's leftover goes to the sheet, then is disclosed; the one end ──
+    Site("OVF2", "Flood_FlowWorks.cs", [r"private void EndRelease\(\)"],
+         [r"ex\.ReportLiquidLost\( Position , lost ,", r"long lost = ledger\.Lose\( \)", r"DrainToSheet\( \)"],
+         "a release ends by offering the rest to the sheet and disclosing what nobody took",
+         order=(r"DrainToSheet\( \)", r"ledger\.Lose\( \)")),
+    Site("OVF2", "Flood_FlowWorks.cs", [r"private bool DrainToSheet\(\)"],
+         [r"Sheet\.RM_MapComponent_Sheet\.SpillRelease\( map , Position , ledger\.Remaining , fluidDef \)"],
+         "the drain offers to the sheet as a flood (D2)"),
+    Site("OVF2", "Flood_FlowWorks.cs", [r"protected override void Tick\(\)"], [r"EndRelease\( \)"],
+         "the release tick reaches its one end"),
     Site("OVF1", "RM_MouseoverDepth.cs", [r"public static string DepthSuffix\("],
          [r"Sheet\.RM_MapComponent_Sheet\.ReadoutAt\( map , c \)"], "the mouseover reads spilled water"),
 ]

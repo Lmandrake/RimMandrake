@@ -375,8 +375,9 @@ namespace RimMandrake.FlowWorks.Sheet
 			return lips.ToArray();
 		}
 
-		private bool Accepts(FluidDef fluid) =>
-			RM_SheetSettings.sheetOverflowEnabled && RimMandrakeFlowWorksSettings.depthEngineEnabled && fluid != null && fluid == Water;
+		/// <summary>The master switch, the per-inflow switch (stage 3), the depth engine, and a carried fluid (water only).</summary>
+		private bool Accepts(FluidDef fluid, Source from) =>
+			RM_SheetSettings.SpillsFrom(from) && RimMandrakeFlowWorksSettings.depthEngineEnabled && fluid != null && fluid == Water;
 
 		private SpillOffer MakeOffer(IntVec3 origin, long dl, FluidDef fluid, Source from)
 		{
@@ -394,7 +395,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// 0 when the switch is off or the fluid is not carried (Stage 1: water only).</summary>
 		public long Probe(IntVec3 origin, long dl, FluidDef fluid, Source from)
 		{
-			if (dl <= 0 || !Accepts(fluid))
+			if (dl <= 0 || !Accepts(fluid, from))
 			{
 				return 0;
 			}
@@ -406,7 +407,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// the caller debits exactly that and keeps (refuses back) the rest.</summary>
 		public long Offer(IntVec3 origin, long dl, FluidDef fluid, Source from)
 		{
-			if (dl <= 0 || !Accepts(fluid))
+			if (dl <= 0 || !Accepts(fluid, from))
 			{
 				return 0;
 			}
@@ -433,6 +434,12 @@ namespace RimMandrake.FlowWorks.Sheet
 		public static long SpillHomeless(Map map, IntVec3 from, long dl, FluidDef fluid) =>
 			Of(map)?.Offer(from, dl, fluid, Source.FillIn) ?? 0;
 
+		/// <summary>The flood hook (D2, owner card 2026-10-22): what a <c>Flood_FlowWorks</c> release (a heat-kit release, a
+		/// forge flood, a tar belch) still holds when its walk ends spills over the lips nearest its seed. Returns dL accepted;
+		/// the release debits exactly that and discloses what nobody took.</summary>
+		public static long SpillRelease(Map map, IntVec3 seed, long dl, FluidDef fluid) =>
+			Of(map)?.Offer(seed, dl, fluid, Source.Flood) ?? 0;
+
 		/// <summary>The rain hook (D2): <paramref name="levels"/> of rain on a brimming, unroofed square of water run over its
 		/// lip. Rain is external input: what the sheet refuses is simply not added, as before.</summary>
 		public static void RainOverflow(Map map, IntVec3 c, int levels, FluidDef rain)
@@ -457,7 +464,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		{
 			outlet = IntVec3.Invalid;
 			RM_MapComponent_Sheet sheet = Of(map);
-			if (sheet == null || !sheet.Accepts(Water))
+			if (sheet == null || !sheet.Accepts(Water, Source.Pump))
 			{
 				return false;
 			}
