@@ -15,7 +15,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_LiquidPump</defName>
     <label>liquid pump</label>
-    <description>A salvaged motor driving a rotary pump in a square steel housing, with a flanged port on every side that takes a pipe or a hose from any direction. Set it beside a liquid tank and a pond, lake or dug channel. Drawing, it lifts liquid from the water beside it into the tank; pouring, it runs the tank's liquid into a dug channel beside it - the way to fill a channel no spring feeds, or keep a moat topped up with something that burns. It will not mix one liquid into another.</description>
+    <description>A salvaged motor driving a rotary pump in a square steel housing, with a flanged port on every side that takes a pipe or a hose from any direction. It needs power. Join it to a liquid tank (touching it, or by pipe or hose) and set it beside a pond, lake or dug channel. Drawing, it lifts liquid from the water beside it into the tank; pouring, it runs the tank's liquid into a dug channel beside it - the way to fill a channel no spring feeds, or keep a moat topped up with something that burns. It will not mix one liquid into another.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidPump</texPath>

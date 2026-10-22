@@ -65,7 +65,7 @@
   <ThingDef ParentName="RM_PumpingStationBase">
     <defName>RM_PumpingStation_Kludged</defName>
     <label>kludged pumping station</label>
-    <description>A pumping station patched back to work with mismatched plate and a borrowed motor. It lifts liquid from up to four cells away into every tank on its hose line, or pours a tank into a dug channel. Half its old rate.</description>
+    <description>A pumping station patched back to work with mismatched plate and a borrowed motor. It lifts liquid from up to four cells away into every tank on its pipe or hose line, or pours a tank into a dug channel. Half its old rate.</description>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -106,7 +106,7 @@
   <ThingDef ParentName="RM_PumpingStationBase">
     <defName>RM_PumpingStation_Repaired</defName>
     <label>repaired pumping station</label>
-    <description>A pumping station restored properly. It lifts liquid from up to four cells away into every tank on its hose line, or pours a tank into a dug channel, at its full industrial rate.</description>
+    <description>A pumping station restored properly. It lifts liquid from up to four cells away into every tank on its pipe or hose line, or pours a tank into a dug channel, at its full industrial rate.</description>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Machinery/RM_PumpingStation_Repaired</texPath>
       <graphicClass>Graphic_Single</graphicClass>

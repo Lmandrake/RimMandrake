@@ -5,8 +5,8 @@
   <RMFlow_PitHeld>Held in a pit: it cannot climb out without a ladder.</RMFlow_PitHeld>
   <RMFlow_PitTooBig>In a pit, but too big for this pit: it can climb out.</RMFlow_PitTooBig>
   <RMFlow_JumpIntoPit>Jump into pit</RMFlow_JumpIntoPit>
-  <RMFlow_JumpIntoPitDesc>Jump down into the adjacent superdeep pit. The fall hurts, and there is no climbing out without a ladder.</RMFlow_JumpIntoPitDesc>
-  <RMFlow_JumpIntoPitConfirm>{0} will jump into the pit, take the fall and be stranded down there until a ladder is placed. Jump?</RMFlow_JumpIntoPitConfirm>
+  <RMFlow_JumpIntoPitDesc>Jump down into the pit beside them. The fall hurts, and there is no climbing back out without a lowered ladder, a ramp or climbing gear.</RMFlow_JumpIntoPitDesc>
+  <RMFlow_JumpIntoPitConfirm>{0} will jump into the pit, take the fall and be stranded down there until there is a way out (a lowered ladder, a ramp or climbing gear). Jump?</RMFlow_JumpIntoPitConfirm>
   <RMFlow_LadderNeedsExcavation>Must be placed in a dug pit.</RMFlow_LadderNeedsExcavation>
   <!-- PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.2, §8.4). -->
   <RMFlow_LadderNeedsWall>Must hang on a wall of the pit: a ladder climbs to a shallower square beside it (north, south, east or west).</RMFlow_LadderNeedsWall>
@@ -65,8 +65,8 @@
   <!-- FLOWWORKS_BUILD_PROGRAM_1 Phase 8: the pump. -->
   <RMFlow_PumpModeDraw>Drawing into the tank</RMFlow_PumpModeDraw>
   <RMFlow_PumpModePour>Pouring into the channel</RMFlow_PumpModePour>
-  <RMFlow_PumpModeDesc>Switch between lifting liquid from the water the pump reaches into a tank on its line (touching it or on a hose run to it), and running that tank's liquid into a dug channel beside it.</RMFlow_PumpModeDesc>
-  <RMFlow_PumpNoTank>no liquid tank touching it or on a hose run to it</RMFlow_PumpNoTank>
+  <RMFlow_PumpModeDesc>Switch between lifting liquid from the water the pump reaches into a tank on its line (touching it, or joined to it by pipe or hose), and running that tank's liquid into a dug channel beside it.</RMFlow_PumpModeDesc>
+  <RMFlow_PumpNoTank>no liquid tank touching it or joined to it by pipe or hose</RMFlow_PumpNoTank>
   <RMFlow_PumpNothingToDraw>nothing beside it the tank can take</RMFlow_PumpNothingToDraw>
   <RMFlow_PumpDrew>drew {0}</RMFlow_PumpDrew>
   <RMFlow_PumpTankEmpty>the tank on its line is empty</RMFlow_PumpTankEmpty>
@@ -77,8 +77,8 @@
   <RMFlow_PumpNoDumpTank>no tank is set to Dump (pouring only drains Dump tanks)</RMFlow_PumpNoDumpTank>
   <RMFlow_PumpOutflowBlocked>outflow blocked: filling tanks instead</RMFlow_PumpOutflowBlocked>
   <RMFlow_PumpOtherPouring>another pump on this network is pouring</RMFlow_PumpOtherPouring>
-  <RMFlow_PumpCircle>intake and outflow in the same water: the pump moves it round in a circle</RMFlow_PumpCircle>
-  <RMFlow_PumpPourNeedsDumpMessage>{0} is set to pour, which now drains only tanks set to Dump. Set a tank's job to Dump to drain it.</RMFlow_PumpPourNeedsDumpMessage>
+  <RMFlow_PumpCircle>intake and outflow are in the same water: the pump only moves it round in a circle (move one hose end)</RMFlow_PumpCircle>
+  <RMFlow_PumpPourNeedsDumpMessage>{0} is set to pour, and pouring drains only tanks whose Job is Dump. Set a tank's Job to Dump to pour it out.</RMFlow_PumpPourNeedsDumpMessage>
   <RMFlow_PumpForeign>the channel holds a different liquid</RMFlow_PumpForeign>
   <RMFlow_PumpPoured>poured {0}</RMFlow_PumpPoured>
 

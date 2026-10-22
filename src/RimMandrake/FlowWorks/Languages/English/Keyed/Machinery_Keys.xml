@@ -12,24 +12,24 @@
   <RMFlow_ConverterNoOutput>No tank on its line can take the {0}</RMFlow_ConverterNoOutput>
   <RMFlow_ConverterRefuses>Cannot process {0}</RMFlow_ConverterRefuses>
   <RMFlow_ConverterRefusesMessage>{0} cannot process {1}.</RMFlow_ConverterRefusesMessage>
-  <RMFlow_ConverterNoTank>No liquid tank touching it or on a hose run to it</RMFlow_ConverterNoTank>
+  <RMFlow_ConverterNoTank>No liquid tank touching it or joined to it by pipe or hose</RMFlow_ConverterNoTank>
   <RMFlow_ConverterNothingToDo>Nothing it can process in its tanks</RMFlow_ConverterNothingToDo>
   <RMFlow_ConverterPending>{0} {1} waiting for room beside the machine</RMFlow_ConverterPending>
-  <RMFlow_NetTooLarge>Network too large: over 3000 pipe cells, hoses and members, so it is not run (split it)</RMFlow_NetTooLarge>
+  <RMFlow_NetTooLarge>Network too large: over 3000 pipe squares, hoses and connected buildings, so it does not run. Split it into smaller networks.</RMFlow_NetTooLarge>
   <RMFlow_TankMode_Store>Job: Store</RMFlow_TankMode_Store>
   <RMFlow_TankMode_Fill>Job: Fill</RMFlow_TankMode_Fill>
   <RMFlow_TankMode_Empty>Job: Empty</RMFlow_TankMode_Empty>
   <RMFlow_TankMode_Dump>Job: Dump</RMFlow_TankMode_Dump>
   <RMFlow_TankModeDesc>Click to change what this tank does on its pipes and hoses.\n\nStore: holds liquid for pumps and machines.\nFill: pulls liquid from the other tanks into itself.\nEmpty: sends its liquid to the other tanks.\nDump: its liquid may leave through outflow hose ends or a pouring pump.\n\nTank to tank needs no pump.</RMFlow_TankModeDesc>
   <RMFlow_TankModeInspect>{0}</RMFlow_TankModeInspect>
-  <RMFlow_TankJobsMessage>A hose between two tanks only connects them now. To move liquid between them, set one tank's job to Empty or Fill.</RMFlow_TankJobsMessage>
+  <RMFlow_TankJobsMessage>A hose between two tanks only joins them. To move liquid between them, set one tank's Job to Empty or Fill.</RMFlow_TankJobsMessage>
   <RMFlow_LiquidTheftLetterLabel>Liquid theft discovered</RMFlow_LiquidTheftLetterLabel>
   <RMFlow_LiquidTheftLetter>{0} of {1} has seen your hose taking from their {2}. Every day it keeps happening now costs {3} goodwill with {1}, like a power-tap clamp on their grid. Uncouple the hose to stop it.</RMFlow_LiquidTheftLetter>
   <RMFlow_ConverterTotals>Processed {0} in, {1} out</RMFlow_ConverterTotals>
 
   <RMFlow_MustRestoreOverRuin>Must be raised over a {0}: industrial works are found, not built.</RMFlow_MustRestoreOverRuin>
 
-  <RMFlow_AdapterBroken>Pipe net not found</RMFlow_AdapterBroken>
+  <RMFlow_AdapterBroken>Shut itself: it could not work with the Vanilla Expanded pipe network (details in the log). Set its mode again to retry.</RMFlow_AdapterBroken>
   <RMFlow_AdapterFeeding>Feeding {0} from the tanks into the pipe net</RMFlow_AdapterFeeding>
   <RMFlow_AdapterDrawing>Drawing {0} from the pipe net into the tanks</RMFlow_AdapterDrawing>
   <RMFlow_AdapterModeFeed>Mode: feed pipe net</RMFlow_AdapterModeFeed>

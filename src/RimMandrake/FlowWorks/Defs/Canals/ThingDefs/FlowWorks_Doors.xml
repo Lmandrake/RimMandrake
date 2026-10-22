@@ -21,7 +21,7 @@
   <ThingDef ParentName="DoorBase">
     <defName>RM_Sluice</defName>
     <label>sluice</label>
-    <description>A sealed gate for a canal. Shut, it holds the liquid back; open it, or hold it open, and the level runs on through. It keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.</description>
+    <description>A sealed gate for a canal. Shut, it holds the liquid back; open it, or hold it open, and the level runs on through. It keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody trapped down in a pit can open it from below. What it is made of decides how tough it is and whether it burns.</description>
     <thingClass>RimMandrake.FlowWorks.Building_RM_FlowDoor</thingClass>
     <statBases>
       <WorkToBuild>500</WorkToBuild>
@@ -51,7 +51,7 @@
   <ThingDef ParentName="DoorBase">
     <defName>RM_SecurityGrateDoor</defName>
     <label>security grate</label>
-    <description>A barred prisoner door for the end of a canal. Liquid flows through the bars while it is shut, and it holds a prisoner as well as any door. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.</description>
+    <description>A barred prisoner door for the end of a canal. Liquid flows through the bars while it is shut, and it holds a prisoner as well as any door. Nobody trapped down in a pit can open it from below. What it is made of decides how tough it is and whether it burns.</description>
     <thingClass>RimMandrake.FlowWorks.Building_RM_FlowDoor</thingClass>
     <statBases>
       <WorkToBuild>1400</WorkToBuild>
