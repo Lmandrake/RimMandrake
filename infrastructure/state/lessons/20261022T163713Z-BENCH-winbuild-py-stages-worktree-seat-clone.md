@@ -1,0 +1,1 @@
+winbuild.py stages the WORKTREE: in a seat clone holding another helper's uncommitted C#, the built DLL bakes it in and the push guard (DLL_SOURCE_STAMP_GUARD_1) refuses. Build from a 'git clone --shared --no-checkout <seat>' scratch clone checked out at HEAD, copy the DLL+.srchash back, publish them.
