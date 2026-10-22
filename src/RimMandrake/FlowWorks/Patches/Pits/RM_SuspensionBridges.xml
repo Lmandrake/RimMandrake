@@ -15,6 +15,7 @@
       <li>RimMandrake.FlowWorks.Pits.Designator_SuspensionJetty_Heavy</li>
       <li>RimMandrake.FlowWorks.Pits.Designator_Drawbridge_Timber</li>   <!-- DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6 -->
       <li>RimMandrake.FlowWorks.Pits.Designator_Drawbridge_Steel</li>
+      <li>RimMandrake.FlowWorks.Pits.Designator_SuspensionTower</li>   <!-- SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING: hidden with bridges off -->
     </value>
   </Operation>
 </Patch>

@@ -4,9 +4,15 @@ SB_settings_off_no_button_never_breaks; BENCH belt 2026-10-22).
   python.exe src/RimMandrake/FlowWorks/northstar/suspension_settings_live.py [out.json] [--origin X,Z] [--fresh-map]
 
 Rows:
-  SB_settings_off_no_button   PROVE rimworld/list_architect_designators (includeHidden false) across every architect
-                              category, with RM_SuspensionSettings.suspensionBridgesBuildable on, then off. EXPECT on: at
-                              least one suspension-bridge designator visible (the can-fail); off: none. Restored after.
+  SB_settings_off_no_button   PROVE RM_SuspensionProofs.ProofButtons (every designator placing an RM_Suspension* def, in
+                              every category, read as the gizmo grid reads it: root.Visible && Designator.Visible), with
+                              RM_SuspensionSettings.suspensionBridgesBuildable on, then off. EXPECT on: at least one shown (the
+                              can-fail; up to 11: 6 bridges, 2 jetties, 2 drawbridges, the tower, less any held back by
+                              research or the drawbridge switch); off: 0 shown. Restored after.
+                              LIES (measured 2026-10-22, SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING): rimworld/list_architect_designators'
+                              'visible' is membership of ResolvedAllowedDesignators (game rules), never Designator.Visible, so it
+                              listed all 11 with the setting off. It is recorded as 'bridgeListOff', never graded. The one true
+                              MOD half of that run: the tower was vanilla's generated button and ignored the setting (fixed).
   SB_settings_off_never_breaks PROVE suspensionWeightCollapse off; a timber span dragged over a 4 m trench (the proof's T1
                               scene: trench (1..6, 0), drag (0,0)-(7,0), god); drafted colonists spawned on the deck until
                               ProofSpan reads Over; 120 ticks (two load passes). EXPECT every deck still stands and no rider
@@ -70,7 +76,15 @@ def main():
         t = str(r.get("result") or r.get("message") or "")
         return kv(t), t
 
+    def shown_suspension():
+        t = proof("ProofButtons", "")[1]
+        if not t.startswith("BUTTONS"):
+            return None, t
+        k = kv(t)
+        return [d for d in (k.get("shownDefs") or "").split(",") if d], t
+
     def visible_suspension():
+        """Bridge-tool membership list: NOT visibility (see LIES above). Recorded, never graded."""
         cats = (B.call("rimworld/list_architect_categories") or {}).get("categories") or []
         hits = []
         for c in cats:
@@ -100,14 +114,17 @@ def main():
     res["settingsBefore"] = {"buildable": b0, "weight": w0}
     try:
         # --- buttons
-        on = visible_suspension()
+        on, on_t = shown_suspension()
         sset("suspensionBridgesBuildable", False)
-        off = visible_suspension()
+        off, off_t = shown_suspension()
+        list_off = visible_suspension()
         sset("suspensionBridgesBuildable", True if b0 is None else b0)
-        if not on:
-            row("SB_settings_off_no_button", "UNMEASURED", "HARNESS", {"why": "no suspension designator visible even with the setting on", "on": on})
+        if on is None or off is None:
+            row("SB_settings_off_no_button", "UNMEASURED", "HARNESS", {"why": "ProofButtons did not answer (old DLL?)", "on": on_t, "off": off_t})
+        elif not on:
+            row("SB_settings_off_no_button", "UNMEASURED", "HARNESS", {"why": "no suspension button shown even with the setting on", "on": on_t})
         else:
-            row("SB_settings_off_no_button", "PASS" if not off else "FAIL", "MOD", {"visibleOn": on, "visibleOff": off})
+            row("SB_settings_off_no_button", "PASS" if not off else "FAIL", "MOD", {"shownOn": on, "shownOff": off, "readOff": off_t, "bridgeListOff": list_off})
         # --- weight
         res["site_calm"] = V.site_calm(B)
         B.call("jawa/kill_hostiles")

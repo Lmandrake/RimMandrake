@@ -176,6 +176,34 @@ namespace RimMandrake.FlowWorks.Pits
 			return b == null ? "REFUSED: no current map" : "SWING " + string.Join(" ", b.swingLog);
 		}
 
+		/// <summary>SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING: which suspension build buttons the architect tab DRAWS now. The gizmo grid
+		/// skips a designator whose Visible is false (GizmoGridDrawer), and a dropdown shows when any element is visible; the
+		/// bridge's rimworld/list_architect_designators 'visible' is only "in ResolvedAllowedDesignators" (game rules), never
+		/// Designator.Visible, so it listed all 11 with the setting off. arg ignored.
+		/// → "BUTTONS shown=N hidden=M shownDefs=a,b hiddenDefs=c,d" over every designator placing an RM_Suspension* def.</summary>
+		public static string ProofButtons(string arg)
+		{
+			List<string> shown = new List<string>();
+			List<string> hidden = new List<string>();
+			foreach (DesignationCategoryDef cat in DefDatabase<DesignationCategoryDef>.AllDefsListForReading)
+			{
+				foreach (Designator root in cat.ResolvedAllowedDesignators)
+				{
+					IEnumerable<Designator> each = root is Designator_Dropdown dd ? dd.Elements : new List<Designator> { root };
+					foreach (Designator d in each)
+					{
+						if (d is Designator_Place place && place.PlacingDef != null && place.PlacingDef.defName.StartsWith("RM_Suspension"))
+						{
+							string name = place.PlacingDef.defName + (d is Designator_Drawbridge ? "(drawbridge)" : "");
+							(root.Visible && d.Visible ? shown : hidden).Add(name);
+						}
+					}
+				}
+			}
+			return "BUTTONS shown=" + shown.Count + " hidden=" + hidden.Count + " shownDefs=" + string.Join(",", shown)
+				+ " hiddenDefs=" + string.Join(",", hidden);
+		}
+
 		/// <summary>"x,z": the vanilla Bridge blueprint check on that square. → "VANILLA accepted=b reason=..."</summary>
 		public static string ProofVanillaBridge(string arg)
 		{
