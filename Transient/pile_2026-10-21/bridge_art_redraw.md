@@ -29,3 +29,5 @@ Registered as artpipe done jobs (done/<id>.json + _artsrc/<id>/) with rimflow_it
 - 22:11 wave 1 done: 17/17 raw, 17 PASS finalize, registered done jobs
 - 22:12 wave 1 published 89e285c0f6; wave 2 gen
 - 22:16 wave 2 done: 15/15 PASS (pyr0-3 homes also 401 -> 9 workers)
+- 22:16 wave 2 published e7ba892c25; wave 3 gen
+- 22:21 wave 3 done: 18/18 PASS; all views share one span (guide); edge views still thin at 32 px (note for him)
