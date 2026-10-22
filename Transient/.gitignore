@@ -230,6 +230,7 @@
 !/biome_ffar/all_bridge_art_sheet_2026-10-21.html
 !/biome_ffar/facings_regen_round2.subjects.json
 !/biome_ffar/facings_regen_round2_sheet_2026-10-22.html
+!/biome_ffar/joint_fittings.subjects.json
 !/biome_ffar/lanterndeeps_close_progress_2026-10-05.md
 !/biome_ffar/lanterndeeps_redo_jobs_2026-10-05.json
 !/biome_ffar/leaningscrub_close_progress_2026-10-05.md
@@ -566,6 +567,13 @@
 !/pile_2026-10-22/jg_list2.py
 !/pile_2026-10-22/jg_pawn.py
 !/pile_2026-10-22/jg_shoot.py
+!/pile_2026-10-22/joinfit/conform.py
+!/pile_2026-10-22/joinfit/jobs.json
+!/pile_2026-10-22/joinfit/jobs_v2.json
+!/pile_2026-10-22/joinfit/make_jobs.py
+!/pile_2026-10-22/joinfit/register.py
+!/pile_2026-10-22/joinfit/sizes.json
+!/pile_2026-10-22/joinfit/textures_manifest.json
 !/pile_2026-10-22/joints/gpt_a1.md
 !/pile_2026-10-22/joints/gpt_q1.txt
 !/pile_2026-10-22/joints/sheet_A.jpg

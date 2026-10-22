@@ -1,0 +1,30 @@
+[
+ {
+  "id": "joinfitraw_saddle_scrapper_v2",
+  "rimflow_item_id": "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID",
+  "prompt": "ONE hose saddle fitting: a short section of round rigid pipe lying exactly horizontally, with a wide bolted band clamp wrapped around its middle, and on top of the clamp one short round hose spigot ending in a ribbed hose ferrule, the spigot pointing straight DOWN the picture, toward the bottom edge of the canvas (toward the viewer), its open ferrule end lowest; the clamp's bolts sit on the top side of the pipe. The clamp is about 2.4 times the pipe's diameter across. Material: rusted salvaged steel: deep brown shadow #302010, warm grey-brown #706050 and rust-orange #805030 body, pale worn highlight #bbaaa0 on the top edge, flaking rust and round rivets. Seen from a high orthographic camera about 35 degrees above the ground, light from overhead-front, top faces lit. Bold, chunky, simple shapes with a thin dark outline and strong value contrast, so it still reads when shrunk to 32 pixels. Crisp painterly RimWorld-mod sprite style. One object only, centred, filling about 80 percent of the canvas width, on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "priority": 5,
+  "background": "transparent",
+  "target_texpath": "RimMandrake/FlowWorks/Joins/Scrapper/Saddle",
+  "no_subject": "C#-drawn liquid join fitting (RM_LiquidJoins), no def",
+  "owner_note": "Draw fittings: 12 joint fitting pictures, one Flange/Coupler/Saddle per look, matched to that look's pipe colours (card 2026-10-22)",
+  "biome_neutral": true,
+  "oversize_reason": "master only: conform.py shrinks it to the 0.12-0.24 cell fitting on a 128/256 px quad"
+ },
+ {
+  "id": "joinfitraw_saddle_industrial_v2",
+  "rimflow_item_id": "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID",
+  "prompt": "ONE hose saddle fitting: a short section of round rigid pipe lying exactly horizontally, with a wide bolted band clamp wrapped around its middle, and on top of the clamp one short round hose spigot ending in a ribbed hose ferrule, the spigot pointing straight DOWN the picture, toward the bottom edge of the canvas (toward the viewer), its open ferrule end lowest; the clamp's bolts sit on the top side of the pipe. The clamp is about 2.4 times the pipe's diameter across. Material: dark gunmetal-grey heavy steel: #303030 shadow, #404040 to #505050 body, pale steel highlight #9fa2a7 on the top edge, chunky hex bolts. Seen from a high orthographic camera about 35 degrees above the ground, light from overhead-front, top faces lit. Bold, chunky, simple shapes with a thin dark outline and strong value contrast, so it still reads when shrunk to 32 pixels. Crisp painterly RimWorld-mod sprite style. One object only, centred, filling about 80 percent of the canvas width, on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "priority": 5,
+  "background": "transparent",
+  "target_texpath": "RimMandrake/FlowWorks/Joins/Industrial/Saddle",
+  "no_subject": "C#-drawn liquid join fitting (RM_LiquidJoins), no def",
+  "owner_note": "Draw fittings: 12 joint fitting pictures, one Flange/Coupler/Saddle per look, matched to that look's pipe colours (card 2026-10-22)",
+  "biome_neutral": true,
+  "oversize_reason": "master only: conform.py shrinks it to the 0.12-0.24 cell fitting on a 128/256 px quad"
+ }
+]
