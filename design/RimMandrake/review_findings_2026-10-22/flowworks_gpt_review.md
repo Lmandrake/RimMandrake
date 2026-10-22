@@ -1,4 +1,6 @@
-# FlowWorks GPT review, 2026-10-22 (read-only; nothing fixed)
+# FlowWorks GPT review, 2026-10-22
+
+**Fixed 2026-10-22 (FOUNDRY):** rows 1-5. The kernel rows (dried-tier order, door drain, pulse allocations) landed at `fa912947d`, each with a SheetWaterChecks case. The looks rows (redraw on a tint/band rung via the `RM_WaterLooks` mesh flag and watcher, reused tint buffer) landed at `a6d324164`, with WaterLookChecks cases. Row 6 is left as is: `Dried` stays unsaved by design, and is now reported first in the next pulse.
 
 Consults: RM_WaterLooks.cs + RM_WaterLookMath.cs + RM_SettingsReset.cs; RM_SheetMath.cs (kernel, commit ac508ba27; 77a6f18c9 itself is only a code_review ledger commit). GPT found nothing in RM_SettingsReset.cs or RM_WaterLookMath.cs. All paths under `src/RimMandrake/FlowWorks/Source/`.
 
