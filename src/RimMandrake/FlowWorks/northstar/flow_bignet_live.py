@@ -37,6 +37,7 @@ def main():
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--size", type=int, default=80)
     ap.add_argument("--max-seconds", type=float, default=520)
+    ap.add_argument("--inland", action="store_true", help="inland moving-water source, plot at (106, 90)")
     a = ap.parse_args()
     import proof_hose as PH  # noqa: E402
     V = PH.V
@@ -53,6 +54,11 @@ def main():
     # was never classified as a body (body_report 'formedByThisCall'), so 114,500 pulses wetted nothing. The plot starts at
     # x=12, a one-square connector row joins it to the strip across the sink band, and the strip is classified at once.
     ox, oz, n = 12, 20, a.size
+    if a.inland:
+        # second design (belt live 2026-10-22): an INLAND moving-water patch (WaterMovingChestDeep 6x6 at (100,120)) is
+        # limitless by the wetness rule's movingWater clause with the shipped settings, and the plot sits well clear of
+        # every map-edge sink band
+        ox, oz = 106, 90
     if a.phase == "site":
         if a.fresh_map:
             B.call("rimworld/go_to_main_menu")
@@ -60,16 +66,21 @@ def main():
         ok, _ = V._wait_playing(B, leave_s=0)
         st["site_calm"] = V.site_calm(B)
         st["wetness0"] = (B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field="wetnessCutoffEnabled") or {}).get("value")
-        B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="wetnessCutoffEnabled", value="False")
-        rect = (0, oz - 2, ox + n + 2, n + 4)
+        if not a.inland:
+            B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="wetnessCutoffEnabled", value="False")
+        rect = (0, oz - 2, ox + n + 2, n + 4) if not a.inland else (96, oz - 2, n + 14, n + 4)
         B.call("jawa/static_call", type=NSP, method="ProofResetRect", args="%d;%d;%d;%d" % rect)
         r = "%d,%d,%d,%d" % rect
         B.call("jawa/destroy_batch", rects=r, categories="All")
-        B.call("jawa/set_terrain_batch", ops="Soil:%s;WaterDeep:0,%d,3,%d" % (r, oz, n))
+        if a.inland:
+            B.call("jawa/set_terrain_batch", ops="Soil:%s;WaterMovingChestDeep:100,%d,6,6" % (r, oz + n // 2 - 3))
+        else:
+            B.call("jawa/set_terrain_batch", ops="Soil:%s;WaterDeep:0,%d,3,%d" % (r, oz, n))
         B.call("jawa/set_roof_batch", ops="None:" + r)
         B.call("jawa/set_fog", action="unfog", rect=r)
-        st["sourceBody"] = (B.call("jawa/flowworks_body_report", x=1, z=oz + n // 2, classify=True) or {}).get("body")
-        for x in range(3, ox):
+        src = (102, oz + n // 2) if a.inland else (1, oz + n // 2)
+        st["sourceBody"] = (B.call("jawa/flowworks_body_report", x=src[0], z=src[1], classify=True) or {}).get("body")
+        for x in range(106 if a.inland else 3, ox):
             B.call("jawa/flowworks_excavation_drive", x=x, z=oz + n // 2, deepenLevels=2, setFill=-1)
         st.update(origin=[ox, oz], size=n, dugRows=0, phaseSite=time.strftime("%H:%M:%S"))
         save()
