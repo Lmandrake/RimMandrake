@@ -46,6 +46,8 @@ the drag's first end, unless said):
   K  island at origin+(30,70): ring at Chebyshev 5..6 dug 2 m (raid_trench_proof's scene), a steel drawbridge east across
      the ring (c+4,c)-(c+7,c) with its winch on the island, a player decoy (sandbags) outside at (c+14, c+4), the leaf
      raised, 4 assault raiders 25 east; 3,000 ticks sampled every 250 -> RAID_UP
+     (colonists hidden undrafted in a closed box, one raider carries a plank, jobs probed per sample), then the same with the lord
+     built sappers=true 90 cells west (the winch giver lives only in the Sapper/Breaching duties). Run --fresh-map --only RAID_UP
   D  z=18  steel  1-wide (0,18)-(7,18), a drafted rider on (3,18); raiseSpeed 0.25; saved and loaded mid-raise
                                                            -> SAVE_MIDRAISE (runs LAST: the load replaces the map)
 
@@ -308,12 +310,17 @@ def main(argv=None):
             fac_cache.append(fac)
         return fac_cache[0]
 
-    def assault(cells, kind="Mercenary_Gunner"):
+    def assault(cells, kind="Mercenary_Gunner", sappers=False, breachers=False):
         fac = faction()
         ids = [spawn(c, kind=kind, faction=fac) for c in cells]
         ids = [i for i in ids if i]
         if ids:
-            B.call("jawa/lord_assault_spawn", pawns=",".join(str(i) for i in ids))
+            kw = {}
+            if sappers:
+                kw["sappers"] = True        # LordJob_AssaultColony(sappers) -> LordToil_AssaultColonySappers -> DutyDef Sapper
+            if breachers:
+                kw["breachers"] = True      # -> LordToil_AssaultColonyBreaching -> DutyDef Breaching
+            B.call("jawa/lord_assault_spawn", pawns=",".join(str(i) for i in ids), **kw)
         return ids
 
     ox, oz = (int(v) for v in a.origin.split(","))
@@ -517,8 +524,11 @@ def lower_only_from_winch(ctx):
     # precondition (SITE, never a mod FAIL): with the leaf raised the far-bank pawn has no path to the winch side, else the real
     # scanner may rightly hand it the lower job by walking round and the 'none' below proves nothing
     # both cells the winch (P(-1,0)) is worked from: (-2,0) behind it AND (0,0), the hinge-bank lip. Live 2026-10-21 only
-    # (-2,0) was asked; it read found=False while the production WorkGiver still found the winch reachable, i.e. the far
-    # pawn could reach the lip by the trench floor (colonists are not held by a pit: RM_SuperdeepTrap.Captures carve-out)
+    # (-2,0) was asked; it read found=False while the production WorkGiver still found the winch reachable. RULED OUT
+    # (WINCH_REACH_DIAGNOSE_CANREACH_FIBS, 2026-10-21): the far pawn does NOT reach the lip by the trench floor - A* refuses
+    # that route too (lip found=False). The yes comes from pawn.CanReach = vanilla regions (walls, no depth) AND the depth-only
+    # pocket grid (depth, no walls): the walls join the banks round the trench's ends for the pocket grid, and the regions walk
+    # the trench floor, so each projection says yes on its own route and the AND is not the joint graph. A MOD finding.
     kvp, tp = ctx["sproof"]("ProofPath", "%s;%s" % (f, xz(P(-2, 0))), answer=True)
     kvl, tpl = ctx["sproof"]("ProofPath", "%s;%s" % (f, xz(P(0, 0))), answer=True)
     tp = "behind=%s | lip=%s" % (tp, tpl)
@@ -686,28 +696,74 @@ def winch_despawn_crashes(ctx):
     row("WINCH_DESPAWN_CRASHES", "PASS" if good else "FAIL", {"despawn": td, "after": t1, "crashes": crashes, "hits": hits})
 
 
+TRENCH_JOBS = ("RM_RaiderSetLadder", "RM_RaiderFillTrench", "RM_LayRaidPlank")
+WINCH_ATTACK_JOBS = ("AttackStatic", "AttackMelee")     # RM_DrawbridgeRaid.WinchJob: melee if reachable, else shoot, else Goto
+
+
 def raid_up(ctx):
     """PROVE raid_trench_proof's island (ring dug 2 m at Chebyshev 5..6), a steel drawbridge east across it with its winch on
-    the island, raised; a player decoy outside; 4 raiders in LordJob_AssaultColony 25 east; --raid-ticks sampled every 250.
-    EXPECT legal progress and no job loop: (WinchJobs + PlanksLaid rose, or a raider reached the decoy or the trench) AND
-    HostileJobsEnded rose by <= 3 per raider. LIES: raiders that never come within 15 squares measure the storyteller, not
-    the hand-off (SITE); a raider in the trench is legal (trench rules), never a breach."""
-    B, P, xz, row, dproof, ticks, spawn = _c(ctx, "B", "P", "xz", "row", "dproof", "ticks", "spawn")
-    c = P(30, 70)
+    the island, raised; the two island colonists UNDRAFTED inside a closed granite box (no line of sight, so FightEnemies has
+    no target and the duty list falls through to the trench rules); a sandbag decoy outside; 4 gunners in a plain
+    LordJob_AssaultColony 25 east, one carrying an RM_RaidPlank in its pack (what IncidentWorker_Raid.PostProcessSpawnedPawns
+    gives; a bridge-spawned pawn gets none); --raid-ticks sampled every 250 with each raider's current job and its target.
+    EXPECT legal progress and no job loop: (a trench-rule job RM_RaiderSetLadder/FillTrench/LayRaidPlank sampled, or PlanksLaid
+    rose, or a raider reached the decoy or the ring) AND HostileJobsEnded rose by <= 3 per raider. Winch jobs are NOT asked of
+    this lord (the winch giver sits only in the Sapper/Breaching duties): the sapper variant (same row) asks them. LIES: raiders that never
+    come within 15 squares measure the storyteller (SITE); a colonist of another scene (or the start colonists) in range gives
+    the gunners a legal target, so reachable ones in range make the row UNMEASURED/SITE; Wait_Combat with a target across the
+    moat is legal, Wait_Combat with NO target is the stall."""
+    row = ctx["row"]
+    det_a = _raid_variant(ctx, "assault", sappers=False)
+    det_s = _raid_variant(ctx, "sapper", sappers=True, dx=-60)
+    ok = det_a.pop("ok") and det_s.pop("ok")
+    row("RAID_UP", "PASS" if ok else "FAIL", {"assault": det_a, "sapper": det_s})
+
+
+def raid_up_sapper_doc():
+    """The sapper half of RAID_UP (ROW_IDS is mirrored by validation.DRAWBRIDGE_LIVE, so it is a variant inside the one row,
+    not a row of its own). PROVE the same island as the assault variant, the same hidden colonists, but the raiders are in a
+    LordJob_AssaultColony(sappers) (LordToil_AssaultColonySappers, DutyDef Sapper: JobGiver_AISapper then
+    JobGiver_RM_DrawbridgeWinch, then CrossTrench), no plank, staged 90 cells west of the assault island. EXPECT WinchJobs rose,
+    or a sampled AttackStatic/AttackMelee aimed at the winch cell, with HostileJobsEnded <= 3 per raider. LIES: sappers with no
+    destroyable thing between them and the target never need the winch; the closed box is that thing, so a sapper chewing the
+    box wall instead of the winch is a SITE read, not a pass."""
+
+
+def _raid_variant(ctx, rid, sappers, dx=30):
+    B, P, xz, dproof, ticks, spawn = _c(ctx, "B", "P", "xz", "dproof", "ticks", "spawn")
+    c = P(dx, 70)       # RAID_UP_SAPPER stages 90 cells west of RAID_UP's island so one run holds both without sharing ground
+    B.call("jawa/kill_hostiles")        # an earlier row's raiders must not join this one's fight
     ring = [(x, z) for x in range(c[0] - 6, c[0] + 7) for z in range(c[1] - 6, c[1] + 7) if max(abs(x - c[0]), abs(z - c[1])) >= 5]
     for cell in ring:
         ctx["dig"](cell, 4)
     ctx["build"]("K", (c[0] + 4, c[1]), (c[0] + 7, c[1]), "steel")
     ctx["power"]((c[0] + 5, c[1]), True)
     B.call("jawa/spawn_batch", ops="Sandbags:%d,%d" % (c[0] + 14, c[1] + 4), stuff="BlocksGranite")
-    for k in range(2):
-        spawn((c[0] - 2 + k, c[1]), draft=True)
+    # the island colonists: closed granite box (x c-3..c, z c-2..c+2), pawns inside, NOT drafted
+    box = [(x, z) for x in range(c[0] - 3, c[0] + 1) for z in range(c[1] - 2, c[1] + 3)
+           if x in (c[0] - 3, c[0]) or z in (c[1] - 2, c[1] + 2)]
+    ctx["walls"](box)
+    inside = [spawn((c[0] - 2 + k, c[1]), draft=False) for k in range(2)]
     dproof("ProofDevSet", "%s;raise;instant" % xz((c[0] + 5, c[1])))
     c0 = ctx["counters"]()
-    ids = ctx["assault"]([(c[0] + 25, c[1] + k) for k in range(4)])
+    spawns = [(c[0] + 25, c[1] + k) for k in range(4)]
+    ids = ctx["assault"](spawns, sappers=sappers)
     V.require(len(ids) == 4, "four raiders spawned in an assault", ids)
-    samples, came_near, reached = [], set(), set()
-    t = 0
+    plank_to = None
+    if not sappers:
+        # a plank in the pack, as the real raid hands one out; the duty (not a forced job) decides what to do with it
+        g = B.call("jawa/pawn_gear", pawn=ids[0], action="inventory", **{"def": "RM_RaidPlank"}) or {}
+        V.require(g.get("success") is not False, "a raider carries a plank", g, cls="HARNESS")
+        plank_to = ids[0]
+    # contamination: any other colonist (the start colonists, other scenes') near the raiders' start is a legal target
+    ps0 = ctx["pawns"]()
+    others = sorted(i for i, p in ps0.items() if p.get("kind") == "Colonist" and i not in inside and not p.get("dead")
+                    and p.get("x") is not None and max(abs(p["x"] - spawns[0][0]), abs(p["z"] - spawns[0][1])) <= 45)
+    # (the offline mock stages every scene on one map, so the other scenes' colonists would always trip this)
+    V.require(ctx["a"].mock or not others, "no colonist outside the box within 45 cells of the raiders", others, cls="SITE")
+    samples, came_near, reached, jobs_seen, trench_seen, winch_seen = [], set(), set(), {}, set(), set()
+    wait_no_target, probed, t = 0, 0, 0
+    winch_cell = (c[0] + 3, c[1])
     while t < ctx["a"].raid_ticks:
         ticks(250)
         t += 250
@@ -716,7 +772,18 @@ def raid_up(ctx):
         for i in ids:
             p = ps.get(i) or {}
             x, z = p.get("x"), p.get("z")
-            snap.append((i, x, z, p.get("dead"), p.get("downed")))
+            pr = B.call("jawa/attack_target_probe", pawn=i, maxDist=60) or {}
+            job, jt, tgt = pr.get("curJob"), pr.get("curJobTargetA"), pr.get("enemyTarget")
+            if pr.get("success") is not False and "curJob" in pr:
+                probed += 1
+            jobs_seen[job] = jobs_seen.get(job, 0) + 1
+            if job in TRENCH_JOBS:
+                trench_seen.add(i)
+            if job in WINCH_ATTACK_JOBS and isinstance(jt, dict) and (jt.get("x"), jt.get("z")) == winch_cell:
+                winch_seen.add(i)
+            if job == "Wait_Combat" and not tgt and not pr.get("picked"):
+                wait_no_target += 1
+            snap.append((i, x, z, p.get("dead"), p.get("downed"), job, jt, tgt))
             if x is None:
                 continue
             d = max(abs(x - c[0]), abs(z - c[1]))
@@ -726,15 +793,19 @@ def raid_up(ctx):
                 reached.add(i)
         samples.append({"t": t, "raiders": snap})
     c1 = ctx["counters"]()
+    V.require(probed > 0, "the job probe answered (jawa/attack_target_probe curJob)", jobs_seen, cls="HARNESS")
     V.require(len(came_near) >= 2, "two raiders came within 15 squares", sorted(came_near))
     ended = ctx["delta"](c0, c1, "HostileJobsEnded")
     winch_jobs, planks = ctx["delta"](c0, c1, "WinchJobs"), ctx["delta"](c0, c1, "PlanksLaid")
-    progress = (winch_jobs or 0) + (planks or 0) > 0 or bool(reached)
+    if sappers:
+        progress = (winch_jobs or 0) > 0 or bool(winch_seen)
+    else:
+        progress = bool(trench_seen) or (planks or 0) > 0 or bool(reached)
     no_loop = ended is not None and ended <= 3 * len(ids)
-    ctx["res"].setdefault("raidSamples", samples)
-    row("RAID_UP", "PASS" if progress and no_loop else "FAIL",
-        {"winchJobs": winch_jobs, "planksLaid": planks, "reached": sorted(reached), "cameNear": sorted(came_near),
-         "hostileJobsEnded": ended, "ticks": t})
+    ctx["res"].setdefault("raidSamples", {})[rid] = samples
+    return {"ok": bool(progress and no_loop), "variant": rid, "winchJobs": winch_jobs, "planksLaid": planks, "plankCarrier": plank_to,
+         "trenchJobRaiders": sorted(trench_seen), "winchAttackRaiders": sorted(winch_seen), "waitCombatNoTarget": wait_no_target,
+         "jobsSeen": jobs_seen, "reached": sorted(reached), "cameNear": sorted(came_near), "hostileJobsEnded": ended, "ticks": t}
 
 
 def raid_plank(ctx):
@@ -962,7 +1033,7 @@ class FakeBridge(object):
             self.nid += 1
             pid = "Human%d" % self.nid
             x, z = kw.get("x"), kw.get("z")
-            self.pawns[pid] = dict(x=x, z=z, hostile=kw.get("faction") not in ("player", None), hediffs=[], under=False,
+            self.pawns[pid] = dict(x=x, z=z, kind=kw.get("kindDef"), hostile=kw.get("faction") not in ("player", None), hediffs=[], under=False,
                                    trapped=(x, z) in self.dug and self._leaf_at(x, z) is None, lord=False, pathing=False)
             # a pawn spawned on a raised leaf square is down in the hole
             l = self._leaf_at(x, z)
@@ -973,7 +1044,20 @@ class FakeBridge(object):
             for i in str(kw.get("pawns") or "").split(","):
                 if i in self.pawns:
                     self.pawns[i]["lord"] = True
+                    self.pawns[i]["sapper"] = bool(kw.get("sappers"))
             return {"success": True}
+        if tool == "jawa/pawn_gear":
+            p = self.pawns.get(kw.get("pawn"))
+            if p and kw.get("action") == "inventory" and kw.get("def") == "RM_RaidPlank":
+                p["plank"] = True
+                return {"success": True}
+            return {"success": False, "error": "mock: pawn_gear only gives RM_RaidPlank"}
+        if tool == "jawa/attack_target_probe":
+            p = self.pawns.get(kw.get("pawn"))
+            if not p or p.get("dead"):
+                return {"success": False, "error": "no pawn"}
+            return {"success": True, "pawn": kw.get("pawn"), "picked": None, "enemyTarget": None,
+                    "curJob": p.get("job", "Wait_Combat" if p.get("lord") else None), "curJobTargetA": p.get("jobTarget")}
         if tool == "jawa/kill_hostiles":
             for p in self.pawns.values():
                 if p["hostile"]:
@@ -991,7 +1075,7 @@ class FakeBridge(object):
                                                                      "end": {"x": p and p["x"], "z": p and p["z"]}}]}
         if tool == "jawa/list_pawns":
             return {"pawns": [dict(id=i, x=p["x"] if not p.get("dead") else None, z=p["z"] if not p.get("dead") else None,
-                                   hostile=p["hostile"], dead=p.get("dead", False), downed=False,
+                                   hostile=p["hostile"], kind=p.get("kind"), dead=p.get("dead", False), downed=False,
                                    **({"health": {"hediffs": [{"def": h} for h in p["hediffs"]]}} if kw.get("includeHealth") else {}))
                               for i, p in self.pawns.items()]}
         if tool == "jawa/mod_settings_field":
@@ -1039,7 +1123,12 @@ class FakeBridge(object):
         if "raid_loop" in self.f:
             self.cnt["HostileJobsEnded"] += 5 * len(raiders)
         elif any(p["x"] <= self._island + 7 for p in raiders):
-            self.cnt["WinchJobs"] += 1
+            for p in raiders:
+                if p.get("sapper"):
+                    p["job"], p["jobTarget"] = "AttackStatic", {"x": self._island + 3, "z": self._islandz}
+                    self.cnt["WinchJobs"] += 1
+                else:
+                    p["job"], p["jobTarget"] = "RM_RaiderSetLadder", None
 
     def static(self, ty, m, arg):
         if ty == DB:
@@ -1092,6 +1181,7 @@ class FakeBridge(object):
                                         progress=0, full=self._full(tier, l_ - f_ + 1), target="lowered", hold=False, auto=False,
                                         pending="none", tip=False, winch=w, powered=False, frozen=False))
             if x2 - x1 == 3 and tier == "steel":
+                self._islandz = min(z1, z2)
                 self._island = x1 - 4             # scene K: the island's centre is 4 west of the first anchor
             return "DRAW ok=True leaves=%d tier=%s hinges=%s winchAt=%s reason=-" % (
                 len(spans), tier, ",".join(h for _, _, h in spans), "|".join("%d,%d" % w for w in winches))
