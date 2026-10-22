@@ -25,8 +25,9 @@ namespace RimMandrake.FlowWorks
 	/// yes into a no. Pockets, trapping, pit rooms and CanReachMapEdge stay on the depth-only labels (ruling 1).
 	///
 	/// WHEN IT MOVES: a stamp of (climb generation, climb settings salt, the walkability generation, the door print, the swim
-	/// grids' version). The walkability generation is bumped from the ConnectivitySource.UpdateIncrementally / ComputeAll
-	/// postfixes (RM_CliffMask's, inside GatherData); the door print (doors held open, the player's doors, drawbridge gates shut
+	/// grids' version). The walkability generation is bumped at once from RegionDirtyer (a wall built or removed, a door or
+	/// fence spawned or despawned: REACH_WINCH_FIX_GHOST_ROAD_RETURNS) and again from the ConnectivitySource.UpdateIncrementally
+	/// / ComputeAll postfixes (inside GatherData, which runs only on a tick some pawn asks for a path); the door print (doors held open, the player's doors, drawbridge gates shut
 	/// to everyone) is re-read every DoorPrintTicks; a gate lock flip bumps at once (RM_Drawbridges.Mode). Stale labels are
 	/// rebuilt from the map tick at most once per RebuildMinTicks; a breach (a delta square that became walkable), a drawbridge
 	/// toggle (RM_PocketGrid.ForceRebuild), a gate lock or hold, or a swim change forces the next tick's rebuild. Like the
@@ -129,6 +130,46 @@ namespace RimMandrake.FlowWorks
 					Interlocked.Exchange(ref st.forced, 1);
 					return;
 				}
+			}
+		}
+
+		/// <summary>REACH_WINCH_FIX_GHOST_ROAD_RETURNS: the path grid's walkability moved on one square (RegionDirtyer, called
+		/// synchronously from PathGrid when a wall is built or removed). ConnectivitySource's deltas (NoteConnectivity) arrive
+		/// only when the pathfinder GATHERS, i.e. when some pawn asks for a path that tick (PathFinder.PathFinderTick: no work,
+		/// no GatherData). A labelling built before a wall went up therefore stayed current-looking until the next path request:
+		/// on a map where nobody walked, CanReach read a ghost road through the new wall (reach_map_proof REACH_WINCH_SITE, live
+		/// 2026-10-22 on a reused map: canReach=True found=False; the A* call itself gathered, so the next read agreed).</summary>
+		internal static void NoteWalkability(Map map, IntVec3 c, bool nowWalkable)
+		{
+			if (map == null || !On || !states.TryGetValue(map, out MapState st))
+			{
+				return;
+			}
+			Interlocked.Increment(ref st.wallGen);
+			byte[] kinds = st.kinds;
+			if (kinds == null || !c.InBounds(map))
+			{
+				return;
+			}
+			int idx = map.cellIndices.CellToIndex(c);
+			if (idx < kinds.Length && RM_WallReachMath.WalkabilityBreach(kinds[idx], nowWalkable))
+			{
+				Interlocked.Exchange(ref st.forced, 1);
+			}
+		}
+
+		/// <summary>REACH_WINCH_FIX_GHOST_ROAD_RETURNS: a door or a fence (region-affecting, walkability unchanged) spawned or
+		/// despawned: the kinds snapshot is stale at once; a removal opens a way (forced, as a breach).</summary>
+		internal static void NoteBarrier(Map map, Thing t, bool removed)
+		{
+			if (map == null || t == null || !On || !(t is Building_Door || t.def.IsFence) || !states.TryGetValue(map, out MapState st))
+			{
+				return;
+			}
+			Interlocked.Increment(ref st.wallGen);
+			if (removed)
+			{
+				Interlocked.Exchange(ref st.forced, 1);
 			}
 		}
 
@@ -810,6 +851,43 @@ namespace RimMandrake.FlowWorks
 		public static void Postfix(Map ___map, List<IntVec3> cellDeltas)
 		{
 			RM_WallReach.NoteConnectivity(___map, cellDeltas, false);
+		}
+	}
+
+	/// <summary>REACH_WINCH_FIX_GHOST_ROAD_RETURNS: walkability changed on a square, synchronously (PathGrid ->
+	/// RegionDirtyer). GatherData's deltas come only when some pawn paths that tick; this one comes always.</summary>
+	[HarmonyPatch(typeof(RegionDirtyer), "Notify_WalkabilityChanged")]
+	[RimMandrake.Shared.PatchFeature("Reachability sees walls and cliffs together", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "reachSeesWallsAndCliffs")]
+	public static class RM_Patch_RegionDirtyer_WallReach
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Map ___map, IntVec3 c, bool newWalkability)
+		{
+			RM_WallReach.NoteWalkability(___map, c, newWalkability);
+		}
+	}
+
+	/// <summary>REACH_WINCH_FIX_GHOST_ROAD_RETURNS: a door or fence spawned (walkability unchanged, kind changed).</summary>
+	[HarmonyPatch(typeof(RegionDirtyer), "Notify_ThingAffectingRegionsSpawned")]
+	[RimMandrake.Shared.PatchFeature("Reachability sees walls and cliffs together", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "reachSeesWallsAndCliffs")]
+	public static class RM_Patch_RegionDirtyer_WallReachSpawned
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Map ___map, Thing b)
+		{
+			RM_WallReach.NoteBarrier(___map, b, false);
+		}
+	}
+
+	/// <summary>REACH_WINCH_FIX_GHOST_ROAD_RETURNS: a door or fence despawned (a way opened: forced).</summary>
+	[HarmonyPatch(typeof(RegionDirtyer), "Notify_ThingAffectingRegionsDespawned")]
+	[RimMandrake.Shared.PatchFeature("Reachability sees walls and cliffs together", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "reachSeesWallsAndCliffs")]
+	public static class RM_Patch_RegionDirtyer_WallReachDespawned
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Map ___map, Thing b)
+		{
+			RM_WallReach.NoteBarrier(___map, b, true);
 		}
 	}
 

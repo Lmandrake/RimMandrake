@@ -49,6 +49,10 @@ ANTI-GUESSING NOTES
   scene staging fault, SITE, never a PASS.
 - found comes from FindPathNow with the pather's own customizers; a pawn mid-job may carry canBashDoors from its job: the
   pawns here are fresh, drafted or wild, so the class reads as staged (cls is in every detail).
+- REACH_WINCH_FIX_GHOST_ROAD_RETURNS (live 2026-10-22, run WITHOUT --fresh-map): on a reused map the (band, class) labelling
+  already existed, and the walls staged here reached it only at the next GatherData, which 1.6 runs only on a tick some pawn
+  asks for a path; ProofReachPair asks CanReach BEFORE its own A* (which gathers), so REACH_WINCH_SITE read canReach=True
+  found=False. Fixed in the mod (RegionDirtyer walkability hook). A fresh map hid it: the first query built the labels.
 - The gate shuts only while the map is LOCKED: FreeHostileCount(current|true) >= 1 is a precondition (SITE when not).
 """
 import argparse

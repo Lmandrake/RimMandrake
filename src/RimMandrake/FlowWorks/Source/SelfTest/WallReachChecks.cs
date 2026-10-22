@@ -382,6 +382,22 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(wallMs < 200, "one band labels in under 200 ms offline (got " + wallMs.ToString("0.0") + ")");
             });
 
+            Case("WallReach_wall_built_is_seen_at_once_not_at_next_path", () =>
+            {
+                // REACH_WINCH_FIX_GHOST_ROAD_RETURNS (live 2026-10-22, reused map): a wall built while nobody paths was seen
+                // only at the next GatherData, so CanReach read a ghost road through it. The walkability hook is synchronous.
+                Assert(RM_WallReachMath.WalkabilityBreach(RM_WallReachMath.Wall, true), "a wall gone is a breach (forced rebuild)");
+                Assert(!RM_WallReachMath.WalkabilityBreach(RM_WallReachMath.Open, false), "a wall built only goes stale (throttled)");
+                Assert(!RM_WallReachMath.WalkabilityBreach(RM_WallReachMath.Open, true), "open staying open is no breach");
+                Assert(!RM_WallReachMath.WalkabilityBreach(RM_WallReachMath.Door, true), "a door square is not a wall breach");
+                string wr = Src("Superdeep", "RM_WallReach.cs");
+                RiverSwitchFlipChecks.Has(wr, @"\[HarmonyPatch\(typeof\(RegionDirtyer\), ""Notify_WalkabilityChanged""\)\]", "walkability is hooked where PathGrid reports it");
+                RiverSwitchFlipChecks.Has(wr, @"Postfix\(Map ___map, IntVec3 c, bool newWalkability\) \{ RM_WallReach\.NoteWalkability\(___map, c, newWalkability\);", "the hook bumps the stamp");
+                RiverSwitchFlipChecks.Has(wr, @"internal static void NoteWalkability\(Map map, IntVec3 c, bool nowWalkable\) \{.{0,200}Interlocked\.Increment\(ref st\.wallGen\);", "every walkability change stales the labels");
+                RiverSwitchFlipChecks.Has(wr, @"\[HarmonyPatch\(typeof\(RegionDirtyer\), ""Notify_ThingAffectingRegionsSpawned""\)\]", "a door or fence spawned is seen");
+                RiverSwitchFlipChecks.Has(wr, @"\[HarmonyPatch\(typeof\(RegionDirtyer\), ""Notify_ThingAffectingRegionsDespawned""\)\]", "a door or fence removed is seen");
+            });
+
             Case("WallReach_wiring_source_pins", () =>
             {
                 string wr = Src("Superdeep", "RM_WallReach.cs");
