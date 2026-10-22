@@ -225,3 +225,5 @@ every run.
 5. **Bars 1, 2 and 4 together** — *the three cover generous, hungry and the place itself; the mat (3) waits on Q2*.
 
 **Recommended: 5** — it covers every clause of your sentence and does not build on the unsettled heat question.
+
+**ANSWERED 2026-10-22 by question card: all four bars (1 hurt one the grove comes, 2 the gut takes the fallen, 3 the mat keeps you, 4 the Sheen marks you) are to be DRAFTED for his validation.** Bars stay his: FOUNDRY drafts text only; bar 3 must be written against the new portable mat (Q2 answer).
