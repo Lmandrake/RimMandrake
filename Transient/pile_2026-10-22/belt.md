@@ -121,3 +121,4 @@ Started 08:48 PDT. Tier fw_gss_sitting, DLL 41fb948b5e. Owner save RM_fw_walkthr
 - 12:26 owner's RM_fw_walkthrough_20261022 load-checked on deployed ee9fa61fbc: loaded, 25 new log lines, 0 exceptions/errors (not ticked, not saved)
 - 12:27 NEW underpass_raid_live.py: PASS (raiders on the floor under the deck at t+180, past it at t+660) -> SUSPENSION_UNDERPASS A7 verified — src/RimMandrake/FlowWorks/northstar/underpass_raid_result_20261022T1250_belt.json
 - 12:29 raid_trench_proof --preladder (new flag): RAID_PRELADDERED_CROSSES PASS (island at t+1500 over the two pre-set ladders, no extra ladder) -> TRENCH_CROSSING A3 verified PARTIAL (its second clause is truncated in the ledger) — src/RimMandrake/FlowWorks/northstar/raid_trench_result_20261022T1300_preladder_belt.json
+- 12:36 validation_v2 HARNESS fix (S6 probe cells unfogged first) -> --live --fresh-map 62/62 PASS on ee9fa61fbc — northstar/validation_v2_result_20261022T1305_belt.json

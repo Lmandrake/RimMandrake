@@ -2449,6 +2449,10 @@ def _phase_S_body(L, args):
         # toggle ON and is refused OFF; D=4 is refused either way (at the 2 m cap phase_S sets); undug soil is accepted even OFF
         # (the toggle gates DEEPENING only -- the control that makes "refused OFF" mean something).
         undug = SCENES["S2_clamp"]["cells"][1]
+        # SITE (belt live 2026-10-22, --fresh-map): every S6 probe cell read fogged and the row went UNMEASURED; the probe
+        # cells are unfogged first (the designator refuses fog; the row asks about the depth gate, not discovery)
+        for c_ in (cells[0], cells[3], undug):
+            L.B.call("jawa/set_fog", action="unfog", rect="%d,%d,3,3" % (c_[0] - 1, c_[1] - 1))
         on1, on4 = L.probe(cells[0]), L.probe(cells[3])
         L.sset(S_FW, "digToDepthEnabled", False)
         try:
