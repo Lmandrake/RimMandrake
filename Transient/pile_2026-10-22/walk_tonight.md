@@ -1,6 +1,7 @@
 # FlowWorks live walk — tonight, 2026-10-22 (BENCH with the owner)
 
-Save **RM_fw_walkthrough_20261022b** (map C: 10 scenarios + DB drawbridge row; map R: C1 + C11). Old save RM_fw_walkthrough_20261022 is kept. Stops JSON (camera driver): `Transient/pile_2026-10-22/walk_tonight.json`. **11 stops, 27 decisions, ~44 min.** Every stop is one of HIS judgments; everything an agent proved is in the skip list.
+Save **RM_fw_walkthrough_20261022b** (map C: 10 scenarios + DB drawbridge row; map R: C1 + C11). Clock: map C 16:00,
+map R 09:42 (the two tiles are ~6.3 h apart in longitude: at the usual 10:00 on map C, map R is in the dark at 03:42). Old save RM_fw_walkthrough_20261022 is kept. Stops JSON (camera driver): `Transient/pile_2026-10-22/walk_tonight.json`. **11 stops, 27 decisions, ~44 min.** Every stop is one of HIS judgments; everything an agent proved is in the skip list.
 
 ## REBUILD (~16:30, after the belt frees the game) — commands in order, BENCH seat clone `/home/mandrake/rm/bench`
 
@@ -79,6 +80,9 @@ Camera: `python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto 
   - view four drawbridges + two closed gates: frame_cell_rect x=63 z=167 w=36 h=18
 - setup: none (timber lowered, timber raised, steel lowered, steel raised + winch powered; gates WoodLog and Steel, closed)
 - look: each leaf/winch/gate draws its MATERIAL picture (443912e4df); closed timber gate = the picture he never picked
+- ⚠ seat saw (preview 16:00): the TIMBER RAISED leaf (no winch, abs 72..76,174) draws NOTHING although ProofLeaf reads it
+  raised 3/3 — only the steel raised leaf shows its upright edge. Filed TIMBER_LEAF_DIAGNOSE_UP_AND_INVISIBLE; tell him
+  before the timber card (judge the timber LOWERED deck and the gates; the raised timber picture is a bug, not a look).
 - **CARD:** Timber drawbridge pictures? — Keep / Redraw leaf / Redraw winch / Redraw both · closes: DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS ('Drawbriges need to be looked at in game')
 - **CARD:** Steel drawbridge pictures? — Keep / Redraw leaf / Redraw winch / Redraw both · closes: DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS
 - **CARD:** Closed gates (timber/Scrapper closed renders exist, never picked)? — Install the A renders / Keep what shows / Redraw · closes: BRIDGE_ART_REDRAW_CABINETS_GROW_SADDLES
@@ -92,13 +96,23 @@ Camera: `python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto 
 - **CARD:** Pipe girth (half)? — Keep / Thinner / Thicker · closes: PIPE_GIRTH_TUNE_HALF_AS_THICK
 - **CARD:** Liquid colours in hoses/canals? — All distinct / Chemfuel ~ propane / Water too dark · closes: (look bar liquid_colours; a 'no' files a tune item)
 
-### 6. C7_levels_wells — map C, ~4 min
+### 6. C7_ponds_level_wells — map C, ~5 min
 - camera: `python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C7`
-  - view ground tanks + gap + bleed wells: frame_cell_rect x=22 z=122 w=22 h=22
+  - view two ponds + hose net + bleed wells + ground tanks: frame_cell_rect x=12 z=124 w=26 h=16
   - view tower + garden hose: frame_cell_rect x=12 z=140 w=30 h=12
-- setup: seat: build the two missing pipe cells (jawa/build_batch RM_UniversalPipe at 28,138 and 29,138) and step 2500 ticks (one in-game hour); HE reads the three tank levels
-- look: three ground tanks moving to one level in decilitre steps; the bleed wells read as wells (not taps); the tall tower
-- **CARD:** Tanks levelling through pipes, speed? — Right / Too fast / Too slow · closes: PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL, WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES
+- premise (corrected 2026-10-22 evening): tanks in plain Store mode do NOT level with each other — **"Storage fill stays
+  pump-only"** (GSS ruling 3, spec of PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL). Levelling is between liquid BODIES joined
+  by a pipe/open hose. The three ground tanks stand apart as a size look only.
+- staged: two dug ponds 2 m deep west of the plot (HIGH full at abs 13..16,134..137; LOW at 1 notch, abs 13..16,126..129),
+  two Modern reels on one pipe, a hose onto each pond's lip; HIGH end Outflow, LOW end **Capped** (nothing moves).
+- setup: HE opens it — select the LOW pond's reel (abs 24,127), Free end -> Outflow (or seat:
+  `python.exe Transient/pile_2026-10-22/walk_c7_probe.py water "role:23,127;Outflow" water`); unpause at speed 3 for
+  ~2.5 in-game hours (6,000 ticks; 10,000 dL move per 250-tick cycle); re-read with `... walk_c7_probe.py water`.
+- look: the full pond falling, the low one rising in decilitre steps to one level; both reels read "Levelling: flowing"
+  then "level"; the hoses plump while flowing; the bleed wells read as wells (not taps); the tall tower
+- known UX wrinkle (seat saw it live): while levelling flows the Outflow end still reads "Nothing drains here: needs a pump
+  or a tank set to Dump", and the HIGH end flips from "beside deep water" to "lying free". A 'confusing' from him files it.
+- **CARD:** Two ponds joined by a hose finding one level, no pump: speed? — Right / Too fast / Too slow · closes: PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (A4 look), WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES
 - **CARD:** Bleed well art? — Reads as a well / Reads as a tap: redraw · closes: BLEED_WELL_STRINGS_RENAME_TAP_RETIRED (strings done; art call)
 
 ### 7. C4_depth_read — map C, ~3 min
@@ -137,25 +151,37 @@ Camera: `python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto 
 - **CARD:** Current push on a wader? — Right / Too strong / Too weak · closes: (feel; RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED rows)
 - **CARD:** Ford stones and ferry rope? — Both read right / Stones read as dry ground / Rope sits in the water · closes: (look bars river_ford, river_works_looks)
 
-### 11. overflow_if_built — map R, ~0 min
+### 11. overflow_on_terrace — map R, ~5 min (overflow stages 1-3 ARE in tonight's DLL)
 - camera: `python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --river --goto C1`
   - view terrace 1 brim (plot-local 0..28, 31..36): C1-local [0, 30, 29, 7]
-- setup: ONLY if overflow Stage 1+ is deployed in tonight's DLL (overflow_build.md says so): HE shuts S1 with the pump on and unpauses until terrace 1 spills; otherwise SKIP (0 min)
+- setup: overflow ships OFF (master switch, global Mod Setting, not per map) and stays OFF for stops 1-10. Turn it ON only
+  here, on map R: dev menu "RMFlowWorks / Canal overflow: switch on/off (test)" (message says ON), or seat:
+  `python.exe Transient/pile_2026-10-22/walk_c7_probe.py 'call:jawa/mod_settings_field:{"typeName":"RimMandrake.FlowWorks.Sheet.RM_SheetSettings","action":"set","field":"sheetOverflowEnabled","value":"True"}'`.
+  Then HE shuts S1 with the pump on and unpauses until terrace 1 spills.
+- **TURN IT OFF AFTER** (it is saved in Mod Settings, so it outlives the save): the same dev action again (message says OFF),
+  or the seat command with `"value":"False"`, then read back (`"action":"get"` -> "False"). Do not save the game with it ON.
+- known open: OVERFLOW_DIAGNOSE_FIRST_WET_RUN (rain spill, return-to-pit, ledger rows FAIL in the proof) — the look is still his.
 - look: the spill sheet on the field
 - **CARD:** Overflow sheet on the ground? — Right / Too blue / too thin / Spreads wrong · closes: CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED
 
-## Proven today by agents — SKIP on the walk (source: belt.md, live_helper_pm.md, 2026-10-22)
+## Proven today by agents — SKIP on the walk (source: belt.md 08:48-14:44 + walk driver 15:17-, 2026-10-22)
 - Reel turns 4 ways: rot 0-3 read back, straight lays, build-preview exit line, old reels load West (state) — only the LOOK is his (stop 1).
 - Pipe riser onto the tank flange: PASS by capture — only the look is his (stop 5).
 - Empty-hose shadow alpha/width (0.80/0.85, 1.35/1.5): state PASS — the look is his (stop 1).
 - Planked squares path + walk, open squares refused (PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS, closed 41fb948b5e).
-- Drill + bleed well refused on an empty survey; tank allowed (DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES, closed).
-- Bleed well label in game ('bleed well'); colonist dig cap 2 m: settings text + right-click reason PASS.
-- lines_proof 10/11 (pipe poles, cords, pit covers; LADDER_HOSE row is fixer B's MOD bug, not a walk stop).
-- drawbridge_proof 12/12 (raise/lower paths, winch, gate refusal, raid rows) — mechanics are done; only PICTURES are his (stops 3-4).
-- suspension_bridge_proof 26 PASS / 8 UNMEASURED; trench_cover_proof 6 PASS; raid_trench island sealed PASS.
-- REACH residual soak 0 in 43,545 ticks; wall-reach rebuild throttled (WALL_REACH_TUNE_REBUILDS_TENFOLD).
+- Drill + bleed well refused on an empty survey; tank allowed (DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES, closed). Bleed well label + settings search 'bleed' PASS (BLEED_WELL_STRINGS_RENAME_TAP_RETIRED closed).
+- lines_proof 11/11 (pipe poles A7-A10, cords, pit covers; LADDER_HOSE_DIAGNOSE_RETRACTS_ON_A_WHIM fixed 0ab8470911, closed).
+- drawbridge_proof 12/12 (twice, incl. on ee9fa61fbc) — mechanics done; only PICTURES are his (stops 3-4).
+- suspension_bridge_proof 26 PASS / 8 UNMEASURED (posts, grate, underpass A1-A7, jetty A1-A3 incl. 'Jump into pit', lake + sea waters); trench_cover 6 PASS + blast/cast A3/A4; raid_trench breach, ladder, siege, jump-pack rows (RAIDERS_TRENCH A2, A4-A7); trench crossing A2/A3.
+- climb_proof 15 PASS; depth_rebuild_proofs 17 PASS (swim/sink, pit depth); validation_v2 62/62 on ee9fa61fbc.
+- Pit access: rail ladder lowered from above, pit travel fly/jump/float, rescue ladder (pit_rescue_live 3/3), quarry find, cover deconstruct drops the rider — all DONE.
+- Thirst 20 PASS (salt bottle fixed), sprinkler T22 + 8 rows, pond_pump, B2/B4/B5/B6/B7 live-session rows (fish roll, ice freeze/thaw, flood canal kept, settings dialog rows).
+- REACH residual soak 0; wall-reach rebuilds tenfold fewer (WALL_REACH_TUNE_REBUILDS_TENFOLD A2/A3); station reach A2.
+- FLOW_ORDER_EXTERNAL_INPUT_1 DONE: 6400-square network wets end to end off one inland source at 7.5 ms/pulse (his input: raise the 6000 cap?).
+- Deep-lake refill restores the exact shape on c8eb3b2c83 (walk driver 15:50; DRAWDOWN item noted).
+- Hose levelling between two ponds: 10,000 dL per 250-tick cycle, reels read "Levelling: flowing" (walk driver, fresh map) — only the SPEED feel is his (stop 6).
 - Do NOT walk: C6 tar, C8 lock, C9 trench (raid branch), C10 basin — no his-eye question open there tonight; their signs stand for a later sitting.
+- Still open (not walk stops; fixers): CAUSEWAY fill (rerun on a calm site owed), overflow first wet run, suspension buttons still showing, railing stuff=null, settings search misses checkbox labels, glow tank dry beside the sea, spill L5 narrowed.
 
 ## Not on the walk, needs him elsewhere
 - Phone collections already sent: joint fittings A-N, pipe atlas A-D + pumps E-G, reel N/S A-P (answer by card; stop 1 shows the stand-in).

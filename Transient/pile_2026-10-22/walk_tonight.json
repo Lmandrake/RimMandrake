@@ -1,7 +1,7 @@
 {
  "save": "RM_fw_walkthrough_20261022b",
  "built_from": "scenarios_map.py (map C) + --river (map R)",
- "note": "frame = absolute cells on map C; frame_rel = C1 plot-local (add c1.origin from src/RimMandrake/FlowWorks/northstar/review/scenarios/map_r_placed.json); answers go in 'answer'",
+ "note": "frame = absolute cells on map C; frame_rel = C1 plot-local (add c1.origin from src/RimMandrake/FlowWorks/northstar/review/scenarios/map_r_placed.json); answers go in 'answer'; clock map C 16:00 / map R 09:42 (6.3 h longitude apart)",
  "minutes": 44,
  "decisions": 27,
  "stops": [
@@ -253,7 +253,7 @@
     }
    ],
    "setup": "none (timber lowered, timber raised, steel lowered, steel raised + winch powered; gates WoodLog and Steel, closed)",
-   "look": "each leaf/winch/gate draws its MATERIAL picture (443912e4df); closed timber gate = the picture he never picked",
+   "look": "each leaf/winch/gate draws its MATERIAL picture (443912e4df); closed timber gate = the picture he never picked; SEAT NOTE: the timber RAISED leaf draws nothing (state raised 3/3) - filed TIMBER_LEAF_DIAGNOSE_UP_AND_INVISIBLE, not his look",
    "decisions": [
     {
      "q": "Timber drawbridge pictures?",
@@ -359,20 +359,20 @@
   },
   {
    "n": 6,
-   "id": "C7_levels_wells",
+   "id": "C7_ponds_level_wells",
    "map": "C",
    "minutes": 4,
    "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C7",
    "views": [
     {
-     "name": "ground tanks + gap + bleed wells",
+     "name": "two ponds + hose net + bleed wells + ground tanks",
      "frame": {
       "tool": "rimworld/frame_cell_rect",
       "args": {
-       "x": 22,
-       "z": 122,
-       "width": 22,
-       "height": 22,
+       "x": 12,
+       "z": 124,
+       "width": 26,
+       "height": 16,
        "paddingCells": 1
       }
      }
@@ -391,18 +391,18 @@
      }
     }
    ],
-   "setup": "seat: build the two missing pipe cells (jawa/build_batch RM_UniversalPipe at 28,138 and 29,138) and step 2500 ticks (one in-game hour); HE reads the three tank levels",
-   "look": "three ground tanks moving to one level in decilitre steps; the bleed wells read as wells (not taps); the tall tower",
+   "setup": "seat (or HE: select the LOW pond's reel at 24,127, Free end -> Outflow): python.exe Transient/pile_2026-10-22/walk_c7_probe.py water \"role:23,127;Outflow\" water; then unpause at speed 3 for ~2.5 in-game hours (6,000 ticks: 10,000 dL per 250-tick cycle) and re-read with ... walk_c7_probe.py water. The three ground tanks are a SIZE look only: Store tanks never level with each other (storage fill stays pump-only, GSS ruling 3).",
+   "look": "the full pond falling and the low pond rising in decilitre steps until one level; both reels read 'Levelling: flowing' then 'level'; the hoses plump while flowing; the bleed wells read as wells (not taps); the tall tower",
    "decisions": [
     {
-     "q": "Tanks levelling through pipes, speed?",
+     "q": "Two ponds joined by a hose finding one level, no pump: speed?",
      "options": [
       "Right",
       "Too fast",
       "Too slow"
      ],
      "closes": [
-      "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+      "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (A4 look)",
       "WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES"
      ],
      "answer": null
@@ -631,9 +631,9 @@
   },
   {
    "n": 11,
-   "id": "overflow_if_built",
+   "id": "overflow_on_terrace",
    "map": "R",
-   "minutes": 0,
+   "minutes": 5,
    "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --river --goto C1",
    "views": [
     {
@@ -646,7 +646,7 @@
      ]
     }
    ],
-   "setup": "ONLY if overflow Stage 1+ is deployed in tonight's DLL (overflow_build.md says so): HE shuts S1 with the pump on and unpauses until terrace 1 spills; otherwise SKIP (0 min)",
+   "setup": "overflow ships OFF (global Mod Setting). ON only here: dev action 'RMFlowWorks / Canal overflow: switch on/off (test)' or jawa/mod_settings_field RimMandrake.FlowWorks.Sheet.RM_SheetSettings sheetOverflowEnabled=True; HE shuts S1 with the pump on and unpauses until terrace 1 spills. TURN IT OFF AFTER (same action / value False, read back False); never save with it ON.",
    "look": "the spill sheet on the field",
    "decisions": [
     {

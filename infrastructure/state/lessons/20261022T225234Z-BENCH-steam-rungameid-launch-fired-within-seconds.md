@@ -1,0 +1,1 @@
+A steam://rungameid launch fired within seconds of killing RimWorld can silently not start the game (Steam still sees it exiting): wait ~8 s after the process is gone, then launch and confirm RimWorldWin64 in tasklist, retrying the launch once.
