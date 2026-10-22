@@ -1,16 +1,16 @@
 <!doctype html><html><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>Composite Scenarios Key</title><style>:root{--bg:#2b2118;--fg:#f2e6cf;--ac:#ffd27f;--li:#5a4636}@media (prefers-color-scheme: light){:root:not([data-theme=dark]){--bg:#f6efe3;--fg:#2b2118;--ac:#8a5a10;--li:#c9b79c}}body{background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,sans-serif;margin:0 auto;max-width:1100px;padding:16px}h1,h2{color:var(--ac)}table{border-collapse:collapse;width:100%;margin:8px 0}td{border:1px solid var(--li);padding:3px 6px;vertical-align:top}p.t{margin:2px 0 2px 16px}</style></head><body><h1>FlowWorks composite review scenarios - key sheet</h1>
-<p>Load RM_fw_walkthrough_20261022 (map C) and RM_fw_scenarios_rivers_20261021 (not saved yet) (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. Every plot is still until your first poke: its START. Reload the save to reset. Raids live in RM_fw_composite_raid, rain in RM_fw_composite_rain (load the branch, never the main save, for those pokes).</p>
+<p>Load RM_fw_walkthrough_20261022b (map C) and RM_fw_scenarios_rivers_20261021 (not saved yet) (map R: C1, C11). Paused at 10:00, god mode on, clear weather, Peaceful, Mod Settings at shipped defaults. Every plot is still until your first poke: its START. Reload the save to reset. Raids live in RM_fw_composite_raid, rain in RM_fw_composite_rain (load the branch, never the main save, for those pokes).</p>
 <p>Each scenario has a gold title label (number, name, START, what to look for), its try lines under the plot, small rust labels on every part a poke touches, violet DEFERRED labels on every piece not built yet, and in-save sign books (a Novel; mouse over it, press i) at its north-west corner and at each DEFERRED piece - the books survive a plain load with no agent.</p>
-<p>Tonight&#x27;s rulings carried: colonists dig to 2 m; deeper holes are machine-dug (mechanoids and droids dig to 20 m, built 2026-10-21; the ridable digging rig is not built: DEFERRED); pipes half as thick and hoses twice the 10-21 girth (owner 2026-10-22 00:00), both built; a FLOWING hose still draws too thin (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL); canal overflow ships in 1.0 but only Stage 0 (offline kernel) exists: DEFERRED; reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE); a fallen cord lands walkable (fix built).</p>
+<p>Tonight&#x27;s rulings carried: colonists dig to 2 m; deeper holes are machine-dug (mechanoids and droids dig to 20 m, built 2026-10-21; the ridable digging rig is not built: DEFERRED); pipes half as thick and hoses twice the 10-21 girth (owner 2026-10-22 00:00), both built; a flowing hose plumps wider than an empty one, and an EMPTY hose casts a darker, wider shadow (built 2026-10-22); a hose reel turns four ways (rotate it like any building); its hose leaves the way it faces. North/south art is the west art turned until he picks the drawn views (REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED); a pipe into a tank rises onto the tank&#x27;s flange (a riser), never slipping under its skid (built 2026-10-22); planked squares of a part-covered pit walk like floor; only the open squares are the pit; a cover gives way only when destroyed, blasted or deconstructed (41fb948b5e); a drill or a bleed well is refused on ground the survey found empty (41fb948b5e); RM_LiquidTap is a BLEED WELL (groundwater seeping up), never a tap or faucet; drawbridge leaves, winches and gates draw their MATERIAL picture (timber/steel) first, a look only as fallback (443912e4df); canal overflow is built (Stages 1-3) but its master switch ships OFF until the Stage 4 live sign-off; scenarios do not turn it on: DEFERRED; reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE); a fallen cord lands walkable (fix built).</p>
 <table>
 <tr><td>#</td><td>scenario</td><td>map</td><td>plot (x,z,w,h)</td><td>look</td><td>staged / DEFERRED</td><td>goto</td></tr>
 <tr><td>C1</td><td>The Thirsty Terraces</td><td>R</td><td>river-anchored (live)</td><td>all four</td><td>15 / 3</td><td>`--goto C1` (map R: framed by `--river --build`; goto on map R owed)</td></tr>
 <tr><td>C2</td><td>The Drowned Keep</td><td>C</td><td>(62, 62, 44, 44)</td><td>Industrial</td><td>19 / 5</td><td>`--goto C2`</td></tr>
-<tr><td>C3</td><td>The Labyrinth Rescue</td><td>C</td><td>(12, 12, 40, 40)</td><td>Scrapper</td><td>20 / 3</td><td>`--goto C3`</td></tr>
-<tr><td>C4</td><td>The Wet Quarry</td><td>C</td><td>(12, 62, 40, 40)</td><td>Industrial</td><td>14 / 2</td><td>`--goto C4`</td></tr>
+<tr><td>C3</td><td>The Labyrinth Rescue</td><td>C</td><td>(12, 12, 40, 40)</td><td>Scrapper</td><td>21 / 2</td><td>`--goto C3`</td></tr>
+<tr><td>C4</td><td>The Wet Quarry</td><td>C</td><td>(12, 62, 40, 40)</td><td>Industrial</td><td>15 / 2</td><td>`--goto C4`</td></tr>
 <tr><td>C5</td><td>The Fuel Depot</td><td>C</td><td>(112, 12, 40, 36)</td><td>Industrial</td><td>13 / 3</td><td>`--goto C5`</td></tr>
 <tr><td>C6</td><td>The Tar Seep</td><td>C</td><td>(162, 12, 40, 36)</td><td>Scrapper</td><td>9 / 2</td><td>`--goto C6`</td></tr>
-<tr><td>C7</td><td>The Bathhouse and Water Tower</td><td>C</td><td>(12, 112, 40, 40)</td><td>Modern</td><td>13 / 2</td><td>`--goto C7`</td></tr>
+<tr><td>C7</td><td>The Bathhouse and Water Tower</td><td>C</td><td>(12, 112, 40, 40)</td><td>Modern</td><td>14 / 1</td><td>`--goto C7`</td></tr>
 <tr><td>C8</td><td>The Canal Lock</td><td>C</td><td>(112, 62, 44, 24)</td><td>Futuristic</td><td>11 / 3</td><td>`--goto C8`</td></tr>
 <tr><td>C9</td><td>The Trench Line</td><td>C</td><td>(162, 62, 44, 32)</td><td>earthworks</td><td>9 / 3</td><td>`--goto C9`</td></tr>
 <tr><td>C10</td><td>The Rain Basin</td><td>C</td><td>(196, 112, 44, 40)</td><td>land and water bodies</td><td>11 / 3</td><td>`--goto C10`</td></tr>
@@ -29,8 +29,8 @@
 <p class=t>5. select the meter on terrace 1: squares, levels held, net in/out per day; shut S1 and watch it turn</p>
 <p class=t>6. deconstruct one pipe pole: the overhead span is gone and the pipe can no longer cross the ditch</p>
 <p class=t>7. watch the labelled WITNESS sprinkler: the canal feed and the sprinkler circuit are separate nets</p>
-<p>Look for: sprinklers centred on their pipe; pipes meet the tank at its centre; the span sags over the ditch, not on its floor; the four looks working side by side</p>
-<p>Broken looks like: a sprinkler off its pipe&#x27;s centre; spraying with no pump on the net; a pipe drawn through the tank; the overhead pipe on the ditch floor or without sag; terrace 3 wet with S2 shut; a hose crossing that is not clean over/under</p>
+<p>Look for: sprinklers centred on their pipe; the pipe rises onto the tall tank&#x27;s flange; the span sags over the ditch, not on its floor; the four looks working side by side; each reel&#x27;s hose leaves the way the reel faces</p>
+<p>Broken looks like: a sprinkler off its pipe&#x27;s centre; spraying with no pump on the net; a pipe drawn through the tank or slipping under its skid; the overhead pipe on the ditch floor or without sag; terrace 3 wet with S2 shut; a hose crossing that is not clean over/under</p>
 <p>Still until poked: S0 shut (terrace 1 full), S1 and S2 shut (terraces 2 and 3 dry); the pump fills the tall tank in Fill mode and the heads spray on the hour (that IS the scenario; the soak reads dug cells and buildings)</p>
 <p>Branch saves: RM_fw_composite_rivers_days: sand to soil by the swale</p>
 <table>
@@ -50,8 +50,8 @@
 <tr><td>sand + swale strip on terrace 3</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>remote field hose (Industrial), Plump</td><td>staged</td><td>look</td><td></td></tr>
 <tr><td>a second hose crossing it at right angles</td><td>staged</td><td>look</td><td></td></tr>
-<tr><td>overflow onto the field (D2/D3)</td><td>DEFERRED</td><td>DEFERRED</td><td>Stage 1+ unbuilt; terrace 1&#x27;s brim is one notch from spilling, so leaving S1 shut with the pump on will spill once it lands - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`</td></tr>
-<tr><td>flowing hose girth, joint flanges</td><td>DEFERRED</td><td>DEFERRED</td><td>pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing (plump) hose still draws thinner than an empty one, and pipe/hose joints have no flanges yet (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL, PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID) - builds under `HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL`</td></tr>
+<tr><td>overflow onto the field (D2/D3)</td><td>DEFERRED</td><td>DEFERRED</td><td>overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; terrace 1&#x27;s brim is one notch from spilling, so leaving S1 shut with the pump on will spill once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`</td></tr>
+<tr><td>joint fittings art (coupler, flange, saddle)</td><td>DEFERRED</td><td>DEFERRED</td><td>pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing hose plumps wider than an empty one; a pipe rises onto a tank&#x27;s flange (built). The joint FITTINGS art (coupler, flange, saddle) is drawn and waits on his pick; nothing is installed (PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID) - builds under `PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID`</td></tr>
 <tr><td>terrace 2&#x27;s front frozen half way</td><td>DEFERRED</td><td>DEFERRED</td><td>a canal levels itself: no frozen half front survives the soak; staged dry, opening S1 shows the front - builds under `design §3 C1 (deviation)`</td></tr>
 </table>
 <p>Exercises (17 ids): 5 poked, 12 look.</p>
@@ -62,11 +62,11 @@
 <p>Try:</p>
 <p class=t>1. main save: walk a colonist over the grated suspension bridge across the west moat arm and out the jetty; swim under the deck (live 2026-10-21: a span must cross dug ground only, so it cannot also span the dry ditch)</p>
 <p class=t>2. RAID BRANCH START: open the pen grate, unpause: raiders reach the ditch and moat, lay the plank or swim (2 m: heads and shoulders up), climb, and try the gate (it stays shut to hostiles)</p>
-<p class=t>3. lower the drawbridge (its winch) mid-raid: the leaf drops; the gate still refuses unless held open; let one raider onto the gatehouse concealed pit: he drops onto the spikes</p>
+<p class=t>3. lower the drawbridge (its winch) mid-raid: the leaf drops; the gate still refuses unless held open; raiders walk the gatehouse planks like floor: deconstruct (or blast) the cover under one and he drops onto the spikes</p>
 <p class=t>4. open the gatehouse grate and sluice: the trapped raider&#x27;s pit floods from the moat; read swim vs drown in the inspect pane</p>
 <p class=t>5. light the chemfuel arm (dev fire at &#x27;light here&#x27;): it goes up like gasoline; the grated deck lets the heat up</p>
 <p class=t>6. cut the winch&#x27;s power (ProofWinchPower off; the GSS cord is DEFERRED): the leaf holds where it is</p>
-<p>Look for: the concealed pit invisible at play zoom with a slight seam at max zoom; the bridge reads HUNG, not a pier; raiders swim, never walk the moat floor</p>
+<p>Look for: the concealed pit invisible at play zoom with a slight seam at max zoom; the bridge reads HUNG, not a pier; raiders swim, never walk the moat floor; the leaf, winch and gate draw the STEEL picture (material first, a look only as fallback); the spikes (lift a plank to see them) are his art call</p>
 <p>Broken looks like: the concealed pit visible at play zoom, or NO seam at max zoom; the concealed pit reading like a bridge; raiders walking on the moat floor; the gate opening for raiders while the leaf is up; a raider unhurt on the spikes; the bridge drawn as a pier-on-pylons; the sluice open but the pit dry</p>
 <p>Still until poked: main save: no hostiles; the moat brim-full and closed; the leaf raised and held by a powered winch; every sluice and grate shut; nothing lit; the two defenders drafted</p>
 <p>Branch saves: RM_fw_composite_raid: four raiders in the north pen, grate shut</p>
@@ -91,7 +91,7 @@
 <tr><td>two defenders, drafted</td><td>staged</td><td>demonstrated</td><td></td></tr>
 <tr><td>raiders in a pen behind a shut grate (raid branch)</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>a raid plank in the pen</td><td>staged</td><td>poked</td><td></td></tr>
-<tr><td>doors leaking slowly under water (D4): the postern</td><td>DEFERRED</td><td>DEFERRED</td><td>overflow Stage 1+ unbuilt; the postern sits by the moat so it shows once it lands - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`</td></tr>
+<tr><td>doors leaking slowly under water (D4): the postern</td><td>DEFERRED</td><td>DEFERRED</td><td>overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; the postern sits by the moat so it shows once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`</td></tr>
 <tr><td>the winch&#x27;s GSS power cord (cut it)</td><td>DEFERRED</td><td>DEFERRED</td><td>ProofWinchPower forces power; no script lays an RM_PowerCord - builds under `POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS`</td></tr>
 <tr><td>machine digging the 4 m gatehouse pit</td><td>DEFERRED</td><td>DEFERRED</td><td>past the 2 m colonist cap - builds under `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL`</td></tr>
 <tr><td>guardrail art</td><td>DEFERRED</td><td>DEFERRED</td><td>a borrowed fence look; a cosmetic change needs his permission - builds under `GUARDRAIL_ART_RESKIN_BORROWED_FENCE`</td></tr>
@@ -110,8 +110,8 @@
 <p class=t>4. try a portable ladder into Hobb&#x27;s pit: refused, too deep (3 m reach) - that is why the maze exists</p>
 <p class=t>5. move o1&#x27;s hose end to the boar&#x27;s pit instead: the boar starts drowning (a non-swimmer); draft and cancel</p>
 <p class=t>6. cut the pump&#x27;s power: the hose goes flat; rotate the pump: the hose follows the port</p>
-<p class=t>7. reel park (west): choose a style, undraft the colonist to deploy one by hand, retract one</p>
-<p>Look for: the hose takes the SHORT way through d1 and passes UNDER the wire span; litres out of the pond = litres into the pit; Hobb rises with the water and leaves only when it nears the brim</p>
+<p class=t>7. reel park (west): choose a style, undraft the colonist to deploy one by hand, retract one; TURN a reel (rotate it): the outlet and the hose follow, four ways (north/south art is the west art turned for now)</p>
+<p>Look for: the hose takes the SHORT way through d1 and passes UNDER the wire span; litres out of the pond = litres into the pit; Hobb rises with the water and leaves only when it nears the brim; an EMPTY hose (the dropped carry) casts a darker, wider shadow than a full one</p>
 <p>Broken looks like: the hose through a wall, over the chasm or on top of the wire span; the long way chosen while d1 is open; a hose that never plumps; Hobb standing on the floor under 2 m of water; the boar swimming; a relay loop accepted</p>
 <p>Still until poked: pump on and Drawing into a tank, hose Plump, but o1&#x27;s free end is Capped: nothing leaves the hose until he sets Outflow; Hobb and the walker are drafted; the boar is penned by its pit</p>
 <table>
@@ -133,12 +133,12 @@
 <tr><td>relay reel o2, wound</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>destination gauge (flow meter) in Hobb&#x27;s pit</td><td>staged</td><td>demonstrated</td><td></td></tr>
 <tr><td>reel park: four looks</td><td>staged</td><td>look</td><td></td></tr>
+<tr><td>three reels turned north / east / south</td><td>staged</td><td>look</td><td></td></tr>
 <tr><td>reel park: deploy order + walker</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>reel park: dropped carry</td><td>staged</td><td>look</td><td></td></tr>
 <tr><td>pump power as a GSS power cord</td><td>DEFERRED</td><td>DEFERRED</td><td>a vanilla conduit stands in: no staging surface lays an RM_PowerCord from a script yet - builds under `POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS`</td></tr>
 <tr><td>swim-out of a flooded sheer pit (Stage 0 live: out only at the brim)</td><td>staged</td><td>poked</td><td>Transient/scenarios_stage0_20261021T220318.json: 2 m FAIL, brim PASS</td></tr>
 <tr><td>machine digging Hobb&#x27;s pit</td><td>DEFERRED</td><td>DEFERRED</td><td>4 m is past the 2 m colonist cap (owner 2026-10-21); the pit is staged, a machine dig order is not built - builds under `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL`</td></tr>
-<tr><td>flowing hose girth</td><td>DEFERRED</td><td>DEFERRED</td><td>pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing (plump) hose still draws thinner than an empty one, and pipe/hose joints have no flanges yet (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL, PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID) - builds under `HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL`</td></tr>
 </table>
 <p>Exercises (32 ids): 16 poked, 16 look.</p>
 <p>Goal read: route lengths: short way (d1 open) &lt;= 40 cells, long way (d1 walled) &gt; 40 and &lt;= 80; live: ProofReadout on Hobb&#x27;s pit for litres-to-2 m, never typed</p>
@@ -169,6 +169,7 @@
 <tr><td>miner in climbing gear, drafted</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>rail ladder on the sump&#x27;s west wall, lowered</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>ramp from the D1 bench to the rim</td><td>staged</td><td>poked</td><td></td></tr>
+<tr><td>hose ramps up the benches and into the drain canal</td><td>staged</td><td>look</td><td></td></tr>
 <tr><td>wrecked pumping station on the rim</td><td>staged</td><td>look</td><td></td></tr>
 <tr><td>a colonist refusing a dig past 2 m (the sump floor&#x27;s order waits for a machine)</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>machine digging past 2 m (the sump)</td><td>DEFERRED</td><td>DEFERRED</td><td>machine labour digs to 20 m (built 2026-10-21, design/RimMandrake/machine_dig_2026-10-21.md); a colony Tunneler under a mechanitor is not staged here yet, and the ridable digging rig is not built - builds under `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL`</td></tr>
@@ -186,7 +187,7 @@
 <p class=t>4. light the containment canal (dev fire at &#x27;light here&#x27;): burns like gasoline, keeps burning, reaches the tank end, leaves the canal spent; pop the firefoam: foamed cells stay out while foam lies</p>
 <p class=t>5. light the astrofuel bund: it detonates, not burns</p>
 <p class=t>6. dig the marked cell in the earth wall between the water and chemfuel canals: they meet and do NOT mix</p>
-<p>Look for: chemfuel, propane and water each their own colour; pipes meet tanks at their centre; the Fill tank is never emptied by colonists</p>
+<p>Look for: chemfuel, propane and water each their own colour; pipes rise onto each tank&#x27;s flange; the Fill tank is never emptied by colonists</p>
 <p>Broken looks like: chemfuel, propane and water hoses all one colour; a tank drawn bridging two pipe runs; the Fill tank emptied; water and chemfuel mixing; a burnt canal that looks fresh; foamed cells relighting under foam; litres from nowhere</p>
 <p>Still until poked: every bay tank in Store; the pump is set to Pour but its Dump-side tank is in Store, so nothing flows; the hose to their tank is Plump with its free end Capped; nothing is lit</p>
 <table>
@@ -204,9 +205,9 @@
 <tr><td>firefoam popper by the canal</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>water canal one wall from the chemfuel</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>spill pad: liquid spill + tracked tar</td><td>staged</td><td>look</td><td></td></tr>
-<tr><td>fuel overflow spreads and burns (D5)</td><td>DEFERRED</td><td>DEFERRED</td><td>overflow Stage 1+ is unbuilt (only the Stage 0 offline kernel exists); the canal stands below its brim so a second Dump will spill once it lands - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`</td></tr>
+<tr><td>fuel overflow spreads and burns (D5)</td><td>DEFERRED</td><td>DEFERRED</td><td>overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; the canal stands below its brim so a second Dump will spill once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`</td></tr>
 <tr><td>an acid canal beside the chemfuel</td><td>DEFERRED</td><td>DEFERRED</td><td>moved to C6 (where corrosion lives); the no-mix poke needs only water against chemfuel - builds under `design §3 C5 layout`</td></tr>
-<tr><td>pipe-to-tank flanges</td><td>DEFERRED</td><td>DEFERRED</td><td>pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing (plump) hose still draws thinner than an empty one, and pipe/hose joints have no flanges yet (HOSE_PLUMP_FIX_SKINNIER_WHEN_FULL, PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID) - builds under `PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID`</td></tr>
+<tr><td>joint fittings art at the tanks</td><td>DEFERRED</td><td>DEFERRED</td><td>pipes are half-girth and hoses twice the 10-21 girth (both built 2026-10-22); a flowing hose plumps wider than an empty one; a pipe rises onto a tank&#x27;s flange (built). The joint FITTINGS art (coupler, flange, saddle) is drawn and waits on his pick; nothing is installed (PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID) - builds under `PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID`</td></tr>
 </table>
 <p>Exercises (24 ids): 14 poked, 10 look.</p>
 <p>Goal read: live: the containment canal&#x27;s chemfuel litres (ProofReadout) and the Dump tank&#x27;s stock read; their sum is the canal&#x27;s brim minus one notch</p>
@@ -220,6 +221,7 @@
 <p class=t>4. start the vat: 400 L tar + 200 L acid water per batch meter in; 200 L of product to a third tank if one is on its line, else 40 gas vented (RM_Reaction_TarAcid; the product thing is owed under SUMP_GASLIGHT_1: judge the metering and the vent)</p>
 <p class=t>5. watch the acid canal: what lies in it loses health over hours (Mod Settings: Liquid corrosion, ships ON)</p>
 <p class=t>6. colonists clean the tracked tar</p>
+<p class=t>7. Architect: place a second drill (or a bleed well) on ground the survey found EMPTY: refused, the reason names the survey</p>
 <p>Look for: tar thick and slow beside water; slime reads viscous, the muffalo below its surface; the three refinery stages easy to tell apart</p>
 <p>Broken looks like: the tar front level with the water&#x27;s; slime that looks like coloured water; a muffalo standing on top of slime; tar filth with no art; a burning tar ditch out within an hour; corrosion while the switch is off</p>
 <p>Still until poked: both race ditches are dry behind shut sluices; the vat is not started; corrosion and the tracked tar DO change over two hours (the soak reads dug cells and buildings, not item health or filth)</p>
@@ -241,22 +243,23 @@
 <p>Exercises (19 ids): 10 poked, 8 look, 1 demonstrated.</p>
 <p>Goal read: live: both ditches dry at the start (excavation read f=0 east of the sluices); the slime pit&#x27;s fill reads 2</p>
 <h2>C7 - The Bathhouse and Water Tower (map C, look Modern)</h2>
-<p>A desert colony&#x27;s water: a tower tank, gravity down to the ground tanks, a bathhouse, stills for bad water, thirsty colonists - and communicating vessels in plain sight.</p>
+<p>A desert colony&#x27;s water: a tower tank, a bathhouse, stills for bad water, thirsty colonists - and water finding its level between two ponds joined by a hose, no pump.</p>
 <p>START: undraft the four thirsty colonists and unpause</p>
 <p>Try:</p>
 <p class=t>1. START: undraft the four, unpause: they drink at the tanks and from bottles; the warden carries water to the prisoner</p>
-<p class=t>2. let them build the two missing pipe cells (or place them: Architect &gt; FlowWorks &gt; pipe on the marked gap): the three ground tanks move to ONE level, in decilitre steps</p>
+<p class=t>2. set the LOW pond&#x27;s hose reel Free end to Outflow: water runs from the full pond to the low one through the hose, no pump, in decilitre steps, until both stand at one level (the reel reads &#x27;Levelling: flowing&#x27;, then &#x27;level&#x27;). The three ground tanks do NOT level with each other: storage fill stays pump-only (GSS ruling 3)</p>
 <p class=t>3. set the tower reel&#x27;s Free end to Outflow: the hose flows to the garden with no pump (gravity) and stops when the tower&#x27;s level drops below the end</p>
 <p class=t>4. run the stills: the fuelled one works day and night; the sun-pan stops at dusk and under a roof</p>
 <p class=t>5. pour poisoned water into the drip filter: a slow, small clean drip</p>
-<p>Look for: pipes end at a tank&#x27;s CENTRE; tanks on one net hold one level at rest; the bath reads as a bath, not a hole</p>
-<p>Broken looks like: tanks on one net at different levels at rest; a gravity hose flowing uphill; brine drunk as water; the sun-pan working at night; pipes ending at a tank&#x27;s edge; the bath pit reading as a hole</p>
-<p>Still until poked: the four colonists are drafted (drafted pawns do not drink); the ground tanks are not joined; the tower hose&#x27;s end is Capped; the well pump draws the pond into the tower (the pond is limited, so it slows; the soak reads dug cells and buildings)</p>
+<p>Look for: a pipe rises onto a tank&#x27;s flange (never under its skid); two ponds joined by an open hose end at one level; the bath reads as a bath, not a hole</p>
+<p>Broken looks like: two ponds joined by open hose ends still at different levels after an hour; a gravity hose flowing uphill; brine drunk as water; the sun-pan working at night; a pipe slipping under a tank&#x27;s skid; the bath pit reading as a hole</p>
+<p>Still until poked: the four colonists are drafted (drafted pawns do not drink); the LOW pond&#x27;s hose end is Capped; the tower hose&#x27;s end is Capped; the well pump draws the pond into the tower (the pond is limited, so it slows; the soak reads dug cells and buildings)</p>
 <table>
 <tr><td>piece</td><td>status</td><td>tag</td><td>note</td></tr>
 <tr><td>well pump, Drawing, powered</td><td>staged</td><td>demonstrated</td><td></td></tr>
 <tr><td>tower: XTall cargo tank, half full</td><td>staged</td><td>demonstrated</td><td></td></tr>
-<tr><td>three ground tanks, one per size, NOT joined</td><td>staged</td><td>poked</td><td></td></tr>
+<tr><td>three ground tanks, one per size (a size look; Store tanks never level)</td><td>staged</td><td>look</td><td></td></tr>
+<tr><td>two ponds at different levels, one hose net, LOW end Capped</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>roofed bathhouse, bath pit filled</td><td>staged</td><td>look</td><td></td></tr>
 <tr><td>liquid thermostat keeps the bath warm</td><td>staged</td><td>demonstrated</td><td></td></tr>
 <tr><td>three bleed wells (ground wells, not on the pipe)</td><td>staged</td><td>poked</td><td></td></tr>
@@ -267,11 +270,10 @@
 <tr><td>gravity hose from the tower, end Capped</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>four thirsty colonists (drafted)</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>prisoner in his own cell</td><td>staged</td><td>demonstrated</td><td></td></tr>
-<tr><td>a blueprint for the two missing pipe cells</td><td>DEFERRED</td><td>DEFERRED</td><td>no script surface places a blueprint; the gap is labelled and the pipe is his to place - builds under `TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH`</td></tr>
-<tr><td>the overflowing bath (D2/D4: leaking under the door)</td><td>DEFERRED</td><td>DEFERRED</td><td>overflow Stage 1+ is unbuilt - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`</td></tr>
+<tr><td>the overflowing bath (D2/D4: leaking under the door)</td><td>DEFERRED</td><td>DEFERRED</td><td>overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`</td></tr>
 </table>
 <p>Exercises (15 ids): 6 poked, 8 look, 1 demonstrated.</p>
-<p>Goal read: live: the three ground tanks read three different stocks before the gap is closed (ProofTank read)</p>
+<p>Goal read: live: the two ponds read different water before the LOW end is opened (ProofPitWater read)</p>
 <h2>C8 - The Canal Lock (map C, look Futuristic)</h2>
 <p>Two canals at different water levels, a lock chamber between two timed sluices, and a swimmer riding the lock up: one still surface per body, levels equalising only through open gates.</p>
 <p>START: order the swimmer down the chamber ladder into the water, then unpause and wait for 13:00</p>
@@ -347,7 +349,7 @@
 <p class=t>6. closed ledger (fenced, south-east): set the reel&#x27;s Free end to Outflow: the two tanks&#x27; sum stays equal to the litre while litres move</p>
 <p class=t>7. RAIN BRANCH (RM_fw_composite_rain): trench E fills, roofed F stays dry; the drawn-down pond refills around the muffalo, never over it</p>
 <p>Look for: the pond&#x27;s edge recedes, the spring&#x27;s never; no water on open ground beside a full canal; the ledger sum constant</p>
-<p>Broken looks like: the pond full after heavy draw; the spring&#x27;s readout not saying it is a source; water on open ground beside a full canal (today; not after Stage 1); water poured onto the muffalo; the flood wiping the canal flat; a sealed edge still draining; any litre unaccounted</p>
+<p>Broken looks like: the pond full after heavy draw; the spring&#x27;s readout not saying it is a source; water on open ground beside a full canal (with the overflow switch off, its shipped default); water poured onto the muffalo; the flood wiping the canal flat; a sealed edge still draining; any litre unaccounted</p>
 <p>Still until poked: sluices A and B shut; the pump Pours from an empty tank; the ledger hose is Capped; canal D and the trenches dry; the edge setter automatic</p>
 <p>Branch saves: RM_fw_composite_rain: weather Rain locked; RM_fw_composite_days</p>
 <table>
@@ -363,7 +365,7 @@
 <tr><td>pump (Pour) + empty tank + hose Intake end in the pond</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>map-edge setter</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>closed ledger: two tanks, one hose, fenced</td><td>staged</td><td>poked</td><td></td></tr>
-<tr><td>overflow Stage 1+ (D1, D2, D6)</td><td>DEFERRED</td><td>DEFERRED</td><td>only the offline Stage 0 kernel exists; canal B is sized so sealing the edge with the pump pouring overfills it once Stage 1 lands - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`</td></tr>
+<tr><td>overflow Stage 1+ (D1, D2, D6)</td><td>DEFERRED</td><td>DEFERRED</td><td>overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; canal B is sized so sealing the edge with the pump pouring overfills it once the switch is on - builds under `CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED`</td></tr>
 <tr><td>a limitless BODY marker on a natural pond</td><td>DEFERRED</td><td>DEFERRED</td><td>the spring is a flow source; a body flagged limitless (and its readout) has no staging surface here - builds under `FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS`</td></tr>
 <tr><td>rain (global weather)</td><td>DEFERRED</td><td>DEFERRED</td><td>lives in the branch save RM_fw_composite_rain, never the main save - builds under `design §2 GPT #11`</td></tr>
 </table>
@@ -404,11 +406,11 @@
 <p class=t>1. START: unpause: wardens feed and water the prisoner from the lip; nobody climbs down</p>
 <p class=t>2. oubliette: lower the rail ladder from ABOVE (only from above); raise it from below with the prisoner on it: stranded</p>
 <p class=t>3. kennel: just watch: the chicken stays in the ring, the husky climbs out slowly, the muffalo steps across; the thrumbo walks round the 1x1 shaft</p>
-<p class=t>4. order the colonist beside the concealed pit onto it: falls through, hurt</p>
+<p class=t>4. order the colonist beside the concealed pit across it: he walks the planks like floor (planked squares are ground); deconstruct one plank under him: the cover gives way, he falls, hurt</p>
 <p class=t>5. jump the jump-pack colonist into the third pit: lands unhurt; undraft the geared one: climbs out of 5 m; undraft the ladder-pit one: climbs the portable ladder</p>
 <p class=t>6. inspect a pit cell at noon and at midnight (dev advance; branch save _days): its temperature differs from the ground&#x27;s (vanilla temperature only, no extra sun)</p>
 <p>Look for: a pit reads as a dark hole at its size; occupants drawn below the floor; raised vs lowered ladder legible; the guardrail keeps people off the lip</p>
-<p>Broken looks like: a warden climbing down; the room not a prison; all three kennel beasts held, or all out; the thrumbo in the 1x1; the concealed pit visible at play zoom; a ladder lowered from below; the guardrail letting someone walk off</p>
+<p>Broken looks like: a warden climbing down; the room not a prison; all three kennel beasts held, or all out; the thrumbo in the 1x1; the concealed pit visible at play zoom; a colonist dropping through planks he only walked on; a ladder lowered from below; the guardrail letting someone walk off</p>
 <p>Still until poked: every colonist drafted; the prisoner is in a sealed 4 m pit; the beasts are wild and roam INSIDE the ring (climbing out is the test, so the soak reads their KIND per plot, not their cell)</p>
 <p>Branch saves: RM_fw_composite_days: midnight for the pit-temperature read</p>
 <table>
@@ -420,7 +422,7 @@
 <tr><td>sluice (wood) in the east wall</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>security grate (steel) in the east wall</td><td>staged</td><td>poked</td><td></td></tr>
 <tr><td>dry drain canals behind the doors</td><td>staged</td><td>look</td><td></td></tr>
-<tr><td>concealed pit 3x3 (planks)</td><td>staged</td><td>poked</td><td>plank lattice, not the design&#x27;s reinforced frame: the frame should HOLD one colonist (review_map pit_cover_drop), and this poke wants a fall</td></tr>
+<tr><td>concealed pit 3x3 (planks)</td><td>staged</td><td>poked</td><td>plank lattice: walked like floor (41fb948b5e); it gives way only when deconstructed or destroyed, which is the poke</td></tr>
 <tr><td>kennel ring, 2 m trench, 2 wide</td><td>staged</td><td>demonstrated</td><td></td></tr>
 <tr><td>chicken, husky, muffalo in the yard</td><td>staged</td><td>demonstrated</td><td></td></tr>
 <tr><td>drafted handler at the ring</td><td>staged</td><td>demonstrated</td><td></td></tr>
