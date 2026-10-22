@@ -607,7 +607,9 @@ def run_relay(args):
             abs(re_.get("edgeOffset") if re_.get("edgeOffset") is not None else 99) <= tol and re_.get("withinEdge") is True and \
             (re_.get("tailAngleDeg") if re_.get("tailAngleDeg") is not None else 99) < 3
         west_inlet = inward != [1, 0] or (abs(de[1] - (dst[1] + 1)) < 0.15 and dst[0] - tol < de[0] < dst[0])
-        ok = lay.get("success") and h.get("layOk") and rel == list(dst) and intake and on_edge and west_inlet and \
+        # HARNESS (BENCH belt 2026-10-22): since b765116aca the relay reels are built West one square east (reel_west_ops), so
+        # their Position is dst + (1, 0) while the footprint stays dst..dst+1: the relay is matched by V.reel_at, not equality
+        ok = lay.get("success") and h.get("layOk") and V.reel_at(rel, dst) and intake and on_edge and west_inlet and \
             (h.get("pathLen") or 99) <= (h.get("maxLength") or 0)
         V.row(rows, name, "PASS" if ok else "FAIL", "MOD",
               dict(_pick(h, "relayTo", "far", "endPoint", "pathLen", "flatLen", "maxLength", "layOk"), reason=lay.get("reason"), intake=intake,
@@ -625,7 +627,7 @@ def run_relay(args):
     a, c = B.hose(RA)
     b, _ = B.hose(RB)
     V.row(rows, "RL6_debug_flow_propagates", "PASS" if a.get("state") == "Plump" and b.get("state") == "Plump" and b.get("provider") == "debug"
-          and (c.get("relayCouplings") or 0) >= 2 and b.get("fedBy") == [list(RA)] else "FAIL", "MOD",
+          and (c.get("relayCouplings") or 0) >= 2 and len(b.get("fedBy") or []) == 1 and V.reel_at(b["fedBy"][0], RA) else "FAIL", "MOD",
           {"A": _pick(a, "state", "provider", "signal"), "B": _pick(b, "state", "provider", "signal", "fedBy"), "relayCouplings": c.get("relayCouplings")})
     B.hp("flow:%d,%d=off" % RA)
     B.ticks((c.get("releaseTicks") or 500) + (c.get("minPlumpDwell") or 600) + 200)

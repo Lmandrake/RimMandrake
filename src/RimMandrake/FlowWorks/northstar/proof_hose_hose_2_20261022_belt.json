@@ -1,0 +1,530 @@
+{
+ "mod": "FlowWorks",
+ "script": "proof_hose.py",
+ "tier": "flowworks",
+ "mode": "partial",
+ "started": "2026-10-22T10:17:19",
+ "rows": [
+  {
+   "id": "HP1_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "startupLogRead": true,
+    "startupErrorsNamingHose": []
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "HP2_probes_site_pinned",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "hoseProbe": true,
+    "colonistsDrafted": [
+     836,
+     840,
+     844
+    ]
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "CR1_deploy_carrying",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "success": true,
+     "cmd": "order:82,68=deploy:106,68",
+     "reason": null,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "carry": "Stored"
+    },
+    "startjob": {
+     "success": true,
+     "cmd": "startjob:82,68=forced;836",
+     "job": "RM_CarryHoseEnd",
+     "curJob": "RM_CarryHoseEnd",
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ]
+    },
+    "ticks": 66,
+    "seen": [
+     "Stored",
+     "Carrying"
+    ],
+    "hose": {
+     "carry": "Carrying",
+     "carrier": 836,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 2,
+     "trailLast": [
+      84,
+      68
+     ],
+     "pulled": 2.2726,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR2_trail_follows_walk",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": {
+     "carry": "Carrying",
+     "carrier": 836,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 2,
+     "trailLast": [
+      84,
+      68
+     ],
+     "pulled": 2.2726,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    },
+    "after": {
+     "carry": "Carrying",
+     "carrier": 836,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 4,
+     "trailLast": [
+      86,
+      68
+     ],
+     "pulled": 4.2686,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    },
+    "pawnPos": [
+     86,
+     68
+    ]
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR3_draft_drops_end",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "draft": true,
+    "pawn": {
+     "id": 836,
+     "name": "Hammer",
+     "pos": [
+      86,
+      68
+     ],
+     "drafted": true,
+     "downed": false,
+     "job": "Wait_Combat",
+     "forced": false,
+     "driver": "JobDriver_Wait",
+     "toil": 0
+    },
+    "hose": {
+     "carry": "Dropped",
+     "carrier": null,
+     "far": [
+      86,
+      68
+     ],
+     "trailCount": 4,
+     "trailLast": [
+      86,
+      68
+     ],
+     "pulled": 4.2686,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR5_resume_laid_at_target",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "startjob": "work",
+    "resumeTicks": 45,
+    "layTicks": 450,
+    "seen": [
+     "Dropped",
+     "Carrying",
+     "Carrying",
+     "Laid"
+    ],
+    "hose": {
+     "carry": "Laid",
+     "carrier": null,
+     "far": [
+      106,
+      68
+     ],
+     "trailCount": 24,
+     "trailLast": [
+      106,
+      68
+     ],
+     "pulled": 24.2648,
+     "pending": "None",
+     "pendingAt": null,
+     "wound": 0,
+     "state": "Flat"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR5b_laid_hose_plumps",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "state": "Plump",
+    "provider": "debug",
+    "signal": true
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR5c_end_kind",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "endKind": "Free",
+    "note": "endKind is stage S4"
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR6_retract_stored",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "success": true,
+     "cmd": "order:82,68=retract",
+     "reason": null,
+     "pending": "Retract",
+     "pendingAt": null,
+     "carry": "Laid"
+    },
+    "startjob": {
+     "success": true,
+     "cmd": "startjob:82,68=forced;836",
+     "job": "RM_RetractHose",
+     "curJob": "RM_RetractHose",
+     "pending": "Retract",
+     "pendingAt": null
+    },
+    "ticks": 1050,
+    "budget": 1513,
+    "seen": [
+     "Laid",
+     "Retracting",
+     "Stored"
+    ],
+    "hose": {
+     "carry": "Stored",
+     "carrier": null,
+     "far": [
+      106,
+      68
+     ],
+     "trailCount": 0,
+     "trailLast": null,
+     "pulled": 0,
+     "pending": "None",
+     "pendingAt": null,
+     "wound": 0,
+     "state": "Flat"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR7_no_instant_gizmos_without_devmode",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "devModeOff_labels": [
+     "Deploy hose",
+     "Choose style",
+     "End look: plain",
+     "Free end: Capped"
+    ],
+    "offending": [],
+    "devModeOn_labels": [
+     "Deploy hose",
+     "Choose style",
+     "End look: plain",
+     "Free end: Capped",
+     "DEV: lay hose instantly"
+    ],
+    "control_found_in_devmode": [
+     "DEV: lay hose instantly"
+    ],
+    "devModeBefore": true
+   },
+   "block": "carry"
+  },
+  {
+   "id": "R1_pick_reaches_reel",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "finishbuild": {
+     "success": true,
+     "cmd": "finishbuild",
+     "worker": "Hammer",
+     "workerHasIdeo": true,
+     "frames": 2,
+     "built": 2,
+     "errors": []
+    },
+    "meaning": "PASS = each picked look is the designator's style and lands on the blueprint (build) or building (god)"
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "R2_built_reels_stored_art",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "defaultLook": "Scrapper",
+    "styleArtMissing": [],
+    "meaning": "PASS = blueprint -> frame -> building kept each look; each reel prints its look's STORED art and selects its look's hose set"
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "R3_laid_out_per_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "reelsNotInDefaultLook": 3,
+    "defaultLook": "Scrapper",
+    "meaning": "PASS = each laid reel prints its look's EMPTY DRUM and its hose draws that look's pieces, including >= 3 reels whose look is not the global default"
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "R5_reeled_in_per_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "meaning": "PASS = reeling in restores each look's STORED art and keeps the stored style"
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "R6_reinstall_keeps_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reinstall": {
+     "success": true,
+     "cmd": "reinstall:82884:113,136",
+     "styleBefore": "RM_HoseReel_Industrial",
+     "minifiedStyle": "RM_HoseReel_Industrial",
+     "installBlueprint": 82915,
+     "installStyle": "RM_HoseReel_Industrial"
+    },
+    "after": {
+     "id": 82884,
+     "rawStyle": "RM_HoseReel_Industrial",
+     "look": "Industrial",
+     "reelTex": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_Deployed",
+     "laid": true
+    },
+    "art": ""
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "R7_legacy_reel_default_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": true,
+    "legacy": {
+     "rawStyle": null,
+     "style": "RM_HoseReel_Scrapper",
+     "look": "Scrapper",
+     "reelTex": "RimMandrake/FlowWorks/Hose/Reel_Deployed",
+     "laid": true
+    },
+    "defaultLook": "Scrapper",
+    "art": "",
+    "meaning": "PASS = an unstyled reel stores NO style (an older save is unchanged) yet draws, and lays its hose in, the default look"
+   },
+   "block": "style_hose"
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errorsNamingHoseOrFlowWorks": [],
+    "otherErrors": 0,
+    "tap": {
+     "polls": 129,
+     "lost": 0,
+     "kept": 0
+    },
+    "siteClearErrors": 0,
+    "newWarnings": 0
+   },
+   "block": "session"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 10.6,
+   "rows": 2,
+   "raised": null
+  },
+  "carry": {
+   "wall_s": 60.9,
+   "rows": 8,
+   "raised": null
+  },
+  "style_hose": {
+   "wall_s": 10.9,
+   "rows": 6,
+   "raised": null
+  },
+  "session": {
+   "wall_s": 0.0,
+   "rows": 1,
+   "raised": null
+  }
+ },
+ "doc": "design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md",
+ "offline": {
+  "skipped": "--skip-offline"
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1792689440102",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "wall_s": 83.2,
+ "site_notes": [
+  {
+   "id": "CR0_scene",
+   "detail": {
+    "pawn": {
+     "id": 836,
+     "name": "Hammer",
+     "pos": [
+      85,
+      68
+     ],
+     "drafted": false,
+     "downed": false,
+     "job": null,
+     "forced": false,
+     "driver": null,
+     "toil": -1
+    },
+    "reel": [
+     82,
+     68
+    ]
+   }
+  }
+ ],
+ "certifiable": false,
+ "site_calm_blocks": {
+  "carry": true,
+  "style_hose": true
+ },
+ "huge_plants_cleared": {
+  "carry": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "style_hose": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  }
+ },
+ "site_calm_restore": false
+}

@@ -1,0 +1,677 @@
+{
+ "mod": "FlowWorks",
+ "script": "proof_hose.py",
+ "tier": "flowworks",
+ "mode": "partial",
+ "started": "2026-10-22T10:18:47",
+ "rows": [
+  {
+   "id": "HP1_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "startupLogRead": true,
+    "startupErrorsNamingHose": []
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "HP2_probes_site_pinned",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "hoseProbe": true,
+    "colonistsDrafted": [
+     524,
+     527,
+     530
+    ]
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "NS_hose_carries_real_units",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:161,158,174,159",
+     "reason": null,
+     "layOk": true
+    },
+    "before": {
+     "success": true,
+     "cmd": "tank:175,159",
+     "id": 37495,
+     "liquid": null,
+     "units": 0,
+     "capacity": 160000,
+     "tick": 205
+    },
+    "after": {
+     "success": true,
+     "cmd": "tank:175,159",
+     "id": 37495,
+     "liquid": "RM_Liquid_FreshWater",
+     "units": 8910,
+     "capacity": 160000,
+     "tick": 375
+    },
+    "gained": 8910,
+    "hoseTook": 1090,
+    "discoveredAfterTicks": 0,
+    "movedTicksAfterDiscovery": 170,
+    "bound": [
+     60,
+     250
+    ],
+    "pumpPoweredAfterTicks": 140,
+    "credits": 1,
+    "netLink": {
+     "a": "RM_LiquidPump@161,157",
+     "b": "RM_LiquidTank@175,159"
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_ends_on_ports",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "nozzleTip": [
+     161.236,
+     158.698
+    ],
+    "footprint": [
+     161,
+     158,
+     2,
+     2
+    ],
+    "look": "Scrapper",
+    "portEnd": [
+     175,
+     160.021
+    ],
+    "tank": [
+     175,
+     159
+    ],
+    "want": "nozzleTip inside the reel's west cell; portEnd = [tank x0, tank z0 + 1 +- 0.1]"
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_tint_is_carried_liquid",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tintLiquid": "RM_Liquid_FreshWater",
+    "want": "RM_Liquid_FreshWater",
+    "tarHalf": "UNMEASURED here: a tar channel needs a fresh map's active fluid (water ran first)"
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_plumps_only_from_powered_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "plumpedAfterTicks": 30,
+    "flatAfterCut": 870,
+    "bound": 905,
+    "plumpedAtTick": 405,
+    "cutTick": 405,
+    "tankStillAfterCut": [
+     8910,
+     8910
+    ],
+    "cut": {
+     "success": true,
+     "destroyed": 1,
+     "message": "Destroyed 1 thing(s) across 2 cell(s)."
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_dropped_carries_nothing",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "staged": {
+     "success": true,
+     "cmd": "settrail:189,158=dropped;189,158;190,159;191,159;192,159;193,159;194,159;195,159;196,159;197,159;198,159;199,159;200,159;201,159;202,159",
+     "carry": "Dropped",
+     "trail": 14,
+     "trailLength": 13.7442,
+     "layOk": true
+    },
+    "units": [
+     0,
+     0
+    ],
+    "netLink": null,
+    "pumpPoweredAfterTicks": 170
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_port_removed_discovered",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "afterRemove": null,
+    "afterRebuild61": {
+     "a": "RM_LiquidPump@217,157",
+     "b": "RM_LiquidTank@231,159"
+    },
+    "destroy": {
+     "success": true,
+     "destroyed": 1,
+     "message": "Destroyed 1 thing(s) across 4 cell(s)."
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_port_removed_moves",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "units": [
+     0,
+     10000
+    ]
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_hose_far_end_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:161,174,174,175",
+     "reason": null,
+     "layOk": true
+    },
+    "units": [
+     0,
+     8900
+    ],
+    "hoseTook": 1100,
+    "pumpPoweredAfterTicks": 100,
+    "discoveredAfterTicks": 0,
+    "movedTicksAfterDiscovery": 190,
+    "netLink": {
+     "a": "RM_LiquidTank@161,176",
+     "b": "RM_LiquidPump@175,175"
+    },
+    "net": {
+     "success": true,
+     "cmd": "net:175,175",
+     "origin": "RM_LiquidPump",
+     "links": 3,
+     "tanks": [
+      {
+       "tank": [
+        161,
+        176
+       ],
+       "units": 8900,
+       "liquid": "RM_Liquid_FreshWater",
+       "route": [
+        [
+         162,
+         174
+        ]
+       ]
+      }
+     ],
+     "componentBuilds": 3,
+     "revisionBumps": 30,
+     "settles": 0,
+     "settledUnits": 0,
+     "dumpedUnits": 0,
+     "spilledUnits": 30000,
+     "hoseDrainedUnits": 1090,
+     "moves": 10,
+     "putBacks": 0,
+     "theftCaught": 0,
+     "theftGoodwill": 0,
+     "tooLarge": false,
+     "indexRebuilds": 12,
+     "levelCycles": 32,
+     "levelLinks": 0,
+     "levelMoves": 0,
+     "levelMovedDl": 0
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_relay_chain_carries",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "layA": {
+     "success": true,
+     "cmd": "lay:189,174,199,174",
+     "reason": null,
+     "layOk": true
+    },
+    "layB": {
+     "success": true,
+     "cmd": "lay:199,174,208,175",
+     "reason": null,
+     "layOk": true
+    },
+    "relayTo": [
+     200,
+     174
+    ],
+    "pumpPoweredAfterTicks": 140,
+    "units": [
+     0,
+     8538
+    ],
+    "hoseTook": 1462,
+    "discoveredAfterTicks(B)": 0,
+    "movedTicksAfterDiscovery": 170,
+    "creditsA": 1,
+    "creditsB": 1
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_pipe_and_hose_one_net",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": {
+     "success": true,
+     "cmd": "lay:218,176,230,176",
+     "reason": null,
+     "layOk": true
+    },
+    "units": [
+     0,
+     8959
+    ],
+    "hoseTook": 1041,
+    "net": {
+     "success": true,
+     "cmd": "net:217,173",
+     "origin": "RM_LiquidPump",
+     "links": 5,
+     "tanks": [
+      {
+       "tank": [
+        231,
+        176
+       ],
+       "units": 8959,
+       "liquid": "RM_Liquid_FreshWater",
+       "route": [
+        [
+         219,
+         176
+        ]
+       ]
+      }
+     ],
+     "componentBuilds": 5,
+     "revisionBumps": 41,
+     "settles": 0,
+     "settledUnits": 0,
+     "dumpedUnits": 0,
+     "spilledUnits": 30520,
+     "hoseDrainedUnits": 2552,
+     "moves": 23,
+     "putBacks": 0,
+     "theftCaught": 0,
+     "theftGoodwill": 0,
+     "tooLarge": false,
+     "indexRebuilds": 15,
+     "levelCycles": 36,
+     "levelLinks": 0,
+     "levelMoves": 0,
+     "levelMovedDl": 0
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_tank_does_not_bridge_pipe_runs",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reached": [
+     [
+      215,
+      174
+     ],
+     [
+      231,
+      176
+     ]
+    ],
+    "secondRunTank": [
+     212,
+     174
+    ],
+    "probeSawPumpTank": true,
+    "secondRunTankBuilt": true
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_external_pipe_is_visual_only",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "probe": 0,
+    "why": "no VE PipeSystem pipe on the flowworks tier: the offline kernel row (HoseNetChecks) is the evidence"
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "NS_tank_feeds_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "units": [
+     0,
+     38901
+    ],
+    "source": [
+     120000,
+     80000
+    ],
+    "hoseTook": 1099,
+    "perCycleCap": 20000,
+    "job": {
+     "clicks": 2,
+     "ok": true,
+     "want": "Job: Empty",
+     "label": "Job: Empty"
+    },
+    "fill": {
+     "success": true,
+     "cmd": "filltank:161,192=RM_Liquid_FreshWater,120000",
+     "liquid": "RM_Liquid_FreshWater",
+     "units": 120000
+    },
+    "credits": 2,
+    "netLink": {
+     "a": "RM_LiquidTank@161,192",
+     "b": "RM_LiquidTank@175,191"
+    }
+   },
+   "block": "realflow"
+  },
+  {
+   "id": "SL1_save_landed_new_file_only",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "new": [
+     "RM_fw_hose_proof_20261022102118.rws"
+    ],
+    "changed": []
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL2_save_names_no_class_of_ours",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "drivers": 0,
+    "offending": [],
+    "RM_MapComponent_Hoses": 0,
+    "rmHoseState": 8,
+    "colonistsOnHoseJobsAtSave": 0,
+    "hoseReelStylesInSave": {
+     "Scrapper": 0,
+     "Industrial": 0,
+     "Modern": 0,
+     "Futuristic": 0
+    },
+    "hosesAtSave": "some"
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL3_hoses_and_reel_styles_survive",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hoses": 8,
+    "hosesEqual": true,
+    "reelStylesEqual": true,
+    "loadSeconds": 6
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL4_carry_states_survive",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "dropped(CR4a)": {
+     "before": {
+      "carry": null,
+      "far": null,
+      "trailCount": null,
+      "trailLast": null,
+      "pending": null,
+      "pendingAt": null
+     },
+     "after": {
+      "carry": null,
+      "far": null,
+      "trailCount": null,
+      "trailLast": null,
+      "pending": null,
+      "pendingAt": null
+     }
+    },
+    "carrying(CR4b)": {
+     "before": {
+      "carry": null,
+      "carrier": null,
+      "far": null,
+      "trailCount": null,
+      "trailLast": null,
+      "pulled": null,
+      "pending": null,
+      "pendingAt": null,
+      "wound": null,
+      "state": null
+     },
+     "after": {
+      "carry": null,
+      "carrier": null,
+      "far": null,
+      "trailCount": null,
+      "trailLast": null,
+      "pulled": null,
+      "pending": null,
+      "pendingAt": null,
+      "wound": null,
+      "state": null
+     }
+    },
+    "resumedAfterLoad(CR5)": {},
+    "staging": {
+     "error": "carry block not run"
+    },
+    "allCarried": {
+     "before": {
+      "(190, 158)": {
+       "carry": "Dropped",
+       "carrier": null,
+       "far": [
+        202,
+        159
+       ],
+       "trailCount": 14,
+       "trailLast": [
+        202,
+        159
+       ],
+       "pulled": 13.7442,
+       "pending": "None",
+       "pendingAt": null,
+       "wound": 0,
+       "state": "Flat"
+      }
+     },
+     "after": {
+      "(190, 158)": {
+       "carry": "Dropped",
+       "carrier": null,
+       "far": [
+        202,
+        159
+       ],
+       "trailCount": 14,
+       "trailLast": [
+        202,
+        159
+       ],
+       "pulled": 13.7442,
+       "pending": "None",
+       "pendingAt": null,
+       "wound": 0,
+       "state": "Flat"
+      }
+     }
+    }
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errorsNamingHoseOrFlowWorks": [],
+    "otherErrors": 0,
+    "tap": {
+     "polls": 267,
+     "lost": 0,
+     "kept": 1
+    },
+    "siteClearErrors": 0,
+    "newWarnings": 1
+   },
+   "block": "session"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 24.6,
+   "rows": 2,
+   "raised": null
+  },
+  "realflow": {
+   "wall_s": 124.5,
+   "rows": 13,
+   "raised": null
+  },
+  "save_load": {
+   "wall_s": 11.4,
+   "rows": 4,
+   "raised": null
+  },
+  "session": {
+   "wall_s": 0.0,
+   "rows": 1,
+   "raised": null
+  }
+ },
+ "doc": "design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md",
+ "offline": {
+  "skipped": "--skip-offline"
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1792689541738",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive4133"
+    ],
+    [
+     "GlowPod",
+     "GlowPod4151"
+    ],
+    [
+     "EggSac",
+     "EggSac4152"
+    ],
+    [
+     "Hive",
+     "Hive4153"
+    ],
+    [
+     "GlowPod",
+     "GlowPod4163"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "wall_s": 161.4,
+ "site_notes": [],
+ "certifiable": false,
+ "site_calm_blocks": {
+  "realflow": true,
+  "save_load": true
+ },
+ "huge_plants_cleared": {
+  "realflow": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "save_load": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  }
+ },
+ "save": "RM_fw_hose_proof_20261022102118.rws",
+ "site_calm_restore": false
+}
