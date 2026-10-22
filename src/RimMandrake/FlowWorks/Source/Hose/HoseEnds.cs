@@ -25,7 +25,7 @@ namespace RimMandrake.FlowWorks.Hose
         public TerrainDef Terrain, Water;
 
         public string Describe() =>
-            Kind == HoseEndKind.Relay ? "coupled to the relay reel at " + Relay?.parent.Position
+            Kind == HoseEndKind.Relay ? "coupled to a relay reel"
             : Kind == HoseEndKind.Port ? "coupled to " + Port?.LabelShort + (Port?.Faction != null && Port.Faction != Faction.OfPlayer ? " (" + Port.Faction.Name + ")" : "")
             // WaterAt also returns water the end only touches: a shore end reads "beside", not "in".
             : Kind == HoseEndKind.Water ? (Terrain != null && Terrain.IsWater ? "lying in " : "lying beside ") + Water?.label

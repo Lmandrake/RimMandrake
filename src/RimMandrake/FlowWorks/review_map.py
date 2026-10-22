@@ -757,7 +757,7 @@ SETUPS = {
                        hose=[(0, 6, 6, 6, None), (7, 6, 13, 6, None)], hose_flow=[(0, 6, "Plump")],
                        try_=["reel in the first hose: the second drains (nothing feeds it)",
                              "lay the third reel's hose back onto the first: refused, a chain may not loop back",
-                             "select the middle reel: 'Relay: fed by the hose from the reel at ...'"],
+                             "select the middle reel: 'Relay: fed by the hose from another reel'"],
                        look="weak spot: a hose that does not end in a brass coupling on the NEXT reel (two loose hoses, "
                             "not a chain); the second hose not plump though fed; a loop back accepted"),
     "hose_deploy_by_hand": dict(short="Deploy by hand, then wind in", notice="a reel with a Deploy order 15 cells out and "
