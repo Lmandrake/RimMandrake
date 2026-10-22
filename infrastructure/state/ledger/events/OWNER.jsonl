@@ -1658,3 +1658,10 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch for PITFALL_SAVED_ARRIVAL_FALLS","ts":"2026-10-22T04:45:42Z","tsn":1792644342111012145}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"bridge answers after relaunch","ts":"2026-10-22T04:46:28Z","tsn":1792644388243078650}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"FlowWorks live queue finished; closing to restore the full mod list","ts":"2026-10-22T04:48:01Z","tsn":1792644481852217926}
+{"seat":"OWNER","event":"file","id":"BRIDGE_ART_REDRAW_CABINETS_GROW_SADDLES","title":"Bridge art: redraw all 12 ranked items from GPT's all-bridge-art review + the 26 drawbridge renders that never arrived; one review sheet, install nothing until he picks","kind":"art","target":"v1","needs":"owner","for":"BENCH","byCard":"Should we start redrawing now? → Redraw all 12 now","ts":"2026-10-22T04:53:13Z","tsn":1792644793379127113}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH helper launching fw_gss_sitting tier for reach map live proof","ts":"2026-10-22T04:53:38Z","tsn":1792644818313582311}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"minimal tier fw_gss_sitting reached main menu, bridge answering","ts":"2026-10-22T04:54:31Z","tsn":1792644871566434274}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH helper: game down to deploy the reach map throttle fix","ts":"2026-10-22T04:56:28Z","tsn":1792644988820706752}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch fw_gss_sitting with throttle fix","ts":"2026-10-22T04:56:41Z","tsn":1792645001728493739}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"main menu, bridge answering","ts":"2026-10-22T04:57:35Z","tsn":1792645055569912231}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH reach map live proof done; game closed","ts":"2026-10-22T04:58:44Z","tsn":1792645124401809238}
