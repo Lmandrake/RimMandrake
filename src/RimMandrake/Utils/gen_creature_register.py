@@ -1805,6 +1805,11 @@ def write_prefill(rows, meta, override=False):
         dec[r["defName"]] = {"decision": pre, "prefill": pre, "prio": prio, "note": ""}
 
     doc = dict(existing)
+    if override:
+        # The file now holds the generator's guesses, not the owner's decisions —
+        # leaving these stamps in place would keep claiming otherwise.
+        for k in ("savedBy", "writeCount"):
+            doc.pop(k, None)
     doc.update({
         "sheetId": "creature_register",
         "posture": "blacklist",
