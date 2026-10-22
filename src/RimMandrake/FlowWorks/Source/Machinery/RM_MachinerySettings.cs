@@ -74,7 +74,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY: draw a flange/coupler/saddle at every liquid join (RM_LiquidJoins). OFF until
 		/// the owner rules on the connector art (design/RimMandrake/liquid_connections_visuals_2026-10-16.md); until then the
 		/// pieces draw a placeholder. Art only.</summary>
-		public static bool joinFittings = false;
+		public static bool joinFittings = true;   // PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID: owner card 2026-10-22, fittings installed, ON
 
 		/// <summary>PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (owner 2026-10-18: "draw pipes as though they are connected into the centers of
 		/// all pipe-receiving items ... so that it appears to continue beneath them through any transparent boundaries they might
@@ -164,7 +164,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref pipeAdaptersEnabled, "pipeAdaptersEnabled", true);
 			Scribe_Values.Look(ref pipeDefaultLook, "pipeDefaultLook", "Scrapper");
 			Scribe_Values.Look(ref pipeLinksIntoMachines, "pipeLinksIntoMachines", true);
-			Scribe_Values.Look(ref joinFittings, "joinFittings", false);
+			Scribe_Values.Look(ref joinFittings, "joinFittings", true);
 			Scribe_Values.Look(ref pipesUnderToCentre, "pipesUnderToCentre", true);
 			Scribe_Values.Look(ref lineCrossingRulesEnabled, "lineCrossingRulesEnabled", true);
 			Scribe_Values.Look(ref pipePolesEnabled, "pipePolesEnabled", true);
@@ -279,9 +279,9 @@ namespace RimMandrake.FlowWorks.Machinery
 			bool linksWas = pipeLinksIntoMachines, fitWas = joinFittings, underWas = pipesUnderToCentre;
 			list.CheckboxLabeled("Pipes run right up to the tanks and machines they join (art only)", ref pipeLinksIntoMachines,
 				"On: a pipe beside a tank, pump or still draws its run on to the shared edge, so you can see it joins. Off: it ends in a cap short of it. Needs a restart to take effect if it was off at startup.");
-			list.CheckboxLabeled("Connector fittings at liquid joins (preview: placeholder art)", ref joinFittings,
-				"Draws a flange where a pipe meets a tank or machine, a coupler where a pump touches a tank, and a saddle where a hose couples onto a pipe. " +
-				"The fitting art is still being designed; until it lands every fitting draws a stand-in. Art only.");
+			list.CheckboxLabeled("Connector fittings at liquid joins (art only)", ref joinFittings,
+				"Draws a flange where a pipe meets a tank or machine, a coupler where a pump touches a tank, and a saddle where a hose couples onto a pipe, " +
+				"each in its pipe look. Off: the joins draw no fittings. Art only.");
 			list.CheckboxLabeled("Pipes and hoses run on beneath tanks and machines to their centre (art only)", ref pipesUnderToCentre,
 				"On: a pipe or hose joining a tank, pump, bleed well, sprinkler or other liquid machine is drawn on underneath it to the middle of the building, so it shows through any see-through edges as if it plugs into the centre. Off: it stops at the building's edge.");
 			if ((linksWas != pipeLinksIntoMachines || fitWas != joinFittings || underWas != pipesUnderToCentre) && Current.ProgramState == ProgramState.Playing && Find.Maps != null)

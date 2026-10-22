@@ -140,7 +140,7 @@ SETTINGS = {
         "universalPipesEnabled": True, "converterRateMultiplier": 1.0, "liquidWorksRuinsEnabled": True,
         "liquidWorksRuinStockEnabled": True, "industrialWorksBuildAnywhere": False, "pipeAdaptersEnabled": True,
         "litresPerFilth": 400.0, "liquidTheftEnabled": True, "liquidTheftGoodwillPerDay": 2.0, "liquidTheftSightRange": 12.0,
-        "pipeLinksIntoMachines": True, "joinFittings": False,   # HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY (art only; fittings OFF until the owner rules)
+        "pipeLinksIntoMachines": True, "joinFittings": True,   # PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID: fittings installed, ON (owner card 2026-10-22; art only)
         "pipesUnderToCentre": True,   # PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (art only)
         "lineCrossingRulesEnabled": True,   # PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE P2 (RM_LineCrossing)
         "pipePolesEnabled": True, "pipePoleMaxSpan": 12.0, "pipePoleSag": 0.02,   # PIPE_POLES phase 4 (RM_PipePoles; sag: owner's widths card)

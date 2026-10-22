@@ -68,8 +68,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string set = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_MachinerySettings.cs"));
                 string hs = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_HoseSettings.cs"));
                 string draw = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
-                Assert(set.Contains("public static bool joinFittings = false;") && set.Contains("\"joinFittings\", false"),
-                    "connector fittings ship OFF (placeholder art) until the owner rules");
+                Assert(set.Contains("public static bool joinFittings = true;") && set.Contains("\"joinFittings\", true"),
+                    "connector fittings ship ON (owner card 2026-10-22: fittings installed)");
                 Assert(set.Contains("public static bool pipeLinksIntoMachines = true;"), "pipes link into tanks/machines by default");
                 Assert(hs.Contains("public static float thickness = 1f;") && hs.Contains("\"hose_thickness\", 1f"), "hose thickness ships at 1");
                 Assert(hs.Contains("\"|T\" + thickness"), "a thickness change re-lays every hose (ShapeFingerprint)");
