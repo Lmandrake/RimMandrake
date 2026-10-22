@@ -132,6 +132,17 @@ def static_checks():
         bad.append("wound-sharing patch must never use a top-level MayRequire (ignored by 1.6)")
     if ws.count("<hediff>RM_KinMendingNetwork</hediff>") != 4:
         bad.append("exactly the two mending bodies (mullgoth, durrok) carry the kin-mending hediff")
+    # ROT_NORTHSTAR_BARS_DRAFT bar 1 (kin mending): the live threshold is derived from these defaults, so they are pinned here.
+    cb = os.path.join(HERE, "..", "CreatureBehaviors", "Source")
+    kp = open(os.path.join(cb, "CompProperties_KinMending.cs"), encoding="utf-8").read()
+    ke = open(os.path.join(cb, "RM_WoundLinkExtension.cs"), encoding="utf-8").read()
+    for pat, what in ((r"int\s+tickIntervalTicks\s*=\s*2500\b", "cycle 2500 ticks"),
+                      (r"float\s+healPerDayPerBodySize\s*=\s*3f\b", "heal 3 per day per body size")):
+        if not re.search(pat, kp):
+            bad.append("kin mending default changed (%s): bar 1's live threshold in rot_northstar_bars_draft must be re-derived" % what)
+    for pat, what in ((r"float\s+radius\s*=\s*12f\b", "radius 12"), (r"int\s+kinMendingMinKin\s*=\s*2\b", "min kin 2")):
+        if not re.search(pat, ke):
+            bad.append("wound-link default changed (%s): bar 1's live threshold in rot_northstar_bars_draft must be re-derived" % what)
     hs = re.search(r"HealthSharingBodies\s*=\s*\{([^}]*)\}", src)
     hs_names = set(re.findall(r'"(\w+)"', hs.group(1))) if hs else set()
     if hs_names != {"RM_Chittik", "RM_Agaripod", "RM_Agaripawn", "RM_Durrok", "RM_Mullgoth"}:
@@ -617,7 +628,7 @@ def _build_suite():
                 _unmeasured(t, 'wild-spawned defended mushrooms with the false-fruit ring exist only on a map generated with the toggle on; the bridge cannot generate a map')
         with t.component("health_sharing", toggle="healthSharing"):
             if _live(t):
-                _unmeasured(t, 'shared wound healing between kin-linked pawns needs two kin pawns, a wound and ticks')
+                _unmeasured(t, 'bar 1 (design/RimMandrake/rot_northstar_bars_draft_2026-10-22.md): a bruise on a mullgoth with 2+ RotNetwork kin within 12 cells heals at least 0.5 x BodySize more over 15,000 ticks than the same bruise on an isolated one; needs a bridge wound tool and RSW bestiary spawns')
         with t.component("pale_tree_wild_spawn", toggle="paleTreeSpawn"):
             if _live(t):
                 _unmeasured(t, 'a rare wild-spawned oddity exists only on a generated map; it is also Royalty-gated')

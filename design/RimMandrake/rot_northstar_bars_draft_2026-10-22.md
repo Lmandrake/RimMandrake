@@ -10,23 +10,21 @@ Common setup for every bar: a **quicktest map** (~90 s, `rimworld-debug-testing`
 `src/RimMandrake/TheRot/validation.py`, run through `modcheck`, one live driver at a time, bridge held via `rimflow bridge take`.
 `UNMEASURED` is a legal outcome and is never a pass. A bar goes in only with its check written and run once (red on a planted defect, green on the clean tree).
 
-## Bar 1. Hurt one, the grove comes
+## Bar 1. The grove tends its own
 
-**Sentence.** Striking one creature of the Rot's network makes its kin within the network radius turn on the attacker within one in-game hour.
+**Sentence.** A wounded creature of the Rot's network heals faster while at least two of its kin stand within 12 cells of it, by 3 severity a day per point of its body size.
 
-**Live check.**
-1. Quicktest map, any biome (the mechanism is the comp, not the biome). Dev-spawn 5 same-tag network kin (e.g. 5 `RM_Chittik`) in a 12-cell cluster, plus 1 colonist 8 cells away; clear other hostiles.
-2. Read baseline: each kin's `Job` and `mindState`, count aimed at the colonist (expect 0), and the colonist's position.
-3. Strike exactly one kin (dev damage from the colonist, or a hit that does not kill; kin stays alive).
-4. Advance 2,500 ticks (one hour). Read each other kin's current job target and distance to the colonist.
-5. Control run: same setup, strike nothing, advance 2,500 ticks.
+**Live check.** (Mechanism: `RM_HediffComp_KinMending` via `RM_KinMendingNetwork`, `src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_KinMending.cs`; carriers today are `RM_Mullgoth` and `RM_Durrok`, tag `RotNetwork`; restored in commit 69905fd71.)
+1. Quicktest map, any biome. Spawn 2 groups of `RM_Mullgoth`, apart in space (more than 30 cells, no other `RotNetwork` body within 12 cells of either): group K = 3 mullgoth in a 5-cell cluster; group I = 1 mullgoth alone. Same body size by construction. Clear other hostiles.
+2. Read each pawn's `BodySize` and confirm `RM_KinMendingNetwork` is on it. Give one mullgoth in K and the lone one in I an identical bruise (blunt, non-permanent, no bleeding) of severity 10; read injury severity as `s0`.
+3. Advance 15,000 ticks (six 2,500-tick cycles; cycle phase is random per pawn, so at least five cycles land).
+4. Read both bruises: `healed = s0 - s_now`.
 
-**Pass.** At least 3 of the 4 untouched kin have the colonist as target or are pathing at it and are closer than at baseline; the control shows 0 of 4. **Fail.** Fewer than 3, or the control also moves (instrument sees nothing).
+**Pass.** `healed(K) - healed(I) >= 0.5 x BodySize`. Mechanism: each cycle heals `3 x BodySize x 2500/60000 = 0.125 x BodySize` extra, so 5 to 6 cycles give 0.625 to 0.75 x BodySize. **Fail.** Smaller difference, or `I` heals as much as `K` (no gate), or either pawn lacks the hediff (instrument blind). Neither bruise may reach 0.
 
-**Cost/time.** One quicktest map plus 2 x 2,500 ticks; about 4 minutes. L2.
+**Cost/time.** One quicktest map plus 15,000 ticks; about 3 minutes. L2.
 
-**Existing rows.** None measures this. `health_sharing` (`map_mechanics`) is UNMEASURED and covers shared healing, not response. `RM_CompWoundLink` / `RM_KinMendingNetwork` share wounds and mending among same-tag kin; they do not make kin attack.
-**Open before this bar can be validated:** I found no def in `src/RimMandrake/TheRot/` that rallies kin to a struck network creature (CreatureBehaviors has `RM_ReactionPropagationRule_SameKindWithinRadius` and `RM_ReactionResponseRule_Rally`; nothing in the Rot wires them to the network tag). If it is unbuilt, the bar is a build item first. Search `src/` before filing (project rule).
+**Existing rows.** `health_sharing` (`map_mechanics`, toggle `healthSharing`) is the measuring row; today UNMEASURED (needs a bridge wound tool and the RSW bestiary spawns). Its offline half, written and run with this draft in `static_checks`, pins the five-body wiring, exactly two mending bodies, and the four defaults the threshold is derived from (2,500-tick cycle, 3 a day per body size, radius 12, min kin 2). Mod options `kinMendingEnabled`, `kinMendingBoostMultiplier` (default 1) scale it; the check runs at defaults.
 
 ## Bar 2. The gut takes the fallen
 
@@ -84,7 +82,7 @@ Common setup for every bar: a **quicktest map** (~90 s, `rimworld-debug-testing`
 
 | bar | rows measuring it today | status | blocking |
 |---|---|---|---|
-| 1 hurt one, the grove comes | none | unbuilt or unwired | find or build the kin-rally wiring, then write the check |
+| 1 the grove tends its own | `health_sharing` (static half runs) | live half UNMEASURED | a bridge wound tool and RSW bestiary spawns |
 | 2 the gut takes the fallen | `hwelgrue.swallow_then_cut_out`, `knocking_louder_early` | written, never run live | stockpile/roof control row |
 | 3 the mat keeps you | three `living_mat_root` rows | written, never run live | Rot-map row (`rot_root_eats_nothing`), a Rot-biome test map |
 | 4 the Sheen marks you | `sheen_exposure_ladder` | UNMEASURED | a forced-weather, long-tick row |
