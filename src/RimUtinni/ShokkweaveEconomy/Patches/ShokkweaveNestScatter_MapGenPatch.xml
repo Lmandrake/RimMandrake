@@ -12,7 +12,7 @@
 
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>RimMandrake: Webwork</li>
+      <li>RimMandrake: Baroque Biomes</li>
     </mods>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
