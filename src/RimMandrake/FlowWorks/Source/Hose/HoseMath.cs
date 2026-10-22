@@ -182,6 +182,14 @@ namespace RimMandrake.FlowWorks.Hose
         public static double MeshWidthFlat(double visible) => visible / FlatBand;
         public static double MeshWidthPlump(double visible) => visible / PlumpBand;
 
+        /// <summary>The contact shadow under a hose (shared Strand_Shadow, drawn in every look): its opacity and its width as a
+        /// multiple of the visible width, from empty (eased 0, flat) to full (1, plump). Owner card 2026-10-22
+        /// (HOSE_GIRTH_TUNE_MUCH_THINNER, "Darker shadow first"): the empty Scrapper hose vanished on desert soil, so the EMPTY
+        /// shadow went from 0.55 opacity at 1.15x to 0.80 at 1.35x; the full hose's (0.85, 1.5x) is unchanged.</summary>
+        public const double ShadowAlphaEmpty = 0.80, ShadowAlphaFull = 0.85, ShadowWidthEmpty = 1.35, ShadowWidthFull = 1.5;
+        public static double ShadowAlpha(double eased) => ShadowAlphaEmpty + (ShadowAlphaFull - ShadowAlphaEmpty) * Geo.Clamp(eased, 0, 1);
+        public static double ShadowWidth(double eased) => ShadowWidthEmpty + (ShadowWidthFull - ShadowWidthEmpty) * Geo.Clamp(eased, 0, 1);
+
         /// <summary>HOSE_ENDS_FIX_MISSES_THE_PORTS: re-aim a drawn hose's last <paramref name="run"/> cells so it ends at
         /// <paramref name="end"/> arriving along <paramref name="axis"/> (unit, pointing into the port): the polyline is cut at arc
         /// length L - run and finished with a cubic Hermite from there (the hose's own tangent) to the end (tangent = axis), so the
@@ -1550,7 +1558,63 @@ namespace RimMandrake.FlowWorks.Hose
         /// constant (u 9/256 at drawSize 2.8) that silently went stale when 2e22f30e3c and 2c27b49569 replaced the art; it is now
         /// MEASURED per look from the installed laid art (ReelIntakeGeometry.OutletTip, generated, --check in selftest_reel_ports.py).
         /// The routing start is the tip itself (always inside the west cell; clamped there).</summary>
-        internal V2 Mouth => HasNozzle ? new V2(Math.Max(NozzleTip.X, X0 + 0.02), NozzleTip.Z) : Centre;
+        /// REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST (owner card 2026-10-22, "Player turns the reel"): the reel is rotatable and the tip,
+        /// the clamp and <see cref="Outward"/> turn with <see cref="Rot"/>; the clamp keeps the start inside the outlet-side cells.</summary>
+        internal V2 Mouth
+        {
+            get
+            {
+                if (!HasNozzle) return Centre;
+                V2 t = NozzleTip;
+                switch (Rot)
+                {
+                    case 1: return new V2(Math.Min(t.X, X0 + W - 0.02), t.Z);   // east
+                    case 0: return new V2(t.X, Math.Min(t.Z, Z0 + H - 0.02));   // north
+                    case 2: return new V2(t.X, Math.Max(t.Z, Z0 + 0.02));       // south
+                    default: return new V2(Math.Max(t.X, X0 + 0.02), t.Z);      // west
+                }
+            }
+        }
+        private int rotCode;
+        /// <summary>The way the reel's outlet faces, as a Rot4 int (0 N, 1 E, 2 S, 3 W). Default (a rect built without one) = 3,
+        /// west: the drawn picture's own outlet, the only facing before 2026-10-22.</summary>
+        public int Rot { get => (rotCode + 3) % 4; set => rotCode = (((value % 4) + 4) % 4 + 1) % 4; }
+        /// <summary>A west-art offset (dx, dz) from the footprint centre, turned to this facing: east = the picture mirrored,
+        /// north = the picture turned 90 degrees clockwise (stand-in art), south = turned 90 degrees anticlockwise (stand-in).</summary>
+        internal V2 FromArt(double dx, double dz)
+        {
+            switch (Rot)
+            {
+                case 1: return new V2(-dx, dz);
+                case 0: return new V2(dz, -dx);
+                case 2: return new V2(-dz, dx);
+                default: return new V2(dx, dz);
+            }
+        }
+        /// <summary>How the one (west-outlet) picture is drawn for a facing, matching <see cref="FromArt"/>: the angle the plane
+        /// turns clockwise seen from above (RimWorld's Rot4.AsAngle sense), whether its u is mirrored, and whether the facing
+        /// has no picture of its own (north and south: the west picture turned is a STAND-IN until the owed art exists).</summary>
+        public static void ArtPose(int rot, out float angle, out bool mirror, out bool standIn)
+        {
+            switch (((rot % 4) + 4) % 4)
+            {
+                case 1: angle = 0f; mirror = true; standIn = false; return;     // east: the west picture mirrored (owner card)
+                case 0: angle = 90f; mirror = false; standIn = true; return;    // north: turned, west outlet -> north
+                case 2: angle = 270f; mirror = false; standIn = true; return;   // south: turned, west outlet -> south
+                default: angle = 0f; mirror = false; standIn = false; return;   // west: the picture as drawn
+            }
+        }
+        /// <summary>The inverse of <see cref="FromArt"/>: a world offset from the centre, in the west picture's frame.</summary>
+        internal V2 ToArt(double x, double z)
+        {
+            switch (Rot)
+            {
+                case 1: return new V2(-x, z);
+                case 0: return new V2(-z, x);
+                case 2: return new V2(z, -x);
+                default: return new V2(x, z);
+            }
+        }
         /// <summary>The reel's look (HoseStyles.Looks); null or unknown = the base (Scrapper) art.</summary>
         public string Look;
         /// <summary>The laid art's nozzle tip, where the end coupling's face is drawn (2x2 reel only).</summary>
@@ -1560,7 +1624,7 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 if (!HasNozzle) return Centre;
                 ReelIntakeGeometry.OutletTip(Look, true, out double dx, out double dz);
-                return Centre + new V2(dx, dz);
+                return Centre + FromArt(dx, dz);
             }
         }
         /// <summary>True when the reel's art carries a brass outlet nozzle the hose couples to (the 2x2 reel).</summary>
@@ -1572,8 +1636,9 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>How far the end coupling's threaded stub slides into the outlet nozzle (drawn under the reel sprite), so the
         /// two meet with no gap.</summary>
         public const double NozzleSeat = 0.07;
-        /// <summary>The direction the hose leaves a nozzled reel (the outlet faces west on every look's art), or null.</summary>
-        internal V2? Outward => HasNozzle ? new V2(-1, 0) : (V2?)null;
+        /// <summary>The direction the hose leaves a nozzled reel: the way its outlet faces (<see cref="Rot"/>; the picture's outlet
+        /// is west), or null.</summary>
+        internal V2? Outward => HasNozzle ? FromArt(-1, 0) : (V2?)null;
         internal bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
         public bool Overlaps(HosePortCandidate o) => o.X0 < X0 + W && X0 < o.X0 + o.W && o.Z0 < Z0 + H && Z0 < o.Z0 + o.H;
 

@@ -181,6 +181,7 @@
     <Compile Include="StyleStage3Checks.cs" />
     <Compile Include="PipeStyleChecks.cs" />
     <Compile Include="LiquidJoinChecks.cs" />
+    <Compile Include="ReelRiserShadowChecks.cs" />
     <Compile Include="ContainerStyleChecks.cs" />
     <Compile Include="..\Thirst\RM_ThirstMath.cs" />
     <Compile Include="ThirstChecks.cs" />

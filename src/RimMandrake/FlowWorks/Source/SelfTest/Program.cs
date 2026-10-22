@@ -2016,6 +2016,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseRulingTextChecks.Run(Case);    // hose leftovers + ruling #3 text (HoseRulingTextChecks.cs)
             PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)
             LiquidJoinChecks.Run(Case);        // liquid-join draw hooks + hose thickness (HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY)
+            ReelRiserShadowChecks.Run(Case);   // owner cards 2026-10-22: reel turns, pipe riser onto the tank flange, empty-hose shadow
             ContainerStyleChecks.Run(Case);    // LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: bottle/bucket/barrel in the four looks
             SettingsResetChecks.Run(Case);     // FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: the shared reset helper and its twelve screens
             ReviewFixChecks.Run(Case);         // code-review batches 2-4 behaviour fixes (2026-10-11)

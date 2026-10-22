@@ -667,7 +667,7 @@ namespace RimMandrake.FlowWorks.Hose
                     var off = new V2(0.03 + 0.05 * e, -(0.03 + 0.06 * e));
                     var sp = new List<V2>(rp.Count);
                     foreach (V2 p in rp) sp.Add(p + off);
-                    sm = Ribbon(sp, vis * (1.15f + 0.35f * e), y - 0.0004f, 0.11);
+                    sm = Ribbon(sp, vis * (float)HoseMath.ShadowWidth(e), y - 0.0004f, 0.11);
                     if (key != null)
                     {
                         if (c != null) { DestroyMeshes(c); }
@@ -677,7 +677,7 @@ namespace RimMandrake.FlowWorks.Hose
                 }
                 Color tint = Tint(r);
                 HoseLookMats hm = HoseMaterials.For(r);      // stage 3: the hose draws in its REEL's look
-                if (sm != null) Graphics.DrawMesh(sm, Matrix4x4.identity, HoseMaterials.Shadow(0.55f + 0.3f * e), 0);
+                if (sm != null) Graphics.DrawMesh(sm, Matrix4x4.identity, HoseMaterials.Shadow((float)HoseMath.ShadowAlpha(e)), 0);
                 // depth pre-pass of the dominant pose only (a fading pose must stay see-through), so wall sun shadows skip the hose
                 if (pm != null && (fm == null || e >= 0.5f)) DepthPass(pm, Matrix4x4.identity, hm.Plump(1f, tint));
                 else if (fm != null) DepthPass(fm, Matrix4x4.identity, hm.Flat(1f));
@@ -801,10 +801,10 @@ namespace RimMandrake.FlowWorks.Hose
             // 2x2 reel's hose runs on to the drum's axis under the opaque drum (HoseReelRect.Mouth), so nothing is drawn
             // there -- a coupling's body would reach back out past the drum into the gap above the base rail
             V2 d0 = (pts[0] - pts[Math.Min(3, n - 1)]).Norm();
-            // the 2x2 reel: the coupling's face meets the brass outlet nozzle, pointing east into it (the nozzle faces west)
+            // the 2x2 reel: the coupling's face meets the brass outlet nozzle, pointing into it (against Outward: the reel turns)
             // 2026-10-05: only when the hose really leaves through the outlet; a hose that could not (a reel boxed in, a relay
             // reel whose nozzle takes the feeding hose, a carried hose) gets no coupling floating on an empty nozzle
-            if (r.Rect.HasNozzle) { if (lying && r.lay != null && r.lay.Outlet) Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, r.Rect.NozzleTip + new V2(HoseReelRect.NozzleSeat, 0), new V2(1, 0), vis, y, wrapTint); }
+            if (r.Rect.HasNozzle) { if (lying && r.lay != null && r.lay.Outlet) { V2 inw = -r.Rect.Outward.Value; Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, r.Rect.NozzleTip + inw * HoseReelRect.NozzleSeat, inw, vis, y, wrapTint); } }
             else Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
@@ -995,7 +995,7 @@ namespace RimMandrake.FlowWorks.Hose
                 if (cc.prefix.Count >= 2)
                 {
                     cc.flat = Ribbon(cc.prefix, wf, y, 0.37);
-                    if (!far) cc.shadow = Ribbon(Shifted(cc.prefix), vis * 1.15f, y - 0.0004f, 0.11);
+                    if (!far) cc.shadow = Ribbon(Shifted(cc.prefix), vis * (float)HoseMath.ShadowWidth(0), y - 0.0004f, 0.11);
                 }
                 carryCache[r] = cc;
                 carryPrefixBuilds++;
@@ -1003,10 +1003,10 @@ namespace RimMandrake.FlowWorks.Hose
             V2 hand = Hand(r.carrier, cc.corner);
             List<V2> tail = HoseLive.Tail(cc.prefix[cc.prefix.Count - 1], cc.corner, hand, step);
             Mesh tf = Ribbon(tail, wf, y, HoseLive.ContinueS0(0.37, cc.len, wf));
-            Mesh ts = far ? null : Ribbon(Shifted(tail), vis * 1.15f, y - 0.0004f, 0.11);
+            Mesh ts = far ? null : Ribbon(Shifted(tail), vis * (float)HoseMath.ShadowWidth(0), y - 0.0004f, 0.11);
             frameMeshes.Add(tf);
             frameMeshes.Add(ts);
-            Material flat = hm.Flat(1f), sh = HoseMaterials.Shadow(0.55f);
+            Material flat = hm.Flat(1f), sh = HoseMaterials.Shadow((float)HoseMath.ShadowAlpha(0));
             if (!far)
             {
                 if (cc.shadow != null) Graphics.DrawMesh(cc.shadow, Matrix4x4.identity, sh, 0);

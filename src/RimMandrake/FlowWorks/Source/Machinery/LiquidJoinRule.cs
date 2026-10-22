@@ -91,6 +91,31 @@ namespace RimMandrake.FlowWorks.Machinery
             return pts.ToArray();
         }
 
+        /// <summary>
+        /// PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID (owner card 2026-10-22, "Draw fittings + pipe riser"): a pipe cell (cx, cz) beside a
+        /// 2x2 universal tank on its west or east side (dx = +1 / -1, dz = 0; footprint bx, bz, bw, bh) cannot meet the tank's
+        /// drawn flange, which sits at mid-height (<paramref name="portZ"/>, TankPortGeometry.PortPoint: z + 1.0 give or take the
+        /// look), because a cell centre is at z + 0.5 or z + 1.5: the arm slid in under the skid. Instead the arm stops at the
+        /// pipe cell's centre and a short riser jogs to the port's height, then runs on to the flange on the shared edge -- the
+        /// same point a hose coupled there ends. <paramref name="under"/> = also the run on beneath the tank to its centre
+        /// (pipesUnderToCentre). Null when the pipe does not face the tank from the west or east.
+        /// </summary>
+        public static double[] RiserStub(int cx, int cz, int dx, int dz, int bx, int bz, int bw, int bh, double portZ, bool under)
+        {
+            if (dz != 0 || Math.Abs(dx) != 1) return null;
+            int nx = cx + dx;
+            if (nx < bx || nx >= bx + bw || cz < bz || cz >= bz + bh) return null;
+            double x0 = cx + 0.5, z0 = cz + 0.5, ex = cx + 0.5 + dx * 0.5;
+            var pts = new System.Collections.Generic.List<double> { x0, z0, x0, portZ, ex, portZ };
+            if (under)
+            {
+                double mx = bx + bw / 2.0, mz = bz + bh / 2.0;
+                pts.Add(mx); pts.Add(portZ);
+                if (Math.Abs(portZ - mz) > 1e-9) { pts.Add(mx); pts.Add(mz); }
+            }
+            return pts.ToArray();
+        }
+
         /// <summary>One straight axis-aligned piece of a stub, drawn as a plane of the pipe's straight atlas tile: centre, its
         /// length along the run (at most 1 cell, the tile's own length) and whether the run is east-west. U0/U1 crop the
         /// tile along the run so a piece shorter than a cell shows a slice, not a squashed tile.</summary>
