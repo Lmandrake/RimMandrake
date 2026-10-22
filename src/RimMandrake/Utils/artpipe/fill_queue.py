@@ -560,6 +560,9 @@ def main(argv=None) -> int:
             d.mkdir(parents=True, exist_ok=True)
 
     rows = load_rows(path)
+    if not rows:
+        print(f"ERROR {path} holds no rows - nothing to file (UNMEASURED, not 'done')", file=sys.stderr)
+        return 2
     filed, duplicates, errors = 0, [], []
     for row in rows:
         try:

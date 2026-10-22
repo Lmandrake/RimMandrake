@@ -366,6 +366,12 @@ def main():
     # PRIMARY: deployed biome files against the deployed defName universe.
     total, unresolved = check_refs(deployed_biome_files, universe)
 
+    if total == 0 or len(universe) == 0:
+        print("UNMEASURED, not a pass or a fail")
+        print("reason: %d wildAnimals/wildPlants entries and a defName universe of %d -- "
+              "a PASS over nothing is not a pass." % (total, len(universe)))
+        return 0
+
     print("--- PRIMARY: deployed UtinniPatches BiomeDefs vs deployed defName universe ---")
     print("deployed mod dir: %s" % deployed_mod_dir)
     print("defName universe size: %d (from %d roots: %s)"
