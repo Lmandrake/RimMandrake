@@ -33,3 +33,4 @@ Bridge: taken by BENCH (FlowWorks live queue: fallen cord, pit cover, pitfall). 
 - 05:15Z COVER_BREAK_DROPS_RIDER live PASS (lines_pit_run1.json). PITFALL row UNMEASURED/HARNESS: load_game_ready answered mid-load; row now waits for Playing + polls ProofTrap. Rerunning.
 - 05:30Z PITFALL row FAIL/MOD live: FinalizeInit called superdeepTrap.ResetDetector() after every load, wiping the scribed lastCell. Fix: removed. Built (clean clone), deploy at next restart. Meanwhile staging gates+hoses on current game for sluice look + joins close-ups.
 - 05:50Z SLUICE closed c922fd3a3f00 (north rim black live). 15 join close-ups in joins_live/ (pinned; camera floor is rootSize 8, so crops of full-res shots at ~114 px/cell). Restarting for the ResetDetector fix.
+- 06:05Z COVER_BREAK_DROPS_RIDER + PITFALL_SAVED_ARRIVAL_FALLS both live PASS (lines_pit_run3.json) on the ResetDetector fix.

@@ -42,6 +42,9 @@ CAN_FAIL = {
     "no_power": ("LADDER_HOSE_DRAINS_RAISED_STAYS", "UNMEASURED", "SITE"),
     "no_reroute": ("DIG_REROUTES_LAID_HOSE", "FAIL", "MOD"),
     "reroute_retracts": ("DIG_REROUTES_LAID_HOSE", "FAIL", "MOD"),
+    "wreck_shields": ("COLLAPSE_CORD_SHOCKS_ONCE", "FAIL", "MOD"),
+    "cover_no_fall": ("COVER_BREAK_DROPS_RIDER", "FAIL", "MOD"),
+    "history_lost": ("PITFALL_SAVED_ARRIVAL_FALLS", "FAIL", "MOD"),
 }
 
 

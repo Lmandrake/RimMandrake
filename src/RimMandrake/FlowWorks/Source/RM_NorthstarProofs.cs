@@ -491,6 +491,42 @@ namespace RimMandrake.FlowWorks
 			return "RAMP " + a[0] + " rot=" + ri + " joins=" + joins + " gen=" + (eng?.ClimbGeneration ?? 0);
 		}
 
+		/// <summary>FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED proof surface. "pawnId;x,z": moves the pawn there with NO arrival
+		/// handling (a forced displacement the detector has not judged yet; it judges it on its next pass against lastCell).
+		/// Writes the pawn's position only. "SHOVE at=x,z".</summary>
+		public static string ProofShove(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			Pawn p = map == null || a.Length != 2 ? null : PawnById(map, a[0]);
+			if (p == null || !Cell(a[1], out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be pawnId;x,z of a spawned pawn and an in-bounds cell";
+			}
+			p.jobs?.StopAll();
+			p.pather?.StopDead();
+			p.Position = c;
+			p.Notify_Teleported(false, false);
+			return "SHOVE at=" + c.x + "," + c.z;
+		}
+
+		/// <summary>Trap state read. arg = pawn id: "TRAP descents=N lastCell=x,z|none pos=x,z held=b last=<newest descent>".
+		/// Read-only.</summary>
+		public static string ProofTrap(string pawnId)
+		{
+			Map map = Find.CurrentMap;
+			Pawn p = map == null ? null : PawnById(map, pawnId);
+			RM_SuperdeepTrapState st = RM_SuperdeepTrap.EngineOf(map)?.SuperdeepTrap;
+			if (p == null || st == null)
+			{
+				return "REFUSED: no spawned pawn " + pawnId + " or no trap state";
+			}
+			string lc = st.LastCellOf(p, out IntVec3 c) ? c.x + "," + c.z : "none";
+			string last = st.RecentDescents.Count > 0 ? st.RecentDescents[st.RecentDescents.Count - 1].Replace(' ', '_') : "-";
+			return "TRAP descents=" + st.DescentCount + " lastCell=" + lc + " pos=" + p.Position.x + "," + p.Position.z
+				+ " held=" + RM_SuperdeepTrap.IsHeld(p) + " last=" + last;
+		}
+
 		/// <summary>Capture down. arg = target pawn id: "VERDICT v held=b prisoner=b cell=x,z".</summary>
 		public static string ProofCaptureDown(string pawnId)
 		{

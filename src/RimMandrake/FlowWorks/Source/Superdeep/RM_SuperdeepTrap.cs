@@ -546,6 +546,13 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>Proof read (RM_NorthstarProofs.ProofTrap): the detector's remembered cell for p, if any.</summary>
+		internal bool LastCellOf(Pawn p, out IntVec3 c)
+		{
+			c = IntVec3.Invalid;
+			return p != null && lastCell.TryGetValue(p, out c);
+		}
+
 		public void ResetDetector()
 		{
 			lastCell.Clear();

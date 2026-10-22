@@ -1144,7 +1144,9 @@ namespace RimMandrake.FlowWorks
 			// SUPERDEEP_HOLDER_RETIRE_1: a save written while the holder Thing
 			// existed carries RM_SuperdeepPit Things; the def is gone, so the
 			// loader drops them ("Could not load reference") — nothing to shed.
-			superdeepTrap.ResetDetector();
+			// FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED: the detector is NOT reset here. FinalizeInit runs after a load too, and
+			// a reset wiped the lastCell/walkedInto the save had just restored, so an arrival made before the save was never
+			// judged (live, lines_proof PITFALL_SAVED_ARRIVAL_FALLS 2026-10-22). A new map's state is new and empty anyway.
 		}
 
 		/// <summary>A save written before this grid existed has dug cells on the

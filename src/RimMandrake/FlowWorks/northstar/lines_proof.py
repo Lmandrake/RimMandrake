@@ -86,11 +86,14 @@ SHOCK_HEDIFF = "RM_FallenWireShock"
 
 ROW_IDS = ["ROPE_DECK_RIGID_REFUSED_FLEX_OK", "COVER_CARRIES_NO_HOSE", "POLE_SPAN_CARRIES_LIQUID", "DIG_UNDER_PIPE_SPLITS_NET",
            "CORD_DECK_LAMP_LIT", "LEAF_RAISED_LAMP_DARK", "COLLAPSE_CORD_SHOCKS_ONCE", "LADDER_HOSE_DRAINS_RAISED_STAYS",
-           "DIG_REROUTES_LAID_HOSE"]
+           "DIG_REROUTES_LAID_HOSE", "COVER_BREAK_DROPS_RIDER", "PITFALL_SAVED_ARRIVAL_FALLS"]
 # which item's L2 each row closes (validation.py's lines chain and the ledger read this)
 ROW_ITEM = {r: "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE" for r in ROW_IDS}
 ROW_ITEM.update({"CORD_DECK_LAMP_LIT": "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS",
-                 "LEAF_RAISED_LAMP_DARK": "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS"})
+                 "LEAF_RAISED_LAMP_DARK": "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS",
+                 "COVER_BREAK_DROPS_RIDER": "FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED",
+                 "PITFALL_SAVED_ARRIVAL_FALLS": "FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED"})
+NPROOF = "RimMandrake.FlowWorks.RM_NorthstarProofs"   # ProofTrap (trap state read), ProofShove (unjudged displacement)
 
 # The C# the rows call (RM_LineProofs; selftest_lines_proof checks each method exists and answers its word). One string arg
 # each (';' inside), one line out: a word then key=value tokens; "REFUSED: why" on bad args.
@@ -622,10 +625,98 @@ def dig_reroute(ctx):
     row("DIG_REROUTES_LAID_HOSE", "PASS" if good else "FAIL", {"lay": ly, "before": th0, "dugUnder": tx, "after": th1})
 
 
+def raw_static(B, ty, method, arg):
+    """An unguarded read for polling (a REFUSED reply while the load settles is not a fault)."""
+    try:
+        r = B.call("jawa/static_call", type=ty, method=method, args=arg, _answer=True) or {}
+    except Exception as e:      # noqa: BLE001
+        return "ERR %s" % e
+    return str(r.get("result") or r.get("message") or r.get("error") or "")
+
+
+def _trap(ctx, pid):
+    r = ctx["B"].call("jawa/static_call", type=NPROOF, method="ProofTrap", args=pid) or {}
+    txt = str(r.get("result") or r.get("message") or r.get("error") or "")
+    V.require(r.get("success") is True and txt.startswith("TRAP"), "ProofTrap answered", txt[:200], cls="HARNESS")
+    return parse(txt), txt
+
+
+def cover_break(ctx):
+    """FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED. PROVE a 3x3 4 m pit with plank-lattice covers across its middle row; a
+    drafted colonist standing on the middle cover; the cover destroyed by damage (KillFinalize, the way fire or a raid breaks
+    it). EXPECT the trap counts one descent for that colonist on that square and holds him (he fell into the pit). LIES: a
+    colonist the spawn put off the cover never rode it (SITE); a cover that never stood reads Excavated (SITE); a cover the
+    damage did not destroy is no break (SITE)."""
+    B, P, xz, row, lproof = _c(ctx, "B", "P", "xz", "row", "lproof")
+    ctx["trench"](1, 3, 94, 96)
+    ctx["build"](*["%s:%d,%d" % ((COVER_DEF,) + P(x, 95)) for x in range(1, 4)])
+    ks, ts = lproof("ProofSurface", xz(P(2, 95)))
+    V.require(ks.get("s") == "Cover", "the middle square reads as an intact pit cover", ts)
+    victim = ctx["spawn"](P(2, 95))
+    B.call("jawa/set_draft", pawnId=victim, drafted=True)
+    ctx["ticks"](10)
+    k0, t0 = _trap(ctx, victim)
+    V.require(k0.get("pos") == xz(P(2, 95)) and k0.get("held") == "False", "the colonist stands on the cover, not held", t0)
+    lt = B.call("jawa/list_things", defName=COVER_DEF, rect="%d,%d,1,1" % P(2, 95), limit=1) or {}
+    cid = ((lt.get("things") or [{}])[0]).get("id")
+    V.require(cid is not None, "the cover under him is listed", lt)
+    dmg = B.call("jawa/damage", thingId=cid, damageDef="Blunt", amount=5000) or {}
+    V.require(ctx["things"](COVER_DEF, P(2, 95)) == 0, "the damage destroyed the cover", dmg, cls="SITE")
+    ctx["ticks"](5)
+    k1, t1 = _trap(ctx, victim)
+    fell = (num(k1, "descents") or 0) - (num(k0, "descents") or 0)
+    good = fell >= 1 and k1.get("held") == "True" and str(victim).replace("Thing_", "") in str(k1.get("last"))
+    row("COVER_BREAK_DROPS_RIDER", "PASS" if good else "FAIL", {"before": t0, "after": t1, "descents": fell, "damage": dmg})
+
+
+def pitfall_saved(ctx):
+    """FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED. PROVE a 3x3 4 m pit; a drafted colonist on its west lip, ticked so the detector
+    remembers the lip; then, PAUSED, moved into the pit with no arrival handling (NorthstarProofs.ProofShove: a forced
+    displacement the detector has not judged yet); saved; loaded; ticked. EXPECT the loaded detector still remembers the lip
+    (lastCell scribed) and the first ticks count the forced arrival as a fall for that colonist. Before the fix lastCell was
+    not saved: the arrival was never judged (no fall). LIES: a lip cell the detector never recorded proves nothing (SITE);
+    a save or load the bridge refused is UNMEASURED. Runs LAST: the load replaces the map every later row would use."""
+    B, P, xz, row = _c(ctx, "B", "P", "xz", "row")
+    ctx["trench"](1, 3, 101, 103)
+    lip, hole = P(0, 102), P(2, 102)
+    victim = ctx["spawn"](lip)
+    B.call("jawa/set_draft", pawnId=victim, drafted=True)
+    ctx["ticks"](10)
+    k0, t0 = _trap(ctx, victim)
+    V.require(k0.get("lastCell") == xz(lip) and k0.get("pos") == xz(lip), "the detector remembers him on the lip", t0)
+    sh = B.call("jawa/static_call", type=NPROOF, method="ProofShove", args="%s;%s" % (victim, xz(hole))) or {}
+    k1, t1 = _trap(ctx, victim)
+    V.require(k1.get("pos") == xz(hole) and k1.get("lastCell") == xz(lip), "moved into the pit, not judged yet", [sh, t1])
+    if ctx["a"].mock:
+        sv, ld = ctx["B"].call("rimworld/save_game", saveName="x"), ctx["B"].call("rimworld/load_game_ready", saveName="x")
+    else:
+        name = "RM_LINES_PITFALL_%s" % time.strftime("%Y%m%dT%H%M%S")
+        sv = B.call("rimworld/save_game", saveName=name) or {}
+        V.require(sv.get("success") is not False, "saved", sv, cls="HARNESS")
+        ld = B.call("rimworld/load_game_ready", saveName=name, timeoutMs=280000) or {}
+        V.require(ld.get("success") is not False, "loaded", str(ld)[:300], cls="HARNESS")
+        V.require(V._wait_playing(B, leave_s=0)[0], "playing after the load", None, cls="HARNESS")
+        for _ in range(60):             # load_game_ready can answer while the load's long event still runs (live 2026-10-22)
+            r = raw_static(B, NPROOF, "ProofTrap", victim)
+            if r.startswith("TRAP"):
+                break
+            time.sleep(2)
+    k2, t2 = _trap(ctx, victim)
+    ctx["ticks"](10)
+    k3, t3 = _trap(ctx, victim)
+    # DescentCount is not saved: the loaded state counts from 0, so any descent after the load naming him on the hole square
+    # is the saved arrival judged (a tick may already have passed inside the load, so lastCell after it may read the hole).
+    good = ((num(k3, "descents") or 0) >= 1 and k3.get("held") == "True"
+            and str(k3.get("last", "")).startswith(str(victim).replace("Thing_", "") + "@" + xz(hole)))
+    row("PITFALL_SAVED_ARRIVAL_FALLS", "PASS" if good else "FAIL",
+        {"onLip": t0, "shoved": t1, "afterLoad": t2, "afterTicks": t3})
+
+
 SCENES = {"ROPE_DECK_RIGID_REFUSED_FLEX_OK": rope_deck, "COVER_CARRIES_NO_HOSE": cover_no_hose,
           "POLE_SPAN_CARRIES_LIQUID": pole_span, "DIG_UNDER_PIPE_SPLITS_NET": dig_pipe, "CORD_DECK_LAMP_LIT": cord_deck_lamp,
           "LEAF_RAISED_LAMP_DARK": leaf_lamp, "COLLAPSE_CORD_SHOCKS_ONCE": collapse_cord,
-          "LADDER_HOSE_DRAINS_RAISED_STAYS": ladder_drain, "DIG_REROUTES_LAID_HOSE": dig_reroute}
+          "LADDER_HOSE_DRAINS_RAISED_STAYS": ladder_drain, "DIG_REROUTES_LAID_HOSE": dig_reroute,
+          "COVER_BREAK_DROPS_RIDER": cover_break, "PITFALL_SAVED_ARRIVAL_FALLS": pitfall_saved}
 
 
 # ====================================================================== offline stand-in
@@ -652,6 +743,8 @@ class FakeBridge(object):
       shock_off          GSS's fallenWireShock is off (SITE)                     -> COLLAPSE_CORD_SHOCKS_ONCE UNMEASURED/SITE
       wreck_blocks       the spawn lands off the fallen squares (SITE)           -> COLLAPSE_CORD_SHOCKS_ONCE UNMEASURED/SITE
       wreck_shields      MOD: an impassable wreck lands on a fallen cord square  -> COLLAPSE_CORD_SHOCKS_ONCE FAIL
+      cover_no_fall      MOD: a destroyed cover leaves its rider unharmed        -> COVER_BREAK_DROPS_RIDER FAIL
+      history_lost       MOD: lastCell is not saved (the pre-fix gap)            -> PITFALL_SAVED_ARRIVAL_FALLS FAIL
       no_drain           MOD: the Intake end moves nothing                       -> LADDER_HOSE_DRAINS_RAISED_STAYS FAIL
       raise_cuts         MOD: raising the ladder reels the hose in               -> LADDER_HOSE_DRAINS_RAISED_STAYS FAIL
       no_power           the pump never powers (SITE)                            -> LADDER_HOSE_DRAINS_RAISED_STAYS UNMEASURED/SITE
@@ -659,7 +752,7 @@ class FakeBridge(object):
       reroute_retracts   MOD: the hose is reeled in though a way round exists    -> DIG_REROUTES_LAID_HOSE FAIL"""
     FAULTS = ("no_proofs", "noclock", "rope_is_timber", "pipe_on_rope", "hose_avoids_deck", "no_cover", "cover_open",
               "span_no_join", "dig_no_break", "dig_breaks_twice", "deck_cord_dead", "leaf_no_cut", "leaf_stays_dark",
-              "double_split", "no_shock", "shock_off", "wreck_blocks", "wreck_shields", "no_drain", "raise_cuts", "no_power", "no_reroute",
+              "double_split", "no_shock", "shock_off", "wreck_blocks", "wreck_shields", "cover_no_fall", "history_lost", "no_drain", "raise_cuts", "no_power", "no_reroute",
               "reroute_retracts")
 
     def __init__(self, faults=()):
@@ -677,6 +770,8 @@ class FakeBridge(object):
         self.cnt = {"broken": 0, "commits": 0, "cordsDropped": 0, "hosesCut": 0, "tore": 0, "liveFalls": 0, "liveHalves": 0,
                     "leafReconnects": 0, "netBumps": 0, "shocks": 0}
         self.fallen = set()    # fallen live squares
+        self.last = {}         # pawn -> detector's lastCell (trap model)
+        self.descents = []     # pawn ids that fell
         self.split_pending = False
         self.ladders = {}      # cell -> raised
         self.batteries = set()
@@ -856,6 +951,22 @@ class FakeBridge(object):
                 x = x - 3
             self.pawns[pid] = dict(x=x, z=z, hediffs=[])
             return {"success": True, "pawns": [{"id": pid}]}
+        if tool == "jawa/damage":
+            for c, ds in self.things.items():
+                for d in list(ds):
+                    if "%s%d%d" % (d, c[0], c[1]) == kw.get("thingId"):
+                        ds.remove(d)
+                        self.surf.pop(c, None)
+                        for pid, p in self.pawns.items():
+                            if (p["x"], p["z"]) == c and "cover_no_fall" not in self.f:
+                                self.descents.append(pid)
+                                self.last[pid] = c
+            return {"success": True}
+        if tool == "rimworld/load_game_ready":
+            self.descents = []          # DescentCount is not saved: the loaded state counts from 0
+            if "history_lost" in self.f:
+                self.last = {}
+            return {"success": True}
         if tool == "jawa/list_pawns":
             return {"pawns": [dict(id=i, x=p["x"], z=p["z"], health={"hediffs": [{"def": h} for h in p["hediffs"]]})
                               for i, p in self.pawns.items()]}
@@ -866,6 +977,12 @@ class FakeBridge(object):
         return {"success": True}
 
     def _tick(self, n):
+        for pid, p in self.pawns.items():
+            c = (p["x"], p["z"])
+            prev = self.last.get(pid)
+            if prev is not None and prev != c and self.dug.get(c) and not self.dug.get(prev):
+                self.descents.append(pid)
+            self.last[pid] = c
         if self.split_pending and "double_split" in self.f:
             self.cnt["liveFalls"] += 1
             self.split_pending = False
@@ -894,6 +1011,18 @@ class FakeBridge(object):
     def static(self, ty, m, arg):
         a = arg.split(";")
         cell = lambda s: tuple(int(v) for v in s.split(",")[:2])  # noqa: E731
+        if ty == NPROOF and m == "ProofShove":
+            p = self.pawns[a[0]]
+            p["x"], p["z"] = cell(a[1])
+            return "SHOVE at=%s" % a[1]
+        if ty == NPROOF and m == "ProofTrap":
+            p = self.pawns[arg]
+            c = (p["x"], p["z"])
+            lc = self.last.get(arg)
+            held = arg in self.descents and self.dug.get(c) and not self._closed(c)
+            return "TRAP descents=%d lastCell=%s pos=%d,%d held=%s last=%s" % (
+                len(self.descents), "%d,%d" % lc if lc else "none", c[0], c[1], bool(held),
+                ("%s@%d,%d_t=1" % ((self.descents[-1],) + c)) if self.descents else "-")
         if ty == SPROOF and m == "ProofBuild":
             (x1, z1), (x2, z2), tier = cell(a[0]), cell(a[1]), a[2]
             kind = "RopeDeck" if tier == "rope" and "rope_is_timber" not in self.f else "Deck"
