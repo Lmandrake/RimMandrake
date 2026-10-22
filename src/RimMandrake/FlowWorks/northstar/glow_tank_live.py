@@ -90,7 +90,6 @@ def main():
             B.call("jawa/battery_set", thing=bt[0]["id"], mode="setPct", value=1.0)
         if s["gid"]:
             s["refuel"] = str(B.call("jawa/thing_refuel", thingId=s["gid"], amount=1) or {})[:160]
-            x0 = min(t.get("x") for t in lt)
         B.hp("filltank:%d,%d=%s,%d" % (s["tank"] + (LIQ[name], 10 * DRAW)))
         s["units0"] = B.hp("tank:%d,%d" % s["tank"]).get("units")
     # the crop: four squares of the grower (its footprint read from the plant op on the glow tank's rect)
@@ -128,7 +127,10 @@ def main():
         s["inspect1"] = inspect(s)
         s["growth1"] = growth(s)
     S, F, Bb = sc["S"], sc["F"], sc["B"]
-    drawS = (S["units0"] or 0) - (S["units1"] or 0)
+    if None in (S["units0"], S["units1"], F["units0"], F["units1"], Bb["units0"], Bb["units1"]):     # an unreadable tank is not a tank that lost nothing
+        row("GLOWTANK_SALT_DRAWN_ONE_UNIT", "UNMEASURED", "HARNESS", {"why": "a tank's units were unreadable", "scenes": sc})
+        return 2
+    drawS = S["units0"] - S["units1"]
     salt_line = any("salt water" in ln for ln in S["inspect1"])
     dry_f = any(ln.startswith("Dry") for ln in F["inspect1"]) and F["units0"] == F["units1"]
     dry_b = any(ln.startswith("Dry") for ln in Bb["inspect1"]) and Bb["units0"] == Bb["units1"]
@@ -151,8 +153,8 @@ def main():
     B.call("jawa/mod_settings_field", typeName=LPS, action="set", field="tankNeedsWater", value="False")
     try:
         off = inspect(S)
-    finally:
-        B.call("jawa/mod_settings_field", typeName=LPS, action="set", field="tankNeedsWater", value=str(w0 or "True"))
+    finally:      # `w0 or "True"` turned an original False into True
+        B.call("jawa/mod_settings_field", typeName=LPS, action="set", field="tankNeedsWater", value="True" if w0 is None else str(w0))
     has_line = any(("Ocean water" in ln) or ln.startswith("Dry") for ln in off)
     row("GLOWTANK_SETTING_OFF_NO_LINE", "PASS" if not has_line else "FAIL", "MOD", {"inspectOff": off, "restoredTo": w0})
     res["scenes"] = sc

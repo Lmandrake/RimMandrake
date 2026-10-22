@@ -94,6 +94,9 @@ def main():
         return (B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1) or {}).get("depth")
     r0 = (B.call("jawa/static_call", type=DPROOF, method="ProofReport", args="force", _answer=True) or {}).get("result")
     t0, l0, d0 = things(), letters(), depth()
+    if d0 is None:      # `depth() not in (None, d0)` below would call any later read a cut
+        row("QUARRY_FIND_DROPS_ON_LIP", "UNMEASURED", "HARNESS", {"why": "the square's depth was unreadable before the cut"})
+        return 2
     des = B.call("jawa/designate_batch", action="add", designation="RM_DigCanal", rect="%d,%d,1,1" % c) or {}
     t, cut_at = 0, None
     while t < 4000:
@@ -111,6 +114,8 @@ def main():
            "designate": str(des)[:200]}
     if cut_at is None:
         row("QUARRY_FIND_DROPS_ON_LIP", "UNMEASURED", "SITE", dict(det, why="no colonist cut the square in 4000 ticks"))
+        for c_ in cids:
+            B.call("jawa/pawn_force_incapacitate", pawn=c_, action="vanish", _answer=True)
         return 2
 
     def finds(rep):
@@ -120,7 +125,7 @@ def main():
             return None
     f0, f1 = finds(r0), finds(r1)
     on_lip = [v for v in new.values() if (v[1], v[2]) != c]
-    good = f0 is not None and f1 == f0 + 1 and bool(on_lip) and bool(new_letters)
+    good = f0 is not None and f1 == f0 + 1 and bool(on_lip) and bool(new_letters) and (d0, d1) == (0, 1)     # the doc's 'depth 0 -> 1'
     row("QUARRY_FIND_DROPS_ON_LIP", "PASS" if good else "FAIL", "MOD", det)
     for c_ in cids:
         B.call("jawa/pawn_force_incapacitate", pawn=c_, action="vanish", _answer=True)

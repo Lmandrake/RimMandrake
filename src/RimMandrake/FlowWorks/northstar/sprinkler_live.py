@@ -446,7 +446,7 @@ def main(argv=None, bridge=None):
             n = net(5)
             res["net5"] = n
             tx, tz = n["tank"]
-            reserve = float(saved[(S_TH, "drinkingReserveLitres")] or 200)
+            reserve = 200.0 if saved[(S_TH, "drinkingReserveLitres")] in (None, "") else float(saved[(S_TH, "drinkingReserveLitres")])
             start = int(reserve * 10) + 200            # 20 L over the reserve: one 12.5 L pulse fits, the second does not
             print(fill(tx, tz, "RM_Liquid_FreshWater", start))
             trace = []

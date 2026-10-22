@@ -15,8 +15,9 @@ Rows:
                               MOD half of that run: the tower was vanilla's generated button and ignored the setting (fixed).
   SB_settings_off_never_breaks PROVE suspensionWeightCollapse off; a timber span dragged over a 4 m trench (the proof's T1
                               scene: trench (1..6, 0), drag (0,0)-(7,0), god); drafted colonists spawned on the deck until
-                              ProofSpan reads Over; 120 ticks (two load passes). EXPECT every deck still stands and no rider
-                              fell. LIES: a span never Over (refused: the precondition is read back); restored after.
+                              ProofSpan reads Over; 120 ticks (two load passes). EXPECT every deck still stands (graded: the
+                              deck count before and after). The riders' cells are recorded, NOT graded: a pawn who fell
+                              keeps his x,z. LIES: a span never Over (refused: the precondition is read back); restored after.
 """
 import argparse
 import json

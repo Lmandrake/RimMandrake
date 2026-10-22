@@ -70,6 +70,8 @@ def main():
     cx, cz = 7, 7
     ring = [(x, z) for x in range(cx - 4, cx + 5) for z in range(cz - 4, cz + 5) if max(abs(x - cx), abs(z - cz)) >= 2]
     site_rows = []
+    # a rerun on the same map would deepen the old cut again (D 8, not 4): the plot's dug state is reset first
+    B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect", args="%d;%d;%d;%d" % rect)
     V.prepare_site(B, rect, site_rows, "xing_site")
     if [r for r in site_rows if r.get("status") not in (None, "PASS")]:
         for rid in ("XING_two_ladders_cross", "XING_one_ladder_no_cross"):
@@ -77,10 +79,9 @@ def main():
         return 2
     misses = []
     for x, z in ring:
-        if True:
-            r = B.call("jawa/flowworks_excavation_drive", x=P(x, z)[0], z=P(x, z)[1], deepenLevels=4, setFill=-1) or {}
-            if r.get("depth") != 4:
-                misses.append((x, z, r.get("depth")))
+        r = B.call("jawa/flowworks_excavation_drive", x=P(x, z)[0], z=P(x, z)[1], deepenLevels=4, setFill=-1) or {}
+        if r.get("depth") != 4:
+            misses.append((x, z, r.get("depth")))
     if misses:
         for rid in ("XING_two_ladders_cross", "XING_one_ladder_no_cross"):
             row(rid, "UNMEASURED", "SITE", {"why": "trench not dug to D 4", "misses": misses[:6]})

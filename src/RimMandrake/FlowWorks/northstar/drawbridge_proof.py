@@ -7,7 +7,8 @@
              with the verdict it would have reached kept under detail.mock (proves the script, never the game)
 
 Run from the repo root with python.exe on the minimal list; the bridge must be held. Exit 0 = every row PASS; 1 = a FAIL;
-2 = a row could not be measured. WRITTEN OFFLINE 2026-10-20 (BENCH, owner asleep): every row is OWED to its first live run.
+2 = a row could not be measured. Written offline 2026-10-20, run live on the belt since (drawbridge_result_*.json beside this
+file): a row's status is its LAST live run, not this docstring.
 
 The rows' C# proof class is RimMandrake.FlowWorks.Pits.RM_DrawbridgeProofs (FlowWorks Source/Pits/Drawbridge/
 RM_DrawbridgeProofs.cs; contracts in OWED_PROOFS). A live run first asks it one question (ProofLeaf on an off-map cell);
@@ -502,6 +503,7 @@ def raise_spares_underpass(ctx):
     ps1 = ctx["pawns"]()
     c1 = ctx["counters"]()
     kvb, tb = sproof("ProofBand", under, answer=True)
+    V.require(kvb, "ProofBand answered (an empty read would pass 'view != deck' vacuously)", tb, cls="HARNESS")
     u0, u1 = ps0.get(under) or {}, ps1.get(under) or {}
     V.require(_health(u0) is not None and _health(u1) is not None, "pawn health read", "no health block", cls="HARNESS")
     same = ctx["at"](u0) == ctx["at"](u1) and len(_health(u1) or []) == len(_health(u0) or [])
@@ -731,7 +733,8 @@ def raid_up(ctx):
     row = ctx["row"]
     det_a = _raid_variant(ctx, "assault", sappers=False)
     det_s = _raid_variant(ctx, "sapper", sappers=True, dx=-60)
-    ok = det_a.pop("ok") and det_s.pop("ok")
+    ok_a, ok_s = det_a.pop("ok"), det_s.pop("ok")     # both popped: `and` would leave the second variant's key in the row
+    ok = ok_a and ok_s
     row("RAID_UP", "PASS" if ok else "FAIL", {"assault": det_a, "sapper": det_s})
 
 

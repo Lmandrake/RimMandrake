@@ -3,8 +3,8 @@ its long side and not 5"; BENCH belt 2026-10-22).
 
   python.exe src/RimMandrake/FlowWorks/northstar/station_reach_live.py [out.json] [--origin X,Z] [--fresh-map]
 
-Two identical scenes 20 squares apart: an RM_PumpingStation_Repaired (3x2, rot North: x 4..6, z 4..5; reach 4 from the
-footprint, P11) in DRAW mode (RM_NorthstarProofs.ProofPump ";draw"), an empty RM_LiquidTank touching its east end (7, 4),
+Two identical scenes 20 squares apart: an RM_PumpingStation_Repaired (3x2, rot North, placed at (4, 4): it covers x 3..5,
+z 4..5; reach 4 from the footprint, P11) in DRAW mode (RM_NorthstarProofs.ProofPump ";draw"), an empty RM_LiquidTank touching its east end (6, 4),
 a charged Battery wired by PowerConduit; a 3-square dug channel (2 notches, filled) parallel to the long north side at
 z = 9 (4 off: scene A) or z = 10 (5 off: scene B). 1000 ticks.
 Rows:
@@ -94,7 +94,6 @@ def main():
         s["water0"] = [(B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=0, setFill=-1) or {}).get("fill") for c in s["chan"]]
     B.ticks(1000)
     for name, s in scenes.items():
-        k, t = kv(""), ""
         r = B.call("jawa/static_call", type=NSP, method="ProofPump", args="%d,%d" % s["st"], _answer=True) or {}
         t = str(r.get("result") or r.get("message"))
         s["after"] = t

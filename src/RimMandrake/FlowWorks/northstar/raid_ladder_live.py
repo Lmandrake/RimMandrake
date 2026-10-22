@@ -7,8 +7,9 @@ person is trapped, climb_proof). An RM_LadderPortable OWNED BY A HOSTILE FACTION
 JobDriver_RM_RaiderTrenchWork leaves it) on the west wall square (5, 6), rot West: its top square is the bank (4, 6).
 Rows:
   RAID_LADDER_COLONIST_CLIMBS_OUT   A7 "your people climb any lowered ladder": a drafted colonist on the pit floor (7, 6) is
-                                    ordered to the bank (1, 6). EXPECT he arrives. Can-fail: the same order with no ladder
-                                    is refused/stays in (the control is run after the ladder is gone, row A6 below).
+                                    ordered to the bank (1, 6). EXPECT he arrives. NO colonist control is run without the
+                                    ladder (the pit is sheer, so arriving needs a way out: climb_proof); row A6 below is the
+                                    can-fail for the raider side only.
   RAID_LADDER_OTHER_HOSTILE_HELD    A7 second half "another hostile faction cannot": a pawn of a DIFFERENT hostile faction
                                     on the pit floor reads held=True (RM_NorthstarProofs.ProofClimb pawn:<id>).
   RAID_LADDER_OWNERS_NOT_HELD       the ladder's own faction on the pit floor reads held=False (it can leave by its ladder):
@@ -126,7 +127,7 @@ def main():
     pr = next((p for p in o.get("pawns") or [] if p.get("id") == col), {})
     end = pr.get("end") or {}
     e = (end.get("x"), end.get("z"))
-    row("RAID_LADDER_COLONIST_CLIMBS_OUT", "PASS" if e == P(1, 6) else "FAIL", "MOD",
+    row("RAID_LADDER_COLONIST_CLIMBS_OUT", ("PASS" if e == P(1, 6) else "FAIL") if pr else "UNMEASURED", "MOD" if pr else "HARNESS",
         {"start": P(7, 6), "dest": P(1, 6), "end": e, "ladderFaction": owner, "order": {k: pr.get(k) for k in ("arrived", "canReach", "ticksElapsed")}})
     B.call("jawa/pawn_force_incapacitate", pawn=col, action="vanish")
     # hostile reads
