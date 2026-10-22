@@ -1,0 +1,219 @@
+{
+ "biome": "SUBJECTS_line_joins_redraw",
+ "built": "2026-10-21T22:46:54-0700",
+ "census": "Transient/biome_ffar/line_joins_redraw.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 325 active",
+ "rows": {
+  "RM_HoseReel": {
+   "columns": {
+    "A": {
+     "single": "337c1066226afa934c91cec3f1cd14168ca7dda09fcc26524f4413db315f80c4"
+    },
+    "B": {
+     "single": "6ae84f160b44d5035cee1024748c672bec0c59c31ad9753f3701751360541310"
+    },
+    "C": {
+     "single": "fae9f91ab89fafb9e5a23cdc266945049653a3fa5a946d4dc927511610e47e7e"
+    },
+    "D": {
+     "single": "f76ef3acdc623bd4cda23e95904b3f24d9b1eda2df41788fe44da44cf731f3e8"
+    },
+    "E": {
+     "single": "6b5afa6ef8b9b9b005a1d179464930386d3b11829c9ea44d5a03f9f6663cf956"
+    },
+    "F": {
+     "single": "aadad1e414970b212517e31c4699a2d92b74de4bf97dc93955a62b1b54284372"
+    },
+    "G": {
+     "single": "46d4eb7c957bc646a605454e3788608017493abedd113ee0d1876cdb288b72f6"
+    },
+    "H": {
+     "single": "4f761fa82a796dda92fad600dbbc4cb470df90a4ff13622715cfb8b101e031f5"
+    },
+    "I": {
+     "single": "a938eee5b453b48c6ac3d41e15cf7f4bd1fe475f6eb44b0e9f9e2524ee7fe4fc"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname",
+    "H": "_byname",
+    "I": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_HoseReel_lj_Futuristic_Deployed",
+    "C": "render RM_HoseReel_lj_Futuristic_PumpHookup",
+    "D": "render RM_HoseReel_lj_Industrial_Deployed",
+    "E": "render RM_HoseReel_lj_Industrial_PumpHookup",
+    "F": "render RM_HoseReel_lj_Modern_Deployed",
+    "G": "render RM_HoseReel_lj_Scrapper_Deployed",
+    "H": "render RM_HoseReel_lj_Scrapper_PumpHookup",
+    "I": "render RM_HoseReel_lj_Modern_PumpHookup"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I"
+   ],
+   "shownBase": [],
+   "subject_key": "hosereel"
+  },
+  "RM_LiquidPump": {
+   "columns": {
+    "A": {
+     "single": "df72e8c0142c7924b5d8bfab37e2bc5157616833c0212ec1656a35f40d0cfb72"
+    },
+    "B": {
+     "single": "2c8722d1192d3b50ca8a12cda9dc44e9dfb5b63f97dae53e80c030eb2c0058b4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_LiquidPump",
+    "B": "Things/Building/FlowWorks/Machinery/RM_LiquidPump"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_LiquidPump_lj_Scrapper"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_LiquidPump",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "liquidpump"
+  },
+  "RM_LiquidTank": {
+   "columns": {
+    "A": {
+     "single": "fb55c29d75ea66814bf2a4c7ca593fa0a847af77110f8239a050917872b081f9"
+    },
+    "B": {
+     "single": "692f5e7c0c76b3818db5dd6f3a0c6e443e6ebe4e5de65dc774a7c0a5dcebddaa"
+    },
+    "C": {
+     "single": "d50afe05066204faba1e4e2dad82245754b7faf4b8185344b26baa19b8174aa0"
+    },
+    "D": {
+     "single": "4735456ab540ba7657350f37e3f7645509185e791eeb40a66330a6288eda5d65"
+    },
+    "E": {
+     "single": "3d3fafcf6593c1389f5f7d8ada05135ef4451e7dc275faef276280791dd8fdb6"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank",
+    "B": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank",
+    "C": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank",
+    "D": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank",
+    "E": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_LiquidTank_lj_Futuristic",
+    "C": "render RM_LiquidTank_lj_Industrial",
+    "D": "render RM_LiquidTank_lj_Modern",
+    "E": "render RM_LiquidTank_lj_Scrapper"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Tank/Scrapper/RM_LiquidTank",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "liquidtank"
+  },
+  "RM_LiquidTap": {
+   "columns": {
+    "A": {
+     "single": "d1f9535f9313a61447690873dc3859180f52598b5f975bbc865d77bf80dd3098"
+    },
+    "B": {
+     "single": "90df4ef7b3afcac1b9881057cfd790c21f367a4e7ebcb1beed306ef0fba60a8c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_LiquidTap",
+    "B": "Things/Building/FlowWorks/Machinery/RM_LiquidTap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_LiquidTap_lj_Scrapper"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_LiquidTap",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "liquidtap"
+  },
+  "RM_SprinklerHead": {
+   "columns": {
+    "A": {
+     "single": "c218a8e926f9a9b876712b10cf78a45b7cb056af3bf535bc03a40d4a8b8ed74e"
+    },
+    "B": {
+     "single": "0dcd7761335185e0e7464dbc4146edd2d36ae305d04ba94b11a94fcce3ef7ded"
+    },
+    "C": {
+     "single": "b90c10a9c1cc4349aa7962d6b1e7e42f3d4b1ceeaa4a13a4da20c9bf76ad3981"
+    },
+    "D": {
+     "single": "991f51b7d8d88ece72835bf550e118b61dcb963f6f1d16705828fc9834291c18"
+    },
+    "E": {
+     "single": "6b63f2ceaad01087cf9f6077308aefc3dfb45b78421bd59d428049ad7b575c2d"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+    "B": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+    "C": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+    "D": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+    "E": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_SprinklerHead_lj_Industrial",
+    "C": "render RM_SprinklerHead_lj_Scrapper",
+    "D": "render RM_SprinklerHead_lj2_Futuristic",
+    "E": "render RM_SprinklerHead_lj2_Modern"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "sprinklerhead"
+  }
+ },
+ "sheetId": "line_joins_redraw_sheet_2026-10-21",
+ "snapshotId": "37a705e15907d839"
+}

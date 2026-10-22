@@ -19,5 +19,22 @@ Items: PIPE_GIRTH_TUNE_HALF_AS_THICK, HOSE_GIRTH_TUNE_MUCH_THINNER (claimed), LI
   sprinkler head x4 (riser foot at texture centre), tank x4 (neck+coupling on the pipe axis E/W), pump x1, tap x1 (pump/tap have one look).
 - NOT made: pipe->hose metal reducer (needs RM_MapComponent_Hoses.DrawPortStub C# + new texture) — owed; flat pipe cap plates (need new raw/<look>_fittings.png) — owed.
 ## Wave 3 — review sheet line_joins_redraw
-## Live check owed
+- art.py backfill artpipe first (lj2 + Modern PumpHookup were not in the ledger). art_sheet --subjects RM_HoseReel RM_SprinklerHead RM_LiquidTank
+  RM_LiquidPump RM_LiquidTap --jobs <17 lj ids> --hide-sets <older families> --name line_joins_redraw: only new candidates + IN GAME show.
+- scaled_review_gate PASS; game_art deliver OK; sheet_freshness verify exit 0; serve_gated -> http://localhost:34515/?t=hs9DuZkq2Pkss4x6GkvTDg (200)
+- Native folder: \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\ (line_joins_redraw sheet, 2026-10-21)
+- Candidate caveats: reels drew 2.1-2.4 cells wide (asked 1.6-1.8), still side-on; sprinkler feet sit ~20-35 px below centre (install sets
+  drawOffset to match the pick); Industrial sprinkler v2 came out tiny (hidden); tap still side-on. RM_SprinklerHead_lj2_Scrapper still rendering.
+## Install notes (when he picks)
+- sprinkler: drawOffset (0,0,0.31) is for TODAY's art; a picked head needs drawOffset z = (foot_y_px - 128)/256 for its own foot.
+- reel: re-run src/RimMandrake/Utils/mockups/messy_conduit/reel_intake_geometry.py (ReelIntakeGeometry.cs is generated from the art); shrink shadowData.
+## Live check owed (live helper; nothing deployed by me)
+- deploy FlowWorks (DLL + Defs + 4 pipe atlases/icons), then at 1 cell = 80-100 px: pipe run, bends, T/4-way, caps (4 looks) beside a conduit and
+  a colonist; hose flat AND plump coupled to a pipe end, a pump and a tank; reel hose; sprinkler on a MID-run pipe cell (foot on the axis?);
+  a pipe-pole span (0.14) beside a ground pipe; Mod Settings hose-thickness slider 0.75-2x.
 ## Shas
+- a88b56db48 (hose + sprinkler offset) · 8d5b94b0e1 (pipe half girth) · 0c54100dfa (progress)
+- 22:13 6/18 renders done (reels x4, Scrapper tank, Scrapper sprinkler), 0 failed; waiting on the daemon (5 at a time).
+- 22:22 11/18 done
+- 22:26 14/18 done; Scrapper PumpHookup timed out (worker 124) -> requeue_flakes
+- 22:32 17/18; sprinkler v1 feet sit at y~175-200 not 128 and Modern is 24x35 px -> 4 sprinkler v2 jobs (*_lj2_*) with exact layout
