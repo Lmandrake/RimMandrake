@@ -95,7 +95,7 @@ SCENARIO = scenario(
                      OVERFLOW_ITEM, (37, 2)),
             deferred("an acid canal beside the chemfuel", "moved to C6 (where corrosion lives); the no-mix poke needs "
                      "only water against chemfuel", "design §3 C5 layout", (37, 5)),
-            deferred("half-girth pipe art", GIRTH_NOTE, "PIPE_GIRTH_TUNE_HALF_AS_THICK", (37, 8))],
+            deferred("pipe-to-tank flanges", GIRTH_NOTE, "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID", (37, 8))],
     exercises={"carry_tanks": "poked", "tank_styles_cargo": "look", "tank_modes": "poked", "pipe_adapter": "poked",
                "hose_their_tank": "look", "carry_bottles": "poked", "carry_containers": "look",
                "containers_styles": "look", "fire_chemfuel": "poked", "fire_astrofuel": "poked", "fire_out": "poked",
