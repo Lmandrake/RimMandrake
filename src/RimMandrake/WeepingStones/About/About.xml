@@ -18,7 +18,6 @@
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>mandrake.rm.environmentalhazards</li>
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
-    <li>mandrake.rut.rotsporekit</li>
   </loadAfter>
   <description>WEEPINGSTONES_RM_MOD_BUILD_1 Phase A (biome_mod_architecture.md §5) — this
 mod now carries `RM_WeepingStones`, the franchise-free BiomeDef itself, as its own
@@ -28,11 +27,11 @@ Ash'karr world until the terminal paint (BIOME_PAINT_ONCE_AT_THE_END_1) — this
 copy is not yet on any live tile, which is the expected mid-migration state, not a defect.
 
 The BiomeDef ships with its franchise-free content only: `RM_Colossia` (ours; was vanilla Odyssey's ColossusToad until 2026-10-10),
-`AA_Eyeling` (Alpha Animals, non-Star-Wars donor), the 8 wave-2 invented natives
+the 8 wave-2 invented natives
 (RM_Sillik/RM_Mirrik/RM_Ssurr/RM_Kirruk/RM_Tirbak/RM_Burrak/RM_Vhakk/RM_Vellak) and the
 canyon-filling crab (RM_Gorrask) in `wildAnimals`; `Plant_Reeds`, `RM_Shadefern` (RULED
-replacement for the donor `AB_GreenRockFern`), `RUT_Dewshrooms` (shared with The Rot's kit,
-inline via `mandrake.rut.rotsporekit`), `Plant_Ambrosia` and the 9 other wave-2 invented
+replacement for the donor `AB_GreenRockFern`), `RM_Dewshrooms` (shared with The Rot,
+gated on the Baroque Biomes package) and the other wave-2 invented
 flora rows in `wildPlants`; the fish bestiary
 (`RM_Ikkal`/`RM_Tarrik`/`RM_Duul`/`RM_Ullo`/`RM_Ozhu`/`RM_Vobbal`/`RM_SeepStone`, each a
 duplicate of the frozen twin's own `RUT_` items so both keep resolving independently); its

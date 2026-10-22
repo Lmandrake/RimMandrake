@@ -18,7 +18,6 @@
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>Ludeon.RimWorld.Anomaly</li>
-    <li>mandrake.rut.rotsporekit</li>
   </loadAfter>
   <description>CONTAGION_RM_MOD_BUILD_1 (Phase A row 16 of
 design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).
@@ -37,8 +36,8 @@ cloud tears, the clear sky is the killer. Ships the biome (own worldgen
 placement worker, `RM_BiomeWorker_Contagion`, replacing the donor Alpha Biomes
 `BiomeWorker_OcularForest` — a donor type in `workerClass` is a hard dependency
 the RimMandrake tier may not assume), its full resident roster transplanted
-wholesale from the frozen campaign twin (11 `wildAnimals` rows, 10 `wildPlants`
-rows, Alpha Biomes/vanilla disease suite), and a Mod
+wholesale from the frozen campaign twin (current counts in the CORRECTED
+paragraph below), and a Mod
 Settings screen with the standard worldgen-rarity master toggle
 (MOD_OPTIONS_RETROFIT_1 doctrine — default = shipped behavior, 0 = never
 generates).
@@ -61,8 +60,8 @@ from a small pool (claw/spike/fang/stump/vestigial wing/useless jaw — some
 armed, some not) onto random un-missing body parts, a rare (12%) "rolled a
 monster" combat buff, and a vanilla severity-per-day hediff randomised to kill
 it within a few in-game days. Death always dissolves the corpse to
-`Filth_Slime` via vanilla's own `DeathActionProperties_Vanish` — no corpse
-persists. Not part of the biome's ambient `wildAnimals` roster (it never
+`Filth_Slime` and Contagion mulch (`DeathActionProperties_RM_VanishToMulch`) — no
+corpse persists. Not part of the biome's ambient `wildAnimals` roster (it never
 breeds; it is budded), so ecosystem accounting is untouched. Gated by its own
 Mod Settings toggle, default on. Placeholder art only (a recolored vanilla
 Warg, this mod's own precedent) — `infrastructure/artpipe/done/` was checked
