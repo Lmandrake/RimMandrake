@@ -32,7 +32,7 @@ class FocusLost(RuntimeError):
 
 
 def is_game(title):
-    return "rimworld" in (title or "").lower()
+    return (title or "").strip().lower().startswith("rimworld by ludeon")   # == game_focus.is_game_title; not a browser tab
 
 
 _GET_RW = r'''

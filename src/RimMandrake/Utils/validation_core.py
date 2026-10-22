@@ -20,9 +20,12 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 UTILS = HERE
-SAVES = os.path.join(os.environ.get("USERPROFILE", ""), "AppData", "LocalLow", "Ludeon Studios",
-                     "RimWorld by Ludeon Studios", "Saves")
-PLAYER_LOG = os.path.join(os.path.dirname(SAVES), "Player.log")
+# One path seam (game_paths resolves the Windows path or its /mnt/c twin). The old USERPROFILE join collapsed to a RELATIVE
+# path when USERPROFILE was unset (WSL), so every save/log read looked at the wrong place and read as "no save".
+from game_paths import SAVES, PLAYER_LOG  # noqa: E402
+if not os.path.isabs(SAVES) and not re.match(r"^[A-Za-z]:[\\/]", SAVES):
+    raise RuntimeError("validation_core: game_paths.SAVES is not an absolute path (%r); refusing to use a relative save "
+                       "folder" % (SAVES,))
 
 if os.path.join(UTILS, "modcheck") not in sys.path:
     sys.path.insert(0, os.path.join(UTILS, "modcheck"))
@@ -509,13 +512,15 @@ def _saves_stat():
 
 
 def _wait_saved(name, budget_s=60):
-    """After rimworld/save_game: wait until <name>.rws exists and its size holds across two reads 1 s apart."""
+    """After rimworld/save_game: wait until <name>.rws was WRITTEN by this save (mtime >= call start minus 5 s of clock/drvfs
+    slack, so a same-name save left by an earlier run cannot satisfy it) and its size holds across two reads 1 s apart."""
     path = os.path.join(SAVES, name + ".rws")
     t0, last = time.time(), -1
     while time.time() - t0 < budget_s:
         time.sleep(1.0)
         size = os.path.getsize(path) if os.path.exists(path) else -1
-        if size > 0 and size == last:
+        fresh = size > 0 and os.path.getmtime(path) >= t0 - 5
+        if fresh and size == last:
             return True
         last = size
     return False
