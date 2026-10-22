@@ -150,7 +150,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             list.CheckboxLabeled("Aerial power lines (master switch)", ref enabled,
                 "Masts, lamp masts and wall brackets carry power over open ground on sagging overhead wires. Off: they leave the " +
                 "architect menu and wires are hidden. Anchors already built stay and keep carrying power, so no save breaks. " +
-                "This switch covers power lines only: FlowWorks' pipe poles have their own switch in FlowWorks' Mod Settings.");
+                "This switch covers power lines only: pipe poles have their own switch in the Mod Settings of the mod that adds them.");
             list.Label("Longest span: " + maxSpan.ToString("0") + " cells");
             maxSpan = Mathf.Round(list.Slider(maxSpan, 8f, 40f));
             using (Dependent(list, "sag", "autoLink"))
