@@ -19,13 +19,17 @@ namespace RimMandrake.FlowWorks
 	///
 	/// Owner rulings carried as data here: D2 sources (pump, rain, flood, fill-in, gravity feed); D3 crop timer (a crop
 	/// under standing overflow dies after <see cref="Params.CropKillPulses"/>, i.e. 1 week; before that it irrigates,
-	/// reported per cell); D4 doors leak slowly (edge conductance <see cref="Params.DoorLeakPermille"/>).
+	/// reported per cell); D4 doors leak slowly (edge conductance <see cref="Params.DoorLeakPermille"/>); D8 sheets lie
+	/// level (each connected saturated puddle is levelled exactly every pulse, <see cref="Params.LevelBasins"/>; the
+	/// diffusion sweeps only spread it to new ground); D9 retention and micro-relief are physical (they decide where a
+	/// spill stops and where puddles linger); D10 a sheet below its fluid's freezing point turns to its own ice tier,
+	/// keeping every dL, and thaws back; lowering the sheet cap stops further filling and deletes nothing.
 	///
 	/// ⛔ Verse-free: compiled into Source/SelfTest/ as the production file.
 	/// </summary>
 	public static class RM_SheetMath
 	{
-		public const int KernelVersion = 1;
+		public const int KernelVersion = 2; // 2: D8 levelling, D10 ice tier (no v1 saves exist)
 
 		/// <summary>1 cm of liquid over one square (2 m²) = 20 L = 200 dL.</summary>
 		public const int DlPerCm = RM_Volume.UnitsPerLevel / RM_Volume.CentimetresPerNotch;
@@ -50,13 +54,17 @@ namespace RimMandrake.FlowWorks
 		public enum Source : byte { Pump = 0, Rain = 1, Flood = 2, FillIn = 3, Gravity = 4 }
 		public const int SourceCount = 5;
 
-		public enum Tier : byte { None = 0, Film = 1, Sheet = 2, Pool = 3 }
+		/// <summary>Ice (D10) is its own tier: the same dL, frozen in place. It is drawn as ice, neither flows, returns nor
+		/// soaks, and pauses the D3 crop timer; it thaws back to the depth tier its dL calls for.</summary>
+		public enum Tier : byte { None = 0, Film = 1, Sheet = 2, Pool = 3, Ice = 4 }
 
 		/// <summary>Per-fluid behaviour (index = fluid id; 0 is "none" and never used).</summary>
 		public struct FluidRule
 		{
 			public int InfiltrationPermille; // × the cell's soak rate
 			public int EvaporationPermille;  // × the cell's evaporation rate
+			public int FreezeDeciC;          // D10: freezes at or below this (tenths of °C); water 0
+			public bool NeverFreezes;        // fuels and the like
 		}
 
 		public sealed class Params
@@ -67,7 +75,9 @@ namespace RimMandrake.FlowWorks
 			public int SheetCapDl = 50 * DlPerCm;         // 0.5 m
 			public int MaxWetCells = 4000;
 			public int MaxDonorsPerSweep = int.MaxValue;  // the work cap, separate from the wet cap (§6 item 5)
-			public int ReliefDl = DlPerCm;                // micro-relief amplitude ±1 cm (D9 open: physical or cosmetic)
+			public int ReliefDl = DlPerCm;                // micro-relief amplitude ±1 cm (D9: physical)
+			public bool LevelBasins = true;               // D8: sheets lie level (false = the diffusion kernel alone, for tests)
+			public int ThawMarginDeciC = 10;              // D10: ice thaws only 1 °C above the freezing point (no flapping)
 			public int DoorLeakPermille = 50;             // D4: a door edge passes 5% of the normal flux
 			public int SheetUpDl = 3 * DlPerCm, SheetDownDl = 2 * DlPerCm;
 			public int PoolUpDl = 15 * DlPerCm, PoolDownDl = 13 * DlPerCm;
@@ -104,6 +114,7 @@ namespace RimMandrake.FlowWorks
 			public readonly byte[] BodyFluid;      // Receiver/Sink: the body's fluid (0 = empty, takes any)
 			public readonly int[] SoakMilliDl;     // per pulse, by base-terrain class (0 on rock, floors, ice, mud, water)
 			public readonly int[] EvapMilliDl;     // per pulse, by temperature and roof (0 at or below 0 °C)
+			public readonly int[] TempDeciC;       // D10: outdoor/room temperature in tenths of °C (default 20 °C)
 			public FluidRule[] Fluids = new FluidRule[256];
 
 			public World(int w, int h)
@@ -111,7 +122,8 @@ namespace RimMandrake.FlowWorks
 				W = w; H = h;
 				int n = w * h;
 				Kinds = new Kind[n]; RoomDl = new int[n]; BodyFluid = new byte[n];
-				SoakMilliDl = new int[n]; EvapMilliDl = new int[n];
+				SoakMilliDl = new int[n]; EvapMilliDl = new int[n]; TempDeciC = new int[n];
+				for (int c = 0; c < n; c++) TempDeciC[c] = 200;
 				for (int f = 1; f < 256; f++) Fluids[f] = new FluidRule { InfiltrationPermille = 1000, EvaporationPermille = 1000 };
 			}
 
@@ -121,6 +133,7 @@ namespace RimMandrake.FlowWorks
 				Array.Copy(Kinds, c.Kinds, Kinds.Length); Array.Copy(RoomDl, c.RoomDl, RoomDl.Length);
 				Array.Copy(BodyFluid, c.BodyFluid, BodyFluid.Length);
 				Array.Copy(SoakMilliDl, c.SoakMilliDl, SoakMilliDl.Length); Array.Copy(EvapMilliDl, c.EvapMilliDl, EvapMilliDl.Length);
+				Array.Copy(TempDeciC, c.TempDeciC, TempDeciC.Length);
 				c.Fluids = (FluidRule[])Fluids.Clone();
 				return c;
 			}
@@ -205,6 +218,7 @@ namespace RimMandrake.FlowWorks
 					if (left == 0) break;
 					if (c < 0 || c >= s.Dl.Length || !World.HoldsSheet(w.Kinds[c])) continue;
 					if (!Compatible(s.Fluid[c], o.Fluid)) continue;
+					if (s.Tiers[c] == Tier.Ice) continue; // D10: an iced lip takes no new spill; the next lip is tried
 					if (s.Dl[c] == 0 && s.Occ.Count >= p.MaxWetCells) continue;
 					int room = p.SheetCapDl - s.Dl[c];
 					if (room <= 0) continue;
@@ -244,14 +258,16 @@ namespace RimMandrake.FlowWorks
 
 		private struct Flux { public int From, To, Dl, MinNew; public byte Fluid; }
 
-		/// <summary>One engine pulse: K relax sweeps, return/absorb, losses on every wet cell, tiers, crop timer, sleep.
+		/// <summary>One engine pulse: freeze/thaw (D10), K relax sweeps, basin levelling (D8), return/absorb, losses on every wet cell, tiers, crop timer, sleep.
 		/// Spills are resolved before it by <see cref="ResolveSpills"/>.</summary>
 		public static void Pulse(State s, World w, Params p, PulseReport rep)
 		{
 			rep?.Clear();
 			int n = s.Dl.Length;
 			var touched = new bool[n];
+			Freeze(s, w, p, rep);
 			for (int k = 0; k < p.SweepsPerPulse; k++) Sweep(s, w, p, touched);
+			if (p.LevelBasins) Level(s, w, p, touched);
 			ReturnAndAbsorb(s, w, p, rep, touched);
 			Losses(s, w, p, rep);
 			Tiers(s, p, rep);
@@ -274,6 +290,7 @@ namespace RimMandrake.FlowWorks
 			{
 				if (s.Calm[i] >= p.SleepAfterPulses) continue;
 				if (!World.HoldsSheet(w.Kinds[i])) continue;
+				if (s.Tiers[i] == Tier.Ice) continue;
 				int mobile = s.Dl[i] - p.RetentionDl;
 				if (mobile <= 0) continue;
 				if (donors++ >= p.MaxDonorsPerSweep) break;
@@ -284,6 +301,7 @@ namespace RimMandrake.FlowWorks
 					f4[d] = 0; int j = nb4[d] = Neighbour(W, H, i, d);
 					if (j < 0 || !World.HoldsSheet(w.Kinds[j])) continue;
 					if (!Compatible(s.Fluid[j], s.Fluid[i])) continue;
+					if (s.Tiers[j] == Tier.Ice) continue;
 					long Hj = (long)s.Dl[j] + Relief(s.Salt, j, p.ReliefDl);
 					long diff = Hi - Hj;
 					if (diff < 2) continue;
@@ -359,6 +377,7 @@ namespace RimMandrake.FlowWorks
 			foreach (int i in s.Occ)
 			{
 				if (!World.HoldsSheet(w.Kinds[i])) continue;
+				if (s.Tiers[i] == Tier.Ice) continue;
 				int mobile = s.Dl[i] - p.RetentionDl;
 				for (int d = 0; d < 4 && mobile > 0; d++)
 				{
@@ -391,7 +410,7 @@ namespace RimMandrake.FlowWorks
 			foreach (int c in s.Occ)
 			{
 				FluidRule fr = w.Fluids[s.Fluid[c]];
-				long soakRate = (long)w.SoakMilliDl[c] * fr.InfiltrationPermille / 1000;
+				long soakRate = s.Tiers[c] == Tier.Ice ? 0 : (long)w.SoakMilliDl[c] * fr.InfiltrationPermille / 1000; // frozen: no soak
 				long evapRate = (long)w.EvapMilliDl[c] * fr.EvaporationPermille / 1000;
 				if (soakRate > 0)
 				{
@@ -426,6 +445,7 @@ namespace RimMandrake.FlowWorks
 			// cells that dried this pulse are no longer in Occ but may still carry a tier: they are swept by Compact
 			foreach (int c in s.Occ)
 			{
+				if (s.Tiers[c] == Tier.Ice) continue; // D10: ice holds its tier until Freeze thaws it; the crop timer pauses
 				Tier t0 = s.Tiers[c], t = NextTier(t0, s.Dl[c], p);
 				if (t != t0) { s.Tiers[c] = t; rep?.TierChanged.Add((c, t0, t)); }
 				if (t >= p.CropStandMinTier)
@@ -443,12 +463,118 @@ namespace RimMandrake.FlowWorks
 		public static Tier NextTier(Tier t, int dl, Params p)
 		{
 			if (dl <= 0) return Tier.None;
-			Tier r = t == Tier.None ? Tier.Film : t;
+			Tier r = t == Tier.None || t == Tier.Ice ? Tier.Film : t;
 			if (r < Tier.Sheet && dl >= p.SheetUpDl) r = Tier.Sheet;
 			if (r < Tier.Pool && dl >= p.PoolUpDl) r = Tier.Pool;
 			if (r == Tier.Pool && dl < p.PoolDownDl) r = Tier.Sheet;
 			if (r == Tier.Sheet && dl < p.SheetDownDl) r = Tier.Film;
 			return r;
+		}
+
+		/// <summary>D10: a wet cell at or below its fluid's freezing point turns to the Ice tier, keeping its dL; ice thaws
+		/// only <see cref="Params.ThawMarginDeciC"/> above it, back to the depth tier its dL calls for. Runs first in the
+		/// pulse, so a cell frozen this pulse neither flows nor returns.</summary>
+		private static void Freeze(State s, World w, Params p, PulseReport rep)
+		{
+			foreach (int c in s.Occ)
+			{
+				FluidRule fr = w.Fluids[s.Fluid[c]];
+				Tier t0 = s.Tiers[c];
+				if (t0 != Tier.Ice)
+				{
+					if (fr.NeverFreezes || w.TempDeciC[c] > fr.FreezeDeciC) continue;
+					s.Tiers[c] = Tier.Ice;
+					s.Calm[c] = 0;
+				}
+				else
+				{
+					if (!fr.NeverFreezes && w.TempDeciC[c] < fr.FreezeDeciC + p.ThawMarginDeciC) continue;
+					s.Tiers[c] = NextTier(Tier.None, s.Dl[c], p);
+					WakeAround(s, w, c);
+				}
+				rep?.TierChanged.Add((c, t0, s.Tiers[c]));
+			}
+		}
+
+		/// <summary>D8, owner card 2026-10-22: "sheets lie level". Every connected puddle of SATURATED liquid (cells at or
+		/// above retention, same fluid, not ice, not over the sheet cap, joined N/E/S/W; a door is never a member, so its
+		/// leak stays slow, D4) is levelled exactly: one surface L over relief r_c, each cell holding clamp(L − r_c,
+		/// retention, cap), the dL left over laid 1 dL each on the lowest cells (relief, then index). Diffusion still does
+		/// the spreading onto new ground (finite extent, §6 item 6); this removes its slow tail and its 1-dL staircase.
+		/// Conserves each puddle to the dL. A puddle whose every cell is asleep is skipped (levelling is idempotent).
+		/// Over-cap cells (a lowered cap, D10) are left out and drain by the sweeps.</summary>
+		private static void Level(State s, World w, Params p, bool[] touched)
+		{
+			var seen = new bool[s.Dl.Length];
+			var comp = new List<int>();
+			var stack = new Stack<int>();
+			foreach (int seed in s.Occ)
+			{
+				if (seen[seed] || !LevelMember(s, w, p, seed)) continue;
+				comp.Clear();
+				seen[seed] = true; stack.Push(seed);
+				bool awake = false;
+				while (stack.Count > 0)
+				{
+					int c = stack.Pop();
+					comp.Add(c);
+					if (s.Calm[c] < p.SleepAfterPulses) awake = true;
+					for (int d = 0; d < 4; d++)
+					{
+						int j = Neighbour(s.W, s.H, c, d);
+						if (j < 0 || seen[j] || s.Fluid[j] != s.Fluid[seed] || !LevelMember(s, w, p, j)) continue;
+						seen[j] = true; stack.Push(j);
+					}
+				}
+				if (!awake || comp.Count < 2) continue;
+				LevelPuddle(s, p, comp, touched);
+			}
+		}
+
+		private static bool LevelMember(State s, World w, Params p, int c) =>
+			s.Dl[c] >= p.RetentionDl && s.Dl[c] <= p.SheetCapDl && s.Tiers[c] != Tier.Ice
+			&& (w.Kinds[c] == Kind.Open || w.Kinds[c] == Kind.Grate);
+
+		private static void LevelPuddle(State s, Params p, List<int> comp, bool[] touched)
+		{
+			int m = comp.Count, R = p.RetentionDl, cap = p.SheetCapDl;
+			var rel = new long[m];
+			long V = 0, lo = long.MaxValue, hi = long.MinValue;
+			for (int k = 0; k < m; k++)
+			{
+				rel[k] = Relief(s.Salt, comp[k], p.ReliefDl);
+				V += s.Dl[comp[k]];
+				lo = Math.Min(lo, rel[k] + R); hi = Math.Max(hi, rel[k] + cap);
+			}
+			long Fill(long L)
+			{
+				long t = 0;
+				for (int k = 0; k < m; k++) t += Math.Max(R, Math.Min(cap, L - rel[k]));
+				return t;
+			}
+			// the highest surface L with Fill(L) ≤ V: Fill(lo) = m·R ≤ V (every member is saturated), Fill(hi) = m·cap ≥ V
+			long a = lo, b = hi;
+			while (a < b) { long mid = a + (b - a + 1) / 2; if (Fill(mid) <= V) a = mid; else b = mid - 1; }
+			long L0 = a, left = V - Fill(L0);
+			// the cells that would rise by one at L0 + 1 take the remainder, lowest relief first, then cell index
+			var next = new int[m];
+			var order = new List<int>(m);
+			for (int k = 0; k < m; k++)
+			{
+				long h0 = L0 - rel[k];
+				next[k] = (int)Math.Max(R, Math.Min(cap, h0));
+				if (h0 + 1 > R && h0 + 1 <= cap) order.Add(k);
+			}
+			order.Sort((x, y) => { int r = rel[x].CompareTo(rel[y]); return r != 0 ? r : comp[x].CompareTo(comp[y]); });
+			for (int q = 0; q < order.Count && left > 0; q++) { next[order[q]]++; left--; }
+			if (left != 0) throw new InvalidOperationException("sheet levelling lost " + left + " dL"); // unreachable: Fill(L0+1) > V
+			for (int k = 0; k < m; k++)
+			{
+				int c = comp[k];
+				if (next[k] == s.Dl[c]) continue;
+				s.Dl[c] = next[k];
+				touched[c] = true;
+			}
 		}
 
 		/// <summary>Drops dried cells from the wet list (fluid, remainders, timers and tier cleared) and re-sorts if cells

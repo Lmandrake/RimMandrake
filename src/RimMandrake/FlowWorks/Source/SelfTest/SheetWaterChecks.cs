@@ -1,6 +1,7 @@
 // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED, Stage 0: offline checks of the sheet-water kernel (RM_SheetMath.cs, the
 // production file). design/RimMandrake/canal_overflow_flooding_2026-10-21.md §4 Stage 0 tests 1-9 as amended by §6, plus
-// the owner's §5 answers that the kernel carries as data (D2 gravity source, D3 crop week, D4 doors leak).
+// the owner's §5 answers that the kernel carries as data (D2 gravity source, D3 crop week, D4 doors leak, D8 sheets lie
+// level, D9 retention and relief are physical, D10 own ice tier and a lowered cap deletes nothing).
 // NOT proven here: anything about the game (temp terrain, pictures, path cost, the engine pulse) — Stage 1.
 using System;
 using System.Collections.Generic;
@@ -177,7 +178,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			});
 
 			// test 5: return to channel, and a full channel refuses
-			// micro-relief (±1 cm, D9 still open) leaves puddles in its dips: with relief OFF every dL of mobile water
+			// micro-relief (±1 cm, D9: physical) leaves puddles in its dips: with relief OFF every dL of mobile water
 			// must run back; with it ON, what stays is bounded by retention + the dip depth
 			foreach (int relief in new[] { 0, DlPerCm })
 				Case("Sheet_runs_back_into_the_canal_when_it_is_drawn_down_relief_" + relief, () =>
@@ -195,8 +196,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 					long credited = 0;
 					for (int i = 0; i < 400; i++) { Pulse(s, w, p, rep); foreach (var (_, dl) in rep.Returned) credited += dl; Assert(s.LedgerCloses, "ledger"); }
 					Assert(credited == s.Returned, "every returned dL is reported for the engine to credit");
-					// a flux needs a 2 dL head (1 dL could only swap levels and ping-pong), so a settled sheet may keep a
-					// 1-dL-per-square staircase toward the drain: a rounding residue, bounded here at 1% of the spill
+					// a flux needs a 2 dL head (1 dL could only swap levels and ping-pong), so diffusion alone left a
+					// 1-dL-per-square staircase toward the drain; D8 levelling removes it (measured 0 at both reliefs,
+					// 2026-10-22); the 1% bound stays as the gross-regression line
 					long residue = 0;
 					foreach (int c in s.Occ) residue += Math.Max(0, s.Dl[c] - p.RetentionDl - 2 * relief);
 					Console.WriteLine($"      relief {relief}: returned {s.Returned} of 30000, held {s.Standing} on {s.WetCount} squares, residue {residue} dL");
@@ -337,6 +339,96 @@ namespace RimMandrake.FlowWorks.SelfTest
 				foreach (int c in s.Occ) if (s.Fluid[c] == Chemfuel) fuel += s.Dl[c];
 				Assert(fuel == 8000, "every dL of chemfuel is still chemfuel (no lake or canal took it, nothing mixed): " + fuel);
 				Assert(w.RoomDl[Idx(w, 0, 2)] == 100000, "a water canal refuses chemfuel");
+			});
+
+			// D8 (owner card 2026-10-22, "sheets lie level"): one pulse levels a walled puddle exactly over its relief;
+			// the diffusion kernel alone leaves a slope and a 1-dL staircase
+			Case("Sheet_D8_a_puddle_lies_level_in_one_pulse_diffusion_alone_does_not", () =>
+			{
+				long Spread(bool level, int pulses, out long standing)
+				{
+					var w = new World(14, 14);
+					Ring(w, 1, 1, 12, 12, Kind.Blocked);
+					var p = new Params { LevelBasins = level };
+					var s = new State(14, 14, 77u);
+					for (int x = 2; x <= 11; x++) for (int z = 2; z <= 11; z++)
+						ResolveSpills(s, w, p, new[] { Offer(p.RetentionDl + 40 * (x + z), Water, Source.Pump, Idx(w, x, z)) }); // a ramp
+					Run(s, w, p, pulses);
+					standing = s.Standing;
+					long lo = long.MaxValue, hi = long.MinValue;
+					for (int x = 2; x <= 11; x++) for (int z = 2; z <= 11; z++)
+					{
+						int c = Idx(w, x, z);
+						if (s.Dl[c] <= p.RetentionDl) continue; // a relief bump above the surface holds only moisture
+						long surf = s.Dl[c] + Relief(s.Salt, c, p.ReliefDl);
+						lo = Math.Min(lo, surf); hi = Math.Max(hi, surf);
+					}
+					return hi - lo;
+				}
+				long lv = Spread(true, 1, out long v1), df1 = Spread(false, 1, out long v2), df60 = Spread(false, 60, out _);
+				Console.WriteLine($"      surface spread: levelled {lv} dL after 1 pulse; diffusion alone {df1} after 1, {df60} after 60");
+				Assert(lv <= 1, "D8: a levelled puddle's surface varies by at most the 1-dL remainder, got " + lv);
+				Assert(df1 > 100 && df60 >= 2, $"the diffusion-only control must still slope (1 pulse {df1}, 60 pulses {df60})");
+				Assert(v1 == v2, "levelling conserves to the dL");
+			});
+
+			Case("Sheet_D8_levelling_keeps_doors_slow_and_skips_settled_puddles", () =>
+			{
+				var w = new World(20, 10);
+				Ring(w, 0, 0, 19, 9, Kind.Blocked);
+				for (int z = 1; z <= 8; z++) w.Kinds[Idx(w, 10, z)] = Kind.Blocked;
+				w.Kinds[Idx(w, 10, 4)] = Kind.Door; // two rooms joined by one door
+				var p = new Params();
+				var s = new State(20, 10, 4u);
+				for (int x = 1; x <= 9; x++) for (int z = 1; z <= 8; z++) ResolveSpills(s, w, p, new[] { Offer(3000, Water, Source.Rain, Idx(w, x, z)) });
+				Run(s, w, p, 20);
+				long east = Inside(s, w, 11, 1, 18, 8);
+				Assert(east > 0 && east * 20 < Inside(s, w, 1, 1, 9, 8), $"D4 under D8: the door still leaks slowly (east {east})");
+				// a settled puddle with no door falls asleep and levelling stops touching it
+				var w2 = new World(8, 8); Ring(w2, 0, 0, 7, 7, Kind.Blocked);
+				var s2 = new State(8, 8, 4u);
+				for (int c = 0; c < 64; c++) if (w2.Kinds[c] == Kind.Open) ResolveSpills(s2, w2, p, new[] { Offer(1000 + c, Water, Source.Rain, c) });
+				Run(s2, w2, p, 30);
+				var snap = (int[])s2.Dl.Clone();
+				Run(s2, w2, p, 10);
+				bool same = true; for (int c = 0; c < 64; c++) same &= snap[c] == s2.Dl[c];
+				bool asleep = true; foreach (int c in s2.Occ) asleep &= s2.Calm[c] >= p.SleepAfterPulses;
+				Assert(same && asleep, "a levelled puddle is a fixed point and sleeps");
+			});
+
+			// D10 (owner card 2026-10-22): below 0 °C a sheet freezes into its own ice tier keeping its volume, and thaws back
+			Case("Sheet_D10_freezes_to_its_own_ice_keeping_every_dL_and_thaws_back", () =>
+			{
+				var w = new World(16, 8);
+				for (int x = 0; x < 16; x++) { w.Kinds[Idx(w, x, 0)] = Kind.Receiver; w.RoomDl[Idx(w, x, 0)] = 100000; } // a drawn-down canal
+				for (int c = 0; c < w.TempDeciC.Length; c++) { w.TempDeciC[c] = -50; w.SoakMilliDl[c] = 2000; }
+				w.Fluids[Chemfuel] = new FluidRule { InfiltrationPermille = 0, EvaporationPermille = 0, NeverFreezes = true };
+				var p = new Params();
+				var s = new State(16, 8, 6u);
+				var water = new List<int>();
+				for (int x = 2; x <= 6; x++) for (int z = 3; z <= 5; z++) { water.Add(Idx(w, x, z)); ResolveSpills(s, w, p, new[] { Offer(4000, Water, Source.Rain, Idx(w, x, z)) }); }
+				ResolveSpills(s, w, p, new[] { Offer(4000, Chemfuel, Source.Pump, Idx(w, 12, 4)) });
+				var rep = new PulseReport();
+				Pulse(s, w, p, rep);
+				foreach (int c in water) Assert(s.Tiers[c] == Tier.Ice && s.Dl[c] == 4000, $"cell {c}: tier {s.Tiers[c]}, {s.Dl[c]} dL (frozen water keeps its dL)");
+				Assert(rep.TierChanged.Exists(t => t.to == Tier.Ice), "the freeze is reported for the picture");
+				Assert(s.Tiers[Idx(w, 12, 4)] != Tier.Ice, "chemfuel never freezes");
+				var stand = s.Stand[water[0]];
+				int[] accIce = ResolveSpills(s, w, p, new[] { Offer(500, Water, Source.Pump, water[0]) });
+				Assert(accIce[0] == 0, "an iced lip takes no new spill");
+				Run(s, w, p, 200);
+				long ice = 0; foreach (int c in water) ice += s.Dl[c];
+				Assert(ice == 15 * 4000 && s.Soaked == 0, $"ice neither flows, returns nor soaks (held {ice}, soaked {s.Soaked})");
+				Assert(s.Stand[water[0]] == stand, "the D3 crop timer pauses under ice");
+				for (int c = 0; c < w.TempDeciC.Length; c++) w.TempDeciC[c] = 5; // +0.5 °C: inside the thaw margin
+				Run(s, w, p, 5);
+				Assert(s.Tiers[water[0]] == Tier.Ice, "ice does not thaw at +0.5 °C (no flapping at the freezing point)");
+				for (int c = 0; c < w.TempDeciC.Length; c++) w.TempDeciC[c] = 30;
+				Pulse(s, w, p, rep);
+				Assert(rep.TierChanged.Exists(t => t.from == Tier.Ice && t.to == Tier.Pool), "it thaws back to the tier its 20 cm call for");
+				Run(s, w, p, 300);
+				Assert(s.Returned > 0, "thawed water flows again and runs back into the canal");
+				Assert(s.LedgerCloses, "ledger");
 			});
 
 			Case("Sheet_dry_all_is_a_disclosed_purge", () =>

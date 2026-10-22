@@ -5,7 +5,7 @@ possible to have it actually spill out onto the world? I know there is some kind
 add everywhere on the map intended to simulate flooding. Could we engage that? Do a deep design pass on
 this then send it to GPT for review and improvement."*
 
-Status: **owner decisions D1–D7 answered 2026-10-21 (§5); Stage 0 offline kernel built** (`Source/RM_SheetMath.cs`).
+Status: **owner decisions D1–D10 answered 2026-10-21/22 (§5); Stage 0 offline kernel built** (`Source/RM_SheetMath.cs`, kernel v2 carries D8 basin levelling and the D10 ice tier; `SelfTest/SheetWaterChecks.cs` 17 cases). Stage 1 engine wiring not started.
 FOUNDRY design helper, 2026-10-21. Section 6 holds GPT's review
 and what we took from it. Every vanilla claim below was read from the 1.6 decompiled source or defs
 through RimSage, and the file and line are cited. Every FlowWorks claim was read from `src/RimMandrake/FlowWorks/`.
