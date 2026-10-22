@@ -639,9 +639,9 @@
   </Operation>
 
 
-  <!-- ============== Rot sheet 2026-10-10 (owner notes on therot_sheet_2026-10-05): AA_AngelMoth new description (rename owed: he gave no name),
-       AA_AnimaColossus -> pluur'va ("rename to a Pluur'va, tripple the cell length"). Label-only renames (save-safe);
-       eggs/items keep their donor labels, as for the other renames in this file. ============== -->
+  <!-- ============== Rot sheet 2026-10-10 (owner notes on therot_sheet_2026-10-05): AA_AngelMoth new description (rename owed: he gave no name).
+       Label-only rename (save-safe); eggs/items keep their donor labels, as for the other renames in this file.
+       (AA_AnimaColossus / pluur'va was dropped from the Rot cast, owner card 2026-10-22: retired donor, no port.) ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_AngelMoth"]</xpath>
     <match Class="PatchOperationSequence">
@@ -666,56 +666,6 @@
     <match Class="PatchOperationReplace">
       <xpath>/Defs/PawnKindDef[defName="AA_AngelMoth"]//texPath[text()="Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth"]</xpath>
       <value><texPath>RotSpecies/AngelMoth/AngelMoth</texPath></value>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_AnimaColossus"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_AnimaColossus"]/label</xpath>
-          <value><label>pluur'va</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_AnimaColossus"]/description</xpath>
-          <value><description>A walking hill: a cold-blooded, six-legged reptile with two spines twisted around each other and six small eyes, so long that it takes a moment to see where it ends. Trees and tall mushrooms grow rooted along its back and feed it in return for the ride. It moves slowly, eats slowly and is very hard to stop. Tamed, it can be trimmed for wood from the grove on its back, and very rarely it sheds a hardened pearl that grows into an anima tree when planted.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/label</xpath>
-          <value><label>pluur'va</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>12</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>15</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>18</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[1]/dessicatedBodyGraphicData/drawSize</xpath>
-          <value><drawSize>12</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[2]/dessicatedBodyGraphicData/drawSize</xpath>
-          <value><drawSize>15</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[3]/dessicatedBodyGraphicData/drawSize</xpath>
-          <value><drawSize>18</drawSize></value>
-        </li>
-      </operations>
     </match>
   </Operation>
 </Patch>

@@ -103,9 +103,9 @@ and storm defs, which exist in `src/` and arrive with the Biomes composite. Re-r
 | AA_Swarmling | `RM_Chittik.xml` (aa_port.py port) | dead |
 | AA_AngelMoth | `RM_Dustveil.xml` | dead |
 | AA_Wildpawn, AA_Wildpod | `RM_Durrok`, `RM_Mullgoth` in SWBestiary `RSW_DesertPortMisc_Races.xml` | dead (confirm names/widths carried; not measured here) |
-| AA_AnimaColossus | NO port exists; `RUT_TheRot.xml` mentions it only in a comment | block dead, creature absent from the game: **needs owner** (port it or drop it from the Rot cast) |
-The `RM_*` flora blocks in the same file (AgaricusDomeCap ... Bryolux) target our own defs and are not part of the 113 errors. Deleting the AA_ blocks
-needs his decision; not added to `dead_patches.md` before now.
+| AA_AnimaColossus | NO port exists | DROPPED from the Rot cast (owner card 2026-10-22); its two blocks and the `RUT_TheRot.xml` comment mention are removed |
+The `RM_*` flora blocks in the same file (AgaricusDomeCap ... Bryolux) target our own defs and are not part of the 113 errors. The other AA_ blocks
+stay (no ruling yet); not added to `dead_patches.md` before now.
 
 **UtinniPatches/BiomeFaunaStatAdjustments_Generated.xml (2 errors): op 1 (`Beldon` predator=false) DEAD.** `Beldon` is a
 retired-donor name; `RSW_Beldon` (SWBestiary) has no `predator` node, so the ruled value (predator false, owner card
@@ -115,5 +115,5 @@ targets `RSW_Gutkurr` and `RSW_Wraid` (MoveSpeed ops match 1 each); only op 1 is
 (`design/Jawa/fauna/gen_stat_adjustments.py`), so fix the generator, not the file. Same file is already listed there: cross-reference only.
 Related, not failing: `RUT_TibannaTap_BeldonWiring.xml` already targets `RSW_Beldon` behind a FindMod.
 
-Net: nothing in the 7 FAIL set blocks the apply; 5 clear on deploy, 2 stay red as expected (inert, Conditional-guarded). Only
-open owner question: AA_AnimaColossus (no RM_ port).
+Net: nothing in the 7 FAIL set blocks the apply; 5 clear on deploy, 2 stay red as expected (inert, Conditional-guarded). The
+AA_AnimaColossus question is answered (dropped, owner card 2026-10-22); the 2 expected-red patches (Rot NamesAndSizes AA_* remainder, Beldon) stay inert.
