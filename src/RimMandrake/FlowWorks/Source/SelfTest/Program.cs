@@ -2051,6 +2051,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             LevelExactChecks.Run(Case);        // WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: exact decilitres, one surface per body (LevelExactChecks.cs)
             LevelPourChecks.Run(Case);         // PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes: pours and fill-ins in decilitres (LevelPourChecks.cs)
             WaterLadderChecks.Run(Case);       // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (P14): one water ladder, base-layer dug water, migration (WaterLadderChecks.cs)
+            WaterLookChecks.Run(Case);         // WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: deep navy tint steps, wet-wall shadow band, settings (WaterLookChecks.cs)
             SheetWaterChecks.Run(Case);        // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 0: the sheet-water kernel (SheetWaterChecks.cs)
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
 

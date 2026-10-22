@@ -19,6 +19,8 @@ namespace RimMandrake.FlowWorks
 	/// Shallow      about 1 m        WaterShallow
 	/// ChestDeep    about 1.5 m      RM_WaterChestDeepStill (vanilla WaterChestDeepBase-family affordances, GPT finding #2)
 	/// Deep         2 m and deeper   WaterDeep (enterable by the swim grid, R12; def identity kept for roads and mods)
+	///   5 m+       DeepStep 1       WaterDeep + navy tint overlay (no terrain change; <see cref="DeepStep"/>)
+	///   10 m+      DeepStep 2       WaterDeep + darker navy tint overlay
 	/// </code>
 	/// Bands are RM_LevelSolve.LookBand's (the band edges sit halfway between rungs: 0.25 / 0.75 / 1.25 / 1.75 m). Freshwater
 	/// is RM_Fluid_Water's ladder (FluidDef.freshwaterLadder); every other liquid keeps its own fill tiers and water-body type.
@@ -36,6 +38,34 @@ namespace RimMandrake.FlowWorks
 		}
 
 		public const int RungCount = 6;
+
+		/// <summary>WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED (owner by card 2026-10-22, "Pick for me: shadow band + navy"): the
+		/// depth steps PAST the Deep rung. They change no terrain: every square 2 m and deeper stays WaterDeep (def identity kept for
+		/// swimming, roads and other mods), and RM_LevelSolve.LookBand keeps 0..5 because every liquid's fill tiers read it. A
+		/// step is a navy tint drawn over the water (SectionLayer_RMDeepWaterTint, numbers in RM_WaterLookMath), thresholds
+		/// from the approved mock deep_T2_navy ("5 m+", "10 m+").</summary>
+		public enum DeepStep
+		{
+			None = 0,
+			FiveMetres = 1,
+			TenMetres = 2,
+		}
+
+		public const double DeepStepFiveMetres = 5.0;
+		public const double DeepStepTenMetres = 10.0;
+
+		/// <summary>The deep step for <paramref name="metres"/> of water standing in one square (true metres, any water body).</summary>
+		public static DeepStep DeepStepForMetres(double metres)
+		{
+			if (metres >= DeepStepTenMetres) return DeepStep.TenMetres;
+			return metres >= DeepStepFiveMetres ? DeepStep.FiveMetres : DeepStep.None;
+		}
+
+		/// <summary>The deep step for <paramref name="waterDl"/> decilitres of water standing in one square.</summary>
+		public static DeepStep DeepStepForDl(long waterDl)
+		{
+			return DeepStepForMetres(RM_LevelSolve.Metres(waterDl));
+		}
 
 		/// <summary>The freshwater table, indexed by rung. Read by both writers through <see cref="FreshwaterDefName"/>.</summary>
 		private static readonly string[] FreshwaterDefNames =
