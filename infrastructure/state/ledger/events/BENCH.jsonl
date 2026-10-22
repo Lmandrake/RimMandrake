@@ -3475,3 +3475,15 @@
 {"seat":"BENCH","event":"start","id":"WINCH_REACH_DIAGNOSE_CANREACH_FIBS","ts":"2026-10-22T02:52:17Z","tsn":1792637537593069966}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"drawbridge pair: WINCH_REACH fix + RAID_UP rework","ts":"2026-10-22T02:53:12Z","tsn":1792637592127001681}
 {"seat":"BENCH","event":"lease","id":"WINCH_REACH_DIAGNOSE_CANREACH_FIBS","action":"renew","token":"BENCH.pid96104.12ff0184","ts":"2026-10-22T02:56:35Z","expires":"2026-10-22T03:41:35Z","tsn":1792637795493129784}
+{"seat":"BENCH","event":"close","id":"WINCH_REACH_DIAGNOSE_CANREACH_FIBS","sha":"93cdbdc40ac1","reason":"MOD fixed: FindPathNow(Touch) gate in WorkGiver_Drawbridge.JobOnThing (93cdbdc40ac1); harness tick-settle 7e904f09852e. Live fw_gss_sitting: LOWER_ONLY_FROM_WINCH PASS (farLower job=False, winchLower job=True); all rows 11/12 PASS, RAID_UP separate. Root RelativeVeto AND-of-projections remains separate work.","ts":"2026-10-22T03:00:01Z","tsn":1792638001650075438}
+{"seat":"BENCH","event":"lease","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","action":"take","token":"BENCH.pid11734.43d26e3d","expires":"2026-10-22T03:45:10Z","ts":"2026-10-22T03:00:10Z","tsn":1792638011348909046}
+{"seat":"BENCH","event":"claim","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","ts":"2026-10-22T03:00:11Z","tsn":1792638011724031593}
+{"seat":"BENCH","event":"start","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","ts":"2026-10-22T03:00:12Z","tsn":1792638012120473240}
+{"seat":"BENCH","event":"start","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","ts":"2026-10-22T03:00:13Z","tsn":1792638013741354384}
+{"seat":"BENCH","event":"lease","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","action":"renew","token":"BENCH.pid11734.43d26e3d","ts":"2026-10-22T03:03:01Z","expires":"2026-10-22T03:48:01Z","tsn":1792638182008449903}
+{"seat":"BENCH","event":"lease","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","action":"renew","token":"BENCH.pid11734.43d26e3d","ts":"2026-10-22T03:08:04Z","expires":"2026-10-22T03:53:04Z","tsn":1792638484330681011}
+{"seat":"BENCH","event":"lease","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","action":"renew","token":"BENCH.pid11734.43d26e3d","ts":"2026-10-22T03:11:49Z","expires":"2026-10-22T03:56:49Z","tsn":1792638710029952250}
+{"seat":"BENCH","event":"lease","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","action":"renew","token":"BENCH.pid11734.43d26e3d","ts":"2026-10-22T03:15:46Z","expires":"2026-10-22T04:00:46Z","tsn":1792638947135738578}
+{"seat":"BENCH","event":"lease","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","action":"renew","token":"BENCH.pid11734.43d26e3d","ts":"2026-10-22T03:19:14Z","expires":"2026-10-22T04:04:14Z","tsn":1792639154384909089}
+{"seat":"BENCH","event":"lease","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","action":"renew","token":"BENCH.pid11734.43d26e3d","ts":"2026-10-22T03:22:29Z","expires":"2026-10-22T04:07:29Z","tsn":1792639350084260536}
+{"seat":"BENCH","event":"lease","id":"DRAWBRIDGE_RAID_DIAGNOSE_LOITERING_AT_MOAT","action":"renew","token":"BENCH.pid11734.43d26e3d","ts":"2026-10-22T03:29:38Z","expires":"2026-10-22T04:14:38Z","tsn":1792639779207451663}
