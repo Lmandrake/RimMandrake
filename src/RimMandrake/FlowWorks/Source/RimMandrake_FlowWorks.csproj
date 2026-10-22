@@ -139,6 +139,7 @@
     <Compile Include="Sheet\SectionLayer_RMSheetWater.cs" />
     <Compile Include="Sheet\RM_SheetPatches.cs" />
     <Compile Include="Sheet\RM_SheetProofs.cs" />
+    <Compile Include="Sheet\RM_SheetFire.cs" />
     <Compile Include="RM_SlimeSlip.cs" />
     <Compile Include="RM_PitExposureMath.cs" />
     <Compile Include="RM_PitExposure.cs" />

@@ -27,9 +27,11 @@ namespace RimMandrake.FlowWorks.Sheet
 	/// - <b>Picture</b>: overlay only (§6 item 2): <see cref="SectionLayer_RMSheetWater"/>. No temp terrain is written, so
 	///   nothing vanilla (crop kill, filth wash, fire, path cost) happens yet — those are Stage 2 effects.
 	///
-	/// Water only in Stage 1 (§6 item 10). Saved: the kernel's whole continuation state (§6 item 4) plus this map's sheet
+	/// Every FlowWorks liquid spills (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>), each by its own FluidDef
+	/// (RM_SheetFluidMath.RuleFor); different liquids never mix (a square or body holding another refuses); burnable spills
+	/// spread and burn (D5, RM_SheetFire.cs). Saved: the kernel's whole continuation state (§6 item 4) plus this map's sheet
 	/// fluid palette (its own, never the engine's compacting palette).</summary>
-	public class RM_MapComponent_Sheet : MapComponent
+	public partial class RM_MapComponent_Sheet : MapComponent
 	{
 		// Loss rates (cm a day) per ground class / weather, never per biome (§3 step 4): Mod Settings (RM_SheetSettings), the
 		// placeholder values kept as the defaults by owner card 2026-10-22, to be tuned on the walk.
@@ -100,13 +102,11 @@ namespace RimMandrake.FlowWorks.Sheet
 			for (int k = 0; k < fluids.Count; k++)
 			{
 				FluidDef f = fluids[k];
-				world.Fluids[k + 1] = new FluidRule
-				{
-					InfiltrationPermille = 1000,
-					EvaporationPermille = 1000,
-					FreezeDeciC = 0,
-					NeverFreezes = f != Water, // Stage 1 carries water only; other fluids' rules arrive with them
-				};
+				// all liquids (owner 2026-10-22): each follows its own FluidDef; a liquid gone from the mod set keeps draining
+				world.Fluids[k + 1] = f == null
+					? new FluidRule { InfiltrationPermille = 1000, EvaporationPermille = 1000, NeverFreezes = true }
+					: RM_SheetFluidMath.RuleFor(Burnable(f), f.hot, f.slipperiness > 0f, f.ticksPerTile, f.sheetSoakPercent,
+						f.sheetEvaporationPercent);
 			}
 		}
 
@@ -146,12 +146,12 @@ namespace RimMandrake.FlowWorks.Sheet
 			if (e != null && e.IsExcavated(c))
 			{
 				FluidDef held = e.FluidAt(c);
-				bool ok = !RM_FlowDoorRules.SealsLiquid(edifice) && (held == null || held == Water);
+				bool ok = !RM_FlowDoorRules.SealsLiquid(edifice);
 				world.Kinds[idx] = ok ? Kind.Receiver : Kind.Blocked;
 				if (ok)
 				{
 					world.RoomDl[idx] = int.MaxValue / 4; // the engine's pour decides (World.Credit)
-					world.BodyFluid[idx] = held == null ? (byte)0 : Key(Water);
+					world.BodyFluid[idx] = held == null ? (byte)0 : Key(held); // another liquid refuses (the kernel's Compatible)
 				}
 				return;
 			}
@@ -159,14 +159,9 @@ namespace RimMandrake.FlowWorks.Sheet
 			if (body != null)
 			{
 				FluidDef bf = body.fluid ?? e.ActiveFluid;
-				if (bf != Water)
-				{
-					world.Kinds[idx] = Kind.Blocked; // a foreign body refuses (fluids never mix)
-					return;
-				}
 				world.Kinds[idx] = body.limitless ? Kind.Sink : Kind.Receiver;
 				world.RoomDl[idx] = int.MaxValue / 4; // the return leg decides (World.Credit)
-				world.BodyFluid[idx] = Key(Water);
+				world.BodyFluid[idx] = bf == null ? (byte)0 : Key(bf); // a pond of another liquid refuses (fluids never mix)
 				return;
 			}
 			TerrainDef baseT = map.terrainGrid.BaseTerrainAt(c);
@@ -304,6 +299,11 @@ namespace RimMandrake.FlowWorks.Sheet
 			IntVec3 c = map.cellIndices.IndexToCell(idx);
 			if (e.IsExcavated(c))
 			{
+				FluidDef held = e.FluidAt(c);
+				if (!RM_StockMath.FluidsCompatible(held != null, held, f))
+				{
+					return 0; // different liquids never mix
+				}
 				// a brimming square means a brimming body (one level surface per body): skip the walk
 				if (e.WaterDlAt(c) >= e.DepthAt(c) * (long)RM_LevelSolve.U)
 				{
@@ -321,7 +321,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// <summary>Lips nearest the inflow first: a walk outward through the connected dug body from <paramref name="origin"/>
 		/// (the pump's outlet, the rained-on square, the filled-in square); every sheet-holding undug neighbour it meets is a lip.
 		/// The origin itself is a lip when it is undug (a filled-in square). Classifies what it meets.</summary>
-		private int[] FindLips(IntVec3 origin)
+		private int[] FindLips(IntVec3 origin, FluidDef fluid)
 		{
 			RM_MapComponent_Excavation e = Engine;
 			var lips = new List<int>(MaxLips);
@@ -367,7 +367,7 @@ namespace RimMandrake.FlowWorks.Sheet
 					if (e.IsExcavated(nc))
 					{
 						FluidDef held = e.FluidAt(nc);
-						if (!RM_FlowDoorRules.SealsLiquid(map.edificeGrid[n]) && (held == null || held == Water))
+						if (!RM_FlowDoorRules.SealsLiquid(map.edificeGrid[n]) && RM_StockMath.FluidsCompatible(held != null, held, fluid))
 						{
 							queue.Enqueue(n);
 						}
@@ -383,16 +383,18 @@ namespace RimMandrake.FlowWorks.Sheet
 			return lips.ToArray();
 		}
 
-		/// <summary>The master switch, the per-inflow switch (stage 3), the depth engine, and a carried fluid (water only).</summary>
+		/// <summary>The master switch, the per-inflow switch (stage 3), the depth engine, and the fluid: water, or any other
+		/// FlowWorks liquid while "other liquids spill" is on (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>).</summary>
 		private bool Accepts(FluidDef fluid, Source from) =>
-			RM_SheetSettings.SpillsFrom(from) && RimMandrakeFlowWorksSettings.depthEngineEnabled && fluid != null && fluid == Water;
+			RM_SheetSettings.SpillsFrom(from) && RimMandrakeFlowWorksSettings.depthEngineEnabled && fluid != null
+			&& (fluid == Water || RM_SheetSettings.otherLiquidsSpillEnabled);
 
 		private SpillOffer MakeOffer(IntVec3 origin, long dl, FluidDef fluid, Source from)
 		{
 			Ensure();
 			return new SpillOffer
 			{
-				LipNearestFirst = FindLips(origin),
+				LipNearestFirst = FindLips(origin, fluid),
 				AmountDl = (int)Math.Min(dl, int.MaxValue / 2),
 				Fluid = Key(fluid),
 				From = from,
@@ -400,7 +402,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		}
 
 		/// <summary>How many of <paramref name="dl"/> a spill at <paramref name="origin"/> would place now, changing no water.
-		/// 0 when the switch is off or the fluid is not carried (Stage 1: water only).</summary>
+		/// 0 when the switch is off or the fluid is not accepted (Accepts).</summary>
 		public long Probe(IntVec3 origin, long dl, FluidDef fluid, Source from)
 		{
 			if (dl <= 0 || !Accepts(fluid, from))
@@ -427,7 +429,7 @@ namespace RimMandrake.FlowWorks.Sheet
 			int got = ResolveSpills(state, world, prm, new[] { o })[0];
 			if (got > 0)
 			{
-				TellOverflowOnce(origin, from);
+				TellOverflowOnce(origin, from, fluid);
 				// a spill between pulses changes the picture now (the overlay draws a fresh square's tier from its dL)
 				foreach (int k in o.LipNearestFirst)
 				{
@@ -469,21 +471,21 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// <summary>The pump hook (D2), part 1: the brimming outlet square of water in a backed-up pump's reach whose canal lip
 		/// takes a whole level now (exact probe). False with the switch off or when no lip has room (backed up, as before).</summary>
 		public static bool PumpSpillOutlet(Map map, List<IntVec3> cells, List<(int room, bool wet, FluidDef fill)> cd, int units,
-			out IntVec3 outlet)
+			FluidDef fluid, out IntVec3 outlet)
 		{
 			outlet = IntVec3.Invalid;
 			RM_MapComponent_Sheet sheet = Of(map);
-			if (sheet == null || !sheet.Accepts(Water, Source.Pump))
+			if (sheet == null || !sheet.Accepts(fluid, Source.Pump))
 			{
 				return false;
 			}
 			for (int c = 0; c < cells.Count; c++)
 			{
-				if (cd[c].room > 0 || !cd[c].wet || cd[c].fill != Water)
+				if (cd[c].room > 0 || !cd[c].wet || cd[c].fill != fluid)
 				{
 					continue;
 				}
-				if (sheet.Probe(cells[c], units, Water, Source.Pump) == units)
+				if (sheet.Probe(cells[c], units, fluid, Source.Pump) == units)
 				{
 					outlet = cells[c];
 					return true;
@@ -494,12 +496,12 @@ namespace RimMandrake.FlowWorks.Sheet
 
 		/// <summary>The pump hook (D2), part 2: the sheet at <paramref name="outlet"/>'s lip as the destination leg of a
 		/// transfer (checked by the exact probe before anything moves, never undone; the tank leg is the reversible one).</summary>
-		public static RM_TransferLeg SpillLeg(Map map, IntVec3 outlet, Source from)
+		public static RM_TransferLeg SpillLeg(Map map, IntVec3 outlet, FluidDef fluid, Source from)
 		{
 			RM_MapComponent_Sheet sheet = Of(map);
 			return RM_TransferLeg.World(
-				k => sheet != null && sheet.Probe(outlet, k, Water, from) == k,
-				k => sheet != null && sheet.Offer(outlet, k, Water, from) == k);
+				k => sheet != null && sheet.Probe(outlet, k, fluid, from) == k,
+				k => sheet != null && sheet.Offer(outlet, k, fluid, from) == k);
 		}
 
 		// ── the pulse ──
@@ -517,6 +519,7 @@ namespace RimMandrake.FlowWorks.Sheet
 			Ensure();
 			RefreshAround();
 			HandOverTakenCells();
+			NoteNonWater();
 			long k0 = System.Diagnostics.Stopwatch.GetTimestamp();
 			RM_SheetMath.Pulse(state, world, prm, rep);
 			long k1 = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -601,13 +604,16 @@ namespace RimMandrake.FlowWorks.Sheet
 						+ " days under it.", new TargetInfo(at, map), MessageTypeDefOf.NegativeEvent, false);
 				}
 			}
-			// D3: water that soaked in irrigates
+			// D3: water that soaked in irrigates (water only: another liquid soaking in waters nothing)
 			if (RM_SheetSettings.irrigateEnabled && rep.Soaked.Count > 0 && SoakApi != null)
 			{
 				soakCells.Clear();
 				foreach (var (k, _) in rep.Soaked)
 				{
-					soakCells.Add(map.cellIndices.IndexToCell(k));
+					if (!nonWater.Contains(k))
+					{
+						soakCells.Add(map.cellIndices.IndexToCell(k));
+					}
 				}
 				try
 				{
@@ -633,18 +639,34 @@ namespace RimMandrake.FlowWorks.Sheet
 					Tier t = TierAt(p.Position);
 					if (t == Tier.Sheet || t == Tier.Pool)
 					{
-						p.needs.mood.thoughts.memories.TryGainMemoryFast(ThoughtDefOf.SoakingWet);
+						FluidDef f = FluidAt(p.Position);
+						if (!Burnable(f))
+						{
+							p.needs.mood.thoughts.memories.TryGainMemoryFast(ThoughtDefOf.SoakingWet);
+						}
+						// all liquids: a poisoned spill builds toxins as the canal does (RM_FillEffectMath.ToxinPerCheck, fill = dL / notch)
+						if (f != null && f.toxicPerDayAtBrim > 0f && HediffDefOf.ToxicBuildup != null)
+						{
+							float add = RM_FillEffectMath.ToxinPerCheck(DlAt(p.Position) / (float)RM_LevelSolve.U, 1, f.toxicPerDayAtBrim,
+								p.GetStatValue(StatDefOf.ToxicEnvironmentResistance), p.Flying)
+								* RimMandrakeFlowWorksSettings.PulseIntervalTicks / (float)RM_FillEffectMath.IntervalTicks;
+							if (add > 0f)
+							{
+								HealthUtility.AdjustSeverity(p, HediffDefOf.ToxicBuildup, add);
+							}
+						}
 					}
 				}
 			}
-			// fire: a water sheet puts it out (fuel sheets never would: water only today)
+			// fire: a sheet of a liquid that does not burn puts it out; a fuel sheet never does (it burns, RM_SheetFire.cs)
 			if (RM_SheetSettings.putsOutFireEnabled)
 			{
 				List<Thing> fires = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
 				for (int i = fires.Count - 1; i >= 0; i--)
 				{
 					Thing f = fires[i];
-					if (f.Spawned && f is Fire fire && fire.parent == null && StandingDlAt(map, f.Position) >= prm.RetentionDl)
+					if (f.Spawned && f is Fire fire && fire.parent == null && StandingDlAt(map, f.Position) >= prm.RetentionDl
+						&& RM_SheetFluidMath.PutsOutFire(Burnable(FluidAt(f.Position))))
 					{
 						f.Destroy();
 					}
@@ -656,7 +678,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		private bool toldOverflow;
 
 		/// <summary>The readable sign (§4 stage 2): the first spill on a map says so, once per map (saved).</summary>
-		private void TellOverflowOnce(IntVec3 origin, Source from)
+		private void TellOverflowOnce(IntVec3 origin, Source from, FluidDef fluid)
 		{
 			if (toldOverflow)
 			{
@@ -666,7 +688,8 @@ namespace RimMandrake.FlowWorks.Sheet
 			string what = from == Source.Pump ? "A pump is pouring into a full channel" : from == Source.Rain ? "Rain is filling a full channel"
 				: from == Source.FillIn ? "Filling a channel in squeezed water out" : from == Source.Gravity ? "A tank is draining into a full channel"
 				: "Released water reached a full channel";
-			Messages.Message(what + ": the channel is overflowing and water is spilling onto the ground.", new TargetInfo(origin, map),
+			Messages.Message(what + ": the channel is overflowing and " + (fluid == Water || fluid == null ? "water" : fluid.label)
+				+ " is spilling onto the ground.", new TargetInfo(origin, map),
 				MessageTypeDefOf.CautionInput, false);
 		}
 
@@ -703,6 +726,7 @@ namespace RimMandrake.FlowWorks.Sheet
 
 		public override void MapComponentTick()
 		{
+			FireTick();
 			// keep the global gate in step with this map (cheap: one int compare a tick)
 			int w = state?.WetCount ?? 0;
 			if (w != countedWet)
@@ -777,7 +801,15 @@ namespace RimMandrake.FlowWorks.Sheet
 			{
 				if (world.Kinds[k] == Kind.Sink)
 				{
-					HandOver(state, k, state.Dl[k], true);
+					byte bf = world.BodyFluid[k];
+					if (bf == 0 || bf == state.Fluid[k])
+					{
+						HandOver(state, k, state.Dl[k], true);
+					}
+					continue; // another liquid's lake never takes it (it dries where it lies)
+				}
+				if (world.BodyFluid[k] != 0 && world.BodyFluid[k] != state.Fluid[k])
+				{
 					continue;
 				}
 				int got = Credit(k, state.Dl[k], state.Fluid[k]);
@@ -805,6 +837,27 @@ namespace RimMandrake.FlowWorks.Sheet
 
 		public int DlAt(IntVec3 c) => state == null || !c.InBounds(map) ? 0 : state.Dl[map.cellIndices.CellToIndex(c)];
 
+		/// <summary>The liquid spilled on <paramref name="c"/>, or null (dry, or a liquid gone from the mod set).</summary>
+		public FluidDef FluidAt(IntVec3 c) => state == null || !c.InBounds(map) ? null : FluidOf(state.Fluid[map.cellIndices.CellToIndex(c)]);
+
+		public static bool Burnable(FluidDef f) => f != null && f.fireKind != RM_FluidFireKind.None;
+
+		/// <summary>Squares holding a liquid other than water before this pulse (what they soak in irrigates nothing).</summary>
+		private readonly HashSet<int> nonWater = new HashSet<int>();
+
+		private void NoteNonWater()
+		{
+			nonWater.Clear();
+			int w = fluids.IndexOf(Water) + 1; // 0 when water never spilled here: every wet square is another liquid
+			foreach (int k in state.Occ)
+			{
+				if (state.Fluid[k] != w)
+				{
+					nonWater.Add(k);
+				}
+			}
+		}
+
 		/// <summary>The mouseover line for a wet undug square: "Spilled water 1.2 cm (24 L)", or "… frozen".</summary>
 		public static string ReadoutAt(Map map, IntVec3 c)
 		{
@@ -817,19 +870,25 @@ namespace RimMandrake.FlowWorks.Sheet
 			string what = (s.FluidOf(s.state.Fluid[map.cellIndices.CellToIndex(c)])?.label ?? "liquid").CapitalizeFirst();
 			string depth = (dl / (double)DlPerCm).ToString(dl < 10 * DlPerCm ? "0.0" : "0", System.Globalization.CultureInfo.InvariantCulture);
 			return "Spilled " + what.ToLowerInvariant() + " " + depth + " cm (" + RM_Volume.FormatLitres(dl / (double)RM_Volume.UnitsPerLitre) + ")"
-				+ (s.TierAt(c) == Tier.Ice ? ", frozen" : "");
+				+ (s.TierAt(c) == Tier.Ice ? ", frozen" : s.IsBurning(c) ? ", burning" : "");
 		}
 
 		public string LedgerLine()
 		{
 			if (state == null)
 			{
-				return "no spilled water.";
+				long rl = Engine?.ReleaseLostDl ?? 0;
+				return "no spilled liquid" + (rl > 0 ? "; released floods with nowhere to go lost "
+					+ RM_Volume.FormatLitres(rl / (double)RM_Volume.UnitsPerLitre) : "") + ".";
 			}
 			string L(long dl) => RM_Volume.FormatLitres(dl / (double)RM_Volume.UnitsPerLitre);
+			// owner card 2026-10-22 "Count silently, show in ledger": a release's lost remainder is shown here, never messaged
+			long releaseLost = Engine?.ReleaseLostDl ?? 0;
 			return "spilled " + L(state.TotalIn) + "; standing " + L(state.Standing) + " on " + state.WetCount + " squares; ran back "
 				+ L(state.Returned) + ", joined lakes " + L(state.JoinedLake) + ", soaked " + L(state.Soaked) + ", dried "
-				+ L(state.Evaporated) + ", dried by hand " + L(state.Purged) + (state.LedgerCloses ? "" : " (LEDGER OPEN: a bug)");
+				+ L(state.Evaporated) + ", burned " + L(state.Burned) + ", dried by hand " + L(state.Purged)
+				+ (state.LedgerCloses ? "" : " (LEDGER OPEN: a bug)")
+				+ "; released floods with nowhere to go lost " + L(releaseLost);
 		}
 
 		/// <summary>"Dry all spilled water now": a DISCLOSED purge (D7), never silent.</summary>
@@ -862,6 +921,7 @@ namespace RimMandrake.FlowWorks.Sheet
 			Scribe_Collections.Look(ref fluids, "RM_sheetFluids", LookMode.Def);
 			Scribe_Values.Look(ref toldOverflow, "RM_sheetToldOverflow", false);
 			Scribe_Values.Look(ref irrigatedTotal, "RM_sheetIrrigated", 0L);
+			ExposeFire();
 			if (Scribe.mode == LoadSaveMode.LoadingVars && data != null)
 			{
 				try

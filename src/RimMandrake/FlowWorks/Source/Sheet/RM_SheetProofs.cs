@@ -58,6 +58,7 @@ namespace RimMandrake.FlowWorks.Sheet
 				+ " standing=" + (s?.Standing ?? 0) + " wet=" + (s?.WetCount ?? 0) + " returned=" + (s?.Returned ?? 0)
 				+ " joined=" + (s?.JoinedLake ?? 0) + " soaked=" + (s?.Soaked ?? 0) + " evaporated=" + (s?.Evaporated ?? 0)
 				+ " burned=" + (s?.Burned ?? 0) + " purged=" + (s?.Purged ?? 0) + " closes=" + B(s == null || s.LedgerCloses)
+				+ " releaseLost=" + (map.GetComponent<RM_MapComponent_Excavation>()?.ReleaseLostDl ?? 0) + " burning=" + sheet.BurningCount
 				+ " destroyedDl=" + DestroyedDl(map) + " pulse=" + (s?.Pulse ?? 0) + " pulseTicks=" + RimMandrakeFlowWorksSettings.PulseIntervalTicks
 				+ " retention=" + p.RetentionDl + " minReceive=" + p.MinReceiveDl + " cap=" + p.SheetCapDl + " maxWet=" + p.MaxWetCells
 				+ " irrigated=" + sheet.IrrigatedTotal;
@@ -122,10 +123,12 @@ namespace RimMandrake.FlowWorks.Sheet
 			}
 			State s = sheet.ProofState;
 			int stand = s == null ? 0 : s.Stand[map.cellIndices.CellToIndex(c)];
-			return "SHEETCELL dl=" + sheet.DlAt(c) + " tier=" + sheet.TierAt(c) + " kind=" + sheet.KindAt(c) + " stand=" + stand;
+			return "SHEETCELL dl=" + sheet.DlAt(c) + " tier=" + sheet.TierAt(c) + " kind=" + sheet.KindAt(c) + " stand=" + stand
+				+ " fluid=" + (sheet.FluidAt(c)?.defName ?? "-") + " burning=" + B(sheet.IsBurning(c));
 		}
 
-		/// <summary>x,z;dl;Source → STAGING through RM_MapComponent_Sheet.Offer (the production entry; the switch is respected).</summary>
+		/// <summary>x,z;dl;Source[;FluidDef] → STAGING through RM_MapComponent_Sheet.Offer (the production entry; the switches are
+		/// respected). The fluid defaults to water; any FlowWorks FluidDef spills (owner 2026-10-22, all liquids).</summary>
 		public static string ProofSheetSpill(string arg)
 		{
 			if (!Ctx(out Map map, out RM_MapComponent_Sheet sheet, out string refused))
@@ -133,12 +136,17 @@ namespace RimMandrake.FlowWorks.Sheet
 				return refused;
 			}
 			string[] a = (arg ?? "").Split(';');
-			if (a.Length != 3 || !Cell(a[0], map, out IntVec3 c) || !long.TryParse(a[1], out long dl) || dl <= 0
+			if ((a.Length != 3 && a.Length != 4) || !Cell(a[0], map, out IntVec3 c) || !long.TryParse(a[1], out long dl) || dl <= 0
 				|| !Enum.TryParse(a[2].Trim(), out Source src))
 			{
-				return "REFUSED: arg must be x,z;dl;Pump|Rain|Flood|FillIn|Gravity";
+				return "REFUSED: arg must be x,z;dl;Pump|Rain|Flood|FillIn|Gravity[;FluidDef]";
 			}
-			long got = sheet.Offer(c, dl, RimMandrakeFlowWorks_DefOf.RM_Fluid_Water, src);
+			FluidDef fluid = a.Length == 4 ? DefDatabase<FluidDef>.GetNamedSilentFail(a[3].Trim()) : RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
+			if (fluid == null)
+			{
+				return "REFUSED: no FluidDef '" + a[3].Trim() + "'";
+			}
+			long got = sheet.Offer(c, dl, fluid, src);
 			return "SPILL offered=" + dl + " accepted=" + got;
 		}
 
@@ -204,6 +212,21 @@ namespace RimMandrake.FlowWorks.Sheet
 			return "SHEETPERF pulses=" + sheet.perfPulses + " kernelMs=" + F(sheet.perfKernelMs / n) + " pulseMs=" + F(sheet.perfPulseMs / n)
 				+ " maxPulseMs=" + F(sheet.perfMaxPulseMs) + " allocB=" + sheet.perfAllocB + " dirtySections=" + sheet.perfDirty
 				+ " terrainWrites=0 active=" + sheet.WetCells + " wetMax=" + sheet.perfWetMax;
+		}
+	
+		/// <summary>x,z → lights the burnable spill there (D5) as a fire beside it would: 'SHEETFIRE lit=T|F burning=N burned=dL'.</summary>
+		public static string ProofSheetIgnite(string arg)
+		{
+			if (!Ctx(out Map map, out RM_MapComponent_Sheet sheet, out string refused))
+			{
+				return refused;
+			}
+			if (!Cell(arg, map, out IntVec3 c))
+			{
+				return "REFUSED: arg must be x,z on the current map";
+			}
+			bool lit = sheet.TryLight(c);
+			return "SHEETFIRE lit=" + B(lit) + " burning=" + sheet.BurningCount + " burned=" + (sheet.ProofState?.Burned ?? 0);
 		}
 	}
 }

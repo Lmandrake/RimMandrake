@@ -67,6 +67,14 @@ namespace RimMandrake.FlowWorks
 		/// real map; a viscous fluid (tar, ooze) sets this far higher.</summary>
 		public int ticksPerTile = 60;
 
+		/// <summary>CANAL_OVERFLOW (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>): how fast a spilled sheet of this
+		/// liquid soaks into the ground and dries, in percent of water's. -1 (unset) derives it from the liquid's own properties
+		/// (RM_SheetFluidMath.RuleFor: viscosity from ticksPerTile, a hot liquid dries 3x). Authored only where a property
+		/// the def has no field for decides it (propane boils off).</summary>
+		public int sheetSoakPercent = -1;
+
+		public int sheetEvaporationPercent = -1;
+
 		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: how this liquid burns. None never lights; CreepingFuse travels as a
 		/// front and burns a level a day; Inferno (chemfuel) is a fast front with big flames that burns down in seconds;
 		/// Detonation (astrofuel) blows up the whole connected body as one chained blast (CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL,
