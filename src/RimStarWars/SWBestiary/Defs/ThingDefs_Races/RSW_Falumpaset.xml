@@ -9,16 +9,12 @@
 
   `leatherDef` repoints to the already-ported RSW_Leather_Tough
   (RSW_MlieWaveC_Resources.xml, Pass 3/Borcatu) — same donor Leather_Tough
-  resource. `specificMeatDef` stays vanilla Core `Cameloid_Meat` (same as
-  Eopie's) — no new resource needed at all this species. Its
+  resource. `specificMeatDef` is `RSW_Cameloid_Meat` — no new resource needed at all this species. Its
   `PathfindingFramework.MovementExtension` modExtension (MayRequire=
   "pathfinding.framework", amphibious movement) is kept verbatim and gated,
   same precedent as Nuna/Dianoga/Dragonsnake — the game is whole without
   that framework, Falumpaset just loses the swamp-movement bonus. Its
-  Odyssey `SW_Spur` specialTrainable/ability is donor content
-  (SW_Abilities.xml, confirmed NOT vanilla Odyssey — same as Dalgo/
-  Corinathoth/Eopie precedent) — left unprefixed, safe only because Mlie
-  stays active. Sounds repoint to the already-absorbed sound wave
+  Odyssey `SW_Spur` specialTrainable/ability is our RSW_SW_Spur (RSW_MlieWaveB_Abilities.xml). Sounds repoint to the already-absorbed sound wave
   (RSW_Pawn_Falumpaset_*, 2026-09-02). texPaths are unchanged text —
   extracted art sits at Textures/swanimals/Falumpaset/ (extract_bundle.py
   against the same AssetBundle every prior wave used).
