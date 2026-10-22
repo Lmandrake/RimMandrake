@@ -1987,7 +1987,9 @@ def _apply_item_verb(ev, index, item, seat, world):
     to = lambda state: _transition(item, state)          # noqa: E731 — one short alias
 
     if verb == "claim":
-        if item.state in ("ready", "doing") and item.claim_ts and \
+        prior = item.state
+        to("ready")        # first: a refused claim (terminal item) must change nothing below
+        if prior in ("ready", "doing") and item.claim_ts and \
                 _seconds_between(item.claim_ts, ev["ts"]) <= CONTEST_WINDOW_S:
             world.contested_claims.append({"id": item.id, "seat": seat,
                                            "winner_ts": item.claim_ts,
@@ -1995,7 +1997,6 @@ def _apply_item_verb(ev, index, item, seat, world):
         else:
             item.claim_ts = ev["ts"]
         item.owner = seat
-        to("ready")
     elif verb == "start":
         # 🔴 THE COMPLETENESS GATE IS GONE. Owner, 2026-08-21:
         #   "I need you to turn off the whole 'you can't work on something that
