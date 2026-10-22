@@ -1252,6 +1252,10 @@ LINES_LIVE = [
      "ladder leaves the hose laid, unmoved"),
     ("DIG_REROUTES_LAID_HOSE", None, "a pit dug under a laid hose: within one corridor check it re-routes round the pit, "
      "still laid"),
+    ("COVER_BREAK_DROPS_RIDER", None, "a pit cover destroyed by damage under a colonist drops him into the pit (one descent, "
+     "held)"),
+    ("PITFALL_SAVED_ARRIVAL_FALLS", None, "a forced arrival into a pit saved before the detector judged it still falls after "
+     "the load (lastCell scribed)"),
 ]
 
 
