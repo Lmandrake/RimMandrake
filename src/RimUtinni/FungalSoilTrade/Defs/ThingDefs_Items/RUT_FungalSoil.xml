@@ -15,14 +15,11 @@
        count x mineableYield 18, with no craft recipe to manufacture more - the
        anti-exponential floor lives on the mineable def, not here.
 
-       PLACEHOLDER ART: reuses BiomesTeam.BiomesCaverns' own BMT_MycelialSoil
-       terrain texture path directly (vendor/mod_sources/BiomesCaverns_src/1.6/
-       Defs/TerrainDef/BiomesCaverns_Floor.xml:309, texturePath
-       BMT_Caverns/Terrains/MycelialSoil) - a real, live asset from an active mod
-       dependency, not an invented path; it is a flat terrain graphic pressed into
-       service as an item icon (same "reuse a confirmed-real path, flag it,
-       don't invent one" move LanternDeeps' own RUT_LanternDeepEmergence made
-       with a vanilla cave-entrance texture). Real bespoke item art is owed. -->
+       PLACEHOLDER ART: reuses the Rot's own mycelial-soil terrain texture
+       (RotSporeKit/Terrains/MycelialSoil, shipped in src/RimMandrake/TheRot/Textures/) -
+       a flat terrain graphic pressed into service as an item icon (same "reuse a
+       confirmed-real path, flag it, don't invent one" move LanternDeeps' own
+       RUT_LanternDeepEmergence made with a vanilla cave-entrance texture). Real bespoke item art is owed. -->
 
   <ThingDef ParentName="ResourceBase">
     <defName>RUT_FungalSoil</defName>
