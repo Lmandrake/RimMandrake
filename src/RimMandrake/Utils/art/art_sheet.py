@@ -411,6 +411,8 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
             fam = FAM_RE.sub("", job)
             if not bound and _slot_of_family(fam) not in (None, *resset):
                 continue      # filed FOR another graphic (job `slot`: Boarwolf_j, not Boarwolf): its slot's lane takes it
+            if not bound and look_lane_target(fam, resset, _live_res(idx)):
+                continue      # filed for a sibling look's texPath: that look's own lane takes it (look_lane_target)
             fac = v.get("facing")
             if fac not in FACINGS:
                 fm = re.search(r"_(north|east|south|west)(_r\d+)?$", job)
@@ -993,6 +995,18 @@ def _prefill_short(source: str, why: str) -> str:
     return why[:80]
 
 
+def _live_res(idx) -> set:
+    """Every texPath (facing suffix dropped) a mod of ours ships today, from the ledger's live set; cached per index."""
+    got = getattr(idx, "_sheet_live_res", None)
+    if got is None:
+        got = {L.parse_texfile(rel)["res"] for (_m, rel) in idx.live}
+        try:
+            idx._sheet_live_res = got
+        except AttributeError:
+            pass
+    return got
+
+
 def _fkey(c: dict) -> tuple:
     return tuple(sorted(c["faces"].items()))
 
@@ -1174,6 +1188,39 @@ def _slot_of_family(fam: str) -> str | None:
 
 
 _FAM_SLOTS: dict | None = None
+_FAM_TEX: dict | None = None
+
+
+def _texpath_of_family(fam: str) -> str | None:
+    """The `target_texpath` an artpipe job family was filed for (done/<id>.json), or None. One def often draws several
+    looks (ThingStyleDefs: Tank/<Look>/RM_LiquidTank); each look's render belongs in THAT look's lane."""
+    global _FAM_TEX
+    if _FAM_TEX is None:
+        import os
+        _FAM_TEX = {}
+        root = Path(os.environ.get("ARTPIPE_STATE_DIR") or rm_str("artpipe")) / "done"
+        if root.is_dir():
+            for f in root.glob("*.json"):
+                if f.name.endswith(".manifest.json"):
+                    continue
+                try:
+                    j = json.loads(f.read_text())
+                except (OSError, ValueError):
+                    continue
+                if isinstance(j, dict) and j.get("id") and isinstance(j.get("target_texpath"), str):
+                    _FAM_TEX.setdefault(FAM_RE.sub("", str(j["id"]).lower()), j["target_texpath"])
+    return _FAM_TEX.get(fam.lower())
+
+
+def look_lane_target(fam: str, resset, live_res) -> str | None:
+    """LINE_JOINS sheet, owner 2026-10-21: *"You had it so that I had to choose between "use this" for each art style...
+    when actually all four art styles could be chosen together."* A render filed for ANOTHER live texPath of ours (a
+    sibling look of the same def) is not a candidate for this lane: return that texPath so it gets a lane of its own
+    (one lane per look = one independent pick per look). None = it may stay here."""
+    if _slot_of_family(fam):
+        return None
+    t = _texpath_of_family(fam)
+    return t if t and t not in resset and t in live_res else None
 
 
 def job_targets() -> dict:
@@ -2771,6 +2818,27 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             if lane is not None:
                 lane["cols"].append(c)
                 named.remove(c)
+        # a render filed for a sibling LOOK's texPath (look_lane_target) goes to that look's lane, made here with the
+        # look's in-game picture: each look is then picked on its own, all of them together if he wants
+        for c in list(named):
+            if any(h and h in c.get("label", "") for h in HIDE_SETS):
+                continue          # hidden on this sheet: it must not open a lane of its own either
+            tex = look_lane_target(c.get("family") or "", {g["res"] for g in graphics if g["res"]}, _live_res(idx))
+            if tex is None:
+                tex = next((g["res"] for g in graphics if g["res"] and g["res"] == _texpath_of_family(c.get("family") or "")), None)
+            if tex is None:
+                continue
+            lane = next((g for g in graphics if g["res"] == tex), None)
+            if lane is None:
+                br = build_row(idx, tex, order, slots)
+                lc = [x for x in br["cols"] if _fkey(x) not in seen]
+                seen.update(_fkey(x) for x in lc)
+                lane = {"res": tex, "role": "look: " + "/".join(tex.split("/")[-2:]), "cols": lc, "prior_raw": None,
+                        "joined_by": "artpipe target_texpath", "look": True}
+                graphics.append(lane)
+            if _fkey(c) not in {_fkey(x) for x in lane["cols"]}:
+                lane["cols"].append(c)
+            named.remove(c)
         # a catch row: renders of the LIVING creature are reference only, never a pickable catch picture
         _src = r["key"][:-len("Catch")] if r["key"].endswith("Catch") and len(r["key"]) > 5 else None
         if _src and named:

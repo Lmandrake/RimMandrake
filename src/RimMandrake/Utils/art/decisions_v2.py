@@ -188,6 +188,66 @@ def mark_returned(path: Path, said: str, apply: bool = False, at: str | None = N
     return {"ok": True, "file": str(path), "returned": doc["returned"], "applied": apply}
 
 
+def accept_looks(path: Path, said: str, prefer: dict | None = None, apply: bool = False, at: str | None = None,
+                 snapshot: dict | None = None) -> dict:
+    """His "take every look" answer on a subject sheet: in EVERY lane of every row that holds a render, pick that render
+    (one pick per lane, so all looks of one def are accepted together). Owner, 2026-10-21, LINE_JOINS sheet: *"Just accept
+    the art and go on. You had it so that I had to choose between "use this" for each art style... when actually all four
+    art styles could be chosen together."* A lane holding several renders needs PREFER {row: letter} naming one of them,
+    else the row is reported and left unchanged. His `assign` of a render to a lane it was NOT filed for (the old sheet
+    offered one lane only) is dropped and kept under `assignSuperseded`. `said` must be his words."""
+    said = (said or "").strip()
+    if len(said) < 8:
+        return {"ok": False, "error": "--accept-looks needs his words (the sentence where he accepted the art)"}
+    doc = json.loads(path.read_text())
+    if snapshot is None:
+        import artledger as L
+        snapshot = json.loads((L.REPO_ROOT / doc["snapshot"]).read_text())
+    if doc.get("snapshotId") and snapshot.get("snapshotId") and doc["snapshotId"] != snapshot["snapshotId"]:
+        return {"ok": False, "error": f"decisions are against snapshot {doc['snapshotId']}, the sheet is "
+                                      f"{snapshot['snapshotId']}: run remap_decisions.py first"}
+    at = at or time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    prefer = prefer or {}
+    picked, unresolved = {}, {}
+    decs = doc.setdefault("decisions", {})
+    for row, srow in sorted((snapshot.get("rows") or {}).items()):
+        gof, labels, cols = srow.get("graphic_of") or {}, srow.get("labels") or {}, srow.get("columns") or {}
+        lanes: dict = {}
+        for letter, g in sorted(gof.items()):
+            if g and not g.startswith("_") and str(labels.get(letter, "")).startswith("render") and letter in cols:
+                lanes.setdefault(g, []).append(letter)
+        if not lanes:
+            continue
+        choice = {}
+        for g, ls in sorted(lanes.items()):
+            want = [x for x in prefer.get(row, []) if x in ls]
+            if len(ls) == 1 or len(want) == 1:
+                choice[g] = want[0] if want else ls[0]
+            else:
+                unresolved.setdefault(row, {})[g] = ls
+        if row in unresolved:
+            continue
+        v = dict(decs.get(row) or {})
+        stale = {k: x for k, x in (v.get("assign") or {}).items() if gof.get(k) not in (None, "_byname") and gof.get(k) != x}
+        if stale:
+            v["assignSuperseded"] = {**(v.get("assignSuperseded") or {}), **stale}
+            v["assign"] = {k: x for k, x in (v.get("assign") or {}).items() if k not in stale}
+        slots = dict(v.get("slots") or {})
+        for g, letter in choice.items():
+            slots[g] = {"state": "pick", "pick": letter, "set_id": SL.set_id(cols[letter]), "slot_id": f"{row}/look:{g}",
+                        "at": at}
+        prim = srow.get("res")
+        v.update({"schema": 2, "rev": snapshot.get("snapshotId"), "slots": slots, "at": at, "decidedAt": at,
+                  "decision": choice.get(prim) or choice[sorted(choice)[0]],
+                  "acceptedLooks": {"at": at, "said": said, "by": "owner", "via": "decisions_v2 --accept-looks"}})
+        decs[row] = v
+        picked[row] = choice
+    if apply and picked:
+        doc["savedAt"], doc["savedBy"] = at, "decisions_v2 --accept-looks (owner's words)"
+        path.write_text(json.dumps(doc, indent=2) + "\n")
+    return {"ok": not unresolved, "picked": picked, "unresolved": unresolved, "applied": apply and bool(picked)}
+
+
 def asks_of(v: dict) -> dict:
     a = v.get("asks") if isinstance(v.get("asks"), dict) else {}
     return {k: x for k, x in a.items() if x not in (None, "", [], {}, False)}
@@ -522,7 +582,22 @@ def main(argv=None) -> int:
     ap.add_argument("--fold-old-ticks", action="store_true")
     ap.add_argument("--returned", metavar="HIS_WORDS",
                     help="stamp the owner's return of each file's sheet (his words); unchanged slots keep their in-game art")
+    ap.add_argument("--accept-looks", metavar="HIS_WORDS",
+                    help="pick the render in EVERY look lane of every row (all looks together); his words")
+    ap.add_argument("--prefer", nargs="*", default=[], metavar="ROW=LETTER",
+                    help="with --accept-looks: the render to take in a lane that holds several")
     a = ap.parse_args(argv)
+    if a.accept_looks:
+        pref: dict = {}
+        for x in a.prefer:
+            r_, _, l_ = x.partition("=")
+            pref.setdefault(r_, []).append(l_)
+        rc = 0
+        for f in a.files:
+            r = accept_looks(Path(f), a.accept_looks, pref, apply=a.apply)
+            print(json.dumps(r, indent=1))
+            rc |= 0 if r["ok"] else 1
+        return rc
     if a.returned:
         rc = 0
         for f in a.files:
