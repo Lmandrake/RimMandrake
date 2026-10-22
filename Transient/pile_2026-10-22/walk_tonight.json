@@ -1,0 +1,667 @@
+{
+ "save": "RM_fw_walkthrough_20261022b",
+ "built_from": "scenarios_map.py (map C) + --river (map R)",
+ "note": "frame = absolute cells on map C; frame_rel = C1 plot-local (add c1.origin from src/RimMandrake/FlowWorks/northstar/review/scenarios/map_r_placed.json); answers go in 'answer'",
+ "minutes": 44,
+ "decisions": 27,
+ "stops": [
+  {
+   "n": 1,
+   "id": "C3_reels_hoses",
+   "map": "C",
+   "minutes": 6,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C3",
+   "views": [
+    {
+     "name": "reel park + turned reels",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 11,
+       "z": 11,
+       "width": 38,
+       "height": 26,
+       "paddingCells": 1
+      }
+     }
+    },
+    {
+     "name": "o1 hose to Hobb (laid, plump)",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 16,
+       "z": 24,
+       "width": 22,
+       "height": 24,
+       "paddingCells": 1
+      }
+     }
+    }
+   ],
+   "setup": "none (staged: park reels plump/filling/flat/wound at x13; dropped carry along z13; turned N/E/S at 39-47,13)",
+   "look": "hose girth empty vs plump; the EMPTY (flat, dropped) hose's shadow; the four reel looks; the turned reels (north/south are the west art turned)",
+   "decisions": [
+    {
+     "q": "Hose girth now (empty and plump)?",
+     "options": [
+      "Keep",
+      "Thinner",
+      "Thicker",
+      "Plump only: wider"
+     ],
+     "closes": [
+      "HOSE_GIRTH_TUNE_MUCH_THINNER"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Empty-hose shadow (darker, wider since today)?",
+     "options": [
+      "Keep",
+      "Lighter",
+      "Darker still"
+     ],
+     "closes": [
+      "HOSE_GIRTH_TUNE_MUCH_THINNER"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Turned reels (north/south = west art turned)?",
+     "options": [
+      "Fine as is",
+      "Install the drawn N/S views (phone A-P)",
+      "Redraw"
+     ],
+     "closes": [
+      "REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED",
+      "REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Reel looks (four styles) still bizarre / side-on?",
+     "options": [
+      "Read right now",
+      "Still side-on: redraw",
+      "Redraw one style"
+     ],
+     "closes": [
+      "REEL_TAP_CAMERA_REDRAW_STILL_SIDE_ON"
+     ],
+     "answer": null
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "id": "C12_planks_ladders",
+   "map": "C",
+   "minutes": 5,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C12",
+   "views": [
+    {
+     "name": "concealed pit + rail ladder",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 63,
+       "z": 30,
+       "width": 16,
+       "height": 12,
+       "paddingCells": 1
+      }
+     }
+    },
+    {
+     "name": "portable ladder / gear / jump pits",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 62,
+       "z": 13,
+       "width": 24,
+       "height": 12,
+       "paddingCells": 1
+      }
+     }
+    }
+   ],
+   "setup": "HE pokes: right-click the drafted colonist at 71,33 to 75,35 (across the planks)",
+   "look": "the colonist ON the planks (floor height, not sunk); the oubliette rail ladder RAISED; the portable ladder leaning",
+   "decisions": [
+    {
+     "q": "A colonist walking the planks reads as?",
+     "options": [
+      "On the floor (right)",
+      "Sunk into the pit",
+      "Floating"
+     ],
+     "closes": [
+      "PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS (closed 41fb948b5e; a 'no' reopens it)"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Rail ladder (raised, on the wall)?",
+     "options": [
+      "Keep",
+      "Hug the wall tighter",
+      "Redraw"
+     ],
+     "closes": [
+      "RAIL_LADDER_REDRAW_CLIMB_NOT_CRAWL"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Portable ladder leaning in the 3 m pit?",
+     "options": [
+      "Keep",
+      "Redraw"
+     ],
+     "closes": [
+      "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS (look bar)"
+     ],
+     "answer": null
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "id": "C2_seam_spikes",
+   "map": "C",
+   "minutes": 6,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C2",
+   "views": [
+    {
+     "name": "gatehouse concealed pit (max zoom for the seam)",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 89,
+       "z": 77,
+       "width": 7,
+       "height": 7,
+       "paddingCells": 1
+      }
+     }
+    },
+    {
+     "name": "drawbridge raised in the keep wall",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 93,
+       "z": 76,
+       "width": 12,
+       "height": 12,
+       "paddingCells": 1
+      }
+     }
+    }
+   ],
+   "setup": "after the seam question HE (god mode) deconstructs one gatehouse plank: the whole cover gives way, spikes show",
+   "look": "the seam at max zoom; then the spikes in the 4 m pit; the steel leaf/winch/gate in place",
+   "decisions": [
+    {
+     "q": "Concealed pit at max zoom?",
+     "options": [
+      "Seam right",
+      "Too visible",
+      "Too hidden"
+     ],
+     "closes": [
+      "north-star look bar pit_covered_seam_at_max_zoom (C2)"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Pit spikes art?",
+     "options": [
+      "Keep",
+      "Thinner spokes",
+      "Redraw to his reference"
+     ],
+     "closes": [
+      "PIT_SPIKES_REDRAW_SPOKES_NOT_LOGS"
+     ],
+     "answer": null
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "id": "DB_drawbridge_pictures",
+   "map": "C",
+   "minutes": 4,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto DB",
+   "views": [
+    {
+     "name": "four drawbridges + two closed gates",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 63,
+       "z": 167,
+       "width": 36,
+       "height": 18,
+       "paddingCells": 1
+      }
+     }
+    }
+   ],
+   "setup": "none (timber lowered, timber raised, steel lowered, steel raised + winch powered; gates WoodLog and Steel, closed)",
+   "look": "each leaf/winch/gate draws its MATERIAL picture (443912e4df); closed timber gate = the picture he never picked",
+   "decisions": [
+    {
+     "q": "Timber drawbridge pictures?",
+     "options": [
+      "Keep",
+      "Redraw leaf",
+      "Redraw winch",
+      "Redraw both"
+     ],
+     "closes": [
+      "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS ('Drawbriges need to be looked at in game')"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Steel drawbridge pictures?",
+     "options": [
+      "Keep",
+      "Redraw leaf",
+      "Redraw winch",
+      "Redraw both"
+     ],
+     "closes": [
+      "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Closed gates (timber/Scrapper closed renders exist, never picked)?",
+     "options": [
+      "Install the A renders",
+      "Keep what shows",
+      "Redraw"
+     ],
+     "closes": [
+      "BRIDGE_ART_REDRAW_CABINETS_GROW_SADDLES"
+     ],
+     "answer": null
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "id": "C5_riser_girth",
+   "map": "C",
+   "minutes": 4,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C5",
+   "views": [
+    {
+     "name": "tank bay + pump",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 112,
+       "z": 24,
+       "width": 26,
+       "height": 24,
+       "paddingCells": 1
+      }
+     }
+    }
+   ],
+   "setup": "none",
+   "look": "pipes rising onto each tank's flange; pipe girth (half since 10-22); chemfuel/propane/water colours",
+   "decisions": [
+    {
+     "q": "Pipe rising onto the tank flange?",
+     "options": [
+      "Right",
+      "Riser too tall",
+      "Enter lower / centre"
+     ],
+     "closes": [
+      "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Pipe girth (half)?",
+     "options": [
+      "Keep",
+      "Thinner",
+      "Thicker"
+     ],
+     "closes": [
+      "PIPE_GIRTH_TUNE_HALF_AS_THICK"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Liquid colours in hoses/canals?",
+     "options": [
+      "All distinct",
+      "Chemfuel ~ propane",
+      "Water too dark"
+     ],
+     "closes": [
+      "(look bar liquid_colours; a 'no' files a tune item)"
+     ],
+     "answer": null
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "id": "C7_levels_wells",
+   "map": "C",
+   "minutes": 4,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C7",
+   "views": [
+    {
+     "name": "ground tanks + gap + bleed wells",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 22,
+       "z": 122,
+       "width": 22,
+       "height": 22,
+       "paddingCells": 1
+      }
+     }
+    },
+    {
+     "name": "tower + garden hose",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 12,
+       "z": 140,
+       "width": 30,
+       "height": 12,
+       "paddingCells": 1
+      }
+     }
+    }
+   ],
+   "setup": "seat: build the two missing pipe cells (jawa/build_batch RM_UniversalPipe at 28,138 and 29,138) and step 2500 ticks (one in-game hour); HE reads the three tank levels",
+   "look": "three ground tanks moving to one level in decilitre steps; the bleed wells read as wells (not taps); the tall tower",
+   "decisions": [
+    {
+     "q": "Tanks levelling through pipes, speed?",
+     "options": [
+      "Right",
+      "Too fast",
+      "Too slow"
+     ],
+     "closes": [
+      "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+      "WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Bleed well art?",
+     "options": [
+      "Reads as a well",
+      "Reads as a tap: redraw"
+     ],
+     "closes": [
+      "BLEED_WELL_STRINGS_RENAME_TAP_RETIRED (strings done; art call)"
+     ],
+     "answer": null
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "id": "C4_depth_read",
+   "map": "C",
+   "minutes": 3,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --goto C4",
+   "views": [
+    {
+     "name": "quarry benches + sump",
+     "frame": {
+      "tool": "rimworld/frame_cell_rect",
+      "args": {
+       "x": 14,
+       "z": 64,
+       "width": 36,
+       "height": 36,
+       "paddingCells": 1
+      }
+     }
+    }
+   ],
+   "setup": "none",
+   "look": "D1/D2/D3 benches + 3 m sump readable at a glance; wet-wall band; the hose climbing the ramps (fixer B's lay)",
+   "decisions": [
+    {
+     "q": "Depth reads at a glance?",
+     "options": [
+      "Yes",
+      "Walls need more shade",
+      "Water needs more depth tint"
+     ],
+     "closes": [
+      "WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Hose up the ramps?",
+     "options": [
+      "Reads right",
+      "Ugly: rework"
+     ],
+     "closes": [
+      "(C4 hose lay, fixer B; no item)"
+     ],
+     "answer": null
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "id": "switch_to_R",
+   "map": "R",
+   "minutes": 1,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --river --labels; python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --river --goto C1",
+   "views": [],
+   "setup": "seat: re-pin map R labels (the save's sidecar carries map C's only)",
+   "look": "-",
+   "decisions": []
+  },
+  {
+   "n": 9,
+   "id": "C1_terraces",
+   "map": "R",
+   "minutes": 6,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --river --goto C1",
+   "views": [
+    {
+     "name": "sprinkler rows (plot-local 36..46, 10..32)",
+     "frame_rel": [
+      36,
+      10,
+      11,
+      23
+     ]
+    },
+    {
+     "name": "pole span over the dry ditch (plot-local 30..40, 34..40)",
+     "frame_rel": [
+      30,
+      33,
+      12,
+      8
+     ]
+    },
+    {
+     "name": "terraces + river bank (plot-local 0..30, 20..41)",
+     "frame_rel": [
+      0,
+      20,
+      31,
+      22
+     ]
+    }
+   ],
+   "setup": "HE opens S1 (terrace 1's tail) and unpauses ~1 in-game hour; frame_rel = plot-local, add c1.origin from review/scenarios/map_r_placed.json",
+   "look": "the four sprinkler looks spraying; the pipe span sagging between poles; terrace 2's front; river vs canal blue",
+   "decisions": [
+    {
+     "q": "Sprinkler heads (four looks)?",
+     "options": [
+      "Keep all",
+      "Redraw one look",
+      "Redraw all"
+     ],
+     "closes": [
+      "SPRINKLER_HEADS_BUILD_PUMP_REQUIRED"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Pipe span on poles reads as?",
+     "options": [
+      "A pipe on poles",
+      "A power line: redraw",
+      "Sag wrong"
+     ],
+     "closes": [
+      "PIPE_POLE_REDRAW_NOT_A_POWER_LINE",
+      "PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Canal front speed along terrace 2?",
+     "options": [
+      "Right",
+      "Too fast",
+      "Too slow"
+     ],
+     "closes": [
+      "(feel; a tune item if not right)"
+     ],
+     "answer": null
+    },
+    {
+     "q": "River blue vs canal blue?",
+     "options": [
+      "One water",
+      "Canal too dark",
+      "River too light"
+     ],
+     "closes": [
+      "CANAL_LAKE_COLOUR_UNIFY_TWO_BLUES"
+     ],
+     "answer": null
+    }
+   ]
+  },
+  {
+   "n": 10,
+   "id": "C11_creek",
+   "map": "R",
+   "minutes": 5,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --river --goto C11",
+   "views": [
+    {
+     "name": "R2 ford",
+     "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --river --goto R2"
+    },
+    {
+     "name": "R3 weir",
+     "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --river --goto R3"
+    },
+    {
+     "name": "R7 ferry rope",
+     "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --river --goto R7"
+    }
+   ],
+   "setup": "HE unpauses ~30 s at R2: the control colonist in the water is carried, the one on the stones is not",
+   "look": "ford stones read as stones; the weir; the rope above the water; the push of the current",
+   "decisions": [
+    {
+     "q": "Weir art?",
+     "options": [
+      "Keep",
+      "Redraw"
+     ],
+     "closes": [
+      "RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Current push on a wader?",
+     "options": [
+      "Right",
+      "Too strong",
+      "Too weak"
+     ],
+     "closes": [
+      "(feel; RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED rows)"
+     ],
+     "answer": null
+    },
+    {
+     "q": "Ford stones and ferry rope?",
+     "options": [
+      "Both read right",
+      "Stones read as dry ground",
+      "Rope sits in the water"
+     ],
+     "closes": [
+      "(look bars river_ford, river_works_looks)"
+     ],
+     "answer": null
+    }
+   ]
+  },
+  {
+   "n": 11,
+   "id": "overflow_if_built",
+   "map": "R",
+   "minutes": 0,
+   "goto": "python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --river --goto C1",
+   "views": [
+    {
+     "name": "terrace 1 brim (plot-local 0..28, 31..36)",
+     "frame_rel": [
+      0,
+      30,
+      29,
+      7
+     ]
+    }
+   ],
+   "setup": "ONLY if overflow Stage 1+ is deployed in tonight's DLL (overflow_build.md says so): HE shuts S1 with the pump on and unpauses until terrace 1 spills; otherwise SKIP (0 min)",
+   "look": "the spill sheet on the field",
+   "decisions": [
+    {
+     "q": "Overflow sheet on the ground?",
+     "options": [
+      "Right",
+      "Too blue / too thin",
+      "Spreads wrong"
+     ],
+     "closes": [
+      "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED"
+     ],
+     "answer": null
+    }
+   ]
+  }
+ ]
+}
