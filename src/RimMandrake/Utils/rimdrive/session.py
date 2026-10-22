@@ -108,7 +108,17 @@ class Session(object):
 
     # ------------------------------------------------------------ lifecycle
     def __enter__(self):
-        self.connect()
+        try:
+            self.connect()
+        except BaseException:
+            # __exit__ never runs when __enter__ raises: a lock taken or focus stolen
+            # before _open() failed (no token, game down) would leak for the process.
+            self._disconnect()
+            if self._lock_taken:
+                self._bridge_release()
+            if self._focus_prev is not None:
+                game_focus.restore_focus(self._focus_prev)
+            raise
         _ACTIVE.append(self)
         return self
 

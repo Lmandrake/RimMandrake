@@ -415,6 +415,9 @@ def main():
     if unmeasured:
         print("⚠️ UNMEASURED kinds are NOT counted as failures and NOT counted as passes. "
               "Read those weapon defs directly.")
+    if bad == 0 and not always:
+        print("\nUNMEASURED: no kind could be priced, so nothing is known to arm.")
+        return 2
     if bad == 0:
         print("\nEvery measurable kind arms on every roll.")
     else:

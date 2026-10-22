@@ -1987,7 +1987,10 @@ def write_prefill(rows, meta, override=False):
         try:
             with open(DECISIONS, encoding="utf-8") as fh:
                 existing = json.load(fh)
-        except (OSError, ValueError):
+        except (OSError, ValueError) as exc:
+            if not override:     # an unreadable file may hold his decisions: never treat it as absent
+                die("the decisions file %s exists but cannot be read as JSON (%s); refusing to overwrite it. "
+                    "Fix it, or --i-know-this-overwrites-the-owners-decisions" % (DECISIONS, exc))
             existing = {}
     if existing.get("savedBy") and not override:
         die("this decisions file has ALREADY been written by the sheet "
@@ -2033,8 +2036,10 @@ def write_prefill(rows, meta, override=False):
                         "calibration")},
         "decisions": dec,
     })
-    with open(DECISIONS, "w", encoding="utf-8") as fh:
+    tmp = DECISIONS + ".tmp.%d" % os.getpid()
+    with open(tmp, "w", encoding="utf-8") as fh:
         json.dump(doc, fh, ensure_ascii=False, indent=1)
+    os.replace(tmp, DECISIONS)
     return len(dec)
 
 
