@@ -37,3 +37,14 @@ Started 08:48 PDT. Tier fw_gss_sitting, DLL 41fb948b5e. Owner save RM_fw_walkthr
 (pending)
 - 08:49 lines_proof --fresh-map start (validation_core post-reveal plant sweep)
 - 08:53 drawbridge_proof --fresh-map start
+- 08:58 drawbridge_proof --fresh-map: 12/12 PASS (Fingerspike arrival recovered as SITE) — northstar/drawbridge_result_20261022T0915_belt.json; verified DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS L2 pass (no criteria registered on the item, run recorded only)
+- 08:58 commit 8e13037d85 local; ./publish REFUSED: origin fa912947d8 touches RM_SheetMath.cs which another helper has uncommitted in this clone — retry later, not resolving
+- 08:58 suspension_bridge_proof --fresh-map start
+- 09:04 suspension_bridge_proof --fresh-map: 26 PASS / 0 FAIL / 8 UNMEASURED (5 owed-unscripted, 3 water rows need --river/--lake/--sea, WAT_flood SITE: decks never awash) — northstar/suspension_result_20261022T0925_belt.json. Verified: SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN A1 A2 -> CLOSED; POSTS A1-A6; GRATE A1-A3; UNDERPASS A1-A6; JETTY A1-A2; ART_RESKIN A3
+- 09:04 trench_cover_proof --fresh-map start
+- 09:04 trench_cover_proof: 6 PASS / 0 FAIL / 4 UNMEASURED owed — northstar/trench_cover_result_20261022T0935_belt.json; TRENCH_COVER A2 verified
+- 09:04 raid_trench_proof --fresh-map start
+- 09:07 raid_trench_proof (storyteller raid): RAID_island_sealed PASS; outcome MILL_FAR — SITE: LordJob_StageThenAttack staged 62+ out for 15000 ticks, and 2 Entities FleshbeastAssault lords (7 pawns) on the map despite site_calm; MASKSWAP UNMEASURED. Rerun --direct
+- 09:11 raid_trench_proof --direct x3: HARNESS fixes (MASKSWAP bar predates RAIDERS_TRENCH ruling -> crossing over raider ladders is UNMEASURED; new row RAID_LADDER_BREACH; bar = ladders on both walls + used). raid_4: RAID_LADDER_BREACH PASS -> RAIDERS_TRENCH A2 verified (northstar/raid_trench_result_20261022T1000_belt.json)
+- 09:11 raid_trench_proof --direct --depth 8 (A3 fill causeway) start
+- 09:15 raid_trench_proof --direct --depth 8: RAID_FILL_CAUSEWAY FAIL (MOD presumed) -> filed CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (FOUNDRY); MASKSWAP PASS (no crossing). Confound probe: free colonist + 600 ticks, still Wait. Evidence northstar/raid_trench_result_20261022T1015_depth8_belt.json + _probe_ txt

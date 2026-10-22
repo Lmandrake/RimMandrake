@@ -1,0 +1,8 @@
+raid_5 (raid_trench_proof --direct --depth 8, 4 m ring, deployed 41fb948b5e), read at tick 15253 after the run:
+lord: LordJob_AssaultColony PirateYttakin pawnCount 3
+Human39719 at 132,126 curJob=Wait  ProofDecision: RM_RaiderFillTrench (131, 0, 126) line=0/8/8/0
+Human39734 at 132,127 curJob=Wait  ProofDecision: RM_RaiderFillTrench (131, 0, 127) line=0/8/8/8/0
+Human39727 at 138,133             ProofDecision: RM_RaiderFillTrench (131, 0, 128) line=0/8/8/8/0
+no ring square filled (all read depth 8), no RM_LadderPortable; lateMovePerRaiderPerSample 0.0 for t+6000..15000.
+island colonists: 1 down at t+1000, all 3 down by t+4000 (shot across).
+after the run: spawned a FREE colonist (Human114964) on the island at 124,125, stepped 600 ticks: both lip raiders still curJob=Wait (enemyTarget None), Human39727 Wait with enemyTarget Human718 (downed); 131,126 still depth 8. A Wait job that is never replaced is the lead.
