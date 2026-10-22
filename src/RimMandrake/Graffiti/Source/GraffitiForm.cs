@@ -15,7 +15,7 @@ namespace RimMandrake.Graffiti
         Stencil,   // repeatable, crisp, does not rainWash away
         Paste,     // wheat-paste poster - decays fast, peels in rain
         Sigil,     // tier-A/tier-C ideoligion emblem, rendered or authored
-        Glyph,     // small practical/hazard/meme mark (the meme glyphs and the warning glyph)
+        Glyph,     // small practical/hazard/meme mark - the shipped three
         Piece,     // full mural-scale work - v2, quality-tiered (fork F1)
     }
 }
