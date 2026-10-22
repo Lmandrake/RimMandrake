@@ -1,0 +1,574 @@
+{
+ "script": "climb_proof.py",
+ "started": "2026-10-22T09:17:56",
+ "rows": [
+  {
+   "id": "CLIMB_pond_person_free",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "k": "2",
+     "held": "False",
+     "trapped": "False",
+     "cell": "124,124",
+     "comp": "0",
+     "pocket": "False",
+     "size": "62439",
+     "depth": "4",
+     "gen": "275",
+     "built": "275",
+     "rebuilds": "84"
+    },
+    "mismatch": {},
+    "txt": "CLIMB k=2 held=False trapped=False cell=124,124 | POCKET k=2 comp=0 pocket=False size=62439 depth=4 gen=275 built=275 rebuilds=84"
+   }
+  },
+  {
+   "id": "CLIMB_pond_person_walks_out",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "end": [
+     124,
+     129
+    ],
+    "rect": [
+     122,
+     122,
+     5,
+     5
+    ],
+    "wantOut": true
+   }
+  },
+  {
+   "id": "CLIMB_D3_person_trapped",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "k": "2",
+     "held": "True",
+     "trapped": "True",
+     "cell": "131,123",
+     "comp": "1",
+     "pocket": "True",
+     "size": "9",
+     "depth": "3",
+     "gen": "275",
+     "built": "275",
+     "rebuilds": "84"
+    },
+    "mismatch": {},
+    "txt": "CLIMB k=2 held=True trapped=True cell=131,123 | POCKET k=2 comp=1 pocket=True size=9 depth=3 gen=275 built=275 rebuilds=84"
+   }
+  },
+  {
+   "id": "CLIMB_D3_person_cannot_walk_out",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "end": [
+     131,
+     123
+    ],
+    "rect": [
+     130,
+     122,
+     3,
+     3
+    ],
+    "wantOut": false
+   }
+  },
+  {
+   "id": "CLIMB_D3_muffalo_free",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "k": "3",
+     "held": "False",
+     "trapped": "False",
+     "cell": "127,123",
+     "comp": "0",
+     "pocket": "False",
+     "size": "62482",
+     "depth": "0",
+     "gen": "275",
+     "built": "275",
+     "rebuilds": "84"
+    },
+    "mismatch": {},
+    "txt": "CLIMB k=3 held=False trapped=False cell=127,123 | POCKET k=3 comp=0 pocket=False size=62482 depth=0 gen=275 built=275 rebuilds=84"
+   }
+  },
+  {
+   "id": "CLIMB_D2_rat_trapped",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "k": "1",
+     "held": "True",
+     "trapped": "True",
+     "cell": "136,123",
+     "comp": "7",
+     "pocket": "True",
+     "size": "1",
+     "depth": "2",
+     "gen": "275",
+     "built": "275",
+     "rebuilds": "84"
+    },
+    "mismatch": {},
+    "txt": "CLIMB k=1 held=True trapped=True cell=136,123 | POCKET k=1 comp=7 pocket=True size=1 depth=2 gen=275 built=275 rebuilds=84"
+   }
+  },
+  {
+   "id": "CLIMB_ladder_prison_door",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "colonist": {
+     "kv": {
+      "k": "2",
+      "held": "True",
+      "trapped": "False",
+      "cell": "140,122",
+      "comp": "2",
+      "pocket": "True",
+      "size": "9",
+      "depth": "4",
+      "gen": "275",
+      "built": "275",
+      "rebuilds": "84"
+     },
+     "mismatch": {}
+    },
+    "rat": {
+     "kv": {
+      "k": "1",
+      "held": "True",
+      "trapped": "True",
+      "cell": "142,124",
+      "comp": "3",
+      "pocket": "True",
+      "size": "9",
+      "depth": "4",
+      "gen": "275",
+      "built": "275",
+      "rebuilds": "84"
+     },
+     "mismatch": {}
+    },
+    "txt": [
+     "CLIMB k=2 held=True trapped=False cell=140,122 | POCKET k=2 comp=2 pocket=True size=9 depth=4 gen=275 built=275 rebuilds=84",
+     "CLIMB k=1 held=True trapped=True cell=142,124 | POCKET k=1 comp=3 pocket=True size=9 depth=4 gen=275 built=275 rebuilds=84"
+    ],
+    "ladder": {
+     "success": true,
+     "thingsPlaced": 1,
+     "failed": 0
+    }
+   }
+  },
+  {
+   "id": "CLIMB_mask_seals_cliff_edge",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "person": "CLIFF k=2 bits=0xCB vanilla=0xFF derived=True derives=266 | POCKET k=2 comp=0 pocket=False size=62439 depth=0 gen=275 built=275 rebuilds=84",
+    "muffalo": "CLIFF k=3 bits=0xFF vanilla=0xFF derived=True derives=266 | POCKET k=3 comp=0 pocket=False size=62482 depth=0 gen=275 built=275 rebuilds=84"
+   }
+  },
+  {
+   "id": "CLIMB_ramp_walk_out",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "end": [
+     145,
+     129
+    ],
+    "rect": [
+     144,
+     122,
+     3,
+     3
+    ],
+    "wantOut": true,
+    "ramp": {
+     "success": true,
+     "method": "System.String ProofRamp(System.String)",
+     "result": "RAMP 146,123 rot=1 joins=True gen=276",
+     "thingArgs": [],
+     "ticksGame": 2019,
+     "operation": {
+      "OperationId": "op_4853c9557f414f07a6de8629ffa1e22d",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 54
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 2019
+     }
+    }
+   }
+  },
+  {
+   "id": "CLIMB_ramp_frees_and_retraps",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "txt": [
+     "POCKET k=2 comp=3 pocket=True size=9 depth=4 gen=275 built=275 rebuilds=84",
+     "POCKET k=2 comp=0 pocket=False size=62464 depth=4 gen=277 built=277 rebuilds=86",
+     "POCKET k=2 comp=3 pocket=True size=9 depth=4 gen=278 built=278 rebuilds=87"
+    ],
+    "ramp": [
+     {
+      "success": true,
+      "method": "System.String ProofRamp(System.String)",
+      "result": "RAMP 146,123 rot=1 joins=True gen=276",
+      "thingArgs": [],
+      "ticksGame": 2019,
+      "operation": {
+       "OperationId": "op_4853c9557f414f07a6de8629ffa1e22d",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 54
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 2019
+      }
+     },
+     {
+      "success": true,
+      "method": "System.String ProofRamp(System.String)",
+      "result": "RAMP 146,123 removed gen=278",
+      "thingArgs": [],
+      "ticksGame": 2990,
+      "operation": {
+       "OperationId": "op_faa921a901364667ba1b67e27fe06854",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 51
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 2990
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "CLIMB_step_cost_slow_at_K",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "txt": [
+     "COST from=121,124 to=122,124 fromD=0 toD=2 k=2 mask=True climb=45 factor=2 cost=90",
+     "COST from=122,123 to=122,124 fromD=2 toD=2 k=2 mask=True climb=45 factor=2 cost=0",
+     "COST from=148,123 to=147,123 fromD=0 toD=1 k=2 mask=True climb=30 factor=2 cost=30"
+    ]
+   }
+  },
+  {
+   "id": "CLIMB_rebuild_follows_fill",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "k": "2",
+     "comp": "0",
+     "pocket": "False",
+     "size": "62464",
+     "depth": "3",
+     "gen": "280",
+     "built": "280",
+     "rebuilds": "88"
+    },
+    "fill": {
+     "success": true,
+     "cell": {
+      "x": 132,
+      "z": 123
+     },
+     "depth": 1,
+     "fillSet": false,
+     "fill": 0,
+     "ticksGame": 3060,
+     "operation": {
+      "OperationId": "op_f6e84a97be0746c29eedd9f0669b3d6b",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 66
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 3060
+     }
+    }
+   }
+  },
+  {
+   "id": "CLIMB_hauler_fetches_ramped_floor",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "why": "",
+    "sealed": [
+     {
+      "id": "Jade46228",
+      "def": "Jade",
+      "label": "Jade x10",
+      "x": 159,
+      "z": 123,
+      "spawned": true,
+      "rot": 0,
+      "stackCount": 10,
+      "hitPoints": -1,
+      "maxHitPoints": -1
+     }
+    ],
+    "final": [
+     {
+      "id": "Jade46228",
+      "def": "Jade",
+      "label": "Jade x10",
+      "x": 164,
+      "z": 128,
+      "spawned": true,
+      "rot": 0,
+      "stackCount": 10,
+      "hitPoints": -1,
+      "maxHitPoints": -1
+     }
+    ],
+    "waited": 750,
+    "ramp": {
+     "success": true,
+     "method": "System.String ProofRamp(System.String)",
+     "result": "RAMP 160,123 rot=1 joins=True gen=281",
+     "thingArgs": [],
+     "ticksGame": 3730,
+     "operation": {
+      "OperationId": "op_73f87a43fbd34605bb8483b35b46d4de",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 52
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 3730
+     }
+    },
+    "trail": [
+     "148,127",
+     "143,125",
+     "138,124",
+     "133,120"
+    ],
+    "hauler": "Human46225",
+    "hauling": true,
+    "zone": "Stockpile zone 1",
+    "filter": true,
+    "placed": 10,
+    "othersOff": 21
+   }
+  },
+  {
+   "id": "CLIMB_raider_never_crosses_ramped_moat",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "why": "",
+    "island": {
+     "id": "Human46235",
+     "def": "Human",
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "faction": "Kissoud",
+     "bodySize": 1.0,
+     "requiredWidth": 1,
+     "captured": true,
+     "jumper": false,
+     "held": false,
+     "lipCells": 0,
+     "lipReachable": 0,
+     "canReachMapEdge": false
+    },
+    "moat": {
+     "id": "Human46241",
+     "def": "Human",
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "faction": "Kissoud",
+     "bodySize": 1.0,
+     "requiredWidth": 1,
+     "captured": true,
+     "jumper": false,
+     "held": false,
+     "lipCells": 32,
+     "lipReachable": 24,
+     "canReachMapEdge": true
+    },
+    "txt": [
+     "POCKET k=2 comp=3 pocket=False size=9 depth=0 gen=282 built=282 rebuilds=90",
+     "POCKET k=2 comp=0 pocket=False size=62473 depth=4 gen=282 built=282 rebuilds=90",
+     "POCKET k=2 comp=0 pocket=False size=62473 depth=0 gen=282 built=282 rebuilds=90"
+    ],
+    "ramp": {
+     "success": true,
+     "method": "System.String ProofRamp(System.String)",
+     "result": "RAMP 154,125 rot=1 joins=True gen=277",
+     "thingArgs": [],
+     "ticksGame": 2019,
+     "operation": {
+      "OperationId": "op_1db5318b4cf8461c862a679c2a397967",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 47
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 2019
+     }
+    }
+   }
+  },
+  {
+   "id": "CLIMB_save_reload_pockets_identical",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "covered by live_session.py B7 (one save + one load; pockets compared, RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS); the grid is derived, never scribed"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/climb_2.json",
+  "origin": "120,120",
+  "fresh_map": true
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Badger46078",
+    "Bluebird46096",
+    "Boomalope46075",
+    "Boomalope46076",
+    "Boomalope46077",
+    "Boomrat46084",
+    "Boomrat46113",
+    "Crow46115",
+    "Crow46116",
+    "Fox_Red46112",
+    "GuineaPig46070",
+    "GuineaPig46071",
+    "GuineaPig46072",
+    "GuineaPig46073",
+    "GuineaPig46125",
+    "GuineaPig46126",
+    "GuineaPig46127",
+    "GuineaPig46128",
+    "GuineaPig46129",
+    "GuineaPig46130",
+    "GuineaPig46131",
+    "GuineaPig46132",
+    "Horse46122",
+    "Horse46123",
+    "Horse46124",
+    "Ibex46083",
+    "Lynx46117",
+    "Mink46119",
+    "Muffalo46079",
+    "Muffalo46080",
+    "Muffalo46081",
+    "Muffalo46082",
+    "Porcupine46086",
+    "Quail46108",
+    "Quail46109",
+    "Quail46110",
+    "Quail46111",
+    "Raccoon46074",
+    "Raccoon46120",
+    "Rat46097",
+    "Sparrow46089",
+    "Sparrow46090",
+    "Sparrow46091",
+    "Sparrow46092",
+    "Sparrow46093",
+    "Sparrow46099",
+    "Sparrow46100",
+    "Sparrow46101",
+    "Sparrow46102",
+    "Sparrow46103",
+    "Squirrel46087",
+    "Squirrel46088",
+    "Squirrel46094",
+    "Squirrel46095",
+    "Squirrel46104",
+    "Squirrel46105",
+    "Squirrel46106",
+    "Squirrel46107",
+    "Squirrel46118",
+    "Squirrel46121",
+    "Tortoise46114",
+    "Turkey46098",
+    "Wolverine46085"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "settings_before": {
+  "superdeepCapturesOwnFaction": "False",
+  "pitRelativeClimbEnabled": "True",
+  "ladderPrisonDoorEnabled": "True"
+ },
+ "settings_restored": {
+  "superdeepCapturesOwnFaction": "False",
+  "pitRelativeClimbEnabled": "True",
+  "ladderPrisonDoorEnabled": "True"
+ }
+}

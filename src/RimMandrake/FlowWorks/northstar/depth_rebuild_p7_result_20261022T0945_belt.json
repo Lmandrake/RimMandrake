@@ -1,0 +1,99 @@
+{
+ "script": "depth_rebuild_proofs.py",
+ "started": "2026-10-22T09:32:45",
+ "rows": [
+  {
+   "id": "P7_fall_7m_takes_3_5x",
+   "status": "PASS",
+   "detail": {
+    "ratio": 3.480574887488871,
+    "falls": {
+     "2m": {
+      "flyer": "FLYER id=Human39072 from=120,153 to=123,153 depth=4 launched=True def=PawnFlyer_Stun",
+      "descents": [
+       "Human39072@123,153 t=179 fall=4.9"
+      ],
+      "fall": [
+       4.9
+      ],
+      "mass": 60.74998,
+      "pos": [
+       124,
+       152
+      ],
+      "dead": null,
+      "depth": null,
+      "readout": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)"
+     },
+     "7m": {
+      "flyer": "FLYER id=Human41822 from=126,153 to=129,153 depth=14 launched=True def=PawnFlyer_Stun",
+      "descents": [
+       "Human41822@129,153 t=419 fall=13.7"
+      ],
+      "fall": [
+       13.7
+      ],
+      "mass": 48.79998,
+      "pos": [
+       130,
+       152
+      ],
+      "dead": null,
+      "depth": null,
+      "readout": "OK Hole 7 m \u00b7 Water 0.00 m (0 L)"
+     }
+    }
+   }
+  },
+  {
+   "id": "P7_prisoner_held_in_1_5m_pocket",
+   "status": "PASS",
+   "detail": {
+    "guest": "{'success': True, 'pawn': 'Olga', 'hostFactionAfter': 'New Arrivals', 'guestStatusBefore': 'Guest', 'guestStatusAfter': 'Prisoner', 'resistanceAfter': 16.0, 'wi",
+    "climb0": "CLIMB k=2 held=True trapped=True cell=135,153 | POCKET k=2 comp=3 pocket=True size=9 depth=3 gen=191 built=191 rebuilds=29",
+    "room": "ROOM split=False pitRoom=False proper=False edge=True prison=False roomsOn=True pitId=2265 lipId=2265",
+    "after1200": [
+     134,
+     152
+    ],
+    "climb1": "CLIMB k=2 held=True trapped=True cell=134,152 | POCKET k=2 comp=3 pocket=True size=9 depth=3 gen=191 built=191 rebuilds=29",
+    "readout": "OK Hole 1.5 m \u00b7 Water 0.00 m (0 L)"
+   }
+  },
+  {
+   "id": "P7_shoot_across_2m_trench_allowed",
+   "status": "PASS",
+   "detail": {
+    "shooter": "Human54281",
+    "target": "Human54285",
+    "probe": "{\"success\": true, \"pawn\": \"Human54281\", \"faction\": \"New Arrivals\", \"position\": {\"x\": 139, \"z\": 154}, \"picked\": {\"id\": \"Human54285\", \"def\": \"Human\", \"x\": 143, \"z\": 154}, \"primary\": \"Gun_BoltActionRifle\", \"primaryVerbRanged\": true, \"ticksGame\": 2023, \"operation\": {\"OperationId\": \"op_f50c6d78ac4a4356be8a0d45b5e2d918\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 46}, \"state\": {\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 2023}}"
+   }
+  },
+  {
+   "id": "P7_shoot_between_7m_pits_refused",
+   "status": "PASS",
+   "detail": {
+    "shooter": "Human54292",
+    "target": "Human54296",
+    "probe": "{\"success\": true, \"pawn\": \"Human54292\", \"faction\": \"New Arrivals\", \"position\": {\"x\": 147, \"z\": 153}, \"primary\": \"Gun_BoltActionRifle\", \"primaryVerbRanged\": true, \"ticksGame\": 2023, \"operation\": {\"OperationId\": \"op_18800c1686e14fb2b4e2310e4ad1bb58\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 45}, \"state\": {\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 2023}}",
+    "depthA": "OK Hole 7 m \u00b7 Water 0.00 m (0 L)",
+    "depthB": "OK Hole 7 m \u00b7 Water 0.00 m (0 L)"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/depth_p7.json",
+  "only": "p7",
+  "fresh_map": true
+ },
+ "settings_before": {
+  "fw.superdeepCapturesOwnFaction": "False",
+  "sw.deepSwimEnabled": "True",
+  "sw.shallowWaterDrowningEnabled": "True"
+ },
+ "settings_restored": {
+  "fw.superdeepCapturesOwnFaction": "False",
+  "sw.deepSwimEnabled": "True",
+  "sw.shallowWaterDrowningEnabled": "True"
+ }
+}

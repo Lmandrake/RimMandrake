@@ -361,10 +361,11 @@ def main():
     if a.fresh_map:
         B.call("rimworld/go_to_main_menu")
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
-    if ok:
-        res["site_calm"] = V.site_calm(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: map-gen hostiles/hives stop safe_advance at arm
     rect_G, rect_pile = (ox + 38, oz + 2, 3, 3), (ox + 43, oz + 8, 2, 2)
     ok, _ = V._wait_playing(B, leave_s=0)
+    # HARNESS (BENCH belt 2026-10-22): d03ca752f4 put this calm BEFORE `ok` was assigned -> UnboundLocalError at start
+    if ok:
+        res["site_calm"] = V.site_calm(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: map-gen hostiles/hives stop safe_advance at arm
     FIELDS = ("superdeepCapturesOwnFaction", "pitRelativeClimbEnabled", "ladderPrisonDoorEnabled")
     before = {f: sget(f) for f in FIELDS}
     res["settings_before"] = before
