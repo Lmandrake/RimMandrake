@@ -26,9 +26,9 @@ VANILLA_TILT = 0.1           # Plant.Print topVerticesAltitudeBias
 
 # (layer index, mature visual size) from the 2026-10-04 def dump; drawSize.x is 1 for all of them.
 MEASURED = {
-    "AB_WitchesOyster": (11, 6.0), "AB_AgaricusDomeCap": (11, 7.0), "AB_LilacBeacon": (11, 3.0),
-    "AB_GlowingAgarilux": (15, 4.0), "RM_PaleTree": (15, 6.0), "AB_GiantAgarilux": (17, 6.0),
-    "AB_DribblingCap": (17, 12.0), "AB_SlimyPholiota": (17, 5.0), "RM_AgelessCap": (11, 1.6),
+    "RM_WitchesOyster": (11, 6.0), "RM_AgaricusDomeCap": (11, 7.0), "RM_LilacBeacon": (11, 3.0),
+    "RM_GlowingAgarilux": (15, 4.0), "RM_PaleTree": (15, 6.0), "RM_GiantAgarilux": (17, 6.0),
+    "RM_DribblingCap": (17, 12.0), "RM_SlimyPholiota": (17, 5.0), "RM_AgelessCap": (11, 1.6),
 }
 
 
@@ -75,12 +75,12 @@ def main():
 
     # 1. vanilla reproduces the bug
     # small LowPlant oyster (south) under a BuildingOnTop giant agarilux (north): layer wins, south loses
-    south, north = (10.0, MEASURED["AB_WitchesOyster"][1]), (12.0, MEASURED["AB_GiantAgarilux"][1])
+    south, north = (10.0, MEASURED["RM_WitchesOyster"][1]), (12.0, MEASURED["RM_GiantAgarilux"][1])
     v = front(south, north, 11 * LAYER, 17 * LAYER, VANILLA_TILT, VANILLA_TILT)
     if v != "b":
         fails.append(f"vanilla model did not reproduce the layer bug (got {v})")
     # same layer, different sizes: a small plant standing north of a big one, inside its sprite, draws over it
-    south, north = (10.0, MEASURED["AB_DribblingCap"][1]), (14.0, MEASURED["RM_AgelessCap"][1])
+    south, north = (10.0, MEASURED["RM_DribblingCap"][1]), (14.0, MEASURED["RM_AgelessCap"][1])
     v = front(south, north, 17 * LAYER, 17 * LAYER, VANILLA_TILT, VANILLA_TILT)
     if v not in ("b", "mixed"):
         fails.append(f"vanilla model did not reproduce the size-slope bug (got {v})")
