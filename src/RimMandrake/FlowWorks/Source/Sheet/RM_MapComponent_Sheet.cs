@@ -141,7 +141,19 @@ namespace RimMandrake.FlowWorks.Sheet
 
 		// ── topology (§6 item 7: authoritative layers, never the picture) ──
 
+		/// <summary>GPT deep review 2026-10-22 #7: a cell whose kind changes (a wall removed, a door built) wakes itself and its
+		/// neighbours, else a settled, lossless puddle slept on beside newly open ground.</summary>
 		private void Classify(int idx)
+		{
+			Kind before = world.Kinds[idx];
+			ClassifyCell(idx);
+			if (state != null && world.Kinds[idx] != before)
+			{
+				RM_SheetMath.WakeAround(state, world, idx);
+			}
+		}
+
+		private void ClassifyCell(int idx)
 		{
 			IntVec3 c = map.cellIndices.IndexToCell(idx);
 			RM_MapComponent_Excavation e = Engine;
@@ -518,8 +530,21 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// levelled the same pulse). Runs whether or not the switch is on: water already standing keeps draining (D7).</summary>
 		public void EnginePulse()
 		{
-			if (state == null || state.WetCount == 0)
+			if (state == null)
 			{
+				return;
+			}
+			if (state.WetCount == 0)
+			{
+				// GPT deep review 2026-10-22 #8: the cells that dried LAST (Dry all, burnt out, drained) are reported by the next
+				// pulse, which never comes on a dry map; flush them here so their path cost and picture follow
+				foreach (var (cell, _) in state.Dried)
+				{
+					IntVec3 c = map.cellIndices.IndexToCell(cell);
+					map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.Terrain);
+					map.pathing?.RecalculatePerceivedPathCostAt(c);
+				}
+				state.Dried.Clear();
 				return;
 			}
 			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -640,7 +665,9 @@ namespace RimMandrake.FlowWorks.Sheet
 				for (int i = 0; i < pawns.Count; i++)
 				{
 					Pawn p = pawns[i];
-					if (p.Flying || p.needs?.mood?.thoughts?.memories == null)
+					// GPT deep review 2026-10-22 #6: the mood guard used to skip the whole pawn, so animals (no mood memories)
+					// waded poisoned spills untouched; it now guards the thought only
+					if (p.Flying)
 					{
 						continue;
 					}
@@ -648,7 +675,7 @@ namespace RimMandrake.FlowWorks.Sheet
 					if (t == Tier.Sheet || t == Tier.Pool)
 					{
 						FluidDef f = FluidAt(p.Position);
-						if (!Burnable(f))
+						if (!Burnable(f) && p.needs?.mood?.thoughts?.memories != null)
 						{
 							p.needs.mood.thoughts.memories.TryGainMemoryFast(ThoughtDefOf.SoakingWet);
 						}

@@ -160,10 +160,13 @@ namespace RimMandrake.FlowWorks.Sheet
 				int dl;
 				if (kind == RM_FuelBurn.Detonation)
 				{
-					dl = state.Dl[i];
+					// GPT deep review 2026-10-22 #3: past the per-check blast cap the puddle is NOT consumed (it used to burn away
+					// with no explosion); it stays lit and blows on a later check
+					dl = 0;
 					if (blasts < MaxBlastsPerCheck)
 					{
 						blasts++;
+						dl = state.Dl[i];
 						GenExplosion.DoExplosion(c, map, BlastRadius, DamageDefOf.Flame, null);
 					}
 				}
