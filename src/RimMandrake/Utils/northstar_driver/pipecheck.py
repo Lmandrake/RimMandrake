@@ -47,7 +47,9 @@ def _leaves(x, pre=""):
 
 # Per-call envelope metadata, never game state. MEASURED 2026-10-21: /operation/DurationMs agreed across two
 # serial reads by chance and then differed pipelined (13 -> 16), a false FAIL. Named, so it is not a guess.
-VOLATILE = re.compile(r"(?i)(duration|elapsed|ms$|utc|timestamp|(^|/)(started|ended|finished)|"
+# A millisecond suffix is matched case-sensitively (fooMs, foo_ms, FOO_MS): a bare (?i)ms$ also swallowed game-state
+# keys such as /items, /rooms, /alarms and silently stopped comparing them.
+VOLATILE = re.compile(r"(?i)(duration|elapsed|(?-i:Ms|_ms|MS)$|utc|timestamp|(^|/)(started|ended|finished)|"
                       r"/operation/.*id$|operationid|correlationid)")
 
 

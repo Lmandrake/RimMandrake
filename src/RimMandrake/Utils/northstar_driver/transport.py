@@ -96,25 +96,35 @@ class TimedTransport(object):
                     out.append(ex)
             return out
         from rimbridge_client import GABP_VERSION, _retired, RetiredToolError
-        t0 = time.perf_counter()
-        ids = []
+        # Validate the WHOLE batch before the first send: a refusal after some requests are on the wire leaves their
+        # replies unread, and the next rb.call dies on "unexpected response id" (the stream desyncs).
         for tool, params in calls:
             why = _retired(tool)
             if why is not None:
                 raise RetiredToolError("%s is RETIRED: %s" % (tool, why))
             self.rb.check_params(tool, params)
-            rid = str(uuid.uuid4())
-            ids.append(rid)
-            self.rb._send({"v": GABP_VERSION, "id": rid, "type": "request",
-                           "method": "tools/call",
-                           "params": {"name": tool, "arguments": params or {}}})
+        t0 = time.perf_counter()
+        ids = []
         got = {}
-        while len(got) < len(ids):
-            msg = self.rb._recv_raw()
-            if msg.get("type") == "event":
-                self.rb.events.append(msg)
-                continue
-            got[msg.get("id")] = msg
+        try:
+            for tool, params in calls:
+                rid = str(uuid.uuid4())
+                ids.append(rid)
+                self.rb._send({"v": GABP_VERSION, "id": rid, "type": "request",
+                               "method": "tools/call",
+                               "params": {"name": tool, "arguments": params or {}}})
+            while len(got) < len(ids):
+                msg = self.rb._recv_raw()
+                if msg.get("type") == "event":
+                    self.rb.events.append(msg)
+                    continue
+                got[msg.get("id")] = msg
+        except Exception:
+            # a timeout/close mid-batch: the late replies belong to nobody; rb._recv_response drops abandoned ids
+            if not hasattr(self.rb, "abandoned"):
+                self.rb.abandoned = set()
+            self.rb.abandoned.update(r for r in ids if r not in got)
+            raise
         per = (time.perf_counter() - t0) * 1000.0 / max(1, len(calls))
         out = []
         for (tool, _), rid in zip(calls, ids):

@@ -101,7 +101,25 @@ r = run("duration")
 check("envelope DurationMs that drifts only on the pipelined run is not a FAIL", r["status"] == "PASS",
       r["evidence"])
 check("VOLATILE spares game state", not P.VOLATILE.search("/ticksGame") and not P.VOLATILE.search(
-    "/operation/Success") and not P.VOLATILE.search("/windows[0]"))
+    "/operation/Success") and not P.VOLATILE.search("/windows[0]") and not P.VOLATILE.search("/items")
+    and not P.VOLATILE.search("/rooms") and not P.VOLATILE.search("/alarms"))
+check("VOLATILE still drops millisecond fields", all(P.VOLATILE.search(k) for k in (
+    "/waitMs", "/took_ms", "/operation/DurationMs", "/ELAPSED_MS")))
+
+
+class FakeRetiredRB(FakeRB):
+    def check_params(self, tool, params):
+        if tool.endswith("list_bad"):
+            raise ValueError("bad params for %s" % tool)
+
+
+rb = FakeRetiredRB()
+try:
+    TimedTransport(rb, pipeline=True).call_many([("rimworld/get_game_info", {}), ("rimworld/list_bad", {})])
+    check("a refused call in a pipelined batch raises", False, "no raise")
+except ValueError:
+    check("a refused call sends nothing (no orphan replies to desync the stream)", rb.queue == [],
+          "%d request(s) on the wire" % len(rb.queue))
 
 r = run("allvolatile")
 check("nothing stable -> UNMEASURED, never PASS", r["status"] == "UNMEASURED", r["evidence"])
