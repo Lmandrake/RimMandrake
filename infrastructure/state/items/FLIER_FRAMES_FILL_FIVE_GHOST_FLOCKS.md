@@ -18,10 +18,10 @@ Question: five flier defs declare flip-book frames absent from `src/`. Are they 
 ## What the game draws
 UNMEASURED live (no bridge allowed). `Player.log` (Oct 20 18:49, SWBestiary loaded) has 0 lines naming the four prefixes and 0 `swanimals` texture errors, which says only that no flight draw happened in that session. Expectation, not measurement: the flip-book textures are looked up when the animal first flies; a miss gives the red "Could not load Texture2D" error and a null/bad texture for the flight frame, so these four animals either show a bad graphic or error-spam when they take off. Priority: Thranta, Tibidee (common/Forge), then Brezak, Drexl.
 
-## Proposed install route (owner-gated: art is cosmetic, needs his permission; ports may reuse extracted donor art until regenerated, owner 2026-10-14)
+## Proposed install route (a delegated art call, `design/RimMandrake/delegation_policy.md` 2026-10-22: judge agent KEEP, install `--reason "delegated: art …"`; ports may reuse extracted donor art until regenerated, owner 2026-10-14)
 For each of 48 files: restore case (`Brezak_Flying_1_east.png`), `python3 src/RimMandrake/Utils/art/art.py install --file <png in clone> --reason "donor flip-book frames for ported flier" SWBestiary swanimals/<K>/<K>_Flying_<n>_<facing>.png` (dry-run first; the store takes the PNG from inside the clone, so copy to a clone path first). Hawkbat/Convor frames were installed the same way.
 Caveat: donor frames are separate repaints like the other ported sets, so expect them to also fail the body-drift audit (`flier_frame_registration_audit_2026-10-20.md`); not measured here. Installing is still better than ghost frames.
-Alternative if the owner prefers no art: remove the four `flyingAnimation*` blocks (animals then do not animate flight).
+Alternative if the judge (or later the owner) prefers no art: remove the four `flyingAnimation*` blocks (animals then do not animate flight).
 
 Nothing here is UNREACHABLE; no def should be retired.
 

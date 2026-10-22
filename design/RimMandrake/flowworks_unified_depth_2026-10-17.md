@@ -160,7 +160,7 @@ settings text, oracle) reads these. Python reads them from the C# by regex, as
 | 1 m | shallow (vanilla `WaterShallow` look) | vanilla |
 | 1.5 m | chest-deep (`RM_WaterChestDeepStill`, vanilla chest-deep art) | def exists |
 | 2 m and deeper | deep (vanilla `WaterDeep` look) | vanilla |
-| optional: 5 m+, 10 m+ | darker "very deep" and "abyss" tints on lakes | **new art or tint; cosmetic, needs the owner's permission** |
+| optional: 5 m+, 10 m+ | darker "very deep" and "abyss" tints on lakes | **new art or tint; cosmetic, a delegated art call (`delegation_policy.md`)** |
 
 - For canals this re-uses the four fill terrains each liquid already has (`RM_Fill_<Liquid>_Trace/Half/Brim/Superdeep`).
   Only the **rule that picks them** changes: by metres of water, not by fraction. defNames stay, so saves do not break;
@@ -279,7 +279,7 @@ law, not the shipped one.
 | `Defs/Canals/TerrainDefs/FlowWorks_Terrain.xml` | labels of `RM_Channel_*` and `RM_Fill_*` in metres (defNames unchanged) |
 | `Source/RM_PumpMath.cs` | stale `PourLevels` comment ("5 units pours 2 levels") |
 | Python: `northstar/selftest_flowworks_kernel_oracle.py`, `northstar/pond_pump.py:43`, `northstar/liquid_checks.py:61` | read constants from C#, no literals |
-| optional art | the wall band (§4.2); lake depth tints (§4.1). Owner permission first. |
+| optional art | the wall band (§4.2); lake depth tints (§4.1). Art judge first (`delegation_policy.md`). |
 
 ## 8. Alternatives
 

@@ -278,8 +278,8 @@
        Five of the donor's six processes (SmeltMechanoid needs an intact feed
        to swallow a whole body); no overclock; 1.5x the donor's breakdown
        rate. Gated on the restoration research and on ancient components.
-       ⚠️ PLACEHOLDER ART: reuses the Repaired texture until the owner rules
-       on a Refurbished sprite (cosmetic changes need his permission).
+       ⚠️ PLACEHOLDER ART: reuses the Repaired texture until a Refurbished
+       sprite passes the art judge (design/RimMandrake/delegation_policy.md).
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_WM_AutomatedSmelter_Refurbished</defName>

@@ -389,8 +389,8 @@ entry, not current canon. He supplied it as the reference and that settles it fo
 campaign — but record it as Legends-sourced so a later canon sweep understands why it
 was accepted instead of re-litigating it.
 
-⚠️ **The cosmetic gate still applies to the ART.** His standing rule is that appearance
-changes can break animated faces and need his permission first, and the 2026-09-17
+⚠️ **The ART goes through the art judge.** Appearance changes can break animated faces, so
+each needs a judge agent's KEEP (`design/RimMandrake/art_judge_brief.md` §F; delegated 2026-10-22), and the 2026-09-17
 order of work stands: **dossier → his verification → skin colour → grid screenshot →
 head shapes → grid screenshot again.** This ruling supplies the canon; it does not skip
 the queue.

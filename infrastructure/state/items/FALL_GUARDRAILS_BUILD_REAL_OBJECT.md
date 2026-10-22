@@ -25,7 +25,7 @@ remains here is the rail itself.
 - **The object.** `RM_PitGuardrail`: a cheap, low, linking 1×1 building (steel or wood, stuff-made), buildable only on
   a cell beside a sheer drop (a PlaceWorker reading the same edge set), does not block sight or shots, does not hold
   pawns out of the pit (ladders are still the way in and out). Art: reuse vanilla fence art for the first pass
-  (cosmetic changes need the owner's permission; a bespoke look is his call).
+  (a bespoke look is a delegated art call — judge agent, `design/RimMandrake/delegation_policy.md`).
 - **Raiders.** Raider AI (ruled the same day: go around, breach if no way, jump packs, ladders) is unaffected; a rail is
   not a breach target unless it stands on the only route.
 - **Mod Settings.** `pitGuardrailsEnabled` (master), `fencesAreRails` (on), both labelled; defaults = shipped.

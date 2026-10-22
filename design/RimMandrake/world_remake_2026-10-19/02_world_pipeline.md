@@ -225,7 +225,7 @@ The proposal changes **timing** and possibly **method**. Each of these is the ow
    - Any new script that could roll a different planet is out.
 5. ⚠️ **"Don't write to the savegame file"** (owner 2026-08-18). The redraft route is the bridge, which complies. The
    offline copy rewriters of 10-18/19 already strain this ruling. A fresh world would *reduce* save writing.
-6. ⚠️ **Cosmetic changes need his permission** (`standing_rulings.md`).
+6. ⚠️ **Cosmetic changes go through the art judge** (`design/RimMandrake/delegation_policy.md`, 2026-10-22).
    - On 2026-10-18 the owner said the placeholder world textures made the map look *"VERY strange"* and *"made of
      mountainous terrain"* (`WORLDMAP_REPAIR_LOST_BIOMES_ROCKY_TEXTURES`).
    - "Strange-looking" is in his own proposal, so this is noted, not blocking.

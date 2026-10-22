@@ -54,9 +54,9 @@ Sub-questions worth putting to him separately rather than as one lump:
 - 🔴 **Gungan's `poor intellectual` is ruled to STAY** — deliberately, as *"half joke
   and half rebuke"* of the films. Any redesign here must preserve it. It is not an
   oversight and a sweep must not clean it up.
-- ⚠️ **Cosmetic genes are gated.** Anything touching appearance — including Bothan fur
-  as a *visual* — needs the owner's permission first, because it can break animated
-  faces. Fur as a *mechanic* is not gated; fur as a *render* is.
+- ⚠️ **Cosmetic genes go through the art judge.** Anything touching appearance — including
+  Bothan fur as a *visual* — needs a judge agent's KEEP (`design/RimMandrake/art_judge_brief.md`
+  §F), because it can break animated faces. Fur as a *mechanic* is not gated; fur as a *render* is.
 - ⚠️ A trait is player-facing text as much as mechanism. Whatever is built, the
   description is read by the player and is subject to his eye like any prose.
 - 🔑 **Do not start by writing traits.** Start by listing which species have a truth

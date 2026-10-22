@@ -116,7 +116,7 @@ chance of scrap; smelting the chunk gives a little steel.
 - **Costs:** one new stone def + chunk + art (wall, chunk, blocks); precedent `RM_CathedralDeckPlate`.
   After paint. Settings: on/off, scrap chance.
 - **Risks:** any metal it yields must be a row in the mineral registry (owner 2026-10-03: *"Each biome
-  has carefully selected mineral abundances, period."*). New art needs his permission; no donor art kept.
+  has carefully selected mineral abundances, period."*). New art passes the art judge (`delegation_policy.md`); no donor art kept.
 
 ### 4. Stones that play differently, not just look different
 Give each Utinni stone a building identity: basalt heavy and tough but slow to cut; pumice/tuff light,

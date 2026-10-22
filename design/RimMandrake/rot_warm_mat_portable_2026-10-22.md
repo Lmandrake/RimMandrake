@@ -60,7 +60,7 @@ Only the way you get it depends on which one is right (open question 1).
   trivialises" number, carried over unchanged.
 - **Art**: it reuses the existing `RotSporeKit/Terrains/MycelialMatting` texture, drawn at 1×1, so it reads as a
   patch of the mat. No new art is queued, because the art status is not NONE. A dedicated sprite is a cosmetic
-  change and needs the owner's permission (open question 4).
+  change, a delegated art call (`delegation_policy.md`; open question 4).
 
 ### Food: what it eats, who feeds it, what starving does (outside the Rot)
 

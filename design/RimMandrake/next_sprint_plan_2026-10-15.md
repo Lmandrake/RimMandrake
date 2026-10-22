@@ -170,7 +170,7 @@ is his validation, a sprint-start owner act in every option).
 7. **His time is a decision packet, not meetings** (X6, GPT): one asynchronous packet per gate with numbered design
    questions, concrete alternatives and a recommendation each, rendered art sheets, and an estimate of review effort.
    At most one unanswered blocking packet at a time; agents work independent items while it waits; silence is never
-   approval. Cosmetic changes still need his permission first, and flyers are never live-tested without him.
+   approval. Cosmetic changes go to an art-judge agent (`delegation_policy.md`, 2026-10-22), and flyers are never live-tested without him.
 8. **Budgets are two numbers**: active owner minutes, and elapsed owner response time. The measured bottleneck is the
    second: the 2026-10-12 queue was mostly open three days later. Every calendar below is agent time **plus** his
    response intervals.
