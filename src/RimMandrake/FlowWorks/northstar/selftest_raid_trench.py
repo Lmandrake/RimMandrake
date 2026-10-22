@@ -58,5 +58,14 @@ except RuntimeError:
 finally:
     R._run = orig
 chk(b2.st is True, "finally restored storyteller after the body raised")
+
+# classify: a positionless sample is skipped (it used to raise on cheb(None)); a raider that died is never LEFT
+C = (100, 100)
+S = [dict(tick=250, raiders=[dict(id=1, x=103, z=100), dict(id=2, x=130, z=100)]),
+     dict(tick=500, raiders=[dict(id=1, x=None, z=None), dict(id=2, x=130, z=100, dead=True)])]
+w, d = R.classify(S, C)
+chk("BREACH" in w, "classify: a raider sampled on the island is BREACH (%r)" % w)
+chk(2 not in d["despawnedAlive"], "classify: a dead raider is not 'despawned alive' (%r)" % d)
+chk(1 in d["despawnedAlive"], "classify: can-fail, a raider gone from the last sample alive is LEFT (%r)" % d)
 print("selftest_raid_trench: %s" % ("FAIL" if bad else "ok"))
 sys.exit(1 if bad else 0)

@@ -242,7 +242,9 @@ def run_live(args):
     B.hp("defaults")
     B.ticks(1)
     hd, _ = B.hose(R2)
-    V.row(rows, "H9_stiffness_setting", "PASS" if (hs.get("minBendFlat") or 0) >= 1.9 and hs.get("geometryHash") != hd.get("geometryHash") else "FAIL", "MOD",
+    # both hashes must be READ: a failed default-pose read (None) is not "the shape moved"
+    V.row(rows, "H9_stiffness_setting", "PASS" if (hs.get("minBendFlat") or 0) >= 1.9 and None not in (hs.get("geometryHash"), hd.get("geometryHash"))
+          and hs.get("geometryHash") != hd.get("geometryHash") else "FAIL", "MOD",
           {"minBend2": hs.get("minBendFlat"), "hash2": hs.get("geometryHash"), "hashDefault": hd.get("geometryHash")})
 
     # ---------------------------------------------------------------- log budget
@@ -253,7 +255,8 @@ def run_live(args):
     site = [e for e in errs_all if "non-destroyable" in str(e.get("Message", ""))]
     errs = [e for e in errs_all if e not in site]
     if not V.SHARED:                 # SHARED: proof_all's one run-end Z (doc section 2 "Log budget")
-        V.row(rows, "HZ_log_budget", "PASS" if not errs else "FAIL", "MOD",
+        # an unreadable log (no "logs" list) is ignorance, never a clean budget
+        V.row(rows, "HZ_log_budget", "UNMEASURED" if not isinstance(lg.get("logs"), list) else "PASS" if not errs else "FAIL", "MOD",
               {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new), "siteClearErrors": len(site)})
     # leave hose 1 plump for the save-load mode (state must survive)
     B.hp("flow:%d,%d=on" % R1)
@@ -528,7 +531,7 @@ def run_removal_check(args):
     errs = [str(e.get("Message", "")) + " " + str(e.get("StackTrace", "")) for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
     class_hits = [e[:240] for e in errs if names_hose_class(e)]
     def_hits = [e[:200] for e in errs if "RM_HoseReel" in e]
-    V.row(rows, "H11_remove_mod_with_hose", "PASS" if not class_hits else "FAIL", "MOD",
+    V.row(rows, "H11_remove_mod_with_hose", "UNMEASURED" if not isinstance(lg.get("logs"), list) else "PASS" if not class_hits else "FAIL", "MOD",
           {"loadSeconds": waited, "errorsNamingOurClasses": class_hits[:6], "errorsNamingOurDefs(expected)": len(def_hits),
            "firstDefErrors": def_hits[:3]})
     return res

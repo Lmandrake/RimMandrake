@@ -85,6 +85,16 @@ def hit_falls_verdict(kv, block, tol=0.03):
     return "PASS" if abs(h - h0 * (1 - block)) <= tol else "FAIL"
 
 
+def dug_to(reply, d):
+    """jawa/flowworks_excavation_drive reply -> the cell reads at least D d (success alone is not a dig)."""
+    return reply.get("success") is True and isinstance(reply.get("depth"), int) and reply["depth"] >= d
+
+
+def filled_to(reply, f):
+    """... -> the fill was set and reads at least f (fillSet=false answers success=true)."""
+    return reply.get("success") is True and reply.get("fillSet") is True and isinstance(reply.get("fill"), int) and reply["fill"] >= f
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("out", nargs="?", default=None)
@@ -148,7 +158,8 @@ def main():
         if bad:        # an unset knob would read the owner's value, not the proof's: nothing below could be trusted
             row("TRENCH_settings", "UNMEASURED", "HARNESS", {"why": "mod_settings_field set refused", "fields": bad})
             return 2
-        bad = [x for x in range(2, 13) if dig(P(x, 5), 2).get("success") is False]
+        # a dig that answers success but stops short of D 2 (bedrock, an old DLL) is no trench either: read the depth back
+        bad = [x for x in range(2, 13) if not dug_to(dig(P(x, 5), 2), 2)]
         if bad:        # no trench dug reads as trench=0 and would FAIL the mod for a harness fault
             row("TRENCH_dig", "UNMEASURED", "SITE", {"why": "excavation_drive refused", "x": bad})
             return 2
@@ -170,7 +181,8 @@ def main():
         kv, txt = read(target, shooters["back"])
         row("TRENCH_one_back_third", near_verdict(kv, "trench", 0.147, 0.01) if kv else "UNMEASURED", "MOD", {"kv": kv, "txt": txt})
 
-        badw = [x for x in range(2, 13) if dig(P(x, 5), 0, fill=1).get("success") is False]
+        # a refused TrySetDriverFill still answers success=true (fillSet=false): no water poured makes "wet == dry" vacuous
+        badw = [x for x in range(2, 13) if not filled_to(dig(P(x, 5), 0, fill=1), 1)]
         B.ticks(SETTLE)
         kv, txt = read(target, shooters["on"])
         row("TRENCH_wet_same_as_dry", near_verdict(kv, "trench", 0.441, 0.02) if kv and not badw else "UNMEASURED",

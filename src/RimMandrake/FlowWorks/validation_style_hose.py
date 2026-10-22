@@ -274,7 +274,8 @@ def run_live(args):
     c = H.hp("census")
     lg = _find(c, LEGACY_AT)
     dl = c.get("defaultLook")
-    e = _art_ok(lg, dl, bool(lg.get("laid"))) if lg else "no legacy reel"
+    # the row claims the hose LAYS in the default look: a lay that failed must not pass on the stored art alone
+    e = ("no legacy reel" if not lg else _art_ok(lg, dl, True) if lg.get("laid") and lg.get("layOk") else "legacy reel not laid")
     V.row(rows, "R7_legacy_reel_default_look", "PASS" if lg and lg.get("rawStyle") is None and lg.get("style") == "RM_HoseReel_%s" % dl and not e else "FAIL", "MOD",
           {"build": bb.get("success"), "legacy": {k: lg.get(k) for k in ("rawStyle", "style", "look", "reelTex", "laid")}, "defaultLook": dl, "art": e,
            "meaning": "PASS = an unstyled reel stores NO style (an older save is unchanged) yet draws, and lays its hose in, the default look"})
