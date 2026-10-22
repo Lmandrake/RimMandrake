@@ -207,6 +207,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(fw.Contains("GetMethod(\"RegisterPipeProfile\"") && fw.Contains("new[] { typeof(Func<float>), typeof(Func<float>) }")
                        && gss.Contains("public static void RegisterPipeProfile(Func<float> maxSpan, Func<float> sag)"), "can-fail: RegisterPipeProfile signature matches");
                 Assert(fw.Contains("GetMethod(\"RegisterSpansChanged\"") && gss.Contains("public static void RegisterSpansChanged(Action<Map> callback)"), "span-change seam matches");
+                // PIPE_POLE_SWITCH_DECIDE_HOSTAGE_TO_WIRES (owner by card 2026-10-21: "Their own switch.")
+                Assert(fw.Contains("GetMethod(\"RegisterPipeSwitch\"") && fw.Contains("new[] { typeof(Func<bool>) }") && fw.Contains("new Func<bool>(PolesOn)")
+                       && fw.Contains("public static bool PolesOn() => RM_MachinerySettings.pipePolesEnabled;")
+                       && gss.Contains("public static void RegisterPipeSwitch(Func<bool> on)"), "can-fail: the pipe poles' own switch is handed to GSS by a matching signature");
+                Assert(!set.Contains("needs Gimme Some Slack's overhead lines on"), "the pipe-pole switch no longer claims it needs GSS's power-lines switch");
                 Assert(fw.Contains("GetMethod(\"UpSpans\"") && fw.Contains("new[] { typeof(Map), typeof(string) }")
                        && gss.Contains("public static List<KeyValuePair<Thing, Thing>> UpSpans(Map map, string kind)"), "phase-5 UpSpans seam matches");
                 string comp = GssSrc("Aerial", "RM_MapComponent_Aerial.cs");

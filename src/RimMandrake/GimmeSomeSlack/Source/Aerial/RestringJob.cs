@@ -83,7 +83,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public override PathEndMode PathEndMode => PathEndMode.Touch;
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false) =>
-            !AerialSettings.enabled || !pawn.Map.designationManager.AnySpawnedDesignationOfDef(Restringing.Des);
+            !AerialLineProfiles.AnyKindOn || !pawn.Map.designationManager.AnySpawnedDesignationOfDef(Restringing.Des);
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) =>
             pawn.Map.designationManager.SpawnedDesignationsOfDef(Restringing.Des).Select(d => d.target.Thing).Where(t => t != null).ToList();
@@ -91,7 +91,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             CompAerialAnchor a = CompAerialAnchor.Of(t);
-            if (a == null || !Restringing.Designated(t) || !Restringing.Restringable(a)) return false;   // a stale mark is cleared by CompAerialAnchor.Changed
+            if (a == null || !AerialLineProfiles.KindOn(a.Kind) || !Restringing.Designated(t) || !Restringing.Restringable(a)) return false;   // a stale mark is cleared by CompAerialAnchor.Changed
             if (t.IsForbidden(pawn) || !pawn.CanReserve(t, 1, -1, null, forced)) return false;
             return Restringing.WorkTarget(pawn, a).IsValid;
         }
@@ -116,7 +116,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
-            this.FailOn(() => !AerialSettings.enabled || !Restringing.Designated(TargetThingA) || !Restringing.HasCut(CompAerialAnchor.Of(TargetThingA)));
+            this.FailOn(() => !(CompAerialAnchor.Of(TargetThingA) is CompAerialAnchor ta && AerialLineProfiles.KindOn(ta.Kind)) || !Restringing.Designated(TargetThingA) || !Restringing.HasCut(CompAerialAnchor.Of(TargetThingA)));
             yield return job.targetB.HasThing ? Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch) : Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
             Toil work = ToilMaker.MakeToil("RM_RestringSpan");
             work.initAction = () =>

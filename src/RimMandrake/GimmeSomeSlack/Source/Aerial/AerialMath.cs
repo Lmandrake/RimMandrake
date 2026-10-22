@@ -61,6 +61,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool Sways(AerialLineKind k) => k == AerialLineKind.Power;
         /// <summary>Only a power anchor joins a power net or draws drop wires to the devices beside it.</summary>
         public static bool CarriesPower(AerialLineKind k) => k == AerialLineKind.Power;
+
+        /// <summary>PIPE_POLE_SWITCH_DECIDE_HOSTAGE_TO_WIRES (owner by card 2026-10-21: "Their own switch."): which switch governs
+        /// an anchor of this kind. A power anchor obeys GSS's power-lines master switch; a pipe pole obeys FlowWorks' pipe-pole
+        /// switch (registered through AerialLineProfiles.RegisterPipeSwitch) and never the power one.</summary>
+        public static bool KindOn(AerialLineKind k, bool powerOn, bool pipeOn) => CarriesPower(k) ? powerOn : pipeOn;
+
+        /// <summary>A behaviour whose GSS setting sits under the power master (auto-link, the wire-down alert, the owner-change
+        /// cut): a power anchor needs the master AND that setting; a pipe pole needs only its own switch, because those GSS
+        /// settings are power-line settings, greyed out with the power master off.</summary>
+        public static bool KindBehaviour(AerialLineKind k, bool powerOn, bool pipeOn, bool powerSetting) =>
+            CarriesPower(k) ? powerOn && powerSetting : pipeOn;
     }
 
     /// <summary>What the link rules need to know about one anchor (or a candidate target).</summary>

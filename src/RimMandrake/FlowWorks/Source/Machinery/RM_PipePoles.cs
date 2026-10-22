@@ -50,6 +50,9 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		public static float Sag() => RM_PipePoleMath.ClampSag(RM_MachinerySettings.pipePoleSag);
 
+		/// <summary>The pipe poles' own switch, handed to GSS (RegisterPipeSwitch).</summary>
+		public static bool PolesOn() => RM_MachinerySettings.pipePolesEnabled;
+
 		/// <summary>State reads (phase 5): liquid-net rebuilds a span change caused; callbacks that changed nothing.</summary>
 		public static int NetBumps, NoChange;
 
@@ -174,6 +177,10 @@ namespace RimMandrake.FlowWorks.Machinery
 					return;
 				}
 				reg.Invoke(null, new object[] { new Func<float>(MaxSpan), new Func<float>(Sag) });
+				// PIPE_POLE_SWITCH_DECIDE_HOSTAGE_TO_WIRES (owner by card 2026-10-21: "Their own switch."): GSS gates pipe poles on
+				// this setting, never on its power-lines master switch. An older GSS without the method: pipe poles follow its master.
+				t.GetMethod("RegisterPipeSwitch", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Func<bool>) }, null)
+					?.Invoke(null, new object[] { new Func<bool>(PolesOn) });
 				listen?.Invoke(null, new object[] { new Action<Map>(OnSpansChanged) });
 				Registered = true;
 			}

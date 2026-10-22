@@ -27,7 +27,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             var res = new List<CompAerialAnchor>();
             if (c == null) return res;
             foreach (CompAerialAnchor a in c.Anchors)
-                if (a.Faction == Faction.OfPlayer && (a.fallen.Count > 0 || a.links.Any(l => l.state == SpanState.Cut)))
+                if (a.Faction == Faction.OfPlayer && AerialLineProfiles.KindBehaviour(a.Kind, AerialSettings.wireDownAlert)
+                    && (a.fallen.Count > 0 || a.links.Any(l => l.state == SpanState.Cut)))
                     res.Add(a);
             return res;
         }
@@ -59,6 +60,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return sb.ToString();
         }
 
-        public override AlertReport GetReport() => AerialSettings.enabled && AerialSettings.wireDownAlert ? AlertReport.CulpritsAre(Culprits()) : AlertReport.Inactive;
+        public override AlertReport GetReport() => AerialLineProfiles.AnyKindOn ? AlertReport.CulpritsAre(Culprits()) : AlertReport.Inactive;
     }
 }

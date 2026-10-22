@@ -46,6 +46,45 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         public static bool PipeRegistered => pipeMaxSpan != null;
 
+        private static Func<bool> pipeOn;
+        /// <summary>State read: how many times a pipe-pole switch was registered (1 after FlowWorks' startup).</summary>
+        public static int PipeSwitchRegistrations;
+
+        /// <summary>PIPE_POLE_SWITCH_DECIDE_HOSTAGE_TO_WIRES (owner by card 2026-10-21: "Their own switch."): FlowWorks hands over
+        /// its pipe-pole Mod Setting, read live. Every GSS aerial gate then reads the switch of the anchor's own kind
+        /// (<see cref="KindOn"/>), so the power-lines master switch no longer hides or stops pipe poles. Unregistered (an older
+        /// FlowWorks), pipe poles count as on.</summary>
+        public static void RegisterPipeSwitch(Func<bool> on)
+        {
+            pipeOn = on;
+            PipeSwitchRegistrations++;
+        }
+
+        public static bool PipeOn
+        {
+            get
+            {
+                if (pipeOn == null) return true;
+                try { return pipeOn(); }
+                catch (Exception e)
+                {
+                    Log.ErrorOnce("[GimmeSomeSlack] the registered pipe-pole switch threw; treating pipe poles as on: " + e.Message, 0x7A1E5D);
+                    return true;
+                }
+            }
+        }
+
+        /// <summary>Is this kind of overhead line switched on (power: GSS's master; pipe: FlowWorks' pipe-pole switch)?</summary>
+        public static bool KindOn(AerialLineKind k) => AerialKinds.KindOn(k, AerialSettings.enabled, PipeOn);
+
+        /// <summary>A power-master-dependent behaviour (auto-link, wire-down alert, owner-change cut) for this kind.</summary>
+        public static bool KindBehaviour(AerialLineKind k, bool powerSetting) =>
+            AerialKinds.KindBehaviour(k, AerialSettings.enabled, PipeOn, powerSetting);
+
+        /// <summary>Any kind of overhead line on: the map-wide draw and the ground layer run, filtering per anchor. Pipe poles
+        /// exist only with FlowWorks, which registers its profile at startup, so without it only the power switch counts.</summary>
+        public static bool AnyKindOn => AerialSettings.enabled || (PipeRegistered && PipeOn);
+
         private static float Read(Func<float> f, float fallback)
         {
             if (f == null) return fallback;

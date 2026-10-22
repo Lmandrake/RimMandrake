@@ -192,7 +192,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             RM_MapComponent_Aerial comp = map.GetComponent<RM_MapComponent_Aerial>();
             comp?.Register(this);
             // GPT source read 2026-10-06 A6: an auto-link still queued when the game was saved (built while paused) is re-queued
-            if ((!respawningAfterLoad || autoLinkPendingSaved) && AerialSettings.enabled && AerialSettings.autoLink) comp?.QueueAutoLink(this);
+            if ((!respawningAfterLoad || autoLinkPendingSaved) && AerialLineProfiles.KindBehaviour(Kind, AerialSettings.autoLink)) comp?.QueueAutoLink(this);
             autoLinkPendingSaved = false;
         }
 
