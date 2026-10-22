@@ -80,3 +80,6 @@ Started 08:48 PDT. Tier fw_gss_sitting, DLL 41fb948b5e. Owner save RM_fw_walkthr
 - 10:46 river save root cause: saved on a bigger mod list (FloodedCanyon/WeatherSuite/SWBestiary classes, RUT_WickingWrap) -> WEDGED (watchdog). Killing RimWorld and relaunching on fw_gss_sitting
 - 10:47 liquid_checks --fresh-map start
 - 10:56 liquid_checks --fresh-map: 6 PASS / 2 FAIL / 8 UNMEASURED. L5_switched_off_hose_spills PASS(10-16)->FAIL = REGRESSION, MOD: 10000 units 'spilled', zero filth on the map -> filed SPILL_DIAGNOSE_TEN_THOUSAND_GONE_DRY (FOUNDRY). L6_free_end_names_their_faction FAIL + L6 draws UNMEASURED: free end 'lying free' on Soil, never coupled to the foreign tank = SITE presumed (West-built reel geometry, first L6 run). L7 rows UNMEASURED (no standing water in the stations), L8 needs --l8-pond — src/RimMandrake/FlowWorks/northstar/liquid_checks_result_20261022T1100_belt.json
+- 10:56 pond_pump --fresh-map start
+- 11:08 pond_pump: HARNESS fixes (no site_calm after fresh map -> Hive stopped arm; unfed colonists Starving in the multi-day refill wait -> feed per chunk); run 4: 2 PASS / 1 UNMEASURED (draw receded no cell) — northstar/pond_pump_result_20261022T1115_belt.json
+- 11:09 thirst_live T4,T5 PASS (salt 0.695x) + sprinkler_live T22 PASS -> SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING A1/A2 verified (L3)
