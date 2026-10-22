@@ -1,0 +1,1 @@
+After a rebase that moves the FlowWorks DLL, ./publish loops on DLL_SOURCE_STAMP_GUARD_1 until the DLL is rebuilt from COMMITTED source; with peers' uncommitted C# in the clone, build in a throwaway clone of HEAD (git clone --no-checkout <bench>; checkout HEAD; winbuild) and copy the .dll+.srchash back (BENCH 2026-10-22, 2483fdf84d)
