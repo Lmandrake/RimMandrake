@@ -410,6 +410,27 @@ def main():
         check(E.def_points_at(src, "Things/Pawn/Animal/Monkey/Monkey_east.png"), "donor pick whose texPath a def already names is live")
         check(not E.def_points_at(src, "Things/Pawn/Animal/Ape/Ape_east.png"), "donor pick no def names is still a TODO")
         check(not E.CUT_NOTE.search("variations") and E.CUT_NOTE.search("no longer needed"), "cut-note matcher")
+        # a note on a row with no decision click (purge-only touch) is a TODO, never dropped (Taozin, 2026-10-22)
+        dn = json.loads(F["decisions"].read_text())
+        dn["decisions"]["RM_Note"] = {"decision": "A", "at": "2026-10-22T06:39:17Z", "note": "grub art is not the adult",
+                                      "purgeTouched": True, "purge": []}
+        F["decisions"].write_text(json.dumps(dn))
+        Rn = E.build_plan(F["decisions"])
+        check(any(t.startswith("RM_Note: note not enacted") for t in Rn["todo"]),
+              "a note on a purge-only (undecided) row is still a TODO")
+        # keep_blocks_pick (2026-10-22): a row-less install keep OLDER than his pick does not block it
+        _mine = E.I.ts("2026-10-22T06:32:47Z")
+        _old = {"ts": "2026-10-16T07:05:29-0700", "target": {"sha": "x"}, "via": "art install (owner words)"}
+        _new = {"ts": "2026-10-23T00:00:00Z", "target": {"sha": "x"}, "via": "art install (owner words)"}
+        check(not E.keep_blocks_pick(_old, "RSW_Manka", _mine, "a.json"), "older row-less keep does not block a newer pick")
+        check(E.keep_blocks_pick(_new, "RSW_Manka", _mine, "a.json"), "newer row-less keep blocks an older pick")
+        check(E.keep_blocks_pick(_old, "RSW_Manka", None, "a.json"), "row-less keep blocks a pick with no time")
+        check(E.keep_blocks_pick({**_old, "target": {"sha": "x", "row": "RSW_Other"}}, "RSW_Manka", _mine, "a.json"),
+              "a keep from another row blocks")
+        check(E.keep_blocks_pick({**_new, "target": {"sha": "x", "row": "RSW_Manka"}, "via": "b.json"}, "RSW_Manka", _mine,
+                                 "a.json"), "a newer keep on this row in another file blocks (ts honoured, not only at)")
+        check(not E.keep_blocks_pick({**_old, "target": {"sha": "x", "row": "RSW_Manka"}, "via": "b.json"}, "RSW_Manka",
+                                     _mine, "a.json"), "an older keep on this row in another file does not block")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
     print(f"\n{'ALL PASS' if not FAILS else f'{len(FAILS)} FAILED'}")
