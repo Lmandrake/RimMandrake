@@ -34,6 +34,16 @@ namespace RimMandrake.FlowWorks.Thirst
 
 		public static float RateMultiplier => thirstRateMultiplier < 0.25f ? 0.25f : (thirstRateMultiplier > 3f ? 3f : thirstRateMultiplier);
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
+		// below the LAST public setting field (C# runs static initialisers in textual order).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_ThirstSettings));
+
+		/// <summary>The Reset button: every setting on this screen back to its shipped value.</summary>
+		public static void ResetAll()
+		{
+			RM_SettingsReset.ResetAll(typeof(RM_ThirstSettings), shippedDefaults);
+		}
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref thirstEnabled, "thirstEnabled", true);
@@ -57,6 +67,7 @@ namespace RimMandrake.FlowWorks.Thirst
 		{
 			list.GapLine();
 			list.Label("Thirst");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.Label("Whose thirst rules run: " + RM_ThirstProvider.ModeLabel
 				+ "  (read at startup; with Dubs Bad Hygiene's thirst running, ours steps aside and our bottles count for Dubs')");
 			list.CheckboxLabeled("Pawns and animals get thirsty (FlowWorks thirst)", ref thirstEnabled,

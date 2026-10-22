@@ -762,6 +762,16 @@ namespace RimMandrake.FlowWorks
 		/// <summary>PROVISIONAL: "some may have jump packs".</summary>
 		public static float raiderJumpPackShare = 0.1f;
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
+		// below the LAST public setting field (C# runs static initialisers in textual order).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_RaiderTrenchSettings));
+
+		/// <summary>The Reset button: every setting on this screen back to its shipped value.</summary>
+		public static void ResetAll()
+		{
+			RM_SettingsReset.ResetAll(typeof(RM_RaiderTrenchSettings), shippedDefaults);
+		}
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref raiderTrenchEnabled, "raiderTrenchEnabled", true);
@@ -777,6 +787,7 @@ namespace RimMandrake.FlowWorks
 		{
 			list.GapLine();
 			list.Label("Raiders against trenches");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("Raiders cross trenches", ref raiderTrenchEnabled,
 				"On, raiders who cannot reach your colony because a trench or pit is in the way go around it if there is a way; "
 			  + "if there is none they jump it, set scaling ladders, or shovel a causeway in. Sieges never do: they shell you. "

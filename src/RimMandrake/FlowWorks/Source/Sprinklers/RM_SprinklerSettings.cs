@@ -24,6 +24,16 @@ namespace RimMandrake.FlowWorks.Sprinklers
 
 		public static readonly float[] RadiusChoices = { 1.9f, 2.9f, 3.9f };
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
+		// below the LAST public setting field (C# runs static initialisers in textual order).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_SprinklerSettings));
+
+		/// <summary>The Reset button: every setting on this screen back to its shipped value.</summary>
+		public static void ResetAll()
+		{
+			RM_SettingsReset.ResetAll(typeof(RM_SprinklerSettings), shippedDefaults);
+		}
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref sprinklersEnabled, "sprinklersEnabled", true);
@@ -38,6 +48,7 @@ namespace RimMandrake.FlowWorks.Sprinklers
 		{
 			list.GapLine();
 			list.Label("Sprinklers");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("Sprinkler heads on pipes", ref sprinklersEnabled,
 				"A sprinkler head stands on a universal pipe and sprays the liquid its network holds onto the ground around it, "
 				+ "once an hour, wetting those squares until the next spray. It needs no power, but a working pump must be on its "

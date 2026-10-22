@@ -56,14 +56,10 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref waterPlantGraceHours, "waterPlantGraceHours", RM_WaterBodyMath.DefaultPlantGraceHours);
 		}
 
-		public static void ResetToShipped()
-		{
-			waterBodyMendsEnabled = fishRollOnGrowth = fishReturnOnRefill = fishingZoneReturnOnRefill = waterBodySplitEnabled = true;
-			waterPlantGraceEnabled = true;
-			freezeCountMendEnabled = true;
-			waterPlantDeepToleranceMetres = RM_WaterBodyMath.DefaultPlantDeepToleranceMetres;
-			waterPlantGraceHours = RM_WaterBodyMath.DefaultPlantGraceHours;
-		}
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: the shared helper replaces the hand-listed reset. MUST stay below the LAST public setting field.
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_WaterMendSettings));
+
+		public static void ResetToShipped() => RM_SettingsReset.ResetAll(typeof(RM_WaterMendSettings), shippedDefaults);
 
 		public static void DoSettingsSection(Listing_Standard list)
 		{
@@ -108,10 +104,7 @@ namespace RimMandrake.FlowWorks
 			list.Label("  Survive dry ground or deeper water for " + waterPlantGraceHours.ToString("0") + " h (shipped 24)");
 			waterPlantGraceHours = Mathf.Round(list.Slider(waterPlantGraceHours, 0f, 240f));
 			GUI.enabled = true;
-			if (list.ButtonText("Reset this section to shipped values"))
-			{
-				ResetToShipped();
-			}
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetToShipped);
 		}
 	}
 

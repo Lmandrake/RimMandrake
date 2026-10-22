@@ -812,8 +812,8 @@ namespace RimMandrake.FlowWorks
             RimMandrake.Shared.SettingsKitMastersDrawer.Dependent(list, Masters, GetField, SetField, keys);
 
         /// <summary>The Reset-all button (after the confirmation): every setting on this window's excavation, flow, pit and look
-        /// sections back to its shipped value. The hose section has its own Reset-all (RM_HoseSettings); the sub-screens with no
-        /// reset of their own (rivers, machinery, sluice gates, kits, quarry) are not touched.</summary>
+        /// sections back to its shipped value. The hose section has its own Reset-all (RM_HoseSettings); every other sub-screen
+        /// (rivers, machinery, kits, quarry, thirst, swimming...) has its own Reset button and is not touched here.</summary>
         public static void ResetAllFields()
         {
             var names = new System.Collections.Generic.List<string>(shippedDefaults.Keys) { nameof(disabledFluids) };

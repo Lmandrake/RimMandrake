@@ -10,6 +10,16 @@ namespace RimMandrake.FlowWorks.MapControls
 	{
 		public static bool mapControlsEnabled = true;
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
+		// below the LAST public setting field (C# runs static initialisers in textual order).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_MapControlSettings));
+
+		/// <summary>The Reset button: every setting on this screen back to its shipped value.</summary>
+		public static void ResetAll()
+		{
+			RM_SettingsReset.ResetAll(typeof(RM_MapControlSettings), shippedDefaults);
+		}
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref mapControlsEnabled, "mapControlsEnabled", true);
@@ -19,6 +29,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		{
 			list.GapLine();
 			list.Label("Map controls (flow source, sink, meter, level holder, timer, map-edge setter, current painter, thermostat)");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("Map controls work", ref mapControlsEnabled,
 				"Map controls are small plain stones a map maker places in development mode (they cannot be built). A source "
 				+ "pours a chosen liquid into the dug channel it stands on or beside, at a set rate; a sink takes liquid out the "

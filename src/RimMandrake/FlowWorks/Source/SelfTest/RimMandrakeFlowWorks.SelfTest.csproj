@@ -186,6 +186,8 @@
     <Compile Include="ThirstChecks.cs" />
     <Compile Include="HoseRulingTextChecks.cs" />
     <Compile Include="ReviewFixChecks.cs" />
+    <Compile Include="..\RM_SettingsReset.cs" />
+    <Compile Include="SettingsResetChecks.cs" />
     <Compile Include="ReviewBatch56Checks.cs" />
     <Compile Include="ReviewFixBatch01Checks.cs" />
     <Compile Include="LevelSetChecks.cs" />

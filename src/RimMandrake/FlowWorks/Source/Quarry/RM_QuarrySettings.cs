@@ -22,6 +22,16 @@ namespace RimMandrake.FlowWorks.Quarry
 		public static bool SluiceActive => sluiceBoxEnabled && Rivers.RM_RiversSettings.riverWorksEnabled;
 		public static bool PanningActive => panningEnabled && Rivers.RM_RiversSettings.riverWorksEnabled;
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
+		// below the LAST public setting field (C# runs static initialisers in textual order).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_QuarrySettings));
+
+		/// <summary>The Reset button: every setting on this screen back to its shipped value.</summary>
+		public static void ResetAll()
+		{
+			RM_SettingsReset.ResetAll(typeof(RM_QuarrySettings), shippedDefaults);
+		}
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref sluiceBoxEnabled, "sluiceBoxEnabled", true);
@@ -36,6 +46,7 @@ namespace RimMandrake.FlowWorks.Quarry
 		{
 			list.GapLine();
 			list.Label("Rivers carry minerals (sluice box, panning)");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("Sluice boxes wash ore out of rivers", ref sluiceBoxEnabled,
 				"A sluice box straddles the bank with one end in shallow moving river water. Once a day it washes a "
 				+ "little of what the river carries onto its bank end. Calm water (a weir's slack pool) and still "
