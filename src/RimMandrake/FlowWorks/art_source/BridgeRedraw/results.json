@@ -1,4 +1,15 @@
 {
+ "RM_DrawbridgeGate_Closed_Futuristic_rd1a_east": {
+  "coverage": 0.234,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeGate_Closed_Futuristic_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1536
+  ],
+  "row": "RD_Gate_Futuristic_Closed",
+  "status": "PASS"
+ },
  "RM_DrawbridgeGate_Closed_Futuristic_rd1a_south": {
   "coverage": 0.637,
   "findings": [],
@@ -8,6 +19,17 @@
    1536
   ],
   "row": "RD_Gate_Futuristic_Closed",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeGate_Closed_Industrial_rd1a_east": {
+  "coverage": 0.182,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeGate_Closed_Industrial_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1536
+  ],
+  "row": "RD_Gate_Industrial_Closed",
   "status": "PASS"
  },
  "RM_DrawbridgeGate_Closed_Industrial_rd1a_south": {
@@ -21,6 +43,17 @@
   "row": "RD_Gate_Industrial_Closed",
   "status": "PASS"
  },
+ "RM_DrawbridgeGate_Closed_Modern_rd1a_east": {
+  "coverage": 0.189,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeGate_Closed_Modern_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1536
+  ],
+  "row": "RD_Gate_Modern_Closed",
+  "status": "PASS"
+ },
  "RM_DrawbridgeGate_Closed_Modern_rd1a_south": {
   "coverage": 0.613,
   "findings": [],
@@ -30,6 +63,17 @@
    1536
   ],
   "row": "RD_Gate_Modern_Closed",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeGate_Open_Futuristic_rd1a_east": {
+  "coverage": 0.175,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeGate_Open_Futuristic_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1536
+  ],
+  "row": "RD_Gate_Futuristic_Open",
   "status": "PASS"
  },
  "RM_DrawbridgeGate_Open_Futuristic_rd1a_south": {
@@ -43,6 +87,17 @@
   "row": "RD_Gate_Futuristic_Open",
   "status": "PASS"
  },
+ "RM_DrawbridgeGate_Open_Industrial_rd1a_east": {
+  "coverage": 0.172,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeGate_Open_Industrial_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1536
+  ],
+  "row": "RD_Gate_Industrial_Open",
+  "status": "PASS"
+ },
  "RM_DrawbridgeGate_Open_Industrial_rd1a_south": {
   "coverage": 0.418,
   "findings": [],
@@ -52,6 +107,17 @@
    1536
   ],
   "row": "RD_Gate_Industrial_Open",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeGate_Open_Modern_rd1a_east": {
+  "coverage": 0.163,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeGate_Open_Modern_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1536
+  ],
+  "row": "RD_Gate_Modern_Open",
   "status": "PASS"
  },
  "RM_DrawbridgeGate_Open_Modern_rd1a_south": {
@@ -65,6 +131,17 @@
   "row": "RD_Gate_Modern_Open",
   "status": "PASS"
  },
+ "RM_DrawbridgeGate_Open_Scrapper_rd1a_east": {
+  "coverage": 0.175,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeGate_Open_Scrapper_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1536
+  ],
+  "row": "RD_Gate_Scrapper_Open",
+  "status": "PASS"
+ },
  "RM_DrawbridgeGate_Open_Scrapper_rd1a_south": {
   "coverage": 0.436,
   "findings": [],
@@ -74,6 +151,17 @@
    1536
   ],
   "row": "RD_Gate_Scrapper_Open",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeGate_Steel_Closed_rd1a_east": {
+  "coverage": 0.237,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeGate_Steel_Closed_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1536
+  ],
+  "row": "RD_Gate_Steel_Closed",
   "status": "PASS"
  },
  "RM_DrawbridgeGate_Steel_Closed_rd1a_south": {
@@ -87,6 +175,17 @@
   "row": "RD_Gate_Steel_Closed",
   "status": "PASS"
  },
+ "RM_DrawbridgeGate_Steel_Open_rd1a_east": {
+  "coverage": 0.197,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeGate_Steel_Open_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1536
+  ],
+  "row": "RD_Gate_Steel_Open",
+  "status": "PASS"
+ },
  "RM_DrawbridgeGate_Steel_Open_rd1a_south": {
   "coverage": 0.382,
   "findings": [],
@@ -96,6 +195,17 @@
    1536
   ],
   "row": "RD_Gate_Steel_Open",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeGate_Timber_Open_rd1a_east": {
+  "coverage": 0.198,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeGate_Timber_Open_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1536
+  ],
+  "row": "RD_Gate_Timber_Open",
   "status": "PASS"
  },
  "RM_DrawbridgeGate_Timber_Open_rd1a_south": {
@@ -395,6 +505,28 @@
   "row": "RD_DBPlanks_Timber",
   "status": "PASS"
  },
+ "RM_DrawbridgeWinch_Steel_Futuristic_rd1a_east": {
+  "coverage": 0.522,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Steel_Futuristic_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchSteel_Futuristic",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Steel_Futuristic_rd1a_north": {
+  "coverage": 0.571,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Steel_Futuristic_rd1a_north.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchSteel_Futuristic",
+  "status": "PASS"
+ },
  "RM_DrawbridgeWinch_Steel_Futuristic_rd1a_south": {
   "coverage": 0.585,
   "findings": [],
@@ -404,6 +536,28 @@
    1024
   ],
   "row": "RD_WinchSteel_Futuristic",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Steel_Industrial_rd1a_east": {
+  "coverage": 0.526,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Steel_Industrial_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchSteel_Industrial",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Steel_Industrial_rd1a_north": {
+  "coverage": 0.678,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Steel_Industrial_rd1a_north.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchSteel_Industrial",
   "status": "PASS"
  },
  "RM_DrawbridgeWinch_Steel_Industrial_rd1a_south": {
@@ -417,6 +571,28 @@
   "row": "RD_WinchSteel_Industrial",
   "status": "PASS"
  },
+ "RM_DrawbridgeWinch_Steel_Modern_rd1a_east": {
+  "coverage": 0.434,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Steel_Modern_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchSteel_Modern",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Steel_Modern_rd1a_north": {
+  "coverage": 0.475,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Steel_Modern_rd1a_north.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchSteel_Modern",
+  "status": "PASS"
+ },
  "RM_DrawbridgeWinch_Steel_Modern_rd1a_south": {
   "coverage": 0.488,
   "findings": [],
@@ -426,6 +602,28 @@
    1024
   ],
   "row": "RD_WinchSteel_Modern",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Steel_rd1a_east": {
+  "coverage": 0.36,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Steel_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchSteel_Steel",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Steel_rd1a_north": {
+  "coverage": 0.529,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Steel_rd1a_north.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchSteel_Steel",
   "status": "PASS"
  },
  "RM_DrawbridgeWinch_Steel_rd1a_south": {
@@ -439,6 +637,28 @@
   "row": "RD_WinchSteel_Steel",
   "status": "PASS"
  },
+ "RM_DrawbridgeWinch_Timber_Futuristic_rd1a_east": {
+  "coverage": 0.27,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Futuristic_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Futuristic",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_Futuristic_rd1a_north": {
+  "coverage": 0.436,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Futuristic_rd1a_north.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Futuristic",
+  "status": "PASS"
+ },
  "RM_DrawbridgeWinch_Timber_Futuristic_rd1a_south": {
   "coverage": 0.436,
   "findings": [],
@@ -448,6 +668,28 @@
    1024
   ],
   "row": "RD_WinchTimber_Futuristic",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_Industrial_rd1a_east": {
+  "coverage": 0.245,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Industrial_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Industrial",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_Industrial_rd1a_north": {
+  "coverage": 0.425,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Industrial_rd1a_north.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Industrial",
   "status": "PASS"
  },
  "RM_DrawbridgeWinch_Timber_Industrial_rd1a_south": {
@@ -461,6 +703,28 @@
   "row": "RD_WinchTimber_Industrial",
   "status": "PASS"
  },
+ "RM_DrawbridgeWinch_Timber_Modern_rd1a_east": {
+  "coverage": 0.254,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Modern_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Modern",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_Modern_rd1a_north": {
+  "coverage": 0.422,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Modern_rd1a_north.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Modern",
+  "status": "PASS"
+ },
  "RM_DrawbridgeWinch_Timber_Modern_rd1a_south": {
   "coverage": 0.404,
   "findings": [],
@@ -472,6 +736,28 @@
   "row": "RD_WinchTimber_Modern",
   "status": "PASS"
  },
+ "RM_DrawbridgeWinch_Timber_Scrapper_rd1a_east": {
+  "coverage": 0.246,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Scrapper_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Scrapper",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_Scrapper_rd1a_north": {
+  "coverage": 0.455,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_Scrapper_rd1a_north.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Scrapper",
+  "status": "PASS"
+ },
  "RM_DrawbridgeWinch_Timber_Scrapper_rd1a_south": {
   "coverage": 0.457,
   "findings": [],
@@ -481,6 +767,28 @@
    1024
   ],
   "row": "RD_WinchTimber_Scrapper",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_rd1a_east": {
+  "coverage": 0.304,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_rd1a_east.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Timber",
+  "status": "PASS"
+ },
+ "RM_DrawbridgeWinch_Timber_rd1a_north": {
+  "coverage": 0.501,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_DrawbridgeWinch_Timber_rd1a_north.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_WinchTimber_Timber",
   "status": "PASS"
  },
  "RM_DrawbridgeWinch_Timber_rd1a_south": {
