@@ -1,0 +1,1 @@
+Scenario hose tuples (rx, rz, x, z, end) set the free end's LOOK (cap/nozzle via HoseProbe end:), never its ROLE; stage Intake/Outflow/Capped with a calls entry to RM_LineProofs.ProofHoseRole. A reel needs >4 squares of straight lead-out or the lay is refused ('no room for the straight lead-out from the nozzle').
