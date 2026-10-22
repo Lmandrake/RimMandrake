@@ -40,6 +40,8 @@ namespace RimMandrake.FlowWorks
 		private static readonly ConditionalWeakTable<Map, RM_PocketGrid[]> strideGrids = new ConditionalWeakTable<Map, RM_PocketGrid[]>();
 		// UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: per map, the grids labelled on the FLOOR view (index s = 0 plain, 1..MaxStride)
 		private static readonly ConditionalWeakTable<Map, RM_PocketGrid[]> floorGrids = new ConditionalWeakTable<Map, RM_PocketGrid[]>();
+		/// <summary>Per map: the tick and the (climb generation, salt) stamp the last paused frame left (UpdatePaused).</summary>
+		private static readonly ConditionalWeakTable<Map, long[]> pausedSeen = new ConditionalWeakTable<Map, long[]>();
 		private static int settingsSalt;
 
 		private readonly Map map;
@@ -168,12 +170,20 @@ namespace RimMandrake.FlowWorks
 		/// <summary>From RM_MapComponent_Excavation.MapComponentUpdate (every frame), only while the game is paused: the tick
 		/// throttle can never pass with the clock stopped, so a depth write made paused (a dev tool, the bridge) left every trap
 		/// verdict reading the old ground until time ran (V2_PIT_ROWS_DIAGNOSE_NOBODY_STAYS_IN: D4 pits dug paused held nobody).
-		/// Paused, nothing writes depth on its own, so this is one rebuild per such write. Like Tick, never inside a query.</summary>
+		/// WALL_REACH_TUNE_REBUILDS_TENFOLD: the bridge also STEPS time under the pause flag (safe_advance: DoSingleTick inside a
+		/// paused frame), where pawns dig and fill; such a frame, and an idle frame between step bursts, stays throttled
+		/// (RM_WallReachMath.PausedUnthrottled on the climb generation and settings salt), so only a write made with the clock
+		/// stopped rebuilds at once, seen at most one frame later. Like Tick, never inside a query.</summary>
 		public static void UpdatePaused(Map map, RM_MapComponent_Excavation eng)
 		{
 			if (Find.TickManager != null && Find.TickManager.Paused)
 			{
-				RebuildIfStale(map, eng, true);
+				long[] seen = pausedSeen.GetValue(map, _ => new[] { int.MinValue, long.MinValue });
+				int now = Find.TickManager.TicksGame;
+				long gen = eng == null ? 0 : eng.ClimbGeneration * 31L + settingsSalt;
+				RebuildIfStale(map, eng, RM_WallReachMath.PausedUnthrottled(now, (int)seen[0], gen, seen[1]));
+				seen[0] = now;
+				seen[1] = gen;
 				RM_WallReach.PausedFrame(map);   // WALL_REACH_TUNE_REBUILDS_TENFOLD: a stepped paused frame stays throttled
 			}
 		}
