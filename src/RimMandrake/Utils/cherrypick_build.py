@@ -978,6 +978,9 @@ def main():
     # The recorded decisions, typed from the dump. Everything the owner cut goes in
     # except what they held back by name.
     index, _ = load_index({t for t in CATEGORY_TYPE.values()})
+    if not index:
+        sys.exit("UNMEASURED: no def records found under %s - validating against an empty dump would "
+                 "report every key as unresolvable and prove nothing." % DUMP)
     held, untypable, unratified, from_dec = [], [], [], 0
     for name in sorted(decided):
         if name in OWNER_EXCLUDE:

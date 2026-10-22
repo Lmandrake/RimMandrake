@@ -872,8 +872,14 @@ def main(argv=None):
     if not save:
         from game_paths import SAVES
         save = os.path.join(SAVES, SAVE_NAME)
-    run(save, a.out, a.profile, a.dry_run, cap_root=a.captures)
+    result = run(save, a.out, a.profile, a.dry_run, cap_root=a.captures)[0]
+    bad = [l for k in ("roundtrip_raw", "roundtrip_ported") for l, ok in result.get(k, {}).items() if not ok]
+    if bad:
+        print("ROUND TRIP FAILED for layer(s): %s - the files written do not re-read to what was decoded" % sorted(set(bad)),
+              file=sys.stderr)
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

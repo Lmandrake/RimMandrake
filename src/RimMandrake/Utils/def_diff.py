@@ -1033,6 +1033,10 @@ def run(live_dir, out_dir, types=None, list_counts=True, max_delta_chars=600,
         if fn.lower().endswith(".json"):
             live_types[fn[:-5]] = os.path.join(defs_dir, fn)
 
+    if not live_types:
+        sys.exit("UNMEASURED: %s holds no *.json def files - every offline def would read as "
+                 "'offline_only (no-live-file-for-type)'." % defs_dir)
+
     op = offline_paths or {}
     ds = build(op.get("config", D_CONFIG), op.get("workshop", D_WORKSHOP),
                op.get("local", D_LOCAL), op.get("data", D_DATA),
