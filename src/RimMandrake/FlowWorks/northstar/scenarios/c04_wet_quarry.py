@@ -1,7 +1,7 @@
 """C4 - The Wet Quarry (map C, 40x40, look Industrial): dug below the water table, kept workable by pumping up and away.
 
 A stepped quarry (D1 > D2 > D3 benches, soil walls west, rock walls east), a machine-dug sump (3 m) with groundwater
-bleeding in from a tap and LOW/HIGH marks on its wall, a pump on the D3 bench with a hose up the ramp to a drain canal
+bleeding in from a bleed well and LOW/HIGH marks on its wall, a pump on the D3 bench with a hose up the ramp to a drain canal
 that runs off the map's west edge (the only edge drain on this map besides C10's), three flow meters, a workbench just
 above HIGH as the stake, a miner in climbing gear, a rail ladder on the sump wall, a wrecked pumping station on the rim.
 Design §3 C4; GPT #7 (no level holder; LOW/HIGH marks; three meters; a workbench; the dig order as a ~70-cell job).
@@ -57,13 +57,13 @@ SCENARIO = scenario(
              "depth; 0.5 m water reads as silt",
     broken="a dug tile reading as gravel path; dirt and stone walls alike; the sump a flat blue square; the miner "
            "standing ON water at 2 m; the ladder lowered from below",
-    idle="the pump draws the sump through the hose to the drain canal, which runs off the map edge, against the tap's "
+    idle="the pump draws the sump through the hose to the drain canal, which runs off the map edge, against the bleed well's "
          "groundwater: the sump stays near LOW (the soak MEASURES whether this balance holds; the build fails if not); "
          "the miner is drafted; no dig is designated until he does it",
     setup=SETUP,
     edge_drain="west",
     fluid_moves=True,
-    parts=[(13, 13, "LOW 1.5 m"), (13, 18, "HIGH 3 m (brim)"), (17, 18, "tap (groundwater)"), (12, 17, "pump (Draw)"),
+    parts=[(13, 13, "LOW 1.5 m"), (13, 18, "HIGH 3 m (brim)"), (17, 18, "bleed well (groundwater)"), (12, 17, "pump (Draw)"),
            (10, 18, "reel: hose up and away"), (20, 35, "ramp"), (22, 14, "workbench (the stake)"),
            (12, 19, "miner (gear)"), (14, 19, "rail ladder"), (2, 37, "drain canal > west edge"),
            (16, 13, "meter sump"), (1, 35, "meter drain"), (10, 21, "meter bench"), (6, 2, "soil walls"),
@@ -71,7 +71,7 @@ SCENARIO = scenario(
     pieces=[staged("stepped benches D1 > D2 > D3", "dig", None, (8, 8)),
             staged("rock east / soil west", "terrain", "Granite_Rough", (20, 0), "look"),
             staged("machine-dug sump, 3 m, water at LOW", "fluid", W, (14, 14)),
-            staged("groundwater tap into the sump", "build", "RM_LiquidTap", (17, 17)),
+            staged("groundwater bleed well into the sump", "build", "RM_LiquidTap", (17, 17)),
             staged("pump Drawing on the sump rim", "pump", "draw", (13, 16), "poked"),
             staged("hose up and away, free end Outflow", "gizmos", None, (11, 16), "poked"),
             staged("drain canal off the west edge", "dig", None, (-12, 36)),
@@ -95,5 +95,5 @@ SCENARIO = scenario(
                "pawn_height_ladder_legible": "look", "half_metre_water_reads_as_silt": "poked",
                "geared_pawn_climbs_out": "poked", "climbing_gear_reads_as_kit": "look",
                "wall_ladder_rides_on_rails": "poked", "empty_reservoir_stops_flow": "poked"},
-    goal="live: the sump's fill after the two-hour soak within one level of LOW (the pump and tap balance)",
+    goal="live: the sump's fill after the two-hour soak within one level of LOW (the pump and bleed well balance)",
 )

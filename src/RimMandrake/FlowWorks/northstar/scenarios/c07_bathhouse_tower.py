@@ -2,7 +2,7 @@
 
 A well pump on a small pond fills an extra-tall cargo tank (the tower); a pipe brings it down to three ground tanks of
 different sizes that are NOT yet joined (a two-cell gap he closes); a roofed bathhouse with a bath pit kept warm by a
-liquid thermostat; a fountain line of taps; the bad-water corner (brine -> fuelled still, salt -> sun-pan still) and a
+liquid thermostat; a line of three bleed wells (hand-bled ground wells, NOT on the pipe beside them); the bad-water corner (brine -> fuelled still, salt -> sun-pan still) and a
 drip filter for poisoned water; a gravity hose from the tower (no pump); four thirsty colonists and a prisoner.
 Design §3 C7; GPT #4 (the every-container permutations went to the art wall).
 """
@@ -26,7 +26,8 @@ SETUP = dict(
        ("RM_UniversalCargoTank", 22, 24, None, None)]
     + walls(perimeter(26, 28, 37, 37, gaps=[(31, 28)]), "Steel") + [("Door", 31, 28, None, "WoodLog"),
                                                                      ("RM_LiquidTap", 32, 32, None, None)]
-    # fountain line: three taps off a pipe, an Empty-mode tank, bottles on a shelf
+    # three bleed wells (RM_LiquidTap: ground wells, off the pipe net) beside a pipe, an Empty-mode tank, bottles on a shelf.
+    # LIQUID_TAP_RENAME_NOT_A_FAUCET (owner card 2026-10-22): nothing here is a faucet; a pipe-fed faucet is filed work.
     + [("RM_UniversalPipe", x, 18, None, None) for x in range(13, 25)]
     + [("RM_LiquidTap", x, 17, None, None) for x in (14, 17, 20)] + [("RM_LiquidTank", 24, 16, None, None),
                                                                     ("Shelf", 27, 17, 0, "WoodLog")]
@@ -58,10 +59,10 @@ SETUP = dict(
 
 SCENARIO = scenario(
     id="C7", n=7, slug="bathhouse_tower", name="The Bathhouse and Water Tower", map="C", size=SIZE, look_style="Modern",
-    purpose="A desert colony's water: a tower tank, gravity down to taps, a bathhouse, stills for bad water, thirsty "
+    purpose="A desert colony's water: a tower tank, gravity down to the ground tanks, a bathhouse, stills for bad water, thirsty "
             "colonists - and communicating vessels in plain sight.",
     start="undraft the four thirsty colonists and unpause",
-    try_=["START: undraft the four, unpause: they drink from taps and bottles; the warden carries water to the prisoner",
+    try_=["START: undraft the four, unpause: they drink at the tanks and from bottles; the warden carries water to the prisoner",
           "let them build the two missing pipe cells (or place them: Architect > FlowWorks > pipe on the marked gap): "
           "the three ground tanks move to ONE level, in decilitre steps",
           "set the tower reel's Free end to Outflow: the hose flows to the garden with no pump (gravity) and stops when "
@@ -77,7 +78,7 @@ SCENARIO = scenario(
     setup=SETUP,
     parts=[(9, 38, "tower (XTall)"), (2, 39, "well pond"), (16, 27, "GAP: 2 pipe cells"), (14, 23, "short"),
            (18, 23, "tall"), (22, 23, "cargo"), (31, 27, "bathhouse"), (30, 35, "bath"), (33, 35, "thermostat 38C"),
-           (17, 15, "fountain taps"), (24, 15, "Empty tank"), (6, 11, "brine > fuelled still"),
+           (17, 15, "bleed wells (ground, off the pipe)"), (24, 15, "Empty tank"), (6, 11, "brine > fuelled still"),
            (6, 0, "salt > sun-pan"), (15, 6, "drip filter"), (33, 11, "prisoner"), (26, 39, "garden (hose end)"),
            (17, 10, "thirsty colonists (drafted)")],
     pieces=[staged("well pump, Drawing, powered", "pump", "draw", (5, 34)),
@@ -85,7 +86,7 @@ SCENARIO = scenario(
             staged("three ground tanks, one per size, NOT joined", "build", "RM_LiquidTankTall", (18, 24), "poked"),
             staged("roofed bathhouse, bath pit filled", "fluid", "RM_Fluid_Water", (29, 31), "look"),
             staged("liquid thermostat keeps the bath warm", "markers", "PlaceThermostat", (33, 34)),
-            staged("fountain line: three taps", "build", "RM_LiquidTap", (14, 17), "poked"),
+            staged("three bleed wells (ground wells, not on the pipe)", "build", "RM_LiquidTap", (14, 17), "poked"),
             staged("Empty-mode tank + bottles on a shelf", "tank", "Empty", (24, 16), "poked"),
             staged("brine tank > fuelled still > clean tank", "build", "RM_FueledStill", (6, 8), "poked"),
             staged("salt tank > sun-pan still", "build", "RM_SunPanStill", (6, 2), "poked"),

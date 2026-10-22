@@ -200,14 +200,14 @@ A quarry dug below the water table: the deeper it goes the more it floods; a pum
 
 **Broken looks like:** a dug tile reading as gravel path; dirt and stone walls alike; the sump a flat blue square; the miner standing ON water at 2 m; the ladder lowered from below
 
-**Still until poked:** the pump draws the sump through the hose to the drain canal, which runs off the map edge, against the tap's groundwater: the sump stays near LOW (the soak MEASURES whether this balance holds; the build fails if not); the miner is drafted; no dig is designated until he does it
+**Still until poked:** the pump draws the sump through the hose to the drain canal, which runs off the map edge, against the bleed well's groundwater: the sump stays near LOW (the soak MEASURES whether this balance holds; the build fails if not); the miner is drafted; no dig is designated until he does it
 
 | piece | status | tag | note |
 |---|---|---|---|
 | stepped benches D1 > D2 > D3 | staged | demonstrated |  |
 | rock east / soil west | staged | look |  |
 | machine-dug sump, 3 m, water at LOW | staged | demonstrated |  |
-| groundwater tap into the sump | staged | demonstrated |  |
+| groundwater bleed well into the sump | staged | demonstrated |  |
 | pump Drawing on the sump rim | staged | poked |  |
 | hose up and away, free end Outflow | staged | poked |  |
 | drain canal off the west edge | staged | demonstrated |  |
@@ -223,7 +223,7 @@ A quarry dug below the water table: the deeper it goes the more it floods; a pum
 
 Exercises (21 ids): 10 poked, 10 look, 1 demonstrated.
 
-Goal read: live: the sump's fill after the two-hour soak within one level of LOW (the pump and tap balance)
+Goal read: live: the sump's fill after the two-hour soak within one level of LOW (the pump and bleed well balance)
 
 ## C5 - The Fuel Depot (map C, look Industrial)
 
@@ -312,13 +312,13 @@ Goal read: live: both ditches dry at the start (excavation read f=0 east of the 
 
 ## C7 - The Bathhouse and Water Tower (map C, look Modern)
 
-A desert colony's water: a tower tank, gravity down to taps, a bathhouse, stills for bad water, thirsty colonists - and communicating vessels in plain sight.
+A desert colony's water: a tower tank, gravity down to the ground tanks, a bathhouse, stills for bad water, thirsty colonists - and communicating vessels in plain sight.
 
 **START:** undraft the four thirsty colonists and unpause
 
 **Try:**
 
-1. START: undraft the four, unpause: they drink from taps and bottles; the warden carries water to the prisoner
+1. START: undraft the four, unpause: they drink at the tanks and from bottles; the warden carries water to the prisoner
 2. let them build the two missing pipe cells (or place them: Architect > FlowWorks > pipe on the marked gap): the three ground tanks move to ONE level, in decilitre steps
 3. set the tower reel's Free end to Outflow: the hose flows to the garden with no pump (gravity) and stops when the tower's level drops below the end
 4. run the stills: the fuelled one works day and night; the sun-pan stops at dusk and under a roof
@@ -337,7 +337,7 @@ A desert colony's water: a tower tank, gravity down to taps, a bathhouse, stills
 | three ground tanks, one per size, NOT joined | staged | poked |  |
 | roofed bathhouse, bath pit filled | staged | look |  |
 | liquid thermostat keeps the bath warm | staged | demonstrated |  |
-| fountain line: three taps | staged | poked |  |
+| three bleed wells (ground wells, not on the pipe) | staged | poked |  |
 | Empty-mode tank + bottles on a shelf | staged | poked |  |
 | brine tank > fuelled still > clean tank | staged | poked |  |
 | salt tank > sun-pan still | staged | poked |  |
