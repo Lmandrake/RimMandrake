@@ -452,6 +452,9 @@ def refuse_shrink(mapping, path, allow):
     this check and is the wrong answer nine times in ten."""
     # ⛔ CANON_PATCH, not `path`. See the note at CANON_PATCH: reading the output path
     # means a scratch target has nothing to lose and the guard never fires.
+    if not CANON_PATCH.is_file():
+        sys.exit("REFUSING: CANON_PATCH %s does not exist - both safety guards read it, so "
+                 "without it nothing would stop a shrinking or hand-block-dropping emit." % CANON_PATCH)
     was = existing_targets(CANON_PATCH)
     lost = sorted(d for d in was - set(mapping) if not is_retired(d))
     if not lost:
@@ -568,6 +571,8 @@ def main():
                     help="for every disarmed kind, show the SURVIVING tags in the same family - a dead tag dies out of a family, and the family is the decision")
     ap.add_argument("--list-unclassified", action="store_true",
                     help="name the surviving guns role_of could not classify - the remaining retag work, which the summary line otherwise hides")
+    ap.add_argument("--allow-shrink", action="store_true",
+                    help="emit even if the patch on disk tags defs this run would drop")
     ap.add_argument("--anyway", action="store_true",
                     help="report even though the dump does not match the live mod list")
     a = ap.parse_args()
@@ -647,7 +652,7 @@ def main():
                   % (d["defName"], f(d, "techLevel"), market_value(d) or "?",
                      str(f(d, "label"))[:34]))
     if a.emit_patch:
-        n = emit_patch(m, a.emit_patch)
+        n = emit_patch(m, a.emit_patch, a.allow_shrink)
         print("\nwrote %s - %d weapons re-tagged" % (a.emit_patch, n))
     return 0
 

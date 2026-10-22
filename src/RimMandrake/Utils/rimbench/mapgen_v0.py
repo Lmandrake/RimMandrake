@@ -820,9 +820,12 @@ def cmd_selftest(_args):
     # Sandstone_Rough are genuinely impassable now, so a rock-heavy map can
     # honestly fail connectivity/buildable-area. Not a selftest gate.
     print("gates reported: %d/8 passed (informational, not a pass/fail gate)" % gates_ok)
+    if not dump_names:
+        print("defnames: UNMEASURED - no TerrainDef dump found under %s, so the "
+              "'defnames(all known)' PASS below checked nothing" % DUMP_DIR, file=sys.stderr)
     checks = {"variety(>=4 distinct landforms)": ok_variety,
               "validate(all pass)": ok_validate,
-              "defnames(all known)": ok_defnames,
+              "defnames(all known)" + ("" if dump_names else " [UNMEASURED]"): ok_defnames,
               "distinct_terrains(>=10, all 8)": ok_distinct,
               "perim_area(2.4-3.3, >=6/8)": ok_band}
     for name, v in checks.items():
