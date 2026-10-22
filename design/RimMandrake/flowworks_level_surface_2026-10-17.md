@@ -201,7 +201,7 @@ time, take Option 2. If instant levelling down a long canal looks wrong to him, 
 | `DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE` | open, FOUNDRY | readout gets the true figure; format to two decimals |
 | `WATER_DEPTH_RESKIN_HE_LOOKS_FIRST` | open | adds the thin-water look if Q2 picks new art |
 | `WATER_SCENES_JUDGE_S5_REDRAWN` | open, BENCH, owner | **hold**: S5's bounds change again; re-draw before he approves |
-| `LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES` | open | unaffected (floors stay 0.5 m steps) |
+| `LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES` | superseded (by `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD`) | unaffected (floors stay 0.5 m steps) |
 | `LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY` | closed `c82dd1c08f55` | its fix is folded into the new solver; keep its test |
 
 **Code (`src/RimMandrake/FlowWorks/`):**

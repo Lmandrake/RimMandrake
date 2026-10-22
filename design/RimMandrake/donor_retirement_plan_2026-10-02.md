@@ -75,7 +75,7 @@ is the shape that reset `ModsConfig.xml` to Core-only twice on 2026-09-27.
 | `ABYSS_FREE_TIER_BODY_1` | proposed | Abyss labels, 12 finished art sets to wire, 8 flora to guard or own |
 | `COMMISSION_LEDGER_CLEANUP_1` | doing | new-creature commissions, not ports. 7 slugs left, all design-blocked. Not on this path |
 | `DESERT_WRAPS_ART_COMMISSION_1` | doing | apparel, not a donor roster. 17 art cells owed. Not on this path |
-| `STONEBACK_BOKKA_ART_STANDARD_1` | doing | bokka art FAILS (donor creature drawn). The regen failed validation twice. It shows the port-art trap: our path, the donor's pixels |
+| `STONEBACK_BOKKA_ART_STANDARD_1` | dropped | bokka art FAILS (donor creature drawn). The regen failed validation twice. It shows the port-art trap: our path, the donor's pixels |
 | `ROT_ROSTER_DEAD_DONOR_NAMES_1` / `NONCANON_BEAST_RENAME_1` / `PATCH_MAYREQUIRE_GUARD_INERT_1` | done | closed precedents |
 
 ## 3. Order of work

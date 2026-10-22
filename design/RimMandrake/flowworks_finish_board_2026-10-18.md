@@ -55,7 +55,7 @@ from FOUNDRY notes; `proposed` means the ledger, not the code (section 0). Sweep
 | `PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT` (P5) | built | bridge | FOUNDRY | A2 dig-to-depth walk, A3 save reload, A4 art (his look) | **must not ship before P2 passes** |
 | `DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT` (P6) | built | bridge | FOUNDRY | rides P5's walk | P5 |
 | `PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH` (P2) | proposed | bridge | FOUNDRY | mask-swap row UNMEASURED; owed `raider_never_crosses_ramped_moat`, `hauler_fetches_ramped_floor`, `save_reload_pockets_identical`; modcheck record | gates shipping P5 |
-| `PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP` | doing | offline | BENCH | A1/A2 live climb rows (P2 discharges) | P2 |
+| `PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP` | superseded (by `PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH`) | offline | BENCH | A1/A2 live climb rows (P2 discharges) | P2 |
 | `PIT_SUPERDEEP_COLLAPSE_1` | doing | bridge | FOUNDRY | live proofs; P12 barrier verdict per site; named in SHIP_1 | SHIP_1 |
 | `POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD` (P14) | doing | offline | BENCH | **NOT BUILT** (no commit mentions it, MEASURED): one-water terrain ladder, wet dug squares on base layer, thin water in situ, ice and flood rows | blocks P10, P13 dug-water fish rows |
 | `LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP` (P11) | proposed (built) | offline | FOUNDRY | live: only the mountainous lake got 0.5-10 m floors, flat/hill lakes 0.5-1 m; roughness table owed to him; his look | P10 |
@@ -84,7 +84,7 @@ from FOUNDRY notes; `proposed` means the ledger, not the code (section 0). Sweep
 | `HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD`, `LIQUID_LEDGER_BUILD_NO_UNIT_LOST` | validated | bridge | BENCH | A2 pipe-look survives blueprint to building (~5 min check); A5/A6 colonists-clean SITE-UNMEASURED |
 | `SPRINKLER_HEADS_BUILD_PUMP_REQUIRED` | doing | offline | BENCH | stage all four nozzle looks spraying for a joint walk (his rule: in situ only) |
 | `THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY` | doing | offline | BENCH | built offline, not deployed; live T1-T7, T9, T10, caravan readout, code review owed |
-| `TANK_TALL_BUILD_TWICE_THE_DRINK` | doing | offline | BENCH | art installed 10-15; live proof of tall tanks |
+| `TANK_TALL_BUILD_TWICE_THE_DRINK` | done | offline | BENCH | art installed 10-15; live proof of tall tanks |
 | `FLOWWORKS_PLAYTEST_CAMPAIGN_1`, `FLOWWORKS_REVIEW_LOOKS_ROUND_1` | proposed | offline | BENCH | stale-looking campaign items; read before acting, probably (d) |
 | `RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED` | built | bridge | FOUNDRY | 11 river toggle proofs + 10 river-walk lines; Rivers walk is DRAFT |
 
