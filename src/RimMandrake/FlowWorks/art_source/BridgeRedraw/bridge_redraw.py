@@ -420,6 +420,78 @@ def build():
 build()
 
 
+# ---- wave 7: the missing facings of the PICKED south views (owner picks, bridge_art_redraw sheet 2026-10-21) -------------
+# Each facing is drawn from ONE master, the installed south he picked (rimworld-sprite-facings: derive from one master, say
+# the surface never the compass; west mirrors east).
+DECISIONS = R / "Transient/biome_ffar/bridge_art_redraw_sheet_2026-10-21.decisions.json"
+FACE = {
+    "north": "now seen from the OPPOSITE side: the REAR view, from behind - the side that faced away from the viewer in "
+             "image 1 now faces the viewer, and the side that faced the viewer is hidden behind it. This is NOT image 1 "
+             "turned upside down and NOT a top-down view: the camera is the same ~35 degrees above horizontal, top "
+             "surfaces still visible, the object simply turned 180 degrees about its vertical axis",
+    "east": "now seen from its SIDE: a side view of the object turned 90 degrees about its vertical axis, at the same ~35 "
+            "degree camera elevation - top surfaces still visible, never an overhead view; its depth front-to-back in "
+            "image 1 is now its width",
+}
+
+
+def facing_jobs():
+    if not DECISIONS.is_file():
+        return
+    dec = json.loads(DECISIONS.read_text())["decisions"]
+    for j in [x for x in JOBS if x["facing"] == "south" and x["wave"] < 7]:
+        rk = j["row"]
+        # anchors and jetties are plan-view parts that turn with the span: their north/east are the south rotated 180/90
+        # degrees, exactly as every shipped set (rotate_facings below), never drawn
+        if not rk.startswith(("RD_Winch", "RD_Gate")) or rk not in dec:
+            continue
+        # the column he picked holds this job (sheet columns: A = in-game set if any, then the renders in order)
+        letters = "ABCDEFG"
+        cols = [x["id"] for x in JOBS if x["row"] == rk and x["wave"] < 7]        # no in-game column on these rows
+        pick = dec[rk].get("decision")
+        if pick not in letters or letters.index(pick) >= len(cols) or cols[letters.index(pick)] != j["id"]:
+            continue
+        tp = j["target_texpath"]
+        master = TEX / f"{tp}_south.png"
+        # the art contract (flowworks_drawbridge_design_2026-10-20.md §R12): winch _south/_east/_north; gate _south
+        # (face-on) and _east (edge-on), north reuses south
+        for fc in (("east",) if rk.startswith("RD_Gate") else ("north", "east")):
+            job(7, j["rank"], rk, j["family"], "fit", j["canvas"],
+                f"Paint the SAME RimWorld building as image 1 (its south view, already approved), {FACE[fc]}. Keep "
+                f"EXACTLY image 1's size, height, footprint, materials, palette, wear, line weight and painting style - "
+                f"the same object, just turned. {READ} {ALPHA}",
+                [master], j["target_def"], tp, facing=fc, gen=j["gen"])
+
+
+facing_jobs()
+
+
+def rotate_facings(apply):
+    """North/east of the PICKED anchors and jetties: the installed south turned 180 / 90 degrees counter-clockwise, the
+    exact convention of every shipped set (measured 2026-10-21: north == rot90(south, 2), east == rot90(south, 1), mean
+    pixel difference 0.0 on the Scrapper/Modern anchors and jetties). Installed through the art ledger."""
+    sys.path.insert(0, str(R / "src/RimMandrake/Utils/art"))
+    import artledger as L
+    dec = json.loads(DECISIONS.read_text())["decisions"]
+    n = 0
+    for j in [x for x in JOBS if x["facing"] == "south" and x["row"].startswith(("RD_Anchor", "RD_Jetty"))]:
+        cols = ["ingame"] + [x["id"] for x in JOBS if x["row"] == j["row"]]
+        pick = (dec.get(j["row"]) or {}).get("decision")
+        if not pick or "ABCDEFG".index(pick) >= len(cols) or cols["ABCDEFG".index(pick)] != j["id"]:
+            continue
+        src = TEX / f"{j['target_texpath']}_south.png"
+        a = np.asarray(Image.open(src).convert("RGBA"))
+        for fc, k in (("north", 2), ("east", 1)):
+            im = Image.fromarray(np.ascontiguousarray(np.rot90(a, k)), "RGBA")
+            dest = TEX / f"{j['target_texpath']}_{fc}.png"
+            r = L.install_image(dest, im, reason="script:src/RimMandrake/FlowWorks/art_source/BridgeRedraw/bridge_redraw.py",
+                                provenance={"kind": "derived", "job": j["id"], "from": rel(src), "rot90": k},
+                                dry_run=not apply)
+            n += 1
+            print(fc, rel(dest), r.get("status"))
+    print(f"rotate_facings: {n} file(s){'' if apply else ' (dry run; --apply installs)'}")
+
+
 # ------------------------------------------------------------------------------------------------------------ guides
 def guides():
     GUIDES.mkdir(parents=True, exist_ok=True)
@@ -645,6 +717,7 @@ def main():
     a.add_argument("--workers", type=int, default=9); a.add_argument("--timeout", type=int, default=420)
     a = sp.add_parser("finalize"); a.add_argument("--wave", type=int)
     sp.add_parser("manifest")
+    a = sp.add_parser("rotate_facings"); a.add_argument("--apply", action="store_true")
     a = ap.parse_args()
     if a.cmd == "list":
         for j in JOBS:
@@ -658,6 +731,8 @@ def main():
         gen(a.wave, set(a.only), a.workers, a.timeout)
     elif a.cmd == "finalize":
         finalize(a.wave)
+    elif a.cmd == "rotate_facings":
+        rotate_facings(a.apply)
     else:
         manifest()
 
