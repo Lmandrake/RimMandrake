@@ -24,8 +24,9 @@ from PIL import Image
 
 DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
          "/3550435517/Textures/Things/Building/Door/Blast")
-OUT = ("/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/BlastDoorFrameAsyncFix"
-       "/Textures/Things/Building/Door/Blast")
+# the shipped textures live in the StarWarsPatches mod (two levels above this Source dir)
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Textures",
+                   "Things", "Building", "Door", "Blast")
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 STEMS = ["SWDoorBlastDoor", "SWDoorBlastBDoor", "SWDoorBlastDDoor"]
@@ -41,6 +42,9 @@ def main() -> int:
                   Image.open(f"{DONOR}/{stem}_MoverAsync_east.png").convert("RGBA")]
         leaves += [l.transpose(Image.FLIP_LEFT_RIGHT) for l in leaves]
         split = Image.open(f"{OUT}/{stem}_FrameAsync_east.png").convert("RGBA")
+        if split.size != frame.size:   # shipped split is padded to a multiple of 4 (offset pad // 2)
+            ox, oy = (split.width - frame.width) // 2, (split.height - frame.height) // 2
+            split = split.crop((ox, oy, ox + frame.width, oy + frame.height))
 
         def stack(layers):
             c = Image.new("RGBA", frame.size, BG)

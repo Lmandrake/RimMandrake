@@ -5,7 +5,7 @@ textures (and their masks) for *Doors Expanded Star Wars edition*.
 RUN WITH:  /home/mandrake/.venvs/art/bin/python   (the only interpreter here with Pillow)
 
     /home/mandrake/.venvs/art/bin/python \
-        /mnt/d/Luke/dev/RimMandrake/src/RimStarWars/BlastDoorFrameAsyncFix/Source/build_frameasync_east.py
+        src/RimStarWars/StarWarsPatches/Source/BlastDoorFrameAsyncFix/build_frameasync_east.py
 
 Everything below is derived from files on disk at build time. Nothing is hand
 painted, so re-running this reproduces the shipped PNGs byte-for-byte.
@@ -121,8 +121,9 @@ from PIL import Image, ImageChops, ImageFilter
 DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
          "/3550435517/Textures/Things/Building/Door/Blast")
 
-OUT = ("/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/BlastDoorFrameAsyncFix"
-       "/Textures/Things/Building/Door/Blast")
+# the shipped textures live in the StarWarsPatches mod (two levels above this Source dir)
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Textures",
+                   "Things", "Building", "Door", "Blast")
 
 # stem -> (defName, east frame mask filename as the DONOR spells it)
 DOORS = {
@@ -154,6 +155,18 @@ def _bbox_str(img: Image.Image) -> str:
     if bb is None:
         return "EMPTY"
     return f"x={bb[0]}..{bb[2] - 1} w={bb[2] - bb[0]} y={bb[1]}..{bb[3] - 1} h={bb[3] - bb[1]}"
+
+
+def pad4(img: Image.Image) -> Image.Image:
+    """Pad transparent to the next multiple of 4 (offset = pad // 2 at left/top), exactly as
+    NONDIV4_TEXTURE_FIX_1 shipped these files (cf3aee40b): a non-%4 PNG is kept RGBA32, 4x the RAM."""
+    w, h = img.size
+    nw, nh = -(-w // 4) * 4, -(-h // 4) * 4
+    if (nw, nh) == (w, h):
+        return img
+    out = Image.new("RGBA", (nw, nh), (0, 0, 0, 0))
+    out.paste(img, ((nw - w) // 2, (nh - h) // 2))
+    return out
 
 
 def _apply_region(src: Image.Image, region: Image.Image) -> Image.Image:
@@ -205,6 +218,7 @@ def main() -> int:
         print(f"  donor placeholder : {ph.size[0]}x{ph.size[1]}  "
               f"{os.path.getsize(placeholder)} B  maxA={ph.getchannel('A').getextrema()[1]}")
         for name, img in build(stem):
+            img = pad4(img)    # the donor canvas is 933: shipped = padded to 936
             p = f"{OUT}/{name}"
             img.save(p, optimize=True)
             lo, hi = img.getchannel("A").getextrema()

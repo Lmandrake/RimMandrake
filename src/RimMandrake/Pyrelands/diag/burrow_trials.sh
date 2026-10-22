@@ -21,9 +21,11 @@ for n in $(seq "${1:-1}" "${2:-10}"); do
   [ "$n" != "${1:-1}" ] && sleep 12
   timeout 240 python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint "$FP" --tag "$TAG" \
       --reload-only --tile "$TILE" --work "$OUTW\\sites" 2>&1 | tail -1 | cut -c1-200
+  rc=${PIPESTATUS[0]}; [ "$rc" != 0 ] && echo "!! trial $n site reload exited $rc (124 = timeout): the next line is NOT a cold trial"
   export BURROW_DIAG_OUT="$OUTW\\burrow_cold_$n.json"
   timeout 400 python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands \
       --plan src/RimMandrake/Pyrelands/northstar_plan.py --chains burrowers_diag --no-record \
       --out "$OUTW\\burrow_run_$n.json" 2>&1 | grep -E "\[diag\]|PASS|FAIL|ERROR|stopped|Traceback|refus" | cut -c1-400 | tail -6
+  rc=${PIPESTATUS[0]}; [ "$rc" != 0 ] && echo "!! trial $n driver exited $rc (124 = timeout); no [diag] line above means NO measurement"
 done
 echo "== done $(date +%T)"
