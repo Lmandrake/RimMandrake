@@ -209,7 +209,7 @@ def has_member(index, type_full, kind, name, arity=None):
 
 # ─────────────────────────────────────────────────────────────── source parse ──
 
-_TYPEOF = re.compile(r"typeof\(\s*([A-Za-z_][\w.]*)(?:\s*<[^()]*>)?\s*\)")
+_TYPEOF = re.compile(r"typeof\(\s*([A-Za-z_][\w.]*)(?:\s*<[^()]*>)?\s*\??\s*\)")
 _NAMEOF = re.compile(r"nameof\(\s*([\w.]+)\s*\)")
 _STRING = re.compile(r'"([^"\\]*)"')
 _MTYPE = re.compile(r"MethodType\.(\w+)")

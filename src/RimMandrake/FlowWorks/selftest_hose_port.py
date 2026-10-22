@@ -67,7 +67,7 @@ def p1_planted():
     return shared, none
 
 
-# P9: every hose credit site, mirroring Source/SelfTest/TransferChecks.cs CreditTags (22: L7's 19 + pond return + sprinkler draw + levelling). Each tag must appear exactly
+# P9: every hose credit site, mirroring Source/SelfTest/TransferChecks.cs CreditTags (24: L7's 19 + pond return + sprinkler draw + levelling + pump overflow spill + gravity overflow). Each tag must appear exactly
 # once, in its file, on a line that makes a credit call, inside the block of a committed transfer (an `RM_LiquidTransfer.Move(`
 # a few lines above; the pre-L1 Try*Liquid guard is still accepted).
 CREDIT_SITES = [
@@ -84,6 +84,8 @@ CREDIT_SITES = [
     ("LiquidTypes/Building_LiquidPump.cs", "credit site: pond return (pump)"),   # POND_RETURN_LEG_BUILD_WATER_GOES_HOME
     ("Sprinklers/RM_Sprinkle.cs", "credit site: sprinkler draw"),   # SPRINKLER_HEADS_BUILD_PUMP_REQUIRED
     ("Machinery/RM_Levelling.cs", "credit site: levelling"),   # PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL
+    ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump overflow spill"),   # CANAL_OVERFLOW stage 1 (mirrors TransferChecks.CreditTags)
+    ("Machinery/RM_LiquidNet.cs", "credit site: gravity overflow"),   # CANAL_OVERFLOW stage 2
 ]
 CREDIT_CALL = re.compile(r"(?:RM_LiquidNet\.Credit|\bCreditTo|\bCreditRoute)\(")
 CREDIT_DEF = re.compile(r"static void (?:Credit|CreditTo|CreditRoute)\(")
