@@ -663,6 +663,8 @@ def build_items(sheets: list[dict], glob: dict, reg: dict) -> tuple[list[dict], 
     for doc in sheets:
         sheet_tiles[doc["sheet"]] = doc.get("tiles")
 
+    missing_rows: list[str] = []      # roster rows with no register row: dropped, but never silently
+
     for card in CARDS:
         cards.append({
             "id": card["id"],
@@ -691,6 +693,7 @@ def build_items(sheets: list[dict], glob: dict, reg: dict) -> tuple[list[dict], 
             defname = entry["def"]
             row = reg.get(defname)
             if row is None:
+                missing_rows.append(f"{key}:{defname}")
                 continue
             extra = []
             if tunes.get(defname):
@@ -748,6 +751,10 @@ def build_items(sheets: list[dict], glob: dict, reg: dict) -> tuple[list[dict], 
                                        it["label"].lower()))
     items = cards + biome_rows + homeless_rows
     scale_groups(items)
+    if missing_rows:
+        print(f"WARNING: {len(missing_rows)} roster creature(s) have no creature_register row and are NOT on "
+              f"this sheet: {', '.join(missing_rows[:12])}{' ...' if len(missing_rows) > 12 else ''}",
+              file=sys.stderr)
 
     counts = {
         "rows": len(items),
@@ -984,8 +991,10 @@ def guard_decisions(path: pathlib.Path, force: bool) -> None:
         return
     try:
         doc = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return
+    except (OSError, json.JSONDecodeError) as exc:
+        sys.exit(f"REFUSING to overwrite {path.name}: it exists but is unreadable ({exc}). "
+                 "It may hold the OWNER's decisions; repair or move it, or pass "
+                 "--i-know-this-overwrites-the-owners-decisions.")
     if doc.get("savedBy") or doc.get("writeCount") or doc.get("frozen"):
         sys.exit(
             f"REFUSING to overwrite {path.name}: it carries savedBy/writeCount/"
@@ -1010,6 +1019,8 @@ def main() -> int:
            for r in json.loads(REGISTER.read_text(encoding="utf-8"))["rows"]}
     items, counts = build_items(sheets, glob, reg)
 
+    if not items:
+        sys.exit("REFUSING: 0 items built (no rosters or an empty register) - blind input, nothing written")
     for it in items:
         if it.get("thumb") and not (HERE / it["thumb"]).is_file():
             it["thumb"] = None

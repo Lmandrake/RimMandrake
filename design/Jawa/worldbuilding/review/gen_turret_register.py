@@ -13,7 +13,9 @@ here writes it.
 import json, os, html
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DATA = "/mnt/d/Luke/dev/RimMandrake/Transient/turret_data.json"
+# Transient/ is untracked and lives only in the clone that made it: the read-only D:\ mirror never holds it
+TRANSIENT = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(HERE)))), "Transient")
+DATA = os.path.join(TRANSIENT, "turret_data.json")
 DEC_NATIVE = r"D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review\turret_register.decisions.json"
 SHEET_NATIVE = r"D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review\turret_register.html"
 
@@ -120,7 +122,7 @@ PLAN_1X1 = {
 WALL_WARNING = "⚠️ wall-mounted: dev-spawning these FREE-STANDING breaks PowerNetManager (root-caused 2026-08-29 — the render-killing NRE); only judge them on a wall."
 
 rows = []
-small = json.load(open("/mnt/d/Luke/dev/RimMandrake/Transient/turret_1x1.json"))
+small = json.load(open(os.path.join(TRANSIENT, "turret_1x1.json")))
 T1 = {t["defName"]: t for t in small}
 for t in small:
     dn = t["defName"]
@@ -180,8 +182,11 @@ rows.sort(key=lambda r: (GROUP_ORDER.index(r["group"]), r["size"], r["defName"])
 # Owner, 2026-08-29 (verbatim intent): the turrets left standing on the review array
 # "need to be all made into the list of our official turrets and recorded as canon...
 # a turret's damage is (# squares)^2 x (largest similar personal weapon)."
-CANON = set(json.load(open("/mnt/d/Luke/dev/RimMandrake/Transient/canon_roster.json")))
-ANCHORS = json.load(open("/mnt/d/Luke/dev/RimMandrake/Transient/weapon_anchors.json"))
+CANON = set(json.load(open(os.path.join(TRANSIENT, "canon_roster.json"))))
+ANCHORS = json.load(open(os.path.join(TRANSIENT, "weapon_anchors.json")))
+if not CANON or not ANCHORS or not turrets or not small:
+    # an empty canon roster would flip EVERY row to cut and overwrite the committed register
+    raise SystemExit("REFUSED: blind input (canon %d, anchors %d, turrets %d, 1x1 %d) - not writing turret_register.json" % (len(CANON), len(ANCHORS), len(turrets), len(small)))
 FALLBACK = {"OuterRim_Turbolaser": "OuterRim_Blaster", "OuterRim_ProtonBomb": "Bomb",
             "HugeGravBlastShockwave": "GravBlastShockwave"}
 FORM = {"Bullet": "Kinetic", "RangedStab": "Kinetic", "OuterRim_Blaster": "Thermal (blaster)",
@@ -366,7 +371,7 @@ async function link(){
     try{const f=await handle.getFile();const txt=await f.text();if(txt.trim()){const j=JSON.parse(txt);
       for(const k of Object.keys(j)) if(k!=='decisions'&&k!=='sheetSavedAt'&&k!=='decidedCount') extraKeys[k]=j[k];
       const m=seed(j.decisions||{}); banner(`linked · kept ${m.kept} of your decisions, filled ${m.filled} from prefill`);
-    }}catch(e){}
+    }}catch(e){ banner('the linked file is not valid JSON - NOT overwriting it; use copy JSON',true); handle=null; render(); return; }
     render(); save(true);
   }catch(e){ banner('link cancelled',true); }
 }
