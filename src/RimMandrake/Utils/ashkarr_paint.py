@@ -1188,8 +1188,17 @@ def _refuse_if_frozen():
     try:
         with open(side, encoding="utf-8") as fh:
             flag = _json.load(fh)
-    except (OSError, ValueError):
-        return                                    # no sidecar, or unreadable: not frozen
+    except FileNotFoundError:
+        return                                    # no sidecar: not frozen
+    except (OSError, ValueError) as exc:
+        # An UNREADABLE sidecar may still say frozen - it must not read as "not frozen".
+        if OVERRIDE in sys.argv:
+            print("!! OVERRIDE GIVEN - freeze sidecar unreadable (%s), rebuilding anyway" % exc)
+            return
+        sys.exit("REFUSING: %s is unreadable (%s), so the freeze on the hand-authored planet cannot be "
+                 "ruled out. Repair the file, or pass %s." % (side, exc, OVERRIDE))
+    if not isinstance(flag, dict):
+        sys.exit("REFUSING: %s is not a JSON object - cannot tell whether the planet is frozen." % side)
     if not flag.get("frozen"):
         return
     if OVERRIDE in sys.argv:
