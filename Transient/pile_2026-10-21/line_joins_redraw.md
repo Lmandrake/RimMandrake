@@ -14,6 +14,10 @@ Items: PIPE_GIRTH_TUNE_HALF_AS_THICK, HOSE_GIRTH_TUNE_MUCH_THINNER (claimed), LI
 - [x] pole span RM_PipePoleMath.SpanWidthCells 0.22 -> 0.14 + RM_PipePoles.xml spanWidth; PipePoleChecks can-fail re-pinned 0.12-0.15
 - selftest_hose_port.py P2 FAIL is pre-existing (GSS AerialSettings.cs string), not this change.
 ## Wave 2 — candidates
+- artpipe find: no prior render at the new girth (old reel 'smaller_fairlead' jobs 2026-10-17 predate the thin hose); 0 sprinkler/tap/pipe hits.
+- 18 jobs filed (fill_queue, list Transient/pile_2026-10-21/line_joins_redraw/artlist.json, ids *_lj_*): reel PumpHookup+Deployed x4 looks,
+  sprinkler head x4 (riser foot at texture centre), tank x4 (neck+coupling on the pipe axis E/W), pump x1, tap x1 (pump/tap have one look).
+- NOT made: pipe->hose metal reducer (needs RM_MapComponent_Hoses.DrawPortStub C# + new texture) — owed; flat pipe cap plates (need new raw/<look>_fittings.png) — owed.
 ## Wave 3 — review sheet line_joins_redraw
 ## Live check owed
 ## Shas
