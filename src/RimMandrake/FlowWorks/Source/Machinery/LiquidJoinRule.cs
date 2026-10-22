@@ -124,10 +124,5 @@ namespace RimMandrake.FlowWorks.Machinery
             }
             return list;
         }
-
-        /// <summary>The hose thickness the design proposes (owner 2026-10-16: "shrink the tube diameter a bit to make it less
-        /// fire-hydrant-thick"): 0.65 x today's visible width = 0.25 cell flat / 0.30 plump against the rigid pipe's 0.23.
-        /// NOT shipped: RM_HoseSettings.thickness stays 1 until he rules on the sheet.</summary>
-        public const double ProposedHoseThickness = 0.65;
     }
 }

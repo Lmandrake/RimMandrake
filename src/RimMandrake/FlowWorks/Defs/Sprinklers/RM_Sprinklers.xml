@@ -21,6 +21,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
+      <!-- foot of the riser on the pipe axis (the art's foot sits 0.29-0.34 cell below the dome; PIPE_GIRTH_TUNE_HALF_AS_THICK) -->
+      <drawOffset>(0,0,0.31)</drawOffset>
       <damageData>
         <rect>(0.3,0.3,0.4,0.4)</rect>
       </damageData>
@@ -67,6 +69,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
+      <!-- foot of the riser on the pipe axis (the art's foot sits 0.29-0.34 cell below the dome; PIPE_GIRTH_TUNE_HALF_AS_THICK) -->
+      <drawOffset>(0,0,0.31)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 
@@ -78,6 +82,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
+      <!-- foot of the riser on the pipe axis (the art's foot sits 0.29-0.34 cell below the dome; PIPE_GIRTH_TUNE_HALF_AS_THICK) -->
+      <drawOffset>(0,0,0.31)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 
@@ -89,6 +95,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
+      <!-- foot of the riser on the pipe axis (the art's foot sits 0.29-0.34 cell below the dome; PIPE_GIRTH_TUNE_HALF_AS_THICK) -->
+      <drawOffset>(0,0,0.31)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 
@@ -100,6 +108,8 @@
       <texPath>RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
+      <!-- foot of the riser on the pipe axis (the art's foot sits 0.29-0.34 cell below the dome; PIPE_GIRTH_TUNE_HALF_AS_THICK) -->
+      <drawOffset>(0,0,0.31)</drawOffset>
     </graphicData>
   </ThingStyleDef>
 
