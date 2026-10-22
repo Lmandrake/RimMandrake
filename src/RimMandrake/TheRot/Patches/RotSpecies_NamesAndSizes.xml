@@ -652,7 +652,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_AngelMoth"]/description</xpath>
-          <value><description>A broad-winged moth whose pale, dust-soft wings hang like a veil, bred long ago for some forgotten waste-eating project and long since gone wild. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, provided the silk is kept well away from every other moth, which will eat that too.</description></value>
+          <value><description>A broad-winged moth of the Rot, grown as much as hatched: its pale wings are a living felt of fungal threads, dusted with spores, and they hang from it like a veil. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, provided the silk is kept well away from every other moth, which will eat that too.</description></value>
         </li>
       </operations>
     </match>

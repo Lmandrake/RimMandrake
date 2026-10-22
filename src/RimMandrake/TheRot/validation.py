@@ -16,12 +16,19 @@ CHAINS
                      carrier dies, pings do not move the log. Landing ping UNMEASURED (needs a gravship landing).
   unjoining          ROT_UNJOINING_DRAUGHT_1: the draught purges parasites + a symbiont (one husk, one scar, purge), only purges
                      a clean patient, and forces a metalhorror implant to emerge.
+  dustveil           DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED: MaxFlightTime > 0 live and the silk defs resolve; the
+                     Pawn_FlightTracker state read and the flip-book cycle are UNMEASURED (no tool yet; flight is seen only
+                     with the owner present).
   map_mechanics      the ten toggled mechanics: UNMEASURED, each naming what it needs (a generated RM_TheRot map, ticks, a game condition).
 
 STATIC (also): ambrosyx_checks -- AMBROSYX_SOURCE_BUILD_DISH_BEFORE_SHROOM: some non-abstract plant of this mod has
                      plant.harvestedThingDef RM_AmbrosyxShroom, a positive yield, a texture folder that exists, a positive row
                      in RM_TheRot's wildPlants (element form) and the ambrosyxSpawn gate; `python3 validation.py --planted`
                      proves the bar goes red on three planted defects (harvest renamed, row removed, gate removed).
+STATIC (also): dustveil_checks -- DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED: RM_Dustveil flies (MaxFlightTime > 0,
+                     FlightCooldown, flightSpeedFactor, a takeoff chance), no Spastic node, a flip-book prefix only with
+                     every frame on disk, fungus-grown text with no laboratory/donor origin, shearing still yields
+                     RM_MothSilk (a Fabric); --planted also turns it red on four planted defects.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
 """
@@ -227,6 +234,7 @@ def static_checks():
             bad.append("RM_UnjoiningDraught.xml lacks %s (ROT_UNJOINING_DRAUGHT_1)" % need)
     bad += cast_checks()
     bad += ambrosyx_checks()
+    bad += dustveil_checks()
     # Phase 0: RM_SwarmlingImplantation's donor comps (AlphaBehavioursAndEvents TurnWhenDead + RemoveFromMechsAndGhouls)
     # are ours now. A donor Class here fails def load with the donor off and takes the hediff (and the Chittik bite) with it.
     ck = open(os.path.join(HERE, "Defs", "Fauna", "RM_Chittik.xml"), encoding="utf-8").read()
@@ -357,6 +365,72 @@ def cast_checks():
     return bad
 
 
+# DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED (owner, by question card 2026-10-22, Rot Q5 option 1): the dustveil really
+# flies (the MaxFlightTime STAT; CanEverFly reads it), is a fungus-grown Rot hybrid, carries no laboratory/waste-disposal
+# origin, and still sheds moth silk on shearing. Its flip-book frames are owed art: the prefix may be set only once
+# every frame exists, and never a Spastic wing node.
+DUSTVEIL_FILE = os.path.join(HERE, "Defs", "Fauna", "RM_Dustveil.xml")
+_DUSTVEIL_ORIGIN = re.compile(r"laborator|waste|engineer|genetic|experiment|project|bred long ago|angel moth|Feroxiious", re.I)
+
+
+def dustveil_checks(text=None):
+    bad = []
+    root = ET.fromstring(text if text is not None else open(DUSTVEIL_FILE, encoding="utf-8").read())
+    defs = {(e.tag, e.findtext("defName")): e for e in root if isinstance(e.tag, str)}
+    th, kind = defs.get(("ThingDef", "RM_Dustveil")), defs.get(("PawnKindDef", "RM_Dustveil"))
+    if th is None or kind is None:
+        return ["RM_Dustveil ThingDef/PawnKindDef missing from Defs/Fauna/RM_Dustveil.xml"]
+    try:
+        mft = float(th.findtext("statBases/MaxFlightTime"))
+    except (TypeError, ValueError):
+        mft = 0.0
+    if not mft > 0:
+        bad.append("RM_Dustveil cannot fly: MaxFlightTime is not > 0 (CanEverFly reads the stat)")
+    if th.find("statBases/FlightCooldown") is None or not float(th.findtext("race/flightSpeedFactor") or 0) > 0:
+        bad.append("RM_Dustveil needs FlightCooldown and race flightSpeedFactor")
+    if not float(th.findtext("race/flightStartChanceOnJobStart") or 0) > 0:
+        bad.append("RM_Dustveil race flightStartChanceOnJobStart is not > 0: it would never take off")
+    body = re.sub(r"<!--.*?-->", "", ET.tostring(root, encoding="unicode"), flags=re.S)
+    if "Spastic" in body:
+        bad.append("RM_Dustveil file carries a Spastic node: flight is a whole-body flip-book, never a wing render-tree")
+    prefix = kind.findtext("flyingAnimationFramePathPrefix")
+    if prefix:
+        n = int(kind.findtext("flyingAnimationFrameCount") or 0)
+        if n < 1:
+            bad.append("RM_Dustveil flip-book prefix set with no flyingAnimationFrameCount")
+        for i in range(1, n + 1):
+            for fc in ("east", "north", "south"):
+                if not os.path.isfile(os.path.join(HERE, "Textures", "%s%d_%s.png" % (prefix, i, fc))):
+                    bad.append("RM_Dustveil flip-book frame %s%d_%s.png missing (every flight would draw pink)" % (prefix, i, fc))
+    for key, e in defs.items():
+        words = " ".join((e.findtext(f) or "") for f in ("label", "description"))
+        if _DUSTVEIL_ORIGIN.search(words):
+            bad.append("%s %s text keeps a donor/laboratory origin or name: %r" % (key[0], key[1], _DUSTVEIL_ORIGIN.search(words).group(0)))
+    if not re.search(r"fung|mycel|spore", th.findtext("description") or ""):
+        bad.append("RM_Dustveil description is not a fungus-grown hybrid")
+    prod = [c for c in th.iter("li") if (c.get("Class") or "").endswith("CompProperties_AnimalProduct")]
+    if not prod or prod[0].findtext("resourceDef") != "RM_MothSilk" or not int(prod[0].findtext("resourceAmount") or 0) > 0:
+        bad.append("RM_Dustveil lost its shearing: no AnimalProduct comp yielding RM_MothSilk")
+    silk = defs.get(("ThingDef", "RM_MothSilk"))
+    if silk is None or "Fabric" not in [c.text for c in silk.iter("li")]:
+        bad.append("RM_MothSilk ThingDef missing or no longer a Fabric stuff")
+    return bad
+
+
+def planted_dustveil():
+    """[(name, red?)]: each planted defect must turn dustveil_checks red; 'clean' must be green."""
+    txt = open(DUSTVEIL_FILE, encoding="utf-8").read()
+    out = [("dv clean", not dustveil_checks(txt))]
+    out.append(("dv grounded", bool(dustveil_checks(re.sub(r"<MaxFlightTime>[^<]*<", "<MaxFlightTime>0<", txt)))))
+    out.append(("dv lab origin", bool(dustveil_checks(txt.replace("A broad-winged moth of the Rot,",
+                                                                 "A moth bred in a laboratory,", 1)))))
+    out.append(("dv no silk", bool(dustveil_checks(txt.replace("<resourceDef>RM_MothSilk<", "<resourceDef>Cloth<")))))
+    out.append(("dv pink flip", bool(dustveil_checks(txt.replace(
+        "<alternateGraphicChance>", "<flyingAnimationFramePathPrefix>RotSpecies/AngelMoth/Flying/NoSuch_Flying_"
+        "</flyingAnimationFramePathPrefix><flyingAnimationFrameCount>5</flyingAnimationFrameCount><alternateGraphicChance>", 1)))))
+    return out
+
+
 try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
@@ -484,6 +558,42 @@ def _build_suite():
                     return
                 if WORKER not in wc.split("|")[0] or ("instance " + WORKER) not in wc:
                     raise ExpectationFailed("workerClass reads %r, expected %s" % (wc, WORKER))
+
+    @suite.chain("dustveil")
+    def dustveil(t):
+        # DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED. State reads only: flight is NEVER driven or filmed unattended
+        # (owner, said three times 2026-09-25); the visual flip-book check is a joint session with him.
+        with t.component("flight_stat_live", beyond_toggle=True):
+            r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_Dustveil", fields="statBases", deep=True, limit=2)
+            if _live(t):
+                rows = (r or {}).get("defs") or []
+                if not isinstance(r, dict) or r.get("success") is False or not rows:
+                    raise ExpectationFailed("could not read ThingDef/RM_Dustveil: %r" % (r,))
+                sb = (rows[0].get("fields") or {}).get("statBases")
+                live = None
+                if isinstance(sb, list):
+                    for m in sb:
+                        if isinstance(m, dict) and "MaxFlightTime" in str(m.get("stat")):
+                            live = m.get("value")
+                elif isinstance(sb, dict):
+                    live = sb.get("MaxFlightTime")
+                if live is None:
+                    _unmeasured(t, "statBases not serialised with MaxFlightTime: %s" % str(sb)[:120])
+                    return
+                if not float(live) > 0:
+                    raise ExpectationFailed("RM_Dustveil MaxFlightTime %r live: CanEverFly is false" % live)
+        with t.component("silk_defs_live", beyond_toggle=True):
+            r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_MothSilk;ThingDef/RM_Dustveil", fields="defName", limit=4)
+            if _live(t):
+                if not isinstance(r, dict) or r.get("success") is False or int(r.get("foundCount", 0)) != 2:
+                    raise ExpectationFailed("RM_MothSilk / RM_Dustveil do not both resolve: %r" % (r,))
+        with t.component("flight_tracker_state_read", beyond_toggle=True):
+            if _live(t):
+                _unmeasured(t, "needs a JawaBench [Tool] reading Pawn_FlightTracker.CanEverFly on a spawned RM_Dustveil "
+                               "(a state read, never a flight hunt); the shearing yield needs a tame adult and 5 days")
+        with t.component("flip_book_frames_cycle", beyond_toggle=True):
+            if _live(t):
+                _unmeasured(t, "frames Dustveil_Flying_1..5 are queued in artpipe; the cycle is judged live only WITH the owner")
 
     @suite.chain("map_mechanics")
     def map_mechanics(t):
@@ -738,9 +848,9 @@ suite = _build_suite() if Suite is not None else None
 
 if __name__ == "__main__":
     if "--planted" in sys.argv:
-        res = planted_ambrosyx()
+        res = planted_ambrosyx() + planted_dustveil()
         for name, ok in res:
-            print("PLANTED %-16s %s" % (name, "RED as expected" if ok and name != "clean" else ("GREEN" if ok else "MISSED")))
+            print("PLANTED %-16s %s" % (name, "RED as expected" if ok and name not in ("clean", "dv clean") else ("GREEN" if ok else "MISSED")))
         sys.exit(0 if all(ok for _n, ok in res) else 1)
     problems = static_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
