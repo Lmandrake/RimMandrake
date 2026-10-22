@@ -68,6 +68,22 @@ hole), so he judges FlowWorks by whether the goal is reachable and how it looks 
   is the only way down: no scenario goes there); Mod Settings at shipped defaults except where a scenario's sign says
   a switch is part of the poke; **no flyer is live-tested without the owner present** (C12's kennel uses walkers and a
   jumper only).
+- **One clock, idle until poked (GPT #1).** The whole map is saved at **10:00**, paused. Every plot is staged in a
+  **stable idle state** that survives a walk-length unpause untouched: its sources shut, its free ends Capped, its
+  pumps off or balanced, its staged pawns drafted (drafted pawns do not wander, eat or sleep) or penned. The
+  scenario's **first poke is its Start** (open S1, set Outflow, open the pen). Build verify unpauses the whole map for
+  **2 in-game hours** with nobody poking and re-reads every plot: a plot that changed on its own fails the build.
+  Reloading the save is the reset; destructive pokes say "reload to reset" on the sign.
+- **Branch saves for anything global or violent (GPT #5, #11).** Raids (C2, C9), weather (C10's rain), multi-day
+  advances (C1 swale, C6 tar burn) and map-edge changes (C10) act on the whole map, so they run in **branch saves** of
+  the same map, named on the sign (`RM_fw_composite_raid`, `..._rain`, `..._days`): the main save never holds a
+  hostile, rain or a sealed edge. In the raid branch, the other plots' pawns are absent and defenders hold fire until
+  he drafts them.
+- **Labels must survive a plain load (GPT #14).** Build verify reloads the save once and checks the labels and sign
+  books are back (companion sidecar); `--labels` is a repair, not the plan.
+- **Every claim has a trigger and an observable (GPT #8).** Each Exercises id is tagged in the builder's coverage data
+  as *demonstrated* (runs by itself), *poked* (needs his action, named in Try), *look* (appearance only), *DEFERRED*
+  or *blocked*; a behavioural bar with no trigger counts as uncovered.
 - **A defect line per scenario** says what broken looks like, so a defect is visible as a broken goal.
 - **Overflow (canal → open ground, `canal_overflow_flooding_2026-10-21.md` §5 D1-D7) is Stage 1+ and unbuilt.**
   Scenarios that would show it (C1, C5, C10) are laid out so it *will* show once it lands, and say **DEFERRED** today.
@@ -111,11 +127,14 @@ stored, let down terrace by terrace, and sprayed. Every link is a FlowWorks piec
 
 **Running when he arrives.** Clock 10:00 (not noon: shadows read), paused. Weir placed and pooling (its pool is the
 river's, read live). Pump on the bank set **Drawing into the tank** (`gizmo_cycle`), tank about 40% (`ProofTank`).
-Terrace 1 canal full; S1 **open**, so terrace 2 is mid-fill with its front half way (staged by one pulse run of the
-driver, not written). S2 **shut**: terrace 3 dry. Sprinklers' network has the pump on it, so they spray on the hour.
+Terrace 1 canal full; terrace 2 part-filled with its front half way (one pulse run
+of the driver, then S1 shut). S2 **shut**: terrace 3 dry. Sprinklers' network has the pump on it, so they spray on the hour. Idle-stable: the
+pump is balanced against the tank (Fill mode stops at full), and terrace 2's front is held by S1 being **shut**
+on the save (the front stays half way until he opens it).
 Remote field hose laid and **Plump**; a second hose from the tank crosses it (`hose_grid` crossing in situ).
 
 **Try.**
+0. Open S1: terrace 2's front resumes.
 1. Unpause one in-game hour: every sprinkler in all four rows sprays (the spray mote, centred on its pipe); the
    sprayed cells stay wet till the next spray, read in the inspect pane and the crop's yield, **not** by a ground
    tint (irrigation has no visual line: ruling 36, 2026-09-17, *"must not re-add an irrigation line"*). Compare the
@@ -125,6 +144,9 @@ Remote field hose laid and **Plump**; a second hose from the tank crosses it (`h
    network*); the remote hose goes flat.
 4. Select the meter on terrace 1: squares, levels held, net in/out per day; shut S1 and watch the numbers turn.
 5. Deconstruct one pipe pole: the overhead span is gone and the pipe line can no longer cross the ditch.
+6. Watch the labelled **witness sprinkler** (its sign shows the tank's measured stock and the hour of its next
+   spray): the canal feed (terraces) and the sprinkler circuit (tank → pipe → heads) are two separate nets, so a
+   failure in one cannot hide behind the other. Cut power and switch Draw/Pour as **separate** pokes.
 
 **Broken looks like.** A sprinkler not centred on its pipe (tonight's defect); sprinklers spraying with no pump on the
 net; a pipe drawn passing *through* the tank instead of into its centre; the overhead pipe drawn on the ditch floor or
@@ -171,8 +193,10 @@ cosmetic change needs his permission), `POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BRE
 ```
 
 **Running when he arrives.** Paused, noon. Moat brim-full (level holder marker keeps it). Drawbridge leaf **raised**
-(winch powered). Gate pit covered, spikes in it, sluice to it **shut**. Raiders spawned hostile *inside* a pen whose
-security grate is **shut** (so nothing happens until he opens it); Peaceful storyteller otherwise.
+(winch powered). Gate pit covered, spikes in it, sluice to it **shut**. **No raiders in the main save.** The raid lives in
+the branch save `RM_fw_composite_raid`: raiders in a pen behind a shut security grate whose hold is proven by the
+build's idle soak (2 h unpaused, nobody out), other plots' pawns removed, keep defenders undrafted until he drafts
+them. Chemfuel lighting is its own poke after the raid, so fire never spoils the bridge inspection.
 
 **Try.**
 1. Open the raiders' grate and unpause: watch them reach the moat, lay the plank across or swim (at 2 m they swim,
@@ -187,7 +211,8 @@ security grate is **shut** (so nothing happens until he opens it); Peaceful stor
    heat up where a plain deck would not.
 6. Cut the winch's power cord: the leaf holds where it is.
 
-**Broken looks like.** The cover visible as a seam at max zoom; the cover reading like a bridge; raiders walking on the
+**Broken looks like.** The cover visible at play zoom, or **no** slight seam at maximum zoom (the bar wants one, so
+the player who placed it can find it); the cover reading like a bridge; raiders walking on the
 moat floor; the gate opening for raiders while the leaf is up; a raider standing on the spikes unhurt; the bridge drawn
 as a pier-on-pylons; the sluice open but the pit dry.
 
@@ -251,6 +276,15 @@ along the short way**, ending at the pit's lip, flow **Plump** (the pump feeds a
 the short is open; a hose that never plumps; litres in the pit that do not match litres out of the pond; Hobb standing
 on the pit floor under 2 m of water; the boar swimming; a loop of relays accepted.
 
+**Prove first (GPT #2, taken).** Before C3 is built, one live check: a swimmer in a flooded sheer pit of C3's exact
+size and depth rises and leaves. If it fails, C3 keeps its maze and hose but delivers into a **rescue cistern** that
+fills a reachable escape basin beside Hobb's pit (a 2 m step he can swim out of), and the sheer-pit escape becomes a
+separately labelled experiment. Hobb is staged **drafted** (no needs drift, no wandering) until the water reaches him.
+
+**Puzzle extras (GPT #13, taken).** The maze has a misleading dead end that *looks* shorter; the relay reel o2 is
+not pre-placed: he picks where to put it (a reel blueprint is in the free area); a flow meter at the pit lip is the
+destination gauge (litres in, level held). Poke: lay o2's hose back onto o1: refused (a chain may not loop).
+
 **DEFERRED.** Nothing core. Swimming up *out of* a flooded sheer pit is R12's claim ("deep water stops being a barrier
 for pits") but no driver row measures that exact climb-out yet: the scenario is the first look; label it so.
 
@@ -283,15 +317,18 @@ keeps it workable. Shows the dig ladder, rock vs soil, finds, ways in and out, a
  wrecked pumping station on the rim (stage 1 of 3)
 ```
 
-**Running when he arrives.** Paused. Tap bleeding into the sump (live). Pump **Drawing** from the sump, hose laid up
-the ramp to the drain canal, Pouring there; the sump is holding level (inflow ≈ outflow, staged by choosing rates, not
-written). One miner in climbing gear on the D3 bench; one colonist at the rim with a 14-cell dig order.
+**Running when he arrives.** Paused. The sump has painted **LOW** and **HIGH** marks (labels on the wall cells) and
+stands at LOW. Topology, explicit: tap → sump; pump (Drawing) on the sump's rim → hose (Outflow end) up the ramp →
+drain canal → edge sink. Each leg has a flow meter, so inflow and outflow read separately; no level holder (it would
+hide a broken pump). A **workbench** sits on the D3 bench just above HIGH: the stake. One miner in climbing gear on the
+bench (drafted); one colonist at the rim with a long dig order (the drain canal itself: ~70 cells, so about one find
+is expected — the sign says so). A ramp is the refuge.
 
 **Try.**
-1. Unpause: the colonist digs; about 1 in 70 dug tiles leaves a lump with a letter the first time; soil goes faster than
+1. Unpause: the colonist digs the drain canal; about 1 in 70 dug tiles leaves a lump, with a letter the first time; soil goes faster than
    rock and rock drops chunks.
 2. Order a dig to 3 m: refused for a colonist (2 m cap) — machines dig deeper (DEFERRED: no machine yet).
-3. Stop the pump: the sump rises half-metre by half-metre (silt-coloured at 0.5 m, then deeper), the miner wades, then
+3. Stop the pump (the deliberate flood): the sump rises half-metre by half-metre toward HIGH and the workbench (silt-coloured at 0.5 m, then deeper), the miner wades, then
    swims; restart it and the level falls.
 4. Raise the rail ladder from below, lower it from above (only from above); the geared miner climbs a sheer wall anyway.
 5. Walk a colonist down the ramp and the pocket staircase: lower with each step, never trapped.
@@ -303,8 +340,8 @@ water at 2 m; the ladder lowered from below.
 **DEFERRED.** Machine digging past 2 m (re-scope card owed). Deepstone stratum finds (`PIT_DEEPSTONE_...`, unbuilt).
 
 **Staging cost.** Medium (~150 lines). Reuse `review_map` `dig`/`designate`/`pump`/`ladder`/`items` keys,
-`owner_review_stage.row_ladders` (rail ladder rotation), `static("PlaceSink")`/`PlaceLevelHolder` for the sump balance,
-`ProofLiquid` for the tap, `carry_industry` setup verbatim.
+`owner_review_stage.row_ladders` (rail ladder rotation), `static("PlaceSink")` and `PlaceMeter` (three meters),
+`ProofLiquid` for the tap, `carry_industry` setup verbatim. (Level holder dropped on GPT's advice.)
 
 ### C5 — The Fuel Depot (map C, 40x36, look: Industrial; cargo tanks Futuristic)
 
@@ -328,11 +365,14 @@ Items: `FLOWWORKS_CONTAINER_MATERIALS_1`, `LIQUID_CONTAINERS_REDRAW_NO_MANA_POTI
  spill pad: one spilled chemfuel filth, tracked tar footprints
  THEIR tank (trader faction) ---- our hose coupled to it, laid back to our Fill tank
  astrofuel bund: a separate 2x2 D1 pit with a trace of astrofuel, 12 cells away, walled; firefoam popper beside the canal
- a water canal and an acid canal run parallel to the chemfuel canal, one wall apart (no mixing)
+ a water canal and an acid canal run parallel to the chemfuel canal, one wall apart; a dig order on one
+ shared-wall cell lets him JOIN water to chemfuel (the no-mix poke)
 ```
 
 **Running when he arrives.** Paused. Tanks staged by `ProofTank` (stock) + `gizmo_cycle` (mode). Our hose on THEIR
-tank laid, Plump with chemfuel tint. Containment canal a quarter full of chemfuel; nothing lit.
+tank laid, Plump with chemfuel tint. Containment canal a quarter full of chemfuel; nothing lit. The Dump tank holds
+exactly enough to bring the canal to one notch below its brim (read at build), which is the DEFERRED overflow's
+starting point.
 
 **Try.**
 1. Unpause: colonists fill barrels from the **Empty** tank and pour into the **Fill** tank only; the **Dump** tank
@@ -344,13 +384,15 @@ tank laid, Plump with chemfuel tint. Containment canal a quarter full of chemfue
    the canal fire reach the reservoir?), and leaves the canal spent. Pop the firefoam: foamed cells stay out while
    foam lies.
 5. Light the astrofuel bund: it detonates, not burns.
+6. Let the dig order open the shared wall between the water and chemfuel canals: the two liquids meet and do **not**
+   mix (one stops where the other stands).
 
 **Broken looks like.** Chemfuel, propane and water hoses all the same colour; a tank drawn bridging two pipe runs; the
 Fill tank emptied by colonists; water and chemfuel mixing at a shared wall; a burnt canal that looks fresh; foamed
 cells relighting under foam; litres appearing from nowhere (the ledger says no unit is lost).
 
-**DEFERRED.** **Fuel overflow spreads and burns (D5)**: the containment canal is filled to one notch below its brim;
-when Stage 1 lands, setting the Dump tank on with the canal shut spills a sheet that a torch then lights. Today it
+**DEFERRED.** **Fuel overflow spreads and burns (D5)**: once the Dump tank has run, the canal stands one notch below its
+brim; when Stage 1 lands, a second Dump with the canal shut spills a sheet that a torch then lights. Today it
 stops at the brim.
 
 **Staging cost.** Low-medium (~120 lines). Almost all reuse: `carry_tanks`, `tank_modes`, `pipe_adapter`,
@@ -379,15 +421,19 @@ Items: `TAR_LOOK_TUNE_THICK_AND_SLOW`, `SLIME_CROSSING_BUILD_SLIPPERY_SLOPE`, `L
  tracked-tar footpath from the refinery door to a stockpile (filth on floor)
 ```
 
-**Running when he arrives.** Paused at the race's start: both ditches staged empty, both sources live. The vat's two
+**Running when he arrives.** Paused at the race's start: both ditches empty; both sources staged **off** until he
+starts the race (one gizmo each: idle-stable). The vat's two
 feeds connected, idle.
 
 **Try.**
 1. Unpause: the water front runs, the tar front crawls behind it (watch both fronts together).
 2. Walk a colonist across the slime pit's edge: slow, nearly uncrossable; the muffalo sits below the surface.
 3. Light the tar ditch: it burns for days; the refinery stops if its feed burns; extinguish with rain (dev weather).
-4. Start the vat: tar + acid meter in; product caught where there is a catcher, vented where there is none.
-5. Watch the acid canal: what lies in it loses health over time, not in seconds.
+4. Start the vat: 400 L tar + 200 L acid water per batch meter in; 200 L of product go to a third tank if one is on
+   its line, else 40 gas are vented (def `RM_Reaction_TarAcid`, provisional; the product thing is owed under
+   `SUMP_GASLIGHT_1`, so judge the metering and the vent, not the product).
+5. Watch the acid canal: what lies in it loses health over hours, not seconds (Mod Settings switch *Liquid
+   corrosion*, shipped ON; turning it off stops the damage).
 6. Colonists clean the tar filth.
 
 **Broken looks like.** Tar front level with water; slime that looks like coloured water; a muffalo standing on top of
@@ -418,7 +464,7 @@ Communicating vessels in plain sight: water finds its level.
                                                              = pipe down
    short | tall | cargo tanks, one per size, all on one net  (levels equal when connected: communicating vessels)
  bathhouse (roofed): 2x3 bath pit D1 filled from a tap off the net; a liquid thermostat marker keeps it warm
- fountain line: three taps, Empty-mode tank, bottles on a shelf (every liquid in every container: the water seller's stall)
+ fountain line: three taps, Empty-mode tank, bottles on a shelf: only the containers this house uses
  bad-water corner: brine tank -> fueled still -> clean tank; salt tank -> sun-pan still (works by day only, noon sun)
  poisoned barrel -> drip filter -> pan (slow, wasteful)
  a hose from the tower tank (no pump) to the garden: gravity
@@ -434,7 +480,7 @@ in their pipe, with a blueprint for the missing cells); thirst staged low on col
 3. Hose from the tower to the garden with no pump: it flows (gravity), and stops when the tower's level drops below.
 4. Run the stills: fuelled works day and night; the sun-pan stops at dusk and under a roof.
 5. Pour poisoned water into the drip filter: a slow, small clean drip.
-6. Look at the stall: every liquid in every container, all four looks, at true scale beside a colonist.
+6. (The every-liquid × every-container permutations moved to the art wall, GPT #4.)
 
 **Broken looks like.** Tanks on one net holding different levels at rest; a gravity hose flowing uphill; brine drunk
 as water (salt off the menu); the sun-pan working at night; pipes ending at a tank's edge, not its centre; the bath pit
@@ -465,14 +511,18 @@ meter, level holder, swimming. Bars: `still_water_one_surface_height`, `sluice_g
 ```
 (Both canals are dug to the same floor; "upper" and "lower" are water levels, which is what FlowWorks models.)
 
-**Running when he arrives.** Paused 05:50; both sluices shut; chamber at the lower canal's level; a colonist swimming in
-the chamber (water staged at 2 m: swims).
+**Running when he arrives.** Paused 10:00 (the map's one clock); the timer's windows are set relative to it (S1
+opens at 10:30-12:00, S2 at 13:00-14:30). All three reaches are **machine-dug to 3 m**. Upper canal 3 m of water
+(brim), chamber and lower canal **2 m** (so the swimmer swims from the start); the holder and the sink are **off**
+(closed system). A ladder in the chamber is the swimmer's exit.
 
 **Try.**
-1. Unpause through the morning: at 06:00 S1 opens, the chamber rises to the upper level, the swimmer rises with it; at
-   09:00 S1 shuts; at 12:00 S2 opens and the chamber falls to the lower level.
+1. Unpause: at 10:30 S1 opens, the chamber rises to the upper level, the swimmer rises with it; at
+   12:00 S1 shuts; at 13:00 S2 opens and the chamber falls to the lower level.
 2. Read the three meters as it happens: net in/out per day, levels held.
-3. Open both sluices at once by hand: the whole run becomes one surface, the upper canal held up by the holder.
+3. **Mode A, closed:** open both sluices by hand with holder and sink off: the run settles to **one** surface.
+   **Mode B, through-flow:** switch holder and sink on: water runs upper → lower; a gradient is expected, not a
+   defect. The sign says which mode is on.
 4. Watch the lower canal: 0.5 m reads as silt-coloured shallows, not as blue water.
 
 **Broken looks like.** Two levels on one side of an open gate; a gate drawn open while shut (or turning unlike a door);
@@ -507,7 +557,8 @@ raider ladder, raider fill-in, titan-wide trench. Bars: `trench_wall_cover_shown
  a 4-wide D2 trench section ("titan gap") at the south end; a stone wall rampart behind the north end
 ```
 
-**Running when he arrives.** Paused. Colonists drafted in the bays. Raiders penned; grate shut.
+**Running when he arrives.** Raid branch save only (`RM_fw_composite_raid`). Colonists drafted in the bays, fire
+held. Raiders (and one titan-size mechanoid) penned; grate shut and proven by the idle soak.
 
 **Try.**
 1. Hover a raider's shot at a colonist: the hit chance lists a "trench wall" cover line, bigger for the chest-deep man.
@@ -517,7 +568,8 @@ raider ladder, raider fill-in, titan-wide trench. Bars: `trench_wall_cover_shown
 4. Hover the lanes: walk cost climbs with depth; the wet bay is slower than the dry D2.
 
 **Broken looks like.** No cover line, or the same for waist and chest; a raider stuck in a pocket; raiders walking over
-a trench as if flat; a titan (if one comes) stepping across the 4-wide gap; the wet bay no slower.
+a trench as if flat; the staged titan-size pawn (a large mechanoid in the pen; every DLC assumed) stepping across the
+4-wide gap; the wet bay no slower.
 
 **DEFERRED.** `WET_FOXHOLE_BUILD_COLD_FEET_SHAKY_AIM` (unbuilt): the wet bay is placed so it shows once built.
 
@@ -557,7 +609,10 @@ C full; D dry; E/F dry. A colonist assigned to the fill-in.
 3. Dev: weather Rain: E fills, F stays dry; the drawn-down pond refills around the muffalo, never over it.
 4. Press *Flood now* on the canyon trigger: the flood runs in canal D, not over the land.
 5. Switch the pump to Pour: the tank empties back into the pond.
-6. Select the edge-setter: set the east edge *sealed*: B stops draining and fills.
+6. Select the edge-setter: set the east edge *sealed*: B stops draining and fills. (C10 sits alone on the east edge;
+   the rain poke 3 is in the `_rain` branch save.)
+7. **Closed ledger (GPT #10, taken):** a fenced corner holds two limited tanks of known stock joined by one hose
+   (Outflow), no rain, no sink, no tap; their sum on the sign must stay equal to the litre while litres move.
 
 **Broken looks like.** The pond full after heavy draw; the spring not marked limitless in its readout; water on open ground beside a full
 canal (today; not after Stage 1); water poured onto the muffalo; the flood wiping the canal flat; a sealed edge still
@@ -624,7 +679,8 @@ ladder, climbing gear, rail ladder, a jumper, administer water to a prisoner. Ba
  OUBLIETTE (machine-dug sheer, 3x4): prisoner bed, prisoner; rail ladder on the N wall RAISED; guardrail round the lip
    a sluice (wood) and a security grate (steel) in its east wall to a dry drain canal
  second cell 3x3: covered (reinforced frame cover); a colonist will walk onto it
- KENNEL: 2-deep pens: chicken | husky | muffalo   ;  sheer 1x1 pit with a thrumbo-size beast beside it (does not fit)
+ KENNEL: ONE animal yard ringed by a 2 m trench (chicken, husky, muffalo inside; drafted handler at the gate):
+   who leaves and how is the test;  a sheer 1x1 pit with a thrumbo-size beast beside it (does not fit)
  a pit with a portable ladder leaning on its W wall (3 m: fits), a colonist with climbing gear inside a deeper one,
  a jump-capable colonist (`climb_proof.py`'s jumper kit) at the lip of a third
 ```
@@ -634,7 +690,8 @@ ladder, climbing gear, rail ladder, a jumper, administer water to a prisoner. Ba
 **Try.**
 1. Unpause: wardens feed and water the prisoner from the lip; nobody climbs down.
 2. Lower the rail ladder from above (only from above); raise it from below with the prisoner on it: stranded.
-3. Kennel: the chicken stays, the husky climbs out slowly, the muffalo steps out; the big beast walks round the 1x1.
+3. Kennel: open nothing, just unpause: the chicken stays in the ring, the husky climbs out slowly, the muffalo
+   steps across; the big beast walks round the 1x1.
 4. Walk a colonist onto the cover: falls through, hurt; jump the jumper in: lands unhurt; the geared colonist
    climbs out of the deep one; a colonist climbs the portable ladder.
 5. Inspect a pit cell at noon and midnight (dev advance): its temperature differs from the ground's (vanilla
@@ -884,27 +941,37 @@ scenario is the natural home; a second sighting is cheap where marked in the bui
   *goal read* per scenario (e.g. C3: the hose route length and the pit's litres-to-2 m; C8: the timer's hours read
   back), so a scenario that cannot reach its goal is caught before he walks it.
 - Map R scenarios (C1, C11) extend `review_map_rivers.py`; it already anchors on real crossings.
+- **Packing plan, map C (250x250; buildable 10..240; plots 40-48 cells, 4-6 cell lanes between) (GPT #14):**
+  ```
+  z 12-56   C3 (x12)   C12 (x62)   C5 (x112)   C6 (x162)
+  z 62-106  C4 (x12)   C2 (x62)    C8 (x112)   C9 (x162)        <- C2, C9: hostiles only in the raid branch save
+  z 112-156 C7 (x12)   spare       spare       C10 (x196-240: alone on the east edge, for the edge-setter poke)
+  z 162-240 free area + S0 status board + art wall (V block + the liquid-ground and container permutations)
+  ```
+  Lanes are paved (walkable, no liquid); edge drains exist only in C4 (its drain canal runs west to the west edge,
+  12 cells away) and C10 (east edge). The builder's `layout_check` gains a lane-crossing test for hoses and canals.
 
-### 5.2 Order (most coverage per hour first)
+### 5.2 Order (confidence first, then most coverage per hour) — revised after GPT #12
 
-| # | scenario | stations / bars | new staging | why here |
+| # | step | stations / bars | new staging | why here |
 |---|---|---|---|---|
-| 1 | **C3 Labyrinth Rescue** | 13 / 19 | ~180 lines | the owner's named loss (the maze); the richest bar set; all hose machinery already staged |
-| 2 | **C12 Oubliette and Kennel** | 12 / 14 | ~110 | pure re-lay of `pit_*`/`hold_*` + `row_ladders`; covers the pit-access bars accepted 2026-10-20 |
-| 3 | **C5 Fuel Depot** | 15 / 9 | ~120 | most stations per line of code; fire rules; overflow D5 hook ready |
-| 4 | **C10 Rain Basin** | 11 / 9 | ~150 | all reservoir bars; the overflow scenario-in-waiting |
-| 5 | **C6 Tar Seep** | 11 / 8 | ~110 | viscous-liquid bars; tar look tune happens here with him |
-| 6 | **C4 Wet Quarry** | 9 / 12 | ~150 | dig ladder and climbing; 2 m colonist cap visible |
-| 7 | **C2 Drowned Keep** | 7 / 12 | ~300 | most new pieces (drawbridge, bridges, raiders); expensive, but the showpiece |
-| 8 | **C8 Canal Lock** | 4 / 8 | ~90 | cheap; level-solving and the map-maker markers |
-| 9 | **C7 Bathhouse and Water Tower** | 9 / 6 | ~170 | thirst and stills; gravity hose |
-| 10 | **C9 Trench Line** | 4 / 7 | ~130 | needs the raid-trench rows to pass first or it shows known failures |
-| 11 | **C11 Prospector's Creek** (map R) | 11 / 2 | ~60 | cheap but needs the river map; build with C1 in one river session |
-| 12 | **C1 Thirsty Terraces** (map R) | 7 / 10 | ~250 | the sprinkler/pipe-pole showpiece; waits for the pipe and hose girth redraws so he judges the new art |
+| 0 | **Stage 0 proofs** (no scenario yet): idle soak + reload-labels check on an empty plot; hose free-end Outflow into a dug cell; swimmer rises out of a flooded sheer pit (C3's geometry); closed-system level solve (C8 mode A) | — | ~80 | the four things the headline scenarios bet on; a failure re-shapes a scenario before it is built |
+| 1 | **C3 Labyrinth Rescue** | 13 / 19 | ~200 | the owner's named loss (the maze); the richest bar set; hose staging exists |
+| 2 | **C12 Oubliette and Kennel** | 12 / 14 | ~110 | re-lay of `pit_*`/`hold_*` + `row_ladders`; the pit-access bars accepted 2026-10-20 |
+| 3 | **C5 Fuel Depot** | 15 / 9 | ~130 | most stations per line; fire rules; D5 hook ready |
+| 4 | **C10 Rain Basin** (+ `_rain` branch) | 11 / 9 | ~170 | reservoir bars; the closed ledger; overflow scenario-in-waiting |
+| 5 | **C6 Tar Seep** | 11 / 8 | ~110 | viscous-liquid bars; the tar look tune happens here with him |
+| 6 | **C4 Wet Quarry** | 9 / 12 | ~150 | dig ladder, climbing, the 2 m colonist cap |
+| 7 | **C11 Prospector's Creek** + **C1 functional prototype** (one river session) | 18 / 12 | ~60 + ~200 | cheap C11 early (GPT); C1's plumbing judged now, its art after the girth redraws |
+| 8 | **C8 Canal Lock** | 4 / 8 | ~90 | cheap once Stage 0's level check passed |
+| 9 | **C7 Bathhouse and Water Tower** | 9 / 6 | ~170 | thirst, stills, gravity hose |
+| 10 | **C9 Trench Line** (raid branch) | 4 / 7 | ~130 | after the raid-trench live rows pass, else he sees known failures |
+| 11 | **C2 Drowned Keep** (raid branch) | 7 / 12 | ~300 | most new pieces; after its raid and bridge prerequisites pass |
 
-Steps 1-6 (~820 lines, roughly two FOUNDRY sessions plus one ~12-minute live build) cover **63 of the 96 stations**
-and most bars; he can walk those six while 7-12 are built. The old 88-station gallery stays buildable until the
-composite map's `COVERAGE.md` shows 0 uncovered; then it is retired (its setups are the composites' raw material).
+Steps 0-6 (~950 lines, about two FOUNDRY sessions plus one ~12-minute live build) cover **63 of the 96 stations**; he
+can walk those six while 7-11 are built. The old 88-station gallery stays buildable until the composite map's
+`COVERAGE.md` shows 0 uncovered **and the composites have passed their build verify** (GPT #8); only then is it retired
+(its setups are the composites' raw material).
 
 ### 5.3 What each scenario waits on (not blocking the build)
 
@@ -915,4 +982,43 @@ composite map's `COVERAGE.md` shows 0 uncovered; then it is retired (its setups 
 - C12: flyers only with him present.
 
 ## 6. GPT critique — taken / rejected
-(pending)
+
+Consulted 2026-10-21 (`gpt_consult.py`, gpt-6.1-sol; this doc minus the §4.1/4.2 tables, ~51 KB). The answer is a
+scratch record, not kept. Fourteen points; how each was handled:
+
+**Taken (folded into §2-§5 above):**
+1. *No shared lifecycle* → one 10:00 clock, every plot idle-stable until his first poke (the poke is the Start),
+   staged pawns drafted, a 2-hour unattended soak in build verify, reload = reset (§2).
+2. *C3 bets on an unproven rescue* → Stage 0 proves the swim-out at C3's exact geometry; a rescue-cistern fallback is
+   specified; Hobb drafted (C3).
+3. *C8 contradicts itself* (0.5 m vs swimming at 2 m; holder + sink cannot settle one surface) → 3 m machine-dug
+   reaches at 2-3 m water, Mode A closed / Mode B through-flow, a chamber ladder, timer windows on the shared clock (C8).
+5. *Hostile containment unverified; raiders wreck other plots* → hostiles only in a raid branch save, pen hold proven
+   by the soak, defenders hold fire, chemfuel lit after the bridge inspection (§2, C2, C9).
+6. *C1 hides broken links* → canal feed and sprinkler circuit are separate nets; a labelled witness sprinkler shows
+   tank stock and next spray; power and Draw/Pour are separate pokes (C1).
+7. *C4's balance is fragile* → no level holder; LOW/HIGH marks; three meters; a workbench as the stake; the dig order
+   is the ~70-cell drain canal so a find is expected, and the sign says so (C4).
+8. *Coverage by id ≠ behaviour* → every id tagged demonstrated / poked / look / DEFERRED / blocked; a no-mix poke (dig
+   the shared wall, C5), a relay-loop poke (C3), a staged titan-size mechanoid (C9); retire the old gallery only after
+   build verify passes (§2, §5.2).
+9. *Contradictory oracles* → **C2's seam line was wrong** (the bar *wants* a slight seam at max zoom; fixed); C5's
+   canal start vs brim reconciled; C6 names the corrosion switch and the vat's real per-batch numbers.
+10. *Ledger needs a closed experiment* → C10's fenced two-tank closed ledger (poke 7).
+11. *Global controls leak* → weather, multi-day and edge pokes in branch saves; C10 alone on the east edge.
+12. *Order optimised counts over confidence* → Stage 0 first; C11 early with a C1 functional prototype; C2 last.
+13. *Reversible puzzles* → C3's misleading dead end, owner-placed relay, destination gauge; C4's workbench stake.
+14. *Validate the walking map* → packing plan (§5.1); labels checked after a plain reload.
+
+**Taken in part:**
+4. *Some composites are galleries in disguise.* Agreed for C7's every-container stall (moved to the art wall) and the
+   kennel's separate pits (now one ringed yard where who-leaves-how is the test). **Rejected** the proposed
+   "competing delivery requests" for C5: FlowWorks has no order/delivery system, so it would test a mechanic that
+   does not exist; C5 keeps tank modes as the colonists' work.
+
+**Rejected:**
+- *Replace C7 / C12 / C5 with new scenarios* (water-service courtyard, adoption yard, delivery depot): the fixes
+  above remove the gallery parts without dropping the scenarios' pit-hold, thirst and fire coverage; renaming them
+  adds build cost and no coverage.
+- *"Save the workbench" as a reusable timed challenge with scoring*: the review map judges FlowWorks, not the
+  player; the workbench stays as a visible stake, unscored.
