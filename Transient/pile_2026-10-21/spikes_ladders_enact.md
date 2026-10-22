@@ -15,3 +15,5 @@
 - LADDER: sheet column A = "IN GAME — FlowWorks" (sha-identical to live RM_Ladder_*); v3a/b/c are columns B/C/D. Pick A + note = keep current, judge in game. NOT installed, raised NOT redrawn; owner must name a set.
 - art guard worktree: 0 unledgered
 - ledger: spikes needs deploy; ladder needs owner; lesson filed. DONE 23:23
+- 23:31 coordinator relay: owner by card 'Install B, judge in game' -> installing v3a + raised redraw
+- 23:32 ladder set B (v3a) N/E/W installed; raised N/E/W derived by Ladder/v3/raised.py (rails fixed, ladder slid up 80 px north / out along axis east) and installed; south + raised south unchanged
