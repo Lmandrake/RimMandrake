@@ -197,6 +197,111 @@ def t_refuses_on_mnt(a, b):
     assert why and "/home/mandrake/rm/<seat>" in why, why
 
 
+# ---- committed mod DLLs at landing (rebuilt from committed source, winbuild mocked) ----------------------
+MOD = "src/RimMandrake/M"
+DLL = MOD + "/Assemblies/M.dll"
+HOOK = r"""#!/usr/bin/env python3
+import hashlib, subprocess, sys
+def git(*a):
+    return subprocess.run(["git", *a], capture_output=True).stdout
+for line in sys.stdin.read().splitlines():
+    sha = line.split()[1]
+    names = sorted(n for n in git("ls-tree", "-r", "--name-only", sha, "--", "%(mod)s/Source").decode().split()
+                   if n.endswith(".cs"))
+    want = "dll:" + hashlib.sha256(b"".join(n.encode() + git("show", "%%s:%%s" %% (sha, n)) for n in names)).hexdigest()
+    if git("show", "%%s:%(dll)s" %% sha).decode() != want:
+        sys.stderr.write("pre-push REFUSED (DLL_SOURCE_STAMP_GUARD_1): committed DLL disagrees\n  MISMATCH %(dll)s\n")
+        sys.exit(1)
+""" % {"mod": MOD, "dll": DLL}
+
+
+def fake_build(tree):
+    """What the mocked winbuild writes for the C# in `tree` (a worktree root)."""
+    import hashlib
+    src = os.path.join(tree, MOD, "Source")
+    names = sorted(f for f in os.listdir(src) if f.endswith(".cs"))
+    data = b"".join((MOD + "/Source/" + n).encode() + open(os.path.join(src, n), "rb").read() for n in names)
+    write(tree, DLL, "dll:" + hashlib.sha256(data).hexdigest())
+    write(tree, DLL + ".srchash", "# project: RimMandrake/M/Source/M.csproj\n" + "".join(
+        "%s %s\n" % (hashlib.sha256(open(os.path.join(src, n), "rb").read()).hexdigest(), n) for n in names))
+
+
+def mock_winbuild(calls):
+    def wb(scratch, csproj):
+        calls.append((scratch, os.path.relpath(csproj, scratch)))
+        fake_build(scratch)
+        return 0, "BUILT"
+    return wb
+
+
+def seed_mod(a, b):
+    for n in ("A", "B", "C"):
+        write(a, MOD + "/Source/%s.cs" % n, "class %s {}\n" % n)
+    write(a, MOD + "/Source/M.csproj", "<Project/>\n")
+    fake_build(a)
+    sh(a, "add", MOD)
+    sh(a, "commit", "-q", "-m", "mod")
+    sh(a, "push", "-q", "origin", "HEAD:main")
+    sh(b, "pull", "-q", "--rebase")
+    P.SCRATCH_ROOT = os.path.join(os.path.dirname(a), "scratch")
+
+
+def dll_matches(repo, ref="origin/main"):
+    """origin's DLL equals a build of origin's committed source (checked in a fresh checkout)."""
+    chk = os.path.join(os.path.dirname(repo), "chk")
+    shutil.rmtree(chk, ignore_errors=True)
+    sh(repo, "fetch", "-q")
+    sh(os.path.dirname(repo), "clone", "-q", "--shared", repo, chk)
+    sh(chk, "checkout", "-q", "--detach", sh(repo, "rev-parse", ref))
+    want = open(os.path.join(chk, DLL)).read()
+    fake_build(chk)
+    return open(os.path.join(chk, DLL)).read() == want
+
+
+def t_dll_only_replay_conflict_rebuilds(a, b):
+    seed_mod(a, b)
+    write(b, MOD + "/Source/A.cs", "class A { int peer; }\n")       # peer: source + its DLL, landed first
+    fake_build(b)
+    sh(b, "add", MOD)
+    sh(b, "commit", "-q", "-m", "peer A + dll")
+    sh(b, "push", "-q", "origin", "HEAD:main")
+    write(a, MOD + "/Source/B.cs", "class B { int mine; }\n")       # mine: another file + my DLL -> DLL-only conflict
+    fake_build(a)
+    write(a, MOD + "/Source/C.cs", "class C { UNCOMMITTED PEER EDIT }\n")   # must not leak into the build
+    calls = []
+    real, P.winbuild = getattr(P, "winbuild", None), mock_winbuild(calls)
+    try:
+        sha, log = quiet(P.publish, a, [MOD + "/Source/B.cs", DLL, DLL + ".srchash"], "mine B + dll")
+    finally:
+        P.winbuild = real
+    assert "PUBLISHED" in log and calls, log
+    assert sha == sh(a, "rev-parse", "origin/main")
+    assert "int peer" in show(a, MOD + "/Source/A.cs") and "int mine" in show(a, MOD + "/Source/B.cs")
+    assert dll_matches(a), "landed DLL is not a build of the landed source"
+    assert "UNCOMMITTED" in open(os.path.join(a, MOD + "/Source/C.cs")).read()      # peer edit untouched
+    assert not sh(a, "stash", "list") and not os.listdir(P.SCRATCH_ROOT)             # no stash, scratch removed
+
+
+def t_stamp_guard_refusal_rebuilds_and_retries(a, b):
+    seed_mod(a, b)
+    hooks = os.path.join(os.path.dirname(a), "hooks")
+    write(hooks, "pre-push", HOOK)
+    os.chmod(os.path.join(hooks, "pre-push"), 0o755)
+    sh(a, "config", "core.hooksPath", hooks)
+    write(a, MOD + "/Source/B.cs", "class B { int changed; }\n")    # source only: the committed DLL goes stale
+    write(a, MOD + "/Source/C.cs", "class C { UNCOMMITTED PEER EDIT }\n")
+    calls = []
+    real, P.winbuild = getattr(P, "winbuild", None), mock_winbuild(calls)
+    P.MAX_TRIES, old_tries = 2, P.MAX_TRIES
+    try:
+        sha, log = quiet(P.publish, a, [MOD + "/Source/B.cs"], "source only")
+    finally:
+        P.winbuild, P.MAX_TRIES = real, old_tries
+    assert "DLL_SOURCE_STAMP_GUARD_1" in log and len(calls) == 1, log
+    assert sha == sh(a, "rev-parse", "origin/main") and dll_matches(a)
+    assert "UNCOMMITTED" in open(os.path.join(a, MOD + "/Source/C.cs")).read()
+
+
 TESTS = [v for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 
