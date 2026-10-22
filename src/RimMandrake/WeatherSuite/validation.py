@@ -173,6 +173,10 @@ def dark_aurora_incident_is_correctly_gated_by_geometry(t):
             raise ExpectationFailed(
                 "jawa/storyteller_fire(%s, dryRun=True) failed to resolve the "
                 "def at all: %r" % (DARK_AURORA, r))
+        if "canFireNow" not in r:
+            # a negative check must see the field: an absent key reads as "cannot fire" and would pass blind
+            raise ExpectationFailed(
+                "jawa/storyteller_fire(%s, dryRun=True) returned no canFireNow field: %r" % (DARK_AURORA, r))
         if r.get("canFireNow"):
             raise ExpectationFailed(
                 "%s reported canFireNow=True on the minimal list with no "

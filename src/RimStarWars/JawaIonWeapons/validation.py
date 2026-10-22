@@ -391,6 +391,8 @@ def vehicle_tier_without_framework(t):
         # 1000-line log buffer anyway). The self-disable is now structural. What a live run CAN still see is
         # that the absent tier left no error behind.
         r = t.bridge_call("jawa/drain_log", limit=1000, errorsOnly=True, contains="JawaIon")
+        if _live(t) and not (r or {}).get("success"):
+            raise ExpectationFailed("UNMEASURED: jawa/drain_log did not answer: %r" % (r,))
         msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
         if _live(t) and msgs:
             raise ExpectationFailed(
@@ -403,6 +405,8 @@ def vehicle_tier_without_framework(t):
         # observable state here. Re-reads the same error filter as independent evidence that the whole
         # vehicle tier -- multiplier included -- is inert, rather than asserting nothing at all.
         r = t.bridge_call("jawa/drain_log", limit=1000, errorsOnly=True, contains="VehicleIon")
+        if _live(t) and not (r or {}).get("success"):
+            raise ExpectationFailed("UNMEASURED: jawa/drain_log did not answer: %r" % (r,))
         msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
         if _live(t) and msgs:
             raise ExpectationFailed("vehicle-tier error line present without Vehicle Framework: %r"

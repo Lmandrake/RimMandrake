@@ -123,6 +123,8 @@ def healer_ran_clean(t):
     defect. Only the presence of a warning is a failure."""
     with t.component("boot_and_heal", beyond_toggle=True):
         drained = t.bridge_call("jawa/drain_log", limit=400, contains=BOOT_LOG_TAG)
+        if t._guard() and not (drained or {}).get("success"):
+            raise ExpectationFailed("UNMEASURED: jawa/drain_log did not answer: %r" % (drained,))
         msgs = [m.get("text", "") for m in ((drained or {}).get("messages") or [])]
         joined = "\n".join(msgs)
         if t._guard():
@@ -237,7 +239,11 @@ def _kv(t):
     text = str(text)
     if text.startswith("ERROR"):
         raise ExpectationFailed("ProofShore: %s" % text)
-    return dict(re.findall(r"(\w+)=(\S+)", text)), text
+    kv = dict(re.findall(r"(\w+)=(\S+)", text))
+    if not kv:
+        # callers skip every check on an empty kv, so an answer with no key=value pairs would PASS blind
+        raise ExpectationFailed("ProofShore answered with no key=value pairs: %s" % text[:200])
+    return kv, text
 
 
 def _want(kv, text, want):

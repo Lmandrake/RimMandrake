@@ -190,6 +190,8 @@ def transpilers_hit_expected_count(t):
         r = t.bridge_call(
             "jawa/drain_log", limit=400,
             contains="world-labels: expected exactly ONE 0.30 constant")
+        if t._guard() and not (r or {}).get("success"):
+            raise ExpectationFailed("UNMEASURED: jawa/drain_log did not answer: %r" % (r,))
         msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
         ok = not msgs
         t._record("no alpha-transpile hit-count error logged", ok)
@@ -204,6 +206,8 @@ def transpilers_hit_expected_count(t):
         r = t.bridge_call(
             "jawa/drain_log", limit=400,
             contains="world-label-lift: expected exactly 4 0.40 constant")
+        if t._guard() and not (r or {}).get("success"):
+            raise ExpectationFailed("UNMEASURED: jawa/drain_log did not answer: %r" % (r,))
         msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
         ok = not msgs
         t._record("no lift-transpile hit-count error logged", ok)
@@ -348,4 +352,7 @@ def swim_hood_kept(t):
         # PawnRenderer built this frame (flags lack Clothes|Headgear): true = kept. Flip
         # swimHoodEnabled off and it must read false while the gene fallback node reads true.
         # No bridge tool exposes render-node CanDrawNow yet.
+        # Nothing is asserted, so the row must not read PASS: upstream_failed makes it UNMEASURED (last row of the chain).
+        t.upstream_reason = "UNMEASURED: no bridge tool exposes render-node CanDrawNow, so the drawn hood while swimming is not read"
+        t.upstream_failed = True
         t.screenshot()

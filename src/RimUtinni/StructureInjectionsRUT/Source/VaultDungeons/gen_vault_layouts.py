@@ -65,7 +65,7 @@ OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "Defs", "VaultDung
 # ResolveSymbols() LOOKUP, never a free pass on the generation semantics.
 PAWN_SYMBOLS = [
     # (symbolDefName, pawnKindDef, note, faction)
-    ("RUT_Symbol_GreenGoo", "AA_GreenGoo",
+    ("RUT_Symbol_GreenGoo", "RM_Wuum",   # was AA_GreenGoo; Alpha Animals retired 2026-10-18, RM_Wuum is our port (the committed XML already says so)
      "HorrorWastes-native (cast_assignment.csv) - bioweapon-adjacent guardian, not the Anomaly toolbox. Third-party (Alpha Animals) -> not KCSG-auto-symbol'd, needs this wrapper.",
      None),
     ("RUT_Symbol_MechLancer", "Mech_Lancer",
@@ -392,8 +392,8 @@ def main():
     with open(os.path.join(OUT_DIR, "SymbolDefs_Vaults.xml"), "w") as f:
         f.write(gen_symboldefs())
 
-    print("wrote StructureLayoutDefs_Vaults.xml (3 templates) + SymbolDefs_Vaults.xml (%d symbols)"
-          % (len(PAWN_SYMBOLS) + len(THING_SYMBOLS)))
+    print("wrote StructureLayoutDefs_Vaults.xml (4 templates) + SymbolDefs_Vaults.xml (%d symbols)"
+          % (len(PAWN_SYMBOLS) + len(THING_SYMBOLS) + len(CONTAINER_SYMBOLS)))
 
 
 if __name__ == "__main__":

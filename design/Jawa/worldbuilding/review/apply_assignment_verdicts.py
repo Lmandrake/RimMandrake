@@ -58,7 +58,8 @@ unparseable/missing Move target refuses THAT FILE's entire apply (report still
 runs) and nothing from it is written. Out-of-scope top-level keys in a decisions
 file are carried through untouched (this tool never rewrites the decisions file).
 
-Exit codes: 0 ok · 2 no sidecar stamp (nothing applied) · 5 a Move target could
+Exit codes: 0 ok · 2 no sidecar stamp (nothing applied) · 3 nothing was read (no decisions
+file found / the mapping table parsed to 0 rows: a blind run is not "ok") · 5 a Move target could
 not be resolved (nothing from that file was written) · 6 the post-apply
 rosters/_validate.py --cross run reported problems (the writes already landed)
 """
@@ -136,7 +137,7 @@ MAPPING_TARGET_ALIASES = {
 }
 
 STAMP_BY = "review-sheet-sidecar"   # assets/serve_sheet.py's STAMP_BY — the unforgeable mark
-RC_OK, RC_NO_SIDECAR, RC_UNRESOLVED, RC_VALIDATOR = 0, 2, 5, 6
+RC_OK, RC_NO_SIDECAR, RC_NOTHING_READ, RC_UNRESOLVED, RC_VALIDATOR = 0, 2, 3, 5, 6
 
 SIZE_ORDER = ["small", "medium", "large", "titan"]
 
@@ -751,6 +752,9 @@ def build_mapping_plan(rows: list[dict], stem_index: dict, propagated: dict) -> 
 
 def run_mapping_mode(mapping_path: str, apply: bool) -> int:
     rows = parse_move_mapping(mapping_path)
+    if not rows:
+        print(f"🔴 {mapping_path}: parsed 0 mapping rows (missing file shape?) — nothing to apply")
+        return RC_NOTHING_READ
     propagated = load_propagated_notes()
     stem_index = load_roster_index_by_stem()
     plan = build_mapping_plan(rows, stem_index, propagated)
@@ -822,6 +826,7 @@ def main(argv=None) -> int:
     paths = args.decisions or DEFAULT_DECISIONS
     overall_rc = RC_OK
     any_written = False
+    processed = 0
 
     for path in paths:
         if not os.path.isfile(path):
@@ -839,6 +844,7 @@ def main(argv=None) -> int:
         items = load_items(html_for(path))
         roster_index = load_roster_index()
         plan = build_plan(doc, kind, items, roster_index, os.path.basename(path))
+        processed += 1
         print_report(plan)
 
         if plan.errors:
@@ -851,6 +857,10 @@ def main(argv=None) -> int:
             print(f"\n  wrote {len(written)} file(s):")
             for w in written:
                 print(f"    {w}")
+
+    if processed == 0 and overall_rc == RC_OK:
+        print("🔴 no decisions file was read — nothing to report or apply")
+        overall_rc = RC_NOTHING_READ
 
     if args.apply and any_written:
         rc = run_validate_cross()

@@ -329,6 +329,12 @@ def main() -> int:
     if '--write' not in sys.argv:
         print("\n(pass --write to emit the patch)")
         return 0
+    if not rows and not already:
+        # nothing joined a home tile to a cast animal: a blind join, not "every animal is fine". Writing would
+        # re-emit only the pinned orphans and silently drop every refit.
+        print("REFUSED: 0 animals refitted and 0 already surviving -- the cast/tile join found no homes; patch not written",
+              file=sys.stderr)
+        return 1
     print(f"\nwrote {emit(all_rows)}  ({len(all_rows)} operations = {len(rows)} refitted/kept + "
           f"{len(pinned)} pinned)")
     return 0

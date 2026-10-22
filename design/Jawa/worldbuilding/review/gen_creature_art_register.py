@@ -213,9 +213,11 @@ def build_rows(R, reg: dict) -> tuple[list[dict], dict]:
         selected.append((defname, GROUP_RULED, {"comm": None, "others": [], "biome": None}))
 
     rows = []
+    not_in_register = []
     for defname, group, extra in selected:
         row = reg.get(defname)
         if row is None:
+            not_in_register.append(defname)
             continue
         art = row.get("art") or {}
         scale = art.get("scale")
@@ -225,6 +227,11 @@ def build_rows(R, reg: dict) -> tuple[list[dict], dict]:
             "natural": natural, "frozen": frozen.get(defname), **extra,
         })
 
+    if not_in_register:
+        # never a quiet shrink: these creatures are rostered/flagged but have no register row, so no sheet row
+        print("WARNING: %d selected creature(s) have no register row and are NOT on the sheet: %s%s"
+              % (len(not_in_register), ", ".join(not_in_register[:12]), " ..." if len(not_in_register) > 12 else ""),
+              file=sys.stderr)
     stats = {
         "rostered": len(rostered), "reserveHi": len(reserve_hi), "off": len(off),
         "frozenEntries": len(frozen),
