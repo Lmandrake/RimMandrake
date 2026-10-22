@@ -36,7 +36,7 @@ Scenes (plot coords from --origin, default 30,30; dug by jawa/flowworks_excavati
                                                                                                 -> LEAF_RAISED_LAMP_DARK
   G  z=72   timber bridge (0,72)-(5,72), trench x=1..4, z=70..74; battery, cords, lamp as E; the span collapsed; a colonist
             spawned on a fallen square                                                           -> COLLAPSE_CORD_SHOCKS_ONCE
-  H  z=84   pump (0,84), battery (3,83), reel (0,85), tank (0,87) (proof_hose's plot shape); a 3x3 pit x=8..10, z=84..86
+  H  z=84   pump (0,84), battery (3,83), reel (0,85) above the pump, tank (0,82) below it; a 3x3 pit x=8..10, z=84..86
             filled, a ladder (8,85) hung on the west wall; hose to (9,85), free end Intake         -> LADDER_HOSE_DRAINS_RAISED_STAYS
   I  z=100  reel (0,100), hose to (16,100) on open ground; a pit x=7..9, z=98..102 dug under it -> DIG_REROUTES_LAID_HOSE
 
@@ -519,11 +519,22 @@ def collapse_cord(ctx):
     c0 = ctx["counters"]()
     ctx["sproof"]("ProofFell", xz(P(2, 72)))
     ctx["ticks"](5)
+    # HARNESS fix 2026-10-21 (FALLEN_CORD_DIAGNOSE_LIVE_BUT_HARMLESS): the collapse leaves an IMPASSABLE RM_SuspensionWreck on
+    # every fallen square, and the live contacts are exactly those squares (live read: shockCells (31,102),(32,102); wrecks
+    # x=31..34). A colonist spawned there read (32,102) at once, then the game pushed him off within 10 ticks, before GSS's
+    # first 20-tick check: shocks 0. With the wreck cleared (what a player does to reach the hole) and the colonist drafted
+    # so he holds the square, GSS shocked him once, threw him 2 cells and downed him (live 2026-10-21). So: clear the wreck,
+    # read it gone, draft the victim.
+    for x in range(1, 5):
+        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % P(x, 72), categories="Building")
+    V.require(all(ctx["things"]("RM_SuspensionWreck", P(x, 72)) == 0 for x in range(1, 5)), "the wreck is cleared off the fallen squares",
+              cls="SITE")
     victim = ctx["spawn"](P(2, 72))
+    B.call("jawa/set_draft", pawnId=victim, drafted=True)
     ps = ctx["pawns"]()
     vat = ((ps.get(victim) or {}).get("x"), (ps.get(victim) or {}).get("z"))
     V.require(vat[1] == P(0, 72)[1] and P(1, 0)[0] <= (vat[0] or -9999) <= P(4, 0)[0], "the colonist stands on a fallen square", vat)
-    ctx["ticks"](60)
+    ctx["ticks"](60)                    # three GSS 20-tick checks while he holds the square
     c1 = ctx["counters"]()
     hed = [str(h.get("def") or h) for h in (((ctx["pawns"]().get(victim) or {}).get("health") or {}).get("hediffs") or [])]
     dark = not ctx["lamp_on"](lamp)
@@ -546,7 +557,11 @@ def ladder_drain(ctx):
     evaporation or seepage is not the hose (the tank's gain is part of the bar); a hose that re-laid round a new obstacle reads
     laid=True but geom moved (geometry is the bar for 'stays')."""
     B, P, xz, row, lproof = _c(ctx, "B", "P", "xz", "row", "lproof")
-    pump, bat, reel, tank = P(0, 84), P(3, 83), P(0, 85), P(0, 87)
+    # SITE fix 2026-10-21 (LADDER_HOSE_DIAGNOSE_SIPS_NOTHING): the tank at (0,87) touched the reel, and HosePortRule ranks a
+    # tank above a pump, so the reel coupled to the TANK; the pump was on no network with the Intake end and the reel read
+    # "Intake needs a working pump on this network" (moved 0 in 1500 ticks). The tank now touches the PUMP (its own store),
+    # never the reel, and the coupling is read back before the row may score.
+    pump, bat, reel, tank = P(0, 84), P(3, 83), P(0, 85), P(0, 82)
     for x in range(8, 11):
         for z in range(84, 87):
             ctx["dig"](P(x, z))
@@ -562,6 +577,11 @@ def ladder_drain(ctx):
     V.require(ladder.get("success") is True, "the ladder is on the pit floor", ladder)
     ly = ctx["lay"](reel, P(9, 85))
     kh0, th0 = ctx["hose"](reel)
+    rl = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,1,1" % reel, limit=1) or {}
+    rid = ((rl.get("things") or [{}])[0]).get("id")
+    ins = (B.call("jawa/inspect_string", thingIds=str(rid)) or {}) if rid else {}
+    lines = [ln for t in (ins.get("things") or []) for ln in (t.get("inspect") or [])]
+    V.require(any(ln.startswith("Connected to liquid pump") for ln in lines), "the reel is coupled to the pump", lines, cls="SITE")
     lproof("ProofHoseRole", "%s;Intake" % xz(reel))
     powered, pw = ctx["poll"](lambda: B.hp("pump:%d,%d" % pump).get("powered") is True, 400)
     V.require(powered, "the pump powered", pw)
@@ -819,6 +839,8 @@ class FakeBridge(object):
             return {"success": True, "things": got[:1]}
         if tool == "jawa/battery_set":
             return {"success": True}
+        if tool == "jawa/inspect_string":
+            return {"success": True, "things": [{"id": kw.get("thingIds"), "inspect": ["Connected to liquid pump (pump)."]}]}
         if tool == "jawa/destroy_batch":
             x, z = (int(v) for v in str(kw.get("rects")).split(",")[:2])
             c = (x, z)
@@ -858,7 +880,7 @@ class FakeBridge(object):
             if r["role"] == "Intake" and r["target"] in self.water and "no_drain" not in self.f and "no_power" not in self.f:
                 moved = min(self.water[r["target"]], 50 * (n // 50))
                 self.water[r["target"]] -= moved
-                tank = (root[0], root[1] + 2)
+                tank = (root[0], root[1] - 3)   # the tank below the pump below the reel (scene H, fixed 2026-10-21)
                 self.tankunits[tank] = self.tankunits.get(tank, 0) + moved
             if any(self._band(c) for c in r["cells"]) and not r["ladders"] and n >= 250:
                 if "reroute_retracts" in self.f:

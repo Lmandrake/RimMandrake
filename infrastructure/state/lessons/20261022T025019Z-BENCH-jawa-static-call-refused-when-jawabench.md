@@ -1,0 +1,1 @@
+jawa/static_call is refused when JawaBench/companion_profile.json's expiresUtc has passed (CAMPAIGN profile), and a proof then reads every row UNMEASURED/HARNESS 'RM_LineProofs is not in the loaded FlowWorks' -- a misleading message; check jawa/companion_handshake effectiveProfile first and renew expiresUtc. (2026-10-21)
