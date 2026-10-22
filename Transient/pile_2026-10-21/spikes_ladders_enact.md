@@ -14,3 +14,4 @@
 - CONFLICT left: E 951e9cece568 sits at FlowWorks/RM_Spikes.png (no Canals/, no def reads it) — purge refused as live
 - LADDER: sheet column A = "IN GAME — FlowWorks" (sha-identical to live RM_Ladder_*); v3a/b/c are columns B/C/D. Pick A + note = keep current, judge in game. NOT installed, raised NOT redrawn; owner must name a set.
 - art guard worktree: 0 unledgered
+- ledger: spikes needs deploy; ladder needs owner; lesson filed. DONE 23:23
