@@ -196,6 +196,8 @@
     <Compile Include="RM_CliffMaskMath.cs" />
     <Compile Include="Superdeep\RM_SuperdeepTrap.cs" />
     <Compile Include="Superdeep\RM_PocketGrid.cs" />
+    <Compile Include="RM_WallReachMath.cs" />
+    <Compile Include="Superdeep\RM_WallReach.cs" />
     <Compile Include="Superdeep\RM_CliffMask.cs" />
     <Compile Include="Superdeep\RM_PitRamp.cs" />
     <Compile Include="Superdeep\RM_PitPathing.cs" />
