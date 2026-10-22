@@ -1,0 +1,6816 @@
+{
+ "schema": 1,
+ "generated": "2026-10-21T21:15:52-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_all_bridge_art"
+ ],
+ "biomes": {
+  "SUBJECTS_all_bridge_art": {
+   "label": "All bridge art",
+   "slug": "all_bridge_art",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "All bridge art \u2014 game art",
+   "lead_html": "<p>Every piece of bridge art we have, one look-over (owner, 2026-10-21: <i>\u201cPlease make a sheet with all your bridge art on it, then send it too to GPT for review and improvement suggestions.\u201d</i>). Superset of the suspension four-looks sheet (2026-10-21) and the drawbridge art sheet (2026-10-20): suspension parts in every tier and all four looks, drawbridge winch / raised leaf / gate / planks renders (not installed), raid plank, pit-cover plank lattice, ford stones, mushroom bridges. GPT's review: Transient/pile_2026-10-21/bridge_art_gpt_review.md.</p>",
+   "rows": [
+    {
+     "key": "RM_SuspensionDeck_Rope",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "rope suspension bridge",
+     "defNames": [
+      "RM_SuspensionDeck_Rope"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Rope"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Rope found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Rope",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "rope suspension bridge anchor",
+     "defNames": [
+      "RM_SuspensionAnchor_Rope"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Rope",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Rope"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Rope found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Steel_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Steel_Scrapper",
+     "defNames": [
+      "RM_SuspensionDeck_Steel_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Steel_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Steel_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Steel_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Steel_Industrial",
+     "defNames": [
+      "RM_SuspensionDeck_Steel_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Steel_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Steel_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Steel_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Steel_Modern",
+     "defNames": [
+      "RM_SuspensionDeck_Steel_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Steel_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Steel_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Steel_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Steel_Futuristic",
+     "defNames": [
+      "RM_SuspensionDeck_Steel_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Steel_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Steel_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_SteelGrated_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_SteelGrated_Scrapper",
+     "defNames": [
+      "RM_SuspensionDeck_SteelGrated_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeckGrated_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_SteelGrated_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_SteelGrated_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_SteelGrated_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_SteelGrated_Industrial",
+     "defNames": [
+      "RM_SuspensionDeck_SteelGrated_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeckGrated_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_SteelGrated_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_SteelGrated_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_SteelGrated_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_SteelGrated_Modern",
+     "defNames": [
+      "RM_SuspensionDeck_SteelGrated_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_SteelGrated_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_SteelGrated_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_SteelGrated_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_SteelGrated_Futuristic",
+     "defNames": [
+      "RM_SuspensionDeck_SteelGrated_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeckGrated_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_SteelGrated_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_SteelGrated_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Heavy_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Heavy_Scrapper",
+     "defNames": [
+      "RM_SuspensionDeck_Heavy_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Heavy_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Heavy_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Heavy_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Heavy_Industrial",
+     "defNames": [
+      "RM_SuspensionDeck_Heavy_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Heavy_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Heavy_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Heavy_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Heavy_Modern",
+     "defNames": [
+      "RM_SuspensionDeck_Heavy_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Heavy_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Heavy_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Heavy_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Heavy_Futuristic",
+     "defNames": [
+      "RM_SuspensionDeck_Heavy_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Heavy_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Heavy_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_HeavyGrated_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_HeavyGrated_Scrapper",
+     "defNames": [
+      "RM_SuspensionDeck_HeavyGrated_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeckGrated_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_HeavyGrated_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_HeavyGrated_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_HeavyGrated_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_HeavyGrated_Industrial",
+     "defNames": [
+      "RM_SuspensionDeck_HeavyGrated_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeckGrated_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_HeavyGrated_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_HeavyGrated_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_HeavyGrated_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_HeavyGrated_Modern",
+     "defNames": [
+      "RM_SuspensionDeck_HeavyGrated_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_HeavyGrated_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_HeavyGrated_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_HeavyGrated_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_HeavyGrated_Futuristic",
+     "defNames": [
+      "RM_SuspensionDeck_HeavyGrated_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeckGrated_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_HeavyGrated_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_HeavyGrated_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Timber_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Timber_Scrapper",
+     "defNames": [
+      "RM_SuspensionDeck_Timber_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Timber_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Timber_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Timber_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Timber_Industrial",
+     "defNames": [
+      "RM_SuspensionDeck_Timber_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Timber_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Timber_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Timber_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Timber_Modern",
+     "defNames": [
+      "RM_SuspensionDeck_Timber_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Timber_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Timber_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Timber_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionDeck_Timber_Futuristic",
+     "defNames": [
+      "RM_SuspensionDeck_Timber_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Timber_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Timber_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Steel_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Steel_Scrapper",
+     "defNames": [
+      "RM_SuspensionAnchor_Steel_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Steel_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Steel_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Steel_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Steel_Industrial",
+     "defNames": [
+      "RM_SuspensionAnchor_Steel_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Steel_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Steel_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Steel_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Steel_Modern",
+     "defNames": [
+      "RM_SuspensionAnchor_Steel_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Steel_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Steel_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Steel_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Steel_Futuristic",
+     "defNames": [
+      "RM_SuspensionAnchor_Steel_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Steel_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Steel_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Heavy_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Heavy_Scrapper",
+     "defNames": [
+      "RM_SuspensionAnchor_Heavy_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Heavy_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Heavy_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Heavy_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Heavy_Industrial",
+     "defNames": [
+      "RM_SuspensionAnchor_Heavy_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Heavy_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Heavy_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Heavy_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Heavy_Modern",
+     "defNames": [
+      "RM_SuspensionAnchor_Heavy_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Heavy_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Heavy_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Heavy_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Heavy_Futuristic",
+     "defNames": [
+      "RM_SuspensionAnchor_Heavy_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Heavy_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Heavy_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Timber_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Timber_Scrapper",
+     "defNames": [
+      "RM_SuspensionAnchor_Timber_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Timber_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Timber_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Timber_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Timber_Industrial",
+     "defNames": [
+      "RM_SuspensionAnchor_Timber_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Timber_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Timber_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Timber_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Timber_Modern",
+     "defNames": [
+      "RM_SuspensionAnchor_Timber_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Timber_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Timber_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Timber_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionAnchor_Timber_Futuristic",
+     "defNames": [
+      "RM_SuspensionAnchor_Timber_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Timber_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Timber_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionJetty_Steel_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionJetty_Steel_Scrapper",
+     "defNames": [
+      "RM_SuspensionJetty_Steel_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionJetty_Steel_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionJetty_Steel_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionJetty_Steel_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionJetty_Steel_Industrial",
+     "defNames": [
+      "RM_SuspensionJetty_Steel_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionJetty_Steel_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionJetty_Steel_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionJetty_Steel_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionJetty_Steel_Modern",
+     "defNames": [
+      "RM_SuspensionJetty_Steel_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionJetty_Steel_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionJetty_Steel_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionJetty_Steel_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionJetty_Steel_Futuristic",
+     "defNames": [
+      "RM_SuspensionJetty_Steel_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionJetty_Steel_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionJetty_Steel_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionJetty_Heavy_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionJetty_Heavy_Scrapper",
+     "defNames": [
+      "RM_SuspensionJetty_Heavy_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionJetty_Heavy_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionJetty_Heavy_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionJetty_Heavy_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionJetty_Heavy_Industrial",
+     "defNames": [
+      "RM_SuspensionJetty_Heavy_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionJetty_Heavy_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionJetty_Heavy_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionJetty_Heavy_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionJetty_Heavy_Modern",
+     "defNames": [
+      "RM_SuspensionJetty_Heavy_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionJetty_Heavy_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionJetty_Heavy_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionJetty_Heavy_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionJetty_Heavy_Futuristic",
+     "defNames": [
+      "RM_SuspensionJetty_Heavy_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionJetty_Heavy_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionJetty_Heavy_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionRailing_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionRailing_Scrapper",
+     "defNames": [
+      "RM_SuspensionRailing_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionRailing_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionRailing_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionRailing_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionRailing_Industrial",
+     "defNames": [
+      "RM_SuspensionRailing_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionRailing_Edge",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionRailing_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionRailing_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionRailing_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionRailing_Modern",
+     "defNames": [
+      "RM_SuspensionRailing_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionRailing_Edge",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionRailing_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionRailing_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionRailing_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionRailing_Futuristic",
+     "defNames": [
+      "RM_SuspensionRailing_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionRailing_Edge",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionRailing_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionRailing_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionTower_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionTower_Scrapper",
+     "defNames": [
+      "RM_SuspensionTower_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionTower",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionTower_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionTower_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionTower_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionTower_Industrial",
+     "defNames": [
+      "RM_SuspensionTower_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionTower",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionTower_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionTower_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionTower_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionTower_Modern",
+     "defNames": [
+      "RM_SuspensionTower_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionTower",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionTower_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionTower_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionTower_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionTower_Futuristic",
+     "defNames": [
+      "RM_SuspensionTower_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionTower",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionTower_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionTower_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionWreck_Scrapper",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionWreck_Scrapper",
+     "defNames": [
+      "RM_SuspensionWreck_Scrapper"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionWreck",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionWreck_Scrapper"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionWreck_Scrapper found"
+     }
+    },
+    {
+     "key": "RM_SuspensionWreck_Industrial",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionWreck_Industrial",
+     "defNames": [
+      "RM_SuspensionWreck_Industrial"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionWreck",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionWreck_Industrial"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionWreck_Industrial found"
+     }
+    },
+    {
+     "key": "RM_SuspensionWreck_Modern",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionWreck_Modern",
+     "defNames": [
+      "RM_SuspensionWreck_Modern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionWreck",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionWreck_Modern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionWreck_Modern found"
+     }
+    },
+    {
+     "key": "RM_SuspensionWreck_Futuristic",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_SuspensionWreck_Futuristic",
+     "defNames": [
+      "RM_SuspensionWreck_Futuristic"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionWreck",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionWreck_Futuristic"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionWreck_Futuristic found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Timber",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "timber suspension bridge",
+     "defNames": [
+      "RM_SuspensionDeck_Timber"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Timber"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Timber found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Steel",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "steel suspension bridge",
+     "defNames": [
+      "RM_SuspensionDeck_Steel"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Steel"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Steel found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_Heavy",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "heavy suspension bridge",
+     "defNames": [
+      "RM_SuspensionDeck_Heavy"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Heavy_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_Heavy"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_Heavy found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_SteelGrated",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "grated steel suspension bridge",
+     "defNames": [
+      "RM_SuspensionDeck_SteelGrated"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_SteelGrated_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_SteelGrated"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_SteelGrated found"
+     }
+    },
+    {
+     "key": "RM_SuspensionDeck_HeavyGrated",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "grated heavy suspension bridge",
+     "defNames": [
+      "RM_SuspensionDeck_HeavyGrated"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_HeavyGrated_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionDeck_HeavyGrated"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionDeck_HeavyGrated found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Timber",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "timber suspension bridge anchor",
+     "defNames": [
+      "RM_SuspensionAnchor_Timber"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Timber"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Timber found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Steel",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "steel suspension bridge anchor",
+     "defNames": [
+      "RM_SuspensionAnchor_Steel"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Steel"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Steel found"
+     }
+    },
+    {
+     "key": "RM_SuspensionAnchor_Heavy",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "heavy suspension bridge anchor",
+     "defNames": [
+      "RM_SuspensionAnchor_Heavy"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Heavy",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionAnchor_Heavy"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionAnchor_Heavy found"
+     }
+    },
+    {
+     "key": "RM_SuspensionJetty_Steel",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "steel jetty",
+     "defNames": [
+      "RM_SuspensionJetty_Steel"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionJetty_Steel",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionJetty_Steel"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionJetty_Steel found"
+     }
+    },
+    {
+     "key": "RM_SuspensionJetty_Heavy",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "heavy jetty",
+     "defNames": [
+      "RM_SuspensionJetty_Heavy"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionJetty_Heavy",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionJetty_Heavy"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionJetty_Heavy found"
+     }
+    },
+    {
+     "key": "RM_SuspensionRailing",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "suspension bridge railing",
+     "defNames": [
+      "RM_SuspensionRailing"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionRailing_Edge",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionRailing"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionRailing found"
+     }
+    },
+    {
+     "key": "RM_SuspensionTower",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "suspension bridge tower",
+     "defNames": [
+      "RM_SuspensionTower"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionTower",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionTower"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionTower found"
+     }
+    },
+    {
+     "key": "RM_SuspensionWreck",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "suspension bridge wreck",
+     "defNames": [
+      "RM_SuspensionWreck"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionWreck",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SuspensionWreck"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SuspensionWreck found"
+     }
+    },
+    {
+     "key": "RM_DrawbridgeWinch_Timber",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_DrawbridgeWinch_Timber",
+     "defNames": [
+      "RM_DrawbridgeWinch_Timber"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_DrawbridgeWinch_Timber"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_DrawbridgeWinch_Timber found"
+     }
+    },
+    {
+     "key": "RM_DrawbridgeWinch_Steel",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_DrawbridgeWinch_Steel",
+     "defNames": [
+      "RM_DrawbridgeWinch_Steel"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_DrawbridgeWinch_Steel"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_DrawbridgeWinch_Steel found"
+     }
+    },
+    {
+     "key": "RM_DrawbridgeGate",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_DrawbridgeGate",
+     "defNames": [
+      "RM_DrawbridgeGate"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/Door/DoorSimple_Mover",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_DrawbridgeGate"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_DrawbridgeGate found"
+     }
+    },
+    {
+     "key": "RM_RaidPlank",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_RaidPlank",
+     "defNames": [
+      "RM_RaidPlank"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Item/Resource/WoodLog",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_RaidPlank"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_RaidPlank found"
+     }
+    },
+    {
+     "key": "RM_RaidPlank_Laid",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_RaidPlank_Laid",
+     "defNames": [
+      "RM_RaidPlank_Laid"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber_Atlas",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_RaidPlank_Laid"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_RaidPlank_Laid found"
+     }
+    },
+    {
+     "key": "RM_PitCover_PlankLattice",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "plank pit cover",
+     "defNames": [
+      "RM_PitCover_PlankLattice"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Canals/RM_PitCover_PlankLattice",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_PitCover_PlankLattice"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_PitCover_PlankLattice found"
+     }
+    },
+    {
+     "key": "RM_FordStones",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_FordStones",
+     "defNames": [
+      "RM_FordStones"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_FordStones NOT in the dump"
+     }
+    },
+    {
+     "key": "RM_MushroomBridge",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_MushroomBridge",
+     "defNames": [
+      "RM_MushroomBridge"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_MushroomBridge NOT in the dump"
+     }
+    },
+    {
+     "key": "RM_HeavyMushroomBridge",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_HeavyMushroomBridge",
+     "defNames": [
+      "RM_HeavyMushroomBridge"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_HeavyMushroomBridge NOT in the dump"
+     }
+    },
+    {
+     "key": "DB_Winch_Timber",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "winch house \u2014 timber (hand-cranked) \u26a0 EAST VIEW IS THREE-QUARTER, NOT A SIDE PROFILE",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Winch_Steel",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeWinch_Timber_east",
+      "RM_DrawbridgeWinch_Timber_north",
+      "RM_DrawbridgeWinch_Timber_south"
+     ],
+     "render_match": "RM_DrawbridgeWinch_Timber",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1.5,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Winch_Timber",
+      "label": "winch house \u2014 timber (hand-cranked) \u26a0 EAST VIEW IS THREE-QUARTER, NOT A SIDE PROFILE",
+      "description": "Winch \u00b7 look Timber \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber \u00b7 drawn at 1.5\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Winch_Timber"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber"
+     }
+    },
+    {
+     "key": "DB_LeafUp_Timber_Face",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf, deck face toward camera \u2014 timber (1 lane \u00d7 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Steel_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Face",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Timber_Face"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Timber_Face",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_LeafUp_Timber_Face",
+      "label": "raised leaf, deck face toward camera \u2014 timber (1 lane \u00d7 4 cells)",
+      "description": "LeafUpFace \u00b7 look Timber \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Face \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Face",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_LeafUp_Timber_Face"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Face"
+     }
+    },
+    {
+     "key": "DB_LeafUp_Timber_Underside",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf, underside toward camera \u2014 timber (1 lane \u00d7 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Steel_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Timber_Underside"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Timber_Underside",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_LeafUp_Timber_Underside",
+      "label": "raised leaf, underside toward camera \u2014 timber (1 lane \u00d7 4 cells)",
+      "description": "LeafUpUnderside \u00b7 look Timber \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Underside \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Underside",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_LeafUp_Timber_Underside"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Underside"
+     }
+    },
+    {
+     "key": "DB_LeafUp_Timber_Edge",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf, edge-on \u2014 timber (1 lane \u00d7 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Steel_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Timber_Edge"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Timber_Edge",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_LeafUp_Timber_Edge",
+      "label": "raised leaf, edge-on \u2014 timber (1 lane \u00d7 4 cells)",
+      "description": "LeafUpEdge \u00b7 look Timber \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Edge \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Edge",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_LeafUp_Timber_Edge"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Edge"
+     }
+    },
+    {
+     "key": "DB_Gate_Timber_Closed",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate closed \u2014 timber (one lane) \u26a0 EAST VIEW IS THREE-QUARTER, NOT EDGE-ON",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Steel_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Gate_Closed",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Timber_Closed_east",
+      "RM_DrawbridgeGate_Timber_Closed_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Timber_Closed",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Gate_Timber_Closed",
+      "label": "bank gate closed \u2014 timber (one lane) \u26a0 EAST VIEW IS THREE-QUARTER, NOT EDGE-ON",
+      "description": "GateClosed \u00b7 look Timber \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Closed \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Closed",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Gate_Timber_Closed"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Closed"
+     }
+    },
+    {
+     "key": "DB_Gate_Timber_Open",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate open \u2014 timber (one lane)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Steel_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Gate_Open",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Timber_Open_east",
+      "RM_DrawbridgeGate_Timber_Open_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Timber_Open",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Gate_Timber_Open",
+      "label": "bank gate open \u2014 timber (one lane)",
+      "description": "GateOpen \u00b7 look Timber \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Open \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Open",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Gate_Timber_Open"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Open"
+     }
+    },
+    {
+     "key": "DB_Planks_Timber",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "planks stacked beside the bridge \u2014 timber (art only)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Planks_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Planks",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgePlanks_Timber"
+     ],
+     "render_match": "RM_DrawbridgePlanks_Timber",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Planks_Timber",
+      "label": "planks stacked beside the bridge \u2014 timber (art only)",
+      "description": "Planks \u00b7 look Timber \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Timber \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Timber",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Planks_Timber"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Timber"
+     }
+    },
+    {
+     "key": "DB_Winch_Steel",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "winch house \u2014 steel (powered motor house)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Winch_Timber",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeWinch_Steel_east",
+      "RM_DrawbridgeWinch_Steel_north",
+      "RM_DrawbridgeWinch_Steel_south"
+     ],
+     "render_match": "RM_DrawbridgeWinch_Steel",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1.5,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Winch_Steel",
+      "label": "winch house \u2014 steel (powered motor house)",
+      "description": "Winch \u00b7 look Steel \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel \u00b7 drawn at 1.5\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Winch_Steel"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel"
+     }
+    },
+    {
+     "key": "DB_LeafUp_Steel_Face",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf, deck face toward camera \u2014 steel (1 lane \u00d7 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Face",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Steel_Face"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Steel_Face",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_LeafUp_Steel_Face",
+      "label": "raised leaf, deck face toward camera \u2014 steel (1 lane \u00d7 4 cells)",
+      "description": "LeafUpFace \u00b7 look Steel \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Face \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Face",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_LeafUp_Steel_Face"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Face"
+     }
+    },
+    {
+     "key": "DB_LeafUp_Steel_Underside",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf, underside toward camera \u2014 steel (1 lane \u00d7 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Steel_Underside"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Steel_Underside",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_LeafUp_Steel_Underside",
+      "label": "raised leaf, underside toward camera \u2014 steel (1 lane \u00d7 4 cells)",
+      "description": "LeafUpUnderside \u00b7 look Steel \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Underside \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Underside",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_LeafUp_Steel_Underside"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Underside"
+     }
+    },
+    {
+     "key": "DB_LeafUp_Steel_Edge",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf, edge-on \u2014 steel (1 lane \u00d7 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Steel_Edge"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Steel_Edge",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_LeafUp_Steel_Edge",
+      "label": "raised leaf, edge-on \u2014 steel (1 lane \u00d7 4 cells)",
+      "description": "LeafUpEdge \u00b7 look Steel \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_LeafUp_Steel_Edge"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge"
+     }
+    },
+    {
+     "key": "DB_Gate_Steel_Closed",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate closed \u2014 steel (one lane)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Timber_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Gate_Closed",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Steel_Closed_east",
+      "RM_DrawbridgeGate_Steel_Closed_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Steel_Closed",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Gate_Steel_Closed",
+      "label": "bank gate closed \u2014 steel (one lane)",
+      "description": "GateClosed \u00b7 look Steel \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Closed \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Closed",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Gate_Steel_Closed"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Closed"
+     }
+    },
+    {
+     "key": "DB_Gate_Steel_Open",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate open \u2014 steel (one lane)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Timber_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Gate_Open",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Steel_Open_east",
+      "RM_DrawbridgeGate_Steel_Open_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Steel_Open",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Gate_Steel_Open",
+      "label": "bank gate open \u2014 steel (one lane)",
+      "description": "GateOpen \u00b7 look Steel \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Open \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Open",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Gate_Steel_Open"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Open"
+     }
+    },
+    {
+     "key": "DB_Planks_Steel",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "planks stacked beside the bridge \u2014 steel (art only)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Planks_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Planks",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgePlanks_Steel"
+     ],
+     "render_match": "RM_DrawbridgePlanks_Steel",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Planks_Steel",
+      "label": "planks stacked beside the bridge \u2014 steel (art only)",
+      "description": "Planks \u00b7 look Steel \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Steel \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Steel",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Planks_Steel"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Steel"
+     }
+    },
+    {
+     "key": "DB_RaidPlank_Item",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raid plank \u2014 carried / dropped item",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_RaidPlank"
+     ],
+     "render_match": "^RM_RaidPlank$",
+     "standin": null,
+     "reference_textures": [],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_RaidPlank_Item",
+      "label": "raid plank \u2014 carried / dropped item",
+      "description": "RaidPlankItem \u00b7 look Raider \u00b7 texture Things/Item/FlowWorks/RM_RaidPlank \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Item/FlowWorks/RM_RaidPlank",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_RaidPlank_Item"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Item/FlowWorks/RM_RaidPlank"
+     }
+    },
+    {
+     "key": "DB_RaidPlank_Laid",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raid plank laid across the pit \u2014 one cell segment",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_RaidPlank_Laid"
+     ],
+     "render_match": "RM_RaidPlank_Laid$",
+     "standin": null,
+     "reference_textures": [],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_RaidPlank_Laid",
+      "label": "raid plank laid across the pit \u2014 one cell segment",
+      "description": "RaidPlankLaid \u00b7 look Raider \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_Laid \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_Laid",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_RaidPlank_Laid"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_Laid"
+     }
+    },
+    {
+     "key": "DB_RaidPlank_LaidEnd",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raid plank laid \u2014 bank end with hooks",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_RaidPlank_LaidEnd"
+     ],
+     "render_match": "RM_RaidPlank_LaidEnd",
+     "standin": null,
+     "reference_textures": [],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_RaidPlank_LaidEnd",
+      "label": "raid plank laid \u2014 bank end with hooks",
+      "description": "RaidPlankLaidEnd \u00b7 look Raider \u00b7 texture Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_LaidEnd \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_LaidEnd",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_RaidPlank_LaidEnd"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_LaidEnd"
+     }
+    },
+    {
+     "key": "DB_Scrapper_Winch_Timber",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "winch house, timber \u2014 Scrapper",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Industrial_Winch_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Winch_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Winch_Timber",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeWinch_Timber_Scrapper_east",
+      "RM_DrawbridgeWinch_Timber_Scrapper_north",
+      "RM_DrawbridgeWinch_Timber_Scrapper_south"
+     ],
+     "render_match": "RM_DrawbridgeWinch_Timber_Scrapper",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1.5,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Scrapper_Winch_Timber",
+      "label": "winch house, timber \u2014 Scrapper",
+      "description": "Winch_Timber \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeWinch_Timber \u00b7 drawn at 1.5\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeWinch_Timber",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Scrapper_Winch_Timber"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeWinch_Timber"
+     }
+    },
+    {
+     "key": "DB_Scrapper_Winch_Steel",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "winch house, steel \u2014 Scrapper",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Industrial_Winch_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Winch_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Winch_Steel",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeWinch_Steel_Scrapper_east",
+      "RM_DrawbridgeWinch_Steel_Scrapper_north",
+      "RM_DrawbridgeWinch_Steel_Scrapper_south"
+     ],
+     "render_match": "RM_DrawbridgeWinch_Steel_Scrapper",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1.5,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Scrapper_Winch_Steel",
+      "label": "winch house, steel \u2014 Scrapper",
+      "description": "Winch_Steel \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeWinch_Steel \u00b7 drawn at 1.5\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeWinch_Steel",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Scrapper_Winch_Steel"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeWinch_Steel"
+     }
+    },
+    {
+     "key": "DB_Scrapper_LeafUp_Face",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf face \u2014 Scrapper (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Face",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Face_Scrapper"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Face_Scrapper",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Scrapper_LeafUp_Face",
+      "label": "raised leaf face \u2014 Scrapper (1 lane x 4 cells)",
+      "description": "LeafUpFace \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Face \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Face",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Scrapper_LeafUp_Face"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Face"
+     }
+    },
+    {
+     "key": "DB_Scrapper_LeafUp_Underside",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf underside \u2014 Scrapper (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Underside_Scrapper"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Underside_Scrapper",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Scrapper_LeafUp_Underside",
+      "label": "raised leaf underside \u2014 Scrapper (1 lane x 4 cells)",
+      "description": "LeafUpUnderside \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Underside \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Underside",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Scrapper_LeafUp_Underside"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Underside"
+     }
+    },
+    {
+     "key": "DB_Scrapper_LeafUp_Edge",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf edge \u2014 Scrapper (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Edge_Scrapper"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Edge_Scrapper",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Scrapper_LeafUp_Edge",
+      "label": "raised leaf edge \u2014 Scrapper (1 lane x 4 cells)",
+      "description": "LeafUpEdge \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Edge \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Edge",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Scrapper_LeafUp_Edge"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeLeafUp_Edge"
+     }
+    },
+    {
+     "key": "DB_Scrapper_Gate_Closed",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate closed \u2014 Scrapper",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Timber_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Gate_Steel_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Gate_Closed",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Closed_Scrapper_east",
+      "RM_DrawbridgeGate_Closed_Scrapper_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Closed_Scrapper",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Scrapper_Gate_Closed",
+      "label": "bank gate closed \u2014 Scrapper",
+      "description": "GateClosed \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeGate_Closed \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeGate_Closed",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Scrapper_Gate_Closed"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeGate_Closed"
+     }
+    },
+    {
+     "key": "DB_Scrapper_Gate_Open",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate open \u2014 Scrapper",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Timber_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Gate_Steel_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Gate_Open",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Open_Scrapper_east",
+      "RM_DrawbridgeGate_Open_Scrapper_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Open_Scrapper",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Scrapper_Gate_Open",
+      "label": "bank gate open \u2014 Scrapper",
+      "description": "GateOpen \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeGate_Open \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeGate_Open",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Scrapper_Gate_Open"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgeGate_Open"
+     }
+    },
+    {
+     "key": "DB_Scrapper_Planks",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "planks beside the bridge \u2014 Scrapper",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Planks_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Planks_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Planks",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgePlanks_Scrapper"
+     ],
+     "render_match": "RM_DrawbridgePlanks_Scrapper",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Scrapper_Planks",
+      "label": "planks beside the bridge \u2014 Scrapper",
+      "description": "Planks \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgePlanks \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgePlanks",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Scrapper_Planks"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Scrapper/RM_DrawbridgePlanks"
+     }
+    },
+    {
+     "key": "DB_Industrial_Winch_Timber",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "winch house, timber \u2014 Industrial",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Scrapper_Winch_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Winch_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Winch_Timber",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeWinch_Timber_Industrial_east",
+      "RM_DrawbridgeWinch_Timber_Industrial_north",
+      "RM_DrawbridgeWinch_Timber_Industrial_south"
+     ],
+     "render_match": "RM_DrawbridgeWinch_Timber_Industrial",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1.5,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Industrial_Winch_Timber",
+      "label": "winch house, timber \u2014 Industrial",
+      "description": "Winch_Timber \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Timber \u00b7 drawn at 1.5\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Timber",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Industrial_Winch_Timber"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Timber"
+     }
+    },
+    {
+     "key": "DB_Industrial_Winch_Steel",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "winch house, steel \u2014 Industrial",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Scrapper_Winch_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Winch_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Winch_Steel",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeWinch_Steel_Industrial_east",
+      "RM_DrawbridgeWinch_Steel_Industrial_north",
+      "RM_DrawbridgeWinch_Steel_Industrial_south"
+     ],
+     "render_match": "RM_DrawbridgeWinch_Steel_Industrial",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1.5,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Industrial_Winch_Steel",
+      "label": "winch house, steel \u2014 Industrial",
+      "description": "Winch_Steel \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Steel \u00b7 drawn at 1.5\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Steel",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Industrial_Winch_Steel"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeWinch_Steel"
+     }
+    },
+    {
+     "key": "DB_Industrial_LeafUp_Face",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf face \u2014 Industrial (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Face",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Face_Industrial"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Face_Industrial",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Industrial_LeafUp_Face",
+      "label": "raised leaf face \u2014 Industrial (1 lane x 4 cells)",
+      "description": "LeafUpFace \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Face \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Face",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Industrial_LeafUp_Face"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Face"
+     }
+    },
+    {
+     "key": "DB_Industrial_LeafUp_Underside",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf underside \u2014 Industrial (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Underside_Industrial"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Underside_Industrial",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Industrial_LeafUp_Underside",
+      "label": "raised leaf underside \u2014 Industrial (1 lane x 4 cells)",
+      "description": "LeafUpUnderside \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Underside \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Underside",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Industrial_LeafUp_Underside"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Underside"
+     }
+    },
+    {
+     "key": "DB_Industrial_LeafUp_Edge",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf edge \u2014 Industrial (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Edge_Industrial"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Edge_Industrial",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Industrial_LeafUp_Edge",
+      "label": "raised leaf edge \u2014 Industrial (1 lane x 4 cells)",
+      "description": "LeafUpEdge \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Edge \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Edge",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Industrial_LeafUp_Edge"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeLeafUp_Edge"
+     }
+    },
+    {
+     "key": "DB_Industrial_Gate_Closed",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate closed \u2014 Industrial",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Timber_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Gate_Steel_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Gate_Closed",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Closed_Industrial_east",
+      "RM_DrawbridgeGate_Closed_Industrial_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Closed_Industrial",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Industrial_Gate_Closed",
+      "label": "bank gate closed \u2014 Industrial",
+      "description": "GateClosed \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Closed \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Closed",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Industrial_Gate_Closed"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Closed"
+     }
+    },
+    {
+     "key": "DB_Industrial_Gate_Open",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate open \u2014 Industrial",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Timber_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Gate_Steel_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Gate_Open",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Open_Industrial_east",
+      "RM_DrawbridgeGate_Open_Industrial_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Open_Industrial",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Industrial_Gate_Open",
+      "label": "bank gate open \u2014 Industrial",
+      "description": "GateOpen \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Open \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Open",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Industrial_Gate_Open"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgeGate_Open"
+     }
+    },
+    {
+     "key": "DB_Industrial_Planks",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "planks beside the bridge \u2014 Industrial",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Planks_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Planks_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Planks",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgePlanks_Industrial"
+     ],
+     "render_match": "RM_DrawbridgePlanks_Industrial",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Industrial_Planks",
+      "label": "planks beside the bridge \u2014 Industrial",
+      "description": "Planks \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgePlanks \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgePlanks",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Industrial_Planks"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Industrial/RM_DrawbridgePlanks"
+     }
+    },
+    {
+     "key": "DB_Modern_Winch_Timber",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "winch house, timber \u2014 Modern",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Scrapper_Winch_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Winch_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Winch_Timber",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeWinch_Timber_Modern_east",
+      "RM_DrawbridgeWinch_Timber_Modern_north",
+      "RM_DrawbridgeWinch_Timber_Modern_south"
+     ],
+     "render_match": "RM_DrawbridgeWinch_Timber_Modern",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1.5,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Modern_Winch_Timber",
+      "label": "winch house, timber \u2014 Modern",
+      "description": "Winch_Timber \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Timber \u00b7 drawn at 1.5\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Timber",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Modern_Winch_Timber"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Timber"
+     }
+    },
+    {
+     "key": "DB_Modern_Winch_Steel",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "winch house, steel \u2014 Modern",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Scrapper_Winch_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Winch_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Winch_Steel",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeWinch_Steel_Modern_east",
+      "RM_DrawbridgeWinch_Steel_Modern_north",
+      "RM_DrawbridgeWinch_Steel_Modern_south"
+     ],
+     "render_match": "RM_DrawbridgeWinch_Steel_Modern",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1.5,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Modern_Winch_Steel",
+      "label": "winch house, steel \u2014 Modern",
+      "description": "Winch_Steel \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Steel \u00b7 drawn at 1.5\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Steel",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Modern_Winch_Steel"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Steel"
+     }
+    },
+    {
+     "key": "DB_Modern_LeafUp_Face",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf face \u2014 Modern (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Face",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Face_Modern"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Face_Modern",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Modern_LeafUp_Face",
+      "label": "raised leaf face \u2014 Modern (1 lane x 4 cells)",
+      "description": "LeafUpFace \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Face \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Face",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Modern_LeafUp_Face"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Face"
+     }
+    },
+    {
+     "key": "DB_Modern_LeafUp_Underside",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf underside \u2014 Modern (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Underside_Modern"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Underside_Modern",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Modern_LeafUp_Underside",
+      "label": "raised leaf underside \u2014 Modern (1 lane x 4 cells)",
+      "description": "LeafUpUnderside \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Underside \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Underside",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Modern_LeafUp_Underside"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Underside"
+     }
+    },
+    {
+     "key": "DB_Modern_LeafUp_Edge",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf edge \u2014 Modern (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Edge_Modern"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Edge_Modern",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Modern_LeafUp_Edge",
+      "label": "raised leaf edge \u2014 Modern (1 lane x 4 cells)",
+      "description": "LeafUpEdge \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Edge \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Edge",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Modern_LeafUp_Edge"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeLeafUp_Edge"
+     }
+    },
+    {
+     "key": "DB_Modern_Gate_Closed",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate closed \u2014 Modern",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Timber_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Gate_Steel_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Gate_Closed",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Closed_Modern_east",
+      "RM_DrawbridgeGate_Closed_Modern_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Closed_Modern",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Modern_Gate_Closed",
+      "label": "bank gate closed \u2014 Modern",
+      "description": "GateClosed \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Closed \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Closed",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Modern_Gate_Closed"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Closed"
+     }
+    },
+    {
+     "key": "DB_Modern_Gate_Open",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate open \u2014 Modern",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Timber_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Gate_Steel_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Gate_Open",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Open_Modern_east",
+      "RM_DrawbridgeGate_Open_Modern_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Open_Modern",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Modern_Gate_Open",
+      "label": "bank gate open \u2014 Modern",
+      "description": "GateOpen \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Open \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Open",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Modern_Gate_Open"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Open"
+     }
+    },
+    {
+     "key": "DB_Modern_Planks",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "planks beside the bridge \u2014 Modern",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Planks_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Planks_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Futuristic_Planks",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgePlanks_Modern"
+     ],
+     "render_match": "RM_DrawbridgePlanks_Modern",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Modern_Planks",
+      "label": "planks beside the bridge \u2014 Modern",
+      "description": "Planks \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgePlanks \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgePlanks",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Modern_Planks"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgePlanks"
+     }
+    },
+    {
+     "key": "DB_Futuristic_Winch_Timber",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "winch house, timber \u2014 Futuristic",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Scrapper_Winch_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Winch_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Winch_Timber",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeWinch_Timber_Futuristic_east",
+      "RM_DrawbridgeWinch_Timber_Futuristic_north",
+      "RM_DrawbridgeWinch_Timber_Futuristic_south"
+     ],
+     "render_match": "RM_DrawbridgeWinch_Timber_Futuristic",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1.5,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Futuristic_Winch_Timber",
+      "label": "winch house, timber \u2014 Futuristic",
+      "description": "Winch_Timber \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Timber \u00b7 drawn at 1.5\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Timber",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Futuristic_Winch_Timber"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Timber"
+     }
+    },
+    {
+     "key": "DB_Futuristic_Winch_Steel",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "winch house, steel \u2014 Futuristic",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Scrapper_Winch_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Winch_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Winch_Steel",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeWinch_Steel_Futuristic_east",
+      "RM_DrawbridgeWinch_Steel_Futuristic_north",
+      "RM_DrawbridgeWinch_Steel_Futuristic_south"
+     ],
+     "render_match": "RM_DrawbridgeWinch_Steel_Futuristic",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1.5,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Futuristic_Winch_Steel",
+      "label": "winch house, steel \u2014 Futuristic",
+      "description": "Winch_Steel \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Steel \u00b7 drawn at 1.5\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Steel",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Futuristic_Winch_Steel"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeWinch_Steel"
+     }
+    },
+    {
+     "key": "DB_Futuristic_LeafUp_Face",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf face \u2014 Futuristic (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Face",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Face",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Face_Futuristic"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Face_Futuristic",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Futuristic_LeafUp_Face",
+      "label": "raised leaf face \u2014 Futuristic (1 lane x 4 cells)",
+      "description": "LeafUpFace \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Face \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Face",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Futuristic_LeafUp_Face"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Face"
+     }
+    },
+    {
+     "key": "DB_Futuristic_LeafUp_Underside",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf underside \u2014 Futuristic (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Underside",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Underside_Futuristic"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Underside_Futuristic",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Futuristic_LeafUp_Underside",
+      "label": "raised leaf underside \u2014 Futuristic (1 lane x 4 cells)",
+      "description": "LeafUpUnderside \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Underside \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Underside",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Futuristic_LeafUp_Underside"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Underside"
+     }
+    },
+    {
+     "key": "DB_Futuristic_LeafUp_Edge",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raised leaf edge \u2014 Futuristic (1 lane x 4 cells)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_LeafUp_Timber_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_LeafUp_Steel_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_LeafUp_Edge",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLeafUp_Edge_Futuristic"
+     ],
+     "render_match": "RM_DrawbridgeLeafUp_Edge_Futuristic",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       4
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Futuristic_LeafUp_Edge",
+      "label": "raised leaf edge \u2014 Futuristic (1 lane x 4 cells)",
+      "description": "LeafUpEdge \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Edge \u00b7 drawn at 1\u00d74 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Edge",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Futuristic_LeafUp_Edge"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeLeafUp_Edge"
+     }
+    },
+    {
+     "key": "DB_Futuristic_Gate_Closed",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate closed \u2014 Futuristic",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Timber_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Gate_Steel_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Gate_Closed",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Gate_Closed",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Closed_Futuristic_east",
+      "RM_DrawbridgeGate_Closed_Futuristic_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Closed_Futuristic",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Futuristic_Gate_Closed",
+      "label": "bank gate closed \u2014 Futuristic",
+      "description": "GateClosed \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeGate_Closed \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeGate_Closed",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Futuristic_Gate_Closed"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeGate_Closed"
+     }
+    },
+    {
+     "key": "DB_Futuristic_Gate_Open",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bank gate open \u2014 Futuristic",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Gate_Timber_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Gate_Steel_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Gate_Open",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Gate_Open",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeGate_Open_Futuristic_east",
+      "RM_DrawbridgeGate_Open_Futuristic_south"
+     ],
+     "render_match": "RM_DrawbridgeGate_Open_Futuristic",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_south.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Futuristic_Gate_Open",
+      "label": "bank gate open \u2014 Futuristic",
+      "description": "GateOpen \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeGate_Open \u00b7 drawn at 1\u00d71.5 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeGate_Open",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Futuristic_Gate_Open"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgeGate_Open"
+     }
+    },
+    {
+     "key": "DB_Futuristic_Planks",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "planks beside the bridge \u2014 Futuristic",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "DB_Planks_Timber",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Planks_Steel",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Scrapper_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Industrial_Planks",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "DB_Modern_Planks",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgePlanks_Futuristic"
+     ],
+     "render_match": "RM_DrawbridgePlanks_Futuristic",
+     "standin": null,
+     "reference_textures": [
+      "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck.png"
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md \u00a7R12 art contract"
+     },
+     "runtimeDesc": {
+      "def": "DB_Futuristic_Planks",
+      "label": "planks beside the bridge \u2014 Futuristic",
+      "description": "Planks \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgePlanks \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgePlanks",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Futuristic_Planks"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Drawbridge/Futuristic/RM_DrawbridgePlanks"
+     }
+    },
+    {
+     "key": "DB_Icon_Raise",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "command icon \u2014 Raise",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeRaise_Icon"
+     ],
+     "render_match": "RM_DrawbridgeRaise_Icon",
+     "standin": null,
+     "reference_textures": [],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "UI command icon: no world size; shown at one cell only to judge legibility"
+     },
+     "runtimeDesc": {
+      "def": "DB_Icon_Raise",
+      "label": "command icon \u2014 Raise",
+      "description": "IconRaise \u00b7 look UI \u00b7 texture UI/Commands/FlowWorks/RM_DrawbridgeRaise \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "UI/Commands/FlowWorks/RM_DrawbridgeRaise",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Icon_Raise"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): UI/Commands/FlowWorks/RM_DrawbridgeRaise"
+     }
+    },
+    {
+     "key": "DB_Icon_Lower",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "command icon \u2014 Lower",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeLower_Icon"
+     ],
+     "render_match": "RM_DrawbridgeLower_Icon",
+     "standin": null,
+     "reference_textures": [],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "UI command icon: no world size; shown at one cell only to judge legibility"
+     },
+     "runtimeDesc": {
+      "def": "DB_Icon_Lower",
+      "label": "command icon \u2014 Lower",
+      "description": "IconLower \u00b7 look UI \u00b7 texture UI/Commands/FlowWorks/RM_DrawbridgeLower \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "UI/Commands/FlowWorks/RM_DrawbridgeLower",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Icon_Lower"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): UI/Commands/FlowWorks/RM_DrawbridgeLower"
+     }
+    },
+    {
+     "key": "DB_Icon_HoldRaised",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "command icon \u2014 HoldRaised",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_DrawbridgeHoldRaised_Icon"
+     ],
+     "render_match": "RM_DrawbridgeHoldRaised_Icon",
+     "standin": null,
+     "reference_textures": [],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "UI command icon: no world size; shown at one cell only to judge legibility"
+     },
+     "runtimeDesc": {
+      "def": "DB_Icon_HoldRaised",
+      "label": "command icon \u2014 HoldRaised",
+      "description": "IconHoldRaised \u00b7 look UI \u00b7 texture UI/Commands/FlowWorks/RM_DrawbridgeHoldRaised \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest drawbridge_art_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "UI/Commands/FlowWorks/RM_DrawbridgeHoldRaised",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "DB_Icon_HoldRaised"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): UI/Commands/FlowWorks/RM_DrawbridgeHoldRaised"
+     }
+    }
+   ],
+   "textures_manifest": "/home/mandrake/rm/bench/src/RimMandrake/FlowWorks/art_source/Drawbridge/drawbridge_art_manifest.json"
+  }
+ }
+}
