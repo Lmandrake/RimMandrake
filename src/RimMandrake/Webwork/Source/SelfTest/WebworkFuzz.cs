@@ -822,6 +822,28 @@ namespace RimMandrake.Webwork.SelfTest
             return fails;
         }
 
+        public static long ResaleStocked, ResaleRefused;
+        private static List<string> Resale(int n, int seed)
+        {
+            var fails = new List<string>(); var rng = new Random(seed);
+            for (int i = 0; i < n; i++)
+            {
+                Cases++;
+                bool strip = rng.Next(2) == 0, on = rng.Next(2) == 0;
+                float chance = (float)(rng.NextDouble() * 1.4 - 0.2);
+                double roll = rng.NextDouble();
+                bool got = RM_ThrixweaveResaleKernel.Stocks(strip, on, chance, roll);
+                bool want = strip && on && chance > 0f && roll < chance;
+                if (got != want) fails.Add($"Stocks({strip},{on},{chance},{roll}) = {got}, want {want}");
+                if (got) ResaleStocked++; else ResaleRefused++;
+                if (!strip && got) fails.Add("stocked with the strip off");
+                int lim = rng.Next(1, 100), rolled = rng.Next(-5, 300);
+                int c = RM_ThrixweaveResaleKernel.Count(rolled, lim);
+                if (c < 0 || c > lim || (rolled >= 0 && rolled <= lim && c != rolled)) fails.Add($"Count({rolled},{lim}) = {c}");
+            }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -834,6 +856,7 @@ namespace RimMandrake.Webwork.SelfTest
                 ("relay", () => Relay(N(4000), S(1))),
                 ("tables", () => Tables(Math.Max(1, N(100)), S(1))),
                 ("webnet", () => WebNet(N(3000), S(1))),
+                ("resale", () => Resale(N(4000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -860,6 +883,11 @@ namespace RimMandrake.Webwork.SelfTest
             {
                 Console.WriteLine($"webnet reached: sites {NetSites}, cable cells {NetCables}, carpet cells {NetCarpet}, cramped maps {NetCramped}");
                 if (!oneSeed.HasValue && scale >= 1 && (NetSites == 0 || NetCables == 0 || NetCarpet == 0 || NetCramped == 0)) { Console.WriteLine("FAIL webnet fuzz never reached a path (blind)"); ok = false; }
+            }
+            if (only == null || only == "resale")
+            {
+                Console.WriteLine($"resale reached: stocked {ResaleStocked}, refused {ResaleRefused}");
+                if (!oneSeed.HasValue && scale >= 1 && (ResaleStocked == 0 || ResaleRefused == 0)) { Console.WriteLine("FAIL resale fuzz never reached a path (blind)"); ok = false; }
             }
             Console.WriteLine($"webwork fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;

@@ -39,6 +39,11 @@ namespace RimMandrake.Webwork
 		// commonality; applies at startup, so a restart). The rename of Hyperweave to thrixweave always applies.
 		public static bool thrixweaveTraderStripEnabled = true;
 
+		// WEBWORK_RESELL (Webwork Q8, 2026-10-22): rare exotic traders resell thrixweave at a steep price (needs the strip on).
+		public static bool thrixweaveResaleEnabled = true;
+		public static float thrixweaveResaleChance = 0.25f;
+		public static bool thrixweaveResaleSteepPrice = true;
+
 		// SHOKKWEAVE_SOLE_SOURCE_1: colonists may cut web nodes (vanilla Deconstruct) for thrixweave.
 		public static bool webHarvestEnabled = true;
 
@@ -66,6 +71,9 @@ namespace RimMandrake.Webwork
 			Scribe_Values.Look(ref nestEnabled, "nestEnabled", true);
 			Scribe_Values.Look(ref eggRelayIntervalMultiplier, "eggRelayIntervalMultiplier", 1f);
 			Scribe_Values.Look(ref thrixweaveTraderStripEnabled, "thrixweaveTraderStripEnabled", true);
+			Scribe_Values.Look(ref thrixweaveResaleEnabled, "thrixweaveResaleEnabled", true);
+			Scribe_Values.Look(ref thrixweaveResaleChance, "thrixweaveResaleChance", 0.25f);
+			Scribe_Values.Look(ref thrixweaveResaleSteepPrice, "thrixweaveResaleSteepPrice", true);
 			Scribe_Values.Look(ref webHarvestEnabled, "webHarvestEnabled", true);
 			Scribe_Values.Look(ref urravethEnabled, "urravethEnabled", true);
 			Scribe_Values.Look(ref urravethSiteChance, "urravethSiteChance", 0.25f);
@@ -181,12 +189,21 @@ namespace RimMandrake.Webwork
                 list.GapLine();
             }
 
-            if (Group(list, "Thrixweave (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "thrixweaveTraderStripEnabled", "webHarvestEnabled" }, "[next game start]"))
+            if (Group(list, "Thrixweave (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "thrixweaveTraderStripEnabled", "thrixweaveResaleEnabled", "thrixweaveResaleChance", "thrixweaveResaleSteepPrice", "webHarvestEnabled" }, "[next game start]"))
             {
                 list.CheckboxLabeled("Thrixweave is sold by no trader", ref thrixweaveTraderStripEnabled,
                     "On: no trader stocks thrixweave (Hyperweave, renamed), it leaves the standard quest-reward "
                   + "pool, and tailored gear is half as likely to be made of it - the Webwork is its only source. "
                   + "Off: it trades like vanilla Hyperweave. The rename always applies. Applies at startup.");
+                list.CheckboxLabeled("Rare exotic traders resell thrixweave", ref thrixweaveResaleEnabled,
+                    "On: the rare exotic-goods orbital traders sometimes carry a little thrixweave, so the Webwork stays the "
+                  + "only ordinary source but not a hard lock. Needs the 'sold by no trader' strip above to be on (off: it "
+                  + "trades like vanilla anyway). Off: no trader ever stocks it. Applies at startup.");
+                list.Label("Chance an exotic trader carries it: " + thrixweaveResaleChance.ToStringPercent());
+                thrixweaveResaleChance = list.Slider(thrixweaveResaleChance, 0f, 1f);
+                list.CheckboxLabeled("Resold thrixweave is priced steeply", ref thrixweaveResaleSteepPrice,
+                    "On: the trader asks the game's 'expensive' price tier for it (the steepest a trader line can carry). "
+                  + "Off: ordinary price. Applies at startup.");
                 list.CheckboxLabeled("Colonists can cut web for thrixweave", ref webHarvestEnabled,
                     "On: anchor lines, sheet webs and web cables can be marked with "
                   + "the Deconstruct tool; a colonist cuts them for thrixweave (3 per anchor line, 2 per sheet web), and "

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_RESELL (owner, Webwork Q8 by card, 2026-10-22): thrixweave stays sole-source for ordinary buying, except that
+  the rare exotic-goods orbital traders (Core Orbital_Exotic) sometimes carry a little, priced steeply. The generator
+  (StockGenerator_ThrixweaveResale) rolls the chance and checks the settings at stock time; the price tier is set by
+  RM_WebworkStartupGate.ApplyResalePrice. Core is always present, so no FindMod guard.
+-->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/TraderKindDef[defName="Orbital_Exotic"]/stockGenerators</xpath>
+    <value>
+      <li Class="RimMandrake.Webwork.StockGenerator_ThrixweaveResale">
+        <countRange>5~15</countRange>
+        <price>Expensive</price>
+      </li>
+    </value>
+  </Operation>
+</Patch>

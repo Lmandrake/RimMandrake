@@ -23,6 +23,7 @@ namespace RimMandrake.Webwork
 			{
 				ApplyThrixweaveStrip(DefDatabase<ThingDef>.GetNamedSilentFail("Hyperweave"));
 			}
+			ApplyResalePrice(DefDatabase<TraderKindDef>.GetNamedSilentFail(ResaleTraderDefName));
 			ApplyWebHarvest();
 			ApplyWebfall(DefDatabase<BiomeDef>.GetNamedSilentFail("RM_Webwork"), DefDatabase<WeatherDef>.GetNamedSilentFail(WebfallDefName));
 		}
@@ -61,6 +62,25 @@ namespace RimMandrake.Webwork
 					d.building.alwaysDeconstructible = RM_WebworkSettings.webHarvestEnabled;
 				}
 			}
+		}
+
+		public const string ResaleTraderDefName = "Orbital_Exotic";
+
+		/// <summary>WEBWORK_RESELL: the resale line's price tier from thrixweaveResaleSteepPrice (the generator is added by
+		/// Patches/RM_Thrixweave_Resale.xml). Returns how many resale lines were set.</summary>
+		public static int ApplyResalePrice(TraderKindDef kind)
+		{
+			int n = 0;
+			if (kind?.stockGenerators == null) return 0;
+			foreach (StockGenerator g in kind.stockGenerators)
+			{
+				if (g is StockGenerator_ThrixweaveResale)
+				{
+					g.price = RM_WebworkSettings.thrixweaveResaleSteepPrice ? PriceType.Expensive : PriceType.Normal;
+					n++;
+				}
+			}
+			return n;
 		}
 
 		public static void ApplyThrixweaveStrip(ThingDef weave)

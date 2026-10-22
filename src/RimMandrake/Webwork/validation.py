@@ -507,6 +507,11 @@ def _build_suite():
             f = _deep(t, "ThingDef/Hyperweave", "tradeability")
             if f is not None and "Sellable" not in "|".join(_flat(f.get("tradeability"))):
                 raise ExpectationFailed("Hyperweave tradeability reads %r with the strip on, expected Sellable" % (f.get("tradeability"),))
+        with t.component("rare_trader_resale_line", toggle="thrixweaveResaleEnabled"):
+            # WEBWORK_RESELL (Q8, 2026-10-22): Orbital_Exotic carries the resale generator (state read, no trade driven)
+            f = _deep(t, "TraderKindDef/Orbital_Exotic", "stockGenerators")
+            if f is not None and "StockGenerator_ThrixweaveResale" not in "|".join(_flat(f.get("stockGenerators"))):
+                raise ExpectationFailed("Orbital_Exotic carries no StockGenerator_ThrixweaveResale: %r" % (f.get("stockGenerators"),))
         with t.component("structures_resolve", beyond_toggle=True):
             for n in ("Anchor", "Web", "Gutter"):
                 f = _deep(t, "ThingDef/RM_Webwork_" + n, "killedLeavings")
