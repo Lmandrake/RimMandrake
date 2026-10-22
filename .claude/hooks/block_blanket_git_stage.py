@@ -104,6 +104,9 @@ def offence(segment):
         tok = shlex.split(segment)
     except ValueError:
         return None                      # unbalanced quotes: not our problem
+    # `GIT_AUTHOR_NAME=x git add -A`, `env X=1 git commit -m y`, `command git ...` are still git
+    while tok and (re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", tok[0]) or tok[0] in ("env", "command", "exec")):
+        tok = tok[1:]
     if not tok or tok[0] != "git":
         return None
 

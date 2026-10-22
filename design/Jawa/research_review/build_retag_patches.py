@@ -228,6 +228,9 @@ def main():
     </match>
   </Operation>""" % (def_xpath(dn), "\n".join(ops)))
 
+    if not blocks and os.path.exists(OUT) and os.path.getsize(OUT) > 200:
+        raise SystemExit("REFUSING: 0 defs to patch (manifest rows %d, capture defs %d) but %s already holds a "
+                         "patch - a blind input, not 'nothing to retag'." % (len(man), len(live), OUT))
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as fh:
         fh.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Patch>\n")

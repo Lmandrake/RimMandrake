@@ -179,6 +179,10 @@ def main(argv=None):
     if not a.write:
         print(f'\n({len(seen)} adjustment(s); pass --write to emit {OUT})')
         return 0
+    if not seen and os.path.exists(OUT) and os.path.getsize(OUT) > 0:
+        print(f'🔴 STOP - 0 adjustments found but {OUT} already holds a patch: that is a blind input '
+              f'(no rosters read, or every def unmapped), not a retirement. Not overwriting it.')
+        return 1
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, 'w', encoding='utf-8', newline='\n') as fh:
         fh.write('\n'.join(o))

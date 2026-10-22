@@ -46,6 +46,12 @@ CASES = [
     (DENY,  "bash <<'EOF'\ncd /x\ngit add .\nEOF"),
     (DENY,  "cat > f.py <<'EOF'\nprint(1)\nEOF\ngit add -A"),   # after the heredoc ends
 
+    # ---- must DENY: an env prefix does not hide git ---------------------------
+    (DENY,  "GIT_AUTHOR_NAME=x git add -A"),
+    (DENY,  "env FOO=1 git commit -m 'x'"),
+    (DENY,  "command git add ."),
+    (ALLOW, "FOO=1 git commit path/one.md -m 'x'"),
+
     # ---- must ALLOW: the prescribed safe forms -----------------------------
     (ALLOW, "git commit path/one.md -m 'x'"),
     (ALLOW, "git commit path/one.md path/two.xml -F - <<'EOF'"),

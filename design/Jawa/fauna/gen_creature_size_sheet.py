@@ -328,30 +328,31 @@ async function idbPut(h){ try{ const db=await idb(); db.transaction('h','readwri
 async function idbGet(){ try{ const db=await idb(); return await new Promise(res=>{
   const q=db.transaction('h','readonly').objectStore('h').get(IKEY); q.onsuccess=()=>res(q.result||null); q.onerror=()=>res(null); }); }catch(e){ return null; } }
 
-let carried = {};
+let carried = {}, carriedDec = {}, fileBlocked = false;   // carriedDec: file rows for creatures not on this sheet
 async function writeFile(){
-  if(!fileHandle) return;
+  if(!fileHandle || fileBlocked) return;
   const touched = Object.values(state).filter(s=>s.touched).length;
   if(ITEMS.length < 50){ setLink('refused — implausible row count', true); return; }
   try{
     const w = await fileHandle.createWritable();
-    await w.write(JSON.stringify(Object.assign({}, carried, payload()), null, 2));
+    await w.write(JSON.stringify(Object.assign({}, carried, payload(), {decisions: Object.assign({}, carriedDec, payload().decisions)}), null, 2));
     await w.close();
     setLink('saved ' + new Date().toLocaleTimeString() + ' · ' + touched + ' of ' + ITEMS.length + ' touched');
   }catch(e){ setLink('write failed: ' + e.message, true); }
 }
 async function adopt(h, opts){
   const write = !opts || opts.write !== false;
-  fileHandle = h;
+  fileHandle = h; fileBlocked = false; carriedDec = {};
   try{ const f = await h.getFile(); const txt = await f.text();
     if(txt.trim()){ const j = JSON.parse(txt);
       for(const k of Object.keys(j)) if(!['posture','postureMeaning','fieldMeaning','savedBy','savedAt','decidedCount','total','decisions'].includes(k)) carried[k]=j[k];
       // 🔴 THE FILE FILLS GAPS; IT NEVER OVERWRITES THIS SESSION'S WORK.
       if(j.decisions) for(const d in j.decisions){
+        if(!state[d]) carriedDec[d] = j.decisions[d];   // not on this sheet: keep it, never drop the owner's row
         if(state[d] && j.decisions[d].touched && !state[d].touched){
           state[d]={s:j.decisions[d].decision,f:j.decisions[d].field||'',note:j.decisions[d].note||'',touched:true}; } }
     }
-  }catch(e){}
+  }catch(e){ fileBlocked = true; setLink('the linked file is not valid JSON - NOT overwriting it; use Copy JSON', true); }
   await idbPut(h); render(); if(write) await writeFile();
 }
 let t=null;
