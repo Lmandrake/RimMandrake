@@ -6,6 +6,10 @@ that runs off the map's west edge (the only edge drain on this map besides C10's
 above HIGH as the stake, a miner in climbing gear, a rail ladder on the sump wall, a wrecked pumping station on the rim.
 Design §3 C4; GPT #7 (no level holder; LOW/HIGH marks; three meters; a workbench; the dig order as a ~70-cell job).
 
+The hose climbs by four ramps on the reel outlet's row (10,16 / 7,16 / 4,16 west, 3,36 south into the canal): a hose changes
+level only by a ramp or a ladder (design P5), so with none it had "no route" (live 2026-10-21; the scenario, not the mod,
+was wrong). Offline proof: SelfTest HoseBandChecks Scenario_C4_C10_hoses_lay_offline.
+
 Digs here are INCREMENTS (flowworks_excavation_drive calls Deepen() N times), so the nested benches sum: D1 ring,
 +1 = D2, +1 = D3, sump +3 = 6 levels (3 m).
 """
@@ -20,6 +24,10 @@ SETUP = dict(
     dig=[(4, 4, 32, 30, 1), (7, 7, 26, 24, 1), (10, 10, 20, 18, 1), SUMP, DRAIN],
     fluid=[(14, 14, 4, 4, 3, W)],                                            # 1.5 m standing water: LOW
     build=[("RM_PitRamp", 20, 33, 0, "WoodLog"),                            # D1 bench up to the rim (north)
+           # the hose's way up and away (P5: a hose changes level only by a ramp or ladder): D3 > D2 > D1 > rim along the
+           # outlet's row, and down into the drain canal's head (live 2026-10-21 the hose had none: "no route")
+           ("RM_PitRamp", 10, 16, 3, "WoodLog"), ("RM_PitRamp", 7, 16, 3, "WoodLog"), ("RM_PitRamp", 4, 16, 3, "WoodLog"),
+           ("RM_PitRamp", 3, 36, 2, "WoodLog"),
            ("RM_LiquidTap", 17, 17, None, None),                            # groundwater bleeding in
            ("RM_LiquidPump", 13, 16, None, None), ("RM_HoseReel", 11, 16, None, None),
            ("PowerConduit", 13, 15, None, None), ("PowerConduit", 13, 14, None, None), ("Battery", 12, 12, 0, None),
@@ -80,6 +88,7 @@ SCENARIO = scenario(
             staged("miner in climbing gear, drafted", "pawn_ops", "RM_ClimbingGear", (12, 18), "poked"),
             staged("rail ladder on the sump's west wall, lowered", "ladder_dev", "lower", (14, 16), "poked"),
             staged("ramp from the D1 bench to the rim", "build", "RM_PitRamp", (20, 33), "poked"),
+            staged("hose ramps up the benches and into the drain canal", "build", "RM_PitRamp", (10, 16), "look"),
             staged("wrecked pumping station on the rim", "build", "RM_PumpingStation_Wrecked", (36, 37), "look"),
             staged("a colonist refusing a dig past 2 m (the sump floor's order waits for a machine)", "designate",
                    "RM_DigCanal", (15, 15), "poked"),

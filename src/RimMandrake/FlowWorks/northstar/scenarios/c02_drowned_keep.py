@@ -8,6 +8,9 @@ west arm. Raiders live ONLY in the raid branch save (RM_fw_composite_raid); chem
 Design §3 C2; GPT #5, #9 (the cover's seam at max zoom is WANTED).
 
 The moat, the dry ditch and the chemfuel segment are kept one UNDUG cell apart wherever their liquids must not meet.
+Every dug cell the moat touches through a GRATE is poured full too (the channel grate 33,22 and the drain grate 20,8): a grate
+lets water through, so a dry grate cell is room the 351-cell moat levels into, its surface sits a hair under 2 m (1.99 m in
+the cell readout) and the bridge's whole-notch `f` floors every cell to 3 = "1.5 m" (MOAT_LEVEL_DIAGNOSE_HALF_METRE_VANISHES).
 """
 from .common import (scenario, staged, deferred, perimeter, walls, W, SUSP, DPROOF, DEEP_DIG_ITEM)
 
@@ -25,7 +28,7 @@ PEN = perimeter(14, 39, 26, 43, gaps=[(20, 39)])
 SETUP = dict(
     dig=[(x, z, 1, 1, 3) for x, z in DITCH] + MOAT_W + [CHEM] + NECKS + [GATEHOUSE] + CHANNEL + [(20, 6, 1, 3, 4)],
     fluid=[(r[0], r[1], r[2], r[3], 4, W) for r in MOAT_W] + [(22, 34, 15, 3, 4, "RM_Fluid_Chemfuel"),
-                                                               (34, 22, 4, 1, 4, W), (20, 6, 1, 2, 4, W)],
+                                                               (33, 22, 5, 1, 4, W), (20, 6, 1, 3, 4, W)],
     build=walls(KEEP, "Steel") + walls(PEN, "Steel") + [("RM_DrawbridgeGate", 33, 18, None, "Steel"),
                                                         ("Door", 8, 20, None, "Steel")],
     spawn=[("RM_Spikes", 29 + i, 17 + j, None) for i in range(3) for j in range(3) if (i, j) != (1, 2)]

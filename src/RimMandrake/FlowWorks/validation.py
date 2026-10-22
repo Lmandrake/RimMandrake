@@ -1230,6 +1230,7 @@ LINES_CASES = [
     "HoseBand_P5_routes_lip_ramp_floor", "HoseBand_P5_routes_lip_ladder_floor_and_raised_ladder_leaves_it_hanging",
     "HoseBand_P5_endpoint_reach_respects_band", "HoseBand_P5_newly_dug_square_replans_or_retracts_once",
     "HoseBand_P2_pit_cover_carries_no_hose", "HoseBand_P5_no_bands_leaves_gss_signatures_unchanged",
+    "HoseBand_swim_split_pool_stays_one_floor", "Scenario_C4_C10_hoses_lay_offline",
     "LineReadout_P9_four_cases_read_apart", "LineReadout_P9_counts_and_dry_pole",
     "LineReadout_P9_adapters_print_the_lines", "PipePoleGravship_P8_aboard_span_rekeys_on_landing",
     "PipePoleGravship_P8_edge_span_coils_and_no_support_loss", "PowerCord_def_is_a_FlexCord_power_transmitter_of_its_own",

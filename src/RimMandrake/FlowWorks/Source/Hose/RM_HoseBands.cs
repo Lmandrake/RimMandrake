@@ -41,6 +41,7 @@ namespace RimMandrake.FlowWorks.Hose
         public static bool Linked(Map map, IntVec3 a, IntVec3 b, int aB, int bB)
         {
             if (aB == bB) return false;
+            if (FloorJoined(map, a, b)) return true;   // one floor, split only by the swim surface (RETRACTS_ON_A_WHIM)
             bool ramp = RM_PitRamp.Joins(map, a, b, aB, bB);
             IntVec3 deep = aB > bB ? a : b, top = aB > bB ? b : a;
             Thing ladder = RM_LadderUtility.LadderAt(map, deep);
@@ -48,6 +49,16 @@ namespace RimMandrake.FlowWorks.Hose
             bool carries = ladder != null && HoseBandMath.LadderCarriesHose(true, RM_LadderUtility.HangsToward(ladder, top),
                 RM_LadderUtility.Reaches(ladder), comp != null && comp.raised);
             return HoseBandMath.StepLinked(aB, bB, ramp, carries);
+        }
+
+        /// <summary>LADDER_HOSE_DIAGNOSE_RETRACTS_ON_A_WHIM: a and b are uncovered dug squares on the same floor (HoseBandMath.FloorJoined).</summary>
+        public static bool FloorJoined(Map map, IntVec3 a, IntVec3 b)
+        {
+            RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+            if (eng == null) return false;
+            int ha = eng.HollowDepthAt(a);
+            if (ha == 0) return false;
+            return HoseBandMath.FloorJoined(ha, eng.HollowDepthAt(b), Pits.RM_PitCoverUtility.IsCovered(map, a), Pits.RM_PitCoverUtility.IsCovered(map, b));
         }
 
         /// <summary>The cardinal link mask of c, as CordWorld.LinkMask numbers it (N, E, S, W = bits 0..3).</summary>
@@ -106,6 +117,7 @@ namespace RimMandrake.FlowWorks.Hose
                 aB = BandAt(map, a); bB = BandAt(map, b);
                 if (aB == bB) return;
             }
+            if (FloorJoined(map, a, b)) return;   // one floor: no level change to count
             if (RM_PitRamp.Joins(map, a, b, aB, bB)) ramps++;
             else if (Linked(map, a, b, aB, bB)) ladders++;   // not linked at all: an old lay the router never made; say nothing
         }

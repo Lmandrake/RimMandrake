@@ -79,6 +79,11 @@ namespace RimMandrake.FlowWorks.SelfTest
         }
 
         private static readonly HoseReelRect Reel = new HoseReelRect(2, 7, 1, 1);
+
+        // northstar/scenarios/c10_rain_basin.py's closed ledger (plot cells; keep in step): the two tanks, the reel's footprint
+        // corner (built West one square east, so this is its footprint), and the hose end beside the far tank
+        private static readonly (int, int)[] C10LedgerTanks = { (32, 5), (40, 3) };
+        private static readonly (int, int) C10LedgerReel = (40, 5), C10LedgerEnd = (34, 5);
         private const double Len = 40;
 
         public static void Run(Action<string, Action> Case)
@@ -160,6 +165,92 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // can-fail: with the link gone the pit floor is closed (no other way down)
                 CordWorld closed = Pit(10, 15, 3, 12);
                 Assert(HoseMath.CheckInstall(closed, Reel, new Cell(13, 7), Len) == "no route", "can-fail: the pit floor was reached with no ladder");
+            });
+
+            Case("HoseBand_swim_split_pool_stays_one_floor", () =>
+            {
+                // LADDER_HOSE_DIAGNOSE_RETRACTS_ON_A_WHIM: a pit (floor 8) holding 2 m reads band 4 (the swim surface); the pump's
+                // intake square drawn a hair under 2 m reads band 8 until the next levelling pulse. Same floor: still one floor.
+                Assert(HoseBandMath.FloorJoined(8, 8, false, false), "one floor split by the swim surface was not joined");
+                Assert(!HoseBandMath.FloorJoined(8, 4, false, false), "can-fail: two different floors were joined");
+                Assert(!HoseBandMath.FloorJoined(8, 8, true, false), "can-fail: a covered square was joined");
+                Assert(!HoseBandMath.FloorJoined(0, 0, false, false), "can-fail: undug ground was joined");
+                Cell intake = new Cell(13, 7);
+                for (int joined = 0; joined < 2; joined++)
+                {
+                    CordWorld w = Pit(10, 15, 3, 12);
+                    w.LinkBands(new Cell(10, 7), new Cell(9, 7));   // the ladder
+                    w.SetBand(intake, 8);
+                    if (joined == 1)
+                        for (int r = 0; r < 4; r++)
+                        {
+                            var n = new Cell(intake.X + CordWorld.CardX[r], intake.Z + CordWorld.CardZ[r]);
+                            if (HoseBandMath.FloorJoined(8, 8, false, false)) w.LinkBands(intake, n);
+                        }
+                    string why = HoseMath.CheckInstall(w, Reel, intake, Len);
+                    if (joined == 1) Assert(why == null, "the hose lost the intake square to a swim-surface split: " + why);
+                    else Assert(why == "no route", "can-fail: the split square was reached with no floor join: " + why);
+                }
+                string bands = Src("Hose", "RM_HoseBands.cs");
+                Assert(Body(bands, "public static bool Linked(").Contains("FloorJoined(map, a, b)"), "RM_HoseBands.Linked does not join one floor");
+                Assert(Body(bands, "private static void Count(").Contains("FloorJoined(map, a, b)"), "the readout counts a floor join as a ladder");
+            });
+
+            Case("Scenario_C4_C10_hoses_lay_offline", () =>
+            {
+                // The review scenarios' hoses (northstar/scenarios c04/c10), rebuilt as the hose world sees them, laid by the
+                // production planner from the turned reel's outlet (RM_MapComponent_Hoses.LayFrom: its own footprint held solid).
+                // OX shifts plot x so C4's drain (plot x -12) is on the grid. A fail names the scenario and the planner's reason.
+                const int OX = 15;
+                Cell C(int x, int z) => new Cell(x + OX, z);
+                var sp = new HoseShapeParams { MinBendRadius = 1.2, MaxLength = HoseMath.DefaultMaxLength };
+                string LayAll(CordWorld w, HoseReelRect reel, Cell target)
+                {
+                    string why = HoseMath.CheckInstall(w, reel, target, sp.MaxLength);
+                    if (why != null) return "install: " + why;
+                    var held = new List<(Cell, BlockKind)>();
+                    for (int x = reel.X0; x < reel.X0 + reel.W; x++)
+                        for (int z = reel.Z0; z < reel.Z0 + reel.H; z++) { held.Add((new Cell(x, z), w.BlockAt(new Cell(x, z)))); w.SetBlocked(new Cell(x, z), BlockKind.Device); }
+                    try
+                    {
+                        for (ulong seed = 17; seed < 17 + 7919UL * 40; seed += 7919UL)
+                        {
+                            HoseLay lay = HoseMath.Lay(w, reel.Mouth, target.Centre, sp, seed, null, reel.Outward);
+                            if (!lay.Ok) return "seed " + seed + ": " + lay.Reason;
+                        }
+                    }
+                    finally { foreach (var (c, k) in held) w.SetBlocked(c, k); }
+                    return null;
+                }
+                void Rect(CordWorld w, int x0, int z0, int wd, int ht, int band) { for (int x = x0; x < x0 + wd; x++) for (int z = z0; z < z0 + ht; z++) w.SetBand(C(x, z), band); }
+                // C4: benches D1 > D2 > D3 (increments), the sump, the drain off the west edge; ramps carry the hose up each step
+                var q = new CordWorld(70, 45);
+                Rect(q, 4, 4, 32, 30, 1); Rect(q, 7, 7, 26, 24, 2); Rect(q, 10, 10, 20, 18, 3); Rect(q, 14, 14, 4, 4, 6); Rect(q, -12, 36, 16, 1, 1);
+                q.SetExtraCost(C(13, 16), HoseMath.BuildingCrossCost);                      // the pump
+                foreach (var (x, z) in new[] { (12, 12), (12, 13), (17, 17), (21, 12), (22, 12), (23, 12) }) q.SetBlocked(C(x, z), BlockKind.Wall);
+                var reel4 = new HoseReelRect(11 + OX, 16, 2, 2) { Rot = 3, Look = "Industrial" };
+                for (int x = 11; x <= 12; x++) for (int z = 16; z <= 17; z++) q.SetExtraCost(C(x, z), HoseMath.BuildingCrossCost);
+                string noRamps = LayAll(q, reel4, C(3, 36));
+                Assert(noRamps != null && noRamps.Contains("no route"), "can-fail: C4's hose climbed the benches with no ramps (" + (noRamps ?? "laid") + ")");
+                foreach (var (lx, lz, hx, hz) in new[] { (10, 16, 9, 16), (7, 16, 6, 16), (4, 16, 3, 16), (3, 36, 3, 35), (20, 33, 20, 34) })
+                    q.LinkBands(C(lx, lz), C(hx, hz));
+                string c4 = LayAll(q, reel4, C(3, 36));
+                Assert(c4 == null, "C4: the quarry hose did not lay up the ramps to the drain canal: " + c4);
+                // C10: the pond hose (reel 14,37 to the pond at 10,33) and the fenced closed ledger (reel 39,5 to beside tank 33,3)
+                var b = new CordWorld(70, 45);
+                for (int x = 1; x < 13; x++) for (int z = 28; z < 36; z++) b.SetExtraCost(C(x, z), 3f);   // the pond: a hose floats
+                foreach (var (x, z) in new[] { (8, 36), (9, 36), (8, 37), (9, 37) }) b.SetBlocked(C(x, z), BlockKind.Wall);
+                b.SetExtraCost(C(6, 36), HoseMath.BuildingCrossCost);
+                var reelPond = new HoseReelRect(14 + OX, 37, 2, 2) { Rot = 3 };
+                string pond = LayAll(b, reelPond, C(10, 33));
+                Assert(pond == null, "C10: the pond hose did not lay: " + pond);
+                for (int x = 31; x <= 42; x++) { b.SetBlocked(C(x, 1), BlockKind.Wall); b.SetBlocked(C(x, 9), BlockKind.Wall); }
+                for (int z = 1; z <= 9; z++) { b.SetBlocked(C(31, z), BlockKind.Wall); b.SetBlocked(C(42, z), BlockKind.Wall); }
+                b.SetBlocked(C(36, 1), BlockKind.None);
+                foreach (var (tx, tz) in C10LedgerTanks) for (int x = tx; x < tx + 2; x++) for (int z = tz; z < tz + 2; z++) b.SetBlocked(C(x, z), BlockKind.Wall);
+                var reelLedger = new HoseReelRect(C10LedgerReel.Item1 + OX, C10LedgerReel.Item2, 2, 2) { Rot = 3 };
+                string ledger = LayAll(b, reelLedger, C(C10LedgerEnd.Item1, C10LedgerEnd.Item2));
+                Assert(ledger == null, "C10: the closed-ledger hose did not lay: " + ledger);
             });
 
             Case("HoseBand_P5_endpoint_reach_respects_band", () =>
