@@ -56,18 +56,23 @@ Rows (plot coords from --origin, default 40,40; site rect origin-(2,6) .. +64 x 
                               PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A5. Runs BEFORE A4 (RM_Levelling.Moves is a process
                               static: read as a delta, with no other link alive).
   PONDS_HOSE_LEVEL           PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A4.
-     scenes E (z+20, the A4 rig) and F (z+40, the A5 rig), same shape: two dug pools 3x3, 4 notches deep (equal floors, so
-     equal dL per square = equal surface), pool 1 at x0..2 z-4..-2 and pool 2 at x0..2 z8..10 (plot-local to the rig); an
-     empty RM_LiquidTank at (12,3); hose reel 1 built West with its footprint at (10,2) and reel 2 at (10,4), both touching the
-     tank (UNVERIFIED LAYOUT GUESS: two reels coupled to one tank are one network component with two open ends -- the
-     RM_Levelling link). Reel 1 laid to the lip (3,-3) and set Intake, reel 2 to (3,9) and set Outflow. A5: pool 1 water F=4,
+     scenes E (z+20, the A4 rig) and F (z+40, the A5 rig), same shape (POND_RIG, checked offline by pond_rig_problems): two
+     dug pools 3x3, 4 notches deep (equal floors, so equal dL per square = equal surface), pool 1 at x0..2 z-4..-2 and pool 2
+     at x0..2 z8..10 (plot-local to the rig); hose reel 1 built West with its footprint at (10,2) and reel 2 at (10,4), both
+     coupled by their East edges to ONE RM_UniversalPipe run x12 z2..5, so the two links are one network component with two
+     open ends (the RM_Levelling link). RULED OUT 2026-10-22: two reels touching one RM_LiquidTank (the first layout guess) --
+     a tank is a component MEMBER, not a conductor (RM_NetComponents.Build attaches a Tank end and never walks through it), so
+     each reel was its own component with one port (Ports.Count < 2): three belt runs read linked=False, moves=0. Before any
+     tick the coupling is read back (ProofLevelLink intakes>=1 and outflows>=1 on each reel = both ends on one component);
+     not so = UNMEASURED/SITE. Reel 1 laid to the lip (3,-3) and set Intake, reel 2 to (3,9) and set Outflow. A5: pool 1 water F=4,
      pool 2 RM_Fluid_Chemfuel F=1; EXPECT RM_Levelling.Moves +0 over 1500 ticks, both pools' dL unchanged and a reel's inspect
      reads "different liquids never mix". A4: pool 1 water F=4, pool 2 water F=1; EXPECT Moves > 0, the per-square dL gap
      <= 100 dL (1 cm over a square metre) within --level-ticks, the total dL conserved within 1 %, and a reel read
-     "Levelling: flowing" while it moved. LIES: a rig with no link (net levelLinks 0 at every read) moves nothing and is
-     UNMEASURED/SITE, never a PASS for A5; evaporation is not levelling (the total is read). The reel's levelling state is read as
-     the enum word through RM_NorthstarProofs.ProofLevelLink (Flowing / Level / DifferentLiquids / ..); an old deploy without
-     the hook falls back to the inspect line's substring.
+     "Levelling: flowing" while it moved. LIES: a rig with no link (ProofLevelLink links=0 at every read) moves nothing and is
+     UNMEASURED/SITE, never a PASS for A5; evaporation is not levelling (the total is read). The reel's levelling state and the
+     counters (links = RM_Levelling.LastLinks, moves = RM_Levelling.Moves) are read through RM_NorthstarProofs.ProofLevelLink
+     (no tank stands on the rig, so the probe's net verb has no origin); an old deploy without the hook reads the inspect line
+     for the word but has no counters, so both rows are UNMEASURED/HARNESS there.
   PORTS_PIPE_AND_REEL_ON_SIDES
   PORTS_ONE_HOSE_PER_SIDE
   PORTS_CORNER_REFUSED       FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE A4 (walk stop 5), read by RM_NorthstarProofs.ProofPumpPorts.
@@ -245,6 +250,85 @@ def ponds_nomix_verdict(moves, dl0, dl1, linked, readout):
     ok = moves == 0 and tuple(dl0) == tuple(dl1) and ("DifferentLiquids" in (readout or "") or
                                                       "different liquids never mix" in (readout or ""))
     return ("PASS" if ok else "FAIL"), "MOD"
+
+
+# The A4/A5 rig, plot-local to the rig (the caller adds the rig's z). Reels are footprint corners of a 2x2 built West
+# (validation_core.reel_west); a pipe run joins their East edges.
+POND_RIG = {"pools": [(0, -4), (0, 8)], "reels": [(10, 2), (10, 4)], "pipes": [(12, 2), (12, 3), (12, 4), (12, 5)], "tanks": [],
+            "ends": [(3, -3), (3, 9)]}
+# The layout the three 2026-10-22 belt runs used (linked=False, moves=0): kept so the selftest proves the checker refuses it.
+TANK_RIG_20261022 = {"pools": [(0, -4), (0, 8)], "reels": [(10, 2), (10, 4)], "pipes": [], "tanks": [(12, 3)],
+                     "ends": [(3, -3), (3, 9)]}
+HOSE_REACH = 40 - 5        # HoseMath.DefaultMaxLength 40, less the ~4.4-cell straight lead-out
+
+
+def _rect(c, w, h):
+    return {(c[0] + i, c[1] + j) for i in range(w) for j in range(h)}
+
+
+def _edge_nbrs(cells):
+    """The cells edge-adjacent to a footprint, outside it (HosePortRule.Pick couples across a shared edge only)."""
+    return {(x + dx, z + dz) for x, z in cells for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))} - set(cells)
+
+
+def pond_rig_problems(lay):
+    """[] when the rig's geometry makes ONE levelling link, else why not. A model of the C# rules read 2026-10-22, not the
+    game: a reel couples to a pipe or tank across a shared edge (HosePorts.RawFind / HosePortRule.Pick); pipes conduct, 4-way
+    (RM_NetComponents.Conducts), a tank does not (Build attaches it as a member); a link needs >= 2 open ends on one component
+    (RM_Levelling.Tick); a free end beside a pipe/tank/reel couples to it and is no open port (HosePorts.FindAt); an end
+    resolves the first dug square of the end and its 8 neighbours (RM_Levelling.Resolve)."""
+    probs = []
+    pools = [_rect(p, 3, 3) for p in lay["pools"]]
+    reels = [_rect(r, 2, 2) for r in lay["reels"]]
+    pipes = set(lay["pipes"])
+    tanks = [_rect(t, 2, 2) for t in lay["tanks"]]
+    solid = [("pipe", {p}) for p in pipes] + [("tank", t) for t in tanks] + [("reel", r) for r in reels]
+    for i, (k, a) in enumerate(solid):
+        for p in pools:
+            if a & p:
+                probs.append("%s %s stands in a pool" % (k, sorted(a)[0]))
+        for k2, b in solid[i + 1:]:
+            if a & b:
+                probs.append("%s %s overlaps %s %s" % (k, sorted(a)[0], k2, sorted(b)[0]))
+    comp, n = {}, 0                       # 4-connected pipe runs
+    for p in sorted(pipes):
+        if p in comp:
+            continue
+        n += 1
+        todo = [p]
+        while todo:
+            q = todo.pop()
+            if q in comp or q not in pipes:
+                continue
+            comp[q] = n
+            todo += [(q[0] + 1, q[1]), (q[0] - 1, q[1]), (q[0], q[1] + 1), (q[0], q[1] - 1)]
+    seen = []
+    for r, fp in zip(lay["reels"], reels):
+        nb = _edge_nbrs(fp)
+        runs = {comp[c] for c in nb if c in comp}
+        if any(nb & t for t in tanks):
+            probs.append("reel %s touches a tank: a tank is a member, not a conductor (one port per component)" % (r,))
+        if len(runs) != 1:
+            probs.append("reel %s touches %d pipe runs (wants exactly 1)" % (r, len(runs)))
+        seen.append(runs)
+    if len(seen) == 2 and (len(seen[0]) != 1 or seen[0] != seen[1]):
+        probs.append("the two reels are not on one pipe run: two components, one open end each")
+    for k, (e, own) in enumerate(zip(lay["ends"], pools)):
+        other = pools[1 - k] if len(pools) == 2 else set()
+        near8 = {(e[0] + dx, e[1] + dz) for dx in (-1, 0, 1) for dz in (-1, 0, 1)}
+        if e in own or e in other:
+            probs.append("end %s lies in a pool (aim at the lip)" % (e,))
+        if not (near8 & own):
+            probs.append("end %s is not beside its pool" % (e,))
+        if near8 & other:
+            probs.append("end %s also reaches the other pool" % (e,))
+        for kind, a in solid:
+            if e in a or (_edge_nbrs({e}) & a):
+                probs.append("end %s couples to a %s (no open port)" % (e, kind))
+        r = lay["reels"][k]
+        if ((e[0] - r[0]) ** 2 + (e[1] - r[1]) ** 2) ** 0.5 > HOSE_REACH:
+            probs.append("end %s is beyond a shipped hose's reach from %s" % (e, r))
+    return probs
 
 
 def ports_parse(txt):
@@ -650,74 +734,90 @@ def scene_tanks(ctx, mine):
 
 
 def _pond_rig(ctx, base_dz, fluid2, fill2):
-    """One rig at plot z+base_dz: two 3x3 pools 4 notches deep, an empty tank, two West reels touching it, hoses to the lips."""
+    """One rig at plot z+base_dz (POND_RIG): two 3x3 pools 4 notches deep, two West reels on one pipe run, hoses to the lips."""
     B, P, static, xz = ctx["B"], ctx["P"], ctx["static"], ctx["xz"]
+    lay = POND_RIG                               # module-level so the selftest can plant the old layout
     o = lambda x, z: P(x, z + base_dz)           # noqa: E731
-    pools = [(0, -4), (0, 8)]
-    for (px, pz), (fl, f) in zip(pools, [(WATER_FLUID, 4), (fluid2, fill2)]):
+    probs = pond_rig_problems(lay)
+    V.require(not probs, "the rig geometry makes one levelling link (pond_rig_problems)", probs, cls="SITE")
+    for (px, pz), (fl, f) in zip(lay["pools"], [(WATER_FLUID, 4), (fluid2, fill2)]):
         for i in range(3):
             for j in range(3):
                 ctx["dig"](o(px + i, pz + j), 4)
                 static(FLUIDP, "ProofFillWithFluid", "%d,%d,%d,%s" % (o(px + i, pz + j) + (f, fl)))
-    tank, r1, r2 = o(12, 3), o(10, 2), o(10, 4)
-    ctx["build"]("RM_LiquidTank:%d,%d" % tank, V.reel_west(r1), V.reel_west(r2))
+    r1, r2 = (o(*r) for r in lay["reels"])
+    ctx["build"](*(["RM_UniversalPipe:%d,%d" % o(*c) for c in lay["pipes"]] + ["RM_LiquidTank:%d,%d" % o(*t) for t in lay["tanks"]]
+                   + [V.reel_west(r1), V.reel_west(r2)]))
     ctx["ticks"](2)
-    B.hp("lay:%d,%d,%d,%d" % (r1 + o(3, -3)), answer=True)
-    B.hp("lay:%d,%d,%d,%d" % (r2 + o(3, 9)), answer=True)
+    for r, e in zip((r1, r2), lay["ends"]):
+        B.hp("lay:%d,%d,%d,%d" % (r + o(*e)), answer=True)
     for r, role in ((r1, "Intake"), (r2, "Outflow")):
         kh, th = static(LPROOF, "ProofHoseLine", xz(r))
         V.require(kh.get("laid") == "True", "hose %s laid" % xz(r), th)
         static(LPROOF, "ProofHoseRole", "%s;%s" % (xz(r), role))
-    rects = ["%d,%d,3,3" % o(px, pz) for px, pz in pools]
-    return dict(tank=tank, reels=(r1, r2), rects=rects)
+    ctx["ticks"](2)                              # the hose-link index re-reads the roles on a later tick
+    rig = dict(reels=(r1, r2), rects=["%d,%d,3,3" % o(px, pz) for px, pz in lay["pools"]], problems=probs)
+    # the coupling read back before any levelling window: both open ends on one component, seen from each reel
+    _dl, _m, _l, _r, coup = _pond_reads(ctx, rig)
+    rig["coupling"] = coup
+    if all(c is not None for c in coup):
+        V.require(all(i >= 1 and u >= 1 for i, u in coup), "both open ends on one network component (intakes, outflows per reel)",
+                  coup, cls="SITE")
+    return rig
 
 
 def _pond_reads(ctx, rig):
+    """-> (dl per pool, Moves, LastLinks, readout, [(intakes, outflows) or None per reel]). Counters come from ProofLevelLink
+    only (None on an old deploy without it: the verdicts then read UNMEASURED/HARNESS)."""
     B, static = ctx["B"], ctx["static"]
     dl = [num(static(LPROOF, "ProofPitWater", r)[0], "dl") for r in rig["rects"]]
-    net = B.hp("net:%d,%d" % rig["tank"])
-    readout = ""
+    readout, moves, links, coup = "", None, None, []
     for r in rig["reels"]:
         kl, tl = static(NPROOF, "ProofLevelLink", "%d,%d" % r, answer=True)
         if kl.get("state"):
             # the enum word first (the verdicts read it), then why a rig may make no link
             readout += " | %s(in=%s out=%s on=%s)" % (kl["state"], kl.get("intakes"), kl.get("outflows"), kl.get("on"))
+            moves, links = num(kl, "moves"), num(kl, "links")
+            i, u = num(kl, "intakes"), num(kl, "outflows")
+            coup.append(None if i is None or u is None else (i, u))
             continue
+        coup.append(None)
         lt = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,1" % r, limit=1, _answer=True) or {}
         rid = ((lt.get("things") or [{}])[0]).get("id")
         if rid:
             ins = B.call("jawa/inspect_string", thingIds=str(rid), _answer=True) or {}
             readout += " | " + " | ".join(ln for t in (ins.get("things") or []) for ln in (t.get("inspect") or []) if "Levelling" in ln)
-    return dl, net.get("levelMoves"), net.get("levelLinks"), readout
+    return dl, moves, links, readout, coup
 
 
 def scene_ponds(ctx, mine):
-    row, P = ctx["row"], ctx["P"]
+    row = ctx["row"]
     if "PONDS_DIFFERENT_LIQUIDS_NO_MIX" in mine:
         rig = _pond_rig(ctx, 40, OIL_FLUID, 1)
-        dl0, m0, _l0, _r0 = _pond_reads(ctx, rig)
-        linked, readout = False, ""
+        dl0, m0, _l0, _r0, _c0 = _pond_reads(ctx, rig)
+        linked, readout, dl1, m1 = False, "", dl0, m0
         for _ in range(6):
             ctx["ticks"](250)
-            dl1, m1, l1, r1 = _pond_reads(ctx, rig)
+            dl1, m1, l1, r1, _c1 = _pond_reads(ctx, rig)
             linked = linked or bool(l1)
             readout = r1 or readout
         moves = None if m0 is None or m1 is None else m1 - m0
         st, cls = ponds_nomix_verdict(moves, dl0, dl1, linked, readout)
-        row("PONDS_DIFFERENT_LIQUIDS_NO_MIX", st, {"dl": [dl0, dl1], "moves": moves, "linked": linked, "readout": readout}, cls=cls)
+        row("PONDS_DIFFERENT_LIQUIDS_NO_MIX", st, {"dl": [dl0, dl1], "moves": moves, "linked": linked, "readout": readout,
+                                                   "coupling": rig["coupling"], "rigProblems": rig["problems"]}, cls=cls)
         # retire the A5 rig's hoses so its link cannot move anything during A4 (it moves nothing by design; the cap is belt-and-braces)
         for r in rig["reels"]:
             ctx["static"](LPROOF, "ProofHoseRole", "%s;Capped" % ctx["xz"](r), answer=True)
     if "PONDS_HOSE_LEVEL" in mine:
         rig = _pond_rig(ctx, 20, WATER_FLUID, 1)
-        dl0, m0, _l, _r = _pond_reads(ctx, rig)
+        dl0, m0, _l, _r, _c = _pond_reads(ctx, rig)
         linked, flowing, trail, waited = False, False, [], 0
         dl1, m1 = dl0, m0
         while waited < ctx["a"].level_ticks:
             if not ctx["ticks"](250):
                 break
             waited += 250
-            dl1, m1, l1, r1 = _pond_reads(ctx, rig)
+            dl1, m1, l1, r1, _c1 = _pond_reads(ctx, rig)
             linked = linked or bool(l1)
             flowing = flowing or "Flowing" in (r1 or "") or "flowing" in (r1 or "")
             trail.append((waited, dl1, m1))
@@ -726,7 +826,8 @@ def scene_ponds(ctx, mine):
         moves = None if m0 is None or m1 is None else m1 - m0
         st, cls = ponds_level_verdict(moves, dl0, dl1, 9, linked, flowing)
         row("PONDS_HOSE_LEVEL", st, {"dl": [dl0, dl1], "moves": moves, "linked": linked, "flowingSeen": flowing,
-                                     "ticks": waited, "trail": trail[-6:]}, cls=cls)
+                                     "ticks": waited, "trail": trail[-6:], "coupling": rig["coupling"],
+                                     "rigProblems": rig["problems"]}, cls=cls)
 
 
 def scene_ports(ctx, mine):
@@ -779,15 +880,16 @@ class FakeBridge(object):
       thrown_hurt      MOD: a thrown duck takes the fall                 -> TRAVEL_THROWN_FLYER_UNHURT FAIL
       blind_health     a thrown person reads unhurt (blind read)          -> TRAVEL_THROWN_FLYER_UNHURT UNMEASURED/HARNESS
       store_only       MOD (the code read 2026-10-22): joined Store tanks never level -> TANKS_JOINED_ONE_LEVEL FAIL
-      no_link          two reels on one tank are no levelling link       -> PONDS_* UNMEASURED/SITE
+      no_link          coupled, yet the mod makes no levelling link      -> PONDS_* UNMEASURED/SITE
+      pipe_gap         a rig pipe never built: two components, one end each -> PONDS_* UNMEASURED/SITE (the coupling read)
       mixes            MOD: water and chemfuel exchange                  -> PONDS_DIFFERENT_LIQUIDS_NO_MIX FAIL
       no_level         MOD: two water pools never level                  -> PONDS_HOSE_LEVEL FAIL
-      no_levellink     ProofLevelLink missing (old deploy)               -> inspect-line fallback; all PASS
+      no_levellink     ProofLevelLink missing (old deploy)               -> no counters: PONDS_* UNMEASURED/HARNESS
       port_shared      MOD: both free ends couple on one side            -> PORTS_ONE_HOSE_PER_SIDE FAIL
       corner_couples   MOD: a hose end on a corner couples               -> PORTS_CORNER_REFUSED FAIL
       no_lay           the hose lays are refused                         -> PORTS_ONE_HOSE_PER_SIDE, PORTS_CORNER_REFUSED UNMEASURED/SITE"""
     FAULTS = ("no_proofs", "no_worker", "decon_no_fall", "ladder_idle", "lower_below", "flyer_held", "person_free", "no_marked",
-              "thrown_hurt", "blind_health", "store_only", "no_link", "mixes", "no_level", "no_levellink", "port_shared",
+              "thrown_hurt", "blind_health", "store_only", "no_link", "pipe_gap", "mixes", "no_level", "no_levellink", "port_shared",
               "corner_couples", "no_lay")
 
     def __init__(self, faults=()):
@@ -852,11 +954,11 @@ class FakeBridge(object):
                 self.tanks[r][0] = u + (tgt - u) * min(n, 2500) // 2500
             drift = tot - sum(u for u, _ in self.tanks.values())
             self.tanks[roots[0]][0] += drift
-        # levelling between the two pools of each rig (pool rects keyed by their lips' reels)
+        # levelling between the open ends on one network component (pipe runs conduct; a tank does not)
         rigs = {}
         for r, h in self.reels.items():
             if h["laid"] and h["role"] in ("Intake", "Outflow"):
-                rigs.setdefault(h["rig"], []).append(h)
+                rigs.setdefault(self._component(r), []).append(h)
         self.links = 0
         for rig, ends in rigs.items():
             if len(ends) < 2 or "no_link" in self.f:
@@ -882,6 +984,22 @@ class FakeBridge(object):
                 self.cells[c] = (self.cells[c][0] + step // 9, self.cells[c][1])
             self.moves += 1
             ends[0]["state"] = ends[1]["state"] = "flowing (no pump; the higher water runs to the lower)"
+
+    def _component(self, root):
+        """The pipe run a reel's East/West/North/South edge touches (RM_NetComponents: pipes conduct, a tank is a member, so a
+        reel touching only a tank is a component of its own). Pure geometry over self.pipes."""
+        fp = _rect(root, 2, 2)
+        seed = sorted(c for c in _edge_nbrs(fp) if c in self.pipes)
+        if not seed:
+            return ("alone", root)
+        run, todo = set(), [seed[0]]
+        while todo:
+            q = todo.pop()
+            if q in run or q not in self.pipes:
+                continue
+            run.add(q)
+            todo += [(q[0] + 1, q[1]), (q[0] - 1, q[1]), (q[0], q[1] + 1), (q[0], q[1] - 1)]
+        return ("run", min(run))
 
     def static(self, ty, m, arg):
         def cell(s):
@@ -944,8 +1062,12 @@ class FakeBridge(object):
                 return "REFUSED: no hose reel at " + arg
             words = {"stopped, different liquids never mix": "DifferentLiquids", "level": "Level",
                      "flowing (no pump; the higher water runs to the lower)": "Flowing"}
-            return "LEVELLINK reel=%d state=%s role=%s laid=%s cycles=1 links=%d moves=%d movedDl=0" % (
-                h["id"], words.get(h.get("state"), "None"), h["role"], h["laid"], self.links, self.moves)
+            root = cell(arg)
+            mine = self._component(root)
+            ends = [g for r, g in self.reels.items() if g["laid"] and self._component(r) == mine]
+            return "LEVELLINK reel=%d state=%s role=%s laid=%s intakes=%d outflows=%d on=True cycles=1 links=%d moves=%d movedDl=0" % (
+                h["id"], words.get(h.get("state"), "None"), h["role"], h["laid"], sum(g["role"] == "Intake" for g in ends),
+                sum(g["role"] == "Outflow" for g in ends), self.links, self.moves)
         if m == "ProofPumpPorts":
             pc = cell(arg)
             if pc not in self.pumps:
@@ -1033,11 +1155,13 @@ class FakeBridge(object):
                 elif d in ("RM_LiquidTank", "RM_LiquidTankTall", "RM_UniversalCargoTank"):
                     self.tanks[c] = [0, {"RM_LiquidTank": 160000, "RM_LiquidTankTall": 320000}.get(d, 640000)]
                 elif d == "RM_UniversalPipe":
+                    if "pipe_gap" in self.f and c[0] == 52 and c[1] % 20 == 4:
+                        continue            # the rig's third pipe never built: the run is cut in two
                     self.pipes.add(c)
                 elif d == "RM_HoseReel":
                     root = (c[0] - 1, c[1]) if len(p) > 2 and int(p[2]) % 4 == 3 else c
                     self.nid += 1
-                    self.reels[root] = dict(laid=False, role="Capped", to=None, rig=root[1] // 10, state=None, id=self.nid)
+                    self.reels[root] = dict(laid=False, role="Capped", to=None, state=None, id=self.nid)
                 elif d == "RM_LiquidPump":
                     self.pumps.add(c)
             return {"success": True}

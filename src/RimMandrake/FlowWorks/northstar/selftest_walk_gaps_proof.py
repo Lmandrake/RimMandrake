@@ -76,9 +76,10 @@ EXPECT = {"": {}, "no_worker": {"COVER_DECON_DROPS_RIDER": ("UNMEASURED", "SITE"
           "blind_health": {"TRAVEL_THROWN_FLYER_UNHURT": ("UNMEASURED", "HARNESS")},
           "store_only": {"TANKS_JOINED_ONE_LEVEL": ("FAIL", "MOD")},
           "no_link": {"PONDS_DIFFERENT_LIQUIDS_NO_MIX": ("UNMEASURED", "SITE"), "PONDS_HOSE_LEVEL": ("UNMEASURED", "SITE")},
+          "pipe_gap": {"PONDS_DIFFERENT_LIQUIDS_NO_MIX": ("UNMEASURED", "SITE"), "PONDS_HOSE_LEVEL": ("UNMEASURED", "SITE")},
           "mixes": {"PONDS_DIFFERENT_LIQUIDS_NO_MIX": ("FAIL", "MOD")},
           "no_level": {"PONDS_HOSE_LEVEL": ("FAIL", "MOD")},
-          "no_levellink": {},
+          "no_levellink": {"PONDS_DIFFERENT_LIQUIDS_NO_MIX": ("UNMEASURED", "HARNESS"), "PONDS_HOSE_LEVEL": ("UNMEASURED", "HARNESS")},
           "port_shared": {"PORTS_ONE_HOSE_PER_SIDE": ("FAIL", "MOD")},
           "corner_couples": {"PORTS_CORNER_REFUSED": ("FAIL", "MOD")},
           "no_lay": {"PORTS_ONE_HOSE_PER_SIDE": ("UNMEASURED", "SITE"), "PORTS_CORNER_REFUSED": ("UNMEASURED", "SITE")}}
@@ -98,5 +99,39 @@ with contextlib.redirect_stdout(io.StringIO()):
     W.main(["--mock", out, "--mock-faults", "no_proofs"])
 check("no_proofs: every row UNMEASURED/HARNESS, none FAIL",
       all(r["detail"].get("mock") == "UNMEASURED" and r["class"] == "HARNESS" for r in json.load(open(out))["rows"]))
+
+# ---- the PONDS rig geometry (P4, 2026-10-22: three belt runs read linked=False, moves=0 on the tank layout)
+check("pond rig: the shipped layout makes one link (no problems)", W.pond_rig_problems(W.POND_RIG) == [])
+tp = W.pond_rig_problems(W.TANK_RIG_20261022)
+check("pond rig: the belt runs' tank layout is refused, naming the tank and the split", any("tank" in p for p in tp)
+      and any("not on one pipe run" in p for p in tp))
+cut = dict(W.POND_RIG, pipes=[c for c in W.POND_RIG["pipes"] if c != (12, 4)])
+check("pond rig: a pipe run cut in two is refused", any("not on one pipe run" in p for p in W.pond_rig_problems(cut)))
+check("pond rig: an end beside a pipe couples (no open port) and is refused",
+      any("couples to a pipe" in p for p in W.pond_rig_problems(dict(W.POND_RIG, pipes=W.POND_RIG["pipes"] + [(4, -3)]))))
+check("pond rig: an end beside the wrong pool is refused",
+      any("other pool" in p for p in W.pond_rig_problems(dict(W.POND_RIG, pools=[(0, -4), (0, -1)], ends=[(3, -2), (3, 0)]))))
+check("pond rig: an end inside its pool is refused", any("lies in a pool" in p for p in W.pond_rig_problems(dict(W.POND_RIG, ends=[(1, -3), (3, 9)]))))
+check("pond rig: an end past the hose's reach is refused", any("reach" in p for p in W.pond_rig_problems(dict(W.POND_RIG, ends=[(3, -3), (3, 60)]))))
+# the planted mis-coupling end to end: the old tank layout through the live path (mock) reads SITE, never PASS or FAIL
+keep = W.POND_RIG
+W.POND_RIG = W.TANK_RIG_20261022
+try:
+    out = os.path.join(tmp, "wg_tankrig.json")
+    with contextlib.redirect_stdout(io.StringIO()):
+        W.main(["--mock", out, "--only", "PONDS_DIFFERENT_LIQUIDS_NO_MIX,PONDS_HOSE_LEVEL"])
+    rows = json.load(open(out))["rows"]
+    check("planted tank rig: both PONDS rows UNMEASURED/SITE", len(rows) == 2 and all((r["detail"].get("mock"), r["class"]) == ("UNMEASURED", "SITE") for r in rows))
+    check("planted tank rig: the coupling read shows one end per component",
+          all(r["detail"].get("coupling") and any(c != (1, 1) and c != [1, 1] for c in r["detail"]["coupling"]) for r in rows))
+finally:
+    W.POND_RIG = keep
+out = os.path.join(tmp, "wg_ponds.json")
+with contextlib.redirect_stdout(io.StringIO()):
+    W.main(["--mock", out, "--only", "PONDS_DIFFERENT_LIQUIDS_NO_MIX,PONDS_HOSE_LEVEL"])
+rows = {r["id"]: r for r in json.load(open(out))["rows"]}
+check("fixed rig (mock): coupling (1,1) on both reels, linked, levelled",
+      all(list(map(list, r["detail"]["coupling"])) == [[1, 1], [1, 1]] and r["detail"]["linked"] for r in rows.values())
+      and rows["PONDS_HOSE_LEVEL"]["detail"]["moves"] > 0)
 print("%d FAIL" % len(fails))
 sys.exit(1 if fails else 0)
