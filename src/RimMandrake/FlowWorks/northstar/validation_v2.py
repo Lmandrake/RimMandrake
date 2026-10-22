@@ -2620,7 +2620,7 @@ def phase_C(L, args):
             L.gmerge("C", mism)
             s1 = L.eng().get("sinkTransferredTotal")
             L.row("E5n_sinks_off", not probs and "E5_sink_off" not in mism and vec.get("E5_sink_off", [[]])[-1] == [1] * 10
-                  and s1 == s0 and not any(x.get("isSink") for x in q), "MOD",
+                  and s0 is not None and s1 == s0 and not any(x.get("isSink") for x in q), "MOD",   # None == None is no reading
                   "sinks OFF: run %s, total %s->%s, isSink any=%s" % (vec.get("E5_sink_off", [[]])[-1], s0, s1,
                                                                     any(x.get("isSink") for x in q)))
         finally:
@@ -4666,6 +4666,8 @@ def run_live(args, B=None):
     finally:
         bad = L.restore_settings()
         L.row("Z_settings_restored", not bad, "HARNESS", bad or "%d touched settings back to shipped defaults" % len(L.touched))
+        if load and "site_calm" in load:   # site_calm opened a settings transaction (storyteller, breaks, wild spawner)
+            load["site_calm_restore"] = _vc().site_calm_restore(B)
         B.call("jawa/weather_set", weather="Clear", unlock=True)
         if args.mock:
             B.finish()
@@ -4757,10 +4759,13 @@ def compare_runs(pa, pb):
     norm = lambda d: re.sub(r"stock[^,}]*?[\d.]+", "stock~", d)  # noqa: E731
     ra, rb = {r["id"]: r for r in a["rows"]}, {r["id"]: r for r in b["rows"]}
     ids = [i for i in ra if i.startswith(ZERO_TICK_PREFIXES) and i in rb]
-    diff = [i for i in ids if (ra[i]["status"], norm(ra[i]["detail"])) != (rb[i]["status"], norm(rb[i]["detail"]))]
+    # a zero-tick row only one run emitted (the other aborted or skipped it) is a difference, never dropped from the compare
+    lone = sorted(i for i in set(ra) ^ set(rb) if i.startswith(ZERO_TICK_PREFIXES))
+    diff = [i for i in ids if (ra[i]["status"], norm(ra[i]["detail"])) != (rb[i]["status"], norm(rb[i]["detail"]))] + lone
     if len(ids) < 20:
         return False, "only %d comparable rows (sanity floor 20)" % len(ids)
-    return not diff, "%d zero-tick rows compared, %d differ %s" % (len(ids), len(diff), diff[:6])
+    return not diff, "%d zero-tick rows compared, %d differ %s (in one run only: %s)" % (
+        len(ids), len(diff), diff[:6], lone[:6])
 
 
 def main(argv=None):
