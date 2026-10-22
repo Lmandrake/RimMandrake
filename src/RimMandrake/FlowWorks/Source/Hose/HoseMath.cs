@@ -1625,6 +1625,21 @@ namespace RimMandrake.FlowWorks.Hose
     /// never depends on thing-list order.</summary>
     public static class HosePortRule
     {
+        /// <summary>Joints study 2026-10-22 (UI note): a Deploy aimed AT a tank, pump or machine (its own, unwalkable square)
+        /// answered "target blocked". The order now lands on the free square beside that thing nearest the reel's mouth; this
+        /// picks it: the candidate nearest <paramref name="mouth"/> (ties: the first). -1 when there is none.</summary>
+        internal static int NearestApproach(IList<Cell> cands, V2 mouth)
+        {
+            int best = -1;
+            double bd = double.MaxValue;
+            for (int i = 0; i < cands.Count; i++)
+            {
+                double d = V2.Dist(cands[i].Centre, mouth);
+                if (d < bd - 1e-9) { bd = d; best = i; }
+            }
+            return best;
+        }
+
         internal static readonly Cell[] SideOrder = { new Cell(1, 0), new Cell(0, 1), new Cell(-1, 0), new Cell(0, -1) };
 
         /// <summary>Index of the chosen candidate, or -1. side = the unit step from the reel to the contact cell.</summary>
