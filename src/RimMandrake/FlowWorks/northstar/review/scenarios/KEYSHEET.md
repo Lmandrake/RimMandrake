@@ -82,14 +82,14 @@ A walled keep inside a water moat: the classic defence, built only from FlowWork
 
 1. main save: walk a colonist over the grated suspension bridge across the west moat arm and out the jetty; swim under the deck (live 2026-10-21: a span must cross dug ground only, so it cannot also span the dry ditch)
 2. RAID BRANCH START: open the pen grate, unpause: raiders reach the ditch and moat, lay the plank or swim (2 m: heads and shoulders up), climb, and try the gate (it stays shut to hostiles)
-3. lower the drawbridge (its winch) mid-raid: the leaf drops; the gate still refuses unless held open; let one raider onto the gatehouse cover: he drops onto the spikes
+3. lower the drawbridge (its winch) mid-raid: the leaf drops; the gate still refuses unless held open; let one raider onto the gatehouse concealed pit: he drops onto the spikes
 4. open the gatehouse grate and sluice: the trapped raider's pit floods from the moat; read swim vs drown in the inspect pane
 5. light the chemfuel arm (dev fire at 'light here'): it goes up like gasoline; the grated deck lets the heat up
 6. cut the winch's power (ProofWinchPower off; the GSS cord is DEFERRED): the leaf holds where it is
 
-**Look for:** the cover invisible at play zoom with a slight seam at max zoom; the bridge reads HUNG, not a pier; raiders swim, never walk the moat floor
+**Look for:** the concealed pit invisible at play zoom with a slight seam at max zoom; the bridge reads HUNG, not a pier; raiders swim, never walk the moat floor
 
-**Broken looks like:** the cover visible at play zoom, or NO seam at max zoom; the cover reading like a bridge; raiders walking on the moat floor; the gate opening for raiders while the leaf is up; a raider unhurt on the spikes; the bridge drawn as a pier-on-pylons; the sluice open but the pit dry
+**Broken looks like:** the concealed pit visible at play zoom, or NO seam at max zoom; the concealed pit reading like a bridge; raiders walking on the moat floor; the gate opening for raiders while the leaf is up; a raider unhurt on the spikes; the bridge drawn as a pier-on-pylons; the sluice open but the pit dry
 
 **Still until poked:** main save: no hostiles; the moat brim-full and closed; the leaf raised and held by a powered winch; every sluice and grate shut; nothing lit; the two defenders drafted
 
@@ -105,7 +105,7 @@ A walled keep inside a water moat: the classic defence, built only from FlowWork
 | winch powered | staged | demonstrated |  |
 | leaf raised | staged | poked |  |
 | gatehouse pit 3x3, 4 m, spikes | staged | poked |  |
-| plank-lattice cover over it | staged | poked |  |
+| concealed pit (planks) over it | staged | poked |  |
 | channel from the moat: grate + sluice | staged | poked |  |
 | guardrail on the gatehouse lip | staged | look |  |
 | rail ladder in the gatehouse pit, raised | staged | poked |  |
@@ -532,13 +532,13 @@ What a pit holds, what climbs out, how wardens work from the lip, and every way 
 1. START: unpause: wardens feed and water the prisoner from the lip; nobody climbs down
 2. oubliette: lower the rail ladder from ABOVE (only from above); raise it from below with the prisoner on it: stranded
 3. kennel: just watch: the chicken stays in the ring, the husky climbs out slowly, the muffalo steps across; the thrumbo walks round the 1x1 shaft
-4. order the cover-side colonist onto the covered cell: falls through, hurt
+4. order the colonist beside the concealed pit onto it: falls through, hurt
 5. jump the jump-pack colonist into the third pit: lands unhurt; undraft the geared one: climbs out of 5 m; undraft the ladder-pit one: climbs the portable ladder
 6. inspect a pit cell at noon and at midnight (dev advance; branch save _days): its temperature differs from the ground's (vanilla temperature only, no extra sun)
 
 **Look for:** a pit reads as a dark hole at its size; occupants drawn below the floor; raised vs lowered ladder legible; the guardrail keeps people off the lip
 
-**Broken looks like:** a warden climbing down; the room not a prison; all three kennel beasts held, or all out; the thrumbo in the 1x1; the cover visible at play zoom; a ladder lowered from below; the guardrail letting someone walk off
+**Broken looks like:** a warden climbing down; the room not a prison; all three kennel beasts held, or all out; the thrumbo in the 1x1; the concealed pit visible at play zoom; a ladder lowered from below; the guardrail letting someone walk off
 
 **Still until poked:** every colonist drafted; the prisoner is in a sealed 4 m pit; the beasts are wild and roam INSIDE the ring (climbing out is the test, so the soak reads their KIND per plot, not their cell)
 
@@ -553,7 +553,7 @@ What a pit holds, what climbs out, how wardens work from the lip, and every way 
 | sluice (wood) in the east wall | staged | poked |  |
 | security grate (steel) in the east wall | staged | poked |  |
 | dry drain canals behind the doors | staged | look |  |
-| covered 3x3 cell (plank lattice) | staged | poked | plank lattice, not the design's reinforced frame: the frame should HOLD one colonist (review_map pit_cover_drop), and this poke wants a fall |
+| concealed pit 3x3 (planks) | staged | poked | plank lattice, not the design's reinforced frame: the frame should HOLD one colonist (review_map pit_cover_drop), and this poke wants a fall |
 | kennel ring, 2 m trench, 2 wide | staged | demonstrated |  |
 | chicken, husky, muffalo in the yard | staged | demonstrated |  |
 | drafted handler at the ring | staged | demonstrated |  |

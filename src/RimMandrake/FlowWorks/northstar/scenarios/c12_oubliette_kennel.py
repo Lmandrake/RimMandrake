@@ -52,7 +52,7 @@ SCENARIO = scenario(
           "stranded",
           "kennel: just watch: the chicken stays in the ring, the husky climbs out slowly, the muffalo steps across; "
           "the thrumbo walks round the 1x1 shaft",
-          "order the cover-side colonist onto the covered cell: falls through, hurt",
+          "order the colonist beside the concealed pit onto it: falls through, hurt",
           "jump the jump-pack colonist into the third pit: lands unhurt; undraft the geared one: climbs out of 5 m; "
           "undraft the ladder-pit one: climbs the portable ladder",
           "inspect a pit cell at noon and at midnight (dev advance; branch save _days): its temperature differs from the "
@@ -60,12 +60,12 @@ SCENARIO = scenario(
     look_for="a pit reads as a dark hole at its size; occupants drawn below the floor; raised vs lowered ladder "
              "legible; the guardrail keeps people off the lip",
     broken="a warden climbing down; the room not a prison; all three kennel beasts held, or all out; the thrumbo in "
-           "the 1x1; the cover visible at play zoom; a ladder lowered from below; the guardrail letting someone walk off",
+           "the 1x1; the concealed pit visible at play zoom; a ladder lowered from below; the guardrail letting someone walk off",
     idle="every colonist drafted; the prisoner is in a sealed 4 m pit; the beasts are wild and roam INSIDE the ring "
          "(climbing out is the test, so the soak reads their KIND per plot, not their cell)",
     setup=SETUP,
     parts=[(4, 27, "oubliette 4 m (machine-dug)"), (4, 21, "prisoner"), (6, 22, "sluice"), (6, 26, "grate"),
-           (11, 26, "covered cell"), (24, 33, "kennel ring 2 m"), (16, 26, "handler"), (35, 28, "1x1 shaft"),
+           (11, 26, "concealed pit"), (24, 33, "kennel ring 2 m"), (16, 26, "handler"), (35, 28, "1x1 shaft"),
            (35, 21, "thrumbo"), (4, 8, "portable ladder 3 m"), (11, 8, "gear, 5 m"), (18, 8, "jump pack")],
     pieces=[staged("oubliette 3x4, 4 m, prisoner bed", "beds", None, (4, 23)),
             staged("prisoner, hungry-ish and thirsty", "pawn_ops", "RM_Thirst=0.25", (4, 22)),
@@ -74,7 +74,7 @@ SCENARIO = scenario(
             staged("sluice (wood) in the east wall", "spawn", "RM_Sluice", (6, 23), "poked"),
             staged("security grate (steel) in the east wall", "spawn", "RM_SecurityGrateDoor", (6, 25), "poked"),
             staged("dry drain canals behind the doors", "dig", None, (7, 23), "look"),
-            staged("covered 3x3 cell (plank lattice)", "spawn", "RM_PitCover_PlankLattice", (10, 22), "poked",
+            staged("concealed pit 3x3 (planks)", "spawn", "RM_PitCover_PlankLattice", (10, 22), "poked",
                    "plank lattice, not the design's reinforced frame: the frame should HOLD one colonist "
                    "(review_map pit_cover_drop), and this poke wants a fall"),
             staged("kennel ring, 2 m trench, 2 wide", "dig", None, (18, 18)),

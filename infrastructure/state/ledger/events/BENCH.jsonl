@@ -3598,3 +3598,7 @@
 {"seat":"BENCH","event":"lease","id":"PIT_COVER_FIX_OCCUPANT_STAYS_BELOW","action":"take","token":"BENCH.pid13702.d6027f08","expires":"2026-10-22T07:41:11Z","ts":"2026-10-22T06:56:11Z","why":"BENCH helper: occupant stays below","tsn":1792652171477526606}
 {"seat":"BENCH","event":"claim","id":"PIT_COVER_FIX_OCCUPANT_STAYS_BELOW","why":"BENCH helper: occupant stays below","ts":"2026-10-22T06:56:11Z","tsn":1792652171855214758}
 {"seat":"BENCH","event":"start","id":"PIT_COVER_FIX_OCCUPANT_STAYS_BELOW","why":"BENCH helper: occupant stays below","ts":"2026-10-22T06:56:12Z","tsn":1792652172221781009}
+{"seat":"BENCH","event":"lease","id":"HOSE_ENDS_FIX_MISSES_THE_PORTS","action":"take","token":"BENCH.pid13742.ba6206d6","expires":"2026-10-22T07:42:04Z","ts":"2026-10-22T06:57:04Z","tsn":1792652224504358267}
+{"seat":"BENCH","event":"claim","id":"HOSE_ENDS_FIX_MISSES_THE_PORTS","ts":"2026-10-22T06:57:04Z","tsn":1792652224898255037}
+{"seat":"BENCH","event":"start","id":"HOSE_ENDS_FIX_MISSES_THE_PORTS","ts":"2026-10-22T06:57:05Z","tsn":1792652225287192702}
+{"seat":"BENCH","event":"lease","id":"DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS","action":"renew","token":"BENCH.pid13590.3a08522a","ts":"2026-10-22T06:58:28Z","expires":"2026-10-22T07:43:28Z","tsn":1792652309266932470}

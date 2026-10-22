@@ -556,7 +556,7 @@ def row_bars_trench(s, L):
 
 def row_bars_access(s, L):
     bx, bz = L["bars"]
-    s.say("ROW bars_access: portable ladder (2 m pit, 4 m wall), climbing gear on the ground and worn, a pit cover")
+    s.say("ROW bars_access: portable ladder (2 m pit, 4 m wall), climbing gear on the ground and worn, a concealed pit")
     cap = []
     p2, p4, pg, pn, pc = (bx, bz + 30), (bx + 5, bz + 30), (bx + 10, bz + 30), (bx + 15, bz + 30), (bx + 20, bz + 30)
     s.pit(p2, 3, 4)
@@ -575,13 +575,13 @@ def row_bars_access(s, L):
     cap.append("climbing gear item on the ground")
     s.pit((pc[0] + 4, pc[1]), 3, 4)
     s.place("RM_PitCover_PlankLattice", (pc[0] + 5, pc[1] + 1))
-    cap.append("plank pit cover over a 2 m pit")
+    cap.append("concealed pit (planks) over a 2 m pit")
     return cap
 
 
 def row_bars_bridges(s, L):
     bx, bz = L["bars"]
-    s.say("ROW bars_bridges: rope/timber/steel/heavy, railings on (north lane) and off (south lane), pit cover beside")
+    s.say("ROW bars_bridges: rope/timber/steel/heavy, railings on (north lane) and off (south lane), concealed pit beside")
     cap = []
     for k, tier in enumerate(("rope", "timber", "steel", "heavy")):
         x0 = bx + k * 13
@@ -594,7 +594,7 @@ def row_bars_bridges(s, L):
             cap.append("%s suspension bridge, railings %s (%s lane)" % (tier, rails, "north" if lane == 0 else "south"))
     s.pit((bx + 54, bz + 40), 3, 4)
     s.place("RM_PitCover_PlankLattice", (bx + 55, bz + 41))
-    cap.append("plank pit cover (east end) beside the bridges: a cover passes for ground, a bridge does not")
+    cap.append("concealed pit (planks, east end) beside the bridges: a concealed pit passes for ground, a bridge does not")
     return cap
 
 
