@@ -404,6 +404,7 @@ namespace RimMandrake.FlowWorks
 			int wet = 0, dry = 0, deepestDry = 0, maxDryBed = 0, minWetBed = int.MaxValue, stepAll = 0, stepDeep = 0;
 			int lbShallow = 0, lbDeep = 0, lbAbyss = 0;
 			IntVec3 deepestCell = IntVec3.Invalid, shelfCell = IntVec3.Invalid;
+			int shelfDepth = int.MaxValue;
 			long hash = 17;
 			foreach (IntVec3 c in body.cells)
 			{
@@ -420,10 +421,14 @@ namespace RimMandrake.FlowWorks
 				maxDryBed = System.Math.Max(maxDryBed, bed);
 				int d = eng.HollowDepthAt(c);
 				if (d > deepestDry) { deepestDry = d; deepestCell = c; }
-				// the proof's walk-out start: the dry square just past the deep notch (5), nearest the lake's west edge
-				if (d == RM_Volume.LevelsPerSquare + 1 && (!shelfCell.IsValid || c.x < shelfCell.x || (c.x == shelfCell.x && c.z < shelfCell.z)))
+				// the proof's walk-out start: a dry square past the deep notch (>= 5), the shallowest such band, then nearest the
+				// lake's west edge. DRAWDOWN_DIAGNOSE_THIRTEEN_BEFORE_TWELVE: it was depth == 5 exactly, and a rough LAKE_FLOORS
+				// floor can skip that band entirely (shelfCell=none, both colonist rows UNMEASURED).
+				if (d > RM_Volume.LevelsPerSquare && (!shelfCell.IsValid || d < shelfDepth
+					|| (d == shelfDepth && (c.x < shelfCell.x || (c.x == shelfCell.x && c.z < shelfCell.z)))))
 				{
 					shelfCell = c;
+					shelfDepth = d;
 				}
 				if (t == RimMandrakeFlowWorks_DefOf.RM_Lakebed_Shallow) lbShallow++;
 				else if (t == RimMandrakeFlowWorks_DefOf.RM_Lakebed_Deep) lbDeep++;
@@ -446,7 +451,7 @@ namespace RimMandrake.FlowWorks
 				+ " maxDryBed=" + maxDryBed + " minWetBed=" + (wet > 0 ? minWetBed : 0) + " stepDeep=" + stepDeep + " stepAll=" + stepAll
 				+ " lakebedShallow=" + lbShallow + " lakebedDeep=" + lbDeep + " lakebedAbyss=" + lbAbyss
 				+ " deepestCell=" + (deepestCell.IsValid ? deepestCell.x + "," + deepestCell.z : "none")
-				+ " shelfCell=" + (shelfCell.IsValid ? shelfCell.x + "," + shelfCell.z : "none")
+				+ " shelfCell=" + (shelfCell.IsValid ? shelfCell.x + "," + shelfCell.z : "none") + " shelfDepth=" + (shelfCell.IsValid ? shelfDepth : 0)
 				+ " hollows=" + RimMandrakeFlowWorksSettings.pondBedHollowEnabled + " stock=" + body.stock.ToString("F1")
 				+ " capacity=" + body.capacity.ToString("F1") + " hash=" + hash;
 		}

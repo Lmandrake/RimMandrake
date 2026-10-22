@@ -156,6 +156,10 @@ namespace RimMandrake.FlowWorks
 		private int[] bedOf;
 		private int[] slot;        // position in `cells`
 		private int[] seenStamp;
+		private int[] cutMark;     // == stamp: an articulation point of the live set (MarkCuts)
+		private int[] disc, low, parent;
+		private byte[] iter;
+		private readonly List<int> dfs = new List<int>();
 		private int stamp;
 		private readonly List<int> cells = new List<int>();
 		private readonly Queue<int> bfs = new Queue<int>();
@@ -189,6 +193,11 @@ namespace RimMandrake.FlowWorks
 				bedOf = new int[n];
 				slot = new int[n];
 				seenStamp = new int[n];
+				cutMark = new int[n];
+				disc = new int[n];
+				low = new int[n];
+				parent = new int[n];
+				iter = new byte[n];
 				stamp = 0;
 			}
 			this.width = width;
@@ -291,6 +300,37 @@ namespace RimMandrake.FlowWorks
 				bestIdx = c;
 				best = c;
 			}
+			if (best >= 0 && unsafeLocal.Count > 0)
+			{
+				// DRAWDOWN_DIAGNOSE_THIRTEEN_BEFORE_TWELVE: a locally-unsafe square (its 8-ring reads as two wet arcs) with a
+				// better (outflow, bed) key than the best safe one is often safe for the whole body: a rough floor's loops close
+				// the arcs elsewhere. Taking the deeper safe square instead dried bed 13 while bed 12 stayed wet. One
+				// articulation-point pass (O(wet squares)) decides them all exactly; it runs only when the bed key is at stake,
+				// so equal beds keep the old order and cost.
+				int alt = -1;
+				for (int k = 0; k < unsafeLocal.Count; k++)
+				{
+					int c = unsafeLocal[k];
+					if (!KeyBetter(feeds[c] != 0, useBeds ? bedOf[c] : 0, bestOut, bestBed))
+					{
+						continue;
+					}
+					if (alt < 0)
+					{
+						MarkCuts();
+					}
+					if (cutMark[c] == stamp)
+					{
+						continue;
+					}
+					if (alt < 0 || RM_BedMath.PrefersCandidate(feeds[c] != 0, useBeds ? bedOf[c] : 0, neighbours[c], Dist(c), c,
+						feeds[alt] != 0, useBeds ? bedOf[alt] : 0, neighbours[alt], Dist(alt), alt))
+					{
+						alt = c;
+					}
+				}
+				return alt >= 0 ? alt : best;
+			}
 			if (best >= 0 || unsafeLocal.Count == 0)
 			{
 				return best;
@@ -311,6 +351,92 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			return -1;
+		}
+
+		private static bool KeyBetter(bool outflow, int bed, bool bestOutflow, int bestBed)
+		{
+			if (outflow != bestOutflow)
+			{
+				return !outflow;
+			}
+			return bed < bestBed;
+		}
+
+		/// <summary>Marks every articulation point of the live set's 8-way graph (cutMark[i] == stamp after the call): the squares
+		/// whose removal would split a piece of the body. Iterative Tarjan, so a 40,000-square lake cannot overflow the stack.</summary>
+		private void MarkCuts()
+		{
+			if (++stamp == int.MaxValue)
+			{
+				Array.Clear(seenStamp, 0, seenStamp.Length);
+				Array.Clear(cutMark, 0, cutMark.Length);
+				stamp = 1;
+			}
+			int time = 0;
+			for (int r = 0; r < cells.Count; r++)
+			{
+				int root = cells[r];
+				if (seenStamp[root] == stamp)
+				{
+					continue;
+				}
+				int rootChildren = 0;
+				seenStamp[root] = stamp;
+				disc[root] = low[root] = ++time;
+				parent[root] = -1;
+				iter[root] = 0;
+				dfs.Clear();
+				dfs.Add(root);
+				while (dfs.Count > 0)
+				{
+					int v = dfs[dfs.Count - 1];
+					if (iter[v] < 8)
+					{
+						int k = iter[v]++;
+						int ux = v % width + RingX[k], uz = v / width + RingZ[k];
+						if (!IsLive(ux, uz))
+						{
+							continue;
+						}
+						int u = uz * width + ux;
+						if (seenStamp[u] != stamp)
+						{
+							seenStamp[u] = stamp;
+							disc[u] = low[u] = ++time;
+							parent[u] = v;
+							iter[u] = 0;
+							dfs.Add(u);
+							if (v == root)
+							{
+								rootChildren++;
+							}
+						}
+						else if (u != parent[v] && disc[u] < low[v])
+						{
+							low[v] = disc[u];
+						}
+						continue;
+					}
+					dfs.RemoveAt(dfs.Count - 1);
+					int p = parent[v];
+					if (p < 0)
+					{
+						continue;
+					}
+					if (low[v] < low[p])
+					{
+						low[p] = low[v];
+					}
+					if (p != root && low[v] >= disc[p])
+					{
+						cutMark[p] = stamp;
+					}
+				}
+				if (rootChildren > 1)
+				{
+					cutMark[root] = stamp;
+				}
+			}
 		}
 
 		/// <summary>The square dried: out of the live set, its neighbours' counts down, its bed out of the wet levels.</summary>
@@ -369,6 +495,7 @@ namespace RimMandrake.FlowWorks
 			if (++stamp == int.MaxValue)
 			{
 				Array.Clear(seenStamp, 0, seenStamp.Length);
+				Array.Clear(cutMark, 0, cutMark.Length);
 				stamp = 1;
 			}
 			int comps = 0;

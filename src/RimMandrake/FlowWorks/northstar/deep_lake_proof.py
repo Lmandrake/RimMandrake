@@ -219,8 +219,8 @@ def main():
         row("DL_shallow_dries_first", st, "MOD", det)
         shelf = cell_of(drained, "shelfCell")
         if shelf is None:
-            row("DL_colonist_free_in_bowl", "UNMEASURED", "MOD", {"why": "no dry square at bed 5", "shape": t1})
-            row("DL_colonist_walks_out", "UNMEASURED", "MOD", {"why": "no dry square at bed 5"})
+            row("DL_colonist_free_in_bowl", "UNMEASURED", "MOD", {"why": "no dry square past bed 4", "shape": t1})
+            row("DL_colonist_walks_out", "UNMEASURED", "MOD", {"why": "no dry square past bed 4"})
         else:
             r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=shelf[0], z=shelf[1], faction="player", count=1) or {}
             pid = ((r.get("pawns") or [{}])[0]).get("id")

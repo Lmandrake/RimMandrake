@@ -181,6 +181,58 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(receded.Count == 0 && fp.All(i => wet[i]), "full again: every square wet, the stack empty");
             });
 
+            Case("DeepBed_rough_rect_lake_drains_shallow_first", () =>
+            {
+                // DRAWDOWN_DIAGNOSE_THIRTEEN_BEFORE_TWELVE: the live deep_lake_proof shape (a painted 72x72 rectangle, rim 3, lake
+                // depth x2) over rough LAKE_FLOORS floors, stock dropped straight to a fraction and settled. A rough floor leaves a
+                // shallower square whose 8-ring reads as two wet arcs (locally unsafe) though the body stays one piece without it;
+                // Pick used to settle for a DEEPER locally-safe square then (live: bed 13 dry while bed 12 stayed wet).
+                int w = 100, h = 100, x0 = 14, z0 = 14, side = 72, rim = 3;
+                var fp = new List<int>();
+                var deep = new HashSet<int>();
+                for (int z = z0; z < z0 + side; z++)
+                    for (int x = x0; x < x0 + side; x++)
+                    {
+                        int i = z * w + x;
+                        fp.Add(i);
+                        if (x - x0 >= rim && z - z0 >= rim && x0 + side - 1 - x >= rim && z0 + side - 1 - z >= rim) deep.Add(i);
+                    }
+                int bad = 0, runs = 0;
+                string first = null;
+                foreach (float r in new[] { 0.3f, 0.6f, 0.9f })
+                {
+                    for (int seed = 1; seed <= 8; seed++)
+                    {
+                        var p = RM_LakeFloorMath.Params.Defaults(seed * 104729, r);
+                        p.depthScale = 2f;
+                        int[] beds = Floor(w, h, fp, deep, p);
+                        var bedOf = new Dictionary<int, int>();
+                        long total = 0;
+                        for (int k = 0; k < fp.Count; k++) { bedOf[fp[k]] = beds[k]; total += beds[k]; }
+                        foreach (float frac in new[] { 0.6f, 0.25f, 0.08f })
+                        {
+                            var wet = new bool[w * h];
+                            foreach (int i in fp) wet[i] = true;
+                            var receded = new List<int>();
+                            Pulse(new RM_RecessionSet(), w, h, fp, bedOf, wet, receded, total * frac, 1f);
+                            int minWet = int.MaxValue, maxDry = 0, wc = 0;
+                            foreach (int i in fp)
+                            {
+                                if (wet[i]) { wc++; minWet = Math.Min(minWet, bedOf[i]); }
+                                else maxDry = Math.Max(maxDry, bedOf[i]);
+                            }
+                            runs++;
+                            if (wc > 0 && maxDry > minWet)
+                            {
+                                bad++;
+                                if (first == null) first = "r " + r + " seed " + seed + " frac " + frac + ": dry " + maxDry + " > wet " + minWet;
+                            }
+                        }
+                    }
+                }
+                Assert(bad == 0, bad + " of " + runs + " drawdowns dried a deeper bed while a shallower stayed wet; first " + first);
+            });
+
             Case("DeepBed_equal_beds_match_the_old_average_model", () =>
             {
                 // every bed equal (one weight a square, as with deepBedsEnabled off or a small pond): the level count gives the
