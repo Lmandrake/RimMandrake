@@ -17,7 +17,7 @@ before; --no-fresh-map uses whatever map is current; --site-save NAME picks anot
 
 Run python.exe from the repo root (bridge calls only work under python.exe; pipe through tr -d '\\r').
 
-ORDER (section 6; one map -- the clean saved site by default -- one calm-world setup, ONE save + ONE load):
+ORDER (section 6; one map -- the clean saved site by default -- one calm-world setup, the census save + load, then S12d's own save + load):
   0. offline gate, run in WSL python3 (numpy, the C# SelfTest): validation.py O1-O8 (O3 = C# SelfTest vs the Python
      oracle + its --probe mutation + the DeterminismChecks floor replay), northstar_matrix/selftest.py,
      human_review.py --plan, selftest_human_review.py, and the design spec JSON for the matrix. Any red refuses to go
@@ -36,6 +36,8 @@ ORDER (section 6; one map -- the clean saved site by default -- one calm-world s
      defect of 2026-10-02), then the ONE save: SL1 only the new .rws appeared; SL2 the save names no class of ours
      (guard: the MapComponent written into saves, 2026-10-02); SL3 after the load every subsystem's census equals the
      one before (guard: no cords on ANY loaded save, the MapDrawer NRE of 2026-10-02).
+  4b. S12d (D4): a SECOND save written by csavenow with a member still pending, reloaded, read against a control --
+     after SL3, so its staging cannot touch SL1-SL3's sets (d4_save; 2026-10-22).
   5. Z: one log budget over the whole session (startup excluded, the load included).
   Not here: the removal check (walk E1, paused by the owner) -- `validation.py --removal-check <the SL save>` after one
   cold load onto `modset_builder.py --tier flowworks`. And not a proof: `human_review.py --build --fresh-map`.
@@ -70,7 +72,7 @@ import validation as V  # noqa: E402
 SCRATCH_WIN = rm_win("scratch", "gss_proof")
 SCRATCH_POSIX = rm_str("scratch", "gss_proof")
 SPEC_NAME = "scenes_design.json"
-BLOCKS = ["matrix", "core", "aerial", "style", "save_load"]   # hose/maze/relay/carry/style_hose moved to FlowWorks/northstar/proof_hose.py (hose port)
+BLOCKS = ["matrix", "core", "aerial", "style", "save_load", "d4_save"]   # hose/maze/relay/carry/style_hose moved to FlowWorks/northstar/proof_hose.py (hose port)
 PARK = (125, 165)                     # colonists moved here, out of the matrix REGION and every site
 
 # The row ids a full live run emits, per block, for the required-check manifest (the walk's `checkout:` header names
@@ -99,7 +101,8 @@ DECLARED_ROWS = {
               "S9a_two_runs_two_styles", "S9b_bridge_largest_wins", "S9c_split_keeps_styles",
               "S9d_restyle_and_materials", "S10_legacy_default_materials", "S11_lamp_master_off_vanilla", "S12a_D1_legacy_run_one_look", "S12b_D7_bulk_spawn_cost"],
     "session": ["D1_zero_tick_rereads_same", "D2_fresh_builder_same", "Z_log_budget"],
-    "save_load": ["SL1_save_landed_new_file_only", "SL2_save_names_no_class_of_ours", "SL3_after_load_census_equal"],
+    "save_load": ["SL1_save_landed_new_file_only", "SL2_save_names_no_class_of_ours", "SL3_after_load_census_equal",
+                  "S12d_D4_pending_queue_save"],
 }
 
 
@@ -745,6 +748,35 @@ class Proof(object):
                   "spawned": cords_b.get("spawnedConduitTexture")})
         self.res["save_load_notes"] = notes
 
+    # ------------------------------------------------------------------ 4b. S12d: a SECOND save, after SL3
+    def d4_save(self):
+        """S12d (GPT D4) measured IN the session. Until 2026-10-22 the style block wrote S12d as SHARED/UNMEASURED and left it
+        to a standalone `validation_style.py --live --save`, so every full proof_all result carried one UNMEASURED row and
+        `modcheck record` (any UNMEASURED row -> RED) could never read it GREEN. The reason it was left out still holds: a
+        member staged pending in the ONE save would change M4/S7/S9e's before/after sets. So D4 gets its own save + load
+        here, AFTER SL3 has compared them -- nothing it stages can reach SL1-SL3. Z (next block) covers this load too; the
+        control's save/load noise is the same list's. Reuses validation_style's own staging, save and read verbatim."""
+        if self.res.get("aborted"):
+            return                                           # the SHARED placeholder row stays, honestly UNMEASURED
+        B = self.B
+        self.rows = [r for r in self.rows if r.get("id") != "S12d_D4_pending_queue_save"]
+        built = VS.s12d_stage(B)
+        name = (self.args.save_name or "RM_gss_proof_%s" % time.strftime("%Y%m%d%H%M%S")) + "_d4"
+        self.res["save_d4"] = name + ".rws"
+        rows = []
+        VS._save_load(B, rows, name, B.ap("styles"), stage=built)
+        bad = [r for r in rows if r.get("status") != "PASS"]
+        if bad:                                              # the save or the load itself failed: D4 was not read
+            self.row("save_load", "S12d_D4_pending_queue_save", "UNMEASURED", "HARNESS",
+                     {"why": "the D4 save/load did not complete", "saveLoad": bad, "built": built})
+            return
+        VS.s12d_after_load(B, rows, built)
+        for r in rows:
+            if r.get("id") == "S12d_D4_pending_queue_save":
+                self.rows.append(dict(r, block="save_load"))
+            else:                                            # its S7 re-read of the second load: evidence, not a row
+                self.res.setdefault("d4_save_notes", []).append(r)
+
     # ------------------------------------------------------------------ control: the list's own noise
     def p2c_control_noise(self):
         """2026-10-10 (full 550-mod list): Z charged GSS with other mods' errors that ANY save/load on that list emits --
@@ -868,6 +900,7 @@ class Proof(object):
         if self.want("matrix"):
             self.block("determinism", self.determinism)
         self.block("save_load", self.save_load)
+        self.block("d4_save", self.d4_save)
         self.block("log_budget", self.log_budget)
 
 
