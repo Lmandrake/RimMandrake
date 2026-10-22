@@ -1,0 +1,88 @@
+{
+ "generated": "2026-10-22",
+ "item": "picks_dessicated: facings derived from the east he approved (owner notes verbatim)",
+ "rows": [
+  {
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "channel": "codex",
+   "priority": 0,
+   "background": "transparent",
+   "biome_neutral": true,
+   "ask": "facings",
+   "id": "picks1redo_akk_v1",
+   "target_def": "RSW_Akk",
+   "target_texpath": "swanimals/Akk/Akk",
+   "slot": "swanimals/Akk/Akk",
+   "derive_from": "donorart_akk_v1_east",
+   "facings": [
+    "north"
+   ],
+   "canvas_w": 512,
+   "canvas_h": 512,
+   "owner_note": "D has a good East. A has good South. Redo North.",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"D has a good East. A has good South. Redo North.\" The attached image is the approved east (side) view; draw the SAME individual from the facing named below, at the same scale, at the creature's own eye level. North is the REAR view: its back, hindquarters, tail and the backs of its legs toward the viewer; no face."
+  },
+  {
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "channel": "codex",
+   "priority": 0,
+   "background": "transparent",
+   "biome_neutral": true,
+   "ask": "facings",
+   "id": "picks1redo_brezak_v1",
+   "target_def": "RSW_Brezak",
+   "target_texpath": "swanimals/Brezak/Brezak",
+   "slot": "swanimals/Brezak/Brezak",
+   "derive_from": "donorart_brezak_v1_east",
+   "facings": [
+    "north"
+   ],
+   "canvas_w": 768,
+   "canvas_h": 768,
+   "owner_note": "N needs regeneration, other directions look good",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"N needs regeneration, other directions look good\" The attached image is the approved east (side) view; draw the SAME individual from the facing named below, at the same scale, at the creature's own eye level. North is the REAR view: no face visible."
+  },
+  {
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "channel": "codex",
+   "priority": 0,
+   "background": "transparent",
+   "biome_neutral": true,
+   "ask": "facings",
+   "id": "picks1redo_tibidee_v1",
+   "target_def": "RSW_Tibidee",
+   "target_texpath": "swanimals/Tibidee/Tibidee",
+   "slot": "swanimals/Tibidee/Tibidee",
+   "derive_from": "dregen_RSW_Tibidee_Tibidee_v1_east",
+   "facings": [
+    "north",
+    "south"
+   ],
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "owner_note": "Try again based on Option A, East Facing (the only decent one... make North and South of that!)",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Try again based on Option A, East Facing (the only decent one... make North and South of that!)\" The attached image is the approved east (side) view; draw the SAME individual from the facing named below, at the same scale, at the creature's own eye level. North is the REAR view (no face); south is the FRONT view (face toward the viewer)."
+  },
+  {
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "channel": "codex",
+   "priority": 0,
+   "background": "transparent",
+   "biome_neutral": true,
+   "ask": "facings",
+   "id": "picks1redo_insectomorph_v1",
+   "target_def": "RSW_Insectomorph",
+   "target_texpath": "RimStarWars/SWBestiary/Insectomorph/Insectomorph",
+   "slot": "RimStarWars/SWBestiary/Insectomorph/Insectomorph",
+   "derive_from": "picks1master_insectomorph_v1_east",
+   "facings": [
+    "north",
+    "south"
+   ],
+   "canvas_w": 512,
+   "canvas_h": 512,
+   "owner_note": "Generate North and South",
+   "prompt": "Owner's note, verbatim, overrides everything below: \"Generate North and South\" The attached image is the approved east (side) view; draw the SAME individual from the facing named below, at the same scale, at the creature's own eye level. North is the REAR view (no face); south is the FRONT view (face toward the viewer)."
+  }
+ ]
+}
