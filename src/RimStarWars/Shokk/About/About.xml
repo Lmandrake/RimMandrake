@@ -54,7 +54,7 @@ verify beyond the skin patch's static xpath match.</description>
     </li>
     <li>
       <packageId>mandrake.rm.biomes</packageId>
-      <displayName>RimMandrake: the Webwork</displayName>
+      <displayName>RimMandrake: Baroque Biomes</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>

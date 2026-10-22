@@ -18,15 +18,12 @@ Ships the mechanism, owns no campaign data:
 
   1. `RSW_WyyyschokkFang` (ThingDef, ResourceBase) — a stackable trophy
      resource, small marketValue on its own. A patch
-     (`RSW_TrophyCraft_WyyyschokkFangDrop.xml`) attaches it as a
-     butcherProducts entry on the third-party `Wyyyschokk` ThingDef
-     (`mlie.starwarsanimalcollection`, Star Wars Animal Collection —
-     confirmed by the same species-ownership search `RimMandrake: SW —
-     Shokk`'s About.xml already recorded: there is no RUT_/RSW_-owned
-     Wyyyschokk def anywhere in this repo, only PatchOperations against the
-     donor's). A patch that matches nothing logs nothing, so this mod loads
-     fine with or without that donor installed — it simply never drops fangs
-     without it.
+     (`RSW_TrophyCraft_WyyyschokkFangDrop.xml`) adds it to the butcherProducts of
+     `RM_Ollathrix` (mandrake.rm.biomes' Webwork owner species), which IS the
+     wyyyschokk (owner ruling 2026-10-03, WYYYSCHOKK_IDENTITY_COLLISION_1; the
+     third-party donor Wyyyschokk in `mlie.starwarsanimalcollection` is retired and
+     no longer patched). A patch that matches nothing logs nothing, so this mod
+     loads fine without the Webwork biome; it simply never drops fangs without it.
   2. `RSW_Apparel_FangPendant` (ThingDef, apparel) — crafted at a hand tailor
      bench from fangs + cloth (the "textile cord"), low work, no research
      prerequisite (tribal tech level). Worn on a brand-new
@@ -76,5 +73,7 @@ listed factions, confirm the pendant sells to a vanilla trader. See
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
+    <!-- RSW_TrophyCraft_WyyyschokkFangDrop.xml patches RM_Ollathrix; a conditional patch loaded earlier silently no-ops -->
+    <li>mandrake.rm.biomes</li>
   </loadAfter>
 </ModMetaData>
