@@ -1,0 +1,2679 @@
+{
+ "schema": 1,
+ "rows": [
+  {
+   "key": "RD_Tower_Scrapper",
+   "label": "tower \u2014 Scrapper (rank 1: saddle top, short front, projecting base)",
+   "part": "Tower",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionTower"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionTower_Scrapper_rd1a|RM_SuspensionTower_Scrapper_rd1b)\\b",
+   "jobs": [
+    "RM_SuspensionTower_Scrapper_rd1a",
+    "RM_SuspensionTower_Scrapper_rd1b"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionTower.png"
+   ]
+  },
+  {
+   "key": "RD_Tower_Industrial",
+   "label": "tower \u2014 Industrial (rank 1: saddle top, short front, projecting base)",
+   "part": "Tower",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionTower"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionTower_Industrial_rd1a|RM_SuspensionTower_Industrial_rd1b)\\b",
+   "jobs": [
+    "RM_SuspensionTower_Industrial_rd1a",
+    "RM_SuspensionTower_Industrial_rd1b"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionTower.png"
+   ]
+  },
+  {
+   "key": "RD_Tower_Modern",
+   "label": "tower \u2014 Modern (rank 1: saddle top, short front, projecting base)",
+   "part": "Tower",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionTower"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionTower_Modern_rd1a|RM_SuspensionTower_Modern_rd1b)\\b",
+   "jobs": [
+    "RM_SuspensionTower_Modern_rd1a",
+    "RM_SuspensionTower_Modern_rd1b"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionTower.png"
+   ]
+  },
+  {
+   "key": "RD_Tower_Futuristic",
+   "label": "tower \u2014 Futuristic (rank 1: saddle top, short front, projecting base)",
+   "part": "Tower",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionTower"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionTower_Futuristic_rd1a|RM_SuspensionTower_Futuristic_rd1b)\\b",
+   "jobs": [
+    "RM_SuspensionTower_Futuristic_rd1a",
+    "RM_SuspensionTower_Futuristic_rd1b"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionTower.png"
+   ]
+  },
+  {
+   "key": "RD_DBPlanks_Timber",
+   "label": "drawbridge lowered deck \u2014 Timber (rank 2: flat parallel-sided tread) \u00b7 never rendered before",
+   "part": "DBPlanks",
+   "look": "Timber",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Timber"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_DrawbridgePlanks_Timber_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgePlanks_Timber_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_DBPlanks_Steel",
+   "label": "drawbridge lowered deck \u2014 Steel (rank 2: flat parallel-sided tread)",
+   "part": "DBPlanks",
+   "look": "Steel",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Steel"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_DrawbridgePlanks_Steel_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgePlanks_Steel_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgePlanks_Steel/RM_DrawbridgePlanks_Steel.png"
+   ]
+  },
+  {
+   "key": "RD_DBPlanks_Scrapper",
+   "label": "drawbridge lowered deck \u2014 Scrapper (rank 2: flat parallel-sided tread) \u00b7 never rendered before",
+   "part": "DBPlanks",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Scrapper"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_DrawbridgePlanks_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgePlanks_Scrapper_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_DBPlanks_Industrial",
+   "label": "drawbridge lowered deck \u2014 Industrial (rank 2: flat parallel-sided tread) \u00b7 never rendered before",
+   "part": "DBPlanks",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Industrial"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_DrawbridgePlanks_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgePlanks_Industrial_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_DBPlanks_Modern",
+   "label": "drawbridge lowered deck \u2014 Modern (rank 2: flat parallel-sided tread)",
+   "part": "DBPlanks",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Modern"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_DrawbridgePlanks_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgePlanks_Modern_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgePlanks_Modern/RM_DrawbridgePlanks_Modern.png"
+   ]
+  },
+  {
+   "key": "RD_DBPlanks_Futuristic",
+   "label": "drawbridge lowered deck \u2014 Futuristic (rank 2: flat parallel-sided tread) \u00b7 never rendered before",
+   "part": "DBPlanks",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgePlanks_Futuristic"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_DrawbridgePlanks_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgePlanks_Futuristic_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_RaidPlank_Laid",
+   "label": "raid plank, laid (rank 3: continuous flat tread)",
+   "part": "RaidPlank",
+   "look": "Base",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_Laid"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_RaidPlank_Laid_rd1a)\\b",
+   "jobs": [
+    "RM_RaidPlank_Laid_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_RaidPlank_Laid/RM_RaidPlank_Laid.png"
+   ]
+  },
+  {
+   "key": "RD_RaidPlank_LaidEnd",
+   "label": "raid plank, laid end (rank 3)",
+   "part": "RaidPlank",
+   "look": "Base",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_LaidEnd"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_RaidPlank_LaidEnd_rd1a)\\b",
+   "jobs": [
+    "RM_RaidPlank_LaidEnd_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_RaidPlank_LaidEnd/RM_RaidPlank_LaidEnd.png"
+   ]
+  },
+  {
+   "key": "RD_RaidPlank_Item",
+   "label": "raid plank, carried item (rank 3: a plank, not a log)",
+   "part": "RaidPlank",
+   "look": "Base",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_RaidPlank"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_RaidPlank_Item_rd1a)\\b",
+   "jobs": [
+    "RM_RaidPlank_Item_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_RaidPlank/RM_RaidPlank.png"
+   ]
+  },
+  {
+   "key": "RD_DeckTimber_Industrial",
+   "label": "timber deck \u2014 Industrial (rank 4: show wood)",
+   "part": "DeckTimber",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_Timber_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_Timber_Industrial_rd1a"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+   ]
+  },
+  {
+   "key": "RD_DeckTimber_Modern",
+   "label": "timber deck \u2014 Modern (rank 4: show wood)",
+   "part": "DeckTimber",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_Timber_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_Timber_Modern_rd1a"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+   ]
+  },
+  {
+   "key": "RD_DeckTimber_Futuristic",
+   "label": "timber deck \u2014 Futuristic (rank 4: show wood)",
+   "part": "DeckTimber",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_Timber_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_Timber_Futuristic_rd1a"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Heavy_Scrapper",
+   "label": "anchor heavy \u2014 Scrapper (rank 5: distinct tier silhouette)",
+   "part": "AnchorHeavy",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Heavy_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Heavy_Scrapper_rd1a",
+    "RM_SuspensionAnchor_Heavy_Scrapper_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Heavy.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Steel_Scrapper",
+   "label": "anchor steel \u2014 Scrapper (rank 5: distinct tier silhouette)",
+   "part": "AnchorSteel",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Steel_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Steel_Scrapper_rd1a",
+    "RM_SuspensionAnchor_Steel_Scrapper_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Timber_Scrapper",
+   "label": "anchor timber \u2014 Scrapper (rank 5: distinct tier silhouette)",
+   "part": "AnchorTimber",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Timber_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Timber_Scrapper_rd1a",
+    "RM_SuspensionAnchor_Timber_Scrapper_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Heavy_Industrial",
+   "label": "anchor heavy \u2014 Industrial (rank 5: distinct tier silhouette)",
+   "part": "AnchorHeavy",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Heavy_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Heavy_Industrial_rd1a",
+    "RM_SuspensionAnchor_Heavy_Industrial_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Heavy.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Steel_Industrial",
+   "label": "anchor steel \u2014 Industrial (rank 5: distinct tier silhouette)",
+   "part": "AnchorSteel",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Steel_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Steel_Industrial_rd1a",
+    "RM_SuspensionAnchor_Steel_Industrial_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Timber_Industrial",
+   "label": "anchor timber \u2014 Industrial (rank 5: distinct tier silhouette)",
+   "part": "AnchorTimber",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Timber_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Timber_Industrial_rd1a",
+    "RM_SuspensionAnchor_Timber_Industrial_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Heavy_Modern",
+   "label": "anchor heavy \u2014 Modern (rank 5: distinct tier silhouette)",
+   "part": "AnchorHeavy",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Heavy_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Heavy_Modern_rd1a",
+    "RM_SuspensionAnchor_Heavy_Modern_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Heavy.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Steel_Modern",
+   "label": "anchor steel \u2014 Modern (rank 5: distinct tier silhouette)",
+   "part": "AnchorSteel",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Steel_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Steel_Modern_rd1a",
+    "RM_SuspensionAnchor_Steel_Modern_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Timber_Modern",
+   "label": "anchor timber \u2014 Modern (rank 5: distinct tier silhouette)",
+   "part": "AnchorTimber",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Timber_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Timber_Modern_rd1a",
+    "RM_SuspensionAnchor_Timber_Modern_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Heavy_Futuristic",
+   "label": "anchor heavy \u2014 Futuristic (rank 5: distinct tier silhouette)",
+   "part": "AnchorHeavy",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Heavy_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Heavy_Futuristic_rd1a",
+    "RM_SuspensionAnchor_Heavy_Futuristic_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Heavy.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Steel_Futuristic",
+   "label": "anchor steel \u2014 Futuristic (rank 5: distinct tier silhouette)",
+   "part": "AnchorSteel",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Steel_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Steel_Futuristic_rd1a",
+    "RM_SuspensionAnchor_Steel_Futuristic_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel.png"
+   ]
+  },
+  {
+   "key": "RD_Anchor_Timber_Futuristic",
+   "label": "anchor timber \u2014 Futuristic (rank 5: distinct tier silhouette)",
+   "part": "AnchorTimber",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionAnchor_Timber_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionAnchor_Timber_Futuristic_rd1a",
+    "RM_SuspensionAnchor_Timber_Futuristic_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_south.png",
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber.png"
+   ]
+  },
+  {
+   "key": "RD_Leaf_Timber_Face",
+   "label": "raised leaf face \u2014 Timber (rank 6: one span, one hinge)",
+   "part": "LeafFace",
+   "look": "Timber",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Face"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Timber_Face_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Timber_Face_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeLeafUp_Timber_Face/RM_DrawbridgeLeafUp_Timber_Face.png"
+   ]
+  },
+  {
+   "key": "RD_Leaf_Timber_Underside",
+   "label": "raised leaf underside \u2014 Timber (rank 6: one span, one hinge)",
+   "part": "LeafUnderside",
+   "look": "Timber",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Underside"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Timber_Underside_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Timber_Underside_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeLeafUp_Timber_Underside/RM_DrawbridgeLeafUp_Timber_Underside.png"
+   ]
+  },
+  {
+   "key": "RD_Leaf_Timber_Edge",
+   "label": "raised leaf edge \u2014 Timber (rank 6: one span, one hinge)",
+   "part": "LeafEdge",
+   "look": "Timber",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Timber_Edge"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Timber_Edge_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Timber_Edge_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeLeafUp_Timber_Edge/RM_DrawbridgeLeafUp_Timber_Edge.png"
+   ]
+  },
+  {
+   "key": "RD_Leaf_Steel_Face",
+   "label": "raised leaf face \u2014 Steel (rank 6: one span, one hinge)",
+   "part": "LeafFace",
+   "look": "Steel",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Face"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Steel_Face_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Steel_Face_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeLeafUp_Steel_Face/RM_DrawbridgeLeafUp_Steel_Face.png"
+   ]
+  },
+  {
+   "key": "RD_Leaf_Steel_Underside",
+   "label": "raised leaf underside \u2014 Steel (rank 6: one span, one hinge) \u00b7 never rendered before",
+   "part": "LeafUnderside",
+   "look": "Steel",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Underside"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Steel_Underside_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Steel_Underside_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Leaf_Steel_Edge",
+   "label": "raised leaf edge \u2014 Steel (rank 6: one span, one hinge)",
+   "part": "LeafEdge",
+   "look": "Steel",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Steel_Edge"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Steel_Edge_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Steel_Edge_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeLeafUp_Steel_Edge/RM_DrawbridgeLeafUp_Steel_Edge.png"
+   ]
+  },
+  {
+   "key": "RD_Leaf_Scrapper_Face",
+   "label": "raised leaf face \u2014 Scrapper (rank 6: one span, one hinge)",
+   "part": "LeafFace",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Face_Scrapper"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Face_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Face_Scrapper_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeLeafUp_Face_Scrapper/RM_DrawbridgeLeafUp_Face_Scrapper.png"
+   ]
+  },
+  {
+   "key": "RD_Leaf_Scrapper_Underside",
+   "label": "raised leaf underside \u2014 Scrapper (rank 6: one span, one hinge)",
+   "part": "LeafUnderside",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Underside_Scrapper"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Underside_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Underside_Scrapper_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeLeafUp_Underside_Scrapper/RM_DrawbridgeLeafUp_Underside_Scrapper.png"
+   ]
+  },
+  {
+   "key": "RD_Leaf_Scrapper_Edge",
+   "label": "raised leaf edge \u2014 Scrapper (rank 6: one span, one hinge)",
+   "part": "LeafEdge",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Edge_Scrapper"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Edge_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Edge_Scrapper_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeLeafUp_Edge_Scrapper/RM_DrawbridgeLeafUp_Edge_Scrapper.png"
+   ]
+  },
+  {
+   "key": "RD_Leaf_Industrial_Face",
+   "label": "raised leaf face \u2014 Industrial (rank 6: one span, one hinge) \u00b7 never rendered before",
+   "part": "LeafFace",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Face_Industrial"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Face_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Face_Industrial_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Leaf_Industrial_Underside",
+   "label": "raised leaf underside \u2014 Industrial (rank 6: one span, one hinge) \u00b7 never rendered before",
+   "part": "LeafUnderside",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Underside_Industrial"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Underside_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Underside_Industrial_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Leaf_Industrial_Edge",
+   "label": "raised leaf edge \u2014 Industrial (rank 6: one span, one hinge) \u00b7 never rendered before",
+   "part": "LeafEdge",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Edge_Industrial"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Edge_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Edge_Industrial_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Leaf_Modern_Face",
+   "label": "raised leaf face \u2014 Modern (rank 6: one span, one hinge) \u00b7 never rendered before",
+   "part": "LeafFace",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Face_Modern"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Face_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Face_Modern_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Leaf_Modern_Underside",
+   "label": "raised leaf underside \u2014 Modern (rank 6: one span, one hinge) \u00b7 never rendered before",
+   "part": "LeafUnderside",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Underside_Modern"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Underside_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Underside_Modern_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Leaf_Modern_Edge",
+   "label": "raised leaf edge \u2014 Modern (rank 6: one span, one hinge) \u00b7 never rendered before",
+   "part": "LeafEdge",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Edge_Modern"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Edge_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Edge_Modern_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Leaf_Futuristic_Face",
+   "label": "raised leaf face \u2014 Futuristic (rank 6: one span, one hinge) \u00b7 never rendered before",
+   "part": "LeafFace",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Face_Futuristic"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Face_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Face_Futuristic_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Leaf_Futuristic_Underside",
+   "label": "raised leaf underside \u2014 Futuristic (rank 6: one span, one hinge) \u00b7 never rendered before",
+   "part": "LeafUnderside",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Underside_Futuristic"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Underside_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Underside_Futuristic_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Leaf_Futuristic_Edge",
+   "label": "raised leaf edge \u2014 Futuristic (rank 6: one span, one hinge) \u00b7 never rendered before",
+   "part": "LeafEdge",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeLeafUp_Edge_Futuristic"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     4
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeLeafUp_Edge_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLeafUp_Edge_Futuristic_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_DeckHeavy_Futuristic",
+   "label": "heavy deck \u2014 Futuristic (rank 7: matte floor, sparse light)",
+   "part": "DeckHeavy",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_Heavy_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_Heavy_Futuristic_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_DeckSteel_Futuristic",
+   "label": "steel deck \u2014 Futuristic (rank 7: matte floor, sparse light)",
+   "part": "DeckSteel",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_Steel_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_Steel_Futuristic_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_JettyHeavy_Futuristic",
+   "label": "jetty heavy \u2014 Futuristic (rank 7)",
+   "part": "JettyHeavy",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionJetty_Heavy_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionJetty_Heavy_Futuristic_rd1a",
+    "RM_SuspensionJetty_Heavy_Futuristic_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_south.png"
+   ]
+  },
+  {
+   "key": "RD_JettySteel_Futuristic",
+   "label": "jetty steel \u2014 Futuristic (rank 7)",
+   "part": "JettySteel",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionJetty_Steel_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionJetty_Steel_Futuristic_rd1a",
+    "RM_SuspensionJetty_Steel_Futuristic_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_south.png"
+   ]
+  },
+  {
+   "key": "RD_PitCover_PlankLattice",
+   "label": "pit cover, plank lattice (rank 8: squared load-bearing lattice)",
+   "part": "PitCover",
+   "look": "Base",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Canals/RM_PitCover_PlankLattice"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_PitCover_PlankLattice_rd1a)\\b",
+   "jobs": [
+    "RM_PitCover_PlankLattice_rd1a"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Canals/RM_PitCover_PlankLattice.png"
+   ]
+  },
+  {
+   "key": "RD_WinchTimber_Timber",
+   "label": "winch, timber tier \u2014 Timber (rank 9: exposed spool, no shed roof)",
+   "part": "WinchTimber",
+   "look": "Timber",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeWinch_Timber_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeWinch_Timber_rd1a",
+    "RM_DrawbridgeWinch_Timber_rd1a_south"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeWinch_Timber_south/RM_DrawbridgeWinch_Timber_south.png"
+   ]
+  },
+  {
+   "key": "RD_WinchTimber_Scrapper",
+   "label": "winch, timber tier \u2014 Scrapper (rank 9: exposed spool, no shed roof) \u00b7 never rendered before",
+   "part": "WinchTimber",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber_Scrapper"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeWinch_Timber_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeWinch_Timber_Scrapper_rd1a",
+    "RM_DrawbridgeWinch_Timber_Scrapper_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_WinchTimber_Industrial",
+   "label": "winch, timber tier \u2014 Industrial (rank 9: exposed spool, no shed roof) \u00b7 never rendered before",
+   "part": "WinchTimber",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber_Industrial"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeWinch_Timber_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeWinch_Timber_Industrial_rd1a",
+    "RM_DrawbridgeWinch_Timber_Industrial_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_WinchTimber_Modern",
+   "label": "winch, timber tier \u2014 Modern (rank 9: exposed spool, no shed roof) \u00b7 never rendered before",
+   "part": "WinchTimber",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber_Modern"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeWinch_Timber_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeWinch_Timber_Modern_rd1a",
+    "RM_DrawbridgeWinch_Timber_Modern_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_WinchTimber_Futuristic",
+   "label": "winch, timber tier \u2014 Futuristic (rank 9: exposed spool, no shed roof) \u00b7 never rendered before",
+   "part": "WinchTimber",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Timber_Futuristic"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeWinch_Timber_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeWinch_Timber_Futuristic_rd1a",
+    "RM_DrawbridgeWinch_Timber_Futuristic_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_DeckHeavy_Scrapper",
+   "label": "heavy deck \u2014 Scrapper (rank 10: simplify, steel reads metal)",
+   "part": "DeckHeavy",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_Heavy_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_Heavy_Scrapper_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_DeckSteel_Scrapper",
+   "label": "steel deck \u2014 Scrapper (rank 10: simplify, steel reads metal)",
+   "part": "DeckSteel",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_Steel_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_Steel_Scrapper_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_DeckHeavy_Industrial",
+   "label": "heavy deck \u2014 Industrial (rank 7 of the suspension list: less tread sparkle)",
+   "part": "DeckHeavy",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_Heavy_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_Heavy_Industrial_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_DeckSteel_Industrial",
+   "label": "steel deck \u2014 Industrial (rank 7 of the suspension list: less tread sparkle)",
+   "part": "DeckSteel",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_Steel_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_Steel_Industrial_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_JettyHeavy_Industrial",
+   "label": "jetty heavy \u2014 Industrial (rank 7)",
+   "part": "JettyHeavy",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionJetty_Heavy_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionJetty_Heavy_Industrial_rd1a",
+    "RM_SuspensionJetty_Heavy_Industrial_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_south.png"
+   ]
+  },
+  {
+   "key": "RD_GratedHeavy_Base",
+   "label": "heavy grated deck \u2014 Base (rank 11: readable bearing bars)",
+   "part": "GratedHeavy",
+   "look": "Base",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_HeavyGrated"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_HeavyGrated_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_HeavyGrated_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_GratedSteel_Base",
+   "label": "steel grated deck \u2014 Base (rank 11: readable bearing bars)",
+   "part": "GratedSteel",
+   "look": "Base",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_SteelGrated"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_SteelGrated_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_SteelGrated_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_GratedHeavy_Scrapper",
+   "label": "heavy grated deck \u2014 Scrapper (rank 11: readable bearing bars)",
+   "part": "GratedHeavy",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeckGrated"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_HeavyGrated_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_HeavyGrated_Scrapper_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_GratedSteel_Scrapper",
+   "label": "steel grated deck \u2014 Scrapper (rank 11: readable bearing bars)",
+   "part": "GratedSteel",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeckGrated"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_SteelGrated_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_SteelGrated_Scrapper_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_GratedHeavy_Industrial",
+   "label": "heavy grated deck \u2014 Industrial (rank 11: readable bearing bars)",
+   "part": "GratedHeavy",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeckGrated"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_HeavyGrated_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_HeavyGrated_Industrial_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_GratedSteel_Industrial",
+   "label": "steel grated deck \u2014 Industrial (rank 11: readable bearing bars)",
+   "part": "GratedSteel",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeckGrated"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_SteelGrated_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_SteelGrated_Industrial_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_GratedHeavy_Modern",
+   "label": "heavy grated deck \u2014 Modern (rank 11: readable bearing bars)",
+   "part": "GratedHeavy",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_HeavyGrated_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_HeavyGrated_Modern_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_GratedSteel_Modern",
+   "label": "steel grated deck \u2014 Modern (rank 11: readable bearing bars)",
+   "part": "GratedSteel",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_SteelGrated_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_SteelGrated_Modern_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_GratedHeavy_Futuristic",
+   "label": "heavy grated deck \u2014 Futuristic (rank 11: readable bearing bars)",
+   "part": "GratedHeavy",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeckGrated"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_HeavyGrated_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_HeavyGrated_Futuristic_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_GratedSteel_Futuristic",
+   "label": "steel grated deck \u2014 Futuristic (rank 11: readable bearing bars)",
+   "part": "GratedSteel",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeckGrated"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_SteelGrated_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_SteelGrated_Futuristic_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_JettySteel_Scrapper",
+   "label": "jetty steel \u2014 Scrapper (rank 12)",
+   "part": "JettySteel",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionJetty_Steel_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionJetty_Steel_Scrapper_rd1a",
+    "RM_SuspensionJetty_Steel_Scrapper_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_south.png"
+   ]
+  },
+  {
+   "key": "RD_JettySteel_Industrial",
+   "label": "jetty steel \u2014 Industrial (rank 12)",
+   "part": "JettySteel",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionJetty_Steel_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionJetty_Steel_Industrial_rd1a",
+    "RM_SuspensionJetty_Steel_Industrial_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_south.png"
+   ]
+  },
+  {
+   "key": "RD_JettySteel_Modern",
+   "label": "jetty steel \u2014 Modern (rank 12)",
+   "part": "JettySteel",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionJetty_Steel_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionJetty_Steel_Modern_rd1a",
+    "RM_SuspensionJetty_Steel_Modern_rd1a_south"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_south.png"
+   ]
+  },
+  {
+   "key": "RD_DeckSteel_Modern",
+   "label": "steel deck \u2014 Modern (rank 12: thinner channels)",
+   "part": "DeckSteel",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionDeck_Steel_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionDeck_Steel_Modern_rd1a"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Railing_Base",
+   "label": "railing \u2014 Base (rank 12: thick posts, one bold rail)",
+   "part": "Railing",
+   "look": "Base",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionRailing_Edge"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionRailing_Base_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionRailing_Base_rd1a"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionRailing_Edge.png"
+   ]
+  },
+  {
+   "key": "RD_Railing_Scrapper",
+   "label": "railing \u2014 Scrapper (rank 12: thick posts, one bold rail)",
+   "part": "Railing",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionRailing_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionRailing_Scrapper_rd1a"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge.png"
+   ]
+  },
+  {
+   "key": "RD_Railing_Industrial",
+   "label": "railing \u2014 Industrial (rank 12: thick posts, one bold rail)",
+   "part": "Railing",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionRailing_Edge"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionRailing_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionRailing_Industrial_rd1a"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionRailing_Edge.png"
+   ]
+  },
+  {
+   "key": "RD_Railing_Modern",
+   "label": "railing \u2014 Modern (rank 12: thick posts, one bold rail)",
+   "part": "Railing",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionRailing_Edge"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionRailing_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionRailing_Modern_rd1a"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionRailing_Edge.png"
+   ]
+  },
+  {
+   "key": "RD_Railing_Futuristic",
+   "label": "railing \u2014 Futuristic (rank 12: thick posts, one bold rail)",
+   "part": "Railing",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionRailing_Edge"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionRailing_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionRailing_Futuristic_rd1a"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionRailing_Edge.png"
+   ]
+  },
+  {
+   "key": "RD_Wreck_Modern",
+   "label": "wreck \u2014 Modern (rank 12: painted panels, not timber)",
+   "part": "Wreck",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionWreck"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_SuspensionWreck_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_SuspensionWreck_Modern_rd1a"
+   ],
+   "reference_textures": [
+    "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionWreck.png"
+   ]
+  },
+  {
+   "key": "RD_Gate_Timber_Open",
+   "label": "gate open \u2014 Timber (rank 12: clear operation and passage) \u00b7 never rendered before",
+   "part": "GateOpen",
+   "look": "Timber",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Timber_Open"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeGate_Timber_Open_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeGate_Timber_Open_rd1a",
+    "RM_DrawbridgeGate_Timber_Open_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Gate_Steel_Closed",
+   "label": "gate closed \u2014 Steel (rank 12: clear operation and passage) \u00b7 never rendered before",
+   "part": "GateClosed",
+   "look": "Steel",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Closed"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeGate_Steel_Closed_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeGate_Steel_Closed_rd1a",
+    "RM_DrawbridgeGate_Steel_Closed_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Gate_Steel_Open",
+   "label": "gate open \u2014 Steel (rank 12: clear operation and passage) \u00b7 never rendered before",
+   "part": "GateOpen",
+   "look": "Steel",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Steel_Open"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeGate_Steel_Open_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeGate_Steel_Open_rd1a",
+    "RM_DrawbridgeGate_Steel_Open_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Gate_Scrapper_Open",
+   "label": "gate open \u2014 Scrapper (rank 12: clear operation and passage) \u00b7 never rendered before",
+   "part": "GateOpen",
+   "look": "Scrapper",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Open_Scrapper"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeGate_Open_Scrapper_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeGate_Open_Scrapper_rd1a",
+    "RM_DrawbridgeGate_Open_Scrapper_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Gate_Industrial_Closed",
+   "label": "gate closed \u2014 Industrial (rank 12: clear operation and passage) \u00b7 never rendered before",
+   "part": "GateClosed",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Closed_Industrial"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeGate_Closed_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeGate_Closed_Industrial_rd1a",
+    "RM_DrawbridgeGate_Closed_Industrial_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Gate_Industrial_Open",
+   "label": "gate open \u2014 Industrial (rank 12: clear operation and passage) \u00b7 never rendered before",
+   "part": "GateOpen",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Open_Industrial"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeGate_Open_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeGate_Open_Industrial_rd1a",
+    "RM_DrawbridgeGate_Open_Industrial_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Gate_Modern_Closed",
+   "label": "gate closed \u2014 Modern (rank 12: clear operation and passage) \u00b7 never rendered before",
+   "part": "GateClosed",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Closed_Modern"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeGate_Closed_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeGate_Closed_Modern_rd1a",
+    "RM_DrawbridgeGate_Closed_Modern_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Gate_Modern_Open",
+   "label": "gate open \u2014 Modern (rank 12: clear operation and passage) \u00b7 never rendered before",
+   "part": "GateOpen",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Open_Modern"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeGate_Open_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeGate_Open_Modern_rd1a",
+    "RM_DrawbridgeGate_Open_Modern_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Gate_Futuristic_Closed",
+   "label": "gate closed \u2014 Futuristic (rank 12: clear operation and passage) \u00b7 never rendered before",
+   "part": "GateClosed",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Closed_Futuristic"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeGate_Closed_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeGate_Closed_Futuristic_rd1a",
+    "RM_DrawbridgeGate_Closed_Futuristic_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Gate_Futuristic_Open",
+   "label": "gate open \u2014 Futuristic (rank 12: clear operation and passage) \u00b7 never rendered before",
+   "part": "GateOpen",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeGate_Open_Futuristic"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeGate_Open_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeGate_Open_Futuristic_rd1a",
+    "RM_DrawbridgeGate_Open_Futuristic_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_WinchSteel_Steel",
+   "label": "winch, steel tier \u2014 Steel (rank 12: top surfaces, big drum, fewer bits)",
+   "part": "WinchSteel",
+   "look": "Steel",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeWinch_Steel_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeWinch_Steel_rd1a",
+    "RM_DrawbridgeWinch_Steel_rd1a_south"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeWinch_Steel_south/RM_DrawbridgeWinch_Steel_south.png"
+   ]
+  },
+  {
+   "key": "RD_WinchSteel_Industrial",
+   "label": "winch, steel tier \u2014 Industrial (rank 12: top surfaces, big drum, fewer bits) \u00b7 never rendered before",
+   "part": "WinchSteel",
+   "look": "Industrial",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel_Industrial"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeWinch_Steel_Industrial_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeWinch_Steel_Industrial_rd1a",
+    "RM_DrawbridgeWinch_Steel_Industrial_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_WinchSteel_Modern",
+   "label": "winch, steel tier \u2014 Modern (rank 12: top surfaces, big drum, fewer bits) \u00b7 never rendered before",
+   "part": "WinchSteel",
+   "look": "Modern",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel_Modern"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeWinch_Steel_Modern_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeWinch_Steel_Modern_rd1a",
+    "RM_DrawbridgeWinch_Steel_Modern_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_WinchSteel_Futuristic",
+   "label": "winch, steel tier \u2014 Futuristic (rank 12: top surfaces, big drum, fewer bits) \u00b7 never rendered before",
+   "part": "WinchSteel",
+   "look": "Futuristic",
+   "section": "Bridge redraw",
+   "resources": [
+    "Things/Building/FlowWorks/Drawbridge/RM_DrawbridgeWinch_Steel_Futuristic"
+   ],
+   "size": {
+    "drawSize": [
+     1.5,
+     1.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "flowworks_drawbridge_design_2026-10-20.md \u00a7R12"
+   },
+   "render_match": "\\b(RM_DrawbridgeWinch_Steel_Futuristic_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeWinch_Steel_Futuristic_rd1a",
+    "RM_DrawbridgeWinch_Steel_Futuristic_rd1a_south"
+   ],
+   "reference_textures": []
+  },
+  {
+   "key": "RD_Icon_Lower",
+   "label": "gizmo icon \u2014 Lower \u00b7 never rendered before",
+   "part": "Icon",
+   "look": "Base",
+   "section": "Bridge redraw",
+   "resources": [
+    "UI/Commands/FlowWorks/RM_DrawbridgeLower"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_DrawbridgeLower_Icon_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeLower_Icon_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeRaise_Icon/RM_DrawbridgeRaise_Icon.png"
+   ]
+  },
+  {
+   "key": "RD_Icon_HoldRaised",
+   "label": "gizmo icon \u2014 HoldRaised \u00b7 never rendered before",
+   "part": "Icon",
+   "look": "Base",
+   "section": "Bridge redraw",
+   "resources": [
+    "UI/Commands/FlowWorks/RM_DrawbridgeHoldRaised"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "def graphicData (default drawSize 1)"
+   },
+   "render_match": "\\b(RM_DrawbridgeHoldRaised_Icon_rd1a)\\b",
+   "jobs": [
+    "RM_DrawbridgeHoldRaised_Icon_rd1a"
+   ],
+   "reference_textures": [
+    "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/RM_DrawbridgeRaise_Icon/RM_DrawbridgeRaise_Icon.png"
+   ]
+  }
+ ],
+ "lead_html": "<p><b>Bridge art \u2014 redraw of all 12</b> (owner by card 2026-10-21: <i>Redraw all 12 now</i>). Each row is one piece GPT's review asked to redraw, or a drawbridge piece whose render never arrived. The reference picture beside a row is today's art; the lettered columns are the new candidates. Pick a letter, or note what to change. Nothing is installed until you pick.</p>"
+}
