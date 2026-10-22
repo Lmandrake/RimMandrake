@@ -31,7 +31,17 @@
     "RSW_Strill": {
       "at": "2026-10-22T06:45:49.012Z",
       "decision": "A",
-      "note": "Redo South facing, that looks ridiculous. Too wide spread for all six feet. (actually seven showed anyway, one is behind another). Just redo south.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:45:49.012Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo South facing, that looks ridiculous. Too wide spread for all six feet. (actually seven showed anyway, one is behind another). Just redo south.",
+          "when": "2026-10-22T00:33:22-0700"
+        }
+      ],
       "picks": {
         "_flip:swanimals/Strill/Strill_Flying_": "D"
       },
@@ -79,7 +89,17 @@
     "RSW_Whisperbird": {
       "at": "2026-10-22T06:48:01.513Z",
       "decision": "A",
-      "note": "A + B is good, but your flying art is old and not modern.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:48:01.513Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "A + B is good, but your flying art is old and not modern.",
+          "when": "2026-10-22T00:33:22-0700"
+        }
+      ],
       "picks": {
         "_flip:swanimals/Whisperbird/Whisperbird_Flying_": "C"
       },
@@ -91,7 +111,17 @@
     "RSW_Yobshrimp": {
       "at": "2026-10-22T06:48:21.485Z",
       "decision": "A",
-      "note": "A + B gets you there. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:48:21.485Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "A + B gets you there. ",
+          "when": "2026-10-22T00:33:22-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "56cf17d553e39270",
       "schema": 2,
