@@ -82,6 +82,12 @@ FEATURES = [
     ("set", r"^(excavationLoadRepairEnabled|legacyFillFallbackEnabled|legacyFloodViaEngineEnabled)$",
      "Old-save repair and legacy fallbacks", M + "they act only when an OLD save loads; a fresh review map has nothing "
      "to repair"),
+    # CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED: the sheet-water layer (Source/Sheet/RM_SheetSettings.cs), ships OFF
+    ("set", r"^(sheetOverflowEnabled|spillFrom(Pumps|Rain|Floods|FillIn|Gravity)|cropsDrownEnabled|irrigateEnabled|"
+     r"pawnEffectsEnabled|putsOutFireEnabled|otherLiquidsSpillEnabled|fuelSpillsBurnEnabled|sheetCapCm|maxWetSquares|"
+     r"retentionCm|sweepsPerPulse|doorLeakPercent|cropDrownPulses|soakCmPerDay(Sand|Soil|Gravel)|dryCmPerDayAt20C|"
+     r"roofedDryPercent|sheetPathCost)$", "Canal overflow: spilt water spreads as a thin sheet",
+     M + "no frozen station stages an overflow; proved by the functional script northstar/sheet_overflow_proof.py"),
     ("set", r"^(networkSeamsMoveEnabled|maxNetworkCells)$", "Flow network bounds",
      M + "performance bounds on very large canal networks; nothing to see at station size"),
     # ---- liquids in canals (the V block holds eleven at every depth)
@@ -247,7 +253,16 @@ FEATURES = [
      r"maxLength|maxLengthDefaults|couplingSpacing|handlingTime|windCellsPerSecond|autoResumeDroppedHose|slack|"
      r"tintByContents|fillWobble|thickness)$", "Hose behaviour and look", "hose_reel"),
     ("set", r"^(pipeLinksIntoMachines|joinFittings)$", "Pipe-to-machine joins and connector fittings",
-     M + "art only, and the connector art awaits the owner's ruling on design/RimMandrake/liquid_connections_visuals_2026-10-16.md; stage it once ruled"),
+     M + "art only (joinFittings ON by owner card 2026-10-22, art installed for the four looks); no frozen station frames a "
+     "pipe joining a tank or machine yet"),
+    ("tex", r"^RimMandrake/FlowWorks/Joins/", "Pipe join fittings art (flange, coupler, saddle per look)",
+     M + "as pipe-to-machine joins"),
+    ("tex", r"^RimMandrake/FlowWorks/PipePole/", "Pipe pole span art per look",
+     M + "as pipe poles; pixel-checked by selftest_flowworks_pipe_pole_art"),
+    ("def", r"^ThingStyleDef/RM_LiquidPump_(Scrapper|Industrial|Modern|Futuristic)$", "Pump looks",
+     M + "no frozen station styles a pump (carry_tanks and pump_pour show the default Scrapper pump)"),
+    ("def", r"^MapMeshFlagDef/RM_WaterLooks$", "Water looks redraw flag",
+     M + "internal mesh-redraw flag; nothing of its own to look at"),
     ("set", r"^waterBodyTypeFlipFixEnabled$", "Water-body count fix",
      M + "fixes vanilla bookkeeping when water changes type; nothing on the map to look at"),
     ("set", r"^(hoseHoldsLiquid|hoseLitresPerCell|litresPerFilth)$", "A hose holds liquid and spills it", "liquid_spill"),
@@ -430,6 +445,9 @@ def classify(items, rules=FEATURES):
         k, name = it[0], it[1]
         if name.startswith("patch-added/"):
             name = name.split("/", 1)[1]
+        if name.startswith("UNPARSEABLE/"):     # a broken Defs file is never covered (its path could match a loose rule)
+            unc.append(it)
+            continue
         for i, (kind, rx, _, _) in enumerate(rules):
             if kind == k and re.search(rx, name):
                 got.setdefault(i, []).append(it)
