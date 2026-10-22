@@ -312,6 +312,20 @@ def _parse_keep_comments(path):
     return ET.parse(path, parser).getroot()
 
 
+def _parse_shipped(path):
+    """Root of the SHIPPED file at `path`: None when it does not exist, SystemExit when it exists but does not parse.
+    An unparseable shipped file used to read as "nothing shipped": the never-subtract carry, the shipped gene lists and
+    both loss guards all went blind together and the run rebuilt the curated catalogue from donors, reporting success."""
+    if not os.path.exists(path):
+        return None
+    try:
+        return ET.parse(path).getroot()
+    except ET.ParseError as exc:
+        raise SystemExit("REFUSING TO WRITE (nothing has been written): the shipped file %s does not parse (%s). "
+                         "Repair it (git has the last good copy); a rebuild over it would drop every def and "
+                         "gene list this run cannot re-derive." % (path, exc))
+
+
 def _key(e):
     # 🪤 ABSTRACT PARENTS HAVE NO defName — they are keyed by a Name= ATTRIBUTE.
     # Keying on defName alone silently skipped every abstract, and an abstract that
@@ -357,8 +371,10 @@ def write_xml(path, header_lines, elements, keep_existing=True):
     if keep_existing and os.path.exists(path):
         try:
             old_root = _parse_keep_comments(path)
-        except ET.ParseError:
-            old_root = None
+        except ET.ParseError as exc:
+            raise SystemExit("REFUSING TO WRITE (nothing has been written): the shipped file %s does not parse "
+                             "(%s); carrying its defs is impossible, and rebuilding over it would drop them."
+                             % (path, exc))
     else:
         old_root = None
     if old_root is None:
@@ -1292,11 +1308,8 @@ def _shipped_meta():
     it was built from in August.
     """
     p = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
-    if not os.path.exists(p):
-        return {}
-    try:
-        root = ET.parse(p).getroot()
-    except ET.ParseError:
+    root = _parse_shipped(p)
+    if root is None:
         return {}
     out = {}
     for xd in root.findall("XenotypeDef"):
@@ -1581,11 +1594,8 @@ def _shipped_gene_lists():
     into `pick_species`'s pre-map list, where every name would miss.
     """
     p = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
-    if not os.path.exists(p):
-        return {}
-    try:
-        root = ET.parse(p).getroot()
-    except ET.ParseError:
+    root = _parse_shipped(p)
+    if root is None:
         return {}
     out = {}
     for xd in root.findall("XenotypeDef"):
@@ -1599,12 +1609,8 @@ def _shipped_gene_lists():
 def _shipped_species_count():
     """How many species the mod on disk currently ships. 0 if it is absent."""
     p = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
-    if not os.path.exists(p):
-        return 0
-    try:
-        return len(ET.parse(p).getroot().findall("XenotypeDef"))
-    except ET.ParseError:
-        return 0
+    root = _parse_shipped(p)
+    return 0 if root is None else len(root.findall("XenotypeDef"))
 
 
 def _shipped_gene_count():
@@ -1622,11 +1628,8 @@ def _shipped_gene_count():
     species guard exists to prevent, and counting species could never see it.
     """
     p = os.path.join(OUT, "Defs/XenotypeDefs/RimMandrakeXenotypes.xml")
-    if not os.path.exists(p):
-        return 0
-    try:
-        root = ET.parse(p).getroot()
-    except ET.ParseError:
+    root = _parse_shipped(p)
+    if root is None:
         return 0
     return sum(len(gl.findall("li"))
                for xd in root.findall("XenotypeDef")
@@ -2078,6 +2081,9 @@ PATCHES = [os.path.join(REPO, "src/RimUtinni/UtinniPatches/Defs"),
            os.path.join(REPO, "src/RimStarWars/StarWarsPatches/Defs")]  # JAWA_PATCHES_SPLIT_1: the old single Defs tree split by tier
 
 
+_SCAN_PARSE_ERRORS = []
+
+
 def scan_defs(root):
     """(defined names, referenced name -> definers). `@X` is a Name= attribute,
     which is a second and separate global namespace."""
@@ -2089,7 +2095,7 @@ def scan_defs(root):
                     trees.append((os.path.join(dp, f),
                                   ET.parse(os.path.join(dp, f)).getroot()))
                 except ET.ParseError:
-                    pass
+                    _SCAN_PARSE_ERRORS.append(os.path.join(dp, f))   # verify() fails on these: skipped = unchecked
     ours, refs, parents = set(), {}, set()
     for fp, r in trees:
         for el in r.iter():
@@ -2165,6 +2171,7 @@ def verify():
     set, where the donors are still installed and every stale reference still
     resolves. That is exactly the failure this mod is built to prevent, so it
     has to be checked against the surviving set instead."""
+    del _SCAN_PARSE_ERRORS[:]
     owner = _owner_index()
     if not owner:
         # an empty ownership index makes `dead` empty by construction: the check would pass vacuously
@@ -2184,6 +2191,11 @@ def verify():
             prefs.setdefault(_t, set()).update(_root + "/" + w for w in _who)
         pparents |= set(_p)
     known = ours | pours
+    if _SCAN_PARSE_ERRORS:
+        # an unparseable Defs file is skipped by the scans: its dead references would pass unseen
+        print("   ⚠️ %d Defs file(s) do not parse and were NOT checked - failing: %s"
+              % (len(_SCAN_PARSE_ERRORS), ", ".join(os.path.relpath(p, REPO) for p in _SCAN_PARSE_ERRORS[:5])))
+        return False
 
     dead = {t: v for t, v in refs.items()
             if t not in ours and t in owner and owner[t] <= DEPARTING}
