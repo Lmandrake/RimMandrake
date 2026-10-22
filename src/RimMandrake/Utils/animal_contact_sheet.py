@@ -1177,6 +1177,8 @@ def main(argv=None):
     if not os.path.isfile(a.csv):
         sys.exit("no animals.csv at %s (run animal_inventory.py first)" % a.csv)
     rows = read_animals_csv(a.csv)
+    if not rows:
+        sys.exit("UNMEASURED: %s holds no animal rows - nothing to sheet." % a.csv)
     # 🔴 THE DEF DUMP — AND SO animals.csv — IS PRE-CHERRY-PICKER. A cut that WORKED
     # is still in it. This is the sheet the owner reviewed when he said "I had really
     # thought I had already removed all of these terrestrial animals somewhere
@@ -1271,6 +1273,13 @@ def main(argv=None):
             c["page"], c["row"], c["col"] = page_no + 1, r, col
             index_rows.append(c)
     t_render = time.perf_counter() - t
+    # Pages left over from an earlier, longer run would sit beside this run's index as sheets it does
+    # not list - stale pictures that look current.
+    if not a.no_image:
+        import glob as _glob
+        for old in _glob.glob(os.path.join(a.out, "animal_sheet_[0-9][0-9].png")):
+            if os.path.basename(old) not in page_files:
+                os.remove(old)
 
     # A cell we planned but whose PNG would not decode stays in the index (it
     # occupies a grid position and you must be able to look up the red X) AND is
