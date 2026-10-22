@@ -285,10 +285,12 @@ class Walk(object):
         return (self.call("jawa/flowworks_engine_state") or {}).get("ticksGame")
 
     def interval(self):
-        v = self.call("jawa/mod_settings_field", typeName=S_FW, action="get", field="pulseIntervalTicks").get("value")
+        v = (self.call("jawa/mod_settings_field", typeName=S_FW, action="get", field="pulseIntervalTicks") or {}).get("value")
         try:
             return int(float(v))
         except (TypeError, ValueError):
+            # the shipped default stands in so the walk can step, but it is not a reading: say so where the eye is
+            self.say("         PULSE INTERVAL UNREAD (%r): stepping the shipped default 250 ticks, NOT a measured interval" % (v,))
             return 250
 
     def readout(self, c):
@@ -486,6 +488,14 @@ def verdict(ok):
     return "UNMEASURED" if ok is None else ("MATCHES" if ok else "DIFFERS")
 
 
+def by_pulse(hist, cells, k, bound):
+    """A 'first full at pulse k, by pulse `bound`' row: True/False, or None when it never read full AND some pulse could not
+    read every square (holds() of a missing square is False, so an unread walk would otherwise read DIFFERS)."""
+    if k is None and not all_read(hist, cells):
+        return None
+    return k is not None and k <= bound
+
+
 def scene_doc(sid):
     with open(SCENES_JSON, encoding="utf-8") as f:
         doc = json.load(f)
@@ -606,7 +616,7 @@ def run_S1(w):
         return b
     h = pulse_loop(w, "S1", canal, 14, tick, g["rect"], shots_at=(3, 10, 14))
     full = first_pulse(h, lambda m: all(holds(m, c, 1) for c in canal))
-    expect_line(w, "S1", "S1.a", "all 8 hold 1 level first at pulse %s" % full, full is not None and full <= 10)
+    expect_line(w, "S1", "S1.a", "all 8 hold 1 level first at pulse %s" % full, by_pulse(h, canal, full, 10))
     broken = [k for k, m, _ in h if not one_run(m, canal)]
     expect_line(w, "S1", "S1.b", "pulses where the wet part was NOT one run from the lake: %s" % (broken or "none"),
                 None if not all_read(h, canal) else not broken)
@@ -650,26 +660,29 @@ def run_S2(w):
     h = pulse_loop(w, "S2", pond + trench, 60, tick, g["rect"], shots_at=(10, 30, 60))
     # plan P1's L2 bar (WATER_SCENES_PROVE_AFTER_THE_CREEP_FIX): every pulse, each pond square within one level (10,000 dL)
     # of the pond squares it touches (no [4 0 4 0])
-    gaps, worst_all = [], 0
+    gaps, worst_all, unread = [], 0, []
     for k, m, _ in h:
         pairs = [(dl_of(m, a), dl_of(m, b)) for a in pond for b in pond if abs(a[0] - b[0]) + abs(a[1] - b[1]) == 1]
         if any(None in pr for pr in pairs):
-            gaps.append("p%d pond squares unread" % k)
+            unread.append(k)            # ignorance, not a gap: a pulse it could not read never counts as DIFFERS
             continue
         worst = max(abs(x - y) for x, y in pairs)
         worst_all = max(worst_all, worst)
         if worst > LEVEL_UNITS:
             gaps.append("p%d gap %d dL [%s]" % (k, worst, dl_str(m, pond)))
     claim = "Every pulse, each pond square holds within one level of the pond squares it touches (no [4 0 4 0])."
-    w.say("  %-6s %-10s doc: %s" % ("S2.lvl", verdict(not gaps), claim + " (plan P1 bar, not a scenes-file row)"))
+    lvl_ok = False if gaps else (None if unread else True)
+    w.say("  %-6s %-10s doc: %s" % ("S2.lvl", verdict(lvl_ok), claim + " (plan P1 bar, not a scenes-file row)"))
     w.say("  %-6s %-10s game: pulses with a gap over 1 level (10,000 dL): %s; widest gap of any pulse %d dL (level water: the "
-          "pond rises as ONE surface, so 0)" % ("", "", gaps[:8] or "none", worst_all))
-    w.rows.append(dict(id="S2.lvl", status=verdict(not gaps), doc=claim, game="%s; widest %d dL" % (gaps[:8] or "none", worst_all)))
+          "pond rises as ONE surface, so 0); pulses with pond squares unread: %s" % ("", "", gaps[:8] or "none", worst_all,
+                                                                                   unread[:8] or "none"))
+    w.rows.append(dict(id="S2.lvl", status=verdict(lvl_ok), doc=claim, game="%s; widest %d dL; unread at %s" % (
+        gaps[:8] or "none", worst_all, unread[:8] or "none")))
     pf = first_pulse(h, lambda m: all(holds(m, c, 4) for c in pond))
     tf = first_pulse(h, lambda m: all(holds(m, c, 1) for c in trench))
-    expect_line(w, "S2", "S2.a", "all 4 pond cells at 4 first at pulse %s (40,000 dL = 4,000 L each)" % pf, pf is not None and pf <= 30,
+    expect_line(w, "S2", "S2.a", "all 4 pond cells at 4 first at pulse %s (40,000 dL = 4,000 L each)" % pf, by_pulse(h, pond, pf, 30),
                 level="each pond square holds 40,000 dL (2.00 m) within %d dL" % TOL_DL)
-    expect_line(w, "S2", "S2.b", "all 6 trench cells at 1 first at pulse %s (10,000 dL = 1,000 L each)" % tf, tf is not None and tf <= 30,
+    expect_line(w, "S2", "S2.b", "all 6 trench cells at 1 first at pulse %s (10,000 dL = 1,000 L each)" % tf, by_pulse(h, trench, tf, 30),
                 level="each trench square holds 10,000 dL (0.50 m, brim) within %d dL" % TOL_DL)
     broken = [k for k, m, _ in h if not one_run(m, trench)]
     expect_line(w, "S2", "S2.c", "pulses where the wet trench was NOT one run from the pond: %s" % (broken or "none"),
@@ -859,7 +872,7 @@ def run_S3(w):
     hb = pulse_loop(w, "S3B", canal + g["gap"], 16, tick, g["rect"], shots_at=(6, 16))
     full = first_pulse(hb, lambda m: all(holds(m, c, 1) for c in canal))
     expect_line(w, "S3", "S3.b", "all 6 canal cells at 1 first at pulse %s of step B (6 x 10,000 dL = 6,000 L to the brim)" % full,
-                full is not None and full <= 16,
+                by_pulse(hb, canal, full, 16),
                 level="a pump lifts: the canal fills to the brim, every square 10,000 dL within %d dL, and the squares match each other" % TOL_DL,
                 readout=w.readout_lines([canal[0], canal[-1]]))
     sB = hb[0][2]["stock"]
@@ -926,8 +939,11 @@ def run_S3q(w):
     obs = []
     for name, cs in canals.items():
         tot = dl_sum(m, cs)
+        if tot is None and all(c in m for c in cs):
+            tot = sum(m[c][1] for c in cs) * LEVEL_UNITS
         if tot is None:
-            tot = sum(m.get(c, (0, 0))[1] for c in cs) * LEVEL_UNITS
+            obs.append("%s: UNMEASURED (canal squares unread after 10 pulses)" % name)
+            continue
         obs.append("%s: canal holds %d dL (%.0f L) after 10 pulses with no hose (%s)" % (
             name, tot, tot / 10.0, "pours straight into the touching dug cell - behaves as (a)/(c)" if tot > 0 else "nothing reached the canal - behaves as (b) or is not running (power/survey)"))
     ruling_line(w, "S3", "S3.Q1", "; ".join(obs))
@@ -939,7 +955,7 @@ def _hold_open_toggle(w, cell):
     w.call("rimworld/click_cell", x=cell[0], z=cell[1])
     gz = (w.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
     g = next((q for q in gz if q.get("label") == "Hold open"), None)
-    ok = g is not None and w.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id")).get("success")
+    ok = g is not None and (w.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id")) or {}).get("success")
     w.call("rimworld/clear_selection")
     return ok
 
@@ -1017,29 +1033,33 @@ def run_S4(w):
     w.say("  step A: sluice SHUT, 20 pulses (the grate variant runs alongside, never opened)")
     ha = pulse_loop(w, "S4A", allc, 20, tick, both, shots_at=(6, 12, 20))
     up = first_pulse(ha, lambda m: all(holds(m, c, 1) for c in g["up"]))
-    expect_line(w, "S4", "S4.a", "3 upstream cells at 1 first at pulse %s" % up, up is not None and up <= 6)
+    expect_line(w, "S4", "S4.a", "3 upstream cells at 1 first at pulse %s" % up, by_pulse(ha, g["up"], up, 6))
     leak = [k for k, m, _ in ha if any(wet(m, c) for c in g["down"])]
     expect_line(w, "S4", "S4.b", "downstream wet while shut at pulses: %s" % (leak or "never"),
                 None if not all_read(ha, g["down"]) else not leak)
     gr = first_pulse(ha, lambda m: all(holds(m, c, 1) for c in gg["down"]))
-    expect_line(w, "S4", "S4.e", "grate: 4 downstream cells at 1 first at pulse %s" % gr, gr is not None and gr <= 12)
+    expect_line(w, "S4", "S4.e", "grate: 4 downstream cells at 1 first at pulse %s" % gr, by_pulse(ha, gg["down"], gr, 12))
     state["step"] = "B"
     w.say("  step B: sluice OPEN, 20 pulses -- %s" % gate_open(w, g["gate"]))
     hb = pulse_loop(w, "S4B", allc, 20, tick, both, shots_at=(8, 20))
     dn = first_pulse(hb, lambda m: all(holds(m, c, 1) for c in g["down"]))
-    expect_line(w, "S4", "S4.c", "4 downstream cells at 1 first at pulse %s after opening" % dn, dn is not None and dn <= 8)
+    expect_line(w, "S4", "S4.c", "4 downstream cells at 1 first at pulse %s after opening" % dn, by_pulse(hb, g["down"], dn, 8))
     state["step"] = "C"
     w.say("  step C: sluice SHUT again, 40 pulses -- %s" % gate_shut(w, g["gate"]))
     hc = pulse_loop(w, "S4C", allc, 40, tick, both, shots_at=(20, 40))
     updry = [k for k, m, _ in hc if any(not holds(m, c, 1) for c in g["up"])]
-    expect_line(w, "S4", "S4.d", "an upstream cell below 1 at pulses: %s" % (updry or "never"), not updry)
+    expect_line(w, "S4", "S4.d", "an upstream cell below 1 at pulses: %s" % (updry or "never"),
+                None if not all_read(hc, g["up"]) else not updry)
     d0 = dl_sum(hc[0][1], g["down"])
     d1 = dl_sum(hc[-1][1], g["down"])
+    if (d0 is None or d1 is None) and all(c in hc[i][1] for i in (0, -1) for c in g["down"]):
+        d0 = sum(hc[0][1][c][1] for c in g["down"]) * LEVEL_UNITS
+        d1 = sum(hc[-1][1][c][1] for c in g["down"]) * LEVEL_UNITS
     if d0 is None or d1 is None:
-        d0 = sum(hc[0][1].get(c, (0, 0))[1] for c in g["down"]) * LEVEL_UNITS
-        d1 = sum(hc[-1][1].get(c, (0, 0))[1] for c in g["down"]) * LEVEL_UNITS
-    ruling_line(w, "S4", "S4.Q1", "downstream held %d dL when shut again and %d dL after 40 pulses (%s)" % (
-        d0, d1, "stays put = (a)" if abs(d1 - d0) <= TOL_DL * len(g["down"]) else "it went down; whether back to the lake (b) or gone (c) needs the totals"))
+        ruling_line(w, "S4", "S4.Q1", "UNMEASURED: downstream squares unread at the start or end of step C")
+    else:
+        ruling_line(w, "S4", "S4.Q1", "downstream held %d dL when shut again and %d dL after 40 pulses (%s)" % (
+            d0, d1, "stays put = (a)" if abs(d1 - d0) <= TOL_DL * len(g["down"]) else "it went down; whether back to the lake (b) or gone (c) needs the totals"))
 
 
 # ---------------------------------------------------------------- S5
@@ -1198,7 +1218,10 @@ def run_S5(w):
     ref = h[14][1] if len(h) > 14 else None
     moved = [k for k, m, _ in h[14:] if ref is not None and any(
         not near(dl_of(m, c), dl_of(ref, c)) for c in g["canalB"])]
-    expect_line(w, "S5", "S5.d", "B canal changed (more than %d dL a square) after pulse 14 at pulses: %s" % (TOL_DL, moved[:12] or "never"), not moved)
+    # near(None, x) is False: an unread square would read as "moved"; no pulse 14, or any unread square, is UNMEASURED
+    d_read = ref is not None and all(dl_of(m, c) is not None for _, m, _ in h[14:] for c in g["canalB"])
+    expect_line(w, "S5", "S5.d", "B canal changed (more than %d dL a square) after pulse 14 at pulses: %s" % (TOL_DL, moved[:12] or "never"),
+                not moved if d_read else None)
     # F: pond square + 2 m canal square settle to one surface: 2,000 L each
     exF = _expect([(1, -2.0), (1, -2.0)], 4 * LEVEL_UNITS)[1]
     fh = [(k, x["f"], dl_of(m, f["canal"])) for k, m, x in h[:21]]
@@ -1206,20 +1229,22 @@ def run_S5(w):
     fmoved = [k for k, s_, c_ in fh[10:] if not (near(s_, f10[1]) and near(c_, f10[2]))]
     expect_line(w, "S5", "S5.h", "pulse 10: pond F %s dL, 2 m canal %s dL (doc: 1 m each = 20,000 dL, total 40,000); changed after pulse 10 at: %s" % (
         f10[1], f10[2], fmoved or "never"),
-        None if f10[1] is None or f10[2] is None or exF is None else (
+        None if f10[1] is None or f10[2] is None or exF is None or any(None in (s_, c_) for _, s_, c_ in fh[10:]) else (
             near(f10[1], exF[0], 2) and near(f10[2], exF[1], 1) and not fmoved),
         level="each of the two squares holds 20,000 dL (1.00 m), surface -1.000 m",
         readout=w.readout_lines([f["canal"], f["pond"]]))
     level_row(w, "S5.lvl.F", f["rect"], "S5 F pond + 2 m canal square")
     # C: fill in canal B cell 1; destroys nothing: pond+canal still 4,000 L (the displaced sheet goes to the other squares)
     cB_end = dl_sum(h[-1][1], g["canalB"])
-    totB0 = None if cB_end is None else cB_end + stock_dl(w.body(g["pondB"][0]))
+    pB0 = stock_dl(w.body(g["pondB"][0]))
+    totB0 = None if cB_end is None or pB0 is None else cB_end + pB0
     ov0 = _overflow(w)
     fi_ok = w.fill_in(g["canalB"][0]).get("success") is not False
     w.say("  step C: canal B cell 1 filled in")
     hc = pulse_loop(w, "S5C", g["canalB"], 4, tick, g["rect"], shots_at=(1,))
     cB1 = dl_sum(hc[-1][1], g["canalB"][1:])
-    totB1 = None if cB1 is None else cB1 + stock_dl(w.body(g["pondB"][0]))
+    pB1 = stock_dl(w.body(g["pondB"][0]))
+    totB1 = None if cB1 is None or pB1 is None else cB1 + pB1
     ov1 = _overflow(w)
     destroyed = None if None in (ov0, ov1) else (float(ov1) - float(ov0)) * LEVEL_UNITS
     sC, (exC_pond, exC_can) = _expect([(1, -2.0), (9, -0.5)], TOT_B)
@@ -1288,8 +1313,8 @@ def run_S5(w):
         return dict(stock=st, held=held, canal=cf, gapwet=gapwet)
     hg = pulse_loop(w, "S5G", q["canal"] + q["gap"], 30, tickG, q["rect"], shots_at=(10, 30))
     tolG = TOL_DL * (len(q["canal"]) + 1)
-    badG = [k for k, _, x in hg if None in (x["stock"], x["canal"]) or x["held"] != x["held"]
-            or abs(x["stock"] + x["held"] + x["canal"] - (sG0 or 0)) > tolG]
+    readG = [(k, x) for k, _, x in hg if None not in (x["stock"], x["canal"]) and x["held"] == x["held"]]
+    badG = [k for k, x in readG if abs(x["stock"] + x["held"] + x["canal"] - (sG0 or 0)) > tolG]
     mG, xG = hg[-1][1], hg[-1][2]
     cG = [dl_of(mG, c) for c in q["canal"]]
     levelG = None not in cG and (max(cG) - min(cG)) <= TOL_DL
@@ -1297,7 +1322,7 @@ def run_S5(w):
     exG = None if sG0 is None or xG["held"] != xG["held"] else _expect([(6, -0.5)], max(0, sG0 - (xG["stock"] or 0) - xG["held"]))[1]
     expect_line(w, "S5", "S5.i", "end: canal squares %s dL (level: %s), pond %s dL, hoses %.0f dL; pulses where pond+hoses+canal != %s "
                 "(+-%d): %s; undug ground wet: %s" % (cG, levelG, xG["stock"], xG["held"], sG0, tolG, badG[:6] or "none", gw or "never"),
-                None if sG0 is None or None in cG else (not badG and levelG and (xG["stock"] or 0) <= TOL_DL * 2 and not gw),
+                None if sG0 is None or None in cG or not readG else (not badG and levelG and (xG["stock"] or 0) <= TOL_DL * 2 and not gw),
                 level="the doc's 'cells 1-4 at 0.5 m, never a 5th' is a whole-notch picture; level water spreads the pumped water over "
                 "all 6 squares (4,000 L = %s dL each, 0.333 m), pond dry bar the hoses" % _r(exG[0] if exG else None),
                 readout=w.readout_lines([q["canal"][0], q["canal"][-1], q["pond"]]))
