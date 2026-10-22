@@ -382,7 +382,11 @@ namespace RimMandrake.FlowWorks
 					long diff = Hi - Hj;
 					if (diff < 2) continue;
 					long f = diff / 5;
-					if (w.Kinds[i] == Kind.Door || w.Kinds[j] == Kind.Door) f = f * p.DoorLeakPermille / 1000;
+					if (w.Kinds[i] == Kind.Door || w.Kinds[j] == Kind.Door)
+					{
+						if (p.DoorLeakPermille <= 0) continue;   // GPT deep review 2026-10-22 #10: the 0% setting seals a door
+						f = f * p.DoorLeakPermille / 1000;
+					}
 					if (f < 1) f = 1; // no dead zone (§6 item 13): f ≤ diff/2 always, so no overshoot
 					f4[d] = (int)Math.Min(f, int.MaxValue);
 					sum += f4[d];
@@ -456,6 +460,7 @@ namespace RimMandrake.FlowWorks
 			{
 				if (!World.HoldsSheet(w.Kinds[i])) continue;
 				if (s.Tiers[i] == Tier.Ice) continue;
+				if (w.Kinds[i] == Kind.Door && p.DoorLeakPermille <= 0) continue;   // GPT deep review 2026-10-22 #10
 				int mobile = s.Dl[i] - p.RetentionDl;
 				int edgeCap = w.Kinds[i] == Kind.Door && mobile > 0
 					? (int)Math.Max(1L, (long)mobile * p.DoorLeakPermille / 1000) : int.MaxValue;

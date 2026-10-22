@@ -567,6 +567,30 @@ namespace RimMandrake.FlowWorks.SelfTest
 				}
 			});
 
+			// GPT deep review 2026-10-22 #10: the slider allows 0% door leak, but both door paths forced a 1 dL minimum
+			Case("Sheet_a_zero_percent_door_is_sealed", () =>
+			{
+				var w = new World(5, 3);
+				for (int c = 0; c < 15; c++) w.Kinds[c] = Kind.Blocked;
+				int a = Idx(w, 1, 1), door = Idx(w, 2, 1), b = Idx(w, 3, 1);
+				w.Kinds[a] = Kind.Open; w.Kinds[door] = Kind.Door; w.Kinds[b] = Kind.Open;
+				var p = new Params { DoorLeakPermille = 0 };
+				var s = new State(5, 3, 11u);
+				ResolveSpills(s, w, p, new[] { Offer(6000, Water, Source.Pump, a) });
+				Run(s, w, p, 40);
+				Assert(s.LedgerCloses, "ledger");
+				Assert(s.Dl[door] == 0 && s.Dl[b] == 0, $"a 0% door passes nothing (door {s.Dl[door]}, beyond {s.Dl[b]})");
+				// a wet door cell beside a drain, 0%: nothing drains through it
+				var w2 = new World(5, 3);
+				for (int c = 0; c < 15; c++) w2.Kinds[c] = Kind.Blocked;
+				int at = Idx(w2, 2, 1), to = Idx(w2, 3, 1);
+				w2.Kinds[at] = Kind.Door; w2.Kinds[to] = Kind.Sink; w2.RoomDl[to] = 1000000; w2.BodyFluid[to] = Water;
+				var s2 = new State(5, 3, 12u);
+				ResolveSpills(s2, w2, p, new[] { Offer(6000, Water, Source.Pump, at) });
+				Pulse(s2, w2, p, null);
+				Assert(s2.LedgerCloses && s2.Returned + s2.JoinedLake == 0, $"a 0% door beside a sink drains nothing ({s2.Returned + s2.JoinedLake})");
+			});
+
 			// FlowWorks GPT review 2026-10-22 (RM_SheetMath.cs:267,278,509): every pulse allocated two map-sized bool arrays and
 			// scanned the whole map, even dry or asleep. Now the working memory is reused and a dry map returns at once.
 			Case("Sheet_pulse_allocates_nothing_in_steady_state", () =>
