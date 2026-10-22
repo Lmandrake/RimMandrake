@@ -198,8 +198,15 @@ def no_more_reading_once_all_stages_done(t):
             raise ExpectationFailed(
                 "could not resolve urn/station thingIds from jawa/list_things: %r" % rows)
 
-        t.bridge_call("jawa/ordered_job", pawnId=reader, jobDef=JOB,
-                     targetAId=urn_id, targetBId=station_id, waitTicks=120)
+        r = t.bridge_call("jawa/ordered_job", pawnId=reader, jobDef=JOB,
+                          targetAId=urn_id, targetBId=station_id, waitTicks=120)
+        # `accepted` is TryTakeOrderedJob's own bool: the job was enqueued and THEN the driver's FailOn killed it. A job
+        # that was never accepted never ran, so "Not yet read" below would hold for any reason at all (vacuous PASS).
+        # (success is NOT required here: the job dying is the expected outcome.)
+        if not (r or {}).get("accepted"):
+            raise ExpectationFailed(
+                "UNMEASURED: jawa/ordered_job(%s) was not accepted, so the forced job never ran and the "
+                "'Not yet read' check below would hold for any reason (HARNESS): %r" % (JOB, r))
         t.wait_ticks(600)
 
         _inspect_contains(t, urn_id, "Not yet read")

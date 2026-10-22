@@ -207,6 +207,22 @@ def t_expect_pawn_despawned():
          verdict == FAIL, verdict)
 
 
+def _log_session(line_after_mark, line_at_mark=None):
+    """A session whose drain_log is empty (or `line_at_mark`) when the chain-start mark is read and then holds `line_after_mark`."""
+    session = _fake_session()
+    n = {"drain": 0}
+
+    def call(tool, **p):
+        if tool != "jawa/drain_log":
+            return {"success": True}
+        n["drain"] += 1
+        if n["drain"] == 1:                       # the runner's chain-start mark
+            return {"messages": [{"text": line_at_mark}] if line_at_mark else []}
+        return {"messages": [{"text": line_after_mark}]}
+    session.call = call
+    return session
+
+
 def t_expect_log_contains():
     suite = Suite("t_mod")
 
@@ -215,24 +231,28 @@ def t_expect_log_contains():
         with t.component("scan", beyond_toggle=True):
             t.expect_log_contains("RMPitsDebug", field="sprung", value="True")
 
-    session = _fake_session()
-    session.call = lambda tool, **p: (
-        {"messages": [{"text": "[RMPitsDebug] SCAN_DONE RM_OpenPit_Bare "
-                              "covered=True sprung=True"}]}
-        if tool == "jawa/drain_log" else {"success": True})
-    result = runner.run_suite(suite, session)
-    check("expect_log_contains: passes when the field=value substring matches",
+    good = "[RMPitsDebug] SCAN_DONE RM_OpenPit_Bare covered=True sprung=True"
+    result = runner.run_suite(suite, _log_session(good))
+    check("expect_log_contains: passes when a line written AFTER the mark matches field=value",
          result["all_green"] is True)
 
-    session2 = _fake_session()
-    session2.call = lambda tool, **p: (
-        {"messages": [{"text": "[RMPitsDebug] SCAN_DONE RM_OpenPit_Bare "
-                              "covered=True sprung=False"}]}
-        if tool == "jawa/drain_log" else {"success": True})
-    result2 = runner.run_suite(suite, session2)
+    bad = "[RMPitsDebug] SCAN_DONE RM_OpenPit_Bare covered=True sprung=False"
+    result2 = runner.run_suite(suite, _log_session(bad))
     verdict = result2["chains"][0]["components"][0]["verdict"]
-    check("expect_log_contains: fails when the log shows the wrong value",
-         verdict == FAIL, verdict)
+    check("expect_log_contains: fails when the log shows the wrong value", verdict == FAIL, verdict)
+
+    # CAN-FAIL: the matching line was already in the buffer at the chain-start mark (a stale line from an earlier
+    # chain or run) and nothing new was written -- the row must go red, not pass on the old line.
+    result3 = runner.run_suite(suite, _log_session(good, line_at_mark=good))
+    verdict3 = result3["chains"][0]["components"][0]["verdict"]
+    check("expect_log_contains: a STALE line present at the chain-start mark does not pass", verdict3 == FAIL, verdict3)
+
+    # an unreadable mark withholds the verdict (UNMEASURED), it never reads as stale-OK
+    s4 = _fake_session()
+    s4.call = lambda tool, **p: ({"success": False, "message": "boom"} if tool == "jawa/drain_log" else {"success": True})
+    result4 = runner.run_suite(suite, s4)
+    verdict4 = result4["chains"][0]["components"][0]["verdict"]
+    check("expect_log_contains: an unreadable chain-start mark is UNMEASURED", verdict4 == UNMEASURED, verdict4)
 
 
 def t_set_setting():

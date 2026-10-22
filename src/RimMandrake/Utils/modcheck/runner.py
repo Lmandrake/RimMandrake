@@ -567,6 +567,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             watch.__enter__()
         t = TestContext(session, anchor=anchor, debug=debug,
                         on_finding=findings.append, watch=watch)
+        t.mark_log()      # expect_log_contains reads only lines written after this point
         if watch is not None and not watch.bland:
             t.upstream_failed = True
             t.upstream_reason = ("could not establish a bland map -- not a verdict on the mod: %s"

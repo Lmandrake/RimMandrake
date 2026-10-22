@@ -39,7 +39,7 @@ GROUNDING (read, not guessed):
     instead." This suite therefore never uses `expect_log_contains` for the
     damage mechanism itself (there is nothing to grep); every mechanism
     component reads back through `jawa/damage`'s own post-mutation state
-    (`downed`, `dead`, `stunTicksLeft`, `hitPointsBefore/After` -- these are
+    (`downed`, `dead`, `stunTicksLeft` -- hitPoints are -1 for every pawn, never used; these are
     genuine re-reads of `pawn.Downed`/`stunner.StunTicksLeft` AFTER
     `TakeDamage`, not an echo of the request) or a follow-up
     `jawa/list_pawns(includeHealth=True)` / `jawa/thing_stats` call.
@@ -188,23 +188,32 @@ def def_wiring(t):
 def flesh_buildup(t):
     """D1's bottom tier: a flesh pawn takes NO stun and NO injury from ion
     fire, only accumulating RSW_JawaIon_Stun until it collapses alive.
-    `harmsHealth=false` means `hitPointsAfter` must never move; `downed`
-    coming from the SAME jawa/damage response is a genuine post-hit re-read
-    of `pawn.Downed`, not an echo."""
+    `harmsHealth=false` means the pawn must gain no injury hediff. NOT measured through `hitPointsBefore/After`:
+    jawa/damage reads `Thing.HitPoints`, which is -1 for every pawn (a pawn's health is hediffs), so that bar compared
+    -1 == -1 and could never fail. The no-injury bar is the set of non-stun hediff defs on the independent
+    `jawa/list_pawns(includeHealth)` read, before the first hit vs after the last. `downed` coming from the SAME
+    jawa/damage response is a genuine post-hit re-read of `pawn.Downed`, not an echo."""
     t.clear_area(size=20)
     raider = t.spawn_pawn("Pirate", hostile=True)
 
     with t.component("buildup_downs_alive_no_injury", toggle="fleshBuildupEnabled"):
+        def _non_stun_hediffs(pawn_row):
+            hs = (pawn_row.get("health") or {}).get("hediffs")
+            if hs is None:
+                raise ExpectationFailed("UNMEASURED: jawa/list_pawns(includeHealth) returned no health.hediffs for %s, so "
+                                        "the no-injury bar could not be read (HARNESS)" % raider)
+            return sorted(h.get("def") for h in hs if h.get("def") != ION_STUN_HEDIFF)
+        hurt_before = _non_stun_hediffs(_pawn_row(t, raider))
         first = _damage(t, raider, ION_DAMAGE, 8)
         first_row = _first_row(first)
-        hp_baseline = first_row.get("hitPointsBefore")
         last_row = first_row
         for _ in range(9):  # ~0.24 severity/hit -> crosses the 0.9 "overloaded" stage
             last_row = _first_row(_damage(t, raider, ION_DAMAGE, 8))
-        if last_row.get("hitPointsAfter") != hp_baseline:
+        hurt_after = _non_stun_hediffs(_pawn_row(t, raider))
+        if hurt_after != hurt_before:
             raise ExpectationFailed(
-                "flesh pawn lost hit points to a harmsHealth=false damage def: "
-                "before=%r after=%r" % (hp_baseline, last_row.get("hitPointsAfter")))
+                "flesh pawn gained injuries from a harmsHealth=false damage def: "
+                "hediffs before=%r after=%r" % (hurt_before, hurt_after))
         if not last_row.get("downed"):
             raise ExpectationFailed(
                 "flesh pawn never went Downed after 10 ion hits: %r" % last_row)
