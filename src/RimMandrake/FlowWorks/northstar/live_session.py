@@ -669,6 +669,33 @@ def settings_surface(s, handle="RimMandrakeFlowWorksMod"):
     return s._surface
 
 
+def _search_box(s):
+    lay = s.call("rimworld/get_ui_layout") or {}
+    surf = [x for x in lay.get("surfaces") or [] if "ModSettings" in str(x.get("type"))]
+    els = (surf[-1] if surf else {}).get("elements") or []
+    fields = [e for e in els if str(e.get("kind")) == "text_field"]
+    # the search box is the narrow one (the wide entries are labelled-entry rows set_text_field cannot drive)
+    return min(fields, key=lambda e: (e.get("screenRect") or {}).get("width", 9999)) if fields else None
+
+
+def _search_finds(s, label):
+    """Type `label` into the FlowWorks settings search box, read the visible text, clear the box. True when found."""
+    box = _search_box(s)
+    if not box:
+        return False
+    s.call("rimworld/set_text_field", targetId=box.get("targetId"), text=label, mode="instant")
+    # LIES: the search box itself now holds the label -- only LABEL elements count, never a text field's own text
+    lay = s.call("rimworld/get_ui_layout") or {}
+    surf = [x for x in lay.get("surfaces") or [] if "ModSettings" in str(x.get("type"))]
+    labels = [str(e.get("label") or "") for e in (surf[-1] if surf else {}).get("elements") or []
+              if str(e.get("kind")) in ("label", "checkbox", "button", "section_header") and e.get("label")]
+    found = any(label.lower() in t.lower() for t in labels)
+    box2 = _search_box(s)
+    if box2:
+        s.call("rimworld/set_text_field", targetId=box2.get("targetId"), text="", mode="instant")
+    return found
+
+
 def b2_settings_dialog(s):
     """The five 'dialog not rendered' partials, in ONE open: every label must be found in the open dialog's UI text
     (rimworld/get_ui_layout); a dialog with no readable text is UNMEASURED, its screenshot kept for an eye check. Then
@@ -683,6 +710,10 @@ def b2_settings_dialog(s):
             st, why = "UNMEASURED", "dialog not opened" if not opened else "get_ui_layout returned no text"
         elif label.lower() in texts.lower():
             st, why = "PASS", ""
+        elif _search_finds(s, label):
+            # HARNESS (belt live 2026-10-22): below the fold is not missing -- the settings search box (f68f12652e) brings
+            # the label's own row up; it is typed, the layout re-read, and the box cleared again
+            st, why = "PASS", "found through the settings search box"
         elif "reset this section" in texts.lower():
             # pass 2 (2026-10-19, HARNESS): since 5c75405998 the dialog is ONE scrolled column (screenshot: sections draw
             # below "Reset all" with a scrollbar) and get_ui_layout returns only the rows inside the visible scroll rect,
