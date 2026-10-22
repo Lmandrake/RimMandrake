@@ -1,0 +1,142 @@
+{
+ "script": "suspension_bridge_proof.py",
+ "started": "2026-10-22T11:42:40",
+ "rows": [
+  {
+   "id": "WAT_river_cross_no_drift",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "no --river x1,z1,x2,z2 given (this map's river crossing)"
+   }
+  },
+  {
+   "id": "WAT_lake_tower_two_spans",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": "BUILD ok=True anchors=2 decks=18 blueprints=0 reason=-",
+    "span1": "SPAN tier=steel load=0.0 rating=2000 state=Ok decks=10 railings=False deckNotches=0 span=1/2 line=Load 0 / 2,000 kg",
+    "span2": "SPAN tier=steel load=0.0 rating=2000 state=Ok decks=8 railings=False deckNotches=0 span=2/2 line=Load 0 / 2,000 kg",
+    "tower": "{'success': True, 'message': 'Placed 1 thing(s) of 1 requested across 1 of 1 op(s).', 'opsRequested': 1, 'spawned': 1, 'failed': 0, 'thingsRequested': 1, 'thing"
+   }
+  },
+  {
+   "id": "WAT_flood_damages_timber_not_steel",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "timber": [
+     {
+      "hp": "312",
+      "max": "312",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     },
+     {
+      "hp": "312",
+      "max": "312",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     }
+    ],
+    "steel": [
+     {
+      "hp": "1000",
+      "max": "1000",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     },
+     {
+      "hp": "1000",
+      "max": "1000",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     }
+    ],
+    "verdictWithheld": "FAIL",
+    "unmeasuredBecause": [
+     {
+      "scope": "WAT_flood",
+      "what": "both decks awash",
+      "why": "{'timber': [{'hp': '312', 'max': '312', 'decks': '4', 'awash': '0', 'floodHits': '0'}, {'hp': '312', 'max': '312', 'decks': '4', 'awash': '0', 'floodHits': '0'}], 'steel': [{'hp': '1000', 'max': '1000', 'decks': '4', 'awash': '0', 'floodHit",
+      "class": "SITE"
+     }
+    ]
+   }
+  },
+  {
+   "id": "WAT_sea_or_backtrack",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "no --sea x1,z1,x2,z2 given (a coast crossing)"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/susp_waters.json",
+  "origin": "140,140",
+  "fresh_map": false,
+  "river": "",
+  "lake": "29,62,48,62",
+  "sea": "",
+  "only": "waters",
+  "mock": false
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "77cd778941b152c46490c667102391c3a2360153ea0ccbf0f0e71f7cff22322e"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Human11662",
+    "Human11670",
+    "Human11677",
+    "Human11685",
+    "Human11692",
+    "Human11698"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "finished": "2026-10-22T11:44:18"
+}

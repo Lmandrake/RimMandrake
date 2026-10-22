@@ -1,0 +1,140 @@
+{
+ "script": "suspension_bridge_proof.py",
+ "started": "2026-10-22T11:46:14",
+ "rows": [
+  {
+   "id": "WAT_river_cross_no_drift",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "no --river x1,z1,x2,z2 given (this map's river crossing)"
+   }
+  },
+  {
+   "id": "WAT_lake_tower_two_spans",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "no --lake x1,z1,x2,z2 given (a crossing longer than 10 squares)"
+   }
+  },
+  {
+   "id": "WAT_flood_damages_timber_not_steel",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "timber": [
+     {
+      "hp": "312",
+      "max": "312",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     },
+     {
+      "hp": "312",
+      "max": "312",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     }
+    ],
+    "steel": [
+     {
+      "hp": "1000",
+      "max": "1000",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     },
+     {
+      "hp": "1000",
+      "max": "1000",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     }
+    ],
+    "verdictWithheld": "FAIL",
+    "unmeasuredBecause": [
+     {
+      "scope": "WAT_flood",
+      "what": "rimworld/step_game_ticks",
+      "why": "refused: RimWorld is busy with a long event.",
+      "class": "HARNESS"
+     },
+     {
+      "scope": "WAT_flood",
+      "what": "both decks awash",
+      "why": "{'timber': [{'hp': '312', 'max': '312', 'decks': '4', 'awash': '0', 'floodHits': '0'}, {'hp': '312', 'max': '312', 'decks': '4', 'awash': '0', 'floodHits': '0'}], 'steel': [{'hp': '1000', 'max': '1000', 'decks': '4', 'awash': '0', 'floodHit",
+      "class": "SITE"
+     }
+    ]
+   }
+  },
+  {
+   "id": "WAT_sea_or_backtrack",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": "BUILD ok=True anchors=2 decks=6 blueprints=0 reason=-",
+    "path": "PATH found=True cells=8 decked=6",
+    "ifFail": "record the measured reason on FLOWWORKS_BRIDGES_DESIGN_SPAN_ANYTHING and set suspensionOverSea off (the backtrack rule)"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/susp_sea2.json",
+  "origin": "140,140",
+  "fresh_map": false,
+  "river": "",
+  "lake": "",
+  "sea": "59,120,66,120",
+  "only": "waters",
+  "mock": false
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "77cd778941b152c46490c667102391c3a2360153ea0ccbf0f0e71f7cff22322e"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "finished": "2026-10-22T11:47:32"
+}
