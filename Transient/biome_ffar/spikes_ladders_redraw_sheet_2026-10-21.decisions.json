@@ -6,7 +6,17 @@
     "RM_Ladder": {
       "at": "2026-10-22T06:18:59.078Z",
       "decision": "A",
-      "note": "must be judged in game",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:18:59.078Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "must be judged in game",
+          "when": "2026-10-21T23:33:58-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "75362e2616eadc2a",
       "schema": 2,
@@ -16,7 +26,17 @@
       "at": "2026-10-22T06:18:52.729Z",
       "decidedAt": "2026-10-22T06:18:32.142Z",
       "decision": "C",
-      "note": "Accept B, C, D as random pool variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-22T06:18:52.729Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Accept B, C, D as random pool variants",
+          "when": "2026-10-21T23:21:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "951e9cece5682cd714e49afdd14ea8764b44030cedf3e6e6e8af743e67785b88"
