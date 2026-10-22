@@ -165,6 +165,12 @@ def main():
     v, rows = S0.run(MockBridge(swim_rule=None), M.STAGE0["rect"][:2])
     check("Stage 0: dry control holds (row S0SWIM_dry_held PASS)", any(r["row"] == "S0SWIM_dry_held" and r["status"] == "PASS"
                                                                        for r in rows))
+    class Blind(MockBridge):                      # probe: a bridge that cannot read a pawn's position
+        def call(self, tool, **kw):
+            r = MockBridge.call(self, tool, **kw)
+            return dict(r, pawns=[]) if tool == "jawa/pawn_get" else r
+    vb, rb = S0.run(Blind(swim_rule=lambda f: True), M.STAGE0["rect"][:2])
+    check("Stage 0: an unreadable position is UNMEASURED, never PASS or FAIL", vb == "UNMEASURED", (vb, rb[-1:]))
     check("Stage 0 site does not overlap any plot", not any(C_ov(M.STAGE0["rect"], p["rect"]) for p in placed))
     print("\n%d FAIL" % len(FAILS) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0

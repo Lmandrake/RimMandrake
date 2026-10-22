@@ -12,7 +12,7 @@ Rows (one JSON file per run):
   S0SWIM_2m_out      water 4 levels (2 m) poured: ordered to the lip, he leaves      -> PASS / FAIL
   S0SWIM_brim_out    only if 2 m failed: water to the brim (8 levels): he leaves    -> PASS / FAIL
 Verdict: PASS (out at 2 m: C3 as designed), PASS_AT_BRIM (C3's sign must say "fill to the brim"), FAIL (the cistern
-fallback), UNMEASURED (the site or a read failed: no claim).
+fallback), UNMEASURED (the site or any position read failed: no claim).
 
     python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --stage0 | tr -d '\\r'       # LIVE (needs the bridge)
     python3    src/RimMandrake/FlowWorks/northstar/scenarios_map.py --stage0 --mock             # MOCK: harness only
@@ -75,6 +75,9 @@ def run(B, origin, rows=None):
     B.call("jawa/set_draft", pawnId=pid, drafted=True)
     o = order(pid, g(LIP))
     p0 = pos(pid)
+    if p0 == (None, None):                       # an unread position is ignorance, never "he stayed" (PASS) nor "he failed"
+        row("S0SWIM_dry_held", "UNMEASURED", dict(order=str(o)[:200], pos=p0))
+        return "UNMEASURED", rows
     row("S0SWIM_dry_held", "PASS" if not outside(p0) else "FAIL",
         dict(order=str(o)[:200], pos=p0, swim=B.call("jawa/static_call", type=SWIM, method="ProofSwim",
                                                      args="%d,%d" % g(START)).get("result")))
@@ -88,6 +91,9 @@ def run(B, origin, rows=None):
             if here[0] is not None else ""
         o = order(pid, g(LIP))
         p1 = pos(pid)
+        if p1 == (None, None):
+            row(rid, "UNMEASURED", dict(level=level, swim=sw, order=str(o)[:200], pos=p1))
+            return "UNMEASURED", rows
         ok = outside(p1)
         row(rid, "PASS" if ok else "FAIL", dict(level=level, metres=level * 0.5, swim=sw, swim_kv=kv(sw),
                                                 order=str(o)[:200], pos=p1))
