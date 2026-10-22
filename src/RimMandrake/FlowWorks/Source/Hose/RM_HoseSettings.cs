@@ -340,6 +340,7 @@ namespace RimMandrake.FlowWorks.Hose
                 FieldInfo f = typeof(RM_HoseSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
                 if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
             }
+            ApplyThickness();   // WidthScale is derived from `thickness`; a reset with the section collapsed never reaches the slider's own call
         }
 
         private static string searchQuery = "";
