@@ -163,7 +163,7 @@ namespace RimMandrake.FlowWorks.Hose
         private static readonly Texture2D IconEnd = ContentFinder<Texture2D>.Get("RimMandrake/FlowWorks/Hose/EndCap", false);
 
         public ulong Seed => (ulong)(parent.thingIDNumber * 7919L + 17);
-        public float MaxLength => Mathf.Clamp(RM_HoseSettings.maxLength, 4f, 80f);
+        public float MaxLength => HoseMath.FiniteClamp(RM_HoseSettings.maxLength, 4f, 80f, (float)HoseMath.DefaultMaxLength);   // HOSE_SETTINGS_FIX_NAN_SHAPE
 
         /// <summary>The reel's footprint (2x2 since round 3); the hose leaves it at its mouth (HoseReelRect.Mouth).</summary>
         public HoseReelRect Rect

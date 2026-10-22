@@ -8,7 +8,7 @@ namespace RimMandrake.FlowWorks.Hose
     /// <summary>
     /// Flexible-hose settings (moved from Gimme Some Slack at the hose port, step 2; design v2 §8): a static section of
     /// RimMandrakeFlowWorksSettings, exposed from its ExposeData with a `hose_` key prefix and drawn in FlowWorks' window under
-    /// "Hoses and pipes". Static fields so HoseProbe "set:" and jawa/mod_settings_field can read and write them. Defaults =
+    /// "Hoses (and the tank Job button)". Static fields so HoseProbe "set:" and jawa/mod_settings_field can read and write them. Defaults =
     /// shipped behaviour. The old GSS file (Mod_*_FireHosesMod.xml) is imported once (RM_HoseLegacy.ImportOnce).
     /// </summary>
     public static class RM_HoseSettings
@@ -46,7 +46,7 @@ namespace RimMandrake.FlowWorks.Hose
         public static int TankUnitsPerCycle => RM_Volume.Units(tankLitresPerCycle);
         public static int DumpUnitsPerCycle => RM_Volume.Units(dumpLitresPerCycle);
         public static int LevellingUnitsPerCycle => RM_Volume.Units(levellingLitresPerCycle);
-        public static float HoseUnitsPerCell => hoseLitresPerCell * RM_Volume.UnitsPerLitre;
+        public static float HoseUnitsPerCell => HoseMath.FiniteClamp(hoseLitresPerCell, 0f, float.MaxValue, 5f) * RM_Volume.UnitsPerLitre;
 
         /// <summary>Model-2 settings stored these three in 200 L units under the old keys: read once into litres when the new key
         /// was never written. An untouched old default becomes the new default (the hose's 40 L a cell was never a ruling).</summary>
@@ -151,8 +151,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Thickness slider range: 0.5x (0.09 cell, the 2026-10-21 thin hose) to 2x (0.36 cell, about the old 0.38 hose).</summary>
         public const float ThicknessMin = 0.5f, ThicknessMax = 2f;
 
-        /// <summary>Push the thickness setting into HoseMath (clamped ThicknessMin-ThicknessMax).</summary>
-        public static void ApplyThickness() => HoseMath.WidthScale = Mathf.Clamp(thickness, ThicknessMin, ThicknessMax);
+        /// <summary>Push the thickness setting into HoseMath (clamped ThicknessMin-ThicknessMax). HOSE_SETTINGS_FIX_NAN_SHAPE: every
+        /// float shape setting is read through HoseMath.FiniteClamp, so a "NaN" in the settings file (float.Parse accepts it, and
+        /// Mathf.Clamp passes it through) reads as the shipped value instead of a NaN width, bend radius or slack in every lay.</summary>
+        public static void ApplyThickness() => HoseMath.WidthScale = HoseMath.FiniteClamp(thickness, ThicknessMin, ThicknessMax, 1f);
 
         public static HoseTuning Tuning() => new HoseTuning
         {
@@ -163,9 +165,9 @@ namespace RimMandrake.FlowWorks.Hose
 
         public static HoseShapeParams Shape() => new HoseShapeParams
         {
-            MinBendRadius = Mathf.Clamp(minBendRadius, 0.3f, 4f),
-            Slack = Mathf.Clamp(slack, 0f, 2f),
-            PlumpAmount = Mathf.Clamp(plumpAmount, 0f, 2f),
+            MinBendRadius = HoseMath.FiniteClamp(minBendRadius, 0.3f, 4f, 1.2f),
+            Slack = HoseMath.FiniteClamp(slack, 0f, 2f, 1f),
+            PlumpAmount = HoseMath.FiniteClamp(plumpAmount, 0f, 2f, 1f),
             CouplingSpacing = Mathf.Clamp(couplingSpacing, 4, 16)
         };
 
@@ -174,7 +176,7 @@ namespace RimMandrake.FlowWorks.Hose
                                                    plumpAmount.ToString("0.###") + "|" + couplingSpacing + "|T" + thickness.ToString("0.###") +
                                                    "|L" + maxLength.ToString("0.###");   // GPT source read B8: a new hose length re-lays (and re-checks) every hose
 
-        /// <summary>The "Hoses and pipes" part of FlowWorks' settings window: four collapsible groups (design v2 §8).</summary>
+        /// <summary>The "Hoses (and the tank Job button)" part of FlowWorks' settings window: four collapsible groups (design v2 §8).</summary>
         public static void DoSettingsSection(Listing_Standard list)
         {
             list.GapLine();

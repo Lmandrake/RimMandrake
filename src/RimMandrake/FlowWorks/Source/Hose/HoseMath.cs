@@ -295,13 +295,13 @@ namespace RimMandrake.FlowWorks.Hose
             return LayOn(w, a, b, plan.Points, p, seed, endInward, startOutward);
         }
 
-        /// <summary>Owner decision by question card 2026-10-06: how far the hose runs dead straight out of the nozzle before it
-        /// may bend. Taken from the minimum bend radius: the coupling's own run (OutletStraight) plus half a radius, so a
-        /// stiffer hose stands farther out of the coupling before its (never tighter than minimum) curve starts.</summary>
         /// <summary>A lead-out join whose plump pose is longer than this x the flat one (+0.5 cell) is a last resort (the fuzz
         /// "plump much longer than flat" bound, HoseFuzz).</summary>
         public const double PlumpGrowthMax = 1.25;
 
+        /// <summary>Owner decision by question card 2026-10-06: how far the hose runs dead straight out of the nozzle before it
+        /// may bend. Taken from the minimum bend radius: the coupling's own run (OutletStraight) plus half a radius, so a
+        /// stiffer hose stands farther out of the coupling before its (never tighter than minimum) curve starts.</summary>
         public static double LeadOutStraight(HoseShapeParams p) => HoseReelRect.OutletStraight + 0.5 * Math.Max(0.45, p.MinBendRadius);
 
         /// <summary>The lead-out: P's start replaced by a straight run of <paramref name="straight"/> from a along u, then the
@@ -1550,16 +1550,13 @@ namespace RimMandrake.FlowWorks.Hose
         internal V2 Centre => new V2(X0 + W / 2.0, Z0 + H / 2.0);
 
         /// <summary>Where the hose leaves the reel. Owner 2026-10-05 (reversing round 5's hide-under-the-drum): the 2x2 reel's hose
-        /// starts at its brass OUTLET, the nozzle on the left of the Reel_Deployed art (tip u 7-11/256, centre v 133-141/256 across the
-        /// four looks; drawSize 2.8), and a coupling sits on that nozzle. The routing start is the nozzle's height on the footprint's
-        /// west edge (inside the west cell, so a lay still starts in a reel cell); <see cref="NozzleTip"/> is where the coupling's face
-        /// meets the nozzle. A 1x1 reel keeps its centre.</summary>
-        /// HOSE_ENDS_FIX_MISSES_THE_PORTS (owner 2026-10-21: "Hose attached to tank and reel broken"): the nozzle used to be a
-        /// constant (u 9/256 at drawSize 2.8) that silently went stale when 2e22f30e3c and 2c27b49569 replaced the art; it is now
-        /// MEASURED per look from the installed laid art (ReelIntakeGeometry.OutletTip, generated, --check in selftest_reel_ports.py).
-        /// The routing start is the tip itself (always inside the west cell; clamped there).</summary>
-        /// REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST (owner card 2026-10-22, "Player turns the reel"): the reel is rotatable and the tip,
-        /// the clamp and <see cref="Outward"/> turn with <see cref="Rot"/>; the clamp keeps the start inside the outlet-side cells.</summary>
+        /// starts at its brass OUTLET nozzle, and a coupling sits on that nozzle. HOSE_ENDS_FIX_MISSES_THE_PORTS (owner 2026-10-21:
+        /// "Hose attached to tank and reel broken"): the nozzle tip is MEASURED per look from the installed laid art
+        /// (ReelIntakeGeometry.OutletTip, generated, --check in selftest_reel_ports.py), never a constant (one went stale when the
+        /// art was replaced). The routing start is that tip, clamped inside the outlet-side cells so a lay still starts in a reel
+        /// cell; <see cref="NozzleTip"/> is where the coupling's face meets the nozzle. REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST (owner
+        /// card 2026-10-22, "Player turns the reel"): the tip, the clamp and <see cref="Outward"/> turn with <see cref="Rot"/>.
+        /// A 1x1 reel keeps its centre.</summary>
         internal V2 Mouth
         {
             get
