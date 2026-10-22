@@ -117,6 +117,8 @@ planet (design folder `world_remake_2026-10-19`).
 **Recommended: 2** — your paint-once ruling already says the planet is settled last, and option 1's silent failure
 is exactly the kind this project keeps paying for.
 
+**ANSWERED 2026-10-22 by question card: option 2, wait for the remake and the paint, then pick the tiles.**
+
 ---
 
 ## Q4. The Unjoining rite is tabled: what happens to it now?
