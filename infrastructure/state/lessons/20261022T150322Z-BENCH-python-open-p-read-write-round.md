@@ -1,0 +1,1 @@
+A Python open(p).read()/write() round-trip on a CRLF-tracked file (e.g. FlowWorks northstar/review/scenarios/KEYSHEET.md, keysheet.html) rewrites EVERY line to LF: a 7-word text fix showed as a 1150-line diff. Check 'file <path>' or git diff --stat before committing; edit such files in bytes (open(p,'rb')) or with newline=''.
