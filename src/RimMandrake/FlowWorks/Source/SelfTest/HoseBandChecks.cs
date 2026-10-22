@@ -301,8 +301,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Body(Src("Hose", "CompHoseReel.cs"), "internal bool TrailWalkable(").Contains("w.StepAllowed(prev.Value, k)"),
                     "a walked trail over a newly dug square still reads walkable");
                 // can-fail: a dig away from the corridor (its box padded 2) does not move the hash
+                // (if the lay's padded box reaches z 13 the dig is inside it and must move the hash instead: both branches assert)
                 CordWorld away = Pit(10, 12, 13, 15);
-                Assert(Corridor(away, lay) == h0 || lay.Flat.Any(p => p.Z > 10), "can-fail: a dig far off the corridor moved the hash");
+                bool boxReaches = lay.Flat.Max(p => p.Floor.Z) + 2 >= 13;
+                Assert(boxReaches ? Corridor(away, lay) != h0 : Corridor(away, lay) == h0,
+                    "can-fail: a dig " + (boxReaches ? "inside the padded box left the hash unchanged" : "far off the corridor moved the hash"));
             });
 
             Case("HoseBand_P2_pit_cover_carries_no_hose", () =>

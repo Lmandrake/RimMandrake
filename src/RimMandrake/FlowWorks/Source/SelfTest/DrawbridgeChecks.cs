@@ -168,7 +168,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     && !RM_DrawbridgeMath.FrozenFor(SuspensionTier.Timber, true, false), "steel without power freezes (STEEL_UNPOWERED_FREEZES)");
                 string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
                 string tick = Body(db, "public static void Tick(RM_MapComponent_SuspensionBridges comp, int now)");
-                Assert(tick.IndexOf("l.frozen = RM_DrawbridgeMath.FrozenFor(") < tick.IndexOf("RM_DrawbridgeMath.Step(") && tick.Contains("if (l.frozen ||"),
+                int frz = tick.IndexOf("l.frozen = RM_DrawbridgeMath.FrozenFor(");
+                Assert(frz >= 0 && frz < tick.IndexOf("RM_DrawbridgeMath.Step(") && tick.Contains("if (l.frozen ||"),
                     "a frozen leaf holds where it is");
                 Assert(tick.Contains("now <= l.workedUntilTick"), "the hand winch moves only while worked");
             });
@@ -210,8 +211,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the launch exception is read only during the launch, from the bridges that launch tore loose");
                 string g = Src("Pits", "Drawbridge", "RM_DrawbridgeGravship.cs");
                 string pre = Body(g, "public static void Prefix(Building_GravEngine engine)");
+                int added = pre.IndexOf("TornLoose.Add(r);", StringComparison.Ordinal);
                 Assert(pre.IndexOf("TornLoose.Clear();", StringComparison.Ordinal) >= 0
-                    && pre.IndexOf("TornLoose.Add(r);", StringComparison.Ordinal) < pre.IndexOf("comp.CollapseSpan(d,", StringComparison.Ordinal),
+                    && added >= 0 && added < pre.IndexOf("comp.CollapseSpan(d,", StringComparison.Ordinal),
                     "each launch refills the torn-loose set before collapsing");
                 string swap = Body(c, "public override void PostSwapMap()");
                 Assert(swap.Contains("!RM_Drawbridges.LeafOfWinch(this, out _, out _)") && swap.Contains("RM_Drawbridges.LinkWinch(this);"),
@@ -309,10 +311,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(cross.IndexOf("RM_RaidPlanks.PlankJob(p, plan.cells, plan.depths)") > 0
                     && cross.IndexOf("RM_RaidPlanks.PlankJob") < cross.IndexOf("JumpJob(p, plan, k)"), "a carried plank is tried before the jump");
                 string lay = Body(raid, "public static bool TryLay(Pawn p, IntVec3 lip, IntVec3 far)");
-                Assert(lay.IndexOf("TryCommit(plank.thingIDNumber, line)") < lay.IndexOf("plank.Destroy(") && lay.Contains("raidPlank = true"),
+                int commit = lay.IndexOf("TryCommit(plank.thingIDNumber, line)");
+                Assert(commit >= 0 && commit < lay.IndexOf("plank.Destroy(") && lay.Contains("raidPlank = true"),
                     "commit first, then the plank is used up and a raid-plank span is laid");
                 string drv = Body(raid, "protected override IEnumerable<Toil> MakeNewToils()");
-                Assert(drv.IndexOf("Toils_General.Wait") < drv.IndexOf("RM_RaidPlanks.TryLay"), "the commit is the job's last step: an interrupted carrier lays nothing");
+                int wait = drv.IndexOf("Toils_General.Wait");
+                Assert(wait >= 0 && wait < drv.IndexOf("RM_RaidPlanks.TryLay"), "the commit is the job's last step: an interrupted carrier lays nothing");
             });
 
             Case("Drawbridge_P5_hoses_on_a_leaf_cut_while_raised_rejoin_lowered", () =>
@@ -364,7 +368,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
                 Assert(c.Contains("public class Building_DrawbridgeGate : Building_Door"), "a custom door (R7), not vanilla semantics");
                 string open = Body(c, "public override bool PawnCanOpen(Pawn p)");
-                Assert(open.IndexOf("base.PawnCanOpen(p)") < open.IndexOf("GateOpensFor("), "the door's own faction rules first, then the bridge's mode");
+                int baseRule = open.IndexOf("base.PawnCanOpen(p)");
+                Assert(baseRule >= 0 && baseRule < open.IndexOf("GateOpensFor("), "the door's own faction rules first, then the bridge's mode");
                 string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
                 Assert(Body(db, "private static void Mode(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l, int now)").Contains("map.reachability?.ClearCache();"),
                     "a lock or unlock re-reads reachability (gates change)");

@@ -215,6 +215,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                             foreach (int i in fp) wet[i] = true;
                             var receded = new List<int>();
                             Pulse(new RM_RecessionSet(), w, h, fp, bedOf, wet, receded, total * frac, 1f);
+                            // a stock below the beds' total must shed something, or the order check below passes on nothing
+                            Assert(receded.Count > 0, "r " + r + " seed " + seed + " frac " + frac + ": nothing receded");
                             int minWet = int.MaxValue, maxDry = 0, wc = 0;
                             foreach (int i in fp)
                             {
