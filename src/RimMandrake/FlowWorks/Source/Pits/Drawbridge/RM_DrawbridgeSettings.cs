@@ -47,7 +47,7 @@ namespace RimMandrake.FlowWorks.Pits
 			  + RM_DrawbridgeMath.RaidPlankMaxSpan + " squares between banks of one height. A laid plank is a light bridge: it "
 			  + "sags, burns and breaks like one.");
 			int pct = Mathf.RoundToInt(raidPlankChance * 100f);
-			list.Label("  Raids that bring planks: " + pct + "%  (PROVISIONAL)");
+			list.Label("  Raids that bring planks: " + pct + "%");
 			raidPlankChance = Mathf.Round(list.Slider(raidPlankChance, 0f, 1f) * 20f) / 20f;
 		}
 	}

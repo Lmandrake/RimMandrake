@@ -48,11 +48,11 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				"On: a bill such as the slime pit's solvent rendering only runs with its liquid to hand — a tank of it on the bench's hose net, or a cell of it beside the bench — and draws its units from the tank. Off: such bills run dry and take nothing.");
 			list.CheckboxLabeled("Reaction vats run (two liquids in, product or gas out)", ref liquidReactionsEnabled,
 				"Tar and acid water react in a vat: the gas comes off as a product where a kit names one (the Sump's tar gas), else it vents as a toxic cloud.");
-			list.Label("Reaction pace: " + reactionRateMultiplier.ToString("0.00") + "x  (first-guess number)");
+			list.Label("Reaction pace: " + reactionRateMultiplier.ToString("0.00") + "x");
 			reactionRateMultiplier = list.Slider(reactionRateMultiplier, 0.1f, 5f);
 			list.CheckboxLabeled("Hot releases scald (boiling floods)", ref hotLiquidEnabled,
 				"On: a flood released hot — the Forge's boiling rain — burns pawns standing in it and steams until it cools over a few hours. Off: the same flood is plain water.");
-			list.Label("Scald strength: " + hotLiquidBurnMultiplier.ToString("0.00") + "x  (first-guess number)");
+			list.Label("Scald strength: " + hotLiquidBurnMultiplier.ToString("0.00") + "x");
 			hotLiquidBurnMultiplier = list.Slider(hotLiquidBurnMultiplier, 0f, 3f);
 			list.CheckboxLabeled("Drained floods leave residue (tar stains the ground)", ref fluidResidueEnabled,
 				"On: when a tar flood drains, part of the ground it covered keeps a tar stain until cleaned. Off: it drains clean.");

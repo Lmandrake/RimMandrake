@@ -228,7 +228,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			list.CheckboxLabeled("Hoses and pipes may tap other factions' tanks (theft)", ref liquidTheftEnabled,
 				"On: another faction's tank or machine joins your hose or pipe network like your own. Taking liquid from it (or putting it in) is " +
 				"theft: once one of theirs sees it, every day it goes on costs goodwill, like a power-tap clamp. Off: their tanks never join your networks.");
-			list.Label("Caught liquid theft costs " + liquidTheftGoodwillPerDay + " goodwill a day, seen within " + liquidTheftSightRange.ToString("0") + " cells");
+			list.Label("Caught liquid theft costs " + liquidTheftGoodwillPerDay + " goodwill a day, seen within " + liquidTheftSightRange.ToString("0") + " squares");
 			liquidTheftGoodwillPerDay = UnityEngine.Mathf.RoundToInt(list.Slider(liquidTheftGoodwillPerDay, 0f, 10f));
 			liquidTheftSightRange = UnityEngine.Mathf.Round(list.Slider(liquidTheftSightRange, 4f, 30f));
 			list.Label("Default look of universal pipes (art only; a pipe built without a picked look, and every older pipe):");

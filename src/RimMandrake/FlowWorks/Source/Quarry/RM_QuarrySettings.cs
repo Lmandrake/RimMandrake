@@ -46,11 +46,11 @@ namespace RimMandrake.FlowWorks.Quarry
 			list.CheckboxLabeled("A flood refills the river's stock", ref placerFloodRefill,
 				"Sluice boxes and panners share one stock per map that regrows over a year. On: a spring flood or "
 				+ "torrential-rain flood tops it back to full.");
-			list.Label("River stock: " + placerStockPercent.ToString("F1") + "% a year of the heavy minerals in this map's rock  (first-guess number)");
+			list.Label("River stock: " + placerStockPercent.ToString("F1") + "% a year of the heavy minerals in this map's rock");
 			placerStockPercent = list.Slider(placerStockPercent, 0f, 20f);
-			list.Label("Sluice box yield: x" + sluiceYieldMultiplier.ToString("F2") + "  (1x = about 1.2 units a day; first-guess number)");
+			list.Label("Sluice box yield: x" + sluiceYieldMultiplier.ToString("F2") + "  (1x = about 1.2 units a day)");
 			sluiceYieldMultiplier = list.Slider(sluiceYieldMultiplier, 0f, 10f);
-			list.Label("Panning yield: x" + panningYieldMultiplier.ToString("F2") + "  (first-guess number)");
+			list.Label("Panning yield: x" + panningYieldMultiplier.ToString("F2") + "");
 			panningYieldMultiplier = list.Slider(panningYieldMultiplier, 0f, 10f);
 		}
 	}

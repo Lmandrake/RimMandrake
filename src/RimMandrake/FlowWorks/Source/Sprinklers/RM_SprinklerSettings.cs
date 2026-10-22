@@ -40,11 +40,11 @@ namespace RimMandrake.FlowWorks.Sprinklers
 			list.Label("Sprinklers");
 			list.CheckboxLabeled("Sprinkler heads on pipes", ref sprinklersEnabled,
 				"A sprinkler head stands on a universal pipe and sprays the liquid its network holds onto the ground around it, "
-				+ "once an hour, wetting those cells until the next spray. It needs no power, but a working pump must be on its "
+				+ "once an hour, wetting those squares until the next spray. It needs no power, but a working pump must be on its "
 				+ "network (the pump is the pressure). Walls stop the spray. Off: built heads sit idle and draw nothing.");
-			list.Label("Water per cell per hour: " + sprinklerLitresPerCellHour.ToString("0.0#") + " L  (ruled 0.5)");
+			list.Label("Water per square per hour: " + sprinklerLitresPerCellHour.ToString("0.0#") + " L  (ruled 0.5)");
 			sprinklerLitresPerCellHour = Mathf.Round(list.Slider(sprinklerLitresPerCellHour, 0.1f, 5f) * 20f) / 20f;
-			list.Label("Head radius: " + sprinklerNativeRadius.ToString("0.0") + " (first-guess 2.9: 29 cells)");
+			list.Label("Head radius: " + sprinklerNativeRadius.ToString("0.0") + " (default 2.9: about 29 squares watered)");
 			int ri = System.Array.IndexOf(RadiusChoices, sprinklerNativeRadius);
 			if (ri < 0) ri = 1;
 			ri = Mathf.RoundToInt(list.Slider(ri, 0f, RadiusChoices.Length - 1));
@@ -58,8 +58,8 @@ namespace RimMandrake.FlowWorks.Sprinklers
 					"Needs Vanilla Furniture Expanded - Farming. On: its sprinkler must touch a universal pipe with a working pump on "
 					+ "the network and pays for its water like ours; inside this project's own biomes its free daily growth boost "
 					+ "is removed (elsewhere VFE runs exactly as shipped). Off: VFE's sprinkler is exactly as shipped everywhere.");
-				list.CheckboxLabeled("  VFE sprinkler: moisture valve (water only cells that need it)", ref vfeThirstValve,
-					"Needs Vanilla Furniture Expanded - Farming. While powered, it waters only cells with a lit plant that is not "
+				list.CheckboxLabeled("  VFE sprinkler: moisture valve (water only squares that need it)", ref vfeThirstValve,
+					"Needs Vanilla Furniture Expanded - Farming. While powered, it waters only squares with a lit plant that is not "
 					+ "already wet from another source, nearest first, within a daily budget and above a reserve floor (its gizmos).");
 			}
 		}

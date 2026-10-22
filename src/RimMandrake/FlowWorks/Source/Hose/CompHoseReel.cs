@@ -491,7 +491,7 @@ namespace RimMandrake.FlowWorks.Hose
                 pendingAt = IntVec3.Invalid;
                 SetCarry(HoseCarryState.Dropped);
                 if (parent.Faction == Faction.OfPlayer)
-                    Messages.Message("Hose at full stretch: this reel holds " + MaxLength.ToString("0") + " cells of hose. The end lies where it stopped.",
+                    Messages.Message("Hose at full stretch: this reel holds " + MaxLength.ToString("0") + " squares of hose. The end lies where it stopped.",
                         new LookTargets(new TargetInfo(far, parent.Map)), MessageTypeDefOf.RejectInput, false);
             }
             HoseChanged();
@@ -662,7 +662,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// hose, this reel holds 40".</summary>
         public string Explain(string why, float need) =>
             why != null && why.StartsWith("route too long") && need > 0
-                ? why + ": the way there needs about " + Mathf.CeilToInt(need) + " cells of hose, this reel holds " + MaxLength.ToString("0")
+                ? why + ": the way there needs about " + Mathf.CeilToInt(need) + " squares of hose, this reel holds " + MaxLength.ToString("0")
                 : why;
 
         public void ReelIn()
@@ -715,12 +715,12 @@ namespace RimMandrake.FlowWorks.Hose
             foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
             if (!RM_HoseSettings.enabled || parent.Faction != Faction.OfPlayer) yield break;
             string relayNote = "\n\nTo go farther, build another hose reel out in the field and run this hose onto it: the hose couples to that reel's side, " +
-                               "and that reel runs its own " + MaxLength.ToString("0") + "-cell hose onward. Whatever flows into a relay reel flows on through its hose.";
+                               "and that reel runs its own " + MaxLength.ToString("0") + "-square hose onward. Whatever flows into a relay reel flows on through its hose.";
             if (carry == HoseCarryState.Stored)
                 yield return new Command_Action
                 {
                     defaultLabel = "Deploy hose",
-                    defaultDesc = "Order a colonist to carry the hose's end out to a cell up to " + MaxLength.ToString("0") + " cells away. " +
+                    defaultDesc = "Order a colonist to carry the hose's end out to a square up to " + MaxLength.ToString("0") + " squares away. " +
                                   "The hose unrolls behind them along the way they walk." + relayNote,
                     icon = IconLay,
                     action = () => TargetCell("Cannot deploy the hose there: ", OrderDeploy)
@@ -730,7 +730,7 @@ namespace RimMandrake.FlowWorks.Hose
                 yield return new Command_Action
                 {
                     defaultLabel = "Move hose end",
-                    defaultDesc = "Order a colonist to pick up the hose's free end and carry it to another cell. Choose a cell beside the reel to bring the end back.",
+                    defaultDesc = "Order a colonist to pick up the hose's free end and carry it to another square. Choose a square beside the reel to bring the end back.",
                     icon = IconLay,
                     action = () => TargetCell("Cannot move the hose end there: ", OrderMove)
                 };
@@ -870,13 +870,13 @@ namespace RimMandrake.FlowWorks.Hose
                          : pending == HosePendingOrder.Move ? "\nOrdered: move the hose end."
                          : pending == HosePendingOrder.Retract ? "\nOrdered: retract the hose." : "";
             if (carry == HoseCarryState.Carrying)
-                return conn + "\nHose being carried" + (carrier != null ? " by " + carrier.LabelShort : "") + ", " + TrailLength().ToString("0") + " of " + MaxLength.ToString("0") + " cells out." + order;
+                return conn + "\nHose being carried" + (carrier != null ? " by " + carrier.LabelShort : "") + ", " + TrailLength().ToString("0") + " of " + MaxLength.ToString("0") + " squares out." + order;
             if (carry == HoseCarryState.Retracting)
                 return conn + "\nHose being wound in" + (carrier != null ? " by " + carrier.LabelShort : "") + "." + order;
             if (!laid) return conn + "\nHose reeled in." + (lastRetractReason != null ? " Retracted automatically: " + Explain(lastRetractReason, lastRetractNeed) + "." : "") + order;
             if (carry == HoseCarryState.Dropped)
-                return conn + "\nHose end dropped, " + TrailLength().ToString("0") + " of " + MaxLength.ToString("0") + " cells out." + order;
-            string len = lay != null ? ", " + lay.FlatLen.ToString("0") + " of " + MaxLength.ToString("0") + " cells" : "";
+                return conn + "\nHose end dropped, " + TrailLength().ToString("0") + " of " + MaxLength.ToString("0") + " squares out." + order;
+            string len = lay != null ? ", " + lay.FlatLen.ToString("0") + " of " + MaxLength.ToString("0") + " squares" : "";
             CompHoseReel relay = comp?.RelayOf(this);
             string to = relay != null ? " to a relay reel" : "";
             // the free end: what it is coupled to (another faction's tank names its faction) or "lying in <water> (no intake ...)"
