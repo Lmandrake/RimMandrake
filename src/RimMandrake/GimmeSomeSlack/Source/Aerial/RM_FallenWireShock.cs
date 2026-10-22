@@ -33,7 +33,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// </summary>
     public static class RM_FallenWireShock
     {
-        public const int CheckInterval = 20;
+        // GPT deep review 2026-10-22 #4: 20 let a pawn walking at normal speed (~13 ticks a cell) cross a contact between two
+        // checks; 4 catches anything slower than 4 ticks a cell. The contact set is small, so the extra checks are cheap.
+        public const int CheckInterval = 4;
         /// <summary>Chance per 250-tick sweep that a live end in fuel lights it. PROVISIONAL.</summary>
         public const float IgniteChancePerSweep = 0.35f;
 
