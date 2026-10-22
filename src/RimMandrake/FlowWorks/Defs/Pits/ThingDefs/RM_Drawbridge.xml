@@ -141,15 +141,16 @@
     </requiredCapacities>
   </WorkGiverDef>
 
-  <!-- DRAWBRIDGE phase 4 (R5): a raider's plank. PLACEHOLDER ART: vanilla wood logs / the timber deck until the commissioned
-       RM_RaidPlank and RM_RaidPlank_Laid pictures pass review (design doc art contract). -->
+  <!-- DRAWBRIDGE phase 4 (R5): a raider's plank. The carried plank draws its own picture (owner pick, bridge_art_redraw
+       sheet 2026-10-21). The LAID plank still draws the timber deck atlas: RM_RaidPlank_Laid/_LaidEnd are installed but need
+       a draw change (per-cell rotation, bank ends) before a def can use them. -->
   <ThingDef ParentName="ResourceBase">
     <defName>RM_RaidPlank</defName>
     <label>raid plank</label>
     <description>A long plank raiders carry to lay across a moat.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/WoodLog</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>Things/Building/FlowWorks/Drawbridge/RM_RaidPlank</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>1</stackLimit>
     <statBases>

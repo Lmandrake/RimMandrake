@@ -37,6 +37,13 @@ for look in LOOKS:
     for part in ("RM_SuspensionDeck", "RM_SuspensionDeckGrated"):
         JOBS.append((f"RimMandrake/FlowWorks/SuspensionBridge/{look}/{part}",
                      f"RimMandrake/FlowWorks/SuspensionBridge/{look}/{part}_Atlas", 28))
+    # per-tier styled decks (BRIDGE_ART_REDRAW_CABINETS_GROW_SADDLES, 2026-10-21): a look's tier with its own picture
+    # (<part>_<Tier>.png) gets its own atlas; a tier without one keeps the look's shared atlas above
+    for part, tiers in (("RM_SuspensionDeck", ("Timber", "Steel", "Heavy")), ("RM_SuspensionDeckGrated", ("Steel", "Heavy"))):
+        for tier in tiers:
+            src = f"RimMandrake/FlowWorks/SuspensionBridge/{look}/{part}_{tier}"
+            if (TEXROOT / (src + ".png")).is_file():
+                JOBS.append((src, src + "_Atlas", 28))
 for tier in ("Rope", "Timber", "Steel", "Heavy", "SteelGrated", "HeavyGrated"):
     JOBS.append((f"{THINGS}/RM_SuspensionDeck_{tier}", f"{THINGS}/RM_SuspensionDeck_{tier}_Atlas", 26 if tier == "Rope" else 28))
 
