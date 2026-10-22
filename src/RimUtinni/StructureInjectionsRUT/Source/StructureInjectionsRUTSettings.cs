@@ -58,7 +58,23 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
             list.Label("Ancients woken before the Reclamation: " + reclamationWokenThreshold);
             reclamationWokenThreshold = (int)list.Slider(reclamationWokenThreshold, 1f, 60f);
 
+            list.Gap();
+            if (list.ButtonText("Reset to defaults"))
+            {
+                ResetAll();
+            }
+
             list.End();
+        }
+
+        /// <summary>Every setting back to its shipped value (the defaults in the field initialisers and the Scribe lines above).</summary>
+        public static void ResetAll()
+        {
+            warLabCraterEnabled = true;
+            ashfallCommandCodesEnabled = true;
+            fleshSealEnabled = true;
+            reclamationByWokenCount = true;
+            reclamationWokenThreshold = 10;
         }
     }
 
