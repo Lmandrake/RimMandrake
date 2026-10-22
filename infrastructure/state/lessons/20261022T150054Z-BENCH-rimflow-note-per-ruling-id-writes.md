@@ -1,0 +1,1 @@
+rimflow note --per-ruling <id> writes the event into OWNER.jsonl as seat OWNER, not your seat: a helper's own progress note on a ruled item goes with --seat BENCH --why '...', never --per-ruling (3 misattributed notes removed 2026-10-22)
