@@ -7,3 +7,5 @@
 - [x] claimed (reassigned FOUNDRY->BENCH)
 - [x] design draft: design/RimMandrake/machine_dig_2026-10-21.md
 - [ ] GPT critique running
+- [x] GPT folded; C# edits in (cap 2 m, RM_DigLabor, DeepenWithin); selftests rerunning
+- [x] built+published 5d79fd1e96; item noted (not closed: live proof owed)
