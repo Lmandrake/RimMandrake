@@ -16,10 +16,11 @@
 //   Scenario_displaced_...) replay §5's displacement walk
 //   inside the test; only the helper arithmetic they call is production code
 //   (review 2026-10-11), so they prove the arithmetic, not the walk's order.
-//   Otherwise EVERYTHING HERE IS REAL. RM_StockMath.cs is the PRODUCTION file, compiled
+//   Otherwise the §5 stock cases are REAL: RM_StockMath.cs is the PRODUCTION file, compiled
 //   into this project directly (see the .csproj). It is not a transcription.
-//   RM_LiquidStock calls every function asserted below, so a change to any
-//   constant or clause fails this test immediately.
+//   RM_LiquidStock calls every RM_StockMath function asserted, so a change to any
+//   constant or clause fails this test immediately. The runner now drives ~70 suites over many production files;
+//   cases built on RiverSwitchFlipChecks.Src/Has read SOURCE TEXT (a revert guard), not behaviour.
 //
 //   ⭐ That is a deliberate improvement on the retired Pits selftest, whose
 //   escape-chance formula was a hand transcription that "keeps passing against
@@ -1413,11 +1414,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                         int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
                         while (tank >= units) { tank -= units; held += units; }
                     }
-                    // conservation of the fill: what the containers hold plus what stays in the tank is what was pumped, and the
-                    // leftover is smaller than the smallest container (the greedy fill left nothing a container could still take)
-                    int smallest = Math.Min(l.bottle, Math.Min(l.bucket, l.barrel));
-                    Assert(held + tank == pumped, "fill did not conserve the pumped liquid at factor " + f + " (held " + held + ", tank " + tank + ")");
-                    Assert(tank < RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(smallest, f), "a container could still have been filled at factor " + f + " (tank " + tank + ")");
+                    // (review 2026-10-22: the old conservation/leftover asserts here were true by construction of the loop above;
+                    // the real guards are the contract assert above and the ScaledUnits monotonicity loop below.) What CAN fail:
+                    // twelve pumped levels fill at least one container at every shipped factor.
+                    Assert(held > 0 && tank < pumped, "twelve pumped levels filled no container at factor " + f + " (tank " + tank + ")");
                 }
                 // ScaledUnits is the one place a material changes a container's size: factor 1 is the contract size, the size never
                 // shrinks as the factor grows, and a positive base never reaches 0 whatever the factor
@@ -1751,12 +1751,12 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 int U(string fam, RM_ContainerMaterial m, int baseUnits) =>
                     RM_ContainerMaterialMath.ScaledUnits(baseUnits, RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), m).capacityFactor);
-                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Wood, 25) == 25, "wood barrel 25");
-                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Metal, 25) == 30, "metal barrel 30");
-                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Plasteel, 25) == 40, "plasteel barrel 40");
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Wood, 25) == 25, "wood barrel factor 1.0 (base 25 -> 25)");
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Metal, 25) == 30, "metal barrel factor 1.2 (base 25 -> 30)");
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Plasteel, 25) == 40, "plasteel barrel factor 1.6 (base 25 -> 40)");
                 Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Plasteel, 25) > U("RM_BarrelItemBase", RM_ContainerMaterial.Metal, 25), "plasteel barrels hold more");
                 Assert(U("RM_BucketItemBase", RM_ContainerMaterial.Wood, 5) == 5 && U("RM_BucketItemBase", RM_ContainerMaterial.Metal, 5) == 6
-                    && U("RM_BucketItemBase", RM_ContainerMaterial.Leather, 5) == 4, "buckets wood 5 / metal 6 / leather 4");
+                    && U("RM_BucketItemBase", RM_ContainerMaterial.Leather, 5) == 4, "bucket factors wood 1.0 / metal 1.2 / leather 0.8 (base 5 -> 5 / 6 / 4)");
                 // A bottle is 1.5 L whatever it is made of (every shipped factor is 1.0). Measured in decilitres, where ANY factor
                 // off 1.0 by 0.04+ moves the count: base 1 unit rounds every factor below 1.5 back to 1 and proved nothing.
                 var bottleRules = ContainerMatFixture.Rules("RM_BottleItemBase");
@@ -2027,6 +2027,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             GptFixesAChecks.Run(Case);         // GPT consult fixes, builder A: liquid net, tanks, hoses, bottles (GptFixesAChecks.cs)
             GptEdge1016Checks.Run(Case);       // GPT edge-case consult fixes 2026-10-16 (GptEdge1016Checks.cs)
             HoseNanShapeChecks.Run(Case);      // HOSE_SETTINGS_FIX_NAN_SHAPE (HoseNanShapeChecks.cs)
+            DirtyReview1022Checks.Run(Case);   // DIRTY-file review 2026-10-22 second pass (DirtyReview1022Checks.cs)
             MapControlChecks.Run(Case);        // FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: dev-placed flow source and sink (MapControlChecks.cs)
             FlowDoorFacingChecks.Run(Case);    // SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: sluices and grates span between canal banks (FlowDoorFacingChecks.cs)
             LadderWallChecks.Run(Case);        // PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the ladder hangs on one wall, slid up holds everyone (LadderWallChecks.cs)

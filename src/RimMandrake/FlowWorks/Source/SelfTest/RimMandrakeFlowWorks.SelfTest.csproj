@@ -201,6 +201,7 @@
     <Compile Include="HoseFuzz.cs" />
     <Compile Include="GptEdge1016Checks.cs" />
     <Compile Include="HoseNanShapeChecks.cs" />
+    <Compile Include="DirtyReview1022Checks.cs" />
     <Compile Include="SequenceFuzz.cs" />
     <Compile Include="FlowKernelFuzz.cs" />
     <Compile Include="GptFixesAChecks.cs" />

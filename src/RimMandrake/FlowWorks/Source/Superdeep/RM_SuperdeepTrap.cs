@@ -137,9 +137,16 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			int w = RequiredWidth(p);
-			bool wide = RM_PitTrapMath.PitWidthAt((x, z) => eng.IsSuperdeepExcavation(new IntVec3(x, 0, z)), c.x, c.z, w);
+			bool wide = WideAt(eng, c, w);
 			return RM_PitTrapMath.Held(true, true, Captures(p), p.Flying,
 				RM_LadderRules.LadderLetsOut(p.Map, c, p), wide);
+		}
+
+		/// <summary>FlowWorks review 2026-10-22: the width lambda lives here so IsHeldAt (a per-path-step read) allocates no
+		/// closure on its early-return paths (a lambda capturing a method-scope local is built at method entry).</summary>
+		private static bool WideAt(RM_MapComponent_Excavation eng, IntVec3 c, int w)
+		{
+			return RM_PitTrapMath.PitWidthAt((x, z) => eng.IsSuperdeepExcavation(new IntVec3(x, 0, z)), c.x, c.z, w);
 		}
 
 		// ── PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: the relative rule (design §8.1-8.3) ──────────
@@ -812,7 +819,7 @@ namespace RimMandrake.FlowWorks
 		{
 			if (Scribe.mode == LoadSaveMode.Saving && jumpers != null)
 			{
-				// Tick prunes only while superdeep cells exist; a discarded pawn left
+				// Tick runs only while a hole exists; a discarded pawn left
 				// here would save as an unresolvable reference.
 				jumpers.RemoveWhere(p => p == null || p.Destroyed);
 			}

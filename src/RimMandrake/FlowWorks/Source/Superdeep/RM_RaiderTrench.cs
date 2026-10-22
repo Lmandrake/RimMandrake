@@ -212,7 +212,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			RM_PocketGrid g = RM_PocketGrid.For(map);
+			// FlowWorks review 2026-10-22: the pawn's own view (stride / floor), the one RelativeVeto judged it unreachable on
+			RM_PocketGrid g = RM_PocketGrid.ForPawn(map, p);
 			int cs = g.ComponentOf(k, p.Position);
 			int ct = g.ComponentOf(k, target.Position);
 			if (cs < 0 || ct < 0 || cs == ct || g.ComponentOf(k, origin) != cs)
@@ -272,9 +273,13 @@ namespace RimMandrake.FlowWorks
 			Lord lord = p.GetLord();
 			int now = Find.TickManager?.TicksGame ?? 0;
 			if (lord != null && lordLips.TryGetValue(lord, out (int tick, IntVec3 lip) e) && now - e.tick < PlanCacheTicks
-				&& e.lip.InBounds(p.Map) && RM_PocketGrid.For(p.Map).ComponentOf(k, e.lip) == RM_PocketGrid.For(p.Map).ComponentOf(k, p.Position))
+				&& e.lip.InBounds(p.Map))
 			{
-				return e.lip;
+				RM_PocketGrid g = RM_PocketGrid.ForPawn(p.Map, p);
+				if (g.ComponentOf(k, e.lip) == g.ComponentOf(k, p.Position))
+				{
+					return e.lip;
+				}
 			}
 			return p.Position;
 		}
@@ -373,7 +378,7 @@ namespace RimMandrake.FlowWorks
 				return null;
 			}
 			Map map = p.Map;
-			RM_PocketGrid g = RM_PocketGrid.For(map);
+			RM_PocketGrid g = RM_PocketGrid.ForPawn(map, p);
 			int ct = g.ComponentOf(k, plan.cells[plan.cells.Count - 1]);
 			// The far side continues past the plan's last square along the same direction; look a few squares on.
 			IntVec3 lastStep = plan.cells[plan.cells.Count - 1] - plan.cells[plan.cells.Count - 2];
@@ -474,7 +479,7 @@ namespace RimMandrake.FlowWorks
 			// Every ladder stands. Normally TryCross has already handed back to vanilla (the ladders make the target reachable:
 			// TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP); this is the fallback when the far side is still cut off for this pawn
 			// (a ladder too short, a wall filled in): step into the trench, the first square off this pawn's component it can reach.
-			RM_PocketGrid g = RM_PocketGrid.For(map);
+			RM_PocketGrid g = RM_PocketGrid.ForPawn(map, p);
 			int cs = g.ComponentOf(k, p.Position);
 			for (int i = 1; i < plan.cells.Count; i++)
 			{
@@ -508,7 +513,6 @@ namespace RimMandrake.FlowWorks
 			Map map = p.Map;
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			IntVec3 c = plan.cells[i];
-			// one raider a square (the driver reserves it): two at once would shovel it past its causeway step
 			// CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP: up to MaxFillersPerSquare raiders share a square (one a square left the rest of
 			// the raid waiting at the lip); job.count carries the square's causeway target, so the driver stops at the step
 			if (eng == null || !eng.CanFillIn(c) || !p.CanReserve(c, RM_RaiderTrenchMath.MaxFillersPerSquare)
@@ -723,7 +727,8 @@ namespace RimMandrake.FlowWorks
 	{
 		private bool IsLadder => job.def == RM_RaiderTrenchDefOf.RM_RaiderSetLadder;
 
-		/// <summary>One raider works a square at a time (the givers skip a square another raider holds).</summary>
+		/// <summary>One raider sets a ladder slot; up to RM_RaiderTrenchMath.MaxFillersPerSquare share a fill square (job.count
+		/// stops the causeway at its step).</summary>
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
 			return pawn.Reserve(job.targetA, job, IsLadder ? 1 : RM_RaiderTrenchMath.MaxFillersPerSquare, -1, null, errorOnFailed);
@@ -749,7 +754,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			RM_MapComponent_Excavation eng = Map?.GetComponent<RM_MapComponent_Excavation>();
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(Map);   // per-tick end condition: the cached lookup
 			return eng != null && RM_SuperdeepTrap.StepDepthAt(Map, eng, job.targetA.Cell) <= job.count;
 		}
 

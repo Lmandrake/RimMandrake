@@ -72,7 +72,7 @@ namespace RimMandrake.FlowWorks
 			if (a.Length == 4)
 			{
 				LiquidDef liquid = DefDatabase<LiquidDef>.GetNamedSilentFail(a[2]);
-				if (!int.TryParse(a[3], out int units) || (units > 0 && liquid == null) || units > tank.Capacity)
+				if (!int.TryParse(a[3], out int units) || units < 0 || (units > 0 && liquid == null) || units > tank.Capacity)
 				{
 					return "REFUSED: bad liquid/units " + a[2] + "/" + a[3] + " (capacity " + tank.Capacity + ")";
 				}
@@ -160,7 +160,8 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design §8.6). arg "x,z;K" (a cell and a climb band) →
-		/// RM_PocketGrid.ProofPocket; or "pawn:&lt;id&gt;" → "CLIMB k=K held=b trapped=b cell=x,z depth=D " + its pocket line.</summary>
+		/// RM_PocketGrid.ProofPocket; or "pawn:&lt;id&gt;" → "CLIMB k=K held=b trapped=b cell=x,z depth=D " + its pocket line; or
+		/// "mask:x,z;K" (the cliff mask) or "cost:fx,fz;tx,tz;&lt;pawnId&gt;" (one step's cost).</summary>
 		public static string ProofClimb(string arg)
 		{
 			Map map = Find.CurrentMap;
@@ -362,6 +363,10 @@ namespace RimMandrake.FlowWorks
 					if (edge) shallow++; else deep++;
 				}
 				return "PAINTED deep=" + deep + " shallow=" + shallow;
+			}
+			if (a[0] != "form" && a[0] != "stock" && a[0] != "shape")
+			{
+				return "REFUSED: unknown mode " + a[0];   // before the body lookup, so a typo never reads as "no body"
 			}
 			if (!Cell(a[1], out IntVec3 at) || !at.InBounds(map))
 			{
@@ -706,8 +711,8 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A4/A5. arg "x,z" (a cell of a hose reel's footprint): what the
 		/// last levelling cycle did at that hose's open end, as the enum word RM_Levelling.StateOf holds (None = the end was in no
-		/// link last cycle), plus the process counters. Read only. "LEVELLINK reel=id state=W role=R laid=b cycles=n links=n
-		/// moves=n movedDl=n", or "REFUSED: ...".</summary>
+		/// link last cycle), plus the process counters. Read only. "LEVELLINK reel=id state=W role=R laid=b intakes=n outflows=n on=b
+		/// cycles=n links=n moves=n movedDl=n", or "REFUSED: ...".</summary>
 		public static string ProofLevelLink(string arg)
 		{
 			Map map = Find.CurrentMap;

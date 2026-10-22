@@ -25,15 +25,15 @@ namespace RimMandrake.FlowWorks
 	/// PILLAR 2: NO PER-TICK FLUID WORK. MapComponentTick calls, every tick,
 	/// superdeepTrap.Tick (while a D=4 cell exists, or under the relative climb rule while anything is dug or a dry
 	/// bed is a hollow), RM_PocketGrid.Tick, RM_PitExposure.Tick,
-	/// liquidFire.Tick, liquidHeat.Tick and RM_PitFillEffects.Tick (only while
-	/// an excavated cell exists). superdeepTrap.Tick does real work EVERY tick:
+	/// liquidFire.Tick, liquidHeat.Tick, RM_SlimeSlip, RM_Swim, RM_PitFillEffects.Tick, RefreshDugSwim (every
+	/// SwimRefreshTicks) and the water-look watcher (only while an excavated cell exists, where each says so). superdeepTrap.Tick does real work EVERY tick:
 	/// it walks the spawned pawns, because the descent detector compares each
-	/// pawn's cell with the one it held the tick before. The other four each
+	/// pawn's cell with the one it held the tick before. The others each
 	/// gate on their own interval and return. None of it is fluid work.
 	/// The whole sort-and-overflow runs on a settings-tunable pulse cadence
 	/// (default 250 ticks, vanilla's own rare cadence). There is no fluid
 	/// simulation and there will not be one.
-	/// The liquid-net SettleTick and TheftTick also run from MapComponentTick, once per pump cycle (250 ticks).
+	/// RM_Levelling.Tick, then the liquid-net SettleTick and TheftTick, also run from MapComponentTick, once per pump cycle (250 ticks).
 	///
 	/// A SOURCE IS TERRAIN (owner ruling 2026-09-16, and ruling 24). A natural
 	/// liquid cell is not a building with a comp — it reads as D = SUPERDEEP,
@@ -45,7 +45,8 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public class RM_MapComponent_Excavation : MapComponent, RM_IFlowWorld, RM_ILevelWorld
 	{
-		/// <summary>D. 0 = surface; 1..4 = shallow/mid/deep/SUPERDEEP.</summary>
+		/// <summary>D in notches (0.5 m each). 0 = surface; 1..3 shallow to deep; 4 (2 m, RM_ExcavationDepth.Superdeep) and deeper
+		/// is a pit, up to RM_ExcavationDepth.MaxDigCeiling.</summary>
 		private byte[] depthGrid;
 
 		/// <summary>F. Always clamped to 0 &lt;= F &lt;= D.</summary>
@@ -221,10 +222,9 @@ namespace RimMandrake.FlowWorks
 		private float sinkTransferredTotal;
 
 		/// <summary>The running conservation ledger. Every pulse's debits and
-		/// credits must sum to zero except liquid destroyed by §5 overflow —
-		/// the ONE sanctioned place in the whole design where liquid leaves the
-		/// world unspent. Recorded so the exception is disclosed rather than
-		/// silent; a silent leak in a conservation-of-mass system reads as a bug.</summary>
+		/// credits must sum to zero except the disclosed exits: this one (liquid destroyed by
+		/// overflow the sheet refused) and the others LedgerReport lists (sunk, burned, released, to a limitless body).
+		/// Recorded so each exit is disclosed rather than silent; a silent leak in a conservation-of-mass system reads as a bug.</summary>
 		private float overflowDestroyedTotal;
 
 		/// <summary>Derived, never scribed: rebuilt from depthGrid on load.</summary>
@@ -240,7 +240,8 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>A single connected excavation this big is already far past
 		/// anything a colony digs by hand; the cap exists so one pathological
-		/// map cannot turn a bounded pulse into a frame hitch.</summary>
+		/// map cannot turn a bounded pulse into a frame hitch. Seeds the kernel only: every pulse overwrites the
+		/// kernel's cap with RimMandrakeFlowWorksSettings.MaxNetworkCells.</summary>
 		private const int MaxComponentCells = 6000;
 
 		public RM_MapComponent_Excavation(Map map)
@@ -352,6 +353,8 @@ namespace RimMandrake.FlowWorks
 		public const int SwimRefreshTicks = 60;
 		private readonly Dictionary<int, int> swimClimb = new Dictionary<int, int>();
 		private readonly HashSet<int> swimCells = new HashSet<int>();
+		private readonly Dictionary<int, int> swimFreshScratch = new Dictionary<int, int>();
+		private readonly List<int> swimChangedScratch = new List<int>();
 
 		/// <summary>A dug square holding swimmable water 2 m or deeper (swimming on).</summary>
 		public bool IsDugSwimCell(IntVec3 c)
@@ -365,7 +368,11 @@ namespace RimMandrake.FlowWorks
 		public int RefreshDugSwim()
 		{
 			bool on = Swimming.RM_SwimWater.On;
-			var fresh = new Dictionary<int, int>();
+			// Scratch reused across calls (FlowWorks review 2026-10-22): this runs every SwimRefreshTicks on every map.
+			Dictionary<int, int> fresh = swimFreshScratch;
+			fresh.Clear();
+			List<int> changed = swimChangedScratch;
+			changed.Clear();
 			if (on)
 			{
 				foreach (IntVec3 c in excavatedCells)
@@ -384,7 +391,6 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
-			var changed = new List<int>();
 			foreach (KeyValuePair<int, int> kv in fresh)
 			{
 				if (!swimClimb.TryGetValue(kv.Key, out int old) || old != kv.Value)
@@ -482,7 +488,7 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>Every excavated cell at D = 4. Walks the excavated set, not
+		/// <summary>Every excavated cell at D >= Superdeep (2 m or deeper). Walks the excavated set, not
 		/// the whole map.</summary>
 		public IEnumerable<IntVec3> SuperdeepCells()
 		{
@@ -708,7 +714,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1 (FL-3). Runs once per map load after the lost-fluid report:
-		/// clamps D to 0..4 and F to 0..D, clears fluid keys past the palette, then drops palette entries no cell
+		/// clamps D to 0..MaxDigCeiling and F to 0..D, clears fluid keys past the palette, then drops palette entries no cell
 		/// uses (null entries included) and remaps the grid, so a long campaign never exhausts the 254 keys.
 		/// One log line when anything changed.</summary>
 		internal void RepairLoadedGrids()
@@ -1537,12 +1543,9 @@ namespace RimMandrake.FlowWorks
 			return d;
 		}
 
-		/// <summary>Called by ReportOverflow, from the fill-in displacement walk
-		/// (FillIn → Displace), when displaced liquid has nowhere to go. It is the
-		/// ONE sanctioned exception to conservation of mass in the whole design,
-		/// so it is recorded and announced rather than quietly dropped.
-		/// Counted in grid LEVELS (the unit F is stored in), not stock units: the one caller,
-		/// ReportOverflow, passes levels and its player message says "level(s)".</summary>
+		/// <summary>The destroyed-liquid exit, in grid LEVELS. Callers: ReportOverflow (the fill-in remainder the sheet
+		/// refused), ReportLiquidLost (hose leftovers, released floods) and DetachIfDryBed (a detached bed's excess stock).
+		/// Disclosed, never silent.</summary>
 		public void NotifyOverflowDestroyed(float levels)
 		{
 			if (levels <= 0f)
@@ -1554,7 +1557,7 @@ namespace RimMandrake.FlowWorks
 			{
 				Log.Warning("[RimMandrake.FlowWorks] conservation exception: " +
 					levels.ToString("F1") + " fill level(s) overflowed with nowhere to go and were " +
-					"destroyed (spec §5 — the only sanctioned case). Map total now " +
+					"destroyed. Map total now " +
 					overflowDestroyedTotal.ToString("F1") + ".");
 			}
 		}
@@ -1578,7 +1581,7 @@ namespace RimMandrake.FlowWorks
 		/// place for it to go, but if it would 'overflow' it is destroyed."</i>
 		///
 		/// The displaced amount is what the new, shallower cell can no longer
-		/// hold: <c>F - (D-1)</c>, clamped at zero. A trench holding one level
+		/// hold (RM_LevelPour.KeptOnFillIn, in decilitres). A trench holding one level
 		/// out of four loses nothing when it is raised to three — the liquid
 		/// simply sits higher, which is what actually happens when you shovel
 		/// earth in under it.
@@ -1610,7 +1613,7 @@ namespace RimMandrake.FlowWorks
 			}
 			// LIQUID_BODY_FLUID_IDENTITY_1 step 2b: the displaced liquid keeps the fluid this cell held.
 			FluidDef cellFluid = FluidAt(c) ?? ActiveFluid;
-			// The F - (D-1) clamp lives in RM_StockMath so the selftest covers the
+			// The kept/displaced split lives in RM_LevelPour.KeptOnFillIn so the selftest covers the
 			// production arithmetic rather than a copy of it.
 			// CANAL_FILLIN_FIX_SHEET_WATER_DESTROYED: displacement is in DECILITRES. What no longer fits under the raised brim
 			// (everything, filled to the surface or back to a pond bed) is displaced; a sheet under the new brim just sits higher.
@@ -1666,8 +1669,8 @@ namespace RimMandrake.FlowWorks
 		/// <summary>
 		/// The displacement walk. Offer the liquid to the connected body,
 		/// NEAREST FIRST — remaining channel cells below their brim, THEN the
-		/// natural body up to its capacity — and destroy only what finds no
-		/// room anywhere.
+		/// natural body up to its capacity — and spill what finds no room as sheet
+		/// water (CANAL_OVERFLOW stage 1); only what the sheet refuses is destroyed.
 		///
 		/// 🔴 THE CHANNEL IS SERVED BEFORE THE BODY, AND THAT IS NOT AN
 		/// ORDERING PREFERENCE. §5's third consequence is a thing the player
@@ -1681,15 +1684,14 @@ namespace RimMandrake.FlowWorks
 		/// first; phase 2 offers whatever is still homeless to the source
 		/// cells the walk touched, again nearest first.
 		///
-		/// 🔑 Whatever finds no room is the ONE sanctioned exception to
-		/// conservation of mass in this whole design, which is why every exit
+		/// 🔑 Whatever the sheet refuses is a disclosed exception to
+		/// conservation of mass, which is why every exit
 		/// from this method routes through <see cref="ReportOverflow"/> and is
 		/// announced rather than quietly dropped. Everything else is a
 		/// transfer.
 		///
-		/// <paramref name="units"/> is in fill LEVELS, the unit the grids hold.
-		/// The body's stock is in fill-units of volume, so phase 2 converts —
-		/// see <see cref="RM_LiquidStock.CreditLevels"/>.
+		/// <paramref name="dl"/> is in decilitres; phase 2 credits it with CreditDl (exact levels) or
+		/// <see cref="RM_LiquidStock.CreditLevels"/> in whole levels (exact off).
 		/// </summary>
 		private void Displace(IntVec3 from, long dl, FluidDef fluid)
 		{
@@ -2250,7 +2252,7 @@ namespace RimMandrake.FlowWorks
 			pondMudSince.Clear();
 		}
 
-		/// <summary>The water terrain a square showed before FlowWorks first staged it, or null. (Public read for the stock.)</summary>
+		/// <summary>Is this undug square natural liquid right now (base terrain IsWater)? Public read for RM_LiquidStock.</summary>
 		public bool IsWaterNow(IntVec3 c)
 		{
 			return IsNaturalLiquid(c);
@@ -2802,7 +2804,7 @@ namespace RimMandrake.FlowWorks
 			{
 				for (int i = 0; i < flowKernel.imbalanceReports.Count; i++)
 				{
-					// The ledger. Every transfer inside a component is -1 and +1, so the only legitimate changes in
+					// The ledger. Every transfer inside a component moves liquid, never makes it, so the only legitimate changes in
 					// total fill are what sources credited in and what left down a sink. Anything else is a leak.
 					Log.Warning("[RimMandrake.FlowWorks] conservation ledger does not balance: " +
 						flowKernel.imbalanceReports[i] + ". This is a defect, not an overflow.");
@@ -3045,6 +3047,9 @@ namespace RimMandrake.FlowWorks
 
 		// ── rain (ruling 25) ──────────────────────────────────────────────
 
+		/// <summary>The most rain one pulse can add to a square, in notches (a burst cap, not a depth).</summary>
+		private const int RainMaxNotchesPerPulse = 4;
+
 		/// <summary>
 		/// RULING 25, verbatim: <i>"Rain fills excavations only where
 		/// unroofed."</i> Roofing is the player's lever and it costs nothing —
@@ -3055,13 +3060,9 @@ namespace RimMandrake.FlowWorks
 		/// would round to zero forever and the whole mechanic would read as
 		/// broken in exactly the weather where a player expects to see it.
 		///
-		/// This is the second place liquid legitimately enters the world (the
-		/// first being a limitless body). It runs before the ledger's "before"
-		/// is measured, so it can never be mistaken for a leak.
+		/// Rain is external input, like a limitless body or a map-control flow source. It runs before the ledger's
+		/// "before" is measured, so it can never be mistaken for a leak.
 		/// </summary>
-		/// <summary>The most rain one pulse can add to a square, in notches (a burst cap, not a depth).</summary>
-		private const int RainMaxNotchesPerPulse = 4;
-
 		private void ApplyRain()
 		{
 			if (!RimMandrakeFlowWorksSettings.rainFillsExcavationsEnabled || excavatedCells.Count == 0)
@@ -3095,7 +3096,15 @@ namespace RimMandrake.FlowWorks
 			foreach (IntVec3 c in excavatedCells)
 			{
 				int i = map.cellIndices.CellToIndex(c);
-				if (RoomNotches(i) <= 0)
+				// The roof grid IS the rule. A roofed excavation stays dry in a
+				// downpour, which is what makes roofing a trap a real decision.
+				// Checked FIRST (FlowWorks review 2026-10-22): a roofed brimming square catches no rain, so none runs over its lip.
+				if (map.roofGrid.Roofed(c))
+				{
+					continue;
+				}
+				int room = RoomNotches(i);
+				if (room <= 0)
 				{
 					// CANAL_OVERFLOW stage 1 (D2): rain on a brimming square runs over the canal's lip (switch off: as before)
 					if (WetDug(i) && FluidAt(c) == fluid)
@@ -3104,30 +3113,23 @@ namespace RimMandrake.FlowWorks
 					}
 					continue;
 				}
-				// The roof grid IS the rule. A roofed excavation stays dry in a
-				// downpour, which is what makes roofing a trap a real decision.
-				if (map.roofGrid.Roofed(c))
-				{
-					continue;
-				}
 				if (!RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(c), fluid))
 				{
 					continue;
 				}
-				int room = RoomNotches(i);
 				int add = room < levels ? room : levels;
-				if (add < levels)
-				{
-					Sheet.RM_MapComponent_Sheet.RainOverflow(map, c, levels - add, fluid);   // CANAL_OVERFLOW stage 1 (D2)
-				}
 				if (!WetDug(i))
 				{
 					byte rainKey;
 					if (!TryPaletteKey(fluid, out rainKey))
 					{
-						continue;   // P7: no key for water -> this dry cell stays dry, never mis-recorded
+						continue;   // P7: no key for water -> this dry cell stays dry, never mis-recorded (and spills nothing)
 					}
 					fluidGrid[i] = rainKey;
+				}
+				if (add < levels)
+				{
+					Sheet.RM_MapComponent_Sheet.RainOverflow(map, c, levels - add, fluid);   // CANAL_OVERFLOW stage 1 (D2)
 				}
 				fillGrid[i] += (byte)add;
 				ApplyFillTerrain(c, fluid);
