@@ -82,7 +82,7 @@ def main() -> int:
         return 0
 
     with open(TILES, 'w', newline='', encoding='utf-8') as fh:
-        w = csv.DictWriter(fh, fieldnames=cols)
+        w = csv.DictWriter(fh, fieldnames=cols, lineterminator='\n')   # the csv module's default is CRLF; the file is LF
         w.writeheader()
         w.writerows(rows)
     print(f"\nwrote {TILES}")
