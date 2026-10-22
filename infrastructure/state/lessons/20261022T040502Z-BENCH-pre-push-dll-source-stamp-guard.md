@@ -1,0 +1,1 @@
+The pre-push DLL_SOURCE_STAMP_GUARD_1 hashes the mod csproj's explicit <Compile> list: adding a new .cs to the mod csproj without committing the rebuilt DLL blocks every push from the clone. To land source-only, keep a new Verse-free kernel in the SelfTest csproj alone until the DLL is committed with it.
