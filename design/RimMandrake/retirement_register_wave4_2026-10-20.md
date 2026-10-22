@@ -66,6 +66,7 @@ Deleting `RM_Faction_CombHolds` before no kept save holds it still orphans loadI
 5. Re-save `src/Jawa/ideoligion/The Salvation.rid` / `MandrakeJawa.xtp` if its active-mod stamp matters (harmless notice otherwise).
 6. Set its archive row back (`python3 src/RimMandrake/Utils/mod_archive.py add <id> --lifecycle ACTIVE-...`, then `check`).
 The mods are NOT unsubscribed: every folder is still on disk under the Steam workshop dir.
+If the world is ever remade, see `design/RimMandrake/world_remake_reinstate_list.md` (My Little Planet comes back; the rest is conditional).
 
 Closure (About.xml `modDependencies` incl. v1.6 + `mod_facts.jsonl` class_ref/hard_dep): no retained mod hard-depends on a cut.
 One flagged edge is soft: `mlie.tabsorting` -> `avius.prisonlabor` is an `IfModActive` LoadFolders branch. Order-only edges left

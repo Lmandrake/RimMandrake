@@ -20,3 +20,5 @@ Tool: `python3 src/RimMandrake/Utils/mod_archive.py build | check | add <package
 `check` exits 1 if any id in any list or wave removed list lacks a row. After a future retirement: update the wave removed file,
 then `add` (manual rows live in `overrides.tsv` and survive `build`) or just re-run `build`, then `check`, then commit the TSV and `about/`.
 Not hooked into anything. `RETIRED-EARLIER` rows carry no per-mod reason (those removals predate the wave files; the reason lives in that period's ledger).
+
+If the world is ever remade (a new Create World pass, not a repaint), see `design/RimMandrake/world_remake_reinstate_list.md` (preserved file; list in `infrastructure/state/modlists/world_remake_reinstate.txt`).
