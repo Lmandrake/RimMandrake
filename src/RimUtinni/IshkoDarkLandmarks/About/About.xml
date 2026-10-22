@@ -19,6 +19,10 @@ Placement on the actual Ash'karr world is deliberately NOT done here - that stay
       <packageId>Ludeon.RimWorld.Odyssey</packageId>
       <displayName>Odyssey</displayName>
     </li>
+    <li>
+      <packageId>mandrake.rut.ashkarrlandmarkart</packageId>
+      <displayName>RimUtinni: Ash'karr Landmark Art</displayName>
+    </li>
   </modDependencies>
 
   <loadAfter>

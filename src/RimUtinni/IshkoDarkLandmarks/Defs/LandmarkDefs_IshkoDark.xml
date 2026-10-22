@@ -68,7 +68,7 @@
     <category>mountain</category>
     <mutatorChances>
       <Cavern Required="True"/>
-      <LavaCaves>0.4</LavaCaves>
+      <!-- no LavaCaves: "long since gone out ... claimed cold" (GPT review 2026-10-22, #2) -->
       <IceCaves>0.15</IceCaves>
       <FoggyMutator>0.1</FoggyMutator>
       <AnimalLife_Decreased>0.2</AnimalLife_Decreased>

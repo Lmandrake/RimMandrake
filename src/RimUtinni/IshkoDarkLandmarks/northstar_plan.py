@@ -12,6 +12,7 @@ ISHKO_MOCK_BREAK=<comma list> re-introduces one defect each, so every check can 
   wrong_pkg      a defName collision: RUT_LightlessSink resolves from another package
   no_anchor      AddLandmark leaves the tile without its Required anchor mutator
   shallow        mutatorChances comes back as bare type names (get_defs without deep=true)
+  no_restore     world_mutators_set does nothing, so the post-run restore cannot verify
 The live tier MUST carry mandrake.rm.gimmesomeslack (JawaBench TypeLoad-fails without it and preflight REFUSES at game_loaded).
 First live run 2026-10-07: 8 PASS in 3 s, recorded GREEN by the driver (see validation.py "LEARNED").
 Dev tooling, never deployed."""
@@ -25,11 +26,22 @@ EXPECT_MODS = ("mandrake.rut.ishkolandmarks", "mandrake.rut.ashkarrlandmarkart")
 NEED_GOD = False
 RECT = None                 # world-level mod: the suite touches no map cells
 
-_DEFS = {
-    "RUT_LightlessSink": ("mountain", 0.08, "Hollow", ["IceCaves", "FoggyMutator", "AnimalLife_Decreased", "DryGround"]),
-    "RUT_ShadowedOverhang": ("mountain", 0.08, "Chasm", ["IceCaves", "FoggyMutator", "AnimalLife_Decreased", "SunnyMutator"]),
-    "RUT_ColdLavaTube": ("mountain", 0.06, "Cavern", ["LavaCaves", "IceCaves", "FoggyMutator", "AnimalLife_Decreased", "DryGround"]),
-}
+def _xml_defs():
+    """The mock reads the SAME XML the suite checks, so its chances can never drift from the
+    defs (GPT review 2026-10-22, #8: the old hand-copied table gave every optional 0.2)."""
+    import xml.etree.ElementTree as ET
+    here = os.path.dirname(os.path.abspath(__file__))
+    out = {}
+    for el in ET.parse(os.path.join(here, "Defs", "LandmarkDefs_IshkoDark.xml")).getroot().findall("LandmarkDef"):
+        chances = []
+        for m in el.find("mutatorChances"):
+            req = (m.get("Required") or "").lower() == "true"
+            chances.append({"mutator": m.tag, "chance": 1.0 if req else float(m.text), "required": req})
+        out[el.findtext("defName")] = (el.findtext("category"), float(el.findtext("commonality")), chances)
+    return out
+
+
+_DEFS = _xml_defs()
 _ICON = {"RUT_LightlessSink": "Hollow", "RUT_ShadowedOverhang": "Chasm", "RUT_ColdLavaTube": "Cavern"}
 
 
@@ -50,8 +62,10 @@ def _breaks():
 class _World(object):
     def __init__(self):
         # tile -> {"water": bool, "landmark": str|None, "mutators": [str]}
+        # tile 2 already carries an anchor (Hollow): the suite must skip it as a candidate.
         self.tiles = {i: {"water": i % 5 == 0, "landmark": "Cove" if i == 1 else None,
-                          "mutators": ["Coast"] if i % 7 == 0 else []} for i in range(2000)}
+                          "mutators": ["Coast"] if i % 7 == 0 else (["Hollow"] if i == 2 else [])}
+                      for i in range(2000)}
 
 
 def _row(i, t):
@@ -80,9 +94,8 @@ def mock_extension(game, tool, p):
                 rows.append({"requested": spec, "found": False, "defName": dn})
                 nf.append(spec)
                 continue
-            cat, comm, anchor, rest = _DEFS[dn]
-            chances = [{"mutator": anchor, "chance": 1.0, "required": True}] + \
-                      [{"mutator": m, "chance": 0.2, "required": False} for m in rest]
+            cat, comm, chances = _DEFS[dn]
+            chances = [dict(c) for c in chances]
             if "shallow" in brk or not p.get("deep"):
                 chances = ["MutatorChance"] * len(chances)
             pkg = "someone.else.landmarks" if ("wrong_pkg" in brk and dn == "RUT_LightlessSink") \
@@ -104,9 +117,16 @@ def mock_extension(game, tool, p):
                 return {"success": False, "message": "No LandmarkDef '%s'." % dn}
             for i in ids:
                 w.tiles[i]["landmark"] = dn
-                anchor = _DEFS[dn][2]
-                if p.get("forced") and "no_anchor" not in brk and anchor not in w.tiles[i]["mutators"]:
-                    w.tiles[i]["mutators"].append(anchor)
+                req = [c["mutator"] for c in _DEFS[dn][2] if c["required"]]
+                opt = [c["mutator"] for c in _DEFS[dn][2] if not c["required"]]
+                if p.get("forced") and "no_anchor" not in brk:
+                    for a in req:
+                        if a not in w.tiles[i]["mutators"]:
+                            w.tiles[i]["mutators"].append(a)
+                # deterministic stand-in for one Rand.Chance optional roll, so every mock run
+                # exercises the restore of a mutator the suite did not ask for
+                if opt and opt[0] not in w.tiles[i]["mutators"]:
+                    w.tiles[i]["mutators"].append(opt[0])
             return {"success": True, "added": len(ids), "removed": 0,
                     "validity": [{"tile": i, "isValidTile": False, "settlementAtOrAdjacent": False} for i in ids],
                     "tiles": [_row(i, w.tiles[i]) for i in ids[:8]]}
@@ -117,7 +137,13 @@ def mock_extension(game, tool, p):
                 n += 1
         return {"success": True, "added": 0, "removed": n}
     if tool == "jawa/world_mutators_set":
+        names = [m for m in str(p.get("mutators") or "").split(",") if m]
+        if "no_restore" in brk:
+            return {"success": True}
         for i in _ids(p):
-            w.tiles[i]["mutators"] = [m for m in w.tiles[i]["mutators"] if m not in str(p.get("mutators")).split(",")]
+            if p.get("action") == "add":
+                w.tiles[i]["mutators"] += [m for m in names if m not in w.tiles[i]["mutators"]]
+            else:
+                w.tiles[i]["mutators"] = [m for m in w.tiles[i]["mutators"] if m not in names]
         return {"success": True}
     return None
