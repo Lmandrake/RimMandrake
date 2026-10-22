@@ -25,12 +25,15 @@ right test for this asset class.
 
 from __future__ import annotations
 
+import os
+
 from PIL import Image
 
 DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
          "/3550435517/Textures/Things/Building/Door/Blast")
-OUT = ("/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/BlastDoorFrameAsyncFix"
-       "/Textures/Things/Building/Door/Blast")
+# the shipped textures live in the StarWarsPatches mod (two levels above this Source dir)
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Textures",
+                   "Things", "Building", "Door", "Blast")
 
 # our output stem -> the donor file every one of its pixels must come from
 PAIRS = [
@@ -48,6 +51,12 @@ def main() -> int:
     for out_name, src_name in PAIRS:
         src = Image.open(f"{DONOR}/{src_name}").convert("RGBA")
         out = Image.open(f"{OUT}/{out_name}").convert("RGBA")
+        # shipped files are padded to a multiple of 4 (NONDIV4_TEXTURE_FIX_1, offset pad // 2):
+        # put the donor on the same padded canvas before comparing pixel for pixel
+        if src.size != out.size and out.width % 4 == 0 and out.height % 4 == 0:
+            pad = Image.new("RGBA", out.size, (0, 0, 0, 0))
+            pad.paste(src, ((out.width - src.width) // 2, (out.height - src.height) // 2))
+            src = pad
         if src.size != out.size:
             print(f"FAIL {out_name}: canvas {out.size} != donor {src.size}")
             failures += 1
@@ -65,6 +74,10 @@ def main() -> int:
 
         sb = src.getchannel("A").getbbox()
         ob = out.getchannel("A").getbbox()
+        if sb is None or ob is None:
+            print(f"FAIL {out_name}: {'donor' if sb is None else 'output'} is fully transparent")
+            failures += 1
+            continue
         inside = (sb[0] <= ob[0] and sb[1] <= ob[1]
                   and sb[2] >= ob[2] and sb[3] >= ob[3])
 
