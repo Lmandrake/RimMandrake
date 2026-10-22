@@ -27,3 +27,5 @@ Registered as artpipe done jobs (done/<id>.json + _artsrc/<id>/) with rimflow_it
 - 22:00 wave 1 gen started
 - 22:07 wave1: 9 towers+planks raw OK; dw1-4 homes 401 -> swapped to pyr0-3
 - 22:11 wave 1 done: 17/17 raw, 17 PASS finalize, registered done jobs
+- 22:12 wave 1 published 89e285c0f6; wave 2 gen
+- 22:16 wave 2 done: 15/15 PASS (pyr0-3 homes also 401 -> 9 workers)
