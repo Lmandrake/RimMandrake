@@ -139,7 +139,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 XElement ext = PoleDef().Element("modExtensions").Elements("li").Single(e => (string)e.Attribute("Class") == "RimMandrake.GimmeSomeSlack.Aerial.AerialAnchorExtension");
                 Assert(ext.Element("lineKind").Value == "Pipe" && float.Parse(ext.Element("spanWidth").Value, System.Globalization.CultureInfo.InvariantCulture) == RM_PipePoleMath.SpanWidthCells,
                     "the def is a Pipe anchor at the pipe's width");
-                Assert(RM_PipePoleMath.SpanWidthCells > 0.17f, "can-fail: thicker than the thickest wire (Industrial 0.10, Scrapper 0.14)");
+                Assert(RM_PipePoleMath.SpanWidthCells >= 0.12f && RM_PipePoleMath.SpanWidthCells <= 0.15f, "can-fail: the halved pipe girth, 0.12-0.15 cell (owner 2026-10-21)");
             });
 
             Case("PipePole_P3_span_is_not_walkable_and_not_in_pawn_topology", () =>

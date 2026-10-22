@@ -3550,3 +3550,9 @@
 {"seat":"BENCH","event":"claim","id":"BRIDGE_ART_REDRAW_CABINETS_GROW_SADDLES","ts":"2026-10-22T04:53:15Z","tsn":1792644795157010475}
 {"seat":"BENCH","event":"start","id":"BRIDGE_ART_REDRAW_CABINETS_GROW_SADDLES","ts":"2026-10-22T04:53:15Z","tsn":1792644795497668911}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-22T04:58:58Z","tsn":1792645138483947509}
+{"seat":"BENCH","event":"note","id":"REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE","text":"Built and live-proved b5e399067a: reach_map_proof 5/5 PASS on fw_gss_sitting (winch site, locked gate+gap, wild animal at player door+trench, non-swimmer moat, residual read); drawbridge LOWER_ONLY_FROM_WINCH regression PASS. OWED: REACH_RESIDUAL_SOAK on the owner's full list (the residual-per-1000-ticks number). Log: Transient/pile_2026-10-21/reach_map_build.md","why":"BENCH helper live result","ts":"2026-10-22T04:59:34Z","tsn":1792645174300897030}
+{"seat":"BENCH","event":"reassign","id":"DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL","to":"BENCH","why":"BENCH helper building it this sitting after owner card 2026-10-21 (Colonists 2 m, machines deeper)","ts":"2026-10-22T04:59:51Z","tsn":1792645191081000150}
+{"seat":"BENCH","event":"lease","id":"DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL","action":"take","token":"BENCH.pid12590.c0617d24","expires":"2026-10-22T05:44:52Z","ts":"2026-10-22T04:59:52Z","tsn":1792645192647189078}
+{"seat":"BENCH","event":"claim","id":"DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL","ts":"2026-10-22T04:59:53Z","tsn":1792645193026272624}
+{"seat":"BENCH","event":"start","id":"DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL","ts":"2026-10-22T04:59:53Z","tsn":1792645193411316417}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"review scenarios live build","ts":"2026-10-22T05:00:04Z","tsn":1792645204796424721}

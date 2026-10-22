@@ -16,8 +16,9 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// design's earlier proposal was 3 %; the card is later and specific).</summary>
 		public const float SagDefault = 0.02f;
 		public const float SagMin = 0f, SagMax = 0.06f;
-		/// <summary>Owner's widths card: rigid pipe 30 cm, about 14 px of a 64 px cell; the pipe atlas measures 0.227 cell.</summary>
-		public const float SpanWidthCells = 0.22f;
+		/// <summary>The ground pipe atlas's girth, 18 of 132 displayed px = 0.136 cell (PIPE_GIRTH_TUNE_HALF_AS_THICK, owner 2026-10-21:
+		/// "Make the pipes half as thick"; it drew 0.30 cell before).</summary>
+		public const float SpanWidthCells = 0.14f;
 
 		private static float Clamp(float v, float lo, float hi) => float.IsNaN(v) ? lo : (v < lo ? lo : (v > hi ? hi : v));
 

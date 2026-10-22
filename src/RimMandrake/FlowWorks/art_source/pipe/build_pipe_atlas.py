@@ -33,8 +33,10 @@ T = 176            # tile edge in the atlas
 P = T // 8         # 22: padding outside the displayed cell
 C = T - 2 * P      # 132: displayed cell = 132 px per cell of occupancy
 ATLAS = 4 * T      # 704
-W_PIPE = 40        # pipe thickness, 0.30 cell (vanilla/VE 0.27, DBH 0.29)
-HUB = 72           # junction box edge, 0.55 cell
+# PIPE_GIRTH_TUNE_HALF_AS_THICK (owner 2026-10-21: "that pipe is crazy thick. Make the pipes half as thick"): was 40 px
+# (0.30 of the C-px displayed cell) and a 72 px hub; now 18 px = 0.136 cell (target 0.12-0.14) and a 36 px hub.
+W_PIPE = 18        # pipe thickness, 0.136 cell
+HUB = 36           # junction box edge, 0.27 cell
 
 CFG = json.loads((HERE / "pieces.json").read_text())
 
