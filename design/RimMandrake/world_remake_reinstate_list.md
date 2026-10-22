@@ -55,7 +55,7 @@ only covers the mod list. Hold the bridge (`rimflow bridge take --for "world rem
    (c) original `The Salvation.rid` or the PAINT-clean one? Each "yes" adds that row's mods. Default = no.
 3. **Base list = `infrastructure/state/modlists/ModsConfig.PAINT.RULED_2026-10-20.xml`** — the only list a remake has been
    measured on. It **already contains** the NEEDED mod (`oblitus.mylittleplanet`, position 30 of 83, after
-   `zylle.morevanillabiomes`) and the three required active mods. Do not base a remake on SHIP (it lacks Alien Worlds and the
+   `zylle.morevanillabiomes`) and the three required active mods. Do not base a remake on SHIP (it lacks the
    bridge) or on FULL.LATEST (325 mods, includes Deep Orbit and every class-E mod; never measured for a remake).
    - If PAINT has since been edited and lost a row, re-insert it from the tables below (`<li>packageId</li>`, after the named
      predecessor), then parse back: `python3 -c "import xml.etree.ElementTree as E,sys;a=[l.text for l in E.parse(sys.argv[1]).find('activeMods')];print(len(a),len(set(a)))" <file>`
@@ -209,10 +209,8 @@ copy only if that step is wanted (each adds load time and was not on the measure
    stops the stamp; check the Player.log line before generating.
 3. **Alien Worlds default-planet trap.** With no Alien Worlds settings file, the planet type is `Default` (vanilla, not
    tidally locked) — MEASURED 2026-10-20 (`06_remake_runbook.md` line 58). Run `set_planet_type.py --check` after launch.
-4. **SHIP lacks Alien Worlds.** `ModsConfig.SHIP.RULED_2026-10-20.xml` (277) does not contain `7f.alienworlds` or
-   `7f.alienworlds.tidallylocked`, although the Wave 4 register (line 33) refused their cut because the save and the sun need
-   them every session. Not a remake problem (PAINT has them), but a world made on PAINT and played on SHIP loses its tidal
-   sun. Flagged here; not changed by this file.
+4. **SHIP now carries Alien Worlds** (owner 2026-10-21: "Obviously."; both ids added to `ModsConfig.SHIP.RULED_2026-10-20.xml`, now 279),
+   so a world made on PAINT and played on SHIP keeps its tidal sun.
 5. **Folders and ids.** All 10 retired rows in section 1 and all 24 active rows in section 3 had their workshop folder
    present on 2026-10-21. Wave 4 did not unsubscribe anything (register line 68). A future unsubscribe empties the folder
    and RimWorld drops the id **silently**; the archive keeps each mod's `About.xml` under
