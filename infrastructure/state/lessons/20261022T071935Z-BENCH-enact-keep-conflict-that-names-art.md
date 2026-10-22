@@ -1,0 +1,1 @@
+An enact keep-conflict that names 'art install (owner words)' may be a mechanical bulk install (the 2026-10-16 rescale card) older than his sheet pick; ruling events carry ts, not at. enact now lets an older row-less keep yield to his newer pick (keep_blocks_pick).
