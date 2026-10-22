@@ -125,6 +125,7 @@ def repo_root():
 
 
 _GIT_CACHE = {}
+_GIT_FAILED = []         # args of every git call that failed or timed out: a failure must not read as "nothing changed"
 
 
 def git(*args, timeout=GIT_TIMEOUT):
@@ -144,8 +145,11 @@ def git(*args, timeout=GIT_TIMEOUT):
         )
     except (OSError, subprocess.SubprocessError):
         _GIT_CACHE[args] = None
+        _GIT_FAILED.append(args)
         return None
     out = proc.stdout if proc.returncode == 0 else None
+    if out is None:
+        _GIT_FAILED.append(args)
     _GIT_CACHE[args] = out
     return out
 
@@ -348,6 +352,8 @@ def report(seat, since, note=None):
     files = changed_files(since)
     subjects = commit_subjects(since)
 
+    if not files and not subjects and any(a and a[0] in ("diff", "log") for a in _GIT_FAILED):
+        return [f"UNMEASURED: git diff/log from {short(since)} failed or timed out -- this is NOT 'up to date'"], False
     if not files and not subjects:
         # The note still prints here: "--again: no previous delta recorded"
         # explains an otherwise baffling "up to date" from an escape hatch.

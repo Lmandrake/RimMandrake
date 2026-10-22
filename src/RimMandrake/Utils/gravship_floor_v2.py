@@ -90,7 +90,7 @@ class Ship(object):
         lay = Layout.load(path)
         self.W, self.H = lay.width, lay.height
         self.deck, self.walls, self.doors = set(), set(), set()
-        self.occ, self.thrusters = {}, []
+        self.occ, self.thrusters, self.east_thrusters = {}, [], []
         self.things = collections.defaultdict(list)
         self.sizes = sizes
         for z in range(lay.height):
@@ -137,6 +137,7 @@ class Ship(object):
         cells, facing east, and the wall they replaced on the east comes back.
         """
         east = [c for c in self.things.get("SmallThruster", [])]
+        self.east_thrusters = sorted(east)               # what --emit-plan must tell the live map to remove
         for (x, z) in east:
             for dx in (0, 1):
                 self.occ.pop((x + dx, z), None)
@@ -528,8 +529,7 @@ def main():
             "floors": {k: v for k, v in floors.items()},
             "floorColor": {k: v for k, v in fcol.items()},
             "wallColor": {k: v for k, v in wcol.items()},
-            "thrusters": {"remove_east": [M(c) for c in sorted(
-                              (x, z) for (x, z) in [(85, 90), (85, 91), (85, 93), (85, 94)])],
+            "thrusters": {"remove_east": [M(c) for c in ship.east_thrusters],
                           "add_west": [M(c) for c in sorted(ship.thrusters)]},
             "counts": {"holes": len(holes), "walls": len(ship.walls),
                        "deck": len(ship.deck)},
