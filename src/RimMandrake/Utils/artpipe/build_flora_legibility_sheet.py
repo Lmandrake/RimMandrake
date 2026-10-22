@@ -314,6 +314,9 @@ def main():
 
     flora_rows = find_flora_jobs(backfill_stems)
     probe_rows = vanilla_probes()
+    if not flora_rows:
+        raise SystemExit("UNMEASURED: 0 flora jobs found under %s (every row skipped or the done/ listing is empty); "
+                         "refusing to write a sheet that grades nothing" % DONE_DIR)
     print(f"  flora rows (MEASURED, live): {len(flora_rows)}")
     print(f"  vanilla probe rows: {len(probe_rows)}")
 
