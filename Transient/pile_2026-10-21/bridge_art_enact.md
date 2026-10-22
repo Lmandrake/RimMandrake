@@ -37,3 +37,4 @@ with art.py install ... --owner-said "<his words>"; railing/tower/wreck/grated b
   reads only Timber/Steel: needs C# look lookup; leaf look files are named LeafUp_<View>_<Look> (material ones LeafUp_<Mat>_<View>)
 - gate art (10 x south+east) installed at contract paths but RM_DrawbridgeGate still draws the vanilla door: needs wiring
 - RM_RaidPlank_Laid / _LaidEnd installed, def still draws the timber deck atlas: needs a draw change (rotation, bank ends)
+- 23:51 owner card "Yes, install my picks": 12 held rows installed over auto-kept art (--owner-said), grated base atlases rebuilt; filed DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS (BENCH, offline)
