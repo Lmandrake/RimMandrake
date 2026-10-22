@@ -1204,18 +1204,49 @@ namespace RimMandrake.FlowWorks.Pits
 			if (GenConstruct.CanPlaceBlueprintAt(rail, c, Rot4.North, map).Accepted)
 			{
 				string look = RecordAt(c)?.look;
+				// RAILING_MATERIAL_FIX_MADE_OF_NOTHING: the railing is madeFromStuff, so both paths pass a material (the deck's when
+				// it can make one, else the default) -- stuff null logged 'madeFromStuff but stuff=null' once per railing, live 2026-10-22.
+				ThingDef stuff = RailingStuffFor(rail, StructuralDeckAt(map, c));
 				if (DebugSettings.godMode)
 				{
-					Thing t = ThingMaker.MakeThing(rail);
+					Thing t = ThingMaker.MakeThing(rail, stuff);
 					t.SetFactionDirect(Faction.OfPlayer);
 					RM_SuspensionLooks.Apply(t, look);
 					GenSpawn.Spawn(t, c, map, Rot4.North);
 				}
 				else
 				{
-					GenConstruct.PlaceBlueprintForBuild(rail, c, map, Rot4.North, Faction.OfPlayer, null, null, RM_SuspensionLooks.StyleFor(rail, look));
+					GenConstruct.PlaceBlueprintForBuild(rail, c, map, Rot4.North, Faction.OfPlayer, stuff, null, RM_SuspensionLooks.StyleFor(rail, look));
 				}
 			}
+		}
+
+		/// <summary>The railing's material: the deck's own stuff when it can make a railing, else the first cost-list material that
+		/// can (a rope deck's wood, a heavy deck's steel), else the game's default for the railing. Null only for an unstuffed rail.</summary>
+		public static ThingDef RailingStuffFor(ThingDef rail, Building_SuspensionDeck deck)
+		{
+			if (rail == null || !rail.MadeFromStuff)
+			{
+				return null;
+			}
+			if (deck != null)
+			{
+				if (deck.Stuff != null && deck.Stuff.stuffProps != null && deck.Stuff.stuffProps.CanMake(rail))
+				{
+					return deck.Stuff;
+				}
+				if (deck.def.costList != null)
+				{
+					foreach (ThingDefCountClass tc in deck.def.costList)
+					{
+						if (tc.thingDef != null && tc.thingDef.IsStuff && tc.thingDef.stuffProps.CanMake(rail))
+						{
+							return tc.thingDef;
+						}
+					}
+				}
+			}
+			return GenStuff.DefaultStuffFor(rail);
 		}
 
 		private void RemoveRailing(IntVec3 c)
