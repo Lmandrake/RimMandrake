@@ -1804,6 +1804,17 @@ def run_sub(s, step):
     if not rows:
         s.row("%s_%s" % (bid, script[:-3]), "-", "-", "UNMEASURED", "HARNESS", dict(rc=rc, why="no result rows", log=log), bid)
         return
+    # an uncaught exception ends a script with exit 1, the same code as a FAIL, and the rows it wrote before dying would fold
+    # into a 'pass' for a criterion whose later rows never ran: a traceback in the log voids every criterion this script maps
+    try:
+        with open(log, encoding="utf-8", errors="replace") as lf2:
+            crashed = "Traceback (most recent call last)" in lf2.read()
+    except OSError:
+        crashed = False
+    if crashed:
+        for it, cid in sorted(set(mapping.values())):
+            s.row("%s:CRASHED:%s" % (script[:-3], cid), it, cid, "UNMEASURED", "HARNESS",
+                  dict(rc=rc, why="traceback in the script's log: rows after the crash never ran", log=log), bid)
     for r in rows:
         rid = str(r.get("id") or r.get("row") or "?")
         st = str(r.get("status") or ("PASS" if r.get("ok") is True else "FAIL" if r.get("ok") is False else "UNMEASURED")).upper()
