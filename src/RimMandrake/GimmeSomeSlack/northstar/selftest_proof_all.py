@@ -20,6 +20,9 @@ paired with a control that differs in that one thing, so a rule that stops firin
   5e. hostiles the calm's own unfog releases are swept again (p2c and P3); a map that keeps releasing FAILs SITE
   6. log_budget control-noise and thrower attribution  7. a dead log journal makes Z UNMEASURED
   8. LogTap counts entries lost between polls
+  9. d4_save (S12d in-session, 2026-10-22): the style block's SHARED UNMEASURED placeholder is REPLACED by the second
+     save's verdict (one S12d row, block save_load; the S7 re-read is evidence, not a row); controls: a failed save/load
+     reads UNMEASURED naming why, never PASS; an aborted session keeps the placeholder; a FAIL verdict stays FAIL
 """
 import argparse
 import json
@@ -49,7 +52,7 @@ PA._SOCKET[:] = [FakeSocket()]
 
 
 def args(only=None):
-    return argparse.Namespace(only=only, no_shots=True, no_fresh_map=True, full_matrix=False, spec=None, skip_offline=False)
+    return argparse.Namespace(only=only, no_shots=True, no_fresh_map=True, full_matrix=False, spec=None, skip_offline=False, save_name=None)
 
 
 def stub_blocks(P, boom=None):
@@ -67,6 +70,7 @@ def stub_blocks(P, boom=None):
         P.row("session", "Z_log_budget", "PASS", "MOD", {})
     P.log_budget = lb
     P.save_load = lambda: P.row("save_load", "SL1_x", "PASS", "MOD", {})
+    P.d4_save = lambda: None
 
 
 def run_session(boom, base):
@@ -390,6 +394,40 @@ for faithful in (True, False):
     if faithful:
         check("7 faithful: M20d wiring row PASS and settings restored", got.get("M20d_keep_wires_setting_roundtrip") == "PASS")
 _VA.anchors_by_pos = _orig
+
+# 9. d4_save: S12d measured by a second save after SL3
+def d4_case(save_rows, after_status, aborted=False):
+    P = PA.Proof(args(None))
+    P.out_path = os.devnull
+    P.rows = [{"id": "S12d_D4_pending_queue_save", "status": "UNMEASURED", "class": "HARNESS", "detail": "SHARED", "block": "style"}]
+    if aborted:
+        P.res["aborted"] = "save did not land"
+    calls = []
+    saved = (PA.VS.s12d_stage, PA.VS._save_load, PA.VS.s12d_after_load)
+    PA.VS.s12d_stage = lambda B: calls.append("stage") or True
+    PA.VS._save_load = lambda B, rows, name, st, stage=False: calls.append(("save", name.endswith("_d4"), stage)) or rows.extend(save_rows)
+    PA.VS.s12d_after_load = lambda B, rows, built: calls.append("after") or rows.append(
+        {"id": "S12d_D4_pending_queue_save", "status": after_status, "class": "MOD", "detail": {}})
+    P.B = type("B", (), {"ap": lambda self, c: {"anchors": []}, "call": lambda self, *a, **k: {}})()
+    try:
+        P.d4_save()
+    finally:
+        PA.VS.s12d_stage, PA.VS._save_load, PA.VS.s12d_after_load = saved
+    return [r for r in P.rows if r["id"] == "S12d_D4_pending_queue_save"], P, calls
+
+
+S7OK = [{"id": "S7_save_load_styles", "status": "PASS", "class": "MOD", "detail": {}}]
+got, P, calls = d4_case(S7OK, "PASS")
+check("9 d4_save: placeholder replaced by ONE PASS row in save_load", [(r["status"], r["block"]) for r in got] == [("PASS", "save_load")], str(got))
+check("9 d4_save: staged, saved under a _d4 name with stage=True, then read", calls == ["stage", ("save", True, True), "after"], str(calls))
+check("9 d4_save: S7 re-read kept as evidence, not a row", not any(r["id"] == "S7_save_load_styles" for r in P.rows) and P.res.get("d4_save_notes"))
+got, P, calls = d4_case([{"id": "S7_save_load_styles", "status": "FAIL", "class": "SITE", "detail": {"state": "menu"}}], "PASS")
+check("9 control: failed save/load -> UNMEASURED with why, after-load never read", [r["status"] for r in got] == ["UNMEASURED"] and "after" not in calls and got[0]["detail"].get("why"), str(got))
+got, P, calls = d4_case(S7OK, "PASS", aborted=True)
+check("9 control: aborted session keeps the SHARED placeholder, stages nothing", [(r["status"], r["block"]) for r in got] == [("UNMEASURED", "style")] and not calls, str((got, calls)))
+got, P, calls = d4_case(S7OK, "FAIL")
+check("9 control: a FAIL verdict stays FAIL", [r["status"] for r in got] == ["FAIL"], str(got))
+check("9 declared: S12d is a declared save_load row", "S12d_D4_pending_queue_save" in PA.DECLARED_ROWS["save_load"] and "d4_save" in PA.BLOCKS)
 
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))
 sys.exit(1 if FAILS else 0)
