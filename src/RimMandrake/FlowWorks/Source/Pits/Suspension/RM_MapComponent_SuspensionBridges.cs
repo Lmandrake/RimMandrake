@@ -285,7 +285,11 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				anyone |= t is Pawn || t.def.passability == Traversability.Impassable;
 			}
-			if (anyone)
+			// FALLEN_CORD_BUILD_RUBBLE_IS_NO_SHIELD (owner card 2026-10-21: "A collapsed pole is not a solid barrier by any
+			// means."): a square whose cord fell with it (ClearDeckTop recorded it before the deck went) gets walkable rubble,
+			// never the impassable wreck, so the cord lies on top and a live one shocks whoever walks there at once.
+			bool cordHere = map.GetComponent<RimMandrake.FlowWorks.Machinery.RM_MapComponent_FallenCords>()?.CordFellAt(c) ?? false;
+			if (anyone || cordHere)
 			{
 				FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_RubbleRock, 2);
 				return;
