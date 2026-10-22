@@ -116,6 +116,64 @@ def fixture_tests():
         check(kinds == sorted(kinds, key=lambda k: {"fauna": 0, "flora": 1, "fish": 2}.get(k, 3)), "rows ordered by kind")
 
 
+class FakeIdx:
+    """the art-ledger surface ledger_settled reads"""
+    def __init__(self, ruled=(), purged=(), live=(), variants=None, subj=()):
+        self.rulings_by_sha = {x: [{"by": "owner", "trust": "ruled", "verdict": "keep"}] for x in ruled}
+        self._p, self._l, self.variants, self._s = set(purged), set(live), variants or {}, list(subj)
+
+    def is_purged(self, s):
+        return s in self._p
+
+    def live_anywhere(self, s):
+        return ["M/Textures/x"] if s in self._l else []
+
+    def subject_rulings(self, keys):
+        return self._s
+
+
+def ledger_tests():
+    """2026-10-21: the dedupe is verified against the ART LEDGER, not sheet-to-sheet only; a sheet named with
+    --exclude-sheet keeps its own subjects; one set of pictures under two subject names is ruled once."""
+    live = col("A", "live", winner=True)
+    it = item("RM_L", [live, col("B"), col("C")])
+    check(Q.ledger_settled(it, {"RM_L"}, FakeIdx(ruled=["bbbb"], purged=["cccc"])) != "",
+          "ledger: every candidate already kept / purged -> settled")
+    check(Q.ledger_settled(it, {"RM_L"}, FakeIdx(ruled=["bbbb"])) == "", "ledger: one candidate still open -> waits")
+    check(Q.ledger_settled(it, {"RM_L"}, FakeIdx(live=["bbbb", "cccc"])) != "", "ledger: candidates installed -> settled")
+    later = [{"by": "owner", "trust": "ruled", "verdict": "redo", "ts": "2026-10-20T00:00:00"}]
+    v = {"bbbb": [{"ts": "2026-10-10T00:00:00"}], "cccc": [{"ts": "2026-10-11T00:00:00"}]}
+    check("after its newest candidate" in Q.ledger_settled(it, {"RM_L"}, FakeIdx(variants=v, subj=later)),
+          "ledger: he ruled the subject after its newest candidate was drawn -> settled")
+    v2 = dict(v, cccc=[{"ts": "2026-10-21T00:00:00"}])
+    check(Q.ledger_settled(it, {"RM_L"}, FakeIdx(variants=v2, subj=later)) == "",
+          "ledger: a candidate drawn after his ruling -> waits")
+    check(Q.ledger_settled(item("RM_E", [], required=True), {"RM_E"}, FakeIdx()) == "",
+          "ledger: a required slot with nothing in game always waits")
+    with tempfile.TemporaryDirectory() as td:
+        out = Path(td)
+        sheet(out, "alpha", [item("RM_One", [live, col("B")]), item("RM_Two", [live, col("C")]),
+                             item("RM_Twin", [live, col("C")])], {})
+        sheet(out, "own", [item("RM_One", [live, col("B")])], {})
+        q = Q.awaiting(Q.NAME, DATE, out, exclude_sheets=["own_sheet_" + DATE], ledger=True)
+        got = {r["subject"] for r in q["rows"]}
+        check("RM_One" not in got and "own" in q["settled"].get("RM_One", ""),
+              "--exclude-sheet: a subject ruled on its own sheet is left off and named")
+        check(("RM_Two" in got) != ("RM_Twin" in got) and "same pictures" in " ".join(q["settled"].values()),
+              "the same pictures under two subject names are one row; the other is named")
+        out2 = Path(td) / "b"
+        out2.mkdir()
+        it2 = item("RM_Blue", [live, col("C")])
+        it2["graphics"][0]["key"] = "g/Blue"
+        sheet(out2, "alpha", [item("RM_Plain", [live, col("C")]), it2], {})
+        q2 = Q.awaiting(Q.NAME, DATE, out2, ledger=True)
+        check({"RM_Plain", "RM_Blue"} <= {r["subject"] for r in q2["rows"]},
+              "the same pictures for DIFFERENT graphics (colour variants) stay two rows")
+        q3 = Q.apply_leave_off(q2, {"RM_Blue": {"leave_off": "its only new set is a crate"}})
+        check("RM_Blue" not in {r["subject"] for r in q3["rows"]} and "crate" in q3["settled"]["RM_Blue"],
+              "--tidy leave_off: the row leaves the page, named with the reason")
+
+
 def compat_tests():
     import decisions_v2 as DV
     files = sorted((Q.L.REPO_ROOT / "Transient").rglob("*.decisions.json"))
@@ -139,6 +197,7 @@ def compat_tests():
 
 def main() -> int:
     fixture_tests()
+    ledger_tests()
     compat_tests()
     print(f"{'FAIL' if FAILS else 'PASS'} selftest_review_queue ({len(FAILS)} failing)")
     return 1 if FAILS else 0

@@ -997,6 +997,73 @@ def _fkey(c: dict) -> tuple:
     return tuple(sorted(c["faces"].items()))
 
 
+def rationalize_row(r: dict, graphics: list, rationalize: bool = False) -> list[str]:
+    """Tidy a row's picture sets BEFORE he sees them (owner, 2026-10-21: "ensure that the art is 'rationalized' meaning
+    there's not a tangle of random E, W, S, N facings missing gaps … so I can't select any one option because they're
+    spread over many options"). Two census-driven steps, both opt-in, never deleting anything:
+      · `set_merges` on the census ROW: [{"from": {facing: label-substring | "IN GAME"}, "label": "...", "why": "..."}]
+        builds ONE new set out of the named sets' facings (halves of one generation drawn as separate jobs). Its pictures
+        are existing art-store bytes, so a pick of it enacts like any other set (enact installs per facing by sha).
+      · `rationalize: true` on the census BIOME entry: a set (never the in-game one, never placeholder) whose every
+        picture is also in ONE other set of the same lane is left off — it offers nothing that set does not.
+    Returns the human-readable list of what was tidied (shown on the row)."""
+    notes = []
+    for m in r.get("set_merges") or []:
+        src = m.get("from") or {}
+        lane = next((g for g in graphics if not g.get("flip") and any(
+            any(s != "IN GAME" and s in c.get("label", "") for s in src.values()) for c in g["cols"])), None)
+        if lane is None:
+            notes.append(f"merge {m.get('label', '?')}: a source set is missing — not built")
+            continue
+        faces, base = {}, None
+        for f, s in src.items():
+            c = next((c for c in lane["cols"] if (c.get("winner") if s == "IN GAME" else s in c.get("label", ""))), None)
+            if c is None or not c["faces"].get(f):
+                faces = None
+                break
+            faces[f] = c["faces"][f]
+            if s != "IN GAME" and base is None:
+                base = c
+        if not faces or base is None:
+            notes.append(f"merge {m.get('label', '?')}: a source facing is missing — not built")
+            continue
+        if any(_fkey(c) == tuple(sorted(faces.items())) for c in lane["cols"]):
+            continue
+        nc = {k: v for k, v in base.items() if k not in ("faces", "winner", "near_of", "also", "copyOf")}
+        nc.update(faces=faces, kind="artpipe", winner=False, merged=True,
+                  family=f"merged:{m.get('label', '')}", label=f"merged set — {m.get('label', '')}",
+                  detail=f"one set built from: " + ", ".join(f"{f} ← {s}" for f, s in src.items())
+                  + (f"\n{m['why']}" if m.get("why") else ""))
+        lane["cols"].append(nc)
+        notes.append(f"built one full set from {', '.join(f'{f[0].upper()}:{s}' for f, s in src.items())}")
+    if rationalize:
+        for g in graphics:
+            if g.get("flip"):
+                continue
+            keep = []
+            for c in g["cols"]:
+                mine = {s for s in c["faces"].values() if s}
+                if c.get("winner") or c.get("purgedLive") or not mine:
+                    keep.append(c)
+                    continue
+                cover = next((o for o in g["cols"] if o is not c and mine <= {s for s in o["faces"].values() if s}
+                              and (len({s for s in o["faces"].values() if s}) > len(mine) or o.get("winner")
+                                   or g["cols"].index(o) < g["cols"].index(c))), None)
+                if cover is not None:
+                    notes.append(f"left off {c.get('label', '?')[:60]} — every picture of it is already in "
+                                 f"{'the in-game set' if cover.get('winner') else cover.get('label', '?')[:60]}")
+                    continue
+                keep.append(c)
+            g["cols"] = keep
+    drops = [d for d in (r.get("drop_sets") or []) if d]
+    for g in graphics:
+        for c in [c for c in g["cols"] if not c.get("winner") and any(d in c.get("label", "") for d in drops)]:
+            g["cols"].remove(c)
+            why = next((w for d, w in (r.get("drop_why") or {}).items() if d in c.get("label", "")), "")
+            notes.append(f"left off {c.get('label', '?')[:60]}" + (f" — {why}" if why else ""))
+    return notes
+
+
 OVERRIDES = Path(__file__).resolve().parent / "sheet_row_overrides.json"
 
 
@@ -1530,7 +1597,7 @@ SLX.putPool = (it, rec, g, p) => {
 };
 SLX.poolToggle = (it, rec, gk, L) => {
   const g = SLX.lane(it, gk);
-  if (!g || !g.pool) return _no('Set ' + L + ' is not in a random pool — the game never draws it at random, so it cannot be a variant.');
+  if (!g || !(g.pool || g.poolable)) return _no('Set ' + L + ' is not in a random pool — the game never draws it at random, so it cannot be a variant.');
   const c = SLX.colIn(it, rec, gk, L);
   if (!c) return _no('no such set');
   if (c.noSelect) return _no('Set ' + L + ' is placeholder art — it cannot be kept as a variant.');
@@ -1555,7 +1622,7 @@ SLX.addable = (rec, g, cols) => cols.filter(c => !c.winner && !c.noSelect && !c.
   && !SLX.list(rec, 'reject', g.key).has(c.letter));
 SLX.poolAddAll = (it, rec, gk) => {
   const g = SLX.lane(it, gk);
-  if (!g || !g.pool) return _no('not a random pool');
+  if (!g || !(g.pool || g.poolable)) return _no('not a random pool');
   SLX.v2(rec);
   const l = SLX.view(it, rec).find(x => x.g.key === gk);
   const p = JSON.parse(JSON.stringify(SLX.poolRec(rec, gk)));
@@ -1678,9 +1745,19 @@ const _itemBody = it => {
   const purge = new Set(d.purge || []);
   const legacy = new Set(d.legacyVariants || []);
   const A = (act, extra, label, cls, title) => `<button class="sl-b ${cls || ''}" data-act="${act}" data-id="${esc(it.id)}"${extra} title="${esc(title || '')}">${label}</button>`;
-  const cell = (c, f) => {
+  const cell = (c, f, g) => {
     const s = c.faces[f];
-    if (!s) return `<div class="bs-cell bs-gap" title="no ${f} picture in this set">—</div>`;
+    if (!s) {
+      /* rationalized view (owner 2026-10-21: no "tangle of random E, W, S, N facings missing gaps"): a set that lacks a
+         facing is shown as the game would draw it after a pick — west mirrors this set's east; any other gap keeps the
+         in-game picture (enact installs only the facings a set has). Dimmed and labelled, never pickable on its own. */
+      const ig = g && g.lane === 'slot' && !c.winner ? SLX.inGame(g)[0] : null;
+      const fill = f === 'west' && c.faces.east ? { sha: c.faces.east, mirror: true, why: 'west = this set\'s east, mirrored (RimWorld mirrors east when there is no west)' }
+        : (ig && ig.faces[f] && f !== 'single' ? { sha: ig.faces[f], why: 'not in this set: picking it keeps the in-game ' + f + ' picture (' + ig.letter + ')' } : null);
+      const ft = fill && it.thumbs[fill.sha];
+      if (ft) return `<div class="bs-cell bs-fill" title="${esc(fill.why)}"><div class="thumb ac-thumb" data-zoom="${(it.fulls || {})[fill.sha] || ft}" data-cap="${esc(it.label)} · ${c.letter} · ${f} · ${esc(fill.why)}"><img src="${ft}" loading="lazy" alt=""${fill.mirror ? ' style="transform:scaleX(-1)"' : ''}></div><span class="bs-face">${faceAbbr(f)}</span><i class="bs-filltag">${fill.mirror ? 'mirror' : 'in game'}</i></div>`;
+      return `<div class="bs-cell bs-gap" title="no ${f} picture in this set">—</div>`;
+    }
     const t = it.thumbs[s];
     if (!t) return `<div class="bs-cell bs-gap" title="picture not archived">?</div>`;
     const p = purge.has(s);
@@ -1690,7 +1767,7 @@ const _itemBody = it => {
   };
   /* flip-book (wing-beat) sets: one grid row per facing, a looping playback cell first, then frames 1..N */
   const faces = (c, g) => {
-    if (!g.flip) return `<div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>`;
+    if (!g.flip) return `<div class="bs-faces">${g.facings.map(f => cell(c, f, g)).join('')}</div>`;
     const rows = g.flipFacings.map(face => {
       const ks = g.facings.filter(k => k.endsWith('_' + face));
       const fr = ks.map(k => c.faces[k] && it.thumbs[c.faces[k]]).filter(Boolean);
@@ -1726,8 +1803,14 @@ const _itemBody = it => {
         + (c.hint ? `<i class="sl-hint" title="what its job name suggests">looks like: ${esc(c.hint)}</i>` : '');
     } else if (!c.purgedLive) {
       const verbs = [A('pick', X, picked ? '✓ using this' : 'use this', picked ? 'on' : '', 'use this set for ' + ((g.slot || {}).label || 'this slot') + ' (click again to take it back)')];
-      /* no random-pool verbs and no "✕ not for this slot" (owner 2026-10-19; 23 of 698 rows and 1 of 698 used them): the
-         note box carries "put B and C in the pool". Pool / reject data already saved still reads and enacts. */
+      /* one-click "add to random pool" is BACK (owner 2026-10-21, reversing 2026-10-19 for it alone: "If there are valid
+         variants, please allow me to simply click 'add to random pool' if it might make sense rather than typing lots of
+         text."). Offered on a lane the game draws at random (g.pool) or can be made to (g.poolable: a creature's adult
+         body, which enact turns into alternateGraphics). "✕ not for this slot" stays gone. */
+      if ((g.pool || g.poolable) && !c.winner && !c.noSelect && !(c.kind === 'donor' && !c.ours && !c.oursRender))
+        verbs.push(A('pool', X, inAdd ? '✓ in random pool' : '＋ random pool', inAdd ? 'on' : '', inAdd
+          ? 'in the random pool: the game draws it at random beside the in-game picture (click again to take it out)'
+          : 'add to the random pool: the game keeps what it draws now AND draws this set at random (' + (g.pool ? 'this slot is already a random pool' : 'becomes alternateGraphics on the creature') + ')'));
       if (c.winner && !g.pool) verbs.push(A('retire', X, ret ? '✕ retiring' : '✕ retire', ret ? 'bad' : '', 'retire this live picture from the game — it stays until its replacement is installed'));
       foot = verbs.join('');
       if (ret && c.winner && st.state === 'pick' && st.pick !== c.letter) note = `<div class="sl-warn sl-replaced">${esc(c.letter)} leaves the game in this same pass, replaced by ${esc(st.pick)}</div>`;
@@ -1968,6 +2051,8 @@ BIOME_STYLE = """<style>
 .bs-cell{overflow:hidden}
 .bs-play img{max-width:100%;max-height:100%;object-fit:contain;pointer-events:none}
 .bs-gap{color:#3a4250;font-size:18px;border:1px dashed #222a33;border-radius:5px}
+.bs-fill{opacity:.45;border:1px dashed #6b7686;border-radius:5px;position:relative}.bs-fill:hover{opacity:.9}
+.bs-filltag{position:absolute;right:2px;bottom:1px;font-size:9px;font-style:normal;color:#cfd6df;background:#0008;padding:0 3px;border-radius:3px}
 .bs-face{position:absolute;left:3px;bottom:2px;font-size:9.5px;color:#8a95a5;background:#0b0d10cc;border-radius:2px;padding:0 3px;pointer-events:none}
 .bs-nearstub{align-self:stretch}
 .bs-nearstub>summary{list-style:none;cursor:pointer;height:100%;min-height:60px;box-sizing:border-box;width:58px;border:1px dashed #3d4653;border-radius:6px;padding:3px;font-size:10.5px;color:var(--dim);display:flex;flex-direction:column;gap:2px;line-height:1.25}
@@ -2714,6 +2799,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                     kept_cols.append(c)
             g["cols"] = [c for c in kept_cols if not any(h and h in c.get("label", "") for h in HIDE_SETS)]
         purged_hidden[r["key"]] = n_hidden
+        _tidy = rationalize_row(r, graphics, rationalize=bool((b or {}).get("rationalize")))
         graphics = [g for g in graphics if g["cols"]] or graphics[:0]
         # primary = first body graphic with pictures, else first graphic; name renders are offered to it too
         prim = next((g for g in graphics if g["res"] and g["role"] == "body"), graphics[0] if graphics else None)
@@ -2922,6 +3008,9 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             gitems.append({
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
                 "pool": bool(g.get("pool")) and lane == "slot", "lane": lane, "slot": slot_,
+                # a creature's adult body can BECOME a random pool (enact adds alternateGraphics) — owner 2026-10-21
+                "poolable": lane == "slot" and not g.get("pool") and gi == 0 and r["kind"] == "fauna"
+                            and not g.get("flip") and bool(set(facings) & {"south", "east", "north"}),
                 "prior": prior, **flip,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
                           if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive", "noSelect", "neverShown", "copyOf", "canonAdvice", "canonFlag")}
@@ -3005,7 +3094,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "effect": (f"{r['kind']} · {_layer(r)} · commonality {r.get('commonality_max')} · "
                        + (f"{n_sets} picture set(s)" + (f" across {len(gitems)} graphics" if len(gitems) > 1 else "")
                           if gitems else "no pictures")),
-            "tier": tier, "tierText": tier_text, "canonTag": canon_tag, "flags": flags,
+            "tier": tier, "tierText": tier_text, "canonTag": canon_tag,
+            "flags": flags + ([f"tidied before review: {t}" for t in _tidy] if _tidy else []),
             "fresh": _fresh_mark(fresh, key),
             "prefillShort": _prefill_short(source, why),
             "prefill": letter, "prefillWhy": why, "prefillSource": source,
@@ -3050,7 +3140,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                           "columns": {c["letter"]: c["faces"] for g in gitems for c in g["cols"]},
                           "labels": {c["letter"]: c["label"] for g in gitems for c in g["cols"]},
                           "graphic_of": {c["letter"]: g["key"] for g in gitems for c in g["cols"]},
-                          "pools": sorted(g["key"] for g in gitems if g.get("pool")),
+                          "pools": sorted(g["key"] for g in gitems if g.get("pool") or g.get("poolable")),
                           "reserved": sorted(set((letter_memory.get(key) or {}).get("reserved") or [])
                                              | {c["letter"] for g in gitems for c in g["cols"]}, key=LETTERS.index),
                           "shownBase": sorted(_base_of.get(key) or ())}

@@ -11,7 +11,7 @@
            · retire of a live picture: redraw, stays until replaced — unless another set is in use there: then both stand
              in ONE pass (owner 2026-10-12), either click order
            · no accept-unchanged control; a seeded agent prefill never reads as a pick (owner provenance)
-           · `in random pool` logic (data saved before 2026-10-19 still enacts; the page offers no pool verb now)
+           · `in random pool` logic; the one-click '+ random pool' verb is back on pool / poolable lanes (owner 2026-10-21)
            · an unassigned render is used by `use` (labels + picks) or `not needed`; a catch row's reference renders never
            · a schema-1 record upgrades on edit: variants -> legacyVariants, a default list -> legacyVariantsDefault
            · needs-you lists required slots with no answer and unlabelled renders; asks set and clear
@@ -219,9 +219,27 @@ def markup_tests():
     check("accept unchanged" not in html and "accept all" not in html and "redraw this slot" in html
           and "add all new renders to the pool" not in html and "kept when you return the sheet" in html,
           "no accept-unchanged and no pool add-all control: the slot button is redraw; unanswered = kept on return")
-    check('data-act="pool"' not in html and 'data-act="reject"' not in html and "not for this slot" not in html
-          and "random pool —" not in html,
-          "no random-pool verb, no '✕ not for this slot' anywhere on the row (owner 2026-10-19)")
+    grown = html[html.index("PLANT · GROWN"):html.index("PLANT · YOUNG")]
+    check(html.count('data-act="pool"') == 1 and grown.count('data-act="pool"') == 1 and 'data-l="B"' in
+          grown[grown.index('data-act="pool"') - 200:grown.index('data-act="pool"') + 200]
+          and 'data-act="reject"' not in html and "not for this slot" not in html,
+          "one-click '+ random pool' on the pool lane's new set of ours only (not the in-game set, not donor) — owner "
+          "2026-10-21; no '✕ not for this slot' anywhere")
+    fa = {"id": "RM_Beast", "rev": "s1", "prefill": "A", "letters": ["A", "B", "C"],
+          "thumbs": {k: f"img/{k}.png" for k in ("as", "ae", "an", "bs", "be", "bn", "ce")}, "graphics": [
+        {"key": "B/Beast", "res": "B/Beast", "primary": True, "lane": "slot", "pool": False, "poolable": True,
+         "facings": ["south", "east", "north", "west"], "role": "body",
+         "slot": {"label": "ADULT", "kind": "adult", "required": True},
+         "cols": [{"letter": "A", "kind": "live", "winner": True, "faces": {"south": "as", "east": "ae", "north": "an"}, "setId": "sa"},
+                  {"letter": "B", "kind": "artpipe", "faces": {"south": "bs", "east": "be", "north": "bn"}, "setId": "sb"},
+                  {"letter": "C", "kind": "artpipe", "faces": {"east": "ce"}, "setId": "sc"}]}]}
+    bh = H.item_html(dict(fa, label="Beast", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],
+                          rulings=[], desc={}, dependsOn=None), {"decision": "", "note": ""})
+    check(bh.count('data-act="pool"') == 2, "a creature's adult body (poolable) offers '+ random pool' on each new set (B, C)")
+    cpart = bh[bh.index("<b>C</b>"):]
+    check("img/an.png" in cpart and "img/as.png" in cpart and "in game" in cpart and "mirror" in cpart
+          and "img/ce.png" in cpart and "bs-gap" not in cpart[:cpart.find("bs-foot")],
+          "a set with only an east shows the in-game south/north and a mirrored west in place of gaps (rationalized view)")
     rh = H.item_html(dict(ITEM, label="Pod", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],
                           rulings=[], desc={}, dependsOn=None),
                      {"decision": "", "note": "", "prefill": "A", "schema": 2, "decidedAt": "T",
