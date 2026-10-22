@@ -16,11 +16,12 @@ CYCLES = {
     "Job:": ["Job: Store", "Job: Fill", "Job: Empty", "Job: Dump"],
     "Free end:": ["Free end: Capped", "Free end: Intake", "Free end: Outflow"],
     "Ladder": ["Ladder down", "Ladder up"],
+    "DEVLADDER": ["DEV: ladder up now", "DEV: ladder down now"],      # live 2026-10-21: the instant staging button
     "Pouring": ["Drawing into the tank", "Pouring into the channel"],
     "Drawing": ["Drawing into the tank", "Pouring into the channel"],
 }
 GIZMOS_OF = {"RM_LiquidTank": ["Job:"], "RM_LiquidTankTall": ["Job:"], "RM_UniversalCargoTank": ["Job:"],
-             "RM_UniversalCargoTankXTall": ["Job:"], "RM_HoseReel": ["Free end:"], "RM_Ladder": ["Ladder"],
+             "RM_UniversalCargoTankXTall": ["Job:"], "RM_HoseReel": ["Free end:"], "RM_Ladder": ["DEVLADDER"],
              "RM_LiquidPump": ["Drawing"]}
 MARKER_DEF = {"PlaceMeter": "RM_FlowMeter", "PlaceSink": "RM_FlowSink", "PlaceSource": "RM_FlowSource",
               "PlaceLevelHolder": "RM_LevelHolder", "PlaceTimer": "RM_TimerSwitch", "PlaceEdgeSetter": "RM_MapEdgeSetter",

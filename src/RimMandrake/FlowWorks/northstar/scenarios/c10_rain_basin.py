@@ -29,16 +29,16 @@ SETUP = dict(
     spawn=[("RM_Sluice", 13, 31, "WoodLog"), ("RM_Sluice", 25, 31, "WoodLog")],
     flood_trigger=[(1, 4, False, False, 0)],
     build=[("RM_LiquidPump", 6, 36, None, None), ("RM_UniversalPipe", 7, 36, None, None),
-           ("RM_LiquidTank", 8, 36, None, None), ("RM_HoseReel", 11, 37, None, None),
+           ("RM_LiquidTank", 8, 36, None, None), ("RM_HoseReel", 14, 37, None, None),
            ("PowerConduit", 5, 37, None, None), ("PowerConduit", 5, 38, None, None), ("Battery", 4, 37, 0, None),
-           ("RM_LiquidTank", 33, 3, None, None), ("RM_LiquidTank", 39, 3, None, None), ("RM_HoseReel", 35, 6, None, None)]
+           ("RM_LiquidTank", 33, 3, None, None), ("RM_LiquidTank", 39, 3, None, None), ("RM_HoseReel", 39, 5, None, None)]
     + walls(LEDGER, "WoodLog", "Fence"),
     batteries=[(4, 37)],
     tank=[(8, 36, "Store", "RM_Liquid_FreshWater", 0), (33, 3, "Store", "RM_Liquid_FreshWater", 8000),
           (39, 3, "Store", "RM_Liquid_FreshWater", 0)],
     pump=[(6, 36, "pour")],
-    hose=[(11, 37, 9, 33, None), (35, 6, 39, 5, None)],
-    gizmos=[(11, 37, "Free end:", "Free end: Intake")],
+    hose=[(14, 37, 10, 33, None), (39, 5, 35, 4, None)],
+    gizmos=[(14, 37, "Free end:", "Free end: Intake")],
     markers=[("PlaceSource", 7, 20, "RM_Fluid_Water|1"), ("PlaceEdgeSetter", 40, 15, "aaaa")],
     pawns=[("Muffalo", 26, 20, "none", None)],
     keep=True,
@@ -80,9 +80,9 @@ SCENARIO = scenario(
             staged("rain trench E open", "dig", None, (2, 12), "poked"),
             staged("rain trench F roofed", "roof", "RoofConstructed", (9, 12), "poked"),
             staged("small pond drawn down, muffalo in the bed", "pawns", "Muffalo", (26, 20), "look"),
-            staged("pump (Pour) + empty tank + hose Intake end in the pond", "gizmos", None, (11, 37), "poked"),
+            staged("pump (Pour) + empty tank + hose Intake end in the pond", "gizmos", None, (14, 37), "poked"),
             staged("map-edge setter", "markers", "PlaceEdgeSetter", (40, 15), "poked"),
-            staged("closed ledger: two tanks, one hose, fenced", "hose", None, (35, 6), "poked"),
+            staged("closed ledger: two tanks, one hose, fenced", "hose", None, (39, 5), "poked"),
             deferred("overflow Stage 1+ (D1, D2, D6)", "only the offline Stage 0 kernel exists; canal B is sized so "
                      "sealing the edge with the pump pouring overfills it once Stage 1 lands", OVERFLOW_ITEM, (16, 38)),
             deferred("a limitless BODY marker on a natural pond", "the spring is a flow source; a body flagged "

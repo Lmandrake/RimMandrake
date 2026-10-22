@@ -30,7 +30,7 @@ SETUP = dict(
     style=[("RM_HoseReel", 11, 16, "RM_HoseReel_Industrial")],
     batteries=[(12, 12)],
     pump=[(13, 16, "draw")],
-    ladder=[(14, 16, "lower")],
+    ladder_dev=[(14, 16, "lower")],
     hose=[(11, 16, 3, 36, None)],                                            # up the benches to the drain canal's head
     gizmos=[(11, 16, "Free end:", "Free end: Outflow")],
     markers=[("PlaceMeter", 16, 14, ""), ("PlaceMeter", 1, 36, ""), ("PlaceMeter", 10, 20, "")],
@@ -78,7 +78,7 @@ SCENARIO = scenario(
             staged("three flow meters", "markers", "PlaceMeter", (16, 14)),
             staged("workbench just above HIGH", "build", "HandTailoringBench", (22, 12), "look"),
             staged("miner in climbing gear, drafted", "pawn_ops", "RM_ClimbingGear", (12, 18), "poked"),
-            staged("rail ladder on the sump's west wall, lowered", "ladder", "lower", (14, 16), "poked"),
+            staged("rail ladder on the sump's west wall, lowered", "ladder_dev", "lower", (14, 16), "poked"),
             staged("ramp from the D1 bench to the rim", "build", "RM_PitRamp", (20, 33), "poked"),
             staged("wrecked pumping station on the rim", "build", "RM_PumpingStation_Wrecked", (36, 37), "look"),
             staged("a colonist refusing a dig past 2 m (the sump floor's order waits for a machine)", "designate",

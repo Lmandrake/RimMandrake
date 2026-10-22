@@ -23,7 +23,7 @@ SETUP = dict(
     terrain=[("Concrete", 2, 4, 12, 4)],                                   # the spill pad
     build=[("RM_UniversalCargoTank", 2, 30, None, None), ("RM_UniversalCargoTank", 7, 30, None, None),
            ("RM_UniversalCargoTankXTall", 12, 30, None, None)]
-    + [("RM_UniversalPipe", x, 27, None, None) for x in range(2, 20)]
+    + [("RM_UniversalPipe", x, 29, None, None) for x in range(2, 20)]
     + [("RM_LiquidTank", x, 14, None, None) for x in (2, 6, 10)] + [("RM_LiquidTank", 14, 21, None, None)]
     + [("RM_UniversalPipe", x, 22, None, None) for x in range(16, 21)]
     + [("RM_LiquidPump", 21, 22, None, None), ("PowerConduit", 21, 23, None, None), ("Battery", 20, 24, 0, None),
@@ -33,7 +33,7 @@ SETUP = dict(
     hostile=[("RM_LiquidTank", 30, 8, None, None)],
     style=[(d, x, 30, d + "_Futuristic") for d, x in (("RM_UniversalCargoTank", 2), ("RM_UniversalCargoTank", 7),
                                                        ("RM_UniversalCargoTankXTall", 12))]
-    + [("RM_UniversalPipe", x, 27, "RM_UniversalPipe_Industrial") for x in range(2, 20)]
+    + [("RM_UniversalPipe", x, 29, "RM_UniversalPipe_Industrial") for x in range(2, 20)]
     + [("RM_HoseReel", 20, 8, "RM_HoseReel_Industrial")],
     tank=[(2, 30, "Store", "RM_Liquid_Chemfuel", 8000), (7, 30, "Store", "RM_Liquid_Propane", 8000),
           (12, 30, "Store", "RM_Liquid_Chemfuel", 16000),
@@ -48,7 +48,7 @@ SETUP = dict(
     + [("RM_BottleEmpty", 6 + i, 11, 5, "Steel") for i in range(3)]
     + [("RM_Filth_LiquidSpill", x, z, 1, None) for x in (3, 4, 5) for z in (5, 6)]
     + [("RM_Filth_Tar", x, z, 1, None) for x in (9, 10, 11) for z in (5, 6)],
-    optional_build=[("RM_PipeAdapter_Chemfuel", 20, 27, None, None, "RM_PipeAdapter_Chemfuel")],
+    optional_build=[("RM_PipeAdapter_Chemfuel", 20, 29, None, None, "RM_PipeAdapter_Chemfuel")],
 )
 
 SCENARIO = scenario(
@@ -72,13 +72,13 @@ SCENARIO = scenario(
     idle="every bay tank in Store; the pump is set to Pour but its Dump-side tank is in Store, so nothing flows; the "
          "hose to their tank is Plump with its free end Capped; nothing is lit",
     setup=SETUP,
-    parts=[(4, 33, "cargo chemfuel"), (8, 33, "cargo propane"), (13, 34, "XTall chemfuel"), (20, 28, "adapter"),
+    parts=[(4, 33, "cargo chemfuel"), (8, 33, "cargo propane"), (13, 34, "XTall chemfuel"), (21, 30, "adapter"),
            (2, 16, "bay: Store"), (6, 16, "bay: Fill"), (10, 16, "bay: Empty"), (14, 23, "set Dump"),
            (21, 20, "pump (Pour)"), (36, 22, "light here"), (28, 19, "dig here: no-mix"), (30, 10, "THEIR tank"),
            (35, 33, "astrofuel bund"), (30, 26, "firefoam"), (4, 3, "spill"), (10, 3, "tracked tar")],
     pieces=[staged("cargo tanks (Futuristic): chemfuel, propane, XTall chemfuel", "style", None, (2, 30), "look"),
-            staged("Industrial pipe run", "style", "RM_UniversalPipe_Industrial", (2, 27), "look"),
-            staged("chemfuel adapter on the run (VCHE)", "optional_build", "RM_PipeAdapter_Chemfuel", (20, 27), "poked",
+            staged("Industrial pipe run", "style", "RM_UniversalPipe_Industrial", (2, 29), "look"),
+            staged("chemfuel adapter on the run (VCHE)", "optional_build", "RM_PipeAdapter_Chemfuel", (20, 29), "poked",
                    "built only when Vanilla Chemfuel Expanded's def is loaded (live get_defs)"),
             staged("filling bay: four tanks", "tank", "Store", (2, 14), "poked"),
             staged("empty barrels and bottles", "stuffed", "RM_BarrelEmpty", (2, 11), "look"),

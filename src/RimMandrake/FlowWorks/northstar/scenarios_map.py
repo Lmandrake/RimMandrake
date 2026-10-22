@@ -330,9 +330,12 @@ def label_ops(placed, extra_board=True):
             add(ox + w // 2, oz - 1 - k, line, "", CREAM, "tiny")
         for x, z, text in sc["parts"]:
             add(ox + x, oz + z, text, "", RUST, "tiny")
-        for pc in sc["pieces"]:
-            if pc["status"] == "DEFERRED" and pc.get("at") is not None:
-                add(ox + pc["at"][0], oz + pc["at"][1], "DEFERRED: " + pc["name"], pc["item"], VIOLET, "tiny")
+        dl = [pc for pc in sc["pieces"] if pc["status"] == "DEFERRED" and pc.get("at") is not None]
+        for k, pc in enumerate(dl):
+            # stacked in one column from the first DEFERRED cell (side by side they overprinted, live 2026-10-21)
+            x0, z0 = dl[0]["at"]
+            step = -2 if z0 > (sc["size"][1] // 2) else 2
+            add(ox + x0, oz + z0 + k * step, "DEFERRED: " + pc["name"], pc["item"], VIOLET, "tiny")
     if extra_board:
         bx, bz, bw, bh = BOARD["rect"]
         add(bx + bw // 2, bz + bh, "S0  FLOWWORKS COMPOSITE SCENARIOS: ONE WALK",
@@ -390,6 +393,10 @@ def review_class():
 
         def calm_at(self, hour=C.CLOCK_HOUR):
             self.calm()                                # weather, Peaceful, sweep, research, god mode (pins noon)
+            self.pin_clock(hour)
+
+        def pin_clock(self, hour=C.CLOCK_HOUR):
+            """Jump (no simulation) to the next `hour`:00 local. Never calm() here: it sweeps every held pawn."""
             clk, mi = self.B.call("jawa/time_clock"), self.B.call("jawa/map_info")
             lon = mi.get("longitude")
             if isinstance(clk.get("ticksAbs"), int) and isinstance(lon, (int, float)):
@@ -457,12 +464,31 @@ def review_class():
                 self.static(n, C.MAPCTL, method, "%d,%d" % g(x, z) + ("|" + tail if tail else ""))
             for c in u.get("calls", []):
                 args = c["fmt"].format(*["%d,%d" % g(*cc) for cc in c["cells"]])
-                self.static(n, c["typ"], c["method"], args)
+                res = self.static(n, c["typ"], c["method"], args)
+                if "ok=False" in res:          # a proof that answers but did not build (live 2026-10-21: drawbridge)
+                    self.notes.append("%s %s(%s): %s" % (n, c["method"], args, res[:240]))
 
         def gizmos(self, p):
             sc, (ox, oz) = p["sc"], p["origin"]
             for x, z, prefix, want in sc["setup"].get("gizmos", []):
                 self.gizmo_cycle(sc["id"], (ox + x, oz + z), prefix, want)
+            # live 2026-10-21: a ladder's "Ladder up" button now ORDERS a climb job ("Ladder up (ordered)"); the
+            # staging route is its DEV instant button, which names the OTHER state once it is reached
+            for x, z, op in sc["setup"].get("ladder_dev", []):
+                cell, press, done = (ox + x, oz + z), "DEV: ladder %s now" % ("up" if op == "raise" else "down"), \
+                    "DEV: ladder %s now" % ("down" if op == "raise" else "up")
+                B = self.B
+                B.call("rimworld/clear_selection")
+                B.call("rimworld/click_cell", x=cell[0], z=cell[1])
+                gz = (B.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
+                g = next((q for q in gz if q.get("label") == press), None)
+                if g is not None:
+                    B.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
+                    gz = (B.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
+                if not any(q.get("label") == done for q in gz):
+                    self.notes.append("%s: ladder at %s not %s (gizmos %s)" % (sc["id"], (x, z), op,
+                                                                           [q.get("label") for q in gz][:6]))
+                B.call("rimworld/clear_selection")
 
         def pawns(self, p, key="pawns", ops_key="pawn_ops"):
             sc, (ox, oz) = p["sc"], p["origin"]
@@ -514,6 +540,14 @@ def review_class():
                 self.gizmos(p)
             self.call("jawa/flowworks_pulse", count=30, x=0, z=0, w=0, h=0)
             for p in placed:
+                if p["sc"]["setup"].get("refill_after_pulse"):
+                    ox, oz = p["origin"]
+                    for x, z, w, h, f, fl in p["sc"]["setup"].get("fluid", []):
+                        for i in range(w):
+                            for j in range(h):
+                                self.static(p["sc"]["id"], C.FLUID, "ProofFillWithFluid",
+                                            "%d,%d,%d,%s" % (ox + x + i, oz + z + j, f, fl))
+            for p in placed:
                 self.pawns(p)
             return ok_opt
 
@@ -521,14 +555,20 @@ def review_class():
             return [p["rect"] for p in placed if p["sc"]["setup"].get("keep") or p["sc"]["setup"].get("pens")]
 
         def snapshot(self, p):
+            """Dug cells (depth, fill), the STAGED defs' counts and the staged pawn kinds' counts. Wild plants that
+            spread, hauled loose items and passers-by are not the plot's state (live soak 2026-10-21)."""
             x, z, w, h = p["rect"]
             ex = self.B.call("jawa/flowworks_excavation_rect", x=x, z=z, w=w, h=h, onlyNonZero=True, includeTerrain=False)
             dug = {(c["x"], c["z"]): (c.get("d"), c.get("f")) for c in ex.get("rows") or [] if c.get("isExcavated")}
             th = self.B.call("jawa/list_things", rect="%d,%d,%d,%d" % p["rect"], limit=2000).get("things") or []
-            defs = Counter(t.get("def") or t.get("defName") for t in th
-                           if not str(t.get("def") or t.get("defName") or "").startswith(("Filth", "RM_Filth", "Plant")))
+            u = p["sc"]["setup"]
+            want_defs = set(built_defs(u, ("RM_PipeAdapter_Chemfuel",)))
+            defs = Counter(t.get("def") or t.get("defName") for t in th if (t.get("def") or t.get("defName")) in want_defs)
             pw = self.B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % p["rect"], limit=200).get("pawns") or []
-            return dict(dug=dug, defs=defs, pawns=Counter(q.get("kind") or q.get("kindDef") for q in pw))
+            kinds = {r[0] for r in u.get("pawns", [])}
+            return dict(dug=dug, defs=defs, pawns=Counter(q.get("kind") or q.get("kindDef") for q in pw
+                                                          if (q.get("kind") or q.get("kindDef")) in kinds and
+                                                          not (q.get("kind") == "Colonist" and not q.get("drafted", True))))
 
         def verify_plots(self, placed, optional_ok=()):
             out = {}
@@ -867,6 +907,10 @@ def main(argv=None):
             return 0 if out == {"swims out at 2 m": "PASS", "only at the brim": "PASS_AT_BRIM", "never": "FAIL"} else 1
         from modcheck import reviewmap as RM
         B = RM.LiveBridge()
+        if a.fresh_map:
+            R0 = review_class()(B, None)
+            R0.fresh_map()
+            R0.calm_at()
         verdict, rows = S0SWIM.run(B, STAGE0["rect"][:2])
         path = os.path.join(REPO, "Transient", "scenarios_stage0_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
         with open(path, "w", encoding="utf-8") as f:
@@ -916,6 +960,7 @@ def main(argv=None):
         return 0 if r["ok"] else 1
     if a.save:
         R.sweep(R.keep_rects(placed))
+        R.pin_clock()                                 # the soak ran the clock 2 h: on to the next 10:00 (no sim)
         R.call("rimworld/pause_game", pause=True)
         B.call("jawa/clear_ui", all=True)
         name = RM.free_save_name(a.name or SAVE_MAIN, RM.saves_stat())

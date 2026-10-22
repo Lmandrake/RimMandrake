@@ -9,12 +9,12 @@ end, and a raider pen 30 cells east behind a shut security grate. Hostiles live 
 from .common import scenario, staged, deferred, perimeter, walls, hline, TAR, W
 
 SIZE = (44, 32)
-BAYS = [((10 if k % 2 == 0 else 13), 2 + 4 * k, 3, 4, (2 if k % 2 == 0 else 3)) for k in range(7)]   # zig-zag
+BAYS = [((10 if k % 2 == 0 else 13), 2 + 4 * k, 3, 5, (2 if k % 2 == 0 else 3)) for k in range(7)]   # zig-zag: 5 tall, so each bay meets the next side-on (4 tall met only at corners, live 2026-10-21)
 PEN = perimeter(36, 20, 42, 28, gaps=[(36, 24)])
 
 SETUP = dict(
     dig=BAYS + [(28, 2, 2, 28, 1), (16, 0, 4, 6, 3)],                        # tar ditch; the titan gap (4 wide)
-    fluid=[(28, 2, 2, 28, 1, TAR), (13, 22, 3, 4, 1, W)],                     # tar unlit; the wet chest bay at 0.5 m
+    fluid=[(28, 2, 2, 28, 1, TAR), (13, 22, 3, 5, 1, W)],                     # tar unlit; the wet chest bay at 0.5 m
     build=walls(hline(4, 16, 31), "BlocksGranite") + walls(PEN, "Steel"),
     spawn=[("RM_SecurityGrateDoor", 36, 24, "Steel")],
     pawns=[("Colonist", 14, 7, "player", "drafted"), ("Colonist", 14, 15, "player", "drafted"),
