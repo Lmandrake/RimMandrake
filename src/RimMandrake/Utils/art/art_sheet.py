@@ -317,6 +317,44 @@ def random_folder_variants(idx: L.Index, res: str, skip_mods=()) -> dict:
     return out
 
 
+def sibling_keeps(idx, row_res, keys, slots: dict) -> list[dict]:
+    """The species' OTHER live graphic slots (other sex, colour variants, lifestages, swimming, desiccated corpse) that
+    the row was not built from. A row is built from ONE texPath, so the owner's approved sibling art never appeared and he
+    was re-asked (Varactyl, 2026-10-21; ART_SHEET_FIX_SIBLING_KEEPS_UNSEEN). `row_res`: the texPaths the row already shows;
+    `keys`: its row key + defNames (matched by L.subject_key against the slot subjects of other texPaths, and by the
+    creature folder). Returns [{res, label, faces:{facing: sha}, protected}] for siblings with a LIVE file, shown as
+    CONTEXT labelled 'already approved' when protected, 'live in game' otherwise: never as options."""
+    row_res = {r.lower() for r in row_res}
+    kset = {L.subject_key(k) for k in keys if k}
+    folders = {r.split("/")[-2].lower() for r in row_res if "/" in r and r.split("/")[-2].lower() not in GENERIC_DIRS}
+    cand = set()
+    for tp, ss in slots.items():
+        if tp.lower() not in row_res and any(L.subject_key(s["subject"]) in kset for s in ss):
+            cand.add(tp)
+    live = defaultdict(dict)
+    for (mod, rel), ev in idx.live.items():
+        pt = L.parse_texfile(rel)
+        if pt["mask"] or pt["res"].lower() in row_res:
+            continue
+        parts = pt["res"].split("/")
+        if pt["res"] in cand or (len(parts) > 1 and parts[-2].lower() in folders):
+            live[pt["res"]].setdefault(pt["facing"], ev["sha"])
+    out = []
+    for res_, faces in sorted(live.items()):
+        prot = any(idx.protected(sha) for sha in faces.values())
+        out.append({"res": res_, "label": res_.split("/")[-1], "faces": faces, "protected": bool(prot)})
+    return out
+
+
+def all_options_ruled(cols: list[dict], idx) -> bool:
+    """True when a row offers nothing the owner has not already ruled: it has options, and every one is a picture set he
+    protected (a keep) or purged. Such a row is dropped from a sheet (he would only be re-asked)."""
+    sel = [c for c in cols if c.get("faces") and not c.get("noSelect")]
+    if not sel:
+        return False
+    return all(all(idx.protected(s) or idx.is_purged(s) for s in c["faces"].values()) for c in sel)
+
+
 def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> dict:
     """`former`: earlier texture paths of the SAME picture (a renamed mod folder) — their git history and bound renders
     join this row, labelled with the old path."""
@@ -1948,6 +1986,7 @@ const _itemBody = it => {
   const rline = r => `<div class="ac-r bs-r ac-t-${r.trust}" title="${esc(r.at + ' ' + r.verdict + ' · ' + r.trust + ' · ' + r.sheet + (r.note ? '\n“' + r.note + '”' : ''))}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`;
   const rs = it.rulings.slice().reverse();
   const rul = rs.length ? `<div class="ac-rulings">${rs.slice(0, 2).map(rline).join('')}${rs.length > 2 ? `<details><summary class="sub">${rs.length - 2} older ruling(s)</summary>${rs.slice(2).map(rline).join('')}</details>` : ''}</div>` : '';
+  const sibHtml = (it.siblings || []).length ? `<div class="bs-sibs"><div class="sub"><b>Already approved / live art for this species</b> — context only, NOT options on this row:</div>${it.siblings.map(sb => `<div class="bs-sib" title="${esc(sb.res)}"><span class="mark ${sb.protected ? 'absent' : 'inferred'}">${sb.protected ? 'already approved (your keep)' : 'live in game'}</span> ${esc(sb.label)} ${['south','east','north'].filter(f => sb.imgs[f]).map(f => `<img src="${sb.imgs[f]}" loading="lazy" alt="" style="height:64px;vertical-align:middle;image-rendering:pixelated">`).join('')}</div>`).join('')}</div>` : '';
   const ds = it.desc || {};
   const dtext = ds.description || '';
   const desc = !ds.def ? `<div class="bs-desc sub">in-game description: UNMEASURED — no ThingDef of this row in the live def dump</div>`
@@ -1960,7 +1999,7 @@ const _itemBody = it => {
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     ${it.fresh ? `<div class="bs-fresh bs-fresh-${it.fresh.state}">${esc(it.fresh.text)}</div>` : ''}
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
-    ${desc}${window.artQuestionHtml(it, d)}${links}${elsewhere}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
+    ${desc}${sibHtml}${window.artQuestionHtml(it, d)}${links}${elsewhere}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${rowHead}${lanes.map(sec).join('')}${window.artAsksHtml(it, d)}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
   return re ? `<details class="bs-ruled"${it.ruledOpen || d.at || d.decidedAt ? ' open' : ''}>${reHead}${inner}</details>` : inner;
 };
@@ -2765,6 +2804,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                     for cr in bb["rows"] if (cr.get("canon") or {}).get("entry")}
     _ph_shared = PD.shared_map(census)
     built, purged_hidden, hidden_kept = [], {}, {}
+    dropped_all_ruled = []
     _base_of = {}          # row -> the pictures the owner has been shown on it (shown_base), kept in the snapshot
     donor_purged = set()
     # only bytes an artpipe render MADE are ours: donor art copied into one of our mods is still the donor's original
@@ -3244,6 +3284,22 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         if _re:
             item["ruledElsewhere"] = {"sheet": _re["sheet"], "sheetId": _re["sheet_id"], "pick": _re["decision"],
                                       "label": _re["label"], "note": _re["note"][:300], "at": (_re["at"] or "")[:10]}
+        _gcols = [c for g in gitems for c in g["cols"]]
+        if key not in _own_touched and not r.get("reopen") and not item.get("reopenedByNewSets") \
+                and all_options_ruled(_gcols, idx):
+            dropped_all_ruled.append(key)      # every option is already his ruling: dropping it, not re-asking him
+            print(f"art_sheet: row {key} dropped: every option is already ruled (protected/purged)", file=sys.stderr)
+            continue
+        _sib = sibling_keeps(idx, {g["res"] for g in gitems if g.get("res")},
+                             [key] + list(r.get("defNames") or []), slots)
+        item["siblings"] = []
+        for sb in _sib:
+            sm = {}
+            for f, sh in sb["faces"].items():
+                if L.store_has(sh):
+                    sm[f] = thumb(sh, imgdir, size=thumb_size)
+            if sm:
+                item["siblings"].append({"label": sb["label"], "res": sb["res"], "protected": sb["protected"], "imgs": sm})
         if scale_res is not None:
             item["scale"] = _scale_for(scale_res, r, gitems, letter, (old or {}).get("decisions", {}).get(key), imgdir)
             if item["scale"].get("status") == "fallback":     # req 2: a FALLBACK size is allowed but must be flagged
@@ -3423,7 +3479,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     return {"biome": biome, "html": _rel(out_html), "decisions": _rel(decisions_path), "wrote_decisions": wrote,
             "gate": ("PASS " if all(c.ok for c in gate_checks) else "OVERRIDE (unstamped, bannered) ") + SG.GATE_VERSION, "snapshot": _rel(snap_path), "snapshotId": snap["snapshotId"], "census_rows": len(rows), "rows": len(ordered),
             "ruled_rows_gone_kept_in_snapshot": sorted(k for k, v in snap_rows.items() if v.get("rowGone")),
-            "collapsed_ruled_elsewhere": n_collapsed, "canon_rows": n_canon, "canon_rows_with_images": sum(1 for it in ordered if it["canon"] and it["canon"]["imgs"]),
+            "collapsed_ruled_elsewhere": n_collapsed, "dropped_all_ruled": sorted(dropped_all_ruled), "canon_rows": n_canon, "canon_rows_with_images": sum(1 for it in ordered if it["canon"] and it["canon"]["imgs"]),
             "canon_rows_with_must_show": sum(1 for it in ordered if it["canon"] and it["canon"]["must"]),
             "linked_rows": n_link, "prefilled_sit1": n_sit1, "no_art": n_noart,
             "sets": sum(len(g["cols"]) for it in ordered for g in it["graphics"]),
