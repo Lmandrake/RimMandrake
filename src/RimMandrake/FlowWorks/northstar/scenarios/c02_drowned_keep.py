@@ -57,21 +57,21 @@ SCENARIO = scenario(
           "RAID BRANCH START: open the pen grate, unpause: raiders reach the ditch and moat, lay the plank or swim (2 m: "
           "heads and shoulders up), climb, and try the gate (it stays shut to hostiles)",
           "lower the drawbridge (its winch) mid-raid: the leaf drops; the gate still refuses unless held open; let one "
-          "raider onto the gatehouse cover: he drops onto the spikes",
+          "raider onto the gatehouse concealed pit: he drops onto the spikes",
           "open the gatehouse grate and sluice: the trapped raider's pit floods from the moat; read swim vs drown in "
           "the inspect pane",
           "light the chemfuel arm (dev fire at 'light here'): it goes up like gasoline; the grated deck lets the heat up",
           "cut the winch's power (ProofWinchPower off; the GSS cord is DEFERRED): the leaf holds where it is"],
-    look_for="the cover invisible at play zoom with a slight seam at max zoom; the bridge reads HUNG, not a pier; "
+    look_for="the concealed pit invisible at play zoom with a slight seam at max zoom; the bridge reads HUNG, not a pier; "
              "raiders swim, never walk the moat floor",
-    broken="the cover visible at play zoom, or NO seam at max zoom; the cover reading like a bridge; raiders walking "
+    broken="the concealed pit visible at play zoom, or NO seam at max zoom; the concealed pit reading like a bridge; raiders walking "
            "on the moat floor; the gate opening for raiders while the leaf is up; a raider unhurt on the spikes; the "
            "bridge drawn as a pier-on-pylons; the sluice open but the pit dry",
     idle="main save: no hostiles; the moat brim-full and closed; the leaf raised and held by a powered winch; every "
          "sluice and grate shut; nothing lit; the two defenders drafted",
     setup=SETUP,
     parts=[(20, 44, "raider pen (raid branch)"), (39, 20, "drawbridge (raised)"), (33, 20, "gate"),
-           (30, 15, "gatehouse: cover over spikes, 4 m"), (34, 23, "channel: grate + sluice"), (20, 5, "drain grate"),
+           (30, 15, "gatehouse: concealed pit over spikes, 4 m"), (34, 23, "channel: grate + sluice"), (20, 5, "drain grate"),
            (8, 21, "postern"), (3, 26, "suspension bridge (grated)"), (5, 31, "jetty"), (29, 37, "light here"),
            (21, 37, "sluice"), (37, 37, "sluice"), (16, 13, "defenders"), (1, 39, "dry ditch"), (40, 10, "moat 2 m")],
     pieces=[staged("dry outer ditch", "dig", None, (1, 1), "look"),
@@ -82,7 +82,7 @@ SCENARIO = scenario(
             staged("winch powered", "calls", "ProofWinchPower", (39, 18)),
             staged("leaf raised", "calls", "ProofDevSet", (39, 18), "poked"),
             staged("gatehouse pit 3x3, 4 m, spikes", "spawn", "RM_Spikes", (29, 17), "poked"),
-            staged("plank-lattice cover over it", "spawn", "RM_PitCover_PlankLattice", (29, 17), "poked"),
+            staged("concealed pit (planks) over it", "spawn", "RM_PitCover_PlankLattice", (29, 17), "poked"),
             staged("channel from the moat: grate + sluice", "spawn", "RM_Sluice", (32, 22), "poked"),
             staged("guardrail on the gatehouse lip", "spawn", "RM_PitGuardrail", (28, 17), "look"),
             staged("rail ladder in the gatehouse pit, raised", "ladder_dev", "raise", (30, 19), "poked"),

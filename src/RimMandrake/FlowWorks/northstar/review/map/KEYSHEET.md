@@ -409,29 +409,29 @@ A staircase never traps
 
 **Look for:** weak spot: the chicken read as trapped at the bottom (a slope must never trap)
 
-### 31. A cover hides the hole - built, not yet seen
+### 31. A concealed pit hides the hole - built, not yet seen
 
-A pit cover hides the hole and looks like the ground around it. A faint seam shows only at the closest zoom.
+A concealed pit hides the hole and looks like the ground around it. A faint seam shows only at the closest zoom.
 
-**Look at:** left: a covered pit; right: the same pit uncovered
+**Look at:** left: a concealed pit; right: the same pit open
 
 **Poke it:**
 
 - zoom in close on the left one: only a faint seam shows
 
-**Look for:** weak spot: a hole outline showing through the cover at play zoom
+**Look for:** weak spot: a hole outline showing through the concealed pit at play zoom
 
-### 32. Step on a cover, fall through - built, not yet seen
+### 32. Step on a concealed pit, fall through - built, not yet seen
 
-Step on a cover and you fall through; three cover builds bear different weights. Plank lattice, woven scrap, reinforced frame.
+Step on a concealed pit and you fall through; three builds bear different weights. Planks, woven scrap, reinforced.
 
-**Look at:** three covered pits: plank lattice, woven scrap, reinforced frame
+**Look at:** three concealed pits: planks, woven scrap, reinforced
 
 **Poke it:**
 
-- order a colonist across each: the weaker covers give way
+- order a colonist across each: the weaker concealed pits give way
 
-**Look for:** weak spot: the reinforced frame giving way under one colonist; all three alike
+**Look for:** weak spot: the reinforced concealed pit giving way under one colonist; all three alike
 
 ### 33. Spikes at the bottom - built, not yet seen
 
@@ -1243,7 +1243,7 @@ River works only work on a real river: painted river ground has no current. So t
 
 ## F - free area
 
-Round your colonists, in the middle of the map: steel, components, wood, granite blocks, chemfuel, bottles, buckets and barrels along the south edge, a pond on the east side. Dig, fill, build ladders, spikes, covers and doors here yourself.
+Round your colonists, in the middle of the map: steel, components, wood, granite blocks, chemfuel, bottles, buckets and barrels along the south edge, a pond on the east side. Dig, fill, build ladders, spikes, concealed pits and doors here yourself.
 
 ## S0 and M
 

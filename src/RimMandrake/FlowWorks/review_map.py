@@ -428,20 +428,20 @@ SETUPS = {
                        marks=[(2, 5, "D1"), (5, 5, "D2"), (8, 5, "D3"), (11, 5, "D4")],
                        try_=["unpause: it climbs out one step at a time"],
                        look="weak spot: the chicken read as trapped at the bottom (a slope must never trap)"),
-    "pit_cover": dict(short="A cover hides the hole", notice="left: a covered pit; right: the same pit uncovered",
+    "pit_cover": dict(short="A concealed pit hides the hole", notice="left: a concealed pit; right: the same pit open",
                       dig=[_pit(2, 5), _pit(10, 5)],
                       spawn=[("RM_PitCover_PlankLattice", 2 + i, 5 + j, None) for i in range(3) for j in range(3)],
                       try_=["zoom in close on the left one: only a faint seam shows"],
-                      look="weak spot: a hole outline showing through the cover at play zoom"),
-    "pit_cover_drop": dict(short="Step on a cover, fall through", notice="three covered pits: plank lattice, woven scrap, "
-                           "reinforced frame",
+                      look="weak spot: a hole outline showing through the concealed pit at play zoom"),
+    "pit_cover_drop": dict(short="Step on a concealed pit, fall through", notice="three concealed pits: planks, woven scrap, "
+                           "reinforced",
                            dig=[_pit(1, 5), _pit(6, 5), _pit(11, 5)],
                            spawn=[(d, ox + i, 5 + j, None) for d, ox in (("RM_PitCover_PlankLattice", 1),
                                   ("RM_PitCover_WovenScrap", 6), ("RM_PitCover_ReinforcedFrame", 11))
                                   for i in range(3) for j in range(3)],
-                           marks=[(2, 4, "plank"), (7, 4, "scrap"), (12, 4, "frame")],
-                           try_=["order a colonist across each: the weaker covers give way"],
-                           look="weak spot: the reinforced frame giving way under one colonist; all three alike"),
+                           marks=[(2, 4, "planks"), (7, 4, "scrap"), (12, 4, "reinforced")],
+                           try_=["order a colonist across each: the weaker concealed pits give way"],
+                           look="weak spot: the reinforced concealed pit giving way under one colonist; all three alike"),
     "pit_spikes": dict(short="Spikes at the bottom", notice="a pit floored with spikes",
                        dig=[_pit(6, 5)], spawn=[("RM_Spikes", 6 + i, 5 + j, None) for i in range(3) for j in range(3)],
                        try_=["walking up to the spikes is harmless; only a fall in triggers them"],
@@ -1851,7 +1851,7 @@ def keysheet(S, st, doc, m, live=None, save=None):
         md += ["- " + x for x in rs["try_"]] + ["", "**Look for:** " + rs["look"], ""]
     md += ["## F - free area", "", "Round your colonists, in the middle of the map: steel, components, wood, granite "
            "blocks, chemfuel, bottles, buckets and barrels along the south edge, a pond on the east side. Dig, fill, "
-           "build ladders, spikes, covers and doors here yourself.", "",
+           "build ladders, spikes, concealed pits and doors here yourself.", "",
            "## S0 and M", "", "S0 (west of the free area) is the status board: each section's counts. M (below it) lists "
            "the look features still drawn with borrowed or missing art.", ""]
     if live:
