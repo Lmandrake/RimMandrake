@@ -80,28 +80,29 @@ namespace RimMandrake.FlowWorks.Hose
             if (relay.W != 2 || relay.H != 2 || (d.X == 0 && d.Z == 0)) return IntakePoint(relay, intake);
             V2 c = relay.Centre;
             double perp, depth;
-            // REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST: a turned relay's picture is turned (or mirrored) with it, so the side and the
-            // edge cell are read in the west picture's frame (ToArt), measured there, and turned back (FromArt)
+            // REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST: the side and the edge cell are read in the facing's art frame (ToArt), measured
+            // there (REEL_FACINGS_REDRAW_NORTH_SOUTH_OWED: north/south from their own pictures, ReelIntakeGeometry frame by
+            // relay.Rot), and turned back (FromArt)
             V2 ca = relay.ToArt(intake.Centre.X - c.X, intake.Centre.Z - c.Z);
             V2 pa;
             if (Math.Abs(ca.X) >= Math.Abs(ca.Z) && ca.X < 0)       // intake on the picture's WEST side (its brass inlet)
             {
-                ReelIntakeGeometry.WestInlet(look, deployed, out perp, out depth);
+                ReelIntakeGeometry.WestInlet(look, deployed, out perp, out depth, relay.Rot);
                 pa = new V2(-relay.W / 2.0 - depth, perp);
             }
             else if (Math.Abs(ca.X) >= Math.Abs(ca.Z))              // EAST
             {
-                ReelIntakeGeometry.Edge(look, deployed, 0, ca.Z > 0 ? 1 : 0, out perp, out depth);
+                ReelIntakeGeometry.Edge(look, deployed, 0, ca.Z > 0 ? 1 : 0, out perp, out depth, relay.Rot);
                 pa = new V2(relay.W / 2.0 + depth, perp);
             }
             else if (ca.Z > 0)                                      // NORTH
             {
-                ReelIntakeGeometry.Edge(look, deployed, 1, ca.X > 0 ? 1 : 0, out perp, out depth);
+                ReelIntakeGeometry.Edge(look, deployed, 1, ca.X > 0 ? 1 : 0, out perp, out depth, relay.Rot);
                 pa = new V2(perp, relay.H / 2.0 + depth);
             }
             else                                                    // SOUTH
             {
-                ReelIntakeGeometry.Edge(look, deployed, 2, ca.X > 0 ? 1 : 0, out perp, out depth);
+                ReelIntakeGeometry.Edge(look, deployed, 2, ca.X > 0 ? 1 : 0, out perp, out depth, relay.Rot);
                 pa = new V2(perp, -relay.H / 2.0 - depth);
             }
             return c + relay.FromArt(pa.X, pa.Z);
