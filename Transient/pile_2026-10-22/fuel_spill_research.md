@@ -69,4 +69,10 @@ ticks/cell (~0.5 m/s game time) is in the real band; propane 2 likewise.
   rapidly" card covers moats; only spilled sheets take the real regression rate.
 
 ## 5. Applied (files, tests, shas)
-See section 5 below (filled at commit time).
+- Source + defs + selftest: 27543e58c3 · DLL (built in a throwaway clone of that HEAD): 29d29cbc9d — PUBLISHED.
+- Files: `FlowWorks/Defs/Canals/FluidDefs/FlowWorks_PitFluids.xml`, `FlowWorks/Source/FluidDef.cs`,
+  `FlowWorks/Source/RM_SheetMath.cs`, `FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs`, `FlowWorks/Source/Sheet/RM_SheetFire.cs`,
+  `FlowWorks/Source/SelfTest/SheetWaterChecks.cs` (new case `Sheet_real_fuel_numbers_...`).
+- Tests: selftest_flowworks_sheet 36/36; run_selftests --only selftest_flowworks_stock, selftest_sheet_overflow_proof,
+  selftest_liquid_checks: GREEN 3/3. Not deployed; not live-tested.
+- Owed (not filed): fuel air-drying below 0 °C / roof-independence (section 4); propane flash fraction at spill time.
