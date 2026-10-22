@@ -82,6 +82,21 @@ namespace RimMandrake.Biomes
         public static float worldLandmarkOpacity = 0.55f;
         public static bool worldLandmarksFullClose = true;
 
+        /// <summary>The planet-look block back to its shipped values (the defaults in the field initialisers above).</summary>
+        public static void ResetWorldLook()
+        {
+            worldBorderBlend = true;
+            worldSeaDepth = true;
+            worldBiomeSwirls = true;
+            worldSoftHills = true;
+            worldSunPeaks = true;
+            worldReadablePaths = true;
+            worldSoftLandmarks = true;
+            worldLandmarkSize = 0.6f;
+            worldLandmarkOpacity = 0.55f;
+            worldLandmarksFullClose = true;
+        }
+
         public static RM_BiomesSettings Instance;
 
         // Roster keys whose own mod gates its mechanics on Enabled(key), added by that mod at startup by reflection
@@ -249,6 +264,7 @@ namespace RimMandrake.Biomes
                     "Every faction's trade caravans may lead tirbak, vellak and vaalok as pack animals. Without them no land "
                     + "trade caravan can reach the Weeping Stones or the Stillsand, whose only pack animals they are.\n\n"
                     + "Default: on. Takes effect on the next game start (it edits faction defs while the game loads).");
+                RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => RM_BiomesSettings.ownedCaravanCarriers = true);
                 list.GapLine();
             }
 
@@ -260,6 +276,7 @@ namespace RimMandrake.Biomes
                     + "whatever their sizes. Without it a giant mushroom on a higher draw layer covers a southern neighbour.\n\n"
                     + "Draw order only. Ground cover stays under every plant; pawns and items stay on top. "
                     + "Other mods' biomes are not touched.\n\nDefault: on. Takes effect at once on running maps.");
+                RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => RM_BiomesSettings.plantDrawOrderSouthInFront = true);
                 list.GapLine();
             }
 
@@ -307,6 +324,7 @@ namespace RimMandrake.Biomes
                         "Zooming in towards the ground brings landmark icons back to their vanilla size and opacity, so one "
                         + "is easy to find and read where you look at single tiles.\n\nDefault: on.");
                 }
+                RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, RM_BiomesSettings.ResetWorldLook);
                 list.GapLine();
             }
 
