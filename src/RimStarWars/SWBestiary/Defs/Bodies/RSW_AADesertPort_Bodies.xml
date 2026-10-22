@@ -6,11 +6,10 @@
   Source mod: Alpha Animals (`sarg.alphaanimals`, workshop 1541721856),
   1.6/Defs/Bodies/Bodies_WormWithArmor.xml,
   1.6/Defs/Bodies/Bodies_TentacledQuadrupedEyeless.xml and
-  1.6/Defs/Bodies/BodyParts_Animal.xml. Alpha Animals stays an active mod
-  dependency for this batch (only Joe's Cephaloids is being retired), so this
-  is a straight structural copy under the RSW_ prefix, not a textures-in
-  absorption - nothing here is donor-C#-dependent, body/body-part defs are
-  pure data.
+  1.6/Defs/Bodies/BodyParts_Animal.xml. Alpha Animals has since been retired
+  (2026-10-18); this is a straight structural copy under the RSW_ prefix, not a
+  textures-in absorption - nothing here is donor-C#-dependent, body/body-part
+  defs are pure data.
 
   defName-only rename, nothing else changed: AA_WormWithArmor -> RSW_WormWithArmor,
   AA_TentacledQuadrupedEyeless -> RSW_TentacledQuadrupedEyeless,

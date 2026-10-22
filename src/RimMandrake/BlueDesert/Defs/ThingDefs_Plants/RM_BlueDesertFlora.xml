@@ -40,12 +40,7 @@
   per-card XML field — the brief's own cards all use the same number anyway,
   and MOD_OPTIONS_RETROFIT_1 wants it player-tunable in one place, not three.
 
-  Art: NONE EXISTS YET (re-checked 2026-09-21: registry.jsonl/done/_artsrc/
-  art_status.json all empty for these subjects). texPaths below point at where
-  fill_queue.py's queued jobs (art_lists/blue_desert_life.csv) will land —
-  until the daemon renders them, these show as missing-texture placeholders in
-  game. Shipping the mechanic ahead of the art is this project's standing
-  practice, not an oversight. What a render must show: transparency (the ice
+  Art: textures now exist under Textures/Things/Plant/RM_*/ for every plant below. What a render must show: transparency (the ice
   visible THROUGH the body) and fractal branching (§8) — no leaves, no solid
   silhouette.
 

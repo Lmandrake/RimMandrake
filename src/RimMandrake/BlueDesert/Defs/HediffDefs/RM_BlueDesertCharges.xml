@@ -4,7 +4,8 @@
 <!--
   BLUE_DESERT_LIFE_AUTHORING_1 — "the charge" (design brief §2a/§2f). One
   HediffDef per native, all `HediffWithComps` carrying
-  `HediffCompProperties_ExplodeOnDeath` (Core, zero C#) so that death by ANY
+  a death-explosion comp (Core `HediffCompProperties_ExplodeOnDeath` at first; now the
+  gated `RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath`) so that death by ANY
   cause — combat, heatstroke (§1f), a neighbour's blast — detonates. Given by
   each PawnKindDef's `startingHediffs` (§1d), not `HediffGiverSetDef`, because
   a giver rolls a CHANCE and this must always be present.
