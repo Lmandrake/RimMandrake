@@ -1,0 +1,1022 @@
+{
+ "script": "flow_bignet_live.py",
+ "rows": [
+  {
+   "id": "FLOW_BIGNET_WETS_END_TO_END",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "item": "FLOW_ORDER_EXTERNAL_INPUT_1",
+   "detail": {
+    "cells": 6400,
+    "pulsesToFarCorner": null,
+    "pulsesRun": 63000,
+    "farCorner": [
+     91,
+     99
+    ]
+   }
+  },
+  {
+   "id": "FLOW_BIGNET_PULSE_COST",
+   "status": "MEASURED",
+   "class": "MOD",
+   "item": "FLOW_ORDER_EXTERNAL_INPUT_1",
+   "detail": {
+    "msPerPulse": [
+     4.668,
+     4.738,
+     4.778,
+     4.75,
+     4.766,
+     4.762,
+     4.734,
+     4.76,
+     4.746,
+     4.762,
+     4.728,
+     4.806,
+     4.798,
+     4.764,
+     4.744,
+     4.73,
+     4.74,
+     4.794,
+     4.81,
+     4.794,
+     4.822,
+     4.682,
+     4.742,
+     4.792,
+     4.728,
+     4.7,
+     4.69,
+     4.718,
+     4.746,
+     4.734,
+     4.712,
+     4.744,
+     4.75,
+     4.746,
+     4.742,
+     4.746,
+     4.72,
+     4.726,
+     4.756,
+     4.848,
+     4.752,
+     4.826,
+     4.718,
+     4.732,
+     4.766,
+     4.73,
+     4.72,
+     4.746,
+     4.712,
+     4.746,
+     4.726,
+     4.74,
+     4.766,
+     4.75,
+     4.676,
+     4.752,
+     4.712,
+     4.73,
+     4.728,
+     4.732,
+     4.848,
+     4.806,
+     4.732,
+     4.728,
+     4.768,
+     4.76,
+     4.738,
+     4.768,
+     4.75,
+     4.79,
+     4.76,
+     4.758,
+     4.736,
+     4.76,
+     4.75,
+     4.674,
+     4.786,
+     4.756,
+     4.76,
+     4.764,
+     4.832,
+     4.818,
+     4.866,
+     4.72,
+     4.758,
+     4.74,
+     4.73,
+     4.74,
+     4.746,
+     4.772,
+     4.798,
+     4.746,
+     4.772,
+     4.744,
+     4.788,
+     4.75,
+     4.77,
+     4.762,
+     4.78,
+     4.758,
+     4.828,
+     4.854,
+     4.75,
+     4.762,
+     4.752,
+     4.758,
+     4.75,
+     4.756,
+     4.756,
+     4.778,
+     4.748,
+     4.758,
+     4.764,
+     4.728,
+     4.736,
+     4.74,
+     4.722,
+     4.738,
+     4.736,
+     4.782,
+     4.808,
+     4.83,
+     4.852,
+     4.75,
+     4.756,
+     4.73
+    ],
+    "meanMsPerPulse": 4.756190476190476,
+    "note": "flowworks_pulse wall time incl. the bridge round trip, per 500-pulse batch"
+   }
+  }
+ ],
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Boomalope52399",
+    "Boomalope52400",
+    "Boomalope52401",
+    "Boomalope52402",
+    "Boomalope52403",
+    "Boomalope52404",
+    "Cougar52418",
+    "Cougar52440",
+    "Crow52415",
+    "Crow52416",
+    "Crow52417",
+    "Deer52420",
+    "Deer52421",
+    "Deer52422",
+    "Deer52423",
+    "Deer52424",
+    "Deer52425",
+    "Deer52426",
+    "Deer52427",
+    "Deer52428",
+    "Hare52398",
+    "Hare52414",
+    "Ibex52445",
+    "Ibex52446",
+    "Ibex52447",
+    "PrairieDog52410",
+    "PrairieDog52439",
+    "Raccoon52419",
+    "Sparrow52405",
+    "Sparrow52406",
+    "Sparrow52407",
+    "Squirrel52411",
+    "Squirrel52413",
+    "Squirrel52430",
+    "Squirrel52441",
+    "Squirrel52443",
+    "Turkey52408",
+    "Turkey52409",
+    "Turkey52429",
+    "Turkey52444",
+    "Vulture52412",
+    "Vulture52442",
+    "WildBoar52431",
+    "WildBoar52432",
+    "WildBoar52433",
+    "WildBoar52434",
+    "WildBoar52435",
+    "WildBoar52436",
+    "WildBoar52437",
+    "WildBoar52438"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "wetness0": "True",
+ "sourceBody": {
+  "id": 1,
+  "limitless": true,
+  "stock": 960.0,
+  "capacity": 960.0,
+  "cellCount": 240,
+  "recededCount": 0,
+  "activeCellCount": 240,
+  "truncated": false
+ },
+ "origin": [
+  12,
+  20
+ ],
+ "size": 80,
+ "dugRows": 80,
+ "phaseSite": "13:30:17",
+ "batches": [
+  {
+   "pulses": 500,
+   "ms": 2334,
+   "msPerPulse": 4.668,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2369,
+   "msPerPulse": 4.738,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2389,
+   "msPerPulse": 4.778,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2375,
+   "msPerPulse": 4.75,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2383,
+   "msPerPulse": 4.766,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2381,
+   "msPerPulse": 4.762,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2367,
+   "msPerPulse": 4.734,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2380,
+   "msPerPulse": 4.76,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2373,
+   "msPerPulse": 4.746,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2381,
+   "msPerPulse": 4.762,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2364,
+   "msPerPulse": 4.728,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2403,
+   "msPerPulse": 4.806,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2399,
+   "msPerPulse": 4.798,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2382,
+   "msPerPulse": 4.764,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2372,
+   "msPerPulse": 4.744,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2365,
+   "msPerPulse": 4.73,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2370,
+   "msPerPulse": 4.74,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2397,
+   "msPerPulse": 4.794,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2405,
+   "msPerPulse": 4.81,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2397,
+   "msPerPulse": 4.794,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2411,
+   "msPerPulse": 4.822,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2341,
+   "msPerPulse": 4.682,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2371,
+   "msPerPulse": 4.742,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2396,
+   "msPerPulse": 4.792,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2364,
+   "msPerPulse": 4.728,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2350,
+   "msPerPulse": 4.7,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2345,
+   "msPerPulse": 4.69,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2359,
+   "msPerPulse": 4.718,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2373,
+   "msPerPulse": 4.746,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2367,
+   "msPerPulse": 4.734,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2356,
+   "msPerPulse": 4.712,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2372,
+   "msPerPulse": 4.744,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2375,
+   "msPerPulse": 4.75,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2373,
+   "msPerPulse": 4.746,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2371,
+   "msPerPulse": 4.742,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2373,
+   "msPerPulse": 4.746,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2360,
+   "msPerPulse": 4.72,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2363,
+   "msPerPulse": 4.726,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2378,
+   "msPerPulse": 4.756,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2424,
+   "msPerPulse": 4.848,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2376,
+   "msPerPulse": 4.752,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2413,
+   "msPerPulse": 4.826,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2359,
+   "msPerPulse": 4.718,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2366,
+   "msPerPulse": 4.732,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2383,
+   "msPerPulse": 4.766,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2365,
+   "msPerPulse": 4.73,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2360,
+   "msPerPulse": 4.72,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2373,
+   "msPerPulse": 4.746,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2356,
+   "msPerPulse": 4.712,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2373,
+   "msPerPulse": 4.746,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2363,
+   "msPerPulse": 4.726,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2370,
+   "msPerPulse": 4.74,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2383,
+   "msPerPulse": 4.766,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2375,
+   "msPerPulse": 4.75,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2338,
+   "msPerPulse": 4.676,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2376,
+   "msPerPulse": 4.752,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2356,
+   "msPerPulse": 4.712,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2365,
+   "msPerPulse": 4.73,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2364,
+   "msPerPulse": 4.728,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2366,
+   "msPerPulse": 4.732,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2424,
+   "msPerPulse": 4.848,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2403,
+   "msPerPulse": 4.806,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2366,
+   "msPerPulse": 4.732,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2364,
+   "msPerPulse": 4.728,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2384,
+   "msPerPulse": 4.768,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2380,
+   "msPerPulse": 4.76,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2369,
+   "msPerPulse": 4.738,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2384,
+   "msPerPulse": 4.768,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2375,
+   "msPerPulse": 4.75,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2395,
+   "msPerPulse": 4.79,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2380,
+   "msPerPulse": 4.76,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2379,
+   "msPerPulse": 4.758,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2368,
+   "msPerPulse": 4.736,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2380,
+   "msPerPulse": 4.76,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2375,
+   "msPerPulse": 4.75,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2337,
+   "msPerPulse": 4.674,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2393,
+   "msPerPulse": 4.786,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2378,
+   "msPerPulse": 4.756,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2380,
+   "msPerPulse": 4.76,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2382,
+   "msPerPulse": 4.764,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2416,
+   "msPerPulse": 4.832,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2409,
+   "msPerPulse": 4.818,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2433,
+   "msPerPulse": 4.866,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2360,
+   "msPerPulse": 4.72,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2379,
+   "msPerPulse": 4.758,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2370,
+   "msPerPulse": 4.74,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2365,
+   "msPerPulse": 4.73,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2370,
+   "msPerPulse": 4.74,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2373,
+   "msPerPulse": 4.746,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2386,
+   "msPerPulse": 4.772,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2399,
+   "msPerPulse": 4.798,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2373,
+   "msPerPulse": 4.746,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2386,
+   "msPerPulse": 4.772,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2372,
+   "msPerPulse": 4.744,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2394,
+   "msPerPulse": 4.788,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2375,
+   "msPerPulse": 4.75,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2385,
+   "msPerPulse": 4.77,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2381,
+   "msPerPulse": 4.762,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2390,
+   "msPerPulse": 4.78,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2379,
+   "msPerPulse": 4.758,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2414,
+   "msPerPulse": 4.828,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2427,
+   "msPerPulse": 4.854,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2375,
+   "msPerPulse": 4.75,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2381,
+   "msPerPulse": 4.762,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2376,
+   "msPerPulse": 4.752,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2379,
+   "msPerPulse": 4.758,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2375,
+   "msPerPulse": 4.75,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2378,
+   "msPerPulse": 4.756,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2378,
+   "msPerPulse": 4.756,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2389,
+   "msPerPulse": 4.778,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2374,
+   "msPerPulse": 4.748,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2379,
+   "msPerPulse": 4.758,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2382,
+   "msPerPulse": 4.764,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2364,
+   "msPerPulse": 4.728,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2368,
+   "msPerPulse": 4.736,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2370,
+   "msPerPulse": 4.74,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2361,
+   "msPerPulse": 4.722,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2369,
+   "msPerPulse": 4.738,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2368,
+   "msPerPulse": 4.736,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2391,
+   "msPerPulse": 4.782,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2404,
+   "msPerPulse": 4.808,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2415,
+   "msPerPulse": 4.83,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2426,
+   "msPerPulse": 4.852,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2375,
+   "msPerPulse": 4.75,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2378,
+   "msPerPulse": 4.756,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 2365,
+   "msPerPulse": 4.73,
+   "farFill": 0
+  }
+ ],
+ "report": {
+  "success": true,
+  "cell": {
+   "x": 0,
+   "z": 0
+  },
+  "depth": 0,
+  "fill": 0,
+  "isExcavated": false,
+  "isSourceCell": false,
+  "isSinkCell": false,
+  "sinkTransferredTotal": 63019.0,
+  "overflowDestroyedTotal": 0.0,
+  "excavatedCellCount": 6409,
+  "ticksGame": 1
+ }
+}
