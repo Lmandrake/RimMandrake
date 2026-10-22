@@ -229,5 +229,34 @@ namespace RimMandrake.FlowWorks.Drilling
 			}
 			return true;
 		}
+
+		/// <summary>DRILL_SURVEY_EXPLAIN_BEFORE_STEEL_IS_SPENT (UX review 2026-10-22): every map is surveyed when it loads
+		/// (RM_MapComponent_SubsurfaceLiquid.FinalizeInit), so the answer exists before anything is built. Show it beside the
+		/// mouse while placing, instead of only on a finished drill.</summary>
+		public override void DrawPlaceMouseAttachments(float curX, ref float curY, BuildableDef def, IntVec3 center, Rot4 rot)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_SubsurfaceLiquid survey = map?.GetComponent<RM_MapComponent_SubsurfaceLiquid>();
+			Color was = GUI.color;
+			if (survey == null)
+			{
+				DrawTextLine(curX, ref curY, "RM_SubsurfaceUnsurveyed".Translate());
+			}
+			else if (!survey.HasYield || survey.ReserveRemaining <= 0f)
+			{
+				GUI.color = ColorLibrary.RedReadable;
+				DrawTextLine(curX, ref curY, survey.HasYield ? "RM_DrillPlaceSpent".Translate().ToString() : "RM_DrillPlaceNoYield".Translate().ToString());
+			}
+			else
+			{
+				DrawTextLine(curX, ref curY, survey.StatusReport());
+			}
+			if (!RimMandrakeFlowWorksSettings.liquidDrillingEnabled)
+			{
+				GUI.color = ColorLibrary.RedReadable;
+				DrawTextLine(curX, ref curY, "RM_DrillPlaceOff".Translate());
+			}
+			GUI.color = was;
+		}
 	}
 }

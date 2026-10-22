@@ -86,6 +86,9 @@
   <RM_SubsurfaceUnsurveyed>Subsurface: unsurveyed.</RM_SubsurfaceUnsurveyed>
   <RM_SubsurfaceNoYield>Subsurface: nothing drillable found under this map.</RM_SubsurfaceNoYield>
   <RM_SubsurfaceYieldReport>Subsurface: {0}, {1} remaining.</RM_SubsurfaceYieldReport>
+  <RM_DrillPlaceNoYield>Subsurface: nothing drillable under this map. A drill or tap here would never pour anything.</RM_DrillPlaceNoYield>
+  <RM_DrillPlaceSpent>Subsurface: this map's reserve is used up and never refills. A drill or tap here would never pour anything.</RM_DrillPlaceSpent>
+  <RM_DrillPlaceOff>Drilling is switched off in the Flow Works settings: a drill or tap would sit idle.</RM_DrillPlaceOff>
   <RM_DrillNeedsOutlet>Needs a dug channel at its outlet — the cell it faces.</RM_DrillNeedsOutlet>
   <RM_DrillLiquidHasNoCanalForm>The liquid below has no canal form and cannot be poured into a channel.</RM_DrillLiquidHasNoCanalForm>
   <RM_DrillLiquidMismatch>The outlet already holds {0}; this drill's liquid cannot mix with it.</RM_DrillLiquidMismatch>
