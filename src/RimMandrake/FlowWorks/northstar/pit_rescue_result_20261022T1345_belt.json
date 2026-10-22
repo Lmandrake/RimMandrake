@@ -1,0 +1,913 @@
+{
+ "script": "pit_rescue_live.py",
+ "started": "2026-10-22T12:14:17",
+ "rows": [
+  {
+   "id": "RESCUE_LADDER_QUEUED",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "detail": {
+    "queuedAt": 250,
+    "builtAt": 1500,
+    "outAt": 4750,
+    "last": {
+     "t": 4750,
+     "ladder": [
+      [
+       "RM_LadderPortable",
+       37,
+       36
+      ]
+     ],
+     "victim": [
+      [
+       44,
+       39
+      ],
+      true,
+      false,
+      true
+     ],
+     "rescuers": [
+      [
+       "Human37328",
+       {
+        "x": 45,
+        "z": 39
+       },
+       "TendPatient"
+      ],
+      [
+       "Human37331",
+       {
+        "x": 36,
+        "z": 42
+       },
+       "GotoWander"
+      ]
+     ]
+    },
+    "assist": null,
+    "controlRescuedAt": 250
+   }
+  },
+  {
+   "id": "RESCUE_LADDER_BUILT",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "detail": {
+    "queuedAt": 250,
+    "builtAt": 1500,
+    "outAt": 4750,
+    "last": {
+     "t": 4750,
+     "ladder": [
+      [
+       "RM_LadderPortable",
+       37,
+       36
+      ]
+     ],
+     "victim": [
+      [
+       44,
+       39
+      ],
+      true,
+      false,
+      true
+     ],
+     "rescuers": [
+      [
+       "Human37328",
+       {
+        "x": 45,
+        "z": 39
+       },
+       "TendPatient"
+      ],
+      [
+       "Human37331",
+       {
+        "x": 36,
+        "z": 42
+       },
+       "GotoWander"
+      ]
+     ]
+    },
+    "assist": null,
+    "controlRescuedAt": 250
+   }
+  },
+  {
+   "id": "RESCUE_COLONIST_OUT",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS",
+   "detail": {
+    "queuedAt": 250,
+    "builtAt": 1500,
+    "outAt": 4750,
+    "last": {
+     "t": 4750,
+     "ladder": [
+      [
+       "RM_LadderPortable",
+       37,
+       36
+      ]
+     ],
+     "victim": [
+      [
+       44,
+       39
+      ],
+      true,
+      false,
+      true
+     ],
+     "rescuers": [
+      [
+       "Human37328",
+       {
+        "x": 45,
+        "z": 39
+       },
+       "TendPatient"
+      ],
+      [
+       "Human37331",
+       {
+        "x": 36,
+        "z": 42
+       },
+       "GotoWander"
+      ]
+     ]
+    },
+    "assist": null,
+    "controlRescuedAt": 250
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/rescue_5.json",
+  "origin": "30,30",
+  "fresh_map": true,
+  "ticks": 7000
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brogg36048",
+    "RM_Brullith36042",
+    "RM_Brullith36047",
+    "RM_Brullith36050",
+    "RM_Illoth36037",
+    "RM_Shambles36049",
+    "RM_Skerrith36040",
+    "RM_Skerrith36041",
+    "RM_Thozzik36038",
+    "RM_Thozzik36043",
+    "RM_Thozzik36046",
+    "RM_ThozzikColony36044",
+    "RM_ThozzikColony36045",
+    "RM_ThozzikColonyQueen36039"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "control": "Human37335",
+ "scene": {
+  "victim": "Human37325",
+  "rescuers": [
+   "Human37328",
+   "Human37331"
+  ],
+  "incap": "{'success': True, 'action': 'downed', 'allowBleedingWoundsHonoured': False, 'downedBefore': False, 'deadBefore': False, 'downedAfter': True, 'deadAfter': False, 'changed': True, 'hediffCount': 4, 'tic"
+ },
+ "trail": [
+  {
+   "t": 250,
+   "ladder": [
+    [
+     "Blueprint_RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 35
+     },
+     "Rescue"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 36,
+      "z": 38
+     },
+     "GotoWander"
+    ]
+   ]
+  },
+  {
+   "t": 500,
+   "ladder": [
+    [
+     "Frame_RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 36,
+      "z": 37
+     },
+     "Wait_MaintainPosture"
+    ]
+   ]
+  },
+  {
+   "t": 750,
+   "ladder": [
+    [
+     "Blueprint_RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 35,
+      "z": 38
+     },
+     "HaulToContainer"
+    ]
+   ]
+  },
+  {
+   "t": 1000,
+   "ladder": [
+    [
+     "Frame_RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 36,
+      "z": 37
+     },
+     "FinishFrame"
+    ]
+   ]
+  },
+  {
+   "t": 1250,
+   "ladder": [
+    [
+     "Frame_RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 36,
+      "z": 37
+     },
+     "FinishFrame"
+    ]
+   ]
+  },
+  {
+   "t": 1500,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 39,
+      "z": 37
+     },
+     "Clean"
+    ]
+   ]
+  },
+  {
+   "t": 1750,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 46,
+      "z": 34
+     },
+     "Wait_Wander"
+    ]
+   ]
+  },
+  {
+   "t": 2000,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 46,
+      "z": 34
+     },
+     "GotoWander"
+    ]
+   ]
+  },
+  {
+   "t": 2250,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 43,
+      "z": 36
+     },
+     "Wait_Wander"
+    ]
+   ]
+  },
+  {
+   "t": 2500,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 39,
+      "z": 38
+     },
+     "GotoWander"
+    ]
+   ]
+  },
+  {
+   "t": 2750,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 34,
+      "z": 38
+     },
+     "GotoWander"
+    ]
+   ]
+  },
+  {
+   "t": 3000,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 32,
+      "z": 39
+     },
+     "Wait_Wander"
+    ]
+   ]
+  },
+  {
+   "t": 3250,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 38,
+      "z": 40
+     },
+     "Clean"
+    ]
+   ]
+  },
+  {
+   "t": 3500,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 43,
+      "z": 39
+     },
+     "Rescue"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 47,
+      "z": 40
+     },
+     "GotoWander"
+    ]
+   ]
+  },
+  {
+   "t": 3750,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 37,
+      "z": 37
+     },
+     "Rescue"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 42,
+      "z": 38
+     },
+     "GotoWander"
+    ]
+   ]
+  },
+  {
+   "t": 4000,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     37,
+     35
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 37,
+      "z": 37
+     },
+     "Rescue"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 37,
+      "z": 38
+     },
+     "GotoWander"
+    ]
+   ]
+  },
+  {
+   "t": 4250,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     null,
+     null
+    ],
+    null,
+    null,
+    null
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 37,
+      "z": 36
+     },
+     "Rescue"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 32,
+      "z": 39
+     },
+     "Wait_Wander"
+    ]
+   ]
+  },
+  {
+   "t": 4500,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     null,
+     null
+    ],
+    null,
+    null,
+    null
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 37,
+      "z": 37
+     },
+     "Rescue"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 32,
+      "z": 39
+     },
+     "Wait_MaintainPosture"
+    ]
+   ]
+  },
+  {
+   "t": 4750,
+   "ladder": [
+    [
+     "RM_LadderPortable",
+     37,
+     36
+    ]
+   ],
+   "victim": [
+    [
+     44,
+     39
+    ],
+    true,
+    false,
+    true
+   ],
+   "rescuers": [
+    [
+     "Human37328",
+     {
+      "x": 45,
+      "z": 39
+     },
+     "TendPatient"
+    ],
+    [
+     "Human37331",
+     {
+      "x": 36,
+      "z": 42
+     },
+     "GotoWander"
+    ]
+   ]
+  }
+ ],
+ "finished": "2026-10-22T12:16:15"
+}
