@@ -562,6 +562,13 @@ def run_category(ds, category, tex_index, dir_index, a, bundle_index=None):
             c["page"], c["row"], c["col"] = page_no + 1, r, col
             index_rows.append(c)
     t_render = time.perf_counter() - t
+    # Pages left over from an earlier, longer run would sit beside this run's
+    # index as sheets it does not list - stale pictures that look current.
+    if not a.no_image:
+        import glob as _glob
+        for old in _glob.glob(os.path.join(out_dir, "%s_sheet_[0-9][0-9].png" % category)):
+            if os.path.basename(old) not in page_files:
+                os.remove(old)
 
     # A planned cell whose PNG would not decode stays in the INDEX (it occupies a
     # grid position, and you must be able to look up the red X) AND is reported
@@ -658,6 +665,11 @@ def main(argv=None):
           % (ds.gameVersion, len(ds.mods),
              sum(len(m["contentDirs"]) for m in ds.mods),
              len(ds.of_type("ThingDef"))))
+
+    if not ds.of_type("ThingDef"):
+        print("ERROR: the load set holds 0 ThingDefs - UNMEASURED, not an empty catalogue "
+              "(check --config / mod folders).", file=sys.stderr)
+        return 2
 
     tex_index, n_png, n_texdirs = build_texture_index(ds.mods)
     dir_index = build_dir_index(tex_index)

@@ -276,9 +276,19 @@ def gates(since_ts=None, handoff_path=None, doing_is_fatal=True):
 
     # `git cherry` marks a commit `-` when origin already holds a patch-equivalent
     # (a rebase rewrites shas), so only `+` is truly unpushed.
+    # A failed `git cherry` (no upstream, git error) used to read as "nothing unpushed".
+    try:
+        ch = subprocess.run(["git", "cherry", "@{u}", "HEAD"], cwd=ROOT, capture_output=True,
+                            text=True, timeout=60)
+        ch_ok, ch_out, ch_err = ch.returncode == 0, ch.stdout.strip(), ch.stderr.strip()
+    except Exception as e:
+        ch_ok, ch_out, ch_err = False, "", str(e)
+    if not ch_ok:
+        bad.append("CANNOT TELL what is unpushed (git cherry failed: %s) — no upstream "
+                   "is not the same as nothing unpushed" % (ch_err.splitlines()[-1] if ch_err else "?"))
     unpushed = "\n".join(
         sh("git", "log", "--oneline", "-1", ln[2:].strip())
-        for ln in sh("git", "cherry", "@{u}", "HEAD").splitlines()
+        for ln in ch_out.splitlines()
         if ln.startswith("+"))
     if unpushed:
         bad.append("UNPUSHED commits — committed-but-unpushed survives exactly one "
