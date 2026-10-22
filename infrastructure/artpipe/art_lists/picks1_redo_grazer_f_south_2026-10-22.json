@@ -1,0 +1,25 @@
+{
+ "generated": "2026-10-22",
+ "item": "Grazer_f south re-draw (enact_e5019365_grazer_v1_south drew a wooden post)",
+ "rows": [
+  {
+   "id": "picks1redo_grazer_f_v1",
+   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+   "channel": "codex",
+   "priority": 0,
+   "background": "transparent",
+   "biome_neutral": true,
+   "target_def": "RSW_Grazer",
+   "target_texpath": "swanimals/Grazer/Grazer_f",
+   "slot": "swanimals/Grazer/Grazer_f",
+   "ask": "slot",
+   "derive_from": "enact_e5019365_grazer_v1_east",
+   "facings": [
+    "south"
+   ],
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "prompt": "The attached image is the female grazer's approved side view; draw the SAME animal from the front: front view, face and chest toward the viewer, at the creature's own eye level, same scale. (The first south render of this redraw came out as a wooden post, not the animal.)"
+  }
+ ]
+}
