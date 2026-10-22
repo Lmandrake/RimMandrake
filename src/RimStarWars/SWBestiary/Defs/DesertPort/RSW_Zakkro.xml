@@ -66,8 +66,7 @@
   (living adult, reused across all lifeStages here) and
   rsw_zakkro_dessicated_v1 (desiccated corpse, single non-directional pose,
   same convention as Mudhorn_Dessicated.png). texPaths below are the paths
-  the render will land at; validate_patch.py will flag them as pending until
-  the artpipe daemon delivers.
+  the renders landed at (Textures/swanimals/DesertPort/Zakkro/).
 
   Not wired into MechCluster/ThingSetMaker loot tables or any biome cast —
   that is cavern-generation's job, out of scope here.

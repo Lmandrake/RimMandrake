@@ -18,11 +18,8 @@
   donor `Tough_Meat` resource, both share the donor's `swresource/Meat_Tough`
   art. No new resource needed this species.
 
-  `canCrossBreedWith` (`Reek`, `IthorianReek`) left pointing at the donor's
-  still-bare, still-unported defNames — correct while Mlie stays active and
-  neither is in this item's own worklist (Reek dropped from the live cast;
-  IthorianReek was never cast-referenced at all). Flagged per the
-  FeralGrazer/Pass 7 precedent for whoever next touches either name.
+  `canCrossBreedWith` (`Reek`, `IthorianReek`) repointed to the ported
+  `RSW_Reek` / `RSW_IthorianReek` ThingDefs.
 
   Sounds repoint to the already-absorbed sound wave: the adult stage uses
   `RSW_Pawn_Reek_*` (NOT `RSW_Pawn_IridonianReek_*` — confirmed against the

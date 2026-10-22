@@ -8,12 +8,11 @@
   the size ladder's own medium band: "the interface killers: snake-analogs in
   the tunnels."
 
-  The arid_shrubland roster's own fauna list already carries `Terrorworm`
-  (a foreign-mod donor, `mlie.horrors`) at the medium-tunnel band as an
-  explicit INTERIM: "tunnel-shaped predator... donor (prep §3.4)". This def
-  is the dedicated flagship that interim was standing in for - Terrorworm
-  stays wired in RUT_AridShrubland.xml too, same not-removed precedent
-  RSW_ShadeWhale/RSW_ShrublandGiant used for their own interim donors.
+  The arid_shrubland roster's fauna list once carried `Terrorworm` (a
+  foreign-mod donor, `mlie.horrors`, since retired and no longer wired) at the
+  medium-tunnel band as an explicit INTERIM: "tunnel-shaped predator... donor
+  (prep §3.4)". This def is the dedicated flagship that interim was standing in
+  for.
 
   Body/art reskinned from `RSW_Klorslug` (already-ported, "ours"-status,
   same RSW mod) - a poisonous vermiform predator, bodySize 1.5, whose own

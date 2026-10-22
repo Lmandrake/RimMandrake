@@ -9,10 +9,10 @@
   repointing its tail to the ALREADY-PORTED Wave B `RSW_SWTailAttackTool`
   group and its jaw's toxic-bite group to `RSW_SWToxicAppendage` — ported
   as RSW_Hssiss (RSW_MlieWaveC_Bodies.xml, Pass 10). Its 2 tusk parts keep
-  the bare `TuskAttackTool` group, which is **Alpha Animals**
-  (`sarg.alphaanimals`, confirmed via the frozen official def dump per the
-  Boma/Pass 9 correction) — not Mlie content, no MayRequire gate needed,
-  matching every other species that uses this same group. Every other
+  the bare `TuskAttackTool` group, which is vanilla Core
+  (BodyPartGroups.xml; an earlier version of this header called it Alpha
+  Animals, which was wrong) — no MayRequire gate needed, matching every other
+  species that uses this same group. Every other
   part (Tail, Spine, Stomach, Heart, Lung x2, Kidney x2, Liver, Neck/Head/
   Skull/Brain/Eye x2/Nose/AnimalJaw, 4x Leg/Paw) is vanilla Core.
 

@@ -9,9 +9,9 @@
   defName-rename-only port (RSW_Jakobeast, RSW_MlieWaveC_Bodies.xml). Its
   Horn part's bare `HornAttackTool` group is vanilla Core (distinct from the
   SW-prefixed `SWHornAttackTool` IridonianReek/Boma use); its 2 Tusk parts'
-  `TuskAttackTool` group is Alpha Animals (`sarg.alphaanimals`, confirmed via
-  the frozen def dump per the Boma/Pass 9 correction) — both left bare
-  exactly as the donor leaves them, no MayRequire gate either way.
+  `TuskAttackTool` group is vanilla Core too (BodyPartGroups.xml; an earlier
+  version of this header called it Alpha Animals, which was wrong) — both left
+  bare exactly as the donor leaves them, no MayRequire gate either way.
 
   `leatherDef` needed a new port: `RSW_Leather_Bright`
   (RSW_MlieWaveC_Resources.xml) — reuses ALREADY-extracted art

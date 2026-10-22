@@ -16,14 +16,12 @@
   trophy — texPath swresource/Trophies/NerfHorn, newly extracted, same
   ResourceVerbBase shape as RSW_BanthaHorn).
 
-  `canCrossBreedWith` (donor: FeralNerf, FeralGrazer, Grazer) — `FeralNerf`
-  renamed to `RSW_FeralNerf` (ported this same pass, above) and
-  `FeralGrazer` renamed to `RSW_FeralGrazer` (already ported, Pass 7).
-  `Grazer` stays bare (out of this item's Wave C worklist — see
-  RSW_FeralNerf.xml's header for the reasoning).
+  `canCrossBreedWith` (donor: FeralNerf, FeralGrazer, Grazer) — all three
+  renamed to their ported RSW_ twins (RSW_FeralNerf, RSW_FeralGrazer,
+  RSW_Grazer).
 
-  `specialTrainables`/`abilities` (Odyssey `SW_Spit`) left bare,
-  MayRequire-gated — same precedent as RSW_FeralNerf, not yet absorbed.
+  `specialTrainables`/`abilities` (Odyssey `SW_Spit`) repointed to the ported
+  `RSW_SW_Spit`.
 
   `alternateGraphicChance`/`alternateGraphics` (7 flat recolors) is a
   CutoutComplex mask-tinting setup, distinct from FrilledGorg's
