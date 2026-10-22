@@ -1,0 +1,1 @@
+./publish conflict on a FlowWorks DLL when THIS clone also holds other agents' unpublished local commits: ./sync refuses, so the lesson's reset-soft+sync recipe stalls. Working route: publish the SOURCE-only commit (its replay lands and rebases the others), the DLL stamp guard then blocks the push; rebuild on the rebased source, publish DLL+.srchash; the guard passes the range.
