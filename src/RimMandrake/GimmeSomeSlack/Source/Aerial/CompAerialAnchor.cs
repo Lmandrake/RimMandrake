@@ -456,7 +456,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 yield return new Command_Action
                 {
                     defaultLabel = "Auto-link selected",
-                    defaultDesc = "Link the selected anchors with the shortest set of wires that joins them all (within range, free insulators only).",
+                    defaultDesc = "Link the selected anchors with the shortest wires in range, as many as their free insulators allow. With few insulators some anchors may stay unlinked.",
                     icon = IconLink,
                     action = AutoLinkSelected,
                 };

@@ -474,6 +474,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private static void Postfix(CompAerialAnchor a, Thing target, LinkVerdict __result)
         {
             if (__result != LinkVerdict.Ok || a?.parent?.Map == null || target == null) return;
+            // GPT deep review 2026-10-22 #1: the run-look rule is the ELECTRICAL run's; a pipe span joins no conduit run, and
+            // RunOf() seeds on the pole plus its adjacent conduit, so a pipe link beside two power runs used to repaint one
+            if (a.Kind != AerialLineKind.Power) return;
             a.parent.Map.GetComponent<RM_MapComponent_ConduitRuns>()?.QueueLink(a.parent, target);
         }
     }

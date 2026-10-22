@@ -433,5 +433,20 @@ got, P, calls = d4_case(S7OK, "FAIL")
 check("9 control: a FAIL verdict stays FAIL", [r["status"] for r in got] == ["FAIL"], str(got))
 check("9 declared: S12d is a declared save_load row", "S12d_D4_pending_queue_save" in PA.DECLARED_ROWS["save_load"] and "d4_save" in PA.BLOCKS)
 
+
+
+# 10. D2 rejects a stale EXTRA edge (GPT deep review 2026-10-22 #7: the probe reports it, the verdict ignored it)
+def d2_case(fresh):
+    P = PA.Proof(args(None))
+    P.matrix_run = type("R", (), {"scenes": {"s": {"determinism": {"same": True}}},
+                                  "boards_out": [{"id": "b1", "scenes": ["s"], "fresh": fresh}]})()
+    P.determinism()
+    return [r["status"] for r in P.rows if r["id"] == "D2_fresh_builder_same"]
+
+
+check("10 D2: clean fresh build PASSes", d2_case({"edges": 1, "same": 1, "different": 0, "missing": 0, "extra": 0}) == ["PASS"])
+check("10 control: an extra stale edge FAILs D2", d2_case({"edges": 1, "same": 1, "different": 0, "missing": 0, "extra": 1}) == ["FAIL"])
+check("10 control: an empty fresh read FAILs D2", d2_case({}) == ["FAIL"])
+
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))
 sys.exit(1 if FAILS else 0)

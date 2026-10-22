@@ -406,7 +406,7 @@ class MockBridge(object):
                     "invisibleApplied": self.settings.get("enabled", "True") != "False", "layerVisible": self.settings.get("enabled", "True") != "False",
                     "spawnedConduitTexture": "ConduitTransparent" if self.settings.get("enabled", "True") != "False" else "Conduit_Atlas"}
         if cmd == "fresh":
-            return {"success": True, "edges": 1, "same": 1, "different": 0, "missing": 0}
+            return {"success": True, "edges": 1, "same": 1, "different": 0, "missing": 0, "extra": 0}
         if cmd.startswith("rect:"):
             if self.settings.get("enabled") == "False":
                 return {"success": True, "cmd": "rect", "graph": False, "nets": 1}
@@ -1293,8 +1293,9 @@ def run(args, B, mock=False):
               "%d/%d scenes: geometry hash + census identical on 2 re-reads after all view toggles" % (sum(det), len(det)))
     fr = [b.get("fresh") or {} for b in R.boards_out]
     if fr and not mock and not sweep_src:
-        bad = ["%s %s %s" % (b["id"], b["scenes"], {k: b["fresh"].get(k) for k in ("edges", "different", "missing")})
-               for b in R.boards_out if (b.get("fresh") or {}).get("different") or (b.get("fresh") or {}).get("missing")]
+        bad = ["%s %s %s" % (b["id"], b["scenes"], {k: b["fresh"].get(k) for k in ("edges", "different", "missing", "extra")})
+               for b in R.boards_out if (b.get("fresh") or {}).get("different") or (b.get("fresh") or {}).get("missing")
+               or (b.get("fresh") or {}).get("extra")]   # GPT deep review 2026-10-22 #7
         R.row("D2_fresh_builder_same", "PASS" if not bad else "FAIL", "MOD",
               bad or "%d boards: a fresh CordBuilder on the same map reproduces every laid edge" % len(fr))
     if not mock and not sweep_src:

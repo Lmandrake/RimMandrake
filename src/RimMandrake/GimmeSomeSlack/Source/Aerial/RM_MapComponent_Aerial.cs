@@ -84,6 +84,18 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             meshes.Clear();
         }
 
+        /// <summary>GPT deep review 2026-10-22 #10: span, fallen-wire and local-drop meshes are native Unity objects; free them
+        /// with the map (RM_MapComponent_CordGraph.MapRemoved does the same for the floor layer).</summary>
+        public override void MapRemoved()
+        {
+            base.MapRemoved();
+            ClearSpanMeshes();
+            foreach (var kv in drops.Values) if (kv.Value != null) UnityEngine.Object.Destroy(kv.Value);
+            drops.Clear();
+            foreach (var kv in dropMeshes.Values) if (kv.Value != null) foreach (Mesh m in kv.Value) if (m != null) UnityEngine.Object.Destroy(m);
+            dropMeshes.Clear();
+        }
+
         public void Notify_SettingsChanged()
         {
             ClearSpanMeshes();
