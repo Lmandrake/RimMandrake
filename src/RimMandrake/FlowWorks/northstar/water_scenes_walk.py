@@ -616,7 +616,7 @@ def run_S1(w):
                 None if not all_read(h, canal) else not dried)
     lim = [x.get("limitless") for _, _, x in h]
     expect_line(w, "S1", "S1.d", "lake limitless at every pulse: %s (stock %s -> %s)" % (
-        all(lim), b0.get("stock"), h[-1][2].get("stock")), all(bool(v) for v in lim))
+        all(lim), b0.get("stock"), h[-1][2].get("stock")), None if any(v is None for v in lim) else all(lim))   # an unread body is UNMEASURED, not DIFFERS
 
 
 # ---------------------------------------------------------------- S2

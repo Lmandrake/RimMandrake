@@ -1730,7 +1730,9 @@ def _count(t, def_name, x, z, w, h):
     r = t.bridge_call("jawa/list_things", defName=def_name, rect=_rect(x, z, w, h), limit=50)
     if r is None:
         return None
-    return len(r.get("things") or [])
+    if not isinstance(r, dict) or r.get("success") is False or not isinstance(r.get("things"), list):
+        raise ExpectationFailed("UNMEASURED: list_things %s did not answer (a refused read is not a count of 0): %r" % (def_name, r))
+    return len(r["things"])
 
 
 def _bottle_loop_plot(t):
