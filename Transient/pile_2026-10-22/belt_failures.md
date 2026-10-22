@@ -1,0 +1,2 @@
+# Belt failures (BENCH prove-fix belt, 2026-10-22) — `<ITEM> — symptom — evidence`
+LADDER_HOSE_DIAGNOSE_RETRACTS_ON_A_WHIM — REPRODUCED (not a flake): lines_proof LADDER_HOSE_DRAINS_RAISED_STAYS on deployed 41fb948b5e: ladder raise -> hose laid=False retract=no_route within 300 ticks; pit drained only 10000 dl (as 10-21 run1) — src/RimMandrake/FlowWorks/northstar/lines_result_20261022T0905_belt.json

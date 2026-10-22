@@ -756,6 +756,17 @@ def _raid_variant(ctx, rid, sappers, dx=30):
         # SITE (live 2026-10-22, full run): the earlier rows' bridges and winches stand in the origin plot, reachable, and the
         # assault gunners trashed them instead of facing the moat. Clear every building in the plot before this island is built.
         o = P(-4, -2)
+        # HARNESS (BENCH belt 2026-10-22): the PM run's RAID_UP stopped in this prep's reveal on 'hurt: Cut/Head' with no
+        # hostile on the map. Destroying the earlier rows' winches CRASHES any leaf still raised (WINCH_LOST_CRASHES is the
+        # mod doing its job) onto whoever stands in the plot. The earlier rows' pawns leave the plot before its buildings go.
+        gone = []
+        for i, p in ctx["pawns"]().items():
+            px, pz = p.get("x"), p.get("z")
+            if (px is not None and pz is not None and not p.get("dead") and o[0] - 2 <= px < o[0] + 52
+                    and o[1] - 2 <= pz < o[1] + 92):
+                B.call("jawa/pawn_force_incapacitate", pawn=i, action="vanish")
+                gone.append(i)
+        V.SITE_NOTES.append({"id": "raid_%s_plot_pawns_vanished" % rid, "detail": gone})
         B.call("jawa/destroy_batch", rects="%d,%d,50,90" % o, categories="Building")
         B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect",
                args="%d;%d;%d;%d" % rect)

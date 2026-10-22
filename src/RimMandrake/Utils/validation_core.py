@@ -652,6 +652,11 @@ def _prepare_site(B, rect, rows, rid):
         why.append("fog triggers still armed after the disarm (an ancient-danger wave can land mid-row): %s"
                    % str({k: ft.get(k) for k in ("error", "found", "left", "leftDefs")})[:200])
     B.ticks(2)
+    # 2026-10-22 (BENCH belt, lines_proof 21x95-cell site, fw_gss_sitting): ONE Plant_Grass read back after the ~60 reveal
+    # ticks -- vanilla's WildPlantSpawner seeds new plants on a large fertile rect while the colonist stands there. The first
+    # destroy ran before reveal, so plants are swept again after it (HARNESS/SITE class fix; a plant re-seeded later inside a
+    # row is the row's own site read, not this gate's).
+    B.call("jawa/destroy_batch", rects=r, categories="Plant")
     roof = B.call("jawa/get_roof_batch", rects=r) or {}
     roofs = [x for x in (roof.get("roofs") or []) if x not in (None, "None")]
     if roofs:
