@@ -31,12 +31,16 @@ Sources: `src/RimMandrake/TheRot/About/About.xml`, `Defs/**`, `Source/RM_TheRotM
 - Starved, it stops heating and the mat it grew dies back to the ground beneath. → living_mat_root.starved_root_dies_back
 - On an `RM_TheRot` map it eats nothing and still spreads (shared-lore exemption). → UNCOVERED: needs an RM_TheRot map; first poke: ProofStage then ProofSweeps "5|fed" on a Rot map, food must not move.
 - It travels on a gravship with its mat floor. → UNCOVERED: needs a gravship launch and landing; first poke: minify, install on substructure, fly, read ProofSweeps "0|fed" on arrival.
+- The dustveil really flies (DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED, owner by card 2026-10-22, Rot Q5): `RM_Dustveil` reads MaxFlightTime > 0 live, and its moth silk still resolves. → dustveil.flight_stat_live, dustveil.silk_defs_live
+- A spawned dustveil's Pawn_FlightTracker reports CanEverFly, and a tame adult sheared after 5 days yields moth silk. → dustveil.flight_tracker_state_read (UNMEASURED: no state-read tool yet; never a flight hunt)
+- Its whole-body flip-book (Dustveil_Flying_1..5, east/south/north) cycles wings-only and lands back on the grounded look. → dustveil.flip_book_frames_cycle (UNMEASURED: frames queued in artpipe; judged only WITH the owner present)
 
 ## the walk
 1. [D] `jawa/get_defs` over every def derived from `Defs/**/*.xml`   # defs_resolve
 2. [D] `jawa/mod_settings_field` get/set/get/restore on every scalar field of `RM_TheRotSettings`   # settings_roundtrip
 3. [D] `jawa/get_defs BiomeDef/RM_TheRot fields animalDensity,plantDensity,workerClass`   # biome_wiring
 4. [B] map-generation, weather and ticks mechanics   # map_mechanics (UNMEASURED)
+4a. [D] `jawa/get_defs ThingDef/RM_Dustveil fields statBases deep` and `ThingDef/RM_MothSilk;ThingDef/RM_Dustveil`   # dustveil
 
 ## north star
 state: DRAFT

@@ -1,0 +1,317 @@
+[
+ {
+  "id": "Dustveil_Flying_1",
+  "facings": [
+   "east"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_1",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_east",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 1 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from the side, flying toward the right of the frame, both wings swept fully UP, raised high and nearly meeting above the back (top of the upstroke). Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 1 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_1",
+  "facings": [
+   "south"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_1",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_south",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 1 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from the front, flying toward the viewer, both wings swept fully UP, raised high and nearly meeting above the back (top of the upstroke). Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 1 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_1",
+  "facings": [
+   "north"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_1",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_north",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 1 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from directly behind, flying away from the viewer: a true rear view with no eyes, no face and no mouth visible, only the back, the abdomen and the wings from behind, both wings swept fully UP, raised high and nearly meeting above the back (top of the upstroke). Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 1 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_2",
+  "facings": [
+   "east"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_2",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_east",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 2 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from the side, flying toward the right of the frame, both wings half raised, angled up at about forty-five degrees. Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 2 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_2",
+  "facings": [
+   "south"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_2",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_south",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 2 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from the front, flying toward the viewer, both wings half raised, angled up at about forty-five degrees. Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 2 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_2",
+  "facings": [
+   "north"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_2",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_north",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 2 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from directly behind, flying away from the viewer: a true rear view with no eyes, no face and no mouth visible, only the back, the abdomen and the wings from behind, both wings half raised, angled up at about forty-five degrees. Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 2 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_3",
+  "facings": [
+   "east"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_3",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_east",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 3 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from the side, flying toward the right of the frame, both wings spread fully OPEN and flat, straight out to each side (mid-stroke, widest silhouette). Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 3 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_3",
+  "facings": [
+   "south"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_3",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_south",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 3 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from the front, flying toward the viewer, both wings spread fully OPEN and flat, straight out to each side (mid-stroke, widest silhouette). Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 3 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_3",
+  "facings": [
+   "north"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_3",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_north",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 3 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from directly behind, flying away from the viewer: a true rear view with no eyes, no face and no mouth visible, only the back, the abdomen and the wings from behind, both wings spread fully OPEN and flat, straight out to each side (mid-stroke, widest silhouette). Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 3 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_4",
+  "facings": [
+   "east"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_4",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_east",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 4 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from the side, flying toward the right of the frame, both wings swept DOWN, angled below the body line (bottom of the downstroke). Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 4 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_4",
+  "facings": [
+   "south"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_4",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_south",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 4 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from the front, flying toward the viewer, both wings swept DOWN, angled below the body line (bottom of the downstroke). Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 4 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_4",
+  "facings": [
+   "north"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_4",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_north",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 4 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from directly behind, flying away from the viewer: a true rear view with no eyes, no face and no mouth visible, only the back, the abdomen and the wings from behind, both wings swept DOWN, angled below the body line (bottom of the downstroke). Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 4 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_5",
+  "facings": [
+   "east"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_5",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_east",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 5 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from the side, flying toward the right of the frame, both wings half lowered on the return stroke, angled slightly below level. Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 5 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_5",
+  "facings": [
+   "south"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_5",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_south",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 5 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from the front, flying toward the viewer, both wings half lowered on the return stroke, angled slightly below level. Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 5 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ },
+ {
+  "id": "Dustveil_Flying_5",
+  "facings": [
+   "north"
+  ],
+  "rimflow_item_id": "DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED",
+  "target_def": "RM_Dustveil",
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "target_texpath": "RotSpecies/AngelMoth/Flying/Dustveil_Flying_5",
+  "slot": "_flip:RotSpecies/AngelMoth/Flying/Dustveil_Flying_",
+  "ask": "slot",
+  "derive_from": "angelmoth_option_a_v1_north",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 40,
+  "biome_neutral": "true",
+  "prompt": "RimWorld game animal flight-animation frame 5 of 5: the dustveil (the same individual as the reference image, the accepted grounded sprite) in flight, seen from directly behind, flying away from the viewer: a true rear view with no eyes, no face and no mouth visible, only the back, the abdomen and the wings from behind, both wings half lowered on the return stroke, angled slightly below level. Whole-body pose: the entire moth, wings and all, in one image.",
+  "style_notes": "Whole-body directional flip-book frame 5 of 5 (vanilla Locust template, 5 frames x 3 facings). INVARIANTS, every frame: the head, thorax, abdomen, legs and antennae stay pixel-stable, at the same fixed, level position, size and silhouette as in every other frame of this facing; ONLY the wing pose changes. Same colours, wing pattern, texture and scale as the reference: no new markings, no new colour scheme. Invented creature, no franchise canon. One animal, centred, transparent background, no ground, no cast shadow, no props, no text."
+ }
+]

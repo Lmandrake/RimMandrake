@@ -15,17 +15,27 @@
     - folded 3 op(s) from src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml
     - leatherDef Leather_Chitin dropped (decoration item; no art owed)
     - customResourceString AA_MothSilkDesc -> 'moth silk' (donor translation key replaced by the words)
-    - leatherDef Leather_Chitin dropped (decoration item; no art owed)
-    - texPath Things/Item/Resource/AA_EggBeetle -> Things/Item/Resource/RM_DustveilEgg (ART OWED, RM_AngelMothEggFertilized)
-    - texPath Things/Item/Resource/AA_EggBeetle -> Things/Item/Resource/RM_DustveilEgg (ART OWED, RM_ButterflyEggUnfertilized)
-    - texPath Things/Item/Resource/AA_MothSilk -> Things/Item/Resource/RM_MothSilk (ART OWED, RM_MothSilk)
+    - both eggs draw our Things/Item/RM_AngelMothEggFertilized stack set; the silk draws Things/Item/Resource/RM_MothSilk.
+  HAND-OWNED since 2026-10-22 (DUSTVEIL_FLIGHT_BUILD_A_MOTH_THAT_WALKED; owner, by question card, Rot Q5 option 1:
+  make the dustveil fly, fungus-grown, no laboratory origin). aa_port.py skips an existing file; never regenerate it.
+    - REAL FLIGHT: the MaxFlightTime/FlightCooldown stats plus the race flight fields, in Locust's shape (Odyssey
+      Races_Animal_Insect.xml). The flight switch is the stat; VEF Floating stays for water crossing on foot.
+    - FLIP-BOOK OWED: the whole-body directional frames (RotSpecies/AngelMoth/Flying/Dustveil_Flying_<N>_<facing>)
+      are queued in artpipe and await his look, so flyingAnimationFramePathPrefix is NOT set yet: without it the moth
+      flies with no wing-beat (GetBestFlyAnimation returns null); with it and no frames every flight draws pink.
+      Set the flyingAnimation* fields on the PawnKindDef when `art install` lands the frames. Never a Spastic
+      wing render-tree. One prefix serves all three looks (A, B, C): the frames follow look A.
+    - TEXT: every label and description rewritten as a fungus-grown Rot hybrid; the donor's waste-disposal
+      origin and the donor art credit (no donor picture ships) are gone. defNames are unchanged (saves).
 -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Dustveil</defName>
     <label>dustveil</label>
-    <description>A broad-winged moth whose pale, dust-soft wings hang like a veil, bred long ago for some forgotten waste-eating project and long since gone wild. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, provided the silk is kept well away from every other moth, which will eat that too.</description>
+    <description>A broad-winged moth of the Rot, grown as much as hatched: its pale wings are a living felt of fungal threads, dusted with spores, and they hang from it like a veil. It flies in short, fluttering hops, over walls and water alike, and drops to the ground to feed. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, the fungal felt of its wings, provided the silk is kept well away from every other dustveil, which will eat that too.</description>
     <statBases>
       <MoveSpeed>3</MoveSpeed>
+      <MaxFlightTime>8</MaxFlightTime>
+      <FlightCooldown>6</FlightCooldown>
       <ComfyTemperatureMin>-54.1</ComfyTemperatureMin>
       <MarketValue>450</MarketValue>
       <Wildness>0.65</Wildness>
@@ -134,6 +144,9 @@
     <race>
       <thinkTreeMain MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">VEF_AnimalWeirdEater</thinkTreeMain>
       <herdAnimal>true</herdAnimal>
+      <flightStartChanceOnJobStart>0.25</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
       <body>RM_Butterfly</body>
       <baseBodySize>0.75</baseBodySize>
       <baseHungerRate>1.0</baseHungerRate>
@@ -172,7 +185,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Dustveil</defName>
-    <label>angel moth</label>
+    <label>dustveil</label>
     <race>RM_Dustveil</race>
     <combatPower>75</combatPower>
     <ecoSystemWeight>0.25</ecoSystemWeight>
@@ -205,8 +218,8 @@
   </PawnKindDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RM_AngelMothEggFertilized</defName>
-    <label>angel moth egg (fert.)</label>
-    <description>Fertilized angel moth egg. If all goes well, it should hatch into an angel moth larva. It can be eaten raw, but it's much better cooked.</description>
+    <label>dustveil egg (fert.)</label>
+    <description>A fertilized dustveil egg, soft-shelled and furred with pale fungal threads. If all goes well, it should hatch into a dustveil larva. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
       <texPath>Things/Item/RM_AngelMothEggFertilized</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
@@ -226,8 +239,8 @@
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RM_ButterflyEggUnfertilized</defName>
-    <label>butterfly egg (unfert.)</label>
-    <description>Unfertilized butterfly egg. It can be eaten raw, but it's much better cooked.</description>
+    <label>dustveil egg (unfert.)</label>
+    <description>An unfertilized dustveil egg, soft-shelled and furred with pale fungal threads. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
       <texPath>Things/Item/RM_AngelMothEggFertilized</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
@@ -242,7 +255,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RM_MothSilk</defName>
     <label>moth silk</label>
-    <description>A very tough silk extracted from Angel moths. Very poor insulator.</description>
+    <description>The fungal felt shorn from a tame dustveil's wings: a very tough silk, light as dust. A very poor insulator. Every dustveil will eat it, so it is stored well away from them.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_MothSilk</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -360,8 +373,8 @@
   </BodyDef>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_DustveilLarva</defName>
-    <label>angel moth larva</label>
-    <description>Angel moths are beautiful lepidopterans that undergo metamorphosis, similar to other more mundane moths. Angel moths are yet another example of a genetically engineered project of waste disposal being abandoned, and its subjects being released into the wild.\n\nThe larvae are quite timid and harmless, and they are content with munching on sparse vegetation. The adult form of the moth, however, is voracious, and it will mainly consume its favourite food: clothing –in particular wool clothes, but many other natural fibres–. If no clothes are present they'll grudgingly devour grass. Although they can be used to get rid of unwanted clothing, it is hard to make them discriminate, as they are quite unruly creatures.\n\nAdult specimens produce a moth silk that can be harvested to use as a textile, though care must be taken to keep it out of other moths' reach, since they'll happily consume it too.\n\nArt by Feroxiious (check her Instagram at https://www.instagram.com/feroxiious/).</description>
+    <label>dustveil larva</label>
+    <description>A dustveil grub: a soft, pale caterpillar threaded through with the same fungus that will one day become its wings. It is timid and harmless, content to nibble at sparse growth. In time the fungus thickens around it into a cocoon, and a dustveil comes out.</description>
     <statBases>
       <MoveSpeed>2</MoveSpeed>
       <MarketValue>15</MarketValue>
@@ -420,7 +433,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_DustveilLarva</defName>
-    <label>angel moth larva</label>
+    <label>dustveil larva</label>
     <race>RM_DustveilLarva</race>
     <combatPower>10</combatPower>
     <ecoSystemWeight>0.01</ecoSystemWeight>
