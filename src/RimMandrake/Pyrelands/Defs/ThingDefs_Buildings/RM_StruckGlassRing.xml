@@ -4,13 +4,14 @@
      (CompRefuelable, no burn-down: fuelConsumptionRate 0); the rite needs it full and empties it (RM_StruckGlass.cs).
      One old, empty ring is laid on each new Pyrelands map by GenStep_StruckGlassRing; more can be laid out from the Ideology tab,
      since the rite works on any map in a storm. RM_GlassSand is the Stillsand item; Pyrelands already yields it from shovelled
-     sand (ScorchableGround.xml) without a hard dependency, same as here.
+     sand (ScorchableGround.xml, by name only). The fuelFilter below IS a def reference, so Pyrelands must load with Stillsand
+     (both ship inside the composed biomes mod).
      Art: our sand-ring render (dregen_RM_StruckGlassRing_RitualSpot_v1, accepted-for-now 2026-10-21; drawn untinted). All numbers PROVISIONAL. -->
 <Defs>
   <ThingDef ParentName="BuildingBase">
     <defName>RM_StruckGlassRing</defName>
     <label>glass ring</label>
-    <description>A rough ring of glass sand poured onto the ground, a hand's width across and a few paces round. Under a lightning storm the ring is stamped out, hard, until none of it is left in the shape it was poured; something in the sky is said to like that very much, and to answer it.\n\nHaul glass sand into the ring until it is whole. An old ring like this, long since scattered, is sometimes found on bare ash in the Pyrelands, with a crater off across the plain.</description>
+    <description>A rough ring of glass sand poured onto the ground, a few paces across. Under a lightning storm the ring is stamped out, hard, until none of it is left in the shape it was poured; something in the sky is said to like that very much, and to answer it.\n\nHaul glass sand into the ring until it is whole. An old ring like this, long since scattered, is sometimes found on bare ash in the Pyrelands, with a crater off across the plain.</description>
     <thingClass>Building</thingClass>
     <category>Building</category>
     <altitudeLayer>FloorEmplacement</altitudeLayer>

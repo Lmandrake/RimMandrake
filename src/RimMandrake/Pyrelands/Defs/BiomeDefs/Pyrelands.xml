@@ -292,8 +292,8 @@
       pending his word (PYRELANDS_GRASS_SATURATION_1) — ruled OUT too,
       owner, verbatim: "No bush or pincushion in pyrelands." Every non-grass
       vanilla wildPlant is now evicted from this biome; only the two
-      RM_FE_ grasses remain. Live instances still need clearing on the next
-      session (not yet done — no bridge this pass).
+      RM_FE_ grasses remain. This table only governs fresh spawning; a map generated before the
+      eviction may still hold the old plants (UNMEASURED here, offline).
     -->
     <wildPlants>
       <RM_FE_Plant_EmberGrass>9.0</RM_FE_Plant_EmberGrass>
