@@ -3556,3 +3556,5 @@
 {"seat":"BENCH","event":"claim","id":"DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL","ts":"2026-10-22T04:59:53Z","tsn":1792645193026272624}
 {"seat":"BENCH","event":"start","id":"DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL","ts":"2026-10-22T04:59:53Z","tsn":1792645193411316417}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"review scenarios live build","ts":"2026-10-22T05:00:04Z","tsn":1792645204796424721}
+{"seat":"BENCH","event":"lease","id":"PIPE_GIRTH_TUNE_HALF_AS_THICK","action":"renew","token":"BENCH.pid12261.5cbe05bb","ts":"2026-10-22T05:04:22Z","expires":"2026-10-22T05:49:22Z","tsn":1792645462653898045}
+{"seat":"BENCH","event":"lease","id":"HOSE_GIRTH_TUNE_MUCH_THINNER","action":"renew","token":"BENCH.pid12261.06a41f6e","ts":"2026-10-22T05:04:23Z","expires":"2026-10-22T05:49:23Z","tsn":1792645463651507583}
