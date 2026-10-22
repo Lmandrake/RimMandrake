@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_awaiting_pick",
- "built": "2026-10-19T07:18:25-0700",
+ "built": "2026-10-21T21:16:33-0700",
  "census": "Transient/biome_ffar/awaiting_pick.subjects.json",
  "census_git_head": null,
- "loadOrder": "live ModsConfig.xml: 536 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 325 active",
  "rows": {
   "AA_ColossalAerofleet": {
    "columns": {
@@ -26,7 +26,9 @@
     "A": "donor original \u2014 Alpha Animals",
     "B": "render gapall_AA_ColossalAerofleet_v1"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet_Colossal"
+   ],
    "res": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet_Colossal",
    "reserved": [
     "A",
@@ -63,7 +65,9 @@
     "B": "render gapall_AA_CrescendoAnole_v1",
     "C": "donor original \u2014 Alpha Animals"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole"
+   ],
    "res": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole",
    "reserved": [
     "A",
@@ -94,7 +98,9 @@
     "A": "render gapall_AA_Metallovore_v1",
     "B": "donor original \u2014 Alpha Animals"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/AA_Metallovore/AA_Metallovore"
+   ],
    "res": "Things/Pawn/Animal/AA_Metallovore/AA_Metallovore",
    "reserved": [
     "A",
@@ -124,7 +130,9 @@
     "A": "donor original \u2014 Alpha Animals",
     "B": "render sheet_redo_AA_Murkling_v2"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/FO_NightPest/FO_NightPest"
+   ],
    "res": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
    "reserved": [
     "A",
@@ -133,147 +141,36 @@
    "shownBase": [],
    "subject_key": "murkling"
   },
-  "AB_Bryolux": {
-   "columns": {
-    "A": {
-     "single": "6311420e4c29e1cef217e3771dbfac8888f7b69d45b9594dd46f526b0865cbd5"
-    },
-    "B": {
-     "single": "46b8d93b0607813527a97e4c111646b71b3ed39d30ebd6d7b7dc2b21c9ac018c"
-    },
-    "C": {
-     "single": "d3565087381e7a4b38b689416bcb445f08962310276d8777289259008c148edc"
-    }
-   },
-   "graphic_of": {
-    "A": "_byname",
-    "B": "_byname",
-    "C": "_byname"
-   },
-   "labels": {
-    "A": "render rotvar_ab_bryolux_a_v1",
-    "B": "render rotvar_ab_bryolux_b_v1",
-    "C": "render rot_bryolux_v2"
-   },
-   "pools": [],
-   "res": null,
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "bryolux"
-  },
-  "AB_DribblingCap": {
-   "columns": {
-    "A": {
-     "single": "c8ea9993f5a3954ab3ceac3764631799d7924cd363221d11f112b52e195df4a9"
-    },
-    "B": {
-     "single": "a1cc2985b9c3e526b4a648fcd895208ea421ad6c02c6e8063bd468517dbb10bd"
-    },
-    "C": {
-     "single": "723aa5da929a06e6e67a5f4640ec3c738aff2fffc1260b6138fc2503e2f67a2f"
-    },
-    "D": {
-     "single": "eaaa4d3e13a7c0f4be0d134c89fac1aa522b4264637e71b868b9cf6fbd87317b"
-    },
-    "E": {
-     "single": "89ed71432ca3caa6f5f13cbde05281d31ea575a13fb4933086ecaa1442ec7912"
-    },
-    "F": {
-     "single": "18378be6d43e8091775a68713cf39822a263b590b52b98ba0d29d321d887ba8c"
-    },
-    "G": {
-     "single": "cd270c5f37c9f5f0b27af0eadabbbd9aef7aed1ae967f2192fe7fdcd34ad840a"
-    }
-   },
-   "graphic_of": {
-    "A": "_byname",
-    "B": "_byname",
-    "C": "_byname",
-    "D": "_byname",
-    "E": "_byname",
-    "F": "_byname",
-    "G": "_byname"
-   },
-   "labels": {
-    "A": "render dregen_RM_DribblingCap_ABDribblingCapA_v1",
-    "B": "render dregen_RM_DribblingCap_ABDribblingCapB_v1",
-    "C": "render dregen_RM_DribblingCap_ABDribblingCapC_v1",
-    "D": "render dregen_RM_DribblingCap_ABDribblingCapD_v1",
-    "E": "render rotvar_ab_dribblingcap_a_v1",
-    "F": "render rotvar_ab_dribblingcap_b_v1",
-    "G": "render rot_dribblingcap_v2"
-   },
-   "pools": [],
-   "res": null,
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G"
-   ],
-   "shownBase": [],
-   "subject_key": "dribblingcap"
-  },
-  "AB_FirevineTree": {
-   "columns": {
-    "A": {
-     "single": "7df9f9f5186b5313f73d44627eb3638e4e775922b4ac00511a295353c4eff5c2"
-    },
-    "B": {
-     "single": "66ff2ec84ef87b2fd09ed32a021edcf6f8e965e1ab0147692e1ab5b5e8921ec1"
-    },
-    "C": {
-     "single": "0d9294c9be6c0315a014a164245b8a93ec87666cea610cf74192c5ffea0d4929"
-    }
-   },
-   "graphic_of": {
-    "A": "_byname",
-    "B": "_byname",
-    "C": "_byname"
-   },
-   "labels": {
-    "A": "render dregen_RM_FirevineTree_ABFirevineTreeB_v1",
-    "B": "render dregen_RM_FirevineTree_ABFirevineTreeC_v1",
-    "C": "render gapbs_AB_FirevineTree_v1"
-   },
-   "pools": [],
-   "res": null,
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "firevinetree"
-  },
   "AB_GiantAgarilux": {
    "columns": {
     "A": {
-     "single": "865acc39ad31e0376214641b585ed7269586663e7f08f407a242d3b7a2a18bc1"
+     "single": "3f5f8ecdf02def8952782c0f5ef97f93696a5ea97a51cca1c2de2978b2abae64"
     },
     "B": {
-     "single": "f316cfdc76321d184a7ffc5fdde04cf1cfdb7591f7819e9fbee554244ff50441"
+     "single": "7fc6feb0154afb14ac9f49dbf1d45f2c73aaa02a1e94cfdf49de975ba1cccec1"
     },
     "C": {
-     "single": "489c2e116801adcce94a9fbda481f2ebb43fb505e711a40a96bfb46d49c6c3b6"
+     "single": "93903a9ba070f46990f0ef7d783a35cee4c22ab9c2bf038c76e825a7940c1a41"
     },
     "D": {
-     "single": "38612d849a7ac6f8a15ddb882140c5623895ae463ba5414e9fc6c3e2e7e8dc0c"
+     "single": "865acc39ad31e0376214641b585ed7269586663e7f08f407a242d3b7a2a18bc1"
     },
     "E": {
-     "single": "faa6d7e31322f0351f7e4782271edcab79dd5d175f24a9ca5f00700b537a39d0"
+     "single": "f316cfdc76321d184a7ffc5fdde04cf1cfdb7591f7819e9fbee554244ff50441"
     },
     "F": {
-     "single": "36b0e1fb28b9ba8eb86c21c8d53313a01380a9883b6deff57238ef5eafde0a80"
+     "single": "489c2e116801adcce94a9fbda481f2ebb43fb505e711a40a96bfb46d49c6c3b6"
     },
     "G": {
+     "single": "38612d849a7ac6f8a15ddb882140c5623895ae463ba5414e9fc6c3e2e7e8dc0c"
+    },
+    "H": {
+     "single": "faa6d7e31322f0351f7e4782271edcab79dd5d175f24a9ca5f00700b537a39d0"
+    },
+    "I": {
+     "single": "36b0e1fb28b9ba8eb86c21c8d53313a01380a9883b6deff57238ef5eafde0a80"
+    },
+    "J": {
      "single": "6a392571840af974a39d220490e80769f63598fbf42949d16b776720a822e8fc"
     }
    },
@@ -284,16 +181,22 @@
     "D": "_byname",
     "E": "_byname",
     "F": "_byname",
-    "G": "_byname"
+    "G": "_byname",
+    "H": "_byname",
+    "I": "_byname",
+    "J": "_byname"
    },
    "labels": {
-    "A": "render dregen_RM_GiantAgarilux_ABGiantAgariluxA_v1",
-    "B": "render dregen_RM_GiantAgarilux_ABGiantAgariluxE_v1",
-    "C": "render dregen_RM_GiantAgarilux_ABGiantAgariluxF_v1",
-    "D": "render rotvar_ab_giantagarilux_a_v1",
-    "E": "render rotvar_ab_giantagarilux_b_v1 \u2014 grader flagged (advisory)",
-    "F": "render rotvar_ab_giantagarilux_b_v2",
-    "G": "render rot_giantagarilux_v2"
+    "A": "render dregen_RM_GiantAgarilux_ABGiantAgariluxB_v1",
+    "B": "render dregen_RM_GiantAgarilux_ABGiantAgariluxC_v1",
+    "C": "render dregen_RM_GiantAgarilux_ABGiantAgariluxD_v1",
+    "D": "render dregen_RM_GiantAgarilux_ABGiantAgariluxA_v1",
+    "E": "render dregen_RM_GiantAgarilux_ABGiantAgariluxE_v1",
+    "F": "render dregen_RM_GiantAgarilux_ABGiantAgariluxF_v1",
+    "G": "render rotvar_ab_giantagarilux_a_v1",
+    "H": "render rotvar_ab_giantagarilux_b_v1 \u2014 grader flagged (advisory)",
+    "I": "render rotvar_ab_giantagarilux_b_v2",
+    "J": "render rot_giantagarilux_v2"
    },
    "pools": [],
    "res": null,
@@ -304,54 +207,13 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H",
+    "I",
+    "J"
    ],
    "shownBase": [],
    "subject_key": "giantagarilux"
-  },
-  "AB_LilacBeacon": {
-   "columns": {
-    "A": {
-     "single": "fac1237e6a7046368c547b18d453bf3064e7e4be5297ac1a01c613058602b58b"
-    },
-    "B": {
-     "single": "4fcd82077ed0c3f73b02ba5f4a345bda3ec84341de2e10b553658b997ce7bc72"
-    },
-    "C": {
-     "single": "05b8e73fe481e9851897647040168932d87515ca04bea59f2b678607cc620e08"
-    },
-    "D": {
-     "single": "37606983c611688874f37f10f06e21f54ae84a00c4d729acd0c6ecf6bc5fb6ce"
-    },
-    "E": {
-     "single": "d0c0f977d67534c1e192a19d614db98ae53eaa30839434de87a95381d70d5e2f"
-    }
-   },
-   "graphic_of": {
-    "A": "_byname",
-    "B": "_byname",
-    "C": "_byname",
-    "D": "_byname",
-    "E": "_byname"
-   },
-   "labels": {
-    "A": "render dregen_RM_LilacBeacon_ABLilacBeaconA_v1",
-    "B": "render dregen_RM_LilacBeacon_ABLilacBeaconB_v1",
-    "C": "render rotvar_ab_lilacbeacon_a_v1",
-    "D": "render rotvar_ab_lilacbeacon_b_v1",
-    "E": "render rot_lilacbeacon_v2"
-   },
-   "pools": [],
-   "res": null,
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E"
-   ],
-   "shownBase": [],
-   "subject_key": "lilacbeacon"
   },
   "AB_RecurvedStropharia": {
    "columns": {
@@ -385,114 +247,6 @@
    "shownBase": [],
    "subject_key": "recurvedstropharia"
   },
-  "AB_SlimyPholiota": {
-   "columns": {
-    "A": {
-     "single": "68a0d9b951e23c13c3549fad510e6d6562ebad8e9a278d76272ce8d913422ae9"
-    },
-    "B": {
-     "single": "bebc09fd621e941e944e19bbd30afd9f6b1c0a45141f9c71539edbc8425cc65b"
-    },
-    "C": {
-     "single": "5abcb8fc4914806a12b0e1f30aae9b1d128f32710403aacc8c9a79c308e3d64c"
-    },
-    "D": {
-     "single": "130633d36a4db6dfdb28d1fc3889b9f24503c6e0798298c3b57af2ac706bcef1"
-    },
-    "E": {
-     "single": "b9cb4014d23ccfcbd739aacd475690b1def96864b8134a90db5d661397cadc85"
-    },
-    "F": {
-     "single": "25e8c5b5a5c024b466559689633c5d13b31f1c334f0c89546b440bffb1e71260"
-    }
-   },
-   "graphic_of": {
-    "A": "_byname",
-    "B": "_byname",
-    "C": "_byname",
-    "D": "_byname",
-    "E": "_byname",
-    "F": "_byname"
-   },
-   "labels": {
-    "A": "render dregen_RM_SlimyPholiota_ABSlimyPholiotaAcopy_v1",
-    "B": "render dregen_RM_SlimyPholiota_ABSlimyPholiotaB_v1",
-    "C": "render dregen_RM_SlimyPholiota_ABSlimyPholiotaC_v1",
-    "D": "render rotvar_ab_slimypholiota_a_v1",
-    "E": "render rotvar_ab_slimypholiota_b_v1",
-    "F": "render rot_slimypholiota_v2"
-   },
-   "pools": [],
-   "res": null,
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F"
-   ],
-   "shownBase": [],
-   "subject_key": "slimypholiota"
-  },
-  "AB_TinkleGrass": {
-   "columns": {
-    "A": {
-     "single": "b10191cd4241c3c2ed00fddd76563186c94569c9a82c441cac49a8fa4388f0b1"
-    }
-   },
-   "graphic_of": {
-    "A": "_byname"
-   },
-   "labels": {
-    "A": "render gapbs_AB_TinkleGrass_v1"
-   },
-   "pools": [],
-   "res": null,
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "tinklegrass"
-  },
-  "AB_WitchesOyster": {
-   "columns": {
-    "A": {
-     "single": "80500d8239a0ee86fb63860d5473e6226d3e49ea44c34a42702440674a2da8b9"
-    },
-    "B": {
-     "single": "bc51c3aebef0368c0dfe5099ffc3d4d1b6c5b08743a7827fdc2f2aed60594534"
-    },
-    "C": {
-     "single": "d707dbf7043780f1cfed17861bf57add4433aa0aef4cddd0d4365215f724ae38"
-    },
-    "D": {
-     "single": "780e22885637d57bafbad47e678a997348f32a754c61da0fc01fc74585438c28"
-    }
-   },
-   "graphic_of": {
-    "A": "_byname",
-    "B": "_byname",
-    "C": "_byname",
-    "D": "_byname"
-   },
-   "labels": {
-    "A": "render dregen_RM_WitchesOyster_ABWitchesOyster_v1",
-    "B": "render rotvar_ab_witchesoyster_a_v1",
-    "C": "render rotvar_ab_witchesoyster_b_v1",
-    "D": "render rot_witchesoyster_v2"
-   },
-   "pools": [],
-   "res": null,
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D"
-   ],
-   "shownBase": [],
-   "subject_key": "witchesoyster"
-  },
   "GSS_01_AerialMast_9base": {
    "columns": {
     "A": {
@@ -518,32 +272,6 @@
    ],
    "shownBase": [],
    "subject_key": "gss_01_aerialmast_9base"
-  },
-  "GSS_02_AerialMastTop_9base": {
-   "columns": {
-    "A": {
-     "single": "ea9115a761d847ae6b5dbb9053e4a10b95e993d75b500a3c361a0ce3a150d9b7"
-    },
-    "B": {
-     "single": "8b471f92be0d9f8da4a3ba4fd8dfb9e2968dd838f70c57ff484a01ccc1862a71"
-    }
-   },
-   "graphic_of": {
-    "A": "RimMandrake/GimmeSomeSlack/Aerial/AerialMastTop",
-    "B": "RimMandrake/GimmeSomeSlack/Aerial/AerialMastTop"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 GimmeSomeSlack",
-    "B": "history MessyConduit \u2014 old path 2026-10-02"
-   },
-   "pools": [],
-   "res": "RimMandrake/GimmeSomeSlack/Aerial/AerialMastTop",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "gss_02_aerialmasttop_9base"
   },
   "GSS_03_AerialLampMast_0Scrapper": {
    "columns": {
@@ -2110,7 +1838,9 @@
     "A": "IN GAME \u2014 ludeon.rimworld.odyssey",
     "B": "render gapall_LavaSnail_v1"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/LavaSnail/LavaSnail"
+   ],
    "res": "Things/Pawn/Animal/LavaSnail/LavaSnail",
    "reserved": [
     "A",
@@ -2207,421 +1937,34 @@
    "shownBase": [],
    "subject_key": "bankstake"
   },
-  "RM_BankWeir": {
-   "columns": {
-    "A": {
-     "east": "854709bc744f8bfc8390eecbabd577fd3564690a9de786e1c6e60a2f81d4bc05",
-     "north": "11c3036ff8fb8f4b3058701cfab5cf848b28de48114ff2415c45f65cc8f6634b",
-     "south": "24ae5d13846bde3dc6f5260e956b710bdcf2b9e43bfaa69c9ac0f5fa5233d728",
-     "west": "55017495ecdda727e271da3c78783fa41dbc74fb0910085e0bbdbb2a371b8f82"
-    },
-    "B": {
-     "single": "a1c0dfe3d1e94698e4c9e95b6c329216f03d30bd0d005017f44442bad455559a"
-    },
-    "C": {
-     "single": "b17a7cc37fdf4dcdd2ef021a69bfaf8565779bdbf60110b2372903cb3b2ea437"
-    }
-   },
-   "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir",
-    "B": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir",
-    "C": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render fwart_RM_BankWeir",
-    "C": "render RM_BankWeir_v1"
-   },
-   "pools": [],
-   "res": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "bankweir"
-  },
-  "RM_BarrelDirty": {
-   "columns": {
-    "A": {
-     "single": "c756fe1d0e2018869fab32f2b0ec7f7b29855868cd811c209cd65defbb4ee20d"
-    },
-    "B": {
-     "south": "1e534dcae5d18ec54e9563fc841cbe13894ca0906abb380dcff08d37976883d5"
-    },
-    "C": {
-     "south": "c7fc75fc05c1d5640053f454c204233987c7205b7d4b432b7a180a67cde171cf"
-    },
-    "D": {
-     "south": "d9be68abd89cad76605778f46a4c8978c0fafb173c00b6ee32847cfc659cfa79"
-    },
-    "E": {
-     "south": "5005947f27798f49f39ed45d26a2ac8205480c54447c1d73fa214461ab3d6974"
-    },
-    "F": {
-     "south": "cf5153afb3a6683bfb286331dbb84d63cf0f94f70adaa92da549bbb674f14afd"
-    },
-    "G": {
-     "south": "f88339deaebd32ca6245c1fc461bea0f90efb7d546e5ecb93611d93a9dd7eb36"
-    },
-    "H": {
-     "south": "80c7acb482d03fe3ecc46e1ebf1c7009943b03178bfb0419c7ca3b4c50cbd49e"
-    },
-    "I": {
-     "south": "d907ff7f93f0107625d60ec8528ed168f72943ec3d7f10e7bdb3da59a7f2a4fc"
-    },
-    "J": {
-     "south": "86a785b8ce242783027b463c7f4d24556b7bb7cb543b845ef9f12f1666b789f5"
-    },
-    "K": {
-     "south": "81dd2780ba691923494c12eecfd9a6bc4da54ca26bcd42080ec1a1cff6b3a3ae"
-    },
-    "L": {
-     "south": "f62417914527e292afa9f7c67456d0baa1b98f73dc9318cb3e19f890d29c4d15"
-    },
-    "M": {
-     "south": "8c369236d238e74a77a7154b9644fac4ef88712b7d97909568da4cd7529282a9"
-    },
-    "N": {
-     "south": "422beee09bc911fea8a0d839ab3c6655f182274079b391de6916d41a380bf00b"
-    },
-    "O": {
-     "south": "29c40d99923fa3774c5d7eebd23aa061e34ebfc02eab5bb66fba6946b1a95cc2"
-    },
-    "P": {
-     "south": "1714237f89c41aae67e9d62f5bc0a5ad63d054f20d975117b9f0a2294fd9c73e"
-    },
-    "Q": {
-     "south": "95b7e0f5ed878469bc777b27538b1a93a764575e016e8ebe87a698bfd4e79890"
-    },
-    "R": {
-     "single": "f34764a27a89e34b1f7f61c4143734b13466a4ff41299bf4b30ad536d4f7177b"
-    },
-    "S": {
-     "single": "7b47cd227b5efe882ab14e8e52df15432fb6d58bee405c6964d6f634eaf94df1"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "B": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "C": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "D": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "E": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "F": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "G": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "H": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "I": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "J": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "K": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "L": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "M": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "N": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "O": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "P": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "Q": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "R": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "S": "Things/Item/Resource/FlowWorks/RM_Barrel"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render liqcont_barrel_futuristic_base",
-    "C": "render liqcont_barrel_futuristic_freshwater",
-    "D": "render liqcont_barrel_futuristic_tar",
-    "E": "render liqcont_barrel_futuristic_toxic",
-    "F": "render liqcont_barrel_industrial_base",
-    "G": "render liqcont_barrel_industrial_freshwater",
-    "H": "render liqcont_barrel_industrial_tar",
-    "I": "render liqcont_barrel_industrial_toxic",
-    "J": "render liqcont_barrel_modern_base",
-    "K": "render liqcont_barrel_modern_freshwater",
-    "L": "render liqcont_barrel_modern_tar",
-    "M": "render liqcont_barrel_modern_toxic",
-    "N": "render liqcont_barrel_scrapper_base",
-    "O": "render liqcont_barrel_scrapper_freshwater",
-    "P": "render liqcont_barrel_scrapper_tar",
-    "Q": "render liqcont_barrel_scrapper_toxic",
-    "R": "render fwart_RM_Barrel",
-    "S": "history FlowWorks 2026-09-17"
-   },
-   "pools": [],
-   "res": "Things/Item/Resource/FlowWorks/RM_Barrel",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S"
-   ],
-   "shownBase": [],
-   "subject_key": "barreldirty"
-  },
-  "RM_BarrelEmpty": {
-   "columns": {
-    "A": {
-     "single": "c756fe1d0e2018869fab32f2b0ec7f7b29855868cd811c209cd65defbb4ee20d"
-    },
-    "B": {
-     "south": "1e534dcae5d18ec54e9563fc841cbe13894ca0906abb380dcff08d37976883d5"
-    },
-    "C": {
-     "south": "c7fc75fc05c1d5640053f454c204233987c7205b7d4b432b7a180a67cde171cf"
-    },
-    "D": {
-     "south": "d9be68abd89cad76605778f46a4c8978c0fafb173c00b6ee32847cfc659cfa79"
-    },
-    "E": {
-     "south": "5005947f27798f49f39ed45d26a2ac8205480c54447c1d73fa214461ab3d6974"
-    },
-    "F": {
-     "south": "cf5153afb3a6683bfb286331dbb84d63cf0f94f70adaa92da549bbb674f14afd"
-    },
-    "G": {
-     "south": "f88339deaebd32ca6245c1fc461bea0f90efb7d546e5ecb93611d93a9dd7eb36"
-    },
-    "H": {
-     "south": "80c7acb482d03fe3ecc46e1ebf1c7009943b03178bfb0419c7ca3b4c50cbd49e"
-    },
-    "I": {
-     "south": "d907ff7f93f0107625d60ec8528ed168f72943ec3d7f10e7bdb3da59a7f2a4fc"
-    },
-    "J": {
-     "south": "86a785b8ce242783027b463c7f4d24556b7bb7cb543b845ef9f12f1666b789f5"
-    },
-    "K": {
-     "south": "81dd2780ba691923494c12eecfd9a6bc4da54ca26bcd42080ec1a1cff6b3a3ae"
-    },
-    "L": {
-     "south": "f62417914527e292afa9f7c67456d0baa1b98f73dc9318cb3e19f890d29c4d15"
-    },
-    "M": {
-     "south": "8c369236d238e74a77a7154b9644fac4ef88712b7d97909568da4cd7529282a9"
-    },
-    "N": {
-     "south": "422beee09bc911fea8a0d839ab3c6655f182274079b391de6916d41a380bf00b"
-    },
-    "O": {
-     "south": "29c40d99923fa3774c5d7eebd23aa061e34ebfc02eab5bb66fba6946b1a95cc2"
-    },
-    "P": {
-     "south": "1714237f89c41aae67e9d62f5bc0a5ad63d054f20d975117b9f0a2294fd9c73e"
-    },
-    "Q": {
-     "south": "95b7e0f5ed878469bc777b27538b1a93a764575e016e8ebe87a698bfd4e79890"
-    },
-    "R": {
-     "single": "f34764a27a89e34b1f7f61c4143734b13466a4ff41299bf4b30ad536d4f7177b"
-    },
-    "S": {
-     "single": "7b47cd227b5efe882ab14e8e52df15432fb6d58bee405c6964d6f634eaf94df1"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "B": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "C": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "D": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "E": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "F": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "G": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "H": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "I": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "J": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "K": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "L": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "M": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "N": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "O": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "P": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "Q": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "R": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "S": "Things/Item/Resource/FlowWorks/RM_Barrel"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render liqcont_barrel_futuristic_base",
-    "C": "render liqcont_barrel_futuristic_freshwater",
-    "D": "render liqcont_barrel_futuristic_tar",
-    "E": "render liqcont_barrel_futuristic_toxic",
-    "F": "render liqcont_barrel_industrial_base",
-    "G": "render liqcont_barrel_industrial_freshwater",
-    "H": "render liqcont_barrel_industrial_tar",
-    "I": "render liqcont_barrel_industrial_toxic",
-    "J": "render liqcont_barrel_modern_base",
-    "K": "render liqcont_barrel_modern_freshwater",
-    "L": "render liqcont_barrel_modern_tar",
-    "M": "render liqcont_barrel_modern_toxic",
-    "N": "render liqcont_barrel_scrapper_base",
-    "O": "render liqcont_barrel_scrapper_freshwater",
-    "P": "render liqcont_barrel_scrapper_tar",
-    "Q": "render liqcont_barrel_scrapper_toxic",
-    "R": "render fwart_RM_Barrel",
-    "S": "history FlowWorks 2026-09-17"
-   },
-   "pools": [],
-   "res": "Things/Item/Resource/FlowWorks/RM_Barrel",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S"
-   ],
-   "shownBase": [],
-   "subject_key": "barrelempty"
-  },
   "RM_Barrel_AcidWater": {
    "columns": {
     "A": {
      "single": "c756fe1d0e2018869fab32f2b0ec7f7b29855868cd811c209cd65defbb4ee20d"
     },
     "B": {
-     "south": "1e534dcae5d18ec54e9563fc841cbe13894ca0906abb380dcff08d37976883d5"
-    },
-    "C": {
-     "south": "c7fc75fc05c1d5640053f454c204233987c7205b7d4b432b7a180a67cde171cf"
-    },
-    "D": {
-     "south": "d9be68abd89cad76605778f46a4c8978c0fafb173c00b6ee32847cfc659cfa79"
-    },
-    "E": {
-     "south": "5005947f27798f49f39ed45d26a2ac8205480c54447c1d73fa214461ab3d6974"
-    },
-    "F": {
-     "south": "cf5153afb3a6683bfb286331dbb84d63cf0f94f70adaa92da549bbb674f14afd"
-    },
-    "G": {
-     "south": "f88339deaebd32ca6245c1fc461bea0f90efb7d546e5ecb93611d93a9dd7eb36"
-    },
-    "H": {
-     "south": "80c7acb482d03fe3ecc46e1ebf1c7009943b03178bfb0419c7ca3b4c50cbd49e"
-    },
-    "I": {
-     "south": "d907ff7f93f0107625d60ec8528ed168f72943ec3d7f10e7bdb3da59a7f2a4fc"
-    },
-    "J": {
-     "south": "86a785b8ce242783027b463c7f4d24556b7bb7cb543b845ef9f12f1666b789f5"
-    },
-    "K": {
-     "south": "81dd2780ba691923494c12eecfd9a6bc4da54ca26bcd42080ec1a1cff6b3a3ae"
-    },
-    "L": {
-     "south": "f62417914527e292afa9f7c67456d0baa1b98f73dc9318cb3e19f890d29c4d15"
-    },
-    "M": {
-     "south": "8c369236d238e74a77a7154b9644fac4ef88712b7d97909568da4cd7529282a9"
-    },
-    "N": {
-     "south": "422beee09bc911fea8a0d839ab3c6655f182274079b391de6916d41a380bf00b"
-    },
-    "O": {
-     "south": "29c40d99923fa3774c5d7eebd23aa061e34ebfc02eab5bb66fba6946b1a95cc2"
-    },
-    "P": {
-     "south": "1714237f89c41aae67e9d62f5bc0a5ad63d054f20d975117b9f0a2294fd9c73e"
-    },
-    "Q": {
-     "south": "95b7e0f5ed878469bc777b27538b1a93a764575e016e8ebe87a698bfd4e79890"
-    },
-    "R": {
      "single": "f34764a27a89e34b1f7f61c4143734b13466a4ff41299bf4b30ad536d4f7177b"
     },
-    "S": {
+    "C": {
      "single": "7b47cd227b5efe882ab14e8e52df15432fb6d58bee405c6964d6f634eaf94df1"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/FlowWorks/RM_Barrel",
     "B": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "C": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "D": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "E": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "F": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "G": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "H": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "I": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "J": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "K": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "L": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "M": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "N": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "O": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "P": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "Q": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "R": "Things/Item/Resource/FlowWorks/RM_Barrel",
-    "S": "Things/Item/Resource/FlowWorks/RM_Barrel"
+    "C": "Things/Item/Resource/FlowWorks/RM_Barrel"
    },
    "labels": {
     "A": "IN GAME \u2014 FlowWorks",
-    "B": "render liqcont_barrel_futuristic_base",
-    "C": "render liqcont_barrel_futuristic_freshwater",
-    "D": "render liqcont_barrel_futuristic_tar",
-    "E": "render liqcont_barrel_futuristic_toxic",
-    "F": "render liqcont_barrel_industrial_base",
-    "G": "render liqcont_barrel_industrial_freshwater",
-    "H": "render liqcont_barrel_industrial_tar",
-    "I": "render liqcont_barrel_industrial_toxic",
-    "J": "render liqcont_barrel_modern_base",
-    "K": "render liqcont_barrel_modern_freshwater",
-    "L": "render liqcont_barrel_modern_tar",
-    "M": "render liqcont_barrel_modern_toxic",
-    "N": "render liqcont_barrel_scrapper_base",
-    "O": "render liqcont_barrel_scrapper_freshwater",
-    "P": "render liqcont_barrel_scrapper_tar",
-    "Q": "render liqcont_barrel_scrapper_toxic",
-    "R": "render fwart_RM_Barrel",
-    "S": "history FlowWorks 2026-09-17"
+    "B": "render fwart_RM_Barrel",
+    "C": "history FlowWorks 2026-09-17"
    },
    "pools": [],
    "res": "Things/Item/Resource/FlowWorks/RM_Barrel",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S"
+    "C"
    ],
    "shownBase": [],
    "subject_key": "barrel_acidwater"
@@ -2656,725 +1999,37 @@
    "shownBase": [],
    "subject_key": "bezzul"
   },
-  "RM_BottleDirty": {
-   "columns": {
-    "A": {
-     "single": "eda179882cd4d539ece5c22cccb95fee21c3b699577442163201ea9890b30bc9"
-    },
-    "B": {
-     "south": "fbcf57c4d699789314e0fc74c61325d35cc60fe1458c681cab3df71ead593811"
-    },
-    "C": {
-     "south": "c774339a655b1d9aab756bf87c2eec075ae97ce7c81fba4aad73bfeaeb23c271"
-    },
-    "D": {
-     "south": "614bb54d982aeadef152318bfd4b9781c25e8c8f247627a5974f908e40dfece8"
-    },
-    "E": {
-     "south": "af31f7c75ecd74ebaa1f53af4bf49356fc35afb10dc313fc1870fca0c2215d44"
-    },
-    "F": {
-     "south": "2ed64819e5f0a9792a382bebd3684a03a45a555eae9e3ff54d1419f1df906d89"
-    },
-    "G": {
-     "south": "dfaef8708f0711b1efd0ad1ee12f68c26d7a848be44b5dd4474040d895905239"
-    },
-    "H": {
-     "south": "b78414f3ead8a298f4e2fd20adbc6ced551d4530c240f7026ff937b517a739d3"
-    },
-    "I": {
-     "south": "70686f8a3fff653c19de7ebd6905d495b9cf2f36e5649feea2640813cb3e3275"
-    },
-    "J": {
-     "south": "bf6a67deafc6aedb27e8dbdc99f811a1d307c30b5bd8f754c7e108dc09504d24"
-    },
-    "K": {
-     "south": "566cf29bef3eb22dd99c101be96b7ddf1ad0223fba5f3da24e4c3d3ba592c29b"
-    },
-    "L": {
-     "south": "7c34a11a8aacb34f6fbf8d3fba8a83bf67a9b546d439a9db1524d2cd2b945d54"
-    },
-    "M": {
-     "south": "5f72a3c6403c8cdf2446f5f9b37e33985a2d7b4b98e27c9957c092407b9f1055"
-    },
-    "N": {
-     "south": "90fc7b1544b4bbc453b871ec4755ebcb8633046469fc8384bf8286a01c63d0b4"
-    },
-    "O": {
-     "south": "0981f4e24d321603e09e39405531a007169dd02acb235d70da417916bccbeb4a"
-    },
-    "P": {
-     "south": "182d57cb8fa30b0393ca3e54e05406b0b393255b65f5ce7beb98439630e831f2"
-    },
-    "Q": {
-     "south": "0037665fe015849c8a6875ce297cbb124904cdf599f079838f66060ee6152754"
-    },
-    "R": {
-     "single": "e42063438955db888fb92f1312cb75a1a5b5490add3040107b3dcca4512f35dd"
-    },
-    "S": {
-     "single": "473b8e8e7eec87b49fc0d8bdc28079d373fab10b58fa03bcb1824ae831a331f5"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "B": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "C": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "D": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "E": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "F": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "G": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "H": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "I": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "J": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "K": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "L": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "M": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "N": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "O": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "P": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "Q": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "R": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "S": "Things/Item/Resource/FlowWorks/RM_Bottle"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render liqcont_bottle_futuristic_base",
-    "C": "render liqcont_bottle_futuristic_freshwater",
-    "D": "render liqcont_bottle_futuristic_tar",
-    "E": "render liqcont_bottle_futuristic_toxic",
-    "F": "render liqcont_bottle_industrial_base",
-    "G": "render liqcont_bottle_industrial_freshwater",
-    "H": "render liqcont_bottle_industrial_tar",
-    "I": "render liqcont_bottle_industrial_toxic",
-    "J": "render liqcont_bottle_modern_base",
-    "K": "render liqcont_bottle_modern_freshwater",
-    "L": "render liqcont_bottle_modern_tar",
-    "M": "render liqcont_bottle_modern_toxic",
-    "N": "render liqcont_bottle_scrapper_base",
-    "O": "render liqcont_bottle_scrapper_freshwater",
-    "P": "render liqcont_bottle_scrapper_tar",
-    "Q": "render liqcont_bottle_scrapper_toxic",
-    "R": "render fwart_RM_Bottle",
-    "S": "history FlowWorks 2026-09-17"
-   },
-   "pools": [],
-   "res": "Things/Item/Resource/FlowWorks/RM_Bottle",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S"
-   ],
-   "shownBase": [],
-   "subject_key": "bottledirty"
-  },
-  "RM_BottleEmpty": {
-   "columns": {
-    "A": {
-     "single": "eda179882cd4d539ece5c22cccb95fee21c3b699577442163201ea9890b30bc9"
-    },
-    "B": {
-     "south": "fbcf57c4d699789314e0fc74c61325d35cc60fe1458c681cab3df71ead593811"
-    },
-    "C": {
-     "south": "c774339a655b1d9aab756bf87c2eec075ae97ce7c81fba4aad73bfeaeb23c271"
-    },
-    "D": {
-     "south": "614bb54d982aeadef152318bfd4b9781c25e8c8f247627a5974f908e40dfece8"
-    },
-    "E": {
-     "south": "af31f7c75ecd74ebaa1f53af4bf49356fc35afb10dc313fc1870fca0c2215d44"
-    },
-    "F": {
-     "south": "2ed64819e5f0a9792a382bebd3684a03a45a555eae9e3ff54d1419f1df906d89"
-    },
-    "G": {
-     "south": "dfaef8708f0711b1efd0ad1ee12f68c26d7a848be44b5dd4474040d895905239"
-    },
-    "H": {
-     "south": "b78414f3ead8a298f4e2fd20adbc6ced551d4530c240f7026ff937b517a739d3"
-    },
-    "I": {
-     "south": "70686f8a3fff653c19de7ebd6905d495b9cf2f36e5649feea2640813cb3e3275"
-    },
-    "J": {
-     "south": "bf6a67deafc6aedb27e8dbdc99f811a1d307c30b5bd8f754c7e108dc09504d24"
-    },
-    "K": {
-     "south": "566cf29bef3eb22dd99c101be96b7ddf1ad0223fba5f3da24e4c3d3ba592c29b"
-    },
-    "L": {
-     "south": "7c34a11a8aacb34f6fbf8d3fba8a83bf67a9b546d439a9db1524d2cd2b945d54"
-    },
-    "M": {
-     "south": "5f72a3c6403c8cdf2446f5f9b37e33985a2d7b4b98e27c9957c092407b9f1055"
-    },
-    "N": {
-     "south": "90fc7b1544b4bbc453b871ec4755ebcb8633046469fc8384bf8286a01c63d0b4"
-    },
-    "O": {
-     "south": "0981f4e24d321603e09e39405531a007169dd02acb235d70da417916bccbeb4a"
-    },
-    "P": {
-     "south": "182d57cb8fa30b0393ca3e54e05406b0b393255b65f5ce7beb98439630e831f2"
-    },
-    "Q": {
-     "south": "0037665fe015849c8a6875ce297cbb124904cdf599f079838f66060ee6152754"
-    },
-    "R": {
-     "single": "e42063438955db888fb92f1312cb75a1a5b5490add3040107b3dcca4512f35dd"
-    },
-    "S": {
-     "single": "473b8e8e7eec87b49fc0d8bdc28079d373fab10b58fa03bcb1824ae831a331f5"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "B": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "C": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "D": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "E": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "F": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "G": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "H": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "I": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "J": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "K": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "L": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "M": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "N": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "O": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "P": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "Q": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "R": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "S": "Things/Item/Resource/FlowWorks/RM_Bottle"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render liqcont_bottle_futuristic_base",
-    "C": "render liqcont_bottle_futuristic_freshwater",
-    "D": "render liqcont_bottle_futuristic_tar",
-    "E": "render liqcont_bottle_futuristic_toxic",
-    "F": "render liqcont_bottle_industrial_base",
-    "G": "render liqcont_bottle_industrial_freshwater",
-    "H": "render liqcont_bottle_industrial_tar",
-    "I": "render liqcont_bottle_industrial_toxic",
-    "J": "render liqcont_bottle_modern_base",
-    "K": "render liqcont_bottle_modern_freshwater",
-    "L": "render liqcont_bottle_modern_tar",
-    "M": "render liqcont_bottle_modern_toxic",
-    "N": "render liqcont_bottle_scrapper_base",
-    "O": "render liqcont_bottle_scrapper_freshwater",
-    "P": "render liqcont_bottle_scrapper_tar",
-    "Q": "render liqcont_bottle_scrapper_toxic",
-    "R": "render fwart_RM_Bottle",
-    "S": "history FlowWorks 2026-09-17"
-   },
-   "pools": [],
-   "res": "Things/Item/Resource/FlowWorks/RM_Bottle",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S"
-   ],
-   "shownBase": [],
-   "subject_key": "bottleempty"
-  },
   "RM_Bottle_FreshWater": {
    "columns": {
     "A": {
      "single": "eda179882cd4d539ece5c22cccb95fee21c3b699577442163201ea9890b30bc9"
     },
     "B": {
-     "south": "fbcf57c4d699789314e0fc74c61325d35cc60fe1458c681cab3df71ead593811"
-    },
-    "C": {
-     "south": "c774339a655b1d9aab756bf87c2eec075ae97ce7c81fba4aad73bfeaeb23c271"
-    },
-    "D": {
-     "south": "614bb54d982aeadef152318bfd4b9781c25e8c8f247627a5974f908e40dfece8"
-    },
-    "E": {
-     "south": "af31f7c75ecd74ebaa1f53af4bf49356fc35afb10dc313fc1870fca0c2215d44"
-    },
-    "F": {
-     "south": "2ed64819e5f0a9792a382bebd3684a03a45a555eae9e3ff54d1419f1df906d89"
-    },
-    "G": {
-     "south": "dfaef8708f0711b1efd0ad1ee12f68c26d7a848be44b5dd4474040d895905239"
-    },
-    "H": {
-     "south": "b78414f3ead8a298f4e2fd20adbc6ced551d4530c240f7026ff937b517a739d3"
-    },
-    "I": {
-     "south": "70686f8a3fff653c19de7ebd6905d495b9cf2f36e5649feea2640813cb3e3275"
-    },
-    "J": {
-     "south": "bf6a67deafc6aedb27e8dbdc99f811a1d307c30b5bd8f754c7e108dc09504d24"
-    },
-    "K": {
-     "south": "566cf29bef3eb22dd99c101be96b7ddf1ad0223fba5f3da24e4c3d3ba592c29b"
-    },
-    "L": {
-     "south": "7c34a11a8aacb34f6fbf8d3fba8a83bf67a9b546d439a9db1524d2cd2b945d54"
-    },
-    "M": {
-     "south": "5f72a3c6403c8cdf2446f5f9b37e33985a2d7b4b98e27c9957c092407b9f1055"
-    },
-    "N": {
-     "south": "90fc7b1544b4bbc453b871ec4755ebcb8633046469fc8384bf8286a01c63d0b4"
-    },
-    "O": {
-     "south": "0981f4e24d321603e09e39405531a007169dd02acb235d70da417916bccbeb4a"
-    },
-    "P": {
-     "south": "182d57cb8fa30b0393ca3e54e05406b0b393255b65f5ce7beb98439630e831f2"
-    },
-    "Q": {
-     "south": "0037665fe015849c8a6875ce297cbb124904cdf599f079838f66060ee6152754"
-    },
-    "R": {
      "single": "e42063438955db888fb92f1312cb75a1a5b5490add3040107b3dcca4512f35dd"
     },
-    "S": {
+    "C": {
      "single": "473b8e8e7eec87b49fc0d8bdc28079d373fab10b58fa03bcb1824ae831a331f5"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/FlowWorks/RM_Bottle",
     "B": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "C": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "D": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "E": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "F": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "G": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "H": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "I": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "J": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "K": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "L": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "M": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "N": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "O": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "P": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "Q": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "R": "Things/Item/Resource/FlowWorks/RM_Bottle",
-    "S": "Things/Item/Resource/FlowWorks/RM_Bottle"
+    "C": "Things/Item/Resource/FlowWorks/RM_Bottle"
    },
    "labels": {
     "A": "IN GAME \u2014 FlowWorks",
-    "B": "render liqcont_bottle_futuristic_base",
-    "C": "render liqcont_bottle_futuristic_freshwater",
-    "D": "render liqcont_bottle_futuristic_tar",
-    "E": "render liqcont_bottle_futuristic_toxic",
-    "F": "render liqcont_bottle_industrial_base",
-    "G": "render liqcont_bottle_industrial_freshwater",
-    "H": "render liqcont_bottle_industrial_tar",
-    "I": "render liqcont_bottle_industrial_toxic",
-    "J": "render liqcont_bottle_modern_base",
-    "K": "render liqcont_bottle_modern_freshwater",
-    "L": "render liqcont_bottle_modern_tar",
-    "M": "render liqcont_bottle_modern_toxic",
-    "N": "render liqcont_bottle_scrapper_base",
-    "O": "render liqcont_bottle_scrapper_freshwater",
-    "P": "render liqcont_bottle_scrapper_tar",
-    "Q": "render liqcont_bottle_scrapper_toxic",
-    "R": "render fwart_RM_Bottle",
-    "S": "history FlowWorks 2026-09-17"
+    "B": "render fwart_RM_Bottle",
+    "C": "history FlowWorks 2026-09-17"
    },
    "pools": [],
    "res": "Things/Item/Resource/FlowWorks/RM_Bottle",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S"
+    "C"
    ],
    "shownBase": [],
    "subject_key": "bottle_freshwater"
-  },
-  "RM_Braskeen": {
-   "columns": {
-    "A": {
-     "single": "0b0264cb3dd0fd3fee3c360cf8a66d7e44f6d8a92b10f3bb504fcf0bfa1d9ddf"
-    },
-    "B": {
-     "single": "6d792f036e00cfbf70da14356661e8ccd4d859ebe1dcca3d7f2b43fe07f4b06b"
-    },
-    "C": {
-     "single": "0c1911ef2c1489297b3ea3aa8cc031a2690b80d456e667cc5353fb19b38f8195"
-    },
-    "D": {
-     "single": "b03534e14dff577504c2ffdb30a7326b87eef80ad910a28862d38b28a049775a"
-    },
-    "E": {
-     "single": "9c1faa7ca91933baad3baf83a14d6618daebc4b09c7f615178ae38a71770a40c"
-    },
-    "F": {
-     "single": "61371decb5b0f076e9daf39b973833c00e90aee2c8b412a8b86e83934ce886f1"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RM_Braskeen",
-    "B": "Things/Plant/RM_Braskeen",
-    "C": "Things/Plant/RM_Braskeen",
-    "D": "Things/Plant/RM_Braskeen",
-    "E": "Things/Plant/RM_Braskeen",
-    "F": "Things/Plant/RM_Braskeen"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant RM_Braskeen (1 of 2) \u2014 Miasma",
-    "B": "IN GAME \u2014 random variant RM_Braskeen_b (2 of 2) \u2014 Miasma",
-    "C": "render braskeen_onE_v1",
-    "D": "render braskeen_onE_v2",
-    "E": "render braskeen_onE_v4",
-    "F": "render braskeen_onE_v5"
-   },
-   "pools": [
-    "Things/Plant/RM_Braskeen"
-   ],
-   "res": "Things/Plant/RM_Braskeen",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F"
-   ],
-   "shownBase": [],
-   "subject_key": "braskeen"
-  },
-  "RM_Brelloch": {
-   "columns": {
-    "A": {
-     "single": "c89035bcb6e79cd149e2324da7fa8b67aa55bb06c2acedeb281496f1bdcf5b1e"
-    },
-    "B": {
-     "single": "1b607384f527eb31400200127a35e4a479dd0493a545190c38a7484b65d274e4"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RM_Brelloch/RM_Brelloch_a",
-    "B": "Things/Plant/RM_Brelloch/RM_Brelloch_a"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant RM_Brelloch_a_a (1 of 1) \u2014 Miasma",
-    "B": "our deployed art (render miasma_brelloch) \u2014 RimMandrake: Baroque Biomes"
-   },
-   "pools": [
-    "Things/Plant/RM_Brelloch/RM_Brelloch_a"
-   ],
-   "res": "Things/Plant/RM_Brelloch/RM_Brelloch_a",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "brelloch"
-  },
-  "RM_BucketDirty": {
-   "columns": {
-    "A": {
-     "single": "0e99ebb19c7e23cfc7c9ce4441ca4ef9e4fd0d42cf981128f478e11ccb7bd7f6"
-    },
-    "B": {
-     "south": "9d85254fc74d20cf2c5c91ac0dd65c0b67da77c3ad6ca8bbac6d5e0bf80bf0eb"
-    },
-    "C": {
-     "south": "4ac3801aec0f7c6ce924f9d802291de22203fc1b446b95fa2ac5a6face21544b"
-    },
-    "D": {
-     "south": "053f2c5bbe8c3626a4b52a774ccebb8e245a5c957e31eae443aebc2dfed614c5"
-    },
-    "E": {
-     "south": "cf5cfb414b00e659d1d301c4ae032fde959b67f2630c83398ee917605ae3bf20"
-    },
-    "F": {
-     "south": "259de53b731ba6a31c213c843880c44a6deefab874d0f8b52b1eccfc7e074092"
-    },
-    "G": {
-     "south": "782dae78fc14d69808170960ef86916da7c16fa391c018b0ff91104f8e272e0e"
-    },
-    "H": {
-     "south": "884ef31996480abe5d1d3cdc19abc4c85f3532d8bc2e7000da434cbed9ec4dba"
-    },
-    "I": {
-     "south": "7e31e6b5725cf2e65deb2d05174ed6351ab0a9f45f06689ed2799ffe814fc839"
-    },
-    "J": {
-     "south": "1401e5ed9d3184ac492d98a5c76ff98e78a679b385fc852b69d56c4e25057d1e"
-    },
-    "K": {
-     "south": "5bd02621e1ef72390964ded5702c9bc38586bd78d38dc618f4b59a306415aaad"
-    },
-    "L": {
-     "south": "a2247582b4cb49722b16c06b39a32e793e4e5f9bdc8e0e215e304083c6fb80be"
-    },
-    "M": {
-     "south": "8b1a978de37f96d1b758d134892569408d11d4607d55b835615c0e2b5308d908"
-    },
-    "N": {
-     "south": "cd47f2df95e7218f14138c12479f0dc0434ffd2027da758dc34a97abbebf0471"
-    },
-    "O": {
-     "south": "2781d93da28af5acc49149c05a36b5a42ad0de055ff071be1525bbea1bbc825e"
-    },
-    "P": {
-     "south": "48b896a9daea5bdc7de37b4500356be2892471662217fe74d842a517768df8e3"
-    },
-    "Q": {
-     "south": "f12352a00e5ad8d8051ed99a4f0feba6b665aa130c7710bf2f0b4b611563b019"
-    },
-    "R": {
-     "single": "e98a66ab7ce16fd8f9fa44da53df2a39d926d6914938bc94ec13e9ea9c2fb93f"
-    },
-    "S": {
-     "single": "e5bd8edd168d9ecdb40b316156906a4a6fcd820e5f20a809e212bc6d1af911ce"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "B": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "C": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "D": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "E": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "F": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "G": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "H": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "I": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "J": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "K": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "L": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "M": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "N": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "O": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "P": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "Q": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "R": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "S": "Things/Item/Resource/FlowWorks/RM_Bucket"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render liqcont_bucket_futuristic_base",
-    "C": "render liqcont_bucket_futuristic_freshwater",
-    "D": "render liqcont_bucket_futuristic_tar",
-    "E": "render liqcont_bucket_futuristic_toxic",
-    "F": "render liqcont_bucket_industrial_base",
-    "G": "render liqcont_bucket_industrial_freshwater",
-    "H": "render liqcont_bucket_industrial_tar",
-    "I": "render liqcont_bucket_industrial_toxic",
-    "J": "render liqcont_bucket_modern_base",
-    "K": "render liqcont_bucket_modern_freshwater",
-    "L": "render liqcont_bucket_modern_tar",
-    "M": "render liqcont_bucket_modern_toxic",
-    "N": "render liqcont_bucket_scrapper_base",
-    "O": "render liqcont_bucket_scrapper_freshwater",
-    "P": "render liqcont_bucket_scrapper_tar",
-    "Q": "render liqcont_bucket_scrapper_toxic",
-    "R": "render fwart_RM_Bucket",
-    "S": "history FlowWorks 2026-09-17"
-   },
-   "pools": [],
-   "res": "Things/Item/Resource/FlowWorks/RM_Bucket",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S"
-   ],
-   "shownBase": [],
-   "subject_key": "bucketdirty"
-  },
-  "RM_BucketEmpty": {
-   "columns": {
-    "A": {
-     "single": "0e99ebb19c7e23cfc7c9ce4441ca4ef9e4fd0d42cf981128f478e11ccb7bd7f6"
-    },
-    "B": {
-     "south": "9d85254fc74d20cf2c5c91ac0dd65c0b67da77c3ad6ca8bbac6d5e0bf80bf0eb"
-    },
-    "C": {
-     "south": "4ac3801aec0f7c6ce924f9d802291de22203fc1b446b95fa2ac5a6face21544b"
-    },
-    "D": {
-     "south": "053f2c5bbe8c3626a4b52a774ccebb8e245a5c957e31eae443aebc2dfed614c5"
-    },
-    "E": {
-     "south": "cf5cfb414b00e659d1d301c4ae032fde959b67f2630c83398ee917605ae3bf20"
-    },
-    "F": {
-     "south": "259de53b731ba6a31c213c843880c44a6deefab874d0f8b52b1eccfc7e074092"
-    },
-    "G": {
-     "south": "782dae78fc14d69808170960ef86916da7c16fa391c018b0ff91104f8e272e0e"
-    },
-    "H": {
-     "south": "884ef31996480abe5d1d3cdc19abc4c85f3532d8bc2e7000da434cbed9ec4dba"
-    },
-    "I": {
-     "south": "7e31e6b5725cf2e65deb2d05174ed6351ab0a9f45f06689ed2799ffe814fc839"
-    },
-    "J": {
-     "south": "1401e5ed9d3184ac492d98a5c76ff98e78a679b385fc852b69d56c4e25057d1e"
-    },
-    "K": {
-     "south": "5bd02621e1ef72390964ded5702c9bc38586bd78d38dc618f4b59a306415aaad"
-    },
-    "L": {
-     "south": "a2247582b4cb49722b16c06b39a32e793e4e5f9bdc8e0e215e304083c6fb80be"
-    },
-    "M": {
-     "south": "8b1a978de37f96d1b758d134892569408d11d4607d55b835615c0e2b5308d908"
-    },
-    "N": {
-     "south": "cd47f2df95e7218f14138c12479f0dc0434ffd2027da758dc34a97abbebf0471"
-    },
-    "O": {
-     "south": "2781d93da28af5acc49149c05a36b5a42ad0de055ff071be1525bbea1bbc825e"
-    },
-    "P": {
-     "south": "48b896a9daea5bdc7de37b4500356be2892471662217fe74d842a517768df8e3"
-    },
-    "Q": {
-     "south": "f12352a00e5ad8d8051ed99a4f0feba6b665aa130c7710bf2f0b4b611563b019"
-    },
-    "R": {
-     "single": "e98a66ab7ce16fd8f9fa44da53df2a39d926d6914938bc94ec13e9ea9c2fb93f"
-    },
-    "S": {
-     "single": "e5bd8edd168d9ecdb40b316156906a4a6fcd820e5f20a809e212bc6d1af911ce"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "B": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "C": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "D": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "E": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "F": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "G": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "H": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "I": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "J": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "K": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "L": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "M": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "N": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "O": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "P": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "Q": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "R": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "S": "Things/Item/Resource/FlowWorks/RM_Bucket"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render liqcont_bucket_futuristic_base",
-    "C": "render liqcont_bucket_futuristic_freshwater",
-    "D": "render liqcont_bucket_futuristic_tar",
-    "E": "render liqcont_bucket_futuristic_toxic",
-    "F": "render liqcont_bucket_industrial_base",
-    "G": "render liqcont_bucket_industrial_freshwater",
-    "H": "render liqcont_bucket_industrial_tar",
-    "I": "render liqcont_bucket_industrial_toxic",
-    "J": "render liqcont_bucket_modern_base",
-    "K": "render liqcont_bucket_modern_freshwater",
-    "L": "render liqcont_bucket_modern_tar",
-    "M": "render liqcont_bucket_modern_toxic",
-    "N": "render liqcont_bucket_scrapper_base",
-    "O": "render liqcont_bucket_scrapper_freshwater",
-    "P": "render liqcont_bucket_scrapper_tar",
-    "Q": "render liqcont_bucket_scrapper_toxic",
-    "R": "render fwart_RM_Bucket",
-    "S": "history FlowWorks 2026-09-17"
-   },
-   "pools": [],
-   "res": "Things/Item/Resource/FlowWorks/RM_Bucket",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S"
-   ],
-   "shownBase": [],
-   "subject_key": "bucketempty"
   },
   "RM_Bucket_Tar": {
    "columns": {
@@ -3382,124 +2037,28 @@
      "single": "0e99ebb19c7e23cfc7c9ce4441ca4ef9e4fd0d42cf981128f478e11ccb7bd7f6"
     },
     "B": {
-     "south": "9d85254fc74d20cf2c5c91ac0dd65c0b67da77c3ad6ca8bbac6d5e0bf80bf0eb"
-    },
-    "C": {
-     "south": "4ac3801aec0f7c6ce924f9d802291de22203fc1b446b95fa2ac5a6face21544b"
-    },
-    "D": {
-     "south": "053f2c5bbe8c3626a4b52a774ccebb8e245a5c957e31eae443aebc2dfed614c5"
-    },
-    "E": {
-     "south": "cf5cfb414b00e659d1d301c4ae032fde959b67f2630c83398ee917605ae3bf20"
-    },
-    "F": {
-     "south": "259de53b731ba6a31c213c843880c44a6deefab874d0f8b52b1eccfc7e074092"
-    },
-    "G": {
-     "south": "782dae78fc14d69808170960ef86916da7c16fa391c018b0ff91104f8e272e0e"
-    },
-    "H": {
-     "south": "884ef31996480abe5d1d3cdc19abc4c85f3532d8bc2e7000da434cbed9ec4dba"
-    },
-    "I": {
-     "south": "7e31e6b5725cf2e65deb2d05174ed6351ab0a9f45f06689ed2799ffe814fc839"
-    },
-    "J": {
-     "south": "1401e5ed9d3184ac492d98a5c76ff98e78a679b385fc852b69d56c4e25057d1e"
-    },
-    "K": {
-     "south": "5bd02621e1ef72390964ded5702c9bc38586bd78d38dc618f4b59a306415aaad"
-    },
-    "L": {
-     "south": "a2247582b4cb49722b16c06b39a32e793e4e5f9bdc8e0e215e304083c6fb80be"
-    },
-    "M": {
-     "south": "8b1a978de37f96d1b758d134892569408d11d4607d55b835615c0e2b5308d908"
-    },
-    "N": {
-     "south": "cd47f2df95e7218f14138c12479f0dc0434ffd2027da758dc34a97abbebf0471"
-    },
-    "O": {
-     "south": "2781d93da28af5acc49149c05a36b5a42ad0de055ff071be1525bbea1bbc825e"
-    },
-    "P": {
-     "south": "48b896a9daea5bdc7de37b4500356be2892471662217fe74d842a517768df8e3"
-    },
-    "Q": {
-     "south": "f12352a00e5ad8d8051ed99a4f0feba6b665aa130c7710bf2f0b4b611563b019"
-    },
-    "R": {
      "single": "e98a66ab7ce16fd8f9fa44da53df2a39d926d6914938bc94ec13e9ea9c2fb93f"
     },
-    "S": {
+    "C": {
      "single": "e5bd8edd168d9ecdb40b316156906a4a6fcd820e5f20a809e212bc6d1af911ce"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/FlowWorks/RM_Bucket",
     "B": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "C": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "D": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "E": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "F": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "G": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "H": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "I": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "J": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "K": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "L": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "M": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "N": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "O": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "P": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "Q": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "R": "Things/Item/Resource/FlowWorks/RM_Bucket",
-    "S": "Things/Item/Resource/FlowWorks/RM_Bucket"
+    "C": "Things/Item/Resource/FlowWorks/RM_Bucket"
    },
    "labels": {
     "A": "IN GAME \u2014 FlowWorks",
-    "B": "render liqcont_bucket_futuristic_base",
-    "C": "render liqcont_bucket_futuristic_freshwater",
-    "D": "render liqcont_bucket_futuristic_tar",
-    "E": "render liqcont_bucket_futuristic_toxic",
-    "F": "render liqcont_bucket_industrial_base",
-    "G": "render liqcont_bucket_industrial_freshwater",
-    "H": "render liqcont_bucket_industrial_tar",
-    "I": "render liqcont_bucket_industrial_toxic",
-    "J": "render liqcont_bucket_modern_base",
-    "K": "render liqcont_bucket_modern_freshwater",
-    "L": "render liqcont_bucket_modern_tar",
-    "M": "render liqcont_bucket_modern_toxic",
-    "N": "render liqcont_bucket_scrapper_base",
-    "O": "render liqcont_bucket_scrapper_freshwater",
-    "P": "render liqcont_bucket_scrapper_tar",
-    "Q": "render liqcont_bucket_scrapper_toxic",
-    "R": "render fwart_RM_Bucket",
-    "S": "history FlowWorks 2026-09-17"
+    "B": "render fwart_RM_Bucket",
+    "C": "history FlowWorks 2026-09-17"
    },
    "pools": [],
    "res": "Things/Item/Resource/FlowWorks/RM_Bucket",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S"
+    "C"
    ],
    "shownBase": [],
    "subject_key": "bucket_tar"
@@ -3688,36 +2247,6 @@
    "shownBase": [],
    "subject_key": "detoxworks_wrecked"
   },
-  "RM_Dhoggur": {
-   "columns": {
-    "A": {
-     "east": "948188e777ef9336733d7570f826e654602ac47e2425f48bbdf82de63f652c40",
-     "north": "b1f818932f35c45309819fe4584922372f6672ae59aecb3f851850d9b626306f",
-     "south": "310dad78fcf39a060dabe1ccb7b307c0dda73866e348a9aed760922b3565a8dc"
-    },
-    "B": {
-     "east": "9d1b682a0cc15392a72816daa94f33b3ea4543036909eff3f390fde4717987c9",
-     "north": "2087c81fce015957be4ce4f87dcb74b1e2bbd37f715b2e7d406a847c6c289b6d",
-     "south": "10c742a6a47497755da620cb4f785c8025bddb6d36f43c3375a9c5693cddbd1e"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur",
-    "B": "Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 TheForge",
-    "B": "render forgeslot_dhoggur_swollen_v1"
-   },
-   "pools": [],
-   "res": "Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "dhoggur"
-  },
   "RM_DripFilter": {
    "columns": {
     "A": {
@@ -3765,7 +2294,9 @@
     "A": "IN GAME \u2014 Cauldron",
     "B": "render RM_Eskith_v2"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/RM_Eskith/RM_Eskith"
+   ],
    "res": "Things/Pawn/Animal/RM_Eskith/RM_Eskith",
    "reserved": [
     "A",
@@ -3935,60 +2466,6 @@
    ],
    "shownBase": [],
    "subject_key": "giantcrownedsilkie"
-  },
-  "RM_GiantCrownedSilkieSilk": {
-   "columns": {
-    "A": {
-     "single": "e830982f4e9e975fbb24f6a402295e9f86f2e8374c0a5803bb566cc672661090"
-    }
-   },
-   "graphic_of": {
-    "A": "_byname"
-   },
-   "labels": {
-    "A": "render donorart_p2_silkie_silk_v1"
-   },
-   "pools": [],
-   "res": null,
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "giantcrownedsilkiesilk"
-  },
-  "RM_Greatbole": {
-   "columns": {
-    "A": {
-     "single": "440d064d807c737b7f652f32e4dfa0483e65444354937ff230edd4b010ec8ab8"
-    },
-    "B": {
-     "single": "f9394a1832fa01fa9f50cee484dee8134dc787585860a45eb647790adcadb974"
-    },
-    "C": {
-     "single": "647642c7cf209cc1dfcddcfe2846d4cf12834394b047099aa906e2b0cfdefb25"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RM_Greatbole/RM_Greatbole_a",
-    "B": "Things/Plant/RM_Greatbole/RM_Greatbole_a",
-    "C": "Things/Plant/RM_Greatbole/RM_Greatbole_a"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant RM_Greatbole_a_a (1 of 3) \u2014 Greentide",
-    "B": "IN GAME \u2014 random variant RM_Greatbole_a_b (2 of 3) \u2014 Greentide",
-    "C": "IN GAME \u2014 random variant RM_Greatbole_a_c (3 of 3) \u2014 Greentide"
-   },
-   "pools": [
-    "Things/Plant/RM_Greatbole/RM_Greatbole_a"
-   ],
-   "res": "Things/Plant/RM_Greatbole/RM_Greatbole_a",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "greatbole"
   },
   "RM_HoseReel": {
    "columns": {
@@ -4219,236 +2696,26 @@
      "east": "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
      "north": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e",
      "south": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b"
-    },
-    "C": {
-     "north": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e"
-    },
-    "D": {
-     "east": "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
-     "north": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b",
-     "south": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b"
     }
    },
    "graphic_of": {
     "A": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
-    "B": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
-    "C": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
-    "D": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue"
+    "B": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue"
    },
    "labels": {
     "A": "IN GAME \u2014 TheRot",
-    "B": "render RM_Hwelgrue",
-    "C": "history TheRot 2026-10-03",
-    "D": "history TheRot 2026-10-03"
+    "B": "render RM_Hwelgrue"
    },
-   "pools": [],
+   "pools": [
+    "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue"
+   ],
    "res": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
    "reserved": [
     "A",
-    "B",
-    "C",
-    "D"
+    "B"
    ],
    "shownBase": [],
    "subject_key": "hwelgrue"
-  },
-  "RM_Ilbareen": {
-   "columns": {
-    "A": {
-     "single": "5d81293c36d8f029a5403c58ba0a7cad9c8d1fed83fedfc04b1bc8ab9068a618"
-    },
-    "B": {
-     "single": "3547ea8ee4bb0683a761df3775c09f736e0a9827ac473e00856e6fb009bf949d"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RM_Ilbareen/RM_Ilbareen_live",
-    "B": "_byname"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 Miasma",
-    "B": "render miasma_ilbareen_dead"
-   },
-   "pools": [],
-   "res": "Things/Plant/RM_Ilbareen/RM_Ilbareen_live",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "ilbareen"
-  },
-  "RM_Immarel": {
-   "columns": {
-    "A": {
-     "single": "6e5db2255e469656ff1631d9c3857aa379f60699084d72b8c6e1baf165ba38aa"
-    },
-    "B": {
-     "single": "176bb2faab3366f3d1ff583c22fd4984431f838fbfff100378f5a4130f4be742"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RM_Immarel/RM_Immarel_a",
-    "B": "Things/Plant/RM_Immarel/RM_Immarel_a"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant RM_Immarel_a_a (1 of 1) \u2014 Miasma",
-    "B": "our deployed art (render miasma_immarel) \u2014 RimMandrake: Baroque Biomes"
-   },
-   "pools": [
-    "Things/Plant/RM_Immarel/RM_Immarel_a"
-   ],
-   "res": "Things/Plant/RM_Immarel/RM_Immarel_a",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "immarel"
-  },
-  "RM_Ismerrow": {
-   "columns": {
-    "A": {
-     "single": "73353e258837c35ee97f605bd4e7d421a79412c8e13aa9a85388f5aaeadebb80"
-    },
-    "B": {
-     "single": "4b52f8cf7ce050a3191ae3deda9f353e23f9199ea82fd575903c12d7e2ec6a44"
-    },
-    "C": {
-     "single": "a3179a28c513eb5a9945a9b365e6c270ef71874abfbb2023f1b061455aefb030"
-    },
-    "D": {
-     "single": "80ade350dd5dd780b5f6c6c967c201b105bd0111f9df7585ae4d53f01cfdded3"
-    },
-    "E": {
-     "single": "e54bd6db6d469d8d99b7de46abee0cfecd6c6276e8695a084adb808bc28d5997"
-    },
-    "F": {
-     "single": "988d133eba969338df771f52af039b6b41461fdadbf3bde8268577862355488b"
-    },
-    "G": {
-     "single": "4fd2981030c98ac5ee9820fde95e6662f85b828f0115bdd2f4cbb75a6b1f28e7"
-    },
-    "H": {
-     "single": "9f0d00a495d3e754bb6c30a6b3e4df45d35338fa0d78f0a3347fd26d8e570242"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RM_Ismerrow",
-    "B": "Things/Plant/RM_Ismerrow",
-    "C": "Things/Plant/RM_Ismerrow",
-    "D": "Things/Plant/RM_Ismerrow",
-    "E": "Things/Plant/RM_Ismerrow",
-    "F": "Things/Plant/RM_Ismerrow",
-    "G": "Things/Plant/RM_Ismerrow",
-    "H": "_byname"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant RM_Ismerrow (1 of 7) \u2014 Miasma",
-    "B": "IN GAME \u2014 random variant RM_Ismerrow_B (2 of 7) \u2014 Miasma",
-    "C": "IN GAME \u2014 random variant RM_Ismerrow_C (3 of 7) \u2014 Miasma",
-    "D": "IN GAME \u2014 random variant RM_Ismerrow_D (4 of 7) \u2014 Miasma",
-    "E": "IN GAME \u2014 random variant RM_Ismerrow_F (5 of 7) \u2014 Miasma",
-    "F": "IN GAME \u2014 random variant RM_Ismerrow_G (6 of 7) \u2014 Miasma",
-    "G": "IN GAME \u2014 random variant RM_Ismerrow_H (7 of 7) \u2014 Miasma",
-    "H": "render b07_ismerrowA"
-   },
-   "pools": [
-    "Things/Plant/RM_Ismerrow"
-   ],
-   "res": "Things/Plant/RM_Ismerrow",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
-   ],
-   "shownBase": [],
-   "subject_key": "ismerrow"
-  },
-  "RM_Jobbosh": {
-   "columns": {
-    "A": {
-     "east": "6e3104dd0eed1be18dc89de760aaca72049eae59cd5dc2f7964c384f021f9937",
-     "north": "16c75cc183b660666ebc2a0e7eb5178abd3753a5c9671ec71155ee909868efc3",
-     "south": "d84e3132fca249183813396b00ac6d5a8f5452bc95a45e56a9fcd06d14c8b350"
-    }
-   },
-   "graphic_of": {
-    "A": "_byname"
-   },
-   "labels": {
-    "A": "render forgeslot_jobbosh_v1"
-   },
-   "pools": [],
-   "res": null,
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "jobbosh"
-  },
-  "RM_Jurrox": {
-   "columns": {
-    "A": {
-     "east": "61c4d4d96d60df89a031fa343c2c1a93d174482e9b9097cab3ab1cd147a9e409",
-     "north": "09caeec485214224a7d7dbfdb01bc850f534a5d38d213994e8e736af20d658bc",
-     "south": "301f8ec574785eb4863758390353928cccc0b4c6d2ffee07f8421fe938edca83"
-    }
-   },
-   "graphic_of": {
-    "A": "_byname"
-   },
-   "labels": {
-    "A": "render forgeslot_jurrox_v1"
-   },
-   "pools": [],
-   "res": null,
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "jurrox"
-  },
-  "RM_Ladder": {
-   "columns": {
-    "A": {
-     "east": "fea1befa6c15d6c30151425cc86420ce7671e62d3aa71a1a03c8bc4f7ba0edaf",
-     "north": "b3ec3005f8bf150e6b6e2b9afbcfdec5ede0780ffb64fdc86193ac90b1c6915d",
-     "single": "f80ef8a544a786f1871c64dbda7885284d06698ea25fcfe286da56c8263977be",
-     "south": "e4ddf8fad082928b277e2b398b59e1b77fece58a915c3d93492ffa75dfb47579",
-     "west": "4868fc58a58a6fd6001ba144afc3af0b9599e4d647bf0594948dc3bd5816ecee"
-    },
-    "B": {
-     "single": "f80ef8a544a786f1871c64dbda7885284d06698ea25fcfe286da56c8263977be"
-    },
-    "C": {
-     "single": "46977386dbdb049efdb8f84b65eac6137a82bd2fac4b9639a72bb6904acc033b"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Building/FlowWorks/Canals/RM_Ladder",
-    "B": "Things/Building/FlowWorks/Canals/RM_Ladder",
-    "C": "_byname"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render fwart_RM_Ladder",
-    "C": "render fwart_RM_LadderRaised"
-   },
-   "pools": [],
-   "res": "Things/Building/FlowWorks/Canals/RM_Ladder",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "ladder"
   },
   "RM_LiquidPump": {
    "columns": {
@@ -4550,26 +2817,6 @@
    "shownBase": [],
    "subject_key": "liquidtank"
   },
-  "RM_PanningSpot": {
-   "columns": {
-    "A": {
-     "single": "c13e999d9dab6c101e6551b3869209f477833c8482a30109cbd071ea6c7c3a47"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Building/FlowWorks/Rivers/RM_PanningSpot"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
-   },
-   "pools": [],
-   "res": "Things/Building/FlowWorks/Rivers/RM_PanningSpot",
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "panningspot"
-  },
   "RM_Pluurva": {
    "columns": {
     "A": {
@@ -4670,34 +2917,6 @@
    "shownBase": [],
    "subject_key": "pumpingstation_wrecked"
   },
-  "RM_Quennath": {
-   "columns": {
-    "A": {
-     "single": "a05bb2816952d3fd58dfc3f6515918f9e8c6119686b896aba55adfcbe444f621"
-    },
-    "B": {
-     "single": "d4c2f947328e5ff6fce34669c2e2e9af2837c9cf397aa5652d180487090093b2"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RM_Quennath/RM_Quennath_a",
-    "B": "Things/Plant/RM_Quennath/RM_Quennath_a"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant RM_Quennath_a_a (1 of 1) \u2014 Miasma",
-    "B": "our deployed art (render miasma_quennath) \u2014 RimMandrake: Baroque Biomes"
-   },
-   "pools": [
-    "Things/Plant/RM_Quennath/RM_Quennath_a"
-   ],
-   "res": "Things/Plant/RM_Quennath/RM_Quennath_a",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "quennath"
-  },
   "RM_RedBugloss": {
    "columns": {
     "A": {
@@ -4730,46 +2949,6 @@
    "shownBase": [],
    "subject_key": "redbugloss"
   },
-  "RM_SecurityGrateDoor": {
-   "columns": {
-    "A": {
-     "east": "760f5aac94433eb7815de710051d970f60f3f240102e0273ee65da2a266607a4",
-     "single": "e7e2018f35b9fb1bbdf99cdbb3fe968c189785eb994248af2151455482d6ddae",
-     "south": "e7e2018f35b9fb1bbdf99cdbb3fe968c189785eb994248af2151455482d6ddae"
-    },
-    "B": {
-     "single": "e7e2018f35b9fb1bbdf99cdbb3fe968c189785eb994248af2151455482d6ddae"
-    },
-    "C": {
-     "single": "40821d7ee76b45378ca59cf47dce032a544514e902a85cf93180d95bd6cf6a89"
-    },
-    "D": {
-     "single": "5d09ebe12153d19b6e885174aa94f3fe6c284f8cba82b557812c2184913c9287"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Building/FlowWorks/Canals/RM_SecurityGrateDoor",
-    "B": "Things/Building/FlowWorks/Canals/RM_SecurityGrateDoor",
-    "C": "Things/Building/FlowWorks/Canals/RM_SecurityGrateDoor",
-    "D": "Things/Building/FlowWorks/Canals/RM_SecurityGrateDoor"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render fwart_RM_SecurityGrateDoor",
-    "C": "render RM_SecurityGrateDoor_MenuIcon_v1",
-    "D": "render RM_SecurityGrateDoor_Mover_v1"
-   },
-   "pools": [],
-   "res": "Things/Building/FlowWorks/Canals/RM_SecurityGrateDoor",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D"
-   ],
-   "shownBase": [],
-   "subject_key": "securitygratedoor"
-  },
   "RM_Shokka": {
    "columns": {
     "A": {
@@ -4791,7 +2970,9 @@
     "A": "IN GAME \u2014 LeaningScrub",
     "B": "render standtall_b1_rm_shokka"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/RM_Shokka/RM_Shokka"
+   ],
    "res": "Things/Pawn/Animal/RM_Shokka/RM_Shokka",
    "reserved": [
     "A",
@@ -4831,66 +3012,6 @@
    ],
    "shownBase": [],
    "subject_key": "silttrap"
-  },
-  "RM_Sluice": {
-   "columns": {
-    "A": {
-     "east": "4bb6efab2d6c3880201dfca304b40a076d7f7672760c04a58b6ca73952dd67aa",
-     "single": "4c9e50d0a3377f24ade26956b87aed830c43562a94fa08b9d0c86c34a04cf1a8",
-     "south": "4c9e50d0a3377f24ade26956b87aed830c43562a94fa08b9d0c86c34a04cf1a8"
-    },
-    "B": {
-     "single": "4c9e50d0a3377f24ade26956b87aed830c43562a94fa08b9d0c86c34a04cf1a8"
-    },
-    "C": {
-     "single": "a754705c8785759809ba701fa781064b5178920804279117365af98c094f455f"
-    },
-    "D": {
-     "single": "91cd6cc2e0d6bebba286eff9ab57a736256abfb09ff1279c13cb25a1c7039e68"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Building/FlowWorks/Canals/RM_Sluice",
-    "B": "Things/Building/FlowWorks/Canals/RM_Sluice",
-    "C": "Things/Building/FlowWorks/Canals/RM_Sluice",
-    "D": "Things/Building/FlowWorks/Canals/RM_Sluice"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render ",
-    "C": "render RM_Sluice_MenuIcon_v1",
-    "D": "render RM_Sluice_Mover_v1"
-   },
-   "pools": [],
-   "res": "Things/Building/FlowWorks/Canals/RM_Sluice",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D"
-   ],
-   "shownBase": [],
-   "subject_key": "sluice"
-  },
-  "RM_SluiceBox": {
-   "columns": {
-    "A": {
-     "single": "bac28634fa7236bb74c8c1a32b2e009f43da72e73643c665fbb0e928b8af9251"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Building/FlowWorks/Rivers/RM_SluiceBox"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
-   },
-   "pools": [],
-   "res": "Things/Building/FlowWorks/Rivers/RM_SluiceBox",
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "sluicebox"
   },
   "RM_Spikes": {
    "columns": {
@@ -5007,7 +3128,9 @@
     "A": "IN GAME \u2014 Cauldron",
     "B": "render cauldron_suush"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/RM_Suush/RM_Suush"
+   ],
    "res": "Things/Pawn/Animal/RM_Suush/RM_Suush",
    "reserved": [
     "A",
@@ -5132,35 +3255,6 @@
    "shownBase": [],
    "subject_key": "tarrefinery_wrecked"
   },
-  "RM_ThozzikColony": {
-   "columns": {
-    "A": {
-     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
-     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
-     "south": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
-    },
-    "B": {
-     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
-     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb"
-    }
-   },
-   "graphic_of": {
-    "A": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
-    "B": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 TheRot",
-    "B": "history TheRot 2026-10-03"
-   },
-   "pools": [],
-   "res": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "thozzikcolony"
-  },
   "RM_UniversalCargoTank": {
    "columns": {
     "A": {
@@ -5221,7 +3315,9 @@
     "B": "render RM_Vexxiss",
     "C": "render RM_Vexxiss_v2"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss"
+   ],
    "res": "Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss",
    "reserved": [
     "A",
@@ -5266,7 +3362,9 @@
     "C": "render RM_WardenMother",
     "D": "render RM_WardenMother_Aged"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/Miasma/WardenMother/WardenMother"
+   ],
    "res": "Things/Pawn/Animal/Miasma/WardenMother/WardenMother",
    "reserved": [
     "A",
@@ -5303,11 +3401,6 @@
      "east": "9e0f11108fd59541edc2e18dc730e3b511312dfde79f8b88878d315e16c22e9b",
      "north": "50da82f4a530ce1e0507b516983ad0ae86abee404e8bfc788280e1b8afb8f3c3",
      "south": "c617a3bdae414b5744d784274edced21739183c516bde0391395c73bd647fb25"
-    },
-    "F": {
-     "east": "3601ff8203913163c81d1820b83ffe92fd1a65ac1801ca7b0c42f36398738fb0",
-     "north": "8dd585b77fc38d3cbf7140f3fe8854aba841162f30ade1e4fd62ff65125061cd",
-     "south": "3601ff8203913163c81d1820b83ffe92fd1a65ac1801ca7b0c42f36398738fb0"
     }
    },
    "graphic_of": {
@@ -5315,26 +3408,25 @@
     "B": "_byname",
     "C": "_byname",
     "D": "_byname",
-    "E": "_byname",
-    "F": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth"
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Greentide",
     "B": "render regen_gt_yammeth_flying_1_v1",
     "C": "render regen_gt_yammeth_flying_2_v1",
     "D": "render regen_gt_yammeth_flying_3_v1",
-    "E": "render regen_gt_yammeth_flying_4_v1",
-    "F": "history Greentide 2026-10-03"
+    "E": "render regen_gt_yammeth_flying_4_v1"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth"
+   ],
    "res": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
    "reserved": [
     "A",
     "B",
     "C",
     "D",
-    "E",
-    "F"
+    "E"
    ],
    "shownBase": [],
    "subject_key": "yammeth"
@@ -5353,7 +3445,9 @@
    "labels": {
     "A": "IN GAME \u2014 Greentide"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/RM_Zrrik/RM_Zrrik"
+   ],
    "res": "Things/Pawn/Animal/RM_Zrrik/RM_Zrrik",
    "reserved": [
     "A"
@@ -5374,13 +3468,13 @@
      "south": "f363735147ca399ffa3ca6506cc2e6027732eb34512ce4550b2c426a468cd5e6"
     },
     "C": {
-     "east": "2087322b275d751dc21427bd256967e3237cb9d715734e2ad99fe41929a08bce"
+     "east": "71bcec6e395dc729dfa9724a62f91adb3baf24b29951c8a7db28802c2f27a74b",
+     "north": "e0e107a952684108d93c2a585a5cb8186fc1023192abcaf6966d465ac3f93f4c",
+     "south": "004024b73efc88879ec68b7f79fde74d928957dd7ebb6343a85c4415cd80d781"
     },
     "D": {
-     "east": "71bcec6e395dc729dfa9724a62f91adb3baf24b29951c8a7db28802c2f27a74b",
-     "north": "e0e107a952684108d93c2a585a5cb8186fc1023192abcaf6966d465ac3f93f4c"
-    },
-    "E": {
+     "east": "2087322b275d751dc21427bd256967e3237cb9d715734e2ad99fe41929a08bce",
+     "north": "e0e107a952684108d93c2a585a5cb8186fc1023192abcaf6966d465ac3f93f4c",
      "south": "004024b73efc88879ec68b7f79fde74d928957dd7ebb6343a85c4415cd80d781"
     }
    },
@@ -5388,171 +3482,26 @@
     "A": "swanimals/Akk/Akk",
     "B": "swanimals/Akk/Akk",
     "C": "_byname",
-    "D": "_byname",
-    "E": "_byname"
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "our deployed art (render standtall_v1_akk) \u2014 ?",
-    "C": "render dregen_RSW_Akk_Akk_v1",
-    "D": "render donorart_akk_v1 \u2014 grader flagged (advisory)",
-    "E": "render donorart_akk_v3"
+    "C": "merged set \u2014 v3 south + v1 east/north",
+    "D": "merged set \u2014 v3 south + dregen east + v1 north"
    },
-   "pools": [],
+   "pools": [
+    "swanimals/Akk/Akk"
+   ],
    "res": "swanimals/Akk/Akk",
    "reserved": [
     "A",
     "B",
     "C",
-    "D",
-    "E"
+    "D"
    ],
    "shownBase": [],
    "subject_key": "akk"
-  },
-  "RSW_Anooba": {
-   "columns": {
-    "A": {
-     "east": "a616443d96fbee65ef9170145a450a5d4dace58012cbd5205d4d4f77e03c0d04",
-     "north": "ec084f56df1ff8c64bce291d0d8350e38fdd74fa1672a80e30214ec0abee519a",
-     "south": "9d63a4733f0f8ff358d154e3208731fa31e9f11d165c5fa43be1b010c58f32ba"
-    },
-    "B": {
-     "east": "a616443d96fbee65ef9170145a450a5d4dace58012cbd5205d4d4f77e03c0d04",
-     "north": "ec084f56df1ff8c64bce291d0d8350e38fdd74fa1672a80e30214ec0abee519a",
-     "south": "269d409cbecb5b94c35adfa9232b97642574e7634939499568d638a45476ccf1"
-    },
-    "C": {
-     "east": "2cbadfc9c5276d09059b21427d0b5e6f18361464d58c1400b3477a1e3c5c04b1",
-     "north": "eea7e9ae90c7dddb3d7f2f9554c096d07223599a985414dec1828c896817ef2f",
-     "south": "4c5c7428147e39e8fba3899540b32321acc1185f0265da3180fae1eaf6eb746d"
-    }
-   },
-   "graphic_of": {
-    "A": "RimStarWars/SWBestiary/Anooba/Anooba_f",
-    "B": "RimStarWars/SWBestiary/Anooba/Anooba_f",
-    "C": "RimStarWars/SWBestiary/Anooba/Anooba_m"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render standtall_v1_anooba_f",
-    "C": "IN GAME \u2014 SWBestiary"
-   },
-   "pools": [],
-   "res": "RimStarWars/SWBestiary/Anooba/Anooba_f",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "anooba"
-  },
-  "RSW_Bordok": {
-   "columns": {
-    "A": {
-     "east": "863dce95225da2e540f379c92f917109cee85b200a4cbb3b90a367d852800b5e",
-     "north": "4c33784fe5bcb7975bdea2fe2cf4bf7c9cb2654dd2f7f85a274750c048a16634",
-     "south": "219a20c8b9be63552a34da9b97d8f6819479b2d161eca3e91a748b2a11411ef2"
-    },
-    "B": {
-     "east": "5967254d535c566e2104aff676fe07f8bf6384cc7a353a32e50b8c404d7944c0",
-     "north": "836f2f2feb3b8aa78ca5ee59f150544c49392ca62ee77582e564dd2db737ec12",
-     "south": "8c21f0bada163f68721a9df4d3a29538f5e387382dda01ce1a3ba4857d6df8dc"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Bordok/Bordok",
-    "B": "swanimals/Bordok/Bordok"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Bordok/Bordok",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "bordok"
-  },
-  "RSW_Brezak": {
-   "columns": {
-    "A": {
-     "east": "11e84a555b07829d75ecdfaae93c256d8f57932ebe075265b0e4acfab7359e0a",
-     "north": "b9791a3d63e257bbc92aea51d62b2ff0419c24e80d6e8be3b9becbe8262ebb32",
-     "south": "936af8b6cd334fdfe0e194f47a3140c9106e6e55a9714cc355d3cea99ad9dff9"
-    },
-    "B": {
-     "east": "11e84a555b07829d75ecdfaae93c256d8f57932ebe075265b0e4acfab7359e0a",
-     "north": "7f9dedbe45025010ee91bebc708924c57ad720d62b70b41561420d66e03eb5be",
-     "south": "ad72d0b07200b2e843e543101f0beb7bc80035ba36d200eb5c07ca6c30aaad82"
-    },
-    "C": {
-     "east": "d55a3a29d4b6c4f7a06e23a55f751d8c43f13d703d918379b615805c553a54fb",
-     "north": "b2f77d04b5b7a16c9541d91127f877e9b33cb2d91b69d96487ea6e85a85ca298",
-     "south": "fe950c93a78a8c39a23ddf4274e947e218c9a07c3b8f4cf14a7fced05e79082a"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Brezak/Brezak",
-    "B": "swanimals/Brezak/Brezak",
-    "C": "swanimals/Brezak/Brezak"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render donorart_brezak_v1",
-    "C": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Brezak/Brezak",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "brezak"
-  },
-  "RSW_CorellianHound": {
-   "columns": {
-    "A": {
-     "east": "ab50b2736da0504839faee4f9b208ba697577cb9b5d35bd7a45d18cba035e275",
-     "north": "a89aa446565ec9b5bebc932ac379edb63070502d85c665d73fd5a25b9d97661b",
-     "south": "46afcc7a0f0f509b2dda15413f5b459f4a955df18bb86d0f7e322e0e20491bfb"
-    },
-    "B": {
-     "east": "ab50b2736da0504839faee4f9b208ba697577cb9b5d35bd7a45d18cba035e275",
-     "north": "7ac76bc65e5fe2de72f34e60c7484c825386c263786c6d7f6690807317d071a7",
-     "south": "46afcc7a0f0f509b2dda15413f5b459f4a955df18bb86d0f7e322e0e20491bfb"
-    },
-    "C": {
-     "east": "8761fe8f27c3f50c0bc37f9aa95749ab42988d2d978d2f25f7a626bbda44ac3f",
-     "north": "9a82949468b4031b076331caf2c36d310a5bfb6ed2314f5ff57690cea0c86e5d",
-     "south": "87b92f25a1b6a6f8e18eeaaf6b037fe8c9036bbaf34669afd0ad89a4cfc06b88"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/CorellianHound/CorellianHound",
-    "B": "swanimals/CorellianHound/CorellianHound",
-    "C": "swanimals/CorellianHound/CorellianHound"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render donorart_corellianhound_v1",
-    "C": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/CorellianHound/CorellianHound",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "corellianhound"
   },
   "RSW_Devourers": {
    "columns": {
@@ -5582,7 +3531,9 @@
     "B": "render donorport_devourer_v1",
     "C": "donor original \u2014 ?"
    },
-   "pools": [],
+   "pools": [
+    "swanimals/Devourer/Devourer"
+   ],
    "res": "swanimals/Devourer/Devourer",
    "reserved": [
     "A",
@@ -5591,88 +3542,6 @@
    ],
    "shownBase": [],
    "subject_key": "devourers"
-  },
-  "RSW_EnergySpider": {
-   "columns": {
-    "A": {
-     "east": "92f284e5f7fd956cf366896b007b732da93d90b4323da9b46ce8abd4026ecb5f",
-     "north": "7c60edc0722962f5901163c738c8cb8b357a9d67fd48245c15bb7a45d90aee10",
-     "south": "4a9c0d50dc41d6ad1d92cc64d8d8d783dff937523600c2b426962096430b9440"
-    },
-    "B": {
-     "east": "92f284e5f7fd956cf366896b007b732da93d90b4323da9b46ce8abd4026ecb5f",
-     "north": "7c60edc0722962f5901163c738c8cb8b357a9d67fd48245c15bb7a45d90aee10",
-     "south": "bd8bb3768381145edeeb07365e89c0cb7dd17dc788e79dfe1f69c93e85ac46d6"
-    },
-    "C": {
-     "east": "e96003aef247a3cb0a0c820afb9db163b4d4c9caa3e8716a7196cd31a4069ff7",
-     "north": "4971d6a7362ba2913f66347fca13c9167b70f857e49cbc95ae51c62c0b1dfd84",
-     "south": "cb027fd9a5ceb07e274cd84552f562af439e9b21afd802b61803264aa34ad4a4"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/EnergySpider/EnergySpider",
-    "B": "swanimals/EnergySpider/EnergySpider",
-    "C": "swanimals/EnergySpider/EnergySpider"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render donorart_energyspider_v1",
-    "C": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/EnergySpider/EnergySpider",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "energyspider"
-  },
-  "RSW_GraniteSlug": {
-   "columns": {
-    "A": {
-     "east": "efd923996ac19754fa0bc545a4dc823cb4ab9968cc6d6529fe5ade17d94dcd75",
-     "north": "5acb23c0e87d2e815511979595b57e2c069d7244e404c0d3dae837e952e0cd8f",
-     "south": "a8ba302dc700373cbb387089e6083d19ca10eccd362f1ecef28e5553f42dcff6"
-    },
-    "B": {
-     "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d"
-    },
-    "C": {
-     "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d",
-     "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
-     "south": "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365"
-    },
-    "D": {
-     "east": "ab103e9b3a0ed6e852e84ca64344b166f7cae4e04d9b592613b8e52301b7ec35",
-     "north": "705da5a1d8988980f1d0ecd3f353c6334a972e2a0af00a4db3a2e60bcea3383e",
-     "south": "c1d2796520a1a2d887d53b53463c87d9ee170b06e43592283d7956e6e5a9694d"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/GraniteSlug/GraniteSlug",
-    "B": "swanimals/GraniteSlug/GraniteSlug",
-    "C": "swanimals/GraniteSlug/GraniteSlug",
-    "D": "swanimals/GraniteSlug/GraniteSlug"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render standtall_b1_graniteslug",
-    "C": "render stillsand_regen_RSW_GraniteSlug_v2",
-    "D": "history SWBestiary 2026-09-17"
-   },
-   "pools": [],
-   "res": "swanimals/GraniteSlug/GraniteSlug",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D"
-   ],
-   "shownBase": [],
-   "subject_key": "graniteslug"
   },
   "RSW_Gualaar": {
    "columns": {
@@ -5695,7 +3564,9 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render offbiome_gualaar_v2"
    },
-   "pools": [],
+   "pools": [
+    "RimStarWars/SWBestiary/Gualaar/Gualaar"
+   ],
    "res": "RimStarWars/SWBestiary/Gualaar/Gualaar",
    "reserved": [
     "A",
@@ -5735,7 +3606,9 @@
     "C": "render dregen_RSW_Leather_Gundark_LeatherReptomammala_v1",
     "D": "render dregen_RSW_Leather_Gundark_LeatherReptomammalb_v1"
    },
-   "pools": [],
+   "pools": [
+    "swanimals/Gundark/Gundark"
+   ],
    "res": "swanimals/Gundark/Gundark",
    "reserved": [
     "A",
@@ -5754,9 +3627,6 @@
      "south": "730e3d2a59dbf99df822fb46b5ce2bcf65f439ab2f6218041c20ae4f2245ff36"
     },
     "B": {
-     "east": "905612bbd73012acd3ba4804fa15e59f5f43275c1fc6c26d5881cc56025d5baa"
-    },
-    "C": {
      "east": "6383a27c137230f67953f0bb70a3bfc99aa8693afd7225a340433da3371a2e70",
      "north": "ec3215970c08dd14f76d9afa2b45cf1eaecd5c3e4d576ed2defe229802c770bf",
      "south": "7696561e5f4fb6b562ff52934f660d1e10b5d4a923cc24799e2f016cf46d1a2c"
@@ -5764,61 +3634,22 @@
    },
    "graphic_of": {
     "A": "RimStarWars/SWBestiary/Insectomorph/Insectomorph",
-    "B": "RimStarWars/SWBestiary/Insectomorph/Insectomorph",
-    "C": "RimStarWars/SWBestiary/Insectomorph/Insectomorph"
+    "B": "RimStarWars/SWBestiary/Insectomorph/Insectomorph"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render canonregen_insectomorph_v1 \u2014 grader flagged (advisory)",
-    "C": "render canon_insectomorph_v1"
+    "B": "render canon_insectomorph_v1"
    },
-   "pools": [],
+   "pools": [
+    "RimStarWars/SWBestiary/Insectomorph/Insectomorph"
+   ],
    "res": "RimStarWars/SWBestiary/Insectomorph/Insectomorph",
    "reserved": [
     "A",
-    "B",
-    "C"
+    "B"
    ],
    "shownBase": [],
    "subject_key": "insectomorph"
-  },
-  "RSW_Katarn": {
-   "columns": {
-    "A": {
-     "east": "80e47c1b15480e1b144f2c0f3bcd87aead1c5892c93d21e4964963d3b2f3079d",
-     "north": "9ee8e127bb98dbed37e66a6205a89aff4c4f6247e4dd8e0a59cc0a9b23e148e4",
-     "south": "0fa5b7e45fee871a209ae658f3942c9b496e1de41ecfd957f643f5c3cace6db6"
-    },
-    "B": {
-     "east": "80e47c1b15480e1b144f2c0f3bcd87aead1c5892c93d21e4964963d3b2f3079d",
-     "north": "3c9391affd1bd9a7f731f483e9a7654c9bb8c54a5dbd451a6937084f174b7b3a",
-     "south": "2aca82044da042bf1d7a010b677d9d5fb7f8e0c527fd061caf9659a7d6b642b6"
-    },
-    "C": {
-     "east": "7c7c5d638daa559873c5470d129b74c54fd292471d85b90e2b2be9360b124d2f",
-     "north": "cf1b6c77e92c88e7cdbae0abd07eff565e8f86404541cdad7a72b6452f9e7af0",
-     "south": "82f57da149841796b79a68831100e1a41557fb4cbbe240522112011a248705a8"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Katarn/Katarn",
-    "B": "swanimals/Katarn/Katarn",
-    "C": "swanimals/Katarn/Katarn"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render donorart_katarn_v1",
-    "C": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Katarn/Katarn",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "katarn"
   },
   "RSW_KellDragon": {
    "columns": {
@@ -5833,12 +3664,14 @@
      "south": "936aa1daba5a94613c2a933027f3d7ed62ffebc86510bf1f45dcd68d55c60210"
     },
     "C": {
-     "north": "7823696e11242ec4091b6b4887704857537e123fbd7627fcaa1ca765e56e349d"
-    },
-    "D": {
      "east": "9f14b19a2361eefd46ea02f16a229f9a9c46cc3b2aaeffb2b340d741c5b40829",
      "north": "a89e0ab9d211a5880d186290df153dcde208c37b13afecfbc9fe5551bbde2dcd",
      "south": "5a1ab3e1b25f9d5b6f469841cc295b64d4dc578f2e296c4f9d55ef66aa9a843d"
+    },
+    "D": {
+     "east": "ded2144a2b5620364259e2ebe239a77864329e6da5870e71757d4bd3a1edc801",
+     "north": "7823696e11242ec4091b6b4887704857537e123fbd7627fcaa1ca765e56e349d",
+     "south": "936aa1daba5a94613c2a933027f3d7ed62ffebc86510bf1f45dcd68d55c60210"
     }
    },
    "graphic_of": {
@@ -5850,10 +3683,12 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render donorart_kelldragon_v1 \u2014 grader flagged (advisory)",
-    "C": "render donorart_kelldragon_v2",
-    "D": "donor original \u2014 ?"
+    "C": "donor original \u2014 ?",
+    "D": "merged set \u2014 v1 south + in-game east + v2 north"
    },
-   "pools": [],
+   "pools": [
+    "swanimals/KellDragon/KellDragon"
+   ],
    "res": "swanimals/KellDragon/KellDragon",
    "reserved": [
     "A",
@@ -5863,36 +3698,6 @@
    ],
    "shownBase": [],
    "subject_key": "kelldragon"
-  },
-  "RSW_Maalraas": {
-   "columns": {
-    "A": {
-     "east": "cf606220707245e80228cb9bc497a21e2b012c8d808ef1d0ccaeb37a1f857d6d",
-     "north": "6209ffcefb417c81c981a1f25413155d216a07b6d17ee64a6e4bf51a2e2dc6dc",
-     "south": "09d522f97b5c2058acd4a45d574e5e011c5c343b00154204663364e97cee54b3"
-    },
-    "B": {
-     "east": "38ba4728caa869fcb1c27aae6229921a0cbf0dd58074a8ebe3c8350e59348103",
-     "north": "0ba5e09e4e937da47dbc30c6dc3f99d03ab8fb2c33669fafa890013b16e18da7",
-     "south": "a9c612a8b92c79dc36447d411df0faf20a45ef0c3afe7b2e50222de7aafe11e2"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Maalraas/Maalraas",
-    "B": "swanimals/Maalraas/Maalraas"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Maalraas/Maalraas",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "maalraas"
   },
   "RSW_Manka": {
    "columns": {
@@ -5922,7 +3727,9 @@
     "B": "render donorart_manka_v1",
     "C": "donor original \u2014 ?"
    },
-   "pools": [],
+   "pools": [
+    "swanimals/Manka/Manka"
+   ],
    "res": "swanimals/Manka/Manka",
    "reserved": [
     "A",
@@ -5960,7 +3767,9 @@
     "B": "render donorart_mawvorr_v1",
     "C": "donor original \u2014 ?"
    },
-   "pools": [],
+   "pools": [
+    "swanimals/Mawvorr/Mawvorr"
+   ],
    "res": "swanimals/Mawvorr/Mawvorr",
    "reserved": [
     "A",
@@ -5970,71 +3779,6 @@
    "shownBase": [],
    "subject_key": "mawvorr"
   },
-  "RSW_Mynock": {
-   "columns": {
-    "A": {
-     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
-     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747",
-     "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
-    },
-    "B": {
-     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
-     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747"
-    },
-    "C": {
-     "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
-    }
-   },
-   "graphic_of": {
-    "A": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
-    "B": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
-    "C": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render warscar_Mynock_v2",
-    "C": "history SWBestiary 2026-09-11"
-   },
-   "pools": [],
-   "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "mynock"
-  },
-  "RSW_PaintedSpat": {
-   "columns": {
-    "A": {
-     "east": "9432da2136a9b524ba5b6f96c67ca1332bf417bd2c9e02d90cbe781e3b697b7f",
-     "north": "07b66a2274fb4d0778ae02ac0f3b9f65b1ca8b99ced7515831cdffda19c5c3bf",
-     "south": "742cae73ffbe5400421ef2c7830cf1581411cc738db08bedaf5280c60c247114"
-    },
-    "B": {
-     "east": "d6155bb929cd67596d8ced313f772a15ff75b688e58e666bff778bd1e9cdee8d",
-     "north": "7ac9c7cb0783b95015bef645e6268c00590d93eb9316099340b7a29e6c284fda",
-     "south": "afbc6020bfab0ff8807596565004e9932d274182b7e7d171f56835d44e6bab85"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/PaintedSpat/PaintedSpat",
-    "B": "swanimals/PaintedSpat/PaintedSpat"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/PaintedSpat/PaintedSpat",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "paintedspat"
-  },
   "RSW_Rancor": {
    "columns": {
     "A": {
@@ -6043,68 +3787,59 @@
      "south": "75605cf88ad9259aa3a9e62ffaa516220d97f1c51304c52953c3e3915e10bd3c"
     },
     "B": {
-     "single": "0f2e9767dccb7bf310cdb612ce22b0128f78b277c4c9278b9597f0d710e4b4aa"
-    },
-    "C": {
-     "single": "dd77612b3f0c8b1f33565e3bfa7a01f5e78f6d0108e947a401afdd34257e20e4"
-    },
-    "D": {
-     "single": "8eb5741b2fa040381dd7bc86d672711cf933bf7f33ebfeeb80feaed09bea2b13"
-    },
-    "E": {
      "east": "38936916cee229d2b27ea6f345d1f2e5f706ebc07364520ce55cffcd8653808d"
     },
-    "F": {
+    "C": {
      "east": "aaa098e7379c41368e54546c81bedc8edf30178e7e9dfb2c776d9f03057b2210",
      "north": "850c0abb7016caa4877213709008ce9be52c564132df69e555c7bab047fc2088",
      "south": "7cc95e75c11829bd6058d4d0dc8cafaaf632b051abff1cd53edb048e584ad30d"
     },
-    "G": {
+    "D": {
      "east": "17474c0846a99fd15dde4e6c4b168418581bdce8ef6e6c9dcaaa071f60d3a46f",
      "north": "20f0d6bf20eb133bf82798e679c2f264d752d9adad13079f4ff174fb978dcf58",
      "south": "2e0fe42a10278da81826439681e863aa036121829be95f399b90c7fbfc0a4e4e"
     },
-    "H": {
+    "E": {
      "east": "b17d8e4f193f7bdde7beb189ec1997b1c27efba5dea7d812394e2d3f7af437d7",
      "north": "7c25e9eeca2fde3bd5a841043fc7ef99ab108f6e74ed3204d74687426d26b0c9",
      "south": "6c7d10df294887b3839697797877cc50f3e170a3d5dec77a7d1f35fa02cecded"
     },
-    "I": {
+    "F": {
      "east": "f6f652edf5036907dd3fb70b7b7ebfdd6daa4fbc3879578bdd758a591f8df3f1",
      "north": "6601c9e74dbe312a911525f149aa8935cffdf52e0697692f87e2480d5c375cb7",
      "south": "eb1c8e9e12d0eac9892af1fd15b0cd3fef5797f5d5e5a92abcac94526460e79e"
     },
-    "J": {
+    "G": {
      "east": "aadafbbe3647205ce2d28dccf2e1de6170321f73b967a9baaa7edaa191ebc19c",
      "north": "d31112a8dfdf04f8d3d48f3193850776b2a1b8333622239fd5c3e8919a809562",
      "south": "ae1c5b99824879f31d9377c9a4ae6e6e0ee9ab8ced1b6d69e61c57ca47b17d35"
     },
-    "K": {
+    "H": {
      "east": "86a82dd525f845649c749549ab7eda6a9e1f0efbb26f1759b2dc84c34b31eee7",
      "north": "8c8062d82c8c11539785ee1d91ed7d3ebf20fd9f4867302597a0414a17513320",
      "south": "5a356324fbfbeddf17965b7371d1eee91e34505261a7e8115ad2ac7b9dc8e81f"
     },
-    "L": {
+    "I": {
      "east": "c4fe2623c76ac98935eb806b764a0cda0d20f4c3b8115c2b22623fa02f3a906c",
      "north": "3ec154f5d05686879202e528e9aed78eb438cf91e502cac8cb31d73f55c0be8c",
      "south": "7f148cace0cd5a152e6b2b14f141745994b9c70cce6556f6484affc1eb08961b"
     },
-    "M": {
+    "J": {
      "east": "20734281ea75fc50b9d3676ad335e7d9e2428198781d1c55c0ce1e67a0fc7655",
      "north": "32c89da674e32e483b1ca9cdd71cc81f8a05d209b9fbaf2a6e410f18f2258e1f",
      "south": "8da4de6deaf927b4b95631cfddf71503f5b78d0d0482d0b4c2c845d93974cc54"
     },
-    "N": {
+    "K": {
      "east": "d6146a642e301107cfd1e7fd974baf37b28323dbc31f32edf9f19831d4dcae58",
      "north": "1dd2cac2d028cb08f5a3f04461bd29f41709ab571f31a5787ea139400ad80ca7",
      "south": "bd7d37477a67523e1054b6391a75543fabc3ac0669077268152604f7919d1537"
     },
-    "O": {
+    "L": {
      "east": "5ae1d0806ad8b69af90bd278b88555fa488c974b1473aefc02b4bbf65f55cc6c",
      "north": "e9bfd89110599a6f133dcb74c1f71629f249ef216b176ebf41abb004c8194fec",
      "south": "0dcb9275e0119216cd81659ea7396417f0358a38249af5308d250b08256ba2c8"
     },
-    "P": {
+    "M": {
      "east": "b299d20cca532cb5cdc7766fa8c1491cdfd72387730837e940cf0ff7cb11bdc2",
      "north": "a4392aefaf2e0fdd9853a81e5adf57ed51ebdbbacdd9f5de3e38508066423648",
      "south": "918ef81311512a46c92c41090783776832cba6cb85ab73783be33ad582a1b913"
@@ -6114,37 +3849,31 @@
     "A": "swanimals/Rancor/Rancor",
     "B": "swanimals/Rancor/Rancor",
     "C": "swanimals/Rancor/Rancor",
-    "D": "swanimals/Rancor/Rancor",
-    "E": "swanimals/Rancor/Rancor",
-    "F": "swanimals/Rancor/Rancor",
-    "G": "swanimals/Rancor/RancorA",
-    "H": "swanimals/Rancor/RancorA",
-    "I": "swanimals/Rancor/RancorB",
-    "J": "swanimals/Rancor/RancorB",
-    "K": "swanimals/Rancor/RancorC",
-    "L": "swanimals/Rancor/RancorC",
-    "M": "swanimals/Rancor/RancorD",
-    "N": "swanimals/Rancor/RancorD",
-    "O": "swanimals/Rancor/RancorE",
-    "P": "swanimals/Rancor/RancorE"
+    "D": "swanimals/Rancor/RancorA",
+    "E": "swanimals/Rancor/RancorA",
+    "F": "swanimals/Rancor/RancorB",
+    "G": "swanimals/Rancor/RancorB",
+    "H": "swanimals/Rancor/RancorC",
+    "I": "swanimals/Rancor/RancorC",
+    "J": "swanimals/Rancor/RancorD",
+    "K": "swanimals/Rancor/RancorD",
+    "L": "swanimals/Rancor/RancorE",
+    "M": "swanimals/Rancor/RancorE"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render p0art_meat_rancor_a_v1",
-    "C": "render p0art_meat_rancor_b_v1",
-    "D": "render p0art_meat_rancor_c_v1",
-    "E": "render donorart_rancor_v1 \u2014 grader flagged (advisory)",
-    "F": "donor original \u2014 ?",
-    "G": "IN GAME \u2014 SWBestiary",
-    "H": "donor original \u2014 ?",
-    "I": "IN GAME \u2014 SWBestiary",
-    "J": "donor original \u2014 ?",
-    "K": "IN GAME \u2014 SWBestiary",
-    "L": "donor original \u2014 ?",
-    "M": "IN GAME \u2014 SWBestiary",
-    "N": "donor original \u2014 ?",
-    "O": "IN GAME \u2014 SWBestiary",
-    "P": "donor original \u2014 ?"
+    "B": "render donorart_rancor_v1 \u2014 grader flagged (advisory)",
+    "C": "donor original \u2014 ?",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "donor original \u2014 ?",
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "donor original \u2014 ?",
+    "H": "IN GAME \u2014 SWBestiary",
+    "I": "donor original \u2014 ?",
+    "J": "IN GAME \u2014 SWBestiary",
+    "K": "donor original \u2014 ?",
+    "L": "IN GAME \u2014 SWBestiary",
+    "M": "donor original \u2014 ?"
    },
    "pools": [
     "swanimals/Rancor/Rancor",
@@ -6168,185 +3897,10 @@
     "J",
     "K",
     "L",
-    "M",
-    "N",
-    "O",
-    "P"
+    "M"
    ],
    "shownBase": [],
    "subject_key": "rancor"
-  },
-  "RSW_Raxshir": {
-   "columns": {
-    "A": {
-     "east": "77bd20fc6889b9c50977fcfc5510215cc65923a65e3e90d6ceb41c3b039ed14c",
-     "north": "b8319ca764d5566824db634ae805d1a70a94c7950979fd6519fdca5f876cf4a6",
-     "south": "a1a128e720194bf3e728ad7d9c5bc85ba07bd5fcdccc53f47f300c83c3fa164f"
-    },
-    "B": {
-     "east": "77bd20fc6889b9c50977fcfc5510215cc65923a65e3e90d6ceb41c3b039ed14c",
-     "north": "b8319ca764d5566824db634ae805d1a70a94c7950979fd6519fdca5f876cf4a6",
-     "south": "82d0078328d0e290628534f012956ef8722c33367458943d43b4b28496226d6e"
-    },
-    "C": {
-     "east": "303bebfd0eb2cd67afba2082fe4976faffa2e04d11e829784dcc61d01b803c3d",
-     "north": "e33730f6ca164f28f78d780af3ebbe272cd74e09790b8494e5511e6fa5b31d81",
-     "south": "8376371764670010430430496e3d850967fa3462b9171b7dbfbc1d937c255b76"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Raxshir/Raxshir",
-    "B": "swanimals/Raxshir/Raxshir",
-    "C": "swanimals/Raxshir/Raxshir"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render donorart_raxshir_v1",
-    "C": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Raxshir/Raxshir",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "shownBase": [],
-   "subject_key": "raxshir"
-  },
-  "RSW_Rikknit": {
-   "columns": {
-    "A": {
-     "east": "c502dd095d5d82047119033b41ca1232525638f7f565e91e0d2027f29e34a43d",
-     "north": "3cab7a16731523093982644f511a7e4566919b05b675f5853c3ea05ed0e31ae3",
-     "south": "f6cf3a285ed1c8ac118b1dc86bcc3b9e5b371e79bf060cb5b3d3776ce5456ea0"
-    },
-    "B": {
-     "east": "32b0e5826a8f7c91b711a8dec36eac4b91810f3fee0b83aae795a18a732d80bd",
-     "north": "d28bb53f5cb7320b6f734688341a197c9e06f28e18dbff744808151f352a87bf",
-     "south": "ab06ee734e6a682968971080b319c8935e60c52b292d75392c217316d939cc58"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Rikknit/Rikknit",
-    "B": "swanimals/Rikknit/Rikknit"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Rikknit/Rikknit",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "rikknit"
-  },
-  "RSW_Roggwart": {
-   "columns": {
-    "A": {
-     "east": "6e194fbc4e4204c65f0d6e4eb00bc46385d6f93de761bdd8b65c67315b19cb20",
-     "north": "cc071409457963d5c2245f8e5c035ca9339e558e213a93e2d9286e4ab2e33d6e",
-     "south": "2ef85728d81ebca9d942b9922edb7e885934a112a470f330a800e85faef6ae12"
-    },
-    "B": {
-     "east": "b3a4128ffc828b58cb56a91d28f8cb633b2928b8571890ad07002106d97c7126",
-     "north": "3baea4fcb9f2705aed623cae811b246664ee4e3c0ceafdce242c008cf8dc888a",
-     "south": "312cd6b38ea78ff2c479accec609bf50a0a38adfbea59d1fe2b640d8d71e83d5"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Roggwart/Roggwart",
-    "B": "swanimals/Roggwart/Roggwart"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Roggwart/Roggwart",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "roggwart"
-  },
-  "RSW_Squall": {
-   "columns": {
-    "A": {
-     "east": "1a57ab43578dc1c2e7d3ca800d9d4417e5a0db4c4edc482f8ca33bbd9e4ecdda",
-     "north": "180c4abb0181515967e4f9f63b639c704ab33fc109cdbd9ffa0c6037a956104e",
-     "south": "a65ddb0aba91cdef7cc7ba37335dd940c98ae1e5f5e922aedf001416e283f403"
-    },
-    "B": {
-     "east": "b3f8d8dfaa270e096be6b294e16d158d4cee04a25a0563b14392e689d8d0d5a6",
-     "north": "e0a574dd79031ad1e56ec9f62b9d07c0ade2d808ba5d6c974a9a9a4b186f3062",
-     "south": "e48d57e0d52b3e2ae026b30c93f95d7564d1b816d67bf83e572a72eab4965819"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Squall/Squall",
-    "B": "swanimals/Squall/Squall"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Squall/Squall",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "squall"
-  },
-  "RSW_Tach": {
-   "columns": {
-    "A": {
-     "east": "47b854dce6be8d361d0de875c228754ed51e89251c99b79bf3b657d4790fc334",
-     "north": "c749633fa27f861db384615320d215dbe2b7ebdc4ae5e5f8ed28218aebd25baf",
-     "south": "be925f7aec37164907767cc765b7e6bd08a12af8ae43b6462e7af188a02a2faa"
-    },
-    "B": {
-     "east": "47b854dce6be8d361d0de875c228754ed51e89251c99b79bf3b657d4790fc334",
-     "north": "7f9fef6ed40fdb18c4f0676e8786605e61a7111d4c47fc3ba7c5c4c10890f4a8",
-     "south": "be925f7aec37164907767cc765b7e6bd08a12af8ae43b6462e7af188a02a2faa"
-    },
-    "C": {
-     "north": "c749633fa27f861db384615320d215dbe2b7ebdc4ae5e5f8ed28218aebd25baf"
-    },
-    "D": {
-     "east": "1117912586cf565e5f9f668835e4b091d1bb303c4ae70d6ef99609076273227d",
-     "north": "d6194d76c0c2330dbeb1cec736d02fd36a4df5bdaf96471ba0e4199192d23090",
-     "south": "2c70893c22c19507bed807809e4e2db440c04333d3956d01defcd9823ecfc378"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Tach/Tach",
-    "B": "swanimals/Tach/Tach",
-    "C": "swanimals/Tach/Tach",
-    "D": "swanimals/Tach/Tach"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render donorart_tach_v1 \u2014 grader flagged (advisory)",
-    "C": "render donorart_tach_v2",
-    "D": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Tach/Tach",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D"
-   ],
-   "shownBase": [],
-   "subject_key": "tach"
   },
   "RSW_Taozin": {
    "columns": {
@@ -6356,39 +3910,21 @@
      "south": "9314a4e6392e3f1ecac5e7753dd7d657e824b11e010b9b8c466fb3a4c4a97dfd"
     },
     "B": {
-     "east": "e65568e22d6f83be6a8ac097fc34b284f01450701710e3ef230f104c5220fa30",
-     "north": "4342197e79ecd52b9f59753c4470649ee9b7e54c986f62893855a2928a246659",
-     "south": "9107c8c872eff603e479477fa22c5a0da04941aada812290ad755b0c0ff09dc3"
-    },
-    "C": {
-     "east": "6a2991f5ecc3dc01f8aa820c39f86d70865bc5a4e1242a02e4f7864493372bdc",
-     "north": "08cbd50b9fc4b1c0dd6645cac26f770c67fcd15ad7edf8f97e64614389270a58",
-     "south": "dd9a9dda5ec0677e62c3731a5edae05a9efe8d1de6ab0f0456e925143c036b02"
-    },
-    "D": {
      "east": "e33621270eb3a78138216f0aab1871429704026bdc54a88cd8c584e5fa338ec1",
      "north": "762859f6802c145174f35187a2af9a34ceb382dbee024856cab48b5f12348a4f",
      "south": "76eecb90b04db40a24754fca8a37835f726fc6c46c2efb1cbbc11058a18343f0"
     },
-    "E": {
-     "east": "c40e64b7bd8c30b7294d8ba9059d58137e717377ba5760207ce0fa54ea247e9c"
-    },
-    "F": {
+    "C": {
      "east": "53874283b49ee762b89a73b4ad61e51e5db247356798a947f2ba08e7322f4b0e",
      "north": "f62d91cbd0e8474f2d7efab76b001f33c0a04db7e06f7a142a2024f15404ed28",
      "south": "10a3465d6fe47a7883e808ea8e0d116857dfe18a4b5023d2abc59fc8462c1886"
     },
-    "G": {
+    "D": {
      "east": "53874283b49ee762b89a73b4ad61e51e5db247356798a947f2ba08e7322f4b0e",
      "north": "2267903e8bd76ead7521227598e292a106a40db5771dad71db49aa600ad5f720",
      "south": "81f9d1d57293d3fcaeaa7b6c0e74e668b271bd357e821ec22318958da73ee339"
     },
-    "H": {
-     "east": "eb1565ecf6e195358873728c4f24b176c2e6f868e6194cba3054b48f460479ba",
-     "north": "763660e44dbb8bca415775132de7196a4c6f96adb163747250ded665e2155313",
-     "south": "503303964fd3caf730c0ba4d4e63dadd10244d384204c79fc6f1b184c573d8cd"
-    },
-    "I": {
+    "E": {
      "east": "2263667da8cf62c65a77528e64929e281f8352d42c51b575eb74485ec2bdc8d7",
      "north": "124e08b24551c87af41643dca78c0931b54ee9ad4eb02bdf117d331b6c299a3c",
      "south": "6b054cb1a01e1621c830371900aa1985719749291a489863dcc4a84b5fa27979"
@@ -6399,70 +3935,28 @@
     "B": "Things/Pawn/Animal/RSW_Taozin/RSW_Taozin",
     "C": "Things/Pawn/Animal/RSW_Taozin/RSW_Taozin",
     "D": "Things/Pawn/Animal/RSW_Taozin/RSW_Taozin",
-    "E": "Things/Pawn/Animal/RSW_Taozin/RSW_Taozin",
-    "F": "Things/Pawn/Animal/RSW_Taozin/RSW_Taozin",
-    "G": "Things/Pawn/Animal/RSW_Taozin/RSW_Taozin",
-    "H": "Things/Pawn/Animal/RSW_Taozin/RSW_Taozin",
-    "I": "_byname"
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render taozin_split_grub_brined_v1",
-    "C": "render taozin_split_grub_v1",
-    "D": "render enact_6f520ce8_taozin_v1",
-    "E": "render standtall_b1_taozin_j",
-    "F": "render standtall_b1_taozin",
-    "G": "render donorart_taozin_v1",
-    "H": "render donorart_taozin_j_v1",
-    "I": "render enact_50f92153_taozin_v1"
+    "B": "render enact_6f520ce8_taozin_v1",
+    "C": "render standtall_b1_taozin",
+    "D": "render donorart_taozin_v1",
+    "E": "render enact_50f92153_taozin_v1"
    },
-   "pools": [],
+   "pools": [
+    "Things/Pawn/Animal/RSW_Taozin/RSW_Taozin"
+   ],
    "res": "Things/Pawn/Animal/RSW_Taozin/RSW_Taozin",
    "reserved": [
     "A",
     "B",
     "C",
     "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I"
+    "E"
    ],
    "shownBase": [],
    "subject_key": "taozin"
-  },
-  "RSW_Tauntaun": {
-   "columns": {
-    "A": {
-     "east": "27e976bc5fea092659db109edbe221d33ee507b3c72f6408e663e0eb6bd806f4",
-     "north": "d5141e04d0f4ac9a382dd7eb66690e8e4193c7cf5c24e3ef908f307766166c5b",
-     "south": "54256ce93ad9bb12ed2c9cdb4ba295404b8dc93b2875ff201e469b837cd5d4ec"
-    },
-    "B": {
-     "east": "dd42ec0c1ec17e2aea9f8d187327c80f022d06b3136fd699e431af204f84e9ed",
-     "north": "192352a7f27eb33bdc7284dfdd801ecf4f81e8cb462a26dcdbf514a08dff4da7",
-     "south": "4e688911e696993db0b5a5417c08d8feebbe689d1d37e727526fe4aa44e6ee40"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
-    "B": "_byname"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render gapall_Tauntaun_v1"
-   },
-   "pools": [
-    "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
-   ],
-   "res": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "tauntaun"
   },
   "RSW_TetnissCrab": {
    "columns": {
@@ -6547,50 +4041,6 @@
    "shownBase": [],
    "subject_key": "tetnisscrab"
   },
-  "RSW_Thranta": {
-   "columns": {
-    "A": {
-     "east": "9dbd533c21aed149b821916d715b139bf657b11494b0caa1919537eb3708224b",
-     "north": "e2d6bd4eb98e1796f1d1bb1bbcd8532bab9414de63675c14b89ea2acaff2c909",
-     "south": "0aff249dde9cd8dd81e80fc7a64a00b36fcb1d339045b1cdc36098af71b34508"
-    },
-    "B": {
-     "east": "9dbd533c21aed149b821916d715b139bf657b11494b0caa1919537eb3708224b",
-     "north": "e2d6bd4eb98e1796f1d1bb1bbcd8532bab9414de63675c14b89ea2acaff2c909",
-     "south": "28dbdfa379bd37741f578a06dc5526837c548cadac70415e7a0a57f21159c253"
-    },
-    "C": {
-     "south": "0aff249dde9cd8dd81e80fc7a64a00b36fcb1d339045b1cdc36098af71b34508"
-    },
-    "D": {
-     "east": "07be76681b529c2f20aaf62ebfa16d5424bad6145736f5eb7a87ddfc1cbbd08b",
-     "north": "2d80025c6f7236d650a6a1e898c8eec5bf72d885ddc63e11ee8b9c14de2eb795",
-     "south": "6cd5329e37166f06285b4029984f534e9bdebb90424d48994c0c9b0516f31bd1"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Thranta/Thranta",
-    "B": "swanimals/Thranta/Thranta",
-    "C": "swanimals/Thranta/Thranta",
-    "D": "swanimals/Thranta/Thranta"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render donorart_thranta_v1 \u2014 grader flagged (advisory)",
-    "C": "render donorart_thranta_v2",
-    "D": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Thranta/Thranta",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D"
-   ],
-   "shownBase": [],
-   "subject_key": "thranta"
-  },
   "RSW_Tibidee": {
    "columns": {
     "A": {
@@ -6599,32 +4049,45 @@
      "south": "975bd4eee0860aa309befcc44b2f9f7ee776e24a3bd1284a5f431de9d8a4e03f"
     },
     "B": {
-     "east": "410de3cf01ba7cf7e85099779f690663efbccaa31b231e00a0a39224fb65a9f8"
-    },
-    "C": {
      "east": "792033b45e93dacae14fe5bb5cfa4fbcb9e70877eb5b2f28e6e92878fc448de9",
      "north": "6a90fbae268b52c40f15b3c379d8d9f9c2f4029167ab71573798c80e61db6c23",
      "south": "2e5f0262ee6951e9eec8a61c52f35b5f2a2d5f3daf9517c51e79864d90c1e96b"
     },
-    "D": {
+    "C": {
      "east": "728b30c429198a545d2bc728d61e1cbb1dbd380da93f64a4e95e72cc80748dca",
      "north": "d5dae432bd68f6a7d8c668c63e8d3f158111333581fdda9cdb23047cddf262a4",
      "south": "e080036eeccf9ddf3143255ca76fa1f05699b28d9271437890e824d82699b8b1"
+    },
+    "D": {
+     "1_east": "aba34226f2f84b0e713a1469459e66967d8af3da323cac1bd78fcd37bce0087f",
+     "1_north": "bc024daeaf0c4d34c1200c33545d284c9d226f42d2f8add9f26566df5e0829a0",
+     "1_south": "58276bcffabe0f000d9d162676b7f4d387020970e4930749f02632f1858b9238",
+     "2_east": "60e1b88a390b44ad37330a9e30d92e0f866dbe2aca506dc2678708443ece11f7",
+     "2_north": "1813259258f8cf68e8ea72300c87a16395e830955ea2c0497bfa89b5c0db97df",
+     "2_south": "ba9791ae9c7b9d46dda126a488e18b3f66866c505bfac09684ee24193968e090",
+     "3_east": "110266c53b026fa824f561476d3690d3a45c9807b1f51083bb561ce960407435",
+     "3_north": "f31da457172a1714555909a7f29f2cc44b5e355449ae7f94ed85f970b88d47cb",
+     "3_south": "1559ca3578f4e53461d68f26f7d5af0e5a888d95e2932ab185ab1ff280332293",
+     "4_east": "aba34226f2f84b0e713a1469459e66967d8af3da323cac1bd78fcd37bce0087f",
+     "4_north": "bc024daeaf0c4d34c1200c33545d284c9d226f42d2f8add9f26566df5e0829a0",
+     "4_south": "58276bcffabe0f000d9d162676b7f4d387020970e4930749f02632f1858b9238"
     }
    },
    "graphic_of": {
     "A": "swanimals/Tibidee/Tibidee",
     "B": "swanimals/Tibidee/Tibidee",
     "C": "swanimals/Tibidee/Tibidee",
-    "D": "swanimals/Tibidee/Tibidee"
+    "D": "_flip:swanimals/Tibidee/Tibidee_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render dregen_RSW_Tibidee_Tibidee_v1",
-    "C": "render gapall_Tibidee_v1",
-    "D": "donor original \u2014 mlie.starwarsanimalcollection"
+    "B": "render gapall_Tibidee_v1",
+    "C": "donor original \u2014 mlie.starwarsanimalcollection",
+    "D": "IN GAME \u2014 Tibidee_Flying_"
    },
-   "pools": [],
+   "pools": [
+    "swanimals/Tibidee/Tibidee"
+   ],
    "res": "swanimals/Tibidee/Tibidee",
    "reserved": [
     "A",
@@ -6648,9 +4111,6 @@
      "south": "3fb381c6d8540e5035a8e6153ca0aa9a59c0186f22659d78e5377b8ed6f3ec93"
     },
     "C": {
-     "south": "54159ec899f4c2e72ab482fc19716a014349c2c884cd30c7d23fb0384f94d971"
-    },
-    "D": {
      "east": "7fc3e9b85b868683c7cd303f270d3f09d1f31c3af740300d403204fa0020285e",
      "north": "800a5dfaa3c21edb1e9afd171a4fb94a505f44a126511fe2d88986c825defc2b",
      "south": "2d6a1bebddefb673e55a7dd49fc3e918abde5f151c1dd99319290a73aff76360"
@@ -6659,22 +4119,21 @@
    "graphic_of": {
     "A": "swanimals/Tooke/Tooke",
     "B": "swanimals/Tooke/Tooke",
-    "C": "swanimals/Tooke/Tooke",
-    "D": "swanimals/Tooke/Tooke"
+    "C": "swanimals/Tooke/Tooke"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render donorart_tooke_v1 \u2014 grader flagged (advisory)",
-    "C": "render donorart_tooke_v2",
-    "D": "donor original \u2014 ?"
+    "C": "donor original \u2014 ?"
    },
-   "pools": [],
+   "pools": [
+    "swanimals/Tooke/Tooke"
+   ],
    "res": "swanimals/Tooke/Tooke",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D"
+    "C"
    ],
    "shownBase": [],
    "subject_key": "tooke"
@@ -6692,12 +4151,14 @@
      "south": "5a2868622dc609a4f78055bd4a9d24976858237dfa6ec412670614b56d0c0bad"
     },
     "C": {
-     "east": "b388a829057f62d54da287a86862f5434e0e15979ebb241dbb63fb7911a2a566"
-    },
-    "D": {
      "east": "4796c85b0ec74789f49c9906bfa8f5ee6e367811b6dc9d0107ca15a98562057e",
      "north": "b110f38e7633fd564f28e76a4c05339b707c545474c62f7d4cbf4f361a3d7dd8",
      "south": "e619ca27ee08d887006a96d1cbb23d6eccd802c86aa2a256d4d859e04ba6174c"
+    },
+    "D": {
+     "east": "b388a829057f62d54da287a86862f5434e0e15979ebb241dbb63fb7911a2a566",
+     "north": "f6c554373c737103f4e230bbc4c84a2042a25e07960424f4c13f06e8d7b197a5",
+     "south": "5a2868622dc609a4f78055bd4a9d24976858237dfa6ec412670614b56d0c0bad"
     }
    },
    "graphic_of": {
@@ -6709,10 +4170,12 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render donorart_tuskcat_v2",
-    "C": "render donorart_tuskcat_v1 \u2014 grader flagged (advisory)",
-    "D": "donor original \u2014 ?"
+    "C": "donor original \u2014 ?",
+    "D": "merged set \u2014 v2 south/north + v1 east"
    },
-   "pools": [],
+   "pools": [
+    "swanimals/TuskCat/TuskCat"
+   ],
    "res": "swanimals/TuskCat/TuskCat",
    "reserved": [
     "A",
@@ -6723,36 +4186,6 @@
    "shownBase": [],
    "subject_key": "tuskcat"
   },
-  "RSW_Vapaad": {
-   "columns": {
-    "A": {
-     "east": "df9220c00d1e8b5a5c897ec9bc5379b53341f7ace8940582f15f68eb75650a81",
-     "north": "4328879aaf0f92e7279612a7c88aa56c33c2f37f4acb545aaff5a0c8190ea712",
-     "south": "0caf52893b2ff2b425444e6d9233ec4974cbabd93908a1e8c3cceb21d421baf5"
-    },
-    "B": {
-     "east": "8e7994cab2c04cd83d96ada09bfbe0817bc36688f1c0a68e2ad4feadc3567351",
-     "north": "5b05061b339e91b7cad670e1b165585c6bbaeb6f1032aef668ab24f6f1dcd45c",
-     "south": "517cb7d4b164789b07bff2ea4a7c295e533ff48b68a72b904f409cc6dfc03802"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad",
-    "B": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render bluedesert_Vapaad_v2"
-   },
-   "pools": [],
-   "res": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "vapaad"
-  },
   "RSW_Veermok": {
    "columns": {
     "A": {
@@ -6761,151 +4194,37 @@
      "south": "ff484d87ff17c0c2200ce6a9e737d73be768ea252f6c7941e302dbdd37d882d7"
     },
     "B": {
-     "east": "13e8666d3768d2a5233f2a2bb4085b11c3955e3b012b6dbb2264c01f4bfb93d2",
-     "north": "32b14654ef3dab82e06e8b882bce7279561ed0ad3f5f4412e081d20e826456ac",
-     "south": "7f9fef6ed40fdb18c4f0676e8786605e61a7111d4c47fc3ba7c5c4c10890f4a8"
-    },
-    "C": {
-     "south": "879cce6174078e194c66461e53746b60f1847853ed1ce4c93a57b0353e4cdb7e"
-    },
-    "D": {
      "east": "ca0ee976d93708313c0dd65bea4df514536e474e9fd6afd7696cc66d31041237",
      "north": "8026ed1dc59408b643bf9e8298eead24aac6891884a1a0f6a29f5c8d976cbc35",
      "south": "c9847f0318e1751d9619ab4f307099de6a5bb1e4c6420b3013b49eb84bcde628"
+    },
+    "C": {
+     "east": "13e8666d3768d2a5233f2a2bb4085b11c3955e3b012b6dbb2264c01f4bfb93d2",
+     "north": "32b14654ef3dab82e06e8b882bce7279561ed0ad3f5f4412e081d20e826456ac",
+     "south": "879cce6174078e194c66461e53746b60f1847853ed1ce4c93a57b0353e4cdb7e"
     }
    },
    "graphic_of": {
     "A": "swanimals/Veermok/Veermok",
     "B": "swanimals/Veermok/Veermok",
-    "C": "swanimals/Veermok/Veermok",
-    "D": "swanimals/Veermok/Veermok"
+    "C": "swanimals/Veermok/Veermok"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render donorart_veermok_v1 \u2014 grader flagged (advisory)",
-    "C": "render donorart_veermok_v2",
-    "D": "donor original \u2014 ?"
+    "B": "donor original \u2014 ?",
+    "C": "merged set \u2014 v2 south + in-game east + v1 north"
    },
-   "pools": [],
+   "pools": [
+    "swanimals/Veermok/Veermok"
+   ],
    "res": "swanimals/Veermok/Veermok",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D"
+    "C"
    ],
    "shownBase": [],
    "subject_key": "veermok"
-  },
-  "RSW_Warbird": {
-   "columns": {
-    "A": {
-     "east": "012b0e9de80257c66cba965d66fd135841b280764a4a26f65850ab6d3c204e6b",
-     "north": "e59fab467ad0b54361c52f3d15f5fb5346224c8b5bfe5b071f7768d4da76cc83",
-     "south": "83f3ec57029471b971ad2dbf5ca802c9a2f276460ae63012cec1c52be970f2ab"
-    },
-    "B": {
-     "east": "a006b66bd85261d7d51ab8bdb83924a4b57ce141597c7a1a1d00f3c9e1931cc5",
-     "north": "0139244f2dcf4a25b9e9bdf4783f0e970fdf6149e7eccb05a9bb8ebaf49f129d",
-     "south": "1766254ad8e6abdf06087b18c9e93f892f3a1bf448b84d1defab5f696d4c9acc"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Warbird/Warbird",
-    "B": "swanimals/Warbird/Warbird"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "donor original \u2014 ?"
-   },
-   "pools": [],
-   "res": "swanimals/Warbird/Warbird",
-   "reserved": [
-    "A",
-    "B"
-   ],
-   "shownBase": [],
-   "subject_key": "warbird"
-  },
-  "RUT_IdeoIcon_AscendantGenome": {
-   "columns": {
-    "A": {
-     "single": "a1e893e0fc3f5b1e454fafbc7682bd80c2741cb996d6f940f779729f04678d1b"
-    }
-   },
-   "graphic_of": {
-    "A": "UI/Ideoligions/RUT_ascendantgenome"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 UtinniPatches"
-   },
-   "pools": [],
-   "res": "UI/Ideoligions/RUT_ascendantgenome",
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "ideoicon_ascendantgenome"
-  },
-  "RUT_IdeoIcon_Astropolitan": {
-   "columns": {
-    "A": {
-     "single": "7087864afbc3239955b8c91e208931bd8d092670ad10683a25e2a7859109e8c2"
-    }
-   },
-   "graphic_of": {
-    "A": "UI/Ideoligions/RUT_astropolitan"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 UtinniPatches"
-   },
-   "pools": [],
-   "res": "UI/Ideoligions/RUT_astropolitan",
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "ideoicon_astropolitan"
-  },
-  "RUT_IdeoIcon_Balance": {
-   "columns": {
-    "A": {
-     "single": "5ecfa4884f32d705e0089d80bf2f0f43cbdd0a1c60cc1fe06843e5c84e05be3b"
-    }
-   },
-   "graphic_of": {
-    "A": "UI/Ideoligions/RUT_balance"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 UtinniPatches"
-   },
-   "pools": [],
-   "res": "UI/Ideoligions/RUT_balance",
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "ideoicon_balance"
-  },
-  "RUT_IdeoIcon_Contract": {
-   "columns": {
-    "A": {
-     "single": "54ce8ea3dd606f10a36af343ae030c9756c5761c23efeb03e839aa3640f20a26"
-    }
-   },
-   "graphic_of": {
-    "A": "UI/Ideoligions/RUT_contract"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 UtinniPatches"
-   },
-   "pools": [],
-   "res": "UI/Ideoligions/RUT_contract",
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "ideoicon_contract"
   },
   "RUT_IdeoIcon_SunDebt": {
    "columns": {
@@ -6932,70 +4251,6 @@
    ],
    "shownBase": [],
    "subject_key": "ideoicon_sundebt"
-  },
-  "RUT_IdeoIcon_Weight": {
-   "columns": {
-    "A": {
-     "single": "d0a53069cd1e3fbbf1a7be562e84392e82e3b05f574d39e1b8ffb64105a87be1"
-    }
-   },
-   "graphic_of": {
-    "A": "UI/Ideoligions/RUT_weight"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 UtinniPatches"
-   },
-   "pools": [],
-   "res": "UI/Ideoligions/RUT_weight",
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "ideoicon_weight"
-  },
-  "Tibidee": {
-   "columns": {
-    "A": {
-     "east": "410de3cf01ba7cf7e85099779f690663efbccaa31b231e00a0a39224fb65a9f8",
-     "north": "5d197c522cc17f7a3debc5e98076d4d87a23c475fcb1af56e5fe8d11cc4f2bfe",
-     "south": "975bd4eee0860aa309befcc44b2f9f7ee776e24a3bd1284a5f431de9d8a4e03f"
-    },
-    "B": {
-     "east": "410de3cf01ba7cf7e85099779f690663efbccaa31b231e00a0a39224fb65a9f8"
-    },
-    "C": {
-     "east": "792033b45e93dacae14fe5bb5cfa4fbcb9e70877eb5b2f28e6e92878fc448de9",
-     "north": "6a90fbae268b52c40f15b3c379d8d9f9c2f4029167ab71573798c80e61db6c23",
-     "south": "2e5f0262ee6951e9eec8a61c52f35b5f2a2d5f3daf9517c51e79864d90c1e96b"
-    },
-    "D": {
-     "east": "728b30c429198a545d2bc728d61e1cbb1dbd380da93f64a4e95e72cc80748dca",
-     "north": "d5dae432bd68f6a7d8c668c63e8d3f158111333581fdda9cdb23047cddf262a4",
-     "south": "e080036eeccf9ddf3143255ca76fa1f05699b28d9271437890e824d82699b8b1"
-    }
-   },
-   "graphic_of": {
-    "A": "swanimals/Tibidee/Tibidee",
-    "B": "swanimals/Tibidee/Tibidee",
-    "C": "swanimals/Tibidee/Tibidee",
-    "D": "swanimals/Tibidee/Tibidee"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render dregen_RSW_Tibidee_Tibidee_v1",
-    "C": "render gapall_Tibidee_v1",
-    "D": "donor original \u2014 mlie.starwarsanimalcollection"
-   },
-   "pools": [],
-   "res": "swanimals/Tibidee/Tibidee",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D"
-   ],
-   "shownBase": [],
-   "subject_key": "tibidee"
   },
   "ZFW_00_Strand_Flat_0Scrapper": {
    "columns": {
@@ -7104,50 +4359,6 @@
    ],
    "shownBase": [],
    "subject_key": "zfw_02_strand_shadow_8shared"
-  },
-  "ZFW_03_Reel_PumpHookup_0Scrapper": {
-   "columns": {
-    "A": {
-     "single": "337c1066226afa934c91cec3f1cd14168ca7dda09fcc26524f4413db315f80c4"
-    },
-    "B": {
-     "single": "451d703ac7e42a9274e764902ae0c88ed4cf5a3fce0553963a43f6f253692bea"
-    },
-    "C": {
-     "single": "1f31cb849d6720ea4fe47771fa40075051875ce00f9c2b749d5a5a22647e0997"
-    },
-    "D": {
-     "single": "d2170b67339a16c770ed00f1f5777308a68cc7242b17b1872e1214ded20d177c"
-    },
-    "E": {
-     "single": "6057f25493479d7093089766ff1d5944de6a34ae7ba3ac52cd2184139d89fba4"
-    }
-   },
-   "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
-    "B": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
-    "C": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
-    "D": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
-    "E": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
-    "B": "render hosereel_coupling_scrapper_pumphookup_a",
-    "C": "render hosereel_coupling_scrapper_pumphookup_b",
-    "D": "render RM_MessyConduit_Hose_Reel_PumpHookup_v2",
-    "E": "render RM_MessyConduit_Hose_Reel_PumpHookup"
-   },
-   "pools": [],
-   "res": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
-   "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E"
-   ],
-   "shownBase": [],
-   "subject_key": "zfw_03_reel_pumphookup_0scrapper"
   },
   "ZFW_05_Coupling_Brass_0Scrapper": {
    "columns": {
@@ -7273,5 +4484,5 @@
   }
  },
  "sheetId": "awaiting_pick_sheet_2026-10-19",
- "snapshotId": "59d69d8fd810e2f4"
+ "snapshotId": "8cc9bdf85997b630"
 }
