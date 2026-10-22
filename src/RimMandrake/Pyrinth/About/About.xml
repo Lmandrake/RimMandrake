@@ -12,12 +12,10 @@
   design/Jawa/mods/crystal_mods_inventory.md). Generic content, no Star Wars or campaign
   material === RimMandrake tier per design/NAMING_SCHEME_PLAN.md.
 
-  NOT YET DEPLOYABLE: det.epochspyrinth is still active in the live mod list and this pack
-  preserves its defNames verbatim, so loading both together collides. This mod stays
-  dormant in the repo until a future retirement item removes det.epochspyrinth from the
-  mod list. The Lantern-Deeps natural-scatter gate (CRYSTAL_INGEST_EXECUTION_1's actual
-  live-effect deliverable) patches the LIVE donor def directly instead === see
-  src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepGatePyrinth.xml.</description>
+  det.epochspyrinth was retired from the mod list (retirement wave 1, 2026-10-19) and this pack
+  preserves its defNames verbatim, so loading both together collides (hence incompatibleWith).
+  The Lantern-Deeps natural-scatter gate (CRYSTAL_INGEST_EXECUTION_1's actual live-effect
+  deliverable) lives in src/RimMandrake/LanternDeeps/Patches/RM_LanternDeepGatePyrinth.xml.</description>
 
   <incompatibleWith>
     <li>det.epochspyrinth</li>
