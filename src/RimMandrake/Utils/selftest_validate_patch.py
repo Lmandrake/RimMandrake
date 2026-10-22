@@ -270,6 +270,35 @@ def t_the_unsupported_token_list_still_routes_text_to_lxml():
         "an expression using text() must NOT be translated to ElementPath")
 
 
+def t_an_unusable_live_dump_exits_2_unmeasured_not_0():
+    """--live pointed at a folder with no dump (and --defnames at a missing file) printed ERROR and exited 0, so a
+    caller chaining on the exit code read it as validated. It must exit 2; a clean run with a usable name list stays 0."""
+    import contextlib
+    import io
+    import subprocess
+    import tempfile
+    script = os.path.join(_SCRIPTS, "validate_patch.py")
+    with tempfile.TemporaryDirectory() as d:
+        patch = os.path.join(d, "p.xml")
+        with open(patch, "w", encoding="utf-8") as f:
+            f.write("<Patch></Patch>")
+        empty = os.path.join(d, "emptydump")
+        os.makedirs(empty)
+        names = os.path.join(d, "names.txt")
+        with open(names, "w", encoding="utf-8") as f:
+            f.write("Steel\n")
+        def rc(*args):
+            r = subprocess.run([sys.executable, script, patch, "--quiet"] + list(args),
+                               capture_output=True, text=True, timeout=120)
+            return r.returncode, r.stdout
+        got, out = rc("--live", empty)
+        assert got == 2 and "UNMEASURED" in out, "unusable --live dump must exit 2 UNMEASURED; got %s: %s" % (got, out[-300:])
+        got, out = rc("--defnames", os.path.join(d, "missing.txt"))
+        assert got == 2, "unreadable --defnames must exit 2; got %s: %s" % (got, out[-300:])
+        got, out = rc("--defnames", names)
+        assert got == 0, "a usable --defnames list on an empty patch stays 0; got %s: %s" % (got, out[-300:])
+
+
 if __name__ == "__main__":
     for k, v in sorted(globals().items()):
         if k.startswith("t_"):

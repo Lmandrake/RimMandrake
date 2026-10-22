@@ -156,6 +156,116 @@ def t_jawaion():
           v.get("bodysize_squared_resistance") == FAIL, (v, d))
 
 
+def _flesh_handler(injure=False, blind=False):
+    """One Pirate; every ion hit adds stun severity and downs it. `injure` plants a real injury (a Cut hediff) on
+    the first hit -- the fault the no-injury bar must catch. jawa/damage reports hitPoints -1 for every pawn."""
+    st = {"hits": 0}
+
+    def h(tool, **p):
+        if tool == "jawa/spawn_pawn":
+            return {"success": True, "pawns": [{"id": "Pirate1"}]}
+        if tool == "jawa/damage":
+            st["hits"] += 1
+            row = {"id": "Pirate1", "isPawn": True, "hitPointsBefore": -1, "hitPointsAfter": -1,
+                   "downed": st["hits"] >= 3, "dead": False, "stunTicksLeft": 0}
+            return {"success": True, "targets": [row], "results": [row]}
+        if tool == "jawa/list_pawns":
+            hed = [{"def": "RSW_JawaIon_Stun", "severity": min(1.0, 0.24 * st["hits"])}] if st["hits"] else []
+            if injure and st["hits"]:
+                hed.append({"def": "Cut", "severity": 3.0})
+            row = {"id": "Pirate1", "bodySize": 1.0}
+            if not blind:
+                row["health"] = {"hediffs": hed}
+            return {"success": True, "pawns": [row]}
+        return {"success": True}
+    return h
+
+
+def t_jawaion_flesh():
+    v, d = run_chain("JawaIonWeapons", "flesh_buildup", _flesh_handler())
+    check("JawaIon flesh: no new injury hediff -> PASS", v.get("buildup_downs_alive_no_injury") == PASS, (v, d))
+    v, d = run_chain("JawaIonWeapons", "flesh_buildup", _flesh_handler(injure=True))
+    check("JawaIon flesh: a planted injury hediff turns the no-injury bar red (it compared -1 == -1 before)",
+          v.get("buildup_downs_alive_no_injury") == FAIL, (v, d))
+    v, d = run_chain("JawaIonWeapons", "flesh_buildup", _flesh_handler(blind=True))
+    check("JawaIon flesh: an unreadable health read is UNMEASURED, never PASS",
+          v.get("buildup_downs_alive_no_injury") == "UNMEASURED", (v, d))
+
+
+def _antiq_handler(accepted):
+    def h(tool, **p):
+        if tool == "jawa/spawn_pawn":
+            return {"success": True, "pawns": [{"id": "Reader1"}]}
+        if tool == "jawa/list_things":
+            return {"success": True, "things": [{"id": "U1", "def": "RUT_Antiquity_Urn"},
+                                                {"id": "S1", "def": "RUT_AntiquityReadingStation"}]}
+        if tool == "jawa/ordered_job":
+            return {"success": accepted, "accepted": accepted}
+        if tool == "jawa/inspect_string":
+            return {"success": True, "things": [{"inspect": ["Not yet read"]}]}
+        return {"success": True}
+    return h
+
+
+def t_antiquities_no_more_reading():
+    v, d = run_chain("Antiquities", "no_more_reading_once_all_stages_done", _antiq_handler(True))
+    check("Antiquities: forced job accepted, antiquity stays unread -> PASS",
+          v.get("stage_completion_gate") == PASS, (v, d))
+    v, d = run_chain("Antiquities", "no_more_reading_once_all_stages_done", _antiq_handler(False))
+    check("Antiquities: a forced job that was never accepted is UNMEASURED, not a vacuous PASS (can fail)",
+          v.get("stage_completion_gate") == "UNMEASURED", (v, d))
+
+
+def t_ashkarr_landmark_art():
+    def h(found, odyssey=True):
+        def f(tool, **p):
+            if tool == "jawa/get_defs":
+                name = p["defs"].split("/")[1]
+                return {"success": True, "defs": [{"found": found, "fields": {
+                    "iconTexturePath": "World/Landmarks/Ashkarr/%s" % name}}]}
+            if tool == "jawa/world_landmarks_get":
+                return {"success": True, "odysseyActive": odyssey}
+            return {"success": True}
+        return f
+    v, d = run_chain("AshkarrLandmarkArt", "sample_defs_readback", h(True))
+    check("AshkarrLandmarkArt: found samples with the right path -> PASS",
+          v.get("landmark_Cliffs_repainted") == PASS, (v, d))
+    v, d = run_chain("AshkarrLandmarkArt", "sample_defs_readback", h(False))
+    check("AshkarrLandmarkArt: an absent provider def is UNMEASURED, not a skip-PASS (can fail)",
+          v.get("landmark_Cliffs_repainted") == "UNMEASURED", (v, d))
+    v, d = run_chain("AshkarrLandmarkArt", "world_landmarks_reachable", h(True, odyssey=True))
+    check("AshkarrLandmarkArt: odysseyActive=true -> PASS", v.get("world_landmarks_get_succeeds") == PASS, (v, d))
+    v, d = run_chain("AshkarrLandmarkArt", "world_landmarks_reachable", h(True, odyssey=False))
+    check("AshkarrLandmarkArt: odysseyActive=false is UNMEASURED, not PASS (can fail)",
+          v.get("world_landmarks_get_succeeds") == "UNMEASURED", (v, d))
+
+
+def t_jawavoice_stuckindoors():
+    suite = runner.load_validation(runner.find_mod_dir("JawaVoice"))
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("jv_validation_probe",
+                                                  os.path.join(runner.find_mod_dir("JawaVoice"), "validation.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    spk = "r_logentry->(SpeakUp) Stuck inside again."
+
+    def handler(rules):
+        def h(tool, **p):
+            if tool == "jawa/get_defs":
+                got = rules if p["defs"].endswith("/StuckIndoors") else allrules   # other defs: their own needles
+                return {"success": True, "defs": [{"found": True, "fields": {
+                    "logRulesInitiator.rulesStrings": got}}]}
+            return {"success": True}
+        return h
+    allrules = [n for _, _, n in mod.FILE_CHECKS]
+    v, d = run_chain("JawaVoice", "patches_add_jawaese_lines", handler([mod.FILE_CHECKS[0][2], spk]))
+    check("JawaVoice StuckIndoors: our line AND a surviving SpeakUp entry -> PASS",
+          v.get("stuckindoors_add_not_replace") == PASS, (v, d))
+    v, d = run_chain("JawaVoice", "patches_add_jawaese_lines", handler([mod.FILE_CHECKS[0][2]]))
+    check("JawaVoice StuckIndoors: only our line left (a REPLACE) is UNMEASURED, never PASS (can fail)",
+          v.get("stuckindoors_add_not_replace") == "UNMEASURED", (v, d))
+
+
 # ------------------------------------------------------------------ ShipMemory
 def _ship_handler(zone_counts):
     st = {"zones": [], "letter": False}
@@ -469,7 +579,7 @@ def t_ninefold():
 
 
 def main():
-    for fn in (t_jawaion, t_shipmemory, t_droidworks_bolt, t_droidworks_quirk_and_prices, t_droidworks_nimbus,
+    for fn in (t_jawaion, t_jawaion_flesh, t_antiquities_no_more_reading, t_jawavoice_stuckindoors, t_ashkarr_landmark_art, t_shipmemory, t_droidworks_bolt, t_droidworks_quirk_and_prices, t_droidworks_nimbus,
                t_aftermath, t_inhabited, t_pawnflavor, t_starwarsraces, t_ninefold):
         print(fn.__name__)
         try:

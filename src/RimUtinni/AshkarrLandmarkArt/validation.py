@@ -176,34 +176,12 @@ def repo_checks(t):
 
 @suite.chain("sample_defs_readback")
 def sample_defs_readback(t):
-    """One representative LandmarkDef per provider/branch shape: Cliffs
-    (Replace branch, vanilla Odyssey), AncientGarrison (Add branch -- field
-    inherited from an abstract parent, no local node to Replace), RSW_Sarlacc
-    (SWBestiary, ported off StarWarsAnimalCollection), VEE_AlluvialFan (VEE_-prefixed
-    provider). REQUIRES THE FULL MOD LIST -- see module docstring's
-    environment note; on minimal, RSW_Sarlacc and VEE_AlluvialFan's provider
-    mods are absent and `jawa/get_defs` will report not-found, which this
-    component treats as an environment gap (UNMEASURED-style skip) rather
-    than a hard failure -- see `_check_one`'s own guard.
-
-    🔴 FOUND AND FIXED (wave 12): this component used to call `jawa/get_def`
-    (singular) with `defType="LandmarkDef"` and read
-    `row.get("resolved") or row.get("fields")`. Cross-checked against
-    `JawaBenchTerrainTools.cs`'s `GetDef`: neither `resolved` nor `fields`
-    is ever a key on that tool's response -- its per-def `extra` block is
-    hand-modelled for exactly THREE types (ThingDef/PawnKindDef/BiomeDef,
-    per the tool's own comment), so for a LandmarkDef `extra` comes back
-    null and `iconTexturePath` was never reachable through it at all. The
-    old guard (`not row.get("resolved") and not row.get("fields")`) was
-    therefore unconditionally true on EVERY call, success or failure, so
-    this component always took the "not found" branch and never once
-    compared `iconTexturePath` against anything -- a silent, permanent
-    no-op, the mirror image of AshkarrFlora's wave-11 bug (that one always
-    raised; this one never even checked). Switched to `jawa/get_defs`
-    (plural), the tool built exactly for this -- "name the fields you want
-    off ANY def type and they are read reflectively" -- whose real
-    per-entry shape (`found`, `fields` -- confirmed against `GetDefs` in
-    the same file) actually carries `iconTexturePath`."""
+    """One representative LandmarkDef per provider/branch shape (SAMPLE_DEFS): Cliffs (Replace branch, vanilla
+    Odyssey), AncientGarrison (Add branch), RSW_Sarlacc (SWBestiary), VEE_AlluvialFan (VEE_ provider). REQUIRES THE
+    FULL MOD LIST: a sample whose provider def is not found reads NOTHING, so it is UNMEASURED (HARNESS/SITE), never
+    PASS -- and, as with any UNMEASURED component, it ends the chain, so the samples after it are UNMEASURED too
+    (chain ids are kept stable for the required-check manifest). `iconTexturePath` is read through jawa/get_defs
+    (plural; the singular jawa/get_def never carried it -- wave 12: the old check was a permanent no-op)."""
     t.clear_area(size=8)
 
     def _check_one(name, expect_path):
@@ -214,12 +192,10 @@ def sample_defs_readback(t):
                 rows = (r or {}).get("defs") or []
                 row = rows[0] if rows else {}
                 if not row.get("found"):
-                    # Provider mod likely absent on this run's list (e.g.
-                    # minimal) -- an environment gap, not a patch defect.
-                    # Recorded, not silently swallowed.
-                    t._record("landmark_%s not found -- provider mod likely "
-                             "absent from this run's mod list" % name, None)
-                    return
+                    raise ExpectationFailed(
+                        "UNMEASURED: LandmarkDef/%s not found -- its provider mod is absent from this run's mod "
+                        "list (assumed present), so its iconTexturePath was never read (HARNESS/SITE): %r"
+                        % (name, r))
                 fields = row.get("fields") or {}
                 got = fields.get("iconTexturePath")
                 if got != expect_path:
@@ -236,9 +212,8 @@ def sample_defs_readback(t):
 def world_landmarks_reachable(t):
     """Walk doc step 8: on a live generated world, the targeted LandmarkDef
     set should be reachable at all (odysseyActive=true, count>0). Tolerates
-    a minimal-list run (module docstring gap #1) by not hard-failing on
-    odysseyActive=false -- that is an environment fact about THIS run, not
-    a defect in this mod's patch."""
+    odysseyActive=false as UNMEASURED (never PASS): an environment fault of THIS run, not a defect in this
+    mod's patch, and not a proof either."""
     t.clear_area(size=8)
 
     with t.component("world_landmarks_get_succeeds", beyond_toggle=True):
@@ -249,8 +224,8 @@ def world_landmarks_reachable(t):
                 raise ExpectationFailed(
                     "jawa/world_landmarks_get did not report success: %r" % row)
             if not row.get("odysseyActive"):
-                t._record(
-                    "odysseyActive=false -- this run's mod list lacks "
-                    "Odyssey; landmark set is not fully reachable here "
-                    "(environment gap, not a patch defect)", None)
+                # DLC is assumed present, so Odyssey inactive is itself a harness/site fault, and nothing was proven.
+                raise ExpectationFailed(
+                    "UNMEASURED: odysseyActive=false -- Odyssey is assumed present, so this run's world/mod list is "
+                    "wrong and the landmark set was not reachable (HARNESS/SITE): %r" % row)
         t.screenshot()

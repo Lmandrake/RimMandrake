@@ -2676,7 +2676,15 @@ def main() -> int:
                   "advisory; the add-if-missing `nomatch` shape is the common "
                   "one and is intentional.")
 
-    return 1 if total_err else 0
+    if total_err:
+        return 1
+    if live is not None and not live.loaded:
+        # --live/--defnames was asked for and could not be read: every live check was UNANSWERED, so this run is
+        # UNMEASURED, not OK. Exit 2 (not 0) so a script chaining on the exit code cannot read it as validated.
+        print(f"\nUNMEASURED - {source} was requested but unusable; the live checks did NOT run "
+              f"(exit 2, not a pass).")
+        return 2
+    return 0
 
 
 if __name__ == "__main__":

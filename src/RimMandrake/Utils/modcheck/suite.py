@@ -163,6 +163,25 @@ class TestContext(object):
         # refused or did not take withholds the PASS/FAIL of every component that ends after it in that scope (UNMEASURED,
         # no finding). None = the old behaviour, exactly.
         self.pre = None
+        # LOG MARK (mark_log): None = never marked (a bare TestContext, the old behaviour); a dict = the weight of every
+        # log text already in the buffer when the chain began; False = the mark was attempted and unreadable.
+        self._log_base = None
+
+    def mark_log(self):
+        """Remember what `jawa/drain_log` already holds, so expect_log_contains counts only lines written AFTER this
+        point (a stale line from an earlier chain or run must not pass a row). The runner calls it once per chain."""
+        try:
+            r = self.session.call("jawa/drain_log", limit=2000) or {}
+            rows = r.get("messages")
+            if r.get("success") is False or rows is None:
+                self._log_base = False
+                return
+            base = {}
+            for m in rows:
+                base[m.get("text", "")] = base.get(m.get("text", ""), 0) + max(1, int(m.get("repeats") or 1))
+            self._log_base = base
+        except Exception:                                      # noqa: BLE001 - upkeep; the expectation reports it
+            self._log_base = False
 
     def _feed_low_colonists(self):
         if not self.feed or self.session is None:
@@ -540,7 +559,17 @@ class TestContext(object):
         if not self._guard():
             return None
         r = self.session.call("jawa/drain_log", limit=limit, contains=tag)
-        msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
+        rows = [m for m in ((r or {}).get("messages") or [])]
+        if self._log_base is False:
+            raise ExpectationFailed("UNMEASURED: the log mark taken at chain start was unreadable (jawa/drain_log), so "
+                                    "a stale line could not be told from a fresh one (HARNESS)")
+        if self._log_base is not None:
+            # keep only texts whose total weight grew past the chain-start mark: a line already there is stale
+            now = {}
+            for m in rows:
+                now[m.get("text", "")] = now.get(m.get("text", ""), 0) + max(1, int(m.get("repeats") or 1))
+            rows = [m for m in rows if now[m.get("text", "")] > self._log_base.get(m.get("text", ""), 0)]
+        msgs = [m.get("text", "") for m in rows]
         line = msgs[-1] if msgs else None
         got = line is not None and (field is None or
                                     ("%s=%s" % (field, value)) in line)

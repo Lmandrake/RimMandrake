@@ -203,6 +203,28 @@ def patches_add_jawaese_lines(t):
             raise ExpectationFailed(
                 "StuckIndoors read-back missing our own added line -- "
                 "add-not-replace cannot even be checked: %r" % r)
+        # Replace-not-add test: collect every rule string in the reply (an entry carries "->"); the add left the
+        # field intact iff at least one entry besides ours survives. Only our own patch touches this def, so a
+        # field holding nothing but our line is exactly what a REPLACE would leave.
+        entries = []
+
+        def _walk(x):
+            if isinstance(x, str):
+                if "->" in x:
+                    entries.append(x)
+            elif isinstance(x, dict):
+                for v in x.values():
+                    _walk(v)
+            elif isinstance(x, (list, tuple)):
+                for v in x:
+                    _walk(v)
+        _walk(r)
+        foreign = [e for e in entries if our_line not in e]
+        if not foreign:
+            raise ExpectationFailed(
+                "UNMEASURED: StuckIndoors read-back holds %d rule string(s), none but our own -- either the add "
+                "REPLACED SpeakUp's entries or this reply shape hides them; the row cannot tell which "
+                "(HARNESS): %r" % (len(entries), str(r)[:300]))
 
 
 @suite.chain("jawa_identity_gate_grounds")
