@@ -116,6 +116,8 @@ cannot simply be made bigger.
 
 **Recommended: 2.** It satisfies both rulings at once with content that already exists.
 
+**ANSWERED 2026-10-22 by question card, write-in:** *"Use a neighboring giant but also spawn some giant spiders to attack it in a titanic battle."* = option 2 plus a battle. OPEN DETAIL (not yet asked): which spiders (the ollathrix is ruled one race/one size; "giant spiders" may mean a pack of ollathrix, or a new spider) — resolve when building.
+
 ---
 
 ## Q4. The Felled Noon rite needs dangerous sun, but the Webwork may get no sun at all
@@ -146,6 +148,8 @@ ollathrix's fear of sun, both hang on the tree shade model.
 **Recommended: 2.** The ollathrix at the shade line is the rite's spectacle, and it already works
 from the shade grid; the participants' sun risk can arrive later without a rebuild.
 
+**ANSWERED 2026-10-22 by question card: option 1, hold the rite until the tree shade model ships**, then build as ruled.
+
 ---
 
 ## Q5. At the end paint, which Webwork gets painted: the new one or the frozen twin?
@@ -168,6 +172,8 @@ lays down.
    needs a new roster decision for which canon animals, if any, belong; the sitting cut all three.
 
 **Recommended: 1.** It is what the sitting ruled, and option 3 stays open later without blocking it.
+
+**ANSWERED 2026-10-22 by question card: option 1, paint RM_Webwork; retire RUT_Webwork at the paint.**
 
 ---
 
@@ -194,6 +200,8 @@ any jackpot needs its own price code wherever it lives.
 **Recommended: 3.** It delivers the jackpot now with machinery that exists and suits contraband,
 and the Bazaar tab can still come later.
 
+**ANSWERED 2026-10-22 by question card: option 3, a quest** (a broker asks for N eggs by a deadline). Build not yet filed.
+
 ---
 
 ## Q7. How should "so quiet you know you're in terrible danger" be judged?
@@ -218,6 +226,8 @@ compete. Which of these does the bar measure?
    protects it from a later change that makes the jungle noisy.
 
 **Recommended: 2.** It turns your sentence into cause and effect, which is what a bar can protect.
+
+**ANSWERED 2026-10-22 by question card, write-in:** *"Landing a ship into a webwork will surely get a response it's only quiet if you walk into it. Mostly about soundscape."* = quiet is conditional (a ship landing always draws a response; quiet only if you walk in), judged mostly by the soundscape. Bars still to be written by the owner; FOUNDRY drafts only.
 
 ---
 
