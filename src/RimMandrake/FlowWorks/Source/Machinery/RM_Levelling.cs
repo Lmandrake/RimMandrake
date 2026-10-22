@@ -90,6 +90,11 @@ namespace RimMandrake.FlowWorks.Machinery
 			// would strip the notches and report nothing moved
 			if (map == null || !RM_HoseSettings.gravityLevellingEnabled || !RM_HoseSettings.enabled || !RM_MapComponent_Excavation.LevelExact)
 			{
+				// switched off: the readout must not keep showing the last cycle's "flowing"
+				if (map != null && states.TryGetValue(map, out MapState off))
+				{
+					off.portState.Clear();
+				}
 				return;
 			}
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
