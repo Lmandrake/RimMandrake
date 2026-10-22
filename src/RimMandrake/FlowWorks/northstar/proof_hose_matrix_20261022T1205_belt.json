@@ -1,0 +1,378 @@
+{
+ "mod": "FlowWorks",
+ "script": "proof_hose.py",
+ "tier": "flowworks",
+ "mode": "partial",
+ "started": "2026-10-22T12:02:05",
+ "rows": [
+  {
+   "id": "HP1_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "startupLogRead": true,
+    "startupErrorsNamingHose": []
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "HP2_probes_site_pinned",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "hoseProbe": true,
+    "colonistsDrafted": [
+     559,
+     562,
+     565
+    ]
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "MX_H00_Flat_straight_L6",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.18,
+    "widthOverWire": 2.88,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2577,
+    "couplings": 2,
+    "flatLen": 10.744,
+    "pathLen": 11.7042,
+    "poseLen": 10.744,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": true,
+    "geometryHash": "4d30f9bf706fd53f",
+    "provider": "none",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H01_Flat_corner_L14",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.18,
+    "widthOverWire": 2.88,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 18.5662,
+    "pathLen": 19.4785,
+    "poseLen": 18.5662,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "1789875796cb7d43",
+    "provider": "none",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H02_Flat_water_L24",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.18,
+    "widthOverWire": 2.88,
+    "minBendFlat": 1.2216,
+    "minBendPlump": 1.2553,
+    "couplings": 2,
+    "flatLen": 27.3811,
+    "pathLen": 28.1453,
+    "poseLen": 27.3811,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "b6587cd13af83192",
+    "provider": "none",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H03_Plump_straight_L14",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.23,
+    "widthOverWire": 3.68,
+    "minBendFlat": 1.258,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 17.3471,
+    "pathLen": 16.1892,
+    "poseLen": 17.3395,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "eb54b174a9ae69e8",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H04_Plump_corner_L24",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.23,
+    "widthOverWire": 3.68,
+    "minBendFlat": 1.2462,
+    "minBendPlump": 1.2555,
+    "couplings": 2,
+    "flatLen": 28.3399,
+    "pathLen": 28.7634,
+    "poseLen": 28.119,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "67b868942243e495",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H05_Plump_water_L6",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.23,
+    "widthOverWire": 3.68,
+    "minBendFlat": 1.2563,
+    "minBendPlump": 1.2564,
+    "couplings": 2,
+    "flatLen": 10.7771,
+    "pathLen": 11.7042,
+    "poseLen": 10.7593,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "b599436cf288e3ef",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H06_Filling50_straight_L24",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.2025,
+    "widthOverWire": 3.2401,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2577,
+    "couplings": 2,
+    "flatLen": 27.24,
+    "pathLen": 28.1453,
+    "poseLen": 27.1274,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "904de2e5a1e9e5e5",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H07_Filling50_corner_L6",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.2025,
+    "widthOverWire": 3.2401,
+    "minBendFlat": 1.2579,
+    "minBendPlump": 1.2577,
+    "couplings": 2,
+    "flatLen": 12.8577,
+    "pathLen": 9.5667,
+    "poseLen": 12.8767,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "2be0f77f8228602a",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "MX_H08_Filling50_water_L14",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.2025,
+    "widthOverWire": 3.2401,
+    "minBendFlat": 1.258,
+    "minBendPlump": 1.2578,
+    "couplings": 2,
+    "flatLen": 17.3391,
+    "pathLen": 18.5656,
+    "poseLen": 17.3361,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "unwalkableAt": [],
+    "fellBack": false,
+    "geometryHash": "232b05b30a3cfce7",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "block": "matrix_hose"
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errorsNamingHoseOrFlowWorks": [],
+    "otherErrors": 0,
+    "tap": {
+     "polls": 31,
+     "lost": 0,
+     "kept": 0
+    },
+    "siteClearErrors": 0,
+    "newWarnings": 0
+   },
+   "block": "session"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 35.2,
+   "rows": 2,
+   "raised": null
+  },
+  "matrix_hose": {
+   "wall_s": 54.4,
+   "rows": 9,
+   "raised": null
+  },
+  "session": {
+   "wall_s": 0.0,
+   "rows": 1,
+   "raised": null
+  }
+ },
+ "doc": "design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md",
+ "offline": {
+  "skipped": "--skip-offline"
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1792695749711",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "wall_s": 90.5,
+ "site_notes": [],
+ "certifiable": false,
+ "site_calm_blocks": {
+  "matrix_hose": true
+ },
+ "huge_plants_cleared": {
+  "matrix_hose": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  }
+ },
+ "site_calm_restore": false
+}
