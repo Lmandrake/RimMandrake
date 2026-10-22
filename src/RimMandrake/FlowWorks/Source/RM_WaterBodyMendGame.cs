@@ -54,6 +54,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref freezeCountMendEnabled, "freezeCountMendEnabled", true);
 			Scribe_Values.Look(ref waterPlantDeepToleranceMetres, "waterPlantDeepToleranceMetres", RM_WaterBodyMath.DefaultPlantDeepToleranceMetres);
 			Scribe_Values.Look(ref waterPlantGraceHours, "waterPlantGraceHours", RM_WaterBodyMath.DefaultPlantGraceHours);
+			RM_WaterLookSettings.ExposeData();   // WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: the water looks ride on this screen
 		}
 
 		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: the shared helper replaces the hand-listed reset. MUST stay below the LAST public setting field.
@@ -105,6 +106,7 @@ namespace RimMandrake.FlowWorks
 			waterPlantGraceHours = Mathf.Round(list.Slider(waterPlantGraceHours, 0f, 240f));
 			GUI.enabled = true;
 			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetToShipped);
+			RM_WaterLookSettings.DoSettingsSection(list);   // its own heading and Reset button (RM_WaterLooks.cs)
 		}
 	}
 
