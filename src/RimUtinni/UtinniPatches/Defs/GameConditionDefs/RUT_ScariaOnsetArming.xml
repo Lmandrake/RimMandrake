@@ -12,9 +12,8 @@
 
   pawnKindFilter: the two PawnKindDefs RUT_Scarlands.xml's own wildAnimals
   list already comments "plated-grazer, keep" — RSW_FoundryBeetle (our own
-  clone, mandrake.rsw.swbestiary) and AA_SpinedGow (Alpha Animals,
-  sarg.alphaanimals, already referenced elsewhere in the campaign, e.g.
-  BiomeCast_Ashkarr.xml). AA_Helixien is commented "mortuary-guild,
+  clone, mandrake.rsw.swbestiary). The original second entry, AA_SpinedGow
+  (Alpha Animals, retired 2026-10-18), is no longer in the filter. AA_Helixien is commented "mortuary-guild,
   adjust-keep" on that same list — NOT a plated grazer, deliberately
   excluded here.
 
