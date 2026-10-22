@@ -3,8 +3,8 @@
 
   <!-- DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 3 (design/RimMandrake/flowworks_drawbridge_design_2026-10-20.md R2,
        owner follow-ups 2026-10-20): the winch house of one drawbridge leaf, built beside the leaf's hinge anchor on its own
-       bank. PLACEHOLDER ART: the anchor's own texture until the commissioned drawbridge art lands (its texPaths will be in the
-       design doc's art section); no drawbridge art is generated or queued here. Costs are proposals. -->
+       bank. The anchor texture below is only a stand-in: at startup the def takes Drawbridge/RM_DrawbridgeWinch_<M> (installed), and a
+       placed winch draws its bridge's look (RM_DrawbridgeArt.Winch, DrawbridgeArtPaths.Winch). Costs are proposals. -->
 
   <ThingDef ParentName="BuildingBase">
     <defName>RM_DrawbridgeWinch_Timber</defName>
@@ -93,8 +93,9 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- DRAWBRIDGE phase 6 (R7): the gate leaf, built in the wall line beside a leaf's hinge anchor (one per lane). PLACEHOLDER
-       ART: the vanilla simple door until RM_DrawbridgeGate_<M>_Closed/_Open pass review (design doc art contract). -->
+  <!-- DRAWBRIDGE phase 6 (R7): the gate leaf, built in the wall line beside a leaf's hinge anchor (one per lane). It draws its
+       picked art shut/open in its bridge's material and look (Building_DrawbridgeGate.DrawAt, DrawbridgeArtPaths.Gate); the
+       vanilla door below is the menu icon and the stand-in where no picture exists for a state. -->
   <ThingDef ParentName="DoorBase">
     <defName>RM_DrawbridgeGate</defName>
     <label>drawbridge gate</label>
@@ -142,8 +143,8 @@
   </WorkGiverDef>
 
   <!-- DRAWBRIDGE phase 4 (R5): a raider's plank. The carried plank draws its own picture (owner pick, bridge_art_redraw
-       sheet 2026-10-21). The LAID plank still draws the timber deck atlas: RM_RaidPlank_Laid/_LaidEnd are installed but need
-       a draw change (per-cell rotation, bank ends) before a def can use them. -->
+       sheet 2026-10-21). The LAID plank draws RM_RaidPlank_Laid on its middle squares and RM_RaidPlank_LaidEnd (hooks toward
+       the bank) on its two end squares, turned to the span (RM_DrawbridgeArt.PrintRaidPlank); the texPath here is its icon. -->
   <ThingDef ParentName="ResourceBase">
     <defName>RM_RaidPlank</defName>
     <label>raid plank</label>
@@ -171,9 +172,8 @@
     <description>A plank raiders laid across the moat. It holds one or two people at a time; it burns and breaks like a light bridge.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
     <graphicData>
-      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber_Atlas</texPath>
+      <texPath>Things/Building/FlowWorks/Drawbridge/RM_RaidPlank_Laid</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <linkType>Basic</linkType>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <passability>Standable</passability>

@@ -73,6 +73,25 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				RM_Drawbridges.LinkWinch(this);
 			}
+			lookGraphic = null;
+		}
+
+		/// <summary>DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS: the winch house draws in its bridge's look (the default look when it
+		/// is beside no leaf), its material's picture when that look has none (DrawbridgeArtPaths.Winch). Resolved once per
+		/// spawn: a winch never changes bridge without respawning.</summary>
+		private Graphic lookGraphic;
+
+		public override Graphic Graphic
+		{
+			get
+			{
+				if (lookGraphic == null && Spawned)
+				{
+					string look = RM_DrawbridgeArt.LookOf(RM_Drawbridges.LeafOfWinch(this, out SuspensionBridgeRecord r, out _) ? r : null);
+					lookGraphic = RM_DrawbridgeArt.Winch(Tier, look) ?? base.Graphic;
+				}
+				return lookGraphic ?? base.Graphic;
+			}
 		}
 
 		/// <summary>Every way off the map passes here (Destroy, deconstruct and kill call DeSpawn; a gravship launch despawns
@@ -98,6 +117,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				RM_Drawbridges.LinkWinch(this);
 			}
+			lookGraphic = null;
 		}
 
 		/// <summary>Phase 6 (R12): the winch house draws its leaf upright while it is raised, and the art planks beside it.
@@ -339,6 +359,32 @@ namespace RimMandrake.FlowWorks.Pits
 	/// </summary>
 	public class Building_DrawbridgeGate : Building_Door
 	{
+		/// <summary>DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS: the gate draws its picked picture, shut or open, in its bridge's
+		/// material and look (unlinked: its stuff's material, the default look); the vanilla door only where no picture exists.
+		/// The leaf it stands at is re-read every 250 ticks, not every frame.</summary>
+		private int artReadTick = -99999;
+		private SuspensionTier artTier = SuspensionTier.Timber;
+		private string artLook;
+
+		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+		{
+			int now = Find.TickManager?.TicksGame ?? 0;
+			if (now - artReadTick >= 250 || now < artReadTick)
+			{
+				artReadTick = now;
+				bool linked = RM_Drawbridges.LeafOfGate(this, out SuspensionBridgeRecord r, out _);
+				artTier = linked ? r.tier : (Stuff != null && Stuff.IsMetal ? SuspensionTier.Steel : SuspensionTier.Timber);
+				artLook = RM_DrawbridgeArt.LookOf(linked ? r : null);
+			}
+			DoorPreDraw();
+			if (RM_DrawbridgeArt.DrawGate(this, drawLoc, artTier, artLook, OpenPct >= 0.5f))
+			{
+				Comps_PostDraw();
+				return;
+			}
+			base.DrawAt(drawLoc, flip);
+		}
+
 		public override bool PawnCanOpen(Pawn p)
 		{
 			if (!base.PawnCanOpen(p))

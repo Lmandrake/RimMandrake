@@ -196,11 +196,11 @@ Which raised view to draw: the leaf rotates up about its hinge, so a span runnin
 1 lane wide and 4 cells tall; the code draws one copy per lane and scales its height to the leaf length (a steel leaf
 over 4 cells is stretched).
 
-**The four looks**, as the suspension bridge ships them (`ThingStyleDef` per part per look, `Machinery/PipeLook.cs`):
-`RimMandrake/FlowWorks/Drawbridge/<Look>/` with `<Look>` = `Scrapper`, `Industrial`, `Modern`, `Futuristic`, holding
-`RM_DrawbridgeWinch_<M>` (Graphic_Multi, per material because the drive differs), `RM_DrawbridgeLeafUp_Face/_Underside/_Edge`,
-`RM_DrawbridgeGate_Closed/_Open` (`_south`, `_east`) and `RM_DrawbridgePlanks`; same sizes as the table. 56 jobs from
-`infrastructure/artpipe/art_lists/flowworks_drawbridge_looks_2026-10-20.json`.
+**The four looks** (`Scrapper`, `Industrial`, `Modern`, `Futuristic`), as installed 2026-10-21 (bridge_art_redraw picks), all
+in `Things/Building/FlowWorks/Drawbridge/`: `RM_DrawbridgeLeafUp_<View>_<Look>`, `RM_DrawbridgePlanks_<Look>`,
+`RM_DrawbridgeWinch_<M>_<Look>` (per material: the drive differs), `RM_DrawbridgeGate_<Closed|Open>_<Look>` (`_south`, `_east`).
+A part draws in its bridge's look (the suspension rule: the look's picture first, else the material's); the candidate order
+is `DrawbridgeArtPaths` in `Source/RM_DrawbridgeMath.cs`, checked on disk by `selftest_flowworks_drawbridge_art.py`.
 
 **Not commissioned:** a mid-raise picture (the spec does not animate the raise), raid planks in steel, a crash-down
 wreck (`RM_SuspensionWreck` exists).

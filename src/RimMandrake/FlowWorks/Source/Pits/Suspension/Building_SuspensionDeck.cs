@@ -201,7 +201,11 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return;   // DRAWBRIDGE (R12): a raised square draws empty; the winch house draws the leaf upright
 			}
-			if (Graphic is Graphic_Linked linked && linked.SubGraphic != null)
+			if (RM_DrawbridgeArt.PrintRaidPlank(layer, this, Record))
+			{
+				// DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS: a laid raid plank draws its own mid and end pieces, turned to the span
+			}
+			else if (Graphic is Graphic_Linked linked && linked.SubGraphic != null)
 			{
 				RM_SuspensionDeckLink.Print(layer, this);   // SUSPENSION_DECK_LINKED_NO_SEAMS
 			}
