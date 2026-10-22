@@ -1,0 +1,1 @@
+RelativeVeto ANDs vanilla regions (walls, no depth) with the depth-only pocket grid (depth, no walls); the AND of two projections is not reachability on the joint graph. Walls + trench that cut a route only together make CanReach true while A* finds nothing. Gate any job you hand out with FindPathNow where walls and pits meet (WINCH_REACH_DIAGNOSE_CANREACH_FIBS).
