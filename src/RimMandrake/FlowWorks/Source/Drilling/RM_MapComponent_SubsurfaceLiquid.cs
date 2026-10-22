@@ -56,6 +56,9 @@ namespace RimMandrake.FlowWorks.Drilling
 		/// flip when a slider does.</summary>
 		public bool HasYield => rolled && hasYield && yieldedLiquid != null;
 
+		/// <summary>The survey has been rolled (FinalizeInit); before that the map does not yet know what is down there.</summary>
+		public bool Surveyed => rolled;
+
 		public LiquidDef YieldedLiquid => yieldedLiquid;
 
 		public float ReserveRemaining => reserveUnits;

@@ -221,6 +221,18 @@ namespace RimMandrake.FlowWorks.Drilling
 			{
 				return true;
 			}
+			// DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES (owner card 2026-10-22 "Refuse on empty survey"): nothing to pour, no drill
+			RM_MapComponent_SubsurfaceLiquid survey = map.GetComponent<RM_MapComponent_SubsurfaceLiquid>();
+			if (survey != null)
+			{
+				switch (RM_DrillSurveyMath.Placement(survey.Surveyed, survey.HasYield, survey.ReserveRemaining))
+				{
+					case RM_DrillSurveyMath.Verdict.NoYield:
+						return "RM_DrillPlaceNoYield".Translate();
+					case RM_DrillSurveyMath.Verdict.Spent:
+						return "RM_DrillPlaceSpent".Translate();
+				}
+			}
 			RM_MapComponent_Excavation engine = map.GetComponent<RM_MapComponent_Excavation>();
 			IntVec3 outlet = Building_LiquidDrill.OutletFor(loc, rot, (checkingDef as ThingDef)?.size ?? IntVec2.One);
 			if (engine == null || !engine.IsExcavated(outlet))
@@ -238,7 +250,7 @@ namespace RimMandrake.FlowWorks.Drilling
 			Map map = Find.CurrentMap;
 			RM_MapComponent_SubsurfaceLiquid survey = map?.GetComponent<RM_MapComponent_SubsurfaceLiquid>();
 			Color was = GUI.color;
-			if (survey == null)
+			if (survey == null || !survey.Surveyed)
 			{
 				DrawTextLine(curX, ref curY, "RM_SubsurfaceUnsurveyed".Translate());
 			}

@@ -65,14 +65,37 @@ namespace RimMandrake.FlowWorks.Pits
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
 			base.SpawnSetup(map, respawningAfterLoad);
-			RM_SuperdeepTrap.EngineOf(map)?.BumpClimbGeneration();
+			Notify_DeckPathChanged(map, Position, respawningAfterLoad);
 		}
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
 			Map map = Map;
+			IntVec3 pos = Position;
 			base.DeSpawn(mode);
+			Notify_DeckPathChanged(map, pos, false);
+		}
+
+		/// <summary>PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS (owner card 2026-10-22 "covered cells are floor"): a deck laid or lifted
+		/// changes what its square is to a walker (ground at the deck's height, or the hole), so everything that cached the
+		/// old answer is told at once, as a ladder does (RM_LadderUtility): the climb generation (pocket grid, cliff masks,
+		/// stride runs), the square's path cost (RM_Patch_PathGrid_PitCoverCost prices a deck at its own cost, the hole at
+		/// 300), the pathfinder's incremental cell update (the cliff masks re-check the generation only on a cell delta) and
+		/// the reach cache. Before this a new cover moved only the generation, so a partly covered pit's planked squares could
+		/// stay "pit" to A* and reachability until some other square changed.</summary>
+		public static void Notify_DeckPathChanged(Map map, IntVec3 c, bool loading)
+		{
+			if (map == null)
+			{
+				return;
+			}
 			RM_SuperdeepTrap.EngineOf(map)?.BumpClimbGeneration();
+			if (!loading && c.InBounds(map))
+			{
+				map.pathing?.RecalculatePerceivedPathCostAt(c);
+				map.pathFinder?.MapData?.Notify_CellDelta(c);
+			}
+			map.reachability?.ClearCache();
 		}
 
 		/// <summary>The whole span gives way at once: every deck is marked and destroyed (rubble left) BEFORE the pawns on it

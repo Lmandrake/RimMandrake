@@ -283,7 +283,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				"Draws a flange where a pipe meets a tank or machine, a coupler where a pump touches a tank, and a saddle where a hose couples onto a pipe. " +
 				"The fitting art is still being designed; until it lands every fitting draws a stand-in. Art only.");
 			list.CheckboxLabeled("Pipes and hoses run on beneath tanks and machines to their centre (art only)", ref pipesUnderToCentre,
-				"On: a pipe or hose joining a tank, pump, tap, sprinkler or other liquid machine is drawn on underneath it to the middle of the building, so it shows through any see-through edges as if it plugs into the centre. Off: it stops at the building's edge.");
+				"On: a pipe or hose joining a tank, pump, bleed well, sprinkler or other liquid machine is drawn on underneath it to the middle of the building, so it shows through any see-through edges as if it plugs into the centre. Off: it stops at the building's edge.");
 			if ((linksWas != pipeLinksIntoMachines || fitWas != joinFittings || underWas != pipesUnderToCentre) && Current.ProgramState == ProgramState.Playing && Find.Maps != null)
 			{
 				foreach (Map m in Find.Maps) m.mapDrawer.WholeMapChanged((ulong)MapMeshFlagDefOf.Buildings);

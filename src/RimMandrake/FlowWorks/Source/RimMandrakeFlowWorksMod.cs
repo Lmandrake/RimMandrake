@@ -797,7 +797,7 @@ namespace RimMandrake.FlowWorks
             .Name("trapTriggerEnabled", "Concealed pits give way under enough weight")
             .Name("superdeepRoomsEnabled", "An enclosed pit is its own room")
             .Name("digFindsEnabled", "Digging a canal can turn up minerals")
-            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("liquidDrillingEnabled", "Drilling and tapping")
+            .Name("digRockGroundEnabled", "Canals can be dug through rock ground").Name("digRockChunksEnabled", "Digging can turn up rock chunks").Name("liquidDrillingEnabled", "Drilling and bleed wells")
             .Name("swaleEnabled", "A watered swale enriches the ground around it");
 
         private static object GetField(string n)
@@ -1890,16 +1890,16 @@ namespace RimMandrake.FlowWorks
             Machinery.Kits.RM_KitSettings.DoSettingsSection(list);
 
             list.GapLine();
-            if (Section(list, "Drilling and tapping", new[] { "liquidDrillingEnabled", "drillYieldChanceMultiplier", "drillUnitsPerCycle" }))
+            if (Section(list, "Drilling and bleed wells", new[] { "liquidDrillingEnabled", "drillYieldChanceMultiplier", "drillUnitsPerCycle" }))
             {
             list.Label("Some maps sit on a liquid you never see "
-                     + "the surface of. A drill (powered) or a tap (hand-worked, smaller) pours "
+                     + "the surface of. A drill (powered) or a bleed well (hand-worked, smaller) pours "
                      + "whatever a subsurface survey found into a dug channel at its outlet, "
                      + "drawing down a fixed reserve that never refills. Every map is surveyed "
                      + "once, quietly, whether or not you ever build one.");
 
-            list.CheckboxLabeled("Drilling and tapping", ref liquidDrillingEnabled,
-                "Master switch for the whole route. Off: a built drill or tap sits there inert, "
+            list.CheckboxLabeled("Drilling and bleed wells", ref liquidDrillingEnabled,
+                "Master switch for the whole route. Off: a built drill or bleed well sits there inert, "
               + "consuming no power and producing nothing — the underlying survey still runs so "
               + "flipping this back on does not need a new game.");
 
@@ -1916,7 +1916,7 @@ namespace RimMandrake.FlowWorks
             {
                 list.Label("Extraction rate: " + RM_Volume.FormatLitres(Mathf.RoundToInt(DrillUnitsPerCycle * RM_Volume.LitresPerNotch)) + " per cycle");
                 drillUnitsPerCycle = list.Slider(drillUnitsPerCycle, 0.1f, 6f);
-                list.Label("How much a drill (or a slower tap, scaled down per building) can pull "
+                list.Label("How much a drill (or a slower bleed well, scaled down per building) can pull "
                          + "from the ground every few seconds (250 ticks) once its outlet has room to take it. "
                          + "The reserve it draws from is finite and never comes back.");
             }
