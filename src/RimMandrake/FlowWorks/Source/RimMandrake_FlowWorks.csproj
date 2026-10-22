@@ -353,6 +353,7 @@
     <Compile Include="Drilling\RM_MapComponent_SubsurfaceLiquid.cs" />
     <Compile Include="Drilling\RM_LiquidDrillExtension.cs" />
     <Compile Include="Drilling\Building_LiquidDrill.cs" />
+    <Compile Include="Drilling\RM_DrillSurveyMath.cs" />
   </ItemGroup>
 
   <!-- Rivers: River Works (was mandrake.rm.riverworks, SURFACE_RIVER_WEIRS_1 slices 1-2), merged

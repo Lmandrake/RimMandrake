@@ -1205,7 +1205,7 @@ def drawbridges(t):
 # from its newest result at the current mod hash and deployed DLL (driver_rows_at), else UNMEASURED naming the driver. The
 # driver calls the C# class RM_LineProofs (contracts: lines_proof.OWED_PROOFS); against a deployed FlowWorks without it, a
 # live run writes every row UNMEASURED/HARNESS.
-LINES_CASE_FILES = ("LineCrossingChecks.cs", "LineDigBreakChecks.cs", "DeckCollapseLinesChecks.cs", "PipePoleChecks.cs", "PipeSpanNetChecks.cs", "HoseBandChecks.cs", "LineReadoutChecks.cs", "PowerCordChecks.cs", "ReelRiserShadowChecks.cs")
+LINES_CASE_FILES = ("LineCrossingChecks.cs", "LineDigBreakChecks.cs", "DeckCollapseLinesChecks.cs", "PipePoleChecks.cs", "PipeSpanNetChecks.cs", "HoseBandChecks.cs", "LineReadoutChecks.cs", "PowerCordChecks.cs", "ReelRiserShadowChecks.cs", "CoverFloorSurveyChecks.cs")
 LINES_CASES = [
     "LineCrossing_P2_table_every_kind_by_every_surface",
     "LineCrossing_P2_rigid_only_on_solid_ground_cover_carries_nothing",
@@ -1241,7 +1241,10 @@ LINES_CASES = [
     "ReelFacing_outlet_nozzle_and_picture_turn_with_the_reel", "ReelFacing_target_on_the_outlet_side_lays_with_no_U_loop",
     "ReelFacing_relay_inlet_turns_with_the_relay", "ReelFacing_def_rotatable_west_default_preview_and_legacy_saves",
     "PipeTankRiser_ends_on_the_hose_flange_not_under_the_skid", "PipeTankRiser_wiring_link_stops_layer_prints_flange_follows",
-    "HoseShadow_empty_is_darker_and_wider_full_unchanged"]
+    "HoseShadow_empty_is_darker_and_wider_full_unchanged",
+    # owner cards 2026-10-22: PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS, DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES
+    "CoverFloor_planked_squares_are_ground_open_squares_the_pit", "CoverFloor_laying_or_lifting_a_lid_invalidates_path_and_reach",
+    "DrillSurvey_empty_survey_refuses_unsurveyed_allows", "DrillSurvey_placeworker_wired_on_drill_and_bleed_well"]
 LINES_LIVE = [
     ("ROPE_DECK_RIGID_REFUSED_FLEX_OK", None, "on a rope deck square the placement gate refuses a pipe and a conduit and accepts "
      "a power cord; a hose to the far bank is laid over >= 3 deck squares"),
