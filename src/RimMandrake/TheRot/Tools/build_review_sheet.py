@@ -743,8 +743,9 @@ def main():
             "deliberately reuses rather than shipping its own — Core has stocked Bryolux/Agarilux/Glowstool "
             "art since 1.4. Resolved the same way as RM_PaleTree/PaleMoss/Emberscythe: UnityPy against the "
             "base resources.assets, bare letter-suffix Graphic_Random names with no prefix (BryoluxA, "
-            "AgariluxA, GlowstoolA), first alphabetically. Art status on these 4 rows is 'vanilla', not "
-            "'donor'.",
+            "AgariluxA, GlowstoolA), first alphabetically. Art status on these 4 DONOR rows is 'vanilla', not "
+            "'donor'. The RM_ ports of three of them (Bryolux, Glowstool, GlowingAgarilux) are repointed to painted "
+            "RotSpecies/ art by Patches/RotSpecies_NamesAndSizes.xml.",
             "RM_PaleTree/RM_PaleMoss (vanilla TreeAnima/Grass_Anima) and RM_Emberscythe (vanilla Megascarab "
             "recolor) were extracted via UnityPy under Windows python.exe: TreeAnima and Grass_Anima are "
             "Graphic_Random families with no underscore (bare letter suffix, e.g. TreeAnimaA / Grass_AnimaA — "
