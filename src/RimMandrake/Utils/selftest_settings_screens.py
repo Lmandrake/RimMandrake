@@ -226,6 +226,7 @@ MODS = {
         "Wild spawns and kin bonds (restart)": "NextGameStart",
         "Giant: the hwelgrue": "Now",
         "Ship: the swallowed navigator": "Now",
+        "Ship: the portable warm mat": "Now",
         "Technology: the gut-mother and the unjoining draught": "Now",
         "Cross-biome opt-in": "Now",
     }, ()),

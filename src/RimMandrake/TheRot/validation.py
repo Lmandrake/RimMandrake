@@ -194,6 +194,28 @@ def static_checks():
     n_entries = nl.split("<entries>", 1)[1].split("</entries>", 1)[0].count("<li>") if "<entries>" in nl else 0
     if n_entries != 8 or "RM_NavigatorSalvageSite" not in nl:
         bad.append("RM_NavigatorLog must carry 8 entries and the RM_NavigatorSalvageSite quest (ROT_NAVIGATOR_LOG_SITES_1), found %d" % n_entries)
+    # ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD: the portable mat root (owner ruling 2026-10-22).
+    mr = re.sub(r"<!--.*?-->", "", open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_LivingMatRoot.xml"),
+                                          encoding="utf-8").read(), flags=re.S)
+    for need in ("<defName>RM_LivingMatRoot</defName>", "CompProperties_RM_LivingMatRoot", "CompProperties_Refuelable",
+                 "<li>FoodRaw</li>", "<consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>", "<tickerType>Rare</tickerType>",
+                 "<maxRoomTemperature>21</maxRoomTemperature>", "<matTerrain>RM_MycelialMatting</matTerrain>",
+                 "<minifiedDef>MinifiedThing</minifiedDef>"):
+        if need not in mr:
+            bad.append("RM_LivingMatRoot.xml lacks %s (ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD)" % need)
+    if "<designationCategory>" in mr or "<costList>" in mr or "Substructure" in mr:
+        bad.append("RM_LivingMatRoot must be a reward (no designator/cost) and must not require substructure ('make it work anywhere')")
+    rot_warm = biome.find(".//li[@Class='RimMandrake.EnvironmentalHazards.RM_WarmGroundExtension']/warmTerrains")
+    root_warm = ET.fromstring(mr.encode("utf-8")).find(".//warmTerrains")
+    if rot_warm is None or root_warm is None or sorted(e.text for e in rot_warm) != sorted(e.text for e in root_warm):
+        bad.append("RM_LivingMatRoot's warmTerrains must equal RM_TheRot's RM_WarmGroundExtension list (same mat)")
+    lm = open(os.path.join(HERE, "Source", "RM_LivingMatRoot.cs"), encoding="utf-8").read()
+    for need in ("RM_TheRotFront.IsRotBiome", "ThermalPowerDivisor = 36f", "RemoveTopLayer", "BiomeHeatsMat"):
+        if need not in lm:
+            bad.append("RM_LivingMatRoot.cs lacks %s" % need)
+    eh = open(os.path.join(HERE, "..", "EnvironmentalHazards", "Source", "RM_MapComponent_WarmGround.cs"), encoding="utf-8").read()
+    if "ThermalPowerDivisor = 36f" not in eh:
+        bad.append("RM_MapComponent_WarmGround's ramp moved: re-derive RM_LivingMatRoot's copy of ThermalPowerDivisor")
     core = open(os.path.join(HERE, "Source", "RM_SwallowedCore.cs"), encoding="utf-8").read()
     for need in ("RM_NavigatorLog.Notify_Ping", "RM_NavigatorLog.Notify_CarrierDied", "engineSeen"):
         if need not in core:
@@ -648,6 +670,66 @@ def _build_suite():
             text = _uj("horror")
             if _live(t) and "horror emerging True" not in text:
                 raise ExpectationFailed("the metalhorror implant was not forced to emerge: %s" % text)
+
+    @suite.chain("living_mat_root")
+    def living_mat_root(t):
+        """ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD. A NON-Rot map with open bare ground near the centre (a quicktest map).
+        ProofStage builds a sealed, roofed 5x5 wood room with a full root at its centre; ProofSweeps runs hurried
+        sweeps (every timer elapsed) on it and reads food, grown cells, room and outdoor temperature."""
+        def _mr(method, args=None):
+            kw = {"type": "RimMandrake.TheRot.RM_LivingMatRootProof", "method": method}
+            if args is not None:
+                kw["args"] = args
+            r = t.bridge_call("jawa/static_call", **kw)
+            return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+        def _num(text, pat):
+            m = re.search(pat, text)
+            return [float(x) for x in m.groups()] if m else None
+
+        with t.component("fed_root_spreads_and_eats", toggle="portableWarmMatSpread"):
+            staged = _mr("ProofStage")
+            if _live(t):
+                if not staged.startswith("STAGED"):
+                    _unmeasured(t, "ProofStage could not stage a room: %s" % staged)
+                elif "rot True" in staged:
+                    _unmeasured(t, "staged on an RM_TheRot map; this chain needs a non-Rot map")
+            text = _mr("ProofSweeps", "5|fed")
+            if _live(t):
+                ate = _num(text, r"ate (-?[\d.]+)")
+                grown = _num(text, r"grown (\d+)->(\d+)")
+                if not ate or not grown:
+                    raise ExpectationFailed("unreadable ProofSweeps: %s" % text)
+                if not grown[1] - grown[0] == 5:
+                    raise ExpectationFailed("5 fed sweeps did not lay 5 mat cells: %s" % text)
+                if not ate[0] > 0:
+                    raise ExpectationFailed("a fed root off the Rot ate nothing: %s" % text)
+        with t.component("mat_room_warms_to_cap", toggle="portableWarmMatWarmth"):
+            text = _mr("ProofSweeps", "40|fed")
+            if _live(t):
+                mat = _num(text, r"mat (\d+)/(\d+)")
+                temp = _num(text, r"room (-?[\d.]+)->(-?[\d.]+)")
+                out = _num(text, r"outdoor (-?[\d.]+)")
+                if not mat or not temp or not out:
+                    raise ExpectationFailed("unreadable ProofSweeps: %s" % text)
+                if mat[0] < 0.6 * mat[1]:
+                    raise ExpectationFailed("40 more sweeps left the room under 60%% mat: %s" % text)
+                target = min(out[0] + 18.0, 21.0)
+                if temp[1] > 21.05:
+                    raise ExpectationFailed("the mat pushed a room past the 21 C cap: %s" % text)
+                if temp[0] < target - 0.5 and not temp[1] > temp[0]:
+                    raise ExpectationFailed("a fed, mat-floored room below its target did not warm: %s" % text)
+        with t.component("starved_root_dies_back", toggle="portableWarmMatDieBack"):
+            text = _mr("ProofSweeps", "3|empty")
+            if _live(t):
+                grown = _num(text, r"grown (\d+)->(\d+)")
+                if not grown:
+                    raise ExpectationFailed("unreadable ProofSweeps: %s" % text)
+                if not (grown[0] - grown[1] == 3 and "starving" in text):
+                    raise ExpectationFailed("3 starved sweeps did not uncover 3 grown cells: %s" % text)
+        with t.component("rot_root_eats_nothing", toggle="portableWarmMat"):
+            if _live(t):
+                _unmeasured(t, "needs an RM_TheRot map; first poke: ProofStage then ProofSweeps 5|fed there, food must not move")
 
     return suite
 
