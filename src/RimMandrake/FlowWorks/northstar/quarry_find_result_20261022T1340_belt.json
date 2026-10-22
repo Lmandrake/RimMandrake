@@ -1,0 +1,133 @@
+{
+ "script": "quarry_find_live.py",
+ "started": "2026-10-22T12:13:21",
+ "rows": [
+  {
+   "id": "QUARRY_FIND_DROPS_ON_LIP",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_QUARRY_DIGGING_1",
+   "detail": {
+    "armed": "ARMED: the next canal cut rolls with certainty | DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+    "after": "DIGFINDS finds 1 | budget 51 | first-found 1 | last Steel x15 @45,45 D=1",
+    "depth": [
+     0,
+     1
+    ],
+    "cutAt": 1750,
+    "newThings": {
+     "Steel36556": [
+      "Steel",
+      44,
+      45,
+      15
+     ]
+    },
+    "newLetters": [
+     "Found while digging: Steel"
+    ],
+    "designate": "{'success': True, 'action': 'add', 'designation': 'RM_DigCanal', 'added': 1, 'removed': 0, 'alreadyPresent': 0, 'alreadyAbsent': 0, 'skippedWrongType': 0, 'targetType': 'Cell', 'targetedThings': False"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/quarry_5.json",
+  "origin": "40,40",
+  "fresh_map": true
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Alpaca36416",
+    "Alpaca36417",
+    "Alpaca36418",
+    "Bluebird36430",
+    "Bluebird36453",
+    "Bluebird36454",
+    "Bluebird36457",
+    "Bluebird36464",
+    "Boomrat36421",
+    "Boomrat36429",
+    "Boomrat36447",
+    "Boomrat36459",
+    "Boomrat36469",
+    "Boomrat36470",
+    "GuineaPig36434",
+    "GuineaPig36435",
+    "GuineaPig36436",
+    "GuineaPig36437",
+    "GuineaPig36438",
+    "GuineaPig36439",
+    "GuineaPig36440",
+    "Hare36413",
+    "Hare36414",
+    "Hare36433",
+    "Hare36443",
+    "Hare36445",
+    "Hare36449",
+    "Hare36456",
+    "Ibex36426",
+    "Ibex36427",
+    "Ibex36428",
+    "Lynx36441",
+    "Megasloth36422",
+    "Megasloth36448",
+    "Megasloth36450",
+    "Mink36444",
+    "Porcupine36446",
+    "Porcupine36452",
+    "Porcupine36460",
+    "Raccoon36425",
+    "Raccoon36442",
+    "Rat36415",
+    "Rat36431",
+    "Rat36455",
+    "Rat36466",
+    "Rat36468",
+    "Squirrel36424",
+    "Squirrel36451",
+    "Squirrel36461",
+    "Tortoise36420",
+    "Tortoise36432",
+    "Tortoise36471",
+    "Turkey36419",
+    "Turkey36423",
+    "Turkey36462",
+    "Turkey36465",
+    "Turkey36467",
+    "Wolverine36458",
+    "Wolverine36463"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive1190"
+    ],
+    [
+     "GlowPod",
+     "GlowPod1203"
+    ],
+    [
+     "EggSac",
+     "EggSac1204"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "finished": "2026-10-22T12:14:13"
+}

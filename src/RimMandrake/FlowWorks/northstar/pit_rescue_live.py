@@ -96,6 +96,12 @@ def main():
         return ((r.get("pawns") or [{}])[0]).get("id")
     victim = spawn(P(7, 5))
     rescuers = [spawn(P(2, 5)), spawn(P(2, 6))]
+    # SITE (belt live 2026-10-22): bridge-spawned colonists can come with work types at priority 0 (the quarry check's job
+    # probe read Mining priority 0, workActive False) -- the first rescue runs' "nobody finishes the frame" may be exactly
+    # that. Construction, Hauling and Doctor (rescue) are set on.
+    for r_ in rescuers:
+        for wt in ("Construction", "Hauling", "Doctor"):
+            B.call("jawa/set_work_priority", pawnId=r_, workType=wt, priority=1)
     inc = B.call("jawa/pawn_force_incapacitate", pawn=victim, action="downed", allowBleedingWounds=False) or {}
     # can-fail control (belt run 3: nobody rescued even after the ladder stood): a colonist downed on OPEN ground; if he is
     # not rescued either, the scene cannot rescue at all (SITE), whatever the pit does
