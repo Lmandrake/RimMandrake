@@ -659,6 +659,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				seen[0] = locked ? 1 : 0;
 				map.reachability?.ClearCache();   // phase 6: drawbridge gates open for nobody while locked (R4, R7)
+				RM_WallReach.Bump(map);   // REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: the gates' shut state is a reach-map input
 			}
 			if (RM_DrawbridgeMath.ShouldCancelAutoLower(locked, l.autoLowering))
 			{

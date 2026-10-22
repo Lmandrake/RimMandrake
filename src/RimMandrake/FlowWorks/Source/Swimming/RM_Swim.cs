@@ -768,6 +768,18 @@ namespace RimMandrake.FlowWorks.Swimming
 			}
 		}
 
+		/// <summary>REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: how many squares the non-swimmer block closes (0: no deep water).</summary>
+		public static int DeepCount(Map map)
+		{
+			return map == null ? 0 : For(map).deepCount;
+		}
+
+		/// <summary>REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: the swim grids' version (moves with every swim-square change).</summary>
+		public static int VersionOf(Map map)
+		{
+			return map == null ? -1 : For(map).version;
+		}
+
 		private static void Retire(MapGrids g, Grid grid, int now)
 		{
 			if (grid != null)

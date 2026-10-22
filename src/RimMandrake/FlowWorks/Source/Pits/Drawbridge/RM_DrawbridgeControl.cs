@@ -352,6 +352,12 @@ namespace RimMandrake.FlowWorks.Pits
 			return RM_DrawbridgeMath.GateOpensFor(RM_Drawbridges.Locked(Map), l.progress > 0, HoldOpen);
 		}
 
+		/// <summary>REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: shut to every pawn whatever its faction (locked and not held, or its
+		/// leaf off its seat): the wall-aware reach map closes it to everyone but a door-basher (RM_WallReach).</summary>
+		public bool ShutToEveryone => Spawned && RM_DrawbridgeSettings.drawbridgesEnabled
+			&& RM_Drawbridges.LeafOfGate(this, out SuspensionBridgeRecord r, out DrawbridgeLeaf l)
+			&& !RM_DrawbridgeMath.GateOpensFor(RM_Drawbridges.Locked(Map), l.progress > 0, HoldOpen);
+
 		public override string GetInspectString()
 		{
 			string s = base.GetInspectString();

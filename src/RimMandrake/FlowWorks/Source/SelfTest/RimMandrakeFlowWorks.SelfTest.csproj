@@ -161,6 +161,8 @@
     <Compile Include="PondReturnChecks.cs" />
     <Compile Include="DeepBedChecks.cs" />
     <Compile Include="PocketGridChecks.cs" />
+    <Compile Include="..\RM_WallReachMath.cs" />
+    <Compile Include="WallReachChecks.cs" />
     <Compile Include="CliffMaskChecks.cs" />
     <Compile Include="OutflowChecks.cs" />
     <Compile Include="HoseHoldChecks.cs" />

@@ -60,6 +60,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Rebuild count, for the bridge proof (a pocket must survive save/reload identically).</summary>
 		public int Rebuilds { get; private set; }
 
+		// REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE (de-risk step 1, reachability_review.md §4): what one rebuild costs, per band,
+		// read through ProofPocketTiming. Wall-clock milliseconds of RM_PocketGridMath.Label (the floods), and of the whole Build.
+		private readonly double[] lastBandMs = new double[RM_PitTrapMath.ClimbBands];
+		private double lastBuildMs, maxBuildMs, totalBuildMs;
+		private int firstBuiltTick = int.MinValue;
+
 		private RM_PocketGrid(Map map, int stride = 0, bool floorView = false)
 		{
 			this.map = map;
@@ -156,6 +162,7 @@ namespace RimMandrake.FlowWorks
 		public static void Tick(Map map, RM_MapComponent_Excavation eng)
 		{
 			RebuildIfStale(map, eng, false);
+			RM_WallReach.Tick(map, false);   // REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: after the depth grids, same throttle rule
 		}
 
 		/// <summary>From RM_MapComponent_Excavation.MapComponentUpdate (every frame), only while the game is paused: the tick
@@ -167,6 +174,7 @@ namespace RimMandrake.FlowWorks
 			if (Find.TickManager != null && Find.TickManager.Paused)
 			{
 				RebuildIfStale(map, eng, true);
+				RM_WallReach.Tick(map, true);
 			}
 		}
 
@@ -177,6 +185,8 @@ namespace RimMandrake.FlowWorks
 		public static void ForceRebuild(Map map)
 		{
 			RebuildIfStale(map, RM_SuperdeepTrap.EngineOf(map), true);
+			RM_WallReach.Force(map);   // REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: a leaf toggle forces the wall-aware labels too
+			RM_WallReach.Tick(map, true);
 		}
 
 		private static void RebuildIfStale(Map map, RM_MapComponent_Excavation eng, bool paused)
@@ -229,17 +239,37 @@ namespace RimMandrake.FlowWorks
 			Build(notifyFlips);
 		}
 
-		private void Build(bool notifyFlips)
+		/// <summary>The walking depth of every square in this grid's view: EffectiveDepth (decks, the floor view), then the stride
+		/// view's bridging. The one input this grid and the wall-aware reach labels (RM_WallReach) both label.</summary>
+		internal byte[] ViewDepth()
 		{
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			int w = map.Size.x, h = map.Size.z;
-			int n = w * h;
 			byte[] depth = EffectiveDepth(map, eng, floorView);
 			if (stride > 0)
 			{
 				// TITAN_TRENCHES_WIRE_MIND_THE_GAP: the stride view (RM_TrenchStride's masks bridge the same cells)
 				depth = RM_TrenchStrideMath.BridgedDepth(depth, RM_TrenchStrideMath.RunWidths(depth, w, h), stride);
 			}
+			return depth;
+		}
+
+		/// <summary>PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS: a ramp joins its square to the one it faces, for every band (design §8.3).
+		/// Null when the view has no ramp (or no dug square).</summary>
+		internal System.Func<int, int, bool> RampJoins(byte[] depth, bool anyDug)
+		{
+			Dictionary<int, int> ramps = anyDug ? RM_PitRamp.Pairs(map, depth) : null;
+			return ramps == null || ramps.Count == 0 ? null
+				: (System.Func<int, int, bool>)((a, b) => ramps.TryGetValue(a, out int t) && t == b);
+		}
+
+		private void Build(bool notifyFlips)
+		{
+			var whole = System.Diagnostics.Stopwatch.StartNew();
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			int w = map.Size.x, h = map.Size.z;
+			int n = w * h;
+			byte[] depth = ViewDepth();
 			RM_PocketGridMath.Labels[] old = bands;
 			var fresh = new RM_PocketGridMath.Labels[BandCount];
 			bool anyDug = false;
@@ -247,14 +277,14 @@ namespace RimMandrake.FlowWorks
 			{
 				anyDug = depth[i] != 0;
 			}
-			// PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS: a ramp joins its square to the one it faces, for every band (design §8.3).
-			Dictionary<int, int> ramps = anyDug ? RM_PitRamp.Pairs(map, depth) : null;
-			System.Func<int, int, bool> rampJoins = ramps == null || ramps.Count == 0 ? null
-				: (System.Func<int, int, bool>)((a, b) => ramps.TryGetValue(a, out int t) && t == b);
+			System.Func<int, int, bool> rampJoins = RampJoins(depth, anyDug);
+			var band = new System.Diagnostics.Stopwatch();
 			for (int k = 1; k < BandCount; k++)
 			{
+				band.Restart();
 				// No dug cell: every band is one surface component per map; skip the floods.
 				fresh[k] = anyDug ? RM_PocketGridMath.Label(depth, w, h, k, rampJoins) : AllSurface(w, h, k);
+				lastBandMs[k] = band.Elapsed.TotalMilliseconds;
 			}
 			bands = fresh;
 			builtGeneration = eng?.ClimbGeneration ?? 0;
@@ -264,6 +294,10 @@ namespace RimMandrake.FlowWorks
 			wideCache.Clear();
 			edgeCache.Clear();
 			Rebuilds++;
+			if (firstBuiltTick == int.MinValue)
+			{
+				firstBuiltTick = builtTick;
+			}
 			if (notifyFlips && stride == 0 && old != null && old[PersonBand] != null && RM_PitRooms.RoomsOn)
 			{
 				RM_PocketGridMath.Labels a = old[PersonBand], b = fresh[PersonBand];
@@ -275,7 +309,71 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
+			lastBuildMs = whole.Elapsed.TotalMilliseconds;
+			totalBuildMs += lastBuildMs;
+			if (lastBuildMs > maxBuildMs)
+			{
+				maxBuildMs = lastBuildMs;
+			}
 		}
+
+		/// <summary>REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: one line of this grid's rebuild cost.</summary>
+		private string TimingLine(string name)
+		{
+			int now = Find.TickManager?.TicksGame ?? 0;
+			int span = firstBuiltTick == int.MinValue ? 0 : now - firstBuiltTick;
+			var sb = new System.Text.StringBuilder();
+			sb.Append(name).Append(" rebuilds=").Append(Rebuilds).Append(" overTicks=").Append(span)
+				.Append(" per1000=").Append(span > 0 ? (Rebuilds * 1000.0 / span).ToString("0.00") : "-")
+				.Append(" lastMs=").Append(lastBuildMs.ToString("0.000")).Append(" maxMs=").Append(maxBuildMs.ToString("0.000"))
+				.Append(" meanMs=").Append(Rebuilds > 0 ? (totalBuildMs / Rebuilds).ToString("0.000") : "-").Append(" bandMs=");
+			for (int k = 1; k < lastBandMs.Length; k++)
+			{
+				sb.Append(k > 1 ? "," : "").Append(lastBandMs[k].ToString("0.000"));
+			}
+			return sb.ToString();
+		}
+
+		/// <summary>REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE (de-risk step 1) bridge/proof read (jawa/static_call, arg ignored):
+		/// "POCKETTIME cells=N plain[ rebuilds=N overTicks=T per1000=R lastMs=.. maxMs=.. meanMs=.. bandMs=b1,..,b6] | stride1[...]
+		/// | floor0[...] … | WALLREACH …". Only grids that exist are listed (views are lazy). Rebuilds count builds since the
+		/// grid was made; per1000 = rebuilds per 1000 ticks since its first build.</summary>
+		public static string ProofPocketTiming(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null)
+			{
+				return "REFUSED: no current map";
+			}
+			var parts = new List<string> { "POCKETTIME cells=" + map.cellIndices.NumGridCells };
+			if (grids.TryGetValue(map, out RM_PocketGrid g) && g.bands != null)
+			{
+				parts.Add(g.TimingLine("plain"));
+			}
+			if (strideGrids.TryGetValue(map, out RM_PocketGrid[] set))
+			{
+				for (int s = 1; s < set.Length; s++)
+				{
+					if (set[s]?.bands != null)
+					{
+						parts.Add(set[s].TimingLine("stride" + s));
+					}
+				}
+			}
+			if (floorGrids.TryGetValue(map, out RM_PocketGrid[] floors))
+			{
+				for (int s = 0; s < floors.Length; s++)
+				{
+					if (floors[s]?.bands != null)
+					{
+						parts.Add(floors[s].TimingLine("floor" + s));
+					}
+				}
+			}
+			parts.Add(RM_WallReach.TimingLine(map));
+			return string.Join(" | ", parts);
+		}
+
 
 		/// <summary>The climb depth of every cell (ClimbDepthAt), an intact cover read as ground (0): the one input the pocket
 		/// grid and the cliff masks (RM_CliffMask) both derive from, so they never disagree. Read-only on the map.</summary>
@@ -626,6 +724,40 @@ namespace RimMandrake.FlowWorks
 		public bool JoinedByLadders(int k, int from, int to, Pawn p)
 		{
 			return RM_PocketGridMath.JoinedByLadders(from, to, LadderEdges(k, p));
+		}
+
+		/// <summary>REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE (V5): every ladder that joins its square to the square across the wall
+		/// it hangs on for this query — the same decision LadderEdges makes (a way for this pawn, or pawnless: lowered; the wall
+		/// still joins in this grid's view) but WITHOUT the depth-only components, so the wall-aware labels can re-key it onto
+		/// theirs. Pairs of cell indices (ladder square, square across).</summary>
+		internal void LadderJoins(Pawn p, List<(int ladder, int other)> into)
+		{
+			into.Clear();
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			List<Thing> ladders = RM_LadderUtility.AllLadders(map, ladderScratch);
+			for (int i = 0; i < ladders.Count; i++)
+			{
+				IntVec3 c = ladders[i].Position;
+				int rot = ladders[i].Rotation.AsInt;
+				if (rot < 0 || rot > 3 || !c.InBounds(map))
+				{
+					continue;
+				}
+				var o = new IntVec3(c.x + RM_LadderWallMath.FX[rot], 0, c.z + RM_LadderWallMath.FZ[rot]);
+				if (!o.InBounds(map))
+				{
+					continue;
+				}
+				bool way = RM_PocketGridMath.LadderIsAWay(p != null, p == null && RM_ClimbJoins.LoweredLadderAt(map, c),
+					p != null && RM_LadderRules.LadderLetsOut(map, c, p));
+				int dc = floorView ? ViewStepDepthAt(eng, c) : RM_SuperdeepTrap.StepDepthAt(map, eng, c);
+				int dO = floorView ? ViewStepDepthAt(eng, o) : RM_SuperdeepTrap.StepDepthAt(map, eng, o);
+				// components 0 and 1: "different", so LadderEdge judges only the way and the wall (the labels decide the rest)
+				if (RM_PocketGridMath.LadderEdge(rot, dc, 0, dO, 1, way))
+				{
+					into.Add((map.cellIndices.CellToIndex(c), map.cellIndices.CellToIndex(o)));
+				}
+			}
 		}
 
 		/// <summary>Does this component reach a map-border component on foot, its own border or through ladders?</summary>
