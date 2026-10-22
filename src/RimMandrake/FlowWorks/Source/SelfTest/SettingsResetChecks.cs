@@ -26,6 +26,13 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            Case("MachinerySettings_toggle_rows_scan_the_defs_once_not_every_frame", () =>
+            {
+                string src = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_MachinerySettings.cs"));
+                Assert(Regex.IsMatch(src, @"if \(toggleRowsCache != null\)\s*\{\s*return toggleRowsCache;"), "ToggleRows returns its cache first (the settings window calls it every frame)");
+                Assert(Regex.IsMatch(src, @"return toggleRowsCache = "), "ToggleRows stores what it scanned");
+            });
+
             Case("SettingsReset_restores_shipped_values_and_skips_non_settings", () =>
             {
                 var shipped = RM_SettingsReset.Snapshot(typeof(Fake));
