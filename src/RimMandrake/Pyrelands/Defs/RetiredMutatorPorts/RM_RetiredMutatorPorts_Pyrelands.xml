@@ -6,7 +6,7 @@
      Mapping, per-row notes and what could not be reproduced: design/RimMandrake/retired_mutators_port_2026-10-19.md.
      Classes named RimMandrake.EnvironmentalHazards.* live in EnvironmentalHazards/Source/RM_WorldMutatorPorts.cs.
      The Ash'karr RUT_ biomes these tiles sit on are added to the whitelists from the Utinni layer
-     (UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml). PLACEHOLDER ART: any graphic here is vanilla. -->
+     (UtinniPatches/Patches/RUT_RetiredMutatorPorts_Biomes.xml). ART: the vent and generator textures are our dregen_ renders (accepted-for-now, art ledger); the landmark icon is vanilla. -->
 <Defs>
 
   <!-- Magma vent (replaces AB_MagmaVent, whose eruptions lived in donor C#): natural 4x4, warm, erupts fire and

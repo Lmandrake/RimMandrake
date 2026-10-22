@@ -10,8 +10,8 @@
     ModExtension_Graffiti.breachLure). Content (sacred/mural/jest/taunt/cant
     text and defs) is a separate item - see GRAFFITI_FRAMEWORK_BUILD_1.md.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\Graffiti\Source\Graffiti.csproj -c Release
+    Build: python3 src/RimMandrake/Utils/winbuild.py Graffiti (stages on D:\ClaudeWork\rimmandrake\build; dotnet is
+    Windows-native and cannot take a /mnt path). Commit the DLL with its .srchash.
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

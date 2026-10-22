@@ -1,5 +1,5 @@
 // Approach B for Graffiti: seeded fuzz over the Verse-free kernel the mod calls (../Kernel/RM_GraffitiKernel.cs) and the two plain enum files:
-//   pick    the weighted pick: in range, monotone in the roll, boundary rolls (0, total, one ulp over), zero / negative weights never picked,
+//   pick    the weighted pick: in range, monotone in the roll, boundary rolls (0, each running sum, total, just over the total), zero / negative weights never picked,
 //           observed frequencies match the weights
 //   gates   meme / skill / hostility gates and the pool-membership rule exhaustively against independent truth tables
 //   react   the relation-keyed reaction priority over all 2^11 flag combinations against an ordered-rule spec
