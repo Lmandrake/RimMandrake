@@ -1,0 +1,226 @@
+<title>Agent Harness Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; wide tables scroll in their own frames; status shown by chips. 70s desert-brown palette. */
+:root{
+  --bg:#f6efe4; --surface:#efe3d0; --fg:#2b1f14; --muted:#6b5643; --rule:#d6c3a6;
+  --accent:#9a5a12; --accent-2:#5d6b2a;
+  --ok:#3f6b2a; --bad:#a23b22; --warn:#8a6a10; --unk:#5f5a66;
+  --f-display:"Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1d1611; --surface:#2a2018; --fg:#efe2cf; --muted:#b59c80; --rule:#4a3a2b;
+  --accent:#e0a050; --accent-2:#a9b86a; --ok:#93c271; --bad:#ec8a6c; --warn:#e3c35c; --unk:#b8b2c2; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1d1611; --surface:#2a2018; --fg:#efe2cf; --muted:#b59c80; --rule:#4a3a2b;
+  --accent:#e0a050; --accent-2:#a9b86a; --ok:#93c271; --bad:#ec8a6c; --warn:#e3c35c; --unk:#b8b2c2; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+main{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:2.2rem}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2rem,6vw,2.9rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.55rem;font-weight:800;padding-bottom:.35rem;border-bottom:2px solid var(--rule)}
+h3{font-size:1.15rem;font-weight:600}
+p,ul,ol{margin:0}
+section{display:flex;flex-direction:column;gap:.9rem}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.lede{color:var(--muted);font-size:.95rem}
+code,.mono{font-family:var(--f-mono);font-size:.86em}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.answer{list-style:none;padding:0;display:flex;flex-direction:column;gap:.7rem;counter-reset:a}
+.answer li{display:grid;grid-template-columns:2rem 1fr;gap:.6rem;counter-increment:a}
+.answer li::before{content:counter(a);font-family:var(--f-display);font-weight:800;font-size:1.4rem;color:var(--accent);line-height:1.1}
+.answer li > span{min-width:0}
+ul.plain{padding-left:1.1rem;display:flex;flex-direction:column;gap:.4rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:6px}
+table{border-collapse:collapse;font-size:.85rem;min-width:44rem;width:100%}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface);position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:700;white-space:nowrap}
+.rec{background:var(--surface);border-radius:8px;padding:1.1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.7rem;border-top:4px solid var(--accent-2)}
+.rec dl{display:grid;grid-template-columns:7.5rem 1fr;gap:.45rem .8rem;margin:0}
+.rec dt{font-family:var(--f-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:.15rem}
+.rec dd{margin:0;min-width:0}
+.exp{list-style:none;padding:0;display:flex;flex-direction:column;gap:.55rem}
+.exp li{border-left:3px solid var(--rule);padding-left:.7rem}
+.exp b{font-family:var(--f-mono);font-size:.82rem;color:var(--accent)}
+.pass{font-weight:700}
+@media (max-width:520px){.rec dl{grid-template-columns:1fr}.rec dt{padding-top:.4rem}}
+.chip{display:inline-block;font-family:var(--f-mono);font-size:.7rem;font-weight:600;letter-spacing:.04em;padding:.1rem .45rem;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.c-ok{color:var(--ok)}.c-bad{color:var(--bad)}.c-warn{color:var(--warn)}.c-unk{color:var(--unk)}.c-m{color:var(--accent)}
+.tally{display:flex;flex-wrap:wrap;gap:.5rem}
+.tally .chip{font-size:.8rem;padding:.2rem .6rem}
+.sources{font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap:.35rem;overflow-wrap:anywhere}
+.sources b{color:var(--fg)}
+footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:.8rem}
+</style>
+<main>
+<header style="display:flex;flex-direction:column;gap:.6rem">
+  <span class="eyebrow">RimMandrake · BENCH research · 2026-10-22</span>
+  <h1>Agent Harness Review</h1>
+  <p class="lede">Your question (about 15:45 PDT): could Devin-like harnesses manage this project better than rimflow plus occasional help, while staying compatible with rimbridge, live testing and loose design? Method: repo reading, sourced web research, three recommendations, a GPT review (41 points), a merge, and a second-fetch validation of 28 claims.</p>
+</header>
+
+<section>
+  <h2>The answer in five lines</h2>
+  <ol class="answer">
+    <li><span><b>Don't buy a product to run the project yet.</b> No tool has a demonstrated integration with a live RimWorld behind a bridge. Our measured bottlenecks are the single live game, writers colliding in one clone, an orchestrator waiting between turns, and your attention. Coding capability is not on that list.</span></li>
+    <li><span><b>"It can't reach the game" is no longer the reason.</b> Devin (CLI and Local Hands), Cursor self-hosted workers, Copilot on a Windows runner, OpenHands locally, and Codex over Tailscale can all reach a machine we own. What's missing is ours: a test service that alone owns the game and accepts jobs.</span></li>
+    <li><span><b>R1:</b> build that live-test service and let a machine run the proof belt. Add a second game lane only after a measured experiment.</span></li>
+    <li><span><b>R2:</b> give each writing helper its own clone and land work through one serial lander. Try an outside agent only on matched offline items.</span></li>
+    <li><span><b>R3:</b> dispatch on events (Claude Code dynamic workflows, hooks, Channels) and write a delegation policy so your time goes to taste. Then run a one-milestone orchestrator bake-off.</span></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Our setup and pain points</h2>
+  <p>RimWorld runs on Windows and the agents run in WSL2, driving it through the GABP bridge and JawaBench with <b>one live driver at a time</b>. A cold load takes ~15 min on the full list and ~22 s on the minimal list. Proof scripts emit PASS/FAIL/UNMEASURED rows, classified MOD, SITE or HARNESS. There are two Claude seats in separate clones, helpers as subagents, and rimflow holds <span class="mono">528</span> live items (MEASURED).</p>
+  <p>The 2026-10-22 belt ran 08:48–14:44 over ~20 proof scripts. The seat reports ~548 rows passed and 8 bugs filed.</p>
+  <ul class="plain">
+    <li><b>Serial live resource.</b> Each DLL redeploy means game down, deploy, and a Steam relaunch. Fixers and the belt wait on each other.</li>
+    <li><b>Shared-clone collisions.</b> <span class="mono">./publish</span> was refused at 08:58 and 09:16 on <span class="mono">RM_SheetMath.cs</span>, stranding 11 commits (not lost).</li>
+    <li><b>Dispatch latency.</b> The log has gaps of 16–28 min (MEASURED). The seat reports idle slots. The cause isn't in the log, so experiment E0 attributes it.</li>
+    <li><b>Harness churn.</b> Telling MOD from SITE from HARNESS takes judgment. One bug was filed wrongly and dropped.</li>
+    <li><b>Your attention is the binding constraint.</b> Design is loose, and owner-look items pile up for the evening walk.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>The landscape</h2>
+  <p class="lede">Prices are from primary pages. Scroll the table sideways on a phone.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Tool</th><th>Executes where</th><th>Reach to our game</th><th>Orchestration</th><th>Evidence / price</th></tr></thead>
+    <tbody>
+      <tr><td>Devin</td><td>Cloud VM. CLI local on Windows/WSL. Local Hands runs cloud-session tools on your PC (approval per call, no screen control, rolling out)</td><td><span class="chip c-warn">plausible</span> via the CLI or Local Hands calling our Python client</td><td>Dynamic Workflows (deterministic Python, resumable)</td><td>Answer.AI 2025: 3 of 20 succeeded. Free / $20 / $200 / Teams $80 + $40 a seat</td></tr>
+      <tr><td>OpenHands</td><td>Local by default; Docker, VM or cloud optional; hosts Claude Code or Codex via ACP</td><td><span class="chip c-warn">plausible</span> (Windows/WSL not stated)</td><td>Agent Canvas, automations</td><td>No game evidence. Free (MIT); Teams $499/mo</td></tr>
+      <tr><td>Codex</td><td>Cloud workspaces; CLI local</td><td><span class="chip c-warn">plausible</span> through a Tailscale VPN or the local CLI</td><td>Cloud tasks, Linear @Codex</td><td>Thin. Plus $20, Pro from $100</td></tr>
+      <tr><td>Jules</td><td>Google cloud</td><td><span class="chip c-bad">no</span></td><td>Task queue</td><td>Thin. 15/day and 3 concurrent, up to 300/day and 60</td></tr>
+      <tr><td>Copilot agent</td><td>Actions runner: Ubuntu x64 or Windows 64-bit (self-hosted)</td><td><span class="chip c-warn">plausible</span>, but a runner service may not see the game session</td><td>Issue → PR</td><td>Thin. AI Credits since 2026-06-01</td></tr>
+      <tr><td>Cursor</td><td>Cloud planning, tools on a self-hosted worker (GA 2026-03-25)</td><td><span class="chip c-warn">plausible</span> on a Linux/WSL worker; Windows <span class="chip c-unk">unverified</span></td><td>Cloud agents, team pools</td><td>Thin</td></tr>
+      <tr><td>Factory</td><td>Cloud and local background agents</td><td><span class="chip c-warn">plausible</span></td><td>Missions: plan → milestones → validation (needs scripted QA, which we have)</td><td>Thin. $20 / $100 / $200</td></tr>
+      <tr><td>Claude Code</td><td>Local CLI/SDK; cloud sessions</td><td><span class="chip c-ok">yes, locally</span></td><td>Dynamic workflows (local, resumable), agent teams (experimental), scheduled tasks, Projects, Channels</td><td>Our own logs</td></tr>
+      <tr><td>Worktree managers</td><td>Local; Vibe Kanban, Claude Squad, Conductor</td><td><span class="chip c-bad">conflicts</span> with the worktree ban</td><td>Board / tmux</td><td>Thin</td></tr>
+      <tr><td>Game-QA agents</td><td>TITAN, AWS+Unity, modl.ai</td><td>Need our bridge. GABS mirrors GABP bridges as MCP tools, with leases</td><td>n/a</td><td>TITAN preprint: 95% task completion, 4 new bugs (2 MMORPGs)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Three recommendations</h2>
+
+  <article class="rec">
+    <span class="eyebrow">R1</span>
+    <h3>A live-test service that alone owns the game, with a machine-run belt</h3>
+    <dl>
+      <dt>Changes</dt><dd>A local Python service owns deploy, launch, the bridge lease (tied to rimflow's BRIDGE lock), save fixtures and a job queue: <span class="mono">submit → status → evidence</span>. It re-proves on every relevant commit, overnight too. An LLM is woken only for a FAIL, a timeout or invalid evidence. Any agent submits jobs. GABS handles lifecycle if it fits.</dd>
+      <dt>Gain</dt><dd>Proofs stop waiting on LLM turns, and an outside product can be tried later without touching the game.</dd>
+      <dt>Cost / risk</dt><dd>2–4 days to build. A bad harness judgment repeats faster unless known-bad builds are made to fail.</dd>
+      <dt>Fit</dt><dd>Native rimbridge. Design ambiguity stays outside the service.</dd>
+    </dl>
+    <ul class="exp">
+      <li><b>E1.0 · ½ day</b> GABS fit: run one existing proof through GABS. <span class="pass">PASS</span>: the rows match a direct run and the lease rule is written down.</li>
+      <li><b>E1.1 · 1 day</b> Robustness: 6 proofs, 3 known-bad builds, 2 injected faults. <span class="pass">PASS</span>: all cases end in a terminal state, 0 known-bad builds pass, no orphan process.</li>
+      <li><b>E1.2 · ½ day</b> Second instance (separate <span class="mono">-savedatafolder</span> and <span class="mono">GABP_SERVER_PORT</span>). <span class="pass">PASS</span>: ≥1.5× proofs/hour at equal reliability.</li>
+    </ul>
+  </article>
+
+  <article class="rec">
+    <span class="eyebrow">R2</span>
+    <h3>One clone per writer, a serial lander, a matched offline trial</h3>
+    <dl>
+      <dt>Changes</dt><dd>Each writing helper gets its own clone (not a worktree) and pushes a branch. One lander applies branches one at a time, checks the combined commit, and keeps DLL+<span class="mono">.srchash</span> pairs together.</dd>
+      <dt>Gain</dt><dd>An end to shared-tree push refusals and to one-writer-at-a-time serialisation.</dd>
+      <dt>Cost / risk</dt><dd>Conflicts move to landing time and must surface with lineage. More disk.</dd>
+      <dt>Fit</dt><dd>Live testing is untouched.</dd>
+    </dl>
+    <ul class="exp">
+      <li><b>E2.1 · 1 day</b> 3 clones plus overlapping edits, an interrupted landing, and a DLL mismatch. <span class="pass">PASS</span>: 0 lost commits, every conflict reported, combined selftests green.</li>
+      <li><b>E2.2 · 1 day</b> 6 offline items split between a local helper and an outside agent, reviewed blind. <span class="pass">PASS</span>: outsider acceptance ≥ local and review minutes ≤ local.</li>
+    </ul>
+  </article>
+
+  <article class="rec">
+    <span class="eyebrow">R3</span>
+    <h3>Event-driven dispatch and a written delegation policy, then a bake-off</h3>
+    <dl>
+      <dt>Changes</dt><dd>Work starts on events (dynamic workflows, hooks, Channels), with a heartbeat only for recovery and a cap on unvalidated work. A short list of technical decision classes agents may take alone, logged as <span class="mono">--why "delegated: …"</span>, never as your approval. A design brief per milestone.</dd>
+      <dt>Gain</dt><dd>Your minutes go to taste, and ready work starts within minutes.</dd>
+      <dt>Cost / risk</dt><dd>A delegated call can steer design, so start narrow. Channels and workflows are new.</dd>
+      <dt>Fit</dt><dd>Works with loose design by asking less, and asking better.</dd>
+    </dl>
+    <ul class="exp">
+      <li><b>E0 · 2 h, first</b> Attribute one belt day's minutes. Check whether this login has scheduled tasks, Projects, Channels and workflows.</li>
+      <li><b>E3.1 · 1 day</b> Shadow delegation: log the cards we'd have sent and you rate them. <span class="pass">PASS</span>: no severe overturn, and ≥ half are delegable.</li>
+      <li><b>E3.2 · 1 day</b> Event dispatch. <span class="pass">PASS</span>: ready-work delay median ≤ 10 min, max ≤ 30 min, within a set token cap.</li>
+      <li><b>E3.3 · 1 day each</b> After R1: one milestone through a Claude dynamic workflow, Devin (Local Hands + Dynamic Workflows) and Factory Missions. Measure your interventions and accepted results.</li>
+    </ul>
+  </article>
+</section>
+
+<section>
+  <h2>What GPT challenged and what changed</h2>
+  <p>GPT made 41 points. We accepted 35, accepted 3 in part, deferred 1 and rejected 2 as stated. The full table is in <span class="mono">merge.md</span>.</p>
+  <ul class="plain">
+    <li><b>Our "hosted agents can't reach the game" was wrong.</b> Several now run locally. The real gap is our missing test service, which became R1.</li>
+    <li><b>Default-proceed cards became a delegation policy.</b> An unanswered card is never logged as your approval.</li>
+    <li><b>Metrics changed.</b> Owner minutes per accepted feature replaced slot occupancy. Experiments now require zero false passes and ≥1.5× throughput.</li>
+    <li><b>Added:</b> GABS first, fixtures before a second instance, a vendor bake-off, design briefs, and a WIP cap.</li>
+    <li><b>Rejected:</b> "Cursor explicitly supports Windows workers" (the docs don't say so) and HeadlessRim (3 stars, version unstated).</li>
+    <li><b>Found by us:</b> Claude Code dynamic workflows, a local built-in equivalent of Devin's Dynamic Workflows.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Validation status</h2>
+  <div class="tally">
+    <span class="chip c-ok">VERIFIED 23</span><span class="chip c-bad">CONTRADICTED 1</span><span class="chip c-unk">UNVERIFIED 1</span><span class="chip c-m">MEASURED 1</span><span class="chip c-warn">UNMEASURED 2</span>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Claim</th><th>Status</th><th>Checked against</th></tr></thead>
+    <tbody>
+      <tr><td>Devin plans and prices</td><td><span class="chip c-ok">VERIFIED</span></td><td>devin.ai/pricing ×2</td></tr>
+      <tr><td>Devin Local Hands, CLI, Dynamic Workflows</td><td><span class="chip c-ok">VERIFIED</span></td><td>docs.devin.ai + GPT</td></tr>
+      <tr><td>Answer.AI 3 / 14 / 3 of 20</td><td><span class="chip c-ok">VERIFIED</span></td><td>answer.ai ×2</td></tr>
+      <tr><td>METR 2025 slowdown; 2026 update</td><td><span class="chip c-ok">VERIFIED</span></td><td>metr.org ×2 posts</td></tr>
+      <tr><td>Codex cloud can't reach private networks</td><td><span class="chip c-bad">CONTRADICTED</span></td><td>Tailscale VPN documented</td></tr>
+      <tr><td>Codex pricing; Linear integration</td><td><span class="chip c-ok">VERIFIED</span></td><td>learn.chatgpt.com, linear.app ×2</td></tr>
+      <tr><td>Jules limits</td><td><span class="chip c-ok">VERIFIED</span></td><td>jules.google ×2</td></tr>
+      <tr><td>Copilot Windows runners; AI Credits</td><td><span class="chip c-ok">VERIFIED</span></td><td>github.blog + docs.github.com</td></tr>
+      <tr><td>Cursor self-hosted GA 2026-03-25</td><td><span class="chip c-ok">VERIFIED</span></td><td>blog + changelog</td></tr>
+      <tr><td>Cursor Windows workers</td><td><span class="chip c-unk">UNVERIFIED</span></td><td>docs don't list them</td></tr>
+      <tr><td>OpenHands pricing; Agent Canvas</td><td><span class="chip c-ok">VERIFIED</span></td><td>openhands.dev ×2 + docs</td></tr>
+      <tr><td>Factory pricing; Missions</td><td><span class="chip c-ok">VERIFIED</span></td><td>docs.factory.com</td></tr>
+      <tr><td>Claude scheduled tasks, Projects, self-hosted envs, agent teams, workflows, Channels</td><td><span class="chip c-ok">VERIFIED</span></td><td>code.claude.com, each ×2 or with GPT</td></tr>
+      <tr><td>RimBridgeServer recommends GABS; GABS leases</td><td><span class="chip c-ok">VERIFIED</span></td><td>both GitHub READMEs</td></tr>
+      <tr><td>TITAN numbers</td><td><span class="chip c-ok">VERIFIED</span></td><td>arXiv abs + html</td></tr>
+      <tr><td>Our client reads GABP_SERVER_PORT</td><td><span class="chip c-m">MEASURED</span></td><td>rimbridge_client.py:84</td></tr>
+      <tr><td>Two RimWorld instances on Archmagi</td><td><span class="chip c-warn">UNMEASURED</span></td><td>experiment E1.2</td></tr>
+      <tr><td>This login can use cloud tasks / Projects</td><td><span class="chip c-warn">UNMEASURED</span></td><td>experiment E0</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Sources</h2>
+  <p class="lede">All seen 2026-10-22.</p>
+  <div class="sources">
+    <p><b>Devin</b> · <a href="https://devin.ai/pricing">devin.ai/pricing</a> · <a href="https://docs.devin.ai/work-with-devin/local-hands">Local Hands</a> · <a href="https://docs.devin.ai/work-with-devin/devin-cli">Devin CLI</a> · <a href="https://docs.devin.ai/work-with-devin/dynamic-workflows">Dynamic Workflows</a> · <a href="https://www.answer.ai/posts/2025-01-08-devin">Answer.AI month with Devin</a></p>
+    <p><b>OpenHands</b> · <a href="https://openhands.dev/pricing">pricing</a> · <a href="https://docs.openhands.dev/openhands/usage/agent-canvas/overview">Agent Canvas</a></p>
+    <p><b>Codex</b> · <a href="https://learn.chatgpt.com/docs/cloud">cloud</a> · <a href="https://learn.chatgpt.com/docs/environments/cloud-environments">cloud environments (VPN)</a> · <a href="https://learn.chatgpt.com/docs/pricing">pricing</a> · <a href="https://linear.app/integrations/codex">Linear integration</a></p>
+    <p><b>Jules</b> · <a href="https://jules.google/docs/usage-limits">usage limits</a></p>
+    <p><b>Copilot</b> · <a href="https://github.blog/changelog/2026-02-18-use-copilot-coding-agent-with-windows-projects/">Windows projects</a> · <a href="https://github.blog/changelog/2025-10-28-copilot-coding-agent-now-supports-self-hosted-runners">self-hosted runners</a> · <a href="https://docs.github.com/en/enterprise-cloud@latest/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-environment">agent environment</a> · <a href="https://github.blog/changelog/2026-06-01-updates-to-github-copilot-billing-and-plans/">billing change</a></p>
+    <p><b>Cursor</b> · <a href="https://cursor.com/blog/self-hosted-cloud-agents">self-hosted agents</a> · <a href="https://cursor.com/changelog/03-25-26">changelog</a> · <a href="https://cursor.com/help/ai-features/self-hosted-machines">self-hosted machines</a> · <a href="https://cursor.com/docs/cloud-agent/self-hosted">worker docs</a></p>
+    <p><b>Factory</b> · <a href="https://docs.factory.com/pricing/individuals">pricing</a> · <a href="https://docs.factory.com/missions/overview">Missions</a></p>
+    <p><b>Claude Code</b> · <a href="https://code.claude.com/docs/en/routines">scheduled tasks</a> · <a href="https://code.claude.com/docs/en/desktop-scheduled-tasks">Desktop tasks</a> · <a href="https://code.claude.com/docs/en/claude-projects">Projects</a> · <a href="https://code.claude.com/docs/en/agent-teams">agent teams</a> · <a href="https://code.claude.com/docs/en/self-hosted-environments">self-hosted environments</a> · <a href="https://code.claude.com/docs/en/workflows">dynamic workflows</a> · <a href="https://code.claude.com/docs/en/channels">Channels</a> · <a href="https://code.claude.com/docs/en/goal">/goal</a> · <a href="https://code.claude.com/docs/en/remote-control">Remote Control</a></p>
+    <p><b>Bridge</b> · <a href="https://github.com/pardeike/RimBridgeServer">RimBridgeServer</a> · <a href="https://github.com/pardeike/GABS">GABS</a></p>
+    <p><b>Research</b> · <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">METR 2025</a> · <a href="https://metr.org/blog/2026-02-24-uplift-update/">METR 2026</a> · <a href="https://arxiv.org/abs/2509.22170">TITAN</a> · <a href="https://arxiv.org/abs/2503.09617">Factorio Learning Environment</a> · <a href="https://github.com/IlyaChichkov/HeadlessRim">HeadlessRim</a> · <a href="https://rimworldgame.com/getmygame/">Ludeon DRM-free</a></p>
+  </div>
+</section>
+
+<footer>The working files are in <span class="mono">D:\Luke\dev\RimMandrake\Transient\pile_2026-10-22\harness_research\</span> once mirrored (setup.md, draft.md, gpt_review.md, merge.md, cards.md).</footer>
+</main>
