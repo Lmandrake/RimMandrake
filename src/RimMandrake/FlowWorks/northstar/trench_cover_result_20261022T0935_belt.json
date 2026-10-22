@@ -1,0 +1,285 @@
+{
+ "script": "trench_cover_proof.py",
+ "started": "2026-10-22T09:04:12",
+ "rows": [
+  {
+   "id": "TRENCH_square_on_blocks_044",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.441",
+     "vanilla": "0.000",
+     "combined": "0.441",
+     "hit": "0.380",
+     "hitNoTrench": "0.681",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "127,135"
+    },
+    "txt": "TRENCH trench=0.441 vanilla=0.000 combined=0.441 hit=0.380 hitNoTrench=0.681 cage=False target=127,125 shooter=127,135"
+   }
+  },
+  {
+   "id": "TRENCH_square_on_hit_falls",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.441",
+     "vanilla": "0.000",
+     "combined": "0.441",
+     "hit": "0.380",
+     "hitNoTrench": "0.681",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "127,135"
+    }
+   }
+  },
+  {
+   "id": "TRENCH_enfilade_zero",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.000",
+     "vanilla": "0.000",
+     "combined": "0.000",
+     "hit": "0.274",
+     "hitNoTrench": "0.274",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "142,125"
+    },
+    "txt": "TRENCH trench=0.000 vanilla=0.000 combined=0.000 hit=0.274 hitNoTrench=0.274 cage=False target=127,125 shooter=142,125"
+   }
+  },
+  {
+   "id": "TRENCH_lip_shooter_zero",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.000",
+     "vanilla": "0.000",
+     "combined": "0.000",
+     "hit": "0.614",
+     "hitNoTrench": "0.614",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "127,126"
+    },
+    "txt": "TRENCH trench=0.000 vanilla=0.000 combined=0.000 hit=0.614 hitNoTrench=0.614 cage=False target=127,125 shooter=127,126"
+   }
+  },
+  {
+   "id": "TRENCH_one_back_third",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.147",
+     "vanilla": "0.000",
+     "combined": "0.147",
+     "hit": "0.483",
+     "hitNoTrench": "0.566",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "127,127"
+    },
+    "txt": "TRENCH trench=0.147 vanilla=0.000 combined=0.147 hit=0.483 hitNoTrench=0.566 cage=False target=127,125 shooter=127,127"
+   }
+  },
+  {
+   "id": "TRENCH_wet_same_as_dry",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.441",
+     "vanilla": "0.000",
+     "combined": "0.441",
+     "hit": "0.385",
+     "hitNoTrench": "0.689",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "126,134"
+    },
+    "txt": "TRENCH trench=0.441 vanilla=0.000 combined=0.441 hit=0.385 hitNoTrench=0.689 cage=False target=127,125 shooter=126,134",
+    "fillRefusedAt": []
+   }
+  },
+  {
+   "id": "TRENCH_raiders_cast_from_canal",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "needs a raid against a colony with a 1 m canal line (design \u00a710 step 7 row 3)"
+   }
+  },
+  {
+   "id": "TRENCH_raiders_skip_sheer_cage",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "needs a raid beside a 1.5 m sheer canal; trusts PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH"
+   }
+  },
+  {
+   "id": "TRENCH_no_blast_cover",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "needs a frag grenade on a pawn in the trench vs an open-ground control (damage read)"
+   }
+  },
+  {
+   "id": "TRENCH_cast_search_cost",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "CastPositionFinder timing on a 500-dug-square map, on vs off"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/tcover_1.json",
+  "origin": "120,120",
+  "fresh_map": true
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "bb1d6adc300a393aa9ad6209f31c51642fb2389d85980a18953eae3670db02a0",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "5d8daed04f51f9ffebbc8810e0a2e6e1c5e05289cce12a50b101d9bc80f871f4"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Boomalope42273",
+    "Boomalope42274",
+    "Boomalope42275",
+    "Boomalope42276",
+    "Cassowary42270",
+    "Cassowary42302",
+    "Chinchilla42266",
+    "Cobra42264",
+    "Elephant42306",
+    "Elephant42307",
+    "Elephant42308",
+    "Elephant42309",
+    "Elephant42310",
+    "Elephant42311",
+    "Elephant42312",
+    "GuineaPig42295",
+    "GuineaPig42296",
+    "GuineaPig42297",
+    "GuineaPig42298",
+    "GuineaPig42299",
+    "GuineaPig42300",
+    "GuineaPig42301",
+    "HermitCrab42263",
+    "HermitCrab42272",
+    "HermitCrab42277",
+    "Monkey42255",
+    "Monkey42256",
+    "Monkey42257",
+    "Monkey42258",
+    "Monkey42259",
+    "Monkey42260",
+    "Monkey42289",
+    "Monkey42290",
+    "Monkey42291",
+    "Monkey42292",
+    "Monkey42293",
+    "Monkey42294",
+    "Panther42271",
+    "Peacock42288",
+    "Peacock42303",
+    "Rat42262",
+    "Rat42265",
+    "Rat42287",
+    "Rat42304",
+    "Rat42305",
+    "Rhinoceros42267",
+    "Rhinoceros42268",
+    "Rhinoceros42269",
+    "SeaTurtle42261",
+    "WildBoar42278",
+    "WildBoar42279",
+    "WildBoar42280",
+    "WildBoar42281",
+    "WildBoar42282",
+    "WildBoar42283",
+    "WildBoar42284",
+    "WildBoar42285",
+    "WildBoar42286"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive31536"
+    ],
+    [
+     "Hive",
+     "Hive31545"
+    ],
+    [
+     "Hive",
+     "Hive31556"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "settings_before": {
+  "trenchCoverEnabled": "True",
+  "trenchCoverStrength": "1",
+  "trenchCoverCap": "0.9"
+ },
+ "pawns": {
+  "target": "Human42381",
+  "shooters": {
+   "on": "Human42384",
+   "axis": "Human42392",
+   "lip": "Human42399",
+   "back": "Human42406"
+  }
+ },
+ "settings_restored": {
+  "trenchCoverEnabled": "True",
+  "trenchCoverStrength": "1",
+  "trenchCoverCap": "0.9"
+ }
+}

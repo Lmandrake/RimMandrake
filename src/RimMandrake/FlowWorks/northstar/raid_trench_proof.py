@@ -23,7 +23,13 @@ Rows:
   MASKSWAP_no_wall_crossing PASS/FAIL  with the masks rebuilding every other chunk, no raider is ever sampled on the
                                        island or in the trench. Sampled every chunk (250 ticks): a crossing and a
                                        return inside one chunk would be missed, so a PASS is "never seen", not "proven
-                                       impossible"; it is UNMEASURED when fewer than 2 raiders came within 15 squares.
+                                       impossible"; it is UNMEASURED when fewer than 2 raiders came within 15 squares,
+                                       and when the crossing went over the raid's own ladder/plank (legal since
+                                       RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP).
+  RAID_LADDER_BREACH        PASS/FAIL  (--depth <= 6) RAIDERS_TRENCH A2: raider ladders on BOTH walls and a raider used them.
+  RAID_FILL_CAUSEWAY        PASS/FAIL  (--depth 8, past the portable ladder reach) RAIDERS_TRENCH A3: a ring square filled
+                                       shallower than dug and a raider used it. First live run 2026-10-22: FAIL, raiders
+                                       Wait at the lip (CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP).
 """
 import argparse
 import json
@@ -154,6 +160,8 @@ def _run(argv, hold):
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--points", type=float, default=500)
     ap.add_argument("--ticks", type=int, default=15000)
+    ap.add_argument("--depth", type=int, default=4, help="ring depth in notches (4 = 2 m; 8 = 4 m, past the 3 m portable "
+                    "ladder reach: RAIDERS_TRENCH A3 expects a fill causeway)")
     ap.add_argument("--direct", action="store_true", help="spawn 6 pirates 30 squares east into LordJob_AssaultColony "
                     "instead of a storyteller raid (which may stage or mill far off)")
     a = ap.parse_args(argv)
@@ -220,7 +228,7 @@ def _run(argv, hold):
     V.prepare_site(B, rect, [], "raid_site")
     ring = [(x, z) for x in range(c[0] - 6, c[0] + 7) for z in range(c[1] - 6, c[1] + 7) if cheb((x, z), c) >= 5]
     for cell in ring:
-        B.call("jawa/flowworks_excavation_drive", x=cell[0], z=cell[1], deepenLevels=4, setFill=-1)
+        B.call("jawa/flowworks_excavation_drive", x=cell[0], z=cell[1], deepenLevels=a.depth, setFill=-1)
     churn = (c[0] + 9, c[1])
     cols = B.probe_of(HPROBE, "colonists").get("pawns") or []
     for i, p in enumerate(cols):
@@ -313,9 +321,54 @@ def _run(argv, hold):
     row("RAID_outcome", "MEASURED", dict(outcome=words, **det))
     cameNear = len(det["cameNear"])
     crossed = det["onIsland"] + det["inTrench"]
-    row("MASKSWAP_no_wall_crossing", "UNMEASURED" if (cameNear < 2 or sealed != "PASS") else ("FAIL" if crossed else "PASS"),
+    # RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP (owner ruling: raiders set ladders, fill, jump) made a crossing LEGAL when the raid
+    # put its own way across. HARNESS (BENCH belt 2026-10-22, --direct run): MASKSWAP read FAIL on two raiders who went down
+    # and up by their own RM_LadderPortable at (131,125) -- the bar predated the ruling. Raider ways across are read back: a
+    # crossing with one is the breach row's business and leaves the mask question UNMEASURED; a crossing without is a FAIL.
+    ways = []
+    for dn in ("RM_LadderPortable", "RM_RaidPlank", "RM_Ladder"):
+        lt = B.call("jawa/list_things", defName=dn, rect="%d,%d,15,15" % (c[0] - 7, c[1] - 7), limit=50) or {}
+        ways += [dict(def_=t.get("def"), x=t.get("x"), z=t.get("z"), faction=t.get("faction")) for t in lt.get("things") or []
+                 if t.get("faction") and not str(t.get("faction")).startswith("Player") and cheb((t.get("x"), t.get("z")), c) in (4, 5, 6, 7)]
+    if cameNear < 2 or sealed != "PASS":
+        ms = "UNMEASURED"
+    elif not crossed:
+        ms = "PASS"
+    else:
+        ms = "UNMEASURED" if ways else "FAIL"
+    row("MASKSWAP_no_wall_crossing", ms,
         {"raidersWithin15": cameNear, "islandSealed": sealed, "sampledOnIslandOrTrench": crossed, "churnRebuilds": k,
-         "caveat": "sampled every %d ticks; never seen, not proven impossible" % CHUNK})
+         "raiderWays": ways, "caveat": "sampled every %d ticks; never seen, not proven impossible; a crossing over the raid's "
+                                       "own ladder/plank is legal (RAIDERS_TRENCH) and masks the question" % CHUNK})
+    # RAIDERS_TRENCH A2: a raid against a base ringed by a sheer 2 m trench no longer stalls -- it sets a way across and walks in
+    # HARNESS (belt 2026-10-22 raid_3): 'a raider on the island' was too strict -- the raiders laddered both walls, shot every
+    # island colonist down from the trench and LEFT (the raid had won). The ruling's bar is "no longer stalls: set a ladder
+    # down and up": a raider-faction way on BOTH walls (Chebyshev 6 outer, 5 inner) and a raider sampled in the trench or on
+    # the island. A raid that came near and put no way across is the stall (FAIL).
+    # RAIDERS_TRENCH A3 (--depth 8): a ring square the raid FILLED reads shallower than dug (a causeway); read back every ring
+    # square's depth (the dig itself is the scene's only writer, so any shallower square is the raid's fill)
+    filled = []
+    for x in range(c[0] - 6, c[0] + 7):
+        for z in range(c[1] - 6, c[1] + 7):
+            if cheb((x, z), c) in (5, 6):
+                dr = B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=-1) or {}
+                if isinstance(dr.get("depth"), int) and dr["depth"] < a.depth:
+                    filled.append((x, z, dr["depth"]))
+    det["ringDepth"], det["filledSquares"] = a.depth, filled
+    walls = sorted({cheb((w["x"], w["z"]), c) for w in ways})
+    both = 5 in walls and 6 in walls
+    used = bool(det["onIsland"] or det["inTrench"])
+    a2 = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" else
+          "PASS" if (both and used) else "FAIL")
+    if a.depth > 6:
+        # 4 m: past the portable ladder's reach -> the fill causeway is the legal way (A3); a ladder there is a FAIL of its own
+        a2 = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" else
+              "PASS" if (filled and used) else "FAIL")
+    row("RAID_LADDER_BREACH" if a.depth <= 6 else "RAID_FILL_CAUSEWAY", a2,
+        {"onIsland": det["onIsland"], "inTrench": det["inTrench"], "raiderWays": ways, "filledSquares": filled,
+                                   "wallsLaddered": walls, "outcome": words,
+                                   "bar": "raiders within 15 squares; raider-faction ladders/planks on both trench walls and a "
+                                          "raider used them (in the trench or on the island) -- no stall"})
     save()
     say("result: %s" % os.path.relpath(a.out, REPO))
     return 0

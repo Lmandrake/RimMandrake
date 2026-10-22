@@ -1,2 +1,3 @@
 # Belt failures (BENCH prove-fix belt, 2026-10-22) — `<ITEM> — symptom — evidence`
 LADDER_HOSE_DIAGNOSE_RETRACTS_ON_A_WHIM — REPRODUCED (not a flake): lines_proof LADDER_HOSE_DRAINS_RAISED_STAYS on deployed 41fb948b5e: ladder raise -> hose laid=False retract=no_route within 300 ticks; pit drained only 10000 dl (as 10-21 run1) — src/RimMandrake/FlowWorks/northstar/lines_result_20261022T0905_belt.json
+CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP — 4 m ring: raiders curJob=Wait at the lip 10k+ ticks, ProofDecision says RM_RaiderFillTrench, nothing filled (RAIDERS_TRENCH A3 FAIL) — src/RimMandrake/FlowWorks/northstar/raid_trench_result_20261022T1015_depth8_belt.json
