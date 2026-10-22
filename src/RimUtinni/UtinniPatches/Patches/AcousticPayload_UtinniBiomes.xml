@@ -430,7 +430,7 @@
       <li>RimMandrake: Acoustic Scanner</li>
     </mods>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/BiomeDef[defName="RUT_NightsideIce"]</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_SleepingIce"]</xpath>
       <value>
         <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
           <quietText>Dirty ice, slowly flowing, and nothing in it but what it already swallowed long ago.</quietText>
@@ -881,7 +881,7 @@
       <li>RimMandrake: Acoustic Scanner</li>
     </mods>
     <match Class="PatchOperationAddModExtension">
-      <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_Wastes"]</xpath>
       <value>
         <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
           <quietText>Salt, ash and fallout, all of it lying where it fell. Nothing moves under it.</quietText>
@@ -910,8 +910,8 @@
               <reading>Hollow metal lying in the ash, still warm.</reading>
               <color>(0.8, 0.8, 0.85)</color>
               <thingDefs>
-                <li>RM_WastelandWreckHull</li>
-                <li>RM_WastelandWreckTank</li>
+                <li>RM_WastesWreckHull</li>
+                <li>RM_WastesWreckTank</li>
               </thingDefs>
             </li>
             <li>

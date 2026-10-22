@@ -167,8 +167,8 @@ calling that table done.
 Wave 1's "fishing is ENGINE-DEAD" analysis read the DONOR `Wasteland`
 BiomeDef (Mlie.AdvancedBiomes) — the live Ash'karr map does not use it.
 MEASURED via `world/ASHKARR_WORLDMAP_tiles.csv` (proper `csv.DictReader`
-column read, not a scan): `RUT_Wasteland` covers all **1853** Wasteland
-tiles; bare `Wasteland` covers **zero**. `RUT_Wasteland` itself left its own
+column read, not a scan): `RUT_Wastes` covers all **1853** Wasteland
+tiles; bare `Wasteland` covers **zero**. `RUT_Wastes` itself left its own
 `waterDeepTerrain`/`waterShallowTerrain`/etc. fields unset, so any water it
 generated fell back to vanilla `TerrainDefOf.WaterDeep` (`Verse/
 MapGenUtility.cs:182`, `?? TerrainDefOf.WaterDeep`) — ordinary freshwater.
@@ -176,26 +176,26 @@ Fishing on the actual live biome would in fact have worked before this wave.
 This does **not** reopen fishing as the mechanism: the owner's mining ruling
 stands on the spec's own flavor line (§4.3, "the pool you want to mine has
 one, and it is a capacitor"), not as a bug workaround. Both the wrong-def
-finding and this non-reversal are documented in-file (RUT_WastelandBrineWater.xml,
-RUT_WastelandBrine_Items.xml headers) so the record doesn't carry the stale claim.
+finding and this non-reversal are documented in-file (RUT_WastesBrineWater.xml,
+RUT_WastesBrine_Items.xml headers) so the record doesn't carry the stale claim.
 
 **Built:**
-- `RUT_WastelandBrineDeep`/`Shallow`/`MovingShallow`/`MovingChestDeep`
-  (`RUT_WastelandBrineWater.xml`, Defs/TerrainDefs/) — four TerrainDefs based
+- `RUT_WastesBrineDeep`/`Shallow`/`MovingShallow`/`MovingChestDeep`
+  (`RUT_WastesBrineWater.xml`, Defs/TerrainDefs/) — four TerrainDefs based
   on Odyssey's `ToxicWater*Base` family (matches the donor's own hypersaline
   flavor and `water_taxonomy.csv`'s "radiologically live"), same crib shape
   as `RUT_ScaldWater.xml`. The two shallow variants carry a new
-  `RUT_WastelandBrineShallow` tag (GenStep_ScatterThings' own tag-based
+  `RUT_WastesBrineShallow` tag (GenStep_ScatterThings' own tag-based
   `CanScatterAt`, verified by reading `Verse/GenStep_ScatterThings.cs`
   directly this pass).
-- `RUT_Wasteland.xml` now wires its four lake/river water fields to those
+- `RUT_Wastes.xml` now wires its four lake/river water fields to those
   terrains (were previously unset). `oceanDeepTerrain`/`oceanShallowTerrain`
   deliberately left unset — the pools are "basins sealed from the seas"
-  (wasteland.md). Scope is biome-wide (all 1853 tiles), same scope wave 1's
+  (wastes.md). Scope is biome-wide (all 1853 tiles), same scope wave 1's
   own dead fishTypes plan already accepted — the SS8 per-tile mutator
   palette that would scope this to exactly "three hypersaline pools" is its
   own future authoring pass, not built here.
-- `RUT_BrineDeposit_Tekk`/`_Drazz`/`_BrinePlate` (`RUT_WastelandBrineDeposits.xml`,
+- `RUT_BrineDeposit_Tekk`/`_Drazz`/`_BrinePlate` (`RUT_WastesBrineDeposits.xml`,
   Defs/ThingDefs_Buildings/) — three `ParentName="RockBase"` Mineable
   ThingDefs (thingClass Mineable, `veinMineable false`/`isNaturalRock false`
   — Core's own `CollapsedRocks` is the precedent for a RockBase def that
@@ -209,12 +209,12 @@ RUT_WastelandBrine_Items.xml headers) so the record doesn't carry the stale clai
   water-terrain scatter. Graphic reuses vanilla `RockFlecked_Atlas`
   (recolored per deposit, same convention the vanilla ore family itself
   uses) — real art, not a placeholder needing `DEPLOY_HOLD.txt`.
-- Three `GenStep_ScatterThings` GenStepDefs (`RUT_WastelandBrineScatter.xml`,
+- Three `GenStep_ScatterThings` GenStepDefs (`RUT_WastesBrineScatter.xml`,
   Defs/MapGeneration/, orders 971-973) scattering the three deposits onto
-  cells tagged `RUT_WastelandBrineShallow`, `countPer10kCellsRange` carrying
+  cells tagged `RUT_WastesBrineShallow`, `countPer10kCellsRange` carrying
   the original common/uncommon/rare tiers forward as relative density
   (1.2~1.8 / 0.4~0.6 / 0.15~0.25). Registered onto `Base_Player.genSteps`
-  globally (`RUT_WastelandBrineScatter_Register.xml`, Patches/) — safe
+  globally (`RUT_WastesBrineScatter_Register.xml`, Patches/) — safe
   because the terrain tag is the real scope, same reasoning
   `RUT_ScaldWreckScatter_Register.xml` already gives for its own three
   wreck GenStepDefs.
@@ -307,7 +307,7 @@ are still real, loaded XML, just not what's on the map.
 
 MEASURED, not asserted: `world/ASHKARR_WORLDMAP_tiles.csv` (2026-09-12, the
 full per-tile census — the same file wave 2's own header already trusted
-for `RUT_Wasteland`'s 1853-tile claim, read via `csv.DictReader`, never
+for `RUT_Wastes`'s 1853-tile claim, read via `csv.DictReader`, never
 grepped). Biome column tallies: `RUT_WeepingStones` 223 tiles /
 `ZBiome_DesertOasis` 0; `RUT_CrackedLands` 970 / `ZBiome_Badlands` 0;
 `RUT_Greentide` 235 / `BiomeCypreJungle` 0 — each RUT figure matches that
@@ -546,7 +546,7 @@ lands.
   — no `statBases` override, eel-register-verbatim convention, `RUT_Hollu`
   jellyfish + `FoodPoisonChanceFixedHuman` 0.05, `RUT_Oobo` octopus 0.4) —
   appended to the existing `RUT_TwilightFish_Niim.xml` (one items file per
-  water, same convention `RUT_WastelandBrine_Items.xml` already
+  water, same convention `RUT_WastesBrine_Items.xml` already
   established across its own waves 1→2). Stats per §0's own register
   envelope table. 8 distinct placeholder texPaths across the whole Twilight
   table now (niim's own `BloddleA` plus 7 new, non-fish, none shared) —
@@ -587,7 +587,7 @@ itself (not a donor patch) and the CSV confirms it live — **312 tiles**,
 directly onto itself (`RUT_RustCathedral_Fishing.xml`'s own
 `not(fishTypes)`-guarded xpath targets `RUT_RustCathedral` by name), **236
 live tiles**, `AB_MechanoidIntrusion` (the doc's own donor name) 0. Also
-re-confirmed `RUT_Wasteland` (1853 tiles, `Wasteland` 0 — wave 2's own fix,
+re-confirmed `RUT_Wastes` (1853 tiles, `Wasteland` 0 — wave 2's own fix,
 still holding) and `RUT_Greentide`/`RUT_WeepingStones`/`RUT_CrackedLands`
 (wave 3's fix) all still wire onto their live defs with no lingering
 donor-targeted `fishTypes` patch anywhere in `src/` (swept
@@ -738,7 +738,7 @@ not caused by this item's own work:
   map found **0 of 9992 things scanned** matching
   `RUT_BrineDeposit_Tekk`/`_Drazz`/`_BrinePlate` — consistent with the same
   root cause, since the wave 2 GenSteps scatter onto a terrain TAG
-  (`RUT_WastelandBrineShallow`) that only exists on terrain that never
+  (`RUT_WastesBrineShallow`) that only exists on terrain that never
   generated.
 
 **This does not mean Cracked Lands/Weeping Stones/Greentide/Wasteland's own
@@ -781,13 +781,13 @@ already executed. **Read the item file in full before touching anything**
 (per this item's own two prior "surprise already built" near-misses) and
 found wave 2 (`29689337f`, committed 2026-09-18 08:51:49Z — 34 min AFTER the
 ruling note, not stale) had already built the complete mechanism: four
-`RUT_WastelandBrine*` TerrainDefs, `RUT_Wasteland.xml`'s water fields wired
+`RUT_WastesBrine*` TerrainDefs, `RUT_Wastes.xml`'s water fields wired
 to them, three `RockBase`-parented Mineable `RUT_BrineDeposit_Tekk`/`_Drazz`/
 `_BrinePlate` ThingDefs, three `GenStep_ScatterThings` defs registered onto
 `Base_Player.genSteps`, and both v1 hediffs (`RUT_BrineShock` from wave 1,
 `RUT_CoolantLoad` on the pre-existing coolant eel). Waves 3-5 then re-swept
 for the wave-3 dead-donor-patch bug class (Wasteland confirmed clean, still
-wired onto the live `RUT_Wasteland` def), and the 2026-09-18 live-verification
+wired onto the live `RUT_Wastes` def), and the 2026-09-18 live-verification
 pass already ran an actual bridge quicktest attempt against it — blocked not
 by anything in this mechanism but by `QUICKTEST_RIVER_WATER_MISSING_1` (no
 water terrain generates on ANY biome this session, control-tested against a
@@ -795,9 +795,9 @@ non-`RUT_` biome too, so the brine terrain/scatter tags never get cells to
 scatter onto).
 
 **Verified, did not rebuild:** re-ran `validate_patch.py` static on all four
-wave-2 mining files (`RUT_WastelandBrineWater.xml`,
-`RUT_WastelandBrineDeposits.xml`, `RUT_WastelandBrineScatter.xml`,
-`RUT_WastelandBrineScatter_Register.xml`) — still 0 errors, 3 advisory
+wave-2 mining files (`RUT_WastesBrineWater.xml`,
+`RUT_WastesBrineDeposits.xml`, `RUT_WastesBrineScatter.xml`,
+`RUT_WastesBrineScatter_Register.xml`) — still 0 errors, 3 advisory
 warnings (the same pre-existing `RockFlecked_Atlas` vanilla-texPath
 not-locally-scannable advisory wave 2's own header already named, and the
 `ParentName="RockBase"` "pass --defs" info-only note). Confirmed via
@@ -857,7 +857,7 @@ gone. **Real catches:** a spawned colonist fishing a placed zone landed
 - **Cracked Lands:** only one of five candidate tiles (107) had water at all,
   a 126-cell stagnant pool under thick rock roof, rejected with the same reason.
   I couldn't show that a Cracked Lands catch reaches a net.
-- **Wasteland:** 4 tiles tried; none generated `RUT_WastelandBrine*` terrain
+- **Wasteland:** 4 tiles tried; none generated `RUT_WastesBrine*` terrain
   (tile 36 had ocean only), `RUT_BrineDeposit_*` 0 of 19,053 things. The mining route
   is still unproven live.
 - **Scald:** unchanged, still waits on `SCALD_MECHANICS_1`'s cove.

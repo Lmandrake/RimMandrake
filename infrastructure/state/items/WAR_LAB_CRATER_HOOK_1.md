@@ -8,7 +8,7 @@ the "plentiful ways to permanently change the map" ending (`the_propane_lakes.md
 
 ## spec
 - **What it does**: an in-game ignition event (thruster contact, a dropped reactor
-  core per `wasteland.md` §10 option 4, or a deliberate charge) at the war lab's map
+  core per `wastes.md` §10 option 4, or a deliberate charge) at the war lab's map
   flips the propane lake's worldmap tile(s) from `RUT_PropaneLake` to a crater biome/
   terrain state, permanently, surviving save/load.
 - **Proven sequence to call in-process** (already validated externally via the bridge,
@@ -74,7 +74,7 @@ this pass authored the missing def rather than guess an existing one:
 
 - **New**: `src/RimUtinni/StructureInjectionsRUT/Defs/WarLab/ThingDefs_Buildings/RUT_WarLabReactorCore.xml`
   — `RUT_WarLabReactorCore`, the "dropped reactor core" ignition source
-  `wasteland.md` §10 option 4 names by name. Modeled on vanilla `AncientGravReactor`
+  `wastes.md` §10 option 4 names by name. Modeled on vanilla `AncientGravReactor`
   (art reuse, `CompProperties_Explosive` so damage/heat can detonate it), at the
   narrative-anchor (1,1) footprint convention `RUT_WarLabArchive`/
   `RUT_WarLabContainmentCell` already use. Carries

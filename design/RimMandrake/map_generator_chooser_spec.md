@@ -11,7 +11,7 @@ Inputs: `sheet` (one file under `design/Jawa/worldbuilding/biomes/`, fields 6 an
 the only fields the chooser parses), `tile` (`{has_river, has_coast, elevation_m}` —
 all default false/0 when unknown), `seed` (int), `map_size` (int, edge length).
 Corpus biomes map to sheets: vanilla `Desert` → `desert.md`, `AridShrubland` →
-`arid_shrubland.md`; `ExtremeDesert` → `deep_desert.md`; `Wasteland` → `wasteland.md`.
+`arid_shrubland.md`; `ExtremeDesert` → `deep_desert.md`; `Wasteland` → `wastes.md`.
 All four exist (read 2026-09-06). Every other sheet is parsed the same way.
 
 ## A. The PLAN schema

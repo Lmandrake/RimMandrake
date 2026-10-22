@@ -6,7 +6,7 @@ list: full     # this mod's whole purpose is patching third-party defs across ~2
 status-hint: the Utinni campaign patch layer — factions, scenario, doctrine, and Ash'karr worldbuilding patches across the third-party mod stack; loads LAST of the three patch tiers.
 
 ## must be true
-- Ash'karr's own content loads clean: 6 BiomeDefs (Jawa_BackgroundWater, RUT_GreySea, RUT_NightsideIce, RUT_PropaneLake, RUT_TheScald, RUT_TwilightSea), 8 FactionDefs (Jawa_AscendantHelix, Jawa_DeepwaterCompact, Jawa_FreeDroidEnclaves, Jawa_GeonosianFoundryHive, Jawa_HuttCartel, Jawa_Junkers, Jawa_IndigenousTribes, Jawa_WildsteamClan), and matching TerrainDefs (Jawa_SaltCrust, RUT_ScaldWater* x5).
+- Ash'karr's own content loads clean: 6 BiomeDefs (Jawa_BackgroundWater, RUT_GreySea, RUT_SleepingIce, RUT_PropaneLake, RUT_TheScald, RUT_TwilightSea), 8 FactionDefs (Jawa_AscendantHelix, Jawa_DeepwaterCompact, Jawa_FreeDroidEnclaves, Jawa_GeonosianFoundryHive, Jawa_HuttCartel, Jawa_Junkers, Jawa_IndigenousTribes, Jawa_WildsteamClan), and matching TerrainDefs (Jawa_SaltCrust, RUT_ScaldWater* x5).
 - The planet name patch (JawaWorld_Name.xml) lands unconditionally (deliberately unguarded — see its own comment): RulePackDef NamerWorld's rulesStrings is replaced to `r_name->Ash'karr`, so a freshly generated world's name reads "Ash'karr".
 - The ikee rename (Ikee_Rename.xml) is identity-only: ThingDef AA_Eyeling and PawnKindDef AA_Eyeling both carry label "ikee"; every stat field (ComfyTemperatureMax, foodType, trainability, wildness, baseBodySize) is untouched.
 - Third-party faction reflavors are Conditional-guarded and produce a result even when their target mod is absent (silent no-op) or present (visible change): FactionDef Empire's label/leaderTitle/fixedLeaderKinds/royalFavorLabel (GalacticEmpire.xml) and FactionDef Mechanoid's label/description/factionIconPath (ForgottenArsenal.xml) only change when Neronix17.OuterRim.GalacticEmpire / the Forgotten Arsenal target mod is active.
@@ -17,7 +17,7 @@ status-hint: the Utinni campaign patch layer — factions, scenario, doctrine, a
 
 ## the walk
 1. [L] Player.log after load (full mod list) contains no "Config error in mandrake.rut.patches" and no XML error naming any file under Patches/ or Defs/
-2. [D] def read-back: BiomeDef RUT_TheScald exists; BiomeDef RUT_GreySea exists; BiomeDef RUT_NightsideIce exists
+2. [D] def read-back: BiomeDef RUT_TheScald exists; BiomeDef RUT_GreySea exists; BiomeDef RUT_SleepingIce exists
 3. [D] def read-back: FactionDef Jawa_AscendantHelix exists; FactionDef Jawa_HuttCartel exists; FactionDef Jawa_IndigenousTribes exists
 4. [D] def read-back: TerrainDef Jawa_SaltCrust exists; TerrainDef RUT_ScaldWaterDeep exists
 5. [D] def read-back: RulePackDef NamerWorld rulesStrings contains "r_name->Ash'karr" (the U+0027 apostrophe, not U+2019)

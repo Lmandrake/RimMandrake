@@ -9,8 +9,8 @@ namespace RimMandrake.TheSump
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for the Sump.
     //
     // Precedent: src/RimMandrake/Miasma/Source/RM_MiasmaMod.cs (the honest-
-    // pointer reasoning below) and src/RimMandrake/PoisonForest/Source/
-    // RM_PoisonForestMod.cs (the worldgen-rarity slider shape).
+    // pointer reasoning below) and src/RimMandrake/Cauldron/Source/
+    // RM_CauldronMod.cs (the worldgen-rarity slider shape).
     //
     // This mod ships a real BiomeWorker of its own (RM_BiomeWorker_TheSump),
     // so it gets the standard worldgen-rarity master toggle every sibling

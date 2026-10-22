@@ -1,6 +1,6 @@
 # Tauntaun
 
-**defName**: `Tauntaun` (donor: Star Wars Animal Collection (Continued), packageId `mlie.starwarsanimalcollection`; the donor's own def, no owned port yet, no `RSW_` twin). Cast in the Nightside Ice via `src/RimUtinni/UtinniPatches/Patches/WildAnimals_NightsideIce.xml` at 0.03 (visitor-dying, owner card 2026-10-01). Donor sprite: `design/Jawa/fauna/sprites/Tauntaun.png`.
+**defName**: `Tauntaun` (donor: Star Wars Animal Collection (Continued), packageId `mlie.starwarsanimalcollection`; the donor's own def, no owned port yet, no `RSW_` twin). Cast in the Nightside Ice via `src/RimUtinni/UtinniPatches/Patches/WildAnimals_SleepingIce.xml` at 0.03 (visitor-dying, owner card 2026-10-01). Donor sprite: `design/Jawa/fauna/sprites/Tauntaun.png`.
 
 ## Sourced text (Wookieepedia, pulled via API)
 Tauntauns were a species of semi-sentient **reptomammals** native to the snowy plains of Hoth.

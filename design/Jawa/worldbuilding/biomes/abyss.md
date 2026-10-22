@@ -102,7 +102,7 @@ Landmark authoring rides `LIGHTFALL_CHASM_AUTHORING_1` (bridge work, next game-u
 🔴 **No steady wind, ever.** The great planetary cycles do not pass through this country —
 they END here. Laminar flow hits the relief and the Dark's temperature mosaic and shatters
 into micro-turbulence: wild vortices dancing among the crags, suddenly icy-still, then
-blasting. 🔑 **Downstream corollary (written into `wasteland.md` §3):** the crag country
+blasting. 🔑 **Downstream corollary (written into `wastes.md` §3):** the crag country
 kills the wind's coherence, so what escapes nightward carries nothing.
 
 ### Power: gusts and seeps — ⛔ NO geothermal (owner's ruling)

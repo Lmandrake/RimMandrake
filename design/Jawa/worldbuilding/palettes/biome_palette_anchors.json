@@ -155,7 +155,7 @@
    ],
    "note": "Two-tone biolum forced through §8.4: lamp-yellow IS the family's light end, glow-blue is the one accent. Owner may prefer the inverse."
   },
-  "nightside_ice": {
+  "sleeping_ice": {
    "family": [
     "#10141f",
     "#2a3345",
@@ -166,7 +166,7 @@
    "accent": "#4fd6a0",
    "accentLabel": "aurora-green / pan chemistry color",
    "accentDerivation": "prose",
-   "sheet": "design/Jawa/worldbuilding/biomes/nightside_ice.md §9",
+   "sheet": "design/Jawa/worldbuilding/biomes/sleeping_ice.md §9",
    "derivedFrom": [
     "§9: “white dirty ice over blue-black rock … aurora green and violet as the ambient · starlight grey”",
     "§9: “in the pans and nowhere else, the shockingly clean saturated chemistry colour”"
@@ -176,7 +176,7 @@
     "warm light of any kind (“No warm light anywhere except what the player brings”)"
    ]
   },
-  "poison_forest": {
+  "cauldron": {
    "family": [
     "#17191b",
     "#4d4842",
@@ -187,7 +187,7 @@
    "accent": "#eaac27",
    "accentLabel": "mineral-ochre runoff band (owner reference)",
    "accentDerivation": "owner-reference",
-   "sheet": "design/Jawa/worldbuilding/biomes/poison_forest.md §9",
+   "sheet": "design/Jawa/worldbuilding/biomes/cauldron.md §9",
    "derivedFrom": [
     "§9: “wet black and slate ground · bone-pale trunks streaked with grey metal tears”",
     "OWNER (2026-09-10): “Artistic reference for Poison Forest. Rainbow springs due to minerals and chemistry, not vulcanism.”"
@@ -624,7 +624,7 @@
    ],
    "note": "The accent is a VALUE spike (near-white), not a hue — deliberate: silk and blooms own brightness here."
   },
-  "wasteland": {
+  "wastes": {
    "family": [
     "#141713",
     "#31352c",
@@ -635,7 +635,7 @@
    "accent": "#7c3f92",
    "accentLabel": "sickly radiance violet (radiotroph glow)",
    "accentDerivation": "prose+art",
-   "sheet": "design/Jawa/worldbuilding/biomes/wasteland.md §9",
+   "sheet": "design/Jawa/worldbuilding/biomes/wastes.md §9",
    "derivedFrom": [
     "§9: “salt white, ash grey, vitrified black-green, brine-pool mineral color — and the sickly radiances against it”"
    ],

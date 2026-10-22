@@ -26,7 +26,7 @@ event-spawned and hydroponics-only flora — is the comment block at the foot of
 temperatures later"* — 670 of 696 plants will not grow below 0 °C and half this planet is
 colder than that. Making these rosters actually live is `NORMALIZE_TEMPERATURE_TOLERANCES_1`.
 
-**5 families · 21 biomes · 137 plants, all distinct.** 10 biomes carry no flora by design: `IceSheet`, `Lake`, `Ocean`, `RUT_GreySea`, `RUT_NightsideIce`, `RUT_PropaneLake`, `RUT_RustCathedral`, `RUT_TheScald`, `RUT_TwilightSea`, `SeaIce`.
+**5 families · 21 biomes · 137 plants, all distinct.** 10 biomes carry no flora by design: `IceSheet`, `Lake`, `Ocean`, `RUT_GreySea`, `RUT_SleepingIce`, `RUT_PropaneLake`, `RUT_RustCathedral`, `RUT_TheScald`, `RUT_TwilightSea`, `SeaIce`.
 
 ## A. dayside desert, badlands and the river jungles
 
@@ -278,7 +278,7 @@ original commissioning snapshot, kept for provenance, not the live state.
 
 ## C. contamination
 
-### `RUT_Wasteland` — 1,853 tiles · -23 … 54 °C (median 4) · plantDensity 0.12
+### `RUT_Wastes` — 1,853 tiles · -23 … 54 °C (median 4) · plantDensity 0.12
 
 *was 9 inherited plants → now **9** assigned*
 

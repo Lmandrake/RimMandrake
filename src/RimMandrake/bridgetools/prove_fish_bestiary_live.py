@@ -36,12 +36,12 @@ FISHING_DESIGNATOR = "architect-designator:zone:highlight-designator-zoneadd-fis
 
 # (label, biome defName, candidate tiles, mode)
 #   mode "fish"  -> look for water, try a Fishing-zone placement
-#   mode "brine" -> look for RUT_WastelandBrine* terrain + list_things for deposits
+#   mode "brine" -> look for RUT_WastesBrine* terrain + list_things for deposits
 WATERS = [
     ("Greentide",     "RUT_Greentide",     [256, 635, 776, 781, 1174], "fish"),
     ("Cracked Lands", "RUT_CrackedLands",  [9225, 14, 20, 107, 110],   "fish"),
     ("Weeping Stones","RUT_WeepingStones", [7344, 10, 83, 142, 144],   "fish"),
-    ("Wasteland",     "RUT_Wasteland",     [224, 0, 23, 36, 47],       "brine"),
+    ("Wasteland",     "RUT_Wastes",     [224, 0, 23, 36, 47],       "brine"),
     ("Twilight",      "RUT_TwilightSea",   [16, 82, 150, 176, 178],    "fish"),
 ]
 

@@ -127,7 +127,7 @@ def run() -> int:
     neg = []
     # AloeVera/JadePlant were retired 2026-10-16 (PLANT_TIER); ScorchedStars now lives in RM_ twins
     for rel in ("RimMandrake/Scarlands/Textures/Things/Plant/RM_ScorchedStars",
-                "RimMandrake/Wasteland/Textures/Things/Plant/RM_WastelandScorchedStars"):
+                "RimMandrake/Wastes/Textures/Things/Plant/RM_WastesScorchedStars"):
         neg += glob.glob(str(P.SRC / rel / "*.png"))
     neg += real
     check(len(neg) >= 6, "probe can see the low-colour real sprites (ScorchedStars x2 / Orruhmu)", len(neg))

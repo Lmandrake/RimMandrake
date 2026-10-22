@@ -48,7 +48,7 @@
     Every RUT_ text below is placed verbatim (never edited here).
 
     NOT PORTED (deliberately, not an oversight):
-      - RUT_NightsideIce, RUT_BlueDesert (BiomeGRimond gets it below, but
+      - RUT_SleepingIce, RUT_BlueDesert (BiomeGRimond gets it below, but
         RUT_BlueDesert already owns 1,029/1,030 of its own tiles directly),
         RUT_TwilightSea, RUT_GreySea, RUT_TheScald, RUT_Umbra (the Auroral
         Umbra): these already run under their OWN RUT_
@@ -214,7 +214,7 @@
       <xpath>/Defs/BiomeDef[defName="Wasteland"]/description</xpath>
       <value><description>Where rivers die, everything they carried is concentrated into salt and brine; where the sky's exhaust falls, nothing ever washes it away. Nothing here recycles -- water doesn't leave, fallout doesn't wash, history doesn't decay. The wildlife is wretched and mutated as the rule, extremophile-odd as the exception; the danger is the ground, the air and the water, never the creatures. They merely adapt, struggle, and mostly fail.</description></value>
     </match>
-  </Operation>   <!-- "the Wasteland" - RUT_Wasteland, first-ever relabel+description -->
+  </Operation>   <!-- "the Wasteland" - RUT_Wastes, first-ever relabel+description -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="AridShrubland"]/description</xpath>

@@ -1,0 +1,92 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    WASTELAND_RM_MOD_BUILD_1. Same recipe as
+    src/RimMandrake/Greentide/Source/RM_Greentide.csproj / TheRot's own
+    RM_TheRot.csproj — copy that header if this one goes stale.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\Wastes\Source\RM_Wastes.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+
+    Harmony: exactly one postfix (Building_GravEngine.CanLaunch, the sealed cask
+    bay's launch check, WASTELAND_GPT_ENRICHMENT_1 §3) — that method has no
+    extension point. Everything else is a plain engine extension point. No shared kit assembly is
+    referenced — Wasteland is not a §2b kit biome (item §8).
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrake.Wastes</AssemblyName>
+    <RootNamespace>RimMandrake.Wastes</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RM_BiomeWorker_Wastes.cs" />
+    <Compile Include="RM_WastesMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
+    <Compile Include="RM_WastesMechanicsExtensions.cs" />
+    <Compile Include="RM_MapComponent_WastesStorms.cs" />
+    <Compile Include="RM_CompAmbientDose.cs" />
+    <Compile Include="RM_CompProcessorGatherable.cs" />
+    <Compile Include="RM_GripperTheft.cs" />
+    <Compile Include="RM_Middenshell.cs" />
+    <Compile Include="RM_NamedStorms.cs" />
+    <Compile Include="RM_MiddenshellProcession.cs" />
+    <Compile Include="RM_WasteCaskBay.cs" />
+    <Compile Include="RM_RiteOfTipping.cs" />
+    <Compile Include="Kernel\RM_WasteCaskKernel.cs" />
+    <Compile Include="Kernel\RM_StormKernel.cs" />
+    <Compile Include="Kernel\RM_TippingKernel.cs" />
+    <Compile Include="Kernel\RM_DoseKernel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- WASTELAND_GPT_ENRICHMENT_1 §3: one postfix on Building_GravEngine.CanLaunch, which has
+         no extension point (RimSage, decompiled 1.6). -->
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

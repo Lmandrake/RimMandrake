@@ -420,7 +420,7 @@ TIERS = {
                "RM_HazardousTerrainProtection), RM_CompWarcasketIntegrity's "
                "compound-failure comp resolving its Class, and "
                "RM_MapComponent_HazardousTerrainImmersion running against the "
-               "Wasteland's real RM_WastelandBrine* terrain, with nothing else on "
+               "Wasteland's real RM_WastesBrine* terrain, with nothing else on "
                "the map that could explain a failure.",
         "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rm.warcasket"],  # BAROQUE_BIOMES_WAVE2_FOLD_1: environmentalhazards+wasteland folded
         "dlc": True,

@@ -56,7 +56,7 @@ def evaluate(st,cross,faces,seas):
 # blue-grey water, tinted only inside the biomes whose sheet says the water is not clean (RM_RiverColorsSettings).
 GRADIENT=[(0xE0/255,0x31/255,0x1C/255),(0x2E/255,0x2E/255,0x00/255),(0x00/255,0x29/255,0x3D/255)]
 WATER=(0.08,0.16,0.30)
-BIOME_WATER={'RM_Contagion':(0.36,0.03,0.04),'RM_Miasma':(0.16,0.14,0.04),'RM_Wasteland':(0.14,0.24,0.06),'RM_RustCathedral':(0.04,0.20,0.16)}
+BIOME_WATER={'RM_Contagion':(0.36,0.03,0.04),'RM_Miasma':(0.16,0.14,0.04),'RM_Wastes':(0.14,0.24,0.06),'RM_RustCathedral':(0.04,0.20,0.16)}
 BANK_SHADE=0.22
 def gradient(t):
     a,b,c=[np.array(x) for x in GRADIENT]

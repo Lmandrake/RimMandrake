@@ -69,7 +69,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/TileMutatorDef[defName="RM_QuicksandPits"]/biomeWhitelist</xpath>
       <value>
-        <li>RUT_Wasteland</li>
+        <li>RUT_Wastes</li>
         <li>RUT_Desert</li>
         <li>RUT_ExtremeDesert</li>
         <li>RUT_AridShrubland</li>
@@ -95,7 +95,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/TileMutatorDef[defName="RSW_WildGalacticPlants"]/biomeWhitelist</xpath>
       <value>
-        <li>RUT_Wasteland</li>
+        <li>RUT_Wastes</li>
         <li>RUT_AridShrubland</li>
       </value>
     </match>

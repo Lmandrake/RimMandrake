@@ -24,7 +24,7 @@ Blindwood 116, +12 more.
 
 ⭐ **Amendment (owner ruling at the 2026-09-08 worldmap sitting): the cold tail is
 repainted.** The def's 90 tiles below propane's −42 °C dew point (arc 130–142, deep in
-Ashwood/Blindwood/Stillwood/Capwood, seven adjacency clusters) moved to `RUT_NightsideIce` —
+Ashwood/Blindwood/Stillwood/Capwood, seven adjacency clusters) moved to `RUT_SleepingIce` —
 each cluster's plurality neighbor. Painted temps and the sheet now agree: nothing of the
 Rot lives below −42 °C, where its water chemistry would be stone and the propane regime
 begins. Verified: whole-planet diff showed exactly 90 tiles changed, zero collateral;

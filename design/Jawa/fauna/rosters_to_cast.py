@@ -32,11 +32,11 @@ WHICH BIOMES THIS WRITES
     one exception with no other declared owner today; re-enabling gen_cast_patch.py for
     it alone is unassessed future work, not something this fix does.
     The RUT_-tier defs whose wildAnimals BIOMECAST_DEFS never claimed (RUT_BlueDesert,
-    RUT_GreySea, RUT_NightsideIce, RUT_PropaneLake, RUT_TheScald, RUT_TwilightSea) and
-    BiomeGRimond (no local override at all) stay deliberately absent here. RM_NightsideIce
-    (NIGHTSIDEICE_RM_MOD_BUILD_1's new standalone mandrake.rm.nightsideice mod) is absent
+    RUT_GreySea, RUT_SleepingIce, RUT_PropaneLake, RUT_TheScald, RUT_TwilightSea) and
+    BiomeGRimond (no local override at all) stay deliberately absent here. RM_SleepingIce
+    (NIGHTSIDEICE_RM_MOD_BUILD_1's new standalone mandrake.rm.sleepingice mod) is absent
     for the same reason and by the same design - its Star Wars fauna row rides
-    WildAnimals_NightsideIce.xml directly, not this generator.
+    WildAnimals_SleepingIce.xml directly, not this generator.
 
 INJECTION LAYERS
     A roster whose sheet is an injection layer (fall_line, wreck_fields - rosters/_SCHEMA.md)

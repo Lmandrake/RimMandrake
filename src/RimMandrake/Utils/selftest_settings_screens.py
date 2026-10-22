@@ -247,7 +247,7 @@ MODS = {
         "Wreck-anchored vermin nests": "Now",
         "Species a wreck nest may produce": "Now",
     }, ()),
-    "Wasteland": ("RM_WastelandMod.cs", "RM_Wasteland.csproj", {
+    "Wastes": ("RM_WastesMod.cs", "RM_Wastes.csproj", {
         "Wasteland master switch": "Now",
         "Storms": "Now",
         "Ambient dose and radiothermal heat": "Now",
@@ -635,7 +635,7 @@ MODS = {
         "Incidents: stampede, haze fronts and the clan's return": "NextPulse",
         "After the haze: ash pulse and sand-lock": "NextPulse",
     }, ()),
-    "NightsideIce": ("RM_NightsideIceMod.cs", "RM_NightsideIce.csproj", {
+    "SleepingIce": ("RM_SleepingIceMod.cs", "RM_SleepingIce.csproj", {
         "Nightside Ice enabled": "Now",
         "The heat dial": "Now",
         "The shivven": "Now",

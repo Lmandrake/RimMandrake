@@ -274,7 +274,7 @@ ATTACH: dict[tuple[str, str], str] = {
         "Its spawn rate is deliberately moderate-but-low so the wood stays eerily "
         "silent: one lethal spider over a near-empty cast. Note a number if you "
         "want it more or less present.",
-    ("wasteland", "SW_Electrictick"):
+    ("wastes", "SW_Electrictick"):
         "Open idea from the prep: slow it to walking pace and promote it to a "
         "signature of the brine pools. Note yes/no if you have a view.",
     ("terminator_sea + the_grey_deep", "AA_Aerofleet"):
@@ -355,7 +355,7 @@ CARDS = [
     },
     {
         "id": "q:nightside:empty-is-correct",
-        "sheet_key": "nightside_ice",
+        "sheet_key": "sleeping_ice",
         "label": "The Nightside — confirm: nearly empty is the design?",
         "q": "The nightside keeps only a shelf of goo and slug forms at trace "
              "rates — 9 in 10 former residents are gone. Is nearly-empty right?",
@@ -702,7 +702,7 @@ def build_items(sheets: list[dict], glob: dict, reg: dict) -> tuple[list[dict], 
             att = ATTACH.get((key, defname))
             if att:
                 extra.append(att)
-            if key == "nightside_ice" and defname in NIGHTSIDE_SHELF:
+            if key == "sleeping_ice" and defname in NIGHTSIDE_SHELF:
                 extra.append(NIGHTSIDE_ART)
             if key == "weeping_stones" and defname in WEEPING_COMB:
                 extra.append(WEEPING_ART)

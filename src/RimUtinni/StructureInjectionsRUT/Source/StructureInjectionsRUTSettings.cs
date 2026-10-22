@@ -7,7 +7,7 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
     //
     // One mechanism (WAR_LAB_CRATER_HOOK_1): destroying the war-lab reactor
     // core permanently mutates every RUT_PropaneLake worldmap tile into
-    // RUT_Wasteland, once per save. No hardcoded rate/chance/threshold exists
+    // RUT_Wastes, once per save. No hardcoded rate/chance/threshold exists
     // to slider-tune here (it is a one-shot structural event, not a
     // recurring one) — the real, honest option is whether this permanent
     // planet-wide biome change is allowed to happen at all.

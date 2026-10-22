@@ -58,13 +58,13 @@ plan that is not mostly about `mlie.starwarsanimalcollection` and
 | `RUT_Cauldron` | 1 | 0 | 16 | 9 | alphaanimals:8, swanimals:3, alphamemes:3 |
 | `RUT_FeverWood` | 3 | 0 | 15 | 0 | swanimals:10, alphabiomes:3 |
 | `RUT_Abyss` | 0 | 0 | 14 | 6 | alphaanimals:14 |
-| `RUT_Wasteland` | 7 | 1 | 12 | 1 | alphaanimals:5, vgeneticse:4 |
+| `RUT_Wastes` | 7 | 1 | 12 | 1 | alphaanimals:5, vgeneticse:4 |
 | `RUT_Contagion` | 1 | 0 | 10 | 10 | alphaanimals:10 |
 | `RUT_Slime` | 0 | 0 | 9 | 6 | alphaanimals:7, vgeneticse:2 |
 | `RUT_WeepingStones` | 0 | 1 | 9 | 4 | swanimals:8 |
 | `RM_TheRot` | 21 | 0 | 8 | 13 | alphaanimals:7 |
 | `RUT_CrackedLands` | 3 | 0 | 7 | 6 | swanimals:5, alphaanimals:2 |
-| `RUT_NightsideIce` | 0 | 0 | 7 | 0 | alphaanimals:7 |
+| `RUT_SleepingIce` | 0 | 0 | 7 | 0 | alphaanimals:7 |
 | `RUT_Scarlands` | 1 | 0 | 7 | 1 | isopodageneline:3, alphaanimals:2 |
 | `RUT_TheForge` | 1 | 0 | 6 | 13 | alphaanimals:3, swanimals:2 |
 | `RUT_Umbra` | 0 | 0 | 4 | 4 | alphaanimals:4 |

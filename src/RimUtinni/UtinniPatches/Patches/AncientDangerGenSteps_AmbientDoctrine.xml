@@ -89,34 +89,34 @@
     </match>
   </Operation>
 
-  <!-- RimUtinni own tier: RUT_NightsideIce, ANCIENT-DENY. No FindMod needed. -->
+  <!-- RimUtinni own tier: RUT_SleepingIce, ANCIENT-DENY. No FindMod needed. -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_NightsideIce"]/preventGenSteps</xpath>
+    <xpath>/Defs/BiomeDef[defName="RUT_SleepingIce"]/preventGenSteps</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RUT_NightsideIce"]</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_SleepingIce"]</xpath>
       <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
     </nomatch>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RUT_NightsideIce"]/preventGenSteps</xpath>
+      <xpath>/Defs/BiomeDef[defName="RUT_SleepingIce"]/preventGenSteps</xpath>
       <value><li>ScatterShrines</li></value>
     </match>
   </Operation>
 
-  <!-- Twin op for RM_NightsideIce (NIGHTSIDEICE_RM_MOD_BUILD_1 step 4, §7(b)): the live
+  <!-- Twin op for RM_SleepingIce (NIGHTSIDEICE_RM_MOD_BUILD_1 step 4, §7(b)): the live
        world still carries 100% RUT_ tiles, so the RUT_ op above stays; this op keeps
-       RM_NightsideIce behaving identically for any OTHER world that already generates on
+       RM_SleepingIce behaving identically for any OTHER world that already generates on
        it, until Phase B's repaint. FindMod on the composed biomes mod so the op is a
        silent no-op if RimMandrake: Baroque Biomes is not loaded. -->
   <Operation Class="PatchOperationFindMod">
     <mods><li>RimMandrake: Baroque Biomes</li></mods>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/BiomeDef[defName="RM_NightsideIce"]/preventGenSteps</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_SleepingIce"]/preventGenSteps</xpath>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/BiomeDef[defName="RM_NightsideIce"]</xpath>
+        <xpath>/Defs/BiomeDef[defName="RM_SleepingIce"]</xpath>
         <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
       </nomatch>
       <match Class="PatchOperationAdd">
-        <xpath>/Defs/BiomeDef[defName="RM_NightsideIce"]/preventGenSteps</xpath>
+        <xpath>/Defs/BiomeDef[defName="RM_SleepingIce"]/preventGenSteps</xpath>
         <value><li>ScatterShrines</li></value>
       </match>
     </match>

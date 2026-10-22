@@ -48,7 +48,7 @@
   `Wasteland`/`Scarlands` (already `maxFishPopulation 0`, no `fishTypes` tag —
   already the no-fish state this patch is establishing everywhere else); the
   5 `RUT_`-tier own-authored defs (RUT_TheScald/RUT_TwilightSea/RUT_GreySea/
-  RUT_PropaneLake/RUT_NightsideIce) are NOT stripped here and carry whatever their
+  RUT_PropaneLake/RUT_SleepingIce) are NOT stripped here and carry whatever their
   own defs/patches say — as of 2026-09-24 the Scald ships 8 `fishTypes` on its def and the
   Twilight Sea 10 via patch (recounted directly from `RUT_TheScald.xml` and
   `BiomeFishTypes_TwilightDeep.xml`; the prior "5"/"8" figures here were wrong) (owner

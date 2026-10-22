@@ -48,7 +48,7 @@
        RUT_TheForge  (10 plants, authored in its own def)
        RUT_TheRot  (30 plants, authored in its own def)
        RUT_Umbra  (the Auroral Umbra; plants authored in its own def)
-       RUT_Wasteland  (9 plants, authored in its own def)
+       RUT_Wastes  (9 plants, authored in its own def)
        RUT_Webwork  (7 plants, authored in its own def)
        RUT_WeepingStones  (4 plants, authored in its own def)
   -->
@@ -87,7 +87,7 @@
   -->
 
   <!-- ============ plantDensity - the named exception list ============ -->
-  <!-- RUT_Wasteland: 0.0099 -> 0.12 is carried by the AUTHORED def
+  <!-- RUT_Wastes: 0.0099 -> 0.12 is carried by the AUTHORED def
        (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/), not patched here.
        1,721 tiles of CONTAMINATION-class ground carrying a nine-plant toxic roster - toxigrass,
        gutter plantain, twisted dandelion, scorched stars - that exists to say THIS GROUND IS

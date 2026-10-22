@@ -2,7 +2,7 @@
 
 Ruled at `WASTELAND_BEDAZZLE_SITTING_1` (2026-09-27/28, owner-typed; "Full accept.
 Bedazzled!"). Design authority: the sitting's ledger notes + the 2026-09-28
-amendment block in `wasteland.md` + `wasteland_survivor_cast_2026-09-28.md`
+amendment block in `wastes.md` + `wasteland_survivor_cast_2026-09-28.md`
 §3–§4/§6. Separate from `WASTELAND_RULED_CONTENT_1` (the cast defs) so each has
 its own catcher. This item also absorbs the storm-defs question:
 `WASTELAND_STORM_WEATHER_DEFS_1`'s scope card was ANSWERED at the sitting — ash

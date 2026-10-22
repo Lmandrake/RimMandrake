@@ -61,7 +61,7 @@ HOUSE = ("Painterly vanilla-RimWorld house style, matte, no outlines, never cute
          "transparent background, no ground, no props, no baked shadow.")
 # The arid region the colony starts in (canonical start tile 17007 is RUT_ExtremeDesert, region The Breaks) and the
 # desert biomes of ours that share its register. A judgment for ORDERING only, never a tile count.
-START = ["RUT_ExtremeDesert", "RM_Stillsand", "RM_LeaningScrub", "RM_LongShade", "RM_Wasteland", "RM_BlueDesert",
+START = ["RUT_ExtremeDesert", "RM_Stillsand", "RM_LeaningScrub", "RM_LongShade", "RM_Wastes", "RM_BlueDesert",
          "RM_FloodedCanyon", "RM_Pyrelands"]
 KIND_PRIO = {"creature_start": 20, "creature": 30, "plant_start": 40, "plant": 45, "terrain": 55, "building": 65,
              "item": 75, "icon": 85}

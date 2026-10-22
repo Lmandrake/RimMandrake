@@ -23,7 +23,7 @@ def vs(n):
 # E: sun elevation from the biome sheets (median); None = nightside/terminator
 BIO={'RM_Greentide':45,'RUT_Greentide':45,'RM_FeverWood':43,'RUT_FeverWood':43,'RM_Webwork':51,'RUT_Webwork':51,
      'RM_Miasma':39,'RUT_Miasma':39,'RM_Contagion':31,'RUT_Contagion':31,'RM_TheForge':57,'RM_FloodedCanyon':21,
-     'RM_WeepingStones':31,'RM_Wasteland':3,'RM_LongShade':14,'RM_Stillsand':47}
+     'RM_WeepingStones':31,'RM_Wastes':3,'RM_LongShade':14,'RM_Stillsand':47}
 N=200; rng=np.random.default_rng(1)
 def sim(name,E,model):
     b=bd[name]['fields']; pd=min(1,b['plantDensity']); wp=b['wildPlants']; tot=sum(w['commonality'] for w in wp)

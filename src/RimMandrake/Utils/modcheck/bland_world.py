@@ -293,7 +293,7 @@ def setup(session, colonists=3, tmpdir=None, max_tiles=40, log=None):
             "wildlife_destroyed": d.get("matchedCount"), "ruins_left": len(left), "problems": problems}
 
 # --retile runs: the BiomeDef each suite's chains need on the map (a suite may also set suite.biome itself).
-SUITE_BIOMES = {"Miasma": "RM_Miasma", "TheRot": "RM_TheRot", "Webwork": "RM_Webwork", "NightsideIce": "RM_NightsideIce",
+SUITE_BIOMES = {"Miasma": "RM_Miasma", "TheRot": "RM_TheRot", "Webwork": "RM_Webwork", "SleepingIce": "RM_SleepingIce",
                 "BlueDesert": "RM_BlueDesert", "FeverWood": "RM_FeverWood", "Greentide": "RM_Greentide",
                 "TheSump": "RM_TheSump", "RustCathedral": "RM_RustCathedral", "LanternDeeps": "RM_LanternDeeps"}
 SUITE_TEMPS = {"BlueDesert": -5}      # cold-only flora refuse the temperate bland tile (BLUEDESERT_FLORA_HARNESS_1)

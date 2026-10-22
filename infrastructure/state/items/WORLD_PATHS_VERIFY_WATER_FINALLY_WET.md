@@ -13,7 +13,7 @@ rivers."*
   broken pieces are intended and are not joined.
 - **FlowWorks River Colours:** the elevation gradient is gone. That gradient was the brown and red rivers, because its
   anchors matched no tile. Rivers are now blue-grey water (0.08, 0.16, 0.30), tinted only in four biomes: RM_Contagion
-  blood red, RM_Miasma brackish, RM_Wasteland toxic green, RM_RustCathedral verdigris. The scribe keys are new.
+  blood red, RM_Miasma brackish, RM_Wastes toxic green, RM_RustCathedral verdigris. The scribe keys are new.
 - **Superseded:** the owner's 2026-09-06 gradient ruling ("Red rivers in the mountains, turning immediately to brackish
   green/brown in the jungles, and a toxic brown/blue near their end.") and the same-day card *River gradient blends into
   land → Darken, same hues*. This feedback replaces those colours. Red now appears only inside the Contagion.

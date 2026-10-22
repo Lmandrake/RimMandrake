@@ -25,8 +25,8 @@ from the donor list remain painted") was therefore never met.
 ## spec
 - Template: `PYRELANDS_WORLD_SWITCH_1` (batches, getter read-back, CSV re-export + LOSS
   diff, R36 backup bar). Map donor def → owned def from `BIOME_OWNERSHIP_WAVE_1`'s
-  commit (`RUT_Desert`, `RUT_ExtremeDesert`, `RUT_AridShrubland`, `RUT_Wasteland`,
-  `RUT_PoisonForest`, `RUT_Scarlands`, `RUT_Contagion`, `RUT_Webwork`, `RUT_Slime`,
+  commit (`RUT_Desert`, `RUT_ExtremeDesert`, `RUT_AridShrubland`, `RUT_Wastes`,
+  `RUT_Cauldron`, `RUT_Scarlands`, `RUT_Contagion`, `RUT_Webwork`, `RUT_Slime`,
   `RM_TheRot`, `RUT_TheForge` (LavaField/Volcano/AB_PyroclasticConflagration),
   `RUT_RustCathedral`, `RUT_Umbra`, `RUT_CrackedLands`, `RUT_Abyss`,
   `RUT_FeverWood`, `RUT_Greentide`, `RUT_Miasma`, `RUT_Sump`, `RUT_WeepingStones`;
@@ -70,11 +70,11 @@ six donors the message did not name. **Nothing was excluded as unresolved.**
 | AB_PropaneLakes | 2531 | RUT_Umbra | 2531 | commit msg (land tiles; the 57 `RUT_PropaneLake` water tiles were already owned and untouched) |
 | Desert | 2390 | RUT_Desert | 2390 | commit msg |
 | AB_MycoticJungle | 2204 | RM_TheRot | 2204 | commit msg |
-| Wasteland | 1853 | RUT_Wasteland | 1853 | commit msg |
+| Wasteland | 1853 | RUT_Wastes | 1853 | commit msg |
 | AB_RockyCrags | 1135 | RUT_Abyss | 1135 | `RUT_Abyss.xml` header |
 | ZBiome_Badlands | 970 | RUT_CrackedLands | 970 | commit msg |
 | AridShrubland | 628 | RUT_AridShrubland | 628 | commit msg |
-| PoisonForest | 546 | RUT_PoisonForest | 546 | commit msg |
+| PoisonForest | 546 | RUT_Cauldron | 546 | commit msg |
 | AB_MechanoidIntrusion | 236 | RUT_RustCathedral | 236 | commit msg |
 | BiomeCypreJungle | 235 | RUT_Greentide | 235 | `RUT_Greentide.xml` header |
 | ZBiome_DesertOasis | 223 | RUT_WeepingStones | 223 | `RUT_WeepingStones.xml` header |
@@ -152,7 +152,7 @@ signal. `painted_defs()` unions the live tile CSV (correctly all-`RUT_` now) wit
 20 of those 22 roster files still name the OLD DONOR bare defName**
 (`arid_shrubland.json`→`AridShrubland`, `desert.json`→`Desert`,
 `dune_sea_deep_desert.json`→`ExtremeDesert`, `fall_line.json`→ all three,
-`abyss.json`→`AB_RockyCrags`, `poison_forest.json`→`PoisonForest`, etc. —
+`abyss.json`→`AB_RockyCrags`, `cauldron.json`→`PoisonForest`, etc. —
 only `the_lantern_deeps.json` and `the_propane_lakes.json` already carry a `RUT_`
 name). That's why the run's 4 non-empty biome buckets were `AridShrubland` 256,
 `Desert` 232, `ExtremeDesert` 198 (all bare donor names, now painted on **zero**
@@ -205,21 +205,21 @@ recommended in 2026-09-07; not attempted here (design authoring, not bookkeeping
 rename, nothing else touched — checked with a post-edit grep sweep, clean):
 `arid_shrubland.json`→`RUT_AridShrubland`, `desert.json`→`RUT_Desert`,
 `dune_sea_deep_desert.json`→`RUT_ExtremeDesert`, `abyss.json`→`RUT_Abyss`,
-`poison_forest.json`→`RUT_PoisonForest`, `the_contagion.json`→`RUT_Contagion`,
+`cauldron.json`→`RUT_PoisonForest`, `the_contagion.json`→`RUT_Contagion`,
 `the_cracked_lands.json`→`RUT_CrackedLands`, `the_fever_wood.json`→`RUT_FeverWood`,
 `the_forge.json`→`RUT_TheForge` (its 3-donor list `AB_PyroclasticConflagration`/
 `LavaField`/`Volcano` collapsed to the one owned def), `the_greentide.json`→`RUT_Greentide`,
 `the_miasma.json`→`RUT_Miasma`, `the_rot.json`→`RM_TheRot`,
 `the_rust_cathedral.json`→`RUT_RustCathedral`, `the_scarlands.json`→`RUT_Scarlands`,
 `the_slime.json`→`RUT_Slime`, `the_sump.json`→`RUT_Sump`, `the_webwork.json`→`RUT_Webwork`,
-`wasteland.json`→`RUT_Wasteland`, `weeping_stones.json`→`RUT_WeepingStones`.
+`wastes.json`→`RUT_Wastes`, `weeping_stones.json`→`RUT_WeepingStones`.
 
 **Deliberately NOT touched** (per this pass's explicit scope): `fall_line.json`
 (`ExtremeDesert`/`Desert`/`AridShrubland` — rides a separate item), `the_pyrelands.json`
 (`ZBiome_Grasslands` — `PYRELANDS_WORLD_SWITCH_1`), `the_lantern_deeps.json` and
 `the_propane_lakes.json` (both still carry bare `AB_PropaneLakes`, left as-is on
 explicit instruction), `the_blue_desert.json` (`BiomeGRimond` — already-switched per
-this item's own spec line), and the already-`RUT_`-only files (`nightside_ice.json`,
+this item's own spec line), and the already-`RUT_`-only files (`sleeping_ice.json`,
 `the_grey_sea.json`, `the_scald.json`, `the_twilight_sea.json`, `wreck_fields.json`
 which is empty).
 

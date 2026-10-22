@@ -57,7 +57,7 @@ Where the word rules could not decide, I read the description and recorded the r
 - **44 owned defs** got `<altitudeLayer>FloorEmplacement</altitudeLayer>` in their own def file. These are 41 RimMandrake defs, 1 RimStarWars def (`RSW_SurraGrass`) and 4 RimUtinni defs (`RUT_DarkCrust`, `RUT_DosimeterLawn`, `RUT_Glower`, `RUT_Fuzz`).
 - **10 donor defs** are changed by patches in the mod whose biome spawns them. Each patch first tests that the def exists, so a missing donor is a silent no-op. Each donor inherits its layer from a parent def, so the patch adds the field to the def itself.
   - `src/RimMandrake/TheForge/Patches/RM_TheForge_GroundCoverDrawLayer.xml`: `AB_TinkleGrass`, `IronScruff_PrimordialGrass`
-  - `src/RimMandrake/Wasteland/Patches/RM_Wasteland_GroundCoverDrawLayer.xml`: `Plant_GrayGrass` (Biotech ashskal)
+  - `src/RimMandrake/Wastes/Patches/RM_Wastes_GroundCoverDrawLayer.xml`: `Plant_GrayGrass` (Biotech ashskal)
   - `src/RimMandrake/LeaningScrub/Patches/RM_LeaningScrub_GroundCoverDrawLayer.xml`: `RG_Plant_AridGrass`, `RG_Plant_CrimsonCushion`
   - `src/RimUtinni/UtinniPatches/Patches/RUT_GroundCoverDrawLayer.xml`: `AB_AlienGrass`, `AB_HardyGrass`, `AB_ToxiGrass`, `GRimMoss`, `RG_Plant_ToxiGrass` (spawned only by RUT biomes)
 - A patch changes the def wherever it spawns, so these plants are lowered **in all biomes**, as ruled.
@@ -98,14 +98,14 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | `GRimMoss` | moss | grimterra.biomesmod | FloorEmplacement (7) | - | 0.4~0.6 | 0.6 | 9 | - | - | RUT_CrackedLands | name: Moss |
 | `IronScruff_PrimordialGrass` | primordial grass | ironscruff.primordialgeysers | FloorEmplacement (7) | - | 0.4~0.6 | 0.6 | 9 | - | - | RM_TheForge, RUT_TheForge | name: Grass |
-| `Plant_GrayGrass` | ashskal | ludeon.rimworld.biotech | FloorEmplacement (7) | - | 0.4~0.6 | 0.6 | 9 | - | - | RM_Wasteland, RUT_Wasteland | name: Grass |
+| `Plant_GrayGrass` | ashskal | ludeon.rimworld.biotech | FloorEmplacement (7) | - | 0.4~0.6 | 0.6 | 9 | - | - | RM_Wastes, RUT_Wastes | name: Grass |
 | `RM_Braskeen` | braskeen | mandrake.rm.biomes | FloorEmplacement (7) | 0.85 | 0.5~0.8 | 0.68 | 1 | - | - | RM_Miasma | desc: flat |
 | `RM_CinderCrust` | cinder crust | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.2~0.5 | 0.5 | 9 | - | - | RM_TheForge | name: Crust |
-| `RM_Cinderfelt` | cinderfelt | mandrake.rm.biomes | FloorEmplacement (7) | 1 | 0.4~0.7 | 0.7 | 4 | - | - | RM_Wasteland | desc: felt |
+| `RM_Cinderfelt` | cinderfelt | mandrake.rm.biomes | FloorEmplacement (7) | 1 | 0.4~0.7 | 0.7 | 4 | - | - | RM_Wastes | desc: felt |
 | `RM_Cruststar` | cruststar | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.5~0.7 | 0.7 | 4 | - | - | RM_LeaningScrub | name: Cruststar |
 | `RM_DarkCrust` | vein moss | mandrake.rm.biomes | FloorEmplacement (7) | 0.9 | 0.5~0.9 | 0.81 | 4 | - | - | RM_Cauldron | name: Crust |
 | `RM_Dewshrooms` | sikkra lure | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.3~0.5 | 0.5 | 9 | - | - | RM_TheRot, RM_WeepingStones, RUT_TheRot, RUT_WeepingStones | owner named it (tiny caps in clusters, 0.5 cell, 9 meshes) |
-| `RM_DosimeterLawn` | dosimeter lawn | mandrake.rm.biomes | FloorEmplacement (7) | 1.1 | 0.4~0.7 | 0.77 | 4 | - | - | RM_Wasteland | desc: mat |
+| `RM_DosimeterLawn` | dosimeter lawn | mandrake.rm.biomes | FloorEmplacement (7) | 1.1 | 0.4~0.7 | 0.77 | 4 | - | - | RM_Wastes | desc: mat |
 | `RM_FruitingBodies` | pimmik mold | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.3~0.5 | 0.5 | 25 | - | - | RM_TheRot, RUT_TheRot | owner named it (mold pins carpeting the floor) |
 | `RM_Fuzz` | the fuzz | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.55~0.85 | 0.85 | 4 | - | - | RM_LeaningScrub | name: Fuzz |
 | `RM_Glasscrust` | glasscrust | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.9~1.1 | 1.1 | 4 | - | - | RM_Stillsand | desc: crust |
@@ -125,7 +125,7 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 | `RM_Plant_SlimeGrass` | slime-grass | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.4~0.8 | 0.8 | 9 | - | - | RM_GelatinousSlime | name: Grass |
 | `RM_Plennith` | plennith | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.8~1.1 | 1.1 | 1 | - | - | RM_FeverWood | desc: mat |
 | `RM_Sagecrust` | tavvik crust | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.2~0.5 | 0.5 | 9 | - | - | RM_TheRot, RUT_TheForge, RUT_TheRot | owner named it (crust on rock and mat) |
-| `RM_Scumgrass` | scumgrass | mandrake.rm.biomes | FloorEmplacement (7) | 0.9 | 0.4~0.8 | 0.72 | 4 | - | - | RM_Wasteland | desc: grass |
+| `RM_Scumgrass` | scumgrass | mandrake.rm.biomes | FloorEmplacement (7) | 0.9 | 0.4~0.8 | 0.72 | 4 | - | - | RM_Wastes | desc: grass |
 | `RM_Selvix` | selvix | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.6~1 | 1.0 | 1 | - | - | RM_Cauldron | desc: flat |
 | `RM_Simmerlace` | simmerlace | mandrake.rm.biomes | FloorEmplacement (7) | 1x1 | 0.8~1.1 | 1.1 | 1 | - | - | RM_TheScald | desc: flat |
 | `RM_Skimmel` | skimmel | mandrake.rm.biomes | FloorEmplacement (7) | - | 0.9~1 | 1.0 | 1 | - | - | RM_FeverWood | desc: film |
@@ -141,11 +141,11 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 | `RSW_SurraGrass` | surra grass | mandrake.rsw.swbestiary | FloorEmplacement (7) | - | 0.4~0.6 | 0.6 | 9 | - | - | RUT_Desert | name: Grass |
 | `RUT_Fuzz` | the fuzz | mandrake.rut.ashkarrflora | FloorEmplacement (7) | - | 0.55~0.85 | 0.85 | 4 | - | - | RUT_AridShrubland | name: Fuzz |
 | `RUT_DarkCrust` | vein moss | mandrake.rut.patches | FloorEmplacement (7) | 0.9 | 0.5~0.9 | 0.81 | 4 | - | - | RUT_Cauldron | name: Crust |
-| `RUT_DosimeterLawn` | dosimeter lawn | mandrake.rut.patches | FloorEmplacement (7) | 1.1 | 0.4~0.7 | 0.77 | 4 | - | - | RUT_Wasteland | desc: mat |
+| `RUT_DosimeterLawn` | dosimeter lawn | mandrake.rut.patches | FloorEmplacement (7) | 1.1 | 0.4~0.7 | 0.77 | 4 | - | - | RUT_Wastes | desc: mat |
 | `RUT_Glower` | the Glowers | mandrake.rut.patches | FloorEmplacement (7) | 0.9 | 0.5~0.9 | 0.81 | 4 | - | - | RUT_Scarlands | desc: moss |
 | `RG_Plant_AridGrass` |  | regrowth.botr.core | FloorEmplacement (7) | - | 0.4~0.6 | 0.6 | 9 | - | - | RM_LeaningScrub, RUT_AridShrubland | name: Grass |
 | `RG_Plant_CrimsonCushion` | crimson cushion | regrowth.botr.core | FloorEmplacement (7) | - | 0.5~0.9 | 0.9 | 16 | - | - | RM_LeaningScrub, RUT_AridShrubland | desc: carpet |
-| `RG_Plant_ToxiGrass` | toxigrass | regrowth.botr.core | FloorEmplacement (7) | - | 0.4~0.6 | 0.6 | 9 | - | - | RUT_Wasteland | name: Grass |
+| `RG_Plant_ToxiGrass` | toxigrass | regrowth.botr.core | FloorEmplacement (7) | - | 0.4~0.6 | 0.6 | 9 | - | - | RUT_Wastes | name: Grass |
 | `AB_AlienGrass` | ocular grass | sarg.alphabiomes | FloorEmplacement (7) | - | 0.4~0.6 | 0.6 | 9 | - | - | RUT_Contagion | name: Grass |
 | `AB_Bryolux` | hessuk moss | sarg.alphabiomes | FloorEmplacement (7) | - | 0.82~0.95 | 0.95 | 4 | - | - | RM_TheRot, RUT_TheRot | name: moss |
 | `AB_HardyGrass` | hardy grass | sarg.alphabiomes | FloorEmplacement (7) | - | 0.4~0.6 | 0.6 | 9 | - | - | RUT_CrackedLands | name: Grass |
@@ -175,7 +175,7 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 | `RM_Wanlith` | wanlith | mandrake.rm.biomes | LowPlant (11) | - | 0.5~0.8 | 0.8 | 1 | - | - | RM_FeverWood | knee-high stalks, yet 'the ground's baseline cover' |
 | `PoisonPlantTallGrass` | tall grass | mlie.advancedbiomes | LowPlant (11) | - | 0.7~0.85 | 0.85 | 9 | - | - | RUT_BlueDesert | words both/neither: +Grass -Tall |
 | `Plant_Bubblespore_Wild` | wild bubble spore plant | mlie.starwarsanimalcollection | LowPlant (11) | - | 0.3~1 | 1.0 | 4 | - | - | RUT_Greentide | words both/neither: + - |
-| `RG_Plant_TallToxiGrass` | tall toxigrass | regrowth.botr.core | LowPlant (11) | - | 0.7~0.85 | 0.85 | 9 | - | - | RUT_Wasteland | words both/neither: +Grass -Tall |
+| `RG_Plant_TallToxiGrass` | tall toxigrass | regrowth.botr.core | LowPlant (11) | - | 0.7~0.85 | 0.85 | 9 | - | - | RUT_Wastes | words both/neither: +Grass -Tall |
 | `AB_FrostLeaf` | frost leaf | sarg.alphabiomes | LowPlant (11) | - | 0.8~1.2 | 1.2 | 1 | - | - | RUT_FuelSnows, RUT_Umbra | words both/neither: + - |
 | `AB_GargantuanLithops` | gargantuan lithops | sarg.alphabiomes | LowPlant (11) | - | 0.75~1 | 1.0 | 1 | - | - | RUT_CrackedLands | words both/neither: + - |
 | `AB_RedLeaves` | ocular plant | sarg.alphabiomes | LowPlant (11) | - | 0.7~1.2 | 1.2 | 1 | - | - | RUT_Contagion | 'ocular plant' 1.2 cells; desc says grass, label says plant |
@@ -188,8 +188,8 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | `IronScruff_Bindweed` | bindweed | ironscruff.primordialgeysers | LowPlant (11) | - | 0.4~0.5 | 0.5 | 25 | Ground | - | RM_TheForge, RUT_TheForge | sown crop |
 | `Plant_Ambrosia` | ambrosia bush | ludeon.rimworld | LowPlant (11) | - | 0.6~1.1 | 1.1 | 1 | - | - | RM_WeepingStones, RUT_WeepingStones | name: bush |
-| `Plant_Toxipotato` | toxipotato plant | ludeon.rimworld.biotech | LowPlant (11) | - | 0.5~1.05 | 1.05 | 1 | Ground,Hydroponic | - | RM_Wasteland, RUT_Wasteland | sown crop |
-| `Plant_TreePolux` | polux tree | ludeon.rimworld.biotech | Building (15) | - | 1.5~2.1 | 2.1 | 1 | - | yes | RM_Wasteland, RUT_Wasteland | tree |
+| `Plant_Toxipotato` | toxipotato plant | ludeon.rimworld.biotech | LowPlant (11) | - | 0.5~1.05 | 1.05 | 1 | Ground,Hydroponic | - | RM_Wastes, RUT_Wastes | sown crop |
+| `Plant_TreePolux` | polux tree | ludeon.rimworld.biotech | Building (15) | - | 1.5~2.1 | 2.1 | 1 | - | yes | RM_Wastes, RUT_Wastes | tree |
 | `Plant_Fireweed` | fireweed | ludeon.rimworld.odyssey | LowPlant (11) | 1.5 | 0.3~0.4 | 0.6 | 4 | - | - | RM_TheForge, RUT_TheForge | desc: flowers |
 | `Plant_MagmaCactus` | magma cactus | ludeon.rimworld.odyssey | LowPlant (11) | 2 | 0.4~0.65 | 1.3 | 1 | - | - | RM_TheForge, RUT_TheForge | mature 1.30 cells > 1.2 |
 | `Plant_Reeds` | sarnreed | ludeon.rimworld.odyssey | LowPlant (11) | - | 0.7~0.8 | 0.8 | 4 | - | - | RM_WeepingStones, RUT_WeepingStones | name: Reeds |
@@ -205,7 +205,7 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 | `RM_Bleedleaf` | bleedleaf | mandrake.rm.biomes | LowPlant (11) | - | 0.7~1 | 1.0 | 4 | - | - | RM_Contagion | desc: shrub |
 | `RM_BloodBouquet` | blood bouquet | mandrake.rm.biomes | LowPlant (11) | - | 0.9~1.5 | 1.5 | 4 | - | - | RM_Cauldron | mature 1.50 cells > 1.2 |
 | `RM_BloodyFist` | bloody fist | mandrake.rm.biomes | Building (15) | - | 1.6~2 | 2.0 | 1 | - | - | RM_Contagion | mature 2.00 cells > 1.2 |
-| `RM_Boilbulb` | boilbulb | mandrake.rm.biomes | LowPlant (11) | 0.85 | 0.5~0.9 | 0.765 | 4 | - | - | RM_Wasteland | desc: a bulb swollen into a dome |
+| `RM_Boilbulb` | boilbulb | mandrake.rm.biomes | LowPlant (11) | 0.85 | 0.5~0.9 | 0.765 | 4 | - | - | RM_Wastes | desc: a bulb swollen into a dome |
 | `RM_Brakkel` | brakkel | mandrake.rm.biomes | LowPlant (11) | - | 2.5~4 | 4.0 | 1 | - | - | RM_Greentide | mature 4.00 cells > 1.2 |
 | `RM_BrellikBulb` | brellik bulb | mandrake.rm.biomes | Building (15) | - | 0.3~0.7 | 0.7 | 1 | Ground,Decorative | - | RM_LanternDeeps | sown crop |
 | `RM_Brelloch` | brelloch | mandrake.rm.biomes | Building (15) | - | 1~1.6 | 1.6 | 1 | Ground | yes | RM_Miasma | tree |
@@ -328,7 +328,7 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 | `RM_Plant_Readerbloom` | readerbloom | mandrake.rm.biomes | LowPlant (11) | 1.2 | 0.6~0.9 | 1.08 | 1 | - | - | RM_GelatinousSlime | desc: stalk |
 | `RM_Plant_Thumbstalk` | thumbstalk | mandrake.rm.biomes | LowPlant (11) | 1.4 | 1~1.5 | 2.1 | 1 | - | yes | RM_GelatinousSlime | tree |
 | `RM_PrennaLace` | prenna lace | mandrake.rm.biomes | LowPlant (11) | - | 0.4~1 | 1.0 | 1 | Ground | - | RM_LanternDeeps | sown crop |
-| `RM_Pusberry` | pusberry | mandrake.rm.biomes | Building (15) | - | 0.8~1.6 | 1.6 | 1 | Ground | yes | RM_Wasteland | tree |
+| `RM_Pusberry` | pusberry | mandrake.rm.biomes | Building (15) | - | 0.8~1.6 | 1.6 | 1 | Ground | yes | RM_Wastes | tree |
 | `RM_Pusmelon` | gubbra gourd | mandrake.rm.biomes | LowPlant (11) | - | 0.43~1 | 1.0 | 4 | - | - | RM_TheRot, RUT_TheRot | desc: a gourd-shaped fungus |
 | `RM_Quathis` | quathis | mandrake.rm.biomes | Building (15) | - | 2.5~4 | 4.0 | 1 | Ground | yes | RM_Greentide | tree |
 | `RM_QuenchVenomvine` | quench venomvine | mandrake.rm.biomes | LowPlant (11) | - | 0.9~1.3 | 1.3 | 1 | - | - | RM_LeaningScrub | mature 1.30 cells > 1.2 |
@@ -372,7 +372,7 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 | `RM_SpherePlant` | sphere plant | mandrake.rm.biomes | LowPlant (11) | - | 0.5~0.9 | 0.9 | 1 | - | - | RM_GreySea | desc: a helmet-sized sphere held clear on spines |
 | `RM_Stonewater` | stonewater | mandrake.rm.biomes | LowPlant (11) | 1.35 | 0.9~1.3 | 1.755 | 1 | RM_ChillBed | - | RM_TheChill | sown crop |
 | `RM_SwornVenomvine` | sworn venomvine | mandrake.rm.biomes | LowPlant (11) | - | 1~1.1 | 1.1 | 1 | Ground | - | RM_LeaningScrub | sown crop |
-| `RM_TallScumgrass` | tall scumgrass | mandrake.rm.biomes | LowPlant (11) | 1.3 | 0.7~1.1 | 1.43 | 4 | - | - | RM_Wasteland | mature 1.43 cells > 1.2 |
+| `RM_TallScumgrass` | tall scumgrass | mandrake.rm.biomes | LowPlant (11) | 1.3 | 0.7~1.1 | 1.43 | 4 | - | - | RM_Wastes | mature 1.43 cells > 1.2 |
 | `RM_Tanglefuzz` | tanglefuzz | mandrake.rm.biomes | LowPlant (11) | - | 1~1.3 | 1.3 | 4 | - | - | RM_LeaningScrub | mature 1.30 cells > 1.2 |
 | `RM_Tarspool` | tarspool | mandrake.rm.biomes | LowPlant (11) | 1 | 0.8~1.1 | 1.1 | 1 | RM_ChillBed | - | RM_TheChill | sown crop |
 | `RM_Tavrosk` | tavrosk | mandrake.rm.biomes | LowPlant (11) | - | 1.6~2.2 | 2.2 | 1 | - | - | RM_Webwork | mature 2.20 cells > 1.2 |
@@ -396,7 +396,7 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 | `RM_Varnoth` | varnoth | mandrake.rm.biomes | LowPlant (11) | - | 1.8~2.5 | 2.5 | 1 | - | yes | RM_FeverWood | tree |
 | `RM_Varrisk` | varrisk | mandrake.rm.biomes | LowPlant (11) | - | 0.9~1.3 | 1.3 | 1 | - | - | RM_Webwork | mature 1.30 cells > 1.2 |
 | `RM_Vashpuk` | vashpuk | mandrake.rm.biomes | LowPlant (11) | - | 0.8~1.1 | 1.1 | 1 | - | - | RM_BlueDesert | desc: a squat waist-high bladder |
-| `RM_VaultRoot` | vault-root tree | mandrake.rm.biomes | Building (15) | 2 | 2.4~5.2 | 10.4 | 1 | Ground | yes | RM_Wasteland | tree |
+| `RM_VaultRoot` | vault-root tree | mandrake.rm.biomes | Building (15) | 2 | 2.4~5.2 | 10.4 | 1 | Ground | yes | RM_Wastes | tree |
 | `RM_Vekkfan` | vekkfan | mandrake.rm.biomes | LowPlant (11) | 1.8x1.8 | 1.4~2 | 3.6 | 1 | - | - | RM_TheScald | mature 3.60 cells > 1.2 |
 | `RM_Velloch` | velloch | mandrake.rm.biomes | LowPlant (11) | - | 0.9~1.3 | 1.3 | 1 | - | - | RM_TheSump | mature 1.30 cells > 1.2 |
 | `RM_VellokReed` | vellok reed | mandrake.rm.biomes | Building (15) | - | 1.5~2.5 | 2.5 | 1 | - | yes | RM_LanternDeeps | tree |
@@ -411,8 +411,8 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 | `RM_Vorrel` | vorrel | mandrake.rm.biomes | LowPlant (11) | - | 0.5~0.8 | 0.8 | 4 | - | - | RM_LongShade | desc: bush |
 | `RM_Vurmeloth` | vurmeloth | mandrake.rm.biomes | Building (15) | - | 3.5~5 | 5.0 | 1 | Ground | yes | RM_Greentide | tree |
 | `RM_WalkingVenomvine` | walking venomvine | mandrake.rm.biomes | LowPlant (11) | - | 0.8~1.2 | 1.2 | 1 | - | - | RM_LeaningScrub | desc: man-high cane at the tail |
-| `RM_Wartshrub` | wartshrub | mandrake.rm.biomes | LowPlant (11) | 1 | 0.7~1.1 | 1.1 | 1 | - | - | RM_Wasteland | desc: shrub |
-| `RM_WastelandScorchedStars` | scorched stars | mandrake.rm.biomes | LowPlant (11) | 1.15 | 0.7~1.1 | 1.265 | 1 | - | - | RM_Wasteland | mature 1.26 cells > 1.2 |
+| `RM_Wartshrub` | wartshrub | mandrake.rm.biomes | LowPlant (11) | 1 | 0.7~1.1 | 1.1 | 1 | - | - | RM_Wastes | desc: shrub |
+| `RM_WastesScorchedStars` | scorched stars | mandrake.rm.biomes | LowPlant (11) | 1.15 | 0.7~1.1 | 1.265 | 1 | - | - | RM_Wastes | mature 1.26 cells > 1.2 |
 | `RM_Weircomb` | weircomb | mandrake.rm.biomes | LowPlant (11) | 1x1 | 0.8~1.1 | 1.1 | 1 | - | - | RM_TwilightSea | desc: upright |
 | `RM_Wickwood` | wickwood tree | mandrake.rm.biomes | Building (15) | - | 2.6~3.6 | 3.6 | 1 | Ground | yes | RM_Abyss | tree |
 | `RM_WildHealroot` | wild healroot | mandrake.rm.biomes | LowPlant (11) | - | 0.3~0.8 | 0.8 | 1 | - | - | RM_LeaningScrub | healroot habit: an upright herb |
@@ -434,9 +434,9 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 | `RUT_FireLavender` | fire lavender | mandrake.rut.patches | LowPlant (11) | - | 0.5~0.9 | 0.9 | 4 | Ground | - | RUT_TheForge | sown crop |
 | `RUT_GiantLeaf` | giant leaf | mandrake.rut.patches | LowPlant (11) | - | 0.5~1.3 | 1.3 | 9 | Ground | - | RUT_FeverWood, RUT_Greentide | sown crop |
 | `RUT_HeatsinkFungus` | heatsink fungus | mandrake.rut.patches | Building (15) | - | 0.3~0.7 | 0.7 | 1 | Ground | yes | RUT_TheForge | tree |
-| `RUT_ScorchedStars` | scorched stars | mandrake.rut.patches | LowPlant (11) | 1.15 | 0.7~1.1 | 1.265 | 1 | - | - | RUT_Scarlands, RUT_Wasteland | mature 1.26 cells > 1.2 |
+| `RUT_ScorchedStars` | scorched stars | mandrake.rut.patches | LowPlant (11) | 1.15 | 0.7~1.1 | 1.265 | 1 | - | - | RUT_Scarlands, RUT_Wastes | mature 1.26 cells > 1.2 |
 | `RUT_TreeMartyr` | martyr tree | mandrake.rut.patches | Building (15) | - | 1.3~3 | 3.0 | 1 | Ground | yes | RUT_Cauldron | tree |
-| `RUT_VaultRoot` | vault-root tree | mandrake.rut.patches | Building (15) | - | 1.2~2.6 | 2.6 | 1 | Ground | yes | RUT_Wasteland | tree |
+| `RUT_VaultRoot` | vault-root tree | mandrake.rut.patches | Building (15) | - | 1.2~2.6 | 2.6 | 1 | Ground | yes | RUT_Wastes | tree |
 | `PoisonShrub` | poison shrub | mlie.advancedbiomes | LowPlant (11) | 1.15 | 0.7~1.1 | 1.265 | 1 | - | - | RUT_FuelSnows, RUT_Umbra | mature 1.26 cells > 1.2 |
 | `Plant_Chakroot_Wild` | wild chak-root plant | mlie.starwarsanimalcollection | LowPlant (11) | - | 0.5~1.5 | 1.5 | 1 | - | - | RUT_FeverWood, RUT_Greentide | mature 1.50 cells > 1.2 |
 | `Plant_FelucianGlowspore_Wild` | wild felucian glowspore | mlie.starwarsanimalcollection | Building (15) | - | 1~3 | 3.0 | 1 | - | yes | RUT_Greentide | tree |
@@ -490,7 +490,7 @@ Regenerate with `python3 src/RimMandrake/Utils/plant_draw_layers.py --json <out>
 | `AB_TangleTea` | tangle tea | sarg.alphabiomes | LowPlant (11) | - | 0.75~1 | 1.0 | 1 | - | - | RUT_Webwork | desc: flowers |
 | `AB_TarPuddle` | tar puddle | sarg.alphabiomes | Skyfaller (30) | - | 1~1.3 | 1.3 | 1 | - | - | RUT_Sump | mature 1.30 cells > 1.2 |
 | `AB_TentacularPlant` | tentacular aberration | sarg.alphabiomes | Building (15) | - | 2.3~3 | 3.0 | 1 | - | - | RUT_Contagion | mature 3.00 cells > 1.2 |
-| `AB_ToxiBulb` | toxibulb | sarg.alphabiomes | Building (15) | - | 2~2.8 | 2.8 | 1 | Ground | yes | RUT_Wasteland | tree |
-| `AB_WeepingToxberry` | weeping toxberry | sarg.alphabiomes | LowPlant (11) | - | 1.5~2 | 2.0 | 4 | - | - | RUT_Wasteland | mature 2.00 cells > 1.2 |
+| `AB_ToxiBulb` | toxibulb | sarg.alphabiomes | Building (15) | - | 2~2.8 | 2.8 | 1 | Ground | yes | RUT_Wastes | tree |
+| `AB_WeepingToxberry` | weeping toxberry | sarg.alphabiomes | LowPlant (11) | - | 1.5~2 | 2.0 | 4 | - | - | RUT_Wastes | mature 2.00 cells > 1.2 |
 | `AB_WitchesOyster` | Tumrata's shelf | sarg.alphabiomes | LowPlant (11) | - | 3~6 | 6.0 | 1 | Ground | - | RM_TheRot, RUT_TheRot | sown crop |
-| `VRE_PoluxBush` | polux bush | vanillaracesexpanded.phytokin | Building (15) | - | 0.75~1.7 | 1.7 | 1 | - | yes | RUT_Wasteland | tree |
+| `VRE_PoluxBush` | polux bush | vanillaracesexpanded.phytokin | Building (15) | - | 0.75~1.7 | 1.7 | 1 | - | yes | RUT_Wastes | tree |

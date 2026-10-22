@@ -124,7 +124,7 @@ stays open as a perf-free follow-up.
 | **Soak Zone / timer switch** | not a player source (B §0) | dev map-maker only | — | MEASURED `FloodedCanyon/Source/MapControls/Building_RM_SoakZone.cs:83` | keep as a dev tool |
 
 **Precipitation (RULED OQ-3, owner's words: *"Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation"*):**
-RM_TheSump, RM_Wasteland, RM_FloodedCanyon, RUT_Sump and RUT_Wasteland have no rain and no snow (weathers zeroed in commit
+RM_TheSump, RM_Wastes, RM_FloodedCanyon, RUT_Sump and RUT_Wastes have no rain and no snow (weathers zeroed in commit
 `607aecf946`, not yet deployed), so they have no rain source; in Flooded Canyon the flood is the only natural water. Where it snows
 *"Blowing snow melts like water and rain yes. It doesn't snow fuel."*: snow counts as the same source as rain (clean water, same
 unroofed-cell rule). *(Corrected 2026-10-20: no Ash'karr biome snows now. The one that did, RUT_Umbra — the Auroral Umbra, briefly

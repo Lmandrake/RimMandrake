@@ -2,10 +2,10 @@
 <!--
   COMMISSION_LEDGER_CLEANUP_1 (poison_forest sheet slug
   `toxic-prized-meat-def-property-on-the-4-flagged-keepers-neeb`).
-  poison_forest.md §7 "Uniquely available": "Toxic exotic meat. Every animal
+  cauldron.md §7 "Uniquely available": "Toxic exotic meat. Every animal
   here is poisonous and a delicacy: these are the prestige ingredients for
   the Star Wars cuisine chain, the things a cook brags about surviving.
-  Danger and value in the same carcass." rosters/poison_forest.json's own
+  Danger and value in the same carcass." rosters/cauldron.json's own
   fauna list flags exactly four keepers `toxic-prized-meat carrier`: Neebray
   (small-flier, donor `mlie.starwarsanimalcollection`), RSW_Screecher
   (medium-pred, ours — ROSTER_DEAD_BMT_NAMES_SWEEP_1 renamed this row from

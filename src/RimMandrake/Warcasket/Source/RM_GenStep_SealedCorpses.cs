@@ -4,7 +4,7 @@ using Verse;
 
 namespace RimMandrake.Warcasket
 {
-    // WARCASKET_JUNKER_KINDS_BUILD_1: the sealed-corpse scatter. wasteland.md §7: "a dead Junker in an
+    // WARCASKET_JUNKER_KINDS_BUILD_1: the sealed-corpse scatter. wastes.md §7: "a dead Junker in an
     // adjusted warcasket is a sealed salvage-within-salvage: suit, tools, and the half-extracted core
     // still in its grips." Generates dead pawns of `pawnKind` wearing their adjusted suit; the suit seals
     // on death (RM_CompSarcophagusSeal) so the corpse is exactly the crack-open target.

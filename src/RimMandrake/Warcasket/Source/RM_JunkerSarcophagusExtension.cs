@@ -3,7 +3,7 @@ using Verse;
 
 namespace RimMandrake.Warcasket
 {
-    // wasteland.md §7, verbatim: "a dead Junker in an adjusted warcasket is
+    // wastes.md §7, verbatim: "a dead Junker in an adjusted warcasket is
     // a sealed salvage-within-salvage: suit, tools, and the half-extracted
     // core still in its grips."
     //

@@ -9,10 +9,10 @@ namespace RimMandrake.Miasma
     // ════════════════════════════════════════════════════════════════════
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for the Miasma.
     //
-    // Precedent: src/RimMandrake/PoisonForest/Source/RM_PoisonForestMod.cs
+    // Precedent: src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs
     // (the worldgen-rarity slider, since this biome ships a real
     // RM_BiomeWorker_Miasma of its own) and
-    // src/RimMandrake/NightsideIce/Source/RM_NightsideIceMod.cs (the
+    // src/RimMandrake/SleepingIce/Source/RM_SleepingIceMod.cs (the
     // honest-about-scope reasoning below).
     //
     // This mod ships six real mechanics (gradient axis, breath-tide surge,
@@ -29,7 +29,7 @@ namespace RimMandrake.Miasma
     // mod's own settings screen already promises a player. So those six get
     // no switch here, only an honest pointer to where their toggles live — a
     // per-mechanic toggle for content this screen does not itself gate would
-    // be a settings screen that lies (NightsideIce's own reasoning, same
+    // be a settings screen that lies (SleepingIce's own reasoning, same
     // shape here). What this screen DOES carry: the worldgen-rarity slider,
     // and the switches for the mechanics this assembly implements itself
     // (succession, young call, predation, pollination gate, deformation,

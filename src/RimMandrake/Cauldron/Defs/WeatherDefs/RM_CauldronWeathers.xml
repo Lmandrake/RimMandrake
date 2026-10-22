@@ -2,7 +2,7 @@
 <!--
   RM_CauldronWeathers.xml     CAULDRON_MECHANICS_BUILD_1 part 2 (tranche 1)
 
-  The four weathers ratified by owner card 2026-09-12 (poison_forest.md §4b):
+  The four weathers ratified by owner card 2026-09-12 (cauldron.md §4b):
   scatter-dusk (the standing state) · vent bloom · vapour bank · dewfall.
   They replace the donor Fog 90 block on RM_Cauldron's
   baseWeatherCommonalities.

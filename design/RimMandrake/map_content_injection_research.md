@@ -340,7 +340,7 @@ compositional anchors (§5.5 rule 2) and rotation** — a small C# class that re
 the same extension shape.
 
 **P5 — a model can author a rimplace template from one sheet paragraph. CONFIRMED,
-with three tooling findings.** A Sonnet agent, given wasteland.md §8, the rimplace
+with three tooling findings.** A Sonnet agent, given wastes.md §8, the rimplace
 API and two exemplars, chose "the Rib-Vault" (a dead sarlacc throat: sunken pit,
 rib flanks thinning toward the mouth, a 5×5 steel vault at the deepest point with
 one anchor crate). Lint clean on the first pass; `verify` 9/9 defNames against the

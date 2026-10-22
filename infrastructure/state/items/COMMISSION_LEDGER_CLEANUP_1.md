@@ -314,12 +314,12 @@ Slice: all 3 poison_forest slugs (the smallest remaining group, picked over
 the in-flight `dune_sea + deep_desert` ["Extreme Desert"] group to avoid
 file collision with a parallel FOUNDRY subagent's flora build there, per
 this session's own briefing). Re-verified currency first, per this item's
-own "watch out": read `poison_forest.md` in full (FROZEN, `BIOME_FREEZE_
-FABLE_REVIEW_1`), `rosters/poison_forest.json`'s own `new_defs` entries
+own "watch out": read `cauldron.md` in full (FROZEN, `BIOME_FREEZE_
+FABLE_REVIEW_1`), `rosters/cauldron.json`'s own `new_defs` entries
 (mechanic_load "none blocking (prep §12)" / "none" / "meat hediff def, no
 C#" — none flagged "unruled"), `_assignment_prep.md` §5's IMPORT-candidates
 notes (the ambusher's own "NEW ART/DEF NEEDED — no donor is vibration-themed;
-nearest body: Biomes! Caverns blind fauna" pointer), and `RUT_PoisonForest.xml`'s
+nearest body: Biomes! Caverns blind fauna" pointer), and `RUT_Cauldron.xml`'s
 own header (which explicitly listed the toxic-meat chain as "NOT this pass's
 scope" — stale, corrected in place, see below). Checked `infrastructure/
 artpipe/{done,pending,registry.jsonl}` by subject for all three before
@@ -343,11 +343,11 @@ near-miss the tunnel-snake slug caught last wave — see below).
   `canon_kinrath_v1` artpipe jobs confirm real generated art already sits at
   the reused texPath) without double-booking the species. Re-themed
   heat-sense to ground-vibration-sense in flavor text only (no stat says
-  "heat"). ComfyTemperature reset to poison_forest.md §0's own measured
+  "heat"). ComfyTemperature reset to cauldron.md §0's own measured
   extremes; Kinrath's Odyssey-gated WebShot ability and egg-layer comp
   dropped for a plain live-birth profile (same simplification precedent
   `RSW_TunnelSnake` used reskinning Klorslug). Wired into
-  `RUT_PoisonForest.xml`'s wildAnimals at 0.25.
+  `RUT_Cauldron.xml`'s wildAnimals at 0.25.
 - **`dark-crust-phototroph-flora-black-purple-red-films-on-starwa` →
   BUILT.** `RUT_DarkCrust` (`src/RimUtinni/UtinniPatches/Defs/
   ThingDefs_Plants/RUT_PollutedFlora.xml`) — no donor crust/lichen form
@@ -371,7 +371,7 @@ near-miss the tunnel-snake slug caught last wave — see below).
   is already non-null — there is no XML node to Add/Replace on a
   "Meat_Neebray"-style def, so patching one directly would have silently
   done nothing. Authored 4 hand-made meat ThingDefs
-  (`RUT_PoisonForestPrizedMeats.xml`, `ParentName="OrganicProductBase"`,
+  (`RUT_CauldronPrizedMeats.xml`, `ParentName="OrganicProductBase"`,
   same shape as this mod family's own `RM_StockedPoolMeats.xml` precedent)
   and a patch (`Patches/PoisonForest_ToxicPrizedMeat.xml`) setting
   `<race><specificMeatDef>` on all four via `PatchOperationFindMod` on each
@@ -384,16 +384,16 @@ near-miss the tunnel-snake slug caught last wave — see below).
   Defs.xml` — zero new C#, matching `mechanic_load: "meat hediff def, no
   C#"` exactly. The "prized" half is `preferability RawTasty` (not the
   vanilla generator's default `RawBad`) plus a new positive thought pair
-  (`RUT_PoisonForestMeatThoughts.xml`, one shared pair across all four
+  (`RUT_CauldronMeatThoughts.xml`, one shared pair across all four
   meats — the slug's own title reads "def PROPERTY on the 4 flagged
   keepers", a single mechanical property, not four bespoke dishes) and
   above-market `MarketValue`, inverting the VAEWaste precedent's negative
-  "disgusting" framing per poison_forest.md §7 ("the things a cook brags
+  "disgusting" framing per cauldron.md §7 ("the things a cook brags
   about surviving"). Placeholder art: vanilla meat-stack textures
   (`Meat_Small`/`Meat_Big` by body size) retinted per species — zero new
   PNGs, no artpipe job needed.
 
-Also corrected `RUT_PoisonForest.xml`'s own header, which still called the
+Also corrected `RUT_Cauldron.xml`'s own header, which still called the
 toxic-meat cuisine chain "NOT this pass's scope" — true when written
 (2026-09-09, before this item existed), false now; left in place would have
 misled the next reader the same way the stale `NAMING_SCHEME_EXECUTION_1`
@@ -556,17 +556,17 @@ fixed, wired, validated and finished that work rather than redoing it.
 
 - `radiotroph-flora-dosimeter-lawn-vault-root-sequestration-tre` → BUILT.
   `RUT_DosimeterLawn` (ground-cover) + `RUT_VaultRoot` (tree),
-  `Defs/ThingDefs_Plants/RUT_WastelandFlora.xml`, wired into
-  `RUT_Wasteland.xml` wildPlants at 0.15/0.08. Ships as plain flora; the
+  `Defs/ThingDefs_Plants/RUT_WastesFlora.xml`, wired into
+  `RUT_Wastes.xml` wildPlants at 0.15/0.08. Ships as plain flora; the
   actual dose-correlated-growth/ore-mining mechanics stay inside
-  wasteland.md's own already-named "dose/geiger layer" engine-feasibility
+  wastes.md's own already-named "dose/geiger layer" engine-feasibility
   scope, not re-filed. Art job `rutvaultroot_v1` already queued by the
   prior session; `rutdosimeterlawn_v1` already landed in
   `infrastructure/artpipe/done/`.
 - `excretor-herd-creature-metal-salt-bezoar-product-def` → BUILT, closed
   as `WASTELAND_EXCRETOR_BEZOAR_1`. `RSW_Excretor` (reskin of the
   already-ported, not-otherwise-wired `RSW_FeralNerf`, zero new art) +
-  `RUT_MetalSaltBezoar` (`RUT_WastelandItems.xml`), wired at 0.15.
+  `RUT_MetalSaltBezoar` (`RUT_WastesItems.xml`), wired at 0.15.
   `CompProperties_Shearable` retargeted from wool to the bezoar resource —
   the roster's "mechanic exists in donors" claim resolved to a plain
   vanilla comp, no donor C# needed at all.
@@ -581,7 +581,7 @@ fixed, wired, validated and finished that work rather than redoing it.
 - `radiothermal-solitary-living-furnace-spacing-law` → BUILT (interim),
   `WASTELAND_RADIOTHERMAL_SOLITARY_1` stays open. `RUT_Radiothermal`
   (`QuadrupedAnimalWithPawsAndTail`), solitary/no-herd, wired into
-  `RUT_Wasteland.xml`. Both halves of the roster's own mechanic_load (heat
+  `RUT_Wastes.xml`. Both halves of the roster's own mechanic_load (heat
   emission, same-species spacing law) are genuinely new C# with no vanilla
   or donor shortcut found — importantly, whether the vanilla
   `CompProperties_HeatPusher` (the building-heater comp) even attaches to
@@ -590,7 +590,7 @@ fixed, wired, validated and finished that work rather than redoing it.
   scope says so and flags the Desktop check.
 - `the-three-storm-weather-defs-ash-radiation-halo-plasma-termi` →
   re-filed as an owner-ruling card, `WASTELAND_STORM_WEATHER_DEFS_1` —
-  wasteland.md's own Owed section already names this as a scope question
+  wastes.md's own Owed section already names this as a scope question
   ("the storm map-reshuffle... needs its own tooling and its own ruling"),
   not a def-authoring task; three options given (flavor-only now / full
   scope now / drop the mutator-churn half).
@@ -1056,7 +1056,7 @@ close/note events even after the process exits.
     the new item's own prose.
 - **`nightside_ice`** (6 slugs) — **confirmed still fully unbuilt, none
   resolved.** `NIGHTSIDEICE_RM_MOD_BUILD_1` closed today but only shipped
-  the mod-scaffold/biome-split move (`src/RimMandrake/NightsideIce/` has
+  the mod-scaffold/biome-split move (`src/RimMandrake/SleepingIce/` has
   only `About.xml` and the BiomeDef — no `ThingDefs_Races` or
   `ThingDefs_Plants` folder at all). The stale uncommitted art jobs wave 14
   saw (`nightside_mahllik_*`/`nightside_zhissa_*`, pending since ~35h+
@@ -1106,7 +1106,7 @@ standing "watch out."
   invented-design this pass is scoped to avoid. Left untouched, as wave 15
   did, but for a mechanics reason now recorded rather than a collision alone.
 - **`nightside_ice` (6 slugs)**: confirmed still unauthored — no ThingDefs
-  under `src/RimMandrake/NightsideIce/`. Checked whether the two stale
+  under `src/RimMandrake/SleepingIce/`. Checked whether the two stale
   pending-turned-done art batches wave 14 flagged (`nightside_mahllik_*`,
   `nightside_zhissa_*`, 3 facings each) resolve any of the 6 slugs: both are
   now in `infrastructure/artpipe/done/` (fully rendered), but nothing in

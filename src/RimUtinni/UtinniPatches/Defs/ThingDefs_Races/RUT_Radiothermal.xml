@@ -4,13 +4,13 @@
 
   Resolves ledger slug
   `wasteland:radiothermal-solitary-living-furnace-spacing-law`
-  (design/Jawa/worldbuilding/biomes/wasteland.md §4: "The radiothermal
+  (design/Jawa/worldbuilding/biomes/wastes.md §4: "The radiothermal
   solitaries — so hot with their own decay they must dump heat to live:
   they haunt the cold dark scour and keep distance from their own kind or
   cook each other (the spacing law returns, driven by heat). A warm boulder
   in the black country means one passed; a tamed one is a living furnace
   that heats a shelter all winter and irradiates it the entire time."
-  roster's own `new_defs` entry, rosters/wasteland.json, mechanic_load "NEW
+  roster's own `new_defs` entry, rosters/wastes.json, mechanic_load "NEW
   C#: heat emission + spacing").
 
   Checked cast_assignment.csv/animal_census.csv first (per this item's own

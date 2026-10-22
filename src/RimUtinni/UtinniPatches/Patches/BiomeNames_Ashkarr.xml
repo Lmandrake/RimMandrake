@@ -3,7 +3,7 @@
   <!-- Ash'karr biome names. Owner 2026-09-07, on reading the world map: "I see
        'Cypre Jungle' - I thought we were renaming all of this?" 30 distinct
        biomes are painted on the planet; only 4 carry our own defNames
-       (RUT_TwilightSea, RUT_GreySea, RUT_NightsideIce, RUT_TheScald). The other
+       (RUT_TwilightSea, RUT_GreySea, RUT_SleepingIce, RUT_TheScald). The other
        26 show a donor's label even though every one of them already has a
        campaign name from its own biome sheet under
        design/Jawa/worldbuilding/biomes/ - see BIOME_LABEL_CAMPAIGN_NAMES_1.
@@ -35,8 +35,8 @@
        `Wasteland` and `AridShrubland` were never touched by this file at all
        (not an oversight of THIS list — they simply were not on the original
        30-biome sheet-name census) and so still showed lowercase donor labels
-       ("scarlands", "wasteland", "arid shrubland") to the player. Their own
-       RUT_ BiomeDefs (RUT_Scarlands, RUT_Wasteland, RUT_AridShrubland) already
+       ("scarlands", "wastes", "arid shrubland") to the player. Their own
+       RUT_ BiomeDefs (RUT_Scarlands, RUT_Wastes, RUT_AridShrubland) already
        carry the correct campaign label; this only copies each onto the donor
        defName the tiles actually use, same conditional convention as every
        other row here. See BiomeDescriptions_Ashkarr.xml (same commit) for the
@@ -188,7 +188,7 @@
       <xpath>/Defs/BiomeDef[defName="Wasteland"]/label</xpath>
       <value><label>the Wasteland</label></value>
     </match>
-  </Operation>   <!-- was "wasteland" (BiomesPlus) - BIOME_TEXT_PORT_1 -->
+  </Operation>   <!-- was "wastes" (BiomesPlus) - BIOME_TEXT_PORT_1 -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="AridShrubland"]/label</xpath>

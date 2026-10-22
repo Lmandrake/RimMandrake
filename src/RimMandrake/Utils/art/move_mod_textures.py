@@ -11,6 +11,9 @@ are never retired by sync: they stay put and are reported, so check the report.
 
 --rel-from/--rel-to rewrite a leading sub-path under Textures/ (a texPath folder rename),
 e.g. --rel-from RimMandrake/MessyConduit --rel-to RimMandrake/GimmeSomeSlack.
+--sub OLD=NEW (repeatable) replaces a substring anywhere in the rel path, folder and file names
+alike, for a defName rename that is baked into texture names (BIOME_DEFNAME_MIGRATION_WAVE_1:
+--sub RM_Wasteland=RM_Wastes moved Wrecks/RM_WastesWreckHull/RM_WastesWreckHull_A.png).
 --leave-kept moves NOTHING that is owner-kept or shares a folder with an owner-kept PNG (a
 Graphic_Random/Multi set stays whole) — no copy, no retire — so a rename can leave a stub at the
 old path instead of shipping each kept picture twice (CRACKEDLANDS_FULL_RENAME_1).
@@ -33,6 +36,7 @@ def main(argv=None) -> int:
     ap.add_argument("new")
     ap.add_argument("--rel-from", default="")
     ap.add_argument("--rel-to", default="")
+    ap.add_argument("--sub", action="append", default=[], metavar="OLD=NEW")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--leave-kept", action="store_true")
     a = ap.parse_args(argv)
@@ -58,6 +62,10 @@ def main(argv=None) -> int:
         rel = f.relative_to(old).as_posix()
         if a.rel_from and (rel == a.rel_from or rel.startswith(a.rel_from + "/")):
             rel = a.rel_to + rel[len(a.rel_from):]
+        for sub in a.sub:
+            o, _, n = sub.partition("=")
+            if o:
+                rel = rel.replace(o, n)
         dest = new / rel
         if f.suffix.lower() == ".png":
             tw.copy(f, dest)

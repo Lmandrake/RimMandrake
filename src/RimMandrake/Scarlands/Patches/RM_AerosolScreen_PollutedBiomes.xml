@@ -4,15 +4,15 @@
      a def naming a type from an absent assembly is discarded whole. A patch whose target biome is absent matches nothing. -->
 <Patch>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RM_Wasteland"]/modExtensions</xpath>
+    <xpath>/Defs/BiomeDef[defName="RM_Wastes"]/modExtensions</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RM_Wasteland"]/modExtensions</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_Wastes"]/modExtensions</xpath>
       <value>
         <li Class="RimMandrake.Scarlands.RM_PollutedBiomeExtension" />
       </value>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RM_Wasteland"]</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_Wastes"]</xpath>
       <value>
         <modExtensions>
           <li Class="RimMandrake.Scarlands.RM_PollutedBiomeExtension" />

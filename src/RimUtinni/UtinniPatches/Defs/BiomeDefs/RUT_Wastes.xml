@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  🔴 FROZEN 2026-09-24 — carrying the world until the terminal paint; content lives in
+  `mandrake.rm.wastes`; do not edit here.
+-->
+<Defs>
+
+  <!--
+    RUT_Wastes                                  UtinniPatches - authored 2026-09-09
+    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/wastes.md
+    (FROZEN). One def by ruling (sheet SS0): the different wastelands (dayside basins,
+    the margin, the dark scour) vary only by mutators and Inhabited injections, never
+    by BiomeDef — the fall_line.md no-new-BiomeDef precedent, extended. This owned
+    def carries that one def forward.
+
+    MEASURED (sheet SS0): 1,126 tiles, arc p10/median/p90 73/90/108 (sitting exactly
+    on the terminator at the median). War-legacy split (sheet SS0): Wasteland is the
+    POISONED legacy — conventional radiation and chemical contamination, never
+    Assailant bioweapon content (that is the Cauldron's and the Contagion's lane).
+
+    Weather: ban 5 is explicit — "No rain (R-H1: rain falls only at the greatest
+    altitudes; the Wasteland is not one)" — so Rain/RainyThunderstorm are zeroed.
+    ToxRain is zeroed too (owner, 2026-09-30, by question card: no rain of any kind here).
+    GrayPall (Anomaly) is kept. The ash storm and radiation halo WeatherDefs now exist in
+    the RM_ tier (WASTELAND_MECHANICS_BUILD_1). Ban 7 stands: "Plasma storms
+    never occur outside the terminator families" — none added here since no plasma
+    WeatherDef exists to add.
+
+    diseases trimmed to the plain vanilla suite (dropped the donor's AnimalFlu/
+    AnimalPlague/OrganDecay/BMT_Disease_Mutapox): ban 4 requires every resident to be
+    "visibly shaped by the contamination," and the sheet's own disease register is
+    radiation/toxin, not wildlife epidemiology — left at the donor's core set rather
+    than inventing a radiological disease that does not exist as a def yet (SS Owed
+    "needs a dose/geiger layer").
+
+    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
+    BiomeFlora_Ashkarr.xml against rosters/wastes.json.
+
+    NOT this pass's scope: the dose/geiger layer; the three storm WeatherDefs (ash,
+    halo, plasma); the mutator/injection palette per family (SS8 table, its own
+    authoring pass); the Junkers' tipping-fee economy; the Throat.
+
+    FISH_BESTIARY_BUILD_1 wave 2 (2026-09-18): waterShallowTerrain/waterDeepTerrain/
+    waterMovingShallowTerrain/waterMovingChestDeepTerrain wired to the
+    RUT_WastesBrine* terrains (RUT_WastesBrineWater.xml, this folder) instead
+    of being left unset. Left unset, any water this def generates fell back to
+    vanilla TerrainDefOf.WaterDeep/WaterShallow (Verse/MapGenUtility.cs:182) —
+    ordinary freshwater, contradicting wave 1's "engine-dead" finding, which
+    analyzed the DONOR `Wasteland` BiomeDef (unused by the live map; MEASURED via
+    world/ASHKARR_WORLDMAP_tiles.csv, RUT_Wastes covers all 1853 Wasteland tiles,
+    bare "Wasteland" covers zero) rather than this def. Wired here anyway, toxic
+    flavor and all, because the owner's mining ruling for the brine-battery
+    archetype (RUT_Tekk/RUT_Drazz/RUT_BrinePlate) stands on its own merits, not as
+    a workaround — see RUT_WastesBrineDeposits.xml. oceanDeepTerrain/
+    oceanShallowTerrain left unset: the pools are "basins sealed from the seas"
+    (wastes.md), never ocean-typed.
+  -->
+
+  <BiomeDef>
+    <defName>RUT_Wastes</defName>
+    <generatesNaturally>false</generatesNaturally>
+    <label>the Wastes</label>
+    <description>Where rivers die, everything they carried is concentrated into salt and brine; where the sky's exhaust falls, nothing ever washes it away. Nothing here recycles -- water doesn't leave, fallout doesn't wash, history doesn't decay. The wildlife is wretched and mutated as the rule, extremophile-odd as the exception; the danger is the ground, the air and the water, never the creatures. They merely adapt, struggle, and mostly fail.</description>
+    <workerClass>BiomesPlus.BiomeWorker_Wasteland</workerClass>
+    <lakeBeachTerrain>Gravel</lakeBeachTerrain>
+    <mudTerrain>MarshyTerrain</mudTerrain>
+    <riverbankTerrain>MarshyTerrain</riverbankTerrain>
+    <waterShallowTerrain MayRequire="Ludeon.RimWorld.Odyssey">RUT_WastesBrineShallow</waterShallowTerrain>
+    <waterDeepTerrain MayRequire="Ludeon.RimWorld.Odyssey">RUT_WastesBrineDeep</waterDeepTerrain>
+    <waterMovingShallowTerrain MayRequire="Ludeon.RimWorld.Odyssey">RUT_WastesBrineMovingShallow</waterMovingShallowTerrain>
+    <waterMovingChestDeepTerrain MayRequire="Ludeon.RimWorld.Odyssey">RUT_WastesBrineMovingChestDeep</waterMovingChestDeepTerrain>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>0.1</animalDensity>
+    <plantDensity>0.12</plantDensity>
+    <forageability>1.0</forageability>
+    <movementDifficulty>2</movementDifficulty>
+    <texture>World/Biomes/RUT_Wastes</texture>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li MayRequire="Mlie.AdvancedBiomes">
+        <terrain>VolcanoSoil</terrain>
+        <min>-999</min>
+        <max>0.5</max>
+      </li>
+      <li MayRequire="Mlie.AdvancedBiomes">
+        <terrain>WastelandAsphalt</terrain>
+        <min>0.5</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>30</Clear>
+      <DryThunderstorm>1</DryThunderstorm>
+      <SnowGentle>0</SnowGentle>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
+      <SnowHard>0</SnowHard>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
+      <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
+      <ToxRain MayRequire="Ludeon.RimWorld.Biotech">0</ToxRain>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <RSW_FleeceSpider MayRequire="mandrake.rsw.swbestiary">0.7</RSW_FleeceSpider>  <!-- fleece spider - wretched-small, keep -->
+      <RSW_Sacapillar MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Sacapillar>  <!-- sacapillar (bodySize 2.40) - PLACED here by the homeless-disposition sitting (frozen 2026-09-10) and never wired until ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 4, 2026-09-23. ⚠️ The one LARGE row in that step, so the only one that can move ECOSYSTEM_PYRAMID_LAW_1 the wrong way. Wired at the ruled 0.5, NOT trimmed the way RSW_Korrum was in RUT_Scarlands: that trim was justified by a MEASURED thin roster (total commonality 1.51, where 0.5 would be a quarter of all sightings), and this roster is rich (17 rows, total 8.28), so 0.5 is ~6% of spawns. BOUND, not a precise claim: at the 2026-09-20 sweep this biome was 73.3% small (smallC 6.80 / largeC 2.48), and adding 0.5 large there gives 66.1% - far above the 50% floor. The roster has drifted since (sweep-era total 9.28 vs 8.28 now) and the current small/large SPLIT is UNMEASURABLE on the Mac (no defs.sqlite, so donor/vanilla bodySizes are unresolvable). The floor would only be at risk if current largeC had grown to ~3.9+. NEXT: re-run the pyramid sweep on the Desktop to confirm. -->
+      <RSW_BloodletterPetrel MayRequire="mandrake.rsw.swbestiary">0.7</RSW_BloodletterPetrel>  <!-- bloodletter petrel - wretched-small, keep -->
+      <RSW_Borcatu MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Borcatu>  <!-- Borcatu - wretched-small, keep -->
+      <RM_Gripper>0.7</RM_Gripper>  <!-- gripper: our port of the donor GR_Beetlefleet (RimMandrake Wasteland), donor retired 2026-10-18 -->
+      <GR_ParagonRat MayRequire="vanillaexpanded.vgeneticse">0.7</GR_ParagonRat>  <!-- rodent paragon - wretched-small, keep -->
+      <RM_Gristleswarm MayRequire="mandrake.rm.wastes">0.6</RM_Gristleswarm>  <!-- gristleswarm (was VFEI2_Swarmling; RM_Wastes's port, donor retired 2026-10-18) - wretched-small, adjust-keep -->
+      <RM_SootGristleswarm MayRequire="mandrake.rm.wastes">0.6</RM_SootGristleswarm>  <!-- soot gristleswarm (was VFEI2_BlackSwarmling; RM_Wastes's port, donors retired 2026-10-18) - wretched-small, adjust-keep -->
+      <RM_ElectricTick MayRequire="mandrake.rm.warscar">0.5</RM_ElectricTick>  <!-- Electrictick - extremophile-odd, adjust-keep -->
+      <Toxalope MayRequire="Ludeon.RimWorld.Biotech">0.4</Toxalope>  <!-- toxalope - wretched-herd, import; vanilla Biotech animal, not mlie.advancedbiomes (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave: MayRequire pointed at an unrelated mod that happens to be active today but does not own this defName) -->
+      <RSW_Maligoat MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Maligoat>  <!-- maligoat - wretched-herd, keep -->
+      <!-- MULTI-HOMED ON PURPOSE - owner approved 2026-09-22 (BIOME_SPECIFIC_FAUNA_LAW_1):
+           the screecher is a real flier (MaxFlightTime 35.0) that MIGRATES in from the wetter
+           RUT_Cauldron to lay in the heat. It is the law's own carve-out, not a violation.
+           ⛔ Do not "fix" it by cutting either home. -->
+      <RSW_Screecher MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import; hot end of the migration -->
+      <GR_Molebear MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Molebear>  <!-- molebear - wretched-medium, keep -->
+      <GR_Spidercat MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Spidercat>  <!-- spidercat - wretched-medium, keep -->
+      <!-- ROT_ROSTER_DEAD_DONOR_NAMES_1 (this pass): RSW_PustuleHornetQueen/
+           RSW_ColonyPustuleHornetQueen/RSW_PustuleHornetSpawned removed — the
+           owner's 2026-09-10 sitting ruled them "move" to the Rot
+           (decisions_propagated.json), wastes.json's roster no longer admits
+           them, and they are now wired in RUT_TheRot.xml instead. Leaving them
+           here too would have doubled a species the owner moved out. -->
+      <VAEWaste_Megatardi>0.18</VAEWaste_Megatardi>  <!-- megatardi - extremophile-odd, import; STAT_NORM_WAVE2_RETIRE_1 absorbed this def natively into UtinniPatches itself (Defs/Absorbed_VAEWasteMegatardi/), so it needs no MayRequire on the retired donor mod at all. The old gate on vanillaexpanded.vaewaste (not in the live mod list) was silently dropping this animal from the roster every load (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave) -->
+      <RSW_Excretor MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Excretor>  <!-- excretor - refiner-herd, new-def (COMMISSION_LEDGER_CLEANUP_1) -->
+      <RUT_BrineBattery>0.1</RUT_BrineBattery>  <!-- brine battery - pool owner, new-def (COMMISSION_LEDGER_CLEANUP_1); discharge mechanic split to WASTELAND_BRINE_BATTERY_DISCHARGE_1 -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <!-- wildPlants: transplanted from rosters/wastes.json "flora" by
+         BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. This element was empty until now and the
+         roster reached the game only through `BiomeFlora_Ashkarr.xml`'s replace
+         operation, which is retired for biomes whose BiomeDef we author — so without
+         this block the biome would have lost its flora outright.
+         The roster is NINE rows, not the 25 the earlier note here claimed: eleven
+         Polluted-Lands filler rows were cut 2026-09-18 (POLLUTED_LANDS_FLORA_PORT_1),
+         and AB_ToxiGrass/PoisonPlantTallGrass went to the_blue_desert, PoisonShrub to
+         the_propane_lakes, AB_GiantToxicFlower to poison_forest, PoisonPlantBush purged
+         outright (all SHEET_ORPHAN_CONSUMPTION_1, owner ruling 2026-09-20).
+         No MayRequire on any row. Eight are donor plants, and this folder's convention
+         (and biome_flora.py's own documented reason) is that donor plants go unguarded
+         because the def dump's packageId names the mod that last RETEXTURED a def, not
+         the one that defines it. The ninth, RUT_ScorchedStars, is THIS mod's own def
+         (Defs/ThingDefs_Plants/RUT_PollutedFlora.xml) and so needs no guard either —
+         same as its unguarded row in RUT_Scarlands.xml. -->
+    <wildPlants>
+      <RM_Scumgrass MayRequire="mandrake.rm.wastes">1.2</RM_Scumgrass>  <!-- toxigrass -->
+      <RM_TallScumgrass MayRequire="mandrake.rm.wastes">0.8</RM_TallScumgrass>  <!-- tall toxigrass -->
+      <!-- Plant_GrayGrass / Plant_Toxipotato / Plant_TreePolux CUT from this roster: owner 2026-10-19 by card ("Cut them as the card said": the eight vanilla/DLC rows), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
+      <RM_ScorchedStars>0.3</RM_ScorchedStars>  <!-- scorched stars -->
+      <RM_Pusberry>0.2</RM_Pusberry>  <!-- weeping toxberry - tree -->
+      <RM_DosimeterLawn>0.15</RM_DosimeterLawn>  <!-- dosimeter lawn - COMMISSION_LEDGER_CLEANUP_1 wave 11, radiotroph flora, growth marks the hottest ground (dose-correlated growth is deferred C#, wastes.md's own "dose/geiger layer" scope) -->
+      <RM_Boilbulb>0.1</RM_Boilbulb>  <!-- toxibulb -->
+      <RM_VaultRoot>0.08</RM_VaultRoot>  <!-- vault-root tree - COMMISSION_LEDGER_CLEANUP_1 wave 11, sequestration tree; ships as a plain wood-yield tree now, "vault ore" mining mechanic deferred to the same dose/geiger layer scope -->
+      <VRE_PoluxBush MayRequire="vanillaracesexpanded.phytokin">0.08</VRE_PoluxBush>  <!-- polux bush -->
+    </wildPlants>
+    <wildPlantRegrowDays>15</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

@@ -172,7 +172,7 @@ FAMILIES = {
   'RM_Contagion': {   # RUT_Contagion frozen 2026-09-25 (CONTAGION_RM_MOD_BUILD_1) —
                        # keyed to the RM_ name so `owned_flora()` (scoped to
                        # src/RimUtinni/UtinniPatches/Defs/BiomeDefs only) no longer
-                       # matches it, same pattern as RM_TheRot/RM_Wasteland above: this
+                       # matches it, same pattern as RM_TheRot/RM_Wastes above: this
                        # dict stops emitting a patch onto the frozen def. 179 tiles ·
                        # 10 plants at authoring — AB_EyeGrass purged (SHEET_ORPHAN_
                        # CONSUMPTION_1, owner ruling 2026-09-20, no successor authored);
@@ -288,7 +288,7 @@ FAMILIES = {
  },
 
  'C. contamination': {
-  'RM_Wasteland': {   # RUT_Wasteland frozen 2026-09-24 (WASTELAND_RM_MOD_BUILD_1) —
+  'RM_Wastes': {   # RUT_Wastes frozen 2026-09-24 (WASTELAND_RM_MOD_BUILD_1) —
                         # keyed to the RM_ name so `owned_flora()` (scoped to
                         # src/RimUtinni/UtinniPatches/Defs/BiomeDefs only) no longer
                         # matches it, same pattern as RM_TheRot above: this dict stops
@@ -362,10 +362,10 @@ FAMILIES = {
 }
 
 # Painted defs that carry NO flora, each by a roster ruling rather than by omission.
-#   RUT_NightsideIce   nightside_ice.json flora_purged "ALL": §6 admits no photosynthesis
+#   RUT_SleepingIce   sleeping_ice.json flora_purged "ALL": §6 admits no photosynthesis
 #                      or photosynthetic tissue of any kind, no soil, nothing that reads
-#                      as a plant. RM_NightsideIce (NIGHTSIDEICE_RM_MOD_BUILD_1, the
-#                      standalone mandrake.rm.nightsideice mod) is the same ruling under
+#                      as a plant. RM_SleepingIce (NIGHTSIDEICE_RM_MOD_BUILD_1, the
+#                      standalone mandrake.rm.sleepingice mod) is the same ruling under
 #                      the RimMandrake tier's own defName — the RUT_ twin stays painted and
 #                      in the set until Phase B's repaint, RM_ is added alongside it, not in
 #                      place of it (BIOME_PAINT_ONCE_AT_THE_END_1: nothing is painted yet).
@@ -385,7 +385,7 @@ FAMILIES = {
 # tension with the_blue_desert.md §6 ban 1 ("no water-based plants or animals"); not
 # re-litigated here (see the RUT_BlueDesert family-A entry above), flagging for whoever
 # next reads that sheet's hard bans.
-PLANTLESS = {'RUT_NightsideIce', 'RM_NightsideIce', 'RUT_RustCathedral',
+PLANTLESS = {'RUT_SleepingIce', 'RM_SleepingIce', 'RUT_RustCathedral',
              'RUT_TwilightSea', 'RUT_GreySea', 'RUT_TheScald', 'RUT_PropaneLake',
              'Ocean', 'Lake', 'SeaIce', 'IceSheet'}
 
@@ -397,8 +397,8 @@ PLANTLESS = {'RUT_NightsideIce', 'RM_NightsideIce', 'RUT_RustCathedral',
 # is a named exception list, never a sweep.
 DENSITY = {
   # biome: (new, shipped, why)
-  'RM_Wasteland': (0.12, 0.0099,  # RUT_Wasteland frozen 2026-09-24 (WASTELAND_RM_MOD_BUILD_1);
-                                   # RM_Wasteland's own def already authors plantDensity 0.12
+  'RM_Wastes': (0.12, 0.0099,  # RUT_Wastes frozen 2026-09-24 (WASTELAND_RM_MOD_BUILD_1);
+                                   # RM_Wastes's own def already authors plantDensity 0.12
                                    # directly (same value), so a regen of this entry emits a
                                    # redundant-but-harmless PatchOperation rather than the
                                    # "already authored" comment-only branch below — `ours` is
@@ -828,7 +828,7 @@ def main() -> int:
         if b in ours:
             # Same rule as wildPlants above: we author this def, so the ruling belongs in
             # it, not in a patch that would silently outrank whatever it says. MEASURED
-            # 2026-09-21: RUT_Wasteland's own def already carries <plantDensity>0.12</>,
+            # 2026-09-21: RUT_Wastes's own def already carries <plantDensity>0.12</>,
             # this ruling's exact value - the operation was pure redundancy waiting to
             # become a silent override.
             out.append(f'  <!-- {b}: {old_d} -> {new_d} is carried by the AUTHORED def')

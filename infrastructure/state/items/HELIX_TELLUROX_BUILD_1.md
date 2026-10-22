@@ -125,7 +125,7 @@ temp path before touching the real file, never a full allocator re-run.
 
 🔴 **`HorrorWastes` (the donor def from Horrors (Continued)) no longer holds any
 painted world tiles** — its ~2,338 tiles were dissolved 2026-09-07 into
-`RUT_NightsideIce`/`BiomeGRimond`/`AB_PropaneLakes`
+`RUT_SleepingIce`/`BiomeGRimond`/`AB_PropaneLakes`
 (`design/Jawa/worldbuilding/horrorwastes_dissolve_execution.md`), whose own
 "Cast re-homing" section already ruled the cast-roster successor as
 `BiomeGRimond` (68% tile plurality + `the_blue_desert.md`'s "the Horrors' host"

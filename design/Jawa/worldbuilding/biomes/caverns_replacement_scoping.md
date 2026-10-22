@@ -172,7 +172,7 @@ workshop copy — a donor-file edit Steam can silently revert; not recommended.)
    palette (owns the look, adds an art pass + your review round).
 2. **Polluted Lands mutation system:** ✅ **RULED DROP** — owner, 2026-09-18 (ruling 6 of
    this doc's six questions, on the `CAVERNS_PARITY_BUILD_1` file event), and already
-   executed 2026-09-09 in `BIOME_OWNERSHIP_WAVE_1`: `RUT_Wasteland`, `RUT_TheForge` and
+   executed 2026-09-09 in `BIOME_OWNERSHIP_WAVE_1`: `RUT_Wastes`, `RUT_TheForge` and
    `RUT_RustCathedral` strip `BMT_Disease_Mutapox` from their disease lists because the
    Wasteland's disease register is radiological, not wildlife epidemiology. The 18
    `BMT_MutaGenes` have zero live consumers in our defs. Mechanism, for the record:

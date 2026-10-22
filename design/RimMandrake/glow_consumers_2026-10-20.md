@@ -84,7 +84,7 @@ glow 0 exactly as vanilla does (script `D:\ClaudeWork\rimmandrake\scratch\glowco
 | `RM_Cauldron` (Poison Forest) | terminator, arc core 82–106, median −1.3° | 16 | 0 | **16** | sheet: *"Chemosynthesis wins, and photosynthesis survives as an underclass"* — no plant encodes the chemotroph half |
 | `RM_Abyss` | nightside | 10 | 2 | **8** | `RM_GiantFibreStalk`, `RM_GiantGlowGlobe` set min 0 only — the trap |
 | `RM_GelatinousSlime` | terminator, arc 81–103 | 4 | 0 | **4** | min 0.31 → dies wherever the sun is more than ~2.9° below the horizon |
-| `RM_Wasteland` | ~+3° sheet; record 37–118 | 9 | 0 | **9** | lit tiles fine; nightside tail dies |
+| `RM_Wastes` | ~+3° sheet; record 37–118 | 9 | 0 | **9** | lit tiles fine; nightside tail dies |
 | `RM_LanternDeeps` | nightside | 11 | 10 | 1 | |
 | `RM_BlueDesert`, `RM_TwilightSea`, `RM_GreySea` | night / terminator seas | 9 / 8 / 17 | all | 0 | already right |
 

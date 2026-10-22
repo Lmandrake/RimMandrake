@@ -67,11 +67,11 @@ WEATHER_PINNED = {"RM_WreckWeathering_Cooked": (0.75, 0), "RM_WreckWeathering_Fr
 JACKETS = {"RM_WreckWeathering_CrystalJacketed": "RM_BrineJacket", "RM_WreckWeathering_IceLocked": "RM_BlueIceMineable"}
 EXTRA_LOOT = {"RM_WreckWeathering_CrystalJacketed": "RM_SalvageLoot_GreyShards"}
 DOSED = {"RM_WreckWeathering_Irradiated": "ToxicBuildup"}
-SARCOPHAGUS = "RM_WastelandWarcasketSarcophagus"
+SARCOPHAGUS = "RM_WastesWarcasketSarcophagus"
 # Fields that must exist planet-wide once steps 3-4 landed (design §7): {field: registered-in}.
-PLANET_FIELDS = {"RM_WreckField_Scald": "biome", "RM_WreckField_NightsideIce": "biome",
+PLANET_FIELDS = {"RM_WreckField_Scald": "biome", "RM_WreckField_SleepingIce": "biome",
                  "RM_WreckField_LanternDeeps": "biome", "RM_WreckField_Warscar": "biome",
-                 "RM_WreckField_Wasteland": "biome", "RM_WreckField_GreyFloor": "floor",
+                 "RM_WreckField_Wastes": "biome", "RM_WreckField_GreyFloor": "floor",
                  "RM_WreckField_TwilightFloor": "floor", "RM_WreckField_ScaldFloor": "floor",
                  "RM_WreckField_BlueDesert": "biome", "RM_WreckField_Miasma": "biome",
                  "RM_WreckField_CrackedLands": "biome", "RM_WreckField_FeverWood": "biome",
@@ -553,7 +553,7 @@ def _wave2_checks(bad, children, fields):
     s = children.get(SARCOPHAGUS)
     if s is None or s.get("ParentName") != "RM_WreckFamily_Carapace":
         bad.append("%s missing or not a Carapace child (design §4 Wasteland)" % SARCOPHAGUS)
-    wf = fields.get("RM_WreckField_Wasteland")
+    wf = fields.get("RM_WreckField_Wastes")
     if wf is None or wf.find("wrecks/" + SARCOPHAGUS) is None:
         bad.append("Wasteland wreck field does not list %s" % SARCOPHAGUS)
     cs = {f: open(os.path.join(HERE, "Source", f), encoding="utf-8").read()

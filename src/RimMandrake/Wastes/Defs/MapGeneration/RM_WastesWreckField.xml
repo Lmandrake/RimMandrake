@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 4: the Wasteland wreck field, Moderate class (design §3d-i:
+  radiation keeps people out). Registered in RM_Wastes's own extraGenSteps.
+  Gate: settingsKey "Wasteland". Weights PROVISIONAL. order 965: after terrain.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WreckField_Wastes</defName>
+    <label>Wasteland</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>Wasteland</settingsKey>
+      <densityClass>RM_WreckDensity_Moderate</densityClass>
+      <wrecks>
+        <RM_WastesWreckHull>2</RM_WastesWreckHull>
+        <RM_WastesWreckTank>1</RM_WastesWreckTank>
+        <RM_WastesWarcasketSarcophagus>0.4</RM_WastesWarcasketSarcophagus>
+      </wrecks>
+      <minSpacing>6</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

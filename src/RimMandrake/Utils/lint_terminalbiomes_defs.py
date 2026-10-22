@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Offline lint of the TerminalBiomes mod (defs/patches vs C#): see lint_mod_defs.py for the checks.
 
-    python3 src/RimMandrake/Utils/lint_wasteland_defs.py [--mod-dir <dir>] [--quiet]
+    python3 src/RimMandrake/Utils/lint_wastes_defs.py [--mod-dir <dir>] [--quiet]
 """
 import os
 import sys

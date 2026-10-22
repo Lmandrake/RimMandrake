@@ -113,7 +113,7 @@ three lengths (3 × one syllable, 7 × two, 4 × three).
 
 ---
 
-## Batch 3b — Nightside Ice (`nightside_ice.json`, 4 rows after the 2026-09-24 eviction)
+## Batch 3b — Nightside Ice (`sleeping_ice.json`, 4 rows after the 2026-09-24 eviction)
 
 *A chemistry set the size of a hemisphere, switched off, under the aurora.* **Owner
 ruling at `NIGHTSIDE_ICE_DESIGN_SITTING_1` (2026-09-24): all six donor residents are

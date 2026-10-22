@@ -15,7 +15,7 @@ new measurement unless marked.
 
 1. **"The defNames are good" must be measured, not assumed.** All 28 `RM_` paint targets resolve on
    the 536-mod list (02 §6) — good. But three still lean on mods that are loaded today
-   (`RM_Wasteland` terrain, two `RM_Cauldron` dryads, three `RM_TheForge` plants), 16 roster rows
+   (`RM_Wastes` terrain, two `RM_Cauldron` dryads, three `RM_TheForge` plants), 16 roster rows
    still use donor defs (`REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS`), and the pending renames
    (`BIOME_DEFNAME_MIGRATION_WAVE_1`, `CRACKEDLANDS_FULL_RENAME_1`) must land **before** the new
    save, or we repeat 2026-10-18 when 1,903 tiles fell back to TemperateForest (03).

@@ -22,7 +22,7 @@ below for the subset that matters to biome rosters).
 
 `src/RimUtinni/UtinniPatches/Patches/WildAnimals_*.xml` — 13 files, one per
 biome that has a scenario-layer roster patch (CrackedLands→RM_FloodedCanyon,
-FeverWood, Greentide, GreySea, LongShade, NightsideIce, Pyrelands, Stillsand,
+FeverWood, Greentide, GreySea, LongShade, SleepingIce, Pyrelands, Stillsand,
 TheRot, TheScald, TwilightSea, Wasteland, WeepingStones).
 
 Comment-stripped scan (regex tag extraction inside `<Patch>`, `<!-- -->`
@@ -41,7 +41,7 @@ The Utinni patch either:
   Greentide, Pyrelands, Wasteland — the 4 bases that actually ship vanilla
   filler), or
 - **Adds** on top of a base that already has an empty or own-cast
-  `wildAnimals` block (FeverWood, LongShade, NightsideIce, TheRot — empty
+  `wildAnimals` block (FeverWood, LongShade, SleepingIce, TheRot — empty
   bases; GreySea, TheScald, TwilightSea, Stillsand, WeepingStones — own
   `RM_`-named cast at the base already, nothing vanilla to replace).
 

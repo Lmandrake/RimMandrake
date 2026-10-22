@@ -111,7 +111,7 @@ the Anvil. Looks like a river, but it isn't. And the river is shown brown and re
   record's broken pieces are the intended look and are not joined. The fill difference is at least 39.2 and its own
   contrast at least 3.6:1 (worst on Abyss). It sits 21.8 from stone. Rivers are blue-grey water (0.08, 0.16, 0.30) on
   screen (47,90,150). They take a tint only inside a biome whose sheet says its water is not clean: RM_Contagion blood red
-  (R-H7 "the red water"), RM_Miasma brackish, RM_Wasteland toxic green (the dead-river salt basins), RM_RustCathedral
+  (R-H7 "the red water"), RM_Miasma brackish, RM_Wastes toxic green (the dead-river salt basins), RM_RustCathedral
   verdigris (the captured coolant river). The tint stops at the biome border, so the Contagion's water reaches the
   lowlands clean. This replaces the 09-06 elevation gradient and the "Darken, same hues" card of the same day. The
   Mod Settings switch and the colour sliders stay. The sliders use new scribe keys.

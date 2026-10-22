@@ -4,11 +4,11 @@
 
   Resolves ledger slug
   `wasteland:brine-battery-pool-owner-ion-gradient-discharge`
-  (design/Jawa/worldbuilding/biomes/wasteland.md §4: "The brine batteries.
+  (design/Jawa/worldbuilding/biomes/wastes.md §4: "The brine batteries.
   Hypersaline pools over mineral beds are half a voltaic cell; what lives in
   them runs on ion gradients and discharges them as defense. The pool you
   want to mine has an owner, and the owner is a capacitor"; roster's own
-  `new_defs` entry, rosters/wasteland.json, mechanic_load "NEW ART/DEF;
+  `new_defs` entry, rosters/wastes.json, mechanic_load "NEW ART/DEF;
   EMP/zap comps exist in donor C# to borrow"; `_assignment_prep.md`'s own
   candidate row: "SW_Electrictick (electric, wrong scale); AA goo family
   (right look)").

@@ -19,7 +19,7 @@ namespace RimMandrake.LanternDeeps
     //     (never the Nightside Ice's surface weather). Lanternstone glows wider, the Chorus rises
     //     (a louder RM_DeepChorus sustainer while the Deep is on screen), Cleavers quicken. Started
     //     by RM_MapComponent_DeepAurora: mirrors any surface condition whose defName names a
-    //     reconnection storm or an aurora (none is built yet; NightsideIce owes it), else on its own
+    //     reconnection storm or an aurora (none is built yet; SleepingIce owes it), else on its own
     //     MTB clock.
     //  2. The collapse with its warnings: a Harmony prefix on RoofCollapseBufferResolver holds every
     //     newly marked roof cell in a Deep for a warning window (vanilla collapses the same tick).

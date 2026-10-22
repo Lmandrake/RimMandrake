@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- WARCASKET_JUNKER_KINDS_BUILD_1: sealed-corpse scatter on the Wasteland (wasteland.md §7). Counts PROVISIONAL.
-     Adds a GenStepDef (class RM_GenStep_SealedCorpses, mandrake.rm.warcasket) and registers it in RM_Wasteland.extraGenSteps. -->
+<!-- WARCASKET_JUNKER_KINDS_BUILD_1: sealed-corpse scatter on the Wasteland (wastes.md §7). Counts PROVISIONAL.
+     Adds a GenStepDef (class RM_GenStep_SealedCorpses, mandrake.rm.warcasket) and registers it in RM_Wastes.extraGenSteps. -->
 <Patch>
   <Operation Class="PatchOperationFindMod">
     <mods><li>RimMandrake: Warcasket</li></mods>
@@ -10,20 +10,20 @@
           <xpath>Defs</xpath>
           <value>
             <GenStepDef>
-              <defName>RUT_SealedJunkerCorpses_Wasteland</defName>
+              <defName>RUT_SealedJunkerCorpses_Wastes</defName>
               <order>970</order>
               <genStep Class="RimMandrake.Warcasket.RM_GenStep_SealedCorpses">
                 <pawnKind>RUT_Jawa_Junkers_CaskedScavenger</pawnKind>
                 <countRange>1~3</countRange>
-                <biomeDefNames><li>RM_Wasteland</li></biomeDefNames>
+                <biomeDefNames><li>RM_Wastes</li></biomeDefNames>
                 <daysDead>12</daysDead>
               </genStep>
             </GenStepDef>
           </value>
         </li>
         <li Class="PatchOperationAdd">
-          <xpath>Defs/BiomeDef[defName="RM_Wasteland"]/extraGenSteps</xpath>
-          <value><li>RUT_SealedJunkerCorpses_Wasteland</li></value>
+          <xpath>Defs/BiomeDef[defName="RM_Wastes"]/extraGenSteps</xpath>
+          <value><li>RUT_SealedJunkerCorpses_Wastes</li></value>
         </li>
       </operations>
     </match>

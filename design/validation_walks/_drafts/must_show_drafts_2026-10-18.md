@@ -96,12 +96,12 @@ no visual surface — no bar: a pure data patch (zeroes `startingCountAtWorldCre
 - [ ] `miasma_muck_colour_gradient` — muck colour, trees and fauna sort along a fresh-to-brine axis across the map (source: owner, `B/miasma_flora_roster_2026-09-23.md:80`)
 - [ ] `miasma_rotting_bed_exists` — decay cells become a rotting bed (source: owner, `I/closed/MIASMA_ROTTING_BED_CUISINE_1.md:5`; `OWNER.jsonl:208` ts 2026-10-02T22:56:14Z)
 
-## RimMandrake/Wasteland
+## RimMandrake/Wastes
 ### must show
-- [ ] `wasteland_just_lost_sunset_lightning` — the light reads as a just-lost sunset flickering with wrathful lightning (source: sheet, owner-ratified, `B/wasteland.md:10`)
-- [ ] `wasteland_survivors_ugly_warty` — native life reads as ugly, warty and tough (source: owner, `B/wasteland.md:26`: "ugly warty life that was already tough enough to survive the waste products")
-- [ ] `wasteland_middenshell_twenty_cells_wide` — the Middenshell is twenty cells wide (source: owner, `B/wasteland.md:36`)
-- [ ] `wasteland_warcasket_primitive_tank` — a warcasket reads as a primitive tank around a person (source: `B/wasteland.md:49`, ruling quote "a primitive tank around a person")
+- [ ] `wasteland_just_lost_sunset_lightning` — the light reads as a just-lost sunset flickering with wrathful lightning (source: sheet, owner-ratified, `B/wastes.md:10`)
+- [ ] `wasteland_survivors_ugly_warty` — native life reads as ugly, warty and tough (source: owner, `B/wastes.md:26`: "ugly warty life that was already tough enough to survive the waste products")
+- [ ] `wasteland_middenshell_twenty_cells_wide` — the Middenshell is twenty cells wide (source: owner, `B/wastes.md:36`)
+- [ ] `wasteland_warcasket_primitive_tank` — a warcasket reads as a primitive tank around a person (source: `B/wastes.md:49`, ruling quote "a primitive tank around a person")
 - [ ] `wasteland_no_precipitation` — no snow or any precipitation falls on the Wasteland (source: owner, `OWNER.jsonl:903` ts 2026-10-17T03:35:16Z EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation")
 
 ## RimMandrake/Scarlands
@@ -191,8 +191,8 @@ no sourced line found (pyrinth appears only in agent-written census/audit text; 
 - [ ] `venomvine_not_placeholder_graphic` — venomvine forms do not use the shared placeholder graphic (source: venomvine_design_2026-10-16.md:46, 2026-10-08, "STOP USING THIS GRAPHIC AND MAKE VENOMVINE!")
 - [ ] `flame_statuary_flame_points` — flame statuary has flames that make sense at its flame points (source: ledger OWNER.jsonl:32 STATUE_ART_EXPANSION_1 ts 2026-09-25T17:16:23Z, "invisible points where flames would make sense"; :34 "the Flame statues")
 
-## RimMandrake/NightsideIce
-- [ ] `nightside_ice_dirty_not_blue` — the ice reads as dirty ice (white, with impurities), not pure blue ice (source: design/Jawa/worldbuilding/biomes/nightside_ice.md:52-53, "Not blue: dirty ice (owner's ruling). Ice only turns blue when it is very pure, clean, old and compressed")
+## RimMandrake/SleepingIce
+- [ ] `nightside_ice_dirty_not_blue` — the ice reads as dirty ice (white, with impurities), not pure blue ice (source: design/Jawa/worldbuilding/biomes/sleeping_ice.md:52-53, "Not blue: dirty ice (owner's ruling). Ice only turns blue when it is very pure, clean, old and compressed")
 - [ ] `nightside_ice_near_empty` — the biome reads as near-empty, almost nothing alive, no lush flora (source: the walk's own [S] "dirty ice, near-empty by design; owner decides" is agent text; owner-side sources: nightside_ice.md "No lush flora of the ordinary kind" sheet text and items/closed/NIGHTSIDEICE_RM_MOD_BUILD_1.md:11-14; sheet text, weak)
 - [ ] `nightside_ice_no_snow_underfoot` — the interior shows no precipitation and no snow underfoot (source: nightside_ice.md:56-58 sheet text, "no wind ... and no snow underfoot"; weak, sheet not verbatim)
 
@@ -235,7 +235,7 @@ no visual surface - no bar (shared behaviour engine of ~50 mechanics; its creatu
 
 ## RimMandrake/Warcasket
 
-- [ ] `warcasket_primitive_tank` — the warcasket reads as a primitive tank around a person: bulky, heavy, not a sleek suit. (source: BENCH.jsonl:528, Wasteland sitting, owner typed, "'a primitive tank around a person'"; `design/Jawa/worldbuilding/biomes/wasteland.md:46-47`)
+- [ ] `warcasket_primitive_tank` — the warcasket reads as a primitive tank around a person: bulky, heavy, not a sleek suit. (source: BENCH.jsonl:528, Wasteland sitting, owner typed, "'a primitive tank around a person'"; `design/Jawa/worldbuilding/biomes/wastes.md:46-47`)
 - [ ] `cask_bay_lead_lined_hardpoint` — the cask bay reads as a lead-lined, shielded hardpoint on the ship. (source: FOUNDRY.jsonl:1393, "the lead-lined cask bay (gravship touch) - a shielded hardpoint", recorded as owner-approved at Wasteland sitting turn 2)
 
 ## RimStarWars/Shokk

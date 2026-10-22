@@ -1,5 +1,5 @@
 """Prove the Middenshell on the HOME map (a generated side map with no colonists gets culled):
-regenerate the current debug map as RM_Wasteland, fire RM_MiddenshellArrives, run, and read its
+regenerate the current debug map as RM_Wastes, fire RM_MiddenshellArrives, run, and read its
 footprint + position over time. Windows python.exe, repo root:
     python.exe src/RimMandrake/bridgetools/prove_middenshell_home.py"""
 import sys, json, time, os, re
@@ -16,7 +16,7 @@ def call(n, **a):
     if isinstance(r, dict): r.pop("operation", None)
     return r
 tile = call("jawa/map_info").get("tile")
-call("jawa/world_tile_set", tiles=str(tile), biome="RM_Wasteland"); call("jawa/world_commit")
+call("jawa/world_tile_set", tiles=str(tile), biome="RM_Wastes"); call("jawa/world_commit")
 call("rimworld/execute_debug_action", path=r"Actions\Regenerate Current Map"); time.sleep(5)
 for _ in range(100):
     if call("rimworld/get_ui_state").get("programState") == "Playing": break

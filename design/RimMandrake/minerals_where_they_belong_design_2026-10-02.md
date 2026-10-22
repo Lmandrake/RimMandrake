@@ -85,8 +85,8 @@ Already in a non-vein form (these are the precedents the design builds on):
 
 | form already used | defs | where |
 |---|---|---|
-| organism-produced bed (mine the colony) | `RM_BrineDeposit_{BrinePlate,Drazz,Tekk}` (+ `RUT_` twins) | `src/RimMandrake/Wasteland` |
-| carcass seam | `RM_MiddenshellSeam`, `RM_MiddenshellVitrifiedSeam` → bezoars | `src/RimMandrake/Wasteland` |
+| organism-produced bed (mine the colony) | `RM_BrineDeposit_{BrinePlate,Drazz,Tekk}` (+ `RUT_` twins) | `src/RimMandrake/Wastes` |
+| carcass seam | `RM_MiddenshellSeam`, `RM_MiddenshellVitrifiedSeam` → bezoars | `src/RimMandrake/Wastes` |
 | giant crystal formation | `RM_GreatSaltCrystal_{Amber,Pink,Violet,White}`, `RM_SaltDome`, `RM_SaltPillar`, `RM_BrineJacket` | `src/RimMandrake/TerminalBiomes` |
 | fossil seam (stratum wall) | `RM_FossilSeam_{Impression,Skeleton,Unique}` | `src/RimMandrake/FloodedCanyon` |
 | mineable wood blob | `RUT_GreatboleHeartwood`, `RUT_FeverTrunkHeartwood` | `src/RimUtinni/UtinniPatches` |
@@ -189,8 +189,8 @@ Steel deep deposit (F11). That is the whole of "things like iron".
 | | jade | F2 biome vein in canyon walls | `MineableJade` | PROPOSED |
 | **Wasteland (the Wastes)** | brine plate, drazz, tekk | F7 colony beds | `RM_BrineDeposit_*` | BUILT |
 | | bezoars | F7 carcass seams | `RM_MiddenshellSeam`, `RM_MiddenshellVitrifiedSeam` | BUILT |
-| | salt, glass | F5 basin crust | none | PROMISED `wasteland.md:246` |
-| | uranium, components | F10 warcasket cores, war salvage | loot | PROPOSED (`wasteland.md:247-253` names the salvage) |
+| | salt, glass | F5 basin crust | none | PROMISED `wastes.md:246` |
+| | uranium, components | F10 warcasket cores, war salvage | loot | PROPOSED (`wastes.md:247-253` names the salvage) |
 | **Warscar** | Beskar, durasteel, spacer components | F10/F12 sealed salvage trove, stripped fleet | loot table | PROPOSED; trove PROMISED `the_scarlands.md:190,233` |
 | **Weeping Stones** | seep-salt | F5 crust off steamfrond vents (the only source) | `RM_SeepSalt` | BUILT |
 | **Miasma** | delta salt | F5/F7 | `RM_DeltaSalt` | BUILT |

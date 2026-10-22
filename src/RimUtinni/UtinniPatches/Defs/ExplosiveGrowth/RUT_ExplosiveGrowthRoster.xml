@@ -73,10 +73,8 @@
          top: a dry plant anywhere else still bursts. -->
     <noSoakBiomes>
       <li>PoisonForest</li>
-      <li>RM_PoisonForest</li>
-      <li>RM_Cauldron</li>  <!-- CAULDRON_FULL_RENAME_1: RM_PoisonForest -> RM_Cauldron; old name kept, list-every-plausible-name policy -->
-      <li>RUT_PoisonForest</li>  <!-- pre-rename name, kept -->
-      <li>RUT_Cauldron</li>  <!-- CAULDRON_FULL_RENAME_1 (2026-09-30): RUT_PoisonForest -> RUT_Cauldron -->
+      <li>RM_Cauldron</li>
+      <li>RUT_Cauldron</li>
       <li>RUT_ExtremeDesert</li>
     </noSoakBiomes>
 

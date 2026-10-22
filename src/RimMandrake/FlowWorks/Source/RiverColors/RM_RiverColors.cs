@@ -57,7 +57,7 @@ namespace RimMandrake.FlowWorks.RiverColors
     // not clean does it take that biome's tint (design/Jawa/worldbuilding/biomes/):
     //   RM_Contagion     blood red    -- the_contagion.md R-H7 "The red water sterilizes on the way down"
     //   RM_Miasma        brackish     -- the_miasma.md: the dying sea's muck channels, "everything ends up here"
-    //   RM_Wasteland     toxic green  -- wasteland.md: hypersaline salt basins, the dead-river termini
+    //   RM_Wastes     toxic green  -- wastes.md: hypersaline salt basins, the dead-river termini
     //   RM_RustCathedral verdigris    -- the_rust_cathedral.md: the captured river is its coolant canals
     // The tint stops at the biome border (each tile draws its own half of every river link), which is the story: the
     // Contagion's water arrives in the lowlands clean. The bank is drawn by Baroque Biomes' RM_WorldPaths (water x 0.22).
@@ -74,7 +74,7 @@ namespace RimMandrake.FlowWorks.RiverColors
             {
                 case "RM_Contagion": return RM_RiverColorsSettings.contagionColor;
                 case "RM_Miasma": return RM_RiverColorsSettings.miasmaColor;
-                case "RM_Wasteland": return RM_RiverColorsSettings.wastelandColor;
+                case "RM_Wastes": return RM_RiverColorsSettings.wastesColor;
                 case "RM_RustCathedral": return RM_RiverColorsSettings.rustCathedralColor;
                 default: return RM_RiverColorsSettings.waterColor;
             }

@@ -255,7 +255,7 @@
          2026-09-07, but that CSV predates BIOME_OWNERSHIP_WAVE_1 (2026-09-09),
          which replaced the donor with this standalone def. MEASURED against
          the current full census, `world/ASHKARR_WORLDMAP_tiles.csv`
-         (2026-09-12, the same file wave 2 already trusted for RUT_Wasteland):
+         (2026-09-12, the same file wave 2 already trusted for RUT_Wastes):
          RUT_Greentide covers 235 tiles (matching THIS file's own "MEASURED
          live on V26" figure above) and BiomeCypreJungle covers zero. The
          freshwater_Common/Uncommon values below are copied verbatim from the

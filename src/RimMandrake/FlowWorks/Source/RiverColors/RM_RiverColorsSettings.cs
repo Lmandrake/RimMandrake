@@ -31,7 +31,7 @@ namespace RimMandrake.FlowWorks.RiverColors
         public static Color waterColor = new Color(0.08f, 0.16f, 0.30f);          // cool blue-grey
         public static Color contagionColor = new Color(0.36f, 0.03f, 0.04f);      // blood red
         public static Color miasmaColor = new Color(0.16f, 0.14f, 0.04f);         // brackish olive-brown
-        public static Color wastelandColor = new Color(0.14f, 0.24f, 0.06f);      // toxic green
+        public static Color wastesColor = new Color(0.14f, 0.24f, 0.06f);      // toxic green
         public static Color rustCathedralColor = new Color(0.04f, 0.20f, 0.16f);  // verdigris coolant
 
         /// <summary>Called from RimMandrakeFlowWorksSettings.ExposeData, inside its PatchApplier Before/AfterExpose pair.</summary>
@@ -41,7 +41,7 @@ namespace RimMandrake.FlowWorks.RiverColors
             Scribe_Values.Look(ref waterColor, "riverColors_waterColor", new Color(0.08f, 0.16f, 0.30f));
             Scribe_Values.Look(ref contagionColor, "riverColors_contagionColor", new Color(0.36f, 0.03f, 0.04f));
             Scribe_Values.Look(ref miasmaColor, "riverColors_miasmaColor", new Color(0.16f, 0.14f, 0.04f));
-            Scribe_Values.Look(ref wastelandColor, "riverColors_wastelandColor", new Color(0.14f, 0.24f, 0.06f));
+            Scribe_Values.Look(ref wastesColor, "riverColors_wastesColor", new Color(0.14f, 0.24f, 0.06f));
             Scribe_Values.Look(ref rustCathedralColor, "riverColors_rustCathedralColor", new Color(0.04f, 0.20f, 0.16f));
         }
 
@@ -97,18 +97,18 @@ namespace RimMandrake.FlowWorks.RiverColors
             {
                 list.CheckboxLabeled("Colour rivers by biome", ref riverColorsEnabled,
                     "On (default): planet-map rivers draw as blue-grey water, tinted only inside the biomes whose water "
-                  + "is not clean: blood red in the Contagion, brackish in the Miasma, toxic green in the Wasteland, "
+                  + "is not clean: blood red in the Contagion, brackish in the Miasma, toxic green in the Wastes, "
                   + "verdigris in the Rust Cathedral. Off: rivers draw with the game's own single flat colour. The "
                   + "planet's river layer is rebuilt when the world is drawn afresh (a load), not the moment a setting "
                   + "changes. Never changes the world itself, only how its rivers are painted.");
             }
 
-            if (Group(list, "Water colours", new[] { "waterColor", "contagionColor", "miasmaColor", "wastelandColor", "rustCathedralColor" }))
+            if (Group(list, "Water colours", new[] { "waterColor", "contagionColor", "miasmaColor", "wastesColor", "rustCathedralColor" }))
             {
                 ColorSection(list, "River water (everywhere else)", ref waterColor);
                 ColorSection(list, "Contagion (blood red)", ref contagionColor);
                 ColorSection(list, "Miasma (brackish)", ref miasmaColor);
-                ColorSection(list, "Wasteland (toxic)", ref wastelandColor);
+                ColorSection(list, "the Wastes (toxic)", ref wastesColor);
                 ColorSection(list, "Rust Cathedral (verdigris coolant)", ref rustCathedralColor);
             }
         }

@@ -7,7 +7,7 @@ using Verse;
 namespace RimMandrake.Utinni.StructureInjectionsRUT
 {
     // WAR_LAB_CRATER_HOOK_1 -- the worldmap-tile half of the ignition-to-crater
-    // ending (design/Jawa/worldbuilding/biomes/wasteland.md §10 option 4: a
+    // ending (design/Jawa/worldbuilding/biomes/wastes.md §10 option 4: a
     // bleeding reactor core dropped into the propane lake ignites it, breaching
     // ANCIENT_WAR_LAB_1). Local-map spectacle (fire, terrain swap, roof breach at
     // the lab itself) is that dungeon's own build -- this class does ONLY the
@@ -30,7 +30,7 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
         private static readonly string[] SourceBiomeDefNames = { "RUT_PropaneLake", "RM_TheChill" };
 
         // CHILL_WORLD_CRATER_1, 2026-09-28: retargeted from the placeholder
-        // RUT_Wasteland (a stand-in from before the real aftermath biome
+        // RUT_Wastes (a stand-in from before the real aftermath biome
         // existed) to RM_ChillCrater, the biome actually built for this
         // mutation (src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_ChillCrater.xml).
         private const string CraterBiomeDefName = "RM_ChillCrater";

@@ -8,14 +8,14 @@ slime_flood,Slime floodwater,AB_GelatinousSuperorganism,yes,organic load; potabl
 sheen_milk,The Sheen / milk ponds,AB_MycoticJungle (the Rot),NO — fungal reproductive emission,biological; reclaims into milk ponds,no,reclaim->milk ponds (not-water),the_rot.md
 rime_etchfall,Hydrocarbon rime / etchfall,AB_RockyCrags (Abyss),NO — chemical frost,corrosive hydrocarbon condensate,no,warm pulse->melt-trickle (the twilight's ONLY liquid water),abyss.md
 crags_trickle,Melt-trickle,AB_RockyCrags warm pulses,yes,thin; the twilight's only liquid water,yes (scarce),refreeze->rime,abyss.md
-waste_brine,Hypersaline brine pools,Wasteland,yes,dead-river concentrate; radiologically live,no,sequestration->brine batteries (locks contamination),wasteland.md
-poison_standing,Poison-forest standing water,PoisonForest,yes,heavy-metal load,never,condensate above it -> potable,poison_forest.md
-night_ice,Nightside ice,RUT_NightsideIce,yes (frozen),atmospheric frost layers; particulates,not unfiltered,melt+filter->potable,nightside_ice.md
+waste_brine,Hypersaline brine pools,Wasteland,yes,dead-river concentrate; radiologically live,no,sequestration->brine batteries (locks contamination),wastes.md
+poison_standing,Poison-forest standing water,PoisonForest,yes,heavy-metal load,never,condensate above it -> potable,cauldron.md
+night_ice,Nightside ice,RUT_SleepingIce,yes (frozen),atmospheric frost layers; particulates,not unfiltered,melt+filter->potable,sleeping_ice.md
 propane_lake,Propane lakes,AB_PropaneLakes;RUT_PropaneLake,NO — cryogenic propane,cryogenic hydrocarbon; ignites on heat,no,ignition (see ANCIENT_WAR_LAB_1 breach route),the_propane_lakes.md
 deep_brine,Grey Deep brine pools,bottom of RUT_GreySea,yes,dense hypersaline; underwater lakes with shores,no,,the_grey_deep.md
 miasma_axis,Miasma fresh↔brine axis,AB_MiasmicMangrove,yes,storm-driven salt line; stranding pools,fresh side only,surge moves the line; stranding->brine,the_miasma.md
 fever_pool,Fever Wood pools,COMIGO_GreaterSwamp_Tropical,yes,the Tenant's aquifer — watched water,unresolved by design (the Tenant rule),pool-strike events,the_fever_wood.md
 river_steam,Steaming rivers,dayside rivers (RiverSteam mod),yes,hot flowing fresh water,once cooled,cooling->potable; steam->fog,the_greentide.md;RiverSteam
 crack_flood,Cracked-lands flood,ZBiome_Badlands,yes,"flash flood — chimes, wall of water",yes (fresh),soak->explosive plant growth; drains,the_cracked_lands.md;FLOOD_WITNESS_EVENT_1
-dead_river,Dead-river termini,dayside river ends,yes,concentrating minerals toward brine,degrading,concentration->waste_brine,wasteland.md
+dead_river,Dead-river termini,dayside river ends,yes,concentrating minerals toward brine,degrading,concentration->waste_brine,wastes.md
 blue_ice,Blue ice (distilled-purity),RM_BlueDesert,yes (frozen),ancient compressed ice; near-zero mineral/particulate load — the taxonomy's top row,yes (melt),melt->potable (distilled-grade, no filtering needed); quarried as the biome's ⭐ premium mineable (RM_BlueIce),the_blue_desert.md;bluedesert_bedazzle_cast_2026-09-28.md;BLUEDESERT_RULED_CONTENT_1

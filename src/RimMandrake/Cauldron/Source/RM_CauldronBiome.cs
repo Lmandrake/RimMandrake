@@ -17,7 +17,7 @@ namespace RimMandrake.Cauldron
     // hard dependency the RimMandrake tier may not assume").
     //
     // ⚠️ RANGES ARE [INVENTED], same footing as every sibling worker. The
-    // frozen campaign sheet (RUT_PoisonForest.xml header) measures this
+    // frozen campaign sheet (RUT_Cauldron.xml header) measures this
     // biome on the campaign world at arc envelope 56-115 (median 91.3,
     // straddling the terminator) — a cold, permanently dim band with "a
     // cold stable ceiling (no day-night swing)". Arc-degrees-from-terminator

@@ -158,7 +158,7 @@
     },
     {
       "def": "AA_Slurrypede",
-      "disposition": "move:RUT_NightsideIce",
+      "disposition": "move:RUT_SleepingIce",
       "reason": "ban 7; rostered nightside (this pass)"
     },
     {
@@ -218,7 +218,7 @@
     },
     {
       "def": "AA_TetraSlug",
-      "disposition": "move:RUT_NightsideIce",
+      "disposition": "move:RUT_SleepingIce",
       "reason": "ban 7; rostered nightside (this pass)"
     },
     {

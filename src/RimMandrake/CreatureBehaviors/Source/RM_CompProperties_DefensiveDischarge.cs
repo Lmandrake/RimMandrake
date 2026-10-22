@@ -3,7 +3,7 @@ using Verse;
 
 namespace RimMandrake.CreatureBehaviors
 {
-    // WASTELAND_BRINE_BATTERY_DISCHARGE_1. wasteland.md §4: "Hypersaline
+    // WASTELAND_BRINE_BATTERY_DISCHARGE_1. wastes.md §4: "Hypersaline
     // pools over mineral beds are half a voltaic cell; what lives in them
     // runs on ion gradients and discharges them as defense." See
     // RM_CompDefensiveDischarge for the mechanism this drives.

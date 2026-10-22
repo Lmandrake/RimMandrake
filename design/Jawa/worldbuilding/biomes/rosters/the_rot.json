@@ -421,21 +421,21 @@
       "band": "wretched-small",
       "commonality": 0.2,
       "def": "RSW_ColonyPustuleHornetQueen",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_ColonyPustuleHornetQueen to the ported RSW_ name, moved in from RUT_Wasteland.xml, now wired"
+      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_ColonyPustuleHornetQueen to the ported RSW_ name, moved in from RUT_Wastes.xml, now wired"
     },
     {
       "action": "import",
       "band": "wretched-small",
       "commonality": 0.3,
       "def": "RSW_PustuleHornetQueen",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_PustuleHornetQueen to the ported RSW_ name, moved in from RUT_Wasteland.xml, now wired"
+      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_PustuleHornetQueen to the ported RSW_ name, moved in from RUT_Wastes.xml, now wired"
     },
     {
       "action": "import",
       "band": "wretched-small",
       "commonality": 0.2,
       "def": "RSW_PustuleHornetSpawned",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_PustuleHornetSpawned to the ported RSW_ name, moved in from RUT_Wasteland.xml, now wired"
+      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_PustuleHornetSpawned to the ported RSW_ name, moved in from RUT_Wastes.xml, now wired"
     },
     {
       "action": "import",

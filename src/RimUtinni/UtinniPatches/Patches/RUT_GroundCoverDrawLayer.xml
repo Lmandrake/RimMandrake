@@ -4,7 +4,7 @@
   Owner ruling 2026-10-14 (typed): "Lower all such plants in all biomes. Small ground cover on the
   appropriate layer."  Item: ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS.
 
-  Donor-owned ground cover spawned by RUT_Contagion, RUT_CrackedLands, RUT_BlueDesert, RUT_Wasteland, moved from LowPlant (11)
+  Donor-owned ground cover spawned by RUT_Contagion, RUT_CrackedLands, RUT_BlueDesert, RUT_Wastes, moved from LowPlant (11)
   to FloorEmplacement (7). Plant.Print lifts a plant's top edge 0.1 in altitude and layers sit
   0.366 apart (Altitudes.LayerSpacing), so any lower layer is enough to keep cover under LowPlant plants;
   inside one layer the order is hash-random (the "moss sometimes in front" report). Draw order only:

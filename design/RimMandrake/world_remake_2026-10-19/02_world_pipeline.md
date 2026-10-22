@@ -134,7 +134,7 @@ What each layer needs in a rebuild on the 536 list:
 
 | artifact | vintage (git) | resolves on the 536 dump? (MEASURED today) | route into a fresh world | loss / risk |
 |---|---|---|---|---|
-| `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows) | 2026-09-12 export from save | 2 of 27 biome names missing: `RUT_ForsakenCrags` ×1135 and `RUT_PoisonForest` ×546. `ZBiome_Grasslands` ×222 resolves (`zylle.morevanillabiomes` is in the list) but is a donor def. | `w9_run` stage 1 | Biome names must be remapped to `RM_` targets with `infrastructure/state/facts/biome_paint_list.md` first (see below). The record is from 09-12, so live edits made after 09-12 are not in it. |
+| `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows) | 2026-09-12 export from save | 2 of 27 biome names missing: `RUT_ForsakenCrags` ×1135 and `RUT_Cauldron` ×546. `ZBiome_Grasslands` ×222 resolves (`zylle.morevanillabiomes` is in the list) but is a donor def. | `w9_run` stage 1 | Biome names must be remapped to `RM_` targets with `infrastructure/state/facts/biome_paint_list.md` first (see below). The record is from 09-12, so live edits made after 09-12 are not in it. |
 | `…_links.csv` (1,713 edges) | 2026-09-07 | not checked (RiverDef/RoadDef) | stage 2 | ⚠️ **Lineage risk.** The 09-07 rebase measured that the links CSV *"shares only 77 of the save's 1,399 road edges"*, and only the tiles CSV was re-exported. A stamp from this file may lay down the deprecated road net. **The save is the authority.** |
 | `…_mutators.csv` (6,710 tiles, 10,084 assignments, 88 defs) | 2026-08-23 (deprecated lineage B) | **10 defs / 120 assignments missing**: `AB_*` ×8 and `sw_*` ×2 | stages 3/4b | Old: the 09-12 save holds **27,856** mutator entries, against 10,084 here. Port names exist (`design/RimMandrake/retired_mutators_port_map.json`), but this CSV has not been rewritten to them. |
 | `…_landmarks.csv` (563 rows, 52 defs) | 2026-08-23 | **5 defs / 16 rows missing** (`AB_TarLakes`, `AB_MagmaticQuagmire`, `AB_QuicksandPits`, `sw_Sarlacc`, `sw_DeadSarlacc`); all five have ports | stage 4 | Old: the save holds 3,008 landmark entries, against 563 here. |
@@ -184,7 +184,7 @@ What still carries retired-donor content into a fresh world: **only what we feed
 - the founders (`AA_Eyeling`);
 - our own defs, where the 536 dump still resolves non-ours refs. These are in the 536 list, not retired:
   - `RM_Cauldron` ×2 `AM_Dryad_*` (`sarg.alphamemes`, a STAY mod; MayRequire-gated, port awaits the owner).
-  (`RM_Wasteland`'s terrain and `RM_TheForge`'s `IronScruff_*` rows were decoupled 2026-10-19, `8e87a9649`.)
+  (`RM_Wastes`'s terrain and `RM_TheForge`'s `IronScruff_*` rows were decoupled 2026-10-19, `8e87a9649`.)
 
   The full table is in §6.
 
@@ -248,7 +248,7 @@ Measured on the 536 dump (subagent; its own one-off script over `BiomeDef/ThingD
 - **62 `RM_`/`RUT_` BiomeDefs; 0 unresolved roster or terrain refs on the 536 list.** No `RSW_` BiomeDefs exist.
 - **All 28 `RM_` paint targets resolve.** These are clean of non-ours refs:
   - Abyss, BlueDesert, Contagion, FeverWood, FloodedCanyon, GelatinousSlime, Greentide, LeaningScrub, LongShade,
-    Miasma, NightsideIce, Pyrelands, RustCathedral, Stillsand, TheRot, TheSump, Warscar, Webwork, WeepingStones;
+    Miasma, SleepingIce, Pyrelands, RustCathedral, Stillsand, TheRot, TheSump, Warscar, Webwork, WeepingStones;
   - the four seas: GreySea, TheChill, TheScald, TwilightSea.
 - **These lean on a non-ours mod that is still in the list.** They fail only if that mod goes too:
 
@@ -258,7 +258,7 @@ Measured on the 536 dump (subagent; its own one-off script over `BiomeDef/ThingD
 | `RUT_Umbra` | `PoisonShrub` |
 | `RUT_BlueDesert` | `PoisonPlantTallGrass` |
 | `RUT_Slime` | 2 `GR_*` |
-| `RUT_Cauldron` / `RUT_Wasteland` | **donor C# workers** `BiomesPlus.*`, plus dryads, `VRE_PoluxBush` and `GR_*` |
+| `RUT_Cauldron` / `RUT_Wastes` | **donor C# workers** `BiomesPlus.*`, plus dryads, `VRE_PoluxBush` and `GR_*` |
 | `RUT_CrackedLands`, `RUT_WeepingStones` | workers `VanillaBiomes.*` |
 
   The `RUT_` ones are frozen twins and are not paint targets, except `RUT_Umbra` (the Auroral Umbra).
