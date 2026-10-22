@@ -203,6 +203,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			Map map = p.Map;
 			long line = RM_DrawbridgeMath.PlankLedger.LineKey(map.cellIndices.CellToIndex(cells[0]), map.cellIndices.CellToIndex(cells[cells.Count - 1]));
+			LedgerOf(map).Release(line);   // LineFree just proved no deck stands here: a plank that burned or broke frees its line (nothing else calls Release)
 			if (!LedgerOf(map).CanCommit(plank.thingIDNumber, line))
 			{
 				return null;
@@ -277,6 +278,7 @@ namespace RimMandrake.FlowWorks.Pits
 				return false;
 			}
 			long line = RM_DrawbridgeMath.PlankLedger.LineKey(map.cellIndices.CellToIndex(lip), map.cellIndices.CellToIndex(far));
+			LedgerOf(map).Release(line);   // LineFree above proved the line is bare now (see PlankJob)
 			if (!LedgerOf(map).TryCommit(plank.thingIDNumber, line))
 			{
 				return false;
