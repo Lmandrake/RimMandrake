@@ -747,6 +747,14 @@ for rec in ds.of_type("ThingDef"):
                       for name, i in FACTORS))
 
 # ========================================================== emit
+# A blind input (no armour tier matched, no leather found, no animals.csv) must not be written
+# out as a normal run: the leather file would be regenerated at the flat baseline over its
+# per-creature character, and a run that produced nothing would still exit 0.
+if not sum(tier_counts.values()) or not leather_n or not animals:
+    sys.exit("REFUSING to write: blind input (armour tiers matched %d, leather profiles %d, "
+             "animals.csv rows %d at %s) - nothing was overwritten."
+             % (sum(tier_counts.values()), sum(leather_n.values()),
+                sum(len(v) for v in animals.values()), ANIMALS))
 retired_skipped = collections.Counter()
 os.makedirs(OUTDIR, exist_ok=True)
 HDR = ('<?xml version="1.0" encoding="utf-8"?>' + NL +

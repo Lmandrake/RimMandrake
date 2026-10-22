@@ -402,6 +402,11 @@ def main():
     else:
         em.skip("VFES_Complex_GraserCannon", "Beam DamageDef or gun top unresolvable")
 
+    if not em.by_mod:
+        # every row skipped: the offline inventory is blind. Writing would replace the committed
+        # patch with an empty <Patch/> and exit 0.
+        sys.exit("REFUSING to write %s: no operation was produced (%d skips) - nothing was overwritten."
+                 % (OUT, len(em.skips)))
     em.write(OUT)
     n = sum(len(v) for v in em.by_mod.values())
     print("wrote %s: %d ops across %d mods, %d skips"
