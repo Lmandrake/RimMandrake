@@ -606,8 +606,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 						var lips = new int[r.Next(1, 6)];
 						for (int i = 0; i < lips.Length; i++) lips[i] = r.Next(-2, 146);
 						var o = Offer(r.Next(1, 20000), r.Next(4) == 0 ? Chemfuel : Water, Source.Pump, lips);
+						ulong h = Hash(s); // review 2026-10-22: hashed BEFORE the preview (hashing after it compared the state to itself)
 						int pre = PreviewSpill(s, w, p, o);
-						ulong h = Hash(s);
 						Assert(Hash(s) == h, "preview changes nothing");
 						int got = ResolveSpills(s, w, p, new[] { o })[0];
 						Assert(pre == got, $"round {round}: preview {pre} vs accepted {got}");

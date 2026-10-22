@@ -400,7 +400,8 @@ namespace RimMandrake.FlowWorks.SelfTest
         private static void CallerCoverage()
         {
             Dictionary<string, string> files = ProductionSources();
-            Assert(files.Count > 50, "read the production source (" + files.Count + " files)");
+            int sourceFiles = files.Keys.Count(k => !k.StartsWith("//tags:"));   // review 2026-10-22: each file is keyed twice
+            Assert(sourceFiles > 50, "read the production source (" + sourceFiles + " files)");
             List<string> bad = Lint(files, out int credits, out Dictionary<string, int> tags);
             Assert(bad.Count == 0, "caller coverage: " + string.Join("; ", bad.Take(8)));
             Assert(credits == CreditTags.Length, "credit calls = " + credits + ", want " + CreditTags.Length + " (FINAL's 11 + the tank settle + the pump's 6 hose-end credits + the dump drain + the pond pour)");

@@ -415,7 +415,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: a pawn weighs body + gear + inventory (the Mass stat) + what it carries, inventory never added twice");
                 int clear = comp.IndexOf("public static void ClearDeckTop(Map map, IntVec3 c)");
                 string clearBody = comp.Substring(clear, comp.IndexOf("public static void Drop(", clear) - clear);
-                Assert(clearBody.Contains("rebuild") && clearBody.LastIndexOf("t.def.IsBlueprint") > clearBody.IndexOf("DestroyMode.KillFinalize"),
+                int kill = clearBody.IndexOf("DestroyMode.KillFinalize");   // review 2026-10-22: -1 used to pass the ordering
+                Assert(clearBody.Contains("rebuild") && kill >= 0 && clearBody.LastIndexOf("t.def.IsBlueprint") > kill,
                     "can-fail: rebuild blueprints left by things killed on a falling deck are cleared off the hole");
                 Assert(comp.Contains("bandGame != Current.Game") && comp.Contains("public override void MapRemoved()"),
                     "can-fail: the band counter resets for a new game/load and drops a removed map's band");
