@@ -62,7 +62,7 @@ def check_loaded_not_zombie(s):
         return Check("game_loaded", FAIL, "get_game_info answered with no ticksGame -- loaded-looking "
                      "ZOMBIE state (aborted load); success flags prove nothing")
     mi, err = _safe(s.call, "jawa/map_info")
-    if err or not (mi or {}).get("success") or not mi.get("sizeX"):
+    if err or not (mi or {}).get("success") or not mi.get("sizeX") or not mi.get("sizeZ"):
         return Check("game_loaded", FAIL, "ticksGame=%s but jawa/map_info gave no map (%s)" % (t1, err or mi))
     return Check("game_loaded", PASS, "ticksGame=%s map=%sx%s" % (t1, mi["sizeX"], mi["sizeZ"]))
 
