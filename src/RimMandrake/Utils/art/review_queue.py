@@ -227,10 +227,11 @@ def awaiting(name: str = NAME, date: str | None = None, out: Path = OUT, exclude
                     r["jobs"].append(j)
             r["sheets"].append(sh["base"])
             if "_sig" not in r:
-                # same pictures FOR THE SAME graphic(s): colour variants drawn at their own texPaths are not twins
-                r["_sig"] = frozenset((g.get("key"), x) for g in it.get("graphics") or [] if g.get("lane") in ("slot", "unassigned")
-                                      for c in g.get("cols") or [] if not c.get("winner")
-                                      for x in (c.get("faces") or {}).values() if x)
+                # twins draw the very same texture paths (three liquids in one RM_Barrel, a tier twin): one ruling
+                # installs for all of them. Colour variants at their own texPaths are not twins. Keyed on the graphics,
+                # not the candidate bytes, so a row the queue page already tidied still matches its untidied twin.
+                r["_sig"] = frozenset(g.get("key") for g in it.get("graphics") or []
+                                      if g.get("lane") == "slot" and g.get("key") and not str(g.get("key")).startswith("_"))
             n += 1
         if n:
             per[sh["base"]] = n
