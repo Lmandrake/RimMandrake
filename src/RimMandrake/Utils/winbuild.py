@@ -205,8 +205,15 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
     rels = [os.path.relpath(d, ROOT) + "/" for d in dirs] + ["src/Directory.Build.targets", "src/Directory.Build.props"]
     excl = sum((["--exclude", e] for e in RSYNC_EXCLUDES), [])
     # -R keeps repo-relative layout; --delete prunes files removed from the clone (excludes kept).
-    r = subprocess.run(["rsync", "-rtR", "--delete", "--no-perms", "--no-owner", "--no-group",
-                        "--modify-window=2", *excl, *rels, stage + "/"], cwd=ROOT)
+    # rsync exit 24 = "some source files vanished": another agent saved/renamed a file in the clone mid-copy (the stage
+    # copies whole src/). Transient, not a build verdict - the copy is idempotent, so retry before failing (2026-10-22).
+    for attempt in range(4):
+        r = subprocess.run(["rsync", "-rtR", "--delete", "--no-perms", "--no-owner", "--no-group",
+                            "--modify-window=2", *excl, *rels, stage + "/"], cwd=ROOT)
+        if r.returncode != 24:
+            break
+        print("rsync 24 (source files vanished mid-copy); retry %d/3" % (attempt + 1), file=sys.stderr)
+        time.sleep(2)
     if r.returncode:
         print("rsync failed (%d)" % r.returncode, file=sys.stderr)
         return r.returncode, record

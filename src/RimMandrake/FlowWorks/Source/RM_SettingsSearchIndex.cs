@@ -102,6 +102,7 @@ namespace RimMandrake.FlowWorks
 	[HarmonyPatch(typeof(Listing_Standard), nameof(Listing_Standard.CheckboxLabeled),
 		new[] { typeof(string), typeof(bool), typeof(string), typeof(float), typeof(float) },
 		new[] { ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal })]
+	[RimMandrake.Shared.PatchFeature("FlowWorks settings search")]
 	public static class RM_Patch_SettingsIndexCheckbox
 	{
 		public static void Prefix(Listing_Standard __instance, string label)
@@ -116,6 +117,7 @@ namespace RimMandrake.FlowWorks
 	[HarmonyPatch(typeof(Listing_Standard), nameof(Listing_Standard.CheckboxLabeled),
 		new[] { typeof(string), typeof(bool), typeof(float) },
 		new[] { ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal })]
+	[RimMandrake.Shared.PatchFeature("FlowWorks settings search")]
 	public static class RM_Patch_SettingsIndexCheckboxTab
 	{
 		public static void Prefix(Listing_Standard __instance, string label)
@@ -129,6 +131,7 @@ namespace RimMandrake.FlowWorks
 
 	[HarmonyPatch(typeof(Listing_Standard), nameof(Listing_Standard.Label),
 		new[] { typeof(string), typeof(float), typeof(TipSignal?) })]
+	[RimMandrake.Shared.PatchFeature("FlowWorks settings search")]
 	public static class RM_Patch_SettingsIndexLabel
 	{
 		public static void Prefix(Listing_Standard __instance, string label)
@@ -141,6 +144,7 @@ namespace RimMandrake.FlowWorks
 	}
 
 	[HarmonyPatch(typeof(Listing_Standard), nameof(Listing_Standard.SliderLabeled))]
+	[RimMandrake.Shared.PatchFeature("FlowWorks settings search")]
 	public static class RM_Patch_SettingsIndexSlider
 	{
 		public static void Prefix(Listing_Standard __instance, string label)
@@ -153,6 +157,7 @@ namespace RimMandrake.FlowWorks
 	}
 
 	[HarmonyPatch(typeof(Listing_Standard), nameof(Listing_Standard.ButtonTextLabeled))]
+	[RimMandrake.Shared.PatchFeature("FlowWorks settings search")]
 	public static class RM_Patch_SettingsIndexButton
 	{
 		public static void Prefix(Listing_Standard __instance, string label)

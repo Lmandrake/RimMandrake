@@ -110,6 +110,13 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstContainers.cs::cache": "a 250-tick map-level bottle count with a now >= stamp guard: at worst ~4 s of a stale count gating an optional fill job, then recounted",
     "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs::noTerrainUntil": "cleared when Current.Game changes (marksGame weak reference)",
     "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstWaterSources.cs::cache": "cleared when Current.Game changes (cacheGame weak reference)",
+    # FlowWorks, reviewed 2026-10-22 against the code at 36d07dde2 (flowworks offline verify)
+    "src/RimMandrake/FlowWorks/Source/Machinery/RM_MachinerySettings.cs::toggleRowsCache": "rows derived from loaded defs, which never change within a process; identical for every game",
+    "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs::anyWetGame": "the guard itself: anyWet is zeroed whenever Current.Game differs from anyWetGame",
+    "src/RimMandrake/FlowWorks/Source/Sheet/SectionLayer_RMSheetWater.cs::byFluid": "material cache keyed by FluidDef and tier (def data, not game ids); identical for every game",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs::workEnds": "diagnostic counters keyed by pawn id, capped at 256 and cleared by ClearMemos on every game load",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs::goalScratch": "scratch list cleared and refilled inside each call before use; holds nothing between calls",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs::edgeScratch": "scratch list cleared at the start of each call before use; holds nothing between calls",
     # Pyrelands
     "src/RimMandrake/Pyrelands/Source/CompFurnaceWarmthAura.cs::byMap": "cleared when Current.Game changes (ownerGame); dead maps pruned on Register",
     "src/RimMandrake/Pyrelands/Source/CompFurnaceWarmthAura.cs::ownerGame": "the Game guard for byMap",

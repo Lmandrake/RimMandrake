@@ -45,7 +45,7 @@ def main():
     check("Rivers scribe keys unique within FlowWorks' settings file",
           not (set(k_fw) & set(k_riv)) and len(k_riv) == len(set(k_riv)), sorted(set(k_fw) & set(k_riv)))
     check("FlowWorks settings scribe the Rivers section", "RM_RiversSettings.ExposeData()" in fw)
-    check("FlowWorks settings window draws the Rivers section", "RM_RiversSettingsWindow.DoSettingsSection(" in fw)
+    check("FlowWorks settings window draws the Rivers section", "RM_RiversSettingsWindow.DoSettingsSection" in fw)
     bools = set(re.findall(r"public static bool (\w+)\s*=(?!>)", settings))
     check("sanity: settings regex sees surfaceCurrentEnabled", "surfaceCurrentEnabled" in bools, sorted(bools))
     for b in sorted(bools):

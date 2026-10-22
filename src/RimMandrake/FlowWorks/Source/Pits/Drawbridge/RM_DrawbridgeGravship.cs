@@ -14,6 +14,7 @@ namespace RimMandrake.FlowWorks.Pits
 	/// its record would otherwise be left keyed to the old map). Applies to every suspension bridge, drawbridge or not.
 	/// </summary>
 	[HarmonyPatch(typeof(GravshipUtility), nameof(GravshipUtility.GenerateGravship))]
+	[RimMandrake.Shared.PatchFeature("Suspension bridges survive a gravship launch")]
 	public static class RM_Patch_GravshipLaunch_Bridges
 	{
 		public static int Collapsed;

@@ -136,6 +136,7 @@ namespace RimMandrake.FlowWorks.Pits
 
 	/// <summary>Hidden under the lid: a beneath pawn is not drawn (Pawn.DynamicDrawPhaseAt, 1.6).</summary>
 	[HarmonyPatch(typeof(Pawn), nameof(Pawn.DynamicDrawPhaseAt))]
+	[RimMandrake.Shared.PatchFeature("Pawns under a pit lid are not drawn")]
 	public static class RM_Patch_PawnBeneathCoverHidden
 	{
 		[HarmonyPrefix]
@@ -147,6 +148,7 @@ namespace RimMandrake.FlowWorks.Pits
 
 	/// <summary>Hidden under the lid: no name label over the lid either (Pawn.DrawGUIOverlay).</summary>
 	[HarmonyPatch(typeof(Pawn), nameof(Pawn.DrawGUIOverlay))]
+	[RimMandrake.Shared.PatchFeature("Pawns under a pit lid show no name label")]
 	public static class RM_Patch_PawnBeneathCoverNoLabel
 	{
 		[HarmonyPrefix]
