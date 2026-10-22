@@ -1,4 +1,4 @@
-"""selftest_scenarios_map.py -- offline proof that the twelve composite scenarios are fit to build (no game).
+"""selftest_scenarios_map.py -- offline proof that the thirteen composite scenarios are fit to build (no game).
 
     python3 src/RimMandrake/FlowWorks/northstar/selftest_scenarios_map.py
 
@@ -61,10 +61,10 @@ def main():
     mb = MockBridge(defs={"Wall"})
     check("probe: the mock refuses an unknown def", mb.call("jawa/build_batch", ops="Bogus:1,1").get("survived") == 0)
     # ---------------------------------------------------------------- the real plan
-    check("twelve scenarios C1..C12 numbered 1..12",
-          [s["id"] for s in SC.ALL] == ["C%d" % i for i in range(1, 13)] and [s["n"] for s in SC.ALL] == list(range(1, 13)))
+    check("thirteen scenarios C1..C13 numbered 1..13",
+          [s["id"] for s in SC.ALL] == ["C%d" % i for i in range(1, 14)] and [s["n"] for s in SC.ALL] == list(range(1, 14)))
     probs = M.layout_check(placed, facts, names)
-    check("map-C layout fits: 10 plots, lanes, edge strip, footprints, defs, pieces", not probs, probs)
+    check("map-C layout fits: 11 plots, lanes, edge strip, footprints, defs, pieces", not probs, probs)
     river = M.synthetic_river()
     c1, plan, unplaced, notes = M.placed_r(river, (M.MAP_SIZE, M.MAP_SIZE))
     check("map R (synthetic river): C1 anchored and clean", c1 is not None and not M.scenario_check(c1, facts, names),
@@ -122,7 +122,7 @@ def main():
           sorted(bars - ex))
     # ---------------------------------------------------------------- MOCK build + verify
     res, B = M.offline_build(names | C.RUNTIME_GENERATED, placed)
-    check("MOCK: all ten map-C plots verify as staged", all(v["ok"] for v in res["verify"].values()),
+    check("MOCK: all eleven map-C plots verify as staged", all(v["ok"] for v in res["verify"].values()),
           {k: v for k, v in res["verify"].items() if not v["ok"]})
     check("MOCK: every sign book placed", res["signs"] == res["sign_ops"], (res["signs"], res["sign_ops"]))
     harm = [n for n in res["notes"] if "not loaded on this mod list" not in n]
@@ -131,6 +131,32 @@ def main():
     rv, _ = M.offline_river(names | C.RUNTIME_GENERATED)
     check("MOCK map R: C1 verifies, C11 eight stations, books placed",
           rv["verify"].get("C1", {}).get("ok") and rv["c11"] == 8 and rv["signs"] == rv["sign_ops"], rv)
+    # ---------------------------------------------------------------- C13: the overflow scenario (owner card 2026-10-22)
+    c13 = SC.BY_ID["C13"]
+    ox, oz = M.PLOTS_C["C13"]
+    spills = [(t, kw) for t, kw in B.calls if t == "jawa/static_call" and kw.get("method") == "ProofSheetSpill"]
+    check("C13: six spills offered, absolute cells, switch-ON setting set before the first", len(spills) == 6 and
+          all(kw["args"].split(";")[0] == "%d,%d" % (ox + c["cells"][0][0], oz + c["cells"][0][1])
+              for (t, kw), c in zip(spills, c13["setup"]["after_soak"])) and
+          [i for i, (t, kw) in enumerate(B.calls) if t == "jawa/mod_settings_field" and kw.get("action") == "set"
+           and kw.get("field") == "sheetOverflowEnabled" and kw.get("value") == "True"]
+          and [i for i, (t, kw) in enumerate(B.calls) if t == "jawa/mod_settings_field" and kw.get("action") == "set"][0]
+          < [i for i, (t, kw) in enumerate(B.calls) if kw is not None and kw.get("method") == "ProofSheetSpill"][0], spills[:1])
+    soak_i = [i for i, (t, kw) in enumerate(B.calls) if t == "rimworld/step_game_ticks"]
+    spill_i = [i for i, (t, kw) in enumerate(B.calls) if kw.get("method") == "ProofSheetSpill"]
+    check("C13: spills are offered AFTER the soak, never before", soak_i and spill_i and min(spill_i) > max(soak_i),
+          (soak_i, spill_i[:2]))
+    check("C13: the chemfuel spill names a real fluid", "RM_Fluid_Chemfuel" in names and
+          any("RM_Fluid_Chemfuel" in c["fmt"] for c in c13["setup"]["after_soak"]))
+    twelve = [s_ for s_ in SC.ALL if s_["id"] != "C13"]
+    ovf = [s_ for s_ in twelve if any("overflow" in (pc.get("why") or "") for pc in s_["pieces"])]
+    check("C1-C12: every scenario that defers overflow says it ships OFF and points at C13",
+          len(ovf) >= 5 and all("C13" in pc["why"] for s_ in ovf for pc in s_["pieces"] if "overflow" in (pc.get("why") or "")),
+          [s_["id"] for s_ in ovf])
+    bad13 = copy.deepcopy(placed[-1])
+    check("probe: a spill outside the plot is seen", (lambda b_: any("outside" in q for q in M.scenario_check(b_, facts, names)))(
+        dict(bad13, sc=dict(bad13["sc"], setup=dict(bad13["sc"]["setup"], after_soak=[dict(typ="T", method="M", fmt="{0}",
+                                                                                           cells=[(99, 99)])])))))
     # ---------------------------------------------------------------- Stage 0 harness
     for label, rule, want in (("2 m", lambda f: f >= 4, "PASS"), ("brim", lambda f: f >= 8, "PASS_AT_BRIM"),
                               ("never", None, "FAIL")):

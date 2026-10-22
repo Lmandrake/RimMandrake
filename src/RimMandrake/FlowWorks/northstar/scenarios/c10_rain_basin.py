@@ -68,7 +68,7 @@ SCENARIO = scenario(
     look_for="the pond's edge recedes, the spring's never; no water on open ground beside a full canal; the ledger "
              "sum constant",
     broken="the pond full after heavy draw; the spring's readout not saying it is a source; water on open ground "
-           "beside a full canal (with the overflow switch off, its shipped default); water poured onto the muffalo; the flood wiping the canal "
+           "beside a full canal (with the overflow switch off, its shipped default; overflow is walked in C13); water poured onto the muffalo; the flood wiping the canal "
            "flat; a sealed edge still draining; any litre unaccounted",
     idle="sluices A and B shut; the pump Pours from an empty tank; the ledger hose is Capped; canal D and the trenches "
          "dry; the edge setter automatic",
@@ -89,7 +89,7 @@ SCENARIO = scenario(
             staged("pump (Pour) + empty tank + hose Intake end in the pond", "gizmos", None, (14, 37), "poked"),
             staged("map-edge setter", "markers", "PlaceEdgeSetter", (40, 15), "poked"),
             staged("closed ledger: two tanks, one hose, fenced", "hose", None, (40, 5), "poked"),
-            deferred("overflow Stage 1+ (D1, D2, D6)", "overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; canal B is sized so "
+            deferred("overflow Stage 1+ (D1, D2, D6)", "overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on (C13 The Spill Yard does); canal B is sized so "
                      "sealing the edge with the pump pouring overfills it once the switch is on", OVERFLOW_ITEM, (16, 38)),
             deferred("a limitless BODY marker on a natural pond", "the spring is a flow source; a body flagged "
                      "limitless (and its readout) has no staging surface here", "FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS",

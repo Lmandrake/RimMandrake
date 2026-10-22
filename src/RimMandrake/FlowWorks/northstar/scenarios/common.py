@@ -1,4 +1,4 @@
-"""scenarios/common.py -- the shared vocabulary of the FlowWorks COMPOSITE review scenarios (C1-C12).
+"""scenarios/common.py -- the shared vocabulary of the FlowWorks COMPOSITE review scenarios (C1-C13).
 
 Design (authoritative): design/RimMandrake/flowworks_composite_review_scenarios_2026-10-21.md. Owner by card
 2026-10-21 ~21:23 PDT: build all twelve in one go, for one walk (REVIEW_SCENARIOS_BUILD_ALL_TWELVE_AT_ONCE).
@@ -14,6 +14,8 @@ it unchanged. Composite-only keys, staged by scenarios_map.py:
     batteries  (x, z)                             charged to 100 % by jawa/battery_set (a built battery holds 0 Wd)
     markers    (method, x, z, tail)               RM_MapControls.Place*: args "x,z|tail" (static_call splits on '|')
     calls      dict(typ, method, fmt, cells)      any other proof surface; fmt's {0},{1}.. become absolute "x,z"
+    after_soak dict(typ, method, fmt, cells)      like calls, but run AFTER the build's 2 h soak (state that moves by itself)
+    settings   (typeName, field, value)           mod setting set (and read back) just before after_soak; config, not the save
     gizmos     (x, z, prefix, want)               the thing's own button, pressed until it reads `want`
     ladder_dev (x, z, raise|lower)                 the ladder's own DEV instant button (its player button now ORDERS a job)
     refill_after_pulse True                       re-pour `fluid` after the build's pulses (C2's moat lost a level)
@@ -68,7 +70,7 @@ RULINGS = {
     "bleed": "RM_LiquidTap is a BLEED WELL (groundwater seeping up), never a tap or faucet",
     "drawbridge": "drawbridge leaves, winches and gates draw their MATERIAL picture (timber/steel) first, a look only as "
                   "fallback (443912e4df)",
-    "overflow": "canal overflow is built (Stages 1-3) but its master switch ships OFF until the Stage 4 live sign-off; scenarios do not turn it on: DEFERRED",
+    "overflow": "canal overflow is built (Stages 1-3) but its master switch ships OFF until the Stage 4 live sign-off; C1-C12 do not turn it on (DEFERRED there); C13 The Spill Yard does",
     "reach": "reachability option 3 is being built separately (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE)",
     "cord": "a fallen cord lands walkable (fix built)",
 }
@@ -170,9 +172,10 @@ def setup_cells(u):
     for r in u.get("hose_trail", []):
         for c in r[2]:
             put(c, "hose_trail")
-    for c in u.get("calls", []):
-        for cc in c["cells"]:
-            put(cc, "calls:%s" % c["method"])
+    for k in ("calls", "after_soak"):
+        for c in u.get(k, []):
+            for cc in c["cells"]:
+                put(cc, "calls:%s" % c["method"])
     for r in u.get("beds", []):
         put((r[0], r[1]), "beds")
     for k in ("pawn_ops", "pen_ops"):
@@ -210,8 +213,10 @@ def find_ref(u, piece):
             name, cells = r[0], [(r[1], r[2])]
         elif key == "style":
             name, cells = r[3], [(r[1], r[2])]
-        elif key == "calls":
+        elif key in ("calls", "after_soak"):
             name, cells = r["method"], [tuple(c) for c in r["cells"]]
+        elif key == "settings":
+            name, cells = r[1], []
         elif key in ("hose", "hose_order"):
             name, cells = None, [(r[0], r[1]), (r[2], r[3])]
         elif key == "hose_trail":
@@ -275,6 +280,10 @@ def referenced_defs(u):
             add(arg, "apparel")
         if op == "need":
             add(arg.split("=")[0], "need")
+    for k in ("calls", "after_soak"):
+        for c in u.get(k, []):
+            for m in re.finditer(r"RM_Fluid_\w+", c["fmt"]):
+                add(m.group(0), "%s fluid" % k)
     for r in u.get("markers", []):
         tail = str(r[3])
         m = re.match(r"(RM_Fluid_\w+)", tail)
