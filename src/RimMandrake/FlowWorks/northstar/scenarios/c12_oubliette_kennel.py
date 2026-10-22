@@ -52,7 +52,8 @@ SCENARIO = scenario(
           "stranded",
           "kennel: just watch: the chicken stays in the ring, the husky climbs out slowly, the muffalo steps across; "
           "the thrumbo walks round the 1x1 shaft",
-          "order the colonist beside the concealed pit onto it: falls through, hurt",
+          "order the colonist beside the concealed pit across it: he walks the planks like floor (planked squares are "
+          "ground); deconstruct one plank under him: the cover gives way, he falls, hurt",
           "jump the jump-pack colonist into the third pit: lands unhurt; undraft the geared one: climbs out of 5 m; "
           "undraft the ladder-pit one: climbs the portable ladder",
           "inspect a pit cell at noon and at midnight (dev advance; branch save _days): its temperature differs from the "
@@ -60,7 +61,7 @@ SCENARIO = scenario(
     look_for="a pit reads as a dark hole at its size; occupants drawn below the floor; raised vs lowered ladder "
              "legible; the guardrail keeps people off the lip",
     broken="a warden climbing down; the room not a prison; all three kennel beasts held, or all out; the thrumbo in "
-           "the 1x1; the concealed pit visible at play zoom; a ladder lowered from below; the guardrail letting someone walk off",
+           "the 1x1; the concealed pit visible at play zoom; a colonist dropping through planks he only walked on; a ladder lowered from below; the guardrail letting someone walk off",
     idle="every colonist drafted; the prisoner is in a sealed 4 m pit; the beasts are wild and roam INSIDE the ring "
          "(climbing out is the test, so the soak reads their KIND per plot, not their cell)",
     setup=SETUP,
@@ -75,8 +76,8 @@ SCENARIO = scenario(
             staged("security grate (steel) in the east wall", "spawn", "RM_SecurityGrateDoor", (6, 25), "poked"),
             staged("dry drain canals behind the doors", "dig", None, (7, 23), "look"),
             staged("concealed pit 3x3 (planks)", "spawn", "RM_PitCover_PlankLattice", (10, 22), "poked",
-                   "plank lattice, not the design's reinforced frame: the frame should HOLD one colonist "
-                   "(review_map pit_cover_drop), and this poke wants a fall"),
+                   "plank lattice: walked like floor (41fb948b5e); it gives way only when deconstructed or destroyed, "
+                   "which is the poke"),
             staged("kennel ring, 2 m trench, 2 wide", "dig", None, (18, 18)),
             staged("chicken, husky, muffalo in the yard", "pawns", "Husky", (25, 25)),
             staged("drafted handler at the ring", "pawns", "Colonist", (16, 24)),

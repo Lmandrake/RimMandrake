@@ -41,7 +41,9 @@ SCENARIO = scenario(
           "on its line, else 40 gas vented (RM_Reaction_TarAcid; the product thing is owed under SUMP_GASLIGHT_1: "
           "judge the metering and the vent)",
           "watch the acid canal: what lies in it loses health over hours (Mod Settings: Liquid corrosion, ships ON)",
-          "colonists clean the tracked tar"],
+          "colonists clean the tracked tar",
+          "Architect: place a second drill (or a bleed well) on ground the survey found EMPTY: refused, the reason names "
+          "the survey"],
     look_for="tar thick and slow beside water; slime reads viscous, the muffalo below its surface; the three refinery "
              "stages easy to tell apart",
     broken="the tar front level with the water's; slime that looks like coloured water; a muffalo standing on top of "

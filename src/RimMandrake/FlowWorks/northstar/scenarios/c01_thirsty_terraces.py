@@ -68,9 +68,9 @@ SCENARIO = scenario(
           "select the meter on terrace 1: squares, levels held, net in/out per day; shut S1 and watch it turn",
           "deconstruct one pipe pole: the overhead span is gone and the pipe can no longer cross the ditch",
           "watch the labelled WITNESS sprinkler: the canal feed and the sprinkler circuit are separate nets"],
-    look_for="sprinklers centred on their pipe; pipes meet the tank at its centre; the span sags over the ditch, not on "
-             "its floor; the four looks working side by side",
-    broken="a sprinkler off its pipe's centre; spraying with no pump on the net; a pipe drawn through the tank; the "
+    look_for="sprinklers centred on their pipe; the pipe rises onto the tall tank's flange; the span sags over the ditch, "
+             "not on its floor; the four looks working side by side; each reel's hose leaves the way the reel faces",
+    broken="a sprinkler off its pipe's centre; spraying with no pump on the net; a pipe drawn through the tank or slipping under its skid; the "
            "overhead pipe on the ditch floor or without sag; terrace 3 wet with S2 shut; a hose crossing that is not "
            "clean over/under",
     idle="S0 shut (terrace 1 full), S1 and S2 shut (terraces 2 and 3 dry); the pump fills the tall tank in Fill mode "
@@ -99,7 +99,7 @@ SCENARIO = scenario(
             staged("a second hose crossing it at right angles", "hose", None, (20, 14), "look"),
             deferred("overflow onto the field (D2/D3)", "Stage 1+ unbuilt; terrace 1's brim is one notch from "
                      "spilling, so leaving S1 shut with the pump on will spill once it lands", OVERFLOW_ITEM, (31, 2)),
-            deferred("joint flanges", GIRTH_NOTE, "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID", (31, 5)),
+            deferred("joint fittings art (coupler, flange, saddle)", GIRTH_NOTE, "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID", (31, 5)),
             deferred("terrace 2's front frozen half way", "a canal levels itself: no frozen half front survives the "
                      "soak; staged dry, opening S1 shows the front", "design §3 C1 (deviation)", (31, 8))],
     exercises={"flow_spreads": "poked", "look_canal": "look", "land_swale": "poked", "land_deepsand": "look",

@@ -70,9 +70,11 @@ SCENARIO = scenario(
           "try a portable ladder into Hobb's pit: refused, too deep (3 m reach) - that is why the maze exists",
           "move o1's hose end to the boar's pit instead: the boar starts drowning (a non-swimmer); draft and cancel",
           "cut the pump's power: the hose goes flat; rotate the pump: the hose follows the port",
-          "reel park (west): choose a style, undraft the colonist to deploy one by hand, retract one"],
+          "reel park (west): choose a style, undraft the colonist to deploy one by hand, retract one; TURN a reel "
+          "(rotate it): the outlet and the hose follow, four ways (north/south art is the west art turned for now)"],
     look_for="the hose takes the SHORT way through d1 and passes UNDER the wire span; litres out of the pond = litres "
-             "into the pit; Hobb rises with the water and leaves only when it nears the brim",
+             "into the pit; Hobb rises with the water and leaves only when it nears the brim; an EMPTY hose (the dropped "
+             "carry) casts a darker, wider shadow than a full one",
     broken="the hose through a wall, over the chasm or on top of the wire span; the long way chosen while d1 is open; "
            "a hose that never plumps; Hobb standing on the floor under 2 m of water; the boar swimming; a relay loop "
            "accepted",
