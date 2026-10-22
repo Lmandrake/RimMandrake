@@ -1,0 +1,1 @@
+gpt_consult: a ~150 KB prompt (dossier + four whole .cs files) at high effort ran past a 580 s --timeout and returned NOTHING (codex writes answer.md only at the end; the job dir keeps only the log). Inside a 600 s foreground limit, trim to ~50 KB (excerpts, not whole files) and give a word budget: the same question then answered in under 10 min.
