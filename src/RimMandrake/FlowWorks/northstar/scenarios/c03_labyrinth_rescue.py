@@ -37,7 +37,10 @@ SETUP = dict(
        ("RM_HoseReel", 36, 28, None, None),                                   # o2, the relay, wound
        ("RM_AerialMast", 18, 26, None, None), ("RM_AerialMast", 18, 34, None, None)]   # the GSS wire span over the corridor
     # reel park (south-west strip): one reel per look, laid plump / filling / flat, one wound; a deploy order; a dropped carry
-    + [("RM_HoseReel", 1, z, None, None) for z in (3, 7, 12, 17, 22)] + [("RM_HoseReel", 12, 0, None, None)],
+    + [("RM_HoseReel", 1, z, None, None) for z in (3, 7, 12, 17, 22)] + [("RM_HoseReel", 12, 0, None, None)]
+    # three reels TURNED (reels turn 4 ways since 73b8805755; the park's reels face west): north, east, south, so he
+    # judges the turned views (north/south = the west art turned until he picks drawn views, REEL_FACINGS_*)
+    + [("RM_HoseReel", 27, 1, 0, None), ("RM_HoseReel", 31, 1, 1, None), ("RM_HoseReel", 35, 2, 2, None)],
     style=[("RM_HoseReel", 1, z, "RM_HoseReel_" + lk) for z, lk in zip((3, 7, 12, 17), ("Scrapper", "Industrial", "Modern",
                                                                                           "Futuristic"))]
     + [("RM_HoseReel", 6, 30, "RM_HoseReel_Scrapper"), ("RM_HoseReel", 36, 28, "RM_HoseReel_Scrapper")],
@@ -85,7 +88,7 @@ SCENARIO = scenario(
            (6, 33, "reel o1"), (RELAY_O2[0], RELAY_O2[1] + 2, "relay o2"), (22, 16, "Hobb (trapped, 4 m)"),
            (26, 12, "boar pit"), (30, 22, "chasm 6 m"), (18, 35, "wire span overhead"), (2, 34, "pond"),
            (5, 25, "pump power"), (23, 12, "meter"), (3, 5, "plump"), (3, 9, "filling"), (3, 14, "flat"),
-           (3, 19, "wound"), (3, 24, "deploy order"), (18, 2, "dropped carry")],
+           (3, 19, "wound"), (3, 24, "deploy order"), (18, 2, "dropped carry"), (31, 3, "turned reels: N  E  S")],
     pieces=[staged("pond (limited)", "terrain", "WaterDeep", (0, 26)),
             staged("pump on the pond edge, Drawing", "pump", "draw", (5, 30)),
             staged("small tank beside the pump", "tank", "Store", (5, 32)),
@@ -103,6 +106,7 @@ SCENARIO = scenario(
             staged("relay reel o2, wound", "build", "RM_HoseReel", RELAY_O2, "poked"),
             staged("destination gauge (flow meter) in Hobb's pit", "markers", "PlaceMeter", (23, 13)),
             staged("reel park: four looks", "style", None, (1, 3), "look"),
+            staged("three reels turned north / east / south", "build", "RM_HoseReel", (27, 1), "look"),
             staged("reel park: deploy order + walker", "hose_order", None, (1, 22), "poked"),
             staged("reel park: dropped carry", "hose_trail", None, (12, 0), "look"),
             deferred("pump power as a GSS power cord", "a vanilla conduit stands in: no staging surface lays an "
