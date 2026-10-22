@@ -76,6 +76,14 @@ namespace RimMandrake.FlowWorks.Rivers
 
 		public static bool WorksActive => RM_RiverMath.WorksOn(riverWorksEnabled, bankWorksEnabled);
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped values (MUST stay below the LAST public setting field) and the two
+		// section lists the window's Reset buttons use (THE CURRENT with the master switch; WORKS with fords).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_RiversSettings));
+		public static readonly string[] CurrentFields = { "riverWorksEnabled", "surfaceCurrentEnabled", "currentStrength", "centreTicksPerCell", "marginTicksPerCell", "itemDriftFactor", "scaleWithRiverSize", "floodSurgeEnabled", "countSeasonalFloods", "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems", "washOffMapEdge", "washedAwayMinDays", "washedAwayMaxDays", "takenByLandTraceEnabled", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "bruiseChancePerStep", "dropChancePerStep" };
+		public static readonly string[] WorksFields = { "fordsEnabled", "bankWorksEnabled", "wearRateMultiplier", "breachEnabled", "breachHpFraction", "stakeSnapTicksPerCell", "stakeLineLevee", "weirPoolLength", "weirCatchesFish", "weirCatchIntervalHours", "weirHeldCatchCap", "weirCatchesDrift", "weirDriftChance", "breachWashesCatch", "breachWashCells", "siltRichening", "siltIntervalDays", "ferryEnabled", "ferryMaxSpan", "ferryRopeGuidesColonists" };
+
+		public static void ResetFields(string[] names) => RM_SettingsReset.Reset(typeof(RM_RiversSettings), shippedDefaults, names);
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref riverWorksEnabled, "riverWorksEnabled", true);
@@ -136,6 +144,7 @@ namespace RimMandrake.FlowWorks.Rivers
 				"Master switch for everything in this section. Off: rivers are vanilla still water and none of it does anything.");
 			l.GapLine();
 			l.Label("THE CURRENT");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(l, () => RM_RiversSettings.ResetFields(RM_RiversSettings.CurrentFields));
 			l.CheckboxLabeled("Surface rivers have a current", ref RM_RiversSettings.surfaceCurrentEnabled,
 				"Moving river water shoves pawns and loose items downstream. Chest-deep water is the fast "
 			  + "lane and cannot be waded out of; shallow water is the edge lane and can still be crossed. "
@@ -194,6 +203,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			l.GapLine();
 			l.Label("WORKS");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(l, () => RM_RiversSettings.ResetFields(RM_RiversSettings.WorksFields));
 			l.CheckboxLabeled("Fords stop the current", ref RM_RiversSettings.fordsEnabled,
 				"Nothing is carried on or beside ford stones. Off: fords are just stone footing.");
 			l.CheckboxLabeled("Bank works active (weir, stakes, silt-trap, ferry)", ref RM_RiversSettings.bankWorksEnabled,

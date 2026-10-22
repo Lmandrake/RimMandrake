@@ -54,6 +54,16 @@ namespace RimMandrake.FlowWorks.Swimming
 		/// (review day 1 2026-10-17); this switch turns that behaviour off alone, deep water and pits unchanged.</summary>
 		public static bool shallowWaterDrowningEnabled = true;
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
+		// below the LAST public setting field (C# runs static initialisers in textual order).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_SwimSettings));
+
+		/// <summary>The Reset button: every setting on this screen back to its shipped value.</summary>
+		public static void ResetAll()
+		{
+			RM_SettingsReset.ResetAll(typeof(RM_SwimSettings), shippedDefaults);
+		}
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref deepSwimEnabled, "deepSwimEnabled", true);
@@ -77,6 +87,7 @@ namespace RimMandrake.FlowWorks.Swimming
 		{
 			list.GapLine();
 			list.Label("Swimming in deep water");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("People and animals can swim in water 2 m and deeper", ref deepSwimEnabled,
 				"Deep lake water, and deep water in dug canals and pits, can be swum. Swimmers are slower than waders, tire, are "
 				+ "warned when tiring, and drown if they cannot reach footing before they are exhausted. Mechanoids and anyone too "

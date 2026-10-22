@@ -17,6 +17,16 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>PROVISIONAL: "some raids bring their own planks": the share of raids (on a map with a drawbridge) that do.</summary>
 		public static float raidPlankChance = 0.35f;
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
+		// below the LAST public setting field (C# runs static initialisers in textual order).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_DrawbridgeSettings));
+
+		/// <summary>The Reset button: every setting on this screen back to its shipped value.</summary>
+		public static void ResetAll()
+		{
+			RM_SettingsReset.ResetAll(typeof(RM_DrawbridgeSettings), shippedDefaults);
+		}
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref drawbridgesEnabled, "rmDrawbridgesEnabled", true);
@@ -31,6 +41,7 @@ namespace RimMandrake.FlowWorks.Pits
 		{
 			list.GapLine();
 			list.Label("Drawbridges");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("Drawbridges can be built", ref drawbridgesEnabled,
 				"On, a timber or steel suspension bridge can be built as a drawbridge: its leaf raises at a winch house and the moat "
 			  + "under it is a whole pit again. Off: no drawbridge is offered, and any existing one is set down (not crashed) and "

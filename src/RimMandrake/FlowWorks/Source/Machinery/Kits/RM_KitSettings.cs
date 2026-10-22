@@ -30,6 +30,16 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 		/// <summary>A drained flood of a residue-leaving liquid (tar) leaves its filth on the ground.</summary>
 		public static bool fluidResidueEnabled = true;
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
+		// below the LAST public setting field (C# runs static initialisers in textual order).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_KitSettings));
+
+		/// <summary>The Reset button: every setting on this screen back to its shipped value.</summary>
+		public static void ResetAll()
+		{
+			RM_SettingsReset.ResetAll(typeof(RM_KitSettings), shippedDefaults);
+		}
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref liquidBathRecipesEnabled, "liquidBathRecipesEnabled", true);
@@ -44,6 +54,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 		{
 			list.GapLine();
 			list.Label("Liquid kits (what biome kits borrow: baths, reactions, hot floods, residue)");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("Liquid bath bills need their liquid", ref liquidBathRecipesEnabled,
 				"On: a bill such as the slime pit's solvent rendering only runs with its liquid to hand — a tank of it on the bench's hose net, or a cell of it beside the bench — and draws its units from the tank. Off: such bills run dry and take nothing.");
 			list.CheckboxLabeled("Reaction vats run (two liquids in, product or gas out)", ref liquidReactionsEnabled,

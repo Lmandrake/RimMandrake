@@ -21,6 +21,16 @@ namespace RimMandrake.FlowWorks
 		public static float raiderGearChanceScale = 1f;
 		public static float breacherSapperGearChance = 1f;
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
+		// below the LAST public setting field (C# runs static initialisers in textual order).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_WallClimbSettings));
+
+		/// <summary>The Reset button: every setting on this screen back to its shipped value.</summary>
+		public static void ResetAll()
+		{
+			RM_SettingsReset.ResetAll(typeof(RM_WallClimbSettings), shippedDefaults);
+		}
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref wallClimbEnabled, "wallClimbEnabled", true);
@@ -36,6 +46,7 @@ namespace RimMandrake.FlowWorks
 		{
 			list.GapLine();
 			list.Label("Climbing over walls");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("Climbing gear scales built walls", ref wallClimbEnabled,
 				"On, a pawn wearing climbing gear climbs over a built wall or impassable fence (up to "
 			  + RM_WallClimbMath.MaxWallSquares + " squares thick) when the wall and the squares on both sides are unroofed, "

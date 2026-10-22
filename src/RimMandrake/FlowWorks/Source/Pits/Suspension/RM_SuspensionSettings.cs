@@ -29,6 +29,17 @@ namespace RimMandrake.FlowWorks.Pits
 		public static bool suspensionOverSea = true;
 		public static bool floodsDamageLightBridges = true;
 
+		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
+		// below the LAST public setting field (C# runs static initialisers in textual order).
+		private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = RM_SettingsReset.Snapshot(typeof(RM_SuspensionSettings));
+
+		/// <summary>The Reset button: every setting on this screen back to its shipped value.</summary>
+		public static void ResetAll()
+		{
+			RM_SettingsReset.ResetAll(typeof(RM_SuspensionSettings), shippedDefaults);
+			RM_PocketGrid.SettingsChanged();   // the walk-under switch re-reads the pocket grid
+		}
+
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref suspensionBridgesBuildable, "suspensionBridgesBuildable", true);
@@ -51,6 +62,7 @@ namespace RimMandrake.FlowWorks.Pits
 		{
 			list.GapLine();
 			list.Label("Suspension bridges");
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 			list.CheckboxLabeled("Suspension bridges can be built", ref suspensionBridgesBuildable,
 				"Drag a suspension bridge across a dug hole like a wall, 1 to 3 squares wide, from solid ground to solid ground; "
 				+ "posts (anchors) go at both ends and the deck is built from the anchors inward. Off: no build buttons; bridges "
