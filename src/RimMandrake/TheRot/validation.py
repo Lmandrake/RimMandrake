@@ -634,12 +634,22 @@ def _build_suite():
             t.session.track("pawn", pid, x=x, z=z)
         return pid
 
+    def _remove(t, pid):
+        """Vanish one pawn (no death, no corpse). destroy_batch NEVER removes pawns (JawaBenchTerrainTools.cs)."""
+        r = t.session.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+        return isinstance(r, dict) and r.get("success") is not False and r.get("destroyedAfter", True) is not False
+
     def _flight_state_read(t):
         t.session.call("rimworld/pause_game", pause=True)
         x, z = t.anchor
         t0 = _ticks(t)
+        if t0 is None or _ticks(t) != t0:
+            _unmeasured(t, "the game is not provably paused before the spawn (ticksGame %r, then moving or unreadable); "
+                           "the moth was NOT spawned (owner ruling: no tick with it on the map)" % (t0,))
+            return
         moth = ctrl = None
         rows = {}
+        gone = True
         try:
             moth = _spawn_one(t, "RM_Dustveil", x, z)
             ctrl = _spawn_one(t, "RM_Chittik", x + 3, z)
@@ -649,9 +659,9 @@ def _build_suite():
                     got = ((r or {}).get("pawns") or []) if isinstance(r, dict) else []
                     rows[pid] = got[0] if got and isinstance(got[0], dict) else None
         finally:
-            for pid, cx in ((moth, x), (ctrl, x + 3)):
+            for pid in (moth, ctrl):
                 if pid:
-                    t.session.call("jawa/destroy_batch", rects="%d,%d,1,1" % (cx, z), categories="All")
+                    gone = _remove(t, pid) and gone
         t1 = _ticks(t)
         if t0 is None or t1 is None:
             _unmeasured(t, "ticksGame unreadable, so 'no tick with the moth spawned' is unproven (%r, %r)" % (t0, t1))
@@ -659,6 +669,10 @@ def _build_suite():
         if t1 != t0:
             _unmeasured(t, "the game was NOT paused: %d tick(s) ran with RM_Dustveil spawned (owner ruling: state read "
                            "only); the read is void" % (t1 - t0))
+            return
+        if not gone:
+            _unmeasured(t, "pawn_force_incapacitate vanish did not report the moth/control destroyed: remove it before "
+                           "ANY unpause")
             return
         if not moth or not ctrl:
             _unmeasured(t, "spawn_pawn gave no id (moth %r, control %r)" % (moth, ctrl))
@@ -936,7 +950,9 @@ def _build_suite():
 
     def _link_defs(t, names):
         r = t.bridge_call("jawa/get_defs", defs=";".join(["ThingDef/" + n for n in names] + [LINK_CONTROL]),
-                          fields="comps", deep=True, limit=len(names) + 2)
+                          fields="comps", deep=False, limit=len(names) + 2)
+        # deep=False on purpose: a shallow list item is its TYPE name (CompProperties_WoundLink); deep=True renders a
+        # comp as a dict of its public fields, whose only class trace is compClass (RM_CompWoundLink).
         if not _live(t):
             return None
         if not isinstance(r, dict) or r.get("success") is False:
@@ -947,20 +963,23 @@ def _build_suite():
             return None
         rows = dict((d.get("defName"), json.dumps((d.get("fields") or {}).get("comps"), default=str))
                     for d in (r.get("defs") or []) if isinstance(d, dict))
-        if rows and not any("CompProperties" in b for b in rows.values()):
+        if rows and not any(("CompProperties" in b or "compClass" in b) for b in rows.values()):
             _unmeasured(t, "get_defs comps carry no class names, so a missing WoundLink comp is invisible: %s"
                            % str(rows)[:160])
             return None
         return rows
+
+    def _has_link(blob):
+        return "CompProperties_WoundLink" in blob or "RM_CompWoundLink" in blob
 
     def _wound_pair(t, dz):
         """Two wild RM_Chittik 2 cells apart (kin radius 12); one Cut of LINK_AMOUNT to A's carapace (no brain, so it
         mirrors); both health rows read back. Returns a dict, or None after an UNMEASURED."""
         x, z = t.anchor
         z += dz
-        t.bridge_call("jawa/destroy_batch", rects="%d,%d,6,3" % (x - 1, z - 1), categories="All")
         a = _spawn_one(t, "RM_Chittik", x, z)
         b = _spawn_one(t, "RM_Chittik", x + 2, z)
+        t._wound_pawns = getattr(t, "_wound_pawns", []) + [p for p in (a, b) if p]
         if not _live(t):
             return None
         if not a or not b:
@@ -1002,9 +1021,32 @@ def _build_suite():
             if rows is not None and _live(t):
                 if "RM_Chittik" not in rows:
                     raise ExpectationFailed("ThingDef/RM_Chittik does not resolve live")
-                if "CompProperties_WoundLink" not in rows["RM_Chittik"]:
+                if not _has_link(rows["RM_Chittik"]):
                     raise ExpectationFailed("RM_Chittik carries no CompProperties_WoundLink live (healthSharing off at "
                                             "startup strips it; else the def lost it): %s" % rows["RM_Chittik"][:200])
+        try:
+            _wound_arms(t, state)
+        finally:
+            if t.session is not None:
+                if state.get("prev") is not None:
+                    t.session.call("jawa/mod_settings_field", typeName=CB_SETTINGS, action="set",
+                                   field="woundLinkEnabled", value=str(state["prev"]))
+                for pid in getattr(t, "_wound_pawns", []):
+                    _remove(t, pid)
+                t._wound_pawns = []
+        with t.component("bestiary_kin_carry_wound_link", beyond_toggle=True):
+            rows = _link_defs(t, ["RM_Durrok", "RM_Mullgoth"])
+            if rows is not None and _live(t):
+                absent = [n for n in ("RM_Durrok", "RM_Mullgoth") if n not in rows]
+                lacking = [n for n in ("RM_Durrok", "RM_Mullgoth") if n in rows and not _has_link(rows[n])]
+                if lacking:
+                    raise ExpectationFailed("%s resolve but carry no CompProperties_WoundLink (Patches/"
+                                            "RotSpecies_WoundSharing.xml did not apply)" % lacking)
+                if absent:
+                    _unmeasured(t, "%s not loaded: they live in mandrake.rsw.swbestiary, absent from this tier" % absent)
+
+    def _wound_arms(t, state):
+        """A3's two arms. The caller restores woundLinkEnabled and removes the pawns, whatever happens here."""
         with t.component("wound_shared_with_kin_when_on", beyond_toggle=True):
             if _live(t):
                 g = t.session.call("jawa/mod_settings_field", typeName=CB_SETTINGS, action="get", field="woundLinkEnabled")
@@ -1021,33 +1063,18 @@ def _build_suite():
                 elif not res["bCut"] > 0:
                     raise ExpectationFailed("sharing ON: the kin 2 cells away received no %s on %s: %r"
                                             % (LINK_DAMAGE, LINK_PART, res))
-        try:
-            with t.component("no_share_when_off", beyond_toggle=True):
-                if _live(t):
+        with t.component("no_share_when_off", beyond_toggle=True):
+            if _live(t):
+                if state.get("prev") is None:
+                    _unmeasured(t, "woundLinkEnabled was never read, so it is not flipped off (it could not be restored)")
+                else:
                     t.set_setting(CB_SETTINGS, {"woundLinkEnabled": "false"})
-                res = _wound_pair(t, 4) if _live(t) else None
-                if res is not None and _live(t):
-                    if res["aCut"] <= 0:
-                        _unmeasured(t, "the victim shows no Cut after the OFF-arm hit: %r" % (res,))
-                    elif res["bCutAny"] > 0:
-                        raise ExpectationFailed("sharing OFF: the kin still received a wound: %r" % (res,))
-        finally:
-            if t.session is not None:
-                if state.get("prev") is not None:
-                    t.session.call("jawa/mod_settings_field", typeName=CB_SETTINGS, action="set",
-                                   field="woundLinkEnabled", value=str(state["prev"]))
-                x, z = t.anchor
-                t.session.call("jawa/destroy_batch", rects="%d,%d,6,7" % (x - 1, z - 1), categories="All")
-        with t.component("bestiary_kin_carry_wound_link", beyond_toggle=True):
-            rows = _link_defs(t, ["RM_Durrok", "RM_Mullgoth"])
-            if rows is not None and _live(t):
-                absent = [n for n in ("RM_Durrok", "RM_Mullgoth") if n not in rows]
-                lacking = [n for n in ("RM_Durrok", "RM_Mullgoth") if n in rows and "CompProperties_WoundLink" not in rows[n]]
-                if lacking:
-                    raise ExpectationFailed("%s resolve but carry no CompProperties_WoundLink (Patches/"
-                                            "RotSpecies_WoundSharing.xml did not apply)" % lacking)
-                if absent:
-                    _unmeasured(t, "%s not loaded: they live in mandrake.rsw.swbestiary, absent from this tier" % absent)
+            res = _wound_pair(t, 4) if _live(t) else None
+            if res is not None and _live(t):
+                if res["aCut"] <= 0:
+                    _unmeasured(t, "the victim shows no Cut after the OFF-arm hit: %r" % (res,))
+                elif res["bCutAny"] > 0:
+                    raise ExpectationFailed("sharing OFF: the kin still received a wound: %r" % (res,))
 
     return suite
 
@@ -1092,9 +1119,9 @@ class _MockRotSession(object):
                 if n not in known:
                     nf.append("ThingDef/" + n)
                     continue
-                comps = [{"Class": "CompProperties_Milkable"}]
+                comps = ["CompProperties_Milkable"]                     # shallow get_defs: list items are TYPE names
                 if not (b == "nocomp" and n == "RM_Chittik"):
-                    comps.append({"Class": "RimMandrake.CreatureBehaviors.CompProperties_WoundLink"})
+                    comps.append("CompProperties_WoundLink")
                 rows.append({"defName": n, "fields": {"comps": comps, "defName": n}})
             return {"success": True, "foundCount": len(rows), "notFound": nf, "defs": rows}
         if tool == "jawa/mod_settings_field":
@@ -1121,10 +1148,10 @@ class _MockRotSession(object):
                 v["hediffs"].append({"def": kw.get("damageDef"), "part": kw.get("bodyPart"), "severity": share})
             return {"success": True}
         if tool == "jawa/destroy_batch":
-            x, z, w, h = [int(v) for v in kw.get("rects").split(",")]
-            for k in [k for k, v in self.pawns.items() if x <= v["x"] < x + w and z <= v["z"] < z + h]:
-                del self.pawns[k]
-            return {"success": True}
+            return {"success": True, "skippedPawns": len(self.pawns)}     # like the real tool: pawns are never destroyed
+        if tool == "jawa/pawn_force_incapacitate":
+            gone = self.pawns.pop(kw.get("pawn"), None) is not None and kw.get("action") == "vanish"
+            return {"success": gone, "destroyedAfter": gone}
         if tool == "jawa/pawn_flight":
             p = self.pawns.get(kw.get("pawn"))
             fly = p is not None and ((p["kind"] == "RM_Dustveil" and b != "grounded") or b == "ctrlflies")

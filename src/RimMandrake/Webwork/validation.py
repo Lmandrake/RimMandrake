@@ -579,9 +579,18 @@ def _build_suite():
                 raise ExpectationFailed("Hyperweave tradeability reads %r with the strip on, expected Sellable" % (f.get("tradeability"),))
         with t.component("rare_trader_resale_line", toggle="thrixweaveResaleEnabled"):
             # WEBWORK_RESELL (Q8, 2026-10-22): Orbital_Exotic carries the resale generator (state read, no trade driven)
-            f = _deep(t, "TraderKindDef/Orbital_Exotic", "stockGenerators")
-            if f is not None and "StockGenerator_ThrixweaveResale" not in "|".join(_flat(f.get("stockGenerators"))):
-                raise ExpectationFailed("Orbital_Exotic carries no StockGenerator_ThrixweaveResale: %r" % (f.get("stockGenerators"),))
+            # SHALLOW read on purpose: deep=True renders each generator as a dict of its public fields with no class name
+            # (DeepSerializeValue), and the resale generator declares none, so its name is invisible there. Shallow
+            # list items are the generators' TYPE names.
+            r = t.bridge_call("jawa/get_defs", defs="TraderKindDef/Orbital_Exotic", fields="stockGenerators", deep=False, limit=2)
+            if _live(t):
+                rows = (r or {}).get("defs") or [] if isinstance(r, dict) else []
+                gens = [str(g) for g in ((rows[0].get("fields") or {}).get("stockGenerators") or [])] if rows else []
+                if not any(g.startswith("StockGenerator_") for g in gens):
+                    _unmeasured(t, "Orbital_Exotic's stockGenerators came back without generator type names, so the "
+                                   "resale line is invisible: %s" % str(r)[:200])
+                elif "StockGenerator_ThrixweaveResale" not in gens:
+                    raise ExpectationFailed("Orbital_Exotic carries no StockGenerator_ThrixweaveResale: %r" % (gens,))
         with t.component("structures_resolve", beyond_toggle=True):
             for n in ("Anchor", "Web", "Gutter"):
                 f = _deep(t, "ThingDef/RM_Webwork_" + n, "killedLeavings")
@@ -600,7 +609,11 @@ def _build_suite():
         # jawa/static_call splits args on '|' into PARAMETERS; every RM_WebworkProof method takes ONE string, so the proof
         # args travel ';'-joined (live 2026-10-21: '|' answered "No public static ProofWebNetwork with 3 params")
         r = t.bridge_call("jawa/static_call", type="RimMandrake.Webwork.RM_WebworkProof", method=method, args=args.replace("|", ";"))
-        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        if _live(t) and (not text or text.startswith("REFUSED")):
+            # a proof that could not stage (or gave nothing) measured nothing: every arm reads UNMEASURED, never FAIL
+            _unmeasured(t, "%s(%s) gave no measurement: %r" % (method, args, text[:160]))
+        return text
 
     def _num(text, key):
         import re as _re
@@ -678,6 +691,8 @@ def _build_suite():
                         and "weaveNear 0->3" in text and "spawned 1" in text):
                     raise ExpectationFailed("cutting an anchor line did not designate/yield 3/spawn: %s" % text)
             text = _wp(t, "ProofHarvest", "true;RM_Webwork_Web;0")
+            if _live(t) and "designatable False" in text and re.search(r"after (\d+) ticks", text):
+                _unmeasured(t, "HARNESS/SITE: the sheet-web arm hit the fog-of-war wait: %s" % text[:200]); return
             if _live(t) and not ("yield 2" in text and "spawned 0" in text):
                 raise ExpectationFailed("cutting a sheet web did not yield 2 (or spawned at multiplier 0): %s" % text)
             off = _wp(t, "ProofHarvest", "false;RM_Webwork_Anchor;0")
@@ -1327,9 +1342,14 @@ class _MockThrixSession(_MockSession):
             return super(_MockThrixSession, self).call(tool, **kw)
         self.calls.append((tool, kw))
         spec, field = kw.get("defs"), kw.get("fields")
-        val = {"label": "thrixweave", "tradeability": "Sellable",
-               "stockGenerators": [{"Class": "StockGenerator_Tag"}] + ([] if self.broken == "noresale" else
-                                                                       [{"Class": "RimMandrake.Webwork.StockGenerator_ThrixweaveResale"}]),
+        if field == "stockGenerators" and kw.get("deep") is not False:
+            gens = [{"countRange": "1~2"}] * 3      # the real deep shape: field dicts, no class name -> must not be used
+        else:                                         # the real shallow shape: each generator's TYPE name
+            gens = ["StockGenerator_Tag", "StockGenerator_Category"] + ([] if self.broken == "noresale" else
+                                                                       ["StockGenerator_ThrixweaveResale"])
+        if self.broken == "blind" and field == "stockGenerators":
+            gens = []
+        val = {"label": "thrixweave", "tradeability": "Sellable", "stockGenerators": gens,
                "killedLeavings": [{"thingDef": "Hyperweave", "count": 3}]}.get(field)
         return {"success": True, "foundCount": 1, "notFound": [],
                 "defs": [{"defName": spec.split("/", 1)[1], "fields": {} if self.broken == "blind" else {field: val}}]}
@@ -1357,7 +1377,7 @@ def mock_thrix():
 
 def mock_run():
     from runner import run_suite  # modcheck package dir is on sys.path via _UTILS/modcheck
-    harvest_ok = mock_harvest_fog_timeout() and mock_urraveth() and mock_lance() and mock_siege() and mock_thrix()
+    harvest_ok = all([mock_harvest_fog_timeout(), mock_urraveth(), mock_lance(), mock_siege(), mock_thrix()])  # run every mock
     fake = _MockSession()
     suite.chains[:] = [c for c in suite.chains if c[0] == "web_terrain_weather"]
     res = run_suite(suite, fake, anchor=(50, 50))
