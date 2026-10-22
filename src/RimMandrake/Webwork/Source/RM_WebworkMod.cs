@@ -35,14 +35,11 @@ namespace RimMandrake.Webwork
 		public static bool nestEnabled = true;
 		public static float eggRelayIntervalMultiplier = 1f;
 
-		// WEBWORK_BASE_PORT_BUILD_1: the creeping front (both apply at startup, so a restart) and the
-		// thrixweave sole-source strip (trader stock, quest rewards, trade tag, stuff commonality).
-		// The rename of Hyperweave to thrixweave always applies.
-		public static bool frontCreepEnabled = true;
-		public static float frontCreepIntervalMultiplier = 1f;
+		// WEBWORK_BASE_PORT_BUILD_1: the thrixweave sole-source strip (trader stock, quest rewards, trade tag, stuff
+		// commonality; applies at startup, so a restart). The rename of Hyperweave to thrixweave always applies.
 		public static bool thrixweaveTraderStripEnabled = true;
 
-		// SHOKKWEAVE_SOLE_SOURCE_1: colonists may cut creep-web nodes (vanilla Deconstruct) for thrixweave.
+		// SHOKKWEAVE_SOLE_SOURCE_1: colonists may cut web nodes (vanilla Deconstruct) for thrixweave.
 		public static bool webHarvestEnabled = true;
 
 		// WEBWORK_DEAD_GIANT_BUILD_1: the urraveth remains (RM_UrravethRemains.cs). Numbers PROVISIONAL.
@@ -68,8 +65,6 @@ namespace RimMandrake.Webwork
 			Scribe_Values.Look(ref emergentSpawnChanceMultiplier, "emergentSpawnChanceMultiplier", 1f);
 			Scribe_Values.Look(ref nestEnabled, "nestEnabled", true);
 			Scribe_Values.Look(ref eggRelayIntervalMultiplier, "eggRelayIntervalMultiplier", 1f);
-			Scribe_Values.Look(ref frontCreepEnabled, "frontCreepEnabled", true);
-			Scribe_Values.Look(ref frontCreepIntervalMultiplier, "frontCreepIntervalMultiplier", 1f);
 			Scribe_Values.Look(ref thrixweaveTraderStripEnabled, "thrixweaveTraderStripEnabled", true);
 			Scribe_Values.Look(ref webHarvestEnabled, "webHarvestEnabled", true);
 			Scribe_Values.Look(ref urravethEnabled, "urravethEnabled", true);
@@ -159,7 +154,7 @@ namespace RimMandrake.Webwork
             if (Group(list, "Emergent spawn", RimMandrake.Shared.SettingScope.Now, new[] { "emergentSpawnEnabled", "emergentSpawnChanceMultiplier" }))
             {
                 list.CheckboxLabeled("Emergent ollathrix spawn enabled", ref emergentSpawnEnabled,
-                    "Destroying a harvest-type Thing this is attached to (a creep-web node, a "
+                    "Destroying a harvest-type Thing this is attached to (a web node, a "
                   + "gutter, …) has a chance to spawn a hostile, manhunter-forced ollathrix on the "
                   + "spot. Off: destroying those things never spawns anything.");
                 list.Label("Spawn chance: " + emergentSpawnChanceMultiplier.ToString("0.00")
@@ -186,20 +181,14 @@ namespace RimMandrake.Webwork
                 list.GapLine();
             }
 
-            if (Group(list, "Creeping front and thrixweave (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "frontCreepEnabled", "frontCreepIntervalMultiplier", "thrixweaveTraderStripEnabled", "webHarvestEnabled" }, "[next game start]"))
+            if (Group(list, "Thrixweave (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "thrixweaveTraderStripEnabled", "webHarvestEnabled" }, "[next game start]"))
             {
-                list.CheckboxLabeled("The web creeps out over the border", ref frontCreepEnabled,
-                    "On: a map bordering a Webwork slowly grows anchor lines, sheet webs and gutters inward from "
-                  + "that edge. Off: the Webwork stays in its own tiles. Applies at startup.");
-                list.Label("Creep advance interval: " + frontCreepIntervalMultiplier.ToString("0.00")
-                    + "x (higher = slower; shipped default one band step per day)");
-                frontCreepIntervalMultiplier = list.Slider(frontCreepIntervalMultiplier, 0.25f, 4f);
                 list.CheckboxLabeled("Thrixweave is sold by no trader", ref thrixweaveTraderStripEnabled,
                     "On: no trader stocks thrixweave (Hyperweave, renamed), it leaves the standard quest-reward "
                   + "pool, and tailored gear is half as likely to be made of it - the Webwork is its only source. "
                   + "Off: it trades like vanilla Hyperweave. The rename always applies. Applies at startup.");
                 list.CheckboxLabeled("Colonists can cut web for thrixweave", ref webHarvestEnabled,
-                    "On: anchor lines and sheet webs (in the Webwork and on maps its front creeps onto) can be marked with "
+                    "On: anchor lines, sheet webs and web cables can be marked with "
                   + "the Deconstruct tool; a colonist cuts them for thrixweave (3 per anchor line, 2 per sheet web), and "
                   + "any cut can wake the emergent ollathrix spawn above. Off: those two can only be broken by force (which "
                   + "still drops their silk). Gutters stay cuttable either way. Applies at startup.");

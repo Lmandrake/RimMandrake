@@ -48,11 +48,6 @@ namespace RimMandrake.CreatureBehaviors
     //      moves near it, and any playing layers end.
     //  10. chewAnchorsBehaviorEnabled — RM_JobGiver_ChewAnchors. Off: a
     //      beetle-like race built to chew anchors never seeks one out.
-    //  11. frontCreepEnabled / frontCreepRateMultiplier —
-    //      RM_MapComponent_FrontCreep. Off: a border map's advancing front
-    //      freezes wherever it currently sits. The dial scales how much of
-    //      each band actually spawns (never the advance interval or depth
-    //      cap, which stay whatever the biome's own extension says).
     //  12. aquaticAmbushEnabled — RM_CompAquaticAmbusher / RM_JobDriver_
     //      LungeAttack (GREENTIDE_MECHANICS_2 M7). Off: a tagged pawn never
     //      goes invisible while submerged and never lunges — a hediff it
@@ -368,8 +363,6 @@ namespace RimMandrake.CreatureBehaviors
         public static bool senseWebEnabled = true;
         public static bool proximitySoundscapeEnabled = true;
         public static bool chewAnchorsBehaviorEnabled = true;
-        public static bool frontCreepEnabled = true;
-        public static float frontCreepRateMultiplier = 1f;
         public static bool aquaticAmbushEnabled = true;
         public static bool woundLinkEnabled = true;
         public static float woundLinkShareMultiplier = 1f;
@@ -613,8 +606,6 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref senseWebEnabled, "senseWebEnabled", true);
             Scribe_Values.Look(ref proximitySoundscapeEnabled, "proximitySoundscapeEnabled", true);
             Scribe_Values.Look(ref chewAnchorsBehaviorEnabled, "chewAnchorsBehaviorEnabled", true);
-            Scribe_Values.Look(ref frontCreepEnabled, "frontCreepEnabled", true);
-            Scribe_Values.Look(ref frontCreepRateMultiplier, "frontCreepRateMultiplier", 1f);
             Scribe_Values.Look(ref aquaticAmbushEnabled, "aquaticAmbushEnabled", true);
             Scribe_Values.Look(ref woundLinkEnabled, "woundLinkEnabled", true);
             Scribe_Values.Look(ref woundLinkShareMultiplier, "woundLinkShareMultiplier", 1f);
@@ -784,17 +775,13 @@ namespace RimMandrake.CreatureBehaviors
                 sunScaldShadeThreshold = list.Slider(sunScaldShadeThreshold, 0.1f, 1f);
                 list.GapLine();
             }
-            if (Group(list, "Web-sense and border creep", new[] { "senseWebEnabled", "chewAnchorsBehaviorEnabled", "frontCreepEnabled", "frontCreepRateMultiplier" }, new[] { "SenseWebNode", "ChewAnchors", "Chewable", "FrontCreep" }))
+            if (Group(list, "Web-sense", new[] { "senseWebEnabled", "chewAnchorsBehaviorEnabled" }, new[] { "SenseWebNode", "ChewAnchors", "Chewable" }))
             {
                 list.CheckboxLabeled("Web-sense network", ref senseWebEnabled,
                     "A registered web/anchor/gutter network stops sensing and marking intruders "
                   + "(nodes still track, but nothing gets felt).");
                 list.CheckboxLabeled("Anchor-chewing behavior", ref chewAnchorsBehaviorEnabled,
                     "A beetle-like animal stops seeking out web anchors to chew through.");
-                list.CheckboxLabeled("Border margin creep", ref frontCreepEnabled,
-                    "A map bordering a creeping biome stops advancing that biome's web/anchor/gutter line inward.");
-                list.Label("Margin creep density: " + frontCreepRateMultiplier.ToString("0.00") + "x");
-                frontCreepRateMultiplier = list.Slider(frontCreepRateMultiplier, 0f, 3f);
                 list.GapLine();
             }
             if (Group(list, "Aquatic ambush", new[] { "aquaticAmbushEnabled" }, new[] { "AquaticAmbusher" }))

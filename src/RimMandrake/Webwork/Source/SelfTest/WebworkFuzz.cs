@@ -552,7 +552,7 @@ namespace RimMandrake.Webwork.SelfTest
             // rounding, windows, intervals over the Mod Settings slider ranges
             run("settings-ranges", () =>
             {
-                // urravethWarningHours 1..24, collapse multiplier 0..3, egg relay multiplier 0.1..3, front creep 0.25..4, thrixweave 0..40
+                // urravethWarningHours 1..24, collapse multiplier 0..3, egg relay multiplier 0.1..3, thrixweave 0..40
                 for (float hrs = 1f; hrs <= 24f; hrs += 0.25f)
                 {
                     Steps++;

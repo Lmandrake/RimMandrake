@@ -105,12 +105,7 @@ the spawn comp keys on).
 3. **Nest raid (the jackpot).** The nest ThingDef (roster item, unbuilt):
    Shokkweave in the walls per §8 — deconstruct/harvest yield ❓~40–80, under
    the mother and the convergence. Priced in risk like the eggs.
-4. **Border creep-web (RULED).** The creep-web variant `RM_MapComponent_FrontCreep`
-   spawns on border maps is harvestable — yield ❓~1–3 per cut — and carries
-   `RSW_CompEmergentSpawnOnDestroy` via a patch with
-   `MayRequire="mandrake.rsw.shokk"` (the cross-boundary pattern
-   `RUT_Webwork.xml` already uses). Comp defaults stand (chance 0.03,
-   manhunter) unless the balance pass moves them.
+4. *(Border creep-web: retired by owner card 2026-10-22 with the front creep; no replacement source.)*
 
 ## 4. Home, tier, build order
 
@@ -122,15 +117,14 @@ No C# anywhere in this item.
 Order: **1)** rename + tradeability + tag strips (one patch file, no
 dependencies, provable the next quicktest) → **2)** live trader-generation
 proof → **3)** butchery patch (needs only the donor mod, live now) → **4)**
-web/nest/creep yields as the roster and `RM_MapComponent_FrontCreep` land.
-Routes 1/3/4-yield block on the roster item; nothing blocks the strip.
+web/nest yields as the roster lands.
+Routes 1/3 block on the roster item; nothing blocks the strip.
 
 ## verify
 
 Live trader generation shows zero hyperweave/Shokkweave stock across all
 generated kinds; a quest-reward roll pass shows none; butchering a Wyyyschokk
-yields it; border creep-web cut yields it and can spawn the emergent Shokk
-(comp already proven in `SHOKK_RSW_MOD_1`).
+yields it.
 
 ## Cards
 

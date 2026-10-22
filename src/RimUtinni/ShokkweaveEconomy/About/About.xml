@@ -23,8 +23,7 @@
     open drops a much larger shokkweave payout.
 
   Out of scope here (see the item and spec): live trader-generation proof and
-  the quest-reward roll pass (both need a quicktest map). The border creep-web
-  structures (RM_Webwork_Anchor/_Web/_Gutter), their small killedLeavings yield and
+  the quest-reward roll pass (both need a quicktest map). The web structures (RM_Webwork_Anchor/_Web/_Gutter/_Cable), their small killedLeavings yield and
   the colonist cut (Deconstruct for silk, with the emergent-ollathrix chance) live in
   mandrake.rm.webwork (WEBWORK_BASE_PORT_BUILD_1, SHOKKWEAVE_SOLE_SOURCE_1).
 

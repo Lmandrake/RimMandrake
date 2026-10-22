@@ -21,10 +21,10 @@
      UtinniPatches/Patches/WildPlants_Webwork.xml below.
 
      No new C# — every mechanism the roster names (churn engine, snap-trigger,
-     needle-cast, scent-lure, front-creep, fresh/withered route-state) is
+     needle-cast, scent-lure, fresh/withered route-state) is
      flagged OWED by the roster doc itself; these are plain wildPlants rows
      wired to existing shipped systems where one already exists
-     (RM_MapComponent_FrontCreep for grennick's context) and otherwise scoped
+     and otherwise scoped
      as future build work, same precedent as FEVERWOOD_FLORA_ROSTER_1.
 
      ART: infrastructure/artpipe/registry.jsonl, done/, _artsrc/ and pending/
@@ -458,7 +458,7 @@
     <defName>RM_Grennick</defName>
 <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>grennick</label>
-    <description>A dense dark turf whose leading edge is abrupt — a clean line of new green over burned or open ground, visibly further along every time you look. Behind the line, threllick and the thicket follow. The margin's advancing front as a plant, the groundcover of the shipped front-creep mechanism (RM_MapComponent_FrontCreep) — it regrows into an untrimmed light-moat.</description>
+    <description>A dense dark turf whose leading edge is abrupt — a clean line of new green over burned or open ground, visibly further along every time you look. Behind the line, threllick and the thicket follow. The margin's advancing front as a plant; it regrows into an untrimmed light-moat.</description>
     <statBases>
       <MaxHitPoints>15</MaxHitPoints>
       <Flammability>0.3</Flammability>

@@ -254,36 +254,10 @@ the web locally, which is the corridor.
 mite-trail treasure-map behavior (egg-mites are roster content; their
 run-the-silk pathing can ride the SenseWeb registry later). **Effort: S.**
 
-### 6. Margin creep — `RM_MapComponent_FrontCreep` + ruled-comp reuse
+### 6. Margin creep — RETIRED
 
-**Player experience** (sheet §8 margins). On maps bordering the Webwork, the web
-line visibly advances between looks: silk further out, pale flowers tracing new
-lines, Webwork flora replacing yours. World map never repaints (frozen map,
-sheet-recorded); the dread is map-local.
-
-**Engine route.** New **`RM_MapComponent_FrontCreep`** (generic mechanism: "a
-biome's contents advance from a map edge on maps adjacent to that biome"):
-- Active only when a neighboring world tile's biome matches a configured
-  BiomeDef (world-grid neighbor query; the map itself keeps its own biome — no
-  worldgen, no repaint, honoring the no-worldgen ruling).
-- On a long interval ❓ (days-scale, invented), advances a front band from the
-  corresponding map edge: spawns RUT_ web Things + converts flora.
-- **Ruled-comp reuse (firm)**: flora conversion rides **`RM_Gas_Transmuting`**
-  (ruled comp 1 family) — the §4/§5 review itself names it "a slow, spreading
-  'this ground is being changed' effect… candidate for spread mechanics." The
-  creep component seeds transmuting gas puffs along the front; the gas class does
-  the species-swap with `Growth` preserved. One mechanism, two biomes' spread
-  stories (Greentide's churn can reuse it later, per the review).
-- Creep-spawned web registers with `RM_MapComponent_SenseWeb` like any web — the
-  advancing line can *feel*, which is the point.
-- Sole-source boundary: whether cutting creep-web on a border map is an in-biome
-  harvest route is `SHOKKWEAVE_SOLE_SOURCE_1`'s call — **carded (card 4)**, and
-  until ruled, creep-web spawns as a no-yield variant.
-
-**New C#**: `RM_MapComponent_FrontCreep` (M). ❓INVENTED: advance rate, band
-depth, density. **v1**: front advance + transmuting flora + no-yield web.
-**Deferred**: retreat when the player burns the front back (regression logic),
-flower-tracing freshness states (roster/art). **Effort: M.**
+Deleted by owner card 2026-10-22 (*"Webs don't creep they are made by spiders"*): no `RM_MapComponent_FrontCreep`, no
+`RM_FrontCreepExtension`, no border web.
 
 ### 7. Droid-priority targeting — folded into the kit's JobGivers
 
@@ -319,7 +293,6 @@ weight/radius. **v1**: in. **Deferred**: nothing. **Effort: S** (inside §1's M)
 | 3 | Shokk-bound | `RM_Ability_TargetedHediffAffliction` (optional volley) | none | S | yes |
 | 4 | Light-moat | `RM_HarmonyPatch_BiomeGlowMultiplier` considered, rejected (reason stated) | `RM_Hediff_SunScald` | S–M | yes |
 | 5 | Beetle anchor-chewing | — (review's own "write directly" precedent) | `RM_JobGiver_ChewAnchors`, `RM_ChewableExtension` | S | yes |
-| 6 | Margin creep | **`RM_Gas_Transmuting` (firm)** | `RM_MapComponent_FrontCreep` | M | yes |
 | 7 | Droid-priority | — (rides #1's JobGivers) | none extra | S | yes |
 
 **Totals**: 7 mechanics · ruled-comp reuse 1 firm + 1 optional (+1 explicit
@@ -351,9 +324,6 @@ independent (boundary carded).
    `PawnGroundSpawner` incident wiring) — independent after the race exists.
 5. **`RM_JobGiver_ChewAnchors` + `RM_ChewableExtension`** — needs 2's
    deregistration hook.
-6. **`RM_MapComponent_FrontCreep`** — last; needs `RM_Gas_Transmuting` from
-   `ALPHA_MECHANICS_KIT_1` and the web Things, and its sole-source boundary card
-   answered (or ships no-yield).
 
 ## Owner rulings (card sitting, 2026-09-11 — all seven cards ruled)
 
@@ -371,12 +341,7 @@ independent (boundary carded).
 3. **Bound-bait — RULED: accept as emergent story.** Feeding a bound
    colonist out as convergence bait is legitimate player cunning; no
    collect-prey behavior is built (not deferred — not built).
-4. **Sole-source boundary — RULED: border creep-web YIELDS, with teeth.**
-   Owner-verbatim: "(2) but it has a small chance of SPAWNING an emergent
-   Shokk to get you." Cutting creep-web on a border map is a real harvest
-   route, and each cut carries a small chance of spawning an emergent Shokk.
-   Supersedes the no-yield-variant placeholder; feeds
-   `SHOKKWEAVE_SOLE_SOURCE_1` (recorded on that item).
+4. **Sole-source boundary — border creep-web: RETIRED 2026-10-22** with the front creep (it had been ruled to yield, with teeth).
 5. **Assembly home — RULED (via the Scarlands sitting): the separate RM_
    creature-behaviors assembly**, in the ShipVermin/behaviors family — NOT
    `mandrake.rm.environmentalhazards`. The six ruled comps stay where they

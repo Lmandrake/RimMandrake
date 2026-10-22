@@ -173,8 +173,6 @@ def main(argv):
         E("ww-settings", "the relay multiplier slider can go below the kernel's 0.01 floor")
     if "urravethSiteChance" in sl and not (sl["urravethSiteChance"][0] >= 0 and sl["urravethSiteChance"][1] <= 1):
         E("ww-settings", "urravethSiteChance slider leaves 0..1")
-    if "frontCreepIntervalMultiplier" in sl and sl["frontCreepIntervalMultiplier"][0] <= 0:
-        E("ww-settings", "front creep interval slider reaches 0 (an advance every tick)")
     ttext = re.search(r"half as likely", settings)
     gate = read(os.path.join(src, "RM_WebworkStartupGate.cs"))
     if not ttext or "commonality = 0.05f" not in gate:
@@ -311,17 +309,6 @@ def main(argv):
                 continue
             if "Hyperweave" in t and re.search(r"stockGenerators|thingDefs|ThingDef\b.*Hyperweave", t) and "TraderKindDef" in t and re.search(r"<thingDefs>.*?Hyperweave", t, flags=re.S):
                 E("ww-economy", f"{os.path.relpath(p, SRC)} stocks Hyperweave on a trader outside the sole-source owners")
-    ccs = re.search(r'GetField\("(\w+)"\)', gate)
-    fc = ""
-    for p in glob.glob(os.path.join(cb, "**", "RM_FrontCreepExtension.cs"), recursive=True):
-        fc = read(p)
-    if not ccs or not fc or not re.search(r"public int " + ccs.group(1) + r"\b", fc):
-        E("ww-economy", "the startup gate reflects a front-extension field that does not exist on RM_FrontCreepExtension (the creep interval would never scale)")
-    if '"RM_FrontCreepExtension"' not in gate:
-        E("ww-economy", "the startup gate no longer matches the extension by its type name")
-    biome_has = any("RM_FrontCreepExtension" in (read(p)) for p in glob.glob(os.path.join(defs, "BiomeDefs", "*.xml")))
-    if not biome_has:
-        W("ww-economy", "the Webwork BiomeDef carries no RM_FrontCreepExtension: the front-creep toggle gates nothing")
 
     # ---- kernel / csproj / emergent comp ----
     if re.search(r"^\s*using\s+(Verse|RimWorld|UnityEngine|HarmonyLib)", kernel, flags=re.M):

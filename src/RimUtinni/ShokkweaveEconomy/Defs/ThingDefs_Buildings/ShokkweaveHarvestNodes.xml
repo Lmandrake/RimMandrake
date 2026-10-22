@@ -18,10 +18,7 @@
   land later - this is the economy's harvest route, that is the biome's
   sensory network; the two can coexist.
 
-  Border creep-web (the 4th, ruled-in route) is NOT built here: it depends on
-  RM_MapComponent_FrontCreep, which is unbuilt (WEBWORK_MECHANICS_1 mechanic
-  #6, itself gated on RM_Gas_Transmuting content wiring). Left as owed on the
-  item.
+  The border creep-web route (once ruled in as a 4th route) was retired by owner card 2026-10-22 with the front creep.
 
   Sole-source guard, addressed head-on: the spec's "beetle-destroyed and
   combat-destroyed web drops NOTHING" rule is about the kit's own web/anchor

@@ -10,10 +10,10 @@
   (the thing anchor-beetles chew); the sheet web carries the commandable
   adhesive (Flickable + RM_CompProperties_AdhesiveSlick -> RM_Webwork_Slick).
 
-  Placement is RM_MapComponent_FrontCreep's job (RM_FrontCreepExtension on the
-  RM_Webwork BiomeDef). Breaking a node by force yields thrixweave (Hyperweave,
+  Nothing places these three any more (the front that scattered them was deleted by owner card 2026-10-22; the web a
+  Webwork map is laid with is RM_WebworkWebNetwork.xml). Breaking a node by force yields thrixweave (Hyperweave,
   renamed in Patches/RM_Thrixweave_Rename.xml) through killedLeavings.
-  SHOKKWEAVE_SOLE_SOURCE_1, the border creep-web harvest: the anchor line and
+  SHOKKWEAVE_SOLE_SOURCE_1, the web-node harvest: the anchor line and
   sheet web are alwaysDeconstructible (claimable false, so the route is the
   setting's alone), a colonist cuts them with the vanilla Deconstruct job, and
   RM_CompHarvestYield drops the same silk on DestroyMode.Deconstruct. All three

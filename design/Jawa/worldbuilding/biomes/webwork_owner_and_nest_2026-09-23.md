@@ -106,7 +106,6 @@ web always from the mouth). Facing set: standard `_north/_east/_south` plus mask
 | sun-helpless (light-moat) | `RSW_Webwork_SunScald` HediffDef via `startingHediffs`; C# `RM_Hediff_SunScald` | ✅ shipped (hediff in the Shokk RSW mod) | re-tokens `RM_Webwork_SunScald` and attaches to `RM_Ollathrix`'s kind inline |
 | untameable | `race.wildness` 1.0 / no `trainability`; ban 1 | authored on the race | inline |
 | fecund and self-predating | not a mechanic today | — | **the egg economy (§4)** carries "1,000 eggs a year"; self-predation stays flavour plus the kit's "hostile to everything including each other" faction-of-none (no truce, ban 2) |
-| margin creep | `RM_MapComponent_FrontCreep` + `RM_FrontCreepExtension` on the biome | ✅ shipped, live-verified | unchanged |
 | beetle anchor-chewing | `RM_JobGiver_ChewAnchors` + `RM_ChewableExtension` | ✅ shipped, **no consumer race** | consumer is the fauna roster's anchor-beetle (`RM_Quarrok`) |
 
 ### 1b. The name, the plural, the register
