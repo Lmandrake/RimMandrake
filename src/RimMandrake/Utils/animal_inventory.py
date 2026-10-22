@@ -709,6 +709,9 @@ def main():
         print("   ! no folder for:", x)
 
     animals, pawnkinds, biomes, attacks, lifestages, owners = project(ds)
+    if not animals:
+        sys.exit("UNMEASURED: the load set yielded 0 animals (wrong --config / mod folders?) - "
+                 "refusing to overwrite the CSVs in %s with empty ones" % os.path.abspath(a.out))
     patches = scan_patches(mods)
     print(f"animals: {len(animals)}   biomes: {len(biomes)}   "
           f"attacks: {len(attacks)}   animal/biome patches: {len(patches)}")

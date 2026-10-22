@@ -842,6 +842,10 @@ def main() -> int:
         return selftest()
     if not a.paths:
         ap.error("give at least one PNG or directory (or --selftest)")
+    if not collect(a.paths, originals=a.originals):
+        print("UNMEASURED: no PNG found under %s - 'no findings' would read as a clean bill" % ", ".join(a.paths),
+              file=sys.stderr)
+        return 2
     findings = run(a.paths, originals=a.originals)
     if a.as_json:
         print(json.dumps([asdict(f) for f in findings], indent=1))
