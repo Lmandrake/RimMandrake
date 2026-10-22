@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL. Opts every Droidworks droid into FlowWorks machine labour (dig past the 2 m
+  colonist cap) by marking the droid FleshTypeDef with FlowWorks' RM_MachineDigger extension. See
+  design/RimMandrake/machine_dig_2026-10-21.md section 2.
+  Guarded by PatchOperationFindMod on FlowWorks: the extension's type exists only when FlowWorks loads, and a missing
+  modExtension type discards the whole def. Without FlowWorks this patch is skipped. (MayRequire on a top-level
+  Operation is ignored, so FindMod is the guard.) Sequence-safe whether or not the def already has modExtensions.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: FlowWorks</li>
+    </mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/FleshTypeDef[defName="RSW_DW_FleshType_Droid"]/modExtensions</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/FleshTypeDef[defName="RSW_DW_FleshType_Droid"]/modExtensions</xpath>
+        <value>
+          <li Class="RimMandrake.FlowWorks.RM_MachineDigger" />
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/FleshTypeDef[defName="RSW_DW_FleshType_Droid"]</xpath>
+        <value>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.RM_MachineDigger" />
+          </modExtensions>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+</Patch>
