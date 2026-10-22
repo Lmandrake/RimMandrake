@@ -1,0 +1,1 @@
+Windows Event 6008 'previous shutdown at <time>' is a stale heartbeat (read 14:34 for a crash that happened 14:52); bound a crash time by the newest file mtimes and the last bridge_calls.jsonl entry instead. Kernel minidumps and WER ReportArchive need admin: Start-Process -Verb RunAs a .ps1 that copies them into D:\ClaudeWork\scratch.
