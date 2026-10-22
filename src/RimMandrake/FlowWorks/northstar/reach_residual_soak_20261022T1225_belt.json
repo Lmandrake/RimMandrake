@@ -1,0 +1,190 @@
+{
+ "records": [
+  {
+   "wall": "12:19:49",
+   "secs": 43.8,
+   "advanced": 2500,
+   "raid": null,
+   "reach": "WALLREACH on=True entries=6 builds=538 overTicks=3450 per1000=155.94 lastMs=1.019 maxMs=22.518 meanMs=1.862 steppedFrames=3523 queries=186080 vetoes=183 | RESIDUAL fails=0 outOfScope=0 stale=0 residual=0 byKey=[] byDoor=[]",
+   "pocket": "POCKETTIME cells=62500 | plain rebuilds=107 overTicks=3583 per1000=29.86 lastMs=5.775 maxMs=20.700 meanMs=7.006 bandMs=0.911,0.874,0.904,0.936,0.931,0.870 | WALLREACH entries=6 builds=538 overTicks=3450 per1000=155.94 lastMs=1.019 maxMs=22.518 meanMs=1.862 steppedFrames=3523",
+   "state": {
+    "tick": 3583,
+    "colonists": 11,
+    "downed": 0,
+    "dead": 0,
+    "hostiles": 0,
+    "jobs": [
+     "Clean",
+     "GotoWander",
+     "GotoWander",
+     "GotoWander",
+     "BuildRoof",
+     "GotoWander",
+     "GotoWander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander"
+    ]
+   }
+  },
+  {
+   "wall": "12:20:31",
+   "secs": 42.4,
+   "advanced": 2500,
+   "raid": null,
+   "reach": "WALLREACH on=True entries=6 builds=784 overTicks=5950 per1000=131.76 lastMs=1.012 maxMs=22.518 meanMs=1.851 steppedFrames=6023 queries=390947 vetoes=379 | RESIDUAL fails=0 outOfScope=0 stale=0 residual=0 byKey=[] byDoor=[]",
+   "pocket": "POCKETTIME cells=62500 | plain rebuilds=107 overTicks=6083 per1000=17.59 lastMs=5.775 maxMs=20.700 meanMs=7.006 bandMs=0.911,0.874,0.904,0.936,0.931,0.870 | WALLREACH entries=6 builds=784 overTicks=5950 per1000=131.76 lastMs=1.012 maxMs=22.518 meanMs=1.851 steppedFrames=6023",
+   "state": {
+    "tick": 6083,
+    "colonists": 11,
+    "downed": 0,
+    "dead": 0,
+    "hostiles": 0,
+    "jobs": [
+     "GotoWander",
+     "GotoWander",
+     "GotoWander",
+     "GotoWander",
+     "BuildRoof",
+     "GotoWander",
+     "GotoWander",
+     "GotoWander",
+     "Wait_Wander",
+     "Clean",
+     "GotoWander"
+    ]
+   }
+  },
+  {
+   "wall": "12:21:14",
+   "secs": 42.2,
+   "advanced": 2500,
+   "raid": null,
+   "reach": "WALLREACH on=True entries=6 builds=1036 overTicks=8450 per1000=122.60 lastMs=1.020 maxMs=22.518 meanMs=1.828 steppedFrames=8523 queries=589694 vetoes=598 | RESIDUAL fails=0 outOfScope=0 stale=0 residual=0 byKey=[] byDoor=[]",
+   "pocket": "POCKETTIME cells=62500 | plain rebuilds=107 overTicks=8583 per1000=12.47 lastMs=5.775 maxMs=20.700 meanMs=7.006 bandMs=0.911,0.874,0.904,0.936,0.931,0.870 | WALLREACH entries=6 builds=1036 overTicks=8450 per1000=122.60 lastMs=1.020 maxMs=22.518 meanMs=1.828 steppedFrames=8523",
+   "state": {
+    "tick": 8583,
+    "colonists": 11,
+    "downed": 0,
+    "dead": 0,
+    "hostiles": 0,
+    "jobs": [
+     "GotoWander",
+     "GotoWander",
+     "GotoWander",
+     "GotoWander",
+     "BuildRoof",
+     "GotoWander",
+     "GotoWander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "GotoWander"
+    ]
+   }
+  },
+  {
+   "wall": "12:21:56",
+   "secs": 42.2,
+   "advanced": 2500,
+   "raid": null,
+   "reach": "WALLREACH on=True entries=6 builds=1282 overTicks=10950 per1000=117.08 lastMs=0.985 maxMs=22.518 meanMs=1.825 steppedFrames=11023 queries=801416 vetoes=860 | RESIDUAL fails=0 outOfScope=0 stale=0 residual=0 byKey=[] byDoor=[]",
+   "pocket": "POCKETTIME cells=62500 | plain rebuilds=107 overTicks=11083 per1000=9.65 lastMs=5.775 maxMs=20.700 meanMs=7.006 bandMs=0.911,0.874,0.904,0.936,0.931,0.870 | WALLREACH entries=6 builds=1282 overTicks=10950 per1000=117.08 lastMs=0.985 maxMs=22.518 meanMs=1.825 steppedFrames=11023",
+   "state": {
+    "tick": 11083,
+    "colonists": 11,
+    "downed": 0,
+    "dead": 0,
+    "hostiles": 0,
+    "jobs": [
+     "Wait_MaintainPosture",
+     "Clean",
+     "GotoWander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "GotoWander",
+     "Wait_Wander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander"
+    ]
+   }
+  }
+ ],
+ "setup": {
+  "undrafted": 7,
+  "newColonists": [
+   "Human45411",
+   "Human45414",
+   "Human45417",
+   "Human45421"
+  ],
+  "wild": [
+   [
+    "Muffalo",
+    "Muffalo45424"
+   ],
+   [
+    "Muffalo",
+    "Muffalo45425"
+   ],
+   [
+    "Alpaca",
+    "Alpaca45426"
+   ],
+   [
+    "Chicken",
+    "Chicken45427"
+   ],
+   [
+    "Chicken",
+    "Chicken45428"
+   ]
+  ],
+  "mine": [
+   {
+    "success": true,
+    "added": 12,
+    "count": null,
+    "message": null
+   },
+   {
+    "success": true,
+    "added": 12,
+    "count": null,
+    "message": null
+   },
+   {
+    "success": true,
+    "added": 7,
+    "count": null,
+    "message": null
+   }
+  ],
+  "reset": "RESET ok=True",
+  "timing0": "POCKETTIME cells=62500 | plain rebuilds=107 overTicks=1083 per1000=98.80 lastMs=5.775 maxMs=20.700 meanMs=7.006 bandMs=0.911,0.874,0.904,0.936,0.931,0.870 | WALLREACH entries=6 builds=254 overTicks=950 per1000=267.37 lastMs=1.011 maxMs=22.518 meanMs=1.828 steppedFrames=1023",
+  "state0": {
+   "tick": 1083,
+   "colonists": 11,
+   "downed": 0,
+   "dead": 0,
+   "hostiles": 0,
+   "jobs": [
+    null,
+    "GotoWander",
+    null,
+    "Wait_Wander",
+    "BuildRoof",
+    "GotoWander",
+    null,
+    null,
+    "Wait_Wander",
+    "GotoWander",
+    "GotoWander"
+   ]
+  },
+  "wall": "12:19:04"
+ }
+}
