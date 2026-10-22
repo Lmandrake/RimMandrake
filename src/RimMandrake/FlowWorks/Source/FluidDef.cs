@@ -75,6 +75,17 @@ namespace RimMandrake.FlowWorks
 
 		public int sheetEvaporationPercent = -1;
 
+		/// <summary>A liquid that boils below the air temperature (liquid propane): cm of a spilled sheet boiled off per game hour
+		/// by ground heat while the cell is warmer than <see cref="sheetBoilPointC"/>, roofed or not. 0 = it does not boil.
+		/// Real numbers: Transient/pile_2026-10-22/fuel_spill_research.md.</summary>
+		public float sheetBoilCmPerHour;
+
+		public float sheetBoilPointC = -42f;
+
+		/// <summary>How fast a burning spill of this liquid burns down, as a real pool fire's regression rate in mm per game
+		/// minute (gasoline ~4, liquid propane ~8, jet fuel ~3). 0 = the channel's burn rate. A detonation ignores it.</summary>
+		public float sheetBurnMmPerMinute;
+
 		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: how this liquid burns. None never lights; CreepingFuse travels as a
 		/// front and burns a level a day; Inferno (chemfuel) is a fast front with big flames that burns down in seconds;
 		/// Detonation (astrofuel) blows up the whole connected body as one chained blast (CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL,

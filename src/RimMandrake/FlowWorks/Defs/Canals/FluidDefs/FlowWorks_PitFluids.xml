@@ -68,6 +68,12 @@
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Chemfuel</defName>
     <label>chemfuel</label>
+    <!-- Spilled chemfuel = gasoline (real numbers and sources: Transient/pile_2026-10-22/fuel_spill_research.md): soaks
+         in 1.5x water (Darcy: density/viscosity 740/0.5 vs 1000/1.0), dries 6x water (3 cm/day at 20 C: the light ends
+         go in hours), burns down 4 mm per game minute (pool-fire regression), so a 2 cm puddle burns ~5 game minutes. -->
+    <sheetSoakPercent>150</sheetSoakPercent>
+    <sheetEvaporationPercent>600</sheetEvaporationPercent>
+    <sheetBurnMmPerMinute>4</sheetBurnMmPerMinute>
     <fireKind>Inferno</fireKind>
     <!-- PROVISIONAL: 2 ticks a cell, a 100-cell moat alight end to end in ~3 s (Mod Settings: chemfuel spread speed). -->
     <fireFrontTicksPerCell>2</fireFrontTicksPerCell>
@@ -86,6 +92,12 @@
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Astrofuel</defName>
     <label>astrofuel</label>
+    <!-- Spilled astrofuel = jet fuel, Jet A / JP-8 (fuel_spill_research.md): soaks in 0.7x water (800/1.2 vs 1000/1.0),
+         dries at half water's rate (kerosene-range, low vapour pressure: a puddle lingers about a week), and when the
+         detonation setting is off burns down 3 mm per game minute. The detonation itself is the owner's 2026-10-15 card. -->
+    <sheetSoakPercent>70</sheetSoakPercent>
+    <sheetEvaporationPercent>50</sheetEvaporationPercent>
+    <sheetBurnMmPerMinute>3</sheetBurnMmPerMinute>
     <fireKind>Detonation</fireKind>
     <fireFrontTicksPerCell>10</fireFrontTicksPerCell>
     <floodTerrain>RM_Fill_Astrofuel_Trace</floodTerrain>
@@ -110,10 +122,15 @@
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Propane</defName>
     <label>liquid propane</label>
-    <!-- CANAL_OVERFLOW (all liquids, owner 2026-10-22): spilled propane boils off fast, so a lit propane spill is a flash,
-         not a pool (spec §3 fire). PROVISIONAL 20x water's drying rate; nothing soaks in. -->
+    <!-- CANAL_OVERFLOW (all liquids, owner 2026-10-22): spilled propane boils off (fuel_spill_research.md). It boils at
+         -42 C on heat from the ground, so the air and a roof do not set the rate: 2 cm per game hour above -42 C (a 2 cm
+         spill is gone in an hour; ~100x water at 20 C), nothing soaks in (the ground freezes under it), and a lit pool
+         burns down 8 mm per game minute (LPG pool fire). -->
     <sheetSoakPercent>0</sheetSoakPercent>
-    <sheetEvaporationPercent>2000</sheetEvaporationPercent>
+    <sheetEvaporationPercent>0</sheetEvaporationPercent>
+    <sheetBoilCmPerHour>2</sheetBoilCmPerHour>
+    <sheetBoilPointC>-42</sheetBoilPointC>
+    <sheetBurnMmPerMinute>8</sheetBurnMmPerMinute>
     <fireKind>Inferno</fireKind>
     <fireFrontTicksPerCell>2</fireFrontTicksPerCell>
     <floodTerrain>RM_Fill_Propane_Trace</floodTerrain>

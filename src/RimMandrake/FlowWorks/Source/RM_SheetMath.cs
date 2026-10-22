@@ -65,6 +65,8 @@ namespace RimMandrake.FlowWorks
 			public int EvaporationPermille;  // × the cell's evaporation rate
 			public int FreezeDeciC;          // D10: freezes at or below this (tenths of °C); water 0
 			public bool NeverFreezes;        // fuels and the like
+			public int BoilMilliDl;          // a liquid that boils at ambient (propane): loses at least this per pulse, roof or not
+			public int BoilAboveDeciC;       // ...while the cell is warmer than its boiling point (tenths of °C)
 		}
 
 		public sealed class Params
@@ -499,6 +501,7 @@ namespace RimMandrake.FlowWorks
 				FluidRule fr = w.Fluids[s.Fluid[c]];
 				long soakRate = s.Tiers[c] == Tier.Ice ? 0 : (long)w.SoakMilliDl[c] * fr.InfiltrationPermille / 1000; // frozen: no soak
 				long evapRate = (long)w.EvapMilliDl[c] * fr.EvaporationPermille / 1000;
+				if (fr.BoilMilliDl > 0 && w.TempDeciC[c] > fr.BoilAboveDeciC) evapRate = Math.Max(evapRate, fr.BoilMilliDl); // fuel_spill_research.md
 				if (soakRate > 0)
 				{
 					long acc = s.SoakRem[c] + soakRate;
@@ -815,6 +818,22 @@ namespace RimMandrake.FlowWorks
 				FreezeDeciC = 0,
 				NeverFreezes = !freezes,
 			};
+		}
+
+		/// <summary>Real spill numbers (Transient/pile_2026-10-22/fuel_spill_research.md): a liquid that boils below the air
+		/// temperature (liquid propane, -42 °C) is boiled off by heat from the ground, not dried by the air, so it loses a fixed
+		/// depth per hour whatever the roof or the warmth. Returns milli-dL per pulse; 0 when <paramref name="cmPerHour"/> is 0.</summary>
+		public static int BoilMilliDlPerPulse(float cmPerHour, int dlPerCm, float pulsesPerDay) =>
+			cmPerHour <= 0f || pulsesPerDay <= 0f ? 0 : (int)Math.Round(cmPerHour * 24f * dlPerCm * 1000f / pulsesPerDay);
+
+		/// <summary>Ticks for a burning spill to lose one notch (<paramref name="cmPerNotch"/>) at a real pool-fire regression
+		/// rate of <paramref name="mmPerMinute"/> in game minutes (<paramref name="ticksPerHour"/> / 60 ticks), divided by the
+		/// burn-rate dial. Gasoline ~4 mm/min, liquid propane ~8, jet fuel ~3 (fuel_spill_research.md).</summary>
+		public static int SheetBurnTicksPerNotch(float mmPerMinute, int cmPerNotch, int ticksPerHour, float rateDial)
+		{
+			float r = rateDial < 0.05f ? 0.05f : rateDial;
+			float mm = mmPerMinute < 0.01f ? 0.01f : mmPerMinute;
+			return Math.Max(1, (int)Math.Round(cmPerNotch * 10f / mm * ticksPerHour / 60f / r));
 		}
 
 		/// <summary>A standing sheet of this liquid puts out a fire on its square: any liquid that does not burn.</summary>
