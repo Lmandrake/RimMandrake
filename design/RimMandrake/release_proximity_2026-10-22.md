@@ -39,3 +39,17 @@ Next tier, not ranked in detail: ExplosiveGrowth (7 of 31 DIRTY, PASS 54 / UNMEA
 - DIRTY counts for FlowWorks may already be falling (review loop active 2026-10-22); re-measure before acting.
 - `modcheck floor --all` UNMEASURED (timeout). The `FLOWWORKS_NORTHSTAR_SHIP_1` item prose predates tonight's review wave.
 - Tier of Ishko is RUT (path `src/RimUtinni/`); tier of the others from `About.xml` packageId (`mandrake.rm.*`).
+
+## Addendum 2026-10-22 (FOUNDRY helper): review pass on Ishko, Pyrelands, Graffiti
+
+Re-measured with `code_review_status.py check` over every tracked `.cs/.xml/.py/.csproj`. Other helpers had already cleaned some files, so the counts above had moved.
+
+- **IshkoDarkLandmarks**: 0 DIRTY. `northstar_plan.py` reviewed against the three LandmarkDefs (mock mirrors the XML; offline mock run GREEN PASS 8).
+  - OFFLINE: none. NEEDS-LIVE: none known (stored live run GREEN, PASS 8). NEEDS-OWNER: whether a landmarks art mod is a release unit.
+- **Pyrelands**: 1 DIRTY, `Defs/BiomeDefs/Pyrelands.xml`, left DIRTY on purpose. Its `RM_SunHeatExtension` (heatKind overhead, +10 C) is a per-biome heat number the Direct Sun ruling (2026-10-19) removes; `unified_direct_sun_heat_2026-10-19.md` §Migration drops it. Re-review after that migration. Fixed: stale "live instances still need clearing" note.
+  - Fixed and marked CLEAN: ring description size and Stillsand-dependency comment (`RM_StruckGlassRing.xml`), stale "placeholder art" header (`RM_RetiredMutatorPorts_Pyrelands.xml`); both csproj and `struck_glass_live.py` reviewed clean (every Compile include exists, none unlisted).
+  - OFFLINE: composed-biomes deploy dry run after the Wave-1 migration; tick the FireHawk box in `PYRELANDS_SHIP_READINESS_1` (not checked this pass). NEEDS-LIVE: `PYRELANDS_GREEN_MINIMAL_1` / `_FULL_1`; Struck Glass rite gizmo and completed-rite strike (the script covers only defs, ring, gate). NEEDS-OWNER: the Direct Sun migration decides the heat extension.
+- **Graffiti**: 0 DIRTY. Fuzz GREEN (17098 cases), `sigil_coverage.py` PASS (27/27 memes, 94/94 icons), mock northstar PASS 11 / UNMEASURED 10 (the mock cannot model the game). `dll_source_stamp.py check` MATCH. Fixed stale build command in `Graffiti.csproj` and `--fuzz-only` family list in `Program.cs`.
+  - CORRECTION to the table above: `viewerReactionEnabled` IS consumed (`ThoughtWorker_ViewedGraffitiMark.cs:30`); the "label or delete the setting" action is moot.
+  - Left alone (comment-only edit would stale the DLL srchash, rebuild owed): `GraffitiForm.cs` says Glyph is "the shipped three"; it is the meme glyphs plus the warning glyph.
+  - OFFLINE: deploy dry run. NEEDS-LIVE: `GRAFFITI_NORTHSTAR_GREEN_MINIMAL_1`, `_GREEN_FULL_1`. NEEDS-OWNER: hashed-prose re-validation; mark-choice and sigil-frame scope for v1.
