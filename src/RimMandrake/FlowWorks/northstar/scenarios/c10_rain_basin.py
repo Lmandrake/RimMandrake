@@ -7,6 +7,11 @@ a dry winding canal D, open and roofed rain trenches E/F, a small pond drawn dow
 in its bed, a pump with a tank and a hose Intake end in the pond, a map-edge setter, and the fenced closed ledger
 (GPT #10). C10 sits alone on the east edge (GPT #11); rain lives in the branch save RM_fw_composite_rain.
 
+The closed ledger: far tank (32,5), hose end (34,5) on the reel outlet's row, reel and near tank at x 40. With the far tank
+at (33,3) the end was 1.5 cells past the 2.2-cell straight lead-out and the planner refused it ("no room for the straight
+lead-out", live 2026-10-21; reproduced offline, SelfTest HoseBandChecks Scenario_C4_C10_hoses_lay_offline). review_map
+builds every reel West, one square east of its staged cell (footprint kept).
+
 Idle-stable: both canal sluices shut; the pump is set to POUR from an EMPTY tank (nothing moves until he sets Draw);
 the closed ledger's hose end is Capped; nobody is assigned the fill-in (it is a poke).
 """
@@ -31,13 +36,14 @@ SETUP = dict(
     build=[("RM_LiquidPump", 6, 36, None, None), ("RM_UniversalPipe", 7, 36, None, None),
            ("RM_LiquidTank", 8, 36, None, None), ("RM_HoseReel", 14, 37, None, None),
            ("PowerConduit", 5, 37, None, None), ("PowerConduit", 5, 38, None, None), ("Battery", 4, 37, 0, None),
-           ("RM_LiquidTank", 33, 3, None, None), ("RM_LiquidTank", 39, 3, None, None), ("RM_HoseReel", 39, 5, None, None)]
+           ("RM_LiquidTank", 32, 5, None, None), ("RM_LiquidTank", 40, 3, None, None), ("RM_HoseReel", 40, 5, None, None)]
     + walls(LEDGER, "WoodLog", "Fence"),
     batteries=[(4, 37)],
-    tank=[(8, 36, "Store", "RM_Liquid_FreshWater", 0), (33, 3, "Store", "RM_Liquid_FreshWater", 8000),
-          (39, 3, "Store", "RM_Liquid_FreshWater", 0)],
+    tank=[(8, 36, "Store", "RM_Liquid_FreshWater", 0), (32, 5, "Store", "RM_Liquid_FreshWater", 8000),
+          (40, 3, "Store", "RM_Liquid_FreshWater", 0)],
     pump=[(6, 36, "pour")],
-    hose=[(14, 37, 10, 33, None), (39, 5, 35, 4, None)],
+    hose=[(14, 37, 10, 33, None), (40, 5, 34, 5, None)],                      # ledger: the far tank sits on the outlet's row,
+                                                                             # a straight run (offline: HoseBandChecks C10)
     gizmos=[(14, 37, "Free end:", "Free end: Intake")],
     markers=[("PlaceSource", 7, 20, "RM_Fluid_Water|1"), ("PlaceEdgeSetter", 40, 15, "aaaa")],
     pawns=[("Muffalo", 26, 20, "none", None)],
@@ -82,7 +88,7 @@ SCENARIO = scenario(
             staged("small pond drawn down, muffalo in the bed", "pawns", "Muffalo", (26, 20), "look"),
             staged("pump (Pour) + empty tank + hose Intake end in the pond", "gizmos", None, (14, 37), "poked"),
             staged("map-edge setter", "markers", "PlaceEdgeSetter", (40, 15), "poked"),
-            staged("closed ledger: two tanks, one hose, fenced", "hose", None, (39, 5), "poked"),
+            staged("closed ledger: two tanks, one hose, fenced", "hose", None, (40, 5), "poked"),
             deferred("overflow Stage 1+ (D1, D2, D6)", "only the offline Stage 0 kernel exists; canal B is sized so "
                      "sealing the edge with the pump pouring overfills it once Stage 1 lands", OVERFLOW_ITEM, (16, 38)),
             deferred("a limitless BODY marker on a natural pond", "the spring is a flow source; a body flagged "

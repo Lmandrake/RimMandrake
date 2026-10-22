@@ -1486,6 +1486,10 @@ class Review(object):
                 self.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PitScorchProof", method="ProofScorch",
                           args="%d,%d,%d,%d" % (g(x, z) + g(x + w - 1, z + h - 1)))
             for d, x, z, rot, stuff in u.get("build", []):
+                if d == "RM_HoseReel" and rot is None:
+                    # the reel turns since a98046cbe9 and a bare op builds it NORTH; every station was laid out for the west
+                    # outlet: West, one square east, so the 2x2 keeps its footprint (GenAdj shifts an even rect west for West)
+                    x, rot = x + 1, 3
                 kw = dict(ops="%s:%d,%d" % ((d,) + g(x, z)) + ("" if rot is None else ",%d" % rot), faction="player",
                           wipeExisting=False)
                 if stuff:
@@ -1678,7 +1682,9 @@ class Review(object):
         for rx, rz, cells in u.get("hose_trail", []):
             self.hose_cmd(n, "settrail:%d,%d=dropped;%s" % (g(rx, rz) + (";".join("%d,%d" % g(*c) for c in cells),)))
         for d, x, z, style in u.get("style", []):
-            th = self.B.call("jawa/list_things", defName=d, rect="%d,%d,1,1" % g(x, z), limit=3).get("things") or []
+            # a reel stands one square east of its staged cell (built West, footprint kept): the rect covers both squares
+            th = self.B.call("jawa/list_things", defName=d, rect=("%d,%d,2,1" if d == "RM_HoseReel" else "%d,%d,1,1") % g(x, z),
+                             limit=3).get("things") or []
             if not th:
                 self.notes.append("station %d style: no %s at %s" % (n, d, g(x, z)))
                 continue

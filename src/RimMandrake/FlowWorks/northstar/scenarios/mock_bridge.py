@@ -245,7 +245,15 @@ class MockBridge(object):
             if not self._known(d) or (kw.get("stuff") and not self._known(kw["stuff"])):
                 failed.append(op)
                 continue
-            self._new(d, nums[0], nums[1], kw.get("faction"), kw.get("stuff"))
+            t = self._new(d, nums[0], nums[1], kw.get("faction"), kw.get("stuff"))
+            if d == "RM_HoseReel":
+                # a 2x2 reel answers a click on any square it covers (GenAdj: an even rect shifts west for W/S, south for E/S)
+                rot = nums[2] % 4 if len(nums) > 2 else 0
+                x0, z0 = nums[0] - (1 if rot in (2, 3) else 0), nums[1] - (1 if rot in (1, 2) else 0)
+                for pre in GIZMOS_OF.get(d, []):
+                    for cx in (x0, x0 + 1):
+                        for cz in (z0, z0 + 1):
+                            self.gz.setdefault((cx, cz, pre), CYCLES[pre][0])
             survived += 1
         return self._ok(survived=survived, failed=failed)
 

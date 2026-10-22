@@ -20,6 +20,14 @@ namespace RimMandrake.FlowWorks.Hose
         public static bool StepLinked(int aBand, int bBand, bool rampJoins, bool ladderCarries) =>
             aBand == bBand || rampJoins || ladderCarries;
 
+        /// <summary>LADDER_HOSE_DIAGNOSE_RETRACTS_ON_A_WHIM: two uncovered dug neighbours with the SAME floor (hollow depth) are
+        /// one floor to a hose lying on it, whatever their bands. Bands read swim water at its surface, and swim is a per-square
+        /// 2 m threshold: a pump drawing one square of a pool a hair under 2 m (before the next levelling pulse) split the pool
+        /// into two bands with a "wall" between the intake square and the ladder square, and a 250-tick corridor check landing
+        /// in that window reeled the hose in ("no route"). The floor never moved, so neither may the hose.</summary>
+        public static bool FloorJoined(int aHollow, int bHollow, bool aCovered, bool bCovered) =>
+            aHollow > 0 && aHollow == bHollow && !aCovered && !bCovered;
+
         /// <summary>Endpoint reach by band: a hose end couples to a port (or touches water) only on its own band, so a pump on
         /// the lip does not take a hose end lying on the floor below it.</summary>
         public static bool EndReaches(int endBand, int otherBand) => endBand == otherBand;

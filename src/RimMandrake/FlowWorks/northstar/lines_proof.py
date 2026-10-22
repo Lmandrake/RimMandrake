@@ -569,7 +569,10 @@ def ladder_drain(ctx):
         for z in range(84, 87):
             ctx["dig"](P(x, z))
             ctx["dig"](P(x, z), 0, 4)
-    ctx["build"]("RM_LiquidPump:%d,%d" % pump, "Battery:%d,%d" % bat, "RM_HoseReel:%d,%d" % reel, "RM_LiquidTank:%d,%d" % tank,
+    # the reel turns since a98046cbe9 (REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST) and a bare op builds it NORTH: built West, one square
+    # east, so the 2x2 keeps the footprint and the west outlet this row was proven with
+    ctx["build"]("RM_LiquidPump:%d,%d" % pump, "Battery:%d,%d" % bat, "RM_HoseReel:%d,%d,3" % (reel[0] + 1, reel[1]),
+                 "RM_LiquidTank:%d,%d" % tank,
                  "RM_Ladder:%d,%d,3" % P(8, 85))
     ctx["ticks"](2)
     lt = B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % bat, limit=2) or {}
@@ -580,7 +583,7 @@ def ladder_drain(ctx):
     V.require(ladder.get("success") is True, "the ladder is on the pit floor", ladder)
     ly = ctx["lay"](reel, P(9, 85))
     kh0, th0 = ctx["hose"](reel)
-    rl = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,1,1" % reel, limit=1) or {}
+    rl = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,1" % reel, limit=1) or {}
     rid = ((rl.get("things") or [{}])[0]).get("id")
     ins = (B.call("jawa/inspect_string", thingIds=str(rid)) or {}) if rid else {}
     lines = [ln for t in (ins.get("things") or []) for ln in (t.get("inspect") or [])]
@@ -923,14 +926,17 @@ class FakeBridge(object):
                 if d == "RM_Ladder":
                     self.ladders[c] = False
                 if d == "RM_HoseReel":
-                    self.reels.setdefault(c, dict(laid=False, cells=[], geom=0, role="Capped", target=None, retract=None, ladders=0))
+                    # built West (rot 3) one square east of its staged cell: the probe names the footprint's west square
+                    rc = (c[0] - 1, c[1]) if len(p) > 2 and int(p[2]) % 4 == 3 else c
+                    self.reels.setdefault(rc, dict(laid=False, cells=[], geom=0, role="Capped", target=None, retract=None, ladders=0))
                 self.things.setdefault(c, []).append(d)
                 survived += 1
             return {"success": True, "survived": survived}
         if tool == "jawa/list_things":
             x, z = (int(v) for v in str(kw.get("rect")).split(",")[:2])
             d = kw.get("defName")
-            cells = [(x, z), (x, z + 1)] if d == "Battery" else [(x, z)]   # a battery is 1x2
+            w = int(str(kw.get("rect")).split(",")[2]) if len(str(kw.get("rect")).split(",")) > 2 else 1
+            cells = [(x, z), (x, z + 1)] if d == "Battery" else [(x + i, z) for i in range(max(1, w))]   # a battery is 1x2
             got = [{"id": "%s%d%d" % (d, x, z)} for c in cells if self._has(c, d)]
             return {"success": True, "things": got[:1]}
         if tool == "jawa/battery_set":
