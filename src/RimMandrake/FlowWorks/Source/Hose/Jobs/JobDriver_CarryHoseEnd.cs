@@ -168,7 +168,7 @@ namespace RimMandrake.FlowWorks.Hose.Jobs
             }
             r.DropCarry(pawn, !unreachable);
             if (unreachable && r.parent.Faction == Faction.OfPlayer)
-                Messages.Message("Hose end dropped at " + r.far + ": could not reach " + Dest + ".", new LookTargets(r.parent), MessageTypeDefOf.RejectInput, false);
+                Messages.Message("Hose end dropped: could not reach " + Dest + ".", new LookTargets(new TargetInfo(r.far, r.parent.Map)), MessageTypeDefOf.RejectInput, false);
         }
 
         protected override IEnumerable<Toil> MakeNewToils()

@@ -60,7 +60,7 @@ namespace RimMandrake.FlowWorks.Hose.Jobs
             {
                 if (!r.laid || r.far != context.ClickedCell || r.parent.Faction != Faction.OfPlayer) continue;
                 string blocked = Blocked(p, r, r.parent, false) ?? EndBlocked(p, r);
-                yield return Opt("Pick up hose end (reel at " + r.parent.Position + ")", blocked,
+                yield return Opt("Pick up hose end (" + r.parent.LabelShort + ")", blocked,
                     () => TargetThen(p, r, "Cannot move the hose end there: ", r.OrderMove));
             }
         }

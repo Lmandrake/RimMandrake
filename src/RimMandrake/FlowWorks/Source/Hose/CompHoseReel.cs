@@ -491,8 +491,8 @@ namespace RimMandrake.FlowWorks.Hose
                 pendingAt = IntVec3.Invalid;
                 SetCarry(HoseCarryState.Dropped);
                 if (parent.Faction == Faction.OfPlayer)
-                    Messages.Message("Hose at full stretch at " + far + ": this reel holds " + MaxLength.ToString("0") + " cells of hose.",
-                        new LookTargets(parent), MessageTypeDefOf.RejectInput, false);
+                    Messages.Message("Hose at full stretch: this reel holds " + MaxLength.ToString("0") + " cells of hose. The end lies where it stopped.",
+                        new LookTargets(new TargetInfo(far, parent.Map)), MessageTypeDefOf.RejectInput, false);
             }
             HoseChanged();
             return r;
@@ -772,8 +772,9 @@ namespace RimMandrake.FlowWorks.Hose
                 };
             yield return new Command_Action
             {
-                defaultLabel = end == HoseEnd.Nozzle ? "Fitting: nozzle" : end == HoseEnd.EndCap ? "Fitting: end cap" : "Fitting: open",
-                defaultDesc = "Switch the fitting drawn on the hose's free end: open (plain hose end), nozzle or end cap. Looks only; what the end does is its role.",
+                defaultLabel = end == HoseEnd.Nozzle ? "End look: nozzle" : end == HoseEnd.EndCap ? "End look: cap" : "End look: plain",
+                defaultDesc = "Changes only how the hose's free end is drawn: a plain hose end, a nozzle or a cap. It does not stop or start "
+                            + "any flow: what the end does is the Free end button (Capped, Intake or Outflow).",
                 icon = end == HoseEnd.Nozzle ? IconLay : IconEnd,
                 action = () => end = end == HoseEnd.Open ? HoseEnd.Nozzle : end == HoseEnd.Nozzle ? HoseEnd.EndCap : HoseEnd.Open
             };
@@ -863,10 +864,10 @@ namespace RimMandrake.FlowWorks.Hose
             RM_MapComponent_Hoses comp = parent.Spawned ? parent.Map.GetComponent<RM_MapComponent_Hoses>() : null;
             List<CompHoseReel> feeders = comp?.FeedersOf(this) ?? new List<CompHoseReel>();
             string conn = p != null ? "Connected to " + p.LabelShort + " (" + portKind.ToString().ToLower() + ")."
-                        : feeders.Count > 0 ? "Relay: fed by the hose from the reel at " + feeders[0].parent.Position + (feeders.Count > 1 ? " (+" + (feeders.Count - 1) + " more)" : "") + "."
+                        : feeders.Count > 0 ? "Relay: fed by the hose from another reel" + (feeders.Count > 1 ? " (+" + (feeders.Count - 1) + " more)" : "") + "."
                         : "Not connected: build it beside a pipe or tank, or lay another reel's hose onto it.";
-            string order = pending == HosePendingOrder.Deploy ? "\nOrdered: deploy the hose to " + pendingAt + "."
-                         : pending == HosePendingOrder.Move ? "\nOrdered: move the hose end to " + pendingAt + "."
+            string order = pending == HosePendingOrder.Deploy ? "\nOrdered: deploy the hose."
+                         : pending == HosePendingOrder.Move ? "\nOrdered: move the hose end."
                          : pending == HosePendingOrder.Retract ? "\nOrdered: retract the hose." : "";
             if (carry == HoseCarryState.Carrying)
                 return conn + "\nHose being carried" + (carrier != null ? " by " + carrier.LabelShort : "") + ", " + TrailLength().ToString("0") + " of " + MaxLength.ToString("0") + " cells out." + order;
@@ -874,17 +875,17 @@ namespace RimMandrake.FlowWorks.Hose
                 return conn + "\nHose being wound in" + (carrier != null ? " by " + carrier.LabelShort : "") + "." + order;
             if (!laid) return conn + "\nHose reeled in." + (lastRetractReason != null ? " Retracted automatically: " + Explain(lastRetractReason, lastRetractNeed) + "." : "") + order;
             if (carry == HoseCarryState.Dropped)
-                return conn + "\nHose end dropped at " + far + ", " + TrailLength().ToString("0") + " of " + MaxLength.ToString("0") + " cells out." + order;
+                return conn + "\nHose end dropped, " + TrailLength().ToString("0") + " of " + MaxLength.ToString("0") + " cells out." + order;
             string len = lay != null ? ", " + lay.FlatLen.ToString("0") + " of " + MaxLength.ToString("0") + " cells" : "";
             CompHoseReel relay = comp?.RelayOf(this);
-            string to = relay != null ? "the relay reel at " + relay.parent.Position : far.ToString();
+            string to = relay != null ? " to a relay reel" : "";
             // the free end: what it is coupled to (another faction's tank names its faction) or "lying in <water> (no intake ...)"
             string endLine = relay == null ? "\nFree end: " + this.FreeEnd().Describe() + "." : "";
             if (relay == null && RM_HoseSettings.freeEndRolesEnabled)
                 endLine += (heldUnits > 0 ? " Holding " + RM_Volume.FormatUnits(heldUnits) + " " + heldLiquid?.label + "." : "") + " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
             // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL (design P9): what passive levelling did at this end last cycle
             endLine += Machinery.RM_Levelling.Readout(parent.Map, this);
-            return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ")." + CrossingLines() + endLine + order;
+            return conn + "\nHose laid" + to + len + " (" + sm.State.ToString().ToLower() + ")." + CrossingLines() + endLine + order;
         }
     }
 }
