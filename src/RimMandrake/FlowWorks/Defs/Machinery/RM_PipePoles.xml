@@ -13,7 +13,9 @@
        the same look, tinted steel-blue so a pipe pole never reads as a power mast. Art contract (installed by `art install` once
        judged; then each style's texPath below is pointed at it): RimMandrake/FlowWorks/PipePole/<Look>/PipePole (pole, 2x4 like
        the mast) and RimMandrake/FlowWorks/PipePole/<Look>/PipeSpan (span strip, looked up SILENTLY by GSS's PipeMats until it
-       exists; until then the span draws the look's wire at the pipe's 0.22-cell width).
+       exists; until then the span draws the look's wire at the pipe's 0.22-cell width). PipeSpan.png INSTALLED 2026-10-22 (D5, joints
+       study): derived from each look's own ground pipe atlas by art_source/PipeSpan/make_pipe_span.py, no new design; the pole stays
+       the tinted stand-in until LINE_WIDTH_JUDGE_ARMS_NOT_INCLUDED.
      * Looks: the pipe's four (PipeStyles.Looks), picked on the build button through PipeLook (RM_PipePole_<Look>). -->
 <Defs>
 
@@ -81,7 +83,7 @@
         <maxLinks>3</maxLinks>   <!-- PROVISIONAL: a run in, a run out, one branch -->
         <attachZ>2.66</attachZ>  <!-- the stand-in mast's crossarm height; re-measure from the pole art when it lands -->
         <insulatorSpread>0</insulatorSpread>
-        <spanWidth>0.14</spanWidth>   <!-- RM_PipePoleMath.SpanWidthCells: the ground pipe atlas's girth (PIPE_GIRTH_TUNE_HALF_AS_THICK, 2026-10-21) -->
+        <spanWidth>0.14</spanWidth>   <!-- RM_PipePoleMath.SpanWidthCells: the ground pipe atlas's girth (PIPE_GIRTH_TUNE_HALF_AS_THICK, 2026-10-21); PipeSpan.png (D5, 2026-10-22) is the look's pipe filling its strip, so the span draws exactly this wide -->
         <spanTexPath>RimMandrake/FlowWorks/PipePole/{look}/PipeSpan</spanTexPath>
       </li>
       <li Class="RimMandrake.FlowWorks.Machinery.RM_LineKindExtension">

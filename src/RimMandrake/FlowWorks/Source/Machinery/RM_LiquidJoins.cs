@@ -61,6 +61,22 @@ namespace RimMandrake.FlowWorks.Machinery
             return null;
         }
 
+        /// <summary>D5 (joints study 2026-10-22): a built pipe pole (never its blueprint or frame) on cell c. The net already joins
+        /// a pipe beside it (RM_PipePoles.JoinCells); without this the ground pipe ended in a cap half a cell short of the pole.</summary>
+        public static bool PipePoleAt(IntVec3 c, Map map)
+        {
+            if (map == null || !c.InBounds(map)) return false;
+            List<Thing> l = c.GetThingList(map);
+            for (int i = 0; i < l.Count; i++)
+            {
+                if (IsPipePole(l[i])) return true;
+            }
+            return false;
+        }
+
+        public static bool IsPipePole(Thing t) =>
+            t is Building && t.def.GetModExtension<RM_LineKindExtension>()?.kind == LineKind.PipePole;
+
         public static bool IsPartner(Thing t)
         {
             RM_NetRole r = RM_LiquidNet.RoleOfKind(t);
@@ -270,7 +286,7 @@ namespace RimMandrake.FlowWorks.Machinery
     }
 
     /// <summary>pipeLinksIntoMachines: a pipe's linked atlas also links toward a tank or liquid machine beside it, so its arm
-    /// reaches the shared edge (the net already counts that pipe as attached).</summary>
+    /// reaches the shared edge (the net already counts that pipe as attached). D5 (2026-10-22): and toward a pipe pole.</summary>
     [RimMandrake.Shared.PatchFeature("Universal pipe: joins", typeof(RM_MachinerySettings), "pipeLinksIntoMachines")]
     [HarmonyPatch(typeof(Graphic_Linked), nameof(Graphic_Linked.ShouldLinkWith))]
     internal static class Patch_Pipe_LinksIntoMachines
@@ -279,7 +295,8 @@ namespace RimMandrake.FlowWorks.Machinery
         {
             if (__result || !RM_MachinerySettings.pipeLinksIntoMachines || parent == null || !parent.Spawned) return;
             if (!RM_LiquidNet.IsPipe(parent)) return;
-            if (RM_LiquidJoins.PartnerAt(c, parent.Map) != null) __result = true;
+            if (RM_LiquidJoins.PartnerAt(c, parent.Map) != null
+                || (RM_MachinerySettings.pipePolesEnabled && RM_LiquidJoins.PipePoleAt(c, parent.Map))) __result = true;
         }
     }
 
@@ -290,7 +307,7 @@ namespace RimMandrake.FlowWorks.Machinery
     {
         private static void Postfix(Building __instance, Map map)
         {
-            if (RM_LiquidJoins.IsPartner(__instance)) RM_LiquidJoins.DirtyAround(map, __instance.OccupiedRect());
+            if (RM_LiquidJoins.IsPartner(__instance) || RM_LiquidJoins.IsPipePole(__instance)) RM_LiquidJoins.DirtyAround(map, __instance.OccupiedRect());
         }
     }
 
@@ -300,7 +317,7 @@ namespace RimMandrake.FlowWorks.Machinery
     {
         private static void Prefix(Building __instance, out (Map map, CellRect rect) __state)
         {
-            __state = RM_LiquidJoins.IsPartner(__instance) ? (__instance.Map, __instance.OccupiedRect()) : (null, default(CellRect));
+            __state = RM_LiquidJoins.IsPartner(__instance) || RM_LiquidJoins.IsPipePole(__instance) ? (__instance.Map, __instance.OccupiedRect()) : (null, default(CellRect));
         }
 
         private static void Postfix((Map map, CellRect rect) __state)
