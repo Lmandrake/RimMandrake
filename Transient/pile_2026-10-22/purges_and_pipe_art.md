@@ -34,4 +34,6 @@
 - after his picks: install the atlas through art.py enact; a pump look needs a style def/C# (like the tanks) — FOUNDRY work.
 
 ## 5. Commits
-- status: pending
+- 8d02d3e2e2 purges (art ledger) — PUBLISHED
+- e5fb1dd9b0 drafts, item, sheet decisions/snapshot, lesson, pins — PUBLISHED
+- item left open, needs owner (his picks), note added
