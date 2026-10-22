@@ -2166,6 +2166,10 @@ def verify():
     resolves. That is exactly the failure this mod is built to prevent, so it
     has to be checked against the surviving set instead."""
     owner = _owner_index()
+    if not owner:
+        # an empty ownership index makes `dead` empty by construction: the check would pass vacuously
+        print("   ⚠️ the def dump names no owners at all - the instrument is blind; failing")
+        return False
 
     ours, refs, parents, trees = scan_defs(OUT + "/Defs")
     files = [fp for fp, _ in trees]
