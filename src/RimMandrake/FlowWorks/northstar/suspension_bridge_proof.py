@@ -626,7 +626,9 @@ def waters(ctx):
             kv, txt = proof("ProofBuild", "%s;%s;steel;god" % (xz(sea[0]), xz(sea[1])))
             w = spawn(sea[0])
             kvp, txtp = proof("ProofPath", "%s;%s" % (w, xz(sea[1]))) if w else ({}, "no pawn")
-            good = kv.get("ok") == "True" and kvp.get("found") == "True"
+            # HARNESS (belt live 2026-10-22): a path found AROUND a small sea patch read PASS with decked=0 -- crossable means
+            # the path stands on the deck
+            good = kv.get("ok") == "True" and kvp.get("found") == "True" and int(kvp.get("decked") or 0) > 0
             row("WAT_sea_or_backtrack", "PASS" if good else "FAIL",
                 {"build": txt, "path": txtp, "ifFail": "record the measured reason on FLOWWORKS_BRIDGES_DESIGN_SPAN_ANYTHING and set "
                  "suspensionOverSea off (the backtrack rule)"})
