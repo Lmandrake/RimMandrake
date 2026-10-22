@@ -1,0 +1,357 @@
+// CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED, Stage 0: offline checks of the sheet-water kernel (RM_SheetMath.cs, the
+// production file). design/RimMandrake/canal_overflow_flooding_2026-10-21.md §4 Stage 0 tests 1-9 as amended by §6, plus
+// the owner's §5 answers that the kernel carries as data (D2 gravity source, D3 crop week, D4 doors leak).
+// NOT proven here: anything about the game (temp terrain, pictures, path cost, the engine pulse) — Stage 1.
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using RimMandrake.FlowWorks;
+using static RimMandrake.FlowWorks.RM_SheetMath;
+
+namespace RimMandrake.FlowWorks.SelfTest
+{
+	internal static class SheetWaterChecks
+	{
+		private static void Assert(bool ok, string msg)
+		{
+			if (!ok) throw new Exception(msg);
+		}
+
+		private const byte Water = 1, Chemfuel = 2;
+
+		private static SpillOffer Offer(int amount, byte fluid, Source src, params int[] lips) =>
+			new SpillOffer { AmountDl = amount, Fluid = fluid, From = src, LipNearestFirst = lips };
+
+		private static int Idx(World w, int x, int z) => z * w.W + x;
+
+		private static void Ring(World w, int x0, int z0, int x1, int z1, Kind k)
+		{
+			for (int x = x0; x <= x1; x++) { w.Kinds[Idx(w, x, z0)] = k; w.Kinds[Idx(w, x, z1)] = k; }
+			for (int z = z0; z <= z1; z++) { w.Kinds[Idx(w, x0, z)] = k; w.Kinds[Idx(w, x1, z)] = k; }
+		}
+
+		private static long Inside(State s, World w, int x0, int z0, int x1, int z1)
+		{
+			long t = 0;
+			for (int x = x0; x <= x1; x++) for (int z = z0; z <= z1; z++) t += s.Dl[Idx(w, x, z)];
+			return t;
+		}
+
+		private static void Run(State s, World w, Params p, int pulses, PulseReport rep = null)
+		{
+			for (int i = 0; i < pulses; i++)
+			{
+				Pulse(s, w, p, rep);
+				Assert(s.LedgerCloses, $"ledger open after pulse {s.Pulse}: in {s.TotalIn} vs standing {s.Standing} + out {s.TotalOut}");
+			}
+		}
+
+		/// <summary>A random small world: walls, doors, grates, receivers (some full), a sink, soak and evaporation.</summary>
+		private static World RandomWorld(Random r, int W, int H, bool losses)
+		{
+			var w = new World(W, H);
+			for (int c = 0; c < W * H; c++)
+			{
+				int roll = r.Next(100);
+				w.Kinds[c] = roll < 10 ? Kind.Blocked : roll < 13 ? Kind.Door : roll < 15 ? Kind.Grate
+					: roll < 20 ? Kind.Receiver : roll < 21 ? Kind.Sink : Kind.Open;
+				if (w.Kinds[c] == Kind.Receiver) w.RoomDl[c] = r.Next(3) == 0 ? 0 : r.Next(20000);
+				if (w.Kinds[c] == Kind.Sink) w.BodyFluid[c] = Water;
+				if (losses) { w.SoakMilliDl[c] = r.Next(0, 3000); w.EvapMilliDl[c] = r.Next(0, 800); }
+			}
+			w.Fluids[Chemfuel] = new FluidRule { InfiltrationPermille = 0, EvaporationPermille = 3000 };
+			return w;
+		}
+
+		public static void Run(Action<string, Action> Case)
+		{
+			Case("Sheet_units_one_cm_is_200_dL_and_a_week_is_1680_pulses", () =>
+			{
+				Assert(DlPerCm == 200, "1 cm over one 2 m² square must be 20 L = 200 dL, got " + DlPerCm);
+				Assert(new Params().CropKillPulses == 1680, "D3: one week at a 250-tick pulse must be 1680 pulses");
+			});
+
+			// test 1: conservation over 10k pulses with every exit live
+			Case("Sheet_conserves_to_the_dL_over_10k_pulses_with_every_exit", () =>
+			{
+				var r = new Random(1021);
+				var w = RandomWorld(r, 24, 24, true);
+				var p = new Params { MaxWetCells = 300 };
+				var s = new State(24, 24, 0xC0FFEEu);
+				long offered = 0, accepted = 0;
+				for (int t = 0; t < 10000; t++)
+				{
+					if (t % 7 == 0 && t < 8000)
+					{
+						var offers = new List<SpillOffer>();
+						for (int k = 0; k < 3; k++)
+						{
+							int a = r.Next(1, 6000);
+							offers.Add(Offer(a, r.Next(4) == 0 ? Chemfuel : Water, (Source)r.Next(SourceCount), r.Next(576), r.Next(576)));
+							offered += a;
+						}
+						foreach (int a in ResolveSpills(s, w, p, offers)) accepted += a;
+					}
+					Pulse(s, w, p, null);
+					Assert(s.LedgerCloses, $"pulse {t}: in {s.TotalIn} != standing {s.Standing} + out {s.TotalOut}");
+					foreach (int c in s.Occ) Assert(s.Dl[c] > 0 && s.Dl[c] <= p.SheetCapDl, $"cell {c} holds {s.Dl[c]}");
+				}
+				Assert(accepted == s.TotalIn, "accepted offers must be exactly the In ledger");
+				Assert(accepted > 0 && accepted < offered, $"the scene must both accept and refuse (accepted {accepted} of {offered})");
+				Assert(s.Returned > 0 && s.JoinedLake > 0 && s.Soaked > 0 && s.Evaporated > 0,
+					$"every exit should have run: returned {s.Returned} lake {s.JoinedLake} soaked {s.Soaked} evap {s.Evaporated}");
+			});
+
+			// test 2: finite extent (§6 item 6): growth stops, wet count ≤ ⌈V/q_min⌉
+			Case("Sheet_extent_is_finite_and_bounded_by_V_over_qmin", () =>
+			{
+				var w = new World(80, 80);
+				var p = new Params();
+				var s = new State(80, 80, 7u);
+				int V = 40000; // 2 m³: 0.2 m on ten squares
+				int c0 = Idx(w, 40, 40);
+				ResolveSpills(s, w, p, new[] { Offer(9000, Water, Source.Pump, c0), Offer(9000, Water, Source.Pump, c0 + 1),
+					Offer(9000, Water, Source.Pump, c0 - 1), Offer(9000, Water, Source.Pump, c0 + 80), Offer(4000, Water, Source.Pump, c0 - 80) });
+				Assert(s.TotalIn == V, "the whole spill should be placed, got " + s.TotalIn);
+				Run(s, w, p, 400);
+				int wet = s.WetCount;
+				var snap = (int[])s.Dl.Clone();
+				Run(s, w, p, 100);
+				for (int c = 0; c < snap.Length; c++) Assert(snap[c] == s.Dl[c], $"cell {c} still moving after settling ({snap[c]} -> {s.Dl[c]})");
+				int bound = (V + p.MinReceiveDl - 1) / p.MinReceiveDl;
+				Assert(wet <= bound, $"wet {wet} > ⌈V/q_min⌉ {bound}");
+				Assert(wet > 50, $"a 2 m³ spill on open flat ground should spread; wet {wet}");
+				Assert(s.Standing == V, "no exits on this ground: all of it still stands");
+			});
+
+			// test 3: order independence
+			Case("Sheet_offer_order_does_not_change_the_outcome", () =>
+			{
+				var r = new Random(3);
+				var w = RandomWorld(r, 20, 20, true);
+				var p = new Params { MaxWetCells = 60 };
+				var offers = new List<SpillOffer>();
+				for (int k = 0; k < 12; k++) offers.Add(Offer(r.Next(100, 9000), k % 3 == 0 ? Chemfuel : Water, (Source)(k % SourceCount), r.Next(400), r.Next(400), r.Next(400)));
+				ulong first = 0;
+				for (int trial = 0; trial < 6; trial++)
+				{
+					var sh = new List<SpillOffer>(offers);
+					var rr = new Random(trial * 977 + 1);
+					for (int i = sh.Count - 1; i > 0; i--) { int j = rr.Next(i + 1); (sh[i], sh[j]) = (sh[j], sh[i]); }
+					var s = new State(20, 20, 99u);
+					var wc = w.Clone();
+					ResolveSpills(s, wc, p, sh);
+					Run(s, wc, p, 200);
+					ulong h = Hash(s);
+					if (trial == 0) first = h;
+					else Assert(h == first, $"shuffle {trial} gave a different state");
+				}
+			});
+
+			// test 4: walls hold, grates pass, doors leak slowly (owner D4: "Leak slowly under them")
+			Case("Sheet_walls_hold_grates_pass_doors_leak_slowly", () =>
+			{
+				long OutsideAfter(Kind gap, int pulses, out long inside)
+				{
+					var w = new World(30, 30);
+					Ring(w, 10, 10, 19, 19, Kind.Blocked);
+					if (gap != Kind.Blocked) w.Kinds[Idx(w, 19, 15)] = gap;
+					var p = new Params();
+					var s = new State(30, 30, 5u);
+					var lips = new List<int>();
+					for (int x = 11; x <= 18; x++) for (int z = 11; z <= 18; z++) lips.Add(Idx(w, x, z));
+					foreach (int c in lips) ResolveSpills(s, w, p, new[] { Offer(4000, Water, Source.Pump, c) }); // 20 cm deep: a pool
+					Run(s, w, p, pulses);
+					inside = Inside(s, w, 11, 11, 18, 18);
+					return s.Standing - inside - Inside(s, w, 19, 15, 19, 15);
+				}
+				long wallOut = OutsideAfter(Kind.Blocked, 300, out long wallIn);
+				long grateOut = OutsideAfter(Kind.Grate, 20, out _);
+				long doorOut20 = OutsideAfter(Kind.Door, 20, out long doorIn20);
+				long doorOut300 = OutsideAfter(Kind.Door, 300, out long doorIn300);
+				Assert(wallOut == 0 && wallIn == 64 * 4000, $"a wall ring must hold every dL (outside {wallOut})");
+				Assert(grateOut > 0, "a grate must pass water");
+				Assert(doorOut20 > 0, "D4: a door leaks; it does not block");
+				Assert(doorOut20 * 4 < grateOut, $"D4: a door leaks SLOWLY (door {doorOut20} vs grate {grateOut} after 20 pulses)");
+				Assert(doorOut300 > doorOut20 && doorIn300 < doorIn20, "the door keeps leaking and the pool keeps falling");
+			});
+
+			// test 5: return to channel, and a full channel refuses
+			// micro-relief (±1 cm, D9 still open) leaves puddles in its dips: with relief OFF every dL of mobile water
+			// must run back; with it ON, what stays is bounded by retention + the dip depth
+			foreach (int relief in new[] { 0, DlPerCm })
+				Case("Sheet_runs_back_into_the_canal_when_it_is_drawn_down_relief_" + relief, () =>
+				{
+					var w = new World(40, 20);
+					for (int x = 0; x < 40; x++) w.Kinds[Idx(w, x, 10)] = Kind.Receiver; // a canal row, brim-full (room 0)
+					var p = new Params { ReliefDl = relief };
+					var s = new State(40, 20, 11u);
+					ResolveSpills(s, w, p, new[] { Offer(30000, Water, Source.Pump, Idx(w, 20, 11), Idx(w, 21, 11), Idx(w, 19, 11)) });
+					Run(s, w, p, 60);
+					Assert(s.Returned == 0, "a brim-full canal takes nothing back");
+					Assert(s.Standing == 30000, "and nothing was lost");
+					for (int x = 0; x < 40; x++) w.RoomDl[Idx(w, x, 10)] = 5000; // the pump stops and the canal is drawn down
+					var rep = new PulseReport();
+					long credited = 0;
+					for (int i = 0; i < 400; i++) { Pulse(s, w, p, rep); foreach (var (_, dl) in rep.Returned) credited += dl; Assert(s.LedgerCloses, "ledger"); }
+					Assert(credited == s.Returned, "every returned dL is reported for the engine to credit");
+					// a flux needs a 2 dL head (1 dL could only swap levels and ping-pong), so a settled sheet may keep a
+					// 1-dL-per-square staircase toward the drain: a rounding residue, bounded here at 1% of the spill
+					long residue = 0;
+					foreach (int c in s.Occ) residue += Math.Max(0, s.Dl[c] - p.RetentionDl - 2 * relief);
+					Console.WriteLine($"      relief {relief}: returned {s.Returned} of 30000, held {s.Standing} on {s.WetCount} squares, residue {residue} dL");
+					Assert(residue * 100 <= 30000, $"mobile water stranded above retention + dips: {residue} dL");
+					Assert(s.Returned + s.Standing == 30000, "conserved");
+					// everything that stays is held moisture (retention), a relief dip, or the residue; the rest ran back
+					Assert(s.Returned > 0 && s.Standing <= (long)s.WetCount * (p.RetentionDl + 2 * relief) + residue,
+						$"only held moisture may stay (held {s.Standing} on {s.WetCount} squares)");
+				});
+
+			// test 6: back-pressure, caps never delete
+			Case("Sheet_full_caps_refuse_back_to_the_inflow_and_lowering_a_cap_deletes_nothing", () =>
+			{
+				var w = new World(30, 30);
+				var p = new Params { MaxWetCells = 10, SheetCapDl = 2000 };
+				var s = new State(30, 30, 3u);
+				int[] acc = ResolveSpills(s, w, p, new[] { Offer(100000, Water, Source.Pump, Idx(w, 15, 15), Idx(w, 16, 15), Idx(w, 14, 15)) });
+				Assert(acc[0] == 6000, "three lips × 2000 dL cap = 6000 accepted, got " + acc[0]);
+				Run(s, w, p, 200);
+				Assert(s.WetCount <= 10, "wet cap " + s.WetCount);
+				int[] acc2 = ResolveSpills(s, w, p, new[] { Offer(100000, Water, Source.Rain, Idx(w, 2, 2)) });
+				Assert(acc2[0] == 0, "a new dry lip past the wet cap is refused");
+				p.MaxWetCells = 3; p.SheetCapDl = 500;
+				long before = s.Standing;
+				Run(s, w, p, 50);
+				Assert(s.Standing == before && s.WetCount >= 3, "lowering a cap must never delete water");
+				Assert(s.TotalOut == 0, "and nothing left by an exit");
+			});
+
+			// test 7: hysteresis
+			Case("Sheet_tier_hysteresis_does_not_flap", () =>
+			{
+				var p = new Params();
+				var t = Tier.Film; int flips = 0;
+				for (int i = 0; i < 100; i++)
+				{
+					var n = NextTier(t, i % 2 == 0 ? 610 : 450, p);
+					if (n != t) flips++;
+					t = n;
+				}
+				Assert(flips == 1 && t == Tier.Sheet, "610/450 around the 600 up / 400 down band flips once, got " + flips);
+				Assert(NextTier(Tier.Sheet, 399, p) == Tier.Film && NextTier(Tier.Film, 3000, p) == Tier.Pool
+					&& NextTier(Tier.Pool, 2700, p) == Tier.Pool && NextTier(Tier.Pool, 2500, p) == Tier.Sheet
+					&& NextTier(Tier.Pool, 0, p) == Tier.None, "tier thresholds");
+			});
+
+			// test 8: bench (provisional 1 ms target, §6 item 12; only a gross regression fails here)
+			Case("Sheet_bench_250x250_4000_wet_three_sweeps", () =>
+			{
+				var w = new World(250, 250);
+				var p = new Params();
+				var s = new State(250, 250, 42u);
+				var offers = new List<SpillOffer>();
+				for (int k = 0; k < 40; k++) offers.Add(Offer(30000, Water, Source.Pump, Idx(w, 20 + (k % 8) * 28, 20 + (k / 8) * 45)));
+				for (int i = 0; i < 25; i++) { ResolveSpills(s, w, p, offers); Pulse(s, w, p, null); }
+				for (int i = 0; s.WetCount < 3500 && i < 400; i++) Pulse(s, w, p, null);
+				int wet = s.WetCount;
+				var sw = Stopwatch.StartNew();
+				const int N = 50;
+				for (int i = 0; i < N; i++) Pulse(s, w, p, null);
+				double ms = sw.Elapsed.TotalMilliseconds / N;
+				Console.WriteLine($"      sheet bench: {wet} wet cells, {ms:F3} ms per pulse (target 1 ms, provisional)");
+				Assert(wet >= 3000, "bench scene too small: " + wet);
+				Assert(ms < 50, $"{ms:F2} ms per pulse is a gross regression");
+			});
+
+			// test 9: save round-trip AND continuation (§6 item 4)
+			Case("Sheet_save_load_continuation_matches_the_uninterrupted_run", () =>
+			{
+				var r = new Random(9);
+				var w0 = RandomWorld(r, 22, 22, true);
+				var p = new Params { MaxWetCells = 200, CropKillPulses = 40 };
+				var a = new State(22, 22, 1234u); var wa = w0.Clone();
+				var b = new State(22, 22, 1234u); var wb = w0.Clone();
+				var feed = new List<SpillOffer[]>();
+				for (int t = 0; t < 400; t++)
+					feed.Add(t % 5 == 0 && t < 300 ? new[] { Offer(r.Next(500, 8000), t % 15 == 0 ? Chemfuel : Water, Source.Gravity, r.Next(484), r.Next(484)) } : new SpillOffer[0]);
+				for (int t = 0; t < 400; t++)
+				{
+					if (t == 173)
+					{
+						byte[] bytes = Save(b);
+						var b2 = Load(bytes);
+						Assert(Hash(b2) == Hash(b), "round-trip hash");
+						b = b2;
+					}
+					int[] x = ResolveSpills(a, wa, p, feed[t]), y = ResolveSpills(b, wb, p, feed[t]);
+					Assert(x.Length == y.Length && (x.Length == 0 || x[0] == y[0]), $"pulse {t}: accepted differs");
+					Pulse(a, wa, p, null); Pulse(b, wb, p, null);
+					Assert(Hash(a) == Hash(b), $"pulse {t}: the save/load continuation diverged");
+				}
+				Assert(a.In[(int)Source.Gravity] > 0, "D2: a gravity feed is an inflow like any other");
+				for (int c = 0; c < wa.RoomDl.Length; c++) Assert(wa.RoomDl[c] == wb.RoomDl[c], "receiver credits diverged");
+			});
+
+			// D3: crop dies only after a week of standing overflow; film irrigates and never kills
+			Case("Sheet_crops_die_after_a_week_of_standing_overflow_film_irrigates", () =>
+			{
+				var w = new World(12, 12);
+				Ring(w, 2, 2, 6, 6, Kind.Blocked);         // a walled yard: 3×3 inside, held at sheet depth
+				for (int c = 0; c < 144; c++) w.SoakMilliDl[c] = 1000; // 1 dL a pulse soaks (and irrigates)
+				var p = new Params();
+				var s = new State(12, 12, 8u);
+				var yard = new List<int>();
+				for (int x = 3; x <= 5; x++) for (int z = 3; z <= 5; z++) yard.Add(Idx(w, x, z));
+				foreach (int c in yard) ResolveSpills(s, w, p, new[] { Offer(5000, Water, Source.Rain, c) }); // 25 cm, plenty for a week of 1 dL
+				int film = Idx(w, 9, 9);
+				ResolveSpills(s, w, p, new[] { Offer(150, Water, Source.Rain, film) }); // under retention: held moisture, film tier
+				var rep = new PulseReport();
+				var killedAt = new Dictionary<int, long>();
+				long filmSoak = 0;
+				for (int i = 0; i < p.CropKillPulses + 50; i++)
+				{
+					Pulse(s, w, p, rep);
+					foreach (int c in rep.CropKilled) { Assert(!killedAt.ContainsKey(c), "a crop is killed once"); killedAt[c] = s.Pulse; }
+					foreach (var (c, dl) in rep.Soaked) if (c == film) filmSoak += dl;
+				}
+				Assert(killedAt.Count == 9, "every yard cell under standing overflow kills its crop after a week, got " + killedAt.Count);
+				foreach (var kv in killedAt) Assert(kv.Value == p.CropKillPulses, $"cell {kv.Key} killed at pulse {kv.Value}, not {p.CropKillPulses}");
+				Assert(!killedAt.ContainsKey(film) && filmSoak == 150, $"the film irrigates (soaked {filmSoak}) and never kills");
+				Assert(s.LedgerCloses, "ledger");
+			});
+
+			// §3 blocking rules: no mixing; a limitless lake absorbs and discloses; a foreign body refuses
+			Case("Sheet_fluids_never_mix_and_the_lake_absorbs_disclosed", () =>
+			{
+				var w = new World(20, 5);
+				w.Kinds[Idx(w, 19, 2)] = Kind.Sink; w.BodyFluid[Idx(w, 19, 2)] = Water;
+				w.Kinds[Idx(w, 0, 2)] = Kind.Receiver; w.RoomDl[Idx(w, 0, 2)] = 100000; w.BodyFluid[Idx(w, 0, 2)] = Water;
+				var p = new Params();
+				var s = new State(20, 5, 2u);
+				ResolveSpills(s, w, p, new[] { Offer(8000, Water, Source.Flood, Idx(w, 17, 2)) });
+				int[] acc = ResolveSpills(s, w, p, new[] { Offer(8000, Chemfuel, Source.FillIn, Idx(w, 17, 2), Idx(w, 2, 2)) });
+				Assert(acc[0] == 8000 && s.Fluid[Idx(w, 2, 2)] == Chemfuel, "chemfuel refuses the water-wet lip and takes the next");
+				Run(s, w, p, 300);
+				Assert(s.JoinedLake > 0, "water reaching a limitless lake joins it, disclosed");
+				long fuel = 0;
+				foreach (int c in s.Occ) if (s.Fluid[c] == Chemfuel) fuel += s.Dl[c];
+				Assert(fuel == 8000, "every dL of chemfuel is still chemfuel (no lake or canal took it, nothing mixed): " + fuel);
+				Assert(w.RoomDl[Idx(w, 0, 2)] == 100000, "a water canal refuses chemfuel");
+			});
+
+			Case("Sheet_dry_all_is_a_disclosed_purge", () =>
+			{
+				var w = new World(10, 10);
+				var p = new Params();
+				var s = new State(10, 10, 1u);
+				ResolveSpills(s, w, p, new[] { Offer(5000, Water, Source.Pump, 55) });
+				Run(s, w, p, 20);
+				long purged = PurgeAll(s);
+				Assert(purged == 5000 && s.Purged == 5000 && s.WetCount == 0 && s.LedgerCloses, "purge discloses every dL");
+				var rep = new PulseReport();
+				Pulse(s, w, p, rep);
+				Assert(rep.TierChanged.Count > 0, "the purge reports the pictures to clear");
+			});
+		}
+	}
+}

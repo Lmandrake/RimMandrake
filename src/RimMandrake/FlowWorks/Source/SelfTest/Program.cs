@@ -132,6 +132,13 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 return LakeFloorChecks.Preview(args[1]);
             }
+            // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED: the sheet-water kernel alone (fast loop while it is built)
+            if (args.Length > 0 && args[0] == "--sheet")
+            {
+                SheetWaterChecks.Run(Case);
+                Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
+                return Fail.Count == 0 ? 0 : 1;
+            }
             if (args.Length > 0 && args[0] == "--oracle-scenes")
             {
                 // A file, not stdin: a large pipe into dotnet.exe across the WSL boundary hangs (measured, 3000 scenes).
@@ -2039,6 +2046,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             LevelExactChecks.Run(Case);        // WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: exact decilitres, one surface per body (LevelExactChecks.cs)
             LevelPourChecks.Run(Case);         // PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes: pours and fill-ins in decilitres (LevelPourChecks.cs)
             WaterLadderChecks.Run(Case);       // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (P14): one water ladder, base-layer dug water, migration (WaterLadderChecks.cs)
+            SheetWaterChecks.Run(Case);        // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 0: the sheet-water kernel (SheetWaterChecks.cs)
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
