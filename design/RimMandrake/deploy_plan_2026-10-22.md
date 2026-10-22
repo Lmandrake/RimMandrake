@@ -43,7 +43,7 @@ both expected**; none is a typo found:
 | cause | files | meaning |
 |---|---|---|
 | `RM_Wastes`, `RM_SleepingIce`, `RM_WastesAshStorm`, `RM_WastesPlasmaStorm` absent | Wastes/RM_AcousticPayload_Wastes, RM_WastesBrine_ScatterRegister, RM_Wastes_MovingDunesBinding; SleepingIce/RM_AcousticPayload_SleepingIce; Scarlands/RM_AerosolScreen_PollutedBiomes | the capture predates the rename; these resolve only after the composite deploys. Re-run after deploy. |
-| `AA_*` (AnimaColossus, Wildpod, Wildpawn, MycoidColossus, Agaripawn, Agaripod, Swarmling, AngelMoth) and `Beldon` absent | TheRot/RotSpecies_NamesAndSizes (113), UtinniPatches/BiomeFaunaStatAdjustments_Generated (2) | donor creatures not in the capture's 325-mod set (Alien Worlds is in LATEST). UNMEASURED whether the Wave 4 list carries them: re-run `--live` against a post-deploy capture; the patches are Conditional-guarded so they no-op, not error, at load. |
+| `AA_*` (AnimaColossus, Wildpod, Wildpawn, MycoidColossus, Agaripawn, Agaripod, Swarmling, AngelMoth) and `Beldon` absent | TheRot/RotSpecies_NamesAndSizes (113), UtinniPatches/BiomeFaunaStatAdjustments_Generated (2) | CORRECTED: the `AA_*` defs belong to Alpha Animals (`sarg.alphaanimals`), NOT Alien Worlds (`7f.alienworlds` defines none of them); `Beldon` belongs to `mlie.starwarsanimalcollection`. Both donors were retired 2026-10-18 and are in no current list (SHIP, LATEST, Wave 4: 0 hits), so a post-deploy capture will NOT clear these. Verdicts: section "Failing-patch verdicts" below. |
 
 OK: UtinniPatches AshStorms_Pyrelands, MechClusterBiomes_AmbientDoctrine (2 warnings), WildAnimals_BlueDesert /
 CrackedLands / LongShade / TheForge; ShokkweaveEggBlackMarket (1 warning); Droidworks FlowWorks_DroidsDigDeep (1
@@ -72,8 +72,7 @@ do nothing until BENCH releases). Dry run each line first; refuse any line you d
    new folders (135 and 24 files), TheRot +2 / Webwork +6 / LeaningScrub +6 added, about 20 DLLs updated, renames pruned.
    Check: dry run `in sync`; `.srchash` of every listed DLL equals the deployed one; `Biomes/Wasteland` and
    `Biomes/NightsideIce` gone; then Load 1 `jawa/running_mods` and re-run the 7 FAIL patch files with `--live` on a fresh
-   capture (expect the `RM_Wastes`/`RM_SleepingIce` errors to clear; the `AA_*` ones stay until the Alien Worlds question
-   is settled).
+   capture (expect the `RM_Wastes`/`RM_SleepingIce` errors to clear; the `AA_*` and `Beldon` ones stay: the donors are retired, see verdicts).
 5. `--apply --mod FlowWorks`: after blocker 3. Check: assembly sha equals `RimMandrakeFlowWorks.dll.srchash`
    (runbook row 1.0).
 6. `--apply --mod Armoury`, then `--mod Ninefold`, then `--mod StructureInjections`, `--mod StructureInjectionsRUT`,
@@ -85,3 +84,36 @@ do nothing until BENCH releases). Dry run each line first; refuse any line you d
    Refresh/Save, never by hand-copy over a running game), after steps 1 to 6.
 9. Last: `python3 src/RimMandrake/Utils/deploy_custom_mods.py` (plain walk, to a file) must end `Everything in sync`
    apart from the held files; then `./game` measures state.
+
+## Failing-patch verdicts (read-only diagnosis, FOUNDRY helper, 2026-10-22)
+
+Checked against the donor folders in `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100` (Alpha Animals
+1541721856, Alien Worlds 3626210061, Star Wars Animal Collection 3497316713), the SHIP / LATEST / Wave 4 lists and the
+RM_ port headers. The live capture is not stale for these: its mod set (325) correctly lacks the retired donors.
+Alien Worlds x2 (commit `1f6930706`, SHIP list) is irrelevant to these patches: it adds world-generation defs, no `AA_*`.
+
+**Wastes / SleepingIce / Scarlands rename failures (5 files): LIVE.** Targets are our own `RM_Wastes`, `RM_SleepingIce`
+and storm defs, which exist in `src/` and arrive with the Biomes composite. Re-run after step 4; no action.
+
+**TheRot/RotSpecies_NamesAndSizes.xml (113 errors): DEAD per block, file not yet deletable.** Every block is a
+`PatchOperationConditional` on an `AA_*` ThingDef/PawnKindDef of retired Alpha Animals, so it no-ops silently. Per species:
+| donor def | where its content went | block |
+|---|---|---|
+| AA_Agaripawn, AA_Agaripod, AA_MycoidColossus | folded into `RM_AgariPorts.xml` (names, sizes, art paths; header says so) | dead |
+| AA_Swarmling | `RM_Chittik.xml` (aa_port.py port) | dead |
+| AA_AngelMoth | `RM_Dustveil.xml` | dead |
+| AA_Wildpawn, AA_Wildpod | `RM_Durrok`, `RM_Mullgoth` in SWBestiary `RSW_DesertPortMisc_Races.xml` | dead (confirm names/widths carried; not measured here) |
+| AA_AnimaColossus | NO port exists; `RUT_TheRot.xml` mentions it only in a comment | block dead, creature absent from the game: **needs owner** (port it or drop it from the Rot cast) |
+The `RM_*` flora blocks in the same file (AgaricusDomeCap ... Bryolux) target our own defs and are not part of the 113 errors. Deleting the AA_ blocks
+needs his decision; not added to `dead_patches.md` before now.
+
+**UtinniPatches/BiomeFaunaStatAdjustments_Generated.xml (2 errors): op 1 (`Beldon` predator=false) DEAD.** `Beldon` is a
+retired-donor name; `RSW_Beldon` (SWBestiary) has no `predator` node, so the ruled value (predator false, owner card
+2026-09-09) holds by default and nothing is lost. Ops 2 to 6 target `RSW_*` and are live (validate_patch: 1 match each).
+Correction to `review_findings_2026-10-22/dead_patches.md`: its "YES LOST" claim for Gutkurr/Wraid is wrong, the file already
+targets `RSW_Gutkurr` and `RSW_Wraid` (MoveSpeed ops match 1 each); only op 1 is dead, and it is a generator output
+(`design/Jawa/fauna/gen_stat_adjustments.py`), so fix the generator, not the file. Same file is already listed there: cross-reference only.
+Related, not failing: `RUT_TibannaTap_BeldonWiring.xml` already targets `RSW_Beldon` behind a FindMod.
+
+Net: nothing in the 7 FAIL set blocks the apply; 5 clear on deploy, 2 stay red as expected (inert, Conditional-guarded). Only
+open owner question: AA_AnimaColossus (no RM_ port).
