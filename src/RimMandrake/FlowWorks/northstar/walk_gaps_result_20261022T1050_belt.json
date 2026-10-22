@@ -1,0 +1,474 @@
+{
+ "script": "walk_gaps_proof.py",
+ "started": "2026-10-22T10:34:38",
+ "rows": [
+  {
+   "id": "COVER_DECON_DROPS_RIDER",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIT_COVER_BUILD_DECONSTRUCT_DROPS_TOO",
+   "criterion": "A2",
+   "detail": {
+    "before": "TRAP descents=0 lastCell=42,43 pos=42,43 held=False last=-",
+    "after": "TRAP descents=0 lastCell=42,43 pos=42,43 held=False last=-",
+    "designation": {
+     "success": true,
+     "action": "add",
+     "designation": "Deconstruct",
+     "added": 1,
+     "removed": 0,
+     "alreadyPresent": 0,
+     "alreadyAbsent": 0,
+     "skippedWrongType": 1,
+     "targetType": "Thing",
+     "targetedThings": true,
+     "note": "'Deconstruct' is a THING designation - the rect selects cells and each thing in them is designated.",
+     "onThings": false,
+     "problemCount": 0,
+     "problemListTruncated": false,
+     "problems": [],
+     "totalNow": 1,
+     "ticksGame": 73,
+     "operation": {
+      "OperationId": "op_8cf453c49aff4a4fa0b9b9f7dfec15b2",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 46
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 73
+     }
+    },
+    "jobTicks": 3000,
+    "workPriority": {
+     "success": true,
+     "requested": 1,
+     "readBack": 3,
+     "manualPrioritiesOn": false,
+     "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+     "operation": {
+      "OperationId": "op_728c7ed905a94130933ad33229fce5c9",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 47
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 63
+     }
+    }
+   }
+  },
+  {
+   "id": "LADDER_RAISED_FROM_BELOW",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE",
+   "criterion": "A4",
+   "detail": {
+    "ladder": "LADDER cell=50,43 present=True raised=True want=True ordered=False top=49,43 inspect=Slid_up_onto_the_rim:_nobody_can_climb_down_or_out.",
+    "ticks": 1550,
+    "pitColonist": "TRAP descents=1 lastCell=49,43 pos=49,43 held=False last=Human36897@42,43_t=4375_fall=9.7"
+   }
+  },
+  {
+   "id": "LADDER_NO_LOWER_FROM_BELOW",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE",
+   "criterion": "A4",
+   "detail": {
+    "ladder": "LADDER cell=50,43 present=True raised=True want=False ordered=True top=49,43 inspect=Slid_up_onto_the_rim:_nobody_can_climb_down_or_out.",
+    "ordered": "True",
+    "want": "False",
+    "gate": "scored only after LADDER_RAISED_FROM_BELOW PASS",
+    "first": "PASS"
+   }
+  },
+  {
+   "id": "LADDER_LOWERED_FROM_RIM",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE",
+   "criterion": "A4",
+   "detail": {
+    "ladder": "LADDER cell=50,43 present=True raised=False want=False ordered=False top=49,43 inspect=Ladder_down:_your_people_climb;_prisoners_only_in_a_prison_break.",
+    "ticks": 150,
+    "rimColonist": "TRAP descents=1 lastCell=49,43 pos=49,43 held=False last=Human36897@42,43_t=4375_fall=9.7"
+   }
+  },
+  {
+   "id": "LADDER_RAISED_FROM_RIM",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE",
+   "criterion": "A4",
+   "detail": {
+    "ladder": "LADDER cell=50,43 present=True raised=True want=True ordered=False top=49,43 inspect=Slid_up_onto_the_rim:_nobody_can_climb_down_or_out.",
+    "ticks": 150,
+    "rimColonist": "TRAP descents=1 lastCell=49,43 pos=49,43 held=False last=Human36897@42,43_t=4375_fall=9.7"
+   }
+  },
+  {
+   "id": "TRAVEL_FLYER_FREE_ON_FLOOR",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT",
+   "criterion": "A4",
+   "detail": {
+    "read": "PITTRAVEL cell=59,43 pawn=duck canFly=True jumps=False floats=False free=True held=False flying=False setting=True",
+    "kind": "Duck",
+    "canFly": "True"
+   }
+  },
+  {
+   "id": "TRAVEL_PERSON_HELD_CONTROL",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT",
+   "criterion": "A4",
+   "detail": {
+    "read": "PITTRAVEL cell=65,43 pawn=Sancho canFly=False jumps=False floats=False free=False held=True flying=False setting=True"
+   }
+  },
+  {
+   "id": "TRAVEL_MARKED_FREE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT",
+   "criterion": "A4",
+   "detail": {
+    "race": "RM_Huldu",
+    "read": "PITTRAVEL cell=60,44 pawn=huldu canFly=False jumps=True floats=False free=True held=False flying=False setting=True",
+    "tried": [
+     [
+      "RM_Huldu",
+      true
+     ]
+    ]
+   }
+  },
+  {
+   "id": "TRAVEL_THROWN_FLYER_UNHURT",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT",
+   "criterion": "A4",
+   "detail": {
+    "duck": "FLYER id=Duck36952 from=56,43 to=59,42 depth=6 launched=True def=PawnFlyer_Stun",
+    "person": "FLYER id=Human36953 from=63,43 to=65,42 depth=6 launched=True def=PawnFlyer_Stun",
+    "duckNew": [
+     "RM_PitExposure"
+    ],
+    "personNew": [
+     "Bruise",
+     "RM_PitExposure"
+    ],
+    "control": "the thrown colonist must gain a hediff, else the read is blind"
+   }
+  },
+  {
+   "id": "TANKS_APART_HOLD",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "walk-stop-6 premise (no ledger criterion)",
+   "detail": {
+    "units": [
+     [
+      16000,
+      128000,
+      256000
+     ],
+     [
+      16000,
+      128000,
+      256000
+     ]
+    ],
+    "capacity": [
+     160000,
+     320000,
+     320000
+    ]
+   }
+  },
+  {
+   "id": "TANKS_JOINED_ONE_LEVEL",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "walk-stop-6 premise (no ledger criterion)",
+   "detail": {
+    "fractionsBefore": [
+     0.1,
+     0.4,
+     0.8
+    ],
+    "fractionsAfter": [
+     0.1,
+     0.4,
+     0.8
+    ],
+    "spreadBefore": 0.7,
+    "spreadAfter": 0.7,
+    "totalBefore": 400000,
+    "totalAfter": 400000,
+    "level": false,
+    "why": "nothing moved between joined Store tanks",
+    "units": [
+     [
+      16000,
+      128000,
+      256000
+     ],
+     [
+      16000,
+      128000,
+      256000
+     ]
+    ],
+    "capacity": [
+     160000,
+     320000,
+     320000
+    ],
+    "netReach": [
+     [
+      76,
+      50
+     ],
+     [
+      80,
+      50
+     ]
+    ],
+    "settles": [
+     2,
+     2
+    ]
+   }
+  },
+  {
+   "id": "PONDS_DIFFERENT_LIQUIDS_NO_MIX",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "A5",
+   "detail": {
+    "dl": [
+     [
+      360000,
+      90000
+     ],
+     [
+      360000,
+      90000
+     ]
+    ],
+    "moves": 0,
+    "linked": false,
+    "readout": " |  | "
+   }
+  },
+  {
+   "id": "PONDS_HOSE_LEVEL",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL",
+   "criterion": "A4",
+   "detail": {
+    "dl": [
+     [
+      360000,
+      90000
+     ],
+     [
+      360000,
+      90000
+     ]
+    ],
+    "moves": 0,
+    "linked": false,
+    "flowingSeen": false,
+    "ticks": 3750,
+    "trail": [
+     [
+      2500,
+      [
+       360000,
+       90000
+      ],
+      0
+     ],
+     [
+      2750,
+      [
+       360000,
+       90000
+      ],
+      0
+     ],
+     [
+      3000,
+      [
+       360000,
+       90000
+      ],
+      0
+     ],
+     [
+      3250,
+      [
+       360000,
+       90000
+      ],
+      0
+     ],
+     [
+      3500,
+      [
+       360000,
+       90000
+      ],
+      0
+     ],
+     [
+      3750,
+      [
+       360000,
+       90000
+      ],
+      0
+     ]
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/walkgaps_3.json",
+  "origin": "40,40",
+  "fresh_map": true,
+  "only": "",
+  "job_ticks": 3000,
+  "level_ticks": 6000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "missingHooks": {
+  "ProofTankSettle": "RM_LiquidNet: one read 'TANKSETTLE settles=N settledUnits=N levelled=N' so TANKS_JOINED_ONE_LEVEL can tell 'no mechanism' from 'mechanism, not yet' (today only units are read)",
+  "ProofLevelLink": "RM_Levelling.StateOf per reel as a word ('LEVEL reel=x,z state=Flowing|Level|DifferentLiquids|..'), instead of substring-reading the reel's inspect line",
+  "ProofPumpPorts": "per side of an RM_LiquidPump: 'PORTS n=pipe|reel:<id>|free:<id>|none ..' with coupled=b, the read FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE A4 needs (no row here: the hose probe's net verb shows tanks reached, not which side a hose coupled on)"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "03db98c3c80271c66a634e737b05a24c6abc868dbc67d76c87c704ed1ec74fff"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Alpaca36799",
+    "Alpaca36800",
+    "Alpaca36801",
+    "Alpaca36802",
+    "Bear_Grizzly36796",
+    "Bear_Grizzly36820",
+    "Bison36823",
+    "Bison36824",
+    "Bison36825",
+    "Bison36826",
+    "Bison36827",
+    "Bison36828",
+    "Bluebird36789",
+    "Bluebird36794",
+    "Bluebird36810",
+    "Bluebird36817",
+    "Fox_Red36805",
+    "Hare36808",
+    "Hare36809",
+    "Hare36812",
+    "Hare36813",
+    "Ibex36787",
+    "Ibex36788",
+    "Ibex36790",
+    "Ibex36791",
+    "Ibex36792",
+    "Ibex36807",
+    "Lynx36793",
+    "Megasloth36816",
+    "Megasloth36821",
+    "Megasloth36829",
+    "Mink36806",
+    "Porcupine36818",
+    "Raccoon36786",
+    "Raccoon36798",
+    "Rat36785",
+    "Rat36811",
+    "Rat36815",
+    "Squirrel36795",
+    "Squirrel36797",
+    "Squirrel36804",
+    "Squirrel36814",
+    "Squirrel36819",
+    "Tortoise36803",
+    "Tortoise36822"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "startColonistsDrafted": [
+  [
+   "Human280",
+   true
+  ],
+  [
+   "Human283",
+   true
+  ],
+  [
+   "Human292",
+   true
+  ]
+ ],
+ "finished": "2026-10-22T10:39:51"
+}
