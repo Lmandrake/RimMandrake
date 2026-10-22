@@ -250,7 +250,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(grid, @"edgeVersion != RM_LadderUtility\.StateVersion", "the ladder-edge cache is keyed on the ladder raise/lower counter");
                 RiverSwitchFlipChecks.Has(Src("Superdeep", "RM_LadderUtility.cs"), @"raised = value;\s*RM_LadderUtility\.StateVersion\+\+;", "SetRaised bumps the counter (a paused toggle)");
                 RiverSwitchFlipChecks.Has(Src("Superdeep", "RM_SuperdeepTrap.cs"), @"g\.TrappedIn\(k, comp, p\) \|\| \(!walksOut && !g\.ReachesEdge\(k, comp, p\)\)\)", "a pit pocket must reach the map edge too");
-                RiverSwitchFlipChecks.Has(grid, @"public static void UpdatePaused\(Map map, RM_MapComponent_Excavation eng\) \{ if \(Find\.TickManager != null && Find\.TickManager\.Paused\) \{ RebuildIfStale\(map, eng, true\); RM_WallReach\.Tick\(map, true\); \} \}",
+                RiverSwitchFlipChecks.Has(grid, @"public static void UpdatePaused\(Map map, RM_MapComponent_Excavation eng\) \{ if \(Find\.TickManager != null && Find\.TickManager\.Paused\) \{ RebuildIfStale\(map, eng, true\); RM_WallReach\.PausedFrame\(map\); // WALL_REACH_TUNE_REBUILDS_TENFOLD[^}]*\} \}",
                     "paused: rebuild a stale grid at once");
                 RiverSwitchFlipChecks.Has(grid, @"if \(!paused && now - builtTick < RebuildMinTicks\) \{ return; \}", "the throttle applies only while time runs");
                 RiverSwitchFlipChecks.Has(grid, @"if \(builtGeneration == eng\.ClimbGeneration && builtSalt == settingsSalt\) \{ return; \}", "and only a stale grid is rebuilt");

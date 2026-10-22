@@ -268,6 +268,30 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "stale: at most once per 60 ticks");
                 Assert(RM_WallReachMath.RebuildDue(true, true, false, 1, 0, 60) && RM_WallReachMath.RebuildDue(true, false, true, 1, 0, 60),
                     "forced (breach, toggle, gate) or paused: now");
+                // WALL_REACH_TUNE_REBUILDS_TENFOLD: a paused frame rebuilds unthrottled only for a write made with the clock stopped
+                Assert(RM_WallReachMath.PausedUnthrottled(500, 500, 7, 6), "clock stopped, stamp moved (a paused write): now");
+                Assert(!RM_WallReachMath.PausedUnthrottled(508, 500, 7, 6), "can-fail: a stepped frame (safe_advance, dev step) is throttled");
+                Assert(!RM_WallReachMath.PausedUnthrottled(500, 500, 7, 7), "an idle frame between step bursts (nothing new) is throttled");
+                Assert(!RM_WallReachMath.PausedUnthrottled(500, int.MinValue, 7, long.MinValue), "the first paused frame only records");
+                // the soak's shape: bursts of 8 stepped ticks, each followed by 3 idle frames; every tick moves the stamp (a path
+                // request gathers); one paused write lands in an idle gap. Unthrottled frames: exactly that one.
+                int lastTick = int.MinValue, tick = 1000, unthrottled = 0;
+                long stamp = 1, lastStamp = long.MinValue;
+                for (int burst = 0; burst < 125; burst++)
+                {
+                    for (int f = 0; f < 4; f++)
+                    {
+                        if (f == 0) { tick += 8; stamp += 8; }
+                        if (burst == 60 && f == 2) stamp++;   // a wall placed from the dev menu, clock stopped
+                        if (RM_WallReachMath.PausedUnthrottled(tick, lastTick, stamp, lastStamp)) unthrottled++;
+                        lastTick = tick;
+                        lastStamp = stamp;
+                    }
+                }
+                Assert(unthrottled == 1, "1000 stepped ticks in 125 bursts with idle frames: one unthrottled frame (the paused write), got " + unthrottled);
+                string wr = Src("Superdeep", "RM_WallReach.cs");
+                RiverSwitchFlipChecks.Has(wr, @"bool unthrottled = RM_WallReachMath\.PausedUnthrottled\(now, st\.pausedFrameTick, StampOf\(map, st\), st\.pausedFrameStamp\); Tick\(map, unthrottled\); st\.pausedFrameTick = now; st\.pausedFrameStamp = StampOf\(map, st\);",
+                    "PausedFrame judges, ticks with that flag (never true), then records the tick and stamp it left");
                 Assert(RM_WallReachMath.Classify(false, true) == RM_WallReachMath.FailKind.OutOfScope
                     && RM_WallReachMath.Classify(true, true) == RM_WallReachMath.FailKind.Stale
                     && RM_WallReachMath.Classify(true, false) == RM_WallReachMath.FailKind.Residual, "residual classification");

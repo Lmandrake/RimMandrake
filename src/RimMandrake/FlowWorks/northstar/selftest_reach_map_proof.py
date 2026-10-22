@@ -41,6 +41,25 @@ check("winch site: drawbridge_proof scene A's walls", (-2, 1) in ww and (9, -1) 
 check("ring: Chebyshev 2..3 round the island", len(R.ring((0, 0), 2, 3)) == 49 - 9 and (0, 0) not in R.ring((0, 0), 2, 3))
 check("rows and owed rows named", R.ROW_IDS[0] == "REACH_WINCH_SITE" and "REACH_RESIDUAL_SOAK" in R.OWED)
 
+def rd(builds, stepped, entries=8):
+    return R.parse("WALLREACH on=True entries=%d builds=%d overTicks=1 per1000=1 lastMs=1 maxMs=1 meanMs=1 steppedFrames=%d "
+                   "queries=0 vetoes=0 | RESIDUAL fails=0" % (entries, builds, stepped))
+
+
+check("throttle: 8 labellings x (600/60 + 2) = 96 builds over a quiet window is PASS",
+      R.throttle_verdict(rd(100, 5), rd(196, 80), 600)[:2] == ("PASS", "MOD"))
+check("can-fail: the soak's ~1 build per tick (600 in 600 ticks) is FAIL",
+      R.throttle_verdict(rd(100, 5), rd(700, 80), 600)[:2] == ("FAIL", "MOD"))
+check("steppedFrames never moved (old DLL or unpaused window): UNMEASURED HARNESS",
+      R.throttle_verdict(rd(100, 5), rd(110, 5), 600)[:2] == ("UNMEASURED", "HARNESS"))
+check("a read without steppedFrames (pre-fix DLL): UNMEASURED HARNESS",
+      R.throttle_verdict(R.parse("WALLREACH entries=8 builds=1"), R.parse("WALLREACH entries=8 builds=9"), 600)[0] == "UNMEASURED")
+check("no build in the window (nothing went stale): UNMEASURED SITE, never a vacuous PASS",
+      R.throttle_verdict(rd(100, 5), rd(100, 80), 600)[:2] == ("UNMEASURED", "SITE"))
+check("the throttle row is a row", "REACH_THROTTLE_HOLDS" in R.ROW_IDS)
+src_wr = open(os.path.join(SRC, "Superdeep", "RM_WallReach.cs"), encoding="utf-8").read()
+check("ProofReach's timing line carries steppedFrames", '" steppedFrames=" + st.steppedFrames' in src_wr)
+
 files = {}
 for root, _, names in os.walk(SRC):
     if os.sep + "SelfTest" in root or os.sep + "obj" in root or os.sep + "bin" in root:

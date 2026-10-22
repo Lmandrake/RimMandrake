@@ -174,7 +174,7 @@ namespace RimMandrake.FlowWorks
 			if (Find.TickManager != null && Find.TickManager.Paused)
 			{
 				RebuildIfStale(map, eng, true);
-				RM_WallReach.Tick(map, true);
+				RM_WallReach.PausedFrame(map);   // WALL_REACH_TUNE_REBUILDS_TENFOLD: a stepped paused frame stays throttled
 			}
 		}
 

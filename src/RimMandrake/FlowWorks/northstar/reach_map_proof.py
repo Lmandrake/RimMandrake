@@ -4,7 +4,8 @@
   python.exe src/RimMandrake/FlowWorks/northstar/reach_map_proof.py [out.json] [--origin X,Z] [--fresh-map] [--only a,b]
 
 Run from the repo root with python.exe; the bridge must be held. Exit 0 = every MEASURED row PASS; 1 = a FAIL; 2 = a row
-could not be measured. WRITTEN OFFLINE 2026-10-21 (BENCH helper, no bridge): every row is OWED to its first live run.
+could not be measured. Written offline 2026-10-21; first live 5/5 PASS 2026-10-22 (b5e399067a). REACH_THROTTLE_HOLDS
+(WALL_REACH_TUNE_REBUILDS_TENFOLD) is owed its first live run.
 
 Owner ruling this proves (2026-10-21 ~21:20 PDT, by card "3: the wall-aware reach map, kept per pawn class"): "Have to say
 (3) and let's look carefully (make a note) to measure how often that bug case occurs."
@@ -30,8 +31,8 @@ jawa/flowworks_excavation_drive, 8 notches = 4 m):
      at x=1..4 except z=0). A wild Muffalo inside (-4,0) -> outside (8,0) (the player's door is shut to it, the gap ends at
      the moat). Control: a drafted colonist at (-4,1) -> (8,0) (opens the door).               -> REACH_ANIMAL_DOOR_TRENCH
   S  base (48,8): a deep-water ring (WaterDeep, Chebyshev 2..3) round an island; no dug square. A non-swimmer at (6,0) ->
-     the island (0,0). The pawn is chosen by its class (cls has bit 16, RM_WallReachMath.NonSwimmer): Colonist first, then
-     player Muffalo/Chicken; none qualifies -> UNMEASURED SITE. Control: none (no swimmer is guaranteed on every list).
+     the island (0,0). The pawn is chosen by its class (cls has bit 16, RM_WallReachMath.NonSwimmer): a player Mech_Militor
+     first (mechanoids sink), then a Colonist with humanlikesSwim set off (restored after); none qualifies -> UNMEASURED SITE. Control: none (no swimmer is guaranteed on every list).
                                                                                                 -> REACH_NONSWIMMER_MOAT
 Every pair is read after ticks(70): the 1.6 pathfinder reads walls/depth only when the map TICKS (GatherData, the
 drawbridge_proof HARNESS note of 2026-10-22), and the reach map rebuilds at most once per 60 ticks.
@@ -54,6 +55,11 @@ ANTI-GUESSING NOTES
   asks for a path; ProofReachPair asks CanReach BEFORE its own A* (which gathers), so REACH_WINCH_SITE read canReach=True
   found=False. Fixed in the mod (RegionDirtyer walkability hook). A fresh map hid it: the first query built the labels.
 - The gate shuts only while the map is LOCKED: FreeHostileCount(current|true) >= 1 is a precondition (SITE when not).
+- WALL_REACH_TUNE_REBUILDS_TENFOLD (2026-10-22 residual soak: ~1000 wall-aware builds per 1000 ticks against the throttle's
+  8 per 60): the bridge steps time with the game PAUSED (safe_advance / step_game_ticks: DoSingleTick inside a paused frame),
+  and the paused-frame hook rebuilt every stale labelling unthrottled on every frame. Fixed in the mod (RM_WallReach.PausedFrame:
+  a paused frame whose clock moved is throttled). REACH_THROTTLE_HOLDS reads builds over a quiet stepped window: the bar is
+  entries x (ticks/60 + 2); steppedFrames must have moved (else the window was not stepped, or the DLL predates the fix).
 """
 import argparse
 import json
@@ -77,7 +83,9 @@ DEEP = 8
 SETTLE = 70
 NONSWIMMER_BIT = 16
 
-ROW_IDS = ["REACH_WINCH_SITE", "REACH_LOCKED_GATE", "REACH_ANIMAL_DOOR_TRENCH", "REACH_NONSWIMMER_MOAT", "REACH_RESIDUAL_READ"]
+ROW_IDS = ["REACH_WINCH_SITE", "REACH_LOCKED_GATE", "REACH_ANIMAL_DOOR_TRENCH", "REACH_NONSWIMMER_MOAT", "REACH_RESIDUAL_READ",
+           "REACH_THROTTLE_HOLDS"]
+QUIET = 600
 OWED = {"REACH_RESIDUAL_SOAK": "the owner's residual measurement: ProofReachReset, a long soak on a dug walled colony on his "
                                "full list, then ProofReach; residual per 1000 ticks is the number"}
 # The C# the rows call (selftest_reach_map_proof checks each exists in source and answers its word).
@@ -117,6 +125,26 @@ def pair_verdict(subject, control=None, want_subject=False, want_control=True):
             return "UNMEASURED", "SITE"
         ok = ok and control.get("canReach") == control.get("found") == str(want_control)
     return ("PASS" if ok else "FAIL"), "MOD"
+
+
+def throttle_verdict(kv0, kv1, ticks, min_ticks=60):
+    """WALL_REACH_TUNE_REBUILDS_TENFOLD: two ProofReach reads round a quiet stepped window of `ticks`. The throttle allows each
+    labelling one rebuild per min_ticks (+2 for the window's edges); more is the bug. UNMEASURED/HARNESS when a read is
+    missing or steppedFrames never moved (no stepped frame seen: an old DLL or an unpaused window proves nothing);
+    UNMEASURED/SITE when no build happened at all (nothing went stale, so a pre-fix DLL would pass it too)."""
+    try:
+        b0, b1 = int(kv0["builds"]), int(kv1["builds"])
+        s0, s1 = int(kv0["steppedFrames"]), int(kv1["steppedFrames"])
+        entries = max(int(kv0["entries"]), int(kv1["entries"]))
+    except (KeyError, TypeError, ValueError):
+        return "UNMEASURED", "HARNESS", None
+    if s1 <= s0:
+        return "UNMEASURED", "HARNESS", None
+    if b1 <= b0:
+        return "UNMEASURED", "SITE", None    # nothing went stale (no pawn pathed): the throttle was never tested
+    bar = entries * (ticks // min_ticks + 2)
+    return ("PASS" if b1 - b0 <= bar else "FAIL"), "MOD", {"builds": b1 - b0, "bar": bar, "entries": entries,
+                                                            "steppedFrames": s1 - s0}
 
 
 def has_bit(kv, bit):
@@ -346,6 +374,13 @@ def main(argv=None):
             kv, txt = static(REACH, "ProofReach")
             row("REACH_RESIDUAL_READ", "PASS" if txt.startswith("WALLREACH") and "RESIDUAL fails=" in txt else "UNMEASURED",
                 "MOD" if txt.startswith("WALLREACH") else "HARNESS", {"read": txt})
+        if "REACH_THROTTLE_HOLDS" in only:
+            ticks(SETTLE)                       # let the scenes' forced rebuilds land before the quiet window
+            kv0, t0 = static(REACH, "ProofReach")
+            stepped = ticks(QUIET)
+            kv1, t1 = static(REACH, "ProofReach")
+            st, cls, det = throttle_verdict(kv0, kv1, QUIET)
+            row("REACH_THROTTLE_HOLDS", st, cls, {"before": t0, "after": t1, "window": QUIET, "stepped": stepped, "verdict": det})
         res["timing_after"] = static(POCKET, "ProofPocketTiming")[1]
         for rid, why in OWED.items():
             row(rid, "UNMEASURED", "OWED", {"why": why})
