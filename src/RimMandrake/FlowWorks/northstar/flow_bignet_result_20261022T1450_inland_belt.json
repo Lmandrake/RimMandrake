@@ -1,0 +1,126 @@
+{
+ "script": "flow_bignet_live.py",
+ "rows": [
+  {
+   "id": "FLOW_BIGNET_WETS_END_TO_END",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "FLOW_ORDER_EXTERNAL_INPUT_1",
+   "detail": {
+    "cells": 6400,
+    "pulsesToFarCorner": 1500,
+    "pulsesRun": 1500,
+    "farCorner": [
+     185,
+     169
+    ]
+   }
+  },
+  {
+   "id": "FLOW_BIGNET_PULSE_COST",
+   "status": "MEASURED",
+   "class": "MOD",
+   "item": "FLOW_ORDER_EXTERNAL_INPUT_1",
+   "detail": {
+    "msPerPulse": [
+     7.46,
+     7.71,
+     7.52
+    ],
+    "meanMsPerPulse": 7.563333333333333,
+    "note": "flowworks_pulse wall time incl. the bridge round trip, per 500-pulse batch"
+   }
+  }
+ ],
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brogg37278",
+    "RM_Brogg37279",
+    "RM_Brullith37269",
+    "RM_Brullith37271",
+    "RM_Dustveil37280",
+    "RM_Grellik37274",
+    "RM_Grellik37275",
+    "RM_MycoidColossus37276",
+    "RM_MycoidColossus37277",
+    "RM_Shambles37270",
+    "RM_Thozzik37282",
+    "RM_ThozzikColony37272",
+    "RM_ThozzikColony37273",
+    "RM_ThozzikColony37281",
+    "RM_ThozzikQueen37283"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "wetness0": "True",
+ "sourceBody": {
+  "id": 1,
+  "limitless": true,
+  "stock": 144.0,
+  "capacity": 144.0,
+  "cellCount": 36,
+  "recededCount": 0,
+  "activeCellCount": 36,
+  "truncated": false
+ },
+ "origin": [
+  106,
+  90
+ ],
+ "size": 80,
+ "dugRows": 80,
+ "phaseSite": "14:23:07",
+ "batches": [
+  {
+   "pulses": 500,
+   "ms": 3730,
+   "msPerPulse": 7.46,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 3855,
+   "msPerPulse": 7.71,
+   "farFill": 0
+  },
+  {
+   "pulses": 500,
+   "ms": 3760,
+   "msPerPulse": 7.52,
+   "farFill": 1
+  }
+ ],
+ "report": {
+  "success": true,
+  "cell": {
+   "x": 0,
+   "z": 0
+  },
+  "depth": 0,
+  "fill": 0,
+  "isExcavated": false,
+  "isSourceCell": false,
+  "isSinkCell": false,
+  "sinkTransferredTotal": 0.0,
+  "overflowDestroyedTotal": 0.0,
+  "excavatedCellCount": 6400,
+  "ticksGame": 1
+ }
+}
