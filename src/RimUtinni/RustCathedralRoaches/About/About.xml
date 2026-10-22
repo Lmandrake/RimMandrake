@@ -13,8 +13,8 @@ itself. Both organic and artificial versions. Make them much smaller and the
 synthetic ones strangely tough and powerful. Cleaners of the area on land
 like the eels that live in the coolant rivers."
 
-Donor: LingLuo.Cockroach (workshop 3196253802, "Rim cockroach"), already
-active in the mod list. MEASURED independently this pass (dnfile metadata
+Donor: LingLuo.Cockroach (workshop 3196253802, "Rim cockroach"), since
+retired (2026-10-19). MEASURED independently this pass (dnfile metadata
 enumeration of Ling_Cockroach.dll plus a direct read of the donor's own
 1.6/Defs/Normal.xml and Patches/Core.xml — not copied from the kit spec
 blind): exactly 5 TypeDefs in the whole assembly (ThinkNode_EatWastepack,
@@ -24,8 +24,7 @@ binds only where a def references it. The donor's one patch
 (Patches/Core.xml) does exactly one PatchOperationAdd, donor-scoped
 (ResurrectMediumMech's ingredient filter), irrelevant here. An XML-clone
 reskin is therefore safe and this mod is exactly that: CLONE, never
-patch-in-place. The donor mod itself is untouched and stays active for its
-own two creatures; nothing below references any of its classes, comps or
+patch-in-place. The donor mod was never touched; nothing below references any of its classes, comps or
 recipes.
 
 Two new races, both bodySize-shrunk from the donor's 2 down to "small

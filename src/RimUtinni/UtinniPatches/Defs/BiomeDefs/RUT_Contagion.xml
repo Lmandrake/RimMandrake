@@ -15,7 +15,7 @@
     p10/median/p90 25/32/45 C, rain median 60 mm (max 1,529) — the wettest dayside
     ground.
 
-    Weather: AB_RedFog (Alpha Biomes' own WeatherDef, kept MayRequire-gated) IS the
+    Weather: RM_ContagionBloom (our port of Alpha Biomes' AB_RedFog WeatherDef) IS the
     Bloom (SS4b) — the storm-state ranged-accuracy x0.4 penalty ban 5 protects
     stands unmodified at the donor's own commonality (17, scaled to 70 of the whole
     table to keep it dominant). The Burn (rare tears letting Clear weather occur) has
@@ -27,7 +27,7 @@
     (`Jawa_ScaldDrizzle/Rain/Fog`) already exists per SS0 but is a SEPARATE
     already-assigned weather suite this def does not duplicate or override.
 
-    diseases: AB_Disease_SporesAllergy pair kept MayRequire-gated (matches the
+    diseases: RM_Disease_SporeAllergy / RM_Disease_AnimalSporeAllergy pair (ports of Alpha Biomes' AB_Disease_SporesAllergy; matches the
     donor's own spore-heavy read); Malaria/SleepingSickness kept high per the
     donor's own set — ban 4 ("No edible forage") is matched by forageability 0.
 

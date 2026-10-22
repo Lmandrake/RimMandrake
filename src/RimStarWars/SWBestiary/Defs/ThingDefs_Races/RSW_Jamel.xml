@@ -8,8 +8,8 @@
   Body: the donor's `body` is the vanilla Core
   `QuadrupedAnimalWithHoovesAndHump` (same as Falumpaset) — no BodyDef port
   needed. `leatherDef` repoints to the already-ported `RSW_Leather_Reptomammal`
-  (RSW_MlieWaveC_Resources.xml, Pass 9/Gutkurr era). `specificMeatDef` stays
-  vanilla Core `Cameloid_Meat` (same as Falumpaset/Eopie) — **no new
+  (RSW_MlieWaveC_Resources.xml, Pass 9/Gutkurr era). `specificMeatDef` is
+  `RSW_Cameloid_Meat` (ported with TeeMuss, RSW_MlieWaveC_Resources.xml) — **no new
   resource needed at all this species**.
 
   Sounds repoint to the already-absorbed sound wave (`RSW_Pawn_Jamel_*`,

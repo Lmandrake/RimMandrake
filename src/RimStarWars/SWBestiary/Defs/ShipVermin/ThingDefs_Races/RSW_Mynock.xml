@@ -127,7 +127,7 @@
       </li>
     </tools>
     <graphicData>
-      <!-- placeholder path, no art yet - see file header. -->
+      <!-- real art, not a placeholder - see file header. -->
       <texPath>RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.6</drawSize>

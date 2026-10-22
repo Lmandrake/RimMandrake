@@ -16,8 +16,8 @@
     - lakeBeachTerrain/mudTerrain/riverbankTerrain -> own
       RM_RustCathedral_CrackedMetalSoil; terrainsByFertility ->
       RM_RustCathedral_PolymerFloor. See Defs/TerrainDefs/
-      RM_RustCathedral_Terrain.xml for why these are OWN defs that still
-      borrow the donor's pixels (disclosed, hard modDependency).
+      RM_RustCathedral_Terrain.xml: OWN defs carrying pixels copied from Alpha
+      Biomes (retired; not a dependency).
     - <fishTypes>/<maxFishPopulation> are NATIVE here (150, freshwater_Common
       = RM_CoolantEelCatch only) rather than arriving by patch — the absorbed
       RustCathedralHum kit's own RUT_RustCathedral_Fishing.xml patch
@@ -45,15 +45,8 @@
       ban 7, roster's own flora_purged entry, biome_flora.py's PLANTLESS
       set). Do not "discover" this as a gap; see the item's own "False
       statements found elsewhere" section.
-    - <texture> kept pointing at the donor's Biomes/AB_MechanoidBiome world
-      icon (disclosed donor-texture reliance, same trade as the terrain
-      above) pending a real world-map icon commission.
+    - <texture> is this mod's own World/Biomes/RM_RustCathedral icon.
 
-  Donor-texture reliance: sarg.alphabiomes ships as a HARD modDependency in
-  About.xml (not MayRequire) for exactly the reasons named above — this
-  biome's floor and world-map icon are literally borrowed pixels until a
-  future art pass. Disclosed in About.xml's own description, same honesty
-  convention RM_Miasma set for its flora textures.
 -->
 <Defs>
 
