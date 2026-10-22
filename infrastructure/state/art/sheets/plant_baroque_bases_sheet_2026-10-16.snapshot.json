@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_plant_baroque_bases",
- "built": "2026-10-16T07:20:44-0700",
+ "built": "2026-10-20T18:49:36-0700",
  "census": "Transient/biome_ffar/plant_baroque_bases.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "RM_CorriskTree": {
    "columns": {
@@ -12,23 +12,34 @@
     },
     "B": {
      "single": "e9506aa827d5a4b4cfc84eb401579a0ce1a906b6cbdf705504de0add9a42d230"
+    },
+    "C": {
+     "single": "b36b1dcfc7f4ac626ca9b144e0cded5a8261d50fef4fea3b3e96ab2b437e0873"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_CorriskTree",
-    "B": "Things/Plant/RM_CorriskTree"
+    "A": "Things/RM_CorriskTree",
+    "B": "Things/RM_CorriskTree",
+    "C": "Things/RM_CorriskTree"
    },
    "labels": {
-    "A": "render RM_CorriskTree_base_v1",
-    "B": "render RM_CorriskTree_base_v2"
+    "A": "IN GAME \u2014 random variant RM_CorriskTree (1 of 3) \u2014 FeverWood",
+    "B": "IN GAME \u2014 random variant RM_CorriskTree_b (2 of 3) \u2014 FeverWood",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_CorriskTree_c (3 of 3) \u2014 FeverWood"
    },
-   "pools": [],
-   "res": "Things/Plant/RM_CorriskTree",
+   "pools": [
+    "Things/RM_CorriskTree"
+   ],
+   "res": "Things/RM_CorriskTree",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "2ac5268baf1185dbd47ecd689c22e95976ca90a6ba049e6d10d78dda04b37ebb",
+    "e9506aa827d5a4b4cfc84eb401579a0ce1a906b6cbdf705504de0add9a42d230"
+   ],
    "subject_key": "corrisktree"
   },
   "RM_Crimmelroot": {
@@ -38,17 +49,21 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Crimmelroot"
+    "A": "Things/RM_Crimmelroot"
    },
    "labels": {
-    "A": "render RM_Crimmelroot_base_v1"
+    "A": "IN GAME \u2014 random variant RM_Crimmelroot (1 of 1) \u2014 FeverWood"
    },
-   "pools": [],
-   "res": "Things/Plant/RM_Crimmelroot",
+   "pools": [
+    "Things/RM_Crimmelroot"
+   ],
+   "res": "Things/RM_Crimmelroot",
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "a5e9fbe3db7763b9ab8eebd0a553927b99cf9e1da3f4d875d1d6a71d2731046f"
+   ],
    "subject_key": "crimmelroot"
   },
   "RM_Glasmaw": {
@@ -58,17 +73,21 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Glasmaw"
+    "A": "Things/RM_Glasmaw"
    },
    "labels": {
-    "A": "render RM_Glasmaw_base_v1"
+    "A": "IN GAME \u2014 random variant RM_Glasmaw (1 of 1) \u2014 Webwork"
    },
-   "pools": [],
-   "res": "Things/Plant/RM_Glasmaw",
+   "pools": [
+    "Things/RM_Glasmaw"
+   ],
+   "res": "Things/RM_Glasmaw",
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0627055d4f17e42b8f92b8d689dd577c6b684c199e444f336c0e743c61420fa0"
+   ],
    "subject_key": "glasmaw"
   },
   "RM_LumbrelTree": {
@@ -81,20 +100,25 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_LumbrelTree",
-    "B": "Things/Plant/RM_LumbrelTree"
+    "A": "Things/RM_LumbrelTree",
+    "B": "Things/RM_LumbrelTree"
    },
    "labels": {
-    "A": "render RM_LumbrelTree_base_v1",
-    "B": "render RM_LumbrelTree_base_v2"
+    "A": "IN GAME \u2014 random variant RM_LumbrelTree_b (2 of 2) \u2014 FeverWood",
+    "B": "IN GAME \u2014 random variant RM_LumbrelTree (1 of 2) \u2014 FeverWood"
    },
-   "pools": [],
-   "res": "Things/Plant/RM_LumbrelTree",
+   "pools": [
+    "Things/RM_LumbrelTree"
+   ],
+   "res": "Things/RM_LumbrelTree",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "145345fb6860b9d44e8de4c0d3444d07c1a45898496e4a9e6d9bf6a06222aad0",
+    "ef4b7dcded7b0dd6f0aede47d43376ac70a791895c37effc3cab5cc234a3993e"
+   ],
    "subject_key": "lumbreltree"
   },
   "RM_Murrowbulb": {
@@ -104,17 +128,21 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Murrowbulb"
+    "A": "Things/RM_Murrowbulb"
    },
    "labels": {
-    "A": "render RM_Murrowbulb_base_v1"
+    "A": "IN GAME \u2014 random variant RM_Murrowbulb (1 of 1) \u2014 Stillsand"
    },
-   "pools": [],
-   "res": "Things/Plant/RM_Murrowbulb",
+   "pools": [
+    "Things/RM_Murrowbulb"
+   ],
+   "res": "Things/RM_Murrowbulb",
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "5f6e6b98a55c934c87d5607c1ace7ca901462ac162e3437c3728c0471551c99c"
+   ],
    "subject_key": "murrowbulb"
   },
   "RM_Salvessa": {
@@ -124,17 +152,21 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Salvessa"
+    "A": "Things/RM_Salvessa"
    },
    "labels": {
-    "A": "render RM_Salvessa_base_v1"
+    "A": "IN GAME \u2014 random variant RM_Salvessa (1 of 1) \u2014 LeaningScrub"
    },
-   "pools": [],
-   "res": "Things/Plant/RM_Salvessa",
+   "pools": [
+    "Things/RM_Salvessa"
+   ],
+   "res": "Things/RM_Salvessa",
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "e3104c8770316ee457a63e888b57b9b25d8eca09d2c664e07c894a0a49f3a352"
+   ],
    "subject_key": "salvessa"
   },
   "RM_Thrannagourd": {
@@ -144,17 +176,21 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Thrannagourd"
+    "A": "Things/RM_Thrannagourd"
    },
    "labels": {
-    "A": "render RM_Thrannagourd_base_v1"
+    "A": "IN GAME \u2014 random variant RM_Thrannagourd (1 of 1) \u2014 LongShade"
    },
-   "pools": [],
-   "res": "Things/Plant/RM_Thrannagourd",
+   "pools": [
+    "Things/RM_Thrannagourd"
+   ],
+   "res": "Things/RM_Thrannagourd",
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "487147bb4c1c6fbafc786294bd4b6d30fc24cf3330510a88b68eb09f8afc0574"
+   ],
    "subject_key": "thrannagourd"
   }
  },

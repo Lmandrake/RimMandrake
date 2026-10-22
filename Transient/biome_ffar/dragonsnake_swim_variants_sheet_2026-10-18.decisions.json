@@ -13,24 +13,24 @@
  },
  "decisions": {
   "RSW_Dragonsnake_A_SWIM": {
-   "decision": "",
+   "decision": "A",
    "note": "",
-   "prefill": ""
+   "prefill": "A"
   },
   "RSW_Dragonsnake_B_SWIM": {
-   "decision": "",
+   "decision": "A",
    "note": "",
-   "prefill": ""
+   "prefill": "A"
   },
   "RSW_Dragonsnake_C_SWIM": {
-   "decision": "",
+   "decision": "A",
    "note": "",
-   "prefill": ""
+   "prefill": "A"
   },
   "RSW_Dragonsnake_D_SWIM": {
-   "decision": "",
+   "decision": "A",
    "note": "",
-   "prefill": ""
+   "prefill": "A"
   }
  }
 }

@@ -1,9 +1,9 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-19T04:35:37-0700",
+ "built": "2026-10-20T18:12:28-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 542 active",
+ "census_git_head": "b551136cdd",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "AA_BedBug": {
    "columns": {
@@ -45,14 +45,13 @@
     "H": "Things/Pawn/Animal/AA_BedBug/AA_BedBug"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
+    "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_BedBug_v1",
     "C": "render enact_be511e0a_bedbug_v1",
     "D": "render cauldronfix_bedbug_v2",
     "G": "render donorart_p2_bedbug_egg_v1",
     "H": "render standtall_b1_rm_bedbug"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
    "reserved": [
     "A",
@@ -64,14 +63,7 @@
     "G",
     "H"
    ],
-   "shownBase": [
-    "13d24f1217a05ac42bed89e44764903fe35615b13f06701ec97042ca12d8613f",
-    "2900a6a7dcf8f0e76df5a094d4a66ada6e5a12450aa3e393130d38d2b8a8614d",
-    "44b8d1279abb53d1964c3ff4e3d0f0a8a52232a407a61016b61627681257a529",
-    "96e5cdc8131a488a93f8ddbbbbc01b6d085b48c65bfdee00f0cb2333ba236b9c",
-    "9f358da2f49ed70666cb8edca0496869d35b4e3d80b4b97eed043ac2f3af3fff",
-    "d3fe789ed08a7895c52a995432a5f2866ed4c0ef5b97539d8e31d221104dc50f"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "bedbug"
   },
   "AA_CrystalMit": {
@@ -98,11 +90,10 @@
     "C": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
+    "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_CrystalMit_v1",
     "C": "render enact_f2b850a2_crystalmit_v1"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
    "reserved": [
     "A",
@@ -111,14 +102,7 @@
     "D",
     "E"
    ],
-   "shownBase": [
-    "26a6604f2f9180e3cf604527e42049b5b3aaf3250727cf3cfefbdd681370b89c",
-    "624dc66dd8a8beeac8c8815a531cd5035a0994de72be15e187a765bbb5cdeea0",
-    "9132cd9961b766996d1dc9c04d9cd45f849edddedd2e34b14d6c6ca745161044",
-    "918f4a66a4a40fdd3b1ff546d2f7ba1be6ca1a16af8cadd96f5a27eda3fbae00",
-    "b8463b4f36e3b108ff38424ec5a492299d66abb1d8f942681da64fe34f203b0a",
-    "c0ef85c2210c8d324c56f6a1ab060867dcf2281be8c981a412a43c72be139f94"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "crystalmit"
   },
   "AA_DecayDrake": {
@@ -139,23 +123,15 @@
     "B": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
-    "B": "render gapall_AA_DecayDrake_v1"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "shipped, not loaded \u2014 DecayDrakeArtOverride"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [
-    "35089a5429fa1ef9535baddc8c09a05f6bea8d9a6f559f09c7b7e9b94684e79f",
-    "6a1234293ef67df19a8aec0c7797b37619c165bae50c64be666b6501e5009342",
-    "79f726107e09de5ea497c6cd29aa7193720d88f0c5a2da6a431de3e1b4bfafab",
-    "ba98737edc7f536ecef779f7fd1353f6274358a61127e5e25e0259658b23f199",
-    "ca8ff92b2d64e790002839d5abe86f4af8d660933bee1c79beef33e7224823d6",
-    "e68cc3a30ed579a9230d75a41e250e96434f5233e5a9d85dd4efe048ba004e40"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "decaydrake"
   },
   "AA_GiantCrownedSilkie": {
@@ -206,15 +182,14 @@
     "G": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
+    "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_GiantCrownedSilkie_v1",
-    "C": "donor original \u2014 Alpha Animals",
-    "D": "donor original \u2014 Alpha Animals",
-    "E": "donor original \u2014 Alpha Animals",
+    "C": "IN GAME \u2014 Alpha Animals",
+    "D": "IN GAME \u2014 Alpha Animals",
+    "E": "IN GAME \u2014 Alpha Animals",
     "F": "render enact_4d78432e_giantcrownedsilkie_v1",
     "G": "render cauldronfix_giantcrownedsilkie_v2"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie",
    "reserved": [
     "A",
@@ -225,23 +200,7 @@
     "F",
     "G"
    ],
-   "shownBase": [
-    "1ddd2f062ca2c1e92927e3360a7a7f6ddb336745903e912e7ba4b0a9a8c2b9de",
-    "254ee2f5f0b0f45414564917866fcfe1e4ed2e729c64eabeb9b5bd6c4f1093cd",
-    "6ab810659674d3885d8ffe63fd1eecfef20824a274e13a0b340b59f7e81e5c6c",
-    "6bcd611a4a74aff828d3e9b89793ccad53a4b303712fba3df4ab61f0d0a5c75f",
-    "7ff4e7b4d532db1e6643557134cf27301ecb195f0d2f09103e8bc594386ce018",
-    "85af572ba1b0c82e7971e39fb13ee420f5c8e0c23d61a5a81504b196217e46c2",
-    "89ea6036368716bbb780cd7cb9bd619ff6ee60fd92dc23e007bbaa38d346964d",
-    "a4ddb93ff7a8d1e732fca5017a48313a49da2afbe78491c75a921e87b7d04674",
-    "aa6750b7c2c69a633227203ab8b5f58ce6c9344e340c0c631567df9eb7eea2f0",
-    "b28c916b9c4d5bd02539de07abb1b9d2b984066af5c1943a5435ed637d2f5195",
-    "c04cb680ccfef100bfa38965c252915babfe56430a55fab715b00d8f90c18ec8",
-    "df7d17bc033213327c1a6fa6485bfd2ddebff1daeae63b15ed2b5fc1371e1581",
-    "e5aac4b8471374432a8886660ab1c671cee784f6f9052f7c01d94a593274bbdf",
-    "e7901ee0d6b722be071c68aebca7707af32a4110824adc4341bb38e985b35217",
-    "ee251b0a55d85bef9b67d7fa172b1c4f25a5b98521e2e2d91351f2dd13396d97"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "giantcrownedsilkie"
   },
   "AA_Helixien": {
@@ -262,23 +221,15 @@
     "B": "Things/Pawn/Animal/AA_Helixien/AA_Helixien"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
+    "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_Helixien_v1"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [
-    "5cefccb8a71b79fbdce2355e6655758f5206274a86a563688828e5e8a906a143",
-    "7778ee23e92f8cebf8b12c6b1c16412f4f0ede6908f9da25ff9e88144e70f63e",
-    "7dec057170bae3d2178b610e709036a4c3149dbf00b7b6a35d9aafc83a8a04bd",
-    "d95f5af4564e0369955f016ab394295e4eeecd2350215116200c2ca4fbc77cb6",
-    "fb0a4cae2598c719ef11b8fcc9b87aa757a3a9d6e7e162c0ba6e09a3d28e65c4",
-    "fb72d8180dbcdaaf28e5cd80fe92dd795242605925b2d24260c51e7fd6764b18"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "helixien"
   },
   "AA_InfectedAerofleet": {
@@ -288,6 +239,11 @@
      "north": "477b909d4b575756a025139662a96534912672c0f784d085bcdef602611ea8f6",
      "south": "a4e3fd409a10a5e9d5934b7b54677b736b5eb9c77c237fd87ee33a5a9d197360"
     },
+    "B": {
+     "east": "599eeebbc85351789ecaab578c250a648a2159448d39c9cf4822674964080027",
+     "north": "2208d36dc81c2c093af8672bd9b6ba8cc014eda4927d56752866eefbd10aa2cf",
+     "south": "eece65af2cc46106d247c3f17187599c591de4e5ac4c84e8973e273894f481d3"
+    },
     "C": {
      "east": "1dd849ff0dffd6ad766e1cd5edf6cc014ae0fcf52e9e8290c8370ba0d1546c1d",
      "north": "128efb45392ad7cb1f5fcbe89248c9c26c2ded8c7ac578bd83e511945a43d388",
@@ -296,27 +252,21 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
+    "B": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
     "C": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_InfectedAerofleet_v1",
     "C": "render enact_d3c59886_infectedaerofleet_v1"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
    "reserved": [
     "A",
     "B",
     "C"
    ],
-   "shownBase": [
-    "2208d36dc81c2c093af8672bd9b6ba8cc014eda4927d56752866eefbd10aa2cf",
-    "477b909d4b575756a025139662a96534912672c0f784d085bcdef602611ea8f6",
-    "599eeebbc85351789ecaab578c250a648a2159448d39c9cf4822674964080027",
-    "7ef5a80c63613a29d125fbfc2686d7a63eebb57c15a97f0730bbfb8ff039f9f5",
-    "a4e3fd409a10a5e9d5934b7b54677b736b5eb9c77c237fd87ee33a5a9d197360",
-    "eece65af2cc46106d247c3f17187599c591de4e5ac4c84e8973e273894f481d3"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "infectedaerofleet"
   },
   "AA_LuciferBug": {
@@ -337,23 +287,15 @@
     "B": "Things/Pawn/Animal/AA_LuciferBug/AA_LuciferBug"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
+    "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_LuciferBug_v1"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_LuciferBug/AA_LuciferBug",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [
-    "00ee5f3ed023d1c773ec98d5eafc58c3968f4fdfedf01d816713051399b0f574",
-    "3a21b34afff268bb7a9b3c8fc7c5b1f8aaaddbaaee7752189cc7ac72672cdb5f",
-    "5287246bc9227b6145daab16830a375b19eaa8652046b1c411f859b588cf2ad4",
-    "77717b0fe6f0525405f2b89743ffbd5e6385175adf7d6f8d7fc2978368621ede",
-    "7a8e813c4c150191d6e235fee954d07a8d3fafb4f44a422513942a4e396b3312",
-    "b29ae17df37836453c164bdbdd5616deba5828f6f8ffe8d6a997b1c06df3af05"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "luciferbug"
   },
   "AA_OcularJelly": {
@@ -374,23 +316,15 @@
     "B": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
+    "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_OcularJelly_v1"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [
-    "57a293332e475b6b8f74dc5bfab782a5bfa500100f42a2b0d19ff4d910e72767",
-    "8ba2a523828595a6eff2f5086c0edec5085a09190d2eb225123ab0ebbd188b1a",
-    "98a20cc1e67b8f1e77017e73ba53e3eb10fdd60745f22ab9d5d693175c703c7a",
-    "b3c588199eb31bc767e0cbf343d928a7ff150a46a02dfa61b9c454542166172f",
-    "b8d7a633991873bda7f22ba36d71f5d62dc2072a3c6bc9776191d9126b025126",
-    "ff0e1e9cee9bfeff7354dcc9ff7f58ecee157f0b1a51ab98303e6ba14190fcde"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "ocularjelly"
   },
   "AA_Plasmorph": {
@@ -411,23 +345,15 @@
     "B": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
+    "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_Plasmorph_v1"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [
-    "701494c16b4df746ca2562ff499b9e5b3bfafdda2954390a18c4537c190979b2",
-    "97541fe82283bb41c830b91580232fd0893c2309fdeba9082ad5df5e14ca5acb",
-    "b3219dad7cdcea7048e5c543bc3ddc413e8c9dcc633c891dd303c8fb3d82f804",
-    "cef5fd1d9ec9ed4959e2acbc35955a405dfe2af858b23c70c723de222c8f76ab",
-    "d45640c2775d8a032302826eaaac61e6421ce8ec396516f9eb7c5c220a7917a1",
-    "dd3688a832d177e48de59c3bc9af3f7dcdda50f73342d84c03f8ff2959e358a2"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "plasmorph"
   },
   "AA_Radyak": {
@@ -466,13 +392,12 @@
     "E": "_byname"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
-    "B": "donor original \u2014 Alpha Animals",
-    "C": "donor original \u2014 Alpha Animals",
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "IN GAME \u2014 Alpha Animals",
+    "C": "IN GAME \u2014 Alpha Animals",
     "D": "render gapall_AA_Radyak_v1",
     "E": "render enact_f3decf4d_radyak_v1"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_Radyak/AA_Radyak_baby",
    "reserved": [
     "A",
@@ -481,20 +406,7 @@
     "D",
     "E"
    ],
-   "shownBase": [
-    "1f49f70893fdf4f8981ab4f0dfa0b171f31c2e174ff01830f96adae064c9cbaa",
-    "240b541f8042b01dfd625a72676a7b6512538a7b2f24eca220579739de408012",
-    "37b2340d40f6b1b47e0c4494be0434a55680d447c41391f766c14c3c93188bd5",
-    "55853e80245af4c0e1faaaa5be45cd72bf1227f88bb3633c8a324a8a3506057c",
-    "74d3f4a98849921c0720e68eb11dc63cf3f4fee6ccc02c62644d5139ff92474a",
-    "7bbaf3110f603589ad686b48dfdef3be8d9c8329bf75ab36faf0ac2eee4578a5",
-    "7c420cf1cdf0fafd534bc1a920ffc9c2641ed9d1a29e0d317cd519b38ce52f7f",
-    "817bc38291addd57c32ea1c5d8d68d28971f0b268bf00dac7f4dd069bd4fe280",
-    "ab6384fff27e1a94b03029abbf81950a86a342426c220901b31d963573055fed",
-    "bb94f6544ae27d90cd6b2d600612090d7de3b6d6739d36802b5549997fd72a37",
-    "c813379ca59f16934eb0a8e1e16cdbcc5fe58832dadd1fb5609c592f1722bab9",
-    "cf3a74e2cea78cfd8001d03d9cba54e409f17566e15c50058b91addec18e40c8"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "radyak"
   },
   "AA_RipperHound": {
@@ -515,32 +427,19 @@
     "B": "Things/Pawn/Animal/AA_RipperHound/AA_RipperHound"
    },
    "labels": {
-    "A": "donor original \u2014 Alpha Animals",
+    "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_RipperHound_v1"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AA_RipperHound/AA_RipperHound",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [
-    "2d9f0edcaa060fe101962bab6037bf1cc2aafce2e01ac1bc29ae4add585bcd55",
-    "2f4b62ac36c07c09455e0364c929f35b5e604939a049d14340bdd5efa4fbdcfa",
-    "4da8046f0cdffc9c02c5f71f015fa708302880349ad1138e0c6ddb0d09b05021",
-    "560d825ea335c9bd41cb0ad4d47722f2e0bf7ae755290762fd1d58fe3de00d48",
-    "afe150558ab8e4d9476dbfca85e10ca2efa53c75076211d1b9c9386f7b7092fc",
-    "ca076d2da86bbe486c546da898e6a30d847797e635e5288abafb5dc9362e1549"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "ripperhound"
   },
   "AM_Dryad_Corruptor": {
    "columns": {
-    "A": {
-     "east": "6ed0e7bbff2aafa7eb3a2657631e5329fc6fa29bb3571d69c5c5598cb2a464e1",
-     "north": "eba2af7891684abdc647afbd3c3923e51c79feb9acc0d53364086a9933af0089",
-     "south": "9dec5e132f577521f6ad3e61682cc23ab58f9ea9e7264e5ae1ccf4db6f809d94"
-    },
     "B": {
      "east": "77b4614da6c779fc4cf11ee50f1d78998d94f2a5302388adf705b1a3404fc25d",
      "north": "7f17b2f4fc08b1f38beb5b6cbc5ba550e53bfec6e86fee51a8842bd21de98c21",
@@ -548,15 +447,13 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor",
-    "B": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor"
+    "B": "RimUtinni/UtinniPatches/DryadCorruptor/AM_Dryad_Corruptor"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Memes",
-    "B": "render gapall_AM_Dryad_Corruptor_v1"
+    "B": "IN GAME \u2014 UtinniPatches"
    },
    "pools": [],
-   "res": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor",
+   "res": "RimUtinni/UtinniPatches/DryadCorruptor/AM_Dryad_Corruptor",
    "reserved": [
     "A",
     "B"
@@ -592,29 +489,16 @@
     "A": "IN GAME \u2014 Alpha Memes",
     "B": "render gapall_AM_Dryad_Ocular_v1"
    },
-   "pools": [],
    "res": "Things/Pawn/Animal/AM_Dryad_Ocular/AM_Dryad_Ocular",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [
-    "17a51f01e5e43bc5523f119b62c79648be3c8059cc0aefdf1c0a1811da6c6196",
-    "376ea56b7ceeb4ab3c61caded70366a3d179c90e2ff8193fc9d5c42bebd06586",
-    "41235e566f15eba09fdfeb0ec79ce5500df9dc5ef25071b095fb8e4be35fae1f",
-    "4b42c438b76d217e613aca4334007ce23a7a62a1128bb8ced05154aae797b8d3",
-    "770271d7ce8b1da71d032c588ae9651fc51c984485f869bcdd3b8e2a89eed670",
-    "906c7051dddb5f9ce5cbdb9440fcf092926f05d47ed1e30a5cd4032c4ad09f11"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "am_dryad_ocular"
   },
   "AM_Dryad_Tumorous": {
    "columns": {
-    "A": {
-     "east": "125790b7435042f9c9bd29545c2ccf696271dacd951ccab371349147a402014f",
-     "north": "c9bf1f7db5a1a5085e4a35375486aaac2858be38ce4c5169ea6ecacb508bb098",
-     "south": "915eec50a79164e1088732b384c6c8e7eac1d2b34d8e5dcb044accb29dcef99f"
-    },
     "B": {
      "east": "6b077510b1ae0697d24696694eba08d573dbf151c4780a6b51bef159d9a8a901",
      "north": "40b71112af19bdce064bb92728f83e5c54f49aecc41c37bf364f9738a16ffac6",
@@ -622,15 +506,13 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous",
-    "B": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous"
+    "B": "RimUtinni/UtinniPatches/DryadTumorous/AM_Dryad_Tumorous"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Memes",
-    "B": "render gapall_AM_Dryad_Tumorous_v1"
+    "B": "IN GAME \u2014 UtinniPatches"
    },
    "pools": [],
-   "res": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous",
+   "res": "RimUtinni/UtinniPatches/DryadTumorous/AM_Dryad_Tumorous",
    "reserved": [
     "A",
     "B"
@@ -647,11 +529,6 @@
   },
   "GR_Beetlefleet": {
    "columns": {
-    "A": {
-     "east": "0beaebade447fef66844c563e919c8e7a97729f42d97911c752fa13cd36675e8",
-     "north": "34c7a3dfb0fec3ecaf76adc49eb074229161cf6b26025f89949f6da3b499f42a",
-     "south": "aa08a14be420ceaa3a443d64fb0f3bc91ccda0df34c4b8669a5eb37feb37146d"
-    },
     "B": {
      "east": "15cd4c22ef0553b094931f85cc21e00473270dde5a6aad31e1fa0ecbcee76e82",
      "north": "1353dead6d575173a214df2274499364dd8835498c89c3e6485ebf5ca8d02559",
@@ -670,21 +547,19 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
     "B": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
-    "C": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
+    "C": "RimUtinni/UtinniPatches/Beetlefleet/GR_Beetlefleet",
     "D": "_byname",
-    "E": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet"
+    "E": "RimUtinni/UtinniPatches/Beetlefleet/GR_Beetlefleet"
    },
    "labels": {
-    "A": "donor original \u2014 Vanilla Genetics Expanded",
     "B": "render gapall_GR_Beetlefleet_v1",
-    "C": "render gapall_GR_Beetlefleet_v1",
+    "C": "IN GAME \u2014 UtinniPatches",
     "D": "render enact_c8bcd172_garsulix_north_v1",
-    "E": "IN GAME \u2014 Cauldron"
+    "E": "render dregen_RM_Garsulix_GRBeetlefleet_v1"
    },
    "pools": [],
-   "res": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
+   "res": "RimUtinni/UtinniPatches/Beetlefleet/GR_Beetlefleet",
    "reserved": [
     "A",
     "B",
@@ -701,6 +576,80 @@
     "aa08a14be420ceaa3a443d64fb0f3bc91ccda0df34c4b8669a5eb37feb37146d"
    ],
    "subject_key": "gr_beetlefleet"
+  },
+  "RM_BedBug": {
+   "columns": {
+    "A": {
+     "east": "057b886d93e75e4ce395f32a7bd425c5032a7468a77fa59544ab952e12e18961",
+     "north": "dc5952fbeb5cc8e2a105030f3d8296023e06a4bd9eb65731b1609ebb1ad7d2da",
+     "south": "8a78ca5f2891954c43e951f7912e7e630cc92de0d7a0b4402825d55b1ae7224c"
+    },
+    "B": {
+     "single": "8f4a2f73d82f7546fb3a9af1b15a1967b50023bf97647f098ffe10064abe7bc3"
+    },
+    "C": {
+     "east": "ba60f423cd55f02804b67c8a2118b7b5cf2d9ec67ea714873b5cca475f90baa4",
+     "north": "d26ea30a5fcc5b8543f064b5c950c35ce55f46bdbbba7f63ea08c178a9ddae8e",
+     "south": "1dbbf3b2b67e52bc51bd4735fef9a45577ecd18905dd71225e50e9bcae66e12f"
+    },
+    "D": {
+     "east": "057b886d93e75e4ce395f32a7bd425c5032a7468a77fa59544ab952e12e18961",
+     "north": "2dd013ef65f9551fc7f787ed9a5bce521d62a6176ede7cef3e8d56a2f12710a6",
+     "south": "57c09404603735ce282f0e0ea7cc59e8f3955ec2f7c6e08b30d9a0be83aba028"
+    },
+    "E": {
+     "east": "2900a6a7dcf8f0e76df5a094d4a66ada6e5a12450aa3e393130d38d2b8a8614d",
+     "north": "13d24f1217a05ac42bed89e44764903fe35615b13f06701ec97042ca12d8613f",
+     "south": "96e5cdc8131a488a93f8ddbbbbc01b6d085b48c65bfdee00f0cb2333ba236b9c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+    "B": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+    "C": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+    "D": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+    "E": "Things/Pawn/Animal/RM_BedBug/RM_BedBug"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render donorart_p2_bedbug_egg_v1",
+    "C": "render enact_be511e0a_bedbug_v1",
+    "D": "render cauldronfix_bedbug_v2",
+    "E": "render gapall_AA_BedBug_v1"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "bedbug"
+  },
+  "RM_Bileworm": {
+   "columns": {
+    "A": {
+     "east": "7778ee23e92f8cebf8b12c6b1c16412f4f0ede6908f9da25ff9e88144e70f63e",
+     "north": "fb0a4cae2598c719ef11b8fcc9b87aa757a3a9d6e7e162c0ba6e09a3d28e65c4",
+     "south": "7dec057170bae3d2178b610e709036a4c3149dbf00b7b6a35d9aafc83a8a04bd"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bileworm"
   },
   "RM_BloodBouquet": {
    "columns": {
@@ -772,6 +721,36 @@
    ],
    "subject_key": "crystalflower"
   },
+  "RM_CrystalMit": {
+   "columns": {
+    "A": {
+     "east": "c50de4b85c204bb94ca2098e994761c973c3990f693f0cb71218f7863ca1872c",
+     "north": "cb2c786fc2ec6a02b76ab8ae14281f4d815f113b5ce80c4dafbc757917092c3b",
+     "south": "b9ac78abe816592c882096f888e9e947be6b03b007232d7e54f4c1873e5e4417"
+    },
+    "B": {
+     "east": "624dc66dd8a8beeac8c8815a531cd5035a0994de72be15e187a765bbb5cdeea0",
+     "north": "c0ef85c2210c8d324c56f6a1ab060867dcf2281be8c981a412a43c72be139f94",
+     "south": "918f4a66a4a40fdd3b1ff546d2f7ba1be6ca1a16af8cadd96f5a27eda3fbae00"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+    "B": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render gapall_AA_CrystalMit_v1"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "crystalmit"
+  },
   "RM_DarkCrust": {
    "columns": {
     "A": {
@@ -793,6 +772,28 @@
     "167f9f9b8fa363643b809db432def4fac45c6ff9451a7753b194e4323adcaa2f"
    ],
    "subject_key": "darkcrust"
+  },
+  "RM_DecayDrake": {
+   "columns": {
+    "A": {
+     "east": "ba98737edc7f536ecef779f7fd1353f6274358a61127e5e25e0259658b23f199",
+     "north": "ca8ff92b2d64e790002839d5abe86f4af8d660933bee1c79beef33e7224823d6",
+     "south": "6a1234293ef67df19a8aec0c7797b37619c165bae50c64be666b6501e5009342"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Miasma"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "decaydrake"
   },
   "RM_Eskith": {
    "columns": {
@@ -1012,11 +1013,11 @@
     }
    },
    "graphic_of": {
-    "A": "_byname",
+    "A": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
     "B": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
    },
    "labels": {
-    "A": "render rot_wildpod_v2",
+    "A": "WAS in game, no longer installed \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
@@ -1031,6 +1032,52 @@
     "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac"
    ],
    "subject_key": "mullgoth"
+  },
+  "RM_Radyak": {
+   "columns": {
+    "A": {
+     "east": "3fa7ef55ca4a882dc70ae5fafc3b9cccc0ab3873b8a81e607668862d021d5813",
+     "north": "c0ca703d1a6a9ba13f4613ae85db32468484053aa3e3ef7ed0205a02e95e9f62",
+     "south": "3130546fac8b2d31b23b809c57a9a3bfdba6f0c8a68f4cd12eccd2390dba3807"
+    },
+    "B": {
+     "east": "18e3d4499f2208cd0c359977e6cc54c0b07dececf89265e21b99006a80382e8d",
+     "north": "b1091560b8a2d6a174975590b6ee26815e9d28eb0d625d47f252453f21dbd880",
+     "south": "29324572952ff4f7b912d78f0c57e28349fd4243626feb2cc6f6c9207318d1b8"
+    },
+    "C": {
+     "east": "cf3a74e2cea78cfd8001d03d9cba54e409f17566e15c50058b91addec18e40c8",
+     "north": "1f49f70893fdf4f8981ab4f0dfa0b171f31c2e174ff01830f96adae064c9cbaa",
+     "south": "37b2340d40f6b1b47e0c4494be0434a55680d447c41391f766c14c3c93188bd5"
+    },
+    "D": {
+     "east": "a8b301e411f3b07f85e92a6277cc3663d2f158c38b80413d1d85718c902b527b",
+     "north": "925850bb8cd8d6ff2323cf1d491bddf6212041e298b6a499e549ea728aabd38f",
+     "south": "a30b610b183253fa980f8c8fe9c5501638691012eb02470aff795522e4318401"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Radyak/RM_Radyak",
+    "B": "Things/Pawn/Animal/RM_Radyak/RM_Radyak",
+    "C": "Things/Pawn/Animal/RM_Radyak/RM_Radyak",
+    "D": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render enact_f3decf4d_radyak_v1",
+    "C": "render gapall_AA_Radyak_v1",
+    "D": "render ossrith_alien_v2"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_Radyak/RM_Radyak",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "radyak"
   },
   "RM_RavenNettle": {
    "columns": {
@@ -1147,6 +1194,28 @@
    ],
    "subject_key": "sessarix"
   },
+  "RM_SikkaSikka": {
+   "columns": {
+    "A": {
+     "east": "c2dba760bd7363f946ff8fe43b563d19523e161bb18b9d3680bd124d143d6a6f",
+     "north": "f862b756c4cad8010b815740ed72b192af9cd134bef3bf3c9accc6a3c830e091",
+     "south": "ba5bedae9e5834b22baa268559c89a9db5fd86e65b43febab1164b4c1980791f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "sikkasikka"
+  },
   "RM_Suush": {
    "columns": {
     "A": {
@@ -1198,16 +1267,12 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapall_RM_TreeMartyr_v1"
    },
-   "pools": [],
    "res": "Things/Plant/RM_TreeMartyr",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [
-    "66b3a5c0e029fa4032e8b9a913bd9e74db95662678bd53f0361d7b46143989ad",
-    "c61901582438d937a3f179165f85c928458bf8ad3fb10244c51b23f0245d40e5"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "treemartyr"
   },
   "RM_Tsevrix": {
@@ -1591,25 +1656,104 @@
     "B": "history SWBestiary 2026-09-11",
     "C": "IN GAME \u2014 Screecher_Flying_"
    },
-   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
    "reserved": [
     "A",
     "B",
     "C"
    ],
-   "shownBase": [
-    "0907a668426b54cbcee1e0cacf2889339b6f1abc7a3783179475dac3ee15af96",
-    "30cb690ac5a38186a3b7ccc95497a40ffca12e2216f75ef38e187bd13171864f",
-    "329ba0809e745b9e153383d6c9360f4e1127c7088bc31d5f784e8e842bb4f020",
-    "37e661b2c97cef6401128e3d875f8e2c3a77679ec272ac975a5d19a4ee5d022e",
-    "4350b5daca9bda496cf78865b547bd80c594a8d8888d27741f5b67b366a38ae1",
-    "7a4295d1173e17636d561a7b20829387971b813984b7e72f39939415e6df38cc",
-    "aa1c394b6c20be424ce98dc0d0466790dd2847e44bfa0aab5e555067387d7f02",
-    "ab46fe0c651e32f57c146d940e2f44815d3f6d83498cf0910364f431467288fd",
-    "bc5d3fb176422bd6aaa618d0f679d29544c2ae0d789da4c54cf2f5dab6179246"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "screecher"
+  },
+  "RSW_Silooth": {
+   "columns": {
+    "A": {
+     "east": "c35c544c87ebce82cfefcde067dd2b4319ee9030a70659922f67f48090ff93d9",
+     "north": "a358803f61660a4b0bd5741066d0b8757b46469e980d2086f830b64f63dea40f",
+     "south": "7a567e48adff5d609d2bdc6c0695214cefda6102aec9404ad916c4e2679626ea"
+    },
+    "B": {
+     "east": "7fc773ea34ae12f38102ff9bcf0baae21c29435b6c7cc4c87154e9daa89eeacd"
+    },
+    "C": {
+     "east": "f37125db3a04bec19684ccb9de1b6b2e7818669ed13adbcd5a3f63cee4e8f6c5",
+     "north": "209a404f0eedf64d73c25f7f126f51f25fea2a6c049f225b733de2224874aff3",
+     "south": "1ca98a94ea0318c3ad6b5e865f3ca5846193d63bd8c430e0fe642ef476a06846"
+    },
+    "D": {
+     "east": "cb8056760f77451b1e1bd0294936719fac62f8669c8c2ac30319a28cd37cba22"
+    },
+    "E": {
+     "east": "daa8f55220a1b9598b2731e4986b9cf7f920f79701dffe207d2b9cae790ae28d"
+    },
+    "F": {
+     "east": "47e4a579b26b49f8b90c02eecb85ee361655b1192a2e731a0f095792f6ac1eb0"
+    },
+    "G": {
+     "east": "8060dfb806bdeb6d646be91703f5085b4716a96ae6f600460a883487dad101fa"
+    },
+    "H": {
+     "east": "90e21a2a9ba21b537231e1cddf88ef64faa50c6fb690a9592d0b1b292778d821"
+    },
+    "I": {
+     "east": "3614c4d699690864f47a0f962ce2a0445db5d3d41776c42f34588709590485ed",
+     "north": "11c9cd19d650a6c5df76d30022154573bfd4f8c2eda6b191e44b2fcb83b4a5a8",
+     "south": "ac97423b5a3b6aa554e2f7617cf09d900f7ec52d4a29c92470e92df448b3fe3f"
+    },
+    "J": {
+     "east": "2197f6d30fa69035d0005acb6c3e8e3742df0a68a48b1008faad81c166023da2",
+     "north": "afa9657f1b60acb6890979b44807432c67ab2073afac37bd0e5595ea734689c2",
+     "south": "d80d9a67d0cfd71ea503701c5dc28da72cd6d3b6fd5303ab085aac795c6afbb5"
+    },
+    "K": {
+     "east": "2197f6d30fa69035d0005acb6c3e8e3742df0a68a48b1008faad81c166023da2",
+     "north": "d6b2d941d5b6270750f9f2fd77bcaddae96f08393e6780e2356691f6ad4055cf",
+     "south": "ee548abc64e34a583295b675d8b882fe1a2b097acf02a8bc5cd5ab816f3c1ccf"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Silooth/Silooth",
+    "B": "RimStarWars/SWBestiary/Silooth/Silooth",
+    "C": "RimStarWars/SWBestiary/Silooth/Silooth",
+    "D": "RimStarWars/SWBestiary/Silooth/Silooth",
+    "E": "RimStarWars/SWBestiary/Silooth/Silooth",
+    "F": "RimStarWars/SWBestiary/Silooth/Silooth",
+    "G": "RimStarWars/SWBestiary/Silooth/Silooth",
+    "H": "RimStarWars/SWBestiary/Silooth/Silooth",
+    "I": "RimStarWars/SWBestiary/Silooth/Silooth",
+    "J": "swanimals/Silooth/Silooth_j",
+    "K": "swanimals/Silooth/Silooth_j"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render dregen_RSW_Silooth_Siloothj_v1",
+    "C": "render enact_7a2b5db5_silooth_v1",
+    "D": "render cauldronfix_silooth_v5",
+    "E": "render cauldronfix_silooth_v5b",
+    "F": "render cauldronfix_silooth_v2",
+    "G": "render cauldronfix_silooth_v3",
+    "H": "render cauldronfix_silooth_v4",
+    "I": "render gapall_Silooth_v1",
+    "J": "IN GAME \u2014 SWBestiary",
+    "K": "donor original \u2014 mlie.starwarsanimalcollection"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/Silooth/Silooth",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
+   ],
+   "shownBase": [],
+   "subject_key": "silooth"
   },
   "RSW_Skalder": {
    "columns": {
@@ -1766,9 +1910,9 @@
     "N": "swanimals/Silooth/Silooth_j"
    },
    "labels": {
-    "A": "donor original \u2014 mlie.starwarsanimalcollection",
+    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Silooth_v1",
-    "C": "donor original \u2014 mlie.starwarsanimalcollection",
+    "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "E": "render enact_7a2b5db5_silooth_v1",
     "G": "render cauldronfix_silooth_v5b",
     "H": "render cauldronfix_silooth_v6",
@@ -1779,7 +1923,6 @@
     "M": "render cauldronfix_silooth_v5",
     "N": "IN GAME \u2014 SWBestiary"
    },
-   "pools": [],
    "res": "swanimals/Silooth/Silooth",
    "reserved": [
     "A",
@@ -1797,26 +1940,11 @@
     "M",
     "N"
    ],
-   "shownBase": [
-    "0f73e9092f41ee7beac27c033f2fbb3968a4c041438f872e682cecc713be7252",
-    "11c9cd19d650a6c5df76d30022154573bfd4f8c2eda6b191e44b2fcb83b4a5a8",
-    "2197f6d30fa69035d0005acb6c3e8e3742df0a68a48b1008faad81c166023da2",
-    "3614c4d699690864f47a0f962ce2a0445db5d3d41776c42f34588709590485ed",
-    "ac97423b5a3b6aa554e2f7617cf09d900f7ec52d4a29c92470e92df448b3fe3f",
-    "b6d1908ee08d6493e2a987774ae41a33bef617b9b65dd5f04862f7649d189b8a",
-    "c095c2f5b2b02888cfb664d4a297c0fe2bf50026f4725e12bde242b74262c5cf",
-    "d6b2d941d5b6270750f9f2fd77bcaddae96f08393e6780e2356691f6ad4055cf",
-    "ee548abc64e34a583295b675d8b882fe1a2b097acf02a8bc5cd5ab816f3c1ccf"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "silooth"
   },
   "Visceral": {
    "columns": {
-    "A": {
-     "east": "e8fb3cb25cf7446023c704f966531f852cb8852a482d8e922d838d77ee9e63b1",
-     "north": "1f6a6687379edfb7d869d053227d0fe1a580964add4fc9a823d0cd9400cf112a",
-     "south": "5ed9d2ac34a60f0acf5a65137c922848d7d9f5ea1c0ea5e54c0ab0854b49bf5e"
-    },
     "B": {
      "east": "087d730e92380879a935209343f2a09c418cf3732a37b3e63f226a037ce63b73",
      "north": "b5bee4c7ca5cb0fa3006ddc3a10bdf15f35413aa12b3763401b389ea164a0501",
@@ -1834,19 +1962,17 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Visceral/Visceral",
-    "B": "Things/Pawn/Animal/Visceral/Visceral",
-    "C": "Things/Pawn/Animal/Visceral/VisceralBaby",
-    "D": "Things/Pawn/Animal/Visceral/VisceralTeen"
+    "B": "RimUtinni/UtinniPatches/Visceral/Visceral",
+    "C": "RimUtinni/UtinniPatches/Visceral/VisceralBaby",
+    "D": "RimUtinni/UtinniPatches/Visceral/VisceralTeen"
    },
    "labels": {
-    "A": "IN GAME \u2014 mlie.horrors",
-    "B": "render gapall_Visceral_v1",
-    "C": "IN GAME \u2014 mlie.horrors",
-    "D": "IN GAME \u2014 mlie.horrors"
+    "B": "IN GAME \u2014 UtinniPatches",
+    "C": "IN GAME \u2014 UtinniPatches",
+    "D": "IN GAME \u2014 UtinniPatches"
    },
    "pools": [],
-   "res": "Things/Pawn/Animal/Visceral/Visceral",
+   "res": "RimUtinni/UtinniPatches/Visceral/Visceral",
    "reserved": [
     "A",
     "B",
@@ -1871,5 +1997,5 @@
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "b1c24502d26896b5"
+ "snapshotId": "f6c4ec59c9693a4a"
 }

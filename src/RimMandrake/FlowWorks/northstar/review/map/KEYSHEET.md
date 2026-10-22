@@ -4,7 +4,7 @@ Load the save in RimWorld (Load game > (no keeper saved yet: build, then --save)
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
-88 stations: 13 works in game, 66 built, not yet seen, 9 partly built, 0 not built yet.
+88 stations: 9 works in game, 70 built, not yet seen, 9 partly built, 0 not built yet.
 
 ## V - pits: what they look like (south-west block)
 
@@ -73,7 +73,7 @@ Two different liquids never mix: where their fronts meet, both stop. Drain one s
 
 **Look for:** weak spot: a cell between the fronts drawn as a blend; one liquid overwriting the other
 
-### 5. A small pond runs dry - works in game
+### 5. A small pond runs dry - built, not yet seen
 
 Any pond is a source: a lake touching the map edge never runs dry; an enclosed pond runs out. An enclosed pond supplies only the water it holds (2 levels a shallow square, 4 a deep one), then the flow stops.
 
@@ -409,7 +409,7 @@ A staircase never traps
 
 **Look for:** weak spot: the chicken read as trapped at the bottom (a slope must never trap)
 
-### 31. A cover hides the hole - works in game
+### 31. A cover hides the hole - built, not yet seen
 
 A pit cover hides the hole and looks like the ground around it. A faint seam shows only at the closest zoom.
 
@@ -459,7 +459,7 @@ Flood an occupied pit to drown, poison or burn whoever is in it. Water drowns no
 
 ## 5 · Pits: holding prisoners
 
-### 35. A ladder in and out - works in game
+### 35. A ladder in and out - built, not yet seen
 
 A ladder: lowered, people climb out; raised, they're stranded. It works like a prison door. Ladders only go on dug ground.
 
@@ -525,7 +525,7 @@ Sluice gates and grate doors let liquid through but hold creatures and prisoners
 
 ## 6 · How it looks
 
-### 40. People sink as the ground deepens - works in game
+### 40. People sink as the ground deepens - built, not yet seen
 
 People sink as the ground deepens and rise as they climb out; in a pit the walls stand over their head. Someone in slime is drawn sunk into it, not standing on top.
 

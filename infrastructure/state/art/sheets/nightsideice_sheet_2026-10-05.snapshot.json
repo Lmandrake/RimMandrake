@@ -1,12 +1,17 @@
 {
  "biome": "RM_NightsideIce",
- "built": "2026-10-14T20:32:09-0700",
+ "built": "2026-10-20T18:46:08-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "census_git_head": "b551136cdd",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "AA_ShockGoat": {
    "columns": {
+    "A": {
+     "east": "cd807a61921c644fab0ebad283c747d908c40af8f76cbfc3d094d5575ba71cb6",
+     "north": "bcaadce40442f96c0115b460a60a005da1246fa98735a96e3b65b248ceb6dd78",
+     "south": "c3393ed5a233b5f45de458a4927376a76d4e760c424768b1f130371c7b587497"
+    },
     "B": {
      "east": "e0b5ce5699b15ead5420377f45d493d9b3453b9d396bf30c890c769f827a87e0",
      "north": "dbdf4abf638e547780df0da7225486568e75a991f6b0e85f39447e964c695ce5",
@@ -19,30 +24,54 @@
     }
    },
    "graphic_of": {
-    "B": "_byname",
+    "A": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat",
+    "B": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat",
     "D": "Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce"
    },
    "labels": {
+    "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_ShockGoat_v1",
     "D": "IN GAME \u2014 NightsideIce"
    },
-   "pools": [],
-   "res": "Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce",
+   "res": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat",
    "reserved": [
     "A",
     "B",
     "C",
     "D"
    ],
-   "shownBase": [
-    "6a11a568eae6fabdb835565debf26d108beb84faccf95cca4cc336056b21eac7",
-    "bcaadce40442f96c0115b460a60a005da1246fa98735a96e3b65b248ceb6dd78",
-    "c3393ed5a233b5f45de458a4927376a76d4e760c424768b1f130371c7b587497",
-    "cd807a61921c644fab0ebad283c747d908c40af8f76cbfc3d094d5575ba71cb6",
-    "dbdf4abf638e547780df0da7225486568e75a991f6b0e85f39447e964c695ce5",
-    "e0b5ce5699b15ead5420377f45d493d9b3453b9d396bf30c890c769f827a87e0"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "shockgoat"
+  },
+  "RM_Zhissa": {
+   "columns": {
+    "A": {
+     "east": "7fe45737f5025e4487e5a936691f9b8068828505a86dc86b89b4efb16b800200",
+     "north": "8f0a90d7a75aca1578987928b88b33b92d56656bf87f15b133802b309b4ebf40",
+     "south": "dff87fe690976185e5bb7bf954cede90767864cd0ab9a9792dd8010a38aafe79"
+    },
+    "B": {
+     "east": "ac78eb5acf8a2243f7093eb818d3899d5f2606742fe6bd88efac4de548e6d998",
+     "north": "83f8a351f83ce5f41ae077906c769a83699bf0814f64a3e3e8cedd792e66a91f",
+     "south": "a4bb19f4354f250335851604645bcf4fa987a60b2dc68c1c972b39573d43c807"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Zhissa/RM_Zhissa",
+    "B": "Things/Pawn/Animal/RM_Zhissa/RM_Zhissa"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 NightsideIce",
+    "B": "render nightside_zhissa"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_Zhissa/RM_Zhissa",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "zhissa"
   },
   "RSW_CaveLemming": {
    "columns": {
@@ -55,22 +84,30 @@
      "east": "1d9d2c449af5e83b6d614cc70780baa8ce0dbcb5c513933653b9653c6a58a955",
      "north": "3f6e1e8cb8f8aaf1da96c1078ac06b8a13a729ccc9c5f4656656debb38c71963",
      "south": "fda357d0e43770aef98d636f6dbe9dabb0ada2d64ed88415aea6e4c5487e305e"
+    },
+    "D": {
+     "east": "1d9d2c449af5e83b6d614cc70780baa8ce0dbcb5c513933653b9653c6a58a955",
+     "north": "0cefb0a5841f3b7282c253c10ce483aa018c7b954f79d7054664bac32d25f071",
+     "south": "fda357d0e43770aef98d636f6dbe9dabb0ada2d64ed88415aea6e4c5487e305e"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
-    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming"
+    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
+    "D": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-11",
-    "C": "IN GAME \u2014 SWBestiary"
+    "C": "render nightsideice_cavelemming_v1",
+    "D": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "22e9996b2a717b3e5eab916f893b770ec541a2605dec1b1d5a79dde316a7f86b",
@@ -82,13 +119,40 @@
    ],
    "subject_key": "cavelemming"
   },
-  "RSW_Wampa": {
+  "RSW_Tauntaun": {
    "columns": {
     "A": {
-     "east": "ef179636328bfc4cc3237382f6f60ae675511cdd463bb392b535ed4cbc9b0da5",
-     "north": "bc2112bb663794b0f36ccef622ecd0f2abd9fd170133ce29676a6785f1ebf222",
-     "south": "582e578f0bbfea1ed15774cfa1970f1ffce405237b2f319470503016b8428165"
+     "east": "27e976bc5fea092659db109edbe221d33ee507b3c72f6408e663e0eb6bd806f4",
+     "north": "d5141e04d0f4ac9a382dd7eb66690e8e4193c7cf5c24e3ef908f307766166c5b",
+     "south": "54256ce93ad9bb12ed2c9cdb4ba295404b8dc93b2875ff201e469b837cd5d4ec"
     },
+    "B": {
+     "east": "dd42ec0c1ec17e2aea9f8d187327c80f022d06b3136fd699e431af204f84e9ed",
+     "north": "192352a7f27eb33bdc7284dfdd801ecf4f81e8cb462a26dcdbf514a08dff4da7",
+     "south": "4e688911e696993db0b5a5417c08d8feebbe689d1d37e727526fe4aa44e6ee40"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render gapall_Tauntaun_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
+   ],
+   "res": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "tauntaun"
+  },
+  "RSW_Wampa": {
+   "columns": {
     "B": {
      "east": "e64862a4879bcacccd3846a30e271e10c040534e3a6d4b72a77aad1857099be3",
      "north": "281e4251a54530e4fc5b60754b456147441f5a3f03480046ff936d10b8807497",
@@ -103,19 +167,23 @@
      "east": "cad3172607aeaa7f52d84c81c82d31943c0872c1d7a9dffebd9f940d6b0e2afd",
      "north": "24baa93cba65defdead28d67289550d6850339b805bc6e88a73336d46902a4b2",
      "south": "1b1323fc5250fc02c823b0ffd4bd47da2ba99da6df677fb5d1dfb5fc4532a5f8"
+    },
+    "E": {
+     "east": "11b6d0329c9b724c7dad9db4eb0b349a633edc1f55dade01ec91b5449675935b",
+     "south": "8ea03da849e75951165f9b1253f20cb41edd7f99262ba797cb81dd7e6b3ab49b"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Wampa/Wampa",
     "B": "swanimals/Wampa/Wampa",
-    "C": "swanimals/Wampa/Wampa_j",
-    "D": "swanimals/Wampa/Wampa"
+    "C": "swanimals/Wampa/Wampa",
+    "D": "swanimals/Wampa/Wampa",
+    "E": "swanimals/Wampa/Wampa"
    },
    "labels": {
-    "A": "history SWBestiary 2026-09-09",
-    "B": "IN GAME \u2014 SWBestiary",
-    "C": "IN GAME \u2014 SWBestiary",
-    "D": "render canonregen_rsw_wampa_v1 \u2014 failed canon check"
+    "B": "render canon_wampa_v1",
+    "C": "WAS in game, no longer installed \u2014 SWBestiary",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render standtall_b1_wampa_j"
    },
    "pools": [],
    "res": "swanimals/Wampa/Wampa",
@@ -123,7 +191,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "11b6d0329c9b724c7dad9db4eb0b349a633edc1f55dade01ec91b5449675935b",
@@ -140,6 +209,11 @@
   },
   "Tauntaun": {
    "columns": {
+    "A": {
+     "east": "45ecc26a11888c3fe7e44d713eebda6ceb7a7ec03db7d572c182b2db301b1e54",
+     "north": "ca69a2b894ca6da3fadd49f252d09b65a2b53b31ef55a3f657759838d4b3948e",
+     "south": "ec61e64684f85023ba6f6b1b1b7e25718a7a8d321e383d5c695141fd2512e0d9"
+    },
     "B": {
      "east": "dd42ec0c1ec17e2aea9f8d187327c80f022d06b3136fd699e431af204f84e9ed",
      "north": "192352a7f27eb33bdc7284dfdd801ecf4f81e8cb462a26dcdbf514a08dff4da7",
@@ -157,39 +231,28 @@
     }
    },
    "graphic_of": {
-    "B": "_byname",
-    "C": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
+    "A": "swanimals/Tauntaun/Tauntaun",
+    "B": "swanimals/Tauntaun/Tauntaun",
+    "C": "swanimals/Tauntaun/Tauntaun_j",
     "D": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
    },
    "labels": {
+    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Tauntaun_v1",
-    "C": "WAS in game, no longer installed \u2014 mlie.starwarsanimalcollection",
+    "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "D": "IN GAME \u2014 SWBestiary"
    },
-   "pools": [
-    "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
-   ],
-   "res": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
+   "res": "swanimals/Tauntaun/Tauntaun",
    "reserved": [
     "A",
     "B",
     "C",
     "D"
    ],
-   "shownBase": [
-    "192352a7f27eb33bdc7284dfdd801ecf4f81e8cb462a26dcdbf514a08dff4da7",
-    "45ecc26a11888c3fe7e44d713eebda6ceb7a7ec03db7d572c182b2db301b1e54",
-    "4e688911e696993db0b5a5417c08d8feebbe689d1d37e727526fe4aa44e6ee40",
-    "7c6c193a9b5f8e1923dcd54d22bcdadd814469aca2b5ecf9118bd7d1fb70ac5d",
-    "ca69a2b894ca6da3fadd49f252d09b65a2b53b31ef55a3f657759838d4b3948e",
-    "dd42ec0c1ec17e2aea9f8d187327c80f022d06b3136fd699e431af204f84e9ed",
-    "dd44f62b3b53bb50cdba2ca90021db2d919e92d678930420aeafa2c5161d830e",
-    "ec61e64684f85023ba6f6b1b1b7e25718a7a8d321e383d5c695141fd2512e0d9",
-    "f600c0a4770bba2397e303d9c166dfe60b7f594b3bf5ff921b0644e3e3aa676c"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "tauntaun"
   }
  },
  "sheetId": "nightsideice_sheet_2026-10-05",
- "snapshotId": "d4b3cd354c181052"
+ "snapshotId": "1f1503f434ff066c"
 }

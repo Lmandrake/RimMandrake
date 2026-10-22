@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_facing_regen_needs_eyes",
- "built": "2026-10-19T05:10:02-0700",
+ "built": "2026-10-20T18:24:26-0700",
  "census": "Transient/biome_ffar/facing_regen_needs_eyes.subjects.json",
  "census_git_head": null,
- "loadOrder": "live ModsConfig.xml: 535 active",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "RM_Qorrax": {
    "columns": {

@@ -2,7 +2,7 @@
  "sheetId": "liquid_connections_sheet_2026-10-16",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/liquid_connections_sheet_2026-10-16.snapshot.json",
- "snapshotId": "b1c097f7252a3743",
+ "snapshotId": "76c0cc1a48eab813",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "SUBJECTS_liquid_connections",
  "reviewStatus": {

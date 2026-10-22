@@ -1,0 +1,4 @@
+note: seeded worker CODEX_HOME /mnt/d/Luke/dev/_rmscratch/codex/home_weir_foam from /mnt/c/Users/Mandrake/.codex (auth.json, config.toml, models_cache.json, version.json, installation_id, skills/)
+note: seeded /mnt/d/Luke/dev/_rmscratch/codex/home_weir_foam's sandbox setup from /mnt/c/Users/Mandrake/.codex_sandbox_seed - no UAC prompt expected
+OK  /home/mandrake/rm/bench/src/RimMandrake/FlowWorks/art_source/Weir/raw/foam_toe.png
+    1536x1024  rgba  1,965,187 bytes  (84s)

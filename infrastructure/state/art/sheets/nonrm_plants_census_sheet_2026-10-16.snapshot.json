@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_nonrm_plants_census",
- "built": "2026-10-16T06:07:26-0700",
+ "built": "2026-10-20T18:47:10-0700",
  "census": "Transient/biome_ffar/nonrm_plants_census.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "RSW_Plant_Bloddle": {
    "columns": {
@@ -31,14 +31,20 @@
     "H": {
      "single": "4a2dbc4f27f86124be1d3884b210cb72c3e819d94c27b2d7a4a64cab99dee7f9"
     },
-    "I": {
-     "single": "8a9467ec8215d4dee0bd9741fec70421d2b993a2195f8c48a73ad4d70bdeb76e"
-    },
     "J": {
      "single": "21f13693fa8e167b794939dd8242e6553851859352787094ea6f2b3e12127a42"
     },
     "K": {
      "single": "dc7fe47e313e98d46afd06892c8a0df0c02b22323122fee76c329ee49466f73b"
+    },
+    "L": {
+     "single": "8e44340d01599d35a657bb17389e52f4d9d27ea85756e9534767add5651618a4"
+    },
+    "M": {
+     "single": "77c4d02480525c96798dd7480636357618a9d7ef8055a5018fa0ba0cafa8cc0f"
+    },
+    "N": {
+     "single": "28b1293c57bb36f69bec31ecce50b46d08a2b632fdc684d5fff73c1f8541ac32"
     }
    },
    "graphic_of": {
@@ -50,12 +56,14 @@
     "F": "Things/Plant/RSW_Plant_Bloddle",
     "G": "Things/Plant/RSW_Plant_Bloddle",
     "H": "Things/Plant/RSW_Plant_Bloddle",
-    "I": "Things/Plant/RSW_Plant_Bloddle",
     "J": "Things/Plant/RSW_Plant_Bloddle",
-    "K": "Things/Plant/RSW_Plant_Bloddle"
+    "K": "Things/Plant/RSW_Plant_Bloddle",
+    "L": "Things/Plant/RSW_Plant_Bloddle",
+    "M": "Things/Plant/RSW_Plant_Bloddle",
+    "N": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_Plant_BloddleA (1 of 7) \u2014 SWBestiary",
+    "A": "render desertportb_plant_bloddle",
     "B": "IN GAME \u2014 random variant RSW_Plant_BloddleB (2 of 7) \u2014 SWBestiary",
     "C": "IN GAME \u2014 random variant RSW_Plant_BloddleC (3 of 7) \u2014 SWBestiary",
     "D": "IN GAME \u2014 random variant RSW_Plant_BloddleD (4 of 7) \u2014 SWBestiary",
@@ -63,9 +71,11 @@
     "F": "IN GAME \u2014 random variant RSW_Plant_BloddleF (6 of 7) \u2014 SWBestiary",
     "G": "IN GAME \u2014 random variant RSW_Plant_BloddleG (7 of 7) \u2014 SWBestiary",
     "H": "render stillsand_s2_RSW_Plant_Bloddle_var6",
-    "I": "render stillsand_s2_RSW_Plant_Bloddle_var7",
     "J": "render stillsand_s2_RSW_Plant_Bloddle_var8",
-    "K": "render stillsand_s2_RSW_Plant_Bloddle_var9"
+    "K": "render stillsand_s2_RSW_Plant_Bloddle_var9",
+    "L": "in game now, never shown \u2014 IN GAME \u2014 random variant RSW_Plant_BloddleA (1 of 7) \u2014 SWBestiary",
+    "M": "render p0art_bloddle_v1",
+    "N": "render dregen_RSW_Plant_Bloddle_RSWPlantBloddleB_v1"
    },
    "pools": [
     "Things/Plant/RSW_Plant_Bloddle"
@@ -82,9 +92,24 @@
     "H",
     "I",
     "J",
-    "K"
+    "K",
+    "L",
+    "M",
+    "N"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad",
+    "0f35431ae70ca1f3c22e67b7ae387f8b17f6aa514358bbde646b9b42e793e480",
+    "21f13693fa8e167b794939dd8242e6553851859352787094ea6f2b3e12127a42",
+    "2e8dd050cb44bf46cb993249c130dc9acf79bd1a5ad83444b6d308914f98549f",
+    "372060452ed2933976d5e9512ac43a897854b9868905d10320bfa52aa7afa83e",
+    "4a2dbc4f27f86124be1d3884b210cb72c3e819d94c27b2d7a4a64cab99dee7f9",
+    "62d66a32e1b4ebb8f9b3fc46f4884f75f64ccb87f05c9cf87cda73a9e0286b0c",
+    "7e46a06226533de20765e8881bfee6075517ab29eea532cc5a4457b77d731bf8",
+    "82602ff97ace79d8e382c8284b22a3ad32ae611e72c9bc582b064789ab0bbb25",
+    "8a9467ec8215d4dee0bd9741fec70421d2b993a2195f8c48a73ad4d70bdeb76e",
+    "dc7fe47e313e98d46afd06892c8a0df0c02b22323122fee76c329ee49466f73b"
+   ],
    "subject_key": "bloddle"
   },
   "RSW_Plant_Chakroot_Wild": {
@@ -109,6 +134,12 @@
     },
     "G": {
      "single": "9719fa6ae5e057be04fc2ff95a67c2910ffb80e230e3f135f90438392c6db6d1"
+    },
+    "H": {
+     "single": "88eacaef7b50e55762283fb942a86a285d1ce5dcf5b0ebd42012aee1c6f57233"
+    },
+    "I": {
+     "single": "39f636fe729b87ec9d4fc5938137a4b8d3370a6f33bd4b900f28fec0bddce39f"
     }
    },
    "graphic_of": {
@@ -118,7 +149,9 @@
     "D": "Things/Plant/RSW_Plant_Chakroot_Wild",
     "E": "Things/Plant/RSW_Plant_Chakroot_Wild",
     "F": "Things/Plant/RSW_Plant_Chakroot_Wild",
-    "G": "Things/Plant/RSW_Plant_Chakroot_Wild"
+    "G": "Things/Plant/RSW_Plant_Chakroot_Wild",
+    "H": "Things/Plant/RSW_Plant_Chakroot_Wild",
+    "I": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RSW_Plant_Chakroot_WildA (1 of 1) \u2014 SWBestiary",
@@ -127,7 +160,9 @@
     "D": "render longshade_rsw_chakroot_v2",
     "E": "render longshade_rsw_chakroot_v3",
     "F": "render longshade_rsw_chakroot_v4",
-    "G": "our deployed art \u2014 RimMandrake: SW \u2014 Bestiary"
+    "G": "our deployed art \u2014 RimMandrake: SW \u2014 Bestiary",
+    "H": "render p0art_chakroot_v1",
+    "I": "render dregen_RSW_Plant_Chakroot_Wild_RSWPlantChakrootWildA_v1"
    },
    "pools": [
     "Things/Plant/RSW_Plant_Chakroot_Wild"
@@ -140,9 +175,19 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H",
+    "I"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "281b6baf86ac2e09b77af4781045f5bd56010c0b89b8527cc981f4c92faca5bc",
+    "2c2ade8a6b934617a022ed25666f8c76b220d0db8a6cfccd5cdbda416e0f8d83",
+    "9719fa6ae5e057be04fc2ff95a67c2910ffb80e230e3f135f90438392c6db6d1",
+    "c4b22950f0abae61c07b6757792291c8e3fb6654736893daefeab09770d38f52",
+    "c7c380ec9133a3b9bd9adc0ca7cd89392881508f2eba754d0983f37c40713e04",
+    "d374c387ba027c5ea6fa0bc7d930f4f9f2f98542c3120e1d41e56d9b23781cec",
+    "d79e1c50d2428558689edca01f9ca223928692fbb4dfbd2c6f9757c031f16518"
+   ],
    "subject_key": "chakroot_wild"
   },
   "RSW_Plant_HubbaGourd_Wild": {
@@ -161,6 +206,12 @@
     },
     "E": {
      "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
+    },
+    "F": {
+     "single": "68c5f2265e6eb0899c64cbcb8eed4c9918842fe6e08e8c35d8157378363cb636"
+    },
+    "G": {
+     "single": "77503de79fd8f6b6cd1cbbc5420f73cd7a01344e08572eebb502e9eba18cd335"
     }
    },
    "graphic_of": {
@@ -168,14 +219,18 @@
     "B": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
     "C": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
     "D": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
-    "E": "Things/Plant/RSW_Plant_HubbaGourd_Wild"
+    "E": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
+    "F": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
+    "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RSW_Plant_HubbaGourd_WildA (1 of 1) \u2014 SWBestiary",
     "B": "render longshade_rsw_hubbagourd_v1",
     "C": "render longshade_rsw_hubbagourd_v2",
     "D": "render longshade_rsw_hubbagourd_v3",
-    "E": "render desertportb_plant_hubbagourd_wild"
+    "E": "render desertportb_plant_hubbagourd_wild",
+    "F": "render p0art_hubbagourd_v1",
+    "G": "render dregen_RSW_Plant_HubbaGourd_Wild_RSWPlantHubbaGourdWildA_v1"
    },
    "pools": [
     "Things/Plant/RSW_Plant_HubbaGourd_Wild"
@@ -186,9 +241,17 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e",
+    "bf361d20f250ff66724faabb75684222bab6ca8e75c416419f7c049da9182c90",
+    "dbdd048d3894e81529b5d4223ba1a4b45d05ed638e1801926728a8cdbae261ee",
+    "f6a652bd0632092970168cc2a4c1eac2bf93001490050f2e6b210779790ec66c",
+    "fb115f79fd0fdfcd7b99369f037c4f5ce4206aaab13062cb87666a115beb5324"
+   ],
    "subject_key": "hubbagourd_wild"
   },
   "RSW_Plant_HydenockTree_Wild": {
@@ -213,10 +276,10 @@
     "D": "Things/Plant/RSW_Plant_HydenockTree_Wild"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_Plant_HydenockTree_WildA (1 of 1) \u2014 SWBestiary",
-    "B": "render regen_fw_hydenocktree_varb_v1",
-    "C": "render regen_fw_hydenocktree_varc_v1",
-    "D": "render gapall_Plant_HydenockTree_Wild_v1"
+    "A": "IN GAME \u2014 random variant RSW_Plant_HydenockTree_WildA (1 of 4) \u2014 SWBestiary",
+    "B": "IN GAME \u2014 random variant RSW_Plant_HydenockTree_Wild_b (2 of 4) \u2014 SWBestiary",
+    "C": "IN GAME \u2014 random variant RSW_Plant_HydenockTree_Wild_c (3 of 4) \u2014 SWBestiary",
+    "D": "IN GAME \u2014 random variant RSW_Plant_HydenockTree_Wild_d (4 of 4) \u2014 SWBestiary"
    },
    "pools": [
     "Things/Plant/RSW_Plant_HydenockTree_Wild"
@@ -228,7 +291,12 @@
     "C",
     "D"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "38ab3e7dce83801a99a3f8f9e23e9d2790c99f8dc611d3df3f3c1ae2bc66dbf9",
+    "d1d29ffecf631507d18cad78c9b516c1441b9aedcb488a351ee9b9af5b906b3a",
+    "d683e2f3e4e9b78fd3d132af578dabf3d1d22450606d8c874870d80cc181a460",
+    "ec139cb2286d339324525b168f9dc34822dea03284557c77c81734f03dbe76aa"
+   ],
    "subject_key": "hydenocktree_wild"
   },
   "RSW_Plant_JoganTree_Wild": {
@@ -236,32 +304,17 @@
     "A": {
      "single": "62db452cd793839b9278b0ab48adeb45979b686fc3e9e721739aaeb24727d9be"
     },
-    "B": {
-     "single": "658a54cc56f76869b85449fbb007a40d1482facb5c6c601fc78408d5c6ad5e30"
-    },
-    "C": {
-     "single": "6532420b56014b8cce35b5b5ef7e26f3d6091554796a720e7fb99c414be5ccc1"
-    },
     "D": {
      "single": "4049a36c5c68562da91bf2ac69e04d1cc021809c3bebf3cdd3f50ad4115f00fe"
-    },
-    "E": {
-     "single": "e4452b4c048248a7ccd7c6d4ad6a07c4b06b7d316dc634621fe9a52b10c24725"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RSW_Plant_JoganTree_Wild",
-    "B": "Things/Plant/RSW_Plant_JoganTree_Wild",
-    "C": "Things/Plant/RSW_Plant_JoganTree_Wild",
-    "D": "Things/Plant/RSW_Plant_JoganTree_Wild",
-    "E": "_byname"
+    "D": "Things/Plant/RSW_Plant_JoganTree_Wild"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RSW_Plant_JoganTree_WildA (1 of 1) \u2014 SWBestiary",
-    "B": "render regen_fw_jogantree_varb_v1",
-    "C": "render regen_fw_jogantree_varc_v1",
-    "D": "render gapall_Plant_JoganTree_Wild_v1",
-    "E": "render swacp1_jogan_v1"
+    "D": "render gapall_Plant_JoganTree_Wild_v1"
    },
    "pools": [
     "Things/Plant/RSW_Plant_JoganTree_Wild"
@@ -274,16 +327,19 @@
     "D",
     "E"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "4049a36c5c68562da91bf2ac69e04d1cc021809c3bebf3cdd3f50ad4115f00fe",
+    "62db452cd793839b9278b0ab48adeb45979b686fc3e9e721739aaeb24727d9be",
+    "6532420b56014b8cce35b5b5ef7e26f3d6091554796a720e7fb99c414be5ccc1",
+    "658a54cc56f76869b85449fbb007a40d1482facb5c6c601fc78408d5c6ad5e30",
+    "e4452b4c048248a7ccd7c6d4ad6a07c4b06b7d316dc634621fe9a52b10c24725"
+   ],
    "subject_key": "jogantree_wild"
   },
   "RSW_Plant_Nysyllin_Wild": {
    "columns": {
     "A": {
      "single": "e8171f251958d644670b6dfb5bb5ebe05691eea90979b1e7e7ebe638b1c01acb"
-    },
-    "B": {
-     "single": "d3b2317d2a9182fd1c246a0e10574bd53725805ea63190451fc302de1608f406"
     },
     "C": {
      "single": "a2a117779fbfefb99394d291c58ce8eace9deaa63b1ca92949f6b4c06763ec1a"
@@ -308,31 +364,54 @@
     },
     "J": {
      "single": "91e1a9ba8e2148684717e55044d79c13106ca192a9a13527d9282b0dc6a0fa5c"
+    },
+    "K": {
+     "single": "8cdfac26872c60b3159083098bf43892ae0c3da0d18c91e809b6709e11bd7427"
+    },
+    "L": {
+     "single": "ae38f3db6f4ccf5c27600a085c8dd3a96c5f0567053a6e1bc9830b7754723d63"
+    },
+    "M": {
+     "single": "a05a6fae2584960668f383a9cb0a7335ae48a0b2f906313a06f16adbc4cd1096"
+    },
+    "N": {
+     "single": "214f49afe055b83dbae0891a2fb4fa1e861345600d781dca0cc192264328fbf9"
+    },
+    "O": {
+     "single": "6874a719f777e30b9b104e42e3d29bb0ff57ddbc8f1a85ac9d361cd1ae66a764"
     }
    },
    "graphic_of": {
     "A": "swplants/Nysillin",
-    "B": "swplants/Nysillin",
     "C": "swplants/Nysillin_Immature",
     "D": "swplants/Nysillin_Immature",
-    "E": "_byname",
-    "F": "_byname",
-    "G": "_byname",
-    "H": "_byname",
-    "I": "_byname",
-    "J": "_byname"
+    "E": "swplants/Nysillin",
+    "F": "swplants/Nysillin_Immature",
+    "G": "swplants/Nysillin_Immature",
+    "H": "swplants/Nysillin_Immature",
+    "I": "swplants/Nysillin_Immature",
+    "J": "swplants/Nysillin_Immature",
+    "K": "_byname",
+    "L": "_byname",
+    "M": "_byname",
+    "N": "_byname",
+    "O": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant Nysillin_a (1 of 1) \u2014 SWBestiary",
-    "B": "donor original \u2014 mlie.starwarsanimalcollection",
-    "C": "IN GAME \u2014 random variant Nysillin_Immature_a (1 of 1) \u2014 SWBestiary",
+    "A": "IN GAME \u2014 random variant Nysillin_a (1 of 2) \u2014 SWBestiary",
+    "C": "IN GAME \u2014 random variant Nysillin_Immature_a (1 of 6) \u2014 SWBestiary",
     "D": "donor original \u2014 mlie.starwarsanimalcollection",
-    "E": "render enact_9f37854b_plant_nysyllin_wild_v1 \u2014 grader flagged (advisory)",
-    "F": "render ls3_nysyllin_a_v1",
-    "G": "render ls3_nysyllin_b_v1",
-    "H": "render leaningscrub_nysyllin_wild_c_v1_single \u2014 grader flagged (advisory)",
-    "I": "render leaningscrub_nysyllin_wild_a_v1_single \u2014 grader flagged (advisory)",
-    "J": "render leaningscrub_nysyllin_wild_b_v1_single \u2014 grader flagged (advisory)"
+    "E": "IN GAME \u2014 random variant Nysillin_e (2 of 2) \u2014 SWBestiary",
+    "F": "IN GAME \u2014 random variant Nysillin_Immature_f (2 of 6) \u2014 SWBestiary",
+    "G": "IN GAME \u2014 random variant Nysillin_Immature_g (3 of 6) \u2014 SWBestiary",
+    "H": "IN GAME \u2014 random variant Nysillin_Immature_h (4 of 6) \u2014 SWBestiary",
+    "I": "IN GAME \u2014 random variant Nysillin_Immature_i (5 of 6) \u2014 SWBestiary",
+    "J": "IN GAME \u2014 random variant Nysillin_Immature_j (6 of 6) \u2014 SWBestiary",
+    "K": "render p0art_nysyllin_v1",
+    "L": "render ls3_nysyllin_a_v1",
+    "M": "render ls3_nysyllin_b_v1",
+    "N": "render leaningscrub_nysyllin_wild_a_v1_single \u2014 grader flagged (advisory)",
+    "O": "render leaningscrub_nysyllin_wild_b_v1_single \u2014 grader flagged (advisory)"
    },
    "pools": [
     "swplants/Nysillin",
@@ -349,9 +428,25 @@
     "G",
     "H",
     "I",
-    "J"
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1a51e709954fc3115d4030e4e66cbca1e26584a0d021a725678a399fd5e22668",
+    "354cb8820aa84fa13d2482661e24bd3aa7d69c9a10712a94bb6af166e269852e",
+    "81bff13530c8f80c2d54398fe92bd7c44b13a8f37d71b47dae55f5a6c2e0d72c",
+    "8f416c92e7a7a3f448e52217a7daa052f325bef55c77b28829cb7fe4ac0d6904",
+    "91e1a9ba8e2148684717e55044d79c13106ca192a9a13527d9282b0dc6a0fa5c",
+    "a2a117779fbfefb99394d291c58ce8eace9deaa63b1ca92949f6b4c06763ec1a",
+    "b2cc062489033687a20ee5dd715bd265fecc7eb3d237854683d7d7c34380a5ed",
+    "d3b2317d2a9182fd1c246a0e10574bd53725805ea63190451fc302de1608f406",
+    "e8171f251958d644670b6dfb5bb5ebe05691eea90979b1e7e7ebe638b1c01acb",
+    "f475685d0cf992dda88ff157f323312d1d4bc64c98ea8d11670df70329490042"
+   ],
    "subject_key": "nysyllin_wild"
   },
   "RSW_Plant_TookeTrap_Wild": {
@@ -359,32 +454,32 @@
     "A": {
      "single": "3171a7befb931a5cf5ff41de26edb5a5d483678ede5330aa10219b2c4c224f5e"
     },
-    "B": {
-     "single": "911f269f3713e33d588b08d4871412a22286248e91a294cf6b0a9dc307c0194f"
-    },
     "C": {
      "single": "17afca25e456ddcadec920e0eb029e1c9eef6df6aada0d905cafb059fced7f25"
     },
-    "D": {
-     "single": "3978815419a5389546f4f9e7e053968edd6dbed9317b62dbcd372db2c01110c7"
-    },
     "E": {
      "single": "4bf9fbb9b496e18be992580e1af022200d892bda373efc8c12eb37b2442d7dce"
+    },
+    "F": {
+     "single": "98240d5e368db8ac4b6eac9778de9029264b7f1c47f429cb667171c77f8cf595"
+    },
+    "G": {
+     "single": "f556fdb08866111ee9c6c0e199e70bdc5f9117cf9d9a53aca4ffd7b58daba59b"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RSW_Plant_TookeTrap_Wild",
-    "B": "Things/Plant/RSW_Plant_TookeTrap_Wild",
     "C": "Things/Plant/RSW_Plant_TookeTrap_Wild",
-    "D": "Things/Plant/RSW_Plant_TookeTrap_Wild",
-    "E": "Things/Plant/RSW_Plant_TookeTrap_Wild"
+    "E": "Things/Plant/RSW_Plant_TookeTrap_Wild",
+    "F": "Things/Plant/RSW_Plant_TookeTrap_Wild",
+    "G": "Things/Plant/RSW_Plant_TookeTrap_Wild"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_Plant_TookeTrap_WildA (1 of 1) \u2014 SWBestiary",
-    "B": "render webwork_tooketrap_redo_v3",
-    "C": "render webwork_tooketrap_redo_v2",
-    "D": "render webwork_tooketrap_redo_v4",
-    "E": "render gapall_Plant_TookeTrap_Wild_v1"
+    "A": "IN GAME \u2014 random variant RSW_Plant_TookeTrap_WildA (1 of 2) \u2014 SWBestiary",
+    "C": "IN GAME \u2014 random variant RSW_Plant_TookeTrap_Wild_c (2 of 2) \u2014 SWBestiary",
+    "E": "render gapall_Plant_TookeTrap_Wild_v1",
+    "F": "render webwork_tooketrap_redo_v3",
+    "G": "render webwork_tooketrap_redo_v2"
    },
    "pools": [
     "Things/Plant/RSW_Plant_TookeTrap_Wild"
@@ -395,9 +490,17 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "17afca25e456ddcadec920e0eb029e1c9eef6df6aada0d905cafb059fced7f25",
+    "3171a7befb931a5cf5ff41de26edb5a5d483678ede5330aa10219b2c4c224f5e",
+    "3978815419a5389546f4f9e7e053968edd6dbed9317b62dbcd372db2c01110c7",
+    "4bf9fbb9b496e18be992580e1af022200d892bda373efc8c12eb37b2442d7dce",
+    "911f269f3713e33d588b08d4871412a22286248e91a294cf6b0a9dc307c0194f"
+   ],
    "subject_key": "tooketrap_wild"
   },
   "RSW_SurraGrass": {
@@ -413,31 +516,40 @@
     },
     "D": {
      "single": "4913c0925d8247232a1584af29191fb721159039b401b4e3681ad38277dec148"
+    },
+    "E": {
+     "single": "41990aa810d2cb3ba0f2c2d01fd4b4acc333cd940c816d20b8f6503730ff8972"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RSW_SurraGrass",
     "B": "Things/Plant/RSW_SurraGrass",
     "C": "Things/Plant/RSW_SurraGrass",
-    "D": "Things/Plant/RSW_SurraGrass"
+    "D": "Things/Plant/RSW_SurraGrass",
+    "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_SurraGrass_a (1 of 4) \u2014 SWBestiary",
-    "B": "IN GAME \u2014 random variant RSW_SurraGrass_b (2 of 4) \u2014 SWBestiary",
-    "C": "IN GAME \u2014 random variant RSW_SurraGrass_c (3 of 4) \u2014 SWBestiary",
-    "D": "IN GAME \u2014 random variant RSW_SurraGrass_d (4 of 4) \u2014 SWBestiary"
+    "A": "our deployed art (render rsw_surragrass_v1) \u2014 RimMandrake: SW \u2014 Bestiary",
+    "B": "render longshade_rsw_surragrass_v1",
+    "C": "render longshade_rsw_surragrass_v2",
+    "D": "render longshade_rsw_surragrass_v3",
+    "E": "render dregen_RM_SurraGrass_RMSurraGrassa_v1"
    },
-   "pools": [
-    "Things/Plant/RSW_SurraGrass"
-   ],
+   "pools": [],
    "res": "Things/Plant/RSW_SurraGrass",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "4913c0925d8247232a1584af29191fb721159039b401b4e3681ad38277dec148",
+    "524f9734ea27fbd0d5b00aabcf9d7bcfc0f418c2b1b5c8b3cb1421508937a4fc",
+    "5f16ba705adb9c5492f5fc081af02cb35842b9b57a0ae110d12afdb7abb399e8",
+    "69df8643405ce858889043b4b205cfe540a3133df28e44fcb77e65489b512f05"
+   ],
    "subject_key": "surragrass"
   },
   "RSW_VellaraBloom": {
@@ -453,31 +565,40 @@
     },
     "D": {
      "single": "f462f40a823fa52fdd6d3b01d00cc5a231ed0640faed06a8819c1eb2e7dc2c97"
+    },
+    "E": {
+     "single": "36de40d6c2bbde2c0f80b10e98ec134fb2e112c36593d9e9d258c560337cdda3"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RSW_VellaraBloom",
     "B": "Things/Plant/RSW_VellaraBloom",
     "C": "Things/Plant/RSW_VellaraBloom",
-    "D": "Things/Plant/RSW_VellaraBloom"
+    "D": "Things/Plant/RSW_VellaraBloom",
+    "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_VellaraBloomA (1 of 4) \u2014 SWBestiary",
-    "B": "IN GAME \u2014 random variant RSW_VellaraBloomB (2 of 4) \u2014 SWBestiary",
-    "C": "IN GAME \u2014 random variant RSW_VellaraBloomC (3 of 4) \u2014 SWBestiary",
-    "D": "IN GAME \u2014 random variant RSW_VellaraBloomD (4 of 4) \u2014 SWBestiary"
+    "A": "our deployed art (render RSW_VellaraBloom) \u2014 RimMandrake: SW \u2014 Bestiary",
+    "B": "render longshade_rsw_vellarabloom_v1",
+    "C": "render longshade_rsw_vellarabloom_v3",
+    "D": "render longshade_rsw_vellarabloom_v2",
+    "E": "render dregen_RM_VellaraBloom_RMVellaraBloomA_v1"
    },
-   "pools": [
-    "Things/Plant/RSW_VellaraBloom"
-   ],
+   "pools": [],
    "res": "Things/Plant/RSW_VellaraBloom",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "4cfe7733c49854b761b9fcd2503a31fe008d62786aca0c9274ec0a8c3b9f970c",
+    "91f981da6ebde0f1cd11952d245090f6d4703f3bc7c222ee5bd8a98c5950f37f",
+    "a3069bf1c4bea67b2e15cde09e281d26f6cf0c6fdb80006b46a0a37cdd1022c4",
+    "f462f40a823fa52fdd6d3b01d00cc5a231ed0640faed06a8819c1eb2e7dc2c97"
+   ],
    "subject_key": "vellarabloom"
   },
   "RUT_BloomCrop": {
@@ -490,16 +611,16 @@
     "A": "Things/Plant/RUT_BloomCrop"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RUT_BloomCrop_a (1 of 1) \u2014 UtinniPatches"
+    "A": "WAS in game, no longer installed \u2014 random variant RUT_BloomCrop_a (1 of 1) \u2014 UtinniPatches"
    },
-   "pools": [
-    "Things/Plant/RUT_BloomCrop"
-   ],
+   "pools": [],
    "res": "Things/Plant/RUT_BloomCrop",
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "d7bf893a40c86888a49fb3f9b343c539ea076bb05aaf13a142f412bc236abcf4"
+   ],
    "subject_key": "bloomcrop"
   },
   "RUT_DarkCrust": {
@@ -521,7 +642,9 @@
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "9a8178213d7b3af79647041340db70561532732b6a171c3baf6d9b7395f59c07"
+   ],
    "subject_key": "darkcrust"
   },
   "RUT_DosimeterLawn": {
@@ -547,7 +670,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0174c4dad614a4ee78509a522ad43a268841c2f55dcb093cc8328459cd16c841",
+    "65d3fe6a30830eb670502cbe0c31d9b372a83c7204a62cea3c2f54de3492eb1a"
+   ],
    "subject_key": "dosimeterlawn"
   },
   "RUT_DyingCreep": {
@@ -560,16 +686,16 @@
     "A": "Things/Plant/RUT_DyingCreep"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RUT_DyingCreep_a (1 of 1) \u2014 UtinniPatches"
+    "A": "render rut_dyingcreep_v1"
    },
-   "pools": [
-    "Things/Plant/RUT_DyingCreep"
-   ],
+   "pools": [],
    "res": "Things/Plant/RUT_DyingCreep",
    "reserved": [
     "A"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "5731188b94272147d77bf76c8d87ad5baf957e6ac25bd0d996fb6f938380c789"
+   ],
    "subject_key": "dyingcreep"
   },
   "RUT_FireLavender": {
@@ -586,8 +712,8 @@
     "B": "Things/Plant/FireLavender"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant FireLavender_a (1 of 1) \u2014 TheForge",
-    "B": "render sheet_redo_RM_FireLavender_v1"
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "B": "IN GAME \u2014 random variant FireLavender_a (1 of 1) \u2014 TheForge"
    },
    "pools": [
     "Things/Plant/FireLavender"
@@ -597,7 +723,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1d2ce9cfc7397d5ce1b101f8bceadd475890fe619ec3e8369eec538f9f70e4c4",
+    "fd4fa34acb1f4dadfa78c89f3adc87f95c5c818e70a9bd44cf4d7665e3986c81"
+   ],
    "subject_key": "firelavender"
   },
   "RUT_Fuzz": {
@@ -619,6 +748,9 @@
     },
     "F": {
      "single": "810e3146c4842506194f27ca661243850494848a2cd111f612f1e7d97ee54d8c"
+    },
+    "G": {
+     "single": "a99c96b9b4103d39ce98ba7972811bca84352a31fea0de21ca52d10963c32ce5"
     }
    },
    "graphic_of": {
@@ -627,15 +759,17 @@
     "C": "Things/Plant/RM_Fuzz",
     "D": "Things/Plant/RM_Fuzz",
     "E": "Things/Plant/RM_Fuzz",
-    "F": "Things/Plant/RM_Fuzz"
+    "F": "Things/Plant/RM_Fuzz",
+    "G": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RM_Fuzz_a (1 of 1) \u2014 LeaningScrub",
-    "B": "render ls3_fuzz_a_v1",
-    "C": "render ls3_fuzz_b_v1",
-    "D": "render leaningscrub_fuzz_b_v1_single",
-    "E": "render leaningscrub_fuzz_c_v1_single",
-    "F": "our deployed art (render rutfuzz_v1) \u2014 RimMandrake: Baroque Biomes"
+    "A": "render gapall_RM_Fuzz_v1",
+    "B": "IN GAME \u2014 random variant RM_Fuzz_a (1 of 6) \u2014 LeaningScrub",
+    "C": "IN GAME \u2014 random variant RM_Fuzz_c (3 of 6) \u2014 LeaningScrub",
+    "D": "IN GAME \u2014 random variant RM_Fuzz_d (4 of 6) \u2014 LeaningScrub",
+    "E": "IN GAME \u2014 random variant RM_Fuzz_e (5 of 6) \u2014 LeaningScrub",
+    "F": "IN GAME \u2014 random variant RM_Fuzz_f (6 of 6) \u2014 LeaningScrub",
+    "G": "render dregen_RM_Fuzz_RMFuzzf_v1"
    },
    "pools": [
     "Things/Plant/RM_Fuzz"
@@ -647,9 +781,17 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "16222059fbb1c0ffbf8e8707c86c2a5c814240f36c467ad41803a4e3018b5675",
+    "4eb8b8a89e0874aa84c09dfef28a0d385e6500c1252d472ed6d2d093ec4d21c3",
+    "810e3146c4842506194f27ca661243850494848a2cd111f612f1e7d97ee54d8c",
+    "9fdb88f5f5e22ec0f684b950362d7717eac5a585191514f9b615c3988803f59c",
+    "e5e830adfbfe3181032b3be669479f6c5e10343bad8ec631398f3c589a88f89a",
+    "e9949ab497d4d5f86e4038fc4c9b9e0c1db53bd12f18620bf022a2951c4eddc1"
+   ],
    "subject_key": "fuzz"
   },
   "RUT_GiantLeaf": {
@@ -670,20 +812,22 @@
     "C": "Things/Plant/GiantLeaf"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant GiantLeaf_a (1 of 1) \u2014 UtinniPatches",
+    "A": "WAS in game, no longer installed \u2014 random variant GiantLeaf_a (1 of 1) \u2014 UtinniPatches",
     "B": "render regen_fw_giantleaf_varb_v1",
     "C": "render regen_fw_giantleaf_varc_v1"
    },
-   "pools": [
-    "Things/Plant/GiantLeaf"
-   ],
+   "pools": [],
    "res": "Things/Plant/GiantLeaf",
    "reserved": [
     "A",
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0c2e4b0f0c99c8b32ce34e36d30b9f5babc147d8af8947fda0116b95d5070a9d",
+    "816cf4e9de3d0c67da130873adb06e7918c42e0d04323a2bb73318157e2807d8",
+    "875193f69bd9d6590e53a12d525a92ea4db1f1bc837f912e05b2ea5656c5b4f6"
+   ],
    "subject_key": "giantleaf"
   },
   "RUT_Glower": {
@@ -700,18 +844,19 @@
     "B": "Things/Plant/RUT_Glower"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RUT_Glower_a (1 of 1) \u2014 UtinniPatches",
+    "A": "WAS in game, no longer installed \u2014 random variant RUT_Glower_a (1 of 1) \u2014 UtinniPatches",
     "B": "render gapall_RM_Glower_v1"
    },
-   "pools": [
-    "Things/Plant/RUT_Glower"
-   ],
+   "pools": [],
    "res": "Things/Plant/RUT_Glower",
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "5545a8875fab6964f6c3db7b641b23a38b0e07cfb129d51b0a05793167119b21",
+    "62cb2314710beea434905e87658c46a54de0050ae8d72e9db59775f7f185ad63"
+   ],
    "subject_key": "glower"
   },
   "RUT_Grellbush": {
@@ -727,31 +872,40 @@
     },
     "D": {
      "single": "aa5b70adeb746c44e0e821210bf23ac9c25b95eb807c5906fe8d21166a8f6f6f"
+    },
+    "E": {
+     "single": "8807d65cd23ffc9115231fce96938c891fb387f64bfb9999c2ea750b7a0996e2"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RUT_Grellbush",
     "B": "Things/Plant/RUT_Grellbush",
     "C": "Things/Plant/RUT_Grellbush",
-    "D": "Things/Plant/RUT_Grellbush"
+    "D": "Things/Plant/RUT_Grellbush",
+    "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RUT_Grellbush_a (1 of 1) \u2014 AshkarrFlora",
+    "A": "render rut_grellbush",
     "B": "render leaningscrub_grellbush_b_v1_single",
     "C": "render leaningscrub_grellbush_c_v1_single",
-    "D": "render gapfin_RM_Grellbush_v1"
+    "D": "render gapfin_RM_Grellbush_v1",
+    "E": "render dregen_RM_Grellbush_RMGrellbusha_v1"
    },
-   "pools": [
-    "Things/Plant/RUT_Grellbush"
-   ],
+   "pools": [],
    "res": "Things/Plant/RUT_Grellbush",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "923d2e2b0f904cf315e382507f754dcf96ff157db8a5e6d4fb8eab6e39ddfd2c",
+    "aa5b70adeb746c44e0e821210bf23ac9c25b95eb807c5906fe8d21166a8f6f6f",
+    "b4ac196d1e1168199842a215457d4e7db10050691640f5e99b05b75c351f583a",
+    "f487ff5a2189044205b69eebc81a33429ff47bed1efee0bb03c0fb5f7f082951"
+   ],
    "subject_key": "grellbush"
   },
   "RUT_Grellspine": {
@@ -776,14 +930,12 @@
     "D": "Things/Plant/RUT_Grellspine"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RUT_Grellspine_a (1 of 1) \u2014 AshkarrFlora",
+    "A": "render rut_grellspine",
     "B": "render leaningscrub_grellspine_b_v1_single",
     "C": "render leaningscrub_grellspine_c_v1_single",
     "D": "render gapfin_RM_Grellspine_v1"
    },
-   "pools": [
-    "Things/Plant/RUT_Grellspine"
-   ],
+   "pools": [],
    "res": "Things/Plant/RUT_Grellspine",
    "reserved": [
     "A",
@@ -791,7 +943,12 @@
     "C",
     "D"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "716cc9c4d0e0f60e31367141102bc8a0381e4baa63f17366eaf83859f8a07f68",
+    "b06362697a3f9f185c59a1e1c25071a32bbb51aa02a64c304396902547c6c8f3",
+    "cbc4a471ac0431328afc5eee73e41e1c73491d418434cc612d323b0dd1a86640",
+    "ec2524f762656697e3a7c8377de69d7a96a533c2e29889dbb47c2d103ed7ae2c"
+   ],
    "subject_key": "grellspine"
   },
   "RUT_HeatsinkFungus": {
@@ -808,8 +965,8 @@
     "B": "Things/Plant/HeatsinkFungus"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant HeatsinkFungus_a (1 of 1) \u2014 TheForge",
-    "B": "render sheet_redo_RM_HeatsinkFungus_v1"
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "B": "IN GAME \u2014 random variant HeatsinkFungus_a (1 of 2) \u2014 TheForge"
    },
    "pools": [
     "Things/Plant/HeatsinkFungus"
@@ -819,7 +976,10 @@
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "98c5c47d973e30cadaf49fbfa048d86e7f318296da57fed6148601e05f24f2b2",
+    "d6aeb87b306c16df0682ef2136121ba8a0dceb600201099ff3ecb16543521bf6"
+   ],
    "subject_key": "heatsinkfungus"
   },
   "RUT_ScorchedStars": {
@@ -842,7 +1002,7 @@
    "labels": {
     "A": "IN GAME \u2014 random variant ScorchedStars_a (1 of 2) \u2014 Wasteland",
     "B": "IN GAME \u2014 random variant ScorchedStars_b (2 of 2) \u2014 Wasteland",
-    "C": "shipped, shadowed \u2014 random variant ScorchedStars_a (1 of 2) \u2014 UtinniPatches"
+    "C": "our deployed art \u2014 RimMandrake: Baroque Biomes"
    },
    "pools": [
     "Things/Plant/ScorchedStars"
@@ -853,89 +1013,26 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "f6db81cb64ac1b1f4ba739529980b43c623a4f292ec234d602b1a2a8ce2a564e",
+    "f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873",
+    "fd6f6fc3794ce20d3f50c7537e77400427df7c9115d35f66f2b70c45b3abbade"
+   ],
    "subject_key": "scorchedstars"
   },
   "RUT_SweetlineTree": {
    "columns": {
     "A": {
      "single": "1e3c294c02b736ea3ee94b0f3420f36bc633e01a85983a15053de3aec6a31558"
-    },
-    "B": {
-     "single": "8e2d15e1a7373c77dc07cba2d1482fbb23932fd2ca2197dd01c3ece261a43221"
-    },
-    "C": {
-     "single": "a6956e4babc6f0a515ef816882e4e426df07934bac0ba17f062f0462780a8bb8"
-    },
-    "D": {
-     "single": "9b6264ece61024ae7332bd196a38b299d06be202e4a70ce02ac7801878cafc34"
-    },
-    "E": {
-     "single": "a921962df9f8e62673eae9dc507cb4b6a84341a2a11880369da791303b718963"
-    },
-    "F": {
-     "single": "bec12ee46872327a8fef9ba8b9e97ee78a92ec5980eb50646ac295c1be71d6ea"
-    },
-    "G": {
-     "single": "ad447c533c63717c2ba6c368f65c34c244f9ca6426cc21f33584a122534d463a"
-    },
-    "H": {
-     "single": "73a8de41e7fabd3e897f627b32ab02351a70d8ea2047ce97440e8e3894955b16"
-    },
-    "I": {
-     "single": "eb97b66289920b1b29695b644948582bf1c5e6bdf9f9f296a433ce2466454e8d"
-    },
-    "J": {
-     "single": "6f3d0d31b01746f968061c8b46a5958529140f7d0d4f0796b084e09d2c3fcfd1"
-    },
-    "K": {
-     "single": "65f0597fca68deb38ca058a57150c38bcce8e6eeb79194618beae46b6f7beadf"
-    },
-    "L": {
-     "single": "b0004073e85854e6a901a647cc86ad3f4d350b4169578199ecbc1c89dfae345c"
-    },
-    "M": {
-     "single": "4a9c503c15ad25d566ee3eb289a6157d790c726b6ecd311565c08e6eb2013dd0"
-    },
-    "N": {
-     "single": "1b7d6a763605ddee1ee6e85485b4b848aaf158173e02d33107fc4f574687a055"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RUT_SweetlineTree",
-    "B": "Things/Plant/RUT_SweetlineTree",
-    "C": "Things/Plant/RUT_SweetlineTree",
-    "D": "Things/Plant/RUT_SweetlineTree",
-    "E": "Things/Plant/RUT_SweetlineTree",
-    "F": "Things/Plant/RUT_SweetlineTree",
-    "G": "Things/Plant/RUT_SweetlineTree",
-    "H": "Things/Plant/RUT_SweetlineTree",
-    "I": "Things/Plant/RUT_SweetlineTree",
-    "J": "Things/Plant/RUT_SweetlineTree",
-    "K": "Things/Plant/RUT_SweetlineTree",
-    "L": "Things/Plant/RUT_SweetlineTree",
-    "M": "Things/Plant/RUT_SweetlineTree",
-    "N": "Things/Plant/RUT_SweetlineTree"
+    "A": "Things/Plant/RUT_SweetlineTree"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RUT_SweetlineTreeA (1 of 14) \u2014 AshkarrFlora",
-    "B": "IN GAME \u2014 random variant RUT_SweetlineTreeB (2 of 14) \u2014 AshkarrFlora",
-    "C": "IN GAME \u2014 random variant RUT_SweetlineTreeC (3 of 14) \u2014 AshkarrFlora",
-    "D": "IN GAME \u2014 random variant RUT_SweetlineTreeD (4 of 14) \u2014 AshkarrFlora",
-    "E": "IN GAME \u2014 random variant RUT_SweetlineTreeE (5 of 14) \u2014 AshkarrFlora",
-    "F": "IN GAME \u2014 random variant RUT_SweetlineTreeF (6 of 14) \u2014 AshkarrFlora",
-    "G": "IN GAME \u2014 random variant RUT_SweetlineTreeG (7 of 14) \u2014 AshkarrFlora",
-    "H": "IN GAME \u2014 random variant RUT_SweetlineTreeH (8 of 14) \u2014 AshkarrFlora",
-    "I": "IN GAME \u2014 random variant RUT_SweetlineTreeI (9 of 14) \u2014 AshkarrFlora",
-    "J": "IN GAME \u2014 random variant RUT_SweetlineTreeJ (10 of 14) \u2014 AshkarrFlora",
-    "K": "IN GAME \u2014 random variant RUT_SweetlineTreeK (11 of 14) \u2014 AshkarrFlora",
-    "L": "IN GAME \u2014 random variant RUT_SweetlineTreeL (12 of 14) \u2014 AshkarrFlora",
-    "M": "IN GAME \u2014 random variant RUT_SweetlineTreeM (13 of 14) \u2014 AshkarrFlora",
-    "N": "IN GAME \u2014 random variant RUT_SweetlineTreeN (14 of 14) \u2014 AshkarrFlora"
+    "A": "WAS in game, no longer installed \u2014 random variant RUT_SweetlineTreeA (1 of 14) \u2014 AshkarrFlora"
    },
-   "pools": [
-    "Things/Plant/RUT_SweetlineTree"
-   ],
+   "pools": [],
    "res": "Things/Plant/RUT_SweetlineTree",
    "reserved": [
     "A",
@@ -953,7 +1050,22 @@
     "M",
     "N"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1b7d6a763605ddee1ee6e85485b4b848aaf158173e02d33107fc4f574687a055",
+    "1e3c294c02b736ea3ee94b0f3420f36bc633e01a85983a15053de3aec6a31558",
+    "4a9c503c15ad25d566ee3eb289a6157d790c726b6ecd311565c08e6eb2013dd0",
+    "65f0597fca68deb38ca058a57150c38bcce8e6eeb79194618beae46b6f7beadf",
+    "6f3d0d31b01746f968061c8b46a5958529140f7d0d4f0796b084e09d2c3fcfd1",
+    "73a8de41e7fabd3e897f627b32ab02351a70d8ea2047ce97440e8e3894955b16",
+    "8e2d15e1a7373c77dc07cba2d1482fbb23932fd2ca2197dd01c3ece261a43221",
+    "9b6264ece61024ae7332bd196a38b299d06be202e4a70ce02ac7801878cafc34",
+    "a6956e4babc6f0a515ef816882e4e426df07934bac0ba17f062f0462780a8bb8",
+    "a921962df9f8e62673eae9dc507cb4b6a84341a2a11880369da791303b718963",
+    "ad447c533c63717c2ba6c368f65c34c244f9ca6426cc21f33584a122534d463a",
+    "b0004073e85854e6a901a647cc86ad3f4d350b4169578199ecbc1c89dfae345c",
+    "bec12ee46872327a8fef9ba8b9e97ee78a92ec5980eb50646ac295c1be71d6ea",
+    "eb97b66289920b1b29695b644948582bf1c5e6bdf9f9f296a433ce2466454e8d"
+   ],
    "subject_key": "sweetlinetree"
   },
   "RUT_TreeMartyr": {
@@ -987,16 +1099,30 @@
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "06a0101b1f0d96c65884157c8446cfb79f7d062680481049c118c95e4d880126",
+    "66b3a5c0e029fa4032e8b9a913bd9e74db95662678bd53f0361d7b46143989ad",
+    "c61901582438d937a3f179165f85c928458bf8ad3fb10244c51b23f0245d40e5"
+   ],
    "subject_key": "treemartyr"
   },
   "RUT_TwinkleSpikeTestPlant": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "single": "0d336e43ded70ca7d741f5bdd58cc71b4b8cc5cefe4f36ef194ebca50ab36f6a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/Production/DeepDrill"
+   },
+   "labels": {
+    "A": "render dregen_RUT_DigShaft_DeepDrill_v1"
+   },
    "pools": [],
-   "res": null,
-   "reserved": [],
+   "res": "Things/Building/Production/DeepDrill",
+   "reserved": [
+    "A"
+   ],
    "shownBase": [],
    "subject_key": "twinklespiketestplant"
   },
@@ -1004,20 +1130,42 @@
    "columns": {
     "A": {
      "single": "ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b"
+    },
+    "B": {
+     "single": "7e8ac56545d860ca9e811c920417a4263e5202916726beeb19ee4485e777f8fb"
+    },
+    "C": {
+     "single": "e290b8473f577a517845d284a742b3d84a46c76a3920139a8ceceb382ad02470"
+    },
+    "D": {
+     "single": "86f9a48f452f269eea5a444c6b7e9b54b0fc9c112798f272f8d7f62b4aaf4540"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/VaultRoot"
+    "A": "Things/Plant/VaultRoot",
+    "B": "Things/Plant/VaultRoot",
+    "C": "Things/Plant/VaultRoot",
+    "D": "Things/Plant/VaultRoot"
    },
    "labels": {
-    "A": "IN GAME \u2014 Wasteland"
+    "A": "IN GAME \u2014 random variant VaultRoot_a (1 of 4) \u2014 Wasteland",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant VaultRoot_b (2 of 4) \u2014 Wasteland",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant VaultRoot_c (3 of 4) \u2014 Wasteland",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant VaultRoot_d (4 of 4) \u2014 Wasteland"
    },
-   "pools": [],
+   "pools": [
+    "Things/Plant/VaultRoot"
+   ],
    "res": "Things/Plant/VaultRoot",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b"
+   ],
    "subject_key": "vaultroot"
   },
   "RUT_WildHealroot": {
@@ -1054,7 +1202,7 @@
     "G": "Things/Plant/RUT_WildHealroot"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RUT_WildHealroot_a (1 of 1) \u2014 AshkarrFlora",
+    "A": "render rut_wildhealroot",
     "B": "render ls3_wildhealroot_a_v1",
     "C": "render ls3_wildhealroot_b_v1",
     "D": "render leaningscrub_wildhealroot_a_v1_single",
@@ -1062,9 +1210,7 @@
     "F": "render leaningscrub_wildhealroot_c_v1_single",
     "G": "render gapfin_RM_WildHealroot_v1"
    },
-   "pools": [
-    "Things/Plant/RUT_WildHealroot"
-   ],
+   "pools": [],
    "res": "Things/Plant/RUT_WildHealroot",
    "reserved": [
     "A",
@@ -1075,112 +1221,57 @@
     "F",
     "G"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "2974c33073f656ac0d191d401eae147f1b70bc4efbe6e51e45efadf5c9e7bd01",
+    "608d78cff29d0c2bfc9582c157eea865527e09f4532a76956942ee3516ea28b9",
+    "665ea887bacc7447228b5b6db40cb45b3cf3fd50f0769d08ae2c45b9c55223d9",
+    "a40d640de1a837182556a3d5d8424ccc4f5882ac380672e464137d67c7de02d9",
+    "b439fc9593cd56d2f0e865f2dfe48502eb8acccf3fac12e33eeebad9027f5dd7",
+    "c335567cb981fcdf2a36df25f8771c4d15477afd829c2474967ce418b3a0bf68",
+    "fffdf16b39c965b18afeae9fe4e10953bf2be87617748d7b3bede2b8231d4028"
+   ],
    "subject_key": "wildhealroot"
   },
   "VCE_Plant_AloeVera": {
-   "columns": {
-    "A": {
-     "single": "8af2e0dd161b75cbe01b889ae88bb4a086033ca42159542460d2111d98abe410"
-    },
-    "B": {
-     "single": "c8780a3c1715e106659c46385158e6fc55c49b7c0f75c3b7eb87fbf4794a2eb6"
-    },
-    "C": {
-     "single": "2e2146683e3b48ce7e74088c9c4acb5420cfcc5372a65b361b94935846f4f539"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/AloeVera",
-    "B": "Things/Plant/AloeVera",
-    "C": "Things/Plant/AloeVera"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant AloeVeraA (1 of 3) \u2014 UtinniPatches",
-    "B": "IN GAME \u2014 random variant AloeVeraB (2 of 3) \u2014 UtinniPatches",
-    "C": "IN GAME \u2014 random variant AloeVeraC (3 of 3) \u2014 UtinniPatches"
-   },
-   "pools": [
-    "Things/Plant/AloeVera"
-   ],
-   "res": "Things/Plant/AloeVera",
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
    "reserved": [
     "A",
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "2e2146683e3b48ce7e74088c9c4acb5420cfcc5372a65b361b94935846f4f539",
+    "8af2e0dd161b75cbe01b889ae88bb4a086033ca42159542460d2111d98abe410",
+    "c8780a3c1715e106659c46385158e6fc55c49b7c0f75c3b7eb87fbf4794a2eb6"
+   ],
    "subject_key": "aloevera"
   },
   "VCE_Plant_BunnyEarsCactus": {
-   "columns": {
-    "A": {
-     "single": "b7edce7d702e6243d836182686bfd4587bc62fcf8145a95163f98e2b7bc0c308"
-    },
-    "B": {
-     "single": "7a4d3b8e7e35d09551d31909ec743bc9f6fe864476c0561cf32aa4c7af260574"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/BunnyEarsCactus",
-    "B": "Things/Plant/BunnyEarsCactus"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant BunnyEarsCactusA (1 of 2) \u2014 UtinniPatches",
-    "B": "IN GAME \u2014 random variant BunnyEarsCactusB (2 of 2) \u2014 UtinniPatches"
-   },
-   "pools": [
-    "Things/Plant/BunnyEarsCactus"
-   ],
-   "res": "Things/Plant/BunnyEarsCactus",
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "7a4d3b8e7e35d09551d31909ec743bc9f6fe864476c0561cf32aa4c7af260574",
+    "b7edce7d702e6243d836182686bfd4587bc62fcf8145a95163f98e2b7bc0c308"
+   ],
    "subject_key": "bunnyearscactus"
   },
   "VCE_Plant_Echeveria": {
-   "columns": {
-    "A": {
-     "single": "1a0feeb83ffe925074a4ade7afe1712eb30711f5bcfe3e4d922b8f8dcacf393b"
-    },
-    "B": {
-     "single": "2fa6a2cca57b4f30b7ac74813bca88632f2628a7855f3a60770faaf8285c1b3c"
-    },
-    "C": {
-     "single": "4f101f52caa575dc2ecbf6000d0b7287094df049d3da3043512c7391f46ae3de"
-    },
-    "D": {
-     "single": "53420fde655086f13df26dc695548ff9ba8bd04f565dbe516bbbc1cc8fdcbfee"
-    },
-    "E": {
-     "single": "ec665eb0a6ea49cb15485b087850823979e4242c1cea03664c40a82167664cdb"
-    },
-    "F": {
-     "single": "37c833c1833c67ff364397a1ea28a2b376ba82734359fbebc1045def0153941b"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/Echeveria",
-    "B": "Things/Plant/Echeveria",
-    "C": "Things/Plant/Echeveria",
-    "D": "Things/Plant/Echeveria",
-    "E": "Things/Plant/Echeveria",
-    "F": "Things/Plant/Echeveria"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant EcheveriaA (1 of 6) \u2014 UtinniPatches",
-    "B": "IN GAME \u2014 random variant EcheveriaB (2 of 6) \u2014 UtinniPatches",
-    "C": "IN GAME \u2014 random variant EcheveriaC (3 of 6) \u2014 UtinniPatches",
-    "D": "IN GAME \u2014 random variant EcheveriaD (4 of 6) \u2014 UtinniPatches",
-    "E": "IN GAME \u2014 random variant EcheveriaE (5 of 6) \u2014 UtinniPatches",
-    "F": "IN GAME \u2014 random variant EcheveriaF (6 of 6) \u2014 UtinniPatches"
-   },
-   "pools": [
-    "Things/Plant/Echeveria"
-   ],
-   "res": "Things/Plant/Echeveria",
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
    "reserved": [
     "A",
     "B",
@@ -1189,169 +1280,115 @@
     "E",
     "F"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "1a0feeb83ffe925074a4ade7afe1712eb30711f5bcfe3e4d922b8f8dcacf393b",
+    "2fa6a2cca57b4f30b7ac74813bca88632f2628a7855f3a60770faaf8285c1b3c",
+    "37c833c1833c67ff364397a1ea28a2b376ba82734359fbebc1045def0153941b",
+    "4f101f52caa575dc2ecbf6000d0b7287094df049d3da3043512c7391f46ae3de",
+    "53420fde655086f13df26dc695548ff9ba8bd04f565dbe516bbbc1cc8fdcbfee",
+    "ec665eb0a6ea49cb15485b087850823979e4242c1cea03664c40a82167664cdb"
+   ],
    "subject_key": "echeveria"
   },
   "VCE_Plant_FairyWashboard": {
-   "columns": {
-    "A": {
-     "single": "e489fb4ef59d366044df3a8b53c3e60529b06f7d392d1ee02b36bc7910e1ea30"
-    },
-    "B": {
-     "single": "b655f5352077736c4a026d7b2231317b158ee655f111794b6109ab1fbe995b86"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/FairyWashboard",
-    "B": "Things/Plant/FairyWashboard"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant FairyWashboardA (1 of 2) \u2014 UtinniPatches",
-    "B": "IN GAME \u2014 random variant FairyWashboardB (2 of 2) \u2014 UtinniPatches"
-   },
-   "pools": [
-    "Things/Plant/FairyWashboard"
-   ],
-   "res": "Things/Plant/FairyWashboard",
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
    "reserved": [
     "A",
     "B"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "b655f5352077736c4a026d7b2231317b158ee655f111794b6109ab1fbe995b86",
+    "e489fb4ef59d366044df3a8b53c3e60529b06f7d392d1ee02b36bc7910e1ea30"
+   ],
    "subject_key": "fairywashboard"
   },
   "VCE_Plant_JadePlant": {
-   "columns": {
-    "A": {
-     "single": "e1734134ab3ca25e2162d6fab1e4a34ad8e1d0a38261e753119ccd8d67cc1da5"
-    },
-    "B": {
-     "single": "64f835039777c20aac43139b3e7f737aea6f7e12f25fb0be990aad2df3ab2319"
-    },
-    "C": {
-     "single": "01aecd6dfcfd325fbdc2fc694f76e4b9336d11178acd95009338c6c805279f38"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/JadePlant",
-    "B": "Things/Plant/JadePlant",
-    "C": "Things/Plant/JadePlant"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 random variant JadePlantA (1 of 3) \u2014 UtinniPatches",
-    "B": "IN GAME \u2014 random variant JadePlantB (2 of 3) \u2014 UtinniPatches",
-    "C": "IN GAME \u2014 random variant JadePlantC (3 of 3) \u2014 UtinniPatches"
-   },
-   "pools": [
-    "Things/Plant/JadePlant"
-   ],
-   "res": "Things/Plant/JadePlant",
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
    "reserved": [
     "A",
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "01aecd6dfcfd325fbdc2fc694f76e4b9336d11178acd95009338c6c805279f38",
+    "64f835039777c20aac43139b3e7f737aea6f7e12f25fb0be990aad2df3ab2319",
+    "e1734134ab3ca25e2162d6fab1e4a34ad8e1d0a38261e753119ccd8d67cc1da5"
+   ],
    "subject_key": "jadeplant"
   },
   "VCE_Plant_PeyotePlant": {
    "columns": {
     "A": {
      "single": "a0b68fe7396425162b9306bb68aee3ee57d5a925beea21cff7ed6dbc0f177561"
-    },
-    "B": {
-     "single": "268f2bf448f28a2019111e1196fd78dc93ab9cadb9bd3d1d63b8517d430802da"
-    },
-    "C": {
-     "single": "c00103ec22c84652fde3a451085d341b7e0bc7bcd6438b227a46c67a7bc1797d"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Peyote",
-    "B": "Things/Plant/Peyote",
-    "C": "Things/Plant/Peyote"
+    "A": "Things/Plant/Peyote"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant PeyoteA (1 of 3) \u2014 UtinniPatches",
-    "B": "IN GAME \u2014 random variant PeyoteB (2 of 3) \u2014 UtinniPatches",
-    "C": "IN GAME \u2014 random variant PeyoteC (3 of 3) \u2014 UtinniPatches"
+    "A": "WAS in game, no longer installed \u2014 random variant PeyoteA (1 of 3) \u2014 UtinniPatches"
    },
-   "pools": [
-    "Things/Plant/Peyote"
-   ],
+   "pools": [],
    "res": "Things/Plant/Peyote",
    "reserved": [
     "A",
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "268f2bf448f28a2019111e1196fd78dc93ab9cadb9bd3d1d63b8517d430802da",
+    "a0b68fe7396425162b9306bb68aee3ee57d5a925beea21cff7ed6dbc0f177561",
+    "c00103ec22c84652fde3a451085d341b7e0bc7bcd6438b227a46c67a7bc1797d"
+   ],
    "subject_key": "peyoteplant"
   },
   "VCE_Plant_PincushionPlant": {
    "columns": {
     "A": {
      "single": "7a0facbdd424cb050e82f0dfc0e6dd065386c513835b5a3101c4de54098def8a"
-    },
-    "B": {
-     "single": "ca34537bc671029f456ab0370df12fb06d20d305529509f2516e4a2a5ed5a22e"
-    },
-    "C": {
-     "single": "834195dd9437498900e1d2c9226a518669e5f602035b464e9fc7d51d8f4e210f"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/PincushionPlant",
-    "B": "Things/Plant/PincushionPlant",
-    "C": "Things/Plant/PincushionPlant"
+    "A": "Things/Plant/PincushionPlant"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant PincushionPlantA (1 of 3) \u2014 UtinniPatches",
-    "B": "IN GAME \u2014 random variant PincushionPlantB (2 of 3) \u2014 UtinniPatches",
-    "C": "IN GAME \u2014 random variant PincushionPlantC (3 of 3) \u2014 UtinniPatches"
+    "A": "WAS in game, no longer installed \u2014 random variant PincushionPlantA (1 of 3) \u2014 UtinniPatches"
    },
-   "pools": [
-    "Things/Plant/PincushionPlant"
-   ],
+   "pools": [],
    "res": "Things/Plant/PincushionPlant",
    "reserved": [
     "A",
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "7a0facbdd424cb050e82f0dfc0e6dd065386c513835b5a3101c4de54098def8a",
+    "834195dd9437498900e1d2c9226a518669e5f602035b464e9fc7d51d8f4e210f",
+    "ca34537bc671029f456ab0370df12fb06d20d305529509f2516e4a2a5ed5a22e"
+   ],
    "subject_key": "pincushionplant"
   },
   "VCE_Plant_Schlumbergera": {
    "columns": {
     "A": {
      "single": "65db735f6b0051898ee31c671a43f6d9518b75825317b4678a455149e95137f7"
-    },
-    "B": {
-     "single": "84b29691ed07d8ea67d0b3c1b77a63cad5629dc592e2dfd4358aaac8e3ebe88c"
-    },
-    "C": {
-     "single": "246fd2d6e320bd268c792c50ef69f5366f7e81e44821f5328ac74323f1fbc91a"
-    },
-    "D": {
-     "single": "6a202fe554c4dc915ca3ad5276387d1493fc7bb592fc11dbce767d9135dfbf18"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Schlumbergera",
-    "B": "Things/Plant/Schlumbergera",
-    "C": "Things/Plant/Schlumbergera",
-    "D": "Things/Plant/Schlumbergera"
+    "A": "Things/Plant/Schlumbergera"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant SchlumbergeraA (1 of 4) \u2014 UtinniPatches",
-    "B": "IN GAME \u2014 random variant SchlumbergeraB (2 of 4) \u2014 UtinniPatches",
-    "C": "IN GAME \u2014 random variant SchlumbergeraC (3 of 4) \u2014 UtinniPatches",
-    "D": "IN GAME \u2014 random variant SchlumbergeraD (4 of 4) \u2014 UtinniPatches"
+    "A": "WAS in game, no longer installed \u2014 random variant SchlumbergeraA (1 of 4) \u2014 UtinniPatches"
    },
-   "pools": [
-    "Things/Plant/Schlumbergera"
-   ],
+   "pools": [],
    "res": "Things/Plant/Schlumbergera",
    "reserved": [
     "A",
@@ -1359,78 +1396,67 @@
     "C",
     "D"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "246fd2d6e320bd268c792c50ef69f5366f7e81e44821f5328ac74323f1fbc91a",
+    "65db735f6b0051898ee31c671a43f6d9518b75825317b4678a455149e95137f7",
+    "6a202fe554c4dc915ca3ad5276387d1493fc7bb592fc11dbce767d9135dfbf18",
+    "84b29691ed07d8ea67d0b3c1b77a63cad5629dc592e2dfd4358aaac8e3ebe88c"
+   ],
    "subject_key": "schlumbergera"
   },
   "VCE_Plant_SnakePlant": {
    "columns": {
     "A": {
      "single": "8f10ec5eca34892dcfc51a8d5b127b36a92613d0952fc27e6479968757c63b5e"
-    },
-    "B": {
-     "single": "bc23d69257a8e760c709a7105ffd04fc598477a8ef33a265878598691134a572"
-    },
-    "C": {
-     "single": "323ad138fc2729987d91c9c914a69b45a5b876e101ab354ade4e2168f2f21770"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/SnakePlant",
-    "B": "Things/Plant/SnakePlant",
-    "C": "Things/Plant/SnakePlant"
+    "A": "Things/Plant/SnakePlant"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant SnakePlantA (1 of 3) \u2014 UtinniPatches",
-    "B": "IN GAME \u2014 random variant SnakePlantB (2 of 3) \u2014 UtinniPatches",
-    "C": "IN GAME \u2014 random variant SnakePlantC (3 of 3) \u2014 UtinniPatches"
+    "A": "WAS in game, no longer installed \u2014 random variant SnakePlantA (1 of 3) \u2014 UtinniPatches"
    },
-   "pools": [
-    "Things/Plant/SnakePlant"
-   ],
+   "pools": [],
    "res": "Things/Plant/SnakePlant",
    "reserved": [
     "A",
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "323ad138fc2729987d91c9c914a69b45a5b876e101ab354ade4e2168f2f21770",
+    "8f10ec5eca34892dcfc51a8d5b127b36a92613d0952fc27e6479968757c63b5e",
+    "bc23d69257a8e760c709a7105ffd04fc598477a8ef33a265878598691134a572"
+   ],
    "subject_key": "snakeplant"
   },
   "VCE_Plant_SweetheartPlant": {
    "columns": {
     "A": {
      "single": "8e498d7b81a308ca12e33b89cf1eed8d00034af57d3ee4996c308105a1e594c8"
-    },
-    "B": {
-     "single": "d551f5fc42e6930d86c7650a08c84e02fbe7befda2eca8cfe98d2d179aea3d6a"
-    },
-    "C": {
-     "single": "01edc5ae7e81c769ca33d9e58d4eedfe562dd2bb9c526e5b0746b318be8e0ffa"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/SweetheartPlant",
-    "B": "Things/Plant/SweetheartPlant",
-    "C": "Things/Plant/SweetheartPlant"
+    "A": "Things/Plant/SweetheartPlant"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant SweetheartPlantA (1 of 3) \u2014 UtinniPatches",
-    "B": "IN GAME \u2014 random variant SweetheartPlantB (2 of 3) \u2014 UtinniPatches",
-    "C": "IN GAME \u2014 random variant SweetheartPlantC (3 of 3) \u2014 UtinniPatches"
+    "A": "WAS in game, no longer installed \u2014 random variant SweetheartPlantA (1 of 3) \u2014 UtinniPatches"
    },
-   "pools": [
-    "Things/Plant/SweetheartPlant"
-   ],
+   "pools": [],
    "res": "Things/Plant/SweetheartPlant",
    "reserved": [
     "A",
     "B",
     "C"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "01edc5ae7e81c769ca33d9e58d4eedfe562dd2bb9c526e5b0746b318be8e0ffa",
+    "8e498d7b81a308ca12e33b89cf1eed8d00034af57d3ee4996c308105a1e594c8",
+    "d551f5fc42e6930d86c7650a08c84e02fbe7befda2eca8cfe98d2d179aea3d6a"
+   ],
    "subject_key": "sweetheartplant"
   }
  },
  "sheetId": "nonrm_plants_census_sheet_2026-10-16",
- "snapshotId": "99af6462218085cf"
+ "snapshotId": "7ac7c48f3612aa8c"
 }

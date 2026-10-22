@@ -1,9 +1,9 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-19T04:36:38-0700",
+ "built": "2026-10-20T18:13:42-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 542 active",
+ "census_git_head": "b551136cdd",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "RM_Bleedleaf": {
    "columns": {
@@ -623,6 +623,36 @@
    ],
    "subject_key": "halfmadetreeblighted"
   },
+  "RM_InfectedAerofleet": {
+   "columns": {
+    "A": {
+     "east": "1dd849ff0dffd6ad766e1cd5edf6cc014ae0fcf52e9e8290c8370ba0d1546c1d",
+     "north": "128efb45392ad7cb1f5fcbe89248c9c26c2ded8c7ac578bd83e511945a43d388",
+     "south": "28ecec6feecab1f0315d2f5a24d2a3ff649c4d3205d58f8a171df10d25bf4c4e"
+    },
+    "B": {
+     "east": "1bd715da66af1deffad32c4758f2f7d4da7be1d5d3edf78b17e05bf5daaf7691",
+     "north": "677e924fc09199f32c18fdb52613399e5b3ea1aa8a1b14758fd0a1acb8247143",
+     "south": "1b2ec225320ab32e190543e3e5121608fe838f983e4defb45615cfe654ecd415"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_InfectedAerofleet/RM_InfectedAerofleet",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_blisteredbulloo"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_InfectedAerofleet/RM_InfectedAerofleet",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "infectedaerofleet"
+  },
   "RM_Lashgrass": {
    "columns": {
     "A": {
@@ -736,6 +766,75 @@
     "402731e583bdea73ffc32a36713b7e76b53e99a9519e1c62139e7fce47767fc9"
    ],
    "subject_key": "meltgut"
+  },
+  "RM_OcularJelly": {
+   "columns": {
+    "A": {
+     "east": "57a293332e475b6b8f74dc5bfab782a5bfa500100f42a2b0d19ff4d910e72767",
+     "north": "8ba2a523828595a6eff2f5086c0edec5085a09190d2eb225123ab0ebbd188b1a",
+     "south": "98a20cc1e67b8f1e77017e73ba53e3eb10fdd60745f22ab9d5d693175c703c7a"
+    },
+    "B": {
+     "east": "12976aef0bc10369b4b3d0fb262c8b867d8ca82d99298c4e9a3517499c2aed68",
+     "north": "40fd0824416b90869361ca3865a48c15b0d26842fc2eaa67e1f98c0758887514",
+     "south": "368f039356561b6717f15b09e45332365dd9c2d828b5041be0dc89cdbb7ef80f"
+    },
+    "C": {
+     "east": "2f8ebce432fe54381f91b70922fd80959b67f48af82619da61b49e5cf18ca435",
+     "north": "df76884a4d8a9a3ed10871a8c21e13b2b58a9f941721e742a076a6ce566760db",
+     "south": "f7597cc8d1df002f7ff53d7a935fafe60a34002237b572c844c8a34d4eca8390"
+    },
+    "D": {
+     "east": "9d90ae9bb7aa417c33011c1e16c887826140f0bc2214239e00f392d5912ed618",
+     "north": "ab619cdb1b0304c06fcef057983e563e6c7715a45e0b3d694131385d6711d296",
+     "south": "2811230242f0ca9ce4f0037685b746007b133801e7622c28e3966e5467fe2c2a"
+    },
+    "E": {
+     "east": "88d54b0668a07e9873b74396bac0280c2eccdf15c2abc33a6e1ce9dde1753beb",
+     "north": "c1ebfbea6f0bd5c509cc2a96757451c9cf6dd38ba9599eaeb9ae900580cb0267",
+     "south": "9eaae69bbd977e7631804ac49b769d5b07b88bdd2fae2179596e73ba2ff72289"
+    },
+    "F": {
+     "east": "090bd5cca9cae6c2f0e727e2630728ab90e411b3945c01ce96c5d997830938c8",
+     "north": "e4df8b6f0e2b243d863a11d1b73ba90294b19e01951b69aa7f1250a281878642",
+     "south": "35941c1c51655edda044680c57b9a2168f5ff8697182337f99a7c42bbde19a2e"
+    },
+    "G": {
+     "east": "4c18eec7c063aa424be4327e160db954afc59b9fe28e413051f8f6684b0e115f",
+     "north": "24900a11e5f134ece06ded26d9415b5f9fc9e473282c96329e970a6b8fe851e9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render tt_zhool_bell_v1",
+    "C": "render tt_zhool_tentaclea_v1",
+    "D": "render tt_zhool_tentacleb_v1",
+    "E": "render tt_zhool_tentaclec_v1",
+    "F": "render tt_zhool_tentacled_v1",
+    "G": "render contagion_zhool"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "ocularjelly"
   },
   "RM_Ogleknot": {
    "columns": {

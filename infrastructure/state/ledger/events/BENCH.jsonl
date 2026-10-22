@@ -3452,3 +3452,4 @@
 {"seat":"BENCH","event":"close","id":"OFFLINE_PILE_DEPLOY_ONE_TRIP_FOR_ALL","sha":"f382a5d0df","reason":"Pile deployed 2026-10-21 by BENCH: FlowWorks + HugeThings DLLs, StarWarsRaces (FA opt-out DLL + defs), biomes compose (CreatureBehaviors, GelatinousSlime, Webwork, WeepingStones net, Greentide/TerminalBiomes defs); GSS already in sync; plan clean after. Owed proofs run: drawbridge 10/12, lines 7/9, titanoslime g5 7/7, Webwork wtw 5/5+1 by design, world sun A2 PASS; FAILs filed as 4 items","why":"pile deploy done, game was down for it","ts":"2026-10-21T21:35:16Z","tsn":1792618516573783334}
 {"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-22T01:11:08Z","tsn":1792631468235196402}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-22T01:22:50Z","tsn":1792632170659379981}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-22T02:30:44Z","tsn":1792636244974907002}

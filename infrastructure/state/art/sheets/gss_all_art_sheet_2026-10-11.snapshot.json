@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_gss_all_art",
- "built": "2026-10-14T20:29:52-0700",
+ "built": "2026-10-20T18:37:20-0700",
  "census": "Transient/biome_ffar/gss_all_art.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 325 active",
  "rows": {
   "GSS_00_TapClamp_0Scrapper": {
    "columns": {
@@ -1165,21 +1165,27 @@
     },
     "B": {
      "single": "cf2ca0c74b67cb8254e9182a6579f7008a8a972af2135a58f89b4a996a7f48c5"
+    },
+    "C": {
+     "single": "db634575f88f4ba1671451458dc7807c62ffce66997a7d6a7f883eeb45ed9a55"
     }
    },
    "graphic_of": {
     "A": "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand",
-    "B": "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand"
+    "B": "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand",
+    "C": "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand"
    },
    "labels": {
     "A": "IN GAME \u2014 GimmeSomeSlack",
-    "B": "render RM_MessyConduit_Cybertek_Strand"
+    "B": "render RM_MessyConduit_Cybertek_Strand",
+    "C": "render RM_Hose_Strand_Plump_gauge_Futuristic"
    },
    "pools": [],
    "res": "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "3df3f9c01d3e82bc46d27a5e77c25153b47e5fee3bb9c1762694ce8a7f7a617a",
@@ -3089,24 +3095,48 @@
     },
     "C": {
      "single": "c17270a6ce4c69fe74ac4ebb4a0ec5592d4930389e037f05dbafe55be168eb25"
+    },
+    "D": {
+     "single": "72ef8ccab0f3d53ed9b5c0eb325448b2dde08d7c322f057c541301dff9c279cf"
+    },
+    "E": {
+     "single": "db634575f88f4ba1671451458dc7807c62ffce66997a7d6a7f883eeb45ed9a55"
+    },
+    "F": {
+     "single": "3832ae62bc9d5be20e2f75aaeb5d70a20fa6b8d56b0bd5185bae0de9736ae217"
+    },
+    "G": {
+     "single": "704e3e5cbedfe9d2365cfaa80ebfd9bfb9ba1c435b6a88398e06b62026ffc7ed"
     }
    },
    "graphic_of": {
     "A": "RimMandrake/FlowWorks/Hose/Strand_Plump",
     "B": "RimMandrake/FlowWorks/Hose/Strand_Plump",
-    "C": "RimMandrake/FlowWorks/Hose/Strand_Plump"
+    "C": "RimMandrake/FlowWorks/Hose/Strand_Plump",
+    "D": "RimMandrake/FlowWorks/Hose/Strand_Plump",
+    "E": "RimMandrake/FlowWorks/Hose/Strand_Plump",
+    "F": "RimMandrake/FlowWorks/Hose/Strand_Plump",
+    "G": "RimMandrake/FlowWorks/Hose/Strand_Plump"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
     "B": "render RM_MessyConduit_Hose_Strand_Plump_v2",
-    "C": "render RM_MessyConduit_Hose_Strand_Plump"
+    "C": "render RM_MessyConduit_Hose_Strand_Plump",
+    "D": "IN GAME \u2014 FlowWorks",
+    "E": "render RM_Hose_Strand_Plump_gauge_Futuristic",
+    "F": "render RM_Hose_Strand_Plump_gauge_Industrial",
+    "G": "render RM_Hose_Strand_Plump_gauge_Modern"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Strand_Plump",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
    ],
    "shownBase": [
     "10772bb2fd185d884b5cab3a8e0c825a5f706a7d2dc91dc145f7df0110916b4d",
@@ -3119,18 +3149,24 @@
    "columns": {
     "A": {
      "single": "11238940d4a3259a47fab22bb97a2734bf1adde12dd29f7ee045892c8bc7d987"
+    },
+    "B": {
+     "single": "3832ae62bc9d5be20e2f75aaeb5d70a20fa6b8d56b0bd5185bae0de9736ae217"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Strand_Plump"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Strand_Plump",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Strand_Plump"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Strand_Plump",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "11238940d4a3259a47fab22bb97a2734bf1adde12dd29f7ee045892c8bc7d987"
@@ -3141,18 +3177,24 @@
    "columns": {
     "A": {
      "single": "3803f1e91fae77daa8b775fab88987a9b4818852de741bc46a2ea9b31cccdef1"
+    },
+    "B": {
+     "single": "704e3e5cbedfe9d2365cfaa80ebfd9bfb9ba1c435b6a88398e06b62026ffc7ed"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Strand_Plump"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Strand_Plump",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Modern/Strand_Plump"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Modern/Strand_Plump",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "3803f1e91fae77daa8b775fab88987a9b4818852de741bc46a2ea9b31cccdef1"
@@ -3163,18 +3205,24 @@
    "columns": {
     "A": {
      "single": "ff3e35e5a0535f6fdf0bc641f525ac014f8a164c4092b5a52f4a932253052eda"
+    },
+    "B": {
+     "single": "db634575f88f4ba1671451458dc7807c62ffce66997a7d6a7f883eeb45ed9a55"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Strand_Plump"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Strand_Plump",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Strand_Plump"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Strand_Plump",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "ff3e35e5a0535f6fdf0bc641f525ac014f8a164c4092b5a52f4a932253052eda"
@@ -3220,24 +3268,42 @@
     },
     "C": {
      "single": "6057f25493479d7093089766ff1d5944de6a34ae7ba3ac52cd2184139d89fba4"
+    },
+    "D": {
+     "single": "337c1066226afa934c91cec3f1cd14168ca7dda09fcc26524f4413db315f80c4"
+    },
+    "E": {
+     "single": "451d703ac7e42a9274e764902ae0c88ed4cf5a3fce0553963a43f6f253692bea"
+    },
+    "F": {
+     "single": "1f31cb849d6720ea4fe47771fa40075051875ce00f9c2b749d5a5a22647e0997"
     }
    },
    "graphic_of": {
     "A": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
     "B": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
-    "C": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup"
+    "C": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
+    "D": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
+    "E": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
+    "F": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks",
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
     "B": "render RM_MessyConduit_Hose_Reel_PumpHookup_v2",
-    "C": "render RM_MessyConduit_Hose_Reel_PumpHookup"
+    "C": "render RM_MessyConduit_Hose_Reel_PumpHookup",
+    "D": "IN GAME \u2014 FlowWorks",
+    "E": "render hosereel_coupling_scrapper_pumphookup_a",
+    "F": "render hosereel_coupling_scrapper_pumphookup_b"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Reel_PumpHookup",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E",
+    "F"
    ],
    "shownBase": [
     "21de7db801aab9237ed1010abfc8964b834f1c861f44c9f7e8b1330f6a208c74",
@@ -3250,18 +3316,36 @@
    "columns": {
     "A": {
      "single": "af776a2c2e57f6d1d0159813f8c5c79a5c64d6f9024b17dfd803df61d40a3b90"
+    },
+    "B": {
+     "single": "d5bc1f788c2e8d4529bc4a3d9002d4656c081e323915f1ce62d04d4468aebdf2"
+    },
+    "C": {
+     "single": "61b9de261ebd19430b57e9e58b0111d34337e5dbb90ae2a37faeaa863efb3480"
+    },
+    "D": {
+     "single": "804afba47c4c665c8408e72eaa858d141fdb0df86385000187c697b58c4bb033"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_PumpHookup"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_PumpHookup",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_PumpHookup",
+    "C": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_PumpHookup",
+    "D": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_PumpHookup"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "render hosereel_coupling_industrial_pumphookup_a",
+    "D": "render hosereel_coupling_industrial_pumphookup_b"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_PumpHookup",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [
     "af776a2c2e57f6d1d0159813f8c5c79a5c64d6f9024b17dfd803df61d40a3b90"
@@ -3272,18 +3356,36 @@
    "columns": {
     "A": {
      "single": "f35cb5f361dca702cdd56cc018bbeb2faa36e69a0cf1400fb66612d68c6d3b92"
+    },
+    "B": {
+     "single": "375d1a3a356a2308db540150ca00dd110913a67aa95f8ab93c36637302ba812e"
+    },
+    "C": {
+     "single": "0e45f54899ad8e486e67adb3436cd30c4e062c30d78874dbec3df81dfd1c22c2"
+    },
+    "D": {
+     "single": "f749397173516a0aaea167fde8e111ae9fca94b386a41cc4ce8088d9a49446f5"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
+    "C": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
+    "D": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "render hosereel_coupling_modern_pumphookup_a",
+    "D": "render hosereel_coupling_modern_pumphookup_b"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [
     "f35cb5f361dca702cdd56cc018bbeb2faa36e69a0cf1400fb66612d68c6d3b92"
@@ -3294,18 +3396,36 @@
    "columns": {
     "A": {
      "single": "80036d23a6a79f600eca0a1347c3cb062557414890a617c2e8fa91019692c0f5"
+    },
+    "B": {
+     "single": "cd2a87a3850ef886c51649260223fd6938b34292e0a89bcd50dbec56fac94e48"
+    },
+    "C": {
+     "single": "55c1f4e9ec197a3ac7938addac6f76098d1e7909a3a5937019b081eccd245e4f"
+    },
+    "D": {
+     "single": "f567d75b5640c6a2e3c38c24f010ea4dce8cb476e07e88d50b32142f4cfeda07"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_PumpHookup"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_PumpHookup",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_PumpHookup",
+    "C": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_PumpHookup",
+    "D": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_PumpHookup"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "render hosereel_coupling_futuristic_pumphookup_a",
+    "D": "render hosereel_coupling_futuristic_pumphookup_b"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_PumpHookup",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [
     "80036d23a6a79f600eca0a1347c3cb062557414890a617c2e8fa91019692c0f5"
@@ -3316,18 +3436,36 @@
    "columns": {
     "A": {
      "single": "0c5979549a3920639c7df474f0b338401db0a7328721ec70be661a6cc1186ea8"
+    },
+    "B": {
+     "single": "a8d0970a1afc3cabb2afcef351ff9001b7a27d7017e3136512170d1368dd6f6e"
+    },
+    "C": {
+     "single": "423ef23b1509e16ab12c0328660b804f6c4ff09172e037f96ef883b0f4778755"
+    },
+    "D": {
+     "single": "d4d949da27a9bb1e4e737fd4ff748905b7d1dbf3afc9e608051c5a090b88a3f8"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Reel_Deployed"
+    "A": "RimMandrake/FlowWorks/Hose/Reel_Deployed",
+    "B": "RimMandrake/FlowWorks/Hose/Reel_Deployed",
+    "C": "RimMandrake/FlowWorks/Hose/Reel_Deployed",
+    "D": "RimMandrake/FlowWorks/Hose/Reel_Deployed"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "render hosereel_coupling_scrapper_deployed_a",
+    "D": "render hosereel_coupling_scrapper_deployed_b"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Reel_Deployed",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [
     "0c5979549a3920639c7df474f0b338401db0a7328721ec70be661a6cc1186ea8"
@@ -3338,18 +3476,36 @@
    "columns": {
     "A": {
      "single": "c1b5f9eb49ba83e7215e4de24596e0769514bb88f15ab6c403d14cca0dd6fd0a"
+    },
+    "B": {
+     "single": "c49f66174d57e1820488a7cc83d88c997156dae13601df8c94c7f1ea65cabe46"
+    },
+    "C": {
+     "single": "015d0d1ebac47cf7642a5dc62bbe168edaea27360d9cacb773ecb82b19b1e089"
+    },
+    "D": {
+     "single": "71b8aae0c40e7a963c12bc7a272d12d35659bd37f242c85f119fbfe994aa6341"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_Deployed"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_Deployed",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_Deployed",
+    "C": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_Deployed",
+    "D": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_Deployed"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "render hosereel_coupling_industrial_deployed_a",
+    "D": "render hosereel_coupling_industrial_deployed_b"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_Deployed",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [
     "c1b5f9eb49ba83e7215e4de24596e0769514bb88f15ab6c403d14cca0dd6fd0a"
@@ -3360,18 +3516,36 @@
    "columns": {
     "A": {
      "single": "d4f40744b3f64efbb52d40361d76f9c36c7dbf70ce8e15437e577f88a9bbfbc3"
+    },
+    "B": {
+     "single": "df3e0afd5a0d647c8e83313a6910bf720403d2f27ce06cf3bcf4d476e3817f1a"
+    },
+    "C": {
+     "single": "414e52ff915aeecbc8d8bc18b0ab4225a943789b1877e9995cb7615abf1b09ea"
+    },
+    "D": {
+     "single": "0a07f21cbd8d18970c613031622a433ea748f14afcca04f0fa8a35df98a16cce"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed",
+    "C": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed",
+    "D": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "render hosereel_coupling_modern_deployed_a",
+    "D": "render hosereel_coupling_modern_deployed_b"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [
     "d4f40744b3f64efbb52d40361d76f9c36c7dbf70ce8e15437e577f88a9bbfbc3"
@@ -3382,18 +3556,36 @@
    "columns": {
     "A": {
      "single": "376e0916564e89e36cd0fa53eed60f7da6677a6e9099b6892a49305dc4df78cf"
+    },
+    "B": {
+     "single": "8c5ce5658db7d7f76cb3128b08bf35b12a092f1f768613012f35b925c0a379b9"
+    },
+    "C": {
+     "single": "10fa31cfac463f3f00ad4ec9c8243897a4bf5d66cda99cdba5c118701e2fe270"
+    },
+    "D": {
+     "single": "e635140537a2ced2b18c14ec84bb3842a8dbb86e8b254b2ea06dc69dd1676e13"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_Deployed"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_Deployed",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_Deployed",
+    "C": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_Deployed",
+    "D": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_Deployed"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "render hosereel_coupling_futuristic_deployed_a",
+    "D": "render hosereel_coupling_futuristic_deployed_b"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_Deployed",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [
     "376e0916564e89e36cd0fa53eed60f7da6677a6e9099b6892a49305dc4df78cf"
@@ -3440,18 +3632,42 @@
    "columns": {
     "A": {
      "single": "2d7be8628789cf4f78e297afb12c4fd367a9daf89d5646a2ddd45a2736dd2e80"
+    },
+    "B": {
+     "single": "ac609c99512b202d3841ae9331f0224d58f4b61b28f24d95cfb611161cbb5b08"
+    },
+    "C": {
+     "single": "5411598726dcd2208669b2c45923885e4a98a0b2f907953122dad38038d97441"
+    },
+    "D": {
+     "single": "e25d226582ee92e353cc31951f7da277f1d19e5b8689708fa5c7846ca94ce32e"
+    },
+    "E": {
+     "single": "b821b66144e6ec6526127f5e9dedca824adb6bf47caa1a2b45ae81c2c763019b"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Coupling_Bare"
+    "A": "RimMandrake/FlowWorks/Hose/Coupling_Bare",
+    "B": "RimMandrake/FlowWorks/Hose/Coupling_Bare",
+    "C": "RimMandrake/FlowWorks/Hose/Coupling_Bare",
+    "D": "RimMandrake/FlowWorks/Hose/Coupling_Bare",
+    "E": "RimMandrake/FlowWorks/Hose/Coupling_Bare"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks",
+    "C": "render RM_Hose_Coupling_Bare_gauge_Futuristic",
+    "D": "render RM_Hose_Coupling_Bare_gauge_Industrial",
+    "E": "render RM_Hose_Coupling_Bare_gauge_Modern"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Coupling_Bare",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "shownBase": [
     "2d7be8628789cf4f78e297afb12c4fd367a9daf89d5646a2ddd45a2736dd2e80"
@@ -3462,18 +3678,24 @@
    "columns": {
     "A": {
      "single": "f1c6ea5090878eef4a1a916230b9b8bae6e89fa8a00030d31d22384e59a51e79"
+    },
+    "B": {
+     "single": "e25d226582ee92e353cc31951f7da277f1d19e5b8689708fa5c7846ca94ce32e"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Coupling_Bare"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Coupling_Bare",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Coupling_Bare"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Industrial/Coupling_Bare",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "f1c6ea5090878eef4a1a916230b9b8bae6e89fa8a00030d31d22384e59a51e79"
@@ -3484,18 +3706,24 @@
    "columns": {
     "A": {
      "single": "523e7374ea0d3a021b257118ff78c4711d9fc71ea5c0dda4d10d2f26d2b4c3ef"
+    },
+    "B": {
+     "single": "b821b66144e6ec6526127f5e9dedca824adb6bf47caa1a2b45ae81c2c763019b"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Modern/Coupling_Bare",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "523e7374ea0d3a021b257118ff78c4711d9fc71ea5c0dda4d10d2f26d2b4c3ef"
@@ -3506,18 +3734,24 @@
    "columns": {
     "A": {
      "single": "c97d0e4027edda84b8c202b48d1d72fa42316b3d8c4f79cd831e9b2d01ec6ee3"
+    },
+    "B": {
+     "single": "5411598726dcd2208669b2c45923885e4a98a0b2f907953122dad38038d97441"
     }
    },
    "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Coupling_Bare"
+    "A": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Coupling_Bare",
+    "B": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Coupling_Bare"
    },
    "labels": {
-    "A": "IN GAME \u2014 FlowWorks"
+    "A": "WAS in game, no longer installed \u2014 FlowWorks",
+    "B": "IN GAME \u2014 FlowWorks"
    },
    "pools": [],
    "res": "RimMandrake/FlowWorks/Hose/Styles/Futuristic/Coupling_Bare",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "c97d0e4027edda84b8c202b48d1d72fa42316b3d8c4f79cd831e9b2d01ec6ee3"
