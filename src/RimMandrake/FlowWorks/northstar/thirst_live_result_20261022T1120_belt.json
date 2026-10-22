@@ -1,0 +1,135 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-22T11:08:10",
+ "rows": [
+  {
+   "id": "T4_bottle_satisfies",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "levels": [
+     0.2,
+     0.692
+    ],
+    "gain": 0.492,
+    "dirtyBottles": [
+     0,
+     1
+    ],
+    "ingest": {
+     "ended": true,
+     "ticks": 660,
+     "jobs": [
+      "Ingest",
+      "GotoWander"
+     ]
+    }
+   }
+  },
+  {
+   "id": "T5_salt_water_quality",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "accepted": true,
+     "beforeJobDef": null,
+     "afterJobDef": "Ingest",
+     "message": null,
+     "note": null
+    },
+    "saltBottleLeft": 0,
+    "levels": [
+     0.2,
+     0.542
+    ],
+    "ratioToFresh": 0.695,
+    "hediffs": {
+     "BadBack": 0.001,
+     "Sterilized": 1.0,
+     "RM_SaltPoisoning": 0.25
+    },
+    "memories": [
+     "RM_Thought_SaltRelief"
+    ],
+    "bad": [],
+    "ingest": {
+     "ended": true,
+     "ticks": 660,
+     "jobs": [
+      "Ingest",
+      "GotoWander"
+     ]
+    },
+    "note": "one pawn, one bottle (the bar says x4 on test pawns; the per-drink numbers are what it scores)"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/thirst_1.json",
+  "only": "T4,T5",
+  "site": "150,130",
+  "log": "",
+  "reload_site": "calm",
+  "dry_run": false,
+  "mock": false,
+  "mock_faults": "",
+  "t25_empties": 1
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "03db98c3c80271c66a634e737b05a24c6abc868dbc67d76c87c704ed1ec74fff"
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "running": 14,
+ "site": {
+  "rect": "150,130,40,40",
+  "paintedWaterRuns": 670,
+  "bottlesOnMap": [],
+  "draftedOwn": 3
+ },
+ "settings_after": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "ended": "2026-10-22T11:09:07"
+}

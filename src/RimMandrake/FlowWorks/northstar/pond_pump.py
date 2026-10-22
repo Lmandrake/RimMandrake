@@ -146,6 +146,9 @@ def main():
         B.call("rimworld/go_to_main_menu")
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
     ok, waited = V._wait_playing(B, leave_s=0)
+    if ok:
+        # HARNESS (belt live 2026-10-22): pond_pump was missed by d03ca752f4 -- a map-gen Hive stopped safe_advance at arm
+        res["site_calm"] = V.site_calm(B)
     rm = B.call("jawa/running_mods", assembly="RimMandrakeFlowWorks", details=False) or {}
     res["running"] = len(rm.get("packageIds") or [])
     B.hp("defaults")
@@ -236,6 +239,11 @@ def main():
         tb = []
         left = int(a.refill_days * 60000)
         while left > 0:
+            # HARNESS (belt live 2026-10-22): the refill wait is days of game time on an unfed debug map -- a colonist went
+            # Starving and the vitals governor stopped the clock mid-row. Feed and rest every colonist before each chunk.
+            for p_ in (B.probe("colonists").get("pawns") or []):
+                for need in ("Food", "Rest"):
+                    B.call("jawa/pawn_need", pawn=p_["id"], action="need", need=need, level=1.0)
             B.ticks(min(5000, left))
             left -= 5000
             bd = body()

@@ -1,0 +1,431 @@
+{
+ "script": "pond_pump.py",
+ "started": "2026-10-22T10:59:25",
+ "rows": [
+  {
+   "id": "POND_PUMP_pond_limited",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "body": {
+     "id": 2,
+     "limitless": false,
+     "stock": 12.0,
+     "capacity": 12.0,
+     "cellCount": 6,
+     "recededCount": 0,
+     "activeCellCount": 6,
+     "truncated": false
+    }
+   }
+  },
+  {
+   "id": "POND_PUMP_draw_conserves",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankGained": 80000,
+    "stockFell": 8.0,
+    "stockFellInTankUnits": 80000.0,
+    "diff": 0.0,
+    "rawEqual": false,
+    "u0": 0,
+    "u1": 80000,
+    "s0": 12.0,
+    "s1": 4.0,
+    "trace": [
+     {
+      "tick": 205,
+      "units": 0,
+      "stock": 12.0,
+      "receded": 0
+     },
+     {
+      "tick": 455,
+      "units": 10000,
+      "stock": 11.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 705,
+      "units": 20000,
+      "stock": 10.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 955,
+      "units": 30000,
+      "stock": 9.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 1205,
+      "units": 40000,
+      "stock": 8.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 1455,
+      "units": 50000,
+      "stock": 7.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 1705,
+      "units": 60000,
+      "stock": 6.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 1955,
+      "units": 70000,
+      "stock": 5.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 2205,
+      "units": 80000,
+      "stock": 4.0,
+      "receded": 0,
+      "pump": null
+     }
+    ],
+    "capacity": 12.0,
+    "pumpPoweredAfterTicks": 170
+   }
+  },
+  {
+   "id": "POND_PUMP_refill_rewets",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "the draw receded no cell, so re-wetting cannot be observed",
+    "stockAfterDraw": 4.0,
+    "trace": [
+     {
+      "tick": 7465,
+      "stock": 4.162,
+      "receded": 0
+     },
+     {
+      "tick": 12465,
+      "stock": 4.324,
+      "receded": 0
+     },
+     {
+      "tick": 17465,
+      "stock": 4.486,
+      "receded": 0
+     },
+     {
+      "tick": 22465,
+      "stock": 4.648,
+      "receded": 0
+     },
+     {
+      "tick": 27465,
+      "stock": 4.81,
+      "receded": 0
+     },
+     {
+      "tick": 32465,
+      "stock": 4.972,
+      "receded": 0
+     },
+     {
+      "tick": 37465,
+      "stock": 5.134,
+      "receded": 0
+     },
+     {
+      "tick": 42465,
+      "stock": 5.2915,
+      "receded": 0
+     },
+     {
+      "tick": 47465,
+      "stock": 5.4535,
+      "receded": 0
+     },
+     {
+      "tick": 52465,
+      "stock": 5.6155,
+      "receded": 0
+     },
+     {
+      "tick": 57465,
+      "stock": 5.7775,
+      "receded": 0
+     },
+     {
+      "tick": 62465,
+      "stock": 5.9395,
+      "receded": 0
+     },
+     {
+      "tick": 67465,
+      "stock": 6.1015,
+      "receded": 0
+     },
+     {
+      "tick": 72465,
+      "stock": 6.2635,
+      "receded": 0
+     },
+     {
+      "tick": 77465,
+      "stock": 6.4225,
+      "receded": 0
+     },
+     {
+      "tick": 82465,
+      "stock": 6.5845,
+      "receded": 0
+     },
+     {
+      "tick": 87465,
+      "stock": 6.745,
+      "receded": 0
+     },
+     {
+      "tick": 92465,
+      "stock": 6.907,
+      "receded": 0
+     },
+     {
+      "tick": 97465,
+      "stock": 7.069,
+      "receded": 0
+     },
+     {
+      "tick": 102465,
+      "stock": 7.231,
+      "receded": 0
+     },
+     {
+      "tick": 107465,
+      "stock": 7.393,
+      "receded": 0
+     },
+     {
+      "tick": 112465,
+      "stock": 7.555,
+      "receded": 0
+     },
+     {
+      "tick": 117465,
+      "stock": 7.714,
+      "receded": 0
+     },
+     {
+      "tick": 122465,
+      "stock": 7.876,
+      "receded": 0
+     }
+    ],
+    "tankAfter": 79955,
+    "terrainAfter": {
+     "182,45": "RM_WaterThin",
+     "183,45": "RM_WaterThin",
+     "184,45": "RM_WaterThin",
+     "182,46": "RM_WaterThin",
+     "183,46": "RM_WaterThin",
+     "184,46": "RM_WaterThin"
+    },
+    "engine": {
+     "success": true,
+     "nextPulseTick": 122501,
+     "ticksUntilNextPulse": 36,
+     "pulseIntervalTicks": 250,
+     "depthEngineEnabled": true,
+     "activeFluid": "RM_Fluid_Water",
+     "activeFluidRaw": "RM_Fluid_Water",
+     "rainAccumulator": 0.0,
+     "excavatedCellCount": 0,
+     "superdeepCellCount": 0,
+     "bodyCount": 2,
+     "sinkTransferredTotal": 0.0,
+     "overflowDestroyedTotal": 0.0,
+     "mapId": 0,
+     "ticksGame": 122465,
+     "operation": {
+      "OperationId": "op_931708ed47524fb7bee60c01cd6414b0",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 47
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 122465
+     }
+    }
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/pond_4.json",
+  "origin": "180,40",
+  "fresh_map": true,
+  "cycles": 8,
+  "refill_days": 2.0
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brogg36950",
+    "RM_Brogg36957",
+    "RM_Brogg36961",
+    "RM_Brogg36962",
+    "RM_Brullith36953",
+    "RM_Chittik36963",
+    "RM_Chittik36964",
+    "RM_Chittik36965",
+    "RM_Chittik36966",
+    "RM_Chittik36967",
+    "RM_Chittik36968",
+    "RM_Chittik36969",
+    "RM_Grellik36954",
+    "RM_Grellik36955",
+    "RM_Illoth36970",
+    "RM_MycoidColossus36952",
+    "RM_Shambles36956",
+    "RM_Shambles36958",
+    "RM_Thozzik36959",
+    "RM_ThozzikColony36951",
+    "RM_ThozzikQueen36960"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "running": 14,
+ "settings_before": {
+  "refillEnabled": "True",
+  "refillRateMultiplier": "1",
+  "recessionEnabled": "True",
+  "liquidPumpEnabled": "True",
+  "depthEngineEnabled": "True"
+ },
+ "classify": {
+  "success": true,
+  "cell": {
+   "x": 183,
+   "z": 46
+  },
+  "classified": true,
+  "formedByThisCall": true,
+  "indexAgrees": true,
+  "isSourceCell": true,
+  "body": {
+   "id": 2,
+   "limitless": false,
+   "stock": 12.0,
+   "capacity": 12.0,
+   "cellCount": 6,
+   "recededCount": 0,
+   "activeCellCount": 6,
+   "truncated": false
+  },
+  "bodyCount": 2,
+  "activeFluid": "RM_Fluid_Water",
+  "activeFluidRaw": "RM_Fluid_Water",
+  "ticksGame": 33,
+  "operation": {
+   "OperationId": "op_f75deb54e85148e58a8604d9c992cd08",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "engine_before": {
+  "success": true,
+  "nextPulseTick": 251,
+  "ticksUntilNextPulse": 218,
+  "pulseIntervalTicks": 250,
+  "depthEngineEnabled": true,
+  "activeFluid": "RM_Fluid_Water",
+  "activeFluidRaw": "RM_Fluid_Water",
+  "rainAccumulator": 0.0,
+  "excavatedCellCount": 0,
+  "superdeepCellCount": 0,
+  "bodyCount": 2,
+  "sinkTransferredTotal": 0.0,
+  "overflowDestroyedTotal": 0.0,
+  "mapId": 0,
+  "ticksGame": 33,
+  "operation": {
+   "OperationId": "op_82521363b71b405893431f4ea420263f",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "terrain_fresh": {
+  "182,45": "WaterShallow",
+  "183,45": "WaterShallow",
+  "184,45": "WaterShallow",
+  "182,46": "WaterShallow",
+  "183,46": "WaterShallow",
+  "184,46": "WaterShallow"
+ },
+ "build": {
+  "success": true,
+  "built": null,
+  "failed": []
+ },
+ "pumpPoweredAfterTicks": 170,
+ "terrain_after_draw": {
+  "182,45": "RM_WaterThin",
+  "183,45": "RM_WaterThin",
+  "184,45": "RM_WaterThin",
+  "182,46": "RM_WaterThin",
+  "183,46": "RM_WaterThin",
+  "184,46": "RM_WaterThin"
+ },
+ "settings_restored": {
+  "refillEnabled": true,
+  "refillRateMultiplier": true,
+  "recessionEnabled": true,
+  "liquidPumpEnabled": true,
+  "depthEngineEnabled": true
+ },
+ "finished": "2026-10-22T11:07:58"
+}

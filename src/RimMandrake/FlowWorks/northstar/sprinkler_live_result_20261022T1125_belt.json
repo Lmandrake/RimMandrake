@@ -1,0 +1,86 @@
+{
+ "script": "sprinkler_live.py",
+ "started": "2026-10-22T11:09:13",
+ "rows": [
+  {
+   "id": "T22_no_brine_spray",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "brineOnly": "Dry: nothing in the tanks on this network",
+    "withFresh": "Spraying fresh water \u00b7 9 L/h \u00b7 18 cells",
+    "brineUnits": [
+     50000,
+     50000
+    ],
+    "freshUnits": 19910,
+    "bad": []
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/sprinkler_1.json",
+  "only": "brine",
+  "dry_run": false,
+  "mock": false,
+  "mock_faults": "",
+  "origin": "120,140"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "03db98c3c80271c66a634e737b05a24c6abc868dbc67d76c87c704ed1ec74fff"
+ },
+ "net3": {
+  "tank": [
+   120,
+   182
+  ],
+  "pump": [
+   123,
+   182
+  ],
+  "head": [
+   125,
+   182
+  ],
+  "covered": [
+   126,
+   183
+  ],
+  "far": [
+   130,
+   186
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead435951",
+  "pumpId": "RM_LiquidPump435950"
+ },
+ "ended": "2026-10-22T11:09:46"
+}
