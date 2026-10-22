@@ -24,6 +24,12 @@ Sources: `src/RimMandrake/Webwork/About/About.xml` description, `Defs/**`, `Sour
 - A Webwork map is laid with thick web cables (slow to climb, never impassable, trees still grow through them), thinner sticky local webs near them, and silk carpet only within a few cells of the spider sites; the step lays nothing off-biome, and each of webNetworkEnabled / siteCarpetEnabled / localWebDensityMultiplier=0 turns its part off. → web_terrain_weather.web_network_laid
 - Webfall sits in RM_Webwork's weather table at webfallCommonality, can be made the current weather, never dims the sun (the light-moat holds), and is gone with webfallEnabled off. → web_terrain_weather.webfall_in_biome_and_occurs
 - The web and carpet appear on a really GENERATED Webwork map. → UNCOVERED: the bridge cannot generate an RM_Webwork map (biome on 0 tiles until the end paint); PlaceWeb runs on the current map instead
+- Urraveth remains (WEBWORK_DEAD_GIANT_BUILD_1): at site chance 0 nothing is placed; at chance 1 one wrapped piece per layout row is laid (every `RM_Urraveth_*` def present). → urraveth_remains.site_chance_zero_places_none, urraveth_remains.site_places_every_piece_wrapped
+- Reading a wrapped piece cuts its wrapping, records its chapter and drops thrixweave of the configured size beside it. → urraveth_remains.reading_one_piece_cuts_its_wrapping
+- With every piece read, opening the skull completes the reading with the four chapters in order (pinned, bound, cut, eaten) and draws the outline. → urraveth_remains.all_read_then_skull_opens_complete
+- An unloaded piece never creaks (60,000 ticks); a loaded rib creaks for the full warning window, and taking the load off ends it harmlessly. → urraveth_remains.unloaded_bones_never_creak, urraveth_remains.load_creaks_and_clearing_saves_it
+- A rib left loaded past its window collapses into rubble, hurts who is under it, and the piece it held up starts creaking. → urraveth_remains.load_left_collapses_with_rubble_and_spreads
+- The urraveth site is laid inside real Webwork mapgen at about 1 map in 4. → UNCOVERED: the bridge cannot generate an RM_Webwork map (0 tiles until the end paint); ProofSite runs the same PlaceSite on the current map
 
 ## the walk
 Run `src/RimMandrake/Webwork/validation.py` (static: `python3 validation.py`); live via the modcheck suite on a tier that loads `mandrake.rm.biomes` (or standalone with CreatureBehaviors).
@@ -41,4 +47,5 @@ No owner north-star bars are drafted for this mod yet.
 ## anti-guessing notes
 RULED OUT: "a zero-tile biome is a defect" — the planet is painted once at the end (BIOME_PAINT_ONCE_AT_THE_END_1); no check reads a tile count.
 RULED OUT: "the egg should hatch" — S6 ruling / ban 1: inert cargo, no CompHatcher; nest_egg_state guards that no hatcher comp appears.
+RULED OUT: "ProofLoad clear/idle can be reached as 'N|clear'" — jawa/static_call splits args on '|' into parameters; until 2026-10-22 ProofLoad split only on '|', so its modes were unreachable from the script (mock_urraveth's "pipe" case guards it).
 RULED OUT: "the nest wall should register a web-node sense comp" — deliberately not wired (RM_CompSenseWebNode consumer unbuilt; WEBWORK_WEB_STRUCTURES_1 owns it).

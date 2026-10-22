@@ -707,6 +707,80 @@ def _build_suite():
                 _unmeasured(t, "the bridge cannot generate an RM_Webwork map (our biome sits on 0 tiles until the one end-paint, "
                                "CLAUDE.md); the placement is proven through PlaceWeb on the current map above")
 
+    def _up(t, method, args):
+        # RM_UrravethProof (WEBWORK_DEAD_GIANT_BUILD_1): one-string proofs, so args travel ';'-joined like _wp's
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Webwork.RM_UrravethProof", method=method, args=args.replace("|", ";"))
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    @suite.chain("urraveth_remains")
+    def urraveth_remains(t):
+        """WEBWORK_DEAD_GIANT_BUILD_1 criteria A2, on the CURRENT map through RM_UrravethProof (static_call). Order matters:
+        site (chance 0, then 1), read one limb pile, read all, open the skull, then the load gauntlet (idle, clear, leave;
+        leave collapses the rib, so it runs last). The planet half of criterion 1 needs no check: the GenStep is a map
+        GenStep and the proof never touches Find.WorldGrid (static: RM_UrravethRemains_MapGenPatch.xml)."""
+        with t.component("site_chance_zero_places_none", toggle="urravethSiteChance", beyond_toggle=True):
+            text = _up(t, "ProofSite", "0")
+            if _live(t):
+                if not text.startswith("SITE"):
+                    _unmeasured(t, "ProofSite gave no answer: %r" % text[:160]); return
+                p = _arrow(text, "pieces")
+                if _field(text, "rolled") != "False" or not p or p[0] != p[1]:
+                    raise ExpectationFailed("site chance 0 still placed remains: %s" % text)
+        with t.component("site_places_every_piece_wrapped", toggle="urravethEnabled"):
+            text = _up(t, "ProofSite", "1")
+            if _live(t):
+                if not text.startswith("SITE"):
+                    _unmeasured(t, "ProofSite gave no answer: %r" % text[:160]); return
+                if _field(text, "rolled") == "True" and _field(text, "placed") in ("0", "-1"):
+                    _unmeasured(t, "no open 15x9 ground on this map (SITE skipped, not a mod defect): %s" % text); return
+                p, rows = _arrow(text, "pieces"), int(_field(text, "layoutRows") or 0)
+                if _field(text, "rolled") != "True" or not p or p[1] - p[0] != rows or rows < 1:
+                    raise ExpectationFailed("site chance 1 did not lay one piece per layout row: %s" % text)
+                if int(_field(text, "pieceDefs") or 0) < 5 or _field(text, "allWrapped") != "True":
+                    raise ExpectationFailed("a piece def is missing or a piece spawned unwrapped: %s" % text)
+        with t.component("reading_one_piece_cuts_its_wrapping", toggle="urravethThrixweavePerPiece", beyond_toggle=True):
+            text = _up(t, "ProofRead", "RM_Urraveth_LimbPile")
+            if _live(t):
+                if not text.startswith("READ"):
+                    _unmeasured(t, "ProofRead gave no answer: %r" % text[:160]); return
+                if _field(text, "wrapped(RM_Urraveth_LimbPile)") != "False" or "pinned" not in (_field(text, "chapters") or ""):
+                    raise ExpectationFailed("reading a limb pile did not unwrap it or record 'pinned': %s" % text)
+                if int(_field(text, "thrixweaveNear") or 0) < int(_field(text, "perPieceSetting") or 1):
+                    raise ExpectationFailed("no thrixweave stack of the configured size beside the read piece: %s" % text)
+        with t.component("all_read_then_skull_opens_complete", beyond_toggle=True):
+            _up(t, "ProofRead", "all")
+            text = _up(t, "ProofRead", "final")
+            if _live(t):
+                if not text.startswith("READ"):
+                    _unmeasured(t, "ProofRead final gave no answer: %r" % text[:160]); return
+                if _field(text, "chapters") != "[pinned,bound,cut,eaten]" or _field(text, "complete") != "True":
+                    raise ExpectationFailed("the reading is not complete with the four chapters in order: %s" % text)
+                if not int(_field(text, "outlineCells") or 0) > 0:
+                    raise ExpectationFailed("the urraveth outline was not drawn: %s" % text)
+        with t.component("unloaded_bones_never_creak", beyond_toggle=True):
+            text = _up(t, "ProofLoad", "0|idle")
+            if _live(t) and not (text.startswith("IDLE") and _field(text, "everCreaking") == "False"):
+                raise ExpectationFailed("an unloaded rib creaked over 60,000 ticks (or no answer): %s" % text)
+        with t.component("load_creaks_and_clearing_saves_it", toggle="urravethWarningHours", beyond_toggle=True):
+            text = _up(t, "ProofLoad", "4|clear")
+            if _live(t):
+                if "CLEAR" not in text:
+                    _unmeasured(t, "ProofLoad clear gave no CLEAR answer (mode not reached?): %r" % text[:200]); return
+                if _field(text, "creaking") != "True" or _field(text, "ticksLeft") != _field(text, "window"):
+                    raise ExpectationFailed("four colonists on a rib did not start a full warning window: %s" % text)
+                if _field(text, "CLEAR creaking") != "False" or _field(text, "ribSpawned") != "True" or _field(text, "anyPawnHurt") != "False":
+                    raise ExpectationFailed("taking the load off did not end the creak harmlessly: %s" % text)
+        with t.component("load_left_collapses_with_rubble_and_spreads", toggle="urravethCollapseDamageMultiplier", beyond_toggle=True):
+            text = _up(t, "ProofLoad", "4|leave")
+            if _live(t):
+                if "LEAVE" not in text:
+                    _unmeasured(t, "ProofLoad leave gave no LEAVE answer: %r" % text[:200]); return
+                if _field(text, "LEAVE ribGone") != "True" or not int(_field(text, "rubbleCells") or 0) > 0 or _field(text, "pawnDamaged") != "True":
+                    raise ExpectationFailed("a rib left loaded past its window did not collapse into rubble and hurt someone: %s" % text)
+                nb = _field(text, "neighbour") or ""
+                if not nb.startswith("none") and not nb.endswith("creaking True"):
+                    raise ExpectationFailed("the piece the rib held up did not start creaking: %s" % text)
+
     return suite
 
 
@@ -783,9 +857,68 @@ def mock_harvest_fog_timeout():
     return ok
 
 
+class _MockUrravethSession(_MockSession):
+    """--mock: urraveth_remains against a working mod. broken="pipe" answers ProofLoad as the pre-2026-10-22 DLL did (it split
+    only on '|', so 'N;clear' fell through to the default mode, leave); broken="order" records the chapters out of order."""
+
+    def __init__(self, broken=None):
+        _MockSession.__init__(self)
+        self.broken, self.pieces = broken, 0
+
+    def call(self, tool, **kw):
+        if tool == "jawa/static_call" and kw.get("type") == "RimMandrake.Webwork.RM_UrravethProof":
+            self.calls.append((tool, kw))
+            m, a = kw.get("method"), kw.get("args") or ""
+            if m == "ProofSite":
+                b = self.pieces
+                if a == "1":
+                    self.pieces += 7
+                return {"success": True, "result": "SITE rolled %s | placed %d | pieces %d->%d | layoutRows 7 | pieceDefs 5 | allWrapped True | "
+                        "RM_Urraveth_Skull=1" % (a == "1", 7 if a == "1" else 0, b, self.pieces)}
+            if m == "ProofRead":
+                ch = {"RM_Urraveth_LimbPile": "[pinned]", "all": "[pinned,bound,cut,eaten]",
+                      "final": "[bound,pinned,cut,eaten]" if self.broken == "order" else "[pinned,bound,cut,eaten]"}[a]
+                return {"success": True, "result": "READ x | wrapped(%s) False | chapters %s | complete %s | outlineCells %d | thrixweaveNear 8 | "
+                        "perPieceSetting 8" % ("RM_Urraveth_LimbPile" if a != "final" else "RM_Urraveth_Skull", ch, a == "final", 40 if a == "final" else 0)}
+            if m == "ProofLoad":
+                mode = a.split("|")[-1] if self.broken == "pipe" else re.split(r"[|;]", a)[-1]
+                mode = mode if mode in ("clear", "idle") else "leave"
+                if mode == "idle":
+                    return {"success": True, "result": "IDLE load 0.00 | everCreaking False | spawned True"}
+                head = "LOAD pawns 4 | load 4.00 | capacity 3.00 | creaking True | ticksLeft 15000 | window 15000"
+                if mode == "clear":
+                    return {"success": True, "result": head + " | CLEAR creaking False | ribSpawned True | anyPawnHurt False"}
+                return {"success": True, "result": head + " | LEAVE ribGone True | rubbleCells 6 | pawnDamaged True | neighbour RM_Urraveth_Pelvis creaking True"}
+        return super(_MockUrravethSession, self).call(tool, **kw)
+
+
+def mock_urraveth():
+    """urraveth_remains: all 7 PASS on a working mod; the old '|'-only split reads UNMEASURED (never PASS) on the idle/clear rows;
+    chapters out of order read FAIL."""
+    from runner import run_suite
+    chains = list(suite.chains)
+    out = {}
+    try:
+        for broken in (None, "pipe", "order"):
+            suite.chains[:] = [c for c in chains if c[0] == "urraveth_remains"]
+            res = run_suite(suite, _MockUrravethSession(broken), anchor=(50, 50))
+            out[broken] = {c.get("name"): str(c.get("verdict", "")).upper()
+                           for ch in res.get("chains", []) for c in (ch.get("components") or [])}
+    finally:
+        suite.chains[:] = chains
+    good = out[None]
+    ok = len(good) == 7 and set(good.values()) == {"PASS"}
+    ok = ok and out["pipe"].get("load_creaks_and_clearing_saves_it") == "UNMEASURED" \
+        and out["pipe"].get("unloaded_bones_never_creak") == "FAIL"
+    ok = ok and out["order"].get("all_read_then_skull_opens_complete") == "FAIL"
+    print("MOCK urraveth: %s (good=%s pipe=%s order=%s)" % ("PASS" if ok else "FAIL", good,
+          {k: v for k, v in out["pipe"].items() if v != "PASS"}, {k: v for k, v in out["order"].items() if v != "PASS"}))
+    return ok
+
+
 def mock_run():
     from runner import run_suite  # modcheck package dir is on sys.path via _UTILS/modcheck
-    harvest_ok = mock_harvest_fog_timeout()
+    harvest_ok = mock_harvest_fog_timeout() and mock_urraveth()
     fake = _MockSession()
     suite.chains[:] = [c for c in suite.chains if c[0] == "web_terrain_weather"]
     res = run_suite(suite, fake, anchor=(50, 50))
