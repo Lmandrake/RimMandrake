@@ -97,8 +97,8 @@ SCENARIO = scenario(
             staged("sand + swale strip on terrace 3", "build", "RM_Swale", (14, 19), "poked"),
             staged("remote field hose (Industrial), Plump", "hose", None, (2, 8), "look"),
             staged("a second hose crossing it at right angles", "hose", None, (20, 14), "look"),
-            deferred("overflow onto the field (D2/D3)", "Stage 1+ unbuilt; terrace 1's brim is one notch from "
-                     "spilling, so leaving S1 shut with the pump on will spill once it lands", OVERFLOW_ITEM, (31, 2)),
+            deferred("overflow onto the field (D2/D3)", "overflow is built (Stages 1-3) but its master switch ships OFF and this scenario does not turn it on; terrace 1's brim is one notch from "
+                     "spilling, so leaving S1 shut with the pump on will spill once the switch is on", OVERFLOW_ITEM, (31, 2)),
             deferred("joint fittings art (coupler, flange, saddle)", GIRTH_NOTE, "PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID", (31, 5)),
             deferred("terrace 2's front frozen half way", "a canal levels itself: no frozen half front survives the "
                      "soak; staged dry, opening S1 shows the front", "design §3 C1 (deviation)", (31, 8))],

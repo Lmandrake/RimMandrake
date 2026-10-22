@@ -24,8 +24,8 @@ namespace RimMandrake.FlowWorks.Sheet
 	///   (<see cref="RM_SheetMath.World.Credit"/>); a limitless body is the disclosed "joined the lake" (D6).
 	/// - <b>Losses</b> (D6, disclosed): soak by the base ground's class, evaporation by temperature and roof. Mod Settings
 	///   rates (RM_SheetSettings), the placeholders kept as defaults (owner card 2026-10-22), tuned on the walk.
-	/// - <b>Picture</b>: overlay only (§6 item 2): <see cref="SectionLayer_RMSheetWater"/>. No temp terrain is written, so
-	///   nothing vanilla (crop kill, filth wash, fire, path cost) happens yet — those are Stage 2 effects.
+	/// - <b>Picture</b>: overlay only (§6 item 2): <see cref="SectionLayer_RMSheetWater"/>. No temp terrain is written, so no vanilla
+	///   side effect fires from a picture; the effects (crops, wading, fire) read the sheet grid itself (<see cref="Effects"/>).
 	///
 	/// Every FlowWorks liquid spills (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>), each by its own FluidDef
 	/// (RM_SheetFluidMath.RuleFor); different liquids never mix (a square or body holding another refuses); burnable spills
