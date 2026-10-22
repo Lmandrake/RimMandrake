@@ -1,0 +1,263 @@
+{
+ "biome": "SUBJECTS_joint_fittings",
+ "built": "2026-10-22T08:02:03-0700",
+ "census": "Transient/biome_ffar/joint_fittings.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 325 active",
+ "rows": {
+  "JoinFit_Coupler_Futuristic": {
+   "columns": {
+    "A": {
+     "single": "064d3f3f2f3c12829911464109b820e48d131dbbafbd6914e1c3b647c27e297a"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Futuristic/Coupler"
+   },
+   "labels": {
+    "A": "render joinfit_coupler_futuristic_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Futuristic/Coupler",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_coupler_futuristic"
+  },
+  "JoinFit_Coupler_Industrial": {
+   "columns": {
+    "A": {
+     "single": "996696b278f248dad0bb8c5e5c539ad6f6618feac86c0b12ca8eae01fb9c20f8"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Industrial/Coupler"
+   },
+   "labels": {
+    "A": "render joinfit_coupler_industrial_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Industrial/Coupler",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_coupler_industrial"
+  },
+  "JoinFit_Coupler_Modern": {
+   "columns": {
+    "A": {
+     "single": "71d5abcb85cbbca2dfcb6af3a604c99eb687d58beba146543c7c18ba6ca66935"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Modern/Coupler"
+   },
+   "labels": {
+    "A": "render joinfit_coupler_modern_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_coupler_modern"
+  },
+  "JoinFit_Coupler_Scrapper": {
+   "columns": {
+    "A": {
+     "single": "9813385848cd0fc1361ffb23b7bb2176071799b46b64a627a82f5869b478a40f"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Scrapper/Coupler"
+   },
+   "labels": {
+    "A": "render joinfit_coupler_scrapper_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Scrapper/Coupler",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_coupler_scrapper"
+  },
+  "JoinFit_Flange_Futuristic": {
+   "columns": {
+    "A": {
+     "single": "57b6ab9de2c4b9bd7b25f58d038df95beaf304efcf0f9bd8d2c6eb3a3e84b4ce"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Futuristic/Flange"
+   },
+   "labels": {
+    "A": "render joinfit_flange_futuristic_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Futuristic/Flange",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_flange_futuristic"
+  },
+  "JoinFit_Flange_Industrial": {
+   "columns": {
+    "A": {
+     "single": "d971429419bf1339e73708b1422d88a8258ca01da242fdf69ceb268d23db7198"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Industrial/Flange"
+   },
+   "labels": {
+    "A": "render joinfit_flange_industrial_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Industrial/Flange",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_flange_industrial"
+  },
+  "JoinFit_Flange_Modern": {
+   "columns": {
+    "A": {
+     "single": "b4fb7aebf13a8f7071fc6bbc0cdff1a82c9248a069218f968b4ce94a2a311c9e"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Modern/Flange"
+   },
+   "labels": {
+    "A": "render joinfit_flange_modern_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_flange_modern"
+  },
+  "JoinFit_Flange_Scrapper": {
+   "columns": {
+    "A": {
+     "single": "6b4249b65b1be810813b6d5447c71e819f93f11eed0701c3fa4a3c00e417288d"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Scrapper/Flange"
+   },
+   "labels": {
+    "A": "render joinfit_flange_scrapper_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Scrapper/Flange",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_flange_scrapper"
+  },
+  "JoinFit_Saddle_Futuristic": {
+   "columns": {
+    "A": {
+     "single": "4cb6625064735522e592e8ceb3692e1fc5d7a4f1c634ff1df55085e1d983c713"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Futuristic/Saddle"
+   },
+   "labels": {
+    "A": "render joinfit_saddle_futuristic_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Futuristic/Saddle",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_saddle_futuristic"
+  },
+  "JoinFit_Saddle_Industrial": {
+   "columns": {
+    "A": {
+     "single": "0b2152e89a1c99e89a1706cf46ae72f7582b23c0b9a0f3bbb77826281e7596b0"
+    },
+    "B": {
+     "single": "c4b04f1fdf27f19a21cd4b8be9962dbaedd34aa88aa90bd7251408dd5f7a645d"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Industrial/Saddle",
+    "B": "RimMandrake/FlowWorks/Joins/Industrial/Saddle"
+   },
+   "labels": {
+    "A": "render joinfit_saddle_industrial_v1",
+    "B": "render joinfit_saddle_industrial_v2"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Industrial/Saddle",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_saddle_industrial"
+  },
+  "JoinFit_Saddle_Modern": {
+   "columns": {
+    "A": {
+     "single": "4b378512957e617b4654ea35e98c07ba3348b64dbd28d83c82884af37aa2961f"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Modern/Saddle"
+   },
+   "labels": {
+    "A": "render joinfit_saddle_modern_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_saddle_modern"
+  },
+  "JoinFit_Saddle_Scrapper": {
+   "columns": {
+    "A": {
+     "single": "10fba582cb2d4bdb0377f7858e26d1b406b14360f1d7251f529031c3fb00ef06"
+    },
+    "B": {
+     "single": "2e4cdc0ce7dfe9914ab77903c30e460d9009f94ad634afe4d8f26369f73e533b"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Joins/Scrapper/Saddle",
+    "B": "RimMandrake/FlowWorks/Joins/Scrapper/Saddle"
+   },
+   "labels": {
+    "A": "render joinfit_saddle_scrapper_v1",
+    "B": "render joinfit_saddle_scrapper_v2"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Joins/Scrapper/Saddle",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "joinfit_saddle_scrapper"
+  }
+ },
+ "sheetId": "joint_fittings_sheet_2026-10-22",
+ "snapshotId": "5784f413c33c666c"
+}

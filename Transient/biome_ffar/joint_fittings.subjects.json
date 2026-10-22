@@ -1,0 +1,1057 @@
+{
+ "schema": 1,
+ "generated": "2026-10-22T08:01:03-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_joint_fittings"
+ ],
+ "biomes": {
+  "SUBJECTS_joint_fittings": {
+   "label": "Joint fittings: flange, coupler, saddle",
+   "slug": "joint_fittings",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Joint fittings: flange, coupler, saddle \u2014 game art",
+   "lead_html": "<p>Owner, by card 2026-10-22 (<i>Joints: fittings art and pipe meets tank</i> &rarr; <b>Draw fittings + pipe riser</b>): the 12 joint fitting pictures, one Flange, Coupler and Saddle per look, in that look's own pipe colours. Sizes from the joints study (D4): flange collar about 0.13 cell, union coupler 0.12, hose saddle 0.24, against a pipe of 0.10. Pick a column per row, or note what to change. The REFERENCE picture beside each row shows the piece on its pipe as the game places it. Nothing is installed and <code>joinFittings</code> stays off until you have picked. Item PIPE_TANK_JOIN_FIX_SLIPS_UNDER_SKID; study Transient/pile_2026-10-22/joints_study.md.</p>",
+   "rows": [
+    {
+     "key": "JoinFit_Flange_Scrapper",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pipe flange where a pipe meets a tank or machine, scrapper look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Flange_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Flange_Modern",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Flange_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_flange_scrapper_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Scrapper_Flange_v1.png",
+       "size": {
+        "drawSize": [
+         2.5,
+         1
+        ],
+        "footprint": [
+         2,
+         1
+        ],
+        "source": "composite (v1): the flange on the Scrapper pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LiquidJoins/LiquidJoinRule.FlangeSize: a 0.5 x 0.5 cell quad, its face (canvas right edge) on the shared cell edge; collar 0.13 cell (joints study D4)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Flange_Scrapper",
+      "label": "pipe flange where a pipe meets a tank or machine, scrapper look",
+      "description": "flange \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Joins/Scrapper/Flange \u00b7 drawn at 0.5\u00d70.5 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Scrapper/Flange",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Flange_Scrapper"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Scrapper/Flange"
+     }
+    },
+    {
+     "key": "JoinFit_Flange_Industrial",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pipe flange where a pipe meets a tank or machine, industrial look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Flange_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Flange_Modern",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Flange_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_flange_industrial_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Industrial_Flange_v1.png",
+       "size": {
+        "drawSize": [
+         2.5,
+         1
+        ],
+        "footprint": [
+         2,
+         1
+        ],
+        "source": "composite (v1): the flange on the Industrial pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LiquidJoins/LiquidJoinRule.FlangeSize: a 0.5 x 0.5 cell quad, its face (canvas right edge) on the shared cell edge; collar 0.13 cell (joints study D4)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Flange_Industrial",
+      "label": "pipe flange where a pipe meets a tank or machine, industrial look",
+      "description": "flange \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Joins/Industrial/Flange \u00b7 drawn at 0.5\u00d70.5 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Industrial/Flange",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Flange_Industrial"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Industrial/Flange"
+     }
+    },
+    {
+     "key": "JoinFit_Flange_Modern",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pipe flange where a pipe meets a tank or machine, modern look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Flange_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Flange_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Flange_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_flange_modern_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Modern_Flange_v1.png",
+       "size": {
+        "drawSize": [
+         2.5,
+         1
+        ],
+        "footprint": [
+         2,
+         1
+        ],
+        "source": "composite (v1): the flange on the Modern pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LiquidJoins/LiquidJoinRule.FlangeSize: a 0.5 x 0.5 cell quad, its face (canvas right edge) on the shared cell edge; collar 0.13 cell (joints study D4)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Flange_Modern",
+      "label": "pipe flange where a pipe meets a tank or machine, modern look",
+      "description": "flange \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Joins/Modern/Flange \u00b7 drawn at 0.5\u00d70.5 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Modern/Flange",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Flange_Modern"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Modern/Flange"
+     }
+    },
+    {
+     "key": "JoinFit_Flange_Futuristic",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pipe flange where a pipe meets a tank or machine, futuristic look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Flange_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Flange_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Flange_Modern",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_flange_futuristic_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Futuristic_Flange_v1.png",
+       "size": {
+        "drawSize": [
+         2.5,
+         1
+        ],
+        "footprint": [
+         2,
+         1
+        ],
+        "source": "composite (v1): the flange on the Futuristic pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LiquidJoins/LiquidJoinRule.FlangeSize: a 0.5 x 0.5 cell quad, its face (canvas right edge) on the shared cell edge; collar 0.13 cell (joints study D4)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Flange_Futuristic",
+      "label": "pipe flange where a pipe meets a tank or machine, futuristic look",
+      "description": "flange \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Joins/Futuristic/Flange \u00b7 drawn at 0.5\u00d70.5 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Futuristic/Flange",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Flange_Futuristic"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Futuristic/Flange"
+     }
+    },
+    {
+     "key": "JoinFit_Coupler_Scrapper",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "union coupler where a pump or reel shares an edge with a tank, scrapper look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Coupler_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Coupler_Modern",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Coupler_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_coupler_scrapper_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Scrapper_Coupler_v1.png",
+       "size": {
+        "drawSize": [
+         1,
+         0.5
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "composite (v1): the coupler on the Scrapper pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "SectionLayer_RM_LiquidJoins: a 0.5 x 0.5 cell quad centred on the shared edge; collar 0.12 cell (joints study D4)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Coupler_Scrapper",
+      "label": "union coupler where a pump or reel shares an edge with a tank, scrapper look",
+      "description": "coupler \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Joins/Scrapper/Coupler \u00b7 drawn at 0.5\u00d70.5 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Scrapper/Coupler",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Coupler_Scrapper"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Scrapper/Coupler"
+     }
+    },
+    {
+     "key": "JoinFit_Coupler_Industrial",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "union coupler where a pump or reel shares an edge with a tank, industrial look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Coupler_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Coupler_Modern",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Coupler_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_coupler_industrial_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Industrial_Coupler_v1.png",
+       "size": {
+        "drawSize": [
+         1,
+         0.5
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "composite (v1): the coupler on the Industrial pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "SectionLayer_RM_LiquidJoins: a 0.5 x 0.5 cell quad centred on the shared edge; collar 0.12 cell (joints study D4)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Coupler_Industrial",
+      "label": "union coupler where a pump or reel shares an edge with a tank, industrial look",
+      "description": "coupler \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Joins/Industrial/Coupler \u00b7 drawn at 0.5\u00d70.5 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Industrial/Coupler",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Coupler_Industrial"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Industrial/Coupler"
+     }
+    },
+    {
+     "key": "JoinFit_Coupler_Modern",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "union coupler where a pump or reel shares an edge with a tank, modern look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Coupler_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Coupler_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Coupler_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_coupler_modern_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Modern_Coupler_v1.png",
+       "size": {
+        "drawSize": [
+         1,
+         0.5
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "composite (v1): the coupler on the Modern pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "SectionLayer_RM_LiquidJoins: a 0.5 x 0.5 cell quad centred on the shared edge; collar 0.12 cell (joints study D4)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Coupler_Modern",
+      "label": "union coupler where a pump or reel shares an edge with a tank, modern look",
+      "description": "coupler \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Joins/Modern/Coupler \u00b7 drawn at 0.5\u00d70.5 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Modern/Coupler",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Coupler_Modern"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Modern/Coupler"
+     }
+    },
+    {
+     "key": "JoinFit_Coupler_Futuristic",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "union coupler where a pump or reel shares an edge with a tank, futuristic look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Coupler_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Coupler_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Coupler_Modern",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_coupler_futuristic_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Futuristic_Coupler_v1.png",
+       "size": {
+        "drawSize": [
+         1,
+         0.5
+        ],
+        "footprint": [
+         1,
+         1
+        ],
+        "source": "composite (v1): the coupler on the Futuristic pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       0.5,
+       0.5
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "SectionLayer_RM_LiquidJoins: a 0.5 x 0.5 cell quad centred on the shared edge; collar 0.12 cell (joints study D4)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Coupler_Futuristic",
+      "label": "union coupler where a pump or reel shares an edge with a tank, futuristic look",
+      "description": "coupler \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Joins/Futuristic/Coupler \u00b7 drawn at 0.5\u00d70.5 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Futuristic/Coupler",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Coupler_Futuristic"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Futuristic/Coupler"
+     }
+    },
+    {
+     "key": "JoinFit_Saddle_Scrapper",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "hose saddle on the pipe cell a hose end couples onto, scrapper look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Saddle_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Saddle_Modern",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Saddle_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_saddle_scrapper_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Scrapper_Saddle_v1.png",
+       "size": {
+        "drawSize": [
+         3,
+         1
+        ],
+        "footprint": [
+         3,
+         1
+        ],
+        "source": "composite (v1): the saddle on the Scrapper pipe atlas, as RM_LiquidJoins places it"
+       }
+      },
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Scrapper_Saddle_v2.png",
+       "size": {
+        "drawSize": [
+         3,
+         1
+        ],
+        "footprint": [
+         3,
+         1
+        ],
+        "source": "composite (v2): the saddle on the Scrapper pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LiquidJoins.DrawHosePortFitting: a 1 x 1 cell quad (SaddleLength x SaddleWidth) across the pipe cell; clamp 0.24 cell (joints study D4/D8)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Saddle_Scrapper",
+      "label": "hose saddle on the pipe cell a hose end couples onto, scrapper look",
+      "description": "saddle \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Joins/Scrapper/Saddle \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Scrapper/Saddle",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Saddle_Scrapper"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Scrapper/Saddle"
+     }
+    },
+    {
+     "key": "JoinFit_Saddle_Industrial",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "hose saddle on the pipe cell a hose end couples onto, industrial look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Saddle_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Saddle_Modern",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Saddle_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_saddle_industrial_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Industrial_Saddle_v1.png",
+       "size": {
+        "drawSize": [
+         3,
+         1
+        ],
+        "footprint": [
+         3,
+         1
+        ],
+        "source": "composite (v1): the saddle on the Industrial pipe atlas, as RM_LiquidJoins places it"
+       }
+      },
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Industrial_Saddle_v2.png",
+       "size": {
+        "drawSize": [
+         3,
+         1
+        ],
+        "footprint": [
+         3,
+         1
+        ],
+        "source": "composite (v2): the saddle on the Industrial pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LiquidJoins.DrawHosePortFitting: a 1 x 1 cell quad (SaddleLength x SaddleWidth) across the pipe cell; clamp 0.24 cell (joints study D4/D8)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Saddle_Industrial",
+      "label": "hose saddle on the pipe cell a hose end couples onto, industrial look",
+      "description": "saddle \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Joins/Industrial/Saddle \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Industrial/Saddle",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Saddle_Industrial"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Industrial/Saddle"
+     }
+    },
+    {
+     "key": "JoinFit_Saddle_Modern",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "hose saddle on the pipe cell a hose end couples onto, modern look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Saddle_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Saddle_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Saddle_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_saddle_modern_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Modern_Saddle_v1.png",
+       "size": {
+        "drawSize": [
+         3,
+         1
+        ],
+        "footprint": [
+         3,
+         1
+        ],
+        "source": "composite (v1): the saddle on the Modern pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LiquidJoins.DrawHosePortFitting: a 1 x 1 cell quad (SaddleLength x SaddleWidth) across the pipe cell; clamp 0.24 cell (joints study D4/D8)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Saddle_Modern",
+      "label": "hose saddle on the pipe cell a hose end couples onto, modern look",
+      "description": "saddle \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Joins/Modern/Saddle \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Modern/Saddle",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Saddle_Modern"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Modern/Saddle"
+     }
+    },
+    {
+     "key": "JoinFit_Saddle_Futuristic",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "hose saddle on the pipe cell a hose end couples onto, futuristic look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "JoinFit_Saddle_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Saddle_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "JoinFit_Saddle_Modern",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": "joinfit_saddle_futuristic_",
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/pile_2026-10-22/joinfit/comp/Futuristic_Saddle_v1.png",
+       "size": {
+        "drawSize": [
+         3,
+         1
+        ],
+        "footprint": [
+         3,
+         1
+        ],
+        "source": "composite (v1): the saddle on the Futuristic pipe atlas, as RM_LiquidJoins places it"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_LiquidJoins.DrawHosePortFitting: a 1 x 1 cell quad (SaddleLength x SaddleWidth) across the pipe cell; clamp 0.24 cell (joints study D4/D8)"
+     },
+     "runtimeDesc": {
+      "def": "JoinFit_Saddle_Futuristic",
+      "label": "hose saddle on the pipe cell a hose end couples onto, futuristic look",
+      "description": "saddle \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Joins/Futuristic/Saddle \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest textures_manifest.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Joins/Futuristic/Saddle",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "JoinFit_Saddle_Futuristic"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Joins/Futuristic/Saddle"
+     }
+    }
+   ],
+   "textures_manifest": "/home/mandrake/rm/bench/Transient/pile_2026-10-22/joinfit/textures_manifest.json"
+  }
+ }
+}
