@@ -51,8 +51,6 @@ namespace RimMandrake.SeaShores
     [HarmonyPatch(typeof(World), nameof(World.CoastDirectionAt))]
     public static class RM_Patch_CoastDirectionAt
     {
-        private static readonly List<PlanetTile> tmpNeighbours = new List<PlanetTile>();
-
         public static void Postfix(PlanetTile tile, ref Rot4 __result)
         {
             if (__result.IsValid || !RM_SeaShoresSettings.Cur.seasCountAsCoast || !tile.Valid)
@@ -70,7 +68,8 @@ namespace RimMandrake.SeaShores
                 return;
             }
 
-            tmpNeighbours.Clear();
+            // A local list: worldgen may ask from more than one thread, and a shared static list would be cleared under it.
+            var tmpNeighbours = new List<PlanetTile>();
             grid.GetTileNeighbors(tile, tmpNeighbours);
             var dirs = new List<Rot4>();
             var coasts = new List<bool>();
@@ -117,15 +116,13 @@ namespace RimMandrake.SeaShores
             mutator = RM_SeaShoresDefOf.RM_SeaCoast;
         }
 
-        private static readonly List<PlanetTile> tmpNeighbours = new List<PlanetTile>();
-
         public static bool HasVanillaOceanNeighbour(PlanetTile tile, PlanetLayer layer)
         {
             if (layer == null || !tile.Valid)
             {
                 return false;
             }
-            tmpNeighbours.Clear();
+            var tmpNeighbours = new List<PlanetTile>();
             layer.GetTileNeighbors(tile, tmpNeighbours);
             for (int i = 0; i < tmpNeighbours.Count; i++)
             {

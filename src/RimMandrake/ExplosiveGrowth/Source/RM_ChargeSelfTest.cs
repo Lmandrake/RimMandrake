@@ -43,7 +43,7 @@ namespace RimMandrake.ExplosiveGrowth
                 c = 0.5f;
                 int passes = 0;
                 while (c > 0f && passes < 1000) { c = RM_MapComponent_ExplosiveGrowth.StepCharge(c, false, true, dt, chargeTicks, 1f); passes++; }
-                if (passes > 16) fail = "dry charge took " + passes + " passes to relax";
+                if (passes > 16 || float.IsNaN(c)) fail = "dry charge took " + passes + " passes to relax";
             }
 
             string head = fail == null ? "charge clock self-test PASS (dormant holds, growing tops in ~60 passes, dry relaxes)" : "charge clock self-test FAIL: " + fail;
@@ -51,7 +51,7 @@ namespace RimMandrake.ExplosiveGrowth
             // 4. The ruled rate table at the ruled defaults (spec §2.5): one factor, replacing, never stacking.
             string rf = null;
             RM_RateSettings s = RM_RateSettings.Ruled;
-            void Want(string what, float got, float want) { if (rf == null && System.Math.Abs(got - want) > 1e-5f) rf = what + " " + got + " != " + want; }
+            void Want(string what, float got, float want) { if (rf == null && !(System.Math.Abs(got - want) <= 1e-5f)) rf = what + " " + got + " != " + want; }
             Want("dry wet", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.DryNative, true, false, false, true, false, false, false, s), 10f);
             Want("dry dry", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.DryNative, true, false, false, false, false, false, false, s), 0.1f);
             Want("dry tree wet", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.DryNative, true, false, false, true, false, true, false, s), 6.25f);

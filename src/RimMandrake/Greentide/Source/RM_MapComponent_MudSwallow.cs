@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.Greentide
@@ -68,6 +69,12 @@ namespace RimMandrake.Greentide
 				Thing thing = haulables[i];
 				// Not ParentHolder != null: a spawned thing's holder is the map's own spawnedThings ThingOwner.
 				if (thing == null || !thing.Spawned)
+				{
+					continue;
+				}
+				// A burial is rebuilt from def + stuff + count alone, so only a thing that survives that is buried. A corpse would be
+				// destroyed with its pawn and come back as an empty Corpse; a minified thing would lose its InnerThing.
+				if (thing is Corpse || thing is MinifiedThing)
 				{
 					continue;
 				}
