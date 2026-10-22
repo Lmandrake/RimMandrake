@@ -7,7 +7,7 @@
 - common RULINGS/GIRTH_NOTE; C1 C3 C5 C6 C7 C12 texts; C2 via side clone (fixer B's moat edit left uncommitted in bench). C4/C10 untouched (fixer B). Keysheet regenerates at the live build.
 ## 3. Walk script + JSON — DONE
 - Transient/pile_2026-10-22/walk_tonight.md + walk_tonight.json: 11 stops (1 conditional overflow), 27 decisions, ~44 min. Route C3 > C12 > C2 > DB > C5 > C7 > C4 > map R C1 > C11.
-- C3 now stages three TURNED reels (N/E/S) for stop 1 (93d5343eab).
+- C3 now stages three TURNED reels (N/E/S) for stop 1 (origin c1e83fe38d).
 ## 4. Rebuild procedure — DONE (top of walk_tonight.md, 11 steps)
 ## Commits — none yet
 
@@ -17,3 +17,9 @@
   rect +6 rows north = the river intake row (would kill the bank). Map R labels: the sign sidecar holds ONE map's labels.
 - Plan: --river --build --fresh-map founds map R as a 2nd map in the same game (river_site helpers, no vanish), builds C1+C11,
   writes review/scenarios/map_r_placed.json (map ids + C1 + stations); --river --goto/--labels; map-C --goto/--save switch back.
+
+## Commits (origin)
+7517bbf820 map R builder + DB row · 444af8cdea sign truth · be9b0277f3 C2 sign (side clone; fixer B's moat edit stays uncommitted in bench) · c1e83fe38d C3 turned reels · 89e5f84dc6 walk files. ./publish refused all day on f425b7c884 (overflow helper's RM_SheetMath.cs conflict) -> landed from /home/mandrake/rm/scratch/BENCH/walkland.
+## Open risks
+- --river --build --fresh-map is UNTESTED live (founding inside a 2-map game; quicktest worlds may lack a straight south bank -> retries up to 25 tiles).
+- Mock does not model 2x2 footprints: the turned reels' cells (C3 local 27-36, 0-2) are proven only on the live build.

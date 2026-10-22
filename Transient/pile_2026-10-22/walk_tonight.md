@@ -6,7 +6,7 @@ Save **RM_fw_walkthrough_20261022b** (map C: 10 scenarios + DB drawbridge row; m
 
 1. **Bridge**: `rimflow bridge take --for "walkthrough rebuild 20261022b"` (bare `rimflow bridge who` first; the belt releases).
 2. **HEAD**: `git fetch origin && git log --oneline -1 origin/main` must include 7517bbf820 (map R builder + DB row),
-   444af8cdea + be9b0277f3 (sign truth), 93d5343eab (C3 turned reels; published with this file), fixer B's C4/C10 lays and
+   444af8cdea + be9b0277f3 (sign truth), c1e83fe38d (C3 turned reels), fixer B's C4/C10 lays and
    the day's FlowWorks DLL (+ .srchash). Bring the seat clone to it with `./publish`/`git pull --rebase origin main` (no
    --autostash; a DLL conflict = stop).
 3. **Game down for the deploy** (a DLL cannot be written while RimWorld runs): close RimWorld by PID

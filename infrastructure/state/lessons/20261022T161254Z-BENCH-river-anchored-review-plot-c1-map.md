@@ -1,0 +1,1 @@
+A river-anchored review plot (C1 on map R) must not get the map-C clear margin: scenarios_map.clear_plots painted Soil over rect+6 rows north, i.e. the river row the intake/weir/pump touch; and river_site.py vanishes the old map's colonists + bland-resets, so it cannot found a 2nd map inside a walkthrough save (scenarios_map.found_map_r reuses its readers without that).
