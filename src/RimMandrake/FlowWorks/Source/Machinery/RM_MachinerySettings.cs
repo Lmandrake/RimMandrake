@@ -187,8 +187,15 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 		}
 
+		private static List<(string key, string label)> toggleRowsCache;
+
+		// The defs never change after load, and the settings window calls this every frame: scan once.
 		private static List<(string key, string label)> ToggleRows()
 		{
+			if (toggleRowsCache != null)
+			{
+				return toggleRowsCache;
+			}
 			var rows = new Dictionary<string, string>();
 			foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
 			{
@@ -203,7 +210,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					rows[key] = ext.label.NullOrEmpty() ? d.LabelCap.ToString() : ext.label;
 				}
 			}
-			return rows.Select(kv => (kv.Key, kv.Value)).OrderBy(r => r.Value).ToList();
+			return toggleRowsCache = rows.Select(kv => (kv.Key, kv.Value)).OrderBy(r => r.Value).ToList();
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
