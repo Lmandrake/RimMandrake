@@ -643,6 +643,11 @@ def main():
     R.note("%d concrete ThingDefs seen across %d source files; %d excluded, %d kept"
            % (n_source_things, len(src_files), len(excluded), len(all_thing_els)))
 
+    if not all_thing_els:
+        R.warn("0 ThingDefs kept from %d source files (sources missing or layout changed) -- ABORTING before "
+               "the committed Bases/Tech/Armor/manifest files are rewritten" % len(src_files))
+        sys.exit(1)
+
     # --------------------------------------------------------- transform --
     tex_paths = set()
     tech_elements, armor_elements = [], []

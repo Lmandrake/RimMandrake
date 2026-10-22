@@ -232,6 +232,11 @@ def main():
         sys.exit(1)
     R.note("confirmed workshop folder %s is packageId %s" % (WORKSHOP_FOLDER, EXPECTED_PACKAGE_ID))
 
+    # blind-input guard: the rmtree below deletes committed output, so the donor's 1.6/Defs must be readable FIRST
+    if not os.path.isdir(SRC_DEFS) or not any(fn.endswith(".xml") for _d, _s, fs in os.walk(SRC_DEFS) for fn in fs):
+        R.warn("no Defs XML under %s (donor layout changed?) -- ABORTING before anything is deleted" % SRC_DEFS)
+        sys.exit(1)
+
     own_out_dir = os.path.join(DEFS_ROOT, OUT_SUBDIR)
     if os.path.isdir(own_out_dir):
         shutil.rmtree(own_out_dir)
