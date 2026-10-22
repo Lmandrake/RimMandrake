@@ -100,6 +100,41 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		private static List<string> disabledMachines = new List<string>();
 
+		// Shipped value of every public static bool/float/int/string setting above, read from the field initialisers.
+		// MUST stay below the LAST public static field (C# runs initialisers in textual order).
+		private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+		private static Dictionary<string, object> SnapshotDefaults()
+		{
+			var d = new Dictionary<string, object>();
+			foreach (System.Reflection.FieldInfo f in typeof(RM_MachinerySettings).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+			{
+				if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string))
+				{
+					d[f.Name] = f.GetValue(null);
+				}
+			}
+			return d;
+		}
+
+		/// <summary>The Reset button: every machinery setting back to its shipped value, every machine switched on.</summary>
+		public static void ResetAll()
+		{
+			foreach (KeyValuePair<string, object> kv in shippedDefaults)
+			{
+				typeof(RM_MachinerySettings).GetField(kv.Key, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)?.SetValue(null, kv.Value);
+			}
+			disabledMachines.Clear();
+			if (Current.ProgramState == ProgramState.Playing)
+			{
+				RM_PipePoles.RedrawSpans();   // the span shadows follow the switch and the sag now, as the sliders do
+				if (Find.Maps != null)
+				{
+					foreach (Map m in Find.Maps) m.mapDrawer.WholeMapChanged((ulong)MapMeshFlagDefOf.Buildings);
+				}
+			}
+		}
+
 		public static string KeyOf(ThingDef def)
 		{
 			RM_MachineToggleExtension ext = def?.GetModExtension<RM_MachineToggleExtension>();
@@ -270,6 +305,8 @@ namespace RimMandrake.FlowWorks.Machinery
 					}
 				}
 			}
+			list.GapLine();
+			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
 		}
 	}
 }
