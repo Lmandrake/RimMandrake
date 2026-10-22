@@ -1,0 +1,1 @@
+rimworld/set_camera_zoom cannot go below rootSize 8 ('Closest'), even with set_camera_zoom_extension on, so frame_cell_rect on a 4-cell rect still shows ~33x19 cells. For zoomed close-ups: jump_camera_to_cell, jawa/screenshot_mode on, rimworld/take_screenshot suppressMessage, then crop the full-res PNG (height/16 px per cell at rootSize 8, centre = cell centre).
