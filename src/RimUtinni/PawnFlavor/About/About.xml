@@ -59,7 +59,7 @@
   </loadAfter>
   <description>Faction-keyed backstories, childhoods and traits for the Ash'karr campaign — every faction answers "why raid them, why enslave theirs, why free them" differently.
 
-Seventy-seven BackstoryDefs (30 childhoods, 47 adulthoods) across thirteen faction categories, thirteen TraitDefs, and a patch file wiring a backstory category filter into each faction.
+Eighty-one BackstoryDefs (32 childhoods, 49 adulthoods) across thirteen faction categories, thirteen TraitDefs, and a patch file wiring a backstory category filter into each faction.
 
 DESIGN SOURCE: design/Jawa/pawn_flavor_design.md (the nine faction sets, rounds 1-4, owner-directed). The two Free Droid Enclave groupings carry their own reframed sets (Assembly = childhood, Service = adulthood).
 

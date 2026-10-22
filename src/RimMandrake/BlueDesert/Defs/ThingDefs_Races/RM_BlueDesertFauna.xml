@@ -5,10 +5,10 @@
      namespace and class names are unchanged, only the assembly moved
      (src/RimMandrake/BlueDesert/Source/BlueDesertLife.cs). -->
 <!--
-  BLUE_DESERT_LIFE_AUTHORING_1 (steps 2-5) — the Blue Desert's three resident
-  fauna, per design/Jawa/worldbuilding/creatures/blue_desert_hydrocarbon_life.md
-  §3-§5. RM_ tier (mandrake.rm.bluedesert eventually — see BlueDesertLife.cs's
-  header for why this file lives here for now instead).
+  BLUE_DESERT_LIFE_AUTHORING_1 (steps 2-5) — the Blue Desert's first three resident
+  fauna (dorrak, krissek, vekkit; the later cast follows below), per
+  design/Jawa/worldbuilding/creatures/blue_desert_hydrocarbon_life.md
+  §3-§5. RM_ tier, shipped in mandrake.rm.bluedesert.
 
   Shape cloned from this mod's own RM_Emberscythe.xml (ParentName
   AnimalThingBase + manual race block — ordinary wildlife via wildAnimals

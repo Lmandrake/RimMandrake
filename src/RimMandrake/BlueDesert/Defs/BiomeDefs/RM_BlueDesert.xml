@@ -10,7 +10,7 @@
     (Vaapad, from "Star Wars Animal Collection (Continued)") and may not ship
     in the franchise-free RimMandrake tier (Q11a, owner ruling 2026-09-22) — it
     rides src/RimUtinni/UtinniPatches/Patches/WildAnimals_BlueDesert.xml onto
-    this def instead, MayRequire="mlie.starwarsanimalcollection".
+    this def instead, as our own RSW_Vapaad, gated on "RimMandrake: SW — Bestiary".
 
     🔑 CORRECTION to the twin's own comment (carried below for provenance):
     that comment called BOTH `Vapaad` and `AA_Thunderbeast` "the roster's two

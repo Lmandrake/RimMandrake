@@ -14,8 +14,8 @@
     RSW_Vozzik     fires a four-shot plasma volley
     RSW_Zhakka  sprays raw, UNIGNITED chemfuel in a cone
 
-  ART OWED: both AbilityDefs borrow a vanilla icon as a placeholder, and the
-  plasma bolt borrows the vanilla charge-shot projectile sprite. Named here so
+  ART OWED: both AbilityDefs borrow a vanilla icon as a placeholder (the plasma
+  bolt now has its own sprite). Named here so
   the placeholder is found by looking rather than by playing.
 -->
 <Defs>
@@ -26,7 +26,7 @@
     <defName>RSW_Projectile_PlasmaBurst</defName>
     <label>plasma burst</label>
     <graphicData>
-      <!-- PLACEHOLDER art: vanilla's charge-shot sprite. Real art owed. -->
+      <!-- Own sprite (Textures/Things/Projectile/RSW_Projectile_PlasmaBurst); it began as vanilla's charge-shot placeholder. -->
       <texPath>Things/Projectile/RSW_Projectile_PlasmaBurst/RSW_Projectile_PlasmaBurst</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>Transparent</shaderType>
