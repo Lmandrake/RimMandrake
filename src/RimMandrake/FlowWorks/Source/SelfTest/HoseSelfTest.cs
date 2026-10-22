@@ -283,6 +283,12 @@ namespace RimMandrake.FlowWorks.SelfTest
             C(HoseMath.CheckInstall(w, reel, new Cell(20, 22), 30) == "target blocked", "install: refuses a wall cell");
             C(HoseMath.CheckInstall(w, reel, new Cell(22, 22), 30) == "no route", "install: refuses a sealed room");
             C(HoseMath.CheckInstall(w, reel, new Cell(-1, 3), 30) == "out of bounds", "install: refuses off the map");
+            // joints study 2026-10-22: a Deploy aimed AT a tank lands beside it, on the side nearest the reel's mouth
+            var approach = new List<Cell> { new Cell(12, 9), new Cell(9, 9), new Cell(10, 12) };
+            C(HosePortRule.NearestApproach(approach, new V2(5.5, 9.5)) == 1, "aim at a tank: the free side nearest the mouth");
+            C(HosePortRule.NearestApproach(new List<Cell>(), new V2(5.5, 9.5)) == -1, "aim at a tank with no free side: unchanged (then refused)");
+            string reelSrc = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "CompHoseReel.cs"));
+            C(reelSrc.Contains("if (relay == null) target = ApproachIfOnPort(comp, target);"), "the order redirects an aim at a port thing before the install check");
             // a straight-line-near target whose only route is long: refused on route length
             CordWorld w2 = Open(40, 40);
             for (int z = 0; z <= 36; z++) w2.SetBlocked(new Cell(10, z), BlockKind.Wall);
