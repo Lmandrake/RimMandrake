@@ -366,7 +366,7 @@ def rope_deck(ctx):
     kg, tg = lproof("ProofCanPlace", "RM_UniversalPipe;%s" % xz(P(-2, 4)))
     V.require(kg.get("ok") == "True", "control: a pipe is accepted on solid ground", tg)
     reel = P(-8, -1)
-    ctx["build"]("RM_HoseReel:%d,%d" % reel)
+    ctx["build"](V.reel_west(reel))
     ctx["ticks"](2)
     ly = ctx["lay"](reel, P(10, 0))
     kh, th = ctx["hose"](reel)
@@ -389,7 +389,7 @@ def cover_no_hose(ctx):
     ks, ts = lproof("ProofSurface", xz(P(2, 12)))
     V.require(ks.get("s") == "Cover", "the square reads as an intact pit cover", ts)
     reel = P(-8, 11)
-    ctx["build"]("RM_HoseReel:%d,%d" % reel)
+    ctx["build"](V.reel_west(reel))
     ctx["ticks"](2)
     ly = ctx["lay"](reel, P(10, 12))
     kh, th = ctx["hose"](reel)
@@ -551,6 +551,8 @@ def collapse_cord(ctx):
          "liveHalves": d(c0, c1, "liveHalves"), "shocks": d(c0, c1, "shocks"), "victimAt": vat, "hediffs": hed, "lampDark": dark})
 
 
+
+
 def ladder_drain(ctx):
     """PROVE proof_hose's pump plot (pump, battery, reel coupled to the pump, tank); a 3x3 4 m pit half filled; a ladder on its
     west wall; the hose laid to the pit floor (down the ladder); its free end set Intake (the gizmo's write); --drain-ticks;
@@ -571,7 +573,7 @@ def ladder_drain(ctx):
             ctx["dig"](P(x, z), 0, 4)
     # the reel turns since a98046cbe9 (REEL_OUTLET_DECIDE_ALWAYS_GOES_WEST) and a bare op builds it NORTH: built West, one square
     # east, so the 2x2 keeps the footprint and the west outlet this row was proven with
-    ctx["build"]("RM_LiquidPump:%d,%d" % pump, "Battery:%d,%d" % bat, "RM_HoseReel:%d,%d,3" % (reel[0] + 1, reel[1]),
+    ctx["build"]("RM_LiquidPump:%d,%d" % pump, "Battery:%d,%d" % bat, V.reel_west(reel),
                  "RM_LiquidTank:%d,%d" % tank,
                  "RM_Ladder:%d,%d,3" % P(8, 85))
     ctx["ticks"](2)
@@ -615,7 +617,7 @@ def dig_reroute(ctx):
     changes nothing (the first lay must cross the pit's squares: SITE); a hose reeled in is not 're-routed' (laid is the bar)."""
     P, xz, row = _c(ctx, "P", "xz", "row")
     reel = P(0, 100)
-    ctx["build"]("RM_HoseReel:%d,%d" % reel)
+    ctx["build"](V.reel_west(reel))
     ctx["ticks"](2)
     ly = ctx["lay"](reel, P(16, 100))
     kh0, th0 = ctx["hose"](reel)

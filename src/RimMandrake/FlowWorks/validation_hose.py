@@ -100,7 +100,7 @@ class H(V.Bridge):
     def hose(self, reel):
         c = self.hp("census")
         for h in c.get("hoses") or []:
-            if tuple(h["reel"]) == tuple(reel):
+            if V.reel_at(h["reel"], reel):
                 return h, c
         return {}, c
 
@@ -154,7 +154,7 @@ def run_live(args):
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE)
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % SITE)
     bw = B.call("jawa/build_batch", ops=V.ops("Wall", WALL), stuff="Steel", faction="player")
-    br = B.call("jawa/build_batch", ops=V.ops("RM_HoseReel", [R1, R2]), faction="player", wipeExisting=False)
+    br = B.call("jawa/build_batch", ops=V.reel_west_ops([R1, R2]), faction="player", wipeExisting=False)
     B.call("jawa/map_commit")
     B.ticks(2)
     h1, c = B.hose(R1)
@@ -327,7 +327,7 @@ def run_maze(args):
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % MSITE)
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % MSITE)
     bw = B.call("jawa/build_batch", ops=V.ops("Wall", walls), stuff="Steel", faction="player")
-    br = B.call("jawa/build_batch", ops=V.ops("RM_HoseReel", [R, PREEL, PLONE]), faction="player", wipeExisting=False)
+    br = B.call("jawa/build_batch", ops=V.reel_west_ops([R, PREEL, PLONE]), faction="player", wipeExisting=False)
     bt = B.call("jawa/build_batch", ops=V.ops("RM_LiquidTank", [PTANK]), faction="player", wipeExisting=False)
     B.call("jawa/map_commit")
     B.ticks(2)
@@ -572,7 +572,7 @@ def run_relay(args):
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE_R)
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE_R)
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % SITE_R)
-    br = B.call("jawa/build_batch", ops=V.ops("RM_HoseReel", [RA, RB, RC]), faction="player", wipeExisting=False)
+    br = B.call("jawa/build_batch", ops=V.reel_west_ops([RA, RB, RC]), faction="player", wipeExisting=False)
     B.call("jawa/map_commit")
     B.ticks(2)
     a, c = B.hose(RA)
@@ -744,7 +744,7 @@ def run_carry(args):
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % CSITE)
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % CSITE)
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % CSITE)
-    br = B.call("jawa/build_batch", ops=V.ops("RM_HoseReel", [CREEL]), faction="player", wipeExisting=False)
+    br = B.call("jawa/build_batch", ops=V.reel_west_ops([CREEL]), faction="player", wipeExisting=False)
     B.call("jawa/map_commit")
     B.call("rimworld/frame_cell_rect", x=CSITE[0], z=CSITE[1], width=CSITE[2], height=CSITE[3], paddingCells=1)
     B.ticks(2)
