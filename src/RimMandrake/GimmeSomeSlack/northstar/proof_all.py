@@ -390,8 +390,9 @@ class Proof(object):
                 # 2026-10-11 (full list, RM_TheRot map): a giant plant outside a site re-plans its trunk blockers into the
                 # cleared site (validation_core.clear_huge_plants); the style site read UNMEASURED and the block aborted
                 self.res.setdefault("huge_plants_cleared", {})[name] = _VC().clear_huge_plants(self.B)
-            except Exception:  # noqa: BLE001
-                pass
+            except Exception as ex:  # noqa: BLE001
+                # a block that ran on an un-calmed map must say so (as FlowWorks' proof_hose does): recorded, not swallowed
+                self.res.setdefault("site_calm_errors", {})[name] = repr(ex)
         try:
             out = fn()
         except Exception as ex:  # noqa: BLE001
