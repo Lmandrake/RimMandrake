@@ -514,11 +514,17 @@ def lower_only_from_winch(ctx):
     # a corridor walled edge to edge (z=-1/z=1 x=-2..9, capped at x=-3/x=10): the far bank reaches the winch side ONLY over the leaf
     ctx["walls"]([P(x, z) for x in range(-2, 10) for z in (-1, 1)] + [P(-3, 0), P(10, 0)])
     ctx["build"]("A", P(0, 0), P(5, 0), "timber")
+    # HARNESS (live 2026-10-22): the 1.6 pathfinder's grid data catch up with walls/depth/deck changes only when the map
+    # TICKS. Staged and read while paused, FindPathNow walked the far pawn straight along the trench floor (found=True
+    # cells=10) through walls it could not yet see; 10 ticks later the same read was found=False. Tick after every
+    # walkability change before any path or job read.
+    ctx["ticks"](10)
     w = spawn(P(-2, 0))
     f = spawn(P(7, 0))
     dproof("ProofOrder", "%s;raise" % xz(P(2, 0)))
     fr, tfr = dproof("ProofWorkJob", "%s;%s" % (pid_num(f), xz(P(2, 0))))
     dproof("ProofDevSet", "%s;raise;instant" % xz(P(2, 0)))
+    ctx["ticks"](10)
     kl, tl = ctx["leaf"](P(2, 0))
     V.require(kl.get("target") == "raised" and num(kl, "progress", -1) == num(kl, "full", -2), "leaf staged raised", tl)
     # precondition (SITE, never a mod FAIL): with the leaf raised the far-bank pawn has no path to the winch side, else the real

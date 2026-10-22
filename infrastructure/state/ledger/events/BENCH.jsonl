@@ -3469,3 +3469,9 @@
 {"seat":"BENCH","event":"close","id":"FALLEN_CORD_DIAGNOSE_LIVE_BUT_HARMLESS","sha":"b8d9bd5d41","reason":"HARNESS: mod correct (contacts (31,102),(32,102) read live); victim spawned on impassable RM_SuspensionWreck, pushed off before GSS 20-tick check. Clear wreck + draft: shocks +1, RM_FallenWireShock, live 9/9 PASS","ts":"2026-10-22T02:50:32Z","tsn":1792637432076112403}
 {"seat":"BENCH","event":"note","id":"LADDER_HOSE_DIAGNOSE_SIPS_NOTHING","text":"fix sha on origin is 27fabb955b (close event's b8d9bd5d41 was the pre-rebase local sha, rewritten by ./publish)","ts":"2026-10-22T02:50:56Z","tsn":1792637456716729710}
 {"seat":"BENCH","event":"note","id":"FALLEN_CORD_DIAGNOSE_LIVE_BUT_HARMLESS","text":"fix sha on origin is 27fabb955b (close event's b8d9bd5d41 was the pre-rebase local sha, rewritten by ./publish)","ts":"2026-10-22T02:50:58Z","tsn":1792637458033091074}
+{"seat":"BENCH","event":"lease","id":"WINCH_REACH_DIAGNOSE_CANREACH_FIBS","action":"take","token":"BENCH.pid96104.12ff0184","expires":"2026-10-22T03:37:15Z","ts":"2026-10-22T02:52:15Z","tsn":1792637535703262725}
+{"seat":"BENCH","event":"claim","id":"WINCH_REACH_DIAGNOSE_CANREACH_FIBS","ts":"2026-10-22T02:52:15Z","tsn":1792637535987566975}
+{"seat":"BENCH","event":"start","id":"WINCH_REACH_DIAGNOSE_CANREACH_FIBS","ts":"2026-10-22T02:52:16Z","tsn":1792637536282448650}
+{"seat":"BENCH","event":"start","id":"WINCH_REACH_DIAGNOSE_CANREACH_FIBS","ts":"2026-10-22T02:52:17Z","tsn":1792637537593069966}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"drawbridge pair: WINCH_REACH fix + RAID_UP rework","ts":"2026-10-22T02:53:12Z","tsn":1792637592127001681}
+{"seat":"BENCH","event":"lease","id":"WINCH_REACH_DIAGNOSE_CANREACH_FIBS","action":"renew","token":"BENCH.pid96104.12ff0184","ts":"2026-10-22T02:56:35Z","expires":"2026-10-22T03:41:35Z","tsn":1792637795493129784}
