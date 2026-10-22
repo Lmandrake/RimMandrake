@@ -44,6 +44,7 @@ SETTINGS = {
         "digToDepthEnabled": True,
         "maxDigDepth": 4.0, "digCostRisesWithDepth": True,   # colonist cap 2 m (DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL); P6 curve
         "machineDigEnabled": True, "maxMachineDigDepth": 40.0,   # machine labour digs to 20 m
+        "reachSeesWallsAndCliffs": True,   # REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE (RM_WallReach)
         "liquidCorrosionEnabled": True, "liquidIgnitionEnabled": True,
         "fillInEnabled": True, "fillInDisplacementEnabled": True, "sourceBudgetEnabled": True,
         "stickyLimitlessEnabled": True, "wetnessCutoffEnabled": True, "recessionEnabled": True, "refillEnabled": True,
