@@ -55,6 +55,8 @@ pattern, so the answer probably applies to all of them.
 **Recommended: 2.** It is the shape you already ruled for cross-biome switches, and it keeps the
 free mods usable outside our save without promising anything.
 
+**ANSWERED 2026-10-22 by question card: option 3, keep as it is (on by default).** Applies to the Webwork, Greentide and Pyrelands workers; no change to make.
+
 ---
 
 ## Q2. May the web creep out of the Webwork onto the maps next to it?
@@ -84,6 +86,8 @@ are also unruled (`advanceIntervalTicks`, `maxBandDepth`, `spawnDensity` are mar
 
 **Recommended: 2.** It keeps the north star's "it's coming for you" while staying inside the
 biomes we test.
+
+**ANSWERED 2026-10-22 by question card: option 4, delete it** (after a briefing: it is a spiderless placement script; he said *"Webs don't creep they are made by spiders"*). This also retires the 2026-09-11 border creep-web harvest route (Shokkweave) — the card told him so before he chose.
 
 ---
 
