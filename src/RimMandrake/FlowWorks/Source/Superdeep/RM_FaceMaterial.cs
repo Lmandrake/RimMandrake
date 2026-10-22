@@ -30,6 +30,9 @@ namespace RimMandrake.FlowWorks
 		public const int FaceQueue = 2440;
 		public const int ShadeQueue = 2441;
 		public const int DetailQueue = 2442;
+		/// <summary>The black outline draws after the lit face and its strata/joints: at ShadeQueue the north face's cream light
+		/// (alpha ~0.33) was blended OVER the black rim line and turned it grey (SLUICE_OUTLINE_FIX_GREY_NORTH_LIP).</summary>
+		public const int OutlineQueue = 2443;
 		/// <summary>Scorch layers go over everything the pit draws (faces, light, joints): ash, then soot, then tint.</summary>
 		public const int AshQueue = 2444;
 		public const int SootQueue = 2445;
@@ -143,6 +146,9 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		public static Material OutlineMat => outlineMat ?? (outlineMat = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.VertexColor))) { renderQueue = OutlineQueue });
+
+		private static Material outlineMat;
 		private static Material ashMat, dirtAshMat, sootMat, tintMat;
 		private static Material[] debrisChar, debrisAsh;
 

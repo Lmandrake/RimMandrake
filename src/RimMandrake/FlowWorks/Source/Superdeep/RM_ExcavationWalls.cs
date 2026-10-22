@@ -209,7 +209,7 @@ namespace RimMandrake.FlowWorks
 		/// the drop: the owner's "black-lining on the southern edge".</summary>
 		private void Outline(IntVec3 c, int d, int north, int south, int west, int east, float y)
 		{
-			Material m = RM_FaceMaterial.ShadeMat;
+			Material m = RM_FaceMaterial.OutlineMat;
 			Color32 k = new Color32(0, 0, 0, 255);
 			int sd = d - south;
 			if (sd > 0)
