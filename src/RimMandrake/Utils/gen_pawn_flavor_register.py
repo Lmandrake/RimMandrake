@@ -561,8 +561,11 @@ def main():
     if os.path.exists(DEC_OUT):
         try:
             existing = json.load(open(DEC_OUT, encoding="utf-8"))
-        except ValueError:
-            existing = {}
+            if not isinstance(existing, dict):
+                raise ValueError("top level is not an object")
+        except (ValueError, OSError) as exc:
+            # An unreadable file may still hold the owner's decisions: never treat it as 'no decisions'.
+            existing = {"savedAt": "UNREADABLE (%s)" % exc}
         if existing.get("savedAt") and not getattr(
                 args, "i_know_this_overwrites_the_owners_decisions"):
             print("REFUSED: %s carries savedAt=%s - it holds the owner's decisions.\n"
@@ -586,7 +589,10 @@ def write_prefill(prefill):
         "prefill": True,   # the page's own save replaces this with savedAt/decidedBy
         "rows": prefill,
     }
-    json.dump(payload, open(DEC_OUT, "w", encoding="utf-8"), indent=1)
+    tmp = DEC_OUT + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, indent=1)
+    os.replace(tmp, DEC_OUT)
     print("wrote prefill %s (%d rows)" % (DEC_OUT, len(prefill)))
 
 
