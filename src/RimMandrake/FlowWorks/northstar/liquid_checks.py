@@ -56,6 +56,7 @@ THEFT = "RimMandrake.FlowWorks.Machinery.RM_LiquidTheft"
 S_HOSE = "RimMandrake.FlowWorks.Hose.RM_HoseSettings"
 S_MACH = "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings"
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
+S_EG = "RimMandrake.ExplosiveGrowth.ExplosiveGrowthSettings"   # spillWaterEnabled: EG plants drink spill filth
 L7_STATIONS = ("flow_drains", "flow_spreads")   # review-map stations 1 and 2 (review_map.station_list)
 SPILL = "RimMandrake.FlowWorks.Machinery.RM_LiquidSpill"
 SPILL_FILTH = "RM_Filth_LiquidSpill"   # the generic spill filth
@@ -730,14 +731,25 @@ def main(argv=None):
             return int(v) if str(v).lstrip("-").isdigit() else None
 
         frect = (s.P(14, 7)[0], s.P(14, 7)[1], 5, 5)        # the free end P(16,9) and its neighbours
-        h0, liq = held()
-        n0, u0 = filth(), unplaced()
-        net0 = B.hp("net:%d,%d" % s.pump)
-        off = set_role(s.reel, "Capped")                   # an Outflow end capped stops the hose carrying
-        B.ticks(900)                                       # lease = now+375, drain checked once per 250-tick cycle
-        h1, _ = held()
-        net1 = B.hp("net:%d,%d" % s.pump)
-        n1, u1 = filth(), unplaced()
+        # HARNESS (SPILL_DIAGNOSE_TEN_THOUSAND_GONE_DRY, belt 13:45: +2 thickness where 3 pieces were made, SpilledUnits +10000
+        # = every piece laid): Explosive Growth's plants DRINK standing-water filth (RM_WetSources.SpillFilthSource.Consume
+        # destroys the whole filth thing, by design: owner 2026-10-18 "spilled water as per wetting the ground, plant growth"),
+        # so the rect's thickness is not conserved while EG reads spills. Its spill-water read is off for the window, restored.
+        eg0 = sget(S_EG, "spillWaterEnabled")
+        if eg0 is not None:
+            B.call("jawa/mod_settings_field", typeName=S_EG, action="set", field="spillWaterEnabled", value="False")
+        try:
+            h0, liq = held()
+            n0, u0 = filth(), unplaced()
+            net0 = B.hp("net:%d,%d" % s.pump)
+            off = set_role(s.reel, "Capped")                   # an Outflow end capped stops the hose carrying
+            B.ticks(900)                                       # lease = now+375, drain checked once per 250-tick cycle
+            h1, _ = held()
+            net1 = B.hp("net:%d,%d" % s.pump)
+            n1, u1 = filth(), unplaced()
+        finally:
+            if eg0 is not None:
+                B.call("jawa/mod_settings_field", typeName=S_EG, action="set", field="spillWaterEnabled", value=str(eg0))
         d0, d1 = net0.get("hoseDrainedUnits"), net1.get("hoseDrainedUnits")
         drained = (d1 - d0) if isinstance(d0, int) and isinstance(d1, int) else None
         pre = None if (lay.get("success") and role["ok"] and off["ok"] and pw is not None) else \

@@ -88,6 +88,7 @@ import validation_core as V  # noqa: E402  (preconditions: scope / require / gua
 SHEET = "RimMandrake.FlowWorks.Sheet.RM_SheetProofs"            # OWED C#: contracts in OWED_PROOFS
 S_SHEET = "RimMandrake.FlowWorks.Sheet.RM_SheetSettings"
 LPROOF = "RimMandrake.FlowWorks.Machinery.RM_LineProofs"         # ProofPitWater
+S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"     # rainFillPerPulse, rainFillsExcavationsEnabled
 NPROOF = "RimMandrake.FlowWorks.RM_NorthstarProofs"              # ProofPump, ProofResetRect
 DL_PER_CM = 200      # RM_SheetMath.DlPerCm: 1 cm over one square = 20 L
 U = 10000            # dL per notch-square (RM_Volume.UnitsPerLevel; read live from the ledger's cap/notch when given)
@@ -287,11 +288,18 @@ def main(argv=None):
         return ok
 
     def sset(typ, field, value):
+        if (typ, field) not in TOUCHED:
+            TOUCHED[(typ, field)] = sget(typ, field)
         r = B.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(value)) or {}
         back = (B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}).get("value")
-        V.require(str(back).lower() == str(value).lower(), "%s.%s reads back %s" % (typ.split(".")[-1], field, value),
-                  [r, back], cls="HARNESS")
-        return str(back).lower() == str(value).lower()
+        same = str(back).lower() == str(value).lower()
+        if not same and not isinstance(value, bool):
+            try:
+                same = abs(float(back) - float(value)) < 1e-6      # a float field may read back "1" for 1.0
+            except (TypeError, ValueError):
+                pass
+        V.require(same, "%s.%s reads back %s" % (typ.split(".")[-1], field, value), [r, back], cls="HARNESS")
+        return same
 
     def sget(typ, field):
         return (B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field, _answer=True) or {}).get("value")
@@ -312,6 +320,7 @@ def main(argv=None):
     P = lambda dx, dz: (ox + dx, oz + dz)        # noqa: E731
     xz = lambda c: "%d,%d" % c                   # noqa: E731
     CTX = {"pulseTicks": None}
+    TOUCHED = {}    # (type, field) -> value read before this run first set it; restored in the finally
 
     # ------------------------------------------------------------------ preflight
     if a.fresh_map and not a.mock:
@@ -383,6 +392,9 @@ def main(argv=None):
         if switch0 is not None:
             B.call("jawa/mod_settings_field", typeName=S_SHEET, action="set", field="sheetOverflowEnabled", value=str(switch0),
                    _answer=True)
+        for (typ, field), v in TOUCHED.items():
+            if v is not None and not (typ == S_SHEET and field == "sheetOverflowEnabled"):
+                B.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(v), _answer=True)
         if not a.mock:
             B.call("jawa/weather_set", weather="Clear", lockWeather=False, _answer=True)
             V.site_calm_restore(B)
@@ -502,19 +514,28 @@ def pump_spill(ctx):
 
 
 def rain_spill(ctx):
-    """PROVE a brim-full canal x=1..6 on z=12 under open sky; jawa/weather_set Rain (locked); poll (<= 12 pulses) until inRain
-    rises; then Clear.
+    """PROVE a brim-full canal x=1..6 on z=12 under open sky; rainFillPerPulse raised to 1.0 for the row; jawa/weather_set Rain
+    (locked); poll (<= 24 pulses) until inRain rises; then Clear, and rain-fill switched OFF for the rest of the run.
+    HARNESS (belt live 2026-10-22, two runs FAIL inRain 0 in 12 pulses): rain arrives as rainFillPerPulse (shipped 0.1) x
+    RainRate levels a pulse, and RainRate ramps over the 4000-tick weather transition, so the first whole level needs ~18
+    pulses at shipped rates; and after 'Clear' the fading rain still lands a level later -- it landed in the next row's EMPTY
+    pit (+1 level x 9 squares = 90,000 dL, and inRain +200,000 = 20 brim squares x 1 level), failing SHEET_RETURNS_TO_PIT and
+    the ledger balance. So: rate 1.0 here (~6 pulses), rain fill OFF after the row (both restored at the end).
     EXPECT inRain > 0; wet squares beside the canal; the canal still brim full (rain over a full canal goes to the sheet, never
     above the brim); destroyedDl +0; closes. LIES: rain on open soil makes no sheet in our model (only RainOverflow on a full
     canal does), so inRain is the bar, not wet squares alone; a roofed canal never rains (the plot is unroofed by the site)."""
     B, row, ledger, ld = _c(ctx, "B", "row", "ledger", "ld")
     canal0 = _canal(ctx, 1, 6, 12)
     l0 = ledger()
+    sset = ctx["sset"]
+    V.require(sset(S_FW, "rainFillsExcavationsEnabled", True) and sset(S_FW, "rainFillPerPulse", 1.0),
+              "rain fill on at 1.0 a pulse", None, cls="HARNESS")
     w = B.call("jawa/weather_set", weather="Rain", lockWeather=True) or {}
     try:
-        got, waited = _poll(ctx, lambda: (ld(l0, ledger(), "inRain") or 0) > 0, 12)
+        got, waited = _poll(ctx, lambda: (ld(l0, ledger(), "inRain") or 0) > 0, 24)
     finally:
         B.call("jawa/weather_set", weather="Clear", lockWeather=True)
+        sset(S_FW, "rainFillsExcavationsEnabled", False)     # the fading rain must not reach later rows' pits
     l1 = ledger()
     canal1, _ = ctx["pitwater"](1, 12, 6, 1)
     lips, tl = ctx["srect"](1, 11, 6, 3)
@@ -903,10 +924,12 @@ def perf_rows(ctx):
     def sample(stage):
         sp("ProofSheetPerf", "reset")
         stage()
-        tm = B.call("jawa/map_comp_timing", ticks=PERF_TICKS, _answer=True) or {}
+        # HARNESS (belt live 2026-10-22): jawa/map_comp_timing waits for the game to run at the CALLER's speed, and this proof
+        # keeps it paused (step_game_ticks pauseFirst), so the call sat in flight and 0 pulses were sampled. The kernel's own
+        # counters (ProofSheetPerf) are the measurement; the ticks are stepped.
+        ctx["ticks"](PERF_TICKS)
         kv, txt = sp("ProofSheetPerf", "-")
-        comp = [t for t in (tm.get("types") or []) if "RM_MapComponent_Excavation" in str(t.get("type"))]
-        return kv, txt, (comp[0].get("sumMsPerTick") if comp else None)
+        return kv, txt, None
 
     def verdict(kv):
         ms = fnum(kv.get("pulseMs"))
@@ -986,7 +1009,8 @@ class FakeBridge(object):
         self.rem = 0            # soak remainder (continuation state the save must keep)
         self.tick, self.pulse = 0, 0
         self.rain, self.cold_since, self.warm_since, self.temp = False, None, None, 20.0
-        self.settings = {"sheetOverflowEnabled": "False", "cropDrownPulses": "2016", "sheetCapCm": "50"}
+        self.settings = {"sheetOverflowEnabled": "False", "cropDrownPulses": "2016", "sheetCapCm": "50",
+                         "rainFillsExcavationsEnabled": "True", "rainFillPerPulse": "0.1"}
         self.cap_cm = 50
         self.plants = {}        # cell -> stand pulses
         self.saved = None
@@ -1079,7 +1103,7 @@ class FakeBridge(object):
                 got = self.offer(canal[0], U, "Pump")
                 if got == U:
                     self.tanks[p["tank"]] -= U + (1 if "pump_leaks" in self.f else 0)
-        if self.rain and "rain_no_spill" not in self.f:
+        if self.rain and "rain_no_spill" not in self.f and self.settings["rainFillsExcavationsEnabled"] == "True":
             for c, (d, w) in list(self.dug.items()):
                 if d == 1 and w >= U:
                     self.offer(c, 500, "Rain")
