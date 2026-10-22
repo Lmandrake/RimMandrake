@@ -451,8 +451,10 @@ namespace RimMandrake.StarWars.JawaRules
 
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> src)
         {
+            var original = new List<CodeInstruction>(src);
+            var patched = new List<CodeInstruction>(original.Count);
             int hits = 0;
-            foreach (var ins in src)
+            foreach (var ins in original)
             {
                 if (ins.opcode == OpCodes.Ldc_R4
                     && ins.operand is float f
@@ -466,10 +468,10 @@ namespace RimMandrake.StarWars.JawaRules
                     var rep = new CodeInstruction(OpCodes.Call, AlphaGetter);
                     rep.labels.AddRange(ins.labels);
                     rep.blocks.AddRange(ins.blocks);
-                    yield return rep;
+                    patched.Add(rep);
                     continue;
                 }
-                yield return ins;
+                patched.Add(ins);
             }
 
             if (hits != 1)
@@ -480,7 +482,9 @@ namespace RimMandrake.StarWars.JawaRules
                           + ". The label opacity is NOT what was asked for. A game "
                           + "update changed the method; re-read it before trusting "
                           + "the 'armed' line above.");
+                return original;   // a partial rewrite (some corners lifted) is worse than none
             }
+            return patched;
         }
     }
 
@@ -532,8 +536,10 @@ namespace RimMandrake.StarWars.JawaRules
 
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> src)
         {
+            var original = new List<CodeInstruction>(src);
+            var patched = new List<CodeInstruction>(original.Count);
             int hits = 0;
-            foreach (var ins in src)
+            foreach (var ins in original)
             {
                 if (ins.opcode == OpCodes.Ldc_R4
                     && ins.operand is float f
@@ -543,10 +549,10 @@ namespace RimMandrake.StarWars.JawaRules
                     var rep = new CodeInstruction(OpCodes.Call, LiftGetter);
                     rep.labels.AddRange(ins.labels);
                     rep.blocks.AddRange(ins.blocks);
-                    yield return rep;
+                    patched.Add(rep);
                     continue;
                 }
-                yield return ins;
+                patched.Add(ins);
             }
 
             if (hits != ExpectedHits)
@@ -557,7 +563,9 @@ namespace RimMandrake.StarWars.JawaRules
                           + "found " + hits + ". The labels are NOT lifted, or are lifted "
                           + "on only some corners, which would SHEAR the glyphs. Re-read "
                           + "the method before trusting the 'armed' line above.");
+                return original;   // a partial rewrite (some corners lifted) is worse than none
             }
+            return patched;
         }
     }
 }
