@@ -781,6 +781,60 @@ def _build_suite():
                 if not nb.startswith("none") and not nb.endswith("creaking True"):
                     raise ExpectationFailed("the piece the rib held up did not start creaking: %s" % text)
 
+    def _lp(t, method, args):
+        # RM_TractionLanceProof lives in mandrake.rm.creaturebehaviors (the shared pull); ProofPull takes TWO params, so its
+        # args stay '|'-joined (static_call's parameter separator)
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.CreatureBehaviors.RM_TractionLanceProof", method=method, args=args)
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    def _kv(text):
+        return dict(tok.split("=", 1) for tok in text.split() if "=" in tok)
+
+    @suite.chain("traction_lance")
+    def traction_lance(t):
+        """WEBWORK_TRACTION_LANCE_BUILD_1 criteria A3 (the parts a proof exists for). RM_TractionLance is this mod's def;
+        the pull is CreatureBehaviors' RM_CompTetherPull. Not covered here (no proof tool yet): friendly pull OFF, the
+        ollathrix pulled into sun, the two research doors, per-toggle off effects."""
+        def pull(t, stuff, mode):
+            text = _lp(t, "ProofPull", "%s|%s" % (stuff, mode))
+            if _live(t) and not text.startswith("LANCE"):
+                _unmeasured(t, "ProofPull %s/%s gave no answer: %r" % (stuff, mode, text[:160]))
+                return None
+            return _kv(text) if _live(t) else None
+        with t.component("manned_lance_pulls_a_raider", beyond_toggle=True):
+            kv = pull(t, "Hyperweave", "raider")
+            if kv is not None:
+                if kv.get("roped") != "True" or int(kv.get("cellsMoved", "0")) < 1 or float(kv.get("endDist", "99")) >= float(kv.get("startDist", "0")):
+                    raise ExpectationFailed("a manned thrixweave lance did not reel a raider toward it: %r" % kv)
+        with t.component("unmanned_lance_does_nothing", beyond_toggle=True):
+            kv = pull(t, "Hyperweave", "unmanned")
+            if kv is not None and (kv.get("roped") != "False" or kv.get("cellsMoved") not in ("0", None)):
+                raise ExpectationFailed("an unmanned lance roped or moved its target: %r" % kv)
+        with t.component("wall_stops_the_pull", beyond_toggle=True):
+            kv = pull(t, "Hyperweave", "wall")
+            if kv is not None and kv.get("outcome") != "wall":
+                raise ExpectationFailed("a raider behind a steel wall was not stopped with reason 'wall': %r" % kv)
+        with t.component("downed_colonist_pulled_in", beyond_toggle=True):
+            kv = pull(t, "Hyperweave", "downed")
+            if kv is not None and (kv.get("roped") != "True" or int(kv.get("cellsMoved", "0")) < 1):
+                raise ExpectationFailed("friendly pull on did not drag a downed colonist in: %r" % kv)
+        with t.component("over_mass_target_snaps_a_cloth_tether", beyond_toggle=True):
+            kv = pull(t, "Cloth", "heavy")
+            if kv is not None and (kv.get("outcome") != "mass" or int(kv.get("snaps", "0")) < 1):
+                raise ExpectationFailed("a thrumbo on a cloth tether did not snap it for mass: %r" % kv)
+        with t.component("cloth_weaker_than_thrixweave", beyond_toggle=True):
+            text = _lp(t, "ProofStuffTable", "")
+            if _live(t):
+                rows = {}
+                for part in text[len("STUFF "):].split(" | ") if text.startswith("STUFF") else []:
+                    name, rest = part.split(":", 1)
+                    rows[name.strip()] = {k: float(v) for k, v in _kv(rest).items()}
+                if "Cloth" not in rows or "Hyperweave" not in rows:
+                    _unmeasured(t, "ProofStuffTable gave no Cloth/Hyperweave rows: %r" % text[:200]); return
+                c, h = rows["Cloth"], rows["Hyperweave"]
+                if not (c["snap"] > h["snap"] and c["range"] < h["range"]):
+                    raise ExpectationFailed("cloth is not snappier and shorter than thrixweave: %r" % rows)
+
     return suite
 
 
@@ -916,9 +970,52 @@ def mock_urraveth():
     return ok
 
 
+class _MockLanceSession(_MockSession):
+    """--mock: traction_lance against a working pull; broken="wall" pulls straight through the wall (outcome arrived)."""
+
+    def __init__(self, broken=None):
+        _MockSession.__init__(self)
+        self.broken = broken
+
+    def call(self, tool, **kw):
+        if tool == "jawa/static_call" and kw.get("type") == "RimMandrake.CreatureBehaviors.RM_TractionLanceProof":
+            self.calls.append((tool, kw))
+            if kw.get("method") == "ProofStuffTable":
+                return {"success": True, "result": "STUFF Cloth: range=8.4 snap=0.090 maxMass=1.2 | DevilstrandCloth: range=12.0 snap=0.060 "
+                        "maxMass=2.0 | Hyperweave: range=15.6 snap=0.030 maxMass=3.0"}
+            stuff, mode = (kw.get("args") or "|").split("|")
+            moved, end, outcome, snaps, roped = 8, 1.0, "arrived", 0, True
+            if mode == "unmanned":
+                moved, end, outcome, roped = 0, 9.0, "none", False
+            elif mode == "wall" and self.broken != "wall":
+                moved, end, outcome = 3, 6.0, "wall"
+            elif mode == "heavy":
+                moved, end, outcome, snaps = 0, 9.0, "mass", 1
+            return {"success": True, "result": "LANCE stuff=%s mode=%s canWork=%s roped=%s startDist=9.0 endDist=%.1f cellsMoved=%d steps=8 "
+                    "outcome=%s snaps=%d range=15.6 snapChance=0.030 maxMass=3.0 rigging=1.00" % (stuff, mode, roped, roped, end, moved, outcome, snaps)}
+        return super(_MockLanceSession, self).call(tool, **kw)
+
+
+def mock_lance():
+    from runner import run_suite
+    chains = list(suite.chains)
+    out = {}
+    try:
+        for broken in (None, "wall"):
+            suite.chains[:] = [c for c in chains if c[0] == "traction_lance"]
+            res = run_suite(suite, _MockLanceSession(broken), anchor=(50, 50))
+            out[broken] = {c.get("name"): str(c.get("verdict", "")).upper()
+                           for ch in res.get("chains", []) for c in (ch.get("components") or [])}
+    finally:
+        suite.chains[:] = chains
+    ok = len(out[None]) == 6 and set(out[None].values()) == {"PASS"} and out["wall"].get("wall_stops_the_pull") == "FAIL"
+    print("MOCK lance: %s (good=%s wall=%s)" % ("PASS" if ok else "FAIL", out[None], out["wall"].get("wall_stops_the_pull")))
+    return ok
+
+
 def mock_run():
     from runner import run_suite  # modcheck package dir is on sys.path via _UTILS/modcheck
-    harvest_ok = mock_harvest_fog_timeout() and mock_urraveth()
+    harvest_ok = mock_harvest_fog_timeout() and mock_urraveth() and mock_lance()
     fake = _MockSession()
     suite.chains[:] = [c for c in suite.chains if c[0] == "web_terrain_weather"]
     res = run_suite(suite, fake, anchor=(50, 50))
