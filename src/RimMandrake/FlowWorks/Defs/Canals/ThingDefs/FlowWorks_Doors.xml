@@ -20,7 +20,7 @@
        The bare RM_Sluice / RM_SecurityGrateDoor PNGs stay as the menu icons (uiIconPath). -->
   <ThingDef ParentName="DoorBase">
     <defName>RM_Sluice</defName>
-    <label>sluice</label>
+    <label>sluice gate</label>
     <description>A sealed gate for a canal. Shut, it holds the liquid back; open it, or hold it open, and the level runs on through. It keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody trapped down in a pit can open it from below. What it is made of decides how tough it is and whether it burns.</description>
     <thingClass>RimMandrake.FlowWorks.Building_RM_FlowDoor</thingClass>
     <statBases>

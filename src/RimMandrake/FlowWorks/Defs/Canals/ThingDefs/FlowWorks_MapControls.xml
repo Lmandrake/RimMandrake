@@ -87,7 +87,7 @@
   <ThingDef ParentName="RM_MapControlBase">
     <defName>RM_TimerSwitch</defName>
     <label>timer switch</label>
-    <description>A map maker's marker. It switches the other map markers and the sluices and grates near it on and off by the hour of day, or on a repeating period. Placed in development mode only; it cannot be built.</description>
+    <description>A map maker's marker. It switches the other map markers and the sluice gates and grates near it on and off by the hour of day, or on a repeating period. Placed in development mode only; it cannot be built.</description>
     <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_TimerSwitch</thingClass>
     <graphicData>
       <color>(0.57,0.56,0.54)</color>

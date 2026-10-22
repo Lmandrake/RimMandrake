@@ -541,7 +541,7 @@ SETUPS = {
                        dig=[(2, 6, 1, 1, 4), (5, 6, 1, 1, 4), (8, 6, 1, 1, 2), (11, 6, 1, 1, 2)],
                        spawn=[("RM_Ladder", 2, 6, None), ("RM_Spikes", 5, 6, None), ("RM_Sluice", 8, 6, "WoodLog"),
                               ("RM_SecurityGrateDoor", 11, 6, "Steel")],
-                       marks=[(2, 4, "ladder"), (5, 4, "spikes"), (8, 4, "sluice"), (11, 4, "grate")],
+                       marks=[(2, 4, "ladder"), (5, 4, "spikes"), (8, 4, "sluice gate"), (11, 4, "grate")],
                        try_=["open the sluice and the grate: open and shut read differently without selecting"],
                        look="weak spot: any of the four drawn with a vanilla stand-in"),
     "look_liquids": dict(short="Tar and slime look thick", notice="a tar pond and canal (left); green, white and yellow "
@@ -926,7 +926,7 @@ SETUPS = {
                          terrain=[("WaterMovingShallow", 0, 3, 16, 2), ("WaterMovingChestDeep", 0, 5, 16, 4),
                                   ("WaterMovingShallow", 0, 9, 16, 2)],  # = RIVER below
                          build=[("RM_SluiceBox", 4, 11, None, None), ("RM_PanningSpot", 11, 11, None, None)],
-                         marks=[(4, 13, "sluice"), (11, 13, "pan here")],
+                         marks=[(4, 13, "sluice box"), (11, 13, "pan here")],
                          try_=["unpause a day: the sluice washes a little ore onto its bank end",
                                "a miner pans at the spot: mostly nothing, sometimes a few units"],
                          look="weak spot: ore on the water end; compare with map R, where the river is real"),

@@ -480,7 +480,7 @@ namespace RimMandrake.FlowWorks.Quarry
 			IntVec3 w = WaterCell;
 			string lane = !w.IsValid ? "no water" : (RM_PlacerWater.LaneAt(Map, w) == RM_RiverMath.LaneMargin ? "washing" : "water too calm to wash");
 			RM_MapComponent_PlacerStock stock = RM_MapComponent_PlacerStock.Of(Map);
-			string line = "Sluice: " + lane + (stock != null ? ", river stock " + stock.Stock.ToString("F0") + "/" + stock.Cap.ToString("F0") : "");
+			string line = "Sluice box: " + lane + (stock != null ? ", river stock " + stock.Stock.ToString("F0") + "/" + stock.Cap.ToString("F0") : "");
 			if (!LastResult.NullOrEmpty())
 			{
 				line += "\nLast wash: " + LastResult;

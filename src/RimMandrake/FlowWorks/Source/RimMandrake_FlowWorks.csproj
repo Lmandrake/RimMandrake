@@ -398,18 +398,15 @@
   <ItemGroup>
   </ItemGroup>
 
-  <!-- Sluice gates: Machinery\Logistics\. Sluice-gate-only files go in this group.
+  <!-- Sprinklers (this group held the retired sluice-gate files until 2026-10-22; Building_RM_SluiceGate had no def).
        One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
   <ItemGroup>
-    <Compile Include="Machinery\Logistics\RM_SluiceGateSettings.cs" />
     <Compile Include="Sprinklers\RM_SprinklerKernel.cs" />
     <Compile Include="Sprinklers\RM_SprinklerSettings.cs" />
     <Compile Include="Sprinklers\RM_MapComponent_Sprinklers.cs" />
     <Compile Include="Sprinklers\RM_Sprinkle.cs" />
     <Compile Include="Sprinklers\CompRM_SprinklerHead.cs" />
     <Compile Include="Sprinklers\CompRM_SmartSprinkler.cs" />
-    <Compile Include="Machinery\Logistics\RM_SluiceGate.cs" />
-    <Compile Include="Machinery\Logistics\RM_SluiceGateMath.cs" />
   </ItemGroup>
 
   <!-- Bottled blood: Machinery\Logistics\. Blood-draw-only files go in this group.

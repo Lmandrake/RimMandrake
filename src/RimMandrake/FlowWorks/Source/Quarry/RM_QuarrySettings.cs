@@ -44,11 +44,11 @@ namespace RimMandrake.FlowWorks.Quarry
 				"A panning spot on the bank beside shallow moving water is Mining work: a colonist squats there for "
 				+ "a couple of hours and usually finds nothing, sometimes a few units. Off: nobody pans.");
 			list.CheckboxLabeled("A flood refills the river's stock", ref placerFloodRefill,
-				"Sluices and panners share one stock per map that regrows over a year. On: a spring flood or "
+				"Sluice boxes and panners share one stock per map that regrows over a year. On: a spring flood or "
 				+ "torrential-rain flood tops it back to full.");
 			list.Label("River stock: " + placerStockPercent.ToString("F1") + "% a year of the heavy minerals in this map's rock  (first-guess number)");
 			placerStockPercent = list.Slider(placerStockPercent, 0f, 20f);
-			list.Label("Sluice yield: x" + sluiceYieldMultiplier.ToString("F2") + "  (1x = about 1.2 units a day; first-guess number)");
+			list.Label("Sluice box yield: x" + sluiceYieldMultiplier.ToString("F2") + "  (1x = about 1.2 units a day; first-guess number)");
 			sluiceYieldMultiplier = list.Slider(sluiceYieldMultiplier, 0f, 10f);
 			list.Label("Panning yield: x" + panningYieldMultiplier.ToString("F2") + "  (first-guess number)");
 			panningYieldMultiplier = list.Slider(panningYieldMultiplier, 0f, 10f);
