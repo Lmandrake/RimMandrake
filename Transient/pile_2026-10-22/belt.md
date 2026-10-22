@@ -43,6 +43,35 @@ Started 08:48 PDT. Tier fw_gss_sitting, DLL 41fb948b5e. Owner save RM_fw_walkthr
 
 
 ## NEXT
+- EXIT STATE (14:43): RimWorld up on RM_fw_walkthrough_20261022 (loaded, paused, tick 129731, not saved by the belt), tier fw_gss_sitting 14 mods (marker kept), FlowWorks DLL ee9fa61fbc deployed, every FlowWorks setting at shipped defaults (preflight P-B4 348 fields; sheetOverflowEnabled False; tankNeedsWater True). Bridge HELD by BENCH "holding for the owner's walkthrough". companion_profile test until 2026-10-23T07:00Z.
+- Open MOD findings for fixers (belt_failures.md): CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (fill never completes before the raid leaves), DRAWDOWN refill hash (deep_lake_proof), OVERFLOW_DIAGNOSE_FIRST_WET_RUN (rain/return/ledger rows; perf call left in flight), SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING, RAILING_MATERIAL_FIX_MADE_OF_NOTHING, SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND, GLOWTANK_DRINK_DIAGNOSE_DRY_BESIDE_THE_SEA, SPILL_DIAGNOSE_TEN_THOUSAND_GONE_DRY (narrowed, mostly harness).
+- Re-prove on a fix: raid_trench_proof --direct --depth 8; deep_lake_proof --fresh-map; sheet_overflow_proof --fresh-map; suspension_settings_live.py; glow_tank_live.py --fresh-map; liquid_checks --only L5.
+- Owed, blocked: SUSPENSION_WATERS A1 (no river tile with a fast lane) + A3 flood (decks never awash); GRATE A4 slime; PIT_TEMPERATURE A2-A4; matrix_hose widths (re-baseline after his girth pick); proof_hose RL3/RL4 west-inlet bar for West-built relays; walk_gaps PONDS rig; extension_proof (preflight refuses on this tier/autosave).
+
+## Harness fixes
+- HARNESS validation_core._prepare_site: plants swept again AFTER reveal (WildPlantSpawner re-seeded one Plant_Grass in the 21x95 lines site during the ~60 reveal ticks). Result: lines_proof 10/11 PASS.
+- HARNESS drawbridge_proof._raid_variant: pawns standing in the origin plot vanish BEFORE its buildings are destroyed (destroying a winch crashes a still-raised leaf onto riders = the PM 'Cut/Head' presumed).
+
+## Run log
+- 08:48 belt started
+- 09:05 lines_proof --fresh-map: 10 PASS / 1 FAIL (LADDER_HOSE_DRAINS_RAISED_STAYS, MOD, same as LADDER_HOSE_DIAGNOSE_RETRACTS_ON_A_WHIM) — src/RimMandrake/FlowWorks/northstar/lines_result_20261022T0905_belt.json
+
+## Results (rows PASS/FAIL/UNMEASURED, final run of each, MEASURED from the result JSONs)
+- lines_proof 11/0/0 (c5c0f047ca) · drawbridge_proof 12/0/0 · suspension_bridge_proof 26/0/8 (+ waters lake/sea PASS on painted water)
+- trench_cover_proof 6/0/4 owed · trench_blast_live 1/0/0 · trench_cast_live 2/0/0 · raid_trench_proof depth 4: breach PASS; depth 8: causeway FAIL (MOD); --jump-packs PASS
+- raid_ladder_live 4/0/0 · raid_siege_live 2/0/0 · trench_crossing_live 2/0/0 · climb_proof 15/0/1 owed · depth_rebuild_proofs 17/0/1 (+p7 PASS)
+- deep_lake_proof (ee9fa61fbc) 5/2/1 (refill hash regression) · validation_v2 61/0/1 · proof_hose blocks 54/2/2 (RL3/RL4 west-inlet bar) · liquid_checks 6/2/8 (L5 spill regression)
+- pond_pump 2/0/1 · thirst T4,T5 2/0 · sprinkler T22 1/0 · walk_gaps_proof 8/1/4 · sheet_overflow_proof 5/3/4 · pit_rescue_live 1/1(+assist)/0+1 · suspension_settings_live 1/1/0
+- scenarios: C2 moat 2 h soak still; C4/C10 hoses laid; bleed settings search PASS
+
+## Items verified / closed / filed
+- CLOSED/done: SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN, LADDER_HOSE_DIAGNOSE_RETRACTS_ON_A_WHIM, MOAT_LEVEL_DIAGNOSE_HALF_METRE_VANISHES, BLEED_WELL_STRINGS_RENAME_TAP_RETIRED, PIT_COVER_BUILD_DECONSTRUCT_DROPS_TOO, FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE, FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT, SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING, TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT
+- verified (criteria): PIPE_POLES A7 A8 A9 A10 · DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS L2 run · SUSPENSION_BRIDGE_BUILD_POSTS A1-A6 · GRATE A1-A3 · UNDERPASS A1-A6 · JETTY A1-A2 · ART_RESKIN A3 · WATERS A2 A4 · RAIDERS_TRENCH A2 A4 A5 A6 A7 · TRENCH_CROSSING A2 · LIQUID_LEDGER A5
+- FILED: CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (mechanism: fill notch ~22k ticks), DRAWDOWN_DIAGNOSE_THIRTEEN_BEFORE_TWELVE (fixed by fixer E; refill hash now FAILs), OVERFLOW_DIAGNOSE_FIRST_WET_RUN, SPILL_DIAGNOSE_TEN_THOUSAND_GONE_DRY (regression), SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING
+- DROPPED (my wrong filing): RESCUE_LADDER_DIAGNOSE_FRAME_NOBODY_FINISHES — the rescuers had Construction priority 0 (SITE)
+
+
+## NEXT
 - Deployed FlowWorks DLL = HEAD ee9fa61fbc (deploy_custom_mods FlowWorks --apply, worktree FlowWorks was clean). Tier fw_gss_sitting 14 mods, marker deployed/config/ModsConfig.swap-active.json kept. companion_profile test until 2026-10-23T07:00Z.
 - Waiting on fixers for re-prove: CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (raid_trench_proof --direct --depth 8), SPILL_DIAGNOSE_TEN_THOUSAND_GONE_DRY (liquid_checks --only L5), DRAWDOWN refill hash (deep_lake_proof --fresh-map), OVERFLOW_DIAGNOSE_FIRST_WET_RUN (sheet_overflow_proof --fresh-map), SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING (suspension_settings_live.py).
 - On any new FlowWorks DLL commit: plan deploy, game down, --apply only when `git status src/RimMandrake/FlowWorks` (non-py) is clean, else copy the committed DLL pair only (git show HEAD:...), relaunch via Steam, rerun lines_proof + the item's proof.
