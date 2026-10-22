@@ -1830,8 +1830,11 @@ const _itemBody = it => {
          facing is shown as the game would draw it after a pick — west mirrors this set's east; any other gap keeps the
          in-game picture (enact installs only the facings a set has). Dimmed and labelled, never pickable on its own. */
       const ig = g && g.lane === 'slot' && !c.winner ? SLX.inGame(g)[0] : null;
-      const fill = f === 'west' && c.faces.east ? { sha: c.faces.east, mirror: true, why: 'west = this set\'s east, mirrored (RimWorld mirrors east when there is no west)' }
-        : (ig && ig.faces[f] && f !== 'single' ? { sha: ig.faces[f], why: 'not in this set: picking it keeps the in-game ' + f + ' picture (' + ig.letter + ')' } : null);
+      /* enact installs only the facings a set has, so an in-game picture of this facing STAYS after a pick; the mirror of
+         east is what the game draws only when no west file ships at all */
+      const igHas = ig && ig.faces[f] && f !== 'single';
+      const fill = igHas ? { sha: ig.faces[f], why: 'not in this set: picking it keeps the in-game ' + f + ' picture (' + ig.letter + ')' }
+        : (f === 'west' && c.faces.east ? { sha: c.faces.east, mirror: true, why: 'west = this set\'s east, mirrored (RimWorld mirrors east when there is no west)' } : null);
       const ft = fill && it.thumbs[fill.sha];
       if (ft) return `<div class="bs-cell bs-fill" title="${esc(fill.why)}"><div class="thumb ac-thumb" data-zoom="${(it.fulls || {})[fill.sha] || ft}" data-cap="${esc(it.label)} · ${c.letter} · ${f} · ${esc(fill.why)}"><img src="${ft}" loading="lazy" alt=""${fill.mirror ? ' style="transform:scaleX(-1)"' : ''}></div><span class="bs-face">${faceAbbr(f)}</span><i class="bs-filltag">${fill.mirror ? 'mirror' : 'in game'}</i></div>`;
       return `<div class="bs-cell bs-gap" title="no ${f} picture in this set">—</div>`;
