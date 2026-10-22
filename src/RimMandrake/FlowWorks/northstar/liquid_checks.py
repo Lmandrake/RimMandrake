@@ -58,7 +58,11 @@ S_MACH = "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings"
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 L7_STATIONS = ("flow_drains", "flow_spreads")   # review-map stations 1 and 2 (review_map.station_list)
 SPILL = "RimMandrake.FlowWorks.Machinery.RM_LiquidSpill"
-SPILL_FILTH = "RM_Filth_LiquidSpill"   # FreshWater has no LiquidDef.spillFilth of its own
+SPILL_FILTH = "RM_Filth_LiquidSpill"   # the generic spill filth
+# HARNESS (belt live 2026-10-22, L5 PASS 10-16 -> 'FAIL'): since cad23ba0e1 (owner 2026-10-18 "it's spilled water as per
+# wetting the ground, plant growth") fresh water spills as Explosive Growth's RM_Filth_WaterSpill (mandrake.rm.biomes), not
+# the generic spill filth: both count as the spill's pieces.
+SPILL_FILTHS = (SPILL_FILTH, "RM_Filth_WaterSpill")
 UNITS_PER_LITRE = _volume_const("UnitsPerLitre", None)   # RM_Volume.UnitsPerLitre (tank units are decilitres)
 FW_PKG = "mandrake.rm.flowworks"
 
@@ -713,7 +717,7 @@ def main(argv=None):
             # thickness, not things: vanilla thickens the filth already on the cell (SPILL_FILTH_FIX_SOIL_SAYS_NO re-run)
             tot = 0
             for t in lt.get("things") or []:
-                if str(t.get("def") or t.get("defName") or "") != SPILL_FILTH:
+                if str(t.get("def") or t.get("defName") or "") not in SPILL_FILTHS:
                     continue
                 k = filth_thickness(t.get("label"))
                 if k is None:
