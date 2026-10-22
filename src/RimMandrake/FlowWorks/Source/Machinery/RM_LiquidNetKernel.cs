@@ -590,6 +590,12 @@ namespace RimMandrake.FlowWorks.Machinery
 
     public static class RM_LiquidNetKernel
     {
+        /// <summary>GLOWTANK_DRINK_DIAGNOSE_DRY_BESIDE_THE_SEA: who has a touch store (the tanks 8-way around it), by its role by
+        /// kind and its live role: a machine, or an outside consumer that is no kind of member (kind None). A tank, a pipe,
+        /// and a foreign machine refused by the theft switch (kind Machine, role None) have none.</summary>
+        public static bool TouchStoreFor(RM_NetRole kind, RM_NetRole role) =>
+            role == RM_NetRole.Machine || kind == RM_NetRole.None;
+
         /// <summary>The revision key: the map's bump counter with the two switches that change what conducts.</summary>
         public static long RevisionKey(int revision, bool pipesOn, bool hosesOn, bool foreignJoin = true) =>
             ((long)revision << 3) | (pipesOn ? 1L : 0L) | (hosesOn ? 2L : 0L) | (foreignJoin ? 4L : 0L);
