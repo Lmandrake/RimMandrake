@@ -39,22 +39,9 @@
   0.4, status `adjust-keep`. Repointed from the bare "Gutkurr" entry in
   cast_assignment.csv / both BiomeCast_Ashkarr.xml copies.
 
-  ⚠️ **Known gap, flagged not fixed, matching the Wave A wiring-gap
-  precedent (2026-09-09)**: `cast_assignment.csv`'s own reason field notes
-  "owner card 2026-09-09: slowed 4.5→4.4" — this tuning is applied by a
-  SEPARATE generated file, `BiomeFaunaStatAdjustments_Generated.xml`
-  (source: `design/Jawa/worldbuilding/biomes/rosters/desert.json`'s
-  `stat_adjustments`), which still targets the bare donor `Gutkurr`
-  defName, not `RSW_Gutkurr`. Now that the wild population spawns as
-  `RSW_Gutkurr`, that MoveSpeed 4.5→4.4 adjustment no longer applies to it
-  — this ThingDef ships with the donor's unadjusted base `MoveSpeed>4.5`
-  (below), matching every prior pass's "copy the base stat verbatim, tuning
-  is a separate patch layer" convention. NOT hand-patched here: both the
-  stat-adjustment file and its roster-JSON source are GENERATED/owned by a
-  different process (`gen_stat_adjustments.py`, BIOME_FAUNA_ASSIGNMENT_
-  SITTING_1 authority) — regenerating them is owed to whoever next runs
-  that generator or the owner's own biome-sheet sitting, not this porting
-  pass.
+  MoveSpeed 4.5 below is the donor base; the owner-ruled 4.5→4.4 (card
+  2026-09-09, desert.json `stat_adjustments`) is applied by
+  `BiomeFaunaStatAdjustments_Generated.xml`, which targets `RSW_Gutkurr`.
 -->
 <Defs>
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">

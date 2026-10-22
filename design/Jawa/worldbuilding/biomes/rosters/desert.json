@@ -800,14 +800,14 @@
       "action": "adjust-keep",
       "band": "burst-predator",
       "commonality": 0.4,
-      "def": "Wraid",
+      "def": "RSW_Wraid",
       "law": "owner card 2026-09-09: slowed 5.0→4.4 — legal burst predator under ban 3 proxy (predator + spd < 4.5)"
     },
     {
       "action": "adjust-keep",
       "band": "burst-predator",
       "commonality": 0.4,
-      "def": "Gutkurr",
+      "def": "RSW_Gutkurr",
       "law": "owner card 2026-09-09: slowed 4.5→4.4 — legal burst predator under ban 3"
     },
     {
@@ -1284,14 +1284,14 @@
   "stat_adjustments": [
     {
       "authority": "owner card 2026-09-09: SW staples adjust-and-keep",
-      "def": "Wraid",
+      "def": "RSW_Wraid",
       "field": "moveSpeed",
       "from": 5.0,
       "to": 4.4
     },
     {
       "authority": "owner card 2026-09-09: SW staples adjust-and-keep",
-      "def": "Gutkurr",
+      "def": "RSW_Gutkurr",
       "field": "moveSpeed",
       "from": 4.5,
       "to": 4.4

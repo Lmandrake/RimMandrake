@@ -80,6 +80,14 @@
                the RimMandrake-tier twins. -->
           <li>RM_TheChill</li>
           <li>RM_TheScald</li>
+          <!-- Restored 2026-10-22: the RULED poles (Rust Cathedral) and the Forge
+               were in the deleted Alpha Biomes block (AB_MechanoidIntrusion,
+               AB_Pyroclastic*); these are their RM_/RUT_ twins.
+               mechanoid_biome_presence_draft.md rows: Rust Cathedral and the Forge, AMBIENT ALLOW. -->
+          <li>RM_RustCathedral</li>
+          <li>RUT_RustCathedral</li>
+          <li>RM_TheForge</li>
+          <li>RUT_TheForge</li>
           <li MayRequire="Ludeon.RimWorld.Odyssey">Scarlands</li>
           <li MayRequire="Ludeon.RimWorld.Odyssey">LavaField</li>
         </allowedBiomes>
@@ -93,6 +101,10 @@
         <li>RUT_TheScald</li>
         <li>RM_TheChill</li>
         <li>RM_TheScald</li>
+        <li>RM_RustCathedral</li>
+        <li>RUT_RustCathedral</li>
+        <li>RM_TheForge</li>
+        <li>RUT_TheForge</li>
         <li MayRequire="Ludeon.RimWorld.Odyssey">Scarlands</li>
         <li MayRequire="Ludeon.RimWorld.Odyssey">LavaField</li>
       </value>
