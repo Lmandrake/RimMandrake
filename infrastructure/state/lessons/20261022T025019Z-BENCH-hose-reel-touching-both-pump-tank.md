@@ -1,0 +1,1 @@
+A hose reel touching both a pump and a tank couples to the TANK (HosePortRule ranks by kind first); the pump is then on no network with the reel's Intake end and nothing moves. Read the reel's inspect 'Connected to ...' line before scoring any hose row whose scene has a reel beside two machines. (LADDER_HOSE_DIAGNOSE_SIPS_NOTHING, 2026-10-21)
