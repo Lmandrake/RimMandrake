@@ -989,7 +989,7 @@ def g_pit_access(s):
     ra, rg, rc = s.climb(a) if a else {}, s.climb(g) if g else {}, s.climb(ctl) if ctl else {}
 
     def st_out(r, want_out=True):
-        if not r:
+        if not r or r.get("depth") is None:     # an unparsed depth is neither "out" nor "still in"
             return "UNMEASURED"
         return "PASS" if ((r.get("depth") == 0) == want_out) else "FAIL"
     st = st_out(ra) if lad.get("survived") and ordered.get(a, False) else "UNMEASURED"
@@ -1019,9 +1019,11 @@ def g_pit_access(s):
             jin = {"success": False, "why": "no jump verb listed", "verbs": str(vl)[:120]}
     yield Wait(180)
     rj = s.climb(j) if j else {}
-    hed = hediffs(s.call("jawa/pawn_get", pawn=j)) if j else {}
+    pg = s.call("jawa/pawn_get", pawn=j) if j else {}
+    hed = hediffs(pg)
     fall = [k for k in hed if k and ("Fall" in k or "Bruise" in k or "Crack" in k)]
-    st = "UNMEASURED" if not (jp.get("success") and jin.get("success") and rj) else (
+    hed_read = s.mock or pg.get("success") is True       # an unread pawn lists no hediffs: that is no "no fall"
+    st = "UNMEASURED" if not (jp.get("success") and jin.get("success") and rj and hed_read) else (
         "PASS" if (rj.get("depth") or 0) > 0 and not fall else "FAIL")
     s.row("B4_access_jump_pack_in_no_fall", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A3", st, "MOD" if st != "UNMEASURED" else "HARNESS",
           dict(pack=str(jp)[:120], jump=str(jin)[:160], pawn=rj, hediffs=hed,
@@ -1219,11 +1221,13 @@ def g_grenade(s):
     r1 = s.call("jawa/explosion_at", at="%d,%d" % t, radius=1.9, damType="Bomb", damAmount=20)
     r2 = s.call("jawa/explosion_at", at="%d,%d" % o, radius=1.9, damType="Bomb", damAmount=20)
     yield Wait(5)
-    ht, ho = (hediffs(s.call("jawa/pawn_get", pawn=p)) if p else {} for p in (pt, po))
+    post_r = [s.call("jawa/pawn_get", pawn=p) if p else {} for p in (pt, po)]
+    post_read = s.mock or all(r.get("success") is True for r in post_r)    # an unread trench pawn reads as "unharmed"
+    ht, ho = (hediffs(r) for r in post_r)
     ht = {k: v - pre_t.get(k, 0.0) for k, v in ht.items() if v - pre_t.get(k, 0.0) > 1e-6}
     ho = {k: v - pre_o.get(k, 0.0) for k, v in ho.items() if v - pre_o.get(k, 0.0) > 1e-6}
     st, sum_t, sum_o = "UNMEASURED", sum(ht.values()), sum(ho.values())
-    if r1.get("success") and r2.get("success") and pt and po and sum_o > 0 and all(drafted) and placed and pre_read:
+    if r1.get("success") and r2.get("success") and pt and po and sum_o > 0 and all(drafted) and placed and pre_read and post_read:
         st = "PASS" if abs(sum_t - sum_o) <= max(2.0, 0.25 * sum_o) else "FAIL"
     s.row("B4_grenade_no_blast_cover", "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A4", st, "MOD" if st != "UNMEASURED" else "HARNESS",
           dict(trench=round(sum_t, 2), open=round(sum_o, 2), added=dict(trench=ht, open=ho), drafted=drafted, cells=cells,
@@ -1489,7 +1493,7 @@ def b5_cold_snap(s):
     st, cls, why = ice_verdict(cond_ok, temps, froze, thaw, same, sum(len(r) for r in canals),
                                melt_exp=melt_exp if froze is not None else None)
     unread_dl = not s.mock and any((x or {}).get("dl") is None for x in before + after)
-    if st == "PASS" and unread_dl:
+    if unread_dl and (st == "PASS" or why.startswith("the readout litres changed")):
         st, cls, why = "UNMEASURED", "HARNESS", "the readout litres were unread (before/after): 'unchanged' is no reading"
     if stale_ice:
         st, cls, why = "UNMEASURED", "HARNESS", "%d ThinIce squares were on the canals before the cold (an earlier B5 on this map)" % stale_ice
@@ -1657,7 +1661,8 @@ def b7_reload(s):
     if s.pawns.get("rescue"):
         r = s.climb(s.pawns["rescue"])
         s.row("B7_rescued_out_of_pit", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A4",
-              "UNMEASURED" if not r else ("PASS" if r.get("depth") == 0 else "FAIL"), "MOD" if r else "HARNESS", dict(downed=r), "B7")
+              "UNMEASURED" if not r or r.get("depth") is None else ("PASS" if r.get("depth") == 0 else "FAIL"),
+              "MOD" if r and r.get("depth") is not None else "HARNESS", dict(downed=r), "B7")
 
 
 # ============================================================================ B9 owner review
