@@ -1,0 +1,402 @@
+{
+ "open": {
+  "success": true,
+  "changed": true,
+  "requestedModId": "mod-settings:mandrake.rm.flowworks:ec74028bcbdab099",
+  "replaceExisting": true,
+  "closedExistingDialogCount": 0,
+  "message": "Opened mod settings dialog for 'mod-settings:mandrake.rm.flowworks:ec74028bcbdab099'.",
+  "mod": {
+   "modId": "mod-settings:mandrake.rm.flowworks:ec74028bcbdab099",
+   "packageId": "mandrake.rm.flowworks",
+   "packageIdPlayerFacing": "mandrake.rm.flowworks",
+   "name": "RimMandrake: FlowWorks",
+   "folderName": "FlowWorks",
+   "authors": "Mandrake",
+   "version": "1.0.0",
+   "rootDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks",
+   "handleType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksMod",
+   "handleTypeName": "RimMandrakeFlowWorksMod",
+   "settingsType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+   "settingsCategory": "FlowWorks: Excavation & Flow",
+   "hasSettingsWindow": true,
+   "hasPersistentState": true,
+   "supportsRead": true
+  },
+  "dialog": {
+   "windowType": "RimWorld.Dialog_ModSettings",
+   "windowId": 88,
+   "mod": {
+    "modId": "mod-settings:mandrake.rm.flowworks:ec74028bcbdab099",
+    "packageId": "mandrake.rm.flowworks",
+    "packageIdPlayerFacing": "mandrake.rm.flowworks",
+    "name": "RimMandrake: FlowWorks",
+    "folderName": "FlowWorks",
+    "authors": "Mandrake",
+    "version": "1.0.0",
+    "rootDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks",
+    "handleType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksMod",
+    "handleTypeName": "RimMandrakeFlowWorksMod",
+    "settingsType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+    "settingsCategory": "FlowWorks: Excavation & Flow",
+    "hasSettingsWindow": true,
+    "hasPersistentState": true,
+    "supportsRead": true
+   }
+  },
+  "before": {
+   "success": true,
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "nonImmediateDialogWindowOpen": true,
+   "currentWindowGetsInput": true,
+   "mouseObscuredNow": true,
+   "windowsForcePause": false,
+   "windowsPreventCameraMotion": false,
+   "windowsPreventSave": false,
+   "anyWindowAbsorbingAllInput": false,
+   "anySearchWidgetFocused": false,
+   "floatMenuOpen": false,
+   "windowCount": 4,
+   "focusedWindowType": "Verse.ImmediateWindow",
+   "topWindowType": "Verse.ImmediateWindow",
+   "mainTabOpen": false,
+   "windows": [
+    {
+     "index": 0,
+     "id": -1593759361,
+     "type": "Verse.ImmediateWindow",
+     "layer": "GameUI",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": true,
+     "rect": {
+      "x": 1635.0,
+      "y": 3.0,
+      "width": 196.0,
+      "height": 25.0
+     }
+    },
+    {
+     "index": 1,
+     "id": 82,
+     "type": "LudeonTK.Dialog_DevPalette",
+     "layer": "Dialog",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": false,
+     "rect": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 130.0,
+      "height": 82.0
+     }
+    },
+    {
+     "index": 2,
+     "id": -1594957055,
+     "type": "Verse.ImmediateWindow",
+     "layer": "Super",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": true,
+     "rect": {
+      "x": 134.0,
+      "y": 40.0,
+      "width": 1010.0,
+      "height": 26.0
+     }
+    },
+    {
+     "index": 3,
+     "id": -1594956985,
+     "type": "Verse.ImmediateWindow",
+     "layer": "Super",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": true,
+     "rect": {
+      "x": 134.0,
+      "y": 14.0,
+      "width": 1010.0,
+      "height": 26.0
+     }
+    }
+   ]
+  },
+  "after": {
+   "success": true,
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "nonImmediateDialogWindowOpen": true,
+   "currentWindowGetsInput": false,
+   "mouseObscuredNow": true,
+   "windowsForcePause": true,
+   "windowsPreventCameraMotion": true,
+   "windowsPreventSave": false,
+   "anyWindowAbsorbingAllInput": true,
+   "anySearchWidgetFocused": false,
+   "floatMenuOpen": false,
+   "windowCount": 5,
+   "focusedWindowType": "Verse.ImmediateWindow",
+   "topWindowType": "Verse.ImmediateWindow",
+   "mainTabOpen": false,
+   "windows": [
+    {
+     "index": 0,
+     "id": -1593759361,
+     "type": "Verse.ImmediateWindow",
+     "layer": "GameUI",
+     "isOpen": true,
+     "getsInput": false,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": true,
+     "rect": {
+      "x": 1635.0,
+      "y": 3.0,
+      "width": 196.0,
+      "height": 25.0
+     }
+    },
+    {
+     "index": 1,
+     "id": 82,
+     "type": "LudeonTK.Dialog_DevPalette",
+     "layer": "Dialog",
+     "isOpen": true,
+     "getsInput": false,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": false,
+     "rect": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 130.0,
+      "height": 82.0
+     }
+    },
+    {
+     "index": 2,
+     "id": 88,
+     "type": "RimWorld.Dialog_ModSettings",
+     "layer": "Dialog",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": true,
+     "closeOnCancel": true,
+     "forcePause": true,
+     "preventCameraMotion": true,
+     "absorbInputAroundWindow": true,
+     "drawInScreenshotMode": true,
+     "semanticKind": "mod_settings_dialog",
+     "semanticDetails": {
+      "windowType": "RimWorld.Dialog_ModSettings",
+      "windowId": 88,
+      "mod": {
+       "modId": "mod-settings:mandrake.rm.flowworks:ec74028bcbdab099",
+       "packageId": "mandrake.rm.flowworks",
+       "packageIdPlayerFacing": "mandrake.rm.flowworks",
+       "name": "RimMandrake: FlowWorks",
+       "folderName": "FlowWorks",
+       "authors": "Mandrake",
+       "version": "1.0.0",
+       "rootDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks",
+       "handleType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksMod",
+       "handleTypeName": "RimMandrakeFlowWorksMod",
+       "settingsType": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+       "settingsCategory": "FlowWorks: Excavation & Flow",
+       "hasSettingsWindow": true,
+       "hasPersistentState": true,
+       "supportsRead": true
+      }
+     },
+     "rect": {
+      "x": 1283.0,
+      "y": 563.0,
+      "width": 900.0,
+      "height": 700.0
+     }
+    },
+    {
+     "index": 3,
+     "id": -1594957055,
+     "type": "Verse.ImmediateWindow",
+     "layer": "Super",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": true,
+     "rect": {
+      "x": 134.0,
+      "y": 40.0,
+      "width": 1010.0,
+      "height": 26.0
+     }
+    },
+    {
+     "index": 4,
+     "id": -1594956985,
+     "type": "Verse.ImmediateWindow",
+     "layer": "Super",
+     "isOpen": true,
+     "getsInput": true,
+     "closeOnAccept": false,
+     "closeOnCancel": false,
+     "forcePause": false,
+     "preventCameraMotion": false,
+     "absorbInputAroundWindow": false,
+     "drawInScreenshotMode": true,
+     "rect": {
+      "x": 134.0,
+      "y": 14.0,
+      "width": 1010.0,
+      "height": 26.0
+     }
+    }
+   ]
+  },
+  "operation": {
+   "OperationId": "op_8ea19313d313453da3c022cd7e8db1d0",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 2
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 1
+  }
+ },
+ "surfaces": [
+  "Verse.GizmoGridDrawer",
+  "Verse.ImmediateWindow",
+  "LudeonTK.Dialog_DevPalette",
+  "RimWorld.Dialog_ModSettings",
+  "Verse.ImmediateWindow",
+  "Verse.ImmediateWindow"
+ ],
+ "fields": [
+  {
+   "targetId": "ui-element:49:4:7",
+   "kind": "text_field",
+   "screenRect": {
+    "x": 1301.0,
+    "y": 621.0,
+    "width": 840.0,
+    "height": 22.0
+   },
+   "text": null
+  },
+  {
+   "targetId": "ui-element:49:4:9",
+   "kind": "text_field",
+   "screenRect": {
+    "x": 1301.0,
+    "y": 621.0,
+    "width": 840.0,
+    "height": 22.0
+   },
+   "text": null
+  },
+  {
+   "targetId": "ui-element:49:4:11",
+   "kind": "text_field",
+   "screenRect": {
+    "x": 1721.0,
+    "y": 621.0,
+    "width": 420.0,
+    "height": 22.0
+   },
+   "text": null
+  }
+ ],
+ "type": {
+  "success": true,
+  "command": "set_text_field",
+  "targetId": "ui-element:49:4:11",
+  "mode": "instant",
+  "requestedText": "network",
+  "finalValue": "network",
+  "typedCharacters": 0,
+  "message": "Replaced the text field value through the live widget path.",
+  "operation": {
+   "OperationId": "op_d625ed2499a14ae1a4398b9ad5e529d9",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 29
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 1
+  }
+ },
+ "labelsTopDown": [
+  "FlowWorks: Excavation & Flow",
+  "Search settings",
+  "Reset all to defaults",
+  "- Water engine: flow and levelling",
+  "Reset this section to defaults",
+  "Depth engine",
+  "Flow pulse: every 4.2 s of game time",
+  "Flow pulse: every 4.2 s of game time",
+  "How often liquid levels itself out. There is no per-tick fluid simulation here and there will not be one \u2014 flow happens on this pulse and nowhere else. A shorter pulse means livelier water and more work per second.",
+  "How often liquid levels itself out. There is no per-tick fluid simulation here and there will not be one \u2014 flow happens on this pulse and nowhere else. A shorter pulse means livelier water and more work per second.",
+  "Flow per pulse: 0.5 m of water per square",
+  "Flow per pulse: 0.5 m of water per square",
+  "How much depth of water one square can take in from its neighbours each pulse. Low reads as thick and slow; high reads as water.",
+  "How much depth of water one square can take in from its neighbours each pulse. Low reads as thick and slow; high reads as water.",
+  "Largest network worked as one piece: 6000 squares",
+  "Largest network worked as one piece: 6000 squares",
+  "A connected canal network bigger than this is worked in pieces of this size each pulse. Higher costs more work in one pulse on a very large network; it changes nothing for a network smaller than it. Takes effect on the next pulse.",
+  "A connected canal network bigger than this is worked in pieces of this size each pulse. Higher costs more work in one pulse on a very large network; it changes nothing for a network smaller than it. Takes effect on the next pulse.",
+  "Liquid crosses between the pieces of a huge network",
+  "A dug square holds water up to its brim, half a metre (1,000 litres) for every half-metre it was dug, and shows the look of how deep the water in it really is. Burning takes the same water away at its own rate, so a deeper channel burns longer.",
+  "A dug square holds water up to its brim, half a metre (1,000 litres) for every half-metre it was dug, and shows the look of how deep the water in it really is. Burning takes the same water away at its own rate, so a deeper channel burns longer.",
+  "Sources are terrain, not buildings: a natural liquid body is itself the source \u2014 a deep square that is already full, which is why it spills into any shallower channel dug at its edge. There is nothing to place and nothing to tune.",
+  "Sources are terrain, not buildings: a natural liquid body is itself the source \u2014 a deep square that is already full, which is why it spills into any shallower channel dug at its edge. There is nothing to place and nothing to tune.",
+  "Liquids that can fill a cut (off: nothing pours that liquid into a cut \u2014 pump, drill or any other source; what already stands in one stays):",
+  "Liquids that can fill a cut (off: nothing pours that liquid into a cut \u2014 pump, drill or any other source; what already stands in one stays):",
+  "Close"
+ ],
+ "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\belt_bleed_search_1792704619.png",
+ "clear": true,
+ "close": true
+}
