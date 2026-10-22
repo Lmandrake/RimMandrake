@@ -92,12 +92,13 @@ ROW_SHOWS = {
 # bars only an extension chain claims (selftest_extensions asserts this list is exactly the difference)
 EXTENSION_ONLY_BARS = ["canal_fire_reaches_reservoir", "reservoir_recharge_progress_visible", "sluice_gate_state_legible",
                        "spikes_read_distinct", "still_water_one_surface_height",
-                       # the 16 bars accepted at the 2026-10-20 sitting: claimed by UNMEASURED live components only
-                       "climbing_gear_reads_as_kit", "deep_water_pawn_swims", "geared_pawn_climbs_out",
-                       "geared_pawn_scales_built_wall", "half_metre_water_reads_as_silt", "jump_into_pit_lands_unhurt",
-                       "limitless_body_marked", "pawn_walks_under_deck", "pipe_meets_building_centre",
+                       # of the 16 bars accepted at the 2026-10-20 sitting, 5 now rest on driver rows (DRIVER_BAR_ROWS); these 11
+                       # are claimed by UNMEASURED live components only: no existing driver row measures them
+                       "climbing_gear_reads_as_kit", "deep_water_pawn_swims",
+                       "geared_pawn_scales_built_wall", "half_metre_water_reads_as_silt",
+                       "pipe_meets_building_centre",
                        "pit_cover_unlike_bridge", "portable_ladder_leans_on_its_wall", "pump_hose_joins_at_side_port",
-                       "raiders_never_shelter_in_a_cage", "suspension_bridge_reads_hung", "trench_wall_cover_shown",
+                       "raiders_never_shelter_in_a_cage", "suspension_bridge_reads_hung",
                        "wall_ladder_rides_on_rails"]
 
 # core row -> the Mod Settings toggle it flips (both sides proven in the same row or its pair)
@@ -448,6 +449,57 @@ def ladder_hung_on_wall(t):
                                     "(PIT_LADDER_REDRAW_HUNG_ON_THE_WALL; review map hold_ladder / hold_ladder_raised)")
 
 
+# North-star bars that rest on rows an existing live driver ALREADY measures (K3, 2026-10-21): bar -> [(driver result row ids that
+# must ALL be PASS at the current mod hash and deployed DLL, why those rows are the bar)]. Read by _bar_chain(rows=...) through
+# driver_rows_at; no row at the current hash = UNMEASURED naming the driver, never PASS. Each id must exist in its driver (the
+# selftest greps the driver source). Look halves of a bar stay the human review sheet's; the rest of the 21 former extension-only
+# bars have NO measuring row in any driver yet (EXTENSION_ONLY_BARS says which).
+DRIVER_BAR_ROWS = {
+    "pawn_walks_under_deck": (("UND_floor_path_walks_under", "UND_both_arrive"), "suspension_bridge_proof.py",
+                              "a colonist on a trench floor walks to the far side of an RM_SuspensionBridge deck (production under-path found, "
+                              "position read from jawa/order_pawn)"),
+    "geared_pawn_climbs_out": (("B4_access_gear_climbs_sheer_4m", "B4_access_no_gear_stays_in"), "live_session.py",
+                               "a colonist wearing RM_ClimbingGear leaves a sheer 4 m pit, the gearless control stays in (depth read from game state)"),
+    "jump_into_pit_lands_unhurt": (("B4_access_jump_pack_in_no_fall",), "live_session.py",
+                                   "a jump-packed colonist lands in a pit with no fall hediff (the flyer/floater halves are the "
+                                   "offline PitTravel cases)"),
+    "limitless_body_marked": (("B2_readout_sea_never_dry", "B2_readout_drainable_not_endless"), "live_session.py",
+                              "an edge-touching painted sea reads 'Endless', a dug square, canal and pond do not"),
+    "trench_wall_cover_shown": (("TRENCH_square_on_hit_falls", "TRENCH_one_back_third"), "trench_cover_proof.py",
+                                "the hit-chance report of a shot at a colonist in a 1 m trench falls by the trench block (HitReportFor "
+                                "with the setting on vs off), square-on and one back from the lip"),
+}
+
+
+def _driver_bar_component(t, live_id, bar):
+    """One component `live_id` claiming `bar`, verdict from the driver rows DRIVER_BAR_ROWS names (see above)."""
+    ids, drv, what = DRIVER_BAR_ROWS[bar]
+    got = None
+    if t._guard():
+        from modcheck import status as _st  # noqa: E402
+        got = driver_rows_at(_st.mod_hash(HERE), dll_sha=repo_dll_sha256())
+    with t.component(live_id, shows=[bar]):
+        if t._guard():
+            miss = [i for i in ids if i not in got]
+            if miss:
+                raise ExpectationFailed("UNMEASURED: live check owed -- no %s result at the current mod hash and deployed DLL carries %s: "
+                                        "run `python.exe src/RimMandrake/FlowWorks/northstar/%s` (%s)" % (drv, ", ".join(miss), drv, what))
+            bad = [(i, got[i]) for i in ids if got[i][0].get("status") == "FAIL"]
+            if bad:
+                raise ExpectationFailed("[%s] %s: %s" % (bad[0][1][0].get("class"), bad[0][1][1], str(bad[0][1][0].get("detail"))[:600]))
+            unm = [(i, got[i]) for i in ids if got[i][0].get("status") != "PASS"]
+            if unm:
+                raise ExpectationFailed("UNMEASURED: %s %s [%s]: %s" % (unm[0][1][1], unm[0][1][0].get("status"), unm[0][1][0].get("class"),
+                                                                         str(unm[0][1][0].get("detail"))[:400]))
+    if got is not None:
+        c = t.components[-1]
+        for i in ids:
+            if i in got:
+                c.evidence.append({"call": "row %s (%s)" % (i, got[i][1]), "result": got[i][0]})
+        if c.verdict == "PASS":
+            c.detail = "; ".join("%s %s" % (got[i][1], i) for i in ids)[:380]
+
+
 def _bar_chain(t, ran_id, cases, live_id, bar, owed):
     """The 2026-10-20 bar-fix chains: the C# SelfTest cases that prove the mechanism offline, then ONE live component
     that claims the bar (shows=) and reports UNMEASURED naming the live check until a bridge session runs it (owed)."""
@@ -461,6 +513,10 @@ def _bar_chain(t, ran_id, cases, live_id, bar, owed):
                 if got.get(name) != "ok":
                     raise ExpectationFailed("%s: %s" % (name, got.get(name) or "case missing from the SelfTest output"))
     t.upstream_failed = False   # the live row only names what is owed: an offline FAIL above must not blank it
+    if bar in DRIVER_BAR_ROWS:  # a driver already measures this bar: read its rows (UNMEASURED until one ran at this hash)
+        _driver_bar_component(t, live_id, bar)
+        t.upstream_failed = False
+        return
     with t.component(live_id, shows=[bar]):
         if t._guard():
             raise ExpectationFailed("UNMEASURED: live check owed -- " + owed)
@@ -581,11 +637,10 @@ def trench_cover_and_raiders(t):
         if t._guard():
             _trench_cover_selftest()
     t.upstream_failed = False
-    with t.component("trench_cover_live", shows=["trench_wall_cover_shown"]):
-        if t._guard():
-            raise ExpectationFailed("UNMEASURED: live check owed -- a raider aiming at a colonist waist-deep in a 1 m hole "
-                                    "and at one chest-deep in a 1.5 m hole: the hit-chance breakdown shows a 'trench wall' "
-                                    "cover line, larger for the chest-deep one (TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT)")
+    # trench_cover_proof.py's square-on and one-back hit-report rows (DRIVER_BAR_ROWS); the chest-deep 1.5 m hole and the
+    # breakdown's drawn text line are still the look half (human review sheet)
+    _driver_bar_component(t, "trench_cover_live", "trench_wall_cover_shown")
+    t.upstream_failed = False
     # the cage guard (RM_TrenchCover.IsCageFor, setting trenchAiAvoidsCages) has NO offline case yet: the live read is all of it
     with t.component("trench_cage_live", shows=["raiders_never_shelter_in_a_cage"]):
         if t._guard():
@@ -861,7 +916,8 @@ def container_styles(t):
 # them: across every result made AT the current mod hash, the newest row per id wins (a later FAIL overrides an earlier PASS);
 # a row no such result carries is UNMEASURED naming the driver. T21 / T22 are thirst rows the sprinkler driver measures, so
 # both chains read one pool. Same contract as core_live_rows: never PASS from a stale or missing result.
-DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json", "lines_result_*.json")
+DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json", "lines_result_*.json",
+                  "suspension_bridge_result_*.json", "trench_cover_proof_result_*.json", "live_session_result_*.json")
 DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
 
 
