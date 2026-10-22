@@ -169,7 +169,7 @@
         <label>varactyl chick</label>
         <labelPlural>varactyl chicks</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Varactyl/Varactyl_m</texPath>
+          <texPath>swanimals/Varactyl/Varactyl_f</texPath>   <!-- owner card 2026-10-22: male uses the female art -->
           <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -191,7 +191,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Varactyl/Varactyl_m</texPath>
+          <texPath>swanimals/Varactyl/Varactyl_f</texPath>   <!-- owner card 2026-10-22: male uses the female art -->
           <drawSize>3.75</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -213,7 +213,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Varactyl/Varactyl_m</texPath>
+          <texPath>swanimals/Varactyl/Varactyl_f</texPath>   <!-- owner card 2026-10-22: male uses the female art -->
           <drawSize>6</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
