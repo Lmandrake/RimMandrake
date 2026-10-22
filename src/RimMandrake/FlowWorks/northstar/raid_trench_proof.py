@@ -162,6 +162,8 @@ def _run(argv, hold):
     ap.add_argument("--ticks", type=int, default=15000)
     ap.add_argument("--jump-packs", action="store_true", help="--direct only: every gunner wears Apparel_PackJump "
                     "(RAIDERS_TRENCH A4: a jump-pack raider jumps the trench and lands on its feet)")
+    ap.add_argument("--preladder", action="store_true", help="--direct only: the raid's own scaling ladders already stand on "
+                    "both walls on the east row (TRENCH_CROSSING A3: it walks straight across); colonists boxed")
     ap.add_argument("--depth", type=int, default=4, help="ring depth in notches (4 = 2 m; 8 = 4 m, past the 3 m portable "
                     "ladder reach: RAIDERS_TRENCH A3 expects a fill causeway)")
     ap.add_argument("--direct", action="store_true", help="spawn 6 pirates 30 squares east into LordJob_AssaultColony "
@@ -235,7 +237,7 @@ def _run(argv, hold):
     cols = B.probe_of(HPROBE, "colonists").get("pawns") or []
     for i, p in enumerate(cols):
         B.probe_of(HPROBE, "pawn:%d=tp:%d,%d" % (p["id"], c[0] - 2 + (i % 4), c[1] + (i // 4)))
-    if a.jump_packs:
+    if a.jump_packs or a.preladder:
         # SITE (belt live 2026-10-22, first --jump-packs run): the gunners shot every island colonist down across the moat by
         # t+4000, after which RM_RaiderTrench.TargetFor has no free colonist and nobody crosses. The colonists stand inside a
         # closed granite box (Chebyshev 3), out of sight, as drawbridge_proof's RAID_UP does.
@@ -280,6 +282,10 @@ def _run(argv, hold):
         for kind, n in (("Mercenary_Gunner", 4), ("Mercenary_Slasher", 2)):
             sp = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0] + 30, z=c[1], faction=fac, count=n) or {}
             ids += [str(p_.get("id")) for p_ in sp.get("pawns") or []]
+        if a.preladder:
+            pre = "RM_LadderPortable:%d,%d,1;RM_LadderPortable:%d,%d,3" % (c[0] + 6, c[1], c[0] + 5, c[1])   # outer wall faces the east bank, inner the island
+            res["preladder"] = str(B.call("jawa/build_batch", ops=pre, faction=fac, wipeExisting=False) or {})[:300]
+            adv(70)
         if a.jump_packs:
             for i_ in ids:
                 B.call("jawa/pawn_gear", pawn=i_, action="wear", **{"def": "Apparel_PackJump"})
@@ -356,7 +362,7 @@ def _run(argv, hold):
         ms = "PASS"
     else:
         # a jump-pack crossing is legal too (A4): with --jump-packs worn the mask question is masked as by a ladder
-        ms = "UNMEASURED" if (ways or a.jump_packs) else "FAIL"
+        ms = "UNMEASURED" if (ways or a.jump_packs or a.preladder) else "FAIL"
     row("MASKSWAP_no_wall_crossing", ms,
         {"raidersWithin15": cameNear, "islandSealed": sealed, "sampledOnIslandOrTrench": crossed, "churnRebuilds": k,
          "raiderWays": ways, "caveat": "sampled every %d ticks; never seen, not proven impossible; a crossing over the raid's "
@@ -395,7 +401,14 @@ def _run(argv, hold):
         row("RAID_JUMP_LANDS_UNHURT", st_j, {"onIsland": det["onIsland"], "fellOnTheWay": fell, "raiderWays": ways,
                                              "filledSquares": filled, "recentDescents": desc[-8:],
                                              "bar": "a raider on the island with no ladder/fill and no descent of his recorded"})
-    if a.jump_packs:
+    if a.preladder:
+        # TRENCH_CROSSING A3: with both walls laddered beforehand the raid crosses on them -- a raider on the island and no
+        # extra ladder set (the two pre-placed ones are the only raider ways)
+        st_p = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" else
+                "PASS" if det["onIsland"] and len(ways) <= 2 else "FAIL")
+        row("RAID_PRELADDERED_CROSSES", st_p, {"onIsland": det["onIsland"], "inTrench": det["inTrench"], "raiderWays": ways,
+                                               "preladder": res.get("preladder"), "ticksWatched": det.get("ticksWatched")})
+    if a.jump_packs or a.preladder:
         a2 = "UNMEASURED"       # jump packs come first in the owner's order: ladders/fill are not asked of this run
     row("RAID_LADDER_BREACH" if a.depth <= 6 else "RAID_FILL_CAUSEWAY", a2,
         {"onIsland": det["onIsland"], "inTrench": det["inTrench"], "raiderWays": ways, "filledSquares": filled,
