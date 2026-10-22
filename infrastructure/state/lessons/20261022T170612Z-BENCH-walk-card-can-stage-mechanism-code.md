@@ -1,0 +1,1 @@
+A walk card can stage a mechanism the code does not have: walk stop 6 (C7) expects three Store tanks joined by pipe to move to one level, but RM_LiquidNetKernel.SettlePlan says Store tanks only buffer and RM_Levelling links only open hose ends. Before a card asks the owner about a behaviour, find the code path that produces it (or a proof row that saw it).
