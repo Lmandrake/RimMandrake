@@ -1,0 +1,1 @@
+art.py enact skips a picked picture that already ships at ANOTHER slot (live_anywhere): a male-lane pick of a female render (Torton B, picks_dessicated 2026-10-22) installed only its south and left the male a mixed A/B set. After enact, audit every pick per facing against the slot it was picked for (snapshot graphic_of), not enact's summary.
