@@ -1,0 +1,132 @@
+{
+ "biome": "SUBJECTS_facings_regen_round2",
+ "built": "2026-10-22T00:32:35-0700",
+ "census": "Transient/biome_ffar/facings_regen_round2.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 325 active",
+ "rows": {
+  "RSW_Strill": {
+   "columns": {
+    "A": {
+     "east": "ec565bbff9c2eb0522dbf9cd8d070533f87bc9452e5eb250b92786afa5150900",
+     "north": "bf77464493a91fa96ecc6ec59ce00ae2d1c3b855b5ecdb7a48fbc38eb1d21d58",
+     "south": "9b0f6597c2a8bf56569b4da4e5309cb8159f7f52af52632bcce2727dd97a6f0b"
+    },
+    "B": {
+     "south": "76e6fb19fbba2fdf9f5223ba3c51042cf485462e9577442ce0de0b8029ac7f4a"
+    },
+    "C": {
+     "1_east": "cccf13c2b59f563c280b591a8e0a4a2d5fc7e4a3039d2967bfeaf797764f3b02",
+     "1_north": "e550de2a8819d928ae04d9cba755b5acaa704d9dec0681e600328d77dd5b7725",
+     "1_south": "fa77dce9932ae766460a02a8d420841697c051563d290f5535af8124275026f1"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Strill/Strill",
+    "B": "swanimals/Strill/Strill",
+    "C": "_flip:swanimals/Strill/Strill_Flying_"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facreg2_strill_south_v1",
+    "C": "IN GAME \u2014 Strill_Flying_"
+   },
+   "pools": [
+    "swanimals/Strill/Strill"
+   ],
+   "res": "swanimals/Strill/Strill",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "strill"
+  },
+  "RSW_Whisperbird": {
+   "columns": {
+    "A": {
+     "east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235",
+     "north": "ef8cec0cad2b4f9a66524bcf2eb484c8ef9036a3e3f0326d173520a2eeda4f2a",
+     "south": "33ef93331abf8795f3a1216d16f88d32bb76c234ca9cc85fa1fa07cf803a14d2"
+    },
+    "B": {
+     "1_east": "cfbef2bcdeb097facae3eca05f3d791ec6c314edcb43200d7bef82dfd8fbca7b",
+     "1_north": "1901d1e16aa3f7bd26d8edbe3cc5da773fcc864a55eb4c228cc774e8b6d21b8b",
+     "1_south": "560c5d43580364b7067f6204298c7be10de1d6233e23e75d8bc616f25143f60a",
+     "2_east": "e6c2c63e3f9c769f926256bb18d5e4c1d43b5b0331a2aaa5632e860e33044084",
+     "2_north": "c19216898050d4f426edb2526f8b55de2706f20878c81ef452413b60199f9713",
+     "2_south": "a65f0c17bb6e0503a4e76236267656e53a6e2b1b551b2835b78ea5bbcfd5d936",
+     "3_east": "d9e083e2e93074a99dd7e06c27dd59b2a9361844b5c6ea924e616632ae7e391b",
+     "3_north": "4418d65507ee0c029465496fc6ada3d3ec9e5f1edb221da9c3357243eb2758cb",
+     "3_south": "2fa1bf0802767a0d3b1285cd77f59970564aca4e4c9c2b0efb73678495ed245d",
+     "4_east": "31a609a26eda7cabaacfe4a830d756e7e704ee54d6a28fbf208906da0dec28a2",
+     "4_north": "4bbb5e39e3a5622cd21e808e4932ce8d3ad32735b322b80a8b9afc4964d075db",
+     "4_south": "694a9ba42cde6e8cb552a5f7fb38e949be235d7a39789bced8258240d1b695a9"
+    },
+    "C": {
+     "1_east": "6771627d6e853227d900b33c41fe2319abd82ce20ffae7bd95a066cc02ee8c79",
+     "1_north": "95d617ed869d78d58068599935b88f6a13f2ed17878c217ba5741c3736700d16",
+     "1_south": "e2e7882e5a8bb2ea0bf0aa535a0f74e49d967c1b6a614bb43e27a1e9c4a83c12",
+     "2_east": "0505b3e35e0cbaa7ce583d15708c5fa4bd8a53c04b1276c79be465f525517ef1",
+     "2_north": "307ae7148eb044f8ea9bdc0cb1edd10ca4c9454d1e7ea936c8bb30e1e0516124",
+     "2_south": "6f9cf37fe90d0a182d615481d9e757b34f7ce135034abd2e04073fc5acbeac76",
+     "3_east": "6d93f7aebe5b444120319dba48e179a9f6d09fff83dd17157ffc85aa48004478",
+     "3_north": "5e1fd7b34081cebb0c18de30fc259019838e373d51421330b3087b22745aeb49",
+     "3_south": "936cf5006a2e2cf50f88958a24a56433d5daf4ad0b034c6e3b93d68c671c3ef5",
+     "4_east": "0505b3e35e0cbaa7ce583d15708c5fa4bd8a53c04b1276c79be465f525517ef1",
+     "4_north": "307ae7148eb044f8ea9bdc0cb1edd10ca4c9454d1e7ea936c8bb30e1e0516124",
+     "4_south": "6f9cf37fe90d0a182d615481d9e757b34f7ce135034abd2e04073fc5acbeac76"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "B": "_flip:swanimals/Whisperbird/Whisperbird_Flying_",
+    "C": "_flip:swanimals/Whisperbird/Whisperbird_Flying_"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "IN GAME \u2014 Whisperbird_Flying_",
+    "C": "flight frames whisperbird_modern_flying"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/Whisperbird/Whisperbird"
+   ],
+   "res": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "whisperbird"
+  },
+  "RSW_Yobshrimp": {
+   "columns": {
+    "A": {
+     "east": "32f1e9cc4e29c035e70c358b0a8dbda94f9dc7d3c7db0ddd834c7470d71e91cb",
+     "north": "f5d5871467a16e6f6e3a18e0ae9ad9f6d5dac0a174de959d557f486c16e8ea94",
+     "south": "9825f29a0ee9f21b3b6ff6d8b31bd60d84c2020116d7aa57dc99b26607771bcd",
+     "west": "c76b334a3564f934688523fa1f8d65152cc1707e591f8cdd48ea772d325130b8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [
+    "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp"
+   ],
+   "res": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "yobshrimp"
+  }
+ },
+ "sheetId": "facings_regen_round2_sheet_2026-10-22",
+ "snapshotId": "f2ba83b1b4208996"
+}

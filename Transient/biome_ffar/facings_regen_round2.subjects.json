@@ -1,0 +1,145 @@
+{
+ "schema": 1,
+ "generated": "2026-10-22T00:31:33-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_facings_regen_round2"
+ ],
+ "biomes": {
+  "SUBJECTS_facings_regen_round2": {
+   "label": "Facings regen, round 2",
+   "slug": "facings_regen_round2",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Facings regen, round 2 \u2014 game art",
+   "lead_html": "<p>Round 2 of the facings regen sheet: only what was redrawn after your 2026-10-21 rulings (older renders hidden, nothing purged). <b>Strill</b>: a new SOUTH only (compact stance, six legs close under the body), drawn from A's east; A's east and north stay. <b>Whisperbird</b>: north is now B (your A + B), installed; the FLIGHT frames are rebuilt the modern way: one still body from your A+B ground art, only the wings beat (4 frames each facing, body checked pixel-identical). Not installed until you pick. <b>Yobshrimp</b>: north is now B (your A + B), installed; shown so you see the combination. Varactyl is held, not on this sheet.</p>",
+   "rows": [
+    {
+     "key": "RSW_Strill",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "strill",
+     "defNames": [
+      "RSW_Strill"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "facreg2_strill_south_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/strill",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Strill/Strill",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Strill"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Strill found"
+     }
+    },
+    {
+     "key": "RSW_Whisperbird",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "whisperbird",
+     "defNames": [
+      "RSW_Whisperbird"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/whisperbird",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Whisperbird"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Whisperbird found"
+     }
+    },
+    {
+     "key": "RSW_Yobshrimp",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "yobshrimp",
+     "defNames": [
+      "RSW_Yobshrimp"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/paleyobshrimp",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Yobshrimp"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Yobshrimp found"
+     }
+    }
+   ],
+   "hide_sets": [
+    "facings_redraw_",
+    "standtall_b1",
+    "leaningscrub_",
+    "desertportb_strill",
+    "enact_24939e08",
+    "enact_followup_whisperbird",
+    "regen_ls2_canon",
+    "enact_23e1bbcd",
+    "enact_ec92b98b",
+    "history "
+   ]
+  }
+ }
+}
