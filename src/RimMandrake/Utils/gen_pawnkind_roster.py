@@ -500,8 +500,8 @@ KIT = {
       <li>ORMeleeSharp</li>
     </weaponTags>
     <apparelRequired>
-      <li>OuterRim_StormtrooperCuirass</li>
-      <li>OuterRim_StormtrooperHelmet</li>
+      <li MayRequire="Neronix17.OuterRim.GalacticEmpire">OuterRim_StormtrooperCuirass</li>
+      <li MayRequire="Neronix17.OuterRim.GalacticEmpire">OuterRim_StormtrooperHelmet</li>
     </apparelRequired>
     <apparelTags>
       <li>ImperialStormtrooper</li>
@@ -512,7 +512,7 @@ KIT = {
          class resolves). severityRange matches the base trooper, not a
          specialty tier. -->
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_PawnKindExtended">
+      <li MayRequire="neronix17.toolbox" Class="TabulaRasa.DefModExt_PawnKindExtended">
         <additionalHediffs>
           <li>
             <hediff>OuterRim_StormtrooperTraining</hediff>
@@ -562,9 +562,9 @@ KIT = {
       <li>ORMeleeSharp</li>
     </weaponTags>
     <apparelRequired>
-      <li>OuterRim_ImperialArmyCuirass</li>
-      <li>OuterRim_ImperialArmyHelmet</li>
-      <li>OuterRim_ImperialArmyPauldrons</li>
+      <li MayRequire="Neronix17.OuterRim.GalacticEmpire">OuterRim_ImperialArmyCuirass</li>
+      <li MayRequire="Neronix17.OuterRim.GalacticEmpire">OuterRim_ImperialArmyHelmet</li>
+      <li MayRequire="Neronix17.OuterRim.GalacticEmpire">OuterRim_ImperialArmyPauldrons</li>
     </apparelRequired>
     <apparelTags>
       <li>ImperialArmy</li>
@@ -572,7 +572,7 @@ KIT = {
     <!-- EMPIRE_TROOPER_TRAINING_1. severityRange matches OuterRim's specialty
          troopers (arty/jump/incinerator), the closest analog to a heavy. -->
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_PawnKindExtended">
+      <li MayRequire="neronix17.toolbox" Class="TabulaRasa.DefModExt_PawnKindExtended">
         <additionalHediffs>
           <li>
             <hediff>OuterRim_StormtrooperTraining</hediff>
@@ -615,8 +615,8 @@ KIT = {
       <li>ORMeleeSharp</li>
     </weaponTags>
     <apparelRequired>
-      <li>OuterRim_ImperialOfficerUniform</li>
-      <li>OuterRim_ImperialOfficerCap</li>
+      <li MayRequire="Neronix17.OuterRim.GalacticEmpire">OuterRim_ImperialOfficerUniform</li>
+      <li MayRequire="Neronix17.OuterRim.GalacticEmpire">OuterRim_ImperialOfficerCap</li>
     </apparelRequired>
     <apparelTags>
       <li>ImperialOfficer</li>
@@ -624,7 +624,7 @@ KIT = {
     <!-- EMPIRE_TROOPER_TRAINING_1. severityRange matches OuterRim's own
          OuterRim_ImperialOfficer, the direct analog for this kind's label. -->
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_PawnKindExtended">
+      <li MayRequire="neronix17.toolbox" Class="TabulaRasa.DefModExt_PawnKindExtended">
         <additionalHediffs>
           <li>
             <hediff>OuterRim_StormtrooperTraining</hediff>
@@ -665,8 +665,8 @@ KIT = {
       <li>ORMeleeSharp</li>
     </weaponTags>
     <apparelRequired>
-      <li>OuterRim_ImperialOfficerUniform_Black</li>
-      <li>OuterRim_ImperialOfficerCap_Black</li>
+      <li MayRequire="Neronix17.OuterRim.GalacticEmpire">OuterRim_ImperialOfficerUniform_Black</li>
+      <li MayRequire="Neronix17.OuterRim.GalacticEmpire">OuterRim_ImperialOfficerCap_Black</li>
     </apparelRequired>
     <apparelTags>
       <li>ImperialOfficer</li>
@@ -1304,7 +1304,7 @@ KIT = {
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
         <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
         <li><thingDef>Chemfuel</thingDef><countRange>10~30</countRange></li>
-        <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
+        <li MayRequire="Neronix17.OuterRim.Core"><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
@@ -1358,7 +1358,7 @@ KIT = {
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
         <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
         <li><thingDef>Chemfuel</thingDef><countRange>10~30</countRange></li>
-        <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
+        <li MayRequire="Neronix17.OuterRim.Core"><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
@@ -1411,7 +1411,7 @@ KIT = {
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
         <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
         <li><thingDef>Chemfuel</thingDef><countRange>10~30</countRange></li>
-        <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
+        <li MayRequire="Neronix17.OuterRim.Core"><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
@@ -1467,7 +1467,7 @@ KIT = {
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
         <li><thingDef>ComponentSpacer</thingDef><countRange>1~2</countRange></li>
         <li><thingDef>Chemfuel</thingDef><countRange>10~30</countRange></li>
-        <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
+        <li MayRequire="Neronix17.OuterRim.Core"><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <!-- oxidised bronze — owner. Droids should read as MADE, not dressed; bronze also keeps them distinct from the Junkers' rust -->
@@ -2377,7 +2377,7 @@ KIT = {
       <li>KotORRanged_strong</li>
     </weaponTags>
     <apparelRequired>
-      <li>guy762_MandoArmor_battle</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_MandoArmor_battle</li>
       <li>guy762_MandoHelmet_supercom</li>
     </apparelRequired>
       <!-- professional mercenaries: combat drugs, real medicine, and paid in silver -->
@@ -2518,8 +2518,8 @@ KIT = {
     </weaponTags>
     <maxApparelQuality>Poor</maxApparelQuality>
       <apparelRequired>
-      <li>guy762_Robes_jawa</li>
-      <li>guy762_JawaHood</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_Robes_jawa</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_JawaHood</li>
     </apparelRequired>
     <apparelTags>
       <li>SaV_apparel_jawa</li>
@@ -2534,7 +2534,7 @@ KIT = {
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
         <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
         <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
-        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
+        <li MayRequire="mandrake.rsw.armoury"><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <!-- dusty dark brown — owner, the Jawa colour -->
@@ -2584,8 +2584,8 @@ KIT = {
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
       <apparelRequired>
-      <li>guy762_Robes_jawa</li>
-      <li>guy762_JawaHood</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_Robes_jawa</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_JawaHood</li>
     </apparelRequired>
     <apparelTags>
       <li>SaV_apparel_jawa</li>
@@ -2600,7 +2600,7 @@ KIT = {
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
         <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
         <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
-        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
+        <li MayRequire="mandrake.rsw.armoury"><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <!-- dusty dark brown — owner, the Jawa colour -->
@@ -2641,8 +2641,8 @@ KIT = {
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
       <apparelRequired>
-      <li>guy762_Robes_jawa</li>
-      <li>guy762_JawaHood</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_Robes_jawa</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_JawaHood</li>
     </apparelRequired>
     <apparelTags>
       <li>SaV_apparel_jawa</li>
@@ -2657,7 +2657,7 @@ KIT = {
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
         <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
         <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
-        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
+        <li MayRequire="mandrake.rsw.armoury"><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <!-- dusty dark brown — owner, the Jawa colour -->
@@ -2698,8 +2698,8 @@ KIT = {
     </weaponTags>
     <maxApparelQuality>Good</maxApparelQuality>
       <apparelRequired>
-      <li>guy762_Robes_jawa</li>
-      <li>guy762_JawaHood</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_Robes_jawa</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_JawaHood</li>
     </apparelRequired>
     <apparelTags>
       <li>SaV_apparel_jawa</li>
@@ -2714,7 +2714,7 @@ KIT = {
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
         <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
         <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
-        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
+        <li MayRequire="mandrake.rsw.armoury"><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
         <li><thingDef>Silver</thingDef><countRange>60~150</countRange></li>
         <li><thingDef>ComponentSpacer</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
@@ -2764,7 +2764,7 @@ KIT = {
       <subOptionsChooseOne>
         <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
-        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li MayRequire="mandrake.rsw.armoury"><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
@@ -2801,9 +2801,9 @@ KIT = {
       <li>KotORRanged_weak</li>
     </weaponTags>
     <apparelRequired>
-      <li>VFEP_WarcasketHelmet_Warcasket</li>
-      <li>VFEP_Warcasket_Warcasket</li>
-      <li>VFEP_WarcasketShoulders_Warcasket</li>
+      <li MayRequire="OskarPotocki.VFE.Pirates">VFEP_WarcasketHelmet_Warcasket</li>
+      <li MayRequire="OskarPotocki.VFE.Pirates">VFEP_Warcasket_Warcasket</li>
+      <li MayRequire="OskarPotocki.VFE.Pirates">VFEP_WarcasketShoulders_Warcasket</li>
     </apparelRequired>
     <apparelTags>
       <li>WarcasketAll</li>
@@ -2814,7 +2814,7 @@ KIT = {
       <subOptionsChooseOne>
         <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
-        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li MayRequire="mandrake.rsw.armoury"><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
@@ -2860,7 +2860,7 @@ KIT = {
       <subOptionsChooseOne>
         <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
-        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li MayRequire="mandrake.rsw.armoury"><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
@@ -2905,15 +2905,15 @@ KIT = {
       <subOptionsChooseOne>
         <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
-        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li MayRequire="mandrake.rsw.armoury"><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
-        <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~2</countRange></li>
+        <li MayRequire="Neronix17.OuterRim.Core"><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~2</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <apparelRequired>
-      <li>VFEP_Warcasket_Warcasket</li>
-      <li>VFEP_WarcasketShoulders_Warcasket</li>
-      <li>VFEP_WarcasketHelmet_Warcasket</li>
+      <li MayRequire="OskarPotocki.VFE.Pirates">VFEP_Warcasket_Warcasket</li>
+      <li MayRequire="OskarPotocki.VFE.Pirates">VFEP_WarcasketShoulders_Warcasket</li>
+      <li MayRequire="OskarPotocki.VFE.Pirates">VFEP_WarcasketHelmet_Warcasket</li>
     </apparelRequired>
       <!-- design: 'max Awful->Poor on WEAPONS; armour UNCLAMPED'. That asymmetry is the faction:
          the armour was cut off a body and the gun was not. Apparel is deliberately left

@@ -353,6 +353,15 @@ def compute_hutt_extraction_offer(hutt_interest, hutt_goodwill):
     }
 
 
+def _count_matched(things, defname):
+    """countMatched of a list_things reply. A reply without it (tool refused / failed) is UNMEASURED, never 0:
+    a false 0 reads as the whole stock being sold on that poll and bumps Heat/Regard."""
+    n = things.get("countMatched") if isinstance(things, dict) else None
+    if not isinstance(n, int):
+        raise RuntimeError("jawa/list_things %s returned no countMatched (UNMEASURED): %r" % (defname, str(things)[:160]))
+    return n
+
+
 def _sale_heat(delta_lost):
     """Sublinear Heat bump for a quantity apparently lost from the colony
     ledger -- kyber spec §3: 'scale with quantity, sublinearly.'"""
@@ -390,7 +399,8 @@ def load_story_flags(path):
         return defaults, False
     p = Path(path)
     if not p.exists():
-        return defaults, False
+        # a path that was NAMED but is missing must not read as "no flags file" (would run on defaults silently)
+        raise SystemExit("gm_blackboard_shadow: --story-flags-file %s does not exist" % path)
     with open(p, encoding="utf-8") as f:
         data = json.load(f)
     defaults.update({k: v for k, v in data.items() if k in defaults})
@@ -563,7 +573,7 @@ class ShadowBlackboard:
         kyber_per_def = {}
         for defname in KYBER_FAMILY_DEFNAMES:
             things = safe_call(rb, "jawa/list_things", {"defName": defname})
-            n = things.get("countMatched", 0)
+            n = _count_matched(things, defname)
             kyber_per_def[defname] = n
             kyber_total += n
 
@@ -588,7 +598,7 @@ class ShadowBlackboard:
         anomaly_per_def = {}
         for defname in ANOMALY_DEFNAMES:
             things = safe_call(rb, "jawa/list_things", {"defName": defname})
-            n = things.get("countMatched", 0)
+            n = _count_matched(things, defname)
             anomaly_per_def[defname] = n
             anomaly_total += n
 
