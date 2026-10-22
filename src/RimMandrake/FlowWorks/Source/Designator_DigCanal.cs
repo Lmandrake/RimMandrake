@@ -196,12 +196,16 @@ namespace RimMandrake.FlowWorks
 			var options = new System.Collections.Generic.List<FloatMenuOption>();
 			int cap = RM_DigLabor.DesignationCap;
 			int colonistCap = RM_ExcavationDepth.MaxDigDepth;
+			// DEEP_DIG_EXPLAIN_WAITING_ON_NO_DROID: say up front when nothing here can dig past the colonist limit
+			string machineNote = Alert_DeepDigWaitsForMachine.HasMachineDigger(Find.CurrentMap)
+				? "; machines only past " + RM_Volume.FormatFloorMetres(colonistCap)
+				: "; machines only past " + RM_Volume.FormatFloorMetres(colonistCap) + ", and you have none: it will wait";
 			for (int n = 1; n <= cap; n++)
 			{
 				int pick = n;
 				options.Add(new FloatMenuOption("Dig to " + RM_Volume.FormatFloorMetres(n)
 					+ " (" + RM_DigDepthMath.DiggerDays(RM_DigDepthMath.WorkToDig(0, n, RimMandrakeFlowWorksSettings.digCostRisesWithDepth)).ToString("0.#")
-					+ " digger-days a square of soil" + (n > colonistCap ? "; machines only past " + RM_Volume.FormatFloorMetres(colonistCap) : "") + ")", delegate
+					+ " digger-days a square of soil" + (n > colonistCap ? machineNote : "") + ")", delegate
 				{
 					chosenTarget = pick;
 					base.ProcessInput(ev);
