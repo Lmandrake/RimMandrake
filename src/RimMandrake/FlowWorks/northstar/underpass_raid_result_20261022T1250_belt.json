@@ -1,0 +1,333 @@
+{
+ "script": "underpass_raid_live.py",
+ "started": "2026-10-22T12:27:03",
+ "rows": [
+  {
+   "id": "UND_raiders_walk_under_moat",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD",
+   "detail": {
+    "bridge": "BUILD ok=True anchors=2 decks=2 blueprints=0 reason=-",
+    "under": [
+     [
+      180,
+      "Human28433",
+      [
+       52,
+       183
+      ]
+     ],
+     [
+      180,
+      "Human28438",
+      [
+       52,
+       184
+      ]
+     ],
+     [
+      240,
+      "Human28433",
+      [
+       52,
+       183
+      ]
+     ],
+     [
+      240,
+      "Human28438",
+      [
+       52,
+       184
+      ]
+     ],
+     [
+      300,
+      "Human28433",
+      [
+       52,
+       183
+      ]
+     ],
+     [
+      300,
+      "Human28438",
+      [
+       52,
+       184
+      ]
+     ]
+    ],
+    "pastTheBridge": [
+     [
+      660,
+      "Human28433",
+      [
+       55,
+       183
+      ]
+     ],
+     [
+      660,
+      "Human28438",
+      [
+       57,
+       184
+      ]
+     ]
+    ],
+    "moved": true,
+    "ticks": 660
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/underpass_1.json",
+  "origin": "40,180",
+  "fresh_map": true,
+  "ticks": 2400
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_GalledRhossak28308",
+    "RM_Garsulix28306",
+    "RM_Rhossak28307",
+    "RM_Zisska28301",
+    "RM_Zisska28302",
+    "RM_Zisska28303",
+    "RM_Zisska28304",
+    "RM_Zisska28305"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "trail": [
+  {
+   "t": 60,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      44,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      45,
+      184
+     ]
+    ]
+   ]
+  },
+  {
+   "t": 120,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      48,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      49,
+      184
+     ]
+    ]
+   ]
+  },
+  {
+   "t": 180,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      52,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      52,
+      184
+     ]
+    ]
+   ]
+  },
+  {
+   "t": 240,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      52,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      52,
+      184
+     ]
+    ]
+   ]
+  },
+  {
+   "t": 300,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      52,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      52,
+      184
+     ]
+    ]
+   ]
+  },
+  {
+   "t": 360,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      52,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      52,
+      184
+     ]
+    ]
+   ]
+  },
+  {
+   "t": 420,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      52,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      52,
+      184
+     ]
+    ]
+   ]
+  },
+  {
+   "t": 480,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      52,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      52,
+      184
+     ]
+    ]
+   ]
+  },
+  {
+   "t": 540,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      52,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      52,
+      184
+     ]
+    ]
+   ]
+  },
+  {
+   "t": 600,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      52,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      52,
+      184
+     ]
+    ]
+   ]
+  },
+  {
+   "t": 660,
+   "raiders": [
+    [
+     "Human28433",
+     [
+      55,
+      183
+     ]
+    ],
+    [
+     "Human28438",
+     [
+      57,
+      184
+     ]
+    ]
+   ]
+  }
+ ],
+ "finished": "2026-10-22T12:27:35"
+}
