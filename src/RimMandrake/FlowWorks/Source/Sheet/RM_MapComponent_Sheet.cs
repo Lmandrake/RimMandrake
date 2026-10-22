@@ -99,6 +99,7 @@ namespace RimMandrake.FlowWorks.Sheet
 			prm.MinReceiveDl = Math.Max(1, prm.RetentionDl / 2);
 			prm.SweepsPerPulse = Mathf.Clamp(RM_SheetSettings.sweepsPerPulse, 1, 12);
 			prm.DoorLeakPermille = Mathf.Clamp(RM_SheetSettings.doorLeakPercent, 0, 100) * 10;
+			float pulsesPerDay = GenDate.TicksPerDay / (float)RimMandrakeFlowWorksSettings.PulseIntervalTicks;
 			for (int k = 0; k < fluids.Count; k++)
 			{
 				FluidDef f = fluids[k];
@@ -107,6 +108,13 @@ namespace RimMandrake.FlowWorks.Sheet
 					? new FluidRule { InfiltrationPermille = 1000, EvaporationPermille = 1000, NeverFreezes = true }
 					: RM_SheetFluidMath.RuleFor(Burnable(f), f.hot, f.slipperiness > 0f, f.ticksPerTile, f.sheetSoakPercent,
 						f.sheetEvaporationPercent);
+				if (f != null && f.sheetBoilCmPerHour > 0f)
+				{
+					FluidRule r = world.Fluids[k + 1];
+					r.BoilMilliDl = RM_SheetFluidMath.BoilMilliDlPerPulse(f.sheetBoilCmPerHour, DlPerCm, pulsesPerDay);
+					r.BoilAboveDeciC = Mathf.RoundToInt(f.sheetBoilPointC * 10f);
+					world.Fluids[k + 1] = r;
+				}
 			}
 		}
 

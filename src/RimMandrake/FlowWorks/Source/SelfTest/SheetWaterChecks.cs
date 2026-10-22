@@ -636,6 +636,39 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(RM_SheetFluidMath.PutsOutFire(false) && !RM_SheetFluidMath.PutsOutFire(true), "only a liquid that does not burn puts fire out");
 			});
 
+			// fuel_spill_research.md (owner 2026-10-22: "realistic numbers ... if liquid propane or chemfuel (gasoline) or
+			// astrofuel (jet fuel) were spilled"): propane boils off on ground heat above -42 C, roof or not; a spill burns
+			// down at its fuel's real pool-fire regression rate
+			Case("Sheet_real_fuel_numbers_propane_boils_above_its_boiling_point_and_spills_burn_at_pool_fire_rates", () =>
+			{
+				int boil = RM_SheetFluidMath.BoilMilliDlPerPulse(2f, DlPerCm, 240f);
+				Assert(boil == 200 * DlPerCm, "2 cm an hour at 240 pulses a day is 0.2 cm a pulse: " + boil);
+				Assert(RM_SheetFluidMath.BoilMilliDlPerPulse(0f, DlPerCm, 240f) == 0, "a liquid that does not boil loses nothing to boiling");
+				foreach (int t in new[] { 200, -500 })
+				{
+					var w = new World(10, 3);
+					FluidRule pr = RM_SheetFluidMath.RuleFor(true, false, false, 60, 0, 0);
+					pr.BoilMilliDl = boil;
+					pr.BoilAboveDeciC = -420;
+					w.Fluids[Chemfuel] = pr;
+					for (int c = 0; c < w.TempDeciC.Length; c++) { w.TempDeciC[c] = t; w.SoakMilliDl[c] = 0; w.EvapMilliDl[c] = 0; }
+					var p = new Params();
+					var s = new State(10, 3, 5u);
+					ResolveSpills(s, w, p, new[] { Offer(3000, Chemfuel, Source.Flood, Idx(w, 4, 1)) });
+					Run(s, w, p, 200);
+					Assert(s.LedgerCloses, "the ledger closes while propane boils");
+					if (t > -420)
+						Assert(s.Evaporated == 3000 && s.WetCount == 0, "at 20 C (no air drying, no soak) the spill boils away entirely: " + s.Evaporated);
+					else
+						Assert(s.Evaporated == 0, "below -42 C liquid propane stays a pool: " + s.Evaporated);
+				}
+				int gas = RM_SheetFluidMath.SheetBurnTicksPerNotch(4f, 50, 2500, 1f);
+				Assert(gas == 5208, "gasoline 4 mm a game minute: a 50 cm notch in 125 game minutes = 5208 ticks, got " + gas);
+				Assert(RM_SheetFluidMath.SheetBurnTicksPerNotch(4f, 50, 2500, 2f) == 2604, "the burn-rate dial halves it at 2");
+				Assert(RM_SheetFluidMath.SheetBurnTicksPerNotch(8f, 50, 2500, 1f) < gas
+					&& RM_SheetFluidMath.SheetBurnTicksPerNotch(3f, 50, 2500, 1f) > gas, "propane burns faster than gasoline, jet fuel slower");
+			});
+
 			// D5: a burning spill loses liquid to the 'burned' exit, conserving the ledger to the dL; a square burned dry leaves
 			Case("Sheet_D5_fuel_burns_away_counted_and_the_front_runs_at_the_fuel_speed", () =>
 			{

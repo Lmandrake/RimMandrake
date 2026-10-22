@@ -168,7 +168,12 @@ namespace RimMandrake.FlowWorks.Sheet
 				}
 				else
 				{
-					int tpn = kind == RM_FuelBurn.Inferno
+					// a spill burns down at its fuel's real pool-fire rate when the FluidDef gives one (fuel_spill_research.md);
+					// the channel's rate otherwise
+					int tpn = f.sheetBurnMmPerMinute > 0f
+						? RM_SheetFluidMath.SheetBurnTicksPerNotch(f.sheetBurnMmPerMinute, RM_Volume.CentimetresPerNotch, GenDate.TicksPerHour,
+							kind == RM_FuelBurn.Inferno ? RimMandrakeFlowWorksSettings.chemfuelBurnRate : 1f)
+						: kind == RM_FuelBurn.Inferno
 						? RM_FuelFireMath.InfernoTicksPerLevelAt(RimMandrakeFlowWorksSettings.chemfuelBurnRate)
 						: RM_FireMath.TicksPerCanalLevel(RimMandrakeFlowWorksSettings.burnDaysPerNotch);
 					burnAcc.TryGetValue(i, out int acc);
