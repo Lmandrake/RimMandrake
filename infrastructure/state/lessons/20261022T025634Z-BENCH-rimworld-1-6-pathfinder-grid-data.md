@@ -1,0 +1,1 @@
+RimWorld 1.6 pathfinder grid data (walls, superdeep depth, deck) catch up only when the map TICKS: a FindPathNow/ProofPath read staged and taken while paused walked through just-built walls (found=True) and read found=False 10 ticks later. Tick ~10 after any walkability change before a path or job read (drawbridge LOWER_ONLY_FROM_WINCH, 2026-10-22).
