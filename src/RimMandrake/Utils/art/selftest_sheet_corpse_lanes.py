@@ -48,6 +48,14 @@ def main() -> int:
           == ["swanimals/FrogDog/FrogDog_Dessicated"], "per-facing jobs of one family open ONE lane")
     check(AS.corpse_lane_texpaths(["dessic_akk_dessicated_v1"], {"swanimals/Akk/Akk_Dessicated"}) == [],
           "a lane the row already has is not opened twice")
+    AS._FAM_TEX.update({"taozin_split_grub_v1": "Things/Pawn/Animal/RSW_TaozinGrub/RSW_TaozinGrub",
+                        "donorart_taozin_j_v1": "swanimals/Taozin/Taozin_j", "donorart_taozin_v1": "swanimals/Taozin/Taozin",
+                        "donorport_kaadu_v1": "swanimals/Kaadu/Kaadu"})
+    check(AS.filed_for_other_texture("taozin_split_grub_v1", "RSW_Taozin"), "a grub render is not the adult's (Taozin)")
+    check(AS.filed_for_other_texture("donorart_taozin_j_v1", "RSW_Taozin"), "a _j render is not the adult's")
+    check(not AS.filed_for_other_texture("donorart_taozin_v1", "RSW_Taozin"), "the adult's own render (old path) stays")
+    check(not AS.filed_for_other_texture("donorport_kaadu_v1", "Kaadu_m"), "a sexless render stays on a sexed lane")
+    check(not AS.filed_for_other_texture("unknown_v1", "RSW_Taozin"), "a job with no target_texpath stays")
     # build_row on the corpse lane keeps the corpse render joined by name; the body lane still drops it
     v = {"kind": "artpipe", "job": "dessic_akk_dessicated_v1", "facing": "?", "date": "2026-10-16", "prompt": "p",
          "res": None}
