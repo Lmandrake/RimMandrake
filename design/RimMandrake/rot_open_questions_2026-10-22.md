@@ -148,6 +148,8 @@ immunity). *Found rite*: a rite the clan discovers in a biome rather than starti
 **Recommended: 1** — the draught already gives players the purge, and your tabling reason (finish and check the
 biomes first) still holds tonight.
 
+**ANSWERED 2026-10-22 by question card: option 1, keep the Unjoining tabled.**
+
 ---
 
 ## Q5. The dustveil: a moth that does not fly, from a laboratory
@@ -172,6 +174,8 @@ fires when the creature's definition is touched; nobody has touched it since.
    new design and art; the silk's source changes.
 
 **Recommended: 1** — every half-measure leaves a known ruling broken, and the flip-book art is the only real cost.
+
+**ANSWERED 2026-10-22 by question card: option 1, make the dustveil fly, fungus-grown, no laboratory origin.** Build filed.
 
 ---
 
