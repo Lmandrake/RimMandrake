@@ -16,7 +16,12 @@ design/RimMandrake/flowworks_composite_review_scenarios_2026-10-21.md. Scenario 
     python3 src/RimMandrake/Utils/save_guard.py run --current-slot none -- \\
         python.exe src/RimMandrake/FlowWorks/northstar/scenarios_map.py --save --name RM_fw_scenarios_20261021
     python.exe .../scenarios_map.py --branch raid|rain [--name ...]      # branch saves (load the main save first)
-    python.exe .../scenarios_map.py --river --build                      # map R (river_site.py first): C1 + C11
+    # map R = a SECOND map in the same game (map C and its colonists stay): founds a mild river tile, builds C1 + C11
+    python.exe .../scenarios_map.py --river --build --fresh-map [--soak]  # -> review/scenarios/map_r_placed.json
+    python.exe .../scenarios_map.py --river --goto C1|C11|R1..R8          # switches to map R, frames
+    python.exe .../scenarios_map.py --river --labels                     # re-pin map R's labels (the save's sign
+                                                                         # sidecar holds the CURRENT map's labels only)
+    # every map-C --goto/--labels/--save/--soak switches back to map C first (ids from map_r_placed.json)
 
 Rules carried from the design (§2, GPT amendments): one clock (10:00, paused); every plot idle-stable until his first
 poke (its Start); the build's verify unpauses two in-game hours with nobody poking (--soak) and a plot that changed on
@@ -69,7 +74,14 @@ FREE = dict(rect=(110, 112, 40, 24),            # round the quicktest colonists 
                ("RM_ClimbingGear", 1, (127, 113)), ("RM_BarrelEmpty", 5, (129, 113))])
 BOARD = dict(rect=(12, 170, 40, 20))             # S0 status board: labels + one sign book
 STAGE0 = dict(rect=(62, 140, 8, 12))             # Stage 0 swim-out site (C3's pit geometry)
-SPECIAL = {"F": FREE["rect"], "S0": BOARD["rect"], "Z0": STAGE0["rect"]}
+# DB: the drawbridge PICTURE row (owner 2026-10-22: "Drawbriges need to be looked at in game"; 443912e4df: each part draws
+# its MATERIAL picture first, a look only as fallback). Timber and steel, each lowered and raised, over a dry 2 m ditch,
+# plus a closed timber gate and a closed steel gate (the closed Timber/Scrapper gate pictures were never picked).
+DBROW = dict(rect=(64, 168, 34, 16), ox=64, oz=168,
+             bridges=[(0, "timber", "", "lower"), (8, "timber", "", "raise"), (16, "steel", ";winch", "lower"),
+                      (24, "steel", ";winch", "raise")],
+             gates=[(2, "WoodLog"), (10, "Steel")])
+SPECIAL = {"F": FREE["rect"], "S0": BOARD["rect"], "Z0": STAGE0["rect"], "DB": DBROW["rect"]}
 CONDUITS = ("PowerConduit", "RM_UniversalPipe", "RM_PitGuardrail", "RM_PitCover_PlankLattice",
             "RM_PitCover_WovenScrap", "RM_PitCover_ReinforcedFrame")
 
@@ -343,10 +355,17 @@ def label_ops(placed, extra_board=True):
             "branch saves", CREAM, "medium")
         for i, sc in enumerate(SC.ALL):
             n_def = sum(1 for pc in sc["pieces"] if pc["status"] == "DEFERRED")
-            where = "map R" if sc["map"] == "R" else "--goto %s" % sc["id"]
+            where = "map R: --river --goto %s" % sc["id"] if sc["map"] == "R" else "--goto %s" % sc["id"]
             add(bx + bw // 2, bz + bh - 2 - i, "%s %s (%s): %d staged, %d DEFERRED" % (
                 sc["id"], sc["name"], where, sum(1 for pc in sc["pieces"] if pc["status"] == "staged"), n_def),
                 "", CREAM, "tiny")
+        ox, oz = DBROW["ox"], DBROW["oz"]
+        add(ox + 16, oz + 15, "DB  DRAWBRIDGE PICTURES", "timber and steel, lowered and raised; two closed gates. Each "
+            "part draws its MATERIAL picture; a look shows only where no picture exists", GOLD, "medium")
+        for dx, tier, w_, st in DBROW["bridges"]:
+            add(ox + dx + 2, oz + 9, "%s %s" % (tier, "raised" if st == "raise" else "lowered"), "", RUST, "tiny")
+        for dx, stuff in DBROW["gates"]:
+            add(ox + dx, oz + 13, "gate (%s), closed" % ("timber" if stuff == "WoodLog" else "steel"), "", RUST, "tiny")
         fx, fz, fw, fh = FREE["rect"]
         add(fx + fw // 2, fz + fh + 1, "F  FREE AREA", "steel, components, wood, granite, chemfuel, bottles, climbing "
             "gear (south edge)", RUST)
@@ -381,6 +400,11 @@ def sign_ops(placed, extra_board=True):
                               "Twelve working systems; every plot is still until your first poke. Raids and rain: "
                               "branch saves %s." % ", ".join(BRANCH_SAVE.values()), "", "walk C3 first (the maze)",
                               "", more="; ".join("%s %s" % (s["id"], s["name"]) for s in SC.ALL)))
+        L.append(RM.sign_book(DBROW["ox"], DBROW["oz"] + 14, "DB", "Drawbridge pictures",
+                              "Timber and steel drawbridges, lowered and raised, and two closed gates.",
+                              "each leaf, winch and gate draws its MATERIAL picture (timber/steel); a look is the "
+                              "fallback only", "lower/raise one at its winch; open a gate",
+                              "which pictures to keep, which to redraw"))
     return L
 
 
@@ -414,10 +438,15 @@ def review_class():
             B.call("jawa/review_label", action="clear", tag=TAG)
             for p in placed:
                 x, z, w, h = p["rect"]
-                # 2026-10-22 night walk (SITE): x-4, not x-2 -- a reel's outlet faces west on every rotation, so a reel at a plot's
-                # west edge needs ~3.5 cells for its lead-out + U-turn; C3's reel park met map limestone at x 8-9 ("no room for the
-                # straight lead-out"). Neighbouring plots stay >= 2 cells apart after the margin.
+                # 2026-10-22 night walk (SITE): x-4, not x-2 -- a reel built with no rotation faces WEST (its default; reels turn
+                # 4 ways since 73b8805755), so a reel at a plot's west edge needs ~3.5 cells for its lead-out + U-turn; C3's reel
+                # park met map limestone at x 8-9 ("no room for the straight lead-out"). Plots stay >= 2 cells apart.
                 rects = [(x - 4, z - 6, w + 8, h + 12)]
+                soil = None
+                if p["sc"]["map"] == "R":
+                    # map R: the margin stops at the plot's north edge (row z+h is the RIVER C1's intake, weir and pump touch),
+                    # and only the plot itself is repainted Soil (the anchor proved it land; a margin may hold a river bend)
+                    rects, soil = [(x - 4, z - 6, w + 8, h + 6)], "Soil:%d,%d,%d,%d" % (x, z, w, h)
                 e = p["sc"].get("edge_drain")
                 if e == "west":
                     rects.append((0, z, x, h))
@@ -435,7 +464,7 @@ def review_class():
                     for q in B.call("jawa/list_pawns", rect=rr, limit=200).get("pawns") or []:
                         B.call("jawa/set_pawn_faction", pawn=str(q.get("id")), faction="none")
                     B.call("jawa/destroy_batch", rects=rr, categories="All")
-                    B.call("jawa/set_terrain_batch", ops="Soil:" + rr)
+                    B.call("jawa/set_terrain_batch", ops=soil or "Soil:" + rr)
                     B.call("jawa/set_fog", action="unfog", rect=rr)
                     B.call("jawa/set_roof_batch", ops="None:" + rr)
                     for area in ("BuildRoof", "Home"):
@@ -622,6 +651,29 @@ def review_class():
                 self.notes.append("labels: %s" % json.dumps(r)[:300])
             return r
 
+        def drawbridge_row(self):
+            """DB: four drawbridges (timber/steel x lowered/raised) over dry 2 m ditches, two closed gates."""
+            ox, oz = DBROW["ox"], DBROW["oz"]
+            x, z, w, h = DBROW["rect"]
+            rr = "%d,%d,%d,%d" % (x, z, w, h)
+            self.call("jawa/destroy_batch", rects=rr, categories="All")
+            self.call("jawa/set_terrain_batch", ops="Soil:" + rr)
+            self.call("jawa/set_fog", action="unfog", rect=rr)
+            self.call("jawa/set_roof_batch", ops="None:" + rr)
+            for dx, tier, winch, state in DBROW["bridges"]:
+                bx, bz = ox + dx, oz + 6
+                for i in range(1, 4):
+                    for j in range(-2, 3):
+                        self.call("jawa/flowworks_excavation_drive", x=bx + i, z=bz + j, deepenLevels=4, setFill=-1)
+                self.static("DB", C.DPROOF, "ProofMakeDrawbridge", "%d,%d;%d,%d;%s;A%s" % (bx, bz, bx + 4, bz, tier, winch))
+                if winch:
+                    self.static("DB", C.DPROOF, "ProofWinchPower", "%d,%d;on" % (bx + 2, bz))
+                if state == "raise":
+                    self.static("DB", C.DPROOF, "ProofDevSet", "%d,%d;raise;instant" % (bx + 2, bz))
+            for dx, stuff in DBROW["gates"]:
+                self.call("jawa/build_batch", ops="RM_DrawbridgeGate:%d,%d" % (ox + dx, oz + 12), faction="player",
+                          wipeExisting=False, stuff=stuff)
+
         def free(self):
             x, z, w, h = FREE["rect"]
             self.call("jawa/destroy_batch", rects="%d,%d,%d,2" % (x, z, w), categories="All")
@@ -644,7 +696,7 @@ def review_class():
     return ScenarioReview
 
 
-def run_build(B, placed, log=None, fresh=False, soak=True):
+def run_build(B, placed, log=None, fresh=False, soak=True, only=None):
     """The whole map-C build on bridge B (live or mock). -> result dict."""
     from modcheck import reviewmap as RM
     R = review_class()(B, log)
@@ -655,6 +707,8 @@ def run_build(B, placed, log=None, fresh=False, soak=True):
     R.clear_plots(placed)
     ok_opt = R.build(placed)
     R.free()
+    if not only:
+        R.drawbridge_row()
     R.call("jawa/map_commit")
     B.ticks(2)
     R.call("rimworld/pause_game", pause=True)
@@ -671,8 +725,37 @@ def run_build(B, placed, log=None, fresh=False, soak=True):
                 labels=len(label_ops(placed).split("\n")), wall_s=round(time.time() - t0, 1), optional=sorted(ok_opt))
 
 
-def run_river(B, terrain, size, log=None):
-    """Map R: C1 on its bank anchor, C11 on the creek plan; labels + signs for both and the R stations."""
+MAP_R_PLACED = os.path.join(OUT, "map_r_placed.json")   # map ids + C1 + the C11 stations of the LAST map-R build
+
+
+def r_labels(c1, plan):
+    """Map R's label ops: C1's plot labels, the C11 headline and the R1-R8 station labels."""
+    import review_map_rivers as RV
+    from modcheck import reviewmap as RM
+    lab = label_ops([c1] if c1 else [], extra_board=False)
+    if plan:
+        c11 = SC.BY_ID["C11"]
+        x, z = plan[0][2]["label"]
+        sub = RM.sign_sub("START: " + c11["start"], c11["look_for"], c11["try_"][1], "broken if: " + c11["broken"])
+        lab += "\n" + RM.label_line(x, z + 3, "C11  PROSPECTOR'S CREEK (stations R1-R%d)" % len(plan), sub, GOLD, "medium", TAG)
+        lab += "\n" + RV.label_ops(plan, RM.label_line)
+    return lab
+
+
+def r_colonist_cells(size, avoid, n=3):
+    """n cells for map R's own colonists (map C keeps its own): along z 20, then z 60, away from every avoid rect +4."""
+    w, h = size
+    out = []
+    for z in (20, 60, h - 20):
+        for x in range(w // 2 - 30, w // 2 + 30, 2):
+            if len(out) < n and not any(C_overlap((x, z, 1, 1), r, 4) for r in avoid):
+                out.append((x, z))
+    return out
+
+
+def run_river(B, terrain, size, log=None, soak=False):
+    """Map R: C1 on its bank anchor, C11 on the creek plan; labels + signs for both and the R stations; three drafted
+    colonists of its own; non-colonists swept outside the plots. -> result dict (incl. 'placed' for MAP_R_PLACED)."""
     import review_map_rivers as RV
     from modcheck import reviewmap as RM
     R = review_class()(B, log)
@@ -699,18 +782,27 @@ def run_river(B, terrain, size, log=None):
             p_ = (-d[1], d[0])
             R.call("jawa/spawn_pawn", kindDef="Colonist", x=bx + d[0] + 2 * p_[0], z=bz + d[1] + 2 * p_[1],
                    faction="player", count=1)
+    avoid = [c1["rect"]] if c1 else []
+    avoid += [(min(cr[0][0], cr[3][0]) - 3, min(cr[0][1], cr[3][1]) - 3, abs(cr[0][0] - cr[3][0]) + 7,
+               abs(cr[0][1] - cr[3][1]) + 7) for _, cr, _ in plan]
+    for x, z in r_colonist_cells(size, avoid):        # map R's own hands (the walk's pokes need someone here)
+        sp = B.call("jawa/spawn_pawn", kindDef="Colonist", x=x, z=z, faction="player", count=1) or {}
+        for q in sp.get("pawns") or []:
+            if q.get("id"):
+                B.call("jawa/set_draft", pawnId=q["id"], drafted=True)
+    if c1:
+        B.call("jawa/map_commit")
+        B.ticks(2)
+    B.call("rimworld/pause_game", pause=True)
     ver = R.verify_plots(placed) if placed else {}
-    c11 = SC.BY_ID["C11"]
-    lab = label_ops(placed, extra_board=False)
-    if plan:
-        x, z = plan[0][2]["label"]
-        sub = RM.sign_sub("START: " + c11["start"], c11["look_for"], c11["try_"][1], "broken if: " + c11["broken"])
-        lab += "\n" + RM.label_line(x, z + 3, "C11  PROSPECTOR'S CREEK (stations R1-R%d)" % len(plan), sub, GOLD, "medium", TAG)
-        lab += "\n" + RV.label_ops(plan, RM.label_line)
+    lab = r_labels(c1, plan)
     B.call("jawa/review_label", action="clear", tag=TAG)
-    B.call("jawa/review_label", action="add", ops=lab, tag=TAG)
+    lr = B.call("jawa/review_label", action="add", ops=lab, tag=TAG) or {}
+    if lr.get("success") is False:
+        R.notes.append("map R labels: %s" % json.dumps(lr)[:200])
     ops = sign_ops(placed, extra_board=False) + (RV.sign_ops(plan) if plan else [])
     if plan:
+        c11 = SC.BY_ID["C11"]
         x, z = plan[0][2]["label"]
         defs = [pc for pc in c11["pieces"] if pc["status"] == "DEFERRED"]
         ops.append(RM.sign_book(x, z + 2, "C11", c11["name"], c11["purpose"] + " START: " + c11["start"],
@@ -718,8 +810,199 @@ def run_river(B, terrain, size, log=None):
                                 more="TRY: " + " | ".join(c11["try_"]) + " || DEFERRED: "
                                 + "; ".join("%s (%s)" % (pc["name"], pc["item"]) for pc in defs)))
     sg = RM.place_signs(B, ops)
+    soaked = R.soak(placed) if (soak and placed) else None
+    B.call("jawa/clear_ui", all=True)
+    rows = [dict(n=k + 1, id=st["id"], crossing=[list(cr[0]), list(cr[1]), cr[2], list(cr[3])], label=list(o["label"]))
+            for k, (st, cr, o) in enumerate(plan)]
     return dict(c1=c1["origin"] if c1 else None, c11=len(plan), unplaced=unplaced, verify=ver, notes=R.notes,
-                signs=sg.get("count"), sign_ops=len(ops))
+                signs=sg.get("count"), sign_ops=len(ops), soak=soaked,
+                placed=dict(c1=dict(origin=list(c1["origin"]), rect=list(c1["rect"])) if c1 else None, stations=rows))
+
+
+def load_map_r(path=MAP_R_PLACED):
+    """-> (doc, c1 placement or None, C11 plan as review_map_rivers tuples). SystemExit when map R was never built."""
+    import review_map_rivers as RV
+    if not os.path.exists(path):
+        raise SystemExit("map R was never built here (%s missing): run --river --build --fresh-map first" % path)
+    doc = json.load(open(path, encoding="utf-8"))
+    c1 = None
+    if doc.get("c1"):
+        o = tuple(doc["c1"]["origin"])
+        c1 = dict(sc=SC.BY_ID["C1"], origin=o, rect=tuple(doc["c1"]["rect"]))
+    by = {s["id"]: s for s in RV.STATIONS}
+    plan = []
+    for r in doc.get("stations") or []:
+        b, d, n, e = r["crossing"]
+        plan.append((by[r["id"]], (tuple(b), tuple(d), n, tuple(e)), dict(label=tuple(r["label"]))))
+    return doc, c1, plan
+
+
+def use_map(B, which):
+    """Make map C or map R current (ids from MAP_R_PLACED). Silent no-op when no map-R build is recorded (a one-map
+    game); a refusal is printed, never hidden. -> True when the wanted map is current (read back)."""
+    if not os.path.exists(MAP_R_PLACED):
+        return which == "C"
+    mid = json.load(open(MAP_R_PLACED, encoding="utf-8")).get("map_" + which.lower())
+    if not isinstance(mid, int):
+        return which == "C"
+    r = B.call("jawa/set_current_map", mapId=mid) or {}
+    if not r.get("success"):
+        print("set_current_map %s (map %s) refused: %s" % (mid, which, str(r)[:200]))
+        return False
+    return True
+
+
+def found_map_r(B, max_tries=25):
+    """Found map R as a SECOND map in the current game (map C and its colonists stay): a mild river tile whose map has a
+    current, moving water on >= 2 edges, AND a straight south bank for C1 plus >= 6 C11 crossings. river_site.py's tile
+    filters and readers, minus its colonist vanish / bland reset (those would gut map C). A fast lane is NOT required
+    (quicktest worlds rarely have one: 20 of 20 river tiles fast=0, 2026-10-18; C11 needs a current, not a fast lane).
+    -> dict(map_c, map_r, tile, size, terrain, problems); map_r None when no tile qualified."""
+    import csv
+    import tempfile
+    import river_site as RS                       # first: it puts Utils/modcheck (bland_world) on sys.path
+    import bland_world as BW
+    import extensions_rivers as RIV
+    import review_map_rivers as RV
+    import site_spec as SS
+    RS.ALLOW_NO_FAST = True
+    out = dict(map_c=(B.call("jawa/map_info") or {}).get("mapId"), map_r=None, tile=None, problems=[])
+    path = os.path.join(os.environ.get("TEMP") or tempfile.gettempdir(), "scenarios_map_r_tiles.csv")
+    r = B.call("jawa/world_tile_export", path=path) or {}
+    if not r.get("success") or not os.path.isfile(path):
+        out["problems"].append("world_tile_export failed: %s" % str(r)[:200])
+        return out
+    with open(path, encoding="utf-8") as f:
+        cands = RS.river_candidates(list(csv.DictReader(f)))
+    river = []
+    for i in range(0, len(cands), 100):
+        wg = B.call("jawa/world_tile_get", tiles=",".join(str(t) for t in cands[i:i + 100])) or {}
+        river += [g for g in wg.get("tiles") or [] if int(g.get("riverCount") or 0) > 0]
+    print("map R: %d mild candidates, %d with a river" % (len(cands), len(river)))
+    tries, generated = 0, []
+    for row in river:
+        if tries >= max_tries:
+            break
+        t = int(row["tile"])
+        if not (B.call("jawa/colony_found", tile=t, faction="Player", name="FlowWorksCreek") or {}).get("success"):
+            continue
+        tries += 1
+        BW.close_naming_dialogs(B)
+        g = B.call("jawa/world_tile_map_generate", tile=t, suggestedMapParent="Settlement") or {}
+        mid = RS.generated_map_id(g)
+        fresh = bool(g.get("success")) and not g.get("wasAlreadyGenerated")
+        if fresh:
+            generated.append(t)
+
+        def drop(why, t=t, fresh=fresh):
+            print("map R: tile %s rejected: %s" % (t, why))
+            if fresh:
+                B.call("jawa/settlement_remove", mode="map", tile=t, force=True)
+        if mid is None:
+            drop("map generate refused or gave no mapId: %s" % str(g)[:160])
+            continue
+        BW.close_naming_dialogs(B)
+        if not (B.call("jawa/set_current_map", mapId=mid) or {}).get("success"):
+            drop("set_current_map refused")
+            continue
+        grid = str((B.call("jawa/static_call", type="RimMandrake.FlowWorks.Rivers.RM_RiverWorksProof", method="ProofGrid",
+                           args="-") or {}).get("result", ""))
+        kv = dict(q.split("=", 1) for q in grid.split() if "=" in q)
+        mi = B.call("jawa/map_info") or {}
+        size = (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeY", 250))))
+        tb = B.call("jawa/get_terrain_batch", rects=RIV.edge_rects(size)) or {}
+        edges = RIV.moving_edges(SS.parse_ops(tb.get("ops")), size) if tb.get("success") else None
+        why = RS.river_reject(kv, edges, False, tile=t, map_tile=mi.get("tile"))
+        if not why:
+            terrain = RV.read_terrain(B, size)
+            c1, plan, unplaced, _ = placed_r(terrain, size)
+            if c1 is None:
+                why = "no straight south bank for C1"
+            elif len(plan) < 6:
+                why = "only %d of 8 C11 crossings" % len(plan)
+        if why:
+            if mi.get("mapId") == mid:
+                use_map_id = out["map_c"]
+                if isinstance(use_map_id, int):
+                    B.call("jawa/set_current_map", mapId=use_map_id)
+            drop(why)
+            continue
+        out.update(map_r=mid, tile=t, size=size, terrain=terrain)
+        break
+    for m in RS.leftover_maps(RS.loaded_maps(B.call), out["map_r"], generated):
+        B.call("jawa/settlement_remove", mode="map", tile=m.get("tile"), force=True)
+    if out["map_r"] is None:
+        if isinstance(out["map_c"], int):
+            B.call("jawa/set_current_map", mapId=out["map_c"])
+        out["problems"].append("no river tile qualified among %d tried" % tries)
+        return out
+    B.call("jawa/set_current_map", mapId=out["map_r"])
+    B.call("jawa/weather_set", weather="Clear", lockWeather=True)
+    B.call("jawa/incident_queue_clear")
+    d = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False) or {}
+    if d.get("success") is not True:
+        out["problems"].append("destroy_bulk nonColonists refused on map R: %s" % str(d)[:160])
+    B.call("jawa/set_fog", action="unfog", rect="0,0,%d,%d" % size)
+    return out
+
+
+def river_main(B, a):
+    """--river: map R (C1 + C11) in the SAME game as map C. --build [--fresh-map] [--soak] | --labels | --goto ID."""
+    import review_map_rivers as RV
+    from modcheck import reviewmap as RM
+    if a.build:
+        if a.fresh_map:
+            info = found_map_r(B)
+            if info["map_r"] is None:
+                print("map R NOT founded: %s" % info["problems"])
+                return 2
+            size, terrain = info["size"], info["terrain"]
+        else:                                           # the current map IS map R (river_site.py made it, a one-map game)
+            mi = B.call("jawa/map_info") or {}
+            size = (int(mi.get("sizeX") or 0), int(mi.get("sizeZ") or 0))
+            terrain = RV.read_terrain(B, size)
+            info = dict(map_c=None, map_r=mi.get("mapId"), tile=mi.get("tile"), problems=[])
+        res = run_river(B, terrain, size, a.log, soak=a.soak)
+        doc = dict(map_c=info["map_c"], map_r=info["map_r"], tile=info["tile"], built=time.strftime("%Y-%m-%dT%H:%M:%S"),
+                   **res.pop("placed"))
+        with open(MAP_R_PLACED, "w", encoding="utf-8") as f:
+            json.dump(doc, f, indent=1)
+        with open(os.path.join(REPO, "Transient", "fw_scenarios_river_verify.json"), "w", encoding="utf-8") as f:
+            json.dump(dict(res, founding=info.get("problems")), f, indent=1, default=str)
+        v = res["verify"].get("C1", {})
+        moved = [s for s, x in (res["soak"] or {}).items() if not x["still"]]
+        print("LIVE map R (tile %s, map %s; map C = %s): C1 at %s %s; C11 %d of 8 stations%s; %d of %d sign books; soak %s; "
+              "%d notes -> %s" % (info["tile"], info["map_r"], info["map_c"], res["c1"], "OK" if v.get("ok") else "FAIL %s" % v,
+                                  res["c11"], " (unplaced %s)" % res["unplaced"] if res["unplaced"] else "", res["signs"] or 0,
+                                  res["sign_ops"], "skipped" if res["soak"] is None else ("still" if not moved else "MOVED %s" % moved),
+                                  len(res["notes"]), os.path.relpath(MAP_R_PLACED, REPO)))
+        bad = not v.get("ok") or res["c11"] < 8 or (res["signs"] or 0) != res["sign_ops"] or moved
+        if a.save:
+            name = RM.free_save_name(a.name or SAVE_RIVER, RM.saves_stat())
+            r = RM.save_keeper(B, name, signs=r_labels(*load_map_r()[1:]))
+            print("save %s: ok=%s" % (name, r["ok"]))
+            bad = bad or not r["ok"]
+        return 1 if bad else 0
+    doc, c1, plan = load_map_r()
+    if not use_map(B, "R"):
+        return 1
+    if a.labels:
+        B.call("jawa/review_label", action="clear", tag=TAG)
+        r = B.call("jawa/review_label", action="add", ops=r_labels(c1, plan), tag=TAG) or {}
+        print("map R labels: %s" % {k: r.get(k) for k in ("success", "added", "count")})
+    if a.goto:
+        w_ = a.goto.upper()
+        if w_ == "C1" and c1:
+            x, z, ww, hh = c1["rect"]
+            r = B.call("rimworld/frame_cell_rect", x=x - 2, z=z - 2, width=ww + 4, height=hh + 6, paddingCells=2)
+        elif w_ == "C11" and plan:
+            r = RV.goto(B, plan, "R1")
+        elif w_.startswith("R") and w_[1:].isdigit() and 1 <= int(w_[1:]) <= len(plan):
+            r = RV.goto(B, plan, w_)
+        else:
+            raise SystemExit("--river --goto %s: unknown; valid: C1, C11, R1..R%d" % (a.goto, len(plan)))
+        print("framed map R %s: %s" % (w_, (r or {}).get("success")))
+    return 0
 
 
 # ------------------------------------------------------------------------------------------------ key sheet
@@ -924,18 +1207,13 @@ def main(argv=None):
     from modcheck import reviewmap as RM
     B = RM.LiveBridge()
     if a.river:
-        import review_map_rivers as RV
-        mi = B.call("jawa/map_info")
-        size = (int(mi.get("sizeX") or 0), int(mi.get("sizeZ") or 0))
-        res = run_river(B, RV.read_terrain(B, size), size, a.log)
-        print(json.dumps(res, default=str)[:3000])
-        if a.save:
-            name = RM.free_save_name(a.name or SAVE_RIVER, RM.saves_stat())
-            r = RM.save_keeper(B, name)
-            print("save %s: ok=%s" % (name, r["ok"]))
-        return 0
+        return river_main(B, a)
+    if a.build and a.fresh_map and os.path.exists(MAP_R_PLACED):
+        os.remove(MAP_R_PLACED)                       # a fresh game: the recorded map ids name nothing any more
+    if not a.build and not use_map(B, "C"):
+        return 1
     if a.build:
-        res = run_build(B, placed, a.log, fresh=a.fresh_map, soak=not a.no_soak)
+        res = run_build(B, placed, a.log, fresh=a.fresh_map, soak=not a.no_soak, only=only)
         with open(os.path.join(REPO, "Transient", "fw_scenarios_verify.json"), "w", encoding="utf-8") as f:
             json.dump(res, f, indent=1, default=str)
         bad = [s for s, v in res["verify"].items() if not v["ok"]]
