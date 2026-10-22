@@ -139,7 +139,9 @@ namespace RimMandrake.StarWars.Sarlacc
 
             float dayFraction = 1f / GenDate.TicksPerDay;
             float movingFactor = (Pawn.pather != null && Pawn.pather.Moving) ? 1.5f : 1f;
-            reserve -= Props.reserveDrainPerDay * dayFraction * movingFactor * RSW_SarlaccSettings.reserveDrainMultiplier;
+            // floor at 0: a negative reserve is the "not yet rolled" sentinel, so draining past 0 (a seeker that never roots on
+            // empty) would be re-rolled to a full reserve on the next load
+            reserve = System.Math.Max(0f, reserve - Props.reserveDrainPerDay * dayFraction * movingFactor * RSW_SarlaccSettings.reserveDrainMultiplier);
 
             if (Find.TickManager.TicksGame < nextRareCheckTick)
             {
