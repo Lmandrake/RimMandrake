@@ -25,6 +25,8 @@ CHAINS
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
 MOCK:   `python3 validation.py --mock` -> runs the web_terrain_weather chain against a fake session that answers like a
         game where the mod works, so the chain's plumbing and parsing are exercised offline.
+        It also runs map_mechanics (fog timeout), urraveth_remains, traction_lance, siege and thrixweave_and_front against
+        mocks with planted defects; each defect must turn ITS row FAIL (or UNMEASURED when it blinds the instrument).
 """
 import os
 import re
@@ -1312,9 +1314,50 @@ def mock_siege():
     return ok
 
 
+class _MockThrixSession(_MockSession):
+    """--mock: thrixweave_and_front against a working mod. broken="noresale" drops StockGenerator_ThrixweaveResale from
+    Orbital_Exotic (must FAIL rare_trader_resale_line); "blind" returns rows with no fields (must read UNMEASURED)."""
+
+    def __init__(self, broken=None):
+        _MockSession.__init__(self)
+        self.broken = broken
+
+    def call(self, tool, **kw):
+        if tool != "jawa/get_defs":
+            return super(_MockThrixSession, self).call(tool, **kw)
+        self.calls.append((tool, kw))
+        spec, field = kw.get("defs"), kw.get("fields")
+        val = {"label": "thrixweave", "tradeability": "Sellable",
+               "stockGenerators": [{"Class": "StockGenerator_Tag"}] + ([] if self.broken == "noresale" else
+                                                                       [{"Class": "RimMandrake.Webwork.StockGenerator_ThrixweaveResale"}]),
+               "killedLeavings": [{"thingDef": "Hyperweave", "count": 3}]}.get(field)
+        return {"success": True, "foundCount": 1, "notFound": [],
+                "defs": [{"defName": spec.split("/", 1)[1], "fields": {} if self.broken == "blind" else {field: val}}]}
+
+
+def mock_thrix():
+    """thrixweave_and_front: 4 PASS on a working mod; a missing resale generator FAILs its row; empty fields read UNMEASURED."""
+    from runner import run_suite
+    chains = list(suite.chains)
+    out = {}
+    try:
+        for broken in (None, "noresale", "blind"):
+            suite.chains[:] = [c for c in chains if c[0] == "thrixweave_and_front"]
+            res = run_suite(suite, _MockThrixSession(broken), anchor=(50, 50))
+            out[broken] = {c.get("name"): str(c.get("verdict", "")).upper()
+                           for ch in res.get("chains", []) for c in (ch.get("components") or [])}
+    finally:
+        suite.chains[:] = chains
+    ok = len(out[None]) == 4 and set(out[None].values()) == {"PASS"}
+    ok = ok and out["noresale"].get("rare_trader_resale_line") == "FAIL" and out["noresale"].get("trader_strip_applied") == "PASS"
+    ok = ok and out["blind"].get("hyperweave_reads_thrixweave") == "UNMEASURED" and "PASS" not in out["blind"].values()
+    print("MOCK thrixweave: %s (good=%s noresale=%s blind=%s)" % ("PASS" if ok else "FAIL", out[None], out["noresale"], out["blind"]))
+    return ok
+
+
 def mock_run():
     from runner import run_suite  # modcheck package dir is on sys.path via _UTILS/modcheck
-    harvest_ok = mock_harvest_fog_timeout() and mock_urraveth() and mock_lance() and mock_siege()
+    harvest_ok = mock_harvest_fog_timeout() and mock_urraveth() and mock_lance() and mock_siege() and mock_thrix()
     fake = _MockSession()
     suite.chains[:] = [c for c in suite.chains if c[0] == "web_terrain_weather"]
     res = run_suite(suite, fake, anchor=(50, 50))
