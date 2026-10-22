@@ -1,0 +1,1 @@
+./publish refuses (git reset --keep) whenever ANOTHER agent has an uncommitted edit to a file origin also changed (2026-10-22: FlowWorks DLL+.srchash); your commit stays local and the plumbing workaround (temp index + commit-tree + push) is refused by the ledger_lint push hook, which lints the stale HEAD. Only the DLL owner committing unblocks it — say so in the report.
