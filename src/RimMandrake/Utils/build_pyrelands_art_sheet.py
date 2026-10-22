@@ -399,7 +399,11 @@ def write_decisions(items: list[dict], force: bool) -> None:
     if os.path.isfile(DECISIONS):
         try:
             cur = json.load(open(DECISIONS, encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
+        except (OSError, json.JSONDecodeError) as exc:
+            if not force:   # an unreadable file may still hold his verdicts: never treat it as absent
+                print(f"  decisions REFUSED: {DECISIONS} exists but cannot be read ({exc}); "
+                      f"pass --i-know-this-overwrites-the-owners-decisions to replace it.")
+                return
             cur = {}
         # Guard on the keys the SIDECAR stamps and a pre-fill generator can never emit.
         # "touchedBySheet" is DERIVED by the sidecar for --status and is not present on

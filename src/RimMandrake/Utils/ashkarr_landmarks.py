@@ -304,6 +304,13 @@ def main():
     MU = {int(r["tile"]): [x for x in re.split(r"[;|,]", r["mutators"]) if x.strip()] for r in mrows}
     lrows = list(csv.DictReader(open(STEM + "_landmarks.csv", encoding="utf-8")))
     taken = {int(r["tile"]) for r in lrows}
+    mine = {why for _n, _w, _s, _p, why in RULES} | {why for _n, _s, _p, why in FORCE_PATCH}
+    already = sum(1 for r in lrows if r.get("why") in mine)
+    if already and a.apply:
+        # --apply APPENDS to the landmarks CSV, and the tiles it placed last time are now "taken", so a second
+        # apply would add a second, different layer on top. Regenerate the base first (ashkarr_populate.py).
+        sys.exit("REFUSED: %s_landmarks.csv already carries %d landmarks placed by this tool; --apply again would "
+                 "stack a second layer. Re-run ashkarr_populate.py to reset the base, then apply once." % (STEM, already))
     settlements = {int(r["tile"]) for r in
                    csv.DictReader(open(STEM + "_settlements.csv", encoding="utf-8"))}
 
@@ -320,6 +327,9 @@ def main():
 
     # ── EXTEND ────────────────────────────────────────────────────────────────
     MD = mutator_defs()
+    if not MD:
+        # an empty table makes mutators_legal() pass every tile -- the exact gate this pass exists to enforce
+        sys.exit("REFUSED: could not read TileMutatorDefs from the def dump -- the legality gate would be silently off")
     water_t = {t for t, d in T.items() if d["water"] == 1}
     coast_n = {t: sum(1 for n in nb[t] if n in water_t) for t in T}
     _links = list(csv.reader(open(STEM + "_links.csv", encoding="utf-8")))[1:]
