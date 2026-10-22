@@ -1,0 +1,141 @@
+{
+ "script": "trench_blast_live.py",
+ "started": "2026-10-22T11:25:36",
+ "rows": [
+  {
+   "id": "TRENCH_no_blast_cover",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT",
+   "detail": {
+    "meanTrench": 20.0,
+    "meanOpen": 20.0,
+    "ratio": 1.0,
+    "dealt": {
+     "trench": [
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0
+     ],
+     "open": [
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0
+     ]
+    },
+    "trials": [
+     {
+      "tick0": 2294,
+      "ids": {
+       "trench": "Human52142",
+       "open": "Human52145"
+      },
+      "trench": 20.0,
+      "open": 20.0
+     },
+     {
+      "tick0": 2366,
+      "ids": {
+       "trench": "Human52336",
+       "open": "Human52339"
+      },
+      "trench": 20.0,
+      "open": 20.0
+     },
+     {
+      "tick0": 2438,
+      "ids": {
+       "trench": "Human52681",
+       "open": "Human52684"
+      },
+      "trench": 20.0,
+      "open": 20.0
+     },
+     {
+      "tick0": 2510,
+      "ids": {
+       "trench": "Human52866",
+       "open": "Human52869"
+      },
+      "trench": 20.0,
+      "open": 20.0
+     },
+     {
+      "tick0": 2582,
+      "ids": {
+       "trench": "Human53092",
+       "open": "Human53095"
+      },
+      "trench": 20.0,
+      "open": 20.0
+     },
+     {
+      "tick0": 2654,
+      "ids": {
+       "trench": "Human53411",
+       "open": "Human53414"
+      },
+      "trench": 20.0,
+      "open": 20.0
+     }
+    ],
+    "logKeys": [
+     "amount",
+     "damageDef",
+     "deflected",
+     "hediffsAdded",
+     "instigatorDef",
+     "instigatorFaction",
+     "instigatorId",
+     "kind",
+     "mapUniqueId",
+     "seq",
+     "tick",
+     "totalDealt",
+     "victimColonist",
+     "victimDeadAfter",
+     "victimDef",
+     "victimFaction",
+     "victimId",
+     "victimIsPawn",
+     "x",
+     "z"
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/blast_1.json",
+  "origin": "70,200",
+  "fresh_map": false,
+  "trials": 6
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "finished": "2026-10-22T11:25:49"
+}
