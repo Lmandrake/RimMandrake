@@ -1091,8 +1091,11 @@ def write_config(pids, version_from):
     # rewrote every ending and made the whole file read as changed.
     buf = io.BytesIO()
     tree.write(buf, encoding="utf-8", xml_declaration=True)
-    with open(CONFIG, "wb") as fh:
+    # tmp + replace: a kill mid-write must not leave the game's live list half-written
+    tmp = CONFIG + ".modset-tmp"
+    with open(tmp, "wb") as fh:
         fh.write(buf.getvalue().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
+    os.replace(tmp, CONFIG)
 
 
 def bridge_ok(override):
