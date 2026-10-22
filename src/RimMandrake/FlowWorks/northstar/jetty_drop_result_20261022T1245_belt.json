@@ -1,0 +1,59 @@
+{
+ "script": "jetty_drop_live.py",
+ "started": "2026-10-22T12:25:36",
+ "rows": [
+  {
+   "id": "JET_open_edge_drop_on_order",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "SUSPENSION_JETTY_BUILD_WALK_THE_PLANK",
+   "detail": {
+    "jetty": "JETTY ok=True anchors=1 decks=1 blueprints=0 railed=1 reason=-",
+    "rails": "RAILS on=False railed=0",
+    "pawn": "Human43363",
+    "select": "{'success': True, 'selected': {'pawnId': 'Thing_Human43363', 'thingIdNumber': 43363, 'className': 'Verse.Pawn', 'defName': 'Human', 'kindDef': 'Colonist', 'race",
+    "gizmos": [
+     "Undraft",
+     "Melee attack",
+     "Jump into pit"
+    ],
+    "execute": "{'success': True, 'requestedGizmoId': 'selection-gizmo:sel-243c474ecb1c368b:3:1b5525d175c33bd7', 'gizmo': {'id': 'selection-gizmo:sel-243c474ecb1c368b:3:1b5525d175c33bd7', 'selectionFingerprint': 'sel",
+    "accept": "{'success': True, 'command': 'accept', 'changed': True, 'windowCountDelta': -1, 'message': \"Dispatched semantic 'accept' input to RimWorld's window stack.\", 'before': {'success': True, 'programState':",
+    "end": [
+     91,
+     218
+    ],
+    "descents": [
+     "Human43363@91,218 t=1139 fall=9.7"
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/jetty_2.json",
+  "origin": "90,215",
+  "fresh_map": false
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "finished": "2026-10-22T12:25:44"
+}
