@@ -721,10 +721,61 @@ namespace RimMandrake.FlowWorks
 				return "REFUSED: no hose reel at " + c;
 			}
 			RM_LevelLinkState? s = Machinery.RM_Levelling.StateOf(map, reel);
+			// why a rig makes no link (walk_gaps PONDS_* read linked=false three runs, 2026-10-22): the open ends on this reel's
+			// networks, and the three switches RM_Levelling.Tick needs
+			int intakes = Machinery.RM_LiquidNet.PortsOf(reel.parent, Machinery.RM_FreeEndRole.Intake).Count;
+			int outflows = Machinery.RM_LiquidNet.PortsOf(reel.parent, Machinery.RM_FreeEndRole.Outflow).Count;
+			bool on = Hose.RM_HoseSettings.gravityLevellingEnabled && Hose.RM_HoseSettings.enabled && RM_MapComponent_Excavation.LevelExact;
 			return "LEVELLINK reel=" + reel.parent.thingIDNumber + " state=" + (s.HasValue ? s.Value.ToString() : "None")
-				+ " role=" + reel.freeEndRole + " laid=" + reel.laid + " cycles=" + Machinery.RM_Levelling.Cycles
-				+ " links=" + Machinery.RM_Levelling.LastLinks + " moves=" + Machinery.RM_Levelling.Moves
-				+ " movedDl=" + Machinery.RM_Levelling.MovedDl;
+				+ " role=" + reel.freeEndRole + " laid=" + reel.laid + " intakes=" + intakes + " outflows=" + outflows + " on=" + on
+				+ " cycles=" + Machinery.RM_Levelling.Cycles + " links=" + Machinery.RM_Levelling.LastLinks
+				+ " moves=" + Machinery.RM_Levelling.Moves + " movedDl=" + Machinery.RM_Levelling.MovedDl;
+		}
+
+		/// <summary>WRITES (it runs real levelling cycles). PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A3: arg "n" (1..200) calls
+		/// RM_Levelling.Tick on the current map n times back to back, timed by Stopwatch, with the managed heap read around each
+		/// call (GC.GetTotalMemory(false): a lower bound; a collection inside a call makes that call's delta unreadable, so
+		/// those calls are counted apart and left out). This is the cost of one pump cycle (every RM_PumpMath.CycleTicks
+		/// ticks), not of a game tick: msPerTick = msAvg / cycleTicks. "LEVELPERF calls=n msAvg=f msMax=f msPerTick=f
+		/// allocKBAvg=f allocCalls=n gcs=n links=n moves=n cycleTicks=n", or "REFUSED: ...".</summary>
+		public static string ProofLevelPerf(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !int.TryParse(arg, out int n) || n < 1 || n > 200)
+			{
+				return "REFUSED: arg must be n (1..200) on the current map";
+			}
+			var sw = new System.Diagnostics.Stopwatch();
+			double total = 0, max = 0, allocKB = 0;
+			int allocCalls = 0, gcs = 0, moves0 = Machinery.RM_Levelling.Moves;
+			for (int i = 0; i < n; i++)
+			{
+				int gc0 = System.GC.CollectionCount(0);
+				long mem0 = System.GC.GetTotalMemory(false);
+				sw.Restart();
+				Machinery.RM_Levelling.Tick(map);
+				sw.Stop();
+				long mem1 = System.GC.GetTotalMemory(false);
+				double ms = sw.Elapsed.TotalMilliseconds;
+				total += ms;
+				max = System.Math.Max(max, ms);
+				if (System.GC.CollectionCount(0) != gc0)
+				{
+					gcs++;
+				}
+				else
+				{
+					allocKB += (mem1 - mem0) / 1024.0;
+					allocCalls++;
+				}
+			}
+			double avg = total / n;
+			System.Globalization.CultureInfo inv = System.Globalization.CultureInfo.InvariantCulture;
+			return "LEVELPERF calls=" + n + " msAvg=" + avg.ToString("0.###", inv) + " msMax=" + max.ToString("0.###", inv)
+				+ " msPerTick=" + (avg / RM_PumpMath.CycleTicks).ToString("0.#####", inv)
+				+ " allocKBAvg=" + (allocCalls == 0 ? "NaN" : (allocKB / allocCalls).ToString("0.#", inv)) + " allocCalls=" + allocCalls
+				+ " gcs=" + gcs + " links=" + Machinery.RM_Levelling.LastLinks + " moves=" + (Machinery.RM_Levelling.Moves - moves0)
+				+ " cycleTicks=" + RM_PumpMath.CycleTicks;
 		}
 
 		/// <summary>FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE A4. arg "x,z" (the pump): per side N/E/S/W, what sits at that port.

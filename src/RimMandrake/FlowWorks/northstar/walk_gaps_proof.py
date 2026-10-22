@@ -73,7 +73,8 @@ Rows (plot coords from --origin, default 40,40; site rect origin-(2,6) .. +64 x 
   PORTS_CORNER_REFUSED       FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE A4 (walk stop 5), read by RM_NorthstarProofs.ProofPumpPorts.
      scene G: an RM_LiquidPump at (52,4); a pipe on its West side (51,4) and (50,4); reel A built West with its body on the
      East side (footprint (53,4)); reels B (52,-1) and C (55,-1) both laid with their free ends to the South side (52,3) (not
-     North: (52,5) is diagonal to the pipe, which a free end may pick); reel D (58,9) laid to the NE corner (53,5).
+     North: (52,5) is diagonal to the pipe, which a free end may pick); reel D (58,9) laid to the SE corner (53,3) (reels are
+     2x2: A covers (53..54,4..5), so NE is taken).
      EXPECT W=pipe and E=reel:A:c (a pipe and a hose on two sides, both kept); S holds two
      free ends, exactly one coupled and it is the LOWER thing id (one hose per side); corner>=1 with cornerCoupled=0. The
      ledger A4 text predates the owner's 2026-10-20 correction (pipes join wherever adjacent and never take a port): its
@@ -679,7 +680,8 @@ def _pond_reads(ctx, rig):
     for r in rig["reels"]:
         kl, tl = static(NPROOF, "ProofLevelLink", "%d,%d" % r, answer=True)
         if kl.get("state"):
-            readout += " | " + kl["state"]
+            # the enum word first (the verdicts read it), then why a rig may make no link
+            readout += " | %s(in=%s out=%s on=%s)" % (kl["state"], kl.get("intakes"), kl.get("outflows"), kl.get("on"))
             continue
         lt = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,1" % r, limit=1, _answer=True) or {}
         rid = ((lt.get("things") or [{}])[0]).get("id")
@@ -735,7 +737,7 @@ def scene_ports(ctx, mine):
                  V.reel_west(ra), V.reel_west(rb), V.reel_west(rc), V.reel_west(rd))
     ctx["ticks"](2)
     lays = {}
-    for r, to in ((rb, P(52, 3)), (rc, P(52, 3)), (rd, P(53, 5))):
+    for r, to in ((rb, P(52, 3)), (rc, P(52, 3)), (rd, P(53, 3))):
         lays[xz(r)] = B.hp("lay:%d,%d,%d,%d" % (r + to), answer=True)
     ctx["ticks"](2)
     _k, txt = static(NPROOF, "ProofPumpPorts", xz(pump), answer=True)
@@ -957,7 +959,7 @@ class FakeBridge(object):
                     sides[s].append("pipe")
             ends = {}
             for root, h in sorted(self.reels.items(), key=lambda kv: kv[1]["id"]):
-                for c in (root, (root[0] + 1, root[1])):
+                for c in (root, (root[0] + 1, root[1]), (root[0], root[1] + 1), (root[0] + 1, root[1] + 1)):
                     s = off.get((c[0] - pc[0], c[1] - pc[1]))
                     if s:
                         sides[s].append("reel:%d:c" % h["id"])
