@@ -109,5 +109,51 @@ namespace RimMandrake.FlowWorks
 		{
 			return west ? BandLipAlpha * BandWestFactor : BandLipAlpha;
 		}
+
+		// ── redraw rungs (FlowWorks GPT review 2026-10-22, RM_WaterLooks.cs:116/207) ────────────────────────────────────
+		// The two layers used to redraw on a TERRAIN change only, so water crossing 5 m / 10 m, or a band's gap changing, inside
+		// one terrain rung left the picture stale. The watcher (RM_WaterLookWatcher) now keys each square's picture by its rung
+		// and dirties the layers' own mesh flag only when a key changes: a deep step, or a band edge moving by 1/32 of a square.
+
+		/// <summary>Band rungs per square: the band is redrawn when its edge moves by this much (about 19 cm of gap).</summary>
+		public const int BandRungsPerSquare = 32;
+
+		/// <summary>The rung of a band <paramref name="thickness"/> (squares): 0 for no band, else at least 1.</summary>
+		public static int BandRung(float thickness)
+		{
+			if (thickness <= 0f)
+			{
+				return 0;
+			}
+			int r = (int)Math.Round(thickness * BandRungsPerSquare);
+			return r < 1 ? 1 : r;
+		}
+
+		/// <summary>One square's picture as a number: its deep step (0..2) and its north and west band rungs. Equal keys draw the
+		/// same picture to within one band rung, so a changed key is the only reason to redraw.</summary>
+		public static int LookKey(int deepStep, float bandNorth, float bandWest)
+		{
+			return (deepStep & 3) | (BandRung(bandNorth) & 63) << 2 | (BandRung(bandWest) & 63) << 8;
+		}
+
+		/// <summary>The last key seen per square (map-sized, allocated once). <see cref="Note"/> says whether it changed.</summary>
+		public sealed class Watch
+		{
+			private int[] keys;
+
+			public bool Note(int cell, int cells, int key)
+			{
+				if (keys == null || keys.Length != cells)
+				{
+					keys = new int[cells];   // 0 = nothing drawn, which is also the key of dry ground
+				}
+				if (keys[cell] == key)
+				{
+					return false;
+				}
+				keys[cell] = key;
+				return true;
+			}
+		}
 	}
 }
