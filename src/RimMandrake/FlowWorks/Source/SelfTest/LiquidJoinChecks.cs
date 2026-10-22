@@ -54,9 +54,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     HoseMath.WidthScale = 1.0;
                     double w0 = HoseMath.VisibleWidth(0, 1), w1 = HoseMath.VisibleWidth(1, 1);
-                    // HOSE_GIRTH_TUNE_MUCH_THINNER (owner 2026-10-21): the default hose is 0.08-0.10 cell flat, under the 0.12-0.14 rigid pipe
-                    Assert(w0 >= 0.08 && w0 <= 0.10, "the default flat hose is 0.08-0.10 cell (" + w0.ToString("0.000") + ")");
-                    Assert(w1 > w0 && w1 < 0.12, "the default plump hose stays under the rigid pipe's 0.12 (" + w1.ToString("0.000") + ")");
+                    // owner 2026-10-22: "Hoses need to be twice as thick" -- the default hose is 0.16-0.20 cell flat
+                    Assert(w0 >= 0.16 && w0 <= 0.20, "the default flat hose is 0.16-0.20 cell (" + w0.ToString("0.000") + ")");
+                    Assert(w1 > w0 && w1 < 0.26, "the default plump hose is swollen over flat, under 0.26 (" + w1.ToString("0.000") + ")");
                     HoseMath.WidthScale = 0.75;
                     Assert(Near(HoseMath.VisibleWidth(0, 1), w0 * 0.75) && Near(HoseMath.VisibleWidth(1, 1), w1 * 0.75), "the scale reaches every width");
                 }

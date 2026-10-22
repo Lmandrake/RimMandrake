@@ -148,7 +148,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 "every look x art x intake cell (all 4 sides): the drawn end lies on the footprint edge within " + HoseRelay.EndTolerance +
                 " cell, inside the edge, coupling pointing in (" + ok + "/" + total + ", worst " + worstOff.ToString("0.000") + " at " + worst + ")");
 
-            // west: both west cells couple to the art's one brass inlet, at its height (centre z - ~0.06), face 0.24-0.31 outside
+            // west: both west cells couple to the art's one nozzle, which is the laid hose's outlet tip too (one measured nozzle)
             int west = 0, wt = 0;
             double r6Miss = 99;
             foreach (string look in ReelIntakeGeometry.Looks)
@@ -157,11 +157,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                     wt++;
                     V2 lo = HoseRelay.DrawnEnd(relay, new Cell(9, 10), look, deployed, out _);
                     V2 hi = HoseRelay.DrawnEnd(relay, new Cell(9, 11), look, deployed, out _);
-                    if (V2.Dist(lo, hi) < 1e-9 && Math.Abs(lo.Z - relay.Centre.Z) < 0.15 && lo.X < relay.X0 - 0.2) west++;
+                    ReelIntakeGeometry.OutletTip(look, deployed, out double tdx, out double tdz);
+                    if (V2.Dist(lo, hi) < 1e-9 && V2.Dist(lo, relay.Centre + new V2(tdx, tdz)) < 0.06) west++;
                     r6Miss = Math.Min(r6Miss, V2.Dist(HoseRelay.IntakePoint(relay, new Cell(9, 10)), lo));
                 }
-            Check(west == wt, "from the west both cells couple to the art's brass inlet (its height, its face outside the edge) (" + west + "/" + wt + ")");
-            Check(r6Miss > 0.4, "can-fail: round 6's end (the lower west cell's edge midpoint) misses the inlet by >= " + r6Miss.ToString("0.00") +
+            Check(west == wt, "from the west both cells couple to the art's measured nozzle (its height, its face) (" + west + "/" + wt + ")");
+            Check(r6Miss > 0.25, "can-fail: round 6's end (the lower west cell's edge midpoint) misses the inlet by >= " + r6Miss.ToString("0.00") +
                 " cell in every look -- the floating coupling of the station-42 shot");
         }
         /// <summary>A hose laid onto a relay from each of the four sides, in every look: it ends exactly on the drawn end,
@@ -209,8 +210,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseRelay.TryIntake(B, A.Mouth, walk, out Cell ab);
             V2 e = HoseRelay.DrawnEnd(B, ab, "Scrapper", true, out V2 inward);
             HoseLay lay = HoseMath.Lay(w, A.Mouth, e, new HoseShapeParams { MaxLength = HoseMath.DefaultMaxLength }, 11, inward);
-            Check(ab.X == 32 && inward.X == 1 && lay.Ok && V2.Dist(lay.Flat[lay.Flat.Count - 1], e) < 1e-6 && Math.Abs(e.Z - B.Centre.Z) < 0.15 &&
-                  e.X < B.X0 && e.X > B.X0 - HoseRelay.EndTolerance,
+            ReelIntakeGeometry.OutletTip("Scrapper", true, out double sdx, out double sdz);
+            Check(ab.X == 32 && inward.X == 1 && lay.Ok && V2.Dist(lay.Flat[lay.Flat.Count - 1], e) < 1e-6 && V2.Dist(e, B.Centre + new V2(sdx, sdz)) < 0.06 &&
+                  Math.Abs(e.X - B.X0) < HoseRelay.EndTolerance,
                 "station 42: A's hose ends on B's west brass inlet (" + e.X.ToString("0.00") + "," + e.Z.ToString("0.00") + "; B footprint " + B.X0 + ".." + (B.X0 + 2) +
                 ", " + B.Z0 + ".." + (B.Z0 + 2) + ")");
         }

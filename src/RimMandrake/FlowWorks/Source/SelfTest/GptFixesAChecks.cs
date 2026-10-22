@@ -243,10 +243,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var reel = new HoseReelRect(50, 20, 2, 2);
                 var target = new Cell(40, 21);   // west, the mouth side: 9.5 from the mouth, 10.5 from the centre
                 double fromMouth = V2.Dist(reel.Mouth, target.Centre), fromCentre = V2.Dist(reel.Centre, target.Centre);
-                Assert(fromMouth < 10.0 && fromCentre > 10.2, "fixture: mouth " + fromMouth.ToString("0.00") + ", centre " + fromCentre.ToString("0.00"));
-                string why = HoseMath.CheckInstall(w, reel, target, 10.2);
+                Assert(fromMouth < 10.0 && fromCentre > 10.45, "fixture: mouth " + fromMouth.ToString("0.00") + ", centre " + fromCentre.ToString("0.00"));
+                string why = HoseMath.CheckInstall(w, reel, target, 10.45);   // the 2026-10-21 nozzle sits 0.76 in from the west edge
                 Assert(why == null, "a target the route reaches within the hose is accepted (got " + (why ?? "null") + ")");
-                Assert(HoseMath.CheckInstall(w, reel, new Cell(30, 21), 10.2) == "too far", "a target past the hose's reach from the mouth is still too far");
+                Assert(HoseMath.CheckInstall(w, reel, new Cell(30, 21), 10.45) == "too far", "a target past the hose's reach from the mouth is still too far");
             });
 
             // DBH_WATER_MEND_ACID_ON_TAP C9-F4/C9-F6: only plain waters carry dbh_water; full DBH gets the integration too.

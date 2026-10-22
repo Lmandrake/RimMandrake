@@ -68,7 +68,7 @@ DECLARED_ROWS = {
               "CR5b_laid_hose_plumps", "CR5c_end_kind", "CR6_retract_stored", "CR7_no_instant_gizmos_without_devmode"],
     "style_hose": ["R1_pick_reaches_reel", "R2_built_reels_stored_art", "R3_laid_out_per_look", "R5_reeled_in_per_look",
                    "R6_reinstall_keeps_look", "R7_legacy_reel_default_look"],
-    "realflow": ["NS_hose_carries_real_units", "NS_hose_plumps_only_from_powered_pump", "NS_hose_tint_is_carried_liquid",
+    "realflow": ["NS_hose_ends_on_ports", "NS_hose_carries_real_units", "NS_hose_plumps_only_from_powered_pump", "NS_hose_tint_is_carried_liquid",
                  "NS_hose_dropped_carries_nothing", "NS_hose_port_removed_discovered", "NS_hose_port_removed_moves",
                  "NS_hose_far_end_pump", "NS_relay_chain_carries", "NS_pipe_and_hose_one_net",
                  "NS_tank_does_not_bridge_pipe_runs", "NS_external_pipe_is_visual_only", "NS_tank_feeds_hose"],
@@ -352,6 +352,7 @@ def _rf_scene0(B, rows, row):
         and gained + hose_took >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10 and (h.get("credits") or 0) > 0 and h.get("netLink"),
         {"lay": lay, "before": t0, "after": t1, "gained": gained, "hoseTook": hose_took, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt,
          "bound": [RF_DISCOVER, RF_CYCLE], "pumpPoweredAfterTicks": s.powered, "credits": h.get("credits"), "netLink": h.get("netLink")})
+    _ends_on_ports(s, h, rows, row)
     plump, waited = _poll(B, lambda: _hose(B, s.reel).get("state") == "Plump", 300)
     tint = _hose(B, s.reel).get("tintLiquid")
     row("NS_hose_tint_is_carried_liquid", tint == LIQUID_WATER, {"tintLiquid": tint, "want": LIQUID_WATER,
@@ -368,6 +369,27 @@ def _rf_scene0(B, rows, row):
     row("NS_hose_plumps_only_from_powered_pump", plump and flat and w2 <= 905 + 10 and u_later == u_after and u_after is not None,
         {"plumpedAfterTicks": waited, "flatAfterCut": w2, "bound": 905, "plumpedAtTick": plumped_at, "cutTick": cut_tick,
          "tankStillAfterCut": [u_after, u_later], "cut": {k: cut.get(k) for k in ("success", "destroyed", "message")}})
+
+
+def _ends_on_ports(s, h, rows, row):
+    """HOSE_ENDS_FIX_MISSES_THE_PORTS (owner, C5 Fuel Depot 2026-10-21: "Hose attached to tank and reel broken"): scene 0's
+    hose ends where the art draws its ports. Reel: the coupling's face (probe nozzleTip) is the measured nozzle of the reel's
+    look -- inside the footprint's west cell, never the old constant 1.3 cells west of centre in bare ground. Tank: the laid
+    end (cell (16, 9), the tank's lower west neighbour) couples on the tank's west flange (probe portEnd) at the footprint's
+    centre line, x = the tank's west edge, z = tank z0 + 1 within 0.1 -- not half a cell beside it. The pixel side of both
+    (table vs texture) is selftest_hose_ports.py; this row proves the running build draws from those tables."""
+    fx, fz = (h.get("footprint") or [None, None])[:2]
+    tip, pe = h.get("nozzleTip"), h.get("portEnd")
+    tx, tz = s.tank
+    if "nozzleTip" not in h or "portEnd" not in h:
+        V.row(rows, "NS_hose_ends_on_ports", "UNMEASURED", "HARNESS",
+              {"why": "the probe has no nozzleTip/portEnd (a build before HOSE_ENDS_FIX_MISSES_THE_PORTS)", "hose": sorted(h)})
+        return
+    reel_ok = tip is not None and fx is not None and fx < tip[0] < fx + 1 and fz < tip[1] < fz + 2
+    tank_ok = pe is not None and abs(pe[0] - tx) < 1e-3 and abs(pe[1] - (tz + 1)) < 0.1
+    row("NS_hose_ends_on_ports", reel_ok and tank_ok,
+        {"nozzleTip": tip, "footprint": h.get("footprint"), "look": h.get("look"), "portEnd": pe, "tank": [tx, tz],
+         "want": "nozzleTip inside the reel's west cell; portEnd = [tank x0, tank z0 + 1 +- 0.1]"})
 
 
 def _rf_scene1(B, rows, row):

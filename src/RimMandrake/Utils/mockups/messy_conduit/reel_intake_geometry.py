@@ -6,17 +6,23 @@ Owner, station 42 (2026-10-04): "pipe does NOT hook up properly to the next reel
 midpoint of the intake cell's shared edge, which on the west side is 0.45 cell below the art's one brass inlet and 0.29
 cell inside its face, and on the north/south sides leaves bare ground between the edge and the drawn reel.
 
-Rule measured here (alpha > 128, the reel drawn at drawSize 2.8 centred on the footprint, canvas 256):
-  * WEST: the art's brass inlet (rows whose leftmost opaque pixel is u < 20): the hose's coupling face meets the inlet face,
-    both west intake cells go to it.
+Rule measured here (alpha > 128, the reel drawn at the defs' drawSize centred on the footprint, canvas 256):
+  * WEST: the art's one outlet/inlet nozzle (rows whose leftmost opaque pixel is within NOZZLE_PX of the leftmost opaque
+    column): the hose's coupling face meets the nozzle face, both west intake cells go to it, and a laid hose leaves the
+    deployed art's nozzle there (outlet table: tip dx, tip dz). HOSE_ENDS_FIX_MISSES_THE_PORTS (2026-10-21): the old rule
+    (u < 20, drawSize 2.8 hard-coded) silently described the 10-05 art after 2e22f30e3c / 2c27b49569 replaced it.
   * EAST / NORTH / SOUTH, per edge cell: along that cell's half of the edge (cell centre +-0.45, 0.05..0.8 from the edge's middle), the line where the drawn
     outline lies closest to the footprint edge (median of a +-0.12-cell band, so a one-pixel spur cannot win); ties go to
     the cell centre. The hose's coupling face meets the outline there.
 Depth = outline position minus the footprint edge along the outward normal (cells; + = outside the edge).
 
 Run: python3 src/RimMandrake/Utils/mockups/messy_conduit/reel_intake_geometry.py   (rewrites the .cs; deterministic)
+     ... --check   exit 1 when the committed .cs no longer matches the installed art / drawSize (selftest_reel_ports.py)
+     ... --out P   write the generated .cs to P instead
 """
 import os
+import re
+import sys
 import numpy as np
 from PIL import Image
 
@@ -27,8 +33,22 @@ TEX = os.path.join(MOD, "Textures", "RimMandrake", "FlowWorks", "Hose")
 OUT = os.path.join(MOD, "Source", "Hose", "ReelIntakeGeometry.cs")
 LOOKS = [("Scrapper", ""), ("Industrial", "Styles/Industrial/"), ("Modern", "Styles/Modern/"), ("Futuristic", "Styles/Futuristic/")]
 ARTS = ["Reel_PumpHookup", "Reel_Deployed"]   # index 0 = stored (hose reeled in), 1 = deployed (hose laid)
-DRAW = 2.8
+DEFS = [os.path.join(MOD, "Defs", "Hose", "RM_HoseReel.xml"), os.path.join(MOD, "Defs", "Hose", "RM_HoseReelStyles.xml")]
+NOZZLE_PX = 6
 BAND = 0.12
+
+
+def draw_size():
+    """The one reel drawSize every reel def and style uses (the C# assumes one); refuses when they disagree."""
+    vals = set()
+    for p in DEFS:
+        vals.update(float(m.group(1)) for m in re.finditer(r"<drawSize>\(\s*([0-9.]+)\s*,\s*([0-9.]+)\s*\)</drawSize>", open(p).read()))
+    if len(vals) != 1:
+        raise SystemExit("reel drawSize is not one value across %s: %s" % (DEFS, sorted(vals)))
+    return vals.pop()
+
+
+DRAW = draw_size()
 
 
 def outline(a, side, perp):
@@ -55,10 +75,12 @@ def outline(a, side, perp):
 def measure(path):
     a = np.array(Image.open(path).convert("RGBA"))[..., 3] > 128
     n = a.shape[0]
-    rows = [v for v in range(n) if a[v].any() and np.nonzero(a[v])[0][0] < 20]
+    umin = min(np.nonzero(a[v])[0][0] for v in range(n) if a[v].any())
+    rows = [v for v in range(n) if a[v].any() and np.nonzero(a[v])[0][0] <= umin + NOZZLE_PX]
     vc = (rows[0] + rows[-1]) / 2.0
     face = float(np.median([np.nonzero(a[v])[0][0] for v in rows]))
     inlet = ((n / 2 - vc) / n * DRAW, (n / 2 - face) / n * DRAW - 1.0)   # (perp dz, depth beyond the west edge)
+    tip = ((umin / n - 0.5) * DRAW, inlet[0])   # the nozzle tip (dx, dz) from the footprint centre
     out = {}
     for side in "ENS":
         for k, centre in enumerate((-0.5, 0.5)):   # edge cell 0 = lower x / z, 1 = higher
@@ -76,19 +98,20 @@ def measure(path):
                 if best is None or score < best[0] - 1e-9:
                     best = (score, perp, d)
             out[(side, k)] = (best[1], best[2])
-    return inlet, out
+    return inlet, out, tip
 
 
-def main():
-    lines = []
+def generate():
+    lines, tips = [], []
     for li, (look, folder) in enumerate(LOOKS):
         for ai, art in enumerate(ARTS):
-            inlet, out = measure(os.path.join(TEX, folder + art + ".png"))
+            inlet, out, tip = measure(os.path.join(TEX, folder + art + ".png"))
             row = [inlet[0], inlet[1]]
             for side in "ENS":
                 for k in range(2):
                     row += list(out[(side, k)])
             lines.append("            { " + ", ".join("%.3f" % x for x in row) + " },   // " + look + " " + art)
+            tips.append("            { %.3f, %.3f },   // %s %s" % (tip[0], tip[1], look, art))
     cs = '''using System;
 using RimMandrake.Shared.Slack;
 
@@ -96,7 +119,7 @@ namespace RimMandrake.FlowWorks.Hose
 {
     /// <summary>
     /// GENERATED by src/RimMandrake/Utils/mockups/messy_conduit/reel_intake_geometry.py from the reel art (all four looks,
-    /// stored Reel_PumpHookup and laid Reel_Deployed, drawSize 2.8). Do not hand-edit: re-run the script.
+    /// stored Reel_PumpHookup and laid Reel_Deployed, drawSize ''' + ('%g' % DRAW) + '''). Do not hand-edit: re-run the script.
     /// Owner, station 42 (2026-10-04): "pipe does NOT hook up properly to the next reel station". Where a relay hose's
     /// coupling face meets the drawn reel, per approach side, in cells from the 2x2 footprint centre:
     ///   row = { westInletDz, westInletDepth, E0 perp, E0 depth, E1 perp, E1 depth, N0.., N1.., S0.., S1.. }
@@ -137,14 +160,44 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         public const int RowCount = 8;
+
+        /// <summary>The reel drawSize the tables were measured at (= every reel def's; the generator refuses otherwise).</summary>
+        public const double DrawSize = ''' + ('%g' % DRAW) + ''';
+
+        private static readonly double[,] outlet =
+        {
+''' + "\n".join(tips) + '''
+        };
+
+        /// <summary>HOSE_ENDS_FIX_MISSES_THE_PORTS: the drawn nozzle's tip, (dx, dz) cells from the 2x2 footprint centre, for
+        /// this look's stored or laid art. The laid hose's end coupling meets it; the hose leaves it westward.</summary>
+        public static void OutletTip(string look, bool deployed, out double dx, out double dz)
+        {
+            int r = Row(look, deployed);
+            dx = outlet[r, 0];
+            dz = outlet[r, 1];
+        }
     }
 }
 '''
-    with open(OUT, "w", newline="\n") as f:
+    return cs
+
+
+def main(argv):
+    cs = generate()
+    if "--check" in argv:
+        have = open(OUT, newline="").read()
+        if have != cs:
+            print("STALE: %s does not match the installed reel art at drawSize %g -- re-run %s" % (OUT, DRAW, os.path.basename(__file__)))
+            return 1
+        print("OK: reel intake/outlet geometry matches the installed art at drawSize %g" % DRAW)
+        return 0
+    out = argv[argv.index("--out") + 1] if "--out" in argv else OUT
+    with open(out, "w", newline="\n") as f:
         f.write(cs)
-    print("wrote", OUT)
-    print("\n".join(lines))
+    print("wrote", out)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main(sys.argv[1:]))

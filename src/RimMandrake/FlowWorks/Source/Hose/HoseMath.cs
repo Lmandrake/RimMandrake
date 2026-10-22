@@ -168,19 +168,58 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Opaque band of the staged strips Textures/.../Hose/Strand_Flat.png (rows 2-60 of 64) and
         /// Strand_Plump.png (rows 1-62), measured 2026-10-02 (lane C cropped the v2 art to fill the strip).</summary>
         public const double FlatBand = 59.0 / 64.0, PlumpBand = 62.0 / 64.0;
-        /// <summary>Visible width collapsed and the extra a full plump adds at plump amount 1: 0.09 cell flat, 0.115 plump
-        /// (HOSE_GIRTH_TUNE_MUCH_THINNER, owner 2026-10-21: "Flexible hoses need to be much thinner too"; target 0.08-0.10 cell
-        /// from Transient/pile_2026-10-21/line_joins_review.md, under the halved rigid pipe's 0.12-0.14).</summary>
-        public const double FlatVisible = 0.09, PlumpExtra = 0.025;
+        /// <summary>Visible width collapsed and the extra a full plump adds at plump amount 1: 0.18 cell flat, 0.23 plump.
+        /// Owner 2026-10-22 00:00, after seeing the 0.09 hose live: "Hoses need to be twice as thick, too thin to see now."
+        /// (HOSE_GIRTH_TUNE_MUCH_THINNER; the 2026-10-21 thinning to 0.09 overshot.)</summary>
+        public const double FlatVisible = 0.18, PlumpExtra = 0.05;
 
         /// <summary>HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY (owner 2026-10-16: "shrink the tube diameter a bit to make it less
         /// fire-hydrant-thick"): every visible width (and so every fitting, wrap and clearance sized from it) times this. Set from
-        /// RM_HoseSettings.thickness; 1 = the shipped (thin, 2026-10-21) width.</summary>
+        /// RM_HoseSettings.thickness; 1 = the shipped width (0.18 cell flat, 2026-10-22).</summary>
         public static double WidthScale = 1.0;
 
         public static double VisibleWidth(double eased, double plumpAmount) => WidthScale * (FlatVisible + PlumpExtra * Math.Max(0, plumpAmount) * Geo.Clamp(eased, 0, 1));
         public static double MeshWidthFlat(double visible) => visible / FlatBand;
         public static double MeshWidthPlump(double visible) => visible / PlumpBand;
+
+        /// <summary>HOSE_ENDS_FIX_MISSES_THE_PORTS: re-aim a drawn hose's last <paramref name="run"/> cells so it ends at
+        /// <paramref name="end"/> arriving along <paramref name="axis"/> (unit, pointing into the port): the polyline is cut at arc
+        /// length L - run and finished with a cubic Hermite from there (the hose's own tangent) to the end (tangent = axis), so the
+        /// last stretch runs straight into the coupling instead of meeting it from the side. Unchanged when the hose is shorter
+        /// than the run or already ends there.</summary>
+        internal static List<V2> EndOnPort(List<V2> pts, V2 end, V2 axis, double run = 0.9, int samples = 8)
+        {
+            if (pts == null || pts.Count < 2) return pts;
+            if (V2.Dist(pts[pts.Count - 1], end) < 1e-6) return pts;
+            double L = Geo.Length(pts);
+            if (L <= run + 1e-6) return pts;
+            var outp = new List<V2>(pts.Count + samples);
+            double acc = 0, cut = L - run;
+            V2 a = pts[0], ta = new V2(1, 0);
+            outp.Add(pts[0]);
+            for (int i = 1; i < pts.Count; i++)
+            {
+                double seg = V2.Dist(pts[i - 1], pts[i]);
+                if (acc + seg >= cut)
+                {
+                    double t = seg < 1e-12 ? 0 : (cut - acc) / seg;
+                    a = pts[i - 1] + (pts[i] - pts[i - 1]) * t;
+                    ta = (pts[i] - pts[i - 1]).Norm();
+                    if (t > 1e-9) outp.Add(a);
+                    break;
+                }
+                acc += seg;
+                outp.Add(pts[i]);
+            }
+            double k = V2.Dist(a, end);
+            V2 m0 = ta * k, m1 = axis * k;
+            for (int s = 1; s <= samples; s++)
+            {
+                double u = s / (double)samples, u2 = u * u, u3 = u2 * u;
+                outp.Add(a * (2 * u3 - 3 * u2 + 1) + m0 * (u3 - 2 * u2 + u) + end * (-2 * u3 + 3 * u2) + m1 * (u3 - u2));
+            }
+            return outp;
+        }
 
         /// <summary>Smoothstep: the blend eases in and out.</summary>
         public static double Ease(double b)
@@ -251,6 +290,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Owner decision by question card 2026-10-06: how far the hose runs dead straight out of the nozzle before it
         /// may bend. Taken from the minimum bend radius: the coupling's own run (OutletStraight) plus half a radius, so a
         /// stiffer hose stands farther out of the coupling before its (never tighter than minimum) curve starts.</summary>
+        /// <summary>A lead-out join whose plump pose is longer than this x the flat one (+0.5 cell) is a last resort (the fuzz
+        /// "plump much longer than flat" bound, HoseFuzz).</summary>
+        public const double PlumpGrowthMax = 1.25;
+
         public static double LeadOutStraight(HoseShapeParams p) => HoseReelRect.OutletStraight + 0.5 * Math.Max(0.45, p.MinBendRadius);
 
         /// <summary>The lead-out: P's start replaced by a straight run of <paramref name="straight"/> from a along u, then the
@@ -581,6 +624,10 @@ namespace RimMandrake.FlowWorks.Hose
                 // scenic route: first only joins that cross no stray reel/pump cell; only if one was turned away for that alone
                 // does a second pass take the old first-that-fits (a cost, never a refusal)
                 bool rigTurnedAway = false;
+                // HOSE_ENDS_FIX_MISSES_THE_PORTS (fuzz seeds 144 & co. once the nozzle moved to the measured art): the cheapest
+                // pair can join the plump pose by a long detour the flat pose does not take, so the hose visibly grows when it
+                // fills. Such a pair is only kept as the last resort, after every other join was tried.
+                (List<V2> f, List<V2> q, List<V2> cc, int m, double lead)? longPlump = null;
                 foreach (bool scenic in new[] { true, false })
                 {
                 if (done || (!scenic && !rigTurnedAway)) break;
@@ -602,6 +649,11 @@ namespace RimMandrake.FlowWorks.Hose
                     if (Math.Min(MinBendRadiusUpTo(f, EndSkip, lead + 2 * R + 1), MinBendRadiusUpTo(q, EndSkip, lead + 2 * R + 1)) < R * 0.97) continue;
                     if (scenic && Rig(f) + Rig(q) > 0) { rigTurnedAway = true; continue; }
                     var cc = LeadOutCandidates(null, lay.Centre, a, u, S, R, 1);
+                    if (Geo.Length(q) > Geo.Length(f) * PlumpGrowthMax + 0.5)
+                    {
+                        if (longPlump == null) longPlump = (f, q, cc.Count > 0 ? cc[0].pts : null, m, pair.x.leadLen);
+                        continue;
+                    }
                     lay.Flat = f;
                     lay.Plump = q;
                     lay.Centre = cc.Count > 0 ? ResampleN(cc[0].pts, m) : ResampleN(StraightenStart(lay.Centre, a, u, S), m);
@@ -610,6 +662,15 @@ namespace RimMandrake.FlowWorks.Hose
                     break;
                 }
                 }
+                }
+                if (!done && longPlump.HasValue)
+                {
+                    var lp = longPlump.Value;
+                    lay.Flat = lp.f;
+                    lay.Plump = lp.q;
+                    lay.Centre = lp.cc != null ? ResampleN(lp.cc, lp.m) : ResampleN(StraightenStart(lay.Centre, a, u, S), lp.m);
+                    lay.LeadOutLen = lp.lead;
+                    done = true;
                 }
                 if (!done) return new HoseLay { Reason = LeadOutBlocked, PathLen = L };
             }
@@ -1444,6 +1505,34 @@ namespace RimMandrake.FlowWorks.Hose
     /// Machine ranks last (selftest S12): a reel beside both a tank and a pump couples to the tank.</summary>
     public enum HosePortKind { Pipe, Tank, Other, Machine, None }
 
+    /// <summary>
+    /// HOSE_ENDS_FIX_MISSES_THE_PORTS: where a hose end coupled to a building meets its DRAWN port. The universal tank
+    /// (RM_LiquidTank and its looks: 2x2, drawSize 2, Graphic_Single) draws one port flange on its west and on its east edge,
+    /// on the footprint's centre line (measured per look from Textures/RimMandrake/FlowWorks/Tank/&lt;Look&gt;/RM_LiquidTank.png;
+    /// selftest_reel_ports.py pins the table to the art). A 2x2 footprint's centre line is a cell corner, so the hose's end
+    /// cell is always half a cell off it: the hose bends over its last stretch onto the port (HoseMath.EndOnPort). Every other
+    /// approach (a tank's north or south side, the tall tank, machines, pipes) keeps the shared edge's midpoint.
+    /// </summary>
+    public static class TankPortGeometry
+    {
+        public const string TankDef = "RM_LiquidTank";
+        public static readonly string[] Looks = { "Scrapper", "Industrial", "Modern", "Futuristic" };
+        /// <summary>Port flange centre, dz cells from the footprint centre, per look (alpha &gt; 128 rows at the edge column).</summary>
+        public static readonly double[] PortDz = { 0.021, 0.025, -0.016, -0.057 };
+
+        /// <summary>The drawn port a hose end on side (sx, sz) of a 2x2 universal tank couples to, or false (keep the edge midpoint).
+        /// (sx, sz) = unit step from the end cell into the tank; (bx, bz) = the tank's footprint minimum.</summary>
+        internal static bool PortPoint(string look, int bx, int bz, int bw, int bh, int sx, int sz, out V2 port)
+        {
+            port = default(V2);
+            if (bw != 2 || bh != 2 || sz != 0 || Math.Abs(sx) != 1) return false;
+            int i = Array.IndexOf(Looks, look);
+            double dz = PortDz[i < 0 ? 0 : i];
+            port = new V2(sx > 0 ? bx : bx + bw, bz + bh / 2.0 + dz);
+            return true;
+        }
+    }
+
     /// <summary>The reel's footprint (round 3, owner 2026-10-04: "the reel should be 2x2, not 1x1, as the shown hose is
     /// quite large"). The hose leaves the reel at its CENTRE (a cell corner for 2x2) from under the sprite.</summary>
     public struct HoseReelRect
@@ -1457,12 +1546,23 @@ namespace RimMandrake.FlowWorks.Hose
         /// four looks; drawSize 2.8), and a coupling sits on that nozzle. The routing start is the nozzle's height on the footprint's
         /// west edge (inside the west cell, so a lay still starts in a reel cell); <see cref="NozzleTip"/> is where the coupling's face
         /// meets the nozzle. A 1x1 reel keeps its centre.</summary>
-        internal V2 Mouth => W == 2 && H == 2 ? Centre + new V2(MouthDX, MouthDZ) : Centre;
-        public const double ReelDrawSize = 2.8, MouthDX = -0.98, MouthDZ = (0.5 - 135.0 / 256) * ReelDrawSize;
-        /// <summary>The nozzle's tip, where the end coupling's face is drawn (2x2 reel only; the art's tip at u 9/256).</summary>
-        internal V2 NozzleTip => Centre + new V2((9.0 / 256 - 0.5) * ReelDrawSize, MouthDZ);
-        /// <summary>The drum's half-height below its axis (art: underside v 165/256), cells.</summary>
-        public const double DrumBelowAxis = (165.0 - 124.0) / 256 * ReelDrawSize;
+        /// HOSE_ENDS_FIX_MISSES_THE_PORTS (owner 2026-10-21: "Hose attached to tank and reel broken"): the nozzle used to be a
+        /// constant (u 9/256 at drawSize 2.8) that silently went stale when 2e22f30e3c and 2c27b49569 replaced the art; it is now
+        /// MEASURED per look from the installed laid art (ReelIntakeGeometry.OutletTip, generated, --check in selftest_reel_ports.py).
+        /// The routing start is the tip itself (always inside the west cell; clamped there).</summary>
+        internal V2 Mouth => HasNozzle ? new V2(Math.Max(NozzleTip.X, X0 + 0.02), NozzleTip.Z) : Centre;
+        /// <summary>The reel's look (HoseStyles.Looks); null or unknown = the base (Scrapper) art.</summary>
+        public string Look;
+        /// <summary>The laid art's nozzle tip, where the end coupling's face is drawn (2x2 reel only).</summary>
+        internal V2 NozzleTip
+        {
+            get
+            {
+                if (!HasNozzle) return Centre;
+                ReelIntakeGeometry.OutletTip(Look, true, out double dx, out double dz);
+                return Centre + new V2(dx, dz);
+            }
+        }
         /// <summary>True when the reel's art carries a brass outlet nozzle the hose couples to (the 2x2 reel).</summary>
         public bool HasNozzle => W == 2 && H == 2;
         /// <summary>2026-10-05: the hose leaves a nozzled reel dead straight out of the outlet for this many cells from

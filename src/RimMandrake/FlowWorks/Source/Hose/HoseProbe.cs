@@ -271,6 +271,10 @@ namespace RimMandrake.FlowWorks.Hose
                   .Append(",\"portContact\":[").Append(r.portContact.X).Append(',').Append(r.portContact.Z).Append(']')
                   .Append(",\"footprint\":[").Append(r.Rect.X0).Append(',').Append(r.Rect.Z0).Append(',').Append(r.Rect.W).Append(',').Append(r.Rect.H).Append(']')
                   .Append(",\"start\":[").Append(D(r.Rect.Mouth.X)).Append(',').Append(D(r.Rect.Mouth.Z)).Append(']')
+                  // HOSE_ENDS_FIX_MISSES_THE_PORTS: where the reel coupling's face is drawn (the measured nozzle) and the tank port the
+                  // laid end's coupling sits on (null = the shared edge's midpoint); proof_hose NS_hose_ends_on_ports reads both
+                  .Append(",\"nozzleTip\":[").Append(D(r.Rect.NozzleTip.X)).Append(',').Append(D(r.Rect.NozzleTip.Z)).Append(']')
+                  .Append(",\"portEnd\":").Append(r.laid && comp.PortEnd(r, out V2 pe, out _) ? "[" + D(pe.X) + "," + D(pe.Z) + "]" : "null")
                   .Append(",\"relayTo\":").Append(RelayPos(comp.RelayOf(r)))
                   .Append(",\"fedBy\":[").Append(string.Join(",", comp.FeedersOf(r).Select(f => RelayPos(f)))).Append(']')
                   .Append(",\"endPoint\":").Append(r.laid ? EndPos(comp, r) : "null")
