@@ -45,16 +45,29 @@ namespace RimMandrake.CreatureBehaviors
 				return;
 			}
 			float mult = Mathf.Max(0f, RM_CreatureBehaviorsSettings.sunScaldSeverityMultiplier);
-			// WEBWORK_HEAT_SHADE_BUILD_1: vanilla InSunlight ignores trees, so on a dayside biome with no night
-			// the scald hit every unroofed cell of its own jungle. Re-key to the shade grid when it runs here
-			// and the setting is on; otherwise exactly the old behaviour.
-			bool inSun = pawn.PositionHeld.InSunlight(pawn.MapHeld);
-			RM_MapComponent_ShadeGrid grid = pawn.MapHeld?.GetComponent<RM_MapComponent_ShadeGrid>();
-			bool gridUsable = grid != null && grid.SunHeatActive;
-			bool exposed = RM_SunHeatMath.ScaldExposed(RM_CreatureBehaviorsSettings.sunScaldReadsShade, gridUsable,
-				gridUsable ? grid.ShadeAt(pawn.PositionHeld) : 0f,
-				RM_CreatureBehaviorsSettings.sunScaldShadeThreshold, inSun);
+			bool exposed = ExposedAt(pawn.MapHeld, pawn.PositionHeld);
 			Severity += (exposed ? SeverityPerSecond_Exposed : SeverityPerSecond_Shaded) * mult;
+		}
+
+		/// <summary>
+		/// Would a scald-carrier standing on <paramref name="cell"/> burn right now? The one predicate the hediff
+		/// ticks on, public so the traction lance's proof (an ollathrix pulled into the sun) reads the same thing.
+		/// WEBWORK_HEAT_SHADE_BUILD_1: vanilla InSunlight ignores trees, so on a dayside biome with no night the
+		/// scald hit every unroofed cell of its own jungle. Re-keyed to the shade grid when it runs here and the
+		/// setting is on; otherwise exactly the old behaviour.
+		/// </summary>
+		public static bool ExposedAt(Map map, IntVec3 cell)
+		{
+			if (map == null || !cell.InBounds(map))
+			{
+				return false;
+			}
+			bool inSun = cell.InSunlight(map);
+			RM_MapComponent_ShadeGrid grid = map.GetComponent<RM_MapComponent_ShadeGrid>();
+			bool gridUsable = grid != null && grid.SunHeatActive;
+			return RM_SunHeatMath.ScaldExposed(RM_CreatureBehaviorsSettings.sunScaldReadsShade, gridUsable,
+				gridUsable ? grid.ShadeAt(cell) : 0f,
+				RM_CreatureBehaviorsSettings.sunScaldShadeThreshold, inSun);
 		}
 	}
 }

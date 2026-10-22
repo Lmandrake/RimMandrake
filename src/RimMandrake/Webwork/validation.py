@@ -793,8 +793,8 @@ def _build_suite():
     @suite.chain("traction_lance")
     def traction_lance(t):
         """WEBWORK_TRACTION_LANCE_BUILD_1 criteria A3 (the parts a proof exists for). RM_TractionLance is this mod's def;
-        the pull is CreatureBehaviors' RM_CompTetherPull. Not covered here (no proof tool yet): friendly pull OFF, the
-        ollathrix pulled into sun, the two research doors, per-toggle off effects."""
+        the pull is CreatureBehaviors' RM_CompTetherPull. Not covered here: per-toggle off effects, and the junction cut
+        registering a touch in RM_MapComponent_SenseWeb."""
         def pull(t, stuff, mode):
             text = _lp(t, "ProofPull", "%s|%s" % (stuff, mode))
             if _live(t) and not text.startswith("LANCE"):
@@ -834,6 +834,43 @@ def _build_suite():
                 c, h = rows["Cloth"], rows["Hyperweave"]
                 if not (c["snap"] > h["snap"] and c["range"] < h["range"]):
                     raise ExpectationFailed("cloth is not snappier and shorter than thrixweave: %r" % rows)
+        with t.component("friendly_pull_off_leaves_a_downed_colonist", beyond_toggle=True):
+            # target chosen the production way (FindTarget); foundOn is the control that proves the proof can see
+            kv = pull(t, "Hyperweave", "friendlyoff")
+            if kv is not None:
+                if kv.get("foundOn") != "True":
+                    _unmeasured(t, "control failed: FindTarget did not pick the downed colonist even with friendly pull ON "
+                                "(a visible hostile in range outranks it?): %r" % kv); return
+                if kv.get("foundOff") != "False" or kv.get("roped") != "False" or kv.get("cellsMoved") != "0":
+                    raise ExpectationFailed("friendly pull OFF still picked or dragged a downed colonist: %r" % kv)
+        with t.component("ollathrix_pulled_from_shade_into_sun", beyond_toggle=True):
+            # the lance needs thrixweave for it: body size 2.6 is over the cloth (1.2) and devilstrand (2.0) caps
+            kv = pull(t, "Hyperweave", "ollathrix")
+            if kv is not None:
+                if kv.get("roped") != "True" or int(kv.get("cellsMoved", "0")) < 1:
+                    raise ExpectationFailed("a thrixweave lance did not reel a wild ollathrix: %r" % kv)
+                if kv.get("startExposed") != "False":
+                    raise ExpectationFailed("the roofed (canopy stand-in) start cell did not read shaded to the scald predicate: %r" % kv)
+                if kv.get("sunAtEnd") != "True" or float(kv.get("endShade", "-1")) >= float(kv.get("threshold", "0.5")):
+                    _unmeasured(t, "the lance's end cell is not in open sun (night, roof or cast shade): %r" % kv); return
+                if kv.get("endExposed") != "True":
+                    raise ExpectationFailed("an ollathrix reeled onto a sunlit cell does not read exposed to sun-scald: %r" % kv)
+
+        def door(t, which, item):
+            text = _lp(t, "ProofResearchDoor", which)
+            if not _live(t):
+                return
+            if not text.startswith("DOOR"):
+                _unmeasured(t, "ProofResearchDoor %s gave no answer: %r" % (which, text[:200])); return
+            kv = _kv(text)
+            if kv.get("before") != "False" or kv.get("buildableBefore") != "False":
+                _unmeasured(t, "could not reset RM_Research_TractionLance to unfinished: %r" % kv); return
+            if kv.get("after") != "True" or kv.get("buildable") != "True":
+                raise ExpectationFailed("studying %s did not finish RM_Research_TractionLance / make the lance buildable: %r" % (item, kv))
+        with t.component("gutter_junction_study_teaches_the_lance", beyond_toggle=True):
+            door(t, "junction", "RM_GutterJunction")
+        with t.component("sump_drawjoint_study_teaches_the_lance", beyond_toggle=True):
+            door(t, "drawjoint", "RUT_PreservedDrawJoint (needs mandrake.rm.thesump loaded)")
 
     return suite
 
@@ -971,7 +1008,10 @@ def mock_urraveth():
 
 
 class _MockLanceSession(_MockSession):
-    """--mock: traction_lance against a working pull; broken="wall" pulls straight through the wall (outcome arrived)."""
+    """--mock: traction_lance against a working pull. broken= "wall" pulls straight through the wall (outcome arrived);
+    "friendly" ignores the friendly-pull setting (FindTarget picks the downed colonist with it OFF, and drags it);
+    "ollathrix" has no pull for an ollathrix (snaps for mass, as with a body-size cap under 2.6); "door:junction" /
+    "door:drawjoint" has no grant on that specimen (its study finishes nothing; one at a time, as a FAIL stops the chain); "night" is a working lance whose end cell is not sunlit (must read UNMEASURED)."""
 
     def __init__(self, broken=None):
         _MockSession.__init__(self)
@@ -983,16 +1023,41 @@ class _MockLanceSession(_MockSession):
             if kw.get("method") == "ProofStuffTable":
                 return {"success": True, "result": "STUFF Cloth: range=8.4 snap=0.090 maxMass=1.2 | DevilstrandCloth: range=12.0 snap=0.060 "
                         "maxMass=2.0 | Hyperweave: range=15.6 snap=0.030 maxMass=3.0"}
+            if kw.get("method") == "ProofResearchDoor":
+                door = kw.get("args") or ""
+                item = "RM_GutterJunction" if door == "junction" else "RUT_PreservedDrawJoint"
+                done = self.broken != "door:" + door
+                return {"success": True, "result": "DOOR door=%s item=%s grantComp=True studies=%d before=False buildableBefore=False "
+                        "after=%s buildable=%s" % (door, item, 1 if door == "junction" else 2, done, done)}
             stuff, mode = (kw.get("args") or "|").split("|")
+            extra = ""
+            if mode == "friendlyoff":
+                if self.broken == "friendly":
+                    extra = " foundOn=True foundOff=True"
+                else:
+                    extra = " foundOn=True foundOff=False"
+            if mode == "ollathrix":
+                extra = " startExposed=True" if self.broken == "ollathrix" else " startExposed=False"
+                if self.broken == "night":
+                    extra += " endExposed=False sunAtEnd=False endShade=0.00 threshold=0.50"
+                elif self.broken == "ollathrix":
+                    extra += " endExposed=False sunAtEnd=False endShade=-1.00 threshold=0.50"
+                else:
+                    extra += " endExposed=True sunAtEnd=True endShade=0.00 threshold=0.50"
             moved, end, outcome, snaps, roped = 8, 1.0, "arrived", 0, True
-            if mode == "unmanned":
+            if mode == "ollathrix" and self.broken == "ollathrix":
+                moved, end, outcome, snaps, roped = 0, 9.0, "mass", 1, False
+            elif mode == "friendlyoff" and self.broken != "friendly":
+                moved, end, outcome, roped = 0, 9.0, "none", False
+            elif mode == "unmanned":
                 moved, end, outcome, roped = 0, 9.0, "none", False
             elif mode == "wall" and self.broken != "wall":
                 moved, end, outcome = 3, 6.0, "wall"
             elif mode == "heavy":
                 moved, end, outcome, snaps = 0, 9.0, "mass", 1
             return {"success": True, "result": "LANCE stuff=%s mode=%s canWork=%s roped=%s startDist=9.0 endDist=%.1f cellsMoved=%d steps=8 "
-                    "outcome=%s snaps=%d range=15.6 snapChance=0.030 maxMass=3.0 rigging=1.00" % (stuff, mode, roped, roped, end, moved, outcome, snaps)}
+                    "outcome=%s snaps=%d range=15.6 snapChance=0.030 maxMass=3.0 rigging=1.00 mass=80.0 bodySize=2.60%s"
+                    % (stuff, mode, roped, roped, end, moved, outcome, snaps, extra)}
         return super(_MockLanceSession, self).call(tool, **kw)
 
 
@@ -1001,15 +1066,22 @@ def mock_lance():
     chains = list(suite.chains)
     out = {}
     try:
-        for broken in (None, "wall"):
+        for broken in (None, "wall", "friendly", "ollathrix", "door:junction", "door:drawjoint", "night"):
             suite.chains[:] = [c for c in chains if c[0] == "traction_lance"]
             res = run_suite(suite, _MockLanceSession(broken), anchor=(50, 50))
             out[broken] = {c.get("name"): str(c.get("verdict", "")).upper()
                            for ch in res.get("chains", []) for c in (ch.get("components") or [])}
     finally:
         suite.chains[:] = chains
-    ok = len(out[None]) == 6 and set(out[None].values()) == {"PASS"} and out["wall"].get("wall_stops_the_pull") == "FAIL"
-    print("MOCK lance: %s (good=%s wall=%s)" % ("PASS" if ok else "FAIL", out[None], out["wall"].get("wall_stops_the_pull")))
+    red = {"wall": out["wall"].get("wall_stops_the_pull"),
+           "friendly": out["friendly"].get("friendly_pull_off_leaves_a_downed_colonist"),
+           "ollathrix": out["ollathrix"].get("ollathrix_pulled_from_shade_into_sun"),
+           "door_junction": out["door:junction"].get("gutter_junction_study_teaches_the_lance"),
+           "door_drawjoint": out["door:drawjoint"].get("sump_drawjoint_study_teaches_the_lance")}
+    night = out["night"].get("ollathrix_pulled_from_shade_into_sun")
+    ok = (len(out[None]) == 10 and set(out[None].values()) == {"PASS"} and set(red.values()) == {"FAIL"}
+          and night not in ("PASS", "FAIL", None))
+    print("MOCK lance: %s (good=%s red=%s night=%s)" % ("PASS" if ok else "FAIL", out[None], red, night))
     return ok
 
 
