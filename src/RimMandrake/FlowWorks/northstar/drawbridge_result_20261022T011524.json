@@ -1,0 +1,64 @@
+{
+ "script": "drawbridge_proof.py",
+ "started": "2026-10-22T01:15:24",
+ "rows": [
+  {
+   "id": "HOSTILE_LOCKS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "freeBefore": "1",
+    "raisedLocked": "LEAF leaf=1/1 progress=480 full=480 target=raised raised=4/4 frozen=False winch=True powered=True hold=False auto=False pending=none tip=True hinge=A version=1",
+    "autoLowering": "LEAF leaf=1/1 progress=450 full=480 target=lowered raised=4/4 frozen=False winch=True powered=True hold=False auto=True pending=none tip=True hinge=A version=1",
+    "afterRaid": "LEAF leaf=1/1 progress=460 full=480 target=raised raised=4/4 frozen=False winch=True powered=True hold=False auto=False pending=none tip=True hinge=A version=1",
+    "trappedFree": "0",
+    "locked": "False"
+   }
+  }
+ ],
+ "args": {
+  "out": null,
+  "origin": "140,140",
+  "fresh_map": false,
+  "only": "HOSTILE_LOCKS",
+  "raid_ticks": 3000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofDevSet",
+  "ProofGivePlank",
+  "ProofInterrupt",
+  "ProofLeaf",
+  "ProofMakeDrawbridge",
+  "ProofOrder",
+  "ProofPlankLedger",
+  "ProofTipPreview",
+  "ProofWinchDespawn",
+  "ProofWinchPower",
+  "ProofWorkJob"
+ ],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "6e9607aa5b56d42119f3a4b9e7f99ddfff0541e7c792233106c8b1ba6115768e",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "f367c74cd0b2f2523a1b5edbcc1c66800f456c0c5ab757e92b4c723c1a44db80"
+ },
+ "finished": "2026-10-22T01:15:39"
+}
