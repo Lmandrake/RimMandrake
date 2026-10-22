@@ -563,6 +563,7 @@
 !/pile_2026-10-21/walk/sluice_ew_grey_outline_crop.png
 !/pile_2026-10-21/walk/spikes_reference_owner_2026-10-21.png
 !/pile_2026-10-21/webwork_wtw_live.json
+!/pile_2026-10-22/art_helper_day.md
 !/pile_2026-10-22/day_plan.md
 !/pile_2026-10-22/flowworks_ux_review.md
 !/pile_2026-10-22/jg_list2.py
@@ -609,6 +610,13 @@
 !/pile_2026-10-22/machine_dig_tick.py
 !/pile_2026-10-22/morning_questions.md
 !/pile_2026-10-22/night_fixer.md
+!/pile_2026-10-22/phone/joint_fittings_phone.md
+!/pile_2026-10-22/phone/joint_fittings_phone.png
+!/pile_2026-10-22/phone/make_phone.py
+!/pile_2026-10-22/phone/pipe_atlas_phone.md
+!/pile_2026-10-22/phone/pipe_atlas_phone_1_layouts.png
+!/pile_2026-10-22/phone/pipe_atlas_phone_2_pieces_scale.png
+!/pile_2026-10-22/phone/pipe_atlas_phone_3_pumps.png
 !/pile_2026-10-22/pipefit/compose.py
 !/pile_2026-10-22/pipefit/make_jobs.py
 !/pile_2026-10-22/pipefit/register.py
