@@ -238,6 +238,8 @@ ERROR_NEEDLES = ["WreckedMachines", "RM_WM_", "AutomatedSmelter"]
 
 def _assert_no_mod_errors(t):
     r = t.bridge_call("jawa/drain_log", limit=200, errorsOnly=True)
+    if t._guard() and not (r or {}).get("success"):
+        raise ExpectationFailed("UNMEASURED: jawa/drain_log did not answer: %r" % (r,))   # unreadable != clean
     msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
     hit = [m for m in msgs if any(n.lower() in m.lower() for n in ERROR_NEEDLES)]
     if hit:
@@ -536,6 +538,8 @@ def alloy_forge_gated(t):
         if t.session is None:
             return
         r = t.bridge_call("jawa/drain_log", limit=200, errorsOnly=True)
+        if not (r or {}).get("success"):
+            raise ExpectationFailed("UNMEASURED: jawa/drain_log did not answer: %r" % (r,))
         msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
         hit = [m for m in msgs if any(n in m for n in ("RM_WM_AlloyForge", "RM_WM_PlasteelAlloying", "AlloyForgeGates"))]
         if hit:

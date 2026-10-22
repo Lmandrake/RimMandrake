@@ -2056,7 +2056,7 @@ def log_chain(t):
             bad = [m.get("text") for m in msgs]
             owned = set(DEFS_BY_TYPE.get("WeatherDef", []) + KINDS + PLANTS + [TREE])
             r2 = t.bridge_call("jawa/drain_log", contains="cross-reference", errorsOnly=True, limit=100)
-            xref = [m.get("text") for m in ((r2 or {}).get("messages") or [])
+            xref = [m.get("text") for m in (_ok(r2, "drain_log(cross-reference)").get("messages") or [])
                     if any(d in (m.get("text") or "") for d in owned)]
             _note(t, "log scan", {"leaningscrub errors": len(bad), "xref naming our defs": len(xref),
                                   "bufferLines": buf.get("totalInBuffer")})
