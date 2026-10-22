@@ -333,7 +333,6 @@ MECHANICS = [
     ("senseWebEnabled", ["RM_MapComponent_SenseWeb", "RM_CompSenseWebNode"], []),
     ("chewAnchorsBehaviorEnabled", ["RM_JobGiver_ChewAnchors", "RM_ChewAnchorsConsumerExtension", "RM_ChewableExtension"],
      ["ThinkTreeDef/RM_ChewAnchors_Consume"]),
-    ("frontCreepEnabled", ["RM_MapComponent_FrontCreep", "RM_FrontCreepExtension"], []),
     ("aquaticAmbushEnabled", ["RM_CompAquaticAmbusher", "RM_JobDriver_LungeAttack"],
      ["JobDef/RM_LungeAttack", "HediffDef/RM_AquaticAmbushInvisibility", "HediffDef/RM_LungeSpeedBurst"]),
     ("parentalEnrageEnabled", ["RM_CompParentalEnrage"], ["MentalStateDef/RM_ParentalEnrage"]),

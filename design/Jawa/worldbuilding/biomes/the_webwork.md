@@ -264,15 +264,13 @@ hediff carrier); 7 owner cards open (rides `KIT_SPECS_CARD_SITTING_1`).
 - `WEBWORK_MECHANICS_1` — the C# kit: web-sense MapComponent (felt-marks, pack
   convergence, kilometer tracking), concealed-burst ambush, Shokk-bound hediff,
   the light-moat (existing UV-sensitivity mechanism — verify the def, never
-  guess), commandable-adhesion, beetle anchor-chewing, margin creep on border
-  maps, droid-priority targeting.
+  guess), commandable-adhesion, beetle anchor-chewing, droid-priority targeting.
 - `SHOKKWEAVE_SOLE_SOURCE_1` — the economy ruling: rename, strip every trader
   table, add the three harvest routes; prove against live trader generation.
   ⭐ **Economy spec DRAFTED 2026-09-11**: `kits/shokkweave_sole_source_spec.md`
   — leak census MEASURED against the frozen dump (11 trader kinds, the
-  quest-reward tag, no producing recipe); the ruled fourth route (border
-  creep-web yields + emergent-Shokk spawn) wired to the built
-  `RSW_CompEmergentSpawnOnDestroy`; stuff-rolled gear RULED 2026-09-11
+  quest-reward tag, no producing recipe); (the fourth route, border creep-web, was
+  retired 2026-10-22 with the front creep); stuff-rolled gear RULED 2026-09-11
   (commonality → 0.05) — no cards open, build-ready for FOUNDRY.
 - **Roster** — rides the full assignment pass: the Wyyyschokk kinds (bestiary FJ
   clade names `nettik`/`chirrik`/`rothrik` available for the guilds), beetles,

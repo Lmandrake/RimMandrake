@@ -141,9 +141,8 @@ the donor is not in the current load and this spec asserts nothing about it.
 files), `mandrake.rm.creaturebehaviors`, `mandrake.rm.flowworks` (CrackedLands's flood),
 `mandrake.rm.weathersuite`. A biome mod depends on these; nothing in them names a biome.
 The `RUT_`-referencing extension classes already used inside the biome defs
-(`RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension`,
-`RimMandrake.CreatureBehaviors.RM_FrontCreepExtension`) are already RimMandrake-tier and
-need no move.
+(`RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension`) is already RimMandrake-tier and
+needs no move.
 
 ## 3. The RimMandrake / Utinni boundary
 

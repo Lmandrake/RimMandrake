@@ -30,8 +30,7 @@ Ships in v1:
     functional on Core + DLCs alone.
   - RM_WebworkSettings : ModSettings with a worldgen-affecting master toggle (default ON) for
     whether RM_Webwork competes to generate on a freshly generated planet at all — off degrades
-    gracefully to "this biome simply never wins a tile," nothing else changes. Future per-
-    mechanic dials (front-creep margin, once WEBWORK_WEB_STRUCTURES_1 wires it) land here too.
+    gracefully to "this biome simply never wins a tile," nothing else changes.
   - RM_Ollathrix (OLLATHRIX_OWNER_SPECIES_1): the biome's own owner species, one race/one kind,
     invented and franchise-free (Q11a); the Utinni layer overlays a Wyyyschokk skin on the same
     defName via mandrake.rsw.shokk. SHOKK_SKIN_SHRINK_1 (S6 ruling 1) moved that species' own

@@ -18,7 +18,7 @@ CHAINS
   scald_binding       the sun-scald hediff resolves to the CreatureBehaviors class (hard dependency).
   web_terrain_weather WEBWORK_TERRAIN_WEATHER_PASS_1: the web laid at mapgen (cables, local webs, silk carpet only near
                       spider sites) and webfall (in the biome's weather table, forceable), each toggle's off arm.
-  map_mechanics       nest placement at mapgen, the 20-30 day re-lay, emergent spawn on destroy, the creep-web
+  map_mechanics       nest placement at mapgen, the 20-30 day re-lay, emergent spawn on destroy, the web
                       harvest (Deconstruct -> thrixweave + emergent spawn), sun-scald in sun,
                       loom spit: UNMEASURED, each says what it needs.
 
@@ -94,10 +94,6 @@ def _base_port_findings():
                 bad.append("RM_Webwork_%s has no texture" % n)
     if "RM_Webwork_Slick" not in txt(os.path.join("Defs", "HediffDefs", "RM_WebworkSlick.xml")):
         bad.append("RM_Webwork_Slick hediff missing")
-    biome = txt(os.path.join("Defs", "BiomeDefs", "RM_Webwork_Biome.xml"))
-    ext = re.search(r"RM_FrontCreepExtension\">(.*?)</spawnDensity>", biome, flags=re.S)
-    if not ext or any("<li>RM_Webwork_%s</li>" % n not in ext.group(1) for n in ("Anchor", "Web", "Gutter")):
-        bad.append("RM_Webwork lacks RM_FrontCreepExtension naming the three RM_ structures")
     ren = txt(os.path.join("Patches", "RM_Thrixweave_Rename.xml"))
     if "<label>thrixweave</label>" not in ren:
         bad.append("Hyperweave is not renamed thrixweave")
@@ -511,13 +507,6 @@ def _build_suite():
             f = _deep(t, "ThingDef/Hyperweave", "tradeability")
             if f is not None and "Sellable" not in "|".join(_flat(f.get("tradeability"))):
                 raise ExpectationFailed("Hyperweave tradeability reads %r with the strip on, expected Sellable" % (f.get("tradeability"),))
-        with t.component("front_creep_extension_on_biome", toggle="frontCreepEnabled"):
-            f = _deep(t, "BiomeDef/" + BIOME, "modExtensions")
-            # LIVE 2026-10-03: get_defs renders a modExtension as its fields without the class name; the front-creep extension is the
-            # one carrying frontThingDefNames.
-            exts = [e for e in (f.get("modExtensions") or []) if isinstance(e, dict)] if f is not None else []
-            if f is not None and not any("frontThingDefNames" in e for e in exts):
-                raise ExpectationFailed("RM_Webwork carries no RM_FrontCreepExtension with the toggle on: %r" % (f.get("modExtensions"),))
         with t.component("structures_resolve", beyond_toggle=True):
             for n in ("Anchor", "Web", "Gutter"):
                 f = _deep(t, "ThingDef/RM_Webwork_" + n, "killedLeavings")
@@ -547,7 +536,7 @@ def _build_suite():
     def map_mechanics(t):
         """WEBWORK_COVERAGE_GAPS_1. Runs on the CURRENT map through RM_WebworkProof (static_call); each proof sets
         its settings for the call and restores them. Not proven here: the GenStep firing inside real mapgen
-        (static: it is in the biome's genSteps, biome_wiring), sun-scald, loom spit, front creep."""
+        (static: it is in the biome's genSteps, biome_wiring), sun-scald, loom spit."""
         with t.component("nest_placed_by_the_genstep", toggle="nestEnabled"):
             text = _wp(t, "ProofNest", "true")
             if _live(t):
@@ -625,7 +614,6 @@ def _build_suite():
         for name, why in (
             ("sun_scald_in_open_sun", "RM_Hediff_SunScald lives in mandrake.rm.creaturebehaviors: its proof belongs there (an ollathrix in lit sun, ticks)"),
             ("loom_spit_fires", "the ranged spit needs an awake ollathrix and a hostile target"),
-            ("front_creep_advances", "frontCreepEnabled is consumed by CreatureBehaviors' front-creep, not Webwork C#; proof belongs there"),
         ):
             with t.component(name, beyond_toggle=True):
                 if _live(t):

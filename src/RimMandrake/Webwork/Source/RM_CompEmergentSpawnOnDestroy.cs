@@ -29,13 +29,13 @@ namespace RimMandrake.Webwork
 	/// owner-verbatim on the sole-source boundary card: "(2) but it has a
 	/// small chance of SPAWNING an emergent Shokk to get you." Attach via
 	/// RM_CompProperties_EmergentSpawnOnDestroy to any Thing whose
-	/// destruction represents a harvest (a creep-web node, a gutter, …) —
+	/// destruction represents a harvest (a web node, a gutter, …) —
 	/// on a DestroyMode.Vanish or Deconstruct (the harvest cases; never fires
 	/// on Kill/Refund/etc.) it rolls the configured chance and spawns a hostile ollathrix
 	/// (or whatever PawnKindDef the attaching def names) at the spot,
 	/// manhunter-forced.
 	///
-	/// Attached to the creep-web nodes RM_Webwork_Anchor/_Web/_Gutter
+	/// Attached to the web nodes RM_Webwork_Anchor/_Web/_Gutter
 	/// (SHOKKWEAVE_SOLE_SOURCE_1): a colonist cutting one with the vanilla
 	/// Deconstruct job destroys it with DestroyMode.Deconstruct, which counts
 	/// as a harvest here; combat destruction (KillFinalize) never fires it.

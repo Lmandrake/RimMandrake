@@ -6,7 +6,6 @@ Decision taken by question card (owner, 2026-10-01): one FOUNDRY item for all th
 ## (a) Move twin-only features onto the `RM_` biomes, so the repaint does not lose them
 - **Greentide** roil (steam-fog) lock: `src/RimUtinni/UtinniPatches/Patches/RUT_RoilLock_BiomeWiring.xml`,
   weather `RUT_RoilWeather` (overlay C# is already free: `RM_WeatherOverlay_GreentideRoil.cs`). Target `RM_Greentide`.
-- **Webwork** web front: `RM_FrontCreepExtension` on the twin `RUT_Webwork` only; the free def leaves it off at `RM_Webwork_Biome.xml` l.26 pending `WEBWORK_WEB_STRUCTURES_1`. Target `RM_Webwork`.
 
 ## (b) Scrub Star Wars IP from free-tier text
 - The Rot: `RM_PaleTree` description says "a faint, tugging sense of the Force".

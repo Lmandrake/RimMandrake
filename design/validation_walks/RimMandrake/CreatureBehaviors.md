@@ -14,7 +14,6 @@ status-hint: shared behaviour engine of ~50 mechanics; the suite covers the foot
 - Sun scald: `sunScaldEnabled` gates `RM_Hediff_SunScald`. → mechanic_toggles.sunScald_wired_and_gated
 - Sense web: `senseWebEnabled` gates `RM_MapComponent_SenseWeb` and `RM_CompSenseWebNode`. → mechanic_toggles.senseWeb_wired_and_gated
 - Chew anchors: `chewAnchorsBehaviorEnabled` gates `RM_JobGiver_ChewAnchors`; `RM_ChewAnchors_Consume` resolves. → mechanic_toggles.chewAnchors_wired_and_gated
-- Front creep: `frontCreepEnabled` gates `RM_MapComponent_FrontCreep`. → mechanic_toggles.frontCreep_wired_and_gated
 - Aquatic ambush: `aquaticAmbushEnabled` gates `RM_CompAquaticAmbusher` and the lunge job; ambush hediffs resolve. → mechanic_toggles.aquaticAmbush_wired_and_gated
 - Parental enrage: `parentalEnrageEnabled` gates `RM_CompParentalEnrage`; `RM_ParentalEnrage` mental state resolves. → mechanic_toggles.parentalEnrage_wired_and_gated
 - Drum lure: `drumLureEnabled` gates `RM_CompDrumLure`; both lure hediffs resolve. → mechanic_toggles.drumLure_wired_and_gated

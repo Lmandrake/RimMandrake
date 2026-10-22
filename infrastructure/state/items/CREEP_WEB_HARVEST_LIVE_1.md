@@ -1,6 +1,6 @@
-# CREEP_WEB_HARVEST_LIVE_1 — live-check the creep-web colonist harvest
+# CREEP_WEB_HARVEST_LIVE_1 — live-check the colonist web-node harvest
 
-Parent: `SHOKKWEAVE_SOLE_SOURCE_1` (route 4, ruled BUILD with a live check by question card 2026-10-09). Built at
+Parent: `SHOKKWEAVE_SOLE_SOURCE_1` (route 4, ruled BUILD with a live check by question card 2026-10-09). **2026-10-22: the border-creep premise is retired (front creep deleted by owner card); what is checked here is only the Deconstruct yield on the Webwork's own nodes (anchor, web, cable), placed by ProofHarvest, never by a front.** Built at
 `6c1f40e9d` in mandrake.rm.webwork (folded into mandrake.rm.biomes at runtime). Not run then: the game was RUNNING and
 a new DLL cannot deploy under a running game.
 

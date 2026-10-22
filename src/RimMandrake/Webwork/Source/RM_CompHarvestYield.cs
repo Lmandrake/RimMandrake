@@ -27,8 +27,8 @@ namespace RimMandrake.Webwork
 	}
 
 	/// <summary>
-	/// SHOKKWEAVE_SOLE_SOURCE_1, the border creep-web harvest route (owner card 2026-09-11: "yields, with teeth"; build
-	/// ruled by question card 2026-10-09). The colonist job is vanilla Deconstruct: the creep-web nodes carry
+	/// SHOKKWEAVE_SOLE_SOURCE_1, the web-node harvest route (owner card 2026-09-11: "yields, with teeth"; build
+	/// ruled by question card 2026-10-09). The colonist job is vanilla Deconstruct: the web nodes carry
 	/// building.alwaysDeconstructible, so the player designates them with the ordinary Deconstruct tool and a
 	/// constructor walks over and cuts them (WorkGiver_Deconstruct / JobDriver_Deconstruct). Vanilla deconstruct
 	/// leavings refund the cost list, which a natural node does not have, so this comp drops the silk on

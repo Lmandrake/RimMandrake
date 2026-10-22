@@ -9,8 +9,7 @@
 
   The two web layers a Webwork map is LAID with at map generation (RM_GenStep_WebworkWeb, order 326). The carpet is
   Defs/TerrainDefs/RM_WebworkSilkCarpet.xml. The older anchor line / sheet web / gutter (RM_WebworkStructures.xml) stay
-  as they were: they are the creeping front's things on a NEIGHBOUR's map, and changing them would change how those
-  maps look.
+  defined but nothing places them (their placer, the creeping front, was deleted by owner card 2026-10-22).
 
   RM_Webwork_Cable   the main structure. Laid in continuous lines: a spanning tree between the spider sites plus two
                      through-cables edge to edge. SLOW, never impassable (pathCost 30, a climb-over): an impassable line
