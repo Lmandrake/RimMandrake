@@ -30,5 +30,5 @@ if a and b:
     ta = {t["id"]: t["cpuSeconds"] for t in (a.get("topThreads") or [])}
     print("\n=== cpu delta over 30s ===")
     for t in (b.get("topThreads") or []):
-        d = t["cpuSeconds"] - ta.get(t["id"], t["cpuSeconds"])
+        d = t["cpuSeconds"] - ta.get(t["id"], 0.0)
         print(f"  thread {t['id']}: +{d:.1f}s  (now {t['cpuSeconds']}s) state={t['state']} wait={t.get('waitReason')}")
