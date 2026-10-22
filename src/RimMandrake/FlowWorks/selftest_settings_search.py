@@ -94,7 +94,7 @@ def main():
     check("4 can-fail: 'tap' (the retired word) does not", not matches(title, "tap"))
     gate = body_of(src, "private static bool Section(")
     check("1 Section draws its own separator after the search gate",
-          gate.find("if (sectionsDrawn++ > 0) list.GapLine();") > gate.find("if (!hit) return false;") > 0)
+          gate.find("if (sectionsDrawn++ > 0) list.GapLine();") > gate.find("SectionHits(title, names, searchQuery)) return false;") > 0)
     print("settings search: %s" % ("PASS" if not FAILS else "FAIL (%d failing)" % len(FAILS)))
     return 1 if FAILS else 0
 

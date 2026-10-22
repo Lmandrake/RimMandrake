@@ -877,12 +877,13 @@ namespace RimMandrake.FlowWorks
         /// </summary>
         private static bool Section(Listing_Standard list, string title, string[] names)
         {
+            RM_SettingsSearchIndex.End();
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
             if (searching)
             {
-                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
-                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
-                if (!hit) return false;
+                // SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND: the words a row SHOWS hit too (its drawn labels, recorded below), not
+                // only the title and field names.
+                if (!RM_SettingsSearchIndex.SectionHits(title, names, searchQuery)) return false;
                 searchHits++;
             }
             // The separator belongs to the section (BLEED_WELL_STRINGS_RENAME_TAP_RETIRED, live 2026-10-22): drawn outside it,
@@ -896,6 +897,7 @@ namespace RimMandrake.FlowWorks
             }
             Text.Font = GameFont.Small;
             if (open) DrawSectionReset(list, names);
+            if (open) RM_SettingsSearchIndex.Begin(list, title);   // the body the caller draws next is this section's index
             return open;
         }
 
@@ -905,12 +907,21 @@ namespace RimMandrake.FlowWorks
         /// Label, restated here; selftest_settings_search.py fails when the two drift.</summary>
         private static void Block(Listing_Standard list, string header, System.Action<Listing_Standard> draw)
         {
+            RM_SettingsSearchIndex.End();
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {
-                if (!RimMandrake.Shared.SettingsKitCore.Matches(header, searchQuery)) return;
+                if (!RM_SettingsSearchIndex.SectionHits(header, null, searchQuery)) return;
                 searchHits++;
             }
-            draw(list);
+            RM_SettingsSearchIndex.Begin(list, header);
+            try
+            {
+                draw(list);
+            }
+            finally
+            {
+                RM_SettingsSearchIndex.End();
+            }
         }
 
         private static int searchHits;
@@ -1993,6 +2004,7 @@ namespace RimMandrake.FlowWorks
             }
             finally
             {
+                RM_SettingsSearchIndex.End();
                 GUI.color = Color.white;
                 Text.Font = GameFont.Small;
                 Text.Anchor = TextAnchor.UpperLeft;

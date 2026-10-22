@@ -5,6 +5,9 @@ pre-fix code; each carries a planted regression that must fail (can-fail).
 RAILING_MATERIAL_FIX_MADE_OF_NOTHING: RM_SuspensionRailing is madeFromStuff, but PlaceRailing made it with stuff=null on both
   paths (god mode ThingMaker.MakeThing(rail); player GenConstruct.PlaceBlueprintForBuild(rail, ..., null, ...)) -> Player.log
   'madeFromStuff but stuff=null. Assigning default.' once per railing. Both paths must pass a material.
+SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND: Mod Settings search matched a section by title and field names only, so 'Liquid crosses'
+  found nothing although the Water engine section draws "Liquid crosses between the pieces of a huge network". The rows' drawn
+  labels are recorded per section (RM_SettingsSearchIndex) and a search hits them.
 """
 import os
 import re
@@ -89,9 +92,69 @@ def check_railing():
     check("railing: can-fail on player-path stuff=null", old2 != body and bool(railing_problems(old2)))
 
 
+# ── SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND ───────────────────────────────────────────────────────────────────────────
+def matches(label, query):
+    """SettingsKitCore.Matches: case-insensitive substring of the trimmed query (blank query matches)."""
+    q = (query or "").strip().lower()
+    return not q or q in (label or "").lower()
+
+
+def section_labels(body, title):
+    """Labels a Section body draws with list.CheckboxLabeled / short list.Label, read from source (string literals only)."""
+    i = body.index('Section(list, "%s"' % title)
+    j = body.index("{", body.index("\n", i))   # the block opening on the line after the if (...)
+    d = 0
+    for k in range(j, len(body)):
+        d += {"{": 1, "}": -1}.get(body[k], 0)
+        if d == 0:
+            break
+    sec = body[j:k]
+    out = re.findall(r'list\.CheckboxLabeled\("((?:[^"\\]|\\.)*)"', sec)
+    out += [m for m in re.findall(r'list\.Label\("((?:[^"\\]|\\.)*)"\)', sec) if len(m) <= 90]
+    return out
+
+
+def gate_hits(gate_src, title, names, labels, query):
+    """The search rule the Section gate implements: old = title/names only; new = also the drawn labels."""
+    hit = matches(title, query) or any(matches(n, query) for n in names)
+    if "SectionHits(title, names, searchQuery)" in gate_src:
+        hit = hit or any(matches(l, query) for l in labels)
+    return hit
+
+
+def check_settings_search():
+    src = read("RimMandrakeFlowWorksMod.cs")
+    gate = body_of(src, "private static bool Section(")
+    block = body_of(src, "private static void Block(")
+    body = body_of(src, "public void DoWindowContents(Rect inRect)")
+    title = "Water engine: flow and levelling"
+    m = re.search(r'Section\(list, "%s", new\[\] \{([^}]*)\}' % re.escape(title), body)
+    check("search: the Water engine section is drawn by Section", bool(m))
+    names = re.findall(r'"(\w+)"', m.group(1)) if m else []
+    labels = section_labels(body, title)
+    row = "Liquid crosses between the pieces of a huge network"
+    check("search: sanity, the section draws the row", row in labels, labels[:4])
+    for q in ("Liquid crosses", "crosses between", "huge network", "pieces"):
+        check("search: '%s' finds the section" % q, gate_hits(gate, title, names, labels, q))
+    check("search: can-fail, 'zzqx' finds nothing", not gate_hits(gate, title, names, labels, "zzqx"))
+    check("search: Section records its body", "RM_SettingsSearchIndex.Begin(list, title)" in gate)
+    check("search: Block records and matches its body", "RM_SettingsSearchIndex.Begin(list, header)" in block
+          and "SectionHits(header, null, searchQuery)" in block)
+    idx = read("RM_SettingsSearchIndex.cs")
+    for meth in ("CheckboxLabeled", "Label"):
+        check("search: a %s prefix records labels" % meth,
+              bool(re.search(r"HarmonyPatch\(typeof\(Listing_Standard\), nameof\(Listing_Standard\.%s\)" % meth, idx)))
+    csproj = read("RimMandrake_FlowWorks.csproj")
+    check("search: the index file is compiled", 'Compile Include="RM_SettingsSearchIndex.cs"' in csproj)
+    old_gate = gate.replace("SectionHits(title, names, searchQuery)", "OLDRULE")
+    check("search: can-fail, the old title/names rule misses 'Liquid crosses'",
+          not gate_hits(old_gate, title, names, labels, "Liquid crosses"))
+
+
 def main():
     print("selftest_flowworks_belt_fixes_h")
     check_railing()
+    check_settings_search()
     if FAILS:
         print("FAIL (%d): %s" % (len(FAILS), ", ".join(FAILS)))
         return 1

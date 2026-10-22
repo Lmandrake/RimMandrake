@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="RimMandrakeFlowWorks_DefOf.cs" />
     <Compile Include="RimMandrakeFlowWorksMod.cs" />
+    <Compile Include="RM_SettingsSearchIndex.cs" />
     <Compile Include="FluidDef.cs" />
     <Compile Include="RM_WaterLadder.cs" />
     <Compile Include="RM_WaterLookMath.cs" />
