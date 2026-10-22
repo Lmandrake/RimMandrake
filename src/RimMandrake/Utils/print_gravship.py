@@ -261,6 +261,7 @@ def main():
                     print("   build failed:", f)
             i = j
         print("things     placed(reported) %d of %d" % (placed, len(things)))
+        bad = bad or placed < len(things)        # build_batch over-reports (survivor AND victim), so fewer than asked is a certain miss
 
         m = rb.call("jawa/map_commit", {})
         print("commit     %s failedSteps %s" % (m.get("success"), m.get("failedSteps")))
