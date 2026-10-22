@@ -260,6 +260,13 @@ def main():
     R.note("confirmed workshop folder %s is packageId %s" % (WORKSHOP_FOLDER, EXPECTED_PACKAGE_ID))
 
     own_out_dir = os.path.join(DEFS_ROOT, OUT_SUBDIR)
+    # Validate every source file BEFORE wiping the previous output: an abort after the
+    # rmtree used to leave the tree deleted and nothing regenerated.
+    for rel in INCLUDE_FILES:
+        if not os.path.isfile(os.path.join(SRC_DEFS, rel)):
+            R.warn("expected source file missing: %s -- ABORTING (previous output untouched)"
+                   % os.path.join(SRC_DEFS, rel))
+            sys.exit(1)
     if os.path.isdir(own_out_dir):
         shutil.rmtree(own_out_dir)
 

@@ -151,7 +151,10 @@ def run(name, prompt, attempts=3, timeout=240):
                "--prompt", prompt, "--timeout", str(timeout), "--force"]
         p = subprocess.run(cmd, capture_output=True, text=True)
         el = time.time() - t0
-        if dest.exists() and dest.stat().st_size > 20000:
+        # --force overwrites, so a FAILED call leaves the previous run's file behind: require a
+        # clean exit AND a file written during THIS attempt, or a stale PNG reads as OK.
+        if (p.returncode == 0 and dest.exists() and dest.stat().st_size > 20000
+                and dest.stat().st_mtime >= t0 - 2):
             print(f"OK   {name}  {el:.0f}s  {dest.stat().st_size//1024}KB", flush=True)
             return True
         print(f"FAIL {name} attempt {i}  {el:.0f}s  rc={p.returncode} "

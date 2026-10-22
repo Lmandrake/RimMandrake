@@ -846,6 +846,13 @@ def emit(fh, title, by_mod):
     return n_own, n_dup
 
 
+# A dump that yielded no weapons, no projectiles or no rung would otherwise overwrite both committed
+# output files with empty patches and exit 0 - a zero that reads as success. Refuse instead.
+if not weapons or not projectiles or not proj_changes or not tool_changes:
+    sys.exit("REFUSING to write: the live dump read is blind (weapons %d, projectiles %d, "
+             "ranged changes %d, melee changes %d) - nothing was overwritten."
+             % (len(weapons), len(projectiles), len(proj_changes), len(tool_changes)))
+
 os.makedirs(OUTDIR, exist_ok=True)
 
 ranged_by_mod = collections.defaultdict(list)
