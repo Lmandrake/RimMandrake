@@ -1,0 +1,167 @@
+{
+ "script": "deep_lake_proof.py",
+ "started": "2026-10-22T09:23:59",
+ "rows": [
+  {
+   "id": "DL_lake_over_4000_is_limited",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "id": "3",
+     "cells": "5184",
+     "limitless": "False",
+     "truncated": "False",
+     "capacity": "57031.0",
+     "levelUnit": "1.000",
+     "bedSum": "57031",
+     "deepest": "20"
+    },
+    "want": {
+     "cells": 5184,
+     "limitless": "False",
+     "deepest>": 4
+    },
+    "painted": "PAINTED deep=4356 shallow=828",
+    "txt": "BODY id=3 cells=5184 limitless=False truncated=False capacity=57031.0 levelUnit=1.000 bedSum=57031 deepest=20"
+   }
+  },
+  {
+   "id": "DL_drained_reads_gradual_hollow",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "wet": "1041",
+     "dry": "4143",
+     "receded": "4143",
+     "deepestDry": "13",
+     "maxDryBed": "13",
+     "minWetBed": "12",
+     "stepDeep": "7",
+     "stepAll": "11",
+     "lakebedShallow": "828",
+     "lakebedDeep": "2",
+     "lakebedAbyss": "3313",
+     "deepestCell": "107,108",
+     "shelfCell": "none",
+     "hollows": "True",
+     "stock": "14257.8",
+     "capacity": "57031.0",
+     "hash": "8966111501207478823"
+    },
+    "stock": "STOCK stock=14257.8 capacity=57031.0 rounds=66 receded=4143"
+   }
+  },
+  {
+   "id": "DL_shallow_dries_first",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "maxDryBed": 13,
+    "minWetBed": 12
+   }
+  },
+  {
+   "id": "DL_colonist_free_in_bowl",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "no dry square at bed 5",
+    "shape": "SHAPE wet=1041 dry=4143 receded=4143 deepestDry=13 maxDryBed=13 minWetBed=12 stepDeep=7 stepAll=11 lakebedShallow=828 lakebedDeep=2 lakebedAbyss=3313 deepestCell=107,108 shelfCell=none hollows=True stock=14257.8 capacity=57031.0 hash=8966111501207478823"
+   }
+  },
+  {
+   "id": "DL_colonist_walks_out",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "no dry square at bed 5"
+   }
+  },
+  {
+   "id": "DL_refill_restores_exact_shape",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": "4506932417285327451",
+    "after": "4506932417285327451",
+    "dryAfter": "0",
+    "recededAfter": "0",
+    "stock": "STOCK stock=57031.0 capacity=57031.0 rounds=66 receded=0",
+    "txt": [
+     "SHAPE wet=5184 dry=0 receded=0 deepestDry=0 maxDryBed=0 minWetBed=2 stepDeep=0 stepAll=0 lakebedShallow=0 lakebedDeep=0 lakebedAbyss=0 deepestCell=none shelfCell=none hollows=True stock=57031.0 capacity=57031.0 hash=4506932417285327451",
+     "SHAPE wet=5184 dry=0 receded=0 deepestDry=0 maxDryBed=0 minWetBed=2 stepDeep=0 stepAll=0 lakebedShallow=0 lakebedDeep=0 lakebedAbyss=0 deepestCell=none shelfCell=none hollows=True stock=57031.0 capacity=57031.0 hash=4506932417285327451"
+    ]
+   }
+  },
+  {
+   "id": "DL_save_reload_bowl_identical",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "needs a save + reload cycle on the bridge: the bed record (RM_bedDepthRecord) and a packed footprint must read back the same SHAPE hash"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/dlake_1.json",
+  "origin": "60,60",
+  "size": 72,
+  "fresh_map": true
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brogg46802",
+    "RM_Brullith46801",
+    "RM_Brullith46803",
+    "RM_Grellik46805",
+    "RM_Grellik46806",
+    "RM_Illoth46795",
+    "RM_MycoidColossus46796",
+    "RM_Shambles46797",
+    "RM_Thozzik46798",
+    "RM_Thozzik46804",
+    "RM_ThozzikColony46793",
+    "RM_ThozzikColony46794",
+    "RM_ThozzikColony46800",
+    "RM_ThozzikQueen46799"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "settings_before": {
+  "deepBedsEnabled": "True",
+  "lakeDepthScale": "1",
+  "deepBedMaxDepth": "100",
+  "drainableLakeMaxCells": "40000",
+  "pondBedHollowEnabled": "True",
+  "recessionEnabled": "True",
+  "refillWaitsForOccupants": "True"
+ },
+ "settings_restored": {
+  "deepBedsEnabled": "True",
+  "lakeDepthScale": "1",
+  "deepBedMaxDepth": "100",
+  "drainableLakeMaxCells": "40000",
+  "pondBedHollowEnabled": "True",
+  "recessionEnabled": "True",
+  "refillWaitsForOccupants": "True"
+ }
+}

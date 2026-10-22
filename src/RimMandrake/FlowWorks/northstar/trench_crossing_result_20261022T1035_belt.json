@@ -1,0 +1,145 @@
+{
+ "script": "trench_crossing_live.py",
+ "started": "2026-10-22T09:22:35",
+ "rows": [
+  {
+   "id": "XING_two_ladders_cross",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP",
+   "detail": {
+    "start": [
+     21,
+     207
+    ],
+    "dest": [
+     27,
+     207
+    ],
+    "end": [
+     27,
+     207
+    ],
+    "ticksElapsed": 1503,
+    "ladders": [
+     {
+      "id": "RM_Ladder46354",
+      "def": "RM_Ladder",
+      "label": "Ladder",
+      "x": 23,
+      "z": 207,
+      "spawned": true,
+      "rot": 3,
+      "stackCount": 1,
+      "hitPoints": 60,
+      "maxHitPoints": 60
+     },
+     {
+      "id": "RM_Ladder46355",
+      "def": "RM_Ladder",
+      "label": "Ladder",
+      "x": 25,
+      "z": 207,
+      "spawned": true,
+      "rot": 1,
+      "stackCount": 1,
+      "hitPoints": 60,
+      "maxHitPoints": 60
+     }
+    ],
+    "order": {
+     "id": "Human46356",
+     "name": "Noob",
+     "kind": "Colonist",
+     "drafted": true,
+     "hasDrafter": true,
+     "requested": {
+      "x": 27,
+      "z": 207
+     },
+     "start": {
+      "x": 21,
+      "z": 207
+     },
+     "end": {
+      "x": 27,
+      "z": 207
+     },
+     "arrived": true,
+     "moved": true,
+     "distanceBefore": 6.0,
+     "distanceAfter": 0.0,
+     "canReach": true,
+     "orderAccepted": true,
+     "stillMoving": false,
+     "curJob": "Wait_Combat",
+     "downed": false,
+     "ticksElapsed": 1503
+    }
+   }
+  },
+  {
+   "id": "XING_one_ladder_no_cross",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP",
+   "detail": {
+    "start": [
+     21,
+     209
+    ],
+    "dest": [
+     27,
+     207
+    ],
+    "end": [
+     21,
+     209
+    ],
+    "inTrench": false,
+    "ticksElapsed": 1505,
+    "laddersLeft": [
+     {
+      "id": "RM_Ladder46354",
+      "def": "RM_Ladder",
+      "label": "Ladder",
+      "x": 23,
+      "z": 207,
+      "spawned": true,
+      "rot": 3,
+      "stackCount": 1,
+      "hitPoints": 60,
+      "maxHitPoints": 60
+     }
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/xing_3.json",
+  "origin": "20,200",
+  "fresh_map": false
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "finished": "2026-10-22T09:23:33"
+}

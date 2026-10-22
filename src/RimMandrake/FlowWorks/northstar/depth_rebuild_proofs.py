@@ -337,6 +337,14 @@ def main():
                 for nm, (o, d) in pits.items():
                     c = (o[0] + 1, o[1] + 1)
                     pid, _ = spawn("Colonist", (o[0] - 2, o[1] + 1), "player")
+                    # HARNESS (BENCH belt 2026-10-22: ratio 3.59 vs 3.5): fall damage is mass x scale (RM_PitTrapMath.FallDamage),
+                    # and the two falls are two colonists of different mass (gear included): the ratio is read per kg
+                    mres = B.call("jawa/static_call", type="RimWorld.StatExtension", method="GetStatValue",
+                                  args="%s|Mass|true|-1" % pid, _answer=True) or {}
+                    try:
+                        mass = float(mres.get("result"))
+                    except (TypeError, ValueError):
+                        mass = None
                     r0 = B.call("jawa/flowworks_pit_report", x=c[0], z=c[1]) or {}
                     lf = sc(PROMO, "ProofForcedFlyer", "%s,%d,%d" % (pid, c[0], c[1]))
                     step(240)
@@ -344,10 +352,11 @@ def main():
                     rec = [x for x in r1.get("recentDescents") or [] if str(x).startswith(pid + "@")]
                     fl = [float(x.rsplit("fall=", 1)[1]) for x in rec if "fall=" in x]
                     p_, info = where(pid)
-                    falls[nm] = {"flyer": lf, "descents": rec, "fall": fl, "pos": p_, "dead": info.get("dead"),
+                    falls[nm] = {"flyer": lf, "descents": rec, "fall": fl, "mass": mass, "pos": p_, "dead": info.get("dead"),
                                  "depth": r1.get("depth"), "readout": sc(NSP, "ProofReadout", "%d,%d" % c)}
                 f2, f7 = (falls["2m"]["fall"] or [None])[0], (falls["7m"]["fall"] or [None])[0]
-                ratio = (f7 / f2) if f2 and f7 else None
+                m2, m7 = falls["2m"]["mass"], falls["7m"]["mass"]
+                ratio = ((f7 / m7) / (f2 / m2)) if f2 and f7 and m2 and m7 else None
                 row("P7_fall_7m_takes_3_5x", "PASS" if ratio and abs(ratio - 3.5) < 0.05 and not falls["7m"]["dead"] else
                     ("UNMEASURED" if ratio is None else "FAIL"), {"ratio": ratio, "falls": falls})
                 # sheer 1.5 m pocket holds a prisoner
