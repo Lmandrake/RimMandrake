@@ -424,8 +424,10 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
             fam_meta[fam] = {"bound": bound or fam_meta.get(fam, {}).get("bound", False), "date": v.get("date", ""),
                              "prompt": v.get("prompt", ""), "derive": v.get("derive_from"), "item": v.get("item")}
     for fam, faces in sorted(fams.items(), key=lambda kv: fam_meta[kv[0]]["date"], reverse=True):
-        if not fam_meta[fam]["bound"] and (NOT_BODY_JOB.search(fam) or FLIP_FAM_RE.match(fam)):
-            continue          # a flight frame joined by name is not a body candidate (flipbook_cols shows it)
+        if not fam_meta[fam]["bound"] and ((NOT_BODY_JOB.search(fam) and not NOT_BODY_JOB.search(parts[-1]))
+                                           or FLIP_FAM_RE.match(fam)):
+            continue          # a flight frame / corpse joined by name is not a BODY candidate (flipbook_cols shows it);
+            # on a lane that IS a corpse texture (Akk_Dessicated) the corpse renders are exactly the candidates
         m = fam_meta[fam]
         cols.append({"kind": "artpipe", "faces": faces, "date": m["date"],
                      "label": f"render {fam}" + (FAILED_CANON_BADGE if _is_failed_canon(fam, _fc) else ""),
@@ -1210,6 +1212,21 @@ def _texpath_of_family(fam: str) -> str | None:
                 if isinstance(j, dict) and j.get("id") and isinstance(j.get("target_texpath"), str):
                     _FAM_TEX.setdefault(FAM_RE.sub("", str(j["id"]).lower()), j["target_texpath"])
     return _FAM_TEX.get(fam.lower())
+
+
+CORPSE_ROLE = "dessicated corpse (RotStage Dessicated)"
+
+
+def corpse_lane_texpaths(jobs, have=()) -> list[str]:
+    """The corpse textures (target_texpath of a NOT_BODY_JOB job, e.g. swanimals/Akk/Akk_Dessicated) that the jobs a
+    row NAMES were filed for, minus lanes it already has — one lane each, in order."""
+    out = []
+    for j in jobs:
+        fam = FAM_RE.sub("", str(j)).lower()
+        tex = _texpath_of_family(fam) if NOT_BODY_JOB.search(fam) else None
+        if tex and NOT_BODY_JOB.search(tex.rsplit("/", 1)[-1]) and tex not in have and tex not in out:
+            out.append(tex)
+    return out
 
 
 def look_lane_target(fam: str, resset, live_res) -> str | None:
@@ -2774,6 +2791,16 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             if cols:
                 graphics.append({"res": xres, "role": ROLE_TEXT.get(xrole, xrole), "cols": cols, "prior_raw": None,
                                  "joined_by": "live-def-dump"})
+        # a corpse render the row NAMES (--jobs dessic_*: RotStage Dessicated art) gets the lane of the texture it was
+        # filed for, beside that texture's in-game picture. Without this every one was dropped (bug 2026-10-22,
+        # picks_dessicated: a sheet built from 58 dessic_* jobs showed 0 dessicated corpses — the owner: "I just did
+        # picks 1 of 3: dessicated corpses... and yet I saw not a single dessicated corpse")
+        for tex in corpse_lane_texpaths(r.get("artpipe_state_jobs") or [], {g["res"] for g in graphics}):
+            br = build_row(idx, tex, order, slots)
+            cols = [c for c in br["cols"] if _fkey(c) not in seen]
+            seen.update(_fkey(c) for c in cols)
+            graphics.append({"res": tex, "role": CORPSE_ROLE, "cols": cols, "prior_raw": None,
+                             "joined_by": "artpipe target_texpath (a job the sheet names)"})
         have = {s for g in graphics for c in g["cols"] for s in c["faces"].values()}
         words = {w for x in [r["key"], r.get("port")] + list(r.get("defNames") or []) if x for w in S.join_stems(x)}
         words |= {(r.get("label") or "").replace(" ", "")}
