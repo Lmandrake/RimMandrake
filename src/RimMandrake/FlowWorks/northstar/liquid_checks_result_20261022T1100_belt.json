@@ -1,0 +1,647 @@
+{
+ "script": "liquid_checks.py",
+ "started": "2026-10-22T10:47:28",
+ "rows": [
+  {
+   "id": "LC_preflight",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "drafted": [
+     404,
+     407,
+     410
+    ],
+    "neutral": {
+     "defName": "OutlanderCivil",
+     "name": "Union of Neveler",
+     "isPlayer": false,
+     "hostile": false,
+     "goodwill": 0,
+     "hidden": false,
+     "permanentEnemy": false,
+     "settlementCount": 9
+    }
+   }
+  },
+  {
+   "id": "L2_dump_tank_drains_without_pump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankUnits": [
+     120000,
+     108949,
+     98949,
+     88949,
+     78949
+    ],
+    "drainedPer1000": 41051,
+    "canalFillSum": [
+     0,
+     4
+    ],
+    "lay": {
+     "success": true,
+     "cmd": "lay:63,158,75,159",
+     "reason": null,
+     "layOk": true
+    },
+    "role": {
+     "clicks": 2,
+     "ok": true,
+     "label": "Free end: Outflow",
+     "readBack": "Outflow"
+    },
+    "job": {
+     "clicks": 3,
+     "ok": true,
+     "label": "Job: Dump",
+     "readBack": "Dump"
+    }
+   }
+  },
+  {
+   "id": "L2_pump_pour_drains_dump_fast",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankUnits": [
+     120000,
+     100000,
+     80000,
+     60000,
+     60000
+    ],
+    "drainedPer1000": 60000,
+    "vsNoPump": 41051,
+    "reachFillSum": [
+     0,
+     6
+    ],
+    "pumpProof": "PUMP running=True moved=0 pour=True tank=none",
+    "job": {
+     "clicks": 3,
+     "ok": true,
+     "label": "Job: Dump",
+     "readBack": "Dump"
+    },
+    "pumpPoweredAfterTicks": 80
+   }
+  },
+  {
+   "id": "L4_ship_tank_fill_loads",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "base_ship": [
+     [
+      120000,
+      0
+     ],
+     [
+      100000,
+      18901
+     ],
+     [
+      80000,
+      38901
+     ],
+     [
+      60000,
+      58901
+     ],
+     [
+      40000,
+      78901
+     ]
+    ],
+    "shipGained": 78901,
+    "baseFell": 80000,
+    "shipDef": "RM_UniversalCargoTank",
+    "cargoBuild": [],
+    "job": {
+     "clicks": 1,
+     "ok": true,
+     "label": "Job: Fill",
+     "readBack": "Fill"
+    },
+    "lay": {
+     "success": true,
+     "cmd": "lay:183,158,196,159",
+     "reason": null,
+     "layOk": true
+    },
+    "hose": {
+     "netLink": {
+      "a": "RM_LiquidTank@183,160",
+      "b": "RM_UniversalCargoTank@197,159"
+     },
+     "credits": 8,
+     "creditedUnits": 158901
+    }
+   }
+  },
+  {
+   "id": "L4_ship_tank_empty_unloads",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "base_ship": [
+     [
+      40000,
+      78901
+     ],
+     [
+      60000,
+      58901
+     ],
+     [
+      80000,
+      38901
+     ],
+     [
+      100000,
+      18901
+     ],
+     [
+      118901,
+      0
+     ]
+    ],
+    "shipFell": 78901,
+    "baseGained": 78901,
+    "job": {
+     "clicks": 1,
+     "ok": true,
+     "label": "Job: Empty",
+     "readBack": "Empty"
+    }
+   }
+  },
+  {
+   "id": "L4_on_a_real_gravship",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": "no gravship fixture on a quicktest map: a plain RM_UniversalCargoTank stands in for the ship's tank (no ship-tank def exists)"
+  },
+  {
+   "id": "L5_switched_off_hose_spills",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "heldUnits": [
+     10000,
+     0
+    ],
+    "drained": 10000,
+    "filthThicknessInRect": [
+     0,
+     0
+    ],
+    "expectedPieces": 3,
+    "unplaced": [
+     0,
+     0
+    ],
+    "heldLiquid": "LiquidDef:RM_Liquid_FreshWater",
+    "rect": [
+     34,
+     179,
+     5,
+     5
+    ],
+    "spilledUnits": [
+     81099,
+     91099
+    ]
+   }
+  },
+  {
+   "id": "L5_colonists_clean_spill",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": "no spill filth to clean (L5 spill row FAIL)"
+  },
+  {
+   "id": "L6_foreign_tank_drawn",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "foreignUnits": [
+     null,
+     null
+    ],
+    "ours": 0
+   }
+  },
+  {
+   "id": "L6_theft_spotted_letter",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "caught": [
+     "0",
+     "0"
+    ],
+    "letters": [
+     0,
+     0
+    ],
+    "witnessAtCheck": [
+     {
+      "id": "Human72539",
+      "x": 80,
+      "z": 185,
+      "downed": false,
+      "dead": false
+     },
+     {
+      "id": "Human72546",
+      "x": 81,
+      "z": 188,
+      "downed": false,
+      "dead": false
+     }
+    ],
+    "drawn": 0,
+    "why": "precondition: foreign filltank None, lay True, our job {'clicks': 1, 'ok': True, 'label': 'Job: Fill', 'readBack': 'Fill'}",
+    "attempts": [
+     {
+      "cycle": 0,
+      "spawnTick": 6254,
+      "checkTick": 6259,
+      "spawned": true,
+      "witnesses": [
+       {
+        "id": "Human69455",
+        "x": 80,
+        "z": 185,
+        "downed": false,
+        "dead": false
+       },
+       {
+        "id": "Human69462",
+        "x": 76,
+        "z": 187,
+        "downed": false,
+        "dead": false
+       }
+      ],
+      "caught": "0"
+     },
+     {
+      "cycle": 1,
+      "spawnTick": 6504,
+      "checkTick": 6509,
+      "spawned": true,
+      "witnesses": [
+       {
+        "id": "Human70431",
+        "x": 80,
+        "z": 185,
+        "downed": false,
+        "dead": false
+       },
+       {
+        "id": "Human70437",
+        "x": 84,
+        "z": 185,
+        "downed": false,
+        "dead": false
+       }
+      ],
+      "caught": "0"
+     },
+     {
+      "cycle": 2,
+      "spawnTick": 6754,
+      "checkTick": 6759,
+      "spawned": true,
+      "witnesses": [
+       {
+        "id": "Human71470",
+        "x": 80,
+        "z": 185,
+        "downed": false,
+        "dead": false
+       },
+       {
+        "id": "Human71476",
+        "x": 80,
+        "z": 182,
+        "downed": false,
+        "dead": false
+       }
+      ],
+      "caught": "0"
+     },
+     {
+      "cycle": 3,
+      "spawnTick": 7004,
+      "checkTick": 7009,
+      "spawned": true,
+      "witnesses": [
+       {
+        "id": "Human72539",
+        "x": 80,
+        "z": 185,
+        "downed": false,
+        "dead": false
+       },
+       {
+        "id": "Human72546",
+        "x": 81,
+        "z": 188,
+        "downed": false,
+        "dead": false
+       }
+      ],
+      "caught": "0"
+     }
+    ],
+    "faction": "OutlanderCivil",
+    "sightRange": "12"
+   }
+  },
+  {
+   "id": "L6_free_end_names_their_faction",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "freeEnd": {
+     "cell": [
+      76,
+      181
+     ],
+     "terrain": "Soil",
+     "water": "",
+     "port": "",
+     "portFaction": "",
+     "describe": "lying free"
+    },
+    "factionName": "Union of Neveler"
+   }
+  },
+  {
+   "id": "L6_goodwill_after_a_day",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": "not run: pass --theft-day (ticks ~60,000)"
+  },
+  {
+   "id": "L7_levelset_setting_on",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "levelSetEnabled": "True"
+   }
+  },
+  {
+   "id": "L7_flow_drains_levels_flat",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "dug": 0,
+    "wet": 0,
+    "why": "no water standing in the station's dug squares",
+    "station": 1,
+    "rect": [
+     0,
+     226,
+     64,
+     14
+    ],
+    "pulses": 16,
+    "ticksGame": 11259
+   }
+  },
+  {
+   "id": "L7_flow_spreads_levels_flat",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "dug": 0,
+    "wet": 0,
+    "why": "no water standing in the station's dug squares",
+    "station": 2,
+    "rect": [
+     70,
+     226,
+     16,
+     14
+    ],
+    "pulses": 16,
+    "ticksGame": 11509
+   }
+  },
+  {
+   "id": "L8_pond_shallows_before_mud",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "why": "no --l8-pond x,z given"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/liquid_1.json",
+  "only": "",
+  "l7_pulses": 16,
+  "l8_pond": "",
+  "l8_pulses": 40,
+  "fresh_map": true,
+  "theft_day": false,
+  "origin_l2": "60,150",
+  "origin_l2b": "100,150",
+  "origin_l6": "60,172",
+  "origin_l4": "180,150",
+  "origin_l5": "20,172"
+ },
+ "quiet_site": {
+  "profile": "quiet_site",
+  "suite": "isolated",
+  "row": "flowworks_liquid_checks",
+  "topic": null,
+  "controls": [
+   {
+    "name": "storyteller_off",
+    "what": "DebugSettings.enableStoryteller=false, threatScale 0, no big threats, incident queue cleared",
+    "hides": "storyteller-fired incidents incl. the mod's own IncidentDefs and conditions (seasonal flooding, cinderfall), pacing, threat-point scaling",
+    "readBack": {
+     "enableStoryteller": false,
+     "enableRandomMentalStates": false,
+     "enableRandomDiseases": false,
+     "logRaidInfo": true,
+     "threatScale": 0.0,
+     "allowBigThreats": false
+    }
+   },
+   {
+    "name": "random_events_off",
+    "what": "random mental states and diseases off",
+    "hides": "mood-break and disease interactions with the mod",
+    "readBack": "read back in storyteller_off readBack"
+   },
+   {
+    "name": "wild_spawner_off",
+    "what": "wild-animal replenishment blocked (jawa/wild_spawner_block, dead-man)",
+    "hides": "the mod's effect on ongoing wildlife arrival; mapgen wildlife is untouched",
+    "readBack": "blocked (read back)"
+   },
+   {
+    "name": "threat_structures_cleared",
+    "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+    "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+    "readBack": {
+     "removed": [
+      [
+       "Hive",
+       "Hive4250"
+      ],
+      [
+       "GlowPod",
+       "GlowPod4263"
+      ],
+      [
+       "Hive",
+       "Hive4264"
+      ],
+      [
+       "GlowPod",
+       "GlowPod4275"
+      ],
+      [
+       "GlowPod",
+       "GlowPod4276"
+      ],
+      [
+       "EggSac",
+       "EggSac4277"
+      ]
+     ],
+     "threatsAfter": 0,
+     "kept": 0,
+     "errors": []
+    }
+   },
+   {
+    "name": "hostiles_removed",
+    "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+    "hides": "combat interactions with the mod's things",
+    "readBack": {
+     "acted": 0,
+     "residue": []
+    }
+   },
+   {
+    "name": "toxic_sources_cleared",
+    "what": "toxic sources removed at setup and read back: toxic game conditions ended, ToxGas cleared, POLLUTED terrain within TOXIC_SCAN_RADIUS of every colonist repainted to its clean counterpart (Biotech pollution gives ToxicBuildup to a pawn standing on it); the receipt also counts stacked 'Forced weather' controllers",
+    "hides": "the mod's interaction with pollution, toxic fallout and tox gas near the colonists",
+    "readBack": {
+     "conditionsEnded": [],
+     "gasCleared": [
+      "ToxGas"
+     ],
+     "pollutedRepainted": 0,
+     "pollutedLeft": 0,
+     "stackedWeatherControllers": 1,
+     "unavailable": []
+    }
+   },
+   {
+    "name": "proximity_letters_sent",
+    "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+    "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+    "readBack": {
+     "letters": [
+      [
+       "AncientExostriderRemains",
+       "Ancient mech",
+       false
+      ],
+      [
+       "VoidMonolith",
+       "Fallen monolith",
+       false
+      ]
+     ],
+     "unsentAfter": 0
+    }
+   },
+   {
+    "name": "queue_drain",
+    "what": "named queued incidents removed at every drain (default StrangerInBlackJoin: the colony-loss rescue is QUEUED by StorytellerComp_Triggered on the death and fires 180 ticks later through IncidentQueueTick, which runs even with the storyteller off)",
+    "hides": "the end-of-colony rescue; a row ABOUT that rescue must not use this control",
+    "readBack": {
+     "defs": [
+      "StrangerInBlackJoin",
+      "SeasonalFlooding"
+     ],
+     "atApply": []
+    }
+   },
+   {
+    "name": "modal_broker",
+    "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+    "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+    "readBack": {
+     "handled": [],
+     "unknown": []
+    }
+   }
+  ],
+  "notSuppressed": [
+   "active quests and their parts (never ended by default: ending a quest changes the world)",
+   "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+   "existing game conditions, map/world/game components and mod tickers",
+   "hives and other pawn-spawning structures, births, egg hatching, breeders",
+   "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+   "weather transitions, fires, existing hostile behaviour"
+  ],
+  "keepDefs": [],
+  "events": [],
+  "problems": [],
+  "verify": null,
+  "arrivals": [],
+  "note": "enableStoryteller is not saved with the game: re-apply after any load"
+ },
+ "settings_before": {
+  "tankModesEnabled": "True",
+  "freeEndRolesEnabled": "True",
+  "hoseHoldsLiquid": "True",
+  "tankLitresPerCycle": "2000",
+  "dumpLitresPerCycle": "1000",
+  "liquidTheftEnabled": "True",
+  "liquidTheftSightRange": "12",
+  "liquidTheftGoodwillPerDay": "2"
+ },
+ "preflight": {
+  "playing": true,
+  "flowworks": true,
+  "drafted": [
+   404,
+   407,
+   410
+  ],
+  "neutral": {
+   "defName": "OutlanderCivil",
+   "name": "Union of Neveler",
+   "isPlayer": false,
+   "hostile": false,
+   "goodwill": 0,
+   "hidden": false,
+   "permanentEnemy": false,
+   "settlementCount": 9
+  }
+ },
+ "quiet_site_restore": null,
+ "finished": "2026-10-22T10:55:33",
+ "counts": {
+  "PASS": 6,
+  "FAIL": 2,
+  "UNMEASURED": 8
+ }
+}
