@@ -34,16 +34,6 @@
     </match>
   </Operation>
 
-  <!-- Gutkurr.moveSpeed: 4.5 -> 4.4   (desert.json)
-       owner card 2026-09-09: SW staples adjust-and-keep -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Gutkurr"]/statBases/MoveSpeed</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Gutkurr"]/statBases/MoveSpeed</xpath>
-      <value><MoveSpeed>4.4</MoveSpeed></value>
-    </match>
-  </Operation>
-
   <!-- RSW_Dewback.moveSpeed: 4.7 -> 4.4   (desert.json)
        LONGSHADE_DESIGN_SITTING_1 Q8 (owner, 2026-09-27): Dewback IN as herd/mount, slowed under the pursuit ban, same treatment as the wraid -->
   <Operation Class="PatchOperationConditional">
@@ -64,6 +54,16 @@
     </match>
   </Operation>
 
+  <!-- RSW_Gutkurr.moveSpeed: 4.5 -> 4.4   (desert.json)
+       owner card 2026-09-09: SW staples adjust-and-keep -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Gutkurr"]/statBases/MoveSpeed</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_Gutkurr"]/statBases/MoveSpeed</xpath>
+      <value><MoveSpeed>4.4</MoveSpeed></value>
+    </match>
+  </Operation>
+
   <!-- RSW_SandoAquaMonster.predator: true -> false   (the_scald.json)
        same — one lineage, one ruling; both carry predator + manhunter-on-hurt 100% (MEASURED) as shipped, which the pastoral read cannot keep -->
   <Operation Class="PatchOperationConditional">
@@ -74,12 +74,12 @@
     </match>
   </Operation>
 
-  <!-- Wraid.moveSpeed: 5.0 -> 4.4   (desert.json)
+  <!-- RSW_Wraid.moveSpeed: 5.0 -> 4.4   (desert.json)
        owner card 2026-09-09: SW staples adjust-and-keep -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Wraid"]/statBases/MoveSpeed</xpath>
+    <xpath>/Defs/ThingDef[defName="RSW_Wraid"]/statBases/MoveSpeed</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Wraid"]/statBases/MoveSpeed</xpath>
+      <xpath>/Defs/ThingDef[defName="RSW_Wraid"]/statBases/MoveSpeed</xpath>
       <value><MoveSpeed>4.4</MoveSpeed></value>
     </match>
   </Operation>
