@@ -18,7 +18,9 @@ THE ORDER IS NOT OPTIONAL
   4. floor colour   - jawa/set_terrain_layer layer='color' takes ONE rect per call,
                       so this is the expensive step: ~1,400 calls for this ship.
 
-Everything is read back afterwards; `success: true` is not evidence.
+THIS SCRIPT DOES NOT READ ANYTHING BACK: it prints the counts the bridge replied with (changed / refused /
+failedVerify), which are the tool's own claims. Verify the ship with a separate read (list_things / get_terrain) before
+calling it laid; `success: true` is not evidence.
 """
 
 import argparse
