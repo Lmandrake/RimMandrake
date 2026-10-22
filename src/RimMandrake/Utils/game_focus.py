@@ -113,6 +113,14 @@ def _ps(script):
     return (out.stdout or "").replace("\r", "").strip()
 
 
+GAME_TITLE = "rimworld by ludeon"      # the game's real window title is "RimWorld by Ludeon Studios"
+
+
+def is_game_title(title):
+    """True only for the game window itself; a browser tab or Explorer folder merely containing "RimWorld" is not it."""
+    return (title or "").strip().lower().startswith(GAME_TITLE)
+
+
 def foreground_title():
     """Title of whatever window currently has focus."""
     return _ps(_PS_HELPER + "\n(Get-Fg).title")
@@ -171,13 +179,13 @@ $now = Get-Fg
     if len(parts) < 3:
         raise RuntimeError("unexpected focus helper output: %r" % res)
     prev_handle, _, now_title = parts[0], parts[1], parts[2]
-    if "rimworld" not in now_title.lower():
+    if not is_game_title(now_title):
         # MEASURED live 2026-10-01: with the owner active in Chrome the AttachThreadInput route is refused every time;
         # a synthetic Alt tap (WScript SendKeys '%') followed by AppActivate is accepted.
         _ps("$w=New-Object -ComObject WScript.Shell; $w.SendKeys('%'); Start-Sleep -Milliseconds 100; "
             "[void]$w.AppActivate('RimWorld by Ludeon Studios'); Start-Sleep -Milliseconds 400")
         now_title = foreground_title()
-    if "rimworld" not in now_title.lower():
+    if not is_game_title(now_title):
         raise RuntimeError(
             "could not bring RimWorld forward; foreground is %r. Bridge calls "
             "that touch the game will time out until it is focused." % now_title)
