@@ -618,6 +618,8 @@ def waters(ctx):
         s0, s1 = hp["steel"]
         # both decks must be awash: a timber deck the flood never reached keeps full hp and would read FAIL (SITE, not mod)
         V.require(int(t1.get("awash", "0")) > 0 and int(s1.get("awash", "0")) > 0, "both decks awash", hp)
+        # a missing hp read 0 (< max: "timber damaged") and None == None ("steel unharmed"): both would PASS on ignorance
+        V.require(all(k in d for d in (t0, s0, t1, s1) for k in ("hp", "max")), "deck hp and max read before and after", hp)
         good = int(t1.get("hp", "0")) < int(t0.get("max", "0")) and s1.get("hp") == s0.get("hp")
         row("WAT_flood_damages_timber_not_steel", "PASS" if good else "FAIL", {"timber": hp["timber"], "steel": hp["steel"]})
     sea = site(a.sea)

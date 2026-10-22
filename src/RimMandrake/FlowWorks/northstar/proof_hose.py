@@ -271,9 +271,11 @@ def _held(B, reels):
         v = ((B.call("jawa/comp_read", thing="RM_HoseReel%d" % hid, comp="CompHoseReel", members="heldUnits") or {})
              .get("values") or {}).get("heldUnits")
         try:
-            tot += int(v or 0)
+            tot += int(v)
         except (TypeError, ValueError):
-            pass
+            # a laid hose whose heldUnits never read is not an empty hose: every bar adds this to the tank's gain, so a
+            # silent 0 here moves the level bar; a fault of the open scope (the row reads UNMEASURED), never a 0
+            V.require(False, "hose %s heldUnits read" % hid, {"heldUnits": v})
     return tot
 
 

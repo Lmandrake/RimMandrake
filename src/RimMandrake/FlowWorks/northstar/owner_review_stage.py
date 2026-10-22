@@ -662,7 +662,9 @@ def main(argv=None):
         if "hoses" in only:
             s.w.clear_site(L["hoses_rect"])
     else:
-        s.say("  kill hostiles; Clear weather locked; clear_site %s" % (L["rect"] if [r for r in only if r not in ("hoses",) + BARS_ROWS] else L["hoses_rect"],))
+        s.say("  kill hostiles; Clear weather locked")
+        if [r for r in only if r not in ("hoses",) + BARS_ROWS]:      # the same three tests as the live branch above
+            s.say("  clear_site %s" % (L["rect"],))
         if [r for r in only if r in BARS_ROWS]:
             s.say("  clear_site %s (bars)" % (L["bars_rect"],))
         if "hoses" in only:
@@ -686,15 +688,19 @@ def main(argv=None):
         return 0
     s.chk("kill_hostiles (final)", s.w.call("jawa/kill_hostiles"))
     s.chk("weather_set Clear (final)", s.w.call("jawa/weather_set", weather="Clear", lockWeather=True))
-    hour = -1.0
+    hour = None
     # daytime: approximate local hour from ticksAbs (ignores longitude); step to 10:00-14:00. Judge it in the picture.
     for _ in range(12):
         t = s.w.call("jawa/time_clock") or {}
-        hour = ((t.get("ticksAbs") or 0) % 60000) / 2500.0
+        if t.get("ticksAbs") is None:       # an unread clock is not midnight: stop stepping, say so
+            hour = None
+            break
+        hour = (t["ticksAbs"] % 60000) / 2500.0
         if 10 <= hour <= 14:
             break
         s.w.ticks(2000)
-    s.notes.append("approx hour %.1f (ticksAbs mod day, longitude ignored)" % hour)
+    s.notes.append("approx hour %s (ticksAbs mod day, longitude ignored)" % ("UNMEASURED: time_clock gave no ticksAbs"
+                                                                             if hour is None else "%.1f" % hour))
     import fw_walk_common as C
     shots = []
     if "hoses" in caps:
