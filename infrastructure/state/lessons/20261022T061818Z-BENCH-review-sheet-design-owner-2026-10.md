@@ -1,0 +1,1 @@
+Review sheet design (owner 2026-10-21): when candidates are per-look variants (Scrapper/Industrial/Modern/Futuristic), the sheet must let him accept all looks together, not force one 'use this' per row as if the looks were rival options. He had to abandon the line-joins sheet and say 'just accept the art'.
