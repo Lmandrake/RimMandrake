@@ -120,7 +120,9 @@ def goodwill_verdict(gw0, gw1, gc0, gc1, per, caught):
     if None in (gw0, gw1):
         return "UNMEASURED", "HARNESS", {"why": "goodwill not readable", "goodwill": [gw0, gw1]}
     det = {"goodwill": [gw0, gw1], "goodwillCharged": [gc0, gc1], "perDay": per}
-    ok = float(gc1 or 0) - float(gc0 or 0) <= -float(per or 2) and gw1 < gw0   # settings read back as text: "1.5" is legal
+    if None in (gc0, gc1, per):     # an unread charge or rate is no evidence, and the rate is never guessed
+        return "UNMEASURED", "HARNESS", dict(det, why="goodwillCharged or the per-day setting not readable")
+    ok = float(gc1) - float(gc0) <= -float(per) and gw1 < gw0   # settings read back as text: "1.5" is legal
     return ("PASS" if ok else "FAIL"), "MOD", det
 
 
@@ -132,6 +134,8 @@ def dump_no_pump_verdict(tank_trace, canal0, canal1, precondition=None):
     det = {"tankUnits": tank_trace, "drainedPer1000": drained, "canalFillSum": [canal0, canal1]}
     if precondition or not tank_trace or not tank_trace[0]:
         return "UNMEASURED", "SITE", dict(det, why=precondition or "tank never held liquid")
+    if None in (canal0, canal1):                 # ProofFluidRow refused: an unread canal is not a dry one
+        return "UNMEASURED", "HARNESS", dict(det, why="the canal fill was unreadable")
     return ("PASS" if drained > 0 and canal1 > canal0 else "FAIL"), "MOD", det
 
 
@@ -145,6 +149,8 @@ def dump_pump_verdict(tank_trace, reach0, reach1, no_pump_rate, precondition=Non
         return "UNMEASURED", "SITE", dict(det, why=precondition or "tank never held liquid")
     if no_pump_rate is None:
         return "UNMEASURED", "HARNESS", dict(det, why="the no-pump scene did not run: no slow rate to compare")
+    if None in (reach0, reach1):
+        return "UNMEASURED", "HARNESS", dict(det, why="the reach fill was unreadable")
     return ("PASS" if drained > no_pump_rate and drained > 0 and reach1 > reach0 else "FAIL"), "MOD", det
 
 
@@ -392,7 +398,7 @@ def main(argv=None):
         return tg()
 
     def sget(typ, field):
-        return B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field).get("value")
+        return (B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}).get("value")
 
     def build(*ops, faction="player"):
         return B.call("jawa/build_batch", ops=";".join(o for o in ops if o), faction=faction, wipeExisting=False)
@@ -401,7 +407,7 @@ def main(argv=None):
         return B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=depth, setFill=-1)
 
     def proof(typ, method, arg):
-        r = B.call("jawa/static_call", type=typ, method=method, args=arg)
+        r = B.call("jawa/static_call", type=typ, method=method, args=arg) or {}
         txt = str(r.get("result") or r.get("message") or r.get("error") or "")
         return r.get("success") is True and not txt.startswith("REFUSED"), txt
 
@@ -409,8 +415,10 @@ def main(argv=None):
         xs, zs = [c[0] for c in cells], [c[1] for c in cells]
         ok, txt = proof("RimMandrake.FlowWorks.RM_PromotionProofs", "ProofFluidRow",
                         "%d,%d,%d,%d" % (min(xs), min(zs), max(xs) - min(xs) + 1, max(zs) - min(zs) + 1))
+        if not ok or txt.count(" ") < 3:
+            return None                     # could not ask: None, never a dry 0 the verdict scores
         got = {}
-        for tok in (txt.split(" ", 3)[3] if ok and txt.count(" ") >= 3 else "").split(";"):
+        for tok in txt.split(" ", 3)[3].split(";"):
             if ":" in tok:
                 xz, rest = tok.split(":", 1)
                 x, z = map(int, xz.split(","))
@@ -625,12 +633,14 @@ def main(argv=None):
                         "caught": cc1})
             if (cc1 or 0) > (cc0 or 0):
                 break
-        drawn = (u_start or 0) - (units(s.tank) or 0)
+        u_end = units(s.tank)
+        unread = u_start is None or u_end is None
+        drawn = None if unread else u_start - u_end      # an unread tank is no theft and no "nothing drawn" either
         pre = None if (ft.get("success") and lay.get("success") and job["ok"]) else \
             "precondition: foreign filltank %s, lay %s, our job %s" % (ft.get("units"), lay.get("success"), job)
         st, cls, det = theft_verdict(drawn, cc0, cc1, l0, l1, at_check, pre)
-        u_end = units(s.tank)
-        unread = u_start is None or u_end is None
+        if unread and st != "PASS":
+            st, cls, det = "UNMEASURED", "HARNESS", dict(det, why="the foreign tank's units were unreadable")
         row("L6_foreign_tank_drawn", ("UNMEASURED" if pre or unread else "PASS" if drawn > 0 else "FAIL"),
             "SITE" if pre else "HARNESS" if unread else "MOD",
             {"foreignUnits": [u_start, u_end], "ours": units(s.north_tank)})

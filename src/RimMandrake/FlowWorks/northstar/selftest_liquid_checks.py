@@ -103,6 +103,10 @@ case(LC.clean_verdict(None, {"success": True}, 3, 9, 0, 750)[0], "UNMEASURED", "
 case(LC.free_end_verdict({}, "Ankor", True)[:2], ("UNMEASURED", "HARNESS"), "unread free end is not a MOD FAIL")
 case(LC.free_end_verdict({"describe": "to Ankor's tank", "portFaction": "Ankor"}, "Ankor", True)[0], "PASS", "names them")
 case(LC.free_end_verdict({"describe": "to a tank", "portFaction": None}, "Ankor", True)[0], "FAIL", "does not name them")
+case(LC.goodwill_verdict(10, 8, None, None, 2, True)[0], "UNMEASURED", "charge unreadable is not 'no charge'")
+case(LC.goodwill_verdict(10, 8, 0, -2, None, True)[0], "UNMEASURED", "per-day rate unread: never guessed")
+case(LC.dump_no_pump_verdict([100, 98], None, None)[0], "UNMEASURED", "canal unreadable is not a dry canal")
+case(LC.dump_pump_verdict([100, 50], None, None, 4)[0], "UNMEASURED", "reach unreadable is not a dry reach")
 bad = [(g, w, y) for g, w, y in cases if g != w]
 for g, w, y in bad:
     print("FAIL", y, "got", g, "want", w)

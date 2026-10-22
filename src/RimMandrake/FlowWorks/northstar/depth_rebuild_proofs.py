@@ -141,6 +141,12 @@ def main():
         x0, z0, w, h = rect
         return c is not None and c[0] is not None and x0 <= c[0] < x0 + w and z0 <= c[1] < z0 + h
 
+    def known(c):     # an end cell was read: "not inside the lake" on an unread position is ignorance, never a PASS
+        return c is not None and c[0] is not None
+
+    def picked(probe):    # attack_target_probe's picked{id} (ThingID, Thing_ prefix stripped), None when nothing was picked
+        return str(((probe or {}).get("picked") or {}).get("id") or "").replace("Thing_", "") or None
+
     if a.fresh_map:
         B.call("rimworld/go_to_main_menu")
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
@@ -189,7 +195,8 @@ def main():
                 # 1a'. a mechanoid at the dug reservoir: class None, never routed in (fix3: dug water opens to swimmers only)
                 md, _ = spawn("Mech_Militor", (lake[0] - 2, lake[1] + 1), "player")
                 omd = order(md, mid, 600) if md else {}
-                row("SWIM_dug_reservoir_mechanoid_refused", "PASS" if md and "raw" not in omd and not inside(pos(omd), lake) else "FAIL",
+                row("SWIM_dug_reservoir_mechanoid_refused", "PASS" if md and "raw" not in omd and known(pos(omd)) and not inside(pos(omd), lake)
+                    else ("UNMEASURED" if not (md and known(pos(omd))) else "FAIL"),
                     {"order": {k: omd.get(k) for k in ("end", "ticksElapsed", "canReach")}, "midSwim": sc(SWIM, "ProofSwim", "%d,%d" % mid)})
                 # 1b. a NATURAL lake (painted WaterDeep, 9x4): the rest of the section swims here
                 nl = (ox + 6, oz + 13, 9, 4)
@@ -213,7 +220,9 @@ def main():
                 tgt = (mid[0], mid[1] - 1)
                 o3 = order(c2, tgt, 600)
                 s3 = sc(SWIM, "ProofSwim", "%d,%d" % tgt)
-                trace, warned, under_at, msgs0 = [], None, None, None
+                trace, warned, under_at = [], None, None
+                ms0 = B.call("rimworld/list_messages", limit=12) or {}   # the baseline: an older swim message is no warning to c2
+                msgs0 = set(m.get("text") or m.get("label") or "" for m in (ms0.get("messages") or []))
                 for k in range(24):           # up to 24 x 250 ticks = 2.4 game hours
                     step(250)
                     p_, info = where(c2)
@@ -221,7 +230,7 @@ def main():
                     s_ = kv(sc(SWIM, "ProofSwim", "%d,%d" % p_)) if p_[0] is not None else {}
                     ms = B.call("rimworld/list_messages", limit=12) or {}
                     texts = [m.get("text") or m.get("label") or "" for m in (ms.get("messages") or [])]
-                    hit = [t for t in texts if any(w in t.lower() for w in ("swim", "tir", "drown", "shore", "exhaust"))]
+                    hit = [t for t in texts if t not in msgs0 and any(w in t.lower() for w in ("swim", "tired", "drown", "shore", "exhaust"))]
                     if hit and warned is None:
                         warned = (k + 1) * 250, hit
                     kd = kv(d3)
@@ -255,7 +264,8 @@ def main():
                 sm = sc(SWIM, "ProofSwim", "%d,%d" % (lake[0] + 2, lake[1] + 2))
                 om = order(me, mid, 600) if me else {}
                 pm = pos(om) if om else None
-                row("SWIM_mechanoid_refused", "PASS" if me and om and "raw" not in om and "class=None" in sm and not inside(pm, lake) else "FAIL",
+                row("SWIM_mechanoid_refused", "PASS" if me and om and "raw" not in om and "class=None" in sm and known(pm) and not inside(pm, lake)
+                    else ("UNMEASURED" if not (me and known(pm)) else "FAIL"),
                     {"swimInLake": sm, "orderToMiddle": {k: om.get(k) for k in ("end", "ticksElapsed", "canReach")} if om else mr,
                      "route": sc(PITPATH, "ProofRoute", "%s|%d,%d" % (me, mid[0], mid[1])) if me else None})
                 # 5. prisoner in a flooded sheer pit: 4 m hole, 2 m water -> surface 2 m below the lip (2026-10-18: with shipped rain fill a 3.5 m hole rose to 2.5 m of water in 1,500 ticks, a K 2 step, and the prisoner climbed out by the rule)
@@ -285,7 +295,8 @@ def main():
                 fset(S_SW, "deepSwimEnabled", True)
                 rb = sc(SWIMW, "Reapply")
                 on2 = kv(sc(SWIM, "ProofSwim", "%d,%d" % c6c))
-                ok6 = on1.get("deepCell") == "True" and off.get("pathCost") not in (None, on1.get("pathCost")) \
+                ok6 = on1.get("deepCell") == "True" and on1.get("pathCost") is not None \
+                    and off.get("pathCost") not in (None, on1.get("pathCost")) \
                     and on2.get("pathCost") == on1.get("pathCost")
                 row("SWIM_toggle_off_on_mid_game", "PASS" if ok6 else "FAIL",
                     {"on": {k: on1.get(k) for k in ("deepCell", "pathCost", "class")}, "off": {k: off.get(k) for k in ("deepCell", "pathCost", "class")},
@@ -401,8 +412,12 @@ def main():
                 at2 = B.call("jawa/attack_target_probe", pawn=sa, maxDist=30) or {}
                 t1 = json.dumps(at1, default=str)
                 t2 = json.dumps(at2, default=str)
-                row("P7_shoot_across_2m_trench_allowed", "PASS" if en and en in t1 else "FAIL", {"shooter": sh, "target": en, "probe": t1[:700]})
-                row("P7_shoot_between_7m_pits_refused", "PASS" if eb and at2.get("success") is not False and at1.get("success") is not False and en and en in t1 and eb not in t2 else "FAIL", {"shooter": sa, "target": eb, "probe": t2[:700],
+                allowed = bool(en) and picked(at1) == en.replace("Thing_", "")
+                row("P7_shoot_across_2m_trench_allowed", "PASS" if allowed else ("UNMEASURED" if not (sh and en and at1) else "FAIL"),
+                    {"shooter": sh, "target": en, "probe": t1[:700]})
+                # the control first: the same probe must pick across the 2 m trench, and this one must have answered
+                row("P7_shoot_between_7m_pits_refused", "UNMEASURED" if not (allowed and sa and eb and at2.get("success") is True)
+                    else ("PASS" if picked(at2) != eb.replace("Thing_", "") else "FAIL"), {"shooter": sa, "target": eb, "probe": t2[:700],
                     "depthA": sc(NSP, "ProofReadout", "%d,%d" % pa), "depthB": sc(NSP, "ProofReadout", "%d,%d" % pb)})
         # ------------------------------------------------------------------ p5
         if "p5" in only:
@@ -419,7 +434,7 @@ def main():
                         dig((sq[0] + i, sq[1] + j), n, n)
                 B.ticks(70)
                 reads = {}
-                total_l = 0
+                total_l, parsed = 0, 0
                 for i in range(4):
                     for j in range(4):
                         c = (sq[0] + i, sq[1] + j)
@@ -427,11 +442,20 @@ def main():
                         reads["%d,%d" % c] = t
                         try:
                             total_l += int(t.rsplit("(", 1)[1].split(" L")[0].replace(",", ""))
+                            parsed += 1
                         except (IndexError, ValueError):
                             pass
                 ls = sc(NSP, "ProofLevelSurface", "%d,%d,4,4" % sq)
-                row("P5_4774_square_152000_L", "PASS" if total_l == 152000 else ("UNMEASURED" if total_l == 0 else "FAIL"), {"litres": total_l, "readouts": reads})
-                row("P5_4774_square_one_surface", "PASS" if " worst 0.000" in ls or "gap 0.0000" in ls or ls.startswith("OK 1") else "INFO", {"levelSurface": ls})
+                row("P5_4774_square_152000_L", "UNMEASURED" if parsed < 16 else ("PASS" if total_l == 152000 else "FAIL"),
+                    {"litres": total_l, "parsedSquares": parsed, "readouts": reads})
+                # "OK n worst G m;..." (RM_NorthstarProofs.ProofLevelSurface): one body, its surface flat to 1 cm
+                try:
+                    head = ls.split(";", 1)[0].split()
+                    nb, worst = (int(head[1]), float(head[3])) if head[0] == "OK" and head[2] == "worst" else (None, None)
+                except (IndexError, ValueError):
+                    nb, worst = None, None
+                row("P5_4774_square_one_surface", "UNMEASURED" if not nb else ("PASS" if nb == 1 and worst <= 0.01 else "FAIL"),
+                    {"bodies": nb, "worstGapM": worst, "levelSurface": ls})
         # ------------------------------------------------------------------ p13 (reeds through a drain/refill cycle)
         if "p13" in only:
             ox, oz = 120, 180
@@ -483,6 +507,9 @@ def main():
                     {"start": n0["control"], "afterGracePlus1h": n3["control"]})
                 row("P13_fish_rows", "UNMEASURED", {"why": "not read here: the fish roll and catch rows are live_session.py B4 "
                                                              "(B4_reservoir_fish_rolled, jawa/fishing + map_zones)"})
+        if "sweep" in only:
+            row("SWEEP_colonists_return_as_colonists", "UNMEASURED", {"why": "needs a map with river current: the proof is "
+                                                                         "river_scenes_walk.py go R3, not this script"})
     finally:
         for (t, f), v in before.items():
             if v is not None:

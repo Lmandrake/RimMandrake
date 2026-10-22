@@ -251,6 +251,10 @@ def main(argv=None):
         kv, _ = lproof("ProofPower", xz(c), answer=True)
         return kv.get("on") == "True"
 
+    def lamp_dark(c):       # an unanswered ProofPower is neither lit nor dark: "not lit" would read ignorance as dark
+        kv, _ = lproof("ProofPower", xz(c), answer=True)
+        return kv.get("on") == "False"
+
     def charge(c):
         lt = B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % c, limit=2) or {}
         bid = ((lt.get("things") or [{}])[0]).get("id")
@@ -322,7 +326,7 @@ def main(argv=None):
         B.call("rimworld/set_god_mode", enabled=True)
 
     ctx = dict(a=a, B=B, P=P, xz=xz, row=row, lproof=lproof, sproof=sproof, dproof=dproof, counters=counters, delta=delta,
-               dig=dig, build=build, ticks=ticks, poll=poll, spawn=spawn, pawns=pawns, things=things, lamp_on=lamp_on,
+               dig=dig, build=build, ticks=ticks, poll=poll, spawn=spawn, pawns=pawns, things=things, lamp_on=lamp_on, lamp_dark=lamp_dark,
                trench=trench, lay=lay, hose=hose, power_line=power_line, res=res, save=save)
     for rid in ROW_IDS:
         if rid in only:
@@ -494,7 +498,7 @@ def leaf_lamp(ctx):
     dproof("ProofDevSet", "%s;raise;instant" % xz(P(2, 60)))
     kl, tl = dproof("ProofLeaf", xz(P(2, 60)))
     V.require(num(kl, "progress", 0) > 0, "the leaf rose", tl)
-    dark, w1 = ctx["poll"](lambda: not ctx["lamp_on"](lamp), 60)
+    dark, w1 = ctx["poll"](lambda: ctx["lamp_dark"](lamp), 60)
     kc, tc = lproof("ProofCord", xz(P(2, 60)))
     dproof("ProofDevSet", "%s;lower;instant" % xz(P(2, 60)))
     lit1, w2 = ctx["poll"](lambda: ctx["lamp_on"](lamp), 300)
@@ -540,7 +544,7 @@ def collapse_cord(ctx):
     ctx["ticks"](60)                    # three GSS 20-tick checks while he holds the square
     c1 = ctx["counters"]()
     hed = [str(h.get("def") or h) for h in (((ctx["pawns"]().get(victim) or {}).get("health") or {}).get("hediffs") or [])]
-    dark = not ctx["lamp_on"](lamp)
+    dark = ctx["lamp_dark"](lamp)
     ctx["ticks"](300)
     c2 = ctx["counters"]()
     d = ctx["delta"]
@@ -582,7 +586,7 @@ def ladder_drain(ctx):
     if bid is not None:
         B.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
     ladder = B.call("jawa/static_call", type=PROMO, method="ProofLadder", args="%d,%d,read" % P(8, 85), _answer=True) or {}
-    V.require(ladder.get("success") is True, "the ladder is on the pit floor", ladder)
+    V.require(ladder.get("success") is True and "present=True" in str(ladder.get("result")), "the ladder is on the pit floor", ladder)
     ly = ctx["lay"](reel, P(9, 85))
     kh0, th0 = ctx["hose"](reel)
     rl = B.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,2,1" % reel, limit=1) or {}
@@ -601,6 +605,8 @@ def ladder_drain(ctx):
     u1 = B.hp("tank:%d,%d" % tank).get("units")
     drained = (num(kw0, "dl") or 0) > (num(kw1, "dl") or 0) and isinstance(u0, int) and isinstance(u1, int) and u1 > u0
     up = B.call("jawa/static_call", type=PROMO, method="ProofLadder", args="%d,%d,raise" % P(8, 85)) or {}
+    # a raise that did not happen leaves the hose where it was: "stays" would pass with nothing raised
+    V.require(up.get("success") is True and "raised=True" in str(up.get("result")), "the ladder was raised", up, cls="SITE")
     ctx["ticks"](300)
     kh1, th1 = ctx["hose"](reel)
     stays = kh1.get("laid") == "True" and kh1.get("geom") == kh0.get("geom") and kh1.get("cut") == "False"
@@ -1083,7 +1089,7 @@ class FakeBridge(object):
             c = (int(p[0]), int(p[1]))
             if p[2] == "raise":
                 self.ladders[c] = True
-            return "LADDER x,z raised=%s" % self.ladders.get(c)
+            return "LADDER cell=%d,%d present=%s raised=%s" % (c[0], c[1], c in self.ladders, self.ladders.get(c))
         if ty == LPROOF:
             return self.lproof(m, a, cell)
         return "OK"

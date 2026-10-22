@@ -332,7 +332,7 @@ def main():
         return parse(txt) if r.get("success") is True and not txt.startswith("REFUSED") else {}, txt
 
     def sget(f):
-        return B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
+        return (B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f) or {}).get("value")
 
     def sset(f, v):
         return B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
@@ -475,7 +475,9 @@ def main():
         f1 = B.call("jawa/flowworks_excavation_drive", x=P(12, 3)[0], z=P(12, 3)[1], deepenLevels=0, setFill=-1, fillInLevels=2) or {}
         B.ticks(SETTLE)
         kv, txt = climb("%d,%d;2" % P(11, 3))
-        if not kv or not fresh(kv):
+        if f1.get("success") is not True:     # a refused fill leaves the pocket: that is the drive, not the grid
+            row("CLIMB_rebuild_follows_fill", "UNMEASURED", "SITE", {"why": "fill drive refused", "fill": f1})
+        elif not kv or not fresh(kv):
             row("CLIMB_rebuild_follows_fill", "UNMEASURED", "MOD", {"why": "no fresh read", "txt": txt, "fill": f1})
         else:
             row("CLIMB_rebuild_follows_fill", "PASS" if kv.get("pocket") == "False" else "FAIL", "MOD",
