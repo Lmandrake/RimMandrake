@@ -112,7 +112,7 @@ SCENARIO = scenario(
             deferred("pump power as a GSS power cord", "a vanilla conduit stands in: no staging surface lays an "
                      "RM_PowerCord from a script yet", "POWER_CORD_BUILD_BENDS_WHERE_CONDUIT_BREAKS", (1, 37)),
             staged("swim-out of a flooded sheer pit (Stage 0 live: out only at the brim)", "pawns", "Colonist",
-                   (22, 13), "poked", "Transient/scenarios_stage0_20261021T220318.json: 2 m FAIL, brim PASS"),
+                   (22, 13), "poked", "Stage 0 live 2026-10-21: 2 m FAIL, brim PASS (PASS_AT_BRIM)"),
             deferred("machine digging Hobb's pit", "4 m is past the 2 m colonist cap (owner 2026-10-21); the pit is "
                      "staged, a machine dig order is not built", DEEP_DIG_ITEM, (7, 37))],
     exercises={"hose_maze": "poked", "hose_maze_walled": "poked", "hose_relay": "poked", "hose_states": "look",
