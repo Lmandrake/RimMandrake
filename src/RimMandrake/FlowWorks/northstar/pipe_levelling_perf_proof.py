@@ -19,10 +19,10 @@ LAYOUT (absolute map coords on a 325 map): basin A x10..134, basin B x190..314, 
 4 notches deep (2 m), A filled F=4 and B F=1 with RM_Fluid_Water (unequal, so links have work). The 55-wide gap holds rigs in
 four columns (x 139 / 150 / 161 / 172), one rig per 5 rows from z 4 (the fifth row and the 7-square lanes between columns are
 free, so a hose from an inner column can route out): the pond rig's shape (walk_gaps_proof _pond_rig) -- two 2x2
-reels built West at (cx, z) and (cx, z+2) touching an RM_LiquidTank at (cx+2, z+1); reel 1 laid to A's lip (135, z) and set
+reels built West at (cx, z) and (cx, z+2) joined by an RM_UniversalPipe run at x cx+2, z..z+3 (rig_ops; NOT a tank: a tank does not conduct); reel 1 laid to A's lip (135, z) and set
 Intake, reel 2 laid to B's lip (189, z+2) and set Outflow. A hose holds 40 squares as shipped (HoseMath.DefaultMaxLength) and
-the far lip is up to 50 away, so RM_HoseSettings.maxLength is held at 80 (its clamp) for the run and put back after. UNVERIFIED LAYOUT GUESS (the same one walk_gaps PONDS_* reads
-linked=false on, 2026-10-22): two reels on one tank are one component with two open ends. ProofLevelLink's links counter is
+the far lip is up to 50 away, so RM_HoseSettings.maxLength is held at 80 (its clamp) for the run and put back after. The pipe-run layout is the one walk_gaps PONDS_* uses after the tank layout read
+linked=false (2026-10-22). ProofLevelLink's links counter is
 read before the timing; fewer links than --rigs is UNMEASURED/SITE naming intakes/outflows/on, never a PASS.
 
 ROWS (both PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL A3; PROVISIONAL bars, no owner number exists):
@@ -88,6 +88,13 @@ def layout(size, rigs, rehearsal):
     cols = (ax + bw + 5, ax + bw + 16, ax + bw + 27, ax + bw + 38)
     spots = [(cx, z) for z in range(z0 + 2, z0 + bh - 5, 5) for cx in cols]
     return ([(ax, z0, bw, bh, FILL_A), (bx, z0, bw, bh, FILL_B)], spots[:rigs], ax + bw, bx - 1)
+
+
+def rig_ops(cx, z):
+    """Build ops of one rig: two 2x2 reels built West at (cx, z) and (cx, z+2) whose East edges both touch ONE RM_UniversalPipe
+    run x cx+2, z..z+3. A pipe conducts; an RM_LiquidTank does NOT (RM_NetComponents.Build attaches it as a member and never walks
+    through it), so two reels on one tank were two components with one port each and levelled nothing (walk_gaps_proof, 2026-10-22)."""
+    return [V.reel_west((cx, z)), V.reel_west((cx, z + 2))] + ["RM_UniversalPipe:%d,%d" % (cx + 2, z + j) for j in range(4)]
 
 
 def tick_verdict(kv, links, want_links, staged_ok):
@@ -235,7 +242,7 @@ def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size,
     for i in range(0, len(spots), 40):
         ops = []
         for cx, z in spots[i:i + 40]:
-            ops += [V.reel_west((cx, z)), V.reel_west((cx, z + 2)), "RM_LiquidTank:%d,%d" % (cx + 2, z + 1)]
+            ops += rig_ops(cx, z)
         B.call("jawa/build_batch", ops=";".join(ops), faction="player", wipeExisting=False)
     B.call("rimworld/step_game_ticks", ticks=2, pauseFirst=True, timeoutMs=60000)
     lay_fail = 0
@@ -276,6 +283,7 @@ class FakeBridge(object):
         self.f = set(faults)
         self.size = 250 if "small_map" in self.f else size
         self.reels = {}
+        self.pipes = set()
         self.dug = 0
 
     def static(self, ty, m, arg):
@@ -302,9 +310,29 @@ class FakeBridge(object):
         return "REFUSED: unknown " + m
 
     def links(self):
+        """A link = an Intake reel and an Outflow reel whose East-edge neighbours lie on ONE 4-connected run of built pipes
+        (a tank, or no pipe, joins nothing: the same coupling rule walk_gaps_proof.pond_rig_problems models)."""
         if "no_link" in self.f:
             return 0
-        return sum(1 for r in self.reels.values() if r.get("role") == "Intake")
+        comp, n = {}, 0
+        for p in sorted(self.pipes):
+            if p in comp:
+                continue
+            n += 1
+            todo = [p]
+            while todo:
+                q = todo.pop()
+                if q in comp or q not in self.pipes:
+                    continue
+                comp[q] = n
+                todo += [(q[0] + 1, q[1]), (q[0] - 1, q[1]), (q[0], q[1] + 1), (q[0], q[1] - 1)]
+        roles = {}
+        for c, r in self.reels.items():
+            x, z = (int(v) for v in c.split(","))
+            runs = {comp[(x + 2, z + j)] for j in (0, 1) if (x + 2, z + j) in comp}
+            if len(runs) == 1 and r.get("role"):
+                roles.setdefault(runs.pop(), set()).add(r["role"])
+        return sum(1 for rs in roles.values() if {"Intake", "Outflow"} <= rs)
 
     def hp(self, cmd, wait_s=20.0, answer=False):
         return {"success": True, "layOk": True}
@@ -315,6 +343,12 @@ class FakeBridge(object):
             if txt is None:
                 return {"success": False, "error": "Method not found"}
             return {"success": True, "result": txt}
+        if tool == "jawa/build_batch":
+            for op in str(kw.get("ops", "")).split(";"):
+                name, _, xy = op.partition(":")
+                if name == "RM_UniversalPipe":
+                    self.pipes.add(tuple(int(v) for v in xy.split(",")[:2]))
+            return {"success": True}
         if tool == "jawa/map_info":
             return {"success": True, "sizeX": self.size, "sizeZ": self.size}
         return {"success": True}

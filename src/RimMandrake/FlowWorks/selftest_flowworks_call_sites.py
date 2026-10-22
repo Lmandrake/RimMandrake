@@ -207,8 +207,8 @@ SITES = [
          "fill-in's homeless remainder spills before anything is reported destroyed (D1)",
          order=(r"remaining -= Sheet\.RM_MapComponent_Sheet\.SpillHomeless\(", r"ReportOverflow\( from , remaining \)")),
     Site("OVF1", "LiquidTypes/Building_LiquidPump.cs", [r"private string TryPour\(\)"],
-         [r"Sheet\.RM_MapComponent_Sheet\.PumpSpillOutlet\( Map , cells , cd , units , out IntVec3 spillAt \)",
-          r"Sheet\.RM_MapComponent_Sheet\.SpillLeg\( Map , spillAt ,"],
+         [r"Sheet\.RM_MapComponent_Sheet\.PumpSpillOutlet\( Map , cells , cd , units , spf , out IntVec3 spillAt \)",
+          r"Sheet\.RM_MapComponent_Sheet\.SpillLeg\( Map , spillAt , spf ,"],
          "a pump backed up against a brimming canal of water spills its level over the lip",
          order=(r"Sheet\.RM_MapComponent_Sheet\.PumpSpillOutlet\(", r"ex\.NoteDriverBackedUp\( cells\[c\] \)")),
     # ── OVF2 CANAL_OVERFLOW step 1: a release's leftover goes to the sheet, then is disclosed; the one end ──
@@ -223,7 +223,7 @@ SITES = [
          "the release tick reaches its one end"),
     # ── OVF3 CANAL_OVERFLOW stage 2: effects and the D2 gravity feed ──
     Site("OVF3", "Machinery/RM_LiquidNet.cs", [r"private static void DumpDrain\("],
-         [r"Sheet\.RM_MapComponent_Sheet\.GravityProbe\( map , end ,", r"Sheet\.RM_MapComponent_Sheet\.SpillLeg\( map , end , RM_SheetMath\.Source\.Gravity \)"],
+         [r"Sheet\.RM_MapComponent_Sheet\.GravityProbe\( map , end ,", r"Sheet\.RM_MapComponent_Sheet\.SpillLeg\( map , end , fluid , RM_SheetMath\.Source\.Gravity \)"],
          "a Dump tank against a full channel spills its surplus over the lip (D2 gravity feed)",
          order=(r"GravityProbe\(", r"RM_LiquidNetKernel\.DumpTake\(")),
     Site("OVF3", "Sheet/RM_MapComponent_Sheet.cs", [r"public void EnginePulse\(\)"], [r"Effects\( \)"],
@@ -234,7 +234,7 @@ SITES = [
          "D3: the crop timer kills the plant"),
     Site("OVF3", "Sheet/RM_MapComponent_Sheet.cs", [r"private void Effects\(\)"], [r"SoakApi\( map , soakCells , IrrigateTicks \)"],
          "D3: soaked water irrigates"),
-    Site("OVF3", "Sheet/RM_MapComponent_Sheet.cs", [r"public long Offer\("], [r"TellOverflowOnce\( origin , from \)"],
+    Site("OVF3", "Sheet/RM_MapComponent_Sheet.cs", [r"public long Offer\("], [r"TellOverflowOnce\( origin , from , fluid \)"],
          "the first spill on a map says so"),
     Site("OVF3", "Sheet/RM_SheetPatches.cs", [r"public static void Postfix\("], [r"RM_MapComponent_Sheet\.PathCostAt\( __instance\.map , c \)"],
          "the path grid adds the wading cost"),

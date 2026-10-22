@@ -34,9 +34,12 @@ basins, spots, la, lb = L.layout((325, 325), 200, False)
 check("layout: two 40,000-square basins", [b[2] * b[3] for b in basins] == [40000, 40000])
 check("layout: basins inside 325", all(b[0] + b[2] <= 325 and b[1] + b[3] <= 325 for b in basins))
 check("layout: 200 rigs", len(spots) == 200)
-check("layout: rigs (4x4 incl. tank) in the gap, clear of both basins",
+check("layout: rigs (3 wide x 4 deep, reels + pipe run) in the gap, clear of both basins",
       all(la < cx and cx + 3 < lb and z + 3 < basins[0][1] + basins[0][3] for cx, z in spots))
-check("layout: rigs never overlap", len({(cx + i, z + j) for cx, z in spots for i in range(4) for j in range(4)}) == 16 * len(spots))
+check("layout: rigs never overlap", len({(cx + i, z + j) for cx, z in spots for i in range(3) for j in range(4)}) == 12 * len(spots))
+ops = L.rig_ops(10, 4)
+check("rig: reels joined by a 4-square pipe run, no tank", sum(o.startswith("RM_UniversalPipe") for o in ops) == 4
+      and not any("Tank" in o for o in ops))
 check("layout: every hose within the 80 clamp (straight-line + 10 detour)",
       all(abs(cx - la) + 10 <= 80 and abs(lb - cx) + 10 <= 80 for cx, _z in spots))
 b2, s2, la2, lb2 = L.layout((120, 120), 200, True)
@@ -57,6 +60,16 @@ for fault, want in EXPECT.items():
     bad = {k: v for k, v in got.items() if v[0] != "PASS"}
     check("mock %-10s -> %s" % (fault or "clean", want or "all PASS"),
           bad == want and len(rows) == 2 and all(r["status"] == "SKIP" and r["criterion"] == "A3" for r in rows))
+# can-fail: the old tank rig (two reels touching a tank, no pipe run) makes no link, so the rows are UNMEASURED/SITE, never PASS
+good_ops = L.rig_ops
+L.rig_ops = lambda cx, z: [L.V.reel_west((cx, z)), L.V.reel_west((cx, z + 2)), "RM_LiquidTank:%d,%d" % (cx + 2, z + 1)]
+out = os.path.join(tmp, "lp_tank.json")
+with contextlib.redirect_stdout(io.StringIO()):
+    L.main(["--mock", out])
+rows = json.load(open(out))["rows"]
+check("can-fail: the old tank rig links nothing -> UNMEASURED/SITE",
+      all(r["detail"].get("mock") == "UNMEASURED" and r["class"] == "SITE" and r["detail"]["links"] == 0 for r in rows) and len(rows) == 2)
+L.rig_ops = good_ops
 out = os.path.join(tmp, "lp_reh.json")
 with contextlib.redirect_stdout(io.StringIO()):
     L.main(["--mock", out, "--rehearsal"])
