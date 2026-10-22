@@ -103,17 +103,32 @@ def static_checks():
             bad.append("settings field %s has no control in DoWindowContents" % n)
     # ROT_MOD_SETTINGS_WIRING_1: every field needs a READER outside its own Scribe line and the settings UI
     # (declaration + one reader = 2 mentions).
-    # ROT_WOUND_SHARING_WIRING_1: five Alpha Animals bodies carry the wound-link / kin-mending wiring by patch.
+    # ROT_WOUND_SHARING_WIRING_1: five bodies carry the wound-link / kin-mending wiring. Since the 2026-10-18 donor
+    # retirement they are our RM_ ports: chittik, gromma, rennok carry it NATIVELY in Defs/Fauna; mullgoth and durrok
+    # (defs in mandrake.rsw.swbestiary) get it by an xpath-guarded patch. RED 2026-10-22 for the reported reason: the
+    # retirement deleted the AA_ FindMod block and the wiring reached only RM_Agaripod/RM_Agaripawn (chittik, durrok and
+    # mullgoth silently lost the promised sharing; the toggle's strip list still named the AA_ bodies).
+    fauna = ""
+    for fn in ("RM_Chittik.xml", "RM_AgariPorts.xml"):
+        fauna += open(os.path.join(HERE, "Defs", "Fauna", fn), encoding="utf-8").read()
+    for body in ("RM_Chittik", "RM_Agaripod", "RM_Agaripawn"):
+        m = re.search(r"<ThingDef[^>]*>\s*<defName>%s</defName>(.*?)</ThingDef>" % body, fauna, re.S)
+        if not m or "CompProperties_WoundLink" not in m.group(1) or "<tag>RotNetwork</tag>" not in m.group(1):
+            bad.append("%s ThingDef does not carry a native wound link with the RotNetwork tag" % body)
     ws = open(os.path.join(HERE, "Patches", "RotSpecies_WoundSharing.xml"), encoding="utf-8").read()
-    for body in ("AA_Swarmling", "AA_Agaripod", "AA_Agaripawn", "AA_Wildpod", "AA_Wildpawn"):
+    for body in ("RM_Durrok", "RM_Mullgoth"):
         if 'defName="%s"' % body not in ws:
             bad.append("wound-sharing patch does not target %s" % body)
-    if "<tag>RotNetwork</tag>" not in ws or ws.count("CompProperties_WoundLink") < 5:
-        bad.append("wound-sharing patch lacks the shared RotNetwork tag or a wound link per body")
-    if "<mods>" not in ws or re.search(r"<Operation[^>]*MayRequire", ws):
-        bad.append("wound-sharing patch must be gated by PatchOperationFindMod, never a top-level MayRequire")
+    if ws.count("<tag>RotNetwork</tag>") < 2 or ws.count("CompProperties_WoundLink") < 4:
+        bad.append("wound-sharing patch lacks the shared RotNetwork tag or a wound link per patched body")
+    if re.search(r"<Operation[^>]*MayRequire", ws):
+        bad.append("wound-sharing patch must never use a top-level MayRequire (ignored by 1.6)")
     if ws.count("<hediff>RM_KinMendingNetwork</hediff>") != 4:
         bad.append("exactly the two mending bodies (mullgoth, durrok) carry the kin-mending hediff")
+    hs = re.search(r"HealthSharingBodies\s*=\s*\{([^}]*)\}", src)
+    hs_names = set(re.findall(r'"(\w+)"', hs.group(1))) if hs else set()
+    if hs_names != {"RM_Chittik", "RM_Agaripod", "RM_Agaripawn", "RM_Durrok", "RM_Mullgoth"}:
+        bad.append("Health sharing toggle strips %s, not the five RM_ bodies" % sorted(hs_names))
     reader_text = re.sub(r"Scribe_Values\.Look\([^\n]*\n", "", src)
     ui_start = reader_text.index("public void DoWindowContents")
     ui_end = reader_text.index("public class RM_TheRotFront") if "public class RM_TheRotFront" in reader_text else reader_text.index("static class RM_TheRotFront")

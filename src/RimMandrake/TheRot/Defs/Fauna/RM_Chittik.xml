@@ -104,6 +104,20 @@
     <tradeTags>
       <li>AnimalCommon</li>
     </tradeTags>
+    <!-- ROT_WOUND_SHARING_WIRING_1, restored natively 2026-10-22: the description promises "shares every wound it takes".
+         The wiring rode a FindMod patch on AA_Swarmling that the donor retirement (b28a7414f) deleted without carrying it
+         to this port. Same shape as RM_Agaripod/RM_Agaripawn; the Health sharing setting strips the comps when off. -->
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+        <inspectLine>Shares wounds with its swarm.</inspectLine>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+        <tag>RotNetwork</tag>
+      </li>
+    </modExtensions>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Chittik</defName>

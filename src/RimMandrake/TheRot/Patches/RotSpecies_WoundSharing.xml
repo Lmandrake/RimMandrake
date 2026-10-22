@@ -1,8 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- ROT_WOUND_SHARING_WIRING_1: real wound-sharing (chittik, gromma, rennok) and kin-mending (mullgoth, durrok) on the five
-     Alpha Animals bodies whose Rot descriptions promise it. One shared tag, RotNetwork, so they share across species.
-     Gated by PatchOperationFindMod (a top-level MayRequire is ignored by 1.6). The Rot screen's Health sharing toggle removes
-     the comps again at startup (restart to apply). Wild and tamed alike: the comps filter on no faction. -->
+<!-- ROT_WOUND_SHARING_WIRING_1: real wound-sharing (chittik, gromma, rennok) and kin-mending (mullgoth, durrok), one shared
+     tag, RotNetwork, so they share across species. Wild and tamed alike: the comps filter on no faction. The Rot screen's
+     Health sharing toggle removes the comps again at startup (restart to apply; RM_TheRotFront.HealthSharingBodies).
+     Since the 2026-10-18 donor retirement the three Rot-owned ports (RM_Chittik, RM_Agaripod, RM_Agaripawn) carry the
+     wiring natively in Defs/Fauna. This patch now wires only RM_Durrok and RM_Mullgoth, whose defs live in
+     mandrake.rsw.swbestiary: each op is guarded by PatchOperationConditional on the def's own xpath (a top-level
+     MayRequire is ignored by 1.6, and FindMod would need the mod NAME). Restored 2026-10-22: the retirement commit
+     b28a7414f deleted the AA_ block without carrying the mending pair across. -->
 <Patch>
-  <!-- A PatchOperationFindMod on "Alpha Animals" stood here; that donor was retired 2026-10-18, so it could never match again and was deleted. -->
+  <!-- RM_Mullgoth: guarded on the def itself (it lives in mandrake.rsw.swbestiary); with that mod absent both ops match nothing. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Mullgoth"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Mullgoth"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              <hediff>RM_KinMendingNetwork</hediff>
+              <inspectLine>Heals faster among its kin.</inspectLine>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Mullgoth"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Mullgoth"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              <hediff>RM_KinMendingNetwork</hediff>
+              <inspectLine>Heals faster among its kin.</inspectLine>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Mullgoth"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_Mullgoth"]</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+          <tag>RotNetwork</tag>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- RM_Durrok: guarded on the def itself (it lives in mandrake.rsw.swbestiary); with that mod absent both ops match nothing. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Durrok"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Durrok"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              <hediff>RM_KinMendingNetwork</hediff>
+              <inspectLine>Heals faster among its kin.</inspectLine>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Durrok"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Durrok"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              <hediff>RM_KinMendingNetwork</hediff>
+              <inspectLine>Heals faster among its kin.</inspectLine>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Durrok"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_Durrok"]</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+          <tag>RotNetwork</tag>
+        </li>
+      </value>
+    </match>
+  </Operation>
 </Patch>

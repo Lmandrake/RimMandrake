@@ -17,17 +17,19 @@
         they are same-mod;
       - own natural ground terrains (RM_TheRotGrass/RM_TheRotSoilRich)
         replacing the donor AB_Mycotic* pair;
-      - all 30 wildPlants rows carried over (17 RM_-renamed kit flora + 13
-        AB_ donor rows, Q9 shape — the 12 still-donor rows were replaced 1:1 at the same
-        commonality by our RM_ ports in ThingDefs_Plants/RM_TheRot_DonorPorts.xml, 2026-10-18 donor retirement), PLUS 5 rows folded in as NATIVE entries from the
+      - the 30 original wildPlants rows carried over (17 RM_-renamed kit flora + 13
+        rows that were AB_ donors; every donor row was since replaced 1:1 at the same
+        commonality by our RM_ ports in ThingDefs_Plants/RM_TheRot_DonorPorts.xml, 2026-10-18
+        donor retirement, so no AB_ row remains), PLUS 5 rows folded in as NATIVE entries from the
         two RotPaleTree_WildSpawn.xml / RotGuardianGroves_WildSpawn.xml
         patches (those patch files existed only to avoid two agents editing
         this def at once — no longer needed once the content lives here);
-      - wildAnimals holds the 8 Alpha Animals donor rows (Q9 stays
-        inline, MayRequire sarg.alphaanimals), the ten RM_ residents of
-        ROT_RM_CAST_MIGRATION_1 and the RM_Hwelgrue giant. The 11 RSW_ rows + Snoruuk the
-        twin also carries are Q12/Q11a Star Wars content and ride the
-        campaign Utinni patch instead — see
+      - wildAnimals holds no donor rows any more (the Alpha Animals rows became
+        our RM_ ports in the 2026-10-18 donor retirement; RM_Durrok and
+        RM_Mullgoth are RM_ defs that live in mandrake.rsw.swbestiary, hence
+        their MayRequire), the ten RM_ residents of ROT_RM_CAST_MIGRATION_1 and
+        the RM_Hwelgrue giant. The genuine Star Wars rows (RSW_ShiroTrap,
+        RSW_Snoruuk) ride the campaign Utinni patch instead — see
         src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheRot.xml — never
         this def (an RM_-tier biome mod may not hard-name Star Wars IP);
       - the two EnvironmentalHazards modExtensions carried over unchanged,

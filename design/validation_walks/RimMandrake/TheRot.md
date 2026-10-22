@@ -23,6 +23,10 @@ Sources: `src/RimMandrake/TheRot/About/About.xml`, `Defs/**`, `Source/RM_TheRotM
 - An installed, linked core multiplies the grav engine's TOTAL range (thrusters included) by 1 + bonus x integrity. → hwelgrue.core_multiplies_total_range
 - Only the ship's own guns lower the core's integrity. → hwelgrue.ship_guns_wreck_the_core
 - An idle hwelgrue crawls to and eats the nearest corpse or item on open ground, never one in a stockpile zone or under a roof, and never starts a fight. → UNCOVERED: needs ticks; first poke: RM_HwelgrueProof.ProofGrazeTarget with a knife on open ground and one in a stockpile.
+- Studying the gut-mother sac unlocks its research; a fed vat returns a dead pawn's bionic arm, rifle and parka and consumes the body; an unfed vat does not progress; the starter keeps, trades, and a split makes one. → gut_mother.research_needs_studied_sac, gut_mother.digest_returns_implants_and_gear, gut_mother.hungry_vat_is_dormant, gut_mother.starter_keeps_and_trades
+- The swallowed navigator's log reads one entry per 4 pings and reveals a salvage site at the second; pings after the carrier dies move nothing; a gravship landing beside a carrier pings at once. → navigator_log.entry_every_n_pings, navigator_log.carrier_death_cuts_log, navigator_log.landing_pings_at_once (UNMEASURED: needs a gravship landing)
+- The Unjoining Draught purges parasites and symbionts (one husk per symbiont, one scar, the purge), gives a clean patient only the purge, and forces a metalhorror implant out. → unjoining.purges_parasites_and_symbionts, unjoining.clean_patient_only_purges, unjoining.forces_metalhorror_out
+- The five Rot network bodies share wounds (chittik, gromma, rennok) or mend among kin (mullgoth, durrok), one RotNetwork tag across species; Health sharing off strips the comps from exactly those five. → UNCOVERED: no live chain yet (static wiring is `validation.py` static_checks, red 2026-10-22 when the donor retirement had dropped chittik/durrok/mullgoth); first poke: spawn two RM_Agaripod, damage one, read the other's health.
 
 ## the walk
 1. [D] `jawa/get_defs` over every def derived from `Defs/**/*.xml`   # defs_resolve
@@ -42,3 +46,4 @@ No owner north-star bars are drafted for this mod yet.
 
 ## anti-guessing notes
 RULED OUT: "a zero-tile biome is a defect" — the planet is painted once at the end (BIOME_PAINT_ONCE_AT_THE_END_1).
+RULED OUT: "the RM_ ports inherited the donor's wound sharing" — only RM_Agaripod/RM_Agaripawn were ported with it; the AA_ FindMod patch was deleted at b28a7414f and the static check now names the five RM_ bodies.
