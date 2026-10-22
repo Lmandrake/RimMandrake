@@ -1,0 +1,1 @@
+A FlowWorks Mod Settings section can drive a building class no def uses (RM_SluiceGateSettings -> Building_RM_SluiceGate; the player's sluice is RM_Sluice, a door). Before reviewing a setting's wording, grep Defs for a thingClass that uses the class it gates.
