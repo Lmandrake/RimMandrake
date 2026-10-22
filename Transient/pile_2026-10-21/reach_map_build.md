@@ -74,3 +74,22 @@ Bridge held, FlowWorks built+deployed with this code, a map with ~60x50 clear at
 Then the owner's number: ProofReachReset, a long soak on a dug, walled colony on the full list, ProofReach
 (REACH_RESIDUAL_SOAK, owed). De-risk timing in game: RM_PocketGrid.ProofPocketTiming "" (per-band ms, rebuilds/1000 ticks,
 wall-aware build ms) - the proof records it before and after.
+
+## Built, committed, LIVE (22:00-22:20, bridge held by BENCH, tier fw_gss_sitting, 14 mods)
+- 8eb254361b: source + DLL committed and published.
+- Live 1: every row HARNESS - static_call with args="" looks for a 0-param overload; the proof now passes "-".
+- Live 2: WINCH_SITE, LOCKED_GATE, ANIMAL_DOOR_TRENCH, RESIDUAL_READ PASS; NONSWIMMER UNMEASURED (Colonist/Muffalo
+  swim; has_bit read cls=-1 as every bit). And a MOD finding: 436 wall-aware builds in 463 ticks - NoteConnectivity forced
+  a rebuild on ANY walkable delta square, and vanilla's deltas include a new wall's walkable neighbours, so every wall
+  placed bypassed the 60-tick throttle. Fixed: only a delta square that was a Wall in the last kinds snapshot and is
+  walkable now (a breach) forces.
+- Live 3 (fix deployed): all 5 rows PASS, incl. REACH_NONSWIMMER_MOAT (Mech_Militor, cls=18: veto=True, A* found=False).
+  Transient/pile_2026-10-21/reach_map_live3.json (pinned).
+  Timing on 250x250 (62,500 cells): depth-only pocket grid rebuild mean 6.4 ms / max 26 ms per whole build, ~0.9 ms per band;
+  wall-aware labelling mean 1.26 ms / max 15 ms per (band, class) build. Build rate in the proof (260 builds / 280 ticks) is
+  dominated by PAUSED staging (UpdatePaused rebuilds at once on every scene change) - not a steady-state rate; the
+  steady-state rate is owed to the soak.
+- Regression: drawbridge_proof --only LOWER_ONLY_FROM_WINCH PASS (farLower job=False, winchLower job=True).
+- Game closed, ./game down, ModsConfig restored (md5 3ad3f33d verified), bridge released.
+- Residual counter after the proof: fails=0 (no pather failure after a CanReach yes during the scenes).
+- STILL OWED: REACH_RESIDUAL_SOAK on the owner's full list (the number he asked for).

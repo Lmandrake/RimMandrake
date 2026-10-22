@@ -91,10 +91,12 @@ namespace RimMandrake.FlowWorks
 
 		// ── invalidation ────────────────────────────────────────────────────────────
 
-		/// <summary>From RM_CliffMask's ConnectivitySource postfixes (inside GatherData: maybe a worker thread, main thread
-		/// blocked). all: ComputeAll (the whole array is new). A delta square that is walkable now is a breach (a wall gone, a
-		/// door built in a wall): the next tick rebuilds at once. A square closed (a wall built) only bumps: stale labels are
-		/// more connected than the map, so they can only miss a veto for up to RebuildMinTicks, never invent one.</summary>
+		/// <summary>From the ConnectivitySource postfixes (inside GatherData: maybe a worker thread, main thread blocked). all:
+		/// ComputeAll (the whole array is new). A delta square that is walkable now but was a WALL in the last kinds snapshot is
+		/// a breach (a wall gone, a door built in a wall): the next tick rebuilds at once. Anything else (a wall built: vanilla's
+		/// deltas also list its walkable neighbours) only bumps: stale labels are more connected than the map, so they can only
+		/// miss a veto for up to RebuildMinTicks, never invent one. (Live 2026-10-21, first run: "any walkable delta forces"
+		/// rebuilt on every wall placed, 436 builds in 463 ticks of staging.)</summary>
 		internal static void NoteConnectivity(Map map, List<IntVec3> deltas, bool all)
 		{
 			if (map == null)
@@ -109,13 +111,20 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			PathGrid pg = map.pathing?.Normal?.pathGrid;
-			if (deltas == null || pg == null)
+			byte[] kinds = st.kinds;
+			if (deltas == null || pg == null || kinds == null)
 			{
 				return;
 			}
+			CellIndices ci = map.cellIndices;
 			for (int i = 0; i < deltas.Count; i++)
 			{
-				if (deltas[i].InBounds(map) && pg.WalkableFast(deltas[i]))
+				if (!deltas[i].InBounds(map))
+				{
+					continue;
+				}
+				int idx = ci.CellToIndex(deltas[i]);
+				if (idx < kinds.Length && kinds[idx] == RM_WallReachMath.Wall && pg.WalkableFast(idx))
 				{
 					Interlocked.Exchange(ref st.forced, 1);
 					return;
