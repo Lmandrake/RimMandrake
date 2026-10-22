@@ -1,0 +1,1 @@
+Suspension-bridge anchors and jetties are plan-view parts that turn with the span: every shipped north/east is EXACTLY the south rotated 180/90 degrees (mean pixel diff 0.0). Derive their facings by rotation (bridge_redraw.py rotate_facings), never draw a 'rear view' - 18 drawn ones came back with the cable pointing the wrong way (2026-10-21).

@@ -1,0 +1,1 @@
+art.py enact cannot install a per-tier pick for a styled part whose tiers share one texPath (RM_SuspensionStyles: one picture per look): it reports the shared file's owner-kept keep as a CONFLICT for every tier. Give each picked tier its own <part>_<Tier> path, install there with --ruling <his ingested ruling id>, repoint the ThingStyleDef; hold those rows in enact (2026-10-21).
