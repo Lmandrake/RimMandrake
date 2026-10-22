@@ -57,7 +57,84 @@ namespace RimMandrake.FlowWorks
 		{
 			lordLips.Clear();
 			warned.Clear();
+			workEnds.Clear();
 			dryRun = false;
+		}
+
+		// CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (live 2026-10-22, 4 m ring): lip raiders sat in a vanilla Wait job for 9,000 ticks
+		// while ProofDecision said RM_RaiderFillTrench. A Wait no giver of ours or the duty's makes is vanilla's error-recover job
+		// (Pawn_JobTracker: "started 10 jobs in one tick" -> JobUtility.TryStartErrorRecoverJob -> Wait 150): a giver whose job
+		// ends the tick it starts is re-asked ten times. Every end of a trench-work job is counted here so ProofJobTrace says.
+		private static readonly Dictionary<int, (int tick, JobCondition cond, int toil, int n, int sameTick)> workEnds =
+			new Dictionary<int, (int, JobCondition, int, int, int)>();
+
+		internal static void NoteWorkEnd(Pawn p, Job job, JobCondition cond, int toil)
+		{
+			if (p == null)
+			{
+				return;
+			}
+			if (workEnds.Count > 256)
+			{
+				workEnds.Clear();
+			}
+			int now = Find.TickManager?.TicksGame ?? 0;
+			workEnds.TryGetValue(p.thingIDNumber, out (int tick, JobCondition cond, int toil, int n, int sameTick) e);
+			bool instant = job != null && job.startTick == now;
+			workEnds[p.thingIDNumber] = (now, cond, toil, e.n + 1, e.sameTick + (instant ? 1 : 0));
+		}
+
+		/// <summary>Bridge/debug read (jawa/static_call): the raider's duty, lord toil, current job and who gave it, how its
+		/// trench-work jobs ended, and -- for the job TryCross would give now -- the reach checks the job's first toil meets
+		/// (the pawn's own CanReach the giver used, vanilla StartPath's PAWNLESS CanReach answered for this walker, the immediate
+		/// touch the work toil fails on, and the reservation).</summary>
+		public static string ProofJobTrace(Pawn p)
+		{
+			if (p == null || !p.Spawned)
+			{
+				return "no pawn";
+			}
+			var sb = new System.Text.StringBuilder();
+			Job cur = p.CurJob;
+			sb.Append("duty=").Append(p.mindState?.duty?.def?.defName ?? "none")
+			  .Append(" toil=").Append(p.GetLord()?.CurLordToil?.GetType().Name ?? "none")
+			  .Append(" job=").Append(cur?.def?.defName ?? "none")
+			  .Append(" giver=").Append(cur?.jobGiver?.GetType().Name ?? "none")
+			  .Append(" started=").Append(cur?.startTick ?? -1)
+			  .Append(" exp=").Append(cur?.expiryInterval ?? -1)
+			  .Append(" enemy=").Append(p.mindState?.enemyTarget?.ToString() ?? "none");
+			if (workEnds.TryGetValue(p.thingIDNumber, out (int tick, JobCondition cond, int toil, int n, int sameTick) e))
+			{
+				sb.Append(" | workEnds n=").Append(e.n).Append(" sameTick=").Append(e.sameTick).Append(" last=").Append(e.cond)
+				  .Append("@toil").Append(e.toil).Append(" t=").Append(e.tick);
+			}
+			else
+			{
+				sb.Append(" | workEnds n=0");
+			}
+			Job j;
+			dryRun = true;
+			try
+			{
+				j = TryCross(p);
+			}
+			finally
+			{
+				dryRun = false;
+			}
+			sb.Append(" | next=").Append(j == null ? "None" : j.def.defName + " " + j.targetA);
+			if (j != null && j.targetA.IsValid && !j.targetA.HasThing)
+			{
+				IntVec3 c = j.targetA.Cell;
+				Map map = p.Map;
+				bool own = p.CanReach(c, PathEndMode.Touch, Danger.Deadly);
+				bool pather = RM_Patch_PathFollower_ReachWalker.As(p,
+					() => map.reachability.CanReach(p.Position, c, PathEndMode.Touch, TraverseParms.For(TraverseMode.PassDoors)));
+				bool immediate = p.CanReachImmediate(c, PathEndMode.Touch);
+				sb.Append(" reachOwn=").Append(own).Append(" reachPather=").Append(pather).Append(" immediate=").Append(immediate)
+				  .Append(" reserve=").Append(p.CanReserve(c));
+			}
+			return sb.ToString();
 		}
 
 		public static bool IsSiege(Pawn p)
@@ -649,6 +726,7 @@ namespace RimMandrake.FlowWorks
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
+			AddFinishAction(cond => RM_RaiderTrench.NoteWorkEnd(pawn, job, cond, CurToilIndex));
 			this.FailOn(() => !RM_RaiderTrench.On);
 			yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
 			Toil work = ToilMaker.MakeToil("RM_RaiderTrenchWork");

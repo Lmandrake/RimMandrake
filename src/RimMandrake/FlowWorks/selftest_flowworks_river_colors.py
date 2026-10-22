@@ -55,7 +55,7 @@ def main():
           not (set(k_other) & set(k_rc)) and len(k_rc) == len(set(k_rc)), sorted(set(k_other) & set(k_rc)))
     check("FlowWorks settings scribe the River colours section", "RiverColors.RM_RiverColorsSettings.ExposeData()" in fw)
     check("FlowWorks settings window draws the River colours section",
-          "RiverColors.RM_RiverColorsSettings.DoSettingsSection(list)" in fw)
+          "RiverColors.RM_RiverColorsSettings.DoSettingsSection)" in fw)
 
     fields = set(re.findall(r"public static (?:bool|Color) (\w+)\s*=", settings))
     check("sanity: field regex sees riverColorsEnabled", "riverColorsEnabled" in fields, sorted(fields))

@@ -182,7 +182,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 Assert(up.Contains("<li>mandrake.rm.flowworks</li>"), "can-fail: the Utinni patch is guarded on FlowWorks (the extension type)");
                 string mod = Src("RimMandrakeFlowWorksMod.cs");
-                Assert(mod.Contains("RM_WallClimbSettings.ExposeData();") && mod.Contains("RM_WallClimbSettings.DoSettingsSection(list);"), "settings scribed and drawn");
+                Assert(mod.Contains("RM_WallClimbSettings.ExposeData();") && mod.Contains("RM_WallClimbSettings.DoSettingsSection);"), "settings scribed and drawn");
                 string csproj = Src("RimMandrake_FlowWorks.csproj");
                 foreach (string f in new[] { "RM_WallClimbMath.cs", "RM_WallClimbSettings.cs", "RM_WallClimb.cs" })
                 {

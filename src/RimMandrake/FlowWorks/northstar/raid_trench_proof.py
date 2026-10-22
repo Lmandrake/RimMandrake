@@ -318,6 +318,15 @@ def _run(argv, hold):
     det["ticksWatched"] = t
     lords = B.call("jawa/lord_pawn_move", action="list") or {}
     det["lords"] = [dict(job=l.get("job"), faction=l.get("faction"), pawns=l.get("pawnCount")) for l in lords.get("lords") or []]
+    # CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (live 2026-10-22: lip raiders in Wait 9,000 ticks, ProofDecision = RM_RaiderFillTrench):
+    # per live raider at the end, its duty, lord toil, job and the giver that made it (none = vanilla's error-recover Wait),
+    # how its trench-work jobs ended (sameTick = ended the tick they started: the 10-jobs-a-tick loop), and the reach checks
+    # the next job's first toil meets. Read-only; an old DLL without the method reads its refusal, which is data.
+    if samples:
+        det["jobTrace"] = {r_["id"]: str((B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_RaiderTrench",
+                                                  method="ProofJobTrace", args=r_["id"], _answer=True) or {}).get("result")
+                                         or "no answer")[:600]
+                           for r_ in (samples[-1]["raiders"] if samples else []) if r_.get("spawned") and not r_.get("dead")}
     row("RAID_outcome", "MEASURED", dict(outcome=words, **det))
     cameNear = len(det["cameNear"])
     crossed = det["onIsland"] + det["inTrench"]

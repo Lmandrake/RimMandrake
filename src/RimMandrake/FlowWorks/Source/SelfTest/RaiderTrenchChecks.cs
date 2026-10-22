@@ -175,7 +175,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(r.Contains("ref " + f + ", \"" + f + "\""), "scribed setting " + f);
                 }
                 string mod = Src("RimMandrakeFlowWorksMod.cs");
-                Assert(mod.Contains("RM_RaiderTrenchSettings.ExposeData();") && mod.Contains("RM_RaiderTrenchSettings.DoSettingsSection(list);"),
+                Assert(mod.Contains("RM_RaiderTrenchSettings.ExposeData();") && mod.Contains("RM_RaiderTrenchSettings.DoSettingsSection);"),
                     "the settings are scribed and drawn");
             });
         }

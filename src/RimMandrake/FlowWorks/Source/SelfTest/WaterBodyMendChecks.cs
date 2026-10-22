@@ -657,7 +657,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				string mod = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
 				string game = RiverSwitchFlipChecks.Src("RM_WaterBodyMendGame.cs");
 				string flip = RiverSwitchFlipChecks.Src("RM_WaterBodyTypeFlipFix.cs");
-				Assert(mod.Contains("RM_WaterMendSettings.ExposeData();") && mod.Contains("RM_WaterMendSettings.DoSettingsSection(list);"), "settings saved and drawn");
+				Assert(mod.Contains("RM_WaterMendSettings.ExposeData();") && mod.Contains("RM_WaterMendSettings.DoSettingsSection);"), "settings saved and drawn");
 				foreach (string f in new[] { "waterBodyMendsEnabled", "fishRollOnGrowth", "fishReturnOnRefill", "fishingZoneReturnOnRefill", "waterBodySplitEnabled", "waterPlantGraceEnabled" })
 				{
 					Assert(game.Contains("public static bool " + f + " = true;"), f + " ships on");
