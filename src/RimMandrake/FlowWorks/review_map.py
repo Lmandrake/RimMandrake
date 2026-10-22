@@ -618,7 +618,10 @@ SETUPS = {
                         build=[("RM_LiquidPump", 3, 6, None, None), ("RM_LiquidTank", 8, 6, None, None),
                                ("RM_UniversalCargoTank", 12, 6, None, None), ("Battery", 4, 9, 0, None),
                                ("PowerConduit", 3, 7, None, None), ("PowerConduit", 3, 8, None, None),
-                               ("PowerConduit", 3, 9, None, None)],
+                               ("PowerConduit", 3, 9, None, None)]
+                        # the pipe the notice promises: pump (3,6) -> tank (8..9,6..7); without it TanksFor() is
+                        # empty and the pump reads "no tank" (a tank is reached only through a network)
+                        + [("RM_UniversalPipe", x, 6, None, None) for x in range(4, 8)],
                         charge=[(4, 9)],    # GSS_CORD_SILENCE_PHANTOM_SPARK: a battery is built empty; fill it
                         try_=["unpause: the pump draws the pond down into the tank"],
                         look="weak spot: the pond not going down; the tank's fill bar never moving"),
@@ -627,7 +630,8 @@ SETUPS = {
                       terrain=[("WaterDeep", 0, 5, 3, 4)],
                       build=[("RM_LiquidPump", 3, 6, None, None), ("RM_LiquidTank", 8, 6, None, None),
                              ("Battery", 4, 9, 0, None), ("PowerConduit", 3, 7, None, None),
-                             ("PowerConduit", 3, 8, None, None), ("PowerConduit", 3, 9, None, None)],
+                             ("PowerConduit", 3, 8, None, None), ("PowerConduit", 3, 9, None, None)]
+                      + [("RM_UniversalPipe", x, 6, None, None) for x in range(4, 8)],   # pump-to-tank pipe, as carry_tanks
                       tank=[(8, 6, "Store", "RM_Liquid_FreshWater", 16000)], pump=[(3, 6, "pour")], charge=[(4, 9)],
                       try_=["unpause: the tank empties back into the pond", "the pump's button flips Draw and Pour"],
                       look="weak spot: pouring with no power; water poured onto dry ground"),
