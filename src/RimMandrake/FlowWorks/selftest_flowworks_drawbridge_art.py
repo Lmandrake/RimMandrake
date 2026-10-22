@@ -5,8 +5,7 @@ DRAWBRIDGE_LOOKS_FIX_HIS_PICKS_OUTRANK, owner by card 2026-10-22 "Material picks
 facing files: winch _south/_east/_north, gate _south/_east (north reuses south). Also: every Drawbridge/ texPath a def
 names exists, and the laid raid plank's two pieces exist.
 
-The one known gap is listed in OWED (accepted on the 2026-10-20 sheet, never installed): a shut timber gate in the
-Scrapper look has no picture and draws the vanilla door. A newly missing picture, or an OWED one that appears, FAILS.
+Nothing is owed now: the shut Timber gate and the Scrapper shut gate were installed 2026-10-22 (owner card, drafts A-D). A newly missing picture FAILS.
 
 Pair honesty: the candidate formulas below are mirrored from the C#; each C# formula string is checked to be present.
 
@@ -31,7 +30,7 @@ MATS = ["Timber", "Steel"]
 VIEWS = ["Face", "Underside", "Edge"]
 
 # (part, material, look) that resolve to NO picture today; the stand-in draws. Owed art, not a code gap.
-OWED = {("GateClosed", "Timber", "Scrapper"), ("GateClosed", "Timber", None)}
+OWED: set = set()
 
 # the C# formulas this file mirrors (whitespace-collapsed source must contain each)
 CS_FORMULAS = [
