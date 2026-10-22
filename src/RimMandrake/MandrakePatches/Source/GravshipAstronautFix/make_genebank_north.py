@@ -85,7 +85,9 @@ def main():
         return 1
 
     os.makedirs(OUT_DIR, exist_ok=True)
-    _tw.save(north, OUT)
+    if not _tw.save(north, OUT):      # False = the art ledger refused/kept the existing file
+        print(f"NOT WRITTEN - art ledger refused {OUT}")
+        return 1
     print(f"OK -> {OUT}")
     return 0
 

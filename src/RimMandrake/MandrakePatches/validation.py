@@ -261,8 +261,8 @@ def effect_findings(ops, rows_by_type, active_names, installed_names):
                 bad.append("%s: %s is still in the dump after the Remove" % (tag, last))
             continue
         if o["cls"] in ("Add", "Replace") and o["rest"] in ("", "/" + (o["pairs"][0][0] if o["pairs"] else "")):
-            for tag, want in o["pairs"]:     # a top-level field set on the def itself: the dump's field must equal it
-                got = (row.get("fields") or {}).get(tag)
+            for fld, want in o["pairs"]:     # a top-level field set on the def itself: the dump's field must equal it
+                got = (row.get("fields") or {}).get(fld)
                 gl = str(got).lower() if isinstance(got, bool) else str(got)
                 same = gl == want.lower() if isinstance(got, bool) else gl == want
                 if not same:
@@ -271,7 +271,7 @@ def effect_findings(ops, rows_by_type, active_names, installed_names):
                     except (TypeError, ValueError):
                         pass
                 if not same:
-                    bad.append("%s: field %s is %r in the dump, the patch sets %r" % (tag_of(o), tag, got, want))
+                    bad.append("%s: field %s is %r in the dump, the patch sets %r" % (tag_of(o), fld, got, want))
         for v in o["values"]:
             if len(v) >= 2 and v not in leaves:
                 bad.append("%s: patched value %r is not in the dump" % (tag, v[:60]))

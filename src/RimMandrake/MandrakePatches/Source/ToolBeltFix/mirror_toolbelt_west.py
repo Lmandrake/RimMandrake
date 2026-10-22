@@ -71,7 +71,8 @@ if cov < 1.0:
 
 out = os.path.join(OUT, REL + "_west.png")
 os.makedirs(os.path.dirname(out), exist_ok=True)
-_tw.save(im.transpose(Image.FLIP_LEFT_RIGHT), out, "PNG", optimize=True)
+if not _tw.save(im.transpose(Image.FLIP_LEFT_RIGHT), out, "PNG", optimize=True):
+    print(f"  NOT WRITTEN  art ledger refused {out}"); sys.exit(1)
 chk = Image.open(out).convert("RGBA")
 print(f"  {os.path.basename(out):<20} {chk.width}x{chk.height}  "
       f"{os.path.getsize(out):>6} B  coverage={coverage(chk):5.2f}%  "
