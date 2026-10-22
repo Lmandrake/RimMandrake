@@ -251,3 +251,5 @@ Webwork: hyperweave clothing and armour, and the best tether, become Webwork-onl
 
 **Recommended: 1.** It is your north star's "it makes treasure" made literal, and the Mod Setting
 already lets a player turn the strip off.
+
+**ANSWERED 2026-10-22 by question card: option 2, sole source for buying, but rare traders resell it at a steep price.** (Asked after the spider siege gained a thrixweave yield.) Build not yet filed.
