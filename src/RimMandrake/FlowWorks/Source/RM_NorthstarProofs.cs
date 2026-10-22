@@ -230,12 +230,6 @@ namespace RimMandrake.FlowWorks
 				+ " factor=" + RimMandrakeFlowWorksSettings.pitSlowClimbFactor.ToString("0.##") + " cost=" + cost;
 		}
 
-		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP (northstar/deep_lake_proof.py). ';'-separated, current map:
-		/// "paint;x;z;w;h;rim" paints a rectangular lake (WaterShallow within <c>rim</c> squares of its edge, WaterDeep inside) —
-		/// writes terrain only; "form;x,z" forms (or finds) the body at a square; "stock;x,z;fraction" sets that body's stock to
-		/// fraction × capacity (a stand-in for pumps: the conservation of real pumping is the offline selftests'), then runs its
-		/// recession and restore to rest (RM_LiquidStock.SettleRecession); "shape;x,z" reads. BODY/SHAPE lines are
-		/// "key=value" tokens; REFUSED: reason otherwise.</summary>
 		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES, owner R9 (2026-10-17: every square of connected still water stands
 		/// at the same surface height, to within 1 cm, read from game state, not the picture): the per-body surface-gap read
 		/// northstar/level_surface_bar.py makes. <paramref name="arg"/> = "x,z,w,h" (a rect of the current map) or "-" (the whole
@@ -333,6 +327,12 @@ namespace RimMandrake.FlowWorks
 				+ " of " + body.capacity.ToString("F2", inv);
 		}
 
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP (northstar/deep_lake_proof.py). ';'-separated, current map:
+		/// "paint;x;z;w;h;rim" paints a rectangular lake (WaterShallow within <c>rim</c> squares of its edge, WaterDeep inside) —
+		/// writes terrain only; "form;x,z" forms (or finds) the body at a square; "stock;x,z;fraction" sets that body's stock to
+		/// fraction × capacity (a stand-in for pumps: the conservation of real pumping is the offline selftests'), then runs its
+		/// recession and restore to rest (RM_LiquidStock.SettleRecession); "shape;x,z" reads. BODY/SHAPE lines are
+		/// "key=value" tokens; REFUSED: reason otherwise.</summary>
 		public static string ProofDeepLake(string arg)
 		{
 			Map map = Find.CurrentMap;
