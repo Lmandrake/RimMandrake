@@ -243,8 +243,8 @@ namespace RimMandrake.FlowWorks.MapControls
 			return new Command_Action
 			{
 				defaultLabel = "Rate...",
-				defaultDesc = verb + " rate, in levels per flow pulse (a level is one fill step of a dug square; the flow "
-					+ "engine pulses every " + pulse + " ticks). Now: " + now + ".",
+				defaultDesc = verb + " rate, in half-metre steps per flow pulse (the flow "
+					+ "pulses every " + (pulse / 60f).ToString("0.#") + " s). Now: " + now + ".",
 				icon = def.uiIcon,
 				action = () =>
 				{

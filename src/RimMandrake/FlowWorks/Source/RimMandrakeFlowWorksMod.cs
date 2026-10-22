@@ -925,7 +925,7 @@ namespace RimMandrake.FlowWorks
             {
 
             list.CheckboxLabeled("Show liquid depth and litres under the mouse", ref mouseoverDepthEnabled,
-                "The cell readout in the bottom-left corner adds the liquid standing in the square: how deep it is in metres "
+                "The readout in the bottom-left corner adds the liquid standing in the square: how deep it is in metres "
               + "(a level is half a metre) and how many litres it holds (a level is 1,000 litres, a deep square 4,000). Dug "
               + "channels and pits show their depth and the water in them; ponds and lakes show their floor and the water standing "
               + "over it; seas and rivers at the map edge say they never run dry. Off: "
@@ -971,16 +971,16 @@ namespace RimMandrake.FlowWorks
             if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled", "digRockGroundEnabled", "digRockWorkMultiplier", "digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent" }))
             {
             list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
-                "Each time a cell is cut a level deeper there is a small chance of a lump of something the land holds, "
-              + "thrown up onto the bank. Deep and superdeep cuts can reach what a deep drill would find under that cell. "
-              + "Where the land holds nothing, you get chunks of the local rock. Filling a cell in and digging it again "
+                "Each time a square is cut a level deeper there is a small chance of a lump of something the land holds, "
+              + "thrown up onto the bank. Cuts 2 m deep or more can reach what a deep drill would find under that square. "
+              + "Where the land holds nothing, you get chunks of the local rock. Filling a square in and digging it again "
               + "pays nothing twice. Off: digging only digs.");
             using (Dependent(list, "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled"))
             {
                 list.CheckboxLabeled("Finds come only from this map's own rock", ref digFindsLocalOnly,
-                    "On: a find is one of the ores actually in this map's rock (or under the cell, for a deep cut). "
+                    "On: a find is one of the ores actually in this map's rock (or under the square, for a deep cut). "
                   + "Off: any ore the game knows can turn up. Components and plasteel never come out of a hole either way.");
-                list.Label("Find chance: x" + digFindChanceMultiplier.ToString("F2") + "  (1x = 1.5% per cut; first-guess number)");
+                list.Label("Find chance: x" + digFindChanceMultiplier.ToString("F2") + "  (1x = 1.5% per cut)");
                 digFindChanceMultiplier = list.Slider(digFindChanceMultiplier, 0f, 10f);
                 list.Label("Loose-find ceiling: " + digFindBudgetPercent.ToString("F1") + "% of the ore in this map's rock");
                 digFindBudgetPercent = list.Slider(digFindBudgetPercent, 0f, 50f);
@@ -992,10 +992,10 @@ namespace RimMandrake.FlowWorks
 
             list.CheckboxLabeled("Canals can be dug through rock ground", ref digRockGroundEnabled,
                 "On: bare stone floor (rough, rough-hewn or smoothed natural rock) can be marked to dig, and is much slower work "
-              + "than soft ground. Off: only soil can be dug, as before.");
+              + "than soft ground. Off: only soil can be dug.");
             using (Dependent(list, "digRockWorkMultiplier"))
             {
-                list.Label("Rock digging takes x" + digRockWorkMultiplier.ToString("F1") + " the work of soft ground  (a rock wall mines in ~700 ticks; a soil cut is 3200)");
+                list.Label("Rock digging takes x" + digRockWorkMultiplier.ToString("F1") + " the work of soft ground  (for scale: mining a standing rock wall is about a fifth of the work of one soil cut)");
                 digRockWorkMultiplier = list.Slider(digRockWorkMultiplier, 1f, 10f);
             }
             list.CheckboxLabeled("Digging can turn up rock chunks", ref digRockChunksEnabled,
@@ -1017,13 +1017,13 @@ namespace RimMandrake.FlowWorks
             if (Section(list, "Water engine: flow and levelling", new[] { "depthEngineEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelExactEnabled", "levelSetEnabled", "disabledFluids" }))
             {
             list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
-                "The depth/fill engine: liquid pours into the deepest excavated cells first "
-              + "and overflows from a full cell into any neighbour with room. Off: nothing "
+                "The depth/fill engine: liquid pours into the deepest excavated squares first "
+              + "and overflows from a full square into any neighbour with room. Off: nothing "
               + "pours and a dug channel is inert earthworks. Digging still works, and a "
               + "channel still costs what it costs to cross.");
 
             list.Gap();
-            list.Label("Flow pulse: every " + PulseIntervalTicks + " ticks");
+            list.Label("Flow pulse: every " + (PulseIntervalTicks / 60f).ToString("0.#") + " s of game time");
             pulseIntervalTicks = list.Slider(pulseIntervalTicks, 60f, 2500f);
             list.Label("How often liquid levels itself out. There is no per-tick fluid "
                      + "simulation here and there will not be one — flow happens on this "
@@ -1033,13 +1033,13 @@ namespace RimMandrake.FlowWorks
             list.Gap();
             using (Dependent(list, "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled"))
             {
-                list.Label("Flow per pulse: " + RM_Volume.FormatMetres(FlowPerPulse) + " of water per cell");
+                list.Label("Flow per pulse: " + RM_Volume.FormatMetres(FlowPerPulse) + " of water per square");
                 flowPerPulse = list.Slider(flowPerPulse, 1f, 4f);
-                list.Label("How much depth of water one cell can take in from its neighbours each "
+                list.Label("How much depth of water one square can take in from its neighbours each "
                          + "pulse. Low reads as thick and slow; high reads as water.");
 
                 list.Gap();
-                list.Label("Largest network worked as one piece: " + MaxNetworkCells + " cells");
+                list.Label("Largest network worked as one piece: " + MaxNetworkCells + " squares");
                 maxNetworkCells = list.Slider(maxNetworkCells, 1000f, 50000f);
                 list.Label("A connected canal network bigger than this is worked in pieces of this size each "
                          + "pulse. Higher costs more work in one pulse on a very large network; it changes "
@@ -1057,7 +1057,7 @@ namespace RimMandrake.FlowWorks
                      + "same water away at its own rate, so a deeper channel burns longer.");
             list.GapLine();
             list.Label("Sources are terrain, not buildings: a natural liquid body is itself "
-                     + "the source — a superdeep cell that is already full, which is why it "
+                     + "the source — a deep square that is already full, which is why it "
                      + "spills into any shallower channel dug at its edge. There is nothing "
                      + "to place and nothing to tune.");
 
@@ -1082,13 +1082,13 @@ namespace RimMandrake.FlowWorks
               + "one dug beside it. Off: every liquid flows at water's pace.");
             using (Dependent(list, "thickCreepEnabled"))
             {
-                list.CheckboxLabeled("Thick liquids creep one cell at a time", ref thickCreepEnabled,
-                    "Needs 'Thick liquids flow slower'. On: tar, slime, oil and blood advance one cell each time they move, "
+                list.CheckboxLabeled("Thick liquids creep one square at a time", ref thickCreepEnabled,
+                    "Needs 'Thick liquids flow slower'. On: tar, slime, oil and blood advance one square each time they move, "
                   + "so a long channel fills at its stated speed instead of all at once on one pulse. Water is not "
-                  + "affected. Off: a thick liquid that reaches a cell can pass on to the next in the same pulse.");
+                  + "affected. Off: a thick liquid that reaches a square can pass on to the next in the same pulse.");
             }
             list.CheckboxLabeled("Water fills a channel from the mouth outward", ref waterFrontCreepEnabled,
-                "On: water advances one cell each pulse, so a dug channel wets from the end nearest the water and the wet "
+                "On: water advances one square each pulse, so a dug channel wets from the end nearest the water and the wet "
               + "front visibly travels along it like a flood. Off: a level can be passed the whole run in one pulse, "
               + "which fills a dead-end channel from its far end first.");
             list.CheckboxLabeled("Water levels out by its surface", ref levelBySurfaceEnabled,
@@ -1115,21 +1115,19 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             if (Section(list, "Corrosive and flammable liquids (lightly tested)", new[] { "liquidCorrosionEnabled", "liquidIgnitionEnabled" }))
             {
-            list.Label("These came in with the liquid-types merge and have never run inside a "
-                     + "live game. They ship on (owner decision 2026-10-15), but they have not had long play, not "
-                     + "because they are broken. Turn one off if it misbehaves, and "
-                     + "expect it to be rough.");
+            list.Label("These two have had little play in a live game. They are on by default; turn one off if it "
+                     + "misbehaves, and expect it to be rough.");
 
             list.CheckboxLabeled("Liquid corrosion", ref liquidCorrosionEnabled,
                 "Standing in an acidic or caustic liquid damages a pawn and eats the apparel "
-              + "it is wearing, per that liquid's registry row. UNTESTED in a running game: "
+              + "it is wearing, as strongly as that liquid is acidic or caustic. Lightly tested: "
               + "it can destroy worn gear, and it acts on colonists exactly as it acts on "
               + "raiders. Off: the rule is inert and liquids are just terrain.");
 
             list.CheckboxLabeled("Liquid ignition", ref liquidIgnitionEnabled,
                 "A flammable liquid catches fire when something hot or electrical touches it — "
-              + "never spontaneously. UNTESTED in a running game, and it is a prototype rather "
-              + "than the finished burn model FlowWorks owes. Off: flammable liquids sit there.");
+              + "never spontaneously. Lightly tested, and simpler than the rules under Burning liquid. "
+              + "Off: flammable liquids sit there.");
 
             // ══════════════════════════════════════════════════════════════
             // PHASE 4 SECTION — kept whole and kept last, see the field block.
@@ -1142,17 +1140,16 @@ namespace RimMandrake.FlowWorks
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
                      + "Everything here is on by default; turn it all off and sources are "
-                     + "bottomless, nothing recedes and nothing drains, which is how the mod "
-                     + "behaved before this.");
+                     + "bottomless, nothing recedes and nothing drains.");
 
             list.CheckboxLabeled("Fill in channels", ref fillInEnabled,
                 "Adds the 'fill in canal' order — the opposite of digging. Each application "
-              + "raises a cell half a metre; taking it all the way back to the surface restores "
+              + "raises a square half a metre; taking it all the way back to the surface restores "
               + "the terrain that was there before you dug. Off: the order refuses and the "
               + "tool is inert.");
 
             list.CheckboxLabeled("Filling in displaces liquid", ref fillInDisplacementEnabled,
-                "Liquid pushed out of a cell you are filling flows into the rest of the "
+                "Liquid pushed out of a square you are filling flows into the rest of the "
               + "channel and back into the body it came from, so the rest of the canal gets "
               + "deeper. Only what finds no room anywhere is lost, and you are told when that "
               + "happens. Off: displaced liquid is simply lost — still reported, never silent.");
@@ -1176,35 +1173,35 @@ namespace RimMandrake.FlowWorks
               + "below (touch the map edge and be big enough).");
 
             list.Gap();
-            list.Label("Smallest limitless body: " + MinLimitlessBodyCells + " cells");
+            list.Label("Smallest limitless body: " + MinLimitlessBodyCells + " squares");
             minLimitlessBodyCells = list.Slider(minLimitlessBodyCells, 1f, 400f);
             list.Label("A body must touch the map edge AND be at least this big to count as "
                      + "limitless. Raise it to make even edge-clipping ponds exhaustible.");
 
             list.CheckboxLabeled("Bodies recede when drawn down", ref recessionEnabled,
-                "A limited body that has been spent gives up cells from its outer edge inward, "
-              + "so you can see it shrinking. The original terrain of every cell it gives up is "
+                "A limited body that has been spent gives up squares from its outer edge inward, "
+              + "so you can see it shrinking. The original terrain of every square it gives up is "
               + "recorded and handed back when the water returns — a receding pond never "
               + "permanently changes your map. Off: the stock runs down invisibly.");
 
-            list.CheckboxLabeled("A body keeps its last cell", ref recedeKeepsLastCell,
-                "While a receding body still holds any liquid at all, its last cell stays wet, so "
+            list.CheckboxLabeled("A body keeps its last square", ref recedeKeepsLastCell,
+                "While a receding body still holds any liquid at all, its last square stays wet, so "
               + "the final dregs can still be drawn instead of sitting invisible until it refills. "
-              + "Off: a body gives up a cell whenever it cannot pay for it in full, down to nothing.");
+              + "Off: a body gives up a square whenever it cannot pay for it in full, down to nothing.");
 
-            list.CheckboxLabeled("A body keeps the cells that feed a channel", ref recedeSparesOutflow,
-                "A receding body gives up the cells touching a dug channel, pump cut or pit last, so a "
+            list.CheckboxLabeled("A body keeps the squares that feed a channel", ref recedeSparesOutflow,
+                "A receding body gives up the squares touching a dug channel, pump cut or pit last, so a "
               + "canal dug off a pond keeps draining it instead of being cut off with most of the "
-              + "water stranded behind the dried inlet. Off: the inlet recedes like any other edge cell.");
+              + "water stranded behind the dried inlet. Off: the inlet recedes like any other edge square.");
 
             list.CheckboxLabeled("Bodies refill", ref refillEnabled,
                 "Seepage, rain and the season slowly put liquid back into a limited body, and "
-              + "its cells come back in the order it gave them up. A very small seep takes "
+              + "its squares come back in the order it gave them up. A very small seep takes "
               + "multiple seasons. Off: what you spend is gone for good.");
 
             list.CheckboxLabeled("Pumps and outflows can refill natural ponds", ref pondReturnLegEnabled,
                 "A pump pouring, or a hose outflow end, next to a pond or its dried bed puts the water back into that "
-              + "pond, half a metre at a time and never past what it held at the start. Off: only dug cells take "
+              + "pond, half a metre at a time and never past what it held at the start. Off: only dug squares take "
               + "poured water; an outflow over a dried bed spills.");
             list.CheckboxLabeled("Returning water waits for people and buildings", ref refillWaitsForOccupants,
                 "A dried pond square does not refill while a pawn stands on it or something is built on it; items "
@@ -1223,7 +1220,7 @@ namespace RimMandrake.FlowWorks
             list.CheckboxLabeled("Lakes have their own floors (affects map generation)", ref deepBedsEnabled,
                 "Each natural lake gets its own floor when the map is made, by the land around it: on plains most lakes are "
               + "shallow and silted, in hills deeper, in mountains deep and chasm-like, with shelves, trenches and holes down "
-              + "there, never a plain crater. A full lake looks exactly as before; the floor shows as it is drawn down, and it "
+              + "there, never a plain crater. A full lake looks the same as ever; the floor shows as it is drawn down, and it "
               + "holds that much water. Applies to lakes the map finds from now on; a lake already found keeps its floor. Off: "
               + "shallow water is 1 m, deep water 2 m.");
             using (Dependent(list, "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres"))
@@ -1247,7 +1244,7 @@ namespace RimMandrake.FlowWorks
                 "A drawn-down pond keeps one flat surface and gets shallower all over: deep water, then chest-deep, then "
               + "shallow, then a thin sheet with the bed showing, then mud by the water's edge, and only after the mud time "
               + "cracked lakebed. Refilling raises the surface everywhere at once. Off: each pond square is full or dry, and "
-              + "a pond shrinks from its edges, as before. Takes effect next pulse (ponds already touched are re-laid once).");
+              + "a pond shrinks from its edges. Takes effect next pulse (ponds already touched are re-laid once).");
             using (Dependent(list, "pondMudDays", "pondStageWritesPerPulse"))
             {
                 list.Label("Mud time: " + pondMudDays.ToString("F1") + " day(s) before an exposed pond square cracks");
@@ -1261,7 +1258,7 @@ namespace RimMandrake.FlowWorks
                 "Water sloshes until it levels, pond or canal: a pond feeds a ditch only while its surface stands above the "
               + "ditch's water, so a shallow ditch stops drawing once the pond has dropped below its floor (dig deeper to keep "
               + "drawing), and a canal standing above a pond's surface runs back into it. Off: a pond feeds any ditch until "
-              + "it is empty, as before.");
+              + "it is empty.");
 
             list.Label("Largest drainable lake (affects map generation): " + DrainableLakeMaxCells + " squares");
             drainableLakeMaxCells = list.Slider(drainableLakeMaxCells, RM_BedMath.OceanWalkCells, 62500f);
@@ -1274,12 +1271,12 @@ namespace RimMandrake.FlowWorks
             {
                 list.Label("Refill speed: " + refillRateMultiplier.ToString("F2") + "x");
                 refillRateMultiplier = list.Slider(refillRateMultiplier, 0.1f, 5f);
-                list.Label("Slow and certain is the intent, not random. At 1x a one-cell seep needs "
+                list.Label("Slow and certain is the intent, not random. At 1x a one-square seep needs "
                          + "the better part of a year to refill what it can support.");
             }
 
             list.CheckboxLabeled("Rain fills open excavations", ref rainFillsExcavationsEnabled,
-                "Rain falls into any excavated cell that is NOT roofed. Roof a pit and it stays "
+                "Rain falls into any excavated square that is NOT roofed. Roof a pit and it stays "
               + "dry in a downpour — that is the point, and it makes roofing a real decision. "
               + "Off: weather never touches a channel.");
 
@@ -1294,13 +1291,13 @@ namespace RimMandrake.FlowWorks
 
             list.CheckboxLabeled("Repair dig data on load", ref excavationLoadRepairEnabled,
                 "When a map loads, depth is held to 0-20 m, liquid never exceeds depth, and liquids "
-              + "no cell uses are dropped from the map's list (one log line says what changed). "
+              + "no square uses are dropped from the map's list (one log line says what changed). "
               + "Takes effect the next time a map loads. Off: saves load exactly as stored.");
 
             list.CheckboxLabeled("Old channels fill back to nearby ground", ref legacyFillFallbackEnabled,
                 "A channel dug before FlowWorks recorded what was under it has nothing to restore when "
               + "you fill it in. It gets the commonest ground around it (soil if there is none) instead "
-              + "of staying an empty trench. Off: such a cell keeps the trench terrain.");
+              + "of staying an empty trench. Off: such a square keeps the trench terrain.");
 
             list.CheckboxLabeled("Spilled liquid fills channels properly", ref legacyFloodViaEngineEnabled,
                 "A spill or release that runs into a dug channel fills it the same way a pump does, so the "
@@ -1332,13 +1329,13 @@ namespace RimMandrake.FlowWorks
               + "50 C (hot) or 0 C (icy). Takes effect within a few seconds. Off: liquid never changes the air.");
             using (Dependent(list, "liquidHeatStrength"))
             {
-                list.Label("Heat strength: x" + liquidHeatStrength.ToString("F2") + " (PROVISIONAL; applies now)");
+                list.Label("Heat strength: x" + liquidHeatStrength.ToString("F2") + " (applies now)");
                 liquidHeatStrength = list.Slider(liquidHeatStrength, 0.25f, 3f);
             }
             list.CheckboxLabeled("Water changing type keeps the game's water-body counts right", ref waterBodyTypeFlipFixEnabled,
-                "A fix for a base-game bug. When a water cell turns into a different kind of water (fresh to salt, or "
+                "A fix for a base-game bug. When a water square turns into a different kind of water (fresh to salt, or "
               + "water to one of our liquids), the game keeps counting it in its old pond. Filling in the rest of that "
-              + "pond later throws an error and the ground is not changed. On: the cell leaves its old pond first. "
+              + "pond later throws an error and the ground is not changed. On: the square leaves its old pond first. "
               + "Off: the base game's behaviour. Takes effect at once.");
 
             // ── PHASE 6: fire ───────────────────────────────────────────────
@@ -1362,21 +1359,21 @@ namespace RimMandrake.FlowWorks
                   + "can burn indefinitely, and a limitless source burns forever.");
                 list.Label("Fire front speed: x" + fireFrontSpeedMultiplier.ToString("F2"));
                 fireFrontSpeedMultiplier = list.Slider(fireFrontSpeedMultiplier, 0.25f, 4f);
-                list.Label("How far fire walks into a pond from where it enters: " + SourceFireReach + " cell(s)");
+                list.Label("How far fire walks into a pond from where it enters: " + SourceFireReach + " square(s)");
                 sourceFireReach = list.Slider(sourceFireReach, 0f, 30f);
                 list.CheckboxLabeled("Explosions light burnable liquid", ref explosionIgnitesLiquidEnabled,
-                    "A flame or bomb blast lights tar, oil and the like in every cell it reaches, even where no fire "
+                    "A flame or bomb blast lights tar, oil and the like in every square it reaches, even where no fire "
                   + "is left burning. Off: only an actual fire lights liquid.");
                 list.CheckboxLabeled("Firefoam smothers burning liquid", ref foamSmothersLiquidFireEnabled,
-                    "Firefoam on a burning cell puts it out, and the cell cannot relight while the foam lies there. "
+                    "Firefoam on a burning square puts it out, and the square cannot relight while the foam lies there. "
                   + "Off: foam does nothing to burning liquid.");
                 list.CheckboxLabeled("Rain slowly douses burning liquid", ref rainDousesLiquidFireEnabled,
-                    "Rain on an open burning cell has a small chance to put it out every second; a downpour clears an "
-                  + "open channel in about half an hour, though a cell still burning beside it can relight it. "
-                  + "Roofed cells are untouched. Off: rain does nothing to burning liquid.");
+                    "Rain on an open burning square has a small chance to put it out every second; a downpour clears an "
+                  + "open channel in about half an hour, though a square still burning beside it can relight it. "
+                  + "Roofed squares are untouched. Off: rain does nothing to burning liquid.");
                 list.CheckboxLabeled("Chemfuel and propane burn like gasoline", ref chemfuelInfernoEnabled,
                     "Lit chemfuel or liquid propane in a channel goes up like a moat of gasoline: the fire races along it in seconds, the "
-                  + "flames stand tall, the heat is fierce, anything that can burn within a few cells of it catches, and "
+                  + "flames stand tall, the heat is fierce, anything that can burn within a few squares of it catches, and "
                   + "the fuel burns away within a minute. The sliders below set both. Off: both creep and smoulder for days like oil.");
                 using (Dependent(list, "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate"))
                 {
@@ -1384,12 +1381,12 @@ namespace RimMandrake.FlowWorks
                     chemfuelIntensity = list.Slider(chemfuelIntensity, 0.25f, 3f);
                     list.Label("Chemfuel and propane fire spread speed: x" + chemfuelSpreadSpeed.ToString("F2"));
                     chemfuelSpreadSpeed = list.Slider(chemfuelSpreadSpeed, 0.25f, 4f);
-                    list.Label("Chemfuel and propane burn-down: a fill level every " + (RM_FuelFireMath.InfernoTicksPerLevelAt(chemfuelBurnRate) / 60f).ToString("F1") + " s");
+                    list.Label("Chemfuel and propane burn-down: half a metre every " + (RM_FuelFireMath.InfernoTicksPerLevelAt(chemfuelBurnRate) / 60f).ToString("F1") + " s");
                     chemfuelBurnRate = list.Slider(chemfuelBurnRate, 0.25f, 4f);
                 }
                 list.CheckboxLabeled("Astrofuel detonates", ref astrofuelDetonationEnabled,
                     "Lighting astrofuel anywhere sets off the whole connected body at once: a rippling chain of explosions "
-                  + "runs through every cell in a second or two, throwing back and staggering whoever is near, with a "
+                  + "runs through every square in a second or two, throwing back and staggering whoever is near, with a "
                   + "wave of heat, and every drop of it is gone. Off: astrofuel burns like chemfuel instead.");
                 using (Dependent(list, "astrofuelBlastScale"))
                 {
@@ -1417,18 +1414,17 @@ namespace RimMandrake.FlowWorks
               + "a deep hole is only a very slow way across.");
 
             list.CheckboxLabeled("Your own pit takes your own people", ref superdeepCapturesOwnFaction,
-                "Off (the default), a superdeep cell ignores your own colonists unless they jump in, "
-              + "otherwise nobody could ever get down there to build the ladder. On, the ground does "
-              + "not care whose side you are on.");
+                "Off (the default), a pit never holds your own colonists unless they jump in, so they can "
+              + "climb down to work and back out. On, a pit holds anyone, whatever side they are on.");
 
             list.CheckboxLabeled("Red alert: a colonist stuck in a pit", ref pitStuckAlertEnabled,
                 "On (the default), a red alert names any of your colonists held down a pit who cannot reach food or a bed. "
               + "Off: no alert; they may starve quietly.");
 
             list.CheckboxLabeled("A ladder is needed to get out", ref ladderRequiredToExitEnabled,
-                "On, a pit holds whoever is in it until a ladder stands in their cell: pull the "
-              + "ladder and they are stranded. Off: a pit still costs the fall, but anyone can walk "
-              + "back out.");
+                "On, nobody climbs out of a pit deeper than they can climb without a way out: a lowered ladder "
+              + "on its wall, a ramp, a portable ladder, climbing gear or a jump. Raise the ladder and they are "
+              + "stranded. Off: a pit still costs the fall, but anyone can walk back out.");
 
             list.CheckboxLabeled("A ladder works like a prison door", ref ladderPrisonDoorEnabled,
                 "On, a lowered ladder lets your people and friendly visitors climb out but not trapped "
@@ -1442,8 +1438,8 @@ namespace RimMandrake.FlowWorks
 
             list.Label("How wide a pit must be to hold a creature (body size multiplier): "
                      + pitWidthBodySizeMultiplier.ToString("F2"), tooltip:
-                "A creature is held only if a square of superdeep cells as wide as it is contains its "
-              + "cell. Width = round(square root of body size x this). At 1.00 a one-cell pit holds "
+                "A creature is held only if a patch of pit as wide as it is contains its "
+              + "square. Width = round(square root of body size x this). At 1.00 a one-square pit holds "
               + "anything under body size 2.25 (a human), a 2x2 pit anything under 6.25, a 3x3 pit "
               + "anything under 12.25. A creature too big for its pit walks out.");
             pitWidthBodySizeMultiplier = list.Slider(pitWidthBodySizeMultiplier, 0.25f, 4f);
@@ -1452,7 +1448,7 @@ namespace RimMandrake.FlowWorks
                 "On, what traps a creature is the height of the step it must climb, compared with each square's north, "
               + "south, east and west neighbours: a slope it can climb a step at a time never traps it, however deep it "
               + "goes, so a drained pond is walked out of. How tall a step a creature climbs depends on its size: "
-              + RM_PocketGrid.BandText() + " Off: the old rule, any superdeep square holds whoever the pit captures.");
+              + RM_PocketGrid.BandText() + " Off: any square 2 m or deeper holds whoever falls in, whatever the slope.");
             list.Label("Climb ability (scales creature height): " + pitClimbAbilityMultiplier.ToString("F2"), tooltip:
                 "1.00 = the table above. Higher, every creature climbs as if it were taller; lower, shorter.");
             pitClimbAbilityMultiplier = list.Slider(pitClimbAbilityMultiplier, 0.5f, 2f);
@@ -1501,7 +1497,7 @@ namespace RimMandrake.FlowWorks
                 "On (default), the game's \"can I get there?\" check judges walls, doors, fences, deep water and pit cliffs on ONE "
               + "map, kept for each kind of walker (opens your doors or not, kept out by fences or not, swims or not), so a pawn is "
               + "never offered a job it can only reach by a route that a wall closes at one end and a cliff at the other (the "
-              + "job-loop bug). It rebuilds at most once a second when walls or digging change. Off: the old check, walls and "
+              + "pawn would retry it forever). It rebuilds at most once a second when walls or digging change. Off: walls and "
               + "cliffs judged separately; a wall and a trench that together cut the way can leave pawns retrying a job forever.");
             list.CheckboxLabeled("Rescues queue a ladder", ref pitRescueLadderEnabled,
                 "On, when one of your colonists is down in a pit (downed, or stuck) and nobody can climb down to them and back out, "
@@ -1511,8 +1507,8 @@ namespace RimMandrake.FlowWorks
 
             list.CheckboxLabeled("Walking along a pit floor is normal speed", ref pitWalkNormalEnabled,
                 "Only climbing into or out of a cut is slow (the deeper, the slower; a ladder too); walking around "
-              + "inside one, at one depth, is ordinary walking, and dropping into a superdeep pit is instant. "
-              + "Off: every step on dug ground costs its depth, as before.");
+              + "inside one, at one depth, is ordinary walking, and dropping into a deep pit is instant. "
+              + "Off: every step on dug ground costs its depth.");
             }
 
             list.GapLine();
@@ -1528,14 +1524,14 @@ namespace RimMandrake.FlowWorks
                 fallDamageMultiplier = list.Slider(fallDamageMultiplier, 0f, 3f);
                 list.Label("Each metre past 2 m adds " + fallDamagePerMetrePast2.ToStringPercent() + " of the 2 m fall (7 m: x"
                     + RM_RelativeRulesMath.FallScale(7f, fallDamagePerMetrePast2, fallDamageCap).ToString("0.##") + ")", tooltip:
-                    "How much worse a fall gets for every metre past 2 m. Shipped: 50%. 0 = every fall from 2 m down hurts alike.");
+                    "How much worse a fall gets for every metre past 2 m. Default: 50%. 0 = every fall from 2 m down hurts alike.");
                 fallDamagePerMetrePast2 = Mathf.Round(list.Slider(fallDamagePerMetrePast2, 0f, 1.5f) * 20f) / 20f;
                 list.Label("Worst fall: x" + fallDamageCap.ToString("0.#") + " the 2 m fall", tooltip:
-                    "No fall hurts more than this many 2 m falls, however deep. Shipped: 4 (reached at 8 m).");
+                    "No fall hurts more than this many 2 m falls, however deep. Default: 4 (reached at 8 m).");
                 fallDamageCap = Mathf.Round(list.Slider(fallDamageCap, 1f, 10f) * 2f) / 2f;
                 list.CheckboxLabeled("A deep fall can kill", ref fallDeathEnabled,
                     "On (shipped), a fall deeper than the first figure below may kill outright, more likely the deeper it is, "
-                  + "and certain at the second. PROVISIONAL numbers. Off: falls only wound.");
+                  + "and certain at the second. Off: falls only wound.");
                 using (Dependent(list, "fallDeathFromMetres", "fallDeathCertainMetres"))
                 {
                     list.Label("Falls can kill from " + fallDeathFromMetres.ToString("0.#") + " m; certain at "
@@ -1556,7 +1552,7 @@ namespace RimMandrake.FlowWorks
                 spikeDamageMultiplier = list.Slider(spikeDamageMultiplier, 0f, 3f);
                 list.Label("Spikes need a sheer drop of " + spikeMinDropMetres.ToString("0.0") + " m to a neighbour", tooltip:
                     "Spikes may stand only where some neighbouring square is at least this much higher, at any depth: the "
-                  + "floor of a 2 m pit, or a 7 m core under a 4 m ledge. Never on a gentle slope. Shipped: 2 m.");
+                  + "floor of a 2 m pit, or a 7 m core under a 4 m ledge. Never on a gentle slope. Default: 2 m.");
                 spikeMinDropMetres = Mathf.Round(list.Slider(spikeMinDropMetres, 0.5f, 5f) * 2f) / 2f;
             }
 
@@ -1597,11 +1593,11 @@ namespace RimMandrake.FlowWorks
             list.CheckboxLabeled("Wardens and doctors work from the lip", ref wardenFromLipEnabled,
                 "Recruiting, converting, enslaving, wearing down, interrogating, tending and bringing food to "
               + "someone in a pit is done from the edge: food is dropped down onto its spot, talk happens "
-              + "within speaking distance, tending from a cell touching them. Only if no edge cell will do "
+              + "within speaking distance, tending from a square touching them. Only if no edge square will do "
               + "does the colonist climb down as usual. Off: they always climb down.");
 
             list.CheckboxLabeled("Sluice gates and grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,
-                "A pawn held in a superdeep pit cannot open a sluice gate or a security grate, even one it "
+                "A pawn held down in a pit cannot open a sluice gate or a security grate, even one it "
               + "could open from outside. Off: they open like ordinary doors for anyone allowed through.");
             list.CheckboxLabeled("A sluice gate only holds small creatures", ref sluiceLetsBigThroughEnabled,
                 "A sluice gate is a cheap canal door: people (prisoners and raiders included) and any creature too big "
@@ -1629,17 +1625,17 @@ namespace RimMandrake.FlowWorks
             list.Label("Head goes under, standing: water over " + pitDrowningHeadFraction.ToStringPercent() + " of the creature's height ("
                 + (RM_RelativeRulesMath.HeightMetres(2) * pitDrowningHeadFraction).ToString("0.00") + " m for a person)", tooltip:
                 "How deep water must be, as a share of a creature's height, before a standing creature is under: it drowns, or "
-              + "swims and tires, and a tired swimmer heads for a square shallower than this. Shipped: 90%.");
+              + "swims and tires, and a tired swimmer heads for a square shallower than this. Default: 90%.");
             pitDrowningHeadFraction = Mathf.Round(list.Slider(pitDrowningHeadFraction, 0.5f, 1.5f) * 20f) / 20f;
             using (Dependent(list, "pitDrowningLyingFraction"))
             {
                 list.Label("Head goes under, lying down: water over " + pitDrowningLyingFraction.ToStringPercent() + " of its height ("
                     + (RM_RelativeRulesMath.HeightMetres(2) * pitDrowningLyingFraction).ToString("0.00") + " m for a person)", tooltip:
-                    "The same for a creature lying down (downed, asleep or in bed). Shipped: 20%.");
+                    "The same for a creature lying down (downed, asleep or in bed). Default: 20%.");
                 pitDrowningLyingFraction = Mathf.Round(list.Slider(pitDrowningLyingFraction, 0.05f, 0.6f) * 20f) / 20f;
             }
             list.CheckboxLabeled("Poisonous liquid poisons whoever stands in it", ref poisonFillEnabled,
-                "A poison liquid builds up toxins in anyone standing in it, more the fuller the cell. "
+                "A poison liquid builds up toxins in anyone standing in it, more the fuller the square. "
               + "Toxic resistance helps. Off: poison is just another liquid.");
             list.CheckboxLabeled("Slime is so slippery it is nearly impossible to cross", ref slimeSlipEnabled,
                 "Anyone walking through slime in a canal or pit keeps slipping: each slip stops them for a moment and "
@@ -1661,7 +1657,7 @@ namespace RimMandrake.FlowWorks
               + "an unroofed pit room tracks outdoor temperature faster. Off: a pit is like open ground.");
             using (Dependent(list, "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier"))
             {
-                list.Label("Exposure narrows the comfortable range by " + pitExposureNarrowing.ToString("F0") + " °C each way (owner's pick: 8)");
+                list.Label("Exposure narrows the comfortable range by " + pitExposureNarrowing.ToString("F0") + " °C each way (default 8)");
                 pitExposureNarrowing = Mathf.Round(list.Slider(pitExposureNarrowing, 0f, 15f));
                 list.Label("Pit temperature coupling: x" + pitTemperatureCoupling.ToString("F1"));
                 pitTemperatureCoupling = list.Slider(pitTemperatureCoupling, 1f, 6f);
@@ -1702,7 +1698,7 @@ namespace RimMandrake.FlowWorks
             {
                 list.Label("A cliff is a rise of " + shootingCliffMetres.ToString("0.0") + " m or more", tooltip:
                     "How much higher the ground between two shooters must stand than the lower of them before it blocks the "
-                  + "shot. Shipped: 2 m, more than a person's height.");
+                  + "shot. Default: 2 m, more than a person's height.");
                 shootingCliffMetres = Mathf.Round(list.Slider(shootingCliffMetres, 0.5f, 5f) * 2f) / 2f;
             }
 
@@ -1735,20 +1731,20 @@ namespace RimMandrake.FlowWorks
             if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled" }))
             {
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
-                "A pawn standing in a dug cell is drawn lower the deeper the cell, and rises smoothly as it "
+                "A pawn standing in a dug square is drawn lower the deeper the square, and rises smoothly as it "
               + "walks out, so every depth reads at a glance. Drawing only: it changes nothing about "
               + "movement, sight or shooting. Off: pawns are drawn at ground level everywhere.");
             using (Dependent(list, "pitSinkPerLevel"))
             {
-                list.Label("Sink per metre of depth (cells): " + (pitSinkPerLevel * 2f).ToString("F2")
-                  + "  (superdeep: " + (pitSinkPerLevel * 8f).ToString("F2") + ")");
+                list.Label("Sink per metre of depth (squares): " + (pitSinkPerLevel * 2f).ToString("F2")
+                  + "  (at 4 m: " + (pitSinkPerLevel * 8f).ToString("F2") + ")");
                 pitSinkPerLevel = list.Slider(pitSinkPerLevel, 0.05f, 0.5f);
             }
 
-            list.CheckboxLabeled("Dug cells show their walls", ref excavationWallFacesEnabled,
+            list.CheckboxLabeled("Dug squares show their walls", ref excavationWallFacesEnabled,
                 "Every cut draws the faces of its banks the way you would see them from above and to the south: the far "
               + "(north) bank's face is a band that grows taller and darker the deeper the cut, and the side banks show "
-              + "as narrow faces. Liquid standing in a cut covers the foot of its walls. Drawing only. Off: a dug cell "
+              + "as narrow faces. Liquid standing in a cut covers the foot of its walls. Drawing only. Off: a dug square "
               + "shows only its ground.");
             using (Dependent(list, "excavationWallMaterialEnabled"))
             {
@@ -1793,7 +1789,7 @@ namespace RimMandrake.FlowWorks
                       + "The cover still hides their sides. Drawing only. Off: the cover hides them as above.");
                     using (Dependent(list, "pitLipOccupantCutWidth"))
                     {
-                        list.Label("Window width: " + pitLipOccupantCutWidth.ToString("0.0") + " cells");
+                        list.Label("Window width: " + pitLipOccupantCutWidth.ToString("0.0") + " squares");
                         pitLipOccupantCutWidth = list.Slider(pitLipOccupantCutWidth, 0.5f, 2.5f);
                     }
                 }
@@ -1842,7 +1838,7 @@ namespace RimMandrake.FlowWorks
 
             list.CheckboxLabeled("Using a container leaves it dirty", ref bottleDirtyStageEnabled,
                 "Drinking a filled bottle or bucket leaves a dirty one that needs washing before it can "
-              + "be filled again — the shipped campaign behaviour. Off: drinking returns a clean empty "
+              + "be filled again. Off: drinking returns a clean empty "
               + "container directly and no dirty ones are minted; any a save already holds are still "
               + "washable. Barrels are the bulk trade good and are never drunk from directly.");
 
@@ -1875,7 +1871,7 @@ namespace RimMandrake.FlowWorks
                      + RM_Volume.FormatUnits(RM_Volume.TankCapacity(1, false, tankCapacityMultiplier)) + ", a tall square twice that, an extra-tall four times)");
             tankCapacityMultiplier = list.Slider(tankCapacityMultiplier, 0.2f, 5f);
             list.Label("Scales every tank's capacity (at 1x a tank square holds one deep canal square, "
-                     + RM_Volume.FormatUnits(RM_Volume.UnitsPerSquare) + ": the 2x2 liquid tank 16 kL, the tall tank and cargo tank 32 kL, the extra-tall cargo tank 64 kL). Any value but 1x "
+                     + RM_Volume.FormatUnits(RM_Volume.UnitsPerSquare) + ": the 2x2 liquid tank 16,000 litres, the tall tank and cargo tank 32,000, the extra-tall cargo tank 64,000). Any value but 1x "
                      + "breaks one tank square = one canal square. Raise it for a colony that wants to stockpile.");
 
             list.CheckboxLabeled("Liquid pumps run", ref liquidPumpEnabled,
@@ -1896,7 +1892,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             if (Section(list, "Drilling and tapping", new[] { "liquidDrillingEnabled", "drillYieldChanceMultiplier", "drillUnitsPerCycle" }))
             {
-            list.Label("The fourth acquisition route: some maps sit on a liquid you never see "
+            list.Label("Some maps sit on a liquid you never see "
                      + "the surface of. A drill (powered) or a tap (hand-worked, smaller) pours "
                      + "whatever a subsurface survey found into a dug channel at its outlet, "
                      + "drawing down a fixed reserve that never refills. Every map is surveyed "
@@ -1921,7 +1917,7 @@ namespace RimMandrake.FlowWorks
                 list.Label("Extraction rate: " + RM_Volume.FormatLitres(Mathf.RoundToInt(DrillUnitsPerCycle * RM_Volume.LitresPerNotch)) + " per cycle");
                 drillUnitsPerCycle = list.Slider(drillUnitsPerCycle, 0.1f, 6f);
                 list.Label("How much a drill (or a slower tap, scaled down per building) can pull "
-                         + "from the ground every 250 ticks once its outlet has room to take it. "
+                         + "from the ground every few seconds (250 ticks) once its outlet has room to take it. "
                          + "The reserve it draws from is finite and never comes back.");
             }
 
@@ -1953,13 +1949,13 @@ namespace RimMandrake.FlowWorks
             if (Section(list, "Swales", new[] { "swaleEnabled", "swaleRateMultiplier" }))
             {
             list.CheckboxLabeled("A watered swale enriches the ground around it", ref swaleEnabled,
-                "On: a swale laid in a dug channel, while its own cell carries water (a fill, a flood "
-              + "or a natural source), slowly turns the ground within two cells one step richer — "
+                "On: a swale laid in a dug channel, while its own square carries water (a fill, a flood "
+              + "or a natural source), slowly turns the ground within two squares one step richer — "
               + "sand to soil to rich soil, never past rich soil, never while dry. Off: a built "
               + "swale does nothing; ground it already improved stays improved.");
             using (Dependent(list, "swaleRateMultiplier"))
             {
-                list.Label("Swale pace: " + SwaleRateMultiplier.ToString("F2") + "x  (1x = one step per fed day; first-guess number)");
+                list.Label("Swale pace: " + SwaleRateMultiplier.ToString("F2") + "x  (1x = one step per fed day)");
                 swaleRateMultiplier = list.Slider(swaleRateMultiplier, 0.1f, 10f);
             }
 

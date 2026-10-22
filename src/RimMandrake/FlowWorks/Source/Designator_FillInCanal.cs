@@ -33,10 +33,11 @@ namespace RimMandrake.FlowWorks
 		public Designator_FillInCanal()
 		{
 			defaultLabel = "Fill in canal";
-			defaultDesc = "Fill an excavated cell back in by one level. Liquid that no longer "
+			defaultDesc = "Fill a dug square back in by half a metre. Liquid that no longer "
 				+ "fits is pushed into the rest of the channel and back into the body it came "
-				+ "from; only what finds no room anywhere is lost. Filling a cell all the way "
-				+ "back to the surface restores the terrain that was there before it was dug.";
+				+ "from; only what finds no room anywhere is lost. Filling a square all the way "
+				+ "back to the surface restores the terrain that was there before it was dug. Colonists assigned to Mining "
+				+ "do the work.";
 			icon = ContentFinder<Texture2D>.Get("UI/Designators/FlowWorks/RM_FillInCanal", true);
 			useMouseIcon = true;
 			soundDragSustain = SoundDefOf.Designate_DragStandard;

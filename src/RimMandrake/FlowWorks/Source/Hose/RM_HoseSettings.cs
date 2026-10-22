@@ -205,7 +205,7 @@ namespace RimMandrake.FlowWorks.Hose
                 "that liquid runs out of its open end: into a channel, or onto the ground as a spill colonists clean up. Off: hoses hold nothing.");
             using (Dependent(list, "hoseLitresPerCell"))
             {
-                list.Label("Liquid held per hose cell: " + RM_Volume.FormatLitres(hoseLitresPerCell));
+                list.Label("Liquid held per square of hose: " + RM_Volume.FormatLitres(hoseLitresPerCell));
                 hoseLitresPerCell = Mathf.Round(list.Slider(hoseLitresPerCell, 0f, 50f) * 2f) / 2f;
             }
             list.Label("Dump tank drain with no pump: " + RM_Volume.FormatLitres(dumpLitresPerCycle) + " per pump cycle (a pump set to Pour is faster)");
@@ -225,22 +225,22 @@ namespace RimMandrake.FlowWorks.Hose
             list.Label("Hose thickness: " + thickness.ToString("0.00") + "x (art only; 1 = the standard hose)");
             thickness = Mathf.Round(list.Slider(thickness, ThicknessMin, ThicknessMax) * 20f) / 20f;
             ApplyThickness();
-            list.Label("Flat/plump transition: " + transitionTicks + " ticks");
+            list.Label("Flat/plump transition: " + (transitionTicks / 60f).ToString("0.0") + " s");
             transitionTicks = Mathf.RoundToInt(list.Slider(transitionTicks, 10f, 120f));
-            list.Label("Collapse after no flow for: " + releaseTicks + " ticks (keeps a stalling pump from flickering the hose)");
+            list.Label("Collapse after no flow for: " + (releaseTicks / 60f).ToString("0.0") + " s (keeps a stalling pump from flickering the hose)");
             releaseTicks = Mathf.RoundToInt(list.Slider(releaseTicks, 100f, 1500f) / 50f) * 50;
-            list.Label("Least time a hose stays plump: " + minPlumpDwell + " ticks (also how long a new liquid must flow before the hose takes its colour)");
+            list.Label("Least time a hose stays plump: " + (minPlumpDwell / 60f).ToString("0.0") + " s (also how long a new liquid must flow before the hose takes its colour)");
             minPlumpDwell = Mathf.RoundToInt(list.Slider(minPlumpDwell, 0f, 2000f) / 50f) * 50;
                 list.GapLine();
             }
 
             if (Group(list, "Hose length and shape", RimMandrake.Shared.SettingScope.Now, new[] { "minBendRadius", "maxLength", "couplingSpacing", "slack", "maxLengthDefaults" }))
             {
-            list.Label("Stiffness (smallest bend radius): " + minBendRadius.ToString("0.0") + " cells");
+            list.Label("Stiffness (smallest bend radius): " + minBendRadius.ToString("0.0") + " squares");
             minBendRadius = Mathf.Round(list.Slider(minBendRadius, 0.6f, 2.5f) * 10f) / 10f;
-            list.Label("Hose length on a reel: " + maxLength.ToString("0") + " cells");
+            list.Label("Hose length on a reel: " + maxLength.ToString("0") + " squares");
             maxLength = Mathf.Round(list.Slider(maxLength, 8f, 60f));
-            list.Label("Hose joiners: only at bends, at least " + couplingSpacing + " cells apart", -1f,
+            list.Label("Hose joiners: only at bends, at least " + couplingSpacing + " squares apart", -1f,
                 (TipSignal?)"Where one hose length is screwed to the next. A straight hose has no joiner; a joiner sits at the sharpest point of a bend.");
             couplingSpacing = Mathf.RoundToInt(list.Slider(couplingSpacing, 4f, 16f));
             list.Label("Hose slack: " + slack.ToString("0.0") + "x");
@@ -255,9 +255,9 @@ namespace RimMandrake.FlowWorks.Hose
             using (Dependent(list, "handlingTime", "windCellsPerSecond", "autoResumeDroppedHose"))
             {
                 list.Label("Handling time (grab, set down, couple): " + handlingTime.ToString("0.00") + "x", -1f,
-                    (TipSignal?)"Scales how long a colonist takes to pick the hose end up, put it down and screw it on. 1x = 45 / 30 / 90 ticks.");
+                    (TipSignal?)"Scales how long a colonist takes to pick the hose end up, put it down and screw it on. 1x = about 0.75 / 0.5 / 1.5 s.");
                 handlingTime = Mathf.Round(list.Slider(handlingTime, 0.25f, 3f) * 20f) / 20f;
-                list.Label("Winding speed: " + windCellsPerSecond.ToString("0.0") + " cells per second", -1f,
+                list.Label("Winding speed: " + windCellsPerSecond.ToString("0.0") + " squares per second", -1f,
                     (TipSignal?)"How fast a colonist winds a hose back onto the reel (a clumsy colonist is slower).");
                 windCellsPerSecond = Mathf.Round(list.Slider(windCellsPerSecond, 1f, 8f) * 2f) / 2f;
                 list.CheckboxLabeled("Interrupted hoses are picked up again automatically", ref autoResumeDroppedHose,

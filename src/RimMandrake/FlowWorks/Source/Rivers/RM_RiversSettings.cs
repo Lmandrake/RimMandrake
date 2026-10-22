@@ -142,9 +142,9 @@ namespace RimMandrake.FlowWorks.Rivers
 			  + "Off: rivers are vanilla. Safe to change mid-game (the flow is read from the map itself).");
 			l.Label("Current strength: x" + RM_RiversSettings.currentStrength.ToString("F2"));
 			RM_RiversSettings.currentStrength = l.Slider(RM_RiversSettings.currentStrength, 0.25f, 3f);
-			l.Label("Fast lane: ticks per cell " + RM_RiversSettings.centreTicksPerCell);
+			l.Label("Fast lane: " + (RM_RiversSettings.centreTicksPerCell / 60f).ToString("0.00") + " s to cross a square");
 			RM_RiversSettings.centreTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiversSettings.centreTicksPerCell, 10f, 200f));
-			l.Label("Edge lane: ticks per cell " + RM_RiversSettings.marginTicksPerCell);
+			l.Label("Edge lane: " + (RM_RiversSettings.marginTicksPerCell / 60f).ToString("0.00") + " s to cross a square");
 			RM_RiversSettings.marginTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiversSettings.marginTicksPerCell, 20f, 400f));
 			l.Label("Items drift slower by x" + RM_RiversSettings.itemDriftFactor.ToString("F1"));
 			RM_RiversSettings.itemDriftFactor = l.Slider(RM_RiversSettings.itemDriftFactor, 1f, 5f);
@@ -187,9 +187,9 @@ namespace RimMandrake.FlowWorks.Rivers
 				"In the fast lane a carried pawn can be bruised and can drop what it is carrying.");
 			if (RM_RiversSettings.crossingHazardsEnabled)
 			{
-				l.Label("Bruise chance per cell: " + RM_RiversSettings.bruiseChancePerStep.ToStringPercent());
+				l.Label("Bruise chance per square: " + RM_RiversSettings.bruiseChancePerStep.ToStringPercent());
 				RM_RiversSettings.bruiseChancePerStep = l.Slider(RM_RiversSettings.bruiseChancePerStep, 0f, 1f);
-				l.Label("Drop-carried chance per cell: " + RM_RiversSettings.dropChancePerStep.ToStringPercent());
+				l.Label("Drop-carried chance per square: " + RM_RiversSettings.dropChancePerStep.ToStringPercent());
 				RM_RiversSettings.dropChancePerStep = l.Slider(RM_RiversSettings.dropChancePerStep, 0f, 1f);
 			}
 			l.GapLine();
@@ -207,19 +207,19 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				l.Label("Breach below HP: " + RM_RiversSettings.breachHpFraction.ToStringPercent());
 				RM_RiversSettings.breachHpFraction = l.Slider(RM_RiversSettings.breachHpFraction, 0.05f, 1f);
-				l.Label("Stake snap: ticks per cell " + RM_RiversSettings.stakeSnapTicksPerCell);
+				l.Label("Stake snap: " + (RM_RiversSettings.stakeSnapTicksPerCell / 60f).ToString("0.00") + " s a square");
 				RM_RiversSettings.stakeSnapTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiversSettings.stakeSnapTicksPerCell, 10f, 1000f));
 				l.CheckboxLabeled("  Breach washes the held catch downstream", ref RM_RiversSettings.breachWashesCatch,
 					"On, a weir that breaches lets the fish and drift it was holding wash downstream. Off: the catch stays in the weir.");
 				if (RM_RiversSettings.breachWashesCatch)
 				{
-					l.Label("  Washed this many cells: " + RM_RiversSettings.breachWashCells);
+					l.Label("  Washed this many squares: " + RM_RiversSettings.breachWashCells);
 					RM_RiversSettings.breachWashCells = Mathf.RoundToInt(l.Slider(RM_RiversSettings.breachWashCells, 1f, 20f));
 				}
 			}
 			l.CheckboxLabeled("A continuous stake-line holds floods (levee)", ref RM_RiversSettings.stakeLineLevee,
 				"Floodwater cannot pass a stake. Any gap lets it in. Off: floods flow through stake-lines.");
-			l.Label("Weir calms this many cells upstream: " + RM_RiversSettings.weirPoolLength + " (0 = its own cell only)");
+			l.Label("Weir calms this many squares upstream: " + RM_RiversSettings.weirPoolLength + " (0 = its own square only)");
 			RM_RiversSettings.weirPoolLength = Mathf.RoundToInt(l.Slider(RM_RiversSettings.weirPoolLength, 0f, 20f));
 			l.CheckboxLabeled("Weirs catch fish", ref RM_RiversSettings.weirCatchesFish,
 				"From the river's own stock, the same stock your fishing zones draw on.");
@@ -235,7 +235,7 @@ namespace RimMandrake.FlowWorks.Rivers
 				"On, a silt-trap slowly makes the bank soil beside it richer. Off: it only holds the silt.");
 			if (RM_RiversSettings.siltRichening)
 			{
-				l.Label("One cell richened every " + RM_RiversSettings.siltIntervalDays.ToString("F2") + " days");
+				l.Label("One square richened every " + RM_RiversSettings.siltIntervalDays.ToString("F2") + " days");
 				RM_RiversSettings.siltIntervalDays = l.Slider(RM_RiversSettings.siltIntervalDays, 0.1f, 5f);
 			}
 			l.CheckboxLabeled("Rope ferries", ref RM_RiversSettings.ferryEnabled,
@@ -243,7 +243,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			  + "line is carried. Drafted colonists cross along it.");
 			if (RM_RiversSettings.ferryEnabled)
 			{
-				l.Label("Longest rope: " + RM_RiversSettings.ferryMaxSpan + " cells");
+				l.Label("Longest rope: " + RM_RiversSettings.ferryMaxSpan + " squares");
 				RM_RiversSettings.ferryMaxSpan = Mathf.RoundToInt(l.Slider(RM_RiversSettings.ferryMaxSpan, 5f, 80f));
 				l.CheckboxLabeled("  Colonists use the rope to cross", ref RM_RiversSettings.ferryRopeGuidesColonists,
 					"On: everyday jobs treat a strung rope as a crossing, the way they treat a ford or a bridge, "

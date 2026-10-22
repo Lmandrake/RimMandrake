@@ -780,12 +780,12 @@ namespace RimMandrake.FlowWorks
 			list.CheckboxLabeled("Raiders cross trenches", ref raiderTrenchEnabled,
 				"On, raiders who cannot reach your colony because a trench or pit is in the way go around it if there is a way; "
 			  + "if there is none they jump it, set scaling ladders, or shovel a causeway in. Sieges never do: they shell you. "
-			  + "Needs \"Superdeep pits trap\" and the relative climb rule. Off: a raid facing a trench it cannot cross waits, "
+			  + "Needs \"Pits can trap whoever falls in\" and \"Pits trap by relative height\". Off: a raid facing a trench it cannot cross waits, "
 			  + "shoots across and leaves.");
 			list.CheckboxLabeled("  Raiders jump trenches", ref raiderJumpsEnabled,
 				"Raiders with a jump pack or a leaping ability jump across a trench in range, and land on their feet.");
 			int pct = Mathf.RoundToInt(raiderJumpPackShare * 100f);
-			list.Label("  Raiders who bring a jump pack: " + pct + "%  (PROVISIONAL)", tooltip:
+			list.Label("  Raiders who bring a jump pack: " + pct + "%", tooltip:
 				"On a map with a dug trench, this share of an industrial-or-better raid's people arrive wearing a jump pack (never "
 			  + "one that would replace a shield belt). Sieges never. 0% = only raiders who already had one.");
 			raiderJumpPackShare = Mathf.Round(list.Slider(raiderJumpPackShare, 0f, 1f) * 20f) / 20f;
@@ -795,7 +795,7 @@ namespace RimMandrake.FlowWorks
 			  + "and whoever is down there is in a pit. Needs \"Portable ladders\" on.");
 			int ladderSec = Mathf.RoundToInt(RM_RaiderTrenchMath.LadderTicks(2.0, raiderLadderSpeed) / 60f);
 			list.Label("  Scaling ladder speed: x" + raiderLadderSpeed.ToString("0.00") + "  (about " + ladderSec
-			  + " s for a 2 m wall)", tooltip: "About 10 s plus 1 s a metre at x1 (PROVISIONAL).");
+			  + " s for a 2 m wall)", tooltip: "About 10 s plus 1 s a metre at x1.");
 			raiderLadderSpeed = Mathf.Round(list.Slider(raiderLadderSpeed, 0.25f, 4f) * 20f) / 20f;
 			list.CheckboxLabeled("  Raiders breach by filling", ref raiderFillEnabled,
 				"When ladders cannot do it (too deep, too narrow, ladders off), raiders shovel earth into the trench until every "

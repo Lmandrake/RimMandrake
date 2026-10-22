@@ -57,7 +57,7 @@ namespace RimMandrake.FlowWorks.Thirst
 		{
 			list.GapLine();
 			list.Label("Thirst");
-			list.Label("Thirst provider: " + RM_ThirstProvider.ModeLabel
+			list.Label("Whose thirst rules run: " + RM_ThirstProvider.ModeLabel
 				+ "  (read at startup; with Dubs Bad Hygiene's thirst running, ours steps aside and our bottles count for Dubs')");
 			list.CheckboxLabeled("Pawns and animals get thirsty (FlowWorks thirst)", ref thirstEnabled,
 				"A thirst bar that empties in about a day and a quarter, faster in heat. At empty, dehydration sets in and kills "

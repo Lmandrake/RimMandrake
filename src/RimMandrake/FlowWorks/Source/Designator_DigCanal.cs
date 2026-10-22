@@ -18,10 +18,11 @@ namespace RimMandrake.FlowWorks
 			defaultDesc = "Carve a channel half a metre deeper. Designating a channel that is "
 				+ "already dug deepens it another half-metre, down to the deepest dig set in this mod's settings "
 				+ "(as shipped, colonists 2 m; mechanoids and droids 20 m); from 2 m a cut is a pit. \"Dig to depth\" orders the whole depth at once. "
-				+ "Liquid fills the deepest cells first and overflows into shallower ones. "
+				+ "Liquid fills the deepest squares first and overflows into shallower ones. "
 				+ "A channel dug into the strip along the map edge is a SINK: liquid reaching "
 				+ "it leaves the map, which is how you empty a canal on purpose. Bare rock ground "
-				+ "can be dug too, but is much slower work, and may turn up chunks of that rock.";
+				+ "can be dug too, but is much slower work, and may turn up chunks of that rock. "
+				+ "Colonists assigned to Mining do the digging.";
 			icon = ContentFinder<Texture2D>.Get("UI/Designators/FlowWorks/RM_DigCanal", true);
 			useMouseIcon = true;
 			soundDragSustain = SoundDefOf.Designate_DragStandard;
