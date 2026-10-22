@@ -122,6 +122,7 @@ FEATURES = [
     ("set", r"^(superdeepCapturesOwnFaction|fallDamageEnabled|fallDamageMultiplier|fallDamagePerMetrePast2|fallDamageCap|fallDeathEnabled|fallDeathFromMetres|fallDeathCertainMetres)$",
      "Own colonists are not captured; falling hurts", "pit_fall"),
     ("gizmo", r"JumpIntoPit", "Jump into pit button", "pit_ways_in"),
+    ("gizmo", r"Deep dig waiting for a machine", "Alert: dig orders past the colonist limit wait for a machine (DEEP_DIG_EXPLAIN_WAITING_ON_NO_DROID)", M + "alert; needs a dig order past the colonist cap on a map with no mining mech or droid, no frozen station stages one"),
     ("gizmo", r"Colonist stuck in a pit", "Red alert: a colonist stuck in a pit (PIT_ALERT_BUILD_RED_MEANS_HELP)", "pit_ways_in"),
     ("set", r"^(superdeepShootingRuleEnabled|shootingCliffMetres)$", "Shooting only from the lip", "pit_shooting"),
     ("set", r"^(blastsBreakPitCovers|trapTriggerEnabled|trapSensitivityMultiplier)$", "Covers give way", "pit_cover_drop"),
