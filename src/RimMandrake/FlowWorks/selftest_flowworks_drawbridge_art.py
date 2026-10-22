@@ -1,6 +1,7 @@
 """DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS: every drawbridge picture the code can ask for resolves to an installed PNG
 (no magenta, no silent stand-in) for every material x look, through the same candidate order the game uses
-(Source/RM_DrawbridgeMath.cs DrawbridgeArtPaths: the look's picture, else the material's). Multi pictures need their
+(Source/RM_DrawbridgeMath.cs DrawbridgeArtPaths: the material's picture, else the look's;
+DRAWBRIDGE_LOOKS_FIX_HIS_PICKS_OUTRANK, owner by card 2026-10-22 "Material picks win"). Multi pictures need their
 facing files: winch _south/_east/_north, gate _south/_east (north reuses south). Also: every Drawbridge/ texPath a def
 names exists, and the laid raid plank's two pieces exist.
 
@@ -38,14 +39,14 @@ CS_FORMULAS = [
     'Dir + "RM_DrawbridgePlanks_" + look, Dir + "RM_DrawbridgePlanks_" + Material(t)',
     'Dir + "RM_DrawbridgeWinch_" + Material(t) + "_" + look, Dir + "RM_DrawbridgeWinch_" + Material(t)',
     'Dir + "RM_DrawbridgeGate_" + state + "_" + look, Dir + "RM_DrawbridgeGate_" + Material(t) + "_" + state',
-    'return look == null ? new[] { materialPath } : new[] { lookPath, materialPath };',
+    'return look == null ? new[] { materialPath } : new[] { materialPath, lookPath };',
     'public const string RaidPlankLaid = Dir + "RM_RaidPlank_Laid";',
     'public const string RaidPlankLaidEnd = Dir + "RM_RaidPlank_LaidEnd";',
 ]
 
 
 def cands(look, look_path, mat_path):
-    return [mat_path] if look is None else [look_path, mat_path]
+    return [mat_path] if look is None else [mat_path, look_path]
 
 
 def parts(m, look):
@@ -118,7 +119,7 @@ def main():
         for f in fails:
             print("FAIL", f)
         return 1
-    print("ok: drawbridge art resolves for 2 materials x 5 looks (incl. none); %d fall back to the material picture; %d owed" % (fallbacks, len(OWED)))
+    print("ok: drawbridge art resolves for 2 materials x 5 looks (incl. none); %d fall back to the look picture; %d owed" % (fallbacks, len(OWED)))
     return 0
 
 

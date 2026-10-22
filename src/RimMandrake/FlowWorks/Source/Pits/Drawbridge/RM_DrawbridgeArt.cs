@@ -9,7 +9,8 @@ namespace RimMandrake.FlowWorks.Pits
 	/// DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6 (R12): the drawbridge pictures, read from the texPaths of the design doc's art
 	/// contract (flowworks_drawbridge_design_2026-10-20.md §R12 "Art contract"). DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS: every
 	/// picture is picked per material AND per look (Scrapper/Industrial/Modern/Futuristic, the bridge's own look as the suspension
-	/// bridge keeps it), the candidates best first from <see cref="DrawbridgeArtPaths"/>: the look's picture, else the material's.
+	/// bridge keeps it), the candidates best first from <see cref="DrawbridgeArtPaths"/>: the material's picture, else the look's
+	/// (DRAWBRIDGE_LOOKS_FIX_HIS_PICKS_OUTRANK, owner by card 2026-10-22: "Material picks win").
 	/// Every lookup is SILENT (ContentFinder, no error) and ends at a stand-in that exists: the suspension deck tile for the leaf
 	/// and planks, the def's own picture for the winch, the vanilla door for the gate. Nothing here generates or queues art.
 	/// </summary>

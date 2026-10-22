@@ -199,7 +199,8 @@ over 4 cells is stretched).
 **The four looks** (`Scrapper`, `Industrial`, `Modern`, `Futuristic`), as installed 2026-10-21 (bridge_art_redraw picks), all
 in `Things/Building/FlowWorks/Drawbridge/`: `RM_DrawbridgeLeafUp_<View>_<Look>`, `RM_DrawbridgePlanks_<Look>`,
 `RM_DrawbridgeWinch_<M>_<Look>` (per material: the drive differs), `RM_DrawbridgeGate_<Closed|Open>_<Look>` (`_south`, `_east`).
-A part draws in its bridge's look (the suspension rule: the look's picture first, else the material's); the candidate order
+A part draws its MATERIAL's picture first, its bridge's look only where the material has none (owner by card 2026-10-22,
+"Material picks win": a Timber drawbridge always shows the Timber picture; looks restyle pipes and machinery); the candidate order
 is `DrawbridgeArtPaths` in `Source/RM_DrawbridgeMath.cs`, checked on disk by `selftest_flowworks_drawbridge_art.py`.
 
 **Not commissioned:** a mid-raise picture (the spec does not animate the raise), raid planks in steel, a crash-down
