@@ -1,0 +1,1 @@
+A whole-notch 'f' (jawa/flowworks_excavation_rect) floors a level surface: a 351-cell moat a hair under 2 m (1.99 m, one dry grate cell it levelled into) reads 1.5 m on EVERY cell. Before calling water lost, check for a dry dug cell the body touches through a grate (grates pass liquid; only a shut sluice seals) and read decilitres/the cell readout, not f.
