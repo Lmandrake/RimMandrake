@@ -207,10 +207,18 @@ namespace RimMandrake.CreatureBehaviors
     public static class RM_TractionLanceProof
     {
         /// <summary>
-        /// stuff: Cloth | DevilstrandCloth | Hyperweave. mode: raider | unmanned | wall | heavy | downed.
+        /// stuff: Cloth | DevilstrandCloth | Hyperweave. mode: raider | unmanned | wall | heavy | downed | friendlyoff |
+        /// ollathrix.
         /// Spawns a player lance of that stuff (power forced on; crew stood in by debugForceManned except "unmanned")
         /// and a target 9 cells east in the open, ropes it and reels until it arrives or the line goes.
         /// "wall" puts a steel wall between them; "heavy" uses a thrumbo; "downed" a downed player colonist.
+        /// "friendlyoff": a downed colonist, but the target is chosen the production way (FindTarget, what CompTick
+        /// calls) with the friendlyPull setting read ON (foundOn, the control) then OFF (foundOff); it is roped only
+        /// if FindTarget picked it with the setting off. The setting is restored.
+        /// "ollathrix": a wild RM_Ollathrix whose start cell is roofed (the canopy's stand-in: a roof is full shade to
+        /// the scald predicate); startExposed/endExposed are RM_Hediff_SunScald.ExposedAt before and after the pull,
+        /// sunAtEnd is vanilla InSunlight on the end cell (false at night or under a roof = the proof cannot ask),
+        /// endShade the shade grid's ShadeAt there (-1 when the grid is off). The roof is put back as it was.
         /// </summary>
         public static string ProofPull(string stuff, string mode)
         {
@@ -261,9 +269,19 @@ namespace RimMandrake.CreatureBehaviors
             {
                 p = PawnGenerator.GeneratePawn(PawnKindDefOf.Thrumbo, null);
             }
-            else if (mode == "downed")
+            else if (mode == "downed" || mode == "friendlyoff")
             {
                 p = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Faction.OfPlayer);
+            }
+            else if (mode == "ollathrix")
+            {
+                PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail("RM_Ollathrix");
+                if (kind == null)
+                {
+                    lance.Destroy();
+                    return "UNMEASURED no RM_Ollathrix pawn kind (Webwork not loaded)";
+                }
+                p = PawnGenerator.GeneratePawn(kind, null);
             }
             else
             {
@@ -277,29 +295,70 @@ namespace RimMandrake.CreatureBehaviors
             {
                 wall = GenSpawn.Spawn(ThingMaker.MakeThing(ThingDefOf.Wall, ThingDefOf.Steel), origin + new IntVec3(5, 0, 0), map);
             }
-            if (mode == "downed")
+            if (mode == "downed" || mode == "friendlyoff")
             {
                 HealthUtility.DamageUntilDowned(p, allowBleedingWounds: false);
             }
+            RoofDef roofBefore = map.roofGrid.RoofAt(at);
+            if (mode == "ollathrix")
+            {
+                map.roofGrid.SetRoof(at, RoofDefOf.RoofConstructed);
+            }
             IntVec3 start = p.Position;
+            float mass = p.GetStatValue(StatDefOf.Mass);
+            float bodySize = p.BodySize;
+            bool startExposed = RM_Hediff_SunScald.ExposedAt(map, start);
             bool roped = false;
             int steps = 0;
-            if (lance.TetherCanWork)
+            string extra = "";
+            bool savedFriendly = RM_CreatureBehaviorsSettings.lanceFriendlyPull;
+            try
             {
-                roped = pull.TryRope(p);
-                while (pull.Target != null && steps < 60)
+                bool rope = lance.TetherCanWork;
+                if (mode == "friendlyoff")
                 {
-                    pull.DebugReelNow();
-                    steps++;
+                    RM_CreatureBehaviorsSettings.lanceFriendlyPull = true;
+                    bool foundOn = pull.FindTarget() == p;
+                    RM_CreatureBehaviorsSettings.lanceFriendlyPull = false;
+                    bool foundOff = pull.FindTarget() == p;
+                    rope = rope && foundOff;
+                    extra = string.Format(" foundOn={0} foundOff={1}", foundOn, foundOff);
+                }
+                if (rope)
+                {
+                    roped = pull.TryRope(p);
+                    while (pull.Target != null && steps < 60)
+                    {
+                        pull.DebugReelNow();
+                        steps++;
+                    }
+                }
+            }
+            finally
+            {
+                RM_CreatureBehaviorsSettings.lanceFriendlyPull = savedFriendly;
+                if (mode == "ollathrix")
+                {
+                    map.roofGrid.SetRoof(at, roofBefore);
                 }
             }
             IntVec3 end = p.Spawned ? p.Position : IntVec3.Invalid;
+            if (mode == "ollathrix")
+            {
+                RM_MapComponent_ShadeGrid grid = map.GetComponent<RM_MapComponent_ShadeGrid>();
+                bool endValid = end.IsValid && end != at;
+                extra = string.Format(" startExposed={0} endExposed={1} sunAtEnd={2} endShade={3:0.00} threshold={4:0.00}",
+                    startExposed, endValid && RM_Hediff_SunScald.ExposedAt(map, end), endValid && end.InSunlight(map),
+                    endValid && grid != null && grid.SunHeatActive ? grid.ShadeAt(end) : -1f,
+                    RM_CreatureBehaviorsSettings.sunScaldShadeThreshold);
+            }
             string outcome = string.Format(
-                "LANCE stuff={0} mode={1} canWork={2} roped={3} startDist={4:0.0} endDist={5:0.0} cellsMoved={6} steps={7} outcome={8} snaps={9} range={10:0.0} snapChance={11:0.000} maxMass={12:0.0} rigging={13:0.00}",
+                "LANCE stuff={0} mode={1} canWork={2} roped={3} startDist={4:0.0} endDist={5:0.0} cellsMoved={6} steps={7} outcome={8} snaps={9} range={10:0.0} snapChance={11:0.000} maxMass={12:0.0} rigging={13:0.00} mass={14:0.0} bodySize={15:0.00}",
                 stuff, mode, lance.TetherCanWork || roped, roped, start.DistanceTo(lance.Position),
                 end.IsValid ? end.DistanceTo(lance.Position) : -1f, end.IsValid ? (int)start.DistanceTo(end) : -1,
                 steps, pull.LastOutcome.NullOrEmpty() ? "none" : pull.LastOutcome, pull.Snaps,
-                tune.range, tune.snapChance, tune.maxMass, lance.Rigging != null ? lance.Rigging.Fuel : -1f);
+                tune.range, tune.snapChance, tune.maxMass, lance.Rigging != null ? lance.Rigging.Fuel : -1f,
+                mass, bodySize) + extra;
             if (p.Spawned)
             {
                 p.Destroy();
@@ -464,6 +523,78 @@ namespace RimMandrake.CreatureBehaviors
                     Mathf.Clamp01(RM_CreatureBehaviorsSettings.lanceSnapChance * f.snap / m), ext.maxMass * f.strength * m));
             }
             return "STUFF " + string.Join(" | ", parts);
+        }
+
+        /// <summary>
+        /// The two research doors (criterion "Research"). door: junction (Webwork's RM_GutterJunction) | drawjoint
+        /// (TheSump's RUT_PreservedDrawJoint). Sets RM_Research_TractionLance's progress to 0 (the fresh-game state),
+        /// spawns the specimen and runs the PRODUCTION completion, RM_CompAnalyzableGrantResearch.OnAnalyzed, once
+        /// per specimen until the row finishes (the draw-joint needs two; at most 4 tries), then reads the row and
+        /// RM_TractionLance's IsResearchFinished. The row's progress is put back as it was. Side effects left on the
+        /// map: the vanilla analysis progress of the studied specimen, and the letters the study sends.
+        /// Call via jawa/static_call type=RimMandrake.CreatureBehaviors.RM_TractionLanceProof method=ProofResearchDoor.
+        /// </summary>
+        public static string ProofResearchDoor(string door)
+        {
+            Map map = Find.CurrentMap;
+            string itemName = door == "junction" ? "RM_GutterJunction" : door == "drawjoint" ? "RUT_PreservedDrawJoint" : null;
+            ResearchProjectDef proj = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("RM_Research_TractionLance");
+            ThingDef lanceDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_TractionLance");
+            ThingDef itemDef = itemName != null ? DefDatabase<ThingDef>.GetNamedSilentFail(itemName) : null;
+            if (map == null || proj == null || lanceDef == null || itemDef == null)
+            {
+                return "UNMEASURED door=" + door + ": no map, no RM_Research_TractionLance/RM_TractionLance, or no " + (itemName ?? "such door");
+            }
+            var progress = typeof(ResearchManager).GetField("progress", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.GetValue(Find.ResearchManager) as Dictionary<ResearchProjectDef, float>;
+            if (progress == null)
+            {
+                return "UNMEASURED door=" + door + ": ResearchManager.progress not readable";
+            }
+            float saved = Find.ResearchManager.GetProgress(proj);
+            Pawn student = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Faction.OfPlayer);
+            var spawned = new List<Thing>();
+            int studies = 0;
+            bool before, after = false, buildable = false;
+            bool hasComp = true;
+            try
+            {
+                progress[proj] = 0f;
+                before = proj.IsFinished;
+                bool buildableBefore = lanceDef.IsResearchFinished;
+                while (!proj.IsFinished && studies < 4)
+                {
+                    Thing item = ThingMaker.MakeThing(itemDef);
+                    if (!GenPlace.TryPlaceThing(item, map.Center, map, ThingPlaceMode.Near))
+                    {
+                        return "UNMEASURED door=" + door + ": could not place " + itemName;
+                    }
+                    spawned.Add(item);
+                    RM_CompAnalyzableGrantResearch comp = item.TryGetComp<RM_CompAnalyzableGrantResearch>();
+                    if (comp == null)
+                    {
+                        hasComp = false;
+                        break;
+                    }
+                    comp.OnAnalyzed(student);
+                    studies++;
+                }
+                after = proj.IsFinished;
+                buildable = lanceDef.IsResearchFinished;
+                return string.Format("DOOR door={0} item={1} grantComp={2} studies={3} before={4} buildableBefore={5} after={6} buildable={7}",
+                    door, itemName, hasComp, studies, before, buildableBefore, after, buildable);
+            }
+            finally
+            {
+                progress[proj] = saved;
+                foreach (Thing t in spawned)
+                {
+                    if (!t.Destroyed)
+                    {
+                        t.Destroy();
+                    }
+                }
+            }
         }
     }
 }
