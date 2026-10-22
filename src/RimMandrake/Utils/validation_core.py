@@ -83,6 +83,9 @@ class _BridgeBase(object):
 
     def probe_of(self, probe_type, cmd, wait_s=20.0, poll_s=0.3):
         before = self.call("jawa/mod_settings_field", typeName=probe_type, action="get", field="serial").get("value")
+        if before is None:
+            # an unreadable serial would let ANY later serial look "changed" and return the PREVIOUS probe's result as this answer
+            return {"success": False, "error": "probe set failed: serial unreadable before the request", "raw": None}
         s = self.call("jawa/mod_settings_field", typeName=probe_type, action="set", field="request", value=cmd)
         if not s.get("success"):
             return {"success": False, "error": "probe set failed", "raw": s}
