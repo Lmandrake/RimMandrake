@@ -95,9 +95,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            Wander(ext);
-
-            if (!Position.InBounds(Map))
+            if (!Wander(ext))
             {
                 Messages.Message("RM_SteamDevilLeftMap".Translate(), new TargetInfo(Position, Map), MessageTypeDefOf.NeutralEvent);
                 Destroy();
@@ -135,7 +133,9 @@ namespace RimMandrake.EnvironmentalHazards
         // class header) — a plain bounded random drift re-rolled on a fixed
         // interval, which reads as "wanders" without needing a private
         // vanilla noise field this class has no access to.
-        private void Wander(RM_WanderingVortexExtension ext)
+        // Returns false when the next step would leave the map. The position is then NOT assigned: Thing.Position's
+        // setter re-registers a spawned thing in the thing grid, which must never be handed an out-of-bounds cell.
+        private bool Wander(RM_WanderingVortexExtension ext)
         {
             if (--ticksUntilDirectionChange <= 0)
             {
@@ -145,7 +145,12 @@ namespace RimMandrake.EnvironmentalHazards
 
             realPosition = realPosition.Moved(direction, ext.wanderSpeedPerTick);
             IntVec3 next = new Vector3(realPosition.x, 0f, realPosition.y).ToIntVec3();
+            if (!next.InBounds(Map))
+            {
+                return false;
+            }
             base.Position = next;
+            return true;
         }
 
         private void DamageCloseThings(RM_WanderingVortexExtension ext)
