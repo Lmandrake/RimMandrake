@@ -1414,10 +1414,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                         int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
                         while (tank >= units) { tank -= units; held += units; }
                     }
-                    // (review 2026-10-22: the old conservation/leftover asserts here were true by construction of the loop above;
-                    // the real guards are the contract assert above and the ScaledUnits monotonicity loop below.) What CAN fail:
-                    // twelve pumped levels fill at least one container at every shipped factor.
-                    Assert(held > 0 && tank < pumped, "twelve pumped levels filled no container at factor " + f + " (tank " + tank + ")");
+                    // (review 2026-10-22: the old fill asserts here were true by construction of the loop above.) What CAN fail:
+                    // a barrel at every shipped material factor stays far below a tank square, as the contract barrel does.
+                    Assert(RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(l.barrel, f) * 10 < RM_Volume.UnitsPerSquare,
+                        "a " + f + "x barrel holds something like a tank square");
                 }
                 // ScaledUnits is the one place a material changes a container's size: factor 1 is the contract size, the size never
                 // shrinks as the factor grows, and a positive base never reaches 0 whatever the factor

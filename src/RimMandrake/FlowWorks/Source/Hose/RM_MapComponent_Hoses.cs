@@ -10,7 +10,7 @@ namespace RimMandrake.FlowWorks.Hose
     /// <summary>
     /// Runtime side of the flexible hoses (design 3.4-3.5): ticks every reel's state machine from the flow providers,
     /// lays hoses lazily (planner + rope settle in HoseMath), and draws them every frame (a handful of meshes; a
-    /// settled hose reuses its cached mesh, only a transitioning one is rebuilt per frame). Kept OUT of the save
+    /// settled hose reuses its cached mesh and pose, a transitioning one is rebuilt once per tick, a winding one every frame). Kept OUT of the save
     /// (Patch_Map_ExposeComponents_SkipHoses): the reels hold everything that must persist.
     /// </summary>
     [StaticConstructorOnStartup]
@@ -704,7 +704,7 @@ namespace RimMandrake.FlowWorks.Hose
                 DrawEnds(r, hm, joints, pts, vis, y + 0.001f, true);
             }
             DrawGhosts(y0);
-            // a transitioning hose's meshes live one frame
+            // a winding hose's, a carried tail's and a ghost's meshes live one frame (a transitioning pose is cached per tick)
             for (int k = 0; k < oldFrame.Count; k++) if (oldFrame[k] != null) UnityEngine.Object.Destroy(oldFrame[k]);
             oldFrame.Clear();
             oldFrame.AddRange(frameMeshes);
