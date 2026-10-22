@@ -88,14 +88,14 @@ namespace RimMandrake.Webwork
                 + " | perPieceSetting " + RM_WebworkSettings.urravethThrixweavePerPiece;
         }
 
-        /// <summary>args "pawns|mode" with mode clear | leave | idle. Picks the rib section that holds up another piece,
+        /// <summary>args "pawns;mode" (or "pawns|mode" from C#) with mode clear | leave | idle. Picks the rib section that holds up another piece,
         /// spawns N player pawns in its footprint and evaluates load. clear: removes them before the window ends.
         /// leave: runs the whole window. idle: no pawns, 240 rare ticks (60,000 ticks).</summary>
         public static string ProofLoad(string args)
         {
             Map map = Map;
             if (map == null) return "REFUSED: no current map";
-            string[] a = (args ?? "").Split('|');
+            string[] a = (args ?? "").Split(new[] { '|', ';' });   // ';' too: jawa/static_call splits args on '|' into PARAMETERS, so "3|clear" never reached this one-string proof (same fix as RM_WebworkProof, 2026-10-21)
             int n = a.Length > 0 && int.TryParse(a[0].Trim(), out int k) ? k : 3;
             string mode = a.Length > 1 ? a[1].Trim() : "leave";
             List<RM_Building_UrravethPiece> pieces = Pieces(map);
