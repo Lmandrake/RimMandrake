@@ -232,6 +232,8 @@
 !/biome_ffar/nightsideice_newlife_jobs_2026-10-05.json
 !/biome_ffar/nightsideice_redo_jobs_2026-10-05.json
 !/biome_ffar/rustcathedral_redo_jobs_2026-10-05.json
+!/biome_ffar/suspension_four_looks_sheet_2026-10-21.decisions.json
+!/biome_ffar/suspension_four_looks_sheet_2026-10-21.html
 !/biome_ffar/thescald_close_jobs_2026-10-05.json
 !/biome_ffar/warscar_close_progress_2026-10-05.md
 !/biome_load_proof_results.tsv
@@ -466,6 +468,7 @@
 !/pile_2026-10-21/drawbridge_pair_diagnosis.md
 !/pile_2026-10-21/drawbridge_pair_night.md
 !/pile_2026-10-21/flowworks_completion_plan.md
+!/pile_2026-10-21/flowworks_live_queue_night.md
 !/pile_2026-10-21/lines_live.json
 !/pile_2026-10-21/relativeveto_options.md
 !/pile_2026-10-21/webwork_wtw_live.json
