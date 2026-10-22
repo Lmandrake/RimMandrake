@@ -495,7 +495,9 @@ def scan_log(text):
     keys = set(ANIMALS) | set(PLANTS)
     xref = [ln for ln in text.splitlines()
             if "Could not resolve cross-reference" in ln and any(k in ln for k in keys)]
-    exc = [ln for ln in text.splitlines() if "Exception" in ln and "RimMandrake.Pyrelands" in ln]
+    # GPT deep review 2026-10-22 #16: our own patch-failure errors carry no "Exception" ("patch FAILED", "NOT FOUND")
+    exc = [ln for ln in text.splitlines() if ("Exception" in ln and "RimMandrake.Pyrelands" in ln)
+           or ("[RimMandrake.Pyrelands]" in ln and ("FAILED" in ln or "NOT FOUND" in ln))]
     allowed = sum(1 for ln in text.splitlines() if LOG_ALLOWED in ln)
     return fatal, xref, exc, allowed
 
