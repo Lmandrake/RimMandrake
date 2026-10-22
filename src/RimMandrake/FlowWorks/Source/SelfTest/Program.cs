@@ -2031,6 +2031,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             TrenchStrideChecks.Run(Case);      // TITAN_TRENCHES_WIRE_MIND_THE_GAP: titans step over trenches narrower than B/4 (TrenchStrideChecks.cs)
             RaiderTrenchChecks.Run(Case);      // RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: go around, jump, ladders, fill; sieges unchanged (RaiderTrenchChecks.cs)
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
+            PitCoverBeneathChecks.Run(Case);   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: a lid laid over a pit occupant keeps her below (PitCoverBeneathChecks.cs)
             DrawbridgeChecks.Run(Case);        // DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS: leaves, raise state, forced repath, never Collapse (DrawbridgeChecks.cs)
             LineCrossingChecks.Run(Case);      // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE: line tag + P2 crossing table, style never changes permission (LineCrossingChecks.cs)
             LineDigBreakChecks.Run(Case);      // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 2: a committed dig breaks lines once, a cancel breaks nothing (LineDigBreakChecks.cs)

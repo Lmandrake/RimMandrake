@@ -243,7 +243,8 @@ namespace RimMandrake.FlowWorks.Pits
 				for (int i = 0; i < thingsHere.Count; i++)
 				{
 					// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: a pawn under the deck (floor band) weighs nothing on it
-				if (thingsHere[i] is Pawn p && !p.Dead && !p.Flying && (p.Faction != owner || countOwnFaction)
+				// PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: beneath a concealed pit's lid is on the floor, not on the lid
+				if (thingsHere[i] is Pawn p && !p.Dead && !p.Flying && (p.Faction != owner || countOwnFaction) && !RM_PitCoverBeneath.IsBeneath(p)
 					&& !RM_SuspensionUnderpass.InFloorBand(p))
 					{
 						standing?.Add(p);

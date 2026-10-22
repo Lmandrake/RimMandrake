@@ -3,12 +3,12 @@
 - [x] claim both (BENCH leases)
 - [x] part 1 XML/Python rename, published 9a82ae98f4: RM_PitCovers.xml labels+descs (3 kinds, all disguise), review_map.py, human_review.py, c12/c02 scenarios, owner_review_stage.py, both KEYSHEETs. defNames unchanged.
   - selftest_review_map FAIL pre-existing: uncovered Spikes/Drawbridge textures (not this change)
-- [ ] part 1 C# strings — BLOCKED with part 2 (another helper's drawbridge .cs uncommitted: RM_DrawbridgeArt/Control, Building_SuspensionDeck, RM_DrawbridgeMath, SelfTest/DrawbridgeChecks)
+- [x] part 1 C# strings (built with part 2; was blocked (another helper's drawbridge .cs uncommitted: RM_DrawbridgeArt/Control, Building_SuspensionDeck, RM_DrawbridgeMath, SelfTest/DrawbridgeChecks)
   - Building_PitCover.cs l.184 "A pit cover was taken apart/broke under", l.238 "A pit cover gave way under", l.296 placeworker refusal
   - RimMandrakeFlowWorksMod.cs l.798/1697 "Pit covers give way under enough weight", l.1321-1322 "Blasts break pit covers", l.1553
   - RM_MachinerySettings.cs l.211-223, RM_LineCrossingMath.cs l.138/143 ("a pit cover carries no lines")
-- [x] part 2 diagnosed — READY TO BUILD
-- [ ] part 2 fix/tests/live row
+- [x] part 2 diagnosed
+- [x] part 2 built: RM_PitCoverBeneath(+Math), seams in RM_SuperdeepTrap/Building_PitCover/SpanDeck, draw+label hidden, inspect 'Below, hidden:'; SelfTest 773/773 (4 new Beneath_* cases); live row X8b_cover_occupant_stays_below + ProofBeneath + mock fault cover_lifts_occupant (validation_v2 offline O-LIVE-NEG green); NOT run live, NOT deployed
 
 ## Part 2 diagnosis (read, not run)
 A cover has NO "below" for anyone: every reader treats an intact cover cell as ground for whoever stands on it.

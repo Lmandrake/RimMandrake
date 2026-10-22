@@ -264,7 +264,7 @@ Defaults = the owner's rulings (§11); all off = vanilla. Nothing here affects w
 | Max throws per explosion | 1–200 | 40 | performance |
 | Max item throws per map tick | 1–500 | 60 | performance |
 | Debug: draw throw vectors | toggle | off | dev mode only |
-**In FlowWorks' settings, not this mod's:** "Blasts break pit covers" — toggle, default **on** (Q5).
+**In FlowWorks' settings, not this mod's:** "Blasts break concealed pits" — toggle, default **on** (Q5).
 
 ## 6. Naming
 
