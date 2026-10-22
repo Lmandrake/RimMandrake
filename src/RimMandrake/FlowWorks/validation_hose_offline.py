@@ -69,6 +69,21 @@ def png_sanity(rel, root=TEX):
     return None
 
 
+def strand_band(path, need=54):
+    """D1 (joints study 2026-10-22): a plump strand must fill its strip, centred (HoseMath.PlumpBand = 62/64 sizes the
+    ribbon as if it did). None when >= need rows are half-opaque across the strip within 2 rows of centre, else why."""
+    from PIL import Image
+    import numpy as np
+    a = np.asarray(Image.open(path).convert("RGBA"))
+    rows = np.where((a[:, :, 3] > 128).mean(1) > 0.5)[0]
+    if not len(rows):
+        return "band empty"
+    r0, r1, h = int(rows.min()), int(rows.max()), a.shape[0]
+    if r1 - r0 + 1 < need or abs((r0 + r1) / 2.0 - (h - 1) / 2.0) > 2:
+        return "band rows %d-%d of %d (needs >= %d, centred): draws thinner than HoseMath.PlumpBand" % (r0, r1, h, need)
+    return None
+
+
 def strand_seam(path):
     """None when a strip tiles (its column 0 continues its last column), else 'seam E vs adjacent A' (premultiplied)."""
     from PIL import Image
@@ -94,9 +109,12 @@ def ho5_hose_art(rows):
     for look in sorted(os.listdir(sdir)) if os.path.isdir(sdir) else []:
         for f in sorted(os.listdir(os.path.join(sdir, look))):
             if f.startswith("Strand") and f.endswith(".png"):
-                why = strand_seam(os.path.join(sdir, look, f))
+                why = strand_seam(os.path.join(sdir, look, f)) or (strand_band(os.path.join(sdir, look, f)) if "Plump" in f else None)
                 if why:
                     probs.append("Hose/Styles/%s/%s: %s" % (look, f[:-4], why))
+    why = strand_band(os.path.join(TEX, "Hose", "Strand_Plump.png"))
+    if why:
+        probs.append("Hose/Strand_Plump: " + why)
     plant = np.zeros((64, 256, 4), np.uint8)
     plant[8:56, :, :] = (255, 0, 255, 255)
     seam = np.zeros((64, 256, 4), np.uint8)
