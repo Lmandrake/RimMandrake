@@ -189,6 +189,29 @@ SITES = [
          [r"OrderBy\( q => RM_PumpMath\.FootprintDistSq\("], "nearest first (probe: delete the ordering)"),
     Site("P11", "LiquidTypes/Building_LiquidPump.cs", [r"private string TryPour\(\)"], [r"ReachCells\( \)"],
          "the pump's pour reads ReachCells"),
+
+    # ── OVF1 CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 1: the sheet layer's hooks ──
+    Site("OVF1", "RM_MapComponent_Excavation.cs", [r"private void DoPulse\(\)"],
+         [r"GetComponent<Sheet\.RM_MapComponent_Sheet>\( \)\?\.EnginePulse\( \)"],
+         "the engine pulse runs the sheet before the channel solve",
+         order=(r"EnginePulse\( \)", r"if \( excavatedCells\.Count == 0 \)")),
+    Site("OVF1", "RM_MapComponent_Excavation.cs", [r"private void ApplyRain\(\)"],
+         [r"Sheet\.RM_MapComponent_Sheet\.RainOverflow\( map , c , levels , fluid \)"],
+         "rain on a brimming square runs over the lip"),
+    Site("OVF1", "RM_MapComponent_Excavation.cs", [r"private void ApplyRain\(\)"],
+         [r"Sheet\.RM_MapComponent_Sheet\.RainOverflow\( map , c , levels - add , fluid \)"],
+         "rain past a square's room runs over the lip"),
+    Site("OVF1", "RM_MapComponent_Excavation.cs", [r"private void Displace\("],
+         [r"remaining -= Sheet\.RM_MapComponent_Sheet\.SpillHomeless\( map , from , remaining , fluid \)"],
+         "fill-in's homeless remainder spills before anything is reported destroyed (D1)",
+         order=(r"remaining -= Sheet\.RM_MapComponent_Sheet\.SpillHomeless\(", r"ReportOverflow\( from , remaining \)")),
+    Site("OVF1", "LiquidTypes/Building_LiquidPump.cs", [r"private string TryPour\(\)"],
+         [r"Sheet\.RM_MapComponent_Sheet\.PumpSpillOutlet\( Map , cells , cd , units , out IntVec3 spillAt \)",
+          r"Sheet\.RM_MapComponent_Sheet\.SpillLeg\( Map , spillAt ,"],
+         "a pump backed up against a brimming canal of water spills its level over the lip",
+         order=(r"Sheet\.RM_MapComponent_Sheet\.PumpSpillOutlet\(", r"ex\.NoteDriverBackedUp\( cells\[c\] \)")),
+    Site("OVF1", "RM_MouseoverDepth.cs", [r"public static string DepthSuffix\("],
+         [r"Sheet\.RM_MapComponent_Sheet\.ReadoutAt\( map , c \)"], "the mouseover reads spilled water"),
 ]
 
 # ⚠️ Scope: "calls[0] is deleted by the probe", so a site whose probe should delete something other than its first call

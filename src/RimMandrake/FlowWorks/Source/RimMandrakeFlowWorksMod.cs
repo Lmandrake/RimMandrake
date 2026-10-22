@@ -721,6 +721,7 @@ namespace RimMandrake.FlowWorks
             Hose.RM_HoseSettings.ExposeData();
             Thirst.RM_ThirstSettings.ExposeData();   // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design §6)
             Sprinklers.RM_SprinklerSettings.ExposeData();   // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design §5)
+            Sheet.RM_SheetSettings.ExposeData();            // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED (stage 1; default off)
             Pits.RM_SuspensionSettings.ExposeData();        // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS (bridges design §9)
             RM_WallClimbSettings.ExposeData();              // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS
             RM_RaiderTrenchSettings.ExposeData();           // RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP
@@ -1968,6 +1969,7 @@ namespace RimMandrake.FlowWorks
             MapControls.RM_MapControlSettings.DoSettingsSection(list);
             Thirst.RM_ThirstSettings.DoSettingsSection(list);
             Sprinklers.RM_SprinklerSettings.DoSettingsSection(list);
+            Sheet.RM_SheetSettings.DoSettingsSection(list);
             Pits.RM_SuspensionSettings.DoSettingsSection(list);
             RM_WallClimbSettings.DoSettingsSection(list);
             RM_RaiderTrenchSettings.DoSettingsSection(list);

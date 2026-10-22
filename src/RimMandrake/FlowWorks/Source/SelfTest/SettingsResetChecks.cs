@@ -45,7 +45,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     new[] { "Pits", "Drawbridge", "RM_DrawbridgeSettings.cs" }, new[] { "Pits", "Suspension", "RM_SuspensionSettings.cs" },
                     new[] { "Superdeep", "RM_WallClimbSettings.cs" }, new[] { "Superdeep", "RM_RaiderTrench.cs" },
                     new[] { "Swimming", "RM_Swim.cs" }, new[] { "MapControls", "RM_MapControlSettings.cs" },
-                    new[] { "Rivers", "RM_RiversSettings.cs" }, new[] { "RM_WaterBodyMendGame.cs" } };
+                    new[] { "Rivers", "RM_RiversSettings.cs" }, new[] { "RM_WaterBodyMendGame.cs" },
+                    new[] { "Sheet", "RM_SheetSettings.cs" } };
                 foreach (string[] s in screens)
                 {
                     string src = RiverSwitchFlipChecks.Src(Path.Combine(s));

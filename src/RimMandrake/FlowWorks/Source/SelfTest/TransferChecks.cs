@@ -385,6 +385,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             "credit site: sprinkler draw",
             // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL: passive levelling between two bodies through a hose route
             "credit site: levelling",
+            // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 1: a backed-up pump spills its level over a full canal's lip
+            "credit site: pump overflow spill",
         };
 
         // review day 3: the decilitre movers (TryPourDl, TryDebitDl, CreditDl, TryReturnDl) joined the list; a site calling one

@@ -1692,6 +1692,8 @@ namespace RimMandrake.FlowWorks
 				// silent just because the mechanic is switched off, which is why
 				// this takes the same reporting exit as a real overflow rather
 				// than only writing a DevMode log.
+				// CANAL_OVERFLOW stage 1 (D1): homeless water spills as a sheet first; only what it refuses is destroyed.
+				dl -= Sheet.RM_MapComponent_Sheet.SpillHomeless(map, from, dl, fluid);
 				ReportOverflow(from, dl);
 				return;
 			}
@@ -1772,6 +1774,9 @@ namespace RimMandrake.FlowWorks
 			{
 				ApplyFillTerrain(map.cellIndices.IndexToCell(cr.Key), fluid);
 			}
+			// CANAL_OVERFLOW stage 1 (D1, supersedes the 2026-09-16 destroy rule): the homeless remainder spills over the lip
+			// as sheet water; only what the sheet refuses (switch off, caps, another liquid) is still destroyed and disclosed.
+			remaining -= Sheet.RM_MapComponent_Sheet.SpillHomeless(map, from, remaining, fluid);
 			ReportOverflow(from, remaining);
 		}
 
@@ -2701,6 +2706,9 @@ namespace RimMandrake.FlowWorks
 			{
 				stock.Pulse(map, this, RimMandrakeFlowWorksSettings.PulseIntervalTicks);
 			}
+			// CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 1: spilled sheet water moves, runs back (credited through the
+			// pour / return leg, so the solve below levels it this pulse), soaks and dries. Nothing when no sheet stands.
+			map.GetComponent<Sheet.RM_MapComponent_Sheet>()?.EnginePulse();
 			if (excavatedCells.Count == 0)
 			{
 				return;
@@ -3072,6 +3080,11 @@ namespace RimMandrake.FlowWorks
 				int i = map.cellIndices.CellToIndex(c);
 				if (RoomNotches(i) <= 0)
 				{
+					// CANAL_OVERFLOW stage 1 (D2): rain on a brimming square runs over the canal's lip (switch off: as before)
+					if (WetDug(i) && FluidAt(c) == fluid)
+					{
+						Sheet.RM_MapComponent_Sheet.RainOverflow(map, c, levels, fluid);
+					}
 					continue;
 				}
 				// The roof grid IS the rule. A roofed excavation stays dry in a
@@ -3086,6 +3099,10 @@ namespace RimMandrake.FlowWorks
 				}
 				int room = RoomNotches(i);
 				int add = room < levels ? room : levels;
+				if (add < levels)
+				{
+					Sheet.RM_MapComponent_Sheet.RainOverflow(map, c, levels - add, fluid);   // CANAL_OVERFLOW stage 1 (D2)
+				}
 				if (!WetDug(i))
 				{
 					byte rainKey;
