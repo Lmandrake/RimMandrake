@@ -310,10 +310,19 @@ def main(argv=None):
             fac_cache.append(fac)
         return fac_cache[0]
 
-    def assault(cells, kind="Mercenary_Gunner", sappers=False, breachers=False):
+    def assault(cells, kind="Mercenary_Gunner", sappers=False, breachers=False, mining=None):
         fac = faction()
         ids = [spawn(c, kind=kind, faction=fac) for c in cells]
         ids = [i for i in ids if i]
+        if mining is not None and not a.mock:
+            for i in ids:           # set BEFORE the lord: LordToil_AssaultColonySappers picks its sappers at UpdateAllDuties
+                # raw 20: a xenotype's aptitude can pull the effective level far down (live: raw 10 read effective 2)
+                B.call("jawa/set_pawn_skill", pawn=i, skill="Mining", level=mining, _answer=True)   # refused: mining disabled by backstory
+                has = (B.call("jawa/static_call", type="RimWorld.SappersUtility", method="HasBuildingDestroyerWeapon",
+                              args=i, _answer=True) or {}).get("result")
+                if str(has) != "True":    # GrenadeDestructive can roll molotovs, which are no building destroyer
+                    B.call("jawa/pawn_gear", pawn=i, action="clear", clearWhat="equipment")
+                    B.call("jawa/pawn_gear", pawn=i, action="equip", **{"def": "Weapon_GrenadeFrag"})
         if ids:
             kw = {}
             if sappers:
@@ -737,8 +746,22 @@ def raid_up_sapper_doc():
 
 def _raid_variant(ctx, rid, sappers, dx=30):
     B, P, xz, dproof, ticks, spawn = _c(ctx, "B", "P", "xz", "dproof", "ticks", "spawn")
-    c = P(dx, 70)       # RAID_UP_SAPPER stages 90 cells west of RAID_UP's island so one run holds both without sharing ground
+    c = P(dx, 70)       # the sapper variant stages 90 cells west of the assault island so one run holds both without sharing ground
     B.call("jawa/kill_hostiles")        # an earlier row's raiders must not join this one's fight
+    # SITE (live 2026-10-22): the preflight prepares only the origin rect; the sapper island (dx=-60) sat on unprepared ground and
+    # its steel bridge was refused ("must end on solid, undug ground"). Each variant prepares its own island + approach.
+    rect = (c[0] - 8, c[1] - 8, 40, 17)
+    if not ctx["a"].mock:
+        # SITE (live 2026-10-22, full run): the earlier rows' bridges and winches stand in the origin plot, reachable, and the
+        # assault gunners trashed them instead of facing the moat. Clear every building in the plot before this island is built.
+        o = P(-4, -2)
+        B.call("jawa/destroy_batch", rects="%d,%d,50,90" % o, categories="Building")
+        B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect",
+               args="%d;%d;%d;%d" % rect)
+        site_rows = []
+        V.prepare_site(B, rect, site_rows, "raid_%s_site" % rid)
+        bad = [r for r in site_rows if r.get("status") not in (None, "PASS")]
+        V.require(not bad, "%s island site prepared" % rid, bad[:3], cls="SITE")
     ring = [(x, z) for x in range(c[0] - 6, c[0] + 7) for z in range(c[1] - 6, c[1] + 7) if max(abs(x - c[0]), abs(z - c[1])) >= 5]
     for cell in ring:
         ctx["dig"](cell, 4)
@@ -750,10 +773,28 @@ def _raid_variant(ctx, rid, sappers, dx=30):
            if x in (c[0] - 3, c[0]) or z in (c[1] - 2, c[1] + 2)]
     ctx["walls"](box)
     inside = [spawn((c[0] - 2 + k, c[1]), draft=False) for k in range(2)]
+    if not ctx["a"].mock:
+        # SITE (live 2026-10-22): with the island hidden, the gunners walked 60+ cells to the start colonists and chased a wild
+        # animal (enemyTarget Human / RM_Ssurr), so 'nobody enters the trench' measured the map, not the duty. Every pawn that
+        # is not this island's colonist leaves the map (a disposable fresh map; later rows spawn their own pawns).
+        for i, p in ctx["pawns"]().items():
+            if i not in inside and not p.get("dead") and not p.get("hostile"):
+                B.call("jawa/pawn_force_incapacitate", pawn=i, action="vanish")
+    ticks(10)       # the 1.6 pathfinder sees the dug ring, the walls and the raised leaf only after the map ticks
     dproof("ProofDevSet", "%s;raise;instant" % xz((c[0] + 5, c[1])))
     c0 = ctx["counters"]()
     spawns = [(c[0] + 25, c[1] + k) for k in range(4)]
-    ids = ctx["assault"](spawns, sappers=sappers)
+    if sappers:
+        # HARNESS (live 2026-10-22): LordToil_AssaultColonySappers gives the Sapper duty only to IsGoodSapper pawns (kindDef
+        # canBeSapper + a building-destroyer weapon + Mining >= 4), else Escort, and with none at all EVERY pawn gets plain
+        # AssaultColony. Mercenary_Gunner has no canBeSapper, so the old 'sapper' variant was an assault in disguise and the
+        # winch giver (Sapper/Breaching duties only) never ran: WinchJobs 0 while ProofDecision showed the moat uncrossable.
+        ids = ctx["assault"](spawns, kind="Grenadier_Destructive", sappers=True, mining=20)
+        good = [i for i in ids if ctx["a"].mock or str((B.call("jawa/static_call", type="RimWorld.SappersUtility",
+                                                                method="IsGoodSapper", args=i, _answer=True) or {}).get("result")) == "True"]
+        V.require(ctx["a"].mock or good, "at least one raider IsGoodSapper (gets the Sapper duty)", good, cls="SITE")
+    else:
+        ids = ctx["assault"](spawns, sappers=False)
     V.require(len(ids) == 4, "four raiders spawned in an assault", ids)
     plank_to = None
     if not sappers:
@@ -769,6 +810,7 @@ def _raid_variant(ctx, rid, sappers, dx=30):
     V.require(ctx["a"].mock or not others, "no colonist outside the box within 45 cells of the raiders", others, cls="SITE")
     samples, came_near, reached, jobs_seen, trench_seen, winch_seen = [], set(), set(), {}, set(), set()
     wait_no_target, probed, t = 0, 0, 0
+    decisions = {}
     winch_cell = (c[0] + 3, c[1])
     while t < ctx["a"].raid_ticks:
         ticks(250)
@@ -778,7 +820,8 @@ def _raid_variant(ctx, rid, sappers, dx=30):
         for i in ids:
             p = ps.get(i) or {}
             x, z = p.get("x"), p.get("z")
-            pr = B.call("jawa/attack_target_probe", pawn=i, maxDist=60) or {}
+            # _answer: a raider that has left the map (the lord gave up) is refused as "not spawned" -- a reading, not a fault
+            pr = B.call("jawa/attack_target_probe", pawn=i, maxDist=60, _answer=True) or {}
             job, jt, tgt = pr.get("curJob"), pr.get("curJobTargetA"), pr.get("enemyTarget")
             if pr.get("success") is not False and "curJob" in pr:
                 probed += 1
@@ -790,6 +833,13 @@ def _raid_variant(ctx, rid, sappers, dx=30):
             if job == "Wait_Combat" and not tgt and not pr.get("picked"):
                 wait_no_target += 1
             snap.append((i, x, z, p.get("dead"), p.get("downed"), job, jt, tgt))
+            if t <= 500 and not ctx["a"].mock:
+                # what the mod's givers would decide for this raider now (the job alone cannot say WHY the winch giver passed)
+                dec = (B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_RaiderTrench", method="ProofDecision", args=i, _answer=True)
+                       or {}).get("result")
+                near_w = (B.call("jawa/static_call", type="RimMandrake.FlowWorks.Pits.RM_DrawbridgeRaid",
+                                 method="NearestRaisedWinch", args=i, _answer=True) or {}).get("result")
+                decisions.setdefault(i, []).append((t, dec, near_w))
             if x is None:
                 continue
             d = max(abs(x - c[0]), abs(z - c[1]))
@@ -809,9 +859,16 @@ def _raid_variant(ctx, rid, sappers, dx=30):
         progress = bool(trench_seen) or (planks or 0) > 0 or bool(reached)
     no_loop = ended is not None and ended <= 3 * len(ids)
     ctx["res"].setdefault("raidSamples", {})[rid] = samples
+    if not ctx["a"].mock:
+        # SITE (live 2026-10-22): the assault variant's island stayed standing, bridged by its raiders' plank and ladder, and
+        # the sapper lord took it as its sapper destination 60 cells away. Each variant tears its own scene down.
+        B.call("jawa/kill_hostiles")
+        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % rect, categories="Building")
+        ticks(10)       # (its colonists stay: the next variant's prepare_site walks one in, then sends every stranger off)
     return {"ok": bool(progress and no_loop), "variant": rid, "winchJobs": winch_jobs, "planksLaid": planks, "plankCarrier": plank_to,
          "trenchJobRaiders": sorted(trench_seen), "winchAttackRaiders": sorted(winch_seen), "waitCombatNoTarget": wait_no_target,
-         "jobsSeen": jobs_seen, "reached": sorted(reached), "cameNear": sorted(came_near), "hostileJobsEnded": ended, "ticks": t}
+         "jobsSeen": jobs_seen, "reached": sorted(reached), "cameNear": sorted(came_near), "hostileJobsEnded": ended, "ticks": t,
+         "decisions": decisions}
 
 
 def raid_plank(ctx):
