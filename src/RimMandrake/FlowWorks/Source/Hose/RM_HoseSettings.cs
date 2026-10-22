@@ -327,7 +327,8 @@ namespace RimMandrake.FlowWorks.Hose
         {
             var d = new Dictionary<string, object>();
             foreach (FieldInfo f in typeof(RM_HoseSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
-                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string) || f.FieldType.IsEnum)
+                if (!f.IsLiteral   // ThicknessMin/Max are consts: FieldInfo.SetValue on one throws, which aborted Reset-all after the settings were reset
+                    && (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string) || f.FieldType.IsEnum))
                     d[f.Name] = f.GetValue(null);
             return d;
         }
