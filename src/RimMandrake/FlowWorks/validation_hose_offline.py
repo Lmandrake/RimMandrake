@@ -65,11 +65,20 @@ def png_sanity(rel, root=TEX):
     if len(vis) and ((vis[:, 0] > 200) & (vis[:, 1] < 60) & (vis[:, 2] > 200)).mean() > 0.2:
         return "magenta"
     if rel.split("/")[-1].startswith("Strand"):
-        pm = np.concatenate([a[:, :, :3] * (a[:, :, 3:4] / 255.0), a[:, :, 3:4]], axis=2)
-        edge = float(np.abs(pm[:, 0] - pm[:, -1]).mean())
-        adj = float(np.abs(np.diff(pm, axis=1)).mean())
-        if edge > max(1.5 * adj, adj + 4.0):
-            return "seam %.1f vs adjacent %.1f" % (edge, adj)
+        return strand_seam(p)
+    return None
+
+
+def strand_seam(path):
+    """None when a strip tiles (its column 0 continues its last column), else 'seam E vs adjacent A' (premultiplied)."""
+    from PIL import Image
+    import numpy as np
+    a = np.asarray(Image.open(path).convert("RGBA")).astype(np.float32)
+    pm = np.concatenate([a[:, :, :3] * (a[:, :, 3:4] / 255.0), a[:, :, 3:4]], axis=2)
+    edge = float(np.abs(pm[:, 0] - pm[:, -1]).mean())
+    adj = float(np.abs(np.diff(pm, axis=1)).mean())
+    if edge > max(1.5 * adj, adj + 4.0):
+        return "seam %.1f vs adjacent %.1f" % (edge, adj)
     return None
 
 
@@ -79,6 +88,15 @@ def ho5_hose_art(rows):
     from PIL import Image
     import numpy as np
     probs = ["%s: %s" % (rel, why) for rel in STAGED_HOSE for why in [png_sanity(rel)] if why]
+    # 2026-10-22 night fixer: the per-look strands (Hose/Styles/<Look>/Strand_*) tile too; Modern/Strand_Plump had an 8-column
+    # empty tail (a gap every tile) that this gate never read. Their canvas is the look's own, so only the seam is judged here.
+    sdir = os.path.join(TEX, "Hose", "Styles")
+    for look in sorted(os.listdir(sdir)) if os.path.isdir(sdir) else []:
+        for f in sorted(os.listdir(os.path.join(sdir, look))):
+            if f.startswith("Strand") and f.endswith(".png"):
+                why = strand_seam(os.path.join(sdir, look, f))
+                if why:
+                    probs.append("Hose/Styles/%s/%s: %s" % (look, f[:-4], why))
     plant = np.zeros((64, 256, 4), np.uint8)
     plant[8:56, :, :] = (255, 0, 255, 255)
     seam = np.zeros((64, 256, 4), np.uint8)
