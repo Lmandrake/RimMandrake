@@ -168,13 +168,14 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Opaque band of the staged strips Textures/.../Hose/Strand_Flat.png (rows 2-60 of 64) and
         /// Strand_Plump.png (rows 1-62), measured 2026-10-02 (lane C cropped the v2 art to fill the strip).</summary>
         public const double FlatBand = 59.0 / 64.0, PlumpBand = 62.0 / 64.0;
-        /// <summary>Visible width collapsed (0.38 cell: 6.1 of today's 0.08 wires, 4.4 of the pre-round-5 0.11 ones) and the
-        /// extra a full plump adds at plump amount 1 (0.465 cell).</summary>
-        public const double FlatVisible = 0.38, PlumpExtra = 0.085;
+        /// <summary>Visible width collapsed and the extra a full plump adds at plump amount 1: 0.09 cell flat, 0.115 plump
+        /// (HOSE_GIRTH_TUNE_MUCH_THINNER, owner 2026-10-21: "Flexible hoses need to be much thinner too"; target 0.08-0.10 cell
+        /// from Transient/pile_2026-10-21/line_joins_review.md, under the halved rigid pipe's 0.12-0.14).</summary>
+        public const double FlatVisible = 0.09, PlumpExtra = 0.025;
 
         /// <summary>HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY (owner 2026-10-16: "shrink the tube diameter a bit to make it less
         /// fire-hydrant-thick"): every visible width (and so every fitting, wrap and clearance sized from it) times this. Set from
-        /// RM_HoseSettings.thickness; 1 = the shipped width until he rules (the proposal is LiquidJoinRule.ProposedHoseThickness).</summary>
+        /// RM_HoseSettings.thickness; 1 = the shipped (thin, 2026-10-21) width.</summary>
         public static double WidthScale = 1.0;
 
         public static double VisibleWidth(double eased, double plumpAmount) => WidthScale * (FlatVisible + PlumpExtra * Math.Max(0, plumpAmount) * Geo.Clamp(eased, 0, 1));

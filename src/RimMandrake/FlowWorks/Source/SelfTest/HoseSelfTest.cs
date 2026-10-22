@@ -49,9 +49,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             double wire = HoseMath.WireVisibleWidth;
             double f = HoseMath.VisibleWidth(0, 1), p = HoseMath.VisibleWidth(1, 1);
             C(wire > 0.05 && wire < 0.12, "wire visible width is the strand's band (" + wire.ToString("0.000") + ")");
-            // the hose kept its width when the cord strand thinned 0.11 -> 0.08 (cords round 5): 4.4x the old wire, ~6x today's
-            C(f >= 4 * wire && f <= 7 * wire, "flat hose is 4-7x a wire (" + (f / wire).ToString("0.00") + "x)");
-            C(p > f * 1.1, "plump hose is visibly swollen over flat (" + p.ToString("0.000") + " vs " + f.ToString("0.000") + ")");
+            // HOSE_GIRTH_TUNE_MUCH_THINNER (owner 2026-10-21): flat 0.08-0.10 cell, a little over a wire, under the rigid pipe
+            C(f >= 0.08 && f <= 0.10 && f > wire, "flat hose is 0.08-0.10 cell and over a wire (" + f.ToString("0.000") + ", " + (f / wire).ToString("0.00") + "x)");
+            C(p > f * 1.1 && p < 0.12, "plump hose is visibly swollen over flat, under 0.12 (" + p.ToString("0.000") + " vs " + f.ToString("0.000") + ")");
             C(Math.Abs(HoseMath.VisibleWidth(0.5, 1) - (f + p) / 2) < 1e-9, "visible width blends linearly in the eased blend");
             C(Math.Abs(HoseMath.VisibleWidth(1, 0) - f) < 1e-9, "plump amount 0 = no swelling");
             C(Math.Abs(HoseMath.MeshWidthFlat(f) * HoseMath.FlatBand - f) < 1e-9 && Math.Abs(HoseMath.MeshWidthPlump(p) * HoseMath.PlumpBand - p) < 1e-9,

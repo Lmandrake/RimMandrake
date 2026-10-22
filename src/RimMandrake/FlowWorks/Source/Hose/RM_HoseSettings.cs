@@ -67,8 +67,8 @@ namespace RimMandrake.FlowWorks.Hose
         public static float minBendRadius = 1.2f;
         /// <summary>How much a charged hose swells, straightens and wobbles (0 = no visible change).</summary>
         public static float plumpAmount = 1f;
-        /// <summary>HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY: hose thickness, x the shipped width (HoseMath.WidthScale). 1 until the owner
-        /// rules on design/RimMandrake/liquid_connections_visuals_2026-10-16.md (proposal 0.65).</summary>
+        /// <summary>Hose thickness, x the shipped width (HoseMath.WidthScale); 1 = the thin hose of HOSE_GIRTH_TUNE_MUCH_THINNER
+        /// (0.09 cell flat). Range ThicknessMin-ThicknessMax.</summary>
         public static float thickness = 1f;
         /// <summary>Flat-to-plump blend time, ticks.</summary>
         public static int transitionTicks = 30;
@@ -148,8 +148,11 @@ namespace RimMandrake.FlowWorks.Hose
         /// here; a hand-kept copy of every default used to sit here).</summary>
         public static void ResetToDefaults() => ResetAllFields();
 
-        /// <summary>Push the thickness setting into HoseMath (clamped 0.5-1).</summary>
-        public static void ApplyThickness() => HoseMath.WidthScale = Mathf.Clamp(thickness, 0.5f, 1f);
+        /// <summary>Thickness slider range: 0.75x (0.068 cell) to 2x (0.18 cell, still under the old 0.38 hose).</summary>
+        public const float ThicknessMin = 0.75f, ThicknessMax = 2f;
+
+        /// <summary>Push the thickness setting into HoseMath (clamped ThicknessMin-ThicknessMax).</summary>
+        public static void ApplyThickness() => HoseMath.WidthScale = Mathf.Clamp(thickness, ThicknessMin, ThicknessMax);
 
         public static HoseTuning Tuning() => new HoseTuning
         {
@@ -220,7 +223,7 @@ namespace RimMandrake.FlowWorks.Hose
             list.Label("Plump amount: " + plumpAmount.ToString("0.0") + "x");
             plumpAmount = Mathf.Round(list.Slider(plumpAmount, 0f, 1.5f) * 10f) / 10f;
             list.Label("Hose thickness: " + thickness.ToString("0.00") + "x (art only; 1 = the standard hose)");
-            thickness = Mathf.Round(list.Slider(thickness, 0.5f, 1f) * 20f) / 20f;
+            thickness = Mathf.Round(list.Slider(thickness, ThicknessMin, ThicknessMax) * 20f) / 20f;
             ApplyThickness();
             list.Label("Flat/plump transition: " + transitionTicks + " ticks");
             transitionTicks = Mathf.RoundToInt(list.Slider(transitionTicks, 10f, 120f));
