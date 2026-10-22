@@ -4,7 +4,7 @@
   RM_LiquidDrill.xml                     FlowWorks · MANY_WATERS_DRILL_BUILDINGS_1
   ============================================================================
   The fourth acquisition route (design doc §3 ruling 3, owner: "you can drill
-  it, on the right maps, with custom buildings"): a drill/tap family that
+  it, on the right maps, with custom buildings"): a drill/bleed-well family that
   raises whatever RM_MapComponent_SubsurfaceLiquid's per-map survey found
   into a dug channel at its outlet cell (Building_LiquidDrill.OutletCell —
   the cell the building's rotation faces). Neither building is a source in
@@ -15,7 +15,10 @@
   .Building_LiquidDrill), tuned per-def by RM_LiquidDrillExtension — the same
   "one property block, read generically" discipline Building_LiquidTank uses:
     RM_LiquidDrill — powered, expensive, the higher-output rig.
-    RM_LiquidTap   — hand-worked (no power), cheap, a slower bleed.
+    RM_LiquidTap   — "bleed well": hand-worked (no power), cheap, a slower bleed.
+                     Not a tap on a pipe (it is off the pipe net); defName kept,
+                     label renamed per LIQUID_TAP_RENAME_NOT_A_FAUCET (owner card
+                     2026-10-22). A pipe-fed faucet is separate, filed work.
 
   Texture: fwart_RM_LiquidDrill / fwart_RM_LiquidTap (2026-10-06 commission).
 
@@ -83,8 +86,8 @@
 
   <ThingDef ParentName="BuildingBase">
     <defName>RM_LiquidTap</defName>
-    <label>liquid tap</label>
-    <description>A hand-bled pipe hammered down to whatever a survey found. No power, no moving parts worth the name — it just bleeds, slowly, into whatever channel you have dug for it. Cheaper than a drill and a fraction of the output, but it never needs the grid.</description>
+    <label>bleed well</label>
+    <description>A hand-bled well: a pipe hammered into the ground down to whatever a survey found. No power, no moving parts worth the name — it just bleeds, slowly, into whatever channel you have dug for it. It stands on its own, not on a pipe network. Cheaper than a drill and a fraction of the output, but it never needs the grid.</description>
     <thingClass>RimMandrake.FlowWorks.Drilling.Building_LiquidDrill</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidTap</texPath>

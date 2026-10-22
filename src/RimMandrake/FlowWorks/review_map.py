@@ -822,12 +822,12 @@ SETUPS = {
                          + [("RM_Filth_Tar", x, z, 1, None) for x in (10, 11, 12) for z in (5, 6, 7)],
                          try_=["unpause: colonists clean both"],
                          look="weak spot: the spill drawn as a vanilla water puddle; tar filth with no art"),
-    "carry_drills": dict(short="Drills, taps and stills", notice="a liquid drill, a tap, a fuelled still, a sun-pan still "
+    "carry_drills": dict(short="Drills, bleed wells and stills", notice="a liquid drill, a bleed well, a fuelled still, a sun-pan still "
                          "and a drip filter",
                          build=[("RM_LiquidDrill", 1, 6, None, None), ("RM_LiquidTap", 5, 6, None, None),
                                 ("RM_FueledStill", 7, 6, None, None), ("RM_SunPanStill", 10, 6, None, None),
                                 ("RM_DripFilter", 13, 6, None, None)],
-                         marks=[(1, 4, "drill"), (5, 4, "tap"), (7, 4, "still"), (10, 4, "sun pan"), (13, 4, "filter")],
+                         marks=[(1, 4, "drill"), (5, 4, "bleed well"), (7, 4, "still"), (10, 4, "sun pan"), (13, 4, "filter")],
                          try_=["select the drill: it says what liquid lies under it, if any"],
                          look="weak spot: a drill with nothing under it and no message saying so"),
     "carry_industry": dict(short="Ruined liquid works", notice="four wrecked plants: desalination, detox works, tar "

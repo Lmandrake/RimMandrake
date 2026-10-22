@@ -265,7 +265,7 @@ FEATURES = [
     ("set", r"^liquidTheft", "Liquid theft",
      M + "needs another faction's tank in sight and goodwill to lose; the matrix stages it (A7 of the liquid ledger)"),
     ("def", r"^HistoryEventDef/RM_LiquidTheftCaught$", "Liquid theft caught", M + "as liquid theft"),
-    ("def", r"^ThingDef/RM_(LiquidDrill|LiquidTap|SunPanStill|DripFilter|FueledStill)$", "Drills, taps and stills",
+    ("def", r"^ThingDef/RM_(LiquidDrill|LiquidTap|SunPanStill|DripFilter|FueledStill)$", "Drills, bleed wells and stills",
      "carry_drills"),
     ("tex", r"Machinery/RM_(LiquidDrill|LiquidTap|SunPanStill|DripFilter|FueledStill)", "Drill and still art",
      "carry_drills"),

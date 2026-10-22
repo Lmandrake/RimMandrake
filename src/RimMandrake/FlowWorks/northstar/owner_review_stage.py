@@ -469,7 +469,7 @@ def row_hoses(s, L):
     nets.append(b)
     scenes["pump_pipeN_hoseS"] = (pb, (hx + 34, hz, 10, 24), (pb[0] - 4, pb[1] - 4, 8, 12), (pb[0] - 2, pb[1] + 1), "pump: pipe N (input), hose S (output)")
     # D: one consumer fed by a pipe from one pump (W) and a hose from another (E)
-    for k, (d, size, label) in enumerate((("RM_LiquidTank", 2, "2x2 tank"), ("RM_LiquidTap", 1, "liquid tap"), ("RM_SprinklerHead", 1, "sprinkler head"))):
+    for k, (d, size, label) in enumerate((("RM_LiquidTank", 2, "2x2 tank"), ("RM_LiquidTap", 1, "bleed well"), ("RM_SprinklerHead", 1, "sprinkler head"))):
         t = (hx + 16, hz + 28 + 10 * k)
         s.place(d, t)
         p1, p2 = (t[0] - 6, t[1]), (t[0] + 14, t[1])
