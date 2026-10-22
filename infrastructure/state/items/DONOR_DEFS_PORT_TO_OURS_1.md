@@ -353,7 +353,6 @@ is not an Alpha Animals def at all and is excluded from the table and count.
 | `AA_Agaripawn` | ThingDef+PawnKindDef | RM_TheRot 0.2 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
 | `AA_Agaripod` | ThingDef+PawnKindDef | RM_TheRot 0.25 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
 | `AA_AngelMoth` | ThingDef+PawnKindDef | RM_TheRot 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_EatWeirdFood; CompProperties_Floating |
-| `AA_AnimaColossus` | ThingDef+PawnKindDef | RM_TheRot 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct; CompProperties_AttachEffecter |
 | `AA_AuroraSylph` | ThingDef+PawnKindDef | RUT_PropaneLake 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AutoNutrition; CompProperties_CauseIncident; CompProperties_Floating |
 | `AA_BedBug` | ThingDef+PawnKindDef | RUT_Cauldron 0.3 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_BloodShrimp` | ThingDef+PawnKindDef | RUT_Contagion 0.2, RUT_Greentide 0.2, RUT_Miasma 0.1 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |

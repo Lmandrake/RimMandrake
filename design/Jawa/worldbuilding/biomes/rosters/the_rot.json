@@ -446,12 +446,6 @@
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "AA_AnimaColossus",
-      "law": "owner review 2026-09 (round2 move mapping): Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1: already an active donor def (sarg.alphaanimals), no port needed, now wired"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
       "def": "RSW_ColonyPustuleHornet",
       "law": "owner review 2026-09 (round2 move mapping): the Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_ColonyPustuleHornet to the ported RSW_ name, now wired"
     },
