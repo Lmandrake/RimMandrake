@@ -1,0 +1,414 @@
+{
+ "script": "raid_trench_proof.py",
+ "mode": "live",
+ "rows": [
+  {
+   "id": "RAID_island_sealed",
+   "status": "PASS",
+   "detail": {
+    "read": "CLIFF k=2 bits=0xCB vanilla=0xFF derived=True derives=83 | POCKET k=2 comp=2 pocket=False size=81 depth=0 gen=354 built=354 rebuilds=89",
+    "eastBit": false
+   }
+  },
+  {
+   "id": "RAID_outcome",
+   "status": "MEASURED",
+   "detail": {
+    "outcome": [
+     "BREACH",
+     "STALL"
+    ],
+    "firstColonistDownOnIsland": null,
+    "raidersSeen": 6,
+    "onIsland": [
+     "Human11670",
+     "Human11685",
+     "Human11692",
+     "Human11698"
+    ],
+    "inTrench": [],
+    "cameNear": [
+     "Human11662",
+     "Human11670",
+     "Human11677",
+     "Human11685",
+     "Human11692",
+     "Human11698"
+    ],
+    "despawnedAlive": [],
+    "aliveNearAtEnd": 6,
+    "lateMovePerRaiderPerSample": 0.0,
+    "ticksWatched": 750,
+    "lords": [
+     {
+      "job": "LordJob_FleshbeastAssault",
+      "faction": "Entities",
+      "pawns": 4
+     },
+     {
+      "job": "LordJob_AssaultColony",
+      "faction": "PirateYttakin",
+      "pawns": 6
+     }
+    ],
+    "jobTrace": {
+     "Human11662": "duty=AssaultColony toil=LordToil_AssaultColony job=Goto giver=JobGiver_RM_CrossTrench started=253 exp=600 enemy=none | workEnds n=0 | next=RM_RaiderSetLadder (131, 0, 125) reachOwn=True reachPather=True immediate=False reserve=True",
+     "Human11677": "duty=AssaultColony toil=LordToil_AssaultColony job=Goto giver=JobGiver_RM_CrossTrench started=253 exp=600 enemy=none | workEnds n=0 | next=RM_RaiderSetLadder (131, 0, 125) reachOwn=True reachPather=True immediate=False reserve=True",
+     "Human11698": "duty=AssaultColony toil=LordToil_AssaultColony job=AttackMelee giver=JobGiver_AISapper started=762 exp=495 enemy=none | workEnds n=0 | next=None",
+     "Human11685": "duty=AssaultColony toil=LordToil_AssaultColony job=AttackMelee giver=JobGiver_AISapper started=776 exp=516 enemy=none | workEnds n=0 | next=None",
+     "Human11670": "duty=AssaultColony toil=LordToil_AssaultColony job=AttackMelee giver=JobGiver_AISapper started=800 exp=473 enemy=none | workEnds n=0 | next=None",
+     "Human11692": "duty=AssaultColony toil=LordToil_AssaultColony job=AttackMelee giver=JobGiver_AISapper started=938 exp=474 enemy=none | workEnds n=0 | next=None"
+    }
+   }
+  },
+  {
+   "id": "MASKSWAP_no_wall_crossing",
+   "status": "UNMEASURED",
+   "detail": {
+    "raidersWithin15": 6,
+    "islandSealed": "PASS",
+    "sampledOnIslandOrTrench": [
+     "Human11670",
+     "Human11685",
+     "Human11692",
+     "Human11698"
+    ],
+    "churnRebuilds": 3,
+    "raiderWays": [],
+    "caveat": "sampled every 250 ticks; never seen, not proven impossible; a crossing over the raid's own ladder/plank is legal (RAIDERS_TRENCH) and masks the question"
+   }
+  },
+  {
+   "id": "RAID_JUMP_LANDS_UNHURT",
+   "status": "PASS",
+   "detail": {
+    "onIsland": [
+     "Human11670",
+     "Human11685",
+     "Human11692",
+     "Human11698"
+    ],
+    "fellOnTheWay": [],
+    "raiderWays": [],
+    "filledSquares": [],
+    "recentDescents": [],
+    "bar": "a raider on the island with no ladder/fill and no descent of his recorded"
+   }
+  },
+  {
+   "id": "RAID_LADDER_BREACH",
+   "status": "UNMEASURED",
+   "detail": {
+    "onIsland": [
+     "Human11670",
+     "Human11685",
+     "Human11692",
+     "Human11698"
+    ],
+    "inTrench": [],
+    "raiderWays": [],
+    "filledSquares": [],
+    "wallsLaddered": [],
+    "outcome": [
+     "BREACH",
+     "STALL"
+    ],
+    "bar": "raiders within 15 squares; raider-faction ladders/planks on both trench walls and a raider used them (in the trench or on the island) -- no stall"
+   }
+  }
+ ],
+ "samples": [
+  {
+   "tick": 250,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human11662",
+     "x": 142,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11670",
+     "x": 145,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11677",
+     "x": 145,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11685",
+     "x": 143,
+     "z": 123,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11692",
+     "x": 153,
+     "z": 128,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human11698",
+     "x": 143,
+     "z": 129,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human710",
+     "x": 125,
+     "z": 127,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human713",
+     "x": 126,
+     "z": 125,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human716",
+     "x": 123,
+     "z": 125,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 500,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human11662",
+     "x": 135,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11670",
+     "x": 132,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11677",
+     "x": 135,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11692",
+     "x": 139,
+     "z": 128,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human710",
+     "x": 123,
+     "z": 126,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human713",
+     "x": 124,
+     "z": 123,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human716",
+     "x": 123,
+     "z": 125,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  },
+  {
+   "tick": 750,
+   "advance": "done",
+   "raiders": [
+    {
+     "id": "Human11662",
+     "x": 135,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11677",
+     "x": 135,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11698",
+     "x": 129,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    },
+    {
+     "id": "Human11685",
+     "x": 129,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11670",
+     "x": 129,
+     "z": 125,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Gunner"
+    },
+    {
+     "id": "Human11692",
+     "x": 129,
+     "z": 124,
+     "dead": false,
+     "downed": false,
+     "spawned": true,
+     "kind": "Mercenary_Slasher"
+    }
+   ],
+   "colonists": [
+    {
+     "id": "Human710",
+     "x": 123,
+     "z": 126,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human713",
+     "x": 125,
+     "z": 124,
+     "dead": false,
+     "downed": false
+    },
+    {
+     "id": "Human716",
+     "x": 125,
+     "z": 123,
+     "dead": false,
+     "downed": false
+    }
+   ]
+  }
+ ],
+ "log": [
+  "quicktest map up: True (2 s)",
+  "threat structures: {'removed': [], 'threatsAfter': 0, 'error': None}",
+  "scene: centre (125, 125), island 9x9, trench 88 squares D 4 (2 m) width 2, colonists on the island: [710, 713, 716]",
+  "RAID_island_sealed         PASS       {\"read\": \"CLIFF k=2 bits=0xCB vanilla=0xFF derived=True derives=83 | POCKET k=2 comp=2 pocket=False size=81 depth=0 gen=354 built=354 rebuilds=89\", \"eastBit\": false}",
+  "assault faction: PirateYttakin (hostile factions on this map: ['TribeRoughNeanderthal', 'PirateYttakin', 'TribeSavageImpid', 'OutlanderRoughPig', 'PirateWaster', 'AncientsHostile', 'Mechanoid', 'Insect', 'HoraxCult', 'Entities', 'RM_Thozziks', 'Salvagers'])",
+  "direct assault: 6 pawns ['Human11662', 'Human11670', 'Human11677', 'Human11685', 'Human11692', 'Human11698']; lord {\"success\": true, \"lordIndex\": 1, \"faction\": \"PirateYttakin\", \"requested\": 6, \"memberCount\": 6, \"members\": [\"Porthos\", \"Wttesh\", \"Wyn'deytt\", \"Sam\", \"Ryshytt\", \"Kinysh\"], \"flags\": {\"canKidnap\": true, \"canTimeoutOrFlee\": true, \"sappers\": false, \"useAvoidGridSmart\": false, \"canSteal\": true, \"breachers",
+  "  t+  250  raiders 6 (near 0, dead 0, downed 0)  closest 17  colonists down/dead 0",
+  "  BREACH: a raider stands on the island at t+750",
+  "RAID_outcome               MEASURED   {\"outcome\": [\"BREACH\", \"STALL\"], \"firstColonistDownOnIsland\": null, \"raidersSeen\": 6, \"onIsland\": [\"Human11670\", \"Human11685\", \"Human11692\", \"Human11698\"], \"inTrench\": [], \"cameNear\": [\"Human11662\", \"Human11670\", \"Human11677\", \"Human11685\", \"Human11692\", \"Human11698\"], \"despawnedAlive\": [], \"aliveNearAtEnd\": 6, \"lateMovePerRaiderPerSample\": 0.0, \"ticksWatched\": 750, \"lords\": [{\"job\": \"LordJob_FleshbeastAssault\", \"faction\": \"Entities\", \"pawns\": 4}, {\"job\": \"LordJob_AssaultColony\", \"faction\": \"PirateYttakin\", \"pawns\": 6}], \"jobTrace\": {\"Human11662\": \"duty=AssaultColony toil=LordToil_AssaultColon",
+  "MASKSWAP_no_wall_crossing  UNMEASURED {\"raidersWithin15\": 6, \"islandSealed\": \"PASS\", \"sampledOnIslandOrTrench\": [\"Human11670\", \"Human11685\", \"Human11692\", \"Human11698\"], \"churnRebuilds\": 3, \"raiderWays\": [], \"caveat\": \"sampled every 250 ticks; never seen, not proven impossible; a crossing over the raid's own ladder/plank is legal (RAIDERS_TRENCH) and masks the question\"}",
+  "RAID_JUMP_LANDS_UNHURT     PASS       {\"onIsland\": [\"Human11670\", \"Human11685\", \"Human11692\", \"Human11698\"], \"fellOnTheWay\": [], \"raiderWays\": [], \"filledSquares\": [], \"recentDescents\": [], \"bar\": \"a raider on the island with no ladder/fill and no descent of his recorded\"}",
+  "RAID_LADDER_BREACH         UNMEASURED {\"onIsland\": [\"Human11670\", \"Human11685\", \"Human11692\", \"Human11698\"], \"inTrench\": [], \"raiderWays\": [], \"filledSquares\": [], \"wallsLaddered\": [], \"outcome\": [\"BREACH\", \"STALL\"], \"bar\": \"raiders within 15 squares; raider-faction ladders/planks on both trench walls and a raider used them (in the trench or on the island) -- no stall\"}",
+  "result: Transient\\pile_2026-10-22\\belt\\raid_jump3.json",
+  "storyteller restore: enableStoryteller restored to False"
+ ],
+ "centre": [
+  125,
+  125
+ ],
+ "raid": {
+  "success": true,
+  "lordIndex": 1,
+  "faction": "PirateYttakin",
+  "requested": 6,
+  "memberCount": 6,
+  "members": [
+   "Porthos",
+   "Wttesh",
+   "Wyn'deytt",
+   "Sam",
+   "Ryshytt",
+   "Kinysh"
+  ],
+  "flags": {
+   "canKidnap": true,
+   "canTimeoutOrFlee": true,
+   "sappers": false,
+   "useAvoidGridSmart": false,
+   "canSteal": true,
+   "breachers": false,
+   "canPickUpOpportunisticWeapons": false
+  },
+  "refused": [],
+  "notAdded": [],
+  "ticksGame": 253,
+  "operation": {
+   "OperationId": "op_5e016eb71ae94353b991d9291bf3efb4",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 253
+  }
+ },
+ "screenshot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\raid_trench_1792694453.png"
+}

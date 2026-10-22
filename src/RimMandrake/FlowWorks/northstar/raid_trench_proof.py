@@ -160,6 +160,8 @@ def _run(argv, hold):
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--points", type=float, default=500)
     ap.add_argument("--ticks", type=int, default=15000)
+    ap.add_argument("--jump-packs", action="store_true", help="--direct only: every gunner wears Apparel_PackJump "
+                    "(RAIDERS_TRENCH A4: a jump-pack raider jumps the trench and lands on its feet)")
     ap.add_argument("--depth", type=int, default=4, help="ring depth in notches (4 = 2 m; 8 = 4 m, past the 3 m portable "
                     "ladder reach: RAIDERS_TRENCH A3 expects a fill causeway)")
     ap.add_argument("--direct", action="store_true", help="spawn 6 pirates 30 squares east into LordJob_AssaultColony "
@@ -233,6 +235,12 @@ def _run(argv, hold):
     cols = B.probe_of(HPROBE, "colonists").get("pawns") or []
     for i, p in enumerate(cols):
         B.probe_of(HPROBE, "pawn:%d=tp:%d,%d" % (p["id"], c[0] - 2 + (i % 4), c[1] + (i // 4)))
+    if a.jump_packs:
+        # SITE (belt live 2026-10-22, first --jump-packs run): the gunners shot every island colonist down across the moat by
+        # t+4000, after which RM_RaiderTrench.TargetFor has no free colonist and nobody crosses. The colonists stand inside a
+        # closed granite box (Chebyshev 3), out of sight, as drawbridge_proof's RAID_UP does.
+        box = [(x, z) for x in range(c[0] - 3, c[0] + 4) for z in range(c[1] - 3, c[1] + 4) if cheb((x, z), c) == 3]
+        B.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % b_ for b_ in box), stuff="BlocksGranite")
     feed()
     adv(70)
     say("scene: centre %s, island 9x9, trench %d squares D 4 (2 m) width 2, colonists on the island: %s" % (
@@ -272,6 +280,9 @@ def _run(argv, hold):
         for kind, n in (("Mercenary_Gunner", 4), ("Mercenary_Slasher", 2)):
             sp = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0] + 30, z=c[1], faction=fac, count=n) or {}
             ids += [str(p_.get("id")) for p_ in sp.get("pawns") or []]
+        if a.jump_packs:
+            for i_ in ids:
+                B.call("jawa/pawn_gear", pawn=i_, action="wear", **{"def": "Apparel_PackJump"})
         fr = B.call("jawa/lord_assault_spawn", pawns=",".join(ids)) or {}
         say("direct assault: %d pawns %s; lord %s" % (len(ids), ids, json.dumps(fr, default=str)[:300]))
     else:
@@ -344,7 +355,8 @@ def _run(argv, hold):
     elif not crossed:
         ms = "PASS"
     else:
-        ms = "UNMEASURED" if ways else "FAIL"
+        # a jump-pack crossing is legal too (A4): with --jump-packs worn the mask question is masked as by a ladder
+        ms = "UNMEASURED" if (ways or a.jump_packs) else "FAIL"
     row("MASKSWAP_no_wall_crossing", ms,
         {"raidersWithin15": cameNear, "islandSealed": sealed, "sampledOnIslandOrTrench": crossed, "churnRebuilds": k,
          "raiderWays": ways, "caveat": "sampled every %d ticks; never seen, not proven impossible; a crossing over the raid's "
@@ -373,6 +385,18 @@ def _run(argv, hold):
         # 4 m: past the portable ladder's reach -> the fill causeway is the legal way (A3); a ladder there is a FAIL of its own
         a2 = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" else
               "PASS" if (filled and used) else "FAIL")
+    if a.jump_packs:
+        # A4: a raider who reached the island over a trench nobody laddered or filled jumped; no descent recorded for him
+        pr_ = B.call("jawa/flowworks_pit_report", x=c[0] + 6, z=c[1]) or {}
+        desc = [str(x) for x in pr_.get("recentDescents") or []]
+        fell = [i_ for i_ in det["onIsland"] if any(d_.startswith(str(i_) + "@") for d_ in desc)]
+        st_j = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" else
+                "PASS" if det["onIsland"] and not fell and not ways and not filled else "FAIL")
+        row("RAID_JUMP_LANDS_UNHURT", st_j, {"onIsland": det["onIsland"], "fellOnTheWay": fell, "raiderWays": ways,
+                                             "filledSquares": filled, "recentDescents": desc[-8:],
+                                             "bar": "a raider on the island with no ladder/fill and no descent of his recorded"})
+    if a.jump_packs:
+        a2 = "UNMEASURED"       # jump packs come first in the owner's order: ladders/fill are not asked of this run
     row("RAID_LADDER_BREACH" if a.depth <= 6 else "RAID_FILL_CAUSEWAY", a2,
         {"onIsland": det["onIsland"], "inTrench": det["inTrench"], "raiderWays": ways, "filledSquares": filled,
                                    "wallsLaddered": walls, "outcome": words,
