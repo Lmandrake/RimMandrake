@@ -531,7 +531,7 @@ def _pawn_row(B, pid, cell):
 
 def _wire_trial(B, cell, settle=24):
     """A fresh DOWNED animal on the live tip cell (downed so it cannot wander: its start cell is fixed), `settle` ticks
-    (> RM_FallenWireShock.CheckInterval 20), then (shocked?, start cell, end cell). The pawn is left lying; the site is
+    (> RM_FallenWireShock.CheckInterval, 4 since 2026-10-22), then (shocked?, start cell, end cell). The pawn is left lying; the site is
     cleared at the end."""
     sp = B.call("jawa/spawn_pawn", kindDef="Muffalo", x=cell[0], z=cell[1], faction="none", count=1)
     pid = ((sp.get("pawns") or [{}])[0]).get("id")
