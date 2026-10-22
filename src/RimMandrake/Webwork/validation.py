@@ -242,6 +242,73 @@ def _web_terrain_weather_findings():
     return bad
 
 
+def _siege_findings():
+    """WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE, offline half (parsed from the XML and C#)."""
+    bad = []
+    have = set(SHIPPED)
+    want = [("IncidentDef", "RM_WebworkSiege"), ("ThingDef", "RM_Webwork_SiegeWeb"), ("ThingDef", "RM_Webwork_SiegeDoorWrap"),
+            ("ThingDef", "RM_Webwork_SiegeCocoon"), ("JobDef", "RM_WebSiegeSpin"), ("JobDef", "RM_WebSiegeCocoon"),
+            ("JobDef", "RM_WebSiegeWrapDoor"), ("DutyDef", "RM_WebSiegeSpinDuty"), ("DutyDef", "RM_WebSiegePressDuty"),
+            ("HediffDef", "RM_Webwork_SilkSuffocation")]
+    for ty, n in want:
+        if (ty, n) not in have:
+            bad.append("%s/%s not defined" % (ty, n))
+    if bad:
+        return bad
+    inc = ET.parse(os.path.join(HERE, "Defs", "IncidentDefs", "RM_WebworkSiege.xml")).getroot().find("IncidentDef")
+    if inc.findtext("category") != "ThreatBig" or inc.findtext("workerClass") != "RimMandrake.Webwork.RM_IncidentWorker_WebworkSiege":
+        bad.append("RM_WebworkSiege must be ThreatBig with RM_IncidentWorker_WebworkSiege")
+    if (inc.findtext("canOccurOnAllPlanetLayers") or "").lower() == "true":
+        bad.append("RM_WebworkSiege must stay on the surface layer")
+    root = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_WebworkSiege.xml")).getroot()
+    things = dict((d.findtext("defName"), d) for d in root.findall("ThingDef"))
+    web = things["RM_Webwork_SiegeWeb"]
+    if (web.findtext("building/isEdifice") or "").lower() != "false" or float(web.findtext("fillPercent") or 1) != 0 \
+            or web.findtext("passability") != "Standable":
+        bad.append("RM_Webwork_SiegeWeb must be a Standable non-edifice with fillPercent 0 (trees and items stay)")
+    if not float(web.findtext("statBases/Flammability") or 0) >= 1:
+        bad.append("RM_Webwork_SiegeWeb must burn well (fire is the canon answer)")
+    if web.find("killedLeavings") is not None:
+        bad.append("RM_Webwork_SiegeWeb has killedLeavings: force-broken siege silk would bypass the per-siege thrixweave cap")
+    comps = "|".join(li.get("Class", "") for li in web.findall("comps/li"))
+    if "RM_CompProperties_SiegeSilk" not in comps or web.findtext("tickerType") != "Normal":
+        bad.append("RM_Webwork_SiegeWeb must carry RM_CompProperties_SiegeSilk (capped yield + slick) and tick Normal")
+    if "EmergentSpawn" in comps or "AdhesiveSlick" in comps:
+        bad.append("RM_Webwork_SiegeWeb must not carry the emergent spawn or RM_CompAdhesiveSlick (it would stick the spiders)")
+    if (web.findtext("building/alwaysDeconstructible") or "").lower() != "true":
+        bad.append("RM_Webwork_SiegeWeb must be cuttable with vanilla Deconstruct")
+    wrap, coc = things["RM_Webwork_SiegeDoorWrap"], things["RM_Webwork_SiegeCocoon"]
+    if wrap.findtext("thingClass") != "RimMandrake.Webwork.RM_Building_SiegeDoorWrap" or (wrap.findtext("building/isEdifice") or "").lower() != "false":
+        bad.append("RM_Webwork_SiegeDoorWrap must be a non-edifice RM_Building_SiegeDoorWrap (an edifice would wipe the door)")
+    if coc.findtext("thingClass") != "RimMandrake.Webwork.RM_Building_SiegeCocoon" or (coc.findtext("building/isEdifice") or "").lower() != "false" \
+            or coc.findtext("tickerType") != "Normal":
+        bad.append("RM_Webwork_SiegeCocoon must be a ticking non-edifice RM_Building_SiegeCocoon")
+    for n, d in things.items():
+        tex = d.findtext("graphicData/texPath") or ""
+        if not os.path.isfile(os.path.join(HERE, "Textures", tex + ".png")):
+            bad.append("%s texPath %s has no PNG in this mod" % (n, tex))
+    hed = ET.parse(os.path.join(HERE, "Defs", "HediffDefs", "RM_WebworkSiege_Hediffs.xml")).getroot().find("HediffDef")
+    if hed.findtext("lethalSeverity") != "1":
+        bad.append("RM_Webwork_SilkSuffocation must be lethal at severity 1 (the cocoon adds it at 1)")
+    src = _read(os.path.join("Source", "RM_WebworkSiege.cs"))
+    for cls in ("RM_IncidentWorker_WebworkSiege", "RM_LordJob_WebworkSiege", "RM_JobDriver_SpinSiegeWeb", "RM_Building_SiegeCocoon",
+                "RM_Building_SiegeDoorWrap", "RM_WebworkSiegeDoorPatch", "RM_MapComponent_WebworkSiege", "RM_CompSiegeSilk"):
+        if "class %s" % cls not in src:
+            bad.append("class %s not found in RM_WebworkSiege.cs" % cls)
+    if "RM_WebworkSiegeKernel.Eligibility" not in src or "MeasureShade" not in src:
+        bad.append("the worker does not gate on the kernel's shaded-neighbour eligibility")
+    about = _read(os.path.join("About", "About.xml"))
+    if "<packageId>brrainz.harmony</packageId>" not in about:
+        bad.append("Webwork patches with Harmony but does not declare brrainz.harmony")
+    proj = _read(os.path.join("Source", "RM_Webwork.csproj"))
+    if 'Include="Kernel\\RM_WebworkSiegeKernel.cs"' not in proj:
+        bad.append("Kernel/RM_WebworkSiegeKernel.cs is not in the csproj")
+    st = _read(os.path.join("Source", "SelfTest", "RimMandrakeWebwork.SelfTest.csproj"))
+    if "RM_WebworkSiegeKernel.cs" not in st:
+        bad.append("the siege kernel is not compiled into the fuzz selftest")
+    return bad
+
+
 def static_checks():
     bad = []
     # WEBWORK_HEAT_SHADE_BUILD_1: the biome declares an overhead sun-heat kind (state read lives in the live chain)
@@ -289,6 +356,7 @@ def static_checks():
     bad.extend(_base_port_findings())
     bad.extend(_traction_lance_findings())
     bad.extend(_web_terrain_weather_findings())
+    bad.extend(_siege_findings())
     for cls in ("RM_GenStep_WebworkNest", "RM_CompEggClutchRelay", "RM_CompEmergentSpawnOnDestroy", "RM_BiomeWorker_Webwork",
                 "RM_GenStep_WebworkWeb", "RM_WeatherOverlay_Webfall"):
         if not any(("class %s" % cls) in _read(os.path.join("Source", f)) for f in os.listdir(os.path.join(HERE, "Source")) if f.endswith(".cs")):
@@ -865,6 +933,109 @@ def _build_suite():
         with t.component("sump_drawjoint_study_teaches_the_lance", beyond_toggle=True):
             door(t, "drawjoint", "RUT_PreservedDrawJoint (needs mandrake.rm.thesump loaded)")
 
+    def _sp(t, method, args):
+        # RM_WebworkSiegeProof (WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE): one-string proofs, so args travel ';'-joined like _wp's
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Webwork.RM_WebworkSiegeProof", method=method, args=args.replace("|", ";"))
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    @suite.chain("siege")
+    def siege(t):
+        """WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE (design/RimMandrake/webwork_spider_siege_2026-10-22.md section 8), on the CURRENT
+        map through RM_WebworkSiegeProof. Order matters: the eligibility gate, then a forced fire (test hook on) whose siege the
+        spin and break rows use; break runs last because it kills half the siege. Test pawns and doors are made by the proof."""
+        with t.component("setting_off_refuses", toggle="siegeEnabled"):
+            off, on = _sp(t, "ProofEligibility", "true|false"), _sp(t, "ProofEligibility", "true|true")
+            if _live(t):
+                if not (off.startswith("ELIG") and on.startswith("ELIG")):
+                    _unmeasured(t, "ProofEligibility gave no answer: %r / %r" % (off[:120], on[:120])); return
+                if _field(off, "reason") != "Disabled" or _field(off, "canFire") != "False":
+                    raise ExpectationFailed("siegeEnabled off still lets the siege fire: %s" % off)
+                if _field(on, "reason") != "Eligible" or _field(on, "canFire") != "True":
+                    raise ExpectationFailed("control (on, test hook on) does not let the siege fire: %s" % on)
+        with t.component("unshaded_or_unbordered_map_refuses", beyond_toggle=True):
+            text = _sp(t, "ProofEligibility", "false|true")
+            if _live(t):
+                if not text.startswith("ELIG"):
+                    _unmeasured(t, "ProofEligibility gave no answer: %r" % text[:160]); return
+                if _field(text, "reason") == "Eligible":
+                    _unmeasured(t, "this map really is a shaded Webwork neighbour, so the refusal arm cannot be read here: %s" % text); return
+                if _field(text, "reason") not in ("NotNeighbour", "ShadeUnmeasurable", "NotShaded", "WebworkMapItself") or _field(text, "canFire") != "False":
+                    raise ExpectationFailed("hook off on an ineligible map did not refuse with a named reason: %s" % text)
+        with t.component("fires_and_spawns_awake_ollathrix", toggle="siegeTestIgnoreMapChecks"):
+            text = _sp(t, "ProofFire", "800")
+            if _live(t):
+                if not text.startswith("FIRE"):
+                    _unmeasured(t, "ProofFire gave no answer: %r" % text[:160]); return
+                lords = _arrow(text, "lords")
+                if _field(text, "ok") != "True" or not int(_field(text, "spiders") or 0) > 0 or not lords or lords[1] != lords[0] + 1:
+                    raise ExpectationFailed("a forced fire did not arrive as one siege lord with spiders: %s" % text)
+                if _field(text, "allOllathrix") != "True" or _field(text, "insects") != "True" or _field(text, "dormant") != "0":
+                    raise ExpectationFailed("the siege is not awake RM_Ollathrix of the insect faction: %s" % text)
+        with t.component("spider_spins_a_web_on_an_unexposed_cell", toggle="siegeSpinSpeed", beyond_toggle=True):
+            text = _sp(t, "ProofSpin", "2500")
+            if _live(t):
+                if not text.startswith("SPIN"):
+                    _unmeasured(t, "ProofSpin gave no answer: %r" % text[:160]); return
+                if text.startswith("SPIN noCell") or text.startswith("SPIN noSpider") or text.startswith("SPIN noSiege"):
+                    _unmeasured(t, "no spider with an unexposed reachable cell near it (sun on a map the grid does not shade?): %s" % text); return
+                sp = _arrow(text, "spun")
+                if _field(text, "web") != "True" or _field(text, "tagged") != "True" or not sp or sp[1] != sp[0] + 1:
+                    raise ExpectationFailed("the spider's spin job did not leave one tagged siege web: %s" % text)
+                if _field(text, "exposed") != "False":
+                    raise ExpectationFailed("the spider chose a cell the sun-scald predicate reads exposed: %s" % text)
+        with t.component("siege_web_slicks_others_not_ollathrix", beyond_toggle=True):
+            text = _sp(t, "ProofSlick", "")
+            if _live(t):
+                if not text.startswith("SLICK") or _field(text, "after") is None:
+                    _unmeasured(t, "ProofSlick gave no answer: %r" % text[:160]); return
+                if not float(_field(text, "after")) > float(_field(text, "before") or 0):
+                    raise ExpectationFailed("a colonist standing on siege silk gained no RM_Webwork_Slick: %s" % text)
+                if float(_field(text, "ollathrixAfter") or 0) > 0:
+                    raise ExpectationFailed("an ollathrix stuck in its own silk: %s" % text)
+        with t.component("cut_yield_is_capped_per_siege", toggle="siegeSilkYieldCap", beyond_toggle=True):
+            text = _sp(t, "ProofCut", "30")
+            if _live(t):
+                if not text.startswith("CUT cap"):
+                    _unmeasured(t, "ProofCut gave no answer: %r" % text[:160]); return
+                cap, per, cuts = int(_field(text, "cap")), int(_field(text, "perCut")), int(_field(text, "cuts"))
+                want = min(max(cap, 0), cuts * per)
+                if int(_field(text, "total")) != want or int(_field(text, "ledger")) != want:
+                    raise ExpectationFailed("cutting %d webs did not yield exactly min(cap, cuts x perCut) = %d: %s" % (cuts, want, text))
+                if _field(text, "forceBroken") != "0":
+                    raise ExpectationFailed("siege silk broken by force yielded thrixweave: %s" % text)
+        with t.component("wrapped_door_shut_until_cut", toggle="siegeWrapDoors"):
+            text = _sp(t, "ProofDoor", "")
+            if _live(t):
+                if not text.startswith("DOOR wrapSpawned"):
+                    _unmeasured(t, "ProofDoor gave no answer: %r" % text[:160]); return
+                if _field(text, "wrapSpawned") != "True" or _field(text, "wrappedOpens") != "False" or _field(text, "afterCutOpens") != "True":
+                    raise ExpectationFailed("a wrapped door opened, or stayed shut after the wrap was cut: %s" % text)
+                if _field(text, "controlOpens") != "True" or _field(text, "controlAfter") != "True":
+                    raise ExpectationFailed("the unwrapped control door did not open (the patch leaks): %s" % text)
+        with t.component("cocoon_cut_open_frees_the_colonist", toggle="siegeCocoonDowned"):
+            text = _sp(t, "ProofCocoon", "rescue")
+            if _live(t):
+                if not text.startswith("COCOON made"):
+                    _unmeasured(t, "ProofCocoon gave no answer: %r" % text[:160]); return
+                if _field(text, "made") != "True" or _field(text, "inside") != "True" or _field(text, "spawned") != "False":
+                    raise ExpectationFailed("the downed colonist was not taken into a cocoon: %s" % text)
+                if _field(text, "RESCUE out") != "True" or _field(text, "alive") != "True" or _field(text, "cocoonGone") != "True":
+                    raise ExpectationFailed("Open did not free the colonist alive: %s" % text)
+        with t.component("cocoon_kills_after_the_deadline", toggle="siegeCocoonDeathHours", beyond_toggle=True):
+            text = _sp(t, "ProofCocoon", "deadline")
+            if _live(t):
+                if "DEADLINE" not in text:
+                    _unmeasured(t, "ProofCocoon deadline gave no DEADLINE answer: %r" % text[:200]); return
+                if _field(text, "DEADLINE deadBefore") != "False" or _field(text, "deadAfter") != "True" or _field(text, "cause") != "True":
+                    raise ExpectationFailed("the cocoon did not kill exactly at its deadline with silk suffocation: %s" % text)
+        with t.component("half_lost_breaks_the_siege", toggle="siegeMaxDays", beyond_toggle=True):
+            text = _sp(t, "ProofBreak", "")
+            if _live(t):
+                if not text.startswith("BREAK killed"):
+                    _unmeasured(t, "ProofBreak gave no answer: %r" % text[:160]); return
+                if _field(text, "toil") != "LordToil_ExitMap" or _field(text, "letter") != "True":
+                    raise ExpectationFailed("losing half the spiders did not break the siege with its letter: %s" % text)
+
     return suite
 
 
@@ -1078,9 +1249,72 @@ def mock_lance():
     return ok
 
 
+class _MockSiegeSession(_MockSession):
+    """--mock: the siege chain against a working mod. broken="cap" yields past the cap; "door" leaves a wrapped door
+    openable; "nocell" has no unexposed cell near the spider (must read UNMEASURED, never FAIL)."""
+
+    def __init__(self, broken=None):
+        _MockSession.__init__(self)
+        self.broken, self.lords = broken, 0
+
+    def call(self, tool, **kw):
+        if tool == "jawa/static_call" and kw.get("type") == "RimMandrake.Webwork.RM_WebworkSiegeProof":
+            self.calls.append((tool, kw))
+            m, a = kw.get("method"), re.split(r"[|;]", kw.get("args") or "")
+            r = None
+            if m == "ProofEligibility":
+                hook, on = a[0] == "true", a[1] != "false"
+                reason = "Disabled" if not on else ("Eligible" if hook else "ShadeUnmeasurable")
+                r = "ELIG reason %s | measurable False | sampled 0 | shaded 0 | canFire %s | why x" % (reason, reason == "Eligible")
+            elif m == "ProofFire":
+                self.lords += 1
+                r = "FIRE ok True | spiders 5 | allOllathrix True | insects True | dormant 0 | lords %d->%d | siegeId 1" % (self.lords - 1, self.lords)
+            elif m == "ProofSpin":
+                r = "SPIN noCell | spun 0" if self.broken == "nocell" else "SPIN cell (40,40) | exposed False | ticks 640 | web True | tagged True | spun 0->1"
+            elif m == "ProofSlick":
+                r = "SLICK before 0.000 | after 0.102 | ollathrixAfter 0.000"
+            elif m == "ProofCut":
+                total = 60 if self.broken == "cap" else 40
+                r = "CUT cap 40 | perCut 2 | cuts 30 | total %d | ledger %d | forceBroken 0" % (total, total)
+            elif m == "ProofDoor":
+                r = "DOOR wrapSpawned True | wrappedOpens %s | controlOpens True | afterCutOpens True | controlAfter True" % (self.broken == "door")
+            elif m == "ProofCocoon":
+                head = "COCOON made True | inside True | spawned False"
+                r = head + (" | DEADLINE deadBefore False | deadAfter True | cause True" if a[0] == "deadline"
+                            else " | RESCUE out True | alive True | cocoonGone True")
+            elif m == "ProofBreak":
+                r = "BREAK killed 3 of 5 | toil LordToil_ExitMap | letter True"
+            return {"success": True, "result": r or "?"}
+        return super(_MockSiegeSession, self).call(tool, **kw)
+
+
+def mock_siege():
+    """siege: all 10 PASS on a working mod except the refusal arm (PASS); broken cap / door read FAIL; no spin cell reads UNMEASURED."""
+    from runner import run_suite
+    chains = list(suite.chains)
+    out = {}
+    try:
+        for broken in (None, "cap", "door", "nocell"):
+            suite.chains[:] = [c for c in chains if c[0] == "siege"]
+            res = run_suite(suite, _MockSiegeSession(broken), anchor=(50, 50))
+            out[broken] = {c.get("name"): str(c.get("verdict", "")).upper()
+                           for ch in res.get("chains", []) for c in (ch.get("components") or [])}
+    finally:
+        suite.chains[:] = chains
+    good = out[None]
+    ok = len(good) == 10 and set(good.values()) == {"PASS"}
+    ok = ok and out["cap"].get("cut_yield_is_capped_per_siege") == "FAIL"
+    ok = ok and out["door"].get("wrapped_door_shut_until_cut") == "FAIL"
+    ok = ok and out["nocell"].get("spider_spins_a_web_on_an_unexposed_cell") == "UNMEASURED"
+    print("MOCK siege: %s (good=%s cap=%s door=%s nocell=%s)" % ("PASS" if ok else "FAIL", good,
+          {k: v for k, v in out["cap"].items() if v != "PASS"}, {k: v for k, v in out["door"].items() if v != "PASS"},
+          {k: v for k, v in out["nocell"].items() if v != "PASS"}))
+    return ok
+
+
 def mock_run():
     from runner import run_suite  # modcheck package dir is on sys.path via _UTILS/modcheck
-    harvest_ok = mock_harvest_fog_timeout() and mock_urraveth() and mock_lance()
+    harvest_ok = mock_harvest_fog_timeout() and mock_urraveth() and mock_lance() and mock_siege()
     fake = _MockSession()
     suite.chains[:] = [c for c in suite.chains if c[0] == "web_terrain_weather"]
     res = run_suite(suite, fake, anchor=(50, 50))

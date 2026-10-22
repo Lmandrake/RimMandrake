@@ -35,7 +35,7 @@ Machinery the siege reuses rather than rebuilds:
 
 | need | existing piece |
 |---|---|
-| sticky ground web | `RM_CompAdhesiveSlick` → hediff `RM_Webwork_Slick` (sticky / slicked / locked) |
+| sticky ground web | hediff `RM_Webwork_Slick` (sticky / slicked / locked) and CreatureBehaviors' adhesive settings, the `RM_CompAdhesiveSlick` recipe |
 | sheet-web look | the `RM_Webwork_Web` picture (`Things/Building/Natural/RM_Webwork_Web`) |
 | wrapped-silk look for a cocoon | the urraveth's wrapped limb pile (`RM_Urraveth/RM_Urraveth_LimbPile_Wrapped`) |
 | ranged bind | `RM_Gun_LoomSpit` via `CompTurretGun`, hediff `RM_LoomBound` (already on the race) |
@@ -124,7 +124,7 @@ gets its own letter; the break gets a letter with the counts.
 
 | spun thing | what it does | how you defeat it |
 |---|---|---|
-| **siege web** (`RM_Webwork_SiegeWeb`, a sheet of sticky silk on the ground; passable, non-edifice so trees and items stay) | slows (pathCost 14) and sticks: standing in it applies `RM_Webwork_Slick` (sticky → locked) | **fire** (Flammability 1.6); cut it (vanilla Deconstruct, yields thrixweave, capped); shoot the spinner mid-job |
+| **siege web** (`RM_Webwork_SiegeWeb`, a sheet of sticky silk on the ground; passable, non-edifice so trees and items stay) | slows (pathCost 14) and sticks: standing in it applies `RM_Webwork_Slick` (sticky → locked) to anyone but an ollathrix (its own comp applies it, so the spiders never stick in their own silk) | **fire** (Flammability 1.6); cut it (vanilla Deconstruct, yields thrixweave, capped); shoot the spinner mid-job |
 | **wrapped door** (`RM_Webwork_SiegeDoorWrap`, a silk wrap on the door's cell) | the door opens for no one while the wrap is on it (one Harmony postfix on `Building_Door.PawnCanOpen`, reading only "is a wrap on this cell") | cut it (vanilla Deconstruct, 4 s PROVISIONAL); fire |
 | **cocoon** (`RM_Webwork_SiegeCocoon`, a `Building_Casket` holding a downed colonist) | a downed colonist is wrapped where they fell; after `siegeCocoonDeathHours` (default 24, answer 3) inside, they die | cut them out: right-click **Open**, or the Open designator (4 s); burning or breaking the cocoon also drops them, downed |
 | **ranged bind** (existing loom spit, `RM_LoomBound`) | already in the race | doctors; already built |
@@ -209,17 +209,17 @@ quicktest map, the test hook on):
 
 | row | reads |
 |---|---|
-| `siege.def_resolves` | IncidentDef present, category ThreatBig, the siege worker |
-| `siege.setting_off_refuses` | master off → CanFireNow false; control on (hook on) → true |
-| `siege.unshaded_map_refuses` | hook off on a map the grid cannot answer for → not eligible, reason named |
-| `siege.fires_and_spawns` | forced fire → N>0 `RM_Ollathrix` of the insect faction in one siege lord, none dormant |
-| `siege.spins_a_web` | a spider given a spin job: after its work ticks one `RM_Webwork_SiegeWeb` stands on an unexposed cell, tagged with the siege id |
-| `siege.web_slicks` | a test pawn on a siege web gains `RM_Webwork_Slick` |
-| `siege.cut_yield_capped` | cutting siege webs drops thrixweave until the cap, then nothing; a force-broken web drops nothing |
-| `siege.door_wraps_and_cuts` | wrapped door: PawnCanOpen false; after the wrap is cut, true; an unwrapped control door opens throughout |
-| `siege.cocoon_rescue` | downed colonist → cocoon; Open → pawn out, alive |
-| `siege.cocoon_kills_after_deadline` | cocoon clock run past `siegeCocoonDeathHours` → pawn dead, letter sent |
-| `siege.breaks_on_losses` | kill half → lord in exit toil; break letter present |
+| `defs_resolve` (existing chain) | every new def resolves live, parsed from the XML |
+| `siege.setting_off_refuses` | master off → CanFireNow false, reason Disabled; control on (hook on) → true |
+| `siege.unshaded_or_unbordered_map_refuses` | hook off on an ineligible map → not eligible, reason named (UNMEASURED on a real shaded neighbour) |
+| `siege.fires_and_spawns_awake_ollathrix` | forced fire → one new siege lord, N>0 `RM_Ollathrix` of the insect faction, none dormant |
+| `siege.spider_spins_a_web_on_an_unexposed_cell` | a spider given a spin job on the production finder's cell: real ticks until one tagged `RM_Webwork_SiegeWeb` stands there, on a cell `ExposedAt` reads false |
+| `siege.siege_web_slicks_others_not_ollathrix` | a test colonist on siege silk gains `RM_Webwork_Slick`; an ollathrix on it does not |
+| `siege.cut_yield_is_capped_per_siege` | 30 cuts of one siege's webs yield exactly min(cap, 30 × 2); a force-broken web yields 0 |
+| `siege.wrapped_door_shut_until_cut` | wrapped door: PawnCanOpen false; after the wrap is cut, true; an unwrapped control door opens throughout |
+| `siege.cocoon_cut_open_frees_the_colonist` | downed test colonist → in a cocoon; Open → out, alive, cocoon gone |
+| `siege.cocoon_kills_after_the_deadline` | cocoon clock one tick short: alive; at the deadline: dead, silk suffocation on the body |
+| `siege.half_lost_breaks_the_siege` | kill half → lord in `LordToil_ExitMap`; break letter sent |
 
 Flight is not involved (the ollathrix does not fly); no live test needs the owner present.
 

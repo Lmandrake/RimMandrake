@@ -844,6 +844,82 @@ namespace RimMandrake.Webwork.SelfTest
             return fails;
         }
 
+        // ════════════════════════ siege ════════════════════════
+        // WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE (RM_WebworkSiegeKernel). Independent restatements of the owner's answers and the
+        // spec's rules: shaded-only with fail-closed, the hook skipping only neighbour+shade, counts clamped and monotone, the
+        // spin score's preferences, press/break, the per-siege yield cap under random cut sequences, and the cocoon clock.
+        public static long SiegeEligible, SiegeRefused, SiegeCapHit, SiegeCocoonKills;
+
+        private static List<string> Siege(int n, int seed)
+        {
+            var fails = new List<string>(); var rng = new Random(seed);
+            for (int i = 0; i < n; i++)
+            {
+                Cases++;
+                bool on = rng.Next(4) != 0, hook = rng.Next(5) == 0, ww = rng.Next(8) == 0, nb = rng.Next(3) != 0, meas = rng.Next(4) != 0;
+                int sampled = rng.Next(-5, 3000), shaded = rng.Next(-5, 3200);
+                float min = (float)(rng.NextDouble() * 1.1 - 0.05);
+                SiegeEligibility e = RM_WebworkSiegeKernel.Eligibility(on, hook, ww, nb, meas, sampled, shaded, min);
+                double frac = sampled <= 0 ? 0 : Math.Max(0, Math.Min(shaded, sampled)) / (double)sampled;
+                bool want = on && !ww && (hook || (nb && meas && sampled >= RM_WebworkSiegeKernel.MinShadeSamples && frac >= min - 1e-6));
+                if ((e == SiegeEligibility.Eligible) != want && Math.Abs(frac - min) > 1e-4)
+                    fails.Add($"Eligibility(on={on},hook={hook},ww={ww},nb={nb},meas={meas},{sampled},{shaded},{min}) = {e}, want eligible={want}");
+                if (e == SiegeEligibility.Eligible) SiegeEligible++; else SiegeRefused++;
+                if (!on && e != SiegeEligibility.Disabled) fails.Add("master off but " + e);
+                if (on && ww && e != SiegeEligibility.WebworkMapItself) fails.Add("Webwork map itself but " + e);
+                if (on && !ww && !hook && nb && !meas && e == SiegeEligibility.Eligible) fails.Add("unmeasurable shade let it fire (must fail closed)");
+
+                float pts = (float)(rng.NextDouble() * 20000 - 500), st = (float)(rng.NextDouble() * 3.2);
+                int c = RM_WebworkSiegeKernel.SpiderCount(pts, st), c2 = RM_WebworkSiegeKernel.SpiderCount(pts + (float)rng.NextDouble() * 500, st);
+                int hi = Math.Max(2, (int)Math.Round(8 * Math.Max(0.05, st), MidpointRounding.AwayFromZero));
+                if (c < 2 || c > hi) fails.Add($"SpiderCount({pts},{st}) = {c} outside [2,{hi}]");
+                if (c2 < c) fails.Add($"SpiderCount not monotone in points: {c} then {c2}");
+
+                float sp = (float)(rng.NextDouble() * 4);
+                int t = RM_WebworkSiegeKernel.SpinTicks(sp), tf = RM_WebworkSiegeKernel.SpinTicks(sp + 0.5f);
+                if (t < RM_WebworkSiegeKernel.MinSpinTicks || tf > t) fails.Add($"SpinTicks({sp}) = {t}, faster {tf}");
+
+                float d = (float)(rng.NextDouble() * 200), ds = (float)(rng.NextDouble() * 9);
+                int w = rng.Next(0, 9), a = rng.Next(0, 9);
+                float s0 = RM_WebworkSiegeKernel.SpinScore(d, ds, w, a);
+                if (RM_WebworkSiegeKernel.SpinScore(d - 1f, ds, w, a) < s0 && d >= 1f) fails.Add("nearer the colony scored lower");
+                if (RM_WebworkSiegeKernel.SpinScore(d, ds, w + 1, a) < s0) fails.Add("beside more web scored lower");
+                if (RM_WebworkSiegeKernel.SpinScore(d, ds, w, a + 1) < s0) fails.Add("beside more anchors scored lower");
+
+                bool near = rng.Next(5) == 0; int spun = rng.Next(0, 500), since = rng.Next(0, 300000);
+                bool press = RM_WebworkSiegeKernel.ShouldPress(near, spun, since);
+                if (press != (near || spun >= RM_WebworkSiegeKernel.PressAfterSpun || since >= RM_WebworkSiegeKernel.PressAfterTicks)) fails.Add("ShouldPress mismatch");
+                float days = (float)(rng.NextDouble() * 10);
+                if (RM_WebworkSiegeKernel.TimedOut(since, days) != (since >= (int)(Math.Max(0.1f, days) * 60000))) fails.Add("TimedOut mismatch");
+                if (RM_WebworkSiegeKernel.MaySpinMore(spun) != (spun < RM_WebworkSiegeKernel.MaxSpunPerSiege)) fails.Add("MaySpinMore mismatch");
+
+                // the farm guard: a random cut sequence against one siege's ledger never yields more than the cap
+                int cap = rng.Next(-3, 120), per = rng.Next(0, 6), ledger = 0, cuts = rng.Next(0, 120);
+                for (int k = 0; k < cuts; k++)
+                {
+                    Steps++;
+                    int g = RM_WebworkSiegeKernel.YieldGranted(ledger, cap, per);
+                    if (g < 0 || g > Math.Max(0, per)) { fails.Add($"YieldGranted({ledger},{cap},{per}) = {g}"); break; }
+                    ledger += g;
+                }
+                if (ledger > Math.Max(0, cap)) fails.Add($"siege yielded {ledger} > cap {cap}");
+                if (cap > 0 && per > 0 && cuts * per >= cap && ledger != cap) fails.Add($"enough cuts ({cuts}x{per}) but yielded {ledger} of cap {cap}");
+                if (cap > 0 && per > 0 && ledger == cap) SiegeCapHit++;
+
+                float hours = (float)(rng.NextDouble() * 80);
+                int dt = RM_WebworkSiegeKernel.CocoonDeathTicks(hours), inside = rng.Next(0, 250000);
+                bool kills = RM_WebworkSiegeKernel.CocoonKills(inside, hours);
+                if (kills != (inside >= dt)) fails.Add("CocoonKills mismatch");
+                if (RM_WebworkSiegeKernel.CocoonKills(dt - 1, hours) || !RM_WebworkSiegeKernel.CocoonKills(dt, hours)) fails.Add("cocoon deadline off by one");
+                if (Math.Abs(dt - Math.Max(2500, Math.Round(Math.Max(1f, hours) * 2500))) > 1) fails.Add($"CocoonDeathTicks({hours}) = {dt}");
+                if (kills) SiegeCocoonKills++;
+                if (fails.Count > 20) break;
+            }
+            // the shipped default: a day
+            if (RM_WebworkSiegeKernel.CocoonDeathTicks(24f) != 60000) fails.Add("shipped 24 h is not one game day");
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -857,6 +933,7 @@ namespace RimMandrake.Webwork.SelfTest
                 ("tables", () => Tables(Math.Max(1, N(100)), S(1))),
                 ("webnet", () => WebNet(N(3000), S(1))),
                 ("resale", () => Resale(N(4000), S(1))),
+                ("siege", () => Siege(N(6000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -888,6 +965,11 @@ namespace RimMandrake.Webwork.SelfTest
             {
                 Console.WriteLine($"resale reached: stocked {ResaleStocked}, refused {ResaleRefused}");
                 if (!oneSeed.HasValue && scale >= 1 && (ResaleStocked == 0 || ResaleRefused == 0)) { Console.WriteLine("FAIL resale fuzz never reached a path (blind)"); ok = false; }
+            }
+            if (only == null || only == "siege")
+            {
+                Console.WriteLine($"siege reached: eligible {SiegeEligible}, refused {SiegeRefused}, cap reached {SiegeCapHit}, cocoon kills {SiegeCocoonKills}");
+                if (!oneSeed.HasValue && scale >= 1 && (SiegeEligible == 0 || SiegeRefused == 0 || SiegeCapHit == 0 || SiegeCocoonKills == 0)) { Console.WriteLine("FAIL siege fuzz never reached a path (blind)"); ok = false; }
             }
             Console.WriteLine($"webwork fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;

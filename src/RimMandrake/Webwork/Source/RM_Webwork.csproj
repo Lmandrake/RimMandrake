@@ -10,9 +10,9 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: every class here is a plain engine extension point (BiomeWorker,
-    ModSettings, ThingComp — RM_CompEmergentSpawnOnDestroy, moved in by
-    SHOKK_SKIN_SHRINK_1 from mandrake.rsw.shokk).
+    One Harmony patch (WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE: a siege-wrapped door
+    opens for no one, RM_WebworkSiege.cs); everything else is a plain engine
+    extension point (BiomeWorker, ModSettings, ThingComp, IncidentWorker, LordJob).
   -->
 
   <PropertyGroup>
@@ -55,6 +55,9 @@
     <Compile Include="RM_GenStep_WebworkWeb.cs" />
     <Compile Include="RM_WebworkArt.cs" />
     <Compile Include="Kernel\RM_WebworkKernel.cs" />
+    <Compile Include="Kernel\RM_WebworkSiegeKernel.cs" />
+    <Compile Include="RM_WebworkSiege.cs" />
+    <Compile Include="RM_WebworkSiegeProof.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,6 +67,16 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE: the siege reads the sun-scald predicate and the shade grid (hard modDependency
+         on mandrake.rm.creaturebehaviors, already declared) and patches Building_Door with Harmony (brrainz.harmony, declared). -->
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine">

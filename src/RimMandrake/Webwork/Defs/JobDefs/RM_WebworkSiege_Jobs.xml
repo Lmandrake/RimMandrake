@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE: the siege spiders' three jobs (RM_WebworkSiege.cs). Each makes its thing only when
+     the work toil finishes; an interrupted job makes nothing. -->
+<Defs>
+
+  <JobDef>
+    <defName>RM_WebSiegeSpin</defName>
+    <driverClass>RimMandrake.Webwork.RM_JobDriver_SpinSiegeWeb</driverClass>
+    <reportString>spinning silk.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_WebSiegeCocoon</defName>
+    <driverClass>RimMandrake.Webwork.RM_JobDriver_SiegeCocoon</driverClass>
+    <reportString>wrapping TargetA in silk.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_WebSiegeWrapDoor</defName>
+    <driverClass>RimMandrake.Webwork.RM_JobDriver_SiegeWrapDoor</driverClass>
+    <reportString>wrapping TargetA in silk.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+</Defs>

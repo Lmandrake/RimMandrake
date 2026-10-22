@@ -8,12 +8,18 @@
   </supportedVersions>
   <modDependencies>
     <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
       <packageId>mandrake.rm.creaturebehaviors</packageId>
       <displayName>RimMandrake: Creature Behaviors</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>mandrake.rm.creaturebehaviors</li>
   </loadAfter>
   <description>WEBWORK_RM_MOD_BUILD_1 (Phase A of design/RimMandrake/biome_mod_architecture.md,
@@ -55,6 +61,12 @@ Ships in v1:
     Wildsteam Clan's own legal bounty for destroying delivered eggs (S6 ruling 2) ships as a
     separate small mod, mandrake.rut.wildsteameggbounty (campaign-tier: it hard-depends on
     RUT_Jawa_WildsteamClan, so it cannot live in this franchise-free mod).
+  - The Webwork siege (WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE, owner order 2026-10-22): a big threat
+    that sends 2-8 awake ollathrix onto a shaded home map bordering the Webwork. They spin sticky
+    silk toward the colony (each web a spider's own job), wrap doors shut, cocoon the downed (who
+    die after a day unless cut out) and leave after losses or three days. Cut siege silk yields
+    thrixweave, capped per siege. Its own Mod Settings section. One Harmony postfix (a wrapped door
+    opens for no one), so Harmony is a declared dependency.
 
 NOT in this mod (scoped to later items, not deferred sub rosa): the black-market Cartel
 trader/quest layer and tradeability-All patch (WEBWORK_EGG_BLACKMARKET_BUILD_1, S5 rulings), the

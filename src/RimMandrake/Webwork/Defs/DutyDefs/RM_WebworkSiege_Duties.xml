@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE: the two duties of RM_LordJob_WebworkSiege (RM_LordToil_WebworkSiege). The ollathrix
+  is an animal; the vanilla Animal think tree runs the LordDuty subtree, so these reach it. Vanilla job givers only, plus
+  RM_JobGiver_WebworkSiegeWork. Radii are PROVISIONAL.
+
+  Spin:  fight what comes close, spin, else wait near the newest web (the duty focus).
+  Press: cocoon the downed and wrap doors, fight, spin, trash what is close, go for the nearest enemy.
+-->
+<Defs>
+
+  <DutyDef>
+    <defName>RM_WebSiegeSpinDuty</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="JobGiver_AIFightEnemies">
+          <targetAcquireRadius>8</targetAcquireRadius>
+          <targetKeepRadius>12</targetKeepRadius>
+        </li>
+        <li Class="RimMandrake.Webwork.RM_JobGiver_WebworkSiegeWork">
+          <spin>true</spin>
+        </li>
+        <li Class="JobGiver_WanderNearDutyLocation">
+          <wanderRadius>6</wanderRadius>
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+  <DutyDef>
+    <defName>RM_WebSiegePressDuty</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.Webwork.RM_JobGiver_WebworkSiegeWork">
+          <cocoon>true</cocoon>
+          <wrapDoors>true</wrapDoors>
+          <spin>false</spin>
+        </li>
+        <li Class="JobGiver_AIFightEnemies">
+          <targetAcquireRadius>20</targetAcquireRadius>
+          <targetKeepRadius>28</targetKeepRadius>
+        </li>
+        <li Class="RimMandrake.Webwork.RM_JobGiver_WebworkSiegeWork">
+          <spin>true</spin>
+        </li>
+        <li Class="JobGiver_AITrashColonyClose" />
+        <li Class="JobGiver_AIGotoNearestHostile" />
+        <li Class="JobGiver_WanderNearDutyLocation">
+          <wanderRadius>6</wanderRadius>
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+</Defs>

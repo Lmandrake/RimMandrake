@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE: the cause of death of a colonist left in a siege cocoon past
+     siegeCocoonDeathHours (owner's card answer 3, 2026-10-22: "dies after a day"). Added at full severity by
+     RM_Building_SiegeCocoon.CheckClock, so the death reads its own cause on the corpse. -->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_Webwork_SilkSuffocation</defName>
+    <label>silk suffocation</label>
+    <description>Wrapped too long in an ollathrix cocoon: the silk closed over mouth and nose.</description>
+    <hediffClass>Hediff</hediffClass>
+    <defaultLabelColor>(0.85, 0.85, 0.75)</defaultLabelColor>
+    <lethalSeverity>1</lethalSeverity>
+    <isBad>true</isBad>
+  </HediffDef>
+
+</Defs>

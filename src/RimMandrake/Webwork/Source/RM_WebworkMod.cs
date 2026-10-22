@@ -62,6 +62,18 @@ namespace RimMandrake.Webwork
 		public static bool webfallEnabled = true;
 		public static float webfallCommonality = 6f;
 
+		// WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE: the siege (RM_WebworkSiege.cs). Numbers PROVISIONAL (2026-10-03 ruling).
+		public static bool siegeEnabled = true;
+		public static float siegeStrength = 1f;
+		public static float siegeSpinSpeed = 1f;
+		public static float siegeMaxDays = 3f;
+		public static bool siegeWrapDoors = true;
+		public static bool siegeCocoonDowned = true;
+		public static float siegeCocoonDeathHours = 24f;
+		public static int siegeSilkYieldCap = 40;
+		public static float siegeMinShadedFraction = 0.3f;
+		public static bool siegeTestIgnoreMapChecks = false;
+
 		public override void ExposeData()
 		{
 			base.ExposeData();
@@ -85,6 +97,16 @@ namespace RimMandrake.Webwork
 			Scribe_Values.Look(ref localWebDensityMultiplier, "localWebDensityMultiplier", 1f);
 			Scribe_Values.Look(ref webfallEnabled, "webfallEnabled", true);
 			Scribe_Values.Look(ref webfallCommonality, "webfallCommonality", 6f);
+			Scribe_Values.Look(ref siegeEnabled, "siegeEnabled", true);
+			Scribe_Values.Look(ref siegeStrength, "siegeStrength", 1f);
+			Scribe_Values.Look(ref siegeSpinSpeed, "siegeSpinSpeed", 1f);
+			Scribe_Values.Look(ref siegeMaxDays, "siegeMaxDays", 3f);
+			Scribe_Values.Look(ref siegeWrapDoors, "siegeWrapDoors", true);
+			Scribe_Values.Look(ref siegeCocoonDowned, "siegeCocoonDowned", true);
+			Scribe_Values.Look(ref siegeCocoonDeathHours, "siegeCocoonDeathHours", 24f);
+			Scribe_Values.Look(ref siegeSilkYieldCap, "siegeSilkYieldCap", 40);
+			Scribe_Values.Look(ref siegeMinShadedFraction, "siegeMinShadedFraction", 0.3f);
+			Scribe_Values.Look(ref siegeTestIgnoreMapChecks, "siegeTestIgnoreMapChecks", false);
 		}
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -259,6 +281,38 @@ namespace RimMandrake.Webwork
                 list.Label("Webfall commonality: " + webfallCommonality.ToString("0.0")
                     + " (against Clear 50, Fog 5, Rain 5 in the same biome; shipped default 6)");
                 webfallCommonality = list.Slider(webfallCommonality, 0f, 30f);
+                list.GapLine();
+            }
+
+            if (Group(list, "The siege (affects maps next to the Webwork)", RimMandrake.Shared.SettingScope.Now, new[] { "siegeEnabled", "siegeStrength",
+                    "siegeSpinSpeed", "siegeMaxDays", "siegeWrapDoors", "siegeCocoonDowned", "siegeCocoonDeathHours", "siegeSilkYieldCap",
+                    "siegeMinShadedFraction", "siegeTestIgnoreMapChecks" }))
+            {
+                list.CheckboxLabeled("The ollathrix lay siege to shaded neighbouring maps", ref siegeEnabled,
+                    "AFFECTS MAPS NEXT TO THE WEBWORK. On: a big threat may send ollathrix out of the Webwork onto a home map whose "
+                  + "tile borders it, if enough of that map's open ground is shaded (they cannot cross sun). They spin sticky silk "
+                  + "toward the colony, wrap doors shut and cocoon the downed. Off: the siege never fires; nothing else changes.");
+                list.Label("Siege strength: " + siegeStrength.ToString("0.00") + "x spiders per threat point (shipped 1.00; 2-8 spiders at 1.00)");
+                siegeStrength = list.Slider(siegeStrength, 0.25f, 3f);
+                list.Label("Spinning speed: " + siegeSpinSpeed.ToString("0.00") + "x (shipped 1.00 = 10 seconds of game time per web; PROVISIONAL)");
+                siegeSpinSpeed = list.Slider(siegeSpinSpeed, 0.25f, 3f);
+                list.Label("Longest siege: " + siegeMaxDays.ToString("0.0") + " days before they leave (shipped 3; PROVISIONAL)");
+                siegeMaxDays = list.Slider(siegeMaxDays, 0.5f, 10f);
+                list.CheckboxLabeled("Spiders wrap doors shut", ref siegeWrapDoors,
+                    "On: a spider can wrap a colony door in silk; it opens for no one until a colonist cuts the wrap (Deconstruct) or it "
+                  + "burns. Off: they never wrap doors (wraps already spun stay until cut).");
+                list.CheckboxLabeled("Downed colonists are cocooned", ref siegeCocoonDowned,
+                    "On: a spider wraps a downed colonist in a cocoon where they fell; cut them out with Open before the time below runs "
+                  + "out, or they die inside. Off: downed colonists are left as ordinary downed.");
+                list.Label("Cocooned colonist dies after: " + siegeCocoonDeathHours.ToString("0") + " hours (shipped 24)");
+                siegeCocoonDeathHours = list.Slider(siegeCocoonDeathHours, 6f, 72f);
+                list.Label("Thrixweave a colony can cut from one siege: " + siegeSilkYieldCap + " (shipped 40, 2 per web cut; 0 = none; PROVISIONAL)");
+                siegeSilkYieldCap = Mathf.RoundToInt(list.Slider(siegeSilkYieldCap, 0f, 200f));
+                list.Label("Shade a map needs: " + siegeMinShadedFraction.ToStringPercent() + " of its open ground (shipped 30%; PROVISIONAL)");
+                siegeMinShadedFraction = list.Slider(siegeMinShadedFraction, 0.05f, 0.9f);
+                list.CheckboxLabeled("Test hook: ignore the Webwork-neighbour and shade checks", ref siegeTestIgnoreMapChecks,
+                    "DEV TESTING ONLY. On: the siege may fire on any home map that is not itself a Webwork map, so it can be tested on a "
+                  + "quicktest map. Leave off in play: off is the shipped behaviour.");
                 list.GapLine();
             }
 

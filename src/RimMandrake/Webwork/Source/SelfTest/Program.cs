@@ -1,5 +1,5 @@
 // Webwork offline fuzz entry. Knobs (forwarded by selftest_webwork_fuzz.py): --fuzz-scale F (multiplies every case
-// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (urraveth|relay|tables|webnet).
+// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (urraveth|relay|tables|webnet|resale|siege).
 using System;
 
 namespace RimMandrake.Webwork.SelfTest
