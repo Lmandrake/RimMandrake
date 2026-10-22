@@ -181,8 +181,16 @@ def main(argv):
     ap.add_argument("--biome")
     a = ap.parse_args(argv)
     sheets, n = seed(*load())
+    if not n["rosters"]:
+        print("REFUSED: 0 RM_ExplosiveGrowthRosterDef found under src/ - every plant would seed as Vanilla (UNMEASURED, not a result)",
+              file=sys.stderr)
+        return 2
     if a.biome:
-        sheets = {a.biome: sheets.get(a.biome, {"rows": []})}
+        if a.biome not in sheets:
+            print("REFUSED: %r is not one of our biomes with a plant list (%d known): UNMEASURED, not an empty sheet"
+                  % (a.biome, len(sheets)), file=sys.stderr)
+            return 2
+        sheets = {a.biome: sheets[a.biome]}
     if a.out:
         json.dump(sheets, open(a.out, "w", encoding="utf-8"), indent=1)
     rows = [r for s in sheets.values() for r in s["rows"]]
