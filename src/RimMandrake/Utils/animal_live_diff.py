@@ -490,6 +490,8 @@ def main():
                  "Produce a dump with src/RimMandrake/RimDefDump.")
 
     live_data, manifest = load_live(a.live)
+    if not live_data.get("animals"):
+        sys.exit("UNMEASURED: %s holds no animals - every offline animal would read as 'offline only'." % a.live)
     offline_rows, offline_pairs = load_offline(a.offline)
     rows, bio_rows, stats = diff(live_data, offline_rows, offline_pairs)
 
