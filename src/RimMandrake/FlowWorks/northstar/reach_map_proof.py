@@ -117,7 +117,8 @@ def pair_verdict(subject, control=None, want_subject=False, want_control=True):
 
 def has_bit(kv, bit):
     try:
-        return (int(kv.get("cls")) & bit) != 0
+        c = int(kv.get("cls"))
+        return c >= 0 and (c & bit) != 0      # cls=-1: not in scope (live 2026-10-21: -1 read as every bit set)
     except (TypeError, ValueError):
         return False
 
@@ -181,7 +182,9 @@ def main(argv=None):
         print("%-28s %-10s %-6s %s" % (rid, st, cls, json.dumps(det, default=str)[:300]), flush=True)
         save()
 
-    def static(ty, method, arg=""):
+    def static(ty, method, arg="-"):
+        # HARNESS (live 2026-10-21): args="" makes static_call look for a 0-parameter overload ("No public static ProofReach
+        # with 0 params"); the one-string-arg proofs need a non-empty arg, ignored by them.
         r = B.call("jawa/static_call", type=ty, method=method, args=arg) or {}
         txt = str(r.get("result") or r.get("message") or r.get("error") or "")
         return (parse(txt) if r.get("success") is True and not txt.startswith("REFUSED") else {}), txt
@@ -311,7 +314,13 @@ def main(argv=None):
             B.call("jawa/set_terrain_batch", ops=";".join("WaterDeep:%d,%d,1,1" % P(*c) for c in ring((0, 0), 2, 3)))
             tried = []
             chosen = None
-            for kind, fac in (("Colonist", "player"), ("Muffalo", "player"), ("Chicken", "player")):
+            SWIM = "RimMandrake.FlowWorks.Swimming.RM_SwimSettings"
+            hs = (B.call("jawa/mod_settings_field", typeName=SWIM, action="get", field="humanlikesSwim") or {}).get("value")
+            # live 2026-10-21: a Colonist, a Muffalo and a Chicken all swim; RM_SwimMath.Classify sinks mechanoids
+            # (mechanoidsSink) and, with humanlikesSwim off, humanlikes. A mech first, then a colonist with that setting off.
+            for kind, fac, sink_humans in (("Mech_Militor", "player", False), ("Colonist", "player", True)):
+                if sink_humans:
+                    B.call("jawa/mod_settings_field", typeName=SWIM, action="set", field="humanlikesSwim", value="False")
                 pid = spawn(P(6, 0), kind=kind, faction=fac, draft=(kind == "Colonist"))
                 if not pid:
                     continue
@@ -321,6 +330,8 @@ def main(argv=None):
                 if has_bit(kv, NONSWIMMER_BIT):
                     chosen = (kv, txt)
                     break
+            if hs is not None:
+                B.call("jawa/mod_settings_field", typeName=SWIM, action="set", field="humanlikesSwim", value=str(hs))
             if chosen is None:
                 row("REACH_NONSWIMMER_MOAT", "UNMEASURED", "SITE", {"why": "no spawned pawn reads as a non-swimmer", "tried": tried})
             else:
