@@ -1387,8 +1387,8 @@ def main(argv=None, bridge=None):
                 if count("RM_Bucket_FreshWater"):
                     break
             bad = []
-            if "RM_GatherSnow" not in seen and not snowb:
-                bad.append("no RM_GatherSnow and no RM_BucketSnow with snow beside the bucket (jobs %s)" % seen)
+            if not snowb:     # a gather job SEEN but no snow bucket made in 3,000 ticks leaves the melt arm untested: not a PASS
+                bad.append("no RM_BucketSnow with snow beside the bucket in 3,000 ticks (jobs %s)" % seen)
             if snowb and melted is None:
                 bad.append("the bucket of snow did not melt into water within 7,000 ticks at %s C" % temp.get("temperature"))
             if "RM_GatherSnow" in seen2:
