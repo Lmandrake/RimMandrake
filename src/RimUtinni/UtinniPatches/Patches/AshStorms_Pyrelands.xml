@@ -84,9 +84,8 @@
              (Defs/BiomeDefs/Pyrelands.xml — Clear/DryThunderstorm/
              RM_FE_Weather_AshFall/RM_FE_Weather_Cinderfall/RM_FE_BlackRain),
              so this operation is retargeted rather than duplicated: adding
-             Alpha Biomes' AB_VolcanicAsh here layers the donor's own named
-             "ash storm" on top of that table for players still on
-             ZBiome_Grasslands before the repaint lands. -->
+             RM_VolcanicAsh (our port of Alpha Biomes' AB_VolcanicAsh) here
+             layers the named "ash storm" on top of that table. -->
         <li Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/baseWeatherCommonalities</xpath>
           <value>
