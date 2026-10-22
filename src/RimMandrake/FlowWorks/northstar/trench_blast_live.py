@@ -82,6 +82,9 @@ def main():
             if pid:
                 B.call("jawa/set_draft", pawnId=pid, drafted=True)
             ids[nm] = pid
+        if not all(ids.values()):
+            row("TRENCH_no_blast_cover", "UNMEASURED", "HARNESS", {"why": "a victim did not spawn", "ids": ids})
+            return 2
         B.ticks(70)                                # the pocket grid sees the dug squares
         t0 = (B.call("rimworld/get_game_info") or {}).get("ticksGame")
         for nm, c in (("trench", tc), ("open", oc)):

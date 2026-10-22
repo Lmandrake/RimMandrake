@@ -94,6 +94,9 @@ def main():
     probe = B.call("jawa/spawn_pawn", kindDef="Mercenary_Gunner", x=0, z=0, faction="?", count=1, _answer=True) or {}
     fac = next((f["def"] for f in (probe.get("details") or {}).get("available") or []
                 if f.get("hostile") and str(f.get("def")).startswith("Pirate")), None)
+    if not fac:       # spawn_pawn with faction None would put raiders of no hostile faction on the map
+        both("UNMEASURED", "SITE", {"why": "no hostile Pirate faction", "colonists": cols})
+        return 2
     raiders = []
     for k in range(5):
         r = B.call("jawa/spawn_pawn", kindDef="Mercenary_Gunner", x=cx + 30, z=cz - 2 + k, faction=fac, count=1) or {}
@@ -108,6 +111,7 @@ def main():
     # siege. The trench rules are switched OFF across the lord swap (restored right after), so every trench job sampled
     # later was given to a SIEGE pawn.
     RTS = "RimMandrake.FlowWorks.RM_RaiderTrenchSettings"
+    trench0 = (B.call("jawa/mod_settings_field", typeName=RTS, action="get", field="raiderTrenchEnabled") or {}).get("value")
     B.call("jawa/mod_settings_field", typeName=RTS, action="set", field="raiderTrenchEnabled", value="False")
     B.call("jawa/lord_assault_spawn", pawns=",".join(raiders))
     lords = (B.call("jawa/lord_pawn_move", action="list") or {}).get("lords") or []
@@ -116,7 +120,7 @@ def main():
     sj = B.call("jawa/lord_set_job", lordIndex=lidx, lordJob="LordJob_Siege",
                 args="faction=%s;siegeSpot=%d,%d;blueprintPoints=300" % (fac, cx + 22, cz)) or {}
     step(2)
-    B.call("jawa/mod_settings_field", typeName=RTS, action="set", field="raiderTrenchEnabled", value="True")
+    B.call("jawa/mod_settings_field", typeName=RTS, action="set", field="raiderTrenchEnabled", value="True" if trench0 is None else str(trench0))
     lords2 = (B.call("jawa/lord_pawn_move", action="list") or {}).get("lords") or []
     res["lords"] = {"before": lords, "setJob": str(sj)[:400], "after": lords2}
     dec = {}

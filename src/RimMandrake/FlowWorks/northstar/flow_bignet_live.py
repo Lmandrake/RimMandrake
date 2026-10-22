@@ -6,8 +6,10 @@ source, and its pulse cost is timed; that timing decides whether the default cap
 
 Resumable in phases (each call stays under the 600 s bridge-call budget; progress is kept in <state.json>):
   site   fresh map (with --fresh-map), wetnessCutoffEnabled OFF for the run (restored by --phase pulse at the end), a
-         SIZE x SIZE plot at (8, 20) cleared to Soil, a 3-wide WaterDeep strip on the map edge x = 0..2 alongside it (an
-         edge-touching inland body is limitless by the old rule: the ONE source).
+         SIZE x SIZE plot at (12, 20) cleared to Soil, a 3-wide WaterDeep strip on the map edge x = 0..2 and a one-square
+         connector row across the sink band (an edge-touching body is limitless by the old rule: the ONE source). With
+         --inland the plot is at (106, 90) beside an inland moving-water patch and the setting is left alone; the choice is
+         kept in <state.json>, so the dig and pulse phases need no --inland.
   dig    digs the plot 2 notches (1 m), dry, row by row from the source side; resumes where it stopped.
   pulse  jawa/flowworks_pulse in batches of up to 500 (no game ticks), reading the far corner square and the plot's
          excavation summary; stops when the far corner is wet or --max-seconds runs out. The pulse cost is the tool's
@@ -43,6 +45,8 @@ def main():
     V = PH.V
     B = PH.PB()
     st = json.load(open(a.state)) if os.path.exists(a.state) else {"script": "flow_bignet_live.py", "rows": []}
+    if a.phase != "site" and "inland" in st:
+        a.inland = st["inland"]          # a dig/pulse call without --inland would otherwise address the wrong plot
 
     def save():
         with open(a.state + ".tmp", "w", encoding="utf-8") as f:
@@ -65,7 +69,10 @@ def main():
             B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
         ok, _ = V._wait_playing(B, leave_s=0)
         st["site_calm"] = V.site_calm(B)
-        st["wetness0"] = (B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field="wetnessCutoffEnabled") or {}).get("value")
+        # read the setting only once: a re-run of this phase would otherwise record the already-OFF value as the original
+        if "wetness0" not in st:
+            st["wetness0"] = (B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field="wetnessCutoffEnabled") or {}).get("value")
+        st["inland"] = a.inland
         if not a.inland:
             B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="wetnessCutoffEnabled", value="False")
         rect = (0, oz - 2, ox + n + 2, n + 4) if not a.inland else (96, oz - 2, n + 14, n + 4)
@@ -123,16 +130,17 @@ def main():
     total = sum(b["pulses"] for b in batches)
     cells = st["size"] ** 2
     per = [b["msPerPulse"] for b in batches if b.get("msPerPulse")]
-    if wet or time.time() - t_start >= a.max_seconds:
-        st["rows"] = [r_ for r_ in st["rows"] if not r_["id"].startswith("FLOW_BIGNET")]
-        st["rows"].append({"id": "FLOW_BIGNET_WETS_END_TO_END", "status": "PASS" if wet and cells > 6000 else "UNMEASURED" if not wet else "FAIL",
-                           "class": "MOD" if wet else "HARNESS", "item": ITEM,
-                           "detail": {"cells": cells, "pulsesToFarCorner": total if wet else None, "pulsesRun": total, "farCorner": far}})
-        st["rows"].append({"id": "FLOW_BIGNET_PULSE_COST", "status": "MEASURED", "class": "MOD", "item": ITEM,
-                           "detail": {"msPerPulse": per, "meanMsPerPulse": (sum(per) / len(per)) if per else None,
-                                      "note": "flowworks_pulse wall time incl. the bridge round trip, per 500-pulse batch"}})
-        B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="wetnessCutoffEnabled",
-               value=str(st.get("wetness0") or "True"))
+    # every way out of the loop (wet, out of time, a batch that ran no pulses) records the rows and restores the setting
+    st["rows"] = [r_ for r_ in st["rows"] if not r_["id"].startswith("FLOW_BIGNET")]
+    st["rows"].append({"id": "FLOW_BIGNET_WETS_END_TO_END", "status": "PASS" if wet and cells > 6000 else "UNMEASURED" if not wet else "FAIL",
+                       "class": "MOD" if wet else "HARNESS", "item": ITEM,
+                       "detail": {"cells": cells, "pulsesToFarCorner": total if wet else None, "pulsesRun": total, "farCorner": far,
+                                  "dugRows": st.get("dugRows")}})
+    st["rows"].append({"id": "FLOW_BIGNET_PULSE_COST", "status": "MEASURED", "class": "MOD", "item": ITEM,
+                       "detail": {"msPerPulse": per, "meanMsPerPulse": (sum(per) / len(per)) if per else None,
+                                  "note": "flowworks_pulse wall time incl. the bridge round trip, per 500-pulse batch"}})
+    B.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="wetnessCutoffEnabled",
+           value="True" if st.get("wetness0") is None else str(st["wetness0"]))
     save()
     print(json.dumps(st["rows"][-2:] if st["rows"] else {}, default=str)[:800])
     return 0

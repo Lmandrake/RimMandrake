@@ -171,7 +171,7 @@ def main():
     det["controlRescuedAt"] = control_moved
     no_rescue_here = control_moved is None
     row("RESCUE_COLONIST_OUT", "UNMEASURED" if (dead or (no_rescue_here and out_at is None)) else ("PASS" if out_at is not None else "FAIL"),
-        "SITE" if (dead or no_rescue_here) else "MOD", det)
+        "SITE" if (dead or (no_rescue_here and out_at is None)) else "MOD", det)
     for pid in [victim, control] + rescuers:
         if pid:
             B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish", _answer=True)

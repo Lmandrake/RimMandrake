@@ -8,8 +8,8 @@ Scene (plot from --origin, default 90,200; 10 x 8 cleared + read back): a 4 m pi
 drafted colonist standing on the jetty square (1, 2).
 PROVE the player's own route: rimworld/select_pawn, rimworld/list_selected_gizmos, the "Jump into pit" gizmo
       (RM_Patch_Pawn_JumpIntoPitGizmo) executed, its confirmation accepted (rimworld/press_accept), 240 ticks.
-EXPECT the colonist ends on a pit floor square and the trap recorded a descent (RM_NorthstarProofs.ProofTrap pawn read
-      or the excavation pit report's recentDescents).
+EXPECT the colonist ends on a pit square AND the excavation pit report's recentDescents holds an entry for him. Both are
+      required: the jetty square (1, 2) is itself a pit square, so a pawn who never jumped also 'ends in the pit' by cell.
 LIES  a gizmo that is absent (no open edge, railings still on) -> FAIL with the gizmo list; a confirmation never accepted
       leaves the pawn on the deck -> recorded.
 """
@@ -103,12 +103,16 @@ def main():
     rep = B.call("jawa/flowworks_pit_report", x=P(2, 2)[0], z=P(2, 2)[1]) or {}
     desc = [str(d) for d in rep.get("recentDescents") or [] if str(d).startswith(str(pid) + "@")]
     det.update(execute=str(ex)[:200], accept=str(acc)[:200], end=end, descents=desc)
-    row("PASS" if end in pit else "FAIL", "MOD", det)
+    if not p:
+        row("UNMEASURED", "HARNESS", dict(det, why="the colonist is not in list_pawns after the jump"))
+        return 2
+    jumped = end in pit and bool(desc)
+    row("PASS" if jumped else "FAIL", "MOD", det)
     B.call("rimworld/clear_selection")
     B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish", _answer=True)
     res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save()
-    return 0 if end in pit else 1
+    return 0 if jumped else 1
 
 
 if __name__ == "__main__":

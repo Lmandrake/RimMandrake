@@ -28,7 +28,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 
-CASTING = ("AttackStatic", "Wait_Combat", "UseVerbOnThing", "AttackMelee")
+# the three jobs the docstring names; a gunner merely meleeing on a canal square is not casting from cover
+CASTING = ("AttackStatic", "Wait_Combat", "UseVerbOnThing")
 
 
 def main():
@@ -146,7 +147,8 @@ def main():
     else:
         row("TRENCH_raiders_cast_from_canal", "FAIL" if fired else "UNMEASURED", "MOD" if fired else "SITE",
             dict(det, why=None if fired else "no raider ever took a ranged job: the raid measured nothing"))
-    row("TRENCH_raiders_skip_sheer_cage", "PASS" if not inSheer else "FAIL", "MOD",
+    near = closest_sheer is not None and closest_sheer <= 3     # a raid that never came near the cage skipped nothing
+    row("TRENCH_raiders_skip_sheer_cage", ("PASS" if near else "UNMEASURED") if not inSheer else "FAIL", "MOD" if (inSheer or near) else "SITE",
         {"inSheer": inSheer[:12], "closestChebyshevToSheer": closest_sheer})
     for pid in raiders + cols:
         B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish", _answer=True)

@@ -90,6 +90,9 @@ def main():
     probe = B.call("jawa/spawn_pawn", kindDef="Mercenary_Slasher", x=0, z=0, faction="?", count=1, _answer=True) or {}
     fac = next((f["def"] for f in (probe.get("details") or {}).get("available") or []
                 if f.get("hostile") and str(f.get("def")).startswith("Pirate")), None)
+    if not fac:
+        row("UNMEASURED", "SITE", {"why": "no hostile Pirate faction"})
+        return 2
     raiders = []
     for k in range(2):
         r = B.call("jawa/spawn_pawn", kindDef="Mercenary_Slasher", x=P(1 + k, 3)[0], z=P(1 + k, 3)[1], faction=fac, count=1) or {}

@@ -10,23 +10,21 @@ debug_process.md: every mod ships with its script and every live session writes 
 
 Run from the repo root with python.exe on the minimal list (FlowWorks); the bridge must be held. Exit 0 = every acceptance row
 PASS; 1 = a FAIL; 2 = a row could not be measured. Perf rows are recorded separately (res["perf"], §6 item 12) and never
-decide the exit code: the 1 ms target is PROVISIONAL. WRITTEN OFFLINE 2026-10-22 (BENCH helper; the belt held the game):
-every row is OWED to its first live run.
+decide the exit code: the 1 ms target is PROVISIONAL. Written offline 2026-10-22, run live on the belt the same day
+(sheet_overflow_result_*.json beside this file): a row's status is its LAST live run, not this docstring.
 
-THE C# THESE ROWS CALL: RimMandrake.FlowWorks.Sheet.RM_SheetProofs (contracts in OWED_PROOFS) -- NOT BUILT when this was
-written. Stage 1 exposes no bridge-readable sheet state: RM_NorthstarProofs.ProofReadout reads the engine's DepthReadoutAt
-only, never RM_MapComponent_Sheet.ReadoutAt. A live run asks ProofSheetLedger first; if the loaded FlowWorks lacks the class,
-every row is UNMEASURED/HARNESS naming it and nothing is staged. Used as is beside it: RM_LineProofs.ProofPitWater (dug water
+THE C# THESE ROWS CALL: RimMandrake.FlowWorks.Sheet.RM_SheetProofs (source Source/Sheet/RM_SheetProofs.cs; contracts in
+OWED_PROOFS). A live run asks ProofSheetLedger first; if the loaded FlowWorks lacks the class, every row is
+UNMEASURED/HARNESS naming it and nothing is staged. Used as is beside it: RM_LineProofs.ProofPitWater (dug water
 in a rect, dL), RM_NorthstarProofs.ProofPump (pour mode) / ProofResetRect, the hose probe (proof_hose.PB.hp: filltank, tank,
 pump), jawa/flowworks_excavation_drive, jawa/build_batch, jawa/weather_set, jawa/game_condition, jawa/cell_temperature,
-jawa/mod_settings_field, jawa/set_plants, jawa/list_things, jawa/map_info, jawa/running_mods, jawa/map_comp_timing,
+jawa/mod_settings_field, jawa/set_plants, jawa/list_things, jawa/map_info, jawa/running_mods,
 rimworld/save_game, rimworld/load_game_ready.
 
 FEATURE GATE (rows whose feature is not built read UNMEASURED/NOT_BUILT with the reason, never PASS): RM_SheetProofs.
-ProofSheetFeatures says which Stage 2/3 pieces the loaded build carries. Stage 1 (water-only engine layer, 6717cd7c12) carries
-the spill hooks (pump, rain, fill-in), return, losses, door leak (Kind.Door), the ice tier (TempDeciC per cell), the master
-switch and persistence. NOT in stage 1: crop drowning / irrigation (Stage 2, being built in Source/Sheet/ now) and any cap
-setting (SheetCapDl and MaxWetCells are kernel Params constants; Stage 3 makes them settings).
+ProofSheetFeatures says which pieces the loaded build carries (crops, soak, capSetting + capField, cropDelayField); a build
+that reports them False leaves CROPS_IRRIGATE_THEN_DROWN and LOWERED_CAP_KEEPS_DEEPER_WATER NOT_BUILT. The sheet cap is the
+setting sheetCapCm (shipped 50 cm = 10,000 dL a square) and the crop delay cropDrownPulses (shipped 1,680 pulses = one week).
 
 Owner rulings this proves (by card 2026-10-21/22): D1 fill-in's homeless water spills; D2 pumps, rain, floods and a higher
 gravity source overflow; D3 standing overflow kills a crop only after 1 week, before that it irrigates; D4 doors leak slowly;
@@ -645,7 +643,7 @@ def backpressure(ctx):
     ring(0, 58, 5, 62)
     _canal(ctx, 2, 2, 60)
     l0 = ledger()
-    cap = l0.get("cap") or 5000
+    cap = l0.get("cap") or 50 * DL_PER_CM      # shipped sheetCapCm 50
     room = 11 * cap
     acc1, t1 = ctx["spill"](P(2, 60), 3 * room)
     acc2, t2 = ctx["spill"](P(2, 60), room)
@@ -734,8 +732,15 @@ def crops(ctx):
     field = feats.get("cropDelayField")
     V.require(field and field != "-", "the build names its crop-delay setting", feats, cls="HARNESS")
     shipped = sget(S_SHEET, field)
+    def alive(rect):
+        lt = B.call("jawa/list_things", defName=CROP, rect="%d,%d,%d,%d" % rect, limit=50) or {}
+        return len(lt.get("things") or [])
     B.call("jawa/set_plants", ops="%s:%d,%d,4,3" % ((CROP,) + P(1, 103)), growth=0.3)
     B.call("jawa/set_plants", ops="%s:%d,%d,4,1" % ((CROP,) + P(1, 108)), growth=0.3)
+    # a planting shortfall would score as a MOD FAIL below (early == 12, control == 4): read the planted count first
+    planted, ctrl0 = alive(P(1, 103) + (4, 3)), alive(P(1, 108) + (4, 1))
+    V.require(planted == 12 and ctrl0 == 4, "all 12 rice and the 4 control rice stand before the spill", [planted, ctrl0],
+              cls="SITE")
     sset(S_SHEET, field, 2)
     try:
         l0 = ledger()
@@ -749,9 +754,6 @@ def crops(ctx):
         tt = {"sheet": len(deep), "film": len(film)}
         V.require(deep, "some rice stands at sheet tier", tiers)
 
-        def alive(rect):
-            lt = B.call("jawa/list_things", defName=CROP, rect="%d,%d,%d,%d" % rect, limit=50) or {}
-            return len(lt.get("things") or [])
         early = alive(P(1, 103) + (4, 3))
         soak_early = ld(l0, ledger(), "soaked")
         dead, waited = _poll(ctx, lambda: sum(alive(c + (1, 1)) for c in deep) == 0, 6)
@@ -1009,7 +1011,7 @@ class FakeBridge(object):
         self.rem = 0            # soak remainder (continuation state the save must keep)
         self.tick, self.pulse = 0, 0
         self.rain, self.cold_since, self.warm_since, self.temp = False, None, None, 20.0
-        self.settings = {"sheetOverflowEnabled": "False", "cropDrownPulses": "2016", "sheetCapCm": "50",
+        self.settings = {"sheetOverflowEnabled": "False", "cropDrownPulses": "1680", "sheetCapCm": "50",
                          "rainFillsExcavationsEnabled": "True", "rainFillPerPulse": "0.1"}
         self.cap_cm = 50
         self.plants = {}        # cell -> stand pulses
