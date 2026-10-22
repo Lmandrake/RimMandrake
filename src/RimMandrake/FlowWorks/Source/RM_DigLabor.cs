@@ -46,6 +46,10 @@ namespace RimMandrake.FlowWorks
 		public static int DesignationCap => RM_DigDepthMath.DesignationCap(RimMandrakeFlowWorksSettings.MaxDigDepth,
 			RimMandrakeFlowWorksSettings.machineDigEnabled, RimMandrakeFlowWorksSettings.MaxMachineDigDepth);
 
+		/// <summary>The deepest a standing order stays valid to (RM_DigDepthMath.OrderCap): past the colonist cap it waits for
+		/// machine labour, even while machine digging is switched off.</summary>
+		public static int OrderCap => RM_DigDepthMath.OrderCap(RimMandrakeFlowWorksSettings.MaxDigDepth, RimMandrakeFlowWorksSettings.MaxMachineDigDepth);
+
 		/// <summary>Why <paramref name="pawn"/> may not cut below <paramref name="depth"/> notches when someone else could, or
 		/// null. Text from the effective limits (never "2 m" when the colonist cap is set elsewhere).</summary>
 		public static string RefusalFor(Pawn pawn, int depth)
@@ -54,6 +58,15 @@ namespace RimMandrake.FlowWorks
 			if (RM_DigDepthMath.MayDeepen(depth, mine))
 			{
 				return null;
+			}
+			if (IsMachineLabour(pawn) && RimMandrakeFlowWorksSettings.machineDigEnabled)
+			{
+				return "Machines dig to " + RM_Volume.FormatFloorMetres(mine) + " (set in this mod's settings).";
+			}
+			if (!RimMandrakeFlowWorksSettings.machineDigEnabled)
+			{
+				return "Colonists dig to " + RM_Volume.FormatFloorMetres(RimMandrakeFlowWorksSettings.MaxDigDepth)
+					+ "; deeper needs machine labour, and \"Machines dig deeper\" is off in this mod's settings. The order waits.";
 			}
 			return "Colonists dig to " + RM_Volume.FormatFloorMetres(mine) + "; deeper needs machine labour (a mechanoid or a droid).";
 		}

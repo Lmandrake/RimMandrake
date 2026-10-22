@@ -96,7 +96,8 @@ namespace RimMandrake.FlowWorks
 				if (!RM_DigDepthMath.MayDeepen(depth, cap))
 				{
 					return "Already " + RM_Volume.FormatFloorMetres(depth) + " deep: the deepest digging goes (" + RM_Volume.FormatFloorMetres(cap)
-						+ ", set in this mod's settings).";
+						+ (RimMandrakeFlowWorksSettings.machineDigEnabled ? ", set in this mod's settings)."
+							: "; deeper needs machine labour, and \"Machines dig deeper\" is off in this mod's settings).");
 				}
 				if (target > 0 && depth >= RM_DigDepthMath.ClampTarget(target, cap))
 				{

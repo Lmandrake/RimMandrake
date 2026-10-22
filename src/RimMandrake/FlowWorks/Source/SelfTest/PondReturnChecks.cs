@@ -154,7 +154,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 Assert(ex.Contains("int first = RM_Volume.FirstCutDepth(IsNaturalBed(c) ? bedGrid[i] : 0"), "Deepen's first cut reads the bed");
                 Assert(RiverSwitchFlipChecks.Src("Designator_DigCanal.cs").Contains("eng.FirstCutDepthAt(c) < 0"), "the designator refuses a maxed bed");
-                Assert(RiverSwitchFlipChecks.Src("WorkGiver_DigCanal.cs").Contains("FirstCutDepthAt(c) < 0"), "the work giver drops a stale bed designation");
+                Assert(RiverSwitchFlipChecks.Src("WorkGiver_DigCanal.cs").Contains("FirstCutDepthAt(c, RM_DigLabor.OrderCap) < 0"), "the work giver drops a stale bed designation (past the order cap)");
                 Assert(RiverSwitchFlipChecks.Src("JobDriver_DigCanal.cs").Contains("FirstCutDepthAt(c)"), "the dig work is the level below the bed");
                 // review 2026-10-14: filling a bed cut back in ends AT the bed (2 -> 3 -> 2), never 3 -> 2 -> 1 -> 0 then a hollow of 2
                 RiverSwitchFlipChecks.Has(ex, @"bool backToBed = bedFloor > 0 && newD <= bedFloor;", "fill-in stops at the bed's floor");

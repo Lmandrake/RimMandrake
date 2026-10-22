@@ -140,7 +140,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         + uses.Count + " terrain reads, " + grid.Count + " grid-first");
                 }
                 string wg = RiverSwitchFlipChecks.Src("WorkGiver_DigCanal.cs");
-                RiverSwitchFlipChecks.Has(wg, @"\|\| !RM_DigDepthMath\.MayDeepen\(depth, RM_DigLabor\.DesignationCap\) \|\| \(target > 0 && depth >= target\)", "work-giver: designation cap and target");
+                RiverSwitchFlipChecks.Has(wg, @"\|\| !RM_DigDepthMath\.MayDeepen\(depth, RM_DigLabor\.OrderCap\) \|\| \(target > 0 && depth >= target\)", "work-giver: order cap and target");
                 string ds = RiverSwitchFlipChecks.Src("Designator_DigCanal.cs");
                 RiverSwitchFlipChecks.Has(ds, @"public class Designator_DigCanalTo : Designator_DigCanal", "the dig-to-N designator exists");
                 RiverSwitchFlipChecks.Has(ds, @"public override string Label => ""Dig to "" \+ RM_Volume\.FormatFloorMetres\(Target\);", "labelled in metres");
@@ -167,7 +167,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "an order is held to the deepest anyone may dig");
                 // a 2 m square ordered to 4 m: still owes work (for a machine) — the order is not stale
                 Assert(RM_DigDepthMath.DigToOwesWork(4, 8, RM_DigDepthMath.DesignationCap(col, true, mach))
-                    && !RM_DigDepthMath.DigToOwesWork(4, 8, RM_DigDepthMath.DesignationCap(col, false, mach)), "the order waits for a machine; with machines off it is done");
+                    && !RM_DigDepthMath.DigToOwesWork(4, 8, RM_DigDepthMath.DesignationCap(col, false, mach)), "today's designation cap: machines off stop new orders at 2 m");
+                // night fixer 2026-10-22: a STANDING order never vanishes when machine digging is switched off; it waits
+                Assert(RM_DigDepthMath.OrderCap(col, mach) == 40 && RM_DigDepthMath.DigToOwesWork(4, 8, RM_DigDepthMath.OrderCap(col, mach))
+                    && RM_DigDepthMath.MayDeepen(4, RM_DigDepthMath.OrderCap(col, mach)), "the order cap ignores the machine switch: the 2 m order to 4 m still stands");
+                Assert(RM_DigDepthMath.OrderCap(16, 8) == 16 && !RM_DigDepthMath.MayDeepen(40, RM_DigDepthMath.OrderCap(col, mach)),
+                    "the order cap is never under the colonist cap and still stops at the ceiling");
                 // colonist then machine on one square: 4 cuts, then 4 more
                 var d = new byte[1];
                 var (c1, _) = DigTo(d, new[] { 0 }, 8, RM_DigDepthMath.CapFor(false, col, true, mach));
@@ -186,12 +191,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(del > 0 && mine > del && wg.IndexOf("des.Delete();", mine) < 0, "the per-digger refusal keeps the designation (only the stale test deletes)");
                 string jd = RiverSwitchFlipChecks.Src("JobDriver_DigCanal.cs");
                 RiverSwitchFlipChecks.Has(jd, @"int after = excavation\.DeepenWithin\(c, RM_DigLabor\.CapFor\(pawn\)\);", "the cut is held to the digger's cap");
-                RiverSwitchFlipChecks.Has(jd, @"cutRefusedButOwed = after == before && RM_DigDepthMath\.MayDeepen\(before, RM_DigLabor\.DesignationCap\);", "a refused cut is noted");
+                RiverSwitchFlipChecks.Has(jd, @"cutRefusedButOwed = after == before && RM_DigDepthMath\.MayDeepen\(before, RM_DigLabor\.OrderCap\);", "a refused cut is noted");
                 RiverSwitchFlipChecks.Has(jd, @"if \(cutRefusedButOwed && Map != null && job\.targetA\.IsValid\)", "and its order put back");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 Assert(!Regex.IsMatch(ex, @"public byte Deepen\(IntVec3 c, int"), "no Deepen overload: bridge tools reflect GetMethod(\"Deepen\")");
                 RiverSwitchFlipChecks.Has(ex, @"public byte Deepen\(IntVec3 c\) \{ return DeepenWithin\(c, RM_DigLabor\.DesignationCap\); \}", "debug/bridge Deepen uses the designation cap");
-                RiverSwitchFlipChecks.Has(ex, @"RM_DigDepthMath\.DigToOwesWork\(ExcavatedDepthAt\(c\), DigTargetAt\(c\), RM_DigLabor\.DesignationCap\)", "orders owe work to anyone's cap");
+                RiverSwitchFlipChecks.Has(ex, @"RM_DigDepthMath\.DigToOwesWork\(ExcavatedDepthAt\(c\), DigTargetAt\(c\), RM_DigLabor\.OrderCap\)", "orders owe work to the order cap (machines off: they wait)");
+                string al = RiverSwitchFlipChecks.Src("RM_DeepDigAlert.cs");
+                RiverSwitchFlipChecks.Has(al, @"if \(eng == null \|\| \(!machinesOff && HasMachineDigger\(m\)\)\)", "the waiting alert covers machine digging switched off");
+                Assert(al.Contains("is switched off in the Flow Works settings"), "and says so");
+                string lab2 = RiverSwitchFlipChecks.Src("RM_DigLabor.cs");
+                Assert(lab2.Contains("is off in this mod's settings. The order waits."), "the right-click reason names the switch");
                 string ds = RiverSwitchFlipChecks.Src("Designator_DigCanal.cs");
                 Assert(Regex.Matches(ds, @"RM_DigLabor\.DesignationCap").Count >= 3, "the designator offers depths to the designation cap");
                 Assert(!ds.Contains("8 m as shipped"), "no '8 m as shipped' text survives");

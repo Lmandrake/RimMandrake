@@ -8,7 +8,8 @@ namespace RimMandrake.FlowWorks
 	/// <summary>
 	/// DEEP_DIG_EXPLAIN_WAITING_ON_NO_DROID (UX review 2026-10-22): a dig order past the colonist limit waits for machine labour
 	/// (RM_DigLabor). With no machine on the map that can mine, it waited silently. This alert names those squares and says why.
-	/// Re-measured every 250 ticks.
+	/// Re-measured every 250 ticks. Night fixer 2026-10-22: also with "Machines dig deeper" switched OFF (the work giver now
+	/// keeps such an order instead of deleting it, so it must say why it waits).
 	/// </summary>
 	public class Alert_DeepDigWaitsForMachine : Alert
 	{
@@ -49,11 +50,13 @@ namespace RimMandrake.FlowWorks
 			}
 			checkedAt = now;
 			culprits.Clear();
-			if (Find.Maps == null || RM_DigLabor.DesignationCap <= RimMandrakeFlowWorksSettings.MaxDigDepth)
+			int orderCap = RM_DigLabor.OrderCap;
+			if (Find.Maps == null || orderCap <= RimMandrakeFlowWorksSettings.MaxDigDepth)
 			{
 				return culprits;   // machines may dig no deeper than colonists: no order can be waiting for one
 			}
 			int colonistCap = RimMandrakeFlowWorksSettings.MaxDigDepth;
+			bool machinesOff = !RimMandrakeFlowWorksSettings.machineDigEnabled;
 			foreach (Map m in Find.Maps)
 			{
 				if (!m.IsPlayerHome || !m.designationManager.AnySpawnedDesignationOfDef(RimMandrakeFlowWorks_DefOf.RM_DigCanal))
@@ -61,7 +64,7 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				RM_MapComponent_Excavation eng = m.GetComponent<RM_MapComponent_Excavation>();
-				if (eng == null || HasMachineDigger(m))
+				if (eng == null || (!machinesOff && HasMachineDigger(m)))
 				{
 					continue;
 				}
@@ -70,8 +73,8 @@ namespace RimMandrake.FlowWorks
 					IntVec3 c = d.target.Cell;
 					int depth = eng.ExcavatedDepthAt(c);
 					bool colonistsCannot = depth == RM_ExcavationDepth.Surface
-						? eng.FirstCutDepthAt(c, colonistCap) < 0 && eng.FirstCutDepthAt(c) >= 0
-						: !RM_DigDepthMath.MayDeepen(depth, colonistCap) && RM_DigDepthMath.MayDeepen(depth, RM_DigLabor.DesignationCap);
+						? eng.FirstCutDepthAt(c, colonistCap) < 0 && eng.FirstCutDepthAt(c, orderCap) >= 0
+						: !RM_DigDepthMath.MayDeepen(depth, colonistCap) && RM_DigDepthMath.MayDeepen(depth, orderCap);
 					if (colonistsCannot)
 					{
 						culprits.Add(new GlobalTargetInfo(c, m));
@@ -83,6 +86,13 @@ namespace RimMandrake.FlowWorks
 
 		public override TaggedString GetExplanation()
 		{
+			if (!RimMandrakeFlowWorksSettings.machineDigEnabled)
+			{
+				return "These dig orders are deeper than colonists may dig (" + RM_Volume.FormatFloorMetres(RimMandrakeFlowWorksSettings.MaxDigDepth)
+					+ "), and \"Machines dig deeper\" is switched off in the Flow Works settings, so nobody may dig them: they wait.\n\n"
+					+ "Turn \"Machines dig deeper\" back on, cancel the orders, or raise \"Deepest colonist dig\" ("
+					+ Culprits().Count + " square(s) waiting).";
+			}
 			return "These dig orders are deeper than colonists may dig (" + RM_Volume.FormatFloorMetres(RimMandrakeFlowWorksSettings.MaxDigDepth)
 				+ "). Only machine labour (a mechanoid or a droid that can do Mining) digs past that, and none is here, so they wait.\n\n"
 				+ "Bring a digging machine, cancel the orders, or raise \"Deepest colonist dig\" in the Flow Works settings ("
