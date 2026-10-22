@@ -48,8 +48,8 @@ deeper; a dormant tar-beast set-piece that wakes on damage or nearby constructio
 sump-mouse placeholder whose faint tracks telegraph where something else has been
 through first; a wick-garden crop that needs no sun, only whatever faint ambient
 light the permanent dusk and station lamps provide; and a permanent-dusk weather
-lock (never rains, never fully dark or light). Ships 4 wildlife rows inline, all
-individually MayRequire-gated Alpha Animals donor rows. A Mod Settings screen gives
+lock (never rains, never fully dark or light). Ships its own invented wildlife and
+flora rosters inline. A Mod Settings screen gives
 a worldgen-rarity master toggle (MOD_OPTIONS_RETROFIT_1 doctrine — default =
 shipped behavior, 0 = never generates); the kit mechanics' own per-mechanic toggles
 live partly on the shared Environmental Hazards Kit's own settings screen (tar
@@ -59,10 +59,8 @@ beast-bulge dread, mouse filth-trail have no toggle at all today) — a second,
 Sump-only copy of the covered ones here would either do nothing or silently
 diverge from what that screen already promises.
 
-⚠️ Not donor-free: the world-map texture (Biomes/AB_TarPits), both terrainsByFertility
-rows (AB_GrassySand/AB_LushGrass) and one wildPlants row (AB_TarPuddle) are all Alpha
-Biomes' own, so sarg.alphabiomes ships as a hard modDependency rather than an
-optional MayRequire — without it this biome has almost no terrain or flora. The
+Donor-free since the 2026-10-18 donor retirement: the world-map texture, both
+terrainsByFertility rows and the former AB_TarPuddle row are our own ports. The
 dormant tar-beast building, the dig-shaft, the moat/fuse-post, the sump-mouse
 placeholder, the mouse-track filth and the wick-plant/wick-stem all still carry
 DEPLOY_HOLD (no real art yet, see src/DEPLOY_HOLD.txt) — content proven to compile

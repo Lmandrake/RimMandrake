@@ -17,9 +17,9 @@
     Both modExtensions are ticket 5's as well: RM_LivePrepExtension is the
     tag src/RimUtinni/RotSporeKit/selftest_live_prep.py enforces both comps
     against, and RM_TreasureMarkerExtension makes an ingredient one of the
-    Rot's treasures for owner card 6's sale conscience. Each is MayRequire'd
-    on its own <li> — an ungated modExtension whose class cannot resolve
-    discards the WHOLE def.
+    Rot's treasures for owner card 6's sale conscience. Neither is
+    MayRequire'd: mandrake.rm.environmentalhazards is a hard modDependency of
+    The Rot, and an unresolvable modExtension class would discard the WHOLE def.
 
     The recipes that turn these into teas and symbionts are
     Defs/RecipeDefs/RM_RotSporeKit_LivePrepRecipes.xml. These three

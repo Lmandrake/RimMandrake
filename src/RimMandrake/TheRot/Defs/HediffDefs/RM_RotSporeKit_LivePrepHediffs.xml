@@ -5,14 +5,10 @@
     ROT_LIVE_PREPARATIONS_1 — M4's hediffs: what the three teas leave behind
     and what the four symbionts ARE.
 
-    MayRequire ON EVERY CROSS-MOD <li>, never on a def or a patch Operation
-    (kit law; measured 2026-09-17 that MayRequire on an Operation is INERT
-    and killed a cold load). Every comp whose Class lives in
-    mandrake.rm.environmentalhazards carries on the <li> itself — the
-    same shape RM_RotSporeKit_SheenHediffs.xml already ships. Without that
-    mod the comp drops and the hediff survives as an inert marker, which is
-    the correct degradation; an ungated <li Class="..."> would have thrown
-    at load.
+    Comps whose Class lives in mandrake.rm.environmentalhazards carry no
+    MayRequire: that mod is a hard modDependency of The Rot (About.xml), so
+    the classes always load. MayRequire on a patch Operation is INERT
+    (measured 2026-09-17; it killed a cold load) and is never used.
 
     TUNING MARKED INVENTED-BUILD is this pass's own: the spec and the cards
     fix the BARGAINS (card 1's five years / once a year; Quickflesh's

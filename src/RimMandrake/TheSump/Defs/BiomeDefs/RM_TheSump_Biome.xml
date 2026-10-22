@@ -22,16 +22,14 @@
     workerClass is a hard dependency the RimMandrake tier may not assume
     (biome_mod_architecture.md Sec5 step 2).
 
-    wildAnimals: 4 rows ship inline, all Alpha Animals donor rows individually
-    MayRequire-gated (unchanged from the twin's 3, plus AA_BumbledroneQueen added
-    per rosters/the_sump.json's own "goes with the rest of the bumbledrones" ruling
-    - THESUMP_RM_MOD_BUILD_1 §5/§3). RSW_Hssiss (the biome's one seated canon beast,
+    wildAnimals: no donor row ships here any more (see SUMP_FAUNA_ROSTER_1 below).
+    RSW_Hssiss (the biome's one seated canon beast,
     ruled 2026-09-10) does NOT ship here - it rides Utinni's WildAnimals_Sump.xml as
     a PatchOperationAdd onto this def instead, MayRequire="mandrake.rsw.swbestiary",
     per the Q11a naming-tier ruling (SUMP_UTINNI_LAYER_1 §3).
 
     SUMP_FAUNA_ROSTER_1 (2026-09-25/26): five invented rows added -
-    RM_SumpMouse (0.8), RM_Brommet (0.4), RM_Dredgel (0.2), RM_Skarrid (0.25),
+    RM_SumpMouse (0.8), RM_Brommet (0.4, since CUT - see the wildAnimals note), RM_Dredgel (0.2), RM_Skarrid (0.25),
     RM_Skellarn (0.15) - per sump_fauna_roster_2026-09-24.md. These five have
     no existing donor slot to evict: the mouse's placeholder was never wired
     into wildAnimals at all, and the other four are wholly new niches. The
@@ -39,11 +37,6 @@
     replaced 1:1, same commonality, by RM_Gulveth/RM_Thrummel/RM_ThrummelWarden/
     RM_ThrummelBroodmother (ThingDefs_Races/RM_SumpFauna.xml) on 2026-10-02, per the
     owner-ruled replacement of 2026-09-24 (sump_fauna_roster_2026-09-24.md SS7).
-
-    wildPlants: AB_TarPuddle carries a fresh MayRequire="sarg.alphabiomes" here
-    that the twin's own copy never needed (same-mod, no gate required there) -
-    same posture RM_Miasma's own wildPlants notes already establish for a donor
-    row moved into a standalone mod.
 
     terrainsByFertility: both Alpha Biomes rows were replaced 1:1 by our ports RM_GrassySand/RM_LushGrass
     (Defs/RM_TheSump_DonorPorts.xml) at the 2026-10-18 donor retirement.
@@ -59,10 +52,6 @@
     mandrake.rm.environmentalhazards and reference RM_Tarred/RM_Filth_Tar, which
     stay exactly where they are (UtinniPatches / shared EnvironmentalHazards
     respectively) - nothing here needed retargeting.
-
-    texture (Biomes/AB_TarPits) is inherited unchanged from the twin, same
-    posture as every sibling's donor world-map texture - not this build's scope
-    to fix.
 
     SUMP_FLORA_ROSTER_1 (2026-09-25): plantDensity corrected 0.15 -> 0.25 and
     forageability corrected 0.0 -> 0.8. Both values contradicted the frozen

@@ -26,8 +26,8 @@ Ships in v1:
   - RM_Webwork BiomeDef: native label/description carried over verbatim (already
     franchise-free), workerClass RM_BiomeWorker_Webwork (tile-range scoring, same shape as
     the sibling Greentide/Pyrelands biome workers), vanilla-only terrain/weather/disease
-    tables, and a Core-only wildAnimals/wildPlants roster (Rat/Hare/Muffalo/Megaspider/Cobra
-    and Oak/Poplar/Bush/Grass/TallGrass/Berry) so the mod is functional on Core + DLCs alone.
+    tables, and the invented wildAnimals/wildPlants roster listed below, so the mod is
+    functional on Core + DLCs alone.
   - RM_WebworkSettings : ModSettings with a worldgen-affecting master toggle (default ON) for
     whether RM_Webwork competes to generate on a freshly generated planet at all — off degrades
     gracefully to "this biome simply never wins a tile," nothing else changes. Future per-

@@ -29,8 +29,8 @@
     tickerType Rare on every def: both comps tick through CompTickRare, and
     without it neither clock runs at all.
 
-    MODEXTENSIONS, both MayRequire'd on the <li> (never on a def or an
-    Operation — kit law):
+    MODEXTENSIONS (not MayRequire'd: mandrake.rm.environmentalhazards is a
+    hard modDependency of The Rot; never MayRequire on a patch Operation):
       RM_LivePrepExtension      the live-prep tag. Read by the lenient
                                 option, and by selftest_live_prep.py, which
                                 FAILS if a def carrying it lacks either comp
@@ -54,9 +54,8 @@
        5 biological years on the first cup, capped at adult, and a pawn can
        benefit only once per year. All three clauses live in the doer's
        fields below; satedDurationTicks 3600000 = 60,000 ticks/day x 60 days
-       = one in-game year. The doer is MayRequire'd, so without
-       environmentalhazards this is an inert (but still perishable) cup
-       rather than a load error.
+       = one in-game year. The doer lives in
+       mandrake.rm.environmentalhazards, a hard modDependency of The Rot.
        ═══════════════════════════════════════════════════════════════════ -->
   <ThingDef ParentName="DrugBase">
     <defName>RM_Tea_AgeReversal</defName>
