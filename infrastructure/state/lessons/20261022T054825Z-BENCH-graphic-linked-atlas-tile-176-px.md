@@ -1,0 +1,1 @@
+A Graphic_Linked atlas tile (176 px) is NOT the cell: the game shows only the inner 3/4 (132 px), so pipe girth = W_PIPE/132, not /176 (the 2026-10-21 line-joins review said 0.23 cell; the game drew 0.30). Pipe girth is the W_PIPE number in FlowWorks/art_source/pipe/build_pipe_atlas.py, rebuilt+installed by --install.
