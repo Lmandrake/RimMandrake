@@ -399,7 +399,7 @@ _VA.anchors_by_pos = _orig
 def d4_case(save_rows, after_status, aborted=False):
     P = PA.Proof(args(None))
     P.out_path = os.devnull
-    P.rows = [{"id": "S12d_D4_pending_queue_save", "status": "UNMEASURED", "class": "HARNESS", "detail": "SHARED", "block": "style"}]
+    P.rows.append({"id": "S12d_D4_pending_queue_save", "status": "UNMEASURED", "class": "HARNESS", "detail": "SHARED", "block": "style"})
     if aborted:
         P.res["aborted"] = "save did not land"
     calls = []
@@ -420,6 +420,10 @@ S7OK = [{"id": "S7_save_load_styles", "status": "PASS", "class": "MOD", "detail"
 got, P, calls = d4_case(S7OK, "PASS")
 check("9 d4_save: placeholder replaced by ONE PASS row in save_load", [(r["status"], r["block"]) for r in got] == [("PASS", "save_load")], str(got))
 check("9 d4_save: staged, saved under a _d4 name with stage=True, then read", calls == ["stage", ("save", True, True), "after"], str(calls))
+check("9 d4_save: the result JSON's rows list is still the live list (rebinding it once lost every later row)",
+      P.res["rows"] is P.rows and [r["status"] for r in P.res["rows"] if r["id"] == "S12d_D4_pending_queue_save"] == ["PASS"])
+P.row("session", "Z_log_budget", "PASS", "MOD", {})
+check("9 d4_save: a row added after the block reaches the result", any(r["id"] == "Z_log_budget" for r in P.res["rows"]))
 check("9 d4_save: S7 re-read kept as evidence, not a row", not any(r["id"] == "S7_save_load_styles" for r in P.rows) and P.res.get("d4_save_notes"))
 got, P, calls = d4_case([{"id": "S7_save_load_styles", "status": "FAIL", "class": "SITE", "detail": {"state": "menu"}}], "PASS")
 check("9 control: failed save/load -> UNMEASURED with why, after-load never read", [r["status"] for r in got] == ["UNMEASURED"] and "after" not in calls and got[0]["detail"].get("why"), str(got))
