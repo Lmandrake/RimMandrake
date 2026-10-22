@@ -42,8 +42,8 @@
     landed three of that sheet's owed slugs here: `RUT_Fuzz` (the fuzz, wildPlants,
     replacing the Plant_ShrubLow stand-in), `RSW_ShrublandGiant` (the huge grazer
     flagship, life-stage art only - parental enrage is new C#, filed separately)
-    and `RSW_TunnelSnake` (the signature corridor predator, alongside the existing
-    Terrorworm interim). Names for all three, and for the pre-existing giants/
+    and `RSW_TunnelSnake` (the signature corridor predator, alongside RM_Vurra,
+    our port of the former Terrorworm interim). Names for all three, and for the pre-existing giants/
     snake-analogs/bird-analogs generically, remain the owner's pick
     (ARIDSHRUBLAND_SHIPPING_NAMES_1) - every RUT_/RSW_ defName above added this
     pass is a working name, same status as RUT_Vorrel.
@@ -161,7 +161,7 @@
       <RSW_Mudhorn MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Mudhorn>  <!-- mudhorn - huge-predator-exception, keep -->
       <RSW_Ronto MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Ronto>  <!-- ronto - huge-grazer, keep -->
       <RSW_ShrublandGiant MayRequire="mandrake.rsw.swbestiary">0.35</RSW_ShrublandGiant>  <!-- COMMISSION_LEDGER_CLEANUP_1: the huge-grazer flagship, large-young/parental-enrage slug -->
-      <RSW_TunnelSnake MayRequire="mandrake.rsw.swbestiary">0.5</RSW_TunnelSnake>  <!-- COMMISSION_LEDGER_CLEANUP_1: the signature corridor predator, alongside the Terrorworm interim -->
+      <RSW_TunnelSnake MayRequire="mandrake.rsw.swbestiary">0.5</RSW_TunnelSnake>  <!-- COMMISSION_LEDGER_CLEANUP_1: the signature corridor predator, alongside RM_Vurra (our port of the former Terrorworm interim) -->
       <RSW_ScrapNestBird MayRequire="mandrake.rsw.swbestiary">0.45</RSW_ScrapNestBird>  <!-- SHRUBLAND_SCRAPNEST_BIRDS_1: the §4 scrap-nest bird-analog; the tunnel snake's own prey -->
       <RSW_Scurrier MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Scurrier>  <!-- scurrier - small-runway, keep -->
       <RSW_Sketto MayRequire="mandrake.rsw.swbestiary">0.8</RSW_Sketto>  <!-- sketto - small-runway, keep -->

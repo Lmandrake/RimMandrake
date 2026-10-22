@@ -55,12 +55,9 @@
   is fully authored and safe to ship inert (visually present, no special
   behaviour) until that lands.
 
-  Textures: none of these 9 have existing art anywhere in the repo (searched
-  infrastructure/artpipe/registry.jsonl, done/, _artsrc/ for all 9 names plus
-  "wick" as a sanity probe — 0 hits on every one). texPaths below point at
-  art queued this same pass via fill_queue.py
-  (Transient/sump_flora_art_list.json, SUMP_FLORA_ROSTER_1) and not yet
-  generated; every file is listed in src/DEPLOY_HOLD.txt until it lands.
+  Textures: when this file was authored none of the 9 had art (queued via
+  fill_queue.py, SUMP_FLORA_ROSTER_1). The art has since landed under
+  Textures/Things/Plant/RM_<Name>/ (texPaths below).
 
   Commonalities are INVENTED-BUILD except the two the doc names outright:
   RM_Dorvel 0.05 ("wild dorvel (comm. ~0.05, station-adjacent) is starter

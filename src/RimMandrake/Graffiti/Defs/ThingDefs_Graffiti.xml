@@ -176,8 +176,8 @@
        GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 — the punk-urban register (design
        §2.2). Form axis alongside GraffitiCategory; asemic letterforms only
        (fork F5, ruled 2026-10-09 - no in-world lettering, no
-       localisation/franchise problem). Art queued via fill_queue.py, not
-       yet generated - see the item's own note on what's owed.
+       localisation/franchise problem). Art has since landed under
+       Textures/Things/Filth/Art/.
        ════════════════════════════════════════════════════════════════ -->
 
   <ThingDef ParentName="RM_BaseGraffiti">
