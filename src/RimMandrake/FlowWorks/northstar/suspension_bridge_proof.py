@@ -209,6 +209,7 @@ def main(argv=None):
         # the plots must be bare, undug, unroofed ground: on a fresh rainforest map every BUILD was refused 'must start on
         # solid, undug ground with nothing built on it' (trees/plants on the anchors) - live 2026-10-19, first live run
         rect = (max(ox - 2, 1), max(oz - 2, 1), 40, 94)
+        res["site_calm"] = V.site_calm(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: map-gen hostiles/hives stop safe_advance at arm
         B.call("jawa/kill_hostiles")
         B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect", args="%d;%d;%d;%d" % rect)
         site_rows = []

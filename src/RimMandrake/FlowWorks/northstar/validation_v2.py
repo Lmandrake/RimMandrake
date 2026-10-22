@@ -4624,6 +4624,11 @@ def run_live(args, B=None):
         L._log("- fresh quicktest map: %s" % load)
         if st != "Playing":
             L.row("L0_fresh_map", False, "SITE", load)
+        elif not args.mock:
+            # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: calm the fresh map (hostiles, hives) as proof_hose does
+            import validation_core as _VC   # noqa: E402
+            load["site_calm"] = _VC.site_calm(B)
+            L._log("- site_calm: %s" % load["site_calm"])
     # The recording contract (`modcheck record`, Utils/modcheck/record.py): the mod hash the run
     # was made AT and the mod list it ran ON, both read now, so a later record can refuse a stale
     # or off-tier result instead of trusting it.

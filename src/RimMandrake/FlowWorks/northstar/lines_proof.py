@@ -307,6 +307,7 @@ def main(argv=None):
         return 2
     if not a.mock:
         rect = (max(ox - 14, 1), max(oz - 8, 1), 36, 116)
+        res["site_calm"] = V.site_calm(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: map-gen hostiles/hives stop safe_advance at arm
         B.call("jawa/kill_hostiles")
         B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect",
                args="%d;%d;%d;%d" % rect)

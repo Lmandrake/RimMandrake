@@ -189,6 +189,8 @@ def main():
         B.call("rimworld/go_to_main_menu")
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
     ok, _ = V._wait_playing(B, leave_s=0)
+    if ok:
+        res["site_calm"] = V.site_calm(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: map-gen hostiles/hives stop safe_advance at arm
     FIELDS = ("deepBedsEnabled", "lakeDepthScale", "deepBedMaxDepth", "drainableLakeMaxCells", "pondBedHollowEnabled",
               "recessionEnabled", "refillWaitsForOccupants")
     before = {f: sget(f) for f in FIELDS}
