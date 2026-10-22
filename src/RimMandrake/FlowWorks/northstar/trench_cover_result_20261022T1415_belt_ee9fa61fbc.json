@@ -1,0 +1,240 @@
+{
+ "script": "trench_cover_proof.py",
+ "started": "2026-10-22T13:09:26",
+ "rows": [
+  {
+   "id": "TRENCH_square_on_blocks_044",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.441",
+     "vanilla": "0.000",
+     "combined": "0.441",
+     "hit": "0.308",
+     "hitNoTrench": "0.552",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "127,135"
+    },
+    "txt": "TRENCH trench=0.441 vanilla=0.000 combined=0.441 hit=0.308 hitNoTrench=0.552 cage=False target=127,125 shooter=127,135"
+   }
+  },
+  {
+   "id": "TRENCH_square_on_hit_falls",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.441",
+     "vanilla": "0.000",
+     "combined": "0.441",
+     "hit": "0.308",
+     "hitNoTrench": "0.552",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "127,135"
+    }
+   }
+  },
+  {
+   "id": "TRENCH_enfilade_zero",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.000",
+     "vanilla": "0.000",
+     "combined": "0.000",
+     "hit": "0.336",
+     "hitNoTrench": "0.336",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "142,125"
+    },
+    "txt": "TRENCH trench=0.000 vanilla=0.000 combined=0.000 hit=0.336 hitNoTrench=0.336 cage=False target=127,125 shooter=142,125"
+   }
+  },
+  {
+   "id": "TRENCH_lip_shooter_zero",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.000",
+     "vanilla": "0.000",
+     "combined": "0.000",
+     "hit": "0.756",
+     "hitNoTrench": "0.756",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "127,126"
+    },
+    "txt": "TRENCH trench=0.000 vanilla=0.000 combined=0.000 hit=0.756 hitNoTrench=0.756 cage=False target=127,125 shooter=127,126"
+   }
+  },
+  {
+   "id": "TRENCH_one_back_third",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.147",
+     "vanilla": "0.000",
+     "combined": "0.147",
+     "hit": "0.324",
+     "hitNoTrench": "0.380",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "127,127"
+    },
+    "txt": "TRENCH trench=0.147 vanilla=0.000 combined=0.147 hit=0.324 hitNoTrench=0.380 cage=False target=127,125 shooter=127,127"
+   }
+  },
+  {
+   "id": "TRENCH_wet_same_as_dry",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "trench": "0.441",
+     "vanilla": "0.000",
+     "combined": "0.441",
+     "hit": "0.308",
+     "hitNoTrench": "0.551",
+     "cage": "False",
+     "target": "127,125",
+     "shooter": "126,135"
+    },
+    "txt": "TRENCH trench=0.441 vanilla=0.000 combined=0.441 hit=0.308 hitNoTrench=0.551 cage=False target=127,125 shooter=126,135",
+    "fillRefusedAt": []
+   }
+  },
+  {
+   "id": "TRENCH_raiders_cast_from_canal",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "needs a raid against a colony with a 1 m canal line (design \u00a710 step 7 row 3)"
+   }
+  },
+  {
+   "id": "TRENCH_raiders_skip_sheer_cage",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "needs a raid beside a 1.5 m sheer canal; trusts PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH"
+   }
+  },
+  {
+   "id": "TRENCH_no_blast_cover",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "needs a frag grenade on a pawn in the trench vs an open-ground control (damage read)"
+   }
+  },
+  {
+   "id": "TRENCH_cast_search_cost",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "CastPositionFinder timing on a 500-dug-square map, on vs off"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/belt/tcover_2.json",
+  "origin": "120,120",
+  "fresh_map": true
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "113d57bf1b0c87237edaa31a474f5fef259c888a601d5c71484f19a083d0eaf2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "77cd778941b152c46490c667102391c3a2360153ea0ccbf0f0e71f7cff22322e"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brullith36146",
+    "RM_Brullith36154",
+    "RM_Chittik36135",
+    "RM_Chittik36136",
+    "RM_Chittik36137",
+    "RM_Chittik36138",
+    "RM_Chittik36139",
+    "RM_Chittik36140",
+    "RM_Chittik36141",
+    "RM_Chittik36142",
+    "RM_Dustveil36144",
+    "RM_Dustveil36145",
+    "RM_Dustveil36147",
+    "RM_Dustveil36150",
+    "RM_Grellik36151",
+    "RM_Grellik36152",
+    "RM_Grellik36153",
+    "RM_MycoidColossus36159",
+    "RM_Shambles36148",
+    "RM_Shambles36149",
+    "RM_Shambles36156",
+    "RM_Thozzik36157",
+    "RM_Thozzik36158",
+    "RM_ThozzikColonyQueen36134",
+    "RM_ThozzikQueen36143",
+    "RM_ThozzikQueen36155"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "settings_before": {
+  "trenchCoverEnabled": "True",
+  "trenchCoverStrength": "1",
+  "trenchCoverCap": "0.9"
+ },
+ "pawns": {
+  "target": "Human38053",
+  "shooters": {
+   "on": "Human38056",
+   "axis": "Human38063",
+   "lip": "Human38072",
+   "back": "Human38079"
+  }
+ },
+ "settings_restored": {
+  "trenchCoverEnabled": "True",
+  "trenchCoverStrength": "1",
+  "trenchCoverCap": "0.9"
+ }
+}
