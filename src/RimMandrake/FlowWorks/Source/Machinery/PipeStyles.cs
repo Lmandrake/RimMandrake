@@ -29,6 +29,14 @@ namespace RimMandrake.FlowWorks.Machinery
         /// <summary>The river weir takes the same four looks (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS, owner 2026-10-16).</summary>
         public const string WeirDef = "RM_BankWeir";
 
+        /// <summary>The liquid pump takes the same four looks (owner card 2026-10-22: pumps E/F/G installed; Scrapper keeps
+        /// today's pump). Registered by PipeLook once its style defs (RM_LiquidPumpStyles.xml, RM_LiquidPump_&lt;Look&gt;) load.</summary>
+        public const string PumpDef = "RM_LiquidPump";
+
+        /// <summary>A pump look's art (texPath): Scrapper = the original pump picture; the rest RimMandrake/FlowWorks/Pump/&lt;Look&gt;/RM_LiquidPump.</summary>
+        public static string PumpTexPath(string look) => DefaultLook(look) == Scrapper
+            ? "Things/Building/FlowWorks/Machinery/RM_LiquidPump" : "RimMandrake/FlowWorks/Pump/" + DefaultLook(look) + "/RM_LiquidPump";
+
         /// <summary>The four liquid tanks take the same four looks (owner 2026-10-14, TANK_TALL_BUILD_TWICE_THE_DRINK: "They should
         /// have the same four variant styles as Gimme Some Slack."). Registered by PipeLook only once their style defs
         /// (RM_LiquidTankStyles.xml, ThingStyleDef &lt;Tank&gt;_&lt;Look&gt;) are loaded, so the build button grows the menu the moment

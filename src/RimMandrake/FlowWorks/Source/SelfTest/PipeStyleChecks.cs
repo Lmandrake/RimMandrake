@@ -4,6 +4,7 @@
 // NOT proven here: the build-button menu opening, a picked look surviving blueprint -> frame -> building -> save, the atlas
 // joining up on a map. Those are live rows in validation.py (pipe_looks chain).
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -165,6 +166,34 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // can-fail: machines stay with production (pumps, stills are machines, not pipes or storage)
                 XElement pump = Thing(Load("LiquidTypes", "ThingDefs", "RM_LiquidPump.xml"), "RM_LiquidPump");
                 Assert((string)pump.Element("designationCategory") == "Production", "the pump is a machine: Production");
+            });
+            Case("PumpStyles_four_looks_scrapper_keeps_todays_pump", () =>
+            {
+                // owner card 2026-10-22: pumps E (Industrial), F (Modern), G (Futuristic) installed, each look picks its picture;
+                // Scrapper keeps today's pump
+                XElement pump = Thing(Load("LiquidTypes", "ThingDefs", "RM_LiquidPump.xml"), PipeStyles.PumpDef);
+                Assert(pump != null, "the pump shipped");
+                var comps = pump.Element("comps").Elements("li").Select(li => (string)li.Attribute("Class")).ToList();
+                Assert(comps.Contains("CompProperties_Styleable") && comps.Contains("RimMandrake.FlowWorks.Machinery.CompProperties_TankLook"),
+                    "the pump stores a look and has the Choose style gizmo");
+                XElement pg = pump.Element("graphicData");
+                Assert((string)pg.Element("texPath") == PipeStyles.PumpTexPath(PipeStyles.Scrapper), "the unstyled pump is the Scrapper picture (today's)");
+                XDocument st = Load("LiquidTypes", "ThingDefs", "RM_LiquidPumpStyles.xml");
+                var tex = new List<string>();
+                foreach (string look in PipeStyles.Looks)
+                {
+                    string dn = PipeStyles.StyleDefName(PipeStyles.PumpDef, look);
+                    XElement s = st.Descendants("ThingStyleDef").FirstOrDefault(e => (string)e.Element("defName") == dn);
+                    Assert(s != null, dn + " present");
+                    XElement g = s.Element("graphicData");
+                    Assert((string)g.Element("texPath") == PipeStyles.PumpTexPath(look), dn + ": art path " + (string)g.Element("texPath"));
+                    Assert((string)g.Element("drawSize") == (string)pg.Element("drawSize"), dn + ": a style never resizes the pump");
+                    tex.Add((string)g.Element("texPath"));
+                }
+                Assert(tex.Distinct().Count() == 4, "can-fail: four looks, four pictures");
+                string src = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "PipeLook.cs"));
+                Assert(src.Contains("PipeStyles.StyleDefName(PipeStyles.PumpDef, PipeStyles.Scrapper)") && src.Contains("Core.Register(new[] { PipeStyles.PumpDef }"),
+                    "PipeLook registers the pump with the shared picker once its styles load");
             });
             Case("Pitch_never_solidifies_in_bulk", () =>
             {

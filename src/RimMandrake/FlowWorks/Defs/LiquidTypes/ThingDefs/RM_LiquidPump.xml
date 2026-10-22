@@ -53,6 +53,10 @@
       </li>
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
+      <!-- per-build look (owner card 2026-10-22, pumps E/F/G): the engine's style field, picked on the build button through
+           PipeLook (PipeStyles.PumpDef); styles in RM_LiquidPumpStyles.xml; CompTankLook is the built pump's Choose style gizmo -->
+      <li Class="CompProperties_Styleable" />
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_TankLook" />
     </comps>
     <building>
       <expandHomeArea>true</expandHomeArea>
