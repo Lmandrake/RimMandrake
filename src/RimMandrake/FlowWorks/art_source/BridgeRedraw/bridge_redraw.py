@@ -47,7 +47,7 @@ HOMES = Path("/mnt/c/Users/Mandrake/.codex_workers")
 LOOKS = ["Scrapper", "Industrial", "Modern", "Futuristic"]
 # already-seeded worker homes (a NEW home cannot be seeded while the sandbox seed template lags the codex build)
 WORKER_HOMES = ["bench_lad1", "bench_lad2", "bench_lad3", "bench_lad4", "bench_lad5", "bench_spk1", "bench_spk2",
-                "bench_spk3", "bench_spk4", "pyr0", "pyr1", "pyr2", "pyr3"]  # dw1-4: 401 unauthorized
+                "bench_spk3", "bench_spk4"]  # dw1-4, pyr0-3: 401 unauthorized
 
 
 def done_png(job):
@@ -624,7 +624,7 @@ def main():
     a = sp.add_parser("list"); a.add_argument("--wave", type=int)
     sp.add_parser("guides")
     a = sp.add_parser("gen"); a.add_argument("--wave", type=int); a.add_argument("--only", nargs="*", default=[])
-    a.add_argument("--workers", type=int, default=13); a.add_argument("--timeout", type=int, default=500)
+    a.add_argument("--workers", type=int, default=9); a.add_argument("--timeout", type=int, default=500)
     a = sp.add_parser("finalize"); a.add_argument("--wave", type=int)
     sp.add_parser("manifest")
     a = ap.parse_args()

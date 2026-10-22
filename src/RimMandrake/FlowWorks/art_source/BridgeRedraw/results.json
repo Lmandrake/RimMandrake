@@ -98,6 +98,171 @@
   "row": "RD_RaidPlank_Laid",
   "status": "PASS"
  },
+ "RM_SuspensionAnchor_Heavy_Futuristic_rd1a_south": {
+  "coverage": 0.312,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Heavy_Futuristic_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Heavy_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Heavy_Industrial_rd1a_south": {
+  "coverage": 0.335,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Heavy_Industrial_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Heavy_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Heavy_Modern_rd1a_south": {
+  "coverage": 0.317,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Heavy_Modern_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Heavy_Modern",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Heavy_Scrapper_rd1a_south": {
+  "coverage": 0.285,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Heavy_Scrapper_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Heavy_Scrapper",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Steel_Futuristic_rd1a_south": {
+  "coverage": 0.154,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Steel_Futuristic_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Steel_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Steel_Industrial_rd1a_south": {
+  "coverage": 0.161,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Steel_Industrial_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Steel_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Steel_Modern_rd1a_south": {
+  "coverage": 0.156,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Steel_Modern_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Steel_Modern",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Steel_Scrapper_rd1a_south": {
+  "coverage": 0.158,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Steel_Scrapper_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Steel_Scrapper",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Timber_Futuristic_rd1a_south": {
+  "coverage": 0.204,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Timber_Futuristic_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Timber_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Timber_Industrial_rd1a_south": {
+  "coverage": 0.261,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Timber_Industrial_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Timber_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Timber_Modern_rd1a_south": {
+  "coverage": 0.246,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Timber_Modern_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Timber_Modern",
+  "status": "PASS"
+ },
+ "RM_SuspensionAnchor_Timber_Scrapper_rd1a_south": {
+  "coverage": 0.194,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionAnchor_Timber_Scrapper_rd1a_south.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_Anchor_Timber_Scrapper",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_Timber_Futuristic_rd1a": {
+  "coverage": 1.0,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_Timber_Futuristic_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DeckTimber_Futuristic",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_Timber_Industrial_rd1a": {
+  "coverage": 1.0,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_Timber_Industrial_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DeckTimber_Industrial",
+  "status": "PASS"
+ },
+ "RM_SuspensionDeck_Timber_Modern_rd1a": {
+  "coverage": 1.0,
+  "findings": [],
+  "out": "src/RimMandrake/FlowWorks/art_source/BridgeRedraw/out/RM_SuspensionDeck_Timber_Modern_rd1a.png",
+  "raw_size": [
+   1024,
+   1024
+  ],
+  "row": "RD_DeckTimber_Modern",
+  "status": "PASS"
+ },
  "RM_SuspensionTower_Futuristic_rd1a": {
   "coverage": 0.369,
   "findings": [],
