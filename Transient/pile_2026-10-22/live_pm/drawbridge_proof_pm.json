@@ -1,0 +1,237 @@
+{
+ "script": "drawbridge_proof.py",
+ "started": "2026-10-22T08:36:27",
+ "rows": [
+  {
+   "id": "RAISE_PATH",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": "PATH found=True cells=10 decked=6",
+    "after": "PATH found=True cells=22 decked=0",
+    "raisedAt": "True",
+    "toggles": 1,
+    "repaths": 1
+   }
+  },
+  {
+   "id": "RAISE_TIPS_RIDERS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "preview": "PREVIEW riders=6 land=4 fall=2 free=4",
+    "devSet": "DEVSET target=raised progress=0",
+    "leafAfter": "LEAF leaf=1/1 progress=10 full=120 target=raised raised=4/4 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "tipped": 4,
+    "fell": 2,
+    "onBank": 4,
+    "inHole": 2,
+    "stillHostile": 6,
+    "cells": [
+     [
+      140,
+      166
+     ],
+     [
+      140,
+      165
+     ],
+     [
+      140,
+      164
+     ],
+     [
+      139,
+      165
+     ],
+     [
+      142,
+      165
+     ],
+     [
+      142,
+      166
+     ]
+    ]
+   }
+  },
+  {
+   "id": "RAISE_SPARES_UNDERPASS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "underBefore": [
+     142,
+     172
+    ],
+    "underAfter": [
+     142,
+     172
+    ],
+    "band": "BAND under=False onDeck=False passes=False view=floor deckNotches=-1",
+    "riderAt": [
+     140,
+     172
+    ],
+    "tipped": 1
+   }
+  },
+  {
+   "id": "LOWER_ONLY_FROM_WINCH",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "farRaise": "WORK job=True spot=winch raise=True why=-",
+    "farLower": "WORK job=False spot=none raise=False why=unreachable_winch,refused_at_far",
+    "winchLower": "WORK job=True spot=winch raise=False why=-",
+    "leaf": "LEAF leaf=1/1 progress=960 full=960 target=raised raised=4/4 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "noWalkRound": "behind=PATH found=False cells=0 decked=0 | lip=PATH found=False cells=0 decked=0"
+   }
+  },
+  {
+   "id": "TWO_LEAF_TIPS_OWN_HINGE",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": "DRAW ok=True leaves=2 tier=timber hinges=A,B winchAt=139,178|148,178 firstAt=140,178 reason=-",
+    "rider1": [
+     140,
+     178
+    ],
+    "rider2": [
+     147,
+     178
+    ]
+   }
+  },
+  {
+   "id": "HOSTILE_LOCKS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "freeBefore": "5",
+    "raisedLocked": "LEAF leaf=1/1 progress=480 full=480 target=raised raised=4/4 frozen=False winch=True powered=True hold=False auto=False pending=none tip=True hinge=A version=1",
+    "autoLowering": "LEAF leaf=1/1 progress=450 full=480 target=lowered raised=4/4 frozen=False winch=True powered=True hold=False auto=True pending=none tip=True hinge=A version=1",
+    "afterRaid": "LEAF leaf=1/1 progress=460 full=480 target=raised raised=4/4 frozen=False winch=True powered=True hold=False auto=False pending=none tip=True hinge=A version=1",
+    "trappedFree": "0",
+    "locked": "False"
+   }
+  },
+  {
+   "id": "STEEL_UNPOWERED_FREEZES",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "partWay": "LEAF leaf=1/1 progress=30 full=120 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1",
+    "unpowered": "LEAF leaf=1/1 progress=30 full=120 target=raised raised=6/6 frozen=True winch=True powered=False hold=True auto=False pending=none tip=True hinge=A version=1",
+    "repowered": "LEAF leaf=1/1 progress=120 full=120 target=raised raised=6/6 frozen=False winch=True powered=True hold=True auto=False pending=none tip=True hinge=A version=1"
+   }
+  },
+  {
+   "id": "WINCH_LOST_CRASHES",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "after": "LEAF leaf=1/1 progress=0 full=960 target=lowered raised=0/4 frozen=False winch=False powered=False hold=False auto=False pending=none tip=False hinge=A version=1",
+    "crashes": 1,
+    "hits": 1,
+    "hediffs": [
+     0,
+     1
+    ],
+    "band": "BAND under=False onDeck=False passes=False view=floor deckNotches=-1"
+   }
+  },
+  {
+   "id": "WINCH_DESPAWN_CRASHES",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "despawn": "DESPAWN ok=True linkedBefore=True linkedAfter=False",
+    "after": "LEAF leaf=1/1 progress=0 full=960 target=lowered raised=0/4 frozen=False winch=False powered=False hold=False auto=False pending=none tip=False hinge=A version=1",
+    "crashes": 1,
+    "hits": 1
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/pile_2026-10-22/live_pm/drawbridge_proof_pm.json",
+  "origin": "140,140",
+  "fresh_map": true,
+  "only": "",
+  "raid_ticks": 3000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofDevSet",
+  "ProofGivePlank",
+  "ProofInterrupt",
+  "ProofLeaf",
+  "ProofMakeDrawbridge",
+  "ProofOrder",
+  "ProofPlankLedger",
+  "ProofTipPreview",
+  "ProofWinchDespawn",
+  "ProofWinchPower",
+  "ProofWorkJob"
+ ],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "861b08f81af40d131d015bf419676567f3828de94263783ac72bbed8bb0c18b1",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "5d8daed04f51f9ffebbc8810e0a2e6e1c5e05289cce12a50b101d9bc80f871f4"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Agaripawn36434",
+    "RM_Agaripawn36435",
+    "RM_Illoth36425",
+    "RM_MycoidColossus36437",
+    "RM_Shambles36430",
+    "RM_Shambles36433",
+    "RM_Thozzik36426",
+    "RM_Thozzik36427",
+    "RM_Thozzik36428",
+    "RM_Thozzik36429",
+    "RM_Thozzik36432",
+    "RM_Thozzik36436",
+    "RM_ThozzikColony36438",
+    "RM_ThozzikQueen36431"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ }
+}

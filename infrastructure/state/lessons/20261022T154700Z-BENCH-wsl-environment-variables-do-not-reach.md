@@ -1,0 +1,1 @@
+WSL environment variables do not reach python.exe (no WSLENV): an env knob like BC_MAX=30000 python.exe tool.py is silently ignored and the default (e.g. a 3000-char truncation) applies, which then reads as a JSON decode error. Pass such knobs as argv to Windows-side scripts.
