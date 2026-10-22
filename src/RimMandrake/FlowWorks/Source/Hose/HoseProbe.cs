@@ -82,6 +82,7 @@ namespace RimMandrake.FlowWorks.Hose
                 if (fi == null) return "{\"success\":false,\"error\":\"no settings field " + kv[0] + "\"}";
                 object v = fi.FieldType.IsEnum ? Enum.Parse(fi.FieldType, kv[1]) : Convert.ChangeType(kv[1], fi.FieldType, CultureInfo.InvariantCulture);
                 fi.SetValue(null, v);
+                RM_HoseSettings.ApplyThickness();   // `set:thickness=` must reach HoseMath.WidthScale (only the slider and ExposeData did)
                 return "{\"success\":true,\"cmd\":" + S(cmd) + "}";
             }
             if (cmd == "colonists") return Colonists(map);

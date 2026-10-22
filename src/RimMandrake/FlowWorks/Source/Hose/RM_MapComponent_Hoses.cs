@@ -387,7 +387,8 @@ namespace RimMandrake.FlowWorks.Hose
             V2 end = EndPoint(r, out CompHoseReel relay, out V2? inward);
             // the relay's look and art (stored / laid) move the drawn inlet, so they are part of the key; S2: so does the
             // walked trail (empty = the planned route, the key as before)
-            string key = r.parent.Position + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + RM_HoseSettings.ShapeFingerprint() + (IsFed(r) ? "|fed" : "");
+            // the reel's OWN look too: the nozzle (Mouth, where the hose starts) is measured per look, and "Choose style" restyles in place
+            string key = r.parent.Position + "/" + HoseLook.LookOfThing(r.parent) + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + RM_HoseSettings.ShapeFingerprint() + (IsFed(r) ? "|fed" : "");
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
