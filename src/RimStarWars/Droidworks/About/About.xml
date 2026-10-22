@@ -20,6 +20,7 @@
     <li>brrainz.harmony</li>
     <li>erdelf.HumanoidAlienRaces</li>
     <li>mandrake.rsw.ionweapons</li>          <!-- IonBuildup_PowersDownDroid.xml patches Jawa Ion Weapons defs -->
+    <li>mandrake.rm.flowworks</li>            <!-- FlowWorks_DroidsDigDeep.xml (FindMod-guarded) -->
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>ludeon.rimworld.anomaly</li>
     <li>ludeon.rimworld.ideology</li>
