@@ -730,11 +730,19 @@ namespace RimMandrake.FlowWorks.Sheet
 
 		/// <summary>Squares of spilled water on every map: the cheap gate the path-cost postfix reads before any map lookup.</summary>
 		private static int anyWet;
+		private static Game anyWetGame;
 		private int countedWet;
 
 		public override void MapComponentTick()
 		{
 			FireTick();
+			// a game torn down by loading another save never calls MapRemoved (review 2026-10-22): the old game's count would keep
+			// the gate open forever, sending every path-cost query through a component lookup; a new Game starts it from zero
+			if (anyWetGame != Current.Game)
+			{
+				anyWetGame = Current.Game;
+				anyWet = 0;
+			}
 			// keep the global gate in step with this map (cheap: one int compare a tick)
 			int w = state?.WetCount ?? 0;
 			if (w != countedWet)

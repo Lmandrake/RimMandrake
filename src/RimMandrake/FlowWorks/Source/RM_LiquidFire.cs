@@ -247,6 +247,19 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
+		/// <summary>Review 2026-10-22: a burning spill beside this channel square offers it to the front, due now; it lights on
+		/// the next 30-tick check. Unlike <see cref="IgniteNow"/> it never forces an extra Tick (that re-ran every effect and the
+		/// detonation budget once per sheet check for a smothered or detonating square). False when nothing burnable stands there.</summary>
+		public bool OfferLight(Map map, RM_MapComponent_Excavation ex, IntVec3 c)
+		{
+			if (!RimMandrakeFlowWorksSettings.canalFireEnabled || BurnableFluidAt(map, ex, c) == null)
+			{
+				return false;
+			}
+			TryQueue(map, ex, c, Find.TickManager.TicksGame, 0);
+			return true;
+		}
+
 		private void TryQueue(Map map, RM_MapComponent_Excavation ex, IntVec3 c, int due, int hops)
 		{
 			if (!c.InBounds(map))
@@ -425,6 +438,11 @@ namespace RimMandrake.FlowWorks
 			int now = Find.TickManager.TicksGame;
 			int infernoCells = 0;
 			haloTries = 0;
+			// D5 "fire crosses both ways" (review 2026-10-22): a burning channel square lights the burnable spill beside it. The
+			// channel's flame is not a vanilla Fire, so the Fire.SpawnSetup hook never saw it and an ordinary fuel canal never lit
+			// its own spill.
+			Sheet.RM_MapComponent_Sheet sheet = Sheet.RM_MapComponent_Sheet.Of(map);
+			bool lightSheet = sheet != null && sheet.WetCells > 0;
 			for (int k = 0; k < scratch.Count; k++)
 			{
 				int i = scratch[k];
@@ -445,6 +463,13 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				EnsureFlame(map, c, fluid);
+				if (lightSheet)
+				{
+					for (int d = 0; d < 4; d++)
+					{
+						sheet.TryLight(c + GenAdj.CardinalDirections[d]);
+					}
+				}
 				RM_FuelBurn kind = BurnOf(fluid);
 				if (kind == RM_FuelBurn.Inferno)
 				{

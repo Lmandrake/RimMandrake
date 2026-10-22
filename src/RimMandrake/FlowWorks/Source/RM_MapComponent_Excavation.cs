@@ -2815,7 +2815,8 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>POND_BED step 2 (design §7 #8, Option B "canal backflow can refill it"): after the kernel's pulse, a dug
 		/// square whose water stands above a neighbouring dry bed square's floor (RM_Volume.RunsIntoBed: a brim-full canal
-		/// always) pours one level into it, and that level is credited to the POND's stock through the return leg, never
+		/// always) pours one level into it (exact-level water: up to one level's decilitres, so a thin sheet with no whole notch
+		/// runs in too), and that water is credited to the POND's stock through the return leg, never
 		/// to a dug cell. Refill and Restore then re-wet the bed last-in-first-out. All or nothing per level: the take
 		/// happens only once the pond is known to accept it, so nothing is created or lost.</summary>
 		private void RunIntoBeds()
@@ -2830,7 +2831,11 @@ namespace RimMandrake.FlowWorks
 			foreach (IntVec3 c in excavatedCells)
 			{
 				int i = map.cellIndices.CellToIndex(c);
-				int f = fillGrid[i] > depthGrid[i] ? depthGrid[i] : fillGrid[i];
+				// FlowWorks review 2026-10-22 (thin part-notch sheet never ran into a dry bed): f is the water's notches ROUNDED UP
+				// (ceil(W / U)), so a sheet with no whole notch (F 0, part > 0) is water too. For integer depths, d - ceil(W/U) < bed
+				// is exactly "the surface (brim minus W) stands above the bed floor"; with no part-notch it is F, as before.
+				long w = System.Math.Min(WaterDl(i), depthGrid[i] * (long)RM_LevelSolve.U);
+				int f = (int)((w + RM_LevelSolve.U - 1) / RM_LevelSolve.U);
 				// A shut sluice seals its cell (the kernel's sealedCell): on the canal square it holds the water in, on the bed
 				// square it keeps the water out (review 2026-10-14: only the canal side was checked).
 				if (f == 0 || RM_FlowDoorRules.SealsLiquid(map.edificeGrid[c]))
@@ -2857,6 +2862,22 @@ namespace RimMandrake.FlowWorks
 			for (int p = 0; p < pours.Count; p++)
 			{
 				FluidDef fluid = FluidAt(pours[p]) ?? ActiveFluid;
+				if (LevelExact)
+				{
+					// Exact-level water: up to one level's decilitres (a thin sheet gives what it has), all or nothing per pour.
+					long want = System.Math.Min(WaterDlAt(pours[p]), (long)RM_LevelSolve.U);
+					long room = ReturnRoomDl(beds[p], fluid, want);
+					if (room <= 0)
+					{
+						continue;
+					}
+					long took = TakeDlCore(pours[p], room, out _);
+					if (took > 0 && !TryReturnDl(beds[p], fluid, took) && !TryPourDl(pours[p], fluid, took))
+					{
+						ReportLiquidLost(pours[p], took, "Water running into a dry pond bed");   // defensive: checked above, so never expected
+					}
+					continue;
+				}
 				if (!CanReturnLevels(beds[p], fluid, 1) || !TakeLevelCore(pours[p], out _))
 				{
 					continue;

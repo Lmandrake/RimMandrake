@@ -12,7 +12,8 @@ namespace RimMandrake.FlowWorks.Sheet
 	///   touching it (RM_Patch_ExplosionLightsLiquid), or a burning channel square beside it.
 	/// - FRONT: one front for every burnable liquid, as the channels': a lit square lights its burnable N/E/S/W neighbours
 	///   <c>fireFrontTicksPerCell</c> later (RM_FireMath.FrontDue; an inferno takes the chemfuel spread dial), and lights a
-	///   burnable channel square beside it through the channel fire (RM_LiquidFire.IgniteNow), so fire crosses both ways.
+	///   burnable channel square beside it through the channel fire's front (RM_LiquidFire.OfferLight), so fire crosses both
+	///   ways (the channel side: RM_LiquidFire.Maintain lights the spill beside a burning channel square).
 	/// - BURN: the channels' rate, ruling 7 (a notch a day; an inferno a level every 5 s at burn rate 1); a detonating liquid
 	///   (astrofuel, with its setting on) is consumed whole on the first check and flame-blasts (a few per check). Burned
 	///   liquid is GONE, counted as "burned" in the sheet ledger (RM_SheetMath.Burn), never silent.
@@ -151,7 +152,7 @@ namespace RimMandrake.FlowWorks.Sheet
 						}
 						if (!TryLight(n) && e != null && e.IsExcavated(n) && Burnable(e.FluidAt(n)) && !e.LiquidFire.IsBurning(map, n))
 						{
-							e.LiquidFire.IgniteNow(map, e, n);
+							e.LiquidFire.OfferLight(map, e, n);   // queued, never a forced extra channel-fire Tick
 						}
 					}
 				}

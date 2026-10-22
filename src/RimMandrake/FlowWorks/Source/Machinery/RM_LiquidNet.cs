@@ -278,6 +278,8 @@ namespace RimMandrake.FlowWorks.Machinery
 			public int revision;
 			public bool polesOn = RM_MachinerySettings.pipePolesEnabled;
 			public readonly RM_NetTopologyCache cache = new RM_NetTopologyCache();
+			/// <summary>Outside consumers (kind None: no spawn/despawn bump of their own) whose store this revision cached.</summary>
+			public readonly HashSet<Thing> outsideOrigins = new HashSet<Thing>();
 		}
 
 		private static readonly Dictionary<Map, NetState> states = new Dictionary<Map, NetState>();
@@ -303,8 +305,18 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return;
 			}
-			StateOf(map).revision++;
+			NetState s = StateOf(map);
+			s.revision++;
+			s.outsideOrigins.Clear();
 			Bumps++;
+		}
+
+		/// <summary>REVIEW 2026-10-22: an outside consumer (a glow tank) is no topology member, so its despawn never bumped and
+		/// its cached touch store outlived a move: reinstalled elsewhere it still drew from the tanks it used to touch. Its
+		/// despawn bumps when this revision cached a store for it.</summary>
+		internal static bool IsOutsideOrigin(Map map, Thing t)
+		{
+			return map != null && t != null && states.TryGetValue(map, out NetState s) && s.outsideOrigins.Contains(t);
 		}
 
 		/// <summary>The map's components for the current revision (RM_HoseLinks' backstop signature runs first, so a link change
@@ -342,7 +354,16 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>A member's store this revision: its tanks (touching first, then by hoses crossed, then by id) and routes.</summary>
 		public static RM_NetResult Store(Thing origin)
 		{
-			return origin?.Map == null ? new RM_NetResult() : Components(origin.Map).StoreOf(origin);
+			if (origin?.Map == null)
+			{
+				return new RM_NetResult();
+			}
+			RM_NetComponents comps = Components(origin.Map);
+			if (!ChangesTopology(origin))
+			{
+				StateOf(origin.Map).outsideOrigins.Add(origin);
+			}
+			return comps.StoreOf(origin);
 		}
 
 		/// <summary>A component this member touches is over the cap: it is refused and the member reads "network too large".</summary>
@@ -1160,6 +1181,10 @@ namespace RimMandrake.FlowWorks.Machinery
 		public static void Postfix(Building __instance, Map __state)
 		{
 			if (RM_LiquidNet.ChangesTopology(__instance))
+			{
+				RM_LiquidNet.Bump(__state);
+			}
+			else if (RM_LiquidNet.IsOutsideOrigin(__state, __instance))
 			{
 				RM_LiquidNet.Bump(__state);
 			}

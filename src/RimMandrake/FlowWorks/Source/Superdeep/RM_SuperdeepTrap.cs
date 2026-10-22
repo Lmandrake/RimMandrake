@@ -293,6 +293,15 @@ namespace RimMandrake.FlowWorks
 			// ladders lead — the ladder graph (the same structural edges the cliff masks restore for A*, closed per pawn by
 			// RM_PitPathing's ladder grid) decides floor -> bank, bank -> bank and bank -> floor; the end rule answers only for a
 			// pocket too narrow to hold the pawn.
+			return VetoedWhole(startPocket, startNarrow, startWayOut, destPocket, destNarrow, destWayIn, g, k, cs, cd, p);
+		}
+
+		/// <summary>FlowWorks review 2026-10-22 (superdeep): the ladder-graph lambda lives here, not in RelativeVeto. It captures
+		/// the parameter p, so in RelativeVeto the compiler built its closure at method ENTRY on every CanReach postfix call
+		/// (relative rule on by default), early returns included; here it is built only when both ends are judged.</summary>
+		private static bool VetoedWhole(bool startPocket, bool startNarrow, bool startWayOut, bool destPocket, bool destNarrow,
+			bool destWayIn, RM_PocketGrid g, int k, int cs, int cd, Pawn p)
+		{
 			return RM_PocketGridMath.ReachVetoedWhole(startPocket, startNarrow, startWayOut, destPocket, destNarrow, destWayIn,
 				() => g.JoinedByLadders(k, cs, cd, p));
 		}
