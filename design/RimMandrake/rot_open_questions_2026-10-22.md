@@ -200,6 +200,8 @@ anyone installs it.
 
 **Recommended: 1** — it is the only option that changes nothing outside the Rot.
 
+**ANSWERED 2026-10-22 by question card: option 1, the free Rot gets its own art paths with our painted versions installed there** (owner's word for this cosmetic change). Build filed.
+
 ---
 
 ## Q7. The Rot's first north-star bars: which experiences get a pass/fail bar?
