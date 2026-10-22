@@ -250,8 +250,9 @@ def grab(def_name, quiet=False):
         import sheet as _sheet
         if not os.path.isfile(os.path.join(out, "sheets", "SHEET_LAYOUT.json")):
             _sheet.make(spec["short"])
-    except SystemExit:
-        pass
+    except SystemExit as e:
+        print("  ! sheet.make refused (%s): SHEET_LAYOUT.json not written, briefs follow without it" % (e.code,),
+              file=sys.stderr)
     import briefs as _briefs
     _briefs.write_all(spec["short"])
 
